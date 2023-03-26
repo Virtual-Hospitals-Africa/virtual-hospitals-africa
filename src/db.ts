@@ -26,5 +26,8 @@ export default new Kysely<DatabaseSchema>({
     password: Deno.env.get("DB_PASS")!,
     user: Deno.env.get("DB_USER")!,
     database: Deno.env.get("DB_NAME")!,
+    tls: {
+      enabled: false,
+    },
   }),
 });
