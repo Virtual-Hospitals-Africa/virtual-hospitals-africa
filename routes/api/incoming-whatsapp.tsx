@@ -2,6 +2,8 @@ import { Handlers } from "$fresh/server.ts";
 import * as conversations from "../../src/models/conversations.ts";
 import { IncomingWhatAppMessage } from "../../src/types.ts";
 
+const verifyToken = Deno.env.get("WHATSAPP_WEBHOOK_VERIFY_TOKEN");
+
 /*
   Handle the webhook from WhatsApp
   https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples
@@ -9,7 +11,18 @@ import { IncomingWhatAppMessage } from "../../src/types.ts";
   To be handled later
 */
 export const handler: Handlers = {
-  async POST(req, ctx) {
+  GET(req) {
+    const { searchParams } = new URL(req.url);
+    const hubMode = searchParams.get("hub.mode");
+    const hubVerifyToken = searchParams.get("hub.verify_token");
+    const hubChallenge = searchParams.get("hub.challenge");
+
+    if (hubMode === "subscribe" && hubVerifyToken === verifyToken) {
+      return new Response(hubChallenge);
+    }
+    return new Response("Invalid token");
+  },
+  async POST(req) {
     const incomingMessage: IncomingWhatAppMessage = await req.json();
 
     console.log(JSON.stringify(incomingMessage));
