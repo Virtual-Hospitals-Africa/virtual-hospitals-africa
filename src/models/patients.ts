@@ -1,0 +1,53 @@
+import db from "../db.ts";
+import { ConversationState, Gender, Maybe, Patient } from "../types.ts";
+
+export async function get(
+  query: { phone_number: string },
+): Promise<
+  Maybe<{
+    id: number;
+    created_at: Date;
+    updated_at: Date;
+    conversation_state: Maybe<ConversationState>;
+    phone_number: string;
+    name: Maybe<string>;
+    gender: Maybe<Gender>;
+    date_of_birth: Maybe<string>;
+    national_id_number: Maybe<string>;
+  }>
+> {
+  const result = await db
+    .selectFrom("patients")
+    .selectAll()
+    .where("phone_number", "=", query.phone_number)
+    .execute();
+  return result && result[0];
+}
+
+export async function upsert(info: {
+  conversation_state: Maybe<ConversationState>;
+  phone_number: string;
+  name: Maybe<string>;
+  gender: Maybe<Gender>;
+  date_of_birth: Maybe<string>;
+  national_id_number: Maybe<string>;
+}): Promise<{
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+  conversation_state: Maybe<ConversationState>;
+  phone_number: string;
+  name: Maybe<string>;
+  gender: Maybe<Gender>;
+  date_of_birth: Maybe<string>;
+  national_id_number: Maybe<string>;
+}> {
+  const [patient] = await db
+    .insertInto("patients")
+    .values(info)
+    .onConflict((oc) => oc.column("phone_number").doUpdateSet(info))
+    .returningAll()
+    .execute();
+
+  return patient;
+}
