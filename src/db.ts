@@ -9,6 +9,7 @@ import {
   WhatsappMessageReceived,
   WhatsappMessageSent,
 } from "./types.ts";
+// import "https://deno.land/x/dotenv/load.ts";
 
 export type DatabaseSchema = {
   appointments: Appointment;
@@ -26,9 +27,5 @@ export default new Kysely<DatabaseSchema>({
     password: Deno.env.get("DB_PASS")!,
     user: Deno.env.get("DB_USER")!,
     database: Deno.env.get("DB_NAME")!,
-    tls: {
-      enabled: true,
-      enforce: true,
-    },
   }),
 });

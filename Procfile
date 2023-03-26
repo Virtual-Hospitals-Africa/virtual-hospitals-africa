@@ -1,1 +1,1 @@
-web: deno run --allow-env --allow-read --allow-net main.ts
+web: deno run --allow-env --allow-read --allow-net --unsafely-treat-insecure-origin-as-secure main.ts
