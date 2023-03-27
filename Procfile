@@ -1,1 +1,1 @@
-web: deno run -A main.ts
+web: DENO_TLS_CA_STORE=system deno run -A main.ts
