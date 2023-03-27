@@ -24,27 +24,35 @@ export async function insertMessageReceived(
   started_responding_at: Date | null | undefined;
   conversation_state: ConversationState | "initial_message";
 }> {
-  const [inserted] = await db.transaction().execute(async (trx) => {
-    const [patient] = await trx
-      .insertInto("patients")
-      .values({ phone_number: opts.patient_phone_number })
-      .onConflict((oc) => oc.column("phone_number").doNothing())
-      .returning(["id", "conversation_state"])
-      .execute();
+  try {
+    console.log("IN HERE");
+    const [inserted] = await db.transaction().execute(async (trx) => {
+      console.log("IN trx");
+      const [patient] = await trx
+        .insertInto("patients")
+        .values({ phone_number: opts.patient_phone_number })
+        .onConflict((oc) => oc.column("phone_number").doNothing())
+        .returning(["id", "conversation_state"])
+        .execute();
 
-    return trx
-      .insertInto("whatsapp_messages_received")
-      .values({
-        patient_id: patient.id,
-        whatsapp_id: opts.whatsapp_id,
-        body: opts.body,
-        conversation_state: patient.conversation_state || "initial_message",
-      })
-      .onConflict((oc) => oc.column("whatsapp_id").doNothing())
-      .returningAll()
-      .execute();
-  });
-  return inserted;
+      console.log("patient", patient);
+      return trx
+        .insertInto("whatsapp_messages_received")
+        .values({
+          patient_id: patient.id,
+          whatsapp_id: opts.whatsapp_id,
+          body: opts.body,
+          conversation_state: patient.conversation_state || "initial_message",
+        })
+        .onConflict((oc) => oc.column("whatsapp_id").doNothing())
+        .returningAll()
+        .execute();
+    });
+    return inserted;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 }
 
 export function insertMessageSent(
