@@ -1,5 +1,10 @@
-import { Kysely } from "kysely";
-import { PostgresDialect } from "https://deno.land/x/kysely_postgres@v0.0.3/mod.ts";
+import "https://deno.land/x/dotenv@v3.2.2/load.ts";
+import {
+  Kysely,
+  PostgresAdapter,
+  PostgresIntrospector,
+  PostgresQueryCompiler,
+} from "kysely";
 import {
   Appointment,
   AppointmentOfferedTime,
@@ -9,7 +14,7 @@ import {
   WhatsappMessageReceived,
   WhatsappMessageSent,
 } from "./types.ts";
-// import "https://deno.land/x/dotenv/load.ts";
+import { PostgreSQLDriver } from "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts";
 
 export type DatabaseSchema = {
   appointments: Appointment;
@@ -21,11 +26,26 @@ export type DatabaseSchema = {
   whatsapp_messages_sent: WhatsappMessageSent;
 };
 
-export default new Kysely<DatabaseSchema>({
-  dialect: new PostgresDialect({
-    hostname: Deno.env.get("DB_HOST")!,
-    password: Deno.env.get("DB_PASS")!,
-    user: Deno.env.get("DB_USER")!,
-    database: Deno.env.get("DB_NAME")!,
-  }),
+const db = new Kysely<DatabaseSchema>({
+  dialect: {
+    createAdapter() {
+      return new PostgresAdapter();
+    },
+    createDriver() {
+      return new PostgreSQLDriver({
+        hostname: Deno.env.get("DB_HOST")!,
+        password: Deno.env.get("DB_PASS")!,
+        user: Deno.env.get("DB_USER")!,
+        database: Deno.env.get("DB_NAME")!,
+      }) as any;
+    },
+    createIntrospector(db: Kysely<unknown>) {
+      return new PostgresIntrospector(db);
+    },
+    createQueryCompiler() {
+      return new PostgresQueryCompiler();
+    },
+  },
 });
+
+export default db;
