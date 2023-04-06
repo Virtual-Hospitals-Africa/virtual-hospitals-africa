@@ -26,18 +26,23 @@ export type DatabaseSchema = {
   whatsapp_messages_sent: WhatsappMessageSent;
 };
 
+const uri = Deno.env.get("DATABASE_URL") + "?sslmode=require" as any;
+console.log("uri", uri);
+
 const db = new Kysely<DatabaseSchema>({
   dialect: {
     createAdapter() {
       return new PostgresAdapter();
     },
     createDriver() {
-      return new PostgreSQLDriver({
-        hostname: Deno.env.get("DB_HOST")!,
-        password: Deno.env.get("DB_PASS")!,
-        user: Deno.env.get("DB_USER")!,
-        database: Deno.env.get("DB_NAME")!,
-      }) as any;
+      return new PostgreSQLDriver(
+        uri || {
+          hostname: Deno.env.get("DB_HOST")!,
+          password: Deno.env.get("DB_PASS")!,
+          user: Deno.env.get("DB_USER")!,
+          database: Deno.env.get("DB_NAME")!,
+        },
+      ) as any;
     },
     createIntrospector(db: Kysely<unknown>) {
       return new PostgresIntrospector(db);
