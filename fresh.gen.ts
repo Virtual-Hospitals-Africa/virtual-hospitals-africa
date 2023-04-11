@@ -5,19 +5,13 @@
 import config from "./deno.json" assert { type: "json" };
 import * as $0 from "./routes/api/incoming-whatsapp.tsx";
 import * as $1 from "./routes/calendar.ts";
-import * as $2 from "./routes/index.tsx";
-import * as $3 from "./routes/logged-in.ts";
-import * as $$0 from "./islands/Counter.tsx";
+import * as $2 from "./routes/logged-in.ts";
 
 const manifest = {
   routes: {
     "./routes/api/incoming-whatsapp.tsx": $0,
     "./routes/calendar.ts": $1,
-    "./routes/index.tsx": $2,
-    "./routes/logged-in.ts": $3,
-  },
-  islands: {
-    "./islands/Counter.tsx": $$0,
+    "./routes/logged-in.ts": $2,
   },
   baseUrl: import.meta.url,
   config,
