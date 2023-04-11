@@ -13,6 +13,7 @@ const manifest = {
     "./routes/calendar.ts": $1,
     "./routes/logged-in.ts": $2,
   },
+  islands: {},
   baseUrl: import.meta.url,
   config,
 };

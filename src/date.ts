@@ -1,5 +1,5 @@
 import { assert } from "https://deno.land/std@0.168.0/testing/asserts.ts";
-import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js";
+// import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js";
 // import * as mod from "https://deno.land/std@0.182.0/datetime/mod.ts";
 import { PatientDemographicInfo } from "./types.ts";
 
@@ -18,7 +18,12 @@ export function prettyPatientDateOfBirth(
   const dtDateOnly = new Date(
     date.valueOf() + date.getTimezoneOffset() * 60 * 1000,
   );
-  return format(dtDateOnly, "d MMMM y", {});
+  return dtDateOnly.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  // return format(dtDateOnly, "d MMMM y", {});
 }
 
 export function newDate(): Date {
@@ -30,7 +35,8 @@ export function formatHarare(
   date = new Date(),
   pattern = "yyyy-MM-d'T'HH:mm:ssXXX",
 ): string {
-  return format(date, pattern, {});
+  return date.toISOString() + pattern;
+  // return format(date, pattern, {});
   // return formatInTimeZone(date, "Africa/Johannesburg", pattern);
 }
 
