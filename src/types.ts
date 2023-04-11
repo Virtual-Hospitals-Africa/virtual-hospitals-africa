@@ -11,16 +11,22 @@ export type DeepPartial<T> = T extends object ? {
   }
   : T;
 
-export type SqlRow = {
+export type SqlRow<T> = {
   id: Generated<number>;
   created_at: ColumnType<Date, undefined, never>;
   updated_at: ColumnType<Date, undefined, never>;
-};
+} & T;
 
-export type InsertSqlRow<T extends SqlRow> = Omit<
-  T,
-  "id" | "created_at" | "updated_at"
->;
+// export type InsertSqlRow<SqlRow<T>> = Omit<
+//   T,
+//   "id" | "created_at" | "updated_at"
+// >;
+
+export type ReturnedSqlRow<T> = {
+  id: number;
+  created_at: Date;
+  updated_at: Date;
+} & T;
 
 export type Gender = "male" | "female" | "other";
 
@@ -39,7 +45,7 @@ export type ConversationState =
   | "not_onboarded:services:check_onboarding"
   | "other_end_of_demo";
 
-export type Patient = SqlRow & {
+export type Patient = {
   conversation_state: Maybe<ConversationState>;
 } & PatientDemographicInfo;
 
@@ -51,7 +57,7 @@ export type PatientDemographicInfo = {
   national_id_number: Maybe<string>;
 };
 
-export type AppointmentOfferedTime = SqlRow & {
+export type AppointmentOfferedTime = {
   appointment_id: number;
   doctor_id: number;
   // doctor_name: string;
@@ -73,9 +79,11 @@ export type UnhandledPatientMessage = {
   conversation_state: Maybe<ConversationState>;
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
-  appointment_offered_times: [null] | AppointmentOfferedTime[];
-  created_at: string;
-  updated_at: string;
+  appointment_offered_times: [null] | ReturnedSqlRow<
+    AppointmentOfferedTime & { doctor_name: string }
+  >[];
+  created_at: Date;
+  updated_at: Date;
 };
 
 // TODO; typecheck that onEnter return gets passed to prompt or eliminate this whole concept
@@ -128,14 +136,14 @@ export type ConversationStateHandler =
   | ConversationStateHandlerDate
   | ConversationStateHandlerType<{ type: "end_of_demo" }>;
 
-export type Appointment = SqlRow & {
+export type Appointment = {
   patient_id: number;
   reason: Maybe<string>;
 };
 
 export type DetermineNextPatientStateValidReturn = {
-  nextPatient?: Patient;
-  nextAppointment?: Appointment;
+  nextPatient?: Patient & { id: number };
+  nextAppointment?: Appointment & { id: number };
 };
 
 export type DetermineNextPatientStateReturn =
@@ -426,21 +434,26 @@ export type GoogleProfile = {
   locale: string;
 };
 
-export type Doctor = SqlRow & {
+export type Doctor = {
   name: string;
   email: string;
   gcal_appointments_calendar_id: string;
   gcal_availability_calendar_id: string;
 };
 
-export type DoctorGoogleToken = SqlRow & {
+export type DoctorGoogleToken = GoogleTokens & {
   doctor_id: number;
-  access_token: string;
-  refresh_token: string;
   expires_at: Date;
 };
 
-export type DoctorWithGoogleTokens = GoogleTokens & Doctor;
+export type DoctorWithGoogleTokens = ReturnedSqlRow<Doctor & GoogleTokens>;
+
+export type DoctorWithPossibleGoogleTokens = ReturnedSqlRow<
+  Doctor & {
+    access_token: Maybe<string>;
+    refresh_token: Maybe<string>;
+  }
+>;
 
 export type Availability = {
   start: string;
@@ -457,7 +470,7 @@ export type DoctorAvailability = {
   availability: Availability;
 };
 
-export type ScheduledAppointment = SqlRow & {
+export type ScheduledAppointment = {
   appointment_offered_time_id: number;
   gcal_event_id: string;
 };
@@ -467,7 +480,7 @@ export type FullScheduledAppointment = {
   reason: string;
 };
 
-export type WhatsappMessageReceived = SqlRow & {
+export type WhatsappMessageReceived = {
   patient_id: number;
   whatsapp_id: string;
   body: string;
@@ -475,7 +488,7 @@ export type WhatsappMessageReceived = SqlRow & {
   conversation_state: ConversationState | "initial_message";
 };
 
-export type WhatsappMessageSent = SqlRow & {
+export type WhatsappMessageSent = {
   patient_id: number;
   whatsapp_id: string;
   body: string;

@@ -3,15 +3,19 @@ import db from "../db.ts";
 import {
   Appointment,
   AppointmentOfferedTime,
-  InsertSqlRow,
+  FullScheduledAppointment,
+  // InsertSqlRow,
   Maybe,
+  ReturnedSqlRow,
 } from "../types.ts";
 
 // TODO: get the doctor_name too
 export async function addOfferedTime(
   opts: { appointment_id: number; doctor_id: number; start: string },
-): Promise<AppointmentOfferedTime> {
-  const result = await sql<AppointmentOfferedTime & { doctor_name: string }>`
+): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
+  const result = await sql<
+    ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
+  >`
     WITH inserted_offered_time as (
       INSERT INTO appointment_offered_times(appointment_id, doctor_id, start)
           VALUES (${opts.appointment_id}, ${opts.doctor_id}, ${opts.start})
@@ -61,7 +65,7 @@ export function createNew(opts: { patient_id: number }): Promise<{
     .execute();
 }
 
-export async function upsert(info: InsertSqlRow<Appointment>): Promise<{
+export async function upsert(info: Appointment): Promise<{
   id: number;
   patient_id: number;
   reason: Maybe<string>;
@@ -79,26 +83,26 @@ export async function upsert(info: InsertSqlRow<Appointment>): Promise<{
 }
 
 // TODO: just update the offered time
-// export async function addScheduled(
-//   opts: { appointment_offered_time_id: number; gcal_event_id: string },
-// ): Promise<FullScheduledAppointment> {
-//   ky.sql`
-//   WITH inserted_appointment_scheduled as (
-//     INSERT INTO appointment_scheduled(appointment_offered_time_id, gcal_event_id)
-//          VALUES (${opts.appointment_offered_time_id}, ${opts.gcal_event_id})
-//       RETURNING id, appointment_offered_time_id
-//   )
+export async function schedule(
+  opts: { appointment_offered_time_id: number; gcal_event_id: string },
+): Promise<FullScheduledAppointment> {
+  const result = await sql<FullScheduledAppointment>`
+    WITH inserted_appointment_scheduled as (
+      INSERT INTO appointment_scheduled(appointment_offered_time_id, gcal_event_id)
+          VALUES (${opts.appointment_offered_time_id}, ${opts.gcal_event_id})
+        RETURNING id, appointment_offered_time_id
+    )
 
-//   SELECT inserted_appointment_scheduled.id as id,
-//          appointments.reason as reason,
-//          doctors.name as doctor_name,
-//          appointment_offered_times.start
-//     FROM inserted_appointment_scheduled
-//     JOIN appointment_offered_times ON inserted_appointment_scheduled.appointment_offered_time_id = appointment_offered_times.id
-//     JOIN appointments ON appointment_offered_times.appointment_id = appointments.id
-//     JOIN patients ON appointments.patient_id = patients.id
-//     JOIN doctors ON appointment_offered_times.doctor_id = doctors.id
-//   `;
+    SELECT inserted_appointment_scheduled.id as id,
+          appointments.reason as reason,
+          doctors.name as doctor_name,
+          appointment_offered_times.start
+      FROM inserted_appointment_scheduled
+      JOIN appointment_offered_times ON inserted_appointment_scheduled.appointment_offered_time_id = appointment_offered_times.id
+      JOIN appointments ON appointment_offered_times.appointment_id = appointments.id
+      JOIN patients ON appointments.patient_id = patients.id
+      JOIN doctors ON appointment_offered_times.doctor_id = doctors.id
+    `.execute(db);
 
-//   return result.rows[0];
-// }
+  return result.rows[0];
+}

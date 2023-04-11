@@ -1,6 +1,11 @@
 import { DeleteResult, sql, Transaction, UpdateResult } from "kysely";
 import db, { DatabaseSchema } from "../db.ts";
-import { GoogleTokens, Maybe } from "../types.ts";
+import {
+  DoctorWithGoogleTokens,
+  DoctorWithPossibleGoogleTokens,
+  GoogleTokens,
+  Maybe,
+} from "../types.ts";
 
 type DoctorDetails = {
   name: string;
@@ -90,56 +95,51 @@ const getWithTokensQuery = db
   .select("doctor_google_tokens.refresh_token");
 
 // TODO: Store auth tokens in a way that we can more easily refresh them and find the ones for a specific doctor
-export function getAllWithTokens(): Promise<{
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  name: string;
-  email: string;
-  gcal_appointments_calendar_id: string;
-  gcal_availability_calendar_id: string;
-  access_token: Maybe<string>;
-  refresh_token: Maybe<string>;
-}[]> {
+export function getAllWithTokens(): Promise<DoctorWithPossibleGoogleTokens[]> {
   return getWithTokensQuery.execute();
+}
+
+function hasTokens(
+  doctor: Maybe<DoctorWithPossibleGoogleTokens>,
+): doctor is DoctorWithGoogleTokens {
+  return !!doctor && !!doctor.access_token && !!doctor.refresh_token;
+}
+
+function withTokens(doctors: DoctorWithPossibleGoogleTokens[]) {
+  const withTokens: DoctorWithGoogleTokens[] = [];
+  for (const doctor of doctors) {
+    if (!hasTokens(doctor)) {
+      throw new Error("Doctor has no access token or refresh token");
+    }
+    withTokens.push(doctor);
+  }
+  return withTokens;
+}
+
+export async function getAllWithExtantTokens(): Promise<
+  DoctorWithGoogleTokens[]
+> {
+  return withTokens(await getAllWithTokens());
 }
 
 export async function getWithTokensById(
   doctor_id: number,
-): Promise<{
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  name: string;
-  email: string;
-  gcal_appointments_calendar_id: string;
-  gcal_availability_calendar_id: string;
-  access_token: Maybe<string>;
-  refresh_token: Maybe<string>;
-}> {
+): Promise<Maybe<DoctorWithPossibleGoogleTokens>> {
   const [doctor] = await getWithTokensQuery.where("doctors.id", "=", doctor_id)
     .execute();
   return doctor;
 }
 
-export function allWithGoogleTokensAboutToExpire(): Promise<
-  {
-    id: number;
-    created_at: Date;
-    updated_at: Date;
-    name: string;
-    email: string;
-    gcal_appointments_calendar_id: string;
-    gcal_availability_calendar_id: string;
-    access_token: Maybe<string>;
-    refresh_token: Maybe<string>;
-  }[]
+export async function allWithGoogleTokensAboutToExpire(): Promise<
+  DoctorWithGoogleTokens[]
 > {
-  return getWithTokensQuery.where(
-    "doctor_google_tokens.expires_at",
-    "<",
-    sql`now() + (5 * interval '1 minute')`,
-  ).execute();
+  return withTokens(
+    await getWithTokensQuery.where(
+      "doctor_google_tokens.expires_at",
+      "<",
+      sql`now() + (5 * interval '1 minute')`,
+    ).execute(),
+  );
 }
 
 export function updateAccessToken(

@@ -11,23 +11,23 @@ import {
   Doctor,
   DoctorGoogleToken,
   Patient,
+  SqlRow,
   WhatsappMessageReceived,
   WhatsappMessageSent,
 } from "./types.ts";
 import { PostgreSQLDriver } from "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts";
 
 export type DatabaseSchema = {
-  appointments: Appointment;
-  appointment_offered_times: AppointmentOfferedTime;
-  doctors: Doctor;
-  doctor_google_tokens: DoctorGoogleToken;
-  patients: Patient;
-  whatsapp_messages_received: WhatsappMessageReceived;
-  whatsapp_messages_sent: WhatsappMessageSent;
+  appointments: SqlRow<Appointment>;
+  appointment_offered_times: SqlRow<AppointmentOfferedTime>;
+  doctors: SqlRow<Doctor>;
+  doctor_google_tokens: SqlRow<DoctorGoogleToken>;
+  patients: SqlRow<Patient>;
+  whatsapp_messages_received: SqlRow<WhatsappMessageReceived>;
+  whatsapp_messages_sent: SqlRow<WhatsappMessageSent>;
 };
 
 const uri = Deno.env.get("DATABASE_URL") + "?sslmode=require" as any;
-console.log("uri", uri);
 
 const db = new Kysely<DatabaseSchema>({
   dialect: {

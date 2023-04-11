@@ -1,6 +1,10 @@
 import { InsertResult, sql, UpdateResult } from "kysely";
 import db from "../db.ts";
-import { ConversationState, UnhandledPatientMessage } from "../types.ts";
+import {
+  ConversationState,
+  ReturnedSqlRow,
+  UnhandledPatientMessage,
+} from "../types.ts";
 
 export function updateReadStatus(
   opts: { whatsapp_id: string; read_status: string },
@@ -14,25 +18,23 @@ export function updateReadStatus(
 
 export async function insertMessageReceived(
   opts: { patient_phone_number: string; whatsapp_id: string; body: string },
-): Promise<{
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  patient_id: number;
-  whatsapp_id: string;
-  body: string;
-  started_responding_at: Date | null | undefined;
-  conversation_state: ConversationState | "initial_message";
-}> {
+): Promise<
+  ReturnedSqlRow<{
+    patient_id: number;
+    whatsapp_id: string;
+    body: string;
+    started_responding_at: Date | null | undefined;
+    conversation_state: ConversationState | "initial_message";
+  }>
+> {
   try {
-    console.log("IN HERE");
     const [inserted] = await db.transaction().execute(async (trx) => {
       console.log("IN trx");
       const [patient] = await trx
         .insertInto("patients")
         .values({ phone_number: opts.patient_phone_number })
         .onConflict((oc) => oc.column("phone_number").doNothing())
-        .returning(["id", "conversation_state"])
+        .returningAll()
         .execute();
 
       console.log("patient", patient);
