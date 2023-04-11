@@ -21,3 +21,16 @@
 //   const renderer = await awaitingRenderer;
 //   ctx.body = renderer.calendar({ events: events.items });
 // }
+import { Handlers } from "$fresh/server.ts";
+import { WithSession } from "fresh_session";
+import { isGoogleTokens } from "../src/google.ts";
+
+export type HasSession = { session: Record<string, string> };
+
+export const handler: Handlers<HasSession, WithSession> = {
+  GET(_req, ctx) {
+    const { session } = ctx.state;
+    console.log(session.data);
+    return Response.redirect("/logged-in", 302);
+  },
+};

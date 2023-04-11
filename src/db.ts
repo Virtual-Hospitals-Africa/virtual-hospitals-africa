@@ -15,7 +15,7 @@ import {
   WhatsappMessageReceived,
   WhatsappMessageSent,
 } from "./types.ts";
-import { PostgreSQLDriver } from "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts";
+import { PostgreSQLDriver } from "kysely-deno-postgres";
 
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>;
