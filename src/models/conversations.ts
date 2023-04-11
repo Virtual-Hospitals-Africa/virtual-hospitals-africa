@@ -29,14 +29,22 @@ export async function insertMessageReceived(
 > {
   try {
     const [inserted] = await db.transaction().execute(async (trx) => {
-      console.log("IN trx");
-      const [patient] = await trx
+      console.log("IN trx", opts);
+      let [patient] = await trx
         .insertInto("patients")
         .values({ phone_number: opts.patient_phone_number })
         .onConflict((oc) => oc.column("phone_number").doNothing())
         .returningAll()
         .execute();
 
+      // TODO: Eliminate this in favor of getting the above to return the existing patient
+      if (!patient) {
+        [patient] = await trx.selectFrom("patients").where(
+          "phone_number",
+          "=",
+          opts.patient_phone_number,
+        ).selectAll().execute();
+      }
       console.log("patient", patient);
       return trx
         .insertInto("whatsapp_messages_received")
@@ -84,11 +92,9 @@ export async function getUnhandledPatientMessages(): Promise<
 
     aot_pre as (
          SELECT appointment_offered_times.*,
-                doctors.name as doctor_name,
-                appointment_scheduled.id is not null as scheduled
+                doctors.name as doctor_name
            FROM appointment_offered_times
            JOIN doctors ON appointment_offered_times.doctor_id = doctors.id
-      LEFT JOIN appointment_scheduled ON appointment_offered_times.id = appointment_scheduled.appointment_offered_time_id
     ),
 
     aot as (

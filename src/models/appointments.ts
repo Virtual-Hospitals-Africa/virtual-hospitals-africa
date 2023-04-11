@@ -84,24 +84,27 @@ export async function upsert(info: Appointment): Promise<{
 
 // TODO: just update the offered time
 export async function schedule(
-  opts: { appointment_offered_time_id: number; gcal_event_id: string },
+  opts: {
+    appointment_offered_time_id: number;
+    scheduled_gcal_event_id: string;
+  },
 ): Promise<FullScheduledAppointment> {
   const result = await sql<FullScheduledAppointment>`
-    WITH inserted_appointment_scheduled as (
-      INSERT INTO appointment_scheduled(appointment_offered_time_id, gcal_event_id)
-          VALUES (${opts.appointment_offered_time_id}, ${opts.gcal_event_id})
-        RETURNING id, appointment_offered_time_id
+    WITH appointment_offered_time_scheduled as (
+         UPDATE appointment_offered_times
+            SET scheduled_gcal_event_id = ${opts.scheduled_gcal_event_id}
+          WHERE id = ${opts.appointment_offered_time_id}
+      RETURNING id, appointment_id, doctor_id, start
     )
 
-    SELECT inserted_appointment_scheduled.id as id,
-          appointments.reason as reason,
-          doctors.name as doctor_name,
-          appointment_offered_times.start
-      FROM inserted_appointment_scheduled
-      JOIN appointment_offered_times ON inserted_appointment_scheduled.appointment_offered_time_id = appointment_offered_times.id
-      JOIN appointments ON appointment_offered_times.appointment_id = appointments.id
+    SELECT appointment_offered_time_scheduled.id as id,
+           appointments.reason as reason,
+           doctors.name as doctor_name,
+           appointment_offered_time_scheduled.start
+      FROM appointment_offered_time_scheduled
+      JOIN appointments ON appointment_offered_time_scheduled.appointment_id = appointments.id
       JOIN patients ON appointments.patient_id = patients.id
-      JOIN doctors ON appointment_offered_times.doctor_id = doctors.id
+      JOIN doctors ON appointment_offered_time_scheduled.doctor_id = doctors.id
     `.execute(db);
 
   return result.rows[0];

@@ -88,7 +88,7 @@ export async function makeAppointment(
 
   await appointments.schedule({
     appointment_offered_time_id: offeredTime.id,
-    gcal_event_id: insertedEvent.id,
+    scheduled_gcal_event_id: insertedEvent.id,
   });
 
   return {
