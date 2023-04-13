@@ -1,3 +1,4 @@
+import "https://deno.land/x/dotenv@v3.2.2/load.ts";
 import {
   assert,
   assertEquals,
@@ -167,9 +168,10 @@ export class Agent {
   }
 }
 
-const selfUrl = Deno.env.get("NODE_ENV") === "dev"
-  ? "https://localhost:5004"
-  : "https://hgat-whatsapp-poc.herokuapp.com";
+console.log('Deno.env.get("SELF_URL")', Deno.env.get("SELF_URL"));
+
+const selfUrl = Deno.env.get("SELF_URL") ||
+  "https://hgat-platform.herokuapp.com";
 const redirect_uri = `${selfUrl}/logged-in`;
 
 export const oauthParams = new URLSearchParams({

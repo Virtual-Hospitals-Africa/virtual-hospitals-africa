@@ -1,11 +1,31 @@
+import "https://deno.land/x/dotenv@v3.2.2/load.ts";
 import { redisSession } from "fresh_session";
 import { connect } from "redis";
 
-const redisUrl = Deno.env.get("REDISCLOUD_URL") || "localhost:6379";
+console.log("HERE");
 
-const redis = await connect(redisUrl as any);
+console.log(Deno.env.toObject());
 
-// or Customizable cookie options and Redis key prefix
+const redisUrl = Deno.env.get("REDISCLOUD_URL");
+
+if (!redisUrl) throw new Error("Missing redis url");
+
+const match = redisUrl.match(/redis:\/\/(.*):(.*)@(.*):(.*)/);
+
+if (!match) throw new Error("Invalid redis url");
+
+const [, , password, hostname, port] = match;
+
+console.log(redisUrl);
+console.log("foo", password, hostname, port);
+
+let redis;
+
+try {
+  redis = await connect({ password, hostname, port });
+} catch (err) {
+  throw err;
+}
 
 export const handler = [
   redisSession(redis, {

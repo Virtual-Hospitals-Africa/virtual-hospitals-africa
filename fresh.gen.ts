@@ -3,19 +3,23 @@
 // This file is automatically updated during development when running `dev.ts`.
 
 import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/_middleware.ts";
-import * as $1 from "./routes/api/incoming-whatsapp.tsx";
-import * as $2 from "./routes/calendar.tsx";
-import * as $3 from "./routes/index.tsx";
-import * as $4 from "./routes/logged-in.tsx";
+import * as $0 from "./routes/_404.tsx";
+import * as $1 from "./routes/_middleware.ts";
+import * as $2 from "./routes/api/incoming-whatsapp.tsx";
+import * as $3 from "./routes/app.tsx";
+import * as $4 from "./routes/calendar.tsx";
+import * as $5 from "./routes/index.tsx";
+import * as $6 from "./routes/logged-in.tsx";
 
 const manifest = {
   routes: {
-    "./routes/_middleware.ts": $0,
-    "./routes/api/incoming-whatsapp.tsx": $1,
-    "./routes/calendar.tsx": $2,
-    "./routes/index.tsx": $3,
-    "./routes/logged-in.tsx": $4,
+    "./routes/_404.tsx": $0,
+    "./routes/_middleware.ts": $1,
+    "./routes/api/incoming-whatsapp.tsx": $2,
+    "./routes/app.tsx": $3,
+    "./routes/calendar.tsx": $4,
+    "./routes/index.tsx": $5,
+    "./routes/logged-in.tsx": $6,
   },
   islands: {},
   baseUrl: import.meta.url,
