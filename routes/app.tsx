@@ -5,6 +5,9 @@ export type HasSession = { session: Record<string, string> };
 
 export const handler: Handlers<HasSession, WithSession> = {
   GET(_req, ctx) {
-    return new Response("OK", { status: 200 });
+    return new Response("Found", {
+      status: 302,
+      headers: { Location: "/calendar" },
+    });
   },
 };

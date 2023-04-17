@@ -495,3 +495,50 @@ export type WhatsappMessageSent = {
   responding_to_id: number;
   read_status: string;
 };
+
+export type Time = {
+  hour:
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8
+    | 9
+    | 10
+    | 11
+    | 12
+    | 13
+    | 14
+    | 15
+    | 16
+    | 17
+    | 18
+    | 19
+    | 20
+    | 21
+    | 22
+    | 23;
+  minute: 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55;
+  amPm: "am" | "pm";
+};
+
+export type TimeWindow = {
+  start: Time;
+  end: Time;
+};
+
+export type AvailabilityJSON = {
+  Sunday: TimeWindow[];
+  Monday: TimeWindow[];
+  Tuesday: TimeWindow[];
+  Wednesday: TimeWindow[];
+  Thursday: TimeWindow[];
+  Friday: TimeWindow[];
+  Saturday: TimeWindow[];
+};
+
+export type DayOfWeek = keyof AvailabilityJSON;

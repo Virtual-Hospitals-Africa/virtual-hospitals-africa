@@ -12,7 +12,7 @@ import * as $5 from "./routes/calendar.tsx";
 import * as $6 from "./routes/index.tsx";
 import * as $7 from "./routes/logged-in.tsx";
 import * as $8 from "./routes/set-availability.tsx";
-import * as $$0 from "./islands/Counter.tsx";
+import * as $$0 from "./islands/set-availability-form.tsx";
 
 const manifest = {
   routes: {
@@ -27,7 +27,7 @@ const manifest = {
     "./routes/set-availability.tsx": $8,
   },
   islands: {
-    "./islands/Counter.tsx": $$0,
+    "./islands/set-availability-form.tsx": $$0,
   },
   baseUrl: import.meta.url,
   config,

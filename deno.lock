@@ -533,6 +533,8 @@
     "https://deno.land/x/fresh@1.0.1/src/server/render.tsx": "120137559cd48b44df899a374dbbec385c97ba38fbd512d5f1866a1abed96803",
     "https://deno.land/x/fresh@1.0.1/src/server/types.ts": "c968f263626f2fd5b5fc44b31982eaf3cfd9c0ced5f961d257bdfdbcfb2ed8cb",
     "https://deno.land/x/fresh@1.1.5/dev.ts": "a66c7d64be35bcd6a8e12eec9c27ae335044c70363a241f2e36ee776db468622",
+    "https://deno.land/x/fresh@1.1.5/plugins/twind.ts": "c0570d6010e29ba24ee5f43b9d3f1fe735f7fac76d9a3e680c9896373d669876",
+    "https://deno.land/x/fresh@1.1.5/plugins/twind/shared.ts": "023e0ffcd66668753b5049edab0de46e6d66194fb6026c679034b9bbf04ad6f3",
     "https://deno.land/x/fresh@1.1.5/runtime.ts": "b02ec1e2e32cf73a33d262b7c9dcab9468ce16cd89fd424196c71003698a4ab0",
     "https://deno.land/x/fresh@1.1.5/server.ts": "f379c9aad24471a71e58fb887fa57e5cc27ad9df035987eb260541c78df38e84",
     "https://deno.land/x/fresh@1.1.5/src/dev/deps.ts": "aef312af6de1315fa95fc0c32e87c56301b64efeb304193d0dce0da0634144d3",

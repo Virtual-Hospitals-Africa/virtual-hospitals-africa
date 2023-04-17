@@ -105,7 +105,7 @@ export async function firstAvailableThirtyMinutes(): Promise<{
   const doctorAvailability = await getAllDoctorAvailability();
 
   let earliestAvailabilityDoctor: DoctorWithGoogleTokens | null = null;
-  let earliestAvailabilityStart: string = "9999-99-99T23:59:59+02:00";
+  let earliestAvailabilityStart = "9999-99-99T23:59:59+02:00";
 
   for (const { doctor, availability } of doctorAvailability) {
     for (const { start, end } of availability) {

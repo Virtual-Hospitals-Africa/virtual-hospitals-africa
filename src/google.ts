@@ -15,6 +15,8 @@ import {
   GoogleProfile,
   GoogleTokens,
 } from "./types.ts";
+import { WithSession } from "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts";
+import { HandlerContext } from "https://deno.land/x/fresh@1.1.5/src/server/mod.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
@@ -36,6 +38,13 @@ export class Agent {
       throw new Error("Invalid tokens object");
     }
     this.tokens = tokens;
+  }
+
+  static fromCtx(ctx: HandlerContext<any, WithSession>): Agent {
+    return new Agent({
+      access_token: ctx.state.session.get("access_token"),
+      refresh_token: ctx.state.session.get("refresh_token"),
+    });
   }
 
   private async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
