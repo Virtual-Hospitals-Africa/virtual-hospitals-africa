@@ -7,6 +7,8 @@ import {
   DayOfWeek,
   DeepPartial,
   GCalEvent,
+  Time,
+  TimeWindow,
 } from "../../src/types.ts";
 import padLeft from "../../src/lodash/padLeft.ts";
 import redirect from "../../src/redirect.ts";
@@ -56,6 +58,14 @@ function parseDate(date: Date = new Date()) {
   return { weekday, day, month, year };
 }
 
+const toHarare = (time: Time) => {
+  const baseHour = time.hour % 12;
+  const hour = time.amPm === "pm" ? baseHour : baseHour + 12;
+  const hourStr = padLeft(String(hour), 2, "0");
+  const minuteStr = padLeft(String(time.minute), 2, "0");
+  return `${hourStr}:${minuteStr}:00+02:00`;
+};
+
 function* availabilityBlocks(
   availability: AvailabilityJSON,
 ): Generator<DeepPartial<GCalEvent>> {
@@ -76,10 +86,8 @@ function* availabilityBlocks(
     const dayStr = dayDate.toISOString().split("T")[0];
 
     for (const timeWindow of dayAvailability) {
-      const start = padLeft(String(timeWindow.start.hour), 2, "0") + ":" +
-        padLeft(String(timeWindow.start.minute), 2, "0") + ":00+02:00";
-      const end = padLeft(String(timeWindow.start.hour), 2, "0") + ":" +
-        padLeft(String(timeWindow.start.minute), 2, "0") + ":00+02:00";
+      const start = toHarare(timeWindow.start);
+      const end = toHarare(timeWindow.end);
 
       yield {
         summary: "Availability Block",
