@@ -9,7 +9,7 @@ import {
   insertMessageSent,
 } from "./models/conversations.ts";
 import conversationStates from "./conversationStates.ts";
-import { MessageOptions, UnhandledPatientMessage } from "./types.ts";
+import { MessageOption, UnhandledPatientMessage } from "./types.ts";
 
 export async function handlePatientMessage(
   patientMessage: UnhandledPatientMessage,
@@ -19,7 +19,7 @@ export async function handlePatientMessage(
   let messageToSend: string | {
     messageBody: string;
     buttonText: string;
-    options: MessageOptions[];
+    options: MessageOption[];
   };
 
   if (next === "invalid_response") {
@@ -65,10 +65,9 @@ export async function handlePatientMessage(
       phone_number: patientMessage.phone_number,
       messageBody: messageToSend,
     })
-    : await whatsapp.sendMessageWithOptions({
+    : await whatsapp.sendMessageWithInteractiveButtons({
       phone_number: patientMessage.phone_number,
       messageBody: messageToSend.messageBody,
-      buttonText: messageToSend.buttonText,
       options: messageToSend.options,
     });
 

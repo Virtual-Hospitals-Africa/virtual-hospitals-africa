@@ -205,6 +205,16 @@ export type IncomingWhatAppMessage = {
                     };
                   };
                 }
+                | {
+                  type: "interactive";
+                  interactive: {
+                    type: "button_reply";
+                    button_reply: {
+                      id: string;
+                      title: string;
+                    };
+                  };
+                }
               )
             >;
           };
@@ -543,11 +553,7 @@ export type AvailabilityJSON = {
 
 export type DayOfWeek = keyof AvailabilityJSON;
 
-export type MessageOptions = {
-  title?: string;
-  rows: {
-    id: string;
-    title: string;
-    description?: string;
-  }[];
+export type MessageOption = {
+  id: string;
+  title: string;
 };

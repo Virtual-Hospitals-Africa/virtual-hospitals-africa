@@ -108,9 +108,11 @@ export const handler: Handlers = {
         });
       }
 
-      const body = message.type === "interactive"
+      const body = message.type === "text"
+        ? message.text.body
+        : message.interactive.type === "list_reply"
         ? message.interactive.list_reply.id
-        : message.text.body;
+        : message.interactive.button_reply.id;
 
       await conversations.insertMessageReceived({
         body,

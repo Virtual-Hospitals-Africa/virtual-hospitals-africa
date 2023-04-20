@@ -34,13 +34,13 @@ const conversationStates: {
     options: [
       {
         option: "make_appointment",
-        display: "Make an appointment with a doctor or specialist",
+        display: "Make appointment",
         aliases: ["appt", "appointment", "doctor", "specialist"],
         onResponse: "not_onboarded:make_appointment:enter_name",
       },
       {
         option: "submit_medical_updates",
-        display: "Submit medical updates",
+        display: "Submit updates",
         aliases: ["submit", "medical", "updates"],
         onResponse: "not_onboarded:submit_medical_updates:check_onboarding",
       },

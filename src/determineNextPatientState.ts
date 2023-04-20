@@ -9,7 +9,7 @@ import {
   DetermineNextPatientStateReturn,
   DetermineNextPatientStateValidReturn,
   Maybe,
-  MessageOptions,
+  MessageOption,
   Patient,
   UnhandledPatientMessage,
 } from "./types.ts";
@@ -75,7 +75,7 @@ export function formatMessageToSend(
 ): string | {
   messageBody: string;
   buttonText: string;
-  options: MessageOptions[];
+  options: MessageOption[];
 } {
   const prompt = typeof state.prompt === "string"
     ? state.prompt
@@ -86,12 +86,10 @@ export function formatMessageToSend(
       return {
         messageBody: prompt,
         buttonText: "Menu",
-        options: [{
-          rows: state.options.map((option) => ({
-            id: option.option,
-            title: option.display,
-          })),
-        }],
+        options: state.options.map((option) => ({
+          id: option.option,
+          title: option.display,
+        })),
       };
     }
     case "date": {
