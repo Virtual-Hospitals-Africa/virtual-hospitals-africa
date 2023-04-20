@@ -9,6 +9,7 @@ import {
   GCalEvent,
 } from "../../src/types.ts";
 import padLeft from "../../src/lodash/padLeft.ts";
+import redirect from "../../src/redirect.ts";
 import { assert } from "std/_util/asserts.ts";
 
 const days: Array<DayOfWeek> = [
@@ -114,22 +115,15 @@ export const handler: Handlers<any, WithSession> = {
 
     const existingAvailabilityEvents = existingAvailability.items || [];
 
-    const deletingExistingAvailability = existingAvailabilityEvents.map(
-      (event) => agent.deleteEvent(gcal_availability_calendar_id, event.id),
-    );
-
-    console.log(JSON.stringify([...availabilityBlocks(availability)]));
-
-    const addingNewAvailability = [
-      ...availabilityBlocks(availability),
-    ].map((event) => agent.insertEvent(gcal_availability_calendar_id, event));
-
-    await Promise.all([
-      ...deletingExistingAvailability,
-      ...addingNewAvailability,
-    ]);
+    // Google rate limits you if you try to do these in parallel :(
+    for (const event of existingAvailabilityEvents) {
+      await agent.deleteEvent(gcal_availability_calendar_id, event.id);
+    }
+    for (const event of availabilityBlocks(availability)) {
+      await agent.insertEvent(gcal_availability_calendar_id, event);
+    }
 
     // TODO: Redirect to calendar
-    return new Response("302", { status: 200 });
+    return redirect("/app/calendar?availability-set=true");
   },
 };
