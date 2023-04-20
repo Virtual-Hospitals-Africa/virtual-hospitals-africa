@@ -24,6 +24,7 @@ const days: Array<DayOfWeek> = [
 ];
 
 function parseForm(params: URLSearchParams): AvailabilityJSON {
+  console.log(params);
   const availability = {
     Sunday: [],
     Monday: [],
@@ -39,6 +40,7 @@ function parseForm(params: URLSearchParams): AvailabilityJSON {
     set(availability, key, toSet);
   });
 
+  console.log(availability);
   return availability;
 }
 
