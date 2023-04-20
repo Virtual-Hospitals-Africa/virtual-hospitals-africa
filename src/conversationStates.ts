@@ -1,4 +1,4 @@
-import { assert } from "https://deno.land/std@0.168.0/testing/asserts.ts";
+import { assert } from "std/testing/asserts.ts";
 import { prettyAppointmentTime, prettyPatientDateOfBirth } from "./date.ts";
 import { firstAvailableThirtyMinutes } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";

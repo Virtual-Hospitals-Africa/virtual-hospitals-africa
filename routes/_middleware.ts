@@ -1,35 +1,38 @@
-import "https://deno.land/x/dotenv@v3.2.2/load.ts";
+import "dotenv";
 import { redisSession } from "fresh_session";
 import { connect } from "redis";
 
-console.log("HERE");
+const connectionOpts = () => {
+  const redisUrl = Deno.env.get("REDISCLOUD_URL");
 
-console.log(Deno.env.toObject());
+  if (!redisUrl) {
+    return { password: undefined, hostname: "localhost", port: 6379 };
+  }
 
-const redisUrl = Deno.env.get("REDISCLOUD_URL");
+  const match = redisUrl.match(/redis:\/\/(.*):(.*)@(.*):(.*)/);
 
-if (!redisUrl) throw new Error("Missing redis url");
+  if (!match) throw new Error("Invalid redis url");
 
-const match = redisUrl.match(/redis:\/\/(.*):(.*)@(.*):(.*)/);
+  const [, , password, hostname, port] = match;
 
-if (!match) throw new Error("Invalid redis url");
-
-const [, , password, hostname, port] = match;
-
-console.log(redisUrl);
-console.log("foo", password, hostname, port);
+  return { password, hostname, port };
+};
 
 let redis;
 
 try {
-  redis = await connect({ password, hostname, port });
+  const opts = connectionOpts();
+  redis = await connect(opts);
 } catch (err) {
   throw err;
 }
 
 export const handler = [
+  // (req: Request, ctx: MiddlewareHandlerContext<any>) => {
+  //   return ctx.next();
+  // },
   redisSession(redis, {
     keyPrefix: "S_",
-    maxAge: 10,
+    maxAge: 10000000,
   }),
 ];

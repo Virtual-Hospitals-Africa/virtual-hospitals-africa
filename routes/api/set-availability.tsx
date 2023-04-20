@@ -1,10 +1,15 @@
 import { Handlers } from "$fresh/server.ts";
 import { Agent } from "../../src/google.ts";
 import set from "../../src/lodash/set.ts";
-import { WithSession } from "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts";
-import { AvailabilityJSON, DayOfWeek } from "../../src/types.ts";
-
-const CALENDAR_EVENT_NAME = "Virtual Hospitals Africa Availability";
+import { WithSession } from "fresh_session";
+import {
+  AvailabilityJSON,
+  DayOfWeek,
+  DeepPartial,
+  GCalEvent,
+} from "../../src/types.ts";
+import padLeft from "../../src/lodash/padLeft.ts";
+import { assert } from "std/_util/asserts.ts";
 
 const days: Array<DayOfWeek> = [
   "Sunday",
@@ -32,27 +37,99 @@ function parseForm(params: URLSearchParams): AvailabilityJSON {
     set(availability, key, toSet);
   });
 
-  console.log(availability);
   return availability;
+}
+
+const dateFormat = new Intl.DateTimeFormat("en-gb", {
+  weekday: "long",
+  month: "numeric",
+  year: "numeric",
+  day: "numeric",
+  timeZone: "Africa/Johannesburg",
+});
+
+function parseDate(date: Date = new Date()) {
+  const dateString = dateFormat.format(date);
+  const [weekday, rest] = dateString.split(", ");
+  const [day, month, year] = rest.split("/");
+  return { weekday, day, month, year };
+}
+
+function* availabilityBlocks(
+  availability: AvailabilityJSON,
+): Generator<DeepPartial<GCalEvent>> {
+  const today = parseDate();
+  const todayIndex = days.indexOf(today.weekday as DayOfWeek);
+  for (const day of days) {
+    const dayAvailability = availability[day];
+    const dayIndex = days.indexOf(day);
+    const dayOffset = dayIndex - todayIndex;
+    const dayDate = new Date(
+      Date.UTC(
+        parseInt(today.year),
+        parseInt(today.month) - 1,
+        parseInt(today.day),
+      ),
+    );
+    dayDate.setDate(dayDate.getDate() + dayOffset);
+    const dayStr = dayDate.toISOString().split("T")[0];
+
+    for (const timeWindow of dayAvailability) {
+      const start = padLeft(String(timeWindow.start.hour), 2, "0") + ":" +
+        padLeft(String(timeWindow.start.minute), 2, "0") + ":00+02:00";
+      const end = padLeft(String(timeWindow.start.hour), 2, "0") + ":" +
+        padLeft(String(timeWindow.start.minute), 2, "0") + ":00+02:00";
+
+      yield {
+        summary: "Availability Block",
+        start: {
+          dateTime: `${dayStr}T${start}`,
+          timeZone: "Africa/Johannesburg",
+        },
+        end: { dateTime: `${dayStr}T${end}`, timeZone: "Africa/Johannesburg" },
+        recurrence: [
+          `RRULE:FREQ=WEEKLY;BYDAY=${day.slice(0, 2).toUpperCase()}`,
+        ],
+      };
+    }
+  }
 }
 
 export const handler: Handlers<any, WithSession> = {
   async POST(req, ctx) {
-    const gcal_appointments_calendar_id = ctx.state.session.get(
-      "gcal_appointments_calendar_id",
-    );
+    const params = new URLSearchParams(await req.text());
+    const availability = parseForm(params);
+
     const gcal_availability_calendar_id = ctx.state.session.get(
       "gcal_availability_calendar_id",
     );
 
-    console.log("gcal_appointments_calendar_id", gcal_appointments_calendar_id);
-    console.log("gcal_availability_calendar_id", gcal_availability_calendar_id);
+    assert(gcal_availability_calendar_id, "No calendar ID found in session");
 
     const agent = Agent.fromCtx(ctx);
-    // const { session } = ctx.state;
-    const params = new URLSearchParams(await req.text());
-    const availability = parseForm(params);
-    console.log("availability", JSON.stringify(availability));
-    return new Response("OK", { status: 200 });
+
+    const existingAvailability = await agent.getEvents(
+      gcal_availability_calendar_id,
+    );
+
+    const existingAvailabilityEvents = existingAvailability.items || [];
+
+    const deletingExistingAvailability = existingAvailabilityEvents.map(
+      (event) => agent.deleteEvent(gcal_availability_calendar_id, event.id),
+    );
+
+    console.log(JSON.stringify([...availabilityBlocks(availability)]));
+
+    const addingNewAvailability = [
+      ...availabilityBlocks(availability),
+    ].map((event) => agent.insertEvent(gcal_availability_calendar_id, event));
+
+    await Promise.all([
+      ...deletingExistingAvailability,
+      ...addingNewAvailability,
+    ]);
+
+    // TODO: Redirect to calendar
+    return new Response("302", { status: 200 });
   },
 };

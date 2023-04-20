@@ -1,8 +1,5 @@
-import "https://deno.land/x/dotenv@v3.2.2/load.ts";
-import {
-  assert,
-  assertEquals,
-} from "https://deno.land/std@0.168.0/testing/asserts.ts";
+import "dotenv";
+import { assert, assertEquals } from "std/testing/asserts.ts";
 import moment from "https://deno.land/x/momentjs@2.29.1-deno/mod.ts";
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {
@@ -15,8 +12,8 @@ import {
   GoogleProfile,
   GoogleTokens,
 } from "./types.ts";
-import { WithSession } from "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts";
-import { HandlerContext } from "https://deno.land/x/fresh@1.1.5/src/server/mod.ts";
+import { WithSession } from "fresh_session";
+import { HandlerContext } from "$fresh/src/server/mod.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
@@ -96,6 +93,15 @@ export class Agent {
       method: "post",
       data: eventDetails,
     });
+  }
+
+  deleteEvent(calendarId: string, eventId: string) {
+    return this.makeCalendarRequest(
+      `/calendars/${calendarId}/events/${eventId}`,
+      {
+        method: "delete",
+      },
+    );
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(): Promise<{

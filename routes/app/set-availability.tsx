@@ -1,9 +1,8 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import Layout from "../components/Layout.tsx";
-import { WithSession } from "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts";
-import { isGoogleTokens } from "../src/google.ts";
-import { AvailabilityJSON, GoogleTokens } from "../src/types.ts";
-import SetAvailabilityForm from "../islands/set-availability-form.tsx";
+import Layout from "../../components/Layout.tsx";
+import { WithSession } from "fresh_session";
+import { AvailabilityJSON, GoogleTokens } from "../../src/types.ts";
+import SetAvailabilityForm from "../../islands/set-availability-form.tsx";
 
 async function getAvailability(
   _tokens: GoogleTokens,
@@ -39,20 +38,10 @@ export const handler: Handlers<
   WithSession
 > = {
   async GET(_, ctx) {
-    const tokens = {
+    const availability = await getAvailability({
       access_token: ctx.state.session.get("access_token"),
       refresh_token: ctx.state.session.get("refresh_token"),
-    };
-
-    if (!isGoogleTokens(tokens)) {
-      console.warn("Where is that large automobile?");
-      return new Response("Found", {
-        status: 302,
-        headers: { Location: "/" },
-      });
-    }
-
-    const availability = await getAvailability(tokens);
+    });
 
     return ctx.render({ availability });
   },
@@ -63,6 +52,9 @@ export default function SetAvailability(
 ) {
   return (
     <Layout title="Set Availability">
+      <h3 className="container p-1 text-secondary-600 uppercase">
+        Working Hours
+      </h3>
       <SetAvailabilityForm availability={availability} />
     </Layout>
   );

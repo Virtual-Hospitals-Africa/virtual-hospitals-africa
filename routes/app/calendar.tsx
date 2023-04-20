@@ -1,4 +1,4 @@
-import Layout from "../components/Layout.tsx";
+import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 
 function CalendarLink(
@@ -24,7 +24,7 @@ export default function Calendar() {
       <div class="calendar-links">
         <CalendarLink
           title="Make Appointment"
-          href="/make-appointment"
+          href="/app/make-appointment"
           icon={
             <svg viewBox="0 0 20 22" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -37,7 +37,7 @@ export default function Calendar() {
         />{" "}
         <CalendarLink
           title="Set Availability"
-          href="/set-availability"
+          href="/app/set-availability"
           icon={
             <svg viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg">
               <path
@@ -50,7 +50,7 @@ export default function Calendar() {
         />{" "}
         <CalendarLink
           title="Schedule Time Off"
-          href="/schedule-time-off"
+          href="/app/schedule-time-off"
           icon={
             <svg viewBox="0 0 18 20" xmlns="http://www.w3.org/2000/svg">
               <path

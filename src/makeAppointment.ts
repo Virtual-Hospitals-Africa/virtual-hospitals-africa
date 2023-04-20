@@ -1,7 +1,4 @@
-import {
-  assert,
-  assertEquals,
-} from "https://deno.land/std@0.168.0/testing/asserts.ts";
+import { assert, assertEquals } from "std/testing/asserts.ts";
 import { formatHarare } from "./date.ts";
 import * as google from "./google.ts";
 import { getAllWithTokens } from "./models/doctors.ts";
