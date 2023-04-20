@@ -9,17 +9,21 @@ import {
   insertMessageSent,
 } from "./models/conversations.ts";
 import conversationStates from "./conversationStates.ts";
-import { UnhandledPatientMessage } from "./types.ts";
+import { MessageOptions, UnhandledPatientMessage } from "./types.ts";
 
 export async function handlePatientMessage(
   patientMessage: UnhandledPatientMessage,
 ): Promise<any> {
   const next = determineNextPatientState(patientMessage);
 
-  let messageBody: string;
+  let messageToSend: string | {
+    messageBody: string;
+    buttonText: string;
+    options: MessageOptions[];
+  };
 
   if (next === "invalid_response") {
-    messageBody = `Sorry, I didn't understand that.\n\n${
+    messageToSend = `Sorry, I didn't understand that.\n\n${
       formatMessageToSend(
         conversationStates[patientMessage.conversation_state!],
         patientMessage,
@@ -44,7 +48,7 @@ export async function handlePatientMessage(
       await appointments.upsert(next.nextAppointment);
     }
 
-    messageBody = formatMessageToSend(nextState, {
+    messageToSend = formatMessageToSend(nextState, {
       ...patientMessage,
       ...next.nextPatient,
       scheduling_appointment_id: next.nextAppointment &&
@@ -54,18 +58,27 @@ export async function handlePatientMessage(
     });
   }
 
-  console.log("messageBody", JSON.stringify(messageBody));
+  console.log("messageBody", JSON.stringify(messageToSend));
 
-  const response = await whatsapp.sendMessage({
-    phone_number: patientMessage.phone_number,
-    messageBody,
-  });
+  const response = typeof messageToSend === "string"
+    ? await whatsapp.sendMessage({
+      phone_number: patientMessage.phone_number,
+      messageBody: messageToSend,
+    })
+    : await whatsapp.sendMessageWithOptions({
+      phone_number: patientMessage.phone_number,
+      messageBody: messageToSend.messageBody,
+      buttonText: messageToSend.buttonText,
+      options: messageToSend.options,
+    });
+
+  console.log("WELKWELKWEKL", JSON.stringify(response));
 
   const insertedMessageSent = await insertMessageSent({
     patient_id: patientMessage.patient_id,
     responding_to_id: patientMessage.message_id,
     whatsapp_id: response.messages[0].id,
-    body: messageBody,
+    body: JSON.stringify(messageToSend),
   });
 
   console.log("insertedMessageSent", JSON.stringify(insertedMessageSent));

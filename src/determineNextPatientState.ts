@@ -9,8 +9,8 @@ import {
   DetermineNextPatientStateReturn,
   DetermineNextPatientStateValidReturn,
   Maybe,
+  MessageOptions,
   Patient,
-  ReturnedSqlRow,
   UnhandledPatientMessage,
 } from "./types.ts";
 
@@ -72,16 +72,27 @@ function isValidResponse(
 export function formatMessageToSend(
   state: ConversationStateHandler,
   patientMessage: UnhandledPatientMessage,
-): string {
+): string | {
+  messageBody: string;
+  buttonText: string;
+  options: MessageOptions[];
+} {
   const prompt = typeof state.prompt === "string"
     ? state.prompt
     : state.prompt(patientMessage);
 
   switch (state.type) {
     case "select": {
-      return prompt + " Reply back with the number of your selection\n\n" +
-        state.options.map((option, index) => `${index + 1}. ${option.display}`)
-          .join("\n");
+      return {
+        messageBody: prompt,
+        buttonText: "Menu",
+        options: state.options.map((option) => ({
+          rows: [{
+            id: option.option,
+            title: option.display,
+          }],
+        })),
+      };
     }
     case "date": {
       return prompt + " Please enter the date in the format DD/MM/YYYY"; // https://en.wikipedia.org/wiki/Date_format_by_country

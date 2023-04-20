@@ -186,15 +186,27 @@ export type IncomingWhatAppMessage = {
                 category: "business_initiated";
               };
             }>;
-            messages?: ReadonlyArray<{
-              from: string; // phone number
-              id: string;
-              timestamp: string; // '1673943918'
-              text: {
-                body: string;
-              };
-              type: "text";
-            }>;
+            messages?: ReadonlyArray<
+              & {
+                from: string; // phone number
+                id: string;
+                timestamp: string; // '1673943918'
+              }
+              & (
+                | { type: "text"; text: { body: string } }
+                | {
+                  type: "interactive";
+                  interactive: {
+                    type: "list_reply";
+                    list_reply: {
+                      id: string;
+                      title: string;
+                      description: string;
+                    };
+                  };
+                }
+              )
+            >;
           };
           field: "messages";
         },
@@ -530,3 +542,12 @@ export type AvailabilityJSON = {
 };
 
 export type DayOfWeek = keyof AvailabilityJSON;
+
+export type MessageOptions = {
+  title?: string;
+  rows: {
+    id: string;
+    title: string;
+    description?: string;
+  }[];
+};

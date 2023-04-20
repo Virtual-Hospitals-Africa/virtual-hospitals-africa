@@ -4,6 +4,46 @@ import { IncomingWhatAppMessage } from "../../src/types.ts";
 
 const verifyToken = Deno.env.get("WHATSAPP_WEBHOOK_VERIFY_TOKEN");
 
+const exampleMessage = {
+  "object": "whatsapp_business_account",
+  "entry": [{
+    "id": "103992419238259",
+    "changes": [{
+      "value": {
+        "messaging_product": "whatsapp",
+        "metadata": {
+          "display_phone_number": "263784010987",
+          "phone_number_id": "100667472910572",
+        },
+        "contacts": [{
+          "profile": { "name": "Will Weiss" },
+          "wa_id": "12032535603",
+        }],
+        "messages": [{
+          "context": {
+            "from": "263784010987",
+            "id": "wamid.HBgLMTIwMzI1MzU2MDMVAgARGBIwRDIxRkMyMDg2RjM5QTY4NjgA",
+          },
+          "from": "12032535603",
+          "id":
+            "wamid.HBgLMTIwMzI1MzU2MDMVAgASGBQzQTgwNzA5OUNCMkVFNjlCQjEzOQA=",
+          "timestamp": "1682017616",
+          "type": "interactive",
+          "interactive": {
+            "type": "list_reply",
+            "list_reply": {
+              "id": "unique-row-identifier",
+              "title": "row-title-content",
+              "description": "row-description-content",
+            },
+          },
+        }],
+      },
+      "field": "messages",
+    }],
+  }],
+};
+
 /*
   Handle the webhook from WhatsApp
   https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/payload-examples
@@ -68,10 +108,14 @@ export const handler: Handlers = {
         });
       }
 
+      const body = message.type === "interactive"
+        ? message.interactive.list_reply.id
+        : message.text.body;
+
       await conversations.insertMessageReceived({
+        body,
         patient_phone_number: message.from,
         whatsapp_id: message.id,
-        body: message.text.body,
       });
     }
 
