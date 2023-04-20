@@ -45,16 +45,30 @@ export class Agent {
   }
 
   private async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
-    const response = await fetch(`${googleApisUrl}${path}`, {
-      method: opts?.method || "get",
+    const url = `${googleApisUrl}${path}`;
+    const method = opts?.method || "get";
+    console.log(`${method} ${url}`);
+    const response = await fetch(url, {
+      method,
       headers: {
         Authorization: `Bearer ${this.tokens.access_token}`,
       },
       body: opts?.data ? JSON.stringify(opts.data) : undefined,
     });
-    const data = await response.json();
-    console.log("Got response", JSON.stringify(data));
-    return data;
+    if (method !== "delete") {
+      try {
+        const data = await response.json();
+        console.log(`${method} ${url}`, JSON.stringify(data));
+        return data;
+      } catch (err) {
+        console.error(`${method} ${url}`, err);
+        throw err;
+      }
+    } else {
+      const text = await response.text();
+      console.log(`${method} ${url}`, text);
+      return text;
+    }
   }
 
   private makeCalendarRequest(path: string, opts?: RequestOpts): Promise<any> {

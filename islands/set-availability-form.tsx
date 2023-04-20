@@ -143,7 +143,7 @@ function TimeInput(
           current={timeWindow.start.minute}
         />
         <AmPmInput
-          name={`${prefix}.start.ampm`}
+          name={`${prefix}.start.amPm`}
           current={timeWindow.start.amPm}
         />
         —
@@ -154,7 +154,7 @@ function TimeInput(
           current={timeWindow.end.minute}
         />
         <AmPmInput
-          name={`${prefix}.end.ampm`}
+          name={`${prefix}.end.amPm`}
           current={timeWindow.end.amPm}
         />
       </div>

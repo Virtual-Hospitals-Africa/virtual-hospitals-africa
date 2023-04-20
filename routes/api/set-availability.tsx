@@ -8,7 +8,6 @@ import {
   DeepPartial,
   GCalEvent,
   Time,
-  TimeWindow,
 } from "../../src/types.ts";
 import padLeft from "../../src/lodash/padLeft.ts";
 import redirect from "../../src/redirect.ts";
@@ -59,8 +58,9 @@ function parseDate(date: Date = new Date()) {
 }
 
 const toHarare = (time: Time) => {
+  console.log("time", time);
   const baseHour = time.hour % 12;
-  const hour = time.amPm === "pm" ? baseHour : baseHour + 12;
+  const hour = time.amPm === "am" ? baseHour : baseHour + 12;
   const hourStr = padLeft(String(hour), 2, "0");
   const minuteStr = padLeft(String(time.minute), 2, "0");
   return `${hourStr}:${minuteStr}:00+02:00`;
@@ -124,6 +124,7 @@ export const handler: Handlers<any, WithSession> = {
     const existingAvailabilityEvents = existingAvailability.items || [];
 
     // Google rate limits you if you try to do these in parallel :(
+    // TODO: revisit whether to clear all these out
     for (const event of existingAvailabilityEvents) {
       await agent.deleteEvent(gcal_availability_calendar_id, event.id);
     }
