@@ -1,8 +1,8 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import Layout from "../../components/Layout.tsx";
+import Layout from "../../../components/Layout.tsx";
 import { WithSession } from "fresh_session";
-import { AvailabilityJSON, GoogleTokens } from "../../src/types.ts";
-import SetAvailabilityForm from "../../islands/set-availability-form.tsx";
+import { AvailabilityJSON, GoogleTokens } from "../../../src/types.ts";
+import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
 
 async function getAvailability(
   _tokens: GoogleTokens,
@@ -48,14 +48,14 @@ export const handler: Handlers<
 };
 
 export default function SetAvailability(
-  { data: { availability } }: PageProps<{ availability: AvailabilityJSON }>,
+  props: PageProps<{ availability: AvailabilityJSON }>,
 ) {
   return (
-    <Layout title="Set Availability">
+    <Layout title="Set Availability" route={props.route}>
       <h3 className="container p-1 text-secondary-600 uppercase">
         Working Hours
       </h3>
-      <SetAvailabilityForm availability={availability} />
+      <SetAvailabilityForm availability={props.data.availability} />
     </Layout>
   );
 }

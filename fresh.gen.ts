@@ -9,7 +9,7 @@ import * as $2 from "./routes/api/incoming-whatsapp.tsx";
 import * as $3 from "./routes/api/set-availability.tsx";
 import * as $4 from "./routes/app/_middleware.tsx";
 import * as $5 from "./routes/app/calendar.tsx";
-import * as $6 from "./routes/app/set-availability.tsx";
+import * as $6 from "./routes/app/calendar/set-availability.tsx";
 import * as $7 from "./routes/index.tsx";
 import * as $8 from "./routes/logged-in.tsx";
 import * as $$0 from "./islands/set-availability-form.tsx";
@@ -22,7 +22,7 @@ const manifest = {
     "./routes/api/set-availability.tsx": $3,
     "./routes/app/_middleware.tsx": $4,
     "./routes/app/calendar.tsx": $5,
-    "./routes/app/set-availability.tsx": $6,
+    "./routes/app/calendar/set-availability.tsx": $6,
     "./routes/index.tsx": $7,
     "./routes/logged-in.tsx": $8,
   },

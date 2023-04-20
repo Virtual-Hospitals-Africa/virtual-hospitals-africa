@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { Agent } from "../../src/google.ts";
-import set from "../../src/lodash/set.ts";
+import set from "../../src/util/set.ts";
 import { WithSession } from "fresh_session";
 import {
   AvailabilityJSON,
@@ -9,7 +9,7 @@ import {
   GCalEvent,
   Time,
 } from "../../src/types.ts";
-import padLeft from "../../src/lodash/padLeft.ts";
+import padLeft from "../../src/util/padLeft.ts";
 import redirect from "../../src/redirect.ts";
 import { assert } from "std/_util/asserts.ts";
 

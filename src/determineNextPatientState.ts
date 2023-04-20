@@ -1,6 +1,6 @@
 import conversationStates from "./conversationStates.ts";
 // import { isValid } from "date-fns";
-import words from "./lodash/words.ts";
+import words from "./util/words.ts";
 import {
   Appointment,
   ConversationStateHandler,

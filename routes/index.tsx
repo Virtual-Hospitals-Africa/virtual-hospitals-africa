@@ -12,7 +12,7 @@ export const handler: Handlers<HasSession, WithSession> = {
       refresh_token: ctx.state.session.get("refresh_token"),
     });
     const Location = isAuthedDoctor
-      ? "/app/set-availability"
+      ? "/app/calendar/set-availability"
       : `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`;
 
     return redirect(Location);
