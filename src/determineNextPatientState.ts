@@ -86,12 +86,12 @@ export function formatMessageToSend(
       return {
         messageBody: prompt,
         buttonText: "Menu",
-        options: state.options.map((option) => ({
-          rows: [{
+        options: [{
+          rows: state.options.map((option) => ({
             id: option.option,
             title: option.display,
-          }],
-        })),
+          })),
+        }],
       };
     }
     case "date": {
