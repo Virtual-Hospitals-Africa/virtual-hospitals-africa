@@ -1,6 +1,8 @@
 const hasOwn = {}.hasOwnProperty;
 
-export default function classNames(...args: any[]): string {
+type ClassNameable = string | number | { [key: string]: boolean };
+
+export default function classNames(...args: ClassNameable[]): string {
   const classes = [];
 
   for (const arg of args) {
@@ -26,8 +28,10 @@ export default function classNames(...args: any[]): string {
         continue;
       }
 
-      for (const key in arg) {
-        if (hasOwn.call(arg, key) && arg[key]) {
+      const argObj = arg as { [key: string]: boolean };
+
+      for (const key in argObj) {
+        if (hasOwn.call(arg, key) && argObj[key]) {
           classes.push(key);
         }
       }

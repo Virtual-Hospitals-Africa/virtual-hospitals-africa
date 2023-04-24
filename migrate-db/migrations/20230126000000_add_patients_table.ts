@@ -14,7 +14,7 @@ export function up(db: Kysely<any>) {
     .addColumn("gender", "varchar(50)")
     .addColumn("date_of_birth", "varchar(50)")
     .addColumn("national_id_number", "varchar(50)")
-    .addColumn("conversation_state", "varchar(50)")
+    .addColumn("conversation_state", "varchar(255)")
     .addUniqueConstraint("national_id_number", ["national_id_number"])
     .addUniqueConstraint("phone_number", ["phone_number"])
     .execute();

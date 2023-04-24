@@ -201,8 +201,14 @@ const conversationStates: {
       },
       {
         option: "go_back",
-        display: "No, I want to start over",
-        aliases: ["no", "cancel", "back", "over"],
+        display: "Go back",
+        aliases: ["back"],
+        onResponse: "other_end_of_demo",
+      },
+      {
+        option: "cancel",
+        display: "Cancel",
+        aliases: ["cancel"],
         onResponse: "other_end_of_demo",
       },
     ],
