@@ -53,7 +53,7 @@ export default function SetAvailability(
   return (
     <Layout title="Set Availability" route={props.route}>
       <h3 className="container p-1 text-secondary-600 uppercase">
-        Working Hours
+        Working Hours for Doctors
       </h3>
       <SetAvailabilityForm availability={props.data.availability} />
     </Layout>
