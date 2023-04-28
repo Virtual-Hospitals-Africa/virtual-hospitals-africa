@@ -200,7 +200,7 @@ export class Agent {
 console.log('Deno.env.get("SELF_URL")', Deno.env.get("SELF_URL"));
 
 const selfUrl = Deno.env.get("SELF_URL") ||
-  "https://hgat-platform.herokuapp.com";
+  "https://virtual-hospitals-africa.herokuapp.com";
 const redirect_uri = `${selfUrl}/logged-in`;
 
 export const oauthParams = new URLSearchParams({
