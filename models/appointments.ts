@@ -4,13 +4,12 @@ import {
   Appointment,
   AppointmentOfferedTime,
   FullScheduledAppointment,
-  // InsertSqlRow,
-  Maybe,
   ReturnedSqlRow,
+  TrxOrDb,
 } from "../types.ts";
 
-// TODO: get the doctor_name too
 export async function addOfferedTime(
+  trx: TrxOrDb,
   opts: { appointment_id: number; doctor_id: number; start: string },
 ): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
   const result = await sql<
@@ -26,53 +25,41 @@ export async function addOfferedTime(
            doctors.name as doctor_name
       FROM inserted_offered_time
       JOIN doctors ON inserted_offered_time.doctor_id = doctors.id
-  `.execute(db);
+  `.execute(trx);
 
   return result.rows[0];
 }
 
-export function get(
-  query: { patient_id: number },
-): Promise<{
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  patient_id: number;
-  reason: Maybe<string>;
-}[]> {
-  return db
-    .selectFrom("appointments")
-    .selectAll()
-    .where("patient_id", "=", query.patient_id)
-    .execute();
-}
+// export function get(
+//   query: { patient_id: number },
+// ): Promise<ReturnedSqlRow<Appointment>[]> {
+//   return db
+//     .selectFrom("appointments")
+//     .selectAll()
+//     .where("patient_id", "=", query.patient_id)
+//     .execute();
+// }
 
 export function clear(): Promise<DeleteResult[]> {
   return db.deleteFrom("appointments").execute();
 }
 
-export function createNew(opts: { patient_id: number }): Promise<{
-  id: number;
-  created_at: Date;
-  updated_at: Date;
-  patient_id: number;
-  reason: Maybe<string>;
-}[]> {
-  return db
+export function createNew(
+  trx: TrxOrDb,
+  opts: { patient_id: number },
+): Promise<ReturnedSqlRow<Appointment>[]> {
+  return trx
     .insertInto("appointments")
     .values({ patient_id: opts.patient_id })
     .returningAll()
     .execute();
 }
 
-export async function upsert(info: Appointment): Promise<{
-  id: number;
-  patient_id: number;
-  reason: Maybe<string>;
-  created_at: Date;
-  updated_at: Date;
-}> {
-  const [appointment] = await db
+export async function upsert(
+  trx: TrxOrDb,
+  info: Appointment,
+): Promise<ReturnedSqlRow<Appointment>> {
+  const [appointment] = await trx
     .insertInto("appointments")
     .values(info)
     .onConflict((oc) => oc.column("id").doUpdateSet(info))
@@ -84,6 +71,7 @@ export async function upsert(info: Appointment): Promise<{
 
 // TODO: just update the offered time
 export async function schedule(
+  trx: TrxOrDb,
   opts: {
     appointment_offered_time_id: number;
     scheduled_gcal_event_id: string;
@@ -105,7 +93,7 @@ export async function schedule(
       JOIN appointments ON appointment_offered_time_scheduled.appointment_id = appointments.id
       JOIN patients ON appointments.patient_id = patients.id
       JOIN doctors ON appointment_offered_time_scheduled.doctor_id = doctors.id
-    `.execute(db);
+    `.execute(trx);
 
   return result.rows[0];
 }

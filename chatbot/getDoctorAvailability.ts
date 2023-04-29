@@ -6,6 +6,7 @@ import {
   GCalFreeBusy,
   ReturnedSqlRow,
   TimeRange,
+  TrxOrDb,
 } from "../types.ts";
 
 export function getAvailability(
@@ -79,9 +80,10 @@ export function defaultTimeRange(): TimeRange {
 }
 
 export async function getAllDoctorAvailability(
+  trx: TrxOrDb,
   timeRange: TimeRange = defaultTimeRange(),
 ) {
-  const doctors = await getAllWithExtantTokens();
+  const doctors = await getAllWithExtantTokens(trx);
   return Promise.all(doctors.map(async (doctor) => {
     const doctorGoogleAgent = new google.Agent(doctor);
     const freeBusy = await doctorGoogleAgent.getFreeBusy({
@@ -98,11 +100,11 @@ export async function getAllDoctorAvailability(
   }));
 }
 
-export async function firstAvailableThirtyMinutes(): Promise<{
+export async function firstAvailableThirtyMinutes(trx: TrxOrDb): Promise<{
   doctor: ReturnedSqlRow<DoctorWithGoogleTokens>;
   start: string;
 }> {
-  const doctorAvailability = await getAllDoctorAvailability();
+  const doctorAvailability = await getAllDoctorAvailability(trx);
 
   let earliestAvailabilityDoctor: DoctorWithGoogleTokens | null = null;
   let earliestAvailabilityStart = "9999-99-99T23:59:59+02:00";

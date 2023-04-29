@@ -88,6 +88,8 @@ export async function getUnhandledPatientMessages(
     WITH responding_to_messages as (
            UPDATE whatsapp_messages_received
               SET started_responding_at = now()
+                , error_commit_hash = NULL
+                , error_message = NULL
             WHERE (started_responding_at is null
                OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash}))
         RETURNING id

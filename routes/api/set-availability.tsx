@@ -12,6 +12,7 @@ import {
 import padLeft from "../../util/padLeft.ts";
 import redirect from "../../util/redirect.ts";
 import { assert } from "std/_util/asserts.ts";
+import { parseDate } from "../../util/date.ts";
 
 const days: Array<DayOfWeek> = [
   "Sunday",
@@ -44,23 +45,7 @@ function parseForm(params: URLSearchParams): AvailabilityJSON {
   return availability;
 }
 
-const dateFormat = new Intl.DateTimeFormat("en-gb", {
-  weekday: "long",
-  month: "numeric",
-  year: "numeric",
-  day: "numeric",
-  timeZone: "Africa/Johannesburg",
-});
-
-function parseDate(date: Date = new Date()) {
-  const dateString = dateFormat.format(date);
-  const [weekday, rest] = dateString.split(", ");
-  const [day, month, year] = rest.split("/");
-  return { weekday, day, month, year };
-}
-
 const toHarare = (time: Time) => {
-  console.log("time", time);
   const baseHour = time.hour % 12;
   const hour = time.amPm === "am" ? baseHour : baseHour + 12;
   const hourStr = padLeft(String(hour), 2, "0");
@@ -71,7 +56,7 @@ const toHarare = (time: Time) => {
 function* availabilityBlocks(
   availability: AvailabilityJSON,
 ): Generator<DeepPartial<GCalEvent>> {
-  const today = parseDate();
+  const today = parseDate(new Date(), "2-digit");
   const todayIndex = days.indexOf(today.weekday as DayOfWeek);
   for (const day of days) {
     const dayAvailability = availability[day];

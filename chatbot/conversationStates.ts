@@ -14,6 +14,7 @@ import {
   Falsy,
   PatientDemographicInfo,
   ReturnedSqlRow,
+  TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
 
@@ -169,9 +170,12 @@ const conversationStates: {
   "onboarded:make_appointment:enter_appointment_reason": {
     type: "string",
     async onEnter(
+      trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
-      await appointments.createNew({ patient_id: patientMessage.patient_id });
+      await appointments.createNew(trx, {
+        patient_id: patientMessage.patient_id,
+      });
       return patientMessage;
     },
     prompt(patientMessage: UnhandledPatientMessage): string {
@@ -219,15 +223,20 @@ const conversationStates: {
   "onboarded:make_appointment:first_scheduling_option": {
     type: "select",
     async onEnter(
+      trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
-      const firstAvailable = await firstAvailableThirtyMinutes();
+      console.log("onboarded:make_appointment:first_scheduling_option onEnter");
+      const firstAvailable = await firstAvailableThirtyMinutes(trx);
+      console.log("past firstAvailableThirtyMinutes");
 
-      const offeredTime = await appointments.addOfferedTime({
+      const offeredTime = await appointments.addOfferedTime(trx, {
         appointment_id: patientMessage.scheduling_appointment_id!,
         doctor_id: firstAvailable.doctor.id,
         start: firstAvailable.start,
       });
+
+      console.log("past appointments.addOfferedTime");
 
       const nextOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
@@ -314,11 +323,7 @@ const conversationStates: {
   },
   "onboarded:appointment_scheduled": {
     type: "string",
-    onEnter(
-      patientMessage: UnhandledPatientMessage,
-    ): Promise<UnhandledPatientMessage> {
-      return makeAppointment(patientMessage);
-    },
+    onEnter: makeAppointment,
     prompt(patientMessage: UnhandledPatientMessage): string {
       assert(patientMessage.appointment_offered_times[0]);
       assert(

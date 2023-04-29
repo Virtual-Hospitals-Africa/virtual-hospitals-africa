@@ -1,10 +1,11 @@
-import { DeleteResult, sql, Transaction, UpdateResult } from "kysely";
-import db, { DatabaseSchema } from "../external-clients/db.ts";
+import { DeleteResult, sql, UpdateResult } from "kysely";
+import db from "../external-clients/db.ts";
 import {
   DoctorWithGoogleTokens,
   DoctorWithPossibleGoogleTokens,
   GoogleTokens,
   Maybe,
+  TrxOrDb,
 } from "../types.ts";
 
 type DoctorDetails = {
@@ -20,8 +21,8 @@ const expiresInAnHourSql = sql<
 >`(SELECT now() + (59 * interval '1 minute'))`;
 
 export async function upsert(
+  trx: TrxOrDb,
   details: DoctorDetails,
-  using: Transaction<DatabaseSchema> | typeof db = db,
 ): Promise<{
   id: number;
   created_at: Date;
@@ -31,7 +32,7 @@ export async function upsert(
   gcal_appointments_calendar_id: string;
   gcal_availability_calendar_id: string;
 }> {
-  const [doctor] = await using
+  const [doctor] = await trx
     .insertInto("doctors")
     .values(details)
     .onConflict((oc) => oc.column("email").doUpdateSet(details))
@@ -54,13 +55,13 @@ export function upsertWithGoogleCredentials(
 }> {
   return db.transaction().execute(async (trx) => {
     const doctor = await upsert(
+      trx,
       {
         name: details.name,
         email: details.email,
         gcal_appointments_calendar_id: details.gcal_appointments_calendar_id,
         gcal_availability_calendar_id: details.gcal_availability_calendar_id,
       },
-      trx,
     );
 
     await trx
@@ -83,20 +84,23 @@ export function upsertWithGoogleCredentials(
   });
 }
 
-const getWithTokensQuery = db
-  .selectFrom("doctors")
-  .leftJoin(
-    "doctor_google_tokens",
-    "doctors.id",
-    "doctor_google_tokens.doctor_id",
-  )
-  .selectAll("doctors")
-  .select("doctor_google_tokens.access_token")
-  .select("doctor_google_tokens.refresh_token");
+const getWithTokensQuery = (trx: TrxOrDb) =>
+  trx
+    .selectFrom("doctors")
+    .leftJoin(
+      "doctor_google_tokens",
+      "doctors.id",
+      "doctor_google_tokens.doctor_id",
+    )
+    .selectAll("doctors")
+    .select("doctor_google_tokens.access_token")
+    .select("doctor_google_tokens.refresh_token");
 
 // TODO: Store auth tokens in a way that we can more easily refresh them and find the ones for a specific doctor
-export function getAllWithTokens(): Promise<DoctorWithPossibleGoogleTokens[]> {
-  return getWithTokensQuery.execute();
+export function getAllWithTokens(
+  trx: TrxOrDb,
+): Promise<DoctorWithPossibleGoogleTokens[]> {
+  return getWithTokensQuery(trx).execute();
 }
 
 function hasTokens(
@@ -116,25 +120,30 @@ function withTokens(doctors: DoctorWithPossibleGoogleTokens[]) {
   return withTokens;
 }
 
-export async function getAllWithExtantTokens(): Promise<
+export async function getAllWithExtantTokens(trx: TrxOrDb): Promise<
   DoctorWithGoogleTokens[]
 > {
-  return withTokens(await getAllWithTokens());
+  return withTokens(await getAllWithTokens(trx));
 }
 
 export async function getWithTokensById(
+  trx: TrxOrDb,
   doctor_id: number,
 ): Promise<Maybe<DoctorWithPossibleGoogleTokens>> {
-  const [doctor] = await getWithTokensQuery.where("doctors.id", "=", doctor_id)
+  const [doctor] = await getWithTokensQuery(trx).where(
+    "doctors.id",
+    "=",
+    doctor_id,
+  )
     .execute();
   return doctor;
 }
 
-export async function allWithGoogleTokensAboutToExpire(): Promise<
+export async function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
   DoctorWithGoogleTokens[]
 > {
   return withTokens(
-    await getWithTokensQuery.where(
+    await getWithTokensQuery(trx).where(
       "doctor_google_tokens.expires_at",
       "<",
       sql`now() + (5 * interval '1 minute')`,

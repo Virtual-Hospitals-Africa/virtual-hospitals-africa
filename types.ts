@@ -1,4 +1,5 @@
-import { ColumnType, Generated } from "kysely";
+import { ColumnType, Generated, Transaction } from "kysely";
+import db, { DatabaseSchema } from "./external-clients/db.ts";
 
 export type Maybe<T> = T | null | undefined;
 
@@ -90,6 +91,7 @@ export type UnhandledPatientMessage = {
 export type ConversationStateHandlerType<T> = T & {
   prompt: string | ((patientMessage: UnhandledPatientMessage) => string);
   onEnter?: (
+    trx: TrxOrDb,
     patientMessage: UnhandledPatientMessage,
     next: DetermineNextPatientStateReturn,
   ) => Promise<UnhandledPatientMessage>;
@@ -150,7 +152,7 @@ export type DetermineNextPatientStateReturn =
   | "invalid_response"
   | DetermineNextPatientStateValidReturn;
 
-export type IncomingWhatAppMessage = {
+export type WhatsAppIncomingMessage = {
   object: "whatsapp_business_account";
   entry: [
     {
@@ -223,6 +225,12 @@ export type IncomingWhatAppMessage = {
       ];
     },
   ];
+};
+
+export type WhatsAppJSONResponse = {
+  messaging_product: "whatsapp";
+  contacts: [{ input: string; wa_id: string }];
+  messages: [{ id: string }];
 };
 
 export type etag = string;
@@ -558,4 +566,12 @@ export type DayOfWeek = keyof AvailabilityJSON;
 export type MessageOption = {
   id: string;
   title: string;
+};
+
+export type TrxOrDb = Transaction<DatabaseSchema> | typeof db;
+
+export type WhatsAppSendable = string | {
+  messageBody: string;
+  buttonText: string;
+  options: MessageOption[];
 };

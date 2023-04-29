@@ -5,6 +5,7 @@ import {
   Maybe,
   Patient,
   ReturnedSqlRow,
+  TrxOrDb,
 } from "../types.ts";
 
 export async function getByPhoneNumber(
@@ -20,7 +21,7 @@ export async function getByPhoneNumber(
   return result && result[0];
 }
 
-export async function upsert(info: {
+export async function upsert(trx: TrxOrDb, info: {
   conversation_state: Maybe<ConversationState>;
   phone_number: string;
   name: Maybe<string>;
@@ -28,7 +29,7 @@ export async function upsert(info: {
   date_of_birth: Maybe<string>;
   national_id_number: Maybe<string>;
 }): Promise<ReturnedSqlRow<Patient>> {
-  const [patient] = await db
+  const [patient] = await trx
     .insertInto("patients")
     .values(info)
     .onConflict((oc) => oc.column("phone_number").doUpdateSet(info))

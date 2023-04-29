@@ -1,6 +1,4 @@
 import { assert } from "std/testing/asserts.ts";
-// import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js"; // TODO: doesn't work
-// import * as mod from "std/datetime/mod.ts";
 import { PatientDemographicInfo } from "../types.ts";
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -29,14 +27,44 @@ export function newDate(): Date {
   return new Date();
 }
 
-// // TODO
+export const numericDateFormat = new Intl.DateTimeFormat("en-gb", {
+  weekday: "long",
+  month: "numeric",
+  year: "numeric",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+  second: "numeric",
+  timeZone: "Africa/Johannesburg",
+});
+
+export const twoDigitDateFormat = new Intl.DateTimeFormat("en-gb", {
+  weekday: "long",
+  month: "2-digit",
+  year: "numeric",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  timeZone: "Africa/Johannesburg",
+});
+
+export function parseDate(date: Date, format: "numeric" | "2-digit"): any {
+  const formatter = format === "numeric"
+    ? numericDateFormat
+    : twoDigitDateFormat;
+  const dateString = formatter.format(date);
+  const [weekday, dateParts, timeParts] = dateString.split(", ");
+  const [day, month, year] = dateParts.split("/");
+  const [hour, minute, second] = timeParts.split(":");
+  return { weekday, day, month, year, hour, minute, second };
+}
+
 export function formatHarare(
   date = new Date(),
-  pattern = "yyyy-MM-d'T'HH:mm:ssXXX",
 ): string {
-  return date.toISOString() + pattern;
-  // return format(date, pattern, {});
-  // return formatInTimeZone(date, "Africa/Johannesburg", pattern);
+  const { day, month, year, hour, minute, second } = parseDate(date, "2-digit");
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}+02:00`;
 }
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
@@ -58,6 +86,18 @@ export function differenceInDays(date1: string, date2: string): number {
   // Calculating the no. of days between two dates
   return Math.round(diffInTime / oneDay);
 }
+
+const longDayFormat = new Intl.DateTimeFormat("en-gb", {
+  month: "long",
+  day: "numeric",
+  timeZone: "Africa/Johannesburg",
+});
+
+const timeFormat = new Intl.DateTimeFormat("en-gb", {
+  hour: "numeric",
+  minute: "numeric",
+  timeZone: "Africa/Johannesburg",
+});
 
 export function prettyAppointmentTime(startTime: string): string {
   assert(rfc3339Regex.test(startTime), `Expected RFC3339 format: ${startTime}`);
@@ -81,12 +121,10 @@ export function prettyAppointmentTime(startTime: string): string {
   } else if (diff === 1) {
     dateStr = "Tomorrow";
   } else {
-    dateStr = format(start, "d MMMM", {});
+    dateStr = longDayFormat.format(start);
   }
 
-  // TODO
-  const prettyTime = format(start, "hh:mm a", {}).toLowerCase();
-  // const prettyTime = formatInTimeZone(start, "Africa/Johannesburg", "hh:mm a")
-  //   .toLowerCase();
+  const prettyTime = timeFormat.format(start);
+
   return `${dateStr} at ${prettyTime} Harare time`;
 }

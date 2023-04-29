@@ -8,6 +8,7 @@ import {
   DeepPartial,
   GCalEvent,
   ReturnedSqlRow,
+  TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
 
@@ -59,6 +60,7 @@ export function appointmentDetails(
 }
 
 export async function makeAppointment(
+  trx: TrxOrDb,
   patientMessage: UnhandledPatientMessage,
 ): Promise<UnhandledPatientMessage> {
   assertEquals(
@@ -76,7 +78,7 @@ export async function makeAppointment(
   );
 
   const { offeredTime, gcal } = appointmentDetails(patientMessage);
-  const doctors = await getAllWithTokens();
+  const doctors = await getAllWithTokens(trx);
 
   const matchingDoctor = doctors.find((doctor) =>
     doctor.id === offeredTime.doctor_id
@@ -105,7 +107,7 @@ export async function makeAppointment(
     gcal,
   );
 
-  await appointments.schedule({
+  await appointments.schedule(trx, {
     appointment_offered_time_id: offeredTime.id,
     scheduled_gcal_event_id: insertedEvent.id,
   });

@@ -15,8 +15,6 @@ const port = parseInt(Deno.env.get("PORT") || "8000", 10);
 
 const opts = { port, plugins: [twindPlugin(twindConfig)] };
 
-console.log("ENV", Deno.env.toObject());
-
 if (Deno.env.get("SELF_URL") === "https://localhost:8000") {
   const ctx = await ServerContext.fromManifest(manifest, opts);
   await serveTls(ctx.handler(), {

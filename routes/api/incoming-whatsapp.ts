@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import * as conversations from "../../models/conversations.ts";
-import { IncomingWhatAppMessage } from "../../types.ts";
+import { WhatsAppIncomingMessage } from "../../types.ts";
 
 const verifyToken = Deno.env.get("WHATSAPP_WEBHOOK_VERIFY_TOKEN");
 
@@ -63,7 +63,7 @@ export const handler: Handlers = {
     return new Response("Invalid token");
   },
   async POST(req) {
-    const incomingMessage: IncomingWhatAppMessage = await req.json();
+    const incomingMessage: WhatsAppIncomingMessage = await req.json();
 
     console.log(JSON.stringify(incomingMessage));
 
