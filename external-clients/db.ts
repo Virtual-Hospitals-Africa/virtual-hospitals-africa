@@ -54,3 +54,15 @@ const db = new Kysely<DatabaseSchema>({
 });
 
 export default db;
+
+export async function resetDb() {
+  await db.deleteFrom("patients").execute();
+  await db.deleteFrom("appointments").execute();
+  await db.deleteFrom("appointment_offered_times").execute();
+  await db.deleteFrom("appointment_offered_times").execute();
+  await db.deleteFrom("doctors").execute();
+  await db.deleteFrom("doctor_google_tokens").execute();
+
+  await db.deleteFrom("whatsapp_messages_received").execute();
+  await db.deleteFrom("whatsapp_messages_sent").execute();
+}

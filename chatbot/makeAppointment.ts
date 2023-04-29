@@ -3,19 +3,24 @@ import { formatHarare } from "../util/date.ts";
 import * as google from "../external-clients/google.ts";
 import { getAllWithTokens } from "../models/doctors.ts";
 import * as appointments from "../models/appointments.ts";
-import { UnhandledPatientMessage } from "../types.ts";
+import {
+  AppointmentOfferedTime,
+  DeepPartial,
+  GCalEvent,
+  ReturnedSqlRow,
+  UnhandledPatientMessage,
+} from "../types.ts";
 
-export async function makeAppointment(
+export function appointmentDetails(
   patientMessage: UnhandledPatientMessage,
-): Promise<UnhandledPatientMessage> {
-  assert(
-    patientMessage.scheduling_appointment_id,
-    "No scheduling_appointment_id found in patientMessage",
-  );
-  assert(
-    patientMessage.scheduling_appointment_reason,
-    "No scheduling_appointment_reason found in patientMessage",
-  );
+): {
+  offeredTime: ReturnedSqlRow<
+    AppointmentOfferedTime & {
+      doctor_name: string;
+    }
+  >;
+  gcal: DeepPartial<GCalEvent>;
+} {
   assert(
     patientMessage.appointment_offered_times,
     "No appointment_offered_times found in patientMessage",
@@ -33,20 +38,54 @@ export async function makeAppointment(
     !patientMessage.appointment_offered_times[0].patient_declined,
     "Patient rejected offered appointment time",
   );
-  assert(
-    patientMessage.appointment_offered_times[0].doctor_id,
-    "No doctor_id found",
-  );
 
   const offeredTime = patientMessage.appointment_offered_times[0];
 
+  const end = new Date(offeredTime.start);
+  end.setMinutes(end.getMinutes() + 30);
+
+  return {
+    offeredTime,
+    gcal: {
+      summary: `Appointment with ${patientMessage.name}`,
+      start: {
+        dateTime: offeredTime.start,
+      },
+      end: {
+        dateTime: formatHarare(end),
+      },
+    },
+  };
+}
+
+export async function makeAppointment(
+  patientMessage: UnhandledPatientMessage,
+): Promise<UnhandledPatientMessage> {
+  assertEquals(
+    patientMessage.conversation_state,
+    "onboarded:appointment_scheduled",
+    "Only onboarded:appointment_scheduled patients supported for now",
+  );
+  assert(
+    patientMessage.scheduling_appointment_id,
+    "No scheduling_appointment_id found in patientMessage",
+  );
+  assert(
+    patientMessage.scheduling_appointment_reason,
+    "No scheduling_appointment_reason found in patientMessage",
+  );
+
+  const { offeredTime, gcal } = appointmentDetails(patientMessage);
   const doctors = await getAllWithTokens();
 
   const matchingDoctor = doctors.find((doctor) =>
     doctor.id === offeredTime.doctor_id
   );
 
-  // TODO: this can easily fail before we fix needing to look up all sessions
+  assert(
+    offeredTime.doctor_id,
+    "No doctor_id found",
+  );
   assert(
     matchingDoctor,
     `No doctor session found for doctor_id ${offeredTime.doctor_id}`,
@@ -63,24 +102,7 @@ export async function makeAppointment(
 
   const insertedEvent = await doctorGoogleAgent.insertEvent(
     matchingDoctor.gcal_appointments_calendar_id,
-    {
-      summary: `Appointment with ${patientMessage.name}`,
-      start: {
-        dateTime: offeredTime.start,
-      },
-      end: {
-        dateTime: formatHarare(end),
-      },
-      // organizer: {
-      //   email: 'hgatorganizer@gmail.com'
-      // },
-      // attendees: [
-      //   {
-      //     email: 'hgatorganizer@gmail.com',
-      //     responseStatus: 'accepted'
-      //   }
-      // ]
-    },
+    gcal,
   );
 
   await appointments.schedule({
@@ -90,8 +112,6 @@ export async function makeAppointment(
 
   return {
     ...patientMessage,
-    appointment_offered_times: [{
-      ...patientMessage.appointment_offered_times[0],
-    }],
+    appointment_offered_times: [offeredTime],
   };
 }

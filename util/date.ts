@@ -1,5 +1,5 @@
 import { assert } from "std/testing/asserts.ts";
-import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js"; // TODO: doesn't work
+// import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js"; // TODO: doesn't work
 // import * as mod from "std/datetime/mod.ts";
 import { PatientDemographicInfo } from "../types.ts";
 
@@ -23,14 +23,13 @@ export function prettyPatientDateOfBirth(
     month: "long",
     day: "numeric",
   });
-  // return format(dtDateOnly, "d MMMM y", {});
 }
 
 export function newDate(): Date {
   return new Date();
 }
 
-// TODO
+// // TODO
 export function formatHarare(
   date = new Date(),
   pattern = "yyyy-MM-d'T'HH:mm:ssXXX",
