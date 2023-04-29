@@ -5,6 +5,7 @@ import {
 } from "../util/date.ts";
 import { firstAvailableThirtyMinutes } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
+import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
 import {
   AppointmentOfferedTime,
@@ -34,25 +35,13 @@ const conversationStates: {
   "not_onboarded:welcome": {
     type: "select",
     prompt:
-      "Hello! I'm Nompilo, a robot that can help connect you to various health services. What can I help you with today?",
+      "Welcome to Virtual Hospitals Africa. What can I help you with today?",
     options: [
       {
         option: "make_appointment",
         display: "Make appointment",
         aliases: ["appt", "appointment", "doctor", "specialist"],
         onResponse: "not_onboarded:make_appointment:enter_name",
-      },
-      {
-        option: "submit_medical_updates",
-        display: "Submit updates",
-        aliases: ["submit", "medical", "updates"],
-        onResponse: "not_onboarded:submit_medical_updates:check_onboarding",
-      },
-      {
-        option: "services",
-        display: "Services",
-        aliases: ["services"],
-        onResponse: "not_onboarded:services:check_onboarding",
       },
     ],
   },
@@ -156,16 +145,6 @@ const conversationStates: {
         },
       };
     },
-  },
-  "not_onboarded:submit_medical_updates:check_onboarding": {
-    type: "string",
-    prompt: "Not implemented",
-    onResponse: "other_end_of_demo",
-  },
-  "not_onboarded:services:check_onboarding": {
-    type: "string",
-    prompt: "Not implemented",
-    onResponse: "other_end_of_demo",
   },
   "onboarded:make_appointment:enter_appointment_reason": {
     type: "string",
@@ -316,26 +295,40 @@ const conversationStates: {
     ],
   },
   "onboarded:appointment_scheduled": {
-    type: "string",
+    type: "select",
     onEnter: makeAppointment,
-    prompt(patientMessage: UnhandledPatientMessage): string {
+    prompt(patientMessage: UnhandledPatientMessage) {
       assert(patientMessage.appointment_offered_times[0]);
       assert(
         patientMessage.appointment_offered_times[0].scheduled_gcal_event_id,
       );
-      return `Thanks ${
-        patientMessage.name!.split(" ")[0]
-      }, you will receive a call from ${
+      return `Thanks ${patientMessage.name!.split(" ")[0]}, we notified ${
         patientMessage.appointment_offered_times[0].doctor_name
-      }, ${
+      } and will message you shortly upon confirmirmation of your appointment at ${
         prettyAppointmentTime(patientMessage.appointment_offered_times[0].start)
-      }. You will receive notifications at 30 minutes and 5 minutes before the appointment. If you need to cancel or reschedule prior to this, please reply with the word "cancel" or "reschedule". [end of demo]`;
+      }`;
     },
-    onResponse(): ConversationStateHandlerReturn {
-      return {
-        nextState: "other_end_of_demo",
-      };
-    },
+    options: [
+      {
+        option: "cancel",
+        display: "Cancel Appointment",
+        onResponse: "onboarded:cancel_appointment",
+      },
+    ],
+  },
+  "onboarded:cancel_appointment": {
+    type: "select",
+    prompt:
+      "Your appoinment has been cancelled. What can I help you with today?",
+    options: [
+      {
+        option: "make_appointment",
+        display: "Make appointment",
+        aliases: ["appt", "appointment", "doctor", "specialist"],
+        onResponse: "onboarded:make_appointment:enter_appointment_reason",
+      },
+    ],
+    onEnter: cancelAppointment,
   },
   "other_end_of_demo": {
     type: "end_of_demo",

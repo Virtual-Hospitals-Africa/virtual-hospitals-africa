@@ -37,8 +37,7 @@ export type ConversationState =
   | "onboarded:make_appointment:first_scheduling_option"
   | "onboarded:make_appointment:other_scheduling_options"
   | "onboarded:appointment_scheduled"
-  | "not_onboarded:submit_medical_updates:check_onboarding"
-  | "not_onboarded:services:check_onboarding"
+  | "onboarded:cancel_appointment"
   | "other_end_of_demo";
 
 export type Patient = {
