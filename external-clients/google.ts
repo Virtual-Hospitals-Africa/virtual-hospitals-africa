@@ -250,13 +250,9 @@ export async function getInitialTokensFromAuthCode(
   return tokens;
 }
 
-type GetFromRefreshTokenResult =
-  | { error: true; error_description: string }
-  | { error: false; access_token: string };
-
 export async function getNewAccessTokenFromRefreshToken(
   refresh_token: string,
-): Promise<GetFromRefreshTokenResult> {
+): Promise<string> {
   const result = await fetch("https://oauth2.googleapis.com/token", {
     method: "post",
     headers: { "Content-Type": "application/json" },
@@ -271,18 +267,7 @@ export async function getNewAccessTokenFromRefreshToken(
   const json = await result.json();
 
   assert(json);
-
-  if (json.error) {
-    return {
-      error: true,
-      error_description: json.error_description,
-    };
-  }
-
   assertEquals(typeof json.access_token, "string");
 
-  return {
-    error: false,
-    access_token: json.access_token,
-  };
+  return json.access_token;
 }

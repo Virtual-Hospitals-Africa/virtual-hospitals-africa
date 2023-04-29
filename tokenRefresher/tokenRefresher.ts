@@ -12,14 +12,14 @@ async function doRefreshTokens(): Promise<any> {
   const doctors = await allWithGoogleTokensAboutToExpire(db);
 
   await Promise.all(doctors.map(async (doctor) => {
-    const result = await google.getNewAccessTokenFromRefreshToken(
-      doctor.refresh_token,
-    );
-    if (result.error) {
-      console.log("Error refreshing token", result.error_description);
-      await removeExpiredAccessToken({ doctor_id: doctor.id });
-    } else {
-      await updateAccessToken(doctor.id, result.access_token);
+    try {
+      const accessToken = await google.getNewAccessTokenFromRefreshToken(
+        doctor.refresh_token,
+      );
+      await updateAccessToken(doctor.id, accessToken);
+    } catch (err) {
+      console.error(err);
+      removeExpiredAccessToken({ doctor_id: doctor.id });
     }
   }));
 }
