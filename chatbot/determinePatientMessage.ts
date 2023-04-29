@@ -17,10 +17,7 @@ export async function determinePatientMessage(
   const next = determineNextPatientState(patientMessage);
 
   if (next === "invalid_response") {
-    const originalMessageSent = formatMessageToSend(
-      conversationStates[patientMessage.conversation_state!],
-      patientMessage,
-    );
+    const originalMessageSent = formatMessageToSend(patientMessage);
     return typeof originalMessageSent === "string"
       ? `Sorry, I didn't understand that.\n\n${originalMessageSent}`
       : {
@@ -30,21 +27,11 @@ export async function determinePatientMessage(
       };
   }
 
-  const nextStateKind = next.nextPatient?.conversation_state ||
-    patientMessage.conversation_state!;
-  const nextState = conversationStates[nextStateKind];
-  console.log("nextStateKind", nextStateKind);
+  patientMessage = {
+    ...patientMessage,
+    ...next.nextPatient,
+  };
 
-  if (nextState.onEnter) {
-    console.log("onEnter");
-    try {
-      patientMessage = await nextState.onEnter(trx, patientMessage, next);
-    } catch (err) {
-      console.log("WELKWEKLWELKWEKLWE");
-      console.error(err);
-      throw err;
-    }
-  }
   if (next.nextPatient) {
     console.log("patients.upsert", JSON.stringify(next.nextPatient));
     await patients.upsert(trx, next.nextPatient);
@@ -54,9 +41,15 @@ export async function determinePatientMessage(
     await appointments.upsert(trx, next.nextAppointment);
   }
 
-  return formatMessageToSend(nextState, {
+  const nextState = conversationStates[patientMessage.conversation_state!];
+
+  if (nextState.onEnter) {
+    patientMessage = await nextState.onEnter(trx, patientMessage, next);
+    console.log("after onEnter", JSON.stringify(patientMessage));
+  }
+
+  return formatMessageToSend({
     ...patientMessage,
-    ...next.nextPatient,
     scheduling_appointment_id: next.nextAppointment &&
       next.nextAppointment.id,
     scheduling_appointment_reason: next.nextAppointment &&

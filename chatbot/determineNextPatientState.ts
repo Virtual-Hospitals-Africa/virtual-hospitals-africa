@@ -1,5 +1,4 @@
 import conversationStates from "./conversationStates.ts";
-// import { isValid } from "date-fns";
 import words from "../util/words.ts";
 import {
   Appointment,
@@ -70,13 +69,14 @@ function isValidResponse(
 }
 
 export function formatMessageToSend(
-  state: ConversationStateHandler,
   patientMessage: UnhandledPatientMessage,
 ): string | {
   messageBody: string;
   buttonText: string;
   options: MessageOption[];
 } {
+  console.log("formatMessageToSend", JSON.stringify(patientMessage));
+  const state = conversationStates[patientMessage.conversation_state!];
   const prompt = typeof state.prompt === "string"
     ? state.prompt
     : state.prompt(patientMessage);

@@ -11,7 +11,10 @@ export async function send(
     phone_number: patientMessage.phone_number,
   });
 
-  console.log("whatsappResponse", whatsappResponse);
+  if ("error" in whatsappResponse) {
+    console.log("whatsappResponse", JSON.stringify(whatsappResponse));
+    throw new Error(whatsappResponse.error.details);
+  }
 
   const insertedMessageSent = await insertMessageSent({
     patient_id: patientMessage.patient_id,

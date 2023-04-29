@@ -1,6 +1,6 @@
 # Virtual Hospitals Africa monorepo
 
-Built with ❤️ by Will Weiss at <a href="https://morehumaninternet.org">More Human
+Built with ❤️ by the team at <a href="https://morehumaninternet.org">More Human
 Internet</a>
 
 ### Setup

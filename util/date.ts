@@ -64,7 +64,7 @@ export function formatHarare(
   date = new Date(),
 ): string {
   const { day, month, year, hour, minute, second } = parseDate(date, "2-digit");
-  return `${year}-${month}-${day} ${hour}:${minute}:${second}+02:00`;
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`;
 }
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;

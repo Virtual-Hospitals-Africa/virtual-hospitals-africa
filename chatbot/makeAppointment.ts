@@ -77,7 +77,10 @@ export async function makeAppointment(
     "No scheduling_appointment_reason found in patientMessage",
   );
 
-  const { offeredTime, gcal } = appointmentDetails(patientMessage);
+  const details = appointmentDetails(patientMessage);
+  console.log("appointment details", JSON.stringify(details));
+
+  const { offeredTime, gcal } = details;
   const doctors = await getAllWithTokens(trx);
 
   const matchingDoctor = doctors.find((doctor) =>
@@ -114,6 +117,9 @@ export async function makeAppointment(
 
   return {
     ...patientMessage,
-    appointment_offered_times: [offeredTime],
+    appointment_offered_times: [{
+      ...offeredTime,
+      scheduled_gcal_event_id: insertedEvent.id,
+    }],
   };
 }

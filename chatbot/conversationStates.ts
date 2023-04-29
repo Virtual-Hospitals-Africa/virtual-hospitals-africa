@@ -34,7 +34,7 @@ const conversationStates: {
   "not_onboarded:welcome": {
     type: "select",
     prompt:
-      "Hello! I'm Nonpilo, a robot that can help connect you to various health services. What can I help you with today?",
+      "Hello! I'm Nompilo, a robot that can help connect you to various health services. What can I help you with today?",
     options: [
       {
         option: "make_appointment",
@@ -212,12 +212,6 @@ const conversationStates: {
         aliases: ["back"],
         onResponse: "other_end_of_demo",
       },
-      {
-        option: "cancel",
-        display: "Cancel",
-        aliases: ["cancel"],
-        onResponse: "other_end_of_demo",
-      },
     ],
   },
   "onboarded:make_appointment:first_scheduling_option": {
@@ -268,14 +262,14 @@ const conversationStates: {
       },
       {
         option: "other_times",
-        display: "No, what are other available times",
+        display: "Other times",
         aliases: ["other"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
       {
         option: "go_back",
-        display: "No, I want to start over",
-        aliases: ["no", "cancel", "back", "over"],
+        display: "Go back",
+        aliases: ["back"],
         onResponse: "other_end_of_demo",
       },
     ],

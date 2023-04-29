@@ -56,14 +56,19 @@ export class Agent {
       body: opts?.data ? JSON.stringify(opts.data) : undefined,
     });
     if (method !== "delete") {
+      let data;
       try {
-        const data = await response.json();
-        console.log(`${method} ${url}`, JSON.stringify(data));
-        return data;
+        data = await response.json();
       } catch (err) {
         console.error(`${method} ${url}`, err);
         throw err;
       }
+      console.log(`${method} ${url}`, JSON.stringify(data));
+      if (data.error) {
+        const errorMessage = data.error?.errors?.[0]?.message || data.error;
+        throw new Error(errorMessage);
+      }
+      return data;
     } else {
       const text = await response.text();
       console.log(`${method} ${url}`, text);

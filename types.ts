@@ -18,11 +18,6 @@ export type SqlRow<T> = {
   updated_at: ColumnType<Date, undefined, never>;
 } & T;
 
-// export type InsertSqlRow<SqlRow<T>> = Omit<
-//   T,
-//   "id" | "created_at" | "updated_at"
-// >;
-
 export type ReturnedSqlRow<T> = {
   id: number;
   created_at: Date;
@@ -227,11 +222,29 @@ export type WhatsAppIncomingMessage = {
   ];
 };
 
-export type WhatsAppJSONResponse = {
+export type WhatsAppJSONResponseSuccess = {
   messaging_product: "whatsapp";
   contacts: [{ input: string; wa_id: string }];
   messages: [{ id: string }];
 };
+
+export type WhatsAppJSONResponseError = {
+  error: {
+    message: string;
+    type: string;
+    code: number;
+    error_data: {
+      messaging_product: "whatsapp";
+    };
+    details: string;
+  };
+  error_subcode: number;
+  fbtrace_id: string;
+};
+
+export type WhatsAppJSONResponse =
+  | WhatsAppJSONResponseSuccess
+  | WhatsAppJSONResponseError;
 
 export type etag = string;
 export type date = string;
