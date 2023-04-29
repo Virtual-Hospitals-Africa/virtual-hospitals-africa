@@ -58,7 +58,7 @@ export async function handlePatientMessage(
     });
   }
 
-  console.log("messageBody", JSON.stringify(messageToSend));
+  console.log("messageToSend", JSON.stringify(messageToSend));
 
   const response = typeof messageToSend === "string"
     ? await whatsapp.sendMessage({
@@ -71,7 +71,7 @@ export async function handlePatientMessage(
       options: messageToSend.options,
     });
 
-  console.log("WELKWELKWEKL", JSON.stringify(response));
+  console.log("response", JSON.stringify(response));
 
   const insertedMessageSent = await insertMessageSent({
     patient_id: patientMessage.patient_id,

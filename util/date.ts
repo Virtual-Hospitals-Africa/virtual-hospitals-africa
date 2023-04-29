@@ -67,6 +67,9 @@ export function prettyAppointmentTime(startTime: string): string {
   );
 
   const start = new Date(startTime);
+
+  console.log("startTime", startTime);
+  console.log("start", start);
   const now = formatHarare();
   const diff = differenceInDays(startTime, now);
 
