@@ -1,3 +1,5 @@
+// TODO: Instead of using a timer, refresh the token on demand.
+// Perhaps we do this as well so that users don't have to wait for the token to be refreshed.a
 import * as google from "../external-clients/google.ts";
 import {
   allWithGoogleTokensAboutToExpire,
@@ -27,13 +29,8 @@ export function createTokenRefresher(): TokenRefresher {
   let timer: number;
 
   async function refreshTokens(): Promise<void> {
-    try {
-      await doRefreshTokens();
-      timer = setTimeout(refreshTokens, 100);
-    } catch (e) {
-      console.log("Error refreshing tokens", e);
-      timer = setTimeout(refreshTokens, 100);
-    }
+    await doRefreshTokens();
+    timer = setTimeout(refreshTokens, 3 * 60 * 1000);
   }
 
   return {
@@ -44,3 +41,5 @@ export function createTokenRefresher(): TokenRefresher {
     },
   };
 }
+
+createTokenRefresher().start();
