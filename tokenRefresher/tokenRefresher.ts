@@ -27,8 +27,13 @@ export function createTokenRefresher(): TokenRefresher {
   let timer: number;
 
   async function refreshTokens(): Promise<void> {
-    await doRefreshTokens();
-    timer = setTimeout(refreshTokens, 100);
+    try {
+      await doRefreshTokens();
+      timer = setTimeout(refreshTokens, 100);
+    } catch (e) {
+      console.log("Error refreshing tokens", e);
+      timer = setTimeout(refreshTokens, 100);
+    }
   }
 
   return {
