@@ -7,9 +7,12 @@ import determineNextPatientState, {
 import {
   getUnhandledPatientMessages,
   insertMessageSent,
+  markChatbotError,
 } from "../models/conversations.ts";
 import conversationStates from "./conversationStates.ts";
 import { MessageOption, UnhandledPatientMessage } from "../types.ts";
+
+const commitHash = Deno.env.get("HEROKU_SLUG_COMMIT") || "local";
 
 export async function handlePatientMessage(
   patientMessage: UnhandledPatientMessage,
@@ -87,13 +90,24 @@ export async function handlePatientMessage(
 
 export type Responder = { start(): void; exit(): void };
 
-export function createResponder(): Responder {
+export function createChatbot(): Responder {
   let timer: number;
 
   // TODO: handle receiving more than one message in a row from same patient
   async function respond(): Promise<void> {
-    const unhandledMessages = await getUnhandledPatientMessages();
-    await Promise.all(unhandledMessages.map(handlePatientMessage));
+    const unhandledMessages = await getUnhandledPatientMessages({ commitHash });
+    await Promise.all(unhandledMessages.map(async (patientMessage) => {
+      try {
+        await handlePatientMessage(patientMessage);
+      } catch (err) {
+        console.error(err);
+        await markChatbotError({
+          commitHash,
+          whatsapp_message_received_id: patientMessage.message_id,
+          errorMessage: err.message,
+        });
+      }
+    }));
     timer = setTimeout(respond, 10);
   }
 
@@ -106,4 +120,4 @@ export function createResponder(): Responder {
   };
 }
 
-createResponder().start();
+createChatbot().start();

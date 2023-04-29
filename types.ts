@@ -506,8 +506,10 @@ export type WhatsappMessageReceived = {
   patient_id: number;
   whatsapp_id: string;
   body: string;
-  started_responding_at: Maybe<ColumnType<Date>>;
   conversation_state: ConversationState | "initial_message";
+  started_responding_at: Maybe<ColumnType<Date>>;
+  error_commit_hash: Maybe<string>;
+  error_message: Maybe<string>;
 };
 
 export type WhatsappMessageSent = {

@@ -19,6 +19,14 @@ export async function up(db: Kysely<any>) {
       "timestamp",
     )
     .addColumn(
+      "error_commit_hash",
+      "varchar(255)",
+    )
+    .addColumn(
+      "error_message",
+      "text",
+    )
+    .addColumn(
       "whatsapp_id",
       "varchar(255)",
       (col) => col.notNull().unique(),

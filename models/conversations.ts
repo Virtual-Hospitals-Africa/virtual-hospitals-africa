@@ -79,14 +79,17 @@ export function insertMessageSent(
   }).execute();
 }
 
-export async function getUnhandledPatientMessages(): Promise<
+export async function getUnhandledPatientMessages(
+  { commitHash }: { commitHash: string },
+): Promise<
   UnhandledPatientMessage[]
 > {
   const result = await sql<UnhandledPatientMessage>`
     WITH responding_to_messages as (
            UPDATE whatsapp_messages_received
               SET started_responding_at = now()
-            WHERE started_responding_at is null
+            WHERE (started_responding_at is null
+               OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash}))
         RETURNING id
     ),
 
@@ -123,4 +126,21 @@ export async function getUnhandledPatientMessages(): Promise<
   `.execute(db);
 
   return result.rows;
+}
+
+export function markChatbotError(
+  opts: {
+    whatsapp_message_received_id: number;
+    commitHash: string;
+    errorMessage: string;
+  },
+) {
+  return db
+    .updateTable("whatsapp_messages_received")
+    .set({
+      error_commit_hash: opts.commitHash,
+      error_message: opts.errorMessage,
+    })
+    .where("id", "=", opts.whatsapp_message_received_id)
+    .execute();
 }
