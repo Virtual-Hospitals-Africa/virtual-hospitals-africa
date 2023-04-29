@@ -1,5 +1,5 @@
 import { redisSession } from "fresh_session";
-import { redis } from "../src/redis.ts";
+import { redis } from "../external-clients/redis.ts";
 
 export const handler = [
   redisSession(redis, {

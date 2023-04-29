@@ -1,12 +1,12 @@
-import * as google from "./google.ts";
-import { getAllWithExtantTokens } from "./models/doctors.ts";
+import * as google from "../external-clients/google.ts";
+import { getAllWithExtantTokens } from "../models/doctors.ts";
 import {
   Availability,
   DoctorWithGoogleTokens,
   GCalFreeBusy,
   ReturnedSqlRow,
   TimeRange,
-} from "./types.ts";
+} from "../types.ts";
 
 export function getAvailability(
   doctor: {

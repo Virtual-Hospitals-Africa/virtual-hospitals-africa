@@ -1,6 +1,6 @@
-import * as doctors from "./models/doctors.ts";
-import * as google from "./google.ts";
-import { Doctor, GoogleTokens, ReturnedSqlRow } from "./types.ts";
+import * as doctors from "../models/doctors.ts";
+import * as google from "../external-clients/google.ts";
+import { Doctor, GoogleTokens, ReturnedSqlRow } from "../types.ts";
 
 export async function initializeDoctor(
   tokens: GoogleTokens,

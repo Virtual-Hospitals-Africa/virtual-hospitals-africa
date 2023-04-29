@@ -1,9 +1,9 @@
 import { Handlers } from "$fresh/server.ts";
 import { WithSession } from "fresh_session";
 import { assert } from "std/_util/asserts.ts";
-import { getInitialTokensFromAuthCode } from "../src/google.ts";
-import { initializeDoctor } from "../src/initializeDoctor.ts";
-import redirect from "../src/redirect.ts";
+import { getInitialTokensFromAuthCode } from "../external-clients/google.ts";
+import { initializeDoctor } from "../web/initializeDoctor.ts";
+import redirect from "../util/redirect.ts";
 
 export type HasSession = { session: Record<string, string> };
 

@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
-import db from "../src/db.ts";
-import { redis } from "../src/redis.ts";
+import db from "../external-clients/db.ts";
+import { redis } from "../external-clients/redis.ts";
 
 export const handler: Handlers = {
   async GET(_req, _ctx) {

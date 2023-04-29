@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { WithSession } from "fresh_session";
-import { isGoogleTokens, oauthParams } from "../src/google.ts";
-import redirect from "../src/redirect.ts";
+import { isGoogleTokens, oauthParams } from "../external-clients/google.ts";
+import redirect from "../util/redirect.ts";
 
 export type HasSession = { session: Record<string, string> };
 

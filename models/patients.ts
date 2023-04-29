@@ -1,4 +1,4 @@
-import db from "../db.ts";
+import db from "../external-clients/db.ts";
 import {
   ConversationState,
   Gender,

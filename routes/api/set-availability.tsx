@@ -1,6 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
-import { Agent } from "../../src/google.ts";
-import set from "../../src/util/set.ts";
+import { Agent } from "../../external-clients/google.ts";
+import set from "../../util/set.ts";
 import { WithSession } from "fresh_session";
 import {
   AvailabilityJSON,
@@ -8,9 +8,9 @@ import {
   DeepPartial,
   GCalEvent,
   Time,
-} from "../../src/types.ts";
-import padLeft from "../../src/util/padLeft.ts";
-import redirect from "../../src/redirect.ts";
+} from "../../types.ts";
+import padLeft from "../../util/padLeft.ts";
+import redirect from "../../util/redirect.ts";
 import { assert } from "std/_util/asserts.ts";
 
 const days: Array<DayOfWeek> = [

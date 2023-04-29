@@ -1,7 +1,7 @@
 import { assert } from "std/testing/asserts.ts";
-// import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js";
+import { format } from "https://deno.land/x/date_fns@v2.22.1/index.js"; // TODO: doesn't work
 // import * as mod from "std/datetime/mod.ts";
-import { PatientDemographicInfo } from "./types.ts";
+import { PatientDemographicInfo } from "../types.ts";
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 

@@ -1,5 +1,5 @@
 import { Migrator } from "kysely";
-import db from "../src/db.ts";
+import db from "../external-clients/db.ts";
 import * as _20230126000000_add_patients_table from "./migrations/20230126000000_add_patients_table.ts";
 import * as _20230127024002_add_whatsapp_conversation_tables from "./migrations/20230127024002_add_whatsapp_conversation_tables.ts";
 import * as _20230127203321_add_doctors_appointments from "./migrations/20230127203321_add_doctors_appointments.ts";

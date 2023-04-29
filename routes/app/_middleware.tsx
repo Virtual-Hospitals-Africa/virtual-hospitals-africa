@@ -1,7 +1,7 @@
 import { MiddlewareHandlerContext } from "https://deno.land/x/fresh@1.1.5/server.ts";
 import { WithSession } from "fresh_session";
-import { isGoogleTokens } from "../../src/google.ts";
-import redirect from "../../src/redirect.ts";
+import { isGoogleTokens } from "../../external-clients/google.ts";
+import redirect from "../../util/redirect.ts";
 
 // Ensure user has session with Google tokens
 export const handler = [

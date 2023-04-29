@@ -1,9 +1,9 @@
 import { assert, assertEquals } from "std/testing/asserts.ts";
-import { formatHarare } from "./date.ts";
-import * as google from "./google.ts";
-import { getAllWithTokens } from "./models/doctors.ts";
-import * as appointments from "./models/appointments.ts";
-import { UnhandledPatientMessage } from "./types.ts";
+import { formatHarare } from "../util/date.ts";
+import * as google from "../external-clients/google.ts";
+import { getAllWithTokens } from "../models/doctors.ts";
+import * as appointments from "../models/appointments.ts";
+import { UnhandledPatientMessage } from "../types.ts";
 
 export async function makeAppointment(
   patientMessage: UnhandledPatientMessage,

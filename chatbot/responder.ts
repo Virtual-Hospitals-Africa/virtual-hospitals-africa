@@ -1,15 +1,15 @@
-import * as patients from "./models/patients.ts";
-import * as appointments from "./models/appointments.ts";
-import * as whatsapp from "./whatsapp.ts";
+import * as patients from "../models/patients.ts";
+import * as appointments from "../models/appointments.ts";
+import * as whatsapp from "../external-clients/whatsapp.ts";
 import determineNextPatientState, {
   formatMessageToSend,
 } from "./determineNextPatientState.ts";
 import {
   getUnhandledPatientMessages,
   insertMessageSent,
-} from "./models/conversations.ts";
+} from "../models/conversations.ts";
 import conversationStates from "./conversationStates.ts";
-import { MessageOption, UnhandledPatientMessage } from "./types.ts";
+import { MessageOption, UnhandledPatientMessage } from "../types.ts";
 
 export async function handlePatientMessage(
   patientMessage: UnhandledPatientMessage,

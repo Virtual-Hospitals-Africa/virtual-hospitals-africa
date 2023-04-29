@@ -1,8 +1,11 @@
 import { assert } from "std/testing/asserts.ts";
-import { prettyAppointmentTime, prettyPatientDateOfBirth } from "./date.ts";
+import {
+  prettyAppointmentTime,
+  prettyPatientDateOfBirth,
+} from "../util/date.ts";
 import { firstAvailableThirtyMinutes } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
-import * as appointments from "./models/appointments.ts";
+import * as appointments from "../models/appointments.ts";
 import {
   AppointmentOfferedTime,
   ConversationState,
@@ -12,7 +15,7 @@ import {
   PatientDemographicInfo,
   ReturnedSqlRow,
   UnhandledPatientMessage,
-} from "./types.ts";
+} from "../types.ts";
 
 function compact<T>(arr: (T | Falsy)[]): T[] {
   const toReturn: T[] = [];

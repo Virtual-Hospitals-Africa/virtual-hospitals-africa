@@ -1,7 +1,7 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import Layout from "../../../components/Layout.tsx";
 import { WithSession } from "fresh_session";
-import { AvailabilityJSON, GoogleTokens } from "../../../src/types.ts";
+import { AvailabilityJSON, GoogleTokens } from "../../../types.ts";
 import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
 
 async function getAvailability(

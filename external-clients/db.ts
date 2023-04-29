@@ -14,7 +14,7 @@ import {
   SqlRow,
   WhatsappMessageReceived,
   WhatsappMessageSent,
-} from "./types.ts";
+} from "../types.ts";
 import { PostgreSQLDriver } from "kysely-deno-postgres";
 
 export type DatabaseSchema = {

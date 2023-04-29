@@ -1,5 +1,5 @@
 import "dotenv";
-import { MessageOption } from "./types.ts";
+import { MessageOption } from "../types.ts";
 
 const postMessageRoute = `https://graph.facebook.com/v15.0/${
   Deno.env.get("WHATSAPP_FROM_PHONE_NUMBER")

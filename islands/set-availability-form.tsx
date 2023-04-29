@@ -1,7 +1,7 @@
 import { useState } from "preact/hooks";
-import range from "../src/util/range.ts";
-import padLeft from "../src/util/padLeft.ts";
-import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from "../src/types.ts";
+import range from "../util/range.ts";
+import padLeft from "../util/padLeft.ts";
+import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from "../types.ts";
 import PlusIcon from "../components/icons/plus.tsx";
 import CopyIcon from "../components/icons/copy.tsx";
 import TrashIcon from "../components/icons/trash.tsx";

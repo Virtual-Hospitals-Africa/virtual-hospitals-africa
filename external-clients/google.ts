@@ -11,7 +11,7 @@ import {
   GCalFreeBusy,
   GoogleProfile,
   GoogleTokens,
-} from "./types.ts";
+} from "../types.ts";
 import { WithSession } from "fresh_session";
 import { HandlerContext } from "$fresh/src/server/mod.ts";
 

@@ -1,5 +1,5 @@
 import { DeleteResult, sql, Transaction, UpdateResult } from "kysely";
-import db, { DatabaseSchema } from "../db.ts";
+import db, { DatabaseSchema } from "../external-clients/db.ts";
 import {
   DoctorWithGoogleTokens,
   DoctorWithPossibleGoogleTokens,

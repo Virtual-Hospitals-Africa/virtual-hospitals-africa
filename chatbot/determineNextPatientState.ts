@@ -1,6 +1,6 @@
 import conversationStates from "./conversationStates.ts";
 // import { isValid } from "date-fns";
-import words from "./util/words.ts";
+import words from "../util/words.ts";
 import {
   Appointment,
   ConversationStateHandler,
@@ -12,7 +12,7 @@ import {
   MessageOption,
   Patient,
   UnhandledPatientMessage,
-} from "./types.ts";
+} from "../types.ts";
 
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
