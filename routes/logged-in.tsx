@@ -5,9 +5,7 @@ import { getInitialTokensFromAuthCode } from "../external-clients/google.ts";
 import { initializeDoctor } from "../web/initializeDoctor.ts";
 import redirect from "../util/redirect.ts";
 
-export type HasSession = { session: Record<string, string> };
-
-export const handler: Handlers<HasSession, WithSession> = {
+export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
     const { session } = ctx.state;
     const code = new URL(req.url).searchParams.get("code");
