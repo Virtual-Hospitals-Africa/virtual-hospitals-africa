@@ -10,6 +10,8 @@ import {
   WhatsAppSendable,
 } from "../types.ts";
 
+const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`;
+
 export async function determinePatientMessage(
   trx: TrxOrDb,
   patientMessage: UnhandledPatientMessage,
@@ -19,11 +21,10 @@ export async function determinePatientMessage(
   if (next === "invalid_response") {
     const originalMessageSent = formatMessageToSend(patientMessage);
     return typeof originalMessageSent === "string"
-      ? `Sorry, I didn't understand that.\n\n${originalMessageSent}`
+      ? sorry(originalMessageSent)
       : {
         ...originalMessageSent,
-        messageBody:
-          `Sorry, I didn't understand that.\n\n${originalMessageSent.messageBody}`,
+        messageBody: sorry(originalMessageSent.messageBody),
       };
   }
 
