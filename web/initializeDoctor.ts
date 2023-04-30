@@ -17,8 +17,8 @@ export async function initializeDoctor(
   return doctors.upsertWithGoogleCredentials({
     name: profile.name,
     email: profile.email,
-    gcal_appointments_calendar_id: calendars.hgatAppointmentsCalendar.id,
-    gcal_availability_calendar_id: calendars.hgatAvailabilityCalendar.id,
+    gcal_appointments_calendar_id: calendars.vhaAppointmentsCalendar.id,
+    gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
     access_token: googleAgent.tokens.access_token,
     refresh_token: googleAgent.tokens.refresh_token,
   });

@@ -124,46 +124,46 @@ export class Agent {
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(): Promise<{
-    hgatAppointmentsCalendar: GCalCalendarListEntry;
-    hgatAvailabilityCalendar: GCalCalendarListEntry;
+    vhaAppointmentsCalendar: GCalCalendarListEntry;
+    vhaAvailabilityCalendar: GCalCalendarListEntry;
   }> {
     const list = await this.getCalendarList();
 
-    let hgatAppointmentsCalendar = list.items.find((calendar) =>
-      calendar.summary === "HGAT Appointments"
+    let vhaAppointmentsCalendar = list.items.find((calendar) =>
+      calendar.summary === "VHA Appointments"
     );
 
-    if (!hgatAppointmentsCalendar) {
-      hgatAppointmentsCalendar = await this.insertCalendar({
-        summary: "HGAT Appointments",
-        description: "Appointments for HGAT",
+    if (!vhaAppointmentsCalendar) {
+      vhaAppointmentsCalendar = await this.insertCalendar({
+        summary: "VHA Appointments",
+        description: "Appointments for VHA",
         timeZone: "Africa/Johannesburg",
       });
 
-      hgatAppointmentsCalendar = await this.insertCalendarIntoList(
-        hgatAppointmentsCalendar.id,
+      vhaAppointmentsCalendar = await this.insertCalendarIntoList(
+        vhaAppointmentsCalendar.id,
       );
       console.log("Created Cppointments Calendar");
     }
 
-    let hgatAvailabilityCalendar = list.items.find((calendar) =>
-      calendar.summary === "HGAT Availability"
+    let vhaAvailabilityCalendar = list.items.find((calendar) =>
+      calendar.summary === "VHA Availability"
     );
 
-    if (!hgatAvailabilityCalendar) {
-      hgatAvailabilityCalendar = await this.insertCalendar({
-        summary: "HGAT Availability",
-        description: "Availability for HGAT",
+    if (!vhaAvailabilityCalendar) {
+      vhaAvailabilityCalendar = await this.insertCalendar({
+        summary: "VHA Availability",
+        description: "Availability for VHA",
         timeZone: "Africa/Johannesburg",
       });
 
-      hgatAvailabilityCalendar = await this.insertCalendarIntoList(
-        hgatAvailabilityCalendar.id,
+      vhaAvailabilityCalendar = await this.insertCalendarIntoList(
+        vhaAvailabilityCalendar.id,
       );
       console.log("Created Availability Calendar");
     }
 
-    return { hgatAppointmentsCalendar, hgatAvailabilityCalendar };
+    return { vhaAppointmentsCalendar, vhaAvailabilityCalendar };
   }
 
   async getFreeBusy({ timeMin, timeMax, calendarIds }: {
