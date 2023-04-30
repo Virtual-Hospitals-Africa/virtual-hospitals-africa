@@ -34,13 +34,16 @@ export function createChatbot(): Responder {
         });
       }
     }));
+    // TODO: it seems like this recursion might be causing a memory leak?
+    // A setInterval isn't quite right because we want to wait for the
+    // previous batch of messages to be done processing before starting again.
     timer = setTimeout(respond, 10);
   }
 
   return {
     start: respond,
     exit(): void {
-      console.log("Exiting responder");
+      console.log("Exiting chatbot");
       clearTimeout(timer);
     },
   };
