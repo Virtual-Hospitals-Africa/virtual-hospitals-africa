@@ -38,3 +38,10 @@ export async function upsert(trx: TrxOrDb, info: {
 
   return patient;
 }
+
+export function remove(opts: { phone_number: string }) {
+  return db
+    .deleteFrom("patients")
+    .where("phone_number", "=", opts.phone_number)
+    .execute();
+}
