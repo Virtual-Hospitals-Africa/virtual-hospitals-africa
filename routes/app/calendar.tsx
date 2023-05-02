@@ -17,8 +17,8 @@ function CalendarLink(
 }
 
 const dailyAppointments = {
-  dayNumber: 11,
-  dayShortWord: "Tue",
+  day: 11,
+  weekday: "Tue",
   appointments: [
     {
       stripeColor: "bg-blue-500",

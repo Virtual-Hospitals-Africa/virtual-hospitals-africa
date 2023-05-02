@@ -1,13 +1,13 @@
 import { FunctionComponent } from "preact";
 
 interface AppointmentDayProps {
-  dayNumber: number;
-  dayShortWord: string;
+  day: number;
+  weekday: string;
 }
 
 const AppointmentDay: FunctionComponent<AppointmentDayProps> = ({
-  dayNumber,
-  dayShortWord,
+  day,
+  weekday,
 }) => {
   return (
     <div>

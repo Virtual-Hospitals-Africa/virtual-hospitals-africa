@@ -4,8 +4,8 @@ import AppointmentCardDetails from "./AppointmentCardDetails.tsx";
 
 interface DailyAppointmentsProps {
   dailyAppointments: {
-    dayNumber: number;
-    dayShortWord: string;
+    day: number;
+    weekday: string;
     appointments: Array<{
       stripeColor: string;
       time: string;
@@ -25,8 +25,8 @@ const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
     <div className="flex">
       <div className="mr-2 flex-none">
         <AppointmentDay
-          dayNumber={calendarInfo.dayNumber}
-          dayShortWord={calendarInfo.dayShortWord}
+          day={calendarInfo.day}
+          weekday={calendarInfo.weekday}
         />
       </div>
       <div className="w-full mr-3">
