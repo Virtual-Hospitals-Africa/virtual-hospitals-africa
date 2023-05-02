@@ -1,6 +1,6 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
-import CalendarCardHolder from "../../components/calendar/DailyAppointments.tsx";
+import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { PageProps } from "$fresh/server.ts";
 
 function CalendarLink(
@@ -46,7 +46,7 @@ export default function Calendar(
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
         <p>TODO: Implement calendar view</p>
-        <CalendarCardHolder dailyAppointments={dailyAppointments} />
+        <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
       <hr />
       <div class="calendar-links">
