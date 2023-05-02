@@ -2,11 +2,11 @@ import { FunctionComponent, h } from "preact";
 import CalendarDay from "./CalendarDay.tsx";
 import CalendarCardDetails from "./CalendarCardDetails.tsx";
 
-interface CalendarCardHolderProps {
-  getCalendarInfoDay: () => {
+interface DailyAppointmentsProps {
+  dailyAppointments: {
     dayNumber: number;
     dayShortWord: string;
-    cardDetails: Array<{
+    appointments: Array<{
       stripeColor: string;
       time: string;
       name: string;
@@ -16,10 +16,10 @@ interface CalendarCardHolderProps {
     }>;
   };
 }
-const CalendarCardHolder: FunctionComponent<CalendarCardHolderProps> = ({
-  getCalendarInfoDay,
+const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
+  dailyAppointments,
 }) => {
-  const calendarInfo = getCalendarInfoDay();
+  const calendarInfo = dailyAppointments;
 
   return (
     <div className="flex">
@@ -30,7 +30,7 @@ const CalendarCardHolder: FunctionComponent<CalendarCardHolderProps> = ({
         />
       </div>
       <div className="w-full mr-3">
-        {calendarInfo.cardDetails.map((detail) => (
+        {calendarInfo.appointments.map((detail, key) => (
           <div className="mb-4">
             <CalendarCardDetails
               stripeColor={detail.stripeColor}
@@ -47,4 +47,4 @@ const CalendarCardHolder: FunctionComponent<CalendarCardHolderProps> = ({
   );
 };
 
-export default CalendarCardHolder;
+export default DailyAppointments;
