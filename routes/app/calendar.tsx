@@ -1,5 +1,6 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
+import CalendarCardHolder from "./calendar/components/CalendarCardHolder.tsx";
 import { PageProps } from "$fresh/server.ts";
 
 function CalendarLink(
@@ -14,12 +15,40 @@ function CalendarLink(
     </a>
   );
 }
+const getCalendarInfoDay = () => {
+  // Get this info from the Google Calendar API and return it in this format.
+  return (
+    {
+      dayNumber: 11,
+      dayShortWord: "Tue",
+      cardDetails: [
+        {
+          stripeColor: "bg-blue-500",
+          time: "1:34PM",
+          name: "belal",
+          patientAge: 27,
+          clinicName: "bkhealth",
+          duration: "30 mins",
+        },
+        {
+          stripeColor: "bg-red-500",
+          time: "10:00 AM",
+          name: "Jane Smith",
+          patientAge: 27,
+          clinicName: "Town Clinic",
+          duration: "45 mins",
+        },
+      ],
+    }
+  );
+};
 
 export default function Calendar(props: PageProps) {
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
         <p>TODO: Implement calendar view</p>
+        <CalendarCardHolder getCalendarInfoDay={getCalendarInfoDay} />
       </div>
       <hr />
       <div class="calendar-links">

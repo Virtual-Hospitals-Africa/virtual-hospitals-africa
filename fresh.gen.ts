@@ -9,11 +9,14 @@ import * as $2 from "./routes/api/incoming-whatsapp.ts";
 import * as $3 from "./routes/api/set-availability.tsx";
 import * as $4 from "./routes/app/_middleware.tsx";
 import * as $5 from "./routes/app/calendar.tsx";
-import * as $6 from "./routes/app/calendar/set-availability.tsx";
-import * as $7 from "./routes/full-reset.ts";
-import * as $8 from "./routes/index.tsx";
-import * as $9 from "./routes/logged-in.tsx";
-import * as $10 from "./routes/patient-reset.ts";
+import * as $6 from "./routes/app/calendar/components/CalendarCardDetails.tsx";
+import * as $7 from "./routes/app/calendar/components/CalendarCardHolder.tsx";
+import * as $8 from "./routes/app/calendar/components/CalendarDay.tsx";
+import * as $9 from "./routes/app/calendar/set-availability.tsx";
+import * as $10 from "./routes/full-reset.ts";
+import * as $11 from "./routes/index.tsx";
+import * as $12 from "./routes/logged-in.tsx";
+import * as $13 from "./routes/patient-reset.ts";
 import * as $$0 from "./islands/set-availability-form.tsx";
 
 const manifest = {
@@ -24,11 +27,14 @@ const manifest = {
     "./routes/api/set-availability.tsx": $3,
     "./routes/app/_middleware.tsx": $4,
     "./routes/app/calendar.tsx": $5,
-    "./routes/app/calendar/set-availability.tsx": $6,
-    "./routes/full-reset.ts": $7,
-    "./routes/index.tsx": $8,
-    "./routes/logged-in.tsx": $9,
-    "./routes/patient-reset.ts": $10,
+    "./routes/app/calendar/components/CalendarCardDetails.tsx": $6,
+    "./routes/app/calendar/components/CalendarCardHolder.tsx": $7,
+    "./routes/app/calendar/components/CalendarDay.tsx": $8,
+    "./routes/app/calendar/set-availability.tsx": $9,
+    "./routes/full-reset.ts": $10,
+    "./routes/index.tsx": $11,
+    "./routes/logged-in.tsx": $12,
+    "./routes/patient-reset.ts": $13,
   },
   islands: {
     "./islands/set-availability-form.tsx": $$0,
