@@ -1,11 +1,11 @@
 import { FunctionComponent } from "preact";
 
-interface CalendarDayProps {
+interface AppointmentDayProps {
   dayNumber: number;
   dayShortWord: string;
 }
 
-const CalendarDay: FunctionComponent<CalendarDayProps> = ({
+const AppointmentDay: FunctionComponent<AppointmentDayProps> = ({
   dayNumber,
   dayShortWord,
 }) => {
@@ -16,4 +16,4 @@ const CalendarDay: FunctionComponent<CalendarDayProps> = ({
     </div>
   );
 };
-export default CalendarDay;
+export default AppointmentDay;

@@ -1,6 +1,6 @@
 import { FunctionComponent, h } from "preact";
 
-interface CalendarCardProps {
+interface AppointmentCardProps {
   stripeColor: string;
   time: string;
   name: string;
@@ -9,7 +9,7 @@ interface CalendarCardProps {
   duration: string;
 }
 
-const CalendarCardDetails: FunctionComponent<CalendarCardProps> = ({
+const AppointmentCardDetails: FunctionComponent<AppointmentCardProps> = ({
   stripeColor,
   time,
   name,
@@ -33,4 +33,4 @@ const CalendarCardDetails: FunctionComponent<CalendarCardProps> = ({
   );
 };
 
-export default CalendarCardDetails;
+export default AppointmentCardDetails;

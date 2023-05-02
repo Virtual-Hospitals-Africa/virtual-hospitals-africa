@@ -1,6 +1,6 @@
 import { FunctionComponent, h } from "preact";
-import CalendarDay from "./CalendarDay.tsx";
-import CalendarCardDetails from "./CalendarCardDetails.tsx";
+import AppointmentDay from "./AppointmentDay.tsx";
+import AppointmentCardDetails from "./AppointmentCardDetails.tsx";
 
 interface DailyAppointmentsProps {
   dailyAppointments: {
@@ -24,7 +24,7 @@ const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
   return (
     <div className="flex">
       <div className="mr-2 flex-none">
-        <CalendarDay
+        <AppointmentDay
           dayNumber={calendarInfo.dayNumber}
           dayShortWord={calendarInfo.dayShortWord}
         />
@@ -32,7 +32,7 @@ const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
       <div className="w-full mr-3">
         {calendarInfo.appointments.map((detail, key) => (
           <div className="mb-4">
-            <CalendarCardDetails
+            <AppointmentCardDetails
               stripeColor={detail.stripeColor}
               time={detail.time}
               name={detail.name}
