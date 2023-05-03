@@ -273,9 +273,14 @@ const conversationStates: {
       console.log("DeclinedOfferedTime", declinedOfferedTime);
       // I think we are getting the error below because of null safty.
       // It could be beacuse the delineoffer is never null
+      
+      const declined: ReturnedSqlRow<AppointmentOfferedTime & {doctor_name: string}
+      >[] = [declinedOfferedTime, ...compact(patientMessage.appointment_offered_times),
+      ];
+
       return {
         ...patientMessage,
-        appointment_offered_times: declinedOfferedTime,
+        appointment_offered_times: declined,
       };
     },
     // async db.change_appointment_offered_time_status(),
