@@ -1,4 +1,3 @@
-import { AppointmentOfferedTime } from './../types';
 import { assert } from "std/testing/asserts.ts";
 import {
   prettyAppointmentTime,
