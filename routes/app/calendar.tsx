@@ -1,5 +1,6 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
+import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { PageProps } from "$fresh/server.ts";
 
 function CalendarLink(
@@ -15,11 +16,37 @@ function CalendarLink(
   );
 }
 
-export default function Calendar(props: PageProps) {
+const dailyAppointments = {
+  day: 11,
+  weekday: "Tue",
+  appointments: [
+    {
+      stripeColor: "bg-blue-500",
+      time: "1:34PM",
+      patientName: "belal",
+      patientAge: 27,
+      clinicName: "bkhealth",
+      durationMinutes: "30 mins",
+    },
+    {
+      stripeColor: "bg-red-500",
+      time: "10:00 AM",
+      patientName: "Jane Smith",
+      patientAge: 27,
+      clinicName: "Town Clinic",
+      durationMinutes: "45 mins",
+    },
+  ],
+};
+
+export default function Calendar(
+  props: PageProps<{ props: PageProps }>,
+) {
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
         <p>TODO: Implement calendar view</p>
+        <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
       <hr />
       <div class="calendar-links">
