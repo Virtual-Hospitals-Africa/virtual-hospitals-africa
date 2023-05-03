@@ -39,6 +39,8 @@ export async function declineOfferedTime(
     .set({ patient_declined: true })
     .where("id", "=", opts.id)
     .execute();
+  
+    console.log('write res', writeResult)
 
   const readResult = await trx.selectFrom('appointment_offered_times')
   .innerJoin('doctors', 'appointment_offered_times.doctor_id', 'doctors.id')
