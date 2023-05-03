@@ -23,18 +23,18 @@ const dailyAppointments = {
     {
       stripeColor: "bg-blue-500",
       time: "1:34PM",
-      name: "belal",
+      patientName: "belal",
       patientAge: 27,
       clinicName: "bkhealth",
-      duration: "30 mins",
+      durationMinutes: "30 mins",
     },
     {
       stripeColor: "bg-red-500",
       time: "10:00 AM",
-      name: "Jane Smith",
+      patientName: "Jane Smith",
       patientAge: 27,
       clinicName: "Town Clinic",
-      duration: "45 mins",
+      durationMinutes: "45 mins",
     },
   ],
 };

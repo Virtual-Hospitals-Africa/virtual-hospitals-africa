@@ -11,8 +11,8 @@ const AppointmentDay: FunctionComponent<AppointmentDayProps> = ({
 }) => {
   return (
     <div>
-      <h1>12</h1>
-      <h4>Tue</h4>
+      <h1>{day}</h1>
+      <h4>{weekday}</h4>
     </div>
   );
 };

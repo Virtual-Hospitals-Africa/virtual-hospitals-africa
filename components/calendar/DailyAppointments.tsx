@@ -9,36 +9,34 @@ interface DailyAppointmentsProps {
     appointments: Array<{
       stripeColor: string;
       time: string;
-      name: string;
+      patientName: string;
       patientAge: number;
       clinicName: string;
-      duration: string;
+      durationMinutes: string;
     }>;
   };
 }
 const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
   dailyAppointments,
 }) => {
-  const calendarInfo = dailyAppointments;
-
   return (
     <div className="flex">
       <div className="mr-2 flex-none">
         <AppointmentDay
-          day={calendarInfo.day}
-          weekday={calendarInfo.weekday}
+          day={dailyAppointments.day}
+          weekday={dailyAppointments.weekday}
         />
       </div>
       <div className="w-full mr-3">
-        {calendarInfo.appointments.map((detail, key) => (
+        {dailyAppointments.appointments.map((detail, key) => (
           <div className="mb-4">
             <AppointmentCardDetails
               stripeColor={detail.stripeColor}
               time={detail.time}
-              name={detail.name}
+              patientName={detail.patientName}
               patientAge={detail.patientAge}
               clinicName={detail.clinicName}
-              duration={detail.duration}
+              durationMinutes={detail.durationMinutes}
             />
           </div>
         ))}
