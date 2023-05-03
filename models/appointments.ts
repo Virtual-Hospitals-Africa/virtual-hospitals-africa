@@ -7,6 +7,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from "../types.ts";
+import { appointmentDetails } from "../chatbot/makeAppointment.ts";
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -28,6 +29,35 @@ export async function addOfferedTime(
   `.execute(trx);
 
   return result.rows[0];
+}
+
+export async function declineOfferedTime(
+  trx: TrxOrDb,
+  opts: { id: number },
+): Promise<ReturnedSqlRow<AppointmentOfferedTime> & {doctor_name: string}> {
+  const writeResult = await trx.updateTable('appointment_offered_times')
+    .set({ patient_declined: true })
+    .where("id", "=", opts.id)
+    .execute();
+
+  const readResult = await trx.selectFrom('appointment_offered_times')
+  .innerJoin('doctors', 'appointment_offered_times.doctor_id', 'doctors.id')
+  .where('appointment_offered_times.id', '=', opts.id)
+  .select([
+    'appointment_offered_times.id',
+    'appointment_offered_times.created_at',
+    'appointment_offered_times.updated_at',
+    'appointment_offered_times.appointment_id',
+    'appointment_offered_times.doctor_id',
+    'appointment_offered_times.start',
+    'appointment_offered_times.patient_declined',
+    'appointment_offered_times.scheduled_gcal_event_id',
+    'doctors.name as doctor_name'
+]).execute()
+
+  console.log('readResult', readResult)
+
+  return readResult[0];
 }
 
 // export function get(
