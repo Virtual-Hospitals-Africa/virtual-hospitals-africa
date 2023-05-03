@@ -33,19 +33,31 @@ export async function addOfferedTime(
 
 export async function declineOfferedTime(
   trx: TrxOrDb,
-  opts: { id: number | undefined },
-): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
-  const result = await sql<
-    ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
-  >`
-  UPDATE appointment_offered_times
-  SET patient_declined = true
-  WHERE id = ${opts.id};
+  opts: { id: number },
+): Promise<ReturnedSqlRow<AppointmentOfferedTime> & {doctor_name: string}> {
+  const writeResult = await trx.updateTable('appointment_offered_times')
+    .set({ patient_declined: true })
+    .where("id", "=", opts.id)
+    .execute();
 
-  SELECT appointment_offered_times.* FROM  appointment_offered_times WHERE id=${opts.id};
-  
-  `.execute(trx);
-  return result.rows[0];
+  const readResult = await trx.selectFrom('appointment_offered_times')
+  .innerJoin('doctors', 'appointment_offered_times.doctor_id', 'doctors.id')
+  .where('appointment_offered_times.id', '=', opts.id)
+  .select([
+    'appointment_offered_times.id',
+    'appointment_offered_times.created_at',
+    'appointment_offered_times.updated_at',
+    'appointment_offered_times.appointment_id',
+    'appointment_offered_times.doctor_id',
+    'appointment_offered_times.start',
+    'appointment_offered_times.patient_declined',
+    'appointment_offered_times.scheduled_gcal_event_id',
+    'doctors.name as doctor_name'
+]).execute()
+
+  console.log('readResult', readResult)
+
+  return readResult[0];
 }
 
 // export function get(

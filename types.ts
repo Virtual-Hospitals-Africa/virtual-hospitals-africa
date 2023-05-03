@@ -59,6 +59,7 @@ export type AppointmentOfferedTime = {
   start: string;
   patient_declined: boolean;
   scheduled_gcal_event_id: string;
+  id: number;
 };
 
 export type UnhandledPatientMessage = {
