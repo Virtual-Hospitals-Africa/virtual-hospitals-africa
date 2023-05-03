@@ -35,12 +35,13 @@ export async function declineOfferedTime(
   trx: TrxOrDb,
   opts: { id: number },
 ): Promise<ReturnedSqlRow<AppointmentOfferedTime> & {doctor_name: string}> {
+  console.log('id given is', opts.id)
   const writeResult = await trx.updateTable('appointment_offered_times')
     .set({ patient_declined: true })
     .where("id", "=", opts.id)
     .execute();
   
-    console.log('write res', writeResult)
+    console.log('write res', writeResult.length)
 
   const readResult = await trx.selectFrom('appointment_offered_times')
   .innerJoin('doctors', 'appointment_offered_times.doctor_id', 'doctors.id')
