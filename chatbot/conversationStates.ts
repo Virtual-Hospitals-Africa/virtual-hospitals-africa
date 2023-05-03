@@ -19,6 +19,8 @@ import {
   UnhandledPatientMessage,
 } from "../types.ts";
 
+// import { db } from "../external-clients/db.ts";
+
 function compact<T>(arr: (T | Falsy)[]): T[] {
   const toReturn: T[] = [];
   for (const item of arr) {
@@ -256,6 +258,24 @@ const conversationStates: {
   // TODO: support other options
   "onboarded:make_appointment:other_scheduling_options": {
     type: "select",
+    async onEnter(
+      trx: TrxOrDb,
+      patientMessage: UnhandledPatientMessage,
+    ): Promise<UnhandledPatientMessage> {
+      console.log(
+        "onboarded:make_appointment:other_scheduling_options onnEnter",
+      );
+
+      const declinedOfferedTime = await appointments.declineOfferedTime(
+        trx,
+        { id: patientMessage.appointment_offered_times[0]?.id },
+      );
+      return {
+        ...patientMessage,
+        appointment_offered_times: declinedOfferedTime,
+      };
+    },
+    // async db.change_appointment_offered_time_status(),
     prompt(_patientMessage: UnhandledPatientMessage): string {
       return "Ok, do you have a prefered time?";
     },

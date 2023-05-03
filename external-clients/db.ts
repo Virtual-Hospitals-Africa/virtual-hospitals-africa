@@ -66,3 +66,9 @@ export async function resetDb() {
   await db.deleteFrom("whatsapp_messages_received").execute();
   await db.deleteFrom("whatsapp_messages_sent").execute();
 }
+
+export async function change_appointment_offered_time_status(rowId: number) {
+  await db.updateTable("appointment_offered_times").set({
+    patient_declined: true,
+  }).where("id", "=", rowId).execute();
+}
