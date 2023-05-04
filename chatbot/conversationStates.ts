@@ -287,7 +287,7 @@ const conversationStates: {
     //   };
     // },
 
-    prompt(_patientMessage: UnhandledPatientMessage): string {
+    prompt(patientMessage: UnhandledPatientMessage): string {
       return "Ok, do you have a prefered time?";
     },
     options: [
