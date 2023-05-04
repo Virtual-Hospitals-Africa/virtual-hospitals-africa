@@ -243,7 +243,7 @@ const conversationStates: {
       {
         option: "other_times",
         display: "Other times",
-        aliases: ["other"],
+        aliases: ["other", "Other times"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
       {
