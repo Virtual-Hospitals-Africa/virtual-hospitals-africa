@@ -9,6 +9,11 @@ export async function up(db: Kysely<any>) {
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
       "doctor_id",
       "integer",
       (col) => col.notNull().references("doctors.id").onDelete("cascade"),
