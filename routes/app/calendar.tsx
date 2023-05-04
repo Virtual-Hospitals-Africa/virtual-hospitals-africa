@@ -2,7 +2,7 @@ import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { PageProps } from "$fresh/server.ts";
-import { useState } from "preact/hooks";
+import { useEffect, useState } from "preact/hooks";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -17,7 +17,7 @@ function CalendarLink(
   );
 }
 
-// imagine we are reading off db and getting appointments
+// imagine we are reading off db and getting all appointments
 const currentDay = new Date().getDate();
 const all_appointments = [
   {
@@ -86,33 +86,12 @@ const all_appointments = [
       },
     ],
   },
-]
+];
 
-// filter all days to only show the next week
-const dailyAppointments = all_appointments.filter((day) => day.day <= currentDay + 6);
-
-// const dailyAppointments = {
-//   day: 3,
-//   weekday: "Tue",
-//   appointments: [
-//     {
-//       stripeColor: "bg-blue-500",
-//       time: "1:34PM",
-//       patientName: "belal",
-//       patientAge: 27,
-//       clinicName: "bkhealth",
-//       durationMinutes: "30 mins",
-//     },
-//     {
-//       stripeColor: "bg-red-500",
-//       time: "10:00 AM",
-//       patientName: "Jane Smith",
-//       patientAge: 27,
-//       clinicName: "Town Clinic",
-//       durationMinutes: "45 mins",
-//     },
-//   ],
-// };
+// filter all days from appointments to only show the next week
+const dailyAppointments = all_appointments.filter((day) =>
+  day.day <= currentDay + 6
+);
 
 export default function Calendar(
   props: PageProps<{ props: PageProps }>,
@@ -134,23 +113,38 @@ export default function Calendar(
     });
   };
 
-  const days = [];
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(selectedDate.getTime() + i * day_multiplier);
-    days.push(date);
-  }
+  const [days, setDays] = useState(() => {
+    const initialDays = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(selectedDate.getTime() + i * day_multiplier);
+      initialDays.push(date);
+    }
+    return initialDays;
+  });
 
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-
-      <div class="calendar-toolbar">
+        <div className="calendar-toolbar">
           <button onClick={handlePrevWeekClick}>Prev</button>
-          {days.map((day, index) => (
+          {days.map((day) => (
             <button
-              key={index}
-              class={day.getDate() === selectedDate.getDate() ? "selected" : ""}
-              onClick={() => setSelectedDate(day)}
+              className={day.getDate() === selectedDate.getDate()
+                ? "selected"
+                : ""}
+              onClick={() => {
+                console.log("yep");
+                setSelectedDate(day);
+                const newDays = [];
+                for (let i = 0; i < 6; i++) {
+                  const nextDate = new Date(
+                    day.getTime() + (i + 1) * day_multiplier,
+                  );
+                  newDays.push(nextDate);
+                }
+                setDays([day, ...newDays]);
+              }}
+              key={day.toDateString()}
             >
               {day.getDate()}
             </button>
@@ -158,7 +152,6 @@ export default function Calendar(
           <button onClick={handleNextWeekClick}>Next</button>
         </div>
 
-        <p>TODO: Implement calendar view</p>
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
 
