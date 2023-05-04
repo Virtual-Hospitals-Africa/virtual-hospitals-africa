@@ -1,6 +1,9 @@
 {
   "tasks": {
-    "start": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors --watch=static/,routes/ dev.ts"
+    "start": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors --watch=static/,routes/ dev.ts",
+    "web": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors main.ts",
+    "chatbot": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors chatbot/chatbot.ts",
+    "token_refresher": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors tokenRefresher/tokenRefresher.ts"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {
