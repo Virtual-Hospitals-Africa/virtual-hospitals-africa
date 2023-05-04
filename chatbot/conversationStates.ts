@@ -268,30 +268,29 @@ const conversationStates: {
 
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
       // const declinedOfferedTime = await appointments.declineOfferedTime(
-      // trx,
-      // { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
+      //   trx,
+      //   { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
       // );
       // console.log("DeclinedOfferedTime", declinedOfferedTime);
       // I think we are getting the error below because of null safty.
       // It could be beacuse the delineoffer is never null
 
-      const declined: ReturnedSqlRow<
-        AppointmentOfferedTime & { doctor_name: string }
-      >[] = [
-        // declinedOfferedTime,
-        ...compact(patientMessage.appointment_offered_times),
-      ];
+      // const declined: ReturnedSqlRow<
+      //   AppointmentOfferedTime & { doctor_name: string }
+      // >[] = [
+      //   declinedOfferedTime,
+      //   ...compact(patientMessage.appointment_offered_times),
+      // ];
 
       return {
         ...patientMessage,
-        appointment_offered_times: declined,
+        // appointment_offered_times: declined,
       };
     },
 
     prompt(_patientMessage: UnhandledPatientMessage): string {
       return "Ok, do you have a prefered time?";
     },
-
     options: [
       {
         option: "1",
