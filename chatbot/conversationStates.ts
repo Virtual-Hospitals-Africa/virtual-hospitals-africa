@@ -288,40 +288,42 @@ const conversationStates: {
     prompt(patientMessage: UnhandledPatientMessage): string {
       return `Ok, do you have a preferred time? ${patientMessage}`;
     },
-    // options: [
-    //   {
-    //     option: "1",
-    //     display: "Sunday, 19 February at 11:00am Harare time",
-    //     onResponse: "onboarded:appointment_scheduled",
-    //   },
-    //   {
-    //     option: "2",
-    //     display: "Sunday, 19 February at 12:00am Harare time",
-    //     onResponse: "onboarded:appointment_scheduled",
-    //   },
-    //   {
-    //     option: "3",
-    //     display: "Monday, 20 February at 11:00am Harare time",
-    //     onResponse: "onboarded:appointment_scheduled",
-    //   },
-    //   {
-    //     option: "4",
-    //     display: "Monday, 20 February at 12:00am Harare time",
-    //     onResponse: "onboarded:appointment_scheduled",
-    //   },
-    //   {
-    //     option: "other_times",
-    //     display: "None of these work, what are other available times",
-    //     aliases: ["other"],
-    //     onResponse: "onboarded:make_appointment:other_scheduling_options",
-    //   },
-    //   {
-    //     option: "go_back",
-    //     display: "No, I want to start over",
-    //     aliases: ["no", "cancel", "back", "over"],
-    //     onResponse: "other_end_of_demo",
-    //   },
-    // ],
+    options: [
+      {
+        option: "1",
+        display: "Sunday, 19 February at 11:00am Harare time",
+        aliases: ["1"],
+        onResponse: "onboarded:appointment_scheduled",
+      },
+      {
+        option: "2",
+        display: "Sunday, 19 February at 12:00am Harare time",
+        aliases: ["2"],
+        onResponse: "onboarded:appointment_scheduled",
+      },
+      //   {
+      //     option: "3",
+      //     display: "Monday, 20 February at 11:00am Harare time",
+      //     onResponse: "onboarded:appointment_scheduled",
+      //   },
+      //   {
+      //     option: "4",
+      //     display: "Monday, 20 February at 12:00am Harare time",
+      //     onResponse: "onboarded:appointment_scheduled",
+      //   },
+      //   {
+      //     option: "other_times",
+      //     display: "None of these work, what are other available times",
+      //     aliases: ["other"],
+      //     onResponse: "onboarded:make_appointment:other_scheduling_options",
+      //   },
+      //   {
+      //     option: "go_back",
+      //     display: "No, I want to start over",
+      //     aliases: ["no", "cancel", "back", "over"],
+      //     onResponse: "other_end_of_demo",
+      //   },
+    ],
   },
   "onboarded:appointment_scheduled": {
     type: "select",
