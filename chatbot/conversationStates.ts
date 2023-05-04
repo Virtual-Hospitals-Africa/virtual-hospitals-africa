@@ -289,18 +289,18 @@ const conversationStates: {
       return `Ok, do you have a preferred time? ${patientMessage}`;
     },
     options: [
-      {
-        option: "1",
-        display: "Sunday, 19 February at 11:00am Harare time",
-        aliases: ["1"],
-        onResponse: "onboarded:appointment_scheduled",
-      },
-      {
-        option: "2",
-        display: "Sunday, 19 February at 12:00am Harare time",
-        aliases: ["2"],
-        onResponse: "onboarded:appointment_scheduled",
-      },
+      //   {
+      //     option: "1",
+      //     display: "Sunday, 19 February at 11:00am Harare time",
+      //     aliases: ["1"],
+      //     onResponse: "onboarded:appointment_scheduled",
+      //   },
+      //   {
+      //     option: "2",
+      //     display: "Sunday, 19 February at 12:00am Harare time",
+      //     aliases: ["2"],
+      //     onResponse: "onboarded:appointment_scheduled",
+      //   },
       //   {
       //     option: "3",
       //     display: "Monday, 20 February at 11:00am Harare time",
