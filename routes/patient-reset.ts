@@ -16,6 +16,8 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
       console.error(err);
       return new Response("Error removing patient", { status: 500 });
     }
-    return new Response("Patient removed", { status: 200 });
+    return new Response(`Patient removed with phone_number ${phone_number}`, {
+      status: 200,
+    });
   },
 };
