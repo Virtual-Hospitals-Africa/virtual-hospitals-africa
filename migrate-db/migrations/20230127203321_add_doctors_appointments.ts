@@ -9,6 +9,11 @@ export async function up(db: Kysely<any>) {
       "timestamp",
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
+    .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
     .addColumn("name", "varchar(255)", (col) => col.notNull())
     .addColumn("email", "varchar(255)", (col) => col.notNull())
     .addColumn("gcal_appointments_calendar_id", "varchar(255)")
@@ -24,6 +29,11 @@ export async function up(db: Kysely<any>) {
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
       "patient_id",
       "integer",
       (col) => col.notNull().references("patients.id").onDelete("cascade"),
@@ -35,6 +45,11 @@ export async function up(db: Kysely<any>) {
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn(
       "created_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
+      "updated_at",
       "timestamp",
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
