@@ -17,51 +17,126 @@ function CalendarLink(
   );
 }
 
-const dailyAppointments = {
-  day: 11,
-  weekday: "Tue",
-  appointments: [
-    {
-      stripeColor: "bg-blue-500",
-      time: "1:34PM",
-      patientName: "belal",
-      patientAge: 27,
-      clinicName: "bkhealth",
-      durationMinutes: "30 mins",
-    },
-    {
-      stripeColor: "bg-red-500",
-      time: "10:00 AM",
-      patientName: "Jane Smith",
-      patientAge: 27,
-      clinicName: "Town Clinic",
-      durationMinutes: "45 mins",
-    },
-  ],
-};
+// imagine we are reading off db and getting appointments
+const currentDay = new Date().getDate();
+const all_appointments = [
+  {
+    day: 3,
+    weekday: "Tue",
+    appointments: [
+      {
+        stripeColor: "bg-blue-500",
+        time: "1:34PM",
+        patientName: "belal",
+        patientAge: 27,
+        clinicName: "bkhealth",
+        durationMinutes: "30 mins",
+      },
+      {
+        stripeColor: "bg-red-500",
+        time: "10:00 AM",
+        patientName: "Jane Smith",
+        patientAge: 27,
+        clinicName: "Town Clinic",
+        durationMinutes: "45 mins",
+      },
+    ],
+  },
+  {
+    day: 4,
+    weekday: "Wed",
+    appointments: [
+      {
+        stripeColor: "bg-green-500",
+        time: "3:00 PM",
+        patientName: "John Doe",
+        patientAge: 35,
+        clinicName: "City Clinic",
+        durationMinutes: "60 mins",
+      },
+      {
+        stripeColor: "bg-purple-500",
+        time: "9:30 AM",
+        patientName: "Sarah Johnson",
+        patientAge: 42,
+        clinicName: "Health Hub",
+        durationMinutes: "30 mins",
+      },
+    ],
+  },
+  {
+    day: 11,
+    weekday: "Wed",
+    appointments: [
+      {
+        stripeColor: "bg-green-500",
+        time: "3:00 PM",
+        patientName: "Big Leg",
+        patientAge: 35,
+        clinicName: "BCIT",
+        durationMinutes: "60 mins",
+      },
+      {
+        stripeColor: "bg-purple-500",
+        time: "9:30 AM",
+        patientName: "huh",
+        patientAge: 42,
+        clinicName: "yep",
+        durationMinutes: "30 mins",
+      },
+    ],
+  },
+]
+
+// filter all days to only show the next week
+const dailyAppointments = all_appointments.filter((day) => day.day <= currentDay + 6);
+
+// const dailyAppointments = {
+//   day: 3,
+//   weekday: "Tue",
+//   appointments: [
+//     {
+//       stripeColor: "bg-blue-500",
+//       time: "1:34PM",
+//       patientName: "belal",
+//       patientAge: 27,
+//       clinicName: "bkhealth",
+//       durationMinutes: "30 mins",
+//     },
+//     {
+//       stripeColor: "bg-red-500",
+//       time: "10:00 AM",
+//       patientName: "Jane Smith",
+//       patientAge: 27,
+//       clinicName: "Town Clinic",
+//       durationMinutes: "45 mins",
+//     },
+//   ],
+// };
 
 export default function Calendar(
   props: PageProps<{ props: PageProps }>,
 ) {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const day_multiplier = 24 * 60 * 60 * 1000;
 
   const handlePrevWeekClick = () => {
     setSelectedDate((prevDate) => {
-      const prevWeek = new Date(prevDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+      const prevWeek = new Date(prevDate.getTime() - 7 * day_multiplier);
       return prevWeek;
     });
   };
 
   const handleNextWeekClick = () => {
     setSelectedDate((prevDate) => {
-      const nextWeek = new Date(prevDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+      const nextWeek = new Date(prevDate.getTime() + 7 * day_multiplier);
       return nextWeek;
     });
   };
 
   const days = [];
   for (let i = 0; i < 7; i++) {
-    const date = new Date(selectedDate.getTime() + i * 24 * 60 * 60 * 1000);
+    const date = new Date(selectedDate.getTime() + i * day_multiplier);
     days.push(date);
   }
 
@@ -86,6 +161,7 @@ export default function Calendar(
         <p>TODO: Implement calendar view</p>
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
+
       <hr />
       <div class="calendar-links">
         <CalendarLink
