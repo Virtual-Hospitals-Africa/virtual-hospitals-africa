@@ -2,6 +2,7 @@ import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { PageProps } from "$fresh/server.ts";
+import { useState } from "preact/hooks";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -42,9 +43,46 @@ const dailyAppointments = {
 export default function Calendar(
   props: PageProps<{ props: PageProps }>,
 ) {
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const handlePrevWeekClick = () => {
+    setSelectedDate((prevDate) => {
+      const prevWeek = new Date(prevDate.getTime() - 7 * 24 * 60 * 60 * 1000);
+      return prevWeek;
+    });
+  };
+
+  const handleNextWeekClick = () => {
+    setSelectedDate((prevDate) => {
+      const nextWeek = new Date(prevDate.getTime() + 7 * 24 * 60 * 60 * 1000);
+      return nextWeek;
+    });
+  };
+
+  const days = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(selectedDate.getTime() + i * 24 * 60 * 60 * 1000);
+    days.push(date);
+  }
+
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
+
+      <div class="calendar-toolbar">
+          <button onClick={handlePrevWeekClick}>Prev</button>
+          {days.map((day, index) => (
+            <button
+              key={index}
+              class={day.getDate() === selectedDate.getDate() ? "selected" : ""}
+              onClick={() => setSelectedDate(day)}
+            >
+              {day.getDate()}
+            </button>
+          ))}
+          <button onClick={handleNextWeekClick}>Next</button>
+        </div>
+
         <p>TODO: Implement calendar view</p>
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
