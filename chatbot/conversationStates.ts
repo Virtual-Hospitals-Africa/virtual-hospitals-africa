@@ -254,38 +254,37 @@ const conversationStates: {
       },
     ],
   },
-  // TODO: support other options
   "onboarded:make_appointment:other_scheduling_options": {
     type: "select",
-    // async onEnter(
-    //   trx: TrxOrDb,
-    //   patientMessage: UnhandledPatientMessage,
-    // ): Promise<UnhandledPatientMessage> {
-    //   console.log(
-    //     "onboarded:make_appointment:other_scheduling_options onnEnter",
-    //   );
+    async onEnter(
+      trx: TrxOrDb,
+      patientMessage: UnhandledPatientMessage,
+    ): Promise<UnhandledPatientMessage> {
+      console.log(
+        "onboarded:make_appointment:other_scheduling_options onnEnter",
+      );
 
-    //   // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-    //   const declinedOfferedTime = await appointments.declineOfferedTime(
-    //     trx,
-    //     { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
-    //   );
-    //   console.log("DeclinedOfferedTime", declinedOfferedTime);
-    //   // I think we are getting the error below because of null safty.
-    //   // It could be beacuse the delineoffer is never null
+      // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
+      // const declinedOfferedTime = await appointments.declineOfferedTime(
+      //   trx,
+      //   { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
+      // );
+      // console.log("DeclinedOfferedTime", declinedOfferedTime);
+      // // I think we are getting the error below because of null safty.
+      // // It could be beacuse the delineoffer is never null
 
-    //   const declined: ReturnedSqlRow<
-    //     AppointmentOfferedTime & { doctor_name: string }
-    //   >[] = [
-    //     declinedOfferedTime,
-    //     ...compact(patientMessage.appointment_offered_times),
-    //   ];
+      // const declined: ReturnedSqlRow<
+      //   AppointmentOfferedTime & { doctor_name: string }
+      // >[] = [
+      //   declinedOfferedTime,
+      //   ...compact(patientMessage.appointment_offered_times),
+      // ];
 
-    //   return {
-    //     ...patientMessage,
-    //     appointment_offered_times: [null],
-    //   };
-    // },
+      return {
+        ...patientMessage,
+        appointment_offered_times: [null],
+      };
+    },
 
     prompt(patientMessage: UnhandledPatientMessage): string {
       return `Ok, do you have a preferred time? ${patientMessage}`;
