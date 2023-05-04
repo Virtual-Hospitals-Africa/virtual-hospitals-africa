@@ -19,8 +19,7 @@ import {
   UnhandledPatientMessage,
 } from "../types.ts";
 
-// import { db } from "../external-clients/db.ts";
-
+// Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
   const toReturn: T[] = [];
   for (const item of arr) {
@@ -267,24 +266,24 @@ const conversationStates: {
       );
 
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-      // const declinedOfferedTime = await appointments.declineOfferedTime(
-      //   trx,
-      //   { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
-      // );
-      // console.log("DeclinedOfferedTime", declinedOfferedTime);
+      const declinedOfferedTime = await appointments.declineOfferedTime(
+        trx,
+        { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
+      );
+      console.log("DeclinedOfferedTime", declinedOfferedTime);
       // I think we are getting the error below because of null safty.
       // It could be beacuse the delineoffer is never null
 
-      // const declined: ReturnedSqlRow<
-      //   AppointmentOfferedTime & { doctor_name: string }
-      // >[] = [
-      //   declinedOfferedTime,
-      //   ...compact(patientMessage.appointment_offered_times),
-      // ];
+      const declined: ReturnedSqlRow<
+        AppointmentOfferedTime & { doctor_name: string }
+      >[] = [
+        declinedOfferedTime,
+        ...compact(patientMessage.appointment_offered_times),
+      ];
 
       return {
         ...patientMessage,
-        // appointment_offered_times: declined,
+        appointment_offered_times: [null],
       };
     },
 
