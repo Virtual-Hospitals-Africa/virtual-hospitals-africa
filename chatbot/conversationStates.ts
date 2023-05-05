@@ -297,9 +297,14 @@ const conversationStates: {
       console.log("declined time slot");
       console.log(declinedStartTime);
 
-      /* seprate fuction */
-      const uniqueAvailbilites = allUniqueAvailbaility(trx);
-      console.log(uniqueAvailbilites);
+      const times = await getAllDoctorAvailability(trx);
+      console.log(times);
+
+      for (let i = 0; i < times.length; i++) {
+        for (let j = i; j < times[i].availability.length; j++) {
+        }
+      }
+
       return {
         ...patientMessage,
         appointment_offered_times: declined,
