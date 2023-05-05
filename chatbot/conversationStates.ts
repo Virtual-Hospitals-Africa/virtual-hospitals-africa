@@ -4,6 +4,7 @@ import {
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
 import {
+  allUniqueAvailbaility,
   firstAvailableThirtyMinutes,
   generateAvailableTime,
   getAllDoctorAvailability,
@@ -13,6 +14,7 @@ import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
 import {
   AppointmentOfferedTime,
+  Availability,
   ConversationState,
   ConversationStateHandler,
   ConversationStateHandlerReturn,
@@ -22,6 +24,7 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
+import { concat } from "https://deno.land/std@0.160.0/bytes/mod.ts";
 
 // Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
@@ -293,6 +296,10 @@ const conversationStates: {
       );
       console.log("declined time slot");
       console.log(declinedStartTime);
+
+      /* seprate fuction */
+      const uniqueAvailbilites = allUniqueAvailbaility(trx);
+      console.log(uniqueAvailbilites);
       return {
         ...patientMessage,
         appointment_offered_times: declined,
