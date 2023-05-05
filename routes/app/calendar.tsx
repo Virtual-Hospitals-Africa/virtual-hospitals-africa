@@ -2,9 +2,8 @@ import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { useEffect, useState } from "preact/hooks";
 import { Agent } from "../../external-clients/google.ts";
-import { AvailabilityJSON, GCalEventsResponse } from "../../types.ts";
+import { GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
 
 function CalendarLink(
