@@ -1,9 +1,9 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
-import DatePicker from "../../components/calendar/Date-Picker.tsx";
+import DatePicker from "../../islands/date-picker-options.tsx";
 import { PageProps } from "$fresh/server.ts";
-import { useEffect, useState } from "preact/hooks";
+import { useEffect, useState } from "https://esm.sh/preact@10.13.1/hooks";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -19,10 +19,9 @@ function CalendarLink(
 }
 
 // imagine we are reading off db and getting all appointments
-const currentDay = new Date().getDate();
 const all_appointments = [
   {
-    day: 3,
+    day: 5,
     weekday: "Tue",
     appointments: [
       {
@@ -89,49 +88,36 @@ const all_appointments = [
   },
 ];
 
-// filter all days from appointments to only show the current day
-const dailyAppointments = all_appointments.filter((day) =>
-  day.day == currentDay
-);
+export default function Calendar(props: PageProps<{ props: PageProps }>) {
+  const currentDate = new Date().getDate();
 
-export default function Calendar(
-  props: PageProps<{ props: PageProps }>,
-) {
-  
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const days: Date[] = [];
+  const [startDay, setStartDay] = useState<number>(new Date().getDate());
 
-  for (let i = 0; i < 7; i++) {
-    const date = new Date(selectedDate.getTime());
-    date.setDate(date.getDate() + i);
-    days.push(date);
+  // Parse the URLSearchParams object from the URL
+  const urlSearchParams = new URLSearchParams(props.url.search);
+
+  // Extract the value of the "startday" parameter
+  const startDayParam = urlSearchParams.get("startday");
+
+  if (startDayParam) {
+    // Convert the startDayParam value to a number and set it in the state
+    const startDayValue = parseInt(startDayParam);
+    setStartDay(startDayValue);
   }
 
-  const handlePrevWeekClick = () => {
-    setSelectedDate((prevDate) => {
-      const date = new Date(prevDate.getTime());
-      date.setDate(date.getDate() - 7);
-      return date;
-    });
-  };
+  // filter all days from appointments to only show the current day
+  const dailyAppointments = all_appointments.filter((day) => day.day == startDay);
 
-  const handleNextWeekClick = () => {
-    setSelectedDate((prevDate) => {
-      const date = new Date(prevDate.getTime());
-      date.setDate(date.getDate() + 7);
-      console.log('1');
-      return date;
-    });
-  };
+  const days = Array.from({ length: 7 }, (_, i) => startDay + i);
+
+  const date = new Date();
+  date.setHours(date.getHours() + 1);
+
+  console.log(startDay, startDayParam)
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-      <DatePicker
-          selectedDate={selectedDate}
-          days={days}
-          handlePrevWeekClick={handlePrevWeekClick}
-          handleNextWeekClick={handleNextWeekClick}
-        />
+        <DatePicker selectedDate={startDay} days={days} />
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
 
