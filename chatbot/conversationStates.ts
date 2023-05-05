@@ -3,7 +3,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import { firstAvailableThirtyMinutes, getAllDoctorAvailability, generateAvailableTime } from "./getDoctorAvailability.ts";
+import { firstAvailableThirtyMinutes, getAllDoctorAvailability, filterDoctorAvailability } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
@@ -265,46 +265,65 @@ const conversationStates: {
       console.log(
         "onboarded:make_appointment:other_scheduling_options onEnter",
       );
+      console.log('id', patientMessage.appointment_offered_times[0]?.id)
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
       const declinedOfferedTime = await appointments.declineOfferedTime(
         trx,
         { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
       );
-      // console.log("DeclinedOfferedTime", declinedOfferedTime);
-      // I think we are getting the error below because of null safty.
-      // It could be beacuse the delineoffer is never null
+      console.log('declined', declinedOfferedTime)
 
-      const declined: ReturnedSqlRow<
+      const declinedStartTime = await appointments.getPatientDeclinedTime(trx, {
+        appointment_id:
+          patientMessage.appointment_offered_times[0]?.appointment_id ?? 0,
+      });
+      console.log("declined time slot");
+      console.log(declinedStartTime);
+      const filteredAvailableTime = await filterDoctorAvailability(
+        trx,
+        declinedStartTime
+      );
+      console.log("filtered stuff, is it working?");
+      console.log(filteredAvailableTime);
+
+      const offeredTime = await appointments.addOfferedTime(trx, {
+        appointment_id: patientMessage.scheduling_appointment_id!,
+        doctor_id: filteredAvailableTime.doctor.id,
+        start: filteredAvailableTime.start,
+      });
+
+      const nextOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
       >[] = [
-        declinedOfferedTime,
+        offeredTime,
         ...compact(patientMessage.appointment_offered_times),
       ];
 
-      // const allAvailable = await generateAvailableTime(trx)
-      const declinedStartTime = await appointments.getPatientDeclinedTime(
-        trx, 
-        {appointment_id: patientMessage.appointment_offered_times[0]?.appointment_id ?? 0})
-        console.log('declined time slot')
-        console.log(declinedStartTime)
+
       return {
         ...patientMessage,
-        appointment_offered_times: declined,
+        appointment_offered_times: nextOfferedTimes,
       };
     },
 
-    prompt(_patientMessage: UnhandledPatientMessage): string {
-      return "Ok, do you have a prefered time?";
+    prompt(patientMessage: UnhandledPatientMessage): string {
+      assert(
+        patientMessage.appointment_offered_times[0],
+        "onEnter should have added an appointment_offered_time",
+      );
+      return `Looking for other times, the next available appoinment is ${
+        prettyAppointmentTime(patientMessage.appointment_offered_times[0].start)
+      }. Would you like to schedule this appointment?`;
     },
     options: [
       {
         option: "1",
-        display: "11:00am",
+        display: "Go ahead",
         onResponse: "onboarded:appointment_scheduled",
       },
       {
         option: "other_times",
-        display: "other time",
+        display: "Other time",
         aliases: ["other"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
