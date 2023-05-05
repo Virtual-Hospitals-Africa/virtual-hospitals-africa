@@ -128,3 +128,13 @@ export async function firstAvailableThirtyMinutes(trx: TrxOrDb): Promise<{
     start: earliestAvailabilityStart,
   };
 }
+
+export async function generateAvailableTime(trx: TrxOrDb){
+  console.log('doctor timessss')
+  const doctorAvailability = await getAllDoctorAvailability(trx);
+  
+  console.log(doctorAvailability)
+
+
+}
+

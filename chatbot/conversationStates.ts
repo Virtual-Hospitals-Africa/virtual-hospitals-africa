@@ -3,7 +3,11 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import { firstAvailableThirtyMinutes } from "./getDoctorAvailability.ts";
+import {
+  firstAvailableThirtyMinutes,
+  generateAvailableTime,
+  getAllDoctorAvailability,
+} from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
@@ -256,73 +260,66 @@ const conversationStates: {
   },
   "onboarded:make_appointment:other_scheduling_options": {
     type: "select",
-    // async onEnter(
-    //   trx: TrxOrDb,
-    //   patientMessage: UnhandledPatientMessage,
-    // ): Promise<UnhandledPatientMessage> {
-    //   console.log(
-    //     "onboarded:make_appointment:other_scheduling_options onnEnter",
-    //   );
+    async onEnter(
+      trx: TrxOrDb,
+      patientMessage: UnhandledPatientMessage,
+    ): Promise<UnhandledPatientMessage> {
+      console.log(
+        "onboarded:make_appointment:other_scheduling_options onEnter",
+      );
+      // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
+      const declinedOfferedTime = await appointments.declineOfferedTime(
+        trx,
+        { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
+      );
+      // console.log("DeclinedOfferedTime", declinedOfferedTime);
+      // I think we are getting the error below because of null safty.
+      // It could be beacuse the delineoffer is never null
 
-    //   // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-    //   const declinedOfferedTime = await appointments.declineOfferedTime(
-    //     trx,
-    //     { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
-    //   );
-    //   console.log("DeclinedOfferedTime", declinedOfferedTime);
-    //   // I think we are getting the error below because of null safty.
-    //   // It could be beacuse the delineoffer is never null
+      const declined: ReturnedSqlRow<
+        AppointmentOfferedTime & { doctor_name: string }
+      >[] = [
+        declinedOfferedTime,
+        ...compact(patientMessage.appointment_offered_times),
+      ];
 
-    //   const declined: ReturnedSqlRow<
-    //     AppointmentOfferedTime & { doctor_name: string }
-    //   >[] = [
-    //     declinedOfferedTime,
-    //     ...compact(patientMessage.appointment_offered_times),
-    //   ];
+      // const allAvailable = await generateAvailableTime(trx)
+      const declinedStartTime = await appointments.getPatientDeclinedTime(
+        trx,
+        {
+          appointment_id:
+            patientMessage.appointment_offered_times[0]?.appointment_id ?? 0,
+        },
+      );
+      console.log("declined time slot");
+      console.log(declinedStartTime);
+      return {
+        ...patientMessage,
+        appointment_offered_times: declined,
+      };
+    },
 
-    //   return {
-    //     ...patientMessage,
-    //     appointment_offered_times: [null],
-    //   };
-    // },
-    prompt(): string {
-      return `Ok, do you have a preferred time?`;
+    prompt(_patientMessage: UnhandledPatientMessage): string {
+      return "Ok, do you have a prefered time?";
     },
     options: [
       {
         option: "1",
-        display: "Friday, 2 June at 11:00am Harare time",
-        aliases: ["1"],
+        display: "11:00am",
         onResponse: "onboarded:appointment_scheduled",
       },
       {
-        option: "2",
-        display: "Friday, 2 June at 12:00am Harare time",
-        aliases: ["2"],
-        onResponse: "onboarded:appointment_scheduled",
+        option: "other_times",
+        display: "other time",
+        aliases: ["other"],
+        onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
-      // {
-      //   option: "3",
-      //   display: "Monday, 20 February at 11:00am Harare time",
-      //   onResponse: "onboarded:appointment_scheduled",
-      // },
-      // {
-      //   option: "4",
-      //   display: "Monday, 20 February at 12:00am Harare time",
-      //   onResponse: "onboarded:appointment_scheduled",
-      // },
-      // {
-      //   option: "other_times",
-      //   display: "None of these work, what are other available times",
-      //   aliases: ["other"],
-      //   onResponse: "onboarded:make_appointment:other_scheduling_options",
-      // },
-      // {
-      //   option: "go_back",
-      //   display: "No, I want to start over",
-      //   aliases: ["no", "cancel", "back", "over"],
-      //   onResponse: "other_end_of_demo",
-      // },
+      {
+        option: "go_back",
+        display: "Go back",
+        aliases: ["no", "cancel", "back", "over"],
+        onResponse: "other_end_of_demo",
+      },
     ],
   },
   "onboarded:appointment_scheduled": {

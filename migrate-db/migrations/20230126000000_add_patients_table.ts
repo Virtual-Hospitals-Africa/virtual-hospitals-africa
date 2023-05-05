@@ -9,6 +9,11 @@ export function up(db: Kysely<any>) {
       "timestamp",
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
+    .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
     .addColumn("phone_number", "varchar(255)", (col) => col.notNull())
     .addColumn("name", "varchar(255)")
     .addColumn("gender", "varchar(50)")
