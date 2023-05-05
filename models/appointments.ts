@@ -62,6 +62,18 @@ export async function declineOfferedTime(
   return readResult[0];
 }
 
+export async function getPatientDeclinedTime(
+  trx: TrxOrDb,
+  opts:{appointment_id: number}
+): Promise<string>{
+  const readResult = await trx.selectFrom('appointment_offered_times')
+  .where('appointment_id', '=', opts.appointment_id)
+  .where('patient_declined', '=', true).select('start')
+  .execute()
+
+  return readResult[0].start
+}
+
 // export function get(
 //   query: { patient_id: number },
 // ): Promise<ReturnedSqlRow<Appointment>[]> {
