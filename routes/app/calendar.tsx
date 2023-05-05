@@ -3,7 +3,7 @@ import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { Agent } from "../../external-clients/google.ts";
-import { GCalEventsResponse } from "../../types.ts";
+import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
 
 function CalendarLink(
@@ -19,21 +19,7 @@ function CalendarLink(
   );
 }
 
-let dailyAppointments: {
-  day: number;
-  weekday: string;
-  appointments: {
-    stripeColor: string; // Just blue for now
-    // Just blue for now
-    time: string;
-    patientName: string; // Remove the prefix "Appointment with "
-    // Remove the prefix "Appointment with "
-    patientAge: number; // Not in the google calendar
-    // Not in the google calendar
-    clinicName: string;
-    durationMinutes: string;
-  }[];
-}[];
+let dailyAppointments: DoctorAppointment[];
 
 export const handler: Handlers<
   { events: GCalEventsResponse },
@@ -76,18 +62,7 @@ export const handler: Handlers<
     });
 
     // Merge appointments for the same day/weekday
-    const mergedAppointments: {
-      day: number;
-      weekday: string;
-      appointments: {
-        stripeColor: string; // Just blue for now
-        time: string;
-        patientName: string; // Remove the prefix "Appointment with "
-        patientAge: number; // Not in the google calendar
-        clinicName: string;
-        durationMinutes: string;
-      }[];
-    }[] = [];
+    const mergedAppointments: DoctorAppointment[] = [];
     mappedAppointments.forEach((appointment) => {
       const existingAppointment = mergedAppointments.find((a) =>
         a.day === appointment.day && a.weekday === appointment.weekday

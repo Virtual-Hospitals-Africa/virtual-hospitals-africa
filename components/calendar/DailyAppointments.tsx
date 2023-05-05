@@ -1,20 +1,10 @@
 import { FunctionComponent, h } from "preact";
 import AppointmentDay from "./AppointmentDay.tsx";
 import AppointmentCardDetails from "./AppointmentCardDetails.tsx";
+import { DoctorAppointment } from "../../types.ts";
 
 interface DailyAppointmentsProps {
-  dailyAppointments: Array<{
-    day: number;
-    weekday: string;
-    appointments: Array<{
-      stripeColor: string;
-      time: string;
-      patientName: string;
-      patientAge: number;
-      clinicName: string;
-      durationMinutes: string;
-    }>;
-  }>;
+  dailyAppointments: Array<DoctorAppointment>;
 }
 
 const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
