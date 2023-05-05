@@ -100,7 +100,7 @@ export const handler: Handlers<
       }
     });
     const currentDay = new Date().getDate();
-    // sort appointments by dar then filter all days from appointments to only show the next week
+    // sort appointments by day then filter all days from appointments to only show the next week
     dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
       (day) => (day.day <= currentDay + 6) && (currentDay <= day.day),
     );
