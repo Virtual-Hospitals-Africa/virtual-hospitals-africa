@@ -588,3 +588,18 @@ export type WhatsAppSendable = string | {
   buttonText: string;
   options: MessageOption[];
 };
+export type DoctorAppointment = {
+  day: number;
+  weekday: string;
+  appointments: {
+    stripeColor: string; // Just blue for now
+    // Just blue for now
+    time: string;
+    patientName: string; // Remove the prefix "Appointment with "
+    // Remove the prefix "Appointment with "
+    patientAge: number; // Not in the google calendar
+    // Not in the google calendar
+    clinicName: string;
+    durationMinutes: string;
+  }[];
+};

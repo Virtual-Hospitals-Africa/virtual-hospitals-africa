@@ -3,12 +3,18 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import { firstAvailableThirtyMinutes } from "./getDoctorAvailability.ts";
+import {
+  allUniqueAvailbaility,
+  firstAvailableThirtyMinutes,
+  generateAvailableTime,
+  getAllDoctorAvailability,
+} from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
 import {
   AppointmentOfferedTime,
+  Availability,
   ConversationState,
   ConversationStateHandler,
   ConversationStateHandlerReturn,
@@ -18,9 +24,9 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
+import { concat } from "https://deno.land/std@0.160.0/bytes/mod.ts";
 
-// import { db } from "../external-clients/db.ts";
-
+// Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
   const toReturn: T[] = [];
   for (const item of arr) {
@@ -244,7 +250,7 @@ const conversationStates: {
       {
         option: "other_times",
         display: "Other times",
-        aliases: ["other"],
+        aliases: ["other", "Other times"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
       {
@@ -255,7 +261,6 @@ const conversationStates: {
       },
     ],
   },
-  // TODO: support other options
   "onboarded:make_appointment:other_scheduling_options": {
     type: "select",
     async onEnter(
@@ -263,61 +268,67 @@ const conversationStates: {
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       console.log(
-        "onboarded:make_appointment:other_scheduling_options onnEnter",
-      );  
-
+        "onboarded:make_appointment:other_scheduling_options onEnter",
+      );
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
       const declinedOfferedTime = await appointments.declineOfferedTime(
         trx,
         { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
       );
-      console.log("DeclinedOfferedTime", declinedOfferedTime);
+      // console.log("DeclinedOfferedTime", declinedOfferedTime);
       // I think we are getting the error below because of null safty.
       // It could be beacuse the delineoffer is never null
-      
-      const declined: ReturnedSqlRow<AppointmentOfferedTime & {doctor_name: string}
-      >[] = [declinedOfferedTime, ...compact(patientMessage.appointment_offered_times),
+
+      const declined: ReturnedSqlRow<
+        AppointmentOfferedTime & { doctor_name: string }
+      >[] = [
+        declinedOfferedTime,
+        ...compact(patientMessage.appointment_offered_times),
       ];
+
+      // const allAvailable = await generateAvailableTime(trx)
+      const declinedStartTime = await appointments.getPatientDeclinedTime(
+        trx,
+        {
+          appointment_id:
+            patientMessage.appointment_offered_times[0]?.appointment_id ?? 0,
+        },
+      );
+      console.log("declined time slot");
+      console.log(declinedStartTime);
+
+      const times = await getAllDoctorAvailability(trx);
+      console.log(times);
+
+      for (let i = 0; i < times.length; i++) {
+        for (let j = i; j < times[i].availability.length; j++) {
+        }
+      }
 
       return {
         ...patientMessage,
         appointment_offered_times: declined,
       };
     },
-    // async db.change_appointment_offered_time_status(),
+
     prompt(_patientMessage: UnhandledPatientMessage): string {
       return "Ok, do you have a prefered time?";
     },
     options: [
       {
         option: "1",
-        display: "Sunday, 19 February at 11:00am Harare time",
-        onResponse: "onboarded:appointment_scheduled",
-      },
-      {
-        option: "2",
-        display: "Sunday, 19 February at 12:00am Harare time",
-        onResponse: "onboarded:appointment_scheduled",
-      },
-      {
-        option: "3",
-        display: "Monday, 20 February at 11:00am Harare time",
-        onResponse: "onboarded:appointment_scheduled",
-      },
-      {
-        option: "4",
-        display: "Monday, 20 February at 12:00am Harare time",
+        display: "11:00am",
         onResponse: "onboarded:appointment_scheduled",
       },
       {
         option: "other_times",
-        display: "None of these work, what are other available times",
+        display: "other time",
         aliases: ["other"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
       {
         option: "go_back",
-        display: "No, I want to start over",
+        display: "Go back",
         aliases: ["no", "cancel", "back", "over"],
         onResponse: "other_end_of_demo",
       },

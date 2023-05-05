@@ -3,8 +3,11 @@ import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import DatePicker from "../../islands/date-picker.tsx";
 import MonthPicker from "../../islands/month-picker.tsx";
-import { PageProps } from "$fresh/server.ts";
-import { useEffect, useState } from "https://esm.sh/preact@10.13.1/hooks";
+import { useState } from "https://esm.sh/preact@10.13.1/hooks";
+import { Handlers, PageProps } from "$fresh/server.ts";
+import { Agent } from "../../external-clients/google.ts";
+import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
+import { WithSession } from "fresh_session";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -89,7 +92,80 @@ const all_appointments = [
   },
 ];
 
-export default function Calendar(props: PageProps<{ props: PageProps }>) {
+let dailyAppointments: DoctorAppointment[];
+
+export const handler: Handlers<
+  { events: GCalEventsResponse },
+  WithSession
+> = {
+  async GET(_, ctx) {
+    // 1. find the gcal_appointments_calendar_id as part of the session.
+    // 2. Pass that in as the id to agent.getEvents();
+    // 3. Use the event data in the view
+    // 4. [Optional] specify timeMin/timeMax so that we are only fetching upcoming appointments
+    // https://developers.google.com/calendar/api/v3/reference/events/list?hl=es-419
+    //  If necessary, do some data-massaging server side
+
+    const agent = Agent.fromCtx(ctx);
+
+    const events = await agent.getEvents(
+      ctx.state.session.data.gcal_appointments_calendar_id,
+    );
+
+    const mappedAppointments = events.items.map((item) => {
+      const start = new Date(item.start.dateTime);
+      const day = start.getUTCDate();
+      const weekday = start.toLocaleString("en-US", { weekday: "short" });
+      const appointment = {
+        stripeColor: "bg-blue-500", // Just blue for now
+        time: start.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        }),
+        patientName: item.summary.replace(/^Appointment with /, ""), // Remove the prefix "Appointment with "
+        patientAge: 30, // Not in the google calendar
+        clinicName: item.organizer.displayName,
+        durationMinutes: Math.round(
+          (new Date(item.end.dateTime).getTime() - start.getTime()) /
+            (1000 * 60),
+        ) + " mins", // Calculate duration in minutes
+      };
+      return { day, weekday, appointments: [appointment] };
+    });
+
+    // Merge appointments for the same day/weekday
+    const mergedAppointments: DoctorAppointment[] = [];
+    mappedAppointments.forEach((appointment) => {
+      const existingAppointment = mergedAppointments.find((a) =>
+        a.day === appointment.day && a.weekday === appointment.weekday
+      );
+      if (existingAppointment) {
+        existingAppointment.appointments.push(...appointment.appointments);
+      } else {
+        mergedAppointments.push(appointment);
+      }
+    });
+    const currentDay = new Date().getDate();
+    // sort appointments by day then filter all days from appointments to only show the next week
+    dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
+      (day) => (day.day <= currentDay + 6) && (currentDay <= day.day),
+    );
+
+    return ctx.render({ events });
+  },
+};
+
+
+export default function Calendar(
+  props: PageProps<{ events: GCalEventsResponse }>,
+) {
+  const { events } = props.data;
+  console.log("events", events);
+  console.log(
+    "somehow put the events from the handle function here",
+  );
+
   const currentMonth = new Date().getMonth();
 
   const [startDay, setStartDay] = useState<number>(new Date().getDate());
