@@ -1,7 +1,8 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
-import DatePicker from "../../islands/date-picker-options.tsx";
+import DatePicker from "../../islands/date-picker.tsx";
+import MonthPicker from "../../islands/month-picker.tsx";
 import { PageProps } from "$fresh/server.ts";
 import { useEffect, useState } from "https://esm.sh/preact@10.13.1/hooks";
 
@@ -89,7 +90,7 @@ const all_appointments = [
 ];
 
 export default function Calendar(props: PageProps<{ props: PageProps }>) {
-  const currentDate = new Date().getDate();
+  const currentMonth = new Date().getMonth();
 
   const [startDay, setStartDay] = useState<number>(new Date().getDate());
 
@@ -117,6 +118,7 @@ export default function Calendar(props: PageProps<{ props: PageProps }>) {
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
+        <MonthPicker selectedMonth={currentMonth}/>
         <DatePicker selectedDate={startDay} days={days} />
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
