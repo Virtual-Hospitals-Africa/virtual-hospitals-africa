@@ -1,7 +1,11 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
-import { PageProps } from "$fresh/server.ts";
+import { Handlers, PageProps } from "$fresh/server.ts";
+import { useEffect, useState } from "preact/hooks";
+import { Agent } from "../../external-clients/google.ts";
+import { AvailabilityJSON, GCalEventsResponse } from "../../types.ts";
+import { WithSession } from "fresh_session";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -16,32 +20,129 @@ function CalendarLink(
   );
 }
 
-const dailyAppointments = {
-  day: 11,
-  weekday: "Tue",
-  appointments: [
-    {
-      stripeColor: "bg-blue-500",
-      time: "1:34PM",
-      patientName: "belal",
-      patientAge: 27,
-      clinicName: "bkhealth",
-      durationMinutes: "30 mins",
-    },
-    {
-      stripeColor: "bg-red-500",
-      time: "10:00 AM",
-      patientName: "Jane Smith",
-      patientAge: 27,
-      clinicName: "Town Clinic",
-      durationMinutes: "45 mins",
-    },
-  ],
+let dailyAppointments: {
+  day: number;
+  weekday: string;
+  appointments: {
+    stripeColor: string; // Just blue for now
+    // Just blue for now
+    time: string;
+    patientName: string; // Remove the prefix "Appointment with "
+    // Remove the prefix "Appointment with "
+    patientAge: number; // Not in the google calendar
+    // Not in the google calendar
+    clinicName: string;
+    durationMinutes: string;
+  }[];
+}[];
+
+export const handler: Handlers<
+  { events: GCalEventsResponse },
+  WithSession
+> = {
+  async GET(_, ctx) {
+    // 1. find the gcal_appointments_calendar_id as part of the session.
+    // 2. Pass that in as the id to agent.getEvents();
+    // 3. Use the event data in the view
+    // 4. [Optional] specify timeMin/timeMax so that we are only fetching upcoming appointments
+    // https://developers.google.com/calendar/api/v3/reference/events/list?hl=es-419
+    //  If necessary, do some data-massaging server side
+
+    const agent = Agent.fromCtx(ctx);
+
+    const events = await agent.getEvents(
+      ctx.state.session.data.gcal_appointments_calendar_id,
+    );
+
+    const mappedAppointments = events.items.map((item) => {
+      const start = new Date(item.start.dateTime);
+      const day = start.getUTCDate();
+      const weekday = start.toLocaleString("en-US", { weekday: "short" });
+      const appointment = {
+        stripeColor: "bg-blue-500", // Just blue for now
+        time: start.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        }),
+        patientName: item.summary.replace(/^Appointment with /, ""), // Remove the prefix "Appointment with "
+        patientAge: 30, // Not in the google calendar
+        clinicName: item.organizer.displayName,
+        durationMinutes: Math.round(
+          (new Date(item.end.dateTime).getTime() - start.getTime()) /
+            (1000 * 60),
+        ) + " mins", // Calculate duration in minutes
+      };
+      return { day, weekday, appointments: [appointment] };
+    });
+
+    // Merge appointments for the same day/weekday
+    const mergedAppointments: {
+      day: number;
+      weekday: string;
+      appointments: {
+        stripeColor: string; // Just blue for now
+        time: string;
+        patientName: string; // Remove the prefix "Appointment with "
+        patientAge: number; // Not in the google calendar
+        clinicName: string;
+        durationMinutes: string;
+      }[];
+    }[] = [];
+    mappedAppointments.forEach((appointment) => {
+      const existingAppointment = mergedAppointments.find((a) =>
+        a.day === appointment.day && a.weekday === appointment.weekday
+      );
+      if (existingAppointment) {
+        existingAppointment.appointments.push(...appointment.appointments);
+      } else {
+        mergedAppointments.push(appointment);
+      }
+    });
+    const currentDay = new Date().getDate();
+    // sort appointments by dar then filter all days from appointments to only show the next week
+    dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
+      (day) => (day.day <= currentDay + 6) && (currentDay <= day.day),
+    );
+
+    return ctx.render({ events });
+  },
 };
 
 export default function Calendar(
-  props: PageProps<{ props: PageProps }>,
+  props: PageProps<{ events: GCalEventsResponse }>,
 ) {
+  const { events } = props.data;
+  console.log("events", events);
+  console.log(
+    "somehow put the events from the handle function here",
+  );
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const day_multiplier = 24 * 60 * 60 * 1000;
+
+  const handlePrevWeekClick = () => {
+    setSelectedDate((prevDate) => {
+      const prevWeek = new Date(prevDate.getTime() - 7 * day_multiplier);
+      return prevWeek;
+    });
+  };
+
+  const handleNextWeekClick = () => {
+    setSelectedDate((prevDate) => {
+      const nextWeek = new Date(prevDate.getTime() + 7 * day_multiplier);
+      return nextWeek;
+    });
+  };
+
+  const [days, setDays] = useState(() => {
+    const initialDays = [];
+    for (let i = 0; i < 7; i++) {
+      const date = new Date(selectedDate.getTime() + i * day_multiplier);
+      initialDays.push(date);
+    }
+    return initialDays;
+  });
+
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
