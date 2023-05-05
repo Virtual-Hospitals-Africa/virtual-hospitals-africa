@@ -103,16 +103,24 @@ export function getAllWithTokens(
   return getWithTokensQuery(trx).execute();
 }
 
-function hasTokens(
-  doctor: Maybe<DoctorWithPossibleGoogleTokens>,
+export function isDoctorWithGoogleTokens(
+  doctor: any,
 ): doctor is DoctorWithGoogleTokens {
-  return !!doctor && !!doctor.access_token && !!doctor.refresh_token;
+  return !!doctor &&
+    typeof doctor === "object" &&
+    typeof doctor.access_token === "string" &&
+    typeof doctor.refresh_token === "string" &&
+    typeof doctor.id === "number" &&
+    typeof doctor.name === "string" &&
+    typeof doctor.email === "string" &&
+    typeof doctor.gcal_appointments_calendar_id === "string" &&
+    typeof doctor.gcal_availability_calendar_id === "string";
 }
 
 function withTokens(doctors: DoctorWithPossibleGoogleTokens[]) {
   const withTokens: DoctorWithGoogleTokens[] = [];
   for (const doctor of doctors) {
-    if (!hasTokens(doctor)) {
+    if (!isDoctorWithGoogleTokens(doctor)) {
       throw new Error("Doctor has no access token or refresh token");
     }
     withTokens.push(doctor);

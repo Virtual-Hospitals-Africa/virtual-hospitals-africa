@@ -4,6 +4,7 @@ import moment from "https://deno.land/x/momentjs@2.29.1-deno/mod.ts";
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {
   DeepPartial,
+  DoctorWithGoogleTokens,
   GCalCalendarList,
   GCalCalendarListEntry,
   GCalEvent,
@@ -14,6 +15,11 @@ import {
 } from "../types.ts";
 import { WithSession } from "fresh_session";
 import { HandlerContext } from "$fresh/src/server/mod.ts";
+import {
+  isDoctorWithGoogleTokens,
+  removeExpiredAccessToken,
+  updateAccessToken,
+} from "../models/doctors.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
@@ -22,36 +28,34 @@ type RequestOpts = {
   data?: any;
 };
 
-export function isGoogleTokens(tokens: any): tokens is GoogleTokens {
-  return !!tokens && typeof tokens === "object" &&
-    "access_token" in tokens && typeof tokens.access_token === "string" &&
-    "refresh_token" in tokens && typeof tokens.refresh_token === "string";
-}
-
-export class Agent {
-  tokens: GoogleTokens;
-  constructor(tokens: any) {
-    if (!isGoogleTokens(tokens)) {
+export class GoogleClient {
+  doctor: DoctorWithGoogleTokens;
+  constructor(public session: WithSession["session"]) {
+    if (!isDoctorWithGoogleTokens(session.data)) {
       throw new Error("Invalid tokens object");
     }
-    this.tokens = tokens;
+    this.doctor = session.data;
   }
 
-  static fromCtx(ctx: HandlerContext<any, WithSession>): Agent {
-    return new Agent({
-      access_token: ctx.state.session.get("access_token"),
-      refresh_token: ctx.state.session.get("refresh_token"),
-    });
+  static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
+    return new GoogleClient(ctx.state.session);
   }
 
-  private async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
+  private async makeRequestOnce(
+    path: string,
+    opts?: RequestOpts,
+  ): Promise<
+    | { result: "unauthorized_error" }
+    | { result: "other_error"; error: Error }
+    | { result: "success"; data: any }
+  > {
     const url = `${googleApisUrl}${path}`;
     const method = opts?.method || "get";
     console.log(`${method} ${url}`);
     const response = await fetch(url, {
       method,
       headers: {
-        Authorization: `Bearer ${this.tokens.access_token}`,
+        Authorization: `Bearer ${this.doctor.access_token}`,
       },
       body: opts?.data ? JSON.stringify(opts.data) : undefined,
     });
@@ -59,21 +63,53 @@ export class Agent {
       let data;
       try {
         data = await response.json();
-      } catch (err) {
-        console.error(`${method} ${url}`, err);
-        throw err;
+      } catch (error) {
+        console.error(`${method} ${url}`, error);
+        return { result: "other_error", error };
       }
       console.log(`${method} ${url}`, JSON.stringify(data));
       if (data.error) {
+        if (data.error.code === 401) {
+          return { result: "unauthorized_error" };
+        }
         const errorMessage = data.error?.errors?.[0]?.message || data.error;
         throw new Error(errorMessage);
       }
-      return data;
+      return { result: "success", data };
     } else {
-      const text = await response.text();
-      console.log(`${method} ${url}`, text);
-      return text;
+      try {
+        const text = await response.text();
+        console.log(`${method} ${url}`, text);
+        return { result: "success", data: text };
+      } catch (error) {
+        console.error(`${method} ${url}`, error);
+        return { result: "other_error", error };
+      }
     }
+  }
+
+  private async makeRequest(
+    path: string,
+    opts?: RequestOpts,
+  ): Promise<any> {
+    let response = await this.makeRequestOnce(path, opts);
+    if (response.result === "unauthorized_error") {
+      assert(this.doctor.refresh_token, "No refresh token");
+      const refreshed = await refreshTokens(this.doctor);
+      if (refreshed.result !== "success") {
+        throw new Error("Failed to refresh tokens");
+      }
+      this.session.set("access_token", refreshed.access_token);
+      this.doctor = { ...this.doctor, access_token: refreshed.access_token };
+      response = await this.makeRequestOnce(path, opts);
+    }
+    if (response.result === "unauthorized_error") {
+      throw new Error("Failed to refresh tokens");
+    }
+    if (response.result === "other_error") {
+      throw response.error;
+    }
+    return response.data;
   }
 
   private makeCalendarRequest(path: string, opts?: RequestOpts): Promise<any> {
@@ -202,8 +238,6 @@ export class Agent {
   }
 }
 
-console.log('Deno.env.get("SELF_URL")', Deno.env.get("SELF_URL"));
-
 const selfUrl = Deno.env.get("SELF_URL") ||
   "https://virtual-hospitals-africa.herokuapp.com";
 const redirect_uri = `${selfUrl}/logged-in`;
@@ -270,4 +304,20 @@ export async function getNewAccessTokenFromRefreshToken(
   assertEquals(typeof json.access_token, "string");
 
   return json.access_token;
+}
+
+export async function refreshTokens(
+  doctor: DoctorWithGoogleTokens,
+): Promise<{ result: "success"; access_token: string } | { result: "expiry" }> {
+  try {
+    const access_token = await getNewAccessTokenFromRefreshToken(
+      doctor.refresh_token,
+    );
+    await updateAccessToken(doctor.id, access_token);
+    return { result: "success", access_token };
+  } catch (err) {
+    console.error(err);
+    removeExpiredAccessToken({ doctor_id: doctor.id });
+    return { result: "expiry" };
+  }
 }

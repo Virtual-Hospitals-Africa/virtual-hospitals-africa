@@ -2,7 +2,7 @@ import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { Agent } from "../../external-clients/google.ts";
+import { GoogleClient } from "../../external-clients/google.ts";
 import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
 
@@ -27,17 +27,19 @@ export const handler: Handlers<
 > = {
   async GET(_, ctx) {
     // 1. find the gcal_appointments_calendar_id as part of the session.
-    // 2. Pass that in as the id to agent.getEvents();
+    // 2. Pass that in as the id to googleClient.getEvents();
     // 3. Use the event data in the view
     // 4. [Optional] specify timeMin/timeMax so that we are only fetching upcoming appointments
     // https://developers.google.com/calendar/api/v3/reference/events/list?hl=es-419
     //  If necessary, do some data-massaging server side
 
-    const agent = Agent.fromCtx(ctx);
+    const googleClient = GoogleClient.fromCtx(ctx);
 
-    const events = await agent.getEvents(
+    const events = await googleClient.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
     );
+
+    console.log("events", events);
 
     const mappedAppointments = events.items.map((item) => {
       const start = new Date(item.start.dateTime);

@@ -5,10 +5,10 @@ import { Doctor, GoogleTokens, ReturnedSqlRow } from "../types.ts";
 export async function initializeDoctor(
   tokens: GoogleTokens,
 ): Promise<ReturnedSqlRow<Doctor>> {
-  const googleAgent = new google.Agent(tokens);
+  const googleGoogleClient = new google.GoogleClient(tokens);
 
-  const gettingProfile = googleAgent.getProfile();
-  const gettingCalendars = googleAgent
+  const gettingProfile = googleGoogleClient.getProfile();
+  const gettingCalendars = googleGoogleClient
     .ensureHasAppointmentsAndAvailabilityCalendars();
 
   const profile = await gettingProfile;
@@ -19,7 +19,7 @@ export async function initializeDoctor(
     email: profile.email,
     gcal_appointments_calendar_id: calendars.vhaAppointmentsCalendar.id,
     gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
-    access_token: googleAgent.tokens.access_token,
-    refresh_token: googleAgent.tokens.refresh_token,
+    access_token: googleGoogleClient.doctor.access_token,
+    refresh_token: googleGoogleClient.doctor.refresh_token,
   });
 }
