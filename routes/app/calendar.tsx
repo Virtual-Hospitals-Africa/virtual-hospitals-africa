@@ -117,31 +117,6 @@ export default function Calendar(
   console.log(
     "somehow put the events from the handle function here",
   );
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const day_multiplier = 24 * 60 * 60 * 1000;
-
-  const handlePrevWeekClick = () => {
-    setSelectedDate((prevDate) => {
-      const prevWeek = new Date(prevDate.getTime() - 7 * day_multiplier);
-      return prevWeek;
-    });
-  };
-
-  const handleNextWeekClick = () => {
-    setSelectedDate((prevDate) => {
-      const nextWeek = new Date(prevDate.getTime() + 7 * day_multiplier);
-      return nextWeek;
-    });
-  };
-
-  const [days, setDays] = useState(() => {
-    const initialDays = [];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(selectedDate.getTime() + i * day_multiplier);
-      initialDays.push(date);
-    }
-    return initialDays;
-  });
 
   return (
     <Layout title="My Calendar" route={props.route}>
