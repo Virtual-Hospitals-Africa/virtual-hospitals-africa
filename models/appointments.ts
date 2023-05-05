@@ -65,13 +65,20 @@ export async function declineOfferedTime(
 export async function getPatientDeclinedTime(
   trx: TrxOrDb,
   opts:{appointment_id: number}
-): Promise<string>{
+): Promise<string[]>{
   const readResult = await trx.selectFrom('appointment_offered_times')
   .where('appointment_id', '=', opts.appointment_id)
   .where('patient_declined', '=', true).select('start')
   .execute()
+  console.log("Read result for get declined time.")
+  console.log(readResult)
+  const declinedTimes = []
 
-  return readResult[0].start
+  for (const {start} of readResult){
+    declinedTimes.push(start)
+  }
+
+  return declinedTimes
 }
 
 // export function get(
