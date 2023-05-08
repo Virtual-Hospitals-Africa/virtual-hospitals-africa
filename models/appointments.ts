@@ -44,7 +44,7 @@ export async function declineOfferedTime(
 
 }
 
-export async function getPatientDeclinedTime(
+export async function getPatientDeclinedTimes(
   trx: TrxOrDb,
   opts:{appointment_id: number}
 ): Promise<string[]>{

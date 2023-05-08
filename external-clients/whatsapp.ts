@@ -75,41 +75,66 @@ export async function sendMessageWithInteractiveButtons(
   return response.json();
 }
 
-// export async function sendMessageWithInteractiveList(
-//   opts: {
-//     phone_number: string;
-//     messageBody: string;
-//     buttonText: string;
-//     options: MessageOptions[];
-//   },
-// ): Promise<{
-//   messaging_product: "whatsapp";
-//   contacts: [{ input: string; wa_id: string }];
-//   messages: [{ id: string }];
-// }> {
-//   const toPost = {
-//     method: "post",
-//     headers: { Authorization, "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       messaging_product: "whatsapp",
-//       to: opts.phone_number,
-//       type: "interactive",
-//       interactive: {
-//         type: "list",
-//         body: {
-//           text: opts.messageBody,
-//         },
-//         action: {
-//           button: opts.buttonText,
-//           sections: opts.options,
-//         },
-//       },
-//     }),
-//   };
+export async function sendMessageWithInteractiveList(
+  opts: {
+    phone_number: string;
+  },
+): Promise<{
+  messaging_product: "whatsapp";
+  contacts: [{ input: string; wa_id: string }];
+  messages: [{ id: string }];
+}> {
+  const toPost = {
+    method: "post",
+    headers: { Authorization, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messaging_product: "whatsapp",
+      to: opts.phone_number,
+      type: "interactive",
+      "interactive": {
+        "type": "list",
+        "header": {
+          "type": "text",
+          "text": "your-header-content",
+        },
+        "body": {
+          "text": "your-text-message-content",
+        },
+        "footer": {
+          "text": "your-footer-content",
+        },
+        "action": {
+          "button": "cta-button-content",
+          "sections": [
+            {
+              "title": "title-content1",
+              "rows": [
+                {
+                  "id": "unique-row-identifier1",
+                  "title": "row-title-content1",
+                  "description": "row-description-content1",
+                },
+              ],
+            },
+            {
+              "title": "title-content2",
+              "rows": [
+                {
+                  "id": "unique-row-identifier2",
+                  "title": "row-title-content2",
+                  "description": "row-description-content2",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    }),
+  };
 
-//   console.log("toPost", JSON.stringify(toPost));
+  console.log("toPost", JSON.stringify(toPost));
 
-//   const response = await fetch(postMessageRoute, toPost);
+  const response = await fetch(postMessageRoute, toPost);
 
-//   return response.json();
-// }
+  return response.json();
+}

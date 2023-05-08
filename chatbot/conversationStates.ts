@@ -3,7 +3,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import { firstAvailableThirtyMinutes, getAllDoctorAvailability, filterDoctorAvailability } from "./getDoctorAvailability.ts";
+import { firstAvailableThirtyMinutes, getAllDoctorAvailability } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
@@ -202,7 +202,7 @@ const conversationStates: {
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       console.log("onboarded:make_appointment:first_scheduling_option onEnter");
-      const firstAvailable = await firstAvailableThirtyMinutes(trx);
+      const firstAvailable = await firstAvailableThirtyMinutes(trx, []);
       console.log("past firstAvailableThirtyMinutes");
 
       const offeredTime = await appointments.addOfferedTime(trx, {
@@ -265,23 +265,36 @@ const conversationStates: {
       console.log(
         "onboarded:make_appointment:other_scheduling_options onEnter",
       );
+
+      assert(patientMessage.appointment_offered_times[0], "should have times");
+
+      const toDecline = []
+      for (const offeredTime of patientMessage.appointment_offered_times) {
+        if (!offeredTime) continue;
+        if (!offeredTime.patient_declined) {
+          toDecline.push(offeredTime.id)
+        }
+      }
+
       console.log('id', patientMessage.appointment_offered_times[0]?.id)
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-      const declinedOfferedTime = await appointments.declineOfferedTime(
-        trx,
-        { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
-      );
-      console.log('declined', declinedOfferedTime)
+      
+      if (!!toDecline.length)  {
+        await appointments.declineOfferedTime(
+          trx,
+          { id: toDecline[0] }, //trying to hardcode 0 to id if it's undefined.
+        );
+      }
 
-      const declinedStartTime = await appointments.getPatientDeclinedTime(trx, {
-        appointment_id:
-          patientMessage.appointment_offered_times[0]?.appointment_id ?? 0,
+      const declinedTimes = await appointments.getPatientDeclinedTimes(trx, {
+        appointment_id: patientMessage.scheduling_appointment_id!,
       });
+
       console.log("declined time slot");
-      console.log(declinedStartTime);
-      const filteredAvailableTime = await filterDoctorAvailability(
+      console.log(declinedTimes);
+      const filteredAvailableTime = await firstAvailableThirtyMinutes(
         trx,
-        declinedStartTime
+        declinedTimes
       );
       console.log("filtered stuff, is it working?");
       console.log(filteredAvailableTime);
@@ -298,7 +311,6 @@ const conversationStates: {
         offeredTime,
         ...compact(patientMessage.appointment_offered_times),
       ];
-
 
       return {
         ...patientMessage,
