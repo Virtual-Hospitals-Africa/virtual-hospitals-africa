@@ -28,20 +28,27 @@ type RequestOpts = {
   data?: any;
 };
 
+export function isGoogleTokens(
+  maybeTokens: any,
+): maybeTokens is GoogleTokens {
+  return !!maybeTokens &&
+    typeof maybeTokens === "object" &&
+    typeof maybeTokens.access_token === "string" &&
+    typeof maybeTokens.refresh_token === "string";
+}
+
 export class GoogleClient {
-  doctor: DoctorWithGoogleTokens;
-  constructor(public session: WithSession["session"]) {
-    if (!isDoctorWithGoogleTokens(session.data)) {
+  constructor(public tokens: GoogleTokens) {
+    if (!isGoogleTokens(tokens)) {
       throw new Error("Invalid tokens object");
     }
-    this.doctor = session.data;
   }
 
   static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
-    return new GoogleClient(ctx.state.session);
+    return new GoogleClient(ctx.state.session.data);
   }
 
-  private async makeRequestOnce(
+  async doMakeRequest(
     path: string,
     opts?: RequestOpts,
   ): Promise<
@@ -55,7 +62,7 @@ export class GoogleClient {
     const response = await fetch(url, {
       method,
       headers: {
-        Authorization: `Bearer ${this.doctor.access_token}`,
+        Authorization: `Bearer ${this.tokens.access_token}`,
       },
       body: opts?.data ? JSON.stringify(opts.data) : undefined,
     });
@@ -88,23 +95,13 @@ export class GoogleClient {
     }
   }
 
-  private async makeRequest(
+  async makeRequest(
     path: string,
     opts?: RequestOpts,
   ): Promise<any> {
-    let response = await this.makeRequestOnce(path, opts);
+    const response = await this.doMakeRequest(path, opts);
     if (response.result === "unauthorized_error") {
-      assert(this.doctor.refresh_token, "No refresh token");
-      const refreshed = await refreshTokens(this.doctor);
-      if (refreshed.result !== "success") {
-        throw new Error("Failed to refresh tokens");
-      }
-      this.session.set("access_token", refreshed.access_token);
-      this.doctor = { ...this.doctor, access_token: refreshed.access_token };
-      response = await this.makeRequestOnce(path, opts);
-    }
-    if (response.result === "unauthorized_error") {
-      throw new Error("Failed to refresh tokens");
+      throw new Error("Unauthorized");
     }
     if (response.result === "other_error") {
       throw response.error;
@@ -235,6 +232,44 @@ export class GoogleClient {
 
   getProfile(): Promise<GoogleProfile> {
     return this.makeRequest("/oauth2/v3/userinfo");
+  }
+}
+
+export class DoctorGoogleClient extends GoogleClient {
+  constructor(
+    public doctor: DoctorWithGoogleTokens,
+    public session?: WithSession["session"],
+  ) {
+    super(doctor);
+    if (!isDoctorWithGoogleTokens(doctor)) {
+      throw new Error("Ya gotta be a doctah");
+    }
+  }
+
+  static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
+    return new DoctorGoogleClient(ctx.state.session.data, ctx.state.session);
+  }
+
+  async makeRequest(
+    path: string,
+    opts?: RequestOpts,
+  ): Promise<any> {
+    try {
+      return await super.makeRequest(path, opts);
+    } catch (err) {
+      if (err.message === "Unauthorized") {
+        assert(this.doctor.refresh_token, "No refresh token");
+        const refreshed = await refreshTokens(this.doctor);
+        if (refreshed.result !== "success") {
+          throw new Error("Failed to refresh tokens");
+        }
+        if (this.session) {
+          this.session.set("access_token", refreshed.access_token);
+        }
+        this.doctor = { ...this.doctor, access_token: refreshed.access_token };
+        return await super.makeRequest(path, opts);
+      }
+    }
   }
 }
 
