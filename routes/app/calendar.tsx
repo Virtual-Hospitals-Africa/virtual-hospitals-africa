@@ -5,7 +5,7 @@ import DatePicker from "../../islands/date-picker.tsx";
 import MonthPicker from "../../islands/month-picker.tsx";
 import { useState } from "https://esm.sh/preact@10.13.1/hooks";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { GoogleClient } from "../../external-clients/google.ts";
+import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
 
@@ -106,7 +106,7 @@ export const handler: Handlers<
     // https://developers.google.com/calendar/api/v3/reference/events/list?hl=es-419
     //  If necessary, do some data-massaging server side
 
-    const googleClient = GoogleClient.fromCtx(ctx);
+    const googleClient = DoctorGoogleClient.fromCtx(ctx);
 
     const events = await googleClient.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
@@ -158,7 +158,6 @@ export const handler: Handlers<
   },
 };
 
-
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
@@ -185,18 +184,20 @@ export default function Calendar(
   }
 
   // filter all days from appointments to only show the current day
-  const dailyAppointments = all_appointments.filter((day) => day.day == startDay);
+  const dailyAppointments = all_appointments.filter((day) =>
+    day.day == startDay
+  );
 
   const days = Array.from({ length: 7 }, (_, i) => startDay + i);
 
   const date = new Date();
   date.setHours(date.getHours() + 1);
 
-  console.log(startDay, startDayParam)
+  console.log(startDay, startDayParam);
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-        <MonthPicker selectedMonth={currentMonth}/>
+        <MonthPicker selectedMonth={currentMonth} />
         <DatePicker selectedDate={startDay} days={days} />
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>

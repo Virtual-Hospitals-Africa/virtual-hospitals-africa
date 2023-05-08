@@ -491,13 +491,6 @@ export type DoctorGoogleToken = GoogleTokens & {
 
 export type DoctorWithGoogleTokens = ReturnedSqlRow<Doctor & GoogleTokens>;
 
-export type DoctorWithPossibleGoogleTokens = ReturnedSqlRow<
-  Doctor & {
-    access_token: Maybe<string>;
-    refresh_token: Maybe<string>;
-  }
->;
-
 export type Availability = {
   start: string;
   end: string;

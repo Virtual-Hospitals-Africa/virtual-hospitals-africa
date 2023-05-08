@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { GoogleClient } from "../../external-clients/google.ts";
+import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import set from "../../util/set.ts";
 import { WithSession } from "fresh_session";
 import {
@@ -102,7 +102,7 @@ export const handler: Handlers<any, WithSession> = {
 
     assert(gcal_availability_calendar_id, "No calendar ID found in session");
 
-    const googleClient = GoogleClient.fromCtx(ctx);
+    const googleClient = DoctorGoogleClient.fromCtx(ctx);
 
     const existingAvailability = await googleClient.getEvents(
       gcal_availability_calendar_id,
