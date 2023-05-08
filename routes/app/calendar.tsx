@@ -25,7 +25,7 @@ function CalendarLink(
 // imagine we are reading off db and getting all appointments
 const all_appointments = [
   {
-    day: 5,
+    day: 8,
     weekday: "Tue",
     appointments: [
       {
@@ -149,7 +149,7 @@ export const handler: Handlers<
     const currentDay = new Date().getDate();
     // sort appointments by day then filter all days from appointments to only show the next week
     dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
-      (day) => (day.day <= currentDay + 6) && (currentDay <= day.day),
+      (day) => (currentDay == day.day),
     );
 
     return ctx.render({ events });
@@ -160,11 +160,6 @@ export const handler: Handlers<
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
-  const { events } = props.data;
-  console.log("events", events);
-  console.log(
-    "somehow put the events from the handle function here",
-  );
 
   const currentMonth = new Date().getMonth();
 
@@ -178,19 +173,18 @@ export default function Calendar(
 
   if (startDayParam) {
     // Convert the startDayParam value to a number and set it in the state
-    const startDayValue = parseInt(startDayParam);
-    setStartDay(startDayValue);
+    const startDayValue = startDayParam;
+    const day = startDayValue.split('-')[2];
+    // const day = startDayValue.toString().slice(-2);
+    console.log(day);
+    setStartDay(parseInt(day));
   }
-
-  // filter all days from appointments to only show the current day
-  const dailyAppointments = all_appointments.filter((day) => day.day == startDay);
 
   const days = Array.from({ length: 7 }, (_, i) => startDay + i);
 
   const date = new Date();
   date.setHours(date.getHours() + 1);
 
-  console.log(startDay, startDayParam)
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">

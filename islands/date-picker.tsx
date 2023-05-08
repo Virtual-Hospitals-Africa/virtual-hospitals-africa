@@ -12,21 +12,26 @@ const DatePicker: FunctionalComponent<Props> = ({
 }) => {
   const [currentDate] = useState(selectedDate);
   const handleDateClick = (day: number) => {
-    const url = `/app/calendar?startday=${day}`;
+    const now = new Date();
+    now.setDate(day); // set the day of the month to the selected day
+    const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
+    const url = `/app/calendar?startday=${dateString}`;
     window.location.href = url;
   };
 
   const previousWeek = (day: number) => {
-    let cur_day = day - 7;
-    if (cur_day < 1) {
-      cur_day = cur_day + 30;
-    }
-    const url = `/app/calendar?startday=${cur_day}`;
+    const now = new Date();
+    now.setDate(day - 7); // subtract 7 days from the selected day
+    const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
+    const url = `/app/calendar?startday=${dateString}`;
     window.location.href = url;
   };
-
+  
   const nextWeek = (day: number) => {
-    const url = `/app/calendar?startday=${(day + 1) % 30}`;
+    const now = new Date();
+    now.setDate(day + 1); // add 1 day to the selected day
+    const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
+    const url = `/app/calendar?startday=${dateString}`;
     window.location.href = url;
   };
 
