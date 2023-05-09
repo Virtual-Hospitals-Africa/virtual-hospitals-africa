@@ -139,7 +139,6 @@ export const handler: Handlers<
   },
 };
 
-
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
@@ -154,7 +153,7 @@ export default function Calendar(
   const startDayParam = urlSearchParams.get("startday");
 
   let month = 0;
-  const lastDaysOfMonth: {[month: number]: number} = {
+  const lastDaysOfMonth: { [month: number]: number } = {
     0: 31, // January
     1: 28, // February
     2: 31, // March
@@ -168,7 +167,7 @@ export default function Calendar(
     10: 30, // November
     11: 31, // December
   };
-  
+
   if (startDayParam) {
     // Convert the startDayParam value to a number and set it in the state
     const startDayValue = startDayParam;
@@ -191,7 +190,10 @@ export default function Calendar(
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
         <MonthPicker selectedMonth={currentMonth} />
-        <DatePicker selectedDate={startDay} days={days} />
+        <DatePicker
+          selectedDate={startDay}
+          days={days}
+        />
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
 

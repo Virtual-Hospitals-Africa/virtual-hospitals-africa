@@ -1,5 +1,4 @@
 import { FunctionalComponent, h } from "preact";
-import { useState } from "preact/hooks";
 
 interface Props {
   selectedDate: number;
@@ -16,7 +15,8 @@ const DatePicker: FunctionalComponent<Props> = ({
     now.setDate(day); // set the day of the month to the selected day
     const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
     const url = `/app/calendar?startday=${dateString}`;
-    window.location.href = url;
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   const previousWeek = (day: number) => {
@@ -24,7 +24,8 @@ const DatePicker: FunctionalComponent<Props> = ({
     now.setDate(day - 7); // subtract 7 days from the selected day
     const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
     const url = `/app/calendar?startday=${dateString}`;
-    window.location.href = url;
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   const nextWeek = (day: number) => {
@@ -32,7 +33,8 @@ const DatePicker: FunctionalComponent<Props> = ({
     now.setDate(day + 1); // add 1 day to the selected day
     const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
     const url = `/app/calendar?startday=${dateString}`;
-    window.location.href = url;
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   return (
