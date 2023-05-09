@@ -139,6 +139,7 @@ export const handler: Handlers<
   },
 };
 
+
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
@@ -152,16 +153,36 @@ export default function Calendar(
   // Extract the value of the "startday" parameter
   const startDayParam = urlSearchParams.get("startday");
 
+  let month = 0;
+  const lastDaysOfMonth: {[month: number]: number} = {
+    0: 31, // January
+    1: 28, // February
+    2: 31, // March
+    3: 30, // April
+    4: 31, // May
+    5: 30, // June
+    6: 31, // July
+    7: 31, // August
+    8: 30, // September
+    9: 31, // October
+    10: 30, // November
+    11: 31, // December
+  };
+  
   if (startDayParam) {
     // Convert the startDayParam value to a number and set it in the state
     const startDayValue = startDayParam;
     const day = startDayValue.split("-")[2];
-    // const day = startDayValue.toString().slice(-2);
+    month = parseInt(startDayValue.split("-")[1]) - 1; // convert month to zero-indexed number
+    const lastDayOfMonth = lastDaysOfMonth[month];
     console.log(day);
-    setStartDay(parseInt(day));
+    setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
   }
 
-  const days = Array.from({ length: 7 }, (_, i) => startDay + i);
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const day = startDay + i;
+    return day > lastDaysOfMonth[month] ? day - lastDaysOfMonth[month] : day; // handle overflow to start from 1
+  });
 
   const date = new Date();
   date.setHours(date.getHours() + 1);
