@@ -129,7 +129,6 @@ export const handler: Handlers<
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
-  const currentMonth = new Date().getMonth();
 
   const [startDay, setStartDay] = useState<number>(new Date().getDate());
 
@@ -161,7 +160,7 @@ export default function Calendar(
     const day = startDayValue.split("-")[2];
     month = parseInt(startDayValue.split("-")[1]) - 1; // convert month to zero-indexed number
     const lastDayOfMonth = lastDaysOfMonth[month];
-    console.log(day);
+    console.log(startDayValue, day, month);
     setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
   }
 
