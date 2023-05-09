@@ -22,76 +22,6 @@ function CalendarLink(
   );
 }
 
-// imagine we are reading off db and getting all appointments
-const all_appointments = [
-  {
-    day: 8,
-    weekday: "Tue",
-    appointments: [
-      {
-        stripeColor: "bg-blue-500",
-        time: "1:34PM",
-        patientName: "belal",
-        patientAge: 27,
-        clinicName: "bkhealth",
-        durationMinutes: "30 mins",
-      },
-      {
-        stripeColor: "bg-red-500",
-        time: "10:00 AM",
-        patientName: "Jane Smith",
-        patientAge: 27,
-        clinicName: "Town Clinic",
-        durationMinutes: "45 mins",
-      },
-    ],
-  },
-  {
-    day: 4,
-    weekday: "Wed",
-    appointments: [
-      {
-        stripeColor: "bg-green-500",
-        time: "3:00 PM",
-        patientName: "John Doe",
-        patientAge: 35,
-        clinicName: "City Clinic",
-        durationMinutes: "60 mins",
-      },
-      {
-        stripeColor: "bg-purple-500",
-        time: "9:30 AM",
-        patientName: "Sarah Johnson",
-        patientAge: 42,
-        clinicName: "Health Hub",
-        durationMinutes: "30 mins",
-      },
-    ],
-  },
-  {
-    day: 11,
-    weekday: "Wed",
-    appointments: [
-      {
-        stripeColor: "bg-green-500",
-        time: "3:00 PM",
-        patientName: "Big Leg",
-        patientAge: 35,
-        clinicName: "BCIT",
-        durationMinutes: "60 mins",
-      },
-      {
-        stripeColor: "bg-purple-500",
-        time: "9:30 AM",
-        patientName: "huh",
-        patientAge: 42,
-        clinicName: "yep",
-        durationMinutes: "30 mins",
-      },
-    ],
-  },
-];
-
 let dailyAppointments: DoctorAppointment[];
 
 export const handler: Handlers<
@@ -156,11 +86,9 @@ export const handler: Handlers<
   },
 };
 
-
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
-
   const currentMonth = new Date().getMonth();
 
   const [startDay, setStartDay] = useState<number>(new Date().getDate());
@@ -174,7 +102,7 @@ export default function Calendar(
   if (startDayParam) {
     // Convert the startDayParam value to a number and set it in the state
     const startDayValue = startDayParam;
-    const day = startDayValue.split('-')[2];
+    const day = startDayValue.split("-")[2];
     // const day = startDayValue.toString().slice(-2);
     console.log(day);
     setStartDay(parseInt(day));
@@ -188,7 +116,7 @@ export default function Calendar(
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-        <MonthPicker selectedMonth={currentMonth}/>
+        <MonthPicker selectedMonth={currentMonth} />
         <DatePicker selectedDate={startDay} days={days} />
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
