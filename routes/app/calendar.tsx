@@ -165,11 +165,6 @@ export default function Calendar(
     setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
   }
 
-  // const days = Array.from({ length: 7 }, (_, i) => {
-  //   const day = startDay + i;
-  //   return day > lastDaysOfMonth[month] ? day - lastDaysOfMonth[month] : day; // handle overflow to start from 1
-  // });
-
   const daysToShow = 7;
   const daysBefore = Math.floor(daysToShow / 2);
   
@@ -194,7 +189,7 @@ export default function Calendar(
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-        <MonthPicker selectedMonth={currentMonth} />
+        <MonthPicker selectedMonth={month} />
         <DatePicker
           selectedDate={startDay}
           days={days}
