@@ -275,13 +275,13 @@ const conversationStates: {
         }
       }
 
-      console.log('id', patientMessage.appointment_offered_times[0]?.id)
+      // console.log('id', patientMessage.appointment_offered_times?.id)
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-      
-      if (!!toDecline.length)  {
+      for (const toDeclineSlot of toDecline){
+        console.log('time slot declining in db', toDeclineSlot)
         await appointments.declineOfferedTime(
           trx,
-          { id: toDecline[0] },
+          { id: toDeclineSlot },
         );
       }
 
