@@ -28,7 +28,7 @@ export const handler: Handlers<
   { events: GCalEventsResponse },
   WithSession
 > = {
-  async GET(_, ctx) {
+  async GET(body, ctx) {
     // 1. find the gcal_appointments_calendar_id as part of the session.
     // 2. Pass that in as the id to agent.getEvents();
     // 3. Use the event data in the view
@@ -41,10 +41,42 @@ export const handler: Handlers<
     const events = await agent.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
     );
+    console.log(
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    );
+    const url = new URL(body.headers.get("referer") as string);
+    const dateString = url.searchParams.get("startday");
+    // initialize date
+    let selectedYear: number;
+    let selectedMonth: number;
+    let selectedDay: number;
+    if (dateString != null) {
+      // Split the date string into an array [year, month, day]
+      const dateArray = dateString.split("-");
+      // Extract the year, month, and day as individual variables
+      selectedYear = parseInt(dateArray[0]);
+      selectedMonth = parseInt(dateArray[1]) - 1; // Subtract 1 to convert to a zero-based index for JavaScript Date object
+      selectedDay = parseInt(dateArray[2]);
+      console.log(
+        `Year: ${selectedYear}, Month: ${selectedMonth}, Day: ${selectedDay}`,
+      );
+    }
+
+    console.log(
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    );
 
     const mappedAppointments = events.items.map((item) => {
       const start = new Date(item.start.dateTime);
-      const day = parseInt(start.toLocaleString("en-US", { day: "numeric" }));
+      const day = parseInt(
+        start.toLocaleDateString("en-US", { day: "numeric" }),
+      );
+      const month = parseInt(
+        start.toLocaleDateString("en-US", { month: "numeric" }),
+      );
+      const year = parseInt(
+        start.toLocaleDateString("en-US", { year: "numeric" }),
+      );
       const weekday = start.toLocaleString("en-US", { weekday: "short" });
       const appointment = {
         stripeColor: "bg-blue-500", // Just blue for now

@@ -589,6 +589,8 @@ export type WhatsAppSendable = string | {
   options: MessageOption[];
 };
 export type DoctorAppointment = {
+  year: number;
+  month: number;
   day: number;
   weekday: string;
   appointments: {
