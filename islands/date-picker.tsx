@@ -10,7 +10,7 @@ const DatePicker: FunctionalComponent<Props> = ({
   selectedDate,
   days,
 }) => {
-  const [currentDate] = useState(selectedDate);
+  const currentDate = selectedDate;
   const handleDateClick = (day: number) => {
     const now = new Date();
     now.setDate(day); // set the day of the month to the selected day
