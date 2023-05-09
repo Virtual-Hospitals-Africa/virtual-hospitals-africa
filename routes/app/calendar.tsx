@@ -44,7 +44,7 @@ export const handler: Handlers<
 
     const mappedAppointments = events.items.map((item) => {
       const start = new Date(item.start.dateTime);
-      const day = start.getUTCDate();
+      const day = parseInt(start.toLocaleString("en-US", { day: "numeric" }));
       const weekday = start.toLocaleString("en-US", { weekday: "short" });
       const appointment = {
         stripeColor: "bg-blue-500", // Just blue for now
@@ -76,7 +76,9 @@ export const handler: Handlers<
         mergedAppointments.push(appointment);
       }
     });
-    const currentDay = new Date().getDate();
+    const currentDay = parseInt(new Date().toLocaleDateString("en-US", {
+      day: "numeric",
+    }));
     // sort appointments by day then filter all days from appointments to only show the next week
     dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
       (day) => (currentDay == day.day),
