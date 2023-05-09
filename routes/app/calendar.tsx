@@ -93,7 +93,7 @@ export const handler: Handlers<
             (1000 * 60),
         ) + " mins", // Calculate duration in minutes
       };
-      return { day, weekday, appointments: [appointment] };
+      return { year, month, day, weekday, appointments: [appointment] };
     });
 
     // Merge appointments for the same day/weekday
@@ -107,14 +107,33 @@ export const handler: Handlers<
       } else {
         mergedAppointments.push(appointment);
       }
-    });
-    const currentDay = parseInt(new Date().toLocaleDateString("en-US", {
-      day: "numeric",
-    }));
+    }); // if there's nothing in the address bar, use the current date
+    console.log(dateString);
+    if (dateString != null) {
+      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
+        .filter(
+          (day) => (selectedDay == day.day),
+        );
+    } else {
+      const currentDate = new Date();
+      const currentDay = parseInt(currentDate.toLocaleDateString("en-US", {
+        day: "numeric",
+      }));
+      console.log("day", currentDay);
+      const currentMonth = parseInt(currentDate.toLocaleDateString("en-US", {
+        month: "numeric",
+      }));
+      console.log("month", currentMonth);
+      const currentYear = parseInt(currentDate.toLocaleDateString("en-US", {
+        year: "numeric",
+      }));
+      console.log("year", currentYear);
+      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
+        .filter(
+          (day) => (currentDay == day.day),
+        );
+    }
     // sort appointments by day then filter all days from appointments to only show the next week
-    dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
-      (day) => (currentDay == day.day),
-    );
 
     return ctx.render({ events });
   },
