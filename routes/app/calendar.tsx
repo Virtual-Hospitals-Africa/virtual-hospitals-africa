@@ -41,9 +41,6 @@ export const handler: Handlers<
     const events = await agent.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
     );
-    console.log(
-      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    );
     const url = new URL(body.headers.get("referer") as string);
     const dateString = url.searchParams.get("startday");
     // initialize date
@@ -61,10 +58,6 @@ export const handler: Handlers<
         `Year: ${selectedYear}, Month: ${selectedMonth}, Day: ${selectedDay}`,
       );
     }
-
-    console.log(
-      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-    );
 
     const mappedAppointments = events.items.map((item) => {
       const start = new Date(item.start.dateTime);
