@@ -54,9 +54,6 @@ export const handler: Handlers<
       selectedYear = parseInt(dateArray[0]);
       selectedMonth = parseInt(dateArray[1]) - 1; // Subtract 1 to convert to a zero-based index for JavaScript Date object
       selectedDay = parseInt(dateArray[2]);
-      console.log(
-        `Year: ${selectedYear}, Month: ${selectedMonth}, Day: ${selectedDay}`,
-      );
     }
 
     const mappedAppointments = events.items.map((item) => {
@@ -112,15 +109,12 @@ export const handler: Handlers<
       const currentDay = parseInt(currentDate.toLocaleDateString("en-US", {
         day: "numeric",
       }));
-      console.log("day", currentDay);
       const currentMonth = parseInt(currentDate.toLocaleDateString("en-US", {
         month: "numeric",
       }));
-      console.log("month", currentMonth);
       const currentYear = parseInt(currentDate.toLocaleDateString("en-US", {
         year: "numeric",
       }));
-      console.log("year", currentYear);
       dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
         .filter(
           (day) => (currentDay == day.day),
