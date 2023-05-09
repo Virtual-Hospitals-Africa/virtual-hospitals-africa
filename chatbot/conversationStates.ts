@@ -3,7 +3,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import { firstAvailableThirtyMinutes, getAllDoctorAvailability } from "./getDoctorAvailability.ts";
+import { availableThirtyMinutes, getAllDoctorAvailability } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
@@ -202,13 +202,12 @@ const conversationStates: {
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       console.log("onboarded:make_appointment:first_scheduling_option onEnter");
-      const firstAvailable = await firstAvailableThirtyMinutes(trx, []);
-      console.log("past firstAvailableThirtyMinutes");
+      const firstAvailable = await availableThirtyMinutes(trx, [], {date:null, timeslots_required:1});
 
       const offeredTime = await appointments.addOfferedTime(trx, {
         appointment_id: patientMessage.scheduling_appointment_id!,
-        doctor_id: firstAvailable.doctor.id,
-        start: firstAvailable.start,
+        doctor_id: firstAvailable[0].doctor.id,
+        start: firstAvailable[0].start,
       });
 
       console.log("past appointments.addOfferedTime");
@@ -292,17 +291,17 @@ const conversationStates: {
 
       console.log("declined time slot");
       console.log(declinedTimes);
-      const filteredAvailableTime = await firstAvailableThirtyMinutes(
+      const filteredAvailableTime = await availableThirtyMinutes(
         trx,
-        declinedTimes
+        declinedTimes, {date: null , timeslots_required: 1}
       );
       console.log("filtered stuff, is it working?");
       console.log(filteredAvailableTime);
 
       const offeredTime = await appointments.addOfferedTime(trx, {
         appointment_id: patientMessage.scheduling_appointment_id!,
-        doctor_id: filteredAvailableTime.doctor.id,
-        start: filteredAvailableTime.start,
+        doctor_id: filteredAvailableTime[0].doctor.id,
+        start: filteredAvailableTime[0].start,
       });
 
       const nextOfferedTimes: ReturnedSqlRow<
