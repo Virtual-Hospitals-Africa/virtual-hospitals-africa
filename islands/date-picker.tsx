@@ -21,7 +21,7 @@ const DatePicker: FunctionalComponent<Props> = ({
 
   const previousWeek = (day: number) => {
     const now = new Date();
-    now.setDate(day - 7); // subtract 7 days from the selected day
+    now.setDate(day - 4); // subtract 7 days from the selected day
     const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
     const url = `/app/calendar?startday=${dateString}`;
     history.pushState({}, "", url);
@@ -30,7 +30,7 @@ const DatePicker: FunctionalComponent<Props> = ({
 
   const nextWeek = (day: number) => {
     const now = new Date();
-    now.setDate(day + 1); // add 1 day to the selected day
+    now.setDate(day + 4); // add 1 day to the selected day
     const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
     const url = `/app/calendar?startday=${dateString}`;
     history.pushState({}, "", url);

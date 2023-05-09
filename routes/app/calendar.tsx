@@ -165,9 +165,27 @@ export default function Calendar(
     setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
   }
 
-  const days = Array.from({ length: 7 }, (_, i) => {
-    const day = startDay + i;
-    return day > lastDaysOfMonth[month] ? day - lastDaysOfMonth[month] : day; // handle overflow to start from 1
+  // const days = Array.from({ length: 7 }, (_, i) => {
+  //   const day = startDay + i;
+  //   return day > lastDaysOfMonth[month] ? day - lastDaysOfMonth[month] : day; // handle overflow to start from 1
+  // });
+
+  const daysToShow = 7;
+  const daysBefore = Math.floor(daysToShow / 2);
+  
+  const days = Array.from({ length: daysToShow }, (_, i) => {
+    const day = startDay - daysBefore + i;
+    if (day < 1) {
+      // Handle days before the start of the month
+      const prevMonth = month === 0 ? 11 : month - 1;
+      const prevMonthDays = lastDaysOfMonth[prevMonth];
+      return prevMonthDays + day;
+    } else if (day > lastDaysOfMonth[month]) {
+      // Handle days after the end of the month
+      return day > lastDaysOfMonth[month] ? day - lastDaysOfMonth[month] : day; // handle overflow to start from 1
+    } else {
+      return day;
+    }
   });
 
   const date = new Date();
