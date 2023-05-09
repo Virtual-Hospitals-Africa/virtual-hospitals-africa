@@ -291,25 +291,24 @@ const conversationStates: {
 
       console.log("declined time slot");
       console.log(declinedTimes);
-      const filteredAvailableTime = await availableThirtyMinutes(
+      const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
         declinedTimes, {date: null , timeslots_required: 1}
       );
-      console.log("filtered stuff, is it working?");
-      console.log(filteredAvailableTime);
-
-      const offeredTime = await appointments.addOfferedTime(trx, {
-        appointment_id: patientMessage.scheduling_appointment_id!,
-        doctor_id: filteredAvailableTime[0].doctor.id,
-        start: filteredAvailableTime[0].start,
-      });
 
       const nextOfferedTimes: ReturnedSqlRow<
-        AppointmentOfferedTime & { doctor_name: string }
-      >[] = [
-        offeredTime,
-        ...compact(patientMessage.appointment_offered_times),
-      ];
+      AppointmentOfferedTime & { doctor_name: string }
+      >[] = []      
+      for (const timeslot of filteredAvailableTimes){
+        const addedTime = await appointments.addOfferedTime(trx, {
+          appointment_id: patientMessage.scheduling_appointment_id!,
+          doctor_id: timeslot.doctor.id,
+          start: timeslot.start,
+        });
+        nextOfferedTimes.push(addedTime)
+      }
+
+      nextOfferedTimes.push(...compact(patientMessage.appointment_offered_times))
 
       return {
         ...patientMessage,

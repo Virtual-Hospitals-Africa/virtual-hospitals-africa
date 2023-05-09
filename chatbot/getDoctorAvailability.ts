@@ -141,11 +141,11 @@ export async function availableThirtyMinutes(trx: TrxOrDb, declinedTimes: string
 
   if (uniqueAppointmentTimeslots.length === 0) throw new Error("No availability found");
 
-  if (uniqueAppointmentTimeslots.length > opts.timeslots_required){
-    uniqueAppointmentTimeslots.slice(0,opts.timeslots_required)
-  }
-
-  return uniqueAppointmentTimeslots;
+  const requiredTimeslots = uniqueAppointmentTimeslots.length > opts.timeslots_required 
+  ? uniqueAppointmentTimeslots.slice(0,opts.timeslots_required) 
+  : uniqueAppointmentTimeslots
+  
+  return requiredTimeslots;
 }
 
 function generateAvailableThrityMinutes(start: string, end: string):
