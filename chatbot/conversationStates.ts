@@ -282,7 +282,7 @@ const conversationStates: {
       if (!!toDecline.length)  {
         await appointments.declineOfferedTime(
           trx,
-          { id: toDecline[0] }, //trying to hardcode 0 to id if it's undefined.
+          { id: toDecline[0] },
         );
       }
 

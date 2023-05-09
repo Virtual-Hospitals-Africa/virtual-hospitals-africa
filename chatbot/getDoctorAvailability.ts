@@ -126,15 +126,35 @@ export async function firstAvailableThirtyMinutes(trx: TrxOrDb, declinedTimes: s
   */
 
   for (const { doctor, availability } of doctorAvailability) {
+    const appointments = []
+    const appointmentDuration = 30 * 60 * 1000; // duration of each appointment in milliseconds
+
     console.log('availability', availability)
     for (const { start, end } of availability) {
-      const minutesBetween =
-        (new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60;
-      if (minutesBetween < 30) continue;
-      if (declinedTimes.some(time => start <= time && time < end)) continue;
+      const current = new Date(start)
+      current.setMinutes(Math.ceil(current.getMinutes() / 30) * 30); //0 or 30
+      current.setSeconds(0);
+      current.setMilliseconds(0);
+
+
+      while (current.getTime() + appointmentDuration <= new Date(end).getTime()) {
+        const currentDate = formatHarare(current) 
+        console.log('currentDate', currentDate)
+        if (!declinedTimes.includes(currentDate)){
+          appointments.push({
+            doctor: doctor,
+            start: currentDate
+          })
+        }
+        current.setTime(current.getTime() + appointmentDuration);
+      }
+      // const minutesBetween =
+      //   (new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60;
+      // if (minutesBetween < 30) continue;
+      // if (declinedTimes.some(time => start <= time && time < end)) continue;
       if (start < earliestAvailabilityStart) {
-        earliestAvailabilityDoctor = doctor;
-        earliestAvailabilityStart = start;
+        earliestAvailabilityDoctor = appointments[0].doctor;
+        earliestAvailabilityStart = appointments[0].start;
       }
     }
   }
@@ -145,11 +165,4 @@ export async function firstAvailableThirtyMinutes(trx: TrxOrDb, declinedTimes: s
     doctor: earliestAvailabilityDoctor,
     start: earliestAvailabilityStart,
   };
-}
-
-export async function generateAvailableTime(trx: TrxOrDb){
-  console.log('doctor timessss')
-  const doctorAvailability = await getAllDoctorAvailability(trx);
-  
-  console.log(doctorAvailability)
 }
