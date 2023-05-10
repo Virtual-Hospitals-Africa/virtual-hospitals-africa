@@ -104,6 +104,16 @@ export class Agent {
     return this.makeCalendarRequest(`/calendars/${calendarId}/events`);
   }
 
+  getEventsInRange(
+    calendarId = "primary",
+    timeMin: string,
+    timeMax: string,
+  ): Promise<GCalEventsResponse> {
+    return this.makeCalendarRequest(
+      `/calendars/${calendarId}/events?timeMin=${timeMin}T00:00:00Z&timeMax=${timeMax}T23:59:59Z`,
+    );
+  }
+
   insertEvent(
     calendarId: string,
     eventDetails: DeepPartial<GCalEvent>,
