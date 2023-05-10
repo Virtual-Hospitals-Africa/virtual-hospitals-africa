@@ -8,6 +8,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { Agent } from "../../external-clients/google.ts";
 import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
+import { dayOfYear } from "https://deno.land/std@0.160.0/datetime/mod.ts";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -52,7 +53,7 @@ export const handler: Handlers<
       const dateArray = dateString.split("-");
       // Extract the year, month, and day as individual variables
       selectedYear = parseInt(dateArray[0]);
-      selectedMonth = parseInt(dateArray[1]) - 1; // Subtract 1 to convert to a zero-based index for JavaScript Date object
+      selectedMonth = parseInt(dateArray[1]);
       selectedDay = parseInt(dateArray[2]);
     }
 
