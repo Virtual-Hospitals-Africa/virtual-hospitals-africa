@@ -28,7 +28,7 @@ export const handler: Handlers<
   { events: GCalEventsResponse },
   WithSession
 > = {
-  async GET(body, ctx) {
+  async GET(req, ctx) {
     // 1. find the gcal_appointments_calendar_id as part of the session.
     // 2. Pass that in as the id to agent.getEvents();
     // 3. Use the event data in the view
@@ -41,7 +41,7 @@ export const handler: Handlers<
     const events = await agent.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
     );
-    const url = new URL(body.headers.get("referer") as string);
+    const url = new URL(req.url);
     const dateString = url.searchParams.get("startday");
     // initialize date
     let selectedYear: number;
@@ -102,7 +102,9 @@ export const handler: Handlers<
     if (dateString != null) {
       dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
         .filter(
-          (day) => (selectedDay == day.day),
+          (day) =>
+            (selectedDay == day.day) && (selectedMonth == day.month) &&
+            (selectedYear == day.year),
         );
     } else {
       const currentDate = new Date();
@@ -117,7 +119,9 @@ export const handler: Handlers<
       }));
       dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
         .filter(
-          (day) => (currentDay == day.day),
+          (day) =>
+            (currentDay == day.day) && (currentMonth == day.month) &&
+            (currentYear == day.year),
         );
     }
     // sort appointments by day then filter all days from appointments to only show the next week
@@ -129,7 +133,6 @@ export const handler: Handlers<
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
-
   const [startDay, setStartDay] = useState<number>(new Date().getDate());
 
   // Parse the URLSearchParams object from the URL
@@ -166,7 +169,7 @@ export default function Calendar(
 
   const daysToShow = 7;
   const daysBefore = Math.floor(daysToShow / 2);
-  
+
   const days = Array.from({ length: daysToShow }, (_, i) => {
     const day = startDay - daysBefore + i;
     if (day < 1) {
