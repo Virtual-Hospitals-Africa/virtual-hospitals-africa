@@ -8,7 +8,6 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { Agent } from "../../external-clients/google.ts";
 import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
-import { dayOfYear } from "https://deno.land/std@0.160.0/datetime/mod.ts";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
