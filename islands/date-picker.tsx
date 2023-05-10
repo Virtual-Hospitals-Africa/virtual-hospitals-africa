@@ -28,33 +28,38 @@ const DatePicker: FunctionalComponent<Props> = ({
   const handleDateClick = (day: number) => {
     const now = new Date();
     now.setDate(day); // set the day of the month to the selected day
-    const selectedMonth = now.getMonth();
-    const selectedYear = now.getFullYear();
-    const selectedDate = now.getDate();
-    const currentMonth = new Date().getMonth();
-    const currentYear = new Date().getFullYear();
-    const currentDate = new Date().getDate();
-  
-    // If selected date is smaller than current date, add 1 to month
-    if (selectedYear < currentYear || (selectedYear === currentYear && selectedMonth < currentMonth) || (selectedYear === currentYear && selectedMonth === currentMonth && selectedDate < currentDate)) {
-      now.setMonth(selectedMonth + 1);
-    }
-  
     const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
-    const date = parseInt(dateString.split("-")[2]);
-    const url = `/app/calendar?startday=${dateString}`;
+    let url = `/app/calendar?startday=${dateString}`;
+
+    const dateParts = dateString.split("-");
+    const year = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]);
+    const cur_day = parseInt(dateParts[2]);
+    if (cur_day < selectedDate && cur_day <= 7) {
+      const newMonth = month + 1;
+      const newMonthString = newMonth.toString().padStart(2, "0"); 
+      url = `/app/calendar?startday=${year}-${newMonthString}-${day}`;
+    }
     history.pushState({}, "", url);
     window.location.reload();
   };
-  
+
   const previousWeek = (day: number) => {
     const now = new Date();
     now.setDate(day - 4); // subtract 7 days from the selected day
-    // if (now > new Date()) {
-    //   now.setMonth(now.getMonth() - 1); // add 1 month if selected date is before current date
+    const dateString = now.toISOString().slice(0, 10); 
+    let url = `/app/calendar?startday=${dateString}`;
+
+    // const dateParts = dateString.split("-");
+    // const year = parseInt(dateParts[0]);
+    // const month = parseInt(dateParts[1]);
+    // const cur_day = parseInt(dateParts[2]);
+    // if (cur_day > selectedDate && cur_day >= 21) {
+    //   const newMonth = month - 1;
+    //   const newMonthString = newMonth.toString().padStart(2, "0"); 
+    //   url = `/app/calendar?startday=${year}-${newMonthString}-${day}`;
     // }
-    const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
-    const url = `/app/calendar?startday=${dateString}`;
+
     history.pushState({}, "", url);
     window.location.reload();
   };
@@ -62,11 +67,18 @@ const DatePicker: FunctionalComponent<Props> = ({
   const nextWeek = (day: number) => {
     const now = new Date();
     now.setDate(day + 4); // add 1 day to the selected day
-    if (now < new Date()) {
-      now.setMonth(now.getMonth() + 1); // add 1 month if selected date is before current date
-    }
-    const dateString = now.toISOString().slice(0, 10); // get the date string in yyyy-mm-dd format
-    const url = `/app/calendar?startday=${dateString}`;
+    const dateString = now.toISOString().slice(0, 10); 
+    let url = `/app/calendar?startday=${dateString}`;
+
+    // const dateParts = dateString.split("-");
+    // const year = parseInt(dateParts[0]);
+    // const month = parseInt(dateParts[1]);
+    // const cur_day = parseInt(dateParts[2]);
+    // if (cur_day < selectedDate && cur_day <= 7) {
+    //   const newMonth = month + 1;
+    //   const newMonthString = newMonth.toString().padStart(2, "0");
+    //   url = `/app/calendar?startday=${year}-${newMonthString}-${day}`;
+    // }
     history.pushState({}, "", url);
     window.location.reload();
   };
