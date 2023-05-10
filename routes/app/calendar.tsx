@@ -107,7 +107,6 @@ export const handler: Handlers<
         mergedAppointments.push(appointment);
       }
     }); // if there's nothing in the address bar, use the current date
-    console.log(dateString);
     if (dateString != null) {
       dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
         .filter(
@@ -155,7 +154,6 @@ export default function Calendar(
     const day = startDayValue.split("-")[2];
     month = parseInt(startDayValue.split("-")[1]) - 1; // convert month to zero-indexed number
     const lastDayOfMonth = lastDaysOfMonth[month];
-    console.log(startDayValue, day, month);
     setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
   }
 
