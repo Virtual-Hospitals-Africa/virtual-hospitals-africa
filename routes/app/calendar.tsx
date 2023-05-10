@@ -38,12 +38,20 @@ export const handler: Handlers<
     //  If necessary, do some data-massaging server side
 
     const agent = Agent.fromCtx(ctx);
-
-    const events = await agent.getEvents(
-      ctx.state.session.data.gcal_appointments_calendar_id,
-    );
     const url = new URL(req.url);
     const dateString = url.searchParams.get("startday");
+    let events;
+    if (dateString) {
+      events = await agent.getEventsInRange(
+        ctx.state.session.data.gcal_appointments_calendar_id,
+        dateString,
+        dateString,
+      );
+    } else {
+      events = await agent.getEvents(
+        ctx.state.session.data.gcal_appointments_calendar_id,
+      );
+    }
     // initialize date
     let selectedYear: number;
     let selectedMonth: number;
@@ -108,25 +116,8 @@ export const handler: Handlers<
             (selectedYear == day.year),
         );
     } else {
-      const currentDate = new Date();
-      const currentDay = parseInt(currentDate.toLocaleDateString("en-US", {
-        day: "numeric",
-      }));
-      const currentMonth = parseInt(currentDate.toLocaleDateString("en-US", {
-        month: "numeric",
-      }));
-      const currentYear = parseInt(currentDate.toLocaleDateString("en-US", {
-        year: "numeric",
-      }));
-      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
-        .filter(
-          (day) =>
-            (currentDay == day.day) && (currentMonth == day.month) &&
-            (currentYear == day.year),
-        );
+      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day);
     }
-    // sort appointments by day then filter all days from appointments to only show the next week
-
     return ctx.render({ events });
   },
 };
