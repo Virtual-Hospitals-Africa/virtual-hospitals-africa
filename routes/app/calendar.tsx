@@ -51,7 +51,7 @@ export const handler: Handlers<
     let selectedYear: number;
     let selectedMonth: number;
     let selectedDay: number;
-    if (dateString != null) {
+    if (dateString) {
       // Split the date string into an array [year, month, day]
       const dateArray = dateString.split("-");
       // Extract the year, month, and day as individual variables
@@ -102,7 +102,7 @@ export const handler: Handlers<
         mergedAppointments.push(appointment);
       }
     }); // if there's nothing in the address bar, use the current date
-    if (dateString != null) {
+    if (dateString) {
       dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
         .filter(
           (day) =>
