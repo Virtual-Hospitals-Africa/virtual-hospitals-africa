@@ -13,7 +13,6 @@ const DatePicker: FunctionalComponent<Props> = ({
   currentYear,
   days,
 }) => {
-  const currentDate = currentDay;
   const handleDateClick = (selectedDay: number) => {
     let newDay = currentDay;
     let newMonth = currentMonth;
@@ -81,8 +80,8 @@ const DatePicker: FunctionalComponent<Props> = ({
             key={index}
             style={{
               margin: "0 40px",
-              backgroundColor: day === currentDate ? "#007aff" : "#fff",
-              color: day === currentDate ? "#fff" : "#000",
+              backgroundColor: day === currentDay ? "#007aff" : "#fff",
+              color: day === currentDay ? "#fff" : "#000",
               borderRadius: "50%",
               width: "40px",
               height: "40px",
