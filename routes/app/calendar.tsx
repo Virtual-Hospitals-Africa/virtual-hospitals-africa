@@ -40,7 +40,7 @@ export const handler: Handlers<
     const initialURL = new URL(req.url);
     let dateString = initialURL.searchParams.get("startday");
     // if there's nothing in the query, create one with the current date
-    if (dateString == null) {
+    if (!dateString) {
       const newDate = new Date();
       newDate.setDate(newDate.getDate());
       dateString = newDate.toISOString().slice(0, 10);
