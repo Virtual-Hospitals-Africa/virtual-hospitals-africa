@@ -344,6 +344,7 @@ const conversationStates: {
         patientMessage.appointment_offered_times[0].start
       )}. Would you like to schedule this appointment?`;
     },
+
     interactive: {
       type: "list",
       header: {
@@ -376,8 +377,8 @@ const conversationStates: {
         ],
       },
     },
-    onResponse: "onboarded:appointment_scheduled",
   },
+
   // options: [
   //   {
   //     option: "1",
