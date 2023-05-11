@@ -37,20 +37,16 @@ export const handler: Handlers<
     //  If necessary, do some data-massaging server side
 
     const agent = Agent.fromCtx(ctx);
-    const url = new URL(req.url);
-    const dateString = url.searchParams.get("startday");
-    let events;
-    if (dateString) {
-      events = await agent.getEventsInRange(
-        ctx.state.session.data.gcal_appointments_calendar_id,
-        dateString,
-        dateString,
-      );
-    } else {
-      events = await agent.getEvents(
-        ctx.state.session.data.gcal_appointments_calendar_id,
-      );
+    const initialURL = new URL(req.url);
+    let dateString = initialURL.searchParams.get("startday");
+    if (dateString == null) {
+      dateString = new Date().toISOString().slice(0, 10);
     }
+    const events = await agent.getEventsInRange(
+      ctx.state.session.data.gcal_appointments_calendar_id,
+      dateString,
+      dateString,
+    );
     // initialize date
     let selectedYear: number;
     let selectedMonth: number;
