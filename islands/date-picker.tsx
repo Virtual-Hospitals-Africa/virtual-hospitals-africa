@@ -38,7 +38,8 @@ const DatePicker: FunctionalComponent<Props> = ({
     if (cur_day < selectedDate && cur_day <= 7) {
       const newMonth = month + 1;
       const newMonthString = newMonth.toString().padStart(2, "0");
-      url = `/app/calendar?startday=${year}-${newMonthString}-${day}`;
+      const newDayString = day.toString().padStart(2, "0");
+      url = `/app/calendar?startday=${year}-${newMonthString}-${newDayString}`;
     }
     history.pushState({}, "", url);
     window.location.reload();
