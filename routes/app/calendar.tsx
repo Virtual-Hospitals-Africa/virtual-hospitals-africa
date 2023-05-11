@@ -128,20 +128,42 @@ export default function Calendar(
   const startDayParam = urlSearchParams.get("startday");
 
   let month = 0;
-  const lastDaysOfMonth: { [month: number]: number } = {
-    0: 31, // January
-    1: 28, // February
-    2: 31, // March
-    3: 30, // April
-    4: 31, // May
-    5: 30, // June
-    6: 31, // July
-    7: 31, // August
-    8: 30, // September
-    9: 31, // October
-    10: 30, // November
-    11: 31, // December
+  const currentYear = 2023;
+  const isLeap = (year: number): boolean =>
+    (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
+  type MonthDays = {
+    [month: number]: number;
   };
+
+  const lastDaysOfMonth: MonthDays = isLeap(currentYear)
+    ? {
+      0: 31, // January
+      1: 29, // February
+      2: 31, // March
+      3: 30, // April
+      4: 31, // May
+      5: 30, // June
+      6: 31, // July
+      7: 31, // August
+      8: 30, // September
+      9: 31, // October
+      10: 30, // November
+      11: 31, // December
+    }
+    : {
+      0: 31, // January
+      1: 28, // February
+      2: 31, // March
+      3: 30, // April
+      4: 31, // May
+      5: 30, // June
+      6: 31, // July
+      7: 31, // August
+      8: 30, // September
+      9: 31, // October
+      10: 30, // November
+      11: 31, // December
+    };
 
   if (startDayParam) {
     // Convert the startDayParam value to a number and set it in the state
@@ -169,9 +191,6 @@ export default function Calendar(
       return day;
     }
   });
-
-  const date = new Date();
-  date.setHours(date.getHours() + 1);
 
   return (
     <Layout title="My Calendar" route={props.route}>
