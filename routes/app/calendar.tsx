@@ -45,27 +45,16 @@ export const handler: Handlers<
       newDate.setDate(newDate.getDate());
       dateString = newDate.toISOString().slice(0, 10);
     }
+    // use PST for debugging reasons UTC-7 (-07:00)
     const params = {
       timeMin: `${dateString}T00:00:00-07:00`,
       timeMax: `${dateString}T23:59:59-07:00`,
     };
+    // get filtered calendar events here
     const events = await agent.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
       params,
     );
-    // initialize date
-    let selectedYear: number;
-    let selectedMonth: number;
-    let selectedDay: number;
-    // check if there are params in the url
-    if (dateString) {
-      // Split the date string into an array [year, month, day]
-      const dateArray = dateString.split("-");
-      // Extract the year, month, and day as individual variables
-      selectedYear = parseInt(dateArray[0]);
-      selectedMonth = parseInt(dateArray[1]);
-      selectedDay = parseInt(dateArray[2]);
-    }
 
     const mappedAppointments = events.items.map((item) => {
       const start = new Date(item.start.dateTime);
@@ -176,15 +165,6 @@ export default function Calendar(
       12: 31, // December
     };
 
-  // if (startDayParam) {
-  //   // Convert the startDayParam value to a number and set it in the state
-  //   const startDayValue = startDayParam;
-  //   const day = startDayValue.split("-")[2];
-  //   month = parseInt(startDayValue.split("-")[1]) - 1; // convert month to zero-indexed number
-  //   const lastDayOfMonth = lastDaysOfMonth[month];
-  //   setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
-  // }
-
   const daysToShow = 7;
   const daysBefore = Math.floor(daysToShow / 2);
 
@@ -194,12 +174,10 @@ export default function Calendar(
       let prevMonthDays;
       let prevMonth;
       // Handle days before the start of the month
-      // Get the previous month. if
+      // Get the previous month if January. If startDay is less than 10, we cannot be looking at the future month.
       if (startMonth === 1 && startDay < 10) {
         prevMonth = 12;
-        setStartYear(startYear - 1);
         prevMonthDays = lastDaysOfMonth[prevMonth];
-        setStartYear(startYear + 1);
       } else {
         prevMonth = startMonth - 1;
         prevMonthDays = lastDaysOfMonth[prevMonth];
@@ -209,7 +187,7 @@ export default function Calendar(
       // Handle days after the end of the month
       return day > lastDaysOfMonth[startMonth]
         ? day - lastDaysOfMonth[startMonth]
-        : day; // handle overflow to start from 1
+        : day;
     } else {
       return day;
     }
