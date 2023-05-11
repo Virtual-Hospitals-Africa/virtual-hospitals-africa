@@ -140,41 +140,40 @@ export default function Calendar(
     setStartMonth(parseInt(dateArray[1]));
     setStartDay(parseInt(dateArray[2]));
   }
-  const currentYear = 2023;
   const isLeap = (year: number): boolean =>
     (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
   type MonthDays = {
     [month: number]: number;
   };
 
-  const lastDaysOfMonth: MonthDays = isLeap(currentYear)
+  const lastDaysOfMonth: MonthDays = isLeap(startYear)
     ? {
-      0: 31, // January
-      1: 29, // February
-      2: 31, // March
-      3: 30, // April
-      4: 31, // May
-      5: 30, // June
-      6: 31, // July
-      7: 31, // August
-      8: 30, // September
-      9: 31, // October
-      10: 30, // November
-      11: 31, // December
+      1: 31, // January
+      2: 29, // February
+      3: 31, // March
+      4: 30, // April
+      5: 31, // May
+      6: 30, // June
+      7: 31, // July
+      8: 31, // August
+      9: 30, // September
+      10: 31, // October
+      11: 30, // November
+      12: 31, // December
     }
     : {
-      0: 31, // January
-      1: 28, // February
-      2: 31, // March
-      3: 30, // April
-      4: 31, // May
-      5: 30, // June
-      6: 31, // July
-      7: 31, // August
-      8: 30, // September
-      9: 31, // October
-      10: 30, // November
-      11: 31, // December
+      1: 31, // January
+      2: 28, // February
+      3: 31, // March
+      4: 30, // April
+      5: 31, // May
+      6: 30, // June
+      7: 31, // July
+      8: 31, // August
+      9: 30, // September
+      10: 31, // October
+      11: 30, // November
+      12: 31, // December
     };
 
   // if (startDayParam) {
@@ -192,9 +191,19 @@ export default function Calendar(
   const days = Array.from({ length: daysToShow }, (_, i) => {
     const day = startDay - daysBefore + i;
     if (day < 1) {
+      let prevMonthDays;
+      let prevMonth;
       // Handle days before the start of the month
-      const prevMonth = startMonth === 0 ? 11 : startMonth - 1;
-      const prevMonthDays = lastDaysOfMonth[prevMonth];
+      // Get the previous month. if
+      if (startMonth === 1 && startDay < 10) {
+        prevMonth = 12;
+        setStartYear(startYear - 1);
+        prevMonthDays = lastDaysOfMonth[prevMonth];
+        setStartYear(startYear + 1);
+      } else {
+        prevMonth = startMonth - 1;
+        prevMonthDays = lastDaysOfMonth[prevMonth];
+      }
       return prevMonthDays + day;
     } else if (day > lastDaysOfMonth[startMonth]) {
       // Handle days after the end of the month
