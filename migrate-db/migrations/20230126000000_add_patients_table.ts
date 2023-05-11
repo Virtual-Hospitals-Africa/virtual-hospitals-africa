@@ -1,6 +1,6 @@
 import { Kysely, sql } from "kysely";
 
-export function up(db: Kysely<any>) {
+export function up(db: Kysely<unknown>) {
   return db.schema
     .createTable("patients")
     .addColumn("id", "serial", (col) => col.primaryKey())
@@ -25,6 +25,6 @@ export function up(db: Kysely<any>) {
     .execute();
 }
 
-export async function down(db: Kysely<any>) {
+export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable("patients");
 }

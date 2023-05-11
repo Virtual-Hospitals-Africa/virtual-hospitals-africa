@@ -2,7 +2,6 @@ import { DeleteResult, sql, UpdateResult } from "kysely";
 import db from "../external-clients/db.ts";
 import {
   DoctorWithGoogleTokens,
-  DoctorWithPossibleGoogleTokens,
   GoogleTokens,
   Maybe,
   TrxOrDb,
@@ -99,20 +98,30 @@ const getWithTokensQuery = (trx: TrxOrDb) =>
 // TODO: Store auth tokens in a way that we can more easily refresh them and find the ones for a specific doctor
 export function getAllWithTokens(
   trx: TrxOrDb,
-): Promise<DoctorWithPossibleGoogleTokens[]> {
+): Promise<DoctorWithGoogleTokens[]> {
   return getWithTokensQuery(trx).execute();
 }
 
-function hasTokens(
-  doctor: Maybe<DoctorWithPossibleGoogleTokens>,
+export function isDoctorWithGoogleTokens(
+  doctor: unknown,
 ): doctor is DoctorWithGoogleTokens {
-  return !!doctor && !!doctor.access_token && !!doctor.refresh_token;
+  return !!doctor &&
+    typeof doctor === "object" &&
+    "access_token" in doctor && typeof doctor.access_token === "string" &&
+    "refresh_token" in doctor && typeof doctor.refresh_token === "string" &&
+    "id" in doctor && typeof doctor.id === "number" &&
+    "name" in doctor && typeof doctor.name === "string" &&
+    "email" in doctor && typeof doctor.email === "string" &&
+    "gcal_appointments_calendar_id" in doctor &&
+    typeof doctor.gcal_appointments_calendar_id === "string" &&
+    "gcal_availability_calendar_id" in doctor &&
+    typeof doctor.gcal_availability_calendar_id === "string";
 }
 
-function withTokens(doctors: DoctorWithPossibleGoogleTokens[]) {
+function withTokens(doctors: DoctorWithGoogleTokens[]) {
   const withTokens: DoctorWithGoogleTokens[] = [];
   for (const doctor of doctors) {
-    if (!hasTokens(doctor)) {
+    if (!isDoctorWithGoogleTokens(doctor)) {
       throw new Error("Doctor has no access token or refresh token");
     }
     withTokens.push(doctor);
@@ -129,7 +138,7 @@ export async function getAllWithExtantTokens(trx: TrxOrDb): Promise<
 export async function getWithTokensById(
   trx: TrxOrDb,
   doctor_id: number,
-): Promise<Maybe<DoctorWithPossibleGoogleTokens>> {
+): Promise<Maybe<DoctorWithGoogleTokens>> {
   const [doctor] = await getWithTokensQuery(trx).where(
     "doctors.id",
     "=",

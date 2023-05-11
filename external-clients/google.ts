@@ -1,9 +1,11 @@
+// deno-lint-ignore-file no-explicit-any
 import "dotenv";
 import { assert, assertEquals } from "std/testing/asserts.ts";
 import moment from "https://deno.land/x/momentjs@2.29.1-deno/mod.ts";
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {
   DeepPartial,
+  DoctorWithGoogleTokens,
   GCalCalendarList,
   GCalCalendarListEntry,
   GCalEvent,
@@ -14,37 +16,49 @@ import {
 } from "../types.ts";
 import { WithSession } from "fresh_session";
 import { HandlerContext } from "$fresh/src/server/mod.ts";
+import {
+  isDoctorWithGoogleTokens,
+  removeExpiredAccessToken,
+  updateAccessToken,
+} from "../models/doctors.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
 type RequestOpts = {
   method?: "get" | "post" | "put" | "delete";
-  data?: any;
+  data?: unknown;
 };
 
-export function isGoogleTokens(tokens: any): tokens is GoogleTokens {
-  return !!tokens && typeof tokens === "object" &&
-    "access_token" in tokens && typeof tokens.access_token === "string" &&
-    "refresh_token" in tokens && typeof tokens.refresh_token === "string";
+export function isGoogleTokens(
+  maybeTokens: unknown,
+): maybeTokens is GoogleTokens {
+  return !!maybeTokens &&
+    typeof maybeTokens === "object" &&
+    "access_token" in maybeTokens &&
+    typeof maybeTokens.access_token === "string" &&
+    "refresh_token" in maybeTokens &&
+    typeof maybeTokens.refresh_token === "string";
 }
 
-export class Agent {
-  tokens: GoogleTokens;
-  constructor(tokens: any) {
+export class GoogleClient {
+  constructor(public tokens: GoogleTokens) {
     if (!isGoogleTokens(tokens)) {
       throw new Error("Invalid tokens object");
     }
-    this.tokens = tokens;
   }
 
-  static fromCtx(ctx: HandlerContext<any, WithSession>): Agent {
-    return new Agent({
-      access_token: ctx.state.session.get("access_token"),
-      refresh_token: ctx.state.session.get("refresh_token"),
-    });
+  static fromCtx(ctx: HandlerContext<unknown, WithSession>): GoogleClient {
+    return new GoogleClient(ctx.state.session.data);
   }
 
-  private async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
+  async doMakeRequest<T>(
+    path: string,
+    opts?: RequestOpts,
+  ): Promise<
+    | { result: "unauthorized_error" }
+    | { result: "other_error"; error: Error }
+    | { result: "success"; data: any }
+  > {
     const url = `${googleApisUrl}${path}`;
     const method = opts?.method || "get";
     console.log(`${method} ${url}`);
@@ -59,21 +73,43 @@ export class Agent {
       let data;
       try {
         data = await response.json();
-      } catch (err) {
-        console.error(`${method} ${url}`, err);
-        throw err;
+      } catch (error) {
+        console.error(`${method} ${url}`, error);
+        return { result: "other_error", error };
       }
       console.log(`${method} ${url}`, JSON.stringify(data));
       if (data.error) {
+        if (data.error.code === 401) {
+          return { result: "unauthorized_error" };
+        }
         const errorMessage = data.error?.errors?.[0]?.message || data.error;
         throw new Error(errorMessage);
       }
-      return data;
+      return { result: "success", data };
     } else {
-      const text = await response.text();
-      console.log(`${method} ${url}`, text);
-      return text;
+      try {
+        const text = await response.text();
+        console.log(`${method} ${url}`, text);
+        return { result: "success", data: text };
+      } catch (error) {
+        console.error(`${method} ${url}`, error);
+        return { result: "other_error", error };
+      }
     }
+  }
+
+  async makeRequest<T>(
+    path: string,
+    opts?: RequestOpts,
+  ): Promise<T> {
+    const response = await this.doMakeRequest(path, opts);
+    if (response.result === "unauthorized_error") {
+      throw new Error("Unauthorized");
+    }
+    if (response.result === "other_error") {
+      throw response.error;
+    }
+    return response.data;
   }
 
   private makeCalendarRequest(path: string, opts?: RequestOpts): Promise<any> {
@@ -211,7 +247,43 @@ export class Agent {
   }
 }
 
-console.log('Deno.env.get("SELF_URL")', Deno.env.get("SELF_URL"));
+export class DoctorGoogleClient extends GoogleClient {
+  constructor(
+    public doctor: DoctorWithGoogleTokens,
+    public session?: WithSession["session"],
+  ) {
+    super(doctor);
+    if (!isDoctorWithGoogleTokens(doctor)) {
+      throw new Error("Ya gotta be a doctah");
+    }
+  }
+
+  static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
+    return new DoctorGoogleClient(ctx.state.session.data, ctx.state.session);
+  }
+
+  async makeRequest(
+    path: string,
+    opts?: RequestOpts,
+  ): Promise<any> {
+    try {
+      return await super.makeRequest(path, opts);
+    } catch (err) {
+      if (err.message === "Unauthorized") {
+        assert(this.doctor.refresh_token, "No refresh token");
+        const refreshed = await refreshTokens(this.doctor);
+        if (refreshed.result !== "success") {
+          throw new Error("Failed to refresh tokens");
+        }
+        if (this.session) {
+          this.session.set("access_token", refreshed.access_token);
+        }
+        this.doctor = { ...this.doctor, access_token: refreshed.access_token };
+        return await super.makeRequest(path, opts);
+      }
+    }
+  }
+}
 
 const selfUrl = Deno.env.get("SELF_URL") ||
   "https://virtual-hospitals-africa.herokuapp.com";
@@ -279,4 +351,20 @@ export async function getNewAccessTokenFromRefreshToken(
   assertEquals(typeof json.access_token, "string");
 
   return json.access_token;
+}
+
+export async function refreshTokens(
+  doctor: DoctorWithGoogleTokens,
+): Promise<{ result: "success"; access_token: string } | { result: "expiry" }> {
+  try {
+    const access_token = await getNewAccessTokenFromRefreshToken(
+      doctor.refresh_token,
+    );
+    await updateAccessToken(doctor.id, access_token);
+    return { result: "success", access_token };
+  } catch (err) {
+    console.error(err);
+    removeExpiredAccessToken({ doctor_id: doctor.id });
+    return { result: "expiry" };
+  }
 }

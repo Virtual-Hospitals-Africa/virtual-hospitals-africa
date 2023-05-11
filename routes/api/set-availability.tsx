@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import { Agent } from "../../external-clients/google.ts";
+import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import set from "../../util/set.ts";
 import { WithSession } from "fresh_session";
 import {
@@ -91,7 +91,7 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: Handlers<any, WithSession> = {
+export const handler: Handlers<unknown, WithSession> = {
   async POST(req, ctx) {
     const params = new URLSearchParams(await req.text());
     const availability = parseForm(params);
@@ -102,9 +102,9 @@ export const handler: Handlers<any, WithSession> = {
 
     assert(gcal_availability_calendar_id, "No calendar ID found in session");
 
-    const agent = Agent.fromCtx(ctx);
+    const googleClient = DoctorGoogleClient.fromCtx(ctx);
 
-    const existingAvailability = await agent.getEvents(
+    const existingAvailability = await googleClient.getEvents(
       gcal_availability_calendar_id,
     );
 
@@ -113,10 +113,10 @@ export const handler: Handlers<any, WithSession> = {
     // Google rate limits you if you try to do these in parallel :(
     // TODO: revisit whether to clear all these out
     for (const event of existingAvailabilityEvents) {
-      await agent.deleteEvent(gcal_availability_calendar_id, event.id);
+      await googleClient.deleteEvent(gcal_availability_calendar_id, event.id);
     }
     for (const event of availabilityBlocks(availability)) {
-      await agent.insertEvent(gcal_availability_calendar_id, event);
+      await googleClient.insertEvent(gcal_availability_calendar_id, event);
     }
 
     // TODO: Redirect to calendar

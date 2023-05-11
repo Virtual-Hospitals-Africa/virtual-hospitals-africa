@@ -100,12 +100,12 @@ export async function makeAppointment(
     `No gcal_appointments_calendar_id found for doctor_id ${offeredTime.doctor_id}`,
   );
 
-  const doctorGoogleAgent = new google.Agent(matchingDoctor);
+  const doctorGoogleClient = new google.DoctorGoogleClient(matchingDoctor);
 
   const end = new Date(offeredTime.start);
   end.setMinutes(end.getMinutes() + 30);
 
-  const insertedEvent = await doctorGoogleAgent.insertEvent(
+  const insertedEvent = await doctorGoogleClient.insertEvent(
     matchingDoctor.gcal_appointments_calendar_id,
     gcal,
   );

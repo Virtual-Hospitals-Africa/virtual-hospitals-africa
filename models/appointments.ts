@@ -7,7 +7,6 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from "../types.ts";
-import { appointmentDetails } from "../chatbot/makeAppointment.ts";
 
 export async function addOfferedTime(
   trx: TrxOrDb,
