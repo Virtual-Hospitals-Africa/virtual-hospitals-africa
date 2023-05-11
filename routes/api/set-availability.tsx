@@ -91,7 +91,7 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: Handlers<any, WithSession> = {
+export const handler: Handlers<unknown, WithSession> = {
   async POST(req, ctx) {
     const params = new URLSearchParams(await req.text());
     const availability = parseForm(params);

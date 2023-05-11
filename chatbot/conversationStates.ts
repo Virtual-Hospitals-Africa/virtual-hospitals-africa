@@ -4,9 +4,7 @@ import {
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
 import {
-  allUniqueAvailbaility,
   firstAvailableThirtyMinutes,
-  generateAvailableTime,
   getAllDoctorAvailability,
 } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
@@ -14,7 +12,6 @@ import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
 import {
   AppointmentOfferedTime,
-  Availability,
   ConversationState,
   ConversationStateHandler,
   ConversationStateHandlerReturn,
@@ -24,7 +21,6 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
-import { concat } from "https://deno.land/std@0.160.0/bytes/mod.ts";
 
 // Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
@@ -299,11 +295,6 @@ const conversationStates: {
 
       const times = await getAllDoctorAvailability(trx);
       console.log(times);
-
-      for (let i = 0; i < times.length; i++) {
-        for (let j = i; j < times[i].availability.length; j++) {
-        }
-      }
 
       return {
         ...patientMessage,
