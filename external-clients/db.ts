@@ -27,6 +27,7 @@ export type DatabaseSchema = {
   whatsapp_messages_sent: SqlRow<WhatsappMessageSent>;
 };
 
+// deno-lint-ignore no-explicit-any
 const uri = Deno.env.get("DATABASE_URL") + "?sslmode=require" as any;
 
 const db = new Kysely<DatabaseSchema>({
@@ -42,6 +43,7 @@ const db = new Kysely<DatabaseSchema>({
           user: Deno.env.get("DB_USER")!,
           database: Deno.env.get("DB_NAME")!,
         },
+        // deno-lint-ignore no-explicit-any
       ) as any;
     },
     createIntrospector(db: Kysely<unknown>) {

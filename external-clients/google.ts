@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import "dotenv";
 import { assert, assertEquals } from "std/testing/asserts.ts";
 import moment from "https://deno.land/x/momentjs@2.29.1-deno/mod.ts";
@@ -25,15 +26,17 @@ const googleApisUrl = "https://www.googleapis.com";
 
 type RequestOpts = {
   method?: "get" | "post" | "put" | "delete";
-  data?: any;
+  data?: unknown;
 };
 
 export function isGoogleTokens(
-  maybeTokens: any,
+  maybeTokens: unknown,
 ): maybeTokens is GoogleTokens {
   return !!maybeTokens &&
     typeof maybeTokens === "object" &&
+    "access_token" in maybeTokens &&
     typeof maybeTokens.access_token === "string" &&
+    "refresh_token" in maybeTokens &&
     typeof maybeTokens.refresh_token === "string";
 }
 
@@ -44,11 +47,11 @@ export class GoogleClient {
     }
   }
 
-  static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
+  static fromCtx(ctx: HandlerContext<unknown, WithSession>): GoogleClient {
     return new GoogleClient(ctx.state.session.data);
   }
 
-  async doMakeRequest(
+  async doMakeRequest<T>(
     path: string,
     opts?: RequestOpts,
   ): Promise<
@@ -95,10 +98,10 @@ export class GoogleClient {
     }
   }
 
-  async makeRequest(
+  async makeRequest<T>(
     path: string,
     opts?: RequestOpts,
-  ): Promise<any> {
+  ): Promise<T> {
     const response = await this.doMakeRequest(path, opts);
     if (response.result === "unauthorized_error") {
       throw new Error("Unauthorized");

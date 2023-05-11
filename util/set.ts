@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export default function set(obj: any, path: string, value: any) {
   const keys = path.split(".");
   let current = obj;

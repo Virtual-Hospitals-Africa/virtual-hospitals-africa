@@ -4,10 +4,10 @@ import { WithSession } from "fresh_session";
 import { AvailabilityJSON, GoogleTokens } from "../../../types.ts";
 import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
 
-async function getAvailability(
+function getAvailability(
   _tokens: GoogleTokens,
 ): Promise<AvailabilityJSON> {
-  return {
+  return Promise.resolve({
     Sunday: [],
     Monday: [{
       start: { hour: 9, minute: 0, amPm: "am" },
@@ -30,7 +30,7 @@ async function getAvailability(
       end: { hour: 5, minute: 0, amPm: "pm" },
     }],
     Saturday: [],
-  };
+  });
 }
 
 export const handler: Handlers<

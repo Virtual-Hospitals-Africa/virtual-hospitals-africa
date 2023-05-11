@@ -103,16 +103,18 @@ export function getAllWithTokens(
 }
 
 export function isDoctorWithGoogleTokens(
-  doctor: any,
+  doctor: unknown,
 ): doctor is DoctorWithGoogleTokens {
   return !!doctor &&
     typeof doctor === "object" &&
-    typeof doctor.access_token === "string" &&
-    typeof doctor.refresh_token === "string" &&
-    typeof doctor.id === "number" &&
-    typeof doctor.name === "string" &&
-    typeof doctor.email === "string" &&
+    "access_token" in doctor && typeof doctor.access_token === "string" &&
+    "refresh_token" in doctor && typeof doctor.refresh_token === "string" &&
+    "id" in doctor && typeof doctor.id === "number" &&
+    "name" in doctor && typeof doctor.name === "string" &&
+    "email" in doctor && typeof doctor.email === "string" &&
+    "gcal_appointments_calendar_id" in doctor &&
     typeof doctor.gcal_appointments_calendar_id === "string" &&
+    "gcal_availability_calendar_id" in doctor &&
     typeof doctor.gcal_availability_calendar_id === "string";
 }
 
