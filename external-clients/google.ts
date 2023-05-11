@@ -100,17 +100,16 @@ export class Agent {
     });
   }
 
-  getEvents(calendarId = "primary"): Promise<GCalEventsResponse> {
-    return this.makeCalendarRequest(`/calendars/${calendarId}/events`);
-  }
-
-  getEventsInRange(
+  getEvents(
     calendarId = "primary",
-    timeMin: string,
-    timeMax: string,
+    opts: {
+      timeMin?: string;
+      timeMax?: string;
+    } = {},
   ): Promise<GCalEventsResponse> {
+    const params = new URLSearchParams(opts);
     return this.makeCalendarRequest(
-      `/calendars/${calendarId}/events?timeMin=${timeMin}T00:00:00Z&timeMax=${timeMax}T23:59:59Z`,
+      `/calendars/${calendarId}/events?${params}`,
     );
   }
 

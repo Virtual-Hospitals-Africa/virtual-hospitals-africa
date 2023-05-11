@@ -39,18 +39,25 @@ export const handler: Handlers<
     const agent = Agent.fromCtx(ctx);
     const initialURL = new URL(req.url);
     let dateString = initialURL.searchParams.get("startday");
+    // if there's nothing in the query, create one with the current date
     if (dateString == null) {
-      dateString = new Date().toISOString().slice(0, 10);
+      const newDate = new Date();
+      newDate.setDate(newDate.getDate());
+      dateString = newDate.toISOString().slice(0, 10);
     }
-    const events = await agent.getEventsInRange(
+    const params = {
+      timeMin: `${dateString}T00:00:00-07:00`,
+      timeMax: `${dateString}T23:59:59-07:00`,
+    };
+    const events = await agent.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
-      dateString,
-      dateString,
+      params,
     );
     // initialize date
     let selectedYear: number;
     let selectedMonth: number;
     let selectedDay: number;
+    // check if there are params in the url
     if (dateString) {
       // Split the date string into an array [year, month, day]
       const dateArray = dateString.split("-");
@@ -103,12 +110,7 @@ export const handler: Handlers<
       }
     }); // if there's nothing in the address bar, use the current date
     if (dateString) {
-      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day)
-        .filter(
-          (day) =>
-            (selectedDay == day.day) && (selectedMonth == day.month) &&
-            (selectedYear == day.year),
-        );
+      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day);
     } else {
       dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day);
     }
@@ -119,15 +121,25 @@ export const handler: Handlers<
 export default function Calendar(
   props: PageProps<{ events: GCalEventsResponse }>,
 ) {
+  // initially set up date with current date
   const [startDay, setStartDay] = useState<number>(new Date().getDate());
+  const [startMonth, setStartMonth] = useState<number>(
+    new Date().getMonth() + 1,
+  );
+  const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
 
   // Parse the URLSearchParams object from the URL
   const urlSearchParams = new URLSearchParams(props.url.search);
 
   // Extract the value of the "startday" parameter
   const startDayParam = urlSearchParams.get("startday");
-
-  let month = 0;
+  // if params exist in the link
+  if (startDayParam) {
+    const dateArray = startDayParam.split("-");
+    setStartYear(parseInt(dateArray[0]));
+    setStartMonth(parseInt(dateArray[1]));
+    setStartDay(parseInt(dateArray[2]));
+  }
   const currentYear = 2023;
   const isLeap = (year: number): boolean =>
     (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
@@ -165,14 +177,14 @@ export default function Calendar(
       11: 31, // December
     };
 
-  if (startDayParam) {
-    // Convert the startDayParam value to a number and set it in the state
-    const startDayValue = startDayParam;
-    const day = startDayValue.split("-")[2];
-    month = parseInt(startDayValue.split("-")[1]) - 1; // convert month to zero-indexed number
-    const lastDayOfMonth = lastDaysOfMonth[month];
-    setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
-  }
+  // if (startDayParam) {
+  //   // Convert the startDayParam value to a number and set it in the state
+  //   const startDayValue = startDayParam;
+  //   const day = startDayValue.split("-")[2];
+  //   month = parseInt(startDayValue.split("-")[1]) - 1; // convert month to zero-indexed number
+  //   const lastDayOfMonth = lastDaysOfMonth[month];
+  //   setStartDay(Math.min(parseInt(day), lastDayOfMonth)); // ensure startDay doesn't exceed lastDayOfMonth
+  // }
 
   const daysToShow = 7;
   const daysBefore = Math.floor(daysToShow / 2);
@@ -181,12 +193,14 @@ export default function Calendar(
     const day = startDay - daysBefore + i;
     if (day < 1) {
       // Handle days before the start of the month
-      const prevMonth = month === 0 ? 11 : month - 1;
+      const prevMonth = startMonth === 0 ? 11 : startMonth - 1;
       const prevMonthDays = lastDaysOfMonth[prevMonth];
       return prevMonthDays + day;
-    } else if (day > lastDaysOfMonth[month]) {
+    } else if (day > lastDaysOfMonth[startMonth]) {
       // Handle days after the end of the month
-      return day > lastDaysOfMonth[month] ? day - lastDaysOfMonth[month] : day; // handle overflow to start from 1
+      return day > lastDaysOfMonth[startMonth]
+        ? day - lastDaysOfMonth[startMonth]
+        : day; // handle overflow to start from 1
     } else {
       return day;
     }
@@ -195,9 +209,11 @@ export default function Calendar(
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-        <MonthPicker selectedMonth={month} />
+        <MonthPicker selectedMonth={startMonth - 1} />
         <DatePicker
-          selectedDate={startDay}
+          currentDay={startDay}
+          currentMonth={startMonth}
+          currentYear={startYear}
           days={days}
         />
         <DailyAppointments dailyAppointments={dailyAppointments} />
