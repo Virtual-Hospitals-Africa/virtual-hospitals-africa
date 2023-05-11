@@ -1,33 +1,68 @@
 import { FunctionalComponent, h } from "preact";
-import { useState } from "preact/hooks";
 
 interface Props {
-  selectedDate: number;
+  currentDay: number;
+  currentMonth: number;
+  currentYear: number;
   days: number[];
 }
 
 const DatePicker: FunctionalComponent<Props> = ({
-  selectedDate,
+  currentDay,
+  currentMonth,
+  currentYear,
   days,
 }) => {
-  const [currentDate] = useState(selectedDate);
-  const handleDateClick = (day: number) => {
-    const url = `/app/calendar?startday=${day}`;
-    window.location.href = url;
+  const handleDateClick = (selectedDay: number) => {
+    let newDay = currentDay;
+    let newMonth = currentMonth;
+    let newYear = currentYear;
+
+    // check if we're decrementing a month
+    if (selectedDay - currentDay > 20) {
+      newMonth -= 1;
+      // check to see if we're decrementing a year
+      if (newMonth < 1) {
+        newMonth = 12;
+        newYear -= 1;
+      }
+      // check if we're incrementing a month
+    } else if (currentDay - selectedDay > 20) {
+      newMonth += 1;
+      // check to see if we're incrementing a year
+      if (newMonth > 12) {
+        newMonth = 1;
+        newYear += 1;
+      }
+      // if neither, just change the day
+    }
+    newDay = selectedDay;
+    const newDayString = newDay.toString().padStart(2, "0");
+    const newMonthString = newMonth.toString().padStart(2, "0");
+    const url =
+      `/app/calendar?startday=${newYear}-${newMonthString}-${newDayString}`;
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   const previousWeek = (day: number) => {
-    let cur_day = day - 7;
-    if (cur_day < 1) {
-      cur_day = cur_day + 30;
-    }
-    const url = `/app/calendar?startday=${cur_day}`;
-    window.location.href = url;
+    const now = new Date();
+    now.setDate(day - 4); // subtract 7 days from the selected day
+    const dateString = now.toISOString().slice(0, 10);
+    const url = `/app/calendar?startday=${dateString}`;
+
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   const nextWeek = (day: number) => {
-    const url = `/app/calendar?startday=${(day + 1) % 30}`;
-    window.location.href = url;
+    const now = new Date();
+    now.setDate(day + 4);
+    const dateString = now.toISOString().slice(0, 10);
+    const url = `/app/calendar?startday=${dateString}`;
+
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   return (
@@ -45,8 +80,8 @@ const DatePicker: FunctionalComponent<Props> = ({
             key={index}
             style={{
               margin: "0 40px",
-              backgroundColor: day === currentDate ? "#007aff" : "#fff",
-              color: day === currentDate ? "#fff" : "#000",
+              backgroundColor: day === currentDay ? "#007aff" : "#fff",
+              color: day === currentDay ? "#fff" : "#000",
               borderRadius: "50%",
               width: "40px",
               height: "40px",
@@ -60,7 +95,7 @@ const DatePicker: FunctionalComponent<Props> = ({
           </button>
         );
       })}
-     <button
+      <button
         style={{ marginRight: "10px" }}
         onClick={() => nextWeek(days[days.length - 1])}
       >

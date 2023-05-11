@@ -136,8 +136,17 @@ export class GoogleClient {
     });
   }
 
-  getEvents(calendarId = "primary"): Promise<GCalEventsResponse> {
-    return this.makeCalendarRequest(`/calendars/${calendarId}/events`);
+  getEvents(
+    calendarId = "primary",
+    opts: {
+      timeMin?: string;
+      timeMax?: string;
+    } = {},
+  ): Promise<GCalEventsResponse> {
+    const params = new URLSearchParams(opts);
+    return this.makeCalendarRequest(
+      `/calendars/${calendarId}/events?${params}`,
+    );
   }
 
   insertEvent(
