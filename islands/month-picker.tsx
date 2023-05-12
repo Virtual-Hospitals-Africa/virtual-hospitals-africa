@@ -37,7 +37,7 @@ const MonthPicker: FunctionalComponent<Props> = ({ selectedMonth }) => {
         ))}
       </select>
     </div>
-  );  
+  );
 };
 
 export default MonthPicker;
