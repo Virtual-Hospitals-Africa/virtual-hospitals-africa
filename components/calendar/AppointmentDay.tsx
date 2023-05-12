@@ -14,7 +14,7 @@ const AppointmentDay: FunctionComponent<AppointmentDayProps> = ({
       <p className={"font-semibold text-indigo-800 text-3xl"}>
         {day}
       </p>
-      <p className={"text-base mt-[-4]"}>{weekday}</p>
+      <p className={"text-base"}>{weekday}</p>
     </div>
   );
 };
