@@ -17,6 +17,7 @@ import * as $10 from "./routes/patient-reset.ts";
 import * as $$0 from "./islands/date-picker.tsx";
 import * as $$1 from "./islands/month-picker.tsx";
 import * as $$2 from "./islands/set-availability-form.tsx";
+import * as $$3 from "./islands/year-picker.tsx";
 
 const manifest = {
   routes: {
@@ -36,6 +37,7 @@ const manifest = {
     "./islands/date-picker.tsx": $$0,
     "./islands/month-picker.tsx": $$1,
     "./islands/set-availability-form.tsx": $$2,
+    "./islands/year-picker.tsx": $$3,
   },
   baseUrl: import.meta.url,
   config,
