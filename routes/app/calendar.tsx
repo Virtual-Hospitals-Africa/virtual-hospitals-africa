@@ -3,6 +3,7 @@ import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import DatePicker from "../../islands/date-picker.tsx";
 import MonthPicker from "../../islands/month-picker.tsx";
+import YearPicker from "../../islands/year-picker.tsx";
 import { useState } from "https://esm.sh/preact@10.13.1/hooks";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
@@ -198,7 +199,19 @@ export default function Calendar(
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-        <MonthPicker selectedMonth={startMonth - 1} />
+        <div className="flex justify-center space-x-4">
+          <MonthPicker
+            selectedMonth={startMonth - 1}
+            currentDay={startDay}
+            currentYear={startYear}
+          />
+          <YearPicker
+            selectedYear={startYear}
+            currentDay={startDay}
+            currentMonth={startMonth}
+          />
+        </div>
+
         <DatePicker
           currentDay={startDay}
           currentMonth={startMonth}
