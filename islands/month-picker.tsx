@@ -2,10 +2,14 @@ import { FunctionalComponent, h } from "preact";
 import { useState } from "preact/hooks";
 
 interface Props {
+  currentDay: number;
+  currentYear: number;
   selectedMonth: number;
 }
 
-const MonthPicker: FunctionalComponent<Props> = ({ selectedMonth }) => {
+const MonthPicker: FunctionalComponent<Props> = (
+  { selectedMonth, currentDay, currentYear },
+) => {
   const months = [
     "January",
     "February",
@@ -24,7 +28,15 @@ const MonthPicker: FunctionalComponent<Props> = ({ selectedMonth }) => {
 
   const handleMonthChange = (event: Event) => {
     const newMonth = parseInt((event.target as HTMLSelectElement).value);
+    const newDayString = currentDay.toString().padStart(2, "0");
+    // add one because the actual month list starts from 1, not 0
+    const newMonthString = (newMonth + 1).toString().padStart(2, "0");
+    const newYearString = currentYear.toString();
     setCurrentMonth(newMonth);
+    const url =
+      `/app/calendar?startday=${newYearString}-${newMonthString}-${newDayString}`;
+    history.pushState({}, "", url);
+    window.location.reload();
   };
 
   return (

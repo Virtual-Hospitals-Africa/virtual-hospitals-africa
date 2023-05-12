@@ -13,7 +13,7 @@ const DatePicker: FunctionalComponent<Props> = ({
   currentYear,
   days,
 }) => {
-  const handleDateClick = (selectedDay: number) => {
+  const dateLink = (selectedDay: number) => {
     let newDay = currentDay;
     let newMonth = currentMonth;
     let newYear = currentYear;
@@ -39,65 +39,54 @@ const DatePicker: FunctionalComponent<Props> = ({
     newDay = selectedDay;
     const newDayString = newDay.toString().padStart(2, "0");
     const newMonthString = newMonth.toString().padStart(2, "0");
-    const url =
-      `/app/calendar?startday=${newYear}-${newMonthString}-${newDayString}`;
-    history.pushState({}, "", url);
-    window.location.reload();
+    return `/app/calendar?startday=${newYear}-${newMonthString}-${newDayString}`;
   };
 
   const previousWeek = (day: number) => {
     const now = new Date();
     now.setDate(day - 4); // subtract 7 days from the selected day
     const dateString = now.toISOString().slice(0, 10);
-    const url = `/app/calendar?startday=${dateString}`;
-
-    history.pushState({}, "", url);
-    window.location.reload();
+    return `/app/calendar?startday=${dateString}`;
   };
 
   const nextWeek = (day: number) => {
     const now = new Date();
     now.setDate(day + 4);
     const dateString = now.toISOString().slice(0, 10);
-    const url = `/app/calendar?startday=${dateString}`;
-
-    history.pushState({}, "", url);
-    window.location.reload();
+    return `/app/calendar?startday=${dateString}`;
   };
 
   return (
     <div className="flex justify-between items-center px-4">
-      <button
+      <a
         className="font-bold text-2xl text-gray-400"
-        onClick={() => previousWeek(days[0])}
+        href={previousWeek(days[0])}
       >
         {"<"}
-      </button>
+      </a>
       <div className="w-10"></div>
       <div className="flex justify-between flex-grow">
-        {days.map((day, index) => {
-          return (
-            <button
-              key={index}
-              className={`text-bold text-lg cursor-pointer rounded-full w-10 h-10 ${
-                day === currentDay
-                  ? "bg-blue-700 text-white"
-                  : "bg-white text-black"
-              }`}
-              onClick={() => handleDateClick(day)}
-            >
-              {day}
-            </button>
-          );
-        })}
+        {days.map((day, index) => (
+          <a
+            key={index}
+            className={`text-bold text-lg cursor-pointer rounded-full w-10 h-10 ${
+              day === currentDay
+                ? "bg-blue-700 text-white"
+                : "bg-white text-black"
+            }`}
+            href={dateLink(day)}
+          >
+            {day}
+          </a>
+        ))}
       </div>
       <div className="w-10"></div>
-      <button
+      <a
         className="font-bold text-2xl text-gray-400"
-        onClick={() => nextWeek(days[days.length - 1])}
+        href={nextWeek(days[days.length - 1])}
       >
         {">"}
-      </button>
+      </a>
     </div>
   );
 };
