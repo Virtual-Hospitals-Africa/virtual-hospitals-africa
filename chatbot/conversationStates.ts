@@ -3,10 +3,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import {
-  firstAvailableThirtyMinutes,
-  getAllDoctorAvailability,
-} from "./getDoctorAvailability.ts";
+import { availableThirtyMinutes, getAllDoctorAvailability } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
@@ -204,13 +201,12 @@ const conversationStates: {
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       console.log("onboarded:make_appointment:first_scheduling_option onEnter");
-      const firstAvailable = await firstAvailableThirtyMinutes(trx);
-      console.log("past firstAvailableThirtyMinutes");
+      const firstAvailable = await availableThirtyMinutes(trx, [], {date:null, timeslots_required:1});
 
       const offeredTime = await appointments.addOfferedTime(trx, {
         appointment_id: patientMessage.scheduling_appointment_id!,
-        doctor_id: firstAvailable.doctor.id,
-        start: firstAvailable.start,
+        doctor_id: firstAvailable[0].doctor.id,
+        start: firstAvailable[0].start,
       });
 
       console.log("past appointments.addOfferedTime");
@@ -266,54 +262,76 @@ const conversationStates: {
       console.log(
         "onboarded:make_appointment:other_scheduling_options onEnter",
       );
+
+      assert(patientMessage.appointment_offered_times[0], "should have times");
+
+      const toDecline = []
+      for (const offeredTime of patientMessage.appointment_offered_times) {
+        if (!offeredTime) continue;
+        if (!offeredTime.patient_declined) {
+          toDecline.push(offeredTime.id)
+        }
+      }
+
+      // console.log('id', patientMessage.appointment_offered_times?.id)
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-      const declinedOfferedTime = await appointments.declineOfferedTime(
-        trx,
-        { id: patientMessage.appointment_offered_times[0]?.id ?? 0 }, //trying to hardcode 0 to id if it's undefined.
-      );
-      // console.log("DeclinedOfferedTime", declinedOfferedTime);
-      // I think we are getting the error below because of null safty.
-      // It could be beacuse the delineoffer is never null
+      for (const toDeclineSlot of toDecline){
+        console.log('time slot declining in db', toDeclineSlot)
+        await appointments.declineOfferedTime(
+          trx,
+          { id: toDeclineSlot },
+        );
+      }
 
-      const declined: ReturnedSqlRow<
-        AppointmentOfferedTime & { doctor_name: string }
-      >[] = [
-        declinedOfferedTime,
-        ...compact(patientMessage.appointment_offered_times),
-      ];
+      const declinedTimes = await appointments.getPatientDeclinedTimes(trx, {
+        appointment_id: patientMessage.scheduling_appointment_id!,
+      });
 
-      // const allAvailable = await generateAvailableTime(trx)
-      const declinedStartTime = await appointments.getPatientDeclinedTime(
-        trx,
-        {
-          appointment_id:
-            patientMessage.appointment_offered_times[0]?.appointment_id ?? 0,
-        },
-      );
       console.log("declined time slot");
-      console.log(declinedStartTime);
+      console.log(declinedTimes);
+      const filteredAvailableTimes = await availableThirtyMinutes(
+        trx,
+        declinedTimes, {date: null , timeslots_required: 1}
+      );
 
-      const times = await getAllDoctorAvailability(trx);
-      console.log(times);
+      const nextOfferedTimes: ReturnedSqlRow<
+      AppointmentOfferedTime & { doctor_name: string }
+      >[] = []      
+      for (const timeslot of filteredAvailableTimes){
+        const addedTime = await appointments.addOfferedTime(trx, {
+          appointment_id: patientMessage.scheduling_appointment_id!,
+          doctor_id: timeslot.doctor.id,
+          start: timeslot.start,
+        });
+        nextOfferedTimes.push(addedTime)
+      }
+
+      nextOfferedTimes.push(...compact(patientMessage.appointment_offered_times))
 
       return {
         ...patientMessage,
-        appointment_offered_times: declined,
+        appointment_offered_times: nextOfferedTimes,
       };
     },
 
-    prompt(_patientMessage: UnhandledPatientMessage): string {
-      return "Ok, do you have a prefered time?";
+    prompt(patientMessage: UnhandledPatientMessage): string {
+      assert(
+        patientMessage.appointment_offered_times[0],
+        "onEnter should have added an appointment_offered_time",
+      );
+      return `Looking for other times, the next available appoinment is ${
+        prettyAppointmentTime(patientMessage.appointment_offered_times[0].start)
+      }. Would you like to schedule this appointment?`;
     },
     options: [
       {
         option: "1",
-        display: "11:00am",
+        display: "Go ahead",
         onResponse: "onboarded:appointment_scheduled",
       },
       {
         option: "other_times",
-        display: "other time",
+        display: "Other time",
         aliases: ["other"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
