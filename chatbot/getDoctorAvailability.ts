@@ -82,14 +82,48 @@ export function defaultTimeRange(): TimeRange {
   return { timeMin, timeMax };
 }
 
+export async function allUniqueAvailbaility(trx: TrxOrDb) {
+  const allDoctorAvailabilities = await getAllAvailability(trx);
+
+  const allAvailabilities = Array.from(
+    new Set(
+      allDoctorAvailabilities.flatMap((availability) =>
+        availability.map(({ start }) => start)
+      ),
+    ),
+  );
+  const uniqueAvailbilites = allAvailabilities.filter((item, index) =>
+    allAvailabilities.indexOf(item) === index
+  );
+  return uniqueAvailbilites;
+}
+
+async function getAllAvailability(
+  trx: TrxOrDb,
+  timeRange: TimeRange = defaultTimeRange(),
+) {
+  const doctors = await getAllWithExtantTokens(trx);
+  return Promise.all(doctors.map(async (doctor) => {
+    const doctorGoogleClient = new google.DoctorGoogleClient(doctor);
+    const freeBusy = await doctorGoogleClient.getFreeBusy({
+      ...timeRange,
+      calendarIds: [
+        doctor.gcal_appointments_calendar_id,
+        doctor.gcal_availability_calendar_id,
+      ],
+    });
+    return getAvailability(doctor, freeBusy);
+  }));
+}
+
 export async function getAllDoctorAvailability(
   trx: TrxOrDb,
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   const doctors = await getAllWithExtantTokens(trx);
   return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleAgent = new google.Agent(doctor);
-    const freeBusy = await doctorGoogleAgent.getFreeBusy({
+    const doctorGoogleClient = new google.DoctorGoogleClient(doctor);
+    const freeBusy = await doctorGoogleClient.getFreeBusy({
       ...timeRange,
       calendarIds: [
         doctor.gcal_appointments_calendar_id,
@@ -164,5 +198,5 @@ string[]{
   }
   return appointments
 
+  console.log(doctorAvailability);
 }
-

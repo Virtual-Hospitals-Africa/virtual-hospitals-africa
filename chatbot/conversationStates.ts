@@ -19,8 +19,7 @@ import {
   UnhandledPatientMessage,
 } from "../types.ts";
 
-// import { db } from "../external-clients/db.ts";
-
+// Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
   const toReturn: T[] = [];
   for (const item of arr) {
@@ -243,7 +242,7 @@ const conversationStates: {
       {
         option: "other_times",
         display: "Other times",
-        aliases: ["other"],
+        aliases: ["other", "Other times"],
         onResponse: "onboarded:make_appointment:other_scheduling_options",
       },
       {
@@ -254,7 +253,6 @@ const conversationStates: {
       },
     ],
   },
-  // TODO: support other options
   "onboarded:make_appointment:other_scheduling_options": {
     type: "select",
     async onEnter(

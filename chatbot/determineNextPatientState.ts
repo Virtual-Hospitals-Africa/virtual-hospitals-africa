@@ -51,6 +51,7 @@ function isValidResponse(
     }
     case "date": {
       const [day, month, year] = messageBody.split("/");
+      // deno-lint-ignore no-unused-vars
       const date = new Date(
         `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00Z`,
       );

@@ -49,7 +49,7 @@ export const twoDigitDateFormat = new Intl.DateTimeFormat("en-gb", {
   timeZone: "Africa/Johannesburg",
 });
 
-export function parseDate(date: Date, format: "numeric" | "2-digit"): any {
+export function parseDate(date: Date, format: "numeric" | "2-digit") {
   const formatter = format === "numeric"
     ? numericDateFormat
     : twoDigitDateFormat;

@@ -7,7 +7,6 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from "../types.ts";
-import { appointmentDetails } from "../chatbot/makeAppointment.ts";
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -31,6 +30,29 @@ export async function addOfferedTime(
   return result.rows[0];
 }
 
+export async function newOfferedTime(
+  trx: TrxOrDb,
+  opts: { appointment_id: number; doctor_id: number; start: string },
+): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
+  const result = await sql<
+    ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
+  >`
+  WITH inserted_offered_time as (
+    INSERT INTO appointment_offered_times(appointment_id, doctor_id, start)
+        VALUES (${opts.appointment_id}, ${opts.doctor_id}, ${opts.start})
+      RETURNING *
+  )
+
+    SELECT inserted_offered_time.*,
+           doctors.name as doctor_name
+      FROM inserted_offered_time
+      JOIN doctors ON inserted_offered_time.doctor_id = doctors.id
+      JOIN appointment_offered_times.appointment_id = ${opts.appointment_id}
+  `.execute(trx);
+
+  return result.rows[0];
+}
+
 export async function declineOfferedTime(
   trx: TrxOrDb,
   opts: { id: number },
@@ -41,26 +63,25 @@ export async function declineOfferedTime(
     .execute();
   
     return writeResult
-
 }
 
 export async function getPatientDeclinedTimes(
   trx: TrxOrDb,
-  opts:{appointment_id: number}
-): Promise<string[]>{
-  const readResult = await trx.selectFrom('appointment_offered_times')
-  .where('appointment_id', '=', opts.appointment_id)
-  .where('patient_declined', '=', true).select('start')
-  .execute()
-  console.log("Read result for get declined time.")
-  console.log(readResult)
-  const declinedTimes = []
+  opts: { appointment_id: number },
+): Promise<string[]> {
+  const readResult = await trx.selectFrom("appointment_offered_times")
+    .where("appointment_id", "=", opts.appointment_id)
+    .where("patient_declined", "=", true).select("start")
+    .execute();
+  console.log("Read result for get declined time.");
+  console.log(readResult);
+  const declinedTimes = [];
 
-  for (const {start} of readResult){
-    declinedTimes.push(start)
+  for (const { start } of readResult) {
+    declinedTimes.push(start);
   }
 
-  return declinedTimes
+  return declinedTimes;
 }
 
 // export function get(

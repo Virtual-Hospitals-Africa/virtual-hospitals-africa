@@ -5,9 +5,7 @@ export type Maybe<T> = T | null | undefined;
 
 export type Falsy = false | 0 | "" | null | undefined;
 
-export type Done<T> = (err?: any, result?: T) => void;
-
-export type DeepPartial<T> = T extends object ? {
+export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>;
   }
   : T;
@@ -319,7 +317,7 @@ export type GCalEvent = {
     },
   ];
   "attendeesOmitted": boolean;
-  "extendedProperties": any;
+  "extendedProperties": Record<string, unknown>;
   "hangoutLink": string;
   "conferenceData": {
     "createRequest": {
@@ -362,7 +360,7 @@ export type GCalEvent = {
     "width": integer;
     "height": integer;
     "display": string;
-    "preferences": any;
+    "preferences": unknown;
   };
   "anyoneCanAddSelf": boolean;
   "guestsCanInviteOthers": boolean;
@@ -491,13 +489,6 @@ export type DoctorGoogleToken = GoogleTokens & {
 
 export type DoctorWithGoogleTokens = ReturnedSqlRow<Doctor & GoogleTokens>;
 
-export type DoctorWithPossibleGoogleTokens = ReturnedSqlRow<
-  Doctor & {
-    access_token: Maybe<string>;
-    refresh_token: Maybe<string>;
-  }
->;
-
 export type Availability = {
   start: string;
   end: string;
@@ -587,4 +578,19 @@ export type WhatsAppSendable = string | {
   messageBody: string;
   buttonText: string;
   options: MessageOption[];
+};
+export type DoctorAppointment = {
+  day: number;
+  weekday: string;
+  appointments: {
+    stripeColor: string; // Just blue for now
+    // Just blue for now
+    time: string;
+    patientName: string; // Remove the prefix "Appointment with "
+    // Remove the prefix "Appointment with "
+    patientAge: number; // Not in the google calendar
+    // Not in the google calendar
+    clinicName: string;
+    durationMinutes: string;
+  }[];
 };

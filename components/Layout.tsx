@@ -15,6 +15,13 @@ export default function Layout(props: LayoutProps) {
         <title>{props.title}</title>
         <link rel="stylesheet" href="/normalize.css" />
         <link rel="stylesheet" href="/main.css" />
+        <script
+          defer
+          src="https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js"
+          integrity="sha512-G3jAqT2eM4MMkLMyQR5YBhvN5/Da3IG6kqgYqU9zlIH4+2a+GuMdLb5Kpxy6ItMdCfgaKlo2XFhI0dHtMJjoRw=="
+          crossOrigin="anonymous"
+          referrerpolicy="no-referrer"
+        />
       </Head>
       <body className="h-full relative">
         <nav>

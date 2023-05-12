@@ -1,7 +1,13 @@
 import Layout from "../../components/Layout.tsx";
 import { JSX } from "preact";
 import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
-import { PageProps } from "$fresh/server.ts";
+import DatePicker from "../../islands/date-picker.tsx";
+import MonthPicker from "../../islands/month-picker.tsx";
+import { useState } from "https://esm.sh/preact@10.13.1/hooks";
+import { Handlers, PageProps } from "$fresh/server.ts";
+import { DoctorGoogleClient } from "../../external-clients/google.ts";
+import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
+import { WithSession } from "fresh_session";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -16,38 +22,186 @@ function CalendarLink(
   );
 }
 
-const dailyAppointments = {
-  day: 11,
-  weekday: "Tue",
-  appointments: [
-    {
-      stripeColor: "bg-blue-500",
-      time: "1:34PM",
-      patientName: "belal",
-      patientAge: 27,
-      clinicName: "bkhealth",
-      durationMinutes: "30 mins",
-    },
-    {
-      stripeColor: "bg-red-500",
-      time: "10:00 AM",
-      patientName: "Jane Smith",
-      patientAge: 27,
-      clinicName: "Town Clinic",
-      durationMinutes: "45 mins",
-    },
-  ],
+// imagine we are reading off db and getting all appointments
+const all_appointments = [
+  {
+    day: 5,
+    weekday: "Tue",
+    appointments: [
+      {
+        stripeColor: "bg-blue-500",
+        time: "1:34PM",
+        patientName: "belal",
+        patientAge: 27,
+        clinicName: "bkhealth",
+        durationMinutes: "30 mins",
+      },
+      {
+        stripeColor: "bg-red-500",
+        time: "10:00 AM",
+        patientName: "Jane Smith",
+        patientAge: 27,
+        clinicName: "Town Clinic",
+        durationMinutes: "45 mins",
+      },
+    ],
+  },
+  {
+    day: 4,
+    weekday: "Wed",
+    appointments: [
+      {
+        stripeColor: "bg-green-500",
+        time: "3:00 PM",
+        patientName: "John Doe",
+        patientAge: 35,
+        clinicName: "City Clinic",
+        durationMinutes: "60 mins",
+      },
+      {
+        stripeColor: "bg-purple-500",
+        time: "9:30 AM",
+        patientName: "Sarah Johnson",
+        patientAge: 42,
+        clinicName: "Health Hub",
+        durationMinutes: "30 mins",
+      },
+    ],
+  },
+  {
+    day: 11,
+    weekday: "Wed",
+    appointments: [
+      {
+        stripeColor: "bg-green-500",
+        time: "3:00 PM",
+        patientName: "Big Leg",
+        patientAge: 35,
+        clinicName: "BCIT",
+        durationMinutes: "60 mins",
+      },
+      {
+        stripeColor: "bg-purple-500",
+        time: "9:30 AM",
+        patientName: "huh",
+        patientAge: 42,
+        clinicName: "yep",
+        durationMinutes: "30 mins",
+      },
+    ],
+  },
+];
+
+let dailyAppointments: DoctorAppointment[];
+
+export const handler: Handlers<
+  { events: GCalEventsResponse },
+  WithSession
+> = {
+  async GET(_, ctx) {
+    // 1. find the gcal_appointments_calendar_id as part of the session.
+    // 2. Pass that in as the id to googleClient.getEvents();
+    // 3. Use the event data in the view
+    // 4. [Optional] specify timeMin/timeMax so that we are only fetching upcoming appointments
+    // https://developers.google.com/calendar/api/v3/reference/events/list?hl=es-419
+    //  If necessary, do some data-massaging server side
+
+    const googleClient = DoctorGoogleClient.fromCtx(ctx);
+
+    const events = await googleClient.getEvents(
+      ctx.state.session.data.gcal_appointments_calendar_id,
+    );
+
+    console.log("events", events);
+
+    const mappedAppointments = events.items.map((item) => {
+      const start = new Date(item.start.dateTime);
+      const day = start.getUTCDate();
+      const weekday = start.toLocaleString("en-US", { weekday: "short" });
+      const appointment = {
+        stripeColor: "bg-blue-500", // Just blue for now
+        time: start.toLocaleString("en-US", {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        }),
+        patientName: item.summary.replace(/^Appointment with /, ""), // Remove the prefix "Appointment with "
+        patientAge: 30, // Not in the google calendar
+        clinicName: item.organizer.displayName,
+        durationMinutes: Math.round(
+          (new Date(item.end.dateTime).getTime() - start.getTime()) /
+            (1000 * 60),
+        ) + " mins", // Calculate duration in minutes
+      };
+      return { day, weekday, appointments: [appointment] };
+    });
+
+    // Merge appointments for the same day/weekday
+    const mergedAppointments: DoctorAppointment[] = [];
+    mappedAppointments.forEach((appointment) => {
+      const existingAppointment = mergedAppointments.find((a) =>
+        a.day === appointment.day && a.weekday === appointment.weekday
+      );
+      if (existingAppointment) {
+        existingAppointment.appointments.push(...appointment.appointments);
+      } else {
+        mergedAppointments.push(appointment);
+      }
+    });
+    const currentDay = new Date().getDate();
+    // sort appointments by day then filter all days from appointments to only show the next week
+    dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day).filter(
+      (day) => (day.day <= currentDay + 6) && (currentDay <= day.day),
+    );
+
+    return ctx.render({ events });
+  },
 };
 
 export default function Calendar(
-  props: PageProps<{ props: PageProps }>,
+  props: PageProps<{ events: GCalEventsResponse }>,
 ) {
+  const { events } = props.data;
+  console.log("events", events);
+  console.log(
+    "somehow put the events from the handle function here",
+  );
+
+  const currentMonth = new Date().getMonth();
+
+  const [startDay, setStartDay] = useState<number>(new Date().getDate());
+
+  // Parse the URLSearchParams object from the URL
+  const urlSearchParams = new URLSearchParams(props.url.search);
+
+  // Extract the value of the "startday" parameter
+  const startDayParam = urlSearchParams.get("startday");
+
+  if (startDayParam) {
+    // Convert the startDayParam value to a number and set it in the state
+    const startDayValue = parseInt(startDayParam);
+    setStartDay(startDayValue);
+  }
+
+  // filter all days from appointments to only show the current day
+  const dailyAppointments = all_appointments.filter((day) =>
+    day.day == startDay
+  );
+
+  const days = Array.from({ length: 7 }, (_, i) => startDay + i);
+
+  const date = new Date();
+  date.setHours(date.getHours() + 1);
+
+  console.log(startDay, startDayParam);
   return (
     <Layout title="My Calendar" route={props.route}>
       <div class="calendar">
-        <p>TODO: Implement calendar view</p>
+        <MonthPicker selectedMonth={currentMonth} />
+        <DatePicker selectedDate={startDay} days={days} />
         <DailyAppointments dailyAppointments={dailyAppointments} />
       </div>
+
       <hr />
       <div class="calendar-links">
         <CalendarLink
