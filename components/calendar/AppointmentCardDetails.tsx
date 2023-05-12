@@ -18,16 +18,19 @@ const AppointmentCardDetails: FunctionComponent<AppointmentCardProps> = ({
   durationMinutes,
 }) => {
   return (
-    <div className="flex border border-gray-300 rounded p-2 relative shadow-lg">
-      <div className={`w-6 h-max ${stripeColor} rounded-l`}></div>
-      <div className="pl-4">
+    <div className="relative flex border border-gray-300 rounded shadow-lg overflow-hidden">
+      <div className={`w-6 h-full ${stripeColor} absolute`}></div>
+      <div className="pl-10 p-2 space-y-1">
         <div className="font-semibold text-lg">{time}</div>
         <div className="font-semibold text-base">{patientName}</div>
         <div className="text-base">Age: {patientAge}</div>
-        <div className="text-base">{clinicName}</div>
+        <div className="text-base pb-8">{clinicName}</div>
       </div>
-      <div className="absolute bg-blue-100 top-0 right-0 mt-2 mr-2 text-base font-semibold">
+      <div className="px-1 absolute text-green-900 font-bold bg-green-100 top-2 right-2 text-base font-semibold">
         {durationMinutes}
+      </div>
+      <div className="absolute bottom-6 right-3 text-lg bg-green-600 text-white py-2 px-6 rounded shadow-lg font-normal mb-2">
+        VIEW
       </div>
     </div>
   );

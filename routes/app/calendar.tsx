@@ -71,7 +71,7 @@ export const handler: Handlers<
       );
       const weekday = start.toLocaleString("en-US", { weekday: "short" });
       const appointment = {
-        stripeColor: "bg-blue-500", // Just blue for now
+        stripeColor: "bg-green-500", // Just green for now
         time: start.toLocaleString("en-US", {
           hour: "numeric",
           minute: "numeric",
