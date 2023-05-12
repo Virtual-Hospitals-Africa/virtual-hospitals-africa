@@ -1,5 +1,4 @@
 import * as google from "../external-clients/google.ts";
-import { assert } from "std/testing/asserts.ts";
 import { getAllWithExtantTokens } from "../models/doctors.ts";
 import {
   Availability,
@@ -16,7 +15,7 @@ export function getAvailability(
     gcal_availability_calendar_id: string;
     gcal_appointments_calendar_id: string;
   },
-  freeBusy: GCalFreeBusy,
+  freeBusy: GCalFreeBusy
 ): Availability {
   const availability = [
     ...freeBusy.calendars[doctor.gcal_availability_calendar_id].busy,
@@ -26,14 +25,12 @@ export function getAvailability(
     freeBusy.calendars[doctor.gcal_appointments_calendar_id].busy;
 
   appointments.forEach((appointment) => {
-    const conflictIndex = availability.findIndex((availabilityBlock) =>
-      (
-        appointment.start >= availabilityBlock.start &&
-        appointment.start < availabilityBlock.end
-      ) || (
-        appointment.end > availabilityBlock.start &&
-        appointment.end <= availabilityBlock.end
-      )
+    const conflictIndex = availability.findIndex(
+      (availabilityBlock) =>
+        (appointment.start >= availabilityBlock.start &&
+          appointment.start < availabilityBlock.end) ||
+        (appointment.end > availabilityBlock.start &&
+          appointment.end <= availabilityBlock.end)
     );
 
     if (conflictIndex === -1) return;
@@ -43,28 +40,36 @@ export function getAvailability(
     let spliceWith: Availability;
 
     if (
-      conflict.start === appointment.start && conflict.end === appointment.end
+      conflict.start === appointment.start &&
+      conflict.end === appointment.end
     ) {
       spliceWith = [];
     } else if (conflict.start === appointment.start) {
-      spliceWith = [{
-        start: appointment.end,
-        end: conflict.end,
-      }];
+      spliceWith = [
+        {
+          start: appointment.end,
+          end: conflict.end,
+        },
+      ];
     } else if (conflict.end === appointment.end) {
-      spliceWith = [{
-        start: conflict.start,
-        end: appointment.start,
-      }];
+      spliceWith = [
+        {
+          start: conflict.start,
+          end: appointment.start,
+        },
+      ];
       return;
     } else {
-      spliceWith = [{
-        start: conflict.start,
-        end: appointment.start,
-      }, {
-        start: appointment.end,
-        end: conflict.end,
-      }];
+      spliceWith = [
+        {
+          start: conflict.start,
+          end: appointment.start,
+        },
+        {
+          start: appointment.end,
+          end: conflict.end,
+        },
+      ];
     }
 
     availability.splice(conflictIndex, 1, ...spliceWith);
@@ -89,54 +94,57 @@ export async function allUniqueAvailbaility(trx: TrxOrDb) {
     new Set(
       allDoctorAvailabilities.flatMap((availability) =>
         availability.map(({ start }) => start)
-      ),
-    ),
+      )
+    )
   );
-  const uniqueAvailbilites = allAvailabilities.filter((item, index) =>
-    allAvailabilities.indexOf(item) === index
+  const uniqueAvailbilites = allAvailabilities.filter(
+    (item, index) => allAvailabilities.indexOf(item) === index
   );
   return uniqueAvailbilites;
 }
 
 async function getAllAvailability(
   trx: TrxOrDb,
-  timeRange: TimeRange = defaultTimeRange(),
+  timeRange: TimeRange = defaultTimeRange()
 ) {
   const doctors = await getAllWithExtantTokens(trx);
-  return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleClient = new google.DoctorGoogleClient(doctor);
-    const freeBusy = await doctorGoogleClient.getFreeBusy({
-      ...timeRange,
-      calendarIds: [
-        doctor.gcal_appointments_calendar_id,
-        doctor.gcal_availability_calendar_id,
-      ],
-    });
-    return getAvailability(doctor, freeBusy);
-  }));
+  return Promise.all(
+    doctors.map(async (doctor) => {
+      const doctorGoogleClient = new google.DoctorGoogleClient(doctor);
+      const freeBusy = await doctorGoogleClient.getFreeBusy({
+        ...timeRange,
+        calendarIds: [
+          doctor.gcal_appointments_calendar_id,
+          doctor.gcal_availability_calendar_id,
+        ],
+      });
+      return getAvailability(doctor, freeBusy);
+    })
+  );
 }
 
 export async function getAllDoctorAvailability(
   trx: TrxOrDb,
-  timeRange: TimeRange = defaultTimeRange(),
+  timeRange: TimeRange = defaultTimeRange()
 ) {
   const doctors = await getAllWithExtantTokens(trx);
-  return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleClient = new google.DoctorGoogleClient(doctor);
-    const freeBusy = await doctorGoogleClient.getFreeBusy({
-      ...timeRange,
-      calendarIds: [
-        doctor.gcal_appointments_calendar_id,
-        doctor.gcal_availability_calendar_id,
-      ],
-    });
-    return {
-      doctor,
-      availability: getAvailability(doctor, freeBusy),
-    };
-  }));
+  return Promise.all(
+    doctors.map(async (doctor) => {
+      const doctorGoogleClient = new google.DoctorGoogleClient(doctor);
+      const freeBusy = await doctorGoogleClient.getFreeBusy({
+        ...timeRange,
+        calendarIds: [
+          doctor.gcal_appointments_calendar_id,
+          doctor.gcal_availability_calendar_id,
+        ],
+      });
+      return {
+        doctor,
+        availability: getAvailability(doctor, freeBusy),
+      };
+    })
+  );
 }
-
 
 /**
  * Gets doctor availability from google calenda, spilt them into 30 minutes block, and filter out
@@ -147,44 +155,57 @@ export async function getAllDoctorAvailability(
  * @returns an object containing the start time and doctor
  */
 
-export async function availableThirtyMinutes(trx: TrxOrDb, declinedTimes: string[], 
-  opts: {date: string | null, timeslots_required: number}
-): Promise<{
-  doctor: ReturnedSqlRow<DoctorWithGoogleTokens>;
-  start: string;
-}[]> {
-  assertAllHarare(declinedTimes)
+export async function availableThirtyMinutes(
+  trx: TrxOrDb,
+  declinedTimes: string[],
+  opts: { date: string | null; timeslots_required: number }
+): Promise<
+  {
+    doctor: ReturnedSqlRow<DoctorWithGoogleTokens>;
+    start: string;
+  }[]
+> {
+  assertAllHarare(declinedTimes);
   const doctorAvailability = await getAllDoctorAvailability(trx);
 
-  let appointments: {doctor: DoctorWithGoogleTokens, start: string}[]
-  appointments = []
+  let appointments: { doctor: DoctorWithGoogleTokens; start: string }[];
+  appointments = [];
   for (const { doctor, availability } of doctorAvailability) {
     for (const { start, end } of availability) {
-      const doctor_appointments = generateAvailableThrityMinutes(start,end)
-      .filter(time => !declinedTimes.includes(time))
-      .filter(appointment => opts.date? appointment.includes(opts.date): true)
-      .map(timeBlock => ({doctor: doctor, start: timeBlock}))
-      appointments = appointments.concat(doctor_appointments)
+      const doctor_appointments = generateAvailableThrityMinutes(start, end)
+        .filter((time) => !declinedTimes.includes(time))
+        .filter((appointment) =>
+          opts.date ? appointment.includes(opts.date) : true
+        )
+        .map((timeBlock) => ({ doctor: doctor, start: timeBlock }));
+      appointments = appointments.concat(doctor_appointments);
     }
   }
-  appointments.sort((a,b) => new Date(a.start).valueOf() - new Date(b.start).valueOf())
-  const key = 'start';
-  const uniqueAppointmentTimeslots = [...new Map(appointments.map(timeBlock => [timeBlock[key], timeBlock])).values()]
+  appointments.sort(
+    (a, b) => new Date(a.start).valueOf() - new Date(b.start).valueOf()
+  );
+  const key = "start";
+  const uniqueAppointmentTimeslots = [
+    ...new Map(
+      appointments.map((timeBlock) => [timeBlock[key], timeBlock])
+    ).values(),
+  ];
 
-  console.log("Unique appointments by date", uniqueAppointmentTimeslots)
+  console.log("Unique appointments by date", uniqueAppointmentTimeslots);
 
-  if (uniqueAppointmentTimeslots.length === 0) throw new Error("No availability found");
+  if (uniqueAppointmentTimeslots.length === 0)
+    throw new Error("No availability found");
 
-  const requiredTimeslots = uniqueAppointmentTimeslots.length > opts.timeslots_required 
-  ? uniqueAppointmentTimeslots.slice(0,opts.timeslots_required) 
-  : uniqueAppointmentTimeslots
-  
+  const requiredTimeslots =
+    uniqueAppointmentTimeslots.length > opts.timeslots_required
+      ? uniqueAppointmentTimeslots.slice(0, opts.timeslots_required)
+      : uniqueAppointmentTimeslots;
+
   return requiredTimeslots;
 }
 
-function generateAvailableThrityMinutes(start: string, end: string):
-string[]{
-  const appointments = []
+function generateAvailableThrityMinutes(start: string, end: string): string[] {
+  const appointments = [];
   const appointmentDuration = 30 * 60 * 1000; // duration of each appointment in milliseconds
   const current = new Date(start);
   current.setMinutes(Math.ceil(current.getMinutes() / 30) * 30); //0 or 30
@@ -192,11 +213,9 @@ string[]{
   current.setMilliseconds(0);
 
   while (current.getTime() + appointmentDuration <= new Date(end).getTime()) {
-    const currentDate = formatHarare(current) 
-    appointments.push(currentDate)
+    const currentDate = formatHarare(current);
+    appointments.push(currentDate);
     current.setTime(current.getTime() + appointmentDuration);
   }
-  return appointments
-
-  console.log(doctorAvailability);
+  return appointments;
 }
