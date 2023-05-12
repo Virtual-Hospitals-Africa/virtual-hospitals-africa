@@ -69,7 +69,7 @@ const DatePicker: FunctionalComponent<Props> = ({
         {days.map((day, index) => (
           <a
             key={index}
-            className={`text-bold text-lg cursor-pointer rounded-full w-10 h-10 ${
+            className={`flex items-center justify-center text-bold text-lg cursor-pointer rounded-full w-10 h-10 ${
               day === currentDay
                 ? "bg-blue-700 text-white"
                 : "bg-white text-black"
