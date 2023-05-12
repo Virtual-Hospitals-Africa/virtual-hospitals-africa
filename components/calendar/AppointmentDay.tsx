@@ -11,10 +11,10 @@ const AppointmentDay: FunctionComponent<AppointmentDayProps> = ({
 }) => {
   return (
     <div className={"flex flex-col items-center px-5 pt-3"}>
-      <p className={"font-semibold text-indigo-800 text-3xl"}>
+      <p className={"font-semibold text-indigo-800 text-5xl"}>
         {day}
       </p>
-      <p className={"text-base"}>{weekday}</p>
+      <p className={"text-black text-xl"}>{weekday}</p>
     </div>
   );
 };
