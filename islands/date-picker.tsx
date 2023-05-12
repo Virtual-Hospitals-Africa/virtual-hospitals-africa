@@ -66,37 +66,34 @@ const DatePicker: FunctionalComponent<Props> = ({
   };
 
   return (
-    <div className="calendar-toolbar">
+    <div className="flex justify-between items-center px-4">
       <button
-        style={{ marginRight: "10px" }}
+        className="font-bold text-2xl text-gray-400"
         onClick={() => previousWeek(days[0])}
       >
         {"<"}
       </button>
-
-      {days.map((day, index) => {
-        return (
-          <button
-            key={index}
-            style={{
-              margin: "0 40px",
-              backgroundColor: day === currentDay ? "#007aff" : "#fff",
-              color: day === currentDay ? "#fff" : "#000",
-              borderRadius: "50%",
-              width: "40px",
-              height: "40px",
-              fontWeight: "bold",
-              fontSize: "1.2rem",
-              cursor: "pointer",
-            }}
-            onClick={() => handleDateClick(day)}
-          >
-            {day}
-          </button>
-        );
-      })}
+      <div className="w-10"></div>
+      <div className="flex justify-between flex-grow">
+        {days.map((day, index) => {
+          return (
+            <button
+              key={index}
+              className={`text-bold text-lg cursor-pointer rounded-full w-10 h-10 ${
+                day === currentDay
+                  ? "bg-blue-700 text-white"
+                  : "bg-white text-black"
+              }`}
+              onClick={() => handleDateClick(day)}
+            >
+              {day}
+            </button>
+          );
+        })}
+      </div>
+      <div className="w-10"></div>
       <button
-        style={{ marginRight: "10px" }}
+        className="font-bold text-2xl text-gray-400"
         onClick={() => nextWeek(days[days.length - 1])}
       >
         {">"}
