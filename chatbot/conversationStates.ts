@@ -347,14 +347,22 @@ const conversationStates: {
     type: "select",
     onEnter: makeAppointment,
     prompt(patientMessage: UnhandledPatientMessage) {
-      assert(patientMessage.appointment_offered_times[0]);
+      const acceptedTimes = []
+      for (const offeredTime of patientMessage.appointment_offered_times){
+        if (!offeredTime?.patient_declined){
+          acceptedTimes.push(offeredTime)
+        }
+      }
+      const acceptedTime = acceptedTimes[0]
+
+      assert(acceptedTime);
       assert(
-        patientMessage.appointment_offered_times[0].scheduled_gcal_event_id,
+        acceptedTime.scheduled_gcal_event_id,
       );
       return `Thanks ${patientMessage.name!.split(" ")[0]}, we notified ${
-        patientMessage.appointment_offered_times[0].doctor_name
+        acceptedTime.doctor_name
       } and will message you shortly upon confirmirmation of your appointment at ${
-        prettyAppointmentTime(patientMessage.appointment_offered_times[0].start)
+        prettyAppointmentTime(acceptedTime.start)
       }`;
     },
     options: [

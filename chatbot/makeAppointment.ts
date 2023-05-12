@@ -26,31 +26,31 @@ export function appointmentDetails(
     patientMessage.appointment_offered_times,
     "No appointment_offered_times found in patientMessage",
   );
-  assertEquals(
-    patientMessage.appointment_offered_times.length,
-    1,
-    "More than one appointment_offered_times not yet supported",
-  );
+  const acceptedTimes = []
+      for (const offeredTime of patientMessage.appointment_offered_times){
+        if (!offeredTime?.patient_declined){
+          acceptedTimes.push(offeredTime)
+        }
+      }
+      const acceptedTime = acceptedTimes[0]
   assert(
-    patientMessage.appointment_offered_times[0],
+    acceptedTime,
     "No appointment_offered_times found in patientMessage",
   );
   assert(
-    !patientMessage.appointment_offered_times[0].patient_declined,
+    !acceptedTime.patient_declined,
     "Patient rejected offered appointment time",
   );
-
-  const offeredTime = patientMessage.appointment_offered_times[0];
-
-  const end = new Date(offeredTime.start);
+  
+  const end = new Date(acceptedTime.start);
   end.setMinutes(end.getMinutes() + 30);
 
   return {
-    offeredTime,
+    offeredTime: acceptedTime,
     gcal: {
       summary: `Appointment with ${patientMessage.name}`,
       start: {
-        dateTime: offeredTime.start,
+        dateTime: acceptedTime.start,
       },
       end: {
         dateTime: formatHarare(end),
