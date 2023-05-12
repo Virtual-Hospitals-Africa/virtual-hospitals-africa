@@ -1,4 +1,5 @@
 import * as google from "../external-clients/google.ts";
+import { assert } from "std/testing/asserts.ts";
 import { getAllWithExtantTokens } from "../models/doctors.ts";
 import {
   Availability,
@@ -8,6 +9,7 @@ import {
   TimeRange,
   TrxOrDb,
 } from "../types.ts";
+import { assertAllHarare, formatHarare } from "../util/date.ts";
 
 export function getAvailability(
   doctor: {
@@ -19,6 +21,7 @@ export function getAvailability(
   const availability = [
     ...freeBusy.calendars[doctor.gcal_availability_calendar_id].busy,
   ];
+
   const appointments =
     freeBusy.calendars[doctor.gcal_appointments_calendar_id].busy;
 
@@ -134,38 +137,66 @@ export async function getAllDoctorAvailability(
   }));
 }
 
-export async function firstAvailableThirtyMinutes(trx: TrxOrDb): Promise<{
+
+/**
+ * Gets doctor availability from google calenda, spilt them into 30 minutes block, and filter out
+ * the declined time and return an object containing the start time and doctor.
+ * @param trx db transaction object
+ * @param declinedTimes a string array that contains the declined time slot
+ * @param opts date: specify a date to see appointments on that date
+ * @returns an object containing the start time and doctor
+ */
+
+export async function availableThirtyMinutes(trx: TrxOrDb, declinedTimes: string[], 
+  opts: {date: string | null, timeslots_required: number}
+): Promise<{
   doctor: ReturnedSqlRow<DoctorWithGoogleTokens>;
   start: string;
-}> {
+}[]> {
+  assertAllHarare(declinedTimes)
   const doctorAvailability = await getAllDoctorAvailability(trx);
 
-  let earliestAvailabilityDoctor: DoctorWithGoogleTokens | null = null;
-  let earliestAvailabilityStart = "9999-99-99T23:59:59+02:00";
-
+  let appointments: {doctor: DoctorWithGoogleTokens, start: string}[]
+  appointments = []
   for (const { doctor, availability } of doctorAvailability) {
     for (const { start, end } of availability) {
-      const minutesBetween =
-        (new Date(end).getTime() - new Date(start).getTime()) / 1000 / 60;
-      if (minutesBetween < 30) continue;
-      if (start < earliestAvailabilityStart) {
-        earliestAvailabilityDoctor = doctor;
-        earliestAvailabilityStart = start;
-      }
+      const doctor_appointments = generateAvailableThrityMinutes(start,end)
+      .filter(time => !declinedTimes.includes(time))
+      .filter(appointment => opts.date? appointment.includes(opts.date): true)
+      .map(timeBlock => ({doctor: doctor, start: timeBlock}))
+      appointments = appointments.concat(doctor_appointments)
     }
   }
+  appointments.sort((a,b) => new Date(a.start).valueOf() - new Date(b.start).valueOf())
+  const key = 'start';
+  const uniqueAppointmentTimeslots = [...new Map(appointments.map(timeBlock => [timeBlock[key], timeBlock])).values()]
 
-  if (!earliestAvailabilityDoctor) throw new Error("No availability found");
+  console.log("Unique appointments by date", uniqueAppointmentTimeslots)
 
-  return {
-    doctor: earliestAvailabilityDoctor,
-    start: earliestAvailabilityStart,
-  };
+  if (uniqueAppointmentTimeslots.length === 0) throw new Error("No availability found");
+
+  const requiredTimeslots = uniqueAppointmentTimeslots.length > opts.timeslots_required 
+  ? uniqueAppointmentTimeslots.slice(0,opts.timeslots_required) 
+  : uniqueAppointmentTimeslots
+  
+  return requiredTimeslots;
 }
 
-export async function generateAvailableTime(trx: TrxOrDb) {
-  console.log("doctor timessss");
-  const doctorAvailability = await getAllDoctorAvailability(trx);
+function generateAvailableThrityMinutes(start: string, end: string):
+string[]{
+  const appointments = []
+  const appointmentDuration = 30 * 60 * 1000; // duration of each appointment in milliseconds
+  const current = new Date(start);
+  current.setMinutes(Math.ceil(current.getMinutes() / 30) * 30); //0 or 30
+  current.setSeconds(0);
+  current.setMilliseconds(0);
+
+  while (current.getTime() + appointmentDuration <= new Date(end).getTime()) {
+    const currentDate = formatHarare(current) 
+    appointments.push(currentDate)
+    current.setTime(current.getTime() + appointmentDuration);
+  }
+  return appointments
 
   console.log(doctorAvailability);
 }

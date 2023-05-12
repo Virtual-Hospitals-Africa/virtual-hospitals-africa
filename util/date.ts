@@ -128,3 +128,12 @@ export function prettyAppointmentTime(startTime: string): string {
 
   return `${dateStr} at ${prettyTime} Harare time`;
 }
+
+export function assertAllHarare(dates: string[]) {
+  for (const date of dates) {
+    assert(
+      date.endsWith("+02:00"),
+      `Expected ${date} to be in Harare time`,
+    );
+  }
+}
