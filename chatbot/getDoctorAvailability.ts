@@ -1,5 +1,4 @@
 import * as google from "../external-clients/google.ts";
-import { assert } from "std/testing/asserts.ts";
 import { getAllWithExtantTokens } from "../models/doctors.ts";
 import {
   Availability,
@@ -198,5 +197,4 @@ string[]{
   }
   return appointments
 
-  console.log(doctorAvailability);
 }

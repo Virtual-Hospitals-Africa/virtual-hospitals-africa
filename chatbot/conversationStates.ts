@@ -3,7 +3,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from "../util/date.ts";
-import { availableThirtyMinutes, getAllDoctorAvailability } from "./getDoctorAvailability.ts";
+import { availableThirtyMinutes } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
 import * as appointments from "../models/appointments.ts";
