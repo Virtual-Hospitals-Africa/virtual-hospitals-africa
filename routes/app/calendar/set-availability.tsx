@@ -1,22 +1,43 @@
-import { Handlers, PageProps } from "$fresh/server.ts";
+import { HandlerContext, Handlers, PageProps } from "$fresh/server.ts";
 import Layout from "../../../components/Layout.tsx";
 import { WithSession } from "fresh_session";
-import { AvailabilityJSON, GoogleTokens } from "../../../types.ts";
+import { AvailabilityJSON, GoogleTokens, Time } from "../../../types.ts";
 import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
 import { DoctorGoogleClient } from "../../../external-clients/google.ts";
-import { toHarare } from "../../api/set-availability.tsx";
-function convertTo12Hour(time) {
-  let hours = time.getHours();
-  let minutes = time.getMinutes();
-  let ampm = hours >= 12 ? "pm" : "am";
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
-  return { hour: hours, minute: minutes, amPm: ampm };
+import { assertAllHarare } from "../../../util/date.ts";
+import { assert, assertEquals } from "std/testing/asserts.ts";
+
+function convertToTime(date: string): Time {
+  const [, timeAndZone] = date.split("T");
+  const [time] = timeAndZone.split("+");
+  const [hourStr, minuteStr, second] = time.split(":");
+  assertEquals(second, "00");
+  const hour = parseInt(hourStr);
+  const minute = parseInt(minuteStr);
+  assertEquals(minute % 5, 0);
+  const amPm = hour >= 12 ? "pm" : "am";
+  const hourMod = hour % 12;
+  return {
+    hour: hourMod === 0 ? 12 : hourMod as Time["hour"],
+    minute: minute as Time["minute"],
+    amPm,
+  };
 }
+
+const shortToLong = {
+  SU: "Sunday" as const,
+  MO: "Monday" as const,
+  TU: "Tuesday" as const,
+  WE: "Wednesday" as const,
+  TH: "Thursday" as const,
+  FR: "Friday" as const,
+  SA: "Saturday" as const,
+};
+
 async function getAvailability(
-  _tokens: GoogleTokens,
-  ctx,
+  ctx: HandlerContext<{
+    availability: AvailabilityJSON;
+  }, WithSession>,
 ): Promise<AvailabilityJSON> {
   const googleClient = DoctorGoogleClient.fromCtx(ctx);
   const events = await googleClient.getEvents(
@@ -27,7 +48,8 @@ async function getAvailability(
   );
   // console.log(events);
   const items = events.items;
-  let schedule = {
+  console.log("items", items);
+  const schedule: AvailabilityJSON = {
     Sunday: [],
     Monday: [],
     Tuesday: [],
@@ -39,29 +61,20 @@ async function getAvailability(
   console.log(
     "asdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasf",
   );
+
   events.items.forEach((item) => {
-    let startDateTime = new Date(item.start.dateTime);
-    let endDateTime = new Date(item.end.dateTime);
-    startDateTime.setHours(startDateTime.getHours());
-    console.log(
-      "start date time:",
-      startDateTime,
-    );
-    endDateTime.setHours(endDateTime.getHours());
-    console.log(
-      "end date time:",
-      endDateTime,
-    );
-    // startDateTime.
+    assertAllHarare([item.start.dateTime, item.end.dateTime]);
+    assert(Array.isArray(item.recurrence));
+    assertEquals(item.recurrence.length, 1);
+    assert(item.recurrence[0].startsWith("RRULE:FREQ=WEEKLY;BYDAY="));
+    const dayStr = item.recurrence[0].replace("RRULE:FREQ=WEEKLY;BYDAY=", "");
+    assert(dayStr in shortToLong);
 
-    let startTime = convertTo12Hour(startDateTime);
-    let endTime = convertTo12Hour(endDateTime);
+    const weekday = shortToLong[dayStr as keyof typeof shortToLong];
 
-    let dayOfWeek = startDateTime.toLocaleString("en-US", { weekday: "long" });
-
-    schedule[dayOfWeek].push({
-      start: startTime,
-      end: endTime,
+    schedule[weekday].push({
+      start: convertToTime(item.start.dateTime),
+      end: convertToTime(item.end.dateTime),
     });
   });
   console.log(schedule);
@@ -73,10 +86,7 @@ export const handler: Handlers<
   WithSession
 > = {
   async GET(_, ctx) {
-    const availability = await getAvailability({
-      access_token: ctx.state.session.get("access_token"),
-      refresh_token: ctx.state.session.get("refresh_token"),
-    }, ctx);
+    const availability = await getAvailability(ctx);
     return ctx.render({ availability });
   },
 };

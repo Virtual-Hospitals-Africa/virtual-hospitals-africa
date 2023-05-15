@@ -143,6 +143,7 @@ export class GoogleClient {
     } = {}
   ): Promise<GCalEventsResponse> {
     const params = new URLSearchParams(opts);
+    params.set('timeZone', 'Africa/Johannesburg');
     return this.makeCalendarRequest(
       `/calendars/${calendarId}/events?${params}`
     );
