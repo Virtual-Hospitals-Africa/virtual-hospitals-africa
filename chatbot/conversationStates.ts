@@ -389,8 +389,7 @@ const conversationStates: {
       trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage>{
-      const result = await cancelAppointment(trx,patientMessage)
-      return result
+      return await cancelAppointment(trx,patientMessage)
     }
   },
   "other_end_of_demo": {

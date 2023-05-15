@@ -1,7 +1,7 @@
 import { TrxOrDb, UnhandledPatientMessage } from "../types.ts";
 import { assert } from "std/testing/asserts.ts";
 import * as google from "../external-clients/google.ts";
-import { getAllWithTokens } from "../models/doctors.ts";
+import { getAllWithTokens, getWithTokensById } from "../models/doctors.ts";
 import { appointmentDetails } from "./makeAppointment.ts";
 
 
@@ -23,8 +23,11 @@ export async function cancelAppointment(
   const { offeredTime } = details;
   const eventID = offeredTime.scheduled_gcal_event_id
   
-  const doctors = await getAllWithTokens(trx);
-  const matchingDoctor = doctors.find(doctor => doctor.id === offeredTime.doctor_id);
+  const matchingDoctor = await getWithTokensById(trx, offeredTime.doctor_id)
+  console.log('get with tokens by id', matchingDoctor)
+  // const doctors = await getAllWithTokens(trx);
+  // const matchingDoctor = doctors.find(doctor => doctor.id === offeredTime.doctor_id);
+
 
   assert(
     offeredTime.doctor_id,
@@ -47,5 +50,6 @@ export async function cancelAppointment(
 
   return {
     ...patientMessage,
-    appointment_offered_times: [],};
+    appointment_offered_times: [],
+    scheduling_appointment_id: undefined};
 }
