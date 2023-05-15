@@ -3,34 +3,69 @@ import Layout from "../../../components/Layout.tsx";
 import { WithSession } from "fresh_session";
 import { AvailabilityJSON, GoogleTokens } from "../../../types.ts";
 import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
-
-function getAvailability(
+import { DoctorGoogleClient } from "../../../external-clients/google.ts";
+import { toHarare } from "../../api/set-availability.tsx";
+function convertTo12Hour(time) {
+  let hours = time.getHours();
+  let minutes = time.getMinutes();
+  let ampm = hours >= 12 ? "pm" : "am";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+  return { hour: hours, minute: minutes, amPm: ampm };
+}
+async function getAvailability(
   _tokens: GoogleTokens,
+  ctx,
 ): Promise<AvailabilityJSON> {
-  return Promise.resolve({
+  const googleClient = DoctorGoogleClient.fromCtx(ctx);
+  const events = await googleClient.getEvents(
+    ctx.state.session.data.gcal_availability_calendar_id,
+  );
+  console.log(
+    "asdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasf",
+  );
+  // console.log(events);
+  const items = events.items;
+  let schedule = {
     Sunday: [],
-    Monday: [{
-      start: { hour: 9, minute: 0, amPm: "am" },
-      end: { hour: 5, minute: 0, amPm: "pm" },
-    }],
-    Tuesday: [{
-      start: { hour: 9, minute: 0, amPm: "am" },
-      end: { hour: 5, minute: 0, amPm: "pm" },
-    }],
-    Wednesday: [{
-      start: { hour: 9, minute: 0, amPm: "am" },
-      end: { hour: 5, minute: 0, amPm: "pm" },
-    }],
-    Thursday: [{
-      start: { hour: 9, minute: 0, amPm: "am" },
-      end: { hour: 5, minute: 0, amPm: "pm" },
-    }],
-    Friday: [{
-      start: { hour: 9, minute: 0, amPm: "am" },
-      end: { hour: 5, minute: 0, amPm: "pm" },
-    }],
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
     Saturday: [],
+  };
+  console.log(
+    "asdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasf",
+  );
+  events.items.forEach((item) => {
+    let startDateTime = new Date(item.start.dateTime);
+    let endDateTime = new Date(item.end.dateTime);
+    startDateTime.setHours(startDateTime.getHours());
+    console.log(
+      "start date time:",
+      startDateTime,
+    );
+    endDateTime.setHours(endDateTime.getHours());
+    console.log(
+      "end date time:",
+      endDateTime,
+    );
+    // startDateTime.
+
+    let startTime = convertTo12Hour(startDateTime);
+    let endTime = convertTo12Hour(endDateTime);
+
+    let dayOfWeek = startDateTime.toLocaleString("en-US", { weekday: "long" });
+
+    schedule[dayOfWeek].push({
+      start: startTime,
+      end: endTime,
+    });
   });
+  console.log(schedule);
+  return Promise.resolve(schedule);
 }
 
 export const handler: Handlers<
@@ -41,8 +76,7 @@ export const handler: Handlers<
     const availability = await getAvailability({
       access_token: ctx.state.session.get("access_token"),
       refresh_token: ctx.state.session.get("refresh_token"),
-    });
-
+    }, ctx);
     return ctx.render({ availability });
   },
 };
