@@ -385,11 +385,11 @@ const conversationStates: {
         onResponse: "onboarded:make_appointment:enter_appointment_reason",
       },
     ],
-    async onEnter(
+    onEnter(
       trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage>{
-      return await cancelAppointment(trx,patientMessage)
+      return cancelAppointment(trx,patientMessage)
     }
   },
   "other_end_of_demo": {
