@@ -385,7 +385,12 @@ const conversationStates: {
         onResponse: "onboarded:make_appointment:enter_appointment_reason",
       },
     ],
-    onEnter: cancelAppointment,
+    onEnter(
+      trx: TrxOrDb,
+      patientMessage: UnhandledPatientMessage,
+    ): Promise<UnhandledPatientMessage>{
+      return cancelAppointment(trx,patientMessage)
+    }
   },
   "other_end_of_demo": {
     type: "end_of_demo",
