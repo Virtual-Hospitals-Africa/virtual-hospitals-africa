@@ -43,10 +43,6 @@ async function getAvailability(
   const events = await googleClient.getEvents(
     ctx.state.session.data.gcal_availability_calendar_id,
   );
-  console.log(
-    "asdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasf",
-  );
-  // console.log(events);
   const items = events.items;
   console.log("items", items);
   const schedule: AvailabilityJSON = {
@@ -58,9 +54,6 @@ async function getAvailability(
     Friday: [],
     Saturday: [],
   };
-  console.log(
-    "asdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasfasdasfasf",
-  );
 
   events.items.forEach((item) => {
     assertAllHarare([item.start.dateTime, item.end.dateTime]);
