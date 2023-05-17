@@ -30,8 +30,11 @@ export async function up(db: Kysely<unknown>) {
       col.notNull().references("patients.id").onDelete("cascade")
     )
     .addColumn("reason", "varchar(255)")
-    .addColumn("appointment_status", "varchar(255)", (col) =>
-      col.defaultTo("pending")
+    .addColumn("status", "text", (col) =>
+      col
+        .notNull()
+        .defaultTo("pending")
+        .check(sql`"status" in ('pending', 'confirmed', 'denied')`)
     )
     .execute();
 
