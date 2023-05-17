@@ -1,5 +1,3 @@
-import { EnumType } from "https://deno.land/x/ts_morph@17.0.1/common/typescript.js";
-import { EnumDeclaration } from "https://deno.land/x/ts_morph@17.0.1/ts_morph.js";
 import { Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<unknown>) {
@@ -36,7 +34,7 @@ export async function up(db: Kysely<unknown>) {
       col.notNull().references("patients.id").onDelete("cascade")
     )
     .addColumn("reason", "varchar(255)")
-    .addColumn("appointmentStatus", "status" as EnumType, (col) =>
+    .addColumn("confirmationStatus", sql`status`, (col) =>
       col.notNull().defaultTo("pending")
     )
     .execute();
