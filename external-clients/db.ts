@@ -1,11 +1,9 @@
-import { DatabaseSchema } from './db';
 import "dotenv";
 import {
   Kysely,
   PostgresAdapter,
   PostgresIntrospector,
   PostgresQueryCompiler,
-  sql
 } from "kysely";
 import {
   Appointment,
@@ -77,32 +75,3 @@ export async function change_appointment_offered_time_status(rowId: number) {
     patient_declined: true,
   }).where("id", "=", rowId).execute();
 }
-
-export async function createUpdateTimeTrigger(){
-  for (const table of DatabaseSchema){
-    await sql
-    `CREATE OR REPLACE FUNCTION update_updated_at()
-    RETURNS TRIGGER AS $$ 
-    BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-    END;
-    $$
-    LANGUAGE plpgsql;
-    `.execute(db)
-    await sql`
-    CREATE TRIGGER update_updated_at_trigger
-          BEFORE UPDATE ON ${table}
-          FOR EACH ROW
-          EXECUTE FUNCTION update_updated_at();`.execute(db)
-  } 
-}
-
-export async function dropUpdateTimeTrigger(){
-  for (const table of DatabaseSchema){
-    await sql
-    `DROP TRIGGER IF EXIST update_updated_at_trigger
-    ON ${table}`.execute(db)
-  }
-}
-
