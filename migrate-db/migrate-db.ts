@@ -4,7 +4,7 @@ import * as _20230126000000_add_patients_table from "./migrations/20230126000000
 import * as _20230127024002_add_whatsapp_conversation_tables from "./migrations/20230127024002_add_whatsapp_conversation_tables.ts";
 import * as _20230127203321_add_doctors_appointments from "./migrations/20230127203321_add_doctors_appointments.ts";
 import * as _20230316155657_add_doctor_google_tokens from "./migrations/20230316155657_add_doctor_google_tokens.ts";
-
+import * as add_update_trigger from "./migrations/add_update_trigger.ts"
 async function migrateToLatest() {
   const migrator = new Migrator({
     db,
@@ -15,6 +15,7 @@ async function migrateToLatest() {
           _20230127024002_add_whatsapp_conversation_tables,
           _20230127203321_add_doctors_appointments,
           _20230316155657_add_doctor_google_tokens,
+          add_update_trigger
         });
       },
     },
