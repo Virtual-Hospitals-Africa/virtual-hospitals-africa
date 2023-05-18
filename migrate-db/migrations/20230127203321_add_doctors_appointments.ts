@@ -2,10 +2,6 @@ import { Kysely, sql } from "kysely";
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createType("status")
-    .asEnum(["pending", "confirmed", "denied"]);
-
-  await db.schema
     .createTable("doctors")
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn("created_at", "timestamp", (col) =>
@@ -34,9 +30,6 @@ export async function up(db: Kysely<unknown>) {
       col.notNull().references("patients.id").onDelete("cascade")
     )
     .addColumn("reason", "varchar(255)")
-    .addColumn("confirmationStatus", sql`status`, (col) =>
-      col.notNull().defaultTo("pending")
-    )
     .execute();
 
   await db.schema
