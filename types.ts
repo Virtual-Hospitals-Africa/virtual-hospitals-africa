@@ -126,7 +126,7 @@ export type ConversationStateHandlerListAction = {
     id: string;
     title: string;
   };
-  section: ConversationStateHandlerListActionSection[];
+  sections: ConversationStateHandlerListActionSection[];
 };
 
 export type ConversationStateHandlerList = ConversationStateHandlerType<{

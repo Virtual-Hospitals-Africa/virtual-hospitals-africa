@@ -159,30 +159,34 @@ export async function sendMessageWithInteractiveList(opts: {
         type: "list",
         header: {
           type: "text",
-          text: `${opts.headerText} Aryan_5`,
+          text: `${opts.headerText}`,
         },
         body: {
-          text: `${opts.messageBody} Aryan_5`,
+          text: `${opts.messageBody}`,
         },
         action: {
-          button: "cta-button-content",
+          button: "Available time",
           sections: [
             {
-              title: "Aryan_5",
+              title: "20230518",
               rows: [
                 {
-                  id: "unique-row-identifier1",
-                  title: "10am with Dr. Jones [ ]",
+                  id: "202305181000",
+                  title: "10am",
                   description: "appointment 1",
                 },
+                { id: "202305181030",
+                  title: "10:30am",
+                  description: "10:30am"
+                }
               ],
             },
             {
-              title: "Aryan_4",
+              title: "20230519",
               rows: [
                 {
                   id: "unique-row-identifier2",
-                  title: "10:30am with Dr. Jones [ ]",
+                  title: "10:30am",
                   description: "description 2",
                 },
               ],
@@ -199,3 +203,10 @@ export async function sendMessageWithInteractiveList(opts: {
 
   return response.json();
 }
+
+// await sendMessageWithInteractiveList({
+//   phone_number: "12369961017",
+//   headerText: "Hello",
+//   messageBody: "Hi there"
+
+// })

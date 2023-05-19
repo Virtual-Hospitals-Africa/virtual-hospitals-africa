@@ -5,6 +5,7 @@ import {
   ConversationStateHandler,
   ConversationStateHandlerSelect,
   ConversationStateHandlerSelectOption,
+  ConversationStateHandlerList,
   DetermineNextPatientStateReturn,
   DetermineNextPatientStateValidReturn,
   Maybe,
@@ -12,6 +13,7 @@ import {
   UnhandledPatientMessage,
   WhatsAppSendable,
   WhatsAppSendableString,
+  ConversationStateHandlerListActionSection,
 } from "../types.ts";
 // have to create a new function for list
 function findMatchingOption(
@@ -40,6 +42,19 @@ function findMatchingOption(
       }
     }
   });
+}
+
+function findMatchingListOption(
+  state: ConversationStateHandlerList,
+  messageBody: string
+): Maybe<ConversationStateHandlerListActionSection>{
+  return state.action.sections.find((section: ConversationStateHandlerListActionSection) => {
+    for (const{ id } of section.rows){
+      if (id === messageBody){
+        return section
+      }
+    }
+  })
 }
 
 function isValidResponse(
@@ -111,10 +126,10 @@ export function formatMessageToSend(
         headerText: "Other Apponitment Times",
         action: {
           button: {
-            id: "button_id_demo",
-            title: "Bitton has title",
+            id: state.action.button.id,
+            title: state.action.button.title
           },
-          sections: state.action.section.map((section) => ({
+          sections: state.action.sections.map((section) => ({
             title: section.title,
             rows: section.rows.map((row) => ({
               id: row.id,
@@ -181,10 +196,14 @@ export default function determineNextPatientState(
     return "invalid_response";
   }
   // need to handle options for list here
-  const { onResponse } =
-    currentState.type === "select"
-      ? findMatchingOption(currentState, messageBody)!
-      : currentState;
+  let onResponse
+  if (currentState.type === "select"){
+    onResponse = findMatchingOption(currentState, messageBody)!.onResponse
+  } else if (currentState.type === "list"){
+    onResponse = findMatchingListOption(currentState, messageBody)!.onResponse
+  } else{
+    onResponse = currentState.onResponse
+  }
 
   currentState.type === "list" ? { nextState: onResponse } : currentState;
 

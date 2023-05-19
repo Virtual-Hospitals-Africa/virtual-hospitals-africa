@@ -282,7 +282,6 @@ const conversationStates: {
         }
       }
 
-<<<<<<< HEAD
       // console.log('id', patientMessage.appointment_offered_times?.id)
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
       for (const toDeclineSlot of toDecline){
@@ -291,13 +290,6 @@ const conversationStates: {
           trx,
           { id: toDeclineSlot },
         );
-=======
-      console.log("id", patientMessage.appointment_offered_times[0]?.id);
-      // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-
-      if (!!toDecline.length) {
-        await appointments.declineOfferedTime(trx, { id: toDecline[0] });
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
       }
 
       const declinedTimes = await appointments.getPatientDeclinedTimes(trx, {
@@ -312,9 +304,8 @@ const conversationStates: {
       );
 
       const nextOfferedTimes: ReturnedSqlRow<
-<<<<<<< HEAD
       AppointmentOfferedTime & { doctor_name: string }
-      >[] = []      
+      >[] = []
       for (const timeslot of filteredAvailableTimes){
         const addedTime = await appointments.addOfferedTime(trx, {
           appointment_id: patientMessage.scheduling_appointment_id!,
@@ -325,10 +316,6 @@ const conversationStates: {
       }
 
       nextOfferedTimes.push(...compact(patientMessage.appointment_offered_times))
-=======
-        AppointmentOfferedTime & { doctor_name: string }
-      >[] = [offeredTime, ...compact(patientMessage.appointment_offered_times)];
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
 
       return {
         ...patientMessage,
@@ -395,7 +382,6 @@ const conversationStates: {
 
       assert(acceptedTime);
       assert(
-<<<<<<< HEAD
         acceptedTime.scheduled_gcal_event_id,
       );
       return `Thanks ${patientMessage.name!.split(" ")[0]}, we notified ${
@@ -403,15 +389,6 @@ const conversationStates: {
       } and will message you shortly upon confirmirmation of your appointment at ${
         prettyAppointmentTime(acceptedTime.start)
       }`;
-=======
-        patientMessage.appointment_offered_times[0].scheduled_gcal_event_id
-      );
-      return `Thanks ${patientMessage.name!.split(" ")[0]}, we notified ${
-        patientMessage.appointment_offered_times[0].doctor_name
-      } and will message you shortly upon confirmirmation of your appointment at ${prettyAppointmentTime(
-        patientMessage.appointment_offered_times[0].start
-      )}`;
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
     },
     options: [
       {
