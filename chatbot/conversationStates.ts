@@ -330,7 +330,7 @@ const conversationStates: {
       return `OK here are the other available time, please choose from the list.`;
     },
     action: {
-      button: "Other Available Time slots",
+      button: "Other Time slots",
       sections: [
         {
           title: "20230518",

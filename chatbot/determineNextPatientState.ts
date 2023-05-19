@@ -53,11 +53,10 @@ function findMatchingListOption(
       console.log('WHat is section here?', section)
       console.log("here insdie find matching option", id)
       if (id === messageBody){
-        console.log('section matched.')
+        console.log('section matched.', section, 'message body is:', messageBody)
         return section
       } 
     }
-    return {onResponse: "onboarded:make_appointment:other_scheduling_options"}
   })
 }
 
