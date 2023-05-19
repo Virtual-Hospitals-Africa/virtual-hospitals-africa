@@ -128,7 +128,13 @@ export type ConversationStateHandlerListAction = {
 
 export type ConversationStateHandlerList = ConversationStateHandlerType<{
   type: "list";
-  action: ConversationStateHandlerListAction;
+  action?: (
+    trx: TrxOrDb,
+    patientMessage: UnhandledPatientMessage
+  ) => Promise<{
+    button: string;
+    sections: ConversationStateHandlerListActionSection[];
+  }>;
 }>;
 
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
@@ -636,7 +642,7 @@ export type WhatsAppSendableList = {
   type: "list";
   headerText: string;
   messageBody: string;
-  action: MessageAction
+  action: MessageAction;
 };
 
 export type MessageAction = {
@@ -649,8 +655,7 @@ export type MessageAction = {
       description: string;
     }[];
   }[];
-
-}
+};
 
 export type WhatsAppSendableButtons = {
   type: "buttons";

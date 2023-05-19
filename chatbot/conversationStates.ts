@@ -11,6 +11,7 @@ import {
   AppointmentOfferedTime,
   ConversationState,
   ConversationStateHandler,
+  ConversationStateHandlerListActionSection,
   ConversationStateHandlerReturn,
   Falsy,
   PatientDemographicInfo,
@@ -18,6 +19,7 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
+import { determinePatientMessage } from "./determinePatientMessage.ts";
 // import { sendMessageWithInteractiveList } from "./determinePatientMessage.ts";
 
 // Is this important??
@@ -315,13 +317,16 @@ const conversationStates: {
         nextOfferedTimes.push(addedTime)
       }
 
-      nextOfferedTimes.push(...compact(patientMessage.appointment_offered_times))
+      nextOfferedTimes.push(
+        ...compact(patientMessage.appointment_offered_times)
+      );
 
       return {
         ...patientMessage,
         appointment_offered_times: nextOfferedTimes,
       };
     },
+
     prompt(patientMessage: UnhandledPatientMessage): string {
       assert(
         patientMessage.appointment_offered_times[0],
@@ -329,43 +334,43 @@ const conversationStates: {
       );
       return `OK here are the other available time, please choose from the list.`;
     },
-    action: {
-      button: "Other Time slots",
-      sections: [
-        {
-          title: "20230518",
+
+    action: async (
+      trx: TrxOrDb,
+      _patientMessage: UnhandledPatientMessage
+    ): Promise<{
+      button: string;
+      sections: ConversationStateHandlerListActionSection[];
+    }> => {
+      const nextOfferedTimes = await availableThirtyMinutes(trx, [], {
+        date: null,
+        timeslots_required: 1,
+      });
+      console.log(`This is null, ${nextOfferedTimes}`);
+      // Dynamically generate the sections based on `nextOfferedTimes`
+      const sections: ConversationStateHandlerListActionSection[] =
+        nextOfferedTimes.map((offeredTime) => ({
+          title: offeredTime.doctor.id.toString(), // Use the appropriate property for the date
           rows: [
             {
-              id: "202305181800",
-              title: "6:00 pm",
-              description: "With Doctor Aryan",
-            },
-            { id: "202305181930", title: "6:30 pm", description: "With Chun" },
-          ],
-          onResponse: "onboarded:appointment_scheduled",
-        },
-        {
-          title: "20230519",
-          rows: [
-            {
-              id: "202305191200",
-              title: "12:00 pm",
-              description: "With Chun",
-            },
-            {
-              id: "202305191230",
-              title: "12:30 pm",
-              description: "With Chun",
+              id: offeredTime.doctor.id.toString(), // Convert id to string
+              title: offeredTime.start,
+              description: `With Dr ${offeredTime.doctor.name}`,
             },
           ],
-          onResponse: "onboarded:appointment_scheduled",
-        },
-        {
-          title: "Other Date",
-          rows: [{ id: "Others", title: "Others", description: "Other date" }],
-          onResponse: "onboarded:make_appointment:other_scheduling_options",
-        },
-      ],
+          onResponse: "not_onboarded:welcome",
+        }));
+
+      sections.push({
+        title: "Other Date",
+        rows: [{ id: "Others", title: "Others", description: "Other date" }],
+        onResponse: "not_onboarded:welcome",
+      });
+
+      return {
+        button: "Other Time slots",
+        sections: sections,
+      };
     },
   },
 
