@@ -18,6 +18,7 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
+import { sendMessageWithInteractiveList } from "./determinePatientMessage.ts";
 
 // Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
@@ -340,11 +341,11 @@ const conversationStates: {
         patientMessage.appointment_offered_times[0],
         "onEnter should have added an appointment_offered_time"
       );
-      return `Looking for other times, the next available appoinment is ${prettyAppointmentTime(
-        patientMessage.appointment_offered_times[0].start
-      )}. Would you like to schedule this appointment?`;
+      sendMessageWithInteractiveList({
+        phone_number: patientMessage.phone_number.toString(),
+      });
+      return `${patientMessage}`;
     },
-
     interactive: {
       type: "list",
       header: {
@@ -377,27 +378,9 @@ const conversationStates: {
         ],
       },
     },
+    onResponse: "onboarded:appointment_scheduled",
   },
 
-  // options: [
-  //   {
-  //     option: "1",
-  //     display: "Go ahead",
-  //     onResponse: "onboarded:appointment_scheduled",
-  //   },
-  //   {
-  //     option: "other_times",
-  //     display: "Other time",
-  //     aliases: ["other"],
-  //     onResponse: "onboarded:make_appointment:other_scheduling_options",
-  //   },
-  //   {
-  //     option: "go_back",
-  //     display: "Go back",
-  //     aliases: ["no", "cancel", "back", "over"],
-  //     onResponse: "other_end_of_demo",
-  //   },
-  // ],
   "onboarded:appointment_scheduled": {
     type: "select",
     onEnter: makeAppointment,

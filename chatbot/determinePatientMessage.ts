@@ -12,67 +12,53 @@ import {
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`;
 
-// const sendMessageWithInteractiveList = (opts: {
-//   phone_number: string;
-// }): Promise<{
-//   messaging_product: "whatsapp";
-//   contacts: [{ input: string; wa_id: string }];
-//   messages: [{ id: string }];
-// }> => {
-//   const toPost = {
-//     method: "post",
-//     headers: { Authorization, "Content-Type": "application/json" },
-//     body: JSON.stringify({
-//       messaging_product: "whatsapp",
-//       to: opts.phone_number,
-//       type: "interactive",
-//       interactive: {
-//         type: "list",
-//         header: {
-//           type: "text",
-//           text: "your-header-content",
-//         },
-//         body: {
-//           text: "your-text-message-content",
-//         },
-//         footer: {
-//           text: "your-footer-content",
-//         },
-//         action: {
-//           button: "cta-button-content",
-//           sections: [
-//             {
-//               title: "title-content1",
-//               rows: [
-//                 {
-//                   id: "unique-row-identifier1",
-//                   title: "row-title-content1",
-//                   description: "row-description-content1",
-//                 },
-//               ],
-//             },
-//             {
-//               title: "title-content2",
-//               rows: [
-//                 {
-//                   id: "unique-row-identifier2",
-//                   title: "row-title-content2",
-//                   description: "row-description-content2",
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       },
-//     }),
-//   };
+export function sendMessageWithInteractiveList(opts: { phone_number: string }) {
+  const toPost = {
+    method: "post",
 
-//   console.log("toPost", JSON.stringify(toPost));
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messaging_product: "whatsapp",
+      to: opts.phone_number,
+      type: "interactive",
 
-//   const response = await fetch(postMessageRoute, toPost);
+      interactive: {
+        type: "list",
+        header: {
+          type: "text",
+          text: "Select Other Appointment",
+        },
+        action: {
+          button: "cta-button-content",
+          sections: [
+            {
+              title: "Time 6pm",
+              rows: [
+                {
+                  id: "message_id_1",
+                  title: "Time 6pm",
+                  description: "With Doctor Aryan",
+                },
+              ],
+            },
+            {
+              title: "Time 6:30pm",
+              rows: [
+                {
+                  id: "message_id_1",
+                  title: "message_id_2",
+                  description: "With doctor chun",
+                },
+              ],
+            },
+          ],
+        },
+      },
+    }),
+  };
 
-//   return response.json();
-// };
+  return toPost.headers;
+}
 
 export async function determinePatientMessage(
   trx: TrxOrDb,
@@ -82,12 +68,10 @@ export async function determinePatientMessage(
 
   if (next === "invalid_response") {
     const originalMessageSent = formatMessageToSend(patientMessage);
-    return typeof originalMessageSent === "string"
-      ? sorry(originalMessageSent)
-      : {
-          ...originalMessageSent,
-          messageBody: sorry(originalMessageSent.messageBody),
-        };
+    return {
+      ...originalMessageSent,
+      messageBody: sorry(originalMessageSent.messageBody),
+    };
   }
 
   patientMessage = {

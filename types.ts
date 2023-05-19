@@ -74,10 +74,7 @@ export type UnhandledPatientMessage = {
   conversation_state: Maybe<ConversationState>;
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
-<<<<<<< HEAD
   scheduling_appointment_status?: Maybe<string>;
-=======
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
   appointment_offered_times:
     | [null]
     | ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
@@ -628,6 +625,7 @@ export type MessageOption = {
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db;
 
 export type WhatsAppSendable =
+<<<<<<< HEAD
   | string
   | {
       messageBody: string;
@@ -657,3 +655,26 @@ export type ParsedDate = {
 }
 =======
 >>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
+=======
+  | WhatsAppSendableString
+  | WhatsAppSendableButtons
+  | WhatsAppSendableList;
+
+export type WhatsAppSendableString = {
+  type: "string";
+  messageBody: string;
+};
+
+export type WhatsAppSendableList = {
+  type: "list";
+  messageBody: string;
+  headerText: string;
+};
+
+export type WhatsAppSendableButtons = {
+  type: "buttons";
+  messageBody: string;
+  buttonText: string;
+  options: MessageOption[];
+};
+>>>>>>> b43a250 (Going to rebase to avoid marge confillts)

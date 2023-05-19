@@ -11,6 +11,8 @@ import {
   MessageOption,
   Patient,
   UnhandledPatientMessage,
+  WhatsAppSendable,
+  WhatsAppSendableString,
 } from "../types.ts";
 
 function findMatchingOption(
@@ -70,13 +72,16 @@ function isValidResponse(
   }
 }
 
-export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
-  | string
-  | {
-      messageBody: string;
-      buttonText: string;
-      options: MessageOption[];
-    } {
+function stringSendable(messageBody: string): WhatsAppSendableString {
+  return {
+    type: "string",
+    messageBody,
+  };
+}
+
+export function formatMessageToSend(
+  patientMessage: UnhandledPatientMessage
+): WhatsAppSendable {
   console.log("formatMessageToSend", JSON.stringify(patientMessage));
   const state = conversationStates[patientMessage.conversation_state!];
   const prompt =
@@ -87,6 +92,7 @@ export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
   switch (state.type) {
     case "select": {
       return {
+        type: "buttons",
         messageBody: prompt,
         buttonText: "Menu",
         options: state.options.map((option) => ({
@@ -95,20 +101,23 @@ export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
         })),
       };
     }
+    // Need to modify the return simlier to select case
+    case "list": {
+      return stringSendable(prompt);
+    }
     case "date": {
-      return prompt + " Please enter the date in the format DD/MM/YYYY"; // https://en.wikipedia.org/wiki/Date_format_by_country
+      return stringSendable(
+        prompt + " Please enter the date in the format DD/MM/YYYY"
+      ); // https://en.wikipedia.org/wiki/Date_format_by_country
     }
     case "string": {
-      return prompt;
+      return stringSendable(prompt);
     }
     case "end_of_demo": {
-      return prompt;
-    }
-    case "list": {
-      return prompt;
+      return stringSendable(prompt);
     }
     default: {
-      return "What happened!?!?!?!?!?";
+      return stringSendable("What happened!?!?!?!?!?");
     }
   }
 }
@@ -151,7 +160,7 @@ export default function determineNextPatientState(
   if (!isValidResponse(currentState, messageBody)) {
     return "invalid_response";
   }
-
+  // need to handle options for list here
   const { onResponse } =
     currentState.type === "select"
       ? findMatchingOption(currentState, messageBody)!
