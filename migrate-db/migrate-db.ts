@@ -6,6 +6,8 @@ import * as _20230127203321_add_doctors_appointments from "./migrations/20230127
 import * as _20230316155657_add_doctor_google_tokens from "./migrations/20230316155657_add_doctor_google_tokens.ts";
 import * as _20230517124053_add_update_trigger from "./migrations/20230517124053_add_update_trigger.ts";
 import * as _20230518122050_add_appointment_status from "./migrations/20230518122050_add_appointment_status.ts";
+
+
 async function migrateToLatest() {
   const migrator = new Migrator({
     db,

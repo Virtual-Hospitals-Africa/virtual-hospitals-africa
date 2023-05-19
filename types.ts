@@ -133,10 +133,12 @@ export type ConversationStateHandler =
   | ConversationStateHandlerDate
   | ConversationStateHandlerType<{ type: "end_of_demo" }>;
 
+type AppointmentStatus = "pending" | "confirmed" | "denied";
+
 export type Appointment = {
   patient_id: number;
   reason: Maybe<string>;
-  status: Maybe<string>;
+  status: AppointmentStatus;
 };
 
 export type DetermineNextPatientStateValidReturn = {

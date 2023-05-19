@@ -41,7 +41,7 @@ export const handler: Handlers<
       todayISOInHarare();
 
     // get filtered calendar events here
-    const events = await googleClient.getEvents(
+    const gettingEvents = googleClient.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
       {
         timeMin: `${startday}T00:00:00+02:00`,
@@ -50,9 +50,11 @@ export const handler: Handlers<
     );
 
     const doctor_id = ctx.state.session.data.id;
-    const gcalEventIds = new Set(events.items.map((item) => item.id));
 
     const appointmentsOfDoctor = await appointments.get(db, { doctor_id });
+    const events = await gettingEvents;
+
+    const gcalEventIds = new Set(events.items.map((item) => item.id));
 
     const appointmentsOfDoctorWithGcalEventIds = appointmentsOfDoctor.filter(
       (appointment) => gcalEventIds.has(appointment.scheduled_gcal_event_id),
