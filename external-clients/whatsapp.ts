@@ -3,29 +3,54 @@ import {
   MessageOption,
   WhatsAppJSONResponse,
   WhatsAppSendable,
+  WhatsAppMessageAction
 } from "../types.ts";
 
-const postMessageRoute = `https://graph.facebook.com/v15.0/${
-  Deno.env.get("WHATSAPP_FROM_PHONE_NUMBER")
-}/messages`;
+const postMessageRoute = `https://graph.facebook.com/v15.0/${Deno.env.get(
+  "WHATSAPP_FROM_PHONE_NUMBER"
+)}/messages`;
 const Authorization = `Bearer ${Deno.env.get("WHATSAPP_BEARER_TOKEN")}`;
 
-export function sendMessage({ phone_number, message }: {
+export function sendMessage({
+  phone_number,
+  message,
+}: {
   phone_number: string;
   message: WhatsAppSendable;
-}): Promise<WhatsAppJSONResponse> {
-  return typeof message === "string"
-    ? sendMessagePlainText({ phone_number, message })
-    : sendMessageWithInteractiveButtons({
-      phone_number,
-      options: message.options,
-      messageBody: message.messageBody,
-    });
+}): Promise<
+  | WhatsAppJSONResponse
+  | {
+      messaging_product: "whatsapp";
+      contacts: [{ input: string; wa_id: string }];
+      messages: [{ id: string }];
+    }
+> {
+  switch (message.type) {
+    case "string":
+      return sendMessagePlainText({
+        phone_number,
+        message: message.messageBody,
+      });
+    case "buttons":
+      return sendMessageWithInteractiveButtons({
+        phone_number,
+        options: message.options,
+        messageBody: message.messageBody,
+      });
+    case "list":
+      return sendMessageWithInteractiveList({
+        phone_number,
+        headerText: message.headerText,
+        messageBody: message.messageBody,
+        action: message.action
+      });
+  }
 }
 
-export async function sendMessagePlainText(
-  opts: { phone_number: string; message: string },
-): Promise<WhatsAppJSONResponse> {
+export async function sendMessagePlainText(opts: {
+  phone_number: string;
+  message: string;
+}): Promise<WhatsAppJSONResponse> {
   const response = await fetch(postMessageRoute, {
     method: "post",
     headers: { Authorization, "Content-Type": "application/json" },
@@ -39,13 +64,11 @@ export async function sendMessagePlainText(
   return response.json();
 }
 
-export async function sendMessageWithInteractiveButtons(
-  opts: {
-    phone_number: string;
-    messageBody: string;
-    options: MessageOption[];
-  },
-): Promise<WhatsAppJSONResponse> {
+export async function sendMessageWithInteractiveButtons(opts: {
+  phone_number: string;
+  messageBody: string;
+  options: MessageOption[];
+}): Promise<WhatsAppJSONResponse> {
   const toPost = {
     method: "post",
     headers: { Authorization, "Content-Type": "application/json" },
@@ -75,66 +98,59 @@ export async function sendMessageWithInteractiveButtons(
   return response.json();
 }
 
-export async function sendMessageWithInteractiveList(
-  opts: {
-    phone_number: string;
-  },
-): Promise<{
+export function sendMessageWithInteractiveList(_opts: {
+  phone_number: string;
+  headerText: string;
+  messageBody: string;
+  action: WhatsAppMessageAction;
+}): Promise<{
   messaging_product: "whatsapp";
   contacts: [{ input: string; wa_id: string }];
   messages: [{ id: string }];
 }> {
-  const toPost = {
-    method: "post",
-    headers: { Authorization, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: opts.phone_number,
-      type: "interactive",
-      "interactive": {
-        "type": "list",
-        "header": {
-          "type": "text",
-          "text": "your-header-content",
-        },
-        "body": {
-          "text": "your-text-message-content",
-        },
-        "footer": {
-          "text": "your-footer-content",
-        },
-        "action": {
-          "button": "cta-button-content",
-          "sections": [
-            {
-              "title": "title-content1",
-              "rows": [
-                {
-                  "id": "unique-row-identifier1",
-                  "title": "row-title-content1",
-                  "description": "row-description-content1",
-                },
-              ],
-            },
-            {
-              "title": "title-content2",
-              "rows": [
-                {
-                  "id": "unique-row-identifier2",
-                  "title": "row-title-content2",
-                  "description": "row-description-content2",
-                },
-              ],
-            },
-          ],
-        },
-      },
-    }),
-  };
+  console.log("List was called");
 
-  console.log("toPost", JSON.stringify(toPost));
+  throw new Error("TODO")
 
-  const response = await fetch(postMessageRoute, toPost);
+  // const toPost = {
+  //   method: "post",
+  //   headers: { Authorization, "Content-Type": "application/json" },
+  //   body: JSON.stringify({
+  //     messaging_product: "whatsapp",
+  //     to: opts.phone_number,
+  //     type: "interactive",
+  //     interactive: {
+  //       type: "list",
+  //       header: {
+  //         type: "text",
+  //         text: `${opts.headerText}`,
+  //       },
+  //       body: {
+  //         text: `${opts.messageBody}`,
+  //       },
+  //       action: {
+  //         button: opts.action.button,
+  //         sections: opts.action.sections.map((section) => ({
+  //           ...section,
+  //           rows: section.rows.map((row) => ({
+  //             ...row,
+  //           })),
+  //         })),
+  //       },
+  //     },
+  //   }),
+  // };
 
-  return response.json();
+  // console.log("toPost", JSON.stringify(toPost));
+
+  // const response = await fetch(postMessageRoute, toPost);
+
+  // return response.json();
 }
+
+// await sendMessageWithInteractiveList({
+//   phone_number: "12369961017",
+//   headerText: "Hello",
+//   messageBody: "Hi there"
+
+// })

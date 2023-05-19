@@ -7,8 +7,8 @@ export type Falsy = false | 0 | "" | null | undefined;
 
 export type DeepPartial<T> = T extends Record<string, unknown>
   ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
+    [P in keyof T]?: DeepPartial<T[P]>;
+  }
   : T;
 
 export type SqlRow<T> = {
@@ -74,12 +74,16 @@ export type UnhandledPatientMessage = {
   conversation_state: Maybe<ConversationState>;
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
-  scheduling_appointment_status?: Maybe<string>;
+  scheduling_appointment_status?: Maybe<AppointmentStatus>;
   appointment_offered_times:
     | [null]
     | ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
   created_at: Date;
   updated_at: Date;
+};
+
+export type UnhandledPatientMessageWithConversationState = UnhandledPatientMessage & {
+  conversation_state: ConversationState;
 };
 
 // TODO; typecheck that onEnter return gets passed to prompt or eliminate this whole concept
@@ -111,6 +115,32 @@ export type ConversationStateHandlerSelectOption = {
   onResponse: ConversationStateHandlerOnResponse;
 };
 
+// export type ConversationStateHandlerListActionSection = {
+//   title: string;
+//   rows: {
+//     id: string;
+//     title: string;
+//     description: string;
+//   }[];
+//   onResponse: ConversationStateHandlerOnResponse;
+// };
+
+// export type ConversationStateHandlerListAction = {
+//   button: string;
+//   sections: ConversationStateHandlerListActionSection[];
+// };
+
+// export type ConversationStateHandlerList = ConversationStateHandlerType<{
+//   type: "list";
+//   action?: (
+//     trx: TrxOrDb,
+//     patientMessage: UnhandledPatientMessage
+//   ) => Promise<{
+//     button: string;
+//     sections: ConversationStateHandlerListActionSection[];
+//   }>;
+// }>;
+
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
   type: "select";
   options: ConversationStateHandlerSelectOption[];
@@ -119,6 +149,11 @@ export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
 export type ConversationStateHandlerString = ConversationStateHandlerType<{
   type: "string";
   validation?: (value: string) => boolean;
+  onResponse: ConversationStateHandlerOnResponse;
+}>;
+
+export type ConversationStateHandlerEndOfDemo = ConversationStateHandlerType<{
+  type: "end_of_demo";
   onResponse: ConversationStateHandlerOnResponse;
 }>;
 
@@ -131,7 +166,8 @@ export type ConversationStateHandler =
   | ConversationStateHandlerSelect
   | ConversationStateHandlerString
   | ConversationStateHandlerDate
-  | ConversationStateHandlerType<{ type: "end_of_demo" }>;
+  | ConversationStateHandlerEndOfDemo;
+  // | ConversationStateHandlerList;
 
 type AppointmentStatus = "pending" | "confirmed" | "denied";
 
@@ -563,12 +599,9 @@ export type MessageOption = {
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db;
 
 export type WhatsAppSendable =
-  | string
-  | {
-      messageBody: string;
-      buttonText: string;
-      options: MessageOption[];
-    };
+  | WhatsAppSendableString
+  | WhatsAppSendableButtons
+  | WhatsAppSendableList;
 export type DoctorAppointment = {
   stripeColor: string;
   patientName: string;
@@ -589,3 +622,34 @@ export type ParsedDate = {
   minute: string
   second: string
 }
+
+export type WhatsAppSendableString = {
+  type: "string";
+  messageBody: string;
+};
+
+export type WhatsAppSendableList = {
+  type: "list";
+  headerText: string;
+  messageBody: string;
+  action: WhatsAppMessageAction;
+};
+
+export type WhatsAppMessageAction = {
+  button: string;
+  sections: {
+    title: string;
+    rows: {
+      id: string;
+      title: string;
+      description: string;
+    }[];
+  }[];
+};
+
+export type WhatsAppSendableButtons = {
+  type: "buttons";
+  messageBody: string;
+  buttonText: string;
+  options: MessageOption[];
+};

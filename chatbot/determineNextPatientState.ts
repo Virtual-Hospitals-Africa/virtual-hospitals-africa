@@ -8,11 +8,16 @@ import {
   DetermineNextPatientStateReturn,
   DetermineNextPatientStateValidReturn,
   Maybe,
-  MessageOption,
   Patient,
   UnhandledPatientMessage,
+  WhatsAppSendable,
+  WhatsAppSendableString,
 } from "../types.ts";
+import pickPatient from "./pickPatient.ts";
 
+
+
+// have to create a new function for list
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
   messageBody: string
@@ -41,6 +46,27 @@ function findMatchingOption(
   });
 }
 
+// function findMatchingListOption(
+//   state: ConversationStateHandlerList,
+//   messageBody: string
+// ): Maybe<ConversationStateHandlerListActionSection>{
+//   return state.action.sections.find((section: ConversationStateHandlerListActionSection) => {
+//     for (const{ id } of section.rows){
+//       console.log('WHat is section here?', section)
+//       console.log("here insdie find matching option", id)
+//       if (id === messageBody){
+//         console.log('section matched.', section, 'message body is:', messageBody)
+//         return section
+//       } 
+//     }
+//   })
+// }
+
+// 1. Generate the options ahead of these function calls
+//    (isValidResponse, findMatchingOption, findMatchingListOption) so that these can continue to be called synchronously
+// 2. Generate the options in these functions — these would need to be changed into async functions
+
+
 function isValidResponse(
   state: ConversationStateHandler,
   messageBody: string
@@ -49,6 +75,8 @@ function isValidResponse(
     case "select": {
       return !!findMatchingOption(state, messageBody);
     }
+    // case "list":
+    //   return true;
     case "date": {
       const [day, month, year] = messageBody.split("/");
       // deno-lint-ignore no-unused-vars
@@ -70,15 +98,28 @@ function isValidResponse(
   }
 }
 
-export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
-  | string
-  | {
-      messageBody: string;
-      buttonText: string;
-      options: MessageOption[];
-    } {
-  console.log("formatMessageToSend", JSON.stringify(patientMessage));
-  const state = conversationStates[patientMessage.conversation_state!];
+function stringSendable(messageBody: string): WhatsAppSendableString {
+  return {
+    type: "string",
+    messageBody,
+  };
+}
+
+// Are the available options part of the patient message?
+// NO
+
+// Got it, please select from the following available times -- prompt
+// Menu -- button
+
+// May 20 -- section.title
+// 9:00 AM Dr. Skhu -- row.title
+
+
+export function formatMessageToSend(
+  patientMessage: UnhandledPatientMessage,
+  // action?: WhatsAppMessageAction,
+): WhatsAppSendable {
+  const state = conversationStates[patientMessage.conversation_state || "not_onboarded:welcome"];
   const prompt =
     typeof state.prompt === "string"
       ? state.prompt
@@ -87,6 +128,7 @@ export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
   switch (state.type) {
     case "select": {
       return {
+        type: "buttons",
         messageBody: prompt,
         buttonText: "Menu",
         options: state.options.map((option) => ({
@@ -95,60 +137,53 @@ export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
         })),
       };
     }
+    // Need to modify the return simlier to select case
+    // case "list": {
+    //   console.log("line 105: in determineNextPatientState");
+    //   return {
+    //     type: "list",
+    //     messageBody: prompt,
+    //     headerText: "Other Apponitment Times",
+    //     action: action!,
+    //   };
+    // }
     case "date": {
-      return prompt + " Please enter the date in the format DD/MM/YYYY"; // https://en.wikipedia.org/wiki/Date_format_by_country
+      return stringSendable(
+        prompt + " Please enter the date in the format DD/MM/YYYY"
+      ); // https://en.wikipedia.org/wiki/Date_format_by_country
     }
     case "string": {
-      return prompt;
+      return stringSendable(prompt);
     }
     case "end_of_demo": {
-      return prompt;
+      return stringSendable(prompt);
     }
     default: {
-      return "What happened!?!?!?!?!?";
+      return stringSendable("What happened!?!?!?!?!?");
     }
   }
 }
 
-const pickPatient = (patientMessage: UnhandledPatientMessage) => ({
-  phone_number: patientMessage.phone_number,
-  name: patientMessage.name,
-  gender: patientMessage.gender,
-  date_of_birth: patientMessage.date_of_birth,
-  national_id_number: patientMessage.national_id_number,
-});
-
 export default function determineNextPatientState(
-  patientMessage: UnhandledPatientMessage
+  patientMessage: UnhandledPatientMessage,
 ): DetermineNextPatientStateReturn {
-  const messageBody = patientMessage.body.trim();
 
   if (!patientMessage.conversation_state) {
     return {
       nextPatient: {
         ...pickPatient(patientMessage),
         id: patientMessage.patient_id,
-        conversation_state: "not_onboarded:welcome",
+        conversation_state: "not_onboarded:welcome" as const,
       },
-    };
+    }
   }
 
   const currentState = conversationStates[patientMessage.conversation_state];
 
-  if (currentState.type === "end_of_demo") {
-    return {
-      nextPatient: {
-        ...pickPatient(patientMessage),
-        id: patientMessage.patient_id,
-        conversation_state: patientMessage.conversation_state,
-      },
-    };
-  }
-
+  const messageBody = patientMessage.body.trim();
   if (!isValidResponse(currentState, messageBody)) {
     return "invalid_response";
   }
-
   const { onResponse } =
     currentState.type === "select"
       ? findMatchingOption(currentState, messageBody)!

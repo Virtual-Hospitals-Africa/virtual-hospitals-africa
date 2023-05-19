@@ -12,33 +12,32 @@ import {
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`;
 
-export async function determinePatientMessage(
+
+export async function determineResponse(
   trx: TrxOrDb,
-  patientMessage: UnhandledPatientMessage,
+  patientMessage: UnhandledPatientMessage
 ): Promise<WhatsAppSendable> {
+
   const next = determineNextPatientState(patientMessage);
 
   if (next === "invalid_response") {
+    // This is returning the type string
     const originalMessageSent = formatMessageToSend(patientMessage);
-    return typeof originalMessageSent === "string"
-      ? sorry(originalMessageSent)
-      : {
-        ...originalMessageSent,
-        messageBody: sorry(originalMessageSent.messageBody),
-      };
+    return {
+      ...originalMessageSent,
+      messageBody: sorry(originalMessageSent.messageBody),
+    };
   }
 
-  patientMessage = {
-    ...patientMessage,
-    ...next.nextPatient,
-  };
+  // patientMessage = {
+  //   ...patientMessage,
+  //   ...next.nextPatient,
+  // };
 
   if (next.nextPatient) {
-    console.log("patients.upsert", JSON.stringify(next.nextPatient));
     await patients.upsert(trx, next.nextPatient);
   }
   if (next.nextAppointment) {
-    console.log("appointments.upsert", JSON.stringify(next.nextAppointment));
     await appointments.upsert(trx, next.nextAppointment);
   }
 
@@ -51,9 +50,8 @@ export async function determinePatientMessage(
 
   return formatMessageToSend({
     ...patientMessage,
-    scheduling_appointment_id: next.nextAppointment &&
-      next.nextAppointment.id,
-    scheduling_appointment_reason: next.nextAppointment &&
-      next.nextAppointment.reason,
+    scheduling_appointment_id: next.nextAppointment && next.nextAppointment.id,
+    scheduling_appointment_reason:
+      next.nextAppointment && next.nextAppointment.reason,
   });
 }
