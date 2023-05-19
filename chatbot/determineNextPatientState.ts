@@ -104,6 +104,9 @@ export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
     case "end_of_demo": {
       return prompt;
     }
+    case "list": {
+      return prompt;
+    }
     default: {
       return "What happened!?!?!?!?!?";
     }

@@ -7,8 +7,8 @@ export type Falsy = false | 0 | "" | null | undefined;
 
 export type DeepPartial<T> = T extends Record<string, unknown>
   ? {
-      [P in keyof T]?: DeepPartial<T[P]>;
-    }
+    [P in keyof T]?: DeepPartial<T[P]>;
+  }
   : T;
 
 export type SqlRow<T> = {
@@ -74,7 +74,10 @@ export type UnhandledPatientMessage = {
   conversation_state: Maybe<ConversationState>;
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
+<<<<<<< HEAD
   scheduling_appointment_status?: Maybe<string>;
+=======
+>>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
   appointment_offered_times:
     | [null]
     | ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
@@ -111,6 +114,59 @@ export type ConversationStateHandlerSelectOption = {
   onResponse: ConversationStateHandlerOnResponse;
 };
 
+// export type ConversationStateHandlerInteractiveActionSection = {
+//   title: string;
+//   rows: {
+//     id: string;
+//     title: string;
+//     description: string;
+//   }[];
+// };
+
+// export type ConversationStateHandlerInteractiveAction = {
+//   section: ConversationStateHandlerInteractiveActionSection[];
+// };
+
+// export type ConversationStateHandlerInteractive = ConversationStateHandlerType<{
+//   type: "list";
+//   header?: {
+//     type: "text";
+//     text: string;
+//   };
+//   body?: any;
+//   footer?: any;
+//   action: ConversationStateHandlerInteractiveAction;
+// }>;
+
+export type ConversationStateHandlerList = ConversationStateHandlerType<{
+  type: "list";
+  onEnter: (
+    trx: TrxOrDb,
+    patientMessage: UnhandledPatientMessage
+  ) => Promise<UnhandledPatientMessage>;
+  prompt: (patientMessage: UnhandledPatientMessage) => string;
+  interactive: {
+    type: "list";
+    header: {
+      type: "text";
+      text: string;
+    };
+    action: {
+      button: string;
+      sections: {
+        title: string;
+        rows: {
+          id: string;
+          title: string;
+          description: string;
+        }[];
+      }[];
+    };
+  };
+  // difine on response here
+  onResponse: ConversationStateHandlerOnResponse;
+}>;
+
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
   type: "select";
   options: ConversationStateHandlerSelectOption[];
@@ -131,7 +187,8 @@ export type ConversationStateHandler =
   | ConversationStateHandlerSelect
   | ConversationStateHandlerString
   | ConversationStateHandlerDate
-  | ConversationStateHandlerType<{ type: "end_of_demo" }>;
+  | ConversationStateHandlerType<{ type: "end_of_demo" }>
+  | ConversationStateHandlerList;
 
 type AppointmentStatus = "pending" | "confirmed" | "denied";
 
@@ -319,7 +376,11 @@ export type GCalEvent = {
     }
   ];
   attendeesOmitted: boolean;
+<<<<<<< HEAD
   extendedProperties: Record<string, unknown>;
+=======
+  extendedProperties: any;
+>>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
   hangoutLink: string;
   conferenceData: {
     createRequest: {
@@ -362,7 +423,11 @@ export type GCalEvent = {
     width: integer;
     height: integer;
     display: string;
+<<<<<<< HEAD
     preferences: unknown;
+=======
+    preferences: any;
+>>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
   };
   anyoneCanAddSelf: boolean;
   guestsCanInviteOthers: boolean;
@@ -569,6 +634,7 @@ export type WhatsAppSendable =
       buttonText: string;
       options: MessageOption[];
     };
+<<<<<<< HEAD
 export type DoctorAppointment = {
   stripeColor: string;
   patientName: string;
@@ -589,3 +655,5 @@ export type ParsedDate = {
   minute: string
   second: string
 }
+=======
+>>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
