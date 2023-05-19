@@ -346,11 +346,7 @@ export type GCalEvent = {
     }
   ];
   attendeesOmitted: boolean;
-<<<<<<< HEAD
   extendedProperties: Record<string, unknown>;
-=======
-  extendedProperties: any;
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
   hangoutLink: string;
   conferenceData: {
     createRequest: {
@@ -393,11 +389,7 @@ export type GCalEvent = {
     width: integer;
     height: integer;
     display: string;
-<<<<<<< HEAD
     preferences: unknown;
-=======
-    preferences: any;
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
   };
   anyoneCanAddSelf: boolean;
   guestsCanInviteOthers: boolean;
@@ -598,14 +590,9 @@ export type MessageOption = {
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db;
 
 export type WhatsAppSendable =
-<<<<<<< HEAD
-  | string
-  | {
-      messageBody: string;
-      buttonText: string;
-      options: MessageOption[];
-    };
-<<<<<<< HEAD
+  | WhatsAppSendableString
+  | WhatsAppSendableButtons
+  | WhatsAppSendableList;
 export type DoctorAppointment = {
   stripeColor: string;
   patientName: string;
@@ -626,12 +613,6 @@ export type ParsedDate = {
   minute: string
   second: string
 }
-=======
->>>>>>> d3747cd (Added the interactive list, still need to make a few bug fixes pull right now)
-=======
-  | WhatsAppSendableString
-  | WhatsAppSendableButtons
-  | WhatsAppSendableList;
 
 export type WhatsAppSendableString = {
   type: "string";
@@ -663,4 +644,3 @@ export type WhatsAppSendableButtons = {
   buttonText: string;
   options: MessageOption[];
 };
->>>>>>> b43a250 (Going to rebase to avoid marge confillts)
