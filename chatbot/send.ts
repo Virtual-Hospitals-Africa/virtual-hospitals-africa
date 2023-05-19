@@ -4,7 +4,7 @@ import { UnhandledPatientMessage, WhatsAppSendable } from "../types.ts";
 
 export async function send(
   message: WhatsAppSendable,
-  patientMessage: UnhandledPatientMessage,
+  patientMessage: UnhandledPatientMessage
 ) {
   const whatsappResponse = await sendMessage({
     message,
@@ -17,6 +17,7 @@ export async function send(
   }
 
   const insertedMessageSent = await insertMessageSent({
+    // instert the message in the database
     patient_id: patientMessage.patient_id,
     responding_to_id: patientMessage.message_id,
     whatsapp_id: whatsappResponse.messages[0].id,

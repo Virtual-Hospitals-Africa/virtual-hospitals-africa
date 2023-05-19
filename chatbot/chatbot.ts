@@ -19,9 +19,11 @@ export function createChatbot(): Responder {
     await Promise.all(
       unhandledMessages.map(async (patientMessage) => {
         try {
+          // toSend is coming from the database
           const toSend = await db
             .transaction()
             .execute((trx) => determinePatientMessage(trx, patientMessage));
+          //this should be return a type list
           console.log("toSend", JSON.stringify(toSend));
           await send(toSend, patientMessage);
         } catch (err) {
@@ -47,7 +49,7 @@ export function createChatbot(): Responder {
     // previous batch of messages to be done processing before starting again.
     timer = setTimeout(respond, 100);
   }
-
+  console.log("Line 50: chatbot at return");
   return {
     start: respond,
     exit(): void {

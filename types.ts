@@ -111,57 +111,27 @@ export type ConversationStateHandlerSelectOption = {
   onResponse: ConversationStateHandlerOnResponse;
 };
 
-// export type ConversationStateHandlerInteractiveActionSection = {
-//   title: string;
-//   rows: {
-//     id: string;
-//     title: string;
-//     description: string;
-//   }[];
-// };
+export type ConversationStateHandlerListActionSection = {
+  title: string;
+  rows: {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+  onResponse: ConversationStateHandlerOnResponse;
+};
 
-// export type ConversationStateHandlerInteractiveAction = {
-//   section: ConversationStateHandlerInteractiveActionSection[];
-// };
-
-// export type ConversationStateHandlerInteractive = ConversationStateHandlerType<{
-//   type: "list";
-//   header?: {
-//     type: "text";
-//     text: string;
-//   };
-//   body?: any;
-//   footer?: any;
-//   action: ConversationStateHandlerInteractiveAction;
-// }>;
+export type ConversationStateHandlerListAction = {
+  button: {
+    id: string;
+    title: string;
+  };
+  section: ConversationStateHandlerListActionSection[];
+};
 
 export type ConversationStateHandlerList = ConversationStateHandlerType<{
   type: "list";
-  onEnter: (
-    trx: TrxOrDb,
-    patientMessage: UnhandledPatientMessage
-  ) => Promise<UnhandledPatientMessage>;
-  prompt: (patientMessage: UnhandledPatientMessage) => string;
-  interactive: {
-    type: "list";
-    header: {
-      type: "text";
-      text: string;
-    };
-    action: {
-      button: string;
-      sections: {
-        title: string;
-        rows: {
-          id: string;
-          title: string;
-          description: string;
-        }[];
-      }[];
-    };
-  };
-  // difine on response here
-  onResponse: ConversationStateHandlerOnResponse;
+  action: ConversationStateHandlerListAction;
 }>;
 
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
@@ -667,8 +637,22 @@ export type WhatsAppSendableString = {
 
 export type WhatsAppSendableList = {
   type: "list";
-  messageBody: string;
   headerText: string;
+  messageBody: string;
+  action: {
+    button: {
+      id: string;
+      title: string;
+    };
+    sections: {
+      title: string;
+      rows: {
+        id: string;
+        title: string;
+        description: string;
+      }[];
+    }[];
+  };
 };
 
 export type WhatsAppSendableButtons = {

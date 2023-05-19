@@ -8,13 +8,12 @@ import {
   DetermineNextPatientStateReturn,
   DetermineNextPatientStateValidReturn,
   Maybe,
-  MessageOption,
   Patient,
   UnhandledPatientMessage,
   WhatsAppSendable,
   WhatsAppSendableString,
 } from "../types.ts";
-
+// have to create a new function for list
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
   messageBody: string
@@ -51,6 +50,8 @@ function isValidResponse(
     case "select": {
       return !!findMatchingOption(state, messageBody);
     }
+    case "list":
+      return true;
     case "date": {
       const [day, month, year] = messageBody.split("/");
       // deno-lint-ignore no-unused-vars
@@ -103,7 +104,26 @@ export function formatMessageToSend(
     }
     // Need to modify the return simlier to select case
     case "list": {
-      return stringSendable(prompt);
+      console.log("line 105: in determineNextPatientState");
+      return {
+        type: "list",
+        messageBody: prompt,
+        headerText: "Other Apponitment Times",
+        action: {
+          button: {
+            id: "button_id_demo",
+            title: "Bitton has title",
+          },
+          sections: state.action.section.map((section) => ({
+            title: section.title,
+            rows: section.rows.map((row) => ({
+              id: row.id,
+              title: row.title,
+              description: row.description,
+            })),
+          })),
+        },
+      };
     }
     case "date": {
       return stringSendable(
@@ -165,6 +185,8 @@ export default function determineNextPatientState(
     currentState.type === "select"
       ? findMatchingOption(currentState, messageBody)!
       : currentState;
+
+  currentState.type === "list" ? { nextState: onResponse } : currentState;
 
   const next =
     typeof onResponse === "string"

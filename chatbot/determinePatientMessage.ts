@@ -67,6 +67,7 @@ export async function determinePatientMessage(
   const next = determineNextPatientState(patientMessage);
 
   if (next === "invalid_response") {
+    // This is returning the type string
     const originalMessageSent = formatMessageToSend(patientMessage);
     return {
       ...originalMessageSent,

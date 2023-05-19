@@ -39,7 +39,12 @@ export function sendMessage({
         messageBody: message.messageBody,
       });
     case "list":
-      return sendMessageWithInteractiveList({ phone_number });
+      console.log("This is message type", message.type);
+      return sendMessageWithInteractiveList({
+        phone_number,
+        headerText: message.headerText,
+        messageBody: message.messageBody,
+      });
   }
 }
 
@@ -103,13 +108,46 @@ export async function sendMessageWithInteractiveButtons(opts: {
 // 10:30am with Dr. Simone [ ]
 // 11am with Dr. Simone [ ]
 
+// const toPost: {
+//   method: string;
+//   headers: {
+//       Authorization: string;
+//       "Content-Type": string;
+//   };
+//   body: {
+//       messaging_product: string;
+//       to: string;
+//       type: string;
+//       interactive: {
+//           type: string;
+//           header: {
+//               type: string;
+//               text: string;
+//           };
+//           body: {
+//               ...;
+//           };
+//           footer: {
+//               ...;
+//           };
+//           action: {
+//               ...;
+//           };
+//       };
+//   };
+// }
+
 export async function sendMessageWithInteractiveList(opts: {
   phone_number: string;
+  headerText: string;
+  messageBody: string;
 }): Promise<{
   messaging_product: "whatsapp";
   contacts: [{ input: string; wa_id: string }];
   messages: [{ id: string }];
 }> {
+  console.log("List was called");
+
   const toPost = {
     method: "post",
     headers: { Authorization, "Content-Type": "application/json" },
@@ -121,34 +159,31 @@ export async function sendMessageWithInteractiveList(opts: {
         type: "list",
         header: {
           type: "text",
-          text: "your-header-content",
+          text: `${opts.headerText} Aryan_5`,
         },
         body: {
-          text: "your-text-message-content",
-        },
-        footer: {
-          text: "your-footer-content",
+          text: `${opts.messageBody} Aryan_5`,
         },
         action: {
           button: "cta-button-content",
           sections: [
             {
-              title: "title-content1",
+              title: "Aryan_5",
               rows: [
                 {
                   id: "unique-row-identifier1",
-                  title: "row-title-content1",
-                  description: "row-description-content1",
+                  title: "10am with Dr. Jones [ ]",
+                  description: "appointment 1",
                 },
               ],
             },
             {
-              title: "title-content2",
+              title: "Aryan_4",
               rows: [
                 {
                   id: "unique-row-identifier2",
-                  title: "row-title-content2",
-                  description: "row-description-content2",
+                  title: "10:30am with Dr. Jones [ ]",
+                  description: "description 2",
                 },
               ],
             },
