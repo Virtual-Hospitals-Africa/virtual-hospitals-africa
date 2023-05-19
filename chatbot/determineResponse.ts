@@ -29,10 +29,10 @@ export async function determineResponse(
     };
   }
 
-  // patientMessage = {
-  //   ...patientMessage,
-  //   ...next.nextPatient,
-  // };
+  patientMessage = {
+    ...patientMessage,
+    ...next.nextPatient,
+  };
 
   if (next.nextPatient) {
     await patients.upsert(trx, next.nextPatient);
