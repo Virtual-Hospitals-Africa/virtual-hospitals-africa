@@ -7,6 +7,7 @@ interface AppointmentCardProps {
   patientAge: number;
   clinicName: string;
   durationMinutes: string;
+  status: string | null;
 }
 
 const AppointmentCardDetails: FunctionComponent<AppointmentCardProps> = ({
@@ -16,6 +17,7 @@ const AppointmentCardDetails: FunctionComponent<AppointmentCardProps> = ({
   patientAge,
   clinicName,
   durationMinutes,
+  status,
 }) => {
   return (
     <div className="relative flex border border-gray-300 rounded shadow-lg overflow-hidden">

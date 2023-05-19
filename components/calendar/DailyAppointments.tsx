@@ -30,6 +30,7 @@ const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
                   patientAge={detail.patientAge}
                   clinicName={detail.clinicName}
                   durationMinutes={detail.durationMinutes}
+                  status={detail.status}
                 />
               </div>
             ))}

@@ -5,9 +5,10 @@ export type Maybe<T> = T | null | undefined;
 
 export type Falsy = false | 0 | "" | null | undefined;
 
-export type DeepPartial<T> = T extends Record<string, unknown> ? {
-    [P in keyof T]?: DeepPartial<T[P]>;
-  }
+export type DeepPartial<T> = T extends Record<string, unknown>
+  ? {
+      [P in keyof T]?: DeepPartial<T[P]>;
+    }
   : T;
 
 export type SqlRow<T> = {
@@ -73,9 +74,10 @@ export type UnhandledPatientMessage = {
   conversation_state: Maybe<ConversationState>;
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
-  appointment_offered_times: [null] | ReturnedSqlRow<
-    AppointmentOfferedTime & { doctor_name: string }
-  >[];
+  scheduling_appointment_status?: Maybe<string>;
+  appointment_offered_times:
+    | [null]
+    | ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
   created_at: Date;
   updated_at: Date;
 };
@@ -86,7 +88,7 @@ export type ConversationStateHandlerType<T> = T & {
   onEnter?: (
     trx: TrxOrDb,
     patientMessage: UnhandledPatientMessage,
-    next: DetermineNextPatientStateReturn,
+    next: DetermineNextPatientStateReturn
   ) => Promise<UnhandledPatientMessage>;
 };
 
@@ -99,8 +101,8 @@ export type ConversationStateHandlerReturn = {
 export type ConversationStateHandlerOnResponse =
   | ConversationState
   | ((
-    patientMessage: UnhandledPatientMessage,
-  ) => ConversationStateHandlerReturn);
+      patientMessage: UnhandledPatientMessage
+    ) => ConversationStateHandlerReturn);
 
 export type ConversationStateHandlerSelectOption = {
   option: string;
@@ -134,6 +136,7 @@ export type ConversationStateHandler =
 export type Appointment = {
   patient_id: number;
   reason: Maybe<string>;
+  status: Maybe<string>;
 };
 
 export type DetermineNextPatientStateValidReturn = {
@@ -182,41 +185,40 @@ export type WhatsAppIncomingMessage = {
               };
             }>;
             messages?: ReadonlyArray<
-              & {
+              {
                 from: string; // phone number
                 id: string;
                 timestamp: string; // '1673943918'
-              }
-              & (
+              } & (
                 | { type: "text"; text: { body: string } }
                 | {
-                  type: "interactive";
-                  interactive: {
-                    type: "list_reply";
-                    list_reply: {
-                      id: string;
-                      title: string;
-                      description: string;
+                    type: "interactive";
+                    interactive: {
+                      type: "list_reply";
+                      list_reply: {
+                        id: string;
+                        title: string;
+                        description: string;
+                      };
                     };
-                  };
-                }
+                  }
                 | {
-                  type: "interactive";
-                  interactive: {
-                    type: "button_reply";
-                    button_reply: {
-                      id: string;
-                      title: string;
+                    type: "interactive";
+                    interactive: {
+                      type: "button_reply";
+                      button_reply: {
+                        id: string;
+                        title: string;
+                      };
                     };
-                  };
-                }
+                  }
               )
             >;
           };
           field: "messages";
-        },
+        }
       ];
-    },
+    }
   ];
 };
 
@@ -255,142 +257,140 @@ export type GoogleTokens = {
 };
 
 export type GCalEvent = {
-  "kind": "calendar#event";
-  "etag": etag;
-  "id": string;
-  "status": string;
-  "htmlLink": string;
-  "created": datetime;
-  "updated": datetime;
-  "summary": string;
-  "description": string;
-  "location": string;
-  "colorId": string;
-  "creator": {
-    "id": string;
-    "email": string;
-    "displayName": string;
-    "self": boolean;
+  kind: "calendar#event";
+  etag: etag;
+  id: string;
+  status: string;
+  htmlLink: string;
+  created: datetime;
+  updated: datetime;
+  summary: string;
+  description: string;
+  location: string;
+  colorId: string;
+  creator: {
+    id: string;
+    email: string;
+    displayName: string;
+    self: boolean;
   };
-  "organizer": {
-    "id": string;
-    "email": string;
-    "displayName": string;
-    "self": boolean;
+  organizer: {
+    id: string;
+    email: string;
+    displayName: string;
+    self: boolean;
   };
-  "start": {
-    "date": date;
-    "dateTime": datetime; // "2016-02-03T19:30:00-05:00"
-    "timeZone": string;
+  start: {
+    date: date;
+    dateTime: datetime; // "2016-02-03T19:30:00-05:00"
+    timeZone: string;
   };
-  "end": {
-    "date": date;
-    "dateTime": datetime; // "2016-02-03T20:30:00-05:00"
-    "timeZone": string;
+  end: {
+    date: date;
+    dateTime: datetime; // "2016-02-03T20:30:00-05:00"
+    timeZone: string;
   };
-  "endTimeUnspecified": boolean;
-  "recurrence": [
-    string,
-  ];
-  "recurringEventId": string;
-  "originalStartTime": {
-    "date": date;
-    "dateTime": datetime;
-    "timeZone": string;
+  endTimeUnspecified: boolean;
+  recurrence: [string];
+  recurringEventId: string;
+  originalStartTime: {
+    date: date;
+    dateTime: datetime;
+    timeZone: string;
   };
-  "transparency": string;
-  "visibility": string;
-  "iCalUID": string;
-  "sequence": integer;
-  "attendees": [
+  transparency: string;
+  visibility: string;
+  iCalUID: string;
+  sequence: integer;
+  attendees: [
     {
-      "id": string;
-      "email": string;
-      "displayName": string;
-      "organizer": boolean;
-      "self": boolean;
-      "resource": boolean;
-      "optional": boolean;
-      "responseStatus": "needsAction" | "declined" | "tentative" | "accepted";
-      "comment": string;
-      "additionalGuests": integer;
-    },
+      id: string;
+      email: string;
+      displayName: string;
+      organizer: boolean;
+      self: boolean;
+      resource: boolean;
+      optional: boolean;
+      responseStatus: "needsAction" | "declined" | "tentative" | "accepted";
+      comment: string;
+      additionalGuests: integer;
+    }
   ];
-  "attendeesOmitted": boolean;
-  "extendedProperties": Record<string, unknown>;
-  "hangoutLink": string;
-  "conferenceData": {
-    "createRequest": {
-      "requestId": string;
-      "conferenceSolutionKey": {
-        "type": string;
+  attendeesOmitted: boolean;
+  extendedProperties: Record<string, unknown>;
+  hangoutLink: string;
+  conferenceData: {
+    createRequest: {
+      requestId: string;
+      conferenceSolutionKey: {
+        type: string;
       };
-      "status": {
-        "statusCode": string;
+      status: {
+        statusCode: string;
       };
     };
-    "entryPoints": [
+    entryPoints: [
       {
-        "entryPointType": string;
-        "uri": string;
-        "label": string;
-        "pin": string;
-        "accessCode": string;
-        "meetingCode": string;
-        "passcode": string;
-        "password": string;
-      },
+        entryPointType: string;
+        uri: string;
+        label: string;
+        pin: string;
+        accessCode: string;
+        meetingCode: string;
+        passcode: string;
+        password: string;
+      }
     ];
-    "conferenceSolution": {
-      "key": {
-        "type": string;
+    conferenceSolution: {
+      key: {
+        type: string;
       };
-      "name": string;
-      "iconUri": string;
+      name: string;
+      iconUri: string;
     };
-    "conferenceId": string;
-    "signature": string;
-    "notes": string;
+    conferenceId: string;
+    signature: string;
+    notes: string;
   };
-  "gadget": {
-    "type": string;
-    "title": string;
-    "link": string;
-    "iconLink": string;
-    "width": integer;
-    "height": integer;
-    "display": string;
-    "preferences": unknown;
+  gadget: {
+    type: string;
+    title: string;
+    link: string;
+    iconLink: string;
+    width: integer;
+    height: integer;
+    display: string;
+    preferences: unknown;
   };
-  "anyoneCanAddSelf": boolean;
-  "guestsCanInviteOthers": boolean;
-  "guestsCanModify": boolean;
-  "guestsCanSeeOtherGuests": boolean;
-  "privateCopy": boolean;
-  "locked": boolean;
-  "reminders": {
-    "useDefault": boolean;
-    "overrides": [
+  anyoneCanAddSelf: boolean;
+  guestsCanInviteOthers: boolean;
+  guestsCanModify: boolean;
+  guestsCanSeeOtherGuests: boolean;
+  privateCopy: boolean;
+  locked: boolean;
+  reminders: {
+    useDefault: boolean;
+    overrides: [
       {
-        "method": string;
-        "minutes": integer;
-      },
+        method: string;
+        minutes: integer;
+      }
     ];
   };
-  "source": {
-    "url": string;
-    "title": string;
+  source: {
+    url: string;
+    title: string;
   };
-  "attachments": [
+  attachments: [
     {
-      "fileUrl": string;
-      "title": string;
-      "mimeType": string;
-      "iconLink": string;
-      "fileId": string;
-    },
+      fileUrl: string;
+      title: string;
+      mimeType: string;
+      iconLink: string;
+      fileId: string;
+    }
   ];
-  "eventType": string;
+  eventType: string;
 };
 
 export type GCalEventsResponse = {
@@ -409,40 +409,38 @@ export type GCalEventsResponse = {
 };
 
 export type GCalCalendarListEntry = {
-  "kind": "calendar#calendarListEntry";
-  "etag": etag;
-  "id": string;
-  "summary": string;
-  "description": string;
-  "location": string;
-  "timeZone": string;
-  "summaryOverride": string;
-  "colorId": string;
-  "backgroundColor": string;
-  "foregroundColor": string;
-  "hidden": boolean;
-  "selected": boolean;
-  "accessRole": string;
-  "defaultReminders": [
+  kind: "calendar#calendarListEntry";
+  etag: etag;
+  id: string;
+  summary: string;
+  description: string;
+  location: string;
+  timeZone: string;
+  summaryOverride: string;
+  colorId: string;
+  backgroundColor: string;
+  foregroundColor: string;
+  hidden: boolean;
+  selected: boolean;
+  accessRole: string;
+  defaultReminders: [
     {
-      "method": string;
-      "minutes": integer;
-    },
+      method: string;
+      minutes: integer;
+    }
   ];
-  "notificationSettings": {
-    "notifications": [
+  notificationSettings: {
+    notifications: [
       {
-        "type": string;
-        "method": string;
-      },
+        type: string;
+        method: string;
+      }
     ];
   };
-  "primary": boolean;
-  "deleted": boolean;
-  "conferenceProperties": {
-    "allowedConferenceSolutionTypes": [
-      string,
-    ];
+  primary: boolean;
+  deleted: boolean;
+  conferenceProperties: {
+    allowedConferenceSolutionTypes: [string];
   };
 };
 
@@ -459,7 +457,7 @@ export type GCalFreeBusy = {
   timeMax: string;
   calendars: {
     [calendarId: string]: {
-      "busy": { start: string; end: string }[];
+      busy: { start: string; end: string }[];
     };
   };
 };
@@ -533,19 +531,7 @@ export type WhatsappMessageSent = {
 };
 
 export type Time = {
-  hour:
-    | 1
-    | 2
-    | 3
-    | 4
-    | 5
-    | 6
-    | 7
-    | 8
-    | 9
-    | 10
-    | 11
-    | 12;
+  hour: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
   minute: 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55;
   amPm: "am" | "pm";
 };
@@ -574,11 +560,13 @@ export type MessageOption = {
 
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db;
 
-export type WhatsAppSendable = string | {
-  messageBody: string;
-  buttonText: string;
-  options: MessageOption[];
-};
+export type WhatsAppSendable =
+  | string
+  | {
+      messageBody: string;
+      buttonText: string;
+      options: MessageOption[];
+    };
 export type DoctorAppointment = {
   year: number;
   month: number;
@@ -594,5 +582,6 @@ export type DoctorAppointment = {
     // Not in the google calendar
     clinicName: string;
     durationMinutes: string;
+    status: string | null;
   }[];
 };

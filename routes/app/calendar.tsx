@@ -9,6 +9,8 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
+import db from "../../external-clients/db.ts";
+import { getAppointmentStatusFromEventId } from "../../models/appointments.ts";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -59,35 +61,53 @@ export const handler: Handlers<
 
     console.log("events", events);
 
-    const mappedAppointments = events.items.map((item) => {
-      const start = new Date(item.start.dateTime);
-      const day = parseInt(
-        start.toLocaleDateString("en-US", { day: "numeric" }),
-      );
-      const month = parseInt(
-        start.toLocaleDateString("en-US", { month: "numeric" }),
-      );
-      const year = parseInt(
-        start.toLocaleDateString("en-US", { year: "numeric" }),
-      );
-      const weekday = start.toLocaleString("en-US", { weekday: "short" });
-      const appointment = {
-        stripeColor: "bg-green-500", // Just green for now
-        time: start.toLocaleString("en-US", {
-          hour: "numeric",
-          minute: "numeric",
-          hour12: true,
-        }),
-        patientName: item.summary.replace(/^Appointment with /, ""), // Remove the prefix "Appointment with "
-        patientAge: 30, // Not in the google calendar
-        clinicName: item.organizer.displayName,
-        durationMinutes: Math.round(
-          (new Date(item.end.dateTime).getTime() - start.getTime()) /
-            (1000 * 60),
-        ) + " mins", // Calculate duration in minutes
-      };
-      return { year, month, day, weekday, appointments: [appointment] };
-    });
+    const mappedAppointments = await Promise.all(
+      events.items.map(async (item) => {
+        let appointmentStatus;
+        try {
+          appointmentStatus = await db.transaction().execute(async (trx) =>
+            await getAppointmentStatusFromEventId(trx, { event_id: item.id })
+          );
+        } catch (err) {
+          console.log("Error getting status");
+          console.error(err);
+        }
+        if (appointmentStatus) {
+          console.log("THIS IS A STATUS", appointmentStatus);
+        } else {
+          appointmentStatus = null;
+        }
+
+        const start = new Date(item.start.dateTime);
+        const day = parseInt(
+          start.toLocaleDateString("en-US", { day: "numeric" }),
+        );
+        const month = parseInt(
+          start.toLocaleDateString("en-US", { month: "numeric" }),
+        );
+        const year = parseInt(
+          start.toLocaleDateString("en-US", { year: "numeric" }),
+        );
+        const weekday = start.toLocaleString("en-US", { weekday: "short" });
+        const appointment = {
+          stripeColor: "bg-green-500", // Just green for now
+          time: start.toLocaleString("en-US", {
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          }),
+          patientName: item.summary.replace(/^Appointment with /, ""), // Remove the prefix "Appointment with "
+          patientAge: 30, // Not in the google calendar
+          clinicName: item.organizer.displayName,
+          durationMinutes: Math.round(
+            (new Date(item.end.dateTime).getTime() - start.getTime()) /
+              (1000 * 60),
+          ) + " mins", // Calculate duration in minutes
+          status: appointmentStatus,
+        };
+        return { year, month, day, weekday, appointments: [appointment] };
+      }),
+    );
 
     // Merge appointments for the same day/weekday
     const mergedAppointments: DoctorAppointment[] = [];
