@@ -3,6 +3,9 @@ import words from "../util/words.ts";
 import {
   Appointment,
   ConversationStateHandler,
+  ConversationStateHandlerListAction,
+  ConversationStateHandlerListActionSection,
+  ConversationStateHandlerOnResponse,
   ConversationStateHandlerSelect,
   ConversationStateHandlerSelectOption,
   DetermineNextPatientStateReturn,
@@ -46,25 +49,21 @@ function findMatchingOption(
   });
 }
 
-// function findMatchingListOption(
-//   state: ConversationStateHandlerList,
-//   messageBody: string
-// ): Maybe<ConversationStateHandlerListActionSection>{
-//   return state.action.sections.find((section: ConversationStateHandlerListActionSection) => {
-//     for (const{ id } of section.rows){
-//       console.log('WHat is section here?', section)
-//       console.log("here insdie find matching option", id)
-//       if (id === messageBody){
-//         console.log('section matched.', section, 'message body is:', messageBody)
-//         return section
-//       } 
-//     }
-//   })
-// }
-
-// 1. Generate the options ahead of these function calls
-//    (isValidResponse, findMatchingOption, findMatchingListOption) so that these can continue to be called synchronously
-// 2. Generate the options in these functions — these would need to be changed into async functions
+function findMatchingSection(
+  action: ConversationStateHandlerListAction,
+  messageBody: string
+): Maybe<ConversationStateHandlerListActionSection>{
+  return action.sections.find((section: ConversationStateHandlerListActionSection) => {
+    for (const{ id } of section.rows){
+      console.log('WHat is section here?', section)
+      console.log("here insdie find matching option", id)
+      if (id === messageBody){
+        console.log('section matched.', section, 'message body is:', messageBody)
+        return section
+      } 
+    }
+  });
+}
 
 
 function isValidResponse(
@@ -75,8 +74,8 @@ function isValidResponse(
     case "select": {
       return !!findMatchingOption(state, messageBody);
     }
-    // case "list":
-    //   return true;
+    case "list":
+      return true;
     case "date": {
       const [day, month, year] = messageBody.split("/");
       // deno-lint-ignore no-unused-vars
@@ -117,7 +116,6 @@ function stringSendable(messageBody: string): WhatsAppSendableString {
 
 export function formatMessageToSend(
   patientMessage: UnhandledPatientMessage,
-  // action?: WhatsAppMessageAction,
 ): WhatsAppSendable {
   const state = conversationStates[patientMessage.conversation_state || "not_onboarded:welcome"];
   const prompt =
@@ -137,16 +135,28 @@ export function formatMessageToSend(
         })),
       };
     }
-    // Need to modify the return simlier to select case
-    // case "list": {
-    //   console.log("line 105: in determineNextPatientState");
-    //   return {
-    //     type: "list",
-    //     messageBody: prompt,
-    //     headerText: "Other Apponitment Times",
-    //     action: action!,
-    //   };
-    // }
+    case "list": {
+      const action = state.action(patientMessage)
+      console.log('actiona aweklaweklw', action);
+      throw new Error("THROW from list")
+
+      // return {
+      //   type: "list",
+      //   messageBody: prompt,
+      //   headerText: "Other Apponitment Times",
+      //   action: {
+      //     button: string;
+      //     sections: {
+      //       title: string;
+      //       rows: {
+      //         id: string;
+      //         title: string;
+      //         description: string;
+      //       }[];
+      //     }[];
+      //   },
+      // };
+    }
     case "date": {
       return stringSendable(
         prompt + " Please enter the date in the format DD/MM/YYYY"
@@ -184,10 +194,15 @@ export default function determineNextPatientState(
   if (!isValidResponse(currentState, messageBody)) {
     return "invalid_response";
   }
-  const { onResponse } =
-    currentState.type === "select"
-      ? findMatchingOption(currentState, messageBody)!
-      : currentState;
+
+  let onResponse: ConversationStateHandlerOnResponse;
+  if (currentState.type === "select") {
+    onResponse = findMatchingOption(currentState, messageBody)!.onResponse;
+  } else if (currentState.type === "list") {
+    onResponse = findMatchingSection(currentState.action(patientMessage), messageBody)!.onResponse;
+  } else {
+    onResponse = currentState.onResponse;
+  }
 
   const next =
     typeof onResponse === "string"

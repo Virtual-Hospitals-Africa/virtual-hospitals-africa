@@ -127,7 +127,10 @@ export async function getUnhandledPatientMessages(
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(db);
 
-  return result.rows;
+  return result.rows.map(row => ({
+    ...row,
+    appointment_offered_times: row.appointment_offered_times ? row.appointment_offered_times.filter(aot => aot) : [],
+  }));
 }
 
 export function markChatbotError(

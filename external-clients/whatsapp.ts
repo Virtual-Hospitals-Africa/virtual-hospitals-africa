@@ -1,9 +1,9 @@
 import "dotenv";
 import {
-  MessageOption,
   WhatsAppJSONResponse,
   WhatsAppSendable,
-  WhatsAppMessageAction
+  WhatsAppMessageAction,
+  WhatsAppMessageOption
 } from "../types.ts";
 
 const postMessageRoute = `https://graph.facebook.com/v15.0/${Deno.env.get(
@@ -67,7 +67,7 @@ export async function sendMessagePlainText(opts: {
 export async function sendMessageWithInteractiveButtons(opts: {
   phone_number: string;
   messageBody: string;
-  options: MessageOption[];
+  options: WhatsAppMessageOption[];
 }): Promise<WhatsAppJSONResponse> {
   const toPost = {
     method: "post",
@@ -98,7 +98,7 @@ export async function sendMessageWithInteractiveButtons(opts: {
   return response.json();
 }
 
-export function sendMessageWithInteractiveList(_opts: {
+export async function sendMessageWithInteractiveList(opts: {
   phone_number: string;
   headerText: string;
   messageBody: string;
@@ -110,47 +110,25 @@ export function sendMessageWithInteractiveList(_opts: {
 }> {
   console.log("List was called");
 
-  throw new Error("TODO")
+  const toPost = {
+    method: "post",
+    headers: { Authorization, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      messaging_product: "whatsapp",
+      to: opts.phone_number,
+      type: "interactive",
+      interactive: {
+        type: "list",
+        header: { type: "text", text: opts.headerText },
+        body: { text: opts.messageBody },
+        action: opts.action
+      },
+    }),
+  };
 
-  // const toPost = {
-  //   method: "post",
-  //   headers: { Authorization, "Content-Type": "application/json" },
-  //   body: JSON.stringify({
-  //     messaging_product: "whatsapp",
-  //     to: opts.phone_number,
-  //     type: "interactive",
-  //     interactive: {
-  //       type: "list",
-  //       header: {
-  //         type: "text",
-  //         text: `${opts.headerText}`,
-  //       },
-  //       body: {
-  //         text: `${opts.messageBody}`,
-  //       },
-  //       action: {
-  //         button: opts.action.button,
-  //         sections: opts.action.sections.map((section) => ({
-  //           ...section,
-  //           rows: section.rows.map((row) => ({
-  //             ...row,
-  //           })),
-  //         })),
-  //       },
-  //     },
-  //   }),
-  // };
+  console.log("toPost", JSON.stringify(toPost));
 
-  // console.log("toPost", JSON.stringify(toPost));
+  const response = await fetch(postMessageRoute, toPost);
 
-  // const response = await fetch(postMessageRoute, toPost);
-
-  // return response.json();
+  return response.json();
 }
-
-// await sendMessageWithInteractiveList({
-//   phone_number: "12369961017",
-//   headerText: "Hello",
-//   messageBody: "Hi there"
-
-// })

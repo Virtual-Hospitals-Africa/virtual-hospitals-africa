@@ -11,7 +11,6 @@ import {
   AppointmentOfferedTime,
   ConversationState,
   ConversationStateHandler,
-  // ConversationStateHandlerListActionSection,
   ConversationStateHandlerReturn,
   Falsy,
   PatientDemographicInfo,
@@ -263,8 +262,7 @@ const conversationStates: {
     ],
   },
   "onboarded:make_appointment:other_scheduling_options": {
-    type: "string",
-    onResponse: "other_end_of_demo",
+    type: "list",
     async onEnter(
       trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage
@@ -301,7 +299,7 @@ const conversationStates: {
       console.log(declinedTimes);
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
-        declinedTimes, {date: null , timeslots_required: 1}
+        declinedTimes, { date: null, timeslots_required: 5 }
       );
 
       const nextOfferedTimes: ReturnedSqlRow<
@@ -329,45 +327,73 @@ const conversationStates: {
       return `OK here are the other available time, please choose from the list.`;
     },
 
-    // action: async (
-    //   trx: TrxOrDb,
-    //   _patientMessage: UnhandledPatientMessage
-    // ): Promise<{
-    //   button: string;
-    //   sections: ConversationStateHandlerListActionSection[];
-    // }> => {
+/*
+offeredTimes [
+  {
+    id: 768,
+    created_at: 2023-05-20T01:11:41.175Z,
+    updated_at: 2023-05-20T01:11:41.175Z,
+    appointment_id: 117,
+    doctor_id: 112,
+    start: "2023-05-20T10:00:00+02:00",
+    patient_declined: false,
+    scheduled_gcal_event_id: null,
+    doctor_name: "Will Weiss"
+  },
+  {
+    id: 769,
+    created_at: 2023-05-20T01:11:41.175Z,
+    updated_at: 2023-05-20T01:11:41.175Z,
+    appointment_id: 117,
+    doctor_id: 112,
+    start: "2023-05-20T10:30:00+02:00",
+    patient_declined: false,
+    scheduled_gcal_event_id: null,
+    doctor_name: "Will Weiss"
+  },
+  {
+    id: 770,
+    created_at: 2023-05-20T01:11:41.175Z,
+    updated_at: 2023-05-20T01:11:41.175Z,
+    appointment_id: 117,
+    doctor_id: 112,
+    start: "2023-05-20T11:00:00+02:00",
+    patient_declined: false,
+    scheduled_gcal_event_id: null,
+    doctor_name: "Will Weiss"
+  },
+  {
+    id: 771,
+    created_at: 2023-05-20T01:11:41.175Z,
+    updated_at: 2023-05-20T01:11:41.175Z,
+    appointment_id: 117,
+    doctor_id: 112,
+    start: "2023-05-20T11:30:00+02:00",
+    patient_declined: false,
+    scheduled_gcal_event_id: null,
+    doctor_name: "Will Weiss"
+  },
+  {
+    id: 772,
+    created_at: 2023-05-20T01:11:41.175Z,
+    updated_at: 2023-05-20T01:11:41.175Z,
+    appointment_id: 117,
+    doctor_id: 112,
+    start: "2023-05-20T12:00:00+02:00",
+    patient_declined: false,
+    scheduled_gcal_event_id: null,
+    doctor_name: "Will Weiss"
+  }
+]
+*/
 
-    //   // TODO use the patientMessage to filter out the actually declined times
-    //   const nextOfferedTimes = await availableThirtyMinutes(trx, [], {
-    //     date: null,
-    //     timeslots_required: 1,
-    //   });
-    //   console.log(`This is null, ${nextOfferedTimes}`);
-    //   // Dynamically generate the sections based on `nextOfferedTimes`
-    //   const sections: ConversationStateHandlerListActionSection[] =
-    //     nextOfferedTimes.map((offeredTime) => ({
-    //       title: offeredTime.doctor.id.toString(), // Use the appropriate property for the date
-    //       rows: [
-    //         {
-    //           id: offeredTime.doctor.id.toString(), // Convert id to string
-    //           title: offeredTime.start,
-    //           description: `With Dr ${offeredTime.doctor.name}`,
-    //         },
-    //       ],
-    //       onResponse: "not_onboarded:welcome",
-    //     }));
+    action(patientMessage: UnhandledPatientMessage) {
+      const offeredTimes = patientMessage.appointment_offered_times.filter(offered_time => !offered_time.patient_declined)
 
-    //   sections.push({
-    //     title: "Other Date",
-    //     rows: [{ id: "Others", title: "Others", description: "Other date" }],
-    //     onResponse: "not_onboarded:welcome",
-    //   });
+      console.log('offeredTimes', offeredTimes);
 
-    //   return {
-    //     button: "Other Time slots",
-    //     sections: sections,
-    //   };
-    // },
+      throw new Error("TO IMPLEMENT")
+    },
   },
 
   "onboarded:appointment_scheduled": {
