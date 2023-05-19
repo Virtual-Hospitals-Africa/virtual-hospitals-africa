@@ -93,9 +93,9 @@ export async function getAppointmentIdFromEventId(
     .where("scheduled_gcal_event_id", "=", opts.event_id)
     .select("appointment_id")
     .execute();
-  console.log(opts.event_id);
-  console.log("Retrieve appointment_id from event_id");
-  console.log(readResult);
+  // console.log(opts.event_id);
+  // console.log("Retrieve appointment_id from event_id");
+  // console.log(readResult);
   return readResult[0] ? readResult[0].appointment_id : null;
 }
 
@@ -108,8 +108,8 @@ export async function getAppointmentStatusFromId(
     .where("id", "=", opts.appointment_id)
     .select("status")
     .execute();
-  console.log("Retrieve appointment status from id");
-  console.log(readResult);
+  // console.log("Retrieve appointment status from id");
+  // console.log(readResult);
   const { status } = readResult[0];
   return status ? status : "pending";
 }
@@ -118,7 +118,6 @@ export async function getAppointmentStatusFromEventId(
   trx: TrxOrDb,
   opts: { event_id: string }
 ): Promise<string | null> {
-  console.log("test1", opts);
   const appointment_id = await getAppointmentIdFromEventId(trx, opts);
   if (appointment_id) {
     const status = await getAppointmentStatusFromId(trx, { appointment_id });
