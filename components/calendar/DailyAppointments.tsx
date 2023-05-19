@@ -1,6 +1,6 @@
 import { FunctionComponent, h } from "preact";
 import AppointmentDay from "./AppointmentDay.tsx";
-import AppointmentCardDetails from "./AppointmentCardDetails.tsx";
+import AppointmentCard from "./AppointmentCard.tsx";
 import { DoctorAppointment } from "../../types.ts";
 
 interface DailyAppointmentsProps {
@@ -10,32 +10,20 @@ interface DailyAppointmentsProps {
 const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({
   dailyAppointments,
 }) => {
+  if (!dailyAppointments.length) return null;
   return (
-    <div>
-      {dailyAppointments.map((dailyAppointment) => (
-        <div className="flex">
-          <div className="mr-2 flex-none">
-            <AppointmentDay
-              day={dailyAppointment.day}
-              weekday={dailyAppointment.weekday}
-            />
-          </div>
-          <div className="w-full mr-3">
-            {dailyAppointment.appointments.map((detail, key) => (
-              <div className="mb-4">
-                <AppointmentCardDetails
-                  stripeColor={detail.stripeColor}
-                  time={detail.time}
-                  patientName={detail.patientName}
-                  patientAge={detail.patientAge}
-                  clinicName={detail.clinicName}
-                  durationMinutes={detail.durationMinutes}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      ))}
+    <div className="flex">
+      <div className="mr-2 flex-none">
+        <AppointmentDay
+          day={dailyAppointments[0].start.day}
+          weekday={dailyAppointments[0].start.weekday}
+        />
+      </div>
+      <div className="w-full mr-3">
+        {dailyAppointments.map((appt, key) => (
+          <AppointmentCard key={key} {...appt} />
+        ))}
+      </div>
     </div>
   );
 };

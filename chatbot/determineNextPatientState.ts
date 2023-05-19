@@ -15,7 +15,7 @@ import {
 
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
-  messageBody: string,
+  messageBody: string
 ): Maybe<ConversationStateHandlerSelectOption> {
   const messageWords = words(messageBody.trim().toLowerCase());
   return state.options.find((option: ConversationStateHandlerSelectOption) => {
@@ -43,7 +43,7 @@ function findMatchingOption(
 
 function isValidResponse(
   state: ConversationStateHandler,
-  messageBody: string,
+  messageBody: string
 ): boolean {
   switch (state.type) {
     case "select": {
@@ -53,15 +53,16 @@ function isValidResponse(
       const [day, month, year] = messageBody.split("/");
       // deno-lint-ignore no-unused-vars
       const date = new Date(
-        `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00Z`,
+        `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00Z`
       );
       // TODO
       // return isValid(date);
       return true;
     }
     case "string": {
-      return !!messageBody &&
-        (!state.validation || state.validation(messageBody));
+      return (
+        !!messageBody && (!state.validation || state.validation(messageBody))
+      );
     }
     default: {
       return false;
@@ -69,18 +70,19 @@ function isValidResponse(
   }
 }
 
-export function formatMessageToSend(
-  patientMessage: UnhandledPatientMessage,
-): string | {
-  messageBody: string;
-  buttonText: string;
-  options: MessageOption[];
-} {
+export function formatMessageToSend(patientMessage: UnhandledPatientMessage):
+  | string
+  | {
+      messageBody: string;
+      buttonText: string;
+      options: MessageOption[];
+    } {
   console.log("formatMessageToSend", JSON.stringify(patientMessage));
   const state = conversationStates[patientMessage.conversation_state!];
-  const prompt = typeof state.prompt === "string"
-    ? state.prompt
-    : state.prompt(patientMessage);
+  const prompt =
+    typeof state.prompt === "string"
+      ? state.prompt
+      : state.prompt(patientMessage);
 
   switch (state.type) {
     case "select": {
@@ -117,7 +119,7 @@ const pickPatient = (patientMessage: UnhandledPatientMessage) => ({
 });
 
 export default function determineNextPatientState(
-  patientMessage: UnhandledPatientMessage,
+  patientMessage: UnhandledPatientMessage
 ): DetermineNextPatientStateReturn {
   const messageBody = patientMessage.body.trim();
 
@@ -147,13 +149,15 @@ export default function determineNextPatientState(
     return "invalid_response";
   }
 
-  const { onResponse } = currentState.type === "select"
-    ? findMatchingOption(currentState, messageBody)!
-    : currentState;
+  const { onResponse } =
+    currentState.type === "select"
+      ? findMatchingOption(currentState, messageBody)!
+      : currentState;
 
-  const next = typeof onResponse === "string"
-    ? { nextState: onResponse }
-    : onResponse(patientMessage);
+  const next =
+    typeof onResponse === "string"
+      ? { nextState: onResponse }
+      : onResponse(patientMessage);
 
   const nextPatient: Patient & { id: number } = {
     ...pickPatient(patientMessage),
@@ -167,6 +171,7 @@ export default function determineNextPatientState(
       id: patientMessage.scheduling_appointment_id!,
       patient_id: patientMessage.patient_id,
       reason: patientMessage.scheduling_appointment_reason!,
+      status: patientMessage.scheduling_appointment_status!,
       ...next.appointmentUpdates,
     };
 
