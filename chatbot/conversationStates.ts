@@ -307,19 +307,14 @@ const conversationStates: {
 
       const nextOfferedTimes: ReturnedSqlRow<
       AppointmentOfferedTime & { doctor_name: string }
-      >[] = []
-      for (const timeslot of filteredAvailableTimes){
-        const addedTime = await appointments.addOfferedTime(trx, {
-          appointment_id: patientMessage.scheduling_appointment_id!,
-          doctor_id: timeslot.doctor.id,
-          start: timeslot.start,
-        });
-        nextOfferedTimes.push(addedTime)
-      }
-
-      nextOfferedTimes.push(
-        ...compact(patientMessage.appointment_offered_times)
-      );
+      >[] = await Promise.all(filteredAvailableTimes.map(
+        timeslot =>
+          appointments.addOfferedTime(trx, {
+            appointment_id: patientMessage.scheduling_appointment_id!,
+            doctor_id: timeslot.doctor.id,
+            start: timeslot.start,
+          })
+      ))
 
       return {
         ...patientMessage,
