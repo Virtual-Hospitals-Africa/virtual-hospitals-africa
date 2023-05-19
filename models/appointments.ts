@@ -83,59 +83,6 @@ export async function getPatientDeclinedTimes(
   return declinedTimes;
 }
 
-export async function getAppointmentIdFromEventId(
-  trx: TrxOrDb,
-  opts: { event_id: string }
-): Promise<number | null> {
-  const readResult = await trx
-    .selectFrom("appointment_offered_times")
-    .where("scheduled_gcal_event_id", "=", opts.event_id)
-    .select("appointment_id")
-    .execute();
-  // console.log(opts.event_id);
-  // console.log("Retrieve appointment_id from event_id");
-  // console.log(readResult);
-  return readResult[0] ? readResult[0].appointment_id : null;
-}
-
-export async function getAppointmentStatusFromId(
-  trx: TrxOrDb,
-  opts: { appointment_id: number }
-): Promise<string> {
-  const readResult = await trx
-    .selectFrom("appointments")
-    .where("id", "=", opts.appointment_id)
-    .select("status")
-    .execute();
-  // console.log("Retrieve appointment status from id");
-  // console.log(readResult);
-  const { status } = readResult[0];
-  return status ? status : "pending";
-}
-
-export async function getAppointmentStatusFromEventId(
-  trx: TrxOrDb,
-  opts: { event_id: string }
-): Promise<string | null> {
-  const appointment_id = await getAppointmentIdFromEventId(trx, opts);
-  if (appointment_id) {
-    const status = await getAppointmentStatusFromId(trx, { appointment_id });
-    return status ? status : "pending";
-  } else {
-    return null;
-  }
-}
-
-// export function get(
-//   query: { patient_id: number },
-// ): Promise<ReturnedSqlRow<Appointment>[]> {
-//   return db
-//     .selectFrom("appointments")
-//     .selectAll()
-//     .where("patient_id", "=", query.patient_id)
-//     .execute();
-// }
-
 export function createNew(
   trx: TrxOrDb,
   opts: { patient_id: number }
@@ -202,13 +149,3 @@ export function get(
     .select(["patients.name", "patient_id", "start", "reason", "status", "scheduled_gcal_event_id"])
     .execute();
 }
-
-// export function get(
-//   query: { patient_id: number },
-// ): Promise<ReturnedSqlRow<Appointment>[]> {
-//   return db
-//     .selectFrom("appointments")
-//     .selectAll()
-//     .where("patient_id", "=", query.patient_id)
-//     .execute();
-// }
