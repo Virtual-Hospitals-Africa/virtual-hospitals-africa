@@ -50,10 +50,14 @@ function findMatchingListOption(
 ): Maybe<ConversationStateHandlerListActionSection>{
   return state.action.sections.find((section: ConversationStateHandlerListActionSection) => {
     for (const{ id } of section.rows){
+      console.log('WHat is section here?', section)
+      console.log("here insdie find matching option", id)
       if (id === messageBody){
+        console.log('section matched.')
         return section
-      }
+      } 
     }
+    return {onResponse: "onboarded:make_appointment:other_scheduling_options"}
   })
 }
 
@@ -125,10 +129,7 @@ export function formatMessageToSend(
         messageBody: prompt,
         headerText: "Other Apponitment Times",
         action: {
-          button: {
-            id: state.action.button.id,
-            title: state.action.button.title
-          },
+          button: state.action.button,
           sections: state.action.sections.map((section) => ({
             title: section.title,
             rows: section.rows.map((row) => ({
@@ -200,6 +201,7 @@ export default function determineNextPatientState(
   if (currentState.type === "select"){
     onResponse = findMatchingOption(currentState, messageBody)!.onResponse
   } else if (currentState.type === "list"){
+    console.log('onResponse is passing type list.')
     onResponse = findMatchingListOption(currentState, messageBody)!.onResponse
   } else{
     onResponse = currentState.onResponse

@@ -12,54 +12,6 @@ import {
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`;
 
-export function sendMessageWithInteractiveList(opts: { phone_number: string }) {
-  const toPost = {
-    method: "post",
-
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: opts.phone_number,
-      type: "interactive",
-
-      interactive: {
-        type: "list",
-        header: {
-          type: "text",
-          text: "Select Other Appointment",
-        },
-        action: {
-          button: "cta-button-content",
-          sections: [
-            {
-              title: "Time 6pm",
-              rows: [
-                {
-                  id: "message_id_1",
-                  title: "Time 6pm",
-                  description: "With Doctor Aryan",
-                },
-              ],
-            },
-            {
-              title: "Time 6:30pm",
-              rows: [
-                {
-                  id: "message_id_1",
-                  title: "message_id_2",
-                  description: "With doctor chun",
-                },
-              ],
-            },
-          ],
-        },
-      },
-    }),
-  };
-
-  return toPost.headers;
-}
-
 export async function determinePatientMessage(
   trx: TrxOrDb,
   patientMessage: UnhandledPatientMessage

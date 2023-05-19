@@ -18,7 +18,7 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
-import { sendMessageWithInteractiveList } from "./determinePatientMessage.ts";
+// import { sendMessageWithInteractiveList } from "./determinePatientMessage.ts";
 
 // Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
@@ -322,68 +322,67 @@ const conversationStates: {
         appointment_offered_times: nextOfferedTimes,
       };
     },
-
     prompt(patientMessage: UnhandledPatientMessage): string {
       assert(
         patientMessage.appointment_offered_times[0],
         "onEnter should have added an appointment_offered_time"
       );
-      sendMessageWithInteractiveList({
-        phone_number: patientMessage.phone_number.toString(),
-      });
-      return `${patientMessage}`;
+      return `OK here are the other available time, please choose from the list.`;
     },
-    interactive: {
-      type: "list",
-      header: {
-        type: "text",
-        text: "Select Other Appointment",
-      },
-      action: {
-        button: "cta-button-content",
-        sections: [
-          {
-            title: "Time 6pm",
-            rows: [
-              {
-                id: "message_id_1",
-                title: "Time 6pm",
-                description: "With Doctor Aryan",
-              },
-            ],
-          },
-          {
-            title: "Time 6:30pm",
-            rows: [
-              {
-                id: "message_id_1",
-                title: "message_id_2",
-                description: "With doctor chun",
-              },
-            ],
-          },
-        ],
-      },
+    action: {
+      button: "Other Available Time slots",
+      sections: [
+        {
+          title: "20230518",
+          rows: [
+            {
+              id: "202305181800",
+              title: "6:00 pm",
+              description: "With Doctor Aryan",
+            },
+            { id: "202305181930", title: "6:30 pm", description: "With Chun" },
+          ],
+          onResponse: "onboarded:appointment_scheduled",
+        },
+        {
+          title: "20230519",
+          rows: [
+            {
+              id: "202305191200",
+              title: "12:00 pm",
+              description: "With Chun",
+            },
+            {
+              id: "202305191230",
+              title: "12:30 pm",
+              description: "With Chun",
+            },
+          ],
+          onResponse: "onboarded:appointment_scheduled",
+        },
+        {
+          title: "Other Date",
+          rows: [{ id: "Others", title: "Others", description: "Other date" }],
+          onResponse: "onboarded:make_appointment:other_scheduling_options",
+        },
+      ],
     },
-    onResponse: "onboarded:appointment_scheduled",
   },
 
   "onboarded:appointment_scheduled": {
     type: "select",
     onEnter: makeAppointment,
     prompt(patientMessage: UnhandledPatientMessage) {
-      const acceptedTimes = []
-      for (const offeredTime of patientMessage.appointment_offered_times){
-        if (!offeredTime?.patient_declined){
-          acceptedTimes.push(offeredTime)
+      const acceptedTimes = [];
+      for (const offeredTime of patientMessage.appointment_offered_times) {
+        if (!offeredTime?.patient_declined) {
+          acceptedTimes.push(offeredTime);
         }
       }
-      const acceptedTime = acceptedTimes[0]
+      const acceptedTime = acceptedTimes[0];
 
       assert(acceptedTime);
-      assert(
-        acceptedTime.scheduled_gcal_event_id,
-      );
+      assert(acceptedTime.scheduled_gcal_event_id);
       return `Thanks ${patientMessage.name!.split(" ")[0]}, we notified ${
         acceptedTime.doctor_name
       } and will message you shortly upon confirmirmation of your appointment at ${
@@ -412,10 +411,10 @@ const conversationStates: {
     ],
     onEnter(
       trx: TrxOrDb,
-      patientMessage: UnhandledPatientMessage,
-    ): Promise<UnhandledPatientMessage>{
-      return cancelAppointment(trx,patientMessage)
-    }
+      patientMessage: UnhandledPatientMessage
+    ): Promise<UnhandledPatientMessage> {
+      return cancelAppointment(trx, patientMessage);
+    },
   },
   other_end_of_demo: {
     type: "end_of_demo",

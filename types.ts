@@ -122,10 +122,7 @@ export type ConversationStateHandlerListActionSection = {
 };
 
 export type ConversationStateHandlerListAction = {
-  button: {
-    id: string;
-    title: string;
-  };
+  button: string;
   sections: ConversationStateHandlerListActionSection[];
 };
 
@@ -639,21 +636,21 @@ export type WhatsAppSendableList = {
   type: "list";
   headerText: string;
   messageBody: string;
-  action: {
-    button: {
+  action: MessageAction
+};
+
+export type MessageAction = {
+  button: string;
+  sections: {
+    title: string;
+    rows: {
       id: string;
       title: string;
-    };
-    sections: {
-      title: string;
-      rows: {
-        id: string;
-        title: string;
-        description: string;
-      }[];
+      description: string;
     }[];
-  };
-};
+  }[];
+
+}
 
 export type WhatsAppSendableButtons = {
   type: "buttons";

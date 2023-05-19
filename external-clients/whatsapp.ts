@@ -3,8 +3,7 @@ import {
   MessageOption,
   WhatsAppJSONResponse,
   WhatsAppSendable,
-  WhatsAppSendableList,
-  WhatsAppSendableButtons,
+  MessageAction
 } from "../types.ts";
 
 const postMessageRoute = `https://graph.facebook.com/v15.0/${Deno.env.get(
@@ -44,6 +43,7 @@ export function sendMessage({
         phone_number,
         headerText: message.headerText,
         messageBody: message.messageBody,
+        action: message.action
       });
   }
 }
@@ -99,48 +99,11 @@ export async function sendMessageWithInteractiveButtons(opts: {
   return response.json();
 }
 
-// May 11
-// 10am with Dr. Jones [ ]
-// 10:30am with Dr. Simone [ ]
-
-// May 12
-// 10am with Dr. Jones [ ]
-// 10:30am with Dr. Simone [ ]
-// 11am with Dr. Simone [ ]
-
-// const toPost: {
-//   method: string;
-//   headers: {
-//       Authorization: string;
-//       "Content-Type": string;
-//   };
-//   body: {
-//       messaging_product: string;
-//       to: string;
-//       type: string;
-//       interactive: {
-//           type: string;
-//           header: {
-//               type: string;
-//               text: string;
-//           };
-//           body: {
-//               ...;
-//           };
-//           footer: {
-//               ...;
-//           };
-//           action: {
-//               ...;
-//           };
-//       };
-//   };
-// }
-
 export async function sendMessageWithInteractiveList(opts: {
   phone_number: string;
   headerText: string;
   messageBody: string;
+  action: MessageAction;
 }): Promise<{
   messaging_product: "whatsapp";
   contacts: [{ input: string; wa_id: string }];
@@ -165,33 +128,13 @@ export async function sendMessageWithInteractiveList(opts: {
           text: `${opts.messageBody}`,
         },
         action: {
-          button: "Available time",
-          sections: [
-            {
-              title: "20230518",
-              rows: [
-                {
-                  id: "202305181000",
-                  title: "10am",
-                  description: "appointment 1",
-                },
-                { id: "202305181030",
-                  title: "10:30am",
-                  description: "10:30am"
-                }
-              ],
-            },
-            {
-              title: "20230519",
-              rows: [
-                {
-                  id: "unique-row-identifier2",
-                  title: "10:30am",
-                  description: "description 2",
-                },
-              ],
-            },
-          ],
+          button: opts.action.button,
+          sections: opts.action.sections.map((section) => ({
+            ...section,
+            rows: section.rows.map((row) => ({
+              ...row,
+            })),
+          })),
         },
       },
     }),
