@@ -75,9 +75,7 @@ export type UnhandledPatientMessage = {
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
   scheduling_appointment_status?: Maybe<AppointmentStatus>;
-  appointment_offered_times:
-    | [null]
-    | ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
+  appointment_offered_times: ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
   created_at: Date;
   updated_at: Date;
 };
@@ -115,31 +113,25 @@ export type ConversationStateHandlerSelectOption = {
   onResponse: ConversationStateHandlerOnResponse;
 };
 
-// export type ConversationStateHandlerListActionSection = {
-//   title: string;
-//   rows: {
-//     id: string;
-//     title: string;
-//     description: string;
-//   }[];
-//   onResponse: ConversationStateHandlerOnResponse;
-// };
+export type ConversationStateHandlerListActionSection = {
+  title: string;
+  rows: {
+    id: string;
+    title: string;
+    description: string;
+  }[];
+  onResponse: ConversationStateHandlerOnResponse;
+};
 
-// export type ConversationStateHandlerListAction = {
-//   button: string;
-//   sections: ConversationStateHandlerListActionSection[];
-// };
+export type ConversationStateHandlerListAction = {
+  button: string;
+  sections: ConversationStateHandlerListActionSection[];
+};
 
-// export type ConversationStateHandlerList = ConversationStateHandlerType<{
-//   type: "list";
-//   action?: (
-//     trx: TrxOrDb,
-//     patientMessage: UnhandledPatientMessage
-//   ) => Promise<{
-//     button: string;
-//     sections: ConversationStateHandlerListActionSection[];
-//   }>;
-// }>;
+export type ConversationStateHandlerList = ConversationStateHandlerType<{
+  type: "list";
+  action: (patientMessage: UnhandledPatientMessage) => ConversationStateHandlerListAction;
+}>;
 
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
   type: "select";
@@ -166,8 +158,8 @@ export type ConversationStateHandler =
   | ConversationStateHandlerSelect
   | ConversationStateHandlerString
   | ConversationStateHandlerDate
-  | ConversationStateHandlerEndOfDemo;
-  // | ConversationStateHandlerList;
+  | ConversationStateHandlerEndOfDemo
+  | ConversationStateHandlerList;
 
 type AppointmentStatus = "pending" | "confirmed" | "denied";
 
@@ -591,7 +583,7 @@ export type AvailabilityJSON = {
 
 export type DayOfWeek = keyof AvailabilityJSON;
 
-export type MessageOption = {
+export type WhatsAppMessageOption = {
   id: string;
   title: string;
 };
@@ -651,5 +643,5 @@ export type WhatsAppSendableButtons = {
   type: "buttons";
   messageBody: string;
   buttonText: string;
-  options: MessageOption[];
+  options: WhatsAppMessageOption[];
 };
