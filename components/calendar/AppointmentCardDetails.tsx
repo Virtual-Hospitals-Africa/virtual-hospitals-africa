@@ -1,4 +1,10 @@
 import { FunctionComponent, h } from "preact";
+import {
+  ConfirmedButton,
+  DeniedButton,
+  NullButton,
+  PendingButtons,
+} from "./Buttons.tsx";
 
 interface AppointmentCardProps {
   stripeColor: string;
@@ -25,19 +31,16 @@ const AppointmentCardDetails: FunctionComponent<AppointmentCardProps> = ({
       <div className="pl-10 p-3 space-y-2">
         <div className="font-semibold text-2xl text-green-600">{time}</div>
         <div className="font-semibold text-xl">{patientName}</div>
-        <div className="text-xl text-gray-500">
-          Age: {patientAge}
-        </div>
-        <div className="text-xl pb-8 text-gray-500">
-          {clinicName}
-        </div>
+        <div className="text-xl text-gray-500">Age: {patientAge}</div>
+        <div className="text-xl pb-8 text-gray-500">{clinicName}</div>
       </div>
       <div className="px-1 absolute text-green-700 font-bold text-xl bg-blue-50 top-2 right-2">
         {durationMinutes}
       </div>
-      <div className="cursor-pointer absolute bottom-6 right-3 text-lg bg-green-600 text-white py-3 px-6 rounded shadow-lg font-normal mb-2">
-        VIEW
-      </div>
+      {status === null && <NullButton />}
+      {status === "pending" && <PendingButtons />}
+      {status === "denied" && <DeniedButton />}
+      {status === "confirmed" && <ConfirmedButton />}
     </div>
   );
 };
