@@ -11,7 +11,7 @@ import {
   AppointmentOfferedTime,
   ConversationState,
   ConversationStateHandler,
-  ConversationStateHandlerListActionSection,
+  // ConversationStateHandlerListActionSection,
   ConversationStateHandlerReturn,
   Falsy,
   PatientDemographicInfo,
@@ -19,8 +19,6 @@ import {
   TrxOrDb,
   UnhandledPatientMessage,
 } from "../types.ts";
-import { determinePatientMessage } from "./determinePatientMessage.ts";
-// import { sendMessageWithInteractiveList } from "./determinePatientMessage.ts";
 
 // Is this important??
 function compact<T>(arr: (T | Falsy)[]): T[] {
@@ -265,7 +263,8 @@ const conversationStates: {
     ],
   },
   "onboarded:make_appointment:other_scheduling_options": {
-    type: "list",
+    type: "string",
+    onResponse: "other_end_of_demo",
     async onEnter(
       trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage
@@ -330,43 +329,45 @@ const conversationStates: {
       return `OK here are the other available time, please choose from the list.`;
     },
 
-    action: async (
-      trx: TrxOrDb,
-      _patientMessage: UnhandledPatientMessage
-    ): Promise<{
-      button: string;
-      sections: ConversationStateHandlerListActionSection[];
-    }> => {
-      const nextOfferedTimes = await availableThirtyMinutes(trx, [], {
-        date: null,
-        timeslots_required: 1,
-      });
-      console.log(`This is null, ${nextOfferedTimes}`);
-      // Dynamically generate the sections based on `nextOfferedTimes`
-      const sections: ConversationStateHandlerListActionSection[] =
-        nextOfferedTimes.map((offeredTime) => ({
-          title: offeredTime.doctor.id.toString(), // Use the appropriate property for the date
-          rows: [
-            {
-              id: offeredTime.doctor.id.toString(), // Convert id to string
-              title: offeredTime.start,
-              description: `With Dr ${offeredTime.doctor.name}`,
-            },
-          ],
-          onResponse: "not_onboarded:welcome",
-        }));
+    // action: async (
+    //   trx: TrxOrDb,
+    //   _patientMessage: UnhandledPatientMessage
+    // ): Promise<{
+    //   button: string;
+    //   sections: ConversationStateHandlerListActionSection[];
+    // }> => {
 
-      sections.push({
-        title: "Other Date",
-        rows: [{ id: "Others", title: "Others", description: "Other date" }],
-        onResponse: "not_onboarded:welcome",
-      });
+    //   // TODO use the patientMessage to filter out the actually declined times
+    //   const nextOfferedTimes = await availableThirtyMinutes(trx, [], {
+    //     date: null,
+    //     timeslots_required: 1,
+    //   });
+    //   console.log(`This is null, ${nextOfferedTimes}`);
+    //   // Dynamically generate the sections based on `nextOfferedTimes`
+    //   const sections: ConversationStateHandlerListActionSection[] =
+    //     nextOfferedTimes.map((offeredTime) => ({
+    //       title: offeredTime.doctor.id.toString(), // Use the appropriate property for the date
+    //       rows: [
+    //         {
+    //           id: offeredTime.doctor.id.toString(), // Convert id to string
+    //           title: offeredTime.start,
+    //           description: `With Dr ${offeredTime.doctor.name}`,
+    //         },
+    //       ],
+    //       onResponse: "not_onboarded:welcome",
+    //     }));
 
-      return {
-        button: "Other Time slots",
-        sections: sections,
-      };
-    },
+    //   sections.push({
+    //     title: "Other Date",
+    //     rows: [{ id: "Others", title: "Others", description: "Other date" }],
+    //     onResponse: "not_onboarded:welcome",
+    //   });
+
+    //   return {
+    //     button: "Other Time slots",
+    //     sections: sections,
+    //   };
+    // },
   },
 
   "onboarded:appointment_scheduled": {
@@ -419,6 +420,7 @@ const conversationStates: {
   other_end_of_demo: {
     type: "end_of_demo",
     prompt: "This is the end of the demo. Thank you for participating!",
+    onResponse: "other_end_of_demo",
   },
 };
 

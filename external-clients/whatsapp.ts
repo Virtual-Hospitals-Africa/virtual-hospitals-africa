@@ -3,7 +3,7 @@ import {
   MessageOption,
   WhatsAppJSONResponse,
   WhatsAppSendable,
-  MessageAction
+  WhatsAppMessageAction
 } from "../types.ts";
 
 const postMessageRoute = `https://graph.facebook.com/v15.0/${Deno.env.get(
@@ -38,7 +38,6 @@ export function sendMessage({
         messageBody: message.messageBody,
       });
     case "list":
-      console.log("This is message type", message.type);
       return sendMessageWithInteractiveList({
         phone_number,
         headerText: message.headerText,
@@ -99,11 +98,11 @@ export async function sendMessageWithInteractiveButtons(opts: {
   return response.json();
 }
 
-export async function sendMessageWithInteractiveList(opts: {
+export function sendMessageWithInteractiveList(_opts: {
   phone_number: string;
   headerText: string;
   messageBody: string;
-  action: MessageAction;
+  action: WhatsAppMessageAction;
 }): Promise<{
   messaging_product: "whatsapp";
   contacts: [{ input: string; wa_id: string }];
@@ -111,40 +110,42 @@ export async function sendMessageWithInteractiveList(opts: {
 }> {
   console.log("List was called");
 
-  const toPost = {
-    method: "post",
-    headers: { Authorization, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      messaging_product: "whatsapp",
-      to: opts.phone_number,
-      type: "interactive",
-      interactive: {
-        type: "list",
-        header: {
-          type: "text",
-          text: `${opts.headerText}`,
-        },
-        body: {
-          text: `${opts.messageBody}`,
-        },
-        action: {
-          button: opts.action.button,
-          sections: opts.action.sections.map((section) => ({
-            ...section,
-            rows: section.rows.map((row) => ({
-              ...row,
-            })),
-          })),
-        },
-      },
-    }),
-  };
+  throw new Error("TODO")
 
-  console.log("toPost", JSON.stringify(toPost));
+  // const toPost = {
+  //   method: "post",
+  //   headers: { Authorization, "Content-Type": "application/json" },
+  //   body: JSON.stringify({
+  //     messaging_product: "whatsapp",
+  //     to: opts.phone_number,
+  //     type: "interactive",
+  //     interactive: {
+  //       type: "list",
+  //       header: {
+  //         type: "text",
+  //         text: `${opts.headerText}`,
+  //       },
+  //       body: {
+  //         text: `${opts.messageBody}`,
+  //       },
+  //       action: {
+  //         button: opts.action.button,
+  //         sections: opts.action.sections.map((section) => ({
+  //           ...section,
+  //           rows: section.rows.map((row) => ({
+  //             ...row,
+  //           })),
+  //         })),
+  //       },
+  //     },
+  //   }),
+  // };
 
-  const response = await fetch(postMessageRoute, toPost);
+  // console.log("toPost", JSON.stringify(toPost));
 
-  return response.json();
+  // const response = await fetch(postMessageRoute, toPost);
+
+  // return response.json();
 }
 
 // await sendMessageWithInteractiveList({

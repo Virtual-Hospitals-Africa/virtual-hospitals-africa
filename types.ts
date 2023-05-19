@@ -74,12 +74,16 @@ export type UnhandledPatientMessage = {
   conversation_state: Maybe<ConversationState>;
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
-  scheduling_appointment_status?: Maybe<string>;
+  scheduling_appointment_status?: Maybe<AppointmentStatus>;
   appointment_offered_times:
     | [null]
     | ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
   created_at: Date;
   updated_at: Date;
+};
+
+export type UnhandledPatientMessageWithConversationState = UnhandledPatientMessage & {
+  conversation_state: ConversationState;
 };
 
 // TODO; typecheck that onEnter return gets passed to prompt or eliminate this whole concept
@@ -111,31 +115,31 @@ export type ConversationStateHandlerSelectOption = {
   onResponse: ConversationStateHandlerOnResponse;
 };
 
-export type ConversationStateHandlerListActionSection = {
-  title: string;
-  rows: {
-    id: string;
-    title: string;
-    description: string;
-  }[];
-  onResponse: ConversationStateHandlerOnResponse;
-};
+// export type ConversationStateHandlerListActionSection = {
+//   title: string;
+//   rows: {
+//     id: string;
+//     title: string;
+//     description: string;
+//   }[];
+//   onResponse: ConversationStateHandlerOnResponse;
+// };
 
-export type ConversationStateHandlerListAction = {
-  button: string;
-  sections: ConversationStateHandlerListActionSection[];
-};
+// export type ConversationStateHandlerListAction = {
+//   button: string;
+//   sections: ConversationStateHandlerListActionSection[];
+// };
 
-export type ConversationStateHandlerList = ConversationStateHandlerType<{
-  type: "list";
-  action?: (
-    trx: TrxOrDb,
-    patientMessage: UnhandledPatientMessage
-  ) => Promise<{
-    button: string;
-    sections: ConversationStateHandlerListActionSection[];
-  }>;
-}>;
+// export type ConversationStateHandlerList = ConversationStateHandlerType<{
+//   type: "list";
+//   action?: (
+//     trx: TrxOrDb,
+//     patientMessage: UnhandledPatientMessage
+//   ) => Promise<{
+//     button: string;
+//     sections: ConversationStateHandlerListActionSection[];
+//   }>;
+// }>;
 
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
   type: "select";
@@ -148,6 +152,11 @@ export type ConversationStateHandlerString = ConversationStateHandlerType<{
   onResponse: ConversationStateHandlerOnResponse;
 }>;
 
+export type ConversationStateHandlerEndOfDemo = ConversationStateHandlerType<{
+  type: "end_of_demo";
+  onResponse: ConversationStateHandlerOnResponse;
+}>;
+
 export type ConversationStateHandlerDate = ConversationStateHandlerType<{
   type: "date";
   onResponse: ConversationStateHandlerOnResponse;
@@ -157,8 +166,8 @@ export type ConversationStateHandler =
   | ConversationStateHandlerSelect
   | ConversationStateHandlerString
   | ConversationStateHandlerDate
-  | ConversationStateHandlerType<{ type: "end_of_demo" }>
-  | ConversationStateHandlerList;
+  | ConversationStateHandlerEndOfDemo;
+  // | ConversationStateHandlerList;
 
 type AppointmentStatus = "pending" | "confirmed" | "denied";
 
@@ -623,10 +632,10 @@ export type WhatsAppSendableList = {
   type: "list";
   headerText: string;
   messageBody: string;
-  action: MessageAction;
+  action: WhatsAppMessageAction;
 };
 
-export type MessageAction = {
+export type WhatsAppMessageAction = {
   button: string;
   sections: {
     title: string;

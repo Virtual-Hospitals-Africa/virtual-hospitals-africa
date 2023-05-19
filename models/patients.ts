@@ -22,6 +22,7 @@ export async function getByPhoneNumber(
 }
 
 export async function upsert(trx: TrxOrDb, info: {
+  id?: number;
   conversation_state: Maybe<ConversationState>;
   phone_number: string;
   name: Maybe<string>;
