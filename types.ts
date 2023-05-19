@@ -568,20 +568,22 @@ export type WhatsAppSendable =
       options: MessageOption[];
     };
 export type DoctorAppointment = {
-  year: number;
-  month: number;
-  day: number;
-  weekday: string;
-  appointments: {
-    stripeColor: string; // Just blue for now
-    // Just blue for now
-    time: string;
-    patientName: string; // Remove the prefix "Appointment with "
-    // Remove the prefix "Appointment with "
-    patientAge: number; // Not in the google calendar
-    // Not in the google calendar
-    clinicName: string;
-    durationMinutes: string;
-    status: string | null;
-  }[];
+  stripeColor: string;
+  patientName: string;
+  patientAge: number;
+  clinicName: string;
+  durationMinutes: number;
+  status?: string | null;
+  start: ParsedDate;
+  end: ParsedDate;
 };
+
+export type ParsedDate = {
+  weekday: string
+  day: string
+  month: string
+  year: string
+  hour: string
+  minute: string
+  second: string
+}

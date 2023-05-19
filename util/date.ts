@@ -49,7 +49,7 @@ export const twoDigitDateFormat = new Intl.DateTimeFormat("en-gb", {
   timeZone: "Africa/Johannesburg",
 });
 
-export function parseDate(date: Date, format: "numeric" | "2-digit") {
+export function parseDate(date: Date, format: "numeric" | "2-digit"): ParsedDate {
   const formatter = format === "numeric"
     ? numericDateFormat
     : twoDigitDateFormat;
@@ -58,6 +58,11 @@ export function parseDate(date: Date, format: "numeric" | "2-digit") {
   const [day, month, year] = dateParts.split("/");
   const [hour, minute, second] = timeParts.split(":");
   return { weekday, day, month, year, hour, minute, second };
+}
+
+export function todayISOInHarare() {
+  const { day, month, year } = parseDate(new Date(), "2-digit");
+  return `${year}-${month}-${day}`;
 }
 
 export function formatHarare(
@@ -135,5 +140,26 @@ export function assertAllHarare(dates: string[]) {
       date.endsWith("+02:00"),
       `Expected ${date} to be in Harare time`,
     );
+  }
+}
+
+const isLeap = (year: number): boolean =>
+    (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
+
+export function numberOfDaysInMonth(month: number, year: number): number {
+  switch (month) {
+    case 1: return 31;
+    case 2: return isLeap(year) ? 29 : 28;
+    case 3: return 31;
+    case 4: return 30;
+    case 5: return 31;
+    case 6: return 30;
+    case 7: return 31;
+    case 8: return 31;
+    case 9: return 30;
+    case 10: return  31;
+    case 11: return  30;
+    case 12: return  31;
+    default: throw new Error("Invalid month");
   }
 }

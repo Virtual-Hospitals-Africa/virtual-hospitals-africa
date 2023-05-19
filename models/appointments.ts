@@ -1,5 +1,4 @@
-import { DeleteResult, sql } from "kysely";
-import db from "../external-clients/db.ts";
+import { sql } from "kysely";
 import {
   Appointment,
   AppointmentOfferedTime,
@@ -137,10 +136,6 @@ export async function getAppointmentStatusFromEventId(
 //     .execute();
 // }
 
-export function clear(): Promise<DeleteResult[]> {
-  return db.deleteFrom("appointments").execute();
-}
-
 export function createNew(
   trx: TrxOrDb,
   opts: { patient_id: number }
@@ -194,3 +189,26 @@ export async function schedule(
 
   return result.rows[0];
 }
+
+export function get(
+  trx: TrxOrDb,
+  query: { doctor_id: number }
+) {
+  return trx
+    .selectFrom("appointment_offered_times")
+    .innerJoin("appointments", "appointment_offered_times.appointment_id", "appointments.id")
+    .innerJoin("patients", "appointments.patient_id", "patients.id")
+    .where("doctor_id", "=", query.doctor_id)
+    .select(["patients.name", "patient_id", "start", "reason", "status", "scheduled_gcal_event_id"])
+    .execute();
+}
+
+// export function get(
+//   query: { patient_id: number },
+// ): Promise<ReturnedSqlRow<Appointment>[]> {
+//   return db
+//     .selectFrom("appointments")
+//     .selectAll()
+//     .where("patient_id", "=", query.patient_id)
+//     .execute();
+// }

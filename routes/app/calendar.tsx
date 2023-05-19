@@ -4,13 +4,17 @@ import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import DatePicker from "../../islands/date-picker.tsx";
 import MonthPicker from "../../islands/month-picker.tsx";
 import YearPicker from "../../islands/year-picker.tsx";
-import { useState } from "preact/hooks";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
 import { WithSession } from "fresh_session";
 import db from "../../external-clients/db.ts";
-import { getAppointmentStatusFromEventId } from "../../models/appointments.ts";
+import * as appointments from "../../models/appointments.ts";
+import {
+  numberOfDaysInMonth,
+  parseDate,
+  todayISOInHarare,
+} from "../../util/date.ts";
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -25,168 +29,74 @@ function CalendarLink(
   );
 }
 
-let dailyAppointments: DoctorAppointment[];
-
 export const handler: Handlers<
-  { events: GCalEventsResponse },
+  { dailyAppointments: DoctorAppointment[]; startday: string },
   WithSession
 > = {
   async GET(req, ctx) {
-    // 1. find the gcal_appointments_calendar_id as part of the session.
-    // 2. Pass that in as the id to googleClient.getEvents();
-    // 3. Use the event data in the view
-    // 4. [Optional] specify timeMin/timeMax so that we are only fetching upcoming appointments
-    // https://developers.google.com/calendar/api/v3/reference/events/list?hl=es-419
-    //  If necessary, do some data-massaging server side
-
     const googleClient = DoctorGoogleClient.fromCtx(ctx);
-    const initialURL = new URL(req.url);
-    let dateString = initialURL.searchParams.get("startday");
-    // if there's nothing in the query, create one with the current date
-    if (!dateString) {
-      const newDate = new Date();
-      newDate.setDate(newDate.getDate());
-      dateString = newDate.toISOString().slice(0, 10);
-    }
-    // use PST for debugging reasons UTC-7 (-07:00)
-    const params = {
-      timeMin: `${dateString}T00:00:00-07:00`,
-      timeMax: `${dateString}T23:59:59-07:00`,
-    };
+
+    // if there's no startday in the query, use today in Harare
+    const startday = new URL(req.url).searchParams.get("startday") ||
+      todayISOInHarare();
+
     // get filtered calendar events here
     const events = await googleClient.getEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
-      params,
+      {
+        timeMin: `${startday}T00:00:00+02:00`,
+        timeMax: `${startday}T23:59:59+02:00`,
+      },
     );
 
-    console.log("events", events);
+    const doctor_id = ctx.state.session.data.id;
+    const gcalEventIds = new Set(events.items.map((item) => item.id));
 
-    const mappedAppointments = await Promise.all(
-      events.items.map(async (item) => {
-        let appointmentStatus;
-        try {
-          appointmentStatus = await db.transaction().execute(async (trx) =>
-            await getAppointmentStatusFromEventId(trx, { event_id: item.id })
-          );
-        } catch (err) {
-          console.log("Error getting status");
-          console.error(err);
-        }
-        if (appointmentStatus) {
-          console.log("THIS IS A STATUS", appointmentStatus);
-        } else {
-          appointmentStatus = null;
+    const appointmentsOfDoctor = await appointments.get(db, { doctor_id });
+
+    const appointmentsOfDoctorWithGcalEventIds = appointmentsOfDoctor.filter(
+      (appointment) => gcalEventIds.has(appointment.scheduled_gcal_event_id),
+    );
+
+    const dailyAppointments = appointmentsOfDoctorWithGcalEventIds.map(
+      (appt) => {
+        const gcalItem = events.items.find((item) =>
+          item.id === appt.scheduled_gcal_event_id
+        );
+        if (!gcalItem) {
+          throw new Error("Could not find gcal event for appointment");
         }
 
-        const start = new Date(item.start.dateTime);
-        const day = parseInt(
-          start.toLocaleDateString("en-US", { day: "numeric" }),
-        );
-        const month = parseInt(
-          start.toLocaleDateString("en-US", { month: "numeric" }),
-        );
-        const year = parseInt(
-          start.toLocaleDateString("en-US", { year: "numeric" }),
-        );
-        const weekday = start.toLocaleString("en-US", { weekday: "short" });
-        const appointment = {
+        const startTime = new Date(gcalItem.start.dateTime);
+        const endTime = new Date(gcalItem.end.dateTime);
+        const duration = endTime.getTime() - startTime.getTime();
+
+        return {
           stripeColor: "bg-green-500", // Just green for now
-          time: start.toLocaleString("en-US", {
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
-          }),
-          patientName: item.summary.replace(/^Appointment with /, ""), // Remove the prefix "Appointment with "
-          patientAge: 30, // Not in the google calendar
-          clinicName: item.organizer.displayName,
-          durationMinutes: Math.round(
-            (new Date(item.end.dateTime).getTime() - start.getTime()) /
-              (1000 * 60),
-          ) + " mins", // Calculate duration in minutes
-          status: appointmentStatus,
+          patientName: appt.name!,
+          patientAge: 30, // TODO: calculate this from patient DOB
+          clinicName: "Placeholder Clinic",
+          durationMinutes: Math.round(duration / (1000 * 60)),
+          status: appt.status,
+          start: parseDate(startTime, "numeric"),
+          end: parseDate(endTime, "numeric"),
         };
-        return { year, month, day, weekday, appointments: [appointment] };
-      }),
+      },
     );
 
-    // Merge appointments for the same day/weekday
-    const mergedAppointments: DoctorAppointment[] = [];
-    mappedAppointments.forEach((appointment: DoctorAppointment) => {
-      const existingAppointment = mergedAppointments.find((a) =>
-        a.day === appointment.day && a.weekday === appointment.weekday
-      );
-      if (existingAppointment) {
-        existingAppointment.appointments.push(...appointment.appointments);
-      } else {
-        mergedAppointments.push(appointment);
-      }
-    }); // if there's nothing in the address bar, use the current date
-    if (dateString) {
-      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day);
-    } else {
-      dailyAppointments = mergedAppointments.sort((a, b) => a.day - b.day);
-    }
-    return ctx.render({ events });
+    return ctx.render({ dailyAppointments, startday });
   },
 };
 
 export default function Calendar(
-  props: PageProps<{ events: GCalEventsResponse }>,
+  props: PageProps<
+    { dailyAppointments: DoctorAppointment[]; startday: string }
+  >,
 ) {
   // initially set up date with current date
-  const [startDay, setStartDay] = useState<number>(new Date().getDate());
-  const [startMonth, setStartMonth] = useState<number>(
-    new Date().getMonth() + 1,
-  );
-  const [startYear, setStartYear] = useState<number>(new Date().getFullYear());
-
-  // Parse the URLSearchParams object from the URL
-  const urlSearchParams = new URLSearchParams(props.url.search);
-
-  // Extract the value of the "startday" parameter
-  const startDayParam = urlSearchParams.get("startday");
-  // if params exist in the link
-  if (startDayParam) {
-    const dateArray = startDayParam.split("-");
-    setStartYear(parseInt(dateArray[0]));
-    setStartMonth(parseInt(dateArray[1]));
-    setStartDay(parseInt(dateArray[2]));
-  }
-  const isLeap = (year: number): boolean =>
-    (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
-  type MonthDays = {
-    [month: number]: number;
-  };
-
-  const lastDaysOfMonth: MonthDays = isLeap(startYear)
-    ? {
-      1: 31, // January
-      2: 29, // February
-      3: 31, // March
-      4: 30, // April
-      5: 31, // May
-      6: 30, // June
-      7: 31, // July
-      8: 31, // August
-      9: 30, // September
-      10: 31, // October
-      11: 30, // November
-      12: 31, // December
-    }
-    : {
-      1: 31, // January
-      2: 28, // February
-      3: 31, // March
-      4: 30, // April
-      5: 31, // May
-      6: 30, // June
-      7: 31, // July
-      8: 31, // August
-      9: 30, // September
-      10: 31, // October
-      11: 30, // November
-      12: 31, // December
-    };
+  const [startYear, startMonth, startDay] = props.data.startday.split("-").map((
+    n,
+  ) => parseInt(n, 10));
 
   const daysToShow = 7;
   const daysBefore = Math.floor(daysToShow / 2);
@@ -194,26 +104,19 @@ export default function Calendar(
   const days = Array.from({ length: daysToShow }, (_, i) => {
     const day = startDay - daysBefore + i;
     if (day < 1) {
-      let prevMonthDays;
-      let prevMonth;
       // Handle days before the start of the month
       // Get the previous month if January. If startDay is less than 10, we cannot be looking at the future month.
-      if (startMonth === 1 && startDay < 10) {
-        prevMonth = 12;
-        prevMonthDays = lastDaysOfMonth[prevMonth];
-      } else {
-        prevMonth = startMonth - 1;
-        prevMonthDays = lastDaysOfMonth[prevMonth];
-      }
+      const prevMonth = startMonth === 1 && startDay < 10 ? 12 : startMonth - 1;
+      const prevMonthDays = numberOfDaysInMonth(prevMonth, startYear);
       return prevMonthDays + day;
-    } else if (day > lastDaysOfMonth[startMonth]) {
-      // Handle days after the end of the month
-      return day > lastDaysOfMonth[startMonth]
-        ? day - lastDaysOfMonth[startMonth]
-        : day;
-    } else {
-      return day;
     }
+    if (day > numberOfDaysInMonth(startMonth, startYear)) {
+      // Handle days after the end of the month
+      return day > numberOfDaysInMonth(startMonth, startYear)
+        ? day - numberOfDaysInMonth(startMonth, startYear)
+        : day;
+    }
+    return day;
   });
 
   return (
@@ -238,7 +141,7 @@ export default function Calendar(
           currentYear={startYear}
           days={days}
         />
-        <DailyAppointments dailyAppointments={dailyAppointments} />
+        <DailyAppointments dailyAppointments={props.data.dailyAppointments} />
       </div>
 
       <hr />

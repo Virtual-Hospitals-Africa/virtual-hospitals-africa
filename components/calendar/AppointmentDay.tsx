@@ -1,7 +1,7 @@
 import { FunctionComponent } from "preact";
 
 interface AppointmentDayProps {
-  day: number;
+  day: string;
   weekday: string;
 }
 
