@@ -3,6 +3,12 @@
     "start": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors --watch=static/,routes/ dev.ts",
     "web": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors main.ts",
     "chatbot": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors chatbot/chatbot.ts",
+    "production:chatbot:up": "heroku ps:scale chatbot=1",
+    "production:chatbot:down": "heroku ps:scale chatbot=0",
+    "production:token_refresher:up": "heroku ps:scale token_refresher=1",
+    "production:token_refresher:down": "heroku ps:scale token_refresher=0",
+    "production:web:up": "heroku ps:scale web=1",
+    "production:web:down": "heroku ps:scale web=0",
     "token_refresher": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors tokenRefresher/tokenRefresher.ts"
   },
   "importMap": "./import_map.json",
