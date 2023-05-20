@@ -1,5 +1,6 @@
 import { Handlers } from "$fresh/server.ts";
 import { WithSession } from "fresh_session";
+import db from "../db/db.ts";
 import { remove } from "../db/models/patients.ts";
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
@@ -11,7 +12,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
       });
     }
     try {
-      await remove({ phone_number });
+      await remove(db, { phone_number });
     } catch (err) {
       console.error(err);
       return new Response("Error removing patient", { status: 500 });

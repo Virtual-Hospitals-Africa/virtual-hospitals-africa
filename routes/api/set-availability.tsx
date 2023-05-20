@@ -1,14 +1,12 @@
-import { Handlers } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import set from "../../util/set.ts";
-import { WithSession } from "fresh_session";
 import {
   AvailabilityJSON,
   DayOfWeek,
   DeepPartial,
   GCalEvent,
+  LoggedInDoctorHandler,
   Time,
-  TrxOrDb,
 } from "../../types.ts";
 import padLeft from "../../util/padLeft.ts";
 import redirect from "../../util/redirect.ts";
@@ -92,7 +90,7 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: Handlers<unknown, WithSession & { trx: TrxOrDb }> = {
+export const handler: LoggedInDoctorHandler = {
   async POST(req, ctx) {
     const params = new URLSearchParams(await req.text());
     const availability = parseForm(params);

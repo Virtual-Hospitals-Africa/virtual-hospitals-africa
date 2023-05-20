@@ -1,4 +1,5 @@
 import { DeleteResult, sql, UpdateResult } from "kysely";
+import isDate from "../../util/isDate.ts";
 import {
   DoctorWithGoogleTokens,
   GoogleTokens,
@@ -66,14 +67,15 @@ export async function upsertWithGoogleCredentials(
     .insertInto("doctor_google_tokens")
     .values({
       doctor_id: doctor.id,
-      expires_at: new Date(),
       access_token: details.access_token,
       refresh_token: details.refresh_token,
+      expires_at: details.expires_at,
     })
     .onConflict((oc) =>
       oc.column("doctor_id").doUpdateSet({
         access_token: details.access_token,
         refresh_token: details.refresh_token,
+        expires_at: details.expires_at,
       })
     )
     .execute();
@@ -110,6 +112,7 @@ export function isDoctorWithGoogleTokens(
     typeof doctor === "object" &&
     "access_token" in doctor && typeof doctor.access_token === "string" &&
     "refresh_token" in doctor && typeof doctor.refresh_token === "string" &&
+    "expires_at" in doctor && (typeof doctor.expires_at === "string" || isDate(doctor.expires_at)) &&
     "id" in doctor && typeof doctor.id === "number" &&
     "name" in doctor && typeof doctor.name === "string" &&
     "email" in doctor && typeof doctor.email === "string" &&

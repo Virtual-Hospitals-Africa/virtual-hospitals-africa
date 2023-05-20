@@ -27,6 +27,7 @@ export async function initializeDoctor(
     gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
     access_token: googleClient.tokens.access_token,
     refresh_token: googleClient.tokens.refresh_token,
+    expires_at: googleClient.tokens.expires_at,
   });
 }
 

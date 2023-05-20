@@ -1,9 +1,8 @@
-import { Handlers } from "$fresh/server.ts";
-import { WithSession } from "fresh_session";
 import resetDb from "../db/reset.ts";
 import { redis } from "../external-clients/redis.ts";
+import { LoggedInDoctorHandler } from "../types.ts";
 
-export const handler: Handlers<Record<string, never>, WithSession> = {
+export const handler: LoggedInDoctorHandler = {
   async GET(_req, ctx) {
     const resettingDb = resetDb();
 

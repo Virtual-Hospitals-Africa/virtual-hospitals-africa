@@ -4,10 +4,13 @@ import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import DatePicker from "../../islands/date-picker.tsx";
 import MonthPicker from "../../islands/month-picker.tsx";
 import YearPicker from "../../islands/year-picker.tsx";
-import { Handlers, PageProps } from "$fresh/server.ts";
+import { PageProps } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
-import { DoctorAppointment, TrxOrDb } from "../../types.ts";
-import { WithSession } from "fresh_session";
+import {
+  DoctorAppointment,
+  LoggedInDoctorHandler,
+  TrxOrDb,
+} from "../../types.ts";
 import * as appointments from "../../db/models/appointments.ts";
 import {
   numberOfDaysInMonth,
@@ -28,9 +31,8 @@ function CalendarLink(
   );
 }
 
-export const handler: Handlers<
-  { dailyAppointments: DoctorAppointment[]; startday: string },
-  WithSession & { trx: TrxOrDb }
+export const handler: LoggedInDoctorHandler<
+  { dailyAppointments: DoctorAppointment[]; startday: string }
 > = {
   async GET(req, ctx) {
     const googleClient = new DoctorGoogleClient(ctx);
@@ -48,9 +50,8 @@ export const handler: Handlers<
       },
     );
 
-    const doctor_id = ctx;
     const appointmentsOfDoctor = await appointments.get(ctx.state.trx, {
-      doctor_id,
+      doctor_id: ctx.state.session.data.id,
     });
     const events = await gettingEvents;
 
@@ -95,6 +96,8 @@ export default function Calendar(
     { dailyAppointments: DoctorAppointment[]; startday: string }
   >,
 ) {
+  console.log("dailyAppointments", props.data.dailyAppointments);
+
   // initially set up date with current date
   const [startYear, startMonth, startDay] = props.data.startday.split("-").map((
     n,

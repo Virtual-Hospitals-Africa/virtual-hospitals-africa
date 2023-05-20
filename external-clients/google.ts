@@ -13,9 +13,9 @@ import {
   GCalFreeBusy,
   GoogleProfile,
   GoogleTokens,
-TrxOrDb,
+  LoggedInDoctor,
+  TrxOrDb,
 } from "../types.ts";
-import { WithSession } from "fresh_session";
 import { HandlerContext } from "$fresh/src/server/mod.ts";
 import {
   isDoctorWithGoogleTokens,
@@ -252,7 +252,7 @@ export class DoctorGoogleClient extends GoogleClient {
   public doctor: DoctorWithGoogleTokens;
 
   constructor(
-    public ctx: HandlerContext<any, WithSession & { trx: TrxOrDb }>,
+    public ctx: HandlerContext<any, LoggedInDoctor>,
   ) {
     super(ctx.state.session.data);
     this.doctor = ctx.state.session.data;
@@ -321,6 +321,10 @@ export async function getInitialTokensFromAuthCode(
   assert(tokens);
   assertEquals(typeof tokens.access_token, "string");
   assertEquals(typeof tokens.refresh_token, "string");
+  assertEquals(typeof tokens.expires_in, "number");
+
+  tokens.expires_at = new Date()
+  tokens.expires_at.setSeconds(tokens.expires_at.getSeconds() + tokens.expires_in);
 
   return tokens;
 }

@@ -1,4 +1,6 @@
 import { ColumnType, Generated, Transaction } from "kysely";
+import { Handlers } from "$fresh/server.ts";
+import { Session } from "fresh_session/session"
 import db, { DatabaseSchema } from "./db/db.ts";
 
 export type Maybe<T> = T | null | undefined;
@@ -284,6 +286,7 @@ export type integer = number;
 export type GoogleTokens = {
   access_token: string;
   refresh_token: string;
+  expires_at: Date | string;
 };
 
 export type GCalEvent = {
@@ -512,7 +515,6 @@ export type Doctor = {
 
 export type DoctorGoogleToken = GoogleTokens & {
   doctor_id: number;
-  expires_at: Date;
 };
 
 export type DoctorWithGoogleTokens = ReturnedSqlRow<Doctor & GoogleTokens>;
@@ -645,3 +647,12 @@ export type WhatsAppSendableButtons = {
   buttonText: string;
   options: WhatsAppMessageOption[];
 };
+
+export type LoggedInDoctor = { 
+  session: Session & {
+    data: DoctorWithGoogleTokens
+  }
+  trx: TrxOrDb
+}
+
+export type LoggedInDoctorHandler<Props = Record<string, never>> = Handlers<Props, LoggedInDoctor>

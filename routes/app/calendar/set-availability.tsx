@@ -1,7 +1,6 @@
-import { HandlerContext, Handlers, PageProps } from "$fresh/server.ts";
+import { PageProps } from "$fresh/server.ts";
 import Layout from "../../../components/Layout.tsx";
-import { WithSession } from "fresh_session";
-import { AvailabilityJSON, TrxOrDb } from "../../../types.ts";
+import { AvailabilityJSON, LoggedInDoctorHandler } from "../../../types.ts";
 import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
 import { DoctorGoogleClient } from "../../../external-clients/google.ts";
 import { assertAllHarare, convertToTime } from "../../../util/date.ts";
@@ -17,51 +16,41 @@ const shortToLong = {
   SA: "Saturday" as const,
 };
 
-async function getAvailability(
-  ctx: HandlerContext<{
-    availability: AvailabilityJSON;
-  }, WithSession & { trx: TrxOrDb }>,
-): Promise<AvailabilityJSON> {
-  const googleClient = new DoctorGoogleClient(ctx);
-  const events = await googleClient.getEvents(
-    ctx.state.session.data.gcal_availability_calendar_id,
-  );
-
-  const schedule: AvailabilityJSON = {
-    Sunday: [],
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-  };
-
-  events.items.forEach((item) => {
-    assertAllHarare([item.start.dateTime, item.end.dateTime]);
-    assert(Array.isArray(item.recurrence));
-    assertEquals(item.recurrence.length, 1);
-    assert(item.recurrence[0].startsWith("RRULE:FREQ=WEEKLY;BYDAY="));
-    const dayStr = item.recurrence[0].replace("RRULE:FREQ=WEEKLY;BYDAY=", "");
-    assert(dayStr in shortToLong);
-
-    const weekday = shortToLong[dayStr as keyof typeof shortToLong];
-
-    schedule[weekday].push({
-      start: convertToTime(item.start.dateTime),
-      end: convertToTime(item.end.dateTime),
-    });
-  });
-
-  return schedule;
-}
-
-export const handler: Handlers<
-  { availability: AvailabilityJSON },
-  WithSession & { trx: TrxOrDb }
+export const handler: LoggedInDoctorHandler<
+  { availability: AvailabilityJSON }
 > = {
   async GET(_, ctx) {
-    const availability = await getAvailability(ctx);
+    const googleClient = new DoctorGoogleClient(ctx);
+    const events = await googleClient.getEvents(
+      ctx.state.session.data.gcal_availability_calendar_id,
+    );
+
+    const availability: AvailabilityJSON = {
+      Sunday: [],
+      Monday: [],
+      Tuesday: [],
+      Wednesday: [],
+      Thursday: [],
+      Friday: [],
+      Saturday: [],
+    };
+
+    events.items.forEach((item) => {
+      assertAllHarare([item.start.dateTime, item.end.dateTime]);
+      assert(Array.isArray(item.recurrence));
+      assertEquals(item.recurrence.length, 1);
+      assert(item.recurrence[0].startsWith("RRULE:FREQ=WEEKLY;BYDAY="));
+      const dayStr = item.recurrence[0].replace("RRULE:FREQ=WEEKLY;BYDAY=", "");
+      assert(dayStr in shortToLong);
+
+      const weekday = shortToLong[dayStr as keyof typeof shortToLong];
+
+      availability[weekday].push({
+        start: convertToTime(item.start.dateTime),
+        end: convertToTime(item.end.dateTime),
+      });
+    });
+
     return ctx.render({ availability });
   },
 };
