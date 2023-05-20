@@ -8,6 +8,7 @@ import {
   DeepPartial,
   GCalEvent,
   Time,
+  TrxOrDb,
 } from "../../types.ts";
 import padLeft from "../../util/padLeft.ts";
 import redirect from "../../util/redirect.ts";
@@ -91,7 +92,7 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: Handlers<unknown, WithSession> = {
+export const handler: Handlers<unknown, WithSession & { trx: TrxOrDb }> = {
   async POST(req, ctx) {
     const params = new URLSearchParams(await req.text());
     const availability = parseForm(params);
@@ -102,7 +103,7 @@ export const handler: Handlers<unknown, WithSession> = {
 
     assert(gcal_availability_calendar_id, "No calendar ID found in session");
 
-    const googleClient = DoctorGoogleClient.fromCtx(ctx);
+    const googleClient = new DoctorGoogleClient(ctx);
 
     const existingAvailability = await googleClient.getEvents(
       gcal_availability_calendar_id,

@@ -30,10 +30,10 @@ function CalendarLink(
 
 export const handler: Handlers<
   { dailyAppointments: DoctorAppointment[]; startday: string },
-  WithSession & { transaction: TrxOrDb }
+  WithSession & { trx: TrxOrDb }
 > = {
   async GET(req, ctx) {
-    const googleClient = DoctorGoogleClient.fromCtx(ctx);
+    const googleClient = new DoctorGoogleClient(ctx);
 
     // if there's no startday in the query, use today in Harare
     const startday = new URL(req.url).searchParams.get("startday") ||
@@ -48,11 +48,8 @@ export const handler: Handlers<
       },
     );
 
-    const doctor_id = ctx.state.session.data.id;
-
-    console.log(ctx.state.transaction);
-
-    const appointmentsOfDoctor = await appointments.get(ctx.state.transaction, {
+    const doctor_id = ctx;
+    const appointmentsOfDoctor = await appointments.get(ctx.state.trx, {
       doctor_id,
     });
     const events = await gettingEvents;

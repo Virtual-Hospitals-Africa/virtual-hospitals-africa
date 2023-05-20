@@ -1,5 +1,5 @@
 import { Kysely, sql } from "kysely";
-import { addUpdatedAtTrigger } from "./20230517124053_add_update_trigger.ts";
+import { addUpdatedAtTrigger } from "../addUpdatedAtTrigger.ts";
 
 export async function up(db: Kysely<unknown>) {
   await db.schema

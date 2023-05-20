@@ -11,7 +11,7 @@ export function createTokenRefresher(): TokenRefresher {
 
   async function doRefreshTokens(): Promise<void> {
     const doctors = await allWithGoogleTokensAboutToExpire(db);
-    await Promise.all(doctors.map(refreshTokens));
+    await Promise.all(doctors.map(doctor => refreshTokens(db, doctor)));
     timer = setTimeout(doRefreshTokens, 3 * 60 * 1000);
   }
 

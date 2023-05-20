@@ -26,7 +26,7 @@ async function respondToPatientMessage(patientMessage: UnhandledPatientMessage) 
       throw new Error(whatsappResponse.error.details);
     }
 
-    await insertMessageSent({
+    await insertMessageSent(db, {
       patient_id: patientMessage.patient_id,
       responding_to_id: patientMessage.message_id,
       whatsapp_id: whatsappResponse.messages[0].id,
@@ -46,7 +46,7 @@ async function respondToPatientMessage(patientMessage: UnhandledPatientMessage) 
       phone_number: patientMessage.phone_number,
     });
 
-    await markChatbotError({
+    await markChatbotError(db, {
       commitHash,
       whatsapp_message_received_id: patientMessage.message_id,
       errorMessage: err.message,
@@ -55,6 +55,6 @@ async function respondToPatientMessage(patientMessage: UnhandledPatientMessage) 
 }
 
 export default async function respond() {
-  const unhandledMessages = await getUnhandledPatientMessages({ commitHash });
+  const unhandledMessages = await getUnhandledPatientMessages(db, { commitHash });
   return await Promise.all(unhandledMessages.map(respondToPatientMessage));
 }

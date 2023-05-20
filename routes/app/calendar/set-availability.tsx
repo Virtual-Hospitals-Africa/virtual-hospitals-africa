@@ -1,28 +1,11 @@
 import { HandlerContext, Handlers, PageProps } from "$fresh/server.ts";
 import Layout from "../../../components/Layout.tsx";
 import { WithSession } from "fresh_session";
-import { AvailabilityJSON, GoogleTokens, Time } from "../../../types.ts";
+import { AvailabilityJSON, TrxOrDb } from "../../../types.ts";
 import SetAvailabilityForm from "../../../islands/set-availability-form.tsx";
 import { DoctorGoogleClient } from "../../../external-clients/google.ts";
-import { assertAllHarare } from "../../../util/date.ts";
+import { assertAllHarare, convertToTime } from "../../../util/date.ts";
 import { assert, assertEquals } from "std/testing/asserts.ts";
-
-function convertToTime(date: string): Time {
-  const [, timeAndZone] = date.split("T");
-  const [time] = timeAndZone.split("+");
-  const [hourStr, minuteStr, second] = time.split(":");
-  assertEquals(second, "00");
-  const hour = parseInt(hourStr);
-  const minute = parseInt(minuteStr);
-  assertEquals(minute % 5, 0);
-  const amPm = hour >= 12 ? "pm" : "am";
-  const hourMod = hour % 12;
-  return {
-    hour: hourMod === 0 ? 12 : hourMod as Time["hour"],
-    minute: minute as Time["minute"],
-    amPm,
-  };
-}
 
 const shortToLong = {
   SU: "Sunday" as const,
@@ -37,14 +20,13 @@ const shortToLong = {
 async function getAvailability(
   ctx: HandlerContext<{
     availability: AvailabilityJSON;
-  }, WithSession>,
+  }, WithSession & { trx: TrxOrDb }>,
 ): Promise<AvailabilityJSON> {
-  const googleClient = DoctorGoogleClient.fromCtx(ctx);
+  const googleClient = new DoctorGoogleClient(ctx);
   const events = await googleClient.getEvents(
     ctx.state.session.data.gcal_availability_calendar_id,
   );
-  const items = events.items;
-  console.log("items", items);
+
   const schedule: AvailabilityJSON = {
     Sunday: [],
     Monday: [],
@@ -70,13 +52,13 @@ async function getAvailability(
       end: convertToTime(item.end.dateTime),
     });
   });
-  console.log(schedule);
-  return Promise.resolve(schedule);
+
+  return schedule;
 }
 
 export const handler: Handlers<
   { availability: AvailabilityJSON },
-  WithSession
+  WithSession & { trx: TrxOrDb }
 > = {
   async GET(_, ctx) {
     const availability = await getAvailability(ctx);

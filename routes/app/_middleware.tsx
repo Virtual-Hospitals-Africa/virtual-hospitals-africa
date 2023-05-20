@@ -7,19 +7,19 @@ import db from "../../db/db.ts";
 
 // Ensure user is a doctor who has session with google tokens
 export const handler = [
-  async (
+  (
     _req: Request,
     ctx: MiddlewareHandlerContext<
       WithSession & {
-        transaction: TrxOrDb;
+        trx: TrxOrDb;
       }
     >,
   ) => {
     const isAuthedDoctor = isDoctorWithGoogleTokens(ctx.state.session.data);
     if (!isAuthedDoctor) return redirect("/");
 
-    await db.transaction().execute((trx: TrxOrDb) => {
-      ctx.state.transaction = trx;
+    return db.transaction().execute((trx: TrxOrDb) => {
+      ctx.state.trx = trx;
       return ctx.next();
     });
   },

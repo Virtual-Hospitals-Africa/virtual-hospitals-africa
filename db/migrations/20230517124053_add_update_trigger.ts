@@ -1,15 +1,6 @@
 import { Kysely, sql } from "kysely";
+import { addUpdatedAtTrigger } from "../addUpdatedAtTrigger.ts";
 import selectAllNonMetaTables from "../selectAllNonMetaTables.ts";
-
-
-export function addUpdatedAtTrigger(db: Kysely<unknown>, table: string) {
-  return sql`
-    CREATE TRIGGER update_updated_at_trigger
-           BEFORE UPDATE ON ${sql.id(table)}
-           FOR EACH ROW
-           EXECUTE FUNCTION update_updated_at();
-  `.execute(db)
-}
 
 export async function up(db: Kysely<unknown>) {
   await sql`

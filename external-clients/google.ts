@@ -22,7 +22,6 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from "../db/models/doctors.ts";
-import db from "../db/db.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
@@ -49,10 +48,6 @@ export class GoogleClient {
     if (!isGoogleTokens(tokens)) {
       throw new Error("Invalid tokens object");
     }
-  }
-
-  static fromCtx(ctx: HandlerContext<unknown, WithSession>): GoogleClient {
-    return new GoogleClient(ctx.state.session.data);
   }
 
   async doMakeRequest<T>(
@@ -254,18 +249,16 @@ export class GoogleClient {
 }
 
 export class DoctorGoogleClient extends GoogleClient {
+  public doctor: DoctorWithGoogleTokens;
+
   constructor(
-    public doctor: DoctorWithGoogleTokens,
-    public session?: WithSession["session"]
+    public ctx: HandlerContext<any, WithSession & { trx: TrxOrDb }>,
   ) {
-    super(doctor);
-    if (!isDoctorWithGoogleTokens(doctor)) {
+    super(ctx.state.session.data);
+    this.doctor = ctx.state.session.data;
+    if (!isDoctorWithGoogleTokens(this.doctor)) {
       throw new Error("Ya gotta be a doctah");
     }
-  }
-
-  static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
-    return new DoctorGoogleClient(ctx.state.session.data, ctx.state.session);
   }
 
   async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
@@ -274,13 +267,11 @@ export class DoctorGoogleClient extends GoogleClient {
     } catch (err) {
       if (err.message === "Unauthorized") {
         assert(this.doctor.refresh_token, "No refresh token");
-        const refreshed = await db.transaction().execute(trx => refreshTokens(trx, this.doctor));
+        const refreshed = await refreshTokens(this.ctx.state.trx, this.doctor);
         if (refreshed.result !== "success") {
           throw new Error("Failed to refresh tokens");
         }
-        if (this.session) {
-          this.session.set("access_token", refreshed.access_token);
-        }
+        this.ctx.state.session.set("access_token", refreshed.access_token);
         this.doctor = { ...this.doctor, access_token: refreshed.access_token };
         return await super.makeRequest(path, opts);
       }
