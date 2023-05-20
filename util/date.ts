@@ -1,5 +1,5 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
-import { PatientDemographicInfo, Time } from '../types.ts'
+import { ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 

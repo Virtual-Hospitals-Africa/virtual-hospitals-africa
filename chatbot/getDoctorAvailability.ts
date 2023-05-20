@@ -103,7 +103,7 @@ async function getAllAvailability(
 ) {
   const doctors = await getAllWithExtantTokens(trx)
   return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleClient = new google.DoctorGoogleClient(doctor)
+    const doctorGoogleClient = new google.GoogleClient(doctor)
     const freeBusy = await doctorGoogleClient.getFreeBusy({
       ...timeRange,
       calendarIds: [
@@ -121,7 +121,7 @@ export async function getAllDoctorAvailability(
 ) {
   const doctors = await getAllWithExtantTokens(trx)
   return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleClient = new google.DoctorGoogleClient(doctor)
+    const doctorGoogleClient = new google.GoogleClient(doctor)
     const freeBusy = await doctorGoogleClient.getFreeBusy({
       ...timeRange,
       calendarIds: [

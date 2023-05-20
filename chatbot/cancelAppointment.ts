@@ -39,7 +39,7 @@ export async function cancelAppointment(
     `No gcal_appointments_calendar_id found for doctor_id ${offeredTime.doctor_id}`,
   )
 
-  const doctorGoogleClient = new google.DoctorGoogleClient(matchingDoctor)
+  const doctorGoogleClient = new google.GoogleClient(matchingDoctor)
   console.log(
     'deleting events, matching doctor:',
     matchingDoctor.gcal_availability_calendar_id,
