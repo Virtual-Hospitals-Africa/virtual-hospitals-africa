@@ -1,6 +1,6 @@
-import { Kysely, sql } from "kysely";
-import { addUpdatedAtTrigger } from "../addUpdatedAtTrigger.ts";
-import selectAllNonMetaTables from "../selectAllNonMetaTables.ts";
+import { Kysely, sql } from 'kysely'
+import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import selectAllNonMetaTables from '../selectAllNonMetaTables.ts'
 
 export async function up(db: Kysely<unknown>) {
   await sql`
@@ -15,15 +15,15 @@ export async function up(db: Kysely<unknown>) {
   `.execute(db)
 
   const tables = await selectAllNonMetaTables(db)
-  
+
   for (const table of tables) {
-    await addUpdatedAtTrigger(db, table);
+    await addUpdatedAtTrigger(db, table)
   }
 }
 
 export async function down(db: Kysely<unknown>) {
   const tables = await selectAllNonMetaTables(db)
-  for (const table of tables){
+  for (const table of tables) {
     await sql`
       DROP TRIGGER IF EXIST update_updated_at_trigger
         ON ${sql.id(table)}

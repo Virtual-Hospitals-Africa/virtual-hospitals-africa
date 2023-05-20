@@ -1,15 +1,15 @@
-import { sql } from "kysely";
+import { sql } from 'kysely'
 import {
   Appointment,
   AppointmentOfferedTime,
   FullScheduledAppointment,
   ReturnedSqlRow,
   TrxOrDb,
-} from "../../types.ts";
+} from '../../types.ts'
 
 export async function addOfferedTime(
   trx: TrxOrDb,
-  opts: { appointment_id: number; doctor_id: number; start: string }
+  opts: { appointment_id: number; doctor_id: number; start: string },
 ): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
   const result = await sql<
     ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
@@ -24,14 +24,14 @@ export async function addOfferedTime(
            doctors.name as doctor_name
       FROM inserted_offered_time
       JOIN doctors ON inserted_offered_time.doctor_id = doctors.id
-  `.execute(trx);
+  `.execute(trx)
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 export async function newOfferedTime(
   trx: TrxOrDb,
-  opts: { appointment_id: number; doctor_id: number; start: string }
+  opts: { appointment_id: number; doctor_id: number; start: string },
 ): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
   const result = await sql<
     ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
@@ -47,74 +47,74 @@ export async function newOfferedTime(
       FROM inserted_offered_time
       JOIN doctors ON inserted_offered_time.doctor_id = doctors.id
       JOIN appointment_offered_times.appointment_id = ${opts.appointment_id}
-  `.execute(trx);
+  `.execute(trx)
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 export async function declineOfferedTime(trx: TrxOrDb, opts: { id: number }) {
   const writeResult = await trx
-    .updateTable("appointment_offered_times")
+    .updateTable('appointment_offered_times')
     .set({ patient_declined: true })
-    .where("id", "=", opts.id)
-    .execute();
+    .where('id', '=', opts.id)
+    .execute()
 
-  return writeResult;
+  return writeResult
 }
 
 export async function getPatientDeclinedTimes(
   trx: TrxOrDb,
-  opts: { appointment_id: number }
+  opts: { appointment_id: number },
 ): Promise<string[]> {
   const readResult = await trx
-    .selectFrom("appointment_offered_times")
-    .where("appointment_id", "=", opts.appointment_id)
-    .where("patient_declined", "=", true)
-    .select("start")
-    .execute();
-  console.log("Read result for get declined time.");
-  console.log(readResult);
-  const declinedTimes = [];
+    .selectFrom('appointment_offered_times')
+    .where('appointment_id', '=', opts.appointment_id)
+    .where('patient_declined', '=', true)
+    .select('start')
+    .execute()
+  console.log('Read result for get declined time.')
+  console.log(readResult)
+  const declinedTimes = []
 
   for (const { start } of readResult) {
-    declinedTimes.push(start);
+    declinedTimes.push(start)
   }
 
-  return declinedTimes;
+  return declinedTimes
 }
 
 export function createNew(
   trx: TrxOrDb,
-  opts: { patient_id: number }
+  opts: { patient_id: number },
 ): Promise<ReturnedSqlRow<Appointment>[]> {
   return trx
-    .insertInto("appointments")
-    .values({ patient_id: opts.patient_id, status: "pending" })
+    .insertInto('appointments')
+    .values({ patient_id: opts.patient_id, status: 'pending' })
     .returningAll()
-    .execute();
+    .execute()
 }
 
 export async function upsert(
   trx: TrxOrDb,
-  info: Appointment
+  info: Appointment,
 ): Promise<ReturnedSqlRow<Appointment>> {
   const [appointment] = await trx
-    .insertInto("appointments")
+    .insertInto('appointments')
     .values(info)
-    .onConflict((oc) => oc.column("id").doUpdateSet(info))
+    .onConflict((oc) => oc.column('id').doUpdateSet(info))
     .returningAll()
-    .execute();
+    .execute()
 
-  return appointment;
+  return appointment
 }
 
 // TODO: just update the offered time
 export async function schedule(
   trx: TrxOrDb,
   opts: {
-    appointment_offered_time_id: number;
-    scheduled_gcal_event_id: string;
-  }
+    appointment_offered_time_id: number
+    scheduled_gcal_event_id: string
+  },
 ): Promise<FullScheduledAppointment> {
   const result = await sql<FullScheduledAppointment>`
     WITH appointment_offered_time_scheduled as (
@@ -132,20 +132,31 @@ export async function schedule(
       JOIN appointments ON appointment_offered_time_scheduled.appointment_id = appointments.id
       JOIN patients ON appointments.patient_id = patients.id
       JOIN doctors ON appointment_offered_time_scheduled.doctor_id = doctors.id
-    `.execute(trx);
+    `.execute(trx)
 
-  return result.rows[0];
+  return result.rows[0]
 }
 
 export function get(
   trx: TrxOrDb,
-  query: { doctor_id: number }
+  query: { doctor_id: number },
 ) {
   return trx
-    .selectFrom("appointment_offered_times")
-    .innerJoin("appointments", "appointment_offered_times.appointment_id", "appointments.id")
-    .innerJoin("patients", "appointments.patient_id", "patients.id")
-    .where("doctor_id", "=", query.doctor_id)
-    .select(["patients.name", "patient_id", "start", "reason", "status", "scheduled_gcal_event_id"])
-    .execute();
+    .selectFrom('appointment_offered_times')
+    .innerJoin(
+      'appointments',
+      'appointment_offered_times.appointment_id',
+      'appointments.id',
+    )
+    .innerJoin('patients', 'appointments.patient_id', 'patients.id')
+    .where('doctor_id', '=', query.doctor_id)
+    .select([
+      'patients.name',
+      'patient_id',
+      'start',
+      'reason',
+      'status',
+      'scheduled_gcal_event_id',
+    ])
+    .execute()
 }

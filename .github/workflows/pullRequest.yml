@@ -28,3 +28,6 @@ jobs:
 
       - name: Run lint
         run: deno lint
+
+      - name: Run fmt --check
+        run: deno fmt --check

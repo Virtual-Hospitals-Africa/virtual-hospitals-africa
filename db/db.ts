@@ -1,10 +1,10 @@
-import "dotenv";
+import 'dotenv'
 import {
   Kysely,
   PostgresAdapter,
   PostgresIntrospector,
   PostgresQueryCompiler,
-} from "kysely";
+} from 'kysely'
 import {
   Appointment,
   AppointmentOfferedTime,
@@ -14,46 +14,45 @@ import {
   SqlRow,
   WhatsappMessageReceived,
   WhatsappMessageSent,
-} from "../types.ts";
-import { PostgreSQLDriver } from "kysely-deno-postgres";
+} from '../types.ts'
+import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
 export type DatabaseSchema = {
-  appointments: SqlRow<Appointment>;
-  appointment_offered_times: SqlRow<AppointmentOfferedTime>;
-  doctors: SqlRow<Doctor>;
-  doctor_google_tokens: SqlRow<DoctorGoogleToken>;
-  patients: SqlRow<Patient>;
-  whatsapp_messages_received: SqlRow<WhatsappMessageReceived>;
-  whatsapp_messages_sent: SqlRow<WhatsappMessageSent>;
-};
+  appointments: SqlRow<Appointment>
+  appointment_offered_times: SqlRow<AppointmentOfferedTime>
+  doctors: SqlRow<Doctor>
+  doctor_google_tokens: SqlRow<DoctorGoogleToken>
+  patients: SqlRow<Patient>
+  whatsapp_messages_received: SqlRow<WhatsappMessageReceived>
+  whatsapp_messages_sent: SqlRow<WhatsappMessageSent>
+}
 
 // deno-lint-ignore no-explicit-any
-const uri = Deno.env.get("DATABASE_URL") + "?sslmode=require" as any;
+const uri = Deno.env.get('DATABASE_URL') + '?sslmode=require' as any
 
 const db = new Kysely<DatabaseSchema>({
   dialect: {
     createAdapter() {
-      return new PostgresAdapter();
+      return new PostgresAdapter()
     },
     createDriver() {
       return new PostgreSQLDriver(
         uri || {
-          hostname: Deno.env.get("DB_HOST")!,
-          password: Deno.env.get("DB_PASS")!,
-          user: Deno.env.get("DB_USER")!,
-          database: Deno.env.get("DB_NAME")!,
+          hostname: Deno.env.get('DB_HOST')!,
+          password: Deno.env.get('DB_PASS')!,
+          user: Deno.env.get('DB_USER')!,
+          database: Deno.env.get('DB_NAME')!,
         },
         // deno-lint-ignore no-explicit-any
-      ) as any;
+      ) as any
     },
     createIntrospector(db: Kysely<unknown>) {
-      return new PostgresIntrospector(db);
+      return new PostgresIntrospector(db)
     },
     createQueryCompiler() {
-      return new PostgresQueryCompiler();
+      return new PostgresQueryCompiler()
     },
-    
   },
-});
+})
 
-export default db;
+export default db

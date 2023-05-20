@@ -1,20 +1,20 @@
-import { InsertResult, sql, UpdateResult } from "kysely";
+import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   ConversationState,
   ReturnedSqlRow,
-  UnhandledPatientMessage,
   TrxOrDb,
-} from "../../types.ts";
+  UnhandledPatientMessage,
+} from '../../types.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
   opts: { whatsapp_id: string; read_status: string },
 ): Promise<UpdateResult[]> {
   return trx
-    .updateTable("whatsapp_messages_sent")
+    .updateTable('whatsapp_messages_sent')
     .set({ read_status: opts.read_status })
-    .where("whatsapp_id", "=", opts.whatsapp_id)
-    .execute();
+    .where('whatsapp_id', '=', opts.whatsapp_id)
+    .execute()
 }
 
 export async function insertMessageReceived(
@@ -22,58 +22,58 @@ export async function insertMessageReceived(
   opts: { patient_phone_number: string; whatsapp_id: string; body: string },
 ): Promise<
   ReturnedSqlRow<{
-    patient_id: number;
-    whatsapp_id: string;
-    body: string;
-    started_responding_at: Date | null | undefined;
-    conversation_state: ConversationState | "initial_message";
+    patient_id: number
+    whatsapp_id: string
+    body: string
+    started_responding_at: Date | null | undefined
+    conversation_state: ConversationState | 'initial_message'
   }>
 > {
-
   let [patient] = await trx
-    .insertInto("patients")
+    .insertInto('patients')
     .values({ phone_number: opts.patient_phone_number })
-    .onConflict((oc) => oc.column("phone_number").doNothing())
+    .onConflict((oc) => oc.column('phone_number').doNothing())
     .returningAll()
-    .execute();
+    .execute()
 
   // TODO: Eliminate this in favor of getting the above to return the existing patient
   if (!patient) {
-    [patient] = await trx.selectFrom("patients").where(
-      "phone_number",
-      "=",
+    const patients = await trx.selectFrom('patients').where(
+      'phone_number',
+      '=',
       opts.patient_phone_number,
-    ).selectAll().execute();
+    ).selectAll().execute()
+    patient = patients[0]
   }
-  console.log("patient", patient);
+  console.log('patient', patient)
   const [inserted] = await trx
-    .insertInto("whatsapp_messages_received")
+    .insertInto('whatsapp_messages_received')
     .values({
       patient_id: patient.id,
       whatsapp_id: opts.whatsapp_id,
       body: opts.body,
-      conversation_state: patient.conversation_state || "initial_message",
+      conversation_state: patient.conversation_state || 'initial_message',
     })
-    .onConflict((oc) => oc.column("whatsapp_id").doNothing())
+    .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()
-    .execute();
+    .execute()
 
-  return inserted;
+  return inserted
 }
 
 export function insertMessageSent(
   trx: TrxOrDb,
   opts: {
-    patient_id: number;
-    responding_to_id: number;
-    whatsapp_id: string;
-    body: string;
+    patient_id: number
+    responding_to_id: number
+    whatsapp_id: string
+    body: string
   },
 ): Promise<InsertResult[]> {
-  return trx.insertInto("whatsapp_messages_sent").values({
+  return trx.insertInto('whatsapp_messages_sent').values({
     ...opts,
-    read_status: "sent",
-  }).execute();
+    read_status: 'sent',
+  }).execute()
 }
 
 export async function getUnhandledPatientMessages(
@@ -123,28 +123,30 @@ export async function getUnhandledPatientMessages(
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
-  `.execute(trx);
+  `.execute(trx)
 
-  return result.rows.map(row => ({
+  return result.rows.map((row) => ({
     ...row,
-    appointment_offered_times: row.appointment_offered_times ? row.appointment_offered_times.filter(aot => aot) : [],
-  }));
+    appointment_offered_times: row.appointment_offered_times
+      ? row.appointment_offered_times.filter((aot) => aot)
+      : [],
+  }))
 }
 
 export function markChatbotError(
   trx: TrxOrDb,
   opts: {
-    whatsapp_message_received_id: number;
-    commitHash: string;
-    errorMessage: string;
+    whatsapp_message_received_id: number
+    commitHash: string
+    errorMessage: string
   },
 ) {
   return trx
-    .updateTable("whatsapp_messages_received")
+    .updateTable('whatsapp_messages_received')
     .set({
       error_commit_hash: opts.commitHash,
       error_message: opts.errorMessage,
     })
-    .where("id", "=", opts.whatsapp_message_received_id)
-    .execute();
+    .where('id', '=', opts.whatsapp_message_received_id)
+    .execute()
 }

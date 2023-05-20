@@ -1,4 +1,4 @@
-import { Kysely, sql } from "kysely";
+import { Kysely, sql } from 'kysely'
 
 export function addUpdatedAtTrigger(db: Kysely<unknown>, table: string) {
   return sql`
