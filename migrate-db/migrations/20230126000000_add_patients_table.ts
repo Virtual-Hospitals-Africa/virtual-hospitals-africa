@@ -26,5 +26,5 @@ export function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable("patients");
+  await db.schema.dropTable("patients").execute();
 }

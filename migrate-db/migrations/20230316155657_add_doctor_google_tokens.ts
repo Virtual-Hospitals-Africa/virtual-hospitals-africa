@@ -28,5 +28,5 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable("doctor_google_tokens");
+  await db.schema.dropTable("doctor_google_tokens").execute();
 }
