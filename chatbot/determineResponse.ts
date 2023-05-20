@@ -1,5 +1,5 @@
-import * as patients from "../models/patients.ts";
-import * as appointments from "../models/appointments.ts";
+import * as patients from "../db/models/patients.ts";
+import * as appointments from "../db/models/appointments.ts";
 import determineNextPatientState, {
   formatMessageToSend,
 } from "./determineNextPatientState.ts";

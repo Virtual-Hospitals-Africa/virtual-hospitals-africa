@@ -1,5 +1,5 @@
-import { assert } from "std/testing/asserts.ts";
-import { PatientDemographicInfo } from "../types.ts";
+import { assert, assertEquals } from "std/testing/asserts.ts";
+import { PatientDemographicInfo, Time } from "../types.ts";
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -162,4 +162,21 @@ export function numberOfDaysInMonth(month: number, year: number): number {
     case 12: return  31;
     default: throw new Error("Invalid month");
   }
+}
+
+export function convertToTime(date: string): Time {
+  const [, timeAndZone] = date.split("T");
+  const [time] = timeAndZone.split("+");
+  const [hourStr, minuteStr, second] = time.split(":");
+  assertEquals(second, "00");
+  const hour = parseInt(hourStr);
+  const minute = parseInt(minuteStr);
+  assertEquals(minute % 5, 0);
+  const amPm = hour >= 12 ? "pm" : "am";
+  const hourMod = hour % 12;
+  return {
+    hour: hourMod === 0 ? 12 : hourMod as Time["hour"],
+    minute: minute as Time["minute"],
+    amPm,
+  };
 }

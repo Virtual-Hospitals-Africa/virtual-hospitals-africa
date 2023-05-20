@@ -1,5 +1,5 @@
 import { Handlers } from "$fresh/server.ts";
-import * as conversations from "../../models/conversations.ts";
+import * as conversations from "../../db/models/conversations.ts";
 import { WhatsAppIncomingMessage } from "../../types.ts";
 
 const verifyToken = Deno.env.get("WHATSAPP_WEBHOOK_VERIFY_TOKEN");

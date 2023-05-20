@@ -1,7 +1,7 @@
 import { Handlers } from "$fresh/server.ts";
 import { WithSession } from "fresh_session";
 import { oauthParams } from "../external-clients/google.ts";
-import { isDoctorWithGoogleTokens } from "../models/doctors.ts";
+import { isDoctorWithGoogleTokens } from "../db/models/doctors.ts";
 import redirect from "../util/redirect.ts";
 
 export const handler: Handlers<Record<string, never>, WithSession> = {

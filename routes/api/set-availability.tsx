@@ -1,12 +1,11 @@
-import { Handlers } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
 import set from "../../util/set.ts";
-import { WithSession } from "fresh_session";
 import {
   AvailabilityJSON,
   DayOfWeek,
   DeepPartial,
   GCalEvent,
+  LoggedInDoctorHandler,
   Time,
 } from "../../types.ts";
 import padLeft from "../../util/padLeft.ts";
@@ -91,7 +90,7 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: Handlers<unknown, WithSession> = {
+export const handler: LoggedInDoctorHandler = {
   async POST(req, ctx) {
     const params = new URLSearchParams(await req.text());
     const availability = parseForm(params);
@@ -102,7 +101,7 @@ export const handler: Handlers<unknown, WithSession> = {
 
     assert(gcal_availability_calendar_id, "No calendar ID found in session");
 
-    const googleClient = DoctorGoogleClient.fromCtx(ctx);
+    const googleClient = new DoctorGoogleClient(ctx);
 
     const existingAvailability = await googleClient.getEvents(
       gcal_availability_calendar_id,

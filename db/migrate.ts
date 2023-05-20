@@ -1,5 +1,5 @@
 import { Migrator, Migration, sql } from "kysely";
-import db from "../external-clients/db.ts";
+import db from "./db.ts";
 
 if (!Deno.args.length) {
   console.error("Please provide a migration name as in\ndeno task migrate:create name");
@@ -7,7 +7,7 @@ if (!Deno.args.length) {
 }
 
 const migrations: Record<string, Migration> = {};
-for (const migrationFile of Deno.readDirSync("./migrate-db/migrations")) {
+for (const migrationFile of Deno.readDirSync("./db/migrations")) {
   const migrationName = migrationFile.name
   const migration = await import(`./migrations/${migrationName}`);
   migrations[migrationName] = migration;

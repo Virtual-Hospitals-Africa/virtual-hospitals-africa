@@ -4,12 +4,14 @@ import DailyAppointments from "../../components/calendar/DailyAppointments.tsx";
 import DatePicker from "../../islands/date-picker.tsx";
 import MonthPicker from "../../islands/month-picker.tsx";
 import YearPicker from "../../islands/year-picker.tsx";
-import { Handlers, PageProps } from "$fresh/server.ts";
+import { PageProps } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
-import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
-import { WithSession } from "fresh_session";
-import db from "../../external-clients/db.ts";
-import * as appointments from "../../models/appointments.ts";
+import {
+  DoctorAppointment,
+  LoggedInDoctorHandler,
+  TrxOrDb,
+} from "../../types.ts";
+import * as appointments from "../../db/models/appointments.ts";
 import {
   numberOfDaysInMonth,
   parseDate,
@@ -29,12 +31,11 @@ function CalendarLink(
   );
 }
 
-export const handler: Handlers<
-  { dailyAppointments: DoctorAppointment[]; startday: string },
-  WithSession
+export const handler: LoggedInDoctorHandler<
+  { dailyAppointments: DoctorAppointment[]; startday: string }
 > = {
   async GET(req, ctx) {
-    const googleClient = DoctorGoogleClient.fromCtx(ctx);
+    const googleClient = new DoctorGoogleClient(ctx);
 
     // if there's no startday in the query, use today in Harare
     const startday = new URL(req.url).searchParams.get("startday") ||
@@ -49,9 +50,9 @@ export const handler: Handlers<
       },
     );
 
-    const doctor_id = ctx.state.session.data.id;
-
-    const appointmentsOfDoctor = await appointments.get(db, { doctor_id });
+    const appointmentsOfDoctor = await appointments.get(ctx.state.trx, {
+      doctor_id: ctx.state.session.data.id,
+    });
     const events = await gettingEvents;
 
     const gcalEventIds = new Set(events.items.map((item) => item.id));
@@ -95,6 +96,8 @@ export default function Calendar(
     { dailyAppointments: DoctorAppointment[]; startday: string }
   >,
 ) {
+  console.log("dailyAppointments", props.data.dailyAppointments);
+
   // initially set up date with current date
   const [startYear, startMonth, startDay] = props.data.startday.split("-").map((
     n,

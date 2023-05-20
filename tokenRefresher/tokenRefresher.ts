@@ -1,8 +1,8 @@
 // TODO: Instead of using a timer, refresh the token on demand.
 // Perhaps we do this as well so that users don't have to wait for the token to be refreshed.a
-import db from "../external-clients/db.ts";
+import db from "../db/db.ts";
 import { refreshTokens } from "../external-clients/google.ts";
-import { allWithGoogleTokensAboutToExpire } from "../models/doctors.ts";
+import { allWithGoogleTokensAboutToExpire } from "../db/models/doctors.ts";
 
 export type TokenRefresher = { start(): void; exit(): void };
 
@@ -11,7 +11,7 @@ export function createTokenRefresher(): TokenRefresher {
 
   async function doRefreshTokens(): Promise<void> {
     const doctors = await allWithGoogleTokensAboutToExpire(db);
-    await Promise.all(doctors.map(refreshTokens));
+    await Promise.all(doctors.map(doctor => refreshTokens(db, doctor)));
     timer = setTimeout(doRefreshTokens, 3 * 60 * 1000);
   }
 

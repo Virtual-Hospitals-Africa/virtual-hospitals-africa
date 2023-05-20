@@ -13,14 +13,15 @@ import {
   GCalFreeBusy,
   GoogleProfile,
   GoogleTokens,
+  LoggedInDoctor,
+  TrxOrDb,
 } from "../types.ts";
-import { WithSession } from "fresh_session";
 import { HandlerContext } from "$fresh/src/server/mod.ts";
 import {
   isDoctorWithGoogleTokens,
   removeExpiredAccessToken,
   updateAccessToken,
-} from "../models/doctors.ts";
+} from "../db/models/doctors.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
@@ -47,10 +48,6 @@ export class GoogleClient {
     if (!isGoogleTokens(tokens)) {
       throw new Error("Invalid tokens object");
     }
-  }
-
-  static fromCtx(ctx: HandlerContext<unknown, WithSession>): GoogleClient {
-    return new GoogleClient(ctx.state.session.data);
   }
 
   async doMakeRequest<T>(
@@ -252,18 +249,16 @@ export class GoogleClient {
 }
 
 export class DoctorGoogleClient extends GoogleClient {
+  public doctor: DoctorWithGoogleTokens;
+
   constructor(
-    public doctor: DoctorWithGoogleTokens,
-    public session?: WithSession["session"]
+    public ctx: HandlerContext<any, LoggedInDoctor>,
   ) {
-    super(doctor);
-    if (!isDoctorWithGoogleTokens(doctor)) {
+    super(ctx.state.session.data);
+    this.doctor = ctx.state.session.data;
+    if (!isDoctorWithGoogleTokens(this.doctor)) {
       throw new Error("Ya gotta be a doctah");
     }
-  }
-
-  static fromCtx(ctx: HandlerContext<any, WithSession>): GoogleClient {
-    return new DoctorGoogleClient(ctx.state.session.data, ctx.state.session);
   }
 
   async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
@@ -272,13 +267,11 @@ export class DoctorGoogleClient extends GoogleClient {
     } catch (err) {
       if (err.message === "Unauthorized") {
         assert(this.doctor.refresh_token, "No refresh token");
-        const refreshed = await refreshTokens(this.doctor);
+        const refreshed = await refreshTokens(this.ctx.state.trx, this.doctor);
         if (refreshed.result !== "success") {
           throw new Error("Failed to refresh tokens");
         }
-        if (this.session) {
-          this.session.set("access_token", refreshed.access_token);
-        }
+        this.ctx.state.session.set("access_token", refreshed.access_token);
         this.doctor = { ...this.doctor, access_token: refreshed.access_token };
         return await super.makeRequest(path, opts);
       }
@@ -328,6 +321,10 @@ export async function getInitialTokensFromAuthCode(
   assert(tokens);
   assertEquals(typeof tokens.access_token, "string");
   assertEquals(typeof tokens.refresh_token, "string");
+  assertEquals(typeof tokens.expires_in, "number");
+
+  tokens.expires_at = new Date()
+  tokens.expires_at.setSeconds(tokens.expires_at.getSeconds() + tokens.expires_in);
 
   return tokens;
 }
@@ -355,17 +352,18 @@ export async function getNewAccessTokenFromRefreshToken(
 }
 
 export async function refreshTokens(
+  trx: TrxOrDb,
   doctor: DoctorWithGoogleTokens
 ): Promise<{ result: "success"; access_token: string } | { result: "expiry" }> {
   try {
     const access_token = await getNewAccessTokenFromRefreshToken(
       doctor.refresh_token
     );
-    await updateAccessToken(doctor.id, access_token);
+    await updateAccessToken(trx, doctor.id, access_token);
     return { result: "success", access_token };
   } catch (err) {
     console.error(err);
-    removeExpiredAccessToken({ doctor_id: doctor.id });
+    removeExpiredAccessToken(trx, { doctor_id: doctor.id });
     return { result: "expiry" };
   }
 }

@@ -6,7 +6,7 @@ import {
 import { availableThirtyMinutes } from "./getDoctorAvailability.ts";
 import { makeAppointment } from "./makeAppointment.ts";
 import { cancelAppointment } from "./cancelAppointment.ts";
-import * as appointments from "../models/appointments.ts";
+import * as appointments from "../db/models/appointments.ts";
 import {
   AppointmentOfferedTime,
   ConversationState,

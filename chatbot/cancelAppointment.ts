@@ -1,7 +1,7 @@
 import { TrxOrDb, UnhandledPatientMessage } from "../types.ts";
 import { assert } from "std/testing/asserts.ts";
 import * as google from "../external-clients/google.ts";
-import { getWithTokensById } from "../models/doctors.ts";
+import { getWithTokensById } from "../db/models/doctors.ts";
 import { appointmentDetails } from "./makeAppointment.ts";
 
 
