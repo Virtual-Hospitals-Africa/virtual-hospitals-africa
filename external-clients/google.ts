@@ -1,7 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
-import "dotenv";
-import { assert, assertEquals } from "std/testing/asserts.ts";
-import moment from "https://deno.land/x/momentjs@2.29.1-deno/mod.ts";
+import 'dotenv'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
+import moment from 'https://deno.land/x/momentjs@2.29.1-deno/mod.ts'
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {
   DeepPartial,
@@ -15,38 +15,38 @@ import {
   GoogleTokens,
   LoggedInDoctor,
   TrxOrDb,
-} from "../types.ts";
-import { HandlerContext } from "$fresh/src/server/mod.ts";
+} from '../types.ts'
+import { HandlerContext } from '$fresh/src/server/mod.ts'
 import {
   isDoctorWithGoogleTokens,
   removeExpiredAccessToken,
   updateAccessToken,
-} from "../db/models/doctors.ts";
+} from '../db/models/doctors.ts'
 
-const googleApisUrl = "https://www.googleapis.com";
+const googleApisUrl = 'https://www.googleapis.com'
 
 type RequestOpts = {
-  method?: "get" | "post" | "put" | "delete";
-  data?: unknown;
-};
+  method?: 'get' | 'post' | 'put' | 'delete'
+  data?: unknown
+}
 
 export function isGoogleTokens(
   maybeTokens: unknown,
 ): maybeTokens is GoogleTokens {
   return (
     !!maybeTokens &&
-    typeof maybeTokens === "object" &&
-    "access_token" in maybeTokens &&
-    typeof maybeTokens.access_token === "string" &&
-    "refresh_token" in maybeTokens &&
-    typeof maybeTokens.refresh_token === "string"
-  );
+    typeof maybeTokens === 'object' &&
+    'access_token' in maybeTokens &&
+    typeof maybeTokens.access_token === 'string' &&
+    'refresh_token' in maybeTokens &&
+    typeof maybeTokens.refresh_token === 'string'
+  )
 }
 
 export class GoogleClient {
   constructor(public tokens: GoogleTokens) {
     if (!isGoogleTokens(tokens)) {
-      throw new Error("Invalid tokens object");
+      throw new Error('Invalid tokens object')
     }
   }
 
@@ -54,96 +54,96 @@ export class GoogleClient {
     path: string,
     opts?: RequestOpts,
   ): Promise<
-    | { result: "unauthorized_error" }
-    | { result: "other_error"; error: Error }
-    | { result: "success"; data: any }
+    | { result: 'unauthorized_error' }
+    | { result: 'other_error'; error: Error }
+    | { result: 'success'; data: any }
   > {
-    const url = `${googleApisUrl}${path}`;
-    const method = opts?.method || "get";
-    console.log(`${method} ${url}`);
+    const url = `${googleApisUrl}${path}`
+    const method = opts?.method || 'get'
+    console.log(`${method} ${url}`)
     const response = await fetch(url, {
       method,
       headers: {
         Authorization: `Bearer ${this.tokens.access_token}`,
       },
       body: opts?.data ? JSON.stringify(opts.data) : undefined,
-    });
-    if (method !== "delete") {
-      let data;
+    })
+    if (method !== 'delete') {
+      let data
       try {
-        data = await response.json();
+        data = await response.json()
       } catch (error) {
-        console.error(`${method} ${url}`, error);
-        return { result: "other_error", error };
+        console.error(`${method} ${url}`, error)
+        return { result: 'other_error', error }
       }
-      console.log(`${method} ${url}`, JSON.stringify(data));
+      console.log(`${method} ${url}`, JSON.stringify(data))
       if (data.error) {
         if (data.error.code === 401) {
-          return { result: "unauthorized_error" };
+          return { result: 'unauthorized_error' }
         }
-        const errorMessage = data.error?.errors?.[0]?.message || data.error;
-        throw new Error(errorMessage);
+        const errorMessage = data.error?.errors?.[0]?.message || data.error
+        throw new Error(errorMessage)
       }
-      return { result: "success", data };
+      return { result: 'success', data }
     } else {
       try {
-        const text = await response.text();
-        console.log(`${method} ${url}`, text);
-        return { result: "success", data: text };
+        const text = await response.text()
+        console.log(`${method} ${url}`, text)
+        return { result: 'success', data: text }
       } catch (error) {
-        console.error(`${method} ${url}`, error);
-        return { result: "other_error", error };
+        console.error(`${method} ${url}`, error)
+        return { result: 'other_error', error }
       }
     }
   }
 
   async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
-    const response = await this.doMakeRequest(path, opts);
-    if (response.result === "unauthorized_error") {
-      throw new Error("Unauthorized");
+    const response = await this.doMakeRequest(path, opts)
+    if (response.result === 'unauthorized_error') {
+      throw new Error('Unauthorized')
     }
-    if (response.result === "other_error") {
-      throw response.error;
+    if (response.result === 'other_error') {
+      throw response.error
     }
-    return response.data;
+    return response.data
   }
 
   private makeCalendarRequest(path: string, opts?: RequestOpts): Promise<any> {
-    return this.makeRequest(`/calendar/v3${path}`, opts);
+    return this.makeRequest(`/calendar/v3${path}`, opts)
   }
 
   getCalendarList(): Promise<GCalCalendarList> {
-    return this.makeCalendarRequest("/users/me/calendarList");
+    return this.makeCalendarRequest('/users/me/calendarList')
   }
 
   insertCalendar(
     calendarDetails: DeepPartial<GCalCalendarListEntry>,
   ): Promise<GCalCalendarListEntry> {
-    return this.makeCalendarRequest("/calendars", {
-      method: "post",
+    return this.makeCalendarRequest('/calendars', {
+      method: 'post',
       data: calendarDetails,
-    });
+    })
   }
 
   insertCalendarIntoList(calendarId: string): Promise<GCalCalendarListEntry> {
-    return this.makeCalendarRequest("/users/me/calendarList", {
-      method: "post",
+    return this.makeCalendarRequest('/users/me/calendarList', {
+      method: 'post',
       data: { id: calendarId },
-    });
+    })
   }
 
   getEvents(
-    calendarId = "primary",
+    calendarId = 'primary',
     opts: {
-      timeMin?: string;
-      timeMax?: string;
+      timeMin?: string
+      timeMax?: string
     } = {},
   ): Promise<GCalEventsResponse> {
-    const params = new URLSearchParams(opts);
-    params.set("timeZone", "Africa/Johannesburg");
+    const params = new URLSearchParams(opts)
+    params.set('timeZone', 'Africa/Johannesburg')
     return this.makeCalendarRequest(
       `/calendars/${calendarId}/events?${params}`,
-    );
+    )
   }
 
   insertEvent(
@@ -151,61 +151,61 @@ export class GoogleClient {
     eventDetails: DeepPartial<GCalEvent>,
   ): Promise<GCalEvent> {
     return this.makeCalendarRequest(`/calendars/${calendarId}/events`, {
-      method: "post",
+      method: 'post',
       data: eventDetails,
-    });
+    })
   }
 
   deleteEvent(calendarId: string, eventId: string) {
     return this.makeCalendarRequest(
       `/calendars/${calendarId}/events/${eventId}`,
       {
-        method: "delete",
+        method: 'delete',
       },
-    );
+    )
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(): Promise<{
-    vhaAppointmentsCalendar: GCalCalendarListEntry;
-    vhaAvailabilityCalendar: GCalCalendarListEntry;
+    vhaAppointmentsCalendar: GCalCalendarListEntry
+    vhaAvailabilityCalendar: GCalCalendarListEntry
   }> {
-    const list = await this.getCalendarList();
+    const list = await this.getCalendarList()
 
     let vhaAppointmentsCalendar = list.items.find(
-      (calendar) => calendar.summary === "VHA Appointments",
-    );
+      (calendar) => calendar.summary === 'VHA Appointments',
+    )
 
     if (!vhaAppointmentsCalendar) {
       vhaAppointmentsCalendar = await this.insertCalendar({
-        summary: "VHA Appointments",
-        description: "Appointments for VHA",
-        timeZone: "Africa/Johannesburg",
-      });
+        summary: 'VHA Appointments',
+        description: 'Appointments for VHA',
+        timeZone: 'Africa/Johannesburg',
+      })
 
       vhaAppointmentsCalendar = await this.insertCalendarIntoList(
         vhaAppointmentsCalendar.id,
-      );
-      console.log("Created Cppointments Calendar");
+      )
+      console.log('Created Cppointments Calendar')
     }
 
     let vhaAvailabilityCalendar = list.items.find(
-      (calendar) => calendar.summary === "VHA Availability",
-    );
+      (calendar) => calendar.summary === 'VHA Availability',
+    )
 
     if (!vhaAvailabilityCalendar) {
       vhaAvailabilityCalendar = await this.insertCalendar({
-        summary: "VHA Availability",
-        description: "Availability for VHA",
-        timeZone: "Africa/Johannesburg",
-      });
+        summary: 'VHA Availability',
+        description: 'Availability for VHA',
+        timeZone: 'Africa/Johannesburg',
+      })
 
       vhaAvailabilityCalendar = await this.insertCalendarIntoList(
         vhaAvailabilityCalendar.id,
-      );
-      console.log("Created Availability Calendar");
+      )
+      console.log('Created Availability Calendar')
     }
 
-    return { vhaAppointmentsCalendar, vhaAvailabilityCalendar };
+    return { vhaAppointmentsCalendar, vhaAvailabilityCalendar }
   }
 
   async getFreeBusy({
@@ -213,88 +213,88 @@ export class GoogleClient {
     timeMax,
     calendarIds,
   }: {
-    timeMin: Date;
-    timeMax: Date;
-    calendarIds: string[];
+    timeMin: Date
+    timeMax: Date
+    calendarIds: string[]
   }): Promise<GCalFreeBusy> {
-    const freeBusy: GCalFreeBusy = await this.makeCalendarRequest("/freeBusy", {
-      method: "post",
+    const freeBusy: GCalFreeBusy = await this.makeCalendarRequest('/freeBusy', {
+      method: 'post',
       data: {
         timeMin: moment(timeMin).format(),
         timeMax: moment(timeMax).format(),
-        timeZone: "Africa/Johannesburg",
+        timeZone: 'Africa/Johannesburg',
         items: calendarIds.map((id) => ({ id })),
       },
-    });
+    })
 
     for (const calendar of Object.values(freeBusy.calendars)) {
       for (const busy of calendar.busy) {
         assert(
-          busy.start.endsWith("+02:00"),
-          "Expected all dates to be on Zimbabwe time",
-        );
+          busy.start.endsWith('+02:00'),
+          'Expected all dates to be on Zimbabwe time',
+        )
         assert(
-          busy.start.endsWith("+02:00"),
-          "Expected all dates to be on Zimbabwe time",
-        );
+          busy.start.endsWith('+02:00'),
+          'Expected all dates to be on Zimbabwe time',
+        )
       }
     }
 
-    return freeBusy;
+    return freeBusy
   }
 
   getProfile(): Promise<GoogleProfile> {
-    return this.makeRequest("/oauth2/v3/userinfo");
+    return this.makeRequest('/oauth2/v3/userinfo')
   }
 }
 
 export class DoctorGoogleClient extends GoogleClient {
-  public doctor: DoctorWithGoogleTokens;
+  public doctor: DoctorWithGoogleTokens
 
   constructor(
     public ctx: HandlerContext<any, LoggedInDoctor>,
   ) {
-    super(ctx.state.session.data);
-    this.doctor = ctx.state.session.data;
+    super(ctx.state.session.data)
+    this.doctor = ctx.state.session.data
     if (!isDoctorWithGoogleTokens(this.doctor)) {
-      throw new Error("Ya gotta be a doctah");
+      throw new Error('Ya gotta be a doctah')
     }
   }
 
   async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
     try {
-      return await super.makeRequest(path, opts);
+      return await super.makeRequest(path, opts)
     } catch (err) {
-      if (err.message === "Unauthorized") {
-        assert(this.doctor.refresh_token, "No refresh token");
-        const refreshed = await refreshTokens(this.ctx.state.trx, this.doctor);
-        if (refreshed.result !== "success") {
-          throw new Error("Failed to refresh tokens");
+      if (err.message === 'Unauthorized') {
+        assert(this.doctor.refresh_token, 'No refresh token')
+        const refreshed = await refreshTokens(this.ctx.state.trx, this.doctor)
+        if (refreshed.result !== 'success') {
+          throw new Error('Failed to refresh tokens')
         }
-        this.ctx.state.session.set("access_token", refreshed.access_token);
-        this.doctor = { ...this.doctor, access_token: refreshed.access_token };
-        return await super.makeRequest(path, opts);
+        this.ctx.state.session.set('access_token', refreshed.access_token)
+        this.doctor = { ...this.doctor, access_token: refreshed.access_token }
+        return await super.makeRequest(path, opts)
       }
     }
   }
 }
 
-const selfUrl = Deno.env.get("SELF_URL") ||
-  "https://virtual-hospitals-africa.herokuapp.com";
-const redirect_uri = `${selfUrl}/logged-in`;
+const selfUrl = Deno.env.get('SELF_URL') ||
+  'https://virtual-hospitals-africa.herokuapp.com'
+const redirect_uri = `${selfUrl}/logged-in`
 
 export const oauthParams = new URLSearchParams({
   redirect_uri,
-  prompt: "consent",
-  response_type: "code",
-  client_id: Deno.env.get("GOOGLE_CLIENT_ID")!,
+  prompt: 'consent',
+  response_type: 'code',
+  client_id: Deno.env.get('GOOGLE_CLIENT_ID')!,
   scope:
-    "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile",
-  access_type: "offline",
-  service: "lso",
-  o2v: "2",
-  flowName: "GeneralOAuthFlow",
-});
+    'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
+  access_type: 'offline',
+  service: 'lso',
+  o2v: '2',
+  flowName: 'GeneralOAuthFlow',
+})
 
 export async function getInitialTokensFromAuthCode(
   google_auth_code: string,
@@ -302,70 +302,70 @@ export async function getInitialTokensFromAuthCode(
   const formData = new URLSearchParams({
     redirect_uri,
     code: google_auth_code,
-    client_id: Deno.env.get("GOOGLE_CLIENT_ID")!,
-    client_secret: Deno.env.get("GOOGLE_CLIENT_SECRET")!,
-    scope: "",
-    grant_type: "authorization_code",
-  });
+    client_id: Deno.env.get('GOOGLE_CLIENT_ID')!,
+    client_secret: Deno.env.get('GOOGLE_CLIENT_SECRET')!,
+    scope: '',
+    grant_type: 'authorization_code',
+  })
 
-  const result = await fetch("https://oauth2.googleapis.com/token", {
-    method: "post",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+  const result = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: formData.toString(),
-  });
+  })
 
-  const tokens = await result.json();
+  const tokens = await result.json()
 
-  console.log("tokens", JSON.stringify(tokens));
+  console.log('tokens', JSON.stringify(tokens))
 
-  assert(tokens);
-  assertEquals(typeof tokens.access_token, "string");
-  assertEquals(typeof tokens.refresh_token, "string");
-  assertEquals(typeof tokens.expires_in, "number");
+  assert(tokens)
+  assertEquals(typeof tokens.access_token, 'string')
+  assertEquals(typeof tokens.refresh_token, 'string')
+  assertEquals(typeof tokens.expires_in, 'number')
 
-  tokens.expires_at = new Date();
+  tokens.expires_at = new Date()
   tokens.expires_at.setSeconds(
     tokens.expires_at.getSeconds() + tokens.expires_in,
-  );
+  )
 
-  return tokens;
+  return tokens
 }
 
 export async function getNewAccessTokenFromRefreshToken(
   refresh_token: string,
 ): Promise<string> {
-  const result = await fetch("https://oauth2.googleapis.com/token", {
-    method: "post",
-    headers: { "Content-Type": "application/json" },
+  const result = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       refresh_token,
-      client_id: Deno.env.get("GOOGLE_CLIENT_ID"),
-      client_secret: Deno.env.get("GOOGLE_CLIENT_SECRET"),
-      grant_type: "refresh_token",
+      client_id: Deno.env.get('GOOGLE_CLIENT_ID'),
+      client_secret: Deno.env.get('GOOGLE_CLIENT_SECRET'),
+      grant_type: 'refresh_token',
     }),
-  });
+  })
 
-  const json = await result.json();
+  const json = await result.json()
 
-  assert(json);
-  assertEquals(typeof json.access_token, "string");
+  assert(json)
+  assertEquals(typeof json.access_token, 'string')
 
-  return json.access_token;
+  return json.access_token
 }
 
 export async function refreshTokens(
   trx: TrxOrDb,
   doctor: DoctorWithGoogleTokens,
-): Promise<{ result: "success"; access_token: string } | { result: "expiry" }> {
+): Promise<{ result: 'success'; access_token: string } | { result: 'expiry' }> {
   try {
     const access_token = await getNewAccessTokenFromRefreshToken(
       doctor.refresh_token,
-    );
-    await updateAccessToken(trx, doctor.id, access_token);
-    return { result: "success", access_token };
+    )
+    await updateAccessToken(trx, doctor.id, access_token)
+    return { result: 'success', access_token }
   } catch (err) {
-    console.error(err);
-    removeExpiredAccessToken(trx, { doctor_id: doctor.id });
-    return { result: "expiry" };
+    console.error(err)
+    removeExpiredAccessToken(trx, { doctor_id: doctor.id })
+    return { result: 'expiry' }
   }
 }

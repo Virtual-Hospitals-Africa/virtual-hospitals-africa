@@ -2,47 +2,47 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import config from "./deno.json" assert { type: "json" };
-import * as $0 from "./routes/_404.tsx";
-import * as $1 from "./routes/_middleware.ts";
-import * as $2 from "./routes/api/incoming-whatsapp.ts";
-import * as $3 from "./routes/api/set-availability.tsx";
-import * as $4 from "./routes/app/_middleware.tsx";
-import * as $5 from "./routes/app/calendar.tsx";
-import * as $6 from "./routes/app/calendar/set-availability.tsx";
-import * as $7 from "./routes/full-reset.ts";
-import * as $8 from "./routes/index.tsx";
-import * as $9 from "./routes/logged-in.tsx";
-import * as $10 from "./routes/logout.tsx";
-import * as $11 from "./routes/patient-reset.ts";
-import * as $$0 from "./islands/date-picker.tsx";
-import * as $$1 from "./islands/month-picker.tsx";
-import * as $$2 from "./islands/set-availability-form.tsx";
-import * as $$3 from "./islands/year-picker.tsx";
+import config from './deno.json' assert { type: 'json' }
+import * as $0 from './routes/_404.tsx'
+import * as $1 from './routes/_middleware.ts'
+import * as $2 from './routes/api/incoming-whatsapp.ts'
+import * as $3 from './routes/api/set-availability.tsx'
+import * as $4 from './routes/app/_middleware.tsx'
+import * as $5 from './routes/app/calendar.tsx'
+import * as $6 from './routes/app/calendar/set-availability.tsx'
+import * as $7 from './routes/full-reset.ts'
+import * as $8 from './routes/index.tsx'
+import * as $9 from './routes/logged-in.tsx'
+import * as $10 from './routes/logout.tsx'
+import * as $11 from './routes/patient-reset.ts'
+import * as $$0 from './islands/date-picker.tsx'
+import * as $$1 from './islands/month-picker.tsx'
+import * as $$2 from './islands/set-availability-form.tsx'
+import * as $$3 from './islands/year-picker.tsx'
 
 const manifest = {
   routes: {
-    "./routes/_404.tsx": $0,
-    "./routes/_middleware.ts": $1,
-    "./routes/api/incoming-whatsapp.ts": $2,
-    "./routes/api/set-availability.tsx": $3,
-    "./routes/app/_middleware.tsx": $4,
-    "./routes/app/calendar.tsx": $5,
-    "./routes/app/calendar/set-availability.tsx": $6,
-    "./routes/full-reset.ts": $7,
-    "./routes/index.tsx": $8,
-    "./routes/logged-in.tsx": $9,
-    "./routes/logout.tsx": $10,
-    "./routes/patient-reset.ts": $11,
+    './routes/_404.tsx': $0,
+    './routes/_middleware.ts': $1,
+    './routes/api/incoming-whatsapp.ts': $2,
+    './routes/api/set-availability.tsx': $3,
+    './routes/app/_middleware.tsx': $4,
+    './routes/app/calendar.tsx': $5,
+    './routes/app/calendar/set-availability.tsx': $6,
+    './routes/full-reset.ts': $7,
+    './routes/index.tsx': $8,
+    './routes/logged-in.tsx': $9,
+    './routes/logout.tsx': $10,
+    './routes/patient-reset.ts': $11,
   },
   islands: {
-    "./islands/date-picker.tsx": $$0,
-    "./islands/month-picker.tsx": $$1,
-    "./islands/set-availability-form.tsx": $$2,
-    "./islands/year-picker.tsx": $$3,
+    './islands/date-picker.tsx': $$0,
+    './islands/month-picker.tsx': $$1,
+    './islands/set-availability-form.tsx': $$2,
+    './islands/year-picker.tsx': $$3,
   },
   baseUrl: import.meta.url,
   config,
-};
+}
 
-export default manifest;
+export default manifest

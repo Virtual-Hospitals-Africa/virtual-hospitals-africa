@@ -1,10 +1,10 @@
-import { assertEquals } from "std/testing/asserts.ts";
-import { PatientDemographicInfo } from "../types.ts";
-import { prettyPatientDateOfBirth } from "../util/date.ts";
+import { assertEquals } from 'std/testing/asserts.ts'
+import { PatientDemographicInfo } from '../types.ts'
+import { prettyPatientDateOfBirth } from '../util/date.ts'
 
-Deno.test("prettyPatientDateOfBirth", () => {
+Deno.test('prettyPatientDateOfBirth', () => {
   const dob = prettyPatientDateOfBirth({
-    date_of_birth: "1990-03-01",
-  } as PatientDemographicInfo);
-  assertEquals(dob, "March 1, 1990");
-});
+    date_of_birth: '1990-03-01',
+  } as PatientDemographicInfo)
+  assertEquals(dob, 'March 1, 1990')
+})

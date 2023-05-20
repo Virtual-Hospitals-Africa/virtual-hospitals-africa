@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Kysely, sql } from "kysely";
+import { Kysely, sql } from 'kysely'
 
 export default async function selectAllNonMetaTables(
   db: Kysely<any>,
@@ -10,7 +10,7 @@ export default async function selectAllNonMetaTables(
      WHERE table_schema = 'public'
        AND table_type = 'BASE TABLE'
        AND table_name NOT LIKE 'kysely_%'
-  `.execute(db);
+  `.execute(db)
 
-  return tables.rows.map(({ table_name }) => table_name);
+  return tables.rows.map(({ table_name }) => table_name)
 }

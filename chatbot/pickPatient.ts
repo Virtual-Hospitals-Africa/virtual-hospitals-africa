@@ -1,4 +1,4 @@
-import { UnhandledPatientMessage } from "../types.ts";
+import { UnhandledPatientMessage } from '../types.ts'
 
 export default function pickPatient(patientMessage: UnhandledPatientMessage) {
   return {
@@ -7,5 +7,5 @@ export default function pickPatient(patientMessage: UnhandledPatientMessage) {
     gender: patientMessage.gender,
     date_of_birth: patientMessage.date_of_birth,
     national_id_number: patientMessage.national_id_number,
-  };
+  }
 }

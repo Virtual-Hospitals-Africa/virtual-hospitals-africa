@@ -1,10 +1,10 @@
 export default function padLeft(
   str: string,
   len: number,
-  padChar = " ",
+  padChar = ' ',
 ): string {
   while (str.length < len) {
-    str = padChar + str;
+    str = padChar + str
   }
-  return str;
+  return str
 }
