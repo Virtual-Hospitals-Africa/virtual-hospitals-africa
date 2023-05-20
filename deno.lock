@@ -662,11 +662,11 @@
     "https://raw.githubusercontent.com/lucacasonato/esbuild_deno_loader/8031f71afa1bbcd3237a94b11f53a2e5c5c0e7bf/src/portable_loader.ts": "47adb6d9a00f13a87d0a15f2af79118eb93503234008c31392d71270bc0a42fa",
     "https://raw.githubusercontent.com/lucacasonato/esbuild_deno_loader/8031f71afa1bbcd3237a94b11f53a2e5c5c0e7bf/src/shared.ts": "007e8d575cb6ebcac4110f1f72188a8bec3aa29287b4ad26e98403c00bebf036",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts": "9473507398048cb24dbb37b3a220777106c69c28d573898648deb2bb84a7e131",
-    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/deps.ts": "c36614cbfecef750aad592d0430e5fcbd5c289da67a57428bb1f63eb0a65a5e4",
+    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/deps.ts": "922185d8f37b8e07ec74d0d468fcc87f3dcab1f39f79934583a8b8d2797b962e",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/mod.ts": "12314f750f4b51e2077902fa1aaf03ec8154aaa0609509425a10b64adb33e2cd",
-    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/session.ts": "88f474480c734044ccfef4e1aaa047073405e9a070d049e8e001547d1093699b",
-    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie.ts": "fe170242836ab64299672c8236c0e3e58fde7ba07f84bb5c76d4cfb4a11f73c2",
+    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/session.ts": "f123506279f18ec8d609ffc7b6a1a1f897723cbe616d0be9446f0badc4915a74",
+    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie.ts": "5ba819ee6fbbeb35950a626b93afd4c671e09df6247df3deb8749a6ac25606c5",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie_option.ts": "ecf48fd5e779ab767b94881d8305e8925849246f461a25c6979067046c1077e0",
-    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/redis.ts": "1268e4756ce6dccfd917cf8465b87d27566d937c8292e7c562cde790fe33e663"
+    "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/redis.ts": "fd5c14e1ea7c5269ed4f2e5a24823a665429ce873885825962aade103fefcc02"
   }
 }

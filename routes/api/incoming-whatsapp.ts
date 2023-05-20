@@ -1,4 +1,5 @@
 import { Handlers } from '$fresh/server.ts'
+import db from '../../db/db.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import { WhatsAppIncomingMessage } from '../../types.ts'
 
@@ -46,7 +47,7 @@ export const handler: Handlers = {
       if (otherStatuses.length) {
         console.error('More than one status in the change, that\'s weird')
       }
-      await conversations.updateReadStatus({
+      await conversations.updateReadStatus(db, {
         whatsapp_id: status.id,
         read_status: status.status,
       })
@@ -74,7 +75,7 @@ export const handler: Handlers = {
         ? message.interactive.list_reply.id
         : message.interactive.button_reply.id
 
-      await conversations.insertMessageReceived({
+      await conversations.insertMessageReceived(db, {
         body,
         patient_phone_number: message.from,
         whatsapp_id: message.id,
