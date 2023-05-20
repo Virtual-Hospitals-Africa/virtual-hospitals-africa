@@ -1,7 +1,8 @@
 import { Kysely, sql } from "kysely";
+import { addUpdatedAtTrigger } from "./20230517124053_add_update_trigger.ts";
 
-export function up(db: Kysely<unknown>) {
-  return db.schema
+export async function up(db: Kysely<unknown>) {
+  await db.schema
     .createTable("clinics")
     .addColumn("id", "serial", (col) => col.primaryKey())
     .addColumn(
@@ -17,8 +18,10 @@ export function up(db: Kysely<unknown>) {
     .addColumn("name", "varchar(255)")
     .addColumn("location", sql`GEOGRAPHY(POINT,4326)`)
     .execute();
+
+  await addUpdatedAtTrigger(db, "clinics");
 }
 
 export function down(db: Kysely<unknown>) {
-  return db.schema.dropTable("clinics");
+  return db.schema.dropTable("clinics").execute();
 }
