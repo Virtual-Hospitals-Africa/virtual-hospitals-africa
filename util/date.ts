@@ -27,32 +27,31 @@ export function newDate(): Date {
   return new Date();
 }
 
-export const numericDateFormat = new Intl.DateTimeFormat("en-gb", {
-  weekday: "long",
-  month: "numeric",
-  year: "numeric",
-  day: "numeric",
-  hour: "numeric",
-  minute: "numeric",
-  second: "numeric",
-  timeZone: "Africa/Johannesburg",
-});
+export const formats = {
+  numeric: new Intl.DateTimeFormat("en-gb", {
+    weekday: "long",
+    month: "numeric",
+    year: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+    timeZone: "Africa/Johannesburg",
+  }),
+  twoDigit: new Intl.DateTimeFormat("en-gb", {
+    weekday: "long",
+    month: "2-digit",
+    year: "numeric",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    timeZone: "Africa/Johannesburg",
+  }),
+}
 
-export const twoDigitDateFormat = new Intl.DateTimeFormat("en-gb", {
-  weekday: "long",
-  month: "2-digit",
-  year: "numeric",
-  day: "2-digit",
-  hour: "2-digit",
-  minute: "2-digit",
-  second: "2-digit",
-  timeZone: "Africa/Johannesburg",
-});
-
-export function parseDate(date: Date, format: "numeric" | "2-digit"): ParsedDate {
-  const formatter = format === "numeric"
-    ? numericDateFormat
-    : twoDigitDateFormat;
+export function parseDate(date: Date, format: keyof typeof formats): ParsedDate {
+  const formatter = formats[format]
   const dateString = formatter.format(date);
   const [weekday, dateParts, timeParts] = dateString.split(", ");
   const [day, month, year] = dateParts.split("/");
@@ -61,14 +60,14 @@ export function parseDate(date: Date, format: "numeric" | "2-digit"): ParsedDate
 }
 
 export function todayISOInHarare() {
-  const { day, month, year } = parseDate(new Date(), "2-digit");
+  const { day, month, year } = parseDate(new Date(), "twoDigit");
   return `${year}-${month}-${day}`;
 }
 
 export function formatHarare(
   date = new Date(),
 ): string {
-  const { day, month, year, hour, minute, second } = parseDate(date, "2-digit");
+  const { day, month, year, hour, minute, second } = parseDate(date, "twoDigit");
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`;
 }
 
@@ -104,6 +103,7 @@ const timeFormat = new Intl.DateTimeFormat("en-gb", {
   timeZone: "Africa/Johannesburg",
 });
 
+// TODO: revisit this function. We should also print the day for today and tomorrow
 export function prettyAppointmentTime(startTime: string): string {
   assert(rfc3339Regex.test(startTime), `Expected RFC3339 format: ${startTime}`);
   assert(

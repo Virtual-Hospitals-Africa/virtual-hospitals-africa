@@ -56,7 +56,7 @@ const toHarare = (time: Time) => {
 function* availabilityBlocks(
   availability: AvailabilityJSON,
 ): Generator<DeepPartial<GCalEvent>> {
-  const today = parseDate(new Date(), "2-digit");
+  const today = parseDate(new Date(), "twoDigit");
   const todayIndex = days.indexOf(today.weekday as DayOfWeek);
   for (const day of days) {
     const dayAvailability = availability[day];
