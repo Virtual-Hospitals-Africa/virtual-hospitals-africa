@@ -48,10 +48,13 @@ export const formats = {
     second: "2-digit",
     timeZone: "Africa/Johannesburg",
   }),
-}
+};
 
-export function parseDate(date: Date, format: keyof typeof formats): ParsedDate {
-  const formatter = formats[format]
+export function parseDate(
+  date: Date,
+  format: keyof typeof formats,
+): ParsedDate {
+  const formatter = formats[format];
   const dateString = formatter.format(date);
   const [weekday, dateParts, timeParts] = dateString.split(", ");
   const [day, month, year] = dateParts.split("/");
@@ -67,7 +70,10 @@ export function todayISOInHarare() {
 export function formatHarare(
   date = new Date(),
 ): string {
-  const { day, month, year, hour, minute, second } = parseDate(date, "twoDigit");
+  const { day, month, year, hour, minute, second } = parseDate(
+    date,
+    "twoDigit",
+  );
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`;
 }
 
@@ -144,23 +150,36 @@ export function assertAllHarare(dates: string[]) {
 }
 
 const isLeap = (year: number): boolean =>
-    (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
+  (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0);
 
 export function numberOfDaysInMonth(month: number, year: number): number {
   switch (month) {
-    case 1: return 31;
-    case 2: return isLeap(year) ? 29 : 28;
-    case 3: return 31;
-    case 4: return 30;
-    case 5: return 31;
-    case 6: return 30;
-    case 7: return 31;
-    case 8: return 31;
-    case 9: return 30;
-    case 10: return  31;
-    case 11: return  30;
-    case 12: return  31;
-    default: throw new Error("Invalid month");
+    case 1:
+      return 31;
+    case 2:
+      return isLeap(year) ? 29 : 28;
+    case 3:
+      return 31;
+    case 4:
+      return 30;
+    case 5:
+      return 31;
+    case 6:
+      return 30;
+    case 7:
+      return 31;
+    case 8:
+      return 31;
+    case 9:
+      return 30;
+    case 10:
+      return 31;
+    case 11:
+      return 30;
+    case 12:
+      return 31;
+    default:
+      throw new Error("Invalid month");
   }
 }
 

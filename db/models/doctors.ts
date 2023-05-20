@@ -112,7 +112,8 @@ export function isDoctorWithGoogleTokens(
     typeof doctor === "object" &&
     "access_token" in doctor && typeof doctor.access_token === "string" &&
     "refresh_token" in doctor && typeof doctor.refresh_token === "string" &&
-    "expires_at" in doctor && (typeof doctor.expires_at === "string" || isDate(doctor.expires_at)) &&
+    "expires_at" in doctor &&
+    (typeof doctor.expires_at === "string" || isDate(doctor.expires_at)) &&
     "id" in doctor && typeof doctor.id === "number" &&
     "name" in doctor && typeof doctor.name === "string" &&
     "email" in doctor && typeof doctor.email === "string" &&

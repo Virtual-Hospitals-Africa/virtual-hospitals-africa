@@ -4,11 +4,15 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable("doctors")
     .addColumn("id", "serial", (col) => col.primaryKey())
-    .addColumn("created_at", "timestamp", (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      "created_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn("updated_at", "timestamp", (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn("name", "varchar(255)", (col) => col.notNull())
     .addColumn("email", "varchar(255)", (col) => col.notNull())
@@ -20,14 +24,20 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable("appointments")
     .addColumn("id", "serial", (col) => col.primaryKey())
-    .addColumn("created_at", "timestamp", (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      "created_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn("updated_at", "timestamp", (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn("patient_id", "integer", (col) =>
-      col.notNull().references("patients.id").onDelete("cascade")
+    .addColumn(
+      "patient_id",
+      "integer",
+      (col) => col.notNull().references("patients.id").onDelete("cascade"),
     )
     .addColumn("reason", "varchar(255)")
     .execute();
@@ -35,17 +45,25 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable("appointment_offered_times")
     .addColumn("id", "serial", (col) => col.primaryKey())
-    .addColumn("created_at", "timestamp", (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      "created_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn("updated_at", "timestamp", (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      "updated_at",
+      "timestamp",
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn("appointment_id", "integer", (col) =>
-      col.notNull().references("appointments.id").onDelete("cascade")
+    .addColumn(
+      "appointment_id",
+      "integer",
+      (col) => col.notNull().references("appointments.id").onDelete("cascade"),
     )
-    .addColumn("doctor_id", "integer", (col) =>
-      col.notNull().references("doctors.id").onDelete("cascade")
+    .addColumn(
+      "doctor_id",
+      "integer",
+      (col) => col.notNull().references("doctors.id").onDelete("cascade"),
     )
     .addColumn("start", "varchar(255)", (col) => col.notNull())
     .addColumn("patient_declined", "boolean", (col) => col.defaultTo(false))

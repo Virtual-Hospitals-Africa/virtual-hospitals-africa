@@ -1,4 +1,4 @@
-import respond from "./respond.ts"
+import respond from "./respond.ts";
 
 export type Responder = { start(): void; exit(): void };
 

@@ -6,5 +6,5 @@ export function addUpdatedAtTrigger(db: Kysely<unknown>, table: string) {
            BEFORE UPDATE ON ${sql.id(table)}
            FOR EACH ROW
            EXECUTE FUNCTION update_updated_at();
-  `.execute(db)
+  `.execute(db);
 }

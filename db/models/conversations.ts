@@ -2,8 +2,8 @@ import { InsertResult, sql, UpdateResult } from "kysely";
 import {
   ConversationState,
   ReturnedSqlRow,
-  UnhandledPatientMessage,
   TrxOrDb,
+  UnhandledPatientMessage,
 } from "../../types.ts";
 
 export function updateReadStatus(
@@ -29,7 +29,6 @@ export async function insertMessageReceived(
     conversation_state: ConversationState | "initial_message";
   }>
 > {
-
   let [patient] = await trx
     .insertInto("patients")
     .values({ phone_number: opts.patient_phone_number })
@@ -125,9 +124,11 @@ export async function getUnhandledPatientMessages(
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx);
 
-  return result.rows.map(row => ({
+  return result.rows.map((row) => ({
     ...row,
-    appointment_offered_times: row.appointment_offered_times ? row.appointment_offered_times.filter(aot => aot) : [],
+    appointment_offered_times: row.appointment_offered_times
+      ? row.appointment_offered_times.filter((aot) => aot)
+      : [],
   }));
 }
 

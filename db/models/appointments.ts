@@ -9,7 +9,7 @@ import {
 
 export async function addOfferedTime(
   trx: TrxOrDb,
-  opts: { appointment_id: number; doctor_id: number; start: string }
+  opts: { appointment_id: number; doctor_id: number; start: string },
 ): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
   const result = await sql<
     ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
@@ -31,7 +31,7 @@ export async function addOfferedTime(
 
 export async function newOfferedTime(
   trx: TrxOrDb,
-  opts: { appointment_id: number; doctor_id: number; start: string }
+  opts: { appointment_id: number; doctor_id: number; start: string },
 ): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
   const result = await sql<
     ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
@@ -64,7 +64,7 @@ export async function declineOfferedTime(trx: TrxOrDb, opts: { id: number }) {
 
 export async function getPatientDeclinedTimes(
   trx: TrxOrDb,
-  opts: { appointment_id: number }
+  opts: { appointment_id: number },
 ): Promise<string[]> {
   const readResult = await trx
     .selectFrom("appointment_offered_times")
@@ -85,7 +85,7 @@ export async function getPatientDeclinedTimes(
 
 export function createNew(
   trx: TrxOrDb,
-  opts: { patient_id: number }
+  opts: { patient_id: number },
 ): Promise<ReturnedSqlRow<Appointment>[]> {
   return trx
     .insertInto("appointments")
@@ -96,7 +96,7 @@ export function createNew(
 
 export async function upsert(
   trx: TrxOrDb,
-  info: Appointment
+  info: Appointment,
 ): Promise<ReturnedSqlRow<Appointment>> {
   const [appointment] = await trx
     .insertInto("appointments")
@@ -114,7 +114,7 @@ export async function schedule(
   opts: {
     appointment_offered_time_id: number;
     scheduled_gcal_event_id: string;
-  }
+  },
 ): Promise<FullScheduledAppointment> {
   const result = await sql<FullScheduledAppointment>`
     WITH appointment_offered_time_scheduled as (
@@ -139,13 +139,24 @@ export async function schedule(
 
 export function get(
   trx: TrxOrDb,
-  query: { doctor_id: number }
+  query: { doctor_id: number },
 ) {
   return trx
     .selectFrom("appointment_offered_times")
-    .innerJoin("appointments", "appointment_offered_times.appointment_id", "appointments.id")
+    .innerJoin(
+      "appointments",
+      "appointment_offered_times.appointment_id",
+      "appointments.id",
+    )
     .innerJoin("patients", "appointments.patient_id", "patients.id")
     .where("doctor_id", "=", query.doctor_id)
-    .select(["patients.name", "patient_id", "start", "reason", "status", "scheduled_gcal_event_id"])
+    .select([
+      "patients.name",
+      "patient_id",
+      "start",
+      "reason",
+      "status",
+      "scheduled_gcal_event_id",
+    ])
     .execute();
 }

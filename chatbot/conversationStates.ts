@@ -51,7 +51,7 @@ const conversationStates: {
     prompt:
       "Sure, I can help you make an appointment with a doctor.\n\nTo start, what is your name?",
     onResponse(
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): ConversationStateHandlerReturn {
       return {
         nextState: "not_onboarded:make_appointment:enter_gender",
@@ -74,7 +74,7 @@ const conversationStates: {
         display: "Male",
         aliases: ["male", "m"],
         onResponse(
-          _patientMessage: UnhandledPatientMessage
+          _patientMessage: UnhandledPatientMessage,
         ): ConversationStateHandlerReturn {
           return {
             nextState: "not_onboarded:make_appointment:enter_date_of_birth",
@@ -87,7 +87,7 @@ const conversationStates: {
         display: "Female",
         aliases: ["female", "f"],
         onResponse(
-          _patientMessage: UnhandledPatientMessage
+          _patientMessage: UnhandledPatientMessage,
         ): ConversationStateHandlerReturn {
           return {
             nextState: "not_onboarded:make_appointment:enter_date_of_birth",
@@ -100,7 +100,7 @@ const conversationStates: {
         display: "Other",
         aliases: ["other", "o"],
         onResponse(
-          _patientMessage: UnhandledPatientMessage
+          _patientMessage: UnhandledPatientMessage,
         ): ConversationStateHandlerReturn {
           return {
             nextState: "not_onboarded:make_appointment:enter_date_of_birth",
@@ -114,7 +114,7 @@ const conversationStates: {
     type: "date",
     prompt: "Thanks for that information. What is your date of birth?",
     onResponse(
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): ConversationStateHandlerReturn {
       const [day, month, year] = patientMessage.body.split("/");
       console.log(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
@@ -122,10 +122,12 @@ const conversationStates: {
       return {
         nextState: "not_onboarded:make_appointment:enter_national_id_number",
         patientUpdates: {
-          date_of_birth: `${year}-${month.padStart(2, "0")}-${day.padStart(
-            2,
-            "0"
-          )}`,
+          date_of_birth: `${year}-${month.padStart(2, "0")}-${
+            day.padStart(
+              2,
+              "0",
+            )
+          }`,
         },
       };
     },
@@ -133,12 +135,14 @@ const conversationStates: {
   "not_onboarded:make_appointment:enter_national_id_number": {
     type: "string",
     prompt(patient: PatientDemographicInfo): string {
-      return `Got it, ${prettyPatientDateOfBirth(
-        patient
-      )}. Please enter your national ID number`;
+      return `Got it, ${
+        prettyPatientDateOfBirth(
+          patient,
+        )
+      }. Please enter your national ID number`;
     },
     onResponse(
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): ConversationStateHandlerReturn {
       return {
         nextState: "onboarded:make_appointment:enter_appointment_reason",
@@ -152,7 +156,7 @@ const conversationStates: {
     type: "string",
     async onEnter(
       trx: TrxOrDb,
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       await appointments.createNew(trx, {
         patient_id: patientMessage.patient_id,
@@ -163,7 +167,7 @@ const conversationStates: {
       return `Got it, ${patientMessage.national_id_number}. What is the reason you want to schedule an appointment?`;
     },
     onResponse(
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): ConversationStateHandlerReturn {
       return {
         nextState: "onboarded:make_appointment:confirm_details",
@@ -176,19 +180,11 @@ const conversationStates: {
   "onboarded:make_appointment:confirm_details": {
     type: "select",
     prompt(patientMessage: UnhandledPatientMessage): string {
-      return `Got it, ${
-        patientMessage.scheduling_appointment_reason
-      }. In summary, your name is ${
-        patientMessage.name
-      }, you're messaging from ${patientMessage.phone_number}, you are a ${
-        patientMessage.gender
-      } born on ${prettyPatientDateOfBirth(
-        patientMessage
-      )} with national id number ${
-        patientMessage.national_id_number
-      } and you want to schedule an appointment for ${
-        patientMessage.scheduling_appointment_reason
-      }. Is this correct?`;
+      return `Got it, ${patientMessage.scheduling_appointment_reason}. In summary, your name is ${patientMessage.name}, you're messaging from ${patientMessage.phone_number}, you are a ${patientMessage.gender} born on ${
+        prettyPatientDateOfBirth(
+          patientMessage,
+        )
+      } with national id number ${patientMessage.national_id_number} and you want to schedule an appointment for ${patientMessage.scheduling_appointment_reason}. Is this correct?`;
     },
     options: [
       {
@@ -209,10 +205,13 @@ const conversationStates: {
     type: "select",
     async onEnter(
       trx: TrxOrDb,
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       console.log("onboarded:make_appointment:first_scheduling_option onEnter");
-      const firstAvailable = await availableThirtyMinutes(trx, [], {date:null, timeslots_required:1});
+      const firstAvailable = await availableThirtyMinutes(trx, [], {
+        date: null,
+        timeslots_required: 1,
+      });
 
       const offeredTime = await appointments.addOfferedTime(trx, {
         appointment_id: patientMessage.scheduling_appointment_id!,
@@ -234,11 +233,13 @@ const conversationStates: {
     prompt(patientMessage: UnhandledPatientMessage): string {
       assert(
         patientMessage.appointment_offered_times[0],
-        "onEnter should have added an appointment_offered_time"
+        "onEnter should have added an appointment_offered_time",
       );
-      return `Great, the next available appoinment is ${prettyAppointmentTime(
-        patientMessage.appointment_offered_times[0].start
-      )}. Would you like to schedule this appointment?`;
+      return `Great, the next available appoinment is ${
+        prettyAppointmentTime(
+          patientMessage.appointment_offered_times[0].start,
+        )
+      }. Would you like to schedule this appointment?`;
     },
     options: [
       {
@@ -265,10 +266,10 @@ const conversationStates: {
     type: "list",
     async onEnter(
       trx: TrxOrDb,
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       console.log(
-        "onboarded:make_appointment:other_scheduling_options onEnter"
+        "onboarded:make_appointment:other_scheduling_options onEnter",
       );
 
       assert(patientMessage.appointment_offered_times[0], "should have times");
@@ -283,8 +284,8 @@ const conversationStates: {
 
       // console.log('id', patientMessage.appointment_offered_times?.id)
       // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-      for (const toDeclineSlot of toDecline){
-        console.log('time slot declining in db', toDeclineSlot)
+      for (const toDeclineSlot of toDecline) {
+        console.log("time slot declining in db", toDeclineSlot);
         await appointments.declineOfferedTime(
           trx,
           { id: toDeclineSlot },
@@ -299,19 +300,20 @@ const conversationStates: {
       console.log(declinedTimes);
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
-        declinedTimes, { date: null, timeslots_required: 5 }
+        declinedTimes,
+        { date: null, timeslots_required: 5 },
       );
 
       const nextOfferedTimes: ReturnedSqlRow<
-      AppointmentOfferedTime & { doctor_name: string }
+        AppointmentOfferedTime & { doctor_name: string }
       >[] = await Promise.all(filteredAvailableTimes.map(
-        timeslot =>
+        (timeslot) =>
           appointments.addOfferedTime(trx, {
             appointment_id: patientMessage.scheduling_appointment_id!,
             doctor_id: timeslot.doctor.id,
             start: timeslot.start,
-          })
-      ))
+          }),
+      ));
 
       return {
         ...patientMessage,
@@ -322,12 +324,12 @@ const conversationStates: {
     prompt(patientMessage: UnhandledPatientMessage): string {
       assert(
         patientMessage.appointment_offered_times[0],
-        "onEnter should have added an appointment_offered_time"
+        "onEnter should have added an appointment_offered_time",
       );
       return `OK here are the other available time, please choose from the list.`;
     },
 
-/*
+    /*
 offeredTimes [
   {
     id: 768,
@@ -385,14 +387,16 @@ offeredTimes [
     doctor_name: "Will Weiss"
   }
 ]
-*/
+    */
 
     action(patientMessage: UnhandledPatientMessage) {
-      const offeredTimes = patientMessage.appointment_offered_times.filter(offered_time => !offered_time.patient_declined)
+      const offeredTimes = patientMessage.appointment_offered_times.filter(
+        (offered_time) => !offered_time.patient_declined,
+      );
 
-      console.log('offeredTimes', offeredTimes);
+      console.log("offeredTimes", offeredTimes);
 
-      throw new Error("TO IMPLEMENT")
+      throw new Error("TO IMPLEMENT");
     },
   },
 
@@ -410,9 +414,9 @@ offeredTimes [
 
       assert(acceptedTime);
       assert(acceptedTime.scheduled_gcal_event_id);
-      return `Thanks ${patientMessage.name!.split(" ")[0]}, we notified ${
-        acceptedTime.doctor_name
-      } and will message you shortly upon confirmirmation of your appointment at ${
+      return `Thanks ${
+        patientMessage.name!.split(" ")[0]
+      }, we notified ${acceptedTime.doctor_name} and will message you shortly upon confirmirmation of your appointment at ${
         prettyAppointmentTime(acceptedTime.start)
       }`;
     },
@@ -438,7 +442,7 @@ offeredTimes [
     ],
     onEnter(
       trx: TrxOrDb,
-      patientMessage: UnhandledPatientMessage
+      patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
       return cancelAppointment(trx, patientMessage);
     },

@@ -1,14 +1,13 @@
 import { ColumnType, Generated, Transaction } from "kysely";
 import { Handlers } from "$fresh/server.ts";
-import { Session } from "fresh_session/session"
+import { Session } from "fresh_session/session";
 import db, { DatabaseSchema } from "./db/db.ts";
 
 export type Maybe<T> = T | null | undefined;
 
 export type Falsy = false | 0 | "" | null | undefined;
 
-export type DeepPartial<T> = T extends Record<string, unknown>
-  ? {
+export type DeepPartial<T> = T extends Record<string, unknown> ? {
     [P in keyof T]?: DeepPartial<T[P]>;
   }
   : T;
@@ -77,14 +76,18 @@ export type UnhandledPatientMessage = {
   scheduling_appointment_id?: number;
   scheduling_appointment_reason?: Maybe<string>;
   scheduling_appointment_status?: Maybe<AppointmentStatus>;
-  appointment_offered_times: ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>[];
+  appointment_offered_times: ReturnedSqlRow<
+    AppointmentOfferedTime & { doctor_name: string }
+  >[];
   created_at: Date;
   updated_at: Date;
 };
 
-export type UnhandledPatientMessageWithConversationState = UnhandledPatientMessage & {
-  conversation_state: ConversationState;
-};
+export type UnhandledPatientMessageWithConversationState =
+  & UnhandledPatientMessage
+  & {
+    conversation_state: ConversationState;
+  };
 
 // TODO; typecheck that onEnter return gets passed to prompt or eliminate this whole concept
 export type ConversationStateHandlerType<T> = T & {
@@ -92,7 +95,7 @@ export type ConversationStateHandlerType<T> = T & {
   onEnter?: (
     trx: TrxOrDb,
     patientMessage: UnhandledPatientMessage,
-    next: DetermineNextPatientStateReturn
+    next: DetermineNextPatientStateReturn,
   ) => Promise<UnhandledPatientMessage>;
 };
 
@@ -105,8 +108,8 @@ export type ConversationStateHandlerReturn = {
 export type ConversationStateHandlerOnResponse =
   | ConversationState
   | ((
-      patientMessage: UnhandledPatientMessage
-    ) => ConversationStateHandlerReturn);
+    patientMessage: UnhandledPatientMessage,
+  ) => ConversationStateHandlerReturn);
 
 export type ConversationStateHandlerSelectOption = {
   option: string;
@@ -132,7 +135,9 @@ export type ConversationStateHandlerListAction = {
 
 export type ConversationStateHandlerList = ConversationStateHandlerType<{
   type: "list";
-  action: (patientMessage: UnhandledPatientMessage) => ConversationStateHandlerListAction;
+  action: (
+    patientMessage: UnhandledPatientMessage,
+  ) => ConversationStateHandlerListAction;
 }>;
 
 export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
@@ -217,40 +222,41 @@ export type WhatsAppIncomingMessage = {
               };
             }>;
             messages?: ReadonlyArray<
-              {
+              & {
                 from: string; // phone number
                 id: string;
                 timestamp: string; // '1673943918'
-              } & (
+              }
+              & (
                 | { type: "text"; text: { body: string } }
                 | {
-                    type: "interactive";
-                    interactive: {
-                      type: "list_reply";
-                      list_reply: {
-                        id: string;
-                        title: string;
-                        description: string;
-                      };
+                  type: "interactive";
+                  interactive: {
+                    type: "list_reply";
+                    list_reply: {
+                      id: string;
+                      title: string;
+                      description: string;
                     };
-                  }
+                  };
+                }
                 | {
-                    type: "interactive";
-                    interactive: {
-                      type: "button_reply";
-                      button_reply: {
-                        id: string;
-                        title: string;
-                      };
+                  type: "interactive";
+                  interactive: {
+                    type: "button_reply";
+                    button_reply: {
+                      id: string;
+                      title: string;
                     };
-                  }
+                  };
+                }
               )
             >;
           };
           field: "messages";
-        }
+        },
       ];
-    }
+    },
   ];
 };
 
@@ -347,7 +353,7 @@ export type GCalEvent = {
       responseStatus: "needsAction" | "declined" | "tentative" | "accepted";
       comment: string;
       additionalGuests: integer;
-    }
+    },
   ];
   attendeesOmitted: boolean;
   extendedProperties: Record<string, unknown>;
@@ -372,7 +378,7 @@ export type GCalEvent = {
         meetingCode: string;
         passcode: string;
         password: string;
-      }
+      },
     ];
     conferenceSolution: {
       key: {
@@ -407,7 +413,7 @@ export type GCalEvent = {
       {
         method: string;
         minutes: integer;
-      }
+      },
     ];
   };
   source: {
@@ -421,7 +427,7 @@ export type GCalEvent = {
       mimeType: string;
       iconLink: string;
       fileId: string;
-    }
+    },
   ];
   eventType: string;
 };
@@ -460,14 +466,14 @@ export type GCalCalendarListEntry = {
     {
       method: string;
       minutes: integer;
-    }
+    },
   ];
   notificationSettings: {
     notifications: [
       {
         type: string;
         method: string;
-      }
+      },
     ];
   };
   primary: boolean;
@@ -608,14 +614,14 @@ export type DoctorAppointment = {
 };
 
 export type ParsedDate = {
-  weekday: string
-  day: string
-  month: string
-  year: string
-  hour: string
-  minute: string
-  second: string
-}
+  weekday: string;
+  day: string;
+  month: string;
+  year: string;
+  hour: string;
+  minute: string;
+  second: string;
+};
 
 export type WhatsAppSendableString = {
   type: "string";
@@ -648,11 +654,14 @@ export type WhatsAppSendableButtons = {
   options: WhatsAppMessageOption[];
 };
 
-export type LoggedInDoctor = { 
+export type LoggedInDoctor = {
   session: Session & {
-    data: DoctorWithGoogleTokens
-  }
-  trx: TrxOrDb
-}
+    data: DoctorWithGoogleTokens;
+  };
+  trx: TrxOrDb;
+};
 
-export type LoggedInDoctorHandler<Props = Record<string, never>> = Handlers<Props, LoggedInDoctor>
+export type LoggedInDoctorHandler<Props = Record<string, never>> = Handlers<
+  Props,
+  LoggedInDoctor
+>;

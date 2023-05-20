@@ -18,12 +18,10 @@ import {
 } from "../types.ts";
 import pickPatient from "./pickPatient.ts";
 
-
-
 // have to create a new function for list
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
-  messageBody: string
+  messageBody: string,
 ): Maybe<ConversationStateHandlerSelectOption> {
   const messageWords = words(messageBody.trim().toLowerCase());
   return state.options.find((option: ConversationStateHandlerSelectOption) => {
@@ -51,24 +49,30 @@ function findMatchingOption(
 
 function findMatchingSection(
   action: ConversationStateHandlerListAction,
-  messageBody: string
-): Maybe<ConversationStateHandlerListActionSection>{
-  return action.sections.find((section: ConversationStateHandlerListActionSection) => {
-    for (const{ id } of section.rows){
-      console.log('WHat is section here?', section)
-      console.log("here insdie find matching option", id)
-      if (id === messageBody){
-        console.log('section matched.', section, 'message body is:', messageBody)
-        return section
-      } 
-    }
-  });
+  messageBody: string,
+): Maybe<ConversationStateHandlerListActionSection> {
+  return action.sections.find(
+    (section: ConversationStateHandlerListActionSection) => {
+      for (const { id } of section.rows) {
+        console.log("WHat is section here?", section);
+        console.log("here insdie find matching option", id);
+        if (id === messageBody) {
+          console.log(
+            "section matched.",
+            section,
+            "message body is:",
+            messageBody,
+          );
+          return section;
+        }
+      }
+    },
+  );
 }
-
 
 function isValidResponse(
   state: ConversationStateHandler,
-  messageBody: string
+  messageBody: string,
 ): boolean {
   switch (state.type) {
     case "select": {
@@ -80,7 +84,7 @@ function isValidResponse(
       const [day, month, year] = messageBody.split("/");
       // deno-lint-ignore no-unused-vars
       const date = new Date(
-        `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00Z`
+        `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}T00:00:00Z`,
       );
       // TODO
       // return isValid(date);
@@ -113,15 +117,15 @@ function stringSendable(messageBody: string): WhatsAppSendableString {
 // May 20 -- section.title
 // 9:00 AM Dr. Skhu -- row.title
 
-
 export function formatMessageToSend(
   patientMessage: UnhandledPatientMessage,
 ): WhatsAppSendable {
-  const state = conversationStates[patientMessage.conversation_state || "not_onboarded:welcome"];
-  const prompt =
-    typeof state.prompt === "string"
-      ? state.prompt
-      : state.prompt(patientMessage);
+  const state = conversationStates[
+    patientMessage.conversation_state || "not_onboarded:welcome"
+  ];
+  const prompt = typeof state.prompt === "string"
+    ? state.prompt
+    : state.prompt(patientMessage);
 
   switch (state.type) {
     case "select": {
@@ -136,9 +140,9 @@ export function formatMessageToSend(
       };
     }
     case "list": {
-      const action = state.action(patientMessage)
-      console.log('actiona aweklaweklw', action);
-      throw new Error("THROW from list")
+      const action = state.action(patientMessage);
+      console.log("actiona aweklaweklw", action);
+      throw new Error("THROW from list");
 
       // return {
       //   type: "list",
@@ -159,7 +163,7 @@ export function formatMessageToSend(
     }
     case "date": {
       return stringSendable(
-        prompt + " Please enter the date in the format DD/MM/YYYY"
+        prompt + " Please enter the date in the format DD/MM/YYYY",
       ); // https://en.wikipedia.org/wiki/Date_format_by_country
     }
     case "string": {
@@ -177,7 +181,6 @@ export function formatMessageToSend(
 export default function determineNextPatientState(
   patientMessage: UnhandledPatientMessage,
 ): DetermineNextPatientStateReturn {
-
   if (!patientMessage.conversation_state) {
     return {
       nextPatient: {
@@ -185,7 +188,7 @@ export default function determineNextPatientState(
         id: patientMessage.patient_id,
         conversation_state: "not_onboarded:welcome" as const,
       },
-    }
+    };
   }
 
   const currentState = conversationStates[patientMessage.conversation_state];
@@ -199,15 +202,16 @@ export default function determineNextPatientState(
   if (currentState.type === "select") {
     onResponse = findMatchingOption(currentState, messageBody)!.onResponse;
   } else if (currentState.type === "list") {
-    onResponse = findMatchingSection(currentState.action(patientMessage), messageBody)!.onResponse;
+    onResponse =
+      findMatchingSection(currentState.action(patientMessage), messageBody)!
+        .onResponse;
   } else {
     onResponse = currentState.onResponse;
   }
 
-  const next =
-    typeof onResponse === "string"
-      ? { nextState: onResponse }
-      : onResponse(patientMessage);
+  const next = typeof onResponse === "string"
+    ? { nextState: onResponse }
+    : onResponse(patientMessage);
 
   const nextPatient: Patient & { id: number } = {
     ...pickPatient(patientMessage),

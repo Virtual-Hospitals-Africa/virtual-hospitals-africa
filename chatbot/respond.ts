@@ -10,7 +10,9 @@ import { sendMessage } from "../external-clients/whatsapp.ts";
 
 const commitHash = Deno.env.get("HEROKU_SLUG_COMMIT") || "local";
 
-async function respondToPatientMessage(patientMessage: UnhandledPatientMessage) {
+async function respondToPatientMessage(
+  patientMessage: UnhandledPatientMessage,
+) {
   try {
     const responseToSend = await db
       .transaction()
@@ -32,9 +34,7 @@ async function respondToPatientMessage(patientMessage: UnhandledPatientMessage) 
       whatsapp_id: whatsappResponse.messages[0].id,
       body: JSON.stringify(responseToSend),
     });
-  
   } catch (err) {
-
     console.log("Error determining message to send");
     console.error(err);
 
@@ -55,6 +55,8 @@ async function respondToPatientMessage(patientMessage: UnhandledPatientMessage) 
 }
 
 export default async function respond() {
-  const unhandledMessages = await getUnhandledPatientMessages(db, { commitHash });
+  const unhandledMessages = await getUnhandledPatientMessages(db, {
+    commitHash,
+  });
   return await Promise.all(unhandledMessages.map(respondToPatientMessage));
 }

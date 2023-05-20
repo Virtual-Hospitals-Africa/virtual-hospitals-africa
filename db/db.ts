@@ -52,7 +52,6 @@ const db = new Kysely<DatabaseSchema>({
     createQueryCompiler() {
       return new PostgresQueryCompiler();
     },
-    
   },
 });
 

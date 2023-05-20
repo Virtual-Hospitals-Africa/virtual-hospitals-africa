@@ -12,12 +12,10 @@ import {
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`;
 
-
 export async function determineResponse(
   trx: TrxOrDb,
-  patientMessage: UnhandledPatientMessage
+  patientMessage: UnhandledPatientMessage,
 ): Promise<WhatsAppSendable> {
-
   const next = determineNextPatientState(patientMessage);
 
   if (next === "invalid_response") {
@@ -51,7 +49,7 @@ export async function determineResponse(
   return formatMessageToSend({
     ...patientMessage,
     scheduling_appointment_id: next.nextAppointment && next.nextAppointment.id,
-    scheduling_appointment_reason:
-      next.nextAppointment && next.nextAppointment.reason,
+    scheduling_appointment_reason: next.nextAppointment &&
+      next.nextAppointment.reason,
   });
 }

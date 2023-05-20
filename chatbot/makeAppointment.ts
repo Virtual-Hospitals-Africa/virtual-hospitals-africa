@@ -26,13 +26,13 @@ export function appointmentDetails(
     patientMessage.appointment_offered_times,
     "No appointment_offered_times found in patientMessage",
   );
-  const acceptedTimes = []
-      for (const offeredTime of patientMessage.appointment_offered_times){
-        if (!offeredTime?.patient_declined){
-          acceptedTimes.push(offeredTime)
-        }
-      }
-      const acceptedTime = acceptedTimes[0]
+  const acceptedTimes = [];
+  for (const offeredTime of patientMessage.appointment_offered_times) {
+    if (!offeredTime?.patient_declined) {
+      acceptedTimes.push(offeredTime);
+    }
+  }
+  const acceptedTime = acceptedTimes[0];
   assert(
     acceptedTime,
     "No appointment_offered_times found in patientMessage",
@@ -41,7 +41,7 @@ export function appointmentDetails(
     !acceptedTime.patient_declined,
     "Patient rejected offered appointment time",
   );
-  
+
   const end = new Date(acceptedTime.start);
   end.setMinutes(end.getMinutes() + 30);
 

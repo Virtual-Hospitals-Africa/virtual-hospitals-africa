@@ -136,7 +136,6 @@ export async function getAllDoctorAvailability(
   }));
 }
 
-
 /**
  * Gets doctor availability from google calenda, spilt them into 30 minutes block, and filter out
  * the declined time and return an object containing the start time and doctor.
@@ -146,44 +145,55 @@ export async function getAllDoctorAvailability(
  * @returns an object containing the start time and doctor
  */
 
-export async function availableThirtyMinutes(trx: TrxOrDb, declinedTimes: string[], 
-  opts: {date: string | null, timeslots_required: number}
+export async function availableThirtyMinutes(
+  trx: TrxOrDb,
+  declinedTimes: string[],
+  opts: { date: string | null; timeslots_required: number },
 ): Promise<{
   doctor: ReturnedSqlRow<DoctorWithGoogleTokens>;
   start: string;
 }[]> {
-  assertAllHarare(declinedTimes)
+  assertAllHarare(declinedTimes);
   const doctorAvailability = await getAllDoctorAvailability(trx);
 
-  let appointments: {doctor: DoctorWithGoogleTokens, start: string}[]
-  appointments = []
+  let appointments: { doctor: DoctorWithGoogleTokens; start: string }[];
+  appointments = [];
   for (const { doctor, availability } of doctorAvailability) {
     for (const { start, end } of availability) {
-      const doctor_appointments = generateAvailableThrityMinutes(start,end)
-      .filter(time => !declinedTimes.includes(time))
-      .filter(appointment => opts.date? appointment.includes(opts.date): true)
-      .map(timeBlock => ({doctor: doctor, start: timeBlock}))
-      appointments = appointments.concat(doctor_appointments)
+      const doctor_appointments = generateAvailableThrityMinutes(start, end)
+        .filter((time) => !declinedTimes.includes(time))
+        .filter((appointment) =>
+          opts.date ? appointment.includes(opts.date) : true
+        )
+        .map((timeBlock) => ({ doctor: doctor, start: timeBlock }));
+      appointments = appointments.concat(doctor_appointments);
     }
   }
-  appointments.sort((a,b) => new Date(a.start).valueOf() - new Date(b.start).valueOf())
-  const key = 'start';
-  const uniqueAppointmentTimeslots = [...new Map(appointments.map(timeBlock => [timeBlock[key], timeBlock])).values()]
+  appointments.sort((a, b) =>
+    new Date(a.start).valueOf() - new Date(b.start).valueOf()
+  );
+  const key = "start";
+  const uniqueAppointmentTimeslots = [
+    ...new Map(appointments.map((timeBlock) => [timeBlock[key], timeBlock]))
+      .values(),
+  ];
 
-  console.log("Unique appointments by date", uniqueAppointmentTimeslots)
+  console.log("Unique appointments by date", uniqueAppointmentTimeslots);
 
-  if (uniqueAppointmentTimeslots.length === 0) throw new Error("No availability found");
+  if (uniqueAppointmentTimeslots.length === 0) {
+    throw new Error("No availability found");
+  }
 
-  const requiredTimeslots = uniqueAppointmentTimeslots.length > opts.timeslots_required 
-  ? uniqueAppointmentTimeslots.slice(0,opts.timeslots_required) 
-  : uniqueAppointmentTimeslots
-  
+  const requiredTimeslots =
+    uniqueAppointmentTimeslots.length > opts.timeslots_required
+      ? uniqueAppointmentTimeslots.slice(0, opts.timeslots_required)
+      : uniqueAppointmentTimeslots;
+
   return requiredTimeslots;
 }
 
-function generateAvailableThrityMinutes(start: string, end: string):
-string[]{
-  const appointments = []
+function generateAvailableThrityMinutes(start: string, end: string): string[] {
+  const appointments = [];
   const appointmentDuration = 30 * 60 * 1000; // duration of each appointment in milliseconds
   const current = new Date(start);
   current.setMinutes(Math.ceil(current.getMinutes() / 30) * 30); //0 or 30
@@ -191,10 +201,9 @@ string[]{
   current.setMilliseconds(0);
 
   while (current.getTime() + appointmentDuration <= new Date(end).getTime()) {
-    const currentDate = formatHarare(current) 
-    appointments.push(currentDate)
+    const currentDate = formatHarare(current);
+    appointments.push(currentDate);
     current.setTime(current.getTime() + appointmentDuration);
   }
-  return appointments
-
+  return appointments;
 }

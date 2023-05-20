@@ -1,14 +1,16 @@
 import "dotenv";
 import {
   WhatsAppJSONResponse,
-  WhatsAppSendable,
   WhatsAppMessageAction,
-  WhatsAppMessageOption
+  WhatsAppMessageOption,
+  WhatsAppSendable,
 } from "../types.ts";
 
-const postMessageRoute = `https://graph.facebook.com/v15.0/${Deno.env.get(
-  "WHATSAPP_FROM_PHONE_NUMBER"
-)}/messages`;
+const postMessageRoute = `https://graph.facebook.com/v15.0/${
+  Deno.env.get(
+    "WHATSAPP_FROM_PHONE_NUMBER",
+  )
+}/messages`;
 const Authorization = `Bearer ${Deno.env.get("WHATSAPP_BEARER_TOKEN")}`;
 
 export function sendMessage({
@@ -20,10 +22,10 @@ export function sendMessage({
 }): Promise<
   | WhatsAppJSONResponse
   | {
-      messaging_product: "whatsapp";
-      contacts: [{ input: string; wa_id: string }];
-      messages: [{ id: string }];
-    }
+    messaging_product: "whatsapp";
+    contacts: [{ input: string; wa_id: string }];
+    messages: [{ id: string }];
+  }
 > {
   switch (message.type) {
     case "string":
@@ -42,7 +44,7 @@ export function sendMessage({
         phone_number,
         headerText: message.headerText,
         messageBody: message.messageBody,
-        action: message.action
+        action: message.action,
       });
   }
 }
@@ -121,7 +123,7 @@ export async function sendMessageWithInteractiveList(opts: {
         type: "list",
         header: { type: "text", text: opts.headerText },
         body: { text: opts.messageBody },
-        action: opts.action
+        action: opts.action,
       },
     }),
   };

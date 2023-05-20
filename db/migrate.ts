@@ -1,14 +1,16 @@
-import { Migrator, Migration, sql } from "kysely";
+import { Migration, Migrator, sql } from "kysely";
 import db from "./db.ts";
 
 if (!Deno.args.length) {
-  console.error("Please provide a migration name as in\ndeno task migrate:create name");
+  console.error(
+    "Please provide a migration name as in\ndeno task migrate:create name",
+  );
   Deno.exit(1);
 }
 
 const migrations: Record<string, Migration> = {};
 for (const migrationFile of Deno.readDirSync("./db/migrations")) {
-  const migrationName = migrationFile.name
+  const migrationName = migrationFile.name;
   const migration = await import(`./migrations/${migrationName}`);
   migrations[migrationName] = migration;
 }
@@ -31,12 +33,19 @@ async function startMigrating() {
     case "--to": {
       const target = Deno.args[1];
       if (!target) {
-        const migrations = await sql<{name: string}>`SELECT name from kysely_migration`.execute(db);
+        const migrations = await sql<
+          { name: string }
+        >`SELECT name from kysely_migration`.execute(db);
         const migrationTargets = migrations.rows.map(({ name }) => name);
-        console.error(`Please specify a valid target as in\n\n  deno task migrate:to ${migrationTargets[0]}\n\nValid targets:\n${migrationTargets.join("\n")}`);
+        console.error(
+          `Please specify a valid target as in\n\n  deno task migrate:to ${
+            migrationTargets[0]
+          }\n\nValid targets:\n${migrationTargets.join("\n")}`,
+        );
         Deno.exit(1);
       }
-      return migrator.migrateTo(target);    }
+      return migrator.migrateTo(target);
+    }
 
     default:
       throw new Error("Invalid command");
@@ -44,7 +53,7 @@ async function startMigrating() {
 }
 
 async function migrate() {
-  const { error, results } = await startMigrating()
+  const { error, results } = await startMigrating();
 
   results?.forEach((it) => {
     if (it.status === "Success") {

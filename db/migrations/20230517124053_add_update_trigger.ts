@@ -12,21 +12,21 @@ export async function up(db: Kysely<unknown>) {
       END;
       $$
       LANGUAGE plpgsql;
-  `.execute(db)
+  `.execute(db);
 
-  const tables = await selectAllNonMetaTables(db)
-  
+  const tables = await selectAllNonMetaTables(db);
+
   for (const table of tables) {
     await addUpdatedAtTrigger(db, table);
   }
 }
 
 export async function down(db: Kysely<unknown>) {
-  const tables = await selectAllNonMetaTables(db)
-  for (const table of tables){
+  const tables = await selectAllNonMetaTables(db);
+  for (const table of tables) {
     await sql`
       DROP TRIGGER IF EXIST update_updated_at_trigger
         ON ${sql.id(table)}
-    `.execute(db)
+    `.execute(db);
   }
 }
