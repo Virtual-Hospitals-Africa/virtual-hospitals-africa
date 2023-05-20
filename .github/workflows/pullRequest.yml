@@ -21,7 +21,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.31.1
+          deno-version: v1.33.4
 
       - name: Where am I?
         run: ls -la
@@ -31,3 +31,6 @@ jobs:
 
       - name: Run fmt --check
         run: deno fmt --check
+
+      - name: Compile chatbot
+        run: DENO_TLS_CA_STORE=system deno compile -A --target x86_64-unknown-linux-gnu --output binaries/chatbot chatbot/chatbot.ts
