@@ -1,5 +1,5 @@
 import { ColumnType, Generated, Transaction } from "kysely";
-import db, { DatabaseSchema } from "./external-clients/db.ts";
+import db, { DatabaseSchema } from "./db/db.ts";
 
 export type Maybe<T> = T | null | undefined;
 

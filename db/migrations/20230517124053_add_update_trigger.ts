@@ -1,17 +1,6 @@
 import { Kysely, sql } from "kysely";
+import selectAllNonMetaTables from "../selectAllNonMetaTables.ts";
 
-
-export async function selectAllNonKyselyMetaTables(db: Kysely<unknown>): Promise<string[]> {
-  const tables = await sql<{table_name: string}>`
-    SELECT table_name
-      FROM information_schema.tables
-     WHERE table_schema = 'public'
-       AND table_type = 'BASE TABLE'
-       AND table_name NOT LIKE 'kysely_%'
-  `.execute(db)
-
-  return tables.rows.map(({ table_name }) => table_name);
-}
 
 export function addUpdatedAtTrigger(db: Kysely<unknown>, table: string) {
   return sql`
@@ -34,7 +23,7 @@ export async function up(db: Kysely<unknown>) {
       LANGUAGE plpgsql;
   `.execute(db)
 
-  const tables = await selectAllNonKyselyMetaTables(db)
+  const tables = await selectAllNonMetaTables(db)
   
   for (const table of tables) {
     await addUpdatedAtTrigger(db, table);
@@ -42,7 +31,7 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  const tables = await selectAllNonKyselyMetaTables(db)
+  const tables = await selectAllNonMetaTables(db)
   for (const table of tables){
     await sql`
       DROP TRIGGER IF EXIST update_updated_at_trigger

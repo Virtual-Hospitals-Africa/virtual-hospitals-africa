@@ -1,5 +1,5 @@
 import * as google from "../external-clients/google.ts";
-import { getAllWithExtantTokens } from "../models/doctors.ts";
+import { getAllWithExtantTokens } from "../db/models/doctors.ts";
 import {
   Availability,
   DoctorWithGoogleTokens,

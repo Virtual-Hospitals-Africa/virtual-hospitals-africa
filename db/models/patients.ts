@@ -1,4 +1,3 @@
-import db from "../external-clients/db.ts";
 import {
   ConversationState,
   Gender,
@@ -6,14 +5,15 @@ import {
   Patient,
   ReturnedSqlRow,
   TrxOrDb,
-} from "../types.ts";
+} from "../../types.ts";
 
 export async function getByPhoneNumber(
+  trx: TrxOrDb,
   query: { phone_number: string },
 ): Promise<
   Maybe<ReturnedSqlRow<Patient>>
 > {
-  const result = await db
+  const result = await trx
     .selectFrom("patients")
     .selectAll()
     .where("phone_number", "=", query.phone_number)
@@ -40,8 +40,8 @@ export async function upsert(trx: TrxOrDb, info: {
   return patient;
 }
 
-export function remove(opts: { phone_number: string }) {
-  return db
+export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
+  return trx
     .deleteFrom("patients")
     .where("phone_number", "=", opts.phone_number)
     .execute();

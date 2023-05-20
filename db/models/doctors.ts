@@ -1,11 +1,10 @@
 import { DeleteResult, sql, UpdateResult } from "kysely";
-import db from "../external-clients/db.ts";
 import {
   DoctorWithGoogleTokens,
   GoogleTokens,
   Maybe,
   TrxOrDb,
-} from "../types.ts";
+} from "../../types.ts";
 
 type DoctorDetails = {
   name: string;
@@ -41,7 +40,8 @@ export async function upsert(
   return doctor;
 }
 
-export function upsertWithGoogleCredentials(
+export async function upsertWithGoogleCredentials(
+  trx: TrxOrDb,
   details: DoctorDetails & GoogleTokens,
 ): Promise<{
   id: number;
@@ -52,35 +52,33 @@ export function upsertWithGoogleCredentials(
   gcal_appointments_calendar_id: string;
   gcal_availability_calendar_id: string;
 }> {
-  return db.transaction().execute(async (trx) => {
-    const doctor = await upsert(
-      trx,
-      {
-        name: details.name,
-        email: details.email,
-        gcal_appointments_calendar_id: details.gcal_appointments_calendar_id,
-        gcal_availability_calendar_id: details.gcal_availability_calendar_id,
-      },
-    );
+  const doctor = await upsert(
+    trx,
+    {
+      name: details.name,
+      email: details.email,
+      gcal_appointments_calendar_id: details.gcal_appointments_calendar_id,
+      gcal_availability_calendar_id: details.gcal_availability_calendar_id,
+    },
+  );
 
-    await trx
-      .insertInto("doctor_google_tokens")
-      .values({
-        doctor_id: doctor.id,
-        expires_at: new Date(),
+  await trx
+    .insertInto("doctor_google_tokens")
+    .values({
+      doctor_id: doctor.id,
+      expires_at: new Date(),
+      access_token: details.access_token,
+      refresh_token: details.refresh_token,
+    })
+    .onConflict((oc) =>
+      oc.column("doctor_id").doUpdateSet({
         access_token: details.access_token,
         refresh_token: details.refresh_token,
       })
-      .onConflict((oc) =>
-        oc.column("doctor_id").doUpdateSet({
-          access_token: details.access_token,
-          refresh_token: details.refresh_token,
-        })
-      )
-      .execute();
+    )
+    .execute();
 
-    return doctor;
-  });
+  return doctor;
 }
 
 const getWithTokensQuery = (trx: TrxOrDb) =>
@@ -93,13 +91,16 @@ const getWithTokensQuery = (trx: TrxOrDb) =>
     )
     .selectAll("doctors")
     .select("doctor_google_tokens.access_token")
-    .select("doctor_google_tokens.refresh_token");
+    .select("doctor_google_tokens.refresh_token")
+    .where("doctor_google_tokens.access_token", "is not", null)
+    .where("doctor_google_tokens.refresh_token", "is not", null);
 
 // TODO: Store auth tokens in a way that we can more easily refresh them and find the ones for a specific doctor
-export function getAllWithTokens(
+export async function getAllWithTokens(
   trx: TrxOrDb,
 ): Promise<DoctorWithGoogleTokens[]> {
-  return getWithTokensQuery(trx).execute();
+  const result = await getWithTokensQuery(trx).execute();
+  return withTokens(result);
 }
 
 export function isDoctorWithGoogleTokens(
@@ -118,7 +119,7 @@ export function isDoctorWithGoogleTokens(
     typeof doctor.gcal_availability_calendar_id === "string";
 }
 
-function withTokens(doctors: DoctorWithGoogleTokens[]) {
+function withTokens(doctors: unknown[]) {
   const withTokens: DoctorWithGoogleTokens[] = [];
   for (const doctor of doctors) {
     if (!isDoctorWithGoogleTokens(doctor)) {
@@ -145,7 +146,7 @@ export async function getWithTokensById(
     doctor_id,
   )
     .execute();
-  return doctor;
+  return withTokens([doctor])[0];
 }
 
 export async function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
@@ -161,10 +162,11 @@ export async function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
 }
 
 export function updateAccessToken(
+  trx: TrxOrDb,
   doctor_id: number,
   access_token: string,
 ): Promise<UpdateResult[]> {
-  return db
+  return trx
     .updateTable("doctor_google_tokens")
     .where("doctor_id", "=", doctor_id)
     .set({ access_token, expires_at: expiresInAnHourSql })
@@ -172,9 +174,10 @@ export function updateAccessToken(
 }
 
 export function removeExpiredAccessToken(
+  trx: TrxOrDb,
   opts: { doctor_id: number },
 ): Promise<DeleteResult[]> {
-  return db.deleteFrom("doctor_google_tokens").where(
+  return trx.deleteFrom("doctor_google_tokens").where(
     "doctor_id",
     "=",
     opts.doctor_id,

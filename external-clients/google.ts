@@ -13,6 +13,7 @@ import {
   GCalFreeBusy,
   GoogleProfile,
   GoogleTokens,
+TrxOrDb,
 } from "../types.ts";
 import { WithSession } from "fresh_session";
 import { HandlerContext } from "$fresh/src/server/mod.ts";
@@ -20,7 +21,8 @@ import {
   isDoctorWithGoogleTokens,
   removeExpiredAccessToken,
   updateAccessToken,
-} from "../models/doctors.ts";
+} from "../db/models/doctors.ts";
+import db from "../db/db.ts";
 
 const googleApisUrl = "https://www.googleapis.com";
 
@@ -272,7 +274,7 @@ export class DoctorGoogleClient extends GoogleClient {
     } catch (err) {
       if (err.message === "Unauthorized") {
         assert(this.doctor.refresh_token, "No refresh token");
-        const refreshed = await refreshTokens(this.doctor);
+        const refreshed = await db.transaction().execute(trx => refreshTokens(trx, this.doctor));
         if (refreshed.result !== "success") {
           throw new Error("Failed to refresh tokens");
         }
@@ -355,17 +357,18 @@ export async function getNewAccessTokenFromRefreshToken(
 }
 
 export async function refreshTokens(
+  trx: TrxOrDb,
   doctor: DoctorWithGoogleTokens
 ): Promise<{ result: "success"; access_token: string } | { result: "expiry" }> {
   try {
     const access_token = await getNewAccessTokenFromRefreshToken(
       doctor.refresh_token
     );
-    await updateAccessToken(doctor.id, access_token);
+    await updateAccessToken(trx, doctor.id, access_token);
     return { result: "success", access_token };
   } catch (err) {
     console.error(err);
-    removeExpiredAccessToken({ doctor_id: doctor.id });
+    removeExpiredAccessToken(trx, { doctor_id: doctor.id });
     return { result: "expiry" };
   }
 }

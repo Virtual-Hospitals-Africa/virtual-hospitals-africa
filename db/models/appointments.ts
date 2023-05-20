@@ -5,7 +5,7 @@ import {
   FullScheduledAppointment,
   ReturnedSqlRow,
   TrxOrDb,
-} from "../types.ts";
+} from "../../types.ts";
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -89,7 +89,7 @@ export function createNew(
 ): Promise<ReturnedSqlRow<Appointment>[]> {
   return trx
     .insertInto("appointments")
-    .values({ patient_id: opts.patient_id })
+    .values({ patient_id: opts.patient_id, status: "pending" })
     .returningAll()
     .execute();
 }

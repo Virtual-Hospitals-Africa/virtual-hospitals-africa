@@ -1,8 +1,8 @@
 import { assert, assertEquals } from "std/testing/asserts.ts";
 import { formatHarare } from "../util/date.ts";
 import * as google from "../external-clients/google.ts";
-import { getAllWithTokens } from "../models/doctors.ts";
-import * as appointments from "../models/appointments.ts";
+import { getAllWithTokens } from "../db/models/doctors.ts";
+import * as appointments from "../db/models/appointments.ts";
 import {
   AppointmentOfferedTime,
   DeepPartial,

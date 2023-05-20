@@ -1,11 +1,11 @@
-import db from "../external-clients/db.ts";
+import db from "../db/db.ts";
 import {
   getUnhandledPatientMessages,
   markChatbotError,
-} from "../models/conversations.ts";
+} from "../db/models/conversations.ts";
 import { UnhandledPatientMessage } from "../types.ts";
 import { determineResponse } from "./determineResponse.ts";
-import { insertMessageSent } from "../models/conversations.ts";
+import { insertMessageSent } from "../db/models/conversations.ts";
 import { sendMessage } from "../external-clients/whatsapp.ts";
 
 const commitHash = Deno.env.get("HEROKU_SLUG_COMMIT") || "local";

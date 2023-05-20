@@ -6,10 +6,9 @@ import MonthPicker from "../../islands/month-picker.tsx";
 import YearPicker from "../../islands/year-picker.tsx";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { DoctorGoogleClient } from "../../external-clients/google.ts";
-import { DoctorAppointment, GCalEventsResponse } from "../../types.ts";
+import { DoctorAppointment, TrxOrDb } from "../../types.ts";
 import { WithSession } from "fresh_session";
-import db from "../../external-clients/db.ts";
-import * as appointments from "../../models/appointments.ts";
+import * as appointments from "../../db/models/appointments.ts";
 import {
   numberOfDaysInMonth,
   parseDate,
@@ -31,7 +30,7 @@ function CalendarLink(
 
 export const handler: Handlers<
   { dailyAppointments: DoctorAppointment[]; startday: string },
-  WithSession
+  WithSession & { transaction: TrxOrDb }
 > = {
   async GET(req, ctx) {
     const googleClient = DoctorGoogleClient.fromCtx(ctx);
@@ -51,7 +50,11 @@ export const handler: Handlers<
 
     const doctor_id = ctx.state.session.data.id;
 
-    const appointmentsOfDoctor = await appointments.get(db, { doctor_id });
+    console.log(ctx.state.transaction);
+
+    const appointmentsOfDoctor = await appointments.get(ctx.state.transaction, {
+      doctor_id,
+    });
     const events = await gettingEvents;
 
     const gcalEventIds = new Set(events.items.map((item) => item.id));
