@@ -5,6 +5,7 @@
     "chatbot": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors chatbot/chatbot.ts",
     "migrate:create": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors migrate-db/create-migration.ts",
     "migrate:up": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors migrate-db/migrate-db.ts --up",
+    "migrate:latest": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors migrate-db/migrate-db.ts --latest",
     "migrate:down": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors migrate-db/migrate-db.ts --down",
     "migrate:to": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors migrate-db/migrate-db.ts --to",
     "chatbot:up": "heroku ps:scale chatbot=1",

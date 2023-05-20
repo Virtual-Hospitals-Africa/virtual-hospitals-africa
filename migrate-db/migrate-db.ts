@@ -1,4 +1,3 @@
-import { assert } from "std/_util/asserts.ts";
 import { Migrator, Migration, sql } from "kysely";
 import db from "../external-clients/db.ts";
 
@@ -23,20 +22,22 @@ const migrator = new Migrator({
 
 async function startMigrating() {
   switch (Deno.args[0]) {
-    case "--up":
+    case "--latest":
       return migrator.migrateToLatest();
+    case "--up":
+      return migrator.migrateUp();
     case "--down":
       return migrator.migrateDown();
-    case "--to":
-      if (!Deno.args[1]) {
+    case "--to": {
+      const target = Deno.args[1];
+      if (!target) {
         const migrations = await sql<{name: string}>`SELECT name from kysely_migration`.execute(db);
         const migrationTargets = migrations.rows.map(({ name }) => name);
         console.error(`Please specify a valid target as in\n\n  deno task migrate:to ${migrationTargets[0]}\n\nValid targets:\n${migrationTargets.join("\n")}`);
         Deno.exit(1);
       }
+      return migrator.migrateTo(target);    }
 
-      assert(Deno.args[1], "Must specify target");
-      return migrator.migrateTo(Deno.args[1]);
     default:
       throw new Error("Invalid command");
   }
