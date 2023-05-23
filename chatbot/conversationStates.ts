@@ -2,6 +2,7 @@ import { assert } from 'std/testing/asserts.ts'
 import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
+  convertToTime
 } from '../util/date.ts'
 import { availableThirtyMinutes } from './getDoctorAvailability.ts'
 import { makeAppointment } from './makeAppointment.ts'
@@ -17,6 +18,8 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
   UnhandledPatientMessage,
+  ConversationStateHandlerListActionSection,
+  ConversationStateHandlerListAction
 } from '../types.ts'
 
 // Is this important??
@@ -389,14 +392,43 @@ offeredTimes [
 ]
     */
 
-    action(patientMessage: UnhandledPatientMessage) {
+    action(patientMessage: UnhandledPatientMessage): ConversationStateHandlerListAction {
       const offeredTimes = patientMessage.appointment_offered_times.filter(
         (offered_time) => !offered_time.patient_declined,
       )
 
-      console.log('offeredTimes', offeredTimes)
+      const sections: ConversationStateHandlerListActionSection[] = [
+        {
+          title: offeredTimes[0].start.split("T")[0],
+          rows: offeredTimes.map((offeredTime) => {
+            return {
+              id: offeredTime.start.split("+")[0],
+              title: `${convertToTime(offeredTime.start).hour}:${
+                convertToTime(offeredTime.start).minute
+              }
+           ${convertToTime(offeredTime.start).amPm}`,
+              description: `With Dr. ${offeredTime.doctor_name}`,
+            };
+          }),
+          onResponse: "onboarded:appointment_scheduled",
+        },
+        {
+          title: "Other Times",
+          rows: [],
+          onResponse: "onboarded:make_appointment:other_scheduling_options",
+        },
+      ];
+      console.log('sections are here line 421', sections)
+      return {
+        button: "More Time Slots",
+        sections: sections
+      }
+      
+      
+      
+      // console.log('offeredTimes', offeredTimes)
 
-      throw new Error('TO IMPLEMENT')
+      // throw new Error('TO IMPLEMENT')
     },
   },
 
