@@ -17,7 +17,7 @@ export async function cancelAppointment(
     .where('id', '=', patientMessage.scheduling_appointment_id)
     .execute()
 
-  const details = appointmentDetails(patientMessage)
+  const details = await appointmentDetails(trx, patientMessage)
   const { offeredTime } = details
   const eventID = offeredTime.scheduled_gcal_event_id
 

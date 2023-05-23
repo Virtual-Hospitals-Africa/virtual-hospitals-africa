@@ -72,8 +72,7 @@ export async function getPatientDeclinedTimes(
     .where('patient_declined', '=', true)
     .select('start')
     .execute()
-  console.log('Read result for get declined time.')
-  console.log(readResult)
+
   const declinedTimes = []
 
   for (const { start } of readResult) {

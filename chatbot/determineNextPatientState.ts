@@ -140,11 +140,11 @@ export function formatMessageToSend(
       }
     }
     case 'list': {
-      const action = state.action(patientMessage)      
+      const action = state.action(patientMessage)
       return {
-        type: "list",
+        type: 'list',
         messageBody: prompt,
-        headerText: "Other Appointment Times",
+        headerText: 'Other Appointment Times',
         action: {
           button: action.button,
           sections: action.sections.map((section) => {
@@ -154,12 +154,12 @@ export function formatMessageToSend(
                 return {
                   id: row.id,
                   title: row.title,
-                  description: row.description
+                  description: row.description,
                 }
-              })
+              }),
             }
-          })
-        }
+          }),
+        },
       }
 
       // return {

@@ -110,7 +110,6 @@ export async function sendMessageWithInteractiveList(opts: {
   contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-
   const toPost = {
     method: 'post',
     headers: { Authorization, 'Content-Type': 'application/json' },

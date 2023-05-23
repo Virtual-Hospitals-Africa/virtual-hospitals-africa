@@ -12,45 +12,59 @@ import {
   UnhandledPatientMessage,
 } from '../types.ts'
 
-export function appointmentDetails(
+export async function appointmentDetails(
+  trx: TrxOrDb,
   patientMessage: UnhandledPatientMessage,
-): {
+): Promise<{
   offeredTime: ReturnedSqlRow<
     AppointmentOfferedTime & {
       doctor_name: string
     }
   >
   gcal: DeepPartial<GCalEvent>
-} {
+}> {
   assert(
     patientMessage.appointment_offered_times,
     'No appointment_offered_times found in patientMessage',
   )
-  const acceptedTimes = []
-  for (const offeredTime of patientMessage.appointment_offered_times) {
-    if (!offeredTime?.patient_declined) {
-      acceptedTimes.push(offeredTime)
+
+  const offeredTimes = patientMessage.appointment_offered_times.filter(
+    (offeredTime) => !offeredTime.patient_declined,
+  )
+  //&& offeredTime.start.includes(patientMessage.body)
+  if (offeredTimes.length > 1) {
+    const toDecline = offeredTimes.filter(
+      (offeredTime) => !offeredTime.start.includes(patientMessage.body),
+    )
+    for (const toDeclineSlot of toDecline) {
+      await appointments.declineOfferedTime(trx, { id: toDeclineSlot.id })
     }
   }
-  const acceptedTime = acceptedTimes[0]
+  const declinedTimes = await appointments.getPatientDeclinedTimes(trx, {
+    appointment_id: patientMessage.scheduling_appointment_id!,
+  })
+  const acceptedTime = offeredTimes.find(
+    (offeredTime) =>
+      !declinedTimes.some((declinedTime) => declinedTime === offeredTime.start),
+  )
+
   assert(
-    acceptedTime,
+    acceptedTime!,
     'No appointment_offered_times found in patientMessage',
   )
   assert(
-    !acceptedTime.patient_declined,
+    !acceptedTime!.patient_declined,
     'Patient rejected offered appointment time',
   )
 
-  const end = new Date(acceptedTime.start)
+  const end = new Date(acceptedTime!.start)
   end.setMinutes(end.getMinutes() + 30)
-
   return {
-    offeredTime: acceptedTime,
+    offeredTime: acceptedTime!,
     gcal: {
       summary: `Appointment with ${patientMessage.name}`,
       start: {
-        dateTime: acceptedTime.start,
+        dateTime: acceptedTime!.start,
       },
       end: {
         dateTime: formatHarare(end),
@@ -77,7 +91,7 @@ export async function makeAppointment(
     'No scheduling_appointment_reason found in patientMessage',
   )
 
-  const details = appointmentDetails(patientMessage)
+  const details = await appointmentDetails(trx, patientMessage)
   console.log('appointment details', JSON.stringify(details))
 
   const { offeredTime, gcal } = details
