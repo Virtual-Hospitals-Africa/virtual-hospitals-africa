@@ -405,8 +405,7 @@ offeredTimes [
               id: offeredTime.start.split("+")[0],
               title: `${convertToTime(offeredTime.start).hour}:${
                 convertToTime(offeredTime.start).minute
-              }
-           ${convertToTime(offeredTime.start).amPm}`,
+              } ${convertToTime(offeredTime.start).amPm}`,
               description: `With Dr. ${offeredTime.doctor_name}`,
             };
           }),
@@ -414,11 +413,14 @@ offeredTimes [
         },
         {
           title: "Other Times",
-          rows: [],
+          rows: [{
+            id: "other_time",
+            title: "Other time slot",
+            description: "Show other times"
+          }],
           onResponse: "onboarded:make_appointment:other_scheduling_options",
         },
       ];
-      console.log('sections are here line 421', sections)
       return {
         button: "More Time Slots",
         sections: sections

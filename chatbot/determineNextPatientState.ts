@@ -140,9 +140,27 @@ export function formatMessageToSend(
       }
     }
     case 'list': {
-      const action = state.action(patientMessage)
-      console.log('actiona aweklaweklw', action)
-      throw new Error('THROW from list')
+      const action = state.action(patientMessage)      
+      return {
+        type: "list",
+        messageBody: prompt,
+        headerText: "Other Appointment Times",
+        action: {
+          button: action.button,
+          sections: action.sections.map((section) => {
+            return {
+              title: section.title,
+              rows: section.rows.map((row) => {
+                return {
+                  id: row.id,
+                  title: row.title,
+                  description: row.description
+                }
+              })
+            }
+          })
+        }
+      }
 
       // return {
       //   type: "list",

@@ -110,7 +110,6 @@ export async function sendMessageWithInteractiveList(opts: {
   contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-  console.log('List was called')
 
   const toPost = {
     method: 'post',
