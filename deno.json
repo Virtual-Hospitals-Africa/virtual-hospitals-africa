@@ -14,7 +14,8 @@
     "token_refresher:down": "heroku ps:scale token_refresher=0",
     "web:up": "heroku ps:scale web=1",
     "web:down": "heroku ps:scale web=0",
-    "token_refresher": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors tokenRefresher/tokenRefresher.ts"
+    "token_refresher": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors tokenRefresher/tokenRefresher.ts",
+    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {

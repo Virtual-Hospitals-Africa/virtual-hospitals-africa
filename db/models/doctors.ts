@@ -94,6 +94,7 @@ const getWithTokensQuery = (trx: TrxOrDb) =>
     .selectAll('doctors')
     .select('doctor_google_tokens.access_token')
     .select('doctor_google_tokens.refresh_token')
+    .select('doctor_google_tokens.expires_at')
     .where('doctor_google_tokens.access_token', 'is not', null)
     .where('doctor_google_tokens.refresh_token', 'is not', null)
 
