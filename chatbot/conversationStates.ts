@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   assertAllHarare,
   convertToTime,
@@ -214,7 +214,7 @@ const conversationStates: {
       console.log('onboarded:make_appointment:first_scheduling_option onEnter')
       const firstAvailable = await availableThirtyMinutes(trx, [], {
         date: null,
-        timeslots_required: 1,
+        timeslotsRequired: 1,
       })
 
       const offeredTime = await appointments.addOfferedTime(trx, {
@@ -292,13 +292,15 @@ const conversationStates: {
       )
       assertAllHarare(declinedTimes)
 
+      const timeslotsRequired = 5
+
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
         declinedTimes,
-        { date: null, timeslots_required: 5 },
+        { date: null, timeslotsRequired },
       )
 
-      const nextOfferedTimes: ReturnedSqlRow<
+      const newlyOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
       >[] = await Promise.all(filteredAvailableTimes.map(
         (timeslot) =>
@@ -308,6 +310,19 @@ const conversationStates: {
             start: timeslot.start,
           }),
       ))
+
+      const nextOfferedTimes = [
+        ...newlyOfferedTimes,
+        ...patientMessage.appointment_offered_times.map((aot) => ({
+          ...aot,
+          patient_declined: true,
+        })),
+      ]
+
+      assertEquals(
+        nextOfferedTimes.length,
+        timeslotsRequired + patientMessage.appointment_offered_times.length,
+      )
 
       return {
         ...patientMessage,
