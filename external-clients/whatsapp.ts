@@ -6,12 +6,12 @@ import {
   WhatsAppSendable,
 } from '../types.ts'
 
-const postMessageRoute = `https://graph.facebook.com/v15.0/${
-  Deno.env.get(
-    'WHATSAPP_FROM_PHONE_NUMBER',
-  )
-}/messages`
-const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
+const WHATSAPP_FROM_PHONE_NUMBER = Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER')
+const WHATSAPP_BEARER_TOKEN = Deno.env.get('WHATSAPP_BEARER_TOKEN')
+const WHATSAPP_URL = Deno.env.get('WHATSAPP_URL') || 'https://graph.facebook.com/v15.0'
+
+const postMessageRoute = `${WHATSAPP_URL}/${WHATSAPP_FROM_PHONE_NUMBER}/messages`
+const Authorization = `Bearer ${WHATSAPP_BEARER_TOKEN}`
 
 export function sendMessage({
   phone_number,

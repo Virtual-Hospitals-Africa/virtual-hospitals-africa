@@ -23,7 +23,7 @@ import {
   updateAccessToken,
 } from '../db/models/doctors.ts'
 
-const googleApisUrl = 'https://www.googleapis.com'
+const googleApisUrl = Deno.env.get('GOOGLE_APIS_URL') || 'https://www.googleapis.com'
 
 type RequestOpts = {
   method?: 'get' | 'post' | 'put' | 'delete'

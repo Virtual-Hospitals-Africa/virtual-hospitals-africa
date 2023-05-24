@@ -56,3 +56,5 @@ package-lock.json
 
 # Local redis storage
 dump.rdb
+
+cov_profile
