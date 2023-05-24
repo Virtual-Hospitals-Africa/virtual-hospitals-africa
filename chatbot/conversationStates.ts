@@ -16,23 +16,11 @@ import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStateHandlerReturn,
-  Falsy,
   PatientDemographicInfo,
   ReturnedSqlRow,
   TrxOrDb,
   UnhandledPatientMessage,
 } from '../types.ts'
-
-// Is this important??
-function compact<T>(arr: (T | Falsy)[]): T[] {
-  const toReturn: T[] = []
-  for (const item of arr) {
-    if (item) {
-      toReturn.push(item)
-    }
-  }
-  return toReturn
-}
 
 const conversationStates: {
   [state in ConversationState]: ConversationStateHandler
@@ -227,7 +215,7 @@ const conversationStates: {
 
       const nextOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
-      >[] = [offeredTime, ...compact(patientMessage.appointment_offered_times)]
+      >[] = [offeredTime, ...patientMessage.appointment_offered_times]
 
       return {
         ...patientMessage,
