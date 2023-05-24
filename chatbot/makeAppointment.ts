@@ -1,7 +1,7 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { formatHarare } from '../util/date.ts'
 import * as google from '../external-clients/google.ts'
-import { getAllWithTokens } from '../db/models/doctors.ts'
+import { getWithTokensById } from '../db/models/doctors.ts'
 import * as appointments from '../db/models/appointments.ts'
 import {
   AppointmentOfferedTime,
@@ -12,48 +12,32 @@ import {
   UnhandledPatientMessage,
 } from '../types.ts'
 
-export async function appointmentDetails(
-  trx: TrxOrDb,
+export function gcalAppointmentDetails(
   patientMessage: UnhandledPatientMessage,
-): Promise<{
+): {
   offeredTime: ReturnedSqlRow<
     AppointmentOfferedTime & {
       doctor_name: string
     }
   >
   gcal: DeepPartial<GCalEvent>
-}> {
+} {
   assert(
-    patientMessage.appointment_offered_times,
+    patientMessage.appointment_offered_times &&
+      patientMessage.appointment_offered_times.length,
     'No appointment_offered_times found in patientMessage',
   )
 
-  const offeredTimes = patientMessage.appointment_offered_times.filter(
+  const acceptedTime = patientMessage.appointment_offered_times.find(
     (offeredTime) => !offeredTime.patient_declined,
   )
-  //&& offeredTime.start.includes(patientMessage.body)
-  if (offeredTimes.length > 1) {
-    const toDecline = offeredTimes.filter(
-      (offeredTime) => !offeredTime.start.includes(patientMessage.body),
-    )
-    for (const toDeclineSlot of toDecline) {
-      await appointments.declineOfferedTime(trx, { id: toDeclineSlot.id })
-    }
-  }
-  const declinedTimes = await appointments.getPatientDeclinedTimes(trx, {
-    appointment_id: patientMessage.scheduling_appointment_id!,
-  })
-  const acceptedTime = offeredTimes.find(
-    (offeredTime) =>
-      !declinedTimes.some((declinedTime) => declinedTime === offeredTime.start),
-  )
 
   assert(
-    acceptedTime!,
+    acceptedTime,
     'No appointment_offered_times found in patientMessage',
   )
   assert(
-    !acceptedTime!.patient_declined,
+    !acceptedTime.patient_declined,
     'Patient rejected offered appointment time',
   )
 
@@ -91,20 +75,16 @@ export async function makeAppointment(
     'No scheduling_appointment_reason found in patientMessage',
   )
 
-  const details = await appointmentDetails(trx, patientMessage)
-  console.log('appointment details', JSON.stringify(details))
+  const details = gcalAppointmentDetails(patientMessage)
 
   const { offeredTime, gcal } = details
-  const doctors = await getAllWithTokens(trx)
-
-  const matchingDoctor = doctors.find((doctor) =>
-    doctor.id === offeredTime.doctor_id
-  )
-
   assert(
     offeredTime.doctor_id,
     'No doctor_id found',
   )
+
+  const matchingDoctor = await getWithTokensById(trx, offeredTime.doctor_id)
+
   assert(
     matchingDoctor,
     `No doctor session found for doctor_id ${offeredTime.doctor_id}`,

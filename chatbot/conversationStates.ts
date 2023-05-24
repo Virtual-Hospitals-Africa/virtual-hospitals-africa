@@ -1,5 +1,6 @@
 import { assert } from 'std/testing/asserts.ts'
 import {
+  assertAllHarare,
   convertToTime,
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
@@ -277,30 +278,20 @@ const conversationStates: {
 
       assert(patientMessage.appointment_offered_times[0], 'should have times')
 
-      const toDecline = []
-      for (const offeredTime of patientMessage.appointment_offered_times) {
-        if (!offeredTime) continue
-        if (!offeredTime.patient_declined) {
-          toDecline.push(offeredTime.id)
-        }
-      }
+      // Mark all previously offered times as declined
+      const toDecline = patientMessage.appointment_offered_times
+        .filter((aot) => !aot.patient_declined)
 
-      // console.log('id', patientMessage.appointment_offered_times?.id)
-      // Created new function to update the row in the db, we get the row id by using the patientMessage that was modified in the previous state.
-      for (const toDeclineSlot of toDecline) {
-        console.log('time slot declining in db', toDeclineSlot)
-        await appointments.declineOfferedTime(
-          trx,
-          { id: toDeclineSlot },
-        )
-      }
+      await appointments.declineOfferedTimes(
+        trx,
+        toDecline.map((aot) => aot.id),
+      )
 
-      const declinedTimes = await appointments.getPatientDeclinedTimes(trx, {
-        appointment_id: patientMessage.scheduling_appointment_id!,
-      })
+      const declinedTimes = patientMessage.appointment_offered_times.map(
+        (aot) => aot.start,
+      )
+      assertAllHarare(declinedTimes)
 
-      console.log('declined time slot')
-      console.log(declinedTimes)
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
         declinedTimes,
@@ -331,66 +322,6 @@ const conversationStates: {
       )
       return `OK here are the other available time, please choose from the list.`
     },
-
-    /*
-offeredTimes [
-  {
-    id: 768,
-    created_at: 2023-05-20T01:11:41.175Z,
-    updated_at: 2023-05-20T01:11:41.175Z,
-    appointment_id: 117,
-    doctor_id: 112,
-    start: "2023-05-20T10:00:00+02:00",
-    patient_declined: false,
-    scheduled_gcal_event_id: null,
-    doctor_name: "Will Weiss"
-  },
-  {
-    id: 769,
-    created_at: 2023-05-20T01:11:41.175Z,
-    updated_at: 2023-05-20T01:11:41.175Z,
-    appointment_id: 117,
-    doctor_id: 112,
-    start: "2023-05-20T10:30:00+02:00",
-    patient_declined: false,
-    scheduled_gcal_event_id: null,
-    doctor_name: "Will Weiss"
-  },
-  {
-    id: 770,
-    created_at: 2023-05-20T01:11:41.175Z,
-    updated_at: 2023-05-20T01:11:41.175Z,
-    appointment_id: 117,
-    doctor_id: 112,
-    start: "2023-05-20T11:00:00+02:00",
-    patient_declined: false,
-    scheduled_gcal_event_id: null,
-    doctor_name: "Will Weiss"
-  },
-  {
-    id: 771,
-    created_at: 2023-05-20T01:11:41.175Z,
-    updated_at: 2023-05-20T01:11:41.175Z,
-    appointment_id: 117,
-    doctor_id: 112,
-    start: "2023-05-20T11:30:00+02:00",
-    patient_declined: false,
-    scheduled_gcal_event_id: null,
-    doctor_name: "Will Weiss"
-  },
-  {
-    id: 772,
-    created_at: 2023-05-20T01:11:41.175Z,
-    updated_at: 2023-05-20T01:11:41.175Z,
-    appointment_id: 117,
-    doctor_id: 112,
-    start: "2023-05-20T12:00:00+02:00",
-    patient_declined: false,
-    scheduled_gcal_event_id: null,
-    doctor_name: "Will Weiss"
-  }
-]
-    */
 
     action(
       patientMessage: UnhandledPatientMessage,
@@ -435,7 +366,25 @@ offeredTimes [
 
   'onboarded:appointment_scheduled': {
     type: 'select',
-    onEnter: makeAppointment,
+    async onEnter(trx: TrxOrDb, patientMessage: UnhandledPatientMessage) {
+      // Decline all other offered times
+      const toDecline = patientMessage.appointment_offered_times
+        .filter((aot) => !aot.patient_declined)
+        .filter((aot) => !aot.start.includes(patientMessage.body))
+        .map((aot) => aot.id)
+
+      await appointments.declineOfferedTimes(trx, toDecline)
+
+      return makeAppointment(trx, {
+        ...patientMessage,
+        appointment_offered_times: patientMessage.appointment_offered_times.map(
+          (aot) =>
+            toDecline.includes(aot.id)
+              ? { ...aot, patient_declined: true }
+              : aot,
+        ),
+      })
+    },
     prompt(patientMessage: UnhandledPatientMessage) {
       const acceptedTimes = []
       for (const offeredTime of patientMessage.appointment_offered_times) {
