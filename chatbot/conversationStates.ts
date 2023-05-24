@@ -1,7 +1,7 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   assertAllHarare,
-  convertToTime,
+  convertToTimeString,
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from '../util/date.ts'
@@ -352,12 +352,7 @@ const conversationStates: {
           rows: offeredTimes.map((offeredTime) => {
             return {
               id: offeredTime.start.split('+')[0],
-              title: `${convertToTime(offeredTime.start).hour}:${
-                convertToTime(offeredTime.start).minute.toString().padStart(
-                  2,
-                  '0',
-                )
-              } ${convertToTime(offeredTime.start).amPm}`,
+              title: convertToTimeString(offeredTime.start),
               description: `With Dr. ${offeredTime.doctor_name}`,
             }
           }),

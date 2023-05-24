@@ -147,37 +147,16 @@ export function formatMessageToSend(
         headerText: 'Other Appointment Times',
         action: {
           button: action.button,
-          sections: action.sections.map((section) => {
-            return {
-              title: section.title,
-              rows: section.rows.map((row) => {
-                return {
-                  id: row.id,
-                  title: row.title,
-                  description: row.description,
-                }
-              }),
-            }
-          }),
+          sections: action.sections.map((section) => ({
+            title: section.title,
+            rows: section.rows.map((row) => ({
+              id: row.id,
+              title: row.title,
+              description: row.description,
+            })),
+          })),
         },
       }
-
-      // return {
-      //   type: "list",
-      //   messageBody: prompt,
-      //   headerText: "Other Apponitment Times",
-      //   action: {
-      //     button: string;
-      //     sections: {
-      //       title: string;
-      //       rows: {
-      //         id: string;
-      //         title: string;
-      //         description: string;
-      //       }[];
-      //     }[];
-      //   },
-      // };
     }
     case 'date': {
       return stringSendable(
