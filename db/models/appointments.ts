@@ -52,11 +52,11 @@ export async function newOfferedTime(
   return result.rows[0]
 }
 
-export async function declineOfferedTime(trx: TrxOrDb, opts: { id: number }) {
+export async function declineOfferedTimes(trx: TrxOrDb, ids: number[]) {
   const writeResult = await trx
     .updateTable('appointment_offered_times')
     .set({ patient_declined: true })
-    .where('id', '=', opts.id)
+    .where('id', 'in', ids)
     .execute()
 
   return writeResult
@@ -72,8 +72,7 @@ export async function getPatientDeclinedTimes(
     .where('patient_declined', '=', true)
     .select('start')
     .execute()
-  console.log('Read result for get declined time.')
-  console.log(readResult)
+
   const declinedTimes = []
 
   for (const { start } of readResult) {
@@ -159,4 +158,8 @@ export function get(
       'scheduled_gcal_event_id',
     ])
     .execute()
+}
+
+export function deleteAppointment(trx: TrxOrDb, id: number) {
+  return trx.deleteFrom('appointments').where('id', '=', id).execute()
 }

@@ -199,3 +199,10 @@ export function convertToTime(date: string): Time {
     amPm,
   }
 }
+
+export function convertToTimeString(time: string): string {
+  const formattedTime = convertToTime(time)
+  return `${formattedTime.hour}:${
+    formattedTime.minute.toString().padStart(2, '0')
+  } ${formattedTime.amPm}`
+}

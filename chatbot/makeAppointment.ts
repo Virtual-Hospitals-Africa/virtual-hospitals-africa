@@ -1,7 +1,7 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { formatHarare } from '../util/date.ts'
 import * as google from '../external-clients/google.ts'
-import { getAllWithTokens } from '../db/models/doctors.ts'
+import { getWithTokensById } from '../db/models/doctors.ts'
 import * as appointments from '../db/models/appointments.ts'
 import {
   AppointmentOfferedTime,
@@ -12,7 +12,7 @@ import {
   UnhandledPatientMessage,
 } from '../types.ts'
 
-export function appointmentDetails(
+export function gcalAppointmentDetails(
   patientMessage: UnhandledPatientMessage,
 ): {
   offeredTime: ReturnedSqlRow<
@@ -23,16 +23,15 @@ export function appointmentDetails(
   gcal: DeepPartial<GCalEvent>
 } {
   assert(
-    patientMessage.appointment_offered_times,
+    patientMessage.appointment_offered_times &&
+      patientMessage.appointment_offered_times.length,
     'No appointment_offered_times found in patientMessage',
   )
-  const acceptedTimes = []
-  for (const offeredTime of patientMessage.appointment_offered_times) {
-    if (!offeredTime?.patient_declined) {
-      acceptedTimes.push(offeredTime)
-    }
-  }
-  const acceptedTime = acceptedTimes[0]
+
+  const acceptedTime = patientMessage.appointment_offered_times.find(
+    (offeredTime) => !offeredTime.patient_declined,
+  )
+
   assert(
     acceptedTime,
     'No appointment_offered_times found in patientMessage',
@@ -42,15 +41,14 @@ export function appointmentDetails(
     'Patient rejected offered appointment time',
   )
 
-  const end = new Date(acceptedTime.start)
+  const end = new Date(acceptedTime!.start)
   end.setMinutes(end.getMinutes() + 30)
-
   return {
-    offeredTime: acceptedTime,
+    offeredTime: acceptedTime!,
     gcal: {
       summary: `Appointment with ${patientMessage.name}`,
       start: {
-        dateTime: acceptedTime.start,
+        dateTime: acceptedTime!.start,
       },
       end: {
         dateTime: formatHarare(end),
@@ -77,20 +75,16 @@ export async function makeAppointment(
     'No scheduling_appointment_reason found in patientMessage',
   )
 
-  const details = appointmentDetails(patientMessage)
-  console.log('appointment details', JSON.stringify(details))
+  const details = gcalAppointmentDetails(patientMessage)
 
   const { offeredTime, gcal } = details
-  const doctors = await getAllWithTokens(trx)
-
-  const matchingDoctor = doctors.find((doctor) =>
-    doctor.id === offeredTime.doctor_id
-  )
-
   assert(
     offeredTime.doctor_id,
     'No doctor_id found',
   )
+
+  const matchingDoctor = await getWithTokensById(trx, offeredTime.doctor_id)
+
   assert(
     matchingDoctor,
     `No doctor session found for doctor_id ${offeredTime.doctor_id}`,

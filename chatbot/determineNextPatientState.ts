@@ -141,25 +141,22 @@ export function formatMessageToSend(
     }
     case 'list': {
       const action = state.action(patientMessage)
-      console.log('actiona aweklaweklw', action)
-      throw new Error('THROW from list')
-
-      // return {
-      //   type: "list",
-      //   messageBody: prompt,
-      //   headerText: "Other Apponitment Times",
-      //   action: {
-      //     button: string;
-      //     sections: {
-      //       title: string;
-      //       rows: {
-      //         id: string;
-      //         title: string;
-      //         description: string;
-      //       }[];
-      //     }[];
-      //   },
-      // };
+      return {
+        type: 'list',
+        messageBody: prompt,
+        headerText: 'Other Appointment Times',
+        action: {
+          button: action.button,
+          sections: action.sections.map((section) => ({
+            title: section.title,
+            rows: section.rows.map((row) => ({
+              id: row.id,
+              title: row.title,
+              description: row.description,
+            })),
+          })),
+        },
+      }
     }
     case 'date': {
       return stringSendable(

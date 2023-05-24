@@ -148,7 +148,7 @@ export async function getAllDoctorAvailability(
 export async function availableThirtyMinutes(
   trx: TrxOrDb,
   declinedTimes: string[],
-  opts: { date: string | null; timeslots_required: number },
+  opts: { date: string | null; timeslotsRequired: number },
 ): Promise<{
   doctor: ReturnedSqlRow<DoctorWithGoogleTokens>
   start: string
@@ -185,8 +185,8 @@ export async function availableThirtyMinutes(
   }
 
   const requiredTimeslots =
-    uniqueAppointmentTimeslots.length > opts.timeslots_required
-      ? uniqueAppointmentTimeslots.slice(0, opts.timeslots_required)
+    uniqueAppointmentTimeslots.length > opts.timeslotsRequired
+      ? uniqueAppointmentTimeslots.slice(0, opts.timeslotsRequired)
       : uniqueAppointmentTimeslots
 
   return requiredTimeslots
