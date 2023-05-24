@@ -300,6 +300,7 @@ const conversationStates: {
         { date: null, timeslotsRequired },
       )
 
+      // TODO: get this down to a single DB call
       const newlyOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
       >[] = await Promise.all(filteredAvailableTimes.map(
