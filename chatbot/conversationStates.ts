@@ -367,12 +367,14 @@ const conversationStates: {
     type: 'select',
     async onEnter(trx: TrxOrDb, patientMessage: UnhandledPatientMessage) {
       // Decline all other offered times
-      const toDecline = patientMessage.appointment_offered_times
+      const toDecline = patientMessage.appointment_offered_times.length === 1 ? [] : patientMessage.appointment_offered_times
         .filter((aot) => !aot.patient_declined)
         .filter((aot) => !aot.start.includes(patientMessage.body))
         .map((aot) => aot.id)
 
-      await appointments.declineOfferedTimes(trx, toDecline)
+      if (toDecline.length > 0){
+        await appointments.declineOfferedTimes(trx, toDecline)
+      } 
 
       return makeAppointment(trx, {
         ...patientMessage,
