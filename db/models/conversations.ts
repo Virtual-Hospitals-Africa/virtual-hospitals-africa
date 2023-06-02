@@ -52,7 +52,7 @@ export async function insertMessageReceived(
       patient_id: patient.id,
       whatsapp_id: opts.whatsapp_id,
       body: opts.body,
-      conversation_state: patient.conversation_state || 'initial_message',
+      conversation_state: patient.conversation_state,
     })
     .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()

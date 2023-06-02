@@ -43,7 +43,7 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'conversation_state',
-      'varchar(255)',
+      sql`conversation_state`,
       (col) => col.notNull(),
     )
     .execute()
