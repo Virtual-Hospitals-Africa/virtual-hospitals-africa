@@ -43,8 +43,8 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'conversation_state',
-      'varchar(255)',
-      (col) => col.notNull(),
+      sql`conversation_state`,
+      (col) => col.defaultTo('initial_message'),
     )
     .execute()
 

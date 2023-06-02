@@ -26,12 +26,15 @@ export async function insertMessageReceived(
     whatsapp_id: string
     body: string
     started_responding_at: Date | null | undefined
-    conversation_state: ConversationState | 'initial_message'
+    conversation_state: ConversationState
   }>
 > {
   let [patient] = await trx
     .insertInto('patients')
-    .values({ phone_number: opts.patient_phone_number })
+    .values({
+      phone_number: opts.patient_phone_number,
+      conversation_state: 'initial_message',
+    })
     .onConflict((oc) => oc.column('phone_number').doNothing())
     .returningAll()
     .execute()
@@ -52,7 +55,7 @@ export async function insertMessageReceived(
       patient_id: patient.id,
       whatsapp_id: opts.whatsapp_id,
       body: opts.body,
-      conversation_state: patient.conversation_state || 'initial_message',
+      conversation_state: patient.conversation_state,
     })
     .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()

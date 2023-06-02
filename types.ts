@@ -27,6 +27,7 @@ export type ReturnedSqlRow<T> = {
 export type Gender = 'male' | 'female' | 'other'
 
 export type ConversationState =
+  | 'initial_message'
   | 'not_onboarded:welcome'
   | 'not_onboarded:make_appointment:enter_name'
   | 'not_onboarded:make_appointment:enter_gender'
@@ -41,7 +42,7 @@ export type ConversationState =
   | 'other_end_of_demo'
 
 export type Patient = {
-  conversation_state: Maybe<ConversationState>
+  conversation_state: ConversationState
 } & PatientDemographicInfo
 
 export type PatientDemographicInfo = {
@@ -55,7 +56,6 @@ export type PatientDemographicInfo = {
 export type AppointmentOfferedTime = {
   appointment_id: number
   doctor_id: number
-  // doctor_name: string;
   start: string
   patient_declined: boolean
   scheduled_gcal_event_id: string
@@ -72,7 +72,7 @@ export type UnhandledPatientMessage = {
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
-  conversation_state: Maybe<ConversationState>
+  conversation_state: ConversationState
   scheduling_appointment_id?: number
   scheduling_appointment_reason?: Maybe<string>
   scheduling_appointment_status?: Maybe<AppointmentStatus>
@@ -91,7 +91,7 @@ export type UnhandledPatientMessageWithConversationState =
 
 // TODO; typecheck that onEnter return gets passed to prompt or eliminate this whole concept
 export type ConversationStateHandlerType<T> = T & {
-  prompt: string | ((patientMessage: UnhandledPatientMessage) => string)
+  prompt?: string | ((patientMessage: UnhandledPatientMessage) => string)
   onEnter?: (
     trx: TrxOrDb,
     patientMessage: UnhandledPatientMessage,
@@ -161,7 +161,14 @@ export type ConversationStateHandlerDate = ConversationStateHandlerType<{
   onResponse: ConversationStateHandlerOnResponse
 }>
 
+export type ConversationStateHandlerInitialMessage =
+  ConversationStateHandlerType<{
+    type: 'initial_message'
+    onResponse: ConversationStateHandlerOnResponse
+  }>
+
 export type ConversationStateHandler =
+  | ConversationStateHandlerInitialMessage
   | ConversationStateHandlerSelect
   | ConversationStateHandlerString
   | ConversationStateHandlerDate

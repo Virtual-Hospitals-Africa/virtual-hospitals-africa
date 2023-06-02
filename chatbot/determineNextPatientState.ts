@@ -75,6 +75,8 @@ function isValidResponse(
   messageBody: string,
 ): boolean {
   switch (state.type) {
+    case 'initial_message':
+      return true
     case 'select': {
       return !!findMatchingOption(state, messageBody)
     }
@@ -121,8 +123,15 @@ export function formatMessageToSend(
   patientMessage: UnhandledPatientMessage,
 ): WhatsAppSendable {
   const state = conversationStates[
-    patientMessage.conversation_state || 'not_onboarded:welcome'
+    patientMessage.conversation_state
   ]
+
+  if (!state.prompt) {
+    throw new Error(
+      `We should never be formatting a message to send while in the ${patientMessage.conversation_state} state`,
+    )
+  }
+
   const prompt = typeof state.prompt === 'string'
     ? state.prompt
     : state.prompt(patientMessage)
@@ -178,16 +187,6 @@ export function formatMessageToSend(
 export default function determineNextPatientState(
   patientMessage: UnhandledPatientMessage,
 ): DetermineNextPatientStateReturn {
-  if (!patientMessage.conversation_state) {
-    return {
-      nextPatient: {
-        ...pickPatient(patientMessage),
-        id: patientMessage.patient_id,
-        conversation_state: 'not_onboarded:welcome' as const,
-      },
-    }
-  }
-
   const currentState = conversationStates[patientMessage.conversation_state]
 
   const messageBody = patientMessage.body.trim()
