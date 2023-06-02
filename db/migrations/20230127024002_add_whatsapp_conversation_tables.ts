@@ -44,7 +44,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'conversation_state',
       sql`conversation_state`,
-      (col) => col.notNull(),
+      (col) => col.defaultTo('initial_message'),
     )
     .execute()
 

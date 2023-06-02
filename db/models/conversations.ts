@@ -26,12 +26,15 @@ export async function insertMessageReceived(
     whatsapp_id: string
     body: string
     started_responding_at: Date | null | undefined
-    conversation_state: ConversationState | 'initial_message'
+    conversation_state: ConversationState
   }>
 > {
   let [patient] = await trx
     .insertInto('patients')
-    .values({ phone_number: opts.patient_phone_number })
+    .values({
+      phone_number: opts.patient_phone_number,
+      conversation_state: 'initial_message',
+    })
     .onConflict((oc) => oc.column('phone_number').doNothing())
     .returningAll()
     .execute()
