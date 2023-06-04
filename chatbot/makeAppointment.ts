@@ -15,7 +15,7 @@ import {
 export function gcalAppointmentDetails(
   patientMessage: UnhandledPatientMessage,
 ): {
-  offeredTime: ReturnedSqlRow<
+  acceptedTime: ReturnedSqlRow<
     AppointmentOfferedTime & {
       doctor_name: string
     }
@@ -28,27 +28,25 @@ export function gcalAppointmentDetails(
     'No appointment_offered_times found in patientMessage',
   )
 
-  const acceptedTime = patientMessage.appointment_offered_times.find(
+  const acceptedTimes = patientMessage.appointment_offered_times.filter(
     (offeredTime) => !offeredTime.patient_declined,
   )
 
-  assert(
-    acceptedTime,
-    'No appointment_offered_times found in patientMessage',
+  assertEquals(
+    acceptedTimes.length,
+    1,
+    'Patient should have accepted exactly one offered time',
   )
-  assert(
-    !acceptedTime.patient_declined,
-    'Patient rejected offered appointment time',
-  )
+  const [acceptedTime] = acceptedTimes
 
-  const end = new Date(acceptedTime!.start)
+  const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
   return {
-    offeredTime: acceptedTime!,
+    acceptedTime,
     gcal: {
       summary: `Appointment with ${patientMessage.name}`,
       start: {
-        dateTime: acceptedTime!.start,
+        dateTime: acceptedTime.start,
       },
       end: {
         dateTime: formatHarare(end),
@@ -77,26 +75,26 @@ export async function makeAppointment(
 
   const details = gcalAppointmentDetails(patientMessage)
 
-  const { offeredTime, gcal } = details
+  const { acceptedTime, gcal } = details
   assert(
-    offeredTime.doctor_id,
+    acceptedTime.doctor_id,
     'No doctor_id found',
   )
 
-  const matchingDoctor = await getWithTokensById(trx, offeredTime.doctor_id)
+  const matchingDoctor = await getWithTokensById(trx, acceptedTime.doctor_id)
 
   assert(
     matchingDoctor,
-    `No doctor session found for doctor_id ${offeredTime.doctor_id}`,
+    `No doctor session found for doctor_id ${acceptedTime.doctor_id}`,
   )
   assert(
     matchingDoctor.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for doctor_id ${offeredTime.doctor_id}`,
+    `No gcal_appointments_calendar_id found for doctor_id ${acceptedTime.doctor_id}`,
   )
 
   const doctorGoogleClient = new google.GoogleClient(matchingDoctor)
 
-  const end = new Date(offeredTime.start)
+  const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
   const insertedEvent = await doctorGoogleClient.insertEvent(
@@ -105,15 +103,20 @@ export async function makeAppointment(
   )
 
   await appointments.schedule(trx, {
-    appointment_offered_time_id: offeredTime.id,
+    appointment_offered_time_id: acceptedTime.id,
     scheduled_gcal_event_id: insertedEvent.id,
   })
 
   return {
     ...patientMessage,
-    appointment_offered_times: [{
-      ...offeredTime,
-      scheduled_gcal_event_id: insertedEvent.id,
-    }],
+    appointment_offered_times: patientMessage.appointment_offered_times.map(
+      (aot) =>
+        aot.id === acceptedTime.id
+          ? {
+            ...acceptedTime,
+            scheduled_gcal_event_id: insertedEvent.id,
+          }
+          : aot,
+    ),
   }
 }

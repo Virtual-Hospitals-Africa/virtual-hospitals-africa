@@ -1,0 +1,72 @@
+import conversationStates from './conversationStates.ts'
+import {
+  UnhandledPatientMessage,
+  WhatsAppSendable,
+  WhatsAppSendableString,
+} from '../types.ts'
+
+function stringSendable(messageBody: string): WhatsAppSendableString {
+  return {
+    type: 'string',
+    messageBody,
+  }
+}
+
+export default function formatMessageToSend(
+  patientMessage: UnhandledPatientMessage,
+): WhatsAppSendable {
+  const state = conversationStates[
+    patientMessage.conversation_state
+  ]
+
+  const prompt = typeof state.prompt === 'string'
+    ? state.prompt
+    : state.prompt(patientMessage)
+
+  switch (state.type) {
+    case 'select': {
+      return {
+        type: 'buttons',
+        messageBody: prompt,
+        buttonText: 'Menu',
+        options: state.options.map((option) => ({
+          id: option.option,
+          title: option.display,
+        })),
+      }
+    }
+    case 'list': {
+      const action = state.action(patientMessage)
+      return {
+        type: 'list',
+        messageBody: prompt,
+        headerText: 'Other Appointment Times',
+        action: {
+          button: action.button,
+          sections: action.sections.map((section) => ({
+            title: section.title,
+            rows: section.rows.map((row) => ({
+              id: row.id,
+              title: row.title,
+              description: row.description,
+            })),
+          })),
+        },
+      }
+    }
+    case 'date': {
+      return stringSendable(
+        prompt + ' Please enter the date in the format DD/MM/YYYY',
+      ) // https://en.wikipedia.org/wiki/Date_format_by_country
+    }
+    case 'string': {
+      return stringSendable(prompt)
+    }
+    case 'end_of_demo': {
+      return stringSendable(prompt)
+    }
+    default: {
+      return stringSendable('What happened!?!?!?!?!?')
+    }
+  }
+}

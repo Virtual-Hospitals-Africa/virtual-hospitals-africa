@@ -89,43 +89,48 @@ export type UnhandledPatientMessageWithConversationState =
     conversation_state: ConversationState
   }
 
-// TODO; typecheck that onEnter return gets passed to prompt or eliminate this whole concept
 export type ConversationStateHandlerType<T> = T & {
-  prompt?: string | ((patientMessage: UnhandledPatientMessage) => string)
+  prompt: string | ((patientMessage: UnhandledPatientMessage) => string)
   onEnter?: (
     trx: TrxOrDb,
     patientMessage: UnhandledPatientMessage,
-    next: DetermineNextPatientStateReturn,
+  ) => Promise<UnhandledPatientMessage>
+  onExit?: (
+    trx: TrxOrDb,
+    patientMessage: UnhandledPatientMessage,
   ) => Promise<UnhandledPatientMessage>
 }
 
-export type ConversationStateHandlerReturn = {
-  nextState: ConversationState
-  patientUpdates?: Partial<PatientDemographicInfo>
-  appointmentUpdates?: Partial<Appointment>
-}
-
-export type ConversationStateHandlerOnResponse =
+export type ConversationStateHandlerNextState =
   | ConversationState
   | ((
     patientMessage: UnhandledPatientMessage,
-  ) => ConversationStateHandlerReturn)
+  ) => ConversationState)
 
 export type ConversationStateHandlerSelectOption = {
   option: string
   display: string
   aliases?: string[]
-  onResponse: ConversationStateHandlerOnResponse
+  nextState: ConversationStateHandlerNextState
+  onExit?: (
+    trx: TrxOrDb,
+    patientMessage: UnhandledPatientMessage,
+  ) => Promise<UnhandledPatientMessage>
 }
 
+export type ConversationStateHandlerListActionRow = {
+  id: string
+  title: string
+  description: string
+  nextState: ConversationStateHandlerNextState
+  onExit?: (
+    trx: TrxOrDb,
+    patientMessage: UnhandledPatientMessage,
+  ) => Promise<UnhandledPatientMessage>
+}
 export type ConversationStateHandlerListActionSection = {
   title: string
-  rows: {
-    id: string
-    title: string
-    description: string
-  }[]
-  onResponse: ConversationStateHandlerOnResponse
+  rows: ConversationStateHandlerListActionRow[]
 }
 
 export type ConversationStateHandlerListAction = {
@@ -148,23 +153,23 @@ export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
 export type ConversationStateHandlerString = ConversationStateHandlerType<{
   type: 'string'
   validation?: (value: string) => boolean
-  onResponse: ConversationStateHandlerOnResponse
+  nextState: ConversationStateHandlerNextState
 }>
 
 export type ConversationStateHandlerEndOfDemo = ConversationStateHandlerType<{
   type: 'end_of_demo'
-  onResponse: ConversationStateHandlerOnResponse
+  nextState: ConversationStateHandlerNextState
 }>
 
 export type ConversationStateHandlerDate = ConversationStateHandlerType<{
   type: 'date'
-  onResponse: ConversationStateHandlerOnResponse
+  nextState: ConversationStateHandlerNextState
 }>
 
 export type ConversationStateHandlerInitialMessage =
   ConversationStateHandlerType<{
     type: 'initial_message'
-    onResponse: ConversationStateHandlerOnResponse
+    nextState: ConversationStateHandlerNextState
   }>
 
 export type ConversationStateHandler =
@@ -183,14 +188,15 @@ export type Appointment = {
   status: AppointmentStatus
 }
 
-export type DetermineNextPatientStateValidReturn = {
-  nextPatient?: Patient & { id: number }
-  nextAppointment?: Appointment & { id: number }
-}
-
-export type DetermineNextPatientStateReturn =
+export type DetermineNextConversationStateReturn =
   | 'invalid_response'
-  | DetermineNextPatientStateValidReturn
+  | {
+    nextState: ConversationStateHandlerNextState
+    onExit?: (
+      trx: TrxOrDb,
+      patientMessage: UnhandledPatientMessage,
+    ) => Promise<UnhandledPatientMessage>
+  }
 
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'

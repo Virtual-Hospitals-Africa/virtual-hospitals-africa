@@ -9,25 +9,29 @@ import { availableThirtyMinutes } from './getDoctorAvailability.ts'
 import { makeAppointment } from './makeAppointment.ts'
 import { cancelAppointment } from './cancelAppointment.ts'
 import * as appointments from '../db/models/appointments.ts'
+import * as patients from '../db/models/patients.ts'
 import {
   AppointmentOfferedTime,
   ConversationState,
   ConversationStateHandler,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
-  ConversationStateHandlerReturn,
   PatientDemographicInfo,
   ReturnedSqlRow,
   TrxOrDb,
   UnhandledPatientMessage,
 } from '../types.ts'
+import pickPatient from './pickPatient.ts'
 
 const conversationStates: {
   [state in ConversationState]: ConversationStateHandler
 } = {
   'initial_message': {
     type: 'initial_message',
-    onResponse: 'not_onboarded:welcome',
+    nextState: 'not_onboarded:welcome',
+    prompt() {
+      throw new Error('Should not prompt for initial message')
+    },
   },
   'not_onboarded:welcome': {
     type: 'select',
@@ -38,7 +42,7 @@ const conversationStates: {
         option: 'make_appointment',
         display: 'Make appointment',
         aliases: ['appt', 'appointment', 'doctor', 'specialist'],
-        onResponse: 'not_onboarded:make_appointment:enter_name',
+        nextState: 'not_onboarded:make_appointment:enter_name',
       },
     ],
   },
@@ -46,15 +50,13 @@ const conversationStates: {
     type: 'string',
     prompt:
       'Sure, I can help you make an appointment with a doctor.\n\nTo start, what is your name?',
-    onResponse(
-      patientMessage: UnhandledPatientMessage,
-    ): ConversationStateHandlerReturn {
-      return {
-        nextState: 'not_onboarded:make_appointment:enter_gender',
-        patientUpdates: {
-          name: patientMessage.body,
-        },
-      }
+    nextState: 'not_onboarded:make_appointment:enter_gender',
+    async onExit(trx, patientMessage) {
+      await patients.upsert(trx, {
+        ...pickPatient(patientMessage),
+        name: patientMessage.body,
+      })
+      return { ...patientMessage, name: patientMessage.body }
     },
   },
   'not_onboarded:make_appointment:enter_gender': {
@@ -69,39 +71,39 @@ const conversationStates: {
         option: 'male',
         display: 'Male',
         aliases: ['male', 'm'],
-        onResponse(
-          _patientMessage: UnhandledPatientMessage,
-        ): ConversationStateHandlerReturn {
-          return {
-            nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
-            patientUpdates: { gender: 'male' },
-          }
+        nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
+        async onExit(trx, patientMessage) {
+          await patients.upsert(trx, {
+            ...pickPatient(patientMessage),
+            gender: 'male',
+          })
+          return { ...patientMessage, gender: 'male' }
         },
       },
       {
         option: 'female',
         display: 'Female',
         aliases: ['female', 'f'],
-        onResponse(
-          _patientMessage: UnhandledPatientMessage,
-        ): ConversationStateHandlerReturn {
-          return {
-            nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
-            patientUpdates: { gender: 'female' },
-          }
+        nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
+        async onExit(trx, patientMessage) {
+          await patients.upsert(trx, {
+            ...pickPatient(patientMessage),
+            gender: 'female',
+          })
+          return { ...patientMessage, gender: 'female' }
         },
       },
       {
         option: 'other',
         display: 'Other',
         aliases: ['other', 'o'],
-        onResponse(
-          _patientMessage: UnhandledPatientMessage,
-        ): ConversationStateHandlerReturn {
-          return {
-            nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
-            patientUpdates: { gender: 'other' },
-          }
+        nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
+        async onExit(trx, patientMessage) {
+          await patients.upsert(trx, {
+            ...pickPatient(patientMessage),
+            gender: 'other',
+          })
+          return { ...patientMessage, gender: 'other' }
         },
       },
     ],
@@ -109,23 +111,17 @@ const conversationStates: {
   'not_onboarded:make_appointment:enter_date_of_birth': {
     type: 'date',
     prompt: 'Thanks for that information. What is your date of birth?',
-    onResponse(
-      patientMessage: UnhandledPatientMessage,
-    ): ConversationStateHandlerReturn {
+    nextState: 'not_onboarded:make_appointment:enter_national_id_number',
+    async onExit(trx, patientMessage) {
       const [day, month, year] = patientMessage.body.split('/')
-      console.log(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`)
-
-      return {
-        nextState: 'not_onboarded:make_appointment:enter_national_id_number',
-        patientUpdates: {
-          date_of_birth: `${year}-${month.padStart(2, '0')}-${
-            day.padStart(
-              2,
-              '0',
-            )
-          }`,
-        },
-      }
+      const monthStr = month.padStart(2, '0')
+      const dayStr = day.padStart(2, '0')
+      const date_of_birth = `${year}-${monthStr}-${dayStr}`
+      await patients.upsert(trx, {
+        ...pickPatient(patientMessage),
+        date_of_birth,
+      })
+      return { ...patientMessage, date_of_birth }
     },
   },
   'not_onboarded:make_appointment:enter_national_id_number': {
@@ -137,15 +133,13 @@ const conversationStates: {
         )
       }. Please enter your national ID number`
     },
-    onResponse(
-      patientMessage: UnhandledPatientMessage,
-    ): ConversationStateHandlerReturn {
-      return {
-        nextState: 'onboarded:make_appointment:enter_appointment_reason',
-        patientUpdates: {
-          national_id_number: patientMessage.body,
-        },
-      }
+    nextState: 'onboarded:make_appointment:enter_appointment_reason',
+    async onExit(trx, patientMessage) {
+      await patients.upsert(trx, {
+        ...pickPatient(patientMessage),
+        national_id_number: patientMessage.body,
+      })
+      return { ...patientMessage, national_id_number: patientMessage.body }
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
@@ -162,14 +156,20 @@ const conversationStates: {
     prompt(patientMessage: UnhandledPatientMessage): string {
       return `Got it, ${patientMessage.national_id_number}. What is the reason you want to schedule an appointment?`
     },
-    onResponse(
-      patientMessage: UnhandledPatientMessage,
-    ): ConversationStateHandlerReturn {
+    nextState: 'onboarded:make_appointment:confirm_details',
+    async onExit(
+      trx,
+      patientMessage,
+    ) {
+      await appointments.upsert(trx, {
+        id: patientMessage.scheduling_appointment_id!,
+        patient_id: patientMessage.patient_id,
+        reason: patientMessage.body,
+        status: patientMessage.scheduling_appointment_status!,
+      })
       return {
-        nextState: 'onboarded:make_appointment:confirm_details',
-        appointmentUpdates: {
-          reason: patientMessage.body,
-        },
+        ...patientMessage,
+        scheduling_appointment_reason: patientMessage.body,
       }
     },
   },
@@ -187,13 +187,13 @@ const conversationStates: {
         option: 'confirm',
         display: 'Yes',
         aliases: ['yes', 'confirm', 'correct'],
-        onResponse: 'onboarded:make_appointment:first_scheduling_option',
+        nextState: 'onboarded:make_appointment:first_scheduling_option',
       },
       {
         option: 'go_back',
         display: 'Go back',
         aliases: ['back'],
-        onResponse: 'other_end_of_demo',
+        nextState: 'other_end_of_demo',
       },
     ],
   },
@@ -203,7 +203,6 @@ const conversationStates: {
       trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
-      console.log('onboarded:make_appointment:first_scheduling_option onEnter')
       const firstAvailable = await availableThirtyMinutes(trx, [], {
         date: null,
         timeslotsRequired: 1,
@@ -214,8 +213,6 @@ const conversationStates: {
         doctor_id: firstAvailable[0].doctor.id,
         start: firstAvailable[0].start,
       })
-
-      console.log('past appointments.addOfferedTime')
 
       const nextOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
@@ -242,19 +239,30 @@ const conversationStates: {
         option: 'confirm',
         display: 'Yes',
         aliases: ['yes', 'confirm', 'correct'],
-        onResponse: 'onboarded:appointment_scheduled',
+        nextState: 'onboarded:appointment_scheduled',
       },
       {
         option: 'other_times',
         display: 'Other times',
         aliases: ['other', 'Other times'],
-        onResponse: 'onboarded:make_appointment:other_scheduling_options',
+        nextState: 'onboarded:make_appointment:other_scheduling_options',
+        async onExit(trx, patientMessage) {
+          await appointments.declineOfferedTimes(
+            trx,
+            patientMessage.appointment_offered_times.map((aot) => aot.id),
+          )
+          return {
+            ...patientMessage,
+            appointment_offered_times: patientMessage.appointment_offered_times
+              .map((aot) => ({ ...aot, patient_declined: true })),
+          }
+        },
       },
       {
         option: 'go_back',
         display: 'Go back',
         aliases: ['back'],
-        onResponse: 'other_end_of_demo',
+        nextState: 'other_end_of_demo',
       },
     ],
   },
@@ -264,19 +272,9 @@ const conversationStates: {
       trx: TrxOrDb,
       patientMessage: UnhandledPatientMessage,
     ): Promise<UnhandledPatientMessage> {
-      console.log(
-        'onboarded:make_appointment:other_scheduling_options onEnter',
-      )
-
-      assert(patientMessage.appointment_offered_times[0], 'should have times')
-
-      // Mark all previously offered times as declined
-      const toDecline = patientMessage.appointment_offered_times
-        .filter((aot) => !aot.patient_declined)
-
-      await appointments.declineOfferedTimes(
-        trx,
-        toDecline.map((aot) => aot.id),
+      assert(
+        patientMessage.appointment_offered_times.length,
+        'should have times',
       )
 
       const declinedTimes = patientMessage.appointment_offered_times.map(
@@ -334,21 +332,43 @@ const conversationStates: {
     action(
       patientMessage: UnhandledPatientMessage,
     ): ConversationStateHandlerListAction {
-      const offeredTimes = patientMessage.appointment_offered_times.filter(
+      const nonDeclinedTimes = patientMessage.appointment_offered_times.filter(
         (offered_time) => !offered_time.patient_declined,
       )
 
+      // TODO: Support more than one day
       const sections: ConversationStateHandlerListActionSection[] = [
         {
-          title: offeredTimes[0].start.split('T')[0],
-          rows: offeredTimes.map((offeredTime) => {
+          title: nonDeclinedTimes[0].start.split('T')[0],
+          rows: nonDeclinedTimes.map((offeredTime) => {
             return {
-              id: offeredTime.start.split('+')[0],
+              id: String(offeredTime.id),
               title: convertToTimeString(offeredTime.start),
               description: `With Dr. ${offeredTime.doctor_name}`,
+              nextState: 'onboarded:appointment_scheduled',
+              // Decline all other offered times
+              async onExit(trx, patientMessage) {
+                const toDecline = patientMessage.appointment_offered_times
+                  .filter((aot) => !aot.patient_declined)
+                  .filter((aot) => aot.id !== offeredTime.id)
+                  .map((aot) => aot.id)
+
+                if (toDecline.length > 0) {
+                  await appointments.declineOfferedTimes(trx, toDecline)
+                }
+
+                return {
+                  ...patientMessage,
+                  appointment_offered_times: patientMessage
+                    .appointment_offered_times.map((aot) =>
+                      toDecline.includes(aot.id)
+                        ? { ...aot, patient_declined: true }
+                        : aot
+                    ),
+                }
+              },
             }
           }),
-          onResponse: 'onboarded:appointment_scheduled',
         },
         {
           title: 'Other Times',
@@ -356,8 +376,22 @@ const conversationStates: {
             id: 'other_time',
             title: 'Other time slot',
             description: 'Show other times',
+            nextState: 'onboarded:make_appointment:other_scheduling_options',
+            async onExit(trx, patientMessage) {
+              await appointments.declineOfferedTimes(
+                trx,
+                patientMessage.appointment_offered_times.map((aot) => aot.id),
+              )
+              return {
+                ...patientMessage,
+                appointment_offered_times: patientMessage
+                  .appointment_offered_times.map((aot) => ({
+                    ...aot,
+                    patient_declined: true,
+                  })),
+              }
+            },
           }],
-          onResponse: 'onboarded:make_appointment:other_scheduling_options',
         },
       ]
       return {
@@ -369,33 +403,11 @@ const conversationStates: {
 
   'onboarded:appointment_scheduled': {
     type: 'select',
-    async onEnter(trx: TrxOrDb, patientMessage: UnhandledPatientMessage) {
-      // Decline all other offered times
-      const toDecline = patientMessage.appointment_offered_times.length === 1
-        ? []
-        : patientMessage.appointment_offered_times
-          .filter((aot) => !aot.patient_declined)
-          .filter((aot) => !aot.start.includes(patientMessage.body))
-          .map((aot) => aot.id)
-
-      if (toDecline.length > 0) {
-        await appointments.declineOfferedTimes(trx, toDecline)
-      }
-
-      return makeAppointment(trx, {
-        ...patientMessage,
-        appointment_offered_times: patientMessage.appointment_offered_times.map(
-          (aot) =>
-            toDecline.includes(aot.id)
-              ? { ...aot, patient_declined: true }
-              : aot,
-        ),
-      })
-    },
+    onEnter: makeAppointment,
     prompt(patientMessage: UnhandledPatientMessage) {
       const acceptedTimes = []
       for (const offeredTime of patientMessage.appointment_offered_times) {
-        if (!offeredTime?.patient_declined) {
+        if (!offeredTime.patient_declined) {
           acceptedTimes.push(offeredTime)
         }
       }
@@ -413,7 +425,7 @@ const conversationStates: {
       {
         option: 'cancel',
         display: 'Cancel Appointment',
-        onResponse: 'onboarded:cancel_appointment',
+        nextState: 'onboarded:cancel_appointment',
       },
     ],
   },
@@ -426,7 +438,7 @@ const conversationStates: {
         option: 'make_appointment',
         display: 'Make appointment',
         aliases: ['appt', 'appointment', 'doctor', 'specialist'],
-        onResponse: 'onboarded:make_appointment:enter_appointment_reason',
+        nextState: 'onboarded:make_appointment:enter_appointment_reason',
       },
     ],
     onEnter(
@@ -439,7 +451,7 @@ const conversationStates: {
   other_end_of_demo: {
     type: 'end_of_demo',
     prompt: 'This is the end of the demo. Thank you for participating!',
-    onResponse: 'other_end_of_demo',
+    nextState: 'other_end_of_demo',
   },
 }
 

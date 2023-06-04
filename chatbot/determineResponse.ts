@@ -1,10 +1,9 @@
-import * as patients from '../db/models/patients.ts'
-import * as appointments from '../db/models/appointments.ts'
-import determineNextPatientState, {
-  formatMessageToSend,
-} from './determineNextPatientState.ts'
+import findMatchingState from './findMatchingState.ts'
+import formatMessageToSend from './formatMessageToSend.ts'
 import conversationStates from './conversationStates.ts'
 import { TrxOrDb, UnhandledPatientMessage, WhatsAppSendable } from '../types.ts'
+import * as patients from '../db/models/patients.ts'
+import pickPatient from './pickPatient.ts'
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`
 
@@ -12,10 +11,9 @@ export async function determineResponse(
   trx: TrxOrDb,
   patientMessage: UnhandledPatientMessage,
 ): Promise<WhatsAppSendable> {
-  const next = determineNextPatientState(patientMessage)
+  const currentState = findMatchingState(patientMessage)
 
-  if (next === 'invalid_response') {
-    // This is returning the type string
+  if (currentState === 'invalid_response') {
     const originalMessageSent = formatMessageToSend(patientMessage)
     return {
       ...originalMessageSent,
@@ -23,29 +21,27 @@ export async function determineResponse(
     }
   }
 
+  const nextState = typeof currentState.nextState === 'string'
+    ? currentState.nextState
+    : currentState.nextState(patientMessage)
+
   patientMessage = {
     ...patientMessage,
-    ...next.nextPatient,
+    conversation_state: nextState,
   }
 
-  if (next.nextPatient) {
-    await patients.upsert(trx, next.nextPatient)
-  }
-  if (next.nextAppointment) {
-    await appointments.upsert(trx, next.nextAppointment)
-  }
+  await patients.upsert(trx, pickPatient(patientMessage))
 
-  const nextState = conversationStates[patientMessage.conversation_state!]
-
-  if (nextState.onEnter) {
-    patientMessage = await nextState.onEnter(trx, patientMessage, next)
-    console.log('after onEnter', JSON.stringify(patientMessage))
+  if (currentState.onExit) {
+    patientMessage = await currentState.onExit(trx, patientMessage)
   }
 
-  return formatMessageToSend({
-    ...patientMessage,
-    scheduling_appointment_id: next.nextAppointment && next.nextAppointment.id,
-    scheduling_appointment_reason: next.nextAppointment &&
-      next.nextAppointment.reason,
-  })
+  const nextConversationState =
+    conversationStates[patientMessage.conversation_state]
+
+  if (nextConversationState.onEnter) {
+    patientMessage = await nextConversationState.onEnter(trx, patientMessage)
+  }
+
+  return formatMessageToSend(patientMessage)
 }

@@ -95,7 +95,7 @@ export function createNew(
 
 export async function upsert(
   trx: TrxOrDb,
-  info: Appointment,
+  info: Appointment & { id?: number },
 ): Promise<ReturnedSqlRow<Appointment>> {
   const [appointment] = await trx
     .insertInto('appointments')
