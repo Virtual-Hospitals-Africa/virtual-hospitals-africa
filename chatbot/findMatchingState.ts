@@ -8,7 +8,7 @@ import {
   ConversationStateHandlerSelectOption,
   DetermineNextConversationStateReturn,
   Maybe,
-  UnhandledPatientMessage,
+  PatientState,
 } from '../types.ts'
 
 function findMatchingOption(
@@ -84,11 +84,11 @@ function isValidResponse(
 }
 
 export default function findMatchingState(
-  patientMessage: UnhandledPatientMessage,
+  patientState: PatientState,
 ): DetermineNextConversationStateReturn {
-  const currentState = conversationStates[patientMessage.conversation_state]
+  const currentState = conversationStates[patientState.conversation_state]
 
-  const messageBody = patientMessage.body.trim()
+  const messageBody = patientState.body.trim()
   if (!isValidResponse(currentState, messageBody)) {
     return 'invalid_response'
   }
@@ -96,7 +96,7 @@ export default function findMatchingState(
     return findMatchingOption(currentState, messageBody)!
   }
   if (currentState.type === 'list') {
-    return findMatchingRow(currentState.action(patientMessage), messageBody)!
+    return findMatchingRow(currentState.action(patientState), messageBody)!
   }
   return currentState
 }

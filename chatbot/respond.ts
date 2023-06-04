@@ -3,7 +3,7 @@ import {
   getUnhandledPatientMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
-import { UnhandledPatientMessage } from '../types.ts'
+import { PatientState } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
 import { sendMessage } from '../external-clients/whatsapp.ts'
@@ -11,16 +11,16 @@ import { sendMessage } from '../external-clients/whatsapp.ts'
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
 
 async function respondToPatientMessage(
-  patientMessage: UnhandledPatientMessage,
+  patientState: PatientState,
 ) {
   try {
     const responseToSend = await db
       .transaction()
-      .execute((trx) => determineResponse(trx, patientMessage))
+      .execute((trx) => determineResponse(trx, patientState))
 
     const whatsappResponse = await sendMessage({
       message: responseToSend,
-      phone_number: patientMessage.phone_number,
+      phone_number: patientState.phone_number,
     })
 
     if ('error' in whatsappResponse) {
@@ -29,8 +29,8 @@ async function respondToPatientMessage(
     }
 
     await insertMessageSent(db, {
-      patient_id: patientMessage.patient_id,
-      responding_to_id: patientMessage.message_id,
+      patient_id: patientState.patient_id,
+      responding_to_id: patientState.message_id,
       whatsapp_id: whatsappResponse.messages[0].id,
       body: JSON.stringify(responseToSend),
     })
@@ -43,12 +43,12 @@ async function respondToPatientMessage(
         type: 'string',
         messageBody: `An unknown error occured: ${err.message}`,
       },
-      phone_number: patientMessage.phone_number,
+      phone_number: patientState.phone_number,
     })
 
     await markChatbotError(db, {
       commitHash,
-      whatsapp_message_received_id: patientMessage.message_id,
+      whatsapp_message_received_id: patientState.message_id,
       errorMessage: err.message,
     })
   }

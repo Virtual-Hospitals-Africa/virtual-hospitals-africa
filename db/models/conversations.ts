@@ -1,9 +1,9 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   ConversationState,
+  PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-  UnhandledPatientMessage,
 } from '../../types.ts'
 
 export function updateReadStatus(
@@ -83,9 +83,9 @@ export async function getUnhandledPatientMessages(
   trx: TrxOrDb,
   { commitHash }: { commitHash: string },
 ): Promise<
-  UnhandledPatientMessage[]
+  PatientState[]
 > {
-  const result = await sql<UnhandledPatientMessage>`
+  const result = await sql<PatientState>`
     WITH responding_to_messages as (
            UPDATE whatsapp_messages_received
               SET started_responding_at = now()

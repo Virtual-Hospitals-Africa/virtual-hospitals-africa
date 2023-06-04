@@ -7,13 +7,13 @@ import {
   AppointmentOfferedTime,
   DeepPartial,
   GCalEvent,
+  PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-  UnhandledPatientMessage,
 } from '../types.ts'
 
 export function gcalAppointmentDetails(
-  patientMessage: UnhandledPatientMessage,
+  patientState: PatientState,
 ): {
   acceptedTime: ReturnedSqlRow<
     AppointmentOfferedTime & {
@@ -23,12 +23,12 @@ export function gcalAppointmentDetails(
   gcal: DeepPartial<GCalEvent>
 } {
   assert(
-    patientMessage.appointment_offered_times &&
-      patientMessage.appointment_offered_times.length,
-    'No appointment_offered_times found in patientMessage',
+    patientState.appointment_offered_times &&
+      patientState.appointment_offered_times.length,
+    'No appointment_offered_times found in patientState',
   )
 
-  const acceptedTimes = patientMessage.appointment_offered_times.filter(
+  const acceptedTimes = patientState.appointment_offered_times.filter(
     (offeredTime) => !offeredTime.patient_declined,
   )
 
@@ -44,7 +44,7 @@ export function gcalAppointmentDetails(
   return {
     acceptedTime,
     gcal: {
-      summary: `Appointment with ${patientMessage.name}`,
+      summary: `Appointment with ${patientState.name}`,
       start: {
         dateTime: acceptedTime.start,
       },
@@ -57,23 +57,23 @@ export function gcalAppointmentDetails(
 
 export async function makeAppointment(
   trx: TrxOrDb,
-  patientMessage: UnhandledPatientMessage,
-): Promise<UnhandledPatientMessage> {
+  patientState: PatientState,
+): Promise<PatientState> {
   assertEquals(
-    patientMessage.conversation_state,
+    patientState.conversation_state,
     'onboarded:appointment_scheduled',
     'Only onboarded:appointment_scheduled patients supported for now',
   )
   assert(
-    patientMessage.scheduling_appointment_id,
-    'No scheduling_appointment_id found in patientMessage',
+    patientState.scheduling_appointment_id,
+    'No scheduling_appointment_id found in patientState',
   )
   assert(
-    patientMessage.scheduling_appointment_reason,
-    'No scheduling_appointment_reason found in patientMessage',
+    patientState.scheduling_appointment_reason,
+    'No scheduling_appointment_reason found in patientState',
   )
 
-  const details = gcalAppointmentDetails(patientMessage)
+  const details = gcalAppointmentDetails(patientState)
 
   const { acceptedTime, gcal } = details
   assert(
@@ -108,8 +108,8 @@ export async function makeAppointment(
   })
 
   return {
-    ...patientMessage,
-    appointment_offered_times: patientMessage.appointment_offered_times.map(
+    ...patientState,
+    appointment_offered_times: patientState.appointment_offered_times.map(
       (aot) =>
         aot.id === acceptedTime.id
           ? {

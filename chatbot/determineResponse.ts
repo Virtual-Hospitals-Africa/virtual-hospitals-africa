@@ -1,7 +1,7 @@
 import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
 import conversationStates from './conversationStates.ts'
-import { TrxOrDb, UnhandledPatientMessage, WhatsAppSendable } from '../types.ts'
+import { PatientState, TrxOrDb, WhatsAppSendable } from '../types.ts'
 import * as patients from '../db/models/patients.ts'
 import pickPatient from './pickPatient.ts'
 
@@ -9,12 +9,12 @@ const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`
 
 export async function determineResponse(
   trx: TrxOrDb,
-  patientMessage: UnhandledPatientMessage,
+  patientState: PatientState,
 ): Promise<WhatsAppSendable> {
-  const currentState = findMatchingState(patientMessage)
+  const currentState = findMatchingState(patientState)
 
   if (currentState === 'invalid_response') {
-    const originalMessageSent = formatMessageToSend(patientMessage)
+    const originalMessageSent = formatMessageToSend(patientState)
     return {
       ...originalMessageSent,
       messageBody: sorry(originalMessageSent.messageBody),
@@ -23,25 +23,25 @@ export async function determineResponse(
 
   const nextState = typeof currentState.nextState === 'string'
     ? currentState.nextState
-    : currentState.nextState(patientMessage)
+    : currentState.nextState(patientState)
 
-  patientMessage = {
-    ...patientMessage,
+  patientState = {
+    ...patientState,
     conversation_state: nextState,
   }
 
-  await patients.upsert(trx, pickPatient(patientMessage))
+  await patients.upsert(trx, pickPatient(patientState))
 
   if (currentState.onExit) {
-    patientMessage = await currentState.onExit(trx, patientMessage)
+    patientState = await currentState.onExit(trx, patientState)
   }
 
   const nextConversationState =
-    conversationStates[patientMessage.conversation_state]
+    conversationStates[patientState.conversation_state]
 
   if (nextConversationState.onEnter) {
-    patientMessage = await nextConversationState.onEnter(trx, patientMessage)
+    patientState = await nextConversationState.onEnter(trx, patientState)
   }
 
-  return formatMessageToSend(patientMessage)
+  return formatMessageToSend(patientState)
 }

@@ -62,7 +62,7 @@ export type AppointmentOfferedTime = {
   id: number
 }
 
-export type UnhandledPatientMessage = {
+export type PatientState = {
   message_id: number
   patient_id: number
   whatsapp_id: string
@@ -83,28 +83,22 @@ export type UnhandledPatientMessage = {
   updated_at: Date
 }
 
-export type UnhandledPatientMessageWithConversationState =
-  & UnhandledPatientMessage
-  & {
-    conversation_state: ConversationState
-  }
-
 export type ConversationStateHandlerType<T> = T & {
-  prompt: string | ((patientMessage: UnhandledPatientMessage) => string)
+  prompt: string | ((patientState: PatientState) => string)
   onEnter?: (
     trx: TrxOrDb,
-    patientMessage: UnhandledPatientMessage,
-  ) => Promise<UnhandledPatientMessage>
+    patientState: PatientState,
+  ) => Promise<PatientState>
   onExit?: (
     trx: TrxOrDb,
-    patientMessage: UnhandledPatientMessage,
-  ) => Promise<UnhandledPatientMessage>
+    patientState: PatientState,
+  ) => Promise<PatientState>
 }
 
 export type ConversationStateHandlerNextState =
   | ConversationState
   | ((
-    patientMessage: UnhandledPatientMessage,
+    patientState: PatientState,
   ) => ConversationState)
 
 export type ConversationStateHandlerSelectOption = {
@@ -114,8 +108,8 @@ export type ConversationStateHandlerSelectOption = {
   nextState: ConversationStateHandlerNextState
   onExit?: (
     trx: TrxOrDb,
-    patientMessage: UnhandledPatientMessage,
-  ) => Promise<UnhandledPatientMessage>
+    patientState: PatientState,
+  ) => Promise<PatientState>
 }
 
 export type ConversationStateHandlerListActionRow = {
@@ -125,8 +119,8 @@ export type ConversationStateHandlerListActionRow = {
   nextState: ConversationStateHandlerNextState
   onExit?: (
     trx: TrxOrDb,
-    patientMessage: UnhandledPatientMessage,
-  ) => Promise<UnhandledPatientMessage>
+    patientState: PatientState,
+  ) => Promise<PatientState>
 }
 export type ConversationStateHandlerListActionSection = {
   title: string
@@ -141,7 +135,7 @@ export type ConversationStateHandlerListAction = {
 export type ConversationStateHandlerList = ConversationStateHandlerType<{
   type: 'list'
   action: (
-    patientMessage: UnhandledPatientMessage,
+    patientState: PatientState,
   ) => ConversationStateHandlerListAction
 }>
 
@@ -194,8 +188,8 @@ export type DetermineNextConversationStateReturn =
     nextState: ConversationStateHandlerNextState
     onExit?: (
       trx: TrxOrDb,
-      patientMessage: UnhandledPatientMessage,
-    ) => Promise<UnhandledPatientMessage>
+      patientState: PatientState,
+    ) => Promise<PatientState>
   }
 
 export type WhatsAppIncomingMessage = {

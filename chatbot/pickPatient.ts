@@ -1,13 +1,13 @@
-import { UnhandledPatientMessage } from '../types.ts'
+import { PatientState } from '../types.ts'
 
-export default function pickPatient(patientMessage: UnhandledPatientMessage) {
+export default function pickPatient(patientState: PatientState) {
   return {
-    id: patientMessage.patient_id,
-    phone_number: patientMessage.phone_number,
-    name: patientMessage.name,
-    gender: patientMessage.gender,
-    date_of_birth: patientMessage.date_of_birth,
-    national_id_number: patientMessage.national_id_number,
-    conversation_state: patientMessage.conversation_state,
+    id: patientState.patient_id,
+    phone_number: patientState.phone_number,
+    name: patientState.name,
+    gender: patientState.gender,
+    date_of_birth: patientState.date_of_birth,
+    national_id_number: patientState.national_id_number,
+    conversation_state: patientState.conversation_state,
   }
 }

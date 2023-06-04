@@ -1,6 +1,6 @@
 import conversationStates from './conversationStates.ts'
 import {
-  UnhandledPatientMessage,
+  PatientState,
   WhatsAppSendable,
   WhatsAppSendableString,
 } from '../types.ts'
@@ -13,15 +13,15 @@ function stringSendable(messageBody: string): WhatsAppSendableString {
 }
 
 export default function formatMessageToSend(
-  patientMessage: UnhandledPatientMessage,
+  patientState: PatientState,
 ): WhatsAppSendable {
   const state = conversationStates[
-    patientMessage.conversation_state
+    patientState.conversation_state
   ]
 
   const prompt = typeof state.prompt === 'string'
     ? state.prompt
-    : state.prompt(patientMessage)
+    : state.prompt(patientState)
 
   switch (state.type) {
     case 'select': {
@@ -36,7 +36,7 @@ export default function formatMessageToSend(
       }
     }
     case 'list': {
-      const action = state.action(patientMessage)
+      const action = state.action(patientState)
       return {
         type: 'list',
         messageBody: prompt,

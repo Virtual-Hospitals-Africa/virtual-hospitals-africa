@@ -1,5 +1,5 @@
 // import { faker } from "faker";
-// import { UnhandledPatientMessage } from "../types.ts";
+// import { PatientState } from "../types.ts";
 
 // function incrementingIds() {
 //   let id = 0;
@@ -11,7 +11,7 @@
 // const messageIds = incrementingIds();
 // const patientIds = incrementingIds();
 
-// export function makePatientMessage(): UnhandledPatientMessage {
+// export function makePatientMessage(): PatientState {
 //   return {
 //     message_id: messageIds.next(),
 //     patient_id: patientIds.next(),
