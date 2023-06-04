@@ -1,8 +1,6 @@
-/* TODO
-  Start up a mock WhatsApp server
-  Start up the server
-  Start up the chatbot
-*/
+import { assertEquals } from "std/testing/asserts.ts";
+import { assert } from "std/_util/asserts.ts";
+import { readLines } from "std/io/mod.ts";
 
 
 const mockEnv = {
@@ -42,28 +40,52 @@ async function startMockServer(port: number) {
 startMockServer(9000)
 startMockServer(9001)
 
+const migateLatest = new Deno.Command('deno', {
+  args: ['task', 'migrate:latest'],
+  env: mockEnv,
+}).spawn();
+
+const migrateResult = await migateLatest.output()
+assertEquals(migrateResult.code, 0)
+
 const redisServer = new Deno.Command("redis-server").spawn();
 
 const server = new Deno.Command('deno', {
   args: ['task', 'start'],
   env: mockEnv,
+  stdout: 'inherit',
+  stderr: 'inherit',
 }).spawn();
+
+const lines = readLines(await server.stdout.getReader())
+
+const foo = server.stdout.getReader()
+// for (await const chunk of foo.)
 
 const chatbot = new Deno.Command('deno', {
   args: ['task', 'chatbot'],
   env: mockEnv,
+  stdout: 'inherit',
+  stderr: 'inherit',
 }).spawn();
 
 Deno.test("chatbot responds to a message", async () => {
   console.log('in here')
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  const response = await fetch('http://localhost:8000/api/incoming-whatsapp', {
+
+  for await (const line of lines) {
+    console.log('zzz', line)
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
+  const response = await fetch('https://localhost:8000/api/incoming-whatsapp', {
     method: 'post',
     body: JSON.stringify({
-      messaging_product: 'whatsapp',
+      messaging_product: 'whatsapp_business_account',
     }),
   })
 
-  console.log(response.json())
-});
+  console.log('after here')
 
+  console.log(await response.json())
+});

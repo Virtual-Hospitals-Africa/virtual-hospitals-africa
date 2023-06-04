@@ -16,6 +16,7 @@ import {
   WhatsappMessageSent,
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
+import { assert } from 'std/_util/asserts.ts'
 
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
@@ -27,8 +28,10 @@ export type DatabaseSchema = {
   whatsapp_messages_sent: SqlRow<WhatsappMessageSent>
 }
 
-// deno-lint-ignore no-explicit-any
-const uri = Deno.env.get('DATABASE_URL') + '?sslmode=require' as any
+const DATABASE_URL = Deno.env.get('DATABASE_URL')
+assert(DATABASE_URL)
+
+const uri = DATABASE_URL.includes('localhost') ? DATABASE_URL : `${DATABASE_URL}?sslmode=require`
 
 const db = new Kysely<DatabaseSchema>({
   dialect: {
@@ -36,15 +39,8 @@ const db = new Kysely<DatabaseSchema>({
       return new PostgresAdapter()
     },
     createDriver() {
-      return new PostgreSQLDriver(
-        uri || {
-          hostname: Deno.env.get('DB_HOST')!,
-          password: Deno.env.get('DB_PASS')!,
-          user: Deno.env.get('DB_USER')!,
-          database: Deno.env.get('DB_NAME')!,
-        },
-        // deno-lint-ignore no-explicit-any
-      ) as any
+      // deno-lint-ignore no-explicit-any
+      return new PostgreSQLDriver(uri as any) as any
     },
     createIntrospector(db: Kysely<unknown>) {
       return new PostgresIntrospector(db)

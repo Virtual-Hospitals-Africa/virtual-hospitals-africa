@@ -24,6 +24,7 @@ export const handler: Handlers = {
     return new Response('Invalid token')
   },
   async POST(req) {
+    console.log("IN HERE")
     const incomingMessage: WhatsAppIncomingMessage = await req.json()
 
     console.log(JSON.stringify(incomingMessage))

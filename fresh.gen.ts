@@ -12,9 +12,10 @@ import * as $5 from './routes/app/calendar.tsx'
 import * as $6 from './routes/app/calendar/set-availability.tsx'
 import * as $7 from './routes/full-reset.ts'
 import * as $8 from './routes/index.tsx'
-import * as $9 from './routes/logged-in.tsx'
-import * as $10 from './routes/logout.tsx'
-import * as $11 from './routes/patient-reset.ts'
+import * as $9 from './routes/landing.tsx'
+import * as $10 from './routes/logged-in.tsx'
+import * as $11 from './routes/logout.tsx'
+import * as $12 from './routes/patient-reset.ts'
 import * as $$0 from './islands/date-picker.tsx'
 import * as $$1 from './islands/month-picker.tsx'
 import * as $$2 from './islands/set-availability-form.tsx'
@@ -31,9 +32,10 @@ const manifest = {
     './routes/app/calendar/set-availability.tsx': $6,
     './routes/full-reset.ts': $7,
     './routes/index.tsx': $8,
-    './routes/logged-in.tsx': $9,
-    './routes/logout.tsx': $10,
-    './routes/patient-reset.ts': $11,
+    './routes/landing.tsx': $9,
+    './routes/logged-in.tsx': $10,
+    './routes/logout.tsx': $11,
+    './routes/patient-reset.ts': $12,
   },
   islands: {
     './islands/date-picker.tsx': $$0,
