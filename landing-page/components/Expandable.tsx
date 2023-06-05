@@ -1,6 +1,6 @@
 // import { createContext, useContext, useState } from 'react'
 
-// function ArrowDownIcon(props) {
+// function ArrowDownIcon(props: any) {
 //   return (
 //     <svg aria-hidden='true' viewBox='0 0 24 24' {...props}>
 //       <path

@@ -1,5 +1,5 @@
 import { Options } from '$fresh/plugins/twind.ts'
-import * as colors from 'twind/colors'
+// import * as colors from 'twind/colors'
 
 const defaultTheme = {
   animation: {
@@ -7,7 +7,7 @@ const defaultTheme = {
     spin: 'spin 1s linear infinite',
     ping: 'ping 1s cubic-bezier(0, 0, 0.2, 1) infinite',
     pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-    bounce: 'bounce 1s infinite'
+    bounce: 'bounce 1s infinite',
   },
   aria: {
     checked: 'checked="true"',
@@ -17,7 +17,7 @@ const defaultTheme = {
     pressed: 'pressed="true"',
     readonly: 'readonly="true"',
     required: 'required="true"',
-    selected: 'selected="true"'
+    selected: 'selected="true"',
   },
   aspectRatio: { auto: 'auto', square: '1 / 1', video: '16 / 9' },
   backgroundImage: {
@@ -25,11 +25,13 @@ const defaultTheme = {
     'gradient-to-t': 'linear-gradient(to top, var(--tw-gradient-stops))',
     'gradient-to-tr': 'linear-gradient(to top right, var(--tw-gradient-stops))',
     'gradient-to-r': 'linear-gradient(to right, var(--tw-gradient-stops))',
-    'gradient-to-br': 'linear-gradient(to bottom right, var(--tw-gradient-stops))',
+    'gradient-to-br':
+      'linear-gradient(to bottom right, var(--tw-gradient-stops))',
     'gradient-to-b': 'linear-gradient(to bottom, var(--tw-gradient-stops))',
-    'gradient-to-bl': 'linear-gradient(to bottom left, var(--tw-gradient-stops))',
+    'gradient-to-bl':
+      'linear-gradient(to bottom left, var(--tw-gradient-stops))',
     'gradient-to-l': 'linear-gradient(to left, var(--tw-gradient-stops))',
-    'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))'
+    'gradient-to-tl': 'linear-gradient(to top left, var(--tw-gradient-stops))',
   },
   backgroundPosition: {
     bottom: 'bottom',
@@ -40,7 +42,7 @@ const defaultTheme = {
     right: 'right',
     'right-bottom': 'right bottom',
     'right-top': 'right top',
-    top: 'top'
+    top: 'top',
   },
   backgroundSize: { auto: 'auto', cover: 'cover', contain: 'contain' },
   blur: {
@@ -52,7 +54,7 @@ const defaultTheme = {
     lg: '16px',
     xl: '24px',
     '2xl': '40px',
-    '3xl': '64px'
+    '3xl': '64px',
   },
   borderRadius: {
     none: '0px',
@@ -63,9 +65,15 @@ const defaultTheme = {
     xl: '0.75rem',
     '2xl': '1rem',
     '3xl': '1.5rem',
-    full: '9999px'
+    full: '9999px',
   },
-  borderWidth: { '0': '0px', '2': '2px', '4': '4px', '8': '8px', DEFAULT: '1px' },
+  borderWidth: {
+    '0': '0px',
+    '2': '2px',
+    '4': '4px',
+    '8': '8px',
+    DEFAULT: '1px',
+  },
   boxShadow: {
     sm: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
     DEFAULT: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
@@ -74,7 +82,7 @@ const defaultTheme = {
     xl: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
     '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.25)',
     inner: 'inset 0 2px 4px 0 rgb(0 0 0 / 0.05)',
-    none: 'none'
+    none: 'none',
   },
   brightness: {
     '0': '0',
@@ -87,7 +95,7 @@ const defaultTheme = {
     '110': '1.1',
     '125': '1.25',
     '150': '1.5',
-    '200': '2'
+    '200': '2',
   },
   columns: {
     '1': '1',
@@ -115,7 +123,7 @@ const defaultTheme = {
     '4xl': '56rem',
     '5xl': '64rem',
     '6xl': '72rem',
-    '7xl': '80rem'
+    '7xl': '80rem',
   },
   container: {},
   content: { none: 'none' },
@@ -126,7 +134,7 @@ const defaultTheme = {
     '100': '1',
     '125': '1.25',
     '150': '1.5',
-    '200': '2'
+    '200': '2',
   },
   cursor: {
     auto: 'auto',
@@ -164,22 +172,22 @@ const defaultTheme = {
     'nesw-resize': 'nesw-resize',
     'nwse-resize': 'nwse-resize',
     'zoom-in': 'zoom-in',
-    'zoom-out': 'zoom-out'
+    'zoom-out': 'zoom-out',
   },
   dropShadow: {
     sm: '0 1px 1px rgb(0 0 0 / 0.05)',
-    DEFAULT: [ '0 1px 2px rgb(0 0 0 / 0.1)', '0 1px 1px rgb(0 0 0 / 0.06)' ],
-    md: [ '0 4px 3px rgb(0 0 0 / 0.07)', '0 2px 2px rgb(0 0 0 / 0.06)' ],
-    lg: [ '0 10px 8px rgb(0 0 0 / 0.04)', '0 4px 3px rgb(0 0 0 / 0.1)' ],
-    xl: [ '0 20px 13px rgb(0 0 0 / 0.03)', '0 8px 5px rgb(0 0 0 / 0.08)' ],
+    DEFAULT: ['0 1px 2px rgb(0 0 0 / 0.1)', '0 1px 1px rgb(0 0 0 / 0.06)'],
+    md: ['0 4px 3px rgb(0 0 0 / 0.07)', '0 2px 2px rgb(0 0 0 / 0.06)'],
+    lg: ['0 10px 8px rgb(0 0 0 / 0.04)', '0 4px 3px rgb(0 0 0 / 0.1)'],
+    xl: ['0 20px 13px rgb(0 0 0 / 0.03)', '0 8px 5px rgb(0 0 0 / 0.08)'],
     '2xl': '0 25px 25px rgb(0 0 0 / 0.15)',
-    none: '0 0 #0000'
+    none: '0 0 #0000',
   },
   flex: {
     '1': '1 1 0%',
     auto: '1 1 auto',
     initial: '0 1 auto',
-    none: 'none'
+    none: 'none',
   },
   flexGrow: { '0': '0', DEFAULT: '1' },
   flexShrink: { '0': '0', DEFAULT: '1' },
@@ -198,7 +206,7 @@ const defaultTheme = {
       '"Apple Color Emoji"',
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
-      '"Noto Color Emoji"'
+      '"Noto Color Emoji"',
     ],
     serif: [
       'ui-serif',
@@ -206,7 +214,7 @@ const defaultTheme = {
       'Cambria',
       '"Times New Roman"',
       'Times',
-      'serif'
+      'serif',
     ],
     mono: [
       'ui-monospace',
@@ -216,23 +224,23 @@ const defaultTheme = {
       'Consolas',
       '"Liberation Mono"',
       '"Courier New"',
-      'monospace'
-    ]
+      'monospace',
+    ],
   },
   fontSize: {
-    xs: [ '0.75rem', [Object] ],
-    sm: [ '0.875rem', [Object] ],
-    base: [ '1rem', [Object] ],
-    lg: [ '1.125rem', [Object] ],
-    xl: [ '1.25rem', [Object] ],
-    '2xl': [ '1.5rem', [Object] ],
-    '3xl': [ '1.875rem', [Object] ],
-    '4xl': [ '2.25rem', [Object] ],
-    '5xl': [ '3rem', [Object] ],
-    '6xl': [ '3.75rem', [Object] ],
-    '7xl': [ '4.5rem', [Object] ],
-    '8xl': [ '6rem', [Object] ],
-    '9xl': [ '8rem', [Object] ]
+    xs: ['0.75rem', [Object]],
+    sm: ['0.875rem', [Object]],
+    base: ['1rem', [Object]],
+    lg: ['1.125rem', [Object]],
+    xl: ['1.25rem', [Object]],
+    '2xl': ['1.5rem', [Object]],
+    '3xl': ['1.875rem', [Object]],
+    '4xl': ['2.25rem', [Object]],
+    '5xl': ['3rem', [Object]],
+    '6xl': ['3.75rem', [Object]],
+    '7xl': ['4.5rem', [Object]],
+    '8xl': ['6rem', [Object]],
+    '9xl': ['8rem', [Object]],
   },
   fontWeight: {
     thin: '100',
@@ -243,7 +251,7 @@ const defaultTheme = {
     semibold: '600',
     bold: '700',
     extrabold: '800',
-    black: '900'
+    black: '900',
   },
   gradientColorStopPositions: {
     '0%': '0%',
@@ -266,20 +274,20 @@ const defaultTheme = {
     '85%': '85%',
     '90%': '90%',
     '95%': '95%',
-    '100%': '100%'
+    '100%': '100%',
   },
   grayscale: { '0': '0', DEFAULT: '100%' },
   gridAutoColumns: {
     auto: 'auto',
     min: 'min-content',
     max: 'max-content',
-    fr: 'minmax(0, 1fr)'
+    fr: 'minmax(0, 1fr)',
   },
   gridAutoRows: {
     auto: 'auto',
     min: 'min-content',
     max: 'max-content',
-    fr: 'minmax(0, 1fr)'
+    fr: 'minmax(0, 1fr)',
   },
   gridColumn: {
     auto: 'auto',
@@ -295,7 +303,7 @@ const defaultTheme = {
     'span-10': 'span 10 / span 10',
     'span-11': 'span 11 / span 11',
     'span-12': 'span 12 / span 12',
-    'span-full': '1 / -1'
+    'span-full': '1 / -1',
   },
   gridColumnEnd: {
     '1': '1',
@@ -311,7 +319,7 @@ const defaultTheme = {
     '11': '11',
     '12': '12',
     '13': '13',
-    auto: 'auto'
+    auto: 'auto',
   },
   gridColumnStart: {
     '1': '1',
@@ -327,7 +335,7 @@ const defaultTheme = {
     '11': '11',
     '12': '12',
     '13': '13',
-    auto: 'auto'
+    auto: 'auto',
   },
   gridRow: {
     auto: 'auto',
@@ -337,7 +345,7 @@ const defaultTheme = {
     'span-4': 'span 4 / span 4',
     'span-5': 'span 5 / span 5',
     'span-6': 'span 6 / span 6',
-    'span-full': '1 / -1'
+    'span-full': '1 / -1',
   },
   gridRowEnd: {
     '1': '1',
@@ -347,7 +355,7 @@ const defaultTheme = {
     '5': '5',
     '6': '6',
     '7': '7',
-    auto: 'auto'
+    auto: 'auto',
   },
   gridRowStart: {
     '1': '1',
@@ -357,7 +365,7 @@ const defaultTheme = {
     '5': '5',
     '6': '6',
     '7': '7',
-    auto: 'auto'
+    auto: 'auto',
   },
   gridTemplateColumns: {
     '1': 'repeat(1, minmax(0, 1fr))',
@@ -372,7 +380,7 @@ const defaultTheme = {
     '10': 'repeat(10, minmax(0, 1fr))',
     '11': 'repeat(11, minmax(0, 1fr))',
     '12': 'repeat(12, minmax(0, 1fr))',
-    none: 'none'
+    none: 'none',
   },
   gridTemplateRows: {
     '1': 'repeat(1, minmax(0, 1fr))',
@@ -381,7 +389,7 @@ const defaultTheme = {
     '4': 'repeat(4, minmax(0, 1fr))',
     '5': 'repeat(5, minmax(0, 1fr))',
     '6': 'repeat(6, minmax(0, 1fr))',
-    none: 'none'
+    none: 'none',
   },
   hueRotate: {
     '0': '0deg',
@@ -389,14 +397,14 @@ const defaultTheme = {
     '30': '30deg',
     '60': '60deg',
     '90': '90deg',
-    '180': '180deg'
+    '180': '180deg',
   },
   invert: { '0': '0', DEFAULT: '100%' },
   keyframes: {
     spin: { to: [Object] },
     ping: { '75%, 100%': [Object] },
     pulse: { '50%': [Object] },
-    bounce: { '0%, 100%': [Object], '50%': [Object] }
+    bounce: { '0%, 100%': [Object], '50%': [Object] },
   },
   letterSpacing: {
     tighter: '-0.05em',
@@ -404,7 +412,7 @@ const defaultTheme = {
     normal: '0em',
     wide: '0.025em',
     wider: '0.05em',
-    widest: '0.1em'
+    widest: '0.1em',
   },
   lineHeight: {
     '3': '.75rem',
@@ -420,7 +428,7 @@ const defaultTheme = {
     snug: '1.375',
     normal: '1.5',
     relaxed: '1.625',
-    loose: '2'
+    loose: '2',
   },
   listStyleType: { none: 'none', disc: 'disc', decimal: 'decimal' },
   listStyleImage: { none: 'none' },
@@ -431,14 +439,14 @@ const defaultTheme = {
     screen: '100vh',
     min: 'min-content',
     max: 'max-content',
-    fit: 'fit-content'
+    fit: 'fit-content',
   },
   minWidth: {
     '0': '0px',
     full: '100%',
     min: 'min-content',
     max: 'max-content',
-    fit: 'fit-content'
+    fit: 'fit-content',
   },
   objectPosition: {
     bottom: 'bottom',
@@ -449,7 +457,7 @@ const defaultTheme = {
     right: 'right',
     'right-bottom': 'right bottom',
     'right-top': 'right top',
-    top: 'top'
+    top: 'top',
   },
   opacity: {
     '0': '0',
@@ -466,7 +474,7 @@ const defaultTheme = {
     '80': '0.8',
     '90': '0.9',
     '95': '0.95',
-    '100': '1'
+    '100': '1',
   },
   order: {
     '1': '1',
@@ -483,18 +491,24 @@ const defaultTheme = {
     '12': '12',
     first: '-9999',
     last: '9999',
-    none: '0'
+    none: '0',
   },
   outlineOffset: { '0': '0px', '1': '1px', '2': '2px', '4': '4px', '8': '8px' },
   outlineWidth: { '0': '0px', '1': '1px', '2': '2px', '4': '4px', '8': '8px' },
-  ringOffsetWidth: { '0': '0px', '1': '1px', '2': '2px', '4': '4px', '8': '8px' },
+  ringOffsetWidth: {
+    '0': '0px',
+    '1': '1px',
+    '2': '2px',
+    '4': '4px',
+    '8': '8px',
+  },
   ringWidth: {
     '0': '0px',
     '1': '1px',
     '2': '2px',
     '4': '4px',
     '8': '8px',
-    DEFAULT: '3px'
+    DEFAULT: '3px',
   },
   rotate: {
     '0': '0deg',
@@ -505,7 +519,7 @@ const defaultTheme = {
     '12': '12deg',
     '45': '45deg',
     '90': '90deg',
-    '180': '180deg'
+    '180': '180deg',
   },
   saturate: { '0': '0', '50': '.5', '100': '1', '150': '1.5', '200': '2' },
   scale: {
@@ -518,14 +532,14 @@ const defaultTheme = {
     '105': '1.05',
     '110': '1.1',
     '125': '1.25',
-    '150': '1.5'
+    '150': '1.5',
   },
   screens: {
     sm: '640px',
     md: '768px',
     lg: '1024px',
     xl: '1280px',
-    '2xl': '1536px'
+    '2xl': '1536px',
   },
   sepia: { '0': '0', DEFAULT: '100%' },
   skew: {
@@ -534,7 +548,7 @@ const defaultTheme = {
     '2': '2deg',
     '3': '3deg',
     '6': '6deg',
-    '12': '12deg'
+    '12': '12deg',
   },
   spacing: {
     '0': '0px',
@@ -571,7 +585,7 @@ const defaultTheme = {
     '0.5': '0.125rem',
     '1.5': '0.375rem',
     '2.5': '0.625rem',
-    '3.5': '0.875rem'
+    '3.5': '0.875rem',
   },
   strokeWidth: { '0': '0', '1': '1', '2': '2' },
   supports: {},
@@ -583,7 +597,7 @@ const defaultTheme = {
     '4': '4px',
     '8': '8px',
     auto: 'auto',
-    'from-font': 'from-font'
+    'from-font': 'from-font',
   },
   textUnderlineOffset: {
     '0': '0px',
@@ -591,7 +605,7 @@ const defaultTheme = {
     '2': '2px',
     '4': '4px',
     '8': '8px',
-    auto: 'auto'
+    auto: 'auto',
   },
   transformOrigin: {
     center: 'center',
@@ -602,7 +616,7 @@ const defaultTheme = {
     bottom: 'bottom',
     'bottom-left': 'bottom left',
     left: 'left',
-    'top-left': 'top left'
+    'top-left': 'top left',
   },
   transitionDelay: {
     '0': '0s',
@@ -613,7 +627,7 @@ const defaultTheme = {
     '300': '300ms',
     '500': '500ms',
     '700': '700ms',
-    '1000': '1000ms'
+    '1000': '1000ms',
   },
   transitionDuration: {
     '0': '0s',
@@ -625,29 +639,31 @@ const defaultTheme = {
     '500': '500ms',
     '700': '700ms',
     '1000': '1000ms',
-    DEFAULT: '150ms'
+    DEFAULT: '150ms',
   },
   transitionProperty: {
     none: 'none',
     all: 'all',
-    DEFAULT: 'color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
-    colors: 'color, background-color, border-color, text-decoration-color, fill, stroke',
+    DEFAULT:
+      'color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter',
+    colors:
+      'color, background-color, border-color, text-decoration-color, fill, stroke',
     opacity: 'opacity',
     shadow: 'box-shadow',
-    transform: 'transform'
+    transform: 'transform',
   },
   transitionTimingFunction: {
     DEFAULT: 'cubic-bezier(0.4, 0, 0.2, 1)',
     linear: 'linear',
     in: 'cubic-bezier(0.4, 0, 1, 1)',
     out: 'cubic-bezier(0, 0, 0.2, 1)',
-    'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)'
+    'in-out': 'cubic-bezier(0.4, 0, 0.2, 1)',
   },
   willChange: {
     auto: 'auto',
     scroll: 'scroll-position',
     contents: 'contents',
-    transform: 'transform'
+    transform: 'transform',
   },
   zIndex: {
     '0': '0',
@@ -656,13 +672,14 @@ const defaultTheme = {
     '30': '30',
     '40': '40',
     '50': '50',
-    auto: 'auto'
-  }
+    auto: 'auto',
+  },
 }
 
 export default {
   selfURL: import.meta.url,
   theme: {
+    // deno-lint-ignore no-explicit-any
     ...(defaultTheme as any),
     // boxShadow: {
     //   sm: '0 2px 6px rgb(15 23 42 / 0.08)',
