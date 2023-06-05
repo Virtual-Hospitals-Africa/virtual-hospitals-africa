@@ -181,16 +181,13 @@ export type Appointment = {
   status: AppointmentStatus
 }
 
-export type DetermineNextConversationStateReturn =
-  | 'invalid_response'
-  | {
-    nextState: ConversationStateHandlerNextState
-    onExit?: (
-      trx: TrxOrDb,
-      patientState: PatientState,
-    ) => Promise<PatientState>
-  }
-
+export type MatchingState = {
+  nextState: ConversationStateHandlerNextState
+  onExit?: (
+    trx: TrxOrDb,
+    patientState: PatientState,
+  ) => Promise<PatientState>
+}
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'
   entry: [

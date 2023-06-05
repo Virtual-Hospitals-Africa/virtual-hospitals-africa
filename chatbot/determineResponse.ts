@@ -13,7 +13,7 @@ export async function determineResponse(
 ): Promise<WhatsAppSendable> {
   const currentState = findMatchingState(patientState)
 
-  if (currentState === 'invalid_response') {
+  if (!currentState) {
     const originalMessageSent = formatMessageToSend(patientState)
     return {
       ...originalMessageSent,

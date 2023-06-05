@@ -1,31 +1,22 @@
 import conversationStates from './conversationStates.ts'
 import {
-  ConversationStateHandler,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionRow,
   ConversationStateHandlerSelect,
   ConversationStateHandlerSelectOption,
-  DetermineNextConversationStateReturn,
+  MatchingState,
   Maybe,
   PatientState,
 } from '../types.ts'
+import { isValidDate } from "../util/date.ts";
 
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
   messageBody: string,
 ): Maybe<ConversationStateHandlerSelectOption> {
-  return state.options.find((option: ConversationStateHandlerSelectOption) => {
-    if (option.option.toLowerCase() === messageBody) {
-      return option
-    }
-    const asNumber = parseInt(messageBody, 10)
-    if (asNumber) {
-      const asIndex = asNumber - 1
-      if (asIndex >= 0 && asIndex < state.options.length) {
-        return state.options[asIndex]
-      }
-    }
-  })
+  return state.options.find((option: ConversationStateHandlerSelectOption) =>
+    option.option === messageBody
+  )
 }
 
 function findMatchingRow(
@@ -39,53 +30,23 @@ function findMatchingRow(
   }
 }
 
-function isValidResponse(
-  state: ConversationStateHandler,
-  messageBody: string,
-): boolean {
-  switch (state.type) {
-    case 'initial_message':
-      return true
-    case 'select': {
-      return !!findMatchingOption(state, messageBody)
-    }
-    case 'list':
-      return true
-    case 'date': {
-      const [day, month, year] = messageBody.split('/')
-      // deno-lint-ignore no-unused-vars
-      const date = new Date(
-        `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00Z`,
-      )
-      // TODO
-      // return isValid(date);
-      return true
-    }
-    case 'string': {
-      return (
-        !!messageBody && (!state.validation || state.validation(messageBody))
-      )
-    }
-    default: {
-      return false
-    }
-  }
-}
-
 export default function findMatchingState(
   patientState: PatientState,
-): DetermineNextConversationStateReturn {
+): Maybe<MatchingState> {
   const currentState = conversationStates[patientState.conversation_state]
 
   const messageBody = patientState.body.trim()
-  if (!isValidResponse(currentState, messageBody)) {
-    return 'invalid_response'
+
+  switch (currentState.type) {
+    case 'select': return findMatchingOption(currentState, messageBody)
+    case 'list': return findMatchingRow(currentState.action(patientState), messageBody)
+    case 'date': {
+      return isValidDate(messageBody) ? currentState : null
+    }
+    case 'string': {
+      const hasBodyPassingValidation = !!messageBody && (!currentState.validation || currentState.validation(messageBody))
+      return hasBodyPassingValidation ? currentState : null
+    }
+    default: return currentState
   }
-  if (currentState.type === 'select') {
-    return findMatchingOption(currentState, messageBody)!
-  }
-  if (currentState.type === 'list') {
-    return findMatchingRow(currentState.action(patientState), messageBody)!
-  }
-  return currentState
 }

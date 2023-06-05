@@ -206,3 +206,12 @@ export function convertToTimeString(time: string): string {
     formattedTime.minute.toString().padStart(2, '0')
   } ${formattedTime.amPm}`
 }
+
+// TODO Implement this
+export function isValidDate(messageBody: string): boolean {
+  const [day, month, year] = messageBody.split('/')
+  const date = new Date(
+    `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00Z`,
+  )
+  return !!date
+}
