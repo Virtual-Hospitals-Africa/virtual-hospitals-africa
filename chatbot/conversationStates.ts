@@ -41,7 +41,6 @@ const conversationStates: {
       {
         option: 'make_appointment',
         display: 'Make appointment',
-        aliases: ['appt', 'appointment', 'doctor', 'specialist'],
         nextState: 'not_onboarded:make_appointment:enter_name',
       },
     ],
@@ -70,7 +69,6 @@ const conversationStates: {
       {
         option: 'male',
         display: 'Male',
-        aliases: ['male', 'm'],
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
@@ -83,7 +81,6 @@ const conversationStates: {
       {
         option: 'female',
         display: 'Female',
-        aliases: ['female', 'f'],
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
@@ -96,7 +93,6 @@ const conversationStates: {
       {
         option: 'other',
         display: 'Other',
-        aliases: ['other', 'o'],
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
@@ -186,13 +182,11 @@ const conversationStates: {
       {
         option: 'confirm',
         display: 'Yes',
-        aliases: ['yes', 'confirm', 'correct'],
         nextState: 'onboarded:make_appointment:first_scheduling_option',
       },
       {
         option: 'go_back',
         display: 'Go back',
-        aliases: ['back'],
         nextState: 'other_end_of_demo',
       },
     ],
@@ -238,13 +232,11 @@ const conversationStates: {
       {
         option: 'confirm',
         display: 'Yes',
-        aliases: ['yes', 'confirm', 'correct'],
         nextState: 'onboarded:appointment_scheduled',
       },
       {
         option: 'other_times',
         display: 'Other times',
-        aliases: ['other', 'Other times'],
         nextState: 'onboarded:make_appointment:other_scheduling_options',
         async onExit(trx, patientState) {
           await appointments.declineOfferedTimes(
@@ -261,7 +253,6 @@ const conversationStates: {
       {
         option: 'go_back',
         display: 'Go back',
-        aliases: ['back'],
         nextState: 'other_end_of_demo',
       },
     ],
@@ -437,7 +428,6 @@ const conversationStates: {
       {
         option: 'make_appointment',
         display: 'Make appointment',
-        aliases: ['appt', 'appointment', 'doctor', 'specialist'],
         nextState: 'onboarded:make_appointment:enter_appointment_reason',
       },
     ],

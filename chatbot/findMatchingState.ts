@@ -1,5 +1,4 @@
 import conversationStates from './conversationStates.ts'
-import words from '../util/words.ts'
 import {
   ConversationStateHandler,
   ConversationStateHandlerListAction,
@@ -15,19 +14,9 @@ function findMatchingOption(
   state: ConversationStateHandlerSelect,
   messageBody: string,
 ): Maybe<ConversationStateHandlerSelectOption> {
-  const messageWords = words(messageBody.trim().toLowerCase())
   return state.options.find((option: ConversationStateHandlerSelectOption) => {
     if (option.option.toLowerCase() === messageBody) {
       return option
-    }
-    if (option.aliases) {
-      if (
-        option.aliases.some((alias) =>
-          messageWords.some((word: string) => alias === word)
-        )
-      ) {
-        return option
-      }
     }
     const asNumber = parseInt(messageBody, 10)
     if (asNumber) {

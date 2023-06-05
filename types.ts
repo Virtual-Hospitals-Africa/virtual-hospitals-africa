@@ -104,7 +104,6 @@ export type ConversationStateHandlerNextState =
 export type ConversationStateHandlerSelectOption = {
   option: string
   display: string
-  aliases?: string[]
   nextState: ConversationStateHandlerNextState
   onExit?: (
     trx: TrxOrDb,
