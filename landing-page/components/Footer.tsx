@@ -1,4 +1,4 @@
-import { GridPattern } from './GridPattern'
+import { GridPattern } from './GridPattern.tsx'
 
 export function Footer() {
   return (

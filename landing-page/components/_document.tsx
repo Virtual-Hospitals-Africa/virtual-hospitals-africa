@@ -5,7 +5,7 @@ export default function Document() {
     <html className='scroll-smooth bg-white antialiased' lang='en'>
       <head>
         <title>
-          Everything Starts as a Square - Get lost in the world of icon design
+          Virtual Hospitals Africa
         </title>
         <meta
           name='description'

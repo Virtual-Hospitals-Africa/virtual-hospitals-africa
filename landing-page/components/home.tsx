@@ -1,17 +1,15 @@
-import { Author } from './Author.tsx'
+import { Partners } from './Partners.tsx'
 import { Footer } from './Footer.tsx'
 import { FreeChapters } from './FreeChapters.tsx'
 import { Hero } from './Hero.tsx'
 import { Introduction } from './Introduction.tsx'
 import { NavBar } from './NavBar.tsx'
 import { Pricing } from './Pricing.tsx'
-import { Resources } from './Resources.tsx'
+import { Research } from './Research.tsx'
 import { Screencasts } from './Screencasts.tsx'
 import { TableOfContents } from './TableOfContents.tsx'
 import { Testimonial } from './Testimonial.tsx'
 import { Testimonials } from './Testimonials.tsx'
-// import avatarImage1 from './avatars.tsx/avatar-1.png'
-// import avatarImage2 from './avatars.tsx/avatar-2.png'
 
 export default function Home() {
   return (
@@ -25,7 +23,7 @@ export default function Home() {
         author={{
           name: 'Tommy Stroman',
           role: 'Front-end developer',
-          // image: avatarImage1,
+          image: '/images/avatars/avatar-1.png',
         }}
       >
         <p>
@@ -39,7 +37,7 @@ export default function Home() {
         author={{
           name: 'Gerardo Stark',
           role: 'Creator of Pandemicons',
-          // image: avatarImage2,
+          image: '/images/avatars/avatar-2.png',
         }}
       >
         <p>
@@ -47,11 +45,11 @@ export default function Home() {
           frustrated and gave up. Now I sell my own custom icon sets online.”
         </p>
       </Testimonial>
-      <Resources />
+      <Research />
       <FreeChapters />
       <Pricing />
       <Testimonials />
-      <Author />
+      <Partners />
       <Footer />
     </>
   )

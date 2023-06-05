@@ -1,17 +1,7 @@
-import Image from 'next/image'
-import clsx from 'clsx'
+import cls from '../../util/cls.ts'
 
-import { Container } from './Container'
-import { Expandable } from './Expandable'
-import avatarImage3 from '@/images/avatars/avatar-3.png'
-import avatarImage4 from '@/images/avatars/avatar-4.png'
-import avatarImage5 from '@/images/avatars/avatar-5.png'
-import avatarImage6 from '@/images/avatars/avatar-6.png'
-import avatarImage7 from '@/images/avatars/avatar-7.png'
-import avatarImage8 from '@/images/avatars/avatar-8.png'
-import avatarImage9 from '@/images/avatars/avatar-9.png'
-import avatarImage10 from '@/images/avatars/avatar-10.png'
-import avatarImage11 from '@/images/avatars/avatar-11.png'
+import { Container } from './Container.tsx'
+// import { Expandable } from './Expandable.tsx'
 
 const testimonials = [
   [
@@ -21,7 +11,7 @@ const testimonials = [
       author: {
         name: 'Antonio Littel',
         role: 'Frontend Developer',
-        image: avatarImage3,
+        image: '/images/avatars/avatar-3.png',
       },
     },
     {
@@ -30,7 +20,7 @@ const testimonials = [
       author: {
         name: 'Lynn Nolan',
         role: 'Growth Marketer',
-        image: avatarImage4,
+        image: '/images/avatars/avatar-4.png',
       },
     },
     {
@@ -39,7 +29,7 @@ const testimonials = [
       author: {
         name: 'Krista Prosacco',
         role: 'Professional Designer',
-        image: avatarImage9,
+        image: '/images/avatars/avatar-9.png',
       },
     },
   ],
@@ -50,7 +40,7 @@ const testimonials = [
       author: {
         name: 'Cameron Considine',
         role: 'Entrepreneur',
-        image: avatarImage7,
+        image: '/images/avatars/avatar-7.png',
       },
     },
     {
@@ -59,7 +49,7 @@ const testimonials = [
       author: {
         name: 'Regina Wisoky',
         role: 'Design Student',
-        image: avatarImage11,
+        image: '/images/avatars/avatar-11.png',
       },
     },
     {
@@ -68,7 +58,7 @@ const testimonials = [
       author: {
         name: 'Vernon Cummerata',
         role: 'UI Engineer',
-        image: avatarImage8,
+        image: '/images/avatars/avatar-8.png',
       },
     },
   ],
@@ -79,7 +69,7 @@ const testimonials = [
       author: {
         name: 'Steven Hackett',
         role: 'Bootcamp Instructor',
-        image: avatarImage5,
+        image: '/images/avatars/avatar-5.png',
       },
     },
     {
@@ -88,7 +78,7 @@ const testimonials = [
       author: {
         name: 'Carla Schoen',
         role: 'Startup Founder',
-        image: avatarImage10,
+        image: '/images/avatars/avatar-10.png',
       },
     },
     {
@@ -97,13 +87,13 @@ const testimonials = [
       author: {
         name: 'Leah Kiehn',
         role: 'Creative Director',
-        image: avatarImage6,
+        image: '/images/avatars/avatar-6.png',
       },
     },
   ],
 ]
 
-function Testimonial({ author, children }) {
+function Testimonial({ author, children }: any) {
   return (
     <figure className='rounded-4xl p-8 shadow-md ring-1 ring-slate-900/5'>
       <blockquote>
@@ -113,7 +103,7 @@ function Testimonial({ author, children }) {
       </blockquote>
       <figcaption className='mt-6 flex items-center'>
         <div className='overflow-hidden rounded-full bg-slate-50'>
-          <Image
+          <img
             className='h-12 w-12 object-cover'
             src={author.image}
             alt=''
@@ -145,7 +135,8 @@ export function Testimonials() {
           they had to say about the finished product.
         </p>
       </Container>
-      <Expandable>
+      {
+        /* <Expandable>
         {({ isExpanded }) => (
           <>
             <ul
@@ -172,7 +163,7 @@ export function Testimonials() {
                       .map((testimonial, testimonialIndex) => (
                         <li
                           key={testimonialIndex}
-                          className={clsx(
+                          className={cls(
                             testimonialIndex === 0 && 'hidden lg:list-item',
                             testimonialIndex === 1 && 'lg:mt-8',
                             testimonialIndex > 1 && 'mt-8',
@@ -190,7 +181,8 @@ export function Testimonials() {
             <Expandable.Button>Read more testimonials</Expandable.Button>
           </>
         )}
-      </Expandable>
+      </Expandable> */
+      }
     </section>
   )
 }

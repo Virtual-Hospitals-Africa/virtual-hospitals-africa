@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId } from 'preact/hooks'
 
 export function Pattern({
   size = 40,
@@ -12,9 +12,9 @@ export function Pattern({
   ],
   ...props
 }) {
-  let id = useId()
-  let width = pattern[0].length * size + (pattern[0].length - 1) * gapX
-  let height = pattern.length * size + (pattern.length - 1) * gapY
+  const id = useId()
+  const width = pattern[0].length * size + (pattern[0].length - 1) * gapX
+  const height = pattern.length * size + (pattern.length - 1) * gapY
 
   return (
     <svg aria-hidden='true' width={width} height={height} {...props}>

@@ -1,6 +1,6 @@
 const hasOwn = {}.hasOwnProperty
 
-type ClassNameable = string | number | { [key: string]: boolean }
+type ClassNameable = boolean | string | number | { [key: string]: boolean }
 
 export default function classNames(...args: ClassNameable[]): string {
   const classes = []

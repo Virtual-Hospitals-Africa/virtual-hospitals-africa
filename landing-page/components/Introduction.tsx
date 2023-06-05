@@ -1,7 +1,22 @@
-import Link from 'next/link'
+import { CheckIcon } from './CheckIcon.tsx'
+import { Container } from './Container.tsx'
 
-import { CheckIcon } from './CheckIcon'
-import { Container } from './Container'
+/*
+
+          We’re partnering with universities to begin clinical trials in
+          November 2023.
+        </p>
+        <p className='mt-4'>
+          We’re looking to partner with organizations who want to improve
+          patient outcomes in Africa at scale.
+        </p>
+        <p className='mt-4'>
+          But it turns out this isn’t how great icon designers work at all.
+        </p>
+        <p className='mt-4'>
+          In “Everything Starts as a Square”, you’ll learn the systems experts
+          use to create pixel perfect icons, without relying on a steady hand.
+*/
 
 export function Introduction() {
   return (
@@ -12,29 +27,25 @@ export function Introduction() {
     >
       <Container className='text-lg tracking-tight text-slate-700'>
         <p className='font-display text-4xl font-bold tracking-tight text-slate-900'>
-          “Everything Starts as a Square” is a book and video course that
-          teaches you a simple method to designing icons that anyone can learn.
+          Through Virtual Hospitals Africa, doctors can leverage the latest
+          technological advances to provide care patients to patients before
+          it's a crisis
         </p>
         <p className='mt-4'>
-          Before I learned how to design icons myself, I always imagined that
-          they were drawn by hand using the pen tool, some sort of fancy
-          graphics tablet, and hours and hours spent manually fine-tuning bezier
-          curves.
+          Hospitals in Africa are overwhelmed. Patients living far away forego
+          care until their diseases are too far along. But what if patients
+          could access care at the onset of symptoms from their mobile devices?
         </p>
         <p className='mt-4'>
-          But it turns out this isn’t how great icon designers work at all.
-        </p>
-        <p className='mt-4'>
-          In “Everything Starts as a Square”, you’ll learn the systems experts
-          use to create pixel perfect icons, without relying on a steady hand.
+          In our proof of concept, patients can:
         </p>
         <ul role='list' className='mt-8 space-y-3'>
           {[
-            'Using boolean operations to combine basic shapes into complex icons',
-            'How to adapt icons to different sizes',
-            'Translating icons from an outline style to a solid style',
-            'Identifying the characteristics that make an icon set cohesive',
-            'Figma features and keyboard shortcuts to speed up your workflow',
+            'connect with trained health workers',
+            'easily schedule in person and video appointments',
+            'send prescriptions securely to local pharmacies',
+            'review their health status and obtain medical records, lab results',
+            'be notified of upcoming appointments and medication reminders',
           ].map((feature) => (
             <li key={feature} className='flex'>
               <CheckIcon className='h-8 w-8 flex-none fill-blue-500' />
@@ -48,13 +59,13 @@ export function Introduction() {
           any of the sets you can find online.
         </p>
         <p className='mt-10'>
-          <Link
+          <a
             href='#free-chapters'
             className='text-base font-medium text-blue-600 hover:text-blue-800'
           >
             Get two free chapters straight to your inbox{' '}
             <span aria-hidden='true'>&rarr;</span>
-          </Link>
+          </a>
         </p>
       </Container>
     </section>

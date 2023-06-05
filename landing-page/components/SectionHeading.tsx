@@ -1,9 +1,9 @@
-import clsx from 'clsx'
+import cls from '../../util/cls.ts'
 
-export function SectionHeading({ number, children, className, ...props }) {
+export function SectionHeading({ number, children, className, ...props }: any) {
   return (
     <h2
-      className={clsx(
+      className={cls(
         className,
         'inline-flex items-center rounded-full px-4 py-1 text-blue-600 ring-1 ring-inset ring-blue-600',
       )}

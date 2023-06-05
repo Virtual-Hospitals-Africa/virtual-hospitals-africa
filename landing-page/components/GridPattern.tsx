@@ -1,7 +1,7 @@
-import { useId } from 'react'
+import { useId } from 'preact/hooks'
 
-export function GridPattern(props) {
-  let patternId = useId()
+export function GridPattern(props: any) {
+  const patternId = useId()
 
   return (
     <svg aria-hidden='true' className='absolute inset-0 h-full w-full'>

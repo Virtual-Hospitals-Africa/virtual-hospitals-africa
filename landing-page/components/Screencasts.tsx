@@ -1,44 +1,38 @@
-import Image from 'next/image'
-
-import { Container } from './Container'
-import { SectionHeading } from './SectionHeading'
-import duotoneImage from '@/images/screencasts/duotone.svg'
-import gridsImage from '@/images/screencasts/grids.svg'
-import setupImage from '@/images/screencasts/setup.svg'
-import strokesImage from '@/images/screencasts/strokes.svg'
+import { Container } from './Container.tsx'
+import { SectionHeading } from './SectionHeading.tsx'
 
 const videos = [
   {
     title: 'Getting started with Figma',
     description:
       'Get familiar with the Figma UI, the different tools it offers, and the most important features.',
-    image: setupImage,
+    image: '/images/screencasts/setup.svg',
     runtime: { minutes: 16, seconds: 54 },
   },
   {
     title: 'Setting up your artboard',
     description:
       'Learn how to create a new artboard and configure your grid and rulers for designing icons.',
-    image: gridsImage,
+    image: '/images/screencasts/grids.svg',
     runtime: { minutes: 9, seconds: 12 },
   },
   {
     title: 'Designing your first icon',
     description:
       'Using basic shapes and boolean operations, learn how to design your own notification icon from scratch.',
-    image: strokesImage,
+    image: '/images/screencasts/strokes.svg',
     runtime: { minutes: 23, seconds: 25 },
   },
   {
     title: 'Advanced design techniques',
     description:
       'Learn the techniques you need to know to adapt your original icon to a modern duotone style.',
-    image: duotoneImage,
+    image: '/images/screencasts/duotone.svg',
     runtime: { minutes: 28, seconds: 44 },
   },
 ]
 
-function PlayIcon(props) {
+function PlayIcon(props: any) {
   return (
     <svg
       aria-hidden='true'
@@ -90,7 +84,7 @@ export function Screencasts() {
                 }}
               >
                 <div className='flex overflow-hidden rounded shadow-sm'>
-                  <Image src={video.image} alt='' unoptimized />
+                  <img src={video.image} alt='' /* unoptimized */ />
                 </div>
                 <div className='absolute bottom-2 left-2 flex items-center rounded-lg bg-black/30 px-1.5 py-0.5 text-sm text-white [@supports(backdrop-filter:blur(0))]:bg-white/10 [@supports(backdrop-filter:blur(0))]:backdrop-blur'>
                   <PlayIcon className='h-4 w-4 fill-current stroke-current' />

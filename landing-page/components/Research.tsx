@@ -1,11 +1,5 @@
-import Image from 'next/image'
-
-import { Container } from './Container'
-import { SectionHeading } from './SectionHeading'
-import abstractBackgroundImage from '@/images/resources/abstract-background.png'
-import discordImage from '@/images/resources/discord.svg'
-import figmaImage from '@/images/resources/figma.svg'
-import videoPlayerImage from '@/images/resources/video-player.svg'
+import { Container } from './Container.tsx'
+import { SectionHeading } from './SectionHeading.tsx'
 
 const resources = [
   {
@@ -15,7 +9,7 @@ const resources = [
     image: function FigmaImage() {
       return (
         <div className='absolute inset-0 flex items-center justify-center bg-[radial-gradient(#2C313D_35%,#000)]'>
-          <Image src={figmaImage} alt='' unoptimized />
+          <img src='/images/resources/figma.svg' alt='' /* unoptimized */ />
         </div>
       )
     },
@@ -27,17 +21,17 @@ const resources = [
     image: function VideoPlayerImage() {
       return (
         <div className='absolute inset-0 flex items-center justify-center'>
-          <Image
+          <img
             className='absolute inset-0 h-full w-full object-cover'
-            src={abstractBackgroundImage}
+            src='/images/resources/abstract-background.png'
             alt=''
             sizes='(min-width: 1280px) 21rem, (min-width: 1024px) 33vw, (min-width: 768px) 19rem, (min-width: 640px) 50vw, 100vw'
           />
-          <Image
+          <img
             className='relative'
-            src={videoPlayerImage}
+            src='/images/resources/video-player.svg'
             alt=''
-            unoptimized
+            /* unoptimized */
           />
         </div>
       )
@@ -50,23 +44,23 @@ const resources = [
     image: function DiscordImage() {
       return (
         <div className='absolute inset-0 flex items-center justify-center bg-[#6366F1]'>
-          <Image src={discordImage} alt='' unoptimized />
+          <img src='/images/resources/discord.svg' alt='' /* unoptimized */ />
         </div>
       )
     },
   },
 ]
 
-export function Resources() {
+export function Research() {
   return (
     <section
-      id='resources'
-      aria-labelledby='resources-title'
+      id='research'
+      aria-labelledby='research-title'
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading number='3' id='resources-title'>
-          Resources
+        <SectionHeading number='3' id='research-title'>
+          Research
         </SectionHeading>
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
           Tools and resources you can use to get started even faster and

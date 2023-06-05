@@ -1,10 +1,8 @@
-import Image from 'next/image'
+import { Container } from './Container.tsx'
+import { GridPattern } from './GridPattern.tsx'
+import { StarRating } from './StarRating.tsx'
 
-import { Container } from './Container'
-import { GridPattern } from './GridPattern'
-import { StarRating } from './StarRating'
-
-export function Testimonial({ id, author, children }) {
+export function Testimonial({ id, author, children }: any) {
   return (
     <aside
       id={id}
@@ -24,7 +22,7 @@ export function Testimonial({ id, author, children }) {
           </blockquote>
           <figcaption className='mt-10 flex items-center sm:justify-center'>
             <div className='overflow-hidden rounded-full bg-slate-200'>
-              <Image
+              <img
                 className='h-12 w-12 object-cover'
                 src={author.image}
                 alt=''

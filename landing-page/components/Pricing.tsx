@@ -1,15 +1,15 @@
-import clsx from 'clsx'
+import cls from '../../util/cls.ts'
 
-import { Button } from './Button'
-import { CheckIcon } from './CheckIcon'
-import { Container } from './Container'
-import { GridPattern } from './GridPattern'
-import { SectionHeading } from './SectionHeading'
+import { Button } from './Button.tsx'
+import { CheckIcon } from './CheckIcon.tsx'
+import { Container } from './Container.tsx'
+import { GridPattern } from './GridPattern.tsx'
+import { SectionHeading } from './SectionHeading.tsx'
 
-function Plan({ name, description, price, features, href, featured }) {
+function Plan({ name, description, price, features, href, featured }: any) {
   return (
     <div
-      className={clsx(
+      className={cls(
         'relative px-4 py-16 sm:rounded-5xl sm:px-10 md:py-12 lg:px-12',
         featured && 'bg-blue-600 sm:shadow-lg',
       )}
@@ -21,7 +21,7 @@ function Plan({ name, description, price, features, href, featured }) {
       )}
       <div className='relative flex flex-col'>
         <h3
-          className={clsx(
+          className={cls(
             'mt-7 text-lg font-semibold tracking-tight',
             featured ? 'text-white' : 'text-slate-900',
           )}
@@ -29,7 +29,7 @@ function Plan({ name, description, price, features, href, featured }) {
           {name}
         </h3>
         <p
-          className={clsx(
+          className={cls(
             'mt-2 text-lg tracking-tight',
             featured ? 'text-white' : 'text-slate-600',
           )}
@@ -38,7 +38,7 @@ function Plan({ name, description, price, features, href, featured }) {
         </p>
         <p className='order-first flex font-display font-bold'>
           <span
-            className={clsx(
+            className={cls(
               'text-[1.75rem] leading-tight',
               featured ? 'text-blue-200' : 'text-slate-500',
             )}
@@ -46,7 +46,7 @@ function Plan({ name, description, price, features, href, featured }) {
             $
           </span>
           <span
-            className={clsx(
+            className={cls(
               'ml-1 mt-1 text-7xl tracking-tight',
               featured ? 'text-white' : 'text-slate-900',
             )}
@@ -57,17 +57,17 @@ function Plan({ name, description, price, features, href, featured }) {
         <div className='order-last mt-8'>
           <ul
             role='list'
-            className={clsx(
+            className={cls(
               '-my-2 divide-y text-base tracking-tight',
               featured
                 ? 'divide-white/10 text-white'
                 : 'divide-slate-200 text-slate-900',
             )}
           >
-            {features.map((feature) => (
+            {features.map((feature: any) => (
               <li key={feature} className='flex py-2'>
                 <CheckIcon
-                  className={clsx(
+                  className={cls(
                     'h-8 w-8 flex-none',
                     featured ? 'fill-white' : 'fill-slate-600',
                   )}

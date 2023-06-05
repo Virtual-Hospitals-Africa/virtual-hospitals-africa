@@ -1,6 +1,6 @@
-import { Container } from './Container'
-import { Expandable } from './Expandable'
-import { SectionHeading } from './SectionHeading'
+import { Container } from './Container.tsx'
+// import { Expandable } from './Expandable.tsx'
+import { SectionHeading } from './SectionHeading.tsx'
 
 const tableOfContents = {
   'Getting started': {
@@ -48,8 +48,9 @@ export function TableOfContents() {
           highly visual pages designed to teach you everything you need to know
           about icon design with no unnecessary filler.
         </p>
-        <Expandable>
-          {({ isExpanded }) => (
+        {
+          /* <Expandable>
+          {({ isExpanded }: any) => (
             <>
               <ol role='list' className='mt-16 space-y-10 sm:space-y-16'>
                 {Object.entries(tableOfContents)
@@ -90,7 +91,8 @@ export function TableOfContents() {
               <Expandable.Button>See more</Expandable.Button>
             </>
           )}
-        </Expandable>
+        </Expandable> */
+        }
       </Container>
     </section>
   )

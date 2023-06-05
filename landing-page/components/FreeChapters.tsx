@@ -1,6 +1,6 @@
-import { Button } from './Button'
-import { Container } from './Container'
-import { Pattern } from './Pattern'
+import { Button } from './Button.tsx'
+import { Container } from './Container.tsx'
+import { Pattern } from './Pattern.tsx'
 
 export function FreeChapters() {
   return (
