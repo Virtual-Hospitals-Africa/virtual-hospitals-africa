@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 // import { Popover } from '@headlessui/react'
 import cls from '../../util/cls.ts'
+import { Button } from './Button.tsx'
 
 const sections = [
   {
@@ -84,6 +85,9 @@ export function NavBar() {
 
   return (
     <div ref={navBarRef as any} className='sticky top-0 z-50'>
+      <Button href='#free-chapters' color='blue'>
+        Sign In
+      </Button>
       <div className='hidden sm:flex sm:h-32 sm:justify-center sm:border-b sm:border-slate-200 sm:bg-white/95 sm:[@supports(backdrop-filter:blur(0))]:bg-white/80 sm:[@supports(backdrop-filter:blur(0))]:backdrop-blur'>
         <ol
           role='list'
