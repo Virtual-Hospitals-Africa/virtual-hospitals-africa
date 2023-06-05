@@ -8,13 +8,17 @@ import db from '../../db/db.ts'
 // Ensure user is a doctor who has session with google tokens
 export const handler = [
   (
-    _req: Request,
+    req: Request,
     ctx: MiddlewareHandlerContext<
       WithSession & {
         trx: TrxOrDb
       }
     >,
   ) => {
+    if (req.url.endsWith('/app')) {
+      return ctx.next()
+    }
+
     const isAuthedDoctor = isDoctorWithGoogleTokens(ctx.state.session.data)
     if (!isAuthedDoctor) return redirect('/')
 
