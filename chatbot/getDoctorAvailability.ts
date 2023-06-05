@@ -137,7 +137,7 @@ export async function getAllDoctorAvailability(
 }
 
 /**
- * Gets doctor availability from google calenda, spilt them into 30 minutes block, and filter out
+ * Gets doctor availability from google calendar, spilt them into 30 minutes block, and filter out
  * the declined time and return an object containing the start time and doctor.
  * @param trx db transaction object
  * @param declinedTimes a string array that contains the declined time slot
