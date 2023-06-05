@@ -8,7 +8,7 @@ import {
   Maybe,
   PatientState,
 } from '../types.ts'
-import { isValidDate } from "../util/date.ts";
+import { isValidDate } from '../util/date.ts'
 
 function findMatchingOption(
   state: ConversationStateHandlerSelect,
@@ -38,8 +38,10 @@ export default function findMatchingState(
   const messageBody = patientState.body.trim()
 
   switch (currentState.type) {
-    case 'select': return findMatchingOption(currentState, messageBody)
-    case 'list': return findMatchingRow(currentState.action(patientState), messageBody)
+    case 'select':
+      return findMatchingOption(currentState, messageBody)
+    case 'list':
+      return findMatchingRow(currentState.action(patientState), messageBody)
     case 'date': {
       return isValidDate(messageBody) ? currentState : null
     }
@@ -48,6 +50,7 @@ export default function findMatchingState(
       const hasBodyPassingValidation = !!messageBody && validation(messageBody)
       return hasBodyPassingValidation ? currentState : null
     }
-    default: return currentState
+    default:
+      return currentState
   }
 }
