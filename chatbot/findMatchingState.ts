@@ -44,7 +44,8 @@ export default function findMatchingState(
       return isValidDate(messageBody) ? currentState : null
     }
     case 'string': {
-      const hasBodyPassingValidation = !!messageBody && (!currentState.validation || currentState.validation(messageBody))
+      const validation = currentState.validation || (() => true)
+      const hasBodyPassingValidation = !!messageBody && validation(messageBody)
       return hasBodyPassingValidation ? currentState : null
     }
     default: return currentState
