@@ -27,7 +27,6 @@ Currently deployed on Heroku. Reach out to @weiss to get access
 - Google Calendar API
 - Redis
 
-
 ### [DO NOT USE] Local Setup
 
 ```bash
