@@ -273,13 +273,15 @@ const conversationStates: {
       )
       assertAllHarare(declinedTimes)
 
-      const timeslotsRequired = 5
+      const timeslotsRequired = 3
 
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
         declinedTimes,
-        { date: null, timeslotsRequired },
+        { date: ['2023-06-07', '2023-06-08', '2023-06-09'], timeslotsRequired },
       )
+
+      // console.log('After the hugeeee function', filteredAvailableTimes)
 
       // TODO: get this down to a single DB call
       const newlyOfferedTimes: ReturnedSqlRow<
@@ -303,7 +305,7 @@ const conversationStates: {
 
       assertEquals(
         nextOfferedTimes.length,
-        timeslotsRequired + patientState.appointment_offered_times.length,
+        timeslotsRequired * 3 + patientState.appointment_offered_times.length,
       )
 
       return {

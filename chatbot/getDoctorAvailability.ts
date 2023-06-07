@@ -148,7 +148,7 @@ export async function getAllDoctorAvailability(
 export async function availableThirtyMinutes(
   trx: TrxOrDb,
   declinedTimes: string[],
-  opts: { date: string | null; timeslotsRequired: number },
+  opts: { date: string[] | null; timeslotsRequired: number },
 ): Promise<{
   doctor: ReturnedSqlRow<DoctorWithGoogleTokens>
   start: string
@@ -162,9 +162,14 @@ export async function availableThirtyMinutes(
     for (const { start, end } of availability) {
       const doctor_appointments = generateAvailableThrityMinutes(start, end)
         .filter((time) => !declinedTimes.includes(time))
-        .filter((appointment) =>
-          opts.date ? appointment.includes(opts.date) : true
-        )
+        .filter((appointment) => {
+          if (opts.date) {
+            const appointment_date = appointment.substring(0, 10)
+            return opts.date.includes(appointment_date)
+          } else {
+            return true
+          }
+        })
         .map((timeBlock) => ({ doctor: doctor, start: timeBlock }))
       appointments = appointments.concat(doctor_appointments)
     }
@@ -184,10 +189,28 @@ export async function availableThirtyMinutes(
     throw new Error('No availability found')
   }
 
-  const requiredTimeslots =
-    uniqueAppointmentTimeslots.length > opts.timeslotsRequired
+  const requiredTimeslots: {
+    doctor: ReturnedSqlRow<DoctorWithGoogleTokens>
+    start: string
+  }[] = []
+  if (opts.date) {
+    opts.date.forEach((requiredDate) => {
+      const appointmentOnASpecificDate = uniqueAppointmentTimeslots.filter(
+        (time) => time.start.startsWith(requiredDate),
+      )
+      const slicedAppointmentOnASpecificDate =
+        appointmentOnASpecificDate.length > opts.timeslotsRequired
+          ? appointmentOnASpecificDate.slice(0, opts.timeslotsRequired)
+          : appointmentOnASpecificDate
+      slicedAppointmentOnASpecificDate.forEach((appointment) =>
+        requiredTimeslots.push(appointment)
+      )
+    })
+  } else {
+    return uniqueAppointmentTimeslots.length > opts.timeslotsRequired
       ? uniqueAppointmentTimeslots.slice(0, opts.timeslotsRequired)
       : uniqueAppointmentTimeslots
+  }
 
   return requiredTimeslots
 }
