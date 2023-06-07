@@ -5,5 +5,5 @@ export function up(db: Kysely<unknown>) {
 }
 
 export function down(db: Kysely<unknown>) {
-  return sql`DROP EXTENSION POSTGIS;`.execute(db)
+  return sql`DROP EXTENSION POSTGIS CASCADE;`.execute(db)
 }
