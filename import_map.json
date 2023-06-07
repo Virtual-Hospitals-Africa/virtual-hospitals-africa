@@ -1,7 +1,7 @@
 {
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.1.5/",
-    "kysely": "https://esm.sh/kysely@0.24.2",
+    "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
     "kysely-deno-postgres": "https://deno.land/x/kysely_deno_postgres@v0.4.0/mod.ts",
     "preact": "https://esm.sh/preact@10.13.1",
     "preact/hooks": "https://esm.sh/preact@10.13.1/hooks",
