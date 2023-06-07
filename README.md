@@ -3,22 +3,6 @@
 Built with ❤️ by the team at <a href="https://morehumaninternet.org">More Human
 Internet</a>
 
-### Setup
-
-```bash
-> createdb -h localhost -U $your_user -W vha_dev
-```
-
-Copy the `.example.env` into `.env` and add the the connection information for
-the database you just created.
-
-```
-DATABASE_URL=postgres://$your_user:@localhost:5432/vha_dev
-```
-
-You'll see other variables that you'll need to override in the `.env` file with
-secrets to use external APIs.
-
 # Run locally
 
 ```
@@ -42,3 +26,20 @@ Currently deployed on Heroku. Reach out to @weiss to get access
 - Whatsapp Cloud API
 - Google Calendar API
 - Redis
+
+
+### [DO NOT USE] Local Setup
+
+```bash
+> createdb -h localhost -U $your_user -W vha_dev
+```
+
+Copy the `.example.env` into `.env` and add the the connection information for
+the database you just created.
+
+```
+DATABASE_URL=postgres://$your_user:@localhost:5432/vha_dev
+```
+
+You'll see other variables that you'll need to override in the `.env` file with
+secrets to use external APIs.
