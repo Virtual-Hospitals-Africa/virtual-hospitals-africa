@@ -1,4 +1,4 @@
-import { useState } from 'preact/hooks'
+import { useState, useRef } from 'preact/hooks'
 import range from '../util/range.ts'
 import padLeft from '../util/padLeft.ts'
 import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
@@ -275,14 +275,50 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
+function validateForm(availability: AvailabilityJSON) : boolean {
+  days.forEach( weekday => {
+    availability[weekday].forEach( timeWindow1 => {
+      if (availability[weekday].some(timeWindow2 => overlaps(timeWindow1,timeWindow2)))
+      {
+        return false;
+      }
+    })
+  })
+  return true;
+}
+
+function overlaps(targetTime : TimeWindow, checkedAgainst : TimeWindow) : boolean {
+  const startTime = targetTime.start;
+  const endTime = targetTime.end;
+  const time1 = new Date();
+  //Doesn't work becuase Time cannot be compared like this
+  //return ((startTime > checkedAgainst.start && startTime < checkedAgainst.end) || (endTime > checkedAgainst.start && endTime < checkedAgainst.end));
+  return false;
+}
+
+
 export default function SetAvailabilityForm(
   { availability }: { availability: AvailabilityJSON },
 ) {
+  const formRef = useRef<HTMLFormElement>(null);
+
   return (
     <form
       method='POST'
       action='/api/set-availability'
       className='container p-1'
+      ref={formRef}
+      onSubmit={event => {
+        event.preventDefault();
+        if (validateForm(availability))
+        {
+          formRef.current?.submit();
+        }
+        else 
+        {
+          //form failed to validate - send alert and skip form submission
+        }
+      }}
     >
       <div
         className='px-4 py-6 grid gap-4 px-0 divide-y divide-gray-100'
