@@ -412,15 +412,14 @@ export default function SetAvailabilityForm(
       ref={formRef}
       onSubmit={event => {
         event.preventDefault();
-        // if (validateForm(availability))
-        // {
-        //   formRef.current?.submit();
-        // }
-        // else 
-        // {
-        //   handleValidationFailed();
-        // }
-        handleValidationFailed();
+        if (validateForm(availability))
+        {
+          formRef.current?.submit();
+        }
+        else 
+        {
+          handleValidationFailed();
+        }
       }}
     >
       <div
