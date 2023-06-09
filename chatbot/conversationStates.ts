@@ -3,11 +3,8 @@ import {
   assertAllHarare,
   convertToTimeString,
   formatHarare,
-  getISOInHarare,
-  newDate,
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
-todayISOInHarare,
 } from '../util/date.ts'
 import { availableThirtyMinutes } from './getDoctorAvailability.ts'
 import { makeAppointment } from './makeAppointment.ts'
@@ -26,7 +23,6 @@ import {
   TrxOrDb,
 } from '../types.ts'
 import pickPatient from './pickPatient.ts'
-import { accepts } from 'https://deno.land/std@0.183.0/http/negotiation.ts'
 
 const conversationStates: {
   [state in ConversationState]: ConversationStateHandler
@@ -279,17 +275,24 @@ const conversationStates: {
       assertAllHarare(declinedTimes)
 
       const timeslotsRequired = 3
-      
+
       const today = new Date()
       const tomorrow = new Date()
-      tomorrow.setDate(tomorrow.getDate() + 1)
+      tomorrow.setDate(today.getDate() + 1)
       const afterTomorrow = new Date()
-      afterTomorrow.setDate(afterTomorrow.getDate() + 2)
+      afterTomorrow.setDate(tomorrow.getDate() + 1)
 
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
         declinedTimes,
-        { date: [formatHarare(today).substring(0,10), formatHarare(tomorrow).substring(0,10), formatHarare(afterTomorrow).substring(0,10)], timeslotsRequired },
+        {
+          date: [
+            formatHarare(today).substring(0, 10),
+            formatHarare(tomorrow).substring(0, 10),
+            formatHarare(afterTomorrow).substring(0, 10),
+          ],
+          timeslotsRequired,
+        },
       )
       // TODO: get this down to a single DB call
       const newlyOfferedTimes: ReturnedSqlRow<
@@ -313,7 +316,8 @@ const conversationStates: {
 
       assertEquals(
         nextOfferedTimes.length,
-        timeslotsRequired * 3 + patientState.appointment_offered_times.length,
+        newlyOfferedTimes.length +
+          patientState.appointment_offered_times.length,
       )
 
       return {

@@ -67,7 +67,6 @@ export function todayISOInHarare() {
   return `${year}-${month}-${day}`
 }
 
-
 export function formatHarare(
   date = new Date(),
 ): string {
@@ -217,7 +216,7 @@ export function isValidDate(messageBody: string): boolean {
   return !!date
 }
 
-export function getISOInHarare(date: Date){
-  const {day, month, year} = parseDate(date, 'twoDigit')
+export function getISOInHarare(date: Date) {
+  const { day, month, year } = parseDate(date, 'twoDigit')
   return `${year}-${month}-${day}`
 }
