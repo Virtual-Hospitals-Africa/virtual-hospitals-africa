@@ -2,6 +2,7 @@ import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   assertAllHarare,
   convertToTimeString,
+  formatHarare,
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from '../util/date.ts'
@@ -273,14 +274,26 @@ const conversationStates: {
       )
       assertAllHarare(declinedTimes)
 
-      const timeslotsRequired = 5
+      const timeslotsRequired = 3
+
+      const today = new Date()
+      const tomorrow = new Date()
+      tomorrow.setDate(today.getDate() + 1)
+      const afterTomorrow = new Date()
+      afterTomorrow.setDate(tomorrow.getDate() + 1)
 
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
         declinedTimes,
-        { date: null, timeslotsRequired },
+        {
+          date: [
+            formatHarare(today).substring(0, 10),
+            formatHarare(tomorrow).substring(0, 10),
+            formatHarare(afterTomorrow).substring(0, 10),
+          ],
+          timeslotsRequired,
+        },
       )
-
       // TODO: get this down to a single DB call
       const newlyOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { doctor_name: string }
@@ -303,7 +316,8 @@ const conversationStates: {
 
       assertEquals(
         nextOfferedTimes.length,
-        timeslotsRequired + patientState.appointment_offered_times.length,
+        newlyOfferedTimes.length +
+          patientState.appointment_offered_times.length,
       )
 
       return {
@@ -327,27 +341,38 @@ const conversationStates: {
         (offered_time) => !offered_time.patient_declined,
       )
 
-      // TODO: Support more than one day
-      const sections: ConversationStateHandlerListActionSection[] = [
-        {
-          title: nonDeclinedTimes[0].start.split('T')[0],
-          rows: nonDeclinedTimes.map((offeredTime) => {
+      const appointmentsByDate: {
+        [date: string]: ReturnedSqlRow<
+          AppointmentOfferedTime & { doctor_name: string }
+        >[]
+      } = nonDeclinedTimes.reduce((acc, appointment) => {
+        const date = appointment.start.substring(0, 10)
+        if (!acc[date]) {
+          acc[date] = []
+        }
+        acc[date].push(appointment)
+        return acc
+      }, Object.create(null))
+
+      const sections: ConversationStateHandlerListActionSection[] = []
+
+      for (const date in appointmentsByDate) {
+        sections.push({
+          title: date,
+          rows: appointmentsByDate[date].map((offeredTime) => {
             return {
               id: String(offeredTime.id),
               title: convertToTimeString(offeredTime.start),
               description: `With Dr. ${offeredTime.doctor_name}`,
               nextState: 'onboarded:appointment_scheduled',
-              // Decline all other offered times
               async onExit(trx, patientState) {
                 const toDecline = patientState.appointment_offered_times
                   .filter((aot) => !aot.patient_declined)
                   .filter((aot) => aot.id !== offeredTime.id)
                   .map((aot) => aot.id)
-
                 if (toDecline.length > 0) {
                   await appointments.declineOfferedTimes(trx, toDecline)
                 }
-
                 return {
                   ...patientState,
                   appointment_offered_times: patientState
@@ -360,31 +385,31 @@ const conversationStates: {
               },
             }
           }),
-        },
-        {
-          title: 'Other Times',
-          rows: [{
-            id: 'other_time',
-            title: 'Other time slot',
-            description: 'Show other times',
-            nextState: 'onboarded:make_appointment:other_scheduling_options',
-            async onExit(trx, patientState) {
-              await appointments.declineOfferedTimes(
-                trx,
-                patientState.appointment_offered_times.map((aot) => aot.id),
-              )
-              return {
-                ...patientState,
-                appointment_offered_times: patientState
-                  .appointment_offered_times.map((aot) => ({
-                    ...aot,
-                    patient_declined: true,
-                  })),
-              }
-            },
-          }],
-        },
-      ]
+        })
+      }
+      sections.push({
+        title: 'Other Times',
+        rows: [{
+          id: 'other_time',
+          title: 'Other time slots',
+          description: 'Show other time slots',
+          nextState: 'onboarded:make_appointment:other_scheduling_options',
+          async onExit(trx, patientState) {
+            await appointments.declineOfferedTimes(
+              trx,
+              patientState.appointment_offered_times.map((aot) => aot.id),
+            )
+            return {
+              ...patientState,
+              appointment_offered_times: patientState.appointment_offered_times
+                .map((aot) => ({
+                  ...aot,
+                  patient_declined: true,
+                })),
+            }
+          },
+        }],
+      })
       return {
         button: 'More Time Slots',
         sections: sections,

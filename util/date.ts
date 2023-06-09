@@ -215,3 +215,8 @@ export function isValidDate(messageBody: string): boolean {
   )
   return !!date
 }
+
+export function getISOInHarare(date: Date) {
+  const { day, month, year } = parseDate(date, 'twoDigit')
+  return `${year}-${month}-${day}`
+}
