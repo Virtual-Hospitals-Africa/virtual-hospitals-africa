@@ -5,6 +5,8 @@ import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
 import PlusIcon from '../components/icons/plus.tsx'
 import CopyIcon from '../components/icons/copy.tsx'
 import TrashIcon from '../components/icons/trash.tsx'
+import set from '../util/set.ts'
+import { Ref } from 'preact'
 
 const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 const minutes = range(0, 60, 5)
@@ -275,25 +277,73 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-function validateForm(availability: AvailabilityJSON) : boolean {
+function validateNoOverlap(availability: AvailabilityJSON) : AvailabilityJSON | null {
+  const overlappingTimes : AvailabilityJSON = {
+    Sunday: [],
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+  }
+  let doesOverlap = false;
+
   days.forEach( weekday => {
-    availability[weekday].forEach( timeWindow1 => {
-      if (availability[weekday].some(timeWindow2 => overlaps(timeWindow1,timeWindow2)))
+    for (let i = 0; i < availability[weekday].length; i++)
+    {
+      const targetTime : TimeWindow = availability[weekday].at(i)!;
+      for (let n = 0; n < availability[weekday].length; n++)
       {
-        return false;
+        if (n == i) {continue;}
+        if (overlaps(targetTime,availability[weekday].at(n)!))
+        {
+          doesOverlap = true;
+          overlappingTimes[weekday].push(targetTime)
+        }
       }
-    })
+    }
   })
-  return true;
+  if (doesOverlap){return overlappingTimes;}
+  else {return null;}
 }
 
-function overlaps(targetTime : TimeWindow, checkedAgainst : TimeWindow) : boolean {
-  const startTime = targetTime.start;
-  const endTime = targetTime.end;
-  const time1 = new Date();
-  //Doesn't work becuase Time cannot be compared like this
-  //return ((startTime > checkedAgainst.start && startTime < checkedAgainst.end) || (endTime > checkedAgainst.start && endTime < checkedAgainst.end));
-  return false;
+function overlaps(targetTime : TimeWindow, checkedAgainst : TimeWindow) : TimeWindow | null {
+  const targetStartTime = timeToMinute(targetTime.start);
+  const targetEndTime = timeToMinute(targetTime.end);
+  const checkedStartTime = timeToMinute(checkedAgainst.start);
+  const checkedEndTime = timeToMinute(checkedAgainst.end);
+  if ((targetEndTime > checkedStartTime) && (targetStartTime < checkedEndTime))
+  {
+    return targetTime;
+  }
+  return null;
+
+  function timeToMinute(time : Time) : number
+  {
+    let hour = time.hour;
+    if (time.amPm == "pm") {hour += 12;}
+    return (hour * 60) + time.minute;
+  }
+}
+
+function validateForm(event : HTMLFormElement)
+{
+  const data = new FormData(event);
+  const availability : AvailabilityJSON = {
+    Sunday: [],
+    Monday: [],
+    Tuesday: [],
+    Wednesday: [],
+    Thursday: [],
+    Friday: [],
+    Saturday: [],
+  }
+  data.forEach((value, key) => {
+    const toSet = /^\d+$/g.test(value.toString()) ? parseInt(value.toString()) : value
+    set(availability, key, toSet)
+  })
+  return validateNoOverlap(availability);
 }
 
 
@@ -301,7 +351,6 @@ export default function SetAvailabilityForm(
   { availability }: { availability: AvailabilityJSON },
 ) {
   const formRef = useRef<HTMLFormElement>(null);
-
   return (
     <form
       method='POST'
@@ -310,13 +359,16 @@ export default function SetAvailabilityForm(
       ref={formRef}
       onSubmit={event => {
         event.preventDefault();
-        if (validateForm(availability))
+        const response = validateForm(event.currentTarget)
+        if (response == null)
         {
+          //valid form, submit
           formRef.current?.submit();
         }
-        else 
+        else
         {
-          //form failed to validate - send alert and skip form submission
+          //invalid form, send alert
+          console.log("invalid form, overlaps");
         }
       }}
     >
