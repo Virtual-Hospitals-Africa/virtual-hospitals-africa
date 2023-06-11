@@ -412,12 +412,14 @@ export default function SetAvailabilityForm(
       ref={formRef}
       onSubmit={event => {
         event.preventDefault();
-        if (validateForm(availability))
+        if (validateForm(event.currentTarget))
         {
           formRef.current?.submit();
         }
         else 
         {
+          //invalid form, send alert use above `response` value update avaliability
+          console.log(validateForm(event.currentTarget));
           handleValidationFailed();
         }
       }}
