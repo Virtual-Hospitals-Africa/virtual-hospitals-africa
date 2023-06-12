@@ -28,6 +28,7 @@ export type ReturnedSqlRow<T> = {
 export type Gender = 'male' | 'female' | 'other'
 
 export type UserState<CS> = {
+  body: string
   conversation_state: CS
 }
 export type PatientConversationState =
@@ -92,17 +93,17 @@ export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
   onEnter?: (
     trx: TrxOrDb,
     userState: US,
-  ) => Promise<PatientState>
+  ) => Promise<US>
   onExit?: (
     trx: TrxOrDb,
     userState: US,
-  ) => Promise<PatientState>
+  ) => Promise<US>
 }
 
 export type ConversationStateHandlerNextState<US extends UserState<any>> =
   | US['conversation_state']
   | ((
-    patientState: US,
+    userState: US,
   ) => US['conversation_state'])
 
 export type ConversationStateHandlerSelectOption<US extends UserState<any>> = {
@@ -122,8 +123,8 @@ export type ConversationStateHandlerListActionRow<US extends UserState<any>> = {
   nextState: ConversationStateHandlerNextState<US>
   onExit?: (
     trx: TrxOrDb,
-    patientState: PatientState,
-  ) => Promise<PatientState>
+    userState: US,
+  ) => Promise<US>
 }
 export type ConversationStateHandlerListActionSection<
   US extends UserState<any>,
@@ -183,6 +184,10 @@ export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerDate<US>
   | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
+
+export type ConversationStates<CS extends string, US extends UserState<CS>> = {
+  [state in CS]: ConversationStateHandler<US>
+}
 
 type AppointmentStatus = 'pending' | 'confirmed' | 'denied'
 

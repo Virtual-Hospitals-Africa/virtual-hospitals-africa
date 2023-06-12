@@ -13,9 +13,9 @@ import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import {
   AppointmentOfferedTime,
-  ConversationStateHandler,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
+  ConversationStates,
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
@@ -24,9 +24,10 @@ import {
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
 
-const conversationStates: {
-  [state in PatientConversationState]: ConversationStateHandler<PatientState>
-} = {
+const conversationStates: ConversationStates<
+  PatientConversationState,
+  PatientState
+> = {
   'initial_message': {
     type: 'initial_message',
     nextState: 'not_onboarded:welcome',

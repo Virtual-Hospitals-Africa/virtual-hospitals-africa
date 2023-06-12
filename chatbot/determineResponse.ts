@@ -1,20 +1,31 @@
 import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
-import conversationStates from './patient/conversationStates.ts'
-import { PatientState, TrxOrDb, WhatsAppSendable } from '../types.ts'
-import * as patients from '../db/models/patients.ts'
-import pickPatient from './pickPatient.ts'
+import {
+  ConversationStates,
+  TrxOrDb,
+  UserState,
+  WhatsAppSendable,
+} from '../types.ts'
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`
 
-export async function determineResponse(
+export async function determineResponse<
+  CS extends string,
+  US extends UserState<CS>,
+>(
   trx: TrxOrDb,
-  patientState: PatientState,
+  conversationStates: ConversationStates<US['conversation_state'], US>,
+  userState: US,
+  // deno-lint-ignore no-explicit-any
+  updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
 ): Promise<WhatsAppSendable> {
-  const currentState = findMatchingState(patientState)
+  const currentState = findMatchingState(conversationStates, userState)
 
   if (!currentState) {
-    const originalMessageSent = formatMessageToSend(patientState)
+    const originalMessageSent = formatMessageToSend(
+      conversationStates,
+      userState,
+    )
     return {
       ...originalMessageSent,
       messageBody: sorry(originalMessageSent.messageBody),
@@ -23,25 +34,24 @@ export async function determineResponse(
 
   const nextState = typeof currentState.nextState === 'string'
     ? currentState.nextState
-    : currentState.nextState(patientState)
+    : currentState.nextState(userState)
 
-  patientState = {
-    ...patientState,
+  userState = {
+    ...userState,
     conversation_state: nextState,
   }
 
-  await patients.upsert(trx, pickPatient(patientState))
+  await updateState(trx, userState)
 
   if (currentState.onExit) {
-    patientState = await currentState.onExit(trx, patientState)
+    userState = await currentState.onExit(trx, userState)
   }
 
-  const nextConversationState =
-    conversationStates[patientState.conversation_state]
+  const nextConversationState = conversationStates[userState.conversation_state]
 
   if (nextConversationState.onEnter) {
-    patientState = await nextConversationState.onEnter(trx, patientState)
+    userState = await nextConversationState.onEnter(trx, userState)
   }
 
-  return formatMessageToSend(patientState)
+  return formatMessageToSend(conversationStates, userState)
 }

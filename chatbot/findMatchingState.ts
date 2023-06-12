@@ -1,28 +1,30 @@
-import conversationStates from './conversationStates.ts'
 import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionRow,
   ConversationStateHandlerSelect,
   ConversationStateHandlerSelectOption,
+  ConversationStates,
   MatchingState,
   Maybe,
-  PatientState,
+  UserState,
 } from '../types.ts'
 import { isValidDate } from '../util/date.ts'
 
-function findMatchingOption(
-  state: ConversationStateHandlerSelect,
+// deno-lint-ignore no-explicit-any
+function findMatchingOption<US extends UserState<any>>(
+  state: ConversationStateHandlerSelect<US>,
   messageBody: string,
-): Maybe<ConversationStateHandlerSelectOption> {
-  return state.options.find((option: ConversationStateHandlerSelectOption) =>
-    option.option === messageBody
-  )
+): Maybe<ConversationStateHandlerSelectOption<US>> {
+  return state.options.find((
+    option: ConversationStateHandlerSelectOption<US>,
+  ) => option.option === messageBody)
 }
 
-function findMatchingRow(
-  action: ConversationStateHandlerListAction,
+// deno-lint-ignore no-explicit-any
+function findMatchingRow<US extends UserState<any>>(
+  action: ConversationStateHandlerListAction<US>,
   messageBody: string,
-): Maybe<ConversationStateHandlerListActionRow> {
+): Maybe<ConversationStateHandlerListActionRow<US>> {
   for (const section of action.sections) {
     for (const row of section.rows) {
       if (row.id === messageBody) return row
@@ -30,18 +32,22 @@ function findMatchingRow(
   }
 }
 
-export default function findMatchingState(
-  patientState: PatientState,
-): Maybe<MatchingState> {
-  const currentState = conversationStates[patientState.conversation_state]
+export default function findMatchingState<
+  CS extends string,
+  US extends UserState<CS>,
+>(
+  conversationStates: ConversationStates<US['conversation_state'], US>,
+  userState: US,
+): Maybe<MatchingState<US>> {
+  const currentState = conversationStates[userState.conversation_state]
 
-  const messageBody = patientState.body.trim()
+  const messageBody = userState.body.trim()
 
   switch (currentState.type) {
     case 'select':
       return findMatchingOption(currentState, messageBody)
     case 'list':
-      return findMatchingRow(currentState.action(patientState), messageBody)
+      return findMatchingRow(currentState.action(userState), messageBody)
     case 'date': {
       return isValidDate(messageBody) ? currentState : null
     }
