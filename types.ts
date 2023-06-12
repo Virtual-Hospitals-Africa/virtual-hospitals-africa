@@ -38,6 +38,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_gender'
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
+  | 'not_onboarded:find_nearest_clinic:share_location'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'
@@ -146,6 +147,8 @@ export type ConversationStateHandlerList<US extends UserState<any>> =
     ) => ConversationStateHandlerListAction<US>
   }>
 
+
+
 export type ConversationStateHandlerSelect<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'select'
@@ -177,6 +180,12 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
     nextState: ConversationStateHandlerNextState<US>
   }>
 
+export type ConversationStateHandlerLocation<US extends UserState<any>> = 
+ConversationStateHandlerType<US, {
+    type: 'location'
+    nextState: ConversationStateHandlerNextState<US>
+}>
+
 export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerInitialMessage<US>
   | ConversationStateHandlerSelect<US>
@@ -184,6 +193,7 @@ export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerDate<US>
   | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
+  | ConversationStateHandlerLocation<US>
 
 export type ConversationStates<CS extends string, US extends UserState<CS>> = {
   [state in CS]: ConversationStateHandler<US>
@@ -621,6 +631,7 @@ export type WhatsAppSendable =
   | WhatsAppSendableString
   | WhatsAppSendableButtons
   | WhatsAppSendableList
+  | WhatsAppSendableLocation
 export type DoctorAppointment = {
   stripeColor: string
   patientName: string
@@ -652,6 +663,11 @@ export type WhatsAppSendableList = {
   headerText: string
   messageBody: string
   action: WhatsAppMessageAction
+}
+
+export type WhatsAppSendableLocation = {
+  type: 'location'
+  messageBody: string
 }
 
 export type WhatsAppMessageAction = {
