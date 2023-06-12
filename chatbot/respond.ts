@@ -3,20 +3,42 @@ import {
   getUnhandledPatientMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
-import { PatientState } from '../types.ts'
+import {
+  ConversationStates,
+  PatientConversationState,
+  PatientState,
+  TrxOrDb,
+} from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
+import * as patients from '../db/models/patients.ts'
 import { sendMessage } from '../external-clients/whatsapp.ts'
+import pickPatient from './pickPatient.ts'
+import patientConversationStates from './patient/conversationStates.ts'
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
 
+const updatePatientState = (trx: TrxOrDb, patientState: PatientState) =>
+  patients.upsert(trx, pickPatient(patientState))
+
 async function respondToPatientMessage(
+  patientConversationStates: ConversationStates<
+    PatientConversationState,
+    PatientState
+  >,
   patientState: PatientState,
 ) {
   try {
     const responseToSend = await db
       .transaction()
-      .execute((trx) => determineResponse(trx, patientState))
+      .execute((trx) =>
+        determineResponse(
+          trx,
+          patientConversationStates,
+          patientState,
+          updatePatientState,
+        )
+      )
 
     const whatsappResponse = await sendMessage({
       message: responseToSend,
@@ -58,5 +80,9 @@ export default async function respond() {
   const unhandledMessages = await getUnhandledPatientMessages(db, {
     commitHash,
   })
-  return await Promise.all(unhandledMessages.map(respondToPatientMessage))
+  return await Promise.all(
+    unhandledMessages.map((msg) =>
+      respondToPatientMessage(patientConversationStates, msg)
+    ),
+  )
 }

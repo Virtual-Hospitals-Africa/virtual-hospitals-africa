@@ -5,28 +5,29 @@ import {
   formatHarare,
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
-} from '../util/date.ts'
-import { availableThirtyMinutes } from './getDoctorAvailability.ts'
-import { makeAppointment } from './makeAppointment.ts'
-import { cancelAppointment } from './cancelAppointment.ts'
-import * as appointments from '../db/models/appointments.ts'
-import * as patients from '../db/models/patients.ts'
+} from '../../util/date.ts'
+import { availableThirtyMinutes } from '../getDoctorAvailability.ts'
+import { makeAppointment } from '../makeAppointment.ts'
+import { cancelAppointment } from '../cancelAppointment.ts'
+import * as appointments from '../../db/models/appointments.ts'
+import * as patients from '../../db/models/patients.ts'
 import {
   AppointmentOfferedTime,
-  ConversationState,
-  ConversationStateHandler,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
+  ConversationStates,
+  PatientConversationState,
   PatientDemographicInfo,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-} from '../types.ts'
-import pickPatient from './pickPatient.ts'
+} from '../../types.ts'
+import pickPatient from '../pickPatient.ts'
 
-const conversationStates: {
-  [state in ConversationState]: ConversationStateHandler
-} = {
+const conversationStates: ConversationStates<
+  PatientConversationState,
+  PatientState
+> = {
   'initial_message': {
     type: 'initial_message',
     nextState: 'not_onboarded:welcome',
@@ -336,7 +337,7 @@ const conversationStates: {
 
     action(
       patientState: PatientState,
-    ): ConversationStateHandlerListAction {
+    ): ConversationStateHandlerListAction<PatientState> {
       const nonDeclinedTimes = patientState.appointment_offered_times.filter(
         (offered_time) => !offered_time.patient_declined,
       )
@@ -354,7 +355,9 @@ const conversationStates: {
         return acc
       }, Object.create(null))
 
-      const sections: ConversationStateHandlerListActionSection[] = []
+      const sections: ConversationStateHandlerListActionSection<
+        PatientState
+      >[] = []
 
       for (const date in appointmentsByDate) {
         sections.push({

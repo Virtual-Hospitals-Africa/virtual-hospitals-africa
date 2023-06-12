@@ -1,8 +1,8 @@
 import {
-  ConversationState,
   Gender,
   Maybe,
   Patient,
+  PatientConversationState,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
@@ -23,7 +23,7 @@ export async function getByPhoneNumber(
 
 export async function upsert(trx: TrxOrDb, info: {
   id?: number
-  conversation_state: ConversationState
+  conversation_state: PatientConversationState
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>

@@ -1,6 +1,6 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-  ConversationState,
+  PatientConversationState,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -26,7 +26,7 @@ export async function insertMessageReceived(
     whatsapp_id: string
     body: string
     started_responding_at: Date | null | undefined
-    conversation_state: ConversationState
+    conversation_state: PatientConversationState
   }>
 > {
   let [patient] = await trx

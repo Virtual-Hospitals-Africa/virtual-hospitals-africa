@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { ColumnType, Generated, Transaction } from 'kysely'
 import { Handlers } from '$fresh/server.ts'
 import { Session } from 'fresh_session/session'
@@ -26,7 +27,11 @@ export type ReturnedSqlRow<T> = {
 
 export type Gender = 'male' | 'female' | 'other'
 
-export type ConversationState =
+export type UserState<CS> = {
+  body: string
+  conversation_state: CS
+}
+export type PatientConversationState =
   | 'initial_message'
   | 'not_onboarded:welcome'
   | 'not_onboarded:make_appointment:enter_name'
@@ -42,7 +47,7 @@ export type ConversationState =
   | 'other_end_of_demo'
 
 export type Patient = {
-  conversation_state: ConversationState
+  conversation_state: PatientConversationState
 } & PatientDemographicInfo
 
 export type PatientDemographicInfo = {
@@ -72,7 +77,7 @@ export type PatientState = {
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
-  conversation_state: ConversationState
+  conversation_state: PatientConversationState
   scheduling_appointment_id?: number
   scheduling_appointment_reason?: Maybe<string>
   scheduling_appointment_status?: Maybe<AppointmentStatus>
@@ -83,95 +88,106 @@ export type PatientState = {
   updated_at: Date
 }
 
-export type ConversationStateHandlerType<T> = T & {
-  prompt: string | ((patientState: PatientState) => string)
+export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
+  prompt: string | ((userState: US) => string)
   onEnter?: (
     trx: TrxOrDb,
-    patientState: PatientState,
-  ) => Promise<PatientState>
+    userState: US,
+  ) => Promise<US>
   onExit?: (
     trx: TrxOrDb,
-    patientState: PatientState,
-  ) => Promise<PatientState>
+    userState: US,
+  ) => Promise<US>
 }
 
-export type ConversationStateHandlerNextState =
-  | ConversationState
+export type ConversationStateHandlerNextState<US extends UserState<any>> =
+  | US['conversation_state']
   | ((
-    patientState: PatientState,
-  ) => ConversationState)
+    userState: US,
+  ) => US['conversation_state'])
 
-export type ConversationStateHandlerSelectOption = {
+export type ConversationStateHandlerSelectOption<US extends UserState<any>> = {
   option: string
   display: string
-  nextState: ConversationStateHandlerNextState
+  nextState: ConversationStateHandlerNextState<US>
   onExit?: (
     trx: TrxOrDb,
-    patientState: PatientState,
-  ) => Promise<PatientState>
+    userState: US,
+  ) => Promise<US>
 }
 
-export type ConversationStateHandlerListActionRow = {
+export type ConversationStateHandlerListActionRow<US extends UserState<any>> = {
   id: string
   title: string
   description: string
-  nextState: ConversationStateHandlerNextState
+  nextState: ConversationStateHandlerNextState<US>
   onExit?: (
     trx: TrxOrDb,
-    patientState: PatientState,
-  ) => Promise<PatientState>
+    userState: US,
+  ) => Promise<US>
 }
-export type ConversationStateHandlerListActionSection = {
+export type ConversationStateHandlerListActionSection<
+  US extends UserState<any>,
+> = {
   title: string
-  rows: ConversationStateHandlerListActionRow[]
+  rows: ConversationStateHandlerListActionRow<US>[]
 }
 
-export type ConversationStateHandlerListAction = {
+export type ConversationStateHandlerListAction<US extends UserState<any>> = {
   button: string
-  sections: ConversationStateHandlerListActionSection[]
+  sections: ConversationStateHandlerListActionSection<US>[]
 }
 
-export type ConversationStateHandlerList = ConversationStateHandlerType<{
-  type: 'list'
-  action: (
-    patientState: PatientState,
-  ) => ConversationStateHandlerListAction
-}>
-
-export type ConversationStateHandlerSelect = ConversationStateHandlerType<{
-  type: 'select'
-  options: ConversationStateHandlerSelectOption[]
-}>
-
-export type ConversationStateHandlerString = ConversationStateHandlerType<{
-  type: 'string'
-  validation?: (value: string) => boolean
-  nextState: ConversationStateHandlerNextState
-}>
-
-export type ConversationStateHandlerEndOfDemo = ConversationStateHandlerType<{
-  type: 'end_of_demo'
-  nextState: ConversationStateHandlerNextState
-}>
-
-export type ConversationStateHandlerDate = ConversationStateHandlerType<{
-  type: 'date'
-  nextState: ConversationStateHandlerNextState
-}>
-
-export type ConversationStateHandlerInitialMessage =
-  ConversationStateHandlerType<{
-    type: 'initial_message'
-    nextState: ConversationStateHandlerNextState
+export type ConversationStateHandlerList<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'list'
+    action: (
+      userState: US,
+    ) => ConversationStateHandlerListAction<US>
   }>
 
-export type ConversationStateHandler =
-  | ConversationStateHandlerInitialMessage
-  | ConversationStateHandlerSelect
-  | ConversationStateHandlerString
-  | ConversationStateHandlerDate
-  | ConversationStateHandlerEndOfDemo
-  | ConversationStateHandlerList
+export type ConversationStateHandlerSelect<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'select'
+    options: ConversationStateHandlerSelectOption<US>[]
+  }>
+
+export type ConversationStateHandlerString<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'string'
+    validation?: (value: string) => boolean
+    nextState: ConversationStateHandlerNextState<US>
+  }>
+
+export type ConversationStateHandlerEndOfDemo<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'end_of_demo'
+    nextState: ConversationStateHandlerNextState<US>
+  }>
+
+export type ConversationStateHandlerDate<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'date'
+    nextState: ConversationStateHandlerNextState<US>
+  }>
+
+export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'initial_message'
+    nextState: ConversationStateHandlerNextState<US>
+  }>
+
+export type ConversationStateHandler<US extends UserState<any>> =
+  | ConversationStateHandlerInitialMessage<US>
+  | ConversationStateHandlerSelect<US>
+  | ConversationStateHandlerString<US>
+  | ConversationStateHandlerDate<US>
+  | ConversationStateHandlerEndOfDemo<US>
+  | ConversationStateHandlerList<US>
+
+export type ConversationStates<CS extends string, US extends UserState<CS>> = {
+  [state in CS]: ConversationStateHandler<US>
+}
 
 type AppointmentStatus = 'pending' | 'confirmed' | 'denied'
 
@@ -181,12 +197,12 @@ export type Appointment = {
   status: AppointmentStatus
 }
 
-export type MatchingState = {
-  nextState: ConversationStateHandlerNextState
+export type MatchingState<US extends UserState<any>> = {
+  nextState: ConversationStateHandlerNextState<US>
   onExit?: (
     trx: TrxOrDb,
-    patientState: PatientState,
-  ) => Promise<PatientState>
+    userState: US,
+  ) => Promise<US>
 }
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'
@@ -557,7 +573,7 @@ export type WhatsappMessageReceived = {
   patient_id: number
   whatsapp_id: string
   body: string
-  conversation_state: ConversationState | 'initial_message'
+  conversation_state: PatientConversationState
   started_responding_at: Maybe<ColumnType<Date>>
   error_commit_hash: Maybe<string>
   error_message: Maybe<string>
