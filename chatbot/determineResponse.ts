@@ -1,6 +1,6 @@
 import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
-import conversationStates from './conversationStates.ts'
+import conversationStates from './patient/conversationStates.ts'
 import { PatientState, TrxOrDb, WhatsAppSendable } from '../types.ts'
 import * as patients from '../db/models/patients.ts'
 import pickPatient from './pickPatient.ts'
