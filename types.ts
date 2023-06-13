@@ -39,6 +39,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'not_onboarded:find_nearest_clinic:share_location'
+  | 'not_onboarded:find_nearest_clinic:got_location'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'
@@ -277,6 +278,16 @@ export type WhatsAppIncomingMessage = {
                       id: string
                       title: string
                     }
+                  }
+                }
+                | {
+                  type: 'location'                // TODO: check location message format
+                  location: {
+                    address?: string              // full address
+                    latitude: number              // floating-point number
+                    longitude: number
+                    name: string                  // first line of address
+                    url: string
                   }
                 }
               )

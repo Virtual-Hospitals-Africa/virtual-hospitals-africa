@@ -147,8 +147,13 @@ const conversationStates: ConversationStates<
   },
   'not_onboarded:find_nearest_clinic:share_location': {
     type: 'location',
-    nextState: 'not_onboarded:make_appointment:enter_name',
+    nextState: 'not_onboarded:find_nearest_clinic:got_location',
     prompt: 'Sure, we can find your nearest clinic. Can you share your location?',
+  },
+  'not_onboarded:find_nearest_clinic:got_location': {
+    type: 'location',
+    nextState: 'not_onboarded:welcome',
+    prompt: 'The nearest clinic is: ......? (not implement)',
   },
   'onboarded:make_appointment:enter_appointment_reason': {
     type: 'string',
