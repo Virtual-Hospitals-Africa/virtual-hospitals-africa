@@ -346,7 +346,7 @@ function validateForm(event : HTMLFormElement)
   return validateNoOverlap(availability);
 }
 
-function OverlapMessage({ overlapTimeSlots }: { overlapTimeSlots: AvailabilityJSON }) {
+function OverlapMessage({ overlapTimeSlots }: { overlapTimeSlots: AvailabilityJSON}) {
   const overlapDays = Object.keys(overlapTimeSlots).reduce((acc, cur) => {
     if (overlapTimeSlots[cur as DayOfWeek].length > 1) {
       acc.push(cur as DayOfWeek);
@@ -361,7 +361,7 @@ function OverlapMessage({ overlapTimeSlots }: { overlapTimeSlots: AvailabilityJS
 }
 
 function WarningModal({ onConfirm, overlapTimeSlots }: { 
-  onConfirm(): void, overlapTimeSlots: AvailabilityJSON
+  onConfirm(): void, overlapTimeSlots: AvailabilityJSON | null
 }) {
   
   return (
@@ -382,7 +382,10 @@ function WarningModal({ onConfirm, overlapTimeSlots }: {
                 <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Time Slots Overlap</h3>
                 <div class="mt-2">
                   <p class="text-sm text-gray-500">
-                    {<OverlapMessage overlapTimeSlots={overlapTimeSlots} />}
+                    {
+                      overlapTimeSlots != null &&
+                      <OverlapMessage overlapTimeSlots={overlapTimeSlots} />
+                    }
                   </p>
                 </div>
               </div>
@@ -405,6 +408,7 @@ export default function SetAvailabilityForm(
   const onConfirm = () => setIsShowModal(false);
   const handleValidationFailed = () => setIsShowModal(true);
   const [overlapTimeSlots, setOverlapTimeSlots] = useState<AvailabilityJSON | null>(null);
+  let response : AvailabilityJSON | null = null;
   return (
     <form
       method='POST'
@@ -413,9 +417,8 @@ export default function SetAvailabilityForm(
       ref={formRef}
       onSubmit={event => {
         event.preventDefault();
-        const result = validateForm(event.currentTarget);
-        setOverlapTimeSlots(result);
-        if (result === null)
+        response = validateForm(event.currentTarget)
+        if (response == null)
         {
           formRef.current?.submit();
         }
@@ -436,7 +439,7 @@ export default function SetAvailabilityForm(
         ))}
       </div>
       {
-        (isShowModal && overlapTimeSlots) && <WarningModal onConfirm={onConfirm} overlapTimeSlots={overlapTimeSlots} />
+        isShowModal && <WarningModal onConfirm={onConfirm} overlapTimeSlots={response} />
       }
       <div className='container grid gap-x-2 grid-cols-2'>
         <button
