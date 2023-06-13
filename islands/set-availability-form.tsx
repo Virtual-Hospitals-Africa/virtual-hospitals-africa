@@ -404,6 +404,7 @@ export default function SetAvailabilityForm(
   const [isShowModal, setIsShowModal] = useState(false);
   const onConfirm = () => setIsShowModal(false);
   const handleValidationFailed = () => setIsShowModal(true);
+  const [overlapTimeSlots, setOverlapTimeSlots] = useState<AvailabilityJSON | null>(null);
   return (
     <form
       method='POST'
@@ -412,14 +413,14 @@ export default function SetAvailabilityForm(
       ref={formRef}
       onSubmit={event => {
         event.preventDefault();
-        if (validateForm(event.currentTarget))
+        const result = validateForm(event.currentTarget);
+        setOverlapTimeSlots(result);
+        if (result === null)
         {
           formRef.current?.submit();
         }
         else 
         {
-          //invalid form, send alert use above `response` value update avaliability
-          console.log(validateForm(event.currentTarget));
           handleValidationFailed();
         }
       }}
@@ -434,9 +435,8 @@ export default function SetAvailabilityForm(
           <DayInput key={day} day={day} timeWindows={availability[day]} />
         ))}
       </div>
-      {/* TODO: Update overlapTimeSlots to accept validation results */}
       {
-        isShowModal && <WarningModal onConfirm={onConfirm} overlapTimeSlots={availability} />
+        (isShowModal && overlapTimeSlots) && <WarningModal onConfirm={onConfirm} overlapTimeSlots={overlapTimeSlots} />
       }
       <div className='container grid gap-x-2 grid-cols-2'>
         <button
