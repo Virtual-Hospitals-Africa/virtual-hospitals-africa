@@ -277,7 +277,7 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-function validateNoOverlap(availability: AvailabilityJSON) : AvailabilityJSON | null {
+export function validateNoOverlap(availability: AvailabilityJSON) : AvailabilityJSON | null {
   const overlappingTimes : AvailabilityJSON = {
     Sunday: [],
     Monday: [],
