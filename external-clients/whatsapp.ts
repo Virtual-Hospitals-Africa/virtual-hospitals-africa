@@ -47,9 +47,9 @@ export function sendMessage({
         action: message.action,
       })
     case 'location':
-      return sendMessageLocationRequest({
+      return sendMessagePlainText({
         phone_number,
-        messageBody: message.messageBody
+        message: message.messageBody
       })
   }
 }
