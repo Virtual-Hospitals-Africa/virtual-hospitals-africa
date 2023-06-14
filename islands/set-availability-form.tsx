@@ -277,6 +277,9 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
+
+//Takes AvaliabilityJSON and returns null if there's no overlapping times
+//returns a AvailabilityJSON of the overlapping times if there is an overlap
 export function validateNoOverlap(availability: AvailabilityJSON) : AvailabilityJSON | null {
   const overlappingTimes : AvailabilityJSON = {
     Sunday: [],
@@ -308,6 +311,8 @@ export function validateNoOverlap(availability: AvailabilityJSON) : Availability
   else {return null;}
 }
 
+//Converts two TimeWindows into minutes, then checks if they overlap, returns `targetTime` if they do overlap
+//else returns null
 function overlaps(targetTime : TimeWindow, checkedAgainst : TimeWindow) : TimeWindow | null {
   const targetStartTime = timeToMinute(targetTime.start);
   const targetEndTime = timeToMinute(targetTime.end);
@@ -327,6 +332,8 @@ function overlaps(targetTime : TimeWindow, checkedAgainst : TimeWindow) : TimeWi
   }
 }
 
+//Converts the form data into an AvaliabilityJSON and then validates the form
+//feasibly you could add more validation functions here
 function validateForm(event : HTMLFormElement)
 {
   const data = new FormData(event);
