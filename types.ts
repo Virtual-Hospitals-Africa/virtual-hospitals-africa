@@ -148,8 +148,6 @@ export type ConversationStateHandlerList<US extends UserState<any>> =
     ) => ConversationStateHandlerListAction<US>
   }>
 
-
-
 export type ConversationStateHandlerSelect<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'select'
@@ -181,11 +179,11 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
     nextState: ConversationStateHandlerNextState<US>
   }>
 
-export type ConversationStateHandlerLocation<US extends UserState<any>> = 
-ConversationStateHandlerType<US, {
+export type ConversationStateHandlerLocation<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
     type: 'location'
     nextState: ConversationStateHandlerNextState<US>
-}>
+  }>
 
 export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerInitialMessage<US>
@@ -281,12 +279,12 @@ export type WhatsAppIncomingMessage = {
                   }
                 }
                 | {
-                  type: 'location'                // TODO: check location message format
+                  type: 'location' // TODO: check location message format
                   location: {
-                    address?: string              // full address
-                    latitude: number              // floating-point number
+                    address?: string // full address
+                    latitude: number // floating-point number
                     longitude: number
-                    name: string                  // first line of address
+                    name: string // first line of address
                     url: string
                   }
                 }

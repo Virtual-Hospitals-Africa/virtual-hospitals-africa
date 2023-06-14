@@ -71,7 +71,7 @@ export const handler: Handlers = {
 
       const body = message.type === 'text'
         ? message.text.body
-        : message.type === 'location'               // TODO: check the location format
+        : message.type === 'location' // TODO: check the location format
         ? JSON.stringify(message.location)
         : message.interactive.type === 'list_reply'
         ? message.interactive.list_reply.id

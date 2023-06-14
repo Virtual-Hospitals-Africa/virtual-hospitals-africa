@@ -49,30 +49,29 @@ export function sendMessage({
     case 'location':
       return sendMessagePlainText({
         phone_number,
-        message: message.messageBody
+        message: message.messageBody,
       })
   }
 }
 
 export async function sendMessageLocation(opts: {
-  phone_number: string,
+  phone_number: string
   location: {
     longitude: number
     latitude: number
   }
 }): Promise<WhatsAppJSONResponse> {
-
-    const toPost = {
-      method: 'post',
-      headers: { Authorization, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        recipient_type: 'individual',
-        to: opts.phone_number, 
-        type: "location",
-        location
-      })
-    }
+  const toPost = {
+    method: 'post',
+    headers: { Authorization, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: opts.phone_number,
+      type: 'location',
+      location,
+    }),
+  }
 
   const response = await fetch(postMessageRoute, toPost)
 
@@ -80,30 +79,29 @@ export async function sendMessageLocation(opts: {
 }
 
 export async function sendMessageLocationRequest(opts: {
-  phone_number: string,
+  phone_number: string
   messageBody: string
 }): Promise<WhatsAppJSONResponse> {
-
-    const toPost = {
-      method: 'post',
-      headers: { Authorization, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        messaging_product: 'whatsapp',
-        recipient_type: 'individual',
-        to: opts.phone_number, 
-        type: "interactive",
-        interactive: {
-          "type": "location_request_message",
-          "body": {
-            "type": "text",
-            "text": opts.messageBody
-          },
-          "action": {
-            "name": "send_location" 
-          }
-        }
-      })
-    }    
+  const toPost = {
+    method: 'post',
+    headers: { Authorization, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: opts.phone_number,
+      type: 'interactive',
+      interactive: {
+        'type': 'location_request_message',
+        'body': {
+          'type': 'text',
+          'text': opts.messageBody,
+        },
+        'action': {
+          'name': 'send_location',
+        },
+      },
+    }),
+  }
 
   console.log('toPostTest: \n', JSON.stringify(toPost))
 
@@ -137,7 +135,6 @@ export async function sendMessageWithInteractiveButtons(opts: {
   messageBody: string
   options: WhatsAppMessageOption[]
 }): Promise<WhatsAppJSONResponse> {
-
   const toPost = {
     method: 'post',
     headers: { Authorization, 'Content-Type': 'application/json' },
