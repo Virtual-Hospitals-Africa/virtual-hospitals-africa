@@ -45,6 +45,11 @@ const conversationStates: ConversationStates<
         display: 'Make appointment',
         nextState: 'not_onboarded:make_appointment:enter_name',
       },
+      {
+        option: 'find_nearest_clinic',
+        display: 'Find Nearest Clinic',
+        nextState: 'not_onboarded:find_nearest_clinic:share_location',
+      },
     ],
   },
   'not_onboarded:make_appointment:enter_name': {
@@ -138,6 +143,19 @@ const conversationStates: ConversationStates<
         national_id_number: patientState.body,
       })
       return { ...patientState, national_id_number: patientState.body }
+    },
+  },
+  'not_onboarded:find_nearest_clinic:share_location': {
+    type: 'location',
+    nextState: 'not_onboarded:find_nearest_clinic:got_location',
+    prompt:
+      'Sure, we can find your nearest clinic. Can you share your location?',
+  },
+  'not_onboarded:find_nearest_clinic:got_location': {
+    type: 'location',
+    nextState: 'not_onboarded:welcome',
+    prompt(patientState: PatientState): string {
+      return `Got it, your location is: ${patientState.body}`
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {

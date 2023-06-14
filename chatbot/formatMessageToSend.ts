@@ -58,6 +58,12 @@ export default function formatMessageToSend<
         },
       }
     }
+    case 'location': {
+      return {
+        type: 'location',
+        messageBody: prompt,
+      }
+    }
     case 'date': {
       return stringSendable(
         prompt + ' Please enter the date in the format DD/MM/YYYY',

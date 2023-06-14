@@ -10,6 +10,8 @@ export async function up(db: Kysely<unknown>) {
       'not_onboarded:make_appointment:enter_gender',
       'not_onboarded:make_appointment:enter_date_of_birth',
       'not_onboarded:make_appointment:enter_national_id_number',
+      'not_onboarded:find_nearest_clinic:share_location',
+      'not_onboarded:find_nearest_clinic:got_location',
       'onboarded:make_appointment:enter_appointment_reason',
       'onboarded:make_appointment:confirm_details',
       'onboarded:make_appointment:first_scheduling_option',
