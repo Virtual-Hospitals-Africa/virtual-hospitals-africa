@@ -1,4 +1,4 @@
-import { useState, useRef } from 'preact/hooks'
+import { useRef, useState } from 'preact/hooks'
 import range from '../util/range.ts'
 import padLeft from '../util/padLeft.ts'
 import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
@@ -277,11 +277,12 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-
 //Takes AvaliabilityJSON and returns null if there's no overlapping times
 //returns a AvailabilityJSON of the overlapping times if there is an overlap
-export function validateNoOverlap(availability: AvailabilityJSON) : AvailabilityJSON | null {
-  const overlappingTimes : AvailabilityJSON = {
+export function validateNoOverlap(
+  availability: AvailabilityJSON,
+): AvailabilityJSON | null {
+  const overlappingTimes: AvailabilityJSON = {
     Sunday: [],
     Monday: [],
     Tuesday: [],
@@ -290,54 +291,53 @@ export function validateNoOverlap(availability: AvailabilityJSON) : Availability
     Friday: [],
     Saturday: [],
   }
-  let doesOverlap = false;
+  let doesOverlap = false
 
-  days.forEach( weekday => {
-    for (let i = 0; i < availability[weekday].length; i++)
-    {
-      const targetTime : TimeWindow = availability[weekday].at(i)!;
-      for (let n = 0; n < availability[weekday].length; n++)
-      {
-        if (n == i) {continue;}
-        if (overlaps(targetTime,availability[weekday].at(n)!))
-        {
-          doesOverlap = true;
+  days.forEach((weekday) => {
+    for (let i = 0; i < availability[weekday].length; i++) {
+      const targetTime: TimeWindow = availability[weekday].at(i)!
+      for (let n = 0; n < availability[weekday].length; n++) {
+        if (n == i) continue
+        if (overlaps(targetTime, availability[weekday].at(n)!)) {
+          doesOverlap = true
           overlappingTimes[weekday].push(targetTime)
         }
       }
     }
   })
-  if (doesOverlap){return overlappingTimes;}
-  else {return null;}
+  if (doesOverlap) return overlappingTimes
+  else return null
 }
 
 //Converts two TimeWindows into minutes, then checks if they overlap, returns `targetTime` if they do overlap
 //else returns null
-function overlaps(targetTime : TimeWindow, checkedAgainst : TimeWindow) : TimeWindow | null {
-  const targetStartTime = timeToMinute(targetTime.start);
-  const targetEndTime = timeToMinute(targetTime.end);
-  const checkedStartTime = timeToMinute(checkedAgainst.start);
-  const checkedEndTime = timeToMinute(checkedAgainst.end);
-  if ((targetEndTime > checkedStartTime) && (targetStartTime < checkedEndTime))
-  {
-    return targetTime;
+function overlaps(
+  targetTime: TimeWindow,
+  checkedAgainst: TimeWindow,
+): TimeWindow | null {
+  const targetStartTime = timeToMinute(targetTime.start)
+  const targetEndTime = timeToMinute(targetTime.end)
+  const checkedStartTime = timeToMinute(checkedAgainst.start)
+  const checkedEndTime = timeToMinute(checkedAgainst.end)
+  if (
+    (targetEndTime > checkedStartTime) && (targetStartTime < checkedEndTime)
+  ) {
+    return targetTime
   }
-  return null;
+  return null
 
-  function timeToMinute(time : Time) : number
-  {
-    let hour = time.hour;
-    if (time.amPm == "pm") {hour += 12;}
-    return (hour * 60) + time.minute;
+  function timeToMinute(time: Time): number {
+    let hour = time.hour
+    if (time.amPm == 'pm') hour += 12
+    return (hour * 60) + time.minute
   }
 }
 
 //Converts the form data into an AvaliabilityJSON and then validates the form
 //feasibly you could add more validation functions here
-function validateForm(event : HTMLFormElement)
-{
-  const data = new FormData(event);
-  const availability : AvailabilityJSON = {
+function validateForm(event: HTMLFormElement) {
+  const data = new FormData(event)
+  const availability: AvailabilityJSON = {
     Sunday: [],
     Monday: [],
     Tuesday: [],
@@ -347,58 +347,88 @@ function validateForm(event : HTMLFormElement)
     Saturday: [],
   }
   data.forEach((value, key) => {
-    const toSet = /^\d+$/g.test(value.toString()) ? parseInt(value.toString()) : value
+    const toSet = /^\d+$/g.test(value.toString())
+      ? parseInt(value.toString())
+      : value
     set(availability, key, toSet)
   })
-  return validateNoOverlap(availability);
+  return validateNoOverlap(availability)
 }
 
-function OverlapMessage({ overlapTimeSlots }: { overlapTimeSlots: AvailabilityJSON}) {
+function OverlapMessage(
+  { overlapTimeSlots }: { overlapTimeSlots: AvailabilityJSON },
+) {
   const overlapDays = Object.keys(overlapTimeSlots).reduce((acc, cur) => {
     if (overlapTimeSlots[cur as DayOfWeek].length > 1) {
-      acc.push(cur as DayOfWeek);
+      acc.push(cur as DayOfWeek)
     }
-    return acc;
+    return acc
   }, [] as DayOfWeek[])
   return (
     <>
-      There are some overlapping time slots on the following days, please update them accordingly: {overlapDays.join(', ')}
+      There are some overlapping time slots on the following days, please update
+      them accordingly: {overlapDays.join(', ')}
     </>
   )
 }
 
-function WarningModal({ onConfirm, overlapTimeSlots }: { 
-  onConfirm(): void, overlapTimeSlots: AvailabilityJSON | null
+function WarningModal({ onConfirm, overlapTimeSlots }: {
+  onConfirm(): void
+  overlapTimeSlots: AvailabilityJSON | null
 }) {
-  
   return (
-    <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      class='relative z-10'
+      aria-labelledby='modal-title'
+      role='dialog'
+      aria-modal='true'
+    >
+      <div class='fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity'>
+      </div>
 
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-
-      <div class="fixed inset-0 z-10 overflow-y-auto">
-        <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div class="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-            <div class="sm:flex sm:items-start">
-              <div class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+      <div class='fixed inset-0 z-10 overflow-y-auto'>
+        <div class='flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0'>
+          <div class='relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6'>
+            <div class='sm:flex sm:items-start'>
+              <div class='mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10'>
+                <svg
+                  class='h-6 w-6 text-red-600'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke-width='1.5'
+                  stroke='currentColor'
+                  aria-hidden='true'
+                >
+                  <path
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    d='M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z'
+                  />
                 </svg>
               </div>
-              <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Time Slots Overlap</h3>
-                <div class="mt-2">
-                  <p class="text-sm text-gray-500">
-                    {
-                      overlapTimeSlots != null &&
-                      <OverlapMessage overlapTimeSlots={overlapTimeSlots} />
-                    }
+              <div class='mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left'>
+                <h3
+                  class='text-base font-semibold leading-6 text-gray-900'
+                  id='modal-title'
+                >
+                  Time Slots Overlap
+                </h3>
+                <div class='mt-2'>
+                  <p class='text-sm text-gray-500'>
+                    {overlapTimeSlots != null &&
+                      <OverlapMessage overlapTimeSlots={overlapTimeSlots} />}
                   </p>
                 </div>
               </div>
             </div>
-            <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-              <button type="button" class="mt-3 inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto" onClick={onConfirm}>Confirm</button>
+            <div class='mt-5 sm:mt-4 sm:flex sm:flex-row-reverse'>
+              <button
+                type='button'
+                class='mt-3 inline-flex justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto'
+                onClick={onConfirm}
+              >
+                Confirm
+              </button>
             </div>
           </div>
         </div>
@@ -410,28 +440,27 @@ function WarningModal({ onConfirm, overlapTimeSlots }: {
 export default function SetAvailabilityForm(
   { availability }: { availability: AvailabilityJSON },
 ) {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [isShowModal, setIsShowModal] = useState(false);
-  const onConfirm = () => setIsShowModal(false);
-  const handleValidationFailed = () => setIsShowModal(true);
-  const [overlapTimeSlots, setOverlapTimeSlots] = useState<AvailabilityJSON | null>(null);
-  let response : AvailabilityJSON | null = null;
+  const formRef = useRef<HTMLFormElement>(null)
+  const [isShowModal, setIsShowModal] = useState(false)
+  const onConfirm = () => setIsShowModal(false)
+  const handleValidationFailed = () => setIsShowModal(true)
+  const [overlapTimeSlots, setOverlapTimeSlots] = useState<
+    AvailabilityJSON | null
+  >(null)
   return (
     <form
       method='POST'
       action='/api/set-availability'
       className='container p-1'
       ref={formRef}
-      onSubmit={event => {
-        event.preventDefault();
-        response = validateForm(event.currentTarget)
-        if (response == null)
-        {
-          formRef.current?.submit();
-        }
-        else 
-        {
-          handleValidationFailed();
+      onSubmit={(event) => {
+        event.preventDefault()
+        const result = validateForm(event.currentTarget)
+        setOverlapTimeSlots(result)
+        if (result === null) {
+          formRef.current?.submit()
+        } else {
+          handleValidationFailed()
         }
       }}
     >
@@ -445,9 +474,12 @@ export default function SetAvailabilityForm(
           <DayInput key={day} day={day} timeWindows={availability[day]} />
         ))}
       </div>
-      {
-        isShowModal && <WarningModal onConfirm={onConfirm} overlapTimeSlots={response} />
-      }
+      {(isShowModal && overlapTimeSlots) && (
+        <WarningModal
+          onConfirm={onConfirm}
+          overlapTimeSlots={overlapTimeSlots}
+        />
+      )}
       <div className='container grid gap-x-2 grid-cols-2'>
         <button
           type='button'
