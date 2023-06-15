@@ -709,3 +709,26 @@ export type LoggedInDoctorHandler<Props = Record<string, never>> = Handlers<
   Props,
   LoggedInDoctor
 >
+
+export type LocationMessage = {
+  address?: string // full address
+  latitude: number // floating-point number
+  longitude: number
+  name: string // first line of address
+  url: string
+}
+
+export type Location = {
+  latitude: number
+  longitude: number
+}
+
+export type Clinic = {
+  name: string
+  address?: string
+  location: Location
+  distance: number
+  vha?: boolean
+  url?: string
+  phone?: string
+}
