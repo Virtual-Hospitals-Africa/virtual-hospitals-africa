@@ -1,21 +1,26 @@
 import { sql } from 'kysely'
-import { Clinic, LocationMessage, PatientState, TrxOrDb, Location } from "../types.ts";
-
+import {
+  Clinic,
+  Location,
+  LocationMessage,
+  PatientState,
+  TrxOrDb,
+} from '../types.ts'
 
 async function findNearestClinicInDB(
-    trx: TrxOrDb,
-    patientState: PatientState 
+  trx: TrxOrDb,
+  patientState: PatientState,
 ): Promise<
   Clinic[]
 > {
-    const locationMessage: LocationMessage = JSON.parse(patientState.body)
+  const locationMessage: LocationMessage = JSON.parse(patientState.body)
 
-    const currentLocation: Location = {
-        latitude: locationMessage.latitude,
-        longitude: locationMessage.longitude
-    }
+  const currentLocation: Location = {
+    latitude: locationMessage.latitude,
+    longitude: locationMessage.longitude,
+  }
 
-    const result = await sql<Clinic>`
+  const result = await sql<Clinic>`
       SELECT name,
              location, 
              ST_Distance(
@@ -31,21 +36,19 @@ async function findNearestClinicInDB(
       ORDER BY location <-> ST_SetSRID(ST_MakePoint(${currentLocation.longitude}, ${currentLocation.latitude}), 4326)::geography
     `.execute(trx)
 
-    const clinics: Clinic[] = result.rows.map((row) => ({
-      name: row.name,
-      location: row.location,
-      distance: row.distance,
-    }));
+  const clinics: Clinic[] = result.rows.map((row) => ({
+    name: row.name,
+    location: row.location,
+    distance: row.distance,
+  }))
 
-    return clinics
+  return clinics
 }
 
 export async function getNearestClinicNames(
   trx: TrxOrDb,
-  patientState: PatientState
+  patientState: PatientState,
 ): Promise<string> {
-  const clinics = await findNearestClinicInDB(trx, patientState);
-  return clinics.map((clinic) => clinic.name).join(', ');
+  const clinics = await findNearestClinicInDB(trx, patientState)
+  return clinics.map((clinic) => clinic.name).join(', ')
 }
-
-
