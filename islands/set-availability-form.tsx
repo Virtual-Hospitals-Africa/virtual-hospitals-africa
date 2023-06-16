@@ -204,9 +204,9 @@ function overlaps(
   otherTimeWindow: TimeWindow,
 ): boolean {
   console.log(timeWindow, otherTimeWindow)
-  
-  return (timeToMin(timeWindow.end) > timeToMin(otherTimeWindow.start)) && 
-  (timeToMin(timeWindow.start) < timeToMin(timeWindow.end));
+
+  return (timeToMin(timeWindow.end) > timeToMin(otherTimeWindow.start)) &&
+    (timeToMin(timeWindow.start) < timeToMin(timeWindow.end))
 }
 
 export function windowsOverlap(timeWindows: TimeWindow[]): boolean {
