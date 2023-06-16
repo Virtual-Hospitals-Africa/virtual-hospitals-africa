@@ -2,7 +2,7 @@ import { sql } from 'kysely'
 import { Clinic, LocationMessage, PatientState, TrxOrDb, Location } from "../types.ts";
 
 
-export async function findNearestClinicInDB(
+async function findNearestClinicInDB(
     trx: TrxOrDb,
     patientState: PatientState 
 ): Promise<
@@ -26,18 +26,26 @@ export async function findNearestClinicInDB(
       WHERE ST_DWithin(
         location,
         ST_SetSRID(ST_MakePoint(${currentLocation.longitude}, ${currentLocation.latitude}), 4326)::geography,
-        50000
+        70000
       )
       ORDER BY location <-> ST_SetSRID(ST_MakePoint(${currentLocation.longitude}, ${currentLocation.latitude}), 4326)::geography
     `.execute(trx)
 
     const clinics: Clinic[] = result.rows.map((row) => ({
-        ...row
+      name: row.name,
+      location: row.location,
+      distance: row.distance,
     }));
 
     return clinics
 }
 
-
+export async function getNearestClinicNames(
+  trx: TrxOrDb,
+  patientState: PatientState
+): Promise<string> {
+  const clinics = await findNearestClinicInDB(trx, patientState);
+  return clinics.map((clinic) => clinic.name).join(', ');
+}
 
 

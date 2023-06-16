@@ -23,6 +23,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
+import { getNearestClinicNames } from '../findNearestClinicInDB.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -155,7 +156,12 @@ const conversationStates: ConversationStates<
     type: 'location',
     nextState: 'not_onboarded:welcome',
     prompt(patientState: PatientState): string {
-      return `Got it, your location is: ${patientState.body}`
+      return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
+    },
+    async onExit(trx, patientState) {
+      const clinic_name = await getNearestClinicNames(trx, patientState)
+      patientState.nearest_clinic_name = clinic_name
+      return { ...patientState, nearest_clinic_name: clinic_name }
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
