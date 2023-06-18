@@ -23,7 +23,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
-import { getNearestClinicNames } from '../findNearestClinicInDB.ts'
+import { getNearestClinics } from '../findNearestClinicInDB.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -152,16 +152,42 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
   },
+  // change the name of got_location to nearest_clinics?
   'not_onboarded:find_nearest_clinic:got_location': {
-    type: 'location',
-    nextState: 'not_onboarded:welcome',
+    // this needs to be conditional if no clinics available then return a string?
+    type: 'list',
+    headerText: 'Here is a list of your nearest clinics:',
     prompt(patientState: PatientState): string {
       return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
     },
+    
+    action(
+      patientState: PatientState,
+    ): ConversationStateHandlerListAction<PatientState> {
+      const sections: ConversationStateHandlerListActionSection<PatientState>[] = [];
+    
+      patientState.nearest_clinics?.map((eachClinic) => {
+        sections.push({
+          title: 'section title',
+          rows: [{
+            id: 'id',
+            title: eachClinic.name,
+            description: "A clinic description",
+            nextState: 'not_onboarded:find_nearest_clinic:got_location',
+          }]
+        });
+      });
+    
+      return {
+        button: 'See clinic list',
+        sections: sections,
+      };
+    }
+    ,
     async onExit(trx, patientState) {
-      const clinic_name = await getNearestClinicNames(trx, patientState)
-      patientState.nearest_clinic_name = clinic_name
-      return { ...patientState, nearest_clinic_name: clinic_name }
+      const allNearestClinics = await getNearestClinics(trx, patientState)
+      // patientState.nearest_clinics = allNearestClinics
+      return { ...patientState, nearest_clinics: allNearestClinics }
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
@@ -285,6 +311,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:other_scheduling_options': {
     type: 'list',
+    headerText: 'Other Appointment Times',
     async onEnter(
       trx: TrxOrDb,
       patientState: PatientState,

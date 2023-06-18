@@ -45,10 +45,10 @@ async function findNearestClinicInDB(
   return clinics
 }
 
-export async function getNearestClinicNames(
+export async function getNearestClinics(
   trx: TrxOrDb,
   patientState: PatientState,
-): Promise<string> {
+): Promise<Clinic[]> {
   const clinics = await findNearestClinicInDB(trx, patientState)
-  return clinics.map((clinic) => clinic.name).join(', ')
+  return clinics
 }

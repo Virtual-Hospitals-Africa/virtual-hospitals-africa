@@ -88,6 +88,7 @@ export type PatientState = {
   >[]
   created_at: Date
   updated_at: Date
+  nearest_clinics?: Clinic[]
   nearest_clinic_name?: string
 }
 
@@ -144,6 +145,7 @@ export type ConversationStateHandlerListAction<US extends UserState<any>> = {
 export type ConversationStateHandlerList<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'list'
+    headerText: string
     action: (
       userState: US,
     ) => ConversationStateHandlerListAction<US>
@@ -727,8 +729,8 @@ export type Location = {
 export type Clinic = {
   name: string
   address?: string
-  location: Location
-  distance: number
+  location?: Location
+  distance?: number
   vha?: boolean
   url?: string
   phone?: string
