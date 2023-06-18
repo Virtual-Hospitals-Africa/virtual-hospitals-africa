@@ -185,6 +185,7 @@ const conversationStates: ConversationStates<
     }
     ,
     async onExit(trx, patientState) {
+      console.log("\n onExit called! \n")
       const allNearestClinics = await getNearestClinics(trx, patientState)
       // patientState.nearest_clinics = allNearestClinics
       return { ...patientState, nearest_clinics: allNearestClinics }
