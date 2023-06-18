@@ -156,38 +156,47 @@ const conversationStates: ConversationStates<
   'not_onboarded:find_nearest_clinic:got_location': {
     // this needs to be conditional if no clinics available then return a string?
     type: 'list',
-    headerText: 'Here is a list of your nearest clinics:',
+    headerText: 'Test header text',
     prompt(patientState: PatientState): string {
       return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
     },
-    
     action(
       patientState: PatientState,
     ): ConversationStateHandlerListAction<PatientState> {
       const sections: ConversationStateHandlerListActionSection<PatientState>[] = [];
-    
-      patientState.nearest_clinics?.map((eachClinic) => {
+
+      if (patientState.nearest_clinics && patientState.nearest_clinics.length > 0) {
+        patientState.nearest_clinics?.map((eachClinic) => {
+          sections.push({
+            title: 'section title',
+            rows: [{
+              id: 'id',
+              title: eachClinic.name,
+              description: "A clinic description",
+              nextState: 'not_onboarded:find_nearest_clinic:got_location',
+            }]
+          });
+        });
+      } else {
         sections.push({
-          title: 'section title',
+          title: 'No clinics title',
           rows: [{
-            id: 'id',
-            title: eachClinic.name,
-            description: "A clinic description",
+            id: 'No clinics row',
+            title: "No clinics row title",
+            description: "No clinics description",
             nextState: 'not_onboarded:find_nearest_clinic:got_location',
           }]
-        });
-      });
+        })
+      }
     
       return {
-        button: 'See clinic list',
+        button: 'Test button text',
         sections: sections,
       };
     }
     ,
     async onExit(trx, patientState) {
-      console.log("\n onExit called! \n")
       const allNearestClinics = await getNearestClinics(trx, patientState)
-      // patientState.nearest_clinics = allNearestClinics
       return { ...patientState, nearest_clinics: allNearestClinics }
     },
   },
