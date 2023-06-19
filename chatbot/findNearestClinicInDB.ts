@@ -28,12 +28,8 @@ async function findNearestClinicInDB(
                 ST_SetSRID(ST_MakePoint(${currentLocation.longitude}, ${currentLocation.latitude}), 4326)::geography
               ) AS distance
       FROM clinics
-      WHERE ST_DWithin(
-        location,
-        ST_SetSRID(ST_MakePoint(${currentLocation.longitude}, ${currentLocation.latitude}), 4326)::geography,
-        70000
-      )
       ORDER BY location <-> ST_SetSRID(ST_MakePoint(${currentLocation.longitude}, ${currentLocation.latitude}), 4326)::geography
+      LIMIT 10
     `.execute(trx)
 
   const clinics: Clinic[] = result.rows.map((row) => ({
@@ -52,3 +48,14 @@ export async function getNearestClinics(
   const clinics = await findNearestClinicInDB(trx, patientState)
   return clinics
 }
+
+/*** 
+ * for testing
+export async function getNearestClinicNames(
+  trx: TrxOrDb,
+  patientState: PatientState
+): Promise<string> {
+  const clinics = await findNearestClinicInDB(trx, patientState);
+  return clinics.map((clinic) => clinic.name).join(', ');
+}
+*/
