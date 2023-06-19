@@ -6,7 +6,7 @@ import {
   WhatsAppSendable,
 } from '../types.ts'
 
-const postMessageRoute = `https://graph.facebook.com/v15.0/${
+const postMessageRoute = `https://graph.facebook.com/v17.0/${
   Deno.env.get(
     'WHATSAPP_FROM_PHONE_NUMBER',
   )
@@ -46,7 +46,71 @@ export function sendMessage({
         messageBody: message.messageBody,
         action: message.action,
       })
+    case 'location':
+      return sendMessagePlainText({
+        phone_number,
+        message: message.messageBody,
+      })
   }
+}
+
+export async function sendMessageLocation(opts: {
+  phone_number: string
+  location: {
+    longitude: number
+    latitude: number
+  }
+}): Promise<WhatsAppJSONResponse> {
+  const toPost = {
+    method: 'post',
+    headers: { Authorization, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: opts.phone_number,
+      type: 'location',
+      location,
+    }),
+  }
+
+  const response = await fetch(postMessageRoute, toPost)
+
+  return response.json()
+}
+
+export async function sendMessageLocationRequest(opts: {
+  phone_number: string
+  messageBody: string
+}): Promise<WhatsAppJSONResponse> {
+  const toPost = {
+    method: 'post',
+    headers: { Authorization, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      recipient_type: 'individual',
+      to: opts.phone_number,
+      type: 'interactive',
+      interactive: {
+        'type': 'location_request_message',
+        'body': {
+          'type': 'text',
+          'text': opts.messageBody,
+        },
+        'action': {
+          'name': 'send_location',
+        },
+      },
+    }),
+  }
+
+  console.log('toPostTest: \n', JSON.stringify(toPost))
+
+  const response = await fetch(postMessageRoute, toPost)
+
+  // console log not showing
+  console.log(await response.text())
+
+  return response.json()
 }
 
 export async function sendMessagePlainText(opts: {
@@ -93,7 +157,7 @@ export async function sendMessageWithInteractiveButtons(opts: {
     }),
   }
 
-  console.log('toPost', JSON.stringify(toPost))
+  console.log('toPost\n', JSON.stringify(toPost))
 
   const response = await fetch(postMessageRoute, toPost)
 
@@ -126,7 +190,7 @@ export async function sendMessageWithInteractiveList(opts: {
     }),
   }
 
-  console.log('toPost', JSON.stringify(toPost))
+  console.log('toPost\n', JSON.stringify(toPost))
 
   const response = await fetch(postMessageRoute, toPost)
 

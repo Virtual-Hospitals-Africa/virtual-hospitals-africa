@@ -6,6 +6,7 @@ import PlusIcon from '../components/icons/plus.tsx'
 import TrashIcon from '../components/icons/trash.tsx'
 import WarningModal from '../components/modals/Warning.tsx'
 import parseAvailabilityForm from '../util/parseAvailabilityForm.ts'
+import timeToMin from '../util/timeToMin.ts'
 
 const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 const minutes = range(0, 60, 5)
@@ -203,10 +204,12 @@ function overlaps(
   otherTimeWindow: TimeWindow,
 ): boolean {
   console.log(timeWindow, otherTimeWindow)
-  throw new Error('Function to be implemented by web team.')
+
+  return (timeToMin(timeWindow.end) > timeToMin(otherTimeWindow.start)) &&
+    (timeToMin(timeWindow.start) < timeToMin(timeWindow.end))
 }
 
-function windowsOverlap(timeWindows: TimeWindow[]): boolean {
+export function windowsOverlap(timeWindows: TimeWindow[]): boolean {
   if (timeWindows.length <= 1) return false
   const [timeWindow, ...rest] = timeWindows
   if (rest.some((otherTimeWindow) => overlaps(timeWindow, otherTimeWindow))) {
