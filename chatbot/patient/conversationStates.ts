@@ -156,9 +156,9 @@ const conversationStates: ConversationStates<
   'not_onboarded:find_nearest_clinic:got_location': {
     // this needs to be conditional if no clinics available then return a string?
     type: 'list',
-    headerText: 'Test header text',
+    headerText: 'Your Nearest Clinics',
     prompt(patientState: PatientState): string {
-      return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
+      return `Got it, your location is: ${patientState.body}. Click the button below to see your nearest clinics.`
     },
     action(
       patientState: PatientState,
@@ -166,36 +166,55 @@ const conversationStates: ConversationStates<
       const sections: ConversationStateHandlerListActionSection<PatientState>[] = [];
 
       if (patientState.nearest_clinics && patientState.nearest_clinics.length > 0) {
+        let id = 0;
         patientState.nearest_clinics?.map((eachClinic) => {
+
+          const distance = 2.5; // Replace with actual distance
+          const clinicLatitude = 123.456; // Replace with the actual latitude of the clinic
+          const clinicLongitude = 789.012; // Replace with the actual longitude of the clinic
+          const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
+          const clinicAddress = "123 Main St, City, Country"; // Replace with the actual address of the clinic
+
           sections.push({
-            title: 'section title',
+            title: eachClinic.name,
             rows: [{
-              id: 'id',
-              title: eachClinic.name,
-              description: "A clinic description",
-              nextState: 'not_onboarded:find_nearest_clinic:got_location',
+              id: `${id}`,
+              title: `${clinicAddress}`,
+              description: `${distance} Km away. Select for directions ${googleMapsLink}`,
+              // provide location for next state? instead of the "Select for directions above ^"? 
+              nextState: 'not_onboarded:find_nearest_clinic:share_location',
             }]
-          });
+          }); 
+          id++;
         });
       } else {
         sections.push({
-          title: 'No clinics title',
+          title: 'Clinic one name + icon',
           rows: [{
-            id: 'No clinics row',
-            title: "No clinics row title",
-            description: "No clinics description",
-            nextState: 'not_onboarded:find_nearest_clinic:got_location',
+            id: 'Clinic one id 1',
+            title: "Clinic one address",
+            description: "X Km away. Select for directions (link to Google Maps)",
+            nextState: 'not_onboarded:find_nearest_clinic:share_location',
+          }]
+        })
+        sections.push({
+          title: 'Clinic two name + icon',
+          rows: [{
+            id: 'Clinic two id',
+            title: "Clinic two address",
+            description: "X Km away. Select for directions (link to Google Maps).",
+            nextState: 'not_onboarded:find_nearest_clinic:share_location',
           }]
         })
       }
     
       return {
-        button: 'Test button text',
+        button: 'Show Nearest Clinics',
         sections: sections,
       };
     }
     ,
-    async onExit(trx, patientState) {
+    async onEnter(trx, patientState) {
       const allNearestClinics = await getNearestClinics(trx, patientState)
       return { ...patientState, nearest_clinics: allNearestClinics }
     },
