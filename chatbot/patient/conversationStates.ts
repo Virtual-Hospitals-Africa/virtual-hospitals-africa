@@ -6,7 +6,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from '../../util/date.ts'
-import { availableThirtyMinutes } from '../getDoctorAvailability.ts'
+import { availableThirtyMinutes, getAvailability } from '../getDoctorAvailability.ts'
 import { makeAppointment } from '../makeAppointment.ts'
 import { cancelAppointment } from '../cancelAppointment.ts'
 import * as appointments from '../../db/models/appointments.ts'
@@ -182,20 +182,39 @@ const conversationStates: ConversationStates<
 
       if (patientState.nearest_clinics && patientState.nearest_clinics.length > 0) {
         let id = 0;
-        patientState.nearest_clinics?.map((eachClinic) => {
+        patientState.nearest_clinics?.forEach((eachClinic) => {
 
-          const distance = 2.5; // Replace with actual distance
+          const titleLimit = 24;
+          const descriptionLimit = 72;
+
+          const clinicName = eachClinic.name.length > titleLimit
+                            ? eachClinic.name.slice(0, titleLimit - 3) + '...'
+                            : eachClinic.name;
+
+          let clinicAddress: string;
+
+          if (eachClinic.address) {
+            clinicAddress = eachClinic.address.length > descriptionLimit
+              ? `${eachClinic.address.slice(0, titleLimit - 3)}...`
+              : eachClinic.address;
+          } else {
+            clinicAddress = "clinic address here...";
+          }
+          
+          const distanceInKM = eachClinic.distance ? (eachClinic.distance / 1000).toFixed(1) 
+                              : "unknown"
+        
+          // const distanceInKM = (eachClinic.distance / 1000).toFixed(1); // Convert from meters to kilometers
           const clinicLatitude = 123.456; // Replace with the actual latitude of the clinic
           const clinicLongitude = 789.012; // Replace with the actual longitude of the clinic
           const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
-          const clinicAddress = "123 Main St, City, Country"; // Replace with the actual address of the clinic
 
           sections.push({
-            title: eachClinic.name,
+            title: clinicName,
             rows: [{
               id: `${id}`,
               title: `${clinicAddress}`,
-              description: `${distance} Km away. Select for directions ${googleMapsLink}`,
+              description: `${distanceInKM} Km away. Click for directions to clinic.`,
               // provide location for next state? instead of the "Select for directions above ^"? 
               nextState: 'not_onboarded:find_nearest_clinic:share_location',
             }]
@@ -208,7 +227,7 @@ const conversationStates: ConversationStates<
           title: 'Clinic one name + icon',
           rows: [{
             id: 'Clinic one id 1',
-            title: "Clinic one address",
+            title: "Clinic one",
             description: "X Km away. Select for directions (link to Google Maps)",
             nextState: 'not_onboarded:find_nearest_clinic:share_location',
           }]
@@ -217,7 +236,7 @@ const conversationStates: ConversationStates<
           title: 'Clinic two name + icon',
           rows: [{
             id: 'Clinic two id',
-            title: "Clinic two address",
+            title: "Clinic two",
             description: "X Km away. Select for directions (link to Google Maps).",
             nextState: 'not_onboarded:find_nearest_clinic:share_location',
           }]
