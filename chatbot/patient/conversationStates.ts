@@ -152,6 +152,21 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
   },
+  /*** 
+   * For testing
+  'not_onboarded:find_nearest_clinic:got_location': {
+    type: 'location',
+    nextState: 'not_onboarded:welcome',
+    prompt(patientState: PatientState): string {
+      return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
+    },
+    async onEnter(trx, patientState) {
+      const clinic_name = await getNearestClinicNames(trx, patientState)
+      patientState.nearest_clinic_name = clinic_name
+      return { ...patientState, nearest_clinic_name: clinic_name }
+    },
+  },
+  */
   // change the name of got_location to nearest_clinics?
   'not_onboarded:find_nearest_clinic:got_location': {
     // this needs to be conditional if no clinics available then return a string?
@@ -212,8 +227,7 @@ const conversationStates: ConversationStates<
         button: 'Show Nearest Clinics',
         sections: sections,
       };
-    }
-    ,
+    },
     async onEnter(trx, patientState) {
       const allNearestClinics = await getNearestClinics(trx, patientState)
       return { ...patientState, nearest_clinics: allNearestClinics }
