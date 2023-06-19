@@ -172,8 +172,8 @@ const conversationStates: ConversationStates<
     // this needs to be conditional if no clinics available then return a string?
     type: 'list',
     headerText: 'Your Nearest Clinics',
-    prompt(patientState: PatientState): string {
-      return `Got it, your location is: ${patientState.body}. Click the button below to see your nearest clinics.`
+    prompt(): string {
+      return `Thank you for sharing your location.\n\nClick the button below to see your nearest clinics.`
     },
     action(
       patientState: PatientState,
@@ -181,8 +181,8 @@ const conversationStates: ConversationStates<
       const sections: ConversationStateHandlerListActionSection<PatientState>[] = [];
 
       if (patientState.nearest_clinics && patientState.nearest_clinics.length > 0) {
-        let id = 0;
-        patientState.nearest_clinics?.forEach((eachClinic) => {
+        
+        patientState.nearest_clinics.forEach((eachClinic, id) => {
 
           const titleLimit = 24;
           const descriptionLimit = 72;
@@ -191,58 +191,41 @@ const conversationStates: ConversationStates<
                             ? eachClinic.name.slice(0, titleLimit - 3) + '...'
                             : eachClinic.name;
 
-          let clinicAddress: string;
-
-          if (eachClinic.address) {
-            clinicAddress = eachClinic.address.length > descriptionLimit
-              ? `${eachClinic.address.slice(0, titleLimit - 3)}...`
-              : eachClinic.address;
-          } else {
-            clinicAddress = "clinic address here...";
-          }
+          const clinicAddress = eachClinic.address
+          ? eachClinic.address.length > descriptionLimit
+            ? `${eachClinic.address.slice(0, descriptionLimit - 3)}...`
+            : eachClinic.address
+          : 'clinic address here...';
           
           const distanceInKM = eachClinic.distance ? (eachClinic.distance / 1000).toFixed(1) 
                               : "unknown"
         
-          // const distanceInKM = (eachClinic.distance / 1000).toFixed(1); // Convert from meters to kilometers
-          const clinicLatitude = 123.456; // Replace with the actual latitude of the clinic
-          const clinicLongitude = 789.012; // Replace with the actual longitude of the clinic
-          const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
+          // const clinicLatitude = eachClinic.location?.latitude; 
+          // const clinicLongitude = eachClinic.location?.longitude;
+          // const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
 
           sections.push({
             title: clinicName,
             rows: [{
               id: `${id}`,
               title: `${clinicAddress}`,
-              description: `${distanceInKM} Km away. Click for directions to clinic.`,
+              description: `${distanceInKM} Km away. Select for directions.`,
               // provide location for next state? instead of the "Select for directions above ^"? 
               nextState: 'not_onboarded:find_nearest_clinic:share_location',
             }]
           }); 
-          // fix below
-          id++;
         });
       } else {
         sections.push({
-          title: 'Clinic one name + icon',
+          title: '',
           rows: [{
-            id: 'Clinic one id 1',
-            title: "Clinic one",
-            description: "X Km away. Select for directions (link to Google Maps)",
+            id: '1',
+            title: 'There aren\'t any clinics near you.',
+            description: '',
             nextState: 'not_onboarded:find_nearest_clinic:share_location',
           }]
         })
-        sections.push({
-          title: 'Clinic two name + icon',
-          rows: [{
-            id: 'Clinic two id',
-            title: "Clinic two",
-            description: "X Km away. Select for directions (link to Google Maps).",
-            nextState: 'not_onboarded:find_nearest_clinic:share_location',
-          }]
-        })
-      }
-    
+      } 
       return {
         button: 'Show Nearest Clinics',
         sections: sections,
