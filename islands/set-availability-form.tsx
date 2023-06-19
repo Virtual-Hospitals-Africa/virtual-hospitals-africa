@@ -199,7 +199,7 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-function overlaps(
+export function overlaps(
   timeWindow: TimeWindow,
   otherTimeWindow: TimeWindow,
 ): boolean {
