@@ -147,7 +147,7 @@ const conversationStates: ConversationStates<
     },
   },
   'not_onboarded:find_nearest_clinic:share_location': {
-    type: 'location',
+    type: 'string',
     nextState: 'not_onboarded:find_nearest_clinic:got_location',
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
@@ -240,6 +240,10 @@ const conversationStates: ConversationStates<
     prompt(): string {
       return 'Here\'s the clinic you selected'
     },
+    setLocation: function(patientState) {
+      this.location = patientState.selectedClinicLocation;
+    },
+    location: null,
     type: 'location',
     nextState: 'not_onboarded:welcome',
   },
