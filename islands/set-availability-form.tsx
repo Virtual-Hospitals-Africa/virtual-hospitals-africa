@@ -199,14 +199,16 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
-function overlaps(
+export function overlaps(
   timeWindow: TimeWindow,
   otherTimeWindow: TimeWindow,
 ): boolean {
-  console.log(timeWindow, otherTimeWindow)
-
-  return (timeToMin(timeWindow.end) > timeToMin(otherTimeWindow.start)) &&
-    (timeToMin(timeWindow.start) < timeToMin(timeWindow.end))
+  const firstTimeStart = timeToMin(timeWindow.start);
+  const firstTimeEnd = timeToMin(timeWindow.end);
+  const secondTimeStart = timeToMin(otherTimeWindow.start);
+  const secondTimeEnd = timeToMin(otherTimeWindow.end);
+  if (firstTimeStart > secondTimeEnd || firstTimeEnd < secondTimeStart) return false;
+  return true;
 }
 
 export function windowsOverlap(timeWindows: TimeWindow[]): boolean {

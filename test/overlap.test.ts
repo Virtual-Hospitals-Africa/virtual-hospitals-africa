@@ -1,6 +1,6 @@
 import { assertEquals } from 'std/testing/asserts.ts'
 import { Time, TimeWindow } from '../types.ts'
-import { windowsOverlap } from '../islands/set-availability-form.tsx'
+import { windowsOverlap, overlaps } from '../islands/set-availability-form.tsx'
 
 function newTimeWindow(startTime: Time, endTime: Time): TimeWindow {
   const timeWindow: TimeWindow = {
@@ -101,4 +101,68 @@ Deno.test('windowsOverlap should return true for overlapping time slots', () => 
     }),
   )
   assertEquals(windowsOverlap(input), true)
+})
+
+Deno.test('overlaps returns true when the first window includes the othjer', () => {
+  assertEquals(
+    overlaps(
+      {
+        start: { hour: 9, minute: 0, amPm: 'am' },
+        end: { hour: 5, minute: 0, amPm: 'pm' },
+      },
+      {
+        start: { hour: 10, minute: 0, amPm: 'am' },
+        end: { hour: 4, minute: 0, amPm: 'pm' },
+      }
+    ),
+    true
+  )
+})
+
+Deno.test('overlaps returns true when the second window includes the first', () => {
+  assertEquals(
+    overlaps(
+      {
+        start: { hour: 10, minute: 0, amPm: 'am' },
+        end: { hour: 4, minute: 0, amPm: 'pm' },
+      },
+      {
+        start: { hour: 9, minute: 0, amPm: 'am' },
+        end: { hour: 5, minute: 0, amPm: 'pm' },
+      },
+    ),
+    true
+  )
+})
+
+Deno.test("overlaps returns false even if the windows don't overlap, even if the windows are not in chronological order", () => {
+  assertEquals(
+    overlaps(
+      {
+        start: { hour: 1, minute: 0, amPm: 'pm' },
+        end: { hour: 5, minute: 0, amPm: 'pm' },
+      },
+      {
+        start: { hour: 10, minute: 0, amPm: 'am' },
+        end: { hour: 11, minute: 0, amPm: 'am' },
+      }
+    ),
+    false
+  )
+})
+
+Deno.test("overlaps returns false if two time slots do not overlap", () => {
+  assertEquals(
+    overlaps(
+      {
+        start: { hour: 9, minute: 0, amPm: 'am' },
+        end: { hour: 12, minute: 0, amPm: 'am' },
+      },
+      {
+        start: { hour: 1, minute: 0, amPm: 'pm' },
+        end: { hour: 3, minute: 0, amPm: 'pm' },
+      }
+    ),
+    false
+  )
 })
