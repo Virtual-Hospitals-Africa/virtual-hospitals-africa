@@ -1,14 +1,14 @@
 import { assertEquals } from 'std/testing/asserts.ts'
 import { TimeWindow } from '../types.ts'
-import { windowsOverlap, overlaps } from '../islands/set-availability-form.tsx'
+import { overlaps, windowsOverlap } from '../islands/set-availability-form.tsx'
 
 Deno.test('windowsOverlap should return false for non-overlapping time slots', () => {
   const input: TimeWindow[] = [
     {
       start: { hour: 9, minute: 0, amPm: 'am' },
       end: { hour: 5, minute: 0, amPm: 'pm' },
-    }
-  ];
+    },
+  ]
   assertEquals(windowsOverlap(input), false)
 })
 
@@ -21,8 +21,8 @@ Deno.test('windowsOverlap should return true for partially overlapping time slot
     {
       start: { hour: 4, minute: 0, amPm: 'pm' },
       end: { hour: 6, minute: 0, amPm: 'pm' },
-    }
-  ];
+    },
+  ]
   assertEquals(windowsOverlap(input), true)
 })
 
@@ -35,8 +35,8 @@ Deno.test('windowsOverlap should return true for partially overlapping time slot
     {
       start: { hour: 10, minute: 0, amPm: 'am' },
       end: { hour: 5, minute: 0, amPm: 'pm' },
-    }
-  ];
+    },
+  ]
   assertEquals(windowsOverlap(input), true)
 })
 
@@ -49,8 +49,8 @@ Deno.test('windowsOverlap should return true for partially overlapping time slot
     {
       start: { hour: 11, minute: 30, amPm: 'am' },
       end: { hour: 2, minute: 20, amPm: 'pm' },
-    }
-  ];
+    },
+  ]
   assertEquals(windowsOverlap(input), true)
 })
 
@@ -63,8 +63,8 @@ Deno.test('windowsOverlap returns true when the first window is identical to the
     {
       start: { hour: 3, minute: 0, amPm: 'pm' },
       end: { hour: 6, minute: 0, amPm: 'pm' },
-    }
-  ];
+    },
+  ]
   assertEquals(windowsOverlap(input), true)
 })
 
@@ -78,9 +78,9 @@ Deno.test('overlaps returns true when the first window includes the other one', 
       {
         start: { hour: 10, minute: 0, amPm: 'am' },
         end: { hour: 4, minute: 0, amPm: 'pm' },
-      }
+      },
     ),
-    true
+    true,
   )
 })
 
@@ -96,11 +96,11 @@ Deno.test('overlaps returns true when the second window includes the first', () 
         end: { hour: 5, minute: 0, amPm: 'pm' },
       },
     ),
-    true
+    true,
   )
 })
 
-Deno.test("overlaps returns false even if the windows don't overlap, even if the windows are not in chronological order", () => {
+Deno.test('overlaps returns false even if the windows don\'t overlap, even if the windows are not in chronological order', () => {
   assertEquals(
     overlaps(
       {
@@ -110,13 +110,13 @@ Deno.test("overlaps returns false even if the windows don't overlap, even if the
       {
         start: { hour: 10, minute: 0, amPm: 'am' },
         end: { hour: 11, minute: 0, amPm: 'am' },
-      }
+      },
     ),
-    false
+    false,
   )
 })
 
-Deno.test("overlaps returns false if two windows do not overlap", () => {
+Deno.test('overlaps returns false if two windows do not overlap', () => {
   assertEquals(
     overlaps(
       {
@@ -126,8 +126,8 @@ Deno.test("overlaps returns false if two windows do not overlap", () => {
       {
         start: { hour: 1, minute: 0, amPm: 'pm' },
         end: { hour: 3, minute: 0, amPm: 'pm' },
-      }
+      },
     ),
-    false
+    false,
   )
 })
