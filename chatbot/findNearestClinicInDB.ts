@@ -49,7 +49,7 @@ export async function getNearestClinics(
   return clinics
 }
 
-/*** 
+/***
  * for testing
 export async function getNearestClinicNames(
   trx: TrxOrDb,
