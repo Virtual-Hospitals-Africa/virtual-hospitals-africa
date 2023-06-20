@@ -40,6 +40,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'not_onboarded:find_nearest_clinic:share_location'
   | 'not_onboarded:find_nearest_clinic:got_location'
+  | 'not_onboarded:find_nearest_clinic:send_clinic_location'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'

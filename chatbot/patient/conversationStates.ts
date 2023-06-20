@@ -209,9 +209,9 @@ const conversationStates: ConversationStates<
             rows: [{
               id: `${id}`,
               title: `${clinicAddress}`,
-              description: `${distanceInKM} Km away. Select for directions.`,
+              description: `${distanceInKM} Km away. Select for destination.`,
               // provide location for next state? instead of the "Select for directions above ^"? 
-              nextState: 'not_onboarded:find_nearest_clinic:share_location',
+              nextState: 'not_onboarded:find_nearest_clinic:send_clinic_location',
             }]
           }); 
         });
@@ -235,6 +235,13 @@ const conversationStates: ConversationStates<
       const allNearestClinics = await getNearestClinics(trx, patientState)
       return { ...patientState, nearest_clinics: allNearestClinics }
     },
+  },
+  'not_onboarded:find_nearest_clinic:send_clinic_location': {
+    prompt(): string {
+      return 'Here\'s the clinic you selected'
+    },
+    type: 'location',
+    nextState: 'not_onboarded:welcome',
   },
   'onboarded:make_appointment:enter_appointment_reason': {
     type: 'string',
