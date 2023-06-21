@@ -6,7 +6,10 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from '../../util/date.ts'
-import { availableThirtyMinutes, getAvailability } from '../getDoctorAvailability.ts'
+import {
+  availableThirtyMinutes,
+  getAvailability,
+} from '../getDoctorAvailability.ts'
 import { makeAppointment } from '../makeAppointment.ts'
 import { cancelAppointment } from '../cancelAppointment.ts'
 import * as appointments from '../../db/models/appointments.ts'
@@ -153,7 +156,7 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
   },
-  /*** 
+  /***
    * For testing
   'not_onboarded:find_nearest_clinic:got_location': {
     type: 'location',
@@ -179,29 +182,32 @@ const conversationStates: ConversationStates<
     action(
       patientState: PatientState,
     ): ConversationStateHandlerListAction<PatientState> {
-      const sections: ConversationStateHandlerListActionSection<PatientState>[] = [];
+      const sections: ConversationStateHandlerListActionSection<
+        PatientState
+      >[] = []
 
-      if (patientState.nearest_clinics && patientState.nearest_clinics.length > 0) {
-        
+      if (
+        patientState.nearest_clinics && patientState.nearest_clinics.length > 0
+      ) {
         patientState.nearest_clinics.forEach((eachClinic, id) => {
-
-          const titleLimit = 24;
-          const descriptionLimit = 72;
+          const titleLimit = 24
+          const descriptionLimit = 72
 
           const clinicName = eachClinic.name.length > titleLimit
-                            ? eachClinic.name.slice(0, titleLimit - 3) + '...'
-                            : eachClinic.name;
+            ? eachClinic.name.slice(0, titleLimit - 3) + '...'
+            : eachClinic.name
 
           const clinicAddress = eachClinic.address
-          ? eachClinic.address.length > descriptionLimit
-            ? `${eachClinic.address.slice(0, descriptionLimit - 3)}...`
-            : eachClinic.address
-          : 'clinic address here...';
-          
-          const distanceInKM = eachClinic.distance ? (eachClinic.distance / 1000).toFixed(1) 
-                              : "unknown"
-        
-          // const clinicLatitude = eachClinic.location?.latitude; 
+            ? eachClinic.address.length > descriptionLimit
+              ? `${eachClinic.address.slice(0, descriptionLimit - 3)}...`
+              : eachClinic.address
+            : 'clinic address here...'
+
+          const distanceInKM = eachClinic.distance
+            ? (eachClinic.distance / 1000).toFixed(1)
+            : 'unknown'
+
+          // const clinicLatitude = eachClinic.location?.latitude;
           // const clinicLongitude = eachClinic.location?.longitude;
           // const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
 
@@ -211,11 +217,12 @@ const conversationStates: ConversationStates<
               id: `${id}`,
               title: `${clinicAddress}`,
               description: `${distanceInKM} Km away. Select for destination.`,
-              // provide location for next state? instead of the "Select for directions above ^"? 
-              nextState: 'not_onboarded:find_nearest_clinic:send_clinic_location',
-            }]
-          }); 
-        });
+              // provide location for next state? instead of the "Select for directions above ^"?
+              nextState:
+                'not_onboarded:find_nearest_clinic:send_clinic_location',
+            }],
+          })
+        })
       } else {
         sections.push({
           title: '',
@@ -224,13 +231,13 @@ const conversationStates: ConversationStates<
             title: 'There aren\'t any clinics near you.',
             description: '',
             nextState: 'not_onboarded:find_nearest_clinic:share_location',
-          }]
+          }],
         })
-      } 
+      }
       return {
         button: 'Show Nearest Clinics',
         sections: sections,
-      };
+      }
     },
     async onEnter(trx, patientState) {    
 
