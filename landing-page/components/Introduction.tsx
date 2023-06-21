@@ -27,9 +27,9 @@ export function Introduction() {
     >
       <Container className='text-lg tracking-tight text-slate-700'>
         <p className='font-display text-4xl font-bold tracking-tight text-slate-900'>
-          Through Virtual Hospitals Africa, doctors can leverage the latest
-          technological advances to provide care patients to patients before
-          it's a crisis
+          Through Virtual Hospitals Africa, health_workers can leverage the
+          latest technological advances to provide care patients to patients
+          before it's a crisis
         </p>
         <p className='mt-4'>
           Hospitals in Africa are overwhelmed. Patients living far away forego

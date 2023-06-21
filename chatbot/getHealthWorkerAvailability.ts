@@ -1,9 +1,9 @@
 import * as google from '../external-clients/google.ts'
-import { getAllWithExtantTokens } from '../db/models/doctors.ts'
+import { getAllWithExtantTokens } from '../db/models/health_workers.ts'
 import {
   Availability,
-  DoctorWithGoogleTokens,
   GCalFreeBusy,
+  HealthWorkerWithGoogleTokens,
   ReturnedSqlRow,
   TimeRange,
   TrxOrDb,
@@ -11,18 +11,18 @@ import {
 import { assertAllHarare, formatHarare } from '../util/date.ts'
 
 export function getAvailability(
-  doctor: {
+  health_worker: {
     gcal_availability_calendar_id: string
     gcal_appointments_calendar_id: string
   },
   freeBusy: GCalFreeBusy,
 ): Availability {
   const availability = [
-    ...freeBusy.calendars[doctor.gcal_availability_calendar_id].busy,
+    ...freeBusy.calendars[health_worker.gcal_availability_calendar_id].busy,
   ]
 
   const appointments =
-    freeBusy.calendars[doctor.gcal_appointments_calendar_id].busy
+    freeBusy.calendars[health_worker.gcal_appointments_calendar_id].busy
 
   appointments.forEach((appointment) => {
     const conflictIndex = availability.findIndex((availabilityBlock) =>
@@ -72,7 +72,7 @@ export function getAvailability(
   return availability
 }
 
-// Leave doctor 2 hours to be able to confirm the appointment
+// Leave health_worker 2 hours to be able to confirm the appointment
 export function defaultTimeRange(): TimeRange {
   const timeMin = new Date()
   timeMin.setHours(timeMin.getHours() + 2)
@@ -82,11 +82,11 @@ export function defaultTimeRange(): TimeRange {
 }
 
 export async function allUniqueAvailbaility(trx: TrxOrDb) {
-  const allDoctorAvailabilities = await getAllAvailability(trx)
+  const allHealthWorkerAvailabilities = await getAllAvailability(trx)
 
   const allAvailabilities = Array.from(
     new Set(
-      allDoctorAvailabilities.flatMap((availability) =>
+      allHealthWorkerAvailabilities.flatMap((availability) =>
         availability.map(({ start }) => start)
       ),
     ),
@@ -101,48 +101,48 @@ async function getAllAvailability(
   trx: TrxOrDb,
   timeRange: TimeRange = defaultTimeRange(),
 ) {
-  const doctors = await getAllWithExtantTokens(trx)
-  return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleClient = new google.GoogleClient(doctor)
-    const freeBusy = await doctorGoogleClient.getFreeBusy({
+  const health_workers = await getAllWithExtantTokens(trx)
+  return Promise.all(health_workers.map(async (health_worker) => {
+    const healthWorkerGoogleClient = new google.GoogleClient(health_worker)
+    const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
       ...timeRange,
       calendarIds: [
-        doctor.gcal_appointments_calendar_id,
-        doctor.gcal_availability_calendar_id,
+        health_worker.gcal_appointments_calendar_id,
+        health_worker.gcal_availability_calendar_id,
       ],
     })
-    return getAvailability(doctor, freeBusy)
+    return getAvailability(health_worker, freeBusy)
   }))
 }
 
-export async function getAllDoctorAvailability(
+export async function getAllHealthWorkerAvailability(
   trx: TrxOrDb,
   timeRange: TimeRange = defaultTimeRange(),
 ) {
-  const doctors = await getAllWithExtantTokens(trx)
-  return Promise.all(doctors.map(async (doctor) => {
-    const doctorGoogleClient = new google.GoogleClient(doctor)
-    const freeBusy = await doctorGoogleClient.getFreeBusy({
+  const health_workers = await getAllWithExtantTokens(trx)
+  return Promise.all(health_workers.map(async (health_worker) => {
+    const healthWorkerGoogleClient = new google.GoogleClient(health_worker)
+    const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
       ...timeRange,
       calendarIds: [
-        doctor.gcal_appointments_calendar_id,
-        doctor.gcal_availability_calendar_id,
+        health_worker.gcal_appointments_calendar_id,
+        health_worker.gcal_availability_calendar_id,
       ],
     })
     return {
-      doctor,
-      availability: getAvailability(doctor, freeBusy),
+      health_worker,
+      availability: getAvailability(health_worker, freeBusy),
     }
   }))
 }
 
 /**
- * Gets doctor availability from google calendar, spilt them into 30 minutes block, and filter out
- * the declined time and return an object containing the start time and doctor.
+ * Gets health_worker availability from google calendar, spilt them into 30 minutes block, and filter out
+ * the declined time and return an object containing the start time and health_worker.
  * @param trx db transaction object
  * @param declinedTimes a string array that contains the declined time slot
  * @param opts date: specify a date to see appointments on that date
- * @returns an object containing the start time and doctor
+ * @returns an object containing the start time and health_worker
  */
 
 export async function availableThirtyMinutes(
@@ -150,17 +150,23 @@ export async function availableThirtyMinutes(
   declinedTimes: string[],
   opts: { date: string[] | null; timeslotsRequired: number },
 ): Promise<{
-  doctor: ReturnedSqlRow<DoctorWithGoogleTokens>
+  health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
   start: string
 }[]> {
   assertAllHarare(declinedTimes)
-  const doctorAvailability = await getAllDoctorAvailability(trx)
+  const health_workerAvailability = await getAllHealthWorkerAvailability(trx)
 
-  let appointments: { doctor: DoctorWithGoogleTokens; start: string }[]
+  let appointments: {
+    health_worker: HealthWorkerWithGoogleTokens
+    start: string
+  }[]
   appointments = []
-  for (const { doctor, availability } of doctorAvailability) {
+  for (const { health_worker, availability } of health_workerAvailability) {
     for (const { start, end } of availability) {
-      const doctor_appointments = generateAvailableThrityMinutes(start, end)
+      const health_worker_appointments = generateAvailableThrityMinutes(
+        start,
+        end,
+      )
         .filter((time) => !declinedTimes.includes(time))
         .filter((appointment) => {
           if (opts.date) {
@@ -170,8 +176,11 @@ export async function availableThirtyMinutes(
             return true
           }
         })
-        .map((timeBlock) => ({ doctor: doctor, start: timeBlock }))
-      appointments = appointments.concat(doctor_appointments)
+        .map((timeBlock) => ({
+          health_worker: health_worker,
+          start: timeBlock,
+        }))
+      appointments = appointments.concat(health_worker_appointments)
     }
   }
   appointments.sort((a, b) =>
@@ -190,7 +199,7 @@ export async function availableThirtyMinutes(
   }
 
   const requiredTimeslots: {
-    doctor: ReturnedSqlRow<DoctorWithGoogleTokens>
+    health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
     start: string
   }[] = []
   if (opts.date) {

@@ -1,8 +1,8 @@
 import resetDb from '../db/reset.ts'
 import { redis } from '../external-clients/redis.ts'
-import { LoggedInDoctorHandler } from '../types.ts'
+import { LoggedInHealthWorkerHandler } from '../types.ts'
 
-export const handler: LoggedInDoctorHandler = {
+export const handler: LoggedInHealthWorkerHandler = {
   async GET(_req, ctx) {
     const resettingDb = resetDb()
 

@@ -1,5 +1,5 @@
 import { FunctionComponent, h } from 'preact'
-import { DoctorAppointment } from '../../types.ts'
+import { HealthWorkerAppointment } from '../../types.ts'
 import {
   ConfirmedButton,
   DeniedButton,
@@ -7,7 +7,7 @@ import {
   PendingButtons,
 } from './Buttons.tsx'
 
-const AppointmentCard: FunctionComponent<DoctorAppointment> = ({
+const AppointmentCard: FunctionComponent<HealthWorkerAppointment> = ({
   stripeColor,
   start,
   patientName,

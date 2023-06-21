@@ -5,10 +5,10 @@ import DatePicker from '../../islands/date-picker.tsx'
 import MonthPicker from '../../islands/month-picker.tsx'
 import YearPicker from '../../islands/year-picker.tsx'
 import { PageProps } from '$fresh/server.ts'
-import { DoctorGoogleClient } from '../../external-clients/google.ts'
+import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
-  DoctorAppointment,
-  LoggedInDoctorHandler,
+  HealthWorkerAppointment,
+  LoggedInHealthWorkerHandler,
   TrxOrDb,
 } from '../../types.ts'
 import * as appointments from '../../db/models/appointments.ts'
@@ -31,11 +31,11 @@ function CalendarLink(
   )
 }
 
-export const handler: LoggedInDoctorHandler<
-  { dailyAppointments: DoctorAppointment[]; startday: string }
+export const handler: LoggedInHealthWorkerHandler<
+  { dailyAppointments: HealthWorkerAppointment[]; startday: string }
 > = {
   async GET(req, ctx) {
-    const googleClient = new DoctorGoogleClient(ctx)
+    const googleClient = new HealthWorkerGoogleClient(ctx)
 
     // if there's no startday in the query, use today in Harare
     const startday = new URL(req.url).searchParams.get('startday') ||
@@ -50,18 +50,19 @@ export const handler: LoggedInDoctorHandler<
       },
     )
 
-    const appointmentsOfDoctor = await appointments.get(ctx.state.trx, {
-      doctor_id: ctx.state.session.data.id,
+    const appointmentsOfHealthWorker = await appointments.get(ctx.state.trx, {
+      health_worker_id: ctx.state.session.data.id,
     })
     const events = await gettingEvents
 
     const gcalEventIds = new Set(events.items.map((item) => item.id))
 
-    const appointmentsOfDoctorWithGcalEventIds = appointmentsOfDoctor.filter(
-      (appointment) => gcalEventIds.has(appointment.scheduled_gcal_event_id),
-    )
+    const appointmentsOfHealthWorkerWithGcalEventIds =
+      appointmentsOfHealthWorker.filter(
+        (appointment) => gcalEventIds.has(appointment.scheduled_gcal_event_id),
+      )
 
-    const dailyAppointments = appointmentsOfDoctorWithGcalEventIds.map(
+    const dailyAppointments = appointmentsOfHealthWorkerWithGcalEventIds.map(
       (appt) => {
         const gcalItem = events.items.find((item) =>
           item.id === appt.scheduled_gcal_event_id
@@ -93,7 +94,7 @@ export const handler: LoggedInDoctorHandler<
 
 export default function Calendar(
   props: PageProps<
-    { dailyAppointments: DoctorAppointment[]; startday: string }
+    { dailyAppointments: HealthWorkerAppointment[]; startday: string }
   >,
 ) {
   console.log('dailyAppointments', props.data.dailyAppointments)

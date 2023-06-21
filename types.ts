@@ -62,7 +62,7 @@ export type PatientDemographicInfo = {
 
 export type AppointmentOfferedTime = {
   appointment_id: number
-  doctor_id: number
+  health_worker_id: number
   start: string
   patient_declined: boolean
   scheduled_gcal_event_id: string
@@ -84,7 +84,7 @@ export type PatientState = {
   scheduling_appointment_reason?: Maybe<string>
   scheduling_appointment_status?: Maybe<AppointmentStatus>
   appointment_offered_times: ReturnedSqlRow<
-    AppointmentOfferedTime & { doctor_name: string }
+    AppointmentOfferedTime & { health_worker_name: string }
   >[]
   created_at: Date
   updated_at: Date
@@ -550,18 +550,20 @@ export type GoogleProfile = {
   locale: string
 }
 
-export type Doctor = {
+export type HealthWorker = {
   name: string
   email: string
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
 }
 
-export type DoctorGoogleToken = GoogleTokens & {
-  doctor_id: number
+export type HealthWorkerGoogleToken = GoogleTokens & {
+  health_worker_id: number
 }
 
-export type DoctorWithGoogleTokens = ReturnedSqlRow<Doctor & GoogleTokens>
+export type HealthWorkerWithGoogleTokens = ReturnedSqlRow<
+  HealthWorker & GoogleTokens
+>
 
 export type Availability = {
   start: string
@@ -573,8 +575,8 @@ export type TimeRange = {
   timeMax: Date
 }
 
-export type DoctorAvailability = {
-  doctor: DoctorWithGoogleTokens
+export type HealthWorkerAvailability = {
+  health_worker: HealthWorkerWithGoogleTokens
   availability: Availability
 }
 
@@ -641,7 +643,7 @@ export type WhatsAppSendable =
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
-export type DoctorAppointment = {
+export type HealthWorkerAppointment = {
   stripeColor: string
   patientName: string
   patientAge: number
@@ -698,14 +700,15 @@ export type WhatsAppSendableButtons = {
   options: WhatsAppMessageOption[]
 }
 
-export type LoggedInDoctor = {
+export type LoggedInHealthWorker = {
   session: Session & {
-    data: DoctorWithGoogleTokens
+    data: HealthWorkerWithGoogleTokens
   }
   trx: TrxOrDb
 }
 
-export type LoggedInDoctorHandler<Props = Record<string, never>> = Handlers<
-  Props,
-  LoggedInDoctor
->
+export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
+  Handlers<
+    Props,
+    LoggedInHealthWorker
+  >

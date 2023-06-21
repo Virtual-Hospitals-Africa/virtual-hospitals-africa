@@ -1,11 +1,11 @@
 import { MiddlewareHandlerContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
 import redirect from '../../util/redirect.ts'
-import { isDoctorWithGoogleTokens } from '../../db/models/doctors.ts'
+import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 import { TrxOrDb } from '../../types.ts'
 import db from '../../db/db.ts'
 
-// Ensure user is a doctor who has session with google tokens
+// Ensure user is a health_worker who has session with google tokens
 export const handler = [
   (
     req: Request,
@@ -19,8 +19,10 @@ export const handler = [
       return ctx.next()
     }
 
-    const isAuthedDoctor = isDoctorWithGoogleTokens(ctx.state.session.data)
-    if (!isAuthedDoctor) return redirect('/')
+    const isAuthedHealthWorker = isHealthWorkerWithGoogleTokens(
+      ctx.state.session.data,
+    )
+    if (!isAuthedHealthWorker) return redirect('/')
 
     return db.transaction().execute((trx: TrxOrDb) => {
       ctx.state.trx = trx

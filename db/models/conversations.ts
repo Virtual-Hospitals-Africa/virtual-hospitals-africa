@@ -98,9 +98,9 @@ export async function getUnhandledPatientMessages(
 
     aot_pre as (
          SELECT appointment_offered_times.*,
-                doctors.name as doctor_name
+                health_workers.name as health_worker_name
            FROM appointment_offered_times
-           JOIN doctors ON appointment_offered_times.doctor_id = doctors.id
+           JOIN health_workers ON appointment_offered_times.health_worker_id = health_workers.id
     ),
 
     aot as (
