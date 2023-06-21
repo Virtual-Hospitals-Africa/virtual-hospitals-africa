@@ -91,7 +91,7 @@ export type PatientState = {
   updated_at: Date
   nearest_clinics?: Clinic[]
   nearest_clinic_name?: string
-  selectedClinicLocation: Location
+  selectedClinic?: Clinic
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -187,8 +187,6 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
 export type ConversationStateHandlerLocation<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'location'
-    location: Location | null
-    setLocation: (patientState: US) => void
     nextState: ConversationStateHandlerNextState<US>
   }>
 
@@ -684,6 +682,7 @@ export type WhatsAppSendableList = {
 export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
+  location: Location
 }
 
 export type WhatsAppMessageAction = {

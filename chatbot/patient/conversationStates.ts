@@ -21,6 +21,7 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+  Clinic
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
 import { getNearestClinics } from '../findNearestClinicInDB.ts'
@@ -231,21 +232,33 @@ const conversationStates: ConversationStates<
         sections: sections,
       };
     },
-    async onEnter(trx, patientState) {
+    async onEnter(trx, patientState) {    
+
+      // store in db
       const allNearestClinics = await getNearestClinics(trx, patientState)
       return { ...patientState, nearest_clinics: allNearestClinics }
     },
   },
   'not_onboarded:find_nearest_clinic:send_clinic_location': {
-    prompt(): string {
-      return 'Here\'s the clinic you selected'
+    prompt(patientState: PatientState): string {
+      return JSON.stringify(patientState.selectedClinic?.name)
     },
-    setLocation: function(patientState) {
-      this.location = patientState.selectedClinicLocation;
-    },
-    location: null,
     type: 'location',
     nextState: 'not_onboarded:welcome',
+    async onEnter(trx, patientState) {
+    console.log(patientState.body)
+    const selectedClinic: Clinic | undefined = patientState.nearest_clinics?.[0];
+    if (selectedClinic) {
+      return {...patientState, selectedClinic: selectedClinic}
+    } else {
+      return {...patientState}
+    }
+
+    }
+    //   // how to get findNearestClinics Clinics[] from db
+    //   // compare the users response patientState.body against the findNearestClinics Clinics[]
+    //   // store location of the selected clinic in patientState.selectedClinicLocation
+    // }
   },
   'onboarded:make_appointment:enter_appointment_reason': {
     type: 'string',
