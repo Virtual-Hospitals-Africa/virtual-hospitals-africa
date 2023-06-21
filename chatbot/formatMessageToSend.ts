@@ -62,7 +62,7 @@ export default function formatMessageToSend<
       return {
         type: 'location',
         messageBody: prompt,
-        location: JSON.parse(prompt)
+        location: JSON.parse(prompt),
       }
     }
     case 'date': {

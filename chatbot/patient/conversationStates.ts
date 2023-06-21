@@ -13,6 +13,7 @@ import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import {
   AppointmentOfferedTime,
+  Clinic,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStates,
@@ -21,7 +22,6 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-  Clinic
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
 import { getNearestClinics } from '../findNearestClinicInDB.ts'
@@ -236,8 +236,7 @@ const conversationStates: ConversationStates<
         sections: sections,
       }
     },
-    async onEnter(trx, patientState) {    
-
+    async onEnter(trx, patientState) {
       // store in db
       const allNearestClinics = await getNearestClinics(trx, patientState)
       return { ...patientState, nearest_clinics: allNearestClinics }
@@ -250,15 +249,15 @@ const conversationStates: ConversationStates<
     type: 'location',
     nextState: 'not_onboarded:welcome',
     async onEnter(trx, patientState) {
-    console.log(patientState.body)
-    const selectedClinic: Clinic | undefined = patientState.nearest_clinics?.[0];
-    if (selectedClinic) {
-      return {...patientState, selectedClinic: selectedClinic}
-    } else {
-      return {...patientState}
-    }
-
-    }
+      console.log(patientState.body)
+      const selectedClinic: Clinic | undefined = patientState.nearest_clinics
+        ?.[0]
+      if (selectedClinic) {
+        return { ...patientState, selectedClinic: selectedClinic }
+      } else {
+        return { ...patientState }
+      }
+    },
     //   // how to get findNearestClinics Clinics[] from db
     //   // compare the users response patientState.body against the findNearestClinics Clinics[]
     //   // store location of the selected clinic in patientState.selectedClinicLocation
