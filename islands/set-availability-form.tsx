@@ -3,8 +3,10 @@ import range from '../util/range.ts'
 import padLeft from '../util/padLeft.ts'
 import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
 import PlusIcon from '../components/icons/plus.tsx'
-import CopyIcon from '../components/icons/copy.tsx'
 import TrashIcon from '../components/icons/trash.tsx'
+import WarningModal from '../components/modals/Warning.tsx'
+import parseAvailabilityForm from '../util/parseAvailabilityForm.ts'
+import timeToMin from '../util/timeToMin.ts'
 
 const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 const minutes = range(0, 60, 5)
@@ -47,78 +49,6 @@ function AmPmInput({ name, current }: { name: string; current: 'am' | 'pm' }) {
       <option value='am' selected={'am' === current}>am</option>
       <option value='pm' selected={'pm' === current}>pm</option>
     </select>
-  )
-}
-
-function CopyDropDown() {
-  const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <div className='relative inline-block text-left'>
-      <div>
-        <button
-          type='button'
-          className='inline-flex w-full justify-center gap-x-1.5 sz-2 ml-2'
-          id='menu-button'
-          aria-expanded='true'
-          aria-haspopup='true'
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <CopyIcon />
-        </button>
-      </div>
-      {isOpen && (
-        <div
-          className='absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
-          role='menu'
-          aria-orientation='vertical'
-          aria-labelledby='menu-button'
-          tabIndex={-1}
-        >
-          <div className='py-1' role='none'>
-            {/* Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" */}
-            <a
-              href='#'
-              className='text-gray-700 block px-4 py-2 text-sm'
-              role='menuitem'
-              tabIndex={-1}
-              id='menu-item-0'
-            >
-              Account settings
-            </a>
-            <a
-              href='#'
-              className='text-gray-700 block px-4 py-2 text-sm'
-              role='menuitem'
-              tabIndex={-1}
-              id='menu-item-1'
-            >
-              Support
-            </a>
-            <a
-              href='#'
-              className='text-gray-700 block px-4 py-2 text-sm'
-              role='menuitem'
-              tabIndex={-1}
-              id='menu-item-2'
-            >
-              License
-            </a>
-            <form method='POST' action='#' role='none'>
-              <button
-                type='submit'
-                className='text-gray-700 block w-full px-4 py-2 text-left text-sm'
-                role='menuitem'
-                tabIndex={-1}
-                id='menu-item-3'
-              >
-                Sign out
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
   )
 }
 
@@ -184,12 +114,6 @@ function TimeInput(
         >
           <PlusIcon />
         </button>
-        {
-          /* <button type="button" className="sz-2 ml-2" title="copy">
-          <CopyIcon />
-        </button> */
-        }
-        {/* <CopyDropDown /> */}
         {removeTimeWindow && (
           <button
             type='button'
@@ -275,14 +199,55 @@ const days: Array<DayOfWeek> = [
   'Saturday',
 ]
 
+export function overlaps(
+  timeWindow: TimeWindow,
+  otherTimeWindow: TimeWindow,
+): boolean {
+  const firstTimeStart = timeToMin(timeWindow.start)
+  const firstTimeEnd = timeToMin(timeWindow.end)
+  const secondTimeStart = timeToMin(otherTimeWindow.start)
+  const secondTimeEnd = timeToMin(otherTimeWindow.end)
+  if (firstTimeStart > secondTimeEnd || firstTimeEnd < secondTimeStart) {
+    return false
+  }
+  return true
+}
+
+export function windowsOverlap(timeWindows: TimeWindow[]): boolean {
+  if (timeWindows.length <= 1) return false
+  const [timeWindow, ...rest] = timeWindows
+  if (rest.some((otherTimeWindow) => overlaps(timeWindow, otherTimeWindow))) {
+    return true
+  }
+  return windowsOverlap(rest)
+}
+
+function findDaysWithOverlap(event: HTMLFormElement) {
+  const data = new FormData(event)
+  const availability = parseAvailabilityForm(data)
+  return Object.keys(availability).filter((day) =>
+    windowsOverlap(availability[day as DayOfWeek])
+  )
+}
+
 export default function SetAvailabilityForm(
   { availability }: { availability: AvailabilityJSON },
 ) {
+  const [overlappingDays, setOverlappingDays] = useState<string[]>([])
+
   return (
     <form
       method='POST'
       action='/api/set-availability'
       className='container p-1'
+      onSubmit={(event) => {
+        const overlapping = findDaysWithOverlap(event.currentTarget)
+        setOverlappingDays(overlapping)
+
+        if (overlapping.length) {
+          event.preventDefault()
+        }
+      }}
     >
       <div
         className='px-4 py-6 grid gap-4 px-0 divide-y divide-gray-100'
@@ -294,7 +259,16 @@ export default function SetAvailabilityForm(
           <DayInput key={day} day={day} timeWindows={availability[day]} />
         ))}
       </div>
-
+      {overlappingDays.length
+        ? (
+          <WarningModal
+            onConfirm={() => setOverlappingDays([])}
+            message={`There are some overlapping time slots on the following days, please update them accordingly: ${
+              overlappingDays.join(', ')
+            }`}
+          />
+        )
+        : null}
       <div className='container grid gap-x-2 grid-cols-2'>
         <button
           type='button'

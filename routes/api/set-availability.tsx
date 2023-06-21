@@ -1,17 +1,17 @@
-import { DoctorGoogleClient } from '../../external-clients/google.ts'
-import set from '../../util/set.ts'
+import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
   AvailabilityJSON,
   DayOfWeek,
   DeepPartial,
   GCalEvent,
-  LoggedInDoctorHandler,
+  LoggedInHealthWorkerHandler,
   Time,
 } from '../../types.ts'
 import padLeft from '../../util/padLeft.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/_util/asserts.ts'
 import { parseDate } from '../../util/date.ts'
+import parseAvailabilityForm from '../../util/parseAvailabilityForm.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -22,27 +22,6 @@ const days: Array<DayOfWeek> = [
   'Friday',
   'Saturday',
 ]
-
-function parseForm(params: URLSearchParams): AvailabilityJSON {
-  console.log(params)
-  const availability = {
-    Sunday: [],
-    Monday: [],
-    Tuesday: [],
-    Wednesday: [],
-    Thursday: [],
-    Friday: [],
-    Saturday: [],
-  }
-
-  params.forEach((value, key) => {
-    const toSet = /^\d+$/g.test(value) ? parseInt(value) : value
-    set(availability, key, toSet)
-  })
-
-  console.log(availability)
-  return availability
-}
 
 const toHarare = (time: Time) => {
   const baseHour = time.hour % 12
@@ -90,10 +69,10 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: LoggedInDoctorHandler = {
+export const handler: LoggedInHealthWorkerHandler = {
   async POST(req, ctx) {
     const params = new URLSearchParams(await req.text())
-    const availability = parseForm(params)
+    const availability = parseAvailabilityForm(params)
 
     const gcal_availability_calendar_id = ctx.state.session.get(
       'gcal_availability_calendar_id',
@@ -101,7 +80,7 @@ export const handler: LoggedInDoctorHandler = {
 
     assert(gcal_availability_calendar_id, 'No calendar ID found in session')
 
-    const googleClient = new DoctorGoogleClient(ctx)
+    const googleClient = new HealthWorkerGoogleClient(ctx)
 
     const existingAvailability = await googleClient.getEvents(
       gcal_availability_calendar_id,

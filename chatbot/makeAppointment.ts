@@ -1,7 +1,7 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { formatHarare } from '../util/date.ts'
 import * as google from '../external-clients/google.ts'
-import { getWithTokensById } from '../db/models/doctors.ts'
+import { getWithTokensById } from '../db/models/health_workers.ts'
 import * as appointments from '../db/models/appointments.ts'
 import {
   AppointmentOfferedTime,
@@ -17,7 +17,7 @@ export function gcalAppointmentDetails(
 ): {
   acceptedTime: ReturnedSqlRow<
     AppointmentOfferedTime & {
-      doctor_name: string
+      health_worker_name: string
     }
   >
   gcal: DeepPartial<GCalEvent>
@@ -77,28 +77,31 @@ export async function makeAppointment(
 
   const { acceptedTime, gcal } = details
   assert(
-    acceptedTime.doctor_id,
-    'No doctor_id found',
+    acceptedTime.health_worker_id,
+    'No health_worker_id found',
   )
 
-  const matchingDoctor = await getWithTokensById(trx, acceptedTime.doctor_id)
+  const matchingHealthWorker = await getWithTokensById(
+    trx,
+    acceptedTime.health_worker_id,
+  )
 
   assert(
-    matchingDoctor,
-    `No doctor session found for doctor_id ${acceptedTime.doctor_id}`,
+    matchingHealthWorker,
+    `No health_worker session found for health_worker_id ${acceptedTime.health_worker_id}`,
   )
   assert(
-    matchingDoctor.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for doctor_id ${acceptedTime.doctor_id}`,
+    matchingHealthWorker.gcal_appointments_calendar_id,
+    `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
   )
 
-  const doctorGoogleClient = new google.GoogleClient(matchingDoctor)
+  const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
 
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
-  const insertedEvent = await doctorGoogleClient.insertEvent(
-    matchingDoctor.gcal_appointments_calendar_id,
+  const insertedEvent = await healthWorkerGoogleClient.insertEvent(
+    matchingHealthWorker.gcal_appointments_calendar_id,
     gcal,
   )
 

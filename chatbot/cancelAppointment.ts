@@ -1,7 +1,7 @@
 import { PatientState, TrxOrDb } from '../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import * as google from '../external-clients/google.ts'
-import { getWithTokensById } from '../db/models/doctors.ts'
+import { getWithTokensById } from '../db/models/health_workers.ts'
 import { deleteAppointment } from '../db/models/appointments.ts'
 
 // This should remove the scheduled appointment from the database and from google calendar
@@ -21,30 +21,33 @@ export async function cancelAppointment(
 
   assert(acceptedTime, 'No acceptedTime found')
   assert(
-    acceptedTime.doctor_id,
-    'No doctor_id found',
+    acceptedTime.health_worker_id,
+    'No health_worker_id found',
   )
 
   const eventID = acceptedTime.scheduled_gcal_event_id
 
-  const matchingDoctor = await getWithTokensById(trx, acceptedTime.doctor_id)
-
-  assert(
-    matchingDoctor,
-    `No doctor session found for doctor_id ${acceptedTime.doctor_id}`,
-  )
-  assert(
-    matchingDoctor.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for doctor_id ${acceptedTime.doctor_id}`,
+  const matchingHealthWorker = await getWithTokensById(
+    trx,
+    acceptedTime.health_worker_id,
   )
 
-  const doctorGoogleClient = new google.GoogleClient(matchingDoctor)
+  assert(
+    matchingHealthWorker,
+    `No health_worker session found for health_worker_id ${acceptedTime.health_worker_id}`,
+  )
+  assert(
+    matchingHealthWorker.gcal_appointments_calendar_id,
+    `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
+  )
+
+  const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
   console.log(
-    'deleting events, matching doctor:',
-    matchingDoctor.gcal_availability_calendar_id,
+    'deleting events, matching health_worker:',
+    matchingHealthWorker.gcal_availability_calendar_id,
   )
-  await doctorGoogleClient.deleteEvent(
-    matchingDoctor.gcal_appointments_calendar_id,
+  await healthWorkerGoogleClient.deleteEvent(
+    matchingHealthWorker.gcal_appointments_calendar_id,
     eventID,
   )
 

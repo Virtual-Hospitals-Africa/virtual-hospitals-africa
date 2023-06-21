@@ -1,8 +1,11 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/Layout.tsx'
-import { AvailabilityJSON, LoggedInDoctorHandler } from '../../../types.ts'
+import {
+  AvailabilityJSON,
+  LoggedInHealthWorkerHandler,
+} from '../../../types.ts'
 import SetAvailabilityForm from '../../../islands/set-availability-form.tsx'
-import { DoctorGoogleClient } from '../../../external-clients/google.ts'
+import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import { assertAllHarare, convertToTime } from '../../../util/date.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 
@@ -16,11 +19,11 @@ const shortToLong = {
   SA: 'Saturday' as const,
 }
 
-export const handler: LoggedInDoctorHandler<
+export const handler: LoggedInHealthWorkerHandler<
   { availability: AvailabilityJSON }
 > = {
   async GET(_, ctx) {
-    const googleClient = new DoctorGoogleClient(ctx)
+    const googleClient = new HealthWorkerGoogleClient(ctx)
     const events = await googleClient.getEvents(
       ctx.state.session.data.gcal_availability_calendar_id,
     )
@@ -61,7 +64,7 @@ export default function SetAvailability(
   return (
     <Layout title='Set Availability' route={props.route}>
       <h3 className='container p-1 text-secondary-600 uppercase'>
-        Working Hours for Doctors
+        Working Hours for HealthWorkers
       </h3>
       <SetAvailabilityForm availability={props.data.availability} />
     </Layout>
