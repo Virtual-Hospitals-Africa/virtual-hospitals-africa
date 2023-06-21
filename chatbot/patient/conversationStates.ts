@@ -6,7 +6,7 @@ import {
   prettyAppointmentTime,
   prettyPatientDateOfBirth,
 } from '../../util/date.ts'
-import { availableThirtyMinutes } from '../getDoctorAvailability.ts'
+import { availableThirtyMinutes } from '../getHealthWorkerAvailability.ts'
 import { makeAppointment } from '../makeAppointment.ts'
 import { cancelAppointment } from '../cancelAppointment.ts'
 import * as appointments from '../../db/models/appointments.ts'
@@ -55,7 +55,7 @@ const conversationStates: ConversationStates<
   'not_onboarded:make_appointment:enter_name': {
     type: 'string',
     prompt:
-      'Sure, I can help you make an appointment with a doctor.\n\nTo start, what is your name?',
+      'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
     nextState: 'not_onboarded:make_appointment:enter_gender',
     async onExit(trx, patientState) {
       await patients.upsert(trx, {
@@ -224,12 +224,12 @@ const conversationStates: ConversationStates<
 
       const offeredTime = await appointments.addOfferedTime(trx, {
         appointment_id: patientState.scheduling_appointment_id!,
-        doctor_id: firstAvailable[0].doctor.id,
+        health_worker_id: firstAvailable[0].health_worker.id,
         start: firstAvailable[0].start,
       })
 
       const nextOfferedTimes: ReturnedSqlRow<
-        AppointmentOfferedTime & { doctor_name: string }
+        AppointmentOfferedTime & { health_worker_name: string }
       >[] = [offeredTime, ...patientState.appointment_offered_times]
 
       return {
@@ -315,12 +315,12 @@ const conversationStates: ConversationStates<
       )
       // TODO: get this down to a single DB call
       const newlyOfferedTimes: ReturnedSqlRow<
-        AppointmentOfferedTime & { doctor_name: string }
+        AppointmentOfferedTime & { health_worker_name: string }
       >[] = await Promise.all(filteredAvailableTimes.map(
         (timeslot) =>
           appointments.addOfferedTime(trx, {
             appointment_id: patientState.scheduling_appointment_id!,
-            doctor_id: timeslot.doctor.id,
+            health_worker_id: timeslot.health_worker.id,
             start: timeslot.start,
           }),
       ))
@@ -362,7 +362,7 @@ const conversationStates: ConversationStates<
 
       const appointmentsByDate: {
         [date: string]: ReturnedSqlRow<
-          AppointmentOfferedTime & { doctor_name: string }
+          AppointmentOfferedTime & { health_worker_name: string }
         >[]
       } = nonDeclinedTimes.reduce((acc, appointment) => {
         const date = appointment.start.substring(0, 10)
@@ -384,7 +384,7 @@ const conversationStates: ConversationStates<
             return {
               id: String(offeredTime.id),
               title: convertToTimeString(offeredTime.start),
-              description: `With Dr. ${offeredTime.doctor_name}`,
+              description: `With Dr. ${offeredTime.health_worker_name}`,
               nextState: 'onboarded:appointment_scheduled',
               async onExit(trx, patientState) {
                 const toDecline = patientState.appointment_offered_times
@@ -454,7 +454,7 @@ const conversationStates: ConversationStates<
       assert(acceptedTime.scheduled_gcal_event_id)
       return `Thanks ${
         patientState.name!.split(' ')[0]
-      }, we notified ${acceptedTime.doctor_name} and will message you shortly upon confirmirmation of your appointment at ${
+      }, we notified ${acceptedTime.health_worker_name} and will message you shortly upon confirmirmation of your appointment at ${
         prettyAppointmentTime(acceptedTime.start)
       }`
     },

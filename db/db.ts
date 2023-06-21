@@ -8,8 +8,8 @@ import {
 import {
   Appointment,
   AppointmentOfferedTime,
-  Doctor,
-  DoctorGoogleToken,
+  HealthWorker,
+  HealthWorkerGoogleToken,
   Patient,
   SqlRow,
   WhatsappMessageReceived,
@@ -20,8 +20,8 @@ import { PostgreSQLDriver } from 'kysely-deno-postgres'
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   appointment_offered_times: SqlRow<AppointmentOfferedTime>
-  doctors: SqlRow<Doctor>
-  doctor_google_tokens: SqlRow<DoctorGoogleToken>
+  health_workers: SqlRow<HealthWorker>
+  health_worker_google_tokens: SqlRow<HealthWorkerGoogleToken>
   patients: SqlRow<Patient>
   whatsapp_messages_received: SqlRow<WhatsappMessageReceived>
   whatsapp_messages_sent: SqlRow<WhatsappMessageSent>

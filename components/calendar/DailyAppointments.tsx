@@ -1,10 +1,10 @@
 import { FunctionComponent, h } from 'preact'
 import AppointmentDay from './AppointmentDay.tsx'
 import AppointmentCard from './AppointmentCard.tsx'
-import { DoctorAppointment } from '../../types.ts'
+import { HealthWorkerAppointment } from '../../types.ts'
 
 interface DailyAppointmentsProps {
-  dailyAppointments: DoctorAppointment[]
+  dailyAppointments: HealthWorkerAppointment[]
 }
 
 const DailyAppointments: FunctionComponent<DailyAppointmentsProps> = ({

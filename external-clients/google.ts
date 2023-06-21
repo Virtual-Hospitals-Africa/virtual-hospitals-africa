@@ -5,7 +5,6 @@ import moment from 'https://deno.land/x/momentjs@2.29.1-deno/mod.ts'
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {
   DeepPartial,
-  DoctorWithGoogleTokens,
   GCalCalendarList,
   GCalCalendarListEntry,
   GCalEvent,
@@ -13,15 +12,16 @@ import {
   GCalFreeBusy,
   GoogleProfile,
   GoogleTokens,
-  LoggedInDoctor,
+  HealthWorkerWithGoogleTokens,
+  LoggedInHealthWorker,
   TrxOrDb,
 } from '../types.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import {
-  isDoctorWithGoogleTokens,
+  isHealthWorkerWithGoogleTokens,
   removeExpiredAccessToken,
   updateAccessToken,
-} from '../db/models/doctors.ts'
+} from '../db/models/health_workers.ts'
 
 const googleApisUrl = 'https://www.googleapis.com'
 
@@ -248,15 +248,15 @@ export class GoogleClient {
   }
 }
 
-export class DoctorGoogleClient extends GoogleClient {
-  public doctor: DoctorWithGoogleTokens
+export class HealthWorkerGoogleClient extends GoogleClient {
+  public health_worker: HealthWorkerWithGoogleTokens
 
   constructor(
-    public ctx: HandlerContext<any, LoggedInDoctor>,
+    public ctx: HandlerContext<any, LoggedInHealthWorker>,
   ) {
     super(ctx.state.session.data)
-    this.doctor = ctx.state.session.data
-    if (!isDoctorWithGoogleTokens(this.doctor)) {
+    this.health_worker = ctx.state.session.data
+    if (!isHealthWorkerWithGoogleTokens(this.health_worker)) {
       throw new Error('Ya gotta be a doctah')
     }
   }
@@ -266,13 +266,19 @@ export class DoctorGoogleClient extends GoogleClient {
       return await super.makeRequest(path, opts)
     } catch (err) {
       if (err.message === 'Unauthorized') {
-        assert(this.doctor.refresh_token, 'No refresh token')
-        const refreshed = await refreshTokens(this.ctx.state.trx, this.doctor)
+        assert(this.health_worker.refresh_token, 'No refresh token')
+        const refreshed = await refreshTokens(
+          this.ctx.state.trx,
+          this.health_worker,
+        )
         if (refreshed.result !== 'success') {
           throw new Error('Failed to refresh tokens')
         }
         this.ctx.state.session.set('access_token', refreshed.access_token)
-        this.doctor = { ...this.doctor, access_token: refreshed.access_token }
+        this.health_worker = {
+          ...this.health_worker,
+          access_token: refreshed.access_token,
+        }
         return await super.makeRequest(path, opts)
       }
     }
@@ -355,17 +361,17 @@ export async function getNewAccessTokenFromRefreshToken(
 
 export async function refreshTokens(
   trx: TrxOrDb,
-  doctor: DoctorWithGoogleTokens,
+  health_worker: HealthWorkerWithGoogleTokens,
 ): Promise<{ result: 'success'; access_token: string } | { result: 'expiry' }> {
   try {
     const access_token = await getNewAccessTokenFromRefreshToken(
-      doctor.refresh_token,
+      health_worker.refresh_token,
     )
-    await updateAccessToken(trx, doctor.id, access_token)
+    await updateAccessToken(trx, health_worker.id, access_token)
     return { result: 'success', access_token }
   } catch (err) {
     console.error(err)
-    removeExpiredAccessToken(trx, { doctor_id: doctor.id })
+    removeExpiredAccessToken(trx, { health_worker_id: health_worker.id })
     return { result: 'expiry' }
   }
 }

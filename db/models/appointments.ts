@@ -9,21 +9,23 @@ import {
 
 export async function addOfferedTime(
   trx: TrxOrDb,
-  opts: { appointment_id: number; doctor_id: number; start: string },
-): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
+  opts: { appointment_id: number; health_worker_id: number; start: string },
+): Promise<
+  ReturnedSqlRow<AppointmentOfferedTime & { health_worker_name: string }>
+> {
   const result = await sql<
-    ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
+    ReturnedSqlRow<AppointmentOfferedTime & { health_worker_name: string }>
   >`
     WITH inserted_offered_time as (
-      INSERT INTO appointment_offered_times(appointment_id, doctor_id, start)
-          VALUES (${opts.appointment_id}, ${opts.doctor_id}, ${opts.start})
+      INSERT INTO appointment_offered_times(appointment_id, health_worker_id, start)
+          VALUES (${opts.appointment_id}, ${opts.health_worker_id}, ${opts.start})
         RETURNING *
     )
 
     SELECT inserted_offered_time.*,
-           doctors.name as doctor_name
+           health_workers.name as health_worker_name
       FROM inserted_offered_time
-      JOIN doctors ON inserted_offered_time.doctor_id = doctors.id
+      JOIN health_workers ON inserted_offered_time.health_worker_id = health_workers.id
   `.execute(trx)
 
   return result.rows[0]
@@ -31,21 +33,23 @@ export async function addOfferedTime(
 
 export async function newOfferedTime(
   trx: TrxOrDb,
-  opts: { appointment_id: number; doctor_id: number; start: string },
-): Promise<ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>> {
+  opts: { appointment_id: number; health_worker_id: number; start: string },
+): Promise<
+  ReturnedSqlRow<AppointmentOfferedTime & { health_worker_name: string }>
+> {
   const result = await sql<
-    ReturnedSqlRow<AppointmentOfferedTime & { doctor_name: string }>
+    ReturnedSqlRow<AppointmentOfferedTime & { health_worker_name: string }>
   >`
   WITH inserted_offered_time as (
-    INSERT INTO appointment_offered_times(appointment_id, doctor_id, start)
-        VALUES (${opts.appointment_id}, ${opts.doctor_id}, ${opts.start})
+    INSERT INTO appointment_offered_times(appointment_id, health_worker_id, start)
+        VALUES (${opts.appointment_id}, ${opts.health_worker_id}, ${opts.start})
       RETURNING *
   )
 
     SELECT inserted_offered_time.*,
-           doctors.name as doctor_name
+           health_workers.name as health_worker_name
       FROM inserted_offered_time
-      JOIN doctors ON inserted_offered_time.doctor_id = doctors.id
+      JOIN health_workers ON inserted_offered_time.health_worker_id = health_workers.id
       JOIN appointment_offered_times.appointment_id = ${opts.appointment_id}
   `.execute(trx)
 
@@ -120,17 +124,17 @@ export async function schedule(
          UPDATE appointment_offered_times
             SET scheduled_gcal_event_id = ${opts.scheduled_gcal_event_id}
           WHERE id = ${opts.appointment_offered_time_id}
-      RETURNING id, appointment_id, doctor_id, start
+      RETURNING id, appointment_id, health_worker_id, start
     )
 
     SELECT appointment_offered_time_scheduled.id as id,
            appointments.reason as reason,
-           doctors.name as doctor_name,
+           health_workers.name as health_worker_name,
            appointment_offered_time_scheduled.start
       FROM appointment_offered_time_scheduled
       JOIN appointments ON appointment_offered_time_scheduled.appointment_id = appointments.id
       JOIN patients ON appointments.patient_id = patients.id
-      JOIN doctors ON appointment_offered_time_scheduled.doctor_id = doctors.id
+      JOIN health_workers ON appointment_offered_time_scheduled.health_worker_id = health_workers.id
     `.execute(trx)
 
   return result.rows[0]
@@ -138,7 +142,7 @@ export async function schedule(
 
 export function get(
   trx: TrxOrDb,
-  query: { doctor_id: number },
+  query: { health_worker_id: number },
 ) {
   return trx
     .selectFrom('appointment_offered_times')
@@ -148,7 +152,7 @@ export function get(
       'appointments.id',
     )
     .innerJoin('patients', 'appointments.patient_id', 'patients.id')
-    .where('doctor_id', '=', query.doctor_id)
+    .where('health_worker_id', '=', query.health_worker_id)
     .select([
       'patients.name',
       'patient_id',

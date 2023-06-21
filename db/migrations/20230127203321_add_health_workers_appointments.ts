@@ -2,7 +2,7 @@ import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createTable('doctors')
+    .createTable('health_workers')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
@@ -61,9 +61,10 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
     .addColumn(
-      'doctor_id',
+      'health_worker_id',
       'integer',
-      (col) => col.notNull().references('doctors.id').onDelete('cascade'),
+      (col) =>
+        col.notNull().references('health_workers.id').onDelete('cascade'),
     )
     .addColumn('start', 'varchar(255)', (col) => col.notNull())
     .addColumn('patient_declined', 'boolean', (col) => col.defaultTo(false))
@@ -74,5 +75,5 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('appointment_offered_times').execute()
   await db.schema.dropTable('appointments').execute()
-  await db.schema.dropTable('doctors').execute()
+  await db.schema.dropTable('health_workers').execute()
 }
