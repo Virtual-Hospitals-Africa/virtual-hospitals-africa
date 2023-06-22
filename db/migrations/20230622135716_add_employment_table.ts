@@ -2,7 +2,7 @@ import { Kysely } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createTable('health_workers')
+    .createTable('employment_table')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('hcw_id', 'integer', (col) =>
       col.notNull()
