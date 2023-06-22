@@ -10,13 +10,16 @@ import { availableThirtyMinutes } from '../getHealthWorkerAvailability.ts'
 import { makeAppointment } from '../makeAppointment.ts'
 import { cancelAppointment } from '../cancelAppointment.ts'
 import * as appointments from '../../db/models/appointments.ts'
+import * as clinics from '../../db/models/clinics.ts'
 import * as patients from '../../db/models/patients.ts'
+
 import {
   AppointmentOfferedTime,
   Clinic,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStates,
+  LocationMessage,
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
@@ -24,7 +27,6 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
-import { getNearestClinics } from '../findNearestClinicInDB.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -237,9 +239,11 @@ const conversationStates: ConversationStates<
       }
     },
     async onEnter(trx, patientState) {
-      // store in db
-      const allNearestClinics = await getNearestClinics(trx, patientState)
-      return { ...patientState, nearest_clinics: allNearestClinics }
+      const location: LocationMessage = JSON.parse(patientState.body)
+      return {
+        ...patientState,
+        nearest_clinics: await clinics.nearest(trx, location),
+      }
     },
   },
   'not_onboarded:find_nearest_clinic:send_clinic_location': {
