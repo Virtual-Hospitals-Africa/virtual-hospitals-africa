@@ -44,7 +44,7 @@ export default function formatMessageToSend<
       return {
         type: 'list',
         messageBody: prompt,
-        headerText: 'Other Appointment Times',
+        headerText: state.headerText,
         action: {
           button: action.button,
           sections: action.sections.map((section) => ({
@@ -62,6 +62,7 @@ export default function formatMessageToSend<
       return {
         type: 'location',
         messageBody: prompt,
+        location: JSON.parse(prompt),
       }
     }
     case 'date': {

@@ -40,6 +40,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'not_onboarded:find_nearest_clinic:share_location'
   | 'not_onboarded:find_nearest_clinic:got_location'
+  | 'not_onboarded:find_nearest_clinic:send_clinic_location'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'
@@ -88,6 +89,9 @@ export type PatientState = {
   >[]
   created_at: Date
   updated_at: Date
+  nearest_clinics?: Clinic[]
+  nearest_clinic_name?: string
+  selectedClinic?: Clinic
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -143,6 +147,7 @@ export type ConversationStateHandlerListAction<US extends UserState<any>> = {
 export type ConversationStateHandlerList<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'list'
+    headerText: string
     action: (
       userState: US,
     ) => ConversationStateHandlerListAction<US>
@@ -679,6 +684,7 @@ export type WhatsAppSendableList = {
 export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
+  location: Location
 }
 
 export type WhatsAppMessageAction = {
@@ -712,3 +718,26 @@ export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
     Props,
     LoggedInHealthWorker
   >
+
+export type LocationMessage = {
+  address?: string // full address
+  latitude: number // floating-point number
+  longitude: number
+  name: string // first line of address
+  url: string
+}
+
+export type Location = {
+  latitude: number
+  longitude: number
+}
+
+export type Clinic = {
+  name: string
+  address?: string
+  location?: Location
+  distance?: number
+  vha?: boolean
+  url?: string
+  phone?: string
+}

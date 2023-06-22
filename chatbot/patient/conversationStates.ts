@@ -10,12 +10,16 @@ import { availableThirtyMinutes } from '../getHealthWorkerAvailability.ts'
 import { makeAppointment } from '../makeAppointment.ts'
 import { cancelAppointment } from '../cancelAppointment.ts'
 import * as appointments from '../../db/models/appointments.ts'
+import * as clinics from '../../db/models/clinics.ts'
 import * as patients from '../../db/models/patients.ts'
+
 import {
   AppointmentOfferedTime,
+  Clinic,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStates,
+  LocationMessage,
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
@@ -146,17 +150,118 @@ const conversationStates: ConversationStates<
     },
   },
   'not_onboarded:find_nearest_clinic:share_location': {
-    type: 'location',
+    type: 'string',
     nextState: 'not_onboarded:find_nearest_clinic:got_location',
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
   },
+  /***
+   * For testing
   'not_onboarded:find_nearest_clinic:got_location': {
     type: 'location',
     nextState: 'not_onboarded:welcome',
     prompt(patientState: PatientState): string {
-      return `Got it, your location is: ${patientState.body}`
+      return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
     },
+    async onEnter(trx, patientState) {
+      const clinic_name = await getNearestClinicNames(trx, patientState)
+      patientState.nearest_clinic_name = clinic_name
+      return { ...patientState, nearest_clinic_name: clinic_name }
+    },
+  },
+  */
+  // change the name of got_location to nearest_clinics?
+  'not_onboarded:find_nearest_clinic:got_location': {
+    // this needs to be conditional if no clinics available then return a string?
+    type: 'list',
+    headerText: 'Your Nearest Clinics',
+    prompt(): string {
+      return `Thank you for sharing your location.\n\nClick the button below to see your nearest clinics.`
+    },
+    action(
+      patientState: PatientState,
+    ): ConversationStateHandlerListAction<PatientState> {
+      const sections: ConversationStateHandlerListActionSection<
+        PatientState
+      >[] = []
+
+      if (
+        patientState.nearest_clinics && patientState.nearest_clinics.length > 0
+      ) {
+        patientState.nearest_clinics.forEach((eachClinic, id) => {
+          const titleLimit = 24
+          const descriptionLimit = 72
+
+          const clinicName = eachClinic.name.length > titleLimit
+            ? eachClinic.name.slice(0, titleLimit - 3) + '...'
+            : eachClinic.name
+
+          const clinicAddress = eachClinic.address
+            ? eachClinic.address.length > descriptionLimit
+              ? `${eachClinic.address.slice(0, descriptionLimit - 3)}...`
+              : eachClinic.address
+            : 'clinic address here...'
+
+          const distanceInKM = eachClinic.distance
+            ? (eachClinic.distance / 1000).toFixed(1)
+            : 'unknown'
+
+          // const clinicLatitude = eachClinic.location?.latitude;
+          // const clinicLongitude = eachClinic.location?.longitude;
+          // const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
+
+          sections.push({
+            title: clinicName,
+            rows: [{
+              id: `${id}`,
+              title: `${clinicAddress}`,
+              description: `${distanceInKM} Km away. Select for destination.`,
+              // provide location for next state? instead of the "Select for directions above ^"?
+              nextState:
+                'not_onboarded:find_nearest_clinic:send_clinic_location',
+            }],
+          })
+        })
+      } else {
+        sections.push({
+          title: '',
+          rows: [{
+            id: '1',
+            title: 'There aren\'t any clinics near you.',
+            description: '',
+            nextState: 'not_onboarded:find_nearest_clinic:share_location',
+          }],
+        })
+      }
+      return {
+        button: 'Show Nearest Clinics',
+        sections: sections,
+      }
+    },
+    async onEnter(trx, patientState) {
+      const location: LocationMessage = JSON.parse(patientState.body)
+      return {
+        ...patientState,
+        nearest_clinics: await clinics.nearest(trx, location),
+      }
+    },
+  },
+  'not_onboarded:find_nearest_clinic:send_clinic_location': {
+    prompt(patientState: PatientState): string {
+      return JSON.stringify(patientState.selectedClinic?.name)
+    },
+    type: 'location',
+    nextState: 'not_onboarded:welcome',
+    onEnter(_trx, patientState) {
+      console.log(patientState.body)
+      const selectedClinic: Clinic | undefined = patientState.nearest_clinics
+        ?.[0]
+      return Promise.resolve({ ...patientState, selectedClinic })
+    },
+    //   // how to get findNearestClinics Clinics[] from db
+    //   // compare the users response patientState.body against the findNearestClinics Clinics[]
+    //   // store location of the selected clinic in patientState.selectedClinicLocation
+    // }
   },
   'onboarded:make_appointment:enter_appointment_reason': {
     type: 'string',
@@ -279,6 +384,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:other_scheduling_options': {
     type: 'list',
+    headerText: 'Other Appointment Times',
     async onEnter(
       trx: TrxOrDb,
       patientState: PatientState,
