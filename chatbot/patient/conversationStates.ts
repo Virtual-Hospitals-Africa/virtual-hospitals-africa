@@ -248,15 +248,11 @@ const conversationStates: ConversationStates<
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',
-    async onEnter(trx, patientState) {
+    onEnter(_trx, patientState) {
       console.log(patientState.body)
       const selectedClinic: Clinic | undefined = patientState.nearest_clinics
         ?.[0]
-      if (selectedClinic) {
-        return { ...patientState, selectedClinic: selectedClinic }
-      } else {
-        return { ...patientState }
-      }
+      return Promise.resolve({ ...patientState, selectedClinic })
     },
     //   // how to get findNearestClinics Clinics[] from db
     //   // compare the users response patientState.body against the findNearestClinics Clinics[]
