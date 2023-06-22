@@ -1,4 +1,4 @@
-import { Migration, Migrator, sql } from 'kysely'
+import { Migration, MigrationResult, Migrator, sql } from 'kysely'
 import db from './db.ts'
 
 if (!Deno.args.length) {
@@ -22,6 +22,17 @@ const migrator = new Migrator({
   },
 })
 
+async function wipe() {
+  const results: MigrationResult[] = []
+  while (true) {
+    const migration = await migrator.migrateDown()
+    results.push(...(migration.results || []))
+    if (migration.error) return { error: migration.error, results }
+    if (!migration.results?.length) break
+  }
+  return { error: null, results }
+}
+
 async function startMigrating() {
   switch (Deno.args[0]) {
     case '--latest':
@@ -30,6 +41,8 @@ async function startMigrating() {
       return migrator.migrateUp()
     case '--down':
       return migrator.migrateDown()
+    case '--wipe':
+      return wipe()
     case '--to': {
       const target = Deno.args[1]
       if (!target) {
