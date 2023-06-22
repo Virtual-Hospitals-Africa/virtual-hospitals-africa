@@ -247,7 +247,9 @@ const conversationStates: ConversationStates<
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
-      const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(clinic => String(clinic.id) === patientState.body)
+      const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(
+        (clinic) => String(clinic.id) === patientState.body,
+      )
       return Promise.resolve({ ...patientState, selectedClinic })
     },
     //   // how to get findNearestClinics Clinics[] from db
