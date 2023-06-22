@@ -4,6 +4,7 @@ import {
   WhatsAppSendable,
   WhatsAppSendableString,
 } from '../types.ts'
+import pick from '../util/pick.ts'
 
 function stringSendable(messageBody: string): WhatsAppSendableString {
   return {
@@ -33,7 +34,7 @@ export default function formatMessageToSend<
         type: 'buttons',
         messageBody: prompt,
         buttonText: 'Menu',
-        options: state.options,
+        options: state.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs
       }
     }
     case 'action': {
@@ -43,13 +44,20 @@ export default function formatMessageToSend<
           type: 'list',
           messageBody: prompt,
           headerText: state.headerText,
-          action,
+          // Select only the fields whatsapp needs
+          action: {
+            button: action.button,
+            sections: action.sections.map((section) => ({
+              title: section.title,
+              rows: section.rows.map(pick(['id', 'title', 'description'])),
+            })),
+          },
         }
         : {
           type: 'buttons',
           messageBody: prompt,
           buttonText: 'Menu',
-          options: action.options,
+          options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
         }
     }
     case 'location': {
