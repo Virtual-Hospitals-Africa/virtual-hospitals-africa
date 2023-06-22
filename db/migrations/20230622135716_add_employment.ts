@@ -32,5 +32,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
+  await db.schema.dropType('health_worker_professions').execute()
   await db.schema.dropTable('employment').execute()
 }
