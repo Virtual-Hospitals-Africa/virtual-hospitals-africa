@@ -1,19 +1,5 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
-  assertAllHarare,
-  convertToTimeString,
-  formatHarare,
-  prettyAppointmentTime,
-  prettyPatientDateOfBirth,
-} from '../../util/date.ts'
-import { availableThirtyMinutes } from '../getHealthWorkerAvailability.ts'
-import { makeAppointment } from '../makeAppointment.ts'
-import { cancelAppointment } from '../cancelAppointment.ts'
-import * as appointments from '../../db/models/appointments.ts'
-import * as clinics from '../../db/models/clinics.ts'
-import * as patients from '../../db/models/patients.ts'
-
-import {
   AppointmentOfferedTime,
   Clinic,
   ConversationStateHandlerListAction,
@@ -26,6 +12,19 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import {
+  assertAllHarare,
+  convertToTimeString,
+  formatHarare,
+  prettyAppointmentTime,
+  prettyPatientDateOfBirth,
+} from '../../util/date.ts'
+import * as appointments from '../../db/models/appointments.ts'
+import * as clinics from '../../db/models/clinics.ts'
+import * as patients from '../../db/models/patients.ts'
+import { availableThirtyMinutes } from './getHealthWorkerAvailability.ts'
+import { cancelAppointment } from './cancelAppointment.ts'
+import { makeAppointment } from './makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
 
 const conversationStates: ConversationStates<
