@@ -1,10 +1,20 @@
-import { Kysely } from 'kysely'
+import { sql, Kysely } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createTable('employment_table')
+    .createType('health_worker_professions')
+    .asEnum([
+      'admin',
+      'doctor',
+      'nurse',
+    ])
+    .execute()
+
+
+  await db.schema
+    .createTable('employment')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn('hcw_id', 'integer', (col) =>
+    .addColumn('health_worker_id', 'integer', (col) =>
       col.notNull()
         .references('health_workers.id')
         .onDelete('cascade'))
@@ -13,9 +23,14 @@ export async function up(db: Kysely<unknown>) {
         .references('clinics.id')
         .onDelete('cascade'))
     .addColumn('profession', 'text', (col) => col.notNull())
+    .addColumn(
+      'profession',
+      sql`health_worker_professions`,
+      (column) => column.defaultTo('initial_message'),
+    )
     .execute()
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('health_workers').execute()
+  await db.schema.dropTable('employment').execute()
 }
