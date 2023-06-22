@@ -24,15 +24,15 @@ export default function formatMessageToSend<
     userState.conversation_state
   ]
 
-  const prompt = typeof state.prompt === 'string'
+  const messageBody = typeof state.prompt === 'string'
     ? state.prompt
     : state.prompt(userState)
 
   switch (state.type) {
     case 'select': {
       return {
+        messageBody,
         type: 'buttons',
-        messageBody: prompt,
         buttonText: 'Menu',
         options: state.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs
       }
@@ -41,8 +41,8 @@ export default function formatMessageToSend<
       const action = state.action(userState)
       return action.type === 'list'
         ? {
+          messageBody,
           type: 'list',
-          messageBody: prompt,
           headerText: state.headerText,
           // Select only the fields whatsapp needs
           action: {
@@ -54,29 +54,29 @@ export default function formatMessageToSend<
           },
         }
         : {
+          messageBody,
           type: 'buttons',
-          messageBody: prompt,
           buttonText: 'Menu',
           options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
         }
     }
     case 'location': {
       return {
+        messageBody,
         type: 'location',
-        messageBody: prompt,
-        location: JSON.parse(prompt),
+        location: JSON.parse(messageBody),
       }
     }
     case 'date': {
       return stringSendable(
-        prompt + ' Please enter the date in the format DD/MM/YYYY',
+        messageBody + ' Please enter the date in the format DD/MM/YYYY',
       ) // https://en.wikipedia.org/wiki/Date_format_by_country
     }
     case 'string': {
-      return stringSendable(prompt)
+      return stringSendable(messageBody)
     }
     case 'end_of_demo': {
-      return stringSendable(prompt)
+      return stringSendable(messageBody)
     }
     default: {
       return stringSendable('What happened!?!?!?!?!?')
