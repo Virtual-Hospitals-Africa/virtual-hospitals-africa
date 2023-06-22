@@ -27,6 +27,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import pickPatient from '../pickPatient.ts'
+import mainMenuOptions from './mainMenuOptions.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -43,18 +44,7 @@ const conversationStates: ConversationStates<
     type: 'select',
     prompt:
       'Welcome to Virtual Hospitals Africa. What can I help you with today?',
-    options: [
-      {
-        option: 'make_appointment',
-        display: 'Make appointment',
-        nextState: 'not_onboarded:make_appointment:enter_name',
-      },
-      {
-        option: 'find_nearest_clinic',
-        display: 'Find Nearest Clinic',
-        nextState: 'not_onboarded:find_nearest_clinic:share_location',
-      },
-    ],
+    options: mainMenuOptions,
   },
   'not_onboarded:make_appointment:enter_name': {
     type: 'string',
@@ -576,13 +566,7 @@ const conversationStates: ConversationStates<
     type: 'select',
     prompt:
       'Your appoinment has been cancelled. What can I help you with today?',
-    options: [
-      {
-        option: 'make_appointment',
-        display: 'Make appointment',
-        nextState: 'onboarded:make_appointment:enter_appointment_reason',
-      },
-    ],
+    options: mainMenuOptions,
     onEnter(
       trx: TrxOrDb,
       patientState: PatientState,
