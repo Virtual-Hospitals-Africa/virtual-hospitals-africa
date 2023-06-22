@@ -10,6 +10,7 @@
     "db:migrate:latest": "deno task run:trusted db/migrate.ts --latest",
     "db:migrate:down": "deno task run:trusted db/migrate.ts --down",
     "db:migrate:to": "deno task run:trusted db/migrate.ts --to",
+    "db:migrate:wipe": "deno task run:trusted db/migrate.ts --wipe",
 
     "heroku:chatbot:up": "heroku ps:scale chatbot=1",
     "heroku:chatbot:down": "heroku ps:scale chatbot=0",
