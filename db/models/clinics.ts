@@ -1,21 +1,20 @@
 import { sql } from 'kysely'
-import { Clinic, TrxOrDb } from '../../types.ts'
+import { Clinic, ReturnedSqlRow, TrxOrDb } from '../../types.ts'
 
 export async function nearest(
   trx: TrxOrDb,
   coords: { latitude: number; longitude: number },
-): Promise<Clinic[]> {
-  const result = await sql<Clinic>`
-      SELECT name,
-             location, 
+): Promise<ReturnedSqlRow<Clinic>[]> {
+  const result = await sql<ReturnedSqlRow<Clinic>>`
+      SELECT *,
              ST_Distance(
-                location,
-                ST_SetSRID(ST_MakePoint(${coords.longitude}, ${coords.latitude}), 4326)::geography
+                  location,
+                  ST_SetSRID(ST_MakePoint(${coords.longitude}, ${coords.latitude}), 4326)::geography
               ) AS distance
-      FROM clinics
-      ORDER BY location <-> ST_SetSRID(ST_MakePoint(${coords.longitude}, ${coords.latitude}), 4326)::geography
-      LIMIT 10
-    `.execute(trx)
+        FROM clinics
+    ORDER BY location <-> ST_SetSRID(ST_MakePoint(${coords.longitude}, ${coords.latitude}), 4326)::geography
+       LIMIT 10
+  `.execute(trx)
 
   return result.rows
 }

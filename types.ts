@@ -47,6 +47,7 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:other_scheduling_options'
   | 'onboarded:appointment_scheduled'
   | 'onboarded:cancel_appointment'
+  | 'onboarded:main_menu'
   | 'other_end_of_demo'
 
 export type Patient = {
@@ -89,7 +90,7 @@ export type PatientState = {
   >[]
   created_at: Date
   updated_at: Date
-  nearest_clinics?: Clinic[]
+  nearest_clinics?: ReturnedSqlRow<Clinic>[]
   nearest_clinic_name?: string
   selectedClinic?: Clinic
 }
@@ -113,8 +114,8 @@ export type ConversationStateHandlerNextState<US extends UserState<any>> =
   ) => US['conversation_state'])
 
 export type ConversationStateHandlerSelectOption<US extends UserState<any>> = {
-  option: string
-  display: string
+  id: string
+  title: string
   nextState: ConversationStateHandlerNextState<US>
   onExit?: (
     trx: TrxOrDb,
@@ -140,17 +141,20 @@ export type ConversationStateHandlerListActionSection<
 }
 
 export type ConversationStateHandlerListAction<US extends UserState<any>> = {
+  type: 'list'
   button: string
   sections: ConversationStateHandlerListActionSection<US>[]
 }
 
 export type ConversationStateHandlerList<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
-    type: 'list'
+    type: 'action'
     headerText: string
     action: (
       userState: US,
-    ) => ConversationStateHandlerListAction<US>
+    ) =>
+      | ConversationStateHandlerSelect<US>
+      | ConversationStateHandlerListAction<US>
   }>
 
 export type ConversationStateHandlerSelect<US extends UserState<any>> =

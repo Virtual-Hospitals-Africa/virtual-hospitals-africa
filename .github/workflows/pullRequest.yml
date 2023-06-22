@@ -29,11 +29,14 @@ jobs:
       - name: Run fmt --check
         run: deno fmt --check
 
+      - name: Run tests
+        run: deno test
+
       - name: Compile chatbot
-        run: DENO_TLS_CA_STORE=system deno compile -A --unstable --target x86_64-unknown-linux-gnu --output binaries/chatbot chatbot/chatbot.ts
+        run: deno task compile:chatbot
+
+      - name: Compile token_refresher
+        run: deno task compile:token_refresher
 
       - name: Compile web
-        run: DENO_TLS_CA_STORE=system deno compile -A --unstable --target x86_64-unknown-linux-gnu --output binaries/web main.ts
-
-      - name: Compile tokenRefresher
-        run: DENO_TLS_CA_STORE=system deno compile -A --unstable --target x86_64-unknown-linux-gnu --output binaries/tokenRefresher tokenRefresher/tokenRefresher.ts
+        run: deno task compile:web

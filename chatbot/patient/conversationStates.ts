@@ -26,7 +26,6 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import pickPatient from '../pickPatient.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
 
 const conversationStates: ConversationStates<
@@ -46,6 +45,12 @@ const conversationStates: ConversationStates<
       'Welcome to Virtual Hospitals Africa. What can I help you with today?',
     options: mainMenuOptions,
   },
+  'onboarded:main_menu': {
+    type: 'select',
+    prompt:
+      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    options: mainMenuOptions,
+  },
   'not_onboarded:make_appointment:enter_name': {
     type: 'string',
     prompt:
@@ -53,7 +58,7 @@ const conversationStates: ConversationStates<
     nextState: 'not_onboarded:make_appointment:enter_gender',
     async onExit(trx, patientState) {
       await patients.upsert(trx, {
-        ...pickPatient(patientState),
+        ...patients.pick(patientState),
         name: patientState.body,
       })
       return { ...patientState, name: patientState.body }
@@ -68,36 +73,36 @@ const conversationStates: ConversationStates<
     type: 'select',
     options: [
       {
-        option: 'male',
-        display: 'Male',
+        id: 'male',
+        title: 'Male',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
-            ...pickPatient(patientState),
+            ...patients.pick(patientState),
             gender: 'male',
           })
           return { ...patientState, gender: 'male' }
         },
       },
       {
-        option: 'female',
-        display: 'Female',
+        id: 'female',
+        title: 'Female',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
-            ...pickPatient(patientState),
+            ...patients.pick(patientState),
             gender: 'female',
           })
           return { ...patientState, gender: 'female' }
         },
       },
       {
-        option: 'other',
-        display: 'Other',
+        id: 'other',
+        title: 'Other',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
-            ...pickPatient(patientState),
+            ...patients.pick(patientState),
             gender: 'other',
           })
           return { ...patientState, gender: 'other' }
@@ -115,7 +120,7 @@ const conversationStates: ConversationStates<
       const dayStr = day.padStart(2, '0')
       const date_of_birth = `${year}-${monthStr}-${dayStr}`
       await patients.upsert(trx, {
-        ...pickPatient(patientState),
+        ...patients.pick(patientState),
         date_of_birth,
       })
       return { ...patientState, date_of_birth }
@@ -133,7 +138,7 @@ const conversationStates: ConversationStates<
     nextState: 'onboarded:make_appointment:enter_appointment_reason',
     async onExit(trx, patientState) {
       await patients.upsert(trx, {
-        ...pickPatient(patientState),
+        ...patients.pick(patientState),
         national_id_number: patientState.body,
       })
       return { ...patientState, national_id_number: patientState.body }
@@ -163,69 +168,76 @@ const conversationStates: ConversationStates<
   // change the name of got_location to nearest_clinics?
   'not_onboarded:find_nearest_clinic:got_location': {
     // this needs to be conditional if no clinics available then return a string?
-    type: 'list',
+    type: 'action',
     headerText: 'Your Nearest Clinics',
     prompt(): string {
       return `Thank you for sharing your location.\n\nClick the button below to see your nearest clinics.`
     },
     action(
       patientState: PatientState,
-    ): ConversationStateHandlerListAction<PatientState> {
-      const sections: ConversationStateHandlerListActionSection<
-        PatientState
-      >[] = []
+    ) {
+      const { nearest_clinics } = patientState
+      if (!nearest_clinics?.length) {
+        return {
+          type: 'select',
+          prompt:
+            'We\'re sorry that no clinics were found in your area. Our team has been notified and will follow up with you soon.',
+          options: [
+            {
+              id: 'main_menu',
+              title: 'Main Menu',
+              nextState(patientState: PatientState): PatientConversationState {
+                return patients.hasDemographicData(patientState)
+                  ? 'onboarded:main_menu'
+                  : 'not_onboarded:welcome'
+              },
+            },
+          ],
+        }
+      }
 
-      if (
-        patientState.nearest_clinics && patientState.nearest_clinics.length > 0
-      ) {
-        patientState.nearest_clinics.forEach((eachClinic, id) => {
+      return {
+        type: 'list',
+        button: 'Show Nearest Clinics',
+        sections: (nearest_clinics || []).map((clinic) => {
           const titleLimit = 24
           const descriptionLimit = 72
 
-          const clinicName = eachClinic.name.length > titleLimit
-            ? eachClinic.name.slice(0, titleLimit - 3) + '...'
-            : eachClinic.name
+          const clinicName = clinic.name.length > titleLimit
+            ? clinic.name.slice(0, titleLimit - 3) + '...'
+            : clinic.name
 
-          const clinicAddress = eachClinic.address
-            ? eachClinic.address.length > descriptionLimit
-              ? `${eachClinic.address.slice(0, descriptionLimit - 3)}...`
-              : eachClinic.address
+          const clinicAddress = clinic.address
+            ? clinic.address.length > descriptionLimit
+              ? `${clinic.address.slice(0, descriptionLimit - 3)}...`
+              : clinic.address
             : 'clinic address here...'
 
-          const distanceInKM = eachClinic.distance
-            ? (eachClinic.distance / 1000).toFixed(1)
+          const distanceInKM = clinic.distance
+            ? (clinic.distance / 1000).toFixed(1)
             : 'unknown'
 
-          // const clinicLatitude = eachClinic.location?.latitude;
-          // const clinicLongitude = eachClinic.location?.longitude;
+          // const clinicLatitude = clinic.location?.latitude;
+          // const clinicLongitude = clinic.location?.longitude;
           // const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
 
-          sections.push({
+          return {
             title: clinicName,
             rows: [{
-              id: `${id}`,
+              id: `${clinic.id}`,
               title: `${clinicAddress}`,
-              description: `${distanceInKM} Km away. Select for destination.`,
+              description: `${distanceInKM}km away. Select for destination.`,
               // provide location for next state? instead of the "Select for directions above ^"?
               nextState:
                 'not_onboarded:find_nearest_clinic:send_clinic_location',
+              onExit(_trx: TrxOrDb, patientState: PatientState) {
+                console.log('onExit')
+                console.log(patientState)
+                return Promise.resolve(patientState)
+              },
             }],
-          })
-        })
-      } else {
-        sections.push({
-          title: '',
-          rows: [{
-            id: '1',
-            title: 'There aren\'t any clinics near you.',
-            description: '',
-            nextState: 'not_onboarded:find_nearest_clinic:share_location',
-          }],
-        })
-      }
-      return {
-        button: 'Show Nearest Clinics',
-        sections: sections,
+          }
+        }),
       }
     },
     async onEnter(trx, patientState) {
@@ -243,6 +255,7 @@ const conversationStates: ConversationStates<
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
+      console.log('WLKWEKLKLWEKLWE')
       console.log(patientState.body)
       const selectedClinic: Clinic | undefined = patientState.nearest_clinics
         ?.[0]
@@ -295,13 +308,13 @@ const conversationStates: ConversationStates<
     },
     options: [
       {
-        option: 'confirm',
-        display: 'Yes',
+        id: 'confirm',
+        title: 'Yes',
         nextState: 'onboarded:make_appointment:first_scheduling_option',
       },
       {
-        option: 'go_back',
-        display: 'Go back',
+        id: 'go_back',
+        title: 'Go back',
         nextState: 'other_end_of_demo',
       },
     ],
@@ -345,13 +358,13 @@ const conversationStates: ConversationStates<
     },
     options: [
       {
-        option: 'confirm',
-        display: 'Yes',
+        id: 'confirm',
+        title: 'Yes',
         nextState: 'onboarded:appointment_scheduled',
       },
       {
-        option: 'other_times',
-        display: 'Other times',
+        id: 'other_times',
+        title: 'Other times',
         nextState: 'onboarded:make_appointment:other_scheduling_options',
         async onExit(trx, patientState) {
           await appointments.declineOfferedTimes(
@@ -366,14 +379,14 @@ const conversationStates: ConversationStates<
         },
       },
       {
-        option: 'go_back',
-        display: 'Go back',
+        id: 'go_back',
+        title: 'Go back',
         nextState: 'other_end_of_demo',
       },
     ],
   },
   'onboarded:make_appointment:other_scheduling_options': {
-    type: 'list',
+    type: 'action',
     headerText: 'Other Appointment Times',
     async onEnter(
       trx: TrxOrDb,
@@ -528,6 +541,7 @@ const conversationStates: ConversationStates<
         }],
       })
       return {
+        type: 'list',
         button: 'More Time Slots',
         sections: sections,
       }
@@ -556,8 +570,8 @@ const conversationStates: ConversationStates<
     },
     options: [
       {
-        option: 'cancel',
-        display: 'Cancel Appointment',
+        id: 'cancel',
+        title: 'Cancel Appointment',
         nextState: 'onboarded:cancel_appointment',
       },
     ],
