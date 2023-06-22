@@ -6,12 +6,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('hcw_id', 'integer', (col) =>
         col.notNull()
-        .references('health_worker.id')
+        .references('health_workers.id')
         .onDelete('cascade')
     )
     .addColumn('clinic_id','integer', (col) =>
         col.notNull()
-        .references('clinic.id')
+        .references('clinics.id')
         .onDelete('cascade')
     )
     .addColumn('profession', 'text', (col) => col.notNull())
