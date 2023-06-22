@@ -1,5 +1,7 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
+import * as clinics from './clinics.ts'
 import {
+  LocationMessage,
   PatientConversationState,
   PatientState,
   ReturnedSqlRow,
@@ -128,12 +130,24 @@ export async function getUnhandledPatientMessages(
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  return result.rows.map((row) => ({
-    ...row,
-    appointment_offered_times: row.appointment_offered_times
-      ? row.appointment_offered_times.filter((aot) => aot)
-      : [],
-  }))
+  const rows: PatientState[] = []
+  for (const row of result.rows) {
+    // TODO do this all in the above query
+    if (
+      row.conversation_state === 'find_nearest_clinic:got_location'
+    ) {
+      const location: LocationMessage = JSON.parse(row.body)
+      row.nearest_clinics = await clinics.nearest(trx, location)
+    }
+
+    rows.push({
+      ...row,
+      appointment_offered_times: row.appointment_offered_times
+        ? row.appointment_offered_times.filter((aot) => aot)
+        : [],
+    })
+  }
+  return rows
 }
 
 export function markChatbotError(

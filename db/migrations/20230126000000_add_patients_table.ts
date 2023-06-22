@@ -1,25 +1,12 @@
 import { Kysely, sql } from 'kysely'
+import patientConversationStates from '../../chatbot/patient/conversationStates.ts'
 
 export async function up(db: Kysely<unknown>) {
+  const conversationStates = Object.keys(patientConversationStates)
+
   await db.schema
-    .createType('conversation_state')
-    .asEnum([
-      'initial_message',
-      'not_onboarded:welcome',
-      'not_onboarded:make_appointment:enter_name',
-      'not_onboarded:make_appointment:enter_gender',
-      'not_onboarded:make_appointment:enter_date_of_birth',
-      'not_onboarded:make_appointment:enter_national_id_number',
-      'not_onboarded:find_nearest_clinic:share_location',
-      'not_onboarded:find_nearest_clinic:got_location',
-      'onboarded:make_appointment:enter_appointment_reason',
-      'onboarded:make_appointment:confirm_details',
-      'onboarded:make_appointment:first_scheduling_option',
-      'onboarded:make_appointment:other_scheduling_options',
-      'onboarded:appointment_scheduled',
-      'onboarded:cancel_appointment',
-      'other_end_of_demo',
-    ])
+    .createType('patient_conversation_state')
+    .asEnum(conversationStates)
     .execute()
 
   return db.schema
@@ -41,8 +28,8 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('date_of_birth', 'varchar(50)')
     .addColumn('national_id_number', 'varchar(50)')
     .addColumn(
-      'conversation_state',
-      sql`conversation_state`,
+      'patient_conversation_state',
+      sql`patient_conversation_state`,
       (column) => column.defaultTo('initial_message'),
     )
     .addUniqueConstraint('national_id_number', ['national_id_number'])
@@ -52,5 +39,5 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patients').execute()
-  await db.schema.dropType('conversation_state').execute()
+  await db.schema.dropType('patient_conversation_state').execute()
 }
