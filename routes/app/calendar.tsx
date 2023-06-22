@@ -17,6 +17,7 @@ import {
   parseDate,
   todayISOInHarare,
 } from '../../util/date.ts'
+import NewCalendar from '../../components/calendar/NewCalendar.tsx'
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -97,8 +98,6 @@ export default function Calendar(
     { dailyAppointments: HealthWorkerAppointment[]; startday: string }
   >,
 ) {
-  console.log('dailyAppointments', props.data.dailyAppointments)
-
   // initially set up date with current date
   const [startYear, startMonth, startDay] = props.data.startday.split('-').map((
     n,
@@ -128,7 +127,9 @@ export default function Calendar(
   return (
     <Layout title='My Calendar' route={props.route}>
       <div class='calendar'>
-        <div className='flex justify-center space-x-4'>
+        <NewCalendar />
+        {
+          /* <div className='flex justify-center space-x-4'>
           <MonthPicker
             selectedMonth={startMonth - 1}
             currentDay={startDay}
@@ -147,7 +148,8 @@ export default function Calendar(
           currentYear={startYear}
           days={days}
         />
-        <DailyAppointments dailyAppointments={props.data.dailyAppointments} />
+        <DailyAppointments dailyAppointments={props.data.dailyAppointments} /> */
+        }
       </div>
 
       <hr />
