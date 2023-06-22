@@ -13,13 +13,12 @@ import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
 import * as patients from '../db/models/patients.ts'
 import { sendMessage } from '../external-clients/whatsapp.ts'
-import pickPatient from './pickPatient.ts'
 import patientConversationStates from './patient/conversationStates.ts'
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
 
 const updatePatientState = (trx: TrxOrDb, patientState: PatientState) =>
-  patients.upsert(trx, pickPatient(patientState))
+  patients.upsert(trx, patients.pick(patientState))
 
 async function respondToPatientMessage(
   patientConversationStates: ConversationStates<

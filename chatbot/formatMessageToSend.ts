@@ -33,30 +33,24 @@ export default function formatMessageToSend<
         type: 'buttons',
         messageBody: prompt,
         buttonText: 'Menu',
-        options: state.options.map((option) => ({
-          id: option.option,
-          title: option.display,
-        })),
+        options: state.options,
       }
     }
-    case 'list': {
+    case 'action': {
       const action = state.action(userState)
-      return {
-        type: 'list',
-        messageBody: prompt,
-        headerText: state.headerText,
-        action: {
-          button: action.button,
-          sections: action.sections.map((section) => ({
-            title: section.title,
-            rows: section.rows.map((row) => ({
-              id: row.id,
-              title: row.title,
-              description: row.description,
-            })),
-          })),
-        },
-      }
+      return action.type === 'list'
+        ? {
+          type: 'list',
+          messageBody: prompt,
+          headerText: state.headerText,
+          action,
+        }
+        : {
+          type: 'buttons',
+          messageBody: prompt,
+          buttonText: 'Menu',
+          options: action.options,
+        }
     }
     case 'location': {
       return {

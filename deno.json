@@ -1,21 +1,30 @@
 {
   "tasks": {
-    "start": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors --watch=static/,routes/ dev.ts",
-    "web": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors main.ts",
-    "chatbot": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors chatbot/chatbot.ts",
-    "migrate:create": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors db/create-migration.ts",
-    "migrate:up": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors db/migrate.ts --up",
-    "migrate:latest": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors db/migrate.ts --latest",
-    "migrate:down": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors db/migrate.ts --down",
-    "migrate:to": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors db/migrate.ts --to",
-    "chatbot:up": "heroku ps:scale chatbot=1",
-    "chatbot:down": "heroku ps:scale chatbot=0",
-    "token_refresher:up": "heroku ps:scale token_refresher=1",
-    "token_refresher:down": "heroku ps:scale token_refresher=0",
-    "web:up": "heroku ps:scale web=1",
-    "web:down": "heroku ps:scale web=0",
-    "token_refresher": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors tokenRefresher/tokenRefresher.ts",
-    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors"
+    "chatbot": "deno task run:trusted chatbot/chatbot.ts",
+    "token_refresher": "deno task run:trusted tokenRefresher/tokenRefresher.ts",
+    "start": "deno task run:trusted dev.ts --watch=static/,routes/",
+    "web": "deno task run:trusted main.ts",
+
+    "db:migrate:create": "deno task run:trusted db/create-migration.ts",
+    "db:migrate:up": "deno task run:trusted db/migrate.ts --up",
+    "db:migrate:latest": "deno task run:trusted db/migrate.ts --latest",
+    "db:migrate:down": "deno task run:trusted db/migrate.ts --down",
+    "db:migrate:to": "deno task run:trusted db/migrate.ts --to",
+
+    "heroku:chatbot:up": "heroku ps:scale chatbot=1",
+    "heroku:chatbot:down": "heroku ps:scale chatbot=0",
+    "heroku:token_refresher:up": "heroku ps:scale token_refresher=1",
+    "heroku:token_refresher:down": "heroku ps:scale token_refresher=0",
+    "heroku:web:up": "heroku ps:scale web=1",
+    "heroku:web:down": "heroku ps:scale web=0",
+
+    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors",
+    "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
+
+    "compile": "DENO_TLS_CA_STORE=system deno compile -A --unstable --target x86_64-unknown-linux-gnu",
+    "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
+    "compile:token_refresher": "deno task compile --output binaries/tokenRefresher tokenRefresher/tokenRefresher.ts",
+    "compile:web": "deno task compile --output binaries/web main.ts"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {

@@ -1,12 +1,17 @@
+import {
+  ConversationStateHandlerSelectOption,
+  PatientState,
+} from '../../types.ts'
+
 export default [
   {
-    option: 'make_appointment',
-    display: 'Make appointment',
+    id: 'make_appointment',
+    title: 'Make appointment',
     nextState: 'not_onboarded:make_appointment:enter_name' as const,
   },
   {
-    option: 'find_nearest_clinic',
-    display: 'Find Nearest Clinic',
+    id: 'find_nearest_clinic',
+    title: 'Find Nearest Clinic',
     nextState: 'not_onboarded:find_nearest_clinic:share_location' as const,
   },
-]
+] as ConversationStateHandlerSelectOption<PatientState>[]

@@ -3,6 +3,8 @@ import {
   Maybe,
   Patient,
   PatientConversationState,
+  PatientDemographicInfo,
+  PatientState,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
@@ -45,4 +47,28 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .deleteFrom('patients')
     .where('phone_number', '=', opts.phone_number)
     .execute()
+}
+
+export function pick(patientState: PatientState) {
+  return {
+    id: patientState.patient_id,
+    phone_number: patientState.phone_number,
+    name: patientState.name,
+    gender: patientState.gender,
+    date_of_birth: patientState.date_of_birth,
+    national_id_number: patientState.national_id_number,
+    conversation_state: patientState.conversation_state,
+  }
+}
+
+export function hasDemographicData(
+  patient: Partial<PatientDemographicInfo>,
+): patient is PatientDemographicInfo {
+  return (
+    !!patient.phone_number &&
+    !!patient.name &&
+    !!patient.gender &&
+    !!patient.date_of_birth &&
+    !!patient.national_id_number
+  )
 }

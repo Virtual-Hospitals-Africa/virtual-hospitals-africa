@@ -17,7 +17,7 @@ function findMatchingOption<US extends UserState<any>>(
 ): Maybe<ConversationStateHandlerSelectOption<US>> {
   return state.options.find((
     option: ConversationStateHandlerSelectOption<US>,
-  ) => option.option === messageBody)
+  ) => option.id === messageBody)
 }
 
 // deno-lint-ignore no-explicit-any
@@ -46,8 +46,12 @@ export default function findMatchingState<
   switch (currentState.type) {
     case 'select':
       return findMatchingOption(currentState, messageBody)
-    case 'list':
-      return findMatchingRow(currentState.action(userState), messageBody)
+    case 'action': {
+      const action = currentState.action(userState)
+      return action.type === 'list'
+        ? findMatchingRow(action, messageBody)
+        : findMatchingOption(action, messageBody)
+    }
     case 'date': {
       return isValidDate(messageBody) ? currentState : null
     }

@@ -5,12 +5,12 @@
 import config from './deno.json' assert { type: 'json' }
 import * as $0 from './routes/_404.tsx'
 import * as $1 from './routes/_middleware.ts'
-import * as $2 from './routes/api/incoming-whatsapp.ts'
-import * as $3 from './routes/api/set-availability.tsx'
-import * as $4 from './routes/app.tsx'
-import * as $5 from './routes/app/_middleware.tsx'
-import * as $6 from './routes/app/calendar.tsx'
-import * as $7 from './routes/app/calendar/set-availability.tsx'
+import * as $2 from './routes/api/set-availability.tsx'
+import * as $3 from './routes/app.tsx'
+import * as $4 from './routes/app/_middleware.tsx'
+import * as $5 from './routes/app/calendar.tsx'
+import * as $6 from './routes/app/calendar/set-availability.tsx'
+import * as $7 from './routes/chatbot/incoming-whatsapp.ts'
 import * as $8 from './routes/full-reset.ts'
 import * as $9 from './routes/index.tsx'
 import * as $10 from './routes/logged-in.tsx'
@@ -25,12 +25,12 @@ const manifest = {
   routes: {
     './routes/_404.tsx': $0,
     './routes/_middleware.ts': $1,
-    './routes/api/incoming-whatsapp.ts': $2,
-    './routes/api/set-availability.tsx': $3,
-    './routes/app.tsx': $4,
-    './routes/app/_middleware.tsx': $5,
-    './routes/app/calendar.tsx': $6,
-    './routes/app/calendar/set-availability.tsx': $7,
+    './routes/api/set-availability.tsx': $2,
+    './routes/app.tsx': $3,
+    './routes/app/_middleware.tsx': $4,
+    './routes/app/calendar.tsx': $5,
+    './routes/app/calendar/set-availability.tsx': $6,
+    './routes/chatbot/incoming-whatsapp.ts': $7,
     './routes/full-reset.ts': $8,
     './routes/index.tsx': $9,
     './routes/logged-in.tsx': $10,
