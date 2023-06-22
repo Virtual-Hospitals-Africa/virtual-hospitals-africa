@@ -731,16 +731,12 @@ export type LocationMessage = {
   url: string
 }
 
-export type Location = {
-  latitude: number
-  longitude: number
-}
-
 export type Clinic = {
   name: string
   address?: string
-  location?: Location
-  distance?: number
+  longitude: number
+  latitude: number
+  distance: number
   vha?: boolean
   url?: string
   phone?: string

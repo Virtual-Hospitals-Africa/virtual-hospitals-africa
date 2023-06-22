@@ -148,21 +148,6 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
   },
-  /***
-   * For testing
-  'find_nearest_clinic:got_location': {
-    type: 'location',
-    nextState: 'not_onboarded:welcome',
-    prompt(patientState: PatientState): string {
-      return `Got it, your location is: ${patientState.body}.\n\n Your nearest clinics is ${patientState.nearest_clinic_name}`
-    },
-    async onEnter(trx, patientState) {
-      const clinic_name = await getNearestClinicNames(trx, patientState)
-      patientState.nearest_clinic_name = clinic_name
-      return { ...patientState, nearest_clinic_name: clinic_name }
-    },
-  },
-  */
   // change the name of got_location to nearest_clinics?
   'find_nearest_clinic:got_location': {
     // this needs to be conditional if no clinics available then return a string?
@@ -247,7 +232,9 @@ const conversationStates: ConversationStates<
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
-      const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(clinic => String(clinic.id) === patientState.body)
+      const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(
+        (clinic) => String(clinic.id) === patientState.body,
+      )
       return Promise.resolve({ ...patientState, selectedClinic })
     },
     //   // how to get findNearestClinics Clinics[] from db
