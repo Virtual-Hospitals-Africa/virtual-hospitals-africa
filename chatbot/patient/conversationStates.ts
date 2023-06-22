@@ -5,7 +5,7 @@ import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStates,
-  LocationMessage,
+  Maybe,
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
@@ -20,7 +20,6 @@ import {
   prettyPatientDateOfBirth,
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
-import * as clinics from '../../db/models/clinics.ts'
 import * as patients from '../../db/models/patients.ts'
 import { availableThirtyMinutes } from './getHealthWorkerAvailability.ts'
 import { cancelAppointment } from './cancelAppointment.ts'
@@ -143,15 +142,15 @@ const conversationStates: ConversationStates<
       return { ...patientState, national_id_number: patientState.body }
     },
   },
-  'not_onboarded:find_nearest_clinic:share_location': {
+  'find_nearest_clinic:share_location': {
     type: 'string',
-    nextState: 'not_onboarded:find_nearest_clinic:got_location',
+    nextState: 'find_nearest_clinic:got_location',
     prompt:
       'Sure, we can find your nearest clinic. Can you share your location?',
   },
   /***
    * For testing
-  'not_onboarded:find_nearest_clinic:got_location': {
+  'find_nearest_clinic:got_location': {
     type: 'location',
     nextState: 'not_onboarded:welcome',
     prompt(patientState: PatientState): string {
@@ -165,7 +164,7 @@ const conversationStates: ConversationStates<
   },
   */
   // change the name of got_location to nearest_clinics?
-  'not_onboarded:find_nearest_clinic:got_location': {
+  'find_nearest_clinic:got_location': {
     // this needs to be conditional if no clinics available then return a string?
     type: 'action',
     headerText: 'Your Nearest Clinics',
@@ -175,6 +174,7 @@ const conversationStates: ConversationStates<
     action(
       patientState: PatientState,
     ) {
+      console.log('patientState', patientState)
       const { nearest_clinics } = patientState
       if (!nearest_clinics?.length) {
         return {
@@ -199,6 +199,7 @@ const conversationStates: ConversationStates<
         type: 'list',
         button: 'Show Nearest Clinics',
         sections: (nearest_clinics || []).map((clinic) => {
+          console.log('clinic', clinic)
           const titleLimit = 24
           const descriptionLimit = 72
 
@@ -227,8 +228,7 @@ const conversationStates: ConversationStates<
               title: `${clinicAddress}`,
               description: `${distanceInKM}km away. Select for destination.`,
               // provide location for next state? instead of the "Select for directions above ^"?
-              nextState:
-                'not_onboarded:find_nearest_clinic:send_clinic_location',
+              nextState: 'find_nearest_clinic:send_clinic_location',
               onExit(_trx: TrxOrDb, patientState: PatientState) {
                 console.log('onExit')
                 console.log(patientState)
@@ -239,25 +239,15 @@ const conversationStates: ConversationStates<
         }),
       }
     },
-    async onEnter(trx, patientState) {
-      const location: LocationMessage = JSON.parse(patientState.body)
-      return {
-        ...patientState,
-        nearest_clinics: await clinics.nearest(trx, location),
-      }
-    },
   },
-  'not_onboarded:find_nearest_clinic:send_clinic_location': {
+  'find_nearest_clinic:send_clinic_location': {
     prompt(patientState: PatientState): string {
       return JSON.stringify(patientState.selectedClinic?.name)
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
-      console.log('WLKWEKLKLWEKLWE')
-      console.log(patientState.body)
-      const selectedClinic: Clinic | undefined = patientState.nearest_clinics
-        ?.[0]
+      const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(clinic => String(clinic.id) === patientState.body)
       return Promise.resolve({ ...patientState, selectedClinic })
     },
     //   // how to get findNearestClinics Clinics[] from db
