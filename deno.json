@@ -2,7 +2,7 @@
   "tasks": {
     "chatbot": "deno task run:trusted chatbot/chatbot.ts",
     "token_refresher": "deno task run:trusted tokenRefresher/tokenRefresher.ts",
-    "start": "deno task run:trusted dev.ts --watch=static/,routes/",
+    "start": "deno task run:trusted dev.ts --watch=static/,routes/,components/",
     "web": "deno task run:trusted main.ts",
 
     "db:migrate:create": "deno task run:trusted db/create-migration.ts",
