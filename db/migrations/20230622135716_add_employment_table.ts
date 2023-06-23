@@ -4,6 +4,7 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createType('health_worker_professions')
     .asEnum([
+      'initial message',
       'admin',
       'doctor',
       'nurse',
@@ -22,11 +23,10 @@ export async function up(db: Kysely<unknown>) {
       col.notNull()
         .references('clinics.id')
         .onDelete('cascade'))
-    .addColumn('profession', 'text', (col) => col.notNull())
     .addColumn(
       'profession',
       sql`health_worker_professions`,
-      (column) => column.defaultTo('initial_message'),
+      (column) => column.defaultTo('initial message'),
     )
     .execute()
 }
