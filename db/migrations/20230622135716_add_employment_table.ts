@@ -1,4 +1,4 @@
-import { sql, Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -9,7 +9,6 @@ export async function up(db: Kysely<unknown>) {
       'nurse',
     ])
     .execute()
-
 
   await db.schema
     .createTable('employment')
