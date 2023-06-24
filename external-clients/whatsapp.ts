@@ -1,10 +1,10 @@
 import 'dotenv'
 import {
+  Clinic,
   WhatsAppJSONResponse,
   WhatsAppMessageAction,
   WhatsAppMessageOption,
   WhatsAppSendable,
-  Clinic
 } from '../types.ts'
 
 const postMessageRoute = `https://graph.facebook.com/v17.0/${
@@ -18,29 +18,29 @@ export function sendMessage({
   message,
   phone_number,
 }: {
-  phone_number: string;
-  message: WhatsAppSendable;
+  phone_number: string
+  message: WhatsAppSendable
 }): Promise<
   | WhatsAppJSONResponse
   | {
-      messaging_product: 'whatsapp';
-      contacts: [{ input: string; wa_id: string }];
-      messages: [{ id: string }];
-    }
+    messaging_product: 'whatsapp'
+    contacts: [{ input: string; wa_id: string }]
+    messages: [{ id: string }]
+  }
 > {
   switch (message.type) {
     case 'string': {
       return sendMessagePlainText({
         phone_number,
         message: message.messageBody,
-      });
+      })
     }
     case 'buttons': {
       return sendMessageWithInteractiveButtons({
         phone_number,
         options: message.options,
         messageBody: message.messageBody,
-      });
+      })
     }
     case 'list': {
       return sendMessageWithInteractiveList({
@@ -48,38 +48,37 @@ export function sendMessage({
         headerText: message.headerText,
         messageBody: message.messageBody,
         action: message.action,
-      });
+      })
     }
     case 'location': {
       const clinic: Clinic = message.clinic
       return sendMessageLocation({
         phone_number,
-        clinic
-      });
+        clinic,
+      })
     }
   }
 }
 
-  export async function sendMessageLocation(opts: {
-    phone_number: string
-    clinic: Clinic
+export async function sendMessageLocation(opts: {
+  phone_number: string
+  clinic: Clinic
 }): Promise<WhatsAppJSONResponse> {
-
-  const { longitude, latitude, name: clinicName, address } = opts.clinic;
+  const { longitude, latitude, name: clinicName, address } = opts.clinic
 
   const toPost = {
     method: 'post',
     headers: { Authorization, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      "messaging_product": "whatsapp",
-      "to": opts.phone_number,
-      "type": "location",
-      "location": {
-        "longitude": longitude,
-        "latitude": latitude,
-        "name": `Clinic: ${clinicName}`,
-        "address": `Address: ${address}`
-      }
+      'messaging_product': 'whatsapp',
+      'to': opts.phone_number,
+      'type': 'location',
+      'location': {
+        'longitude': longitude,
+        'latitude': latitude,
+        'name': `Clinic: ${clinicName}`,
+        'address': `Address: ${address}`,
+      },
     }),
   }
 

@@ -1,9 +1,9 @@
 import {
+  Clinic,
   ConversationStates,
   UserState,
   WhatsAppSendable,
   WhatsAppSendableString,
-  Clinic
 } from '../types.ts'
 import pick from '../util/pick.ts'
 
@@ -66,7 +66,7 @@ export default function formatMessageToSend<
       return {
         type: 'location',
         messageBody: messageBody,
-        clinic: clinic
+        clinic: clinic,
       }
     }
     case 'date': {

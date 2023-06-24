@@ -200,7 +200,7 @@ const conversationStates: ConversationStates<
           const distanceInKM = clinic.distance
             ? (clinic.distance / 1000).toFixed(1)
             : 'unknown'
-            
+
           return {
             title: clinicName,
             rows: [{
@@ -222,7 +222,7 @@ const conversationStates: ConversationStates<
   'find_nearest_clinic:send_clinic_location': {
     prompt(patientState: PatientState): string {
       return JSON.stringify({
-        chosenClinic: patientState.selectedClinic 
+        chosenClinic: patientState.selectedClinic,
       })
     },
     type: 'location',
