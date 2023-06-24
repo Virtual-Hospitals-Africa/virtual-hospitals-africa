@@ -17,9 +17,9 @@ export async function up(db: Kysely<unknown>) {
       col.notNull()
         .references('health_workers.id')
         .onDelete('cascade'))
-    .addColumn('clinic_id', 'integer', (col) =>
+    .addColumn('facility_id', 'integer', (col) =>
       col.notNull()
-        .references('clinics.id')
+        .references('facilities.id')
         .onDelete('cascade'))
     .addColumn(
       'profession',

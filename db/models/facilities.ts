@@ -11,7 +11,7 @@ export async function nearest(
                   location,
                   ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
               ) AS distance
-        FROM clinics
+        FROM facilities
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10
   `.execute(trx)

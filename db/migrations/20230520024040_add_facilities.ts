@@ -4,7 +4,7 @@ import { readCSV } from 'https://deno.land/x/csv@v0.8.0/mod.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createTable('clinics')
+    .createTable('facilities')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
@@ -26,14 +26,14 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('phone', 'varchar(255)')
     .execute()
 
-  await addUpdatedAtTrigger(db, 'clinics')
+  await addUpdatedAtTrigger(db, 'facilities')
 
   // Import data from CSV file
   await importDataFromCSV(db, './db/resources/zimbabwe-health-facilities.csv')
 }
 
 export function down(db: Kysely<unknown>) {
-  return db.schema.dropTable('clinics').execute()
+  return db.schema.dropTable('facilities').execute()
 }
 
 // TODO: Can't get last column properly, maybe because new line character
@@ -65,7 +65,7 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
     }
 
     await sql`
-      INSERT INTO clinics (
+      INSERT INTO facilities (
         name,
         location,
         longitude,
