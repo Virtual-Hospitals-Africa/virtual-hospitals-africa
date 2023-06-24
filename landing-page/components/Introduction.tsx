@@ -3,7 +3,7 @@ import { Container } from './Container.tsx'
 
 /*
 
-          We’re partnering with universities to begin clinical trials in
+          We’re partnering with universities to begin facilityal trials in
           November 2023.
         </p>
         <p className='mt-4'>

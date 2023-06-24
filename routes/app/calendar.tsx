@@ -79,7 +79,7 @@ export const handler: LoggedInHealthWorkerHandler<
           stripeColor: 'bg-green-500', // Just green for now
           patientName: appt.name!,
           patientAge: 30, // TODO: calculate this from patient DOB
-          clinicName: 'Placeholder Clinic',
+          facilityName: 'Placeholder Clinic',
           durationMinutes: Math.round(duration / (1000 * 60)),
           status: appt.status,
           start: parseDate(startTime, 'numeric'),

@@ -10,8 +10,8 @@ export default [
     nextState: 'not_onboarded:make_appointment:enter_name' as const,
   },
   {
-    id: 'find_nearest_clinic',
+    id: 'find_nearest_facility',
     title: 'Find Nearest Clinic',
-    nextState: 'find_nearest_clinic:share_location' as const,
+    nextState: 'find_nearest_facility:share_location' as const,
   },
 ] as ConversationStateHandlerSelectOption<PatientState>[]

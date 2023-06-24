@@ -50,9 +50,9 @@ export type PatientConversationState =
   | 'onboarded:appointment_scheduled'
   | 'onboarded:cancel_appointment'
   | 'onboarded:main_menu'
-  | 'find_nearest_clinic:share_location'
-  | 'find_nearest_clinic:got_location'
-  | 'find_nearest_clinic:send_clinic_location'
+  | 'find_nearest_facility:share_location'
+  | 'find_nearest_facility:got_location'
+  | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
 export type Patient = {
@@ -95,9 +95,9 @@ export type PatientState = {
   >[]
   created_at: Date
   updated_at: Date
-  nearest_clinics?: ReturnedSqlRow<Clinic>[]
-  nearest_clinic_name?: string
-  selectedClinic?: Clinic
+  nearest_facilities?: ReturnedSqlRow<Clinic>[]
+  nearest_facility_name?: string
+  selectedFacility?: Clinic
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -661,7 +661,7 @@ export type HealthWorkerAppointment = {
   stripeColor: string
   patientName: string
   patientAge: number
-  clinicName: string
+  facilityName: string
   durationMinutes: number
   status?: string | null
   start: ParsedDate

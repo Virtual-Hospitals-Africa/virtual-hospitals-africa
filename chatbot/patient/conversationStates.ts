@@ -142,29 +142,29 @@ const conversationStates: ConversationStates<
       return { ...patientState, national_id_number: patientState.body }
     },
   },
-  'find_nearest_clinic:share_location': {
+  'find_nearest_facility:share_location': {
     type: 'string',
-    nextState: 'find_nearest_clinic:got_location',
+    nextState: 'find_nearest_facility:got_location',
     prompt:
-      'Sure, we can find your nearest clinic. Can you share your location?',
+      'Sure, we can find your nearest facility. Can you share your location?',
   },
-  // change the name of got_location to nearest_clinics?
-  'find_nearest_clinic:got_location': {
+  // change the name of got_location to nearest_facilities?
+  'find_nearest_facility:got_location': {
     type: 'action',
-    headerText: 'Your Nearest Clinics',
+    headerText: 'Nearest Facilities',
     prompt(): string {
-      return `Thank you for sharing your location.\n\nClick the button below to see your nearest clinics.`
+      return `Thank you for sharing your location.\n\nClick the button below to see your nearest health facilities.`
     },
     action(
       patientState: PatientState,
     ) {
       console.log('patientState', patientState)
-      const { nearest_clinics } = patientState
-      if (!nearest_clinics?.length) {
+      const { nearest_facilities } = patientState
+      if (!nearest_facilities?.length) {
         return {
           type: 'select',
           prompt:
-            'We\'re sorry that no clinics were found in your area. Our team has been notified and will follow up with you soon.',
+            'We\'re sorry that no facilities were found in your area. Our team has been notified and will follow up with you soon.',
           options: [
             {
               id: 'main_menu',
@@ -181,33 +181,33 @@ const conversationStates: ConversationStates<
 
       return {
         type: 'list',
-        button: 'Show Nearest Clinics',
-        sections: (nearest_clinics || []).map((clinic) => {
-          console.log('clinic', clinic)
+        button: 'Show Nearest Health Facilities',
+        sections: (nearest_facilities || []).map((facility) => {
+          console.log('facility', facility)
           const titleLimit = 24
           const descriptionLimit = 72
 
-          const clinicName = clinic.name.length > titleLimit
-            ? clinic.name.slice(0, titleLimit - 3) + '...'
-            : clinic.name
+          const facilityName = facility.name.length > titleLimit
+            ? facility.name.slice(0, titleLimit - 3) + '...'
+            : facility.name
 
-          const clinicAddress = clinic.address
-            ? clinic.address.length > descriptionLimit
-              ? `${clinic.address.slice(0, descriptionLimit - 3)}...`
-              : clinic.address
-            : 'clinic address here...'
+          const facilityAddress = facility.address
+            ? facility.address.length > descriptionLimit
+              ? `${facility.address.slice(0, descriptionLimit - 3)}...`
+              : facility.address
+            : 'facility address here...'
 
-          const distanceInKM = clinic.distance
-            ? (clinic.distance / 1000).toFixed(1)
+          const distanceInKM = facility.distance
+            ? (facility.distance / 1000).toFixed(1)
             : 'unknown'
 
           return {
-            title: clinicName,
+            title: facilityName,
             rows: [{
-              id: `${clinic.id}`,
-              title: `${clinicAddress}`,
+              id: `${facility.id}`,
+              title: `${facilityAddress}`,
               description: `${distanceInKM}km away. Select for destination.`,
-              nextState: 'find_nearest_clinic:send_clinic_location',
+              nextState: 'find_nearest_facility:send_facility_location',
               onExit(_trx: TrxOrDb, patientState: PatientState) {
                 console.log('onExit')
                 console.log(patientState)
@@ -219,32 +219,33 @@ const conversationStates: ConversationStates<
       }
     },
   },
-  'find_nearest_clinic:send_clinic_location': {
+  'find_nearest_facility:send_facility_location': {
     prompt(patientState: PatientState): string {
-      const { selectedClinic } = patientState
+      const { selectedFacility } = patientState
       assert(
-        selectedClinic,
-        'selectedClinic should be available in the patientState',
+        selectedFacility,
+        'selectedFacility should be available in the patientState',
       )
       // TODO Slightly hacky — better would be to give the precise type for the return of prompt for
       // this ConversationStateHandlerType
       return JSON.stringify({
-        messageBody: selectedClinic.name,
+        messageBody: selectedFacility.name,
         location: {
-          longitude: selectedClinic.longitude,
-          latitude: selectedClinic.latitude,
-          name: selectedClinic.name,
-          address: selectedClinic.address,
+          longitude: selectedFacility.longitude,
+          latitude: selectedFacility.latitude,
+          name: selectedFacility.name,
+          address: selectedFacility.address,
         },
       })
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
-      const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(
-        (clinic) => String(clinic.id) === patientState.body,
-      )
-      return Promise.resolve({ ...patientState, selectedClinic })
+      const selectedFacility: Maybe<Clinic> = patientState.nearest_facilities
+        ?.find(
+          (facility) => String(facility.id) === patientState.body,
+        )
+      return Promise.resolve({ ...patientState, selectedFacility })
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {
