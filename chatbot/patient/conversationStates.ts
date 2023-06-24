@@ -1,10 +1,10 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   AppointmentOfferedTime,
-  Clinic,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStates,
+  Facility,
   Maybe,
   PatientConversationState,
   PatientDemographicInfo,
@@ -25,6 +25,11 @@ import { availableThirtyMinutes } from './getHealthWorkerAvailability.ts'
 import { cancelAppointment } from './cancelAppointment.ts'
 import { makeAppointment } from './makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
+import {
+  capLengthAtWhatsAppDescription,
+  capLengthAtWhatsAppTitle,
+} from '../../util/capLengthAt.ts'
+import uniq from '../../util/uniq.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -158,7 +163,6 @@ const conversationStates: ConversationStates<
     action(
       patientState: PatientState,
     ) {
-      console.log('patientState', patientState)
       const { nearest_facilities } = patientState
       if (!nearest_facilities?.length) {
         return {
@@ -179,43 +183,52 @@ const conversationStates: ConversationStates<
         }
       }
 
+      const facilities = nearest_facilities.map((facility) => {
+        const distanceInKM = (facility.distance / 1000).toFixed(1)
+        const description = distanceInKM
+          ? `${facility.address} (${distanceInKM}km)`
+          : facility.address
+
+        return {
+          section: 'Town Name Here',
+          row: {
+            id: `${facility.id}`,
+            title: capLengthAtWhatsAppTitle(facility.name),
+            description: capLengthAtWhatsAppDescription(description),
+            nextState: 'find_nearest_facility:send_facility_location' as const,
+            onExit(_trx: TrxOrDb, patientState: PatientState) {
+              console.log('onExit')
+              console.log(patientState)
+              return Promise.resolve(patientState)
+            },
+          },
+        }
+      })
+
+      console.log('facilities')
+      console.log(facilities)
+
+      const sectionTitles = uniq(facilities.map((facility) => facility.section))
+
+      console.log('sectionTitles', sectionTitles)
+
+      const sections: ConversationStateHandlerListActionSection<
+        PatientState
+      >[] = [...sectionTitles].map((title) => ({
+        title,
+        rows: (
+          facilities
+            .filter((facility) => facility.section === title)
+            .map((facility) => facility.row)
+        ),
+      }))
+
+      console.log('sections', sections)
+
       return {
         type: 'list',
         button: 'Nearest Facilities',
-        sections: (nearest_facilities || []).map((facility) => {
-          console.log('facility', facility)
-          const titleLimit = 24
-          const descriptionLimit = 72
-
-          const facilityName = facility.name.length > titleLimit
-            ? facility.name.slice(0, titleLimit - 3) + '...'
-            : facility.name
-
-          const facilityAddress = facility.address
-            ? facility.address.length > descriptionLimit
-              ? `${facility.address.slice(0, descriptionLimit - 3)}...`
-              : facility.address
-            : 'facility address here...'
-
-          const distanceInKM = facility.distance
-            ? (facility.distance / 1000).toFixed(1)
-            : 'unknown'
-
-          return {
-            title: facilityName,
-            rows: [{
-              id: `${facility.id}`,
-              title: `${facilityAddress}`,
-              description: `${distanceInKM}km away. Select for destination.`,
-              nextState: 'find_nearest_facility:send_facility_location',
-              onExit(_trx: TrxOrDb, patientState: PatientState) {
-                console.log('onExit')
-                console.log(patientState)
-                return Promise.resolve(patientState)
-              },
-            }],
-          }
-        }),
+        sections,
       }
     },
   },
@@ -241,7 +254,7 @@ const conversationStates: ConversationStates<
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
-      const selectedFacility: Maybe<Clinic> = patientState.nearest_facilities
+      const selectedFacility: Maybe<Facility> = patientState.nearest_facilities
         ?.find(
           (facility) => String(facility.id) === patientState.body,
         )

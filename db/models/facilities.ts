@@ -1,11 +1,11 @@
 import { sql } from 'kysely'
-import { Clinic, Location, ReturnedSqlRow, TrxOrDb } from '../../types.ts'
+import { Facility, Location, ReturnedSqlRow, TrxOrDb } from '../../types.ts'
 
 export async function nearest(
   trx: TrxOrDb,
   location: Location,
-): Promise<ReturnedSqlRow<Clinic>[]> {
-  const result = await sql<ReturnedSqlRow<Clinic>>`
+): Promise<ReturnedSqlRow<Facility>[]> {
+  const result = await sql<ReturnedSqlRow<Facility>>`
       SELECT *,
              ST_Distance(
                   location,
