@@ -200,11 +200,7 @@ const conversationStates: ConversationStates<
           const distanceInKM = clinic.distance
             ? (clinic.distance / 1000).toFixed(1)
             : 'unknown'
-
-          // const clinicLatitude = clinic.location?.latitude;
-          // const clinicLongitude = clinic.location?.longitude;
-          // const googleMapsLink = `https://maps.google.com/?q=${clinicLatitude},${clinicLongitude}`;
-
+            
           return {
             title: clinicName,
             rows: [{
@@ -226,20 +222,17 @@ const conversationStates: ConversationStates<
   'find_nearest_clinic:send_clinic_location': {
     prompt(patientState: PatientState): string {
       return JSON.stringify({
-        longitude: patientState.selectedClinic?.longitude,
-        latitude: patientState.selectedClinic?.latitude,
+        chosenClinic: patientState.selectedClinic 
       })
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
-      console.log("onEnter to send_clinic_location_STATE")
       const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(
         (clinic) => String(clinic.id) === patientState.body,
       )
       return Promise.resolve({ ...patientState, selectedClinic })
     },
-
   },
   'onboarded:make_appointment:enter_appointment_reason': {
     type: 'string',

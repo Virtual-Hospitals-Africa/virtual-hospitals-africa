@@ -688,7 +688,7 @@ export type WhatsAppSendableList = {
 export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
-  location: Location
+  clinic: Clinic
 }
 
 export type WhatsAppMessageAction = {

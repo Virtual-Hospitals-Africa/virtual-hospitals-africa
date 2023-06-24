@@ -4,7 +4,7 @@ import {
   WhatsAppMessageAction,
   WhatsAppMessageOption,
   WhatsAppSendable,
-  Location
+  Clinic
 } from '../types.ts'
 
 const postMessageRoute = `https://graph.facebook.com/v17.0/${
@@ -51,14 +51,10 @@ export function sendMessage({
       });
     }
     case 'location': {
-      const { longitude, latitude } = JSON.parse(message.messageBody);
-      const location: Location = {
-        longitude: parseFloat(longitude),
-        latitude: parseFloat(latitude)
-      };
+      const clinic: Clinic = message.clinic
       return sendMessageLocation({
         phone_number,
-        location,
+        clinic
       });
     }
   }
@@ -66,13 +62,10 @@ export function sendMessage({
 
   export async function sendMessageLocation(opts: {
     phone_number: string
-    location: Location
+    clinic: Clinic
 }): Promise<WhatsAppJSONResponse> {
 
-  const { location } = opts;
-
-  const longitude: number = location.longitude
-  const latitude: number = location.latitude
+  const { longitude, latitude, name: clinicName, address } = opts.clinic;
 
   const toPost = {
     method: 'post',
@@ -84,8 +77,8 @@ export function sendMessage({
       "location": {
         "longitude": longitude,
         "latitude": latitude,
-        "name": "LOCATION_NAME",
-        "address": "LOCATION_ADDRESS"
+        "name": `Clinic: ${clinicName}`,
+        "address": `Address: ${address}`
       }
     }),
   }

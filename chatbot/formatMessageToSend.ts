@@ -3,6 +3,7 @@ import {
   UserState,
   WhatsAppSendable,
   WhatsAppSendableString,
+  Clinic
 } from '../types.ts'
 import pick from '../util/pick.ts'
 
@@ -60,13 +61,12 @@ export default function formatMessageToSend<
           options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
         }
     }
-
     case 'location': {
-      // responseToSend as parameter to sendMessage
+      const clinic: Clinic = JSON.parse(messageBody).chosenClinic
       return {
         type: 'location',
         messageBody: messageBody,
-        location: JSON.parse(messageBody)
+        clinic: clinic
       }
     }
     case 'date': {
