@@ -60,11 +60,13 @@ export default function formatMessageToSend<
           options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
         }
     }
+
     case 'location': {
+      // responseToSend as parameter to sendMessage
       return {
-        messageBody,
         type: 'location',
-        location: JSON.parse(messageBody),
+        messageBody: messageBody,
+        location: JSON.parse(messageBody)
       }
     }
     case 'date': {

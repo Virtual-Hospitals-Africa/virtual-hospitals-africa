@@ -150,7 +150,6 @@ const conversationStates: ConversationStates<
   },
   // change the name of got_location to nearest_clinics?
   'find_nearest_clinic:got_location': {
-    // this needs to be conditional if no clinics available then return a string?
     type: 'action',
     headerText: 'Your Nearest Clinics',
     prompt(): string {
@@ -212,7 +211,6 @@ const conversationStates: ConversationStates<
               id: `${clinic.id}`,
               title: `${clinicAddress}`,
               description: `${distanceInKM}km away. Select for destination.`,
-              // provide location for next state? instead of the "Select for directions above ^"?
               nextState: 'find_nearest_clinic:send_clinic_location',
               onExit(_trx: TrxOrDb, patientState: PatientState) {
                 console.log('onExit')
@@ -227,20 +225,21 @@ const conversationStates: ConversationStates<
   },
   'find_nearest_clinic:send_clinic_location': {
     prompt(patientState: PatientState): string {
-      return JSON.stringify(patientState.selectedClinic?.name)
+      return JSON.stringify({
+        longitude: patientState.selectedClinic?.longitude,
+        latitude: patientState.selectedClinic?.latitude,
+      })
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
+      console.log("onEnter to send_clinic_location_STATE")
       const selectedClinic: Maybe<Clinic> = patientState.nearest_clinics?.find(
         (clinic) => String(clinic.id) === patientState.body,
       )
       return Promise.resolve({ ...patientState, selectedClinic })
     },
-    //   // how to get findNearestClinics Clinics[] from db
-    //   // compare the users response patientState.body against the findNearestClinics Clinics[]
-    //   // store location of the selected clinic in patientState.selectedClinicLocation
-    // }
+
   },
   'onboarded:make_appointment:enter_appointment_reason': {
     type: 'string',

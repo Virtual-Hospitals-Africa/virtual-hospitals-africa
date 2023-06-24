@@ -741,3 +741,8 @@ export type Clinic = {
   url?: string
   phone?: string
 }
+
+export type Location = {
+  longitude: number
+  latitude: number
+}

@@ -4,6 +4,7 @@ import {
   WhatsAppMessageAction,
   WhatsAppMessageOption,
   WhatsAppSendable,
+  Location
 } from '../types.ts'
 
 const postMessageRoute = `https://graph.facebook.com/v17.0/${
@@ -14,62 +15,78 @@ const postMessageRoute = `https://graph.facebook.com/v17.0/${
 const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
 
 export function sendMessage({
-  phone_number,
   message,
+  phone_number,
 }: {
-  phone_number: string
-  message: WhatsAppSendable
+  phone_number: string;
+  message: WhatsAppSendable;
 }): Promise<
   | WhatsAppJSONResponse
   | {
-    messaging_product: 'whatsapp'
-    contacts: [{ input: string; wa_id: string }]
-    messages: [{ id: string }]
-  }
+      messaging_product: 'whatsapp';
+      contacts: [{ input: string; wa_id: string }];
+      messages: [{ id: string }];
+    }
 > {
   switch (message.type) {
-    case 'string':
+    case 'string': {
       return sendMessagePlainText({
         phone_number,
         message: message.messageBody,
-      })
-    case 'buttons':
+      });
+    }
+    case 'buttons': {
       return sendMessageWithInteractiveButtons({
         phone_number,
         options: message.options,
         messageBody: message.messageBody,
-      })
-    case 'list':
+      });
+    }
+    case 'list': {
       return sendMessageWithInteractiveList({
         phone_number,
         headerText: message.headerText,
         messageBody: message.messageBody,
         action: message.action,
-      })
-    case 'location':
-      return sendMessagePlainText({
+      });
+    }
+    case 'location': {
+      const { longitude, latitude } = JSON.parse(message.messageBody);
+      const location: Location = {
+        longitude: parseFloat(longitude),
+        latitude: parseFloat(latitude)
+      };
+      return sendMessageLocation({
         phone_number,
-        message: message.messageBody,
-      })
+        location,
+      });
+    }
   }
 }
 
-export async function sendMessageLocation(opts: {
-  phone_number: string
-  location: {
-    longitude: number
-    latitude: number
-  }
+  export async function sendMessageLocation(opts: {
+    phone_number: string
+    location: Location
 }): Promise<WhatsAppJSONResponse> {
+
+  const { location } = opts;
+
+  const longitude: number = location.longitude
+  const latitude: number = location.latitude
+
   const toPost = {
     method: 'post',
     headers: { Authorization, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      messaging_product: 'whatsapp',
-      recipient_type: 'individual',
-      to: opts.phone_number,
-      type: 'location',
-      location,
+      "messaging_product": "whatsapp",
+      "to": opts.phone_number,
+      "type": "location",
+      "location": {
+        "longitude": longitude,
+        "latitude": latitude,
+        "name": "LOCATION_NAME",
+        "address": "LOCATION_ADDRESS"
+      }
     }),
   }
 
