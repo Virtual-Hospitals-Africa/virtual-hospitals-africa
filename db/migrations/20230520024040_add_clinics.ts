@@ -29,7 +29,7 @@ export async function up(db: Kysely<unknown>) {
   await addUpdatedAtTrigger(db, 'clinics')
 
   // Import data from CSV file
-  await importDataFromCSV(db, './db/dummy.csv')
+  await importDataFromCSV(db, './db/resources/zimbabwe-health-facilities.csv')
 }
 
 export function down(db: Kysely<unknown>) {
