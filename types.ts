@@ -25,6 +25,11 @@ export type ReturnedSqlRow<T> = {
   updated_at: Date
 } & T
 
+export type Location = {
+  longitude: number
+  latitude: number
+}
+
 export type Gender = 'male' | 'female' | 'other'
 
 export type UserState<CS> = {
@@ -688,7 +693,13 @@ export type WhatsAppSendableList = {
 export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
-  clinic: Clinic
+  location: WhatsAppLocation
+}
+
+export type WhatsAppLocation = Location & {
+  name: string
+  address?: string
+  url?: string
 }
 
 export type WhatsAppMessageAction = {
@@ -723,26 +734,11 @@ export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
     LoggedInHealthWorker
   >
 
-export type LocationMessage = {
-  address?: string // full address
-  latitude: number // floating-point number
-  longitude: number
-  name: string // first line of address
-  url: string
-}
-
-export type Clinic = {
+export type Clinic = Location & {
   name: string
   address?: string
-  longitude: number
-  latitude: number
   distance: number
   vha?: boolean
   url?: string
   phone?: string
-}
-
-export type Location = {
-  longitude: number
-  latitude: number
 }

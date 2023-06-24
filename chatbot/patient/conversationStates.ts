@@ -221,8 +221,21 @@ const conversationStates: ConversationStates<
   },
   'find_nearest_clinic:send_clinic_location': {
     prompt(patientState: PatientState): string {
+      const { selectedClinic } = patientState
+      assert(
+        selectedClinic,
+        'selectedClinic should be available in the patientState',
+      )
+      // TODO Slightly hacky — better would be to give the precise type for the return of prompt for
+      // this ConversationStateHandlerType
       return JSON.stringify({
-        chosenClinic: patientState.selectedClinic,
+        messageBody: selectedClinic.name,
+        location: {
+          longitude: selectedClinic.longitude,
+          latitude: selectedClinic.latitude,
+          name: selectedClinic.name,
+          address: selectedClinic.address,
+        },
       })
     },
     type: 'location',

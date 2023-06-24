@@ -1,5 +1,4 @@
 import {
-  Clinic,
   ConversationStates,
   UserState,
   WhatsAppSendable,
@@ -62,11 +61,11 @@ export default function formatMessageToSend<
         }
     }
     case 'location': {
-      const clinic: Clinic = JSON.parse(messageBody).chosenClinic
+      const parsedMessageBody = JSON.parse(messageBody)
       return {
         type: 'location',
-        messageBody: messageBody,
-        clinic: clinic,
+        messageBody: parsedMessageBody.messageBody,
+        location: parsedMessageBody.location,
       }
     }
     case 'date': {

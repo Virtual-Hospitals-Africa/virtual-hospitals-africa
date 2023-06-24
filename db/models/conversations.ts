@@ -1,7 +1,7 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import * as clinics from './clinics.ts'
 import {
-  LocationMessage,
+  Location,
   PatientConversationState,
   PatientState,
   ReturnedSqlRow,
@@ -136,7 +136,7 @@ export async function getUnhandledPatientMessages(
     if (
       row.conversation_state.startsWith('find_nearest_clinic')
     ) {
-      const location: LocationMessage = JSON.parse(row.body)
+      const location: Location = JSON.parse(row.body)
       row.nearest_clinics = await clinics.nearest(trx, location)
     }
 

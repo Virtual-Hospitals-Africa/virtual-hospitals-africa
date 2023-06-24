@@ -1,7 +1,7 @@
 import 'dotenv'
 import {
-  Clinic,
   WhatsAppJSONResponse,
+  WhatsAppLocation,
   WhatsAppMessageAction,
   WhatsAppMessageOption,
   WhatsAppSendable,
@@ -51,10 +51,9 @@ export function sendMessage({
       })
     }
     case 'location': {
-      const clinic: Clinic = message.clinic
       return sendMessageLocation({
         phone_number,
-        clinic,
+        location: message.location,
       })
     }
   }
@@ -62,23 +61,16 @@ export function sendMessage({
 
 export async function sendMessageLocation(opts: {
   phone_number: string
-  clinic: Clinic
+  location: WhatsAppLocation
 }): Promise<WhatsAppJSONResponse> {
-  const { longitude, latitude, name: clinicName, address } = opts.clinic
-
   const toPost = {
     method: 'post',
     headers: { Authorization, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      'messaging_product': 'whatsapp',
-      'to': opts.phone_number,
-      'type': 'location',
-      'location': {
-        'longitude': longitude,
-        'latitude': latitude,
-        'name': `Clinic: ${clinicName}`,
-        'address': `Address: ${address}`,
-      },
+      messaging_product: 'whatsapp',
+      to: opts.phone_number,
+      type: 'location',
+      location: opts.location,
     }),
   }
 
