@@ -95,9 +95,9 @@ export type PatientState = {
   >[]
   created_at: Date
   updated_at: Date
-  nearest_facilities?: ReturnedSqlRow<Clinic>[]
+  nearest_facilities?: ReturnedSqlRow<Facility>[]
   nearest_facility_name?: string
-  selectedFacility?: Clinic
+  selectedFacility?: Facility
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -734,9 +734,9 @@ export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
     LoggedInHealthWorker
   >
 
-export type Clinic = Location & {
+export type Facility = Location & {
   name: string
-  address?: string
+  address: string
   distance: number
   vha?: boolean
   url?: string
