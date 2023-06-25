@@ -39,8 +39,10 @@ export default function Layout(props: LayoutProps) {
           </a>
           <h1>{props.title}</h1>
         </nav>
-        {props.children}
-        <BottomNav route={props.route} />
+        <div className='min-h-full'>
+          {props.children}
+          <BottomNav route={props.route} />
+        </div>
       </body>
     </>
   )

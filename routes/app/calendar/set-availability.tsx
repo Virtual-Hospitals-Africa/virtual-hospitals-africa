@@ -1,5 +1,5 @@
 import { PageProps } from '$fresh/server.ts'
-import Layout from '../../../components/Layout.tsx'
+import Layout from '../../../components/library/Layout.tsx'
 import {
   AvailabilityJSON,
   LoggedInHealthWorkerHandler,

@@ -1,9 +1,9 @@
 import cls from '../../util/cls.ts'
 
-import { Button } from './Button.tsx'
-import { CheckIcon } from './CheckIcon.tsx'
-import { Container } from './Container.tsx'
-import { GridPattern } from './GridPattern.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import { CheckIcon } from '../../components/library/CheckIcon.tsx'
+import { Container } from '../../components/library/Container.tsx'
+import { GridPattern } from '../../components/library/GridPattern.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 function Plan({ name, description, price, features, href, featured }: any) {

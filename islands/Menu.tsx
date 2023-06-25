@@ -1,6 +1,17 @@
+import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
-export function MenuOptions() {
+type MenuOption = {
+  label: string
+  href: string
+  icon?: JSX.Element
+}
+
+type MenuProps = {
+  options: MenuOption[]
+}
+
+export function MenuOptions({ options }: MenuProps) {
   return (
     <div
       className='absolute right-0 z-10 mt-2 w-36 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'
@@ -11,24 +22,18 @@ export function MenuOptions() {
     >
       <div className='py-1' role='none'>
         {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
-        <a
-          href='#'
-          className='text-gray-700 block px-4 py-2 text-sm'
-          role='menuitem'
-          tabIndex={-1}
-          id='menu-0-item-0'
-        >
-          Edit
-        </a>
-        <a
-          href='#'
-          className='text-gray-700 block px-4 py-2 text-sm'
-          role='menuitem'
-          tabIndex={-1}
-          id='menu-0-item-1'
-        >
-          Cancel
-        </a>
+        {options.map((option, i) => (
+          <a
+            href={option.href}
+            className='text-gray-700 block px-4 py-2 text-sm'
+            role='menuitem'
+            tabIndex={-1}
+            id='menu-0-item-0'
+          >
+            {option.icon && <span className='mr-2'>{option.icon}</span>}
+            {option.label}
+          </a>
+        ))}
       </div>
     </div>
   )
@@ -42,7 +47,7 @@ export function MenuOptions() {
     Leaving: "transition ease-in duration-75"
       From: "transform opacity-100 scale-100"
       To: "transform opacity-0 scale-95" */
-export default function AppointmentMenu() {
+export default function Menu({ options }: MenuProps) {
   const [showMenu, setShowMenu] = useState(false)
 
   return (
@@ -67,7 +72,7 @@ export default function AppointmentMenu() {
           </svg>
         </button>
       </div>
-      {showMenu && <MenuOptions />}
+      {showMenu && <MenuOptions options={options} />}
     </div>
   )
 }

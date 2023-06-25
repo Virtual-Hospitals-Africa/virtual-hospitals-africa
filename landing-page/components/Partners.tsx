@@ -1,5 +1,5 @@
 import * as preact from 'preact'
-import { GridPattern } from './GridPattern.tsx'
+import { GridPattern } from '../../components/library/GridPattern.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 function TwitterIcon(props: Record<string, unknown>) {

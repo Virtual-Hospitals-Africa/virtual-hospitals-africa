@@ -1,4 +1,4 @@
-import { Container } from './Container.tsx'
+import { Container } from '../../components/library/Container.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 const resources = [

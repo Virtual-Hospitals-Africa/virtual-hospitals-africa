@@ -1,4 +1,4 @@
-import Layout from '../../components/Layout.tsx'
+import Layout from '../../components/library/Layout.tsx'
 import { JSX } from 'preact'
 import DailyAppointments from '../../components/calendar/DailyAppointments.tsx'
 import DatePicker from '../../islands/date-picker.tsx'
@@ -9,7 +9,6 @@ import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
   HealthWorkerAppointment,
   LoggedInHealthWorkerHandler,
-  TrxOrDb,
 } from '../../types.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
@@ -17,7 +16,6 @@ import {
   parseDate,
   todayISOInHarare,
 } from '../../util/date.ts'
-import NewCalendar from '../../components/calendar/NewCalendar.tsx'
 
 function CalendarLink(
   { title, href, icon }: { title: string; href: string; icon: JSX.Element },
@@ -130,9 +128,6 @@ export default function Calendar(
   return (
     <Layout title='My Calendar' route={props.route}>
       <div class='calendar'>
-        <NewCalendar
-          appointments={props.data.dailyAppointments}
-        />
         <div className='flex justify-center space-x-4'>
           <MonthPicker
             selectedMonth={startMonth - 1}

@@ -48,10 +48,16 @@ const days = [
 ]
 
 export default function Calendar(
-  { children }: { children?: JSX.Element },
+  { day, today, children }: {
+    day: string
+    today: string
+    children?: JSX.Element
+  },
 ) {
+  console.log(day, today)
+
   return (
-    <div className='mt-10 text-center lg:col-start-8 lg:col-end-13 lg:row-start-1 lg:mt-9 xl:col-start-9'>
+    <div className='text-center lg:col-start-8 lg:col-end-13 lg:mt-9 xl:col-start-9'>
       <div className='flex items-center text-gray-900'>
         <button
           type='button'

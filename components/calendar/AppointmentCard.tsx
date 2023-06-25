@@ -11,7 +11,6 @@ const AppointmentCard: FunctionComponent<HealthWorkerAppointment> = ({
   start,
   patientName,
   patientAge,
-  facilityName,
   durationMinutes,
   status,
 }) => {
@@ -25,7 +24,7 @@ const AppointmentCard: FunctionComponent<HealthWorkerAppointment> = ({
           </div>
           <div className='font-semibold text-xl'>{patientName}</div>
           <div className='text-xl text-gray-500'>Age: {patientAge}</div>
-          <div className='text-xl pb-8 text-gray-500'>{facilityName}</div>
+          <div className='text-xl pb-8 text-gray-500'>{'Virtual Hospital'}</div>
         </div>
         <div className='px-1 absolute text-green-700 font-bold text-xl bg-blue-50 top-2 right-2'>
           {durationMinutes} mins

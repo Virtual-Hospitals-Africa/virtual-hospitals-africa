@@ -1,10 +1,10 @@
-import HomeIcon from './icons/home.tsx'
-import CalendarIcon from './icons/calendar.tsx'
-import PatientsIcon from './icons/patients.tsx'
-import ProfileIcon from './icons/profile.tsx'
-import sortBy from '../util/sortBy.ts'
-import cls from '../util/cls.ts'
 import { JSX } from 'preact/jsx-runtime'
+import HomeIcon from '../icons/home.tsx'
+import CalendarIcon from '../icons/calendar.tsx'
+import PatientsIcon from '../icons/patients.tsx'
+import ProfileIcon from '../icons/profile.tsx'
+import sortBy from '../../util/sortBy.ts'
+import cls from '../../util/cls.ts'
 
 type LinkProps = {
   href: string

@@ -145,6 +145,28 @@ export function prettyAppointmentTime(startTime: string): string {
   return `${dateStr} at ${prettyTime}`
 }
 
+export function timeInSimpleAmPm(parsed: ParsedDate): string {
+  const hour = parseInt(parsed.hour)
+  
+  if (hour === 0) return `12:${parsed.minute}am`
+  if (hour === 12) return `12:${parsed.minute}pm`
+  return hour > 12 
+    ? `${hour - 12}:${parsed.minute}pm` 
+    : `${hour}:${parsed.minute}am`
+}
+
+export function timeRangeInSimpleAmPm(
+  start: ParsedDate,
+  end: ParsedDate,
+): string {
+  const timeStart = timeInSimpleAmPm(start)
+  const timeEnd = timeInSimpleAmPm(end)
+  const sameAmPm = timeStart.slice(-2) === timeEnd.slice(-2)
+  return sameAmPm 
+    ? `${timeStart.slice(0, -2)}-${timeEnd}` 
+    : `${timeStart}-${timeEnd}`
+}
+
 export function assertAllHarare(dates: string[]) {
   for (const date of dates) {
     assert(

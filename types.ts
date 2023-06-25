@@ -758,3 +758,9 @@ export type Facility = Location & {
   url?: string
   phone?: string
 }
+
+export type CalendarPageProps = {
+  appointments: HealthWorkerAppointment[]
+  day: string
+  today: string
+}

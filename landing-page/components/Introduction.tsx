@@ -1,5 +1,5 @@
-import { CheckIcon } from './CheckIcon.tsx'
-import { Container } from './Container.tsx'
+import { CheckIcon } from '../../components/library/CheckIcon.tsx'
+import { Container } from '../../components/library/Container.tsx'
 
 /*
 
