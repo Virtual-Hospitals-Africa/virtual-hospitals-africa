@@ -1,5 +1,6 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
+import cls from '../util/cls.ts'
 
 type MenuOption = {
   label: string
@@ -9,6 +10,7 @@ type MenuOption = {
 
 type MenuProps = {
   options: MenuOption[]
+  className?: string
 }
 
 export function MenuOptions({ options }: MenuProps) {
@@ -47,11 +49,16 @@ export function MenuOptions({ options }: MenuProps) {
     Leaving: "transition ease-in duration-75"
       From: "transform opacity-100 scale-100"
       To: "transform opacity-0 scale-95" */
-export default function Menu({ options }: MenuProps) {
+export default function Menu({ options, className }: MenuProps) {
   const [showMenu, setShowMenu] = useState(false)
 
   return (
-    <div className='absolute right-0 top-6 xl:relative xl:right-auto xl:top-auto xl:self-center'>
+    <div
+      className={cls(
+        'absolute right-0 top-6 xl:relative xl:right-auto xl:top-auto xl:self-center',
+        className,
+      )}
+    >
       <div>
         <button
           type='button'

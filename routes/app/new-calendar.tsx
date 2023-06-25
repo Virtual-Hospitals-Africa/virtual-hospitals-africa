@@ -1,10 +1,6 @@
 import { PageProps } from '$fresh/server.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
-import {
-  CalendarPageProps,
-  HealthWorkerAppointment,
-  LoggedInHealthWorkerHandler,
-} from '../../types.ts'
+import { CalendarPageProps, LoggedInHealthWorkerHandler } from '../../types.ts'
 import { get as getAppointments } from '../../db/models/appointments.ts'
 import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import NewCalendar from '../../components/calendar/NewCalendar.tsx'
@@ -55,8 +51,12 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
 
         return {
           id: appt.id,
-          patientName: appt.name!,
-          patientAge: 30, // TODO: calculate this from patient DOB
+          patient: {
+            id: appt.patient_id,
+            name: appt.name!,
+            age: 30, // TODO: calculate this from patient DOB
+            phone_number: appt.phone_number,
+          },
           durationMinutes: Math.round(duration / (1000 * 60)),
           status: appt.status,
           start: parseDate(startTime, 'numeric'),
@@ -76,8 +76,6 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
 export default function Calendar(
   props: PageProps<CalendarPageProps>,
 ) {
-  console.log('props', props.data)
-  console.log('props.route', props.route)
   return (
     <Layout title='My Calendar' route={props.route}>
       <Container size='lg'>

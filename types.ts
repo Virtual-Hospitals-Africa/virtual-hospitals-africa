@@ -674,9 +674,13 @@ export type HealthWorkerAppointmentLocation =
 
 export type HealthWorkerAppointment = {
   id: number
-  patientImageUrl?: string
-  patientName: string
-  patientAge: number
+  patient: {
+    id: number
+    image_url?: string
+    name: string
+    age: number
+    phone_number?: string
+  }
   durationMinutes: number
   status?: string | null
   start: ParsedDate

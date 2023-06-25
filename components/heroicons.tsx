@@ -105,3 +105,24 @@ export function MapPinIcon(props: any) {
     </svg>
   )
 }
+
+export function PlusIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns='http://www.w3.org/2000/svg'
+      fill='none'
+      viewBox='0 0 24 24'
+      strokeWidth={1.5}
+      stroke='currentColor'
+      className={cls('w-6 h-6', props.className)}
+    >
+      <path
+        d='M12 6V12M12 12V18M12 12H18M12 12H6'
+        strokeWidth='2'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      />
+    </svg>
+  )
+}

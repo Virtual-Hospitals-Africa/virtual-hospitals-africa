@@ -76,8 +76,10 @@ export const handler: LoggedInHealthWorkerHandler<
 
         return {
           id: appt.id,
-          patientName: appt.name!,
-          patientAge: 30, // TODO: calculate this from patient DOB
+          patient: {
+            name: appt.name!,
+            age: 30, // TODO: calculate this from patient DOB
+          },
           durationMinutes: Math.round(duration / (1000 * 60)),
           status: appt.status,
           start: parseDate(startTime, 'numeric'),

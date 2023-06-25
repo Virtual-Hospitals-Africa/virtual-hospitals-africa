@@ -63,7 +63,7 @@ export default function BottomNav({ route }: { route: string }) {
   )
 
   return (
-    <footer className='absolute bottom-0 w-full flex justify-around gap-2 p-1'>
+    <footer className='w-full flex justify-around gap-2 p-1'>
       {bottomNavLinks.map((link) => (
         <BottomNavLink {...link} active={link === activeLink} />
       ))}

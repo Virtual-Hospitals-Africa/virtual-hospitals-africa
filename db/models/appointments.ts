@@ -157,6 +157,7 @@ export function get(
       'appointments.id',
       'patients.name',
       'patient_id',
+      'phone_number',
       'start',
       'reason',
       'status',

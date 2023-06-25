@@ -1,7 +1,7 @@
 import Calendar from './Calendar.tsx'
 import { CalendarPageProps } from '../../types.ts'
-import Appointment from './Appointment.tsx'
 import Card from '../library/Card.tsx'
+import Appointments from './Appointments.tsx'
 
 export default function NewCalendar(
   { appointments, day, today, route }: CalendarPageProps & { route: string },
@@ -21,20 +21,11 @@ export default function NewCalendar(
             Schedule Appointment
           </button>
         </Calendar>
-        {/* <div className='w-full'> */}
-        {
-          /* */
-        }
-
-        <ol className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-          <h2 className='text-base font-semibold leading-6 text-gray-900'>
-            {headerText}
-          </h2>
-          {appointments.map((appointment) => (
-            <Appointment appointment={appointment} route={route} />
-          ))}
-        </ol>
-        {/* </div> */}
+        <Appointments
+          headerText={headerText}
+          appointments={appointments}
+          route={route}
+        />
       </div>
     </Card>
   )
