@@ -8,7 +8,6 @@ import {
 } from './Buttons.tsx'
 
 const AppointmentCard: FunctionComponent<HealthWorkerAppointment> = ({
-  stripeColor,
   start,
   patientName,
   patientAge,
@@ -19,7 +18,7 @@ const AppointmentCard: FunctionComponent<HealthWorkerAppointment> = ({
   return (
     <div className='mb-4'>
       <div className='relative flex border border-gray-300 rounded shadow-lg overflow-hidden'>
-        <div className={`w-6 h-full ${stripeColor} absolute`}></div>
+        <div className={`w-6 h-full absolute`}></div>
         <div className='pl-10 p-3 space-y-2'>
           <div className='font-semibold text-2xl text-green-600'>
             {start.hour}:{start.minute}

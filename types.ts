@@ -657,15 +657,31 @@ export type WhatsAppSendable =
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
+
+export type HealthWorkerAppointmentPhysicalLocation = {
+  type: 'physical'
+  facility: ReturnedSqlRow<Facility>
+}
+
+export type HealthWorkerAppointmentVirtualLocation = {
+  type: 'virtual'
+  href: string
+}
+
+export type HealthWorkerAppointmentLocation =
+  | HealthWorkerAppointmentPhysicalLocation
+  | HealthWorkerAppointmentVirtualLocation
+
 export type HealthWorkerAppointment = {
-  stripeColor: string
+  id: number
+  patientImageUrl?: string
   patientName: string
   patientAge: number
-  facilityName: string
   durationMinutes: number
   status?: string | null
   start: ParsedDate
   end: ParsedDate
+  location: HealthWorkerAppointmentLocation
 }
 
 export type ParsedDate = {

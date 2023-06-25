@@ -62,6 +62,11 @@ export function parseDate(
   return { weekday, day, month, year, hour, minute, second }
 }
 
+export function stringify(date: ParsedDate): string {
+  const { day, month, year, hour, minute, second } = date
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
+}
+
 export function todayISOInHarare() {
   const { day, month, year } = parseDate(new Date(), 'twoDigit')
   return `${year}-${month}-${day}`
@@ -137,7 +142,7 @@ export function prettyAppointmentTime(startTime: string): string {
 
   const prettyTime = timeFormat.format(start)
 
-  return `${dateStr} at ${prettyTime} Harare time`
+  return `${dateStr} at ${prettyTime}`
 }
 
 export function assertAllHarare(dates: string[]) {

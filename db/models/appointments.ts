@@ -154,6 +154,7 @@ export function get(
     .innerJoin('patients', 'appointments.patient_id', 'patients.id')
     .where('health_worker_id', '=', query.health_worker_id)
     .select([
+      'appointments.id',
       'patients.name',
       'patient_id',
       'start',

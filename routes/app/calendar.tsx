@@ -77,14 +77,17 @@ export const handler: LoggedInHealthWorkerHandler<
         const duration = endTime.getTime() - startTime.getTime()
 
         return {
-          stripeColor: 'bg-green-500', // Just green for now
+          id: appt.id,
           patientName: appt.name!,
           patientAge: 30, // TODO: calculate this from patient DOB
-          facilityName: 'Placeholder Facility',
           durationMinutes: Math.round(duration / (1000 * 60)),
           status: appt.status,
           start: parseDate(startTime, 'numeric'),
           end: parseDate(endTime, 'numeric'),
+          location: {
+            type: 'virtual' as const,
+            href: 'https://meet.google.com/abc-defg-hij', // TODO: link to meeting
+          },
         }
       },
     )
@@ -127,9 +130,10 @@ export default function Calendar(
   return (
     <Layout title='My Calendar' route={props.route}>
       <div class='calendar'>
-        <NewCalendar />
-        {
-          /* <div className='flex justify-center space-x-4'>
+        <NewCalendar
+          appointments={props.data.dailyAppointments}
+        />
+        <div className='flex justify-center space-x-4'>
           <MonthPicker
             selectedMonth={startMonth - 1}
             currentDay={startDay}
@@ -148,8 +152,7 @@ export default function Calendar(
           currentYear={startYear}
           days={days}
         />
-        <DailyAppointments dailyAppointments={props.data.dailyAppointments} /> */
-        }
+        <DailyAppointments dailyAppointments={props.data.dailyAppointments} />
       </div>
 
       <hr />
