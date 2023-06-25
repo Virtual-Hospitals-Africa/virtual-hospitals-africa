@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { useId } from 'preact/hooks'
 
 export function GridPattern(props: any) {
