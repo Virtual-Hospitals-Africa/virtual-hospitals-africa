@@ -74,7 +74,7 @@ export function pick(patientState: PatientState) {
     date_of_birth: patientState.date_of_birth,
     national_id_number: patientState.national_id_number,
     conversation_state: patientState.conversation_state,
-    location: patientState.location
+    location: patientState.location,
   }
 }
 

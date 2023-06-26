@@ -5,13 +5,13 @@ import {
   ConversationStateHandlerListActionSection,
   ConversationStates,
   Facility,
+  Location,
   Maybe,
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-  Location
 } from '../../types.ts'
 import {
   assertAllHarare,
@@ -157,7 +157,7 @@ const conversationStates: ConversationStates<
       const locationMessage: Location = JSON.parse(patientState.body)
       const currentLocation: Location = {
         longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude
+        latitude: locationMessage.latitude,
       }
       const location_string_format: string = JSON.stringify(currentLocation)
       await patients.upsert(trx, {
