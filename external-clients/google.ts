@@ -159,6 +159,22 @@ export class GoogleClient {
     })
   }
 
+  updateEvent(
+    { calendarId, eventId, details }: {
+      calendarId: string
+      eventId: string
+      details: DeepPartial<GCalEvent>
+    },
+  ): Promise<GCalEvent> {
+    return this.makeCalendarRequest(
+      `/calendars/${calendarId}/events/${eventId}`,
+      {
+        method: 'put',
+        data: details,
+      },
+    )
+  }
+
   deleteEvent(calendarId: string, eventId: string) {
     return this.makeCalendarRequest(
       `/calendars/${calendarId}/events/${eventId}`,
