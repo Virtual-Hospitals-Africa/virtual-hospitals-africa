@@ -174,7 +174,7 @@ const conversationStates: ConversationStates<
               id: 'main_menu',
               title: 'Main Menu',
               nextState(patientState: PatientState): PatientConversationState {
-                return patients.hasDemographicData(patientState)
+                return patients.hasDemographicInfo(patientState)
                   ? 'onboarded:main_menu'
                   : 'not_onboarded:welcome'
               },

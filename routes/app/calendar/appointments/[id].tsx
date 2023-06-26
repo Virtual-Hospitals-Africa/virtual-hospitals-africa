@@ -18,21 +18,21 @@ export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
     const id = parseInt(ctx.params.id)
     assert(!isNaN(id), 'Invalid appointment ID')
 
-    const healthWorker = ctx.state.session.data
-    assert(
-      isHealthWorkerWithGoogleTokens(healthWorker),
-      'Invalid health worker',
-    )
+    // const healthWorker = ctx.state.session.data
+    // assert(
+    //   isHealthWorkerWithGoogleTokens(healthWorker),
+    //   'Invalid health worker',
+    // )
 
-    const [appointment] = await appointments.get(ctx.state.trx, {
-      id,
-      health_worker_id: healthWorker.id,
-    })
+    // const [appointment] = await appointments.getWithPatientInfo(ctx.state.trx, {
+    //   id,
+    //   health_worker_id: healthWorker.id,
+    // })
 
-    assert(appointment, 'Appointment not found')
+    // assert(appointment, 'Appointment not found')
 
     return ctx.render({
-      appointment,
+      appointment: { foo: 'bar' } as any,
     })
   },
 }

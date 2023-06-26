@@ -67,6 +67,24 @@ export type PatientDemographicInfo = {
   national_id_number: Maybe<string>
 }
 
+export type HasDemographicInfo = {
+  phone_number: string
+  name: string
+  gender: Gender
+  date_of_birth: string
+  national_id_number: string
+}
+
+// TODO: define this
+export type PatientMedicalRecord = {
+  foo: string
+}
+
+export type PatientWithMedicalRecord = {
+  patient: Patient
+  medical_record: PatientMedicalRecord
+}
+
 export type AppointmentOfferedTime = {
   appointment_id: number
   health_worker_id: number
@@ -218,6 +236,11 @@ export type Appointment = {
   patient_id: number
   reason: Maybe<string>
   status: AppointmentStatus
+}
+
+export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
+  scheduled_gcal_event_id: Maybe<string>
+  patient: Patient
 }
 
 export type MatchingState<US extends UserState<any>> = {
@@ -606,17 +629,7 @@ export type HealthWorkerAvailability = {
   availability: Availability
 }
 
-export type ScheduledAppointment = {
-  appointment_offered_time_id: number
-  gcal_event_id: string
-}
-
-export type FullScheduledAppointment = {
-  id: number
-  reason: string
-}
-
-export type WhatsappMessageReceived = {
+export type WhatsAppMessageReceived = {
   patient_id: number
   whatsapp_id: string
   body: string
@@ -626,7 +639,7 @@ export type WhatsappMessageReceived = {
   error_message: Maybe<string>
 }
 
-export type WhatsappMessageSent = {
+export type WhatsAppMessageSent = {
   patient_id: number
   whatsapp_id: string
   body: string
