@@ -410,6 +410,7 @@ export type GCalEvent = {
   attendeesOmitted: boolean
   extendedProperties: Record<string, unknown>
   hangoutLink: string
+  conferenceDataVersion: number
   conferenceData: {
     createRequest: {
       requestId: string
@@ -660,20 +661,6 @@ export type WhatsAppSendable =
   | WhatsAppSendableList
   | WhatsAppSendableLocation
 
-export type HealthWorkerAppointmentPhysicalLocation = {
-  type: 'physical'
-  facility: ReturnedSqlRow<Facility>
-}
-
-export type HealthWorkerAppointmentVirtualLocation = {
-  type: 'virtual'
-  href: string
-}
-
-export type HealthWorkerAppointmentLocation =
-  | HealthWorkerAppointmentPhysicalLocation
-  | HealthWorkerAppointmentVirtualLocation
-
 export type HealthWorkerAppointment = {
   id: number
   patient: {
@@ -687,7 +674,12 @@ export type HealthWorkerAppointment = {
   status?: string | null
   start: ParsedDate
   end: ParsedDate
-  location: HealthWorkerAppointmentLocation
+  physicalLocation?: {
+    facility: ReturnedSqlRow<Facility>
+  }
+  virtualLocation?: {
+    href: string
+  }
 }
 
 export type ParsedDate = {

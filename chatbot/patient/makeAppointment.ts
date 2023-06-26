@@ -11,6 +11,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import generateUUID from '../../util/uuid.ts'
 
 export function gcalAppointmentDetails(
   patientState: PatientState,
@@ -50,6 +51,15 @@ export function gcalAppointmentDetails(
       },
       end: {
         dateTime: formatHarare(end),
+      },
+      conferenceDataVersion: 1,
+      conferenceData: {
+        createRequest: {
+          conferenceSolutionKey: {
+            type: 'hangoutsMeet',
+          },
+          requestId: generateUUID(),
+        },
       },
     },
   }

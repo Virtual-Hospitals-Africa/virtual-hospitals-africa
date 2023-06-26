@@ -33,30 +33,32 @@ function AppointmentContents(
               </time>
             </dd>
           </div>
-          <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
-            <dt>
-              {appointment.location.type === 'physical'
-                ? (
-                  <>
-                    <span className='sr-only'>Location</span>
-                    <MapPinIcon
-                      className='h-5 w-5 text-gray-400'
-                      aria-hidden='true'
-                    />
-                    {appointment.location.facility.name}
-                  </>
-                )
-                : (
-                  <a
-                    href={appointment.location.href}
-                    className='text-indigo-600 font-bold flex'
-                  >
-                    <GoogleMeetIcon className='w-5 mr-1' />
-                    Join Google Meet
-                  </a>
-                )}
-            </dt>
-          </div>
+          {appointment.physicalLocation && (
+            <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
+              <dt>
+                <span className='sr-only'>Location</span>
+                <MapPinIcon
+                  className='h-5 w-5 text-gray-400'
+                  aria-hidden='true'
+                />
+                {appointment.physicalLocation.facility.name}
+              </dt>
+            </div>
+          )}
+          {appointment.virtualLocation && (
+            <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
+              <dt>
+                <span className='sr-only'>Link</span>
+                <a
+                  href={appointment.virtualLocation.href}
+                  className='text-indigo-600 font-bold flex'
+                >
+                  <GoogleMeetIcon className='w-5 mr-1' />
+                  Join Google Meet
+                </a>
+              </dt>
+            </div>
+          )}
           {appointment.patient.phone_number && (
             <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
               <dt>

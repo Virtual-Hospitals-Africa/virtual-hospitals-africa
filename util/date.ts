@@ -278,3 +278,18 @@ export function getISOInHarare(date: Date) {
   const { day, month, year } = parseDate(date, 'twoDigit')
   return `${year}-${month}-${day}`
 }
+
+export function prettyMinimal(day: string, today: string) {
+  const [year, month, date] = day.split('-')
+  const dayDate = new Date(`${year}-${month}-${date}T00:00:00Z`)
+  const dayInHarare = getISOInHarare(dayDate)
+  const todayInHarare = getISOInHarare(new Date(today))
+  const diff = differenceInDays(dayInHarare, todayInHarare)
+  if (diff === 0) return 'Today'
+  if (diff === 1) return 'Tomorrow'
+  const monthStr = monthName(parseInt(month) as MonthNum)
+  const sameYearAsToday = year === today.split('-')[0]
+  return sameYearAsToday
+    ? `${parseInt(date)} ${monthStr}`
+    : `${parseInt(date)} ${monthStr} ${year}`
+}

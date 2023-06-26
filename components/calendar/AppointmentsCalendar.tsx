@@ -2,13 +2,14 @@ import Calendar from './Calendar.tsx'
 import { CalendarPageProps } from '../../types.ts'
 import Card from '../library/Card.tsx'
 import Appointments from './Appointments.tsx'
+import { prettyMinimal } from '../../util/date.ts'
 
 export default function AppointmentsCalendar(
   { appointments, day, today, route }: CalendarPageProps & { route: string },
 ) {
   const headerText = today === day
     ? 'Today’s Appointments'
-    : `Appointments on ${day}`
+    : `Appointments on ${prettyMinimal(day, today)}`
 
   return (
     <Card className='w-full'>

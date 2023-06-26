@@ -1,6 +1,10 @@
 import { PageProps } from '$fresh/server.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
-import { CalendarPageProps, LoggedInHealthWorkerHandler } from '../../types.ts'
+import {
+  CalendarPageProps,
+  HealthWorkerAppointment,
+  LoggedInHealthWorkerHandler,
+} from '../../types.ts'
 import { get as getAppointments } from '../../db/models/appointments.ts'
 import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
@@ -45,6 +49,9 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
           throw new Error('Could not find gcal event for appointment')
         }
 
+        console.log('gcalItem')
+        console.log(JSON.stringify(gcalItem, null, 2))
+
         const startTime = new Date(gcalItem.start.dateTime)
         const endTime = new Date(gcalItem.end.dateTime)
         const duration = endTime.getTime() - startTime.getTime()
@@ -61,11 +68,10 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
           status: appt.status,
           start: parseDate(startTime, 'numeric'),
           end: parseDate(endTime, 'numeric'),
-          location: {
-            type: 'virtual' as const,
-            href: 'https://meet.google.com/abc-defg-hij', // TODO: link to meeting
+          virtualLocation: gcalItem.hangoutLink && {
+            href: gcalItem.hangoutLink,
           },
-        }
+        } as HealthWorkerAppointment
       },
     )
 
