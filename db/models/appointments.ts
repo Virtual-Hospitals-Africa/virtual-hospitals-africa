@@ -3,6 +3,7 @@ import {
   Appointment,
   AppointmentOfferedTime,
   FullScheduledAppointment,
+  Maybe,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
@@ -142,9 +143,12 @@ export async function schedule(
 
 export function get(
   trx: TrxOrDb,
-  query: { health_worker_id: number },
-) {
-  return trx
+  query: { 
+    id?: number
+    health_worker_id?: number 
+  },
+): Promise<ReturnedSqlRow<Appointment>[]> {
+  let builder = trx
     .selectFrom('appointment_offered_times')
     .innerJoin(
       'appointments',
@@ -152,7 +156,6 @@ export function get(
       'appointments.id',
     )
     .innerJoin('patients', 'appointments.patient_id', 'patients.id')
-    .where('health_worker_id', '=', query.health_worker_id)
     .select([
       'appointments.id',
       'patients.name',
@@ -162,8 +165,19 @@ export function get(
       'reason',
       'status',
       'scheduled_gcal_event_id',
+      'appointments.created_at',
+      'appointments.updated_at'
     ])
-    .execute()
+
+  if (query.id) builder = builder.where('id', '=', query.id)
+  if (query.health_worker_id) builder = builder.where('health_worker_id', '=', query.health_worker_id)
+
+  return builder.execute()
+}
+
+export async function getById(trx: TrxOrDb, id: number): Promise<Maybe<ReturnedSqlRow<Appointment>>> {
+  const result = await get(trx, { id })
+  return result[0]
 }
 
 export function deleteAppointment(trx: TrxOrDb, id: number) {
