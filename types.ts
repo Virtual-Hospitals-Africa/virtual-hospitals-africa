@@ -565,6 +565,17 @@ export type GoogleProfile = {
   locale: string
 }
 
+export type Employee = {
+  health_worker_id: integer
+  profession: Profession
+  facility_id: integer
+}
+
+export type Profession =
+  | 'admin'
+  | 'doctor'
+  | 'nurse'
+
 export type HealthWorker = {
   name: string
   email: string
