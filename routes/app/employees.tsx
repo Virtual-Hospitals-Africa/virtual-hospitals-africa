@@ -1,6 +1,6 @@
 import { PageProps } from '$fresh/server.ts'
 import { LoggedInHealthWorkerHandler } from '../../types.ts'
-import HealthWorkerTable from '../../components/HealthWorkerTable.tsx'
+import HealthWorkerTable from '../../components/library/HealthWorkerTable.tsx'
 import isAdmin from '../../util/isAdmin.ts'
 
 export const handler: LoggedInHealthWorkerHandler<

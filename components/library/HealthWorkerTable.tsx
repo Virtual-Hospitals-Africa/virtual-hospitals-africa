@@ -1,5 +1,5 @@
-import { FunctionComponent, h } from 'preact'
-import { Profession } from '../types.ts'
+import { FunctionComponent } from 'preact'
+import { Profession } from '../../types.ts'
 
 interface EmployeeTable {
   isAdmin: boolean
