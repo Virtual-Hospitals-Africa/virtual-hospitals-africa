@@ -14,6 +14,7 @@ import {
   SqlRow,
   WhatsappMessageReceived,
   WhatsappMessageSent,
+  Employee
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
@@ -25,6 +26,7 @@ export type DatabaseSchema = {
   patients: SqlRow<Patient>
   whatsapp_messages_received: SqlRow<WhatsappMessageReceived>
   whatsapp_messages_sent: SqlRow<WhatsappMessageSent>
+  employment: SqlRow<Employee>
 }
 
 // deno-lint-ignore no-explicit-any
