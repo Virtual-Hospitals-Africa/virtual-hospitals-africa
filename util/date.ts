@@ -1,5 +1,5 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
-import { ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
+import { MonthNum, ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -179,6 +179,37 @@ export function assertAllHarare(dates: string[]) {
 const isLeap = (year: number): boolean =>
   (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)
 
+export function monthName(month: MonthNum): string {
+  switch (month) {
+    case 1:
+      return 'January'
+    case 2:
+      return 'February'
+    case 3:
+      return 'March'
+    case 4:
+      return 'April'
+    case 5:
+      return 'May'
+    case 6:
+      return 'June'
+    case 7:
+      return 'July'
+    case 8:
+      return 'August'
+    case 9:
+      return 'September'
+    case 10:
+      return 'October'
+    case 11:
+      return 'November'
+    case 12:
+      return 'December'
+    default:
+      throw new Error(`Invalid month (${month})`)
+  }
+}
+
 export function numberOfDaysInMonth(month: number, year: number): number {
   switch (month) {
     case 1:
@@ -206,7 +237,7 @@ export function numberOfDaysInMonth(month: number, year: number): number {
     case 12:
       return 31
     default:
-      throw new Error('Invalid month')
+      throw new Error(`Invalid month (${month})`)
   }
 }
 

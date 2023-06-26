@@ -1,7 +1,6 @@
 import { CalendarIcon, MapPinIcon } from '../heroicons.tsx'
 import { HealthWorkerAppointment } from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
-import AppointmentMenu from './AppointmentMenu.tsx'
 import GoogleMeetIcon from '../icons/google-meet.tsx'
 import WhatsAppIcon from '../icons/whatsapp.tsx'
 import Avatar from '../library/Avatar.tsx'

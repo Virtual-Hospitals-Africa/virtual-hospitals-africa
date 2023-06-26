@@ -7,7 +7,7 @@ import {
   LoggedInHealthWorkerHandler,
   Time,
 } from '../../types.ts'
-import padLeft from '../../util/padLeft.ts'
+import { padTime } from '../../util/pad.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/_util/asserts.ts'
 import { parseDate } from '../../util/date.ts'
@@ -26,8 +26,8 @@ const days: Array<DayOfWeek> = [
 const toHarare = (time: Time) => {
   const baseHour = time.hour % 12
   const hour = time.amPm === 'am' ? baseHour : baseHour + 12
-  const hourStr = padLeft(String(hour), 2, '0')
-  const minuteStr = padLeft(String(time.minute), 2, '0')
+  const hourStr = padTime(hour)
+  const minuteStr = padTime(time.minute)
   return `${hourStr}:${minuteStr}:00+02:00`
 }
 

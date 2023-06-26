@@ -1,79 +1,133 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '../heroicons.tsx'
 import cls from '../../util/cls.ts'
 import { JSX } from 'preact/jsx-runtime'
+import { monthName, numberOfDaysInMonth } from '../../util/date.ts'
+import range from '../../util/range.ts'
+import { padTime } from '../../util/pad.ts'
+import { MonthNum } from '../../types.ts'
 
-const days = [
-  { date: '2021-12-27' },
-  { date: '2021-12-28' },
-  { date: '2021-12-29' },
-  { date: '2021-12-30' },
-  { date: '2021-12-31' },
-  { date: '2022-01-01', isCurrentMonth: true },
-  { date: '2022-01-02', isCurrentMonth: true },
-  { date: '2022-01-03', isCurrentMonth: true },
-  { date: '2022-01-04', isCurrentMonth: true },
-  { date: '2022-01-05', isCurrentMonth: true },
-  { date: '2022-01-06', isCurrentMonth: true },
-  { date: '2022-01-07', isCurrentMonth: true },
-  { date: '2022-01-08', isCurrentMonth: true },
-  { date: '2022-01-09', isCurrentMonth: true },
-  { date: '2022-01-10', isCurrentMonth: true },
-  { date: '2022-01-11', isCurrentMonth: true },
-  { date: '2022-01-12', isCurrentMonth: true, isToday: true },
-  { date: '2022-01-13', isCurrentMonth: true },
-  { date: '2022-01-14', isCurrentMonth: true },
-  { date: '2022-01-15', isCurrentMonth: true },
-  { date: '2022-01-16', isCurrentMonth: true },
-  { date: '2022-01-17', isCurrentMonth: true },
-  { date: '2022-01-18', isCurrentMonth: true },
-  { date: '2022-01-19', isCurrentMonth: true },
-  { date: '2022-01-20', isCurrentMonth: true },
-  { date: '2022-01-21', isCurrentMonth: true },
-  { date: '2022-01-22', isCurrentMonth: true, isSelected: true },
-  { date: '2022-01-23', isCurrentMonth: true },
-  { date: '2022-01-24', isCurrentMonth: true },
-  { date: '2022-01-25', isCurrentMonth: true },
-  { date: '2022-01-26', isCurrentMonth: true },
-  { date: '2022-01-27', isCurrentMonth: true },
-  { date: '2022-01-28', isCurrentMonth: true },
-  { date: '2022-01-29', isCurrentMonth: true },
-  { date: '2022-01-30', isCurrentMonth: true },
-  { date: '2022-01-31', isCurrentMonth: true },
-  { date: '2022-02-01' },
-  { date: '2022-02-02' },
-  { date: '2022-02-03' },
-  { date: '2022-02-04' },
-  { date: '2022-02-05' },
-  { date: '2022-02-06' },
-]
+type CalendarDayProps = {
+  date: string
+  isCurrentMonth?: boolean
+  isToday?: boolean
+  isSelected?: boolean
+}
+
+function daysToShow(
+  { day, today }: { day: string; today: string },
+): CalendarDayProps[] {
+  const toShow = (date: string) => ({
+    date,
+    isToday: date === today,
+    isSelected: date === day,
+  })
+
+  const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))
+
+  const lastMonthInt = monthInt === 1 ? 12 : monthInt - 1
+  const lastMonthYearInt = monthInt === 1 ? yearInt - 1 : yearInt
+
+  const nextMonthInt = monthInt === 12 ? 1 : monthInt + 1
+  const nextMonthYearInt = monthInt === 12 ? yearInt + 1 : yearInt
+
+  const totalDaysInThisMonth = numberOfDaysInMonth(monthInt, yearInt)
+
+  const daysOfThisMonth: CalendarDayProps[] = range(1, totalDaysInThisMonth + 1)
+    .map((d) => {
+      const date = `${yearInt}-${padTime(monthInt)}-${padTime(d)}`
+      return {
+        isCurrentMonth: true,
+        ...toShow(date),
+      }
+    })
+
+  const firstDayOfThisMonth = new Date(`${yearInt}-${padTime(monthInt)}-01`)
+  const firstWeekDaysOfLastMonth = firstDayOfThisMonth.getDay()
+
+  const lastDayOfThisMonth = new Date(
+    `${yearInt}-${padTime(monthInt)}-${totalDaysInThisMonth}`,
+  )
+  const lastWeekDaysOfNextMonth = 6 - lastDayOfThisMonth.getDay()
+
+  const totalDaysInLastMonth = numberOfDaysInMonth(
+    lastMonthInt,
+    lastMonthYearInt,
+  )
+
+  const daysOfLastMonth: CalendarDayProps[] = range(
+    totalDaysInLastMonth - firstWeekDaysOfLastMonth + 1,
+    totalDaysInLastMonth + 1,
+  ).map((dayInt) => {
+    const date = `${lastMonthYearInt}-${padTime(lastMonthInt)}-${
+      padTime(dayInt)
+    }`
+    return toShow(date)
+  })
+
+  const daysOfNextMonth: CalendarDayProps[] = range(
+    1,
+    lastWeekDaysOfNextMonth + 1,
+  ).map((dayInt) => {
+    const date = `${nextMonthYearInt}-${padTime(nextMonthInt)}-${
+      padTime(dayInt)
+    }`
+    return toShow(date)
+  })
+
+  return [
+    ...daysOfLastMonth,
+    ...daysOfThisMonth,
+    ...daysOfNextMonth,
+  ]
+}
 
 export default function Calendar(
-  { day, today, children }: {
+  { day, today, route, children }: {
     day: string
     today: string
+    route: string
     children?: JSX.Element
   },
 ) {
-  console.log(day, today)
+  const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))
+  const days = daysToShow({ day, today })
+
+  const lastMonthInt = monthInt === 1 ? 12 : monthInt - 1
+  const lastMonthYearInt = monthInt === 1 ? yearInt - 1 : yearInt
+  const totalDaysInLastMonth = numberOfDaysInMonth(
+    lastMonthInt,
+    lastMonthYearInt,
+  )
+  const lastDayOfLastMonth = `${lastMonthYearInt}-${
+    padTime(lastMonthInt)
+  }-${totalDaysInLastMonth}`
+
+  const nextMonthInt = monthInt === 12 ? 1 : monthInt + 1
+  const nextMonthYearInt = monthInt === 12 ? yearInt + 1 : yearInt
+  const firstDayOfNextMonth = `${nextMonthYearInt}-${padTime(nextMonthInt)}-01`
 
   return (
     <div className='text-center lg:col-start-8 lg:col-end-13 lg:mt-9 xl:col-start-9'>
       <div className='flex items-center text-gray-900'>
-        <button
+        <a
           type='button'
           className='-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
+          href={`${route}?day=${lastDayOfLastMonth}`}
         >
           <span className='sr-only'>Previous month</span>
           <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
-        </button>
-        <div className='flex-auto text-sm font-semibold'>January</div>
-        <button
+        </a>
+        <div className='flex-auto text-sm font-semibold'>
+          {monthName(monthInt as MonthNum)}
+        </div>
+        <a
           type='button'
           className='-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
+          href={`${route}?day=${firstDayOfNextMonth}`}
         >
           <span className='sr-only'>Next month</span>
           <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
-        </button>
+        </a>
       </div>
       <div className='mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500'>
         <div>M</div>
@@ -86,7 +140,7 @@ export default function Calendar(
       </div>
       <div className='isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200'>
         {days.map((day, dayIdx) => (
-          <button
+          <a
             key={day.date}
             type='button'
             className={cls(
@@ -104,6 +158,7 @@ export default function Calendar(
               dayIdx === days.length - 7 && 'rounded-bl-lg',
               dayIdx === days.length - 1 && 'rounded-br-lg',
             )}
+            href={`${route}?day=${day.date}`}
           >
             <time
               dateTime={day.date}
@@ -115,7 +170,7 @@ export default function Calendar(
             >
               {day.date.split('-').pop()!.replace(/^0/, '')}
             </time>
-          </button>
+          </a>
         ))}
       </div>
       {children}

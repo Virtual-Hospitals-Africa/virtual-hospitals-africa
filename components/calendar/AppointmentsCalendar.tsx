@@ -3,7 +3,7 @@ import { CalendarPageProps } from '../../types.ts'
 import Card from '../library/Card.tsx'
 import Appointments from './Appointments.tsx'
 
-export default function NewCalendar(
+export default function AppointmentsCalendar(
   { appointments, day, today, route }: CalendarPageProps & { route: string },
 ) {
   const headerText = today === day
@@ -13,13 +13,14 @@ export default function NewCalendar(
   return (
     <Card className='w-full'>
       <div className='lg:grid lg:grid-cols-12 lg:gap-x-16 w-full'>
-        <Calendar day={day} today={today}>
-          <button
+        <Calendar day={day} today={today} route={route}>
+          <a
             type='button'
             className='mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+            href={`${route}/schedule-appointment`}
           >
             Schedule Appointment
-          </button>
+          </a>
         </Calendar>
         <Appointments
           headerText={headerText}

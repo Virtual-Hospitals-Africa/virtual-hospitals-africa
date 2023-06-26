@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import range from '../util/range.ts'
-import padLeft from '../util/padLeft.ts'
+import { padTime } from '../util/pad.ts'
 import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
 import PlusIcon from '../components/icons/plus.tsx'
 import TrashIcon from '../components/icons/trash.tsx'
@@ -36,7 +36,7 @@ function MinuteInput({ name, current }: { name: string; current: number }) {
           selected={minute === current}
           className='text-right'
         >
-          {padLeft(String(minute), 2, '0')}
+          {padTime(minute)}
         </option>
       ))}
     </select>
