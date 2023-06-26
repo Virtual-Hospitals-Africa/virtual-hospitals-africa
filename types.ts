@@ -105,7 +105,7 @@ export type PatientState = {
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
-  location: Maybe<string>
+  location: Maybe<Location>
   scheduling_appointment_id?: number
   scheduling_appointment_reason?: Maybe<string>
   scheduling_appointment_status?: Maybe<AppointmentStatus>

@@ -159,12 +159,11 @@ const conversationStates: ConversationStates<
         longitude: locationMessage.longitude,
         latitude: locationMessage.latitude,
       }
-      const location_string_format: string = JSON.stringify(currentLocation)
       await patients.upsert(trx, {
         ...patients.pick(patientState),
-        location: location_string_format,
+        location: currentLocation,
       })
-      return { ...patientState, location: location_string_format }
+      return { ...patientState, location: currentLocation }
     },
   },
   // change the name of got_location to nearest_facilities?
