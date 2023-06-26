@@ -287,13 +287,58 @@ export type WhatsAppLocationMessage = {
   }
 }
 
-export type WhatsAppVoiceMessage = {
+export type WhatsAppAudioMessage = {
   type: 'audio'
   audio: {
     id: string
-    voice: true
+    voice: boolean
     mime_type: 'audio/ogg; codecs=opus'
     sha256: string
+  }
+}
+
+export type WhatsAppImageMessage = {
+  type: 'image'
+  image: {
+    id: string
+    mime_type: 'image/jpeg'
+    sha256: string
+  }
+}
+
+export type WhatsAppVideoMessage = {
+  type: 'video'
+  video: {
+    id: string
+    mime_type: 'video/mp4'
+    sha256: string
+  }
+}
+
+export type WhatsAppContactsMessage = {
+  type: 'contacts'
+  contacts: {
+    name: {
+      first_name: string
+      last_name: string
+      formatted_name: string
+    }
+    phones: {
+      phone: string // "+1 (203) 253-5603",
+      wa_id: string // "12032535603",
+      type: 'CELL'
+    }[]
+    emails: { email: string; type: 'HOME' }[]
+  }[]
+}
+
+export type WhatsAppDocumentsMessage = {
+  type: 'document'
+  document: {
+    id: string
+    sha256: string
+    filename: string
+    mime_type: string
   }
 }
 
@@ -308,7 +353,11 @@ export type WhatsAppMessage =
     | WhatsAppListReplyMessage
     | WhatsAppButtonReplyMessage
     | WhatsAppLocationMessage
-    | WhatsAppVoiceMessage
+    | WhatsAppAudioMessage
+    | WhatsAppImageMessage
+    | WhatsAppVideoMessage
+    | WhatsAppContactsMessage
+    | WhatsAppDocumentsMessage
   )
 
 export type WhatsAppIncomingMessage = {
