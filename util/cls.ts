@@ -1,6 +1,10 @@
+import { Maybe } from '../types.ts'
+
 const hasOwn = {}.hasOwnProperty
 
-type ClassNameable = boolean | string | number | { [key: string]: boolean }
+type ClassNameable = Maybe<
+  boolean | string | number | { [key: string]: boolean }
+>
 
 export default function classNames(...args: ClassNameable[]): string {
   const classes = []

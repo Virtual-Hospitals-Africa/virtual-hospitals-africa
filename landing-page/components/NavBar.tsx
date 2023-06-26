@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 // import { Popover } from '@headlessui/react'
 import cls from '../../util/cls.ts'
-import { Button } from './Button.tsx'
+import { Button } from '../../components/library/Button.tsx'
 
 const sections = [
   {

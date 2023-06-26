@@ -410,6 +410,7 @@ export type GCalEvent = {
   attendeesOmitted: boolean
   extendedProperties: Record<string, unknown>
   hangoutLink: string
+  conferenceDataVersion: number
   conferenceData: {
     createRequest: {
       requestId: string
@@ -622,6 +623,8 @@ export type WhatsappMessageSent = {
   read_status: string
 }
 
+export type MonthNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
 export type Time = {
   hour: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
   minute: 0 | 5 | 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 55
@@ -657,15 +660,26 @@ export type WhatsAppSendable =
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
+
 export type HealthWorkerAppointment = {
-  stripeColor: string
-  patientName: string
-  patientAge: number
-  facilityName: string
+  id: number
+  patient: {
+    id: number
+    image_url?: string
+    name: string
+    age: number
+    phone_number?: string
+  }
   durationMinutes: number
   status?: string | null
   start: ParsedDate
   end: ParsedDate
+  physicalLocation?: {
+    facility: ReturnedSqlRow<Facility>
+  }
+  virtualLocation?: {
+    href: string
+  }
 }
 
 export type ParsedDate = {
@@ -741,4 +755,10 @@ export type Facility = Location & {
   vha?: boolean
   url?: string
   phone?: string
+}
+
+export type CalendarPageProps = {
+  appointments: HealthWorkerAppointment[]
+  day: string
+  today: string
 }

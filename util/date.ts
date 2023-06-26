@@ -1,5 +1,5 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
-import { ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
+import { MonthNum, ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -60,6 +60,11 @@ export function parseDate(
   const [day, month, year] = dateParts.split('/')
   const [hour, minute, second] = timeParts.split(':')
   return { weekday, day, month, year, hour, minute, second }
+}
+
+export function stringify(date: ParsedDate): string {
+  const { day, month, year, hour, minute, second } = date
+  return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
 }
 
 export function todayISOInHarare() {
@@ -137,7 +142,29 @@ export function prettyAppointmentTime(startTime: string): string {
 
   const prettyTime = timeFormat.format(start)
 
-  return `${dateStr} at ${prettyTime} Harare time`
+  return `${dateStr} at ${prettyTime}`
+}
+
+export function timeInSimpleAmPm(parsed: ParsedDate): string {
+  const hour = parseInt(parsed.hour)
+
+  if (hour === 0) return `12:${parsed.minute}am`
+  if (hour === 12) return `12:${parsed.minute}pm`
+  return hour > 12
+    ? `${hour - 12}:${parsed.minute}pm`
+    : `${hour}:${parsed.minute}am`
+}
+
+export function timeRangeInSimpleAmPm(
+  start: ParsedDate,
+  end: ParsedDate,
+): string {
+  const timeStart = timeInSimpleAmPm(start)
+  const timeEnd = timeInSimpleAmPm(end)
+  const sameAmPm = timeStart.slice(-2) === timeEnd.slice(-2)
+  return sameAmPm
+    ? `${timeStart.slice(0, -2)}-${timeEnd}`
+    : `${timeStart}-${timeEnd}`
 }
 
 export function assertAllHarare(dates: string[]) {
@@ -151,6 +178,37 @@ export function assertAllHarare(dates: string[]) {
 
 const isLeap = (year: number): boolean =>
   (year % 4 === 0) && (year % 100 !== 0) || (year % 400 === 0)
+
+export function monthName(month: MonthNum): string {
+  switch (month) {
+    case 1:
+      return 'January'
+    case 2:
+      return 'February'
+    case 3:
+      return 'March'
+    case 4:
+      return 'April'
+    case 5:
+      return 'May'
+    case 6:
+      return 'June'
+    case 7:
+      return 'July'
+    case 8:
+      return 'August'
+    case 9:
+      return 'September'
+    case 10:
+      return 'October'
+    case 11:
+      return 'November'
+    case 12:
+      return 'December'
+    default:
+      throw new Error(`Invalid month (${month})`)
+  }
+}
 
 export function numberOfDaysInMonth(month: number, year: number): number {
   switch (month) {
@@ -179,7 +237,7 @@ export function numberOfDaysInMonth(month: number, year: number): number {
     case 12:
       return 31
     default:
-      throw new Error('Invalid month')
+      throw new Error(`Invalid month (${month})`)
   }
 }
 
@@ -219,4 +277,19 @@ export function isValidDate(messageBody: string): boolean {
 export function getISOInHarare(date: Date) {
   const { day, month, year } = parseDate(date, 'twoDigit')
   return `${year}-${month}-${day}`
+}
+
+export function prettyMinimal(day: string, today: string) {
+  const [year, month, date] = day.split('-')
+  const dayDate = new Date(`${year}-${month}-${date}T00:00:00Z`)
+  const dayInHarare = getISOInHarare(dayDate)
+  const todayInHarare = getISOInHarare(new Date(today))
+  const diff = differenceInDays(dayInHarare, todayInHarare)
+  if (diff === 0) return 'Today'
+  if (diff === 1) return 'Tomorrow'
+  const monthStr = monthName(parseInt(month) as MonthNum)
+  const sameYearAsToday = year === today.split('-')[0]
+  return sameYearAsToday
+    ? `${parseInt(date)} ${monthStr}`
+    : `${parseInt(date)} ${monthStr} ${year}`
 }

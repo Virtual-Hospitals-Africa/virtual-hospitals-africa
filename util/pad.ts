@@ -1,4 +1,4 @@
-export default function padLeft(
+export function padLeft(
   str: string,
   len: number,
   padChar = ' ',
@@ -7,4 +7,8 @@ export default function padLeft(
     str = padChar + str
   }
   return str
+}
+
+export function padTime(num: number): string {
+  return padLeft(String(num), 2, '0')
 }

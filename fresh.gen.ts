@@ -2,7 +2,6 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import config from './deno.json' assert { type: 'json' }
 import * as $0 from './routes/_404.tsx'
 import * as $1 from './routes/_middleware.ts'
 import * as $2 from './routes/api/set-availability.tsx'
@@ -16,10 +15,11 @@ import * as $9 from './routes/index.tsx'
 import * as $10 from './routes/logged-in.tsx'
 import * as $11 from './routes/logout.tsx'
 import * as $12 from './routes/patient-reset.ts'
-import * as $$0 from './islands/date-picker.tsx'
-import * as $$1 from './islands/month-picker.tsx'
-import * as $$2 from './islands/set-availability-form.tsx'
-import * as $$3 from './islands/year-picker.tsx'
+import * as $$0 from './islands/Menu.tsx'
+import * as $$1 from './islands/date-picker.tsx'
+import * as $$2 from './islands/month-picker.tsx'
+import * as $$3 from './islands/set-availability-form.tsx'
+import * as $$4 from './islands/year-picker.tsx'
 
 const manifest = {
   routes: {
@@ -38,13 +38,13 @@ const manifest = {
     './routes/patient-reset.ts': $12,
   },
   islands: {
-    './islands/date-picker.tsx': $$0,
-    './islands/month-picker.tsx': $$1,
-    './islands/set-availability-form.tsx': $$2,
-    './islands/year-picker.tsx': $$3,
+    './islands/Menu.tsx': $$0,
+    './islands/date-picker.tsx': $$1,
+    './islands/month-picker.tsx': $$2,
+    './islands/set-availability-form.tsx': $$3,
+    './islands/year-picker.tsx': $$4,
   },
   baseUrl: import.meta.url,
-  config,
 }
 
 export default manifest

@@ -1,6 +1,6 @@
 import cls from '../../util/cls.ts'
 
-import { Container } from './Container.tsx'
+import { Container } from '../../components/library/Container.tsx'
 // import { Expandable } from './Expandable.tsx'
 
 const testimonials = [

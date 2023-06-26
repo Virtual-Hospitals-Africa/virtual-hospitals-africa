@@ -60,7 +60,10 @@ export class GoogleClient {
   > {
     const url = `${googleApisUrl}${path}`
     const method = opts?.method || 'get'
-    console.log(`${method} ${url}`)
+    console.log(
+      `${method} ${url}`,
+      ...(opts?.data ? [JSON.stringify(opts?.data)] : []),
+    )
     const response = await fetch(url, {
       method,
       headers: {
