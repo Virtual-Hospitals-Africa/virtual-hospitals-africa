@@ -75,7 +75,7 @@ const HealthWorkerTable: FunctionComponent<EmployeeTable> = ({
                       scope='col'
                       className='relative py-3.5 pl-3 pr-4 sm:pr-6'
                     >
-                      <span className='sr-only'>Edit</span>
+                      <span className='sr-only'>Invites</span>
                     </th>
                   </tr>
                 </thead>
@@ -95,12 +95,14 @@ const HealthWorkerTable: FunctionComponent<EmployeeTable> = ({
                         {employee.facility}
                       </td>
                       <td className='relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6'>
-                        <a
-                          href='#'
-                          className='text-indigo-600 hover:text-indigo-900'
-                        >
-                          Resend invite
-                        </a>
+                        {isAdmin && (
+                          <a
+                            href='#'
+                            className='text-indigo-600 hover:text-indigo-900'
+                          >
+                            Resend invite
+                          </a>
+                        )}
                       </td>
                     </tr>
                   ))}
