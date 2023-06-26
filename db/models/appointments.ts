@@ -7,9 +7,9 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import uniq from '../../util/uniq.ts';
-import { getWithMedicalRecord } from "./patients.ts"
-import { assert } from "std/_util/asserts.ts";
+import uniq from '../../util/uniq.ts'
+import { getWithMedicalRecords } from './patients.ts'
+import { assert } from 'std/_util/asserts.ts'
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -136,7 +136,6 @@ export async function getWithPatientInfo(
     health_worker_id?: number
   },
 ) {
-
   let builder = trx
     .selectFrom('appointment_offered_times')
     .innerJoin(
@@ -161,19 +160,17 @@ export async function getWithPatientInfo(
     builder = builder.where('health_worker_id', '=', query.health_worker_id)
   }
 
-  return builder.execute()
+  const appointments = await builder.execute()
 
-  // const appointments = await builder.execute()
+  const patient_ids = uniq(appointments.map((a) => a.patient_id))
 
-  // const patient_ids = uniq(appointments.map((a) => a.patient_id))
+  const patients = await getWithMedicalRecords(trx, patient_ids)
 
-  // const patients = await getWithMedicalRecord(trx, { patient_ids })
-
-  // return appointments.map(appointment => {
-  //   const patient = patients.find(p => p.id === appointment.patient_id)
-  //   assert(patient, `Could not find patient ${appointment.patient_id}`)
-  //   return { ...appointment, patient }
-  // })
+  return appointments.map((appointment) => {
+    const patient = patients.find((p) => p.id === appointment.patient_id)
+    assert(patient, `Could not find patient ${appointment.patient_id}`)
+    return { ...appointment, patient }
+  })
 }
 
 export async function getWithPatientInfoById(

@@ -51,14 +51,14 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 }
 
 // TODO: implement medical record functionality
-export function getWithMedicalRecord(
+export function getWithMedicalRecords(
   trx: TrxOrDb,
-  opts: { patient_ids: number[] },
+  patient_ids: number[],
 ) {
   return trx
     .selectFrom('patients')
     .selectAll()
-    .where('id', 'in', opts.patient_ids)
+    .where('id', 'in', patient_ids)
     .execute()
 }
 
