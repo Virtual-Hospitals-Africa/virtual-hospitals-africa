@@ -143,9 +143,9 @@ export async function schedule(
 
 export function get(
   trx: TrxOrDb,
-  query: { 
+  query: {
     id?: number
-    health_worker_id?: number 
+    health_worker_id?: number
   },
 ): Promise<ReturnedSqlRow<Appointment>[]> {
   let builder = trx
@@ -166,16 +166,21 @@ export function get(
       'status',
       'scheduled_gcal_event_id',
       'appointments.created_at',
-      'appointments.updated_at'
+      'appointments.updated_at',
     ])
 
-  if (query.id) builder = builder.where('id', '=', query.id)
-  if (query.health_worker_id) builder = builder.where('health_worker_id', '=', query.health_worker_id)
+  if (query.id) builder = builder.where('appointments.id', '=', query.id)
+  if (query.health_worker_id) {
+    builder = builder.where('health_worker_id', '=', query.health_worker_id)
+  }
 
   return builder.execute()
 }
 
-export async function getById(trx: TrxOrDb, id: number): Promise<Maybe<ReturnedSqlRow<Appointment>>> {
+export async function getById(
+  trx: TrxOrDb,
+  id: number,
+): Promise<Maybe<ReturnedSqlRow<Appointment>>> {
   const result = await get(trx, { id })
   return result[0]
 }

@@ -1,15 +1,13 @@
+import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
-import * as appointments from '../../../db/models/appointments.ts'
-import PatientCard from '../../../components/patient.tsx'
+import * as appointments from '../../../../db/models/appointments.ts'
+import PatientCard from '../../../../components/patient.tsx'
 import {
   Appointment,
-  AvailabilityJSON,
   LoggedInHealthWorkerHandler,
-  Patient,
   ReturnedSqlRow,
-} from '../../../types.ts'
-import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
+} from '../../../../types.ts'
+import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 
 type AppointmentPageProps = {
   appointment: ReturnedSqlRow<Appointment>
