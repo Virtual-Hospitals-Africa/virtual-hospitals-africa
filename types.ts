@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { ColumnType, Generated, Transaction } from 'kysely'
+import { JSX } from 'preact/jsx-runtime'
 import { Handlers } from '$fresh/server.ts'
 import { Session } from 'fresh_session/session'
 import db, { DatabaseSchema } from './db/db.ts'
@@ -745,3 +746,12 @@ export type Clinic = {
   url?: string
   phone?: string
 }
+
+export type LinkProps = {
+  href: string
+  title: string
+  active: boolean
+  Icon: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
+}
+
+export type LinkDef = Omit<LinkProps, 'active'>

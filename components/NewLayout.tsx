@@ -2,6 +2,7 @@ import { Head } from '$fresh/runtime.ts'
 import { JSX } from 'preact'
 import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
+import { Sidebar } from './Sidebar.tsx'
 
 export type LayoutProps = {
   title: string
@@ -27,8 +28,13 @@ export default function NewLayout(props: LayoutProps) {
         />
       </Head>
       <body className='h-full relative'>
-        <Header title={props.title} imageUrl={props.imageUrl} isShowNav={props.isShowNav} />
-        {props.children}
+        <section>
+          <Sidebar route={props.route} />
+          <section className='md:pl-72'>
+            <Header title={props.title} imageUrl={props.imageUrl} isShowNav={props.isShowNav} />
+            {props.children}
+          </section>
+        </section>
         <BottomNav route={props.route} />
       </body>
     </>

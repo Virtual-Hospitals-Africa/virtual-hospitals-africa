@@ -8,7 +8,7 @@ export type HeaderProps = {
 export function Header({ title, imageUrl, isShowNav = true }: HeaderProps) {
   return (
     <nav class="bg-gray-800">
-      <div class="max-w-7xl w-full">
+      <div class="max-w-7xl w-full px-5">
         <div class="relative flex h-16 items-center justify-between">
           <div class="flex items-center gap-2">
             {isShowNav && (
