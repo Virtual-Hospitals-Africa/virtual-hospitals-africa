@@ -16,10 +16,7 @@ import * as $10 from './routes/logged-in.tsx'
 import * as $11 from './routes/logout.tsx'
 import * as $12 from './routes/patient-reset.ts'
 import * as $$0 from './islands/Menu.tsx'
-import * as $$1 from './islands/date-picker.tsx'
-import * as $$2 from './islands/month-picker.tsx'
-import * as $$3 from './islands/set-availability-form.tsx'
-import * as $$4 from './islands/year-picker.tsx'
+import * as $$1 from './islands/set-availability-form.tsx'
 
 const manifest = {
   routes: {
@@ -39,10 +36,7 @@ const manifest = {
   },
   islands: {
     './islands/Menu.tsx': $$0,
-    './islands/date-picker.tsx': $$1,
-    './islands/month-picker.tsx': $$2,
-    './islands/set-availability-form.tsx': $$3,
-    './islands/year-picker.tsx': $$4,
+    './islands/set-availability-form.tsx': $$1,
   },
   baseUrl: import.meta.url,
 }
