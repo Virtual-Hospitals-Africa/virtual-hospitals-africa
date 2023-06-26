@@ -33,6 +33,7 @@ export async function upsert(trx: TrxOrDb, info: {
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
+  location: Maybe<string>
 }): Promise<ReturnedSqlRow<Patient>> {
   const [patient] = await trx
     .insertInto('patients')
@@ -73,6 +74,7 @@ export function pick(patientState: PatientState) {
     date_of_birth: patientState.date_of_birth,
     national_id_number: patientState.national_id_number,
     conversation_state: patientState.conversation_state,
+    location: patientState.location
   }
 }
 

@@ -11,6 +11,7 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+  Location
 } from '../../types.ts'
 import {
   assertAllHarare,
@@ -152,6 +153,19 @@ const conversationStates: ConversationStates<
     nextState: 'find_nearest_facility:got_location',
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
+    async onExit(trx, patientState) {
+      const locationMessage: Location = JSON.parse(patientState.body)
+      const currentLocation: Location = {
+        longitude: locationMessage.longitude,
+        latitude: locationMessage.latitude
+      }
+      const location_string_format: string = JSON.stringify(currentLocation)
+      await patients.upsert(trx, {
+        ...patients.pick(patientState),
+        location: location_string_format,
+      })
+      return { ...patientState, location: location_string_format }
+    },
   },
   // change the name of got_location to nearest_facilities?
   'find_nearest_facility:got_location': {
