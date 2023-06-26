@@ -2,10 +2,14 @@ import { sql } from 'kysely'
 import {
   Appointment,
   AppointmentOfferedTime,
-  FullScheduledAppointment,
+  AppointmentWithAllPatientInfo,
+  Maybe,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import uniq from '../../util/uniq.ts'
+import { getWithMedicalRecords } from './patients.ts'
+import { assert } from 'std/_util/asserts.ts'
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -111,40 +115,28 @@ export async function upsert(
   return appointment
 }
 
-// TODO: just update the offered time
-export async function schedule(
+export function schedule(
   trx: TrxOrDb,
   opts: {
     appointment_offered_time_id: number
     scheduled_gcal_event_id: string
   },
-): Promise<FullScheduledAppointment> {
-  const result = await sql<FullScheduledAppointment>`
-    WITH appointment_offered_time_scheduled as (
-         UPDATE appointment_offered_times
-            SET scheduled_gcal_event_id = ${opts.scheduled_gcal_event_id}
-          WHERE id = ${opts.appointment_offered_time_id}
-      RETURNING id, appointment_id, health_worker_id, start
-    )
-
-    SELECT appointment_offered_time_scheduled.id as id,
-           appointments.reason as reason,
-           health_workers.name as health_worker_name,
-           appointment_offered_time_scheduled.start
-      FROM appointment_offered_time_scheduled
-      JOIN appointments ON appointment_offered_time_scheduled.appointment_id = appointments.id
-      JOIN patients ON appointments.patient_id = patients.id
-      JOIN health_workers ON appointment_offered_time_scheduled.health_worker_id = health_workers.id
-    `.execute(trx)
-
-  return result.rows[0]
-}
-
-export function get(
-  trx: TrxOrDb,
-  query: { health_worker_id: number },
 ) {
   return trx
+    .updateTable('appointment_offered_times')
+    .set({ scheduled_gcal_event_id: opts.scheduled_gcal_event_id })
+    .where('id', '=', opts.appointment_offered_time_id)
+    .execute()
+}
+
+export async function getWithPatientInfo(
+  trx: TrxOrDb,
+  query: {
+    id?: number
+    health_worker_id?: number
+  },
+) {
+  let builder = trx
     .selectFrom('appointment_offered_times')
     .innerJoin(
       'appointments',
@@ -152,20 +144,43 @@ export function get(
       'appointments.id',
     )
     .innerJoin('patients', 'appointments.patient_id', 'patients.id')
-    .where('health_worker_id', '=', query.health_worker_id)
     .select([
       'appointments.id',
-      'patients.name',
       'patient_id',
-      'phone_number',
       'start',
       'reason',
       'status',
       'scheduled_gcal_event_id',
+      'appointments.created_at',
+      'appointments.updated_at',
     ])
-    .execute()
+
+  if (query.id) builder = builder.where('appointments.id', '=', query.id)
+  if (query.health_worker_id) {
+    builder = builder.where('health_worker_id', '=', query.health_worker_id)
+  }
+
+  const appointments = await builder.execute()
+
+  const patient_ids = uniq(appointments.map((a) => a.patient_id))
+
+  const patients = await getWithMedicalRecords(trx, patient_ids)
+
+  return appointments.map((appointment) => {
+    const patient = patients.find((p) => p.id === appointment.patient_id)
+    assert(patient, `Could not find patient ${appointment.patient_id}`)
+    return { ...appointment, patient }
+  })
 }
 
-export function deleteAppointment(trx: TrxOrDb, id: number) {
+export async function getWithPatientInfoById(
+  trx: TrxOrDb,
+  id: number,
+): Promise<Maybe<AppointmentWithAllPatientInfo>> {
+  const result = await getWithPatientInfo(trx, { id })
+  return result[0]
+}
+
+export function remove(trx: TrxOrDb, id: number) {
   return trx.deleteFrom('appointments').where('id', '=', id).execute()
 }

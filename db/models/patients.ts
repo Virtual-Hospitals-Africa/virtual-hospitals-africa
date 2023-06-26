@@ -1,5 +1,6 @@
 import {
   Gender,
+  HasDemographicInfo,
   Maybe,
   Patient,
   PatientConversationState,
@@ -49,6 +50,18 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .execute()
 }
 
+// TODO: implement medical record functionality
+export function getWithMedicalRecords(
+  trx: TrxOrDb,
+  patient_ids: number[],
+) {
+  return trx
+    .selectFrom('patients')
+    .selectAll()
+    .where('id', 'in', patient_ids)
+    .execute()
+}
+
 export function pick(patientState: PatientState) {
   return {
     id: patientState.patient_id,
@@ -61,9 +74,9 @@ export function pick(patientState: PatientState) {
   }
 }
 
-export function hasDemographicData(
+export function hasDemographicInfo(
   patient: Partial<PatientDemographicInfo>,
-): patient is PatientDemographicInfo {
+): patient is HasDemographicInfo {
   return (
     !!patient.phone_number &&
     !!patient.name &&

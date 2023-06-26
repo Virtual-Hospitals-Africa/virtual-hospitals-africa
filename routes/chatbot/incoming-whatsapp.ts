@@ -1,6 +1,7 @@
 import { Handlers } from '$fresh/server.ts'
 import db from '../../db/db.ts'
 import * as conversations from '../../db/models/conversations.ts'
+import * as whatsapp from '../../external-clients/whatsapp.ts'
 import { WhatsAppIncomingMessage } from '../../types.ts'
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
@@ -27,6 +28,8 @@ export const handler: Handlers = {
     const incomingMessage: WhatsAppIncomingMessage = await req.json()
 
     console.log(JSON.stringify(incomingMessage))
+
+    // {"object":"whatsapp_business_account","entry":[{"id":"103992419238259","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"263784010987","phone_number_id":"100667472910572"},"contacts":[{"profile":{"name":"Will Weiss"},"wa_id":"12032535603"}],"messages":[{"from":"12032535603","id":"wamid.HBgLMTIwMzI1MzU2MDMVAgASGBQzQTg1RUZDMDJFNDE2NDg2MkZBQgA=","timestamp":"1687807194","type":"audio","audio":{"mime_type":"audio/ogg; codecs=opus","sha256":"sQMkSRNvd9udZqPeZfO5T/UOMT1zYEh//aitgp9dS8c=","id":"1834915043569604","voice":true}}]},"field":"messages"}]}]}
 
     if (incomingMessage.object !== 'whatsapp_business_account') {
       console.error('Object is not whatsapp_business_account')
@@ -69,10 +72,18 @@ export const handler: Handlers = {
         })
       }
 
+      if (message.type === 'audio') {
+        const foo = whatsapp.get(message.audio.id)
+        console.log('HERE IS YOUR MEDIA', foo)
+        return new Response('OK')
+      }
+
       const body = message.type === 'text'
         ? message.text.body
         : message.type === 'location' // TODO: check the location format
         ? JSON.stringify(message.location)
+        // : message.type === 'audio'
+        // ? message.audio
         : message.interactive.type === 'list_reply'
         ? message.interactive.list_reply.id
         : message.interactive.button_reply.id
@@ -87,3 +98,5 @@ export const handler: Handlers = {
     return new Response('OK')
   },
 }
+
+// TODO handle messages like this {"object":"whatsapp_business_account","entry":[{"id":"103214822804490","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"263712093355","phone_number_id":"113792741736396"},"messages":[{"from":"263782057099","id":"wamid.HBgMMjYzNzgyMDU3MDk5FQIAEhgSNDY4MDg4NzBCQkEyRjg3Q0M5AA==","timestamp":"1687676124","system":{"body":"User A changed from ‎263782057099 to 263719057099‎","wa_id":"263719057099","type":"user_changed_number"},"type":"system"}]},"field":"messages"}]}]}

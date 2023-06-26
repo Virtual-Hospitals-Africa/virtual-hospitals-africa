@@ -67,6 +67,24 @@ export type PatientDemographicInfo = {
   national_id_number: Maybe<string>
 }
 
+export type HasDemographicInfo = {
+  phone_number: string
+  name: string
+  gender: Gender
+  date_of_birth: string
+  national_id_number: string
+}
+
+// TODO: define this
+export type PatientMedicalRecord = {
+  foo: string
+}
+
+export type PatientWithMedicalRecord = {
+  patient: Patient
+  medical_record: PatientMedicalRecord
+}
+
 export type AppointmentOfferedTime = {
   appointment_id: number
   health_worker_id: number
@@ -220,6 +238,11 @@ export type Appointment = {
   status: AppointmentStatus
 }
 
+export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
+  scheduled_gcal_event_id: Maybe<string>
+  patient: Patient
+}
+
 export type MatchingState<US extends UserState<any>> = {
   nextState: ConversationStateHandlerNextState<US>
   onExit?: (
@@ -227,6 +250,67 @@ export type MatchingState<US extends UserState<any>> = {
     userState: US,
   ) => Promise<US>
 }
+
+export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }
+
+export type WhatsAppListReplyMessage = {
+  type: 'interactive'
+  interactive: {
+    type: 'list_reply'
+    list_reply: {
+      id: string
+      title: string
+      description: string
+    }
+  }
+}
+
+export type WhatsAppButtonReplyMessage = {
+  type: 'interactive'
+  interactive: {
+    type: 'button_reply'
+    button_reply: {
+      id: string
+      title: string
+    }
+  }
+}
+
+export type WhatsAppLocationMessage = {
+  type: 'location' // TODO: check location message format
+  location: {
+    address?: string // full address
+    latitude: number // floating-point number
+    longitude: number
+    name: string // first line of address
+    url: string
+  }
+}
+
+export type WhatsAppVoiceMessage = {
+  type: 'audio'
+  audio: {
+    id: string
+    voice: true
+    mime_type: 'audio/ogg; codecs=opus'
+    sha256: string
+  }
+}
+
+export type WhatsAppMessage =
+  & {
+    from: string // phone number
+    id: string
+    timestamp: string // '1673943918'
+  }
+  & (
+    | WhatsAppTextMessage
+    | WhatsAppListReplyMessage
+    | WhatsAppButtonReplyMessage
+    | WhatsAppLocationMessage
+    | WhatsAppVoiceMessage
+  )
+
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'
   entry: [
@@ -263,47 +347,7 @@ export type WhatsAppIncomingMessage = {
                 category: 'business_initiated'
               }
             }>
-            messages?: ReadonlyArray<
-              & {
-                from: string // phone number
-                id: string
-                timestamp: string // '1673943918'
-              }
-              & (
-                | { type: 'text'; text: { body: string } }
-                | {
-                  type: 'interactive'
-                  interactive: {
-                    type: 'list_reply'
-                    list_reply: {
-                      id: string
-                      title: string
-                      description: string
-                    }
-                  }
-                }
-                | {
-                  type: 'interactive'
-                  interactive: {
-                    type: 'button_reply'
-                    button_reply: {
-                      id: string
-                      title: string
-                    }
-                  }
-                }
-                | {
-                  type: 'location' // TODO: check location message format
-                  location: {
-                    address?: string // full address
-                    latitude: number // floating-point number
-                    longitude: number
-                    name: string // first line of address
-                    url: string
-                  }
-                }
-              )
-            >
+            messages?: ReadonlyArray<WhatsAppMessage>
           }
           field: 'messages'
         },
@@ -606,17 +650,7 @@ export type HealthWorkerAvailability = {
   availability: Availability
 }
 
-export type ScheduledAppointment = {
-  appointment_offered_time_id: number
-  gcal_event_id: string
-}
-
-export type FullScheduledAppointment = {
-  id: number
-  reason: string
-}
-
-export type WhatsappMessageReceived = {
+export type WhatsAppMessageReceived = {
   patient_id: number
   whatsapp_id: string
   body: string
@@ -626,7 +660,7 @@ export type WhatsappMessageReceived = {
   error_message: Maybe<string>
 }
 
-export type WhatsappMessageSent = {
+export type WhatsAppMessageSent = {
   patient_id: number
   whatsapp_id: string
   body: string

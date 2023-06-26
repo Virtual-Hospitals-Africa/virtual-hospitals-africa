@@ -2,7 +2,7 @@ import { PatientState, TrxOrDb } from '../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import * as google from '../../external-clients/google.ts'
 import { getWithTokensById } from '../../db/models/health_workers.ts'
-import { deleteAppointment } from '../../db/models/appointments.ts'
+import { remove } from '../../db/models/appointments.ts'
 
 // This should remove the scheduled appointment from the database and from google calendar
 export async function cancelAppointment(
@@ -13,7 +13,7 @@ export async function cancelAppointment(
     patientState.scheduling_appointment_id,
     'No scheduling_appointment_id found in patientState',
   )
-  await deleteAppointment(trx, patientState.scheduling_appointment_id)
+  await remove(trx, patientState.scheduling_appointment_id)
 
   const acceptedTime = patientState.appointment_offered_times.find((aot) =>
     !aot.patient_declined

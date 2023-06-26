@@ -1,3 +1,4 @@
+import { assert } from 'std/_util/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
@@ -5,7 +6,7 @@ import {
   HealthWorkerAppointment,
   LoggedInHealthWorkerHandler,
 } from '../../types.ts'
-import { get as getAppointments } from '../../db/models/appointments.ts'
+import { getWithPatientInfo as getAppointments } from '../../db/models/appointments.ts'
 import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { Container } from '../../components/library/Container.tsx'
@@ -28,6 +29,7 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
       },
     )
 
+    assert(ctx.state.session.data.id)
     const appointmentsOfHealthWorker = await getAppointments(ctx.state.trx, {
       health_worker_id: ctx.state.session.data.id,
     })
@@ -37,7 +39,10 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
 
     const appointmentsOfHealthWorkerWithGcalEventIds =
       appointmentsOfHealthWorker.filter(
-        (appointment) => gcalEventIds.has(appointment.scheduled_gcal_event_id),
+        (appointment) => (
+          assert(appointment.scheduled_gcal_event_id),
+            gcalEventIds.has(appointment.scheduled_gcal_event_id)
+        ),
       )
 
     const appointments = appointmentsOfHealthWorkerWithGcalEventIds.map(
@@ -58,12 +63,7 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
 
         return {
           id: appt.id,
-          patient: {
-            id: appt.patient_id,
-            name: appt.name!,
-            age: 30, // TODO: calculate this from patient DOB
-            phone_number: appt.phone_number,
-          },
+          patient: { ...appt.patient, age: 30 },
           durationMinutes: Math.round(duration / (1000 * 60)),
           status: appt.status,
           start: parseDate(startTime, 'numeric'),

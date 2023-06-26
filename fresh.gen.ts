@@ -8,8 +8,8 @@ import * as $2 from './routes/api/set-availability.tsx'
 import * as $3 from './routes/app.tsx'
 import * as $4 from './routes/app/_middleware.tsx'
 import * as $5 from './routes/app/calendar.tsx'
-import * as $6 from './routes/app/calendar/set-availability.tsx'
-import * as $7 from './routes/app/employees.tsx'
+import * as $6 from './routes/app/calendar/appointments/[id].tsx'
+import * as $7 from './routes/app/calendar/set-availability.tsx'
 import * as $8 from './routes/chatbot/incoming-whatsapp.ts'
 import * as $9 from './routes/full-reset.ts'
 import * as $10 from './routes/index.tsx'
@@ -27,8 +27,8 @@ const manifest = {
     './routes/app.tsx': $3,
     './routes/app/_middleware.tsx': $4,
     './routes/app/calendar.tsx': $5,
-    './routes/app/calendar/set-availability.tsx': $6,
-    './routes/app/employees.tsx': $7,
+    './routes/app/calendar/appointments/[id].tsx': $6,
+    './routes/app/calendar/set-availability.tsx': $7,
     './routes/chatbot/incoming-whatsapp.ts': $8,
     './routes/full-reset.ts': $9,
     './routes/index.tsx': $10,
