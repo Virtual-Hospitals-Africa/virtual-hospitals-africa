@@ -1,5 +1,3 @@
-import { LinkDef } from '../types.ts'
-
-export default function matchActiveLink(links: LinkDef[], route: string) {
-  return links.find((link: LinkDef) => route.startsWith(link.href))
+export default function matchActiveLink<T extends { href: string }>(links: T[], route: string) {
+  return links.find((link: T) => route.startsWith(link.href))
 }

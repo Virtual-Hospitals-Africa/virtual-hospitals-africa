@@ -50,7 +50,7 @@ const bottomNavLinksByLength = sortBy(
 )
 
 export default function BottomNav({ route }: { route: string }) {
-  const activeLink = matchActiveLink(bottomNavLinksByLength, route)
+  const activeLink = matchActiveLink<LinkDef>(bottomNavLinksByLength, route)
   return (
     <footer className='absolute bottom-0 w-full flex justify-around gap-2 p-1 md:hidden'>
       {bottomNavLinks.map((link) => (

@@ -39,7 +39,7 @@ const navLinks: LinkDef[] = [
 
 
 export function Sidebar(props: SidebarProps) {
-  const activeLink = matchActiveLink(navLinks, props.route)
+  const activeLink = matchActiveLink<LinkDef>(navLinks, props.route)
   return (
     <div className='hidden fixed inset-y-0 z-50 md:flex w-72 md:flex-col'>
       <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-5 pb-4'>

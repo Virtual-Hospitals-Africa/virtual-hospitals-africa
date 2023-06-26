@@ -755,3 +755,9 @@ export type LinkProps = {
 }
 
 export type LinkDef = Omit<LinkProps, 'active'>
+
+export type TabProps = Omit<LinkProps, 'Icon'> & {
+  number?: number
+}
+
+export type TabDef = Omit<TabProps, 'active'>
