@@ -571,11 +571,10 @@ export type Employee = {
   facility_id: integer
 }
 
-export type Profession = 
-  | 'admin' 
-  | 'doctor' 
+export type Profession =
+  | 'admin'
+  | 'doctor'
   | 'nurse'
-
 
 export type HealthWorker = {
   name: string

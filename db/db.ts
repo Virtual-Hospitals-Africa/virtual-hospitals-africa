@@ -8,13 +8,13 @@ import {
 import {
   Appointment,
   AppointmentOfferedTime,
+  Employee,
   HealthWorker,
   HealthWorkerGoogleToken,
   Patient,
   SqlRow,
   WhatsappMessageReceived,
   WhatsappMessageSent,
-  Employee
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
