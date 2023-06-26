@@ -73,19 +73,25 @@ export const handler: Handlers = {
       }
 
       if (message.type === 'audio') {
-        const foo = await whatsapp.get(message.audio.id)
-        console.log('HERE IS YOUR MEDIA', foo)
+        const mediaResponse = await whatsapp.get(message.audio.id)
+        console.log('HERE IS YOUR audio', mediaResponse)
         return new Response('OK')
       } else if (message.type === 'image') {
+        const mediaResponse = await whatsapp.get(message.image.id)
+        console.log('HERE IS YOUR image', mediaResponse)
         // TODO handle this
         return new Response('OK')
       } else if (message.type === 'video') {
-        // TODO handle this
-        return new Response('OK')
-      } else if (message.type === 'contacts') {
+        const mediaResponse = await whatsapp.get(message.video.id)
+        console.log('HERE IS YOUR video', mediaResponse)
         // TODO handle this
         return new Response('OK')
       } else if (message.type === 'document') {
+        const mediaResponse = await whatsapp.get(message.document.id)
+        console.log('HERE IS YOUR document', mediaResponse)
+        // TODO handle this
+        return new Response('OK')
+      } else if (message.type === 'contacts') {
         // TODO handle this
         return new Response('OK')
       }
