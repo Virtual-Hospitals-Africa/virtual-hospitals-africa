@@ -73,8 +73,20 @@ export const handler: Handlers = {
       }
 
       if (message.type === 'audio') {
-        const foo = whatsapp.get(message.audio.id)
+        const foo = await whatsapp.get(message.audio.id)
         console.log('HERE IS YOUR MEDIA', foo)
+        return new Response('OK')
+      } else if (message.type === 'image') {
+        // TODO handle this
+        return new Response('OK')
+      } else if (message.type === 'video') {
+        // TODO handle this
+        return new Response('OK')
+      } else if (message.type === 'contacts') {
+        // TODO handle this
+        return new Response('OK')
+      } else if (message.type === 'document') {
+        // TODO handle this
         return new Response('OK')
       }
 
