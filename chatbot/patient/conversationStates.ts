@@ -1,3 +1,4 @@
+import { Options } from '$fresh/plugins/twind.ts';
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   ConversationStateHandlerListAction,
@@ -303,7 +304,7 @@ const conversationStates: ConversationStates<
     prompt(patientState: PatientState): string {
       return `Got it, ${patientState.national_id_number}. What is the reason you want to schedule an appointment?`
     },
-    nextState: 'onboarded:make_appointment:confirm_details',
+    nextState: 'onboarded:make_appointment:choose_upload_media_type',
     async onExit(
       trx,
       patientState,
@@ -322,6 +323,74 @@ const conversationStates: ConversationStates<
         },
       }
     },
+  },
+  'onboarded:make_appointment:choose_upload_media_type': {
+    type: 'select',
+    prompt(patientState:PatientState): string {
+      return `Got it, ${patientState.scheduling_appointment_reason}. Please select the approproiate option to submit media to explain your situation to our doctor.`
+    },
+    options: [
+      {
+        id: 'photo',
+        title: 'Photo',
+        nextState: 'onboarded:make_appointment:upload_photo'
+      },
+      {
+        id: 'video',
+        title: 'Video',
+        nextState: 'onboarded:make_appointment:upload_video'
+      },
+      {
+        id: 'voice',
+        title: 'Voice Note',
+        nextState: 'onboarded:make_appointment:upload_voice'
+      },
+      {
+        id: 'no_media',
+        title: 'No Media',
+        nextState: 'onboarded:make_appointment:confirm_details'
+      }
+    ]
+  },
+  'onboarded:make_appointment:upload_photo': {
+    type: 'string',
+    prompt: 'Please upload your photo here to our doctor',
+    nextState: 'onboarded:make_appointment:upload_more_media',
+    async onExit(trx, patientState){
+      //TODO Extract the photo from the whatsapp id returned and insert the binary data into our db.
+    }
+  },
+  'onboarded:make_appointment:upload_video': {
+    type: 'string',
+    prompt: 'Please upload your video here to our doctor',
+    nextState: 'onboarded:make_appointment:upload_more_media',
+    async onExit(trx, patientState){
+      //TODO Extract the video from the whatsapp id returned and insert the binary data into our db.
+    }
+  },
+  'onboarded:make_appointment:upload_voice': {
+    type: 'string',
+    prompt: 'Please upload your voice note here to our doctor',
+    nextState: 'onboarded:make_appointment:upload_more_media',
+    async onExit(trx, patientState){
+      //TODO Extract the voice from the whatsapp id returned and insert the binary data into our db.
+    }
+  },
+  'onboarded:make_appointment:upload_more_media': {
+    type: 'select',
+    prompt: 'Do you want to upload more media to our doctor?',
+    options: [
+      {
+        id: 'more_media',
+        title: 'Yes',
+        nextState: 'onboarded:make_appointment:choose_upload_media_type'
+      },
+      {
+        id: 'no_more_media',
+        title: 'No',
+        nextState: 'onboarded:make_appointment:confirm_details'
+      }
+    ]
   },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
