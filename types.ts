@@ -287,22 +287,29 @@ export type WhatsAppLocationMessage = {
   }
 }
 
-// export type WhatsAppVoiceMessage = {
-//   voice: true
-// }
-
-export type WhatsAppMessage = {
-  from: string // phone number
-  id: string
-  timestamp: string // '1673943918'
+export type WhatsAppVoiceMessage = {
+  type: 'audio'
+  audio: {
+    id: string
+    voice: true
+    mime_type: 'audio/ogg; codecs=opus'
+    sha256: string
+  }
 }
-& (
-  | WhatsAppTextMessage
-  | WhatsAppListReplyMessage
-  | WhatsAppButtonReplyMessage
-  | WhatsAppLocationMessage
-  // | WhatsAppVoiceMessage
-)
+
+export type WhatsAppMessage =
+  & {
+    from: string // phone number
+    id: string
+    timestamp: string // '1673943918'
+  }
+  & (
+    | WhatsAppTextMessage
+    | WhatsAppListReplyMessage
+    | WhatsAppButtonReplyMessage
+    | WhatsAppLocationMessage
+    | WhatsAppVoiceMessage
+  )
 
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'
