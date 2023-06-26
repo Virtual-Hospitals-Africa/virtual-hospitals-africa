@@ -14,18 +14,6 @@ const postMessageRoute = `https://graph.facebook.com/v17.0/${
 }/messages`
 const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
 
-export async function getFoo() {
-  const response = await fetch(
-    `https://graph.facebook.com/v17.0/12032535603/media`,
-    {
-      method: 'get',
-      headers: { Authorization, 'Content-Type': 'application/json' },
-    },
-  )
-
-  return response.json()
-}
-
 export function sendMessage({
   message,
   phone_number,
@@ -174,4 +162,13 @@ export function sendMessageWithInteractiveList(opts: {
       action: opts.action,
     },
   })
+}
+
+export async function getWhatsApp(path: string) {
+  const mediaUrl = `https://graph.facebook.com/v17.0/${path}`
+  const response = await fetch(mediaUrl,  {
+    method: 'GET',
+    headers: { Authorization, 'Content-Type': 'application/json' },
+  })
+  return response.json()
 }

@@ -250,6 +250,60 @@ export type MatchingState<US extends UserState<any>> = {
     userState: US,
   ) => Promise<US>
 }
+
+export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }
+
+export type WhatsAppListReplyMessage = {
+  type: 'interactive'
+  interactive: {
+    type: 'list_reply'
+    list_reply: {
+      id: string
+      title: string
+      description: string
+    }
+  }
+}
+
+export type WhatsAppButtonReplyMessage = {
+  type: 'interactive'
+  interactive: {
+    type: 'button_reply'
+    button_reply: {
+      id: string
+      title: string
+    }
+  }
+}
+
+export type WhatsAppLocationMessage = {
+  type: 'location' // TODO: check location message format
+  location: {
+    address?: string // full address
+    latitude: number // floating-point number
+    longitude: number
+    name: string // first line of address
+    url: string
+  }
+}
+
+// export type WhatsAppVoiceMessage = {
+//   voice: true
+// }
+
+export type WhatsAppMessage = {
+  from: string // phone number
+  id: string
+  timestamp: string // '1673943918'
+}
+& (
+  | WhatsAppTextMessage
+  | WhatsAppListReplyMessage
+  | WhatsAppButtonReplyMessage
+  | WhatsAppLocationMessage
+  // | WhatsAppVoiceMessage
+)
+
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'
   entry: [
@@ -286,47 +340,7 @@ export type WhatsAppIncomingMessage = {
                 category: 'business_initiated'
               }
             }>
-            messages?: ReadonlyArray<
-              & {
-                from: string // phone number
-                id: string
-                timestamp: string // '1673943918'
-              }
-              & (
-                | { type: 'text'; text: { body: string } }
-                | {
-                  type: 'interactive'
-                  interactive: {
-                    type: 'list_reply'
-                    list_reply: {
-                      id: string
-                      title: string
-                      description: string
-                    }
-                  }
-                }
-                | {
-                  type: 'interactive'
-                  interactive: {
-                    type: 'button_reply'
-                    button_reply: {
-                      id: string
-                      title: string
-                    }
-                  }
-                }
-                | {
-                  type: 'location' // TODO: check location message format
-                  location: {
-                    address?: string // full address
-                    latitude: number // floating-point number
-                    longitude: number
-                    name: string // first line of address
-                    url: string
-                  }
-                }
-              )
-            >
+            messages?: ReadonlyArray<WhatsAppMessage>
           }
           field: 'messages'
         },

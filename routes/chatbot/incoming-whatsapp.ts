@@ -28,6 +28,8 @@ export const handler: Handlers = {
 
     console.log(JSON.stringify(incomingMessage))
 
+    // {"object":"whatsapp_business_account","entry":[{"id":"103992419238259","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"263784010987","phone_number_id":"100667472910572"},"contacts":[{"profile":{"name":"Will Weiss"},"wa_id":"12032535603"}],"messages":[{"from":"12032535603","id":"wamid.HBgLMTIwMzI1MzU2MDMVAgASGBQzQTg1RUZDMDJFNDE2NDg2MkZBQgA=","timestamp":"1687807194","type":"audio","audio":{"mime_type":"audio/ogg; codecs=opus","sha256":"sQMkSRNvd9udZqPeZfO5T/UOMT1zYEh//aitgp9dS8c=","id":"1834915043569604","voice":true}}]},"field":"messages"}]}]}
+
     if (incomingMessage.object !== 'whatsapp_business_account') {
       console.error('Object is not whatsapp_business_account')
       return new Response('Unexpected object', { status: 400 })
@@ -68,6 +70,7 @@ export const handler: Handlers = {
           status: 400,
         })
       }
+
 
       const body = message.type === 'text'
         ? message.text.body
