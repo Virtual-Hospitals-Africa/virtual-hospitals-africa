@@ -1,14 +1,23 @@
+import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import { LoggedInHealthWorkerHandler } from '../../types.ts'
 import HealthWorkerTable from '../../components/health_worker/Table.tsx'
-import isAdmin from '../../util/isAdmin.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
 
 export const handler: LoggedInHealthWorkerHandler<
   { isAdmin: boolean }
 > = {
-  async GET(req, ctx) {
-    const adminState = await isAdmin(ctx.state)
-    return ctx.render({ isAdmin: adminState })
+  async GET(_req, ctx) {
+    const healthWorker = ctx.state.session.data
+    assert(
+      health_workers.isHealthWorkerWithGoogleTokens(healthWorker),
+      'Invalid health worker',
+    )
+    const isAdmin = await health_workers.isAdmin(
+      ctx.state.trx,
+      { id: healthWorker.id },
+    )
+    return ctx.render({ isAdmin })
   },
 }
 
