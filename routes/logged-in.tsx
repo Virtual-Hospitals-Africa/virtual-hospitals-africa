@@ -23,6 +23,7 @@ export async function initializeHealthWorker(
   return health_workers.upsertWithGoogleCredentials(db, {
     name: profile.name,
     email: profile.email,
+    avatar_url: profile.picture,
     gcal_appointments_calendar_id: calendars.vhaAppointmentsCalendar.id,
     gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
     access_token: googleClient.tokens.access_token,

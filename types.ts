@@ -672,6 +672,7 @@ export type Profession =
 export type HealthWorker = {
   name: string
   email: string
+  avatar_url: string
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
 }
