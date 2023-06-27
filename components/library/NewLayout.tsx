@@ -1,6 +1,6 @@
 import { Head } from '$fresh/runtime.ts'
 import { JSX } from 'preact'
-import BottomNav from './library/BottomNav.tsx'
+import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
 

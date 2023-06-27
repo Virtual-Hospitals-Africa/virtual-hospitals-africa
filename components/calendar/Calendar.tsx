@@ -1,4 +1,7 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '../heroicons.tsx'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from '../library/icons/heroicons.tsx'
 import cls from '../../util/cls.ts'
 import { JSX } from 'preact/jsx-runtime'
 import { monthName, numberOfDaysInMonth } from '../../util/date.ts'
