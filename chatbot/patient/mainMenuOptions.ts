@@ -6,12 +6,12 @@ import {
 export default [
   {
     id: 'make_appointment',
-    title: 'Make appointment',
+    title: 'Make Appointment',
     nextState: 'not_onboarded:make_appointment:enter_name' as const,
   },
   {
-    id: 'find_nearest_clinic',
-    title: 'Find Nearest Clinic',
-    nextState: 'find_nearest_clinic:share_location' as const,
+    id: 'find_nearest_facility',
+    title: 'Nearest Facility',
+    nextState: 'find_nearest_facility:share_location' as const,
   },
 ] as ConversationStateHandlerSelectOption<PatientState>[]

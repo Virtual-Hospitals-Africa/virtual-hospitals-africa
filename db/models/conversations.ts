@@ -1,7 +1,7 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
-import * as clinics from './clinics.ts'
+import * as facilities from './facilities.ts'
 import {
-  LocationMessage,
+  Location,
   PatientConversationState,
   PatientState,
   ReturnedSqlRow,
@@ -134,10 +134,10 @@ export async function getUnhandledPatientMessages(
   for (const row of result.rows) {
     // TODO do this all in the above query
     if (
-      row.conversation_state.startsWith('find_nearest_clinic')
+      row.conversation_state.startsWith('find_nearest_facility')
     ) {
-      const location: LocationMessage = JSON.parse(row.body)
-      row.nearest_clinics = await clinics.nearest(trx, location)
+      const location: Location = JSON.parse(row.body)
+      row.nearest_facilities = await facilities.nearest(trx, location)
     }
 
     rows.push({

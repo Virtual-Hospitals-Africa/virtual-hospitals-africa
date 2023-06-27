@@ -15,7 +15,9 @@ const badgeStyles: Record<BadgeColor, string> = {
 export default function Badge({ content, color = 'gray' }: BadgeProps) {
   return (
     <div
-      className={`'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium ${badgeStyles[color]}`}
+      className={`'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium ${
+        badgeStyles[color]
+      }`}
     >
       {content}
     </div>

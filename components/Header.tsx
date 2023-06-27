@@ -1,17 +1,20 @@
 export type HeaderProps = {
-  title: string,
+  title: string
   imageUrl?: string
   isShowNav?: boolean
 }
 
 export function Header({ title, imageUrl, isShowNav = true }: HeaderProps) {
   return (
-    <nav className="bg-gray-800">
-      <div className="max-w-7xl w-full px-5">
-        <div className="relative flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
+    <nav className='bg-gray-800'>
+      <div className='max-w-7xl w-full px-5'>
+        <div className='relative flex h-16 items-center justify-between'>
+          <div className='flex items-center gap-2'>
             {isShowNav && (
-              <a className='back' onClick={() => window.history.back()}>
+              <a
+                className='back'
+                onClick={() => window.history.back()}
+              >
                 <svg
                   className='back-arrow w-4 h-4'
                   viewBox='0 0 16 16'
@@ -24,19 +27,43 @@ export function Header({ title, imageUrl, isShowNav = true }: HeaderProps) {
                 </svg>
               </a>
             )}
-            <h6 className="text-xl">{title}</h6>
+            <h6 className='text-xl'>{title}</h6>
           </div>
-          <div className="absolute inset-y-0 right-0 flex gap-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button type="button" className="rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <span className="sr-only">View notifications</span>
-              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          <div className='absolute inset-y-0 right-0 flex gap-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
+            <button
+              type='button'
+              className='rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+            >
+              <span className='sr-only'>View notifications</span>
+              <svg
+                className='h-6 w-6'
+                fill='none'
+                viewBox='0 0 24 24'
+                stroke-width='1.5'
+                stroke='currentColor'
+                aria-hidden='true'
+              >
+                <path
+                  stroke-linecap='round'
+                  stroke-linejoin='round'
+                  d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+                />
               </svg>
             </button>
             {imageUrl && (
-              <button type="button" className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                <span className="sr-only">To user profile</span>
-                <img className="h-8 w-8 rounded-full" src={imageUrl} alt="user avatar" />
+              <button
+                type='button'
+                className='flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+                id='user-menu-button'
+                aria-expanded='false'
+                aria-haspopup='true'
+              >
+                <span className='sr-only'>To user profile</span>
+                <img
+                  className='h-8 w-8 rounded-full'
+                  src={imageUrl}
+                  alt='user avatar'
+                />
               </button>
             )}
           </div>

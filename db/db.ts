@@ -8,12 +8,13 @@ import {
 import {
   Appointment,
   AppointmentOfferedTime,
+  Employee,
   HealthWorker,
   HealthWorkerGoogleToken,
   Patient,
   SqlRow,
-  WhatsappMessageReceived,
-  WhatsappMessageSent,
+  WhatsAppMessageReceived,
+  WhatsAppMessageSent,
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
@@ -23,8 +24,9 @@ export type DatabaseSchema = {
   health_workers: SqlRow<HealthWorker>
   health_worker_google_tokens: SqlRow<HealthWorkerGoogleToken>
   patients: SqlRow<Patient>
-  whatsapp_messages_received: SqlRow<WhatsappMessageReceived>
-  whatsapp_messages_sent: SqlRow<WhatsappMessageSent>
+  employment: SqlRow<Employee>
+  whatsapp_messages_received: SqlRow<WhatsAppMessageReceived>
+  whatsapp_messages_sent: SqlRow<WhatsAppMessageSent>
 }
 
 // deno-lint-ignore no-explicit-any

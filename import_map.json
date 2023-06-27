@@ -1,21 +1,20 @@
 {
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.1.5/",
+    "$fresh/": "https://deno.land/x/fresh@1.2.0/",
     "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
     "kysely-deno-postgres": "https://deno.land/x/kysely_deno_postgres@v0.4.0/mod.ts",
-    "preact": "https://esm.sh/preact@10.13.1",
-    "preact/hooks": "https://esm.sh/preact@10.13.1/hooks",
-    "preact/": "https://esm.sh/preact@10.13.1/",
-    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@5.2.6",
+    "preact": "https://esm.sh/preact@10.15.1",
+    "preact/hooks": "https://esm.sh/preact@10.15.1/hooks",
+    "preact/": "https://esm.sh/preact@10.15.1/",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.1.0",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.1.3",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.2.3",
     "fresh_session": "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts",
     "fresh_session/session": "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/session.ts",
-    "redis": "https://deno.land/x/redis@v0.29.2/mod.ts",
-    "std/": "https://deno.land/std@0.188.0/",
+    "redis": "https://deno.land/x/redis@v0.30.0/mod.ts",
+    "std/": "https://deno.land/std@0.190.0/",
     "dotenv": "https://deno.land/x/dotenv@v3.2.2/load.ts",
     "twind": "https://esm.sh/twind@0.16.19",
-    "twind/": "https://esm.sh/twind@0.16.19/",
-    "faker": "https://deno.land/x/deno_faker@v1.0.3/mod.ts"
+    "twind/": "https://esm.sh/twind@0.16.19/"
   }
 }

@@ -26,6 +26,11 @@ export type ReturnedSqlRow<T> = {
   updated_at: Date
 } & T
 
+export type Location = {
+  longitude: number
+  latitude: number
+}
+
 export type Gender = 'male' | 'female' | 'other'
 
 export type UserState<CS> = {
@@ -46,9 +51,9 @@ export type PatientConversationState =
   | 'onboarded:appointment_scheduled'
   | 'onboarded:cancel_appointment'
   | 'onboarded:main_menu'
-  | 'find_nearest_clinic:share_location'
-  | 'find_nearest_clinic:got_location'
-  | 'find_nearest_clinic:send_clinic_location'
+  | 'find_nearest_facility:share_location'
+  | 'find_nearest_facility:got_location'
+  | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
 export type Patient = {
@@ -61,6 +66,24 @@ export type PatientDemographicInfo = {
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
+}
+
+export type HasDemographicInfo = {
+  phone_number: string
+  name: string
+  gender: Gender
+  date_of_birth: string
+  national_id_number: string
+}
+
+// TODO: define this
+export type PatientMedicalRecord = {
+  foo: string
+}
+
+export type PatientWithMedicalRecord = {
+  patient: Patient
+  medical_record: PatientMedicalRecord
 }
 
 export type AppointmentOfferedTime = {
@@ -91,9 +114,9 @@ export type PatientState = {
   >[]
   created_at: Date
   updated_at: Date
-  nearest_clinics?: ReturnedSqlRow<Clinic>[]
-  nearest_clinic_name?: string
-  selectedClinic?: Clinic
+  nearest_facilities?: ReturnedSqlRow<Facility>[]
+  nearest_facility_name?: string
+  selectedFacility?: Facility
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -216,6 +239,11 @@ export type Appointment = {
   status: AppointmentStatus
 }
 
+export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
+  scheduled_gcal_event_id: Maybe<string>
+  patient: Patient
+}
+
 export type MatchingState<US extends UserState<any>> = {
   nextState: ConversationStateHandlerNextState<US>
   onExit?: (
@@ -223,6 +251,116 @@ export type MatchingState<US extends UserState<any>> = {
     userState: US,
   ) => Promise<US>
 }
+
+export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }
+
+export type WhatsAppListReplyMessage = {
+  type: 'interactive'
+  interactive: {
+    type: 'list_reply'
+    list_reply: {
+      id: string
+      title: string
+      description: string
+    }
+  }
+}
+
+export type WhatsAppButtonReplyMessage = {
+  type: 'interactive'
+  interactive: {
+    type: 'button_reply'
+    button_reply: {
+      id: string
+      title: string
+    }
+  }
+}
+
+export type WhatsAppLocationMessage = {
+  type: 'location' // TODO: check location message format
+  location: {
+    address?: string // full address
+    latitude: number // floating-point number
+    longitude: number
+    name: string // first line of address
+    url: string
+  }
+}
+
+export type WhatsAppAudioMessage = {
+  type: 'audio'
+  audio: {
+    id: string
+    voice: boolean
+    mime_type: 'audio/ogg; codecs=opus'
+    sha256: string
+  }
+}
+
+export type WhatsAppImageMessage = {
+  type: 'image'
+  image: {
+    id: string
+    mime_type: 'image/jpeg'
+    sha256: string
+  }
+}
+
+export type WhatsAppVideoMessage = {
+  type: 'video'
+  video: {
+    id: string
+    mime_type: 'video/mp4'
+    sha256: string
+  }
+}
+
+export type WhatsAppContactsMessage = {
+  type: 'contacts'
+  contacts: {
+    name: {
+      first_name: string
+      last_name: string
+      formatted_name: string
+    }
+    phones: {
+      phone: string // "+1 (203) 253-5603",
+      wa_id: string // "12032535603",
+      type: 'CELL'
+    }[]
+    emails: { email: string; type: 'HOME' }[]
+  }[]
+}
+
+export type WhatsAppDocumentsMessage = {
+  type: 'document'
+  document: {
+    id: string
+    sha256: string
+    filename: string
+    mime_type: string
+  }
+}
+
+export type WhatsAppMessage =
+  & {
+    from: string // phone number
+    id: string
+    timestamp: string // '1673943918'
+  }
+  & (
+    | WhatsAppTextMessage
+    | WhatsAppListReplyMessage
+    | WhatsAppButtonReplyMessage
+    | WhatsAppLocationMessage
+    | WhatsAppAudioMessage
+    | WhatsAppImageMessage
+    | WhatsAppVideoMessage
+    | WhatsAppContactsMessage
+    | WhatsAppDocumentsMessage
+  )
+
 export type WhatsAppIncomingMessage = {
   object: 'whatsapp_business_account'
   entry: [
@@ -259,47 +397,7 @@ export type WhatsAppIncomingMessage = {
                 category: 'business_initiated'
               }
             }>
-            messages?: ReadonlyArray<
-              & {
-                from: string // phone number
-                id: string
-                timestamp: string // '1673943918'
-              }
-              & (
-                | { type: 'text'; text: { body: string } }
-                | {
-                  type: 'interactive'
-                  interactive: {
-                    type: 'list_reply'
-                    list_reply: {
-                      id: string
-                      title: string
-                      description: string
-                    }
-                  }
-                }
-                | {
-                  type: 'interactive'
-                  interactive: {
-                    type: 'button_reply'
-                    button_reply: {
-                      id: string
-                      title: string
-                    }
-                  }
-                }
-                | {
-                  type: 'location' // TODO: check location message format
-                  location: {
-                    address?: string // full address
-                    latitude: number // floating-point number
-                    longitude: number
-                    name: string // first line of address
-                    url: string
-                  }
-                }
-              )
-            >
+            messages?: ReadonlyArray<WhatsAppMessage>
           }
           field: 'messages'
         },
@@ -406,6 +504,7 @@ export type GCalEvent = {
   attendeesOmitted: boolean
   extendedProperties: Record<string, unknown>
   hangoutLink: string
+  conferenceDataVersion: number
   conferenceData: {
     createRequest: {
       requestId: string
@@ -560,9 +659,21 @@ export type GoogleProfile = {
   locale: string
 }
 
+export type Employee = {
+  health_worker_id: integer
+  profession: Profession
+  facility_id: integer
+}
+
+export type Profession =
+  | 'admin'
+  | 'doctor'
+  | 'nurse'
+
 export type HealthWorker = {
   name: string
   email: string
+  avatar_url: string
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
 }
@@ -590,17 +701,7 @@ export type HealthWorkerAvailability = {
   availability: Availability
 }
 
-export type ScheduledAppointment = {
-  appointment_offered_time_id: number
-  gcal_event_id: string
-}
-
-export type FullScheduledAppointment = {
-  id: number
-  reason: string
-}
-
-export type WhatsappMessageReceived = {
+export type WhatsAppMessageReceived = {
   patient_id: number
   whatsapp_id: string
   body: string
@@ -610,13 +711,15 @@ export type WhatsappMessageReceived = {
   error_message: Maybe<string>
 }
 
-export type WhatsappMessageSent = {
+export type WhatsAppMessageSent = {
   patient_id: number
   whatsapp_id: string
   body: string
   responding_to_id: number
   read_status: string
 }
+
+export type MonthNum = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 export type Time = {
   hour: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
@@ -653,15 +756,26 @@ export type WhatsAppSendable =
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
+
 export type HealthWorkerAppointment = {
-  stripeColor: string
-  patientName: string
-  patientAge: number
-  clinicName: string
+  id: number
+  patient: {
+    id: number
+    image_url?: string
+    name: string
+    age: number
+    phone_number?: string
+  }
   durationMinutes: number
   status?: string | null
   start: ParsedDate
   end: ParsedDate
+  physicalLocation?: {
+    facility: ReturnedSqlRow<Facility>
+  }
+  virtualLocation?: {
+    href: string
+  }
 }
 
 export type ParsedDate = {
@@ -689,7 +803,13 @@ export type WhatsAppSendableList = {
 export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
-  location: Location
+  location: WhatsAppLocation
+}
+
+export type WhatsAppLocation = Location & {
+  name: string
+  address?: string
+  url?: string
 }
 
 export type WhatsAppMessageAction = {
@@ -724,24 +844,10 @@ export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
     LoggedInHealthWorker
   >
 
-export type LocationMessage = {
-  address?: string // full address
-  latitude: number // floating-point number
-  longitude: number
-  name: string // first line of address
-  url: string
-}
-
-export type Location = {
-  latitude: number
-  longitude: number
-}
-
-export type Clinic = {
+export type Facility = Location & {
   name: string
-  address?: string
-  location?: Location
-  distance?: number
+  address: string
+  distance: number
   vha?: boolean
   url?: string
   phone?: string
@@ -762,3 +868,8 @@ export type TabProps = Omit<LinkProps, 'Icon'> & {
 
 export type TabDef = Omit<TabProps, 'active'>
 
+export type CalendarPageProps = {
+  appointments: HealthWorkerAppointment[]
+  day: string
+  today: string
+}

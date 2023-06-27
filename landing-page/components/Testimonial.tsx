@@ -1,5 +1,5 @@
-import { Container } from './Container.tsx'
-import { GridPattern } from './GridPattern.tsx'
+import { Container } from '../../components/library/Container.tsx'
+import { GridPattern } from '../../components/library/GridPattern.tsx'
 import { StarRating } from './StarRating.tsx'
 
 export function Testimonial({ id, author, children }: any) {

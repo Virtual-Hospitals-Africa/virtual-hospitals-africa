@@ -2,17 +2,12 @@ import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
   GoogleTokens,
+  HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
+  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-
-type HealthWorkerDetails = {
-  name: string
-  email: string
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-}
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -21,16 +16,8 @@ const expiresInAnHourSql = sql<
 
 export async function upsert(
   trx: TrxOrDb,
-  details: HealthWorkerDetails,
-): Promise<{
-  id: number
-  created_at: Date
-  updated_at: Date
-  name: string
-  email: string
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-}> {
+  details: HealthWorker,
+): Promise<ReturnedSqlRow<HealthWorker>> {
   const [health_worker] = await trx
     .insertInto('health_workers')
     .values(details)
@@ -43,21 +30,14 @@ export async function upsert(
 
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
-  details: HealthWorkerDetails & GoogleTokens,
-): Promise<{
-  id: number
-  created_at: Date
-  updated_at: Date
-  name: string
-  email: string
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-}> {
+  details: HealthWorker & GoogleTokens,
+): Promise<ReturnedSqlRow<HealthWorker>> {
   const health_worker = await upsert(
     trx,
     {
       name: details.name,
       email: details.email,
+      avatar_url: details.avatar_url,
       gcal_appointments_calendar_id: details.gcal_appointments_calendar_id,
       gcal_availability_calendar_id: details.gcal_availability_calendar_id,
     },

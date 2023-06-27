@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 export function CheckIcon(props: any) {
   return (
     <svg aria-hidden='true' viewBox='0 0 32 32' {...props}>

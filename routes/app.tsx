@@ -8,14 +8,16 @@ import Tabs from '../components/Tabs.tsx'
 import { TabDef } from '../types.ts'
 import Recent from '../islands/recent.tsx'
 
-const TEMP_AVATAR = 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+const TEMP_AVATAR =
+  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
   GET(_req, ctx) {
     const isAuthedHealthWorker = isHealthWorkerWithGoogleTokens(
       ctx.state.session.data,
     )
-    const Location = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
+    const Location =
+      `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
     if (!isAuthedHealthWorker) return redirect(Location)
     return ctx.render({})
   },
@@ -31,7 +33,11 @@ export default function App(
   props: PageProps,
 ) {
   return (
-    <NewLayout title='Good morning, Nurse!' route={props.route} imageUrl={TEMP_AVATAR} >
+    <NewLayout
+      title='Good morning, Nurse!'
+      route={props.route}
+      imageUrl={TEMP_AVATAR}
+    >
       <Tabs route={props.route} tabs={tabs} />
       <Recent />
     </NewLayout>

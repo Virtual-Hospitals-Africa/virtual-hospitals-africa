@@ -1,9 +1,9 @@
-import { CheckIcon } from './CheckIcon.tsx'
-import { Container } from './Container.tsx'
+import { CheckIcon } from '../../components/library/CheckIcon.tsx'
+import { Container } from '../../components/library/Container.tsx'
 
 /*
 
-          We’re partnering with universities to begin clinical trials in
+          We’re partnering with universities to begin facilityal trials in
           November 2023.
         </p>
         <p className='mt-4'>
@@ -27,9 +27,9 @@ export function Introduction() {
     >
       <Container className='text-lg tracking-tight text-slate-700'>
         <p className='font-display text-4xl font-bold tracking-tight text-slate-900'>
-          Through Virtual Hospitals Africa, health_workers can leverage the
-          latest technological advances to provide care patients to patients
-          before it's a crisis
+          Through Virtual Hospitals Africa, health care professionals can
+          leverage the latest technological advances to provide care patients to
+          patients before it's a crisis
         </p>
         <p className='mt-4'>
           Hospitals in Africa are overwhelmed. Patients living far away forego
@@ -41,7 +41,7 @@ export function Introduction() {
         </p>
         <ul role='list' className='mt-8 space-y-3'>
           {[
-            'connect with trained health workers',
+            'connect with trained health care professionals',
             'easily schedule in person and video appointments',
             'send prescriptions securely to local pharmacies',
             'review their health status and obtain medical records, lab results',

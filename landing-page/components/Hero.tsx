@@ -1,28 +1,28 @@
-import { Button } from './Button.tsx'
-import { GridPattern } from './GridPattern.tsx'
-import { StarRating } from './StarRating.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import { GridPattern } from '../../components/library/GridPattern.tsx'
+// import { StarRating } from './StarRating.tsx'
 
-function Testimonial() {
-  return (
-    <figure className='relative mx-auto max-w-md text-center lg:mx-0 lg:text-left'>
-      <div className='flex justify-center text-blue-600 lg:justify-start'>
-        <StarRating />
-      </div>
-      <blockquote className='mt-2'>
-        <p className='font-display text-xl font-medium text-slate-900'>
-          “This method of designing icons is genius. I wish I had known this
-          method a lot sooner.”
-        </p>
-      </blockquote>
-      <figcaption className='mt-2 text-sm text-slate-500'>
-        <strong className="font-semibold text-blue-600 before:content-['—_']">
-          Stacey Solomon
-        </strong>
-        , Founder at Retail Park
-      </figcaption>
-    </figure>
-  )
-}
+// function Testimonial() {
+//   return (
+//     <figure className='relative mx-auto max-w-md text-center lg:mx-0 lg:text-left'>
+//       <div className='flex justify-center text-blue-600 lg:justify-start'>
+//         <StarRating />
+//       </div>
+//       <blockquote className='mt-2'>
+//         <p className='font-display text-xl font-medium text-slate-900'>
+//           “This method of designing icons is genius. I wish I had known this
+//           method a lot sooner.”
+//         </p>
+//       </blockquote>
+//       <figcaption className='mt-2 text-sm text-slate-500'>
+//         <strong className="font-semibold text-blue-600 before:content-['—_']">
+//           Stacey Solomon
+//         </strong>
+//         , Founder at Retail Park
+//       </figcaption>
+//     </figure>
+//   )
+// }
 
 export function Hero() {
   return (

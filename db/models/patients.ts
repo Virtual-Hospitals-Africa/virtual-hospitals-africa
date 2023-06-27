@@ -1,5 +1,7 @@
+import { assert } from 'std/_util/asserts.ts'
 import {
   Gender,
+  HasDemographicInfo,
   Maybe,
   Patient,
   PatientConversationState,
@@ -49,6 +51,19 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .execute()
 }
 
+// TODO: implement medical record functionality
+export function getWithMedicalRecords(
+  trx: TrxOrDb,
+  ids: number[],
+) {
+  assert(ids.length, 'Must provide ids to decline')
+  return trx
+    .selectFrom('patients')
+    .selectAll()
+    .where('id', 'in', ids)
+    .execute()
+}
+
 export function pick(patientState: PatientState) {
   return {
     id: patientState.patient_id,
@@ -61,9 +76,9 @@ export function pick(patientState: PatientState) {
   }
 }
 
-export function hasDemographicData(
+export function hasDemographicInfo(
   patient: Partial<PatientDemographicInfo>,
-): patient is PatientDemographicInfo {
+): patient is HasDemographicInfo {
   return (
     !!patient.phone_number &&
     !!patient.name &&

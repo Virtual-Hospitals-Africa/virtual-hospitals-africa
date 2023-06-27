@@ -28,6 +28,6 @@ export async function down(db: Kysely<unknown>) {
 `
 
 Deno.writeTextFile(
-  `migrate-db/migrations/${migrationFileName}`,
+  `db/migrations/${migrationFileName}`,
   initialContents,
 )

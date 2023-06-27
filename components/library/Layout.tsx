@@ -1,11 +1,11 @@
 import { Head } from '$fresh/runtime.ts'
-import { JSX } from 'preact'
+import { ComponentChildren } from 'preact'
 import BottomNav from './BottomNav.tsx'
 
 export type LayoutProps = {
   title: string
   route: string
-  children: JSX.Element | JSX.Element[]
+  children: ComponentChildren
 }
 
 export default function Layout(props: LayoutProps) {
@@ -39,8 +39,10 @@ export default function Layout(props: LayoutProps) {
           </a>
           <h1>{props.title}</h1>
         </nav>
-        {props.children}
-        <BottomNav route={props.route} />
+        <div className='min-h-full'>
+          {props.children}
+          <BottomNav route={props.route} />
+        </div>
       </body>
     </>
   )

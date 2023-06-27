@@ -61,10 +61,11 @@ export default function formatMessageToSend<
         }
     }
     case 'location': {
+      const parsedMessageBody = JSON.parse(messageBody)
       return {
-        messageBody,
         type: 'location',
-        location: JSON.parse(messageBody),
+        messageBody: parsedMessageBody.messageBody,
+        location: parsedMessageBody.location,
       }
     }
     case 'date': {
