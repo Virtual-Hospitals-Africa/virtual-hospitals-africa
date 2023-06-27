@@ -58,11 +58,12 @@ function hasContentProperty(
   return typeof data === 'object' && 'content' in data
 }
 
-function ActionLink({ data }: { data: TableData }) {
+function ActionButton({ data }: { data: TableData }) {
   if (!hasActionProperty(data)) return <></>
   return (
     <a
-      href={data.action}
+      href={typeof data.action === 'string' ? data.action : undefined}
+      onClick={typeof data.action === 'string' ? undefined : data.action}
       className='text-indigo-600 hover:text-indigo-900'
     >
       {hasContentProperty(data) ? data.content : 'Action'}
@@ -83,7 +84,7 @@ function TableRow<T>(
           key={header.dataKey}
         >
           {hasActionProperty(rowData[header.dataKey])
-            ? <ActionLink data={rowData[header.dataKey]} />
+            ? <ActionButton data={rowData[header.dataKey]} />
             : (
               <div className='flex items-center gap-4'>
                 {getTableDataImage(rowData[header.dataKey])}
