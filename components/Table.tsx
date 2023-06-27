@@ -21,21 +21,21 @@ type TableProp<T> = {
   data: TableRow<T>[]
 }
 
-function getTableDataContent(data: TableData) {
+function TableDataContent(data: TableData) {
   if (typeof data === 'string' || typeof data === 'number') {
     return data
   }
   return data.content
 }
 
-function getTableDataTitle(data: TableData) {
+function TableDataTitle(data: TableData) {
   if (typeof data === 'string' || typeof data === 'number') {
     return <></>
   }
   return <div className='mb-1 font-medium text-gray-900'>{data.title}</div>
 }
 
-function getTableDataImage(data: TableData) {
+function TableDataImage(data: TableData) {
   if (typeof data === 'string' || typeof data === 'number') {
     return <></>
   }
@@ -87,11 +87,11 @@ function TableRow<T>(
             ? <ActionButton data={rowData[header.dataKey]} />
             : (
               <div className='flex items-center gap-4'>
-                {getTableDataImage(rowData[header.dataKey])}
+                {TableDataImage(rowData[header.dataKey])}
                 <div>
-                  {getTableDataTitle(rowData[header.dataKey])}
+                  {TableDataTitle(rowData[header.dataKey])}
                   <div className='text-gray-500'>
-                    {getTableDataContent(rowData[header.dataKey])}
+                    {TableDataContent(rowData[header.dataKey])}
                   </div>
                 </div>
               </div>
