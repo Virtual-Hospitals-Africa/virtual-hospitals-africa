@@ -1,3 +1,4 @@
+import { assert } from 'std/_util/asserts.ts'
 import {
   Gender,
   HasDemographicInfo,
@@ -53,12 +54,13 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 // TODO: implement medical record functionality
 export function getWithMedicalRecords(
   trx: TrxOrDb,
-  patient_ids: number[],
+  ids: number[],
 ) {
+  assert(ids.length, 'Must provide ids to decline')
   return trx
     .selectFrom('patients')
     .selectAll()
-    .where('id', 'in', patient_ids)
+    .where('id', 'in', ids)
     .execute()
 }
 

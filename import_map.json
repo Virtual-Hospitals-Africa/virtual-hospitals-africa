@@ -11,11 +11,10 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.2.3",
     "fresh_session": "https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts",
     "fresh_session/session": "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/session.ts",
-    "redis": "https://deno.land/x/redis@v0.29.2/mod.ts",
-    "std/": "https://deno.land/std@0.188.0/",
+    "redis": "https://deno.land/x/redis@v0.30.0/mod.ts",
+    "std/": "https://deno.land/std@0.190.0/",
     "dotenv": "https://deno.land/x/dotenv@v3.2.2/load.ts",
     "twind": "https://esm.sh/twind@0.16.19",
-    "twind/": "https://esm.sh/twind@0.16.19/",
-    "faker": "https://deno.land/x/deno_faker@v1.0.3/mod.ts"
+    "twind/": "https://esm.sh/twind@0.16.19/"
   }
 }
