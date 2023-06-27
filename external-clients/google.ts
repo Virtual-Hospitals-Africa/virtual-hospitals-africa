@@ -400,10 +400,13 @@ export async function getLocationAddress(locationCoordinates: Location): Promise
   // make the google api call
   const longitude = -74.0059
   const latitude = 40.7128
-  const API_KEY = ''
+  const API_KEY = 'AIzaSyCJWfHNTyRnlw3phU22A87ziRefvlu2Vhg'
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`
   
+  const result = await fetch(url)
+  const JSON = await result.json()
+
   await Promise.resolve();
-  console.log("coordinates: ", locationCoordinates)
+  console.log(JSON)
   return "test"
 }
