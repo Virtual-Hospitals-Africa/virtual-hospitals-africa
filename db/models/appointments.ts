@@ -60,14 +60,13 @@ export async function newOfferedTime(
   return result.rows[0]
 }
 
-export async function declineOfferedTimes(trx: TrxOrDb, ids: number[]) {
-  const writeResult = await trx
+export function declineOfferedTimes(trx: TrxOrDb, ids: number[]) {
+  assert(ids.length, 'Must provide ids to decline')
+  return trx
     .updateTable('appointment_offered_times')
     .set({ patient_declined: true })
     .where('id', 'in', ids)
     .execute()
-
-  return writeResult
 }
 
 export async function getPatientDeclinedTimes(
@@ -161,6 +160,8 @@ export async function getWithPatientInfo(
   }
 
   const appointments = await builder.execute()
+
+  if (!appointments.length) return []
 
   const patient_ids = uniq(appointments.map((a) => a.patient_id))
 
