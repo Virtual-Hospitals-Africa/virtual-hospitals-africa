@@ -761,3 +761,4 @@ export type TabProps = Omit<LinkProps, 'Icon'> & {
 }
 
 export type TabDef = Omit<TabProps, 'active'>
+
