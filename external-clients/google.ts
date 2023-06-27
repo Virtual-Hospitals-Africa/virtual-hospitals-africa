@@ -15,6 +15,7 @@ import {
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorker,
   TrxOrDb,
+  Location
 } from '../types.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import {
@@ -393,4 +394,16 @@ export async function refreshTokens(
     removeExpiredAccessToken(trx, { health_worker_id: health_worker.id })
     return { result: 'expiry' }
   }
+}
+
+export async function getLocationAddress(locationCoordinates: Location): Promise<string> {
+  // make the google api call
+  const longitude = -74.0059
+  const latitude = 40.7128
+  const API_KEY = ''
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`
+  
+  await Promise.resolve();
+  console.log("coordinates: ", locationCoordinates)
+  return "test"
 }
