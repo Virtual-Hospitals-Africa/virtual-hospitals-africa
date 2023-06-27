@@ -40,13 +40,13 @@ body {
 }
 
 nav {
-  background-color: var(--color-primary);
+  /* background-color: var(--color-primary); */
   color: white;
-
+/* 
   display: flex;
-  align-items: center;
+  align-items: center; */
 
-  padding: 0 var(--std-margin);
+  /* padding: 0 var(--std-margin); */
 }
 
 nav a.back {

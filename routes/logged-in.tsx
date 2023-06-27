@@ -48,6 +48,6 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
       session.set(key, value)
     }
 
-    return redirect('/app/calendar')
+    return redirect('/app')
   },
 }

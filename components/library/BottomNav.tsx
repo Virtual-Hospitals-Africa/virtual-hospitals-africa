@@ -4,16 +4,9 @@ import CalendarIcon from '../icons/calendar.tsx'
 import PatientsIcon from '../icons/patients.tsx'
 import ProfileIcon from '../icons/profile.tsx'
 import sortBy from '../../util/sortBy.ts'
+import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
-
-type LinkProps = {
-  href: string
-  title: string
-  active: boolean
-  Icon: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
-}
-
-type LinkDef = Omit<LinkProps, 'active'>
+import { LinkDef, LinkProps } from '../../types.ts'
 
 function BottomNavLink({
   href,
@@ -58,12 +51,9 @@ const bottomNavLinksByLength = sortBy(
 )
 
 export default function BottomNav({ route }: { route: string }) {
-  const activeLink = bottomNavLinksByLength.find((link: LinkDef) =>
-    route.startsWith(link.href)
-  )
-
+  const activeLink = matchActiveLink<LinkDef>(bottomNavLinksByLength, route)
   return (
-    <footer className='w-full flex justify-around gap-2 p-1'>
+    <footer className='absolute bottom-0 w-full flex justify-around gap-2 p-1 md:hidden'>
       {bottomNavLinks.map((link) => (
         <BottomNavLink {...link} active={link === activeLink} />
       ))}
