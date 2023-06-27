@@ -1,10 +1,10 @@
 import { LoggedInHealthWorker } from '../types.ts'
 
 export default async function isAdmin(
-  ctx: LoggedInHealthWorker,
+  state: LoggedInHealthWorker,
 ): Promise<boolean> {
-  const userEmail: string = ctx.session.data.email
-  const matches = await ctx.trx
+  const userEmail: string = state.session.data.email
+  const matches = await state.trx
     .selectFrom('employment')
     .innerJoin(
       'health_workers',
