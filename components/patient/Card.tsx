@@ -1,6 +1,6 @@
-import { PaperClipIcon } from './heroicons.tsx'
+import { PaperClipIcon } from '../library/icons/heroicons.tsx'
 
-export default function Patient() {
+export default function PatientCard() {
   return (
     <div>
       <div className='px-4 sm:px-0'>

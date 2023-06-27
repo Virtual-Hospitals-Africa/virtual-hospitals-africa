@@ -1,5 +1,5 @@
-import matchActiveLink from '../util/matchActiveLink.ts'
-import { TabDef, TabProps } from '../types.ts'
+import matchActiveLink from '../../util/matchActiveLink.ts'
+import { TabDef, TabProps } from '../../types.ts'
 import Badge from './Badge.tsx'
 
 export type TabsProps = {

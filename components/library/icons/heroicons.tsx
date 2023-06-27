@@ -1,5 +1,5 @@
 import { ComponentChildren } from 'preact'
-import cls from '../util/cls.ts'
+import cls from '../../../util/cls.ts'
 
 function HeroIcon(
   { className, children }: { className?: string; children: ComponentChildren },

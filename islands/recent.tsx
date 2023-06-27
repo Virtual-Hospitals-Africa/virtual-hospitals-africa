@@ -1,4 +1,4 @@
-import Table, { TableData, TableHeader } from '../components/Table.tsx'
+import Table, { TableData, TableHeader } from '../components/library/Table.tsx'
 
 export type PersonType = {
   id: string

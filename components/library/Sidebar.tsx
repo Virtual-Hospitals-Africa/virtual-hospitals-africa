@@ -1,11 +1,11 @@
-import { LinkDef, LinkProps } from '../types.ts'
+import { LinkDef, LinkProps } from '../../types.ts'
 
 import HomeIcon from './icons/home.tsx'
 import CalendarIcon from './icons/calendar.tsx'
 import PatientsIcon from './icons/patients.tsx'
 import ProfileIcon from './icons/profile.tsx'
 import LogoutIcon from './icons/logout.tsx'
-import matchActiveLink from '../util/matchActiveLink.ts'
+import matchActiveLink from '../../util/matchActiveLink.ts'
 
 export type SidebarProps = {
   route: string
