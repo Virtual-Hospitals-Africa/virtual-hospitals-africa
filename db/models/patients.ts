@@ -1,7 +1,9 @@
 import { assert } from 'std/_util/asserts.ts'
+import { sql } from 'kysely'
 import {
   Gender,
   HasDemographicInfo,
+  Location,
   Maybe,
   Patient,
   PatientConversationState,
@@ -33,11 +35,49 @@ export async function upsert(trx: TrxOrDb, info: {
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
+  location: Maybe<Location>
 }): Promise<ReturnedSqlRow<Patient>> {
   const [patient] = await trx
     .insertInto('patients')
     .values(info)
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(info))
+    .returningAll()
+    .execute()
+
+  return patient
+}
+
+export async function upsertLocation(trx: TrxOrDb, info: {
+  id?: number
+  conversation_state: PatientConversationState
+  phone_number: string
+  name: Maybe<string>
+  gender: Maybe<Gender>
+  date_of_birth: Maybe<string>
+  national_id_number: Maybe<string>
+  location: Maybe<Location>
+}): Promise<ReturnedSqlRow<Patient>> {
+  let locationAsGeography
+
+  // Check if location is not null or undefined
+  if (info.location) {
+    // Convert the location into a geography type
+    locationAsGeography =
+      sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)`
+  } else {
+    // If location is null or undefined, set it to null in the database
+    locationAsGeography = null
+  }
+
+  // Create a new info object with location in the new format
+  const newInfo = {
+    ...info,
+    location: locationAsGeography,
+  }
+  const [patient] = await trx
+    .insertInto('patients')
+    .values(newInfo)
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(newInfo))
     .returningAll()
     .execute()
 
@@ -73,6 +113,7 @@ export function pick(patientState: PatientState) {
     date_of_birth: patientState.date_of_birth,
     national_id_number: patientState.national_id_number,
     conversation_state: patientState.conversation_state,
+    location: patientState.location,
   }
 }
 

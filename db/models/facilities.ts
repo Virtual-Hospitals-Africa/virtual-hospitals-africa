@@ -10,7 +10,9 @@ export async function nearest(
              ST_Distance(
                   location,
                   ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-              ) AS distance
+              ) AS distance,
+              ST_X(location::geometry) as longitude,
+              ST_Y(location::geometry) as latitude
         FROM facilities
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10

@@ -4,6 +4,11 @@ import { readCSV } from 'https://deno.land/x/csv@v0.8.0/mod.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
+    .createType('kind')
+    .asEnum(['clinic', 'hospital'])
+    .execute()
+
+  await db.schema
     .createTable('facilities')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
@@ -18,9 +23,8 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn('name', 'varchar(255)')
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
-    .addColumn('longitude', 'double precision')
-    .addColumn('latitude', 'double precision')
     .addColumn('address', 'text')
+    .addColumn('kind', sql`kind`, (column) => column.defaultTo('clinic'))
     .addColumn('vha', 'boolean')
     .addColumn('url', 'text')
     .addColumn('phone', 'varchar(255)')
@@ -68,9 +72,8 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
       INSERT INTO facilities (
         name,
         location,
-        longitude,
-        latitude,
         address,
+        kind,
         vha,
         url,
         phone
@@ -79,9 +82,8 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
         ST_SetSRID(ST_MakePoint(${rowData['longitude']}, ${
       rowData['latitude']
     }), 4326),
-        ${rowData['longitude']},
-        ${rowData['latitude']},
         ${rowData['address']},
+        ${rowData['kind']},
         ${rowData['vha']},
         ${rowData['url']},
         ${rowData['phone']}

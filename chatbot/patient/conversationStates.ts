@@ -5,6 +5,7 @@ import {
   ConversationStateHandlerListActionSection,
   ConversationStates,
   Facility,
+  Location,
   Maybe,
   PatientConversationState,
   PatientDemographicInfo,
@@ -152,6 +153,18 @@ const conversationStates: ConversationStates<
     nextState: 'find_nearest_facility:got_location',
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
+    async onExit(trx, patientState) {
+      const locationMessage: Location = JSON.parse(patientState.body)
+      const currentLocation: Location = {
+        longitude: locationMessage.longitude,
+        latitude: locationMessage.latitude,
+      }
+      await patients.upsertLocation(trx, {
+        ...patients.pick(patientState),
+        location: currentLocation,
+      })
+      return { ...patientState, location: currentLocation }
+    },
   },
   // change the name of got_location to nearest_facilities?
   'find_nearest_facility:got_location': {
