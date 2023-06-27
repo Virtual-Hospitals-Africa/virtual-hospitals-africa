@@ -37,6 +37,26 @@ export async function upsert(trx: TrxOrDb, info: {
   national_id_number: Maybe<string>
   location: Maybe<Location>
 }): Promise<ReturnedSqlRow<Patient>> {
+  const [patient] = await trx
+    .insertInto('patients')
+    .values(info)
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(info))
+    .returningAll()
+    .execute()
+
+  return patient
+}
+
+export async function upsertLocation(trx: TrxOrDb, info: {
+  id?: number
+  conversation_state: PatientConversationState
+  phone_number: string
+  name: Maybe<string>
+  gender: Maybe<Gender>
+  date_of_birth: Maybe<string>
+  national_id_number: Maybe<string>
+  location: Maybe<Location>
+}): Promise<ReturnedSqlRow<Patient>> {
   let locationAsGeography
 
   // Check if location is not null or undefined
