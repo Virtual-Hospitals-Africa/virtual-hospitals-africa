@@ -52,6 +52,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
+  | 'onboarded:make_appointment:ask_for_media'
   | 'onboarded:make_appointment:choose_upload_media_type'
   | 'onboarded:make_appointment:upload_photo'
   | 'onboarded:make_appointment:upload_video'
