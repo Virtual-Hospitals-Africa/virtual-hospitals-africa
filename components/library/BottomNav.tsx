@@ -23,7 +23,7 @@ function BottomNavLink({
   return (
     <a
       href={href}
-      className={'gap-0 text-sm flex flex-col mh-full justify-between' + cls({
+      className={cls('gap-0 text-sm flex flex-col mh-full justify-between', {
         'text-primary': active,
       })}
     >
@@ -44,13 +44,10 @@ const bottomNavLinks: LinkDef[] = [
   { href: '/app/profile', title: 'My Profile', Icon: ProfileIcon },
 ]
 
-const bottomNavLinksByLength = sortBy(
-  bottomNavLinks,
-  (link: LinkDef) => -link.href.length,
-)
+const matchingButtonNavLink = matchActiveLink(bottomNavLinks)
 
 export default function BottomNav({ route }: { route: string }) {
-  const activeLink = matchActiveLink<LinkDef>(bottomNavLinksByLength, route)
+  const activeLink = matchingButtonNavLink(route)
   return (
     <footer className='absolute bottom-0 w-full flex justify-around gap-2 p-1 md:hidden'>
       {bottomNavLinks.map((link) => (

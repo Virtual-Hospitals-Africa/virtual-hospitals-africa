@@ -9,7 +9,7 @@ import {
 } from '../../types.ts'
 import { padTime } from '../../util/pad.ts'
 import redirect from '../../util/redirect.ts'
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { parseDate } from '../../util/date.ts'
 import parseAvailabilityForm from '../../util/parseAvailabilityForm.ts'
 

@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 import cls from '../../util/cls.ts'
 
 const styles = {
@@ -6,8 +5,11 @@ const styles = {
   sm: 'mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:max-w-4xl lg:px-12',
   md: 'mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:max-w-5xl lg:px-8',
   lg: 'mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:max-w-7xl lg:px-8',
-} as any
+}
 
-export function Container({ size = 'sm', className, ...props }: any) {
+export function Container({ size = 'sm', className, ...props }: {
+  size?: keyof typeof styles
+  className?: string
+}) {
   return <div className={cls(styles[size], className)} {...props} />
 }

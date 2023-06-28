@@ -1,6 +1,11 @@
+import { Patient } from '../../types.ts'
 import { PaperClipIcon } from '../library/icons/heroicons.tsx'
 
-export default function PatientCard() {
+type PatientCardProps = {
+  patient: Patient
+}
+
+export default function PatientCard(_props: PatientCardProps) {
   return (
     <div>
       <div className='px-4 sm:px-0'>

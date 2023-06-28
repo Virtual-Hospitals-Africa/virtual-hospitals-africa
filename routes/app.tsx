@@ -27,14 +27,16 @@ export const handler: Handlers<
 }
 
 const tabs: TabDef[] = [
-  { title: 'RECENT', href: '/app' },
-  { title: 'APPOINTMENTS', href: '/app/appointments', number: 654 },
-  { title: 'ORDERS', href: '/app/orders', number: 2 },
+  { name: 'recent' },
+  { name: 'appointments', count: 654 },
+  { name: 'orders', count: 2 },
 ]
 
 export default function App(
   props: PageProps<{ healthWorker: HealthWorkerWithGoogleTokens }>,
 ) {
+  const tabQuery = new URL(props.url).searchParams.get('tab')
+  const activeTab = tabs.find((tab) => tab.name === tabQuery) || tabs[0]
   return (
     <Layout
       title='Good morning, Nurse!'
@@ -42,8 +44,10 @@ export default function App(
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >
-      <Tabs route={props.route} tabs={tabs} />
-      <Recent />
+      <Tabs route={props.route} tabs={tabs} activeTab={activeTab} />
+      {activeTab.name === 'recent' && <Recent />}
+      {activeTab.name === 'appointments' && <p>TODO: appointments</p>}
+      {activeTab.name === 'orders' && <p>TODO: orders</p>}
     </Layout>
   )
 }
