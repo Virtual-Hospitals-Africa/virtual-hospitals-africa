@@ -36,8 +36,9 @@ export async function up(db: Kysely<unknown>) {
   await importDataFromCSV(db, './db/resources/zimbabwe-health-facilities.csv')
 }
 
-export function down(db: Kysely<unknown>) {
-  return db.schema.dropTable('facilities').execute()
+export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('facilities').execute()
+  await db.schema.dropType('kind').execute()
 }
 
 // TODO: Can't get last column properly, maybe because new line character
