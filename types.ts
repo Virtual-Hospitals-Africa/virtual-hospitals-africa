@@ -873,4 +873,5 @@ export type CalendarPageProps = {
   appointments: HealthWorkerAppointment[]
   day: string
   today: string
+  healthWorker: HealthWorker
 }

@@ -2,12 +2,14 @@ import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
   AvailabilityJSON,
+  HealthWorker,
   LoggedInHealthWorkerHandler,
 } from '../../../types.ts'
 import SetAvailabilityForm from '../../../islands/set-availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import { assertAllHarare, convertToTime } from '../../../util/date.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 
 const shortToLong = {
   SU: 'Sunday' as const,
@@ -20,9 +22,12 @@ const shortToLong = {
 }
 
 export const handler: LoggedInHealthWorkerHandler<
-  { availability: AvailabilityJSON }
+  { availability: AvailabilityJSON; healthWorker: HealthWorker }
 > = {
   async GET(_, ctx) {
+    const healthWorker = ctx.state.session.data
+    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+
     const googleClient = new HealthWorkerGoogleClient(ctx)
     const events = await googleClient.getEvents(
       ctx.state.session.data.gcal_availability_calendar_id,
@@ -54,15 +59,22 @@ export const handler: LoggedInHealthWorkerHandler<
       })
     })
 
-    return ctx.render({ availability })
+    return ctx.render({ availability, healthWorker })
   },
 }
 
 export default function SetAvailability(
-  props: PageProps<{ availability: AvailabilityJSON }>,
+  props: PageProps<
+    { availability: AvailabilityJSON; healthWorker: HealthWorker }
+  >,
 ) {
   return (
-    <Layout title='Set Availability' route={props.route}>
+    <Layout
+      title='Set Availability'
+      route={props.route}
+      avatarUrl={props.data.healthWorker.avatar_url}
+      variant='standard'
+    >
       <h3 className='container p-1 text-secondary-600 uppercase'>
         Working Hours for HealthWorkers
       </h3>

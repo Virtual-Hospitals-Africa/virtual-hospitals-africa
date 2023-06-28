@@ -11,7 +11,7 @@ function AppointmentContents(
 ) {
   return (
     <>
-      <Avatar src={appointment.patient.image_url} />
+      <Avatar src={appointment.patient.image_url} className='h-14 w-14' />
       <div className='flex-auto'>
         <a href={href}>
           <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>

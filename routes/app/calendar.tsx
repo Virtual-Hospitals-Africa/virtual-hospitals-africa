@@ -11,9 +11,13 @@ import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import Layout from '../../components/library/Layout.tsx'
+import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 
 export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
   async GET(req, ctx) {
+    const healthWorker = ctx.state.session.data
+    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+
     const googleClient = new HealthWorkerGoogleClient(ctx)
 
     const today = todayISOInHarare()
@@ -75,7 +79,7 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
       },
     )
 
-    return ctx.render({ appointments, day, today })
+    return ctx.render({ appointments, day, today, healthWorker })
   },
 }
 
@@ -83,7 +87,12 @@ export default function Calendar(
   props: PageProps<CalendarPageProps>,
 ) {
   return (
-    <Layout title='My Calendar' route={props.route}>
+    <Layout
+      title='My Calendar'
+      route={props.route}
+      avatarUrl={props.data.healthWorker.avatar_url}
+      variant='standard'
+    >
       <Container size='lg' className='py-5'>
         <AppointmentsCalendar route={props.route} {...props.data} />
       </Container>
