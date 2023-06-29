@@ -396,10 +396,10 @@ export async function refreshTokens(
   }
 }
 
-export async function getLocationAddress(locationCoordinates: Location | null | undefined): Promise<string> {
+export async function getLocationAddress(locationCoordsObj: Location | null | undefined): Promise<string> {
   try {
-    const longitude = locationCoordinates ? locationCoordinates.longitude : -74.0059;
-    const latitude = locationCoordinates ? locationCoordinates.latitude : 40.7128;
+    const longitude = locationCoordsObj ? locationCoordsObj.longitude : -74.0059;
+    const latitude = locationCoordsObj ? locationCoordsObj.latitude : 40.7128;
     const API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`;
@@ -414,6 +414,8 @@ export async function getLocationAddress(locationCoordinates: Location | null | 
     if (responseJSON.status === "OK") {
       const address = responseJSON.results[0].formatted_address;
       if (address) {
+        console.log(address)
+        // change to town/province maybe?
         return address;
       }
     }
