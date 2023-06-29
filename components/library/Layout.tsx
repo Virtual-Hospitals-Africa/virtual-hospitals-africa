@@ -26,7 +26,7 @@ export default function Layout(props: LayoutProps) {
         />
       </Head>
       <body className='h-full relative'>
-        <section>
+        <section className='pb-14 md:pb-0'>
           <Sidebar route={props.route} />
           <section className='md:pl-72'>
             <Header

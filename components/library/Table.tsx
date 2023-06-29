@@ -56,7 +56,13 @@ function TableCellInnerContents<T extends Row>(
   if (column.type === 'avatar') {
     const src = row[column.dataKey]
     if (typeof src === 'string') {
-      return <Avatar className='h-11 w-11 min-w-11 ml-2' src={src} />
+      return (
+        <div className='flex items-center'>
+          <div className='h-11 w-11 flex-shrink-0'>
+            <Avatar className='h-11 w-11 flex-shrink-0' src={src} />
+          </div>
+        </div>
+      )
     }
     throw new Error(`Expected ${column.dataKey as string} to be of type string`)
   }
@@ -85,7 +91,7 @@ function TableCell<T extends Row>(
 ) {
   return (
     <td
-      className={cls(column.label ? 'p-3' : 'py-2')}
+      className={cls(column.label ? 'p-3' : 'p-2')}
       key={column.label}
     >
       <TableCellInnerContents row={row} column={column} />
