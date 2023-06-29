@@ -1,83 +1,75 @@
-import Table, { TableData, TableHeader } from '../components/library/Table.tsx'
+import Table, { TableColumn } from '../components/library/Table.tsx'
 
-export type PersonType = {
-  id: string
+type Patient = {
+  id: number
   name: string
-  age: number
-  lastVisit: string
-  avh: string
-  image: string
+  last_visited: string
+  nearest_facility: string
+  avatar_url: string
 }
 
-type TableRow = {
-  id: TableData
-  name: TableData
-  lastVisit: TableData
-  avh: TableData
-  view: TableData
-}
-
-const PEOPLE: PersonType[] = [
+const patients: Patient[] = [
   {
-    id: 'PAT456789D',
+    id: 123,
     name: 'Lindsay Walton',
-    age: 46,
-    lastVisit: '4/19/2023',
-    avh: 'Hope Clinic',
-    image:
+    last_visited: '4/19/2023',
+    nearest_facility: 'Hope Clinic',
+    avatar_url:
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
   {
-    id: 'PAT456729D',
-    name: 'Lindsay Walton',
-    age: 42,
-    lastVisit: '4/19/2023',
-    avh: 'Hope Clinic',
-    image:
+    id: 456,
+    name: 'Jessie Jones',
+    last_visited: '4/18/2023',
+    nearest_facility: 'Hope Clinic',
+    avatar_url:
       'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
   },
 ]
 
-const tableTitles: TableHeader<TableRow>[] = [
+const columns: TableColumn<Patient>[] = [
   {
-    label: 'PATIENT NAME',
+    label: null,
+    dataKey: 'avatar_url',
+    type: 'avatar',
+  },
+  {
+    label: 'Patient',
     dataKey: 'name',
+    type: 'content',
+    cellClassName: 'mb-1 font-medium',
   },
   {
-    label: 'PATIENT ID',
+    label: 'ID',
     dataKey: 'id',
+    type: 'content',
   },
   {
-    label: 'LAST VISIT',
-    dataKey: 'lastVisit',
+    label: 'Last Visit',
+    dataKey: 'last_visited',
+    type: 'content',
   },
   {
-    label: 'AVH',
-    dataKey: 'avh',
+    label: 'Nearest Facility',
+    dataKey: 'nearest_facility',
+    type: 'content',
   },
   {
-    label: '',
-    dataKey: 'view',
+    label: 'Actions',
+    type: 'actions',
+    actions: {
+      View(patient) {
+        return `/app/patients/${patient.id}`
+      },
+    },
   },
 ]
 
-function formatTableData(data: PersonType[]): TableRow[] {
-  return data.map((person) => ({
-    id: person.id,
-    name: {
-      title: person.name,
-      image: person.image,
-      content: `${person.age} years old`,
-    },
-    lastVisit: person.lastVisit,
-    avh: person.avh,
-    view: {
-      content: 'View',
-      action: `/app/patient/${person.id}`,
-    },
-  }))
-}
-
-export default function Recent() {
-  return <Table headers={tableTitles} data={formatTableData(PEOPLE)} />
+export default function RecentPatients() {
+  return (
+    <Table
+      columns={columns}
+      rows={patients}
+    />
+  )
 }

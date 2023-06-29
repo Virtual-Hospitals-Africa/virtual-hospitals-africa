@@ -39,7 +39,7 @@ export default function App(
   const activeTab = tabs.find((tab) => tab.name === tabQuery) || tabs[0]
   return (
     <Layout
-      title='Good morning, Nurse!'
+      title={`Good day, ${props.data.healthWorker.name.split(' ')[0]}!`}
       route={props.route}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
