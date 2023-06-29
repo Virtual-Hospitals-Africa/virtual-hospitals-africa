@@ -1,4 +1,4 @@
-﻿name,latitude,longitude,address,kind,vha,phone,url,lastColumn
+﻿name,latitude,longitude,address,category,vha,phone,url,lastColumn
 Chamunangana,-21.60719,29.60194016,somewhere,clinic,TRUE,12345678907,https://maps.app.goo.gl/somewhere,
 Chasvingo,-22.05558,30.50114059,somewhere,clinic,TRUE,12345678907,https://maps.app.goo.gl/somewhere,
 Dulibadzimu,-22.20681,29.98372078,somewhere,clinic,TRUE,12345678907,https://maps.app.goo.gl/somewhere,

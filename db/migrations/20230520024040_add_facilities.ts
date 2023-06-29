@@ -1,10 +1,11 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import * as google from '../../external-clients/google.ts'
 import { readCSV } from 'https://deno.land/x/csv@v0.8.0/mod.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createType('kind')
+    .createType('facility_category')
     .asEnum(['clinic', 'hospital'])
     .execute()
 
@@ -24,7 +25,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('name', 'varchar(255)')
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
     .addColumn('address', 'text')
-    .addColumn('kind', sql`kind`, (column) => column.defaultTo('clinic'))
+    .addColumn('category', sql`facility_category`, (column) => column.defaultTo('clinic'))
     .addColumn('vha', 'boolean')
     .addColumn('url', 'text')
     .addColumn('phone', 'varchar(255)')
@@ -36,8 +37,10 @@ export async function up(db: Kysely<unknown>) {
   await importDataFromCSV(db, './db/resources/zimbabwe-health-facilities.csv')
 }
 
-export function down(db: Kysely<unknown>) {
-  return db.schema.dropTable('facilities').execute()
+export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('facilities').execute()
+  await db.schema.dropType('patient_conversation_state').execute()
+
 }
 
 // TODO: Can't get last column properly, maybe because new line character
@@ -68,12 +71,17 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
       rowData[header[i]] = rowDataArray[i]
     }
 
+    const address = await google.getLocationAddress({
+      longitude: rowData['longitude'],
+      latitude: rowData['latitude'],
+    })
+
     await sql`
       INSERT INTO facilities (
         name,
         location,
         address,
-        kind,
+        category,
         vha,
         url,
         phone
@@ -82,8 +90,8 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
         ST_SetSRID(ST_MakePoint(${rowData['longitude']}, ${
       rowData['latitude']
     }), 4326),
-        ${rowData['address']},
-        ${rowData['kind']},
+        ${address},
+        ${rowData['category']},
         ${rowData['vha']},
         ${rowData['url']},
         ${rowData['phone']}
