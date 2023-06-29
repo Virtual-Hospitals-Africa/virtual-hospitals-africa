@@ -31,6 +31,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
+import getAddressString from '../../util/getAddressString.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -197,10 +198,13 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
+
+        const address = getAddressString({longitude: facility.longitude, latitude: facility.latitude})
+
         const distanceInKM = (facility.distance / 1000).toFixed(1)
         const description = distanceInKM
-          ? `${facility.address} (${distanceInKM}km)`
-          : facility.address
+          ? `${address} (${distanceInKM}km)`
+          : address
 
         return {
           section: 'Town Name Here',
