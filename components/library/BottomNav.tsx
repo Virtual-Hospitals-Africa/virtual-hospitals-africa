@@ -49,7 +49,7 @@ const matchingButtonNavLink = matchActiveLink(bottomNavLinks)
 export default function BottomNav({ route }: { route: string }) {
   const activeLink = matchingButtonNavLink(route)
   return (
-    <footer className='absolute bottom-0 w-full flex justify-around gap-2 p-1 md:hidden'>
+    <footer className='fixed bottom-0 w-full flex justify-around gap-2 p-1 md:hidden bg-white border-t border-gray-200 h-14'>
       {bottomNavLinks.map((link) => (
         <BottomNavLink {...link} active={link === activeLink} />
       ))}
