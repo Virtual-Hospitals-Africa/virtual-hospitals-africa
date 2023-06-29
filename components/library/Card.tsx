@@ -2,14 +2,15 @@ import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
 export default function Card(
-  { className, children = <ExampleCardContents /> }: {
+  { className, children = <ExampleCardContents />, orientation = 'horizontal' }: {
     className?: string
     children?: JSX.Element | JSX.Element[]
+    orientation?: 'vertical' | 'horizontal'
   },
 ) {
   return (
     <div className={cls(className, 'bg-white sm:px-6 p-3 rounded-lg')}>
-      <div className='flex space-x-3'>
+      <div className={cls('flex gap-3', orientation === 'vertical' ? 'flex-col' : 'flex-row')}>
         {children}
       </div>
     </div>

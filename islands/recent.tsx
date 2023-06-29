@@ -1,6 +1,7 @@
 import Table, { TableColumn } from '../components/library/Table.tsx'
+import PatientCards from './patient-cards.tsx'
 
-type Patient = {
+export type Patient = {
   id: number
   name: string
   last_visited: string
@@ -67,9 +68,16 @@ const columns: TableColumn<Patient>[] = [
 
 export default function RecentPatients() {
   return (
-    <Table
-      columns={columns}
-      rows={patients}
-    />
+    <>
+      <section className='block sm:hidden'>
+        <PatientCards patients={patients} />
+      </section>
+      <section className='hidden sm:block'>
+        <Table
+          columns={columns}
+          rows={patients}
+        />
+      </section>
+    </>
   )
 }
