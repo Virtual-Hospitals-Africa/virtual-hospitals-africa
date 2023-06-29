@@ -114,6 +114,31 @@ export async function getUnhandledPatientMessages(
       LEFT JOIN aot_pre ON appointments.id = aot_pre.appointment_id
           WHERE appointments.id is not null
        GROUP BY appointments.id, appointments.patient_id, appointments.reason
+    ),
+
+    nearest_facilities as (
+      SELECT patient_id,
+      json_agg(json_build_object(
+          'id', id,
+          'name', name,
+          'address', address,
+          'longitude', ST_X(location::geometry),
+          'latitude', ST_Y(location::geometry),
+          'distance', distance
+      )) as nearest_facilities
+     FROM (
+           SELECT facilities.*, patients.id AS patient_id,
+                  ST_Distance(
+                       patients.location,
+                       facilities.location
+                  ) as distance,
+                  ROW_NUMBER() OVER (PARTITION BY patients.id ORDER BY ST_Distance(patients.location, facilities.location)) as row_number
+             FROM patients
+             CROSS JOIN facilities
+             WHERE patients.location is not null
+          ) AS subq
+     WHERE subq.row_number <= 10
+     group by patient_id
     )
 
        SELECT whatsapp_messages_received.id as message_id,
@@ -121,17 +146,24 @@ export async function getUnhandledPatientMessages(
               whatsapp_messages_received.whatsapp_id,
               whatsapp_messages_received.body,
               patients.*,
+              json_build_object(
+                'longitude', ST_X(patients.location::geometry),
+                'latitude', ST_Y(patients.location::geometry)
+              ) as real_location,
+              nearest_facilities.nearest_facilities,
               aot.appointment_id as scheduling_appointment_id,
               aot.reason as scheduling_appointment_reason,
               aot.offered_times as appointment_offered_times
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
+    LEFT JOIN nearest_facilities ON nearest_facilities.patient_id = patients.id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
   const rows: PatientState[] = []
   for (const row of result.rows) {
+    /** 
     // TODO do this all in the above query
     if (
       row.conversation_state.startsWith('find_nearest_facility')
@@ -139,6 +171,7 @@ export async function getUnhandledPatientMessages(
       const location: Location = JSON.parse(row.body)
       row.nearest_facilities = await facilities.nearest(trx, location)
     }
+    */
 
     rows.push({
       ...row,
