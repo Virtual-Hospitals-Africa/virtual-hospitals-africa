@@ -1,3 +1,5 @@
+import cls from '../../util/cls.ts'
+
 type BadgeColor = 'gray' | 'red' | 'yellow' | 'green'
 
 export type BadgeProps = {
@@ -15,9 +17,10 @@ const badgeStyles: Record<BadgeColor, string> = {
 export default function Badge({ content, color = 'gray' }: BadgeProps) {
   return (
     <div
-      className={`'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium ${
-        badgeStyles[color]
-      }`}
+      className={cls(
+        'inline-flex items-baseline rounded-full px-2.5 py-0.5 text-sm font-medium',
+        badgeStyles[color],
+      )}
     >
       {content}
     </div>

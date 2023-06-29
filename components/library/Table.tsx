@@ -1,119 +1,125 @@
-import { h } from 'preact'
+import { JSX } from 'preact'
+import cls from '../../util/cls.ts'
+import Avatar from './Avatar.tsx'
 
-export type TableHeader<T> = {
-  label: string
-  dataKey: keyof T
-}
+type Row = Record<string, string | number> & { id: number }
 
-export type TableData = string | number | {
-  content: string | number
-  image?: string
-  title?: string | number
-  action?: string | (() => void)
-}
-
-type TableRow<T> = {
-  [K in keyof T]: TableData
-}
-
-type TableProp<T> = {
-  headers: TableHeader<T>[]
-  data: TableRow<T>[]
-}
-
-function TableDataContent(data: TableData) {
-  if (typeof data === 'string' || typeof data === 'number') {
-    return data
+export type TableColumn<T extends Row> =
+  & {
+    label: null | string
+    cellClassName?: string
   }
-  return data.content
-}
-
-function TableDataTitle(data: TableData) {
-  if (typeof data === 'string' || typeof data === 'number') {
-    return <></>
-  }
-  return <div className='mb-1 font-medium text-gray-900'>{data.title}</div>
-}
-
-function TableDataImage(data: TableData) {
-  if (typeof data === 'string' || typeof data === 'number') {
-    return <></>
-  }
-  return (
-    <div className='h-11 w-11 flex-shrink-0'>
-      <img className='h-11 w-11 rounded-full' src={data.image} alt='' />
-    </div>
+  & (
+    | { type: 'content'; dataKey: keyof T }
+    | { type: 'avatar'; dataKey: keyof T }
+    | {
+      type: 'actions'
+      actions: Record<string, (row: T) => string | (() => void)>
+    }
   )
+
+type TableProps<T extends Row> = {
+  columns: TableColumn<T>[]
+  rows: T[]
 }
 
-function hasActionProperty(
-  data: TableData,
-): data is Exclude<TableData, string | number> {
-  return typeof data === 'object' && 'action' in data
-}
-
-function hasContentProperty(
-  data: TableData,
-): data is Exclude<TableData, string | number> {
-  return typeof data === 'object' && 'content' in data
-}
-
-function ActionButton({ data }: { data: TableData }) {
-  if (!hasActionProperty(data)) return <></>
+function ActionButton(
+  { name, action }: { name: string; action: string | (() => void) },
+) {
   return (
     <a
-      href={typeof data.action === 'string' ? data.action : undefined}
-      onClick={typeof data.action === 'string' ? undefined : data.action}
+      href={typeof action === 'string' ? action : undefined}
+      onClick={typeof action === 'string' ? undefined : action}
       className='text-indigo-600 hover:text-indigo-900'
     >
-      {hasContentProperty(data) ? data.content : 'Action'}
+      {name}
     </a>
   )
 }
 
-function TableRow<T>(
-  { rowData, headers }: { rowData: TableRow<T>; headers: TableHeader<T>[] },
+function TableCellInnerContents<T extends Row>(
+  { row, column }: { row: T; column: TableColumn<T> },
+) {
+  if (column.type === 'content') {
+    return (
+      <div
+        className={cls(
+          'text-gray-900 text-sm whitespace-nowrap',
+          column.cellClassName,
+        )}
+      >
+        {row[column.dataKey]}
+      </div>
+    )
+  }
+
+  if (column.type === 'avatar') {
+    const src = row[column.dataKey]
+    if (typeof src === 'string') {
+      return <Avatar className='h-11 w-11 min-w-11 ml-2' src={src} />
+    }
+    throw new Error(`Expected ${column.dataKey as string} to be of type string`)
+  }
+
+  if (column.type === 'actions') {
+    const actions = Object.entries(column.actions).map(([name, action]) => ({
+      name,
+      action: action(row),
+    }))
+    return (
+      <>
+        {actions.map((action) => <ActionButton {...action} />)}
+      </>
+    )
+  }
+
+  throw new Error(`Unexpected column.type ${JSON.stringify(column)}`)
+}
+
+function TableCell<T extends Row>(
+  { row, column }: {
+    row: T
+    column: TableColumn<T>
+    colIndex: number
+  },
+) {
+  return (
+    <td
+      className={cls(column.label ? 'p-3' : 'py-2')}
+      key={column.label}
+    >
+      <TableCellInnerContents row={row} column={column} />
+    </td>
+  )
+}
+
+function TableRow<T extends Row>(
+  { row, columns }: { row: T; columns: TableColumn<T>[] },
 ) {
   return (
     <tr>
-      {headers.map((header, index) => (
-        <td
-          className={`whitespace-nowrap py-4 pr-3 text-sm text-gray-500 ${
-            index === 0 ? 'pl-4 py-3.5' : 'pl-3 py-4'
-          }`}
-          key={header.dataKey}
-        >
-          {hasActionProperty(rowData[header.dataKey])
-            ? <ActionButton data={rowData[header.dataKey]} />
-            : (
-              <div className='flex items-center gap-4'>
-                {TableDataImage(rowData[header.dataKey])}
-                <div>
-                  {TableDataTitle(rowData[header.dataKey])}
-                  <div className='text-gray-500'>
-                    {TableDataContent(rowData[header.dataKey])}
-                  </div>
-                </div>
-              </div>
-            )}
-        </td>
+      {columns.map((column, index) => (
+        <TableCell column={column} row={row} colIndex={index} />
       ))}
     </tr>
   )
 }
 
-function TableHeader<T>({ headers }: { headers: TableHeader<T>[] }) {
+function TableHeader<T extends Row>(
+  { columns }: { columns: TableColumn<T>[] },
+) {
   return (
     <thead className='bg-gray-50'>
       <tr>
-        {headers.map((header, index) => (
+        {columns.map((column, _index) => (
           <th
             scope='col'
-            className={`text-left text-sm font-semibold text-gray-500 py-3.5 pr-3 ${
-              index === 0 ? 'pl-4' : 'pl-3'
-            }`}
+            className={cls(
+              'text-left text-sm font-semibold text-gray-500',
+              column.label && 'p-3',
+            )}
           >
-            {header.label}
+            {column.label}
           </th>
         ))}
       </tr>
@@ -121,31 +127,9 @@ function TableHeader<T>({ headers }: { headers: TableHeader<T>[] }) {
   )
 }
 
-function hasIdProperty<T>(
-  obj: TableRow<T>,
-): obj is TableRow<T> & { id: TableData } {
-  return 'id' in obj
-}
-
-function getRowKey<T>(rowData: TableRow<T>, index: number) {
-  if (!hasIdProperty(rowData)) return index.toString()
-  const idColumn = rowData['id']
-  if (typeof idColumn === 'string' || typeof idColumn === 'number') {
-    return String(idColumn)
-  } else if (
-    idColumn &&
-    (typeof idColumn.content === 'string' ||
-      typeof idColumn.content === 'number')
-  ) {
-    return String(idColumn.content)
-  } else {
-    return index.toString()
-  }
-}
-
-const Table: <T>(props: TableProp<T>) => h.JSX.Element = (
-  { headers, data },
-) => {
+export default function Table<T extends Row>(
+  { columns, rows }: TableProps<T>,
+): JSX.Element {
   return (
     <div className='px-4 sm:px-6 lg:px-8'>
       <div className='mt-8 flow-root'>
@@ -153,13 +137,13 @@ const Table: <T>(props: TableProp<T>) => h.JSX.Element = (
           <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
             <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg'>
               <table className='min-w-full divide-y divide-gray-300'>
-                <TableHeader headers={headers} />
+                <TableHeader columns={columns} />
                 <tbody className='divide-y divide-gray-200 bg-white'>
-                  {data.map((rowData, index) => (
+                  {rows.map((row) => (
                     <TableRow
-                      key={getRowKey(rowData, index)}
-                      rowData={rowData}
-                      headers={headers}
+                      key={row.id}
+                      row={row}
+                      columns={columns}
                     />
                   ))}
                 </tbody>
@@ -171,5 +155,3 @@ const Table: <T>(props: TableProp<T>) => h.JSX.Element = (
     </div>
   )
 }
-
-export default Table

@@ -1,4 +1,4 @@
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
