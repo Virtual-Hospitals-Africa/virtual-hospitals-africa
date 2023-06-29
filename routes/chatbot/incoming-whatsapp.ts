@@ -79,6 +79,7 @@ export const handler: Handlers = {
       } else if (message.type === 'image') {
         const mediaResponse = await whatsapp.get(message.image.id)
         console.log('HERE IS YOUR image', mediaResponse)
+        
         // TODO handle this
         return new Response('OK')
       } else if (message.type === 'video') {

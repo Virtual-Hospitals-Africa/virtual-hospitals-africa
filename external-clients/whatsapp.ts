@@ -7,6 +7,9 @@ import {
   WhatsAppSendable,
 } from '../types.ts'
 
+// import { writeFileSync } from 'fs';
+
+
 const postMessageRoute = `https://graph.facebook.com/v17.0/${
   Deno.env.get(
     'WHATSAPP_FROM_PHONE_NUMBER',
@@ -19,6 +22,15 @@ export async function get(path: string) {
     headers: { Authorization, 'content-type': 'application/json' },
   })
   return response.json()
+}
+export async function getBinaryData(path: string) {
+  const response = await fetch(`https://graph.facebook.com/v17.0/${path}`, {
+    headers: {Authorization}
+  })
+  console.log(response.status)
+  const content = await response.arrayBuffer()
+  
+  return content
 }
 
 export function sendMessage({
