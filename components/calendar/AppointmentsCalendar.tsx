@@ -4,13 +4,16 @@ import Card from '../library/Card.tsx'
 import Appointments from './Appointments.tsx'
 import { prettyMinimal } from '../../util/date.ts'
 
+function formHeaderText({ day, today }: { day: string; today: string }) {
+  if (today === day) return 'Today’s Appointments'
+  const dayStrMinimal = prettyMinimal(day, today)
+  if (dayStrMinimal === 'Tomorrow') return 'Tomorrow’s Appointments'
+  return `Appointments on ${dayStrMinimal}`
+}
+
 export default function AppointmentsCalendar(
   { appointments, day, today, route }: CalendarPageProps & { route: string },
 ) {
-  const headerText = today === day
-    ? 'Today’s Appointments'
-    : `Appointments on ${prettyMinimal(day, today)}`
-
   return (
     <Card className='w-full'>
       <div className='lg:grid lg:grid-cols-12 lg:gap-x-16 w-full'>
@@ -24,7 +27,7 @@ export default function AppointmentsCalendar(
           </a>
         </Calendar>
         <Appointments
-          headerText={headerText}
+          headerText={formHeaderText({ day, today })}
           appointments={appointments}
           route={route}
         />
