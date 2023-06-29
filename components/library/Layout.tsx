@@ -1,10 +1,14 @@
 import { Head } from '$fresh/runtime.ts'
 import { ComponentChildren } from 'preact'
 import BottomNav from './BottomNav.tsx'
+import { Header } from './Header.tsx'
+import { Sidebar } from './Sidebar.tsx'
 
 export type LayoutProps = {
   title: string
   route: string
+  avatarUrl: string
+  variant: 'standard' | 'with-back-button-on-mobile'
   children: ComponentChildren
 }
 
@@ -13,8 +17,6 @@ export default function Layout(props: LayoutProps) {
     <>
       <Head>
         <title>{props.title}</title>
-        <link rel='stylesheet' href='/normalize.css' />
-        <link rel='stylesheet' href='/main.css' />
         <script
           defer
           src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'
@@ -24,25 +26,18 @@ export default function Layout(props: LayoutProps) {
         />
       </Head>
       <body className='h-full relative'>
-        <nav>
-          <a class='back' onClick={() => window.history.back()}>
-            <svg
-              class='back-arrow'
-              viewBox='0 0 16 16'
-            >
-              <path
-                d='M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z'
-                fill='white'
-              >
-              </path>
-            </svg>
-          </a>
-          <h1>{props.title}</h1>
-        </nav>
-        <div className='min-h-full'>
-          {props.children}
-          <BottomNav route={props.route} />
-        </div>
+        <section className='pb-14 md:pb-0'>
+          <Sidebar route={props.route} />
+          <section className='md:pl-72'>
+            <Header
+              title={props.title}
+              avatarUrl={props.avatarUrl}
+              variant={props.variant}
+            />
+            {props.children}
+          </section>
+        </section>
+        <BottomNav route={props.route} />
       </body>
     </>
   )

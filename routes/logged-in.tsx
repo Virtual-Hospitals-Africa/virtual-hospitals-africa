@@ -1,6 +1,6 @@
 import { Handlers } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
@@ -48,6 +48,6 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
       session.set(key, value)
     }
 
-    return redirect('/app/calendar')
+    return redirect('/app')
   },
 }

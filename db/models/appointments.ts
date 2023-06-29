@@ -9,7 +9,7 @@ import {
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import { getWithMedicalRecords } from './patients.ts'
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 
 export async function addOfferedTime(
   trx: TrxOrDb,

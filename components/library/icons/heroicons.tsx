@@ -1,25 +1,26 @@
-import { ComponentChildren } from 'preact'
-import cls from '../util/cls.ts'
+import { JSX } from 'preact'
+import cls from '../../../util/cls.ts'
 
 function HeroIcon(
-  { className, children }: { className?: string; children: ComponentChildren },
+  props: JSX.SVGAttributes<SVGSVGElement>,
 ) {
   return (
     <svg
-      className={cls('w-6 h-6', className)}
+      {...props}
+      className={cls('w-6 h-6', props.className as string)}
       fill='none'
       viewBox='0 0 24 24'
       strokeWidth={1.5}
       stroke='currentColor'
     >
-      {children}
+      {props.children}
     </svg>
   )
 }
 
-export function CalendarIcon({ className }: { className?: string }) {
+export function CalendarIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -29,9 +30,9 @@ export function CalendarIcon({ className }: { className?: string }) {
   )
 }
 
-export function ChevronLeftIcon({ className }: { className?: string }) {
+export function ChevronLeftIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -40,9 +41,9 @@ export function ChevronLeftIcon({ className }: { className?: string }) {
     </HeroIcon>
   )
 }
-export function ChevronRightIcon({ className }: { className?: string }) {
+export function ChevronRightIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -52,9 +53,11 @@ export function ChevronRightIcon({ className }: { className?: string }) {
   )
 }
 
-export function EllipsisHorizontalIcon({ className }: { className?: string }) {
+export function EllipsisHorizontalIcon(
+  props: JSX.SVGAttributes<SVGSVGElement>,
+) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -64,9 +67,9 @@ export function EllipsisHorizontalIcon({ className }: { className?: string }) {
   )
 }
 
-export function MapPinIcon({ className }: { className?: string }) {
+export function MapPinIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -81,9 +84,9 @@ export function MapPinIcon({ className }: { className?: string }) {
   )
 }
 
-export function PlusIcon({ className }: { className?: string }) {
+export function PlusIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         d='M12 6V12M12 12V18M12 12H18M12 12H6'
         strokeWidth='2'
@@ -94,13 +97,41 @@ export function PlusIcon({ className }: { className?: string }) {
   )
 }
 
-export function PaperClipIcon({ className }: { className?: string }) {
+export function PaperClipIcon(props: JSX.SVGAttributes<SVGSVGElement>) {
   return (
-    <HeroIcon className={className}>
+    <HeroIcon {...props}>
       <path
         stroke-linecap='round'
         stroke-linejoin='round'
         d='M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13'
+      />
+    </HeroIcon>
+  )
+}
+
+export function BellIcon(
+  props: JSX.SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <HeroIcon {...props}>
+      <path
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        d='M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0'
+      />
+    </HeroIcon>
+  )
+}
+
+export function ArrowLeftIcon(
+  props: JSX.SVGAttributes<SVGSVGElement>,
+) {
+  return (
+    <HeroIcon {...props}>
+      <path
+        d='M3 12H21M7 16L3 12L7 16ZM3 12L7 8L3 12Z'
+        stroke-linecap='round'
+        stroke-linejoin='round'
       />
     </HeroIcon>
   )

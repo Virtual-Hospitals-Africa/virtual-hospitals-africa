@@ -1,6 +1,6 @@
 import cls from '../../util/cls.ts'
-import { PlusIcon } from '../heroicons.tsx'
-import MakeAppointmentIcon from '../icons/make-appointment.tsx'
+import { PlusIcon } from './icons/heroicons.tsx'
+import MakeAppointmentIcon from './icons/make-appointment.tsx'
 
 export default function EmptyState({ className }: { className?: string }) {
   return (

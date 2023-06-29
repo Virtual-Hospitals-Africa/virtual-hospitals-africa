@@ -39,8 +39,7 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('facilities').execute()
-  await db.schema.dropType('patient_conversation_state').execute()
-
+  await db.schema.dropType('facility_category').execute()
 }
 
 // TODO: Can't get last column properly, maybe because new line character

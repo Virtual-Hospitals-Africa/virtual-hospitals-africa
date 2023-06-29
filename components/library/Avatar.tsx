@@ -1,8 +1,13 @@
-export default function Avatar({ src }: { src?: string }) {
+import cls from '../../util/cls.ts'
+
+export default function Avatar(
+  { src, className }: { src?: string; className?: string },
+) {
+  const fullClassName = cls(className, 'flex-none rounded-full')
   if (!src) {
     return (
       <svg
-        className='h-14 w-14 flex-none rounded-full'
+        className={fullClassName}
         viewBox='0 0 24 24'
         fill='none'
         xmlns='http://www.w3.org/2000/svg'
@@ -21,7 +26,7 @@ export default function Avatar({ src }: { src?: string }) {
     <img
       src={src}
       alt=''
-      className='h-14 w-14 flex-none rounded-full'
+      className={fullClassName}
     />
   )
 }

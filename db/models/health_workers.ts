@@ -171,3 +171,31 @@ export function removeExpiredAccessToken(
     opts.health_worker_id,
   ).execute()
 }
+
+export async function isAdmin(
+  trx: TrxOrDb,
+  opts: {
+    id: number
+    // TODO: use facility_id here
+    // facility_id: number
+  },
+): Promise<boolean> {
+  const matches = await trx
+    .selectFrom('employment')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .where('health_workers.id', '=', opts.id)
+    // .where('facility_id', '=', opts.facility_id)
+    .where('profession', '=', 'admin')
+    .execute()
+  if (matches.length > 1) {
+    throw new Error(
+      'Duplicate matches found when searching for an admin identified by: ' +
+        opts.id + ' in database',
+    )
+  }
+  return matches.length === 1
+}

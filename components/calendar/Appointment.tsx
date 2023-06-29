@@ -1,8 +1,8 @@
-import { CalendarIcon, MapPinIcon } from '../heroicons.tsx'
+import { CalendarIcon, MapPinIcon } from '../library/icons/heroicons.tsx'
 import { HealthWorkerAppointment } from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
-import GoogleMeetIcon from '../icons/google-meet.tsx'
-import WhatsAppIcon from '../icons/whatsapp.tsx'
+import GoogleMeetIcon from '../library/icons/google-meet.tsx'
+import WhatsAppIcon from '../library/icons/whatsapp.tsx'
 import Avatar from '../library/Avatar.tsx'
 import Menu from '../../islands/Menu.tsx'
 
@@ -11,7 +11,7 @@ function AppointmentContents(
 ) {
   return (
     <>
-      <Avatar src={appointment.patient.image_url} />
+      <Avatar src={appointment.patient.image_url} className='h-14 w-14' />
       <div className='flex-auto'>
         <a href={href}>
           <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>
