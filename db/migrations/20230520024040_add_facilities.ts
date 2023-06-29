@@ -25,7 +25,11 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('name', 'varchar(255)')
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
     .addColumn('address', 'text')
-    .addColumn('category', sql`facility_category`, (column) => column.defaultTo('clinic'))
+    .addColumn(
+      'category',
+      sql`facility_category`,
+      (column) => column.defaultTo('clinic'),
+    )
     .addColumn('vha', 'boolean')
     .addColumn('url', 'text')
     .addColumn('phone', 'varchar(255)')

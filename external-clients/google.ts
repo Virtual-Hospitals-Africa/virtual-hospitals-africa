@@ -13,9 +13,9 @@ import {
   GoogleProfile,
   GoogleTokens,
   HealthWorkerWithGoogleTokens,
+  Location,
   LoggedInHealthWorker,
   TrxOrDb,
-  Location
 } from '../types.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import {
@@ -23,6 +23,9 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
+
+const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
+assert(GOOGLE_MAPS_API_KEY)
 
 const googleApisUrl = 'https://www.googleapis.com'
 
@@ -396,17 +399,16 @@ export async function refreshTokens(
   }
 }
 
-export async function getLocationAddress(locationCoordsObj: Location): Promise<string> {
-  const longitude = locationCoordsObj ? locationCoordsObj.longitude : -74.0059;
-  const latitude = locationCoordsObj ? locationCoordsObj.latitude : 40.7128;
-  const API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
+export async function getLocationAddress(
+  { longitude, latitude }: Location,
+): Promise<string> {
+  const url =
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
 
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`;
-
-  const result = await fetch(url);
+  const result = await fetch(url)
   assert(result.ok)
-  const json = await result.json();
-  assert(json.status === "OK")
+  const json = await result.json()
+  assert(json.status === 'OK')
   assert(Array.isArray(json.results))
   assert(json.results.length)
   const [firstResult] = json.results

@@ -197,7 +197,6 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
-
         const distanceInKM = (facility.distance / 1000).toFixed(1)
         const description = distanceInKM
           ? `${facility.address} (${distanceInKM}km)`
