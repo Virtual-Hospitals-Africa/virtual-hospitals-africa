@@ -116,36 +116,6 @@ export async function getUnhandledPatientMessages(
        GROUP BY appointments.id, appointments.patient_id, appointments.reason
     ),
 
-    nearest_via_message as (
-      SELECT patient_id,
-             json_agg(json_build_object(
-                 'id', id,
-                 'name', name,
-                 'address', address,
-                 'longitude', ST_X(location::geometry),
-                 'latitude', ST_Y(location::geometry),
-                 'distance', distance
-             )) as nearest_facilities
-      FROM (SELECT facilities.*, location.patient_id as patient_id,
-                   ST_Distance(
-                       location.location,
-                       facilities.location
-                   ) as distance,
-                  ROW_NUMBER() OVER (PARTITION BY location.patient_id ORDER BY ST_Distance(location.location, facilities.location)) as row_number
-            FROM (SELECT patient_id,
-                          ST_MakePoint(
-                                      CAST(body::json ->> 'longitude' AS double precision),
-                                      CAST(body::json ->> 'latitude' AS double precision)
-                           )::geography AS location
-                    FROM whatsapp_messages_received
-                    WHERE conversation_state = 'find_nearest_facility:share_location'
-                  ) AS location
-            CROSS JOIN facilities
-            ) AS subq
-      WHERE subq.row_number <= 10
-      GROUP BY patient_id
-    )
-
        SELECT whatsapp_messages_received.id as message_id,
               whatsapp_messages_received.patient_id,
               whatsapp_messages_received.whatsapp_id,
@@ -155,29 +125,19 @@ export async function getUnhandledPatientMessages(
                 'longitude', ST_X(patients.location::geometry),
                 'latitude', ST_Y(patients.location::geometry)
               ) as real_location,
-              nearest_via_message.nearest_facilities AS nearest_facilities,
+              patient_nearest_facilities.nearest_facilities AS nearest_facilities,
               aot.appointment_id as scheduling_appointment_id,
               aot.reason as scheduling_appointment_reason,
               aot.offered_times as appointment_offered_times
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
-    LEFT JOIN nearest_via_message ON nearest_via_message.patient_id = patients.id
+    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
   const rows: PatientState[] = []
   for (const row of result.rows) {
-    /*
-    // TODO do this all in the above query
-    if (
-      row.conversation_state === 'find_nearest_facility:share_location'
-    ) {
-      const location: Location = JSON.parse(row.body)
-      row.nearest_facilities = await facilities.nearest(trx, location)
-    }
-    */
-
     rows.push({
       ...row,
       appointment_offered_times: row.appointment_offered_times
