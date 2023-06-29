@@ -163,7 +163,7 @@ export async function getUnhandledPatientMessages(
 
   const rows: PatientState[] = []
   for (const row of result.rows) {
-    /** 
+    /**
     // TODO do this all in the above query
     if (
       row.conversation_state.startsWith('find_nearest_facility')
