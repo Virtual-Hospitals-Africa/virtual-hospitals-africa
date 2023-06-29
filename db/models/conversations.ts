@@ -118,31 +118,32 @@ export async function getUnhandledPatientMessages(
 
     nearest_via_message as (
       SELECT patient_id,
-      json_agg(json_build_object(
-          'id', id,
-          'name', name,
-          'address', address,
-          'longitude', ST_X(location::geometry),
-          'latitude', ST_Y(location::geometry),
-          'distance', distance
-      )) as nearest_facilities
-     FROM  (select facilities.*, location.patient_id as patient_id,
+             json_agg(json_build_object(
+                 'id', id,
+                 'name', name,
+                 'address', address,
+                 'longitude', ST_X(location::geometry),
+                 'latitude', ST_Y(location::geometry),
+                 'distance', distance
+             )) as nearest_facilities
+      FROM (SELECT facilities.*, location.patient_id as patient_id,
                    ST_Distance(
                        location.location,
                        facilities.location
                    ) as distance,
                   ROW_NUMBER() OVER (PARTITION BY location.patient_id ORDER BY ST_Distance(location.location, facilities.location)) as row_number
-             FROM (SELECT patient_id,
+            FROM (SELECT patient_id,
                           ST_MakePoint(
                                       CAST(body::json ->> 'longitude' AS double precision),
                                       CAST(body::json ->> 'latitude' AS double precision)
                            )::geography AS location
                     FROM whatsapp_messages_received
-                    WHERE conversation_state = 'find_nearest_facility:share_location') as location
-                    CROSS JOIN facilities
-                   ) as subq
-     WHERE subq.row_number <= 10
-     GROUP BY patient_id
+                    WHERE conversation_state = 'find_nearest_facility:share_location'
+                  ) AS location
+            CROSS JOIN facilities
+            ) AS subq
+      WHERE subq.row_number <= 10
+      GROUP BY patient_id
     )
 
        SELECT whatsapp_messages_received.id as message_id,
