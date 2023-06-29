@@ -396,17 +396,31 @@ export async function refreshTokens(
   }
 }
 
-export async function getLocationAddress(locationCoordinates: Location): Promise<string> {
-  // make the google api call
-  const longitude = -74.0059
-  const latitude = 40.7128
-  const API_KEY = 'AIzaSyCJWfHNTyRnlw3phU22A87ziRefvlu2Vhg'
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`
-  
-  const result = await fetch(url)
-  const JSON = await result.json()
+export async function getLocationAddress(locationCoordinates: Location | null | undefined): Promise<string> {
+  try {
+    const longitude = locationCoordinates ? locationCoordinates.longitude : -74.0059;
+    const latitude = locationCoordinates ? locationCoordinates.latitude : 40.7128;
+    const API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 
-  await Promise.resolve();
-  console.log(JSON)
-  return "test"
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`;
+
+    const result = await fetch(url);
+    if (!result.ok) {
+      throw new Error(`API request failed with status ${result.status}`);
+    }
+
+    const responseJSON = await result.json();
+
+    if (responseJSON.status === "OK") {
+      const address = responseJSON.results[0].formatted_address;
+      if (address) {
+        return address;
+      }
+    }
+
+    throw new Error("Address not found");
+  } catch (error) {
+    console.error("Error retrieving address:", error);
+    return "address unavailable"; 
+  }
 }
