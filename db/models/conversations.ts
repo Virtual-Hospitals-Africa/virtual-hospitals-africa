@@ -114,7 +114,7 @@ export async function getUnhandledPatientMessages(
       LEFT JOIN aot_pre ON appointments.id = aot_pre.appointment_id
           WHERE appointments.id is not null
        GROUP BY appointments.id, appointments.patient_id, appointments.reason
-    ),
+    )
 
        SELECT whatsapp_messages_received.id as message_id,
               whatsapp_messages_received.patient_id,

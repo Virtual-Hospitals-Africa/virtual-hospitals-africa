@@ -1,4 +1,4 @@
-import { Kysely, sql } from "kysely";
+import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await sql`
@@ -19,13 +19,15 @@ export async function up(db: Kysely<unknown>) {
                         facilities.location
                     ) as distance,
                     ROW_NUMBER() OVER (PARTITION BY location.patient_id ORDER BY ST_Distance(location.location, facilities.location)) as row_number
-              FROM (SELECT patient_id,
+              FROM (SELECT  DISTINCT ON (patient_id)
+                            patient_id,
                             ST_MakePoint(
                                         CAST(body::json ->> 'longitude' AS double precision),
                                         CAST(body::json ->> 'latitude' AS double precision)
                             )::geography AS location
                       FROM whatsapp_messages_received
                       WHERE conversation_state = 'find_nearest_facility:share_location'
+                      ORDER BY patient_id, updated_at DESC
                     ) AS location
               CROSS JOIN facilities
               ) AS subq
