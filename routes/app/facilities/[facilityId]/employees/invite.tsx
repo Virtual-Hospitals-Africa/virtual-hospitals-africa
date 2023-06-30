@@ -8,11 +8,9 @@ import {
 import * as health_workers from '../..../../../../../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
 import parseForm from '../../../../../util/parseForm.ts'
-import InviteEmployeesForm from "../../../../../islands/invites-form.tsx";
+import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 
 type EmployeesPageProps = {
-  isAdmin: boolean
-  facilityId: number
   healthWorker: ReturnedSqlRow<HealthWorker>
 }
 
@@ -24,9 +22,10 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       ctx.state.trx,
       { id: healthWorker.id },
     )
+    assert(isAdmin)
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
-    return ctx.render({ isAdmin, healthWorker, facilityId })
+    return ctx.render({ healthWorker })
   },
   async POST(req, ctx) {
     console.log('DID WE GET IN HERE')
@@ -37,6 +36,8 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       ctx.state.trx,
       { id: healthWorker.id },
     )
+    assert(isAdmin)
+
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
 

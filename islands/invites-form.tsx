@@ -1,8 +1,8 @@
-import { useState } from 'preact/hooks';
-import range from "../util/range.ts";
+import { useState } from 'preact/hooks'
+import range from '../util/range.ts'
 
 export default function InviteEmployeesForm() {
-  const [totalInvites, setTotalInvites] = useState(1);
+  const [totalInvites, setTotalInvites] = useState(1)
 
   return (
     <form style={{ maxWidth: '800px', margin: '0 auto' }} method='POST'>
@@ -51,24 +51,28 @@ export default function InviteEmployeesForm() {
                 style={{ height: '2.5rem' }}
                 required={index === 0 || index !== totalInvites - 1}
                 onSelect={() => {
-                  const isLast = index === totalInvites - 1;
-                  const othersAllFilled = true;
+                  const isLast = index === totalInvites - 1
+                  const othersAllFilled = true
                   if (isLast && othersAllFilled) {
-                    setTotalInvites(totalInvites + 1);
+                    setTotalInvites(totalInvites + 1)
                   }
                 }}
                 onChange={() => {
-                  console.log('onChange');
-                  const isLast = index === totalInvites - 1;
-                  const othersAllFilled = true;
+                  console.log('onChange')
+                  const isLast = index === totalInvites - 1
+                  const othersAllFilled = true
                   if (isLast && othersAllFilled) {
-                    setTotalInvites(totalInvites + 1);
+                    setTotalInvites(totalInvites + 1)
                   }
                 }}
               >
                 <option value=''>--Choose a profession--</option>
-                <option>{'nurse'.charAt(0).toUpperCase() + 'nurse'.slice(1)}</option>
-                <option>{'doctor'.charAt(0).toUpperCase() + 'doctor'.slice(1)}</option>
+                <option>
+                  {'nurse'.charAt(0).toUpperCase() + 'nurse'.slice(1)}
+                </option>
+                <option>
+                  {'doctor'.charAt(0).toUpperCase() + 'doctor'.slice(1)}
+                </option>
               </select>
             </div>
           ))}
@@ -84,5 +88,5 @@ export default function InviteEmployeesForm() {
         </button>
       </div>
     </form>
-  );
+  )
 }
