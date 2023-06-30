@@ -7,7 +7,7 @@ import TrashIcon from '../components/library/icons/trash.tsx'
 import WarningModal from '../components/library/modals/Warning.tsx'
 import parseAvailabilityForm from '../util/parseAvailabilityForm.ts'
 import timeToMin from '../util/timeToMin.ts'
-import { Button } from '../components/library/Button.tsx'
+import FormButtons from '../components/library/form/buttons.tsx'
 
 const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 const minutes = range(0, 60, 5)
@@ -269,17 +269,7 @@ export default function AvailabilityForm(
           />
         )
         : null}
-      <div className='container grid gap-x-2 grid-cols-2'>
-        <Button
-          type='button'
-          variant='outline'
-          color='white'
-          onClick={() => window.history.back()}
-        >
-          Cancel
-        </Button>
-        <Button type='submit'>Submit</Button>
-      </div>
+      <FormButtons />
     </form>
   )
 }

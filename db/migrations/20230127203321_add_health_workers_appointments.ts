@@ -1,6 +1,12 @@
 import { Kysely, sql } from 'kysely'
+import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
+  await db.schema
+    .createType('status')
+    .asEnum(['pending', 'confirmed', 'denied'])
+    .execute()
+
   await db.schema
     .createTable('health_workers')
     .addColumn('id', 'serial', (col) => col.primaryKey())
@@ -41,6 +47,7 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
     .addColumn('reason', 'varchar(255)')
+    .addColumn('status', sql`status`, (column) => column.defaultTo('pending'))
     .execute()
 
   await db.schema
@@ -71,10 +78,15 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('patient_declined', 'boolean', (col) => col.defaultTo(false))
     .addColumn('scheduled_gcal_event_id', 'varchar(255)')
     .execute()
+
+  await addUpdatedAtTrigger(db, 'appointment_offered_times')
+  await addUpdatedAtTrigger(db, 'appointments')
+  await addUpdatedAtTrigger(db, 'health_workers')
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('appointment_offered_times').execute()
   await db.schema.dropTable('appointments').execute()
   await db.schema.dropTable('health_workers').execute()
+  await db.schema.dropType('status').execute()
 }

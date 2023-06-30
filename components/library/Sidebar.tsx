@@ -38,8 +38,9 @@ function NavItem({
 const navLinks: LinkDef[] = [
   { href: '/app', title: 'Home', Icon: HomeIcon },
   { href: '/app/patients', title: 'My Patients', Icon: PatientsIcon },
-  { href: '/app/dispensary', title: 'Dispensary', Icon: PatientsIcon },
+  { href: '/app/employees', title: 'Employees', Icon: PatientsIcon },
   { href: '/app/calendar', title: 'Calendar', Icon: CalendarIcon },
+  { href: '/app/dispensary', title: 'Dispensary', Icon: PatientsIcon },
   { href: '/app/profile', title: 'Profile', Icon: ProfileIcon },
   { href: '/logout', title: 'Log Out', Icon: LogoutIcon },
 ]

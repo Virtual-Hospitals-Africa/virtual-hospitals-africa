@@ -165,7 +165,10 @@ export async function getWithPatientInfo(
 
   const patient_ids = uniq(appointments.map((a) => a.patient_id))
 
-  const patients = await getWithMedicalRecords(trx, patient_ids)
+  const patients = await getWithMedicalRecords(trx, {
+    ids: patient_ids,
+    health_worker_id: query.health_worker_id,
+  })
 
   return appointments.map((appointment) => {
     const patient = patients.find((p) => p.id === appointment.patient_id)

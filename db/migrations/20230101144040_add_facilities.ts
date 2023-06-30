@@ -1,7 +1,7 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import * as google from '../../external-clients/google.ts'
-import { readCSV } from 'https://deno.land/x/csv@v0.8.0/mod.ts'
+import parseCsv from '../../util/parseCsv.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -37,8 +37,7 @@ export async function up(db: Kysely<unknown>) {
 
   await addUpdatedAtTrigger(db, 'facilities')
 
-  // Import data from CSV file
-  await importDataFromCSV(db, './db/resources/zimbabwe-health-facilities.csv')
+  await importDataFromCSV(db)
 }
 
 export async function down(db: Kysely<unknown>) {
@@ -48,35 +47,13 @@ export async function down(db: Kysely<unknown>) {
 
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
-async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
-  const file = await Deno.open(filePath)
-
-  let header: string[] = []
-  let isFirstRow = true
-
-  for await (const row of readCSV(file)) {
-    // Collecting data from the async iterable row into an array
-    const rowDataArray: string[] = []
-    for await (const cell of row) {
-      rowDataArray.push(cell)
-    }
-
-    if (isFirstRow) {
-      // Assuming the first row of the CSV contains the header
-      header = rowDataArray
-      isFirstRow = false
-      continue
-    }
-
-    const rowData: Record<string, string> = {}
-
-    for (let i = 0; i < header.length; i++) {
-      rowData[header[i]] = rowDataArray[i]
-    }
-
+async function importDataFromCSV(db: Kysely<unknown>) {
+  for await (
+    const row of parseCsv('./db/resources/zimbabwe-health-facilities.csv')
+  ) {
     const address = await google.getLocationAddress({
-      longitude: rowData['longitude'],
-      latitude: rowData['latitude'],
+      longitude: Number(row['longitude']),
+      latitude: Number(row['latitude']),
     })
 
     await sql`
@@ -89,18 +66,14 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
         url,
         phone
       ) VALUES (
-        ${rowData['name']},
-        ST_SetSRID(ST_MakePoint(${rowData['longitude']}, ${
-      rowData['latitude']
-    }), 4326),
+        ${row['name']},
+        ST_SetSRID(ST_MakePoint(${row['longitude']}, ${row['latitude']}), 4326),
         ${address},
-        ${rowData['category']},
-        ${rowData['vha']},
-        ${rowData['url']},
-        ${rowData['phone']}
+        ${row['category']},
+        ${row['vha']},
+        ${row['url']},
+        ${row['phone']}
       )
     `.execute(db)
   }
-
-  file.close()
 }

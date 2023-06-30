@@ -27,7 +27,11 @@ import { GridPattern } from '../../components/library/GridPattern.tsx'
 export function Hero() {
   return (
     <header className='overflow-hidden bg-slate-100 lg:bg-transparent lg:px-5'>
-      <Button href='/app' color='blue' className='absolute right-3 top-3 z-10'>
+      <Button
+        href='/login'
+        color='blue'
+        className='absolute right-3 top-3 z-10'
+      >
         Sign In
       </Button>
       <div className='mx-auto grid max-w-6xl grid-cols-1 grid-rows-[auto_1fr] gap-y-16 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pb-36 lg:pt-20 xl:py-32'>

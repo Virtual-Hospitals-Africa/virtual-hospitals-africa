@@ -55,6 +55,7 @@ function TableCellInnerContents<T extends Row>(
 
   if (column.type === 'avatar') {
     const src = row[column.dataKey]
+    if (!src) return <></>
     if (typeof src === 'string') {
       return (
         <div className='flex items-center'>

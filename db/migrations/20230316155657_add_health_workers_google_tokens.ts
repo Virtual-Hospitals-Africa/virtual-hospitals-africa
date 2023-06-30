@@ -1,4 +1,5 @@
 import { Kysely, sql } from 'kysely'
+import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema.createTable('health_worker_google_tokens')
@@ -26,6 +27,8 @@ export async function up(db: Kysely<unknown>) {
     .addUniqueConstraint('access_token', ['access_token'])
     .addUniqueConstraint('refresh_token', ['refresh_token'])
     .execute()
+
+  await addUpdatedAtTrigger(db, 'health_worker_google_tokens')
 }
 
 export async function down(db: Kysely<unknown>) {
