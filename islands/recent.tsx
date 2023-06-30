@@ -69,15 +69,15 @@ const columns: TableColumn<Patient>[] = [
 export default function RecentPatients() {
   return (
     <>
-      <section className='block sm:hidden'>
-        <PatientCards patients={patients} />
-      </section>
-      <section className='hidden sm:block'>
-        <Table
-          columns={columns}
-          rows={patients}
-        />
-      </section>
+      <PatientCards
+        patients={patients}
+        className='flex sm:hidden'
+      />
+      <Table
+        columns={columns}
+        rows={patients}
+        className='hidden sm:block'
+      />
     </>
   )
 }

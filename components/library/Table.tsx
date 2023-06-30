@@ -20,7 +20,8 @@ export type TableColumn<T extends Row> =
 
 type TableProps<T extends Row> = {
   columns: TableColumn<T>[]
-  rows: T[]
+  rows: T[],
+  className?: string
 }
 
 function ActionButton(
@@ -134,10 +135,10 @@ function TableHeader<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { columns, rows }: TableProps<T>,
+  { columns, rows, className }: TableProps<T>,
 ): JSX.Element {
   return (
-    <div className='px-4 sm:px-6 lg:px-8'>
+    <div className={cls(className, 'px-4 sm:px-6 lg:px-8')}>
       <div className='mt-8 flow-root'>
         <div className='-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8'>
           <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>

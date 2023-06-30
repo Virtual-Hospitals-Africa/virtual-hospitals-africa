@@ -1,24 +1,23 @@
+import cls from '../util/cls.ts'
 import { Patient } from './recent.tsx'
 import Card from '../components/library/Card.tsx'
 import { Button } from '../components/library/Button.tsx'
+import Avatar from '../components/library/Avatar.tsx'
 
 function CardHeader(
   { name, imageUrl }: { name: string, imageUrl: string }
 ) {
   return (
-    <div className='flex gap-3'>
+    <div className='flex gap-3 items-center'>
       <div className='flex-shrink-0'>
-        <img
-          className='h-10 w-10 rounded-full'
+        <Avatar
           src={imageUrl}
-          alt={`${name} avatar`}
+          className='h-10 w-10'
         />
       </div>
-      <div className='min-w-0 flex-1 flex items-center'>
-        <p className='font-semibold text-gray-900'>
-          {name}
-        </p>
-      </div>
+      <p className='font-semibold text-gray-900 min-w-0 flex-1 flex'>
+        {name}
+      </p>
     </div>
   )
 }
@@ -50,8 +49,8 @@ function CardBody(
         {
           DISPLAYED_COLUMNS.map(column => (
             <div className='flex gap-3'>
-              <p className='font-semibold'>{column.label}:</p>
-              <p>{patient[column['dataKey']]}</p>
+              <p className='font-semibold whitespace-nowrap'>{column.label}:</p>
+              <p className='truncate'>{patient[column['dataKey']]}</p>
             </div>
           ))
         }
@@ -78,13 +77,11 @@ function PatientCard(
 
 
 export default function PatientCards(
-  { patients } : { patients: Patient[] }
+  { patients, className } : { patients: Patient[], className?: string }
 ) {
   return (
-    <section className='px-4 sm:px-6 lg:px-8 mt-8 flex flex-col gap-3'>
-      {
-        patients.map(patient => <PatientCard patient={patient} />)
-      }
+    <section className={cls(className, 'px-4 sm:px-6 lg:px-8 mt-8 flex flex-col gap-3')}>
+      { patients.map(patient => <PatientCard patient={patient} />) }
     </section>
   )
 }
