@@ -1,7 +1,5 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
-import * as facilities from './facilities.ts'
 import {
-  Location,
   PatientConversationState,
   PatientState,
   ReturnedSqlRow,
@@ -121,25 +119,23 @@ export async function getUnhandledPatientMessages(
               whatsapp_messages_received.whatsapp_id,
               whatsapp_messages_received.body,
               patients.*,
+              json_build_object(
+                'longitude', ST_X(patients.location::geometry),
+                'latitude', ST_Y(patients.location::geometry)
+              ) as real_location,
+              patient_nearest_facilities.nearest_facilities AS nearest_facilities,
               aot.appointment_id as scheduling_appointment_id,
               aot.reason as scheduling_appointment_reason,
               aot.offered_times as appointment_offered_times
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
+    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
   const rows: PatientState[] = []
   for (const row of result.rows) {
-    // TODO do this all in the above query
-    if (
-      row.conversation_state.startsWith('find_nearest_facility')
-    ) {
-      const location: Location = JSON.parse(row.body)
-      row.nearest_facilities = await facilities.nearest(trx, location)
-    }
-
     rows.push({
       ...row,
       appointment_offered_times: row.appointment_offered_times
