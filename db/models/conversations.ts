@@ -1,7 +1,5 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
-import * as facilities from './facilities.ts'
 import {
-  Location,
   PatientConversationState,
   PatientState,
   ReturnedSqlRow,
