@@ -10,6 +10,8 @@ const baseStyles = {
 
 const variantStyles = {
   solid: {
+    primary:
+      'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
     slate:
       'bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-slate-900',
     blue:
@@ -27,7 +29,7 @@ const variantStyles = {
 
 export function Button({
   variant = 'solid',
-  color = 'slate',
+  color = 'primary',
   className,
   href,
   ...props

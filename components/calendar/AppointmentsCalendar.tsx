@@ -3,6 +3,7 @@ import { CalendarPageProps } from '../../types.ts'
 import Card from '../library/Card.tsx'
 import Appointments from './Appointments.tsx'
 import { prettyMinimal } from '../../util/date.ts'
+import { Button } from '../library/Button.tsx'
 
 function formHeaderText({ day, today }: { day: string; today: string }) {
   if (today === day) return 'Today’s Appointments'
@@ -18,13 +19,12 @@ export default function AppointmentsCalendar(
     <Card className='w-full'>
       <div className='lg:grid lg:grid-cols-12 lg:gap-x-16 w-full'>
         <Calendar day={day} today={today} route={route}>
-          <a
-            type='button'
-            className='mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-            href={`${route}/schedule-appointment`}
+          <Button
+            className='mt-8 w-full'
+            href={`${route}/schedule`}
           >
             Schedule Appointment
-          </a>
+          </Button>
         </Calendar>
         <Appointments
           headerText={formHeaderText({ day, today })}
