@@ -19,13 +19,15 @@
     "heroku:web:up": "heroku ps:scale web=1",
     "heroku:web:down": "heroku ps:scale web=0",
 
-    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors",
-    "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
-
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unstable --target x86_64-unknown-linux-gnu",
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
     "compile:token_refresher": "deno task compile --output binaries/tokenRefresher tokenRefresher/tokenRefresher.ts",
-    "compile:web": "deno task compile --output binaries/web main.ts"
+    "compile:web": "deno task compile --output binaries/web main.ts",
+
+    "lock:reset": "rm -f deno.lock && deno cache --reload main.ts chatbot/chatbot.ts tokenRefresher/tokenRefresher.ts",
+
+    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors",
+    "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {
