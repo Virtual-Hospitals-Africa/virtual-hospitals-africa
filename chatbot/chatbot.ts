@@ -15,7 +15,7 @@ export function createChatbot(): Responder {
   }
   // console.log('Line 50: chatbot at return')
   return {
-    start: respondAndSetTimer,
+    start: () => respondAndSetTimer,
     exit(): void {
       console.log('Exiting chatbot')
       clearTimeout(timer)
