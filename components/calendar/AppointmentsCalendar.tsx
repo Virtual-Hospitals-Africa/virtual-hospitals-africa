@@ -21,7 +21,7 @@ export default function AppointmentsCalendar(
         <Calendar day={day} today={today} route={route}>
           <Button
             className='mt-8 w-full'
-            href={`${route}/schedule`}
+            href={`${route}/appointments/schedule`}
           >
             Schedule Appointment
           </Button>

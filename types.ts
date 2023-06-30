@@ -58,6 +58,7 @@ export type PatientConversationState =
 
 export type Patient = {
   conversation_state: PatientConversationState
+  avatar_url?: string
 } & PatientDemographicInfo
 
 export type PatientDemographicInfo = {
@@ -76,9 +77,9 @@ export type HasDemographicInfo = {
   national_id_number: string
 }
 
-// TODO: define this
+// TODO: actually define this
 export type PatientMedicalRecord = {
-  foo: string
+  allergies: string[]
 }
 
 export type PatientWithMedicalRecord = {
@@ -862,13 +863,6 @@ export type LinkProps = {
 }
 
 export type LinkDef = Omit<LinkProps, 'active'>
-
-export type TabProps = {
-  name: string
-  count?: number
-}
-
-export type TabDef = Omit<TabProps, 'active'>
 
 export type CalendarPageProps = {
   appointments: HealthWorkerAppointment[]

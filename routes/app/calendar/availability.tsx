@@ -153,7 +153,6 @@ export const handler: LoggedInHealthWorkerHandler<
       await googleClient.insertEvent(gcal_availability_calendar_id, event)
     }
 
-    // TODO: Redirect to calendar
     return redirect('/app/calendar?availability-set=true')
   },
 }
@@ -168,7 +167,7 @@ export default function SetAvailability(
       title='Set Availability'
       route={props.route}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='with-back-button-on-mobile'
     >
       <Container size='lg'>
         <SetAvailabilityForm availability={props.data.availability} />

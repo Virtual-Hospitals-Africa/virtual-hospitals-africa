@@ -92,16 +92,40 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 }
 
 // TODO: implement medical record functionality
+// TODO: only show medical record if health worker has permission
 export function getWithMedicalRecords(
   trx: TrxOrDb,
-  ids: number[],
+  opts: {
+    ids: number[]
+    health_worker_id?: number
+  },
 ) {
-  assert(ids.length, 'Must provide ids to decline')
+  assert(opts.ids.length, 'Must provide ids to decline')
   return trx
     .selectFrom('patients')
     .selectAll()
-    .where('id', 'in', ids)
+    .where('id', 'in', opts.ids)
     .execute()
+}
+
+function haveNames(
+  patients: ReturnedSqlRow<Patient>[],
+): patients is ReturnedSqlRow<Patient & { name: string }>[] {
+  return patients.every((patient) => !!patient.name)
+}
+
+export async function getAllWithNames(
+  trx: TrxOrDb,
+): Promise<ReturnedSqlRow<Patient & { name: string }>[]> {
+  const patients = await trx
+    .selectFrom('patients')
+    .selectAll()
+    .where('name', 'is not', null)
+    .execute()
+
+  assert(haveNames(patients))
+
+  return patients
 }
 
 export function pick(patientState: PatientState) {

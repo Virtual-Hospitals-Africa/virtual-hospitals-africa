@@ -1,5 +1,5 @@
 import { HealthWorkerAppointment } from '../../types.ts'
-import EmptyState from '../library/EmptyState.tsx'
+import AppointmentsEmptyState from './EmptyState.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Appointment from './Appointment.tsx'
 
@@ -19,7 +19,7 @@ export default function Appointments(
     return (
       <div className={className}>
         {header}
-        <EmptyState className='p-2' />
+        <AppointmentsEmptyState />
       </div>
     )
   }
