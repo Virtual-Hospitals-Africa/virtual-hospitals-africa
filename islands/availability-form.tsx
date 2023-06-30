@@ -231,7 +231,7 @@ function findDaysWithOverlap(event: HTMLFormElement) {
   )
 }
 
-export default function SetAvailabilityForm(
+export default function AvailabilityForm(
   { availability }: { availability: AvailabilityJSON },
 ) {
   const [overlappingDays, setOverlappingDays] = useState<string[]>([])

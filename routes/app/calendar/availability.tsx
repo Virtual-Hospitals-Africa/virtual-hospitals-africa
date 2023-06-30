@@ -9,7 +9,7 @@ import {
   LoggedInHealthWorkerHandler,
   Time,
 } from '../../../types.ts'
-import SetAvailabilityForm from '../../../islands/set-availability-form.tsx'
+import SetAvailabilityForm from '../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import { assertAllHarare, convertToTime } from '../../../util/date.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
