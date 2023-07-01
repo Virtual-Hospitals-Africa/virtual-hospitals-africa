@@ -9,6 +9,7 @@ import {
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
+  PatientWithMedicalRecord,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
@@ -93,19 +94,30 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 
 // TODO: implement medical record functionality
 // TODO: only show medical record if health worker has permission
-export function getWithMedicalRecords(
+export async function getWithMedicalRecords(
   trx: TrxOrDb,
   opts: {
     ids: number[]
     health_worker_id?: number
   },
-) {
-  assert(opts.ids.length, 'Must provide ids to decline')
-  return trx
+): Promise<ReturnedSqlRow<PatientWithMedicalRecord>[]> {
+  assert(opts.ids.length, 'Must select nonzero patients')
+  const patients = await trx
     .selectFrom('patients')
     .selectAll()
     .where('id', 'in', opts.ids)
     .execute()
+
+  return patients.map((patient) => ({
+    ...patient,
+    medical_record: {
+      allergies: [
+        'chocolate',
+        'bananas',
+      ],
+      history: {},
+    },
+  }))
 }
 
 function haveNames(

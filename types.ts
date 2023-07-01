@@ -80,10 +80,10 @@ export type HasDemographicInfo = {
 // TODO: actually define this
 export type PatientMedicalRecord = {
   allergies: string[]
+  history: any
 }
 
-export type PatientWithMedicalRecord = {
-  patient: Patient
+export type PatientWithMedicalRecord = Patient & {
   medical_record: PatientMedicalRecord
 }
 
@@ -243,7 +243,7 @@ export type Appointment = {
 
 export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
   scheduled_gcal_event_id: Maybe<string>
-  patient: Patient
+  patient: PatientWithMedicalRecord
 }
 
 export type MatchingState<US extends UserState<any>> = {

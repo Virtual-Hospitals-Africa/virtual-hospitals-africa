@@ -1,7 +1,7 @@
 import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as appointments from '../../../../db/models/appointments.ts'
-import PatientCard from '../../../../components/patient/Card.tsx'
+import PatientCard from '../../../../components/patients/DetailedCard.tsx'
 import {
   AppointmentWithAllPatientInfo,
   HealthWorker,

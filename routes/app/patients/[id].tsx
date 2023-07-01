@@ -1,18 +1,21 @@
 import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as patients from '../../../db/models/patients.ts'
-import PatientCard from '../../../components/patient/Card.tsx'
+import PatientDetailedCard from '../../../components/patients/DetailedCard.tsx'
 import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
   Patient,
+  PatientWithMedicalRecord,
   ReturnedSqlRow,
 } from '../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import Layout from '../../../components/library/Layout.tsx'
+import { Container } from '../../../components/library/Container.tsx'
+import SectionHeader from '../../../components/library/typography/SectionHeader.tsx'
 
 type PatientPageProps = {
-  patient: Patient
+  patient: PatientWithMedicalRecord
   healthWorker: ReturnedSqlRow<HealthWorker>
 }
 
@@ -51,7 +54,14 @@ export default function PatientPage(
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >
-      <PatientCard patient={props.data.patient} />
+      <Container size='lg'>
+        <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
+          <SectionHeader>
+            Demographic Data
+          </SectionHeader>
+          <PatientDetailedCard patient={props.data.patient} />
+        </div>
+      </Container>
     </Layout>
   )
 }
