@@ -52,8 +52,8 @@ async function importDataFromCSV(db: Kysely<unknown>) {
     const row of parseCsv('./db/resources/zimbabwe-health-facilities.csv')
   ) {
     const address = await google.getLocationAddress({
-      longitude: Number(row['longitude']),
-      latitude: Number(row['latitude']),
+      longitude: Number(row.longitude),
+      latitude: Number(row.latitude),
     })
 
     await sql`
@@ -66,13 +66,13 @@ async function importDataFromCSV(db: Kysely<unknown>) {
         url,
         phone
       ) VALUES (
-        ${row['name']},
-        ST_SetSRID(ST_MakePoint(${row['longitude']}, ${row['latitude']}), 4326),
+        ${row.name},
+        ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
         ${address},
-        ${row['category']},
-        ${row['vha']},
-        ${row['url']},
-        ${row['phone']}
+        ${row.category},
+        ${row.vha},
+        ${row.url},
+        ${row.phone}
       )
     `.execute(db)
   }

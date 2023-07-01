@@ -40,8 +40,8 @@ export async function up(db: Kysely<unknown>) {
       sql`patient_conversation_state`,
       (column) => column.defaultTo('initial_message'),
     )
-    .addUniqueConstraint('national_id_number', ['national_id_number'])
-    .addUniqueConstraint('phone_number', ['phone_number'])
+    .addUniqueConstraint('patient_national_id_number', ['national_id_number'])
+    .addUniqueConstraint('patient_phone_number', ['phone_number'])
     .execute()
 
   await addUpdatedAtTrigger(db, 'patients')

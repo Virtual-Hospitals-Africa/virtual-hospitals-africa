@@ -23,9 +23,9 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('access_token', 'varchar(255)', (col) => col.notNull())
     .addColumn('refresh_token', 'varchar(255)', (col) => col.notNull())
     .addColumn('expires_at', 'timestamp', (col) => col.notNull())
-    .addUniqueConstraint('health_worker_id', ['health_worker_id'])
-    .addUniqueConstraint('access_token', ['access_token'])
-    .addUniqueConstraint('refresh_token', ['refresh_token'])
+    .addUniqueConstraint('google_tokens_health_worker_id', ['health_worker_id'])
+    .addUniqueConstraint('google_tokens_access_token', ['access_token'])
+    .addUniqueConstraint('google_tokens_refresh_token', ['refresh_token'])
     .execute()
 
   await addUpdatedAtTrigger(db, 'health_worker_google_tokens')
