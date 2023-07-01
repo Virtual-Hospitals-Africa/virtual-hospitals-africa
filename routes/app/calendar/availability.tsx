@@ -167,7 +167,7 @@ export default function SetAvailability(
       title='Set Availability'
       route={props.route}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='with-back-button-on-mobile'
+      variant='form'
     >
       <Container size='lg'>
         <SetAvailabilityForm availability={props.data.availability} />

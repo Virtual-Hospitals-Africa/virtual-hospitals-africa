@@ -8,7 +8,7 @@ export type LayoutProps = {
   title: string
   route: string
   avatarUrl: string
-  variant: 'standard' | 'with-back-button-on-mobile'
+  variant: 'standard' | 'form'
   children: ComponentChildren
 }
 
