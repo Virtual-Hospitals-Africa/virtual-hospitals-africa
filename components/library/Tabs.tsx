@@ -34,7 +34,7 @@ function Tab(
   )
 }
 
-export default function Tabs<Tab extends string>(
+export function Tabs<Tab extends string>(
   { route, tabs, activeTab, counts }: TabsProps<Tab>,
 ) {
   return (
@@ -68,4 +68,9 @@ export default function Tabs<Tab extends string>(
       </div>
     </div>
   )
+}
+
+export function activeTab<Tab extends string>(tabs: Tab[], url: string): Tab {
+  const tabQuery = new URL(url).searchParams.get('tab')
+  return tabs.find((tab) => tab === tabQuery) || tabs[0]
 }

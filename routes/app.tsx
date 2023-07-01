@@ -3,7 +3,7 @@ import { PageProps } from '$fresh/server.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as patients from '../db/models/patients.ts'
 import Layout from '../components/library/Layout.tsx'
-import Tabs from '../components/library/Tabs.tsx'
+import { activeTab, Tabs } from '../components/library/Tabs.tsx'
 import {
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
@@ -85,12 +85,11 @@ export const handler: LoggedInHealthWorkerHandler<AppProps> = {
 
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
-    const tabQuery = new URL(req.url).searchParams.get('tab')
-    const activeTab = tabs.find((tab) => tab === tabQuery) || tabs[0]
+    const tab = activeTab(tabs, req.url)
 
     return ctx.render({
       healthWorker,
-      ...(await fetchNeededData(ctx.state.trx, activeTab)),
+      ...(await fetchNeededData(ctx.state.trx, tab)),
     })
   },
 }

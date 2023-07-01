@@ -39,7 +39,7 @@ export default function SchedulePage(
       title='Schedule Appointment'
       route={props.route}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='with-back-button-on-mobile'
+      variant='form'
     >
       <Container size='lg'>
         <ScheduleForm />
