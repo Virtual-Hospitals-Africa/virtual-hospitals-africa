@@ -6,14 +6,14 @@ export type AddPatientStep =
   | 'address'
   | 'history'
   | 'allergies'
-  | 'age'
+  | 'age_related_questions'
 
 const stepNames: AddPatientStep[] = [
   'personal',
   'address',
   'history',
   'allergies',
-  'age',
+  'age_related_questions',
 ]
 
 // deno-lint-ignore no-explicit-any

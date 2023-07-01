@@ -59,6 +59,7 @@ export type PatientConversationState =
 export type Patient = {
   conversation_state: PatientConversationState
   avatar_url?: string
+  location?: Maybe<Location>
 } & PatientDemographicInfo
 
 export type PatientDemographicInfo = {
