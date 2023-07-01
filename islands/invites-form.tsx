@@ -50,29 +50,17 @@ export default function InviteEmployeesForm() {
                 className='block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 style={{ height: '2.5rem' }}
                 required={index === 0 || index !== totalInvites - 1}
-                onSelect={() => {
-                  const isLast = index === totalInvites - 1
-                  const othersAllFilled = true
-                  if (isLast && othersAllFilled) {
-                    setTotalInvites(totalInvites + 1)
-                  }
-                }}
                 onChange={() => {
-                  console.log('onChange')
                   const isLast = index === totalInvites - 1
-                  const othersAllFilled = true
-                  if (isLast && othersAllFilled) {
+                  if (isLast) {
                     setTotalInvites(totalInvites + 1)
                   }
                 }}
               >
-                <option value=''>--Choose a profession--</option>
-                <option>
-                  {'nurse'.charAt(0).toUpperCase() + 'nurse'.slice(1)}
-                </option>
-                <option>
-                  {'doctor'.charAt(0).toUpperCase() + 'doctor'.slice(1)}
-                </option>
+                <option value=''></option>
+                <option value='nurse'>Nurse</option>
+                <option value='doctor'>Doctor</option>
+                <option value='admin'>Administrator</option>
               </select>
             </div>
           ))}
