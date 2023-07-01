@@ -1,19 +1,26 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
-import { HealthWorker, LoggedInHealthWorkerHandler } from '../../../types.ts'
+import {
+  HealthWorker,
+  LoggedInHealthWorkerHandler,
+  Patient,
+} from '../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import { Steps } from '../../../components/library/Steps.tsx'
+import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 
-export const handler: LoggedInHealthWorkerHandler<
-  { healthWorker: HealthWorker }
-> = {
+type AddPatientProps = {
+  healthWorker: HealthWorker
+  patient: Partial<Patient>
+}
+
+export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   GET(_, ctx) {
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
-    return ctx.render({ healthWorker })
+    return ctx.render({ healthWorker, patient: {} })
   },
   async POST(req, ctx) {
     const _params = new URLSearchParams(await req.text())
@@ -47,11 +54,9 @@ function getSteps(url: URL) {
 }
 
 export default function AddPatient(
-  props: PageProps<
-    { healthWorker: HealthWorker }
-  >,
+  props: PageProps<AddPatientProps>,
 ) {
-  console.log(getSteps(props.url))
+  const { steps, currentStep } = useAddPatientSteps(props)
 
   return (
     <Layout
@@ -61,8 +66,14 @@ export default function AddPatient(
       variant='form'
     >
       <Container size='lg'>
-        <Steps route={props.route} steps={getSteps(props.url)} />
-        <form method='POST'></form>
+        {steps}
+        <form method='POST'>
+          {currentStep === 'personal' && <div>TODO personal form</div>}
+          {currentStep === 'address' && <div>TODO address form</div>}
+          {currentStep === 'history' && <div>TODO history form</div>}
+          {currentStep === 'allergies' && <div>TODO allergies form</div>}
+          {currentStep === 'age' && <div>TODO age form</div>}
+        </form>
       </Container>
     </Layout>
   )
