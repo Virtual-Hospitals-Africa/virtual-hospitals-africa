@@ -1,58 +1,62 @@
-import { Patient } from '../../types.ts'
+import { PatientWithMedicalRecord } from '../../types.ts'
 import { PaperClipIcon } from '../library/icons/heroicons.tsx'
 
-type PatientCardProps = {
-  patient: Patient
+type PatientDetailedCardProps = {
+  patient: PatientWithMedicalRecord
 }
 
-export default function PatientCard(_props: PatientCardProps) {
+export default function PatientDetailedCard(
+  { patient }: PatientDetailedCardProps,
+) {
   return (
-    <div>
+    <div className='py-6 px-4 rounded-md border-2 border-gray-300 bg-gray-300'>
       <div className='px-4 sm:px-0'>
-        <h3 className='text-base font-semibold leading-7 text-white'>
+        <h3 className='text-base font-semibold leading-7 text-gray-900'>
           Applicant Information
         </h3>
-        <p className='mt-1 max-w-2xl text-sm leading-6 text-gray-400'>
+        <p className='mt-1 max-w-2xl text-sm leading-6 text-gray-500'>
           Personal details and application.
         </p>
       </div>
-      <div className='mt-6 border-t border-white/10'>
-        <dl className='divide-y divide-white/10'>
-          <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-white'>
+      <div className='mt-6'>
+        <dl className='grid grid-cols-1 sm:grid-cols-2'>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-medium leading-6 text-gray-900'>
               Full name
             </dt>
-            <dd className='mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0'>
-              Margot Foster
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+              {patient.name}
             </dd>
           </div>
-          <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-white'>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-medium leading-6 text-gray-900'>
               Application for
             </dt>
-            <dd className='mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0'>
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               Backend Developer
             </dd>
           </div>
-          <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-white'>
-              Email address
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-medium leading-6 text-gray-900'>
+              Phone number
             </dt>
-            <dd className='mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0'>
-              margotfoster@example.com
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+              {patient.phone_number}
             </dd>
           </div>
-          <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-white'>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-medium leading-6 text-gray-900'>
               Salary expectation
             </dt>
-            <dd className='mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0'>
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               $120,000
             </dd>
           </div>
-          <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-white'>About</dt>
-            <dd className='mt-1 text-sm leading-6 text-gray-400 sm:col-span-2 sm:mt-0'>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
+            <dt className='text-sm font-medium leading-6 text-gray-900'>
+              About
+            </dt>
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim
               incididunt cillum culpa consequat. Excepteur qui ipsum aliquip
               consequat sint. Sit id mollit nulla mollit nostrud in ea officia
@@ -60,14 +64,14 @@ export default function PatientCard(_props: PatientCardProps) {
               reprehenderit deserunt qui eu.
             </dd>
           </div>
-          <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-white'>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
+            <dt className='text-sm font-medium leading-6 text-gray-900'>
               Attachments
             </dt>
-            <dd className='mt-2 text-sm text-white sm:col-span-2 sm:mt-0'>
+            <dd className='mt-2 text-sm text-gray-900'>
               <ul
                 role='list'
-                className='divide-y divide-white/10 rounded-md border border-white/20'
+                className='divide-y divide-gray-100 rounded-md border border-gray-200'
               >
                 <li className='flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6'>
                   <div className='flex w-0 flex-1 items-center'>
@@ -85,7 +89,7 @@ export default function PatientCard(_props: PatientCardProps) {
                   <div className='ml-4 flex-shrink-0'>
                     <a
                       href='#'
-                      className='font-medium text-indigo-400 hover:text-indigo-300'
+                      className='font-medium text-indigo-600 hover:text-indigo-500'
                     >
                       Download
                     </a>
@@ -107,7 +111,7 @@ export default function PatientCard(_props: PatientCardProps) {
                   <div className='ml-4 flex-shrink-0'>
                     <a
                       href='#'
-                      className='font-medium text-indigo-400 hover:text-indigo-300'
+                      className='font-medium text-indigo-600 hover:text-indigo-500'
                     >
                       Download
                     </a>

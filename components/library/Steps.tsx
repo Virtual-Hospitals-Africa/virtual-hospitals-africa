@@ -1,9 +1,9 @@
+import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import { CheckIcon } from './CheckIcon.tsx'
 
 type Step<S> = {
   name: S
-  display?: string
   status: 'complete' | 'current' | 'upcoming'
 }
 
@@ -18,7 +18,7 @@ export function Steps<S extends string>(
   return (
     <div className='lg:border-b lg:border-t lg:border-gray-200'>
       <nav
-        className='mx-auto max-w-7xl sm:px-6 lg:px-8'
+        className='mx-auto max-w-7xl'
         aria-label='Progress'
       >
         <ol
@@ -57,7 +57,7 @@ export function Steps<S extends string>(
                         </span>
                         <span className='ml-4 mt-0.5 flex min-w-0 flex-col'>
                           <span className='text-sm font-medium capitalize'>
-                            {step.display || step.name}
+                            {capitalize(step.name)}
                           </span>
                         </span>
                       </span>
@@ -85,7 +85,7 @@ export function Steps<S extends string>(
                         </span>
                         <span className='ml-4 mt-0.5 flex min-w-0 flex-col'>
                           <span className='text-sm font-medium text-indigo-600 capitalize'>
-                            {step.display || step.name}
+                            {capitalize(step.name)}
                           </span>
                         </span>
                       </span>
@@ -112,7 +112,7 @@ export function Steps<S extends string>(
                         </span>
                         <span className='ml-4 mt-0.5 flex min-w-0 flex-col'>
                           <span className='text-sm font-medium text-gray-500 capitalize'>
-                            {step.display || step.name}
+                            {capitalize(step.name)}
                           </span>
                         </span>
                       </span>
