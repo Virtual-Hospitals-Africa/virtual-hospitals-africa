@@ -22,9 +22,9 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
     const isAdmin = await health_workers.isAdmin(
       ctx.state.trx,
-      { 
+      {
         employee_id: healthWorker.id,
-        facility_id: facilityId
+        facility_id: facilityId,
       },
     )
     assert(isAdmin)
@@ -38,13 +38,13 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
     const isAdmin = await health_workers.isAdmin(
       ctx.state.trx,
-      { 
+      {
         employee_id: healthWorker.id,
-        facility_id: parseInt(ctx.params.facilityId)
+        facility_id: parseInt(ctx.params.facilityId),
       },
     )
 
-    assert( isAdmin)
+    assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)

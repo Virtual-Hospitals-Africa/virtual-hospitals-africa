@@ -1,15 +1,22 @@
 import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
-import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
+import {
+  Facility,
+  HealthWorkerWithGoogleTokens,
+  LoggedInHealthWorkerHandler,
+} from '../../../../types.ts'
 import * as health_workers from '../../../../db/models/health_workers.ts'
-import Table, {
-  TableColumn,
-} from '../../../../components/library/Table.tsx'
+import Layout from '../../../../components/library/Layout.tsx'
+import { Employee } from '../../../../components/health_worker/HealthWorkerTable.tsx'
+import HealthWorkerTable from '../../../../components/health_worker/HealthWorkerTable.tsx'
+import { Container } from '../../../../components/library/Container.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<
   {
     isAdmin: boolean
     tableData: Employee[]
+    healthWorker: HealthWorkerWithGoogleTokens
+    facility: Facility
   }
 > = {
   async GET(_req, ctx) {
@@ -19,6 +26,10 @@ export const handler: LoggedInHealthWorkerHandler<
       health_workers.isHealthWorkerWithGoogleTokens(healthWorker),
       'Invalid health worker',
     )
+    const facility = await health_workers.getFacilityById(ctx.state.trx, {
+      facilityId: facilityId,
+    })
+    assert(facility, 'facility no.' + facilityId + ' does not exist')
     const isAdmin = await health_workers.isAdmin(
       ctx.state.trx,
       {
@@ -39,69 +50,38 @@ export const handler: LoggedInHealthWorkerHandler<
           name: value.name,
           profession: value.profession,
           id: value.id,
+          avatar_url: value.avatar_url,
         },
       )
     })
-    return ctx.render({ isAdmin, tableData })
+    return ctx.render({ isAdmin, tableData, healthWorker, facility })
   },
 }
-
-type Employee = {
-  id: number,
-  name: string,
-  profession: string
-  avatar_url?: string
-}
-
-const columns : TableColumn<Employee>[] = [
-  {
-    label: null,
-    dataKey: 'avatar_url',
-    type: 'avatar'
-  },
-  {
-    label: "ID",
-    dataKey: "id",
-    type: 'content'
-  },
-  {
-    label: "Health Worker",
-    dataKey: "name",
-    type: 'content'
-  },
-  {
-    label: "Profession",
-    dataKey: "profession",
-    type: 'content'
-  }
-]
 
 export default function EmployeeTable(
   props: PageProps<
     {
       isAdmin: boolean
       tableData: Employee[]
+      healthWorker: HealthWorkerWithGoogleTokens
+      facility: Facility
     }
   >,
 ) {
   console.log('props.data', props.data)
-  if (props.data.isAdmin) {
-    columns.push(
-      {
-        label: "Actions",
-        type: 'actions',
-        actions: {
-          resendInvite() {
-            return () => {throw new Error("Not implemented yet")}
-          }
-        }
-      }
-    )
-  }
   return (
-    <Table
-      columns={columns}
-      rows={props.data.tableData}
-    />
+    <Layout
+      title={'View health workers at ' + props.data.facility.name + '.'}
+      route={props.route}
+      avatarUrl={props.data.healthWorker.avatar_url}
+      variant='standard'
+    >
+      <Container size='lg'>
+        <HealthWorkerTable
+          isAdmin={props.data.isAdmin}
+          employees={props.data.tableData}
+        />
+      </Container>
+    </Layout>
   )
 }

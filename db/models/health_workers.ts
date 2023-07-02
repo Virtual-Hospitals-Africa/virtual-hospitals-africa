@@ -1,6 +1,7 @@
 import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
+  Facility,
   GoogleTokens,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
@@ -218,6 +219,7 @@ export async function getEmployeesAtFacility(
   {
     name: string
     profession: Profession
+    avatar_url: string
   }
 >[]> {
   return await trx
@@ -239,6 +241,20 @@ export async function getEmployeesAtFacility(
       'health_workers.id as id',
       'health_workers.created_at',
       'health_workers.updated_at',
+      'avatar_url',
     ])
     .execute()
+}
+
+export async function getFacilityById(
+  trx: TrxOrDb,
+  opts: {
+    facilityId: number
+  },
+): Promise<ReturnedSqlRow<Facility> | undefined> {
+  return await trx
+    .selectFrom('facilities')
+    .where('id', '=', opts.facilityId)
+    .selectAll()
+    .executeTakeFirst()
 }
