@@ -44,10 +44,11 @@ export const handler: LoggedInHealthWorkerHandler<
         facilityId: facilityId,
       },
     )
-    if (!employeeData.some((employee) =>{
-      return employee.id === healthWorker.id
-    }))
-    {
+    if (
+      !employeeData.some((employee) => {
+        return employee.id === healthWorker.id
+      })
+    ) {
       //If the user isn't part of the facility they're trying to access
       return redirect('/app')
     }
