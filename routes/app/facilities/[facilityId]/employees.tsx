@@ -91,8 +91,8 @@ export default function EmployeeTable(
         label: "Actions",
         type: 'actions',
         actions: {
-          resendInvite(employee: Employee) {
-            return "not implemented yet"
+          resendInvite() {
+            return () => {throw new Error("Not implemented yet")}
           }
         }
       }

@@ -17,26 +17,34 @@ type EmployeesPageProps = {
 export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
   async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
+    const facilityId = parseInt(ctx.params.facilityId)
+
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
     const isAdmin = await health_workers.isAdmin(
       ctx.state.trx,
-      { id: healthWorker.id },
+      { 
+        employee_id: healthWorker.id,
+        facility_id: facilityId
+      },
     )
     assert(isAdmin)
-    const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
   async POST(req, ctx) {
     console.log('DID WE GET IN HERE')
     const healthWorker = ctx.state.session.data
-    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
 
+    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
     const isAdmin = await health_workers.isAdmin(
       ctx.state.trx,
-      { id: healthWorker.id },
+      { 
+        employee_id: healthWorker.id,
+        facility_id: parseInt(ctx.params.facilityId)
+      },
     )
-    assert(isAdmin)
+
+    assert( isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
