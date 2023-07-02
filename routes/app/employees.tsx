@@ -26,6 +26,6 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
     if (!facilityId) {
       throw new Error('User not employed at any facility')
     }
-    return redirect('facilities/' + facilityId + '/employees')
+    return redirect('/app/facilities/' + facilityId + '/employees')
   },
 }

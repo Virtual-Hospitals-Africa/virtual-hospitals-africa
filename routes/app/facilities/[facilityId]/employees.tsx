@@ -89,6 +89,7 @@ export default function EmployeeTable(
         <HealthWorkerTable
           isAdmin={props.data.isAdmin}
           employees={props.data.tableData}
+          facilityId={props.data.facility.id}
         />
       </Container>
     </Layout>
