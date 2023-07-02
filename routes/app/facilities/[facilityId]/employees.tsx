@@ -10,6 +10,7 @@ import Layout from '../../../../components/library/Layout.tsx'
 import { Employee } from '../../../../components/health_worker/HealthWorkerTable.tsx'
 import HealthWorkerTable from '../../../../components/health_worker/HealthWorkerTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
+import redirect from '../../../../util/redirect.ts'
 
 export const handler: LoggedInHealthWorkerHandler<
   {
@@ -43,6 +44,13 @@ export const handler: LoggedInHealthWorkerHandler<
         facilityId: facilityId,
       },
     )
+    if (!employeeData.some((employee) =>{
+      return employee.id === healthWorker.id
+    }))
+    {
+      //If the user isn't part of the facility they're trying to access
+      return redirect('/app')
+    }
     const tableData: Employee[] = []
     employeeData.map((value) => {
       tableData.push(

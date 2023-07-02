@@ -217,6 +217,7 @@ export async function getEmployeesAtFacility(
   },
 ): Promise<ReturnedSqlRow<
   {
+    id: number
     name: string
     profession: Profession
     avatar_url: string
