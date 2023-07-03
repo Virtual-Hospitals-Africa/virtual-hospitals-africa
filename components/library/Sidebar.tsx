@@ -1,9 +1,7 @@
 import { LinkDef, LinkProps } from '../../types.ts'
 
-import HomeIcon from './icons/home.tsx'
 import CalendarIcon from './icons/calendar.tsx'
 import PatientsIcon from './icons/patients.tsx'
-import ProfileIcon from './icons/profile.tsx'
 import LogoutIcon from './icons/logout.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
@@ -36,11 +34,10 @@ function NavItem({
 }
 
 const navLinks: LinkDef[] = [
-  { href: '/app', title: 'Home', Icon: HomeIcon },
   { href: '/app/patients', title: 'My Patients', Icon: PatientsIcon },
-  { href: '/app/dispensary', title: 'Dispensary', Icon: PatientsIcon },
+  { href: '/app/employees', title: 'Employees', Icon: PatientsIcon },
   { href: '/app/calendar', title: 'Calendar', Icon: CalendarIcon },
-  { href: '/app/profile', title: 'Profile', Icon: ProfileIcon },
+  { href: '/app/dispensary', title: 'Dispensary', Icon: PatientsIcon },
   { href: '/logout', title: 'Log Out', Icon: LogoutIcon },
 ]
 
@@ -51,14 +48,14 @@ export function Sidebar(props: SidebarProps) {
   return (
     <div className='hidden fixed inset-y-0 z-50 md:flex w-72 md:flex-col'>
       <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-5 pb-4'>
-        <div className='flex h-16 shrink-0 items-center gap-3'>
+        <a href='/app' className='flex h-16 shrink-0 items-center gap-3'>
           <img
             className='h-8 w-auto'
             src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
             alt='Virtual Hospitals Africa'
           />
           <h6 class='text-l'>Virtual Hospitals Africa</h6>
-        </div>
+        </a>
         <nav className='flex flex-1 flex-col'>
           <ul role='list' className='-mx-2 space-y-1'>
             {navLinks.map((link) => (

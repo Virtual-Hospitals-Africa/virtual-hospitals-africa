@@ -1,7 +1,7 @@
 import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as appointments from '../../../../db/models/appointments.ts'
-import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
+import PatientCard from '../../../../components/patients/DetailedCard.tsx'
 import {
   AppointmentWithAllPatientInfo,
   HealthWorker,
@@ -10,48 +10,40 @@ import {
 } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
+import { Container } from '../../../../components/library/Container.tsx'
+import ScheduleForm from '../../../../islands/schedule-form.tsx'
 
-type AppointmentPageProps = {
-  appointment: AppointmentWithAllPatientInfo
+type SchedulePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
 }
 
-export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
-  async GET(_, ctx) {
+export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
+  GET(_, ctx) {
     const healthWorker = ctx.state.session.data
     assert(
       isHealthWorkerWithGoogleTokens(healthWorker),
       'Invalid health worker',
     )
 
-    const id = parseInt(ctx.params.id)
-    assert(!isNaN(id), 'Invalid appointment ID')
-
-    const [appointment] = await appointments.getWithPatientInfo(ctx.state.trx, {
-      id,
-      health_worker_id: healthWorker.id,
-    })
-
-    assert(appointment, 'Appointment not found')
-
     return ctx.render({
-      appointment,
       healthWorker,
     })
   },
 }
 
-export default function AppointmentPage(
-  props: PageProps<AppointmentPageProps>,
+export default function SchedulePage(
+  props: PageProps<SchedulePageProps>,
 ) {
   return (
     <Layout
-      title={`Appointment with ${props.data.appointment.patient.name}`}
+      title='Schedule Appointment'
       route={props.route}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='form'
     >
-      <PatientDetailedCard patient={props.data.appointment.patient} />
+      <Container size='lg'>
+        <ScheduleForm />
+      </Container>
     </Layout>
   )
 }

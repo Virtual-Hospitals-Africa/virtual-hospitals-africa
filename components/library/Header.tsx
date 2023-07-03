@@ -4,7 +4,7 @@ import Avatar from './Avatar.tsx'
 export type HeaderProps = {
   title: string
   avatarUrl: string
-  variant: 'standard' | 'with-back-button-on-mobile'
+  variant: 'standard' | 'form'
 }
 
 function Notification() {
@@ -70,7 +70,7 @@ export function Header({ title, avatarUrl, variant }: HeaderProps) {
       <div className='max-w-7xl w-full px-5'>
         <div className='relative flex h-16 items-center justify-between'>
           <HeaderLeft
-            showBackButton={variant === 'with-back-button-on-mobile'}
+            showBackButton={variant === 'form'}
             title={title}
           />
           <HeaderRight avatarUrl={avatarUrl} />

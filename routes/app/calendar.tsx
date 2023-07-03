@@ -93,7 +93,7 @@ export default function Calendar(
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >
-      <Container size='lg' className='py-5'>
+      <Container size='lg'>
         <AppointmentsCalendar route={props.route} {...props.data} />
       </Container>
     </Layout>

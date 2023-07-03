@@ -1,4 +1,5 @@
 import { Kysely, sql } from 'kysely'
+import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -32,6 +33,8 @@ export async function up(db: Kysely<unknown>) {
       'profession',
     ])
     .execute()
+
+  await addUpdatedAtTrigger(db, 'employment')
 }
 
 export async function down(db: Kysely<unknown>) {

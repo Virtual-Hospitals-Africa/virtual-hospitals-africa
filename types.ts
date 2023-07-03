@@ -58,6 +58,8 @@ export type PatientConversationState =
 
 export type Patient = {
   conversation_state: PatientConversationState
+  avatar_url?: string
+  location?: Maybe<Location>
 } & PatientDemographicInfo
 
 export type PatientDemographicInfo = {
@@ -76,13 +78,13 @@ export type HasDemographicInfo = {
   national_id_number: string
 }
 
-// TODO: define this
+// TODO: actually define this
 export type PatientMedicalRecord = {
-  foo: string
+  allergies: string[]
+  history: any
 }
 
-export type PatientWithMedicalRecord = {
-  patient: Patient
+export type PatientWithMedicalRecord = Patient & {
   medical_record: PatientMedicalRecord
 }
 
@@ -242,7 +244,7 @@ export type Appointment = {
 
 export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
   scheduled_gcal_event_id: Maybe<string>
-  patient: Patient
+  patient: PatientWithMedicalRecord
 }
 
 export type MatchingState<US extends UserState<any>> = {
@@ -305,6 +307,7 @@ export type WhatsAppImageMessage = {
     id: string
     mime_type: 'image/jpeg'
     sha256: string
+    caption?: string
   }
 }
 
@@ -314,6 +317,7 @@ export type WhatsAppVideoMessage = {
     id: string
     mime_type: 'video/mp4'
     sha256: string
+    caption?: string
   }
 }
 
@@ -862,13 +866,6 @@ export type LinkProps = {
 }
 
 export type LinkDef = Omit<LinkProps, 'active'>
-
-export type TabProps = {
-  name: string
-  count?: number
-}
-
-export type TabDef = Omit<TabProps, 'active'>
 
 export type CalendarPageProps = {
   appointments: HealthWorkerAppointment[]

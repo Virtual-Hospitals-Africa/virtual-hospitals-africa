@@ -1,10 +1,10 @@
+import parseForm from './parseForm.ts'
 import { AvailabilityJSON } from '../types.ts'
-import set from './set.ts'
 
 export default function parseAvailabilityForm(
   params: URLSearchParams | FormData,
 ): AvailabilityJSON {
-  const availability = {
+  return parseForm(params, {
     Sunday: [],
     Monday: [],
     Tuesday: [],
@@ -12,14 +12,5 @@ export default function parseAvailabilityForm(
     Thursday: [],
     Friday: [],
     Saturday: [],
-  }
-
-  params.forEach((value, key) => {
-    const toSet = /^\d+$/g.test(value as string)
-      ? parseInt(value as string)
-      : value
-    set(availability, key, toSet)
   })
-
-  return availability
 }
