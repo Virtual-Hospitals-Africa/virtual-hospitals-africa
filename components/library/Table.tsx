@@ -20,7 +20,7 @@ export type TableColumn<T extends Row> =
 
 type TableProps<T extends Row> = {
   columns: TableColumn<T>[]
-  rows: T[],
+  rows: T[]
   className?: string
 }
 
