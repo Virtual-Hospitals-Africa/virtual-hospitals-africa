@@ -23,7 +23,7 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
-import getAreaNameByType from '../util/getAreaNameByType.ts'
+import uniq from "../util/uniq.ts";
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 assert(GOOGLE_MAPS_API_KEY)
@@ -402,7 +402,7 @@ export async function refreshTokens(
 
 export async function getLocationAddress(
   { longitude, latitude }: Location,
-): Promise<string> {
+): Promise<string | null> {
   const encodedLatitude = encodeURIComponent(latitude)
   const encodedLongitude = encodeURIComponent(longitude)
 
@@ -435,14 +435,21 @@ export async function getLocationAddress(
   )
 
   // remove any duplicates
-  const uniqueComponents = [...new Set(nonUnknownComponents)]
+  const uniqueComponents = uniq(nonUnknownComponents)
 
-  let address
-  if (uniqueComponents.length === 0) {
-    address = 'Address unknown'
-  } else {
-    address = uniqueComponents.join(', ')
+  if (!uniqueComponents.length) return null
+
+  return uniqueComponents.join(', ')
+}
+
+export default function getAreaNameByType(
+  addressComponents: Array<any>,
+  areaType: string,
+): string {
+  for (const component of addressComponents) {
+    if (component.types?.includes(areaType)) {
+      return component.short_name ?? component.long_name ?? 'unknown'
+    }
   }
-  console.log(address)
-  return address
+  return 'unknown'
 }
