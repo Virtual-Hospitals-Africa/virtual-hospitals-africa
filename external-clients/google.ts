@@ -413,5 +413,13 @@ export async function getLocationAddress(
   assert(json.results.length)
   const [firstResult] = json.results
   assert(typeof firstResult.formatted_address === 'string')
-  return firstResult.formatted_address
+
+  const locality = firstResult.address_components[1].short_name;
+  const townOrDistrict = firstResult.address_components[2].short_name;
+  const province = firstResult.address_components[3].short_name.replace(/province/gi, "").trim();
+  const country = firstResult.address_components[4].short_name;
+  
+  const address = `${locality}, ${townOrDistrict}, ${province}, ${country}`;
+  // console.log(address)
+  return address;
 }

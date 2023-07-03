@@ -75,10 +75,10 @@ async function importDataFromCSV(db: Kysely<unknown>, filePath: string) {
     }
 
     const address = await google.getLocationAddress({
-      longitude: rowData['longitude'],
-      latitude: rowData['latitude'],
-    })
-
+      longitude: parseFloat(rowData['longitude']),
+      latitude: parseFloat(rowData['latitude']),
+    });
+    
     await sql`
       INSERT INTO facilities (
         name,
