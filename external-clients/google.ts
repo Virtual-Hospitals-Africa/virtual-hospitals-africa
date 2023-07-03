@@ -401,7 +401,7 @@ export async function refreshTokens(
 
 export async function getLocationAddress(
   { longitude, latitude }: Location,
-): Promise<string> {
+): Promise<string | undefined> {
   const url =
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
 
@@ -414,14 +414,32 @@ export async function getLocationAddress(
   const [firstResult] = json.results
   assert(typeof firstResult.formatted_address === 'string')
 
-  const locality = firstResult.address_components[1].short_name;
-  const townOrDistrict = firstResult.address_components[2].short_name;
-  const province = firstResult.address_components[3].short_name
-  // .replace(/province/gi, "").trim();
-  const country = firstResult.address_components[4].short_name;
-  
+  console.log("BEGIN HERE")
+  const locality = getAreaNameByType(firstResult.address_components, "locality");
+  const townOrDistrict = getAreaNameByType(firstResult.address_components, "administrative_area_level_2");
+  const province = getAreaNameByType(firstResult.address_components, "administrative_area_level_1");
+  const country = getAreaNameByType(firstResult.address_components, "country");
+
   const address = `${locality}, ${townOrDistrict}, ${province}, ${country}`;
   console.log(address)
   return address;
 }
+
+function getAreaNameByType(addressComponents: Array<any>, areaType: string) {
+  for (let i = 0; i < addressComponents.length; i++) {
+    const component = addressComponents[i];
+    if (component.types && component.types.includes(areaType)) {
+      if (component.short_name !== null) {
+        return component.short_name;
+      } else if (component.long_name !== null) {
+        return component.long_name;
+      } else {
+        return "unknown"
+      }
+    }
+  }
+  return "unknown";
+}
+
+
 
