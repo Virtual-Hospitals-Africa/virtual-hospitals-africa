@@ -44,13 +44,13 @@ function CardBody(
   { patient } : { patient: Patient }
 ) {
   return (
-    <div className='flex items-end'>
+    <div className='flex items-end gap-7'>
       <div className="flex flex-col flex-1 min-w-0">
         {
           DISPLAYED_COLUMNS.map(column => (
-            <div className='flex gap-3'>
+            <div className='flex gap-3 justify-between'>
               <p className='font-semibold whitespace-nowrap'>{column.label}:</p>
-              <p className='truncate'>{patient[column['dataKey']]}</p>
+              <p className='truncate text-gray-500'>{patient[column['dataKey']]}</p>
             </div>
           ))
         }
