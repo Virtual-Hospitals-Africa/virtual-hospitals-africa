@@ -38,13 +38,13 @@ export async function upsert(trx: TrxOrDb, info: {
   national_id_number: Maybe<string>
   location?: Maybe<Location>
 }): Promise<ReturnedSqlRow<Patient>> {
+  console.log('info', info)
+
   const [patient] = await trx
     .insertInto('patients')
-    .values({
-      ...info,
-      location: (info.location &&
-        sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)`),
-    })
+    .values({ ...info, location: info.location 
+      ? sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)`
+      : null })
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(info))
     .returningAll()
     .execute()
