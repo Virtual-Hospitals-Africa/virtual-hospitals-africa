@@ -427,14 +427,19 @@ export async function getLocationAddress(
   const addressComponents = [locality, townOrDistrict, province, country];
   const nonUnknownComponents = addressComponents.filter((component) => component !== "unknown");
 
+  // remove any duplicates
+  const uniqueComponents = [...new Set(nonUnknownComponents)];
+
   let address;
-  if (nonUnknownComponents.length === 0) {
+  if (uniqueComponents.length === 0) {
     address = "Address unknown";
   } else {
-    address = nonUnknownComponents.join(", ");
+    address = uniqueComponents.join(", ");
   }
+  console.log(address)
   return address;
 }
+
 
 
 
