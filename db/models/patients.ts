@@ -9,6 +9,7 @@ import {
   PatientConversationState,
   PatientDemographicInfo,
   PatientState,
+  PatientWithMedicalRecord,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
@@ -35,49 +36,16 @@ export async function upsert(trx: TrxOrDb, info: {
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
-  location: Maybe<Location>
+  location?: Maybe<Location>
 }): Promise<ReturnedSqlRow<Patient>> {
   const [patient] = await trx
     .insertInto('patients')
-    .values(info)
+    .values({
+      ...info,
+      location: (info.location &&
+        sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)`),
+    })
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(info))
-    .returningAll()
-    .execute()
-
-  return patient
-}
-
-export async function upsertLocation(trx: TrxOrDb, info: {
-  id?: number
-  conversation_state: PatientConversationState
-  phone_number: string
-  name: Maybe<string>
-  gender: Maybe<Gender>
-  date_of_birth: Maybe<string>
-  national_id_number: Maybe<string>
-  location: Maybe<Location>
-}): Promise<ReturnedSqlRow<Patient>> {
-  let locationAsGeography
-
-  // Check if location is not null or undefined
-  if (info.location) {
-    // Convert the location into a geography type
-    locationAsGeography =
-      sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)`
-  } else {
-    // If location is null or undefined, set it to null in the database
-    locationAsGeography = null
-  }
-
-  // Create a new info object with location in the new format
-  const newInfo = {
-    ...info,
-    location: locationAsGeography,
-  }
-  const [patient] = await trx
-    .insertInto('patients')
-    .values(newInfo)
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(newInfo))
     .returningAll()
     .execute()
 
@@ -92,16 +60,51 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 }
 
 // TODO: implement medical record functionality
-export function getWithMedicalRecords(
+// TODO: only show medical record if health worker has permission
+export async function getWithMedicalRecords(
   trx: TrxOrDb,
-  ids: number[],
-) {
-  assert(ids.length, 'Must provide ids to decline')
-  return trx
+  opts: {
+    ids: number[]
+    health_worker_id?: number
+  },
+): Promise<ReturnedSqlRow<PatientWithMedicalRecord>[]> {
+  assert(opts.ids.length, 'Must select nonzero patients')
+  const patients = await trx
     .selectFrom('patients')
     .selectAll()
-    .where('id', 'in', ids)
+    .where('id', 'in', opts.ids)
     .execute()
+
+  return patients.map((patient) => ({
+    ...patient,
+    medical_record: {
+      allergies: [
+        'chocolate',
+        'bananas',
+      ],
+      history: {},
+    },
+  }))
+}
+
+function haveNames(
+  patients: ReturnedSqlRow<Patient>[],
+): patients is ReturnedSqlRow<Patient & { name: string }>[] {
+  return patients.every((patient) => !!patient.name)
+}
+
+export async function getAllWithNames(
+  trx: TrxOrDb,
+): Promise<ReturnedSqlRow<Patient & { name: string }>[]> {
+  const patients = await trx
+    .selectFrom('patients')
+    .selectAll()
+    .where('name', 'is not', null)
+    .execute()
+
+  assert(haveNames(patients))
+
+  return patients
 }
 
 export function pick(patientState: PatientState) {

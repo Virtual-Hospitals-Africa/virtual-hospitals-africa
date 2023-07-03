@@ -1,4 +1,5 @@
 import { Kysely, sql } from 'kysely'
+import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -90,6 +91,9 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.notNull(),
     )
     .execute()
+
+  await addUpdatedAtTrigger(db, 'whatsapp_messages_received')
+  await addUpdatedAtTrigger(db, 'whatsapp_messages_sent')
 }
 
 export async function down(db: Kysely<unknown>) {

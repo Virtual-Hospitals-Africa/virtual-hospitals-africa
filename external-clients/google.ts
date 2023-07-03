@@ -13,6 +13,7 @@ import {
   GoogleProfile,
   GoogleTokens,
   HealthWorkerWithGoogleTokens,
+  Location,
   LoggedInHealthWorker,
   TrxOrDb,
 } from '../types.ts'
@@ -22,6 +23,9 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
+
+const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
+assert(GOOGLE_MAPS_API_KEY)
 
 const googleApisUrl = 'https://www.googleapis.com'
 
@@ -393,4 +397,21 @@ export async function refreshTokens(
     removeExpiredAccessToken(trx, { health_worker_id: health_worker.id })
     return { result: 'expiry' }
   }
+}
+
+export async function getLocationAddress(
+  { longitude, latitude }: Location,
+): Promise<string> {
+  const url =
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
+
+  const result = await fetch(url)
+  assert(result.ok)
+  const json = await result.json()
+  assert(json.status === 'OK')
+  assert(Array.isArray(json.results))
+  assert(json.results.length)
+  const [firstResult] = json.results
+  assert(typeof firstResult.formatted_address === 'string')
+  return firstResult.formatted_address
 }

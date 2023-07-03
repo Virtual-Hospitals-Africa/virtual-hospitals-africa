@@ -159,7 +159,7 @@ const conversationStates: ConversationStates<
         longitude: locationMessage.longitude,
         latitude: locationMessage.latitude,
       }
-      await patients.upsertLocation(trx, {
+      await patients.upsert(trx, {
         ...patients.pick(patientState),
         location: currentLocation,
       })
