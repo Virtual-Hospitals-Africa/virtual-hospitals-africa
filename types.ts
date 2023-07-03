@@ -307,6 +307,7 @@ export type WhatsAppImageMessage = {
     id: string
     mime_type: 'image/jpeg'
     sha256: string
+    caption?: string
   }
 }
 
@@ -316,6 +317,7 @@ export type WhatsAppVideoMessage = {
     id: string
     mime_type: 'video/mp4'
     sha256: string
+    caption?: string
   }
 }
 
