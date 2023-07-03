@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { sql } from 'kysely'
 import {
   Gender,
@@ -38,14 +38,16 @@ export async function upsert(trx: TrxOrDb, info: {
   national_id_number: Maybe<string>
   location?: Maybe<Location>
 }): Promise<ReturnedSqlRow<Patient>> {
-  console.log('info', info)
-
+  const toInsert = {
+    ...info,
+    location: info.location
+      ? sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)` as unknown as Location
+      : null,
+  }
   const [patient] = await trx
     .insertInto('patients')
-    .values({ ...info, location: info.location 
-      ? sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)`
-      : null })
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(info))
+    .values(toInsert)
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
     .returningAll()
     .execute()
 
@@ -130,4 +132,17 @@ export function hasDemographicInfo(
     !!patient.date_of_birth &&
     !!patient.national_id_number
   )
+}
+
+export async function nearestFacilities(trx: TrxOrDb, patient_id: number) {
+  const result = await trx
+    .selectFrom('patient_nearest_facilities')
+    .selectAll()
+    .where('patient_id', '=', patient_id)
+    .execute()
+
+  assertEquals(result.length, 1)
+  const [patient] = result
+  assert(patient.nearest_facilities.length > 0)
+  return patient.nearest_facilities
 }
