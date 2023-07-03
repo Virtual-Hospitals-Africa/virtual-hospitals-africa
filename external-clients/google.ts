@@ -403,9 +403,8 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string> {
-
-  const encodedLatitude = encodeURIComponent(latitude);
-  const encodedLongitude = encodeURIComponent(longitude);
+  const encodedLatitude = encodeURIComponent(latitude)
+  const encodedLongitude = encodeURIComponent(longitude)
 
   const url =
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
@@ -419,28 +418,31 @@ export async function getLocationAddress(
   const [firstResult] = json.results
   assert(typeof firstResult.formatted_address === 'string')
 
-  const locality = getAreaNameByType(firstResult.address_components, "locality");
-  const townOrDistrict = getAreaNameByType(firstResult.address_components, "administrative_area_level_2");
-  const province = getAreaNameByType(firstResult.address_components, "administrative_area_level_1");
-  const country = getAreaNameByType(firstResult.address_components, "country");
+  const locality = getAreaNameByType(firstResult.address_components, 'locality')
+  const townOrDistrict = getAreaNameByType(
+    firstResult.address_components,
+    'administrative_area_level_2',
+  )
+  const province = getAreaNameByType(
+    firstResult.address_components,
+    'administrative_area_level_1',
+  )
+  const country = getAreaNameByType(firstResult.address_components, 'country')
 
-  const addressComponents = [locality, townOrDistrict, province, country];
-  const nonUnknownComponents = addressComponents.filter((component) => component !== "unknown");
+  const addressComponents = [locality, townOrDistrict, province, country]
+  const nonUnknownComponents = addressComponents.filter((component) =>
+    component !== 'unknown'
+  )
 
   // remove any duplicates
-  const uniqueComponents = [...new Set(nonUnknownComponents)];
+  const uniqueComponents = [...new Set(nonUnknownComponents)]
 
-  let address;
+  let address
   if (uniqueComponents.length === 0) {
-    address = "Address unknown";
+    address = 'Address unknown'
   } else {
-    address = uniqueComponents.join(", ");
+    address = uniqueComponents.join(', ')
   }
   console.log(address)
-  return address;
+  return address
 }
-
-
-
-
-
