@@ -23,6 +23,7 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
+import getAreaNameByType from '../util/getAreaNameByType.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 assert(GOOGLE_MAPS_API_KEY)
@@ -401,9 +402,13 @@ export async function refreshTokens(
 
 export async function getLocationAddress(
   { longitude, latitude }: Location,
-): Promise<string | undefined> {
+): Promise<string> {
+
+  const encodedLatitude = encodeURIComponent(latitude);
+  const encodedLongitude = encodeURIComponent(longitude);
+
   const url =
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
 
   const result = await fetch(url)
   assert(result.ok)
@@ -414,32 +419,23 @@ export async function getLocationAddress(
   const [firstResult] = json.results
   assert(typeof firstResult.formatted_address === 'string')
 
-  console.log("BEGIN HERE")
   const locality = getAreaNameByType(firstResult.address_components, "locality");
   const townOrDistrict = getAreaNameByType(firstResult.address_components, "administrative_area_level_2");
   const province = getAreaNameByType(firstResult.address_components, "administrative_area_level_1");
   const country = getAreaNameByType(firstResult.address_components, "country");
 
-  const address = `${locality}, ${townOrDistrict}, ${province}, ${country}`;
-  console.log(address)
+  const addressComponents = [locality, townOrDistrict, province, country];
+  const nonUnknownComponents = addressComponents.filter((component) => component !== "unknown");
+
+  let address;
+  if (nonUnknownComponents.length === 0) {
+    address = "Address unknown";
+  } else {
+    address = nonUnknownComponents.join(", ");
+  }
   return address;
 }
 
-function getAreaNameByType(addressComponents: Array<any>, areaType: string) {
-  for (let i = 0; i < addressComponents.length; i++) {
-    const component = addressComponents[i];
-    if (component.types && component.types.includes(areaType)) {
-      if (component.short_name !== null) {
-        return component.short_name;
-      } else if (component.long_name !== null) {
-        return component.long_name;
-      } else {
-        return "unknown"
-      }
-    }
-  }
-  return "unknown";
-}
 
 
 
