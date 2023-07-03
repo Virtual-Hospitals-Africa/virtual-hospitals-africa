@@ -25,11 +25,11 @@ export async function get(path: string) {
 }
 export async function getBinaryData(path: string) {
   const response = await fetch(`https://graph.facebook.com/v17.0/${path}`, {
-    headers: {Authorization}
+    headers: {Authorization,}
   })
   console.log(response.status)
   const content = await response.arrayBuffer()
-  
+
   return content
 }
 

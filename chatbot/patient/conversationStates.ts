@@ -1,4 +1,3 @@
-import { Options } from '$fresh/plugins/twind.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   ConversationStateHandlerListAction,
@@ -31,6 +30,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
+import * as media from '../../db/models/media.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -327,13 +327,14 @@ const conversationStates: ConversationStates<
   'onboarded:make_appointment:ask_for_media': {
     type: 'select',
     prompt(patientState: PatientState): string {
-      return `Got it, ${patientState.scheduling_appointment_reason}. Do you wish to provide media to our health worker?`
+      return `Got it, ${patientState.scheduling_appointment_reason}. To assist the doctor with triaging your case, 
+      you can send a picture, video clip or voice note describing your symptoms.`
     },
     options: [
       {
         id: 'yes',
         title: 'Upload media',
-        nextState: 'onboarded:make_appointment:choose_upload_media_type',
+        nextState: 'onboarded:make_appointment:upload_media',
       },
       {
         id: 'no',
@@ -342,74 +343,26 @@ const conversationStates: ConversationStates<
       },
     ],
   },
-  'onboarded:make_appointment:choose_upload_media_type': {
+  'onboarded:make_appointment:upload_media':{
     type: 'select',
-    prompt:
-      'Please select the approproiate option to submit media to explain your situation to our doctor.',
+    prompt: 'Please send your photo, video clip or voice note in the chat describing you symptoms here and click on the button once you finished uploading.',
     options: [
       {
-        id: 'photo',
-        title: 'Photo',
-        nextState: 'onboarded:make_appointment:upload_photo',
-      },
-      {
-        id: 'video',
-        title: 'Video',
-        nextState: 'onboarded:make_appointment:upload_video',
-      },
-      {
-        id: 'voice',
-        title: 'Voice Note',
-        nextState: 'onboarded:make_appointment:upload_voice',
-      },
+      id: 'finish_upload',
+      title: 'Upload completed',
+      nextState: 'onboarded:make_appointment:confirm_details'
+      }
     ],
-  },
-  'onboarded:make_appointment:upload_photo': {
-    type: 'string',
-    prompt: 'Please upload your photo here to our doctor',
-    nextState: 'onboarded:make_appointment:upload_more_media',
-    async onExit(_trx, patientState) {
-      await console.log('Hello world')
-      return patientState
-      //TODO Extract the photo from the whatsapp id returned and insert the binary data into our db.
-    },
-  },
-  'onboarded:make_appointment:upload_video': {
-    type: 'string',
-    prompt: 'Please upload your video here to our doctor',
-    nextState: 'onboarded:make_appointment:upload_more_media',
-    async onExit(_trx, patientState) {
-      await console.log('Hello world')
-      return patientState
-      //TODO Extract the video from the whatsapp id returned and insert the binary data into our db.
-    },
-  },
-  'onboarded:make_appointment:upload_voice': {
-    type: 'string',
-    prompt: 'Please upload your voice note here to our doctor',
-    nextState: 'onboarded:make_appointment:upload_more_media',
-    async onExit(_trx, patientState) {
-      await console.log('Hello world')
-      return patientState
-      //TODO Extract the voice from the whatsapp id returned and insert the binary data into our db.
-    },
-  },
-  'onboarded:make_appointment:upload_more_media': {
-    type: 'select',
-    prompt: 'Do you want to upload more media to our doctor?',
-    options: [
-      {
-        id: 'more_media',
-        title: 'Yes',
-        nextState: 'onboarded:make_appointment:choose_upload_media_type',
-      },
-      {
-        id: 'no_more_media',
-        title: 'No',
-        nextState: 'onboarded:make_appointment:confirm_details',
-      },
-    ],
-  },
+    async onExit(
+      trx,
+      patientState
+    ){
+      const mediaUploaded = await media.getPatientMediaCount(trx, {paitent_id: patientState.patient_id}) 
+      return {
+        ...patientState,
+        media_uploaded: mediaUploaded
+    }
+  }},
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
     prompt(patientState: PatientState): string {
@@ -419,7 +372,8 @@ const conversationStates: ConversationStates<
         prettyPatientDateOfBirth(
           patientState,
         )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. Is this correct?`
+      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}.
+      You have also uploaded ${patientState.media_uploaded ? patientState.media_uploaded : 0} media to the doctor. Is this correct?`
     },
     options: [
       {

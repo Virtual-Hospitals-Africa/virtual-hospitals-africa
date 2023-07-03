@@ -53,11 +53,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
   | 'onboarded:make_appointment:ask_for_media'
-  | 'onboarded:make_appointment:choose_upload_media_type'
-  | 'onboarded:make_appointment:upload_photo'
-  | 'onboarded:make_appointment:upload_video'
-  | 'onboarded:make_appointment:upload_voice'
-  | 'onboarded:make_appointment:upload_more_media'
+  | 'onboarded:make_appointment:upload_media'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'
   | 'onboarded:make_appointment:other_scheduling_options'
@@ -140,6 +136,7 @@ export type PatientState = {
   nearest_facilities?: ReturnedSqlRow<Facility>[]
   nearest_facility_name?: string
   selectedFacility?: Facility
+  media_uploaded?: number
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -947,4 +944,11 @@ export type CalendarPageProps = {
 export type LocationDistance = {
   origin: Location
   destination: Location
+}
+export type patientMedia = {
+  id:number,
+  file_name:string,
+  file_type:string,
+  binary_date:BinaryType,
+  patient_id: number
 }
