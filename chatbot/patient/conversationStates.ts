@@ -163,7 +163,15 @@ const conversationStates: ConversationStates<
         ...patients.pick(patientState),
         location: currentLocation,
       })
-      return { ...patientState, location: currentLocation }
+
+      return {
+        ...patientState,
+        location: currentLocation,
+        nearest_facilities: await patients.nearestFacilities(
+          trx,
+          patientState.patient_id,
+        ),
+      }
     },
   },
   // change the name of got_location to nearest_facilities?

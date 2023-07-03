@@ -9,9 +9,11 @@ import {
   Appointment,
   AppointmentOfferedTime,
   Employee,
+  Facility,
   HealthWorker,
   HealthWorkerGoogleToken,
   Patient,
+  ReturnedSqlRow,
   SqlRow,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
@@ -27,6 +29,11 @@ export type DatabaseSchema = {
   employment: SqlRow<Employee>
   whatsapp_messages_received: SqlRow<WhatsAppMessageReceived>
   whatsapp_messages_sent: SqlRow<WhatsAppMessageSent>
+  facilities: SqlRow<Facility>
+  patient_nearest_facilities: {
+    patient_id: number
+    nearest_facilities: ReturnedSqlRow<Facility>[]
+  }
 }
 
 // deno-lint-ignore no-explicit-any
