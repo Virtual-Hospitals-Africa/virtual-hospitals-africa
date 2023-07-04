@@ -1,14 +1,15 @@
 import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
+  Facility,
   GoogleTokens,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
+  Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
   Date
@@ -175,27 +176,86 @@ export function removeExpiredAccessToken(
 export async function isAdmin(
   trx: TrxOrDb,
   opts: {
-    id: number
-    // TODO: use facility_id here
-    // facility_id: number
+    employee_id: number
+    facility_id: number
   },
 ): Promise<boolean> {
   const matches = await trx
+    .selectFrom('employment')
+    .where('health_worker_id', '=', opts.employee_id)
+    .where('facility_id', '=', opts.facility_id)
+    .where('profession', '=', 'admin')
+    .execute()
+  if (matches.length > 1) {
+    throw new Error(
+      'Duplicate matches found when searching for an admin identified by: ' +
+        opts.employee_id + ' in database',
+    )
+  }
+  return matches.length === 1
+}
+
+export async function getFirstEmployedFacility(
+  trx: TrxOrDb,
+  opts: {
+    employeeId: number
+  },
+): Promise<number | undefined> {
+  const firstFacilityID = await trx
+    .selectFrom('employment')
+    .select('facility_id')
+    .where('health_worker_id', '=', opts.employeeId)
+    .orderBy('id')
+    .executeTakeFirst()
+  return firstFacilityID?.facility_id
+}
+
+export async function getEmployeesAtFacility(
+  trx: TrxOrDb,
+  opts: {
+    facilityId: number
+  },
+): Promise<ReturnedSqlRow<
+  {
+    id: number
+    name: string
+    profession: Profession
+    avatar_url: string
+  }
+>[]> {
+  return await trx
     .selectFrom('employment')
     .innerJoin(
       'health_workers',
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .where('health_workers.id', '=', opts.id)
-    // .where('facility_id', '=', opts.facility_id)
-    .where('profession', '=', 'admin')
-    .execute()
-  if (matches.length > 1) {
-    throw new Error(
-      'Duplicate matches found when searching for an admin identified by: ' +
-        opts.id + ' in database',
+    .innerJoin(
+      'facilities',
+      'facilities.id',
+      'employment.facility_id',
     )
-  }
-  return matches.length === 1
+    .where('facility_id', '=', opts.facilityId)
+    .select([
+      'health_workers.name as name',
+      'profession',
+      'health_workers.id as id',
+      'health_workers.created_at',
+      'health_workers.updated_at',
+      'avatar_url',
+    ])
+    .execute()
+}
+
+export async function getFacilityById(
+  trx: TrxOrDb,
+  opts: {
+    facilityId: number
+  },
+): Promise<ReturnedSqlRow<Facility> | undefined> {
+  return await trx
+    .selectFrom('facilities')
+    .where('id', '=', opts.facilityId)
+    .selectAll()
+    .executeTakeFirst()
 }
