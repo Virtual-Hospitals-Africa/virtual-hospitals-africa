@@ -8,8 +8,9 @@ import {
 } from '../../../../types.ts'
 import * as health_workers from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import { Employee } from '../../../../components/health_worker/HealthWorkerTable.tsx'
-import EmployeesTable from '../../../../components/health_worker/HealthWorkerTable.tsx'
+import EmployeesTable, {
+  Employee,
+} from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
 
@@ -43,14 +44,10 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       ctx.state.trx,
       { facilityId },
     )
-    if (
-      !employees.some((employee) => {
-        return employee.id === healthWorker.id
-      })
-    ) {
-      //If the user isn't part of the facility they're trying to access
-      return redirect('/app')
-    }
+    const isEmployeeAtFacility = employees.some((employee) =>
+      employee.id === healthWorker.id
+    )
+    if (!isEmployeeAtFacility) return redirect('/app')
     return ctx.render({ isAdmin, employees, healthWorker, facility })
   },
 }
@@ -58,7 +55,6 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
 export default function EmployeeTable(
   props: PageProps<EmployeePageProps>,
 ) {
-  console.log('props.data', props.data)
   return (
     <Layout
       title={`${props.data.facility.name} Employees`}
@@ -70,7 +66,7 @@ export default function EmployeeTable(
         <EmployeesTable
           isAdmin={props.data.isAdmin}
           employees={props.data.employees}
-          facilityId={props.data.facility.id}
+          pathname={props.url.pathname}
         />
       </Container>
     </Layout>

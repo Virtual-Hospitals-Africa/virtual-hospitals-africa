@@ -1,14 +1,14 @@
-import { FunctionComponent } from 'preact'
+import { JSX } from 'preact'
 import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
 
-interface EmployeeTable {
+type EmployeesTableProps = {
   isAdmin: boolean
   employees: Employee[]
-  facilityId: number
+  pathname: string
 }
 
 export type Employee = {
@@ -18,11 +18,11 @@ export type Employee = {
   avatar_url?: string
 }
 
-const EmployeesTable: FunctionComponent<EmployeeTable> = ({
+export default function EmployeesTable({
   isAdmin,
   employees,
-  facilityId,
-}) => {
+  pathname,
+}: EmployeesTableProps): JSX.Element {
   const columns: TableColumn<Employee>[] = [
     {
       label: null,
@@ -44,7 +44,10 @@ const EmployeesTable: FunctionComponent<EmployeeTable> = ({
       dataKey: 'profession',
       type: 'content',
     },
-    {
+  ]
+
+  if (isAdmin) {
+    columns.push({
       label: 'Actions',
       type: 'actions',
       actions: {
@@ -54,8 +57,8 @@ const EmployeesTable: FunctionComponent<EmployeeTable> = ({
           }
         },
       },
-    },
-  ]
+    })
+  }
   return (
     <>
       <FormRow className='mb-4'>
@@ -64,7 +67,7 @@ const EmployeesTable: FunctionComponent<EmployeeTable> = ({
           (
             <Button
               type='button'
-              href={'/app/facilities/' + facilityId + '/employees/invite'}
+              href={`${pathname}/invite`}
               className='block w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
             >
               Invite
@@ -72,11 +75,9 @@ const EmployeesTable: FunctionComponent<EmployeeTable> = ({
           )}
       </FormRow>
       <Table
-        columns={isAdmin ? columns : columns.slice(0, 3)}
+        columns={columns}
         rows={employees}
       />
     </>
   )
 }
-
-export default EmployeesTable
