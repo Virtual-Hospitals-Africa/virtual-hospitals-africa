@@ -864,7 +864,7 @@ export type GoogleAddressComponent = {
   long_name?: string
 }
 
-export type GoogleAddressComponentType = 
+export type GoogleAddressComponentType =
   | 'locality'
   | 'administrative_area_level_2'
   | 'administrative_area_level_1'
@@ -885,4 +885,3 @@ export type CalendarPageProps = {
   today: string
   healthWorker: HealthWorker
 }
-

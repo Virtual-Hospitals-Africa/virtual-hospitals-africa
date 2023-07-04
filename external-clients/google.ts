@@ -10,14 +10,14 @@ import {
   GCalEvent,
   GCalEventsResponse,
   GCalFreeBusy,
+  GoogleAddressComponent,
+  GoogleAddressComponentType,
   GoogleProfile,
   GoogleTokens,
   HealthWorkerWithGoogleTokens,
   Location,
   LoggedInHealthWorker,
   TrxOrDb,
-  GoogleAddressComponent,
-  GoogleAddressComponentType
 } from '../types.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import {
@@ -25,7 +25,7 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
-import uniq from "../util/uniq.ts";
+import uniq from '../util/uniq.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 assert(GOOGLE_MAPS_API_KEY)
@@ -444,7 +444,7 @@ export async function getLocationAddress(
 
 function getAreaNameByType(
   addressComponents: Array<GoogleAddressComponent>,
-  areaType: GoogleAddressComponentType, 
+  areaType: GoogleAddressComponentType,
 ): string | null {
   for (const component of addressComponents) {
     if (component.types?.includes(areaType)) {
@@ -453,6 +453,3 @@ function getAreaNameByType(
   }
   return null
 }
-
-
-
