@@ -444,7 +444,7 @@ export async function getLocationAddress(
 
 export default function getAreaNameByType(
   addressComponents: Array<any>,
-  areaType: string,
+  areaType: string, 
 ): string {
   for (const component of addressComponents) {
     if (component.types?.includes(areaType)) {
