@@ -438,9 +438,7 @@ export async function getLocationAddress(
   )
 
   const uniqueComponents = uniq(nonUnknownComponents)
-
   if (!uniqueComponents.length) return null
-
   return uniqueComponents.join(', ')
 }
 
