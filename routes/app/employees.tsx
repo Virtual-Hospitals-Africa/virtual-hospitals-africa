@@ -23,9 +23,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       ctx.state.trx,
       { employeeId: healthWorker.id },
     )
-    if (!facilityId) {
-      throw new Error('User not employed at any facility')
-    }
+    assert(facilityId, 'User not employed at any facility')
     return redirect('/app/facilities/' + facilityId + '/employees')
   },
 }

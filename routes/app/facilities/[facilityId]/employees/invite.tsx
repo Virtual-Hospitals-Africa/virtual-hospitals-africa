@@ -18,7 +18,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
   async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
     const facilityId = parseInt(ctx.params.facilityId)
-
+    assert(facilityId)
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
     const isAdmin = await health_workers.isAdmin(
       ctx.state.trx,

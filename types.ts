@@ -850,7 +850,6 @@ export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
   >
 
 export type Facility = Location & {
-  id: number
   name: string
   address: string
   distance: number
