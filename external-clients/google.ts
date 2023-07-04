@@ -16,6 +16,8 @@ import {
   Location,
   LoggedInHealthWorker,
   TrxOrDb,
+  GoogleAddressComponent,
+  GoogleAddressComponentType
 } from '../types.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import {
@@ -430,11 +432,11 @@ export async function getLocationAddress(
   const country = getAreaNameByType(firstResult.address_components, 'country')
 
   const addressComponents = [locality, townOrDistrict, province, country]
+
   const nonUnknownComponents = addressComponents.filter((component) =>
-    component !== 'unknown'
+    component !== null
   )
 
-  // remove any duplicates
   const uniqueComponents = uniq(nonUnknownComponents)
 
   if (!uniqueComponents.length) return null
@@ -442,14 +444,17 @@ export async function getLocationAddress(
   return uniqueComponents.join(', ')
 }
 
-export default function getAreaNameByType(
-  addressComponents: Array<any>,
-  areaType: string, 
-): string {
+function getAreaNameByType(
+  addressComponents: Array<GoogleAddressComponent>,
+  areaType: GoogleAddressComponentType, 
+): string | null {
   for (const component of addressComponents) {
     if (component.types?.includes(areaType)) {
-      return component.short_name ?? component.long_name ?? 'unknown'
+      return component.short_name || component.long_name || null
     }
   }
-  return 'unknown'
+  return null
 }
+
+
+
