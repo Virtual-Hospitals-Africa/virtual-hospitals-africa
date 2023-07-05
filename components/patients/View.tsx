@@ -13,7 +13,9 @@ function NonEmptyPatientsView(
   return (
     <>
       <FormRow className='mb-4'>
-        <SearchInput />
+        <form className='w-full'>
+          <SearchInput />
+        </form>
         <Button
           type='button'
           href='/app/patients/add'

@@ -22,9 +22,11 @@ export const handler: LoggedInHealthWorkerHandler<PatientsProps> = {
 
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
+    const search = new URL(req.url).searchParams.get('search')
+
     return ctx.render({
       healthWorker,
-      patients: await getAllWithNames(ctx.state.trx),
+      patients: await getAllWithNames(ctx.state.trx, search),
     })
   },
 }
