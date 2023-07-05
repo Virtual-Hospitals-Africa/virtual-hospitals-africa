@@ -26,8 +26,7 @@ import * as $$0 from './islands/Menu.tsx'
 import * as $$1 from './islands/availability-form.tsx'
 import * as $$2 from './islands/invites-form.tsx'
 import * as $$3 from './islands/patient-cards.tsx'
-import * as $$4 from './islands/recent.tsx'
-import * as $$5 from './islands/schedule-form.tsx'
+import * as $$4 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
@@ -57,8 +56,7 @@ const manifest = {
     './islands/availability-form.tsx': $$1,
     './islands/invites-form.tsx': $$2,
     './islands/patient-cards.tsx': $$3,
-    './islands/recent.tsx': $$4,
-    './islands/schedule-form.tsx': $$5,
+    './islands/schedule-form.tsx': $$4,
   },
   baseUrl: import.meta.url,
 }
