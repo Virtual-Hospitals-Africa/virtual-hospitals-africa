@@ -1,11 +1,11 @@
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
 export default function Card(
   { className, children = <ExampleCardContents />, orientation = 'horizontal' }:
     {
       className?: string
-      children?: JSX.Element | JSX.Element[]
+      children?: ComponentChildren
       orientation?: 'vertical' | 'horizontal'
     },
 ) {
