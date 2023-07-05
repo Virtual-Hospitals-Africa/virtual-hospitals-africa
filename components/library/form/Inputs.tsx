@@ -6,15 +6,15 @@ type LabeledInputProps = {
   name: string
   label?: string
   required?: boolean
-}
-
-type SearchInputProps = Partial<LabeledInputProps> & {
   placeholder?: string
 }
+
+type SearchInputProps = Partial<LabeledInputProps>
+
+type DateInputProps = Partial<LabeledInputProps>
 
 type TextInputProps = LabeledInputProps & {
   type?: 'text' | 'email'
-  placeholder?: string
 }
 
 type SelectInputProps = LabeledInputProps & {
@@ -70,7 +70,7 @@ export function SelectInput(
 }
 
 export function DateInput(
-  { name, label, required }: LabeledInputProps,
+  { name = 'date', label, required }: DateInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>

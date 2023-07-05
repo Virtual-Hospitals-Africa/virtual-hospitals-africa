@@ -17,6 +17,7 @@ export default function Layout(props: LayoutProps) {
     <>
       <Head>
         <title>{props.title}</title>
+        <link href='/tailwind-form-reset.css' rel='stylesheet' />
         <script
           defer
           src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'
