@@ -435,7 +435,7 @@ export async function getLocationAddress(
   const nonUnknownComponents = addressComponents.filter((component) =>
     component !== null
   )
-  
+
   const uniqueComponents = uniq(nonUnknownComponents)
   if (!uniqueComponents.length) return null
   console.log(uniqueComponents.join(', '))
@@ -447,9 +447,7 @@ function getAreaNameByType(
   areaType: GoogleAddressComponentType,
 ): string | null {
   const locationInfo = addressComponentList
-    .flatMap(addressComponentObj => addressComponentObj.address_components)
-    .find(locationInfo => locationInfo.types?.includes(areaType));
-    return locationInfo?.short_name || locationInfo?.long_name || null
+    .flatMap((addressComponentObj) => addressComponentObj.address_components)
+    .find((locationInfo) => locationInfo.types?.includes(areaType))
+  return locationInfo?.short_name || locationInfo?.long_name || null
 }
-
-

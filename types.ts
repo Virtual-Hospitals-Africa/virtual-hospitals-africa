@@ -858,15 +858,13 @@ export type Facility = Location & {
   phone?: string
 }
 
-
 export type GoogleAddressComponent = {
   address_components: {
-    long_name?: string;
-    short_name?: string;
-    types?: string[];
-  }[];
-};
-
+    long_name?: string
+    short_name?: string
+    types?: string[]
+  }[]
+}
 
 export type GoogleAddressComponentType =
   | 'locality'
