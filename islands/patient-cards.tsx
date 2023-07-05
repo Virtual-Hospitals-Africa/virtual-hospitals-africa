@@ -1,5 +1,5 @@
 import cls from '../util/cls.ts'
-import { Patient } from './recent.tsx'
+import { Patient } from '../components/patients/Table.tsx'
 import Card from '../components/library/Card.tsx'
 import { Button } from '../components/library/Button.tsx'
 import Avatar from '../components/library/Avatar.tsx'
@@ -17,22 +17,24 @@ const DISPLAYED_COLUMNS: {
     dataKey: 'last_visited',
   },
   {
-    label: 'AVH',
+    label: 'Nearest Facility',
     dataKey: 'nearest_facility',
   },
 ]
 
 function CardHeader(
-  { name, imageUrl }: { name: string; imageUrl: string },
+  { name, imageUrl }: { name: string; imageUrl?: string },
 ) {
   return (
     <div className='flex gap-3 items-center'>
-      <div className='flex-shrink-0'>
-        <Avatar
-          src={imageUrl}
-          className='h-10 w-10'
-        />
-      </div>
+      {imageUrl && (
+        <div className='flex-shrink-0'>
+          <Avatar
+            src={imageUrl}
+            className='h-10 w-10'
+          />
+        </div>
+      )}
       <p className='font-semibold text-gray-900 min-w-0 flex-1 flex'>
         {name}
       </p>
@@ -48,20 +50,15 @@ function CardBody(
       <div className='flex flex-col flex-1 min-w-0'>
         {DISPLAYED_COLUMNS.map((column) => (
           <div className='flex gap-3 justify-between'>
-            <p className='font-semibold whitespace-nowrap'>{column.label}:</p>
+            <p className='font-semibold text-gray-500 whitespace-nowrap'>
+              {column.label}:
+            </p>
             <p className='truncate text-gray-500'>
               {patient[column['dataKey']]}
             </p>
           </div>
         ))}
       </div>
-      <Button
-        href={`/app/patients/${patient.id}`}
-        variant='solid'
-        color='blue'
-      >
-        View
-      </Button>
     </div>
   )
 }
@@ -70,10 +67,12 @@ function PatientCard(
   { patient }: { patient: Patient },
 ) {
   return (
-    <Card orientation='vertical' className='shadow-lg'>
-      <CardHeader name={patient.name} imageUrl={patient.avatar_url} />
-      <CardBody patient={patient} />
-    </Card>
+    <a href={`/app/patients/${patient.id}`}>
+      <Card orientation='vertical' className='shadow-lg'>
+        <CardHeader name={patient.name} imageUrl={patient.avatar_url} />
+        <CardBody patient={patient} />
+      </Card>
+    </a>
   )
 }
 
