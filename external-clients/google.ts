@@ -10,6 +10,8 @@ import {
   GCalEvent,
   GCalEventsResponse,
   GCalFreeBusy,
+  GoogleAddressComponent,
+  GoogleAddressComponentType,
   GoogleProfile,
   GoogleTokens,
   HealthWorkerWithGoogleTokens,
@@ -23,6 +25,7 @@ import {
   removeExpiredAccessToken,
   updateAccessToken,
 } from '../db/models/health_workers.ts'
+import uniq from '../util/uniq.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 assert(GOOGLE_MAPS_API_KEY)
@@ -401,9 +404,12 @@ export async function refreshTokens(
 
 export async function getLocationAddress(
   { longitude, latitude }: Location,
-): Promise<string> {
+): Promise<string | null> {
+  const encodedLatitude = encodeURIComponent(latitude)
+  const encodedLongitude = encodeURIComponent(longitude)
+
   const url =
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
 
   const result = await fetch(url)
   assert(result.ok)
@@ -413,5 +419,37 @@ export async function getLocationAddress(
   assert(json.results.length)
   const [firstResult] = json.results
   assert(typeof firstResult.formatted_address === 'string')
-  return firstResult.formatted_address
+
+  const locality = getAreaNameByType(firstResult.address_components, 'locality')
+  const townOrDistrict = getAreaNameByType(
+    firstResult.address_components,
+    'administrative_area_level_2',
+  )
+  const province = getAreaNameByType(
+    firstResult.address_components,
+    'administrative_area_level_1',
+  )
+  const country = getAreaNameByType(firstResult.address_components, 'country')
+
+  const addressComponents = [locality, townOrDistrict, province, country]
+
+  const nonUnknownComponents = addressComponents.filter((component) =>
+    component !== null
+  )
+
+  const uniqueComponents = uniq(nonUnknownComponents)
+  if (!uniqueComponents.length) return null
+  return uniqueComponents.join(', ')
+}
+
+function getAreaNameByType(
+  addressComponents: Array<GoogleAddressComponent>,
+  areaType: GoogleAddressComponentType,
+): string | null {
+  for (const component of addressComponents) {
+    if (component.types?.includes(areaType)) {
+      return component.short_name || component.long_name || null
+    }
+  }
+  return null
 }

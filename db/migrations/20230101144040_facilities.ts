@@ -68,7 +68,7 @@ async function importDataFromCSV(db: Kysely<unknown>) {
       ) VALUES (
         ${row.name},
         ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
-        ${address},
+        ${address ? address : 'Address unknown'},
         ${row.category},
         ${row.vha},
         ${row.url},
