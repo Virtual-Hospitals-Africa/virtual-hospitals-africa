@@ -706,15 +706,19 @@ export type HealthWorkerAvailability = {
   availability: Availability
 }
 
-export type WhatsAppMessageReceived = {
-  patient_id: number
-  whatsapp_id: string
-  body: string
-  conversation_state: PatientConversationState
-  started_responding_at: Maybe<ColumnType<Date>>
-  error_commit_hash: Maybe<string>
-  error_message: Maybe<string>
-}
+export type WhatsAppMessageReceived =
+  & {
+    patient_id: number
+    whatsapp_id: string
+    conversation_state: PatientConversationState
+    started_responding_at: Maybe<ColumnType<Date>>
+    error_commit_hash: Maybe<string>
+    error_message: Maybe<string>
+  }
+  & (
+    | { has_media: false; body: string }
+    | { has_media: true; media_id: number }
+  ) // Nice to have: enforce at Postgres level that if you don't have media, you have a body and if you do have media you have a media_id
 
 export type WhatsAppMessageSent = {
   patient_id: number

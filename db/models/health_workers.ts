@@ -33,6 +33,7 @@ export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   details: HealthWorker & GoogleTokens,
 ): Promise<ReturnedSqlRow<HealthWorker>> {
+  console.log('upsertWithGoogleCredentials', details)
   const health_worker = await upsert(
     trx,
     {
@@ -43,6 +44,13 @@ export async function upsertWithGoogleCredentials(
       gcal_availability_calendar_id: details.gcal_availability_calendar_id,
     },
   )
+
+  console.log('upserting tokens', {
+    health_worker_id: health_worker.id,
+    access_token: details.access_token,
+    refresh_token: details.refresh_token,
+    expires_at: details.expires_at,
+  })
 
   await trx
     .insertInto('health_worker_google_tokens')
