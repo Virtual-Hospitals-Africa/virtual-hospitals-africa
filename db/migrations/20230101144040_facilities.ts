@@ -5,11 +5,6 @@ import parseCsv from '../../util/parseCsv.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createType('facility_category')
-    .asEnum(['clinic', 'hospital'])
-    .execute()
-
-  await db.schema
     .createTable('facilities')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
@@ -25,13 +20,8 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('name', 'varchar(255)')
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
     .addColumn('address', 'text')
-    .addColumn(
-      'category',
-      sql`facility_category`,
-      (column) => column.defaultTo('clinic'),
-    )
+    .addColumn('category', 'text')
     .addColumn('vha', 'boolean')
-    .addColumn('url', 'text')
     .addColumn('phone', 'varchar(255)')
     .execute()
 
@@ -42,7 +32,6 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('facilities').execute()
-  await db.schema.dropType('facility_category').execute()
 }
 
 // TODO: Can't get last column properly, maybe because new line character
@@ -63,7 +52,6 @@ async function importDataFromCSV(db: Kysely<unknown>) {
         address,
         category,
         vha,
-        url,
         phone
       ) VALUES (
         ${row.name},
@@ -71,7 +59,6 @@ async function importDataFromCSV(db: Kysely<unknown>) {
         ${address ? address : 'Address unknown'},
         ${row.category},
         ${row.vha},
-        ${row.url},
         ${row.phone}
       )
     `.execute(db)
