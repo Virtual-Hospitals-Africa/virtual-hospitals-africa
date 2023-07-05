@@ -37,9 +37,13 @@ export async function down(db: Kysely<unknown>) {
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
 async function importDataFromCSV(db: Kysely<unknown>) {
+  let i = 0
   for await (
     const row of parseCsv('./db/resources/zimbabwe-health-facilities.csv')
   ) {
+    // TODO remove this
+    i++
+    if (i >= 10) return
     const address = await google.getLocationAddress({
       longitude: Number(row.longitude),
       latitude: Number(row.latitude),

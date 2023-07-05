@@ -420,6 +420,8 @@ export async function getLocationAddress(
   assert(data.results.length)
   const resultData = data.results
 
+  console.log('resultData', resultData)
+
   const locality = getAreaNameByType(resultData, 'locality')
   const townOrDistrict = getAreaNameByType(
     resultData,
@@ -438,7 +440,6 @@ export async function getLocationAddress(
 
   const uniqueComponents = uniq(nonUnknownComponents)
   if (!uniqueComponents.length) return null
-  console.log(uniqueComponents.join(', '))
   return uniqueComponents.join(', ')
 }
 
