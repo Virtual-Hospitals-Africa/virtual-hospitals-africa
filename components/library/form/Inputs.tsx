@@ -120,10 +120,10 @@ export function ImageInput(
 }
 
 export function SearchInput(
-  { name, label, placeholder, required }: SearchInputProps,
+  { name = 'search', label, placeholder, required }: SearchInputProps,
 ) {
   return (
-    <LabeledInput name={name || 'search'} label={label} required={required}>
+    <LabeledInput name={name} label={label} required={required}>
       <div className='relative flex items-center'>
         <input
           type='search'

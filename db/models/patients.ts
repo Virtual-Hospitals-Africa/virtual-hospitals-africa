@@ -97,12 +97,16 @@ function haveNames(
 
 export async function getAllWithNames(
   trx: TrxOrDb,
+  search?: Maybe<string>,
 ): Promise<ReturnedSqlRow<Patient & { name: string }>[]> {
-  const patients = await trx
+  let query = trx
     .selectFrom('patients')
     .selectAll()
     .where('name', 'is not', null)
-    .execute()
+
+  if (search) query = query.where('name', 'ilike', `%${search}%`)
+
+  const patients = await query.execute()
 
   assert(haveNames(patients))
 
