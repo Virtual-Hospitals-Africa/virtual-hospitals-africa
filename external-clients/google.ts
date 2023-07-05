@@ -26,7 +26,7 @@ import {
   updateAccessToken,
 } from '../db/models/health_workers.ts'
 import uniq from '../util/uniq.ts'
-import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
+// import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 assert(GOOGLE_MAPS_API_KEY)
