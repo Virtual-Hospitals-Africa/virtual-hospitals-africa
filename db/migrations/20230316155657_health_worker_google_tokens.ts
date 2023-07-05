@@ -20,7 +20,7 @@ export async function up(db: Kysely<unknown>) {
       (col) =>
         col.notNull().references('health_workers.id').onDelete('cascade'),
     )
-    .addColumn('access_token', 'varchar(255)', (col) => col.notNull())
+    .addColumn('access_token', 'text', (col) => col.notNull())
     .addColumn('refresh_token', 'varchar(255)', (col) => col.notNull())
     .addColumn('expires_at', 'timestamp', (col) => col.notNull())
     .addUniqueConstraint('google_tokens_health_worker_id', ['health_worker_id'])
