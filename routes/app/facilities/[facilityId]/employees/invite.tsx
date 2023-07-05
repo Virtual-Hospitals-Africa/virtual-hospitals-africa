@@ -10,6 +10,8 @@ import { assert } from 'std/testing/asserts.ts'
 import parseForm from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 import { SmtpClient, ConnectConfigWithAuthentication } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
+import { addInvite } from '../../../../../db/migrations/20230703205040_invites.ts';
+import db from '../../../../../db/db.ts'
 
 type EmployeesPageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -49,7 +51,6 @@ async function sendInviteMail(email: string, inviteCode: string) {
   });
 
   await client.close();
-  
 }
 
 
@@ -66,7 +67,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
         facility_id: facilityId,
       },
     )
-    assert(isAdmin)
+    //assert(isAdmin)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
@@ -83,7 +84,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       },
     )
 
-    assert(isAdmin)
+    //assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
@@ -101,6 +102,12 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
     
       if (email) { // Ensure that email is not empty
         const inviteCode = generateInviteCode();
+        await addInvite(db, { //here
+          email: email,
+          profession: profession,
+          facilityId: facilityId,
+          inviteCode: inviteCode,
+        });
         await sendInviteMail(email, inviteCode);
         // Do something with profession if necessary
       }

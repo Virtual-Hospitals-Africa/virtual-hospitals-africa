@@ -670,6 +670,13 @@ export type Employee = {
   facility_id: integer
 }
 
+export type Invitation ={
+    email: string;
+    facility_id: number;
+    profession: string;
+    invite_code: string;
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'

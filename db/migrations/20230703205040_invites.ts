@@ -1,5 +1,6 @@
 import { Kysely, sql } from "kysely";
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { DatabaseSchema } from '../db.ts'
 
 export async function up(db: Kysely<unknown>) {
     await db.schema
@@ -28,12 +29,29 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
         'invite_code',
-        sql`integer`,
+        sql`text`,
         (column) => column.notNull(),
       )
     .execute()
   await addUpdatedAtTrigger(db, 'invites')
 }
+
+export async function addInvite(db: Kysely<DatabaseSchema>, inviteSet: { email: string; facilityId: number; profession: string; inviteCode: string }) {
+    await sql`
+      INSERT INTO invites (
+        email,
+        facility_id,
+        profession,
+        invite_code
+      ) VALUES (
+        ${inviteSet.email},
+        ${inviteSet.facilityId},
+        ${inviteSet.profession},
+        ${inviteSet.inviteCode}
+      )
+    `.execute(db)
+  }
+
 
 export async function down(db: Kysely<unknown>) {
     await db.schema.dropTable('invites').execute()
