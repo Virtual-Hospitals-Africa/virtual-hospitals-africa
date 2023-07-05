@@ -865,6 +865,18 @@ export type Facility = Location & {
   phone?: string
 }
 
+export type GoogleAddressComponent = {
+  types: GoogleAddressComponentType[]
+  short_name?: string
+  long_name?: string
+}
+
+export type GoogleAddressComponentType =
+  | 'locality'
+  | 'administrative_area_level_2'
+  | 'administrative_area_level_1'
+  | 'country'
+
 export type LinkProps = {
   href: string
   title: string
