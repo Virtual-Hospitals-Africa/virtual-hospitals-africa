@@ -327,8 +327,7 @@ const conversationStates: ConversationStates<
   'onboarded:make_appointment:ask_for_media': {
     type: 'select',
     prompt(patientState: PatientState): string {
-      return `Got it, ${patientState.scheduling_appointment_reason}. To assist the doctor with triaging your case, 
-      you can send a picture, video clip or voice note describing your symptoms.`
+      return `Got it, ${patientState.scheduling_appointment_reason}. To assist the doctor with triaging your case, you can send a picture, video clip or voice note describing your symptoms.`
     },
     options: [
       {
@@ -372,8 +371,7 @@ const conversationStates: ConversationStates<
         prettyPatientDateOfBirth(
           patientState,
         )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}.
-      You have also uploaded ${patientState.media_uploaded ? patientState.media_uploaded : 0} media to the doctor. Is this correct?`
+      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${patientState.media_uploaded ? patientState.media_uploaded : 0} media to the doctor. Is this correct?`
     },
     options: [
       {
