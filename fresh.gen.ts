@@ -12,16 +12,17 @@ import * as $6 from './routes/app/calendar/availability.tsx'
 import * as $7 from './routes/app/employees.tsx'
 import * as $8 from './routes/app/facilities/[facilityId]/employees.tsx'
 import * as $9 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $10 from './routes/app/patients.tsx'
-import * as $11 from './routes/app/patients/[id].tsx'
-import * as $12 from './routes/app/patients/add.tsx'
-import * as $13 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $14 from './routes/full-reset.ts'
-import * as $15 from './routes/index.tsx'
-import * as $16 from './routes/logged-in.tsx'
-import * as $17 from './routes/login.tsx'
-import * as $18 from './routes/logout.tsx'
-import * as $19 from './routes/patient-reset.ts'
+import * as $10 from './routes/app/health_workers.tsx'
+import * as $11 from './routes/app/patients.tsx'
+import * as $12 from './routes/app/patients/[id].tsx'
+import * as $13 from './routes/app/patients/add.tsx'
+import * as $14 from './routes/chatbot/incoming-whatsapp.ts'
+import * as $15 from './routes/full-reset.ts'
+import * as $16 from './routes/index.tsx'
+import * as $17 from './routes/logged-in.tsx'
+import * as $18 from './routes/login.tsx'
+import * as $19 from './routes/logout.tsx'
+import * as $20 from './routes/patient-reset.ts'
 import * as $$0 from './islands/Menu.tsx'
 import * as $$1 from './islands/PersonSearch.tsx'
 import * as $$2 from './islands/availability-form.tsx'
@@ -41,16 +42,17 @@ const manifest = {
     './routes/app/employees.tsx': $7,
     './routes/app/facilities/[facilityId]/employees.tsx': $8,
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $9,
-    './routes/app/patients.tsx': $10,
-    './routes/app/patients/[id].tsx': $11,
-    './routes/app/patients/add.tsx': $12,
-    './routes/chatbot/incoming-whatsapp.ts': $13,
-    './routes/full-reset.ts': $14,
-    './routes/index.tsx': $15,
-    './routes/logged-in.tsx': $16,
-    './routes/login.tsx': $17,
-    './routes/logout.tsx': $18,
-    './routes/patient-reset.ts': $19,
+    './routes/app/health_workers.tsx': $10,
+    './routes/app/patients.tsx': $11,
+    './routes/app/patients/[id].tsx': $12,
+    './routes/app/patients/add.tsx': $13,
+    './routes/chatbot/incoming-whatsapp.ts': $14,
+    './routes/full-reset.ts': $15,
+    './routes/index.tsx': $16,
+    './routes/logged-in.tsx': $17,
+    './routes/login.tsx': $18,
+    './routes/logout.tsx': $19,
+    './routes/patient-reset.ts': $20,
   },
   islands: {
     './islands/Menu.tsx': $$0,

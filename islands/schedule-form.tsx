@@ -10,14 +10,11 @@ export default function ScheduleForm() {
           name='patient'
           href='/app/patients'
         />
-        {
-          /* <PersonSearch
+        <PersonSearch
           name='health_worker'
           href='/app/health_workers'
-        /> */
-        }
-        <DateInput />
-        <FormButtons submitText='Available Times' />
+        />
+        <FormButtons submitText='Next Available' />
       </form>
     </>
   )

@@ -1,4 +1,4 @@
-import parseForm from './parseForm.ts'
+import { parseForm } from './parseForm.ts'
 import { AvailabilityJSON } from '../types.ts'
 
 export default function parseAvailabilityForm(

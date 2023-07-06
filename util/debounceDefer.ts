@@ -3,7 +3,7 @@
 // but always returns a promise that resolves with the result of a call that gets made after no further calls have been made for waitMillis.
 export default function debounceDefer<Args extends Array<any>, Resolves>(
   fn: (...args: Args) => Promise<Resolves>,
-  waitMillis: number
+  waitMillis: number,
 ): (...args: Args) => Promise<Resolves> {
   let timer: any
   let resolving: null | Promise<Resolves>
@@ -32,10 +32,10 @@ export default function debounceDefer<Args extends Array<any>, Resolves>(
       reject = null
 
       fn(...args)
-        .then(result => {
+        .then((result) => {
           resolveNow(result)
         })
-        .catch(error => {
+        .catch((error) => {
           rejectNow(error)
         })
     }, waitMillis)

@@ -39,7 +39,7 @@ export default function PersonSearch({
   useEffect(() => {
     fetch(`${href}?search=${search}`, {
       headers: {
-        'Content-Type': 'application/json',
+        'content-type': 'application/json',
       },
     }).then(async (response) => {
       const people = await response.json()
