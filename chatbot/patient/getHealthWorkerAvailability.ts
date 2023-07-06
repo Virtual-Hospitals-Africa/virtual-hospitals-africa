@@ -97,6 +97,24 @@ export async function allUniqueAvailbaility(trx: TrxOrDb) {
   return uniqueAvailbilites
 }
 
+export async function getHealthWorkerAvailability(
+  health_worker: HealthWorkerWithGoogleTokens,
+  timeRange = defaultTimeRange(),
+) {
+  const healthWorkerGoogleClient = new google.GoogleClient(health_worker)
+  const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
+    ...timeRange,
+    calendarIds: [
+      health_worker.gcal_appointments_calendar_id,
+      health_worker.gcal_availability_calendar_id,
+    ],
+  })
+  return {
+    health_worker,
+    availability: getAvailability(health_worker, freeBusy),
+  }
+}
+
 async function getAllAvailability(
   trx: TrxOrDb,
   timeRange: TimeRange = defaultTimeRange(),
@@ -120,20 +138,11 @@ export async function getAllHealthWorkerAvailability(
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   const health_workers = await getAllWithExtantTokens(trx)
-  return Promise.all(health_workers.map(async (health_worker) => {
-    const healthWorkerGoogleClient = new google.GoogleClient(health_worker)
-    const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
-      ...timeRange,
-      calendarIds: [
-        health_worker.gcal_appointments_calendar_id,
-        health_worker.gcal_availability_calendar_id,
-      ],
-    })
-    return {
-      health_worker,
-      availability: getAvailability(health_worker, freeBusy),
-    }
-  }))
+  return Promise.all(
+    health_workers.map((health_worker) =>
+      getHealthWorkerAvailability(health_worker, timeRange)
+    ),
+  )
 }
 
 /**
