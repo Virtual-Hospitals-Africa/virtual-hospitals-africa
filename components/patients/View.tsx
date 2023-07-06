@@ -5,6 +5,7 @@ import { SearchInput } from '../library/form/Inputs.tsx'
 import FormRow from '../library/form/Row.tsx'
 import PatientsEmptyState from './EmptyState.tsx'
 import PatientsTable from './Table.tsx'
+import PatientCards from '../../islands/patient-cards.tsx'
 
 function NonEmptyPatientsView(
   { patients }: { patients: ReturnedSqlRow<Patient & { name: string }>[] },
@@ -12,7 +13,9 @@ function NonEmptyPatientsView(
   return (
     <>
       <FormRow className='mb-4'>
-        <SearchInput />
+        <form className='w-full'>
+          <SearchInput />
+        </form>
         <Button
           type='button'
           href='/app/patients/add'
@@ -22,6 +25,10 @@ function NonEmptyPatientsView(
         </Button>
       </FormRow>
 
+      <PatientCards
+        patients={patients}
+        className='flex sm:hidden'
+      />
       <PatientsTable patients={patients} />
     </>
   )

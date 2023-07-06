@@ -7,6 +7,7 @@ import { activeTab, Tabs } from '../components/library/Tabs.tsx'
 import {
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
+  Maybe,
   Patient,
   ReturnedSqlRow,
   TrxOrDb,
@@ -49,6 +50,7 @@ type AppProps = {
 async function fetchNeededData(
   trx: TrxOrDb,
   tab: AppTypedProps['tab'],
+  search?: Maybe<string>,
 ): Promise<AppTypedProps & Pick<AppProps, 'counts'>> {
   const counts = {
     orders: 5,
@@ -59,7 +61,7 @@ async function fetchNeededData(
     case 'recent': {
       return {
         tab: 'recent',
-        patients: await patients.getAllWithNames(trx),
+        patients: await patients.getAllWithNames(trx, search),
         counts,
       }
     }
@@ -86,10 +88,11 @@ export const handler: LoggedInHealthWorkerHandler<AppProps> = {
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
     const tab = activeTab(tabs, req.url)
+    const search = new URL(req.url).searchParams.get('search')
 
     return ctx.render({
       healthWorker,
-      ...(await fetchNeededData(ctx.state.trx, tab)),
+      ...(await fetchNeededData(ctx.state.trx, tab, search)),
     })
   },
 }

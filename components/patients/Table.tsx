@@ -1,6 +1,6 @@
 import Table, { TableColumn } from '../library/Table.tsx'
 
-type Patient = {
+export type Patient = {
   id: number
   name: string
   avatar_url?: string
@@ -51,6 +51,7 @@ export default function PatientsTable({ patients }: { patients: Patient[] }) {
     <Table
       columns={columns}
       rows={patients}
+      className='hidden sm:block'
     />
   )
 }
