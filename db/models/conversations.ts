@@ -1,11 +1,10 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-  PatientConversationState,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-WhatsAppMessageContents,
-WhatsAppMessageReceived,
+  WhatsAppMessageContents,
+  WhatsAppMessageReceived,
 } from '../../types.ts'
 import { assert } from "https://deno.land/std@0.188.0/testing/asserts.ts";
 import compact from '../../util/compact.ts'
@@ -21,20 +20,32 @@ export function updateReadStatus(
     .execute()
 }
 
-export function isWhatsAppContents(contents: unknown): contents is WhatsAppMessageContents {
+export function isWhatsAppContents(
+  contents: unknown,
+): contents is WhatsAppMessageContents {
   if (!contents || typeof contents !== 'object') return false
-  if (!('has_media' in contents) || !('media_id' in contents) || !('body' in contents)) return false
+  if (
+    !('has_media' in contents) || !('media_id' in contents) ||
+    !('body' in contents)
+  ) return false
   if (contents.has_media) {
-    return !!contents.media_id && typeof contents.media_id === 'number' && contents.body === null
+    return !!contents.media_id && typeof contents.media_id === 'number' &&
+      contents.body === null
   }
-  return contents.media_id === null && typeof contents.media_id === 'string' && !!contents.body
+  return contents.media_id === null && typeof contents.media_id === 'string' &&
+    !!contents.body
 }
 
 export async function insertMessageReceived(
   trx: TrxOrDb,
-  data: {
-    patient_phone_number: string
-  } & Pick<WhatsAppMessageReceived, 'whatsapp_id' | 'has_media' | 'body' | 'media_id'>,
+  data:
+    & {
+      patient_phone_number: string
+    }
+    & Pick<
+      WhatsAppMessageReceived,
+      'whatsapp_id' | 'has_media' | 'body' | 'media_id'
+    >,
 ): Promise<
   ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
@@ -71,12 +82,6 @@ export async function insertMessageReceived(
   assert(isWhatsAppContents(inserted))
 
   return inserted
-}
-
-export function insertMediaReceived(
-  trx: TrxOrDb,
-  opts: { patient_phone_number: string; whatsapp_id: string; media_id: number },
-) {
 }
 
 export function insertMessageSent(

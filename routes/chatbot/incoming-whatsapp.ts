@@ -2,11 +2,17 @@ import { Handlers } from '$fresh/server.ts'
 import db from '../../db/db.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as whatsapp from '../../external-clients/whatsapp.ts'
-import { WhatsAppIncomingMessage, WhatsAppMessage, WhatsAppMessageContents } from '../../types.ts'
+import {
+  WhatsAppIncomingMessage,
+  WhatsAppMessage,
+  WhatsAppMessageContents,
+} from '../../types.ts'
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
-async function getContents(message: WhatsAppMessage): Promise<WhatsAppMessageContents> {
+async function getContents(
+  message: WhatsAppMessage,
+): Promise<WhatsAppMessageContents> {
   switch (message.type) {
     case 'audio':
     case 'video':
@@ -15,26 +21,31 @@ async function getContents(message: WhatsAppMessage): Promise<WhatsAppMessageCon
       throw new Error('Not yet handled')
     }
     case 'image': {
-      throw new Error('Implement')
-      // const mediaResponse = await whatsapp.get(message.image.id)
-      // console.log('HERE IS YOUR image', mediaResponse)
-      // const { url } = mediaResponse
-      // const image = await whatsapp.get(url)
+      const mediaResponse = await whatsapp.get(message.image.id)
+      console.log('HERE IS YOUR image', mediaResponse)
+      const { url } = mediaResponse
+      const image = await whatsapp.get(url)
+      console.log(image)
+      return { has_media: true, media_id: message.image.id, body: null }
     }
-    case 'text': 
-      return {has_media: false, media_id: null, body: message.text.body}
-    
-    case 'location': 
-      return {has_media: false, media_id: null, body: JSON.stringify(message.location) }
-    
+    case 'text':
+      return { has_media: false, media_id: null, body: message.text.body }
+
+    case 'location':
+      return {
+        has_media: false,
+        media_id: null,
+        body: JSON.stringify(message.location),
+      }
+
     case 'interactive': {
-      const body = message.interactive.type === 'list_reply' 
-        ?  message.interactive.list_reply.id
-        :  message.interactive.button_reply.id
+      const body = message.interactive.type === 'list_reply'
+        ? message.interactive.list_reply.id
+        : message.interactive.button_reply.id
       return { has_media: false, media_id: null, body }
-    }  
+    }
     default: {
-      throw new Error(`Unknown message.type ${(message as any).type}`)
+      throw new Error('Unknown message.type')
     }
   }
 }
@@ -106,15 +117,15 @@ export const handler: Handlers = {
       }
 
       const contents = await getContents(message)
-      
+
       await conversations.insertMessageReceived(db, {
         patient_phone_number: message.from,
         whatsapp_id: message.id,
-        ...contents
+        ...contents,
       })
     }
 
     return new Response('OK')
-  }
+  },
   // TODO handle messages like this {"object":"whatsapp_business_account","entry":[{"id":"103214822804490","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"263712093355","phone_number_id":"113792741736396"},"messages":[{"from":"263782057099","id":"wamid.HBgMMjYzNzgyMDU3MDk5FQIAEhgSNDY4MDg4NzBCQkEyRjg3Q0M5AA==","timestamp":"1687676124","system":{"body":"User A changed from ‎263782057099 to 263719057099‎","wa_id":"263719057099","type":"user_changed_number"},"type":"system"}]},"field":"messages"}]}]}
 }

@@ -740,20 +740,18 @@ export type HealthWorkerAvailability = {
   availability: Availability
 }
 
-export type WhatsAppMessageContents = (
-  | { has_media: false; body: string, media_id: null }
-  | { has_media: true; body: null, media_id: number }
-)
+export type WhatsAppMessageContents =
+  | { has_media: false; body: string; media_id: null }
+  | { has_media: true; body: null; media_id: string }
 
-export type WhatsAppMessageReceived =
-  WhatsAppMessageContents & {
-    patient_id: number
-    whatsapp_id: string
-    conversation_state: PatientConversationState
-    started_responding_at: Maybe<ColumnType<Date>>
-    error_commit_hash: Maybe<string>
-    error_message: Maybe<string>
-  }
+export type WhatsAppMessageReceived = WhatsAppMessageContents & {
+  patient_id: number
+  whatsapp_id: string
+  conversation_state: PatientConversationState
+  started_responding_at: Maybe<ColumnType<Date>>
+  error_commit_hash: Maybe<string>
+  error_message: Maybe<string>
+}
 
 export type WhatsAppMessageSent = {
   patient_id: number
