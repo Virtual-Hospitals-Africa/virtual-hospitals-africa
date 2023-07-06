@@ -1,15 +1,18 @@
+import cls from '../../../util/cls.ts'
 import { Button } from '../Button.tsx'
 
 type FormButtonsProps = {
+  className?: string
   submitText?: string
   cancelText?: string
 }
 
 export default function FormButtons(
-  { submitText = 'Submit', cancelText = 'Cancel' }: FormButtonsProps = {},
+  { className, submitText = 'Submit', cancelText = 'Cancel' }:
+    FormButtonsProps = {},
 ) {
   return (
-    <div className='container grid gap-x-2 grid-cols-2'>
+    <div className={cls('container grid gap-x-2 grid-cols-2', className)}>
       <Button
         type='button'
         variant='outline'
