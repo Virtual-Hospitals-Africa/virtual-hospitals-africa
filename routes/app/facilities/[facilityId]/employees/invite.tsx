@@ -7,7 +7,7 @@ import {
 } from '../../../../../types.ts'
 import * as health_workers from '../..../../../../../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
-import parseForm from '../../../../../util/parseForm.ts'
+import { parseRequest } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 
 type EmployeesPageProps = {
@@ -51,10 +51,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
 
     console.log(`Inviting user to facility ${facilityId}`)
 
-    const params = new URLSearchParams(await req.text())
-
-    const values = parseForm(params, [])
-    console.log('values', values)
+    const values = await parseRequest(req, [])
     return new Response('OK')
   },
 }

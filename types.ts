@@ -20,11 +20,16 @@ export type SqlRow<T> = {
   updated_at: ColumnType<Date, undefined, never>
 } & T
 
-export type ReturnedSqlRow<T> = {
-  id: number
+export type HasId<T extends Record<string, unknown> = Record<string, unknown>> =
+  & T
+  & {
+    id: number
+  }
+
+export type ReturnedSqlRow<T extends Record<string, unknown>> = HasId<T> & {
   created_at: Date
   updated_at: Date
-} & T
+}
 
 export type Location = {
   longitude: number

@@ -13,6 +13,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import haveNames from '../../util/haveNames.ts'
 
 export async function getByPhoneNumber(
   trx: TrxOrDb,
@@ -87,12 +88,6 @@ export async function getWithMedicalRecords(
       history: {},
     },
   }))
-}
-
-function haveNames(
-  patients: ReturnedSqlRow<Patient>[],
-): patients is ReturnedSqlRow<Patient & { name: string }>[] {
-  return patients.every((patient) => !!patient.name)
 }
 
 export async function getAllWithNames(

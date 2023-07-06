@@ -343,7 +343,7 @@ export async function getInitialTokensFromAuthCode(
 
   const result = await fetch('https://oauth2.googleapis.com/token', {
     method: 'post',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
     body: formData.toString(),
   })
 
@@ -369,7 +369,7 @@ export async function getNewAccessTokenFromRefreshToken(
 ): Promise<string> {
   const result = await fetch('https://oauth2.googleapis.com/token', {
     method: 'post',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'content-type': 'application/json' },
     body: JSON.stringify({
       refresh_token,
       client_id: Deno.env.get('GOOGLE_CLIENT_ID'),

@@ -1,6 +1,6 @@
 import set from './set.ts'
 
-export default function parseForm<T>(
+export function parseForm<T>(
   params: URLSearchParams | FormData,
   defaultValue: T,
 ): T {
@@ -12,4 +12,12 @@ export default function parseForm<T>(
   })
 
   return defaultValue
+}
+
+export async function parseRequest<T>(
+  req: Request,
+  defaultValue: T,
+): Promise<T> {
+  const params = new URLSearchParams(await req.text())
+  return parseForm(params, defaultValue)
 }

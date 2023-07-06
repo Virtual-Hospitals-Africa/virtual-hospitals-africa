@@ -12,6 +12,8 @@ import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_wor
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
+import { json } from '../../../../util/responses.ts'
+import { parseRequest } from '../../../../util/parseForm.ts'
 
 type SchedulePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -28,6 +30,17 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     return ctx.render({
       healthWorker,
     })
+  },
+  async POST(req, ctx) {
+    const healthWorker = ctx.state.session.data
+    assert(
+      isHealthWorkerWithGoogleTokens(healthWorker),
+      'Invalid health worker',
+    )
+
+    const scheduleData = await parseRequest(req, {})
+
+    return json('OK')
   },
 }
 
