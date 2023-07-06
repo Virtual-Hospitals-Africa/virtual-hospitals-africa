@@ -17,11 +17,11 @@ import {
   Patient,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
+  PatientMedia,
   ReturnedSqlRow,
   SqlRow,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
-  PatientMedia
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
