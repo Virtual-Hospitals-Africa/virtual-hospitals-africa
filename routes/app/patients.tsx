@@ -24,6 +24,12 @@ export const handler: LoggedInHealthWorkerHandler<PatientsProps> = {
 
     const search = new URL(req.url).searchParams.get('search')
 
+    const patients = await getAllWithNames(ctx.state.trx, search)
+
+    if (req.headers.get('content-type') === 'application/json') {
+      return new Response(JSON.stringify(patients), { status: 200 })
+    }
+
     return ctx.render({
       healthWorker,
       patients: await getAllWithNames(ctx.state.trx, search),

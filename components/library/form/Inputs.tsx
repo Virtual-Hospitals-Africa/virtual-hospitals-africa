@@ -1,4 +1,4 @@
-import { ComponentChildren } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import { SearchIcon } from '../icons/heroicons.tsx'
 import capitalize from '../../../util/capitalize.ts'
 
@@ -7,6 +7,10 @@ type LabeledInputProps = {
   label?: string
   required?: boolean
   placeholder?: string
+  value?: string
+  onInput?: JSX.GenericEventHandler<HTMLInputElement>
+  onFocus?: JSX.GenericEventHandler<HTMLInputElement>
+  onBlur?: JSX.GenericEventHandler<HTMLInputElement>
 }
 
 type SearchInputProps = Partial<LabeledInputProps>
@@ -17,7 +21,8 @@ type TextInputProps = LabeledInputProps & {
   type?: 'text' | 'email'
 }
 
-type SelectInputProps = LabeledInputProps & {
+type SelectInputProps = Omit<LabeledInputProps, 'onInput'> & {
+  onSelect?: JSX.GenericEventHandler<HTMLSelectElement>
   children: ComponentChildren
 }
 
@@ -38,7 +43,8 @@ function LabeledInput(
 }
 
 export function TextInput(
-  { name, type, label, placeholder, required }: TextInputProps,
+  { name, type, label, placeholder, required, onInput, onFocus, onBlur }:
+    TextInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -48,13 +54,16 @@ export function TextInput(
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         placeholder={placeholder}
         required={required}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </LabeledInput>
   )
 }
 
 export function SelectInput(
-  { name, label, required, children }: SelectInputProps,
+  { name, label, required, onSelect, children }: SelectInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -62,6 +71,7 @@ export function SelectInput(
         name={name}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         required={required}
+        onSelect={onSelect}
       >
         {children}
       </select>
@@ -70,7 +80,7 @@ export function SelectInput(
 }
 
 export function DateInput(
-  { name = 'date', label, required }: DateInputProps,
+  { name = 'date', label, required, onInput, onFocus, onBlur }: DateInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -79,6 +89,9 @@ export function DateInput(
         name={name}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         required={required}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </LabeledInput>
   )
@@ -86,7 +99,8 @@ export function DateInput(
 
 // TODO
 export function PhoneNumberInput(
-  { name, label, placeholder, required }: TextInputProps,
+  { name, label, placeholder, required, onInput, onFocus, onBlur }:
+    TextInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -96,6 +110,9 @@ export function PhoneNumberInput(
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         placeholder={placeholder}
         required={required}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </LabeledInput>
   )
@@ -103,7 +120,8 @@ export function PhoneNumberInput(
 
 // TODO
 export function ImageInput(
-  { name, label, placeholder, required }: TextInputProps,
+  { name, label, placeholder, required, onInput, onFocus, onBlur }:
+    TextInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -114,13 +132,17 @@ export function ImageInput(
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         placeholder={placeholder}
         required={required}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </LabeledInput>
   )
 }
 
 export function SearchInput(
-  { name = 'search', label, placeholder, required }: SearchInputProps,
+  { name = 'search', label, placeholder, required, onInput, onFocus, onBlur }:
+    SearchInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -131,6 +153,12 @@ export function SearchInput(
           className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
           placeholder={placeholder}
           required={required}
+          onInput={onInput}
+          onFocus={(e) => {
+            console.log('WEKLEWKLWLEKWLKEW')
+            onFocus && onFocus(e)
+          }}
+          onBlur={onBlur}
         />
         <div className='absolute inset-y-0 right-0 pr-1.5 grid place-items-center'>
           <SearchIcon />
