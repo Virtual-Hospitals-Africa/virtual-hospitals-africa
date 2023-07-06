@@ -67,7 +67,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
         facility_id: facilityId,
       },
     )
-    //assert(isAdmin)
+    assert(isAdmin)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
@@ -84,7 +84,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       },
     )
 
-    //assert(isAdmin)
+    assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
@@ -102,13 +102,13 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
     
       if (email) { // Ensure that email is not empty
         const inviteCode = generateInviteCode();
-        await addInvite(db, { //here
+        await sendInviteMail(email, inviteCode);
+        await addInvite(db, {
           email: email,
           profession: profession,
           facilityId: facilityId,
           inviteCode: inviteCode,
         });
-        await sendInviteMail(email, inviteCode);
         // Do something with profession if necessary
       }
     }
