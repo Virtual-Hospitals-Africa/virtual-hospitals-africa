@@ -1,4 +1,4 @@
-import { TrxOrDb,ReturnedSqlRow, patientMedia } from './../../types.ts';
+import { PatientMedia, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
 import { sql } from 'kysely'
 
 export async function getPatientMediaCount(
@@ -13,8 +13,9 @@ export async function getPatientMediaCount(
 }
 
 export async function getAllPatientMedia(
-  trx:TrxOrDb,
-  opts: {patient_id: number})
-  :Promise<ReturnedSqlRow<patientMedia>[]>{
-    return await trx.selectFrom('media').where('patient_id', '=', opts.patient_id).selectAll().execute()
-  }
+  trx: TrxOrDb,
+  opts: { patient_id: number },
+): Promise<ReturnedSqlRow<PatientMedia>[]> {
+  return await trx.selectFrom('media').where('patient_id', '=', opts.patient_id)
+    .selectAll().execute()
+}

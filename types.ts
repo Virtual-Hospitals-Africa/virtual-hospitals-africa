@@ -948,7 +948,7 @@ export type LocationDistance = {
   origin: Location
   destination: Location
 }
-export type patientMedia = {
+export type PatientMedia = {
   id:number,
   file_name:string,
   file_type:string,
