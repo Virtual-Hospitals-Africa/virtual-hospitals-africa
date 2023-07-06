@@ -1,5 +1,5 @@
 // import SearchResults from '../SearchResults.tsx'
-import { useEffect, useState } from 'preact/hooks'
+import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
 import SearchResults, {
   PersonSearchResult,
 } from '../components/library/SearchResults.tsx'
@@ -23,6 +23,19 @@ export default function PersonSearch({
     delay: debounce(setSearchImmediate, 220),
   })
 
+  const onDocumentClick = useCallback(() => {
+    setIsFocused(
+      document.activeElement ===
+        document.querySelector(`input[name="${name}_name"]`),
+    )
+  }, [])
+
+  useEffect(() => {
+    onDocumentClick()
+    self.addEventListener('click', onDocumentClick)
+    return () => self.removeEventListener('click', onDocumentClick)
+  })
+
   useEffect(() => {
     fetch(`${href}?search=${search}`, {
       headers: {
@@ -36,7 +49,7 @@ export default function PersonSearch({
         people.every((person) => person.id && typeof person.id === 'number'),
       )
       setPeople(people)
-    })
+    }).catch(console.error)
   }, [search])
 
   console.log('search', search)
@@ -44,25 +57,13 @@ export default function PersonSearch({
   console.log('people', people)
   console.log('selected', selected)
 
-  // const showSearchResults = isFocused && people.length > 0 &&
-  //   selected?.name !== search
-
-  const showSearchResults = true
-
-  console.log('showSearchResults', showSearchResults)
+  const showSearchResults = isFocused && people.length > 0 &&
+    selected?.name !== search
 
   return (
-    <>
+    <div className='w-full'>
       <SearchInput
-        onFocus={() => {
-          console.log('setIsFocused(true)')
-          setIsFocused(true)
-        }}
-        onBlur={() => {
-          console.log('setIsFocused(false)')
-          setIsFocused(false)
-        }}
-        name={name}
+        name={`${name}_name`}
         value={search}
         onInput={(event) => {
           assert(event.target)
@@ -70,22 +71,27 @@ export default function PersonSearch({
           assert(typeof event.target.value === 'string')
           setSearch.delay(event.target.value)
         }}
-      />
-      {/* TODO add empty state for no results */}
-      {showSearchResults && (
-        <SearchResults>
-          {people.map((person) => (
-            <PersonSearchResult
-              person={person}
-              isSelected={selected?.id === person.id}
-              onSelect={() => {
-                setSelected(person)
-                setSearchImmediate(person.name)
-              }}
-            />
-          ))}
-        </SearchResults>
+      >
+        {/* TODO add empty state for no results */}
+        {showSearchResults && (
+          <SearchResults>
+            {people.map((person) => (
+              <PersonSearchResult
+                person={person}
+                isSelected={selected?.id === person.id}
+                onSelect={() => {
+                  console.log('onSelect')
+                  setSelected(person)
+                  setSearchImmediate(person.name)
+                }}
+              />
+            ))}
+          </SearchResults>
+        )}
+      </SearchInput>
+      {selected && (
+        <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}
-    </>
+    </div>
   )
 }

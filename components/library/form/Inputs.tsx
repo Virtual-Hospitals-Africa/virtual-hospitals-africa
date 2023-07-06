@@ -7,18 +7,23 @@ type LabeledInputProps = {
   label?: string
   required?: boolean
   placeholder?: string
-  value?: string
   onInput?: JSX.GenericEventHandler<HTMLInputElement>
   onFocus?: JSX.GenericEventHandler<HTMLInputElement>
   onBlur?: JSX.GenericEventHandler<HTMLInputElement>
 }
 
-type SearchInputProps = Partial<LabeledInputProps>
+type SearchInputProps = Partial<LabeledInputProps> & {
+  value?: string
+  children?: ComponentChildren
+}
 
-type DateInputProps = Partial<LabeledInputProps>
+type DateInputProps = Partial<LabeledInputProps> & {
+  value?: string
+}
 
 type TextInputProps = LabeledInputProps & {
   type?: 'text' | 'email'
+  value?: string
 }
 
 type SelectInputProps = Omit<LabeledInputProps, 'onInput'> & {
@@ -32,7 +37,7 @@ function LabeledInput(
   },
 ) {
   return (
-    <label className='block text-sm font-medium leading-6 text-gray-500 w-full'>
+    <label className='block text-sm font-medium leading-6 text-gray-500 w-full relative'>
       {label}
       {required && '*'}
       <div className='mt-2'>
@@ -43,7 +48,7 @@ function LabeledInput(
 }
 
 export function TextInput(
-  { name, type, label, placeholder, required, onInput, onFocus, onBlur }:
+  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur }:
     TextInputProps,
 ) {
   return (
@@ -54,6 +59,7 @@ export function TextInput(
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         placeholder={placeholder}
         required={required}
+        value={value}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -141,8 +147,17 @@ export function ImageInput(
 }
 
 export function SearchInput(
-  { name = 'search', label, placeholder, required, onInput, onFocus, onBlur }:
-    SearchInputProps,
+  {
+    name = 'search',
+    label,
+    value,
+    placeholder,
+    required,
+    onInput,
+    onFocus,
+    onBlur,
+    children,
+  }: SearchInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -153,6 +168,7 @@ export function SearchInput(
           className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
           placeholder={placeholder}
           required={required}
+          value={value}
           onInput={onInput}
           onFocus={(e) => {
             console.log('WEKLEWKLWLEKWLKEW')
@@ -160,10 +176,12 @@ export function SearchInput(
           }}
           onBlur={onBlur}
         />
+
         <div className='absolute inset-y-0 right-0 pr-1.5 grid place-items-center'>
           <SearchIcon />
         </div>
       </div>
+      {children}
     </LabeledInput>
   )
 }

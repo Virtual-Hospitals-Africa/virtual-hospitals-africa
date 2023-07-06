@@ -1,6 +1,13 @@
 import { Button } from '../Button.tsx'
 
-export default function FormButtons() {
+type FormButtonsProps = {
+  submitText?: string
+  cancelText?: string
+}
+
+export default function FormButtons(
+  { submitText = 'Submit', cancelText = 'Cancel' }: FormButtonsProps = {},
+) {
   return (
     <div className='container grid gap-x-2 grid-cols-2'>
       <Button
@@ -9,9 +16,9 @@ export default function FormButtons() {
         color='white'
         onClick={() => window.history.back()}
       >
-        Cancel
+        {cancelText}
       </Button>
-      <Button type='submit'>Submit</Button>
+      <Button type='submit'>{submitText}</Button>
     </div>
   )
 }
