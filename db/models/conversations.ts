@@ -4,7 +4,10 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+WhatsAppMessageContents,
+WhatsAppMessageReceived,
 } from '../../types.ts'
+import { assert } from "https://deno.land/std@0.188.0/testing/asserts.ts";
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
@@ -18,47 +21,62 @@ export function updateReadStatus(
     .execute()
 }
 
+export function isWhatsAppContents(contents: unknown): contents is WhatsAppMessageContents {
+  if (!contents || typeof contents !== 'object') return false
+  if (!('has_media' in contents) || !('media_id' in contents) || !('body' in contents)) return false
+  if (contents.has_media) {
+    return !!contents.media_id && typeof contents.media_id === 'number' && contents.body === null
+  }
+  return contents.media_id === null && typeof contents.media_id === 'string' && !!contents.body
+}
+
 export async function insertMessageReceived(
   trx: TrxOrDb,
-  opts: { patient_phone_number: string; whatsapp_id: string; body: string },
+  data: {
+    patient_phone_number: string
+  } & Pick<WhatsAppMessageReceived, 'whatsapp_id' | 'has_media' | 'body' | 'media_id'>,
 ): Promise<
-  ReturnedSqlRow<{
-    patient_id: number
-    whatsapp_id: string
-    body: string
-    started_responding_at: Date | null | undefined
-    conversation_state: PatientConversationState
-  }>
+  ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
-  const patient = (
-    await trx
-      .insertInto('patients')
-      .values({
-        phone_number: opts.patient_phone_number,
-        conversation_state: 'initial_message',
-      })
-      .onConflict((oc) => oc.column('phone_number').doNothing())
-      .returningAll()
-      .executeTakeFirst()
-  ) || (
-    await trx.selectFrom('patients').where(
+  let patient = await trx
+    .insertInto('patients')
+    .values({
+      phone_number: data.patient_phone_number,
+      conversation_state: 'initial_message',
+    })
+    .onConflict((oc) => oc.column('phone_number').doNothing())
+    .returningAll()
+    .executeTakeFirst()
+
+  // TODO: Eliminate this in favor of getting the above to return the existing patient
+  if (!patient) {
+    const patients = await trx.selectFrom('patients').where(
       'phone_number',
       '=',
-      opts.patient_phone_number,
+      data.patient_phone_number,
     ).selectAll().executeTakeFirstOrThrow()
-  )
+  }
 
-  return trx
+  const [inserted] = await trx
     .insertInto('whatsapp_messages_received')
     .values({
       patient_id: patient.id,
-      whatsapp_id: opts.whatsapp_id,
-      body: opts.body,
       conversation_state: patient.conversation_state,
+      ...data,
     })
     .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()
-    .executeTakeFirstOrThrow()
+    .execute()
+
+  assert(isWhatsAppContents(inserted))
+
+  return inserted
+}
+
+export function insertMediaReceived(
+  trx: TrxOrDb,
+  opts: { patient_phone_number: string; whatsapp_id: string; media_id: number },
+) {
 }
 
 export function insertMessageSent(
