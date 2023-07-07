@@ -29,11 +29,11 @@ export function isWhatsAppContents(
     !('body' in contents)
   ) return false
   if (contents.has_media) {
-    return !!contents.media_id && typeof contents.media_id === 'number' &&
+    return !!contents.media_id && typeof contents.media_id === 'string' &&
       contents.body === null
   }
-  return contents.media_id === null && typeof contents.media_id === 'string' &&
-    !!contents.body
+  return contents.media_id === null && !!contents.body &&
+    typeof contents.body === 'string'
 }
 
 export async function insertMessageReceived(
@@ -81,7 +81,12 @@ export async function insertMessageReceived(
     .returningAll()
     .execute()
 
-  assert(isWhatsAppContents(inserted))
+  console.log(inserted)
+
+  assert(
+    isWhatsAppContents(inserted),
+    'assertion error occured, what happened?',
+  )
 
   return inserted
 }
