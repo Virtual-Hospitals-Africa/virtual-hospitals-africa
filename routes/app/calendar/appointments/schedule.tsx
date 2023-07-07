@@ -21,7 +21,7 @@ import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
-import { json } from '../../../../util/responses.ts'
+import { makeAppointment2 } from '../../../../scheduling/makeAppointment.ts'
 
 type SearchFormValues = {
   health_worker_id?: number
@@ -33,6 +33,7 @@ type ScheduleFormValues = {
   start: Date
   end: Date
   durationMinutes: number
+  reason: string
   patient_id: number
   health_worker_ids: number[]
 }
@@ -57,6 +58,7 @@ function isScheduleFormValues(
     'start' in values && values.start instanceof Date &&
     'end' in values && values.end instanceof Date &&
     'durationMinutes' in values && typeof values.durationMinutes === 'number' &&
+    'reason' in values && typeof values.reason === 'string' &&
     'patient_id' in values && typeof values.patient_id === 'number' &&
     'health_worker_ids' in values && Array.isArray(values.health_worker_ids) &&
     values.health_worker_ids.every((id) => typeof id === 'number')
@@ -136,7 +138,7 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
       isScheduleFormValues,
     )
 
-    return json(schedule)
+    await makeAppointment2(ctx.state.trx, schedule)
   },
 }
 

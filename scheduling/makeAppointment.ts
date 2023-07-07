@@ -11,7 +11,17 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../types.ts'
-import generateUUID from '../util/uuid.ts'
+
+function gcal({ start, end }: {
+  start: string,
+  end: string
+}) {
+  return {
+    summary: 'Appointment',
+    start: { dateTime: start },
+    end: { dateTime: end },
+  }
+}
 
 export function gcalAppointmentDetails(
   patientState: PatientState,
@@ -44,24 +54,10 @@ export function gcalAppointmentDetails(
   end.setMinutes(end.getMinutes() + 30)
   return {
     acceptedTime,
-    gcal: {
-      summary: `Appointment with ${patientState.name}`,
-      start: {
-        dateTime: acceptedTime.start,
-      },
-      end: {
-        dateTime: formatHarare(end),
-      },
-      conferenceDataVersion: 1,
-      conferenceData: {
-        createRequest: {
-          conferenceSolutionKey: {
-            type: 'hangoutsMeet',
-          },
-          requestId: generateUUID(),
-        },
-      },
-    },
+    gcal: gcal({
+      start: acceptedTime.start,
+      end: formatHarare(end),
+    })
   }
 }
 
@@ -90,6 +86,76 @@ export async function makeAppointment(
     acceptedTime.health_worker_id,
     'No health_worker_id found',
   )
+
+  const matchingHealthWorker = await getWithTokensById(
+    trx,
+    acceptedTime.health_worker_id,
+  )
+
+  assert(
+    matchingHealthWorker,
+    `No health_worker session found for health_worker_id ${acceptedTime.health_worker_id}`,
+  )
+  assert(
+    matchingHealthWorker.gcal_appointments_calendar_id,
+    `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
+  )
+
+  const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
+
+  const end = new Date(acceptedTime.start)
+  end.setMinutes(end.getMinutes() + 30)
+
+  const insertedEvent = await healthWorkerGoogleClient.insertEvent(
+    matchingHealthWorker.gcal_appointments_calendar_id,
+    gcal,
+  )
+
+  await appointments.schedule(trx, {
+    appointment_offered_time_id: acceptedTime.id,
+    scheduled_gcal_event_id: insertedEvent.id,
+  })
+
+  return {
+    ...patientState,
+    appointment_offered_times: patientState.appointment_offered_times.map(
+      (aot) =>
+        aot.id === acceptedTime.id
+          ? {
+            ...acceptedTime,
+            scheduled_gcal_event_id: insertedEvent.id,
+          }
+          : aot,
+    ),
+  }
+}
+
+export type ScheduleFormValues = {
+  start: Date
+  end: Date
+  reason: string
+  durationMinutes: number
+  patient_id: number
+  health_worker_ids: number[]
+}
+
+export async function makeAppointment2(
+  trx: TrxOrDb,
+  values: ScheduleFormValues,
+): Promise<PatientState> {
+
+  const appointment = await appointments.upsert(trx, {
+    patient_id: values.patient_id,
+    reason: values.reason,
+    status: 'pending'
+  })
+
+  const offeredTime = appointments.newOfferedTime(trx, {
+    appointment_id: appointment.id,
+    health_worker_id: values.health_worker_ids[0],
+    start: formatHarare(values.start),
+  })
+
 
   const matchingHealthWorker = await getWithTokensById(
     trx,
