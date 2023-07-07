@@ -1,4 +1,4 @@
-import { Kysely, sql } from "kysely";
+import { Kysely, sql } from "kysely"
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import { DatabaseSchema } from '../db.ts'
 

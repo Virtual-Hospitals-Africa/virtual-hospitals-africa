@@ -38,6 +38,28 @@ function isInvites(
   return Array.isArray(values) && values.every(isInvite)
 }
 
+async function sendInviteMail(email: string, inviteCode: string) {	
+  const client = new SmtpClient();	
+  const { SEND_EMAIL, PWD } = Deno.env.toObject();	
+  const connectConfig: ConnectConfigWithAuthentication = {	
+    hostname: "smtp.gmail.com",	
+    port: 465,	
+    username: SEND_EMAIL,	
+    password: PWD,	
+  };	
+  await client.connectTLS(connectConfig);	
+
+  await client.send({	
+    from: SEND_EMAIL,	
+    to: email,	
+    subject: "Welcome to VHA",	
+    content: `Please visit ${origin}/accept-invite/${inviteCode}`	
+  });	
+
+
+  await client.close();
+}
+
 export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
   async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
@@ -51,7 +73,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
         facility_id: facilityId,
       },
     )
-    //assert(isAdmin)
+    assert(isAdmin)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
@@ -68,7 +90,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       },
     )
 
-    //assert(isAdmin)
+    assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
@@ -76,6 +98,22 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
     console.log(`Inviting user to facility ${facilityId}`)
 
     const values = await parseRequest<Invite[]>(req, [], isInvites)
+    for (let invite of values) {	
+      const email = invite.email;	
+      const profession = invite.profession;	
+
+      if (email) { // Ensure that email is not empty	
+        const inviteCode = generateUUID();	
+        await sendInviteMail(email, inviteCode);	
+        await addInvite(db, {	
+          email: email,	
+          profession: profession,	
+          facilityId: facilityId,	
+          inviteCode: inviteCode,	
+        });	
+        // Do something with profession if necessary	
+      }	
+    }
     return new Response('OK')
   },
 }
