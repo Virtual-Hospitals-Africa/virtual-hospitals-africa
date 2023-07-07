@@ -68,12 +68,14 @@ export async function insertMessageReceived(
     ).selectAll().executeTakeFirstOrThrow()
   }
 
+  const { patient_phone_number, ...message_data } = data
+  console.log(patient_phone_number)
   const [inserted] = await trx
     .insertInto('whatsapp_messages_received')
     .values({
       patient_id: patient.id,
       conversation_state: patient.conversation_state,
-      ...data,
+      ...message_data,
     })
     .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()

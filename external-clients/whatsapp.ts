@@ -16,7 +16,10 @@ const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
 
 export async function get(path: string) {
   const response = await fetch(`https://graph.facebook.com/v17.0/${path}`, {
-    headers: { Authorization, 'Content-Type': 'application/json', 'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"},
+    headers: {
+      Authorization,
+      'Content-Type': 'application/json',
+    },
   })
   console.log('headers', response.headers)
   return response.json()

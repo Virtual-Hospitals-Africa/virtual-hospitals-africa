@@ -15,8 +15,11 @@ async function getContents(
 ): Promise<WhatsAppMessageContents> {
   switch (message.type) {
     case 'audio':
+      return { has_media: true, media_id: message.audio.id, body: null }
     case 'video':
+      return { has_media: true, media_id: message.video.id, body: null }
     case 'document':
+      return { has_media: true, media_id: message.document.id, body: null }
     case 'contacts': {
       throw new Error('Not yet handled')
     }
