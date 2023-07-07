@@ -26,6 +26,7 @@ import {
   updateAccessToken,
 } from '../db/models/health_workers.ts'
 import uniq from '../util/uniq.ts'
+import { cacheFacilityAddress, getFacilityAddress } from './redis.ts'
 // import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
@@ -406,6 +407,12 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string | null> {
+  // Get address from redis
+  const cachedAddress = await getFacilityAddress(longitude, latitude)
+  if (cachedAddress) {
+    console.log('get address from redis: ' + cachedAddress)
+    return cachedAddress
+  }
   const encodedLatitude = encodeURIComponent(latitude)
   const encodedLongitude = encodeURIComponent(longitude)
 
@@ -440,7 +447,10 @@ export async function getLocationAddress(
 
   const uniqueComponents = uniq(nonUnknownComponents)
   if (!uniqueComponents.length) return null
-  return uniqueComponents.join(', ')
+  const address = uniqueComponents.join(', ')
+  // Cache address into redis
+  await cacheFacilityAddress(longitude, latitude, address)
+  return address
 }
 
 function getAreaNameByType(
