@@ -85,10 +85,10 @@ function daysToShow(
 }
 
 export default function Calendar(
-  { day, today, route, children }: {
+  { day, today, url, children }: {
     day: string
     today: string
-    route: string
+    url: URL
     children?: JSX.Element
   },
 ) {
@@ -115,7 +115,7 @@ export default function Calendar(
         <a
           type='button'
           className='-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
-          href={`${route}?day=${lastDayOfLastMonth}`}
+          href={`${url.pathname}?day=${lastDayOfLastMonth}`}
         >
           <span className='sr-only'>Previous month</span>
           <ChevronLeftIcon className='h-5 w-5' aria-hidden='true' />
@@ -126,7 +126,7 @@ export default function Calendar(
         <a
           type='button'
           className='-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500'
-          href={`${route}?day=${firstDayOfNextMonth}`}
+          href={`${url.pathname}?day=${firstDayOfNextMonth}`}
         >
           <span className='sr-only'>Next month</span>
           <ChevronRightIcon className='h-5 w-5' aria-hidden='true' />
@@ -161,7 +161,7 @@ export default function Calendar(
               dayIdx === days.length - 7 && 'rounded-bl-lg',
               dayIdx === days.length - 1 && 'rounded-br-lg',
             )}
-            href={`${route}?day=${day.date}`}
+            href={`${url.pathname}?day=${day.date}`}
           >
             <time
               dateTime={day.date}

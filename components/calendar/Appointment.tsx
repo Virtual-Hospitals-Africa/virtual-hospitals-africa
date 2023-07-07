@@ -1,23 +1,39 @@
 import { CalendarIcon, MapPinIcon } from '../library/icons/heroicons.tsx'
-import { HealthWorkerAppointment } from '../../types.ts'
+import {
+  HealthWorkerAppointment,
+  HealthWorkerAppointmentSlot,
+} from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
 import GoogleMeetIcon from '../library/icons/google-meet.tsx'
 import WhatsAppIcon from '../library/icons/whatsapp.tsx'
 import Avatar from '../library/Avatar.tsx'
 import Menu from '../../islands/Menu.tsx'
+import { Button } from '../library/Button.tsx'
 
 function AppointmentContents(
-  { appointment, href }: { appointment: HealthWorkerAppointment; href: string },
+  { appointment, href }: {
+    appointment: HealthWorkerAppointment | HealthWorkerAppointmentSlot
+    href?: string
+  },
 ) {
+  // Show the health worker when showing appointment slots,
+  // the patient for the actual appointment
+  // TODO: revisit whether we want to show all participants
+  const featuring = appointment.type === 'slot'
+    ? appointment.health_workers[0]
+    : appointment.patient
+
+  const header = (
+    <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>
+      {featuring.name}
+    </h3>
+  )
+
   return (
     <>
-      <Avatar src={appointment.patient.image_url} className='h-14 w-14' />
+      <Avatar src={featuring.avatar_url} className='h-14 w-14' />
       <div className='flex-auto'>
-        <a href={href}>
-          <h3 className='pr-10 font-semibold text-gray-900 xl:pr-0'>
-            {appointment.patient.name}
-          </h3>
-        </a>
+        {href ? <a href={href}>{header}</a> : header}
         <dl className='mt-2 flex flex-col text-gray-500 xl:flex-row'>
           <div className='flex items-start space-x-1.5'>
             <dt>
@@ -59,15 +75,15 @@ function AppointmentContents(
               </dt>
             </div>
           )}
-          {appointment.patient.phone_number && (
+          {featuring.phone_number && (
             <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
               <dt>
                 <a
-                  href={`https://wa.me/${appointment.patient.phone_number}`}
+                  href={`https://wa.me/${featuring.phone_number}`}
                   className='text-indigo-600 font-bold flex'
                 >
                   <WhatsAppIcon className='w-5 mr-1' />
-                  Message Patient
+                  Message
                 </a>
               </dt>
             </div>
@@ -79,23 +95,49 @@ function AppointmentContents(
 }
 
 export default function Appointment(
-  { route, appointment }: {
-    route: string
-    appointment: HealthWorkerAppointment
+  { url, appointment }: {
+    url: URL
+    appointment: HealthWorkerAppointment | HealthWorkerAppointmentSlot
   },
 ) {
-  const href = `${route}/appointments/${appointment.id}`
+  const href = appointment.type === 'appointment'
+    ? `${url.pathname}/appointments/${appointment.id}`
+    : undefined
+
+  const search = new URLSearchParams(url.search)
+  search.set('start', stringify(appointment.start))
+  search.set('end', stringify(appointment.end))
+  search.set('durationMinutes', String(appointment.durationMinutes))
+  if (appointment.health_workers) {
+    search.set(
+      'health_worker_ids',
+      JSON.stringify(appointment.health_workers.map((hw) => hw.id)),
+    )
+  }
 
   return (
     <li className='relative flex space-x-6 py-6 xl:static hover:bg-gray-50 px-2 py-3'>
       <AppointmentContents appointment={appointment} href={href} />
-      <Menu
-        options={[
-          { label: 'Cancel', href: `${href}/cancel` },
-          { label: 'Reschedule', href: `${href}/reschedule` },
-        ]}
-        className='top-2 right-2'
-      />
+      {appointment.type === 'slot'
+        ? (
+          <form
+            action={`${url.pathname}?${search}`}
+            method='POST'
+          >
+            <Button>
+              Book
+            </Button>
+          </form>
+        )
+        : (
+          <Menu
+            options={[
+              { label: 'Cancel', href: `${href}/cancel` },
+              { label: 'Reschedule', href: `${href}/reschedule` },
+            ]}
+            className='top-2 right-2'
+          />
+        )}
     </li>
   )
 }

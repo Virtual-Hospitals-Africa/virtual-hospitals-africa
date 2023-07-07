@@ -1,4 +1,7 @@
-import { HealthWorkerAppointment } from '../../types.ts'
+import {
+  HealthWorkerAppointment,
+  HealthWorkerAppointmentSlot,
+} from '../../types.ts'
 import AppointmentsEmptyState from './EmptyState.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Appointment from './Appointment.tsx'
@@ -7,10 +10,10 @@ const className =
   'mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'
 
 export default function Appointments(
-  { headerText, appointments, route }: {
+  { headerText, appointments, url }: {
     headerText: string
-    appointments: HealthWorkerAppointment[]
-    route: string
+    appointments: (HealthWorkerAppointment | HealthWorkerAppointmentSlot)[]
+    url: URL
   },
 ) {
   const header = <SectionHeader>{headerText}</SectionHeader>
@@ -30,7 +33,7 @@ export default function Appointments(
       {appointments.map((appointment) => (
         <Appointment
           appointment={appointment}
-          route={route}
+          url={url}
           key={appointment.id}
         />
       ))}

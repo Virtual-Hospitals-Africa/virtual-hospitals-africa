@@ -47,8 +47,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
-    const patientData = await parseRequest(req, {})
-    assert(hasNames(patientData))
+    const patientData = await parseRequest(req, {}, hasNames)
     const patient = {
       ...pickDemographics(patientData),
       name: compact([

@@ -59,16 +59,24 @@ export function parseDate(
   const [weekday, dateParts, timeParts] = dateString.split(', ')
   const [day, month, year] = dateParts.split('/')
   const [hour, minute, second] = timeParts.split(':')
-  return { weekday, day, month, year, hour, minute, second }
+  return { weekday, day, month, year, hour, minute, second, format }
 }
 
 export function stringify(date: ParsedDate): string {
+  assert(date.format === 'numeric')
   const { day, month, year, hour, minute, second } = date
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
 }
 
 export function todayISOInHarare() {
   const { day, month, year } = parseDate(new Date(), 'twoDigit')
+  return `${year}-${month}-${day}`
+}
+
+export function tomorrowISOInHarare() {
+  const date = new Date()
+  date.setDate(date.getDate() + 1)
+  const { day, month, year } = parseDate(date, 'twoDigit')
   return `${year}-${month}-${day}`
 }
 
@@ -124,8 +132,6 @@ export function prettyAppointmentTime(startTime: string): string {
 
   const start = new Date(startTime)
 
-  console.log('startTime', startTime)
-  console.log('start', start)
   const now = formatHarare()
   const diff = differenceInDays(startTime, now)
 
@@ -167,10 +173,14 @@ export function timeRangeInSimpleAmPm(
     : `${timeStart}-${timeEnd}`
 }
 
+export function isIsoHarare(date: string): boolean {
+  return rfc3339Regex.test(date) && date.endsWith('+02:00')
+}
+
 export function assertAllHarare(dates: string[]) {
   for (const date of dates) {
     assert(
-      date.endsWith('+02:00'),
+      isIsoHarare(date),
       `Expected ${date} to be in Harare time`,
     )
   }

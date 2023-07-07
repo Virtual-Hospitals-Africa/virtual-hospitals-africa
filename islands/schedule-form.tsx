@@ -5,11 +5,12 @@ import PersonSearch from './PersonSearch.tsx'
 export default function ScheduleForm() {
   return (
     <>
-      <form method='POST'>
+      <form>
         <FormRow>
           <PersonSearch
             name='patient'
             href='/app/patients'
+            required
           />
         </FormRow>
         <FormRow>

@@ -11,7 +11,8 @@ import { HasId } from '../types.ts'
 export default function PersonSearch({
   href,
   name,
-}: { href: string; name: string }) {
+  required,
+}: { href: string; name: string; required?: boolean }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
@@ -38,9 +39,7 @@ export default function PersonSearch({
 
   useEffect(() => {
     fetch(`${href}?search=${search}`, {
-      headers: {
-        'content-type': 'application/json',
-      },
+      headers: { accept: 'application/json' },
     }).then(async (response) => {
       const people = await response.json()
       assert(Array.isArray(people))
@@ -52,11 +51,6 @@ export default function PersonSearch({
     }).catch(console.error)
   }, [search])
 
-  console.log('search', search)
-  console.log('isFocused', isFocused)
-  console.log('people', people)
-  console.log('selected', selected)
-
   const showSearchResults = isFocused && people.length > 0 &&
     selected?.name !== search
 
@@ -65,6 +59,7 @@ export default function PersonSearch({
       <SearchInput
         name={`${name}_name`}
         value={search}
+        required={required}
         onInput={(event) => {
           assert(event.target)
           assert('value' in event.target)
