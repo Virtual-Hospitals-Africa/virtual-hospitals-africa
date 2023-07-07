@@ -10,6 +10,9 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import { assert } from 'std/testing/asserts.ts'
+import haveNames from '../../util/haveNames.ts'
+
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
   Date
@@ -258,4 +261,22 @@ export async function getFacilityById(
     .where('id', '=', opts.facilityId)
     .selectAll()
     .executeTakeFirst()
+}
+
+export async function getAllWithNames(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<ReturnedSqlRow<HealthWorker & { name: string }>[]> {
+  let query = trx
+    .selectFrom('health_workers')
+    .selectAll()
+    .where('name', 'is not', null)
+
+  if (search) query = query.where('name', 'ilike', `%${search}%`)
+
+  const healthWorkers = await query.execute()
+
+  assert(haveNames(healthWorkers))
+
+  return healthWorkers
 }

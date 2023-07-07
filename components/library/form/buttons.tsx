@@ -1,17 +1,27 @@
+import cls from '../../../util/cls.ts'
 import { Button } from '../Button.tsx'
 
-export default function FormButtons() {
+type FormButtonsProps = {
+  className?: string
+  submitText?: string
+  cancelText?: string
+}
+
+export default function FormButtons(
+  { className, submitText = 'Submit', cancelText = 'Cancel' }:
+    FormButtonsProps = {},
+) {
   return (
-    <div className='container grid gap-x-2 grid-cols-2'>
+    <div className={cls('container grid gap-x-2 grid-cols-2', className)}>
       <Button
         type='button'
         variant='outline'
         color='white'
         onClick={() => window.history.back()}
       >
-        Cancel
+        {cancelText}
       </Button>
-      <Button type='submit'>Submit</Button>
+      <Button type='submit'>{submitText}</Button>
     </div>
   )
 }

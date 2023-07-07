@@ -20,11 +20,16 @@ export type SqlRow<T> = {
   updated_at: ColumnType<Date, undefined, never>
 } & T
 
-export type ReturnedSqlRow<T> = {
-  id: number
+export type HasId<T extends Record<string, unknown> = Record<string, unknown>> =
+  & T
+  & {
+    id: number
+  }
+
+export type ReturnedSqlRow<T extends Record<string, unknown>> = HasId<T> & {
   created_at: Date
   updated_at: Date
-} & T
+}
 
 export type Location = {
   longitude: number
@@ -686,6 +691,7 @@ export type HealthWorker = {
   name: string
   email: string
   avatar_url: string
+  phone_number?: Maybe<string>
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
 }
@@ -769,19 +775,36 @@ export type WhatsAppSendable =
   | WhatsAppSendableList
   | WhatsAppSendableLocation
 
-export type HealthWorkerAppointment = {
-  id: number
-  patient: {
+export type HealthWorkerAppointmentSlot = {
+  type: 'slot'
+  id: string
+  patient?: {
     id: number
-    image_url?: string
+    avatar_url?: string
     name: string
-    age: number
     phone_number?: string
   }
   durationMinutes: number
-  status?: string | null
   start: ParsedDate
   end: ParsedDate
+  health_workers: ReturnedSqlRow<HealthWorker>[]
+  physicalLocation?: undefined
+  virtualLocation?: undefined
+}
+
+export type HealthWorkerAppointment = {
+  type: 'appointment'
+  id: number
+  patient: {
+    id: number
+    avatar_url?: string
+    name: string
+    phone_number?: string
+  }
+  durationMinutes: number
+  start: ParsedDate
+  end: ParsedDate
+  health_workers?: ReturnedSqlRow<HealthWorker>[]
   physicalLocation?: {
     facility: ReturnedSqlRow<Facility>
   }
@@ -798,6 +821,7 @@ export type ParsedDate = {
   hour: string
   minute: string
   second: string
+  format: 'numeric' | 'twoDigit'
 }
 
 export type WhatsAppSendableString = {

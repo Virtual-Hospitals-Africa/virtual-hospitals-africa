@@ -1,5 +1,10 @@
-import parseForm from './parseForm.ts'
+import { parseForm } from './parseForm.ts'
 import { AvailabilityJSON } from '../types.ts'
+
+// TODO: implement
+function isAvailabilityJson(_values: unknown): _values is AvailabilityJSON {
+  return true
+}
 
 export default function parseAvailabilityForm(
   params: URLSearchParams | FormData,
@@ -12,5 +17,5 @@ export default function parseAvailabilityForm(
     Thursday: [],
     Friday: [],
     Saturday: [],
-  })
+  }, isAvailabilityJson)
 }

@@ -22,7 +22,7 @@ import {
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { availableThirtyMinutes } from './getHealthWorkerAvailability.ts'
+import { availableSlots } from './getHealthWorkerAvailability.ts'
 import { cancelAppointment } from './cancelAppointment.ts'
 import { makeAppointment } from './makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
@@ -341,9 +341,8 @@ const conversationStates: ConversationStates<
       trx: TrxOrDb,
       patientState: PatientState,
     ): Promise<PatientState> {
-      const firstAvailable = await availableThirtyMinutes(trx, [], {
-        date: null,
-        timeslotsRequired: 1,
+      const firstAvailable = await availableSlots(trx, {
+        count: 1,
       })
 
       const offeredTime = await appointments.addOfferedTime(trx, {
@@ -418,26 +417,25 @@ const conversationStates: ConversationStates<
       )
       assertAllHarare(declinedTimes)
 
-      const timeslotsRequired = 3
-
       const today = new Date()
       const tomorrow = new Date()
       tomorrow.setDate(today.getDate() + 1)
       const afterTomorrow = new Date()
       afterTomorrow.setDate(tomorrow.getDate() + 1)
 
-      const filteredAvailableTimes = await availableThirtyMinutes(
+      const filteredAvailableTimes = await availableSlots(
         trx,
-        declinedTimes,
         {
-          date: [
+          declinedTimes,
+          count: 10,
+          dates: [
             formatHarare(today).substring(0, 10),
             formatHarare(tomorrow).substring(0, 10),
             formatHarare(afterTomorrow).substring(0, 10),
           ],
-          timeslotsRequired,
         },
       )
+
       // TODO: get this down to a single DB call
       const newlyOfferedTimes: ReturnedSqlRow<
         AppointmentOfferedTime & { health_worker_name: string }

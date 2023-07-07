@@ -10,6 +10,7 @@ import {
 } from '../../types.ts'
 import PatientsView from '../../components/patients/View.tsx'
 import { getAllWithNames } from '../../db/models/patients.ts'
+import { json } from '../../util/responses.ts'
 
 type PatientsProps = {
   healthWorker: HealthWorkerWithGoogleTokens
@@ -23,6 +24,12 @@ export const handler: LoggedInHealthWorkerHandler<PatientsProps> = {
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
     const search = new URL(req.url).searchParams.get('search')
+
+    const patients = await getAllWithNames(ctx.state.trx, search)
+
+    if (req.headers.get('accept') === 'application/json') {
+      return json(patients)
+    }
 
     return ctx.render({
       healthWorker,

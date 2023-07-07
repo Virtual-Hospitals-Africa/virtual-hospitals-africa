@@ -4,6 +4,7 @@
 
 import * as $0 from './routes/_404.tsx'
 import * as $1 from './routes/_middleware.ts'
+<<<<<<< HEAD
 import * as $2 from './routes/accept-invite.tsx'
 import * as $3 from './routes/app.tsx'
 import * as $4 from './routes/app/calendar.tsx'
@@ -13,6 +14,17 @@ import * as $7 from './routes/app/calendar/availability.tsx'
 import * as $8 from './routes/app/employees.tsx'
 import * as $9 from './routes/app/facilities/[facilityId]/employees.tsx'
 import * as $10 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
+=======
+import * as $2 from './routes/app.tsx'
+import * as $3 from './routes/app/calendar.tsx'
+import * as $4 from './routes/app/calendar/appointments/[id].tsx'
+import * as $5 from './routes/app/calendar/appointments/schedule.tsx'
+import * as $6 from './routes/app/calendar/availability.tsx'
+import * as $7 from './routes/app/employees.tsx'
+import * as $8 from './routes/app/facilities/[facilityId]/employees.tsx'
+import * as $9 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
+import * as $10 from './routes/app/health_workers.tsx'
+>>>>>>> main
 import * as $11 from './routes/app/patients.tsx'
 import * as $12 from './routes/app/patients/[id].tsx'
 import * as $13 from './routes/app/patients/add.tsx'
@@ -24,15 +36,17 @@ import * as $18 from './routes/login.tsx'
 import * as $19 from './routes/logout.tsx'
 import * as $20 from './routes/patient-reset.ts'
 import * as $$0 from './islands/Menu.tsx'
-import * as $$1 from './islands/availability-form.tsx'
-import * as $$2 from './islands/invites-form.tsx'
-import * as $$3 from './islands/patient-cards.tsx'
-import * as $$4 from './islands/schedule-form.tsx'
+import * as $$1 from './islands/PersonSearch.tsx'
+import * as $$2 from './islands/availability-form.tsx'
+import * as $$3 from './islands/invites-form.tsx'
+import * as $$4 from './islands/patient-cards.tsx'
+import * as $$5 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
     './routes/_404.tsx': $0,
     './routes/_middleware.ts': $1,
+<<<<<<< HEAD
     './routes/accept-invite.tsx': $2,
     './routes/app.tsx': $3,
     './routes/app/calendar.tsx': $4,
@@ -42,6 +56,17 @@ const manifest = {
     './routes/app/employees.tsx': $8,
     './routes/app/facilities/[facilityId]/employees.tsx': $9,
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $10,
+=======
+    './routes/app.tsx': $2,
+    './routes/app/calendar.tsx': $3,
+    './routes/app/calendar/appointments/[id].tsx': $4,
+    './routes/app/calendar/appointments/schedule.tsx': $5,
+    './routes/app/calendar/availability.tsx': $6,
+    './routes/app/employees.tsx': $7,
+    './routes/app/facilities/[facilityId]/employees.tsx': $8,
+    './routes/app/facilities/[facilityId]/employees/invite.tsx': $9,
+    './routes/app/health_workers.tsx': $10,
+>>>>>>> main
     './routes/app/patients.tsx': $11,
     './routes/app/patients/[id].tsx': $12,
     './routes/app/patients/add.tsx': $13,
@@ -55,10 +80,11 @@ const manifest = {
   },
   islands: {
     './islands/Menu.tsx': $$0,
-    './islands/availability-form.tsx': $$1,
-    './islands/invites-form.tsx': $$2,
-    './islands/patient-cards.tsx': $$3,
-    './islands/schedule-form.tsx': $$4,
+    './islands/PersonSearch.tsx': $$1,
+    './islands/availability-form.tsx': $$2,
+    './islands/invites-form.tsx': $$3,
+    './islands/patient-cards.tsx': $$4,
+    './islands/schedule-form.tsx': $$5,
   },
   baseUrl: import.meta.url,
 }

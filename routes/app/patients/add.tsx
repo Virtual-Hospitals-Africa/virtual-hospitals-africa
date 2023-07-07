@@ -12,7 +12,7 @@ import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
-import parseForm from '../../../util/parseForm.ts'
+import { parseRequest } from '../../../util/parseForm.ts'
 import { isObject } from 'https://deno.land/x/importmap@0.2.1/_util.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
@@ -47,9 +47,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
-    const params = new URLSearchParams(await req.text())
-    const patientData = parseForm(params, {})
-    assert(hasNames(patientData))
+    const patientData = await parseRequest(req, {}, hasNames)
     const patient = {
       ...pickDemographics(patientData),
       name: compact([

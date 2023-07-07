@@ -58,18 +58,15 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
           throw new Error('Could not find gcal event for appointment')
         }
 
-        console.log('gcalItem')
-        console.log(JSON.stringify(gcalItem, null, 2))
-
         const startTime = new Date(gcalItem.start.dateTime)
         const endTime = new Date(gcalItem.end.dateTime)
         const duration = endTime.getTime() - startTime.getTime()
 
         return {
+          type: 'appointment',
           id: appt.id,
           patient: { ...appt.patient, age: 30 },
           durationMinutes: Math.round(duration / (1000 * 60)),
-          status: appt.status,
           start: parseDate(startTime, 'numeric'),
           end: parseDate(endTime, 'numeric'),
           virtualLocation: gcalItem.hangoutLink && {
@@ -94,7 +91,7 @@ export default function Calendar(
       variant='standard'
     >
       <Container size='lg'>
-        <AppointmentsCalendar route={props.route} {...props.data} />
+        <AppointmentsCalendar url={props.url} {...props.data} />
       </Container>
     </Layout>
   )
