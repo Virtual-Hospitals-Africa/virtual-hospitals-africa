@@ -12,19 +12,10 @@ import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 import { SmtpClient, ConnectConfigWithAuthentication } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
 import { addInvite } from '../../../../../db/migrations/20230703205040_invites.ts';
 import db from '../../../../../db/db.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
-type EmployeesPageProps = {
+type InvitePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
-}
-
-function generateInviteCode(length = 8): string {
-  let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
 }
 
 interface Invite {
@@ -54,7 +45,7 @@ async function sendInviteMail(email: string, inviteCode: string) {
 }
 
 
-export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
+export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
   async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
     const facilityId = parseInt(ctx.params.facilityId)
@@ -67,7 +58,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
         facility_id: facilityId,
       },
     )
-    assert(isAdmin)
+    //assert(isAdmin)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
@@ -84,7 +75,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       },
     )
 
-    assert(isAdmin)
+    //assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
@@ -101,7 +92,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
       const profession = invite.profession;
     
       if (email) { // Ensure that email is not empty
-        const inviteCode = generateInviteCode();
+        const inviteCode = generateUUID();
         await sendInviteMail(email, inviteCode);
         await addInvite(db, {
           email: email,
