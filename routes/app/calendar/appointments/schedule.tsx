@@ -21,7 +21,8 @@ import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
-import { makeAppointment2 } from '../../../../scheduling/makeAppointment.ts'
+import { makeAppointmentWeb } from '../../../../scheduling/makeAppointment.ts'
+import redirect from '../../../../util/redirect.ts'
 
 type SearchFormValues = {
   health_worker_id?: number
@@ -138,15 +139,14 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
       isScheduleFormValues,
     )
 
-    await makeAppointment2(ctx.state.trx, schedule)
+    await makeAppointmentWeb(ctx.state.trx, schedule)
+    return redirect('/app/calendar')
   },
 }
 
 export default function SchedulePage(
   props: PageProps<SchedulePageProps>,
 ) {
-  console.log('props.url', props.url)
-
   return (
     <Layout
       title='Schedule Appointment'
