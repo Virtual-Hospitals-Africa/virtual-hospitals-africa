@@ -341,8 +341,7 @@ const conversationStates: ConversationStates<
       trx: TrxOrDb,
       patientState: PatientState,
     ): Promise<PatientState> {
-      const firstAvailable = await availableThirtyMinutes(trx, [], {
-        date: null,
+      const firstAvailable = await availableThirtyMinutes(trx, {
         timeslotsRequired: 1,
       })
 
@@ -428,14 +427,14 @@ const conversationStates: ConversationStates<
 
       const filteredAvailableTimes = await availableThirtyMinutes(
         trx,
-        declinedTimes,
         {
-          date: [
+          timeslotsRequired,
+          declinedTimes,
+          dates: [
             formatHarare(today).substring(0, 10),
             formatHarare(tomorrow).substring(0, 10),
             formatHarare(afterTomorrow).substring(0, 10),
           ],
-          timeslotsRequired,
         },
       )
       // TODO: get this down to a single DB call

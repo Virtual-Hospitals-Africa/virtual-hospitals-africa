@@ -80,23 +80,6 @@ export function defaultTimeRange(): TimeRange {
   timeMax.setDate(timeMin.getDate() + 7)
   return { timeMin, timeMax }
 }
-
-export async function allUniqueAvailbaility(trx: TrxOrDb) {
-  const allHealthWorkerAvailabilities = await getAllAvailability(trx)
-
-  const allAvailabilities = Array.from(
-    new Set(
-      allHealthWorkerAvailabilities.flatMap((availability) =>
-        availability.map(({ start }) => start)
-      ),
-    ),
-  )
-  const uniqueAvailbilites = allAvailabilities.filter((item, index) =>
-    allAvailabilities.indexOf(item) === index
-  )
-  return uniqueAvailbilites
-}
-
 export async function getHealthWorkerAvailability(
   health_worker: HealthWorkerWithGoogleTokens,
   timeRange = defaultTimeRange(),
@@ -156,21 +139,24 @@ export async function getAllHealthWorkerAvailability(
 
 export async function availableThirtyMinutes(
   trx: TrxOrDb,
-  declinedTimes: string[],
-  opts: { date: string[] | null; timeslotsRequired: number },
+  { dates, declinedTimes = [], timeslotsRequired }: { 
+    timeslotsRequired: number
+    declinedTimes?: string[]
+    dates?: string[]
+  },
 ): Promise<{
   health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
   start: string
 }[]> {
   assertAllHarare(declinedTimes)
-  const health_workerAvailability = await getAllHealthWorkerAvailability(trx)
+  const healthWorkerAvailability = await getAllHealthWorkerAvailability(trx)
 
   let appointments: {
     health_worker: HealthWorkerWithGoogleTokens
     start: string
   }[]
   appointments = []
-  for (const { health_worker, availability } of health_workerAvailability) {
+  for (const { health_worker, availability } of healthWorkerAvailability) {
     for (const { start, end } of availability) {
       const health_worker_appointments = generateAvailableThrityMinutes(
         start,
@@ -178,16 +164,13 @@ export async function availableThirtyMinutes(
       )
         .filter((time) => !declinedTimes.includes(time))
         .filter((appointment) => {
-          if (opts.date) {
-            const appointment_date = appointment.substring(0, 10)
-            return opts.date.includes(appointment_date)
-          } else {
-            return true
-          }
+          if (!opts.dates) return true
+          const appointment_date = appointment.substring(0, 10)
+          return opts.dates.includes(appointment_date)
         })
-        .map((timeBlock) => ({
-          health_worker: health_worker,
-          start: timeBlock,
+        .map((start) => ({
+          health_worker,
+          start,
         }))
       appointments = appointments.concat(health_worker_appointments)
     }
@@ -195,13 +178,10 @@ export async function availableThirtyMinutes(
   appointments.sort((a, b) =>
     new Date(a.start).valueOf() - new Date(b.start).valueOf()
   )
-  const key = 'start'
   const uniqueAppointmentTimeslots = [
-    ...new Map(appointments.map((timeBlock) => [timeBlock[key], timeBlock]))
+    ...new Map(appointments.map((timeBlock) => [timeBlock.start, timeBlock]))
       .values(),
   ]
-
-  console.log('Unique appointments by date', uniqueAppointmentTimeslots)
 
   if (uniqueAppointmentTimeslots.length === 0) {
     throw new Error('No availability found')
@@ -211,22 +191,22 @@ export async function availableThirtyMinutes(
     health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
     start: string
   }[] = []
-  if (opts.date) {
-    opts.date.forEach((requiredDate) => {
+  if (dates) {
+    dates.forEach((requiredDate) => {
       const appointmentOnASpecificDate = uniqueAppointmentTimeslots.filter(
         (time) => time.start.startsWith(requiredDate),
       )
       const slicedAppointmentOnASpecificDate =
-        appointmentOnASpecificDate.length > opts.timeslotsRequired
-          ? appointmentOnASpecificDate.slice(0, opts.timeslotsRequired)
+        appointmentOnASpecificDate.length > timeslotsRequired
+          ? appointmentOnASpecificDate.slice(0, timeslotsRequired)
           : appointmentOnASpecificDate
       slicedAppointmentOnASpecificDate.forEach((appointment) =>
         requiredTimeslots.push(appointment)
       )
     })
   } else {
-    return uniqueAppointmentTimeslots.length > opts.timeslotsRequired
-      ? uniqueAppointmentTimeslots.slice(0, opts.timeslotsRequired)
+    return uniqueAppointmentTimeslots.length > timeslotsRequired
+      ? uniqueAppointmentTimeslots.slice(0, timeslotsRequired)
       : uniqueAppointmentTimeslots
   }
 
@@ -237,7 +217,7 @@ function generateAvailableThrityMinutes(start: string, end: string): string[] {
   const appointments = []
   const appointmentDuration = 30 * 60 * 1000 // duration of each appointment in milliseconds
   const current = new Date(start)
-  current.setMinutes(Math.ceil(current.getMinutes() / 30) * 30) //0 or 30
+  current.setMinutes(Math.ceil(current.getMinutes() / 30) * 30) // 0 or 30
   current.setSeconds(0)
   current.setMilliseconds(0)
 
