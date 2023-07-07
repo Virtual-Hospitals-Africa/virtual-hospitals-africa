@@ -3,6 +3,7 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
+  Profession,
   ReturnedSqlRow,
 } from '../../../../../types.ts'
 import * as health_workers from '../..../../../../../../db/models/health_workers.ts'
@@ -12,6 +13,25 @@ import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 
 type EmployeesPageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
+}
+
+type Invite = { email: string; profession: Profession }
+
+function isInvite(
+  value: unknown,
+): value is Invite {
+  return (
+    typeof value === 'object' && value !== null &&
+    'email' in value && typeof value.email === 'string' &&
+    'profession' in value && typeof value.profession === 'string' &&
+    ['doctor', 'nurse', 'admin'].includes(value.profession)
+  )
+}
+
+function isInvites(
+  values: unknown,
+): values is Invite[] {
+  return Array.isArray(values) && values.every(isInvite)
 }
 
 export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
@@ -51,7 +71,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeesPageProps> = {
 
     console.log(`Inviting user to facility ${facilityId}`)
 
-    const values = await parseRequest(req, [])
+    const values = await parseRequest<Invite[]>(req, [], isInvites)
     return new Response('OK')
   },
 }

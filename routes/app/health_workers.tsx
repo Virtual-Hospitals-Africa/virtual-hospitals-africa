@@ -6,7 +6,7 @@ import { json } from '../../util/responses.ts'
 
 export const handler: LoggedInHealthWorkerHandler<unknown> = {
   async GET(req, ctx) {
-    assertEquals(req.headers.get('content-type'), 'application/json')
+    assertEquals(req.headers.get('accept'), 'application/json')
 
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))

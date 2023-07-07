@@ -12,14 +12,14 @@ function formHeaderText({ day, today }: { day: string; today: string }) {
 }
 
 export default function AppointmentsCalendar(
-  { appointments, day, today, route }: CalendarPageProps & { route: string },
+  { appointments, day, today, url }: CalendarPageProps & { url: URL },
 ) {
   return (
     <div className='lg:grid lg:grid-cols-12 lg:gap-x-16 w-full'>
-      <Calendar day={day} today={today} route={route}>
+      <Calendar day={day} today={today} url={url}>
         <Button
           className='mt-8 w-full'
-          href={`${route}/appointments/schedule`}
+          href={`${url.pathname}/appointments/schedule`}
         >
           Schedule Appointment
         </Button>
@@ -27,7 +27,7 @@ export default function AppointmentsCalendar(
       <Appointments
         headerText={formHeaderText({ day, today })}
         appointments={appointments}
-        route={route}
+        url={url}
       />
     </div>
   )
