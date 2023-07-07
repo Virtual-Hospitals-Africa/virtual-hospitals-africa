@@ -16,7 +16,7 @@ import * as patients from '../../../../db/models/patients.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import {
   availableSlots,
-} from '../../../../chatbot/patient/getHealthWorkerAvailability.ts'
+} from '../../../../scheduling/getHealthWorkerAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
@@ -135,8 +135,6 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
       {},
       isScheduleFormValues,
     )
-
-    console.log('schedule', schedule)
 
     return json(schedule)
   },

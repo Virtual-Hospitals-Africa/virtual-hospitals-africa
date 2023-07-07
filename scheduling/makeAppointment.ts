@@ -1,8 +1,8 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
-import { formatHarare } from '../../util/date.ts'
-import * as google from '../../external-clients/google.ts'
-import { getWithTokensById } from '../../db/models/health_workers.ts'
-import * as appointments from '../../db/models/appointments.ts'
+import { formatHarare } from '../util/date.ts'
+import * as google from '../external-clients/google.ts'
+import { getWithTokensById } from '../db/models/health_workers.ts'
+import * as appointments from '../db/models/appointments.ts'
 import {
   AppointmentOfferedTime,
   DeepPartial,
@@ -10,8 +10,8 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-} from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
+} from '../types.ts'
+import generateUUID from '../util/uuid.ts'
 
 export function gcalAppointmentDetails(
   patientState: PatientState,
