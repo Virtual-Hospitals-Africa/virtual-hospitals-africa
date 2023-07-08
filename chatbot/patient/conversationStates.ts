@@ -22,6 +22,7 @@ import {
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import { availableSlots } from '../../scheduling/getHealthWorkerAvailability.ts'
+import * as media from '../../db/models/media.ts'
 import { cancelAppointment } from '../../scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
@@ -30,7 +31,6 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
-import * as media from '../../db/models/media.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,

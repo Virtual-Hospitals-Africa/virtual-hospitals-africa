@@ -952,6 +952,6 @@ export type PatientMedia = {
   id:number,
   file_name:string,
   file_type:string,
-  binary_date:BinaryType,
+  binary_data:BinaryType,
   patient_id: number
 }
