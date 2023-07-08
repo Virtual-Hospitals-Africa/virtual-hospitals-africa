@@ -263,6 +263,19 @@ export async function getFacilityById(
     .executeTakeFirst()
 }
 
+export async function addInvite(trx : TrxOrDb , inviteSet: { email: string; facilityId: number; profession: Profession; inviteCode: string }) {
+  console.log(inviteSet)
+  return await trx
+    .insertInto('health_worker_invitees')
+    .values({
+      email: inviteSet.email,
+      facility_id: inviteSet.facilityId,
+      profession:inviteSet.profession,
+      invite_code: inviteSet.inviteCode
+    })
+    .executeTakeFirst()
+  }
+
 export async function getAllWithNames(
   trx: TrxOrDb,
   search?: Maybe<string>,

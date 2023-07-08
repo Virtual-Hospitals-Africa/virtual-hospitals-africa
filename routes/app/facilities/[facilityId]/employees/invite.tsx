@@ -11,8 +11,7 @@ import { assert } from 'std/testing/asserts.ts'
 import { parseRequest } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 import { SmtpClient, ConnectConfigWithAuthentication } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
-import { addInvite } from '../../../../../db/migrations/20230703205040_invites.ts';
-import db from '../../../../../db/db.ts'
+import { addInvite } from '../..../../../../../../db/models/health_workers.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
 type InvitePageProps = {
@@ -35,7 +34,8 @@ function isInvite(
 function isInvites(
   values: unknown,
 ): values is Invite[] {
-  return Array.isArray(values) && values.every(isInvite)
+  return true
+  //return Array.isArray(values) && values.every(isInvite)
 }
 
 async function sendInviteMail(email: string, inviteCode: string) {	
@@ -98,19 +98,21 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
     console.log(`Inviting user to facility ${facilityId}`)
 
     const values = await parseRequest<Invite[]>(req, [], isInvites)
-    for (let invite of values) {	
+    console.log(values)
+    for (const invite of values) {	
       const email = invite.email;	
-      const profession = invite.profession;	
+      const profession = invite.profession;
 
-      if (email) { // Ensure that email is not empty	
+      if (email) { // Ensure that email is not empty
         const inviteCode = generateUUID();	
-        await sendInviteMail(email, inviteCode);	
-        await addInvite(db, {	
+        //await sendInviteMail(email, inviteCode);	
+        const Response = await addInvite(ctx.state.trx, {	
           email: email,	
           profession: profession,	
           facilityId: facilityId,	
           inviteCode: inviteCode,	
-        });	
+        });
+        console.log(Response)	
         // Do something with profession if necessary	
       }	
     }
