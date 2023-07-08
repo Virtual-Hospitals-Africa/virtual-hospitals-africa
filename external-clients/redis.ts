@@ -19,3 +19,23 @@ const connectionOpts = () => {
 
 const opts = connectionOpts()
 export const redis = await connect(opts)
+
+export async function cacheFacilityAddress(
+  longitude: number,
+  latitude: number,
+  address: string,
+) {
+  const key = `facility:${longitude},${latitude}`
+
+  await redis.set(key, address)
+  console.log('cache address into redis: ' + key + ': ' + address)
+}
+
+export async function getFacilityAddress(
+  longitude: number,
+  latitude: number,
+): Promise<string | null> {
+  const key = `facility:${longitude},${latitude}`
+  const address = await redis.get(key)
+  return address
+}

@@ -1,4 +1,5 @@
 import 'dotenv'
+import { assert } from 'std/testing/asserts.ts'
 import {
   Kysely,
   PostgresAdapter,
@@ -38,8 +39,12 @@ export type DatabaseSchema = {
   invites: SqlRow<Invitation>
 }
 
+const DATABASE_URL = Deno.env.get('DATABASE_URL')
+assert(DATABASE_URL)
 // deno-lint-ignore no-explicit-any
-const uri = Deno.env.get('DATABASE_URL') + '?sslmode=require' as any
+const uri: any = DATABASE_URL.includes('localhost')
+  ? DATABASE_URL
+  : `${DATABASE_URL}?sslmode=require`
 
 const db = new Kysely<DatabaseSchema>({
   dialect: {
