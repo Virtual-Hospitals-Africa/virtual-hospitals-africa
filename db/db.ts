@@ -37,7 +37,8 @@ export type DatabaseSchema = {
   }
 }
 
-const DATABASE_URL = Deno.env.get('DATABASE_URL')
+const DATABASE_URL = Deno.env.get('DATABASE_URL') ||
+  Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL')
 assert(DATABASE_URL)
 // deno-lint-ignore no-explicit-any
 const uri: any = DATABASE_URL.includes('localhost')
