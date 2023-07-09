@@ -10,8 +10,11 @@ import * as health_workers from '../..../../../../../../db/models/health_workers
 import { assert } from 'std/testing/asserts.ts'
 import { parseRequest } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
-import { SmtpClient, ConnectConfigWithAuthentication } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
-import { addInvite } from '../..../../../../../../db/models/health_workers.ts'
+import {
+  ConnectConfigWithAuthentication,
+  SmtpClient,
+} from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
+import { addToInvitees } from '../..../../../../../../db/models/health_workers.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
 type InvitePageProps = {
@@ -38,26 +41,25 @@ function isInvites(
   //return Array.isArray(values) && values.every(isInvite)
 }
 
-async function sendInviteMail(email: string, inviteCode: string) {	
-  const client = new SmtpClient();	
-  const { SEND_EMAIL, PWD } = Deno.env.toObject();	
-  const connectConfig: ConnectConfigWithAuthentication = {	
-    hostname: "smtp.gmail.com",	
-    port: 465,	
-    username: SEND_EMAIL,	
-    password: PWD,	
-  };	
-  await client.connectTLS(connectConfig);	
+async function sendInviteMail(email: string, inviteCode: string) {
+  const client = new SmtpClient()
+  const { SEND_EMAIL, PWD } = Deno.env.toObject()
+  const connectConfig: ConnectConfigWithAuthentication = {
+    hostname: 'smtp.gmail.com',
+    port: 465,
+    username: SEND_EMAIL,
+    password: PWD,
+  }
+  await client.connectTLS(connectConfig)
 
-  await client.send({	
-    from: SEND_EMAIL,	
-    to: email,	
-    subject: "Welcome to VHA",	
-    content: `Please visit ${origin}/accept-invite/${inviteCode}`	
-  });	
+  await client.send({
+    from: SEND_EMAIL,
+    to: email,
+    subject: 'Welcome to VHA',
+    content: `Please visit ${origin}/accept-invite/${inviteCode}`,
+  })
 
-
-  await client.close();
+  await client.close()
 }
 
 export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
@@ -99,22 +101,21 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 
     const values = await parseRequest<Invite[]>(req, [], isInvites)
     console.log(values)
-    for (const invite of values) {	
-      const email = invite.email;	
-      const profession = invite.profession;
+    for (const invite of values) {
+      const email = invite.email
+      const profession = invite.profession
 
       if (email) { // Ensure that email is not empty
-        const inviteCode = generateUUID();	
-        //await sendInviteMail(email, inviteCode);	
-        const Response = await addInvite(ctx.state.trx, {	
-          email: email,	
-          profession: profession,	
-          facilityId: facilityId,	
-          inviteCode: inviteCode,	
-        });
-        console.log(Response)	
-        // Do something with profession if necessary	
-      }	
+        const inviteCode = generateUUID()
+        //await sendInviteMail(email, inviteCode);
+        const Response = await addToInvitees(ctx.state.trx, {
+          email: email,
+          profession: profession,
+          facilityId: facilityId,
+          inviteCode: inviteCode,
+        })
+        console.log(Response)
+      }
     }
     return new Response('OK')
   },
