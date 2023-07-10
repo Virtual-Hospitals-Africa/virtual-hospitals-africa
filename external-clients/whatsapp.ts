@@ -21,16 +21,16 @@ export async function get(path: string) {
       'Content-Type': 'application/json',
     },
   })
-  console.log('headers', response.headers)
   return response.json()
 }
 export async function getBinaryData(path: string): Promise<BinaryData> {
-  const response = await fetch(`https://graph.facebook.com/v17.0/${path}`, {
-    headers: {Authorization, 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36'}
+  const response = await fetch(path, {
+    headers: {
+      Authorization,
+      'User-Agent': 'Deno prod',
+    },
   })
-  console.log(response.status)
-  console.log(response.body)
-  
+
   return response.arrayBuffer()
 }
 

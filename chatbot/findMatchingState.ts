@@ -41,7 +41,7 @@ export default function findMatchingState<
 ): Maybe<MatchingState<US>> {
   const currentState = conversationStates[userState.conversation_state]
 
-  const messageBody = userState.body.trim()
+  const messageBody = userState.body?.trim()
 
   switch (currentState.type) {
     case 'select':
