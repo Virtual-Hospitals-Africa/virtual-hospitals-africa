@@ -326,8 +326,8 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:ask_for_media': {
     type: 'select',
-    prompt(patientState: PatientState): string {
-      return `Got it, ${patientState.scheduling_appointment_reason}. To assist the doctor with triaging your case, you can send a picture, video clip or voice note describing your symptoms.`
+    prompt(): string {
+      return `To assist the doctor with triaging your case, you can send a picture, video clip or voice note describing your symptoms.`
     },
     options: [
       {
