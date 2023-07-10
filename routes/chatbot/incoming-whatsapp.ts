@@ -1,6 +1,7 @@
 import { Handlers } from '$fresh/server.ts'
 import db from '../../db/db.ts'
 import * as conversations from '../../db/models/conversations.ts'
+import * as media from '../../db/models/media.ts'
 import * as whatsapp from '../../external-clients/whatsapp.ts'
 import {
   WhatsAppIncomingMessage,
@@ -126,6 +127,14 @@ export const handler: Handlers = {
         whatsapp_id: message.id,
         ...contents,
       })
+
+      if (contents.has_media) {
+        const res = await media.insertMediaReceived(db, {
+          phone_number: message.from,
+          media_id: contents.media_id,
+        })
+        console.log('media inserted', res)
+      }
     }
 
     return new Response('OK')

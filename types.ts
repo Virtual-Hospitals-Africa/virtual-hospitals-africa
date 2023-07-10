@@ -953,5 +953,5 @@ export type PatientMedia = {
   file_name: string
   file_type: string
   binary_data: BinaryData
-  patient_id: number
+  phone_number: string
 }

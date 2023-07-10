@@ -17,20 +17,26 @@ export async function getAllPatientMedia(
   trx: TrxOrDb,
   opts: { patient_id: number },
 ): Promise<ReturnedSqlRow<PatientMedia>[]> {
-  return await trx.selectFrom('media').where('patient_id', '=', opts.patient_id)
+  const patient = await trx.selectFrom('patients').where(
+    'id',
+    '=',
+    opts.patient_id,
+  ).select('phone_number').execute()
+  const { phone_number } = patient[0]
+  return await trx.selectFrom('media').where('phone_number', '=', phone_number)
     .selectAll().execute()
 }
 
-export async function addMedia(
+export async function insertMediaReceived(
   trx: TrxOrDb,
-  opts: { patient_id: number; media_id: string },
+  opts: { phone_number: string; media_id: string },
 ) {
   const { url, mime_type } = await whatsapp.get(opts.media_id)
   const mediaFile = await whatsapp.getBinaryData(url)
 
   return await trx.insertInto('media').values({
     media_id: opts.media_id,
-    patient_id: opts.patient_id,
+    phone_number: opts.phone_number,
     binary_data: mediaFile,
     file_name: 'abc',
     file_type: mime_type,
