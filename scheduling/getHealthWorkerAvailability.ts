@@ -1,5 +1,5 @@
-import * as google from '../../external-clients/google.ts'
-import { getAllWithExtantTokens } from '../../db/models/health_workers.ts'
+import * as google from '../external-clients/google.ts'
+import { getAllWithExtantTokens } from '../db/models/health_workers.ts'
 import {
   Availability,
   GCalFreeBusy,
@@ -7,10 +7,10 @@ import {
   ReturnedSqlRow,
   TimeRange,
   TrxOrDb,
-} from '../../types.ts'
-import { assertAllHarare, formatHarare } from '../../util/date.ts'
-import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
-import flatten from '../../util/flatten.ts'
+} from '../types.ts'
+import { assertAllHarare, formatHarare } from '../util/date.ts'
+import { assert } from 'std/testing/asserts.ts'
+import flatten from '../util/flatten.ts'
 
 export function getAvailability(
   health_worker: {

@@ -1,5 +1,6 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { MonthNum, ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
+import { isDate } from 'https://cdn.jsdelivr.net/npm/kysely/dist/esm/util/object-utils.js'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
@@ -62,7 +63,8 @@ export function parseDate(
   return { weekday, day, month, year, hour, minute, second, format }
 }
 
-export function stringify(date: ParsedDate): string {
+export function stringify(date: ParsedDate | Date): string {
+  if (isDate(date)) date = parseDate(date, 'numeric')
   assert(date.format === 'numeric')
   const { day, month, year, hour, minute, second } = date
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
@@ -108,6 +110,10 @@ export function differenceInDays(date1: string, date2: string): number {
 
   // Calculating the no. of days between two dates
   return Math.round(diffInTime / oneDay)
+}
+
+export function differenceInMinutes(date1: Date, date2: Date): number {
+  return (date1.valueOf() - date2.valueOf()) / 60000
 }
 
 const longDayFormat = new Intl.DateTimeFormat('en-gb', {

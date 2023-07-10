@@ -22,9 +22,9 @@ import {
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { availableSlots } from './getHealthWorkerAvailability.ts'
-import { cancelAppointment } from './cancelAppointment.ts'
-import { makeAppointment } from './makeAppointment.ts'
+import { availableSlots } from '../../scheduling/getHealthWorkerAvailability.ts'
+import { cancelAppointment } from '../../scheduling/cancelAppointment.ts'
+import { makeAppointmentChatbot } from '../../scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
 import {
   capLengthAtWhatsAppDescription,
@@ -564,7 +564,7 @@ const conversationStates: ConversationStates<
 
   'onboarded:appointment_scheduled': {
     type: 'select',
-    onEnter: makeAppointment,
+    onEnter: makeAppointmentChatbot,
     prompt(patientState: PatientState) {
       const acceptedTimes = []
       for (const offeredTime of patientState.appointment_offered_times) {
