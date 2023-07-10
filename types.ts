@@ -949,9 +949,9 @@ export type LocationDistance = {
   destination: Location
 }
 export type PatientMedia = {
-  id:number,
-  file_name:string,
-  file_type:string,
-  binary_data:BinaryType,
+  id: number
+  file_name: string
+  file_type: string
+  binary_data: BinaryData
   patient_id: number
 }
