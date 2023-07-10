@@ -127,8 +127,8 @@ export async function availableSlots(
   },
 ): Promise<{
   health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
-  start: string
-  end: string
+  start: Date
+  end: Date
   durationMinutes: number
 }[]> {
   assertAllHarare(declinedTimes)
@@ -172,11 +172,18 @@ export async function availableSlots(
 
   assert(uniqueSlots.length > 0, 'No availability found')
 
-  if (!dates) return uniqueSlots.slice(0, count)
+  const slotsWithDates = uniqueSlots.map((slot) => ({
+    health_worker: slot.health_worker,
+    start: new Date(slot.start),
+    end: new Date(slot.end),
+    durationMinutes: slot.durationMinutes,
+  }))
+
+  if (!dates) return slotsWithDates.slice(0, count)
 
   return flatten(dates.map((date) =>
-    uniqueSlots.filter(
-      (time) => time.start.startsWith(date),
+    slotsWithDates.filter(
+      (time) => formatHarare(time.start).startsWith(date),
     ).slice(0, count)
   ))
 }

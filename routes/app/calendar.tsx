@@ -44,15 +44,15 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
     const appointmentsOfHealthWorkerWithGcalEventIds =
       appointmentsOfHealthWorker.filter(
         (appointment) => (
-          assert(appointment.scheduled_gcal_event_id),
-            gcalEventIds.has(appointment.scheduled_gcal_event_id)
+          assert(appointment.gcal_event_id),
+            gcalEventIds.has(appointment.gcal_event_id)
         ),
       )
 
     const appointments = appointmentsOfHealthWorkerWithGcalEventIds.map(
       (appt) => {
         const gcalItem = events.items.find((item) =>
-          item.id === appt.scheduled_gcal_event_id
+          item.id === appt.gcal_event_id
         )
         if (!gcalItem) {
           throw new Error('Could not find gcal event for appointment')
