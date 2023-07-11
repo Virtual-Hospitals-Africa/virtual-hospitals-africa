@@ -37,6 +37,7 @@ const pickDemographics = pick([
   'gender',
   'date_of_birth',
   'national_id_number',
+  'avatar_url'
 ])
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -47,7 +48,8 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
-    const patientData = await parseRequest(req, {}, hasNames)
+    const patientData = await parseRequest(req, {}, hasNames, 'avatar_url')
+    
     const patient = {
       ...pickDemographics(patientData),
       name: compact([
@@ -55,6 +57,13 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         patientData.middle_names,
         patientData.last_name,
       ]).join(' '),
+    }
+
+    if (patient.avatar_url) {
+      const filePath = patient.avatar_url.replace('temp', '/images/patient')
+      const fileSavedPath = `static${filePath}`
+      await Deno.copyFile(patient.avatar_url, fileSavedPath)
+      patient.avatar_url = filePath
     }
 
     assert(patients.hasDemographicInfo(patient))
@@ -81,7 +90,11 @@ export default function AddPatient(
     >
       <Container size='lg'>
         {steps}
-        <form method='POST' className='w-full mt-4'>
+        <form
+          method='POST'
+          className='w-full mt-4'
+          encType='multipart/form-data'
+        >
           {currentStep === 'personal' && <PatientPersonalForm />}
           {currentStep === 'address' && <div>TODO address form</div>}
           {currentStep === 'history' && <div>TODO history form</div>}
