@@ -929,3 +929,8 @@ export type CalendarPageProps = {
   today: string
   healthWorker: HealthWorker
 }
+
+export type LocationDistance = {
+  origin: { longitude: number; latitude: number };
+  destination: { longitude: number; latitude: number };
+};

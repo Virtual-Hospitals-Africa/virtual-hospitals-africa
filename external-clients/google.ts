@@ -16,6 +16,7 @@ import {
   GoogleTokens,
   HealthWorkerWithGoogleTokens,
   Location,
+  LocationDistance,
   LoggedInHealthWorker,
   TrxOrDb,
 } from '../types.ts'
@@ -26,7 +27,7 @@ import {
   updateAccessToken,
 } from '../db/models/health_workers.ts'
 import uniq from '../util/uniq.ts'
-import { cacheFacilityAddress, getFacilityAddress } from './redis.ts'
+import { cacheFacilityAddress, getFacilityAddress, getDistanceFromRedis, cacheDistanceInRedis } from './redis.ts'
 // import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
@@ -461,4 +462,40 @@ function getAreaNameByType(
     .flatMap((addressComponentObj) => addressComponentObj.address_components)
     .find((locationInfo) => locationInfo.types?.includes(areaType))
   return locationInfo?.short_name || locationInfo?.long_name || null
+}
+
+export async function getWalkingDistance(
+  locations: LocationDistance,
+): Promise<string> {
+  // Get walking distance from redis
+  const cachedDistance = await getDistanceFromRedis(
+    locations.origin,
+    locations.destination,
+  )
+  if (cachedDistance) {
+    console.log('Get walking distance from redis: ' + cachedDistance)
+    return cachedDistance
+  }
+
+  const originCoords =
+    `${locations.origin.latitude},${locations.origin.longitude}`
+  const destCoords =
+    `${locations.destination.latitude},${locations.destination.longitude}`
+  const mode = `walking`
+
+  const url =
+    `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords}&destinations=${destCoords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
+
+  const result = await fetch(url)
+  assert(result.ok, 'Failed to fetch walking distance')
+  const json = await result.json()
+  assert(json.status === 'OK', 'Invalid response from Google Maps API')
+  const distance = json.rows[0].elements[0].distance.text
+  // Cache walking distance into redis
+  await cacheDistanceInRedis(
+    locations.origin,
+    locations.destination,
+    distance,
+  )
+  return distance
 }
