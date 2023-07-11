@@ -413,58 +413,68 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string | null> {
-  const cachedAddress = await getFacilityAddress(longitude, latitude);
+  const cachedAddress = await getFacilityAddress(longitude, latitude)
   if (cachedAddress) {
-    console.log('get address from redis: ' + cachedAddress);
-    return cachedAddress;
+    console.log('get address from redis: ' + cachedAddress)
+    return cachedAddress
   }
 
-  const data = await getGeocodeData(latitude, longitude);
-  const address = getAddressFromData(data);
+  const data = await getGeocodeData(latitude, longitude)
+  const address = getAddressFromData(data)
 
   if (address) {
-    await cacheFacilityAddress(longitude, latitude, address);
-    return address;
+    console.log('address stored in redis: ' + cachedAddress)
+    await cacheFacilityAddress(longitude, latitude, address)
+    return address
   }
 
-  return null;
+  return null
 }
 
-async function getGeocodeData(latitude: number, longitude: number): Promise<any> {
-  const encodedLatitude = encodeURIComponent(latitude);
-  const encodedLongitude = encodeURIComponent(longitude);
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`;
-  const response = await fetch(url);
-  assert(response.ok);
-  const data = await response.json();
-  assert(data.status === 'OK');
-  assert(Array.isArray(data.results));
-  assert(data.results.length);
-  return data.results;
+async function getGeocodeData(
+  latitude: number,
+  longitude: number,
+): Promise<GoogleAddressComponent[]> {
+  const encodedLatitude = encodeURIComponent(latitude)
+  const encodedLongitude = encodeURIComponent(longitude)
+  const url =
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
+  const response = await fetch(url)
+  assert(response.ok)
+  const data = await response.json()
+  assert(data.status === 'OK')
+  assert(Array.isArray(data.results))
+  assert(data.results.length)
+  return data.results
 }
 
-function getAddressFromData(resultData: any[]) {
+function getAddressFromData(resultData: Array<GoogleAddressComponent>) {
   for (const addressComponent of resultData) {
     if (isFormattedAddressUseful(addressComponent.formatted_address)) {
-      const address = addressComponent.formatted_address;
-      return address;
+      console.log('Formatted address found', addressComponent.formatted_address)
+      const address = addressComponent.formatted_address
+      return address
     }
   }
 
-  const locality = getAreaNameByType(resultData, 'locality');
-  const townOrDistrict = getAreaNameByType(resultData, 'administrative_area_level_2');
-  const province = getAreaNameByType(resultData, 'administrative_area_level_1');
-  const country = getAreaNameByType(resultData, 'country');
+  const locality = getAreaNameByType(resultData, 'locality')
+  const townOrDistrict = getAreaNameByType(
+    resultData,
+    'administrative_area_level_2',
+  )
+  const province = getAreaNameByType(resultData, 'administrative_area_level_1')
+  const country = getAreaNameByType(resultData, 'country')
 
-  const addressComponents = [locality, townOrDistrict, province, country];
-  const nonUnknownComponents = addressComponents.filter((component) => component !== null);
+  const addressComponents = [locality, townOrDistrict, province, country]
+  const nonUnknownComponents = addressComponents.filter((component) =>
+    component !== null
+  )
 
-  const uniqueComponents = uniq(nonUnknownComponents);
-  if (!uniqueComponents.length) return null;
+  const uniqueComponents = uniq(nonUnknownComponents)
+  if (!uniqueComponents.length) return null
 
-  return uniqueComponents.join(', ');
+  return uniqueComponents.join(', ')
 }
-
 
 function isFormattedAddressUseful(formattedAddress: string): boolean {
   const regex =
