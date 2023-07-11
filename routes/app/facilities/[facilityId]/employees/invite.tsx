@@ -56,7 +56,7 @@ async function sendInviteMail(email: string, inviteCode: string) {
     from: SEND_EMAIL,
     to: email,
     subject: 'Welcome to VHA',
-    content: `Please visit ${origin}/accept-invite/${inviteCode}`,
+    content: `Please visit ${origin}/${inviteCode}/accept-invite`,
   })
 
   await client.close()
@@ -106,7 +106,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 
       if (email) { // Ensure that email is not empty
         //const inviteCode = generateUUID() For testing use a static code
-        const inviteCode = "invitecode"
+        const inviteCode = 'invitecode'
         //await sendInviteMail(email, inviteCode);
         const Response = await addToInvitees(ctx.state.trx, {
           email: email,

@@ -5,12 +5,12 @@
 import * as $0 from './routes/_404.tsx'
 import * as $1 from './routes/_middleware.ts'
 import * as $2 from './routes/app.tsx'
-import * as $3 from './routes/app/calendar.tsx'
-import * as $4 from './routes/app/calendar/appointments/[id].tsx'
-import * as $5 from './routes/app/calendar/appointments/schedule.tsx'
-import * as $6 from './routes/app/calendar/availability.tsx'
-import * as $7 from './routes/app/employees.tsx'
-import * as $8 from './routes/app/facilities/[facilityId]/accept-invite.tsx'
+import * as $3 from './routes/app/[inviteCode]/accept-invite.tsx'
+import * as $4 from './routes/app/calendar.tsx'
+import * as $5 from './routes/app/calendar/appointments/[id].tsx'
+import * as $6 from './routes/app/calendar/appointments/schedule.tsx'
+import * as $7 from './routes/app/calendar/availability.tsx'
+import * as $8 from './routes/app/employees.tsx'
 import * as $9 from './routes/app/facilities/[facilityId]/employees.tsx'
 import * as $10 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
 import * as $11 from './routes/app/health_workers.tsx'
@@ -36,12 +36,12 @@ const manifest = {
     './routes/_404.tsx': $0,
     './routes/_middleware.ts': $1,
     './routes/app.tsx': $2,
-    './routes/app/calendar.tsx': $3,
-    './routes/app/calendar/appointments/[id].tsx': $4,
-    './routes/app/calendar/appointments/schedule.tsx': $5,
-    './routes/app/calendar/availability.tsx': $6,
-    './routes/app/employees.tsx': $7,
-    './routes/app/facilities/[facilityId]/accept-invite.tsx': $8,
+    './routes/app/[inviteCode]/accept-invite.tsx': $3,
+    './routes/app/calendar.tsx': $4,
+    './routes/app/calendar/appointments/[id].tsx': $5,
+    './routes/app/calendar/appointments/schedule.tsx': $6,
+    './routes/app/calendar/availability.tsx': $7,
+    './routes/app/employees.tsx': $8,
     './routes/app/facilities/[facilityId]/employees.tsx': $9,
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $10,
     './routes/app/health_workers.tsx': $11,

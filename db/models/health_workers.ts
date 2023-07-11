@@ -281,16 +281,27 @@ export async function addToInvitees(trx : TrxOrDb , inviteSet: { email: string; 
 
   export async function addHealthWorker(
     trx: TrxOrDb,
-    opts: {
-      healthWorker : HealthWorker
-  }
-  ) : Promise<ReturnedSqlRow<HealthWorker> | undefined> {
+    healthWorkerSet: {
+      name: string;
+      email: string;
+      avatar_url: string;
+      gcal_appointments_calendar_id: string;
+      gcal_availability_calendar_id: string;
+    }) {
+    console.log('healthWorkerSet: ', healthWorkerSet);
     return await trx
       .insertInto('health_workers')
-      .values(opts.healthWorker)
-      .returningAll()
+      .values({
+        name: healthWorkerSet.name,
+        email: healthWorkerSet.email,
+        avatar_url: healthWorkerSet.avatar_url,
+        gcal_appointments_calendar_id: healthWorkerSet.gcal_appointments_calendar_id,
+        gcal_availability_calendar_id: healthWorkerSet.gcal_availability_calendar_id,
+      })
       .executeTakeFirst()
   }
+
+
   
 
 export async function getAllWithNames(
