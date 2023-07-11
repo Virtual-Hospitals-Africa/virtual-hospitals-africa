@@ -414,11 +414,11 @@ export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string | null> {
   // Get address from redis
-  const cachedAddress = await getFacilityAddress(longitude, latitude)
-  if (cachedAddress) {
-    console.log('get address from redis: ' + cachedAddress)
-    return cachedAddress
-  }
+  // const cachedAddress = await getFacilityAddress(longitude, latitude)
+  // if (cachedAddress) {
+  //   console.log('get address from redis: ' + cachedAddress)
+  //   return cachedAddress
+  // }
   const encodedLatitude = encodeURIComponent(latitude)
   const encodedLongitude = encodeURIComponent(longitude)
 
@@ -433,7 +433,17 @@ export async function getLocationAddress(
   assert(data.results.length)
   const resultData = data.results
 
-  console.log('resultData', resultData)
+  // console.log('resultData', resultData)
+
+  resultData.
+
+  // loop through resultData and check the .formatted_address property and if it's useful then assign it and break from loop
+  // if it's not useful, continue and construct a new address
+  // test to see if a different address is returned using the hospital one
+
+  console.log(resultData[0].formatted_address)
+
+  // console.log('result', resultData.formatted_address)
 
   const locality = getAreaNameByType(resultData, 'locality')
   const townOrDistrict = getAreaNameByType(
@@ -496,6 +506,7 @@ export async function getWalkingDistance(
   const json = await result.json()
   assert(json.status === 'OK', 'Invalid response from Google Maps API')
   const distance = json.rows[0].elements[0].distance.text
+  
   // Cache walking distance into redis
   await cacheDistanceInRedis(
     locations.origin,
@@ -504,3 +515,10 @@ export async function getWalkingDistance(
   )
   return distance
 }
+
+function isFormattedAddressFromAPIUseful(formattedAddress: string): boolean {
+  const regex: RegExp = /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i;
+  return regex.test(formattedAddress);
+}
+
+
