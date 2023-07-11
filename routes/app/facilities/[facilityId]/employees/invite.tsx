@@ -80,7 +80,6 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
     return ctx.render({ healthWorker })
   },
   async POST(req, ctx) {
-    console.log('DID WE GET IN HERE')
     const healthWorker = ctx.state.session.data
 
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
@@ -106,7 +105,8 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       const profession = invite.profession
 
       if (email) { // Ensure that email is not empty
-        const inviteCode = generateUUID()
+        //const inviteCode = generateUUID() For testing use a static code
+        const inviteCode = "invitecode"
         //await sendInviteMail(email, inviteCode);
         const Response = await addToInvitees(ctx.state.trx, {
           email: email,

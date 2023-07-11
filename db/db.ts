@@ -18,8 +18,7 @@ import {
   SqlRow,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
-  health_worker_invitees,
-  Invitation
+  health_worker_invitee,
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
@@ -37,8 +36,7 @@ export type DatabaseSchema = {
     patient_id: number
     nearest_facilities: ReturnedSqlRow<Facility>[]
   }
-  health_worker_invitees: SqlRow<health_worker_invitees>
-  invites: SqlRow<Invitation>
+  health_worker_invitees: SqlRow<health_worker_invitee>
 }
 
 const DATABASE_URL = Deno.env.get('DATABASE_URL')
