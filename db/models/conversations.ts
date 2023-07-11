@@ -30,27 +30,25 @@ export async function insertMessageReceived(
     conversation_state: PatientConversationState
   }>
 > {
-  let [patient] = await trx
-    .insertInto('patients')
-    .values({
-      phone_number: opts.patient_phone_number,
-      conversation_state: 'initial_message',
-    })
-    .onConflict((oc) => oc.column('phone_number').doNothing())
-    .returningAll()
-    .execute()
-
-  // TODO: Eliminate this in favor of getting the above to return the existing patient
-  if (!patient) {
-    const patients = await trx.selectFrom('patients').where(
+  const patient = (
+    await trx
+      .insertInto('patients')
+      .values({
+        phone_number: opts.patient_phone_number,
+        conversation_state: 'initial_message',
+      })
+      .onConflict((oc) => oc.column('phone_number').doNothing())
+      .returningAll()
+      .executeTakeFirst()
+  ) || (
+    await trx.selectFrom('patients').where(
       'phone_number',
       '=',
       opts.patient_phone_number,
-    ).selectAll().execute()
-    patient = patients[0]
-  }
-  console.log('patient', patient)
-  const [inserted] = await trx
+    ).selectAll().executeTakeFirstOrThrow()
+  )
+
+  return trx
     .insertInto('whatsapp_messages_received')
     .values({
       patient_id: patient.id,
@@ -60,9 +58,7 @@ export async function insertMessageReceived(
     })
     .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()
-    .execute()
-
-  return inserted
+    .executeTakeFirstOrThrow()
 }
 
 export function insertMessageSent(
@@ -73,11 +69,11 @@ export function insertMessageSent(
     whatsapp_id: string
     body: string
   },
-): Promise<InsertResult[]> {
+): Promise<InsertResult> {
   return trx.insertInto('whatsapp_messages_sent').values({
     ...opts,
     read_status: 'sent',
-  }).execute()
+  }).executeTakeFirstOrThrow()
 }
 
 export async function getUnhandledPatientMessages(
