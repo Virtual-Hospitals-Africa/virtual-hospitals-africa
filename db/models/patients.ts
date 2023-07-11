@@ -1,4 +1,4 @@
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { sql } from 'kysely'
 import {
   Gender,
@@ -29,7 +29,7 @@ export async function getByPhoneNumber(
   return result && result[0]
 }
 
-export async function upsert(trx: TrxOrDb, info: {
+export function upsert(trx: TrxOrDb, info: {
   id?: number
   conversation_state: PatientConversationState
   phone_number: string
@@ -45,21 +45,19 @@ export async function upsert(trx: TrxOrDb, info: {
       ? sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)` as unknown as Location
       : null,
   }
-  const [patient] = await trx
+  return trx
     .insertInto('patients')
     .values(toInsert)
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
     .returningAll()
-    .execute()
-
-  return patient
+    .executeTakeFirstOrThrow()
 }
 
 export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
   return trx
     .deleteFrom('patients')
     .where('phone_number', '=', opts.phone_number)
-    .execute()
+    .executeTakeFirst()
 }
 
 // TODO: implement medical record functionality
@@ -134,14 +132,12 @@ export function hasDemographicInfo(
 }
 
 export async function nearestFacilities(trx: TrxOrDb, patient_id: number) {
-  const result = await trx
+  const patient = await trx
     .selectFrom('patient_nearest_facilities')
     .selectAll()
     .where('patient_id', '=', patient_id)
-    .execute()
+    .executeTakeFirstOrThrow()
 
-  assertEquals(result.length, 1)
-  const [patient] = result
   assert(patient.nearest_facilities.length > 0)
   return patient.nearest_facilities
 }
