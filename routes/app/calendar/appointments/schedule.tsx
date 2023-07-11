@@ -21,7 +21,7 @@ import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
-import { makeAppointmentWeb } from '../../../../scheduling/makeAppointment.ts'
+// import { makeAppointmentWeb } from '../../../../scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
 
 type SearchFormValues = {
@@ -139,7 +139,8 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
       isScheduleFormValues,
     )
 
-    await makeAppointmentWeb(ctx.state.trx, schedule)
+    // TODO (obviously)
+    // await makeAppointmentWeb(ctx.state.trx, schedule)
     return redirect('/app/calendar')
   },
 }

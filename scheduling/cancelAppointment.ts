@@ -10,35 +10,23 @@ export async function cancelAppointment(
   patientState: PatientState,
 ): Promise<PatientState> {
   assert(
-    patientState.scheduling_appointment_id,
+    patientState.scheduled_appointment,
     'No scheduling_appointment_id found in patientState',
   )
-  await remove(trx, patientState.scheduling_appointment_id)
-
-  const acceptedTime = patientState.appointment_offered_times.find((aot) =>
-    !aot.patient_declined
-  )
-
-  assert(acceptedTime, 'No acceptedTime found')
-  assert(
-    acceptedTime.health_worker_id,
-    'No health_worker_id found',
-  )
-
-  const eventID = acceptedTime.scheduled_gcal_event_id
+  await remove(trx, patientState.scheduled_appointment.id)
 
   const matchingHealthWorker = await getWithTokensById(
     trx,
-    acceptedTime.health_worker_id,
+    patientState.scheduled_appointment.health_worker_id,
   )
 
   assert(
     matchingHealthWorker,
-    `No health_worker session found for health_worker_id ${acceptedTime.health_worker_id}`,
+    `No health_worker session found for health_worker_id ${patientState.scheduled_appointment.health_worker_id}`,
   )
   assert(
     matchingHealthWorker.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
+    `No gcal_appointments_calendar_id found for health_worker_id ${patientState.scheduled_appointment.health_worker_id}`,
   )
 
   const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
@@ -48,14 +36,11 @@ export async function cancelAppointment(
   )
   await healthWorkerGoogleClient.deleteEvent(
     matchingHealthWorker.gcal_appointments_calendar_id,
-    eventID,
+    patientState.scheduled_appointment.gcal_event_id,
   )
 
   return {
     ...patientState,
-    appointment_offered_times: [],
-    scheduling_appointment_id: undefined,
-    scheduling_appointment_reason: undefined,
-    scheduling_appointment_status: undefined,
+    scheduled_appointment: undefined,
   }
 }
