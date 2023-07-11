@@ -931,6 +931,6 @@ export type CalendarPageProps = {
 }
 
 export type LocationDistance = {
-  origin: { longitude: number; latitude: number };
-  destination: { longitude: number; latitude: number };
-};
+  origin: Location
+  destination: Location
+}
