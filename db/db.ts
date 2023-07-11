@@ -8,18 +8,18 @@ import {
 } from 'kysely'
 import {
   Appointment,
-  PatientAppointmentOfferedTime,
+  AppointmentHealthWorkerAttendee,
   Employee,
   Facility,
   HealthWorker,
   HealthWorkerGoogleToken,
   Patient,
+  PatientAppointmentOfferedTime,
+  PatientAppointmentRequest,
   ReturnedSqlRow,
   SqlRow,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
-PatientAppointmentRequest,
-AppointmentHealthWorkerAttendee,
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 

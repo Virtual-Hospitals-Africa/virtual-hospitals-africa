@@ -204,13 +204,14 @@ export async function getFirstEmployedFacility(
     employeeId: number
   },
 ): Promise<number | undefined> {
-  const firstFacilityID = await trx
+  const firstFacility = await trx
     .selectFrom('employment')
     .select('facility_id')
     .where('health_worker_id', '=', opts.employeeId)
     .orderBy('id')
-    .executeTakeFirst()
-  return firstFacilityID?.facility_id
+    .executeTakeFirstOrThrow()
+
+  return firstFacility.facility_id
 }
 
 export async function getEmployeesAtFacility(
@@ -250,13 +251,13 @@ export async function getEmployeesAtFacility(
     .execute()
 }
 
-export async function getFacilityById(
+export function getFacilityById(
   trx: TrxOrDb,
   opts: {
     facilityId: number
   },
-): Promise<ReturnedSqlRow<Facility> | undefined> {
-  return await trx
+): Promise<Maybe<ReturnedSqlRow<Facility>>> {
+  return trx
     .selectFrom('facilities')
     .where('id', '=', opts.facilityId)
     .selectAll()

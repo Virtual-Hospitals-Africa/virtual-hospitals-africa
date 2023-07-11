@@ -45,6 +45,7 @@ async function respondToPatientMessage(
     })
 
     if ('error' in whatsappResponse) {
+      console.log('responseToSend', JSON.stringify(responseToSend))
       console.log('whatsappResponse', JSON.stringify(whatsappResponse))
       throw new Error(whatsappResponse.error.details)
     }

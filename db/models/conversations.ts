@@ -5,6 +5,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -85,64 +86,99 @@ export async function getUnhandledPatientMessages(
 ): Promise<
   PatientState[]
 > {
-  const result = await sql<PatientState>`
+  // deno-lint-ignore no-explicit-any
+  const result = await sql<any>`
     WITH responding_to_messages as (
-           UPDATE whatsapp_messages_received
-              SET started_responding_at = now()
-                , error_commit_hash = NULL
-                , error_message = NULL
-            WHERE (started_responding_at is null
-               OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash}))
-        RETURNING id
+          UPDATE whatsapp_messages_received
+             SET started_responding_at = now()
+               , error_commit_hash = NULL
+               , error_message = NULL
+           WHERE (started_responding_at is null
+             OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash}))
+      RETURNING id
     ),
 
     aot_pre as (
-         SELECT appointment_offered_times.*,
-                health_workers.name as health_worker_name
-           FROM appointment_offered_times
-           JOIN health_workers ON appointment_offered_times.health_worker_id = health_workers.id
+      SELECT patient_appointment_offered_times.*,
+             health_workers.name as health_worker_name
+        FROM patient_appointment_offered_times
+        JOIN health_workers ON patient_appointment_offered_times.health_worker_id = health_workers.id
     ),
 
     aot as (
-         SELECT appointments.id as appointment_id,
-                appointments.patient_id,
-                appointments.reason,
+         SELECT patient_appointment_requests.id as patient_appointment_request_id,
+                patient_appointment_requests.patient_id,
+                patient_appointment_requests.reason,
                 json_agg(aot_pre.*) as offered_times
-           FROM appointments
-      LEFT JOIN aot_pre ON appointments.id = aot_pre.appointment_id
-          WHERE appointments.id is not null
-       GROUP BY appointments.id, appointments.patient_id, appointments.reason
+           FROM patient_appointment_requests
+      LEFT JOIN aot_pre ON patient_appointment_requests.id = aot_pre.patient_appointment_request_id
+          WHERE patient_appointment_requests.id is not null
+       GROUP BY patient_appointment_requests.id, patient_appointment_requests.patient_id, patient_appointment_requests.reason
     )
 
-       SELECT whatsapp_messages_received.id as message_id,
-              whatsapp_messages_received.patient_id,
-              whatsapp_messages_received.whatsapp_id,
-              whatsapp_messages_received.body,
-              patients.*,
-              json_build_object(
-                'longitude', ST_X(patients.location::geometry),
-                'latitude', ST_Y(patients.location::geometry)
-              ) as real_location,
-              patient_nearest_facilities.nearest_facilities AS nearest_facilities,
-              aot.appointment_id as scheduling_appointment_id,
-              aot.reason as scheduling_appointment_reason,
-              aot.offered_times as appointment_offered_times
+       SELECT whatsapp_messages_received.id as message_id
+            , whatsapp_messages_received.patient_id
+            , whatsapp_messages_received.whatsapp_id
+            , whatsapp_messages_received.body
+            , patients.*
+            , patient_nearest_facilities.nearest_facilities AS nearest_facilities
+            , aot.patient_appointment_request_id as scheduling_appointment_request_id
+            , aot.reason as scheduling_appointment_reason
+            , aot.offered_times as scheduling_appointment_offered_times
+            , appointments.id as scheduled_appointment_id
+            , appointments.reason as scheduled_appointment_reason
+            , appointment_health_worker_attendees.health_worker_id as scheduled_appointment_health_worker_id
+            , health_workers.name as scheduled_appointment_health_worker_name
+            , appointments.gcal_event_id as scheduled_appointment_gcal_event_id
+            , appointments.start as scheduled_appointment_start
+
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
     LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id
+    LEFT JOIN appointments ON appointments.patient_id = patients.id
+    LEFT JOIN appointment_health_worker_attendees ON appointment_health_worker_attendees.appointment_id = appointments.id
+    LEFT JOIN health_workers ON health_workers.id = appointment_health_worker_attendees.health_worker_id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
   const rows: PatientState[] = []
+
   for (const row of result.rows) {
-    rows.push({
-      ...row,
-      appointment_offered_times: row.appointment_offered_times
-        ? row.appointment_offered_times.filter((aot) => aot)
-        : [],
-    })
+    const {
+      scheduling_appointment_request_id,
+      scheduling_appointment_reason,
+      scheduling_appointment_offered_times,
+      scheduled_appointment_id,
+      scheduled_appointment_reason,
+      scheduled_appointment_health_worker_id,
+      scheduled_appointment_health_worker_name,
+      scheduled_appointment_gcal_event_id,
+      scheduled_appointment_start,
+      ...rest
+    } = row
+    const toPush = { ...rest }
+    if (scheduling_appointment_request_id) {
+      toPush.scheduling_appointment_request = {
+        id: scheduling_appointment_request_id,
+        reason: scheduling_appointment_reason,
+        offered_times: compact(scheduling_appointment_offered_times),
+      }
+    }
+    if (scheduled_appointment_id) {
+      toPush.scheduled_appointment = {
+        id: scheduled_appointment_id,
+        reason: scheduled_appointment_reason,
+        health_worker_id: scheduled_appointment_health_worker_id,
+        health_worker_name: scheduled_appointment_health_worker_name,
+        gcal_event_id: scheduled_appointment_gcal_event_id,
+        start: scheduled_appointment_start,
+      }
+    }
+    console.log('message', toPush)
+    rows.push(toPush)
   }
+
   return rows
 }
 
@@ -161,5 +197,5 @@ export function markChatbotError(
       error_message: opts.errorMessage,
     })
     .where('id', '=', opts.whatsapp_message_received_id)
-    .execute()
+    .executeTakeFirstOrThrow()
 }

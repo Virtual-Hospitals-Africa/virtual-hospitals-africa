@@ -9,7 +9,7 @@ import {
   TrxOrDb,
 } from '../types.ts'
 import { assertAllHarare, formatHarare } from '../util/date.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import flatten from '../util/flatten.ts'
 
 export function getAvailability(
@@ -181,10 +181,16 @@ export async function availableSlots(
 
   if (!dates) return slotsWithDates.slice(0, count)
 
+  assertEquals(
+    count / dates.length,
+    Math.floor(count / dates.length),
+    'For now we only support balancing slots across dates evenly',
+  )
+
   return flatten(dates.map((date) =>
     slotsWithDates.filter(
       (time) => formatHarare(time.start).startsWith(date),
-    ).slice(0, count)
+    ).slice(0, count / dates.length)
   ))
 }
 

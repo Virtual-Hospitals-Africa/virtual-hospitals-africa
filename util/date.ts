@@ -53,11 +53,11 @@ export const formats = {
 }
 
 export function parseDate(
-  date: Date,
+  date: string | Date,
   format: keyof typeof formats,
 ): ParsedDate {
   const formatter = formats[format]
-  const dateString = formatter.format(date)
+  const dateString = formatter.format(new Date(date))
   const [weekday, dateParts, timeParts] = dateString.split(', ')
   const [day, month, year] = dateParts.split('/')
   const [hour, minute, second] = timeParts.split(':')
@@ -84,7 +84,7 @@ export function tomorrowISOInHarare() {
 }
 
 export function formatHarare(
-  date = new Date(),
+  date: Date | string = new Date(),
 ): string {
   const { day, month, year, hour, minute, second } = parseDate(
     date,
@@ -132,7 +132,10 @@ const timeFormat = new Intl.DateTimeFormat('en-gb', {
 // TODO: revisit this function. We should also print the day for today and tomorrow
 export function prettyAppointmentTime(startTime: string | Date): string {
   if (isString(startTime)) {
-    assert(rfc3339Regex.test(startTime), `Expected RFC3339 format: ${startTime}`)
+    assert(
+      rfc3339Regex.test(startTime),
+      `Expected RFC3339 format: ${startTime}`,
+    )
     assert(
       startTime.endsWith('+02:00'),
       `Expected ${startTime} to be in Harare time`,
@@ -140,7 +143,7 @@ export function prettyAppointmentTime(startTime: string | Date): string {
   } else {
     assert(isDate(startTime))
   }
-  
+
   const start = isString(startTime) ? new Date(startTime) : startTime
 
   const now = formatHarare()

@@ -1,12 +1,13 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
-import { differenceInMinutes, formatHarare, stringify } from '../util/date.ts'
+import { formatHarare } from '../util/date.ts'
+// import { differenceInMinutes, formatHarare, stringify } from '../util/date.ts'
 import * as google from '../external-clients/google.ts'
 import { getWithTokensById } from '../db/models/health_workers.ts'
 import * as appointments from '../db/models/appointments.ts'
 import {
-  PatientAppointmentOfferedTime,
   DeepPartial,
   GCalEvent,
+  PatientAppointmentOfferedTime,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -33,15 +34,16 @@ export function gcalAppointmentDetails(
   >
   gcal: DeepPartial<GCalEvent>
 } {
+  assert(patientState.scheduling_appointment_request)
   assert(
-    patientState.appointment_offered_times &&
-      patientState.appointment_offered_times.length,
+    patientState.scheduling_appointment_request.offered_times.length,
     'No appointment_offered_times found in patientState',
   )
 
-  const acceptedTimes = patientState.appointment_offered_times.filter(
-    (offeredTime) => !offeredTime.declined,
-  )
+  const acceptedTimes = patientState.scheduling_appointment_request
+    .offered_times.filter(
+      (offeredTime) => !offeredTime.declined,
+    )
 
   assertEquals(
     acceptedTimes.length,
@@ -55,7 +57,7 @@ export function gcalAppointmentDetails(
   return {
     acceptedTime,
     gcal: gcal({
-      start: acceptedTime.start,
+      start: formatHarare(acceptedTime.start),
       end: formatHarare(end),
     }),
   }
@@ -65,6 +67,7 @@ export async function makeAppointmentChatbot(
   trx: TrxOrDb,
   patientState: PatientState,
 ): Promise<PatientState> {
+  console.log('makeAppointmentChatbot')
   assertEquals(
     patientState.conversation_state,
     'onboarded:appointment_scheduled',

@@ -20,9 +20,9 @@ export async function up(db: Kysely<unknown>) {
       'integer',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
-    .addColumn('reason', 'varchar(255)', col => col.notNull())
+    .addColumn('reason', 'varchar(255)', (col) => col.notNull())
     .addColumn('start', 'timestamptz', (col) => col.notNull())
-    .addColumn('gcal_event_id', 'varchar(255)', col => col.notNull())
+    .addColumn('gcal_event_id', 'varchar(255)', (col) => col.notNull())
     .execute()
 
   await db.schema
@@ -41,8 +41,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'appointment_id',
       'integer',
-      (col) =>
-        col.notNull().references('appointments.id').onDelete('cascade'),
+      (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
     .addColumn(
       'health_worker_id',
@@ -94,7 +93,10 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'patient_appointment_request_id',
       'integer',
-      (col) => col.notNull().references('patient_appointment_requests.id').onDelete('cascade'),
+      (col) =>
+        col.notNull().references('patient_appointment_requests.id').onDelete(
+          'cascade',
+        ),
     )
     .addColumn(
       'health_worker_id',
@@ -110,8 +112,6 @@ export async function up(db: Kysely<unknown>) {
   await addUpdatedAtTrigger(db, 'appointment_health_worker_attendees')
   await addUpdatedAtTrigger(db, 'patient_appointment_requests')
   await addUpdatedAtTrigger(db, 'patient_appointment_offered_times')
-  
-  
 }
 
 export async function down(db: Kysely<unknown>) {

@@ -1,3 +1,4 @@
+import { hasDemographicInfo } from '../../db/models/patients.ts'
 import {
   ConversationStateHandlerSelectOption,
   PatientState,
@@ -7,7 +8,11 @@ export default [
   {
     id: 'make_appointment',
     title: 'Make Appointment',
-    nextState: 'not_onboarded:make_appointment:enter_name' as const,
+    nextState(patientState) {
+      return hasDemographicInfo(patientState)
+        ? 'onboarded:make_appointment:enter_appointment_reason' as const
+        : 'not_onboarded:make_appointment:enter_name' as const
+    },
   },
   {
     id: 'find_nearest_facility',
