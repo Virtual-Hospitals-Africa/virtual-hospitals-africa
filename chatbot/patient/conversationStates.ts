@@ -358,6 +358,8 @@ const conversationStates: ConversationStates<
         count: 1,
       })
 
+      assert(firstAvailable.length > 0)
+
       const offeredTime = await appointments.addOfferedTime(trx, {
         patient_appointment_request_id:
           patientState.scheduling_appointment_request.id,

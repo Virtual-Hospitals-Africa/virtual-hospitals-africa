@@ -131,6 +131,7 @@ export async function availableSlots(
   end: Date
   durationMinutes: number
 }[]> {
+  assert(count > 0, 'count must be greater than 0')
   assertAllHarare(declinedTimes)
 
   const healthWorkerAvailability = await getAllHealthWorkerAvailability(
@@ -163,7 +164,8 @@ export async function availableSlots(
   slots.sort((a, b) =>
     new Date(a.start).valueOf() - new Date(b.start).valueOf()
   )
-  assert(slots.length > 0, 'No availability found')
+
+  if (!slots.length) return []
 
   const uniqueSlots = [
     ...new Map(slots.map((slot) => [slot.start, slot]))

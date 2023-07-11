@@ -1,6 +1,5 @@
 import { assert, assertEquals } from 'std/testing/asserts.ts'
-import { formatHarare } from '../util/date.ts'
-// import { differenceInMinutes, formatHarare, stringify } from '../util/date.ts'
+import { differenceInMinutes, formatHarare, stringify } from '../util/date.ts'
 import * as google from '../external-clients/google.ts'
 import { getWithTokensById } from '../db/models/health_workers.ts'
 import * as appointments from '../db/models/appointments.ts'
@@ -129,83 +128,57 @@ export type ScheduleFormValues = {
   health_worker_ids: number[]
 }
 
-// export async function makeAppointmentWeb(
-//   trx: TrxOrDb,
-//   values: ScheduleFormValues,
-// ): Promise<void> {
-//   assertEquals(
-//     values.health_worker_ids.length,
-//     1,
-//     'TODO support multiple health workers',
-//   )
-//   assertEquals(
-//     values.durationMinutes,
-//     differenceInMinutes(values.end, values.start),
-//   )
+export async function makeAppointmentWeb(
+  trx: TrxOrDb,
+  values: ScheduleFormValues,
+): Promise<void> {
+  assertEquals(
+    values.health_worker_ids.length,
+    1,
+    'TODO support multiple health workers',
+  )
+  assertEquals(
+    values.durationMinutes,
+    differenceInMinutes(values.end, values.start),
+  )
 
-//   const appointment = await appointments.upsert(trx, {
-//     patient_id: values.patient_id,
-//     reason: values.reason,
-//   })
-//   console.log('appointment', appointment)
+  const matchingHealthWorker = await getWithTokensById(
+    trx,
+    values.health_worker_ids[0],
+  )
 
-//   console.log('bar', {
-//     appointment_id: appointment.id,
-//     health_worker_id: values.health_worker_ids[0],
-//     start: formatHarare(values.start),
-//   })
-//   const offeredTime = await appointments.addOfferedTime(trx, {
-//     appointment_id: appointment.id,
-//     health_worker_id: values.health_worker_ids[0],
-//     start: formatHarare(values.start),
-//   })
+  assert(
+    matchingHealthWorker,
+    `No health_worker session found for health_worker_id ${
+      values.health_worker_ids[0]
+    }`,
+  )
+  assert(
+    matchingHealthWorker.gcal_appointments_calendar_id,
+    `No gcal_appointments_calendar_id found for health_worker_id ${
+      values.health_worker_ids[0]
+    }`,
+  )
 
-//   console.log('offeredTime', offeredTime)
+  const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
 
-//   const matchingHealthWorker = await getWithTokensById(
-//     trx,
-//     values.health_worker_ids[0],
-//   )
+  const insertedEvent = await healthWorkerGoogleClient.insertEvent(
+    matchingHealthWorker.gcal_appointments_calendar_id,
+    gcal({
+      start: stringify(values.start),
+      end: stringify(values.end),
+    }),
+  )
 
-//   assert(
-//     matchingHealthWorker,
-//     `No health_worker session found for health_worker_id ${
-//       values.health_worker_ids[0]
-//     }`,
-//   )
-//   assert(
-//     matchingHealthWorker.gcal_appointments_calendar_id,
-//     `No gcal_appointments_calendar_id found for health_worker_id ${
-//       values.health_worker_ids[0]
-//     }`,
-//   )
+  const appointment = await appointments.upsert(trx, {
+    patient_id: values.patient_id,
+    reason: values.reason,
+    start: values.start,
+    gcal_event_id: insertedEvent.id,
+  })
 
-//   const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
-
-//   console.log(
-//     'gcal',
-//     gcal({
-//       start: stringify(values.start),
-//       end: stringify(values.end),
-//     }),
-//   )
-
-//   const insertedEvent = await healthWorkerGoogleClient.insertEvent(
-//     matchingHealthWorker.gcal_appointments_calendar_id,
-//     gcal({
-//       start: stringify(values.start),
-//       end: stringify(values.end),
-//     }),
-//   )
-
-//   console.log('mmwe', {
-//     appointment_offered_time_id: offeredTime.id,
-//     gcal_event_id: insertedEvent.id,
-//   })
-//   const kewlk = await appointments.schedule(trx, {
-//     appointment_offered_time_id: offeredTime.id,
-//     gcal_event_id: insertedEvent.id,
-//   })
-
-//   console.log('kewlk', kewlk)
-// }
+  await appointments.addAttendees(trx, {
+    appointment_id: appointment.id,
+    health_worker_ids: values.health_worker_ids,
+  })
+}
