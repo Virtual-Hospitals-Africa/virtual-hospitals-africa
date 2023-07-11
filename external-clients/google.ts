@@ -413,60 +413,63 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string | null> {
-  // Get address from redis
-  // const cachedAddress = await getFacilityAddress(longitude, latitude)
-  // if (cachedAddress) {
-  //   console.log('get address from redis: ' + cachedAddress)
-  //   return cachedAddress
-  // }
-  const encodedLatitude = encodeURIComponent(latitude)
-  const encodedLongitude = encodeURIComponent(longitude)
+  const cachedAddress = await getFacilityAddress(longitude, latitude);
+  if (cachedAddress) {
+    console.log('get address from redis: ' + cachedAddress);
+    return cachedAddress;
+  }
 
-  const url =
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
+  const data = await getGeocodeData(latitude, longitude);
+  const address = getAddressFromData(data);
 
-  const response = await fetch(url)
-  assert(response.ok)
-  const data = await response.json()
-  assert(data.status === 'OK')
-  assert(Array.isArray(data.results))
-  assert(data.results.length)
-  const resultData = data.results
+  if (address) {
+    await cacheFacilityAddress(longitude, latitude, address);
+    return address;
+  }
 
-  // console.log('resultData', resultData)
+  return null;
+}
 
-  resultData.
+async function getGeocodeData(latitude: number, longitude: number): Promise<any> {
+  const encodedLatitude = encodeURIComponent(latitude);
+  const encodedLongitude = encodeURIComponent(longitude);
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`;
+  const response = await fetch(url);
+  assert(response.ok);
+  const data = await response.json();
+  assert(data.status === 'OK');
+  assert(Array.isArray(data.results));
+  assert(data.results.length);
+  return data.results;
+}
 
-  // loop through resultData and check the .formatted_address property and if it's useful then assign it and break from loop
-  // if it's not useful, continue and construct a new address
-  // test to see if a different address is returned using the hospital one
+function getAddressFromData(resultData: any[]) {
+  for (const addressComponent of resultData) {
+    if (isFormattedAddressUseful(addressComponent.formatted_address)) {
+      const address = addressComponent.formatted_address;
+      return address;
+    }
+  }
 
-  console.log(resultData[0].formatted_address)
+  const locality = getAreaNameByType(resultData, 'locality');
+  const townOrDistrict = getAreaNameByType(resultData, 'administrative_area_level_2');
+  const province = getAreaNameByType(resultData, 'administrative_area_level_1');
+  const country = getAreaNameByType(resultData, 'country');
 
-  // console.log('result', resultData.formatted_address)
+  const addressComponents = [locality, townOrDistrict, province, country];
+  const nonUnknownComponents = addressComponents.filter((component) => component !== null);
 
-  const locality = getAreaNameByType(resultData, 'locality')
-  const townOrDistrict = getAreaNameByType(
-    resultData,
-    'administrative_area_level_2',
-  )
-  const province = getAreaNameByType(
-    resultData,
-    'administrative_area_level_1',
-  )
-  const country = getAreaNameByType(resultData, 'country')
+  const uniqueComponents = uniq(nonUnknownComponents);
+  if (!uniqueComponents.length) return null;
 
-  const addressComponents = [locality, townOrDistrict, province, country]
-  const nonUnknownComponents = addressComponents.filter((component) =>
-    component !== null
-  )
+  return uniqueComponents.join(', ');
+}
 
-  const uniqueComponents = uniq(nonUnknownComponents)
-  if (!uniqueComponents.length) return null
-  const address = uniqueComponents.join(', ')
-  // Cache address into redis
-  await cacheFacilityAddress(longitude, latitude, address)
-  return address
+
+function isFormattedAddressUseful(formattedAddress: string): boolean {
+  const regex =
+    /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i
+  return regex.test(formattedAddress)
 }
 
 function getAreaNameByType(
@@ -506,7 +509,7 @@ export async function getWalkingDistance(
   const json = await result.json()
   assert(json.status === 'OK', 'Invalid response from Google Maps API')
   const distance = json.rows[0].elements[0].distance.text
-  
+
   // Cache walking distance into redis
   await cacheDistanceInRedis(
     locations.origin,
@@ -515,10 +518,3 @@ export async function getWalkingDistance(
   )
   return distance
 }
-
-function isFormattedAddressFromAPIUseful(formattedAddress: string): boolean {
-  const regex: RegExp = /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i;
-  return regex.test(formattedAddress);
-}
-
-
