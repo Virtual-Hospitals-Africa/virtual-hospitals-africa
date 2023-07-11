@@ -110,6 +110,24 @@ export function upsertRequest(
     .executeTakeFirstOrThrow()
 }
 
+export function addAttendees(
+  trx: TrxOrDb,
+  { appointment_id, health_worker_ids }: {
+    appointment_id: number
+    health_worker_ids: number[]
+  },
+) {
+  return trx
+    .insertInto('appointment_health_worker_attendees')
+    .values(health_worker_ids.map((health_worker_id) => ({
+      appointment_id,
+      health_worker_id,
+      confirmed: false,
+    })))
+    .returningAll()
+    .execute()
+}
+
 export async function schedule(
   trx: TrxOrDb,
   { appointment_offered_time_id, gcal_event_id }: {
@@ -155,15 +173,10 @@ export async function schedule(
     .returningAll()
     .executeTakeFirstOrThrow()
 
-  await trx
-    .insertInto('appointment_health_worker_attendees')
-    .values({
-      appointment_id: appointment.id,
-      health_worker_id,
-      confirmed: false,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  await addAttendees(trx, {
+    appointment_id: appointment.id,
+    health_worker_ids: [health_worker_id],
+  })
 
   const healthWorker = await trx
     .selectFrom('health_workers')
@@ -211,6 +224,7 @@ export async function getWithPatientInfo(
       'appointments.created_at',
       'appointments.updated_at',
     ])
+    .orderBy('start', 'asc')
 
   if (query.id) builder = builder.where('appointments.id', '=', query.id)
   if (query.health_worker_id) {
