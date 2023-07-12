@@ -37,7 +37,7 @@ const pickDemographics = pick([
   'gender',
   'date_of_birth',
   'national_id_number',
-  'avatar_url'
+  'avatar_url',
 ])
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -49,7 +49,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
     const patientData = await parseRequest(req, {}, hasNames, 'avatar_url')
-    
+
     const patient = {
       ...pickDemographics(patientData),
       name: compact([

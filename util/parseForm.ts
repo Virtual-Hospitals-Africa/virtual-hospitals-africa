@@ -46,7 +46,7 @@ async function parseFile(
     const file: File = value
     const fileName = file.name
     const filePath = `temp/${uuid}-${fileName}`
-    const arrayBuffer = await file.arrayBuffer();
+    const arrayBuffer = await file.arrayBuffer()
     await Deno.writeFile(filePath, new Uint8Array(arrayBuffer), { mode: 0o777 })
     updatedForm.append(fileFieldKey, filePath)
   }
@@ -65,13 +65,13 @@ export async function parseRequest<T>(
   const contentType = req.headers.get('content-type')
 
   const searchParams = new URL(req.url).searchParams
-  
+
   let formData = await req.formData()
 
   if (contentType?.startsWith('multipart/form-data') && fileFieldKey) {
     formData = await parseFile(formData, fileFieldKey)
   }
-  
+
   const text = parseFormDataToQueryString(formData)
 
   const params = req.method === 'POST' && text
@@ -81,11 +81,10 @@ export async function parseRequest<T>(
   return parseForm(params, defaultValue, typeCheck)
 }
 
-
 function parseFormDataToQueryString(formData: FormData) {
-  const queryString = [];
+  const queryString = []
   for (const [key, value] of formData.entries()) {
-    queryString.push(`${key}=${value}`);
+    queryString.push(`${key}=${value}`)
   }
-  return queryString.join("&");
+  return queryString.join('&')
 }
