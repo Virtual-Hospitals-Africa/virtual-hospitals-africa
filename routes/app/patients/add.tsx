@@ -61,6 +61,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     if (patient.avatar_url) {
       const filePath = patient.avatar_url.replace('temp', '/images/patient')
+      // TODO: Save the binary file to database directly
       const fileSavedPath = `static${filePath}`
       await Deno.copyFile(patient.avatar_url, fileSavedPath)
       patient.avatar_url = filePath
