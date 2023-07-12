@@ -261,9 +261,8 @@ const conversationStates: ConversationStates<
         selectedFacility,
         'selectedFacility should be available in the patientState',
       )
-      // TODO Slightly hacky — better would be to give the precise type for the return of prompt for
-      // this ConversationStateHandlerType
-      return JSON.stringify({
+
+      const locationMessage = {
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
@@ -271,7 +270,22 @@ const conversationStates: ConversationStates<
           name: selectedFacility.name,
           address: selectedFacility.address,
         },
-      })
+      }
+
+      const buttonMessage = {
+        type: 'buttons',
+        messageBody: 'Click below to go back to main menu.',
+        buttonText: 'Back to main menu',
+        options: [{
+          id: 'back_to_menu',
+          title: 'Back to Menu',
+        }],
+      }
+
+      const messageArray = [locationMessage, buttonMessage]
+      // TODO Slightly hacky — better would be to give the precise type for the return of prompt for
+      // this ConversationStateHandlerType
+      return JSON.stringify(messageArray)
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',
