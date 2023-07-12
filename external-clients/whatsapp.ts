@@ -5,6 +5,7 @@ import {
   WhatsAppMessageAction,
   WhatsAppMessageOption,
   WhatsAppSendable,
+  WhatsAppSendables
 } from '../types.ts'
 
 const postMessageRoute = `https://graph.facebook.com/v17.0/${
@@ -78,6 +79,30 @@ export function sendMessage({
     }
   }
 }
+
+export function sendMessages({
+  messages,
+  phone_number,
+}: {
+  phone_number: string
+  messages: WhatsAppSendables
+}): Promise<WhatsAppJSONResponse[]> {
+  // Send the first message
+  const firstMessagePromise = sendMessage({
+    phone_number,
+    message: messages[0]
+  });
+
+  // Send the second message
+  const secondMessagePromise = sendMessage({
+    phone_number,
+    message: messages[1]
+  });
+
+  // Wait for both messages to send and then return the array of responses
+  return Promise.all([firstMessagePromise, secondMessagePromise]);
+}
+
 
 export async function postMessage(body: unknown) {
   const toPost = {
