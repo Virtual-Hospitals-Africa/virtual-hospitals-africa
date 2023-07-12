@@ -16,12 +16,13 @@ import * as patients from '../../../../db/models/patients.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import {
   availableSlots,
-} from '../../../../chatbot/patient/getHealthWorkerAvailability.ts'
+} from '../../../../scheduling/getHealthWorkerAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
-import { json } from '../../../../util/responses.ts'
+import { makeAppointmentWeb } from '../../../../scheduling/makeAppointment.ts'
+import redirect from '../../../../util/redirect.ts'
 
 type SearchFormValues = {
   health_worker_id?: number
@@ -33,6 +34,7 @@ type ScheduleFormValues = {
   start: Date
   end: Date
   durationMinutes: number
+  reason: string
   patient_id: number
   health_worker_ids: number[]
 }
@@ -57,6 +59,7 @@ function isScheduleFormValues(
     'start' in values && values.start instanceof Date &&
     'end' in values && values.end instanceof Date &&
     'durationMinutes' in values && typeof values.durationMinutes === 'number' &&
+    'reason' in values && typeof values.reason === 'string' &&
     'patient_id' in values && typeof values.patient_id === 'number' &&
     'health_worker_ids' in values && Array.isArray(values.health_worker_ids) &&
     values.health_worker_ids.every((id) => typeof id === 'number')
@@ -136,17 +139,14 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
       isScheduleFormValues,
     )
 
-    console.log('schedule', schedule)
-
-    return json(schedule)
+    await makeAppointmentWeb(ctx.state.trx, schedule)
+    return redirect('/app/calendar')
   },
 }
 
 export default function SchedulePage(
   props: PageProps<SchedulePageProps>,
 ) {
-  console.log('props.url', props.url)
-
   return (
     <Layout
       title='Schedule Appointment'

@@ -1,5 +1,5 @@
-import * as google from '../../external-clients/google.ts'
-import { getAllWithExtantTokens } from '../../db/models/health_workers.ts'
+import * as google from '../external-clients/google.ts'
+import { getAllWithExtantTokens } from '../db/models/health_workers.ts'
 import {
   Availability,
   GCalFreeBusy,
@@ -7,10 +7,10 @@ import {
   ReturnedSqlRow,
   TimeRange,
   TrxOrDb,
-} from '../../types.ts'
-import { assertAllHarare, formatHarare } from '../../util/date.ts'
-import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
-import flatten from '../../util/flatten.ts'
+} from '../types.ts'
+import { assertAllHarare, formatHarare } from '../util/date.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
+import flatten from '../util/flatten.ts'
 
 export function getAvailability(
   health_worker: {
@@ -127,10 +127,11 @@ export async function availableSlots(
   },
 ): Promise<{
   health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
-  start: string
-  end: string
+  start: Date
+  end: Date
   durationMinutes: number
 }[]> {
+  assert(count > 0, 'count must be greater than 0')
   assertAllHarare(declinedTimes)
 
   const healthWorkerAvailability = await getAllHealthWorkerAvailability(
@@ -163,7 +164,8 @@ export async function availableSlots(
   slots.sort((a, b) =>
     new Date(a.start).valueOf() - new Date(b.start).valueOf()
   )
-  assert(slots.length > 0, 'No availability found')
+
+  if (!slots.length) return []
 
   const uniqueSlots = [
     ...new Map(slots.map((slot) => [slot.start, slot]))
@@ -172,12 +174,25 @@ export async function availableSlots(
 
   assert(uniqueSlots.length > 0, 'No availability found')
 
-  if (!dates) return uniqueSlots.slice(0, count)
+  const slotsWithDates = uniqueSlots.map((slot) => ({
+    health_worker: slot.health_worker,
+    start: new Date(slot.start),
+    end: new Date(slot.end),
+    durationMinutes: slot.durationMinutes,
+  }))
+
+  if (!dates) return slotsWithDates.slice(0, count)
+
+  assertEquals(
+    count / dates.length,
+    Math.floor(count / dates.length),
+    'For now we only support balancing slots across dates evenly',
+  )
 
   return flatten(dates.map((date) =>
-    uniqueSlots.filter(
-      (time) => time.start.startsWith(date),
-    ).slice(0, count)
+    slotsWithDates.filter(
+      (time) => formatHarare(time.start).startsWith(date),
+    ).slice(0, count / dates.length)
   ))
 }
 

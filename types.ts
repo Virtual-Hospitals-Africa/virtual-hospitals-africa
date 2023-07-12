@@ -7,6 +7,8 @@ import db, { DatabaseSchema } from './db/db.ts'
 
 export type Maybe<T> = T | null | undefined
 
+export type NonNull<T> = Exclude<T, null | undefined>
+
 export type Falsy = false | 0 | '' | null | undefined
 
 export type DeepPartial<T> = T extends Record<string, unknown> ? {
@@ -93,13 +95,11 @@ export type PatientWithMedicalRecord = Patient & {
   medical_record: PatientMedicalRecord
 }
 
-export type AppointmentOfferedTime = {
-  appointment_id: number
+export type PatientAppointmentOfferedTime = {
+  patient_appointment_request_id: number
   health_worker_id: number
-  start: string
-  patient_declined: boolean
-  scheduled_gcal_event_id: string
-  id: number
+  start: Date
+  declined: boolean
 }
 
 export type PatientState = {
@@ -114,12 +114,21 @@ export type PatientState = {
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
   location: Maybe<Location>
-  scheduling_appointment_id?: number
-  scheduling_appointment_reason?: Maybe<string>
-  scheduling_appointment_status?: Maybe<AppointmentStatus>
-  appointment_offered_times: ReturnedSqlRow<
-    AppointmentOfferedTime & { health_worker_name: string }
-  >[]
+  scheduling_appointment_request?: {
+    id: number
+    reason: Maybe<string>
+    offered_times: ReturnedSqlRow<
+      PatientAppointmentOfferedTime & { health_worker_name: string }
+    >[]
+  }
+  scheduled_appointment?: {
+    id: number
+    reason: string
+    health_worker_id: number
+    health_worker_name: string
+    gcal_event_id: string
+    start: Date
+  }
   created_at: Date
   updated_at: Date
   nearest_facilities?: ReturnedSqlRow<Facility>[]
@@ -239,17 +248,26 @@ export type ConversationStates<CS extends string, US extends UserState<CS>> = {
   [state in CS]: ConversationStateHandler<US>
 }
 
-type AppointmentStatus = 'pending' | 'confirmed' | 'denied'
-
 export type Appointment = {
   patient_id: number
-  reason: Maybe<string>
-  status: AppointmentStatus
+  reason: string
+  start: Date
+  gcal_event_id: string
 }
 
 export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
-  scheduled_gcal_event_id: Maybe<string>
   patient: PatientWithMedicalRecord
+}
+
+export type AppointmentHealthWorkerAttendee = {
+  appointment_id: number
+  health_worker_id: number
+  confirmed: boolean
+}
+
+export type PatientAppointmentRequest = {
+  patient_id: number
+  reason?: string
 }
 
 export type MatchingState<US extends UserState<any>> = {
@@ -910,4 +928,9 @@ export type CalendarPageProps = {
   day: string
   today: string
   healthWorker: HealthWorker
+}
+
+export type LocationDistance = {
+  origin: Location
+  destination: Location
 }
