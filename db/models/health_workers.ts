@@ -281,23 +281,14 @@ export async function addToInvitees(trx : TrxOrDb , inviteSet: { email: string; 
 
   export async function addHealthWorker(
     trx: TrxOrDb,
-    healthWorkerSet: {
-      name: string;
-      email: string;
-      avatar_url: string;
-      gcal_appointments_calendar_id: string;
-      gcal_availability_calendar_id: string;
-    }) {
-    console.log('healthWorkerSet: ', healthWorkerSet);
+    opts: {
+      healthworker: HealthWorker
+    }
+    ) {
+    console.log('healthWorkerSet: ', opts.healthworker);
     return await trx
       .insertInto('health_workers')
-      .values({
-        name: healthWorkerSet.name,
-        email: healthWorkerSet.email,
-        avatar_url: healthWorkerSet.avatar_url,
-        gcal_appointments_calendar_id: healthWorkerSet.gcal_appointments_calendar_id,
-        gcal_availability_calendar_id: healthWorkerSet.gcal_availability_calendar_id,
-      })
+      .values(opts.healthworker)
       .executeTakeFirst()
   }
 

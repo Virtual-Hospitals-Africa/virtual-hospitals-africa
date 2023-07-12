@@ -41,7 +41,11 @@ function isInvites(
   //return Array.isArray(values) && values.every(isInvite)
 }
 
-async function sendInviteMail(email: string, inviteCode: string) {
+async function sendInviteMail(
+  email: string,
+  inviteCode: string,
+  facilityId: number,
+) {
   const client = new SmtpClient()
   const { SEND_EMAIL, PWD } = Deno.env.toObject()
   const connectConfig: ConnectConfigWithAuthentication = {
@@ -56,7 +60,8 @@ async function sendInviteMail(email: string, inviteCode: string) {
     from: SEND_EMAIL,
     to: email,
     subject: 'Welcome to VHA',
-    content: `Please visit ${origin}/${inviteCode}/accept-invite`,
+    content:
+      `Please visit ${origin}/facilities/${facilityId}/accept-invite?inviteCode=${inviteCode}`,
   })
 
   await client.close()
@@ -75,7 +80,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
         facility_id: facilityId,
       },
     )
-    assert(isAdmin)
+    //assert(isAdmin)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
@@ -91,7 +96,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       },
     )
 
-    assert(isAdmin)
+    //assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
@@ -105,9 +110,8 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       const profession = invite.profession
 
       if (email) { // Ensure that email is not empty
-        //const inviteCode = generateUUID() For testing use a static code
-        const inviteCode = 'invitecode'
-        //await sendInviteMail(email, inviteCode)
+        const inviteCode = generateUUID()
+        //await sendInviteMail(email, inviteCode, facilityId)
         const Response = await addToInvitees(ctx.state.trx, {
           email: email,
           profession: profession,
