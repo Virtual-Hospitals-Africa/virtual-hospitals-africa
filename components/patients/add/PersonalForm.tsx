@@ -1,12 +1,12 @@
 import {
   DateInput,
-  ImageInput,
   PhoneNumberInput,
   SelectInput,
   TextInput,
 } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import Buttons from '../../library/form/buttons.tsx'
+import FilePreviewInput from '../../../islands/file-preview-input.tsx'
 
 export default function PatientPersonalForm() {
   return (
@@ -33,10 +33,14 @@ export default function PatientPersonalForm() {
         {/* TODO: support non-required phone numbers on the backend */}
         <PhoneNumberInput name='phone_number' required />
       </FormRow>
-      <FormRow>
-        <ImageInput name='avatar_url' label='Photo' />
+      <FormRow className='flex-wrap'>
+        <FilePreviewInput
+          name='avatar_url'
+          label='Photo'
+          classNames='w-36 h-36'
+        />
       </FormRow>
-      <hr className='mb-2' />
+      <hr className='my-2' />
       <Buttons />
     </>
   )

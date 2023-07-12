@@ -38,6 +38,7 @@ export function upsert(trx: TrxOrDb, info: {
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   location?: Maybe<Location>
+  avatar_url?: string
 }): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
     ...info,

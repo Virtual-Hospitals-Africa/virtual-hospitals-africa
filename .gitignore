@@ -59,3 +59,6 @@ dump.rdb
 
 # compiled by deno
 binaries/
+
+# temp static files
+temp/
