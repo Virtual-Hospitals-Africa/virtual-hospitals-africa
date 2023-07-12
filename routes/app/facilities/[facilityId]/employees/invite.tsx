@@ -107,7 +107,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       if (email) { // Ensure that email is not empty
         //const inviteCode = generateUUID() For testing use a static code
         const inviteCode = 'invitecode'
-        //await sendInviteMail(email, inviteCode);
+        //await sendInviteMail(email, inviteCode)
         const Response = await addToInvitees(ctx.state.trx, {
           email: email,
           profession: profession,
