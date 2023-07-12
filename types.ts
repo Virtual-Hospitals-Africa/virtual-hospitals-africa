@@ -793,6 +793,9 @@ export type WhatsAppSendable =
   | WhatsAppSendableList
   | WhatsAppSendableLocation
 
+  
+export type WhatsAppSendables = [WhatsAppSendable, WhatsAppSendable]
+
 export type HealthWorkerAppointmentSlot = {
   type: 'slot'
   id: string
