@@ -10,9 +10,8 @@ type FilePreviewInputProps = TextInputProps & {
 }
 
 function PreviewImage(
-  { image, onRemove, name, classNames }: {
+  { image, name, classNames }: {
     image: string
-    onRemove: () => void
     name: string
     classNames?: string
   },
@@ -20,17 +19,13 @@ function PreviewImage(
   return (
     <div className='flex items-center gap-3 flex-wrap'>
       <div
-        onClick={onRemove}
         className={cls(
           classNames,
-          'mt-2 group hover:bg-gray-50 relative cursor-pointer p-2 rounded-md border border-gray-300 border-solid',
+          'mt-2 p-2 rounded-md border border-gray-300 border-solid',
         )}
       >
-        <span className='opacity-0 group-hover:opacity-100 group-hover:inline absolute top-2/4 left-1/2 -translate-y-1/2	-translate-x-1/2 transition-opacity'>
-          X
-        </span>
         <img
-          className='group-hover:opacity-40 transition-opacity w-full h-full object-cover'
+          className='w-full h-full object-cover'
           src={image}
           alt={`Uploaded ${name}`}
         />
@@ -69,7 +64,6 @@ export default function FilePreviewInput(
       {image && (
         <PreviewImage
           image={image.url}
-          onRemove={() => setImage(null)}
           name={image.name}
           classNames={props.classNames}
         />
