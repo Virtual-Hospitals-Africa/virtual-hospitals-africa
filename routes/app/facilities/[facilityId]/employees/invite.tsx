@@ -38,6 +38,7 @@ function isInvites(
   values: unknown,
 ): values is Invite[] {
   return true
+  //commented out because it's somehow causing error
   //return Array.isArray(values) && values.every(isInvite)
 }
 
@@ -54,7 +55,7 @@ async function sendInviteMail(
     username: SEND_EMAIL,
     password: PWD,
   }
-  await client.connectTLS(connectConfig)
+  await client.connect(connectConfig)
 
   await client.send({
     from: SEND_EMAIL,
@@ -80,7 +81,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
         facility_id: facilityId,
       },
     )
-    //assert(isAdmin)
+    assert(isAdmin)
     assert(facilityId)
     return ctx.render({ healthWorker })
   },
@@ -96,7 +97,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       },
     )
 
-    //assert(isAdmin)
+    assert(isAdmin)
 
     const facilityId = parseInt(ctx.params.facilityId)
     assert(facilityId)
@@ -111,7 +112,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 
       if (email) { // Ensure that email is not empty
         const inviteCode = generateUUID()
-        //await sendInviteMail(email, inviteCode, facilityId)
+        await sendInviteMail(email, inviteCode, facilityId)
         const Response = await addToInvitees(ctx.state.trx, {
           email: email,
           profession: profession,
