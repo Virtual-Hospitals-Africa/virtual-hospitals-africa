@@ -8,12 +8,14 @@ import {
 } from 'kysely'
 import {
   Appointment,
-  AppointmentOfferedTime,
+  AppointmentHealthWorkerAttendee,
   Employee,
   Facility,
   HealthWorker,
   HealthWorkerGoogleToken,
   Patient,
+  PatientAppointmentOfferedTime,
+  PatientAppointmentRequest,
   ReturnedSqlRow,
   SqlRow,
   WhatsAppMessageReceived,
@@ -24,7 +26,9 @@ import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
-  appointment_offered_times: SqlRow<AppointmentOfferedTime>
+  patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
+  patient_appointment_requests: SqlRow<PatientAppointmentRequest>
+  appointment_health_worker_attendees: SqlRow<AppointmentHealthWorkerAttendee>
   health_workers: SqlRow<HealthWorker>
   health_worker_google_tokens: SqlRow<HealthWorkerGoogleToken>
   patients: SqlRow<Patient>
@@ -39,7 +43,8 @@ export type DatabaseSchema = {
   health_worker_invitees: SqlRow<health_worker_invitee>
 }
 
-const DATABASE_URL = Deno.env.get('DATABASE_URL')
+const DATABASE_URL = Deno.env.get('DATABASE_URL') ||
+  Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL')
 assert(DATABASE_URL)
 // deno-lint-ignore no-explicit-any
 const uri: any = DATABASE_URL.includes('localhost')

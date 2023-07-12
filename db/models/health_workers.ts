@@ -20,18 +20,16 @@ const expiresInAnHourSql = sql<
   Date
 >`(SELECT now() + (59 * interval '1 minute'))`
 
-export async function upsert(
+export function upsert(
   trx: TrxOrDb,
   details: HealthWorker,
 ): Promise<ReturnedSqlRow<HealthWorker>> {
-  const [health_worker] = await trx
+  return trx
     .insertInto('health_workers')
     .values(details)
     .onConflict((oc) => oc.column('email').doUpdateSet(details))
     .returningAll()
-    .execute()
-
-  return health_worker
+    .executeTakeFirstOrThrow()
 }
 
 export async function upsertWithGoogleCredentials(
@@ -134,12 +132,12 @@ export async function getWithTokensById(
   trx: TrxOrDb,
   health_worker_id: number,
 ): Promise<Maybe<HealthWorkerWithGoogleTokens>> {
-  const [health_worker] = await getWithTokensQuery(trx).where(
+  const health_worker = await getWithTokensQuery(trx).where(
     'health_workers.id',
     '=',
     health_worker_id,
   )
-    .execute()
+    .executeTakeFirstOrThrow()
   return withTokens([health_worker])[0]
 }
 
@@ -159,23 +157,23 @@ export function updateAccessToken(
   trx: TrxOrDb,
   health_worker_id: number,
   access_token: string,
-): Promise<UpdateResult[]> {
+): Promise<UpdateResult> {
   return trx
     .updateTable('health_worker_google_tokens')
     .where('health_worker_id', '=', health_worker_id)
     .set({ access_token, expires_at: expiresInAnHourSql })
-    .execute()
+    .executeTakeFirstOrThrow()
 }
 
 export function removeExpiredAccessToken(
   trx: TrxOrDb,
   opts: { health_worker_id: number },
-): Promise<DeleteResult[]> {
+): Promise<DeleteResult> {
   return trx.deleteFrom('health_worker_google_tokens').where(
     'health_worker_id',
     '=',
     opts.health_worker_id,
-  ).execute()
+  ).executeTakeFirstOrThrow()
 }
 
 export async function isAdmin(
@@ -206,13 +204,14 @@ export async function getFirstEmployedFacility(
     employeeId: number
   },
 ): Promise<number | undefined> {
-  const firstFacilityID = await trx
+  const firstFacility = await trx
     .selectFrom('employment')
     .select('facility_id')
     .where('health_worker_id', '=', opts.employeeId)
     .orderBy('id')
-    .executeTakeFirst()
-  return firstFacilityID?.facility_id
+    .executeTakeFirstOrThrow()
+
+  return firstFacility.facility_id
 }
 
 export async function getEmployeesAtFacility(
@@ -252,13 +251,13 @@ export async function getEmployeesAtFacility(
     .execute()
 }
 
-export async function getFacilityById(
+export function getFacilityById(
   trx: TrxOrDb,
   opts: {
     facilityId: number
   },
-): Promise<ReturnedSqlRow<Facility> | undefined> {
-  return await trx
+): Promise<Maybe<ReturnedSqlRow<Facility>>> {
+  return trx
     .selectFrom('facilities')
     .where('id', '=', opts.facilityId)
     .selectAll()

@@ -21,7 +21,7 @@ type DateInputProps = Partial<LabeledInputProps> & {
   value?: string
 }
 
-type TextInputProps = LabeledInputProps & {
+export type TextInputProps = LabeledInputProps & {
   type?: 'text' | 'email'
   value?: string
 }
@@ -127,7 +127,8 @@ export function PhoneNumberInput(
 // TODO
 export function ImageInput(
   { name, label, placeholder, required, onInput, onFocus, onBlur }:
-    TextInputProps,
+    & TextInputProps
+    & { isHidden?: boolean },
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -135,13 +136,16 @@ export function ImageInput(
         type='file'
         accept='.jpg,.jpeg,.png'
         name={name}
-        className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
+        className='w-0 h-0 overflow-hidden'
         placeholder={placeholder}
         required={required}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
       />
+      <span className='inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer'>
+        Upload
+      </span>
     </LabeledInput>
   )
 }

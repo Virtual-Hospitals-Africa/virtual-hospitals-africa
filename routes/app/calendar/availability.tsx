@@ -11,7 +11,11 @@ import {
 } from '../../../types.ts'
 import SetAvailabilityForm from '../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
-import { assertAllHarare, convertToTime } from '../../../util/date.ts'
+import {
+  assertAllHarare,
+  convertToTime,
+  formatHarare,
+} from '../../../util/date.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import { padTime } from '../../../util/pad.ts'
@@ -65,7 +69,7 @@ function* availabilityBlocks(
       ),
     )
     dayDate.setDate(dayDate.getDate() + dayOffset)
-    const dayStr = dayDate.toISOString().split('T')[0]
+    const dayStr = formatHarare(dayDate).split('T')[0]
 
     for (const timeWindow of dayAvailability) {
       const start = toHarare(timeWindow.start)
