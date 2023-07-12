@@ -8,11 +8,12 @@ import {
   PatientConversationState,
   PatientState,
   TrxOrDb,
+  WhatsAppJSONResponse,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
 import * as patients from '../db/models/patients.ts'
-import { sendMessage } from '../external-clients/whatsapp.ts'
+import { sendMessage, sendMessages } from '../external-clients/whatsapp.ts'
 import patientConversationStates from './patient/conversationStates.ts'
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
@@ -39,23 +40,35 @@ async function respondToPatientMessage(
         )
       )
 
-    const whatsappResponse = await sendMessage({
-      message: responseToSend,
-      phone_number: patientState.phone_number,
-    })
-
-    if ('error' in whatsappResponse) {
-      console.log('responseToSend', JSON.stringify(responseToSend))
-      console.log('whatsappResponse', JSON.stringify(whatsappResponse))
-      throw new Error(whatsappResponse.error.details)
+    let whatsappResponses: WhatsAppJSONResponse[]
+    if (Array.isArray(responseToSend)) {
+      whatsappResponses = await sendMessages({
+        messages: responseToSend,
+        phone_number: patientState.phone_number,
+      })
+    } else {
+      whatsappResponses = [
+        await sendMessage({
+          message: responseToSend,
+          phone_number: patientState.phone_number,
+        }),
+      ]
     }
 
-    await insertMessageSent(db, {
-      patient_id: patientState.patient_id,
-      responding_to_id: patientState.message_id,
-      whatsapp_id: whatsappResponse.messages[0].id,
-      body: JSON.stringify(responseToSend),
-    })
+    for (const whatsappResponse of whatsappResponses) {
+      if ('error' in whatsappResponse) {
+        console.log('responseToSend', JSON.stringify(responseToSend))
+        console.log('whatsappResponse', JSON.stringify(whatsappResponse))
+        throw new Error(whatsappResponse.error.details)
+      }
+
+      await insertMessageSent(db, {
+        patient_id: patientState.patient_id,
+        responding_to_id: patientState.message_id,
+        whatsapp_id: whatsappResponse.messages[0].id,
+        body: JSON.stringify(responseToSend),
+      })
+    }
   } catch (err) {
     console.log('Error determining message to send')
     console.error(err)
