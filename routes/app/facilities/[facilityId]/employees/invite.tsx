@@ -110,14 +110,15 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       const email = invite.email
       const profession = invite.profession
 
-      if (email) { // Ensure that email is not empty
+      if (email) {
         const inviteCode = generateUUID()
-        await sendInviteMail(email, inviteCode, facilityId)
+        //still working on sendInviteMail
+        //await sendInviteMail(email, inviteCode, facilityId)
         const Response = await addToInvitees(ctx.state.trx, {
           email: email,
           profession: profession,
-          facilityId: facilityId,
-          inviteCode: inviteCode,
+          facility_id: facilityId,
+          invite_code: inviteCode,
         })
         console.log(Response)
       }

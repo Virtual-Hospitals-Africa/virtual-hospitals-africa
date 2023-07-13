@@ -11,9 +11,9 @@ import {
   AppointmentHealthWorkerAttendee,
   Employee,
   Facility,
-  health_worker_invitee,
   HealthWorker,
   HealthWorkerGoogleToken,
+  HealthWorkerInvitee,
   Patient,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
@@ -40,7 +40,7 @@ export type DatabaseSchema = {
     patient_id: number
     nearest_facilities: ReturnedSqlRow<Facility>[]
   }
-  health_worker_invitees: SqlRow<health_worker_invitee>
+  health_worker_invitees: SqlRow<HealthWorkerInvitee>
 }
 
 const DATABASE_URL = Deno.env.get('DATABASE_URL') ||

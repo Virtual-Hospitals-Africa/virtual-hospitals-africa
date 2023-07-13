@@ -693,7 +693,7 @@ export type Employee = {
   facility_id: integer
 }
 
-export type health_worker_invitee = {
+export type HealthWorkerInvitee = {
   email: string
   facility_id: integer
   profession: Profession

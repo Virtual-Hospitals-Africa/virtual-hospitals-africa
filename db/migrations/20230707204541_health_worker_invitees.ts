@@ -17,7 +17,7 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'invite_code',
-      'varchar(255)',
+      'uuid',
       (column) => column.notNull(),
     )
     .addUniqueConstraint('only_invited_once_per_profession', [

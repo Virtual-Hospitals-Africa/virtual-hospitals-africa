@@ -4,15 +4,15 @@ import {
   Employee,
   Facility,
   GoogleTokens,
-  health_worker_invitee,
   HealthWorker,
+  HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   Maybe,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -266,36 +266,17 @@ export function getFacilityById(
 
 export async function addToInvitees(
   trx: TrxOrDb,
-  inviteSet: {
+  invite: {
     email: string
-    facilityId: number
+    facility_id: number
     profession: Profession
-    inviteCode: string
+    invite_code: string
   },
 ) {
-  console.log(inviteSet)
   return await trx
     .insertInto('health_worker_invitees')
-    .values({
-      email: inviteSet.email,
-      facility_id: inviteSet.facilityId,
-      profession: inviteSet.profession,
-      invite_code: inviteSet.inviteCode,
-    })
+    .values(invite)
     .returningAll()
-    .executeTakeFirst()
-}
-
-export async function addHealthWorker(
-  trx: TrxOrDb,
-  opts: {
-    healthworker: HealthWorker
-  },
-) {
-  console.log('healthWorkerSet: ', opts.healthworker)
-  return await trx
-    .insertInto('health_workers')
-    .values(opts.healthworker)
     .executeTakeFirst()
 }
 
@@ -323,24 +304,15 @@ export async function getInvitee(
     inviteCode: string
     email: string
   },
-): Promise<ReturnedSqlRow<health_worker_invitee> | undefined> {
+): Promise<ReturnedSqlRow<HealthWorkerInvitee>> {
   const result = await trx
     .selectFrom('health_worker_invitees')
     .where('email', '=', opts.email)
     .where('invite_code', '=', opts.inviteCode)
     .selectAll()
     .execute()
-  if (result.length > 1) {
-    throw new Error(
-      `Error verifying invite code, duplicate entries for user identified by ${opts.email} and code ${opts.inviteCode}`,
-    )
-  }
-  if (result.length === 1) {
-    return result.at(0)
-  }
-  throw new Error(
-    `invite code: ${opts.inviteCode} and email: ${opts.email} do not return an invite entry`,
-  )
+  assertEquals(result.length, 1)
+  return result[0]
 }
 
 export async function addEmployee(

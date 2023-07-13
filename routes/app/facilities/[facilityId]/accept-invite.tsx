@@ -1,15 +1,15 @@
 import redirect from '../../../../util/redirect.ts'
 import {
-  health_worker_invitee,
+  HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
   TrxOrDb,
 } from '../../../../types.ts'
 import {
   addEmployee,
-  addHealthWorker,
   getInvitee,
   isHealthWorkerWithGoogleTokens,
+  upsert,
 } from '../../../../db/models/health_workers.ts'
 import { oauthParams } from '../../../../external-clients/google.ts'
 import { assert } from 'std/testing/asserts.ts'
@@ -17,7 +17,7 @@ import { PageProps } from '$fresh/server.ts'
 
 type AcceptInvitePageProps = {
   healthWorker: HealthWorkerWithGoogleTokens
-  invite: health_worker_invitee
+  invite: HealthWorkerInvitee
 }
 
 export const handler: LoggedInHealthWorkerHandler<AcceptInvitePageProps> = {
@@ -57,10 +57,20 @@ export const handler: LoggedInHealthWorkerHandler<AcceptInvitePageProps> = {
 export async function addToHealthWorkerAndEmploymentTable(
   trx: TrxOrDb,
   healthWorker: HealthWorkerWithGoogleTokens,
-  invite: health_worker_invitee,
+  invite: HealthWorkerInvitee,
 ) {
   //TODO: check whether the healthworker already exists, and just add to employmnet table if so
-  //assert(await addHealthWorker(trx, { healthworker: healthWorker }))
+  /*
+  assert(
+    await upsert(trx, {
+      name: healthWorker.name,
+      email: healthWorker.email,
+      avatar_url: healthWorker.avatar_url,
+      gcal_appointments_calendar_id: healthWorker.gcal_appointments_calendar_id,
+      gcal_availability_calendar_id: healthWorker.gcal_availability_calendar_id,
+    }),
+  )
+  */
 
   assert(
     await addEmployee(trx, {
