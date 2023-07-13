@@ -4,8 +4,8 @@ import * as whatsapp from '../../external-clients/whatsapp.ts'
 
 export async function getPatientMediaCount(
   trx: TrxOrDb,
-  opts: {paitent_id: number})
-:Promise<number>{
+  opts: { paitent_id: number },
+): Promise<number> {
   const result = await sql<number>`
   SELECT COUNT(*)
   FROM media

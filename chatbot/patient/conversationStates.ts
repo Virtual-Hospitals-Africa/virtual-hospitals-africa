@@ -342,26 +342,30 @@ const conversationStates: ConversationStates<
       },
     ],
   },
-  'onboarded:make_appointment:upload_media':{
+  'onboarded:make_appointment:upload_media': {
     type: 'select',
-    prompt: 'Please send your photo, video clip or voice note in the chat describing you symptoms here and click on the button once you finished uploading.',
+    prompt:
+      'Please send your photo, video clip or voice note in the chat describing you symptoms here and click on the button once you finished uploading.',
     options: [
       {
-      id: 'finish_upload',
-      title: 'Upload completed',
-      nextState: 'onboarded:make_appointment:confirm_details'
-      }
+        id: 'finish_upload',
+        title: 'Upload completed',
+        nextState: 'onboarded:make_appointment:confirm_details',
+      },
     ],
     async onExit(
       trx,
-      patientState
-    ){
-      const mediaUploaded = await media.getPatientMediaCount(trx, {paitent_id: patientState.patient_id}) 
+      patientState,
+    ) {
+      const mediaUploaded = await media.getPatientMediaCount(trx, {
+        paitent_id: patientState.patient_id,
+      })
       return {
         ...patientState,
-        media_uploaded: mediaUploaded
-    }
-  }},
+        media_uploaded: mediaUploaded,
+      }
+    },
+  },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
     prompt(patientState: PatientState): string {
@@ -371,7 +375,9 @@ const conversationStates: ConversationStates<
         prettyPatientDateOfBirth(
           patientState,
         )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${patientState.media_uploaded ? patientState.media_uploaded : 0} media to the doctor. Is this correct?`
+      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${
+        patientState.media_uploaded ? patientState.media_uploaded : 0
+      } media to the doctor. Is this correct?`
     },
     options: [
       {

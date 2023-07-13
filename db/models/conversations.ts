@@ -6,7 +6,7 @@ import {
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
-import { assert } from "https://deno.land/std@0.188.0/testing/asserts.ts";
+import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
@@ -49,7 +49,7 @@ export async function insertMessageReceived(
 ): Promise<
   ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
-  let patient = await trx
+  const patient = (await trx
     .insertInto('patients')
     .values({
       phone_number: data.patient_phone_number,
@@ -57,20 +57,17 @@ export async function insertMessageReceived(
     })
     .onConflict((oc) => oc.column('phone_number').doNothing())
     .returningAll()
-    .executeTakeFirst()
-
-  // TODO: Eliminate this in favor of getting the above to return the existing patient
-  if (!patient) {
-    const patients = await trx.selectFrom('patients').where(
-      'phone_number',
-      '=',
-      data.patient_phone_number,
-    ).selectAll().executeTakeFirstOrThrow()
-  }
+    .executeTakeFirst()) || (
+      await trx.selectFrom('patients').where(
+        'phone_number',
+        '=',
+        data.patient_phone_number,
+      ).selectAll().executeTakeFirstOrThrow()
+    )
 
   const { patient_phone_number, ...message_data } = data
   console.log(patient_phone_number)
-  const [inserted] = await trx
+  const inserted = await trx
     .insertInto('whatsapp_messages_received')
     .values({
       patient_id: patient.id,
@@ -79,9 +76,7 @@ export async function insertMessageReceived(
     })
     .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()
-    .execute()
-
-  console.log(inserted)
+    .executeTakeFirst()
 
   assert(
     isWhatsAppContents(inserted),
