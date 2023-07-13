@@ -1,16 +1,18 @@
 import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
+  Employee,
   Facility,
   GoogleTokens,
   HealthWorker,
+  HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   Maybe,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -262,6 +264,22 @@ export function getFacilityById(
     .executeTakeFirst()
 }
 
+export async function addToInvitees(
+  trx: TrxOrDb,
+  invite: {
+    email: string
+    facility_id: number
+    profession: Profession
+    invite_code: string
+  },
+) {
+  return await trx
+    .insertInto('health_worker_invitees')
+    .values(invite)
+    .returningAll()
+    .executeTakeFirst()
+}
+
 export async function getAllWithNames(
   trx: TrxOrDb,
   search?: Maybe<string>,
@@ -278,4 +296,34 @@ export async function getAllWithNames(
   assert(haveNames(healthWorkers))
 
   return healthWorkers
+}
+
+export async function getInvitee(
+  trx: TrxOrDb,
+  opts: {
+    inviteCode: string
+    email: string
+  },
+): Promise<ReturnedSqlRow<HealthWorkerInvitee>> {
+  const result = await trx
+    .selectFrom('health_worker_invitees')
+    .where('email', '=', opts.email)
+    .where('invite_code', '=', opts.inviteCode)
+    .selectAll()
+    .execute()
+  assertEquals(result.length, 1)
+  return result[0]
+}
+
+export async function addEmployee(
+  trx: TrxOrDb,
+  opts: {
+    employee: Employee
+  },
+): Promise<ReturnedSqlRow<Employee> | undefined> {
+  return await trx
+    .insertInto('employment')
+    .values(opts.employee)
+    .returningAll()
+    .executeTakeFirst()
 }
