@@ -29,16 +29,15 @@ export async function getAllPatientMedia(
 
 export async function insertMediaReceived(
   trx: TrxOrDb,
-  opts: { phone_number: string; media_id: string },
+  opts: { phone_number: string; media_id: string; file_name: string },
 ) {
   const { url, mime_type } = await whatsapp.get(opts.media_id)
   const mediaFile = await whatsapp.getBinaryData(url)
 
   return await trx.insertInto('media').values({
-    media_id: opts.media_id,
     phone_number: opts.phone_number,
     binary_data: mediaFile,
-    file_name: 'abc',
+    file_name: opts.file_name,
     file_type: mime_type,
-  }).returningAll().execute()
+  }).returningAll().executeTakeFirst()
 }

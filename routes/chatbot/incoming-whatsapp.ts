@@ -132,6 +132,7 @@ export const handler: Handlers = {
         const res = await media.insertMediaReceived(db, {
           phone_number: message.from,
           media_id: contents.media_id,
+          file_name: 'testing123',
         })
         console.log('media inserted', res)
       }
