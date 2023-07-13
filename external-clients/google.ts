@@ -413,19 +413,18 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string | null> {
-  // const cachedAddress = await getFacilityAddress(longitude, latitude)
-  // if (cachedAddress) {
-  //   console.log('address retreived from redis: ' + cachedAddress)
-  //   return cachedAddress
-  // }
+  const cachedAddress = await getFacilityAddress(longitude, latitude)
+  if (cachedAddress) {
+    console.log('address retreived from redis: ' + cachedAddress)
+    return cachedAddress
+  }
 
   const data = await getGeocodeData(latitude, longitude)
   const address = getAddressFromData(data)
 
   if (address) {
-    // console.log('address stored in redis: ' + cachedAddress)
-    // await cacheFacilityAddress(longitude, latitude, address)
-    console.log('address returned:', address)
+    console.log('address stored in redis: ' + cachedAddress)
+    await cacheFacilityAddress(longitude, latitude, address)
     return address
   }
 
