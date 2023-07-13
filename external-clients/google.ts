@@ -413,37 +413,58 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string | null> {
-  // Get address from redis
   const cachedAddress = await getFacilityAddress(longitude, latitude)
   if (cachedAddress) {
-    console.log('get address from redis: ' + cachedAddress)
+    console.log('address retreived from redis: ' + cachedAddress)
     return cachedAddress
   }
+
+  const data = await getGeocodeData(latitude, longitude)
+  const address = getAddressFromData(data)
+
+  if (address) {
+    console.log('address stored in redis: ' + cachedAddress)
+    await cacheFacilityAddress(longitude, latitude, address)
+    return address
+  }
+
+  return null
+}
+
+async function getGeocodeData(
+  latitude: number,
+  longitude: number,
+): Promise<GoogleAddressComponent[]> {
   const encodedLatitude = encodeURIComponent(latitude)
   const encodedLongitude = encodeURIComponent(longitude)
-
   const url =
     `https://maps.googleapis.com/maps/api/geocode/json?latlng=${encodedLatitude},${encodedLongitude}&key=${GOOGLE_MAPS_API_KEY}`
-
   const response = await fetch(url)
   assert(response.ok)
   const data = await response.json()
   assert(data.status === 'OK')
   assert(Array.isArray(data.results))
   assert(data.results.length)
-  const resultData = data.results
+  return data.results
+}
 
-  console.log('resultData', resultData)
+function getAddressFromData(resultData: Array<GoogleAddressComponent>) {
+  for (const addressComponent of resultData) {
+    if (isFormattedAddressUseful(addressComponent.formatted_address)) {
+      const address = addressComponent.formatted_address.replace(
+        'Zimbabwe',
+        'ZW',
+      )
+      return address
+    }
+  }
 
   const locality = getAreaNameByType(resultData, 'locality')
   const townOrDistrict = getAreaNameByType(
     resultData,
     'administrative_area_level_2',
   )
-  const province = getAreaNameByType(
-    resultData,
-    'administrative_area_level_1',
-  )
+  const province = getAreaNameByType(resultData, 'administrative_area_level_1')
   const country = getAreaNameByType(resultData, 'country')
 
   const addressComponents = [locality, townOrDistrict, province, country]
@@ -453,10 +474,14 @@ export async function getLocationAddress(
 
   const uniqueComponents = uniq(nonUnknownComponents)
   if (!uniqueComponents.length) return null
-  const address = uniqueComponents.join(', ')
-  // Cache address into redis
-  await cacheFacilityAddress(longitude, latitude, address)
-  return address
+
+  return uniqueComponents.join(', ')
+}
+
+function isFormattedAddressUseful(formattedAddress: string): boolean {
+  const regex =
+    /^(?!.*unnamed)(?=.*?(shop|stand|road|complex|hospital|rd|avenue|station))/i
+  return regex.test(formattedAddress)
 }
 
 function getAreaNameByType(
@@ -496,6 +521,7 @@ export async function getWalkingDistance(
   const json = await result.json()
   assert(json.status === 'OK', 'Invalid response from Google Maps API')
   const distance = json.rows[0].elements[0].distance.text
+
   // Cache walking distance into redis
   await cacheDistanceInRedis(
     locations.origin,
