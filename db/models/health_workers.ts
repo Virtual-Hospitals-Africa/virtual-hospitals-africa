@@ -1,7 +1,7 @@
 import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
-Employee,
+  Employee,
   Facility,
   GoogleTokens,
   health_worker_invitee,
@@ -264,35 +264,40 @@ export function getFacilityById(
     .executeTakeFirst()
 }
 
-export async function addToInvitees(trx : TrxOrDb , inviteSet: { email: string; facilityId: number; profession: Profession; inviteCode: string }) {
+export async function addToInvitees(
+  trx: TrxOrDb,
+  inviteSet: {
+    email: string
+    facilityId: number
+    profession: Profession
+    inviteCode: string
+  },
+) {
   console.log(inviteSet)
   return await trx
     .insertInto('health_worker_invitees')
     .values({
       email: inviteSet.email,
       facility_id: inviteSet.facilityId,
-      profession:inviteSet.profession,
-      invite_code: inviteSet.inviteCode
+      profession: inviteSet.profession,
+      invite_code: inviteSet.inviteCode,
     })
     .returningAll()
     .executeTakeFirst()
-  }
+}
 
-  export async function addHealthWorker(
-    trx: TrxOrDb,
-    opts: {
-      healthworker: HealthWorker
-    }
-    ) {
-    console.log('healthWorkerSet: ', opts.healthworker);
-    return await trx
-      .insertInto('health_workers')
-      .values(opts.healthworker)
-      .executeTakeFirst()
-  }
-
-
-  
+export async function addHealthWorker(
+  trx: TrxOrDb,
+  opts: {
+    healthworker: HealthWorker
+  },
+) {
+  console.log('healthWorkerSet: ', opts.healthworker)
+  return await trx
+    .insertInto('health_workers')
+    .values(opts.healthworker)
+    .executeTakeFirst()
+}
 
 export async function getAllWithNames(
   trx: TrxOrDb,
@@ -317,30 +322,32 @@ export async function getInvitee(
   opts: {
     inviteCode: string
     email: string
-  }
-) : Promise<ReturnedSqlRow<health_worker_invitee> | undefined> {
+  },
+): Promise<ReturnedSqlRow<health_worker_invitee> | undefined> {
   const result = await trx
     .selectFrom('health_worker_invitees')
     .where('email', '=', opts.email)
     .where('invite_code', '=', opts.inviteCode)
     .selectAll()
     .execute()
-  if (result.length > 1)
-  {
-    throw new Error(`Error verifying invite code, duplicate entries for user identified by ${opts.email} and code ${opts.inviteCode}`)
+  if (result.length > 1) {
+    throw new Error(
+      `Error verifying invite code, duplicate entries for user identified by ${opts.email} and code ${opts.inviteCode}`,
+    )
   }
-  if (result.length === 1)
-  {
+  if (result.length === 1) {
     return result.at(0)
   }
-  throw new Error(`invite code: ${opts.inviteCode} and email: ${opts.email} do not return an invite entry`)
+  throw new Error(
+    `invite code: ${opts.inviteCode} and email: ${opts.email} do not return an invite entry`,
+  )
 }
 
 export async function addEmployee(
   trx: TrxOrDb,
   opts: {
     employee: Employee
-  }
+  },
 ): Promise<ReturnedSqlRow<Employee> | undefined> {
   return await trx
     .insertInto('employment')

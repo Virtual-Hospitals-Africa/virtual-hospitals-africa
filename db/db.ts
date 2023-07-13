@@ -11,6 +11,7 @@ import {
   AppointmentHealthWorkerAttendee,
   Employee,
   Facility,
+  health_worker_invitee,
   HealthWorker,
   HealthWorkerGoogleToken,
   Patient,
@@ -20,7 +21,6 @@ import {
   SqlRow,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
-  health_worker_invitee,
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
