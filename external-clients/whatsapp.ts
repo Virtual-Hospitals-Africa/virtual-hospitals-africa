@@ -80,39 +80,20 @@ export function sendMessages({
   phone_number: string
   messages: WhatsAppSendables
 }): Promise<WhatsAppJSONResponse[]> {
-  return Promise.all(
-    messages.map((message) => {
-      switch (message.type) {
-        case 'string': {
-          return sendMessagePlainText({
-            phone_number,
-            message: message.messageBody,
-          })
-        }
-        case 'buttons': {
-          return sendMessageWithInteractiveButtons({
-            phone_number,
-            options: message.options,
-            messageBody: message.messageBody,
-          })
-        }
-        case 'list': {
-          return sendMessageWithInteractiveList({
-            phone_number,
-            headerText: message.headerText,
-            messageBody: message.messageBody,
-            action: message.action,
-          })
-        }
-        case 'location': {
-          return sendMessageLocation({
-            phone_number,
-            location: message.location,
-          })
-        }
-      }
-    }),
-  )
+  // Send the first message
+  const firstMessagePromise = sendMessage({
+    phone_number,
+    message: messages[0],
+  })
+
+  // Send the second message
+  const secondMessagePromise = sendMessage({
+    phone_number,
+    message: messages[1],
+  })
+
+  // Wait for both messages to send and then return the array of responses
+  return Promise.all([firstMessagePromise, secondMessagePromise])
 }
 
 export async function postMessage(body: unknown) {
