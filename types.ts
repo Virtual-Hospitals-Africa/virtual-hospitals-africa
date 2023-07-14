@@ -238,6 +238,9 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
 export type ConversationStateHandlerLocation<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'location'
+    getMessage: (
+      userState: US
+    ) => WhatsAppSendables
     nextState: ConversationStateHandlerNextState<US>
   }>
 

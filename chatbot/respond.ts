@@ -7,8 +7,7 @@ import {
   ConversationStates,
   PatientConversationState,
   PatientState,
-  TrxOrDb,
-  WhatsAppJSONResponse,
+  TrxOrDb
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
@@ -40,20 +39,10 @@ async function respondToPatientMessage(
         )
       )
 
-    let whatsappResponses: WhatsAppJSONResponse[]
-    if (Array.isArray(responseToSend)) {
-      whatsappResponses = await sendMessages({
+    const whatsappResponses = await sendMessages({
         messages: responseToSend,
         phone_number: patientState.phone_number,
-      })
-    } else {
-      whatsappResponses = [
-        await sendMessage({
-          message: responseToSend,
-          phone_number: patientState.phone_number,
-        }),
-      ]
-    }
+    })
 
     for (const whatsappResponse of whatsappResponses) {
       if ('error' in whatsappResponse) {

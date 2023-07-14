@@ -1,3 +1,4 @@
+import { getUnhandledPatientMessages } from '../db/models/conversations.ts'
 import {
   ConversationStates,
   UserState,
@@ -63,15 +64,7 @@ export default function formatMessageToSend<
         }
     }
     case 'location': {
-      const parsedMessageBody = JSON.parse(messageBody)
-      const locationMessage: WhatsAppSendable = {
-        type: 'location',
-        messageBody: parsedMessageBody[0].messageBody,
-        location: parsedMessageBody[0].location,
-      }
-
-      const buttonMessage: WhatsAppSendable = parsedMessageBody[1]
-      return [locationMessage, buttonMessage]
+      return state.getMessage(userState)
     }
     case 'date': {
       return stringSendable(

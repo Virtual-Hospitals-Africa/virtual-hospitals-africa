@@ -2,6 +2,7 @@ import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
+  ConversationStateHandlerLocation,
   ConversationStates,
   Facility,
   Location,
@@ -12,6 +13,8 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+WhatsAppSendable,
+WhatsAppSendables,
 } from '../../types.ts'
 import {
   convertToTimeString,
@@ -255,14 +258,18 @@ const conversationStates: ConversationStates<
     },
   },
   'find_nearest_facility:send_facility_location': {
-    prompt(patientState: PatientState): string {
+    prompt(): string {
+      return "I will send you facility location"
+    },
+    getMessage(patientState: PatientState): WhatsAppSendables {
       const { selectedFacility } = patientState
       assert(
         selectedFacility,
         'selectedFacility should be available in the patientState',
       )
 
-      const locationMessage = {
+      const locationMessage: WhatsAppSendable = {
+        type: 'location',
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
@@ -272,7 +279,7 @@ const conversationStates: ConversationStates<
         },
       }
 
-      const buttonMessage = {
+      const buttonMessage: WhatsAppSendable = {
         type: 'buttons',
         messageBody: 'Click below to go back to main menu.',
         buttonText: 'Back to main menu',
@@ -281,11 +288,7 @@ const conversationStates: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-
-      const messageArray = [locationMessage, buttonMessage]
-      // TODO Slightly hacky — better would be to give the precise type for the return of prompt for
-      // this ConversationStateHandlerType
-      return JSON.stringify(messageArray)
+      return [locationMessage, buttonMessage]
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',

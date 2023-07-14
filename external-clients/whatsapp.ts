@@ -78,22 +78,30 @@ export function sendMessages({
   phone_number,
 }: {
   phone_number: string
-  messages: WhatsAppSendables
+  messages: WhatsAppSendable | WhatsAppSendables 
 }): Promise<WhatsAppJSONResponse[]> {
-  // Send the first message
-  const firstMessagePromise = sendMessage({
-    phone_number,
-    message: messages[0],
-  })
+  // Convert the single message to an array for consistent handling
+  const messagesArray = Array.isArray(messages) ? messages : [messages];
 
-  // Send the second message
-  const secondMessagePromise = sendMessage({
-    phone_number,
-    message: messages[1],
-  })
+    // Create an array to hold our promises
+    const messagePromises: Promise<WhatsAppJSONResponse>[] = [];
 
-  // Wait for both messages to send and then return the array of responses
-  return Promise.all([firstMessagePromise, secondMessagePromise])
+    // Send the first message
+    messagePromises.push(sendMessage({
+      phone_number,
+      message: messagesArray[0],
+    }));
+  
+    // Chain a delay and a potential second message send if a second message exists
+    if (messagesArray[1]) {
+      const secondMessagePromise = messagePromises[0]
+        .then(() => new Promise(resolve => setTimeout(resolve, 10)))
+        .then(() => sendMessage({phone_number, message: messagesArray[1]}));
+      messagePromises.push(secondMessagePromise);
+    }
+  
+    // Wait for all promises to resolve, then return the array of responses
+    return Promise.all(messagePromises);
 }
 
 export async function postMessage(body: unknown) {
