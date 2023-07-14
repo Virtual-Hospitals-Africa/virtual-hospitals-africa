@@ -15,7 +15,7 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn('file_name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('file_type', 'varchar(255)', (col) => col.notNull())
+    .addColumn('mime_type', 'varchar(255)', (col) => col.notNull())
     .addColumn('binary_data', 'bytea', (col) => col.notNull())
     .execute()
 

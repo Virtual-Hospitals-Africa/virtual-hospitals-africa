@@ -742,7 +742,7 @@ export type HealthWorkerAvailability = {
 
 export type WhatsAppMessageContents =
   | { has_media: false; body: string; media_id: null }
-  | { has_media: true; body: null; media_id: string }
+  | { has_media: true; body: null; media_id: number }
 
 export type WhatsAppMessageReceived = WhatsAppMessageContents & {
   patient_id: number
@@ -951,6 +951,6 @@ export type LocationDistance = {
 export type PatientMedia = {
   id: number
   file_name: string
-  file_type: string
+  mime_type: string
   binary_data: BinaryData
 }

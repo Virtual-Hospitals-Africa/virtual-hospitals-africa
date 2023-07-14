@@ -11,27 +11,45 @@ import {
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
+async function downloadAndInsertMedia(media_id: string) {
+  const { url, mime_type } = await whatsapp.get(media_id)
+  const binary_data = await whatsapp.getBinaryData(url)
+  const insertedMedia = await media.insert(db, {
+    binary_data,
+    mime_type,
+    file_name: 'patient_media',
+  })
+  return insertedMedia.id
+}
+
 async function getContents(
   message: WhatsAppMessage,
 ): Promise<WhatsAppMessageContents> {
   switch (message.type) {
     case 'audio':
-      return { has_media: true, media_id: message.audio.id, body: null }
+      return {
+        has_media: true,
+        media_id: await downloadAndInsertMedia(message.audio.id),
+        body: null,
+      }
     case 'video':
-      return { has_media: true, media_id: message.video.id, body: null }
+      return {
+        has_media: true,
+        media_id: await downloadAndInsertMedia(message.video.id),
+        body: null,
+      }
     case 'document':
-      return { has_media: true, media_id: message.document.id, body: null }
-    case 'contacts': {
-      throw new Error('Not yet handled')
-    }
-    case 'image': {
-      const mediaResponse = await whatsapp.get(message.image.id)
-      console.log('HERE IS YOUR image', mediaResponse)
-      const { url } = mediaResponse
-      const image = await whatsapp.get(url)
-      console.log(image)
-      return { has_media: true, media_id: message.image.id, body: null }
-    }
+      return {
+        has_media: true,
+        media_id: await downloadAndInsertMedia(message.document.id),
+        body: null,
+      }
+    case 'image':
+      return {
+        has_media: true,
+        media_id: await downloadAndInsertMedia(message.image.id),
+        body: null,
+      }
     case 'text':
       return { has_media: false, media_id: null, body: message.text.body }
 
@@ -47,6 +65,9 @@ async function getContents(
         ? message.interactive.list_reply.id
         : message.interactive.button_reply.id
       return { has_media: false, media_id: null, body }
+    }
+    case 'contacts': {
+      throw new Error('Not yet handled')
     }
     default: {
       throw new Error('Unknown message.type')
@@ -75,9 +96,7 @@ export const handler: Handlers = {
   async POST(req) {
     const incomingMessage: WhatsAppIncomingMessage = await req.json()
 
-    console.log('Hello there', JSON.stringify(incomingMessage))
-
-    // {"object":"whatsapp_business_account","entry":[{"id":"103992419238259","changes":[{"value":{"messaging_product":"whatsapp","metadata":{"display_phone_number":"263784010987","phone_number_id":"100667472910572"},"contacts":[{"profile":{"name":"Will Weiss"},"wa_id":"12032535603"}],"messages":[{"from":"12032535603","id":"wamid.HBgLMTIwMzI1MzU2MDMVAgASGBQzQTg1RUZDMDJFNDE2NDg2MkZBQgA=","timestamp":"1687807194","type":"audio","audio":{"mime_type":"audio/ogg; codecs=opus","sha256":"sQMkSRNvd9udZqPeZfO5T/UOMT1zYEh//aitgp9dS8c=","id":"1834915043569604","voice":true}}]},"field":"messages"}]}]}
+    console.log(JSON.stringify(incomingMessage))
 
     if (incomingMessage.object !== 'whatsapp_business_account') {
       console.error('Object is not whatsapp_business_account')
@@ -127,15 +146,6 @@ export const handler: Handlers = {
         whatsapp_id: message.id,
         ...contents,
       })
-
-      if (contents.has_media) {
-        const res = await media.insertMediaReceived(db, {
-          phone_number: message.from,
-          media_id: contents.media_id,
-          file_name: 'testing123',
-        })
-        console.log('media inserted', res)
-      }
     }
 
     return new Response('OK')
