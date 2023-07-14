@@ -27,7 +27,10 @@
     "lock:reset": "rm -f deno.lock && deno cache --reload main.ts chatbot/chatbot.ts tokenRefresher/tokenRefresher.ts",
 
     "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors",
-    "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors"
+    "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
+
+    "switch:prod": "cp .env.prod .env",
+    "switch:local": "cp .env.local .env"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {
