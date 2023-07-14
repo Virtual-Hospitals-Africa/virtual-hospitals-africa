@@ -20,3 +20,15 @@ export async function insert(
   return await trx.insertInto('media').values(opts).returningAll()
     .executeTakeFirstOrThrow()
 }
+
+export async function retrieveImage(
+  trx: TrxOrDb,
+  opts: { media_id: number },
+): Promise<BinaryData> {
+  const { binary_data } = await trx.selectFrom('media').where(
+    'media.id',
+    '=',
+    opts.media_id,
+  ).select('binary_data').executeTakeFirstOrThrow()
+  return binary_data
+}

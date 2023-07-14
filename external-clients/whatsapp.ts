@@ -30,8 +30,7 @@ export async function getBinaryData(path: string): Promise<BinaryData> {
       'User-Agent': 'Deno prod',
     },
   })
-
-  return response.arrayBuffer()
+  return await response.arrayBuffer()
 }
 
 export function sendMessage({

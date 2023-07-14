@@ -21,6 +21,9 @@ async function downloadAndInsertMedia(media_id: string) {
     mime_type,
     file_name: 'patient_media',
   })
+
+  console.log('inserted_media', insertedMedia)
+  console.log('binary_data', insertedMedia.binary_data)
   return insertedMedia.id
 }
 
