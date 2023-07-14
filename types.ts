@@ -41,7 +41,8 @@ export type Location = {
 export type Gender = 'male' | 'female' | 'other'
 
 export type UserState<CS> = {
-  body: string
+  body?: string
+  has_media: boolean
   conversation_state: CS
 }
 export type PatientConversationState =
@@ -52,8 +53,8 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
-  | 'onboarded:make_appointment:ask_for_media'
-  | 'onboarded:make_appointment:upload_media'
+  | 'onboarded:make_appointment:initial_ask_for_media'
+  | 'onboarded:make_appointment:subsequent_ask_for_media'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'
   | 'onboarded:make_appointment:other_scheduling_options'
@@ -108,7 +109,8 @@ export type PatientState = {
   message_id: number
   patient_id: number
   whatsapp_id: string
-  body: string
+  body?: string
+  has_media: boolean
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
@@ -238,6 +240,13 @@ export type ConversationStateHandlerLocation<US extends UserState<any>> =
     nextState: ConversationStateHandlerNextState<US>
   }>
 
+export type ConversationStateHandlerExpectMedia<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'expect_media'
+    nextState: ConversationStateHandlerNextState<US>
+    options: [ConversationStateHandlerSelectOption<US>]
+  }>
+
 export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerInitialMessage<US>
   | ConversationStateHandlerSelect<US>
@@ -246,6 +255,7 @@ export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
   | ConversationStateHandlerLocation<US>
+  | ConversationStateHandlerExpectMedia<US>
 
 export type ConversationStates<CS extends string, US extends UserState<CS>> = {
   [state in CS]: ConversationStateHandler<US>

@@ -29,7 +29,8 @@ export default function formatMessageToSend<
     : state.prompt(userState)
 
   switch (state.type) {
-    case 'select': {
+    case 'select':
+    case 'expect_media': {
       return {
         messageBody,
         type: 'buttons',

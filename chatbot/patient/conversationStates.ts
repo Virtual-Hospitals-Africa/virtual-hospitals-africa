@@ -118,6 +118,7 @@ const conversationStates: ConversationStates<
     prompt: 'Thanks for that information. What is your date of birth?',
     nextState: 'not_onboarded:make_appointment:enter_national_id_number',
     async onExit(trx, patientState) {
+      assert(patientState.body)
       const [day, month, year] = patientState.body.split('/')
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
@@ -153,6 +154,7 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
     async onExit(trx, patientState) {
+      assert(patientState.body)
       const locationMessage: Location = JSON.parse(patientState.body)
       const currentLocation: Location = {
         longitude: locationMessage.longitude,
@@ -303,7 +305,7 @@ const conversationStates: ConversationStates<
     prompt(patientState: PatientState): string {
       return `Got it, ${patientState.national_id_number}. What is the reason you want to schedule an appointment?`
     },
-    nextState: 'onboarded:make_appointment:ask_for_media',
+    nextState: 'onboarded:make_appointment:initial_ask_for_media',
     async onExit(
       trx,
       patientState,
@@ -323,32 +325,29 @@ const conversationStates: ConversationStates<
       }
     },
   },
-  'onboarded:make_appointment:ask_for_media': {
-    type: 'select',
-    prompt(): string {
-      return `To assist the doctor with triaging your case, you can send a picture, video clip or voice note describing your symptoms.`
-    },
+  'onboarded:make_appointment:initial_ask_for_media': {
+    type: 'expect_media',
+    prompt:
+      'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
+    nextState: 'onboarded:make_appointment:subsequent_ask_for_media',
     options: [
       {
-        id: 'yes',
-        title: 'Upload media',
-        nextState: 'onboarded:make_appointment:upload_media',
-      },
-      {
-        id: 'no',
-        title: 'No media',
+        id: 'skip',
+        title: 'Skip',
         nextState: 'onboarded:make_appointment:confirm_details',
       },
     ],
   },
-  'onboarded:make_appointment:upload_media': {
-    type: 'select',
-    prompt:
-      'Please send your photo, video clip or voice note in the chat describing you symptoms here and click on the button once you finished uploading.',
+  'onboarded:make_appointment:subsequent_ask_for_media': {
+    type: 'expect_media',
+    prompt() {
+      return 'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.'
+    },
+    nextState: 'onboarded:make_appointment:subsequent_ask_for_media',
     options: [
       {
-        id: 'finish_upload',
-        title: 'Upload completed',
+        id: 'done',
+        title: 'Done',
         nextState: 'onboarded:make_appointment:confirm_details',
       },
     ],

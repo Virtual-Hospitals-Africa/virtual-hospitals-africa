@@ -1,4 +1,6 @@
+import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
 import {
+  ConversationStateHandlerExpectMedia,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionRow,
   ConversationStateHandlerSelect,
@@ -12,7 +14,9 @@ import { isValidDate } from '../util/date.ts'
 
 // deno-lint-ignore no-explicit-any
 function findMatchingOption<US extends UserState<any>>(
-  state: ConversationStateHandlerSelect<US>,
+  state:
+    | ConversationStateHandlerSelect<US>
+    | ConversationStateHandlerExpectMedia<US>,
   messageBody: string,
 ): Maybe<ConversationStateHandlerSelectOption<US>> {
   return state.options.find((
@@ -44,21 +48,32 @@ export default function findMatchingState<
   const messageBody = userState.body?.trim()
 
   switch (currentState.type) {
-    case 'select':
+    case 'select': {
+      assert(messageBody)
       return findMatchingOption(currentState, messageBody)
+    }
+
     case 'action': {
+      assert(messageBody)
       const action = currentState.action(userState)
       return action.type === 'list'
         ? findMatchingRow(action, messageBody)
         : findMatchingOption(action, messageBody)
     }
     case 'date': {
+      assert(messageBody)
       return isValidDate(messageBody) ? currentState : null
     }
     case 'string': {
+      assert(messageBody)
       const validation = currentState.validation || (() => true)
       const hasBodyPassingValidation = !!messageBody && validation(messageBody)
       return hasBodyPassingValidation ? currentState : null
+    }
+    case 'expect_media': {
+      if (userState.has_media) return currentState
+      assert(messageBody)
+      return findMatchingOption(currentState, messageBody)
     }
     default:
       return currentState
