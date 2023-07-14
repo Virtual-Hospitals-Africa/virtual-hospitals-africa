@@ -1,10 +1,12 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-  PatientConversationState,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+  WhatsAppMessageContents,
+  WhatsAppMessageReceived,
 } from '../../types.ts'
+// import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
@@ -18,47 +20,87 @@ export function updateReadStatus(
     .execute()
 }
 
+export function isWhatsAppContents(
+  contents: unknown,
+): contents is WhatsAppMessageContents {
+  console.log('contents passed to check', contents)
+  if (!contents || typeof contents !== 'object') {
+    console.log('failed in here, contents is unknown')
+    return false
+  }
+  if (
+    !('has_media' in contents) || !('media_id' in contents) ||
+    !('body' in contents)
+  ) {
+    console.log(`failed because has_media / media_id / body not in contents`)
+    return false
+  }
+  if (contents.has_media) {
+    console.log(
+      `checking here is ${
+        !!contents.media_id && typeof contents.media_id === 'string' &&
+        !contents.body
+      } `,
+    )
+    return !!contents.media_id && typeof contents.media_id === 'string' &&
+      !contents.body
+  }
+  console.log(`last branch, ${
+    contents.media_id === null && !!contents.body &&
+    typeof contents.body === 'string'
+  }`)
+  return contents.media_id === null && !!contents.body &&
+    typeof contents.body === 'string'
+}
+
 export async function insertMessageReceived(
   trx: TrxOrDb,
-  opts: { patient_phone_number: string; whatsapp_id: string; body: string },
+  data:
+    & {
+      patient_phone_number: string
+    }
+    & Pick<
+      WhatsAppMessageReceived,
+      'whatsapp_id' | 'has_media' | 'body' | 'media_id'
+    >,
 ): Promise<
-  ReturnedSqlRow<{
-    patient_id: number
-    whatsapp_id: string
-    body: string
-    started_responding_at: Date | null | undefined
-    conversation_state: PatientConversationState
-  }>
+  ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
-  const patient = (
-    await trx
-      .insertInto('patients')
-      .values({
-        phone_number: opts.patient_phone_number,
-        conversation_state: 'initial_message',
-      })
-      .onConflict((oc) => oc.column('phone_number').doNothing())
-      .returningAll()
-      .executeTakeFirst()
-  ) || (
-    await trx.selectFrom('patients').where(
-      'phone_number',
-      '=',
-      opts.patient_phone_number,
-    ).selectAll().executeTakeFirstOrThrow()
-  )
+  const patient = (await trx
+    .insertInto('patients')
+    .values({
+      phone_number: data.patient_phone_number,
+      conversation_state: 'initial_message',
+    })
+    .onConflict((oc) => oc.column('phone_number').doNothing())
+    .returningAll()
+    .executeTakeFirst()) || (
+      await trx.selectFrom('patients').where(
+        'phone_number',
+        '=',
+        data.patient_phone_number,
+      ).selectAll().executeTakeFirstOrThrow()
+    )
 
-  return trx
+  const { patient_phone_number, ...message_data } = data
+  console.log(patient_phone_number)
+  const inserted = await trx
     .insertInto('whatsapp_messages_received')
     .values({
       patient_id: patient.id,
-      whatsapp_id: opts.whatsapp_id,
-      body: opts.body,
       conversation_state: patient.conversation_state,
+      ...message_data,
     })
-    .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()
     .executeTakeFirstOrThrow()
+
+  // console.log('inserted stuff', inserted)
+  // assert(
+  //   isWhatsAppContents(inserted),
+  //   'assertion error occured, what happened?',
+  // )
+
+  return inserted
 }
 
 export function insertMessageSent(

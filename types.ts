@@ -52,6 +52,8 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'onboarded:make_appointment:enter_appointment_reason'
+  | 'onboarded:make_appointment:ask_for_media'
+  | 'onboarded:make_appointment:upload_media'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:first_scheduling_option'
   | 'onboarded:make_appointment:other_scheduling_options'
@@ -134,6 +136,7 @@ export type PatientState = {
   nearest_facilities?: ReturnedSqlRow<Facility>[]
   nearest_facility_name?: string
   selectedFacility?: Facility
+  media_uploaded?: number
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -737,10 +740,13 @@ export type HealthWorkerAvailability = {
   availability: Availability
 }
 
-export type WhatsAppMessageReceived = {
+export type WhatsAppMessageContents =
+  | { has_media: false; body: string; media_id: null }
+  | { has_media: true; body: null; media_id: number }
+
+export type WhatsAppMessageReceived = WhatsAppMessageContents & {
   patient_id: number
   whatsapp_id: string
-  body: string
   conversation_state: PatientConversationState
   started_responding_at: Maybe<ColumnType<Date>>
   error_commit_hash: Maybe<string>
@@ -941,4 +947,10 @@ export type CalendarPageProps = {
 export type LocationDistance = {
   origin: Location
   destination: Location
+}
+export type PatientMedia = {
+  id: number
+  file_name: string
+  mime_type: string
+  binary_data: BinaryData
 }

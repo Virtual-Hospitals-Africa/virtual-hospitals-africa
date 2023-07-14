@@ -303,7 +303,7 @@ const conversationStates: ConversationStates<
     prompt(patientState: PatientState): string {
       return `Got it, ${patientState.national_id_number}. What is the reason you want to schedule an appointment?`
     },
-    nextState: 'onboarded:make_appointment:confirm_details',
+    nextState: 'onboarded:make_appointment:ask_for_media',
     async onExit(
       trx,
       patientState,
@@ -323,6 +323,36 @@ const conversationStates: ConversationStates<
       }
     },
   },
+  'onboarded:make_appointment:ask_for_media': {
+    type: 'select',
+    prompt(): string {
+      return `To assist the doctor with triaging your case, you can send a picture, video clip or voice note describing your symptoms.`
+    },
+    options: [
+      {
+        id: 'yes',
+        title: 'Upload media',
+        nextState: 'onboarded:make_appointment:upload_media',
+      },
+      {
+        id: 'no',
+        title: 'No media',
+        nextState: 'onboarded:make_appointment:confirm_details',
+      },
+    ],
+  },
+  'onboarded:make_appointment:upload_media': {
+    type: 'select',
+    prompt:
+      'Please send your photo, video clip or voice note in the chat describing you symptoms here and click on the button once you finished uploading.',
+    options: [
+      {
+        id: 'finish_upload',
+        title: 'Upload completed',
+        nextState: 'onboarded:make_appointment:confirm_details',
+      },
+    ],
+  },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
     prompt(patientState: PatientState): string {
@@ -332,7 +362,9 @@ const conversationStates: ConversationStates<
         prettyPatientDateOfBirth(
           patientState,
         )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. Is this correct?`
+      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${
+        patientState.media_uploaded ? patientState.media_uploaded : 0
+      } media to the doctor. Is this correct?`
     },
     options: [
       {
