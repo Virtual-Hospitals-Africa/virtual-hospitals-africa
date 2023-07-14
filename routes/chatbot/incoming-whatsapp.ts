@@ -15,15 +15,11 @@ async function downloadAndInsertMedia(media_id: string) {
   const resp = await whatsapp.get(media_id)
   const { url, mime_type } = resp
   const binary_data = await whatsapp.getBinaryData(url)
-  console.log('binary_data', binary_data)
   const insertedMedia = await media.insert(db, {
     binary_data,
     mime_type,
     file_name: 'patient_media',
   })
-
-  console.log('inserted_media', insertedMedia)
-  console.log('binary_data', insertedMedia.binary_data)
   return insertedMedia.id
 }
 
