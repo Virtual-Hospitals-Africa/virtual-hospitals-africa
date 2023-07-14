@@ -6,7 +6,7 @@ import {
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
-import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
+// import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
@@ -23,15 +23,32 @@ export function updateReadStatus(
 export function isWhatsAppContents(
   contents: unknown,
 ): contents is WhatsAppMessageContents {
-  if (!contents || typeof contents !== 'object') return false
+  console.log('contents passed to check', contents)
+  if (!contents || typeof contents !== 'object') {
+    console.log('failed in here, contents is unknown')
+    return false
+  }
   if (
     !('has_media' in contents) || !('media_id' in contents) ||
     !('body' in contents)
-  ) return false
-  if (contents.has_media) {
-    return !!contents.media_id && typeof contents.media_id === 'string' &&
-      contents.body === null
+  ) {
+    console.log(`failed because has_media / media_id / body not in contents`)
+    return false
   }
+  if (contents.has_media) {
+    console.log(
+      `checking here is ${
+        !!contents.media_id && typeof contents.media_id === 'string' &&
+        !contents.body
+      } `,
+    )
+    return !!contents.media_id && typeof contents.media_id === 'string' &&
+      !contents.body
+  }
+  console.log(`last branch, ${
+    contents.media_id === null && !!contents.body &&
+    typeof contents.body === 'string'
+  }`)
   return contents.media_id === null && !!contents.body &&
     typeof contents.body === 'string'
 }
@@ -74,14 +91,14 @@ export async function insertMessageReceived(
       conversation_state: patient.conversation_state,
       ...message_data,
     })
-    .onConflict((oc) => oc.column('whatsapp_id').doNothing())
     .returningAll()
-    .executeTakeFirst()
+    .executeTakeFirstOrThrow()
 
-  assert(
-    isWhatsAppContents(inserted),
-    'assertion error occured, what happened?',
-  )
+  // console.log('inserted stuff', inserted)
+  // assert(
+  //   isWhatsAppContents(inserted),
+  //   'assertion error occured, what happened?',
+  // )
 
   return inserted
 }

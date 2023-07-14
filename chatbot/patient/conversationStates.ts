@@ -22,7 +22,6 @@ import {
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import { availableSlots } from '../../scheduling/getHealthWorkerAvailability.ts'
-import * as media from '../../db/models/media.ts'
 import { cancelAppointment } from '../../scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
@@ -353,18 +352,6 @@ const conversationStates: ConversationStates<
         nextState: 'onboarded:make_appointment:confirm_details',
       },
     ],
-    async onExit(
-      trx,
-      patientState,
-    ) {
-      const mediaUploaded = await media.getPatientMediaCount(trx, {
-        paitent_id: patientState.patient_id,
-      })
-      return {
-        ...patientState,
-        media_uploaded: mediaUploaded,
-      }
-    },
   },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
