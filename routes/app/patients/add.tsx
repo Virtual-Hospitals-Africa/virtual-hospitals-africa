@@ -8,6 +8,7 @@ import {
 import { assert } from 'std/testing/asserts.ts'
 import * as patients from '../../../db/models/patients.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
+import * as media from '../../../db/models/media.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
@@ -38,6 +39,7 @@ const pickDemographics = pick([
   'date_of_birth',
   'national_id_number',
   'avatar_url',
+  'file_type'
 ])
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -59,17 +61,25 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       ]).join(' '),
     }
 
+    let mediaId: number | undefined
+
     if (patient.avatar_url) {
-      const filePath = patient.avatar_url.replace('temp', '/images/patient')
-      // TODO: Save the binary file to database directly
-      const fileSavedPath = `static${filePath}`
-      await Deno.copyFile(patient.avatar_url, fileSavedPath)
-      patient.avatar_url = filePath
+      const binaryData = await Deno.readFile(patient.avatar_url)
+      const { id } = await media.insert(ctx.state.trx, {
+        binary_data: binaryData,
+        mime_type: patient.file_type,
+        file_name: patientData.first_name,
+      })
+      mediaId = id
     }
+
+    delete patient.avatar_url
+    delete patient.file_type
 
     assert(patients.hasDemographicInfo(patient))
     await patients.upsert(ctx.state.trx, {
       ...patient,
+      avatar_media_id: mediaId,
       // TODO separate patient's whatsapp conversation_state from patients table
       conversation_state: 'initial_message',
     })
