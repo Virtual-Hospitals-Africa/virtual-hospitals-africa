@@ -68,7 +68,7 @@ export type PatientConversationState =
 
 export type Patient = {
   conversation_state: PatientConversationState
-  avatar_url?: string
+  avatar_media_id?: number
   location?: Maybe<Location>
 } & PatientDemographicInfo
 
