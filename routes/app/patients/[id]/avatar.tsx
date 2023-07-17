@@ -1,9 +1,7 @@
 import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import * as media from '../../../../db/models/media.ts'
-import {
-  LoggedInHealthWorkerHandler,
-} from '../../../../types.ts'
+import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import { file } from '../../../../util/responses.ts'
 
@@ -32,7 +30,7 @@ export const handler: LoggedInHealthWorkerHandler<PatientAvatarProps> = {
     assert(patient.avatar_media_id, 'Patient has no avatar')
 
     const avatar = await media.retrieveMedia(ctx.state.trx, {
-      media_id: patient.avatar_media_id
+      media_id: patient.avatar_media_id,
     })
 
     const avatarData = avatar.binary_data

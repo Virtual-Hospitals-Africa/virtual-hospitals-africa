@@ -67,7 +67,7 @@ export type PatientConversationState =
   | 'other_end_of_demo'
 
 export type Patient = {
-  id: number,
+  id: number
   conversation_state: PatientConversationState
   avatar_media_id?: number
   location?: Maybe<Location>

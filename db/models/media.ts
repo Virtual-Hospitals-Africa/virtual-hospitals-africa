@@ -1,4 +1,4 @@
-import { PatientMedia, ReturnedSqlRow, TrxOrDb, Media } from './../../types.ts'
+import { Media, PatientMedia, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
 import { sql } from 'kysely'
 
 export async function getPatientMediaCount(

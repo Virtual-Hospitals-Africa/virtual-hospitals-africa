@@ -39,7 +39,7 @@ const pickDemographics = pick([
   'date_of_birth',
   'national_id_number',
   'avatar_url',
-  'file_type'
+  'file_type',
 ])
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -73,7 +73,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       mediaId = id
       Deno.remove(patient.avatar_url)
     }
-    
+
     delete patient.avatar_url
     delete patient.file_type
 

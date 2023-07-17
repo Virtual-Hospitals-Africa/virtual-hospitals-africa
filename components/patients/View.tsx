@@ -8,10 +8,14 @@ import PatientsTable from './Table.tsx'
 import PatientCards from '../../islands/patient-cards.tsx'
 import { Patient as PatientData } from '../../components/patients/Table.tsx'
 
-function attachAvatarUrl(patients: ReturnedSqlRow<Patient & { name: string }>[]): PatientData[] {
+function attachAvatarUrl(
+  patients: ReturnedSqlRow<Patient & { name: string }>[],
+): PatientData[] {
   return patients.map((patient) => ({
     ...patient,
-    avatar_url: patient.avatar_media_id ? `/app/patients/${patient.id}/avatar` : undefined,
+    avatar_url: patient.avatar_media_id
+      ? `/app/patients/${patient.id}/avatar`
+      : undefined,
   }))
 }
 
