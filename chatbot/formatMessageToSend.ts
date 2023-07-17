@@ -1,10 +1,9 @@
-import { getUnhandledPatientMessages } from '../db/models/conversations.ts'
 import {
   ConversationStates,
   UserState,
   WhatsAppSendable,
-  WhatsAppSendables,
   WhatsAppSendableString,
+  WhatsAppSingleSendable,
 } from '../types.ts'
 import pick from '../util/pick.ts'
 
@@ -21,7 +20,7 @@ export default function formatMessageToSend<
 >(
   conversationStates: ConversationStates<US['conversation_state'], US>,
   userState: US,
-): WhatsAppSendable | WhatsAppSendables {
+): WhatsAppSingleSendable | WhatsAppSendable {
   const state = conversationStates[
     userState.conversation_state
   ]
@@ -64,7 +63,7 @@ export default function formatMessageToSend<
         }
     }
     case 'location': {
-      return state.getMessage(userState)
+      return state.getMessages(userState)
     }
     case 'date': {
       return stringSendable(

@@ -5,7 +5,7 @@ import {
   WhatsAppMessageAction,
   WhatsAppMessageOption,
   WhatsAppSendable,
-  WhatsAppSendables,
+  WhatsAppSingleSendable,
 } from '../types.ts'
 
 const postMessageRoute = `https://graph.facebook.com/v17.0/${
@@ -40,7 +40,7 @@ export function sendMessage({
   phone_number,
 }: {
   phone_number: string
-  message: WhatsAppSendable
+  message: WhatsAppSingleSendable
 }): Promise<WhatsAppJSONResponse> {
   switch (message.type) {
     case 'string': {
@@ -78,30 +78,32 @@ export function sendMessages({
   phone_number,
 }: {
   phone_number: string
-  messages: WhatsAppSendable | WhatsAppSendables 
+  messages: WhatsAppSingleSendable | WhatsAppSendable
 }): Promise<WhatsAppJSONResponse[]> {
   // Convert the single message to an array for consistent handling
-  const messagesArray = Array.isArray(messages) ? messages : [messages];
+  const messagesArray = Array.isArray(messages) ? messages : [messages]
 
-    // Create an array to hold our promises
-    const messagePromises: Promise<WhatsAppJSONResponse>[] = [];
+  // Create an array to hold our promises
+  const messagePromises: Promise<WhatsAppJSONResponse>[] = []
 
-    // Send the first message
-    messagePromises.push(sendMessage({
-      phone_number,
-      message: messagesArray[0],
-    }));
-  
-    // Chain a delay and a potential second message send if a second message exists
-    if (messagesArray[1]) {
-      const secondMessagePromise = messagePromises[0]
-        .then(() => new Promise(resolve => setTimeout(resolve, 10)))
-        .then(() => sendMessage({phone_number, message: messagesArray[1]}));
-      messagePromises.push(secondMessagePromise);
-    }
-  
-    // Wait for all promises to resolve, then return the array of responses
-    return Promise.all(messagePromises);
+  // Send the first message
+  messagePromises.push(sendMessage({
+    phone_number,
+    message: messagesArray[0],
+  }))
+
+  // Chain a delay and a potential second message send if a second message exists
+  if (messagesArray[1]) {
+    const secondMessagePromise = messagePromises[0]
+      /* setTimeout() function in chatbot.ts has a delay of 100 milliseconds,
+         so time gap between two message must be less than 100 */
+      .then(() => new Promise((resolve) => setTimeout(resolve, 10)))
+      .then(() => sendMessage({ phone_number, message: messagesArray[1] }))
+    messagePromises.push(secondMessagePromise)
+  }
+
+  // Wait for all promises to resolve, then return the array of responses
+  return Promise.all(messagePromises)
 }
 
 export async function postMessage(body: unknown) {

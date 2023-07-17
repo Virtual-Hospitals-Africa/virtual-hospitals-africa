@@ -5,7 +5,7 @@ import {
   TrxOrDb,
   UserState,
   WhatsAppSendable,
-  WhatsAppSendables,
+  WhatsAppSingleSendable,
 } from '../types.ts'
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`
@@ -19,7 +19,7 @@ export async function determineResponse<
   userState: US,
   // deno-lint-ignore no-explicit-any
   updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
-): Promise<WhatsAppSendable | WhatsAppSendables> {
+): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
   const currentState = findMatchingState(conversationStates, userState)
 
   if (!currentState) {

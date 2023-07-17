@@ -238,9 +238,9 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
 export type ConversationStateHandlerLocation<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'location'
-    getMessage: (
-      userState: US
-    ) => WhatsAppSendables
+    getMessages: (
+      userState: US,
+    ) => WhatsAppSendable
     nextState: ConversationStateHandlerNextState<US>
   }>
 
@@ -807,13 +807,13 @@ export type WhatsAppMessageOption = {
 
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db
 
-export type WhatsAppSendable =
+export type WhatsAppSingleSendable =
   | WhatsAppSendableString
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
 
-export type WhatsAppSendables = [WhatsAppSendable, WhatsAppSendable]
+export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
 export type HealthWorkerAppointmentSlot = {
   type: 'slot'

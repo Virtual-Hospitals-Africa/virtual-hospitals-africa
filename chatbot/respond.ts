@@ -7,7 +7,7 @@ import {
   ConversationStates,
   PatientConversationState,
   PatientState,
-  TrxOrDb
+  TrxOrDb,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
@@ -40,8 +40,8 @@ async function respondToPatientMessage(
       )
 
     const whatsappResponses = await sendMessages({
-        messages: responseToSend,
-        phone_number: patientState.phone_number,
+      messages: responseToSend,
+      phone_number: patientState.phone_number,
     })
 
     for (const whatsappResponse of whatsappResponses) {
