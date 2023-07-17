@@ -16,6 +16,7 @@ import {
 } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
 import { addToInvitees } from '../..../../../../../../db/models/health_workers.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import redirect from '../../../../../util/redirect.ts'
 
 type InvitePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -123,7 +124,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
         console.log(Response)
       }
     }
-    return new Response('OK')
+    return redirect(`/app/facilities/${facilityId}/employees/success`)
   },
 }
 
