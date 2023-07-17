@@ -60,13 +60,17 @@ async function respondToPatientMessage(
     console.log('Error determining message to send')
     console.error(err)
 
+    const messageBody = err.errorKnown
+    ? `An error has occurred: ${err.message}`
+    : `An unknown error has occurred: ${err.message}`;
+
     await sendMessage({
       message: {
         type: 'string',
-        messageBody: `An unknown error occured: ${err.message}`,
+        messageBody: messageBody,
       },
       phone_number: patientState.phone_number,
-    })
+    });
 
     await markChatbotError(db, {
       commitHash,

@@ -30,6 +30,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
+import customError from '../../util/customError.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -154,6 +155,7 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
     async onExit(trx, patientState) {
+
       try {
         assert(patientState.body)
 
@@ -175,9 +177,8 @@ const conversationStates: ConversationStates<
             patientState.patient_id,
           ),
         }
-      } catch (err) {
-        console.log('Error occured inside onExit', err)
-        throw new Error('Please share your location as an attachment.')
+      } catch (e) {
+        throw customError('Please share your location as an attachment.', true)
       }
     },
   },

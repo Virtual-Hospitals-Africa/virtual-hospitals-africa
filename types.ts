@@ -932,6 +932,11 @@ export type GoogleAddressComponent = {
   }[]
 }
 
+export interface CustomError {
+  errorKnown: boolean;
+  message: string;
+}
+
 export type GoogleAddressComponentType =
   | 'locality'
   | 'administrative_area_level_2'
