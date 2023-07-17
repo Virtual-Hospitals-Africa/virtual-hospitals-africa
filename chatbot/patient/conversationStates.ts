@@ -30,7 +30,8 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
-import customError from '../../util/customError.ts'
+import customErrorHandler from '../../util/customErrorHandler.ts'
+import isValidLocationString from '../../util/isValidLocationString.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -155,30 +156,30 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
     async onExit(trx, patientState) {
-      try {
-        assert(patientState.body)
+      if (!patientState.body || !isValidLocationString(patientState.body)) {
+        throw customErrorHandler(
+          'Please share your location as an attachment.',
+          true,
+        )
+      }
 
-        const locationMessage: Location = JSON.parse(patientState.body)
-        const currentLocation: Location = {
-          longitude: locationMessage.longitude,
-          latitude: locationMessage.latitude,
-        }
-        await patients.upsert(trx, {
-          ...patients.pick(patientState),
-          location: currentLocation,
-        })
+      const locationMessage: Location = JSON.parse(patientState.body)
+      const currentLocation: Location = {
+        longitude: locationMessage.longitude,
+        latitude: locationMessage.latitude,
+      }
+      await patients.upsert(trx, {
+        ...patients.pick(patientState),
+        location: currentLocation,
+      })
 
-        return {
-          ...patientState,
-          location: currentLocation,
-          nearest_facilities: await patients.nearestFacilities(
-            trx,
-            patientState.patient_id,
-          ),
-        }
-      } catch (e) {
-        console.log('Error inside onExit', e)
-        throw customError('Please share your location as an attachment.', true)
+      return {
+        ...patientState,
+        location: currentLocation,
+        nearest_facilities: await patients.nearestFacilities(
+          trx,
+          patientState.patient_id,
+        ),
       }
     },
   },
