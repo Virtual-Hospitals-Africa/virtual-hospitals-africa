@@ -67,8 +67,9 @@ export type PatientConversationState =
   | 'other_end_of_demo'
 
 export type Patient = {
+  id: number
   conversation_state: PatientConversationState
-  avatar_url?: string
+  avatar_media_id?: number
   location?: Maybe<Location>
 } & PatientDemographicInfo
 
@@ -958,9 +959,13 @@ export type LocationDistance = {
   origin: Location
   destination: Location
 }
-export type PatientMedia = {
-  id: number
+
+export type Media = {
   file_name: string
   mime_type: string
   binary_data: BinaryData
+}
+
+export type PatientMedia = Media & {
+  id: number
 }

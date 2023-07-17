@@ -49,6 +49,7 @@ async function parseFile(
     const arrayBuffer = await file.arrayBuffer()
     await Deno.writeFile(filePath, new Uint8Array(arrayBuffer), { mode: 0o777 })
     updatedForm.append(fileFieldKey, filePath)
+    updatedForm.append('file_type', file.type)
   }
   return updatedForm
 }
