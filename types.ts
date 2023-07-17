@@ -719,6 +719,40 @@ export type Profession =
   | 'doctor'
   | 'nurse'
 
+export type NurseSpeciality =
+  | 'primary_care_nurse'
+  | 'registered_general_nurse'
+  | 'midwife'
+  | 'intensive_and_coronary_care_nurse'
+  | 'renal_nurse'
+  | 'neonatal_intensive_care_and_paediatric_nurse'
+  | 'psychiatric_mental_health_nurse'
+  | 'operating_theatre_nurse'
+  | 'community_nurse'
+  | 'opthalmic_nurse'
+  | 'nurse_administrator'
+  | 'nurse_anaesthetist'
+  | 'trauma_care_nurse'
+  | 'clinical_care_nurse'
+  | 'clinical_officer'
+  | 'orthopaedic_nurse'
+  | 'oncology_and_palliative_care_nurse'
+  | 'dental_nurse'
+
+export type NurseRegistrationDetails = {
+  health_worker_id: number
+  gender: Gender
+  national_id: string
+  speciality: NurseSpeciality
+  date_of_first_practice: Date
+  ncz_registration_number: string
+  business_phone_number: string
+  mobile_number: string
+  national_id_media_id: number
+  ncz_registration_card_media_id: number
+  face_picture_media_id: number
+}
+
 export type HealthWorker = {
   name: string
   email: string
