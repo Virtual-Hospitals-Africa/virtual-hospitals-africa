@@ -932,7 +932,7 @@ export type GoogleAddressComponent = {
   }[]
 }
 
-export interface CustomError {
+export type CustomError = {
   errorKnown: boolean
   message: string
 }
