@@ -41,18 +41,18 @@ export async function up(db: Kysely<unknown>) {
       'timestamp',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('nurse_id', 'integer', (column) =>
+    .addColumn('employee_id', 'integer', (column) =>
       column
         .notNull()
-        .references('health_workers.id')
+        .references('employment.id')
         .onDelete('cascade'))
     .addColumn(
       'speciality',
       sql`nurse_speciality`,
       (column) => column.notNull(),
     )
-    .addUniqueConstraint('one_unique_speciality_per_nurse', [
-      'nurse_id',
+    .addUniqueConstraint('one_unique_speciality_per_employee', [
+      'employee_id',
       'speciality',
     ])
     .execute()
