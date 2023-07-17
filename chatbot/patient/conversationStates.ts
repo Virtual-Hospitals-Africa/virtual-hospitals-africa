@@ -154,10 +154,9 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
     async onExit(trx, patientState) {
-      
       try {
         assert(patientState.body)
-    
+
         const locationMessage: Location = JSON.parse(patientState.body)
         const currentLocation: Location = {
           longitude: locationMessage.longitude,
@@ -167,7 +166,7 @@ const conversationStates: ConversationStates<
           ...patients.pick(patientState),
           location: currentLocation,
         })
-  
+
         return {
           ...patientState,
           location: currentLocation,
@@ -175,9 +174,10 @@ const conversationStates: ConversationStates<
             trx,
             patientState.patient_id,
           ),
-        } 
+        }
       } catch (err) {
-        throw new Error("Please share your location as an attachment.")
+        console.log('Error occured inside onExit', err)
+        throw new Error('Please share your location as an attachment.')
       }
     },
   },
