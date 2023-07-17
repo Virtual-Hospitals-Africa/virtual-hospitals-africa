@@ -5,11 +5,7 @@ import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import { file } from '../../../../util/responses.ts'
 
-type PatientAvatarProps = {
-  binaryData: BinaryData
-}
-
-export const handler: LoggedInHealthWorkerHandler<PatientAvatarProps> = {
+export const handler: LoggedInHealthWorkerHandler = {
   async GET(_, ctx) {
     const healthWorker = ctx.state.session.data
     assert(
@@ -29,7 +25,7 @@ export const handler: LoggedInHealthWorkerHandler<PatientAvatarProps> = {
 
     assert(patient.avatar_media_id, 'Patient has no avatar')
 
-    const avatar = await media.retrieveMedia(ctx.state.trx, {
+    const avatar = await media.get(ctx.state.trx, {
       media_id: patient.avatar_media_id,
     })
 

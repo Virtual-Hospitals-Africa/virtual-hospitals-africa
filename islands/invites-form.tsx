@@ -26,7 +26,7 @@ export default function InviteEmployeesForm() {
             <div className='mt-2 mb-2'>
               <input
                 type='email'
-                name={`${index}.email`}
+                name={`invites.${index}.email`}
                 id={`email-${index}`}
                 className='block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-1'
                 placeholder='you@example.com'
@@ -46,7 +46,7 @@ export default function InviteEmployeesForm() {
             <div className='mt-2 mb-2'>
               <select
                 id={`profession-${index}`}
-                name={`${index}.profession`}
+                name={`invites.${index}.profession`}
                 className='block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 style={{ height: '2.5rem' }}
                 required={index === 0 || index !== totalInvites - 1}

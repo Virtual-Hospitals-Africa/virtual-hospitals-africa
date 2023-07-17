@@ -961,7 +961,6 @@ export type LocationDistance = {
 }
 
 export type Media = {
-  file_name: string
   mime_type: string
   binary_data: BinaryData
 }
