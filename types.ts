@@ -743,14 +743,17 @@ export type NurseRegistrationDetails = {
   health_worker_id: number
   gender: Gender
   national_id: string
-  speciality: NurseSpeciality
   date_of_first_practice: Date
   ncz_registration_number: string
-  business_phone_number: string
   mobile_number: string
-  national_id_media_id: number
-  ncz_registration_card_media_id: number
-  face_picture_media_id: number
+  national_id_media_id: Maybe<number>
+  ncz_registration_card_media_id: Maybe<number>
+  face_picture_media_id: Maybe<number>
+}
+
+export type Specialities = {
+  nurse_id: number
+  speciality: NurseSpeciality
 }
 
 export type HealthWorker = {
