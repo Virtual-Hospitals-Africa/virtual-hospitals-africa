@@ -71,8 +71,9 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         file_name: patientData.first_name,
       })
       mediaId = id
+      Deno.remove(patient.avatar_url)
     }
-
+    
     delete patient.avatar_url
     delete patient.file_type
 
