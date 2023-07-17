@@ -933,8 +933,8 @@ export type GoogleAddressComponent = {
 }
 
 export interface CustomError {
-  errorKnown: boolean;
-  message: string;
+  errorKnown: boolean
+  message: string
 }
 
 export type GoogleAddressComponentType =

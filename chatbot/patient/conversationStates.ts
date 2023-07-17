@@ -155,7 +155,6 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
     async onExit(trx, patientState) {
-
       try {
         assert(patientState.body)
 
@@ -178,6 +177,7 @@ const conversationStates: ConversationStates<
           ),
         }
       } catch (e) {
+        console.log('Error inside onExit', e)
         throw customError('Please share your location as an attachment.', true)
       }
     },

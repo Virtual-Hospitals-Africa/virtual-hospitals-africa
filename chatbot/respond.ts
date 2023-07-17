@@ -61,8 +61,8 @@ async function respondToPatientMessage(
     console.error(err)
 
     const messageBody = err.errorKnown
-    ? `An error has occurred: ${err.message}`
-    : `An unknown error has occurred: ${err.message}`;
+      ? `An error has occurred: ${err.message}`
+      : `An unknown error has occurred: ${err.message}`
 
     await sendMessage({
       message: {
@@ -70,7 +70,7 @@ async function respondToPatientMessage(
         messageBody: messageBody,
       },
       phone_number: patientState.phone_number,
-    });
+    })
 
     await markChatbotError(db, {
       commitHash,
