@@ -3,20 +3,21 @@ import Layout from '../../../components/library/Layout.tsx'
 import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
+  Media,
   Patient,
+  ReturnedSqlRow,
 } from '../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import * as patients from '../../../db/models/patients.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
-import * as media from '../../../db/models/media.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
-import { isObject } from 'https://deno.land/x/importmap@0.2.1/_util.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
+import isObjectLike from '../../../util/isObjectLike.ts'
 
 type AddPatientProps = {
   healthWorker: HealthWorker
@@ -29,8 +30,10 @@ type HasNames = {
   middle_names?: string
 }
 
-function hasNames(patient: unknown): patient is HasNames {
-  return isObject(patient) && !!patient.first_name && !!patient.last_name
+function hasNames(
+  patient: unknown,
+): patient is HasNames & { avatar_media?: ReturnedSqlRow<Media> } {
+  return isObjectLike(patient) && !!patient.first_name && !!patient.last_name
 }
 
 const pickDemographics = pick([
@@ -38,8 +41,6 @@ const pickDemographics = pick([
   'gender',
   'date_of_birth',
   'national_id_number',
-  'avatar_url',
-  'file_type',
 ])
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -50,7 +51,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
-    const patientData = await parseRequest(req, {}, hasNames, 'avatar_url')
+    const patientData = await parseRequest(ctx.state.trx, req, hasNames)
 
     const patient = {
       ...pickDemographics(patientData),
@@ -59,28 +60,12 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         patientData.middle_names,
         patientData.last_name,
       ]).join(' '),
+      avatar_media_id: patientData.avatar_media?.id,
     }
-
-    let mediaId: number | undefined
-
-    if (patient.avatar_url) {
-      const binaryData = await Deno.readFile(patient.avatar_url)
-      const { id } = await media.insert(ctx.state.trx, {
-        binary_data: binaryData,
-        mime_type: patient.file_type,
-        file_name: patientData.first_name,
-      })
-      mediaId = id
-      Deno.remove(patient.avatar_url)
-    }
-
-    delete patient.avatar_url
-    delete patient.file_type
 
     assert(patients.hasDemographicInfo(patient))
     await patients.upsert(ctx.state.trx, {
       ...patient,
-      avatar_media_id: mediaId,
       // TODO separate patient's whatsapp conversation_state from patients table
       conversation_state: 'initial_message',
     })

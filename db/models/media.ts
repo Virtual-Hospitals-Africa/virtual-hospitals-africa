@@ -15,7 +15,7 @@ export async function getPatientMediaCount(
 
 export async function insert(
   trx: TrxOrDb,
-  opts: { file_name: string; binary_data: BinaryData; mime_type: string },
+  opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<ReturnedSqlRow<PatientMedia>> {
   return await trx.insertInto('media').values(opts).returningAll()
     .executeTakeFirstOrThrow()
@@ -33,18 +33,17 @@ export async function retrieveImage(
   return binary_data
 }
 
-export async function retrieveMedia(
+export function get(
   trx: TrxOrDb,
   opts: { media_id: number },
-): Promise<Media> {
-  const media = await trx
+): Promise<ReturnedSqlRow<Media>> {
+  return trx
     .selectFrom('media')
     .where(
       'media.id',
       '=',
       opts.media_id,
     )
-    .select(['file_name', 'mime_type', 'binary_data'])
+    .selectAll()
     .executeTakeFirstOrThrow()
-  return media
 }

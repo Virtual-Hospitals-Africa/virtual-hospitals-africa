@@ -23,7 +23,7 @@ export async function get(path: string) {
   })
   return response.json()
 }
-export async function getBinaryData(path: string): Promise<BinaryData> {
+export async function getBinaryData(path: string): Promise<Uint8Array> {
   const response = await fetch(path, {
     headers: {
       Authorization,
