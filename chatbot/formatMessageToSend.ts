@@ -3,6 +3,7 @@ import {
   UserState,
   WhatsAppSendable,
   WhatsAppSendableString,
+  WhatsAppSingleSendable,
 } from '../types.ts'
 import pick from '../util/pick.ts'
 
@@ -19,7 +20,7 @@ export default function formatMessageToSend<
 >(
   conversationStates: ConversationStates<US['conversation_state'], US>,
   userState: US,
-): WhatsAppSendable {
+): WhatsAppSingleSendable | WhatsAppSendable {
   const state = conversationStates[
     userState.conversation_state
   ]
@@ -62,12 +63,7 @@ export default function formatMessageToSend<
         }
     }
     case 'location': {
-      const parsedMessageBody = JSON.parse(messageBody)
-      return {
-        type: 'location',
-        messageBody: parsedMessageBody.messageBody,
-        location: parsedMessageBody.location,
-      }
+      return state.getMessages(userState)
     }
     case 'date': {
       return stringSendable(
