@@ -154,24 +154,30 @@ const conversationStates: ConversationStates<
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
     async onExit(trx, patientState) {
-      assert(patientState.body)
-      const locationMessage: Location = JSON.parse(patientState.body)
-      const currentLocation: Location = {
-        longitude: locationMessage.longitude,
-        latitude: locationMessage.latitude,
-      }
-      await patients.upsert(trx, {
-        ...patients.pick(patientState),
-        location: currentLocation,
-      })
-
-      return {
-        ...patientState,
-        location: currentLocation,
-        nearest_facilities: await patients.nearestFacilities(
-          trx,
-          patientState.patient_id,
-        ),
+      
+      try {
+        assert(patientState.body)
+    
+        const locationMessage: Location = JSON.parse(patientState.body)
+        const currentLocation: Location = {
+          longitude: locationMessage.longitude,
+          latitude: locationMessage.latitude,
+        }
+        await patients.upsert(trx, {
+          ...patients.pick(patientState),
+          location: currentLocation,
+        })
+  
+        return {
+          ...patientState,
+          location: currentLocation,
+          nearest_facilities: await patients.nearestFacilities(
+            trx,
+            patientState.patient_id,
+          ),
+        } 
+      } catch (err) {
+        throw new Error("Please share your location as an attachment.")
       }
     },
   },
