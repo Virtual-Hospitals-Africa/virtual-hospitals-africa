@@ -51,9 +51,9 @@ export async function up(db: Kysely<unknown>) {
       sql`nurse_speciality`,
       (column) => column.notNull(),
     )
-    .addUniqueConstraint('one_unique_speciality_per_nurse',[
-        'nurse_id',
-        'speciality'
+    .addUniqueConstraint('one_unique_speciality_per_nurse', [
+      'nurse_id',
+      'speciality',
     ])
     .execute()
 

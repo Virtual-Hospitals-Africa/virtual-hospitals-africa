@@ -20,10 +20,10 @@ import {
   PatientAppointmentRequest,
   PatientMedia,
   ReturnedSqlRow,
+  Specialities,
   SqlRow,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
-  Specialities
 } from '../types.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
