@@ -1,4 +1,4 @@
-import { CheckIcon } from '../../../../../components/library/CheckIcon.tsx'
+import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 
 export default function successPage() {
   return (

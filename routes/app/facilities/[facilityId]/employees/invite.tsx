@@ -124,7 +124,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
         console.log(Response)
       }
     }
-    return redirect(`/app/facilities/${facilityId}/employees/success`)
+    return redirect(`/app/email-success`)
   },
 }
 

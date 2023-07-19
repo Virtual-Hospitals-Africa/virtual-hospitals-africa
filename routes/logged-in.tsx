@@ -7,6 +7,8 @@ import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleTokens, HealthWorker, ReturnedSqlRow } from '../types.ts'
+import { redis } from '../external-clients/redis.ts'
+import { sessionId } from '../routes/app/accept-invite.tsx'
 
 export async function initializeHealthWorker(
   tokens: GoogleTokens,
@@ -47,7 +49,10 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     ) {
       session.set(key, value)
     }
-
-    return redirect('/app')
+    const isInvitee = redis.get(sessionId)
+    if (!isInvitee) {
+      return redirect('/app')
+    }
+    return redirect('/app/redirect-accept-invite')
   },
 }

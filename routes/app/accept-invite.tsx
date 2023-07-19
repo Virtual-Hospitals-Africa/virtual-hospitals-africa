@@ -1,21 +1,21 @@
-import redirect from '../../../../util/redirect.ts'
+import redirect from '../../util/redirect.ts'
 import {
   HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
   TrxOrDb,
-} from '../../../../types.ts'
+} from '../../types.ts'
 import {
   addEmployee,
   getInvitee,
   isHealthWorkerWithGoogleTokens,
   upsert,
-} from '../../../../db/models/health_workers.ts'
+} from '../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
-import { CheckIcon } from '../../../../components/library/CheckIcon.tsx'
-import { redis } from '../../../../external-clients/redis.ts'
-import generateUUID from '../../../../util/uuid.ts'
+import { CheckIcon } from '../../components/library/CheckIcon.tsx'
+import { redis } from '../../external-clients/redis.ts'
+import generateUUID from '../../util/uuid.ts'
 
 type AcceptInvitePageProps = {
   healthWorker: HealthWorkerWithGoogleTokens
@@ -37,7 +37,7 @@ export const handler: LoggedInHealthWorkerHandler<AcceptInvitePageProps> = {
 
     const healthWorker = ctx.state.session.data
     if (!isHealthWorkerWithGoogleTokens(healthWorker)) {
-      return redirect(`/app/facilities/${facilityId}/employees/redirect`)
+      return redirect(`/app/redirect-login`)
     }
 
     const invite = await getInvitee(ctx.state.trx, {
@@ -88,9 +88,7 @@ export async function addToHealthWorkerAndEmploymentTable(
   )
 }
 
-export default function acceptInvite(
-  props: PageProps<AcceptInvitePageProps>,
-) {
+export function acceptInvite() {
   return (
     <div className='rounded-md bg-green-50 p-4'>
       <div className='flex'>

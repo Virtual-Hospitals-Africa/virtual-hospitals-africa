@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'preact/hooks'
-import { oauthParams } from '../../../../external-clients/google.ts'
+import { oauthParams } from '../../external-clients/google.ts'
 
 export default function Redirect() {
   const redirectTimeout = useRef<number | null>(null)

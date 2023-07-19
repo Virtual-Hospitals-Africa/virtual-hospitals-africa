@@ -315,6 +315,19 @@ export async function getInvitee(
   return result[0]
 }
 
+export async function getInviteCode(
+  trx: TrxOrDb,
+  email: string
+): Promise<string> {
+  const result = await trx
+    .selectFrom('health_worker_invitees')
+    .where('email', '=', email)
+    .select('invite_code')
+    .execute()
+  assertEquals(result.length, 1)
+  return result[0].invite_code
+}
+
 export async function addEmployee(
   trx: TrxOrDb,
   opts: {
