@@ -14,6 +14,23 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15.3
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432/tcp
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379/tcp
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -30,7 +47,7 @@ jobs:
         run: deno fmt --check
 
       - name: Test setup
-        run: ./test_setup.sh
+        run: echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
 
       - name: Run tests
         run: deno task test
