@@ -16,7 +16,6 @@
     "dotenv": "https://deno.land/x/dotenv@v3.2.2/load.ts",
     "twind": "https://esm.sh/twind@0.16.19",
     "twind/": "https://esm.sh/twind@0.16.19/",
-    "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
-    "sinon": "https://cdn.skypack.dev/sinon"
+    "csv": "https://deno.land/x/csv@v0.8.0/mod.ts"
   }
 }

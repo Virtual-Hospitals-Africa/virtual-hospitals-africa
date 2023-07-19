@@ -1,15 +1,11 @@
-// deno-lint-ignore-file no-explicit-any
-import db from '../../db/db.ts'
-import respond from '../../chatbot/respond.ts'
-import * as conversations from '../../db/models/conversations.ts'
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import sinon from 'npm:sinon'
+import db from '../../db/db.ts'
 import reset from '../../db/reset.ts'
+import * as conversations from '../../db/models/conversations.ts'
 import * as patients from '../../db/models/patients.ts'
-import {
-  assert,
-  assertEquals,
-} from 'https://deno.land/std@0.190.0/testing/asserts.ts'
+import respond from '../../chatbot/respond.ts'
 
 describe('patient chatbot', () => {
   beforeEach(reset)
@@ -25,7 +21,7 @@ describe('patient chatbot', () => {
     })
 
     const fakeWhatsApp = {
-      sendMessage: sinon.stub().resolves({} as any),
+      sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
           id: 'wamid.1234',
