@@ -30,7 +30,9 @@
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
 
     "switch:prod": "cp .env.prod .env",
-    "switch:local": "cp .env.local .env"
+    "switch:local": "cp .env.local .env",
+
+    "test": "DENO_TLS_CA_STORE=system deno test -A  --unsafely-ignore-certificate-errors"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {

@@ -29,8 +29,11 @@ jobs:
       - name: Run fmt --check
         run: deno fmt --check
 
+      - name: Test setup
+        run: ./test_setup.sh
+
       - name: Run tests
-        run: deno test
+        run: deno task test
 
       - name: Compile chatbot
         run: deno task compile:chatbot
