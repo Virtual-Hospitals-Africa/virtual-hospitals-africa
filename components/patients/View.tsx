@@ -6,10 +6,23 @@ import FormRow from '../library/form/Row.tsx'
 import PatientsEmptyState from './EmptyState.tsx'
 import PatientsTable from './Table.tsx'
 import PatientCards from '../../islands/patient-cards.tsx'
+import { Patient as PatientData } from '../../components/patients/Table.tsx'
+
+function attachAvatarUrl(
+  patients: ReturnedSqlRow<Patient & { name: string }>[],
+): PatientData[] {
+  return patients.map((patient) => ({
+    ...patient,
+    avatar_url: patient.avatar_media_id
+      ? `/app/patients/${patient.id}/avatar`
+      : undefined,
+  }))
+}
 
 function NonEmptyPatientsView(
   { patients }: { patients: ReturnedSqlRow<Patient & { name: string }>[] },
 ) {
+  const patientsWithAvatarUrl = attachAvatarUrl(patients)
   return (
     <>
       <FormRow className='mb-4'>
@@ -26,10 +39,10 @@ function NonEmptyPatientsView(
       </FormRow>
 
       <PatientCards
-        patients={patients}
+        patients={patientsWithAvatarUrl}
         className='flex sm:hidden'
       />
-      <PatientsTable patients={patients} />
+      <PatientsTable patients={patientsWithAvatarUrl} />
     </>
   )
 }

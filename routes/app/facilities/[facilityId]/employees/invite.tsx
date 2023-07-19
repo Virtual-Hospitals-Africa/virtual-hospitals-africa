@@ -16,6 +16,7 @@ import {
 } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
 import { addToInvitees } from '../..../../../../../../db/models/health_workers.ts'
 import generateUUID from '../../../../../util/uuid.ts'
+import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 
 type InvitePageProps = {
@@ -37,10 +38,12 @@ function isInvite(
 
 function isInvites(
   values: unknown,
-): values is Invite[] {
-  return true
-  //commented out because it's somehow causing error
-  //return Array.isArray(values) && values.every(isInvite)
+): values is { invites: Invite[] } {
+  return isObjectLike(values) &&
+    Array.isArray(values.invites) &&
+    isInvite(values.invites[0]) &&
+    // The last may be incomplete
+    values.invites.slice(0, -1).every(isInvite)
 }
 
 async function sendInviteMail(
@@ -105,24 +108,20 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 
     console.log(`Inviting user to facility ${facilityId}`)
 
-    const values = await parseRequest<Invite[]>(req, [], isInvites)
-    console.log(values)
-    for (const invite of values) {
-      const email = invite.email
-      const profession = invite.profession
+    const { invites } = await parseRequest(ctx.state.trx, req, isInvites)
 
-      if (email) {
-        const inviteCode = generateUUID()
-        //still working on sendInviteMail
-        //await sendInviteMail(email, inviteCode, facilityId)
-        const Response = await addToInvitees(ctx.state.trx, {
-          email: email,
-          profession: profession,
-          facility_id: facilityId,
-          invite_code: inviteCode,
-        })
-        console.log(Response)
-      }
+    for (const { email, profession } of invites) {
+      if (!email) continue
+      const inviteCode = generateUUID()
+      //still working on sendInviteMail
+      //await sendInviteMail(email, inviteCode, facilityId)
+      const result = await addToInvitees(ctx.state.trx, {
+        email: email,
+        profession: profession,
+        facility_id: facilityId,
+        invite_code: inviteCode,
+      })
+      console.log(result)
     }
     return redirect(`/app/email-success`)
   },

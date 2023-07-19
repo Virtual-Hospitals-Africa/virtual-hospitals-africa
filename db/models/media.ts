@@ -1,4 +1,4 @@
-import { PatientMedia, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
+import { Media, PatientMedia, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
 import { sql } from 'kysely'
 
 export async function getPatientMediaCount(
@@ -15,7 +15,7 @@ export async function getPatientMediaCount(
 
 export async function insert(
   trx: TrxOrDb,
-  opts: { file_name: string; binary_data: BinaryData; mime_type: string },
+  opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<ReturnedSqlRow<PatientMedia>> {
   return await trx.insertInto('media').values(opts).returningAll()
     .executeTakeFirstOrThrow()
@@ -31,4 +31,19 @@ export async function retrieveImage(
     opts.media_id,
   ).select('binary_data').executeTakeFirstOrThrow()
   return binary_data
+}
+
+export function get(
+  trx: TrxOrDb,
+  opts: { media_id: number },
+): Promise<ReturnedSqlRow<Media>> {
+  return trx
+    .selectFrom('media')
+    .where(
+      'media.id',
+      '=',
+      opts.media_id,
+    )
+    .selectAll()
+    .executeTakeFirstOrThrow()
 }

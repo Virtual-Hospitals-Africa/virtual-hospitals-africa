@@ -187,8 +187,12 @@ export function timeRangeInSimpleAmPm(
     : `${timeStart}-${timeEnd}`
 }
 
+export function isRfc3339(date: string): boolean {
+  return rfc3339Regex.test(date)
+}
+
 export function isIsoHarare(date: string): boolean {
-  return rfc3339Regex.test(date) && date.endsWith('+02:00')
+  return isRfc3339(date) && date.endsWith('+02:00')
 }
 
 export function assertAllHarare(dates: string[]) {

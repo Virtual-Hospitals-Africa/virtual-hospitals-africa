@@ -75,8 +75,8 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     )
 
     const search = await parseRequest<SearchFormValues>(
+      ctx.state.trx,
       req,
-      {},
       isSearchFormValues,
     )
 
@@ -134,8 +134,8 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     )
 
     const schedule = await parseRequest<ScheduleFormValues>(
+      ctx.state.trx,
       req,
-      {},
       isScheduleFormValues,
     )
 

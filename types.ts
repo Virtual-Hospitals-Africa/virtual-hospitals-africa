@@ -67,8 +67,9 @@ export type PatientConversationState =
   | 'other_end_of_demo'
 
 export type Patient = {
+  id: number
   conversation_state: PatientConversationState
-  avatar_url?: string
+  avatar_media_id?: number
   location?: Maybe<Location>
 } & PatientDemographicInfo
 
@@ -237,6 +238,9 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
 export type ConversationStateHandlerLocation<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'location'
+    getMessages: (
+      userState: US,
+    ) => WhatsAppSendable
     nextState: ConversationStateHandlerNextState<US>
   }>
 
@@ -718,6 +722,43 @@ export type Profession =
   | 'doctor'
   | 'nurse'
 
+export type NurseSpeciality =
+  | 'primary_care_nurse'
+  | 'registered_general_nurse'
+  | 'midwife'
+  | 'intensive_and_coronary_care_nurse'
+  | 'renal_nurse'
+  | 'neonatal_intensive_care_and_paediatric_nurse'
+  | 'psychiatric_mental_health_nurse'
+  | 'operating_theatre_nurse'
+  | 'community_nurse'
+  | 'opthalmic_nurse'
+  | 'nurse_administrator'
+  | 'nurse_anaesthetist'
+  | 'trauma_care_nurse'
+  | 'clinical_care_nurse'
+  | 'clinical_officer'
+  | 'orthopaedic_nurse'
+  | 'oncology_and_palliative_care_nurse'
+  | 'dental_nurse'
+
+export type NurseRegistrationDetails = {
+  health_worker_id: number
+  gender: Gender
+  national_id: string
+  date_of_first_practice: Date
+  ncz_registration_number: string
+  mobile_number: string
+  national_id_media_id: Maybe<number>
+  ncz_registration_card_media_id: Maybe<number>
+  face_picture_media_id: Maybe<number>
+}
+
+export type Specialities = {
+  nurse_id: number
+  speciality: NurseSpeciality
+}
+
 export type HealthWorker = {
   name: string
   email: string
@@ -803,11 +844,13 @@ export type WhatsAppMessageOption = {
 
 export type TrxOrDb = Transaction<DatabaseSchema> | typeof db
 
-export type WhatsAppSendable =
+export type WhatsAppSingleSendable =
   | WhatsAppSendableString
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
+
+export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
 export type HealthWorkerAppointmentSlot = {
   type: 'slot'
@@ -958,9 +1001,12 @@ export type LocationDistance = {
   origin: Location
   destination: Location
 }
-export type PatientMedia = {
-  id: number
-  file_name: string
+
+export type Media = {
   mime_type: string
   binary_data: BinaryData
+}
+
+export type PatientMedia = Media & {
+  id: number
 }

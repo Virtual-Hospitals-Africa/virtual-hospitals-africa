@@ -9,7 +9,9 @@ import {
   LoggedInHealthWorkerHandler,
   Time,
 } from '../../../types.ts'
-import SetAvailabilityForm from '../../../islands/availability-form.tsx'
+import SetAvailabilityForm, {
+  isPartialAvailability,
+} from '../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import {
   assertAllHarare,
@@ -21,8 +23,8 @@ import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_worker
 import { padTime } from '../../../util/pad.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseDate } from '../../../util/date.ts'
-import parseAvailabilityForm from '../../../util/parseAvailabilityForm.ts'
 import { Container } from '../../../components/library/Container.tsx'
+import { parseRequest } from '../../../util/parseForm.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -53,12 +55,13 @@ const toHarare = (time: Time) => {
 }
 
 function* availabilityBlocks(
-  availability: AvailabilityJSON,
+  availability: Partial<AvailabilityJSON>,
 ): Generator<DeepPartial<GCalEvent>> {
   const today = parseDate(new Date(), 'twoDigit')
   const todayIndex = days.indexOf(today.weekday as DayOfWeek)
   for (const day of days) {
     const dayAvailability = availability[day]
+    if (!dayAvailability) continue
     const dayIndex = days.indexOf(day)
     const dayOffset = dayIndex - todayIndex
     const dayDate = new Date(
@@ -131,8 +134,11 @@ export const handler: LoggedInHealthWorkerHandler<
     return ctx.render({ availability, healthWorker })
   },
   async POST(req, ctx) {
-    const params = new URLSearchParams(await req.text())
-    const availability = parseAvailabilityForm(params)
+    const availability = await parseRequest(
+      ctx.state.trx,
+      req,
+      isPartialAvailability,
+    )
 
     const gcal_availability_calendar_id = ctx.state.session.get(
       'gcal_availability_calendar_id',

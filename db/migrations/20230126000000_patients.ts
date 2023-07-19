@@ -11,6 +11,15 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await db.schema
+    .createType('gender')
+    .asEnum([
+      'male',
+      'female',
+      'other',
+    ])
+    .execute()
+
+  await db.schema
     .createTable('patients')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
@@ -25,7 +34,7 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn('phone_number', 'varchar(255)', (col) => col.notNull())
     .addColumn('name', 'varchar(255)')
-    .addColumn('gender', 'varchar(50)')
+    .addColumn('gender', sql`gender`)
     .addColumn('date_of_birth', 'varchar(50)')
     .addColumn('national_id_number', 'varchar(50)')
     .addColumn('avatar_url', 'varchar(255)')
@@ -50,4 +59,5 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patients').execute()
   await db.schema.dropType('patient_conversation_state').execute()
+  await db.schema.dropType('gender').execute()
 }

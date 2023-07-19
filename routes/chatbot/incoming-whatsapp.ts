@@ -18,7 +18,6 @@ async function downloadAndInsertMedia(media_id: string) {
   const insertedMedia = await media.insert(db, {
     binary_data,
     mime_type,
-    file_name: 'patient_media',
   })
   return insertedMedia.id
 }

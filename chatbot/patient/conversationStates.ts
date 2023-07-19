@@ -12,6 +12,8 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+  WhatsAppSendable,
+  WhatsAppSingleSendable,
 } from '../../types.ts'
 import {
   convertToTimeString,
@@ -255,15 +257,18 @@ const conversationStates: ConversationStates<
     },
   },
   'find_nearest_facility:send_facility_location': {
-    prompt(patientState: PatientState): string {
+    prompt(): string {
+      return 'I will send you facility location'
+    },
+    getMessages(patientState: PatientState): WhatsAppSendable {
       const { selectedFacility } = patientState
       assert(
         selectedFacility,
         'selectedFacility should be available in the patientState',
       )
-      // TODO Slightly hacky — better would be to give the precise type for the return of prompt for
-      // this ConversationStateHandlerType
-      return JSON.stringify({
+
+      const locationMessage: WhatsAppSingleSendable = {
+        type: 'location',
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
@@ -271,7 +276,18 @@ const conversationStates: ConversationStates<
           name: selectedFacility.name,
           address: selectedFacility.address,
         },
-      })
+      }
+
+      const buttonMessage: WhatsAppSingleSendable = {
+        type: 'buttons',
+        messageBody: 'Click below to go back to main menu.',
+        buttonText: 'Back to main menu',
+        options: [{
+          id: 'back_to_menu',
+          title: 'Back to Menu',
+        }],
+      }
+      return [locationMessage, buttonMessage]
     },
     type: 'location',
     nextState: 'not_onboarded:welcome',

@@ -3,7 +3,9 @@ import Layout from '../../../components/library/Layout.tsx'
 import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
+  Media,
   Patient,
+  ReturnedSqlRow,
 } from '../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import * as patients from '../../../db/models/patients.ts'
@@ -13,9 +15,9 @@ import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
-import { isObject } from 'https://deno.land/x/importmap@0.2.1/_util.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
+import isObjectLike from '../../../util/isObjectLike.ts'
 
 type AddPatientProps = {
   healthWorker: HealthWorker
@@ -28,8 +30,10 @@ type HasNames = {
   middle_names?: string
 }
 
-function hasNames(patient: unknown): patient is HasNames {
-  return isObject(patient) && !!patient.first_name && !!patient.last_name
+function hasNames(
+  patient: unknown,
+): patient is HasNames & { avatar_media?: ReturnedSqlRow<Media> } {
+  return isObjectLike(patient) && !!patient.first_name && !!patient.last_name
 }
 
 const pickDemographics = pick([
@@ -37,7 +41,6 @@ const pickDemographics = pick([
   'gender',
   'date_of_birth',
   'national_id_number',
-  'avatar_url',
 ])
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -48,7 +51,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
-    const patientData = await parseRequest(req, {}, hasNames, 'avatar_url')
+    const patientData = await parseRequest(ctx.state.trx, req, hasNames)
 
     const patient = {
       ...pickDemographics(patientData),
@@ -57,14 +60,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         patientData.middle_names,
         patientData.last_name,
       ]).join(' '),
-    }
-
-    if (patient.avatar_url) {
-      const filePath = patient.avatar_url.replace('temp', '/images/patient')
-      // TODO: Save the binary file to database directly
-      const fileSavedPath = `static${filePath}`
-      await Deno.copyFile(patient.avatar_url, fileSavedPath)
-      patient.avatar_url = filePath
+      avatar_media_id: patientData.avatar_media?.id,
     }
 
     assert(patients.hasDemographicInfo(patient))
