@@ -6,7 +6,7 @@ import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import { TrxOrDb } from '../types.ts'
 import db from '../db/db.ts'
 import { redis } from '../external-clients/redis.ts'
-import { sessionId } from '../routes/app/accept-invite.tsx'
+import { sessionId } from '../routes/app/facilities/[facilityId]/accept-invite.tsx'
 
 export const handler = [
   redisSession(redis, {

@@ -324,7 +324,9 @@ export async function getInviteCode(
     .where('email', '=', email)
     .select('invite_code')
     .execute()
-  assertEquals(result.length, 1)
+    if (!result[0]) {
+      throw new Error(`No invitee found with email ${email}`);
+    }
   return result[0].invite_code
 }
 
