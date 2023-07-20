@@ -11,7 +11,7 @@ import {
   UserState,
 } from '../types.ts'
 import { isValidDate } from '../util/date.ts'
-import isValidLocationString from "../util/isValidLocationString.ts";
+import isValidLocationString from '../util/isValidLocationString.ts'
 
 // deno-lint-ignore no-explicit-any
 function findMatchingOption<US extends UserState<any>>(
