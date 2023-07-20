@@ -44,10 +44,12 @@ async function importDataFromCSV(db: Kysely<unknown>) {
     // TODO remove this
     i++
     if (i >= 10) return
-    const address = await google.getLocationAddress({
-      longitude: Number(row.longitude),
-      latitude: Number(row.latitude),
-    })
+    const address = Deno.env.get('SKIP_GOOGLE_MAPS')
+      ? null
+      : await google.getLocationAddress({
+        longitude: Number(row.longitude),
+        latitude: Number(row.latitude),
+      })
 
     await sql`
       INSERT INTO facilities (
@@ -60,7 +62,7 @@ async function importDataFromCSV(db: Kysely<unknown>) {
       ) VALUES (
         ${row.name},
         ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
-        ${address ? address : 'Address unknown'},
+        ${address || 'Address unknown'},
         ${row.category},
         ${row.vha},
         ${row.phone}
