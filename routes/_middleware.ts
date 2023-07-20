@@ -31,8 +31,8 @@ export const handler = [
       ctx.state.session.data,
     )
 
-    const isInvitee=redis.get(sessionId)
-    if (!isAuthedHealthWorker&&!isInvitee) return redirect('/')
+    const isInvitee = redis.get(sessionId)
+    if (!isAuthedHealthWorker && !isInvitee) return redirect('/')
 
     return db.transaction().execute((trx: TrxOrDb) => {
       ctx.state.trx = trx

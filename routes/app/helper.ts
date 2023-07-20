@@ -1,4 +1,8 @@
-import { HealthWorkerInvitee, HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import {
+  HealthWorkerInvitee,
+  HealthWorkerWithGoogleTokens,
+  TrxOrDb,
+} from '../../types.ts'
 import { addEmployee } from '../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
 
