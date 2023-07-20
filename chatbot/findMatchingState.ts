@@ -75,6 +75,14 @@ export default function findMatchingState<
       assert(messageBody)
       return findMatchingOption(currentState, messageBody)
     }
+    case 'get_location': {
+      // TODO
+      if (messageBody?.includes("longitude")) {
+        return currentState
+      } else {
+        return null
+      }
+    }
     default:
       return currentState
   }

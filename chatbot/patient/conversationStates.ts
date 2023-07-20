@@ -151,7 +151,7 @@ const conversationStates: ConversationStates<
     },
   },
   'find_nearest_facility:share_location': {
-    type: 'string',
+    type: 'get_location',
     nextState: 'find_nearest_facility:got_location',
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',

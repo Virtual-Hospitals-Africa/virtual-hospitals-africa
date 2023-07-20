@@ -76,6 +76,9 @@ export default function formatMessageToSend<
     case 'end_of_demo': {
       return stringSendable(messageBody)
     }
+    case 'get_location': {
+      return stringSendable(messageBody)
+    }
     default: {
       return stringSendable('What happened!?!?!?!?!?')
     }

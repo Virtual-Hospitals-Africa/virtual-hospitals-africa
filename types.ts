@@ -217,6 +217,13 @@ export type ConversationStateHandlerString<US extends UserState<any>> =
     nextState: ConversationStateHandlerNextState<US>
   }>
 
+export type ConversationStateHandlerGetLocation<US extends UserState<any>> =
+  ConversationStateHandlerType<US, {
+    type: 'get_location'
+    // validation?: (value: string) => boolean
+    nextState: ConversationStateHandlerNextState<US>
+  }>
+
 export type ConversationStateHandlerEndOfDemo<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'end_of_demo'
@@ -258,6 +265,7 @@ export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerDate<US>
   | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
+  | ConversationStateHandlerGetLocation<US>
   | ConversationStateHandlerLocation<US>
   | ConversationStateHandlerExpectMedia<US>
 
