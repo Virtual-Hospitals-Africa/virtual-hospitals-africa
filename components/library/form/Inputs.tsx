@@ -22,8 +22,9 @@ type DateInputProps = Partial<LabeledInputProps> & {
 }
 
 export type TextInputProps = LabeledInputProps & {
-  type?: 'text' | 'email'
+  type?: 'text' | 'email' | 'tel'
   value?: string
+  pattern?: string
 }
 
 type SelectInputProps = Omit<LabeledInputProps, 'onInput'> & {
@@ -48,7 +49,7 @@ function LabeledInput(
 }
 
 export function TextInput(
-  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur }:
+  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur, pattern }:
     TextInputProps,
 ) {
   return (
@@ -63,6 +64,7 @@ export function TextInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
+        pattern={pattern}
       />
     </LabeledInput>
   )

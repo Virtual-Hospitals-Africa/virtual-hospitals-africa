@@ -8,12 +8,14 @@ import {
   HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   Maybe,
+  NurseRegistrationDetails,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
+import { FormState } from '../../routes/app/facilities/[facilityId]/register.tsx'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -214,6 +216,21 @@ export async function getFirstEmployedFacility(
   return firstFacility.facility_id
 }
 
+export async function getEmployee(
+  trx:TrxOrDb,
+  opts: {
+    facilityId: number,
+    healthworkerId: number
+  }
+) {
+  return await trx
+    .selectFrom('employment')
+    .selectAll()
+    .where('facility_id', '=', opts.facilityId)
+    .where('health_worker_id', '=', opts.healthworkerId)
+    .executeTakeFirst()
+}
+
 export async function getEmployeesAtFacility(
   trx: TrxOrDb,
   opts: {
@@ -341,4 +358,36 @@ export async function addEmployee(
     .values(opts.employee)
     .returningAll()
     .executeTakeFirst()
+}
+
+export async function addNurseSpeciality(
+  trx: TrxOrDb,
+  opts: {
+    employeeId: number
+    formData: FormState
+  }
+) {
+  return await trx
+    .insertInto('nurse_specialities')
+    .values({
+      employee_id: opts.employeeId,
+      speciality: opts.formData.speciality
+    })
+    .execute()
+}
+
+export async function addNurseRegistrationDetails(
+  trx: TrxOrDb,
+  opts: {
+    healthworkerId: number,
+    registrationDetails: NurseRegistrationDetails
+  }
+) {
+  console.log(opts.registrationDetails)
+  return await trx
+    .insertInto('nurse_registration_details')
+    .values({
+      health_worker_id: opts.healthworkerId,
+    } && opts.registrationDetails)
+    .execute()
 }
