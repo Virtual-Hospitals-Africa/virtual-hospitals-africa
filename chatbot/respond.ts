@@ -8,12 +8,25 @@ import {
   PatientConversationState,
   PatientState,
   TrxOrDb,
+  WhatsAppJSONResponse,
+  WhatsAppSendable,
+  WhatsAppSingleSendable,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
 import * as patients from '../db/models/patients.ts'
-import { sendMessage, sendMessages } from '../external-clients/whatsapp.ts'
 import patientConversationStates from './patient/conversationStates.ts'
+
+type WhatsApp = {
+  sendMessage(opts: {
+    phone_number: string
+    message: WhatsAppSingleSendable
+  }): Promise<WhatsAppJSONResponse>
+  sendMessages(opts: {
+    phone_number: string
+    messages: WhatsAppSingleSendable | WhatsAppSendable
+  }): Promise<WhatsAppJSONResponse[]>
+}
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
 
@@ -21,6 +34,7 @@ const updatePatientState = (trx: TrxOrDb, patientState: PatientState) =>
   patients.upsert(trx, patients.pick(patientState))
 
 async function respondToPatientMessage(
+  whatsapp: WhatsApp,
   patientConversationStates: ConversationStates<
     PatientConversationState,
     PatientState
@@ -39,7 +53,7 @@ async function respondToPatientMessage(
         )
       )
 
-    const whatsappResponses = await sendMessages({
+    const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
       phone_number: patientState.phone_number,
     })
@@ -62,7 +76,7 @@ async function respondToPatientMessage(
     console.log('Error determining message to send')
     console.error(err)
 
-    await sendMessage({
+    await whatsapp.sendMessage({
       message: {
         type: 'string',
         messageBody: `An unknown error occured: ${err.message}`,
@@ -78,13 +92,13 @@ async function respondToPatientMessage(
   }
 }
 
-export default async function respond() {
+export default async function respond(whatsapp: WhatsApp) {
   const unhandledMessages = await getUnhandledPatientMessages(db, {
     commitHash,
   })
-  return await Promise.all(
+  return Promise.all(
     unhandledMessages.map((msg) =>
-      respondToPatientMessage(patientConversationStates, msg)
+      respondToPatientMessage(whatsapp, patientConversationStates, msg)
     ),
   )
 }

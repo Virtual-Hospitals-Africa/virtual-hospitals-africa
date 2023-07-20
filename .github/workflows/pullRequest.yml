@@ -14,6 +14,28 @@ env:
 jobs:
   check:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgis/postgis:15-3.3
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpw
+          POSTGRES_DB: vha_test
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      redis:
+        image: redis:latest
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Check out code
         uses: actions/checkout@v3
@@ -29,8 +51,17 @@ jobs:
       - name: Run fmt --check
         run: deno fmt --check
 
+      - name: Test setup
+        run: |
+          echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
+          echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
+          echo "SKIP_GOOGLE_MAPS=true" >> .env
+
+      - name: Migrate database
+        run: deno task db:migrate:latest
+
       - name: Run tests
-        run: deno test
+        run: deno task test
 
       - name: Compile chatbot
         run: deno task compile:chatbot
