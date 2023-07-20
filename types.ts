@@ -242,9 +242,9 @@ export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
     nextState: ConversationStateHandlerNextState<US>
   }>
 
-export type ConversationStateHandlerLocation<US extends UserState<any>> =
+export type ConversationStateHandlerSendLocation<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
-    type: 'location'
+    type: 'send_location'
     getMessages: (
       userState: US,
     ) => WhatsAppSendable
@@ -266,7 +266,7 @@ export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
   | ConversationStateHandlerGetLocation<US>
-  | ConversationStateHandlerLocation<US>
+  | ConversationStateHandlerSendLocation<US>
   | ConversationStateHandlerExpectMedia<US>
 
 export type ConversationStates<CS extends string, US extends UserState<CS>> = {
@@ -328,8 +328,8 @@ export type WhatsAppButtonReplyMessage = {
   }
 }
 
-export type WhatsAppLocationMessage = {
-  type: 'location' // TODO: check location message format
+export type WhatsAppSendLocationMessage = {
+  type: 'send_location' // TODO: check location message format
   location: {
     address?: string // full address
     latitude: number // floating-point number
@@ -406,7 +406,7 @@ export type WhatsAppMessage =
     | WhatsAppTextMessage
     | WhatsAppListReplyMessage
     | WhatsAppButtonReplyMessage
-    | WhatsAppLocationMessage
+    | WhatsAppSendLocationMessage
     | WhatsAppAudioMessage
     | WhatsAppImageMessage
     | WhatsAppVideoMessage
@@ -856,7 +856,7 @@ export type WhatsAppSingleSendable =
   | WhatsAppSendableString
   | WhatsAppSendableButtons
   | WhatsAppSendableList
-  | WhatsAppSendableLocation
+  | WhatsAppSendableSendLocation
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
@@ -921,8 +921,8 @@ export type WhatsAppSendableList = {
   action: WhatsAppMessageAction
 }
 
-export type WhatsAppSendableLocation = {
-  type: 'location'
+export type WhatsAppSendableSendLocation = {
+  type: 'send_location'
   messageBody: string
   location: WhatsAppLocation
 }

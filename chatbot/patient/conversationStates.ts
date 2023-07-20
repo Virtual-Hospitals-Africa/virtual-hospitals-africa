@@ -268,7 +268,7 @@ const conversationStates: ConversationStates<
       )
 
       const locationMessage: WhatsAppSingleSendable = {
-        type: 'location',
+        type: 'send_location',
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
@@ -289,7 +289,7 @@ const conversationStates: ConversationStates<
       }
       return [locationMessage, buttonMessage]
     },
-    type: 'location',
+    type: 'send_location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
       const selectedFacility: Maybe<Facility> = patientState.nearest_facilities
