@@ -11,6 +11,7 @@ import {
   UserState,
 } from '../types.ts'
 import { isValidDate } from '../util/date.ts'
+import isValidLocationString from "../util/isValidLocationString.ts";
 
 // deno-lint-ignore no-explicit-any
 function findMatchingOption<US extends UserState<any>>(
@@ -76,12 +77,7 @@ export default function findMatchingState<
       return findMatchingOption(currentState, messageBody)
     }
     case 'get_location': {
-      // TODO: HERE
-      if (messageBody?.includes("longitude")) {
-        return currentState
-      } else {
-        return null
-      }
+      return isValidLocationString(messageBody) ? currentState : null
     }
     default:
       return currentState
