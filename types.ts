@@ -220,7 +220,6 @@ export type ConversationStateHandlerString<US extends UserState<any>> =
 export type ConversationStateHandlerGetLocation<US extends UserState<any>> =
   ConversationStateHandlerType<US, {
     type: 'get_location'
-    // validation?: (value: string) => boolean
     nextState: ConversationStateHandlerNextState<US>
   }>
 
