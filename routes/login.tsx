@@ -7,7 +7,10 @@ import { WithSession } from 'https://raw.githubusercontent.com/will-weiss/fresh-
 export const handler: Handlers<unknown, WithSession> = {
   GET(_req, ctx) {
     const healthWorker = ctx.state.session.data
-    if (isHealthWorkerWithGoogleTokens(healthWorker)) return redirect('/app')
+
+    if (isHealthWorkerWithGoogleTokens(healthWorker)) {
+      return redirect('/app')
+    }
     const loginUrl =
       `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
     return redirect(loginUrl)
