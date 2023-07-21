@@ -63,7 +63,7 @@ export async function insertMessageReceived(
     & Pick<
       WhatsAppMessageReceived,
       'whatsapp_id' | 'has_media' | 'body' | 'media_id'
-    >
+    >,
 ): Promise<
   ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {

@@ -8,8 +8,32 @@ import * as patients from '../../db/models/patients.ts'
 import respond from '../../chatbot/respond.ts'
 
 describe('patient chatbot', () => {
-  beforeEach(reset)
-  afterEach(() => db.destroy())
+  // beforeEach(reset)
+  let beforeTestResources: Deno.ResourceMap
+
+  beforeEach(async () => {
+    beforeTestResources = Deno.resources()
+
+    await reset()
+  })
+
+  afterEach(async () => {
+    await db.destroy()
+
+    const afterTestResources = Deno.resources()
+    for (const rid in afterTestResources) {
+      if (rid in beforeTestResources) {
+        continue
+      }
+      if (
+        afterTestResources[rid] === 'tcpListener' ||
+        afterTestResources[rid] === 'tcpStream'
+      ) {
+        Deno.close(Number(rid))
+      }
+    }
+  })
+  // afterEach(() => db.destroy())
 
   it('It sends the main menu after the initial message', async () => {
     await conversations.insertMessageReceived(db, {
@@ -60,7 +84,7 @@ describe('patient chatbot', () => {
       name: 'test',
       gender: 'female',
       date_of_birth: '1111/11/11',
-      national_id_number: ''
+      national_id_number: '',
     })
 
     await conversations.insertMessageReceived(db, {
@@ -68,7 +92,7 @@ describe('patient chatbot', () => {
       has_media: false,
       body: 'find_nearest_facility',
       media_id: null,
-      whatsapp_id: 'whatsapp_id'
+      whatsapp_id: 'whatsapp_id',
     })
 
     const fakeWhatsApp = {
@@ -85,17 +109,21 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          type: "string",
-          messageBody: "Sure, we can find your nearest facility. Can you share your location?"
+          type: 'string',
+          messageBody:
+            'Sure, we can find your nearest facility. Can you share your location?',
         },
-        phone_number: "00000000"
-      }
+        phone_number: '00000000',
+      },
     ])
     const patient = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })
 
     assert(patient)
-    assertEquals(patient.conversation_state, 'find_nearest_facility:share_location')
+    assertEquals(
+      patient.conversation_state,
+      'find_nearest_facility:share_location',
+    )
   })
 })
