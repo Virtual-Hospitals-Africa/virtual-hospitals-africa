@@ -62,7 +62,7 @@ export default function formatMessageToSend<
           options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
         }
     }
-    case 'location': {
+    case 'send_location': {
       return state.getMessages(userState)
     }
     case 'date': {
@@ -74,6 +74,9 @@ export default function formatMessageToSend<
       return stringSendable(messageBody)
     }
     case 'end_of_demo': {
+      return stringSendable(messageBody)
+    }
+    case 'get_location': {
       return stringSendable(messageBody)
     }
     default: {

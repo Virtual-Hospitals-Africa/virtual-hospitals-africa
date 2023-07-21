@@ -64,7 +64,7 @@ export function sendMessage({
         action: message.action,
       })
     }
-    case 'location': {
+    case 'send_location': {
       return sendMessageLocation({
         phone_number,
         location: message.location,

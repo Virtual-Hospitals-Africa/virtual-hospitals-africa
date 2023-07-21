@@ -151,7 +151,7 @@ const conversationStates: ConversationStates<
     },
   },
   'find_nearest_facility:share_location': {
-    type: 'string',
+    type: 'get_location',
     nextState: 'find_nearest_facility:got_location',
     prompt:
       'Sure, we can find your nearest facility. Can you share your location?',
@@ -268,7 +268,7 @@ const conversationStates: ConversationStates<
       )
 
       const locationMessage: WhatsAppSingleSendable = {
-        type: 'location',
+        type: 'send_location',
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
@@ -289,7 +289,7 @@ const conversationStates: ConversationStates<
       }
       return [locationMessage, buttonMessage]
     },
-    type: 'location',
+    type: 'send_location',
     nextState: 'not_onboarded:welcome',
     onEnter(_trx, patientState) {
       const selectedFacility: Maybe<Facility> = patientState.nearest_facilities
