@@ -4,21 +4,24 @@ import { HasId } from '../../types.ts'
 import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
 
-type PersonSearchResultProps = {
+type BasicSelectProps = {
+  isSelected: boolean
+  onSelect: () => void
+}
+
+type PersonSearchResultProps = BasicSelectProps & {
   person: HasId<{ name: string; avatar_url?: string }>
-  isSelected: boolean
-  onSelect: () => void
 }
 
-type FacilitySearchResultProps = {
+type FacilitySearchResultProps = BasicSelectProps & {
   facility: HasId<{ name: string; address: string }>
-  isSelected: boolean
-  onSelect: () => void
 }
 
-export function PersonSearchResult(
-  { person, isSelected, onSelect }: PersonSearchResultProps,
-) {
+type SearchResultProps = BasicSelectProps & {
+  children: JSX.Element
+}
+
+function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
   const [isActive, setIsActive] = useState(false)
 
   return (
@@ -29,23 +32,12 @@ export function PersonSearchResult(
       )}
       role='option'
       tabIndex={-1}
-      onClick={() => {
-        console.log('WEKLWELKEW')
-        onSelect()
-      }}
+      onClick={() => onSelect()}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >
-      <div className='flex items-center'>
-        <Avatar
-          src={person.avatar_url}
-          className='h-6 w-6 flex-shrink-0 rounded-full'
-        />
-        <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
-          {person.name}
-        </span>
-      </div>
-      {isActive && (
+      {children}
+      {(isActive || isSelected) && (
         <span
           className={cls(
             'absolute inset-y-0 right-0 flex items-center pr-4',
@@ -70,23 +62,29 @@ export function PersonSearchResult(
   )
 }
 
+export function PersonSearchResult(
+  { person, isSelected, onSelect }: PersonSearchResultProps,
+) {
+  return (
+    <SearchResult isSelected={isSelected} onSelect={onSelect}>
+      <div className='flex items-center'>
+        <Avatar
+          src={person.avatar_url}
+          className='h-6 w-6 flex-shrink-0 rounded-full'
+        />
+        <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
+          {person.name}
+        </span>
+      </div>
+    </SearchResult>
+  )
+}
+
 export function FacilitySearchResult(
   { facility, isSelected, onSelect }: FacilitySearchResultProps,
 ) {
-  const [isActive, setIsActive] = useState(false)
-
   return (
-    <li
-      className={cls(
-        'relative cursor-default select-none py-2 pl-3 pr-9',
-        isActive ? 'text-white bg-indigo-600' : 'text-gray-900',
-      )}
-      role='option'
-      tabIndex={-1}
-      onClick={() => onSelect()}
-      onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => setIsActive(false)}
-    >
+    <SearchResult isSelected={isSelected} onSelect={onSelect}>
       <div className='flex flex-col'>
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
           {facility.name}
@@ -95,28 +93,7 @@ export function FacilitySearchResult(
           {facility.address}
         </div>
       </div>
-      {(isActive || isSelected) && (
-        <span
-          className={cls(
-            'absolute inset-y-0 right-0 flex items-center pr-4',
-            isActive ? 'text-white' : 'text-indigo-600',
-          )}
-        >
-          <svg
-            className='h-5 w-5'
-            viewBox='0 0 20 20'
-            fill='currentColor'
-            aria-hidden='true'
-          >
-            <path
-              fill-rule='evenodd'
-              d='M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z'
-              clip-rule='evenodd'
-            />
-          </svg>
-        </span>
-      )}
-    </li>
+    </SearchResult>
   )
 }
 
