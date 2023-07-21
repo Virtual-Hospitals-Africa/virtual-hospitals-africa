@@ -1,4 +1,4 @@
-import { Kysely } from "kysely";
+import { Kysely } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db
@@ -13,7 +13,7 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-   await db
+  await db
     .schema
     .alterTable('patients')
     .dropColumn('country')
