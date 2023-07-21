@@ -17,6 +17,7 @@ import {
 import { addToInvitees } from '../..../../../../../../db/models/health_workers.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import redirect from '../../../../../util/redirect.ts'
 
 type InvitePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -122,7 +123,7 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       })
       console.log(result)
     }
-    return new Response('OK')
+    return redirect(`/app/email-success`)
   },
 }
 
