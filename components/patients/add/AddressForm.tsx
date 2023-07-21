@@ -16,7 +16,7 @@ function PatientAddress() {
       </FormRow>
       <FormRow>
         <TextInput name='district' label='District' required />
-        <TextInput name='city' label='City' required />
+        <TextInput name='ward' label='City/Town/Ward' required />
       </FormRow>
       <FormRow>
         <TextInput name='street' label='Street Address/Village' required />
@@ -31,7 +31,7 @@ function NearestHealthCare() {
       <SectionHeader className='mb-3'>Nearest Health Care</SectionHeader>
       <FormRow>
         <FacilitySearch
-          name='facility'
+          name='nearest_facility'
           href='/app/facilities'
           label='Nearest Facility'
           required
