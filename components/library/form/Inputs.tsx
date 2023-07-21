@@ -7,6 +7,7 @@ type LabeledInputProps = {
   label?: string
   required?: boolean
   placeholder?: string
+  disabled?: boolean
   onInput?: JSX.GenericEventHandler<HTMLInputElement>
   onFocus?: JSX.GenericEventHandler<HTMLInputElement>
   onBlur?: JSX.GenericEventHandler<HTMLInputElement>
@@ -48,7 +49,7 @@ function LabeledInput(
 }
 
 export function TextInput(
-  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur }:
+  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur, disabled }:
     TextInputProps,
 ) {
   return (
@@ -59,6 +60,7 @@ export function TextInput(
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
         value={value}
         onInput={onInput}
         onFocus={onFocus}

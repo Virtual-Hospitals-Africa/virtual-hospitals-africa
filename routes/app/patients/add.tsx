@@ -14,6 +14,7 @@ import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
+import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
@@ -93,7 +94,7 @@ export default function AddPatient(
           encType='multipart/form-data'
         >
           {currentStep === 'personal' && <PatientPersonalForm />}
-          {currentStep === 'address' && <div>TODO address form</div>}
+          {currentStep === 'address' && <PatientAddressForm />}
           {currentStep === 'history' && <div>TODO history form</div>}
           {currentStep === 'allergies' && <div>TODO allergies form</div>}
           {currentStep === 'age_related_questions' && <div>TODO age form</div>}

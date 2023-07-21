@@ -1,5 +1,7 @@
 import { sql } from 'kysely'
-import { Facility, Location, ReturnedSqlRow, TrxOrDb } from '../../types.ts'
+import { assert } from 'std/testing/asserts.ts'
+import { Facility, Location, ReturnedSqlRow, TrxOrDb, Maybe } from '../../types.ts'
+import haveNames from '../../util/haveNames.ts'
 
 export async function nearest(
   trx: TrxOrDb,
@@ -19,4 +21,22 @@ export async function nearest(
   `.execute(trx)
 
   return result.rows
+}
+
+export async function getAllWithNames(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<ReturnedSqlRow<Facility>[]> {
+  let query = trx
+    .selectFrom('facilities')
+    .selectAll()
+    .where('name', 'is not', null)
+
+  if (search) query = query.where('name', 'ilike', `%${search}%`)
+
+  const facilities = await query.execute()
+
+  assert(haveNames(facilities))
+
+  return facilities
 }
