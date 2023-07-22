@@ -5,24 +5,24 @@
 import * as $0 from './routes/_404.tsx'
 import * as $1 from './routes/_middleware.ts'
 import * as $2 from './routes/accept-invite/[inviteCode].tsx'
-import * as $3 from './routes/app.tsx'
-import * as $4 from './routes/app/calendar.tsx'
-import * as $5 from './routes/app/calendar/appointments/[id].tsx'
-import * as $6 from './routes/app/calendar/appointments/schedule.tsx'
-import * as $7 from './routes/app/calendar/availability.tsx'
-import * as $8 from './routes/app/email-success.tsx'
-import * as $9 from './routes/app/employees.tsx'
-import * as $10 from './routes/app/facilities/[facilityId]/employees.tsx'
-import * as $11 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $12 from './routes/app/health_workers.tsx'
-import * as $13 from './routes/app/helper.ts'
-import * as $14 from './routes/app/invite-confirmation.tsx'
-import * as $15 from './routes/app/patients.tsx'
-import * as $16 from './routes/app/patients/[id].tsx'
-import * as $17 from './routes/app/patients/[id]/avatar.tsx'
-import * as $18 from './routes/app/patients/add.tsx'
-import * as $19 from './routes/app/redirect-accept-invite.tsx'
-import * as $20 from './routes/app/redirect-login.tsx'
+import * as $3 from './routes/accept-invite/redirect-login.tsx'
+import * as $4 from './routes/app.tsx'
+import * as $5 from './routes/app/calendar.tsx'
+import * as $6 from './routes/app/calendar/appointments/[id].tsx'
+import * as $7 from './routes/app/calendar/appointments/schedule.tsx'
+import * as $8 from './routes/app/calendar/availability.tsx'
+import * as $9 from './routes/app/email-success.tsx'
+import * as $10 from './routes/app/employees.tsx'
+import * as $11 from './routes/app/facilities/[facilityId]/employees.tsx'
+import * as $12 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
+import * as $13 from './routes/app/health_workers.tsx'
+import * as $14 from './routes/app/helper.ts'
+import * as $15 from './routes/app/invite-confirmation.tsx'
+import * as $16 from './routes/app/patients.tsx'
+import * as $17 from './routes/app/patients/[id].tsx'
+import * as $18 from './routes/app/patients/[id]/avatar.tsx'
+import * as $19 from './routes/app/patients/add.tsx'
+import * as $20 from './routes/app/redirect-accept-invite.tsx'
 import * as $21 from './routes/chatbot/incoming-whatsapp.ts'
 import * as $22 from './routes/foo.tsx'
 import * as $23 from './routes/full-reset.ts'
@@ -44,24 +44,24 @@ const manifest = {
     './routes/_404.tsx': $0,
     './routes/_middleware.ts': $1,
     './routes/accept-invite/[inviteCode].tsx': $2,
-    './routes/app.tsx': $3,
-    './routes/app/calendar.tsx': $4,
-    './routes/app/calendar/appointments/[id].tsx': $5,
-    './routes/app/calendar/appointments/schedule.tsx': $6,
-    './routes/app/calendar/availability.tsx': $7,
-    './routes/app/email-success.tsx': $8,
-    './routes/app/employees.tsx': $9,
-    './routes/app/facilities/[facilityId]/employees.tsx': $10,
-    './routes/app/facilities/[facilityId]/employees/invite.tsx': $11,
-    './routes/app/health_workers.tsx': $12,
-    './routes/app/helper.ts': $13,
-    './routes/app/invite-confirmation.tsx': $14,
-    './routes/app/patients.tsx': $15,
-    './routes/app/patients/[id].tsx': $16,
-    './routes/app/patients/[id]/avatar.tsx': $17,
-    './routes/app/patients/add.tsx': $18,
-    './routes/app/redirect-accept-invite.tsx': $19,
-    './routes/app/redirect-login.tsx': $20,
+    './routes/accept-invite/redirect-login.tsx': $3,
+    './routes/app.tsx': $4,
+    './routes/app/calendar.tsx': $5,
+    './routes/app/calendar/appointments/[id].tsx': $6,
+    './routes/app/calendar/appointments/schedule.tsx': $7,
+    './routes/app/calendar/availability.tsx': $8,
+    './routes/app/email-success.tsx': $9,
+    './routes/app/employees.tsx': $10,
+    './routes/app/facilities/[facilityId]/employees.tsx': $11,
+    './routes/app/facilities/[facilityId]/employees/invite.tsx': $12,
+    './routes/app/health_workers.tsx': $13,
+    './routes/app/helper.ts': $14,
+    './routes/app/invite-confirmation.tsx': $15,
+    './routes/app/patients.tsx': $16,
+    './routes/app/patients/[id].tsx': $17,
+    './routes/app/patients/[id]/avatar.tsx': $18,
+    './routes/app/patients/add.tsx': $19,
+    './routes/app/redirect-accept-invite.tsx': $20,
     './routes/chatbot/incoming-whatsapp.ts': $21,
     './routes/foo.tsx': $22,
     './routes/full-reset.ts': $23,

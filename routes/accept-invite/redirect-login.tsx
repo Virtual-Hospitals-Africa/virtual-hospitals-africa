@@ -1,16 +1,12 @@
 import { useEffect } from 'preact/hooks'
-import { oauthParams } from '../../external-clients/google.ts'
 import redirect from '../../util/redirect.ts'
 
-const loginUrl =
-  `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
-
 //work in progress: redirect currently does not work
-export default function Redirect() {
+export default function RedirectLogin() {
   useEffect(() => {
     const redirectTimeout = setTimeout(() => {
       console.log('get into here?')
-      redirect(loginUrl)
+      return redirect('/login')
     }, 3000)
     return () => {
       clearTimeout(redirectTimeout)
@@ -34,7 +30,7 @@ export default function Redirect() {
                 onMouseOut={(e) =>
                   e.currentTarget.style.textDecoration = 'none'}
                 onClick={() => {
-                  return Response.redirect(loginUrl, 307)
+                  return redirect('/login')
                 }}
               >
                 click here.
