@@ -8,7 +8,7 @@ import * as health_workers from '../db/models/health_workers.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleTokens, HealthWorker, ReturnedSqlRow } from '../types.ts'
 import { redis } from '../external-clients/redis.ts'
-import { sessionId } from '../routes/app/facilities/[facilityId]/accept-invite.tsx'
+import { sessionId } from '../routes/accept-invite/[inviteCode].tsx'
 
 export async function initializeHealthWorker(
   tokens: GoogleTokens,

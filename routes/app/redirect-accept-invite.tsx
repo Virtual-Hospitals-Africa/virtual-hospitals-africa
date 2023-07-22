@@ -8,7 +8,7 @@ import {
 import { PageProps } from '$fresh/server.ts'
 import { addToHealthWorkerAndEmploymentTable } from '../app/helper.ts'
 import InviteConfirmation from '../app/invite-confirmation.tsx'
-import { sessionId } from '../app/facilities/[facilityId]/accept-invite.tsx'
+import { sessionId } from '../../routes/accept-invite/[inviteCode].tsx'
 
 type RedirectedAcceptInvitePageProps = {
   healthWorker: HealthWorkerWithGoogleTokens
@@ -20,8 +20,9 @@ export const handler: LoggedInHealthWorkerHandler<
 > = {
   async GET(_req, ctx) {
     const healthWorker = ctx.state.session.data
+
     const inviteCodeFromSession = await redis.get(sessionId)
-    console.log('invite code in redis ' + inviteCodeFromSession)
+
     if (inviteCodeFromSession) {
       const inviteCodeFromDB = await getInviteCode(
         ctx.state.trx,

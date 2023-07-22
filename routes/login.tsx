@@ -3,12 +3,18 @@ import { oauthParams } from '../external-clients/google.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import redirect from '../util/redirect.ts'
 import { WithSession } from 'https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts'
+import { redis } from '../external-clients/redis.ts'
+import { sessionId } from '../routes/accept-invite/[inviteCode].tsx'
 
 export const handler: Handlers<unknown, WithSession> = {
-  GET(_req, ctx) {
+  async GET(_req, ctx) {
     const healthWorker = ctx.state.session.data
 
     if (isHealthWorkerWithGoogleTokens(healthWorker)) {
+      const isInvitee = await redis.get(sessionId)
+      if (isInvitee) {
+        return redirect('/app/redirect-accept-invite')
+      }
       return redirect('/app')
     }
     const loginUrl =

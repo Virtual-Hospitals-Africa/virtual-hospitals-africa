@@ -6,7 +6,6 @@ import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import { TrxOrDb } from '../types.ts'
 import db from '../db/db.ts'
 import { redis } from '../external-clients/redis.ts'
-import { sessionId } from '../routes/app/facilities/[facilityId]/accept-invite.tsx'
 
 export const handler = [
   redisSession(redis, {
@@ -31,8 +30,7 @@ export const handler = [
       ctx.state.session.data,
     )
 
-    const isInvitee = redis.get(sessionId)
-    if (!isAuthedHealthWorker && !isInvitee) return redirect('/')
+    if (!isAuthedHealthWorker) return redirect('/')
 
     return db.transaction().execute((trx: TrxOrDb) => {
       ctx.state.trx = trx

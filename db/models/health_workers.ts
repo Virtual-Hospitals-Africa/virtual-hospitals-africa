@@ -323,11 +323,8 @@ export async function getInviteCode(
     .selectFrom('health_worker_invitees')
     .where('email', '=', email)
     .select('invite_code')
-    .execute()
-  if (!result[0]) {
-    throw new Error(`No invitee found with email ${email}`)
-  }
-  return result[0].invite_code
+    .executeTakeFirstOrThrow()
+  return result.invite_code
 }
 
 export async function addEmployee(
