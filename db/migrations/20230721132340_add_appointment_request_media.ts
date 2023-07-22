@@ -7,18 +7,28 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'patient_appointment_request_id',
       'integer',
-      (col) => col.references('patient_appointment_requests.id'),
+      (col) =>
+        col.references('patient_appointment_requests.id').onDelete('cascade'),
     )
-    .addColumn('media_id', 'integer', (col) => col.references('media.id'))
+    .addColumn(
+      'media_id',
+      'integer',
+      (col) => col.references('media.id').onDelete('cascade'),
+    )
     .execute()
 
   await db.schema.createTable('appointment_media')
     .addColumn(
       'appointment_id',
       'integer',
-      (col) => col.references('appointments.id'),
+      (col) => col.references('appointments.id').onDelete('cascade'),
     )
-    .addColumn('media_id', 'integer', (col) => col.references('media.id'))
+    .addColumn(
+      'media_id',
+      'integer',
+      (col) => col.references('media.id').onDelete('cascade'),
+    )
+    .execute()
 }
 
 export async function down(db: Kysely<unknown>) {

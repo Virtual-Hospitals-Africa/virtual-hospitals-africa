@@ -1,3 +1,4 @@
+import { assert } from 'std/testing/asserts.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   PatientState,
@@ -237,4 +238,23 @@ export function markChatbotError(
     })
     .where('id', '=', opts.whatsapp_message_received_id)
     .executeTakeFirstOrThrow()
+}
+
+export async function getMediaIdByPatientId(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: number
+  },
+): Promise<number[]> {
+  const queryResult = await trx.selectFrom('whatsapp_messages_received').where(
+    'patient_id',
+    '=',
+    opts.patient_id,
+  ).where('has_media', '=', true).select('media_id').execute()
+  const mediaIds = []
+  for (const { media_id } of queryResult) {
+    assert(media_id, `No media found for patient${opts.patient_id}`)
+    mediaIds.push(media_id)
+  }
+  return mediaIds
 }

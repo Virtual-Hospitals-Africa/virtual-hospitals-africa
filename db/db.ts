@@ -9,6 +9,7 @@ import {
 import {
   Appointment,
   AppointmentHealthWorkerAttendee,
+  AppointmentMedia,
   Employee,
   Facility,
   HealthWorker,
@@ -18,6 +19,7 @@ import {
   Patient,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
+  PatientAppointmentRequestMedia,
   PatientMedia,
   ReturnedSqlRow,
   Specialities,
@@ -47,6 +49,8 @@ export type DatabaseSchema = {
   media: SqlRow<PatientMedia>
   nurse_registration_details: SqlRow<NurseRegistrationDetails>
   nurse_specialities: SqlRow<Specialities>
+  appointment_media: SqlRow<AppointmentMedia>
+  patient_appointment_request_media: SqlRow<PatientAppointmentRequestMedia>
 }
 
 const DATABASE_URL = Deno.env.get('DATABASE_URL') ||

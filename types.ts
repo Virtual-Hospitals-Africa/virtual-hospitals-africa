@@ -140,6 +140,7 @@ export type PatientState = {
   nearest_facility_name?: string
   selectedFacility?: Facility
   media_uploaded?: number
+  media_ids?: number[]
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -1016,4 +1017,14 @@ export type Media = {
 
 export type PatientMedia = Media & {
   id: number
+}
+
+export type AppointmentMedia = {
+  appointment_id: number
+  media_id: number
+}
+
+export type PatientAppointmentRequestMedia = {
+  patient_appointment_request_id: number
+  media_id: number
 }
