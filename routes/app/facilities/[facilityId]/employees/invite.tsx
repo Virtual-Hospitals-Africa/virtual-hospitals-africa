@@ -110,11 +110,18 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 
     const { invites } = await parseRequest(ctx.state.trx, req, isInvites)
 
+    const successfulEmails: string[] = []
+
     for (const { email, profession } of invites) {
       if (!email) continue
       const inviteCode = generateUUID()
-      //still working on sendInviteMail
-      //await sendInviteMail(email, inviteCode, facilityId)
+      try {
+        //still working on sendInviteMailv
+        //await sendInviteMail(email, inviteCode, facilityId);
+        successfulEmails.push(email)
+      } catch (error) {
+        console.error(`Failed to send invite to ${email}: ${error}`)
+      }
       const result = await addToInvitees(ctx.state.trx, {
         email: email,
         profession: profession,
@@ -123,7 +130,11 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       })
       console.log(result)
     }
-    return redirect(`/app/email-success`)
+    return redirect(
+      `/app/facilities/${facilityId}/employees?invited=${
+        successfulEmails.join(',')
+      }`,
+    )
   },
 }
 

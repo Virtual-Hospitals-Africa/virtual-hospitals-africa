@@ -13,6 +13,7 @@ import EmployeesTable, {
 } from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
+import { CheckIcon } from '../../../../components/library/CheckIcon.tsx'
 
 type EmployeePageProps = {
   isAdmin: boolean
@@ -55,6 +56,9 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
 export default function EmployeeTable(
   props: PageProps<EmployeePageProps>,
 ) {
+  const urlParams = new URLSearchParams(props.url.search)
+  const invited = urlParams.get('invited')
+
   return (
     <Layout
       title={`${props.data.facility.name} Employees`}
@@ -63,6 +67,23 @@ export default function EmployeeTable(
       variant='standard'
     >
       <Container size='lg'>
+        {invited && (
+          <div className='rounded-md bg-green-50 p-4 mb-4'>
+            <div className='flex'>
+              <div className='flex-shrink-0'>
+                <CheckIcon
+                  className='h-5 w-5 text-green-400'
+                  aria-hidden='true'
+                />
+              </div>
+              <div className='ml-3'>
+                <h3 className='text-sm font-medium text-green-800'>
+                  Successfully invited {invited}
+                </h3>
+              </div>
+            </div>
+          </div>
+        )}
         <EmployeesTable
           isAdmin={props.data.isAdmin}
           employees={props.data.employees}
