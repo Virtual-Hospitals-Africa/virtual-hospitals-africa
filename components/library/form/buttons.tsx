@@ -15,11 +15,11 @@ type FormButtonsProps = {
   className?: string
   submitText?: string
   cancelText?: string
-  cancelHref: string
+  cancelHref?: string
 } & (StepButtonProps | SubmitButtonProps)
 
 export default function FormButtons(
-  { className, submitText = 'Submit', cancelText = 'Cancel', nextActionType = 'submit', nextActionHref, cancelHref }:
+  { className, submitText = 'Submit', cancelText = 'Cancel', nextActionType = 'submit', nextActionHref, cancelHref = '/app' }:
     FormButtonsProps,
 ) {
   return (

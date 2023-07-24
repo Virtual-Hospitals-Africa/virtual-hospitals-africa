@@ -26,7 +26,7 @@ export default function ScheduleForm() {
         <FormRow>
           <TextInput name='reason' required />
         </FormRow>
-        <FormButtons className='mt-4' submitText='Next Available' />
+        <FormButtons className='mt-4' submitText='Next Available' cancelHref='/app/calendar' />
       </form>
     </>
   )
