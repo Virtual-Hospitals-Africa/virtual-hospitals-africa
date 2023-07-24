@@ -44,6 +44,14 @@ const pickDemographics = pick([
   'national_id_number',
 ])
 
+const pickAddress = pick([
+  'country',
+  'province',
+  'district',
+  'ward',
+  'street'
+])
+
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   GET(_, ctx) {
     const healthWorker = ctx.state.session.data
@@ -56,6 +64,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     const patient = {
       ...pickDemographics(patientData),
+      ...pickAddress(patientData),
       name: compact([
         patientData.first_name,
         patientData.middle_names,
