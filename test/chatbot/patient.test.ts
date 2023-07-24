@@ -36,7 +36,6 @@ describe('patient chatbot', () => {
     }
   })
   // afterEach(() => db.destroy())
- 
   it('It sends the main menu after the initial message', async () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '2369961017',
@@ -157,16 +156,70 @@ describe('patient chatbot', () => {
       }
   
       await respond(fakeWhatsApp)
-      console.log(fakeWhatsApp.sendMessages.firstCall.args)
+      console.log(fakeWhatsApp.sendMessages.firstCall.args[0].messages.action.sections)
       assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
         {
           messages: {
-            type: 'string',
-            messageBody:
-              'Sure, we can find your nearest facility. Can you share your location?',
+            type: 'list',
+            headerText:"Nearest Facilities",
+            messageBody:"Thank you for sharing your location.\n" +
+            "\n" +
+            "Click the button below to see your nearest health facilities.",
+            action: { button: "Nearest Facilities",sections: [
+              {
+                title: "Town Name Here",
+                rows: [
+                  {
+                    id: "8",
+                    title: "Majini",
+                    description: "Makado, Gwanda, Matabeleland South Province, ZW (430.6km)"
+                  },
+                  {
+                    id: "2",
+                    title: "Chamunangana",
+                    description: "Sitauzis, Gwanda, Matabeleland South Province, ZW (444.5km)"
+                  },
+                  {
+                    id: "3",
+                    title: "Chasvingo",
+                    description: "Beitbridge, Matabeleland South Province, ZW (471.0km)"
+                  },
+                  {
+                    id: "5",
+                    title: "Chituripasi",
+                    description: "Tshiturapadsi, Beitbridge, Matabeleland South Province, ZW (484.4km)"
+                  },
+                  {
+                    id: "9",
+                    title: "Makakabule",
+                    description: "Beitbridge, Matabeleland South Province, ZW (490.6km)"
+                  },
+                  {
+                    id: "6",
+                    title: "Dite",
+                    description: "Sinyoni, Beitbridge, Matabeleland South Province, ZW (490.8km)"
+                  },
+                  {
+                    id: "4",
+                    title: "Chikwarakwara",
+                    description: "Beitbridge, Matabeleland South Province, ZW (496.5km)"
+                  },
+                  {
+                    id: "1",
+                    title: "Beitbridge",
+                    description: "Beitbridge, Matabeleland South Province, ZW (496.6km)"
+                  },
+                  {
+                    id: "7",
+                    title: "Dulibadzimu",
+                    description: "Shop number 6, Tsumbo Complex Dulivadzimu, Beitbridge, ZW (496.9km)"
+                  }
+                ]
+              }
+            ]}
           },
           phone_number: '00000000',
-        },
+        }
       ])
       const patient = await patients.getByPhoneNumber(db, {
         phone_number: '00000000',

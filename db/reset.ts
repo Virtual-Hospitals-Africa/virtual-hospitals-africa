@@ -4,7 +4,7 @@ import selectAllNonMetaTables from './selectAllNonMetaTables.ts'
 export default async function reset() {
   const tables = await selectAllNonMetaTables(db)
   for (const table of tables) {
-    if (table === 'facilities') {
+    if (table === 'facilities' || table === 'spatial_ref_sys') {
       continue
     }
     //console.log(`Deleting all rows from ${table}`)
