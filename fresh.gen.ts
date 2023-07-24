@@ -16,22 +16,21 @@ import * as $10 from './routes/app/facilities/[facilityId]/employees.tsx'
 import * as $11 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
 import * as $12 from './routes/app/facilities/[facilityId]/register.tsx'
 import * as $13 from './routes/app/health_workers.tsx'
-import * as $14 from './routes/app/helper.ts'
-import * as $15 from './routes/app/invite-confirmation.tsx'
-import * as $16 from './routes/app/patients.tsx'
-import * as $17 from './routes/app/patients/[id].tsx'
-import * as $18 from './routes/app/patients/[id]/avatar.tsx'
-import * as $19 from './routes/app/patients/add.tsx'
-import * as $20 from './routes/app/redirect-accept-invite.tsx'
-import * as $21 from './routes/app/redirect-login.tsx'
-import * as $22 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $23 from './routes/foo.tsx'
-import * as $24 from './routes/full-reset.ts'
-import * as $25 from './routes/index.tsx'
-import * as $26 from './routes/logged-in.tsx'
-import * as $27 from './routes/login.tsx'
-import * as $28 from './routes/logout.tsx'
-import * as $29 from './routes/patient-reset.ts'
+import * as $14 from './routes/app/invite-confirmation.tsx'
+import * as $15 from './routes/app/patients.tsx'
+import * as $16 from './routes/app/patients/[id].tsx'
+import * as $17 from './routes/app/patients/[id]/avatar.tsx'
+import * as $18 from './routes/app/patients/add.tsx'
+import * as $19 from './routes/app/redirect-accept-invite.tsx'
+import * as $20 from './routes/app/redirect-login.tsx'
+import * as $21 from './routes/chatbot/incoming-whatsapp.ts'
+import * as $22 from './routes/foo.tsx'
+import * as $23 from './routes/full-reset.ts'
+import * as $24 from './routes/index.tsx'
+import * as $25 from './routes/logged-in.tsx'
+import * as $26 from './routes/login.tsx'
+import * as $27 from './routes/logout.tsx'
+import * as $28 from './routes/patient-reset.ts'
 import * as $$0 from './islands/Menu.tsx'
 import * as $$1 from './islands/PersonSearch.tsx'
 import * as $$2 from './islands/availability-form.tsx'
@@ -56,22 +55,21 @@ const manifest = {
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $11,
     './routes/app/facilities/[facilityId]/register.tsx': $12,
     './routes/app/health_workers.tsx': $13,
-    './routes/app/helper.ts': $14,
-    './routes/app/invite-confirmation.tsx': $15,
-    './routes/app/patients.tsx': $16,
-    './routes/app/patients/[id].tsx': $17,
-    './routes/app/patients/[id]/avatar.tsx': $18,
-    './routes/app/patients/add.tsx': $19,
-    './routes/app/redirect-accept-invite.tsx': $20,
-    './routes/app/redirect-login.tsx': $21,
-    './routes/chatbot/incoming-whatsapp.ts': $22,
-    './routes/foo.tsx': $23,
-    './routes/full-reset.ts': $24,
-    './routes/index.tsx': $25,
-    './routes/logged-in.tsx': $26,
-    './routes/login.tsx': $27,
-    './routes/logout.tsx': $28,
-    './routes/patient-reset.ts': $29,
+    './routes/app/invite-confirmation.tsx': $14,
+    './routes/app/patients.tsx': $15,
+    './routes/app/patients/[id].tsx': $16,
+    './routes/app/patients/[id]/avatar.tsx': $17,
+    './routes/app/patients/add.tsx': $18,
+    './routes/app/redirect-accept-invite.tsx': $19,
+    './routes/app/redirect-login.tsx': $20,
+    './routes/chatbot/incoming-whatsapp.ts': $21,
+    './routes/foo.tsx': $22,
+    './routes/full-reset.ts': $23,
+    './routes/index.tsx': $24,
+    './routes/logged-in.tsx': $25,
+    './routes/login.tsx': $26,
+    './routes/logout.tsx': $27,
+    './routes/patient-reset.ts': $28,
   },
   islands: {
     './islands/Menu.tsx': $$0,

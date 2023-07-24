@@ -12,7 +12,7 @@ import { assert } from 'std/testing/asserts.ts'
 import { redis } from '../../../../external-clients/redis.ts'
 import generateUUID from '../../../../util/uuid.ts'
 import { PageProps } from '$fresh/server.ts'
-import { addToHealthWorkerAndEmploymentTable } from '../../../../routes/app/helper.ts'
+import { addToHealthWorkerAndEmploymentTable } from '../../../../util/helper.ts'
 import InviteConfirmation from '../../../../routes/app/invite-confirmation.tsx'
 
 type AcceptInvitePageProps = {
