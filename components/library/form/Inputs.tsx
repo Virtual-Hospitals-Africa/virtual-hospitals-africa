@@ -49,8 +49,18 @@ function LabeledInput(
 }
 
 export function TextInput(
-  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur, pattern }:
-    TextInputProps,
+  {
+    name,
+    type,
+    label,
+    placeholder,
+    required,
+    value,
+    onInput,
+    onFocus,
+    onBlur,
+    pattern,
+  }: TextInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>

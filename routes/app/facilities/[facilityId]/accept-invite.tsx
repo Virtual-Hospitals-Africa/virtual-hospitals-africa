@@ -3,9 +3,6 @@ import {
   HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
-  TrxOrDb,
-  NurseRegistrationDetails,
-NurseSpeciality,
 } from '../../../../types.ts'
 import {
   getInvitee,
@@ -17,11 +14,6 @@ import generateUUID from '../../../../util/uuid.ts'
 import { PageProps } from '$fresh/server.ts'
 import { addToHealthWorkerAndEmploymentTable } from '../../../../routes/app/helper.ts'
 import InviteConfirmation from '../../../../routes/app/invite-confirmation.tsx'
-import NursePersonalForm from '../../../../components/health_worker/nurse/invite/NursePersonalForm.tsx'
-import { NurseRegistrationStepNames, getStepFormData, isNurseRegistrationStep, useNurseRegistrationSteps } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
-import { parseRequest } from '../../../../util/parseForm.ts'
-import isObjectLike from '../../../../util/isObjectLike.ts'
-import { Container } from '../../../../components/library/Container.tsx'
 
 type AcceptInvitePageProps = {
   healthWorker: HealthWorkerWithGoogleTokens
@@ -60,12 +52,12 @@ export const handler: LoggedInHealthWorkerHandler<AcceptInvitePageProps> = {
     }
 
     //set invite code to redis so I can call it again in the registration
-    ctx.state.session.set('inviteCode',inviteCode)
+    ctx.state.session.set('inviteCode', inviteCode)
 
     addToHealthWorkerAndEmploymentTable(ctx.state.trx, healthWorker, invite)
 
     return ctx.render({ healthWorker, invite })
-  }
+  },
 }
 
 export default function acceptInvite(props: PageProps<AcceptInvitePageProps>) {

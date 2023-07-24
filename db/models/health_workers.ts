@@ -217,11 +217,11 @@ export async function getFirstEmployedFacility(
 }
 
 export async function getEmployee(
-  trx:TrxOrDb,
+  trx: TrxOrDb,
   opts: {
-    facilityId: number,
+    facilityId: number
     healthworkerId: number
-  }
+  },
 ) {
   return await trx
     .selectFrom('employment')
@@ -365,13 +365,13 @@ export async function addNurseSpeciality(
   opts: {
     employeeId: number
     formData: FormState
-  }
+  },
 ) {
   return await trx
     .insertInto('nurse_specialities')
     .values({
       employee_id: opts.employeeId,
-      speciality: opts.formData.speciality
+      speciality: opts.formData.speciality,
     })
     .execute()
 }
@@ -379,15 +379,12 @@ export async function addNurseSpeciality(
 export async function addNurseRegistrationDetails(
   trx: TrxOrDb,
   opts: {
-    healthworkerId: number,
     registrationDetails: NurseRegistrationDetails
-  }
+  },
 ) {
   console.log(opts.registrationDetails)
   return await trx
     .insertInto('nurse_registration_details')
-    .values({
-      health_worker_id: opts.healthworkerId,
-    } && opts.registrationDetails)
+    .values(opts.registrationDetails)
     .execute()
 }
