@@ -47,7 +47,7 @@ export default function PatientAddressForm() {
       <PatientAddress />
       <NearestHealthCare />
       <hr className='my-2' />
-      <Buttons />
+      <Buttons cancelHref='/app/patients/add?step=personal' />
     </>
   )
 }

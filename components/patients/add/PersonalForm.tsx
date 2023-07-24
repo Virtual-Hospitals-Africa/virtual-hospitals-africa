@@ -41,7 +41,12 @@ export default function PatientPersonalForm() {
         />
       </FormRow>
       <hr className='my-2' />
-      <Buttons />
+      <Buttons
+        submitText='Next Step'
+        nextActionType='step'
+        nextActionHref='/app/patients/add?step=address' 
+        cancelHref='/app/patients'
+      />
     </>
   )
 }
