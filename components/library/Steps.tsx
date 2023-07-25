@@ -8,12 +8,12 @@ type Step<S> = {
 }
 
 export type StepsProps<S extends string> = {
-  route: string
+  url: URL
   steps: Step<S>[]
 }
 
 export function Steps<S extends string>(
-  { route, steps }: StepsProps<S>,
+  { url, steps }: StepsProps<S>,
 ) {
   return (
     <div className='lg:border-b lg:border-t lg:border-gray-200'>
@@ -36,7 +36,10 @@ export function Steps<S extends string>(
               >
                 {step.status === 'complete'
                   ? (
-                    <a href={`${route}?step=${step.name}`} className='group'>
+                    <a
+                      href={`${url.pathname}?step=${step.name}`}
+                      className='group'
+                    >
                       <span
                         className='absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
                         aria-hidden='true'
@@ -65,7 +68,10 @@ export function Steps<S extends string>(
                   )
                   : step.status === 'current'
                   ? (
-                    <a href={`${route}?step=${step.name}`} aria-current='step'>
+                    <a
+                      href={`${url.pathname}?step=${step.name}`}
+                      aria-current='step'
+                    >
                       <span
                         className='absolute left-0 top-0 h-full w-1 bg-indigo-600 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
                         aria-hidden='true'
@@ -92,7 +98,10 @@ export function Steps<S extends string>(
                     </a>
                   )
                   : (
-                    <a href={`${route}?step=${step.name}`} className='group'>
+                    <a
+                      href={`${url.pathname}?step=${step.name}`}
+                      className='group'
+                    >
                       <span
                         className='absolute left-0 top-0 h-full w-1 bg-transparent group-hover:bg-gray-200 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full'
                         aria-hidden='true'

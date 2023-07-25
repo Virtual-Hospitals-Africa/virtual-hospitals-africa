@@ -21,9 +21,12 @@ type DateInputProps = Partial<LabeledInputProps> & {
   value?: string
 }
 
+type GenderInputProps = Partial<SelectInputProps>
+
 export type TextInputProps = LabeledInputProps & {
-  type?: 'text' | 'email'
+  type?: 'text' | 'email' | 'tel'
   value?: string
+  pattern?: string
 }
 
 type SelectInputProps = Omit<LabeledInputProps, 'onInput'> & {
@@ -48,8 +51,18 @@ function LabeledInput(
 }
 
 export function TextInput(
-  { name, type, label, placeholder, required, value, onInput, onFocus, onBlur }:
-    TextInputProps,
+  {
+    name,
+    type,
+    label,
+    placeholder,
+    required,
+    value,
+    onInput,
+    onFocus,
+    onBlur,
+    pattern,
+  }: TextInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -63,6 +76,7 @@ export function TextInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
+        pattern={pattern}
       />
     </LabeledInput>
   )
@@ -187,5 +201,24 @@ export function SearchInput(
       </div>
       {children}
     </LabeledInput>
+  )
+}
+
+export function GenderInput(
+  { name = 'gender', label = 'Gender', required, onSelect, children }:
+    GenderInputProps,
+) {
+  return (
+    <SelectInput
+      name={name}
+      required={required}
+      label={label}
+      onSelect={onSelect}
+    >
+      <option value='male' label='Male'></option>
+      <option value='female' label='Female'></option>
+      <option value='other' label='Other'></option>
+      {children}
+    </SelectInput>
   )
 }
