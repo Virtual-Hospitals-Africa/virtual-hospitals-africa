@@ -16,7 +16,7 @@ export async function resetInTest() {
     if (table === 'facilities' || table === 'spatial_ref_sys') {
       continue
     }
-
+    // console.log(`Deleting all rows from ${table}`)
     // deno-lint-ignore no-explicit-any
     await db.deleteFrom(table as any).execute()
   }
