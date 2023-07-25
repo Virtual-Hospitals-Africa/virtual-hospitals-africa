@@ -9,13 +9,13 @@ import {
   HealthWorkerWithGoogleTokens,
   Maybe,
   NurseRegistrationDetails,
+  NurseSpeciality,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
-import { FormState } from '../../routes/app/facilities/[facilityId]/register.tsx'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -364,14 +364,14 @@ export async function addNurseSpeciality(
   trx: TrxOrDb,
   opts: {
     employeeId: number
-    formData: FormState
+    speciality: NurseSpeciality
   },
 ) {
   return await trx
     .insertInto('nurse_specialities')
     .values({
       employee_id: opts.employeeId,
-      speciality: opts.formData.speciality,
+      speciality: opts.speciality,
     })
     .execute()
 }

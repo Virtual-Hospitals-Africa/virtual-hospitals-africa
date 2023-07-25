@@ -4,7 +4,6 @@ import { Steps } from '../../../library/Steps.tsx'
 import { NurseSpeciality, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
-import { NurseRegistrationDetails } from '../../../../types.ts'
 
 export type NurseRegistrationStep =
   | 'personal'
@@ -59,9 +58,9 @@ export function getStepFormData(
 ) {
   switch (currentStep) {
     case NurseRegistrationStepNames[0]:
-      return parseRequest(trx, req, personalFormFields)
+      return parseRequest(trx, req, isPersonalFormFields)
     case NurseRegistrationStepNames[1]:
-      return parseRequest(trx, req, professionalInformationFields)
+      return parseRequest(trx, req, isProfessionalInformationFields)
     case NurseRegistrationStepNames[2]:
       //TODO
       break
@@ -70,9 +69,9 @@ export function getStepFormData(
   }
 }
 
-export type personalFormFields = {
+export type PersonalFormFields = {
   first_name: string
-  middle_name: string
+  middle_names: string
   last_name: string
   gender: 'male' | 'female' | 'other'
   national_id: string
@@ -80,18 +79,18 @@ export type personalFormFields = {
   mobile_number: string
 }
 
-export type professionalInformationFields = {
+export type ProfessionalInformationFields = {
   speciality: NurseSpeciality
   date_of_first_practice: Date
   ncz_registration_number: string
 }
 
-function personalFormFields(
+function isPersonalFormFields(
   fields: unknown,
-): fields is personalFormFields {
+): fields is PersonalFormFields {
   return isObjectLike(fields) &&
     !!fields.first_name &&
-    !!fields.middle_name &&
+    !!fields.middle_names &&
     !!fields.last_name &&
     !!fields.gender &&
     !!fields.national_id &&
@@ -99,9 +98,9 @@ function personalFormFields(
     !!fields.mobile_number
 }
 
-function professionalInformationFields(
+function isProfessionalInformationFields(
   fields: unknown,
-): fields is professionalInformationFields {
+): fields is ProfessionalInformationFields {
   console.log(fields)
   return isObjectLike(fields) &&
     !!fields.speciality &&

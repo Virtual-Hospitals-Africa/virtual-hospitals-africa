@@ -37,7 +37,7 @@ export function Steps<S extends string>(
                 {step.status === 'complete'
                   ? (
                     <a
-                      href={`${url.origin + url.pathname}?step=${step.name}`}
+                      href={`${url.pathname}?step=${step.name}`}
                       className='group'
                     >
                       <span
@@ -69,7 +69,7 @@ export function Steps<S extends string>(
                   : step.status === 'current'
                   ? (
                     <a
-                      href={`${url.origin + url.pathname}?step=${step.name}`}
+                      href={`${url.pathname}?step=${step.name}`}
                       aria-current='step'
                     >
                       <span
@@ -99,7 +99,7 @@ export function Steps<S extends string>(
                   )
                   : (
                     <a
-                      href={`${url.origin + url.pathname}?step=${step.name}`}
+                      href={`${url.pathname}?step=${step.name}`}
                       className='group'
                     >
                       <span

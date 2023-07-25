@@ -21,6 +21,8 @@ type DateInputProps = Partial<LabeledInputProps> & {
   value?: string
 }
 
+type GenderInputProps = Partial<SelectInputProps>
+
 export type TextInputProps = LabeledInputProps & {
   type?: 'text' | 'email' | 'tel'
   value?: string
@@ -199,5 +201,24 @@ export function SearchInput(
       </div>
       {children}
     </LabeledInput>
+  )
+}
+
+export function GenderInput(
+  { name = 'gender', label = 'Gender', required, onSelect, children }:
+    GenderInputProps,
+) {
+  return (
+    <SelectInput
+      name={name}
+      required={required}
+      label={label}
+      onSelect={onSelect}
+    >
+      <option value='male' label='Male'></option>
+      <option value='female' label='Female'></option>
+      <option value='other' label='Other'></option>
+      {children}
+    </SelectInput>
   )
 }

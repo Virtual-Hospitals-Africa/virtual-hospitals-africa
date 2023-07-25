@@ -23,15 +23,15 @@ import {
   getEmployee,
 } from '../../../../db/models/health_workers.ts'
 import {
-  personalFormFields,
-  professionalInformationFields,
+  PersonalFormFields,
+  ProfessionalInformationFields,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
 
 type RegisterPageProps = {
   formState: FormState
 }
 
-export type FormState = personalFormFields & professionalInformationFields & {
+export type FormState = PersonalFormFields & ProfessionalInformationFields & {
   currentStep: string
   speciality: NurseSpeciality
 }
@@ -115,12 +115,12 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       national_id_media_id: undefined,
     }
 
-    addNurseSpeciality(ctx.state.trx, {
+    await addNurseSpeciality(ctx.state.trx, {
       employeeId: employee.id,
-      formData: formState,
+      speciality: formState.speciality,
     })
 
-    addNurseRegistrationDetails(ctx.state.trx, {
+    await addNurseRegistrationDetails(ctx.state.trx, {
       registrationDetails: nurseRegistrationDetails,
     })
 
@@ -146,14 +146,4 @@ export default function register(
       </form>
     </Container>
   )
-}
-
-function parseFormState(formState: FormState) {
-  return {
-    gender: formState.gender,
-    national_id: formState.national_id,
-    date_of_first_practice: formState.date_of_first_practice,
-    ncz_registration_number: formState.ncz_registration_number,
-    mobile_number: formState.mobile_number,
-  }
 }

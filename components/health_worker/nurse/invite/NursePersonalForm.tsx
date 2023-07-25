@@ -1,6 +1,6 @@
 import {
+  GenderInput,
   PhoneNumberInput,
-  SelectInput,
   TextInput,
 } from '../../../library/form/Inputs.tsx'
 
@@ -13,15 +13,11 @@ export default function NursePersonalForm() {
     <>
       <FormRow>
         <TextInput name='first_name' required label='First Name' />
-        <TextInput name='middle_name' label='Middle Name' />
+        <TextInput name='middle_names' label='Middle Names' />
         <TextInput name='last_name' required label='Last Name' />
       </FormRow>
       <FormRow>
-        <SelectInput name='gender' required label='Gender'>
-          <option value='male' label='Male'></option>
-          <option value='female' label='Female'></option>
-          <option value='other' label='Other'></option>
-        </SelectInput>
+        <GenderInput required />
       </FormRow>
       <FormRow>
         <TextInput
