@@ -79,7 +79,7 @@ describe('patient chatbot', () => {
       {
         messages: [
           {
-            type: 'location',
+            type: 'send_location',
             messageBody: 'Chamunangana',
             location: {
               longitude: 29.601940155,
