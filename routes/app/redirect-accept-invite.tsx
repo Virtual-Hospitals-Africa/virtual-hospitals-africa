@@ -6,7 +6,7 @@ import {
   LoggedInHealthWorkerHandler,
 } from '../../types.ts'
 import { PageProps } from '$fresh/server.ts'
-import { addToHealthWorkerAndEmploymentTable } from '../app/helper.ts'
+import { addToHealthWorkerAndEmploymentTable } from '../../util/helper.ts'
 import InviteConfirmation from '../app/invite-confirmation.tsx'
 import { sessionId } from '../../routes/accept-invite/[inviteCode].tsx'
 
