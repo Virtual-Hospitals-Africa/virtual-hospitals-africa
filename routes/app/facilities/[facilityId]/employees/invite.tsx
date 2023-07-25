@@ -65,8 +65,7 @@ async function sendInviteMail(
     from: SEND_EMAIL,
     to: email,
     subject: 'Welcome to VHA',
-    content:
-      `Please visit ${origin}/facilities/${facilityId}/accept-invite?inviteCode=${inviteCode}`,
+    content: `Please visit ${origin}/accept-invite/${inviteCode}`,
   })
 
   await client.close()

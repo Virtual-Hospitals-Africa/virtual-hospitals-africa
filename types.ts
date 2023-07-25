@@ -140,6 +140,7 @@ export type PatientState = {
   nearest_facility_name?: string
   selectedFacility?: Facility
   media_uploaded?: number
+  media_ids?: number[]
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -749,6 +750,27 @@ export type NurseSpeciality =
   | 'oncology_and_palliative_care_nurse'
   | 'dental_nurse'
 
+export const NurseSpecialities: NurseSpeciality[] = [
+  'primary_care_nurse',
+  'clinical_care_nurse',
+  'clinical_officer',
+  'community_nurse',
+  'dental_nurse',
+  'intensive_and_coronary_care_nurse',
+  'midwife',
+  'neonatal_intensive_care_and_paediatric_nurse',
+  'nurse_administrator',
+  'nurse_anaesthetist',
+  'oncology_and_palliative_care_nurse',
+  'operating_theatre_nurse',
+  'opthalmic_nurse',
+  'orthopaedic_nurse',
+  'psychiatric_mental_health_nurse',
+  'registered_general_nurse',
+  'renal_nurse',
+  'trauma_care_nurse',
+]
+
 export type NurseRegistrationDetails = {
   health_worker_id: number
   gender: Gender
@@ -762,7 +784,7 @@ export type NurseRegistrationDetails = {
 }
 
 export type Specialities = {
-  nurse_id: number
+  employee_id: number
   speciality: NurseSpeciality
 }
 
@@ -1016,4 +1038,14 @@ export type Media = {
 
 export type PatientMedia = Media & {
   id: number
+}
+
+export type AppointmentMedia = {
+  appointment_id: number
+  media_id: number
+}
+
+export type PatientAppointmentRequestMedia = {
+  patient_appointment_request_id: number
+  media_id: number
 }

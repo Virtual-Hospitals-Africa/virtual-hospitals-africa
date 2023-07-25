@@ -32,6 +32,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
+import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -365,6 +366,23 @@ const conversationStates: ConversationStates<
         id: 'done',
         title: 'Done',
         nextState: 'onboarded:make_appointment:confirm_details',
+        async onExit(trx, patientState) {
+          const request_id = patientState.scheduling_appointment_request?.id
+          assert(request_id, 'request_id is undefined.')
+          const mediaIds = await getMediaIdByPatientId(trx, {
+            patient_id: patientState.patient_id,
+          })
+          mediaIds.map(async (media_id) => {
+            await appointments.insertAppointmentRequestMedia(trx, {
+              request_id,
+              media_id,
+            })
+          })
+          return {
+            media_uploaded: mediaIds.length,
+            ...patientState,
+          }
+        },
       },
     ],
   },
@@ -602,7 +620,6 @@ const conversationStates: ConversationStates<
                   'patientState.scheduling_appointment_request.offered_times',
                   patientState.scheduling_appointment_request.offered_times,
                 )
-
                 const toDecline = patientState.scheduling_appointment_request
                   .offered_times
                   .filter((aot) => !aot.declined)

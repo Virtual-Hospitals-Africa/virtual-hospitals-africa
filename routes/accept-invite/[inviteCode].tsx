@@ -11,6 +11,9 @@ export const handler: LoggedInHealthWorkerHandler = {
     const inviteCode = ctx.params.inviteCode
     assert(inviteCode)
 
+    //set invite code to redis so I can call it again in the registration
+    ctx.state.session.set('inviteCode', inviteCode)
+
     await redis.set(sessionId, inviteCode)
     return ctx.render()
   },

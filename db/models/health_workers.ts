@@ -8,6 +8,8 @@ import {
   HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   Maybe,
+  NurseRegistrationDetails,
+  NurseSpeciality,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
@@ -214,6 +216,21 @@ export async function getFirstEmployedFacility(
   return firstFacility.facility_id
 }
 
+export async function getEmployee(
+  trx: TrxOrDb,
+  opts: {
+    facilityId: number
+    healthworkerId: number
+  },
+) {
+  return await trx
+    .selectFrom('employment')
+    .selectAll()
+    .where('facility_id', '=', opts.facilityId)
+    .where('health_worker_id', '=', opts.healthworkerId)
+    .executeTakeFirst()
+}
+
 export async function getEmployeesAtFacility(
   trx: TrxOrDb,
   opts: {
@@ -338,4 +355,33 @@ export async function addEmployee(
     .values(opts.employee)
     .returningAll()
     .executeTakeFirst()
+}
+
+export async function addNurseSpeciality(
+  trx: TrxOrDb,
+  opts: {
+    employeeId: number
+    speciality: NurseSpeciality
+  },
+) {
+  return await trx
+    .insertInto('nurse_specialities')
+    .values({
+      employee_id: opts.employeeId,
+      speciality: opts.speciality,
+    })
+    .execute()
+}
+
+export async function addNurseRegistrationDetails(
+  trx: TrxOrDb,
+  opts: {
+    registrationDetails: NurseRegistrationDetails
+  },
+) {
+  console.log(opts.registrationDetails)
+  return await trx
+    .insertInto('nurse_registration_details')
+    .values(opts.registrationDetails)
+    .execute()
 }
