@@ -1,11 +1,13 @@
 import { sql } from 'kysely'
 import {
   Appointment,
+  AppointmentMedia,
   AppointmentWithAllPatientInfo,
   Maybe,
   NonNull,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
+  PatientAppointmentRequestMedia,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -184,6 +186,17 @@ export async function schedule(
     .select('name')
     .executeTakeFirstOrThrow()
 
+  const appointment_mediaIds = await getMediaIdByRequestId(trx, {
+    request_id: offered.patient_appointment_request_id,
+  })
+
+  appointment_mediaIds.map(async (media_id) => {
+    await insertAppointmentMedia(trx, {
+      appointment_id: appointment.id,
+      media_id,
+    })
+  })
+
   await trx
     .deleteFrom('patient_appointment_requests')
     .where('id', '=', offered.patient_appointment_request_id)
@@ -259,4 +272,47 @@ export async function getWithPatientInfoById(
 
 export function remove(trx: TrxOrDb, id: number) {
   return trx.deleteFrom('appointments').where('id', '=', id).execute()
+}
+
+export async function insertAppointmentRequestMedia(
+  trx: TrxOrDb,
+  opts: {
+    request_id: number
+    media_id: number
+  },
+): Promise<ReturnedSqlRow<PatientAppointmentRequestMedia>> {
+  return await trx.insertInto('patient_appointment_request_media').values({
+    media_id: opts.media_id,
+    patient_appointment_request_id: opts.request_id,
+  }).returningAll().executeTakeFirstOrThrow()
+}
+
+export async function getMediaIdByRequestId(
+  trx: TrxOrDb,
+  opts: {
+    request_id: number
+  },
+): Promise<number[]> {
+  const queryResult = await trx.selectFrom('patient_appointment_request_media')
+    .where('patient_appointment_request_id', '=', opts.request_id).select(
+      'media_id',
+    ).execute()
+  const mediaIds = []
+  for (const { media_id } of queryResult) {
+    mediaIds.push(media_id)
+  }
+  return mediaIds
+}
+
+export async function insertAppointmentMedia(
+  trx: TrxOrDb,
+  opts: {
+    appointment_id: number
+    media_id: number
+  },
+): Promise<ReturnedSqlRow<AppointmentMedia>> {
+  return await trx.insertInto('appointment_media').values({
+    media_id: opts.media_id,
+    appointment_id: opts.appointment_id,
+  }).returningAll().executeTakeFirstOrThrow()
 }
