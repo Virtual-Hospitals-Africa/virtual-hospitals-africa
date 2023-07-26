@@ -328,8 +328,8 @@ export type WhatsAppButtonReplyMessage = {
   }
 }
 
-export type WhatsAppSendLocationMessage = {
-  type: 'send_location' // TODO: check location message format
+export type WhatsAppLocationMessage = {
+  type: 'location' // TODO: check location message format
   location: {
     address?: string // full address
     latitude: number // floating-point number
@@ -406,7 +406,7 @@ export type WhatsAppMessage =
     | WhatsAppTextMessage
     | WhatsAppListReplyMessage
     | WhatsAppButtonReplyMessage
-    | WhatsAppSendLocationMessage
+    | WhatsAppLocationMessage
     | WhatsAppAudioMessage
     | WhatsAppImageMessage
     | WhatsAppVideoMessage
@@ -877,7 +877,7 @@ export type WhatsAppSingleSendable =
   | WhatsAppSendableString
   | WhatsAppSendableButtons
   | WhatsAppSendableList
-  | WhatsAppSendableSendLocation
+  | WhatsAppSendableLocation
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
@@ -942,8 +942,8 @@ export type WhatsAppSendableList = {
   action: WhatsAppMessageAction
 }
 
-export type WhatsAppSendableSendLocation = {
-  type: 'send_location'
+export type WhatsAppSendableLocation = {
+  type: 'location'
   messageBody: string
   location: WhatsAppLocation
 }

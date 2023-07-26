@@ -269,7 +269,7 @@ const conversationStates: ConversationStates<
       )
 
       const locationMessage: WhatsAppSingleSendable = {
-        type: 'send_location',
+        type: 'location',
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,

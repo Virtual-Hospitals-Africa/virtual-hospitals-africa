@@ -53,7 +53,7 @@ async function getContents(
     case 'text':
       return { has_media: false, media_id: null, body: message.text.body }
 
-    case 'send_location':
+    case 'location':
       return {
         has_media: false,
         media_id: null,
