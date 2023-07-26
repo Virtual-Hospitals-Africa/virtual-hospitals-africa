@@ -53,7 +53,7 @@ async function getContents(
     case 'text':
       return { has_media: false, media_id: null, body: message.text.body }
 
-    case 'send_location':
+    case 'location':
       return {
         has_media: false,
         media_id: null,
@@ -81,6 +81,8 @@ async function getContents(
   We don't respond to the user directly in this handler, we only put the message in the DB
   To be handled later
 */
+
+// for getting messages from the WhatsApp Webhook and adding them to db
 export const handler: Handlers = {
   GET(req) {
     const { searchParams } = new URL(req.url)

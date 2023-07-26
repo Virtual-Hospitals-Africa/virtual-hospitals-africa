@@ -327,8 +327,8 @@ export type WhatsAppButtonReplyMessage = {
   }
 }
 
-export type WhatsAppSendLocationMessage = {
-  type: 'send_location' // TODO: check location message format
+export type WhatsAppLocationMessage = {
+  type: 'location' // TODO: check location message format
   location: {
     address?: string // full address
     latitude: number // floating-point number
@@ -405,7 +405,7 @@ export type WhatsAppMessage =
     | WhatsAppTextMessage
     | WhatsAppListReplyMessage
     | WhatsAppButtonReplyMessage
-    | WhatsAppSendLocationMessage
+    | WhatsAppLocationMessage
     | WhatsAppAudioMessage
     | WhatsAppImageMessage
     | WhatsAppVideoMessage
