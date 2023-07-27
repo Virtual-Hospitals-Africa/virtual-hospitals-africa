@@ -10,7 +10,8 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('It sends share-location after welcome message', async () => {
+  it('It sends invitation to share location after welcome message', async () => {
+    // To set a patient in a sepefic state, we have to insert this state into db
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:welcome',
       phone_number: '00000000',
@@ -38,7 +39,6 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsApp)
-    console.log(fakeWhatsApp.sendMessages.firstCall.args)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {

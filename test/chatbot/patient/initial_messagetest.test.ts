@@ -12,7 +12,7 @@ describe('patient chatbot', () => {
   afterEach(() => db.destroy())
   it('It sends the main menu after the initial message', async () => {
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '2369961017',
+      patient_phone_number: '00000000',
       has_media: false,
       body: 'body',
       media_id: null,
@@ -41,11 +41,11 @@ describe('patient chatbot', () => {
             { id: 'find_nearest_facility', title: 'Nearest Facility' },
           ],
         },
-        phone_number: '2369961017',
+        phone_number: '00000000',
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '2369961017',
+      phone_number: '00000000',
     })
 
     assert(patient)

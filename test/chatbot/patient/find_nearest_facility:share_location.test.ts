@@ -6,11 +6,12 @@ import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
 import * as patients from '../../../db/models/patients.ts'
-// TODO: database will change so we need change when whole list of facilities added
+
+// TODO: facilities list will change based on facility table
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('It sends nearest-facilities after invite-share-location', async () => {
+  it('It sends nearest facilities list after invitation', async () => {
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
       phone_number: '00000000',
@@ -23,6 +24,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
+      // Somewhere in Harare
       body: JSON.stringify({
         latitude: -17.832132339478,
         longitude: 31.047979354858,
@@ -41,9 +43,6 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsApp)
-    console.log(
-      fakeWhatsApp.sendMessages.firstCall.args[0].messages.action.sections,
-    )
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
@@ -57,6 +56,7 @@ describe('patient chatbot', () => {
             sections: [
               {
                 title: 'Town Name Here',
+                // TODO: facilities list will change based on facility table
                 rows: [
                   {
                     id: '8',

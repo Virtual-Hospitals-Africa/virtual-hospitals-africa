@@ -10,7 +10,7 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('It back to main menu after send facility link', async () => {
+  it('It comes back to main menu after clicking button', async () => {
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:send_facility_location',
       phone_number: '00000000',
@@ -38,7 +38,6 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsApp)
-    console.log(fakeWhatsApp.sendMessages.firstCall.args)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
