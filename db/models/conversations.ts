@@ -6,9 +6,11 @@ import {
   TrxOrDb,
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
+  Facility
 } from '../../types.ts'
 // import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
+import { getWalkingDistance } from '../../external-clients/google.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -195,6 +197,7 @@ export async function getUnhandledPatientMessages(
       scheduled_appointment_health_worker_name,
       scheduled_appointment_gcal_event_id,
       scheduled_appointment_start,
+      nearest_facilities,
       ...rest
     } = row
     const toPush = { ...rest }
@@ -215,6 +218,18 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
+
+    if (rest.conversation_state === 'find_nearest_facility:got_location') {
+      console.log("nearest_facilities updated with walking distance now")
+      // toPush.nearest_facilities = await Promise.all(nearest_facilities.map(async (facility: Facility) => ({
+      //   ...facility,
+      //   walking_distance: await getWalkingDistance({
+      //     origin: { longitude: 29.9876098633, latitude: -22.20458 },
+      //     destination: { longitude: 29.601940155 , latitude: -21.60719 }
+      //   })
+      // })));
+    }
+
     console.log('message', toPush)
     rows.push(toPush)
   }
