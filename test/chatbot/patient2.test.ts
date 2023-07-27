@@ -3,13 +3,13 @@ import { assert, assertEquals } from 'std/testing/asserts.ts'
 import sinon from 'npm:sinon'
 import db from '../../db/db.ts'
 // import {redis} from '../../external-clients/redis.ts'
-import reset from '../../db/reset.ts'
+import { resetInTest } from '../../db/reset.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as patients from '../../db/models/patients.ts'
 import respond from '../../chatbot/respond.ts'
 
 describe('patient chatbot', () => {
-  beforeEach(reset)
+  beforeEach(resetInTest)
   afterEach(() => db.destroy())
   // afterEach(() => redis.close())
 
