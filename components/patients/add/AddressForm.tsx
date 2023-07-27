@@ -11,7 +11,7 @@ function PatientAddress() {
     <section className='mb-7'>
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
       <FormRow>
-        <TextInput name='country' label='Country' required value='Zimbabwe' disabled />
+        <TextInput name='country' label='Country' required value='Zimbabwe' readonly />
         <TextInput name='province' label='Province' required />
       </FormRow>
       <FormRow>
