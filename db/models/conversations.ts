@@ -1,6 +1,7 @@
 import { assert } from 'std/testing/asserts.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
+Facility,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -9,6 +10,7 @@ import {
 } from '../../types.ts'
 // import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
+import { getWalkingDistance } from "../../external-clients/google.ts";
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -175,16 +177,14 @@ export async function getUnhandledPatientMessages(
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
-    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id
+    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id AND patients.conversation_state = 'find_nearest_facility:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
     LEFT JOIN appointment_health_worker_attendees ON appointment_health_worker_attendees.appointment_id = appointments.id
     LEFT JOIN health_workers ON health_workers.id = appointment_health_worker_attendees.health_worker_id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  const rows: PatientState[] = []
-
-  for (const row of result.rows) {
+  const rows: PatientState[] = await Promise.all(result.rows.map(async (row) => {
     const {
       scheduling_appointment_request_id,
       scheduling_appointment_reason,
@@ -195,6 +195,7 @@ export async function getUnhandledPatientMessages(
       scheduled_appointment_health_worker_name,
       scheduled_appointment_gcal_event_id,
       scheduled_appointment_start,
+      nearest_facilities,
       ...rest
     } = row
     const toPush = { ...rest }
@@ -215,9 +216,15 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    console.log('message', toPush)
-    rows.push(toPush)
-  }
+    if (nearest_facilities?.length) {
+      assert(row.location)
+      toPush.nearest_facilities = await nearest_facilities.map(async (facility: Facility) => ({
+        ...facility,
+        walking_distance: await getWalkingDistance({ origin: row.location, destination: facility }),
+      }))
+    }
+    return toPush
+  }))
 
   return rows
 }

@@ -168,13 +168,16 @@ const conversationStates: ConversationStates<
         location: currentLocation,
       })
 
+      const nearest_facilities = await patients.nearestFacilities(
+        trx,
+        patientState.patient_id,
+        currentLocation,
+      )
+
       return {
         ...patientState,
         location: currentLocation,
-        nearest_facilities: await patients.nearestFacilities(
-          trx,
-          patientState.patient_id,
-        ),
+        nearest_facilities: nearest_facilities,
       }
     },
   },
@@ -209,9 +212,11 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
-        const distanceInKM = (facility.distance / 1000).toFixed(1)
+        const distanceInKM = facility.walking_distance
+          ? facility.walking_distance
+          : (facility.distance / 1000).toFixed(1) + ' km'
         const description = distanceInKM
-          ? `${facility.address} (${distanceInKM}km)`
+          ? `${facility.address} (${distanceInKM})`
           : facility.address
 
         return {
