@@ -33,6 +33,7 @@ import {
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
+import {getWalkingDistance} from '../../external-clients/google.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -168,14 +169,21 @@ const conversationStates: ConversationStates<
         location: currentLocation,
       })
 
+      const nearest_facilities = await patients.nearestFacilities(trx, patientState.patient_id);
+
+      const updated_nearest_facilities = await Promise.all(nearest_facilities.map(async facility => ({
+        ...facility,
+        walking_distance: await getWalkingDistance({
+          origin: { longitude: currentLocation.longitude, latitude: currentLocation.latitude },
+          destination: { longitude: facility.longitude, latitude: facility.latitude }
+        })
+      })));
+
       return {
         ...patientState,
         location: currentLocation,
-        nearest_facilities: await patients.nearestFacilities(
-          trx,
-          patientState.patient_id,
-        ),
-      }
+        nearest_facilities: updated_nearest_facilities
+      };
     },
   },
   // change the name of got_location to nearest_facilities?
@@ -209,7 +217,7 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
-        const distanceInKM = (facility.distance / 1000).toFixed(1)
+        const distanceInKM = facility.walking_distance
         const description = distanceInKM
           ? `${facility.address} (${distanceInKM}km)`
           : facility.address
@@ -230,12 +238,12 @@ const conversationStates: ConversationStates<
         }
       })
 
-      console.log('facilities')
-      console.log(facilities)
+      // console.log('facilities')
+      // console.log(facilities)
 
       const sectionTitles = uniq(facilities.map((facility) => facility.section))
 
-      console.log('sectionTitles', sectionTitles)
+      // console.log('sectionTitles', sectionTitles)
 
       const sections: ConversationStateHandlerListActionSection<
         PatientState
@@ -248,7 +256,7 @@ const conversationStates: ConversationStates<
         ),
       }))
 
-      console.log('sections', sections)
+      // console.log('sections', sections)
 
       return {
         type: 'list',
