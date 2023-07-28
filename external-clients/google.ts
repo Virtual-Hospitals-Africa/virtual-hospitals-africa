@@ -33,7 +33,6 @@ import {
   getDistanceFromRedis,
   getFacilityAddress,
 } from './redis.ts'
-import { NullLiteral } from 'https://deno.land/x/ts_morph@17.0.1/ts_morph.js'
 // import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
