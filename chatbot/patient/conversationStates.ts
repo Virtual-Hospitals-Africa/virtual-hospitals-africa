@@ -33,7 +33,7 @@ import {
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
-import {getWalkingDistance} from '../../external-clients/google.ts'
+import { getWalkingDistance } from '../../external-clients/google.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -169,21 +169,32 @@ const conversationStates: ConversationStates<
         location: currentLocation,
       })
 
-      const nearest_facilities = await patients.nearestFacilities(trx, patientState.patient_id);
+      const nearest_facilities = await patients.nearestFacilities(
+        trx,
+        patientState.patient_id,
+      )
 
-      const updated_nearest_facilities = await Promise.all(nearest_facilities.map(async facility => ({
-        ...facility,
-        walking_distance: await getWalkingDistance({
-          origin: { longitude: currentLocation.longitude, latitude: currentLocation.latitude },
-          destination: { longitude: facility.longitude, latitude: facility.latitude }
-        })
-      })));
+      const updated_nearest_facilities = await Promise.all(
+        nearest_facilities.map(async (facility) => ({
+          ...facility,
+          walking_distance: await getWalkingDistance({
+            origin: {
+              longitude: currentLocation.longitude,
+              latitude: currentLocation.latitude,
+            },
+            destination: {
+              longitude: facility.longitude,
+              latitude: facility.latitude,
+            },
+          }),
+        })),
+      )
 
       return {
         ...patientState,
         location: currentLocation,
-        nearest_facilities: updated_nearest_facilities
-      };
+        nearest_facilities: updated_nearest_facilities,
+      }
     },
   },
   // change the name of got_location to nearest_facilities?
