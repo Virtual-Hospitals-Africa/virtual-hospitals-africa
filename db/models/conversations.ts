@@ -1,7 +1,6 @@
 import { assert } from 'std/testing/asserts.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-Facility,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -10,7 +9,6 @@ Facility,
 } from '../../types.ts'
 // import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
-import { getWalkingDistance } from "../../external-clients/google.ts";
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -184,7 +182,7 @@ export async function getUnhandledPatientMessages(
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  const rows: PatientState[] = await Promise.all(result.rows.map(async (row) => {
+  const rows: PatientState[] = await Promise.all(result.rows.map((row) => {
     const {
       scheduling_appointment_request_id,
       scheduling_appointment_reason,
@@ -195,7 +193,6 @@ export async function getUnhandledPatientMessages(
       scheduled_appointment_health_worker_name,
       scheduled_appointment_gcal_event_id,
       scheduled_appointment_start,
-      nearest_facilities,
       ...rest
     } = row
     const toPush = { ...rest }
@@ -216,13 +213,7 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    if (nearest_facilities?.length) {
-      assert(row.location)
-      toPush.nearest_facilities = await nearest_facilities.map(async (facility: Facility) => ({
-        ...facility,
-        walking_distance: await getWalkingDistance({ origin: row.location, destination: facility }),
-      }))
-    }
+
     return toPush
   }))
 
