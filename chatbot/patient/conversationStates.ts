@@ -33,7 +33,6 @@ import {
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
-import { getWalkingDistance } from '../../external-clients/google.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,

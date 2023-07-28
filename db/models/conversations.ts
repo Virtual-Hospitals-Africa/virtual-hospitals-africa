@@ -215,7 +215,7 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    
+
     console.log('message', toPush)
     rows.push(toPush)
   }
