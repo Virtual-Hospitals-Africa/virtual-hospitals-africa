@@ -1,7 +1,6 @@
 import { assert } from 'std/testing/asserts.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-  Facility,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -10,7 +9,6 @@ import {
 } from '../../types.ts'
 // import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
 import compact from '../../util/compact.ts'
-import { getWalkingDistance } from '../../external-clients/google.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
