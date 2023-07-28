@@ -33,6 +33,7 @@ import {
   getDistanceFromRedis,
   getFacilityAddress,
 } from './redis.ts'
+import { NullLiteral } from 'https://deno.land/x/ts_morph@17.0.1/ts_morph.js'
 // import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
@@ -496,7 +497,7 @@ function getAreaNameByType(
 
 export async function getWalkingDistance(
   locations: LocationDistance,
-): Promise<string> {
+): Promise<string | null> {
   // Get walking distance from redis
   const cachedDistance = await getDistanceFromRedis(
     locations.origin,
@@ -520,6 +521,13 @@ export async function getWalkingDistance(
   assert(result.ok, 'Failed to fetch walking distance')
   const json = await result.json()
   assert(json.status === 'OK', 'Invalid response from Google Maps API')
+
+  if (
+    json.rows[0].elements[0].status === "ZERO_RESULTS"
+  ) {
+    return null;
+  }
+
   const distance = json.rows[0].elements[0].distance.text
 
   // Cache walking distance into redis
@@ -528,5 +536,6 @@ export async function getWalkingDistance(
     locations.destination,
     distance,
   )
+
   return distance
 }

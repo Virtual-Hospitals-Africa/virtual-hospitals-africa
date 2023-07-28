@@ -993,7 +993,7 @@ export type Facility = Location & {
   vha?: boolean
   url?: string
   phone?: string
-  walking_distance?: string
+  walking_distance?: string | null
 }
 
 export type GoogleAddressComponent = {

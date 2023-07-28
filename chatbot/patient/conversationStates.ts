@@ -212,7 +212,7 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
-        const distanceInKM = facility.walking_distance
+        const distanceInKM = facility.walking_distance ? facility.walking_distance : "geo"
         const description = distanceInKM
           ? `${facility.address} (${distanceInKM})`
           : facility.address
