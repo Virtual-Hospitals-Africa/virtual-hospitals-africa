@@ -521,8 +521,10 @@ export async function getWalkingDistance(
   const json = await result.json()
   assert(json.status === 'OK', 'Invalid response from Google Maps API')
 
+  console.log(json)
+
   if (
-    json.rows[0].elements[0].status === 'ZERO_RESULTS'
+    json.rows[0].elements[0].status === 'ZERO_RESULTS' || json.rows[0].elements[0].status === 'NOT_FOUND'
   ) {
     return null
   }
