@@ -219,6 +219,8 @@ const conversationStates: ConversationStates<
           ? `${facility.address} (${distanceInKM})`
           : facility.address
 
+        console.log("facility name:", facility.name)
+
         return {
           section: 'Town Name Here',
           row: {

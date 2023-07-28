@@ -184,7 +184,7 @@ export async function getUnhandledPatientMessages(
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  const rows: PatientState[] = await Promise.all(result.rows.map(async (row) => {
+  const rows: PatientState[] = await Promise.all(result.rows.map( (row) => {
     const {
       scheduling_appointment_request_id,
       scheduling_appointment_reason,
@@ -195,7 +195,7 @@ export async function getUnhandledPatientMessages(
       scheduled_appointment_health_worker_name,
       scheduled_appointment_gcal_event_id,
       scheduled_appointment_start,
-      nearest_facilities,
+      // nearest_facilities,
       ...rest
     } = row
     const toPush = { ...rest }
@@ -216,13 +216,13 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    if (nearest_facilities?.length) {
-      assert(row.location)
-      toPush.nearest_facilities = await nearest_facilities.map(async (facility: Facility) => ({
-        ...facility,
-        walking_distance: await getWalkingDistance({ origin: row.location, destination: facility }),
-      }))
-    }
+    // if (nearest_facilities?.length) {
+    //   assert(row.location)
+    //   toPush.nearest_facilities = await nearest_facilities.map(async (facility: Facility) => ({
+    //     ...facility,
+    //     walking_distance: await getWalkingDistance({ origin: row.location, destination: facility }),
+    //   }))
+    // }
     return toPush
   }))
 
