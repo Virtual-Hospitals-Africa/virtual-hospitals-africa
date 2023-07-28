@@ -195,7 +195,6 @@ export async function getUnhandledPatientMessages(
       scheduled_appointment_health_worker_name,
       scheduled_appointment_gcal_event_id,
       scheduled_appointment_start,
-      // nearest_facilities,
       ...rest
     } = row
     const toPush = { ...rest }
@@ -216,13 +215,7 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    // if (nearest_facilities?.length) {
-    //   assert(row.location)
-    //   toPush.nearest_facilities = await nearest_facilities.map(async (facility: Facility) => ({
-    //     ...facility,
-    //     walking_distance: await getWalkingDistance({ origin: row.location, destination: facility }),
-    //   }))
-    // }
+
     return toPush
   }))
 
