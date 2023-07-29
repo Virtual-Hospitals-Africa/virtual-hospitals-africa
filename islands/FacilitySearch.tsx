@@ -13,10 +13,12 @@ export default function PersonSearch({
   name,
   label,
   required,
-}: { href: string; name: string; label?: string; required?: boolean; }) {
+}: { href: string; name: string; label?: string; required?: boolean }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
-  const [facilities, setFacilities] = useState<HasId<{ name: string; address: string }>[]>([])
+  const [facilities, setFacilities] = useState<
+    HasId<{ name: string; address: string }>[]
+  >([])
 
   const [search, setSearchImmediate] = useState('')
 
@@ -44,12 +46,20 @@ export default function PersonSearch({
     }).then(async (response) => {
       const facilities = await response.json()
       assert(Array.isArray(facilities))
-      assert(facilities.every((facility) => facility && typeof facility === 'object'))
       assert(
-        facilities.every((facility) => facility.id && typeof facility.id === 'number'),
+        facilities.every((facility) =>
+          facility && typeof facility === 'object'
+        ),
       )
       assert(
-        facilities.every((facility) => facility.address && typeof facility.address === 'string'),
+        facilities.every((facility) =>
+          facility.id && typeof facility.id === 'number'
+        ),
+      )
+      assert(
+        facilities.every((facility) =>
+          facility.address && typeof facility.address === 'string'
+        ),
       )
       setFacilities(facilities)
     }).catch(console.error)

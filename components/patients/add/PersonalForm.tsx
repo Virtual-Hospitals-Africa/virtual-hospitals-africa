@@ -20,7 +20,7 @@ export default function PatientPersonalForm({
   date_of_birth = '',
   national_id_number = '',
   avatar_media_id,
-  avatar_media_name = ''
+  avatar_media_name = '',
 }: PatientPersonalFormProps) {
   return (
     <>
@@ -52,7 +52,9 @@ export default function PatientPersonalForm({
           name='avatar_media'
           label='Photo'
           classNames='w-36 h-36'
-          value={avatar_media_id ? `/app/patients/avatar/${avatar_media_id}` : undefined}
+          value={avatar_media_id
+            ? `/app/patients/avatar/${avatar_media_id}`
+            : undefined}
           fileName={avatar_media_name}
         />
       </FormRow>

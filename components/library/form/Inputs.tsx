@@ -63,7 +63,7 @@ export function TextInput(
     onInput,
     onFocus,
     onBlur,
-    disabled, 
+    disabled,
     readonly,
     pattern,
   }: TextInputProps,
@@ -106,7 +106,8 @@ export function SelectInput(
 }
 
 export function DateInput(
-  { name = 'date', value, label, required, onInput, onFocus, onBlur }: DateInputProps,
+  { name = 'date', value, label, required, onInput, onFocus, onBlur }:
+    DateInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>

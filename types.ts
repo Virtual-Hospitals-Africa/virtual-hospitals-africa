@@ -77,11 +77,11 @@ export type PatientPersonal = {
 } & PatientDemographicInfo
 
 export type PatientAddress = {
-  country: string;
-  province: string;
-  district: string;
-  ward: string;
-  street: string;
+  country: string
+  province: string
+  district: string
+  ward: string
+  street: string
 }
 
 export type PatientDemographicInfo = {

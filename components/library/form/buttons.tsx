@@ -9,8 +9,12 @@ type FormButtonsProps = {
 }
 
 export default function FormButtons(
-  { className, submitText = 'Submit', cancelText = 'Cancel', cancelHref = '/app' }:
-    FormButtonsProps = {},
+  {
+    className,
+    submitText = 'Submit',
+    cancelText = 'Cancel',
+    cancelHref = '/app',
+  }: FormButtonsProps = {},
 ) {
   return (
     <div className={cls('container grid gap-x-2 grid-cols-2', className)}>

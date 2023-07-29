@@ -1,6 +1,4 @@
-import {
-  TextInput,
-} from '../../library/form/Inputs.tsx'
+import { TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import Buttons from '../../library/form/buttons.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
@@ -11,7 +9,13 @@ function PatientAddress() {
     <section className='mb-7'>
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
       <FormRow>
-        <TextInput name='country' label='Country' required value='Zimbabwe' readonly />
+        <TextInput
+          name='country'
+          label='Country'
+          required
+          value='Zimbabwe'
+          readonly
+        />
         <TextInput name='province' label='Province' required />
       </FormRow>
       <FormRow>

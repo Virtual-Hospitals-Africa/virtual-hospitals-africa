@@ -45,7 +45,7 @@ export default function FilePreviewInput(
       url: string
     }
   >(null)
-  const isShowPreview =  image || props.value
+  const isShowPreview = image || props.value
   return (
     <>
       <ImageInput

@@ -2,12 +2,12 @@ import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
   HealthWorker,
+  LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
   Media,
-  ReturnedSqlRow,
-  LoggedInHealthWorker,
-  PatientPersonal,
   PatientAddress,
+  PatientPersonal,
+  ReturnedSqlRow,
 } from '../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
@@ -15,7 +15,10 @@ import * as patients from '../../../db/models/patients.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import { useAddPatientSteps, getNextStep } from '../../../components/patients/add/Steps.tsx'
+import {
+  getNextStep,
+  useAddPatientSteps,
+} from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
@@ -24,7 +27,7 @@ import pick from '../../../util/pick.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 
 export type AddPatientDataProps = {
-  personal: Omit<PatientPersonal, 'name'> & HasNames,
+  personal: Omit<PatientPersonal, 'name'> & HasNames
   address: PatientAddress
 }
 
@@ -49,14 +52,17 @@ type HasAddress = {
 
 function hasNames(
   patient: unknown,
-): patient is HasNames & { avatar_media?: ReturnedSqlRow<Media> & { name: string } } {
+): patient is HasNames & {
+  avatar_media?: ReturnedSqlRow<Media> & { name: string }
+} {
   return isObjectLike(patient) && !!patient.first_name && !!patient.last_name
 }
 
 function hasAddress(
   patient: unknown,
 ): patient is HasAddress {
-  return isObjectLike(patient) && !!patient.country && !!patient.province && !!patient.district && !!patient.ward && !!patient.street
+  return isObjectLike(patient) && !!patient.country && !!patient.province &&
+    !!patient.district && !!patient.ward && !!patient.street
 }
 
 const pickDemographics = pick([
@@ -71,7 +77,7 @@ const pickAddress = pick([
   'province',
   'district',
   'ward',
-  'street'
+  'street',
 ])
 
 const pickHealthCare = pick([
@@ -80,7 +86,10 @@ const pickHealthCare = pick([
 
 const SESSION_KEY = 'patient-data'
 
-async function handlePersonalData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
+async function handlePersonalData(
+  req: Request,
+  ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
+) {
   const { personal } = ctx.state.session.get(SESSION_KEY) || {}
   const patientData = await parseRequest(ctx.state.trx, req, hasNames)
   const patient = {
@@ -90,14 +99,19 @@ async function handlePersonalData(req: Request, ctx: HandlerContext<AddPatientPr
       first_name: patientData.first_name,
       middle_names: patientData.middle_names,
       last_name: patientData.last_name,
-      avatar_media_id: patientData.avatar_media?.id || personal?.avatar_media_id,
-      avatar_media_name: patientData.avatar_media?.name || personal?.avatar_media_name,
-    }
+      avatar_media_id: patientData.avatar_media?.id ||
+        personal?.avatar_media_id,
+      avatar_media_name: patientData.avatar_media?.name ||
+        personal?.avatar_media_name,
+    },
   }
   ctx.state.session.set(SESSION_KEY, patient)
 }
 
-async function handleAddressData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
+async function handleAddressData(
+  req: Request,
+  ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
+) {
   const personalData = ctx.state.session.get(SESSION_KEY)
   const patientData = await parseRequest(ctx.state.trx, req, hasAddress)
   const patient = {
@@ -106,12 +120,15 @@ async function handleAddressData(req: Request, ctx: HandlerContext<AddPatientPro
     address: {
       ...pickAddress(patientData),
       ...pickHealthCare(patientData),
-    }
+    },
   }
   ctx.state.session.set(SESSION_KEY, patient)
 }
 
-async function storePatientData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
+async function storePatientData(
+  req: Request,
+  ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
+) {
   const { personal, address } = ctx.state.session.get(SESSION_KEY)
 
   const personalData = {
@@ -185,7 +202,9 @@ export default function AddPatient(
           className='w-full mt-4'
           encType='multipart/form-data'
         >
-          {currentStep === 'personal' && <PatientPersonalForm {...patient.personal} />}
+          {currentStep === 'personal' && (
+            <PatientPersonalForm {...patient.personal} />
+          )}
           {currentStep === 'address' && <PatientAddressForm />}
           {currentStep === 'history' && <div>TODO history form</div>}
           {currentStep === 'allergies' && <div>TODO allergies form</div>}

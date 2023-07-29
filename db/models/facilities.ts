@@ -1,6 +1,12 @@
 import { sql } from 'kysely'
 import { assert } from 'std/testing/asserts.ts'
-import { Facility, Location, ReturnedSqlRow, TrxOrDb, Maybe } from '../../types.ts'
+import {
+  Facility,
+  Location,
+  Maybe,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
 
 export async function nearest(
