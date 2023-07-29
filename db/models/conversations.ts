@@ -1,3 +1,4 @@
+import { assert } from 'std/testing/asserts.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   PatientState,
@@ -174,16 +175,14 @@ export async function getUnhandledPatientMessages(
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
-    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id
+    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id AND patients.conversation_state = 'find_nearest_facility:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
     LEFT JOIN appointment_health_worker_attendees ON appointment_health_worker_attendees.appointment_id = appointments.id
     LEFT JOIN health_workers ON health_workers.id = appointment_health_worker_attendees.health_worker_id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  const rows: PatientState[] = []
-
-  for (const row of result.rows) {
+  const rows: PatientState[] = await Promise.all(result.rows.map((row) => {
     const {
       scheduling_appointment_request_id,
       scheduling_appointment_reason,
@@ -214,9 +213,9 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    console.log('message', toPush)
-    rows.push(toPush)
-  }
+
+    return toPush
+  }))
 
   return rows
 }
@@ -237,4 +236,23 @@ export function markChatbotError(
     })
     .where('id', '=', opts.whatsapp_message_received_id)
     .executeTakeFirstOrThrow()
+}
+
+export async function getMediaIdByPatientId(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: number
+  },
+): Promise<number[]> {
+  const queryResult = await trx.selectFrom('whatsapp_messages_received').where(
+    'patient_id',
+    '=',
+    opts.patient_id,
+  ).where('has_media', '=', true).select('media_id').execute()
+  const mediaIds = []
+  for (const { media_id } of queryResult) {
+    assert(media_id, `No media found for patient${opts.patient_id}`)
+    mediaIds.push(media_id)
+  }
+  return mediaIds
 }

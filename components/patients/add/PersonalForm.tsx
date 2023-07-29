@@ -52,7 +52,7 @@ export default function PatientPersonalForm({
           name='avatar_media'
           label='Photo'
           classNames='w-36 h-36'
-          value={`/app/patients/avatar/${avatar_media_id}`}
+          value={avatar_media_id ? `/app/patients/avatar/${avatar_media_id}` : undefined}
           fileName={avatar_media_name}
         />
       </FormRow>

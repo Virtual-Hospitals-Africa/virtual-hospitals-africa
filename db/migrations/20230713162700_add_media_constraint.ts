@@ -10,7 +10,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'media_id',
       'integer',
-      (col) => col.references('media.id'),
+      (col) => col.references('media.id').onDelete('set default'),
     )
     .execute()
 

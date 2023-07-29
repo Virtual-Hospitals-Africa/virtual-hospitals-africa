@@ -32,6 +32,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
+import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -167,13 +168,16 @@ const conversationStates: ConversationStates<
         location: currentLocation,
       })
 
+      const nearest_facilities = await patients.nearestFacilities(
+        trx,
+        patientState.patient_id,
+        currentLocation,
+      )
+
       return {
         ...patientState,
         location: currentLocation,
-        nearest_facilities: await patients.nearestFacilities(
-          trx,
-          patientState.patient_id,
-        ),
+        nearest_facilities: nearest_facilities,
       }
     },
   },
@@ -208,9 +212,11 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
-        const distanceInKM = (facility.distance / 1000).toFixed(1)
+        const distanceInKM = facility.walking_distance
+          ? facility.walking_distance
+          : (facility.distance / 1000).toFixed(1) + ' km'
         const description = distanceInKM
-          ? `${facility.address} (${distanceInKM}km)`
+          ? `${facility.address} (${distanceInKM})`
           : facility.address
 
         return {
@@ -268,7 +274,7 @@ const conversationStates: ConversationStates<
       )
 
       const locationMessage: WhatsAppSingleSendable = {
-        type: 'send_location',
+        type: 'location',
         messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
@@ -365,6 +371,23 @@ const conversationStates: ConversationStates<
         id: 'done',
         title: 'Done',
         nextState: 'onboarded:make_appointment:confirm_details',
+        async onExit(trx, patientState) {
+          const request_id = patientState.scheduling_appointment_request?.id
+          assert(request_id, 'request_id is undefined.')
+          const mediaIds = await getMediaIdByPatientId(trx, {
+            patient_id: patientState.patient_id,
+          })
+          mediaIds.map(async (media_id) => {
+            await appointments.insertAppointmentRequestMedia(trx, {
+              request_id,
+              media_id,
+            })
+          })
+          return {
+            media_uploaded: mediaIds.length,
+            ...patientState,
+          }
+        },
       },
     ],
   },
@@ -602,7 +625,6 @@ const conversationStates: ConversationStates<
                   'patientState.scheduling_appointment_request.offered_times',
                   patientState.scheduling_appointment_request.offered_times,
                 )
-
                 const toDecline = patientState.scheduling_appointment_request
                   .offered_times
                   .filter((aot) => !aot.declined)

@@ -14,6 +14,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
+import { getWalkingDistance } from '../../external-clients/google.ts'
 
 export async function getByPhoneNumber(
   trx: TrxOrDb,
@@ -132,7 +133,11 @@ export function hasDemographicInfo(
   )
 }
 
-export async function nearestFacilities(trx: TrxOrDb, patient_id: number) {
+export async function nearestFacilities(
+  trx: TrxOrDb,
+  patient_id: number,
+  currentLocation: Location,
+) {
   const patient = await trx
     .selectFrom('patient_nearest_facilities')
     .selectAll()
@@ -140,5 +145,22 @@ export async function nearestFacilities(trx: TrxOrDb, patient_id: number) {
     .executeTakeFirstOrThrow()
 
   assert(patient.nearest_facilities.length > 0)
-  return patient.nearest_facilities
+
+  const updated_nearest_facilities = await Promise.all(
+    patient.nearest_facilities.map(async (facility) => ({
+      ...facility,
+      walking_distance: await getWalkingDistance({
+        origin: {
+          longitude: currentLocation.longitude,
+          latitude: currentLocation.latitude,
+        },
+        destination: {
+          longitude: facility.longitude,
+          latitude: facility.latitude,
+        },
+      }),
+    })),
+  )
+
+  return updated_nearest_facilities
 }

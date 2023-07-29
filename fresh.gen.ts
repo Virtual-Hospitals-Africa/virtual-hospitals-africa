@@ -15,8 +15,8 @@ import * as $9 from './routes/app/facilities.tsx'
 import * as $10 from './routes/app/facilities/[facilityId]/accept-invite.tsx'
 import * as $11 from './routes/app/facilities/[facilityId]/employees.tsx'
 import * as $12 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $13 from './routes/app/health_workers.tsx'
-import * as $14 from './routes/app/helper.ts'
+import * as $13 from './routes/app/facilities/[facilityId]/register.tsx'
+import * as $14 from './routes/app/health_workers.tsx'
 import * as $15 from './routes/app/invite-confirmation.tsx'
 import * as $16 from './routes/app/patients.tsx'
 import * as $17 from './routes/app/patients/[id].tsx'
@@ -57,8 +57,8 @@ const manifest = {
     './routes/app/facilities/[facilityId]/accept-invite.tsx': $10,
     './routes/app/facilities/[facilityId]/employees.tsx': $11,
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $12,
-    './routes/app/health_workers.tsx': $13,
-    './routes/app/helper.ts': $14,
+    './routes/app/facilities/[facilityId]/register.tsx': $13,
+    './routes/app/health_workers.tsx': $14,
     './routes/app/invite-confirmation.tsx': $15,
     './routes/app/patients.tsx': $16,
     './routes/app/patients/[id].tsx': $17,

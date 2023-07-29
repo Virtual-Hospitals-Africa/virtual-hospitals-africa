@@ -46,6 +46,6 @@ export function useAddPatientSteps(props: PageProps) {
 
   return {
     currentStep,
-    steps: <Steps route={props.route} steps={steps} />,
+    steps: <Steps url={props.url} steps={steps} />,
   }
 }
