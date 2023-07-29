@@ -83,7 +83,6 @@ const SESSION_KEY = 'patient-data'
 async function handlePersonalData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
   const { personal } = ctx.state.session.get(SESSION_KEY) || {}
   const patientData = await parseRequest(ctx.state.trx, req, hasNames)
-  console.log('patient data', patientData)
   const patient = {
     step: 'personal',
     personal: {
@@ -96,7 +95,6 @@ async function handlePersonalData(req: Request, ctx: HandlerContext<AddPatientPr
     }
   }
   ctx.state.session.set(SESSION_KEY, patient)
-  console.log(patient)
 }
 
 async function handleAddressData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
