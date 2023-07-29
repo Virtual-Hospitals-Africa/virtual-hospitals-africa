@@ -90,7 +90,7 @@ export function SelectInput(
 }
 
 export function DateInput(
-  { name = 'date', label, required, onInput, onFocus, onBlur }: DateInputProps,
+  { name = 'date', value, label, required, onInput, onFocus, onBlur }: DateInputProps,
 ) {
   return (
     <LabeledInput name={name} label={label} required={required}>
@@ -102,6 +102,7 @@ export function DateInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
+        value={value}
       />
     </LabeledInput>
   )
@@ -109,7 +110,7 @@ export function DateInput(
 
 // TODO
 export function PhoneNumberInput(
-  { name, label, placeholder, required, onInput, onFocus, onBlur }:
+  { name, label, placeholder, required, onInput, onFocus, onBlur, value }:
     TextInputProps,
 ) {
   return (
@@ -118,6 +119,7 @@ export function PhoneNumberInput(
         type='tel'
         name={name}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
+        value={value}
         placeholder={placeholder}
         required={required}
         onInput={onInput}

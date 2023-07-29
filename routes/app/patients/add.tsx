@@ -4,9 +4,10 @@ import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
   Media,
-  Patient,
   ReturnedSqlRow,
-  LoggedInHealthWorker
+  LoggedInHealthWorker,
+  PatientPersonal,
+  PatientAddress,
 } from '../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
@@ -14,7 +15,7 @@ import * as patients from '../../../db/models/patients.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
+import { useAddPatientSteps, getNextStep } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
@@ -22,9 +23,14 @@ import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 
+export type AddPatientDataProps = {
+  personal: Omit<PatientPersonal, 'name'> & HasNames,
+  address: PatientAddress
+}
+
 type AddPatientProps = {
   healthWorker: HealthWorker
-  patient: Partial<Patient>
+  patient: AddPatientDataProps
 }
 
 type HasNames = {
@@ -43,7 +49,7 @@ type HasAddress = {
 
 function hasNames(
   patient: unknown,
-): patient is HasNames & { avatar_media?: ReturnedSqlRow<Media> } {
+): patient is HasNames & { avatar_media?: ReturnedSqlRow<Media> & { name: string } } {
   return isObjectLike(patient) && !!patient.first_name && !!patient.last_name
 }
 
@@ -75,18 +81,22 @@ const pickHealthCare = pick([
 const SESSION_KEY = 'patient-data'
 
 async function handlePersonalData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
+  const { personal } = ctx.state.session.get(SESSION_KEY) || {}
   const patientData = await parseRequest(ctx.state.trx, req, hasNames)
+  console.log('patient data', patientData)
   const patient = {
     step: 'personal',
-    ...pickDemographics(patientData),
-    name: compact([
-      patientData.first_name,
-      patientData.middle_names,
-      patientData.last_name,
-    ]).join(' '),
-    avatar_media_id: patientData.avatar_media?.id,
+    personal: {
+      ...pickDemographics(patientData),
+      first_name: patientData.first_name,
+      middle_names: patientData.middle_names,
+      last_name: patientData.last_name,
+      avatar_media_id: patientData.avatar_media?.id || personal?.avatar_media_id,
+      avatar_media_name: patientData.avatar_media?.name || personal?.avatar_media_name,
+    }
   }
   ctx.state.session.set(SESSION_KEY, patient)
+  console.log(patient)
 }
 
 async function handleAddressData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
@@ -95,22 +105,53 @@ async function handleAddressData(req: Request, ctx: HandlerContext<AddPatientPro
   const patient = {
     ...personalData,
     step: 'address',
-    ...pickAddress(patientData),
-    ...pickHealthCare(patientData),
+    address: {
+      ...pickAddress(patientData),
+      ...pickHealthCare(patientData),
+    }
   }
   ctx.state.session.set(SESSION_KEY, patient)
 }
 
+async function storePatientData(req: Request, ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>) {
+  const { personal, address } = ctx.state.session.get(SESSION_KEY)
+
+  const personalData = {
+    ...pickDemographics(personal),
+    name: compact([
+      personal.first_name,
+      personal.middle_names,
+      personal.last_name,
+    ]).join(' '),
+    avatar_media_id: personal.avatar_media_id,
+  }
+  assert(patients.hasDemographicInfo(personalData))
+
+  await patients.upsert(ctx.state.trx, {
+    ...personalData,
+    ...address,
+    // TODO separate patient's whatsapp conversation_state from patients table
+    conversation_state: 'initial_message',
+  })
+}
+
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
-  GET(_, ctx) {
+  GET(req, ctx) {
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
-    return ctx.render({ healthWorker, patient: {} })
+    const urlStep = new URL(req.url).searchParams.get('step')
+    const { step, ...patient } = ctx.state.session.get(SESSION_KEY) || {}
+    const cachedLastStep = step
+    if (!urlStep && cachedLastStep) {
+      const nextStep = getNextStep(cachedLastStep)
+      return redirect(`/app/patients/add?step=${nextStep}`)
+    }
+    return ctx.render({ healthWorker, patient })
   },
   // TODO: support steps of the form other than personal
   async POST(req, ctx) {
     const step = new URL(req.url).searchParams.get('step') || 'personal'
-    
+
     if (step === 'personal') {
       await handlePersonalData(req, ctx)
       return redirect('/app/patients/add?step=address')
@@ -120,15 +161,8 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       await handleAddressData(req, ctx)
     }
 
-    const patient = ctx.state.session.get(SESSION_KEY)
-    delete patient.step
-
-    assert(patients.hasDemographicInfo(patient))
-    await patients.upsert(ctx.state.trx, {
-      ...patient,
-      // TODO separate patient's whatsapp conversation_state from patients table
-      conversation_state: 'initial_message',
-    })
+    await storePatientData(req, ctx)
+    ctx.state.session.set(SESSION_KEY, undefined)
     return redirect('/app/patients/add?step=history')
   },
 }
@@ -137,6 +171,7 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { steps, currentStep } = useAddPatientSteps(props)
+  const { patient } = props.data
 
   return (
     <Layout
@@ -152,7 +187,7 @@ export default function AddPatient(
           className='w-full mt-4'
           encType='multipart/form-data'
         >
-          {currentStep === 'personal' && <PatientPersonalForm />}
+          {currentStep === 'personal' && <PatientPersonalForm {...patient.personal} />}
           {currentStep === 'address' && <PatientAddressForm />}
           {currentStep === 'history' && <div>TODO history form</div>}
           {currentStep === 'allergies' && <div>TODO allergies form</div>}

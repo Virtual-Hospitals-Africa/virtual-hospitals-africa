@@ -72,7 +72,10 @@ export async function parseRequest<T extends Record<string, unknown>>(
         mime_type: value.type,
         binary_data: new Uint8Array(await value.arrayBuffer()),
       })
-      set(parsed, key, inserted)
+      set(parsed, key, {
+        ...inserted,
+        name: value.name,
+      })
     }),
   )
 
