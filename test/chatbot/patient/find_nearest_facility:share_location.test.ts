@@ -53,60 +53,69 @@ describe('patient chatbot', () => {
             '\n' +
             'Click the button below to see your nearest health facilities.',
           action: {
-            button: "Nearest Facilities",
+            button: 'Nearest Facilities',
             sections: [
               {
-                title: "Town Name Here",
+                title: 'Town Name Here',
                 rows: [
                   {
-                    id: "8",
-                    title: "Majini",
-                    description: "Makado, Gwanda, Matabeleland South Province, ZW (531 km)"
+                    id: '8',
+                    title: 'Majini',
+                    description:
+                      'Makado, Gwanda, Matabeleland South Province, ZW (531 km)',
                   },
                   {
-                    id: "2",
-                    title: "Chamunangana",
-                    description: "Sitauzis, Gwanda, Matabeleland South Province, ZW (550 km)"
+                    id: '2',
+                    title: 'Chamunangana',
+                    description:
+                      'Sitauzis, Gwanda, Matabeleland South Province, ZW (550 km)',
                   },
                   {
-                    id: "3",
-                    title: "Chasvingo",
-                    description: "Beitbridge, Matabeleland South Province, ZW (524 km)"
+                    id: '3',
+                    title: 'Chasvingo',
+                    description:
+                      'Beitbridge, Matabeleland South Province, ZW (524 km)',
                   },
                   {
-                    id: "5",
-                    title: "Chituripasi",
-                    description: "Tshiturapadsi, Beitbridge, Matabeleland South Province, ZW (547 km)"
+                    id: '5',
+                    title: 'Chituripasi',
+                    description:
+                      'Tshiturapadsi, Beitbridge, Matabeleland South Province, ZW (547 km)',
                   },
                   {
-                    id: "9",
-                    title: "Makakabule",
-                    description: "Beitbridge, Matabeleland South Province, ZW (562 km)"
+                    id: '9',
+                    title: 'Makakabule',
+                    description:
+                      'Beitbridge, Matabeleland South Province, ZW (562 km)',
                   },
                   {
-                    id: "6",
-                    title: "Dite",
-                    description: "Sinyoni, Beitbridge, Matabeleland South Province, ZW (546 km)"
+                    id: '6',
+                    title: 'Dite',
+                    description:
+                      'Sinyoni, Beitbridge, Matabeleland South Province, ZW (546 km)',
                   },
                   {
-                    id: "4",
-                    title: "Chikwarakwara",
-                    description: "Beitbridge, Matabeleland South Province, ZW (582 km)"
+                    id: '4',
+                    title: 'Chikwarakwara',
+                    description:
+                      'Beitbridge, Matabeleland South Province, ZW (582 km)',
                   },
                   {
-                    id: "1",
-                    title: "Beitbridge",
-                    description: "Beitbridge, Matabeleland South Province, ZW (555 km)"
+                    id: '1',
+                    title: 'Beitbridge',
+                    description:
+                      'Beitbridge, Matabeleland South Province, ZW (555 km)',
                   },
                   {
-                    id: "7",
-                    title: "Dulibadzimu",
-                    description: "Shop number 6, Tsumbo Complex Dulivadzimu, Beitbridge, ZW (556 km)"
-                  }
-                ]
-              }
-            ]
-          }          
+                    id: '7',
+                    title: 'Dulibadzimu',
+                    description:
+                      'Shop number 6, Tsumbo Complex Dulivadzimu, Beitbridge, ZW (556 km)',
+                  },
+                ],
+              },
+            ],
+          },
         },
         phone_number: '00000000',
       },
