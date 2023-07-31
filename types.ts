@@ -77,19 +77,19 @@ export type PatientPersonal = {
 } & PatientDemographicInfo
 
 export type PatientAddress = {
-  country: string
-  province: string
-  district: string
-  ward: string
-  street: string
+  country?: Maybe<string>
+  province?: Maybe<string>
+  district?: Maybe<string>
+  ward?: Maybe<string>
+  street?: Maybe<string>
 }
 
 export type PatientDemographicInfo = {
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: string
-  national_id_number: string
+  date_of_birth: Maybe<string>
+  national_id_number: Maybe<string>
 }
 
 export type HasDemographicInfo = {
@@ -130,6 +130,11 @@ export type PatientState = {
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
   location: Maybe<Location>
+  country: Maybe<string>
+  province: Maybe<string>
+  district: Maybe<string>
+  ward: Maybe<string>
+  street: Maybe<string>
   scheduling_appointment_request?: {
     id: number
     reason: Maybe<string>

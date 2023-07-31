@@ -40,6 +40,11 @@ export function upsert(trx: TrxOrDb, info: {
   national_id_number: Maybe<string>
   location?: Maybe<Location>
   avatar_media_id?: number
+  country: Maybe<string>
+  province: Maybe<string>
+  district: Maybe<string>
+  ward: Maybe<string>
+  street: Maybe<string>
 }): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
     ...info,
@@ -118,6 +123,11 @@ export function pick(patientState: PatientState) {
     national_id_number: patientState.national_id_number,
     conversation_state: patientState.conversation_state,
     location: patientState.location,
+    country: patientState.country,
+    province: patientState.province,
+    district: patientState.district,
+    ward: patientState.ward,
+    street: patientState.street,
   }
 }
 

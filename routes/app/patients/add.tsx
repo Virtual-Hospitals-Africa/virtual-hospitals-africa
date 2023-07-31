@@ -84,13 +84,13 @@ const pickHealthCare = pick([
   'nearest_facility_id',
 ])
 
-const SESSION_KEY = 'patient-data'
+const PATIENT_SESSION_KEY = 'patient-data'
 
 async function handlePersonalData(
   req: Request,
   ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
 ) {
-  const { personal } = ctx.state.session.get(SESSION_KEY) || {}
+  const { personal } = ctx.state.session.get(PATIENT_SESSION_KEY) || {}
   const patientData = await parseRequest(ctx.state.trx, req, hasNames)
   const patient = {
     step: 'personal',
@@ -105,14 +105,14 @@ async function handlePersonalData(
         personal?.avatar_media_name,
     },
   }
-  ctx.state.session.set(SESSION_KEY, patient)
+  ctx.state.session.set(PATIENT_SESSION_KEY, patient)
 }
 
 async function handleAddressData(
   req: Request,
   ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
 ) {
-  const personalData = ctx.state.session.get(SESSION_KEY)
+  const personalData = ctx.state.session.get(PATIENT_SESSION_KEY)
   const patientData = await parseRequest(ctx.state.trx, req, hasAddress)
   const patient = {
     ...personalData,
@@ -122,14 +122,14 @@ async function handleAddressData(
       ...pickHealthCare(patientData),
     },
   }
-  ctx.state.session.set(SESSION_KEY, patient)
+  ctx.state.session.set(PATIENT_SESSION_KEY, patient)
 }
 
 async function storePatientData(
   req: Request,
   ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
 ) {
-  const { personal, address } = ctx.state.session.get(SESSION_KEY)
+  const { personal, address } = ctx.state.session.get(PATIENT_SESSION_KEY)
 
   const personalData = {
     ...pickDemographics(personal),
@@ -155,7 +155,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
     const urlStep = new URL(req.url).searchParams.get('step')
-    const { step, ...patient } = ctx.state.session.get(SESSION_KEY) || {}
+    const { step, ...patient } = ctx.state.session.get(PATIENT_SESSION_KEY) || {}
     const cachedLastStep = step
     if (!urlStep && cachedLastStep) {
       const nextStep = getNextStep(cachedLastStep)
@@ -177,7 +177,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     await storePatientData(req, ctx)
-    ctx.state.session.set(SESSION_KEY, undefined)
+    ctx.state.session.set(PATIENT_SESSION_KEY, undefined)
     return redirect('/app/patients/add?step=history')
   },
 }
@@ -203,7 +203,7 @@ export default function AddPatient(
           encType='multipart/form-data'
         >
           {currentStep === 'personal' && (
-            <PatientPersonalForm {...patient.personal} />
+            <PatientPersonalForm initialData={patient.personal} />
           )}
           {currentStep === 'address' && <PatientAddressForm />}
           {currentStep === 'history' && <div>TODO history form</div>}
