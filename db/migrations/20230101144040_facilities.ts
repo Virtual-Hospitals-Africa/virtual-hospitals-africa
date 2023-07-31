@@ -44,12 +44,19 @@ async function importDataFromCSV(db: Kysely<unknown>) {
     // TODO remove this
     i++
     if (i >= 10) return
+    /*
     const address = Deno.env.get('SKIP_GOOGLE_MAPS')
       ? null
       : await google.getLocationAddress({
         longitude: Number(row.longitude),
         latitude: Number(row.latitude),
-      })
+      })*/
+      const address = row.address === 'UNKNOWN' ? Deno.env.get('SKIP_GOOGLE_MAPS')
+      ? null
+      : await google.getLocationAddress({
+        longitude: Number(row.longitude),
+        latitude: Number(row.latitude),
+      }) : row.address
 
     await sql`
       INSERT INTO facilities (
