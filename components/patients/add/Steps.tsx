@@ -16,6 +16,12 @@ const stepNames: AddPatientStep[] = [
   'age_related_questions',
 ]
 
+export function getNextStep(currentStep: AddPatientStep): AddPatientStep {
+  const currentIndex = stepNames.indexOf(currentStep)
+  const nextIndex = currentIndex + 1
+  return nextIndex === stepNames.length ? currentStep : stepNames[nextIndex]
+}
+
 // deno-lint-ignore no-explicit-any
 function isAddPatientStep(step: any): step is AddPatientStep {
   return stepNames.includes(step)

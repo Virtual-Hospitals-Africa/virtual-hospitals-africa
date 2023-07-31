@@ -5,7 +5,7 @@ type FormButtonsProps = {
   className?: string
   submitText?: string
   cancelText?: string
-  cancelAction?: () => void
+  cancelHref?: string
 }
 
 export default function FormButtons(
@@ -13,7 +13,7 @@ export default function FormButtons(
     className,
     submitText = 'Submit',
     cancelText = 'Cancel',
-    cancelAction = () => window.history.back(),
+    cancelHref = '/app',
   }: FormButtonsProps = {},
 ) {
   return (
@@ -22,7 +22,7 @@ export default function FormButtons(
         type='button'
         variant='outline'
         color='white'
-        onClick={cancelAction}
+        href={cancelHref}
       >
         {cancelText}
       </Button>

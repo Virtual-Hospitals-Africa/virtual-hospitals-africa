@@ -7,6 +7,7 @@ import cls from '../util/cls.ts'
 
 type FilePreviewInputProps = TextInputProps & {
   classNames?: string
+  fileName?: string
 }
 
 function PreviewImage(
@@ -44,6 +45,7 @@ export default function FilePreviewInput(
       url: string
     }
   >(null)
+  const isShowPreview = image || props.value
   return (
     <>
       <ImageInput
@@ -61,10 +63,10 @@ export default function FilePreviewInput(
           }
         }}
       />
-      {image && (
+      {isShowPreview && (
         <PreviewImage
-          image={image.url}
-          name={image.name}
+          image={image?.url || props.value || ''}
+          name={image?.name || props.fileName || ''}
           classNames={props.classNames}
         />
       )}
