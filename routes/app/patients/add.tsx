@@ -155,7 +155,8 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
     const urlStep = new URL(req.url).searchParams.get('step')
-    const { step, ...patient } = ctx.state.session.get(PATIENT_SESSION_KEY) || {}
+    const { step, ...patient } = ctx.state.session.get(PATIENT_SESSION_KEY) ||
+      {}
     const cachedLastStep = step
     if (!urlStep && cachedLastStep) {
       const nextStep = getNextStep(cachedLastStep)
