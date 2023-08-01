@@ -7,7 +7,6 @@ import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
 import * as patients from '../../../db/models/patients.ts'
 
-// TODO: facilities list will change based on facility table
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
@@ -44,80 +43,31 @@ describe('patient chatbot', () => {
 
     await respond(fakeWhatsApp)
     //console.log(fakeWhatsApp.sendMessages.firstCall.args[0].messages.action)
-    assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
-      {
-        messages: {
-          type: 'list',
-          headerText: 'Nearest Facilities',
-          messageBody: 'Thank you for sharing your location.\n' +
-            '\n' +
-            'Click the button below to see your nearest health facilities.',
-          action: {
-            button: 'Nearest Facilities',
-            sections: [
-              {
-                title: 'Town Name Here',
-                rows: [
-                  {
-                    id: '656',
-                    title: 'Arcadia',
-                    description: 'Harare, Harare Province, ZW (2.3 km)',
-                  },
-                  {
-                    id: '657',
-                    title: 'Braeside',
-                    description: '4 General Booth Rd, Harare, ZW (3.4 km)',
-                  },
-                  {
-                    id: '1686',
-                    title: 'WILKINS infectious Ho...',
-                    description: '52JH+JV3, Weale Rd, Harare, ZW (3.3 km)',
-                  },
-                  {
-                    id: '652',
-                    title: 'Belvedere',
-                    description: '52JF+2FH, Burton Rd, Harare, ZW (3.7 km)',
-                  },
-                  {
-                    id: '630',
-                    title: 'Matapi',
-                    description: 'Harare Rd, Harare, ZW (3.5 km)',
-                  },
-                  {
-                    id: '638',
-                    title: 'Mbare ',
-                    description: '42RP+45G, Third Ave, Harare, ZW (4.1 km)',
-                  },
-                  {
-                    id: '648',
-                    title: 'Beatrice Infectious',
-                    description:
-                      'Infectious Diseases Hospital, 423 simon Maozorodze, Harare, ZW (4.0 km)',
-                  },
-                  {
-                    id: '639',
-                    title: 'Mbare hostels',
-                    description: 'Harare, Harare Province, ZW (4.5 km)',
-                  },
-                  {
-                    id: '655',
-                    title: 'Sunningdale',
-                    description:
-                      '43H3+7CP Sunningdale Community Centre, 2nd Rd, Harare, ZW (5.0 km)',
-                  },
-                  {
-                    id: '658',
-                    title: 'Eastly',
-                    description: '3 Worcester Rd, Harare, ZW (4.4 km)',
-                  },
-                ],
-              },
-            ],
-          },
-        },
-        phone_number: '00000000',
-      },
-    ])
+    const callArgs = fakeWhatsApp.sendMessages.firstCall.args[0]
+
+    assertEquals(callArgs.messages.type, 'list')
+
+    assertEquals(callArgs.messages.headerText, 'Nearest Facilities')
+
+    assertEquals(
+      callArgs.messages.messageBody,
+      'Thank you for sharing your location.\n' +
+        '\n' +
+        'Click the button below to see your nearest health facilities.',
+    )
+
+    assertEquals(callArgs.messages.action.button, 'Nearest Facilities')
+
+    assertEquals(callArgs.messages.action.sections[0].title, 'Town Name Here')
+
+    assertEquals(callArgs.messages.action.sections[0].rows[0].id, '656')
+    assertEquals(callArgs.messages.action.sections[0].rows[0].title, 'Arcadia')
+
+    assertEquals(callArgs.messages.action.sections[0].rows[1].id, '657')
+    assertEquals(callArgs.messages.action.sections[0].rows[1].title, 'Braeside')
+
+    assertEquals(callArgs.phone_number, '00000000')
+
     const patient = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })

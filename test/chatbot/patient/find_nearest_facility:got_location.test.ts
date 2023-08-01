@@ -6,7 +6,7 @@ import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
 import * as patients from '../../../db/models/patients.ts'
-// TODO: This test failed, but it should be fine.
+
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
