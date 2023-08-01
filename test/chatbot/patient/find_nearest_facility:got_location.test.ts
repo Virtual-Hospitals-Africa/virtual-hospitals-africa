@@ -61,7 +61,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: '2',
+      body: '656',
       media_id: null,
       whatsapp_id: 'whatsapp_id123',
     })
@@ -76,17 +76,18 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsAppTwo)
+    console.log(fakeWhatsAppTwo.sendMessages.firstCall.args)
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
         messages: [
           {
             type: 'location',
-            messageBody: 'Chamunangana',
+            messageBody: 'Arcadia',
             location: {
-              longitude: 29.601940155,
-              latitude: -21.60719,
-              name: 'Chamunangana',
-              address: 'Sitauzis, Gwanda, Matabeleland South Province, ZW',
+              longitude: 31.0546,
+              latitude: -17.8468,
+              name: 'Arcadia',
+              address: 'Harare, Harare Province, ZW',
             },
           },
           {

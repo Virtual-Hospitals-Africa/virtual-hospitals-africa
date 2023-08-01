@@ -43,7 +43,7 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsApp)
-    console.log(fakeWhatsApp.sendMessages.firstCall.args[0].messages.action)
+    //console.log(fakeWhatsApp.sendMessages.firstCall.args[0].messages.action)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
@@ -59,58 +59,56 @@ describe('patient chatbot', () => {
                 title: 'Town Name Here',
                 rows: [
                   {
-                    id: '8',
-                    title: 'Majini',
-                    description:
-                      'Makado, Gwanda, Matabeleland South Province, ZW (430.6 km)',
+                    id: '656',
+                    title: 'Arcadia',
+                    description: 'Harare, Harare Province, ZW (2.3 km)',
                   },
                   {
-                    id: '2',
-                    title: 'Chamunangana',
-                    description:
-                      'Sitauzis, Gwanda, Matabeleland South Province, ZW (444.5 km)',
+                    id: '657',
+                    title: 'Braeside',
+                    description: '4 General Booth Rd, Harare, ZW (3.4 km)',
                   },
                   {
-                    id: '3',
-                    title: 'Chasvingo',
-                    description:
-                      'Beitbridge, Matabeleland South Province, ZW (471.0 km)',
+                    id: '1686',
+                    title: 'WILKINS infectious Ho...',
+                    description: '52JH+JV3, Weale Rd, Harare, ZW (3.3 km)',
                   },
                   {
-                    id: '5',
-                    title: 'Chituripasi',
-                    description:
-                      'Tshiturapadsi, Beitbridge, Matabeleland South Province, ZW (484.4 km)',
+                    id: '652',
+                    title: 'Belvedere',
+                    description: '52JF+2FH, Burton Rd, Harare, ZW (3.7 km)',
                   },
                   {
-                    id: '9',
-                    title: 'Makakabule',
-                    description:
-                      'Beitbridge, Matabeleland South Province, ZW (490.6 km)',
+                    id: '630',
+                    title: 'Matapi',
+                    description: 'Harare Rd, Harare, ZW (3.5 km)',
                   },
                   {
-                    id: '6',
-                    title: 'Dite',
-                    description:
-                      'Sinyoni, Beitbridge, Matabeleland South Province, ZW (490.8 km)',
+                    id: '638',
+                    title: 'Mbare ',
+                    description: '42RP+45G, Third Ave, Harare, ZW (4.1 km)',
                   },
                   {
-                    id: '4',
-                    title: 'Chikwarakwara',
+                    id: '648',
+                    title: 'Beatrice Infectious',
                     description:
-                      'Beitbridge, Matabeleland South Province, ZW (496.5 km)',
+                      'Infectious Diseases Hospital, 423 simon Maozorodze, Harare, ZW (4.0 km)',
                   },
                   {
-                    id: '1',
-                    title: 'Beitbridge',
-                    description:
-                      'Beitbridge, Matabeleland South Province, ZW (496.6 km)',
+                    id: '639',
+                    title: 'Mbare hostels',
+                    description: 'Harare, Harare Province, ZW (4.5 km)',
                   },
                   {
-                    id: '7',
-                    title: 'Dulibadzimu',
+                    id: '655',
+                    title: 'Sunningdale',
                     description:
-                      'Shop number 6, Tsumbo Complex Dulivadzimu, Beitbridge, ZW (496.9 km)',
+                      '43H3+7CP Sunningdale Community Centre, 2nd Rd, Harare, ZW (5.0 km)',
+                  },
+                  {
+                    id: '658',
+                    title: 'Eastly',
+                    description: '3 Worcester Rd, Harare, ZW (4.4 km)',
                   },
                 ],
               },
