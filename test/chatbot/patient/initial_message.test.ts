@@ -10,7 +10,7 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('Sends the main menu after the initial message', async () => {
+  it('sends the main menu after the initial message', async () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
