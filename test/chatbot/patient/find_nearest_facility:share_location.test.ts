@@ -10,7 +10,7 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('It sends nearest facilities list after invitation', async () => {
+  it('sends nearest facilities list after invitation', async () => {
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
       phone_number: '00000000',
