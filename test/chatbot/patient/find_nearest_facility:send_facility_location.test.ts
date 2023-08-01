@@ -1,23 +1,29 @@
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import sinon from 'npm:sinon'
-import db from '../../db/db.ts'
-// import {redis} from '../../external-clients/redis.ts'
-import { resetInTest } from '../../db/reset.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as patients from '../../db/models/patients.ts'
-import respond from '../../chatbot/respond.ts'
+import { resetInTest } from '../../../db/reset.ts'
+import db from '../../../db/db.ts'
+import respond from '../../../chatbot/respond.ts'
+import * as conversations from '../../../db/models/conversations.ts'
+import * as patients from '../../../db/models/patients.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  // afterEach(() => redis.close())
+  it('comes back to main menu after clicking button', async () => {
+    await patients.upsert(db, {
+      conversation_state: 'find_nearest_facility:send_facility_location',
+      phone_number: '00000000',
+      name: 'test',
+      gender: 'female',
+      date_of_birth: '1111/11/11',
+      national_id_number: '',
+    })
 
-  it('foo', async () => {
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '2369961017',
+      patient_phone_number: '00000000',
       has_media: false,
-      body: 'body',
+      body: 'Back to Menu',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -44,14 +50,17 @@ describe('patient chatbot', () => {
             { id: 'find_nearest_facility', title: 'Nearest Facility' },
           ],
         },
-        phone_number: '2369961017',
+        phone_number: '00000000',
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '2369961017',
+      phone_number: '00000000',
     })
 
     assert(patient)
-    assertEquals(patient.conversation_state, 'not_onboarded:welcome')
+    assertEquals(
+      patient.conversation_state,
+      'not_onboarded:welcome',
+    )
   })
 })
