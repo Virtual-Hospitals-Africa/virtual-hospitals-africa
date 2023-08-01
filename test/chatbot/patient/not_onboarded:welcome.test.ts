@@ -10,7 +10,7 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('It sends invitation to share location after welcome message', async () => {
+  it('sends invitation to share location after welcome message', async () => {
     // To set a patient in a sepefic state, we have to insert this state into db
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:welcome',
