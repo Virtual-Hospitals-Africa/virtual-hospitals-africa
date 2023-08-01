@@ -6,20 +6,26 @@ import { Button } from '../../../library/Button.tsx'
 export default function NurseDocumentForm() {
   return (
     <>
-      <FormRow>
+      <FormRow className='grid grid-cols-1 place-items-center'>
         <FilePreviewInput
+          classNames='h-64 w-auto'
           name='national_id_picture'
           label='National Identity Card'
         />
       </FormRow>
-      <FormRow>
+      <FormRow className='grid grid-cols-1 place-items-center'>
         <FilePreviewInput
+          classNames='h-64 w-auto'
           name='ncz_registration_card'
           label='Nurses Council Of Zimbabwe Registration Identity Card'
         />
       </FormRow>
-      <FormRow>
-        <FilePreviewInput name='face_picture' label='Identification Photo' />
+      <FormRow className='grid grid-cols-1 place-items-center'>
+        <FilePreviewInput 
+          classNames='h-64 w-auto'
+          name='face_picture' 
+          label='Identification Photo' 
+        />
       </FormRow>
       <hr className='my-2' />
       <div className='container grid grid-cols-1'>
