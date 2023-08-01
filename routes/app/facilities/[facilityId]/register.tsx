@@ -1,4 +1,5 @@
 import {
+alterHealthworkerName,
   getInvitee,
   isHealthWorkerWithGoogleTokens,
 } from '../../../../db/models/health_workers.ts'
@@ -72,6 +73,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
 
     return ctx.render({ formState })
   },
+
   async POST(req, ctx) {
     const formState: FormState = JSON.parse(
       ctx.state.session.get('inviteFormState'),
@@ -115,10 +117,18 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       national_id_media_id: undefined,
     }
 
+    const newName = `${formState.first_name} ${formState.middle_names} ${formState.last_name}`
+
     await addNurseSpeciality(ctx.state.trx, {
       employeeId: employee.id,
       speciality: formState.speciality,
     })
+    
+    if (newName !== healthWorker.name) {
+      await alterHealthworkerName(ctx.state.trx, {
+        healthworkerId: healthWorker.id, newHealthworkerName: newName
+      })
+    }
 
     await addNurseRegistrationDetails(ctx.state.trx, {
       registrationDetails: nurseRegistrationDetails,

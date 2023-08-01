@@ -382,9 +382,24 @@ export async function addNurseRegistrationDetails(
     registrationDetails: NurseRegistrationDetails
   },
 ) {
-  console.log(opts.registrationDetails)
   return await trx
     .insertInto('nurse_registration_details')
     .values(opts.registrationDetails)
+    .execute()
+}
+
+export async function alterHealthworkerName(
+  trx: TrxOrDb,
+  opts: {
+    healthworkerId: number
+    newHealthworkerName: string
+  }
+) {
+  return await trx
+    .updateTable('health_workers')
+    .set({
+      name: opts.newHealthworkerName
+    })
+    .where('id', '=', opts.healthworkerId)
     .execute()
 }
