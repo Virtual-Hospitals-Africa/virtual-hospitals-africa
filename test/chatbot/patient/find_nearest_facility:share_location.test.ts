@@ -62,55 +62,55 @@ describe('patient chatbot', () => {
                     id: '8',
                     title: 'Majini',
                     description:
-                      'Makado, Gwanda, Matabeleland South Province, ZW (531 km)',
+                      'Makado, Gwanda, Matabeleland South Province, ZW (430.6 km)',
                   },
                   {
                     id: '2',
                     title: 'Chamunangana',
                     description:
-                      'Sitauzis, Gwanda, Matabeleland South Province, ZW (550 km)',
+                      'Sitauzis, Gwanda, Matabeleland South Province, ZW (444.5 km)',
                   },
                   {
                     id: '3',
                     title: 'Chasvingo',
                     description:
-                      'Beitbridge, Matabeleland South Province, ZW (524 km)',
+                      'Beitbridge, Matabeleland South Province, ZW (471.0 km)',
                   },
                   {
                     id: '5',
                     title: 'Chituripasi',
                     description:
-                      'Tshiturapadsi, Beitbridge, Matabeleland South Province, ZW (547 km)',
+                      'Tshiturapadsi, Beitbridge, Matabeleland South Province, ZW (484.4 km)',
                   },
                   {
                     id: '9',
                     title: 'Makakabule',
                     description:
-                      'Beitbridge, Matabeleland South Province, ZW (562 km)',
+                      'Beitbridge, Matabeleland South Province, ZW (490.6 km)',
                   },
                   {
                     id: '6',
                     title: 'Dite',
                     description:
-                      'Sinyoni, Beitbridge, Matabeleland South Province, ZW (546 km)',
+                      'Sinyoni, Beitbridge, Matabeleland South Province, ZW (490.8 km)',
                   },
                   {
                     id: '4',
                     title: 'Chikwarakwara',
                     description:
-                      'Beitbridge, Matabeleland South Province, ZW (582 km)',
+                      'Beitbridge, Matabeleland South Province, ZW (496.5 km)',
                   },
                   {
                     id: '1',
                     title: 'Beitbridge',
                     description:
-                      'Beitbridge, Matabeleland South Province, ZW (555 km)',
+                      'Beitbridge, Matabeleland South Province, ZW (496.6 km)',
                   },
                   {
                     id: '7',
                     title: 'Dulibadzimu',
                     description:
-                      'Shop number 6, Tsumbo Complex Dulivadzimu, Beitbridge, ZW (556 km)',
+                      'Shop number 6, Tsumbo Complex Dulivadzimu, Beitbridge, ZW (496.9 km)',
                   },
                 ],
               },

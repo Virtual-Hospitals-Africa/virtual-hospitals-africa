@@ -517,9 +517,17 @@ export async function getWalkingDistance(
     `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${originCoords}&destinations=${destCoords}&mode=${mode}&key=${GOOGLE_MAPS_API_KEY}`
 
   const result = await fetch(url)
-  assert(result.ok, 'Failed to fetch walking distance')
+  //assert(result.ok, 'Failed to fetch walking distance')
+  if (!result.ok) {
+    console.error('Failed to fetch walking distance')
+    return null
+  }
   const json = await result.json()
-  assert(json.status === 'OK', 'Invalid response from Google Maps API')
+  //assert(json.status === 'OK', 'Invalid response from Google Maps API')
+  if (json.status !== 'OK') {
+    console.error('Invalid response from Google Maps API')
+    return null
+  }
 
   if (
     json.rows[0].elements[0].status === 'ZERO_RESULTS' ||
