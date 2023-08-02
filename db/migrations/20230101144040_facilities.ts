@@ -37,19 +37,17 @@ export async function down(db: Kysely<unknown>) {
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
 async function importDataFromCSV(db: Kysely<unknown>) {
-  let i = 0
   for await (
     const row of parseCsv('./db/resources/zimbabwe-health-facilities.csv')
   ) {
-    // TODO remove this
-    i++
-    if (i >= 10) return
-    const address = Deno.env.get('SKIP_GOOGLE_MAPS')
-      ? null
-      : await google.getLocationAddress({
-        longitude: Number(row.longitude),
-        latitude: Number(row.latitude),
-      })
+    const address = row.address === 'UNKNOWN'
+      ? Deno.env.get('SKIP_GOOGLE_MAPS')
+        ? null
+        : await google.getLocationAddress({
+          longitude: Number(row.longitude),
+          latitude: Number(row.latitude),
+        })
+      : row.address
 
     await sql`
       INSERT INTO facilities (
@@ -62,7 +60,7 @@ async function importDataFromCSV(db: Kysely<unknown>) {
       ) VALUES (
         ${row.name},
         ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
-        ${address || 'Address unknown'},
+        ${address || 'UNKNOWN'},
         ${row.category},
         ${row.vha},
         ${row.phone}

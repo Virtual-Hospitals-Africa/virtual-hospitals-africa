@@ -175,16 +175,14 @@ export async function getUnhandledPatientMessages(
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
-    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id
+    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id AND patients.conversation_state = 'find_nearest_facility:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
     LEFT JOIN appointment_health_worker_attendees ON appointment_health_worker_attendees.appointment_id = appointments.id
     LEFT JOIN health_workers ON health_workers.id = appointment_health_worker_attendees.health_worker_id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  const rows: PatientState[] = []
-
-  for (const row of result.rows) {
+  const rows: PatientState[] = await Promise.all(result.rows.map((row) => {
     const {
       scheduling_appointment_request_id,
       scheduling_appointment_reason,
@@ -215,9 +213,9 @@ export async function getUnhandledPatientMessages(
         start: scheduled_appointment_start,
       }
     }
-    console.log('message', toPush)
-    rows.push(toPush)
-  }
+
+    return toPush
+  }))
 
   return rows
 }

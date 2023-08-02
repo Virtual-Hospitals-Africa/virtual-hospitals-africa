@@ -66,12 +66,23 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = {
+export type Patient = PatientPersonal & PatientAddress
+
+export type PatientPersonal = {
   id: number
   conversation_state: PatientConversationState
   avatar_media_id?: number
+  avatar_media_name?: string
   location?: Maybe<Location>
 } & PatientDemographicInfo
+
+export type PatientAddress = {
+  country?: Maybe<string>
+  province?: Maybe<string>
+  district?: Maybe<string>
+  ward?: Maybe<string>
+  street?: Maybe<string>
+}
 
 export type PatientDemographicInfo = {
   phone_number: string
@@ -119,6 +130,11 @@ export type PatientState = {
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
   location: Maybe<Location>
+  country: Maybe<string>
+  province: Maybe<string>
+  district: Maybe<string>
+  ward: Maybe<string>
+  street: Maybe<string>
   scheduling_appointment_request?: {
     id: number
     reason: Maybe<string>
@@ -328,8 +344,8 @@ export type WhatsAppButtonReplyMessage = {
   }
 }
 
-export type WhatsAppSendLocationMessage = {
-  type: 'send_location' // TODO: check location message format
+export type WhatsAppLocationMessage = {
+  type: 'location' // TODO: check location message format
   location: {
     address?: string // full address
     latitude: number // floating-point number
@@ -406,7 +422,7 @@ export type WhatsAppMessage =
     | WhatsAppTextMessage
     | WhatsAppListReplyMessage
     | WhatsAppButtonReplyMessage
-    | WhatsAppSendLocationMessage
+    | WhatsAppLocationMessage
     | WhatsAppAudioMessage
     | WhatsAppImageMessage
     | WhatsAppVideoMessage
@@ -877,7 +893,7 @@ export type WhatsAppSingleSendable =
   | WhatsAppSendableString
   | WhatsAppSendableButtons
   | WhatsAppSendableList
-  | WhatsAppSendableSendLocation
+  | WhatsAppSendableLocation
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
@@ -942,8 +958,8 @@ export type WhatsAppSendableList = {
   action: WhatsAppMessageAction
 }
 
-export type WhatsAppSendableSendLocation = {
-  type: 'send_location'
+export type WhatsAppSendableLocation = {
+  type: 'location'
   messageBody: string
   location: WhatsAppLocation
 }
@@ -993,6 +1009,7 @@ export type Facility = Location & {
   vha?: boolean
   url?: string
   phone?: string
+  walking_distance?: string | null
 }
 
 export type GoogleAddressComponent = {
