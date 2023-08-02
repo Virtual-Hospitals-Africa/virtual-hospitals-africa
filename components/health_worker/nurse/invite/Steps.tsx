@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import { AddPatientStep } from '../../../patients/add/Steps.tsx'
 import { Steps } from '../../../library/Steps.tsx'
-import { NurseSpeciality, TrxOrDb } from '../../../../types.ts'
+import { Media, NurseSpeciality, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 
@@ -62,7 +62,7 @@ export function getStepFormData(
     case NurseRegistrationStepNames[1]:
       return parseRequest(trx, req, isProfessionalInformationFields)
     case NurseRegistrationStepNames[2]:
-      //TODO
+      //return parseRequest(trx, req, isDocumentFormFields)
       break
     default:
       throw new Error('No step found')
@@ -85,12 +85,17 @@ export type ProfessionalInformationFields = {
   ncz_registration_number: string
 }
 
+export type DocumentFormFields = {
+  national_id_picture: Media
+  ncz_registration_card: Media
+  face_picture: Media
+}
+
 function isPersonalFormFields(
   fields: unknown,
 ): fields is PersonalFormFields {
   return isObjectLike(fields) &&
     !!fields.first_name &&
-    !!fields.middle_names &&
     !!fields.last_name &&
     !!fields.gender &&
     !!fields.national_id &&
@@ -101,9 +106,27 @@ function isPersonalFormFields(
 function isProfessionalInformationFields(
   fields: unknown,
 ): fields is ProfessionalInformationFields {
-  console.log(fields)
   return isObjectLike(fields) &&
     !!fields.speciality &&
     !!fields.date_of_first_practice &&
     !!fields.ncz_registration_number
+}
+
+function isMedia(
+  mediaEntry: unknown,
+): mediaEntry is ReturnedSqlRow<Media> {
+  return isObjectLike(mediaEntry) &&
+  !!mediaEntry.mime_type &&
+  !!mediaEntry.binary_data &&
+  !!mediaEntry.id
+}
+
+function isDocumentFormFields(
+  fields: unknown,
+): fields is DocumentFormFields {
+  console.log(fields)
+  return isObjectLike(fields) &&
+  isMedia(fields.national_id_picture) &&
+  isMedia(fields.ncz_registration_card) &&
+  isMedia(fields.face_picture)
 }

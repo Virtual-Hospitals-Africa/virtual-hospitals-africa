@@ -3,10 +3,11 @@ alterHealthworkerName,
   getInvitee,
   isHealthWorkerWithGoogleTokens,
 } from '../../../../db/models/health_workers.ts'
-import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
+import { HealthWorkerWithGoogleTokens, LoggedInHealthWorkerHandler } from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import {
+DocumentFormFields,
   getStepFormData,
   isNurseRegistrationStep,
   NurseRegistrationStepNames,
@@ -27,12 +28,15 @@ import {
   PersonalFormFields,
   ProfessionalInformationFields,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
+import { HandlerContext } from 'https://deno.land/x/fresh@1.2.0/server.ts'
+import { LoggedInHealthWorker } from '../../../../types.ts'
+
 
 type RegisterPageProps = {
   formState: FormState
 }
 
-export type FormState = PersonalFormFields & ProfessionalInformationFields & {
+export type FormState = PersonalFormFields & ProfessionalInformationFields & DocumentFormFields & {
   currentStep: string
   speciality: NurseSpeciality
 }
@@ -96,46 +100,54 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       return redirect(nextPage.toString())
     }
 
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-    const facilityId = parseInt(ctx.params.facilityId)
-    const employee = await getEmployee(ctx.state.trx, {
-      facilityId: facilityId,
-      healthworkerId: healthWorker.id,
-    })
-    assert(employee)
-
-    const nurseRegistrationDetails: NurseRegistrationDetails = {
-      health_worker_id: healthWorker.id,
-      gender: formState.gender,
-      national_id: formState.national_id,
-      date_of_first_practice: formState.date_of_first_practice,
-      ncz_registration_number: formState.ncz_registration_number,
-      mobile_number: formState.mobile_number,
-      face_picture_media_id: undefined,
-      ncz_registration_card_media_id: undefined,
-      national_id_media_id: undefined,
-    }
-
-    const newName = `${formState.first_name} ${formState.middle_names} ${formState.last_name}`
-
-    await addNurseSpeciality(ctx.state.trx, {
-      employeeId: employee.id,
-      speciality: formState.speciality,
-    })
-    
-    if (newName !== healthWorker.name) {
-      await alterHealthworkerName(ctx.state.trx, {
-        healthworkerId: healthWorker.id, newHealthworkerName: newName
-      })
-    }
-
-    await addNurseRegistrationDetails(ctx.state.trx, {
-      registrationDetails: nurseRegistrationDetails,
-    })
+    await registerNurse(ctx,formState)
 
     return redirect('/app')
   },
+}
+
+function getNurseRegistrationDetails(healthWorker: HealthWorkerWithGoogleTokens, formState: FormState) : NurseRegistrationDetails {
+  return {
+    health_worker_id: healthWorker.id,
+    gender: formState.gender,
+    national_id: formState.national_id,
+    date_of_first_practice: formState.date_of_first_practice,
+    ncz_registration_number: formState.ncz_registration_number,
+    mobile_number: formState.mobile_number,
+    face_picture_media_id: undefined,
+    ncz_registration_card_media_id: undefined,
+    national_id_media_id: undefined,
+  }
+}
+
+async function registerNurse(ctx: HandlerContext<RegisterPageProps, LoggedInHealthWorker>, formState: FormState) {
+
+  const healthWorker = ctx.state.session.data
+  assert(isHealthWorkerWithGoogleTokens(healthWorker))
+  const facilityId = parseInt(ctx.params.facilityId)
+  const employee = await getEmployee(ctx.state.trx, {
+    facilityId: facilityId,
+    healthworkerId: healthWorker.id,
+  })
+  assert(employee)
+
+  const nurseRegistrationDetails = getNurseRegistrationDetails(healthWorker,formState)
+  const newName = `${formState.first_name} ${formState.middle_names} ${formState.last_name}`
+
+  await addNurseSpeciality(ctx.state.trx, {
+    employeeId: employee.id,
+    speciality: formState.speciality,
+  })
+  
+  if (newName !== healthWorker.name) {
+    await alterHealthworkerName(ctx.state.trx, {
+      healthworkerId: healthWorker.id, newHealthworkerName: newName
+    })
+  }
+
+  await addNurseRegistrationDetails(ctx.state.trx, {
+    registrationDetails: nurseRegistrationDetails,
+  })
 }
 
 export default function register(
