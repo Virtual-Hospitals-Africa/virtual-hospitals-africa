@@ -7,8 +7,6 @@ import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleTokens, HealthWorker, ReturnedSqlRow } from '../types.ts'
-import { redis } from '../external-clients/redis.ts'
-import { sessionId } from '../routes/app/facilities/[facilityId]/accept-invite.tsx'
 
 export async function initializeHealthWorker(
   tokens: GoogleTokens,
@@ -42,17 +40,34 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     assert(code, 'No code found in query params')
 
     const tokens = await getInitialTokensFromAuthCode(code)
-    const health_worker = await initializeHealthWorker(tokens)
+    const googleClient = new google.GoogleClient(tokens)
+    const profile = await googleClient.getProfile()
+    const isHealthWorker = await health_workers.isHealthWorker(
+      db,
+      profile.email,
+    ) || await health_workers.getInvitee(
+      db,
+      {
+        email: profile.email,
+      },
+    )
 
+    const invite_code = await session.get('inviteCode')
+    const isAuthed = isHealthWorker || invite_code
+    if (!isAuthed) return new Response('Please contact adminto invite you.')
+
+    //initialize it in the case there is no google credentials registered.
+    const health_worker = await initializeHealthWorker(tokens)
     for (
       const [key, value] of Object.entries({ ...health_worker, ...tokens })
     ) {
       session.set(key, value)
     }
-    const isInvitee = await redis.get(sessionId)
-    if (isInvitee) {
-      return redirect('/app/redirect-accept-invite')
-    }
-    return redirect('/app')
+
+    session.set('inviteCode', undefined)
+
+    return redirect(
+      invite_code ? '/app/redirect-accept-invite' : '/app',
+    )
   },
 }

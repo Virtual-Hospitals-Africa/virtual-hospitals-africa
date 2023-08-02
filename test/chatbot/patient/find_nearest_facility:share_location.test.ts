@@ -60,10 +60,10 @@ describe('patient chatbot', () => {
 
     assertEquals(callArgs.messages.action.sections[0].title, 'Town Name Here')
 
-    assertEquals(callArgs.messages.action.sections[0].rows[0].id, '656')
+    assertEquals(callArgs.messages.action.sections[0].rows[0].id, '657')
     assertEquals(callArgs.messages.action.sections[0].rows[0].title, 'Arcadia')
 
-    assertEquals(callArgs.messages.action.sections[0].rows[1].id, '657')
+    assertEquals(callArgs.messages.action.sections[0].rows[1].id, '658')
     assertEquals(callArgs.messages.action.sections[0].rows[1].title, 'Braeside')
 
     assertEquals(callArgs.phone_number, '00000000')

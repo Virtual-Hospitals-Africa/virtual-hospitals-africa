@@ -14,7 +14,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -315,21 +315,33 @@ export async function getAllWithNames(
   return healthWorkers
 }
 
-export async function getInvitee(
+export function getInvitee(
   trx: TrxOrDb,
   opts: {
-    inviteCode: string
+    inviteCode?: string
     email: string
   },
-): Promise<ReturnedSqlRow<HealthWorkerInvitee>> {
-  const result = await trx
+): Promise<Maybe<ReturnedSqlRow<HealthWorkerInvitee>>> {
+  let query = trx
     .selectFrom('health_worker_invitees')
     .where('email', '=', opts.email)
-    .where('invite_code', '=', opts.inviteCode)
+    .selectAll()
+
+  if (opts.inviteCode) query = query.where('invite_code', '=', opts.inviteCode)
+
+  return query.executeTakeFirst()
+}
+
+export async function isHealthWorker(
+  trx: TrxOrDb,
+  email: string,
+): Promise<boolean> {
+  const matches = await trx
+    .selectFrom('health_workers')
+    .where('email', '=', email)
     .selectAll()
     .execute()
-  assertEquals(result.length, 1)
-  return result[0]
+  return matches.length >= 1
 }
 
 export async function getInviteCode(
@@ -340,11 +352,8 @@ export async function getInviteCode(
     .selectFrom('health_worker_invitees')
     .where('email', '=', email)
     .select('invite_code')
-    .execute()
-  if (!result[0]) {
-    throw new Error(`No invitee found with email ${email}`)
-  }
-  return result[0].invite_code
+    .executeTakeFirstOrThrow()
+  return result.invite_code
 }
 
 export async function addEmployee(
