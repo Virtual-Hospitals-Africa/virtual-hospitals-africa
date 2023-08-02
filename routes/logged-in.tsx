@@ -45,7 +45,13 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     const isHealthWorker = await health_workers.isHealthWorker(
       db,
       profile.email,
+    ) || await health_workers.getInvitee(
+      db,
+      {
+        email: profile.email,
+      },
     )
+
     const invite_code = await session.get('inviteCode')
     const isAuthed = isHealthWorker || invite_code
     if (!isAuthed) return new Response('Please contact adminto invite you.')

@@ -27,11 +27,27 @@ export async function up(db: Kysely<unknown>) {
 
   await addUpdatedAtTrigger(db, 'facilities')
 
+  await addTestFacility(db)
   await importDataFromCSV(db)
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('facilities').execute()
+}
+
+// Add a test facility with all VHA employees as admins
+// deno-lint-ignore no-explicit-any
+function addTestFacility(db: Kysely<any>) {
+  return db.insertInto('facilities').values({
+    name: 'VHA Test Hospital',
+    location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,
+    address: 'Bristol, UK',
+    category: 'Hospital',
+    vha: true,
+    phone: null,
+  })
+    .returningAll()
+    .execute()
 }
 
 // TODO: Can't get last column properly, maybe because new line character

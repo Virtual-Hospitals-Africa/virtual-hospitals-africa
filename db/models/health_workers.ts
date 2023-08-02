@@ -14,7 +14,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
 
 // Shave a minute so that we refresh too early rather than too late
@@ -315,21 +315,21 @@ export async function getAllWithNames(
   return healthWorkers
 }
 
-export async function getInvitee(
+export function getInvitee(
   trx: TrxOrDb,
   opts: {
-    inviteCode: string
+    inviteCode?: string
     email: string
   },
-): Promise<ReturnedSqlRow<HealthWorkerInvitee>> {
-  const result = await trx
+): Promise<Maybe<ReturnedSqlRow<HealthWorkerInvitee>>> {
+  let query = trx
     .selectFrom('health_worker_invitees')
     .where('email', '=', opts.email)
-    .where('invite_code', '=', opts.inviteCode)
     .selectAll()
-    .execute()
-  assertEquals(result.length, 1)
-  return result[0]
+
+  if (opts.inviteCode) query = query.where('invite_code', '=', opts.inviteCode)
+
+  return query.executeTakeFirst()
 }
 
 export async function isHealthWorker(
