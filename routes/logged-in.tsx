@@ -47,25 +47,21 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
       profile.email,
     )
     const invite_code = await session.get('inviteCode')
-    if (isHealthWorker) {
-      //initilize it in the case there is no google credentials registered.
-      const health_worker = await initializeHealthWorker(tokens)
-      for (
-        const [key, value] of Object.entries({ ...health_worker, ...tokens })
-      ) {
-        session.set(key, value)
-      }
-      return redirect('/app')
-    } else if (invite_code) {
-      const health_worker = await initializeHealthWorker(tokens)
-      for (
-        const [key, value] of Object.entries({ ...health_worker, ...tokens })
-      ) {
-        session.set(key, value)
-      }
-      return redirect('/app/redirect-accept-invite')
-    } else {
-      return new Response('Please contact adminto invite you.')
+    const isAuthed = isHealthWorker || invite_code
+    if (!isAuthed) return new Response('Please contact adminto invite you.')
+
+    //initialize it in the case there is no google credentials registered.
+    const health_worker = await initializeHealthWorker(tokens)
+    for (
+      const [key, value] of Object.entries({ ...health_worker, ...tokens })
+    ) {
+      session.set(key, value)
     }
+
+    session.set('inviteCode', undefined)
+
+    return redirect(
+      invite_code ? '/app/redirect-accept-invite' : '/app',
+    )
   },
 }
