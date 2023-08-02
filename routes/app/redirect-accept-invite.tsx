@@ -1,4 +1,3 @@
-import { redis } from '../../external-clients/redis.ts'
 import { getInviteCode, getInvitee } from '../../db/models/health_workers.ts'
 import {
   HealthWorkerInvitee,
@@ -6,9 +5,8 @@ import {
   LoggedInHealthWorkerHandler,
 } from '../../types.ts'
 import { PageProps } from '$fresh/server.ts'
-import { addToHealthWorkerAndEmploymentTable } from '../../util/helper.ts'
+import { addToEmploymentTable } from '../../util/helper.ts'
 import InviteConfirmation from '../app/invite-confirmation.tsx'
-import { sessionId } from '../../routes/accept-invite/[inviteCode].tsx'
 
 type RedirectedAcceptInvitePageProps = {
   healthWorker: HealthWorkerWithGoogleTokens
@@ -21,7 +19,7 @@ export const handler: LoggedInHealthWorkerHandler<
   async GET(_req, ctx) {
     const healthWorker = ctx.state.session.data
 
-    const inviteCodeFromSession = await redis.get(sessionId)
+    const inviteCodeFromSession = ctx.state.session.get('inviteCode')
 
     if (inviteCodeFromSession) {
       const inviteCodeFromDB = await getInviteCode(
@@ -33,7 +31,7 @@ export const handler: LoggedInHealthWorkerHandler<
           inviteCode: inviteCodeFromSession,
           email: ctx.state.session.data.email,
         })
-        addToHealthWorkerAndEmploymentTable(ctx.state.trx, healthWorker, invite)
+        addToEmploymentTable(ctx.state.trx, healthWorker, invite)
         return ctx.render({ healthWorker, invite })
       } else {
         throw new Error('Invalid invite code.')

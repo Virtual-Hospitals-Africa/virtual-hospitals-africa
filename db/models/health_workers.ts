@@ -332,6 +332,18 @@ export async function getInvitee(
   return result[0]
 }
 
+export async function isHealthWorker(
+  trx: TrxOrDb,
+  email: string,
+): Promise<boolean> {
+  const matches = await trx
+    .selectFrom('health_workers')
+    .where('email', '=', email)
+    .selectAll()
+    .execute()
+  return matches.length >= 1
+}
+
 export async function getInviteCode(
   trx: TrxOrDb,
   email: string,
