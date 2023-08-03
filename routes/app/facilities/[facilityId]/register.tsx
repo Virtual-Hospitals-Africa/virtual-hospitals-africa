@@ -122,6 +122,7 @@ export default function register(
       <form
         method='POST'
         className='w-full mt-4'
+        encType='multipart/form-data'
       >
         {stepState.currentStep === 'personal' && <NursePersonalForm />}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}

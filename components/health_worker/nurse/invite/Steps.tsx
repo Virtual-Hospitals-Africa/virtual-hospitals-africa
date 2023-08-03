@@ -62,11 +62,14 @@ export function getStepFormData(
     case NurseRegistrationStepNames[1]:
       return parseRequest(trx, req, isProfessionalInformationFields)
     case NurseRegistrationStepNames[2]:
-      //TODO
-      break
+      return parseRequest(trx, req, isDocumentFormFields)
     default:
       throw new Error('No step found')
   }
+}
+
+export type DocumentFormFields = {
+  id: number
 }
 
 export type PersonalFormFields = {
@@ -106,4 +109,11 @@ function isProfessionalInformationFields(
     !!fields.speciality &&
     !!fields.date_of_first_practice &&
     !!fields.ncz_registration_number
+}
+
+function isDocumentFormFields(
+  fields: unknown,
+): fields is DocumentFormFields {
+  console.log(fields)
+  return false;
 }
