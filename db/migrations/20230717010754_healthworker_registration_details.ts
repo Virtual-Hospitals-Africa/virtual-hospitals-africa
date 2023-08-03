@@ -100,6 +100,10 @@ export async function up(db: Kysely<unknown>) {
       column
         .references('media.id')
         .onDelete('set null'))
+    .addColumn('approved_by', 'integer', (column) =>
+      column
+        .references('health_workers.id')
+        .onDelete('cascade'))
     .execute()
 
   await addUpdatedAtTrigger(db, 'nurse_registration_details')
