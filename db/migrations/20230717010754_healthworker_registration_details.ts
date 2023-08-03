@@ -103,7 +103,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('approved_by', 'integer', (column) =>
       column
         .references('health_workers.id')
-        .onDelete('no action'))
+        .onDelete('cascade'))
     .execute()
 
   await addUpdatedAtTrigger(db, 'nurse_registration_details')
