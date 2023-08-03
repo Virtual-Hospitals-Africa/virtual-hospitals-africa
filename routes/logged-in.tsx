@@ -1,6 +1,6 @@
 import { Handlers } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { assert } from 'std/testing/asserts.ts'
+import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
