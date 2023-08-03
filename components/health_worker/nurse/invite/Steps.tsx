@@ -4,6 +4,8 @@ import { Steps } from '../../../library/Steps.tsx'
 import { NurseSpeciality, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
+import { Maybe } from '../../../../types.ts'
+import { Media } from '../../../../types.ts'
 
 export type NurseRegistrationStep =
   | 'personal'
@@ -69,7 +71,9 @@ export function getStepFormData(
 }
 
 export type DocumentFormFields = {
-  id: number
+  national_id_picture: Maybe<Media>
+  ncz_registration_card: Maybe<Media>
+  face_picture: Maybe<Media>
 }
 
 export type PersonalFormFields = {
@@ -111,9 +115,21 @@ function isProfessionalInformationFields(
     !!fields.ncz_registration_number
 }
 
+function isMedia(
+  media: unknown
+): media is Maybe<Media> {
+  return isObjectLike(media) && 
+  !!media.mime_type &&
+  !!media.binary_data
+  || media === undefined
+  
+}
+
 function isDocumentFormFields(
   fields: unknown,
 ): fields is DocumentFormFields {
-  console.log(fields)
-  return false;
+  return isObjectLike(fields) &&
+  !!isMedia(fields.national_id_picture) &&
+  !!isMedia(fields.ncz_registration_card) &&
+  !!isMedia(fields.face_picture) 
 }

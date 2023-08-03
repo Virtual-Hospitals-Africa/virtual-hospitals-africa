@@ -72,15 +72,11 @@ export async function parseRequest<T extends Record<string, unknown>>(
         mime_type: value.type,
         binary_data: new Uint8Array(await value.arrayBuffer()),
       })
-<<<<<<< HEAD
       set(parsed, key, {
         ...inserted,
         name: value.name,
       })
-=======
-      set(parsed, key, inserted)
-      console.log(inserted)
->>>>>>> 455cfe0 (parseform function)
+      console.log('----inserted: ', inserted)
     }),
   )
 
