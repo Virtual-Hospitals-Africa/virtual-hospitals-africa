@@ -1,6 +1,6 @@
-import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
+import { HealthWorkerWithGoogleTokens, LoggedInHealthWorkerHandler } from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import {
   getStepFormData,
   isNurseRegistrationStep,
@@ -20,13 +20,14 @@ import * as nurse_registration_details from '../../../../db/models/nurse_registr
 import {
   PersonalFormFields,
   ProfessionalInformationFields,
+  DocumentFormFields
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
 
 type RegisterPageProps = {
   formState: FormState
 }
 
-export type FormState = PersonalFormFields & ProfessionalInformationFields & {
+export type FormState = PersonalFormFields & ProfessionalInformationFields & DocumentFormFields & {
   currentStep: string
   speciality: NurseSpeciality
 }
@@ -86,17 +87,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     })
     assert(employee)
 
-    const nurseRegistrationDetails: NurseRegistrationDetails = {
-      health_worker_id: healthWorker.id,
-      gender: formState.gender,
-      national_id: formState.national_id,
-      date_of_first_practice: formState.date_of_first_practice,
-      ncz_registration_number: formState.ncz_registration_number,
-      mobile_number: formState.mobile_number,
-      face_picture_media_id: undefined,
-      ncz_registration_card_media_id: undefined,
-      national_id_media_id: undefined,
-    }
+    const nurseRegistrationDetails = getRegistrationDetails(healthWorker,formState)
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
@@ -109,6 +100,20 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
 
     return redirect('/app')
   },
+}
+
+function getRegistrationDetails(healthWorker: HealthWorkerWithGoogleTokens, formState: FormState): NurseRegistrationDetails {
+  return {
+    health_worker_id: healthWorker.id,
+    gender: formState.gender,
+    national_id: formState.national_id,
+    date_of_first_practice: formState.date_of_first_practice,
+    ncz_registration_number: formState.ncz_registration_number,
+    mobile_number: formState.mobile_number,
+    face_picture_media_id: formState.face_picture?.id,
+    ncz_registration_card_media_id: formState.ncz_registration_card?.id,
+    national_id_media_id: formState.national_id_picture?.id,
+  }
 }
 
 export default function register(

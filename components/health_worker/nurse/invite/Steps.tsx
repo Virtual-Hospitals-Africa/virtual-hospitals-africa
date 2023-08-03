@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import { AddPatientStep } from '../../../patients/add/Steps.tsx'
 import { Steps } from '../../../library/Steps.tsx'
-import { NurseSpeciality, TrxOrDb } from '../../../../types.ts'
+import { NurseSpeciality, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 import { Maybe } from '../../../../types.ts'
@@ -71,9 +71,9 @@ export function getStepFormData(
 }
 
 export type DocumentFormFields = {
-  national_id_picture: Maybe<Media>
-  ncz_registration_card: Maybe<Media>
-  face_picture: Maybe<Media>
+  national_id_picture: Maybe<ReturnedSqlRow<Media>>
+  ncz_registration_card: Maybe<ReturnedSqlRow<Media>>
+  face_picture: Maybe<ReturnedSqlRow<Media>>
 }
 
 export type PersonalFormFields = {
@@ -120,7 +120,8 @@ function isMedia(
 ): media is Maybe<Media> {
   return isObjectLike(media) && 
   !!media.mime_type &&
-  !!media.binary_data
+  !!media.binary_data &&
+  !!media.id
   || media === undefined
   
 }
