@@ -1,5 +1,4 @@
 import { Kysely } from 'kysely'
-import generateUUID from '../../util/uuid.ts'
 
 const vhaStaff = [
   'adastomek123@gmail.com',
@@ -37,8 +36,7 @@ async function inviteVhaStaff(db: Kysely<any>) {
     vhaStaff.map((email) => ({
       email,
       profession: 'admin',
-      facility_id: 1,
-      invite_code: generateUUID(),
+      facility_id: 1, // Test Facility
     })),
   )
     .execute()

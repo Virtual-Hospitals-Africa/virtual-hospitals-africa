@@ -5,22 +5,26 @@ import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
+import * as employment from '../db/models/employment.ts'
 import * as google from '../external-clients/google.ts'
-import { GoogleTokens, HealthWorker, ReturnedSqlRow } from '../types.ts'
+import {
+  GoogleProfile,
+  HealthWorker,
+  Profession,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from '../types.ts'
 
 export async function initializeHealthWorker(
-  tokens: GoogleTokens,
+  trx: TrxOrDb,
+  googleClient: google.GoogleClient,
+  profile: GoogleProfile,
+  invitees: { id: number; facility_id: number; profession: Profession }[],
 ): Promise<ReturnedSqlRow<HealthWorker>> {
-  const googleClient = new google.GoogleClient(tokens)
-
-  const gettingProfile = googleClient.getProfile()
-  const gettingCalendars = googleClient
+  const calendars = await googleClient
     .ensureHasAppointmentsAndAvailabilityCalendars()
 
-  const profile = await gettingProfile
-  const calendars = await gettingCalendars
-
-  return health_workers.upsertWithGoogleCredentials(db, {
+  const healthWorker = await health_workers.upsertWithGoogleCredentials(trx, {
     name: profile.name,
     email: profile.email,
     avatar_url: profile.picture,
@@ -30,6 +34,19 @@ export async function initializeHealthWorker(
     refresh_token: googleClient.tokens.refresh_token,
     expires_at: googleClient.tokens.expires_at,
   })
+
+  await employment.add(
+    trx,
+    invitees.map((invitee) => ({
+      health_worker_id: healthWorker.id,
+      facility_id: invitee.facility_id,
+      profession: invitee.profession,
+    })),
+  )
+
+  await employment.removeInvitees(trx, invitees.map((invitee) => invitee.id))
+
+  return healthWorker
 }
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
@@ -39,35 +56,42 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
     assert(code, 'No code found in query params')
 
-    const tokens = await getInitialTokensFromAuthCode(code)
-    const googleClient = new google.GoogleClient(tokens)
-    const profile = await googleClient.getProfile()
-    const isHealthWorker = await health_workers.isHealthWorker(
-      db,
-      profile.email,
-    ) || await health_workers.getInvitee(
-      db,
-      {
+    const gettingTokens = getInitialTokensFromAuthCode(code)
+
+    const authorized = await db.transaction().execute(async (trx) => {
+      const tokens = await gettingTokens
+
+      const googleClient = new google.GoogleClient(tokens)
+      const profile = await googleClient.getProfile()
+
+      const invitees = await employment.getInvitees(trx, {
         email: profile.email,
-      },
-    )
+      })
 
-    const invite_code = await session.get('inviteCode')
-    const isAuthed = isHealthWorker || invite_code
-    if (!isAuthed) return new Response('Please contact adminto invite you.')
+      const healthWorker = await (
+        invitees.length
+          ? initializeHealthWorker(
+            trx,
+            googleClient,
+            profile,
+            invitees,
+          )
+          : health_workers.updateTokens(trx, profile.email, tokens)
+      )
 
-    //initialize it in the case there is no google credentials registered.
-    const health_worker = await initializeHealthWorker(tokens)
-    for (
-      const [key, value] of Object.entries({ ...health_worker, ...tokens })
-    ) {
-      session.set(key, value)
-    }
+      if (!healthWorker) return false
 
-    session.set('inviteCode', undefined)
+      for (
+        const [key, value] of Object.entries({ ...healthWorker, ...tokens })
+      ) {
+        session.set(key, value)
+      }
 
-    return redirect(
-      invite_code ? '/app/redirect-accept-invite' : '/app',
-    )
+      return true
+    })
+
+    return authorized
+      ? redirect('/app')
+      : new Response('Not authorized', { status: 401 })
   },
 }

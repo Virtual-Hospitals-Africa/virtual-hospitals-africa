@@ -1,21 +1,16 @@
-import { DeleteResult, sql, UpdateResult } from 'kysely'
+import { DeleteResult, InsertResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
-  Employee,
-  Facility,
   GoogleTokens,
   HealthWorker,
-  HealthWorkerInvitee,
   HealthWorkerWithGoogleTokens,
   Maybe,
-  NurseRegistrationDetails,
-  NurseSpeciality,
-  Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import haveNames from '../../util/haveNames.ts'
+import pick from '../../util/pick.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -34,38 +29,50 @@ export function upsert(
     .executeTakeFirstOrThrow()
 }
 
+export const pickHealthWorker = pick([
+  'name',
+  'email',
+  'avatar_url',
+  'gcal_appointments_calendar_id',
+  'gcal_availability_calendar_id',
+])
+
+export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
+
+export function upsertGoogleTokens(
+  trx: TrxOrDb,
+  health_worker_id: number,
+  tokens: GoogleTokens,
+): Promise<InsertResult[]> {
+  assert(health_worker_id)
+
+  return trx
+    .insertInto('health_worker_google_tokens')
+    .values({
+      health_worker_id,
+      ...tokens,
+    })
+    .onConflict((oc) => oc.column('health_worker_id').doUpdateSet(tokens))
+    .execute()
+}
+
+export async function updateTokens(
+  trx: TrxOrDb,
+  email: string,
+  tokens: GoogleTokens,
+) {
+  const healthWorker = await getByEmail(trx, email)
+  if (!healthWorker) return null
+  await upsertGoogleTokens(trx, healthWorker.id, tokens)
+  return healthWorker
+}
+
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   details: HealthWorker & GoogleTokens,
 ): Promise<ReturnedSqlRow<HealthWorker>> {
-  const health_worker = await upsert(
-    trx,
-    {
-      name: details.name,
-      email: details.email,
-      avatar_url: details.avatar_url,
-      gcal_appointments_calendar_id: details.gcal_appointments_calendar_id,
-      gcal_availability_calendar_id: details.gcal_availability_calendar_id,
-    },
-  )
-
-  await trx
-    .insertInto('health_worker_google_tokens')
-    .values({
-      health_worker_id: health_worker.id,
-      access_token: details.access_token,
-      refresh_token: details.refresh_token,
-      expires_at: details.expires_at,
-    })
-    .onConflict((oc) =>
-      oc.column('health_worker_id').doUpdateSet({
-        access_token: details.access_token,
-        refresh_token: details.refresh_token,
-        expires_at: details.expires_at,
-      })
-    )
-    .execute()
-
+  const health_worker = await upsert(trx, pickHealthWorker(details))
+  await upsertGoogleTokens(trx, health_worker.id, pickTokens(details))
   return health_worker
 }
 
@@ -178,125 +185,6 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
-export async function isAdmin(
-  trx: TrxOrDb,
-  opts: {
-    employee_id: number
-    facility_id: number
-  },
-): Promise<boolean> {
-  const matches = await trx
-    .selectFrom('employment')
-    .where('health_worker_id', '=', opts.employee_id)
-    .where('facility_id', '=', opts.facility_id)
-    .where('profession', '=', 'admin')
-    .execute()
-  if (matches.length > 1) {
-    throw new Error(
-      'Duplicate matches found when searching for an admin identified by: ' +
-        opts.employee_id + ' in database',
-    )
-  }
-  return matches.length === 1
-}
-
-export async function getFirstEmployedFacility(
-  trx: TrxOrDb,
-  opts: {
-    employeeId: number
-  },
-): Promise<number | undefined> {
-  const firstFacility = await trx
-    .selectFrom('employment')
-    .select('facility_id')
-    .where('health_worker_id', '=', opts.employeeId)
-    .orderBy('id')
-    .executeTakeFirstOrThrow()
-
-  return firstFacility.facility_id
-}
-
-export async function getEmployee(
-  trx: TrxOrDb,
-  opts: {
-    facilityId: number
-    healthworkerId: number
-  },
-) {
-  return await trx
-    .selectFrom('employment')
-    .selectAll()
-    .where('facility_id', '=', opts.facilityId)
-    .where('health_worker_id', '=', opts.healthworkerId)
-    .executeTakeFirst()
-}
-
-export async function getEmployeesAtFacility(
-  trx: TrxOrDb,
-  opts: {
-    facilityId: number
-  },
-): Promise<ReturnedSqlRow<
-  {
-    id: number
-    name: string
-    profession: Profession
-    avatar_url: string
-  }
->[]> {
-  return await trx
-    .selectFrom('employment')
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'facilities',
-      'facilities.id',
-      'employment.facility_id',
-    )
-    .where('facility_id', '=', opts.facilityId)
-    .select([
-      'health_workers.name as name',
-      'profession',
-      'health_workers.id as id',
-      'health_workers.created_at',
-      'health_workers.updated_at',
-      'avatar_url',
-    ])
-    .execute()
-}
-
-export function getFacilityById(
-  trx: TrxOrDb,
-  opts: {
-    facilityId: number
-  },
-): Promise<Maybe<ReturnedSqlRow<Facility>>> {
-  return trx
-    .selectFrom('facilities')
-    .where('id', '=', opts.facilityId)
-    .selectAll()
-    .executeTakeFirst()
-}
-
-export async function addToInvitees(
-  trx: TrxOrDb,
-  invite: {
-    email: string
-    facility_id: number
-    profession: Profession
-    invite_code: string
-  },
-) {
-  return await trx
-    .insertInto('health_worker_invitees')
-    .values(invite)
-    .returningAll()
-    .executeTakeFirst()
-}
-
 export async function getAllWithNames(
   trx: TrxOrDb,
   search?: Maybe<string>,
@@ -315,85 +203,13 @@ export async function getAllWithNames(
   return healthWorkers
 }
 
-export function getInvitee(
-  trx: TrxOrDb,
-  opts: {
-    inviteCode?: string
-    email: string
-  },
-): Promise<Maybe<ReturnedSqlRow<HealthWorkerInvitee>>> {
-  let query = trx
-    .selectFrom('health_worker_invitees')
-    .where('email', '=', opts.email)
-    .selectAll()
-
-  if (opts.inviteCode) query = query.where('invite_code', '=', opts.inviteCode)
-
-  return query.executeTakeFirst()
-}
-
-export async function isHealthWorker(
+export function getByEmail(
   trx: TrxOrDb,
   email: string,
-): Promise<boolean> {
-  const matches = await trx
+): Promise<Maybe<ReturnedSqlRow<HealthWorker>>> {
+  return trx
     .selectFrom('health_workers')
     .where('email', '=', email)
     .selectAll()
-    .execute()
-  return matches.length >= 1
-}
-
-export async function getInviteCode(
-  trx: TrxOrDb,
-  email: string,
-): Promise<string> {
-  const result = await trx
-    .selectFrom('health_worker_invitees')
-    .where('email', '=', email)
-    .select('invite_code')
-    .executeTakeFirstOrThrow()
-  return result.invite_code
-}
-
-export async function addEmployee(
-  trx: TrxOrDb,
-  opts: {
-    employee: Employee
-  },
-): Promise<ReturnedSqlRow<Employee> | undefined> {
-  return await trx
-    .insertInto('employment')
-    .values(opts.employee)
-    .returningAll()
     .executeTakeFirst()
-}
-
-export async function addNurseSpeciality(
-  trx: TrxOrDb,
-  opts: {
-    employeeId: number
-    speciality: NurseSpeciality
-  },
-) {
-  return await trx
-    .insertInto('nurse_specialities')
-    .values({
-      employee_id: opts.employeeId,
-      speciality: opts.speciality,
-    })
-    .execute()
-}
-
-export async function addNurseRegistrationDetails(
-  trx: TrxOrDb,
-  opts: {
-    registrationDetails: NurseRegistrationDetails
-  },
-) {
-  console.log(opts.registrationDetails)
-  return await trx
-    .insertInto('nurse_registration_details')
-    .values(opts.registrationDetails)
-    .execute()
 }

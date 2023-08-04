@@ -7,7 +7,7 @@ import {
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
-// import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
+// import { assert } from 'std/testing/asserts.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(

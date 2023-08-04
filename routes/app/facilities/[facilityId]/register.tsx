@@ -1,7 +1,3 @@
-import {
-  getInvitee,
-  isHealthWorkerWithGoogleTokens,
-} from '../../../../db/models/health_workers.ts'
 import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
@@ -17,11 +13,10 @@ import { Container } from '../../../../components/library/Container.tsx'
 import NursePersonalForm from '../../../../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../../../../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentForm from '../../../../components/health_worker/nurse/invite/NurseDocumentForm.tsx'
-import {
-  addNurseRegistrationDetails,
-  addNurseSpeciality,
-  getEmployee,
-} from '../../../../db/models/health_workers.ts'
+import * as health_workers from '../../../../db/models/health_workers.ts'
+import * as employment from '../../../../db/models/employment.ts'
+import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
+import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import {
   PersonalFormFields,
   ProfessionalInformationFields,
@@ -37,23 +32,11 @@ export type FormState = PersonalFormFields & ProfessionalInformationFields & {
 }
 
 export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
-  async GET(req, ctx) {
-    const facilityId = parseInt(ctx.params.facilityId)
-    assert(facilityId)
+  GET(req, ctx) {
+    const facility_id = parseInt(ctx.params.facility_id)
+    assert(facility_id)
     const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-    const inviteCode = await ctx.state.session.get('inviteCode')
-    assert(inviteCode)
-    const invite = await getInvitee(ctx.state.trx, {
-      inviteCode: inviteCode,
-      email: healthWorker.email,
-    })
-    assert(invite)
-    assertEquals(
-      facilityId,
-      invite.facility_id,
-      'facility id in path not equal to invite id in db',
-    )
+    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
 
     const url = new URL(req.url)
     const stepParam = url.searchParams.get('step')
@@ -95,11 +78,11 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     }
 
     const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-    const facilityId = parseInt(ctx.params.facilityId)
-    const employee = await getEmployee(ctx.state.trx, {
-      facilityId: facilityId,
-      healthworkerId: healthWorker.id,
+    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+    const facility_id = parseInt(ctx.params.facility_id)
+    const employee = await employment.getEmployee(ctx.state.trx, {
+      facility_id: facility_id,
+      health_worker_id: healthWorker.id,
     })
     assert(employee)
 
@@ -115,12 +98,12 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       national_id_media_id: undefined,
     }
 
-    await addNurseSpeciality(ctx.state.trx, {
-      employeeId: employee.id,
+    await nurse_specialties.add(ctx.state.trx, {
+      employee_id: employee.id,
       speciality: formState.speciality,
     })
 
-    await addNurseRegistrationDetails(ctx.state.trx, {
+    await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: nurseRegistrationDetails,
     })
 
