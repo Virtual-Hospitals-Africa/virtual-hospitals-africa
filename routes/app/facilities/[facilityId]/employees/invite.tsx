@@ -14,8 +14,7 @@ import {
   ConnectConfigWithAuthentication,
   SmtpClient,
 } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
-import { addToInvitees } from '../..../../../../../../db/models/health_workers.ts'
-import generateUUID from '../../../../../util/uuid.ts'
+import * as employment from '../..../../../../../../db/models/employment.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 
@@ -46,92 +45,73 @@ function isInvites(
     values.invites.slice(0, -1).every(isInvite)
 }
 
-async function sendInviteMail(
-  email: string,
-  inviteCode: string,
-  facilityId: number,
-) {
-  const client = new SmtpClient()
-  const { SEND_EMAIL, PWD } = Deno.env.toObject()
-  const connectConfig: ConnectConfigWithAuthentication = {
-    hostname: 'smtp.gmail.com',
-    port: 465,
-    username: SEND_EMAIL,
-    password: PWD,
-  }
-  await client.connect(connectConfig)
+// async function sendInviteMail(
+//   email: string,
+//   facility_id: number,
+// ) {
+//   const client = new SmtpClient()
+//   const { SEND_EMAIL, PWD } = Deno.env.toObject()
+//   const connectConfig: ConnectConfigWithAuthentication = {
+//     hostname: 'smtp.gmail.com',
+//     port: 465,
+//     username: SEND_EMAIL,
+//     password: PWD,
+//   }
+//   await client.connect(connectConfig)
 
-  await client.send({
-    from: SEND_EMAIL,
-    to: email,
-    subject: 'Welcome to VHA',
-    content: `Please visit ${origin}/accept-invite/${inviteCode}`,
-  })
+//   await client.send({
+//     from: SEND_EMAIL,
+//     to: email,
+//     subject: 'Welcome to VHA',
+//     content: `Please visit ${origin}/login?invited=true`,
+//   })
 
-  await client.close()
-}
+//   await client.close()
+// }
 
 export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
   async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
-    const facilityId = parseInt(ctx.params.facilityId)
-    assert(facilityId)
+    const facility_id = parseInt(ctx.params.facility_id)
+    assert(facility_id)
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    const isAdmin = await health_workers.isAdmin(
+    const isAdmin = await employment.isAdmin(
       ctx.state.trx,
       {
-        employee_id: healthWorker.id,
-        facility_id: facilityId,
+        health_worker_id: healthWorker.id,
+        facility_id: facility_id,
       },
     )
     assert(isAdmin)
-    assert(facilityId)
+    assert(facility_id)
     return ctx.render({ healthWorker })
   },
   async POST(req, ctx) {
     const healthWorker = ctx.state.session.data
 
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    const isAdmin = await health_workers.isAdmin(
+    const isAdmin = await employment.isAdmin(
       ctx.state.trx,
       {
-        employee_id: healthWorker.id,
-        facility_id: parseInt(ctx.params.facilityId),
+        health_worker_id: healthWorker.id,
+        facility_id: parseInt(ctx.params.facility_id),
       },
     )
 
     assert(isAdmin)
 
-    const facilityId = parseInt(ctx.params.facilityId)
-    assert(facilityId)
-
-    console.log(`Inviting user to facility ${facilityId}`)
+    const facility_id = parseInt(ctx.params.facility_id)
+    assert(facility_id)
 
     const { invites } = await parseRequest(ctx.state.trx, req, isInvites)
 
-    const successfulEmails: string[] = []
+    const invitesWithEmails = invites.filter((invite) => invite.email)
 
-    for (const { email, profession } of invites) {
-      if (!email) continue
-      const inviteCode = generateUUID()
-      try {
-        //still working on sendInviteMailv
-        //await sendInviteMail(email, inviteCode, facilityId);
-        successfulEmails.push(email)
-      } catch (error) {
-        console.error(`Failed to send invite to ${email}: ${error}`)
-      }
-      const result = await addToInvitees(ctx.state.trx, {
-        email: email,
-        profession: profession,
-        facility_id: facilityId,
-        invite_code: inviteCode,
-      })
-      console.log(result)
-    }
+    await employment.addInvitees(ctx.state.trx, facility_id, invitesWithEmails)
+
     return redirect(
-      `/app/facilities/${facilityId}/employees?invited=${
-        successfulEmails.join(',')
+      `/app/facilities/${facility_id}/employees?invited=${
+        invitesWithEmails.map((invite) => invite.email).join(', ')
       }`,
     )
   },

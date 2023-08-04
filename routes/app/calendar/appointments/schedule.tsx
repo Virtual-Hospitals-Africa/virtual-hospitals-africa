@@ -1,4 +1,4 @@
-import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import {
   HealthWorker,
@@ -69,10 +69,7 @@ function isScheduleFormValues(
 export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
   async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
-    assert(
-      isHealthWorkerWithGoogleTokens(healthWorker),
-      'Invalid health worker',
-    )
+    assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
     const search = await parseRequest<SearchFormValues>(
       ctx.state.trx,
@@ -128,10 +125,7 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
   },
   async POST(req, ctx) {
     const healthWorker = ctx.state.session.data
-    assert(
-      isHealthWorkerWithGoogleTokens(healthWorker),
-      'Invalid health worker',
-    )
+    assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
     const schedule = await parseRequest<ScheduleFormValues>(
       ctx.state.trx,

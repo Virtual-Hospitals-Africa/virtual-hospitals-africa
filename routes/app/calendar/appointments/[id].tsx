@@ -1,4 +1,4 @@
-import { assert } from 'https://deno.land/std@0.188.0/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as appointments from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
@@ -19,10 +19,7 @@ type AppointmentPageProps = {
 export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
   async GET(_, ctx) {
     const healthWorker = ctx.state.session.data
-    assert(
-      isHealthWorkerWithGoogleTokens(healthWorker),
-      'Invalid health worker',
-    )
+    assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
     const id = parseInt(ctx.params.id)
     assert(!isNaN(id), 'Invalid appointment ID')

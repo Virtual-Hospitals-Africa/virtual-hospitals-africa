@@ -15,11 +15,6 @@ export async function up(db: Kysely<unknown>) {
       sql`health_worker_professions`,
       (col) => col.notNull(),
     )
-    .addColumn(
-      'invite_code',
-      'uuid',
-      (column) => column.notNull(),
-    )
     .addUniqueConstraint('only_invited_once_per_profession', [
       'email',
       'facility_id',

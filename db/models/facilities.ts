@@ -46,3 +46,14 @@ export async function getAllWithNames(
 
   return facilities
 }
+
+export function get(
+  trx: TrxOrDb,
+  id: number,
+): Promise<Maybe<ReturnedSqlRow<Facility>>> {
+  return trx
+    .selectFrom('facilities')
+    .where('id', '=', id)
+    .selectAll()
+    .executeTakeFirst()
+}

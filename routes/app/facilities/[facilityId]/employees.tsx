@@ -7,6 +7,8 @@ import {
   ReturnedSqlRow,
 } from '../../../../types.ts'
 import * as health_workers from '../../../../db/models/health_workers.ts'
+import * as facilities from '../../../../db/models/facilities.ts'
+import * as employment from '../../../../db/models/employment.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable, {
   Employee,
@@ -25,25 +27,23 @@ type EmployeePageProps = {
 export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
   async GET(_req, ctx) {
     const healthWorker = ctx.state.session.data
-    const facilityId = parseInt(ctx.params.facilityId)
-    assert(
-      health_workers.isHealthWorkerWithGoogleTokens(healthWorker),
-      'Invalid health worker',
-    )
-    const facility = await health_workers.getFacilityById(ctx.state.trx, {
-      facilityId: facilityId,
-    })
-    assert(facility, `facility ${facilityId} does not exist`)
-    const isAdmin = await health_workers.isAdmin(
+    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+
+    const facility_id = parseInt(ctx.params.facility_id)
+    assert(facility_id)
+
+    const facility = await facilities.get(ctx.state.trx, facility_id)
+    assert(facility, `facility ${facility_id} does not exist`)
+    const isAdmin = await employment.isAdmin(
       ctx.state.trx,
       {
-        employee_id: healthWorker.id,
-        facility_id: facilityId,
+        health_worker_id: healthWorker.id,
+        facility_id: facility_id,
       },
     )
-    const employees = await health_workers.getEmployeesAtFacility(
+    const employees = await employment.getByFacility(
       ctx.state.trx,
-      { facilityId },
+      { facility_id },
     )
     const isEmployeeAtFacility = employees.some((employee) =>
       employee.id === healthWorker.id
