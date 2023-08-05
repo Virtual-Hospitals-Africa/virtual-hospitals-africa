@@ -113,9 +113,19 @@ export default function EmployeeTable(
           </div>
         )}
         {props.data.isAdmin && (
-          <InviteesTable
-            invitees={props.data.invitees}
-          />
+          <>
+            <div className='px-1 py-1 sm:px-1'>
+              <h3 className='text-base font-semibold leading-7 text-gray-900'>
+                Invitees
+              </h3>
+              <p className='mt-1 max-w-2xl text-sm leading-6 text-gray-500'>
+                Recently invited health workers.
+              </p>
+            </div>
+            <InviteesTable
+              invitees={props.data.invitees}
+            />
+          </>
         )}
       </Container>
     </Layout>
