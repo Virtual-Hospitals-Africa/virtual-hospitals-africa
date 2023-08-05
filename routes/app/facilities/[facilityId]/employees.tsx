@@ -18,10 +18,14 @@ import redirect from '../../../../util/redirect.ts'
 import { CheckIcon } from '../../../../components/library/CheckIcon.tsx'
 import CrossIcon from '../../../../components/library/icons/cross.tsx'
 import { useState } from 'preact/hooks'
+import InviteesTable, {
+  Invitee,
+} from '../../../../components/health_worker/InviteesTable.tsx'
 
 type EmployeePageProps = {
   isAdmin: boolean
   employees: Employee[]
+  invitees: Invitee[]
   healthWorker: HealthWorkerWithGoogleTokens
   facility: ReturnedSqlRow<Facility>
 }
@@ -51,7 +55,11 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       employee.id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
-    return ctx.render({ isAdmin, employees, healthWorker, facility })
+    const invitees = await health_workers.getInviteesAtFacility(
+      ctx.state.trx,
+      facility_id,
+    )
+    return ctx.render({ isAdmin, employees, invitees, healthWorker, facility })
   },
 }
 
@@ -93,14 +101,21 @@ export default function EmployeeTable(
                 </div>
               </div>
               <div className='ml-auto'>
-                <CrossIcon
+                <button
                   type='button'
                   className='text-green-400'
                   onClick={() => setIsInvitedVisible(false)}
-                />
+                >
+                  <CrossIcon />
+                </button>
               </div>
             </div>
           </div>
+        )}
+        {props.data.isAdmin && (
+          <InviteesTable
+            invitees={props.data.invitees}
+          />
         )}
       </Container>
     </Layout>
