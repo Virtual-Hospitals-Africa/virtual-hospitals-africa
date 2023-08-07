@@ -30,9 +30,7 @@ export async function initializeHealthWorker(
     avatar_url: profile.picture,
     gcal_appointments_calendar_id: calendars.vhaAppointmentsCalendar.id,
     gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
-    access_token: googleClient.tokens.access_token,
-    refresh_token: googleClient.tokens.refresh_token,
-    expires_at: googleClient.tokens.expires_at,
+    ...health_workers.pickTokens(googleClient.tokens),
   })
 
   await employment.add(
@@ -76,7 +74,11 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
             profile,
             invitees,
           )
-          : health_workers.updateTokens(trx, profile.email, tokens)
+          : health_workers.updateTokens(
+            trx,
+            profile.email,
+            health_workers.pickTokens(tokens),
+          )
       )
 
       if (!healthWorker) return false
