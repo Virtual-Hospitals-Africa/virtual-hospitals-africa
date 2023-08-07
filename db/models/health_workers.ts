@@ -3,6 +3,7 @@ import isDate from '../../util/isDate.ts'
 import {
   GoogleTokens,
   HealthWorker,
+  HealthWorkerWithFacilityRoles,
   HealthWorkerWithGoogleTokens,
   Maybe,
   ReturnedSqlRow,
@@ -45,7 +46,6 @@ export function upsertGoogleTokens(
   tokens: GoogleTokens,
 ): Promise<InsertResult[]> {
   assert(health_worker_id)
-
   return trx
     .insertInto('health_worker_google_tokens')
     .values({
@@ -213,3 +213,20 @@ export function getByEmail(
     .selectAll()
     .executeTakeFirst()
 }
+
+// export function getWithFacilityRoles(
+//   trx: TrxOrDb,
+//   id: number
+// ): Promise<HealthWorkerWithFacilityRoles> {
+//   assert(id)
+//   return trx
+//     .selectFrom('health_workers')
+//     .where('health_workers.id', '=', id)
+//     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
+//     .innerJoin('facilities', 'facilities.id', 'employment.facility_id')
+//     .selectAll('health_workers')
+//     .select([
+//       sql``
+//     ])
+//     .executeTakeFirstOrThrow()
+// }
