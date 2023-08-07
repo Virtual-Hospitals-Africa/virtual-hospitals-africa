@@ -50,7 +50,6 @@ export async function initializeHealthWorker(
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
-
     const { session } = ctx.state
     const code = new URL(req.url).searchParams.get('code')
 

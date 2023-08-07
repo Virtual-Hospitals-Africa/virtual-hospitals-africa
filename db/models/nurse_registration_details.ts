@@ -16,7 +16,7 @@ export function getDetails(
   trx: TrxOrDb,
   opts: {
     healthWorkerId: number
-  }
+  },
 ) {
   return trx
     .selectFrom('nurse_registration_details')

@@ -3,7 +3,6 @@ import isDate from '../../util/isDate.ts'
 import {
   GoogleTokens,
   HealthWorker,
-  HealthWorkerWithFacilityRoles,
   HealthWorkerWithGoogleTokens,
   Maybe,
   ReturnedSqlRow,

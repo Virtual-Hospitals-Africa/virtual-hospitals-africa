@@ -116,21 +116,20 @@ function isProfessionalInformationFields(
 }
 
 function isMedia(
-  media: unknown
+  media: unknown,
 ): media is Maybe<Media> {
-  return isObjectLike(media) && 
-  !!media.mime_type &&
-  !!media.binary_data &&
-  !!media.id
-  || media === undefined
-  
+  return isObjectLike(media) &&
+      !!media.mime_type &&
+      !!media.binary_data &&
+      !!media.id ||
+    media === undefined
 }
 
 function isDocumentFormFields(
   fields: unknown,
 ): fields is DocumentFormFields {
   return isObjectLike(fields) &&
-  !!isMedia(fields.national_id_picture) &&
-  !!isMedia(fields.ncz_registration_card) &&
-  !!isMedia(fields.face_picture) 
+    !!isMedia(fields.national_id_picture) &&
+    !!isMedia(fields.ncz_registration_card) &&
+    !!isMedia(fields.face_picture)
 }

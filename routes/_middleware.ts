@@ -32,7 +32,7 @@ export const handler = [
 
     if (!isAuthedHealthWorker) return redirect('/')
 
-    return db.transaction().execute( (trx: TrxOrDb) => {
+    return db.transaction().execute((trx: TrxOrDb) => {
       ctx.state.trx = trx
       return ctx.next()
     })

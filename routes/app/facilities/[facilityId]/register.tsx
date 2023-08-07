@@ -1,4 +1,7 @@
-import { HealthWorkerWithGoogleTokens, LoggedInHealthWorkerHandler } from '../../../../types.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  LoggedInHealthWorkerHandler,
+} from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import {
@@ -18,19 +21,23 @@ import * as employment from '../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import {
+  DocumentFormFields,
   PersonalFormFields,
   ProfessionalInformationFields,
-  DocumentFormFields
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
 
 type RegisterPageProps = {
   formState: FormState
 }
 
-export type FormState = PersonalFormFields & ProfessionalInformationFields & DocumentFormFields & {
-  currentStep: string
-  speciality: NurseSpeciality
-}
+export type FormState =
+  & PersonalFormFields
+  & ProfessionalInformationFields
+  & DocumentFormFields
+  & {
+    currentStep: string
+    speciality: NurseSpeciality
+  }
 
 export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
   GET(req, ctx) {
@@ -87,7 +94,10 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     })
     assert(employee)
 
-    const nurseRegistrationDetails = getRegistrationDetails(healthWorker,formState)
+    const nurseRegistrationDetails = getRegistrationDetails(
+      healthWorker,
+      formState,
+    )
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
@@ -98,13 +108,16 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       registrationDetails: nurseRegistrationDetails,
     })
 
-    ctx.state.session.set('isRegistering',false)
+    ctx.state.session.set('isRegistering', false)
 
     return redirect('/app')
   },
 }
 
-function getRegistrationDetails(healthWorker: HealthWorkerWithGoogleTokens, formState: FormState): NurseRegistrationDetails {
+function getRegistrationDetails(
+  healthWorker: HealthWorkerWithGoogleTokens,
+  formState: FormState,
+): NurseRegistrationDetails {
   return {
     health_worker_id: healthWorker.id,
     gender: formState.gender,
@@ -115,7 +128,7 @@ function getRegistrationDetails(healthWorker: HealthWorkerWithGoogleTokens, form
     face_picture_media_id: formState.face_picture?.id,
     ncz_registration_card_media_id: formState.ncz_registration_card?.id,
     national_id_media_id: formState.national_id_picture?.id,
-    approved_by: null
+    approved_by: null,
   }
 }
 

@@ -74,7 +74,7 @@ export function getByHealthWorker(
   trx: TrxOrDb,
   opts: {
     health_worker_id: number
-  }
+  },
 ) {
   return trx
     .selectFrom('employment')
