@@ -242,6 +242,7 @@ export async function getMediaIdByPatientId(
   trx: TrxOrDb,
   opts: {
     patient_id: number
+    existing_media?: number[]
   },
 ): Promise<number[]> {
   const queryResult = await trx.selectFrom('whatsapp_messages_received').where(
@@ -249,10 +250,13 @@ export async function getMediaIdByPatientId(
     '=',
     opts.patient_id,
   ).where('has_media', '=', true).select('media_id').execute()
-  const mediaIds = []
+  const mediaIds: number[] = []
   for (const { media_id } of queryResult) {
     assert(media_id, `No media found for patient${opts.patient_id}`)
-    mediaIds.push(media_id)
+    if (!opts.existing_media || !opts.existing_media.includes(media_id)) {
+      mediaIds.push(media_id)
+    }
   }
+
   return mediaIds
 }

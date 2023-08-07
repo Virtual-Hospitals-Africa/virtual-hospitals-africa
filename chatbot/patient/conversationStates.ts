@@ -67,7 +67,7 @@ const conversationStates: ConversationStates<
         ...patients.pick(patientState),
         name: patientState.body,
       })
-      return { ...patientState, name: patientState.body }
+      return { ...patientState, name: patientState.body, media_ids: [] }
     },
   },
   'not_onboarded:make_appointment:enter_gender': {
@@ -375,12 +375,14 @@ const conversationStates: ConversationStates<
         id: 'done',
         title: 'Done',
         nextState: 'onboarded:make_appointment:confirm_details',
-        async onExit(trx, patientState) {
+        async onExit(trx, patientState): Promise<PatientState> {
           const request_id = patientState.scheduling_appointment_request?.id
           assert(request_id, 'request_id is undefined.')
           const mediaIds = await getMediaIdByPatientId(trx, {
             patient_id: patientState.patient_id,
+            existing_media: patientState.media_ids,
           })
+          console.log('media to be inserted', mediaIds)
           mediaIds.map(async (media_id) => {
             await appointments.insertAppointmentRequestMedia(trx, {
               request_id,
@@ -388,8 +390,9 @@ const conversationStates: ConversationStates<
             })
           })
           return {
-            media_uploaded: mediaIds.length,
             ...patientState,
+            media_uploaded: mediaIds.length,
+            media_ids: mediaIds
           }
         },
       },
@@ -398,6 +401,7 @@ const conversationStates: ConversationStates<
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
     prompt(patientState: PatientState): string {
+      console.log('confirm details', patientState)
       assert(patientState.scheduling_appointment_request)
       assert(patientState.scheduling_appointment_request.reason)
       return `Got it, ${patientState.scheduling_appointment_request.reason}. In summary, your name is ${patientState.name}, you're messaging from ${patientState.phone_number}, you are a ${patientState.gender} born on ${
@@ -406,7 +410,7 @@ const conversationStates: ConversationStates<
         )
       } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${
         patientState.media_uploaded ? patientState.media_uploaded : 0
-      } media to the doctor. Is this correct?`
+      } media to the doctor. Is this correct? Uploaded media ${patientState.media_ids}`
     },
     options: [
       {
@@ -458,7 +462,7 @@ const conversationStates: ConversationStates<
     },
     prompt(patientState: PatientState): string {
       assert(patientState.scheduling_appointment_request)
-
+      console.log('patientstate at first option', patientState)
       assert(
         patientState.scheduling_appointment_request.offered_times[0],
         'onEnter should have added an appointment_offered_time',
@@ -700,11 +704,12 @@ const conversationStates: ConversationStates<
     prompt(patientState: PatientState) {
       assert(patientState.scheduled_appointment)
       assert(patientState.scheduled_appointment.gcal_event_id)
+      console.log('scheduled appt', patientState)
       return `Thanks ${
         patientState.name!.split(' ')[0]
       }, we notified ${patientState.scheduled_appointment.health_worker_name} and will message you shortly upon confirmirmation of your appointment at ${
         prettyAppointmentTime(patientState.scheduled_appointment.start)
-      }`
+      } We have also send ${patientState.media_uploaded} with id ${patientState.media_ids}`
     },
     options: [
       {
@@ -716,13 +721,17 @@ const conversationStates: ConversationStates<
   },
   'onboarded:cancel_appointment': {
     type: 'select',
-    prompt:
-      'Your appoinment has been cancelled. What can I help you with today?',
+    prompt(patientState: PatientState){
+      console.log('cancelling prompt', patientState)
+      return 'Your appoinment has been cancelled. What can I help you with today?'
+    },
     options: mainMenuOptions,
     onEnter(
       trx: TrxOrDb,
       patientState: PatientState,
     ): Promise<PatientState> {
+      console.log('before cancelling patient state', patientState)
+      console.log('existing media', patientState.media_ids)
       return cancelAppointment(trx, patientState)
     },
   },
