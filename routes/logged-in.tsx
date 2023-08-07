@@ -67,7 +67,6 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
         email: profile.email,
       })
 
-
       const healthWorker = await (
         invitees.length
           ? initializeHealthWorker(
@@ -85,23 +84,10 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
       if (!healthWorker) return false
 
-
       for (
         const [key, value] of Object.entries({ ...healthWorker, ...tokens })
       ) {
         session.set(key, value)
-      }
-
-      const nurseDetails = await details.getDetails(trx, {healthWorkerId: healthWorker.id})
-    
-      if (!nurseDetails) {
-        const inviteDetails = await employment.getInvitees(trx, {email: healthWorker.email})
-        if (inviteDetails) return redirect (`routes/app/facilities/${inviteDetails.at(0)?.facility_id}/register`)
-        return false
-      }
-  
-      if (!nurseDetails.approved_by) {
-        return false
       }
 
       return true

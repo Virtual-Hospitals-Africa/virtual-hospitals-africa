@@ -70,6 +70,19 @@ export function getEmployee(
     .executeTakeFirst()
 }
 
+export function getByHealthWorker(
+  trx: TrxOrDb,
+  opts: {
+    health_worker_id: number
+  }
+) {
+  return trx
+    .selectFrom('employment')
+    .selectAll()
+    .where('health_worker_id', '=', opts.health_worker_id)
+    .execute()
+}
+
 export function getByFacility(
   trx: TrxOrDb,
   opts: {

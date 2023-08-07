@@ -821,6 +821,20 @@ export type HealthWorkerWithGoogleTokens = ReturnedSqlRow<
   HealthWorker & GoogleTokens
 >
 
+export type HealthWorkerWithFacilityRoles = HealthWorkerWithGoogleTokens & {
+  facilities: {
+    id: number
+    roles: {
+      nurse: {
+        employed_as: boolean
+        approved: boolean
+      }
+      doctor?: boolean
+      admin?: boolean
+    }
+  }[]
+}
+
 export type Availability = {
   start: string
   end: string

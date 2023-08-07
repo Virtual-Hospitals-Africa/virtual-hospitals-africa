@@ -34,8 +34,8 @@ export type FormState = PersonalFormFields & ProfessionalInformationFields & Doc
 
 export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
   GET(req, ctx) {
-    const facility_id = parseInt(ctx.params.facility_id)
-    assert(facility_id)
+    const facilityId = parseInt(ctx.params.facilityId)
+    assert(facilityId)
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
 
@@ -80,9 +80,9 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
 
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    const facility_id = parseInt(ctx.params.facility_id)
+    const facilityId = parseInt(ctx.params.facilityId)
     const employee = await employment.getEmployee(ctx.state.trx, {
-      facility_id: facility_id,
+      facility_id: facilityId,
       health_worker_id: healthWorker.id,
     })
     assert(employee)
@@ -97,6 +97,8 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: nurseRegistrationDetails,
     })
+
+    ctx.state.session.set('isRegistering',false)
 
     return redirect('/app')
   },
