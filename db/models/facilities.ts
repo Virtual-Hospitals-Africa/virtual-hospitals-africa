@@ -58,7 +58,7 @@ export function get(
     .executeTakeFirst()
 }
 
-export function getFirstFacilityByHealthWorkerId(
+export function getFirstByHealthWorker(
   trx: TrxOrDb,
   healthWorkerId: number,
 ): Promise<Maybe<ReturnedSqlRow<Facility>>> {

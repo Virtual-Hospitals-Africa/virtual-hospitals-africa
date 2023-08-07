@@ -167,7 +167,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       return redirect(`/app/patients/add?step=${nextStep}`)
     }
     if (urlStep === 'address') {
-      const facility = await facilities.getFirstFacilityByHealthWorkerId(
+      const facility = await facilities.getFirstByHealthWorker(
         ctx.state.trx,
         healthWorker.id,
       )
