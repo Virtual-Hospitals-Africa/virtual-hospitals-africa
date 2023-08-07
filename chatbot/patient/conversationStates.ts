@@ -33,6 +33,7 @@ import {
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
+import { hasOnlyExpressionInitializer } from 'https://deno.land/x/ts_morph@17.0.1/common/typescript.js'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -400,8 +401,12 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
+    async onEnter(_trx, patientState){
+      await console.log('confirming details onEnter', patientState)
+      return patientState
+    },
     prompt(patientState: PatientState): string {
-      console.log('confirm details', patientState)
+      console.log('confirm details prompts', patientState)
       assert(patientState.scheduling_appointment_request)
       assert(patientState.scheduling_appointment_request.reason)
       return `Got it, ${patientState.scheduling_appointment_request.reason}. In summary, your name is ${patientState.name}, you're messaging from ${patientState.phone_number}, you are a ${patientState.gender} born on ${
@@ -417,6 +422,15 @@ const conversationStates: ConversationStates<
         id: 'confirm',
         title: 'Yes',
         nextState: 'onboarded:make_appointment:first_scheduling_option',
+        async onExit(trx, patientState): Promise<PatientState>{
+          console.log('this is the patient state after confirming details.', patientState)
+          const _mediaIds = await getMediaIdByPatientId(trx, {
+            patient_id: patientState.patient_id,
+            existing_media: patientState.media_ids,
+          })
+          
+          return patientState
+        }
       },
       {
         id: 'go_back',
