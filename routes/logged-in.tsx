@@ -50,6 +50,7 @@ export async function initializeHealthWorker(
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
+
     const { session } = ctx.state
     const code = new URL(req.url).searchParams.get('code')
 
@@ -59,13 +60,13 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
     const authorized = await db.transaction().execute(async (trx) => {
       const tokens = await gettingTokens
-
       const googleClient = new google.GoogleClient(tokens)
       const profile = await googleClient.getProfile()
 
       const invitees = await employment.getInvitees(trx, {
         email: profile.email,
       })
+
 
       const healthWorker = await (
         invitees.length
@@ -84,6 +85,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
       if (!healthWorker) return false
 
+
       for (
         const [key, value] of Object.entries({ ...healthWorker, ...tokens })
       ) {
@@ -94,7 +96,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     
       if (!nurseDetails) {
         const inviteDetails = await employment.getInvitees(trx, {email: healthWorker.email})
-        if (inviteDetails.at(0)) return redirect (`routes/app/facilities/${inviteDetails.at(0)?.facility_id}/register`)
+        if (inviteDetails) return redirect (`routes/app/facilities/${inviteDetails.at(0)?.facility_id}/register`)
         return false
       }
   
