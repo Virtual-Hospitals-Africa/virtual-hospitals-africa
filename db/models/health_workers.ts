@@ -226,7 +226,15 @@ export function getByEmail(
 //     .innerJoin('facilities', 'facilities.id', 'employment.facility_id')
 //     .selectAll('health_workers')
 //     .select([
-//       sql``
+//       sql`
+//          SELECT health_workers.*,
+//          JSON_AGG(employment) as employed_facilities
+//          FROM health_workers
+//          JOIN health_worker_google_tokens ON health_worker_google_tokens.health_worker_id = health_workers.id
+//          JOIN employment ON employment.health_worker_id = health_workers.id
+//          JOIN facilities ON facilities.id = employment.facility_id
+//          GROUP BY health_workers.id
+//        `
 //     ])
 //     .executeTakeFirstOrThrow()
 // }
