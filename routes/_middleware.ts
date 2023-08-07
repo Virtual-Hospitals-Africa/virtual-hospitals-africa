@@ -34,7 +34,6 @@ export const handler = [
 
     return db.transaction().execute( (trx: TrxOrDb) => {
       ctx.state.trx = trx
-      //ctx.state.healthWorker = await health_workers.getWithFacilityRoles(trx, isAuthedHealthWorker.id)
       return ctx.next()
     })
   },
