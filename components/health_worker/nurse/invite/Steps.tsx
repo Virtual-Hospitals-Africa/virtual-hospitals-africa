@@ -78,7 +78,7 @@ export type DocumentFormFields = {
 
 export type PersonalFormFields = {
   first_name: string
-  middle_names: string
+  middle_names?: string
   last_name: string
   gender: 'male' | 'female' | 'other'
   national_id: string
@@ -97,7 +97,6 @@ function isPersonalFormFields(
 ): fields is PersonalFormFields {
   return isObjectLike(fields) &&
     !!fields.first_name &&
-    !!fields.middle_names &&
     !!fields.last_name &&
     !!fields.gender &&
     !!fields.national_id &&

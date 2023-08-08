@@ -1,12 +1,13 @@
 import { redisSession } from 'fresh_session'
 import { MiddlewareHandlerContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { TrxOrDb } from '../../types.ts'
+import { NurseRegistrationDetails, TrxOrDb } from '../../types.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
 import redirect from '../../util/redirect.ts'
+import { Employee } from '../../types.ts'
 
 export const handler = [
   async (
@@ -28,22 +29,20 @@ export const handler = [
       healthWorkerId: healthWorker.id,
     })
 
-    if (ctx.state.session.get('isRegistering')) return ctx.next()
 
-    if (!nurseDetails) {
-      if (employmentDetails?.at(0)) {
-        ctx.state.session.set('isRegistering', true)
-        console.log(
-          `/app/facilities/${employmentDetails.at(0)?.facility_id}/register`,
-        )
-        return redirect(
-          `/app/facilities/${employmentDetails.at(0)?.facility_id}/register`,
-        )
-      }
-      return new Response('Not authorized', { status: 401 })
+    if (ctx.state.session.get('isRegistering') && req.url.includes(`/app/facilities/${employmentDetails.at(0)?.facility_id}/register`) ) return ctx.next()
+
+    if (
+      employmentDetails?.some((employee) => {
+        employee.profession === 'nurse' && !nurseDetails
+    })) {
+      ctx.state.session.set('isRegistering', true)
+      return redirect(
+        `/app/facilities/${employmentDetails.at(0)?.facility_id}/register`,
+      )
     }
 
-    if (!nurseDetails.approved_by) {
+    if (!nurseDetails?.approved_by) {
       return new Response('Please wait unitl details approved by admin', {
         status: 401,
       })

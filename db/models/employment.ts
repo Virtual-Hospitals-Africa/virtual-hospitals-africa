@@ -75,7 +75,7 @@ export function getByHealthWorker(
   opts: {
     health_worker_id: number
   },
-) {
+): Promise<ReturnedSqlRow<Employee>[] | undefined> {
   return trx
     .selectFrom('employment')
     .selectAll()
