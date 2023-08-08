@@ -8,6 +8,7 @@ import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.t
 import { assert } from 'std/testing/asserts.ts'
 import redirect from '../../util/redirect.ts'
 import { Employee } from '../../types.ts'
+import EmployeeTable from './facilities/[facilityId]/employees.tsx'
 
 export const handler = [
   async (
@@ -29,25 +30,49 @@ export const handler = [
       healthWorkerId: healthWorker.id,
     })
 
-
-    if (ctx.state.session.get('isRegistering') && req.url.includes(`/app/facilities/${employmentDetails.at(0)?.facility_id}/register`) ) return ctx.next()
-
     if (
-      employmentDetails?.some((employee) => {
-        employee.profession === 'nurse' && !nurseDetails
-    })) {
-      ctx.state.session.set('isRegistering', true)
-      return redirect(
-        `/app/facilities/${employmentDetails.at(0)?.facility_id}/register`,
+      ctx.state.session.get('isRegistering') &&
+      req.url.includes(
+        `/app/facilities/${employmentDetails?.at(0)?.facility_id}/register`,
       )
-    }
+    ) return ctx.next()
 
-    if (!nurseDetails?.approved_by) {
-      return new Response('Please wait unitl details approved by admin', {
-        status: 401,
-      })
-    }
+    let approvalState = 'unauthorized'
 
-    return ctx.next()
+    employmentDetails?.every((employee) => {
+      switch (employee.profession) {
+        case 'admin' || 'doctor':
+          approvalState = 'approved'
+          return false
+        case 'nurse':
+          if (!nurseDetails) {
+            approvalState = 'needRegistration'
+          } else if (!nurseDetails?.approved_by) {
+            approvalState = 'needApproval'
+          } else {
+            approvalState = 'approved'
+            return false
+          }
+      }
+      return true
+    })
+
+    switch (approvalState) {
+      case 'unauthorized':
+        return new Response('Unauthorized', { status: 401 })
+      case 'approved':
+        return ctx.next()
+      case 'needRegistration':
+        ctx.state.session.set('isRegistering', true)
+        return redirect(
+          `/app/facilities/${employmentDetails?.at(0)?.facility_id}/register`,
+        )
+      case 'needApproval':
+        return new Response('Please wait unitl details approved by admin', {
+          status: 401,
+        })
+      default:
+        return new Response('Unauthorized', { status: 401 })
+    }
   },
 ]
