@@ -76,7 +76,6 @@ export async function parseRequest<T extends Record<string, unknown>>(
         ...inserted,
         name: value.name,
       })
-      console.log('----inserted: ', inserted)
     }),
   )
 
