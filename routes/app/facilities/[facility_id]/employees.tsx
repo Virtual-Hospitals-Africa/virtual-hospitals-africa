@@ -18,14 +18,10 @@ import redirect from '../../../../util/redirect.ts'
 import { CheckIcon } from '../../../../components/library/CheckIcon.tsx'
 import CrossIcon from '../../../../components/library/icons/cross.tsx'
 import { useState } from 'preact/hooks'
-import InviteesTable, {
-  Invitee,
-} from '../../../../components/health_worker/InviteesTable.tsx'
 
 type EmployeePageProps = {
   isAdmin: boolean
   employees: Employee[]
-  invitees: Invitee[]
   healthWorker: HealthWorkerWithGoogleTokens
   facility: ReturnedSqlRow<Facility>
 }
@@ -59,7 +55,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       ctx.state.trx,
       facility_id,
     )
-    return ctx.render({ isAdmin, employees, invitees, healthWorker, facility })
+    return ctx.render({ isAdmin, employees, healthWorker, facility })
   },
 }
 
@@ -111,21 +107,6 @@ export default function EmployeeTable(
               </div>
             </div>
           </div>
-        )}
-        {props.data.isAdmin && (
-          <>
-            <div className='px-1 py-1 sm:px-1'>
-              <h3 className='text-base font-semibold leading-7 text-gray-900'>
-                Invitees
-              </h3>
-              <p className='mt-1 max-w-2xl text-sm leading-6 text-gray-500'>
-                Recently invited health workers.
-              </p>
-            </div>
-            <InviteesTable
-              invitees={props.data.invitees}
-            />
-          </>
         )}
       </Container>
     </Layout>

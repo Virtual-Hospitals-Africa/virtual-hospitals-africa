@@ -1,6 +1,6 @@
 import { Handlers } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
@@ -51,6 +51,7 @@ export async function initializeHealthWorker(
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
+    let redirectTo = '/app'
     const { session } = ctx.state
     const code = new URL(req.url).searchParams.get('code')
 
@@ -67,6 +68,13 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
       const invitees = await employment.getInvitees(trx, {
         email: profile.email,
       })
+
+      /*
+      if (invitees.length) {
+        const facility_id = invitees[0].facility_id
+        redirectTo = `/app/facilities/${facility_id}/register`
+      }
+      */
 
       const healthWorker = await (
         invitees.length
@@ -91,7 +99,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     })
 
     return authorized
-      ? redirect('/app')
+      ? redirect(redirectTo)
       : new Response('Not authorized', { status: 401 })
   },
 }
