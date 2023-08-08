@@ -15,10 +15,10 @@ describe('patient chatbot', () => {
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:welcome',
       phone_number: '00000000',
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '1111/11/11',
-      national_id_number: '',
+      name: null,
+      gender: null,
+      date_of_birth: null,
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {

@@ -17,14 +17,14 @@ describe('patient chatbot', () => {
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
-      date_of_birth: '1111/11/11',
-      national_id_number: '',
+      date_of_birth: '1111-11-11',
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: '00000000',
+      body: '123456',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -43,7 +43,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Got it, 00000000. What is the reason you want to schedule an appointment?',
+            'Got it, 123456. What is the reason you want to schedule an appointment?',
           type: 'string',
         },
         phone_number: '00000000',
@@ -58,5 +58,6 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'onboarded:make_appointment:enter_appointment_reason',
     )
+    assertEquals(patient.national_id_number, '123456')
   })
 })
