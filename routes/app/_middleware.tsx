@@ -1,14 +1,17 @@
 import { redisSession } from 'fresh_session'
 import { MiddlewareHandlerContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { NurseRegistrationDetails, TrxOrDb } from '../../types.ts'
+import {
+  NurseRegistrationDetails,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from '../../types.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
 import redirect from '../../util/redirect.ts'
 import { Employee } from '../../types.ts'
-import EmployeeTable from './facilities/[facilityId]/employees.tsx'
 
 export const handler = [
   async (
@@ -26,46 +29,22 @@ export const handler = [
     const employmentDetails = await employment.getByHealthWorker(trx, {
       health_worker_id: healthWorker.id,
     })
-    const nurseDetails = await details.getDetails(trx, {
+    const nurseDetails = await details.get(trx, {
       healthWorkerId: healthWorker.id,
     })
 
-    if (
-      ctx.state.session.get('isRegistering') &&
-      req.url.includes(
-        `/app/facilities/${employmentDetails?.at(0)?.facility_id}/register`,
-      )
-    ) return ctx.next()
+    const state = getApprovalState(employmentDetails, nurseDetails, req)
+    console.log(state)
 
-    let approvalState = 'unauthorized'
-
-    employmentDetails?.every((employee) => {
-      switch (employee.profession) {
-        case 'admin' || 'doctor':
-          approvalState = 'approved'
-          return false
-        case 'nurse':
-          if (!nurseDetails) {
-            approvalState = 'needRegistration'
-          } else if (!nurseDetails?.approved_by) {
-            approvalState = 'needApproval'
-          } else {
-            approvalState = 'approved'
-            return false
-          }
-      }
-      return true
-    })
-
-    switch (approvalState) {
+    switch (state.approval) {
       case 'unauthorized':
         return new Response('Unauthorized', { status: 401 })
       case 'approved':
+      case 'registering':
         return ctx.next()
       case 'needRegistration':
-        ctx.state.session.set('isRegistering', true)
         return redirect(
-          `/app/facilities/${employmentDetails?.at(0)?.facility_id}/register`,
+          `/app/facilities/${state.facilityId}/register`,
         )
       case 'needApproval':
         return new Response('Please wait unitl details approved by admin', {
@@ -76,3 +55,45 @@ export const handler = [
     }
   },
 ]
+
+function getApprovalState(
+  employmentDetails: ReturnedSqlRow<Employee>[] | undefined,
+  nurseDetails: NurseRegistrationDetails | undefined,
+  req: Request,
+) {
+  let approval = 'unauthorized'
+  let facilityId = 0
+
+  employmentDetails?.every((employee) => {
+    switch (employee.profession) {
+      case 'admin' || 'doctor':
+        approval = 'approved'
+        return false
+      case 'nurse':
+        if (!nurseDetails) {
+          if (
+            req.url.includes(
+              `/app/facilities/${employee.facility_id}/register`,
+            )
+          ) {
+            facilityId = employee.facility_id
+            approval = 'registering'
+          } else {
+            facilityId = employee.facility_id
+            approval = 'needRegistration'
+          }
+        } else if (!nurseDetails?.approved_by) {
+          approval = 'needApproval'
+        } else {
+          approval = 'approved'
+          return false
+        }
+    }
+    return true
+  })
+
+  return {
+    approval,
+    facilityId,
+  }
+}

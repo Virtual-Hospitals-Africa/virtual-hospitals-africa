@@ -1,4 +1,8 @@
-import { NurseRegistrationDetails, TrxOrDb } from '../../types.ts'
+import {
+  NurseRegistrationDetails,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from '../../types.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -12,12 +16,12 @@ export function add(
     .execute()
 }
 
-export function getDetails(
+export function get(
   trx: TrxOrDb,
   opts: {
     healthWorkerId: number
   },
-) {
+): Promise<ReturnedSqlRow<NurseRegistrationDetails> | undefined> {
   return trx
     .selectFrom('nurse_registration_details')
     .selectAll()
