@@ -61,39 +61,33 @@ function getApprovalState(
   nurseDetails: NurseRegistrationDetails | undefined,
   req: Request,
 ) {
-  let approval = 'unauthorized'
-  let facilityId = 0
+  if (!employmentDetails) return { approval: 'unauthorized' }
 
-  employmentDetails?.every((employee) => {
-    switch (employee.profession) {
-      case 'admin' || 'doctor':
-        approval = 'approved'
-        return false
-      case 'nurse':
-        if (!nurseDetails) {
-          if (
-            req.url.includes(
-              `/app/facilities/${employee.facility_id}/register`,
-            )
-          ) {
-            facilityId = employee.facility_id
-            approval = 'registering'
-          } else {
-            facilityId = employee.facility_id
-            approval = 'needRegistration'
-          }
-        } else if (!nurseDetails?.approved_by) {
-          approval = 'needApproval'
-        } else {
-          approval = 'approved'
-          return false
-        }
+  for (const employee of employmentDetails) {
+    console.log(employee)
+    if (employee.profession === 'nurse') {
+      if (!nurseDetails) {
+        if (
+          req.url.includes(`/app/facilities/${employee.facility_id}/register`)
+        ) {
+          return { approval: 'registering', facilityId: employee.facility_id }
+        } else {return {
+            approval: 'needRegistration',
+            facilityId: employee.facility_id,
+          }}
+      } else if (!nurseDetails?.approved_by) {
+        return { approval: 'needApproval', facilityId: employee.facility_id }
+      } else return { approval: 'approved', facilityId: employee.facility_id }
     }
-    return true
-  })
-
-  return {
-    approval,
-    facilityId,
   }
+
+  if (
+    employmentDetails?.find(({ profession }) => {
+      return profession === 'nurse' || profession === 'admin'
+    })
+  ) {
+    return { approval: 'approved' }
+  }
+
+  return { approval: 'unauthorized' }
 }
