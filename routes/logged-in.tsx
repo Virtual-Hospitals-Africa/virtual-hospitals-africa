@@ -69,12 +69,10 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
         email: profile.email,
       })
 
-      /*
-      if (invitees.length) {
+      if (invitees.length >= 1) {
         const facility_id = invitees[0].facility_id
         redirectTo = `/app/facilities/${facility_id}/register`
       }
-      */
 
       const healthWorker = await (
         invitees.length

@@ -97,13 +97,12 @@ export default function EmployeeTable(
                 </div>
               </div>
               <div className='ml-auto'>
-                <button
+                <CrossIcon
                   type='button'
                   className='text-green-400'
                   onClick={() => setIsInvitedVisible(false)}
                 >
-                  <CrossIcon />
-                </button>
+                </CrossIcon>
               </div>
             </div>
           </div>
