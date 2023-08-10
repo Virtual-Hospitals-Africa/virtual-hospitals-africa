@@ -1,4 +1,3 @@
-import { redisSession } from 'fresh_session'
 import { MiddlewareHandlerContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
 import {
@@ -12,6 +11,7 @@ import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.t
 import { assert } from 'std/testing/asserts.ts'
 import redirect from '../../util/redirect.ts'
 import { Employee } from '../../types.ts'
+import { HealthWorkerWithRegistrationState } from '../../db/models/employment.ts'
 
 export const handler = [
   async (
@@ -33,7 +33,7 @@ export const handler = [
       healthWorkerId: healthWorker.id,
     })
 
-    const state = getApprovalState(employmentDetails, nurseDetails, req)
+    const state = getApprovalState(employmentDetails, req)
     console.log(state)
 
     switch (state.approval) {
@@ -42,11 +42,11 @@ export const handler = [
       case 'approved':
       case 'registering':
         return ctx.next()
-      case 'needRegistration':
+      case 'registrationNeeded':
         return redirect(
           `/app/facilities/${state.facilityId}/register`,
         )
-      case 'needApproval':
+      case 'pendingApproval':
         return new Response('Please wait unitl details approved by admin', {
           status: 401,
         })
@@ -57,33 +57,22 @@ export const handler = [
 ]
 
 function getApprovalState(
-  employmentDetails: ReturnedSqlRow<Employee>[] | undefined,
-  nurseDetails: NurseRegistrationDetails | undefined,
-  req: Request,
+  employmentDetails: HealthWorkerWithRegistrationState[],
+  req: Request
 ) {
-  if (!employmentDetails) return { approval: 'unauthorized' }
-
   for (const employee of employmentDetails) {
-    console.log(employee)
-    if (employee.profession === 'nurse') {
-      if (!nurseDetails) {
-        if (
-          req.url.includes(`/app/facilities/${employee.facility_id}/register`)
-        ) {
-          return { approval: 'registering', facilityId: employee.facility_id }
-        } else {return {
-            approval: 'needRegistration',
-            facilityId: employee.facility_id,
-          }}
-      } else if (!nurseDetails?.approved_by) {
-        return { approval: 'needApproval', facilityId: employee.facility_id }
-      } else return { approval: 'approved', facilityId: employee.facility_id }
+    if (employee.registration_needed) {
+      if (req.url.includes(`/app/facilities/${employee.facility_id}/register`)) return {approval: 'registering'}
+      else return { approval: 'registrationNeeded', facilityId: employee.facility_id }
     }
+    if (employee.registration_pending_approval) return { approval: 'pendingApproval' }
   }
 
   if (
-    employmentDetails?.find(({ profession }) => {
-      return profession === 'nurse' || profession === 'admin'
+    employmentDetails?.find((employee) => {
+      return employee.profession === 'nurse' 
+        || employee.profession === 'admin' 
+        || employee.registration_completed
     })
   ) {
     return { approval: 'approved' }
