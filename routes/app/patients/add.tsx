@@ -1,6 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
+  Facility,
   HealthWorker,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
@@ -13,6 +14,7 @@ import { assert } from 'std/testing/asserts.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import * as patients from '../../../db/models/patients.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
+import * as facilities from '../../../db/models/facilities.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import {
@@ -32,7 +34,9 @@ export type AddPatientDataProps = {
 }
 
 type AddPatientProps = {
-  healthWorker: HealthWorker
+  healthWorker: HealthWorker & {
+    facility?: ReturnedSqlRow<Facility>
+  }
   patient: AddPatientDataProps
 }
 
@@ -151,7 +155,7 @@ async function storePatientData(
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
-  GET(req, ctx) {
+  async GET(req, ctx) {
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
     const urlStep = new URL(req.url).searchParams.get('step')
@@ -161,6 +165,17 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     if (!urlStep && cachedLastStep) {
       const nextStep = getNextStep(cachedLastStep)
       return redirect(`/app/patients/add?step=${nextStep}`)
+    }
+    if (urlStep === 'address') {
+      const facility = await facilities.getFirstByHealthWorker(
+        ctx.state.trx,
+        healthWorker.id,
+      )
+      assert(facility, 'Health worker not employed at any facility')
+      return ctx.render({
+        healthWorker: { ...healthWorker, facility },
+        patient,
+      })
     }
     return ctx.render({ healthWorker, patient })
   },
@@ -187,7 +202,7 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { steps, currentStep } = useAddPatientSteps(props)
-  const { patient } = props.data
+  const { patient, healthWorker: { facility } } = props.data
 
   return (
     <Layout
@@ -206,7 +221,9 @@ export default function AddPatient(
           {currentStep === 'personal' && (
             <PatientPersonalForm initialData={patient.personal} />
           )}
-          {currentStep === 'address' && <PatientAddressForm />}
+          {currentStep === 'address' && (
+            <PatientAddressForm defaultFacility={facility} />
+          )}
           {currentStep === 'history' && <div>TODO history form</div>}
           {currentStep === 'allergies' && <div>TODO allergies form</div>}
           {currentStep === 'age_related_questions' && <div>TODO age form</div>}

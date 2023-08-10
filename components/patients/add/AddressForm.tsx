@@ -3,6 +3,7 @@ import FormRow from '../../library/form/Row.tsx'
 import Buttons from '../../library/form/buttons.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import FacilitySearch from '../../../islands/FacilitySearch.tsx'
+import { Facility, ReturnedSqlRow } from '../../../types.ts'
 
 function PatientAddress() {
   return (
@@ -29,7 +30,9 @@ function PatientAddress() {
   )
 }
 
-function NearestHealthCare() {
+function NearestHealthCare(
+  { defaultFacility }: { defaultFacility?: ReturnedSqlRow<Facility> },
+) {
   return (
     <section>
       <SectionHeader className='mb-3'>Nearest Health Care</SectionHeader>
@@ -39,17 +42,20 @@ function NearestHealthCare() {
           href='/app/facilities'
           label='Nearest Facility'
           required
+          defaultFacility={defaultFacility}
         />
       </FormRow>
     </section>
   )
 }
 
-export default function PatientAddressForm() {
+export default function PatientAddressForm(
+  { defaultFacility }: { defaultFacility?: ReturnedSqlRow<Facility> },
+) {
   return (
     <>
       <PatientAddress />
-      <NearestHealthCare />
+      <NearestHealthCare defaultFacility={defaultFacility} />
       <hr className='my-2' />
       <Buttons cancelHref='/app/patients/add?step=personal' />
     </>

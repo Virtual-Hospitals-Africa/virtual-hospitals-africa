@@ -1,19 +1,26 @@
 // import SearchResults from '../SearchResults.tsx'
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
   FacilitySearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/testing/asserts.ts'
 import debounce from '../util/debounce.ts'
-import { HasId } from '../types.ts'
+import { Facility, HasId, ReturnedSqlRow } from '../types.ts'
 
-export default function PersonSearch({
+export default function FacilitySearch({
   href,
   name,
   label,
   required,
-}: { href: string; name: string; label?: string; required?: boolean }) {
+  defaultFacility,
+}: {
+  href: string
+  name: string
+  label?: string
+  required?: boolean
+  defaultFacility?: ReturnedSqlRow<Facility>
+}) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
   const [facilities, setFacilities] = useState<
@@ -64,6 +71,12 @@ export default function PersonSearch({
       setFacilities(facilities)
     }).catch(console.error)
   }, [search])
+
+  useEffect(() => {
+    if (!defaultFacility) return
+    setSearchImmediate(defaultFacility.name)
+    setSelected(defaultFacility)
+  }, [defaultFacility?.id])
 
   const showSearchResults = isFocused && facilities.length > 0 &&
     selected?.name !== search
