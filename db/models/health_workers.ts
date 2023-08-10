@@ -221,18 +221,3 @@ export function getByEmail(
     .selectAll()
     .executeTakeFirst()
 }
-
-export async function getInviteesAtFacility(
-  trx: TrxOrDb,
-  facilityId: number,
-) {
-  return await trx
-    .selectFrom('health_worker_invitees')
-    .where('facility_id', '=', facilityId)
-    .select([
-      'id',
-      'email',
-      'profession',
-    ])
-    .execute()
-}

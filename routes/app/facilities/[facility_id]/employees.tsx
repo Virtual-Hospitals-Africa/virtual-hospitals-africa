@@ -51,10 +51,6 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       employee.id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
-    const invitees = await health_workers.getInviteesAtFacility(
-      ctx.state.trx,
-      facility_id,
-    )
     return ctx.render({ isAdmin, employees, healthWorker, facility })
   },
 }

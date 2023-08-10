@@ -12,6 +12,7 @@ export default function CrossIcon(
       strokeWidth='1.5'
       stroke='currentColor'
       class='w-6 h-6'
+      style={{ pointerEvents: 'bounding-box' }}
     >
       <path
         strokeLinecap='round'
