@@ -1,4 +1,3 @@
-import { isNumber } from 'https://deno.land/x/redis@v0.30.0/stream.ts'
 import {
   NurseRegistrationDetails,
   ReturnedSqlRow,
@@ -33,7 +32,7 @@ export function get(
 }
 
 function inputValidation(registrationDetails: NurseRegistrationDetails) {
-  return isNumber(registrationDetails.health_worker_id) &&
+  return typeof registrationDetails.health_worker_id === 'number' &&
     registrationDetails.national_id.match('^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$') &&
     isDate(registrationDetails.date_of_first_practice) &&
     registrationDetails.ncz_registration_number.match(
@@ -41,11 +40,11 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
     ) &&
     registrationDetails.mobile_number.toString().match('^[0-9]+$') &&
     (registrationDetails.national_id_media_id === undefined ||
-      isNumber(registrationDetails.national_id_media_id)) &&
+      typeof registrationDetails.national_id_media_id === 'number') &&
     (registrationDetails.ncz_registration_card_media_id === undefined ||
-      isNumber(registrationDetails.ncz_registration_card_media_id)) &&
+      typeof registrationDetails.ncz_registration_card_media_id === 'number') &&
     (registrationDetails.face_picture_media_id === undefined ||
-      isNumber(registrationDetails.face_picture_media_id))
+      typeof registrationDetails.face_picture_media_id === 'number')
 }
 
 function isDate(date: Date): boolean {
