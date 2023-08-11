@@ -58,21 +58,28 @@ export const handler = [
 
 function getApprovalState(
   employmentDetails: HealthWorkerWithRegistrationState[],
-  req: Request
+  req: Request,
 ) {
   for (const employee of employmentDetails) {
     if (employee.registration_needed) {
-      if (req.url.includes(`/app/facilities/${employee.facility_id}/register`)) return {approval: 'registering'}
-      else return { approval: 'registrationNeeded', facilityId: employee.facility_id }
+      if (
+        req.url.includes(`/app/facilities/${employee.facility_id}/register`)
+      ) return { approval: 'registering' }
+      else {return {
+          approval: 'registrationNeeded',
+          facilityId: employee.facility_id,
+        }}
     }
-    if (employee.registration_pending_approval) return { approval: 'pendingApproval' }
+    if (employee.registration_pending_approval) {
+      return { approval: 'pendingApproval' }
+    }
   }
 
   if (
     employmentDetails?.find((employee) => {
-      return employee.profession === 'nurse' 
-        || employee.profession === 'admin' 
-        || employee.registration_completed
+      return employee.profession === 'nurse' ||
+        employee.profession === 'admin' ||
+        employee.registration_completed
     })
   ) {
     return { approval: 'approved' }
