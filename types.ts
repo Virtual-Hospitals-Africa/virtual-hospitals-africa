@@ -796,6 +796,7 @@ export type NurseRegistrationDetails = {
   national_id_media_id: Maybe<number>
   ncz_registration_card_media_id: Maybe<number>
   face_picture_media_id: Maybe<number>
+  approved_by: Maybe<number>
 }
 
 export type Specialities = {
@@ -819,6 +820,20 @@ export type HealthWorkerGoogleToken = GoogleTokens & {
 export type HealthWorkerWithGoogleTokens = ReturnedSqlRow<
   HealthWorker & GoogleTokens
 >
+
+export type HealthWorkerWithFacilityRoles = HealthWorkerWithGoogleTokens & {
+  facilities: {
+    id: number
+    roles: {
+      nurse: {
+        employed_as: boolean
+        approved: boolean
+      }
+      doctor?: boolean
+      admin?: boolean
+    }
+  }[]
+}
 
 export type Availability = {
   start: string

@@ -7,6 +7,7 @@ import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
 import * as google from '../external-clients/google.ts'
+import * as details from '../db/models/nurse_registration_details.ts'
 import {
   GoogleProfile,
   HealthWorker,
@@ -58,7 +59,6 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
     const authorized = await db.transaction().execute(async (trx) => {
       const tokens = await gettingTokens
-
       const googleClient = new google.GoogleClient(tokens)
       const profile = await googleClient.getProfile()
 

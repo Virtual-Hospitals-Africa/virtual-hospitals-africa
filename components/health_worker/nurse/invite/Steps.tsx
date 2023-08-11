@@ -1,9 +1,11 @@
 import { PageProps } from '$fresh/server.ts'
 import { AddPatientStep } from '../../../patients/add/Steps.tsx'
 import { Steps } from '../../../library/Steps.tsx'
-import { NurseSpeciality, TrxOrDb } from '../../../../types.ts'
+import { NurseSpeciality, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
+import { Maybe } from '../../../../types.ts'
+import { Media } from '../../../../types.ts'
 
 export type NurseRegistrationStep =
   | 'personal'
@@ -62,16 +64,21 @@ export function getStepFormData(
     case NurseRegistrationStepNames[1]:
       return parseRequest(trx, req, isProfessionalInformationFields)
     case NurseRegistrationStepNames[2]:
-      //TODO
-      break
+      return parseRequest(trx, req, isDocumentFormFields)
     default:
       throw new Error('No step found')
   }
 }
 
+export type DocumentFormFields = {
+  national_id_picture: Maybe<ReturnedSqlRow<Media>>
+  ncz_registration_card: Maybe<ReturnedSqlRow<Media>>
+  face_picture: Maybe<ReturnedSqlRow<Media>>
+}
+
 export type PersonalFormFields = {
   first_name: string
-  middle_names: string
+  middle_names?: string
   last_name: string
   gender: 'male' | 'female' | 'other'
   national_id: string
@@ -90,7 +97,6 @@ function isPersonalFormFields(
 ): fields is PersonalFormFields {
   return isObjectLike(fields) &&
     !!fields.first_name &&
-    !!fields.middle_names &&
     !!fields.last_name &&
     !!fields.gender &&
     !!fields.national_id &&
@@ -106,4 +112,23 @@ function isProfessionalInformationFields(
     !!fields.speciality &&
     !!fields.date_of_first_practice &&
     !!fields.ncz_registration_number
+}
+
+function isMedia(
+  media: unknown,
+): media is Maybe<Media> {
+  return isObjectLike(media) &&
+      !!media.mime_type &&
+      !!media.binary_data &&
+      !!media.id ||
+    media === undefined
+}
+
+function isDocumentFormFields(
+  fields: unknown,
+): fields is DocumentFormFields {
+  return isObjectLike(fields) &&
+    !!isMedia(fields.national_id_picture) &&
+    !!isMedia(fields.ncz_registration_card) &&
+    !!isMedia(fields.face_picture)
 }
