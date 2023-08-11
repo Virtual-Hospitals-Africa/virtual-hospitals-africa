@@ -225,7 +225,9 @@ export default function AddPatient(
             <PatientAddressForm defaultFacility={facility} />
           )}
           {currentStep === 'history' && <div>TODO history form</div>}
-          {currentStep === 'allergies' && <div>TODO allergies form</div>}
+          {currentStep === 'pre-existing_conditions' && (
+            <div>TODO pre-existing_conditions form</div>
+          )}
           {currentStep === 'age_related_questions' && <div>TODO age form</div>}
         </form>
       </Container>
