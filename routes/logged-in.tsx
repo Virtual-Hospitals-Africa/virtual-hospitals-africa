@@ -7,6 +7,7 @@ import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
 import * as google from '../external-clients/google.ts'
+import * as details from '../db/models/nurse_registration_details.ts'
 import {
   GoogleProfile,
   HealthWorker,
@@ -87,6 +88,18 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
         const [key, value] of Object.entries({ ...healthWorker, ...tokens })
       ) {
         session.set(key, value)
+      }
+
+      const nurseDetails = await details.getDetails(trx, {healthWorkerId: healthWorker.id})
+    
+      if (!nurseDetails) {
+        const inviteDetails = await employment.getInvitees(trx, {email: healthWorker.email})
+        if (inviteDetails.at(0)) return redirect (`routes/app/facilities/${inviteDetails.at(0)?.facility_id}/register`)
+        return false
+      }
+  
+      if (!nurseDetails.approved_by) {
+        return false
       }
 
       return true

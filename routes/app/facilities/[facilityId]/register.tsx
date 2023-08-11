@@ -113,6 +113,7 @@ function getRegistrationDetails(healthWorker: HealthWorkerWithGoogleTokens, form
     face_picture_media_id: formState.face_picture?.id,
     ncz_registration_card_media_id: formState.ncz_registration_card?.id,
     national_id_media_id: formState.national_id_picture?.id,
+    approved_by: null
   }
 }
 
