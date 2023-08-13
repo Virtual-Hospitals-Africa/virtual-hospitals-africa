@@ -219,7 +219,7 @@ const conversationStates: ConversationStates<
           ? `${facility.address} (${distanceInKM})`
           : facility.address
 
-        const facilityName = facility.vha ? `${facility.name} VHA` : facility.name
+        const facilityName = facility.vha ? `${facility.name} (VHA)` : facility.name
         console.log(facility.vha)
 
         return {
