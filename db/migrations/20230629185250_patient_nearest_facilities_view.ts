@@ -43,7 +43,6 @@ export async function up(db: Kysely<unknown>) {
     GROUP BY patient_id
   )
 `.execute(db)
-
 }
 
 export async function down(db: Kysely<unknown>) {

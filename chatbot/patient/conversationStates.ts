@@ -219,7 +219,9 @@ const conversationStates: ConversationStates<
           ? `${facility.address} (${distanceInKM})`
           : facility.address
 
-        const facilityName = facility.vha ? `${facility.name} (VHA)` : facility.name
+        const facilityName = facility.vha
+          ? `${facility.name} (VHA)`
+          : facility.name
         console.log(facility.vha)
 
         return {
@@ -238,12 +240,12 @@ const conversationStates: ConversationStates<
         }
       })
 
-      // console.log('facilities')
-      // console.log(facilities)
+      console.log('facilities')
+      console.log(facilities)
 
       const sectionTitles = uniq(facilities.map((facility) => facility.section))
 
-      // console.log('sectionTitles', sectionTitles)
+      console.log('sectionTitles', sectionTitles)
 
       const sections: ConversationStateHandlerListActionSection<
         PatientState
@@ -256,7 +258,7 @@ const conversationStates: ConversationStates<
         ),
       }))
 
-      // console.log('sections', sections)
+      console.log('sections', sections)
 
       return {
         type: 'list',
