@@ -219,13 +219,14 @@ const conversationStates: ConversationStates<
           ? `${facility.address} (${distanceInKM})`
           : facility.address
 
-        console.log("vha status:", facility.vha)
+        const facilityName = facility.vha ? `${facility.name} VHA` : facility.name
+        console.log(facility.vha)
 
         return {
           section: 'Town Name Here',
           row: {
             id: `${facility.id}`,
-            title: capLengthAtWhatsAppTitle(facility.name),
+            title: capLengthAtWhatsAppTitle(facilityName),
             description: capLengthAtWhatsAppDescription(description),
             nextState: 'find_nearest_facility:send_facility_location' as const,
             onExit(_trx: TrxOrDb, patientState: PatientState) {
@@ -237,12 +238,12 @@ const conversationStates: ConversationStates<
         }
       })
 
-      console.log('facilities')
-      console.log(facilities)
+      // console.log('facilities')
+      // console.log(facilities)
 
       const sectionTitles = uniq(facilities.map((facility) => facility.section))
 
-      console.log('sectionTitles', sectionTitles)
+      // console.log('sectionTitles', sectionTitles)
 
       const sections: ConversationStateHandlerListActionSection<
         PatientState
@@ -255,7 +256,7 @@ const conversationStates: ConversationStates<
         ),
       }))
 
-      console.log('sections', sections)
+      // console.log('sections', sections)
 
       return {
         type: 'list',
