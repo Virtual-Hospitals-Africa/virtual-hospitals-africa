@@ -219,6 +219,8 @@ const conversationStates: ConversationStates<
           ? `${facility.address} (${distanceInKM})`
           : facility.address
 
+        console.log("vha status:", facility.vha)
+
         return {
           section: 'Town Name Here',
           row: {
