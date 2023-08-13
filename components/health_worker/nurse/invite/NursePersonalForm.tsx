@@ -16,18 +16,15 @@ export default function NursePersonalForm() {
           name='first_name'
           required
           label='First Name'
-          pattern='^[a-zA-Z]+$'
         />
         <TextInput
           name='middle_names'
           label='Middle Names'
-          pattern='^[a-zA-Z]*$'
         />
         <TextInput
           name='last_name'
           required
           label='Last Name'
-          pattern='^[a-zA-Z]+$'
         />
       </FormRow>
       <FormRow>
