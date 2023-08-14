@@ -22,23 +22,16 @@ describe('/login', () => {
     }).spawn()
 
     // TODO use readLines to actually know the server has started when we see this line
-    // Listening on https://localhost:8000/
-    return new Promise((resolve) => setTimeout(resolve, 1000))
-  })
-
-  afterAll(() => {
-    console.log('here')
-    server.kill()
-    console.log('killed')
+    // Listening on https://localhost:8002/
+    return new Promise((resolve) => setTimeout(resolve, 2000))
   })
 
   it("redirects to google if not already logged in", async () => {
-    const response = await fetch('https://localhost:8002/login', { redirect: "manual" })
-    
+    const response = await fetch('https://localhost:8002/login', { redirect: 'manual' })    
     const redirectLocation = response.headers.get('location')
     assert(redirectLocation)
     assert(redirectLocation.startsWith('https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8000%2Flogged-in'))
-    if (response.body) response.body.cancel()
+    await response.body?.cancel()
   })
 
   describe('when logged in', () => {
