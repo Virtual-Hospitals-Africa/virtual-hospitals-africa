@@ -23,6 +23,7 @@ export async function down(db: Kysely<unknown>) {
     .dropTable('wards').execute()
 }
 
+// deno-lint-ignore no-explicit-any
 async function importWardsFromCSV(db: Kysely<any>) {
   for await (
     const row of parseCsv('./db/resources/zimbabwe-wards.csv')
