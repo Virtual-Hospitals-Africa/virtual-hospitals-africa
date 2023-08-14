@@ -29,11 +29,12 @@ export async function handler(
     (employee) => employee.registration_pending_approval,
   )
   if (roleNeedingRegistration) {
-    const redirectTo =
+    const registrationPage =
       `/app/facilities/${roleNeedingRegistration.facility_id}/register`
 
     const url = new URL(req.url)
-    return url.pathname === redirectTo ? ctx.next() : redirect(redirectTo)
+    const onRegistrationPage = url.pathname === registrationPage
+    return onRegistrationPage ? ctx.next() : redirect(registrationPage)
   }
 
   // TODO make a page for this purpose
