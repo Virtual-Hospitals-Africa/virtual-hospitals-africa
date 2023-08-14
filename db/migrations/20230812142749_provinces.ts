@@ -11,7 +11,7 @@ const provinceList = [
   'Masvingo',
   'Matabeleland North',
   'Matabeleland South',
-  'Midlands'
+  'Midlands',
 ]
 
 export async function up(db: Kysely<unknown>) {
@@ -40,7 +40,7 @@ async function addProvinces(db: Kysely<any>) {
     .insertInto('provinces')
     .values(provinceList.map((name) => ({
       name,
-      country_id: 1
+      country_id: 1,
     })))
     .execute()
 }

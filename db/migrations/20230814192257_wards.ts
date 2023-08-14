@@ -27,7 +27,6 @@ async function importWardsFromCSV(db: Kysely<any>) {
   for await (
     const row of parseCsv('./db/resources/zimbabwe-wards.csv')
   ) {
-
     await sql`
       INSERT INTO wards (
         name,
