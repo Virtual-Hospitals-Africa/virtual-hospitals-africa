@@ -10,21 +10,20 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('sends invitation to share location after welcome message', async () => {
-    // To set a patient in a sepefic state, we have to insert this state into db
+  it('asks for birthday after inquiring gender', async () => {
     await patients.upsert(db, {
-      conversation_state: 'not_onboarded:welcome',
+      conversation_state: 'not_onboarded:make_appointment:enter_gender',
       phone_number: '00000000',
       name: 'test',
-      gender: 'female',
-      date_of_birth: '1111/11/11',
-      national_id_number: '',
+      gender: null,
+      date_of_birth: null,
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'find_nearest_facility',
+      body: 'other',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -42,9 +41,9 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          type: 'string',
           messageBody:
-            'Sure, we can find your nearest facility. Can you share your location?',
+            'Thanks for that information. What is your date of birth? Please enter the date in the format DD/MM/YYYY',
+          type: 'string',
         },
         phone_number: '00000000',
       },
@@ -56,7 +55,8 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'find_nearest_facility:share_location',
+      'not_onboarded:make_appointment:enter_date_of_birth',
     )
+    assertEquals(patient.gender, 'other')
   })
 })

@@ -17,7 +17,7 @@ describe('patient chatbot', () => {
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
-      date_of_birth: '1111/11/11',
+      date_of_birth: '2023-01-01',
       national_id_number: '',
     })
 
@@ -76,7 +76,6 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsAppTwo)
-    console.log(fakeWhatsAppTwo.sendMessages.firstCall.args)
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
         messages: [
