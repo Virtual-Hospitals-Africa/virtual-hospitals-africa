@@ -35,6 +35,7 @@ export async function down(db: Kysely<unknown>) {
     .dropTable('provinces').execute()
 }
 
+// deno-lint-ignore no-explicit-any
 async function addProvinces(db: Kysely<any>) {
   await db
     .insertInto('provinces')
