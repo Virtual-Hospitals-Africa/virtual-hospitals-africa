@@ -16,19 +16,18 @@ import * as $10 from './routes/app/facilities/[facilityId]/employees.tsx'
 import * as $11 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
 import * as $12 from './routes/app/facilities/[facilityId]/register.tsx'
 import * as $13 from './routes/app/health_workers.tsx'
-import * as $14 from './routes/app/invite-confirmation.tsx'
-import * as $15 from './routes/app/patients.tsx'
-import * as $16 from './routes/app/patients/[id].tsx'
-import * as $17 from './routes/app/patients/[id]/avatar.tsx'
-import * as $18 from './routes/app/patients/add.tsx'
-import * as $19 from './routes/app/patients/avatar/[id].tsx'
-import * as $20 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $21 from './routes/full-reset.ts'
-import * as $22 from './routes/index.tsx'
-import * as $23 from './routes/logged-in.tsx'
-import * as $24 from './routes/login.tsx'
-import * as $25 from './routes/logout.tsx'
-import * as $26 from './routes/patient-reset.ts'
+import * as $14 from './routes/app/patients.tsx'
+import * as $15 from './routes/app/patients/[id].tsx'
+import * as $16 from './routes/app/patients/[id]/avatar.tsx'
+import * as $17 from './routes/app/patients/add.tsx'
+import * as $18 from './routes/app/patients/avatar/[id].tsx'
+import * as $19 from './routes/chatbot/incoming-whatsapp.ts'
+import * as $20 from './routes/full-reset.ts'
+import * as $21 from './routes/index.tsx'
+import * as $22 from './routes/logged-in.tsx'
+import * as $23 from './routes/login.tsx'
+import * as $24 from './routes/logout.tsx'
+import * as $25 from './routes/patient-reset.ts'
 import * as $$0 from './islands/FacilitySearch.tsx'
 import * as $$1 from './islands/Menu.tsx'
 import * as $$2 from './islands/PersonSearch.tsx'
@@ -54,19 +53,18 @@ const manifest = {
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $11,
     './routes/app/facilities/[facilityId]/register.tsx': $12,
     './routes/app/health_workers.tsx': $13,
-    './routes/app/invite-confirmation.tsx': $14,
-    './routes/app/patients.tsx': $15,
-    './routes/app/patients/[id].tsx': $16,
-    './routes/app/patients/[id]/avatar.tsx': $17,
-    './routes/app/patients/add.tsx': $18,
-    './routes/app/patients/avatar/[id].tsx': $19,
-    './routes/chatbot/incoming-whatsapp.ts': $20,
-    './routes/full-reset.ts': $21,
-    './routes/index.tsx': $22,
-    './routes/logged-in.tsx': $23,
-    './routes/login.tsx': $24,
-    './routes/logout.tsx': $25,
-    './routes/patient-reset.ts': $26,
+    './routes/app/patients.tsx': $14,
+    './routes/app/patients/[id].tsx': $15,
+    './routes/app/patients/[id]/avatar.tsx': $16,
+    './routes/app/patients/add.tsx': $17,
+    './routes/app/patients/avatar/[id].tsx': $18,
+    './routes/chatbot/incoming-whatsapp.ts': $19,
+    './routes/full-reset.ts': $20,
+    './routes/index.tsx': $21,
+    './routes/logged-in.tsx': $22,
+    './routes/login.tsx': $23,
+    './routes/logout.tsx': $24,
+    './routes/patient-reset.ts': $25,
   },
   islands: {
     './islands/FacilitySearch.tsx': $$0,

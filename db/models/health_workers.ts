@@ -49,9 +49,17 @@ export function upsertGoogleTokens(
     .insertInto('health_worker_google_tokens')
     .values({
       health_worker_id,
-      ...tokens,
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token,
+      expires_at: tokens.expires_at,
     })
-    .onConflict((oc) => oc.column('health_worker_id').doUpdateSet(tokens))
+    .onConflict((oc) =>
+      oc.column('health_worker_id').doUpdateSet({
+        access_token: tokens.access_token,
+        refresh_token: tokens.refresh_token,
+        expires_at: tokens.expires_at,
+      })
+    )
     .execute()
 }
 
