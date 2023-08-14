@@ -12,9 +12,20 @@ export default function NursePersonalForm() {
   return (
     <>
       <FormRow>
-        <TextInput name='first_name' required label='First Name' />
-        <TextInput name='middle_names' label='Middle Names' />
-        <TextInput name='last_name' required label='Last Name' />
+        <TextInput
+          name='first_name'
+          required
+          label='First Name'
+        />
+        <TextInput
+          name='middle_names'
+          label='Middle Names'
+        />
+        <TextInput
+          name='last_name'
+          required
+          label='Last Name'
+        />
       </FormRow>
       <FormRow>
         <GenderInput required />

@@ -14,6 +14,11 @@ export default function set(obj: any, path: string, value: any) {
         current[key] = {}
       }
     }
+
+    if (key === '__proto__' || key === 'constructor' || key === 'prototype') {
+      return obj
+    }
+
     current = current[key]
   }
 
