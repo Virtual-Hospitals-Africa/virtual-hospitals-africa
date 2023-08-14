@@ -222,7 +222,6 @@ const conversationStates: ConversationStates<
         const facilityName = facility.vha
           ? `${facility.name} (VHA)`
           : facility.name
-        console.log(facility.vha)
 
         return {
           section: 'Town Name Here',
