@@ -18,6 +18,7 @@ export const handler: Handlers<unknown, WithSession> = {
     if (isHealthWorkerWithGoogleTokens(healthWorker)) {
       return redirect('/app')
     }
+
     const loginUrl =
       `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
     return redirect(loginUrl)
