@@ -31,7 +31,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
 
-    const facility_id = parseInt(ctx.params.facility_id)
+    const facility_id = parseInt(ctx.params.facilityId)
     assert(facility_id)
 
     const facility = await facilities.get(ctx.state.trx, facility_id)

@@ -4,15 +4,15 @@ import { Steps } from '../../../components/library/Steps.tsx'
 export type AddPatientStep =
   | 'personal'
   | 'address'
+  | 'pre-existing_conditions'
   | 'history'
-  | 'allergies'
   | 'age_related_questions'
 
 const stepNames: AddPatientStep[] = [
   'personal',
   'address',
+  'pre-existing_conditions',
   'history',
-  'allergies',
   'age_related_questions',
 ]
 

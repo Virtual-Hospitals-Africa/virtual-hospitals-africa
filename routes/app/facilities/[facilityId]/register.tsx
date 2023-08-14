@@ -1,6 +1,9 @@
-import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  LoggedInHealthWorkerHandler,
+} from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import {
   getStepFormData,
   isNurseRegistrationStep,
@@ -18,6 +21,7 @@ import * as employment from '../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import {
+  DocumentFormFields,
   PersonalFormFields,
   ProfessionalInformationFields,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
@@ -26,15 +30,19 @@ type RegisterPageProps = {
   formState: FormState
 }
 
-export type FormState = PersonalFormFields & ProfessionalInformationFields & {
-  currentStep: string
-  speciality: NurseSpeciality
-}
+export type FormState =
+  & PersonalFormFields
+  & ProfessionalInformationFields
+  & DocumentFormFields
+  & {
+    currentStep: string
+    speciality: NurseSpeciality
+  }
 
 export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
   GET(req, ctx) {
-    const facility_id = parseInt(ctx.params.facility_id)
-    assert(facility_id)
+    const facilityId = parseInt(ctx.params.facilityId)
+    assert(facilityId)
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
 
@@ -79,24 +87,17 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
 
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    const facility_id = parseInt(ctx.params.facility_id)
+    const facilityId = parseInt(ctx.params.facilityId)
     const employee = await employment.getEmployee(ctx.state.trx, {
-      facility_id: facility_id,
+      facility_id: facilityId,
       health_worker_id: healthWorker.id,
     })
     assert(employee)
 
-    const nurseRegistrationDetails: NurseRegistrationDetails = {
-      health_worker_id: healthWorker.id,
-      gender: formState.gender,
-      national_id: formState.national_id,
-      date_of_first_practice: formState.date_of_first_practice,
-      ncz_registration_number: formState.ncz_registration_number,
-      mobile_number: formState.mobile_number,
-      face_picture_media_id: undefined,
-      ncz_registration_card_media_id: undefined,
-      national_id_media_id: undefined,
-    }
+    const nurseRegistrationDetails = getRegistrationDetails(
+      healthWorker,
+      formState,
+    )
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
@@ -107,8 +108,28 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       registrationDetails: nurseRegistrationDetails,
     })
 
+    ctx.state.session.set('isRegistering', false)
+
     return redirect('/app')
   },
+}
+
+function getRegistrationDetails(
+  healthWorker: HealthWorkerWithGoogleTokens,
+  formState: FormState,
+): NurseRegistrationDetails {
+  return {
+    health_worker_id: healthWorker.id,
+    gender: formState.gender,
+    national_id: formState.national_id,
+    date_of_first_practice: formState.date_of_first_practice,
+    ncz_registration_number: formState.ncz_registration_number,
+    mobile_number: formState.mobile_number,
+    face_picture_media_id: formState.face_picture?.id,
+    ncz_registration_card_media_id: formState.ncz_registration_card?.id,
+    national_id_media_id: formState.national_id_picture?.id,
+    approved_by: null,
+  }
 }
 
 export default function register(
@@ -122,6 +143,7 @@ export default function register(
       <form
         method='POST'
         className='w-full mt-4'
+        encType='multipart/form-data'
       >
         {stepState.currentStep === 'personal' && <NursePersonalForm />}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}

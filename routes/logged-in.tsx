@@ -7,6 +7,7 @@ import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
 import * as google from '../external-clients/google.ts'
+import * as details from '../db/models/nurse_registration_details.ts'
 import {
   GoogleProfile,
   HealthWorker,
@@ -49,7 +50,6 @@ export async function initializeHealthWorker(
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
-    let redirectTo = '/app'
     const { session } = ctx.state
     const code = new URL(req.url).searchParams.get('code')
 
@@ -59,18 +59,12 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
     const authorized = await db.transaction().execute(async (trx) => {
       const tokens = await gettingTokens
-
       const googleClient = new google.GoogleClient(tokens)
       const profile = await googleClient.getProfile()
 
       const invitees = await employment.getInvitees(trx, {
         email: profile.email,
       })
-
-      if (invitees.length >= 1) {
-        const facility_id = invitees[0].facility_id
-        redirectTo = `/app/facilities/${facility_id}/register`
-      }
 
       const healthWorker = await (
         invitees.length
@@ -99,7 +93,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     })
 
     return authorized
-      ? redirect(redirectTo)
+      ? redirect('/app')
       : new Response('Not authorized', { status: 401 })
   },
 }

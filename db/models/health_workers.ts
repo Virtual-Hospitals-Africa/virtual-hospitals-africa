@@ -45,7 +45,6 @@ export function upsertGoogleTokens(
   tokens: GoogleTokens,
 ): Promise<InsertResult[]> {
   assert(health_worker_id)
-
   return trx
     .insertInto('health_worker_google_tokens')
     .values({

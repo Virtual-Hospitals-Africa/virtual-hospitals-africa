@@ -1,7 +1,8 @@
-import { PageProps } from '$fresh/server.ts'
+import { HandlerContext, PageProps } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   HealthWorker,
+  LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
   Profession,
   ReturnedSqlRow,
@@ -69,48 +70,40 @@ function isInvites(
 //   await client.close()
 // }
 
+async function assertIsAdminAtFacility(
+  ctx: HandlerContext<InvitePageProps, LoggedInHealthWorker>,
+) {
+  const healthWorker = ctx.state.session.data
+  const facilityId = parseInt(ctx.params.facilityId)
+  assert(facilityId)
+  assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+  const isAdmin = await employment.isAdmin(
+    ctx.state.trx,
+    {
+      health_worker_id: healthWorker.id,
+      facility_id: facilityId,
+    },
+  )
+  assert(isAdmin)
+  return { healthWorker, facilityId }
+}
+
 export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    const facility_id = parseInt(ctx.params.facility_id)
-    assert(facility_id)
-    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    const isAdmin = await employment.isAdmin(
-      ctx.state.trx,
-      {
-        health_worker_id: healthWorker.id,
-        facility_id: facility_id,
-      },
-    )
-    assert(isAdmin)
-    assert(facility_id)
+    const { healthWorker } = await assertIsAdminAtFacility(ctx)
     return ctx.render({ healthWorker })
   },
   async POST(req, ctx) {
-    const healthWorker = ctx.state.session.data
-
-    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    const isAdmin = await employment.isAdmin(
-      ctx.state.trx,
-      {
-        health_worker_id: healthWorker.id,
-        facility_id: parseInt(ctx.params.facility_id),
-      },
-    )
-
-    assert(isAdmin)
-
-    const facility_id = parseInt(ctx.params.facility_id)
-    assert(facility_id)
+    const { facilityId } = await assertIsAdminAtFacility(ctx)
 
     const { invites } = await parseRequest(ctx.state.trx, req, isInvites)
 
     const invitesWithEmails = invites.filter((invite) => invite.email)
 
-    await employment.addInvitees(ctx.state.trx, facility_id, invitesWithEmails)
+    await employment.addInvitees(ctx.state.trx, facilityId, invitesWithEmails)
 
     return redirect(
-      `/app/facilities/${facility_id}/employees?invited=${
+      `/app/facilities/${facilityId}/employees?invited=${
         invitesWithEmails.map((invite) => invite.email).join(', ')
       }`,
     )
