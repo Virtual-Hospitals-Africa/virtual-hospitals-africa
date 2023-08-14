@@ -10,9 +10,10 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('comes back to main menu after clicking button', async () => {
+  it('sends invitation to share location after welcome message', async () => {
+    // To set a patient in a sepefic state, we have to insert this state into db
     await patients.upsert(db, {
-      conversation_state: 'find_nearest_facility:send_facility_location',
+      conversation_state: 'not_onboarded:welcome',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
@@ -23,7 +24,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'Back to Menu',
+      body: 'find_nearest_facility',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -41,14 +42,9 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
+          type: 'string',
           messageBody:
-            'Welcome to Virtual Hospitals Africa. What can I help you with today?',
-          type: 'buttons',
-          buttonText: 'Menu',
-          options: [
-            { id: 'make_appointment', title: 'Make Appointment' },
-            { id: 'find_nearest_facility', title: 'Nearest Facility' },
-          ],
+            'Sure, we can find your nearest facility. Can you share your location?',
         },
         phone_number: '00000000',
       },
@@ -60,7 +56,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'not_onboarded:welcome',
+      'find_nearest_facility:share_location',
     )
   })
 })
