@@ -78,7 +78,7 @@ async function importData(db: Kysely<DatabaseSchema>, data: AdminDistrict) {
   }
 }
 
-async function insertCountry(db: Kysely<any>, country: Country) {
+async function insertCountry(db: Kysely<DatabaseSchema>, country: Country) {
   const result = await db.insertInto('countries').values({
     name: country.name,
   }).returningAll().executeTakeFirstOrThrow()
