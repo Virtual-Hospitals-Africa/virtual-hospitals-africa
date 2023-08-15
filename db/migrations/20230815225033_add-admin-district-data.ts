@@ -30,7 +30,7 @@ type Suburb = {
   name: string
 }
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<DatabaseSchema>) {
   const data = await getDataFromJSON()
   await importData(db, data)
 }
@@ -50,7 +50,7 @@ async function getDataFromJSON(): Promise<AdminDistrict> {
   return data
 }
 
-async function importData(db: Kysely<unknown>, data: AdminDistrict) {
+async function importData(db: Kysely<DatabaseSchema>, data: AdminDistrict) {
   for await (
     const country of data.countries
   ) {
