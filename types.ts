@@ -1065,3 +1065,13 @@ export type PatientAppointmentRequestMedia = {
   patient_appointment_request_id: number
   media_id: number
 }
+
+export type Country = { id: number; name: string }
+
+export type Provinces = { id: number; name: string; country_id: number }
+
+export type Districts = { id: number; name: string; province_id: number }
+
+export type Wards = { id: number; name: string; district_id: number }
+
+export type Suburbs = { id: number; name: string; ward_id: number }

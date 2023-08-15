@@ -1,5 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import parseJSON from '../../util/parseJSON.ts'
+import { DatabaseSchema } from '../../db/db.ts'
 
 type AdminDistrict = {
   countries: Country[]
@@ -49,7 +50,7 @@ async function getDataFromJSON(): Promise<AdminDistrict> {
   return data
 }
 
-async function importData(db: Kysely<any>, data: AdminDistrict) {
+async function importData(db: Kysely<unknown>, data: AdminDistrict) {
   for await (
     const country of data.countries
   ) {
@@ -85,7 +86,7 @@ async function insertCountry(db: Kysely<any>, country: Country) {
 }
 
 async function insertProvince(
-  db: Kysely<any>,
+  db: Kysely<DatabaseSchema>,
   province: Province,
   countryId: number,
 ) {
@@ -97,7 +98,7 @@ async function insertProvince(
 }
 
 async function insertDistrict(
-  db: Kysely<any>,
+  db: Kysely<DatabaseSchema>,
   district: District,
   provinceId: number,
 ) {
@@ -108,7 +109,11 @@ async function insertDistrict(
   return result.id
 }
 
-async function insertWard(db: Kysely<any>, ward: Ward, districtId: number) {
+async function insertWard(
+  db: Kysely<DatabaseSchema>,
+  ward: Ward,
+  districtId: number,
+) {
   const result = await db.insertInto('wards').values({
     name: ward.name,
     district_id: districtId,
@@ -116,7 +121,11 @@ async function insertWard(db: Kysely<any>, ward: Ward, districtId: number) {
   return result.id
 }
 
-async function insertSuburb(db: Kysely<any>, suburb: Suburb, wardId: number) {
+async function insertSuburb(
+  db: Kysely<DatabaseSchema>,
+  suburb: Suburb,
+  wardId: number,
+) {
   await db.insertInto('suburbs').values({
     name: suburb.name,
     ward_id: wardId,
