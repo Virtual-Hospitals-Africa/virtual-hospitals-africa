@@ -3,20 +3,20 @@ import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createTable('provinces')
+    .createTable('suburbs')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('country_id', 'integer', (col) =>
+    .addColumn('ward_id', 'integer', (col) =>
       col.notNull()
-        .references('countries.id')
+        .references('wards.id')
         .onDelete('cascade'))
-    .addUniqueConstraint('province_name', ['name'])
+    .addUniqueConstraint('suburb_name', ['name', 'ward_id'])
     .execute()
 
-  await addUpdatedAtTrigger(db, 'provinces')
+  await addUpdatedAtTrigger(db, 'suburbs')
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema
-    .dropTable('provinces').execute()
+    .dropTable('suburbs').execute()
 }

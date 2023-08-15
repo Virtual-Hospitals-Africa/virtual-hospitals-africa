@@ -1,8 +1,6 @@
 import { Kysely } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
-const countryList = ['Zimbabwe']
-
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('countries')
@@ -12,18 +10,9 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await addUpdatedAtTrigger(db, 'countries')
-  await addCountries(db)
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema
     .dropTable('countries').execute()
-}
-
-// deno-lint-ignore no-explicit-any
-async function addCountries(db: Kysely<any>) {
-  await db
-    .insertInto('countries')
-    .values(countryList.map((name) => ({ name })))
-    .execute()
 }

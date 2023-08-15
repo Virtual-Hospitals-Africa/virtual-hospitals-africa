@@ -1,6 +1,5 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
-import parseCsv from '../../util/parseCsv.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -15,27 +14,9 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await addUpdatedAtTrigger(db, 'wards')
-  await importWardsFromCSV(db)
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema
     .dropTable('wards').execute()
-}
-
-// deno-lint-ignore no-explicit-any
-async function importWardsFromCSV(db: Kysely<any>) {
-  for await (
-    const row of parseCsv('./db/resources/zimbabwe-wards.csv')
-  ) {
-    await sql`
-      INSERT INTO wards (
-        name,
-        district_id
-      ) VALUES (
-        ${row.name},
-        ${row.district_id}
-      )
-    `.execute(db)
-  }
 }
