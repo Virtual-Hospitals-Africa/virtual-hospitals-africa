@@ -39,7 +39,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'go_back',
+      body: 'confirm',
       media_id: null,
       whatsapp_id: 'whatsapp_id_one',
     })
@@ -59,10 +59,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
-          type: 'buttons',
-          buttonText: 'Menu',
-          options: [{ id: 'skip', title: 'Skip' }],
+            "Would you like to schedule this appointment?"
         },
         phone_number: '00000000',
       },
@@ -74,7 +71,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:initial_ask_for_media',
+      'onboarded:make_appointment:first_scheduling_option',
     )
   })
 })
