@@ -54,6 +54,7 @@ jobs:
       - name: Test setup
         run: |
           echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
+          echo "SELF_URL=https://localhost:8000" >> .env
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
