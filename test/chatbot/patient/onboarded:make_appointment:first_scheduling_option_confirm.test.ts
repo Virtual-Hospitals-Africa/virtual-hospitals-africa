@@ -15,17 +15,17 @@ describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
-  let getFreeBusy: any
+  let insertEvent: any
   beforeEach(() => {
-    getFreeBusy = sinon.stub(google.GoogleClient.prototype, 'getFreeBusy')
+    insertEvent = sinon.stub(google.GoogleClient.prototype, 'insertEvent')
   })
   afterEach(() => {
-    getFreeBusy.restore()
+    insertEvent.restore()
   })
 
-  it('provides with first_scheduling_option details after confirming details', async () => {
+  it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
     await patients.upsert(db, {
-      conversation_state: 'onboarded:make_appointment:confirm_details',
+      conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
@@ -33,6 +33,7 @@ describe('patient chatbot', () => {
       national_id_number: null,
     })
 
+    // insert patient_appointment_requests
     const patientBefore = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })
@@ -48,14 +49,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
-      has_media: false,
-      body: 'confirm',
-      media_id: null,
-      whatsapp_id: 'whatsapp_id_one',
-    })
-
+    // insert health worker and offered time
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
@@ -71,6 +65,27 @@ describe('patient chatbot', () => {
       expires_at,
     })
 
+    const health_worker = await health_workers.getByEmail(db, 'test@doctor.com')
+
+    assert(health_worker)
+
+    const time = new Date()
+    time.setDate(time.getDate() + 1)
+    time.setHours(9, 30, 0, 0)
+    await appointments.addOfferedTime(db, {
+      patient_appointment_request_id: scheduling_appointment_request.id,
+      health_worker_id: health_worker.id,
+      start: time,
+    })
+
+    await conversations.insertMessageReceived(db, {
+      patient_phone_number: '00000000',
+      has_media: false,
+      body: 'confirm',
+      media_id: null,
+      whatsapp_id: 'whatsapp_id_one',
+    })
+
     const fakeWhatsApp = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
@@ -80,53 +95,8 @@ describe('patient chatbot', () => {
       }]),
     }
 
-    const timeMin = new Date()
-    console.log(timeMin)
-    timeMin.setHours(timeMin.getHours() + 2)
-
-    const timeMax = new Date(timeMin)
-    timeMax.setDate(timeMin.getDate() + 7)
-
-    const secondDay9AM = new Date(timeMin)
-    secondDay9AM.setDate(timeMin.getDate() + 1)
-    secondDay9AM.setHours(9, 0, 0, 0)
-
-    const secondDay5PM = new Date(timeMin)
-    secondDay5PM.setDate(timeMin.getDate() + 1)
-    secondDay5PM.setHours(17, 0, 0, 0)
-
-    const secondDayBusyTime = new Date(timeMin)
-    secondDayBusyTime.setDate(timeMin.getDate() + 1)
-    secondDayBusyTime.setHours(9, 30, 0, 0)
-
-    console.log(timeMin)
-    console.log(secondDay9AM)
-    console.log(secondDay5PM)
-    console.log(secondDayBusyTime)
-    getFreeBusy.resolves(
-      {
-        kind: 'calendar#freeBusy',
-        timeMin: timeMin,
-        timeMax: timeMax,
-        calendars: {
-          'gcal_appointments_calendar_id': {
-            busy: [
-              {
-                start: secondDay9AM,
-                end: secondDayBusyTime,
-              },
-            ],
-          },
-          'gcal_availability_calendar_id': {
-            busy: [
-              {
-                start: secondDay9AM,
-                end: secondDay5PM,
-              },
-            ],
-          },
-        },
-      },
+    insertEvent.resolves(
+      { id: 'insertEvent_id' },
     )
 
     await respond(fakeWhatsApp)
@@ -134,16 +104,12 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          messageBody: 'Great, the next available appoinment is ' +
-            prettyAppointmentTime(secondDayBusyTime) +
-            '. Would you like to schedule this appointment?',
+          messageBody:
+            'Thanks test, we notified Test Doctor and will message you shortly upon confirmirmation of your appointment at ' +
+            prettyAppointmentTime(time),
           type: 'buttons',
           buttonText: 'Menu',
-          options: [
-            { id: 'confirm', title: 'Yes' },
-            { id: 'other_times', title: 'Other times' },
-            { id: 'go_back', title: 'Go back' },
-          ],
+          options: [{ id: 'cancel', title: 'Cancel Appointment' }],
         },
         phone_number: '00000000',
       },
@@ -155,7 +121,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:first_scheduling_option',
+      'onboarded:appointment_scheduled',
     )
   })
 })
