@@ -32,7 +32,7 @@ describe('/login', () => {
     let line: string
     const ___timeout___ = Date.now()
     do {
-      if (Date.now() > ___timeout___ + 20000 ) {
+      if (Date.now() > ___timeout___ + 20000) {
         stdout.releaseLock()
         await process.stdout.cancel()
         throw new Error('hung process')

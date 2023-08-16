@@ -3,8 +3,6 @@ import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
 import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
 
-
-
 describe('landing page', () => {
   const PORT = '8001'
   const ROUTE = `https://localhost:${PORT}`
@@ -30,7 +28,7 @@ describe('landing page', () => {
     let line: string
     const ___timeout___ = Date.now()
     do {
-      if (Date.now() > ___timeout___ + 20000 ) {
+      if (Date.now() > ___timeout___ + 20000) {
         stdout.releaseLock()
         await process.stdout.cancel()
         throw new Error('hung process')
