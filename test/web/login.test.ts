@@ -8,9 +8,11 @@ import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
 
 describe('/login', () => {
+  const PORT = '8002'
+  const ROUTE = `https://localhost:${PORT}`
+  let process: Deno.ChildProcess
   beforeAll(async () => {
-    const PORT = '8002'
-    const process = new Deno.Command('deno', {
+    process = new Deno.Command('deno', {
       args: [
         'task',
         'start',
@@ -23,18 +25,29 @@ describe('/login', () => {
       stderr: 'null',
     }).spawn()
 
-    const reader = readerFromStreamReader(process.stdout.getReader())
+    const stdout = process.stdout.getReader()
+    const reader = readerFromStreamReader(stdout)
     const lineReader = readLines(reader)
 
     let line: string
+    const ___timeout___ = Date.now()
     do {
+      if (Date.now() > ___timeout___ + 20000 ) {
+        stdout.releaseLock()
+        await process.stdout.cancel()
+        throw new Error('hung process')
+      }
       line = (await lineReader.next()).value
-      console.log('------line: ',line)
-    } while (!line.includes('localhost'))
+    } while (line !== `Listening on ${ROUTE}/`)
+    stdout.releaseLock()
+    await process.stdout.cancel()
+  })
+  afterAll(() => {
+    process.kill()
   })
 
   it('redirects to google if not already logged in', async () => {
-    const response = await fetch('https://localhost:8002/login', {
+    const response = await fetch(`${ROUTE}/login`, {
       redirect: 'manual',
     })
     const redirectLocation = response.headers.get('location')
@@ -80,7 +93,7 @@ describe('/login', () => {
     afterAll(() => db.destroy())
 
     it('redirects to /app', async () => {
-      const response = await fetch('https://localhost:8002/login', {
+      const response = await fetch(`${ROUTE}/login`, {
         redirect: 'manual',
         credentials: 'same-origin',
         headers: {
