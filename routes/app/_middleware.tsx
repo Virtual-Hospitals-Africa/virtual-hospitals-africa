@@ -39,7 +39,10 @@ export async function handler(
 
   // TODO make a page for this purpose
   if (rolePendingApproval) {
-    return redirect('/app/pending-approval')
+    const pendingApprovalPage = '/app/pending-approval'
+    const url = new URL(req.url)
+    const onPendingApprovalPage = url.pathname === pendingApprovalPage
+    return onPendingApprovalPage ? ctx.next() : redirect(pendingApprovalPage)
   }
   return ctx.next()
 }
