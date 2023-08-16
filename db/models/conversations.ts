@@ -160,6 +160,7 @@ export async function getUnhandledPatientMessages(
             , whatsapp_messages_received.whatsapp_id
             , whatsapp_messages_received.body
             , whatsapp_messages_received.has_media
+            , whatsapp_messages_received.media_id
             , patients.*
             , patient_nearest_facilities.nearest_facilities AS nearest_facilities
             , aot.patient_appointment_request_id as scheduling_appointment_request_id

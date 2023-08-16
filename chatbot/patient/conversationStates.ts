@@ -33,7 +33,6 @@ import {
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
-import { hasOnlyExpressionInitializer } from 'https://deno.land/x/ts_morph@17.0.1/common/typescript.js'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -68,7 +67,7 @@ const conversationStates: ConversationStates<
         ...patients.pick(patientState),
         name: patientState.body,
       })
-      return { ...patientState, name: patientState.body, media_ids: [] }
+      return { ...patientState, name: patientState.body }
     },
   },
   'not_onboarded:make_appointment:enter_gender': {
@@ -370,67 +369,47 @@ const conversationStates: ConversationStates<
     prompt() {
       return 'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.'
     },
+    async onEnter(trx, patientState) {
+      assert(patientState.scheduling_appointment_request)
+      console.log('patientState', patientState)
+
+      assert(patientState.media_id)
+      await appointments.insertAppointmentRequestMedia(trx, {
+        patient_appointment_request_id:
+          patientState.scheduling_appointment_request.id,
+        media_id: patientState.media_id,
+      })
+      return patientState
+    },
     nextState: 'onboarded:make_appointment:subsequent_ask_for_media',
     options: [
       {
         id: 'done',
         title: 'Done',
         nextState: 'onboarded:make_appointment:confirm_details',
-        async onExit(trx, patientState): Promise<PatientState> {
-          const request_id = patientState.scheduling_appointment_request?.id
-          assert(request_id, 'request_id is undefined.')
-          const mediaIds = await getMediaIdByPatientId(trx, {
-            patient_id: patientState.patient_id,
-            existing_media: patientState.media_ids,
-          })
-          console.log('media to be inserted', mediaIds)
-          mediaIds.map(async (media_id) => {
-            await appointments.insertAppointmentRequestMedia(trx, {
-              request_id,
-              media_id,
-            })
-          })
-          return {
-            ...patientState,
-            media_uploaded: mediaIds.length,
-            media_ids: mediaIds
-          }
-        },
       },
     ],
   },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
-    async onEnter(_trx, patientState){
+    async onEnter(_trx, patientState) {
       await console.log('confirming details onEnter', patientState)
       return patientState
     },
     prompt(patientState: PatientState): string {
-      console.log('confirm details prompts', patientState)
       assert(patientState.scheduling_appointment_request)
       assert(patientState.scheduling_appointment_request.reason)
       return `Got it, ${patientState.scheduling_appointment_request.reason}. In summary, your name is ${patientState.name}, you're messaging from ${patientState.phone_number}, you are a ${patientState.gender} born on ${
         prettyPatientDateOfBirth(
           patientState,
         )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${
-        patientState.media_uploaded ? patientState.media_uploaded : 0
-      } media to the doctor. Is this correct? Uploaded media ${patientState.media_ids}`
+      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. Is this correct?`
     },
     options: [
       {
         id: 'confirm',
         title: 'Yes',
         nextState: 'onboarded:make_appointment:first_scheduling_option',
-        async onExit(trx, patientState): Promise<PatientState>{
-          console.log('this is the patient state after confirming details.', patientState)
-          const _mediaIds = await getMediaIdByPatientId(trx, {
-            patient_id: patientState.patient_id,
-            existing_media: patientState.media_ids,
-          })
-          
-          return patientState
-        }
       },
       {
         id: 'go_back',
@@ -723,7 +702,7 @@ const conversationStates: ConversationStates<
         patientState.name!.split(' ')[0]
       }, we notified ${patientState.scheduled_appointment.health_worker_name} and will message you shortly upon confirmirmation of your appointment at ${
         prettyAppointmentTime(patientState.scheduled_appointment.start)
-      } We have also send ${patientState.media_uploaded} with id ${patientState.media_ids}`
+      }`
     },
     options: [
       {
@@ -735,7 +714,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:cancel_appointment': {
     type: 'select',
-    prompt(patientState: PatientState){
+    prompt(patientState: PatientState) {
       console.log('cancelling prompt', patientState)
       return 'Your appoinment has been cancelled. What can I help you with today?'
     },
@@ -745,7 +724,7 @@ const conversationStates: ConversationStates<
       patientState: PatientState,
     ): Promise<PatientState> {
       console.log('before cancelling patient state', patientState)
-      console.log('existing media', patientState.media_ids)
+      console.log('existing media', patientState.media_id)
       return cancelAppointment(trx, patientState)
     },
   },

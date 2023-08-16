@@ -123,6 +123,7 @@ export type PatientState = {
   whatsapp_id: string
   body?: string
   has_media: boolean
+  media_id?: number
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
@@ -155,8 +156,6 @@ export type PatientState = {
   nearest_facilities?: ReturnedSqlRow<Facility>[]
   nearest_facility_name?: string
   selectedFacility?: Facility
-  media_uploaded?: number
-  media_ids: number[]
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {

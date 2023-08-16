@@ -274,17 +274,20 @@ export function remove(trx: TrxOrDb, id: number) {
   return trx.deleteFrom('appointments').where('id', '=', id).execute()
 }
 
-export async function insertAppointmentRequestMedia(
+export function insertAppointmentRequestMedia(
   trx: TrxOrDb,
-  opts: {
-    request_id: number
+  toInsert: {
+    patient_appointment_request_id: number
     media_id: number
   },
 ): Promise<ReturnedSqlRow<PatientAppointmentRequestMedia>> {
-  return await trx.insertInto('patient_appointment_request_media').values({
-    media_id: opts.media_id,
-    patient_appointment_request_id: opts.request_id,
-  }).returningAll().executeTakeFirstOrThrow()
+  assert(toInsert.patient_appointment_request_id)
+  assert(toInsert.media_id)
+  return trx
+    .insertInto('patient_appointment_request_media')
+    .values(toInsert)
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
 export async function getMediaIdByRequestId(
