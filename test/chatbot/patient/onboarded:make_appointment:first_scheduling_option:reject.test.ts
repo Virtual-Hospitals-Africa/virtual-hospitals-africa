@@ -11,8 +11,7 @@ import * as patients from '../../../db/models/patients.ts'
 import * as appointments from '../../../db/models/appointments.ts'
 import {
   convertToTimeString,
-  formatHarare,
-  prettyAppointmentTime,
+  formatHarare
 } from '../../../util/date.ts'
 
 describe('patient chatbot', () => {
@@ -81,29 +80,32 @@ describe('patient chatbot', () => {
 
     assert(health_worker)
 
-    const timeMin = new Date()
-    console.log(timeMin)
-    timeMin.setHours(timeMin.getHours() + 2)
+    const currentTime = new Date()
+    currentTime.setHours(currentTime.getHours() + 2)
+    const timeMin = formatHarare(currentTime)
 
-    const timeMax = new Date(timeMin)
-    timeMax.setDate(timeMin.getDate() + 7)
+    currentTime.setDate(currentTime.getDate() + 7)
+    const timeMax = formatHarare(currentTime)
 
-    const secondDay9AM = new Date(timeMin)
-    secondDay9AM.setDate(timeMin.getDate() + 1)
-    secondDay9AM.setHours(9, 0, 0, 0)
+    currentTime.setDate(currentTime.getDate() - 6)
+    currentTime.setHours(currentTime.getHours() + 1)
+    currentTime.setMinutes(0)
+    currentTime.setSeconds(0)
+    currentTime.setMilliseconds(0)
+    const secondDayStart = formatHarare(currentTime)
 
-    const secondDay5PM = new Date(timeMin)
-    secondDay5PM.setDate(timeMin.getDate() + 1)
-    secondDay5PM.setHours(17, 0, 0, 0)
+    currentTime.setHours(currentTime.getHours())
+    currentTime.setMinutes(30)
+    const secondDayBusyTime = formatHarare(currentTime)
 
-    const secondDayBusyTime = new Date(timeMin)
-    secondDayBusyTime.setDate(timeMin.getDate() + 1)
-    secondDayBusyTime.setHours(9, 30, 0, 0)
+    const firstOtherTime = new Date(currentTime)
+    firstOtherTime.setHours(firstOtherTime.getHours() + 1)
+    firstOtherTime.setMinutes(0)
 
-    console.log(timeMin)
-    console.log(secondDay9AM)
-    console.log(secondDay5PM)
-    console.log(secondDayBusyTime)
+    currentTime.setHours(currentTime.getHours() + 8)
+    currentTime.setMinutes(0)
+    const secondDayEnd = formatHarare(currentTime)
+
     getFreeBusy.resolves(
       {
         kind: 'calendar#freeBusy',
@@ -113,7 +115,7 @@ describe('patient chatbot', () => {
           'gcal_appointments_calendar_id': {
             busy: [
               {
-                start: secondDay9AM,
+                start: secondDayStart,
                 end: secondDayBusyTime,
               },
             ],
@@ -121,8 +123,8 @@ describe('patient chatbot', () => {
           'gcal_availability_calendar_id': {
             busy: [
               {
-                start: secondDay9AM,
-                end: secondDay5PM,
+                start: secondDayStart,
+                end: secondDayEnd,
               },
             ],
           },
@@ -130,10 +132,11 @@ describe('patient chatbot', () => {
       },
     )
 
+    const start = new Date(secondDayBusyTime)
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
       health_worker_id: health_worker.id,
-      start: secondDayBusyTime,
+      start: start,
     })
 
     await conversations.insertMessageReceived(db, {
@@ -158,6 +161,7 @@ describe('patient chatbot', () => {
     )
 
     await respond(fakeWhatsApp)
+    
     const message = fakeWhatsApp.sendMessages.firstCall.args[0].messages
 
     assertEquals(
@@ -168,16 +172,17 @@ describe('patient chatbot', () => {
     assertEquals(message.headerText, 'Other Appointment Times')
     assertEquals(message.action.button, 'More Time Slots')
 
-    const date = formatHarare(secondDayBusyTime).substring(0, 10)
-    const time = convertToTimeString(formatHarare(secondDayBusyTime))
+    const date = formatHarare(firstOtherTime).substring(0, 10)
     assertEquals(message.action.sections[0].title, date)
-    //assertEquals(message.action.sections[0].rows[0].title, time)
+    const time = convertToTimeString(formatHarare(firstOtherTime))
+    assertEquals(message.action.sections[0].rows[0].title, time)
+
     assertEquals(
       message.action.sections[0].rows[0].description,
       'With Dr. Test Doctor',
     )
 
-    assertEquals(message.action.sections[1], {
+    assertEquals(message.action.sections[message.action.sections.length-1], {
       title: 'Other Times',
       rows: [
         {
@@ -188,53 +193,7 @@ describe('patient chatbot', () => {
       ],
     })
 
-    console.log(fakeWhatsApp.sendMessages.firstCall.args)
-    /*
-    assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
-      {
-        messages: {
-          messageBody: "OK here are the other available time, please choose from the list.",
-          type: "list",
-          headerText: "Other Appointment Times",
-          action: {
-            button: "More Time Slots",
-            sections: [
-              {
-                title: "2023-08-17",
-                rows: [
-                  {
-                    id: "34",
-                    title: "11:00 am",
-                    description: "With Dr. Test Doctor"
-                  },
-                  {
-                    id: "35",
-                    title: "11:30 am",
-                    description: "With Dr. Test Doctor"
-                  },
-                  {
-                    id: "36",
-                    title: "12:00 pm",
-                    description: "With Dr. Test Doctor"
-                  }
-                ]
-              },
-              {
-                title: "Other Times",
-                rows: [
-                  {
-                    id: "other_time",
-                    title: "Other time slots",
-                    description: "Show other time slots"
-                  }
-                ]
-              }
-            ]
-          }
-        },
-        phone_number: '00000000',
-      },
-    ]) */
+
     const patient = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })

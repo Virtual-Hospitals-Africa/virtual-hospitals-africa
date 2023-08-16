@@ -9,7 +9,7 @@ import * as conversations from '../../../db/models/conversations.ts'
 import * as health_workers from '../../../db/models/health_workers.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as appointments from '../../../db/models/appointments.ts'
-import { prettyAppointmentTime } from '../../../util/date.ts'
+import { formatHarare, prettyAppointmentTime } from '../../../util/date.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
@@ -80,29 +80,26 @@ describe('patient chatbot', () => {
       }]),
     }
 
-    const timeMin = new Date()
-    console.log(timeMin)
-    timeMin.setHours(timeMin.getHours() + 2)
+    const currentTime = new Date()
+    currentTime.setHours(currentTime.getHours() + 2)
+    const timeMin = formatHarare(currentTime)
 
-    const timeMax = new Date(timeMin)
-    timeMax.setDate(timeMin.getDate() + 7)
+    currentTime.setDate(currentTime.getDate() + 7)
+    const timeMax = formatHarare(currentTime)
 
-    const secondDay9AM = new Date(timeMin)
-    secondDay9AM.setDate(timeMin.getDate() + 1)
-    secondDay9AM.setHours(9, 0, 0, 0)
+    currentTime.setDate(currentTime.getDate() - 6)
+    currentTime.setHours(currentTime.getHours() + 1)
+    currentTime.setMinutes(0)
+    const secondDayStart = formatHarare(currentTime)
 
-    const secondDay5PM = new Date(timeMin)
-    secondDay5PM.setDate(timeMin.getDate() + 1)
-    secondDay5PM.setHours(17, 0, 0, 0)
+    currentTime.setHours(currentTime.getHours())
+    currentTime.setMinutes(30)
+    const secondDayBusyTime = formatHarare(currentTime)
 
-    const secondDayBusyTime = new Date(timeMin)
-    secondDayBusyTime.setDate(timeMin.getDate() + 1)
-    secondDayBusyTime.setHours(9, 30, 0, 0)
+    currentTime.setHours(currentTime.getHours() + 8)
+    currentTime.setMinutes(0)
+    const secondDayEnd = formatHarare(currentTime)
 
-    console.log(timeMin)
-    console.log(secondDay9AM)
-    console.log(secondDay5PM)
-    console.log(secondDayBusyTime)
     getFreeBusy.resolves(
       {
         kind: 'calendar#freeBusy',
@@ -112,7 +109,7 @@ describe('patient chatbot', () => {
           'gcal_appointments_calendar_id': {
             busy: [
               {
-                start: secondDay9AM,
+                start: secondDayStart,
                 end: secondDayBusyTime,
               },
             ],
@@ -120,8 +117,8 @@ describe('patient chatbot', () => {
           'gcal_availability_calendar_id': {
             busy: [
               {
-                start: secondDay9AM,
-                end: secondDay5PM,
+                start: secondDayStart,
+                end: secondDayEnd,
               },
             ],
           },
@@ -130,7 +127,6 @@ describe('patient chatbot', () => {
     )
 
     await respond(fakeWhatsApp)
-    console.log(fakeWhatsApp.sendMessages.firstCall.args)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {

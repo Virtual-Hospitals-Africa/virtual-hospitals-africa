@@ -18,7 +18,7 @@ describe('patient chatbot', () => {
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '',
+      national_id_number: '1238',
     })
 
     await conversations.insertMessageReceived(db, {
