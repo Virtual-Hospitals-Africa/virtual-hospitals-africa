@@ -4,25 +4,33 @@ import db from '../../db/db.ts'
 import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import reset from '../../db/reset.ts'
+import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
+import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
 
 describe('/login', () => {
-  beforeAll(() => {
-    new Deno.Command('deno', {
+  beforeAll(async () => {
+    const PORT = '8002'
+    const process = new Deno.Command('deno', {
       args: [
         'task',
         'start',
       ],
       env: {
-        PORT: '8002',
+        PORT: PORT,
       },
       stdin: 'null',
-      stdout: 'null',
+      stdout: 'piped',
       stderr: 'null',
     }).spawn()
 
-    // TODO use readLines to actually know the server has started when we see this line
-    // Listening on https://localhost:8002/
-    return new Promise((resolve) => setTimeout(resolve, 2000))
+    const reader = readerFromStreamReader(process.stdout.getReader())
+    const lineReader = readLines(reader)
+
+    let line: string
+    do {
+      line = (await lineReader.next()).value
+      console.log('------line: ',line)
+    } while (!line.includes('localhost'))
   })
 
   it('redirects to google if not already logged in', async () => {
