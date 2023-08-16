@@ -22,6 +22,12 @@ export async function handler(
     health_worker_id: healthWorker.id,
   })
 
+  console.log(roles)
+
+  if (roles.length <= 0) {
+    return new Response('Unauthorized', { status: 401 })
+  }
+
   const roleNeedingRegistration = roles.find(
     (employee) => employee.registration_needed,
   )
