@@ -2,7 +2,8 @@
   "tasks": {
     "chatbot": "deno task run:trusted chatbot/chatbot.ts",
     "token_refresher": "deno task run:trusted tokenRefresher/tokenRefresher.ts",
-    "start": "deno task run:trusted dev.ts '--watch=**/*.tsx,**/*.ts'",
+    "foo": "ls -d */ | awk '{} END' | tr '\\n' ','",
+    "start": "deno task run:trusted --watch=$(ls -d */ | tr '\\n' '/,') dev.ts",
     "web": "deno task run:trusted main.ts",
 
     "db:migrate:create": "deno task run:trusted db/create-migration.ts",
