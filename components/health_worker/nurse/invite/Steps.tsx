@@ -128,7 +128,9 @@ function isDocumentFormFields(
   fields: unknown,
 ): fields is DocumentFormFields {
   return isObjectLike(fields) &&
-    (isMedia(fields.national_id_picture) || fields.national_id_picture === "") &&
-    (isMedia(fields.ncz_registration_card) || fields.ncz_registration_card === "" ) &&
-    (isMedia(fields.face_picture) || fields.face_picture === "" )
+    (isMedia(fields.national_id_picture) ||
+      fields.national_id_picture === '') &&
+    (isMedia(fields.ncz_registration_card) ||
+      fields.ncz_registration_card === '') &&
+    (isMedia(fields.face_picture) || fields.face_picture === '')
 }
