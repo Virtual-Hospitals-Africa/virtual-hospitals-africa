@@ -219,11 +219,15 @@ const conversationStates: ConversationStates<
           ? `${facility.address} (${distanceInKM})`
           : facility.address
 
+        const facilityName = facility.vha
+          ? `${facility.name} (VHA)`
+          : facility.name
+
         return {
           section: 'Town Name Here',
           row: {
             id: `${facility.id}`,
-            title: capLengthAtWhatsAppTitle(facility.name),
+            title: capLengthAtWhatsAppTitle(facilityName),
             description: capLengthAtWhatsAppDescription(description),
             nextState: 'find_nearest_facility:send_facility_location' as const,
             onExit(_trx: TrxOrDb, patientState: PatientState) {

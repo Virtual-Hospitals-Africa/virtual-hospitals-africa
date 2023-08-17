@@ -21,7 +21,6 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
     .addColumn('address', 'text')
     .addColumn('category', 'text')
-    .addColumn('vha', 'boolean')
     .addColumn('phone', 'varchar(255)')
     .execute()
 
@@ -37,13 +36,12 @@ export async function down(db: Kysely<unknown>) {
 
 // Add a test facility with all VHA employees as admins
 // deno-lint-ignore no-explicit-any
-function addTestFacility(db: Kysely<any>) {
+export function addTestFacility(db: Kysely<any>) {
   return db.insertInto('facilities').values({
     name: 'VHA Test Hospital',
     location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,
     address: 'Bristol, UK',
     category: 'Hospital',
-    vha: true,
     phone: null,
   })
     .returningAll()
@@ -71,14 +69,12 @@ async function importDataFromCSV(db: Kysely<unknown>) {
         location,
         address,
         category,
-        vha,
         phone
       ) VALUES (
         ${row.name},
         ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
         ${address || 'UNKNOWN'},
         ${row.category},
-        ${row.vha},
         ${row.phone}
       )
     `.execute(db)

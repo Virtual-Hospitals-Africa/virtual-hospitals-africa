@@ -10,6 +10,8 @@ import {
   Appointment,
   AppointmentHealthWorkerAttendee,
   AppointmentMedia,
+  Country,
+  Districts,
   Employee,
   Facility,
   HealthWorker,
@@ -21,9 +23,12 @@ import {
   PatientAppointmentRequest,
   PatientAppointmentRequestMedia,
   PatientMedia,
+  Provinces,
   ReturnedSqlRow,
   Specialities,
   SqlRow,
+  Suburbs,
+  Wards,
   WhatsAppMessageReceived,
   WhatsAppMessageSent,
 } from '../types.ts'
@@ -51,6 +56,11 @@ export type DatabaseSchema = {
   nurse_specialities: SqlRow<Specialities>
   appointment_media: SqlRow<AppointmentMedia>
   patient_appointment_request_media: SqlRow<PatientAppointmentRequestMedia>
+  countries: SqlRow<Country>
+  provinces: SqlRow<Provinces>
+  districts: SqlRow<Districts>
+  wards: SqlRow<Wards>
+  suburbs: SqlRow<Suburbs>
 }
 
 const DATABASE_URL = Deno.env.get('DATABASE_URL') ||

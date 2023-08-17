@@ -5,6 +5,16 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import { SqlBool } from 'kysely'
+
+export type HealthWorkerWithRegistrationState = {
+  profession: Profession
+  facility_id: number
+  id: number
+  registration_pending_approval: SqlBool
+  registration_needed: SqlBool
+  registration_completed: SqlBool
+}
 
 export function add(
   trx: TrxOrDb,
@@ -75,11 +85,38 @@ export function getByHealthWorker(
   opts: {
     health_worker_id: number
   },
-): Promise<ReturnedSqlRow<Employee>[] | undefined> {
+): Promise<HealthWorkerWithRegistrationState[]> {
   return trx
     .selectFrom('employment')
-    .selectAll()
-    .where('health_worker_id', '=', opts.health_worker_id)
+    .leftJoin('nurse_registration_details', (join) =>
+      join
+        .on(
+          'nurse_registration_details.health_worker_id',
+          '=',
+          opts.health_worker_id,
+        )
+        .on('employment.profession', '=', 'nurse'))
+    .where('employment.health_worker_id', '=', opts.health_worker_id)
+    .select([
+      'employment.id',
+      'employment.facility_id',
+      'employment.profession',
+      ({ eb, and }) =>
+        and([
+          eb('nurse_registration_details.id', 'is not', null),
+          eb('nurse_registration_details.approved_by', 'is', null),
+        ]).as('registration_pending_approval'),
+      ({ eb, and }) =>
+        and([
+          eb('nurse_registration_details.id', 'is', null),
+          eb('employment.profession', '=', 'nurse'),
+        ]).as('registration_needed'),
+      ({ eb, or }) =>
+        or([
+          eb('employment.profession', '!=', 'nurse'),
+          eb('nurse_registration_details.approved_by', 'is not', null),
+        ]).as('registration_completed'),
+    ])
     .execute()
 }
 

@@ -34,6 +34,16 @@ export async function initializeHealthWorker(
     ...health_workers.pickTokens(googleClient.tokens),
   })
 
+  console.log('healthWorker', healthWorker)
+  console.log(
+    'invitees',
+    invitees.map((invitee) => ({
+      health_worker_id: healthWorker.id,
+      facility_id: invitee.facility_id,
+      profession: invitee.profession,
+    })),
+  )
+
   await employment.add(
     trx,
     invitees.map((invitee) => ({

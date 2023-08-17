@@ -10,20 +10,21 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('comes back to main menu after clicking button', async () => {
+  it('asks for reason after inquiring national ID number', async () => {
     await patients.upsert(db, {
-      conversation_state: 'find_nearest_facility:send_facility_location',
+      conversation_state:
+        'not_onboarded:make_appointment:enter_national_id_number',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '',
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'Back to Menu',
+      body: '123456',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -42,13 +43,8 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Welcome to Virtual Hospitals Africa. What can I help you with today?',
-          type: 'buttons',
-          buttonText: 'Menu',
-          options: [
-            { id: 'make_appointment', title: 'Make Appointment' },
-            { id: 'find_nearest_facility', title: 'Nearest Facility' },
-          ],
+            'Got it, 123456. What is the reason you want to schedule an appointment?',
+          type: 'string',
         },
         phone_number: '00000000',
       },
@@ -60,7 +56,8 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'not_onboarded:welcome',
+      'onboarded:make_appointment:enter_appointment_reason',
     )
+    assertEquals(patient.national_id_number, '123456')
   })
 })

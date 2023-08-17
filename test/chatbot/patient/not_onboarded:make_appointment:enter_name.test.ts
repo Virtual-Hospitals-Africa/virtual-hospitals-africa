@@ -10,20 +10,20 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('comes back to main menu after clicking button', async () => {
+  it('asks for gender after inquiring name', async () => {
     await patients.upsert(db, {
-      conversation_state: 'find_nearest_facility:send_facility_location',
+      conversation_state: 'not_onboarded:make_appointment:enter_name',
       phone_number: '00000000',
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '2023-01-01',
-      national_id_number: '',
+      name: null,
+      gender: null,
+      date_of_birth: null,
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'Back to Menu',
+      body: 'test',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -42,12 +42,13 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+            'Thanks test, I will remember that.\n\nWhat is your gender?',
           type: 'buttons',
           buttonText: 'Menu',
           options: [
-            { id: 'make_appointment', title: 'Make Appointment' },
-            { id: 'find_nearest_facility', title: 'Nearest Facility' },
+            { id: 'male', title: 'Male' },
+            { id: 'female', title: 'Female' },
+            { id: 'other', title: 'Other' },
           ],
         },
         phone_number: '00000000',
@@ -60,7 +61,8 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'not_onboarded:welcome',
+      'not_onboarded:make_appointment:enter_gender',
     )
+    assertEquals(patient.name, 'test')
   })
 })
