@@ -228,7 +228,7 @@ export function getByEmail(
 
 export async function getInviteesAtFacility(
   trx: TrxOrDb,
-  facilityId: number
+  facilityId: number,
 ) {
   return await trx
     .selectFrom('health_worker_invitees')
