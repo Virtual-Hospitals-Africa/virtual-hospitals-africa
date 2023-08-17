@@ -9,30 +9,44 @@ type EmployeesTableProps = {
   isAdmin: boolean
   employees: Employee[]
   pathname: string
+  invitees: Invitee[]
 }
 
 export type Employee = {
-  id: number
   name: string
   profession: string
   avatar_url?: string
+}
+
+export type Invitee = {
+  email: string
+  profession: string
+}
+
+export function transformInviteesToEmployees(invitees: Invitee[]): Employee[] {
+  return invitees.map((invitee) => ({
+    name: invitee.email,
+    profession: invitee.profession,
+  }))
 }
 
 export default function EmployeesTable({
   isAdmin,
   employees,
   pathname,
+  invitees,
 }: EmployeesTableProps): JSX.Element {
+  let employeesToDisplay = employees
+  if (isAdmin) {
+    employeesToDisplay = employees.concat(
+      transformInviteesToEmployees(invitees),
+    )
+  }
   const columns: TableColumn<Employee>[] = [
     {
       label: null,
       dataKey: 'avatar_url',
       type: 'avatar',
-    },
-    {
-      label: 'ID',
-      dataKey: 'id',
-      type: 'content',
     },
     {
       label: 'Health Worker',
@@ -76,7 +90,7 @@ export default function EmployeesTable({
       </FormRow>
       <Table
         columns={columns}
-        rows={employees}
+        rows={employeesToDisplay}
       />
     </>
   )

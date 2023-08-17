@@ -12,12 +12,10 @@ import * as employment from '../../../../db/models/employment.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable, {
   Employee,
+  Invitee,
 } from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
-import InviteesTable, {
-  Invitee,
-} from '../../../../components/health_worker/InviteesTable.tsx'
 import InviteSuccess from '../../../../islands/invite-success.tsx'
 
 type EmployeePageProps = {
@@ -74,29 +72,15 @@ export default function EmployeeTable(
       variant='standard'
     >
       <Container size='lg'>
+        <InviteSuccess
+          invited={invited}
+        />
         <EmployeesTable
           isAdmin={props.data.isAdmin}
           employees={props.data.employees}
           pathname={props.url.pathname}
+          invitees={props.data.invitees}
         />
-        <InviteSuccess
-          invited={invited}
-        />
-        {props.data.isAdmin && (
-          <>
-            <div className='mt-4 mb-1 px-1 py-1 sm:px-1'>
-              <h3 className='text-base font-semibold leading-7 text-gray-900'>
-                Invitees
-              </h3>
-              <p className='mt-1 max-w-2xl text-sm leading-6 text-gray-500'>
-                Recently invited health workers.
-              </p>
-            </div>
-            <InviteesTable
-              invitees={props.data.invitees}
-            />
-          </>
-        )}
       </Container>
     </Layout>
   )
