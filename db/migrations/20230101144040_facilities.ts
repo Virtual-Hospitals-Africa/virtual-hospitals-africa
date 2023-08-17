@@ -36,7 +36,7 @@ export async function down(db: Kysely<unknown>) {
 
 // Add a test facility with all VHA employees as admins
 // deno-lint-ignore no-explicit-any
-function addTestFacility(db: Kysely<any>) {
+export function addTestFacility(db: Kysely<any>) {
   return db.insertInto('facilities').values({
     name: 'VHA Test Hospital',
     location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,

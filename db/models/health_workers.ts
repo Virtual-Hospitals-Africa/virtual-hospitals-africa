@@ -1,4 +1,4 @@
-import { DeleteResult, InsertResult, sql, UpdateResult } from 'kysely'
+import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
   GoogleTokens,
@@ -43,7 +43,7 @@ export function upsertGoogleTokens(
   trx: TrxOrDb,
   health_worker_id: number,
   tokens: GoogleTokens,
-): Promise<InsertResult[]> {
+): Promise<ReturnedSqlRow<GoogleTokens> | undefined> {
   assert(health_worker_id)
   return trx
     .insertInto('health_worker_google_tokens')
@@ -60,7 +60,8 @@ export function upsertGoogleTokens(
         expires_at: tokens.expires_at,
       })
     )
-    .execute()
+    .returningAll()
+    .executeTakeFirst()
 }
 
 export async function updateTokens(
@@ -77,10 +78,14 @@ export async function updateTokens(
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   details: HealthWorker & GoogleTokens,
-): Promise<ReturnedSqlRow<HealthWorker>> {
+) {
   const health_worker = await upsert(trx, pickHealthWorker(details))
-  await upsertGoogleTokens(trx, health_worker.id, pickTokens(details))
-  return health_worker
+  const tokens = await upsertGoogleTokens(
+    trx,
+    health_worker.id,
+    pickTokens(details),
+  )
+  return { ...health_worker, ...tokens }
 }
 
 const getWithTokensQuery = (trx: TrxOrDb) =>
