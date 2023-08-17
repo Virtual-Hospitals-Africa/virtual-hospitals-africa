@@ -9,10 +9,7 @@ import * as conversations from '../../../db/models/conversations.ts'
 import * as health_workers from '../../../db/models/health_workers.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as appointments from '../../../db/models/appointments.ts'
-import {
-  convertToTimeString,
-  formatHarare
-} from '../../../util/date.ts'
+import { convertToTimeString, formatHarare } from '../../../util/date.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
@@ -34,7 +31,7 @@ describe('patient chatbot', () => {
     insertEvent.restore()
   })
 
-  it('provides with other_appointment_times after rejecting first_option', async () => {
+  it('provides with other_appointment_time after rejecting first_option', async () => {
     await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number: '00000000',
@@ -44,7 +41,7 @@ describe('patient chatbot', () => {
       national_id_number: null,
     })
 
-    // insert patient_appointment_requests
+    // Insert patient_appointment_requests
     const patientBefore = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })
@@ -60,7 +57,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    // insert health worker and offered time
+    // Insert health worker
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
@@ -80,31 +77,32 @@ describe('patient chatbot', () => {
 
     assert(health_worker)
 
+    //  Insert google calender
     const currentTime = new Date()
     currentTime.setHours(currentTime.getHours() + 2)
-    const timeMin = formatHarare(currentTime)
+    const timeMin = formatHarare(currentTime) // current + 2 hours
 
     currentTime.setDate(currentTime.getDate() + 7)
-    const timeMax = formatHarare(currentTime)
+    const timeMax = formatHarare(currentTime) // current + 7 days + 2 hours
 
     currentTime.setDate(currentTime.getDate() - 6)
     currentTime.setHours(currentTime.getHours() + 1)
     currentTime.setMinutes(0)
     currentTime.setSeconds(0)
     currentTime.setMilliseconds(0)
-    const secondDayStart = formatHarare(currentTime)
+    const secondDayStart = formatHarare(currentTime) // current + 1 day + 3 hours
 
     currentTime.setHours(currentTime.getHours())
     currentTime.setMinutes(30)
-    const secondDayBusyTime = formatHarare(currentTime)
+    const secondDayBusyTime = formatHarare(currentTime) // current + 1 day + 3.5 hours
 
     const firstOtherTime = new Date(currentTime)
     firstOtherTime.setHours(firstOtherTime.getHours() + 1)
-    firstOtherTime.setMinutes(0)
+    firstOtherTime.setMinutes(0) // current + 1 day + 4.5 hours
 
     currentTime.setHours(currentTime.getHours() + 8)
     currentTime.setMinutes(0)
-    const secondDayEnd = formatHarare(currentTime)
+    const secondDayEnd = formatHarare(currentTime) // current + 1 day + 11 hours ==> secondDayStart + 8 hour
 
     getFreeBusy.resolves(
       {
@@ -132,6 +130,7 @@ describe('patient chatbot', () => {
       },
     )
 
+    // Insert first_scheduling_option
     const start = new Date(secondDayBusyTime)
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
@@ -161,7 +160,7 @@ describe('patient chatbot', () => {
     )
 
     await respond(fakeWhatsApp)
-    
+
     const message = fakeWhatsApp.sendMessages.firstCall.args[0].messages
 
     assertEquals(
@@ -182,7 +181,7 @@ describe('patient chatbot', () => {
       'With Dr. Test Doctor',
     )
 
-    assertEquals(message.action.sections[message.action.sections.length-1], {
+    assertEquals(message.action.sections[message.action.sections.length - 1], {
       title: 'Other Times',
       rows: [
         {
@@ -192,7 +191,6 @@ describe('patient chatbot', () => {
         },
       ],
     })
-
 
     const patient = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',

@@ -33,7 +33,7 @@ describe('patient chatbot', () => {
       national_id_number: null,
     })
 
-    // insert patient_appointment_requests
+    // Insert patient_appointment_requests
     const patientBefore = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })
@@ -49,7 +49,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    // insert health worker and offered time
+    // Insert health worker
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
@@ -69,6 +69,7 @@ describe('patient chatbot', () => {
 
     assert(health_worker)
 
+    // Insert offered time
     const time = new Date()
     time.setDate(time.getDate() + 1)
     time.setHours(9, 30, 0, 0)
@@ -100,7 +101,6 @@ describe('patient chatbot', () => {
     )
 
     await respond(fakeWhatsApp)
-    console.log(fakeWhatsApp.sendMessages.firstCall.args)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {

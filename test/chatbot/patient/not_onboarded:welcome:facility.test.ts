@@ -11,7 +11,6 @@ describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
   it('sends invitation to share location after welcome message', async () => {
-    // To set a patient in a sepefic state, we have to insert this state into db
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:welcome',
       phone_number: '00000000',

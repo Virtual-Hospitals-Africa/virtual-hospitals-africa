@@ -10,20 +10,20 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('asks for reason after welcome message', async () => {
+  it('sends invitation to share location after canceling appointent', async () => {
     await patients.upsert(db, {
-      conversation_state: 'onboarded:main_menu',
+      conversation_state: 'onboarded:cancel_appointment',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '1233',
+      national_id_number: '12344',
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'make_appointment',
+      body: 'find_nearest_facility',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -41,9 +41,9 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          messageBody:
-            'Got it, 1233. What is the reason you want to schedule an appointment?',
           type: 'string',
+          messageBody:
+            'Sure, we can find your nearest facility. Can you share your location?',
         },
         phone_number: '00000000',
       },
@@ -55,7 +55,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:enter_appointment_reason',
+      'find_nearest_facility:share_location',
     )
   })
 })

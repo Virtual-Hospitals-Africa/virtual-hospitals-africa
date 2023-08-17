@@ -10,7 +10,7 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('sends a link and back to main menu button after selecting a facility', async () => {
+  it('sends a facility link and back_to_main_menu button after selecting a facility', async () => {
     // Step 1: share location
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',

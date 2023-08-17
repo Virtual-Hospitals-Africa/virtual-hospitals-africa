@@ -42,7 +42,6 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsApp)
-    //console.log(fakeWhatsApp.sendMessages.firstCall.args[0].messages.action)
     const callArgs = fakeWhatsApp.sendMessages.firstCall.args[0]
 
     assertEquals(callArgs.messages.type, 'list')

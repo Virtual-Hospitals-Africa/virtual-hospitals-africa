@@ -10,22 +10,23 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('asks for reason after welcome message', async () => {
+
+  it('ends after not confriming first scheduling option ', async () => {
     await patients.upsert(db, {
-      conversation_state: 'onboarded:main_menu',
+      conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '1233',
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: '00000000',
       has_media: false,
-      body: 'make_appointment',
+      body: 'go_back',
       media_id: null,
-      whatsapp_id: 'whatsapp_id',
+      whatsapp_id: 'whatsapp_id_one',
     })
 
     const fakeWhatsApp = {
@@ -41,9 +42,9 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          messageBody:
-            'Got it, 1233. What is the reason you want to schedule an appointment?',
           type: 'string',
+          messageBody:
+            'This is the end of the demo. Thank you for participating!',
         },
         phone_number: '00000000',
       },
@@ -55,7 +56,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:enter_appointment_reason',
+      'other_end_of_demo',
     )
   })
 })

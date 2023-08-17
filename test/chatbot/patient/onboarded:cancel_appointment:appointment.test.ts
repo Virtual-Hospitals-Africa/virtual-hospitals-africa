@@ -10,14 +10,14 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('asks for reason after welcome message', async () => {
+  it('asks for reason after canceling appointent', async () => {
     await patients.upsert(db, {
-      conversation_state: 'onboarded:main_menu',
+      conversation_state: 'onboarded:cancel_appointment',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '1233',
+      national_id_number: '12344',
     })
 
     await conversations.insertMessageReceived(db, {
@@ -42,7 +42,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Got it, 1233. What is the reason you want to schedule an appointment?',
+            'Got it, 12344. What is the reason you want to schedule an appointment?',
           type: 'string',
         },
         phone_number: '00000000',

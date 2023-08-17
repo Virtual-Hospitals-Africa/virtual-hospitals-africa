@@ -4,12 +4,10 @@ import sinon from 'npm:sinon'
 import { resetInTest } from '../../../db/reset.ts'
 import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
-import * as google from '../../../external-clients/google.ts'
 import * as conversations from '../../../db/models/conversations.ts'
 import * as health_workers from '../../../db/models/health_workers.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as appointments from '../../../db/models/appointments.ts'
-import { prettyAppointmentTime } from '../../../util/date.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
@@ -41,7 +39,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    // Insert health worker and offered time
+    // Insert health worker
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
@@ -61,6 +59,7 @@ describe('patient chatbot', () => {
 
     assert(health_worker)
 
+    // Insert offered time
     const time = new Date()
     time.setDate(time.getDate() + 1)
     time.setHours(9, 30, 0, 0)
@@ -94,7 +93,6 @@ describe('patient chatbot', () => {
     }
 
     await respond(fakeWhatsApp)
-    console.log(fakeWhatsApp.sendMessages.firstCall.args)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {

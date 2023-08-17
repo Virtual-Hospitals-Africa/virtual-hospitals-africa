@@ -9,23 +9,24 @@ import * as conversations from '../../../db/models/conversations.ts'
 import * as health_workers from '../../../db/models/health_workers.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as appointments from '../../../db/models/appointments.ts'
-import { formatHarare, prettyAppointmentTime } from '../../../util/date.ts'
+import { prettyAppointmentTime } from '../../../util/date.ts'
+import { declineOfferedTimes } from '../../../db/models/appointments.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
-  let getFreeBusy: any
+  let insertEvent: any
   beforeEach(() => {
-    getFreeBusy = sinon.stub(google.GoogleClient.prototype, 'getFreeBusy')
+    insertEvent = sinon.stub(google.GoogleClient.prototype, 'insertEvent')
   })
   afterEach(() => {
-    getFreeBusy.restore()
+    insertEvent.restore()
   })
 
-  it('provides with first_scheduling_option details after confirming details', async () => {
+  it('provides with cancel_appointment_option after confirming another appointment', async () => {
     await patients.upsert(db, {
-      conversation_state: 'onboarded:make_appointment:confirm_details',
+      conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number: '00000000',
       name: 'test',
       gender: 'female',
@@ -33,6 +34,7 @@ describe('patient chatbot', () => {
       national_id_number: null,
     })
 
+    // Insert patient_appointment_requests
     const patientBefore = await patients.getByPhoneNumber(db, {
       phone_number: '00000000',
     })
@@ -48,14 +50,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
-      has_media: false,
-      body: 'confirm',
-      media_id: null,
-      whatsapp_id: 'whatsapp_id_one',
-    })
-
+    // Insert health worker
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
@@ -71,6 +66,37 @@ describe('patient chatbot', () => {
       expires_at,
     })
 
+    const health_worker = await health_workers.getByEmail(db, 'test@doctor.com')
+
+    assert(health_worker)
+
+    // Insert offered time
+    const firstTime = new Date()
+    firstTime.setDate(firstTime.getDate() + 1)
+    firstTime.setHours(9, 30, 0, 0)
+    const firstOfferedTime = await appointments.addOfferedTime(db, {
+      patient_appointment_request_id: scheduling_appointment_request.id,
+      health_worker_id: health_worker.id,
+      start: firstTime,
+    })
+    await declineOfferedTimes(db, [firstOfferedTime.id])
+
+    const otherTime = new Date(firstTime)
+    otherTime.setHours(10, 0, 0, 0)
+    const secondOfferedTime = await appointments.addOfferedTime(db, {
+      patient_appointment_request_id: scheduling_appointment_request.id,
+      health_worker_id: health_worker.id,
+      start: otherTime,
+    })
+
+    await conversations.insertMessageReceived(db, {
+      patient_phone_number: '00000000',
+      has_media: false,
+      body: String(secondOfferedTime.id),
+      media_id: null,
+      whatsapp_id: 'whatsapp_id_one',
+    })
+
     const fakeWhatsApp = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
@@ -80,66 +106,20 @@ describe('patient chatbot', () => {
       }]),
     }
 
-    const currentTime = new Date()
-    currentTime.setHours(currentTime.getHours() + 2)
-    const timeMin = formatHarare(currentTime)
-
-    currentTime.setDate(currentTime.getDate() + 7)
-    const timeMax = formatHarare(currentTime)
-
-    currentTime.setDate(currentTime.getDate() - 6)
-    currentTime.setHours(currentTime.getHours() + 1)
-    currentTime.setMinutes(0)
-    const secondDayStart = formatHarare(currentTime)
-
-    currentTime.setHours(currentTime.getHours())
-    currentTime.setMinutes(30)
-    const secondDayBusyTime = formatHarare(currentTime)
-
-    currentTime.setHours(currentTime.getHours() + 8)
-    currentTime.setMinutes(0)
-    const secondDayEnd = formatHarare(currentTime)
-
-    getFreeBusy.resolves(
-      {
-        kind: 'calendar#freeBusy',
-        timeMin: timeMin,
-        timeMax: timeMax,
-        calendars: {
-          'gcal_appointments_calendar_id': {
-            busy: [
-              {
-                start: secondDayStart,
-                end: secondDayBusyTime,
-              },
-            ],
-          },
-          'gcal_availability_calendar_id': {
-            busy: [
-              {
-                start: secondDayStart,
-                end: secondDayEnd,
-              },
-            ],
-          },
-        },
-      },
+    insertEvent.resolves(
+      { id: 'insertEvent_id' },
     )
 
     await respond(fakeWhatsApp)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          messageBody: 'Great, the next available appoinment is ' +
-            prettyAppointmentTime(secondDayBusyTime) +
-            '. Would you like to schedule this appointment?',
+          messageBody:
+            'Thanks test, we notified Test Doctor and will message you shortly upon confirmirmation of your appointment at ' +
+            prettyAppointmentTime(otherTime),
           type: 'buttons',
           buttonText: 'Menu',
-          options: [
-            { id: 'confirm', title: 'Yes' },
-            { id: 'other_times', title: 'Other times' },
-            { id: 'go_back', title: 'Go back' },
-          ],
+          options: [{ id: 'cancel', title: 'Cancel Appointment' }],
         },
         phone_number: '00000000',
       },
@@ -151,7 +131,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:first_scheduling_option',
+      'onboarded:appointment_scheduled',
     )
   })
 })
