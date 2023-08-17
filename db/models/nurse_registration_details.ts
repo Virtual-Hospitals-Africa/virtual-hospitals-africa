@@ -31,8 +31,29 @@ export function get(
     .executeTakeFirst()
 }
 
+export function approve(
+  trx: TrxOrDb,
+  opts: {
+    approverId: number
+    healthWorkerId: number
+  },
+) {
+  return trx
+    .updateTable('nurse_registration_details')
+    .set({
+      approved_by: opts.approverId,
+    })
+    .where('approved_by', 'is', null)
+    .where('health_worker_id', '=', opts.healthWorkerId)
+    .returningAll()
+    .executeTakeFirst()
+}
+
 function inputValidation(registrationDetails: NurseRegistrationDetails) {
   return typeof registrationDetails.health_worker_id === 'number' &&
+    (registrationDetails.gender === 'male' ||
+      registrationDetails.gender === 'female' ||
+      registrationDetails.gender === 'other') &&
     registrationDetails.national_id.match('^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$') &&
     isDate(registrationDetails.date_of_first_practice) &&
     registrationDetails.ncz_registration_number.match(
@@ -44,9 +65,11 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
     (registrationDetails.ncz_registration_card_media_id === undefined ||
       typeof registrationDetails.ncz_registration_card_media_id === 'number') &&
     (registrationDetails.face_picture_media_id === undefined ||
-      typeof registrationDetails.face_picture_media_id === 'number')
+      typeof registrationDetails.face_picture_media_id === 'number') &&
+    (registrationDetails.approved_by === undefined ||
+      typeof registrationDetails.approved_by === 'number')
 }
 
 function isDate(date: Date): boolean {
-  return date.toString().match('^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$') !== null
+  return date.toISOString().match('^[0-9]{4}[-][0-9]{2}[-][0-9]{2}') !== null
 }
