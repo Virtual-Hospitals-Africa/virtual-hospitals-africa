@@ -32,7 +32,6 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
-import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -371,7 +370,6 @@ const conversationStates: ConversationStates<
     },
     async onEnter(trx, patientState) {
       assert(patientState.scheduling_appointment_request)
-      console.log('patientState', patientState)
 
       assert(patientState.media_id)
       await appointments.insertAppointmentRequestMedia(trx, {
@@ -392,10 +390,6 @@ const conversationStates: ConversationStates<
   },
   'onboarded:make_appointment:confirm_details': {
     type: 'select',
-    async onEnter(_trx, patientState) {
-      await console.log('confirming details onEnter', patientState)
-      return patientState
-    },
     prompt(patientState: PatientState): string {
       assert(patientState.scheduling_appointment_request)
       assert(patientState.scheduling_appointment_request.reason)
@@ -455,7 +449,6 @@ const conversationStates: ConversationStates<
     },
     prompt(patientState: PatientState): string {
       assert(patientState.scheduling_appointment_request)
-      console.log('patientstate at first option', patientState)
       assert(
         patientState.scheduling_appointment_request.offered_times[0],
         'onEnter should have added an appointment_offered_time',
@@ -697,7 +690,6 @@ const conversationStates: ConversationStates<
     prompt(patientState: PatientState) {
       assert(patientState.scheduled_appointment)
       assert(patientState.scheduled_appointment.gcal_event_id)
-      console.log('scheduled appt', patientState)
       return `Thanks ${
         patientState.name!.split(' ')[0]
       }, we notified ${patientState.scheduled_appointment.health_worker_name} and will message you shortly upon confirmirmation of your appointment at ${
@@ -714,8 +706,7 @@ const conversationStates: ConversationStates<
   },
   'onboarded:cancel_appointment': {
     type: 'select',
-    prompt(patientState: PatientState) {
-      console.log('cancelling prompt', patientState)
+    prompt() {
       return 'Your appoinment has been cancelled. What can I help you with today?'
     },
     options: mainMenuOptions,
@@ -723,8 +714,6 @@ const conversationStates: ConversationStates<
       trx: TrxOrDb,
       patientState: PatientState,
     ): Promise<PatientState> {
-      console.log('before cancelling patient state', patientState)
-      console.log('existing media', patientState.media_id)
       return cancelAppointment(trx, patientState)
     },
   },
