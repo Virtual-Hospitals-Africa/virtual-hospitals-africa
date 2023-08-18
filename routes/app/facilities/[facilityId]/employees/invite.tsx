@@ -15,7 +15,7 @@ import {
   ConnectConfigWithAuthentication,
   SmtpClient,
 } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
-import * as employment from '../..../../../../../../db/models/employment.ts'
+import * as employment from '../../../../../db/models/employment.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 
@@ -100,6 +100,20 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 
     const invitesWithEmails = invites.filter((invite) => invite.email)
 
+    const existingEmployees = await employment.getMatching(ctx.state.trx, {
+      facility_id: facilityId,
+      invitees: invitesWithEmails,
+    })
+
+    if (existingEmployees.length) {
+      const url = new URL(req.url)
+      url.searchParams.set(
+        'alreadyEmployees',
+        existingEmployees.map((employee) => employee.email).join(','),
+      )
+      return redirect(url.toString())
+    }
+
     await employment.addInvitees(ctx.state.trx, facilityId, invitesWithEmails)
 
     return redirect(
@@ -111,6 +125,8 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
 }
 
 export default function InviteEmployees(props: PageProps) {
+  const alreadyEmployees = props.url.searchParams.get('alreadyEmployees')
+
   return (
     <Layout
       title='Invite Employees'
@@ -118,7 +134,9 @@ export default function InviteEmployees(props: PageProps) {
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >
-      <InviteEmployeesForm />
+      <InviteEmployeesForm
+        alreadyEmployees={alreadyEmployees ? alreadyEmployees.split(',') : null}
+      />
     </Layout>
   )
 }
