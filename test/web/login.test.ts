@@ -119,7 +119,7 @@ describe('/login', () => {
       response.body?.cancel()
     })
 
-    it('unemployed is unauthorized', async () => {
+    it('doesn\'t allow unemployed access to /app', async () => {
       const response = await fetch(`${ROUTE}/app`, {
         headers: {
           Cookie: 'sessionId=123',
@@ -129,7 +129,7 @@ describe('/login', () => {
       response.body?.cancel()
     })
 
-    it('admin is authorized', async () => {
+    it('allows admin access to /app', async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: 1,
@@ -149,7 +149,7 @@ describe('/login', () => {
       )
     })
 
-    it('doctor is authorized', async () => {
+    it('allows doctor access /app', async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: 1,
@@ -170,7 +170,7 @@ describe('/login', () => {
       )
     })
 
-    it('unregistered nurse goes to registration', async () => {
+    it('redirects unregistered nurse to registration', async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: 1,
@@ -193,7 +193,7 @@ describe('/login', () => {
       )
     })
 
-    it('unnaproved nurse goes to pending-approval', async () => {
+    it('redirects unapproved nurse to /app/pending-approval', async () => {
       await details.add(db, { registrationDetails: testRegistrationDetails })
 
       const response = await fetch(`${ROUTE}/app`, {
@@ -205,7 +205,7 @@ describe('/login', () => {
       await response.text()
     })
 
-    it('approvoed nurse goes to app', async () => {
+    it('allows approvoed nurse access to /app', async () => {
       await details.approve(db, {
         approverId: 1,
         healthWorkerId: 1,
@@ -225,7 +225,7 @@ describe('/login', () => {
       )
     })
 
-    it('user can go to and from add patient screen', async () => {
+    it('allows user to go to and from the add patient page', async () => {
       let response = await fetch(`${ROUTE}/app`, {
         headers: {
           Cookie: 'sessionId=123',
@@ -266,7 +266,7 @@ describe('/login', () => {
       assert((await response.text()).includes('Add patient'))
     })
 
-    it('user can go to and from My Patients', async () => {
+    it('allows user to go to and from the My Patients page', async () => {
       let response = await fetch(`${ROUTE}/app`, {
         headers: {
           Cookie: 'sessionId=123',
@@ -302,7 +302,7 @@ describe('/login', () => {
       await response.text()
     })
 
-    it('user can go to calendar', async () => {
+    it('allows user can go to calendar', async () => {
       const response = await fetch(`${ROUTE}/app`, {
         headers: {
           Cookie: 'sessionId=123',
@@ -314,7 +314,7 @@ describe('/login', () => {
       assert(pageContents.includes('Calendar'))
     })
 
-    it('user can go to and from employees table', async () => {
+    it('allows user can go to and from employees table screen', async () => {
       let response = await fetch(`${ROUTE}/app`, {
         headers: {
           Cookie: 'sessionId=123',
@@ -347,7 +347,7 @@ describe('/login', () => {
       await response.text()
     })
 
-    it(`admin can go to invite`, async () => {
+    it(`allows admin access to invite`, async () => {
       let response = await fetch(`${ROUTE}/app/facilities/1/employees`, {
         headers: {
           Cookie: 'sessionId=123',
