@@ -157,6 +157,42 @@ export function getByFacility(
     .execute()
 }
 
+export function getMatching(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    invitees: {
+      email: string
+      profession: 'admin' | 'doctor' | 'nurse'
+    }[]
+  },
+) {
+  return trx
+    .selectFrom('employment')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .innerJoin(
+      'facilities',
+      'facilities.id',
+      'employment.facility_id',
+    )
+    .where('facility_id', '=', opts.facility_id)
+    .where(({ and, or, eb }) =>
+      or(opts.invitees.map((invitee) =>
+        and([
+          eb('health_workers.email', '=', invitee.email),
+          eb('profession', '=', invitee.profession),
+        ])
+      ))
+    )
+    .select([
+      'email',
+    ]).execute()
+}
+
 export function addInvitees(
   trx: TrxOrDb,
   facility_id: number,

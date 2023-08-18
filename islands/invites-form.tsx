@@ -1,11 +1,27 @@
 import { useState } from 'preact/hooks'
 import range from '../util/range.ts'
+import { Maybe } from '../types.ts'
+import WarningModal from '../components/library/modals/Warning.tsx'
 
-export default function InviteEmployeesForm() {
+export default function InviteEmployeesForm(
+  { alreadyEmployees }: { alreadyEmployees: Maybe<string[]> },
+) {
+  const [showWarningModal, setShowWarningModal] = useState(
+    !!(alreadyEmployees && alreadyEmployees.length),
+  )
   const [totalInvites, setTotalInvites] = useState(1)
 
   return (
     <form style={{ maxWidth: '800px', margin: '0 auto' }} method='POST'>
+      {showWarningModal && (
+        <WarningModal
+          title='Already Added Employees'
+          message={`${alreadyEmployees!.join(', ')} ${
+            alreadyEmployees!.length === 1 ? 'is' : 'are'
+          } already added. You may send invites to new users or give them new roles.`}
+          onConfirm={() => setShowWarningModal(false)}
+        />
+      )}
       <div
         style={{
           display: 'flex',
