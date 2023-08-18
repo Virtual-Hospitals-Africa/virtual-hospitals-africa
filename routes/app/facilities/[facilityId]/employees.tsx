@@ -12,16 +12,16 @@ import * as employment from '../../../../db/models/employment.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable, {
   Employee,
+  Invitee,
 } from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
-import { CheckIcon } from '../../../../components/library/CheckIcon.tsx'
-import CrossIcon from '../../../../components/library/icons/cross.tsx'
-import { useState } from 'preact/hooks'
+import InviteSuccess from '../../../../islands/invite-success.tsx'
 
 type EmployeePageProps = {
   isAdmin: boolean
   employees: Employee[]
+  invitees: Invitee[]
   healthWorker: HealthWorkerWithGoogleTokens
   facility: ReturnedSqlRow<Facility>
 }
@@ -51,7 +51,11 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       employee.id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
-    return ctx.render({ isAdmin, employees, healthWorker, facility })
+    const invitees = await health_workers.getInviteesAtFacility(
+      ctx.state.trx,
+      facility_id,
+    )
+    return ctx.render({ isAdmin, employees, invitees, healthWorker, facility })
   },
 }
 
@@ -60,9 +64,6 @@ export default function EmployeeTable(
 ) {
   const urlParams = new URLSearchParams(props.url.search)
   const invited = urlParams.get('invited')
-
-  const [isInvitedVisible, setIsInvitedVisible] = useState(!!invited)
-
   return (
     <Layout
       title={`${props.data.facility.name} Employees`}
@@ -71,38 +72,15 @@ export default function EmployeeTable(
       variant='standard'
     >
       <Container size='lg'>
+        <InviteSuccess
+          invited={invited}
+        />
         <EmployeesTable
           isAdmin={props.data.isAdmin}
           employees={props.data.employees}
           pathname={props.url.pathname}
+          invitees={props.data.invitees}
         />
-        {isInvitedVisible && (
-          <div className='rounded-md bg-green-50 p-4 mt-4 mb-4'>
-            <div className='flex justify-between'>
-              <div className='flex'>
-                <div className='flex-shrink-0'>
-                  <CheckIcon
-                    className='h-5 w-5 text-green-400'
-                    aria-hidden='true'
-                  />
-                </div>
-                <div className='ml-3'>
-                  <h3 className='text-sm font-medium text-green-800'>
-                    Successfully invited {invited}
-                  </h3>
-                </div>
-              </div>
-              <div className='ml-auto'>
-                <CrossIcon
-                  type='button'
-                  className='text-green-400'
-                  onClick={() => setIsInvitedVisible(false)}
-                >
-                </CrossIcon>
-              </div>
-            </div>
-          </div>
-        )}
       </Container>
     </Layout>
   )
