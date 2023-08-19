@@ -1,82 +1,28 @@
 import { afterAll, beforeAll, describe, it } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
-import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
-import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
-import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
 import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
-import { NurseRegistrationDetails } from '../../types.ts'
+import {
+  cleanUpWebServer,
+  dbWipeThenLatest,
+  startWebServer,
+  testHealthWorker,
+  testRegistrationDetails,
+} from './utilities.ts'
 
 describe('/login', () => {
   const PORT = '8002'
   const ROUTE = `https://localhost:${PORT}`
-
-  const testHealthWorker = {
-    name: 'Test Health Worker',
-    email: 'test@healthworker.com',
-    avatar_url:
-      'https://lh3.googleusercontent.com/a/AAcHTtdCli8DiIjBkdb9TZL3W46MoxFPOy2Xuqkm345WiS446Ow=s96-c',
-    gcal_appointments_calendar_id:
-      'vjf3q6onfgnn83me7rf10fdcj4@group.calendar.google.com',
-    gcal_availability_calendar_id:
-      'fq5vbod94ihhherp9fad2tlaqk@group.calendar.google.com',
-    access_token: 'ya29.whateverlrkwlkawlk-tl2O85WA2QW_1Lf_P4lRqyAG4aUCIo0D18F',
-    expires_in: 3599,
-    refresh_token:
-      '1//01_ao4e0Kf-uTCgYIARAAGAESNwF-L9IrQkmis6YBAP4NE7BWrI7ry1qSeotPA_DLMYW9yiGLUUsaOjy7rlUvYs2nL_BTFjuv',
-    expires_at: '2023-07-25T19:20:45.123Z',
-  }
-
-  const testRegistrationDetails: NurseRegistrationDetails = {
-    health_worker_id: 1,
-    gender: 'male',
-    national_id: '12345678A12',
-    date_of_first_practice: new Date(1999, 11, 11),
-    ncz_registration_number: 'GN123456',
-    mobile_number: '1111',
-    national_id_media_id: undefined,
-    ncz_registration_card_media_id: undefined,
-    face_picture_media_id: undefined,
-    approved_by: undefined,
-  }
-
   let process: Deno.ChildProcess
   beforeAll(async () => {
     await dbWipeThenLatest()
-    process = new Deno.Command('deno', {
-      args: [
-        'task',
-        'start',
-      ],
-      env: {
-        PORT: PORT,
-      },
-      stdin: 'null',
-      stdout: 'piped',
-      stderr: 'null',
-    }).spawn()
-
-    const stdout = process.stdout.getReader()
-    const reader = readerFromStreamReader(stdout)
-    const lineReader = readLines(reader)
-
-    let line: string
-    const ___timeout___ = Date.now()
-    do {
-      if (Date.now() > ___timeout___ + 20000) {
-        stdout.releaseLock()
-        await process.stdout.cancel()
-        throw new Error('hung process')
-      }
-      line = (await lineReader.next()).value
-    } while (line !== `Listening on ${ROUTE}/`)
-    stdout.releaseLock()
+    process = await startWebServer(PORT)
   })
   afterAll(async () => {
-    await process.stdout.cancel()
-    process.kill()
+    await cleanUpWebServer(process)
   })
 
   it('redirects to google if not already logged in', async () => {
@@ -347,7 +293,7 @@ describe('/login', () => {
       await response.text()
     })
 
-    it(`allows admin access to invite`, async () => {
+    it(`allows admin access to invite, `, async () => {
       let response = await fetch(`${ROUTE}/app/facilities/1/employees`, {
         headers: {
           Cookie: 'sessionId=123',
@@ -371,27 +317,48 @@ describe('/login', () => {
       assert(pageContents.includes('Profession'))
       assert(pageContents.includes('Invite'))
     })
+
+    it('doesn\'t allow unemployed access to employees, redirecting back to app', async () => {
+      const response = await fetch(`${ROUTE}/app/facilities/2/employees`, {
+        headers: {
+          Cookie: 'sessionId=123',
+        },
+      })
+
+      assert(response.redirected)
+      assert(response.url === `${ROUTE}/app`)
+      await response.text()
+    })
+
+    it('doesn\'t allow non-admin to invite page', async () => {
+      await db
+        .deleteFrom('employment')
+        .where('health_worker_id', '=', 1)
+        .where('profession', '=', 'admin')
+        .execute()
+
+      let response = await fetch(`${ROUTE}/app/facilities/1/employees`, {
+        headers: {
+          Cookie: 'sessionId=123',
+        },
+      })
+
+      assert(response.ok, 'user should still be able to access employees page')
+      assert(response.url === `${ROUTE}/app/facilities/1/employees`)
+      const pageContents = await response.text()
+      assert(
+        !pageContents.includes('href="/app/facilities/1/employees/invite"'),
+        'there shouldn\'t be a link to the invite page',
+      )
+
+      response = await fetch(`${ROUTE}/app/facilities/1/employees/invite`, {
+        headers: {
+          Cookie: 'sessionId=123',
+        },
+      })
+
+      assert(!response.ok, 'shouldn\'t be able to access invite page')
+      await response.text()
+    })
   })
 })
-
-async function dbWipeThenLatest() {
-  await new Deno.Command('deno', {
-    args: [
-      'task',
-      'db:migrate:wipe',
-    ],
-    stdin: 'null',
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-
-  await new Deno.Command('deno', {
-    args: [
-      'task',
-      'db:migrate:latest',
-    ],
-    stdin: 'null',
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-}
