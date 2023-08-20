@@ -10,19 +10,21 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('sends a link and back to main menu button after selecting a facility', async () => {
+
+  const phone_number = '00000000'
+  it('sends a facility link and back_to_main_menu button after selecting a facility', async () => {
     // Step 1: share location
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '',
+      national_id_number: '1238',
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: JSON.stringify({
         latitude: -17.832132339478,
@@ -44,22 +46,8 @@ describe('patient chatbot', () => {
     await respond(fakeWhatsAppOne)
 
     // Step 2: select facility id
-    await patients.upsert(db, {
-      conversation_state: 'find_nearest_facility:got_location',
-      phone_number: '00000000',
-      name: 'test',
-      gender: 'female',
-      date_of_birth: '1111/11/11',
-      national_id_number: '',
-      // TODO: This test will not fail if adding location here, but not in line with actual situation
-      location: {
-        latitude: -17.832132339478,
-        longitude: 31.047979354858,
-      },
-    })
-
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: '657',
       media_id: null,
@@ -99,11 +87,11 @@ describe('patient chatbot', () => {
             }],
           },
         ],
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)

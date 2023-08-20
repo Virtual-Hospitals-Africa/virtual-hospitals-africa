@@ -299,7 +299,11 @@ const conversationStates: ConversationStates<
       return [locationMessage, buttonMessage]
     },
     type: 'send_location',
-    nextState: 'not_onboarded:welcome',
+    nextState(patientState: PatientState): PatientConversationState {
+      return patients.hasDemographicInfo(patientState)
+        ? 'onboarded:main_menu'
+        : 'not_onboarded:welcome'
+    },
     onEnter(_trx, patientState) {
       const selectedFacility: Maybe<Facility> = patientState.nearest_facilities
         ?.find(
