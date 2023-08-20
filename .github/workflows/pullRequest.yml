@@ -46,7 +46,7 @@ jobs:
           deno-version: v1.33.3
 
       - name: Run lint
-        run: deno lint --ignore=landing-page/,test/chatbot
+        run: // deno-lint-ignore-file no-explicit-any
 
       - name: Run fmt --check
         run: deno fmt --check

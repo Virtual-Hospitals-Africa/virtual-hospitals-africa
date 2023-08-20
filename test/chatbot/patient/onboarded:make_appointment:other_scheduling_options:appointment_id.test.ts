@@ -24,10 +24,11 @@ describe('patient chatbot', () => {
     insertEvent.restore()
   })
 
+  const phone_number = '00000000'
   it('provides with cancel_appointment_option after confirming another appointment', async () => {
-    await patients.upsert(db, {
+    const patientBefore = await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -35,10 +36,6 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    const patientBefore = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
-    })
-
     assert(patientBefore)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
@@ -54,7 +51,7 @@ describe('patient chatbot', () => {
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
-    await health_workers.upsertWithGoogleCredentials(db, {
+    const health_worker = await health_workers.upsertWithGoogleCredentials(db, {
       name: 'Test Doctor',
       email: 'test@doctor.com',
       avatar_url: 'https://placekitten/200/200',
@@ -65,8 +62,6 @@ describe('patient chatbot', () => {
       refresh_token: 'test:refresh_token',
       expires_at,
     })
-
-    const health_worker = await health_workers.getByEmail(db, 'test@doctor.com')
 
     assert(health_worker)
 
@@ -90,7 +85,7 @@ describe('patient chatbot', () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: String(secondOfferedTime.id),
       media_id: null,
@@ -121,11 +116,11 @@ describe('patient chatbot', () => {
           buttonText: 'Menu',
           options: [{ id: 'cancel', title: 'Cancel Appointment' }],
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)

@@ -13,10 +13,11 @@ describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
+  const phone_number = '00000000'
   it('comes back to main menu after cancelling appointment', async () => {
-    await patients.upsert(db, {
+    const patientBefore = await patients.upsert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -24,10 +25,6 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    const patientBefore = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
-    })
-
     assert(patientBefore)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
@@ -43,7 +40,7 @@ describe('patient chatbot', () => {
     const expires_at = new Date()
     expires_at.setSeconds(expires_at.getSeconds() + 3600000)
 
-    await health_workers.upsertWithGoogleCredentials(db, {
+    const health_worker = await health_workers.upsertWithGoogleCredentials(db, {
       name: 'Test Doctor',
       email: 'test@doctor.com',
       avatar_url: 'https://placekitten/200/200',
@@ -54,8 +51,6 @@ describe('patient chatbot', () => {
       refresh_token: 'test:refresh_token',
       expires_at,
     })
-
-    const health_worker = await health_workers.getByEmail(db, 'test@doctor.com')
 
     assert(health_worker)
 
@@ -70,13 +65,13 @@ describe('patient chatbot', () => {
     })
 
     // Insert scheduled appointment
-    await appointments.schedule(db, {
+    const appointment = await appointments.schedule(db, {
       appointment_offered_time_id: offeredTime.id,
       gcal_event_id: 'insertEvent_id',
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: 'cancel',
       media_id: null,
@@ -105,11 +100,11 @@ describe('patient chatbot', () => {
             { id: 'find_nearest_facility', title: 'Nearest Facility' },
           ],
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)
@@ -117,5 +112,10 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'onboarded:cancel_appointment',
     )
+
+    const cancelledAppointmet = await appointments.getWithPatientInfo(db, {
+      id: appointment.id,
+    })
+    assertEquals(cancelledAppointmet.length, 0)
   })
 })

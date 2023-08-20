@@ -23,10 +23,11 @@ describe('patient chatbot', () => {
     getFreeBusy.restore()
   })
 
+  const phone_number = '00000000'
   it('provides with first_scheduling_option details after confirming details', async () => {
-    await patients.upsert(db, {
+    const patientBefore = await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -34,10 +35,6 @@ describe('patient chatbot', () => {
     })
 
     // Insert patient_appointment_requests
-    const patientBefore = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
-    })
-
     assert(patientBefore)
     const scheduling_appointment_request = await appointments
       .createNewRequest(db, {
@@ -113,7 +110,7 @@ describe('patient chatbot', () => {
     )
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: 'confirm',
       media_id: null,
@@ -144,11 +141,11 @@ describe('patient chatbot', () => {
             { id: 'go_back', title: 'Go back' },
           ],
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)

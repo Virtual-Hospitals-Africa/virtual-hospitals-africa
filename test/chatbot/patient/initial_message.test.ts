@@ -10,9 +10,11 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
+
+  const phone_number = '00000000'
   it('sends the main menu after the initial message', async () => {
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: 'body',
       media_id: null,
@@ -41,11 +43,11 @@ describe('patient chatbot', () => {
             { id: 'find_nearest_facility', title: 'Nearest Facility' },
           ],
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)

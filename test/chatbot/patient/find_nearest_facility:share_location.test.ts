@@ -10,10 +10,12 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
+
+  const phone_number = '00000000'
   it('sends nearest facilities list after invitation', async () => {
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -21,7 +23,7 @@ describe('patient chatbot', () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       // Somewhere in Harare
       body: JSON.stringify({
@@ -65,10 +67,10 @@ describe('patient chatbot', () => {
     assertEquals(callArgs.messages.action.sections[0].rows[1].id, '658')
     assertEquals(callArgs.messages.action.sections[0].rows[1].title, 'Braeside')
 
-    assertEquals(callArgs.phone_number, '00000000')
+    assertEquals(callArgs.phone_number, phone_number)
 
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)

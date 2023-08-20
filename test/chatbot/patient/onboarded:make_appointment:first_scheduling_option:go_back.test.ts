@@ -11,10 +11,11 @@ describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
+  const phone_number = '00000000'
   it('ends after not confriming first scheduling option ', async () => {
     await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -22,7 +23,7 @@ describe('patient chatbot', () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: 'go_back',
       media_id: null,
@@ -46,11 +47,11 @@ describe('patient chatbot', () => {
           messageBody:
             'This is the end of the demo. Thank you for participating!',
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)
