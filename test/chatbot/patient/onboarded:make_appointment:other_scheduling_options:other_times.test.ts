@@ -22,7 +22,7 @@ describe('patient chatbot', () => {
   afterEach(() => {
     getFreeBusy.restore()
   })
-  
+
   // deno-lint-ignore no-explicit-any
   let insertEvent: any
   beforeEach(() => {
