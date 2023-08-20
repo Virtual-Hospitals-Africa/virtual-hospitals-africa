@@ -14,7 +14,7 @@ import { formatHarare, prettyAppointmentTime } from '../../../util/date.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-
+  // deno-lint-ignore no-explicit-any
   let getFreeBusy: any
   beforeEach(() => {
     getFreeBusy = sinon.stub(google.GoogleClient.prototype, 'getFreeBusy')

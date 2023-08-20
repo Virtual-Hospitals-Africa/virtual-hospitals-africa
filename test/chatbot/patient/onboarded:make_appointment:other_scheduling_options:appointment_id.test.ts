@@ -15,7 +15,7 @@ import { declineOfferedTimes } from '../../../db/models/appointments.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-
+  // deno-lint-ignore no-explicit-any
   let insertEvent: any
   beforeEach(() => {
     insertEvent = sinon.stub(google.GoogleClient.prototype, 'insertEvent')
