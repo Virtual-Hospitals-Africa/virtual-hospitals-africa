@@ -22,7 +22,7 @@ function getUniqueCountries(adminDistricts: AdminDistricts[]) {
   return countries
 }
 
-function getUniqueItems<
+export function filterDistrictsByKey<
   T,
   K extends keyof T,
   U extends keyof T,
@@ -74,7 +74,7 @@ export default function PatientAddressForm(
   const [selectedWard, setSelectedWard] = useState<AdminDistricts['wardId']>()
   const countries = useMemo(() => getUniqueCountries(adminDistricts), [])
   const provinces = useMemo(() =>
-    getUniqueItems(
+    filterDistrictsByKey(
       'provinceId',
       'provinceName',
       adminDistricts,
@@ -83,7 +83,7 @@ export default function PatientAddressForm(
     ), [selectedCountry])
 
   const districts = useMemo(() =>
-    getUniqueItems(
+    filterDistrictsByKey(
       'districtId',
       'districtName',
       adminDistricts,
@@ -91,7 +91,7 @@ export default function PatientAddressForm(
       selectedProvinces,
     ), [selectedProvinces])
   const wards = useMemo(() =>
-    getUniqueItems(
+    filterDistrictsByKey(
       'wardId',
       'wardName',
       adminDistricts,
@@ -99,7 +99,7 @@ export default function PatientAddressForm(
       selectedDistrict,
     ), [selectedDistrict])
   const suburbs = useMemo(() =>
-    getUniqueItems(
+    filterDistrictsByKey(
       'suburbId',
       'suburbName',
       adminDistricts,
