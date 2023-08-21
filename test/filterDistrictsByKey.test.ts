@@ -8,7 +8,7 @@ Deno.test('filterDistrictsByKey should returns one filtered province based on th
   const filterKey: keyof AdminDistricts = 'countryId'
   const filterValue: AdminDistricts['countryId'] = 1
   const adminDistricts: AdminDistricts[] = [
-    { 
+    {
       countryId: 2,
       countryName: 'Country2',
       provinceId: 1,
@@ -18,9 +18,9 @@ Deno.test('filterDistrictsByKey should returns one filtered province based on th
       wardId: 1,
       wardName: 'Ward1',
       suburbId: 1,
-      suburbName: 'Suburb1'
+      suburbName: 'Suburb1',
     },
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 2,
@@ -30,18 +30,27 @@ Deno.test('filterDistrictsByKey should returns one filtered province based on th
       wardId: 2,
       wardName: 'Ward2',
       suburbId: 2,
-      suburbName: 'Suburb2'
-    }
+      suburbName: 'Suburb2',
+    },
   ]
 
   const expectedResult = [
-    { 
+    {
       id: 2,
-      name: 'Province2'
-    }
+      name: 'Province2',
+    },
   ]
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
 
 Deno.test('filterDistrictsByKey should returns two filtered provinces based on the provided country info with two matches', () => {
@@ -50,7 +59,7 @@ Deno.test('filterDistrictsByKey should returns two filtered provinces based on t
   const filterKey: keyof AdminDistricts = 'countryId'
   const filterValue: AdminDistricts['countryId'] = 1
   const adminDistricts: AdminDistricts[] = [
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 1,
@@ -60,9 +69,9 @@ Deno.test('filterDistrictsByKey should returns two filtered provinces based on t
       wardId: 1,
       wardName: 'Ward1',
       suburbId: 1,
-      suburbName: 'Suburb1'
+      suburbName: 'Suburb1',
     },
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 2,
@@ -72,22 +81,31 @@ Deno.test('filterDistrictsByKey should returns two filtered provinces based on t
       wardId: 2,
       wardName: 'Ward2',
       suburbId: 2,
-      suburbName: 'Suburb2'
-    }
+      suburbName: 'Suburb2',
+    },
   ]
 
   const expectedResult = [
-    { 
+    {
       id: 1,
-      name: 'Province1'
+      name: 'Province1',
     },
-    { 
+    {
       id: 2,
-      name: 'Province2'
-    }
+      name: 'Province2',
+    },
   ]
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
 
 Deno.test('filterDistrictsByKey should returns two filtered provinces based on the provided country info with two matched and unique provinces', () => {
@@ -96,7 +114,7 @@ Deno.test('filterDistrictsByKey should returns two filtered provinces based on t
   const filterKey: keyof AdminDistricts = 'countryId'
   const filterValue: AdminDistricts['countryId'] = 1
   const adminDistricts: AdminDistricts[] = [
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 1,
@@ -106,9 +124,9 @@ Deno.test('filterDistrictsByKey should returns two filtered provinces based on t
       wardId: 1,
       wardName: 'Ward1',
       suburbId: 1,
-      suburbName: 'Suburb1'
+      suburbName: 'Suburb1',
     },
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 2,
@@ -118,22 +136,31 @@ Deno.test('filterDistrictsByKey should returns two filtered provinces based on t
       wardId: 2,
       wardName: 'Ward2',
       suburbId: 2,
-      suburbName: 'Suburb2'
-    }
+      suburbName: 'Suburb2',
+    },
   ]
 
   const expectedResult = [
-    { 
+    {
       id: 1,
-      name: 'Province1'
+      name: 'Province1',
     },
-    { 
+    {
       id: 2,
-      name: 'Province2'
-    }
+      name: 'Province2',
+    },
   ]
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
 
 Deno.test('filterDistrictsByKey should returns empty array when nothing matches', () => {
@@ -142,7 +169,7 @@ Deno.test('filterDistrictsByKey should returns empty array when nothing matches'
   const filterKey: keyof AdminDistricts = 'countryId'
   const filterValue: AdminDistricts['countryId'] = 3
   const adminDistricts: AdminDistricts[] = [
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 1,
@@ -152,9 +179,9 @@ Deno.test('filterDistrictsByKey should returns empty array when nothing matches'
       wardId: 1,
       wardName: 'Ward1',
       suburbId: 1,
-      suburbName: 'Suburb1'
+      suburbName: 'Suburb1',
     },
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 2,
@@ -164,13 +191,22 @@ Deno.test('filterDistrictsByKey should returns empty array when nothing matches'
       wardId: 2,
       wardName: 'Ward2',
       suburbId: 2,
-      suburbName: 'Suburb2'
-    }
+      suburbName: 'Suburb2',
+    },
   ]
 
-  const expectedResult: {id: number, name: string}[] = []
+  const expectedResult: { id: number; name: string }[] = []
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
 
 Deno.test('filterDistrictsByKey should returns empty array when adminDistricts is an empty array', () => {
@@ -180,9 +216,18 @@ Deno.test('filterDistrictsByKey should returns empty array when adminDistricts i
   const filterValue: AdminDistricts['countryId'] = 3
   const adminDistricts: AdminDistricts[] = []
 
-  const expectedResult: {id: number, name: string}[] = []
+  const expectedResult: { id: number; name: string }[] = []
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
 
 Deno.test('filterDistrictsByKey should returns empty array when filterValue is undefined', () => {
@@ -191,7 +236,7 @@ Deno.test('filterDistrictsByKey should returns empty array when filterValue is u
   const filterKey: keyof AdminDistricts = 'countryId'
   const filterValue = undefined
   const adminDistricts: AdminDistricts[] = [
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 1,
@@ -201,9 +246,9 @@ Deno.test('filterDistrictsByKey should returns empty array when filterValue is u
       wardId: 1,
       wardName: 'Ward1',
       suburbId: 1,
-      suburbName: 'Suburb1'
+      suburbName: 'Suburb1',
     },
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 2,
@@ -213,13 +258,22 @@ Deno.test('filterDistrictsByKey should returns empty array when filterValue is u
       wardId: 2,
       wardName: 'Ward2',
       suburbId: 2,
-      suburbName: 'Suburb2'
-    }
+      suburbName: 'Suburb2',
+    },
   ]
 
-  const expectedResult: {id: number, name: string}[] = []
+  const expectedResult: { id: number; name: string }[] = []
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
 
 Deno.test('filterDistrictsByKey should returns one filtered province based on the provided country info with two matched but identical provinces', () => {
@@ -228,7 +282,7 @@ Deno.test('filterDistrictsByKey should returns one filtered province based on th
   const filterKey: keyof AdminDistricts = 'countryId'
   const filterValue: AdminDistricts['countryId'] = 1
   const adminDistricts: AdminDistricts[] = [
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 1,
@@ -238,9 +292,9 @@ Deno.test('filterDistrictsByKey should returns one filtered province based on th
       wardId: 1,
       wardName: 'Ward1',
       suburbId: 1,
-      suburbName: 'Suburb1'
+      suburbName: 'Suburb1',
     },
-    { 
+    {
       countryId: 1,
       countryName: 'Country1',
       provinceId: 1,
@@ -250,16 +304,25 @@ Deno.test('filterDistrictsByKey should returns one filtered province based on th
       wardId: 2,
       wardName: 'Ward2',
       suburbId: 2,
-      suburbName: 'Suburb2'
-    }
+      suburbName: 'Suburb2',
+    },
   ]
 
   const expectedResult = [
-    { 
+    {
       id: 1,
-      name: 'Province1'
-    }
+      name: 'Province1',
+    },
   ]
 
-  assertEquals(filterDistrictsByKey(itemId, itemName, adminDistricts, filterKey, filterValue), expectedResult)
+  assertEquals(
+    filterDistrictsByKey(
+      itemId,
+      itemName,
+      adminDistricts,
+      filterKey,
+      filterValue,
+    ),
+    expectedResult,
+  )
 })
