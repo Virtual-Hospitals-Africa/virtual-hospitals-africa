@@ -16,22 +16,22 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'country',
       'integer',
-      (col) => col.notNull().references('countries.id'),
+      (col) => col.references('countries.id'),
     )
     .addColumn(
       'province',
       'integer',
-      (col) => col.notNull().references('provinces.id'),
+      (col) => col.references('provinces.id'),
     )
     .addColumn(
       'district',
       'integer',
-      (col) => col.notNull().references('provinces.id'),
+      (col) => col.references('provinces.id'),
     )
     .addColumn(
       'ward',
       'integer',
-      (col) => col.notNull().references('wards.id'),
+      (col) => col.references('wards.id'),
     )
     .addColumn(
       'suburb',
