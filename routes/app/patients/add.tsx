@@ -54,6 +54,7 @@ type HasAddress = {
   province: string
   district: string
   ward: string
+  suburb?: string
   street: string
 }
 
@@ -84,6 +85,7 @@ const pickAddress = pick([
   'province',
   'district',
   'ward',
+  'suburb',
   'street',
 ])
 

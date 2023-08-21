@@ -81,6 +81,7 @@ export type PatientAddress = {
   province?: Maybe<string>
   district?: Maybe<string>
   ward?: Maybe<string>
+  suburb?: Maybe<string>
   street?: Maybe<string>
 }
 
