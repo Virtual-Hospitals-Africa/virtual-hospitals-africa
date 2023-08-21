@@ -276,6 +276,7 @@ export default function AvailabilityForm(
       {overlappingDays.length
         ? (
           <WarningModal
+            title='Time Slots Overlap'
             onConfirm={() => setOverlappingDays([])}
             message={`There are some overlapping time slots on the following days, please update them accordingly: ${
               overlappingDays.join(', ')

@@ -12,21 +12,20 @@ describe('patient chatbot', () => {
   afterEach(() => db.destroy())
 
   const phone_number = '00000000'
-  it('asks for reason after inquiring national ID number', async () => {
+  it('asks for reason after welcome message', async () => {
     await patients.upsert(db, {
-      conversation_state:
-        'not_onboarded:make_appointment:enter_national_id_number',
+      conversation_state: 'onboarded:main_menu',
       phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: null,
+      national_id_number: '1233',
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '123456',
+      body: 'make_appointment',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -45,7 +44,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Got it, 123456. What is the reason you want to schedule an appointment?',
+            'Got it, 1233. What is the reason you want to schedule an appointment?',
           type: 'string',
         },
         phone_number: phone_number,
@@ -60,6 +59,5 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'onboarded:make_appointment:enter_appointment_reason',
     )
-    assertEquals(patient.national_id_number, '123456')
   })
 })

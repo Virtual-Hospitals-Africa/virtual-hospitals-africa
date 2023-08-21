@@ -2,7 +2,7 @@ import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 
-type Row = Record<string, string | number> & { id: number }
+type Row = Record<string, string | number> & { id?: number }
 
 export type TableColumn<T extends Row> =
   & {

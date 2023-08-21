@@ -12,21 +12,20 @@ describe('patient chatbot', () => {
   afterEach(() => db.destroy())
 
   const phone_number = '00000000'
-  it('asks for reason after inquiring national ID number', async () => {
+  it('sends invitation to share location after canceling appointent', async () => {
     await patients.upsert(db, {
-      conversation_state:
-        'not_onboarded:make_appointment:enter_national_id_number',
+      conversation_state: 'onboarded:cancel_appointment',
       phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: null,
+      national_id_number: '12344',
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '123456',
+      body: 'find_nearest_facility',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -44,9 +43,9 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          messageBody:
-            'Got it, 123456. What is the reason you want to schedule an appointment?',
           type: 'string',
+          messageBody:
+            'Sure, we can find your nearest facility. Can you share your location?',
         },
         phone_number: phone_number,
       },
@@ -58,8 +57,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:enter_appointment_reason',
+      'find_nearest_facility:share_location',
     )
-    assertEquals(patient.national_id_number, '123456')
   })
 })

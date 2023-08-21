@@ -10,19 +10,20 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
-  it('asks for name after welcome message', async () => {
-    // To set a patient in a sepefic state, we have to insert this state into db
+
+  const phone_number = '00000000'
+  it('asks for the reason the patient wants to schedule an appointment', async () => {
     await patients.upsert(db, {
-      conversation_state: 'not_onboarded:welcome',
-      phone_number: '00000000',
-      name: null,
-      gender: null,
-      date_of_birth: null,
-      national_id_number: null,
+      conversation_state: 'onboarded:cancel_appointment',
+      phone_number: phone_number,
+      name: 'test',
+      gender: 'female',
+      date_of_birth: '2023-01-01',
+      national_id_number: '12344',
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: 'make_appointment',
       media_id: null,
@@ -42,23 +43,21 @@ describe('patient chatbot', () => {
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
-          type: 'string',
           messageBody:
-            'Sure, I can help you make an appointment with a health_worker.\n' +
-            '\n' +
-            'To start, what is your name?',
+            'Got it, 12344. What is the reason you want to schedule an appointment?',
+          type: 'string',
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'not_onboarded:make_appointment:enter_name',
+      'onboarded:make_appointment:enter_appointment_reason',
     )
   })
 })

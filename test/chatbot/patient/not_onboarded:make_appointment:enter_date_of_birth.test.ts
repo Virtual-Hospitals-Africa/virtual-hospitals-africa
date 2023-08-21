@@ -10,10 +10,12 @@ import * as patients from '../../../db/models/patients.ts'
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
+
+  const phone_number = '00000000'
   it('asks for national ID number after inquiring birthday', async () => {
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',
-      phone_number: '00000000',
+      phone_number: phone_number,
       name: 'test',
       gender: 'other',
       date_of_birth: null,
@@ -21,7 +23,7 @@ describe('patient chatbot', () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: '00000000',
+      patient_phone_number: phone_number,
       has_media: false,
       body: '01/01/2023',
       media_id: null,
@@ -45,11 +47,11 @@ describe('patient chatbot', () => {
             'Got it, January 1, 2023. Please enter your national ID number',
           type: 'string',
         },
-        phone_number: '00000000',
+        phone_number: phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: '00000000',
+      phone_number: phone_number,
     })
 
     assert(patient)

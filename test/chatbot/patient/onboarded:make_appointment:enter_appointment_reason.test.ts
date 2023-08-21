@@ -12,7 +12,7 @@ describe('patient chatbot', () => {
   afterEach(() => db.destroy())
 
   const phone_number = '00000000'
-  it('asks for reason after inquiring national ID number', async () => {
+  it('asks for media after inquiring appointment reason', async () => {
     await patients.upsert(db, {
       conversation_state:
         'not_onboarded:make_appointment:enter_national_id_number',
@@ -28,25 +28,46 @@ describe('patient chatbot', () => {
       has_media: false,
       body: '123456',
       media_id: null,
-      whatsapp_id: 'whatsapp_id',
+      whatsapp_id: 'whatsapp_id_one',
     })
 
-    const fakeWhatsApp = {
+    const fakeWhatsAppOne = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.1234',
+          id: 'wamid.12341',
         }],
       }]),
     }
 
-    await respond(fakeWhatsApp)
-    assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
+    await respond(fakeWhatsAppOne)
+
+    await conversations.insertMessageReceived(db, {
+      patient_phone_number: phone_number,
+      has_media: false,
+      body: 'pain',
+      media_id: null,
+      whatsapp_id: 'whatsapp_id_two',
+    })
+
+    const fakeWhatsAppTwo = {
+      sendMessage: sinon.stub().throws(),
+      sendMessages: sinon.stub().resolves([{
+        messages: [{
+          id: 'wamid.12342',
+        }],
+      }]),
+    }
+
+    await respond(fakeWhatsAppTwo)
+    assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
         messages: {
           messageBody:
-            'Got it, 123456. What is the reason you want to schedule an appointment?',
-          type: 'string',
+            'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
+          type: 'buttons',
+          buttonText: 'Menu',
+          options: [{ id: 'skip', title: 'Skip' }],
         },
         phone_number: phone_number,
       },
@@ -58,8 +79,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:make_appointment:enter_appointment_reason',
+      'onboarded:make_appointment:initial_ask_for_media',
     )
-    assertEquals(patient.national_id_number, '123456')
   })
 })

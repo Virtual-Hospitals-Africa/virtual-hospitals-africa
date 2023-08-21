@@ -1,4 +1,5 @@
-export default function WarningModal({ message, onConfirm }: {
+export default function WarningModal({ title, message, onConfirm }: {
+  title: string
   message: string
   onConfirm(): void
 }) {
@@ -37,7 +38,7 @@ export default function WarningModal({ message, onConfirm }: {
                   class='text-base font-semibold leading-6 text-gray-900'
                   id='modal-title'
                 >
-                  Time Slots Overlap
+                  {title}
                 </h3>
                 <div class='mt-2'>
                   <p class='text-sm text-gray-500'>

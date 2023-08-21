@@ -9,12 +9,6 @@ export const handler: Handlers<unknown, WithSession> = {
   GET(_req, ctx) {
     const healthWorker = ctx.state.session.data
 
-    /*throw new Error('OH NO!')
-    Deno.writeFileSync(
-      '/Users/willweiss/Desktop/foo.json',
-      new TextEncoder().encode(JSON.stringify(healthWorker)),
-    )*/
-
     if (isHealthWorkerWithGoogleTokens(healthWorker)) {
       return redirect('/app')
     }

@@ -32,7 +32,6 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
-import { getMediaIdByPatientId } from '../../db/models/conversations.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -300,7 +299,11 @@ const conversationStates: ConversationStates<
       return [locationMessage, buttonMessage]
     },
     type: 'send_location',
-    nextState: 'not_onboarded:welcome',
+    nextState(patientState: PatientState): PatientConversationState {
+      return patients.hasDemographicInfo(patientState)
+        ? 'onboarded:main_menu'
+        : 'not_onboarded:welcome'
+    },
     onEnter(_trx, patientState) {
       const selectedFacility: Maybe<Facility> = patientState.nearest_facilities
         ?.find(
@@ -369,29 +372,23 @@ const conversationStates: ConversationStates<
     prompt() {
       return 'Thanks for sending that. To send another image, video, or voice note, click the + button. Otherwise, click Done.'
     },
+    async onEnter(trx, patientState) {
+      assert(patientState.scheduling_appointment_request)
+
+      assert(patientState.media_id)
+      await appointments.insertAppointmentRequestMedia(trx, {
+        patient_appointment_request_id:
+          patientState.scheduling_appointment_request.id,
+        media_id: patientState.media_id,
+      })
+      return patientState
+    },
     nextState: 'onboarded:make_appointment:subsequent_ask_for_media',
     options: [
       {
         id: 'done',
         title: 'Done',
         nextState: 'onboarded:make_appointment:confirm_details',
-        async onExit(trx, patientState) {
-          const request_id = patientState.scheduling_appointment_request?.id
-          assert(request_id, 'request_id is undefined.')
-          const mediaIds = await getMediaIdByPatientId(trx, {
-            patient_id: patientState.patient_id,
-          })
-          mediaIds.map(async (media_id) => {
-            await appointments.insertAppointmentRequestMedia(trx, {
-              request_id,
-              media_id,
-            })
-          })
-          return {
-            media_uploaded: mediaIds.length,
-            ...patientState,
-          }
-        },
       },
     ],
   },
@@ -404,9 +401,7 @@ const conversationStates: ConversationStates<
         prettyPatientDateOfBirth(
           patientState,
         )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. You have also uploaded ${
-        patientState.media_uploaded ? patientState.media_uploaded : 0
-      } media to the doctor. Is this correct?`
+      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. Is this correct?`
     },
     options: [
       {
@@ -458,7 +453,6 @@ const conversationStates: ConversationStates<
     },
     prompt(patientState: PatientState): string {
       assert(patientState.scheduling_appointment_request)
-
       assert(
         patientState.scheduling_appointment_request.offered_times[0],
         'onEnter should have added an appointment_offered_time',
@@ -716,8 +710,9 @@ const conversationStates: ConversationStates<
   },
   'onboarded:cancel_appointment': {
     type: 'select',
-    prompt:
-      'Your appoinment has been cancelled. What can I help you with today?',
+    prompt() {
+      return 'Your appoinment has been cancelled. What can I help you with today?'
+    },
     options: mainMenuOptions,
     onEnter(
       trx: TrxOrDb,
