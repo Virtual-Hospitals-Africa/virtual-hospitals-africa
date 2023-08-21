@@ -26,7 +26,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'district',
       'integer',
-      (col) => col.references('provinces.id'),
+      (col) => col.references('districts.id'),
     )
     .addColumn(
       'ward',
