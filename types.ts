@@ -1090,3 +1090,10 @@ export type Districts = { id: number; name: string; province_id: number }
 export type Wards = { id: number; name: string; district_id: number }
 
 export type Suburbs = { id: number; name: string; ward_id: number }
+
+export type AdminDistricts =
+  & { countryId: Country['id']; countryName: Country['name'] }
+  & { provinceId: Provinces['id']; provinceName: Provinces['name'] }
+  & { districtId: Districts['id']; districtName: Districts['name'] }
+  & { wardId: Wards['id']; wardName: Wards['name'] }
+  & { suburbId: Suburbs['id'] | null; suburbName: Suburbs['name'] | null }

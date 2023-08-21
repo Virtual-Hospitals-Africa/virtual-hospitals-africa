@@ -1,31 +1,17 @@
-import { TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import Buttons from '../../library/form/buttons.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import FacilitySearch from '../../../islands/FacilitySearch.tsx'
-import { Facility, ReturnedSqlRow } from '../../../types.ts'
+import { AdminDistricts, Facility, ReturnedSqlRow } from '../../../types.ts'
+import PatientAddressInputs from '../../../islands/patient-address-inputs.tsx'
 
-function PatientAddress() {
+function PatientAddress(
+  { adminDistricts }: { adminDistricts?: AdminDistricts[] },
+) {
   return (
     <section className='mb-7'>
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
-      <FormRow>
-        <TextInput
-          name='country'
-          label='Country'
-          required
-          value='Zimbabwe'
-          readonly
-        />
-        <TextInput name='province' label='Province' required />
-      </FormRow>
-      <FormRow>
-        <TextInput name='district' label='District' required />
-        <TextInput name='ward' label='City/Town/Ward' required />
-      </FormRow>
-      <FormRow>
-        <TextInput name='street' label='Street Address/Village' required />
-      </FormRow>
+      <PatientAddressInputs adminDistricts={adminDistricts} />
     </section>
   )
 }
@@ -50,11 +36,14 @@ function NearestHealthCare(
 }
 
 export default function PatientAddressForm(
-  { defaultFacility }: { defaultFacility?: ReturnedSqlRow<Facility> },
+  { defaultFacility, adminDistricts }: {
+    defaultFacility?: ReturnedSqlRow<Facility>
+    adminDistricts?: AdminDistricts[]
+  },
 ) {
   return (
     <>
-      <PatientAddress />
+      <PatientAddress adminDistricts={adminDistricts} />
       <NearestHealthCare defaultFacility={defaultFacility} />
       <hr className='my-2' />
       <Buttons cancelHref='/app/patients/add?step=personal' />
