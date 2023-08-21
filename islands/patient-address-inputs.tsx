@@ -116,7 +116,7 @@ export default function PatientAddressForm(
           label='Country'
           onChange={(e) => {
             const selectedCountry = e?.currentTarget?.value
-            if (!selectedCountry) return
+            if (selectedCountry === undefined) return
             setSelectedCountry(Number(selectedCountry))
             setSelectedProvinces(undefined)
             setSelectedDistrict(undefined)
@@ -143,7 +143,7 @@ export default function PatientAddressForm(
           ref={provinceInputRef}
           onChange={(e) => {
             const selectedProvince = e?.currentTarget?.value
-            if (!selectedProvince) return
+            if (selectedProvince === undefined) return
             setSelectedProvinces(Number(selectedProvince))
             setSelectedDistrict(undefined)
             setSelectedWard(undefined)
@@ -166,7 +166,7 @@ export default function PatientAddressForm(
           ref={districtInputRef}
           onChange={(e) => {
             const selectedDistrict = e?.currentTarget?.value
-            if (!selectedDistrict) return
+            if (selectedDistrict === undefined) return
             setSelectedDistrict(Number(selectedDistrict))
             setSelectedWard(undefined)
             clearRefsValue(wardInputRef, suburbInputRef)
@@ -186,7 +186,7 @@ export default function PatientAddressForm(
           ref={wardInputRef}
           onChange={(e) => {
             const selectedWard = e?.currentTarget?.value
-            if (!selectedWard) return
+            if (selectedWard === undefined) return
             setSelectedWard(Number(selectedWard))
             clearRefsValue(suburbInputRef)
           }}
