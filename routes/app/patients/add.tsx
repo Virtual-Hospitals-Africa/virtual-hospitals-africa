@@ -171,7 +171,6 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
     if (urlStep === 'address') {
       const adminDistricts = await countries.getAdminDistInfo(ctx.state.trx)
-      // console.log(adminDistricts)
       const facility = await facilities.getFirstByHealthWorker(
         ctx.state.trx,
         healthWorker.id,
