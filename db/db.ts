@@ -10,7 +10,7 @@ import {
   Appointment,
   AppointmentHealthWorkerAttendee,
   AppointmentMedia,
-  Country,
+  Countries,
   Districts,
   Employee,
   Facility,
@@ -56,7 +56,7 @@ export type DatabaseSchema = {
   nurse_specialities: SqlRow<Specialities>
   appointment_media: SqlRow<AppointmentMedia>
   patient_appointment_request_media: SqlRow<PatientAppointmentRequestMedia>
-  countries: SqlRow<Country>
+  countries: SqlRow<Countries>
   provinces: SqlRow<Provinces>
   districts: SqlRow<Districts>
   wards: SqlRow<Wards>

@@ -6,7 +6,7 @@ import { AdminDistricts, Facility, ReturnedSqlRow } from '../../../types.ts'
 import PatientAddressInputs from '../../../islands/patient-address-inputs.tsx'
 
 function PatientAddress(
-  { adminDistricts }: { adminDistricts?: AdminDistricts[] },
+  { adminDistricts }: { adminDistricts?: AdminDistricts },
 ) {
   return (
     <section className='mb-7'>
@@ -38,7 +38,7 @@ function NearestHealthCare(
 export default function PatientAddressForm(
   { defaultFacility, adminDistricts }: {
     defaultFacility?: ReturnedSqlRow<Facility>
-    adminDistricts?: AdminDistricts[]
+    adminDistricts?: AdminDistricts
   },
 ) {
   return (

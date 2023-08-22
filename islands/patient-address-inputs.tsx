@@ -1,111 +1,53 @@
 import { useMemo, useRef, useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
 import { SelectInput, TextInput } from '../components/library/form/Inputs.tsx'
-import { AdminDistricts } from '../types.ts'
+import {
+  AdminDistricts,
+  Countries,
+  Districts,
+  Provinces,
+  Wards,
+} from '../types.ts'
 import clearRefsValue from '../util/clearRefsValue.ts'
 
-function getUniqueCountries(adminDistricts: AdminDistricts[]) {
-  const countriesSet = new Set<AdminDistricts['countryId']>()
-  const countries: {
-    id: AdminDistricts['countryId']
-    name: AdminDistricts['countryName']
-  }[] = []
-  for (const adminDistrict of adminDistricts) {
-    if (!countriesSet.has(adminDistrict.countryId)) {
-      countriesSet.add(adminDistrict.countryId)
-      countries.push({
-        id: adminDistrict.countryId,
-        name: adminDistrict.countryName,
-      })
-    }
-  }
-  return countries
-}
-
-export function filterDistrictsByKey<
-  T,
-  K extends keyof T,
-  U extends keyof T,
-  V extends keyof T,
->(
-  itemId: U,
-  itemName: V,
-  adminDistricts: T[],
-  filterKey: K,
-  filterValue?: T[K],
-) {
-  if (!filterValue) return []
-  const itemsSet = new Set<T[U]>()
-  const uniqueItems: {
-    id: T[U]
-    name: T[V]
-  }[] = []
-  for (const adminDistrict of adminDistricts) {
-    if (
-      (adminDistrict[filterKey] !== filterValue) ||
-      (itemsSet.has(adminDistrict[itemId])) ||
-      (!adminDistrict[itemId] || !adminDistrict[itemName])
-    ) continue
-    itemsSet.add(adminDistrict[itemId])
-    uniqueItems.push({
-      id: adminDistrict[itemId],
-      name: adminDistrict[itemName],
-    })
-  }
-  return uniqueItems
-}
-
 export default function PatientAddressForm(
-  { adminDistricts = [] }: { adminDistricts?: AdminDistricts[] },
+  { adminDistricts = [] }: { adminDistricts?: AdminDistricts },
 ) {
   const suburbInputRef = useRef<HTMLSelectElement>(null)
   const wardInputRef = useRef<HTMLSelectElement>(null)
   const districtInputRef = useRef<HTMLSelectElement>(null)
   const provinceInputRef = useRef<HTMLSelectElement>(null)
   const [selectedCountry, setSelectedCountry] = useState<
-    AdminDistricts['countryId']
+    Countries['id']
   >()
   const [selectedProvinces, setSelectedProvinces] = useState<
-    AdminDistricts['provinceId']
+    Provinces['id']
   >()
   const [selectedDistrict, setSelectedDistrict] = useState<
-    AdminDistricts['districtId']
+    Districts['id']
   >()
-  const [selectedWard, setSelectedWard] = useState<AdminDistricts['wardId']>()
-  const countries = useMemo(() => getUniqueCountries(adminDistricts), [])
-  const provinces = useMemo(() =>
-    filterDistrictsByKey(
-      'provinceId',
-      'provinceName',
-      adminDistricts,
-      'countryId',
-      selectedCountry,
-    ), [selectedCountry])
+  const [selectedWard, setSelectedWard] = useState<Wards['id']>()
 
-  const districts = useMemo(() =>
-    filterDistrictsByKey(
-      'districtId',
-      'districtName',
-      adminDistricts,
-      'provinceId',
-      selectedProvinces,
-    ), [selectedProvinces])
-  const wards = useMemo(() =>
-    filterDistrictsByKey(
-      'wardId',
-      'wardName',
-      adminDistricts,
-      'districtId',
-      selectedDistrict,
-    ), [selectedDistrict])
-  const suburbs = useMemo(() =>
-    filterDistrictsByKey(
-      'suburbId',
-      'suburbName',
-      adminDistricts,
-      'wardId',
-      selectedWard,
-    ), [selectedWard])
+  const provinces = useMemo(() => {
+    if (!selectedCountry) return []
+    return adminDistricts.find((country) => country.id === selectedCountry)
+      ?.provinces || []
+  }, [selectedCountry])
+
+  const districts = useMemo(() => {
+    if (!selectedProvinces) return []
+    return provinces.find((province) => province.id === selectedProvinces)
+      ?.districts || []
+  }, [selectedProvinces])
+  const wards = useMemo(() => {
+    if (!selectedDistrict) return []
+    return districts.find((district) => district.id === selectedDistrict)
+      ?.wards || []
+  }, [selectedDistrict])
+  const suburbs = useMemo(() => {
+    if (!selectedWard) return []
+    return wards.find((ward) => ward.id === selectedWard)?.suburbs || []
+  }, [selectedWard])
 
   return (
     <section className='mb-7'>
@@ -130,7 +72,7 @@ export default function PatientAddressForm(
           }}
         >
           <option value=''>Select</option>
-          {countries.map((country) => (
+          {adminDistricts.map((country) => (
             <option value={country.id}>
               {country.name}
             </option>
