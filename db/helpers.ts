@@ -131,7 +131,7 @@ export function jsonObjectFrom<O>(
  *     jsonBuildObject({
  *       first: eb.ref('first_name'),
  *       last: eb.ref('last_name'),
- *       full: sql<string>`first_name || ' ' || last_name`
+ *       full: sql<string>`first_name || ' ' || last_name`
  *     }).as('name')
  *   ])
  *   .execute()
