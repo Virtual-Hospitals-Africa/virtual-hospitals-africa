@@ -29,14 +29,6 @@ export function upsert(
     .executeTakeFirstOrThrow()
 }
 
-export const pickHealthWorker = pick([
-  'name',
-  'email',
-  'avatar_url',
-  'gcal_appointments_calendar_id',
-  'gcal_availability_calendar_id',
-])
-
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
 export function upsertGoogleTokens(
@@ -75,15 +67,27 @@ export async function updateTokens(
   return healthWorker
 }
 
+const pickHealthWorkerDetails = pick([
+  'name',
+  'email',
+  'avatar_url',
+  'gcal_appointments_calendar_id',
+  'gcal_availability_calendar_id',
+])
+
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   details: HealthWorker & GoogleTokens,
 ) {
-  const health_worker = await upsert(trx, pickHealthWorker(details))
-  const tokens = await upsertGoogleTokens(
+  const health_worker = await upsert(trx, pickHealthWorkerDetails(details))
+  const tokens = pickTokens(details)
+  assert(tokens.access_token)
+  assert(tokens.refresh_token)
+  assert(tokens.expires_at)
+  await upsertGoogleTokens(
     trx,
     health_worker.id,
-    pickTokens(details),
+    tokens,
   )
   return { ...health_worker, ...tokens }
 }
