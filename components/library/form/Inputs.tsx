@@ -1,4 +1,5 @@
-import { ComponentChildren, JSX } from 'preact'
+import { ComponentChildren, JSX, Ref } from 'preact'
+import { forwardRef } from 'preact/compat'
 import { SearchIcon } from '../icons/heroicons.tsx'
 import capitalize from '../../../util/capitalize.ts'
 
@@ -32,7 +33,7 @@ export type TextInputProps = LabeledInputProps & {
 }
 
 type SelectInputProps = Omit<LabeledInputProps, 'onInput'> & {
-  onSelect?: JSX.GenericEventHandler<HTMLSelectElement>
+  onChange?: JSX.GenericEventHandler<HTMLSelectElement>
   children: ComponentChildren
 }
 
@@ -88,22 +89,26 @@ export function TextInput(
   )
 }
 
-export function SelectInput(
-  { name, label, required, onSelect, children }: SelectInputProps,
-) {
-  return (
-    <LabeledInput name={name} label={label} required={required}>
-      <select
-        name={name}
-        className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
-        required={required}
-        onSelect={onSelect}
-      >
-        {children}
-      </select>
-    </LabeledInput>
-  )
-}
+export const SelectInput = forwardRef(
+  (
+    { name, label, required, onChange, children }: SelectInputProps,
+    ref: Ref<HTMLSelectElement>,
+  ) => {
+    return (
+      <LabeledInput name={name} label={label} required={required}>
+        <select
+          name={name}
+          className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
+          required={required}
+          onChange={onChange}
+          ref={ref}
+        >
+          {children}
+        </select>
+      </LabeledInput>
+    )
+  },
+)
 
 export function DateInput(
   { name = 'date', value, label, required, onInput, onFocus, onBlur }:
@@ -210,7 +215,7 @@ export function SearchInput(
 }
 
 export function GenderInput(
-  { name = 'gender', label = 'Gender', required, onSelect, children }:
+  { name = 'gender', label = 'Gender', required, onChange, children }:
     GenderInputProps,
 ) {
   return (
@@ -218,7 +223,7 @@ export function GenderInput(
       name={name}
       required={required}
       label={label}
-      onSelect={onSelect}
+      onChange={onChange}
     >
       <option value='male' label='Male'></option>
       <option value='female' label='Female'></option>

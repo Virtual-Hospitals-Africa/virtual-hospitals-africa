@@ -1081,7 +1081,7 @@ export type PatientAppointmentRequestMedia = {
   media_id: number
 }
 
-export type Country = { id: number; name: string }
+export type Countries = { id: number; name: string }
 
 export type Provinces = { id: number; name: string; country_id: number }
 
@@ -1090,3 +1090,24 @@ export type Districts = { id: number; name: string; province_id: number }
 export type Wards = { id: number; name: string; district_id: number }
 
 export type Suburbs = { id: number; name: string; ward_id: number }
+
+export type AdminDistricts = {
+  id: Countries['id']
+  name: Countries['name']
+  provinces: {
+    id: Provinces['id']
+    name: Provinces['name']
+    districts: {
+      id: Districts['id']
+      name: Districts['name']
+      wards: {
+        id: Wards['id']
+        name: Wards['name']
+        suburbs: {
+          id: Suburbs['id'] | null
+          name: Suburbs['name'] | null
+        }[]
+      }[]
+    }[]
+  }[]
+}[]

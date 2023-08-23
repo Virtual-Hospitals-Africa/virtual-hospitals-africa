@@ -1,6 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
+  AdminDistricts,
   Facility,
   HealthWorker,
   LoggedInHealthWorker,
@@ -13,6 +14,7 @@ import {
 import { assert } from 'std/testing/asserts.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import * as patients from '../../../db/models/patients.ts'
+import * as address from '../../../db/models/address.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import * as facilities from '../../../db/models/facilities.ts'
 import redirect from '../../../util/redirect.ts'
@@ -38,6 +40,7 @@ type AddPatientProps = {
     facility?: ReturnedSqlRow<Facility>
   }
   patient: AddPatientDataProps
+  adminDistricts?: AdminDistricts
 }
 
 type HasNames = {
@@ -169,6 +172,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       return redirect(`/app/patients/add?step=${nextStep}`)
     }
     if (urlStep === 'address') {
+      const adminDistricts = await address.getAll(ctx.state.trx)
       const facility = await facilities.getFirstByHealthWorker(
         ctx.state.trx,
         healthWorker.id,
@@ -177,6 +181,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       return ctx.render({
         healthWorker: { ...healthWorker, facility },
         patient,
+        adminDistricts,
       })
     }
     return ctx.render({ healthWorker, patient })
@@ -204,7 +209,7 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { steps, currentStep } = useAddPatientSteps(props)
-  const { patient, healthWorker: { facility } } = props.data
+  const { patient, healthWorker: { facility }, adminDistricts } = props.data
 
   return (
     <Layout
@@ -224,7 +229,10 @@ export default function AddPatient(
             <PatientPersonalForm initialData={patient.personal} />
           )}
           {currentStep === 'address' && (
-            <PatientAddressForm defaultFacility={facility} />
+            <PatientAddressForm
+              defaultFacility={facility}
+              adminDistricts={adminDistricts}
+            />
           )}
           {currentStep === 'history' && <div>TODO history form</div>}
           {currentStep === 'pre-existing_conditions' && (
