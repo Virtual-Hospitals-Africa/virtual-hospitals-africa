@@ -45,6 +45,7 @@ export function upsertGoogleTokens(
   tokens: GoogleTokens,
 ): Promise<ReturnedSqlRow<GoogleTokens> | undefined> {
   assert(health_worker_id)
+  console.log('upsertGoogleTokens', health_worker_id, tokens)
   return trx
     .insertInto('health_worker_google_tokens')
     .values({
@@ -80,10 +81,11 @@ export async function upsertWithGoogleCredentials(
   details: HealthWorker & GoogleTokens,
 ) {
   const health_worker = await upsert(trx, pickHealthWorker(details))
-  const tokens = await upsertGoogleTokens(
+  const tokens = pickTokens(details)
+  await upsertGoogleTokens(
     trx,
     health_worker.id,
-    pickTokens(details),
+    tokens,
   )
   return { ...health_worker, ...tokens }
 }
