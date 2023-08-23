@@ -11,7 +11,15 @@ describe('db/models/health_workers.ts', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
-  it('can upsertWithGoogleCredentials', async () => {
+  it('can upsertWithGoogleCredentials even if a previous health worker without tokens was inserted', async () => {
+    await health_workers.upsert(db, {
+      name: 'Previous Worker',
+      email: 'previous@worker.com',
+      avatar_url: 'avatar_url',
+      gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+      gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+    })
+
     const result = await health_workers.upsertWithGoogleCredentials(db, {
       name: 'Test Worker',
       email: 'test@worker.com',
