@@ -25,7 +25,7 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
     const day = new URL(req.url).searchParams.get('day') || today
 
     // get filtered calendar events here
-    const gettingEvents = googleClient.getEvents(
+    const gettingEvents = googleClient.getActiveEvents(
       ctx.state.session.data.gcal_appointments_calendar_id,
       {
         timeMin: `${day}T00:00:00+02:00`,

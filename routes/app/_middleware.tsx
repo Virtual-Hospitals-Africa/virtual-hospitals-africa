@@ -14,6 +14,7 @@ export async function handler(
     }
   >,
 ) {
+  console.log('foo', ctx)
   const { trx } = ctx.state
   const healthWorker = ctx.state.session.data
   assert(isHealthWorkerWithGoogleTokens(healthWorker))
@@ -21,8 +22,6 @@ export async function handler(
   const roles = await employment.getByHealthWorker(trx, {
     health_worker_id: healthWorker.id,
   })
-
-  console.log(roles)
 
   if (roles.length <= 0) {
     return new Response('Unauthorized', { status: 401 })
