@@ -164,6 +164,18 @@ export class GoogleClient {
     )
   }
 
+  async getActiveEvents(
+    calendarId = 'primary',
+    opts: {
+      timeMin?: string
+      timeMax?: string
+    } = {},
+  ): Promise<GCalEventsResponse> {
+    const events: GCalEventsResponse = await this.getEvents(calendarId, opts)
+    const items = events.items.filter((event) => event.status !== 'cancelled')
+    return { ...events, items }
+  }
+
   insertEvent(
     calendarId: string,
     eventDetails: DeepPartial<GCalEvent>,

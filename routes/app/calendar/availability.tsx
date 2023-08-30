@@ -101,7 +101,7 @@ export const handler: LoggedInHealthWorkerHandler<
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
     const googleClient = new HealthWorkerGoogleClient(ctx)
-    const events = await googleClient.getEvents(
+    const events = await googleClient.getActiveEvents(
       ctx.state.session.data.gcal_availability_calendar_id,
     )
 
@@ -148,7 +148,7 @@ export const handler: LoggedInHealthWorkerHandler<
 
     const googleClient = new HealthWorkerGoogleClient(ctx)
 
-    const existingAvailability = await googleClient.getEvents(
+    const existingAvailability = await googleClient.getActiveEvents(
       gcal_availability_calendar_id,
     )
 
