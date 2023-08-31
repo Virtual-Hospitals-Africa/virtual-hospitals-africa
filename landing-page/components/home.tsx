@@ -28,7 +28,7 @@ export default function Home() {
       >
         <p>
           “I didn’t know a thing about icon design until I read this book. Now I
-          can create any icon I need in no time. Great resource!”
+          can create any icon I need in no time. Great resource!” Wow!
         </p>
       </Testimonial>
       <Screencasts />
