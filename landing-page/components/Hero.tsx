@@ -64,7 +64,7 @@ export function Hero() {
               Virtual<br />Hospitals<br /> Africa
             </h1>
             <p className='mt-4 text-3xl text-slate-600'>
-              Bringing accessible digital health care to Africans WELKEKWL WOEI
+              Bringing accessible digital health care to Africans
             </p>
             <div className='mt-8 flex gap-4'>
               <Button href='#free-chapters' color='blue'>
