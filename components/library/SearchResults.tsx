@@ -17,6 +17,10 @@ type FacilitySearchResultProps = BasicSelectProps & {
   facility: HasId<{ name: string; address: string }>
 }
 
+type AllergySearchResultProps = BasicSelectProps & {
+  allergy: string
+}
+
 type SearchResultProps = BasicSelectProps & {
   children: JSX.Element
 }
@@ -120,14 +124,13 @@ export default function SearchResults({
 }
 
 export function AllergySearchResult(
-  // deno-lint-ignore no-explicit-any
-  { allergyName, isSelected, onSelect }: any,
+  { allergy, isSelected, onSelect }: AllergySearchResultProps,
 ) {
   return (
     <SearchResult isSelected={isSelected} onSelect={onSelect}>
       <div className='flex flex-col'>
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
-          {allergyName}
+          {allergy}
         </div>
       </div>
     </SearchResult>

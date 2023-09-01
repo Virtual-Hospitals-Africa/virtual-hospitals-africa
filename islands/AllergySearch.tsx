@@ -13,10 +13,7 @@ export default function AllergySearch() {
   const [isFocused, setIsFocused] = useState(false)
   const searchInputRef = useRef<HTMLInputElement | null>(null)
 
-  const [selectedAllergies, setSelectedAllergies] = useState<string[]>([
-    'Pollen',
-    'Synthetics',
-  ])
+  const [selectedAllergies, setSelectedAllergies] = useState<string[]>([])
 
   const toggleAllergyList = (allergy: string) => {
     if (searchInputRef.current) {
@@ -83,7 +80,7 @@ export default function AllergySearch() {
           <SearchResults>
             {filteredAllergyList.map((allergy) => (
               <AllergySearchResult
-                allergyName={allergy}
+                allergy={allergy}
                 isSelected={false}
                 onSelect={() => {
                   toggleAllergyList(allergy)

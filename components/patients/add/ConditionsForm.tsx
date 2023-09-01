@@ -17,15 +17,6 @@ export default function PatientConditionsForm() {
       <section>
         <AllergySearch />
       </section>
-
-      {
-        /* <FormRow className='flex flex-row justify-start items-start gap-4'>
-        <IconButton iconType='add'></IconButton>
-        <button style='font-size: 16px; color: #4F46E5; font-weight: 500'>
-          Add Allergy
-        </button>
-      </FormRow> */
-      }
     </div>
   )
 }
