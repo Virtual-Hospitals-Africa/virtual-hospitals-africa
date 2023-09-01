@@ -61,7 +61,7 @@ function TableCellInnerContents<T extends Row>(
       return (
         <div className='flex items-center'>
           <div className='h-11 w-11 flex-shrink-0'>
-            <Avatar className='h-11 w-11 flex-shrink-0' src={src} />
+            <Avatar className='h-11 w-11 flex-shrink-0 object-cover' src={src} />
           </div>
         </div>
       )
