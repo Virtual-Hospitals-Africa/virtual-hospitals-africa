@@ -6,7 +6,7 @@ import { assert } from 'std/_util/asserts.ts'
 import SearchResults, {
   AllergySearchResult,
 } from '../components/library/SearchResults.tsx'
-import { RemoveIcon } from '../components/library/icons/add-remove-buttons.tsx'
+import RemoveIcon from '../components/library/icons/remove.tsx'
 
 export default function AllergySearch() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -34,27 +34,20 @@ export default function AllergySearch() {
   })
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    function handleClickOutside(event: MouseEvent) {
       if (
         searchInputRef.current &&
         event.target instanceof Node &&
         event.target !== searchInputRef.current &&
         searchInputRef.current !== event.target
       ) {
-        setTimeout(() => {
-          setIsFocused(false)
-        }, 150)
+        setIsFocused(false)
       }
     }
 
-    if (isFocused) {
-      document.addEventListener('click', handleClickOutside)
-    }
-
-    return () => {
-      document.removeEventListener('click', handleClickOutside)
-    }
-  }, [isFocused])
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [])
 
   return (
     <>
@@ -81,10 +74,7 @@ export default function AllergySearch() {
             {filteredAllergyList.map((allergy) => (
               <AllergySearchResult
                 allergy={allergy}
-                isSelected={false}
-                onSelect={() => {
-                  toggleAllergyList(allergy)
-                }}
+                onSelect={() => toggleAllergyList(allergy)}
               />
             ))}
           </SearchResults>
@@ -93,15 +83,14 @@ export default function AllergySearch() {
 
       <div className='flex-start flex flex-row gap-2'>
         {selectedAllergies.map((allergy) => (
-          <div
+          <button
             key={allergy}
             onClick={() => toggleAllergyList(allergy)}
-            className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2'
-            style={{ cursor: 'pointer' }}
+            className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
           >
             {allergy}
             <RemoveIcon />
-          </div>
+          </button>
         ))}
       </div>
     </>

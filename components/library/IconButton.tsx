@@ -1,6 +1,7 @@
 // add appropriate styles
 
-import { AddIcon, RemoveIcon } from './icons/add-remove-buttons.tsx'
+import AddIcon from './icons/add.tsx'
+import RemoveIcon from './icons/remove.tsx'
 
 interface IconButtonProps {
   iconType: 'add' | 'remove'

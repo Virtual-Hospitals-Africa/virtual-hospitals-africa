@@ -5,7 +5,7 @@ import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
 
 type BasicSelectProps = {
-  isSelected: boolean
+  isSelected?: boolean
   onSelect: () => void
 }
 
