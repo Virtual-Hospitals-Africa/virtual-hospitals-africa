@@ -17,6 +17,10 @@ const vhaStaff = [
   'scheduler.vha@gmail.com',
   'will.weiss1230@gmail.com',
   'kopp.kriszti@gmail.com',
+  'aatirsiddiqui1@gmail.com',
+  'aislinjohn2002@gmail.com',
+  'ijdebruler@gmail.com',
+  'johnduffer1@gmail.com',
   // 'will@morehumaninternet.org',
 ]
 

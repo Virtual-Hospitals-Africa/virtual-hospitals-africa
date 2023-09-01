@@ -5,14 +5,14 @@ export type AddPatientStep =
   | 'personal'
   | 'address'
   | 'pre-existing_conditions'
-  | 'history'
+  | 'family'
   | 'age_related_questions'
 
 const stepNames: AddPatientStep[] = [
   'personal',
   'address',
   'pre-existing_conditions',
-  'history',
+  'family',
   'age_related_questions',
 ]
 

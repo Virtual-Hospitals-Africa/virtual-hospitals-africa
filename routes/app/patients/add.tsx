@@ -202,7 +202,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     await storePatientData(req, ctx)
     ctx.state.session.set(PATIENT_SESSION_KEY, undefined)
-    return redirect('/app/patients/add?step=history')
+    return redirect('/app/patients/add?step=family')
   },
 }
 
@@ -235,7 +235,7 @@ export default function AddPatient(
               adminDistricts={adminDistricts}
             />
           )}
-          {currentStep === 'history' && <div>TODO history form</div>}
+          {currentStep === 'family' && <div>TODO history form</div>}
           {currentStep === 'pre-existing_conditions' && (
             <PatientConditionsForm />
           )}
