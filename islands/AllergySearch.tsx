@@ -44,7 +44,6 @@ export default function AllergySearch() {
         event.target !== searchInputRef.current &&
         searchInputRef.current !== event.target
       ) {
-        console.log('setIsFocused to false')
         setTimeout(() => {
           setIsFocused(false)
         }, 150)
