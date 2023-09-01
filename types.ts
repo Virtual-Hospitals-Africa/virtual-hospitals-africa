@@ -66,7 +66,7 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = PatientPersonal & PatientAddress
+export type Patient = PatientPersonal & PatientAddress & PatientHealthCareInfo
 
 export type PatientPersonal = {
   id: number
@@ -75,6 +75,10 @@ export type PatientPersonal = {
   avatar_media_name?: string
   location?: Maybe<Location>
 } & PatientDemographicInfo
+
+export type PatientHealthCareInfo = {
+  nearest_facility_id?: Maybe<number>
+}
 
 export type PatientAddress = {
   country?: Maybe<string>
