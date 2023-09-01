@@ -29,6 +29,7 @@ import { parseRequest } from '../../../util/parseForm.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
+import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
 
 export type AddPatientDataProps = {
   personal: Omit<PatientPersonal, 'name'> & HasNames
@@ -236,7 +237,7 @@ export default function AddPatient(
           )}
           {currentStep === 'history' && <div>TODO history form</div>}
           {currentStep === 'pre-existing_conditions' && (
-            <div>TODO pre-existing_conditions form</div>
+            <PatientConditionsForm />
           )}
           {currentStep === 'age_related_questions' && <div>TODO age form</div>}
         </form>

@@ -96,7 +96,7 @@ export default function FacilitySearch({
         }}
       >
         {showSearchResults && (
-          <SearchResults>
+          <SearchResults className='max-w-sm'>
             {facilities.map((facility) => (
               <FacilitySearchResult
                 facility={facility}
@@ -110,6 +110,7 @@ export default function FacilitySearch({
           </SearchResults>
         )}
       </SearchInput>
+
       {selected && (
         <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}

@@ -29,16 +29,17 @@ import * as $23 from './routes/logged-in.tsx'
 import * as $24 from './routes/login.tsx'
 import * as $25 from './routes/logout.tsx'
 import * as $26 from './routes/patient-reset.ts'
-import * as $$0 from './islands/FacilitySearch.tsx'
-import * as $$1 from './islands/Menu.tsx'
-import * as $$2 from './islands/PersonSearch.tsx'
-import * as $$3 from './islands/availability-form.tsx'
-import * as $$4 from './islands/file-preview-input.tsx'
-import * as $$5 from './islands/invite-success.tsx'
-import * as $$6 from './islands/invites-form.tsx'
-import * as $$7 from './islands/patient-address-inputs.tsx'
-import * as $$8 from './islands/patient-cards.tsx'
-import * as $$9 from './islands/schedule-form.tsx'
+import * as $$0 from './islands/AllergySearch.tsx'
+import * as $$1 from './islands/FacilitySearch.tsx'
+import * as $$2 from './islands/Menu.tsx'
+import * as $$3 from './islands/PersonSearch.tsx'
+import * as $$4 from './islands/availability-form.tsx'
+import * as $$5 from './islands/file-preview-input.tsx'
+import * as $$6 from './islands/invite-success.tsx'
+import * as $$7 from './islands/invites-form.tsx'
+import * as $$8 from './islands/patient-address-inputs.tsx'
+import * as $$9 from './islands/patient-cards.tsx'
+import * as $$10 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
@@ -71,16 +72,17 @@ const manifest = {
     './routes/patient-reset.ts': $26,
   },
   islands: {
-    './islands/FacilitySearch.tsx': $$0,
-    './islands/Menu.tsx': $$1,
-    './islands/PersonSearch.tsx': $$2,
-    './islands/availability-form.tsx': $$3,
-    './islands/file-preview-input.tsx': $$4,
-    './islands/invite-success.tsx': $$5,
-    './islands/invites-form.tsx': $$6,
-    './islands/patient-address-inputs.tsx': $$7,
-    './islands/patient-cards.tsx': $$8,
-    './islands/schedule-form.tsx': $$9,
+    './islands/AllergySearch.tsx': $$0,
+    './islands/FacilitySearch.tsx': $$1,
+    './islands/Menu.tsx': $$2,
+    './islands/PersonSearch.tsx': $$3,
+    './islands/availability-form.tsx': $$4,
+    './islands/file-preview-input.tsx': $$5,
+    './islands/invite-success.tsx': $$6,
+    './islands/invites-form.tsx': $$7,
+    './islands/patient-address-inputs.tsx': $$8,
+    './islands/patient-cards.tsx': $$9,
+    './islands/schedule-form.tsx': $$10,
   },
   baseUrl: import.meta.url,
 }
