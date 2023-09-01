@@ -99,17 +99,37 @@ export function FacilitySearchResult(
 
 export default function SearchResults({
   children,
+  className,
 }: {
   children: JSX.Element[]
+  className?: string
 }) {
   return (
     <ul
-      className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
+      className={cls(
+        'absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm',
+        className,
+      )}
       // className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'
       id='options'
       role='listbox'
     >
       {children}
     </ul>
+  )
+}
+
+export function AllergySearchResult(
+  // deno-lint-ignore no-explicit-any
+  { allergyName, isSelected, onSelect }: any,
+) {
+  return (
+    <SearchResult isSelected={isSelected} onSelect={onSelect}>
+      <div className='flex flex-col'>
+        <div className={cls('truncate text-base', isSelected && 'font-bold')}>
+          {allergyName}
+        </div>
+      </div>
+    </SearchResult>
   )
 }
