@@ -1,64 +1,60 @@
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../db/reset.ts'
-import db from '../../../db/db.ts'
-import respond from '../../../chatbot/respond.ts'
-import * as conversations from '../../../db/models/conversations.ts'
-import * as patients from '../../../db/models/patients.ts'
+import { resetInTest } from '../../../../../db/reset.ts'
+import db from '../../../../../db/db.ts'
+import respond from '../../../../../chatbot/respond.ts'
+import * as conversations from '../../../../../db/models/conversations.ts'
+import * as patients from '../../../../../db/models/patients.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
   const phone_number = '00000000'
-  it('sends a facility link and back_to_main_menu button after selecting a facility', async () => {
-    // Step 1: share location
+  it('asks for media after inquiring appointment reason', async () => {
     await patients.upsert(db, {
-      conversation_state: 'find_nearest_facility:share_location',
+      conversation_state:
+        'not_onboarded:make_appointment:enter_national_id_number',
       phone_number: phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '1238',
+      national_id_number: null,
     })
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: JSON.stringify({
-        latitude: -17.832132339478,
-        longitude: 31.047979354858,
-      }),
+      body: '123456',
       media_id: null,
-      whatsapp_id: 'whatsapp_id',
+      whatsapp_id: 'whatsapp_id_one',
     })
 
     const fakeWhatsAppOne = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.1234',
+          id: 'wamid.12341',
         }],
       }]),
     }
 
     await respond(fakeWhatsAppOne)
 
-    // Step 2: select facility id
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '657',
+      body: 'pain',
       media_id: null,
-      whatsapp_id: 'whatsapp_id123',
+      whatsapp_id: 'whatsapp_id_two',
     })
 
     const fakeWhatsAppTwo = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.5678',
+          id: 'wamid.12342',
         }],
       }]),
     }
@@ -66,27 +62,13 @@ describe('patient chatbot', () => {
     await respond(fakeWhatsAppTwo)
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
-        messages: [
-          {
-            type: 'location',
-            messageBody: 'Arcadia',
-            location: {
-              longitude: 31.0546,
-              latitude: -17.8468,
-              name: 'Arcadia',
-              address: 'Harare, Harare Province, ZW',
-            },
-          },
-          {
-            type: 'buttons',
-            messageBody: 'Click below to go back to main menu.',
-            buttonText: 'Back to main menu',
-            options: [{
-              id: 'back_to_menu',
-              title: 'Back to Menu',
-            }],
-          },
-        ],
+        messages: {
+          messageBody:
+            'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',
+          type: 'buttons',
+          buttonText: 'Menu',
+          options: [{ id: 'skip', title: 'Skip' }],
+        },
         phone_number: phone_number,
       },
     ])
@@ -97,7 +79,7 @@ describe('patient chatbot', () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'find_nearest_facility:send_facility_location',
+      'onboarded:make_appointment:initial_ask_for_media',
     )
   })
 })
