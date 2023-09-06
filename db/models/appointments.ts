@@ -321,16 +321,19 @@ export async function insertAppointmentMedia(
 }
 
 export async function getAppointmentMediaId(
-  trx:TrxOrDb,
+  trx: TrxOrDb,
   opts: {
     appointment_id: number
   },
-): Promise<number[]>{
-  const read_result = await trx.selectFrom('appointment_media').where('appointment_id', '=', opts.appointment_id).select('media_id').execute()
+): Promise<number[]> {
+  const read_result = await trx.selectFrom('appointment_media').where(
+    'appointment_id',
+    '=',
+    opts.appointment_id,
+  ).select('media_id').execute()
   const media_ids = []
-  for (const {media_id} of read_result){
+  for (const { media_id } of read_result) {
     media_ids.push(media_id)
   }
   return media_ids
 }
-
