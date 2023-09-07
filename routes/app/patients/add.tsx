@@ -25,6 +25,7 @@ import {
 } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
+import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
@@ -235,7 +236,9 @@ export default function AddPatient(
               adminDistricts={adminDistricts}
             />
           )}
-          {currentStep === 'family' && <div>TODO history form</div>}
+          {currentStep === 'family' && (
+            <FamilyForm />
+          )}
           {currentStep === 'pre-existing_conditions' && (
             <PatientConditionsForm />
           )}
