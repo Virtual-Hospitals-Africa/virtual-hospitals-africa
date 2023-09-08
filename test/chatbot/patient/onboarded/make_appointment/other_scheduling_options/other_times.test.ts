@@ -9,7 +9,10 @@ import * as conversations from '../../../../../../db/models/conversations.ts'
 import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../db/models/appointments.ts'
-import { convertToTimeString, formatHarare } from '../../../../../../util/date.ts'
+import {
+  convertToTimeString,
+  formatHarare,
+} from '../../../../../../util/date.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
