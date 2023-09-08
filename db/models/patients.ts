@@ -101,8 +101,28 @@ export async function getAllWithNames(
 ): Promise<ReturnedSqlRow<Patient & { name: string }>[]> {
   let query = trx
     .selectFrom('patients')
-    .selectAll()
-    .where('name', 'is not', null)
+    .innerJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .select([
+      'patients.id',
+      'patients.avatar_media_id',
+      'patients.name',
+      'patients.phone_number',
+      'patients.location',
+      'patients.gender',
+      'patients.date_of_birth',
+      'patients.national_id_number',
+      'patients.conversation_state',
+      'patients.country',
+      'patients.province',
+      'patients.district',
+      'patients.ward',
+      'patients.suburb',
+      'patients.street',
+      'patients.created_at',
+      'patients.updated_at',
+      'facilities.name as nearest_facility',
+    ])
+    .where('patients.name', 'is not', null)
 
   if (search) query = query.where('name', 'ilike', `%${search}%`)
 

@@ -31,7 +31,7 @@ function CardHeader(
         <div className='flex-shrink-0'>
           <Avatar
             src={imageUrl}
-            className='h-10 w-10'
+            className='h-10 w-10 object-cover'
           />
         </div>
       )}
