@@ -103,7 +103,7 @@ export async function getAllWithNames(
     .selectFrom('patients')
     .innerJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
     .select([
-      'patients.id', 
+      'patients.id',
       'patients.avatar_media_id',
       'patients.name',
       'patients.phone_number',
@@ -120,7 +120,7 @@ export async function getAllWithNames(
       'patients.street',
       'patients.created_at',
       'patients.updated_at',
-      'facilities.name as nearest_facility'
+      'facilities.name as nearest_facility',
     ])
     .where('patients.name', 'is not', null)
 
