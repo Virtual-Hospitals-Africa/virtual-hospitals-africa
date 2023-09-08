@@ -24,6 +24,7 @@ const vhaStaff = [
   'rishabh106@gmail.com',
   'ashleyradford23@gmail.com',
   'yedusolo@gmail.com',
+  'nahcnelle@gmail.com',
   // 'will@morehumaninternet.org',
 ]
 
