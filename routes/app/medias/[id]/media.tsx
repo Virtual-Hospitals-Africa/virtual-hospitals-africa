@@ -19,7 +19,7 @@ export const handler: LoggedInHealthWorkerHandler = {
     assert(id, 'Invalid media ID, id is probably not int')
 
     const appointment_media = await media.get(ctx.state.trx, { media_id: id })
-    
+
     const mediaData = appointment_media.binary_data
     return file(mediaData, appointment_media.mime_type)
   },
