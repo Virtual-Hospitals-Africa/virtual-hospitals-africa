@@ -7,17 +7,17 @@ import * as $1 from './routes/_middleware.ts'
 import * as $2 from './routes/app.tsx'
 import * as $3 from './routes/app/_middleware.tsx'
 import * as $4 from './routes/app/calendar.tsx'
-import * as $5 from './routes/app/calendar/appointments/[id].tsx'
-import * as $6 from './routes/app/calendar/appointments/_middleware.tsx'
-import * as $7 from './routes/app/calendar/appointments/schedule.tsx'
-import * as $8 from './routes/app/calendar/availability.tsx'
-import * as $9 from './routes/app/employees.tsx'
-import * as $10 from './routes/app/facilities.tsx'
-import * as $11 from './routes/app/facilities/[facilityId]/employees.tsx'
-import * as $12 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $13 from './routes/app/facilities/[facilityId]/register.tsx'
-import * as $14 from './routes/app/health_workers.tsx'
-import * as $15 from './routes/app/medias/[id]/media.tsx'
+import * as $5 from './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx'
+import * as $6 from './routes/app/calendar/appointments/[id].tsx'
+import * as $7 from './routes/app/calendar/appointments/_middleware.tsx'
+import * as $8 from './routes/app/calendar/appointments/schedule.tsx'
+import * as $9 from './routes/app/calendar/availability.tsx'
+import * as $10 from './routes/app/employees.tsx'
+import * as $11 from './routes/app/facilities.tsx'
+import * as $12 from './routes/app/facilities/[facilityId]/employees.tsx'
+import * as $13 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
+import * as $14 from './routes/app/facilities/[facilityId]/register.tsx'
+import * as $15 from './routes/app/health_workers.tsx'
 import * as $16 from './routes/app/patients.tsx'
 import * as $17 from './routes/app/patients/[id].tsx'
 import * as $18 from './routes/app/patients/[id]/avatar.tsx'
@@ -50,17 +50,18 @@ const manifest = {
     './routes/app.tsx': $2,
     './routes/app/_middleware.tsx': $3,
     './routes/app/calendar.tsx': $4,
-    './routes/app/calendar/appointments/[id].tsx': $5,
-    './routes/app/calendar/appointments/_middleware.tsx': $6,
-    './routes/app/calendar/appointments/schedule.tsx': $7,
-    './routes/app/calendar/availability.tsx': $8,
-    './routes/app/employees.tsx': $9,
-    './routes/app/facilities.tsx': $10,
-    './routes/app/facilities/[facilityId]/employees.tsx': $11,
-    './routes/app/facilities/[facilityId]/employees/invite.tsx': $12,
-    './routes/app/facilities/[facilityId]/register.tsx': $13,
-    './routes/app/health_workers.tsx': $14,
-    './routes/app/medias/[id]/media.tsx': $15,
+    './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx':
+      $5,
+    './routes/app/calendar/appointments/[id].tsx': $6,
+    './routes/app/calendar/appointments/_middleware.tsx': $7,
+    './routes/app/calendar/appointments/schedule.tsx': $8,
+    './routes/app/calendar/availability.tsx': $9,
+    './routes/app/employees.tsx': $10,
+    './routes/app/facilities.tsx': $11,
+    './routes/app/facilities/[facilityId]/employees.tsx': $12,
+    './routes/app/facilities/[facilityId]/employees/invite.tsx': $13,
+    './routes/app/facilities/[facilityId]/register.tsx': $14,
+    './routes/app/health_workers.tsx': $15,
     './routes/app/patients.tsx': $16,
     './routes/app/patients/[id].tsx': $17,
     './routes/app/patients/[id]/avatar.tsx': $18,
