@@ -14,6 +14,7 @@ type LabeledInputProps = {
   onInput?: JSX.GenericEventHandler<HTMLInputElement>
   onFocus?: JSX.GenericEventHandler<HTMLInputElement>
   onBlur?: JSX.GenericEventHandler<HTMLInputElement>
+  styleAddition?: string
 }
 
 type SearchInputProps = Partial<LabeledInputProps> & {
@@ -68,6 +69,7 @@ export function TextInput(
     disabled,
     readonly,
     pattern,
+    styleAddition='',
   }: TextInputProps,
 ) {
   return (
@@ -75,7 +77,7 @@ export function TextInput(
       <input
         type={type}
         name={name}
-        className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
+        className={'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 ' + styleAddition}
         placeholder={placeholder}
         required={required}
         disabled={disabled}

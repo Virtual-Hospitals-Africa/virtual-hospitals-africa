@@ -40,7 +40,7 @@ export default function NursePersonalForm({ email }: { email: string | undefined
         />
       </FormRow>
       <FormRow>
-        <TextInput name='email' type='email' required label='Email' value={email ? email : ''}/>
+        <TextInput name='email' type='email' required label='Email' value={email ? email : ''} disabled={email ? true : false} styleAddition='bg-gray-100'/>
         <PhoneNumberInput
           name='mobile_number'
           required
