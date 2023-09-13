@@ -1,6 +1,6 @@
 import { PageProps } from '$fresh/server.ts'
 import { AddPatientStep } from '../../../patients/add/Steps.tsx'
-import { Steps } from '../../../library/Steps.tsx'
+import { Steps, useSteps } from '../../../library/Steps.tsx'
 import { NurseSpeciality, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
@@ -12,46 +12,13 @@ export type NurseRegistrationStep =
   | 'professional'
   | 'document'
 
-export const NurseRegistrationStepNames = [
+export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
   'personal',
   'professional',
   'document',
 ]
 
-export function isNurseRegistrationStep(
-  step: string | null,
-): step is AddPatientStep {
-  if (step === null) {
-    return false
-  }
-  return NurseRegistrationStepNames.includes(step)
-}
-
-export function useNurseRegistrationSteps(props: PageProps) {
-  const stepQuery = props.url.searchParams.get('step')
-  const currentStep = isNurseRegistrationStep(stepQuery)
-    ? stepQuery
-    : NurseRegistrationStepNames[0]
-
-  let completed = false
-
-  const steps = NurseRegistrationStepNames.map((name) => {
-    if (name === currentStep) {
-      completed = true
-      return { name, status: 'current' as const }
-    }
-    if (completed) {
-      return { name, status: 'upcoming' as const }
-    }
-    return { name, status: 'complete' as const }
-  })
-
-  return {
-    currentStep,
-    stepsTopBar: <Steps url={props.url} steps={steps} />,
-    steps,
-  }
-}
+export const useNurseRegistrationSteps = useSteps(NurseRegistrationStepNames)
 
 export function getStepFormData(
   currentStep: string,
