@@ -1,5 +1,4 @@
-import { PageProps } from '$fresh/server.ts'
-import { Steps } from '../../../components/library/Steps.tsx'
+import { useSteps } from '../../../components/library/Steps.tsx'
 
 export type AddPatientStep =
   | 'personal'
@@ -22,30 +21,4 @@ export function getNextStep(currentStep: AddPatientStep): AddPatientStep {
   return nextIndex === stepNames.length ? currentStep : stepNames[nextIndex]
 }
 
-// deno-lint-ignore no-explicit-any
-function isAddPatientStep(step: any): step is AddPatientStep {
-  return stepNames.includes(step)
-}
-
-export function useAddPatientSteps(props: PageProps) {
-  const stepQuery = props.url.searchParams.get('step')
-  const currentStep = isAddPatientStep(stepQuery) ? stepQuery : stepNames[0]
-
-  let completed = false
-
-  const steps = stepNames.map((name) => {
-    if (name === currentStep) {
-      completed = true
-      return { name, status: 'current' as const }
-    }
-    if (completed) {
-      return { name, status: 'upcoming' as const }
-    }
-    return { name, status: 'complete' as const }
-  })
-
-  return {
-    currentStep,
-    steps: <Steps url={props.url} steps={steps} />,
-  }
-}
+export const useAddPatientSteps = useSteps(stepNames)
