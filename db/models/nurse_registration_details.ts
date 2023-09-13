@@ -66,7 +66,7 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
       typeof registrationDetails.ncz_registration_card_media_id === 'number') &&
     (registrationDetails.face_picture_media_id === undefined ||
       typeof registrationDetails.face_picture_media_id === 'number') &&
-    (registrationDetails.approved_by === undefined ||
+    (registrationDetails.approved_by == undefined ||
       typeof registrationDetails.approved_by === 'number')
 }
 
