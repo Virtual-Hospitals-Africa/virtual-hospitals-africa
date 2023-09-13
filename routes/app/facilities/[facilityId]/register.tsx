@@ -40,12 +40,15 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     assert(facilityId)
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+    assert(healthWorker.email)
 
     const registrationFormState = ctx.state.session.get('registrationFormState')
 
     const formState = registrationFormState
       ? JSON.parse(registrationFormState)
       : {} as FormState
+
+    formState.email = healthWorker.email
 
     return ctx.render({ formState })
   },
@@ -141,7 +144,9 @@ export default function register(
         className='w-full mt-4'
         encType='multipart/form-data'
       >
-        {stepState.currentStep === 'personal' && <NursePersonalForm />}
+        {stepState.currentStep === 'personal' && (
+          <NursePersonalForm formData={props.data.formState} />
+        )}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
         {stepState.currentStep === 'document' && <NurseDocumentForm />}
       </form>
