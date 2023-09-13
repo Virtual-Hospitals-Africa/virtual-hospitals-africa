@@ -146,7 +146,9 @@ export default function register(
         className='w-full mt-4'
         encType='multipart/form-data'
       >
-        {stepState.currentStep === 'personal' && <NursePersonalForm email={props.data.formState.email.valueOf()} />}
+        {stepState.currentStep === 'personal' && (
+          <NursePersonalForm email={props.data.formState.email.valueOf()} />
+        )}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
         {stepState.currentStep === 'document' && <NurseDocumentForm />}
       </form>
