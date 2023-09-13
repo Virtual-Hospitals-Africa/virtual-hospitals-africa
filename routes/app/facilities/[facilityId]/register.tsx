@@ -58,7 +58,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
       ? formState = JSON.parse(formObject)
       : formState = {} as FormState
     formState.currentStep = currentStep
-    formState.email = healthWorker.email ? healthWorker.email : ''
+    formState.email = healthWorker.email
     assert(formState)
     ctx.state.session.set('inviteFormState', JSON.stringify(formState))
 
@@ -146,9 +146,7 @@ export default function register(
         className='w-full mt-4'
         encType='multipart/form-data'
       >
-        {stepState.currentStep === 'personal' && (
-          <NursePersonalForm email={props.data.formState.email.valueOf()} />
-        )}
+        {stepState.currentStep === 'personal' && <NursePersonalForm formData={props.data.formState}/>}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
         {stepState.currentStep === 'document' && <NurseDocumentForm />}
       </form>
