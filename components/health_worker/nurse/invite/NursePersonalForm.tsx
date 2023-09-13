@@ -49,7 +49,7 @@ export default function NursePersonalForm(
           required
           label='Email'
           value={formData.email}
-          disabled={formData.email ? true : false}
+          disabled={true}
         />
         <PhoneNumberInput
           name='mobile_number'
