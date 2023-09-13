@@ -343,3 +343,17 @@ export async function getMedia(
   }
   return medias
 }
+
+export async function checkMediaInAppointment(
+  trx: TrxOrDb,
+  opts: {
+    media_id: number
+    appointment_id: number
+  },
+) {
+  const queryResult = await sql`SELECT 1 as result_value
+    FROM appointment_media
+    WHERE media_id = ${opts.media_id} AND appointment_id = ${opts.appointment_id}`
+    .execute(trx)
+  return queryResult.rows[0]
+}
