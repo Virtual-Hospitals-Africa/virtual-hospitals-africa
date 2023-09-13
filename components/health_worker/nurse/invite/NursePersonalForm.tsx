@@ -9,7 +9,9 @@ import Buttons from '../../../library/form/buttons.tsx'
 import { Button } from '../../../library/Button.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
 
-export default function NursePersonalForm({ formData }: {formData: FormState}) {
+export default function NursePersonalForm(
+  { formData }: { formData: FormState },
+) {
   return (
     <>
       <FormRow>
@@ -41,7 +43,14 @@ export default function NursePersonalForm({ formData }: {formData: FormState}) {
         />
       </FormRow>
       <FormRow>
-        <TextInput name='email' type='email' required label='Email' value={formData.email} disabled={formData.email ? true : false}/>
+        <TextInput
+          name='email'
+          type='email'
+          required
+          label='Email'
+          value={formData.email}
+          disabled={formData.email ? true : false}
+        />
         <PhoneNumberInput
           name='mobile_number'
           required
