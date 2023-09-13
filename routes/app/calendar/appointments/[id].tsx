@@ -16,7 +16,7 @@ import AppointmentDetail from '../../../../components/patients/AppointmentDetail
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
   healthWorker: ReturnedSqlRow<HealthWorker>
-  medias: number[]
+  medias: { media_id: number; mime_type: string }[]
 }
 
 export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
@@ -32,24 +32,17 @@ export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
       health_worker_id: healthWorker.id,
     })
 
-    const appointment_media_ids = await appointments.getAppointmentMediaId(
+    const appointment_medias = await appointments.getMedia(
       ctx.state.trx,
       { appointment_id: id },
     )
-    // const appointment_medias = appointment_media_ids.map((media_id) =>
-    //   get(ctx.state.trx, { media_id })
-    // )
-    // const resolved_appointment_medias = await Promise.all(appointment_medias)
-    // const media_details = resolved_appointment_medias.map((resolved_media) => ({
-    //   binary_data: resolved_media.binary_data,
-    //   mime_type: resolved_media.mime_type,
-    // }))
+
     assert(appointment, 'Appointment not found')
 
     return ctx.render({
       appointment,
       healthWorker,
-      medias: appointment_media_ids,
+      medias: appointment_medias,
     })
   },
 }
@@ -67,9 +60,8 @@ export default function AppointmentPage(
       <PatientDetailedCard patient={props.data.appointment.patient} />
       <AppointmentDetail
         appointment={props.data.appointment}
-        medias={props.data.medias}
-      >
-      </AppointmentDetail>
+        mediaFiles={props.data.medias}
+      />
     </Layout>
   )
 }

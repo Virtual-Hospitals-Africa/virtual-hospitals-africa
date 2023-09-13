@@ -320,20 +320,26 @@ export async function insertAppointmentMedia(
   }).returningAll().executeTakeFirstOrThrow()
 }
 
-export async function getAppointmentMediaId(
+export async function getMedia(
   trx: TrxOrDb,
   opts: {
     appointment_id: number
   },
-): Promise<number[]> {
+): Promise<{ media_id: number; mime_type: string }[]> {
   const read_result = await trx.selectFrom('appointment_media').where(
     'appointment_id',
     '=',
     opts.appointment_id,
   ).select('media_id').execute()
-  const media_ids = []
+
+  const medias = []
   for (const { media_id } of read_result) {
-    media_ids.push(media_id)
+    const { mime_type } = await trx.selectFrom('media').where(
+      'media.id',
+      '=',
+      media_id,
+    ).select('media.mime_type').executeTakeFirstOrThrow()
+    medias.push({ media_id, mime_type })
   }
-  return media_ids
+  return medias
 }
