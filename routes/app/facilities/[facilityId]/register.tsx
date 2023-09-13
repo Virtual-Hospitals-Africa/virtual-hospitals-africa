@@ -40,12 +40,15 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     assert(facilityId)
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+    assert(healthWorker.email)
 
     const registrationFormState = ctx.state.session.get('registrationFormState')
 
     const formState = registrationFormState
       ? JSON.parse(registrationFormState)
       : {} as FormState
+
+    formState.email = healthWorker.email
 
     return ctx.render({ formState })
   },
