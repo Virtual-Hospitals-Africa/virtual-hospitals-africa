@@ -1,3 +1,4 @@
+import { PageProps } from '$fresh/server.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import { CheckIcon } from './CheckIcon.tsx'
@@ -159,4 +160,36 @@ export function Steps<S extends string>(
       </nav>
     </div>
   )
+}
+
+export function useSteps<Step extends string>(
+  stepNames: Step[],
+) {
+  const isStep = (step: string | null): step is Step => {
+    return !!step && stepNames.includes(step as Step)
+  }
+
+  return function (props: PageProps) {
+    const stepQuery = props.url.searchParams.get('step')
+    const currentStep = isStep(stepQuery) ? stepQuery : stepNames[0]
+
+    let completed = false
+
+    const steps = stepNames.map((name) => {
+      if (name === currentStep) {
+        completed = true
+        return { name, status: 'current' as const }
+      }
+      if (completed) {
+        return { name, status: 'upcoming' as const }
+      }
+      return { name, status: 'complete' as const }
+    })
+
+    return {
+      currentStep,
+      stepsTopBar: <Steps url={props.url} steps={steps} />,
+      steps,
+    }
+  }
 }

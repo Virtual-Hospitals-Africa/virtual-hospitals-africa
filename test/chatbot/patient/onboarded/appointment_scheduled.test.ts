@@ -1,13 +1,13 @@
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert, assertEquals } from 'std/testing/asserts.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../db/reset.ts'
-import db from '../../../db/db.ts'
-import respond from '../../../chatbot/respond.ts'
-import * as conversations from '../../../db/models/conversations.ts'
-import * as health_workers from '../../../db/models/health_workers.ts'
-import * as patients from '../../../db/models/patients.ts'
-import * as appointments from '../../../db/models/appointments.ts'
+import { resetInTest } from '../../../../db/reset.ts'
+import db from '../../../../db/db.ts'
+import respond from '../../../../chatbot/respond.ts'
+import * as conversations from '../../../../db/models/conversations.ts'
+import * as health_workers from '../../../../db/models/health_workers.ts'
+import * as patients from '../../../../db/models/patients.ts'
+import * as appointments from '../../../../db/models/appointments.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)

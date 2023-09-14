@@ -210,7 +210,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
-  const { steps, currentStep } = useAddPatientSteps(props)
+  const { stepsTopBar, currentStep } = useAddPatientSteps(props)
   const { patient, healthWorker: { facility }, adminDistricts } = props.data
 
   return (
@@ -221,7 +221,7 @@ export default function AddPatient(
       variant='form'
     >
       <Container size='lg'>
-        {steps}
+        {stepsTopBar}
         <form
           method='POST'
           className='w-full mt-4'

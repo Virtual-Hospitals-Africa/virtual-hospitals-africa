@@ -15,8 +15,6 @@ for (const migrationFile of Deno.readDirSync('./db/migrations')) {
   migrations[migrationName] = migration
 }
 
-console.log('migrations', migrations)
-
 const migrator = new Migrator({
   db,
   provider: {

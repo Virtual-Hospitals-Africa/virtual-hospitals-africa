@@ -6,7 +6,6 @@ import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import {
   getStepFormData,
-  isNurseRegistrationStep,
   NurseRegistrationStepNames,
   useNurseRegistrationSteps,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
@@ -34,10 +33,6 @@ export type FormState =
   & PersonalFormFields
   & ProfessionalInformationFields
   & DocumentFormFields
-  & {
-    currentStep: string
-    speciality: NurseSpeciality
-  }
 
 export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
   GET(req, ctx) {
@@ -45,59 +40,60 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     assert(facilityId)
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+    assert(healthWorker.email)
 
-    const url = new URL(req.url)
-    const stepParam = url.searchParams.get('step')
+    const registrationFormState = ctx.state.session.get('registrationFormState')
 
-    const formObject = ctx.state.session.get('inviteFormState')
-    let formState: FormState
-    const currentStep = isNurseRegistrationStep(stepParam)
-      ? stepParam
-      : NurseRegistrationStepNames[0]
-    formObject
-      ? formState = JSON.parse(formObject)
-      : formState = {} as FormState
-    formState.currentStep = currentStep
-    assert(formState)
-    ctx.state.session.set('inviteFormState', JSON.stringify(formState))
+    const formState = registrationFormState
+      ? JSON.parse(registrationFormState)
+      : {} as FormState
+
+    formState.email = healthWorker.email
 
     return ctx.render({ formState })
   },
   async POST(req, ctx) {
-    const formState: FormState = JSON.parse(
-      ctx.state.session.get('inviteFormState'),
-    )
-    const nurseData = await getStepFormData(
-      formState.currentStep,
-      ctx.state.trx,
-      req,
-    )
-    Object.assign(formState, nurseData)
-    const stepIndex = NurseRegistrationStepNames.findIndex((name) =>
-      name === formState.currentStep
-    )
-
-    if (stepIndex < NurseRegistrationStepNames.length - 1) {
-      ctx.state.session.set('inviteFormState', JSON.stringify(formState))
-      const nextStep = NurseRegistrationStepNames[stepIndex + 1]
-      const nextPage = new URL(req.url)
-      nextPage.searchParams.set('step', nextStep)
-      return redirect(nextPage.toString())
-    }
-
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
+
     const facilityId = parseInt(ctx.params.facilityId)
+    assert(facilityId)
+
     const employee = await employment.getEmployee(ctx.state.trx, {
       facility_id: facilityId,
       health_worker_id: healthWorker.id,
     })
     assert(employee)
 
-    const nurseRegistrationDetails = getRegistrationDetails(
-      healthWorker,
-      formState,
+    const step = new URL(req.url).searchParams.get('step')
+    assert(step)
+
+    const priorFormState: FormState = JSON.parse(
+      ctx.state.session.get('registrationFormState') || '{}',
     )
+
+    const newFormState = await getStepFormData(
+      step,
+      ctx.state.trx,
+      req,
+    )
+
+    const formState = {
+      ...priorFormState,
+      ...newFormState,
+    }
+
+    const stepIndex = NurseRegistrationStepNames.findIndex((name) =>
+      name === step
+    )
+
+    if (stepIndex < NurseRegistrationStepNames.length - 1) {
+      ctx.state.session.set('registrationFormState', JSON.stringify(formState))
+      const nextStep = NurseRegistrationStepNames[stepIndex + 1]
+      const nextPage = new URL(req.url)
+      nextPage.searchParams.set('step', nextStep)
+      return redirect(nextPage.toString())
+    }
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
@@ -105,10 +101,13 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     })
 
     await nurse_registration_details.add(ctx.state.trx, {
-      registrationDetails: nurseRegistrationDetails,
+      registrationDetails: getRegistrationDetails(
+        healthWorker,
+        formState,
+      ),
     })
 
-    ctx.state.session.set('isRegistering', false)
+    ctx.state.session.set('registrationFormState', undefined)
 
     return redirect('/app')
   },
@@ -122,7 +121,7 @@ function getRegistrationDetails(
     health_worker_id: healthWorker.id,
     gender: formState.gender,
     national_id: formState.national_id,
-    date_of_first_practice: formState.date_of_first_practice,
+    date_of_first_practice: new Date(formState.date_of_first_practice),
     ncz_registration_number: formState.ncz_registration_number,
     mobile_number: formState.mobile_number,
     face_picture_media_id: formState.face_picture?.id,
@@ -145,7 +144,9 @@ export default function register(
         className='w-full mt-4'
         encType='multipart/form-data'
       >
-        {stepState.currentStep === 'personal' && <NursePersonalForm />}
+        {stepState.currentStep === 'personal' && (
+          <NursePersonalForm formData={props.data.formState} />
+        )}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
         {stepState.currentStep === 'document' && <NurseDocumentForm />}
       </form>
