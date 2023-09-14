@@ -6,7 +6,7 @@ export default function FamilyForm() {
         <>
             <FormRow>
                 <SelectInput name='marital status' required label='Marial Status'>
-                    <option value='single'>Single</option>
+                    <option value='single'>Single</option>Mark
                     <option value='married'>Married</option>
                     <option value='civilPartner'>Civil Partner</option>
                     <option value='widowWidower'>Widow/Widower</option>
