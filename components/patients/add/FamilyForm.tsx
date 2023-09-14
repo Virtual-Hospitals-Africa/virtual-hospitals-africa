@@ -17,7 +17,7 @@ export default function FamilyForm() {
                     
                 </SelectInput>
             </FormRow>
-            <h1>Next of Kin</h1>
+            <h1>Next of Kin!</h1>
             <FormRow>
                 <TextInput name='name'/>
                 <TextInput name='phone number'/>
