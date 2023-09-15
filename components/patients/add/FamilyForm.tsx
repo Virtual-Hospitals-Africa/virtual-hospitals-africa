@@ -1,11 +1,40 @@
 import { SelectInput, TextInput } from "../../library/form/Inputs.tsx"
 import FormRow from "../../library/form/Row.tsx"
+import { allRelations } from "../../../util/relationList.ts"
+import { allReligions } from "../../../util/religionList.ts"
+import SectionHeader from '../../library/typography/SectionHeader.tsx'
+import Buttons from '../../library/form/buttons.tsx'
+import AddIcon from "../../library/icons/add.tsx"
+import RemoveIcon from "../../library/icons/remove.tsx"
+import IconButton from "../../library/IconButton.tsx"
+import { useState } from "preact/hooks"
 
 export default function FamilyForm() {
+
+    const [otherReligion, setOtherReligion] = useState(false);
+    const selectReligions = allReligions.map((religion) => { 
+        return (
+            <option value='${religion}'>{religion}</option>
+        )
+    })
+
+    function handleReligion(religion: string) {
+        if( religion === "Other") 
+            setOtherReligion(true);
+    }
+    
+    const selectRelations = allRelations.map((relation) => {
+        return (
+            <option>{relation}</option>
+        )
+    })
+
+    
+
     return (
         <>
             <FormRow>
-                <SelectInput name='marital status' required label='Marial Status'>
+                <SelectInput name='marital status' required label='Marital Status'>
                     <option value='single'>Single</option>Mark
                     <option value='married'>Married</option>
                     <option value='civilPartner'>Civil Partner</option>
@@ -14,15 +43,43 @@ export default function FamilyForm() {
                     <option value='divorced'>Divorced</option>
                 </SelectInput>
                 <SelectInput name='religion' required label="Religion">
-                    
+                    {selectReligions}
                 </SelectInput>
+                
             </FormRow>
-            <h1>Next of Kin!</h1>
-            <FormRow>
-                <TextInput name='name'/>
-                <TextInput name='phone number'/>
-                <TextInput name='relationship' />
-            </FormRow>
+            <section>
+                <SectionHeader className='mb-3'>Next of Kin</SectionHeader>
+               
+                <FormRow>
+                    <TextInput name='name' required label = 'name'/>
+                    <TextInput name='phone number'/>
+                    <SelectInput name='relationship' required label = 'relationship'>
+                        {selectRelations}
+                    </SelectInput>
+                </FormRow>
+                </section>
+                <hr className='my-2' />
+                <section>
+                    <SectionHeader className='mb-3'>Dependants</SectionHeader>
+                    <FormRow>
+                        {/* {IconButton()} */} 
+                         {/* <text size={21}>{RemoveIcon()}</text> */}
+                        {/* Function to add more Dependants  */}
+                        <TextInput name='name' required label = 'name'/>
+                        <TextInput name='phone number'/>
+                        <SelectInput name='relationship' required label = 'relationship'>
+                            {selectRelations}
+                        </SelectInput>
+                    </FormRow>
+                     {/* {IconButton(props: 'add')} */}
+                </section>
+                <hr className='my-2' />
+            <section>
+                <Buttons
+                    submitText='Next Step'
+                    cancelHref='/app/patients'
+                />
+            </section>
         </>
     )
 }
