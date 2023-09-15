@@ -20,7 +20,6 @@ import {
   ReturnedSqlRow,
   Specialities,
 } from '../../../../../types.ts'
-import { ConsoleHandler } from 'https://deno.land/std@0.164.0/log/handlers.ts'
 
 type HealthWorkerPageProps = {
   worker_facilities: ReturnedSqlRow<Facility>[]
