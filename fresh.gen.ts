@@ -37,9 +37,10 @@ import * as $$4 from './islands/availability-form.tsx'
 import * as $$5 from './islands/file-preview-input.tsx'
 import * as $$6 from './islands/invite-success.tsx'
 import * as $$7 from './islands/invites-form.tsx'
-import * as $$8 from './islands/patient-address-inputs.tsx'
-import * as $$9 from './islands/patient-cards.tsx'
-import * as $$10 from './islands/schedule-form.tsx'
+import * as $$8 from './islands/landing-page/NavBar.tsx'
+import * as $$9 from './islands/patient-address-inputs.tsx'
+import * as $$10 from './islands/patient-cards.tsx'
+import * as $$11 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
@@ -80,9 +81,10 @@ const manifest = {
     './islands/file-preview-input.tsx': $$5,
     './islands/invite-success.tsx': $$6,
     './islands/invites-form.tsx': $$7,
-    './islands/patient-address-inputs.tsx': $$8,
-    './islands/patient-cards.tsx': $$9,
-    './islands/schedule-form.tsx': $$10,
+    './islands/landing-page/NavBar.tsx': $$8,
+    './islands/patient-address-inputs.tsx': $$9,
+    './islands/patient-cards.tsx': $$10,
+    './islands/schedule-form.tsx': $$11,
   },
   baseUrl: import.meta.url,
 }
