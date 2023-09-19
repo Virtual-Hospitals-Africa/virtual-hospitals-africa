@@ -13,10 +13,9 @@ export default function HealthWorkerDetailedCard(
 ) {
   return (
     <div className='py-6 px-4 rounded-md border-2 border-gray-300 bg-gray-300'>
-      <div className='mt-6'>
         <dl className='grid grid-cols-4 sm:grid-cols-4'>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               First Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
@@ -24,35 +23,55 @@ export default function HealthWorkerDetailedCard(
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Middle name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               {healthWorker.name.split(' ').length > 2
                 ? healthWorker.name.split(' ').slice(1, -1).join(' ')
-                : ''} 
+                : 'N/A'} 
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Last Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-            {healthWorker.name.split(' ').length > 1
-                ? healthWorker.name.split(' ').at(-1)
-                : ''} 
+              {healthWorker.name.split(' ').length > 1
+                  ? healthWorker.name.split(' ').at(-1)
+                  : ''} 
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Gender
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               {nurseRegistrationDetails.gender}
             </dd>
           </div>
-          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+          <div className='px-4 py-6 sm:col-span-3 sm:px-0'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
+              Date of Birth
+            </dt>
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+              {'N/A'} 
+            </dd>
+          </div>
+          <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
+              Phone Number
+            </dt>
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+              {
+                nurseRegistrationDetails.mobile_number.substring(0,3) + '-' +
+                nurseRegistrationDetails.mobile_number.substring(3,6) + '-' +
+                nurseRegistrationDetails.mobile_number.substring(6)
+              }
+            </dd>
+          </div>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Nurse Council's Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
@@ -60,7 +79,15 @@ export default function HealthWorkerDetailedCard(
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
+              Date of First Practice
+            </dt>
+            <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+              {nurseRegistrationDetails.date_of_first_practice.toLocaleString().split(',')[0]}
+            </dd>
+          </div>
+          <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Clinic
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
@@ -68,7 +95,7 @@ export default function HealthWorkerDetailedCard(
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Virtual Hospitals
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
@@ -78,7 +105,7 @@ export default function HealthWorkerDetailedCard(
 
           
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-4 sm:px-0'>
-            <dt className='text-sm font-medium leading-6 text-gray-900'>
+            <dt className='text-sm font-bold leading-6 text-gray-900'>
               Documents
             </dt>
             <dd className='mt-2 text-sm text-gray-900'>
@@ -126,7 +153,6 @@ export default function HealthWorkerDetailedCard(
             </dd>
           </div>
         </dl>
-      </div>
     </div>
   )
 }

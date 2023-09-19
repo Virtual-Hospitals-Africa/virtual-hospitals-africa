@@ -56,6 +56,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
 
     // filter for employment positions for health worker at facility {facility_id}
     // TODO: or do we want to show all positions even if they dont have that position at facility {facility_id}??
+    // --> I think we show all their positions at all facilities?
     const employee_positions = all_employment.filter((employee) =>
       employee.facility_id === facility_id
     )
