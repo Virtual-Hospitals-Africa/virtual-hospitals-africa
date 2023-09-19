@@ -1,4 +1,9 @@
-import { NurseSpeciality, Specialities, TrxOrDb, ReturnedSqlRow } from '../../types.ts'
+import {
+  NurseSpeciality,
+  ReturnedSqlRow,
+  Specialities,
+  TrxOrDb,
+} from '../../types.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -17,7 +22,7 @@ export function getByHealthWorker(
   trx: TrxOrDb,
   opts: {
     health_worker_id: number
-  }
+  },
 ): Promise<ReturnedSqlRow<Specialities>[]> {
   return trx.selectFrom('nurse_specialities')
     .where('employee_id', '=', opts.health_worker_id)

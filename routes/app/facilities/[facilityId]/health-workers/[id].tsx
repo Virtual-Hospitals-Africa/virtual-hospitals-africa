@@ -67,9 +67,12 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
       ctx.state.trx,
       { healthWorkerId: health_worker_id },
     )
-    assert(nurseRegistrationDetails, `Nurse registration not found for health worker ${health_worker_id}`)
+    assert(
+      nurseRegistrationDetails,
+      `Nurse registration not found for health worker ${health_worker_id}`,
+    )
 
-    // TODO: what if not a nurse but doctor/admin? where do we get registration info? 
+    // TODO: what if not a nurse but doctor/admin? where do we get registration info?
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
@@ -92,7 +95,23 @@ export default function HealthWorkerPage(
     >
       <Container size='lg'>
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-          <SectionHeader>
+          <div className='my-6 overflow-hidden bg-slate-50'>
+            <img
+              className='h-20 w-20 object-cover display:inline rounded-full'
+              src={''}
+              alt=''
+              width={48}
+              height={48}
+            />
+            <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
+              {props.data.healthWorker.name}
+            </dt>
+            <dt className='text-sm font-sm leading-6 text-gray-400'>
+              {props.data.employee_positions[0].profession}
+            </dt>
+          </div>
+          <div className='my-6 py-1 px-4 rounded-md bg-gray-300'></div>
+          <SectionHeader className='mb-1'>
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCardProps
