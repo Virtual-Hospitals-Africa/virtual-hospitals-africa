@@ -3,11 +3,11 @@ import { Footer } from './Footer.tsx'
 import { FreeChapters } from './FreeChapters.tsx'
 import { Hero } from './Hero.tsx'
 import { Introduction } from './Introduction.tsx'
-import { NavBar } from './NavBar.tsx'
-import { Pricing } from './Pricing.tsx'
+import NavBar from '../../islands/landing-page/NavBar.tsx'
 import { Research } from './Research.tsx'
-import { Screencasts } from './Screencasts.tsx'
-import { TableOfContents } from './TableOfContents.tsx'
+import { Patients } from './Patients.tsx'
+import { HealthWorkers } from './HealthWorkers.tsx'
+import { TeamSection } from './Team.tsx'
 import { Testimonial } from './Testimonial.tsx'
 import { Testimonials } from './Testimonials.tsx'
 
@@ -17,7 +17,7 @@ export default function Home() {
       <Hero />
       <Introduction />
       <NavBar />
-      <TableOfContents />
+      <HealthWorkers />
       <Testimonial
         id='testimonial-from-tommy-stroman'
         author={{
@@ -31,7 +31,7 @@ export default function Home() {
           can create any icon I need in no time. Great resource!” Wow!
         </p>
       </Testimonial>
-      <Screencasts />
+      <Patients />
       <Testimonial
         id='testimonial-from-gerardo-stark'
         author={{
@@ -47,9 +47,9 @@ export default function Home() {
       </Testimonial>
       <Research />
       <FreeChapters />
-      <Pricing />
       <Testimonials />
       <Partners />
+      <TeamSection />
       <Footer />
     </>
   )

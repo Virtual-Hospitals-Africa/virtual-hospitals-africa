@@ -4,19 +4,11 @@ import cls from '../../util/cls.ts'
 import { Button } from '../../components/library/Button.tsx'
 
 const sections = [
-  {
-    id: 'table-of-contents',
-    title: (
-      <>
-        <span className='hidden lg:inline'>Table of contents</span>
-        <span className='lg:hidden'>Contents</span>
-      </>
-    ),
-  },
-  { id: 'screencasts', title: 'Screencasts' },
-  { id: 'resources', title: 'Resources' },
-  { id: 'pricing', title: 'Pricing' },
+  { id: 'health-workers', title: 'Health Workers' },
+  { id: 'patients', title: 'Patients' },
+  { id: 'research', title: 'Research' },
   { id: 'partners', title: 'Partners' },
+  { id: 'team', title: 'Team' },
 ]
 
 function MenuIcon({ open, ...props }: any) {
@@ -37,15 +29,17 @@ function MenuIcon({ open, ...props }: any) {
   )
 }
 
-export function NavBar() {
+export default function NavBar() {
   let navBarRef = useRef()
   let [activeIndex, setActiveIndex] = useState(null)
   let mobileActiveIndex = activeIndex === null ? 0 : activeIndex
 
   useEffect(() => {
     function updateActiveIndex() {
+      console.log('updateActiveIndex')
       let newActiveIndex = null
       let elements = sections.map(({ id }) => document.getElementById(id))
+      console.log('elements', elements)
       let bodyRect = document.body.getBoundingClientRect()
       // @ts-ignore
       let offset = bodyRect.top + navBarRef.current.offsetHeight + 1
@@ -85,9 +79,6 @@ export function NavBar() {
 
   return (
     <div ref={navBarRef as any} className='sticky top-0 z-50'>
-      <Button href='#free-chapters' color='blue'>
-        Sign In
-      </Button>
       <div className='hidden sm:flex sm:h-32 sm:justify-center sm:border-b sm:border-slate-200 sm:bg-white/95 sm:[@supports(backdrop-filter:blur(0))]:bg-white/80 sm:[@supports(backdrop-filter:blur(0))]:backdrop-blur'>
         <ol
           role='list'
@@ -98,7 +89,7 @@ export function NavBar() {
               <a
                 href={`#${section.id}`}
                 className={cls(
-                  'flex w-full flex-col items-center justify-center border-b-2 before:mb-2 before:font-mono before:text-sm before:content-[counter(section,decimal-leading-zero)]',
+                  'flex w-full flex-col items-center justify-center border-b-2 before:mb-2 before:font-mono before:text-sm',
                   sectionIndex === activeIndex
                     ? 'border-blue-600 bg-blue-50 text-blue-600 before:text-blue-600'
                     : 'border-transparent before:text-slate-500 hover:bg-blue-50/40 hover:before:text-slate-900',
