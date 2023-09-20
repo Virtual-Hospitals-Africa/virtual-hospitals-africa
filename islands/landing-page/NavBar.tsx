@@ -1,7 +1,8 @@
+// deno-lint-ignore-file no-explicit-any
 import { useEffect, useRef, useState } from 'preact/hooks'
 // import { Popover } from '@headlessui/react'
 import cls from '../../util/cls.ts'
-import { Button } from '../../components/library/Button.tsx'
+import { assert } from 'std/_util/asserts.ts'
 
 const sections = [
   { id: 'health-workers', title: 'Health Workers' },
@@ -11,41 +12,43 @@ const sections = [
   { id: 'team', title: 'Team' },
 ]
 
-function MenuIcon({ open, ...props }: any) {
-  return (
-    <svg
-      aria-hidden='true'
-      fill='none'
-      strokeWidth='2'
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      viewBox='0 0 24 24'
-      {...props}
-    >
-      <path
-        d={open ? 'M17 7 7 17M7 7l10 10' : 'm15 16-3 3-3-3M15 8l-3-3-3 3'}
-      />
-    </svg>
-  )
-}
+// function MenuIcon({ open, ...props }: any) {
+//   return (
+//     <svg
+//       aria-hidden='true'
+//       fill='none'
+//       strokeWidth='2'
+//       strokeLinecap='round'
+//       strokeLinejoin='round'
+//       viewBox='0 0 24 24'
+//       {...props}
+//     >
+//       <path
+//         d={open ? 'M17 7 7 17M7 7l10 10' : 'm15 16-3 3-3-3M15 8l-3-3-3 3'}
+//       />
+//     </svg>
+//   )
+// }
 
 export default function NavBar() {
-  let navBarRef = useRef()
-  let [activeIndex, setActiveIndex] = useState(null)
-  let mobileActiveIndex = activeIndex === null ? 0 : activeIndex
+  const navBarRef = useRef<HTMLElement>()
+  const [activeIndex, setActiveIndex] = useState<null | number>(null)
+  // let mobileActiveIndex = activeIndex === null ? 0 : activeIndex
 
   useEffect(() => {
     function updateActiveIndex() {
-      console.log('updateActiveIndex')
       let newActiveIndex = null
-      let elements = sections.map(({ id }) => document.getElementById(id))
-      console.log('elements', elements)
-      let bodyRect = document.body.getBoundingClientRect()
-      // @ts-ignore
-      let offset = bodyRect.top + navBarRef.current.offsetHeight + 1
+      const elements = sections.map(({ id }) => {
+        const element = document.getElementById(id)
+        assert(element, `No element found with id "${id}"`)
+        return element
+      })
+      const bodyRect = document.body.getBoundingClientRect()
+
+      assert(navBarRef.current)
+      const offset = bodyRect.top + navBarRef.current.offsetHeight + 1
 
       if (window.scrollY >= Math.floor(bodyRect.height) - window.innerHeight) {
-        // @ts-ignore
         setActiveIndex(sections.length - 1)
         return
       }
@@ -53,7 +56,6 @@ export default function NavBar() {
       for (let index = 0; index < elements.length; index++) {
         if (
           window.scrollY >=
-            // @ts-ignore
             elements[index].getBoundingClientRect().top - offset
         ) {
           newActiveIndex = index
@@ -62,18 +64,17 @@ export default function NavBar() {
         }
       }
 
-      // @ts-ignore
       setActiveIndex(newActiveIndex)
     }
 
     updateActiveIndex()
 
-    window.addEventListener('resize', updateActiveIndex)
-    window.addEventListener('scroll', updateActiveIndex, { passive: true })
+    addEventListener('resize', updateActiveIndex)
+    addEventListener('scroll', updateActiveIndex, { passive: true })
 
     return () => {
-      window.removeEventListener('resize', updateActiveIndex)
-      window.removeEventListener('scroll', updateActiveIndex)
+      removeEventListener('resize', updateActiveIndex)
+      removeEventListener('scroll', updateActiveIndex)
     }
   }, [])
 
