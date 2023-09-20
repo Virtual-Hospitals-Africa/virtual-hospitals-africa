@@ -2,8 +2,7 @@ import { LoggedInHealthWorkerHandler } from '../../../../../../types.ts'
 import { file } from '../../../../../../util/responses.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../../../db/models/health_workers.ts'
 import { assert } from 'std/testing/asserts.ts'
-import * as media from '../../../../../../db/models/media.ts'
-import { checkMediaInAppointment } from '../../../../../../db/models/appointments.ts'
+import { checkAndGetMediaInAppointment } from '../../../../../../db/models/appointments.ts'
 
 export const handler: LoggedInHealthWorkerHandler = {
   async GET(_, ctx) {
@@ -17,18 +16,8 @@ export const handler: LoggedInHealthWorkerHandler = {
     const healthWorker = ctx.state.session.data
     assert(isHealthWorkerWithGoogleTokens(healthWorker))
 
-    //Check if media is associated with appointment
-    const isAppointmentMediaAssociated = await checkMediaInAppointment(
-      ctx.state.trx,
-      { media_id, appointment_id },
-    )
-    console.log(isAppointmentMediaAssociated)
-    assert(
-      isAppointmentMediaAssociated,
-      'the media does not associated with this appointment',
-    )
-    const appointment_media = await media.get(ctx.state.trx, {
-      media_id,
+    const appointment_media = await checkAndGetMediaInAppointment(ctx.state.trx, {
+      media_id, appointment_id
     })
 
     const mediaData = appointment_media.binary_data

@@ -11,11 +11,13 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
+  Media
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import { getWithMedicalRecords } from './patients.ts'
 import { assert } from 'std/testing/asserts.ts'
 import isDate from '../../util/isDate.ts'
+import * as media from './media.ts'
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -320,7 +322,7 @@ export async function insertAppointmentMedia(
   }).returningAll().executeTakeFirstOrThrow()
 }
 
-export async function getMedia(
+export async function getMedias(
   trx: TrxOrDb,
   opts: {
     appointment_id: number
@@ -337,16 +339,32 @@ export async function getMedia(
 
 }
 
+export async function checkAndGetMediaInAppointment(
+  trx: TrxOrDb,
+  opts: {
+    media_id: number,
+    appointment_id: number
+  },
+) : Promise<ReturnedSqlRow<Media>> {
+  const mediaExisted = await checkMediaInAppointment(trx, {media_id: opts.media_id, appointment_id: opts.appointment_id})
+  assert(
+    mediaExisted,
+    `the media ${opts.media_id} does not associated with the appointment ${opts.appointment_id}`,
+  )
+  return await media.get(trx, {media_id: opts.media_id})
+}
+
 export async function checkMediaInAppointment(
   trx: TrxOrDb,
   opts: {
     media_id: number
     appointment_id: number
   },
-) {
-  const queryResult = await sql`SELECT 1 as result_value
-    FROM appointment_media
-    WHERE media_id = ${opts.media_id} AND appointment_id = ${opts.appointment_id}`
-    .execute(trx)
-  return queryResult.rows[0]
+) : Promise<boolean>{
+  const queryResult = await trx.selectFrom('appointment_media')
+  .where('media_id', '=', opts.media_id)
+  .where('appointment_id', '=', opts.appointment_id)
+  .select('media_id')
+  .executeTakeFirstOrThrow()
+  return !!queryResult.media_id
 }

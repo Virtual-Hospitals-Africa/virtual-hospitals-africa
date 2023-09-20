@@ -32,7 +32,7 @@ export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
       health_worker_id: healthWorker.id,
     })
 
-    const appointment_medias = await appointments.getMedia(
+    const appointment_medias = await appointments.getMedias(
       ctx.state.trx,
       { appointment_id: id },
     )
@@ -60,7 +60,7 @@ export default function AppointmentPage(
       <PatientDetailedCard patient={props.data.appointment.patient} />
       <AppointmentDetail
         appointment={props.data.appointment}
-        mediaFiles={props.data.medias}
+        medias={props.data.medias}
       />
     </Layout>
   )
