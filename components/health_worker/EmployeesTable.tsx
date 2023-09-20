@@ -23,6 +23,34 @@ export type Invitee = {
   profession: string
 }
 
+export function concatEmployeeProfessions(employees: Employee[]): Array<Employee> {
+
+  const inviteeMap = new Map<string, string>()
+  const returnEmployees: Employee[] = new Array<Employee>()
+
+  employees.forEach((employee) => {
+    if (inviteeMap.has(employee.name)) {
+      inviteeMap.set(employee.name, inviteeMap.get(employee.name) + ", " + employee.profession)
+    } else {
+      inviteeMap.set(employee.name, employee.profession)
+    }
+  });
+
+  employees.forEach((employee) => {
+    if (inviteeMap.has(employee.name)) {
+        console.log("Found " + employee.name)
+      returnEmployees.push({
+        name: employee.name,
+        profession: inviteeMap.get(employee.name) as string,
+        avatar_url: employee.avatar_url,
+      })
+      inviteeMap.delete(employee.name)
+    }
+  });
+
+  return returnEmployees;
+}
+
 export function transformInviteesToEmployees(invitees: Invitee[]): Employee[] {
   return invitees.map((invitee) => ({
     name: invitee.email,
@@ -36,9 +64,10 @@ export default function EmployeesTable({
   pathname,
   invitees,
 }: EmployeesTableProps): JSX.Element {
-  let employeesToDisplay = employees
+  let employeesToDisplay = concatEmployeeProfessions(employees)
+
   if (isAdmin) {
-    employeesToDisplay = employees.concat(
+    employeesToDisplay = employeesToDisplay.concat(
       transformInviteesToEmployees(invitees),
     )
   }

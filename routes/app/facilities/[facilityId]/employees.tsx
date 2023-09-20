@@ -13,6 +13,7 @@ import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable, {
   Employee,
   Invitee,
+  concatEmployeeProfessions,
 } from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'

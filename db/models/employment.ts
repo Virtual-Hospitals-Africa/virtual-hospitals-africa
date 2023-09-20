@@ -155,6 +155,11 @@ export function getByFacility(
       'avatar_url',
     ])
     .execute()
+    // .select(
+    //   ({ fn }) => [
+    //     fn.agg<string[]>('array_agg', 'profession').as('professions'),
+    //   ]
+    // )
 }
 
 export function getMatching(
