@@ -79,7 +79,7 @@ export default function NavBar() {
   }, [])
 
   return (
-    <div ref={navBarRef as any} className='sticky top-0 z-50'>
+    <div ref={navBarRef as any} className='sticky top-0 z-50 bg-white'>
       <div className='hidden sm:flex sm:h-32 sm:justify-center sm:border-b sm:border-slate-200 sm:bg-white/95 sm:[@supports(backdrop-filter:blur(0))]:bg-white/80 sm:[@supports(backdrop-filter:blur(0))]:backdrop-blur'>
         <ol
           role='list'
@@ -93,7 +93,7 @@ export default function NavBar() {
                   'flex w-full flex-col items-center justify-center border-b-2 before:mb-2 before:font-mono before:text-sm',
                   sectionIndex === activeIndex
                     ? 'border-blue-600 bg-blue-50 text-blue-600 before:text-blue-600'
-                    : 'border-transparent before:text-slate-500 hover:bg-blue-50/40 hover:before:text-slate-900',
+                    : 'border-transparent bg-white before:text-slate-500 hover:bg-blue-50/40 hover:before:text-slate-900',
                 )}
               >
                 {section.title}
