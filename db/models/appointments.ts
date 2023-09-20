@@ -326,22 +326,15 @@ export async function getMedia(
     appointment_id: number
   },
 ): Promise<{ media_id: number; mime_type: string }[]> {
-  const read_result = await trx.selectFrom('appointment_media').where(
-    'appointment_id',
-    '=',
-    opts.appointment_id,
-  ).select('media_id').execute()
+  const read_result = await trx.selectFrom('appointment_media')
+  .innerJoin('media', 'media.id', 'media_id')
+  .select(['media_id', 'media.mime_type as mime_type'])
+  .where('appointment_id', '=', opts.appointment_id)
+  .execute()
 
-  const medias = []
-  for (const { media_id } of read_result) {
-    const { mime_type } = await trx.selectFrom('media').where(
-      'media.id',
-      '=',
-      media_id,
-    ).select('media.mime_type').executeTakeFirstOrThrow()
-    medias.push({ media_id, mime_type })
-  }
-  return medias
+  console.log(`get media result...: ${read_result}`)
+  return read_result
+
 }
 
 export async function checkMediaInAppointment(
