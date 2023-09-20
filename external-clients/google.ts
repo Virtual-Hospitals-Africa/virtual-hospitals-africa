@@ -121,6 +121,9 @@ export class GoogleClient {
       throw new Error('Unauthorized')
     }
     if (response.result === 'other_error') {
+      if ('email' in this.tokens) {
+        console.error(this.tokens.email)
+      }
       throw response.error
     }
     return response.data
