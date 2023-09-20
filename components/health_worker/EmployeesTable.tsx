@@ -25,14 +25,15 @@ export type Invitee = {
 
 export function concatEmployeeProfessions(employees: Employee[]): Array<Employee> {
 
-  const inviteeMap = new Map<string, string>()
+  const inviteeMap = new Map<string, string[]>()
   const returnEmployees: Employee[] = new Array<Employee>()
 
   employees.forEach((employee) => {
     if (inviteeMap.has(employee.name)) {
-      inviteeMap.set(employee.name, inviteeMap.get(employee.name) + ", " + employee.profession)
+      const professions = inviteeMap.get(employee.name)!
+      inviteeMap.set(employee.name, professions.concat(employee.profession))
     } else {
-      inviteeMap.set(employee.name, employee.profession)
+      inviteeMap.set(employee.name, [employee.profession])
     }
   });
 
@@ -41,7 +42,7 @@ export function concatEmployeeProfessions(employees: Employee[]): Array<Employee
         console.log("Found " + employee.name)
       returnEmployees.push({
         name: employee.name,
-        profession: inviteeMap.get(employee.name) as string,
+        profession: inviteeMap.get(employee.name)!.sort().join(', ')!,
         avatar_url: employee.avatar_url,
       })
       inviteeMap.delete(employee.name)
