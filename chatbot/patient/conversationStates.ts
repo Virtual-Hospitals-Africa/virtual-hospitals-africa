@@ -376,7 +376,7 @@ const conversationStates: ConversationStates<
       assert(patientState.scheduling_appointment_request)
 
       assert(patientState.media_id)
-      await appointments.insertAppointmentRequestMedia(trx, {
+      await appointments.insertRequestMedia(trx, {
         patient_appointment_request_id:
           patientState.scheduling_appointment_request.id,
         media_id: patientState.media_id,

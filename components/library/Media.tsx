@@ -12,5 +12,5 @@ export default function Media(
       </audio>
     )
   }
-  throw('Unspported Media Type: {mime_type}')
+  throw ('Unspported Media Type: {mime_type}')
 }

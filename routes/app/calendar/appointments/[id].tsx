@@ -10,13 +10,11 @@ import {
 } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import { get, retrieveImage } from '../../../../db/models/media.ts'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
   healthWorker: ReturnedSqlRow<HealthWorker>
-  medias: { media_id: number; mime_type: string }[]
 }
 
 export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
@@ -32,17 +30,11 @@ export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
       health_worker_id: healthWorker.id,
     })
 
-    const appointment_medias = await appointments.getMedias(
-      ctx.state.trx,
-      { appointment_id: id },
-    )
-
     assert(appointment, 'Appointment not found')
 
     return ctx.render({
       appointment,
       healthWorker,
-      medias: appointment_medias,
     })
   },
 }
@@ -60,7 +52,6 @@ export default function AppointmentPage(
       <PatientDetailedCard patient={props.data.appointment.patient} />
       <AppointmentDetail
         appointment={props.data.appointment}
-        medias={props.data.medias}
       />
     </Layout>
   )
