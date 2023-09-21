@@ -39,7 +39,7 @@ describe('patient chatbot', () => {
   it('provides with other_appointment_times after choosing other_time_option', async () => {
     const patientBefore = await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -192,7 +192,7 @@ describe('patient chatbot', () => {
     })
 
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

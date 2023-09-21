@@ -14,7 +14,6 @@ export async function handler(
     }
   >,
 ) {
-  console.log('foo', ctx)
   const { trx } = ctx.state
   const healthWorker = ctx.state.session.data
   assert(isHealthWorkerWithGoogleTokens(healthWorker))

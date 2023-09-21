@@ -28,7 +28,7 @@ describe('patient chatbot', () => {
   it('provides with cancel_appointment_option after confirming another appointment', async () => {
     const patientBefore = await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -116,11 +116,11 @@ describe('patient chatbot', () => {
           buttonText: 'Menu',
           options: [{ id: 'cancel', title: 'Cancel Appointment' }],
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

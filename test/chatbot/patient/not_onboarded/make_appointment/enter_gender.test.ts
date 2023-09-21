@@ -15,7 +15,7 @@ describe('patient chatbot', () => {
   it('asks for birthday after inquiring gender', async () => {
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_gender',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: null,
       date_of_birth: null,
@@ -47,11 +47,11 @@ describe('patient chatbot', () => {
             'Thanks for that information. What is your date of birth? Please enter the date in the format DD/MM/YYYY',
           type: 'string',
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

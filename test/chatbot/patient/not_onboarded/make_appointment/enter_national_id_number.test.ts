@@ -16,7 +16,7 @@ describe('patient chatbot', () => {
     await patients.upsert(db, {
       conversation_state:
         'not_onboarded:make_appointment:enter_national_id_number',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -48,11 +48,11 @@ describe('patient chatbot', () => {
             'Got it, 123456. What is the reason you want to schedule an appointment?',
           type: 'string',
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

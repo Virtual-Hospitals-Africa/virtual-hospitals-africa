@@ -15,7 +15,7 @@ describe('patient chatbot', () => {
   it('ends after not confriming first scheduling option ', async () => {
     await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -47,11 +47,11 @@ describe('patient chatbot', () => {
           messageBody:
             'This is the end of the demo. Thank you for participating!',
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)
