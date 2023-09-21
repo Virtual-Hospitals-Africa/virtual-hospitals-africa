@@ -5,7 +5,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { SqlBool } from 'kysely'
+import { SqlBool, sql } from 'kysely'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
@@ -155,6 +155,69 @@ export function getByFacility(
       'avatar_url',
     ])
     .execute()
+}
+
+export async function getEmployeeAndInviteeByFacility(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+  }
+): Promise<
+{
+  name: string
+  is_invitee: boolean
+  health_worker_id: number
+  professions: Profession[]
+  avatar_url: string
+}[] > {
+  // deno-lint-ignore no-explicit-any
+  const result = await sql<any>`
+    SELECT
+      FALSE AS is_invitee,
+      health_workers.id AS health_worker_id,
+      health_workers.name AS name,
+      JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
+      health_workers.avatar_url AS avatar_url
+    FROM
+      health_workers
+    INNER JOIN
+      employment
+    ON
+      employment.health_worker_id = health_workers.id
+    WHERE
+      employment.facility_id = ${opts.facility_id}
+    GROUP BY
+      health_workers.id
+
+    UNION ALL
+
+    SELECT
+      TRUE AS is_invitee,
+      NULL AS health_worker_id,
+      health_worker_invitees.email AS name,
+      JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
+      NULL AS avatar_url
+    FROM
+      health_worker_invitees
+    WHERE
+      health_worker_invitees.facility_id = ${opts.facility_id}
+    GROUP BY
+      health_worker_invitees.id
+  `.execute(trx)
+
+  const rows = await Promise.all(result.rows.map((row) => {
+    const toPush = {
+      name: row.name,
+      is_invitee: row.is_invitee,
+      health_worker_id: row.health_worker_id,
+      professions: row.professions,
+      avatar_url: row.avatar_url
+    }
+    
+    return toPush
+  }))
+
+  return rows;
 }
 
 export function getMatching(

@@ -13,7 +13,6 @@ import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable, {
   Employee,
   Invitee,
-  concatEmployeeProfessions,
 } from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
@@ -44,18 +43,39 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
         facility_id: facility_id,
       },
     )
-    const employees = await employment.getByFacility(
+
+    const employeesAndInvitees = await employment.getEmployeeAndInviteeByFacility(
       ctx.state.trx,
       { facility_id },
     )
+    
+    const employees = employeesAndInvitees
+      .filter((employee) => 
+        employee.is_invitee === false)
+      .map((employee) => {
+        return {
+          name: employee.name,
+          health_worker_id: employee.health_worker_id,
+          professions: employee.professions.join(", "),
+          avatar_url: employee.avatar_url
+        }
+    })
+
     const isEmployeeAtFacility = employees.some((employee) =>
-      employee.id === healthWorker.id
+      employee.health_worker_id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
-    const invitees = await health_workers.getInviteesAtFacility(
-      ctx.state.trx,
-      facility_id,
-    )
+
+    const invitees = employeesAndInvitees
+      .filter((invitee) =>
+        invitee.is_invitee === true)
+      .map((invitee) => {
+        return {
+          email: invitee.name,
+          professions: invitee.professions.join(", ")
+        }
+      })
+
     return ctx.render({ isAdmin, employees, invitees, healthWorker, facility })
   },
 }

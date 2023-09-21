@@ -14,48 +14,19 @@ type EmployeesTableProps = {
 
 export type Employee = {
   name: string
-  profession: string
+  professions: string
   avatar_url?: string
 }
 
 export type Invitee = {
   email: string
-  profession: string
-}
-
-export function concatEmployeeProfessions(employees: Employee[]): Array<Employee> {
-
-  const inviteeMap = new Map<string, string[]>()
-  const returnEmployees: Employee[] = new Array<Employee>()
-
-  employees.forEach((employee) => {
-    if (inviteeMap.has(employee.name)) {
-      const professions = inviteeMap.get(employee.name)!
-      inviteeMap.set(employee.name, professions.concat(employee.profession))
-    } else {
-      inviteeMap.set(employee.name, [employee.profession])
-    }
-  });
-
-  employees.forEach((employee) => {
-    if (inviteeMap.has(employee.name)) {
-        console.log("Found " + employee.name)
-      returnEmployees.push({
-        name: employee.name,
-        profession: inviteeMap.get(employee.name)!.sort().join(', ')!,
-        avatar_url: employee.avatar_url,
-      })
-      inviteeMap.delete(employee.name)
-    }
-  });
-
-  return returnEmployees;
+  professions: string
 }
 
 export function transformInviteesToEmployees(invitees: Invitee[]): Employee[] {
   return invitees.map((invitee) => ({
     name: invitee.email,
-    profession: invitee.profession,
+    professions: invitee.professions,
   }))
 }
 
@@ -65,10 +36,10 @@ export default function EmployeesTable({
   pathname,
   invitees,
 }: EmployeesTableProps): JSX.Element {
-  let employeesToDisplay = concatEmployeeProfessions(employees)
+  let employeesToDisplay = employees
 
   if (isAdmin) {
-    employeesToDisplay = employeesToDisplay.concat(
+    employeesToDisplay = employees.concat(
       transformInviteesToEmployees(invitees),
     )
   }
@@ -85,7 +56,7 @@ export default function EmployeesTable({
     },
     {
       label: 'Profession',
-      dataKey: 'profession',
+      dataKey: 'professions',
       type: 'content',
     },
   ]
