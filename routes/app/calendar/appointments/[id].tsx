@@ -10,13 +10,13 @@ import {
 } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import { retrieveImage } from '../../../../db/models/media.ts'
+import { retrieveImage, get } from '../../../../db/models/media.ts'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
   healthWorker: ReturnedSqlRow<HealthWorker>
-  medias: BinaryData[]
+  medias: {binary_data:BinaryData, mime_type:string} []
 }
 
 export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
@@ -32,16 +32,19 @@ export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
       health_worker_id: healthWorker.id,
     })
 
-    const appointment_medias = await appointments.getAppointmentMediaId(ctx.state.trx, {appointment_id: id})
-    const media_binary = appointment_medias.map(media_id => retrieveImage(ctx.state.trx, {media_id}))
-    const resolved_binary = await Promise.all(media_binary)
-
+    const appointment_media_ids = await appointments.getAppointmentMediaId(ctx.state.trx, {appointment_id: id})
+    const appointment_medias = appointment_media_ids.map(media_id => get(ctx.state.trx, {media_id}))
+    const resolved_appointment_medias = await Promise.all(appointment_medias)
+    const media_details = resolved_appointment_medias.map(resolved_media => ({
+      binary_data: resolved_media.binary_data,
+      mime_type: resolved_media.mime_type,
+    }));    
     assert(appointment, 'Appointment not found')
-
+    
     return ctx.render({
       appointment,
       healthWorker,
-      medias: resolved_binary
+      medias: media_details
     })
   },
 }
