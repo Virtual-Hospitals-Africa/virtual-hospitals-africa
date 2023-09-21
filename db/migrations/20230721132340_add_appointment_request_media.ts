@@ -1,9 +1,20 @@
-import { Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db
     .schema
     .createTable('patient_appointment_request_media')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
     .addColumn(
       'patient_appointment_request_id',
       'integer',
