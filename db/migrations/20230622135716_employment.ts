@@ -14,6 +14,16 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('employment')
     .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
     .addColumn('health_worker_id', 'integer', (col) =>
       col.notNull()
         .references('health_workers.id')
