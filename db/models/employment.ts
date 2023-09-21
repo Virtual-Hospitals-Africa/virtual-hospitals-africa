@@ -5,7 +5,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { SqlBool, sql } from 'kysely'
+import { sql, SqlBool } from 'kysely'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
@@ -161,15 +161,16 @@ export async function getEmployeeAndInviteeByFacility(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<
-{
-  name: string
-  is_invitee: boolean
-  health_worker_id: number
-  professions: Profession[]
-  avatar_url: string
-}[] > {
+  {
+    name: string
+    is_invitee: boolean
+    health_worker_id: number
+    professions: Profession[]
+    avatar_url: string
+  }[]
+> {
   // deno-lint-ignore no-explicit-any
   const result = await sql<any>`
     SELECT
@@ -211,13 +212,13 @@ export async function getEmployeeAndInviteeByFacility(
       is_invitee: row.is_invitee,
       health_worker_id: row.health_worker_id,
       professions: row.professions,
-      avatar_url: row.avatar_url
+      avatar_url: row.avatar_url,
     }
-    
+
     return toPush
   }))
 
-  return rows;
+  return rows
 }
 
 export function getMatching(

@@ -44,22 +44,22 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       },
     )
 
-    const employeesAndInvitees = await employment.getEmployeeAndInviteeByFacility(
-      ctx.state.trx,
-      { facility_id },
-    )
-    
+    const employeesAndInvitees = await employment
+      .getEmployeeAndInviteeByFacility(
+        ctx.state.trx,
+        { facility_id },
+      )
+
     const employees = employeesAndInvitees
-      .filter((employee) => 
-        employee.is_invitee === false)
+      .filter((employee) => employee.is_invitee === false)
       .map((employee) => {
         return {
           name: employee.name,
           health_worker_id: employee.health_worker_id,
-          professions: employee.professions.join(", "),
-          avatar_url: employee.avatar_url
+          professions: employee.professions.join(', '),
+          avatar_url: employee.avatar_url,
         }
-    })
+      })
 
     const isEmployeeAtFacility = employees.some((employee) =>
       employee.health_worker_id === healthWorker.id
@@ -67,12 +67,11 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
     if (!isEmployeeAtFacility) return redirect('/app')
 
     const invitees = employeesAndInvitees
-      .filter((invitee) =>
-        invitee.is_invitee === true)
+      .filter((invitee) => invitee.is_invitee === true)
       .map((invitee) => {
         return {
           email: invitee.name,
-          professions: invitee.professions.join(", ")
+          professions: invitee.professions.join(', '),
         }
       })
 
