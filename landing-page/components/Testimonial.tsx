@@ -1,8 +1,14 @@
+import { JSX } from 'preact'
 import { Container } from '../../components/library/Container.tsx'
-import { GridPattern } from '../../components/library/GridPattern.tsx'
-import { StarRating } from './StarRating.tsx'
+import GridPattern from '../../islands/landing-page/GridPattern.tsx'
 
-export function Testimonial({ id, author, children }: any) {
+export function Testimonial(
+  { id, author, children }: {
+    id: string
+    author: { name: string; image: string; role: string }
+    children: JSX.Element
+  },
+) {
   return (
     <aside
       id={id}
@@ -10,13 +16,14 @@ export function Testimonial({ id, author, children }: any) {
       className='relative bg-slate-100 py-16 sm:py-32'
     >
       <div className='text-slate-900/10'>
-        <GridPattern x='50%' patternTransform='translate(0 80)' />
+        <GridPattern
+          x='50%'
+          patternTransform='translate(0 80)'
+          className='bg-slate-100'
+        />
       </div>
       <Container size='xs' className='relative'>
         <figure>
-          <div className='flex text-slate-900 sm:justify-center'>
-            <StarRating />
-          </div>
           <blockquote className='mt-10 font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-center'>
             {children}
           </blockquote>

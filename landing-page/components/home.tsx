@@ -27,8 +27,8 @@ export default function Home() {
         }}
       >
         <p>
-          “I didn’t know a thing about icon design until I read this book. Now I
-          can create any icon I need in no time. Great resource!” Wow!
+          “Equipping health facilities with Virtual Hospitals Africa will be a
+          game changer in how care is provided in Southern Africa and beyond”
         </p>
       </Testimonial>
       <Patients />
@@ -36,13 +36,14 @@ export default function Home() {
         id='testimonial-from-gerardo-stark'
         author={{
           name: 'Gerardo Stark',
-          role: 'Creator of Pandemicons',
+          role: 'Patient',
           image: '/images/avatars/avatar-2.png',
         }}
       >
         <p>
-          “I’ve tried to create my own icons in the past but quickly got
-          frustrated and gave up. Now I sell my own custom icon sets online.”
+          “The nearest hospital is a 25 mile walk away, so often I just wouldn’t
+          go even if I was sick. I feel so much better knowing I can get my
+          questions answered and medications sent out from home.”
         </p>
       </Testimonial>
       <Research />

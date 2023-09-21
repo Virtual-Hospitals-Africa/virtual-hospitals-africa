@@ -1,5 +1,6 @@
 import { Container } from '../../components/library/Container.tsx'
-import { IdentificationIcon } from '../../components/library/icons/heroicons.tsx'
+import { IdentificationIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import { FeatureGrid } from './FeatureGrid.tsx'
 // import { Expandable } from './Expandable.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
@@ -35,6 +36,34 @@ export function HealthWorkers() {
           </a>
         </p>
       </Container>
+      <FeatureGrid
+        features={[
+          {
+            title: 'Crystal Clear Medical Records',
+            description:
+              'Find and evaluate patient medical records quickly and easily.',
+            image: '/images/screencasts/setup.svg',
+          },
+          {
+            title: 'One Click Prescriptions',
+            description:
+              'Upon making a diagnosis, health workers can send prescriptions to local pharmacies with a single click.',
+            image: '/images/screencasts/grids.svg',
+          },
+          {
+            title: 'Painless Follow Up',
+            description:
+              'When needed, create follow up appointments with other doctors or specialists even those at other facilities.',
+            image: '/images/screencasts/strokes.svg',
+          },
+          {
+            title: 'Built-in Metrics',
+            description:
+              'Clinic and hospital leaders can view aggregates at a facility and country wide level to monitor and evaluate how they can improve patient outcomes.',
+            image: '/images/screencasts/duotone.svg',
+          },
+        ]}
+      />
     </section>
   )
 }

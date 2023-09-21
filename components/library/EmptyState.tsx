@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
-import { PlusIcon } from './icons/heroicons.tsx'
+import { PlusIcon } from './icons/heroicons/outline.tsx'
 import { Button } from './Button.tsx'
 
 type EmptyStateProps = {

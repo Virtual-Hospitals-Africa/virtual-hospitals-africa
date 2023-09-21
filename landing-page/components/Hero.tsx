@@ -1,7 +1,7 @@
 import { Button } from '../../components/library/Button.tsx'
-import { GridPattern } from '../../components/library/GridPattern.tsx'
+import GridPattern from '../../islands/landing-page/GridPattern.tsx'
 import { Logo } from '../../components/library/Logo.tsx'
-import { PlayCircleIcon } from '../../components/library/icons/heroicons.tsx'
+import { PlayCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 // import { StarRating } from './StarRating.tsx'
 
 // function Testimonial() {
