@@ -191,10 +191,13 @@ export async function schedule(
   const media_ids = await getMediaIdByRequestId(trx, {
     request_id: offered.patient_appointment_request_id,
   })
-  await insertMedia(trx, {
-    appointment_id: appointment.id,
-    media_ids,
-  })
+  if (media_ids.length) {
+    await insertMedia(trx, {
+      appointment_id: appointment.id,
+      media_ids,
+    })
+  }
+
   await trx
     .deleteFrom('patient_appointment_requests')
     .where('id', '=', offered.patient_appointment_request_id)
@@ -318,6 +321,8 @@ export function insertMedia(
     media_ids: number[]
   },
 ): Promise<ReturnedSqlRow<AppointmentMedia>> {
+  assert(opts.appointment_id)
+  assert(opts.media_ids.length)
   const toInsert = opts.media_ids.map((media_id) => ({
     appointment_id: opts.appointment_id,
     media_id,
