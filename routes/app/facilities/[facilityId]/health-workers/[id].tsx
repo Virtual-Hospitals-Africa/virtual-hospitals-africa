@@ -132,7 +132,11 @@ export default function HealthWorkerPage(
               {props.data.healthWorker.name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
-              {props.data.employee_positions[0].profession}
+                {props.data.employee_positions.map((item, index) => (
+                  props.data.employee_positions.length - 1 == index ? 
+                    <p key={index}>{item.profession}</p> :
+                    <p key={index}>{item.profession + ', '}</p>
+                ))}
             </dt>
           </div>
           <SectionHeader className='mb-1'>
