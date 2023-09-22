@@ -1,8 +1,9 @@
 import * as employment from '../../db/models/employment.ts'
-import { HealthWorker, NurseRegistrationDetails, Specialities } from '../../types.ts'
+import { Facility, HealthWorker, NurseRegistrationDetails, Specialities } from '../../types.ts'
 import { DownloadIcon } from '../library/icons/heroicons.tsx'
 
 type HealthWorkerDetailedCardProps = {
+  worker_facilities: Facility[]
   employee_positions: employment.HealthWorkerWithRegistrationState[]
   healthWorker: HealthWorker
   nurseRegistrationDetails: NurseRegistrationDetails
@@ -10,7 +11,7 @@ type HealthWorkerDetailedCardProps = {
 }
 
 export default function HealthWorkerDetailedCard(
-  { employee_positions, healthWorker, nurseRegistrationDetails, specialities }:
+  { worker_facilities, employee_positions, healthWorker, nurseRegistrationDetails, specialities }:
     HealthWorkerDetailedCardProps,
 ) {
   return (
@@ -121,7 +122,18 @@ export default function HealthWorkerDetailedCard(
               Clinic
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {'TBD'}
+              <ul>
+                {worker_facilities.map((item, index) => (
+                  <li key={index}>
+                    <div>
+                      {item.name}
+                    </div>
+                    <div className='pl-4 text-xs'>
+                      {item.address}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-3 sm:px-0'>

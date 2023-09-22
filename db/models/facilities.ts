@@ -73,3 +73,20 @@ export function getFirstByHealthWorker(
     .selectAll('facilities')
     .executeTakeFirst()
 }
+
+export function getByHealthWorker(
+  trx: TrxOrDb,
+  healthWorkerId: number,
+): Promise<Maybe<ReturnedSqlRow<Facility>[]>> {
+  return trx
+    .selectFrom('facilities')
+    .innerJoin(
+      'employment',
+      'facilities.id',
+      'employment.facility_id',
+    )
+    .where('employment.health_worker_id', '=', healthWorkerId)
+    .groupBy('facilities.id')
+    .selectAll('facilities')
+    .execute()
+}

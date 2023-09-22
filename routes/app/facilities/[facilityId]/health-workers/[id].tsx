@@ -13,14 +13,17 @@ import * as nurse_registration_details from '../../../../../db/models/nurse_regi
 import * as nurse_specialities from '../../../../../db/models/nurse_specialties.ts'
 
 import {
+  Facility,
   HealthWorker,
   LoggedInHealthWorkerHandler,
   NurseRegistrationDetails,
   ReturnedSqlRow,
   Specialities
 } from '../../../../../types.ts'
+import { ConsoleHandler } from 'https://deno.land/std@0.164.0/log/handlers.ts'
 
 type HealthWorkerPageProps = {
+  worker_facilities: ReturnedSqlRow<Facility>[]
   employee_positions: employment.HealthWorkerWithRegistrationState[]
   healthWorker: ReturnedSqlRow<HealthWorker>
   nurseRegistrationDetails: ReturnedSqlRow<NurseRegistrationDetails>
@@ -51,6 +54,16 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
       `Health worker ${health_worker_id} does not exist`,
     )
 
+    // get list of all facilites a health worker works at
+    const worker_facilities = await facilities.getByHealthWorker(
+      ctx.state.trx,
+      health_worker_id
+    )
+    assert(
+      worker_facilities,
+      `Clinics/facilities not found for health worker ${health_worker_id}`,
+    )
+
     // get list of all employments for a health worker {health_worker_id}
     const all_employment = await employment.getByHealthWorker(
       ctx.state.trx,
@@ -63,6 +76,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
     const employee_positions = all_employment.filter((employee) =>
       employee.facility_id === facility_id
     )
+    console.log(employee_positions)
     if (!employee_positions) return redirect('/app')
 
     // get health worker's nurse registration details
@@ -75,6 +89,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
       `Nurse registration not found for health worker ${health_worker_id}`,
     )
 
+    // get nurse specialities
     const specialities = await nurse_specialities.getByHealthWorker(
       ctx.state.trx,
       { health_worker_id: health_worker_id }
@@ -84,6 +99,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
+      worker_facilities,
       employee_positions,
       healthWorker,
       nurseRegistrationDetails,
@@ -123,6 +139,7 @@ export default function HealthWorkerPage(
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCardProps
+            worker_facilities={props.data.worker_facilities}
             employee_positions={props.data.employee_positions}
             healthWorker={props.data.healthWorker}
             nurseRegistrationDetails={props.data.nurseRegistrationDetails}
