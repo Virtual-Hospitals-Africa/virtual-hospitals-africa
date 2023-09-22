@@ -10,18 +10,21 @@ import * as employment from '../../../../../db/models/employment.ts'
 import * as facilities from '../../../../../db/models/facilities.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
+import * as nurse_specialities from '../../../../../db/models/nurse_specialties.ts'
 
 import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
   NurseRegistrationDetails,
   ReturnedSqlRow,
+  Specialities
 } from '../../../../../types.ts'
 
 type HealthWorkerPageProps = {
   employee_positions: employment.HealthWorkerWithRegistrationState[]
   healthWorker: ReturnedSqlRow<HealthWorker>
   nurseRegistrationDetails: ReturnedSqlRow<NurseRegistrationDetails>
+  specialities: ReturnedSqlRow<Specialities>[]
 }
 
 export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
@@ -72,6 +75,11 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
       `Nurse registration not found for health worker ${health_worker_id}`,
     )
 
+    const specialities = await nurse_specialities.getByHealthWorker(
+      ctx.state.trx,
+      { health_worker_id: health_worker_id }
+    )
+
     // TODO: what if not a nurse but doctor/admin? where do we get registration info?
     // maybe should assert nurseRegistrationDetails
 
@@ -79,6 +87,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
       employee_positions,
       healthWorker,
       nurseRegistrationDetails,
+      specialities
     })
   },
 }
@@ -110,7 +119,6 @@ export default function HealthWorkerPage(
               {props.data.employee_positions[0].profession}
             </dt>
           </div>
-          <div className='my-6 py-1 px-4 rounded-md bg-gray-300'></div>
           <SectionHeader className='mb-1'>
             Demographic Data
           </SectionHeader>
@@ -118,6 +126,7 @@ export default function HealthWorkerPage(
             employee_positions={props.data.employee_positions}
             healthWorker={props.data.healthWorker}
             nurseRegistrationDetails={props.data.nurseRegistrationDetails}
+            specialities={props.data.specialities}
           />
         </div>
       </Container>
