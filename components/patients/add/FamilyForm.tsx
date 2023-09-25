@@ -8,13 +8,18 @@ import AddIcon from "../../library/icons/add.tsx"
 import RemoveIcon from "../../library/icons/remove.tsx"
 import IconButton from "../../library/IconButton.tsx"
 import { useState } from "preact/hooks"
+import { AddPatientDataProps } from '../../../routes/app/patients/add.tsx'
+//import AddDependants from "../../../islands/AddDependants.tsx"
+type FamilyFormProps = AddPatientDataProps['family']
 
-export default function FamilyForm() {
+export default function FamilyForm(
+    { initialData = {} }: {initialData: Partial<FamilyFormProps> },
+) {
 
     const [otherReligion, setOtherReligion] = useState(false);
     const selectReligions = allReligions.map((religion) => { 
         return (
-            <option value='${religion}'>{religion}</option>
+            <option value='${religion}' selected={initialData.religion === religion}>{religion}</option>
         )
     })
 
@@ -28,8 +33,6 @@ export default function FamilyForm() {
             <option>{relation}</option>
         )
     })
-
-    
 
     return (
         <>
@@ -51,9 +54,9 @@ export default function FamilyForm() {
                 <SectionHeader className='mb-3'>Next of Kin</SectionHeader>
                
                 <FormRow>
-                    <TextInput name='name' required label = 'name'/>
+                    <TextInput name='Name' required label = 'Name'/>
                     <TextInput name='phone number'/>
-                    <SelectInput name='relationship' required label = 'relationship'>
+                    <SelectInput name='relationship' required label = 'Relationship'>
                         {selectRelations}
                     </SelectInput>
                 </FormRow>
@@ -61,17 +64,8 @@ export default function FamilyForm() {
                 <hr className='my-2' />
                 <section>
                     <SectionHeader className='mb-3'>Dependants</SectionHeader>
-                    <FormRow>
-                        {/* {IconButton()} */} 
-                         {/* <text size={21}>{RemoveIcon()}</text> */}
-                        {/* Function to add more Dependants  */}
-                        <TextInput name='name' required label = 'name'/>
-                        <TextInput name='phone number'/>
-                        <SelectInput name='relationship' required label = 'relationship'>
-                            {selectRelations}
-                        </SelectInput>
-                    </FormRow>
-                     {/* {IconButton(props: 'add')} */}
+                    {/* <AddDependants /> */}
+                     
                 </section>
                 <hr className='my-2' />
             <section>

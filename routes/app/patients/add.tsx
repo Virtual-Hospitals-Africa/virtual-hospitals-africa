@@ -9,6 +9,7 @@ import {
   Media,
   PatientAddress,
   PatientPersonal,
+  PatientFamily, 
   ReturnedSqlRow,
 } from '../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
@@ -35,6 +36,7 @@ import PatientConditionsForm from '../../../components/patients/add/ConditionsFo
 export type AddPatientDataProps = {
   personal: Omit<PatientPersonal, 'name'> & HasNames
   address: PatientAddress
+  family: PatientFamily
 }
 
 type AddPatientProps = {
@@ -237,7 +239,7 @@ export default function AddPatient(
             />
           )}
           {currentStep === 'family' && (
-            <FamilyForm />
+            <FamilyForm initialData = {patient.family} />
           )}
           {currentStep === 'pre-existing_conditions' && (
             <PatientConditionsForm />

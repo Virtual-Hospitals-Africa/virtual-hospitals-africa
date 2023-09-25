@@ -105,6 +105,11 @@ export type HasDemographicInfo = {
   national_id_number: string
 }
 
+export type PatientFamily = {
+  marital_status: string
+  religion: string
+}
+
 // TODO: actually define this
 export type PatientMedicalRecord = {
   allergies: string[]
