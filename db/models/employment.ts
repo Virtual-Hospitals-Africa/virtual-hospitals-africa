@@ -221,7 +221,7 @@ export async function getEmployeeAndInviteeByFacility(
         name: row.name,
         is_invitee: row.is_invitee,
         health_worker_id: row.health_worker_id,
-        professions: row.professions.join(', '),
+        professions: row.professions,
         avatar_url: row.avatar_url,
         email: row.email,
       }
