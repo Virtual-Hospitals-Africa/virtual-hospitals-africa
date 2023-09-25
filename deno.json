@@ -32,7 +32,7 @@
     "switch:prod": "cp .env.prod .env",
     "switch:local": "cp .env.local .env",
 
-    "test": "DENO_TLS_CA_STORE=system deno test -A --unsafely-ignore-certificate-errors",
+    "test": "DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unsafely-ignore-certificate-errors",
     "test:chatbot": "deno task test test/chatbot/patient/*.test.ts"
   },
   "importMap": "./import_map.json",

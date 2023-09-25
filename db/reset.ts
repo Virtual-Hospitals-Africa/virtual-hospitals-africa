@@ -1,3 +1,4 @@
+import { assert } from "std/testing/asserts.ts"
 import db from './db.ts'
 import selectAllNonMetaTables from './selectAllNonMetaTables.ts'
 
@@ -11,6 +12,7 @@ export default async function reset() {
 }
 
 export async function resetInTest() {
+  assert(Deno.env.get("IS_TEST"), "Don't run this outside tests!")
   const tables = await selectAllNonMetaTables(db)
   for (const table of tables) {
     if (table === 'facilities' || table === 'spatial_ref_sys') {

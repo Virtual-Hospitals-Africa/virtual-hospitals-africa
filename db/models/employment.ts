@@ -167,18 +167,26 @@ export async function getEmployeeAndInviteeByFacility(
     name: string
     is_invitee: boolean
     health_worker_id: number
-    professions: Profession[]
-    avatar_url: string
+    professions: string
+    avatar_url: string,
+    email: string
   }[]
 > {
-  // deno-lint-ignore no-explicit-any
-  const result = await sql<any>`
+  const result = await sql<{
+    name: string
+    is_invitee: boolean
+    health_worker_id: number
+    professions: string
+    avatar_url: string,
+    email: string
+  }>`
     SELECT
       FALSE AS is_invitee,
       health_workers.id AS health_worker_id,
       health_workers.name AS name,
       JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
       health_workers.avatar_url AS avatar_url
+      health_workers.email as email
     FROM
       health_workers
     INNER JOIN
@@ -195,9 +203,10 @@ export async function getEmployeeAndInviteeByFacility(
     SELECT
       TRUE AS is_invitee,
       NULL AS health_worker_id,
-      health_worker_invitees.email AS name,
+      NULL AS name,
       JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
       NULL AS avatar_url
+      health_worker_invitees.email as email
     FROM
       health_worker_invitees
     WHERE
@@ -206,19 +215,20 @@ export async function getEmployeeAndInviteeByFacility(
       health_worker_invitees.id
   `.execute(trx)
 
-  const rows = await Promise.all(result.rows.map((row) => {
-    const toPush = {
-      name: row.name,
-      is_invitee: row.is_invitee,
-      health_worker_id: row.health_worker_id,
-      professions: row.professions,
-      avatar_url: row.avatar_url,
+  const resultRows = result.rows.map(
+    (row) => {
+      return {
+        name: row.name,
+        is_invitee: row.is_invitee,
+        health_worker_id: row.health_worker_id,
+        professions: row.professions.join(', '),
+        avatar_url: row.avatar_url,
+        email: row.email
+      }
     }
+  )
 
-    return toPush
-  }))
-
-  return rows
+  return resultRows
 }
 
 export function getMatching(

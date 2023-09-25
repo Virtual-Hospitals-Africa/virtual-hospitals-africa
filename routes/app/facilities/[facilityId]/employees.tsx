@@ -17,6 +17,8 @@ import EmployeesTable, {
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
 import InviteSuccess from '../../../../islands/invite-success.tsx'
+import partition from '../../../../util/partition.ts'
+import { patch } from 'std/semver/mod.ts'
 
 type EmployeePageProps = {
   isAdmin: boolean
@@ -50,28 +52,29 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
         { facility_id },
       )
 
-    const employees = employeesAndInvitees
-      .filter((employee) => employee.is_invitee === false)
-      .map((employee) => {
-        return {
-          name: employee.name,
-          health_worker_id: employee.health_worker_id,
-          professions: employee.professions.join(', '),
-          avatar_url: employee.avatar_url,
-        }
-      })
+    const [employees_filtered, invitees_filtered] = partition(employeesAndInvitees, item => !item.is_invitee)
 
-    const isEmployeeAtFacility = employees.some((employee) =>
+    const isEmployeeAtFacility = employees_filtered.some((employee) =>
       employee.health_worker_id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
 
-    const invitees = employeesAndInvitees
-      .filter((invitee) => invitee.is_invitee === true)
+    const employees = employees_filtered.map(
+      (employee) => {
+        return({
+            name: employee.name,
+            professions: employee.professions,
+            avatar_url: employee.avatar_url,
+            // email: employee.email
+          })
+        }
+    )
+
+    const invitees = invitees_filtered
       .map((invitee) => {
         return {
           email: invitee.name,
-          professions: invitee.professions.join(', '),
+          professions: invitee.professions,
         }
       })
 
