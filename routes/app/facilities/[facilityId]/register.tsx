@@ -6,6 +6,7 @@ import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
 import { assert } from 'std/testing/asserts.ts'
 import {
   getStepFormData,
+  NurseRegistrationStep,
   NurseRegistrationStepNames,
   useNurseRegistrationSteps,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
@@ -41,6 +42,16 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     const healthWorker = ctx.state.session.data
     assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
     assert(healthWorker.email)
+
+    const step = new URL(req.url).searchParams.get('step')
+    // TODO: Further make this handling of multistep forms generic
+    if (
+      !NurseRegistrationStepNames.includes(
+        step as unknown as NurseRegistrationStep,
+      )
+    ) {
+      return redirect(`/app/facilities/${facilityId}/register?step=personal`)
+    }
 
     const registrationFormState = ctx.state.session.get('registrationFormState')
 
