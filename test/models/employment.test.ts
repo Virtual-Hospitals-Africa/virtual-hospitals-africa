@@ -10,19 +10,19 @@ import { Profession } from '../../types.ts'
 // import * as fs from 'fs';
 
 describe('db/models/employment.ts', () => {
+  beforeEach(resetInTest)
+  afterEach(() => db.destroy())
 
-    beforeEach(resetInTest)
-    afterEach(() => db.destroy())
+  it('should add an employee', async () => {
+    console.log('Here')
 
-    it('should add an employee', async () => {
-
-        await health_workers.upsert(db, {
-            name: 'Previous Worker 1',
-            email: 'previous1@worker.com',
-            avatar_url: 'avatar_url',
-            gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-            gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-        })
+    // await health_workers.upsert(db, {
+    //     name: 'Previous Worker 1',
+    //     email: 'previous1@worker.com',
+    //     avatar_url: 'avatar_url',
+    //     gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+    //     gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+    // })
 
     // await employment.add(db, [``
     //     {
@@ -52,5 +52,5 @@ describe('db/models/employment.ts', () => {
     //     )
     // console.log(result)
     // assert(result)
-    })
+  })
 })

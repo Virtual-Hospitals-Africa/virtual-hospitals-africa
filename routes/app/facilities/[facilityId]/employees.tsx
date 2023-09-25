@@ -52,7 +52,10 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
         { facility_id },
       )
 
-    const [employees_filtered, invitees_filtered] = partition(employeesAndInvitees, item => !item.is_invitee)
+    const [employees_filtered, invitees_filtered] = partition(
+      employeesAndInvitees,
+      (item) => !item.is_invitee,
+    )
 
     const isEmployeeAtFacility = employees_filtered.some((employee) =>
       employee.health_worker_id === healthWorker.id
@@ -61,13 +64,13 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
 
     const employees = employees_filtered.map(
       (employee) => {
-        return({
-            name: employee.name,
-            professions: employee.professions,
-            avatar_url: employee.avatar_url,
-            // email: employee.email
-          })
-        }
+        return ({
+          name: employee.name,
+          professions: employee.professions,
+          avatar_url: employee.avatar_url,
+          // email: employee.email
+        })
+      },
     )
 
     const invitees = invitees_filtered

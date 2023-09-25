@@ -168,7 +168,7 @@ export async function getEmployeeAndInviteeByFacility(
     is_invitee: boolean
     health_worker_id: number
     professions: string
-    avatar_url: string,
+    avatar_url: string
     email: string
   }[]
 > {
@@ -177,7 +177,7 @@ export async function getEmployeeAndInviteeByFacility(
     is_invitee: boolean
     health_worker_id: number
     professions: string
-    avatar_url: string,
+    avatar_url: string
     email: string
   }>`
     SELECT
@@ -223,9 +223,9 @@ export async function getEmployeeAndInviteeByFacility(
         health_worker_id: row.health_worker_id,
         professions: row.professions.join(', '),
         avatar_url: row.avatar_url,
-        email: row.email
+        email: row.email,
       }
-    }
+    },
   )
 
   return resultRows
