@@ -185,7 +185,7 @@ export async function getEmployeeAndInviteeByFacility(
       health_workers.id AS health_worker_id,
       health_workers.name AS name,
       JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
-      health_workers.avatar_url AS avatar_url
+      health_workers.avatar_url AS avatar_url,
       health_workers.email as email
     FROM
       health_workers
@@ -205,7 +205,7 @@ export async function getEmployeeAndInviteeByFacility(
       NULL AS health_worker_id,
       NULL AS name,
       JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
-      NULL AS avatar_url
+      NULL AS avatar_url,
       health_worker_invitees.email as email
     FROM
       health_worker_invitees
