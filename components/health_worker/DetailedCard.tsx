@@ -1,6 +1,11 @@
 import * as employment from '../../db/models/employment.ts'
-import { Facility, HealthWorker, NurseRegistrationDetails, Specialities } from '../../types.ts'
-import { DownloadIcon } from '../library/icons/heroicons.tsx'
+import {
+  Facility,
+  HealthWorker,
+  NurseRegistrationDetails,
+  Specialities,
+} from '../../types.ts'
+import { ArrowDownTrayIcon } from '../library/icons/heroicons/solid.tsx'
 
 type HealthWorkerDetailedCardProps = {
   worker_facilities: Facility[]
@@ -11,8 +16,13 @@ type HealthWorkerDetailedCardProps = {
 }
 
 export default function HealthWorkerDetailedCard(
-  { worker_facilities, employee_positions, healthWorker, nurseRegistrationDetails, specialities }:
-    HealthWorkerDetailedCardProps,
+  {
+    worker_facilities,
+    employee_positions,
+    healthWorker,
+    nurseRegistrationDetails,
+    specialities,
+  }: HealthWorkerDetailedCardProps,
 ) {
   return (
     <div>
@@ -167,7 +177,7 @@ export default function HealthWorkerDetailedCard(
                         href='#'
                         className='font-medium flex text-indigo-600 hover:text-indigo-500'
                       >
-                        <DownloadIcon
+                        <ArrowDownTrayIcon
                           className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
                           aria-hidden='true'
                         />Download
@@ -195,7 +205,7 @@ export default function HealthWorkerDetailedCard(
                         href='#'
                         className='font-medium flex text-indigo-600 hover:text-indigo-500'
                       >
-                        <DownloadIcon
+                        <ArrowDownTrayIcon
                           className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
                           aria-hidden='true'
                         />

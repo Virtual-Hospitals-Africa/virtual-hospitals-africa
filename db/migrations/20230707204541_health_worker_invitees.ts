@@ -5,6 +5,16 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('health_worker_invitees')
     .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
     .addColumn('email', 'varchar(255)', (col) => col.notNull())
     .addColumn('facility_id', 'integer', (col) =>
       col.notNull()

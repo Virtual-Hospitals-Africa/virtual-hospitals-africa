@@ -1,5 +1,5 @@
 import { PatientWithMedicalRecord } from '../../types.ts'
-import { PaperClipIcon } from '../library/icons/heroicons.tsx'
+import { PaperClipIcon } from '../library/icons/heroicons/outline.tsx'
 
 type PatientDetailedCardProps = {
   patient: PatientWithMedicalRecord

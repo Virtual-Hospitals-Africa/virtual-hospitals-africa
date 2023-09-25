@@ -10,6 +10,7 @@ import {
 } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
+import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
@@ -49,6 +50,9 @@ export default function AppointmentPage(
       variant='standard'
     >
       <PatientDetailedCard patient={props.data.appointment.patient} />
+      <AppointmentDetail
+        appointment={props.data.appointment}
+      />
     </Layout>
   )
 }

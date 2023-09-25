@@ -15,7 +15,7 @@ describe('patient chatbot', () => {
   it('sends nearest facilities list after invitation', async () => {
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
@@ -70,7 +70,7 @@ describe('patient chatbot', () => {
     assertEquals(callArgs.phone_number, phone_number)
 
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

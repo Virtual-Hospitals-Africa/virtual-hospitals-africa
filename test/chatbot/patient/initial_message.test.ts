@@ -43,11 +43,11 @@ describe('patient chatbot', () => {
             { id: 'find_nearest_facility', title: 'Nearest Facility' },
           ],
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

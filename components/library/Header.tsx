@@ -1,4 +1,4 @@
-import { ArrowLeftIcon, BellIcon } from './icons/heroicons.tsx'
+import { ArrowLeftIcon, BellIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
 
 export type HeaderProps = {

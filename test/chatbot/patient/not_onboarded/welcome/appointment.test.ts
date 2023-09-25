@@ -15,7 +15,7 @@ describe('patient chatbot', () => {
   it('asks for name after welcome message', async () => {
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:welcome',
-      phone_number: phone_number,
+      phone_number,
       name: null,
       gender: null,
       date_of_birth: null,
@@ -49,11 +49,11 @@ describe('patient chatbot', () => {
             '\n' +
             'To start, what is your name?',
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

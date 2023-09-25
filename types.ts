@@ -302,6 +302,10 @@ export type Appointment = {
 
 export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
   patient: PatientWithMedicalRecord
+  media: {
+    media_id: number
+    mime_type: string
+  }[]
 }
 
 export type AppointmentHealthWorkerAttendee = {

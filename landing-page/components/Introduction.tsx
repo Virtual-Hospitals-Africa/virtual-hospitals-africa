@@ -27,14 +27,14 @@ export function Introduction() {
     >
       <Container className='text-lg tracking-tight text-slate-700'>
         <p className='font-display text-4xl font-bold tracking-tight text-slate-900'>
-          Through Virtual Hospitals Africa, health care professionals can
-          leverage the latest technological advances to provide care patients to
-          patients before it's a crisis
+          Local care backed by a worldwide network
         </p>
         <p className='mt-4'>
-          Hospitals in Africa are overwhelmed. Patients living far away forego
-          care until their diseases are too far along. But what if patients
-          could access care at the onset of symptoms from their mobile devices?
+          Health care systems in Africa are overwhelmed. Those living in far
+          away villages forego care until their diseases are too far along. But
+          what if patients and the facilities serving them could leverage a
+          network of virtual hospitals with medical professionals all over the
+          globe?
         </p>
         <p className='mt-4'>
           In our proof of concept, patients can:
@@ -61,7 +61,7 @@ export function Introduction() {
         <p className='mt-10'>
           <a
             href='#free-chapters'
-            className='text-base font-medium text-blue-600 hover:text-blue-800'
+            className='text-base font-bold text-blue-600 hover:text-blue-800'
           >
             Get two free chapters straight to your inbox{' '}
             <span aria-hidden='true'>&rarr;</span>

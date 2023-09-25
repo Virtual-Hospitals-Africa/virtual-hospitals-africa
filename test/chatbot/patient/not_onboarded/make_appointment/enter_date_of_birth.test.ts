@@ -15,7 +15,7 @@ describe('patient chatbot', () => {
   it('asks for national ID number after inquiring birthday', async () => {
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_date_of_birth',
-      phone_number: phone_number,
+      phone_number,
       name: 'test',
       gender: 'other',
       date_of_birth: null,
@@ -47,11 +47,11 @@ describe('patient chatbot', () => {
             'Got it, January 1, 2023. Please enter your national ID number',
           type: 'string',
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)
