@@ -130,7 +130,7 @@ describe('/login', () => {
       })
       assert(response.ok, 'should have returned ok')
       assert(
-        response.url === `${ROUTE}/app/facilities/1/register`,
+        response.url === `${ROUTE}/app/facilities/1/register?step=personal`,
         `should be in ${ROUTE}/app/facilities/1/register`,
       )
       assert(
