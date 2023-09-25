@@ -5,7 +5,7 @@ import {
   NurseRegistrationDetails,
   Specialities,
 } from '../../types.ts'
-import { ArrowDownTrayIcon } from '../library/icons/heroicons/solid.tsx'
+import { ArrowDownTrayIcon } from '../library/icons/heroicons/outline.tsx'
 
 type HealthWorkerDetailedCardProps = {
   worker_facilities: Facility[]
