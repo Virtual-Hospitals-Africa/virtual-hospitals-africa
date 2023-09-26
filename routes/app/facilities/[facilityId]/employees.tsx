@@ -68,7 +68,6 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
           name: employee.name,
           professions: employee.professions,
           avatar_url: employee.avatar_url,
-          // email: employee.email
         })
       },
     )
@@ -76,7 +75,7 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
     const invitees = invitees_filtered
       .map((invitee) => {
         return {
-          email: invitee.name,
+          email: invitee.email,
           professions: invitee.professions,
         }
       })

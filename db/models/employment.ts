@@ -217,11 +217,12 @@ export async function getEmployeeAndInviteeByFacility(
 
   const resultRows = result.rows.map(
     (row) => {
+      const professions = row.professions as unknown as string[]
       return {
         name: row.name,
         is_invitee: row.is_invitee,
         health_worker_id: row.health_worker_id,
-        professions: row.professions,
+        professions: professions.join(', '),
         avatar_url: row.avatar_url,
         email: row.email,
       }
