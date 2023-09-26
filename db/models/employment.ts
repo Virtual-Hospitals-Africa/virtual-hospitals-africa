@@ -5,8 +5,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { sql, SqlBool } from 'kysely'
-import partition from '../../util/partition.ts'
+import { SqlBool } from 'kysely'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession

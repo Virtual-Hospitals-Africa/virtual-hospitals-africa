@@ -70,7 +70,10 @@ assert(DATABASE_URL)
 
 // Connect with vha_test database instead of vha_dev when running tests
 if (Deno.env.get('IS_TEST')) {
-  assert(DATABASE_URL.includes('vha_dev'))
+  assert(
+    DATABASE_URL.includes('vha_dev') || DATABASE_URL.includes('vha_test'),
+    'DATABASE_URL must include vha_dev or vha_test',
+  )
   DATABASE_URL = DATABASE_URL.replace('vha_dev', 'vha_test')
 }
 

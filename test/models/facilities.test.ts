@@ -20,7 +20,7 @@ describe('db/models/facilities.ts', () => {
         gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_at_facility1)
-  
+
       const hw_at_facility2 = await health_workers.upsert(db, {
         name: 'At Facility 2',
         email: 'at_facility2@worker.com',
@@ -29,7 +29,7 @@ describe('db/models/facilities.ts', () => {
         gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_at_facility2)
-  
+
       const hw_other_facility = await health_workers.upsert(db, {
         name: 'At Facility 3',
         email: 'previous3@worker.com',
@@ -38,7 +38,7 @@ describe('db/models/facilities.ts', () => {
         gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_other_facility)
-  
+
       await employment.add(db, [
         {
           health_worker_id: hw_at_facility1.id,
@@ -66,19 +66,19 @@ describe('db/models/facilities.ts', () => {
           profession: 'doctor',
         },
       ])
-  
+
       await employment.addInvitees(db, 3, [
         {
           email: 'invitee@test.com',
           profession: 'doctor',
         },
       ])
-  
+
       const withInvitees = await facilities.getEmployees(db, {
         facility_id: 3,
         include_invitees: true,
       })
-  
+
       assertEquals(withInvitees, [
         {
           avatar_url: 'avatar_url',
@@ -116,12 +116,12 @@ describe('db/models/facilities.ts', () => {
           ],
         },
       ])
-  
+
       const withoutInvitees = await facilities.getEmployees(db, {
         facility_id: 3,
         include_invitees: false,
       })
-  
+
       assertEquals(withoutInvitees, [
         {
           avatar_url: 'avatar_url',
