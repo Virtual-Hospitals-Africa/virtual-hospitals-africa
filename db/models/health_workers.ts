@@ -244,3 +244,14 @@ export async function getInviteesAtFacility(
     ])
     .execute()
 }
+
+export function getById(
+  trx: TrxOrDb,
+  health_worker_id: number,
+): Promise<ReturnedSqlRow<HealthWorker> | undefined> {
+  return trx
+    .selectFrom('health_workers')
+    .where('id', '=', health_worker_id)
+    .selectAll()
+    .executeTakeFirst()
+}
