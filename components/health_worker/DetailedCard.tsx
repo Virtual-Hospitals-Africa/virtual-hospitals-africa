@@ -18,7 +18,6 @@ type HealthWorkerDetailedCardProps = {
 export default function HealthWorkerDetailedCard(
   {
     worker_facilities,
-    employee_positions,
     healthWorker,
     nurseRegistrationDetails,
     specialities,

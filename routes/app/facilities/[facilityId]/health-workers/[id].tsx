@@ -4,7 +4,7 @@ import redirect from '../../../../../util/redirect.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import { Container } from '../../../../../components/library/Container.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
-import HealthWorkerDetailedCardProps from '../../../../../components/health_worker/DetailedCard.tsx'
+import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 
 import * as employment from '../../../../../db/models/employment.ts'
 import * as facilities from '../../../../../db/models/facilities.ts'
@@ -66,12 +66,11 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
     // get list of all employments for a health worker {health_worker_id}
     const all_employment = await employment.getByHealthWorker(
       ctx.state.trx,
-      { health_worker_id: health_worker_id },
+      { health_worker_id },
     )
 
     // filter for employment positions for health worker at facility {facility_id}
     // TODO: or do we want to show all positions even if they dont have that position at facility {facility_id}??
-    // --> I think we show all their positions at all facilities?
     const employee_positions = all_employment.filter((employee) =>
       employee.facility_id === facility_id
     )
@@ -91,7 +90,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
     // get nurse specialities
     const specialities = await nurse_specialities.getByHealthWorker(
       ctx.state.trx,
-      { health_worker_id: health_worker_id },
+      { health_worker_id },
     )
 
     // TODO: what if not a nurse but doctor/admin? where do we get registration info?
@@ -131,17 +130,16 @@ export default function HealthWorkerPage(
               {props.data.healthWorker.name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
-              {props.data.employee_positions.map((item, index) => (
-                props.data.employee_positions.length - 1 == index
-                  ? <p key={index}>{item.profession}</p>
-                  : <p key={index}>{item.profession + ', '}</p>
-              ))}
+              <p>
+                {props.data.employee_positions.map((item) => item.profession)
+                  .join(', ')}
+              </p>
             </dt>
           </div>
           <SectionHeader className='mb-1'>
             Demographic Data
           </SectionHeader>
-          <HealthWorkerDetailedCardProps
+          <HealthWorkerDetailedCard
             worker_facilities={props.data.worker_facilities}
             employee_positions={props.data.employee_positions}
             healthWorker={props.data.healthWorker}
