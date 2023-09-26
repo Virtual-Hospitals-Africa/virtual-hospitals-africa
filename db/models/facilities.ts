@@ -4,6 +4,7 @@ import {
   Facility,
   Location,
   Maybe,
+  Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
@@ -89,4 +90,79 @@ export function getByHealthWorker(
     .groupBy('facilities.id')
     .selectAll('facilities')
     .execute()
+}
+export type EmployeeHealthWorker = {
+  name: string
+  is_invitee: false
+  health_worker_id: number
+  professions: Profession[]
+  avatar_url: string
+  email: string
+  display_name: string
+}
+
+export type EmployeeInvitee = {
+  name: null
+  is_invitee: true
+  health_worker_id: null
+  professions: Profession[]
+  avatar_url: null
+  email: string
+  display_name: string
+}
+
+export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
+
+export async function getEmployees(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    include_invitees?: boolean
+  },
+): Promise<FacilityEmployee[]> {
+  const result = await sql<FacilityEmployee>`
+    SELECT
+      FALSE AS is_invitee,
+      health_workers.id AS health_worker_id,
+      health_workers.name AS name,
+      health_workers.email as email,
+      health_workers.name as display_name,
+      JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
+      health_workers.avatar_url AS avatar_url
+    FROM
+      health_workers
+    INNER JOIN
+      employment
+    ON
+      employment.health_worker_id = health_workers.id
+    WHERE
+      employment.facility_id = ${opts.facility_id}
+    GROUP BY
+      health_workers.id
+
+    UNION ALL
+
+    SELECT
+      TRUE AS is_invitee,
+      NULL AS health_worker_id,
+      NULL AS name,
+      health_worker_invitees.email as email,
+      health_worker_invitees.email as display_name,
+      JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
+      NULL AS avatar_url
+    FROM
+      health_worker_invitees
+    WHERE
+      health_worker_invitees.facility_id = ${opts.facility_id}
+    AND
+      TRUE = ${opts.include_invitees ? 'TRUE' : 'FALSE'}
+    GROUP BY
+      health_worker_invitees.id
+
+    ORDER BY
+      is_invitee ASC,
+      email ASC
+  `.execute(trx)
+
+  return result.rows
 }

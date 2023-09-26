@@ -6,6 +6,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { sql, SqlBool } from 'kysely'
+import partition from '../../util/partition.ts'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
@@ -118,104 +119,6 @@ export function getByHealthWorker(
         ]).as('registration_completed'),
     ])
     .execute()
-}
-
-export function getByFacility(
-  trx: TrxOrDb,
-  opts: {
-    facility_id: number
-  },
-): Promise<ReturnedSqlRow<
-  {
-    id: number
-    name: string
-    profession: Profession
-    avatar_url: string
-  }
->[]> {
-  return trx
-    .selectFrom('employment')
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'facilities',
-      'facilities.id',
-      'employment.facility_id',
-    )
-    .where('facility_id', '=', opts.facility_id)
-    .select([
-      'health_workers.name as name',
-      'profession',
-      'health_workers.id as id',
-      'health_workers.created_at',
-      'health_workers.updated_at',
-      'avatar_url',
-    ])
-    .execute()
-}
-
-export async function getEmployeeAndInviteeByFacility(
-  trx: TrxOrDb,
-  opts: {
-    facility_id: number
-  },
-): Promise<
-  {
-    name: string
-    is_invitee: boolean
-    health_worker_id: number
-    professions: Profession[]
-    avatar_url: string
-    email: string
-  }[]
-> {
-  const result = await sql<{
-    name: string
-    is_invitee: boolean
-    health_worker_id: number
-    professions: Profession[]
-    avatar_url: string
-    email: string
-  }>`
-    SELECT
-      FALSE AS is_invitee,
-      health_workers.id AS health_worker_id,
-      health_workers.name AS name,
-      health_workers.email as email,
-      JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
-      health_workers.avatar_url AS avatar_url
-    FROM
-      health_workers
-    INNER JOIN
-      employment
-    ON
-      employment.health_worker_id = health_workers.id
-    WHERE
-      employment.facility_id = ${opts.facility_id}
-    GROUP BY
-      health_workers.id
-
-    UNION ALL
-
-    SELECT
-      TRUE AS is_invitee,
-      NULL AS health_worker_id,
-      NULL AS name,
-      health_worker_invitees.email as email,
-      JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
-      NULL AS avatar_url
-    FROM
-      health_worker_invitees
-    WHERE
-      health_worker_invitees.facility_id = ${opts.facility_id}
-    GROUP BY
-      health_worker_invitees.id
-  `.execute(trx)
-
-  return result.rows
 }
 
 export function getMatching(

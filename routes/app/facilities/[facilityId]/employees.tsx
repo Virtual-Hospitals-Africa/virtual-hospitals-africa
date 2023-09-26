@@ -10,20 +10,14 @@ import * as health_workers from '../../../../db/models/health_workers.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
 import * as employment from '../../../../db/models/employment.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import EmployeesTable, {
-  Employee,
-  Invitee,
-} from '../../../../components/health_worker/EmployeesTable.tsx'
+import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
 import InviteSuccess from '../../../../islands/invite-success.tsx'
-import partition from '../../../../util/partition.ts'
-import { patch } from 'std/semver/mod.ts'
 
 type EmployeePageProps = {
   isAdmin: boolean
-  employees: Employee[]
-  invitees: Invitee[]
+  employees: facilities.FacilityEmployee[]
   healthWorker: HealthWorkerWithGoogleTokens
   facility: ReturnedSqlRow<Facility>
 }
@@ -42,27 +36,22 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       ctx.state.trx,
       {
         health_worker_id: healthWorker.id,
-        facility_id: facility_id,
+        facility_id,
       },
     )
 
-    const employeesAndInvitees = await employment
-      .getEmployeeAndInviteeByFacility(
+    const employees = await facilities
+      .getEmployees(
         ctx.state.trx,
-        { facility_id },
+        { facility_id, include_invitees: isAdmin },
       )
-
-    const [employees, invitees] = partition(
-      employeesAndInvitees,
-      (item) => !item.is_invitee,
-    )
 
     const isEmployeeAtFacility = employees.some((employee) =>
       employee.health_worker_id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
 
-    return ctx.render({ isAdmin, employees, invitees, healthWorker, facility })
+    return ctx.render({ isAdmin, employees, healthWorker, facility })
   },
 }
 
@@ -86,7 +75,6 @@ export default function EmployeeTable(
           isAdmin={props.data.isAdmin}
           employees={props.data.employees}
           pathname={props.url.pathname}
-          invitees={props.data.invitees}
         />
       </Container>
     </Layout>

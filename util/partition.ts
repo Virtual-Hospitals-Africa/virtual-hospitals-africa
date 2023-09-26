@@ -1,6 +1,6 @@
 export default function partition<T, U>(
   array: (T | U)[],
-  predicate: (item: T | U) => boolean,
+  predicate: (item: T | U) => item is T,
 ): [T[], U[]] {
   const passes = [] as T[]
   const fails = [] as U[]
