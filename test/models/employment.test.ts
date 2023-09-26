@@ -4,6 +4,7 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
+import { Profession } from '../../types.ts'
 
 describe('db/models/employment.ts', () => {
   beforeEach(resetInTest)
@@ -67,9 +68,9 @@ describe('db/models/employment.ts', () => {
       },
     ])
 
-    const professions_info: Map<number, string> = new Map<number, string>([
-      [prev_worker_1_id, ['admin', 'doctor'].join(', ')],
-      [prev_worker_2_id, ['doctor', 'nurse'].join(', ')],
+    const professions_info: Map<number, Profession[]> = new Map<number, Profession[]>([
+      [prev_worker_1_id, ['admin', 'doctor']],
+      [prev_worker_2_id, ['doctor', 'nurse']],
     ])
 
     const facility_id = 3
@@ -86,8 +87,8 @@ describe('db/models/employment.ts', () => {
       )
 
       assertEquals(
-        expected_professions,
         resultValue.professions,
+        expected_professions
       )
     }
   })

@@ -167,7 +167,7 @@ export async function getEmployeeAndInviteeByFacility(
     name: string
     is_invitee: boolean
     health_worker_id: number
-    professions: string
+    professions: Profession[]
     avatar_url: string
     email: string
   }[]
@@ -176,7 +176,7 @@ export async function getEmployeeAndInviteeByFacility(
     name: string
     is_invitee: boolean
     health_worker_id: number
-    professions: string
+    professions: Profession[]
     avatar_url: string
     email: string
   }>`

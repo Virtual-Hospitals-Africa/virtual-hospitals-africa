@@ -4,6 +4,7 @@ import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
+import { Profession } from '../../types.ts'
 
 type EmployeesTableProps = {
   isAdmin: boolean
@@ -14,13 +15,13 @@ type EmployeesTableProps = {
 
 export type Employee = {
   name: string
-  professions: string
+  professions: Profession[]
   avatar_url?: string
 }
 
 export type Invitee = {
   email: string
-  professions: string
+  professions: Profession[]
 }
 
 export function transformInviteesToEmployees(invitees: Invitee[]): Employee[] {
@@ -43,6 +44,12 @@ export default function EmployeesTable({
       transformInviteesToEmployees(invitees),
     )
   }
+
+  employeesToDisplay = employeesToDisplay.map((employee) => ({
+    ...employee,
+    professions: employee.professions.join(', '),
+  }))
+
   const columns: TableColumn<Employee>[] = [
     {
       label: null,
