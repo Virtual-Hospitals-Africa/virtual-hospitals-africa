@@ -68,7 +68,10 @@ describe('db/models/employment.ts', () => {
       },
     ])
 
-    const professions_info: Map<number, Profession[]> = new Map<number, Profession[]>([
+    const professions_info: Map<number, Profession[]> = new Map<
+      number,
+      Profession[]
+    >([
       [prev_worker_1_id, ['admin', 'doctor']],
       [prev_worker_2_id, ['doctor', 'nurse']],
     ])
@@ -88,7 +91,7 @@ describe('db/models/employment.ts', () => {
 
       assertEquals(
         resultValue.professions,
-        expected_professions
+        expected_professions,
       )
     }
   })
