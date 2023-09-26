@@ -16,7 +16,7 @@ type EmployeesTableProps = {
 type Employee = {
   avatar_url: null | string
   display_name: string
-  professions: Profession[]
+  professions: string[]
 }
 
 export default function EmployeesTable({
