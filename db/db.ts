@@ -63,9 +63,20 @@ export type DatabaseSchema = {
   suburbs: SqlRow<Suburbs>
 }
 
-const DATABASE_URL = Deno.env.get('DATABASE_URL') ||
+let DATABASE_URL = Deno.env.get('DATABASE_URL') ||
   Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL')
+
 assert(DATABASE_URL)
+
+// Connect with vha_test database instead of vha_dev when running tests
+if (Deno.env.get('IS_TEST')) {
+  assert(
+    DATABASE_URL.includes('vha_dev') || DATABASE_URL.includes('vha_test'),
+    'DATABASE_URL must include vha_dev or vha_test',
+  )
+  DATABASE_URL = DATABASE_URL.replace('vha_dev', 'vha_test')
+}
+
 // deno-lint-ignore no-explicit-any
 const uri: any = DATABASE_URL.includes('localhost')
   ? DATABASE_URL

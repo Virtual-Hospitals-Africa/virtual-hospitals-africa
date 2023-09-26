@@ -10,18 +10,14 @@ import * as health_workers from '../../../../db/models/health_workers.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
 import * as employment from '../../../../db/models/employment.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import EmployeesTable, {
-  Employee,
-  Invitee,
-} from '../../../../components/health_worker/EmployeesTable.tsx'
+import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import redirect from '../../../../util/redirect.ts'
 import InviteSuccess from '../../../../islands/invite-success.tsx'
 
 type EmployeePageProps = {
   isAdmin: boolean
-  employees: Employee[]
-  invitees: Invitee[]
+  employees: facilities.FacilityEmployee[]
   healthWorker: HealthWorkerWithGoogleTokens
   facility: ReturnedSqlRow<Facility>
 }
@@ -40,22 +36,22 @@ export const handler: LoggedInHealthWorkerHandler<EmployeePageProps> = {
       ctx.state.trx,
       {
         health_worker_id: healthWorker.id,
-        facility_id: facility_id,
+        facility_id,
       },
     )
-    const employees = await employment.getByFacility(
-      ctx.state.trx,
-      { facility_id },
-    )
+
+    const employees = await facilities
+      .getEmployees(
+        ctx.state.trx,
+        { facility_id, include_invitees: isAdmin },
+      )
+
     const isEmployeeAtFacility = employees.some((employee) =>
-      employee.id === healthWorker.id
+      employee.health_worker_id === healthWorker.id
     )
     if (!isEmployeeAtFacility) return redirect('/app')
-    const invitees = await health_workers.getInviteesAtFacility(
-      ctx.state.trx,
-      facility_id,
-    )
-    return ctx.render({ isAdmin, employees, invitees, healthWorker, facility })
+
+    return ctx.render({ isAdmin, employees, healthWorker, facility })
   },
 }
 
@@ -79,7 +75,6 @@ export default function EmployeeTable(
           isAdmin={props.data.isAdmin}
           employees={props.data.employees}
           pathname={props.url.pathname}
-          invitees={props.data.invitees}
         />
       </Container>
     </Layout>
