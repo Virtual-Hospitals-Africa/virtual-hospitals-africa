@@ -4,22 +4,12 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
-import omit from '../../util/omit.ts'
-import { Profession } from '../../types.ts'
-
-// import * as fs from 'fs';
 
 describe('db/models/employment.ts', () => {
   beforeEach(resetInTest)
   afterEach(() => db.destroy())
 
   it('should add an employee', async () => {
-    // Add 2 health workers to the test facility - Done
-    // Add 1 health worker to another facility - Done
-    // Make the first health worker an admin and doctor - Done
-    // Make the second health worker a nurse - Done
-    // Make the third health worker a doctor - Done
-
     const prev_worker_1 = await health_workers.upsert(db, {
       name: 'Previous Worker 1',
       email: 'previous1@worker.com',

@@ -184,9 +184,9 @@ export async function getEmployeeAndInviteeByFacility(
       FALSE AS is_invitee,
       health_workers.id AS health_worker_id,
       health_workers.name AS name,
+      health_workers.email as email,
       JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
-      health_workers.avatar_url AS avatar_url,
-      health_workers.email as email
+      health_workers.avatar_url AS avatar_url
     FROM
       health_workers
     INNER JOIN
@@ -204,9 +204,9 @@ export async function getEmployeeAndInviteeByFacility(
       TRUE AS is_invitee,
       NULL AS health_worker_id,
       NULL AS name,
+      health_worker_invitees.email as email,
       JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
-      NULL AS avatar_url,
-      health_worker_invitees.email as email
+      NULL AS avatar_url
     FROM
       health_worker_invitees
     WHERE
@@ -215,21 +215,7 @@ export async function getEmployeeAndInviteeByFacility(
       health_worker_invitees.id
   `.execute(trx)
 
-  const resultRows = result.rows.map(
-    (row) => {
-      const professions = row.professions as unknown as string[]
-      return {
-        name: row.name,
-        is_invitee: row.is_invitee,
-        health_worker_id: row.health_worker_id,
-        professions: professions.join(', '),
-        avatar_url: row.avatar_url,
-        email: row.email,
-      }
-    },
-  )
-
-  return resultRows
+  return result.rows
 }
 
 export function getMatching(
