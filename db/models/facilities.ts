@@ -78,7 +78,7 @@ export function getFirstByHealthWorker(
 export function getByHealthWorker(
   trx: TrxOrDb,
   healthWorkerId: number,
-): Promise<Maybe<ReturnedSqlRow<Facility>[]>> {
+) {
   return trx
     .selectFrom('facilities')
     .innerJoin(
