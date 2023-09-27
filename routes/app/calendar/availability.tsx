@@ -9,9 +9,7 @@ import {
   LoggedInHealthWorkerHandler,
   Time,
 } from '../../../types.ts'
-import SetAvailabilityForm, {
-  isPartialAvailability,
-} from '../../../islands/availability-form.tsx'
+import SetAvailabilityForm from '../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import {
   assertAllHarare,
@@ -25,6 +23,7 @@ import redirect from '../../../util/redirect.ts'
 import { parseDate } from '../../../util/date.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
+import { isPartialAvailability } from '../../../scheduling/availability.tsx'
 
 const days: Array<DayOfWeek> = [
   'Sunday',

@@ -29,24 +29,19 @@ type HealthWorkerPageProps = {
   specialities: ReturnedSqlRow<Specialities>[]
 }
 
-export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
+export const handler: LoggedInHealthWorkerHandler<
+  HealthWorkerPageProps,
+  { facility: ReturnedSqlRow<Facility> }
+> = {
   async GET(_, ctx) {
-    // get facility id
-    const facility_id = parseInt(ctx.params.facilityId)
-    assert(!isNaN(facility_id), 'Invalid facility ID')
-
-    // get facility
-    const facility = await facilities.get(ctx.state.trx, facility_id)
-    assert(facility, `Facility ${facility_id} does not exist`)
-
     // get health worker id
     const health_worker_id = parseInt(ctx.params.id)
     assert(!isNaN(health_worker_id), 'Invalid health worker ID')
 
     // get health worker id
-    const healthWorker = await health_workers.getById(
+    const healthWorker = await health_workers.get(
       ctx.state.trx,
-      health_worker_id,
+      { health_worker_id },
     )
     assert(
       healthWorker,
@@ -72,7 +67,7 @@ export const handler: LoggedInHealthWorkerHandler<HealthWorkerPageProps> = {
     // filter for employment positions for health worker at facility {facility_id}
     // TODO: or do we want to show all positions even if they dont have that position at facility {facility_id}??
     const employee_positions = all_employment.filter((employee) =>
-      employee.facility_id === facility_id
+      employee.facility_id === ctx.state.facility.id
     )
     console.log(employee_positions)
     if (!employee_positions) return redirect('/app')

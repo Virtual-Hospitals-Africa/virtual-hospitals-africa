@@ -1,6 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
 import { PageProps } from '$fresh/server.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 import Layout from '../../components/library/Layout.tsx'
 import {
   HealthWorkerWithGoogleTokens,
@@ -19,10 +17,6 @@ type PatientsProps = {
 
 export const handler: LoggedInHealthWorkerHandler<PatientsProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-
     const search = new URL(req.url).searchParams.get('search')
 
     const patients = await getAllWithNames(ctx.state.trx, search)
@@ -32,7 +26,7 @@ export const handler: LoggedInHealthWorkerHandler<PatientsProps> = {
     }
 
     return ctx.render({
-      healthWorker,
+      healthWorker: ctx.state.healthWorker,
       patients: await getAllWithNames(ctx.state.trx, search),
     })
   },

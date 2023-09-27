@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 // import { Popover } from '@headlessui/react'
 import cls from '../../util/cls.ts'
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/testing/asserts.ts'
 
 const sections = [
   { id: 'health-workers', title: 'Health Workers' },

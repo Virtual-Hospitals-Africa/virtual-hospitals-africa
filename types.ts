@@ -2,7 +2,7 @@
 import { ColumnType, Generated, Transaction } from 'kysely'
 import { JSX } from 'preact/jsx-runtime'
 import { Handlers } from '$fresh/server.ts'
-import { Session } from 'fresh_session/session'
+import { Session } from 'fresh_session'
 import db, { DatabaseSchema } from './db/db.ts'
 
 export type Maybe<T> = T | null | undefined
@@ -821,6 +821,33 @@ export type HealthWorker = {
   gcal_availability_calendar_id: string
 }
 
+export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
+  id: number
+  employment: {
+    facility_id: number
+    roles: {
+      nurse: {
+        employed_as: boolean
+        registration_needed: boolean
+        registration_completed: boolean
+        registration_pending_approval: boolean
+      }
+      doctor: {
+        employed_as: boolean
+        registration_needed: boolean
+        registration_completed: boolean
+        registration_pending_approval: boolean
+      }
+      admin: {
+        employed_as: boolean
+        registration_needed: boolean
+        registration_completed: boolean
+        registration_pending_approval: boolean
+      }
+    }
+  }[]
+}
+
 export type HealthWorkerGoogleToken = GoogleTokens & {
   health_worker_id: number
 }
@@ -1012,17 +1039,18 @@ export type WhatsAppSendableButtons = {
 }
 
 export type LoggedInHealthWorker = {
-  session: Session & {
-    data: HealthWorkerWithGoogleTokens
-  }
   trx: TrxOrDb
+  session: Session
+  healthWorker: EmployedHealthWorker
 }
 
-export type LoggedInHealthWorkerHandler<Props = Record<string, never>> =
-  Handlers<
-    Props,
-    LoggedInHealthWorker
-  >
+export type LoggedInHealthWorkerHandler<
+  Props = Record<string, never>,
+  Extra = Record<string, never>,
+> = Handlers<
+  Props,
+  LoggedInHealthWorker & Extra
+>
 
 export type Facility = Location & {
   name: string

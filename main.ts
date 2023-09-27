@@ -17,7 +17,8 @@ const self = Deno.env.get('SELF_URL')
 
 if (self === 'https://localhost:8000') {
   const ctx = await ServerContext.fromManifest(manifest, opts)
-  await serveTls(ctx.handler(), {
+  // deno-lint-ignore no-explicit-any
+  await serveTls(ctx.handler() as any, {
     ...opts,
     certFile: './local-certs/localhost.crt',
     keyFile: './local-certs/localhost.key',
