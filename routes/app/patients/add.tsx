@@ -12,7 +12,7 @@ import {
   PatientFamily, 
   ReturnedSqlRow,
 } from '../../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
@@ -139,7 +139,7 @@ async function handleAddressData(
 }
 
 async function storePatientData(
-  req: Request,
+  _req: Request,
   ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
 ) {
   const { personal, address } = ctx.state.session.get(PATIENT_SESSION_KEY)
@@ -165,8 +165,7 @@ async function storePatientData(
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
     const urlStep = new URL(req.url).searchParams.get('step')
     const { step, ...patient } = ctx.state.session.get(PATIENT_SESSION_KEY) ||
       {}

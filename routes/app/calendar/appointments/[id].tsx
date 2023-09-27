@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as appointments from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
@@ -10,6 +10,7 @@ import {
 } from '../../../../types.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
+import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
@@ -49,6 +50,9 @@ export default function AppointmentPage(
       variant='standard'
     >
       <PatientDetailedCard patient={props.data.appointment.patient} />
+      <AppointmentDetail
+        appointment={props.data.appointment}
+      />
     </Layout>
   )
 }

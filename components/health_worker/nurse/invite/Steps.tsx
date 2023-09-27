@@ -67,7 +67,6 @@ function isPersonalFormFields(
     !!fields.last_name &&
     !!fields.gender &&
     !!fields.national_id &&
-    !!fields.email &&
     !!fields.mobile_number
 }
 

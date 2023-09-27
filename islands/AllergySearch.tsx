@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { allAllergies } from '../util/allergyList.ts'
 import FormRow from '../components/library/form/Row.tsx'
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import SearchResults, {
   AllergySearchResult,
 } from '../components/library/SearchResults.tsx'

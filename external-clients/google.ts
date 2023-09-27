@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import 'dotenv'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import moment from 'https://deno.land/x/momentjs@2.29.1-deno/mod.ts'
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {
@@ -33,7 +34,6 @@ import {
   getDistanceFromRedis,
   getFacilityAddress,
 } from './redis.ts'
-// import { normalizeURLPath } from 'https://deno.land/x/fresh@1.2.0/src/server/context.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 assert(GOOGLE_MAPS_API_KEY)
@@ -121,6 +121,9 @@ export class GoogleClient {
       throw new Error('Unauthorized')
     }
     if (response.result === 'other_error') {
+      if ('email' in this.tokens) {
+        console.error(this.tokens.email)
+      }
       throw response.error
     }
     return response.data

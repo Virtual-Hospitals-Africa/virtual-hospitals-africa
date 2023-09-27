@@ -2,7 +2,6 @@ import { redisSession } from 'fresh_session'
 import { MiddlewareHandlerContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
 import redirect from '../util/redirect.ts'
-import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import { TrxOrDb } from '../types.ts'
 import db from '../db/db.ts'
 import { redis } from '../external-clients/redis.ts'
@@ -26,15 +25,15 @@ export const handler = [
       return ctx.next()
     }
 
-    const isAuthedHealthWorker = isHealthWorkerWithGoogleTokens(
-      ctx.state.session.data,
-    )
+    if (!ctx.state.session.get('health_worker_id')) return redirect('/')
 
-    if (!isAuthedHealthWorker) return redirect('/')
-
-    return db.transaction().execute((trx: TrxOrDb) => {
+    return db.transaction().execute((trx) => {
       ctx.state.trx = trx
       return ctx.next()
+    }).catch((err) => {
+      console.error(err)
+      const status = err.status || 500
+      return new Response(err.message, { status })
     })
   },
 ]

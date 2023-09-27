@@ -1,7 +1,7 @@
 import 'dotenv'
 import { connect } from 'redis'
+import { assert } from 'std/assert/assert.ts'
 import { Location } from '../types.ts'
-import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
 
 interface RedisConnectionOptions {
   username?: string

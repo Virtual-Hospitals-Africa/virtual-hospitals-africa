@@ -1,10 +1,20 @@
-import { Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('countries')
     .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addUniqueConstraint('country_name', ['name'])
     .execute()

@@ -1,14 +1,17 @@
 import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
+  EmployedHealthWorker,
   GoogleTokens,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
+  Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { jsonArrayFrom } from '../helpers.ts'
+import { assert } from 'std/assert/assert.ts'
 import haveNames from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
 
@@ -61,7 +64,7 @@ export async function updateTokens(
   email: string,
   tokens: GoogleTokens,
 ) {
-  const healthWorker = await getByEmail(trx, email)
+  const healthWorker = await get(trx, { email })
   if (!healthWorker) return null
   await upsertGoogleTokens(trx, healthWorker.id, tokens)
   return healthWorker
@@ -78,7 +81,7 @@ const pickHealthWorkerDetails = pick([
 export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   details: HealthWorker & GoogleTokens,
-) {
+): Promise<HealthWorkerWithGoogleTokens> {
   const health_worker = await upsert(trx, pickHealthWorkerDetails(details))
   const tokens = pickTokens(details)
   assert(tokens.access_token)
@@ -134,6 +137,15 @@ export function isHealthWorkerWithGoogleTokens(
     typeof health_worker.gcal_appointments_calendar_id === 'string' &&
     'gcal_availability_calendar_id' in health_worker &&
     typeof health_worker.gcal_availability_calendar_id === 'string'
+}
+
+export function isEmployed(
+  health_worker: unknown,
+): health_worker is EmployedHealthWorker & HealthWorkerWithGoogleTokens {
+  return isHealthWorkerWithGoogleTokens(health_worker) &&
+    'employment' in health_worker &&
+    Array.isArray(health_worker.employment) &&
+    !!health_worker.employment.length
 }
 
 function withTokens(health_workers: unknown[]) {
@@ -219,15 +231,118 @@ export async function getAllWithNames(
   return healthWorkers
 }
 
-export function getByEmail(
+export async function get(
   trx: TrxOrDb,
-  email: string,
-): Promise<Maybe<ReturnedSqlRow<HealthWorker>>> {
-  return trx
+  opts: {
+    email?: string
+    health_worker_id?: number
+  },
+): Promise<Maybe<EmployedHealthWorker>> {
+  let query = trx
     .selectFrom('health_workers')
-    .where('email', '=', email)
-    .selectAll()
-    .executeTakeFirst()
+    .leftJoin(
+      'nurse_registration_details',
+      'health_workers.id',
+      'nurse_registration_details.health_worker_id',
+    )
+    .innerJoin(
+      'health_worker_google_tokens',
+      'health_workers.id',
+      'health_worker_google_tokens.health_worker_id',
+    )
+    .select((eb) => [
+      'health_workers.id',
+      'health_workers.created_at',
+      'health_workers.updated_at',
+      'health_workers.name',
+      'health_workers.email',
+      'health_workers.avatar_url',
+      'health_workers.gcal_appointments_calendar_id',
+      'health_workers.gcal_availability_calendar_id',
+      'health_worker_google_tokens.access_token',
+      'health_worker_google_tokens.refresh_token',
+      'health_worker_google_tokens.expires_at',
+      'nurse_registration_details.health_worker_id',
+      'nurse_registration_details.approved_by',
+      jsonArrayFrom(
+        eb.selectFrom('employment')
+          .select([
+            'employment.facility_id',
+            sql<Profession[]>`JSON_AGG(employment.profession)`.as(
+              'professions',
+            ),
+          ])
+          .whereRef(
+            'employment.health_worker_id',
+            '=',
+            'health_workers.id',
+          )
+          .groupBy('employment.facility_id'),
+      ).as('facilities'),
+    ])
+
+  if (opts.email) query = query.where('health_workers.email', '=', opts.email)
+  if (opts.health_worker_id) {
+    query = query.where(
+      'health_workers.id',
+      '=',
+      opts.health_worker_id,
+    )
+  }
+
+  const result = await query.executeTakeFirst()
+
+  return result && {
+    id: result.id,
+    created_at: result.created_at,
+    updated_at: result.updated_at,
+    ...pickHealthWorkerDetails(result),
+    ...pickTokens(result),
+    employment: result.facilities.map((f) => ({
+      facility_id: f.facility_id,
+      roles: {
+        nurse: f.professions.includes('nurse')
+          ? {
+            employed_as: true,
+            registration_needed: !result.health_worker_id,
+            registration_completed: !!result.approved_by,
+            registration_pending_approval: !result.approved_by,
+          }
+          : {
+            employed_as: false,
+            registration_needed: false,
+            registration_completed: false,
+            registration_pending_approval: false,
+          },
+        doctor: f.professions.includes('doctor')
+          ? {
+            employed_as: true,
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+          }
+          : {
+            employed_as: false,
+            registration_needed: false,
+            registration_completed: false,
+            registration_pending_approval: false,
+          },
+        admin: f.professions.includes('admin')
+          ? {
+            employed_as: true,
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+          }
+          : {
+            employed_as: false,
+            registration_needed: false,
+            registration_completed: false,
+            registration_pending_approval: false,
+          },
+      },
+    })),
+  }
 }
 
 export async function getInviteesAtFacility(

@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
@@ -11,13 +11,10 @@ import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import Layout from '../../components/library/Layout.tsx'
-import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 
 export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-
+    const { healthWorker } = ctx.state
     const googleClient = new HealthWorkerGoogleClient(ctx)
 
     const today = todayISOInHarare()
