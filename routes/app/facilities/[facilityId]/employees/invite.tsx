@@ -1,23 +1,22 @@
-import { HandlerContext, PageProps } from '$fresh/server.ts'
+import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
+  Facility,
   HealthWorker,
-  LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
   Profession,
   ReturnedSqlRow,
 } from '../../../../../types.ts'
-import * as health_workers from '../..../../../../../../db/models/health_workers.ts'
-import { assert } from 'std/testing/asserts.ts'
 import { parseRequest } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
-import {
-  ConnectConfigWithAuthentication,
-  SmtpClient,
-} from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
+// import {
+//   ConnectConfigWithAuthentication,
+//   SmtpClient,
+// } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
 import * as employment from '../../../../../db/models/employment.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
+import { assertOr403 } from '../../../../../util/assertOr.ts'
 
 type InvitePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -70,38 +69,23 @@ function isInvites(
 //   await client.close()
 // }
 
-async function assertIsAdminAtFacility(
-  ctx: HandlerContext<InvitePageProps, LoggedInHealthWorker>,
-) {
-  const healthWorker = ctx.state.session.data
-  const facilityId = parseInt(ctx.params.facilityId)
-  assert(facilityId)
-  assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-  const isAdmin = await employment.isAdmin(
-    ctx.state.trx,
-    {
-      health_worker_id: healthWorker.id,
-      facility_id: facilityId,
-    },
-  )
-  assert(isAdmin)
-  return { healthWorker, facilityId }
-}
-
-export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
-  async GET(req, ctx) {
-    const { healthWorker } = await assertIsAdminAtFacility(ctx)
-    return ctx.render({ healthWorker })
+export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
+  facility: ReturnedSqlRow<Facility>
+  isAdminAtFacility: boolean
+}> = {
+  GET(_req, ctx) {
+    assertOr403(ctx.state.isAdminAtFacility)
+    return ctx.render({ healthWorker: ctx.state.healthWorker })
   },
   async POST(req, ctx) {
-    const { facilityId } = await assertIsAdminAtFacility(ctx)
+    assertOr403(ctx.state.isAdminAtFacility)
 
     const { invites } = await parseRequest(ctx.state.trx, req, isInvites)
 
     const invitesWithEmails = invites.filter((invite) => invite.email)
 
     const existingEmployees = await employment.getMatching(ctx.state.trx, {
-      facility_id: facilityId,
+      facility_id: ctx.state.facility.id,
       invitees: invitesWithEmails,
     })
 
@@ -114,10 +98,14 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps> = {
       return redirect(url.toString())
     }
 
-    await employment.addInvitees(ctx.state.trx, facilityId, invitesWithEmails)
+    await employment.addInvitees(
+      ctx.state.trx,
+      ctx.state.facility.id,
+      invitesWithEmails,
+    )
 
     return redirect(
-      `/app/facilities/${facilityId}/employees?invited=${
+      `/app/facilities/${ctx.state.facility.id}/employees?invited=${
         invitesWithEmails.map((invite) => invite.email).join(', ')
       }`,
     )

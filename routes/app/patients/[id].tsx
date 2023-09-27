@@ -5,11 +5,9 @@ import PatientDetailedCard from '../../../components/patients/DetailedCard.tsx'
 import {
   HealthWorker,
   LoggedInHealthWorkerHandler,
-  Patient,
   PatientWithMedicalRecord,
   ReturnedSqlRow,
 } from '../../../types.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import { Container } from '../../../components/library/Container.tsx'
 import SectionHeader from '../../../components/library/typography/SectionHeader.tsx'
@@ -21,8 +19,7 @@ type PatientPageProps = {
 
 export const handler: LoggedInHealthWorkerHandler<PatientPageProps> = {
   async GET(_, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const id = parseInt(ctx.params.id)
     assert(!isNaN(id), 'Invalid appointment ID')

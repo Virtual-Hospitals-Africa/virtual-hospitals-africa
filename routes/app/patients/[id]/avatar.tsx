@@ -2,17 +2,15 @@ import { assert } from 'std/testing/asserts.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import * as media from '../../../../db/models/media.ts'
 import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import { file } from '../../../../util/responses.ts'
 
 export const handler: LoggedInHealthWorkerHandler = {
   async GET(_, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-
+    const healthWorker = ctx.state.healthWorker
     const id = parseInt(ctx.params.id)
     assert(!isNaN(id), 'Invalid patient ID')
 
+    // TODO: not get the whole patient, just check if the health worker has access as part of the media query below
     const [patient] = await patients.getWithMedicalRecords(ctx.state.trx, {
       ids: [id],
       health_worker_id: healthWorker.id,

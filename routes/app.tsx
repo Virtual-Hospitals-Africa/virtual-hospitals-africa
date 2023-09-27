@@ -83,15 +83,11 @@ async function fetchNeededData(
 
 export const handler: LoggedInHealthWorkerHandler<AppProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-
     const tab = activeTab(tabs, req.url)
     const search = new URL(req.url).searchParams.get('search')
 
     return ctx.render({
-      healthWorker,
+      healthWorker: ctx.state.healthWorker,
       ...(await fetchNeededData(ctx.state.trx, tab, search)),
     })
   },
