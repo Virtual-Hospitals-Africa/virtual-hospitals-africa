@@ -29,11 +29,11 @@ import * as $23 from './routes/logged-in.tsx'
 import * as $24 from './routes/login.tsx'
 import * as $25 from './routes/logout.tsx'
 import * as $26 from './routes/patient-reset.ts'
-import * as $$0 from './islands/AddDependants.tsx'
-import * as $$1 from './islands/AllergySearch.tsx'
-import * as $$2 from './islands/FacilitySearch.tsx'
-import * as $$3 from './islands/Menu.tsx'
-import * as $$4 from './islands/PersonSearch.tsx'
+import * as $$0 from './islands/AllergySearch.tsx'
+import * as $$1 from './islands/FacilitySearch.tsx'
+import * as $$2 from './islands/Menu.tsx'
+import * as $$3 from './islands/PersonSearch.tsx'
+import * as $$4 from './islands/ReligionSelect.tsx'
 import * as $$5 from './islands/availability-form.tsx'
 import * as $$6 from './islands/file-preview-input.tsx'
 import * as $$7 from './islands/invite-success.tsx'
@@ -73,11 +73,11 @@ const manifest = {
     './routes/patient-reset.ts': $26,
   },
   islands: {
-    './islands/AddDependants.tsx': $$0,
-    './islands/AllergySearch.tsx': $$1,
-    './islands/FacilitySearch.tsx': $$2,
-    './islands/Menu.tsx': $$3,
-    './islands/PersonSearch.tsx': $$4,
+    './islands/AllergySearch.tsx': $$0,
+    './islands/FacilitySearch.tsx': $$1,
+    './islands/Menu.tsx': $$2,
+    './islands/PersonSearch.tsx': $$3,
+    './islands/ReligionSelect.tsx': $$4,
     './islands/availability-form.tsx': $$5,
     './islands/file-preview-input.tsx': $$6,
     './islands/invite-success.tsx': $$7,
