@@ -1,4 +1,5 @@
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,

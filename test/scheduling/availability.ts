@@ -1,4 +1,4 @@
-import { assertEquals } from 'std/testing/asserts.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { TimeWindow } from '../../types.ts'
 import { overlaps, windowsOverlap } from '../../scheduling/availability.tsx'
 

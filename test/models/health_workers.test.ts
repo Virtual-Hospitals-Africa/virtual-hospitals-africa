@@ -1,5 +1,6 @@
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
 import * as health_workers from '../../db/models/health_workers.ts'

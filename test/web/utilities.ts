@@ -1,5 +1,5 @@
-import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
-import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
+import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
+import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import { NurseRegistrationDetails } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 

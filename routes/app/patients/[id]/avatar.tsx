@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import * as media from '../../../../db/models/media.ts'
 import { LoggedInHealthWorkerHandler } from '../../../../types.ts'

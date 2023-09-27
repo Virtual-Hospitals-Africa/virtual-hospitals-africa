@@ -14,7 +14,7 @@ import {
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import { getWithMedicalRecords } from './patients.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 

@@ -4,7 +4,7 @@ import {
   TrxOrDb,
 } from '../types.ts'
 import { addEmployee } from '../db/models/health_workers.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export async function addToEmploymentTable(
   trx: TrxOrDb,

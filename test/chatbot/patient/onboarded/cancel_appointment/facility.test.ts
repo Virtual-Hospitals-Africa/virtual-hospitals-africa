@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
 import { resetInTest } from '../../../../../db/reset.ts'
 import db from '../../../../../db/db.ts'

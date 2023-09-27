@@ -1,4 +1,5 @@
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { MonthNum, ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
 import { isDate } from 'https://cdn.jsdelivr.net/npm/kysely/dist/esm/util/object-utils.js'
 import { isString } from 'https://deno.land/x/redis@v0.30.0/stream.ts'

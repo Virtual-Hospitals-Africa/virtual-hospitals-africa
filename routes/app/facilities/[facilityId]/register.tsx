@@ -5,7 +5,7 @@ import {
   ReturnedSqlRow,
 } from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
   NurseRegistrationStep,

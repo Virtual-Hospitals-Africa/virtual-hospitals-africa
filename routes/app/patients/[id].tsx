@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as patients from '../../../db/models/patients.ts'
 import PatientDetailedCard from '../../../components/patients/DetailedCard.tsx'

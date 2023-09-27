@@ -1,6 +1,6 @@
 import { MiddlewareHandlerContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export async function handler(
   req: Request,

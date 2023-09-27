@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, it } from 'std/testing/bdd.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { cleanUpWebServer, startWebServer } from './utilities.ts'
 
 describe('landing page', () => {

@@ -11,7 +11,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import haveNames from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
 
