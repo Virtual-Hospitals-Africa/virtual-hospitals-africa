@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import db from './db.ts'
 import selectAllNonMetaTables from './selectAllNonMetaTables.ts'
 

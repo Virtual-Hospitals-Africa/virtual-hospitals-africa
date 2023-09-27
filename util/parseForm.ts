@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import set from './set.ts'
 import * as media from '../db/models/media.ts'
 import { isRfc3339 } from './date.ts'

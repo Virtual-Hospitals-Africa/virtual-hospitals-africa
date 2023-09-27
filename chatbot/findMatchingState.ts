@@ -1,4 +1,4 @@
-import { assert } from 'https://deno.land/std@0.190.0/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import {
   ConversationStateHandlerExpectMedia,
   ConversationStateHandlerListAction,

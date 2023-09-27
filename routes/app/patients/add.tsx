@@ -11,7 +11,7 @@ import {
   PatientPersonal,
   ReturnedSqlRow,
 } from '../../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { HandlerContext } from '$fresh/src/server/mod.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'

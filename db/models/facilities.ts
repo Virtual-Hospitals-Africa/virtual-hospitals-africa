@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import {
   Facility,
   Location,

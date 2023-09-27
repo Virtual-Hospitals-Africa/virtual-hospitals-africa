@@ -1,5 +1,5 @@
 import 'dotenv'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import {
   Kysely,
   PostgresAdapter,

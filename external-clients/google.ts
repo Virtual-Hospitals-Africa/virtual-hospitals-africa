@@ -1,6 +1,7 @@
 // deno-lint-ignore-file no-explicit-any
 import 'dotenv'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import moment from 'https://deno.land/x/momentjs@2.29.1-deno/mod.ts'
 // const formatRFC3339 = require("date-fns/formatRFC3339");
 import {

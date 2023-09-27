@@ -1,7 +1,7 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../../types.ts'
 import { file } from '../../../../../../util/responses.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../../../../db/models/health_workers.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import * as media from '../../../../../../db/models/media.ts'
 
 export const handler: LoggedInHealthWorkerHandler = {

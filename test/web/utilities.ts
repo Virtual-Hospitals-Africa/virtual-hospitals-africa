@@ -1,5 +1,5 @@
-import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
-import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
+import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
+import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import { NurseRegistrationDetails } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 
@@ -59,7 +59,6 @@ export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
 
 export async function cleanUpWebServer(process: Deno.ChildProcess) {
   await process.stdout.cancel()
-  await dbWipeThenLatest()
   process.kill()
 }
 

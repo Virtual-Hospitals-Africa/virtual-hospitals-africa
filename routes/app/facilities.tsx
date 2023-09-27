@@ -1,4 +1,4 @@
-import { assertEquals } from 'std/testing/asserts.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { LoggedInHealthWorkerHandler } from '../../types.ts'
 import { getAllWithNames } from '../../db/models/facilities.ts'
 import { json } from '../../util/responses.ts'

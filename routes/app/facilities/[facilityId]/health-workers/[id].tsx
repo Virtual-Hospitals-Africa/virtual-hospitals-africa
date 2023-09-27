@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import redirect from '../../../../../util/redirect.ts'
 import Layout from '../../../../../components/library/Layout.tsx'

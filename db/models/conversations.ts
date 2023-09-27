@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   PatientState,
@@ -7,7 +7,7 @@ import {
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
-// import { assert } from 'std/testing/asserts.ts'
+// import { assert } from 'std/assert/assert.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
