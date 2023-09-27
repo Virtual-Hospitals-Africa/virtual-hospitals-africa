@@ -3,28 +3,6 @@ import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/co
 import { NurseRegistrationDetails } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 
-export async function dbWipeThenLatest() {
-  await new Deno.Command('deno', {
-    args: [
-      'task',
-      'db:migrate:wipe',
-    ],
-    stdin: 'null',
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-
-  await new Deno.Command('deno', {
-    args: [
-      'task',
-      'db:migrate:latest',
-    ],
-    stdin: 'null',
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-}
-
 export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
   const process = new Deno.Command('deno', {
     args: [
@@ -57,9 +35,12 @@ export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
   return process
 }
 
-export async function cleanUpWebServer(process: Deno.ChildProcess) {
+export async function killWebServer(process: Deno.ChildProcess) {
   await process.stdout.cancel()
   process.kill()
+  await new Deno.Command('wait', {
+    args: [String(process.pid)],
+  }).output()
 }
 
 export const testHealthWorker = () => {

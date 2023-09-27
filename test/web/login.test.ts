@@ -13,7 +13,7 @@ import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import {
-  cleanUpWebServer,
+  killWebServer,
   startWebServer,
   testHealthWorker,
   testRegistrationDetails,
@@ -32,7 +32,7 @@ describe('/login', { sanitizeResources: false }, () => {
   })
   beforeEach(resetInTest)
   afterAll(async () => {
-    await cleanUpWebServer(process)
+    await killWebServer(process)
     await db.destroy()
     await redis.flushdb()
   })
