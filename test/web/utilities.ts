@@ -59,7 +59,6 @@ export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
 
 export async function cleanUpWebServer(process: Deno.ChildProcess) {
   await process.stdout.cancel()
-  await dbWipeThenLatest()
   process.kill()
 }
 
