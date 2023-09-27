@@ -38,8 +38,8 @@ export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
 export async function killWebServer(process: Deno.ChildProcess) {
   await process.stdout.cancel()
   process.kill()
-  await new Deno.Command('wait', {
-    args: [String(process.pid)],
+  await new Deno.Command('bash', {
+    args: ['-c', `wait ${process.pid}`],
   }).output()
 }
 
