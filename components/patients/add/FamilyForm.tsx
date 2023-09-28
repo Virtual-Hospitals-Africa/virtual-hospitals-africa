@@ -39,7 +39,8 @@ export default function FamilyForm(
                 <ReligionSelect />
             </FormRow>
             <section>
-                <SectionHeader className='mb-3'>Next of Kin</SectionHeader>
+                
+                <SectionHeader className='my-5 text-[20px]'>Next of Kin</SectionHeader>
                 <FormRow>
                     <TextInput name='Name' required label = 'Name'/>
                     <TextInput name='phone number'/>
@@ -51,13 +52,12 @@ export default function FamilyForm(
                     </SelectInput>
                 </FormRow>
                 </section>
-                <hr className='my-2' />
                 <section>
-                    <SectionHeader className='mb-3'>Dependants</SectionHeader>
+                    <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
                     {/* <AddDependants /> */}
                      
                 </section>
-                <hr className='my-2' />
+                <hr className='my-5' />
             <section>
                 <Buttons
                     submitText='Next Step'

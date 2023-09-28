@@ -8,6 +8,7 @@ export default function ReligionSelect () {
         'Pentecostal/Protestant',
         'Christianity',
         'Islam',
+        'Buddhism',
         'Apostolic Sect',
         'African Traditional Religion',
         'Non-Religious'
@@ -16,7 +17,7 @@ export default function ReligionSelect () {
     const selectedOther = selectedReligion === 'other'
 
     return (
-        <>
+        <div className='w-full'>
             <SelectInput name={selectedOther? '' : 'religion'} required label='Religion' onChange={(e) => {
                 const selectedReligion = e?.currentTarget?.value;
                 setSelectedReligion(selectedReligion);
@@ -29,8 +30,8 @@ export default function ReligionSelect () {
                 <option value='other'>Other</option>
             </SelectInput>
             {
-                selectedOther && <TextInput name='religion' />
+                selectedOther && <TextInput name='religion' label='' placeholder='Religion' />
             }
-        </>
+        </div>
     )
 }
