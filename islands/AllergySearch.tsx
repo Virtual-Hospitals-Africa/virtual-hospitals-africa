@@ -31,7 +31,7 @@ export default function AllergySearch() {
 
   const filteredAllergyList = allAllergies.filter((allergy) => {
     return allergy.toLowerCase().includes(searchTerm.toLowerCase())
-  })
+  }).filter((allergy) => !selectedAllergies.includes(allergy))
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -81,7 +81,7 @@ export default function AllergySearch() {
         )}
       </FormRow>
 
-      <div className='flex-start flex flex-row gap-2'>
+      <div className='flex-start flex flex-wrap gap-2 max-w-[1000px]'>
         {selectedAllergies.map((allergy) => (
           <button
             key={allergy}
