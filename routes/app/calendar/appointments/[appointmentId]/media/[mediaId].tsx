@@ -13,8 +13,7 @@ export const handler: LoggedInHealthWorkerHandler = {
     const media_id = parseInt(ctx.params.mediaId)
     assert(media_id)
 
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const appointment_media = await media.get(ctx.state.trx, {
       media_id,

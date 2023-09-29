@@ -21,7 +21,9 @@ export const handler = [
   ) => {
     const url = new URL(req.url)
 
-    if (!url.pathname.startsWith('/app')) {
+    const accessingApp = url.pathname.startsWith('/app')
+
+    if (!accessingApp) {
       return ctx.next()
     }
 

@@ -23,16 +23,15 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
 
     // get filtered calendar events here
     const gettingEvents = googleClient.getActiveEvents(
-      ctx.state.session.data.gcal_appointments_calendar_id,
+      ctx.state.healthWorker.gcal_appointments_calendar_id,
       {
         timeMin: `${day}T00:00:00+02:00`,
         timeMax: `${day}T23:59:59+02:00`,
       },
     )
 
-    assert(ctx.state.session.data.id)
     const appointmentsOfHealthWorker = await getAppointments(ctx.state.trx, {
-      health_worker_id: ctx.state.session.data.id,
+      health_worker_id: ctx.state.healthWorker.id,
     })
     const events = await gettingEvents
 

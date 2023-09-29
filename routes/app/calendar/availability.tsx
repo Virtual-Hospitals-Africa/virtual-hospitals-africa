@@ -97,12 +97,11 @@ export const handler: LoggedInHealthWorkerHandler<
   { availability: AvailabilityJSON; healthWorker: HealthWorker }
 > = {
   async GET(_, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const googleClient = new HealthWorkerGoogleClient(ctx)
     const events = await googleClient.getActiveEvents(
-      ctx.state.session.data.gcal_availability_calendar_id,
+      healthWorker.gcal_availability_calendar_id,
     )
 
     const availability: AvailabilityJSON = {
