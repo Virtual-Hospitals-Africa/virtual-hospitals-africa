@@ -303,8 +303,8 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   constructor(
     public ctx: HandlerContext<any, LoggedInHealthWorker>,
   ) {
-    super(ctx.state.session.data)
-    this.health_worker = ctx.state.session.data
+    super(ctx.state.healthWorker)
+    this.health_worker = ctx.state.healthWorker
     if (!isHealthWorkerWithGoogleTokens(this.health_worker)) {
       throw new Error('Ya gotta be a doctah')
     }
@@ -323,11 +323,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
         if (refreshed.result !== 'success') {
           throw new Error('Failed to refresh tokens')
         }
-        this.ctx.state.session.set('access_token', refreshed.access_token)
-        this.health_worker = {
-          ...this.health_worker,
-          access_token: refreshed.access_token,
-        }
+        this.health_worker.access_token = refreshed.access_token
         return await super.makeRequest(path, opts)
       }
     }

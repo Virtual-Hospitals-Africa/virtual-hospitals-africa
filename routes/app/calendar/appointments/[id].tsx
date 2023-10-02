@@ -19,8 +19,7 @@ type AppointmentPageProps = {
 
 export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
   async GET(_, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const id = parseInt(ctx.params.id)
     assert(!isNaN(id), 'Invalid appointment ID')

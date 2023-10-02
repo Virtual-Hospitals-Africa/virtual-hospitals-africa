@@ -68,8 +68,7 @@ function isScheduleFormValues(
 
 export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const search = await parseRequest<SearchFormValues>(
       ctx.state.trx,
@@ -124,8 +123,7 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     })
   },
   async POST(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const schedule = await parseRequest<ScheduleFormValues>(
       ctx.state.trx,
