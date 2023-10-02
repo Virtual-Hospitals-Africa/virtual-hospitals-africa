@@ -4,6 +4,7 @@ import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import FacilitySearch from '../../../islands/FacilitySearch.tsx'
 import { AdminDistricts, Facility, ReturnedSqlRow } from '../../../types.ts'
 import PatientAddressInputs from '../../../islands/patient-address-inputs.tsx'
+import PersonSearch from '../../../islands/PersonSearch.tsx'
 
 function PatientAddress(
   { adminDistricts }: { adminDistricts?: AdminDistricts },
@@ -29,6 +30,14 @@ function NearestHealthCare(
           label='Nearest Facility'
           required
           defaultFacility={defaultFacility}
+        />
+      </FormRow>
+      <FormRow>
+        <PersonSearch
+        name = 'Primary_Doctor'
+        label="Primary/Family Doctor"
+        required
+        href='/app/health_workers'
         />
       </FormRow>
     </section>
