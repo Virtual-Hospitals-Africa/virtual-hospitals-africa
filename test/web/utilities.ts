@@ -1,28 +1,7 @@
-import { readLines } from 'https://deno.land/std@0.140.0/io/buffer.ts'
-import { readerFromStreamReader } from 'https://deno.land/std@0.140.0/streams/conversion.ts'
+import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
+import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import { NurseRegistrationDetails } from '../../types.ts'
-
-export async function dbWipeThenLatest() {
-  await new Deno.Command('deno', {
-    args: [
-      'task',
-      'db:migrate:wipe',
-    ],
-    stdin: 'null',
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-
-  await new Deno.Command('deno', {
-    args: [
-      'task',
-      'db:migrate:latest',
-    ],
-    stdin: 'null',
-    stdout: 'null',
-    stderr: 'null',
-  }).output()
-}
+import generateUUID from '../../util/uuid.ts'
 
 export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
   const process = new Deno.Command('deno', {
@@ -56,30 +35,36 @@ export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
   return process
 }
 
-export async function cleanUpWebServer(process: Deno.ChildProcess) {
+export async function killWebServer(process: Deno.ChildProcess) {
   await process.stdout.cancel()
-  await dbWipeThenLatest()
   process.kill()
+  await new Deno.Command('bash', {
+    args: ['-c', `wait ${process.pid}`],
+  }).output()
 }
 
-export const testHealthWorker = {
-  name: 'Test Health Worker',
-  email: 'test@healthworker.com',
-  avatar_url:
-    'https://lh3.googleusercontent.com/a/AAcHTtdCli8DiIjBkdb9TZL3W46MoxFPOy2Xuqkm345WiS446Ow=s96-c',
-  gcal_appointments_calendar_id:
-    'vjf3q6onfgnn83me7rf10fdcj4@group.calendar.google.com',
-  gcal_availability_calendar_id:
-    'fq5vbod94ihhherp9fad2tlaqk@group.calendar.google.com',
-  access_token: 'ya29.whateverlrkwlkawlk-tl2O85WA2QW_1Lf_P4lRqyAG4aUCIo0D18F',
-  expires_in: 3599,
-  refresh_token:
-    '1//01_ao4e0Kf-uTCgYIARAAGAESNwF-L9IrQkmis6YBAP4NE7BWrI7ry1qSeotPA_DLMYW9yiGLUUsaOjy7rlUvYs2nL_BTFjuv',
-  expires_at: '2023-07-25T19:20:45.123Z',
+export const testHealthWorker = () => {
+  const expires_at = new Date()
+  expires_at.setHours(expires_at.getHours() + 1)
+  return {
+    name: 'Test Health Worker',
+    email: generateUUID() + '@example.com',
+    avatar_url: generateUUID() + '.com',
+    gcal_appointments_calendar_id: generateUUID() +
+      '@appointments.calendar.google.com',
+    gcal_availability_calendar_id: generateUUID() +
+      '@availability.calendar.google.com',
+    access_token: 'access.' + generateUUID(),
+    refresh_token: 'refresh.' + generateUUID(),
+    expires_in: 3599,
+    expires_at,
+  }
 }
 
-export const testRegistrationDetails: NurseRegistrationDetails = {
-  health_worker_id: 1,
+export const testRegistrationDetails = (
+  { health_worker_id }: { health_worker_id: number },
+): NurseRegistrationDetails => ({
+  health_worker_id,
   gender: 'male',
   national_id: '12345678A12',
   date_of_first_practice: new Date(1999, 11, 11),
@@ -89,4 +74,4 @@ export const testRegistrationDetails: NurseRegistrationDetails = {
   ncz_registration_card_media_id: undefined,
   face_picture_media_id: undefined,
   approved_by: undefined,
-}
+})

@@ -1,15 +1,15 @@
-import { GridPattern } from '../../components/library/GridPattern.tsx'
+import GridPattern from '../../islands/landing-page/GridPattern.tsx'
+import MHIHomeLink from '../../islands/landing-page/MHIDotsLogo.tsx'
 
 export function Footer() {
   return (
-    <footer className='relative pb-20 pt-5 sm:pb-32 sm:pt-14'>
-      <div className='absolute inset-x-0 top-0 h-32 text-slate-900/10 [mask-image:linear-gradient(white,transparent)]'>
-        <GridPattern x='50%' />
+    <footer className='relative flex flex-row w-full items-between p-4 pt-5 sm:pt-14'>
+      <div className='relative text-sm text-slate-600'>
+        <p>
+          &copy; {new Date().getFullYear()} Health Gateway Africa Trust
+        </p>
       </div>
-      <div className='relative text-center text-sm text-slate-600'>
-        <p>Copyright &copy; {new Date().getFullYear()} Lindehoff Design, LLC</p>
-        <p>All rights reserved.</p>
-      </div>
+      <MHIHomeLink />
     </footer>
   )
 }

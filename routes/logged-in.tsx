@@ -1,27 +1,28 @@
 import { Handlers } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
 import * as google from '../external-clients/google.ts'
-import * as details from '../db/models/nurse_registration_details.ts'
 import {
+  EmployedHealthWorker,
   GoogleProfile,
   HealthWorker,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../types.ts'
+import uniq from '../util/uniq.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   profile: GoogleProfile,
   invitees: { id: number; facility_id: number; profession: Profession }[],
-): Promise<ReturnedSqlRow<HealthWorker>> {
+): Promise<EmployedHealthWorker> {
   const calendars = await googleClient
     .ensureHasAppointmentsAndAvailabilityCalendars()
 
@@ -45,7 +46,65 @@ export async function initializeHealthWorker(
 
   await employment.removeInvitees(trx, invitees.map((invitee) => invitee.id))
 
-  return healthWorker
+  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
+
+  return {
+    ...healthWorker,
+    employment: facility_ids.map((facility_id) => ({
+      facility_id,
+      roles: {
+        nurse: invitees.some((invitee) =>
+            invitee.facility_id === facility_id &&
+            invitee.profession === 'nurse'
+          )
+          ? {
+            employed_as: true,
+            registration_needed: true,
+            registration_completed: false,
+            registration_pending_approval: true,
+          }
+          : {
+            employed_as: false,
+            registration_needed: false,
+            registration_completed: false,
+            registration_pending_approval: false,
+          },
+        doctor:
+          invitees.some((invitee) =>
+              invitee.facility_id === facility_id &&
+              invitee.profession === 'doctor'
+            )
+            ? {
+              employed_as: true,
+              registration_needed: false,
+              registration_completed: true,
+              registration_pending_approval: false,
+            }
+            : {
+              employed_as: false,
+              registration_needed: false,
+              registration_completed: false,
+              registration_pending_approval: false,
+            },
+        admin: invitees.some((invitee) =>
+            invitee.facility_id === facility_id &&
+            invitee.profession === 'admin'
+          )
+          ? {
+            employed_as: true,
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+          }
+          : {
+            employed_as: false,
+            registration_needed: false,
+            registration_completed: false,
+            registration_pending_approval: false,
+          },
+      },
+    })),
+  }
 }
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
@@ -83,11 +142,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
       if (!healthWorker) return false
 
-      for (
-        const [key, value] of Object.entries({ ...healthWorker, ...tokens })
-      ) {
-        session.set(key, value)
-      }
+      session.set('health_worker_id', healthWorker.id)
 
       return true
     })

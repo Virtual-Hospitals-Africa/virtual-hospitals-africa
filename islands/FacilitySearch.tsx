@@ -4,7 +4,7 @@ import SearchResults, {
   FacilitySearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import { Facility, HasId, ReturnedSqlRow } from '../types.ts'
 

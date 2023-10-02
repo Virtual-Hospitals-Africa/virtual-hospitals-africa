@@ -1,6 +1,6 @@
 import { ComponentChildren, JSX, Ref } from 'preact'
 import { forwardRef } from 'preact/compat'
-import { SearchIcon } from '../icons/heroicons.tsx'
+import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
 
@@ -201,7 +201,7 @@ export function SearchInput(
     <LabeledInput name={name} label={label} required={required}>
       <div className='relative flex items-center'>
         <div className='absolute inset-y-0 left-0 pl-1.5 grid place-items-center'>
-          <SearchIcon />
+          <MagnifyingGlassIcon />
         </div>
         <input
           ref={ref}

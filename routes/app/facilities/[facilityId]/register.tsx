@@ -1,16 +1,19 @@
 import {
+  Facility,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
+  ReturnedSqlRow,
 } from '../../../../types.ts'
 import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
+  NurseRegistrationStep,
   NurseRegistrationStepNames,
   useNurseRegistrationSteps,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../util/redirect.ts'
-import { PageProps } from 'https://deno.land/x/fresh@1.2.0/server.ts'
+import { PageProps } from '$fresh/server.ts'
 import { Container } from '../../../../components/library/Container.tsx'
 import NursePersonalForm from '../../../../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../../../../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
@@ -34,13 +37,21 @@ export type FormState =
   & ProfessionalInformationFields
   & DocumentFormFields
 
-export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
+export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
+  facility: ReturnedSqlRow<Facility>
+}> = {
   GET(req, ctx) {
-    const facilityId = parseInt(ctx.params.facilityId)
-    assert(facilityId)
-    const healthWorker = ctx.state.session.data
-    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-    assert(healthWorker.email)
+    const { healthWorker, facility } = ctx.state
+
+    const step = new URL(req.url).searchParams.get('step')
+    // TODO: Further make this handling of multistep forms generic
+    if (
+      !NurseRegistrationStepNames.includes(
+        step as unknown as NurseRegistrationStep,
+      )
+    ) {
+      return redirect(`/app/facilities/${facility.id}/register?step=personal`)
+    }
 
     const registrationFormState = ctx.state.session.get('registrationFormState')
 
@@ -53,15 +64,9 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
     return ctx.render({ formState })
   },
   async POST(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(health_workers.isHealthWorkerWithGoogleTokens(healthWorker))
-
-    const facilityId = parseInt(ctx.params.facilityId)
-    assert(facilityId)
-
     const employee = await employment.getEmployee(ctx.state.trx, {
-      facility_id: facilityId,
-      health_worker_id: healthWorker.id,
+      facility_id: ctx.state.facility.id,
+      health_worker_id: ctx.state.healthWorker.id,
     })
     assert(employee)
 
@@ -102,7 +107,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps> = {
 
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(
-        healthWorker,
+        ctx.state.healthWorker,
         formState,
       ),
     })

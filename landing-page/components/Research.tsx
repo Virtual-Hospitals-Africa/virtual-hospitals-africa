@@ -1,4 +1,5 @@
 import { Container } from '../../components/library/Container.tsx'
+import { PresentationChartBarIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 const resources = [
@@ -59,12 +60,11 @@ export function Research() {
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading number='3' id='research-title'>
+        <SectionHeading id='research-title' icon={<PresentationChartBarIcon />}>
           Research
         </SectionHeading>
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
-          Tools and resources you can use to get started even faster and
-          progress even further.
+          Improve health outcomes for millionsr
         </p>
         <p className='mt-4 text-lg tracking-tight text-slate-700'>
           Design assets, icon teardowns, and a community of fellow icon

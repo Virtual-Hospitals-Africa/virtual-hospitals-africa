@@ -1,4 +1,7 @@
-import { CalendarIcon, MapPinIcon } from '../library/icons/heroicons.tsx'
+import {
+  CalendarIcon,
+  MapPinIcon,
+} from '../library/icons/heroicons/outline.tsx'
 import {
   HealthWorkerAppointment,
   HealthWorkerAppointmentSlot,

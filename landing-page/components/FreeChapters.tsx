@@ -25,7 +25,7 @@ export function FreeChapters() {
             </p>
           </div>
           <form className='lg:pl-16'>
-            <h3 className='text-base font-medium tracking-tight text-white'>
+            <h3 className='text-base font-bold tracking-tight text-white'>
               Get two free chapters straight to your inbox{' '}
               <span aria-hidden='true'>&rarr;</span>
             </h3>

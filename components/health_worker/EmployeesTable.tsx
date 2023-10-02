@@ -4,44 +4,26 @@ import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
+import { Profession } from '../../types.ts'
+import { FacilityEmployee } from '../../db/models/facilities.ts'
 
 type EmployeesTableProps = {
   isAdmin: boolean
-  employees: Employee[]
+  employees: FacilityEmployee[]
   pathname: string
-  invitees: Invitee[]
 }
 
-export type Employee = {
-  name: string
-  profession: string
-  avatar_url?: string
-}
-
-export type Invitee = {
-  email: string
-  profession: string
-}
-
-export function transformInviteesToEmployees(invitees: Invitee[]): Employee[] {
-  return invitees.map((invitee) => ({
-    name: invitee.email,
-    profession: invitee.profession,
-  }))
+type Employee = {
+  avatar_url: null | string
+  display_name: string
+  professions: string[]
 }
 
 export default function EmployeesTable({
   isAdmin,
   employees,
   pathname,
-  invitees,
 }: EmployeesTableProps): JSX.Element {
-  let employeesToDisplay = employees
-  if (isAdmin) {
-    employeesToDisplay = employees.concat(
-      transformInviteesToEmployees(invitees),
-    )
-  }
   const columns: TableColumn<Employee>[] = [
     {
       label: null,
@@ -50,12 +32,12 @@ export default function EmployeesTable({
     },
     {
       label: 'Health Worker',
-      dataKey: 'name',
+      dataKey: 'display_name',
       type: 'content',
     },
     {
       label: 'Profession',
-      dataKey: 'profession',
+      dataKey: 'professions',
       type: 'content',
     },
   ]
@@ -90,7 +72,7 @@ export default function EmployeesTable({
       </FormRow>
       <Table
         columns={columns}
-        rows={employeesToDisplay}
+        rows={employees}
       />
     </>
   )

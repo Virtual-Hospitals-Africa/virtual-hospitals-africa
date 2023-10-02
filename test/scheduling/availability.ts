@@ -1,6 +1,6 @@
-import { assertEquals } from 'std/testing/asserts.ts'
-import { TimeWindow } from '../types.ts'
-import { overlaps, windowsOverlap } from '../islands/availability-form.tsx'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { TimeWindow } from '../../types.ts'
+import { overlaps, windowsOverlap } from '../../scheduling/availability.tsx'
 
 Deno.test('windowsOverlap should return false for non-overlapping time slots', () => {
   const input: TimeWindow[] = [

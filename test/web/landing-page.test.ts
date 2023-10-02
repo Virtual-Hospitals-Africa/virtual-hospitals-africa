@@ -1,8 +1,8 @@
 import { afterAll, beforeAll, describe, it } from 'std/testing/bdd.ts'
-import { assert } from 'std/testing/asserts.ts'
-import { cleanUpWebServer, startWebServer } from './utilities.ts'
+import { assert } from 'std/assert/assert.ts'
+import { killWebServer, startWebServer } from './utilities.ts'
 
-describe('landing page', () => {
+describe('landing page', { sanitizeResources: false }, () => {
   const PORT = '8001'
   const ROUTE = `https://localhost:${PORT}`
   let process: Deno.ChildProcess
@@ -10,7 +10,7 @@ describe('landing page', () => {
     process = await startWebServer(PORT)
   })
   afterAll(async () => {
-    await cleanUpWebServer(process)
+    await killWebServer(process)
   })
 
   it('can be accessed', async () => {

@@ -2,7 +2,7 @@ import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 
-type Row = Record<string, string | number> & { id?: number }
+type Row = Record<string, string | number | string[] | null> & { id?: number }
 
 export type TableColumn<T extends Row> =
   & {
@@ -42,6 +42,7 @@ function TableCellInnerContents<T extends Row>(
   { row, column }: { row: T; column: TableColumn<T> },
 ) {
   if (column.type === 'content') {
+    const value = row[column.dataKey]
     return (
       <div
         className={cls(
@@ -49,7 +50,7 @@ function TableCellInnerContents<T extends Row>(
           column.cellClassName,
         )}
       >
-        {row[column.dataKey]}
+        {Array.isArray(value) ? value.join(', ') : value}
       </div>
     )
   }

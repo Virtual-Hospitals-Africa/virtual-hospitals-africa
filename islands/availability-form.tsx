@@ -1,27 +1,17 @@
 import { useState } from 'preact/hooks'
-import range from '../util/range.ts'
 import { padTime } from '../util/pad.ts'
 import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
 import PlusIcon from '../components/library/icons/plus.tsx'
 import TrashIcon from '../components/library/icons/trash.tsx'
 import WarningModal from '../components/library/modals/Warning.tsx'
-import timeToMin from '../util/timeToMin.ts'
 import FormButtons from '../components/library/form/buttons.tsx'
-import isObjectLike from '../util/isObjectLike.ts'
-import { parseFormWithoutFiles } from '../util/parseForm.ts'
-
-const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-const minutes = range(0, 60, 5)
-
-export function isPartialAvailability(
-  values: unknown,
-): values is Partial<AvailabilityJSON> {
-  return isObjectLike(values) &&
-    Object.keys(values).every((day) =>
-      // deno-lint-ignore no-explicit-any
-      days.includes(day as any) && Array.isArray(values[day])
-    )
-}
+import {
+  days,
+  defaultTimeWindow,
+  findDaysWithOverlap,
+  hours,
+  minutes,
+} from '../scheduling/availability.tsx'
 
 function HourInput({ name, current }: { name: string; current: number }) {
   return (
@@ -141,11 +131,6 @@ function TimeInput(
   )
 }
 
-const defaultTimeWindow: TimeWindow = {
-  start: { hour: 9, minute: 0, amPm: 'am' },
-  end: { hour: 5, minute: 0, amPm: 'pm' },
-}
-
 function DayInput(
   { day, timeWindows: initialTimeWindows }: {
     day: string
@@ -199,50 +184,6 @@ function DayInput(
       </div>
     </>
   )
-}
-
-const days: Array<DayOfWeek> = [
-  'Sunday',
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-]
-
-export function overlaps(
-  timeWindow: TimeWindow,
-  otherTimeWindow: TimeWindow,
-): boolean {
-  const firstTimeStart = timeToMin(timeWindow.start)
-  const firstTimeEnd = timeToMin(timeWindow.end)
-  const secondTimeStart = timeToMin(otherTimeWindow.start)
-  const secondTimeEnd = timeToMin(otherTimeWindow.end)
-  if (firstTimeStart > secondTimeEnd || firstTimeEnd < secondTimeStart) {
-    return false
-  }
-  return true
-}
-
-export function windowsOverlap(timeWindows: TimeWindow[]): boolean {
-  if (timeWindows.length <= 1) return false
-  const [timeWindow, ...rest] = timeWindows
-  if (rest.some((otherTimeWindow) => overlaps(timeWindow, otherTimeWindow))) {
-    return true
-  }
-  return windowsOverlap(rest)
-}
-
-function findDaysWithOverlap(event: HTMLFormElement) {
-  const availability = parseFormWithoutFiles(
-    new FormData(event),
-    isPartialAvailability,
-  )
-  return Object.keys(availability).filter((day) => {
-    const timeWindows = availability[day as DayOfWeek]
-    return !!timeWindows && windowsOverlap(timeWindows)
-  })
 }
 
 export default function AvailabilityForm(

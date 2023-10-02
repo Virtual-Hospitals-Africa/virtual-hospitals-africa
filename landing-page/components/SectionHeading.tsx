@@ -1,6 +1,6 @@
 import cls from '../../util/cls.ts'
 
-export function SectionHeading({ number, children, className, ...props }: any) {
+export function SectionHeading({ icon, children, className, ...props }: any) {
   return (
     <h2
       className={cls(
@@ -10,7 +10,7 @@ export function SectionHeading({ number, children, className, ...props }: any) {
       {...props}
     >
       <span className='font-mono text-sm' aria-hidden='true'>
-        {number.padStart(2, '0')}
+        {icon}
       </span>
       <span className='ml-3 h-3.5 w-px bg-blue-600/20' />
       <span className='ml-3 text-base font-medium tracking-tight'>

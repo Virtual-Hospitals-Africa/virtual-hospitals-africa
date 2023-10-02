@@ -1,4 +1,6 @@
 import { PageProps } from '$fresh/server.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
   AvailabilityJSON,
@@ -9,22 +11,20 @@ import {
   LoggedInHealthWorkerHandler,
   Time,
 } from '../../../types.ts'
-import SetAvailabilityForm, {
-  isPartialAvailability,
-} from '../../../islands/availability-form.tsx'
+import SetAvailabilityForm from '../../../islands/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import {
   assertAllHarare,
   convertToTime,
   formatHarare,
 } from '../../../util/date.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
 import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import { padTime } from '../../../util/pad.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseDate } from '../../../util/date.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
+import { isPartialAvailability } from '../../../scheduling/availability.tsx'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -97,12 +97,11 @@ export const handler: LoggedInHealthWorkerHandler<
   { availability: AvailabilityJSON; healthWorker: HealthWorker }
 > = {
   async GET(_, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
+    const { healthWorker } = ctx.state
 
     const googleClient = new HealthWorkerGoogleClient(ctx)
     const events = await googleClient.getActiveEvents(
-      ctx.state.session.data.gcal_availability_calendar_id,
+      healthWorker.gcal_availability_calendar_id,
     )
 
     const availability: AvailabilityJSON = {

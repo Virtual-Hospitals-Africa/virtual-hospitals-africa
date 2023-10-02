@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
-import { assert, assertEquals } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
 import { resetInTest } from '../../../../../db/reset.ts'
 import db from '../../../../../db/db.ts'
@@ -15,7 +16,7 @@ describe('patient chatbot', () => {
   it('asks for gender after inquiring name', async () => {
     await patients.upsert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_name',
-      phone_number: phone_number,
+      phone_number,
       name: null,
       gender: null,
       date_of_birth: null,
@@ -53,11 +54,11 @@ describe('patient chatbot', () => {
             { id: 'other', title: 'Other' },
           ],
         },
-        phone_number: phone_number,
+        phone_number,
       },
     ])
     const patient = await patients.getByPhoneNumber(db, {
-      phone_number: phone_number,
+      phone_number,
     })
 
     assert(patient)

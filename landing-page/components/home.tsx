@@ -3,11 +3,11 @@ import { Footer } from './Footer.tsx'
 import { FreeChapters } from './FreeChapters.tsx'
 import { Hero } from './Hero.tsx'
 import { Introduction } from './Introduction.tsx'
-import { NavBar } from './NavBar.tsx'
-import { Pricing } from './Pricing.tsx'
+import NavBar from '../../islands/landing-page/NavBar.tsx'
 import { Research } from './Research.tsx'
-import { Screencasts } from './Screencasts.tsx'
-import { TableOfContents } from './TableOfContents.tsx'
+import { Patients } from './Patients.tsx'
+import { HealthWorkers } from './HealthWorkers.tsx'
+import { TeamSection } from './Team.tsx'
 import { Testimonial } from './Testimonial.tsx'
 import { Testimonials } from './Testimonials.tsx'
 
@@ -17,7 +17,7 @@ export default function Home() {
       <Hero />
       <Introduction />
       <NavBar />
-      <TableOfContents />
+      <HealthWorkers />
       <Testimonial
         id='testimonial-from-tommy-stroman'
         author={{
@@ -27,29 +27,30 @@ export default function Home() {
         }}
       >
         <p>
-          “I didn’t know a thing about icon design until I read this book. Now I
-          can create any icon I need in no time. Great resource!” Wow!
+          “Equipping health facilities with Virtual Hospitals Africa will be a
+          game changer in how care is provided in Southern Africa and beyond”
         </p>
       </Testimonial>
-      <Screencasts />
+      <Patients />
       <Testimonial
         id='testimonial-from-gerardo-stark'
         author={{
           name: 'Gerardo Stark',
-          role: 'Creator of Pandemicons',
+          role: 'Patient',
           image: '/images/avatars/avatar-2.png',
         }}
       >
         <p>
-          “I’ve tried to create my own icons in the past but quickly got
-          frustrated and gave up. Now I sell my own custom icon sets online.”
+          “The nearest hospital is a 25 mile walk away, so often I just wouldn’t
+          go even if I was sick. I feel so much better knowing I can get my
+          questions answered and medications sent out from home.”
         </p>
       </Testimonial>
       <Research />
       <FreeChapters />
-      <Pricing />
       <Testimonials />
       <Partners />
+      <TeamSection />
       <Footer />
     </>
   )

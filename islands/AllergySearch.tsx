@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { allAllergies } from '../util/allergyList.ts'
 import FormRow from '../components/library/form/Row.tsx'
-import { assert } from 'std/_util/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import SearchResults, {
   AllergySearchResult,
 } from '../components/library/SearchResults.tsx'
@@ -20,18 +20,18 @@ export default function AllergySearch() {
       setSearchTerm('')
     }
 
-    setSelectedAllergies((prevSelectedAllergies) => {
-      if (prevSelectedAllergies.includes(allergy)) {
-        return prevSelectedAllergies.filter((item) => item !== allergy)
-      } else {
-        return [...prevSelectedAllergies, allergy]
-      }
-    })
+    setSelectedAllergies((prevSelectedAllergies) =>
+      prevSelectedAllergies.includes(allergy)
+        ? prevSelectedAllergies.filter((item) => item !== allergy)
+        : [...prevSelectedAllergies, allergy]
+    )
   }
 
-  const filteredAllergyList = allAllergies.filter((allergy) => {
-    return allergy.toLowerCase().includes(searchTerm.toLowerCase())
-  })
+  const filteredAllergyList = allAllergies
+    .filter((allergy) => !selectedAllergies.includes(allergy))
+    .filter((allergy) =>
+      allergy.toLowerCase().includes(searchTerm.toLowerCase())
+    )
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -68,8 +68,8 @@ export default function AllergySearch() {
         />
       </FormRow>
 
-      <FormRow className='mb-3'>
-        {isFocused && searchTerm && (
+      <FormRow className='mb-3 relative'>
+        {isFocused && searchTerm && !!filteredAllergyList.length && (
           <SearchResults>
             {filteredAllergyList.map((allergy) => (
               <AllergySearchResult
@@ -81,7 +81,7 @@ export default function AllergySearch() {
         )}
       </FormRow>
 
-      <div className='flex-start flex flex-row gap-2'>
+      <div className='flex-start flex flex-wrap gap-2 w-full'>
         {selectedAllergies.map((allergy) => (
           <button
             key={allergy}

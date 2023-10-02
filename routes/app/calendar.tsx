@@ -1,4 +1,4 @@
-import { assert } from 'std/testing/asserts.ts'
+import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import { HealthWorkerGoogleClient } from '../../external-clients/google.ts'
 import {
@@ -11,13 +11,10 @@ import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import Layout from '../../components/library/Layout.tsx'
-import { isHealthWorkerWithGoogleTokens } from '../../db/models/health_workers.ts'
 
 export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
   async GET(req, ctx) {
-    const healthWorker = ctx.state.session.data
-    assert(isHealthWorkerWithGoogleTokens(healthWorker))
-
+    const { healthWorker } = ctx.state
     const googleClient = new HealthWorkerGoogleClient(ctx)
 
     const today = todayISOInHarare()
@@ -26,16 +23,15 @@ export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
 
     // get filtered calendar events here
     const gettingEvents = googleClient.getActiveEvents(
-      ctx.state.session.data.gcal_appointments_calendar_id,
+      ctx.state.healthWorker.gcal_appointments_calendar_id,
       {
         timeMin: `${day}T00:00:00+02:00`,
         timeMax: `${day}T23:59:59+02:00`,
       },
     )
 
-    assert(ctx.state.session.data.id)
     const appointmentsOfHealthWorker = await getAppointments(ctx.state.trx, {
-      health_worker_id: ctx.state.session.data.id,
+      health_worker_id: ctx.state.healthWorker.id,
     })
     const events = await gettingEvents
 

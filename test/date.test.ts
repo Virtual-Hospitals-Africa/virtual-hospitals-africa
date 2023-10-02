@@ -1,4 +1,4 @@
-import { assertEquals } from 'std/testing/asserts.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 import { PatientDemographicInfo } from '../types.ts'
 import { prettyPatientDateOfBirth } from '../util/date.ts'
 

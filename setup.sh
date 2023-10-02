@@ -25,6 +25,7 @@ ensure_you_have "createdb" "postgresql"
 echo "Great! You have the right tools installed. Creating a local database..."
 
 db_exists vha_dev || createdb -h localhost -U $me -w vha_dev
+db_exists vha_test || createdb -h localhost -U $me -w vha_test
 
 echo "Done! Now we'll set up your local environment variables..."
 
@@ -66,5 +67,6 @@ deno task switch:local
 echo "Now let's migrate your local database..."
 
 deno task db:migrate:latest
+IS_TEST=true deno task db:migrate:latest
 
 echo "Migrations complete! You can now run the server with 'deno task start'"
