@@ -7,7 +7,7 @@ import ReligionSelect from '../../../islands/ReligionSelect.tsx'
 type FamilyFormProps = AddPatientDataProps['family']
 
 export default function FamilyForm(
-  { initialData = {} }: { initialData: Partial<FamilyFormProps> }, 
+  { initialData = {} }: { initialData: Partial<FamilyFormProps> },
 ) {
   const allRelations = [
     'Wife',

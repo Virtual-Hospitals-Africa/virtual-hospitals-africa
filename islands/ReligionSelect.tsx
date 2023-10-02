@@ -37,7 +37,12 @@ export default function ReligionSelect() {
         <option value='other'>Other</option>
       </SelectInput>
       {selectedOther && (
-        <TextInput name='religion' label='Other' placeholder='Religion' required />
+        <TextInput
+          name='religion'
+          label='Other'
+          placeholder='Religion'
+          required
+        />
       )}
     </div>
   )
