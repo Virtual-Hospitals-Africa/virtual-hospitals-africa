@@ -7,7 +7,7 @@ import ReligionSelect from '../../../islands/ReligionSelect.tsx'
 type FamilyFormProps = AddPatientDataProps['family']
 
 export default function FamilyForm(
-  { initialData = {} }: { initialData: Partial<FamilyFormProps> }, //might be unnecessary? ask!
+  { initialData = {} }: { initialData: Partial<FamilyFormProps> }, 
 ) {
   const allRelations = [
     'Wife',
@@ -27,12 +27,12 @@ export default function FamilyForm(
   return (
     <>
       <FormRow>
-        <SelectInput name='marital status' required label='Marital Status'>
-          <option value='Select'>Select</option>
+        <SelectInput name='marital_status' required label='Marital Status'>
+          <option value=''>Select</option>
           <option value='single'>Single</option>
           <option value='married'>Married</option>
-          <option value='civilPartner'>Civil Partner</option>
-          <option value='widowWidower'>Widow/Widower</option>
+          <option value='civil_partner'>Civil Partner</option>
+          <option value='widow_widower'>Widow/Widower</option>
           <option value='separated'>Separated</option>
           <option value='divorced'>Divorced</option>
         </SelectInput>
@@ -41,17 +41,17 @@ export default function FamilyForm(
       <section>
         <SectionHeader className='my-5 text-[20px]'>Next of Kin</SectionHeader>
         <FormRow>
-          <TextInput name='Name' required label='Name' />
-          <TextInput name='phone number' />
+          <TextInput name='name' required label='Name' />
+          <TextInput name='phone_number' />
           <SelectInput name='relationship' required label='Relationship'>
-            <option>Select</option>
+            <option value=''>Select</option>
             {allRelations.map((relation) => <option>{relation}</option>)}
           </SelectInput>
         </FormRow>
       </section>
       <section>
         <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
-        {/* <AddDependants /> */}
+        {/* <AddDependents /> */}
       </section>
       <hr className='my-5' />
       <section>

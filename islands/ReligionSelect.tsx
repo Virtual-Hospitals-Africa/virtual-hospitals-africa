@@ -28,7 +28,7 @@ export default function ReligionSelect() {
           console.log(selectedReligion)
         }}
       >
-        <option>Select</option>
+        <option value=''>Select</option>
         {allReligions.map((religion) => (
           <option value={religion} selected={selectedReligion === religion}>
             {religion}
@@ -37,7 +37,7 @@ export default function ReligionSelect() {
         <option value='other'>Other</option>
       </SelectInput>
       {selectedOther && (
-        <TextInput name='religion' label='' placeholder='Religion' />
+        <TextInput name='religion' label='Other' placeholder='Religion' required />
       )}
     </div>
   )
