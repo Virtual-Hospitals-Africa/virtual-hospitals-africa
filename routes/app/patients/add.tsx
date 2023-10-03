@@ -8,6 +8,7 @@ import {
   LoggedInHealthWorkerHandler,
   Media,
   PatientAddress,
+  PatientFamily,
   PatientPersonal,
   ReturnedSqlRow,
 } from '../../../types.ts'
@@ -25,6 +26,7 @@ import {
 } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
+import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
@@ -34,6 +36,7 @@ import PatientConditionsForm from '../../../components/patients/add/ConditionsFo
 export type AddPatientDataProps = {
   personal: Omit<PatientPersonal, 'name'> & HasNames
   address: PatientAddress
+  family: PatientFamily
 }
 
 type AddPatientProps = {
@@ -234,7 +237,9 @@ export default function AddPatient(
               adminDistricts={adminDistricts}
             />
           )}
-          {currentStep === 'family' && <div>TODO history form</div>}
+          {currentStep === 'family' && (
+            <FamilyForm initialData={patient.family} />
+          )}
           {currentStep === 'pre-existing_conditions' && (
             <PatientConditionsForm />
           )}
