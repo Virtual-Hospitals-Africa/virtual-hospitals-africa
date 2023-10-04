@@ -8,8 +8,8 @@ import {
   LoggedInHealthWorkerHandler,
   Media,
   PatientAddress,
+  PatientFamily,
   PatientPersonal,
-  PatientFamily, 
   ReturnedSqlRow,
 } from '../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -238,7 +238,7 @@ export default function AddPatient(
             />
           )}
           {currentStep === 'family' && (
-            <FamilyForm initialData = {patient.family} />
+            <FamilyForm initialData={patient.family} />
           )}
           {currentStep === 'pre-existing_conditions' && (
             <PatientConditionsForm />
