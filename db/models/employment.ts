@@ -194,3 +194,22 @@ export function removeInvitees(
   return trx.deleteFrom('health_worker_invitees').where('id', 'in', ids)
     .execute()
 }
+
+export function getFacilityAdmin(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+  },
+) {
+  return trx
+    .selectFrom('employment')
+    .where('facility_id', '=', opts.facility_id)
+    .where('profession', '=', 'admin')
+    .leftJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .select(['employment.id', 'health_worker_id', 'name', 'email', 'profession', 'facility_id'])
+    .executeTakeFirst()
+}
