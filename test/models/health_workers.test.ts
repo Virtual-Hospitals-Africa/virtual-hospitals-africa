@@ -6,7 +6,7 @@ import { resetInTest } from '../../db/reset.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
-import { EmployedHealthWorker, EmploymentInfo } from '../../types.ts'
+import { EmployedHealthWorker } from '../../types.ts'
 import { assertArrayIncludes } from 'https://deno.land/std@0.160.0/testing/asserts.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
@@ -175,7 +175,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             ncz_registration_number: null,
             profession: 'doctor',
           },
-        ]
+        ],
       )
     })
   })
