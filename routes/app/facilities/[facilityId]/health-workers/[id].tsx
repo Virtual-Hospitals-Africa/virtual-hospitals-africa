@@ -10,6 +10,7 @@ import * as health_workers from '../../../../../db/models/health_workers.ts'
 import * as nurse_specialities from '../../../../../db/models/nurse_specialties.ts'
 
 import {
+  EmployeeInfo,
   EmploymentInfo,
   Facility,
   LoggedInHealthWorkerHandler,
@@ -20,6 +21,7 @@ import {
 type HealthWorkerPageProps = {
   specialities: ReturnedSqlRow<Specialities>[]
   employmentInfo: EmploymentInfo[]
+  employeeInfo: EmployeeInfo
 }
 
 export const handler: LoggedInHealthWorkerHandler<
@@ -46,7 +48,14 @@ export const handler: LoggedInHealthWorkerHandler<
         facility_id + '. Double check your input.',
     )
 
-    console.log(employmentInfo)
+    const employeeInfo = await health_workers.getEmployeeInfo(
+      ctx.state.trx,
+      health_worker_id,
+      facility_id,
+    )
+    console.log(employeeInfo)
+
+    // console.log(employmentInfo)
 
     // to deal with duplicates in case user is nurse/doctor/admin at same facility
     const facility_names = new Set<string>()
@@ -73,6 +82,7 @@ export const handler: LoggedInHealthWorkerHandler<
     return ctx.render({
       specialities,
       employmentInfo,
+      employeeInfo,
     })
   },
 }
@@ -82,10 +92,10 @@ export default function HealthWorkerPage(
 ) {
   return (
     <Layout
-      title={props.data.employmentInfo[0].name}
+      title={props.data.employeeInfo.name}
       route={props.route}
-      avatarUrl={props.data.employmentInfo[0].avatar_url
-        ? props.data.employmentInfo[0].avatar_url
+      avatarUrl={props.data.employeeInfo.avatar_url
+        ? props.data.employeeInfo.avatar_url
         : 'avatar_url'}
       variant='standard'
     >
@@ -100,13 +110,13 @@ export default function HealthWorkerPage(
               height={48}
             />
             <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
-              {props.data.employmentInfo[0].name}
+              {props.data.employeeInfo.name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
-              <p>
-                {props.data.employmentInfo.map((item) => item.profession)
-                  .join(', ')}
-              </p>
+              {props.data.employeeInfo.employment.map((item) => (
+                  item.professions.join(', ')
+                ))
+                .join(', ')}
             </dt>
           </div>
           <SectionHeader className='mb-1'>
@@ -115,6 +125,7 @@ export default function HealthWorkerPage(
           <HealthWorkerDetailedCard
             specialities={props.data.specialities}
             employmentInfo={props.data.employmentInfo}
+            employeeInfo={props.data.employeeInfo}
           />
         </div>
       </Container>

@@ -2,6 +2,8 @@ import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
+import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
+import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { resetInTest } from '../../db/reset.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -174,6 +176,164 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             national_id: null,
             ncz_registration_number: null,
             profession: 'doctor',
+          },
+        ],
+      )
+    })
+  })
+
+  describe('getEmployeeInfo', () => {
+    it('returns the health worker and their employment information if that matches a given facility id', async () => {
+      const healthWorker = await health_workers.upsertWithGoogleCredentials(
+        db,
+        {
+          name: 'Worker',
+          email: 'test@worker.com',
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          access_token: 'access_token',
+          refresh_token: 'refresh_token',
+          expires_at: new Date(),
+        },
+      )
+
+      await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 1,
+      }, {
+        health_worker_id: healthWorker.id,
+        profession: 'doctor',
+        facility_id: 2,
+      }])
+
+      const result = await health_workers.getEmployeeInfo(
+        db,
+        healthWorker.id,
+        1,
+      )
+
+      assert(result)
+      assertEquals(result.health_worker_id, null) // healthWorker.id)
+      assertEquals(result.gender, null)
+      assertEquals(result.name, 'Worker')
+      assertEquals(result.mobile_number, null)
+      assertEquals(result.avatar_url, 'avatar_url')
+      assertEquals(result.date_of_first_practice, null)
+      assertEquals(result.email, 'test@worker.com')
+      assertEquals(result.national_id, null)
+      assertEquals(result.ncz_registration_number, null)
+      assertEquals(result.specialty, undefined)
+      assertEquals(result.registration_completed, false)
+      assertEquals(result.registration_needed, true)
+      assertEquals(result.registration_pending_approval, false)
+      assertEquals(
+        result.employment,
+        [
+          {
+            facility_id: 1,
+            facility_name: 'VHA Test Hospital',
+            address: 'Bristol, UK',
+            professions: ['nurse'],
+          },
+          {
+            address: 'Beitbridge, Matabeleland South Province, ZW',
+            facility_id: 2,
+            facility_name: 'Beitbridge',
+            professions: ['doctor'],
+          },
+        ],
+      )
+    })
+
+    it('returns the nurse registration details & specialty where applicable', async () => {
+      const healthWorker = await health_workers.upsertWithGoogleCredentials(
+        db,
+        {
+          name: 'Worker',
+          email: 'test@worker.com',
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          access_token: 'access_token',
+          refresh_token: 'refresh_token',
+          expires_at: new Date(),
+        },
+      )
+
+      const [firstEmployment, secondEmployment] = await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 1,
+      }, {
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 2,
+      }])
+
+      await nurse_specialties.add(db, {
+        employee_id: firstEmployment.id,
+        speciality: 'midwife',
+      })
+
+      await nurse_specialties.add(db, {
+        employee_id: secondEmployment.id,
+        speciality: 'clinical_care_nurse',
+      })
+
+      await nurse_registration_details.add(db, {
+        registrationDetails: {
+          health_worker_id: healthWorker.id,
+          gender: 'female',
+          national_id: '12345678A12',
+          date_of_first_practice: new Date('2020-01-01'),
+          ncz_registration_number: 'GN123456',
+          mobile_number: '5555555555',
+          national_id_media_id: null,
+          ncz_registration_card_media_id: null,
+          face_picture_media_id: null,
+          approved_by: null,
+        },
+      })
+
+      const result = await health_workers.getEmployeeInfo(
+        db,
+        healthWorker.id,
+        1,
+      )
+
+      console.log('\n')
+      console.log(result)
+
+      assert(result)
+      assertEquals(result.health_worker_id, healthWorker.id)
+      assertEquals(result.gender, 'female')
+      assertEquals(result.name, 'Worker')
+      assertEquals(result.mobile_number, '555-555-5555')
+      assertEquals(result.avatar_url, 'avatar_url')
+      assertEquals(result.date_of_first_practice, new Date('2020-01-01'))
+      assertEquals(result.email, 'test@worker.com')
+      assertEquals(result.national_id, '12345678A12')
+      assertEquals(result.ncz_registration_number, 'GN123456')
+      assertEquals(result.specialty, 'midwife')
+      assertEquals(result.registration_completed, true)
+      assertEquals(result.registration_needed, false)
+      assertEquals(result.registration_pending_approval, true)
+      assertEquals(
+        result.employment,
+        [
+          {
+            facility_id: 1,
+            facility_name: 'VHA Test Hospital',
+            address: 'Bristol, UK',
+            professions: ['nurse'],
+          },
+          {
+            address: 'Beitbridge, Matabeleland South Province, ZW',
+            facility_id: 2,
+            facility_name: 'Beitbridge',
+            professions: ['nurse'],
           },
         ],
       )

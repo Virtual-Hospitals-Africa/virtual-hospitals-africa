@@ -842,6 +842,28 @@ export type EmploymentInfo = {
   facility_id: Maybe<number>
 }
 
+export type EmployeeInfo = {
+  name: string
+  email: string
+  gender: Gender
+  national_id: string
+  ncz_registration_number: string
+  mobile_number: string
+  health_worker_id: number
+  date_of_first_practice: Date
+  specialty: NurseSpeciality
+  avatar_url: string
+  registration_completed: boolean
+  registration_needed: boolean
+  registration_pending_approval: boolean
+  employment: {
+    address: string
+    facility_id: number
+    facility_name: string
+    professions: string[]
+  }[]
+}
+
 export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
   id: number
   employment: {

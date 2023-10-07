@@ -60,11 +60,11 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
       '^[a-zA-Z]{2}[0-9]{6}$',
     ) &&
     registrationDetails.mobile_number.toString().match('^[0-9]+$') &&
-    (registrationDetails.national_id_media_id === undefined ||
+    (registrationDetails.national_id_media_id == undefined ||
       typeof registrationDetails.national_id_media_id === 'number') &&
-    (registrationDetails.ncz_registration_card_media_id === undefined ||
+    (registrationDetails.ncz_registration_card_media_id == undefined ||
       typeof registrationDetails.ncz_registration_card_media_id === 'number') &&
-    (registrationDetails.face_picture_media_id === undefined ||
+    (registrationDetails.face_picture_media_id == undefined ||
       typeof registrationDetails.face_picture_media_id === 'number') &&
     (registrationDetails.approved_by == undefined ||
       typeof registrationDetails.approved_by === 'number')
