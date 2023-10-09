@@ -55,7 +55,7 @@ export type PersonalFormFields = {
 
 export type ProfessionalInformationFields = {
   specialty: NurseSpecialty
-  date_of_first_practice: Date
+  date_of_first_practice: string
   ncz_registration_number: string
 }
 

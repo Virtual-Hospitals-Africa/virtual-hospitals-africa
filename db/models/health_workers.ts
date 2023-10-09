@@ -11,7 +11,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom  } from '../helpers.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import haveNames from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
@@ -398,7 +398,10 @@ export function getEmployeeInfo(
     )
     .select((eb) => [
       'all_employment.health_worker_id as health_worker_id',
-      sql<Maybe<string>>`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`.as('date_of_first_practice'),
+      sql<
+        Maybe<string>
+      >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
+        .as('date_of_first_practice'),
       'nurse_registration_details.gender',
       'nurse_registration_details.mobile_number',
       'nurse_registration_details.national_id',
@@ -436,7 +439,9 @@ export function getEmployeeInfo(
             'facilities.id as facility_id',
             'facilities.name as facility_name',
             'facilities.address',
-            sql<Profession[]>`array_agg(employment.profession)`.as('professions'),
+            sql<Profession[]>`array_agg(employment.profession)`.as(
+              'professions',
+            ),
           ]),
       ).as('employment'),
     ])
