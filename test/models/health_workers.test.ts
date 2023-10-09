@@ -6,7 +6,8 @@ import { resetInTest } from '../../db/reset.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
-import { EmployedHealthWorker } from '../../types.ts'
+import { EmployedHealthWorker, EmploymentInfo } from '../../types.ts'
+import { assertArrayIncludes } from 'https://deno.land/std@0.160.0/testing/asserts.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -141,17 +142,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       )
       assert(result)
 
-      assertEquals(
-        omit([
-          'date_of_first_practice',
-          'gender',
-          'health_worker_id',
-          'mobile_number',
-          'national_id',
-          'ncz_registration_number',
-        ])(result),
-        {
-          '0': {
+      assertArrayIncludes(
+        result,
+        [
+          {
             address: 'Bristol, UK',
             avatar_url: 'avatar_url',
             date_of_first_practice: null,
@@ -166,7 +160,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             ncz_registration_number: null,
             profession: 'nurse',
           },
-          '1': {
+          {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             avatar_url: 'avatar_url',
             date_of_first_practice: null,
@@ -181,7 +175,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             ncz_registration_number: null,
             profession: 'doctor',
           },
-        },
+        ]
       )
     })
   })

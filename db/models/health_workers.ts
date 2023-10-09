@@ -396,11 +396,6 @@ export async function getEmploymentInfo(
       'nurse_specialities.employee_id',
       'all_employment.health_worker_id',
     )
-    .innerJoin(
-      'nurse_specialities',
-      'nurse_specialities.employee_id',
-      'employment.health_worker_id',
-    ) // will uncomment once specialties table is filled out
     .select([
       'nurse_registration_details.health_worker_id as health_worker_id',
       'nurse_registration_details.date_of_first_practice as date_of_first_practice',

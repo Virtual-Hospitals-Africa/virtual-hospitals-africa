@@ -2,14 +2,12 @@ import { EmploymentInfo, Specialities } from '../../types.ts'
 import { ArrowDownTrayIcon } from '../library/icons/heroicons/outline.tsx'
 
 type HealthWorkerDetailedCardProps = {
-  facilityInfo: string[]
   specialities: Specialities[]
   employmentInfo: EmploymentInfo[]
 }
 
 export default function HealthWorkerDetailedCard(
   {
-    facilityInfo,
     specialities,
     employmentInfo,
   }: HealthWorkerDetailedCardProps,
@@ -133,7 +131,7 @@ export default function HealthWorkerDetailedCard(
                       {item.facility_name}
                     </div>
                     <div className='pl-4 text-xs'>
-                      {item.address ? item.address.split('|')[1] : 'N/A'}
+                      {item.address ? item.address : 'N/A'}
                     </div>
                   </li>
                 ))}

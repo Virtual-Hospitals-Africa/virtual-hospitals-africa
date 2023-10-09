@@ -18,7 +18,6 @@ import {
 } from '../../../../../types.ts'
 
 type HealthWorkerPageProps = {
-  facilityInfo: string[]
   specialities: ReturnedSqlRow<Specialities>[]
   employmentInfo: EmploymentInfo[]
 }
@@ -72,7 +71,6 @@ export const handler: LoggedInHealthWorkerHandler<
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
-      facilityInfo,
       specialities,
       employmentInfo,
     })
@@ -115,7 +113,6 @@ export default function HealthWorkerPage(
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCard
-            facilityInfo={props.data.facilityInfo}
             specialities={props.data.specialities}
             employmentInfo={props.data.employmentInfo}
           />
