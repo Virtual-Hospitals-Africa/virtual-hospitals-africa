@@ -1,5 +1,6 @@
 // Taken from https://github.com/kysely-org/kysely/blob/master/src/helpers/postgres.ts
 import { Expression, RawBuilder, Simplify, sql } from 'kysely'
+import { Maybe } from '../types.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.

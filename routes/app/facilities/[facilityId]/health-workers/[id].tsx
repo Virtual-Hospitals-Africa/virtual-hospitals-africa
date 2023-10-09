@@ -7,20 +7,18 @@ import SectionHeader from '../../../../../components/library/typography/SectionH
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 
 import * as health_workers from '../../../../../db/models/health_workers.ts'
-import * as nurse_specialities from '../../../../../db/models/nurse_specialties.ts'
+import * as nurse_specialties from '../../../../../db/models/nurse_specialties.ts'
 
 import {
   EmployeeInfo,
-  EmploymentInfo,
   Facility,
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
-  Specialities,
+  Specialties,
 } from '../../../../../types.ts'
 
 type HealthWorkerPageProps = {
-  specialities: ReturnedSqlRow<Specialities>[]
-  employmentInfo: EmploymentInfo[]
+  specialties: ReturnedSqlRow<Specialties>[]
   employeeInfo: EmployeeInfo
 }
 
@@ -37,41 +35,18 @@ export const handler: LoggedInHealthWorkerHandler<
     const health_worker_id = parseInt(ctx.params.id)
     assert(!isNaN(health_worker_id), 'Invalid health worker ID')
 
-    const employmentInfo = await health_workers.getEmploymentInfo(
-      ctx.state.trx,
-      health_worker_id,
-      facility_id,
-    )
-    assert(
-      employmentInfo.length > 0,
-      'Health worker ' + health_worker_id + ' does not work at facility ' +
-        facility_id + '. Double check your input.',
-    )
-
     const employeeInfo = await health_workers.getEmployeeInfo(
       ctx.state.trx,
       health_worker_id,
       facility_id,
     )
     console.log(employeeInfo)
-
-    // console.log(employmentInfo)
-
-    // to deal with duplicates in case user is nurse/doctor/admin at same facility
-    const facility_names = new Set<string>()
-    const facilityInfo: string[] = []
-    employmentInfo.forEach((item) => {
-      if (item.facility_name && !facility_names.has(item.facility_name)) {
-        facilityInfo.push(item.facility_name + '|' + item.address)
-        facility_names.add(item.facility_name)
-      }
-    })
     assert(
-      facilityInfo.length > 0,
+      employeeInfo,
       `Clinics/facilities not found for health worker ${health_worker_id}`,
     )
-    // get nurse specialities (empty table for now)
-    const specialities = await nurse_specialities.getByHealthWorker(
+    // get nurse specialties (empty table for now)
+    const specialties = await nurse_specialties.getByHealthWorker(
       ctx.state.trx,
       { health_worker_id },
     )
@@ -80,8 +55,7 @@ export const handler: LoggedInHealthWorkerHandler<
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
-      specialities,
-      employmentInfo,
+      specialties,
       employeeInfo,
     })
   },
@@ -114,8 +88,8 @@ export default function HealthWorkerPage(
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
               {props.data.employeeInfo.employment.map((item) => (
-                  item.professions.join(', ')
-                ))
+                item.professions.join(', ')
+              ))
                 .join(', ')}
             </dt>
           </div>
@@ -123,8 +97,7 @@ export default function HealthWorkerPage(
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCard
-            specialities={props.data.specialities}
-            employmentInfo={props.data.employmentInfo}
+            specialties={props.data.specialties}
             employeeInfo={props.data.employeeInfo}
           />
         </div>

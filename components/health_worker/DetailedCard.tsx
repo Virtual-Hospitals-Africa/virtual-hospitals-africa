@@ -1,16 +1,14 @@
-import { EmployeeInfo, EmploymentInfo, Specialities } from '../../types.ts'
+import { EmployeeInfo, Specialties } from '../../types.ts'
 import { ArrowDownTrayIcon } from '../library/icons/heroicons/outline.tsx'
 
 type HealthWorkerDetailedCardProps = {
-  specialities: Specialities[]
-  employmentInfo: EmploymentInfo[]
+  specialties: Specialties[]
   employeeInfo: EmployeeInfo
 }
 
 export default function HealthWorkerDetailedCard(
   {
-    specialities,
-    employmentInfo,
+    specialties,
     employeeInfo,
   }: HealthWorkerDetailedCardProps,
 ) {
@@ -75,7 +73,7 @@ export default function HealthWorkerDetailedCard(
               Email
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.email ? employeeInfo.email : 'N/A'}
+              {employeeInfo.email || 'N/A'}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -83,11 +81,7 @@ export default function HealthWorkerDetailedCard(
               Phone Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.mobile_number
-                ? employeeInfo.mobile_number.substring(0, 3) + '-' +
-                  employeeInfo.mobile_number.substring(3, 6) + '-' +
-                  employeeInfo.mobile_number.substring(6)
-                : 'N/A'}
+              {employeeInfo.mobile_number || 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -96,8 +90,8 @@ export default function HealthWorkerDetailedCard(
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               <ul>
-                {specialities.map((item, index) => (
-                  <li key={index}>{item.speciality.replaceAll('_', ' ')}</li>
+                {specialties.map((item, index) => (
+                  <li key={index}>{item.specialty.replaceAll('_', ' ')}</li>
                 ))}
               </ul>
             </dd>
@@ -107,10 +101,7 @@ export default function HealthWorkerDetailedCard(
               Date of First Practice
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.date_of_first_practice
-                ? employeeInfo.date_of_first_practice.toLocaleString()
-                  .split(',')[0]
-                : 'N/A'}
+              {employeeInfo.date_of_first_practice || 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>

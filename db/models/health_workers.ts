@@ -3,7 +3,6 @@ import isDate from '../../util/isDate.ts'
 import {
   EmployedHealthWorker,
   EmployeeInfo,
-  EmploymentInfo,
   GoogleTokens,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
@@ -12,7 +11,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom  } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import haveNames from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
@@ -362,11 +361,11 @@ export async function getInviteesAtFacility(
     .execute()
 }
 
-export async function getEmploymentInfo(
+export function getEmployeeInfo(
   trx: TrxOrDb,
   health_worker_id: number,
   facility_id: number,
-): Promise<EmploymentInfo[]> {
+): Promise<Maybe<EmployeeInfo>> {
   const query = trx
     .selectFrom('facilities')
     .innerJoin('employment', 'employment.facility_id', 'facilities.id')
@@ -393,73 +392,18 @@ export async function getEmploymentInfo(
       'health_workers.id',
     )
     .leftJoin(
-      'nurse_specialities',
-      'nurse_specialities.employee_id',
-      'all_employment.health_worker_id',
-    )
-    .select([
-      'nurse_registration_details.health_worker_id as health_worker_id',
-      'nurse_registration_details.date_of_first_practice as date_of_first_practice',
-      'nurse_registration_details.gender',
-      'nurse_registration_details.mobile_number',
-      'nurse_registration_details.national_id',
-      'nurse_registration_details.ncz_registration_number',
-      'health_workers.email',
-      'health_workers.name',
-      'health_workers.avatar_url',
-      'all_facilities.name as facility_name',
-      'all_facilities.id as facility_id',
-      'all_facilities.address',
-      'all_employment.profession',
-    ])
-    .distinct()
-
-  return await query.execute()
-}
-
-export async function getEmployeeInfo(
-  trx: TrxOrDb,
-  health_worker_id: number,
-  facility_id: number,
-): Promise<EmployeeInfo> {
-  const query = trx
-    .selectFrom('facilities')
-    .innerJoin('employment', 'employment.facility_id', 'facilities.id')
-    .innerJoin(
-      'health_workers',
-      'health_worker_id',
-      'employment.health_worker_id',
-    )
-    .where('health_workers.id', '=', health_worker_id)
-    .where('facilities.id', '=', facility_id)
-    .innerJoin(
-      'employment as all_employment',
-      'all_employment.health_worker_id',
-      'health_workers.id',
-    )
-    .innerJoin(
-      'facilities as all_facilities',
-      'all_employment.facility_id',
-      'all_facilities.id',
-    )
-    .leftJoin(
-      'nurse_registration_details',
-      'nurse_registration_details.health_worker_id',
-      'health_workers.id',
-    )
-    .leftJoin(
-      'nurse_specialities',
-      'nurse_specialities.employee_id',
-      'all_employment.health_worker_id',
+      'nurse_specialties',
+      'nurse_specialties.employee_id',
+      'all_employment.id',
     )
     .select((eb) => [
-      'nurse_registration_details.health_worker_id as health_worker_id',
-      'nurse_registration_details.date_of_first_practice as date_of_first_practice',
+      'all_employment.health_worker_id as health_worker_id',
+      sql<Maybe<string>>`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`.as('date_of_first_practice'),
       'nurse_registration_details.gender',
       'nurse_registration_details.mobile_number',
       'nurse_registration_details.national_id',
       'nurse_registration_details.ncz_registration_number',
-      'speciality',
+      'nurse_specialties.specialty',
       'health_workers.email',
       'health_workers.name',
       'health_workers.avatar_url',
@@ -478,7 +422,6 @@ export async function getEmployeeInfo(
           eb('employment.profession', '!=', 'nurse'),
           eb('nurse_registration_details.approved_by', 'is not', null),
         ]).as('registration_completed'),
-      // ({})
       jsonArrayFrom(
         eb.selectFrom('facilities')
           .innerJoin('employment', 'employment.facility_id', 'facilities.id')
@@ -493,12 +436,10 @@ export async function getEmployeeInfo(
             'facilities.id as facility_id',
             'facilities.name as facility_name',
             'facilities.address',
-            sql`array_agg(employment.profession)`.as('professions'),
+            sql<Profession[]>`array_agg(employment.profession)`.as('professions'),
           ]),
       ).as('employment'),
     ])
 
-  // console.log(query.compile().sql)
-
-  return await query.executeTakeFirst() as any
+  return query.executeTakeFirst()
 }

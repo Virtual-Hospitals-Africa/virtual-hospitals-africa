@@ -4,7 +4,7 @@ import {
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { NurseRegistrationDetails, NurseSpeciality } from '../../../../types.ts'
+import { NurseRegistrationDetails, NurseSpecialty } from '../../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
@@ -102,7 +102,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
-      speciality: formState.speciality,
+      specialty: formState.specialty,
     })
 
     await nurse_registration_details.add(ctx.state.trx, {
