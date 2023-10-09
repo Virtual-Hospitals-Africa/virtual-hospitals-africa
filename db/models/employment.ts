@@ -16,6 +16,13 @@ export type HealthWorkerWithRegistrationState = {
   registration_completed: SqlBool
 }
 
+export type FacilityAdminInfo = {
+  id: number
+  email: string | null
+  name: string
+  facility_name: string
+} & Employee
+
 export function add(
   trx: TrxOrDb,
   employees: Employee[],
@@ -195,12 +202,12 @@ export function removeInvitees(
     .execute()
 }
 
-export function getFacilityAdmin(
+export function getFacilityAdminInfo(
   trx: TrxOrDb,
   opts: {
     facility_id: number
   },
-) {
+): Promise<ReturnedSqlRow<FacilityAdminInfo>> {
   return trx
     .selectFrom('employment')
     .where('facility_id', '=', opts.facility_id)
@@ -210,6 +217,11 @@ export function getFacilityAdmin(
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .select(['employment.id', 'health_worker_id', 'name', 'email', 'profession', 'facility_id'])
+    .leftJoin(
+      'facilities',
+      'facilities.id',
+      'employment.facility_id',
+    )
+    .select(['employment.id', 'health_worker_id', 'health_workers.name', 'email', 'profession', 'facility_id', 'facilities.name as facility_name'])
     .executeTakeFirst()
 }
