@@ -2,6 +2,7 @@ import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
   EmployedHealthWorker,
+  EmploymentInfo,
   GoogleTokens,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
@@ -358,4 +359,66 @@ export async function getInviteesAtFacility(
       'profession',
     ])
     .execute()
+}
+
+export async function getEmploymentInfo(
+  trx: TrxOrDb,
+  health_worker_id: number,
+  facility_id: number,
+): Promise<EmploymentInfo[]> {
+  const query = trx
+    .selectFrom('facilities')
+    .innerJoin('employment', 'employment.facility_id', 'facilities.id')
+    .innerJoin(
+      'health_workers',
+      'health_worker_id',
+      'employment.health_worker_id',
+    )
+    .where('health_workers.id', '=', health_worker_id)
+    .where('facilities.id', '=', facility_id)
+    .innerJoin(
+      'employment as all_employment',
+      'all_employment.health_worker_id',
+      'health_workers.id',
+    )
+    .innerJoin(
+      'facilities as all_facilities',
+      'all_employment.facility_id',
+      'all_facilities.id',
+    )
+    .leftJoin(
+      'nurse_registration_details',
+      'nurse_registration_details.health_worker_id',
+      'health_workers.id',
+    )
+    .leftJoin(
+      'nurse_specialities',
+      'nurse_specialities.employee_id',
+      'all_employment.health_worker_id',
+    )
+    .innerJoin(
+      'nurse_specialities',
+      'nurse_specialities.employee_id',
+      'employment.health_worker_id',
+    ) // will uncomment once specialties table is filled out
+    .select([
+      'nurse_registration_details.health_worker_id as health_worker_id',
+      'nurse_registration_details.date_of_first_practice as date_of_first_practice',
+      'nurse_registration_details.gender',
+      'nurse_registration_details.mobile_number',
+      'nurse_registration_details.national_id',
+      'nurse_registration_details.ncz_registration_number',
+      'health_workers.email',
+      'health_workers.name',
+      'health_workers.avatar_url',
+      'all_facilities.name as facility_name',
+      'all_facilities.id as facility_id',
+      'all_facilities.address',
+      'all_employment.profession',
+    ])
+    .distinct()
+
+  console.log(query.compile().sql)
+
+  return await query.execute()
 }

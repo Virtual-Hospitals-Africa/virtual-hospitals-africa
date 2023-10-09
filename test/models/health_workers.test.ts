@@ -57,6 +57,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           expires_at: new Date(),
         },
       )
+      console.log(healthWorker.id)
 
       await employment.add(db, [{
         health_worker_id: healthWorker.id,
@@ -102,6 +103,86 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         access_token: 'access_token',
         refresh_token: 'refresh_token',
       })
+    })
+  })
+
+  describe('getEmploymentInfo', () => {
+    it('returns the health worker and their employment information if that matches a given facility id', async () => {
+      const healthWorker = await health_workers.upsertWithGoogleCredentials(
+        db,
+        {
+          name: 'Worker',
+          email: 'test@worker.com',
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          access_token: 'access_token',
+          refresh_token: 'refresh_token',
+          expires_at: new Date(),
+        },
+      )
+
+      await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 1,
+      }])
+
+      await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'doctor',
+        facility_id: 2,
+      }])
+
+      const result = await health_workers.getEmploymentInfo(
+        db,
+        healthWorker.id,
+        1,
+      )
+      assert(result)
+
+      assertEquals(
+        omit([
+          'date_of_first_practice',
+          'gender',
+          'health_worker_id',
+          'mobile_number',
+          'national_id',
+          'ncz_registration_number',
+        ])(result),
+        {
+          '0': {
+            address: 'Bristol, UK',
+            avatar_url: 'avatar_url',
+            date_of_first_practice: null,
+            email: 'test@worker.com',
+            facility_id: 1,
+            facility_name: 'VHA Test Hospital',
+            gender: null,
+            health_worker_id: null,
+            mobile_number: null,
+            name: 'Worker',
+            national_id: null,
+            ncz_registration_number: null,
+            profession: 'nurse',
+          },
+          '1': {
+            address: 'Beitbridge, Matabeleland South Province, ZW',
+            avatar_url: 'avatar_url',
+            date_of_first_practice: null,
+            email: 'test@worker.com',
+            facility_id: 2,
+            facility_name: 'Beitbridge',
+            gender: null,
+            health_worker_id: null,
+            mobile_number: null,
+            name: 'Worker',
+            national_id: null,
+            ncz_registration_number: null,
+            profession: 'doctor',
+          },
+        },
+      )
     })
   })
 })

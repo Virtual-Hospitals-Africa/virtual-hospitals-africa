@@ -826,6 +826,22 @@ export type HealthWorker = {
   gcal_availability_calendar_id: string
 }
 
+export type EmploymentInfo = {
+  name: string
+  email: string
+  gender: Maybe<Gender>
+  national_id: Maybe<string>
+  ncz_registration_number: Maybe<string>
+  mobile_number: Maybe<string>
+  health_worker_id: Maybe<number>
+  date_of_first_practice: Maybe<Date>
+  facility_name: Maybe<string>
+  address: Maybe<string>
+  avatar_url: Maybe<string>
+  profession: Profession
+  facility_id: Maybe<number>
+}
+
 export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
   id: number
   employment: {

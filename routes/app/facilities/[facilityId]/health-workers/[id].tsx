@@ -6,27 +6,21 @@ import { Container } from '../../../../../components/library/Container.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 
-import * as employment from '../../../../../db/models/employment.ts'
-import * as facilities from '../../../../../db/models/facilities.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
-import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
 import * as nurse_specialities from '../../../../../db/models/nurse_specialties.ts'
 
 import {
+  EmploymentInfo,
   Facility,
-  HealthWorker,
   LoggedInHealthWorkerHandler,
-  NurseRegistrationDetails,
   ReturnedSqlRow,
   Specialities,
 } from '../../../../../types.ts'
 
 type HealthWorkerPageProps = {
-  worker_facilities: ReturnedSqlRow<Facility>[]
-  employee_positions: employment.HealthWorkerWithRegistrationState[]
-  healthWorker: ReturnedSqlRow<HealthWorker>
-  nurseRegistrationDetails: ReturnedSqlRow<NurseRegistrationDetails>
+  facilityInfo: string[]
   specialities: ReturnedSqlRow<Specialities>[]
+  employmentInfo: EmploymentInfo[]
 }
 
 export const handler: LoggedInHealthWorkerHandler<
@@ -34,55 +28,41 @@ export const handler: LoggedInHealthWorkerHandler<
   { facility: ReturnedSqlRow<Facility> }
 > = {
   async GET(_, ctx) {
+    // get facility id
+    const facility_id = parseInt(ctx.params.facilityId)
+    assert(!isNaN(facility_id), 'Invalid facility ID')
+
     // get health worker id
     const health_worker_id = parseInt(ctx.params.id)
     assert(!isNaN(health_worker_id), 'Invalid health worker ID')
 
-    // get health worker id
-    const healthWorker = await health_workers.get(
-      ctx.state.trx,
-      { health_worker_id },
-    )
-    assert(
-      healthWorker,
-      `Health worker ${health_worker_id} does not exist`,
-    )
-
-    // get list of all facilites a health worker works at
-    const worker_facilities = await facilities.getByHealthWorker(
+    const employmentInfo = await health_workers.getEmploymentInfo(
       ctx.state.trx,
       health_worker_id,
+      facility_id,
     )
     assert(
-      worker_facilities,
+      employmentInfo.length > 0,
+      'Health worker ' + health_worker_id + ' does not work at facility ' +
+        facility_id + '. Double check your input.',
+    )
+
+    console.log(employmentInfo)
+
+    // to deal with duplicates in case user is nurse/doctor/admin at same facility
+    const facility_names = new Set<string>()
+    const facilityInfo: string[] = []
+    employmentInfo.forEach((item) => {
+      if (item.facility_name && !facility_names.has(item.facility_name)) {
+        facilityInfo.push(item.facility_name + '|' + item.address)
+        facility_names.add(item.facility_name)
+      }
+    })
+    assert(
+      facilityInfo.length > 0,
       `Clinics/facilities not found for health worker ${health_worker_id}`,
     )
-
-    // get list of all employments for a health worker {health_worker_id}
-    const all_employment = await employment.getByHealthWorker(
-      ctx.state.trx,
-      { health_worker_id },
-    )
-
-    // filter for employment positions for health worker at facility {facility_id}
-    // TODO: or do we want to show all positions even if they dont have that position at facility {facility_id}??
-    const employee_positions = all_employment.filter((employee) =>
-      employee.facility_id === ctx.state.facility.id
-    )
-    console.log(employee_positions)
-    if (!employee_positions) return redirect('/app')
-
-    // get health worker's nurse registration details
-    const nurseRegistrationDetails = await nurse_registration_details.get(
-      ctx.state.trx,
-      { healthWorkerId: health_worker_id },
-    )
-    assert(
-      nurseRegistrationDetails,
-      `Nurse registration not found for health worker ${health_worker_id}`,
-    )
-
-    // get nurse specialities
+    // get nurse specialities (empty table for now)
     const specialities = await nurse_specialities.getByHealthWorker(
       ctx.state.trx,
       { health_worker_id },
@@ -92,11 +72,9 @@ export const handler: LoggedInHealthWorkerHandler<
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
-      worker_facilities,
-      employee_positions,
-      healthWorker,
-      nurseRegistrationDetails,
+      facilityInfo,
       specialities,
+      employmentInfo,
     })
   },
 }
@@ -106,9 +84,11 @@ export default function HealthWorkerPage(
 ) {
   return (
     <Layout
-      title={props.data.healthWorker.name}
+      title={props.data.employmentInfo[0].name}
       route={props.route}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      avatarUrl={props.data.employmentInfo[0].avatar_url
+        ? props.data.employmentInfo[0].avatar_url
+        : 'avatar_url'}
       variant='standard'
     >
       <Container size='lg'>
@@ -122,11 +102,11 @@ export default function HealthWorkerPage(
               height={48}
             />
             <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
-              {props.data.healthWorker.name}
+              {props.data.employmentInfo[0].name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
               <p>
-                {props.data.employee_positions.map((item) => item.profession)
+                {props.data.employmentInfo.map((item) => item.profession)
                   .join(', ')}
               </p>
             </dt>
@@ -135,11 +115,9 @@ export default function HealthWorkerPage(
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCard
-            worker_facilities={props.data.worker_facilities}
-            employee_positions={props.data.employee_positions}
-            healthWorker={props.data.healthWorker}
-            nurseRegistrationDetails={props.data.nurseRegistrationDetails}
+            facilityInfo={props.data.facilityInfo}
             specialities={props.data.specialities}
+            employmentInfo={props.data.employmentInfo}
           />
         </div>
       </Container>
