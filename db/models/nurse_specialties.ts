@@ -1,7 +1,7 @@
 import {
-  NurseSpeciality,
+  NurseSpecialty,
   ReturnedSqlRow,
-  Specialities,
+  Specialties,
   TrxOrDb,
 } from '../../types.ts'
 
@@ -9,11 +9,11 @@ export function add(
   trx: TrxOrDb,
   opts: {
     employee_id: number
-    speciality: NurseSpeciality
+    specialty: NurseSpecialty
   },
 ) {
   return trx
-    .insertInto('nurse_specialities')
+    .insertInto('nurse_specialties')
     .values(opts)
     .execute()
 }
@@ -23,8 +23,8 @@ export function getByHealthWorker(
   opts: {
     health_worker_id: number
   },
-): Promise<ReturnedSqlRow<Specialities>[]> {
-  return trx.selectFrom('nurse_specialities')
+): Promise<ReturnedSqlRow<Specialties>[]> {
+  return trx.selectFrom('nurse_specialties')
     .where('employee_id', '=', opts.health_worker_id)
     .selectAll()
     .execute()

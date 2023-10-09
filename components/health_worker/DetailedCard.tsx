@@ -1,26 +1,15 @@
-import * as employment from '../../db/models/employment.ts'
-import {
-  Facility,
-  HealthWorker,
-  NurseRegistrationDetails,
-  Specialities,
-} from '../../types.ts'
+import { EmployeeInfo, Specialties } from '../../types.ts'
 import { ArrowDownTrayIcon } from '../library/icons/heroicons/outline.tsx'
 
 type HealthWorkerDetailedCardProps = {
-  worker_facilities: Facility[]
-  employee_positions: employment.HealthWorkerWithRegistrationState[]
-  healthWorker: HealthWorker
-  nurseRegistrationDetails: NurseRegistrationDetails
-  specialities: Specialities[]
+  specialties: Specialties[]
+  employeeInfo: EmployeeInfo
 }
 
 export default function HealthWorkerDetailedCard(
   {
-    worker_facilities,
-    healthWorker,
-    nurseRegistrationDetails,
-    specialities,
+    specialties,
+    employeeInfo,
   }: HealthWorkerDetailedCardProps,
 ) {
   return (
@@ -32,7 +21,7 @@ export default function HealthWorkerDetailedCard(
               First Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {healthWorker.name.split(' ')[0]}
+              {employeeInfo.name.split(' ')[0]}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -40,8 +29,8 @@ export default function HealthWorkerDetailedCard(
               Middle Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {healthWorker.name.split(' ').length > 2
-                ? healthWorker.name.split(' ').slice(1, -1).join(' ')
+              {employeeInfo.name.split(' ').length > 2
+                ? employeeInfo.name.split(' ').slice(1, -1).join(' ')
                 : 'N/A'}
             </dd>
           </div>
@@ -50,8 +39,8 @@ export default function HealthWorkerDetailedCard(
               Last Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {healthWorker.name.split(' ').length > 1
-                ? healthWorker.name.split(' ').at(-1)
+              {employeeInfo.name.split(' ').length > 1
+                ? employeeInfo.name.split(' ').at(-1)
                 : 'N/A'}
             </dd>
           </div>
@@ -60,7 +49,7 @@ export default function HealthWorkerDetailedCard(
               Gender
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {nurseRegistrationDetails.gender}
+              {employeeInfo.gender}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -76,7 +65,7 @@ export default function HealthWorkerDetailedCard(
               National ID Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {nurseRegistrationDetails.national_id}
+              {employeeInfo.national_id}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -84,7 +73,7 @@ export default function HealthWorkerDetailedCard(
               Email
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {healthWorker.email ? healthWorker.email : 'N/A'}
+              {employeeInfo.email || 'N/A'}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -92,9 +81,7 @@ export default function HealthWorkerDetailedCard(
               Phone Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {nurseRegistrationDetails.mobile_number.substring(0, 3) + '-' +
-                nurseRegistrationDetails.mobile_number.substring(3, 6) + '-' +
-                nurseRegistrationDetails.mobile_number.substring(6)}
+              {employeeInfo.mobile_number || 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -103,8 +90,8 @@ export default function HealthWorkerDetailedCard(
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               <ul>
-                {specialities.map((item, index) => (
-                  <li key={index}>{item.speciality.replaceAll('_', ' ')}</li>
+                {specialties.map((item, index) => (
+                  <li key={index}>{item.specialty.replaceAll('_', ' ')}</li>
                 ))}
               </ul>
             </dd>
@@ -114,8 +101,7 @@ export default function HealthWorkerDetailedCard(
               Date of First Practice
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {nurseRegistrationDetails.date_of_first_practice.toLocaleString()
-                .split(',')[0]}
+              {employeeInfo.date_of_first_practice || 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
@@ -123,7 +109,7 @@ export default function HealthWorkerDetailedCard(
               Nurse Council's Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {nurseRegistrationDetails.ncz_registration_number}
+              {employeeInfo.ncz_registration_number}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -132,13 +118,13 @@ export default function HealthWorkerDetailedCard(
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               <ul>
-                {worker_facilities.map((item, index) => (
+                {employeeInfo.employment.map((item, index) => (
                   <li key={index}>
                     <div>
-                      {item.name}
+                      {item.facility_name}
                     </div>
                     <div className='pl-4 text-xs'>
-                      {item.address}
+                      {item.address ? item.address : 'N/A'}
                     </div>
                   </li>
                 ))}

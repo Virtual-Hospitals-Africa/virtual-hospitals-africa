@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import { AddPatientStep } from '../../../patients/add/Steps.tsx'
 import { Steps, useSteps } from '../../../library/Steps.tsx'
-import { NurseSpeciality, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
+import { NurseSpecialty, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 import { Maybe } from '../../../../types.ts'
@@ -54,8 +54,8 @@ export type PersonalFormFields = {
 }
 
 export type ProfessionalInformationFields = {
-  speciality: NurseSpeciality
-  date_of_first_practice: Date
+  specialty: NurseSpecialty
+  date_of_first_practice: string
   ncz_registration_number: string
 }
 
@@ -75,7 +75,7 @@ function isProfessionalInformationFields(
 ): fields is ProfessionalInformationFields {
   console.log(fields)
   return isObjectLike(fields) &&
-    !!fields.speciality &&
+    !!fields.specialty &&
     !!fields.date_of_first_practice &&
     !!fields.ncz_registration_number
 }

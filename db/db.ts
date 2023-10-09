@@ -25,7 +25,7 @@ import {
   PatientMedia,
   Provinces,
   ReturnedSqlRow,
-  Specialities,
+  Specialties,
   SqlRow,
   Suburbs,
   Wards,
@@ -53,7 +53,7 @@ export type DatabaseSchema = {
   health_worker_invitees: SqlRow<HealthWorkerInvitee>
   media: SqlRow<PatientMedia>
   nurse_registration_details: SqlRow<NurseRegistrationDetails>
-  nurse_specialities: SqlRow<Specialities>
+  nurse_specialties: SqlRow<Specialties>
   appointment_media: SqlRow<AppointmentMedia>
   patient_appointment_request_media: SqlRow<PatientAppointmentRequestMedia>
   countries: SqlRow<Countries>

@@ -67,7 +67,7 @@ export const testRegistrationDetails = (
   health_worker_id,
   gender: 'male',
   national_id: '12345678A12',
-  date_of_first_practice: new Date(1999, 11, 11),
+  date_of_first_practice: '1999-11-11',
   ncz_registration_number: 'GN123456',
   mobile_number: '1111',
   national_id_media_id: undefined,
