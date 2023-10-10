@@ -28,7 +28,7 @@ get_artifacts() {
 make_deno_script() {
   echo "console.log("
   get_artifacts
-  echo ".artifacts.find(a => a.name == '$ARTIFACT_NAME' && a.workflow_run.head_sha == '$HEROKU_SLUG_COMMIT').url"
+  echo ".artifacts.find(a => a.name == '$ARTIFACT_NAME' && a.workflow_run.head_sha == '$HEROKU_SLUG_COMMIT')?.url"
   echo ")"
 }
 
