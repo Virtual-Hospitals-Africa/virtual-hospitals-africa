@@ -158,7 +158,7 @@ describe('/login', { sanitizeResources: false }, () => {
       )
     })
 
-    it('redirects unapproved nurse to /app/pending-approval', async () => {
+    it('redirects unapproved nurse to /app/pending_approval', async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
@@ -175,7 +175,7 @@ describe('/login', { sanitizeResources: false }, () => {
           Cookie: `sessionId=${sessionId}`,
         },
       })
-      assert(response.url === `${ROUTE}/app/pending-approval`)
+      assert(response.url === `${ROUTE}/app/pending_approval`)
       await response.text()
     })
 

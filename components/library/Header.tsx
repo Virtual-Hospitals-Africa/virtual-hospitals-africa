@@ -3,8 +3,8 @@ import Avatar from './Avatar.tsx'
 
 export type HeaderProps = {
   title: string
-  avatarUrl: string
-  variant: 'standard' | 'form'
+  variant: 'standard' | 'form' | 'standard-without-nav'
+  avatarUrl?: string
 }
 
 function Notification() {
@@ -73,7 +73,9 @@ export function Header({ title, avatarUrl, variant }: HeaderProps) {
             showBackButton={variant === 'form'}
             title={title}
           />
-          <HeaderRight avatarUrl={avatarUrl} />
+          {variant !== 'standard-without-nav' && (
+            <HeaderRight avatarUrl={avatarUrl} />
+          )}
         </div>
       </div>
     </nav>

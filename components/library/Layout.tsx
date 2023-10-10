@@ -4,13 +4,19 @@ import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
 
-export type LayoutProps = {
-  title: string
-  route: string
-  avatarUrl: string
-  variant: 'standard' | 'form'
-  children: ComponentChildren
-}
+export type LayoutProps =
+  & {
+    title: string
+    route: string
+    children: ComponentChildren
+  }
+  & ({
+    variant: 'standard' | 'form'
+    avatarUrl: string
+  } | {
+    variant: 'standard-without-nav'
+    avatarUrl?: string
+  })
 
 export default function Layout(props: LayoutProps) {
   return (
@@ -27,8 +33,14 @@ export default function Layout(props: LayoutProps) {
       </Head>
       <body className='h-full relative'>
         <section className='pb-14 md:pb-0'>
-          <Sidebar route={props.route} />
-          <section className='md:pl-72'>
+          {props.variant != 'standard-without-nav' && (
+            <Sidebar route={props.route} />
+          )}
+          <section
+            className={props.variant != 'standard-without-nav'
+              ? 'md:pl-72'
+              : ''}
+          >
             <Header
               title={props.title}
               avatarUrl={props.avatarUrl}
@@ -37,7 +49,9 @@ export default function Layout(props: LayoutProps) {
             {props.children}
           </section>
         </section>
-        <BottomNav route={props.route} />
+        {props.variant != 'standard-without-nav' && (
+          <BottomNav route={props.route} />
+        )}
       </body>
     </>
   )
