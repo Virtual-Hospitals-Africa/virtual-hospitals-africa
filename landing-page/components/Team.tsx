@@ -1,4 +1,5 @@
 import { Container } from '../../components/library/Container.tsx'
+import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 const people = [
@@ -107,7 +108,7 @@ export function TeamSection() {
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading number='2' id='team-title'>
+        <SectionHeading id='team-title' icon={<UserCircleIcon />}>
           Team
         </SectionHeading>
         <Team />

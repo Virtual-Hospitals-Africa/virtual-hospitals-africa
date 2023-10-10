@@ -1,6 +1,15 @@
+import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
-export function SectionHeading({ icon, children, className, ...props }: any) {
+type SectionHeadingProps = {
+  icon: JSX.Element
+  children: ComponentChildren
+  className?: string
+} & Omit<JSX.HTMLAttributes<HTMLHeadingElement>, 'icon'>
+
+export function SectionHeading(
+  { icon, children, className, ...props }: SectionHeadingProps,
+) {
   return (
     <h2
       className={cls(
