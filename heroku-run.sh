@@ -1,14 +1,14 @@
 #! /usr/bin/env bash
 set -xeuo pipefail
 
-ARTIFACT_NAME="$1"
+ARTIFACT_NAME="$1_exe"
 
-if ! [ "$ARTIFACT_NAME" = "web" -o "$ARTIFACT_NAME" = "chatbot" -o "$ARTIFACT_NAME" = "token_refresher" ]; then
+if ! [ "$ARTIFACT_NAME" = "web_exe" -o "$ARTIFACT_NAME" = "chatbot_exe" -o "$ARTIFACT_NAME" = "token_refresher_exe" ]; then
   echo "Must provide a recognized artifact name"
   exit 1
 fi
 
-if [ "$ARTIFACT_NAME" = "web" ]; then
+if [ "$ARTIFACT_NAME" = "web_exe" ]; then
   # TODO: see if we actually have migrations to run by comparing files, otherwise don't run this
   deno task db:migrate:latest
 fi
@@ -33,7 +33,6 @@ make_deno_script() {
 }
 
 SCRIPT=$(mktemp)
-make_deno_script
 make_deno_script > $SCRIPT
 ARTIFACT_URL=$(deno run $SCRIPT)
 
