@@ -207,7 +207,7 @@ export function getFacilityAdminInfo(
   opts: {
     facility_id: number
   },
-): Promise<ReturnedSqlRow<FacilityAdminInfo>> {
+): Promise<ReturnedSqlRow<FacilityAdminInfo> | undefined> {
   return trx
     .selectFrom('employment')
     .where('facility_id', '=', opts.facility_id)
@@ -231,5 +231,7 @@ export function getFacilityAdminInfo(
       'facility_id',
       'facilities.name as facility_name',
     ])
-    .executeTakeFirst()
+    .executeTakeFirst() as Promise<
+      ReturnedSqlRow<FacilityAdminInfo> | undefined
+    >
 }

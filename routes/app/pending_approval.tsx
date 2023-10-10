@@ -16,7 +16,7 @@ import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  facilityAdmin: FacilityAdminInfo
+  facilityAdmin: FacilityAdminInfo | undefined
 }
 
 export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
@@ -32,6 +32,8 @@ export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
       facility_id: healthWorker.employment[0].facility_id,
     })
 
+    assert(facilityAdmin)
+
     return ctx.render({
       healthWorker: healthWorker,
       facilityAdmin: facilityAdmin,
@@ -42,7 +44,11 @@ export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
 export default function PendingApprovalPage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
-  console.log(props)
+  const facilityName = props.data.facilityAdmin?.facility_name ||
+    'your facility'
+  const facilityAdminName = props.data.facilityAdmin?.name ||
+    'your facility admin'
+
   return (
     <Layout
       title='Virtual Hospitals Africa'
@@ -56,11 +62,10 @@ export default function PendingApprovalPage(
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
               <PageHeader className='h1'>Application under review</PageHeader>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from {props.data.facilityAdmin.facility_name}
-                {' '}
+                Your application from {facilityName}{' '}
                 is currently under review by{' '}
-                {props.data.facilityAdmin.name}. You will receive an email once
-                your application has been approved.
+                {facilityAdminName}. You will receive an email once your
+                application has been approved.
               </p>
               <div class='mt-10 flex'>
                 <Button href='/'>
