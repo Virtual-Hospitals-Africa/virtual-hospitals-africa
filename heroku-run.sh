@@ -42,11 +42,9 @@ if [ -z "$ARTIFACT_URL" ]; then
   deno task $ARTIFACT_NAME
 else
   echo "Found artifact for $ARTIFACT_NAME, downloading and running binary"
-  mkdir -p binaries
-  get_github $ARTIFACT_URL/zip > binaries/$ARTIFACT_NAME.zip
-  unzip binaries/$ARTIFACT_NAME.zip -d binaries
-  rm binaries/$ARTIFACT_NAME.zip
-  ls -la binaries
-  chmod +x binaries/$ARTIFACT_NAME
-  ./binaries/$ARTIFACT_NAME
+  get_github $ARTIFACT_URL/zip > $ARTIFACT_NAME.zip
+  unzip $ARTIFACT_NAME.zip -d binaries
+  rm $ARTIFACT_NAME.zip
+  chmod +x $ARTIFACT_NAME
+  ./$ARTIFACT_NAME
 fi
