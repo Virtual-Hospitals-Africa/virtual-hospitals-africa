@@ -4,9 +4,9 @@ import db from '../db/db.ts'
 import { refreshTokens } from '../external-clients/google.ts'
 import { allWithGoogleTokensAboutToExpire } from '../db/models/health_workers.ts'
 
-export type TokenRefresher = { start(): void; exit(): void }
+export type token_refresher = { start(): void; exit(): void }
 
-export function createTokenRefresher(): TokenRefresher {
+export function createtoken_refresher(): token_refresher {
   let timer: number
 
   async function doRefreshTokens(): Promise<void> {
@@ -20,10 +20,10 @@ export function createTokenRefresher(): TokenRefresher {
   return {
     start: doRefreshTokens,
     exit(): void {
-      console.log('Exiting tokenRefresher')
+      console.log('Exiting token_refresher')
       clearTimeout(timer)
     },
   }
 }
 
-createTokenRefresher().start()
+createtoken_refresher().start()

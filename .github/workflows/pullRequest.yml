@@ -12,7 +12,7 @@ env:
   BUILD_STRING: "${{ github.run_number }}-${{ github.sha }}"
 
 jobs:
-  check:
+  lint_and_test:
     runs-on: ubuntu-latest
 
     services:
@@ -44,13 +44,13 @@ jobs:
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.37.0
-
+      
       - name: Run lint
         run: deno lint
 
       - name: Run fmt --check
         run: deno fmt --check
-
+  
       - name: Test setup
         run: |
           echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
@@ -64,6 +64,18 @@ jobs:
       - name: Run tests
         run: deno task test
 
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.37.0
+
       - name: Compile chatbot
         run: deno task compile:chatbot
 
@@ -72,3 +84,21 @@ jobs:
 
       - name: Compile web
         run: deno task compile:web
+      
+      - name: Upload chatbot
+        uses: actions/upload-artifact@v3
+        with:
+          name: chatbot
+          path: binaries/chatbot
+
+      - name: Upload token_refresher
+        uses: actions/upload-artifact@v3
+        with:
+          name: token_refresher
+          path: binaries/token_refresher
+
+      - name: Upload web
+        uses: actions/upload-artifact@v3
+        with:
+          name: web
+          path: binaries/web
