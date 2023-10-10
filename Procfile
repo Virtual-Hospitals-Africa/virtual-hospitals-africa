@@ -1,3 +1,3 @@
-web: deno task web
-chatbot: deno task chatbot
-token_refresher: deno task token_refresher
+web: ./heroku-run.sh web
+chatbot: ./heroku-run.sh chatbot
+token_refresher: ./heroku-run.sh token_refresher
