@@ -6,27 +6,20 @@ import { Container } from '../../../../../components/library/Container.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 
-import * as employment from '../../../../../db/models/employment.ts'
-import * as facilities from '../../../../../db/models/facilities.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
-import * as nurse_registration_details from '../../../../../db/models/nurse_registration_details.ts'
-import * as nurse_specialities from '../../../../../db/models/nurse_specialties.ts'
+import * as nurse_specialties from '../../../../../db/models/nurse_specialties.ts'
 
 import {
+  EmployeeInfo,
   Facility,
-  HealthWorker,
   LoggedInHealthWorkerHandler,
-  NurseRegistrationDetails,
   ReturnedSqlRow,
-  Specialities,
+  Specialties,
 } from '../../../../../types.ts'
 
 type HealthWorkerPageProps = {
-  worker_facilities: ReturnedSqlRow<Facility>[]
-  employee_positions: employment.HealthWorkerWithRegistrationState[]
-  healthWorker: ReturnedSqlRow<HealthWorker>
-  nurseRegistrationDetails: ReturnedSqlRow<NurseRegistrationDetails>
-  specialities: ReturnedSqlRow<Specialities>[]
+  specialties: ReturnedSqlRow<Specialties>[]
+  employeeInfo: EmployeeInfo
 }
 
 export const handler: LoggedInHealthWorkerHandler<
@@ -34,56 +27,26 @@ export const handler: LoggedInHealthWorkerHandler<
   { facility: ReturnedSqlRow<Facility> }
 > = {
   async GET(_, ctx) {
+    // get facility id
+    const facility_id = parseInt(ctx.params.facilityId)
+    assert(!isNaN(facility_id), 'Invalid facility ID')
+
     // get health worker id
     const health_worker_id = parseInt(ctx.params.id)
     assert(!isNaN(health_worker_id), 'Invalid health worker ID')
 
-    // get health worker id
-    const healthWorker = await health_workers.get(
-      ctx.state.trx,
-      { health_worker_id },
-    )
-    assert(
-      healthWorker,
-      `Health worker ${health_worker_id} does not exist`,
-    )
-
-    // get list of all facilites a health worker works at
-    const worker_facilities = await facilities.getByHealthWorker(
+    const employeeInfo = await health_workers.getEmployeeInfo(
       ctx.state.trx,
       health_worker_id,
+      facility_id,
     )
+    console.log(employeeInfo)
     assert(
-      worker_facilities,
+      employeeInfo,
       `Clinics/facilities not found for health worker ${health_worker_id}`,
     )
-
-    // get list of all employments for a health worker {health_worker_id}
-    const all_employment = await employment.getByHealthWorker(
-      ctx.state.trx,
-      { health_worker_id },
-    )
-
-    // filter for employment positions for health worker at facility {facility_id}
-    // TODO: or do we want to show all positions even if they dont have that position at facility {facility_id}??
-    const employee_positions = all_employment.filter((employee) =>
-      employee.facility_id === ctx.state.facility.id
-    )
-    console.log(employee_positions)
-    if (!employee_positions) return redirect('/app')
-
-    // get health worker's nurse registration details
-    const nurseRegistrationDetails = await nurse_registration_details.get(
-      ctx.state.trx,
-      { healthWorkerId: health_worker_id },
-    )
-    assert(
-      nurseRegistrationDetails,
-      `Nurse registration not found for health worker ${health_worker_id}`,
-    )
-
-    // get nurse specialities
-    const specialities = await nurse_specialities.getByHealthWorker(
+    // get nurse specialties (empty table for now)
+    const specialties = await nurse_specialties.getByHealthWorker(
       ctx.state.trx,
       { health_worker_id },
     )
@@ -92,11 +55,8 @@ export const handler: LoggedInHealthWorkerHandler<
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
-      worker_facilities,
-      employee_positions,
-      healthWorker,
-      nurseRegistrationDetails,
-      specialities,
+      specialties,
+      employeeInfo,
     })
   },
 }
@@ -106,9 +66,11 @@ export default function HealthWorkerPage(
 ) {
   return (
     <Layout
-      title={props.data.healthWorker.name}
+      title={props.data.employeeInfo.name}
       route={props.route}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      avatarUrl={props.data.employeeInfo.avatar_url
+        ? props.data.employeeInfo.avatar_url
+        : 'avatar_url'}
       variant='standard'
     >
       <Container size='lg'>
@@ -122,24 +84,21 @@ export default function HealthWorkerPage(
               height={48}
             />
             <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
-              {props.data.healthWorker.name}
+              {props.data.employeeInfo.name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
-              <p>
-                {props.data.employee_positions.map((item) => item.profession)
-                  .join(', ')}
-              </p>
+              {props.data.employeeInfo.employment.map((item) => (
+                item.professions.join(', ')
+              ))
+                .join(', ')}
             </dt>
           </div>
           <SectionHeader className='mb-1'>
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCard
-            worker_facilities={props.data.worker_facilities}
-            employee_positions={props.data.employee_positions}
-            healthWorker={props.data.healthWorker}
-            nurseRegistrationDetails={props.data.nurseRegistrationDetails}
-            specialities={props.data.specialities}
+            specialties={props.data.specialties}
+            employeeInfo={props.data.employeeInfo}
           />
         </div>
       </Container>

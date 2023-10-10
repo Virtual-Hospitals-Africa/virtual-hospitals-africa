@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { ColumnType, Generated, Transaction } from 'kysely'
+import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact/jsx-runtime'
 import { Handlers } from '$fresh/server.ts'
 import { Session } from 'fresh_session'
@@ -758,7 +758,7 @@ export type Profession =
   | 'doctor'
   | 'nurse'
 
-export type NurseSpeciality =
+export type NurseSpecialty =
   | 'primary_care_nurse'
   | 'registered_general_nurse'
   | 'midwife'
@@ -778,7 +778,7 @@ export type NurseSpeciality =
   | 'oncology_and_palliative_care_nurse'
   | 'dental_nurse'
 
-export const NurseSpecialities: NurseSpeciality[] = [
+export const NurseSpecialties: NurseSpecialty[] = [
   'primary_care_nurse',
   'clinical_care_nurse',
   'clinical_officer',
@@ -803,7 +803,7 @@ export type NurseRegistrationDetails = {
   health_worker_id: number
   gender: Gender
   national_id: string
-  date_of_first_practice: Date
+  date_of_first_practice: string
   ncz_registration_number: string
   mobile_number: string
   national_id_media_id: Maybe<number>
@@ -812,9 +812,9 @@ export type NurseRegistrationDetails = {
   approved_by: Maybe<number>
 }
 
-export type Specialities = {
+export type Specialties = {
   employee_id: number
-  speciality: NurseSpeciality
+  specialty: NurseSpecialty
 }
 
 export type HealthWorker = {
@@ -824,6 +824,28 @@ export type HealthWorker = {
   phone_number?: Maybe<string>
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
+}
+
+export type EmployeeInfo = {
+  name: string
+  email: string
+  gender: Maybe<Gender>
+  national_id: Maybe<string>
+  ncz_registration_number: Maybe<string>
+  mobile_number: Maybe<string>
+  health_worker_id: Maybe<number>
+  date_of_first_practice: Maybe<string>
+  specialty: Maybe<NurseSpecialty>
+  avatar_url: Maybe<string>
+  registration_completed: SqlBool
+  registration_needed: SqlBool
+  registration_pending_approval: SqlBool
+  employment: {
+    address: string
+    facility_id: number
+    facility_name: string
+    professions: Profession[]
+  }[]
 }
 
 export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {

@@ -6,7 +6,7 @@ import {
 
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { NurseSpecialities } from '../../../../types.ts'
+import { NurseSpecialties } from '../../../../types.ts'
 
 export default function NurseProfessionalForm() {
   return (
@@ -26,11 +26,11 @@ export default function NurseProfessionalForm() {
         />
       </FormRow>
       <FormRow>
-        <SelectInput name='speciality' label='Speciality' required>
-          {NurseSpecialities.map((speciality) => (
+        <SelectInput name='specialty' label='Specialty' required>
+          {NurseSpecialties.map((specialty) => (
             <option
-              value={speciality}
-              label={prettierSpecialityName(speciality)}
+              value={specialty}
+              label={prettierSpecialtyName(specialty)}
             >
             </option>
           ))}
@@ -45,7 +45,7 @@ export default function NurseProfessionalForm() {
   )
 }
 
-function prettierSpecialityName(specialityName: string): string {
-  const name = specialityName.replaceAll('\_', ' ')
+function prettierSpecialtyName(specialtyName: string): string {
+  const name = specialtyName.replaceAll('\_', ' ')
   return name.charAt(0).toUpperCase() + name.slice(1)
 }

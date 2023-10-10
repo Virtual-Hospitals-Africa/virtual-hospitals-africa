@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import set from './set.ts'
 import * as media from '../db/models/media.ts'
-import { isRfc3339 } from './date.ts'
 import { TrxOrDb } from '../types.ts'
 
 type Primitive = string | number | boolean | Date
@@ -14,7 +13,6 @@ export function parseParam(param: string): FormValue {
   if (param === 'off') return false
   if (/^\d+$/g.test(param)) return parseInt(param)
   if (param[0] === '[') return JSON.parse(param)
-  if (isRfc3339(param)) return new Date(param)
   return param
 }
 

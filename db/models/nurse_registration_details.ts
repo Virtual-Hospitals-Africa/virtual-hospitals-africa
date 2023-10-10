@@ -54,22 +54,20 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
     (registrationDetails.gender === 'male' ||
       registrationDetails.gender === 'female' ||
       registrationDetails.gender === 'other') &&
-    registrationDetails.national_id.match('^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$') &&
+    /^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$/.test(registrationDetails.national_id) &&
     isDate(registrationDetails.date_of_first_practice) &&
-    registrationDetails.ncz_registration_number.match(
-      '^[a-zA-Z]{2}[0-9]{6}$',
-    ) &&
-    registrationDetails.mobile_number.toString().match('^[0-9]+$') &&
-    (registrationDetails.national_id_media_id === undefined ||
+    /^[a-zA-Z]{2}[0-9]{6}$/.test(registrationDetails.ncz_registration_number) &&
+    /^[0-9]+$/.test(registrationDetails.mobile_number) &&
+    (registrationDetails.national_id_media_id == null ||
       typeof registrationDetails.national_id_media_id === 'number') &&
-    (registrationDetails.ncz_registration_card_media_id === undefined ||
+    (registrationDetails.ncz_registration_card_media_id == null ||
       typeof registrationDetails.ncz_registration_card_media_id === 'number') &&
-    (registrationDetails.face_picture_media_id === undefined ||
+    (registrationDetails.face_picture_media_id == null ||
       typeof registrationDetails.face_picture_media_id === 'number') &&
-    (registrationDetails.approved_by == undefined ||
+    (registrationDetails.approved_by == null ||
       typeof registrationDetails.approved_by === 'number')
 }
 
-function isDate(date: Date): boolean {
-  return date.toISOString().match('^[0-9]{4}[-][0-9]{2}[-][0-9]{2}') !== null
+function isDate(date: string): boolean {
+  return /^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$/.test(date)
 }

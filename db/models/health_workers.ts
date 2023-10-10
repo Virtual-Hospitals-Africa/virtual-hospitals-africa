@@ -2,6 +2,7 @@ import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
   EmployedHealthWorker,
+  EmployeeInfo,
   GoogleTokens,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
@@ -358,4 +359,92 @@ export async function getInviteesAtFacility(
       'profession',
     ])
     .execute()
+}
+
+export function getEmployeeInfo(
+  trx: TrxOrDb,
+  health_worker_id: number,
+  facility_id: number,
+): Promise<Maybe<EmployeeInfo>> {
+  const query = trx
+    .selectFrom('facilities')
+    .innerJoin('employment', 'employment.facility_id', 'facilities.id')
+    .innerJoin(
+      'health_workers',
+      'health_worker_id',
+      'employment.health_worker_id',
+    )
+    .where('health_workers.id', '=', health_worker_id)
+    .where('facilities.id', '=', facility_id)
+    .innerJoin(
+      'employment as all_employment',
+      'all_employment.health_worker_id',
+      'health_workers.id',
+    )
+    .innerJoin(
+      'facilities as all_facilities',
+      'all_employment.facility_id',
+      'all_facilities.id',
+    )
+    .leftJoin(
+      'nurse_registration_details',
+      'nurse_registration_details.health_worker_id',
+      'health_workers.id',
+    )
+    .leftJoin(
+      'nurse_specialties',
+      'nurse_specialties.employee_id',
+      'all_employment.id',
+    )
+    .select((eb) => [
+      'all_employment.health_worker_id as health_worker_id',
+      sql<
+        Maybe<string>
+      >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
+        .as('date_of_first_practice'),
+      'nurse_registration_details.gender',
+      'nurse_registration_details.mobile_number',
+      'nurse_registration_details.national_id',
+      'nurse_registration_details.ncz_registration_number',
+      'nurse_specialties.specialty',
+      'health_workers.email',
+      'health_workers.name',
+      'health_workers.avatar_url',
+      ({ eb, and }) =>
+        and([
+          eb('nurse_registration_details.id', 'is not', null),
+          eb('nurse_registration_details.approved_by', 'is', null),
+        ]).as('registration_pending_approval'),
+      ({ eb, and }) =>
+        and([
+          eb('nurse_registration_details.id', 'is', null),
+          eb('employment.profession', '=', 'nurse'),
+        ]).as('registration_needed'),
+      ({ eb, or }) =>
+        or([
+          eb('employment.profession', '!=', 'nurse'),
+          eb('nurse_registration_details.approved_by', 'is not', null),
+        ]).as('registration_completed'),
+      jsonArrayFrom(
+        eb.selectFrom('facilities')
+          .innerJoin('employment', 'employment.facility_id', 'facilities.id')
+          .innerJoin(
+            'health_workers',
+            'health_workers.id',
+            'employment.health_worker_id',
+          )
+          .where('health_workers.id', '=', health_worker_id)
+          .groupBy('facilities.id')
+          .select([
+            'facilities.id as facility_id',
+            'facilities.name as facility_name',
+            'facilities.address',
+            sql<Profession[]>`array_agg(employment.profession)`.as(
+              'professions',
+            ),
+          ]),
+      ).as('employment'),
+    ])
+
+  return query.executeTakeFirst()
 }
