@@ -3,7 +3,7 @@ import cls from '../../../../util/cls.ts'
 
 function HeroIconOutline(
   props: JSX.SVGAttributes<SVGSVGElement>,
-) {
+): JSX.Element {
   return (
     <svg
       {...props}

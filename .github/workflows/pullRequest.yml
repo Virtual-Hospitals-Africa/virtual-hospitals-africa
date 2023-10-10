@@ -46,7 +46,7 @@ jobs:
           deno-version: v1.37.0
 
       - name: Run lint
-        run: deno lint --ignore=landing-page/
+        run: deno lint
 
       - name: Run fmt --check
         run: deno fmt --check
