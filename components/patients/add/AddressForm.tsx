@@ -34,9 +34,8 @@ function NearestHealthCare(
       </FormRow>
       <FormRow>
         <PersonSearch
-        name = 'Primary_Doctor'
+        name = 'primary_doctor'
         label="Primary/Family Doctor"
-        required
         href='/app/health_workers'
         />
       </FormRow>
