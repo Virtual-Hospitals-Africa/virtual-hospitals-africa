@@ -16,10 +16,10 @@ import {
   ReturnedSqlRow,
   Specialties,
 } from '../../../../../types.ts'
+import { assertOr404 } from '../../../../../util/assertOr.ts'
 
 type HealthWorkerPageProps = {
-  specialties: ReturnedSqlRow<Specialties>[]
-  employeeInfo: EmployeeInfo
+  employee: EmployeeInfo
 }
 
 export const handler: LoggedInHealthWorkerHandler<
@@ -35,28 +35,22 @@ export const handler: LoggedInHealthWorkerHandler<
     const health_worker_id = parseInt(ctx.params.id)
     assert(!isNaN(health_worker_id), 'Invalid health worker ID')
 
-    const employeeInfo = await health_workers.getEmployeeInfo(
+    const employee = await health_workers.getEmployeeInfo(
       ctx.state.trx,
       health_worker_id,
       facility_id,
     )
-    console.log(employeeInfo)
-    assert(
-      employeeInfo,
+    console.log(employee)
+    assertOr404(
+      employee,
       `Clinics/facilities not found for health worker ${health_worker_id}`,
-    )
-    // get nurse specialties (empty table for now)
-    const specialties = await nurse_specialties.getByHealthWorker(
-      ctx.state.trx,
-      { health_worker_id },
     )
 
     // TODO: what if not a nurse but doctor/admin? where do we get registration info?
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
-      specialties,
-      employeeInfo,
+      employee,
     })
   },
 }
@@ -66,10 +60,10 @@ export default function HealthWorkerPage(
 ) {
   return (
     <Layout
-      title={props.data.employeeInfo.name}
+      title={props.data.employee.name}
       route={props.route}
-      avatarUrl={props.data.employeeInfo.avatar_url
-        ? props.data.employeeInfo.avatar_url
+      avatarUrl={props.data.employee.avatar_url
+        ? props.data.employee.avatar_url
         : 'avatar_url'}
       variant='standard'
     >
@@ -84,10 +78,10 @@ export default function HealthWorkerPage(
               height={48}
             />
             <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
-              {props.data.employeeInfo.name}
+              {props.data.employee.name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
-              {props.data.employeeInfo.employment.map((item) => (
+              {props.data.employee.employment.map((item) => (
                 item.professions.join(', ')
               ))
                 .join(', ')}
@@ -97,8 +91,7 @@ export default function HealthWorkerPage(
             Demographic Data
           </SectionHeader>
           <HealthWorkerDetailedCard
-            specialties={props.data.specialties}
-            employeeInfo={props.data.employeeInfo}
+            employee={props.data.employee}
           />
         </div>
       </Container>

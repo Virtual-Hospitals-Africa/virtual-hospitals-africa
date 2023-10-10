@@ -9,7 +9,6 @@ import { Patients } from './Patients.tsx'
 import { HealthWorkers } from './HealthWorkers.tsx'
 import { TeamSection } from './Team.tsx'
 import { Testimonial } from './Testimonial.tsx'
-import { Testimonials } from './Testimonials.tsx'
 
 export default function Home() {
   return (
@@ -48,7 +47,6 @@ export default function Home() {
       </Testimonial>
       <Research />
       <FreeChapters />
-      <Testimonials />
       <Partners />
       <TeamSection />
       <Footer />
