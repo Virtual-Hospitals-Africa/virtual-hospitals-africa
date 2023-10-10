@@ -73,7 +73,7 @@ export function Header({ title, avatarUrl, variant }: HeaderProps) {
             showBackButton={variant === 'form'}
             title={title}
           />
-          {variant != 'standard-without-nav' && (
+          {variant !== 'standard-without-nav' && (
             <HeaderRight avatarUrl={avatarUrl} />
           )}
         </div>

@@ -1,6 +1,7 @@
 import {
   Employee,
   HealthWorkerInvitee,
+  Maybe,
   Profession,
   ReturnedSqlRow,
   TrxOrDb,
@@ -16,7 +17,7 @@ export type HealthWorkerWithRegistrationState = {
   registration_completed: SqlBool
 }
 
-export type FacilityAdminInfo = {
+export type FacilityAdmin = {
   id: number
   email: string | null
   name: string
@@ -202,22 +203,22 @@ export function removeInvitees(
     .execute()
 }
 
-export function getFacilityAdminInfo(
+export function getFacilityAdmin(
   trx: TrxOrDb,
   opts: {
     facility_id: number
   },
-): Promise<ReturnedSqlRow<FacilityAdminInfo> | undefined> {
+): Promise<Maybe<FacilityAdmin>> {
   return trx
     .selectFrom('employment')
     .where('facility_id', '=', opts.facility_id)
     .where('profession', '=', 'admin')
-    .leftJoin(
+    .innerJoin(
       'health_workers',
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .leftJoin(
+    .innerJoin(
       'facilities',
       'facilities.id',
       'employment.facility_id',
@@ -231,7 +232,5 @@ export function getFacilityAdminInfo(
       'facility_id',
       'facilities.name as facility_name',
     ])
-    .executeTakeFirst() as Promise<
-      ReturnedSqlRow<FacilityAdminInfo> | undefined
-    >
+    .executeTakeFirst()
 }

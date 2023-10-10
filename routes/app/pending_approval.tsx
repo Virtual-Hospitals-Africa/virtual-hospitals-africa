@@ -7,36 +7,28 @@ import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
 import * as health_workers from '../../db/models/health_workers.ts'
-import {
-  FacilityAdminInfo,
-  getFacilityAdminInfo,
-} from '../../db/models/employment.ts'
+import { FacilityAdmin, getFacilityAdmin } from '../../db/models/employment.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  facilityAdmin: FacilityAdminInfo | undefined
+  facilityAdmin: FacilityAdmin | undefined
 }
 
 export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
   async GET(req, ctx) {
-    console.log(ctx.state)
+    const { healthWorker } = ctx.state
 
-    const healthWorker = await health_workers.get(ctx.state.trx, {
-      health_worker_id: ctx.state.healthWorker.id,
-    })
-    assert(healthWorker)
-
-    const facilityAdmin = await getFacilityAdminInfo(ctx.state.trx, {
+    const facilityAdmin = await getFacilityAdmin(ctx.state.trx, {
       facility_id: healthWorker.employment[0].facility_id,
     })
 
     assert(facilityAdmin)
 
     return ctx.render({
-      healthWorker: healthWorker,
-      facilityAdmin: facilityAdmin,
+      healthWorker,
+      facilityAdmin,
     })
   },
 }
@@ -69,7 +61,7 @@ export default function PendingApprovalPage(
               </p>
               <div class='mt-10 flex'>
                 <Button href='/'>
-                  Homepage<span aria-hidden='true'>&rarr;</span>
+                  Homepage<span aria-hidden='true'>&nbsp;&nbsp;&rarr;</span>
                 </Button>
               </div>
             </div>
