@@ -43,8 +43,9 @@ if [ -z "$ARTIFACT_URL" ]; then
 else
   echo "Found artifact for $ARTIFACT_NAME, downloading and running binary"
   get_github $ARTIFACT_URL/zip > $ARTIFACT_NAME.zip
-  unzip $ARTIFACT_NAME.zip -d binaries
+  unzip $ARTIFACT_NAME.zip
   rm $ARTIFACT_NAME.zip
+  ls -la
   chmod +x $ARTIFACT_NAME
   ./$ARTIFACT_NAME
 fi
