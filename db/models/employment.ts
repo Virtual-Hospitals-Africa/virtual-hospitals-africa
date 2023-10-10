@@ -222,6 +222,14 @@ export function getFacilityAdminInfo(
       'facilities.id',
       'employment.facility_id',
     )
-    .select(['employment.id', 'health_worker_id', 'health_workers.name', 'email', 'profession', 'facility_id', 'facilities.name as facility_name'])
+    .select([
+      'employment.id',
+      'health_worker_id',
+      'health_workers.name',
+      'email',
+      'profession',
+      'facility_id',
+      'facilities.name as facility_name',
+    ])
     .executeTakeFirst()
 }
