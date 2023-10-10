@@ -1,15 +1,13 @@
-import { EmployeeInfo, Specialties } from '../../types.ts'
+import { EmployeeInfo } from '../../types.ts'
 import { ArrowDownTrayIcon } from '../library/icons/heroicons/outline.tsx'
 
 type HealthWorkerDetailedCardProps = {
-  specialties: Specialties[]
-  employeeInfo: EmployeeInfo
+  employee: EmployeeInfo
 }
 
 export default function HealthWorkerDetailedCard(
   {
-    specialties,
-    employeeInfo,
+    employee,
   }: HealthWorkerDetailedCardProps,
 ) {
   return (
@@ -21,7 +19,7 @@ export default function HealthWorkerDetailedCard(
               First Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.name.split(' ')[0]}
+              {employee.name.split(' ')[0]}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -29,8 +27,8 @@ export default function HealthWorkerDetailedCard(
               Middle Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.name.split(' ').length > 2
-                ? employeeInfo.name.split(' ').slice(1, -1).join(' ')
+              {employee.name.split(' ').length > 2
+                ? employee.name.split(' ').slice(1, -1).join(' ')
                 : 'N/A'}
             </dd>
           </div>
@@ -39,8 +37,8 @@ export default function HealthWorkerDetailedCard(
               Last Name
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.name.split(' ').length > 1
-                ? employeeInfo.name.split(' ').at(-1)
+              {employee.name.split(' ').length > 1
+                ? employee.name.split(' ').at(-1)
                 : 'N/A'}
             </dd>
           </div>
@@ -49,7 +47,7 @@ export default function HealthWorkerDetailedCard(
               Gender
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.gender}
+              {employee.gender}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -65,7 +63,7 @@ export default function HealthWorkerDetailedCard(
               National ID Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.national_id}
+              {employee.national_id}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -73,7 +71,7 @@ export default function HealthWorkerDetailedCard(
               Email
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.email || 'N/A'}
+              {employee.email || 'N/A'}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -81,7 +79,7 @@ export default function HealthWorkerDetailedCard(
               Phone Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.mobile_number || 'N/A'}
+              {employee.mobile_number || 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -89,11 +87,9 @@ export default function HealthWorkerDetailedCard(
               Specialty
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              <ul>
-                {specialties.map((item, index) => (
-                  <li key={index}>{item.specialty.replaceAll('_', ' ')}</li>
-                ))}
-              </ul>
+              {employee.specialty
+                ? employee.specialty.replaceAll('_', ' ')
+                : 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -101,7 +97,7 @@ export default function HealthWorkerDetailedCard(
               Date of First Practice
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.date_of_first_practice || 'N/A'}
+              {employee.date_of_first_practice || 'N/A'}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
@@ -109,7 +105,7 @@ export default function HealthWorkerDetailedCard(
               Nurse Council's Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employeeInfo.ncz_registration_number}
+              {employee.ncz_registration_number}
             </dd>
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -118,7 +114,7 @@ export default function HealthWorkerDetailedCard(
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               <ul>
-                {employeeInfo.employment.map((item, index) => (
+                {employee.employment.map((item, index) => (
                   <li key={index}>
                     <div>
                       {item.facility_name}
