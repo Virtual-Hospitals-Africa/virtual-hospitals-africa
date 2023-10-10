@@ -10,7 +10,7 @@ fi
 
 if [ "$ARTIFACT_NAME" = "web" ]; then
   # TODO: see if we actually have migrations to run by comparing files, otherwise don't run this
-  deno task db:migrate:web
+  deno task db:migrate:latest
 fi
 
 get_github() {
@@ -25,13 +25,17 @@ get_artifacts() {
   get_github https://api.github.com/repos/morehumaninternet/virtual-hospitals-africa/actions/artifacts
 }
 
-find_matching_artifact() {
-  jq -r --arg artifact_name "$ARTIFACT_NAME" \
-        --arg commit "$HEROKU_SLUG_COMMIT" \
-    '.artifacts[] | select(.name == $artifact_name) | select(.workflow_run.head_sha == $commit) | .url'
+make_deno_script() {
+  echo "console.log("
+  get_artifacts
+  echo ".artifacts.find(a => a.name == '$ARTIFACT_NAME' && a.workflow_run.head_sha == '$HEROKU_SLUG_COMMIT').url"
+  echo ")"
 }
 
-ARTIFACT_URL=$(get_artifacts | find_matching_artifact)
+SCRIPT=$(mktemp)
+make_deno_script
+make_deno_script > $SCRIPT
+ARTIFACT_URL=$(deno run $SCRIPT)
 
 if [ -z "$ARTIFACT_URL" ]; then
   echo "No matching artifact found, running $ARTIFACT_NAME from source"
