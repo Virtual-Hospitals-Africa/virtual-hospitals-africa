@@ -1,7 +1,7 @@
 {
   "tasks": {
     "chatbot": "deno task run:trusted chatbot/chatbot.ts",
-    "token_refresher": "deno task run:trusted tokenRefresher/tokenRefresher.ts",
+    "token_refresher": "deno task run:trusted token_refresher/token_refresher.ts",
     "start": "deno task run:trusted --watch=chatbot/,db/,islands/,scheduling/,util/,components/,external-clients/,landing-page/,routes/,static/ dev.ts",
     "web": "deno task run:trusted main.ts",
     "db:migrate:create": "deno task run:trusted db/create-migration.ts",
@@ -19,9 +19,9 @@
     "heroku:web:down": "heroku ps:scale web=0",
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unstable --target x86_64-unknown-linux-gnu",
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
-    "compile:token_refresher": "deno task compile --output binaries/tokenRefresher tokenRefresher/tokenRefresher.ts",
+    "compile:token_refresher": "deno task compile --output binaries/token_refresher token_refresher/token_refresher.ts",
     "compile:web": "deno task compile --output binaries/web main.ts",
-    "lock:reset": "rm -f deno.lock && deno cache --reload main.ts chatbot/chatbot.ts tokenRefresher/tokenRefresher.ts",
+    "lock:reset": "rm -f deno.lock && deno cache --reload main.ts chatbot/chatbot.ts token_refresher/token_refresher.ts",
     "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors",
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
     "switch:prod": "cp .env.prod .env",
