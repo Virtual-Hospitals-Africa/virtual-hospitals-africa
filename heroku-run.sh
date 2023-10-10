@@ -46,5 +46,7 @@ else
   get_github $ARTIFACT_URL/zip > binaries/$ARTIFACT_NAME.zip
   unzip binaries/$ARTIFACT_NAME.zip -d binaries
   rm binaries/$ARTIFACT_NAME.zip
+  ls -la binaries
+  chmod +x binaries/$ARTIFACT_NAME
   ./binaries/$ARTIFACT_NAME
 fi
