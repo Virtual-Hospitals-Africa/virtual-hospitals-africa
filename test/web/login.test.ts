@@ -332,22 +332,19 @@ describe('/login', { sanitizeResources: false }, () => {
       assert(pageContents.includes('Calendar'))
     })
 
-    it('allows user can go to and from employees table screen', async () => {
+    it('allows a health worker employed at a facility to view its employees', async () => {
+      const nurse = await upsertWithGoogleCredentials(db, testHealthWorker())
+
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
+      }, {
+        facility_id: 1,
+        health_worker_id: nurse.id,
+        profession: 'nurse',
       }])
-      let response = await fetch(`${ROUTE}/app`, {
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
-      })
-      assert(response.ok)
-      let pageContents = await response.text()
-      assert(pageContents.includes('href="/app/employees"'))
-
-      response = await fetch(`${ROUTE}/app/employees`, {
+      const response = await fetch(`${ROUTE}/app/employees`, {
         headers: {
           Cookie: `sessionId=${sessionId}`,
         },
@@ -356,18 +353,17 @@ describe('/login', { sanitizeResources: false }, () => {
       assert(response.ok)
       assert(response.redirected)
       assert(response.url === `${ROUTE}/app/facilities/1/employees`)
-      pageContents = await response.text()
-      assert(pageContents.includes('href="/app"'))
-
-      response = await fetch(`${ROUTE}/app`, {
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
-      })
-
-      assert(response.ok)
-      assert(response.url === `${ROUTE}/app`)
-      await response.text()
+      const pageContents = await response.text()
+      assert(
+        pageContents.includes(
+          `href="/app/facilities/1/health-workers/${healthWorker.id}"`,
+        ),
+      )
+      assert(
+        pageContents.includes(
+          `href="/app/facilities/1/health-workers/${nurse.id}"`,
+        ),
+      )
     })
 
     it(`allows admin access to invite`, async () => {

@@ -60,6 +60,7 @@ export default function EmployeeTable(
           isAdmin={props.data.isAdminAtFacility}
           employees={props.data.employees}
           pathname={props.url.pathname}
+          facility_id={props.data.facility.id}
         />
       </Container>
     </Layout>
