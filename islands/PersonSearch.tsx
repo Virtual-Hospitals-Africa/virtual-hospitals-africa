@@ -60,7 +60,7 @@ export default function PersonSearch({
     <div className='w-full'>
       <SearchInput
         name={`${name}_name`}
-        label = {label}
+        label={label}
         value={search}
         required={required}
         onInput={(event) => {
