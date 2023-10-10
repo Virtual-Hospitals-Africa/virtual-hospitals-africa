@@ -39,13 +39,11 @@ function ImageDownload(props: { name: string, href: string }) {
   )
 }
 
-
 export default function HealthWorkerDetailedCard(
   {
     employee,
   }: HealthWorkerDetailedCardProps,
 ) {
-  const media_url =  `/app/facilities/${employee.employment[0].facility_id}/health-workers/${employee.health_worker_id}/media`
 
   return (
     <div>
