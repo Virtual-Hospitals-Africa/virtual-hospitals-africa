@@ -4,13 +4,19 @@ import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
 
-export type LayoutProps = {
-  title: string
-  route: string
-  avatarUrl: string
-  variant: 'standard' | 'form' | 'standard-without-nav'
-  children: ComponentChildren
-}
+export type LayoutProps =
+  & {
+    title: string
+    route: string
+    children: ComponentChildren
+  }
+  & ({
+    variant: 'standard' | 'form'
+    avatarUrl: string
+  } | {
+    variant: 'standard-without-nav'
+    avatarUrl?: string
+  })
 
 export default function Layout(props: LayoutProps) {
   return (
@@ -37,7 +43,7 @@ export default function Layout(props: LayoutProps) {
           >
             <Header
               title={props.title}
-              avatarUrl={props.avatarUrl}
+              avatarUrl={props.avatarUrl || undefined}
               variant={props.variant}
             />
             {props.children}

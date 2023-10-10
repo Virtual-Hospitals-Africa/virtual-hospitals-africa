@@ -45,7 +45,6 @@ export default function PendingApprovalPage(
     <Layout
       title='Virtual Hospitals Africa'
       route={'/app/pending_approval'}
-      avatarUrl={''}
       variant='standard-without-nav'
     >
       <div class='overflow-hidden bg-white py-32'>
