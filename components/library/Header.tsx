@@ -1,17 +1,11 @@
 import { ArrowLeftIcon, BellIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
 
-export type HeaderProps =
-  & {
-    title: string
-  }
-  & ({
-    variant: 'standard' | 'form'
-    avatarUrl: string
-  } | {
-    variant: 'standard-without-nav'
-    avatarUrl?: string
-  })
+export type HeaderProps = {
+  title: string
+  variant: 'standard' | 'form' | 'standard-without-nav'
+  avatarUrl?: string
+}
 
 function Notification() {
   return (

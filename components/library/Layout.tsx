@@ -43,7 +43,7 @@ export default function Layout(props: LayoutProps) {
           >
             <Header
               title={props.title}
-              avatarUrl={props.avatarUrl || undefined}
+              avatarUrl={props.avatarUrl}
               variant={props.variant}
             />
             {props.children}
