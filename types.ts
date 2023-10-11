@@ -846,6 +846,10 @@ export type EmployeeInfo = {
     facility_name: string
     professions: Profession[]
   }[]
+  documents: {
+    name: string
+    href: string
+  }[]
 }
 
 export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {

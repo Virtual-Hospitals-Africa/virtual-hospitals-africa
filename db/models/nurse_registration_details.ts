@@ -11,7 +11,7 @@ export function add(
     registrationDetails: NurseRegistrationDetails
   },
 ) {
-  assert(inputValidation(opts.registrationDetails))
+  assert(inputValidation(opts.registrationDetails), 'failed at input validation')
   return trx
     .insertInto('nurse_registration_details')
     .values(opts.registrationDetails)
