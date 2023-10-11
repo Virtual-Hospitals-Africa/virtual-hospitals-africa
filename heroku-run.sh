@@ -17,6 +17,8 @@ if [ "$ARTIFACT_NAME" = "web" ]; then
   deno task db:migrate:latest
 fi
 
+deno task $ARTIFACT_NAME
+
 get_github() {
   curl -L \
     -H "Accept: application/vnd.github+json" \
@@ -47,15 +49,16 @@ download_and_run_artifact() {
   ./$ARTIFACT_NAME
 }
 
-make_deno_script > $SCRIPT
-ARTIFACT_URL=$(deno run $SCRIPT)
+# TODO try this later
+# make_deno_script > $SCRIPT
+# ARTIFACT_URL=$(deno run $SCRIPT)
 
-if [ -z "$ARTIFACT_URL" ]; then
-  echo "No matching artifact found, running $ARTIFACT_NAME from source"
-  deno task $ARTIFACT_NAME
-else
-  download_and_run_artifact || {
-    echo "Failed to download and run artifact, running $ARTIFACT_NAME from source"
-    deno task $ARTIFACT_NAME
-  }
-fi
+# if [ -z "$ARTIFACT_URL" ]; then
+#   echo "No matching artifact found, running $ARTIFACT_NAME from source"
+#   deno task $ARTIFACT_NAME
+# else
+#   download_and_run_artifact || {
+#     echo "Failed to download and run artifact, running $ARTIFACT_NAME from source"
+#     deno task $ARTIFACT_NAME
+#   }
+# fi
