@@ -716,9 +716,6 @@ export default {
     // },
     colors: {
       ...colors,
-      foo: {
-        '900': '#312E81',
-      },
       // primary: {
       //   '50': '#e2f5eb',
       //   '100': '#c5ebd2',

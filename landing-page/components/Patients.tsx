@@ -15,13 +15,11 @@ export function Patients() {
           Patients
         </SectionHeading>
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
-          Over an hour of high quality, step-by-step video content to sharpen
-          your icon design workflow.
+          24/7 medical professional services, in person and online
         </p>
         <p className='mt-4 text-lg tracking-tight text-slate-700'>
-          Learn how to design your very first icons in a series of patients that
-          will teach you everything you need to know to go from beginner to pro
-          in just over an hour.
+          Get peace of mind knowing you have instant access to your doctor’s
+          office and global system of virtual hospitals anywhere you are.
         </p>
       </Container>
       <FeatureGrid

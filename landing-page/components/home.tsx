@@ -20,29 +20,31 @@ export default function Home() {
       <Testimonial
         id='testimonial-from-tommy-stroman'
         author={{
-          name: 'Tommy Stroman',
-          role: 'Front-end developer',
+          name: 'Dr. Buhlebenkosi Ndlovu',
+          role: 'Medical Doctor',
           image: '/images/avatars/avatar-1.png',
         }}
       >
         <p>
-          “Equipping health facilities with Virtual Hospitals Africa will be a
-          game changer in how care is provided in Southern Africa and beyond”
+          “Virtual hospitals can help ensure that everyone has access to the
+          healthcare they need. I am excited about the personalized care options
+          that virtual hospitals can offer my patients making much easier and
+          more convenient.”
         </p>
       </Testimonial>
       <Patients />
       <Testimonial
         id='testimonial-from-gerardo-stark'
         author={{
-          name: 'Gerardo Stark',
+          name: 'Sekuru Dube, 75',
           role: 'Patient',
           image: '/images/avatars/avatar-2.png',
         }}
       >
         <p>
-          “The nearest hospital is a 25 mile walk away, so often I just wouldn’t
-          go even if I was sick. I feel so much better knowing I can get my
-          questions answered and medications sent out from home.”
+          “I look forward to being able to communicate with all my care
+          providers easily and efficiently, and to receive clear and concise
+          information about my next steps and how to lead a healthy life.”
         </p>
       </Testimonial>
       <Research />
