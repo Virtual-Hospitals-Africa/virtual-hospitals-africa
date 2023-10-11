@@ -32,7 +32,7 @@ export function getByPhoneNumber(
 
 export function upsert(trx: TrxOrDb, info: {
   id?: number
-  conversation_state: PatientConversationState
+  conversation_state?: PatientConversationState
   phone_number?: string
   name?: Maybe<string>
   gender?: Maybe<Gender>
@@ -54,7 +54,10 @@ export function upsert(trx: TrxOrDb, info: {
   }
   return trx
     .insertInto('patients')
-    .values(toInsert)
+    .values({
+      ...toInsert,
+      conversation_state: toInsert.conversation_state || 'initial_message',
+    })
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
     .returningAll()
     .executeTakeFirstOrThrow()
