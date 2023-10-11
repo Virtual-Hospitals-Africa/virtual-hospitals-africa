@@ -1,6 +1,8 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
+apt-get install -y strace
+
 SCRIPT=$(mktemp)
 ARTIFACT_NAME="$1"
 ARTIFACT_URL=""
