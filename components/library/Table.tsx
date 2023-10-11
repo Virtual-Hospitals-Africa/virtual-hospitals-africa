@@ -1,6 +1,7 @@
 import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
+import { Maybe } from '../../types.ts'
 
 type Row = Record<string, string | number | string[] | null> & { id?: number }
 
@@ -14,7 +15,7 @@ export type TableColumn<T extends Row> =
     | { type: 'avatar'; dataKey: keyof T }
     | {
       type: 'actions'
-      actions: Record<string, (row: T) => string | (() => void)>
+      actions: Record<string, (row: T) => Maybe<string>>
     }
   )
 
@@ -25,12 +26,11 @@ type TableProps<T extends Row> = {
 }
 
 function ActionButton(
-  { name, action }: { name: string; action: string | (() => void) },
+  { name, action }: { name: string; action?: Maybe<string> },
 ) {
-  return (
+  return !action ? null : (
     <a
       href={typeof action === 'string' ? action : undefined}
-      onClick={typeof action === 'string' ? undefined : action}
       className='text-indigo-600 hover:text-indigo-900'
     >
       {name}
@@ -43,6 +43,7 @@ function TableCellInnerContents<T extends Row>(
 ) {
   if (column.type === 'content') {
     const value = row[column.dataKey]
+
     return (
       <div
         className={cls(

@@ -99,6 +99,7 @@ export type EmployeeHealthWorker = {
   avatar_url: string
   email: string
   display_name: string
+  href: string
 }
 
 export type EmployeeInvitee = {
@@ -109,6 +110,7 @@ export type EmployeeInvitee = {
   avatar_url: null
   email: string
   display_name: string
+  href: null
 }
 
 export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
@@ -128,7 +130,8 @@ export async function getEmployees(
       health_workers.email as email,
       health_workers.name as display_name,
       JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
-      health_workers.avatar_url AS avatar_url
+      health_workers.avatar_url AS avatar_url,
+      CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text) as href
     FROM
       health_workers
     INNER JOIN
@@ -149,7 +152,8 @@ export async function getEmployees(
       health_worker_invitees.email as email,
       health_worker_invitees.email as display_name,
       JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
-      NULL AS avatar_url
+      NULL AS avatar_url,
+      NULL as href
     FROM
       health_worker_invitees
     WHERE

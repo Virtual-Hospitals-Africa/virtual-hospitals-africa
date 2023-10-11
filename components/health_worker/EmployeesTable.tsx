@@ -4,19 +4,21 @@ import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
-import { Profession } from '../../types.ts'
 import { FacilityEmployee } from '../../db/models/facilities.ts'
 
 type EmployeesTableProps = {
   isAdmin: boolean
   employees: FacilityEmployee[]
   pathname: string
+  facility_id: number
 }
 
 type Employee = {
   avatar_url: null | string
   display_name: string
   professions: string[]
+  health_worker_id: number | null
+  href: string | null
 }
 
 export default function EmployeesTable({
@@ -40,21 +42,17 @@ export default function EmployeesTable({
       dataKey: 'professions',
       type: 'content',
     },
-  ]
-
-  if (isAdmin) {
-    columns.push({
+    {
       label: 'Actions',
       type: 'actions',
       actions: {
-        ['Resend Invite']() {
-          return () => {
-            throw new Error('Not implemented yet')
-          }
+        ['View'](row: Employee) {
+          return row.href
         },
       },
-    })
-  }
+    },
+  ]
+
   return (
     <>
       <FormRow className='mb-4'>
