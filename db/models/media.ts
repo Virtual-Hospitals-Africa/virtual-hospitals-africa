@@ -13,7 +13,6 @@ export function get(
   opts: {
     media_id: number
     appointment_id?: number
-    nurse_registration_details_id?: number
   },
 ): Promise<ReturnedSqlRow<Media>> {
   let query = trx
@@ -35,28 +34,6 @@ export function get(
         'appointment_media.appointment_id',
         '=',
         opts.appointment_id,
-      )
-  }
-
-  if (opts.nurse_registration_details_id) {
-    query = query.innerJoin(
-      'nurse_registration_details',
-      'nurse_registration_details.national_id_media_id',
-      'media.id',
-    ).innerJoin(
-      'nurse_registration_details',
-      'ncz_registration_card_media_id',
-      'media.id',
-    )
-      .innerJoin(
-        'nurse_registration_details',
-        'face_picture_media_id',
-        'media.id',
-      )
-      .where(
-        'nurse_registration_details.id',
-        '=',
-        opts.nurse_registration_details_id,
       )
   }
 

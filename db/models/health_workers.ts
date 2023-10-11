@@ -449,34 +449,55 @@ export function getEmployeeInfo(
           'nd_1.id',
           '=',
           'nurse_registration_details.id',
-        ).where('nurse_registration_details.national_id_media_id', 'is not', null)
-        .select([
-          sql<string>`'National ID'`.as('name'),
-          sql<string>`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`.as('href'),
-        ])
-        .union(
-          eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-            'nd_1.id',
-            '=',
-            'nurse_registration_details.id',
-          ).where('nurse_registration_details.face_picture_media_id', 'is not', null)
-          .select([
-            sql<string>`'Face Picture'`.as('name'),
-            sql<string>`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`.as('href'),
-          ])
+        ).where(
+          'nurse_registration_details.national_id_media_id',
+          'is not',
+          null,
         )
-        .union(
-          eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-            'nd_1.id',
-            '=',
-            'nurse_registration_details.id',
-          ).where('nurse_registration_details.ncz_registration_card_media_id', 'is not', null)
           .select([
-            sql<string>`'Registration Card'`.as('name'),
-            sql<string>`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`.as('href'),
+            sql<string>`'National ID'`.as('name'),
+            sql<
+              string
+            >`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
+              .as('href'),
           ])
-        )
-        .orderBy('name')
+          .union(
+            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+              'nd_1.id',
+              '=',
+              'nurse_registration_details.id',
+            ).where(
+              'nurse_registration_details.face_picture_media_id',
+              'is not',
+              null,
+            )
+              .select([
+                sql<string>`'Face Picture'`.as('name'),
+                sql<
+                  string
+                >`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                  .as('href'),
+              ]),
+          )
+          .union(
+            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+              'nd_1.id',
+              '=',
+              'nurse_registration_details.id',
+            ).where(
+              'nurse_registration_details.ncz_registration_card_media_id',
+              'is not',
+              null,
+            )
+              .select([
+                sql<string>`'Registration Card'`.as('name'),
+                sql<
+                  string
+                >`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
+                  .as('href'),
+              ]),
+          )
+          .orderBy('name'),
       ).as('documents'),
     ])
 

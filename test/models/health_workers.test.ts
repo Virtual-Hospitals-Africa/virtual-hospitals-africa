@@ -295,18 +295,18 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       const nationalIdMedia = await media.insert(db, {
         binary_data: new Uint8Array(),
-        mime_type: 'image/png'
+        mime_type: 'image/png',
       })
 
       const facePictureMedia = await media.insert(db, {
         binary_data: new Uint8Array(),
-        mime_type: 'image/png'
+        mime_type: 'image/png',
       })
 
       const registrationCardMedia = await media.insert(db, {
         binary_data: new Uint8Array(),
-        mime_type: 'image/png'
-      }) 
+        mime_type: 'image/png',
+      })
 
       await nurse_registration_details.add(db, {
         registrationDetails: {
@@ -344,9 +344,21 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.registration_needed, false)
       assertEquals(result.registration_pending_approval, true)
       assertEquals(result.documents, [
-        {name: 'Face Picture', href: `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${facePictureMedia.id}`},
-        {name: 'National ID', href: `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${nationalIdMedia.id}`},
-        {name: 'Registration Card', href: `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${registrationCardMedia.id}`},
+        {
+          name: 'Face Picture',
+          href:
+            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${facePictureMedia.id}`,
+        },
+        {
+          name: 'National ID',
+          href:
+            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${nationalIdMedia.id}`,
+        },
+        {
+          name: 'Registration Card',
+          href:
+            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${registrationCardMedia.id}`,
+        },
       ])
       assertEquals(
         result.employment,

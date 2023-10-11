@@ -5,7 +5,7 @@ type HealthWorkerDetailedCardProps = {
   employee: EmployeeInfo
 }
 
-function ImageDownload(props: { name: string, href: string }) {
+function ImageDownload(props: { name: string; href: string }) {
   return (
     <li className='py-4 pl-4 pr-5 text-sm leading-6'>
       <div className='flex items-center justify-between'>
@@ -19,7 +19,7 @@ function ImageDownload(props: { name: string, href: string }) {
           <a
             href={props.href}
             className='font-medium flex text-indigo-600 hover:text-indigo-500'
-            target="_blank"
+            target='_blank'
           >
             <ArrowDownTrayIcon
               className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
@@ -44,7 +44,6 @@ export default function HealthWorkerDetailedCard(
     employee,
   }: HealthWorkerDetailedCardProps,
 ) {
-
   return (
     <div>
       <div className='py-6 px-4 rounded-md border-2 border-gray-200 bg-gray-200'>
@@ -180,9 +179,9 @@ export default function HealthWorkerDetailedCard(
                 className='mx-auto divide-y divide-gray-100 rounded-md border border-gray-200'
                 style={{ width: '50%' }}
               >
-                {employee.documents.map((document, index) =>
+                {employee.documents.map((document, index) => (
                   <ImageDownload {...document} />
-                )}
+                ))}
               </ul>
             </dd>
           </div>
