@@ -89,6 +89,7 @@ describe('db/models/facilities.ts', () => {
           is_invitee: false,
           name: 'At Facility 1',
           href: `/app/facilities/3/health-workers/${hw_at_facility1.id}`,
+          approved: false,
           professions: [
             'admin',
             'doctor',
@@ -102,6 +103,7 @@ describe('db/models/facilities.ts', () => {
           is_invitee: false,
           name: 'At Facility 2',
           href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          approved: false,
           professions: [
             'doctor',
             'nurse',
@@ -115,6 +117,7 @@ describe('db/models/facilities.ts', () => {
           is_invitee: true,
           name: null,
           href: null,
+          approved: false,
           professions: [
             'doctor',
           ],
@@ -135,6 +138,7 @@ describe('db/models/facilities.ts', () => {
           is_invitee: false,
           name: 'At Facility 1',
           href: `/app/facilities/3/health-workers/${hw_at_facility1.id}`,
+          approved: false,
           professions: [
             'admin',
             'doctor',
@@ -148,6 +152,7 @@ describe('db/models/facilities.ts', () => {
           is_invitee: false,
           name: 'At Facility 2',
           href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          approved: false,
           professions: [
             'doctor',
             'nurse',

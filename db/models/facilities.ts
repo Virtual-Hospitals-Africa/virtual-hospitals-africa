@@ -100,6 +100,7 @@ export type EmployeeHealthWorker = {
   email: string
   display_name: string
   href: string
+  approved: boolean
 }
 
 export type EmployeeInvitee = {
@@ -111,6 +112,7 @@ export type EmployeeInvitee = {
   email: string
   display_name: string
   href: null
+  approved: boolean
 }
 
 export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
@@ -131,9 +133,14 @@ export async function getEmployees(
       health_workers.name as display_name,
       JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
       health_workers.avatar_url AS avatar_url,
-      CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text) as href
+      CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text) as href,
+      (nurse_registration_details.approved_by IS NOT NULL) as approved
     FROM
       health_workers
+    LEFT JOIN
+      nurse_registration_details
+    ON
+      nurse_registration_details.health_worker_id = health_workers.id
     INNER JOIN
       employment
     ON
@@ -141,7 +148,7 @@ export async function getEmployees(
     WHERE
       employment.facility_id = ${opts.facility_id}
     GROUP BY
-      health_workers.id
+      health_workers.id, nurse_registration_details.approved_by
 
     UNION ALL
 
@@ -153,7 +160,8 @@ export async function getEmployees(
       health_worker_invitees.email as display_name,
       JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
       NULL AS avatar_url,
-      NULL as href
+      NULL as href,
+      FALSE as approved
     FROM
       health_worker_invitees
     WHERE

@@ -182,6 +182,17 @@ export function addInvitees(
     .execute()
 }
 
+export function approveInvitee(
+  trx: TrxOrDb,
+  admin_id: number,
+  invitee_id: number,
+) {
+  return trx.updateTable('nurse_registration_details')
+    .set({ approved_by: admin_id })
+    .where('health_worker_id', '=', invitee_id)
+    .execute()
+}
+
 export function getInvitees(
   trx: TrxOrDb,
   opts: {
