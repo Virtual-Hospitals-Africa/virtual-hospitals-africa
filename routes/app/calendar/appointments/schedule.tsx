@@ -7,7 +7,6 @@ import {
   Maybe,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
@@ -21,7 +20,10 @@ import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
-import { makeAppointmentWeb } from '../../../../scheduling/makeAppointment.ts'
+import {
+  isScheduleFormValues,
+  makeAppointmentWeb,
+} from '../../../../scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
 
 type SearchFormValues = {
@@ -30,9 +32,9 @@ type SearchFormValues = {
   date?: string
 }
 
-type ScheduleFormValues = {
-  start: Date
-  end: Date
+export type ScheduleFormValues = {
+  start: string
+  end: string
   durationMinutes: number
   reason: string
   patient_id: number
@@ -49,21 +51,6 @@ function isSearchFormValues(
   _values: unknown,
 ): _values is SearchFormValues {
   return true
-}
-
-function isScheduleFormValues(
-  values: unknown,
-): values is ScheduleFormValues {
-  return (
-    !!values && typeof values === 'object' &&
-    'start' in values && values.start instanceof Date &&
-    'end' in values && values.end instanceof Date &&
-    'durationMinutes' in values && typeof values.durationMinutes === 'number' &&
-    'reason' in values && typeof values.reason === 'string' &&
-    'patient_id' in values && typeof values.patient_id === 'number' &&
-    'health_worker_ids' in values && Array.isArray(values.health_worker_ids) &&
-    values.health_worker_ids.every((id) => typeof id === 'number')
-  )
 }
 
 export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
