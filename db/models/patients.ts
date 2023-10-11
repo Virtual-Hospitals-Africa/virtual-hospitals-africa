@@ -112,7 +112,7 @@ export async function getWithMedicalRecords(
 ): Promise<ReturnedSqlRow<PatientWithMedicalRecord>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')
   const patients = await selectWithName(trx)
-    .where('id', 'in', opts.ids)
+    .where('patients.id', 'in', opts.ids)
     .execute()
 
   assert(haveNames(patients))

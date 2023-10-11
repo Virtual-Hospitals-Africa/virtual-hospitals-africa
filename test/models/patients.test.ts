@@ -79,6 +79,49 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     })
   })
 
+  describe('getWithMedicalRecords', () => {
+    it('finds patients by their name with a dummy medical record', async () => {
+      const testPatient = await patients.upsert(db, {
+        name: 'Test Patient',
+        conversation_state: 'initial_message',
+      })
+
+      const results = await patients.getWithMedicalRecords(db, {
+        ids: [testPatient.id],
+      })
+      assertEquals(results, [
+        {
+          id: testPatient.id,
+          href: `/app/patients/${testPatient.id}`,
+          avatar_url: null,
+          name: 'Test Patient',
+          country: null,
+          date_of_birth: null,
+          district: null,
+          gender: null,
+          location: null,
+          national_id_number: null,
+          nearest_facility: null,
+          phone_number: null,
+          province: null,
+          street: null,
+          suburb: null,
+          ward: null,
+          created_at: results[0].created_at,
+          updated_at: results[0].updated_at,
+          last_visited: null,
+          medical_record: {
+            allergies: [
+              'chocolate',
+              'bananas',
+            ],
+            history: {},
+          },
+        },
+      ])
+    })
+  })
+
   describe('getAvatar', () => {
     it('gets the binary data and mime_type of the avatar', async () => {
       const insertedMedia = await media.insert(db, {
