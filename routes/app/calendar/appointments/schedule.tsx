@@ -123,8 +123,6 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     })
   },
   async POST(req, ctx) {
-    const { healthWorker } = ctx.state
-
     const schedule = await parseRequest<ScheduleFormValues>(
       ctx.state.trx,
       req,

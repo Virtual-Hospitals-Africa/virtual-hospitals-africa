@@ -8,15 +8,14 @@ import {
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
   Maybe,
-  Patient,
-  ReturnedSqlRow,
+  RenderedPatient,
   TrxOrDb,
 } from '../types.ts'
 import PatientsView from '../components/patients/View.tsx'
 
 type RecentPatientsProps = {
   tab: 'recent'
-  patients: ReturnedSqlRow<Patient & { name: string }>[]
+  patients: RenderedPatient[]
 }
 
 type AppointmentsProps = {

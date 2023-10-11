@@ -14,19 +14,18 @@ type PatientPersonalFormProps = AddPatientDataProps['personal']
 export default function PatientPersonalForm(
   { initialData = {} }: { initialData: Partial<PatientPersonalFormProps> },
 ) {
-  console.log('initialData', initialData)
   return (
     <>
       <FormRow>
         <TextInput
           name='first_name'
-          value={initialData.first_name || ''}
+          value={initialData.first_name}
           required
         />
-        <TextInput name='middle_names' value={initialData.middle_names || ''} />
+        <TextInput name='middle_names' value={initialData.middle_names} />
         <TextInput
           name='last_name'
-          value={initialData.last_name || ''}
+          value={initialData.last_name}
           required
         />
       </FormRow>
@@ -44,7 +43,7 @@ export default function PatientPersonalForm(
         </SelectInput>
         <DateInput
           name='date_of_birth'
-          value={initialData.date_of_birth || ''}
+          value={initialData.date_of_birth}
           required
         />
       </FormRow>
@@ -53,7 +52,7 @@ export default function PatientPersonalForm(
           name='national_id_number'
           required
           label='National ID Number'
-          value={initialData.national_id_number || ''}
+          value={initialData.national_id_number}
         />
         {/* TODO: support non-required phone numbers on the backend */}
         <PhoneNumberInput

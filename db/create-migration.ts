@@ -22,12 +22,13 @@ export function up(db: Kysely<unknown>) {
 
 }
 
-export async function down(db: Kysely<unknown>) {
+export function down(db: Kysely<unknown>) {
 
 }
 `
 
-Deno.writeTextFile(
-  `db/migrations/${migrationFileName}`,
-  initialContents,
-)
+const filePath = `db/migrations/${migrationFileName}`
+
+Deno.writeTextFile(filePath, initialContents)
+
+console.log('Created migration file: ', filePath)

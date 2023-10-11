@@ -68,10 +68,33 @@ export type PatientConversationState =
 
 export type Patient = PatientPersonal & PatientAddress & PatientHealthCareInfo
 
+export type RenderedPatient = ReturnedSqlRow<
+  Pick<
+    Patient,
+    | 'country'
+    | 'date_of_birth'
+    | 'district'
+    | 'gender'
+    | 'location'
+    | 'national_id_number'
+    | 'phone_number'
+    | 'province'
+    | 'street'
+    | 'suburb'
+    | 'ward'
+  > & {
+    name: string
+    href: Maybe<string>
+    avatar_url: Maybe<string>
+    nearest_facility: Maybe<string>
+    last_visited: null // TODO: implement
+  }
+>
+
 export type PatientPersonal = {
   id: number
   conversation_state: PatientConversationState
-  avatar_media_id?: number
+  avatar_media_id?: Maybe<number>
   avatar_media_name?: string
   location?: Maybe<Location>
 } & PatientDemographicInfo
@@ -90,7 +113,7 @@ export type PatientAddress = {
 }
 
 export type PatientDemographicInfo = {
-  phone_number: string
+  phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
@@ -116,7 +139,7 @@ export type PatientMedicalRecord = {
   history: any
 }
 
-export type PatientWithMedicalRecord = Patient & {
+export type PatientWithMedicalRecord = RenderedPatient & {
   medical_record: PatientMedicalRecord
 }
 
@@ -982,9 +1005,9 @@ export type HealthWorkerAppointmentSlot = {
   id: string
   patient?: {
     id: number
-    avatar_url?: string
-    name: string
-    phone_number?: string
+    avatar_url: Maybe<string>
+    name: Maybe<string>
+    phone_number: Maybe<string>
   }
   durationMinutes: number
   start: ParsedDate
@@ -999,9 +1022,9 @@ export type HealthWorkerAppointment = {
   id: number
   patient: {
     id: number
-    avatar_url?: string
-    name: string
-    phone_number?: string
+    avatar_url: Maybe<string>
+    name: Maybe<string>
+    phone_number: Maybe<string>
   }
   durationMinutes: number
   start: ParsedDate

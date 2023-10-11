@@ -1,14 +1,12 @@
+import { RenderedPatient } from '../../types.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 
-export type Patient = {
-  id: number
-  name: string
-  avatar_url?: string
-  last_visited?: string
-  nearest_facility?: string
-}
-
-const columns: TableColumn<Patient>[] = [
+const columns: TableColumn<
+  Pick<
+    RenderedPatient,
+    'avatar_url' | 'name' | 'last_visited' | 'nearest_facility' | 'href'
+  >
+>[] = [
   {
     label: null,
     dataKey: 'avatar_url',
@@ -19,11 +17,6 @@ const columns: TableColumn<Patient>[] = [
     dataKey: 'name',
     type: 'content',
     cellClassName: 'mb-1 font-medium',
-  },
-  {
-    label: 'ID',
-    dataKey: 'id',
-    type: 'content',
   },
   {
     label: 'Last Visit',
@@ -40,13 +33,15 @@ const columns: TableColumn<Patient>[] = [
     type: 'actions',
     actions: {
       View(patient) {
-        return `/app/patients/${patient.id}`
+        return patient.href
       },
     },
   },
 ]
 
-export default function PatientsTable({ patients }: { patients: Patient[] }) {
+export default function PatientsTable(
+  { patients }: { patients: RenderedPatient[] },
+) {
   return (
     <Table
       columns={columns}

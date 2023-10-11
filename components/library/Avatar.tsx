@@ -1,7 +1,8 @@
+import { Maybe } from '../../types.ts'
 import cls from '../../util/cls.ts'
 
 export default function Avatar(
-  { src, className }: { src?: string; className?: string },
+  { src, className }: { src?: Maybe<string>; className?: string },
 ) {
   const fullClassName = cls(className, 'flex-none rounded-full')
   if (!src) {
