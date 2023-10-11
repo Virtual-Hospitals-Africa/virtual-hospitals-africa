@@ -42,7 +42,7 @@ download_and_run_artifact() {
   unzip $ARTIFACT_NAME.zip
   rm $ARTIFACT_NAME.zip
   chmod +x $ARTIFACT_NAME
-  ./$ARTIFACT_NAME
+  strace ./$ARTIFACT_NAME
 }
 
 make_deno_script > $SCRIPT
