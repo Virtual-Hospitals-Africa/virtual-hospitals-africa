@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import { Container } from '../../components/library/Container.tsx'
-import GridPattern from '../../islands/landing-page/GridPattern.tsx'
+import MedicalIconPattern from './MedicalIconPattern.tsx'
 
 export function Testimonial(
   { id, author, children }: {
@@ -16,18 +16,17 @@ export function Testimonial(
       className='relative bg-slate-100 py-16 sm:py-32'
     >
       <div className='text-slate-900/10'>
-        <GridPattern
-          x='50%'
-          patternTransform='translate(0 80)'
-          className='bg-slate-100'
-        />
+        <MedicalIconPattern />
       </div>
-      <Container size='xs' className='relative'>
+      <Container
+        size='xs'
+        className='relative bg-indigo-900 text-white rounded-lg p-12'
+      >
         <figure>
-          <blockquote className='mt-10 font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-center'>
+          <blockquote className='font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-center'>
             {children}
           </blockquote>
-          <figcaption className='mt-10 flex items-center sm:justify-center'>
+          <figcaption className='mt-6 flex items-center sm:justify-center'>
             <div className='overflow-hidden rounded-full bg-slate-200'>
               <img
                 className='h-12 w-12 object-cover'

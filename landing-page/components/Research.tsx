@@ -2,11 +2,11 @@ import { Container } from '../../components/library/Container.tsx'
 import { PresentationChartBarIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
-const resources = [
+const features = [
   {
-    title: 'Figma icon templates',
+    title: 'Clean Data',
     description:
-      'Pefectly structured templates for quickly designing new icons at dozens of common sizes.',
+      'Fully paperless and designed from the ground up to keep patient data in sync across the whole platform',
     image: function FigmaImage() {
       return (
         <div className='absolute inset-0 flex items-center justify-center bg-[radial-gradient(#2C313D_35%,#000)]'>
@@ -16,9 +16,9 @@ const resources = [
     },
   },
   {
-    title: 'Weekly icon teardowns',
+    title: 'Large Population',
     description:
-      'Weekly videos where we dissect and recreate beautiful icons we find on the web.',
+      'Our cloud-native system can scale to thousands of facilities serving millions of patients',
     image: function VideoPlayerImage() {
       return (
         <div className='absolute inset-0 flex items-center justify-center'>
@@ -39,9 +39,21 @@ const resources = [
     },
   },
   {
-    title: 'Community of icon designers',
+    title: 'Real-time Dashboards',
     description:
-      'A private Discord server where you can get help and give feedback on each others\' work.',
+      'Get visibility into health trends with customizable time series graphs',
+    image: function DiscordImage() {
+      return (
+        <div className='absolute inset-0 flex items-center justify-center bg-[#6366F1]'>
+          <img src='/images/resources/discord.svg' alt='' /* unoptimized */ />
+        </div>
+      )
+    },
+  },
+  {
+    title: 'AI Decision Support',
+    description:
+      'Proprietary models based on latest medical data can support making diagnoses, prescribing medications, and managing patients',
     image: function DiscordImage() {
       return (
         <div className='absolute inset-0 flex items-center justify-center bg-[#6366F1]'>
@@ -64,12 +76,20 @@ export function Research() {
           Research
         </SectionHeading>
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
-          Improve health outcomes for millionsr
+          Improve health outcomes for millions
         </p>
         <p className='mt-4 text-lg tracking-tight text-slate-700'>
-          Design assets, icon teardowns, and a community of fellow icon
-          designers where you can ask questions, get feedback, and accelerate
-          your learning.
+          Monitor and evaluate at a country-wide level, with secure medical data
+          sourced directly from patients
+        </p>
+        <p className='mt-4'>
+          <a
+            href='#learn-more'
+            className='text-base font-bold text-blue-600 hover:text-blue-800'
+          >
+            Learn more about how your institution can get involved{' '}
+            <span aria-hidden='true'>&rarr;</span>
+          </a>
         </p>
       </Container>
       <Container size='lg' className='mt-16'>
@@ -77,7 +97,7 @@ export function Research() {
           role='list'
           className='-mx-3 grid grid-cols-1 gap-y-10 lg:grid-cols-3 lg:text-center xl:-mx-12 xl:divide-x xl:divide-slate-400/20'
         >
-          {resources.map((resource) => (
+          {features.map((resource) => (
             <li
               key={resource.title}
               className='grid auto-rows-min grid-cols-1 items-center gap-8 px-3 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-1 xl:px-12'
