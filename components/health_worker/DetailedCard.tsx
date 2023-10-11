@@ -5,6 +5,40 @@ type HealthWorkerDetailedCardProps = {
   employee: EmployeeInfo
 }
 
+function ImageDownload(props: { name: string; href: string }) {
+  return (
+    <li className='py-4 pl-4 pr-5 text-sm leading-6'>
+      <div className='flex items-center justify-between'>
+        <div className='ml-4 flex min-w-0 flex-1 gap-2'>
+          <span className='truncate font-medium'>
+            {props.name}
+          </span>
+        </div>
+
+        <div className='ml-4 flex-shrink-0'>
+          <a
+            href={props.href}
+            className='font-medium flex text-indigo-600 hover:text-indigo-500'
+            target='_blank'
+          >
+            <ArrowDownTrayIcon
+              className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
+              aria-hidden='true'
+            />Download
+          </a>
+        </div>
+      </div>
+      <div className='flex justify-center mt-2 bg-gray-300 p-2 w-full'>
+        <img
+          src={props.href}
+          alt='Download Preview'
+          className='mt-2 w-full max-w-xs mx-auto'
+        />
+      </div>
+    </li>
+  )
+}
+
 export default function HealthWorkerDetailedCard(
   {
     employee,
@@ -145,92 +179,9 @@ export default function HealthWorkerDetailedCard(
                 className='mx-auto divide-y divide-gray-100 rounded-md border border-gray-200'
                 style={{ width: '50%' }}
               >
-                <li className='py-4 pl-4 pr-5 text-sm leading-6'>
-                  <div className='flex items-center justify-between'>
-                    <div className='ml-4 flex min-w-0 flex-1 gap-2'>
-                      <span className='truncate font-medium'>
-                        National Identification Card
-                      </span>
-                    </div>
-
-                    <div className='ml-4 flex-shrink-0'>
-                      <a
-                        href='#'
-                        className='font-medium flex text-indigo-600 hover:text-indigo-500'
-                      >
-                        <ArrowDownTrayIcon
-                          className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
-                          aria-hidden='true'
-                        />Download
-                      </a>
-                    </div>
-                  </div>
-                  <div className='flex justify-center mt-2 bg-gray-300 p-2 w-full'>
-                    <img
-                      src={''}
-                      alt='Download Preview'
-                      className='mt-2 w-full max-w-xs mx-auto'
-                    />
-                  </div>
-                </li>
-                <li className='py-4 pl-4 pr-5 text-sm leading-6'>
-                  <div className='flex items-center justify-between'>
-                    <div className='ml-4 flex min-w-0 flex-1 gap-2'>
-                      <span className='truncate font-medium'>
-                        National Nurses Council Identity Card
-                      </span>
-                    </div>
-
-                    <div className='ml-4 flex-shrink-0'>
-                      <a
-                        href='#'
-                        className='font-medium flex text-indigo-600 hover:text-indigo-500'
-                      >
-                        <ArrowDownTrayIcon
-                          className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
-                          aria-hidden='true'
-                        />
-                        Download
-                      </a>
-                    </div>
-                  </div>
-                  <div className='flex justify-center mt-2 bg-gray-300 p-2 w-full'>
-                    <img
-                      src={''}
-                      alt='Download Preview'
-                      className='mt-2 w-full max-w-xs mx-auto'
-                    />
-                  </div>
-                </li>
-                <li className='py-4 pl-4 pr-5 text-sm leading-6'>
-                  <div className='flex items-center justify-between'>
-                    <div className='ml-4 flex min-w-0 flex-1 gap-2'>
-                      <span className='truncate font-medium'>
-                        Practicing Certificate
-                      </span>
-                    </div>
-
-                    <div className='ml-4 flex-shrink-0'>
-                      <a
-                        href='#'
-                        className='font-medium flex text-indigo-600 hover:text-indigo-500'
-                      >
-                        <ArrowDownTrayIcon
-                          className='mr-1 h-5 w-5 flex-shrink-0 text-gray-400'
-                          aria-hidden='true'
-                        />
-                        Download
-                      </a>
-                    </div>
-                  </div>
-                  <div className='flex justify-center mt-2 bg-gray-300 p-2 w-full'>
-                    <img
-                      src={''}
-                      alt='Download Preview'
-                      className='mt-2 w-full max-w-xs mx-auto'
-                    />
-                  </div>
-                </li>
+                {employee.documents.map((document, index) => (
+                  <ImageDownload {...document} />
+                ))}
               </ul>
             </dd>
           </div>
