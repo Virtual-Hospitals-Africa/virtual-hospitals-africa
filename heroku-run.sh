@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-apt-get install -y strace
+# apt-get install -y strace
 
 SCRIPT=$(mktemp)
 ARTIFACT_NAME="$1"
@@ -44,7 +44,7 @@ download_and_run_artifact() {
   unzip $ARTIFACT_NAME.zip
   rm $ARTIFACT_NAME.zip
   chmod +x $ARTIFACT_NAME
-  strace ./$ARTIFACT_NAME
+  ./$ARTIFACT_NAME
 }
 
 make_deno_script > $SCRIPT
