@@ -3,6 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
+import { Maybe } from '../../../types.ts'
 
 type LabeledInputProps = {
   name: string
@@ -23,14 +24,14 @@ type SearchInputProps = Partial<LabeledInputProps> & {
 }
 
 type DateInputProps = Partial<LabeledInputProps> & {
-  value?: string
+  value?: Maybe<string>
 }
 
 type GenderInputProps = Partial<SelectInputProps>
 
 export type TextInputProps = LabeledInputProps & {
   type?: 'text' | 'email' | 'tel'
-  value?: string
+  value?: Maybe<string>
   pattern?: string
 }
 
@@ -84,7 +85,7 @@ export function TextInput(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value}
+        value={value || ''}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -129,7 +130,7 @@ export function DateInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
-        value={value}
+        value={value || ''}
       />
     </LabeledInput>
   )
@@ -146,7 +147,7 @@ export function PhoneNumberInput(
         type='tel'
         name={name}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
-        value={value}
+        value={value || ''}
         placeholder={placeholder}
         required={required}
         onInput={onInput}

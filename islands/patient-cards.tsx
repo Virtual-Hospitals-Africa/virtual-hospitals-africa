@@ -1,12 +1,11 @@
 import cls from '../util/cls.ts'
-import { Patient } from '../components/patients/Table.tsx'
 import Card from '../components/library/Card.tsx'
-import { Button } from '../components/library/Button.tsx'
 import Avatar from '../components/library/Avatar.tsx'
+import { Maybe, RenderedPatient } from '../types.ts'
 
 const DISPLAYED_COLUMNS: {
   label: string
-  dataKey: keyof Patient
+  dataKey: keyof RenderedPatient
 }[] = [
   {
     label: 'Patient ID',
@@ -23,14 +22,14 @@ const DISPLAYED_COLUMNS: {
 ]
 
 function CardHeader(
-  { name, imageUrl }: { name: string; imageUrl?: string },
+  { name, avatar_url }: { name: string; avatar_url?: Maybe<string> },
 ) {
   return (
     <div className='flex gap-3 items-center'>
-      {imageUrl && (
+      {avatar_url && (
         <div className='flex-shrink-0'>
           <Avatar
-            src={imageUrl}
+            src={avatar_url}
             className='h-10 w-10 object-cover'
           />
         </div>
@@ -43,7 +42,7 @@ function CardHeader(
 }
 
 function CardBody(
-  { patient }: { patient: Patient },
+  { patient }: { patient: RenderedPatient },
 ) {
   return (
     <div className='flex items-end gap-7'>
@@ -64,12 +63,12 @@ function CardBody(
 }
 
 function PatientCard(
-  { patient }: { patient: Patient },
+  { patient }: { patient: RenderedPatient },
 ) {
   return (
     <a href={`/app/patients/${patient.id}`}>
       <Card orientation='vertical' className='shadow-lg'>
-        <CardHeader name={patient.name} imageUrl={patient.avatar_url} />
+        <CardHeader name={patient.name} avatar_url={patient.avatar_url} />
         <CardBody patient={patient} />
       </Card>
     </a>
@@ -77,7 +76,7 @@ function PatientCard(
 }
 
 export default function PatientCards(
-  { patients, className }: { patients: Patient[]; className?: string },
+  { patients, className }: { patients: RenderedPatient[]; className?: string },
 ) {
   return (
     <section

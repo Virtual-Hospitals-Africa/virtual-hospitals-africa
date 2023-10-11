@@ -10,34 +10,34 @@ import {
   PatientDemographicInfo,
   PatientState,
   PatientWithMedicalRecord,
+  RenderedPatient,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 
-export async function getByPhoneNumber(
+export function getByPhoneNumber(
   trx: TrxOrDb,
   query: { phone_number: string },
 ): Promise<
   Maybe<ReturnedSqlRow<Patient>>
 > {
-  const result = await trx
+  return trx
     .selectFrom('patients')
     .selectAll()
     .where('phone_number', '=', query.phone_number)
-    .execute()
-  return result && result[0]
+    .executeTakeFirst()
 }
 
 export function upsert(trx: TrxOrDb, info: {
   id?: number
   conversation_state: PatientConversationState
-  phone_number: string
-  name: Maybe<string>
-  gender: Maybe<Gender>
-  date_of_birth: Maybe<string>
-  national_id_number: Maybe<string>
+  phone_number?: string
+  name?: Maybe<string>
+  gender?: Maybe<Gender>
+  date_of_birth?: Maybe<string>
+  national_id_number?: Maybe<string>
   location?: Maybe<Location>
   avatar_media_id?: number
   country?: Maybe<string>
@@ -67,6 +67,40 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .executeTakeFirst()
 }
 
+const baseSelect = (trx: TrxOrDb) =>
+  trx
+    .selectFrom('patients')
+    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .select([
+      'patients.id',
+      'patients.name',
+      'patients.phone_number',
+      'patients.location',
+      'patients.gender',
+      'patients.date_of_birth',
+      'patients.national_id_number',
+      'patients.country',
+      'patients.province',
+      'patients.district',
+      'patients.ward',
+      'patients.suburb',
+      'patients.street',
+      'patients.created_at',
+      'patients.updated_at',
+      sql<Maybe<string>>`concat('/app/patients/', patients.id::text)`.as(
+        'href',
+      ),
+      sql<
+        Maybe<string>
+      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+        .as('avatar_url'),
+      'facilities.name as nearest_facility',
+      sql<null>`NULL`.as('last_visited'),
+    ])
+
+const selectWithName = (trx: TrxOrDb) =>
+  baseSelect(trx).where('patients.name', 'is not', null)
+
 // TODO: implement medical record functionality
 // TODO: only show medical record if health worker has permission
 export async function getWithMedicalRecords(
@@ -77,11 +111,11 @@ export async function getWithMedicalRecords(
   },
 ): Promise<ReturnedSqlRow<PatientWithMedicalRecord>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')
-  const patients = await trx
-    .selectFrom('patients')
-    .selectAll()
+  const patients = await selectWithName(trx)
     .where('id', 'in', opts.ids)
     .execute()
+
+  assert(haveNames(patients))
 
   return patients.map((patient) => ({
     ...patient,
@@ -98,39 +132,25 @@ export async function getWithMedicalRecords(
 export async function getAllWithNames(
   trx: TrxOrDb,
   search?: Maybe<string>,
-): Promise<ReturnedSqlRow<Patient & { name: string }>[]> {
-  let query = trx
-    .selectFrom('patients')
-    .innerJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
-    .select([
-      'patients.id',
-      'patients.avatar_media_id',
-      'patients.name',
-      'patients.phone_number',
-      'patients.location',
-      'patients.gender',
-      'patients.date_of_birth',
-      'patients.national_id_number',
-      'patients.conversation_state',
-      'patients.country',
-      'patients.province',
-      'patients.district',
-      'patients.ward',
-      'patients.suburb',
-      'patients.street',
-      'patients.created_at',
-      'patients.updated_at',
-      'facilities.name as nearest_facility',
-    ])
-    .where('patients.name', 'is not', null)
+): Promise<RenderedPatient[]> {
+  let query = baseSelect(trx).where('patients.name', 'is not', null)
 
-  if (search) query = query.where('name', 'ilike', `%${search}%`)
+  if (search) query = query.where('patients.name', 'ilike', `%${search}%`)
 
   const patients = await query.execute()
 
   assert(haveNames(patients))
 
   return patients
+}
+
+export function getAvatar(trx: TrxOrDb, opts: { patient_id: number }) {
+  return trx
+    .selectFrom('media')
+    .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
+    .select(['media.mime_type', 'media.binary_data'])
+    .where('patients.id', '=', opts.patient_id)
+    .executeTakeFirst()
 }
 
 export function pick(patientState: PatientState) {
@@ -155,7 +175,6 @@ export function hasDemographicInfo(
   patient: Partial<PatientDemographicInfo>,
 ): patient is HasDemographicInfo {
   return (
-    !!patient.phone_number &&
     !!patient.name &&
     !!patient.gender &&
     !!patient.date_of_birth &&

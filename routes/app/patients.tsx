@@ -3,8 +3,7 @@ import Layout from '../../components/library/Layout.tsx'
 import {
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
-  Patient,
-  ReturnedSqlRow,
+  RenderedPatient,
 } from '../../types.ts'
 import PatientsView from '../../components/patients/View.tsx'
 import { getAllWithNames } from '../../db/models/patients.ts'
@@ -12,7 +11,7 @@ import { json } from '../../util/responses.ts'
 
 type PatientsProps = {
   healthWorker: HealthWorkerWithGoogleTokens
-  patients: ReturnedSqlRow<Patient & { name: string }>[]
+  patients: RenderedPatient[]
 }
 
 export const handler: LoggedInHealthWorkerHandler<PatientsProps> = {
