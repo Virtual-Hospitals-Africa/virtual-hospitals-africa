@@ -4,7 +4,8 @@ import SearchResults, {
   PersonSearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from 'https://deno.land/std@0.160.0/_util/assert.ts'
+//import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import { HasId } from '../types.ts'
 
@@ -12,7 +13,8 @@ export default function PersonSearch({
   href,
   name,
   required,
-}: { href: string; name: string; required?: boolean }) {
+  label,
+}: { href: string; name: string; required?: boolean; label?: string }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
@@ -58,6 +60,7 @@ export default function PersonSearch({
     <div className='w-full'>
       <SearchInput
         name={`${name}_name`}
+        label={label}
         value={search}
         required={required}
         onInput={(event) => {
