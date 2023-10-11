@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { differenceInMinutes, formatHarare, stringify } from '../util/date.ts'
+import { differenceInMinutes, formatHarare, isIsoHarare } from '../util/date.ts'
 import * as google from '../external-clients/google.ts'
 import { getWithTokensById } from '../db/models/health_workers.ts'
 import * as appointments from '../db/models/appointments.ts'
@@ -67,7 +67,6 @@ export async function makeAppointmentChatbot(
   trx: TrxOrDb,
   patientState: PatientState,
 ): Promise<PatientState> {
-  console.log('makeAppointmentChatbot')
   assertEquals(
     patientState.conversation_state,
     'onboarded:appointment_scheduled',
@@ -121,12 +120,29 @@ export async function makeAppointmentChatbot(
 }
 
 export type ScheduleFormValues = {
-  start: Date
-  end: Date
+  start: string
+  end: string
   reason: string
   durationMinutes: number
   patient_id: number
   health_worker_ids: number[]
+}
+
+export function isScheduleFormValues(
+  values: unknown,
+): values is ScheduleFormValues {
+  return (
+    !!values && typeof values === 'object' &&
+    'start' in values && typeof values.start === 'string' &&
+    isIsoHarare(values.start) &&
+    'end' in values && typeof values.end === 'string' &&
+    isIsoHarare(values.end) &&
+    'durationMinutes' in values && typeof values.durationMinutes === 'number' &&
+    'reason' in values && typeof values.reason === 'string' &&
+    'patient_id' in values && typeof values.patient_id === 'number' &&
+    'health_worker_ids' in values && Array.isArray(values.health_worker_ids) &&
+    values.health_worker_ids.every((id) => typeof id === 'number')
+  )
 }
 
 export async function makeAppointmentWeb(
@@ -138,9 +154,13 @@ export async function makeAppointmentWeb(
     1,
     'TODO support multiple health workers',
   )
+  assert(isIsoHarare(values.start))
+  assert(isIsoHarare(values.end))
+  const start = new Date(values.start)
+  const end = new Date(values.end)
   assertEquals(
     values.durationMinutes,
-    differenceInMinutes(values.end, values.start),
+    differenceInMinutes(end, start),
   )
 
   const matchingHealthWorker = await getWithTokensById(
@@ -166,15 +186,15 @@ export async function makeAppointmentWeb(
   const insertedEvent = await healthWorkerGoogleClient.insertEvent(
     matchingHealthWorker.gcal_appointments_calendar_id,
     gcal({
-      start: stringify(values.start),
-      end: stringify(values.end),
+      start: values.start,
+      end: values.end,
     }),
   )
 
   const appointment = await appointments.upsert(trx, {
+    start,
     patient_id: values.patient_id,
     reason: values.reason,
-    start: values.start,
     gcal_event_id: insertedEvent.id,
   })
 
