@@ -21,29 +21,21 @@ export function Hero() {
         </div>
         <div className='relative flex items-end lg:col-span-5 lg:row-span-2'>
           <div className='absolute -bottom-12 -top-20 left-0 right-1/2 z-10 rounded-br-6xl bg-[#312E81] text-white/10 md:bottom-8 lg:-inset-y-32 lg:left-[-100vw] lg:right-full lg:-mr-40'>
-            {
-              /* <GridPattern
-              x='100%'
-              y='100%'
-              patternTransform='translate(112 64)'
-            /> */
-            }
             <RadialPattern />
             <div className='absolute grid place-items-center w-full h-full pl-80'>
               <div className='flex w-full h-full items-center justify-end'>
                 <div className='lg:ml-auto lg:mr-60 md:mx-auto px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0'>
                   <h1 className='flex gap-10 items-center font-display text-5xl font-extrabold text-white sm:text-6xl'>
-                    <Logo height='130' />
-                    Virtual<br />Hospitals<br /> Africa
+                    <Logo variant='white' />
                   </h1>
                   <p className='mt-8 text-3xl text-white max-w-md'>
                     Bringing accessible health care to Africans
                   </p>
                   <div className='mt-8 flex gap-4'>
-                    <Button href='#free-chapters' color='blue'>
-                      Watch the demo
+                    <Button href='/learn-more' color='blue'>
+                      Learn more
                     </Button>
-                    <Button href='#pricing' variant='solid' color='white'>
+                    <Button href='/waitlist' variant='solid' color='white'>
                       Join the waitlist
                     </Button>
                   </div>
