@@ -1,37 +1,38 @@
+import { JSX } from 'preact'
 import { DateInput, TextInput } from '../components/library/form/Inputs.tsx'
 import FormRow from '../components/library/form/Row.tsx'
 import FormButtons from '../components/library/form/buttons.tsx'
 import PersonSearch from './PersonSearch.tsx'
 
-export default function ScheduleForm() {
+export default function ScheduleForm(
+  { onSubmit }: { onSubmit?: JSX.DOMAttributes<HTMLFormElement>['onSubmit'] },
+) {
   return (
-    <>
-      <form>
-        <FormRow>
-          <PersonSearch
-            name='patient'
-            href='/app/patients'
-            required
-          />
-        </FormRow>
-        <FormRow>
-          <PersonSearch
-            name='health_worker'
-            href='/app/health_workers'
-          />
-        </FormRow>
-        <FormRow>
-          <DateInput />
-        </FormRow>
-        <FormRow>
-          <TextInput name='reason' required />
-        </FormRow>
-        <FormButtons
-          className='mt-4'
-          submitText='Next Available'
-          cancelHref='/app/calendar'
+    <form onSubmit={onSubmit}>
+      <FormRow>
+        <PersonSearch
+          name='patient'
+          href='/app/patients'
+          required
         />
-      </form>
-    </>
+      </FormRow>
+      <FormRow>
+        <PersonSearch
+          name='health_worker'
+          href='/app/health_workers'
+        />
+      </FormRow>
+      <FormRow>
+        <DateInput />
+      </FormRow>
+      <FormRow>
+        <TextInput name='reason' required />
+      </FormRow>
+      <FormButtons
+        className='mt-4'
+        submitText='Next Available'
+        cancelHref='/app/calendar'
+      />
+    </form>
   )
 }

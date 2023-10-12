@@ -23,27 +23,22 @@ import { hasName } from '../../../../util/haveNames.ts'
 import {
   isScheduleFormValues,
   makeAppointmentWeb,
+  ScheduleFormValues,
 } from '../../../../scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
+import { json } from '../../../../util/responses.ts'
+import Schedule from '../../../../islands/Schedule.tsx'
+
+type SchedulePageProps = {
+  healthWorker: ReturnedSqlRow<HealthWorker>
+  slots?: HealthWorkerAppointmentSlot[]
+}
 
 type SearchFormValues = {
   health_worker_id?: number
   patient_id?: number
   date?: string
-}
-
-export type ScheduleFormValues = {
-  start: string
-  end: string
-  durationMinutes: number
-  reason: string
-  patient_id: number
-  health_worker_ids: number[]
-}
-
-type SchedulePageProps = {
-  healthWorker: ReturnedSqlRow<HealthWorker>
-  slots?: HealthWorkerAppointmentSlot[]
+  reason?: string
 }
 
 // TODO implement
@@ -55,6 +50,7 @@ function isSearchFormValues(
 
 export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
   async GET(req, ctx) {
+    const respondWithJson = req.headers.get('accept') === 'application/json'
     const { healthWorker } = ctx.state
 
     const search = await parseRequest<SearchFormValues>(
@@ -64,8 +60,9 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     )
 
     if (!search.patient_id) {
-      return ctx.render({ healthWorker })
+      return respondWithJson ? json([]) : ctx.render({ healthWorker })
     }
+
     const gettingPatient = patients.getWithMedicalRecords(ctx.state.trx, {
       ids: [search.patient_id],
     })
@@ -104,6 +101,10 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
       health_workers: [slot.health_worker],
     }))
 
+    if (respondWithJson) {
+      return json(slots)
+    }
+
     return ctx.render({
       healthWorker,
       slots,
@@ -132,14 +133,7 @@ export default function SchedulePage(
       variant='form'
     >
       <Container size='lg'>
-        <ScheduleForm />
-        {props.data.slots && (
-          <Appointments
-            headerText='Slots available'
-            appointments={props.data.slots}
-            url={props.url}
-          />
-        )}
+        <Schedule url={props.url} slots={props.data.slots} />
       </Container>
     </Layout>
   )

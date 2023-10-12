@@ -9,12 +9,21 @@ import { assert } from 'https://deno.land/std@0.160.0/_util/assert.ts'
 import debounce from '../util/debounce.ts'
 import { HasId } from '../types.ts'
 
+type PersonSearchProps = {
+  href: string
+  name: string
+  required?: boolean
+  label?: string
+  value?: HasId<{ name: string }> | null
+}
+
 export default function PersonSearch({
   href,
   name,
   required,
   label,
-}: { href: string; name: string; required?: boolean; label?: string }) {
+  value,
+}: PersonSearchProps) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
