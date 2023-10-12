@@ -5,8 +5,6 @@ import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
 import { FacilityEmployee } from '../../db/models/facilities.ts'
-import { approveInvitee } from '../../db/models/employment.ts'
-import db from '../../db/db.ts'
 
 type EmployeesTableProps = {
   isAdmin: boolean
@@ -17,20 +15,18 @@ type EmployeesTableProps = {
 }
 
 type Employee = {
-  is_invitee: boolean
   avatar_url: null | string
   display_name: string
   professions: string[]
   health_worker_id: number | null
   href: string | null
-  approved: boolean
+  approved: number
 }
 
 export default function EmployeesTable({
   isAdmin,
   employees,
   pathname,
-  health_worker_id,
 }: EmployeesTableProps): JSX.Element {
   const columns: TableColumn<Employee>[] = [
     {
@@ -53,8 +49,10 @@ export default function EmployeesTable({
       type: 'actions',
       actions: {
         ['View'](row: Employee) {
-          if (row.approved || row.professions.includes('admin')) {
-            console.log(row)
+          if (
+            row.approved || !row.professions.includes('nurse') ||
+            row.professions.length > 1
+          ) {
             return row.href
           }
         },
@@ -64,9 +62,7 @@ export default function EmployeesTable({
               row.health_worker_id && !row.approved &&
               !row.professions.includes('admin')
             ) {
-              approveInvitee(db, health_worker_id, row.health_worker_id)
-
-              return `${pathname}?approved=${row.display_name}`
+              return row.href
             }
           }
         },

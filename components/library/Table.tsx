@@ -3,7 +3,7 @@ import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
 
-type Row = Record<string, string | number | string[] | boolean | null> & {
+type Row = Record<string, string | number | string[] | null | undefined> & {
   id?: number
 }
 
