@@ -2,7 +2,7 @@ import { Button } from '../../components/library/Button.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import { Pattern } from './Pattern.tsx'
 
-export function FreeChapters() {
+export function ScheduleADemo() {
   return (
     <section
       id='free-chapters'

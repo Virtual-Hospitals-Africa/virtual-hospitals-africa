@@ -1,6 +1,6 @@
 import { Partners } from './Partners.tsx'
 import { Footer } from './Footer.tsx'
-import { FreeChapters } from './FreeChapters.tsx'
+import { ScheduleADemo } from './ScheduleADemo.tsx'
 import { Hero } from './Hero.tsx'
 import { Introduction } from './Introduction.tsx'
 import NavBar from '../../islands/landing-page/NavBar.tsx'
@@ -48,7 +48,7 @@ export default function Home() {
         </p>
       </Testimonial>
       <Research />
-      <FreeChapters />
+      <ScheduleADemo />
       <Partners />
       <TeamSection />
       <Footer />
