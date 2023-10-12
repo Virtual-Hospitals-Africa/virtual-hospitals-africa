@@ -2,6 +2,7 @@ import * as preact from 'preact'
 import GridPattern from '../../islands/landing-page/GridPattern.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import { Container } from '../../components/library/Container.tsx'
 
 function TwitterIcon(props: Record<string, unknown>) {
   return (
@@ -11,55 +12,107 @@ function TwitterIcon(props: Record<string, unknown>) {
   )
 }
 
+export default function PartnersContent() {
+  return (
+    <div className='bg-white py-4 sm:py-6'>
+      <div className='mx-auto max-w-7xl'>
+        <div className='grid grid-cols-1 items-center gap-x-8 gap-y-16 lg:grid-cols-2'>
+          <div className='mx-auto w-full max-w-xl lg:mx-0'>
+            <h2 className='text-3xl font-bold tracking-tight text-gray-900'>
+              Driving innovative health care
+            </h2>
+            <p className='mt-6 text-lg leading-8 text-gray-600'>
+              We’re interested in collaborating with funders passionate about
+              global health to pilot this system in 5 rural clinics in Zimbabwe
+              in early 2024. Your support will enable software development,
+              health worker training, internet access, point of care testing,
+              implementation, other essential services and associated costs.
+            </p>
+            <p className='mt-6 text-lg leading-8 text-gray-600'>
+              In creating this integrated platform together we can demonstrate
+              how higher quality care can be delivered to patients with less
+              stress at lower cost.
+            </p>
+            <div className='mt-8 flex items-center gap-x-6'>
+              <a
+                href='#'
+                className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+              >
+                Create account
+              </a>
+              <a href='#' className='text-sm font-semibold text-gray-900'>
+                Contact us <span aria-hidden='true'>&rarr;</span>
+              </a>
+            </div>
+          </div>
+          <div className='mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8'>
+            <img
+              className='max-h-12 w-full object-contain object-left'
+              src='https://tailwindui.com/img/logos/tuple-logo-gray-900.svg'
+              alt='Tuple'
+              width={105}
+              height={48}
+            />
+            <img
+              className='max-h-12 w-full object-contain object-left'
+              src='https://tailwindui.com/img/logos/reform-logo-gray-900.svg'
+              alt='Reform'
+              width={104}
+              height={48}
+            />
+            <img
+              className='max-h-12 w-full object-contain object-left'
+              src='https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg'
+              alt='SavvyCal'
+              width={140}
+              height={48}
+            />
+            <img
+              className='max-h-12 w-full object-contain object-left'
+              src='https://tailwindui.com/img/logos/laravel-logo-gray-900.svg'
+              alt='Laravel'
+              width={136}
+              height={48}
+            />
+            <img
+              className='max-h-12 w-full object-contain object-left'
+              src='https://tailwindui.com/img/logos/transistor-logo-gray-900.svg'
+              alt='Transistor'
+              width={158}
+              height={48}
+            />
+            <img
+              className='max-h-12 w-full object-contain object-left'
+              src='https://tailwindui.com/img/logos/statamic-logo-gray-900.svg'
+              alt='Statamic'
+              width={147}
+              height={48}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function Partners() {
   return (
     <section
       id='partners'
       aria-labelledby='partners-title'
-      className='relative scroll-mt-14 pb-3 pt-8 sm:scroll-mt-32 sm:pb-16 sm:pt-10 lg:pt-16'
+      className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
-      <div className='absolute inset-x-0 bottom-0 top-1/2 text-slate-900/10 [mask-image:linear-gradient(transparent,white)]'>
+      {
+        /* <div className='absolute inset-x-0 bottom-0 top-1/2 text-slate-900/10 [mask-image:linear-gradient(transparent,white)]'>
         <GridPattern x='50%' y='100%' />
-      </div>
-      <div className='relative mx-auto max-w-5xl pt-16 sm:px-6'>
-        <div className='bg-slate-50 pt-px sm:rounded-6xl'>
-          <div className='relative mx-auto -mt-16 h-44 w-44 overflow-hidden rounded-full bg-slate-200 md:float-right md:h-64 md:w-64 md:[shape-outside:circle(40%)] lg:mr-20 lg:h-72 lg:w-72'>
-            <img
-              className='absolute inset-0 h-full w-full object-cover'
-              src='/images/avatars/author.png'
-              alt=''
-              sizes='(min-width: 1024px) 18rem, (min-width: 768px) 16rem, 11rem'
-            />
-          </div>
-          <div className='px-4 py-10 sm:px-10 sm:py-16 md:py-20 lg:px-20 lg:py-32'>
-            <SectionHeading id='author-title' icon={<UserCircleIcon />}>
-              Partners
-            </SectionHeading>
-            <p className='mt-8 font-display text-5xl font-extrabold tracking-tight text-slate-900 sm:text-6xl'>
-              <span className='block text-blue-600'>Mira Lindehoff –</span>{' '}
-              Hey there, I’m the author behind ‘Everything Starts as a Square’.
-            </p>
-            <p className='mt-4 text-lg tracking-tight text-slate-700'>
-              I’ve been designing icons professionally for over a decade and
-              have worked with dozens of the biggest brands to create custom
-              sets for their products. I’m an accomplished conference speaker,
-              and have been teaching icon design workshops every month for the
-              last three years. I’ve worked with designers of all skill levels
-              and honed my way of teaching to really click for anyone who has
-              the itch to start designing their own icons.
-            </p>
-            <p className='mt-8'>
-              <a
-                href='#'
-                className='inline-flex items-center text-base font-medium tracking-tight text-blue-600'
-              >
-                <TwitterIcon className='h-10 w-10 fill-current' />
-                <span className='ml-4'>Follow on Twitter</span>
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
+      </div> */
+      }
+      <Container>
+        <SectionHeading id='author-title' icon={<UserCircleIcon />}>
+          Partners
+        </SectionHeading>
+        <PartnersContent />
+      </Container>
     </section>
   )
 }
