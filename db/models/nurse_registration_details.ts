@@ -41,6 +41,7 @@ export function approve(
     healthWorkerId: number
   },
 ) {
+  console.log("HEALTH WORKER" + opts.healthWorkerId)
   return trx
     .updateTable('nurse_registration_details')
     .set({
@@ -58,6 +59,7 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
       registrationDetails.gender === 'female' ||
       registrationDetails.gender === 'other') &&
     /^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$/.test(registrationDetails.national_id) &&
+    isDate(registrationDetails.date_of_birth) &&
     isDate(registrationDetails.date_of_first_practice) &&
     /^[a-zA-Z]{2}[0-9]{6}$/.test(registrationDetails.ncz_registration_number) &&
     /^[0-9]+$/.test(registrationDetails.mobile_number) &&

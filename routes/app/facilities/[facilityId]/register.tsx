@@ -100,6 +100,8 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       return redirect(nextPage.toString())
     }
 
+    console.log("FORM STATE" + formState.first_name + formState.middle_names + formState.last_name)
+
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
       specialty: formState.specialty,
@@ -125,6 +127,7 @@ function getRegistrationDetails(
   return {
     health_worker_id: healthWorker.id,
     gender: formState.gender,
+    date_of_birth: formState.date_of_birth,
     national_id: formState.national_id,
     date_of_first_practice: formState.date_of_first_practice,
     ncz_registration_number: formState.ncz_registration_number,

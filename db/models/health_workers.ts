@@ -423,6 +423,10 @@ export function getEmployeeInfo(
       'all_employment.health_worker_id as health_worker_id',
       sql<
         Maybe<string>
+      >`TO_CHAR(nurse_registration_details.date_of_birth, 'FMDD FMMonth YYYY')`
+        .as('date_of_birth'),
+      sql<
+        Maybe<string>
       >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
         .as('date_of_first_practice'),
       'nurse_registration_details.gender',

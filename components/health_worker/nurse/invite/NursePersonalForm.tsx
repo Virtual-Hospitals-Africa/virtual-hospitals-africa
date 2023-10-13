@@ -1,4 +1,5 @@
 import {
+  DateInput,
   GenderInput,
   PhoneNumberInput,
   TextInput,
@@ -31,6 +32,11 @@ export default function NursePersonalForm(
         />
       </FormRow>
       <FormRow>
+        <DateInput
+          name='date_of_birth'
+          required
+          label='Date of Birth'
+        />
         <GenderInput required />
       </FormRow>
       <FormRow>
