@@ -32,21 +32,21 @@ jobs:
 
       - name: Compile web
         run: deno task compile:web
-      
-      - name: Upload chatbot
-        uses: actions/upload-artifact@v3
-        with:
-          name: chatbot
-          path: binaries/chatbot
 
-      - name: Upload token_refresher
-        uses: actions/upload-artifact@v3
-        with:
-          name: token_refresher
-          path: binaries/token_refresher
+      # - name: Upload chatbot
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: chatbot
+      #     path: binaries/chatbot
 
-      - name: Upload web
-        uses: actions/upload-artifact@v3
-        with:
-          name: web
-          path: binaries/web
+      # - name: Upload token_refresher
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: token_refresher
+      #     path: binaries/token_refresher
+
+      # - name: Upload web
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: web
+      #     path: binaries/web
