@@ -20,6 +20,7 @@ export default function PersonSearch({
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
 
   const [search, setSearchImmediate] = useState('')
+  //const [profession, setProfession] = useState('')
 
   // Don't search until the user has stopped typing for a bit
   const [setSearch] = useState({
@@ -40,7 +41,10 @@ export default function PersonSearch({
   })
 
   useEffect(() => {
-    fetch(`${href}?search=${search}`, {
+    const url = new URL(`${window.location.origin}${href}`)
+    url.searchParams.set('search', search)
+
+    fetch(url, {
       headers: { accept: 'application/json' },
     }).then(async (response) => {
       const people = await response.json()
