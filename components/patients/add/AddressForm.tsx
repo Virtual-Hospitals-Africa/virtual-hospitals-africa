@@ -36,7 +36,7 @@ function NearestHealthCare(
         <PersonSearch
           name='primary_doctor'
           label='Primary/Family Doctor'
-          href='/app/health_workers'
+          href='/app/health_workers?profession=doctor'
         />
       </FormRow>
     </section>

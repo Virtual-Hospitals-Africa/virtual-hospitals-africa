@@ -4,6 +4,15 @@ class StatusError extends Error {
   }
 }
 
+export function assertOr400(
+  condition: unknown,
+  message = 'Bad Request',
+): asserts condition {
+  if (!condition) {
+    throw new StatusError(message, 400)
+  }
+}
+
 export function assertOr401(
   condition: unknown,
   message = 'Unauthorized',
