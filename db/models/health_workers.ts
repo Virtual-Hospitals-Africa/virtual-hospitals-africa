@@ -216,14 +216,37 @@ export function removeExpiredAccessToken(
 
 export async function getAllWithNames(
   trx: TrxOrDb,
-  search?: Maybe<string>,
+  opts: {
+    search?: Maybe<string>
+    profession?: Maybe<Profession>
+  },
 ): Promise<ReturnedSqlRow<HealthWorker & { name: string }>[]> {
   let query = trx
     .selectFrom('health_workers')
-    .selectAll()
+    .select([
+      'health_workers.id',
+      'health_workers.avatar_url',
+      'health_workers.created_at',
+      'health_workers.email',
+      'health_workers.gcal_appointments_calendar_id',
+      'health_workers.gcal_availability_calendar_id',
+      'health_workers.name',
+      'health_workers.updated_at',
+    ])
     .where('name', 'is not', null)
 
-  if (search) query = query.where('name', 'ilike', `%${search}%`)
+  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
+
+  if (opts.profession) {
+    query = query
+      .innerJoin(
+        'employment',
+        'health_workers.id',
+        'employment.health_worker_id',
+      )
+      .where('profession', '=', opts.profession)
+      .groupBy('health_workers.id')
+  }
 
   const healthWorkers = await query.execute()
 
