@@ -1,6 +1,7 @@
 import { SectionHeading } from './SectionHeading.tsx'
 import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { Container } from '../../components/library/Container.tsx'
+import ArrowLink from './ArrowLink.tsx'
 
 export default function PartnersContent() {
   return (
@@ -24,15 +25,10 @@ export default function PartnersContent() {
               stress at lower cost.
             </p>
             <div className='mt-8 flex items-center gap-x-6'>
-              <a
-                href='#'
-                className='rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
-              >
-                Create account
-              </a>
-              <a href='#' className='text-sm font-semibold text-gray-900'>
-                Contact us <span aria-hidden='true'>&rarr;</span>
-              </a>
+              <ArrowLink
+                href='/learn-more?entrypoint=partners'
+                text='Learn More'
+              />
             </div>
           </div>
           <div className='mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8'>

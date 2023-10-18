@@ -22,7 +22,7 @@ export default function Home() {
         author={{
           name: 'Dr. Buhlebenkosi Ndlovu',
           role: 'Medical Doctor',
-          image: '/images/avatars/avatar-1.png',
+          image: '/images/avatars/ndlovu.png',
         }}
       >
         <p>
