@@ -1,5 +1,6 @@
 import { Container } from '../../components/library/Container.tsx'
 import { IdentificationIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import ArrowLink from './ArrowLink.tsx'
 import { FeatureGrid } from './FeatureGrid.tsx'
 // import { Expandable } from './Expandable.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
@@ -27,13 +28,10 @@ export function HealthWorkers() {
           communicate with, and improve outcomes for patients.
         </p>
         <p className='mt-10'>
-          <a
+          <ArrowLink
             href='#free-chapters'
-            className='text-base font-bold text-blue-600 hover:text-blue-800'
-          >
-            See how seamless digital systems can help your facility{' '}
-            <span aria-hidden='true'>&rarr;</span>
-          </a>
+            text='See how seamless digital systems can help your facility'
+          />
         </p>
       </Container>
       <FeatureGrid

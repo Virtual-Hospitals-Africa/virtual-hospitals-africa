@@ -1,16 +1,6 @@
-import * as preact from 'preact'
-import GridPattern from '../../islands/landing-page/GridPattern.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { Container } from '../../components/library/Container.tsx'
-
-function TwitterIcon(props: Record<string, unknown>) {
-  return (
-    <svg aria-hidden='true' viewBox='0 0 40 40' {...props}>
-      <path d='M13.817 33.753c12.579 0 19.459-10.422 19.459-19.458 0-.297 0-.592-.02-.884a13.913 13.913 0 0 0 3.411-3.543 13.65 13.65 0 0 1-3.928 1.077 6.864 6.864 0 0 0 3.007-3.784 13.707 13.707 0 0 1-4.342 1.66 6.845 6.845 0 0 0-11.655 6.239A19.417 19.417 0 0 1 5.654 7.915a6.843 6.843 0 0 0 2.117 9.128 6.786 6.786 0 0 1-3.104-.853v.086a6.842 6.842 0 0 0 5.487 6.704 6.825 6.825 0 0 1-3.088.116 6.847 6.847 0 0 0 6.39 4.75A13.721 13.721 0 0 1 3.334 30.68a19.36 19.36 0 0 0 10.483 3.066' />
-    </svg>
-  )
-}
 
 export default function PartnersContent() {
   return (
@@ -102,11 +92,6 @@ export function Partners() {
       aria-labelledby='partners-title'
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
-      {
-        /* <div className='absolute inset-x-0 bottom-0 top-1/2 text-slate-900/10 [mask-image:linear-gradient(transparent,white)]'>
-        <GridPattern x='50%' y='100%' />
-      </div> */
-      }
       <Container>
         <SectionHeading id='author-title' icon={<UserCircleIcon />}>
           Partners

@@ -1,0 +1,17 @@
+- [x] rounded corners on hero image
+- [x] remove play button while no video
+- [ ] Arrow links
+- [ ] partners icon
+- [ ] fix testimonials with bubble around testimonial author
+- [ ] team icon
+- [ ] learn more ?
+- [ ] parallax on medical gear ?
+- [ ] gradient ?
+- [ ] form to sign up
+- [x] VHA Trust
+- [ ] Footer spacing
+- [ ] partner icons
+- [ ] partner call to action is "Join us"
+- [ ] free chapters -> schedule a demo
+- [ ] all 3 team members
+- [ ] Built with love

@@ -1,5 +1,6 @@
 import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import { Container } from '../../components/library/Container.tsx'
+import ArrowLink from './ArrowLink.tsx'
 
 export function Introduction() {
   return (
@@ -37,12 +38,10 @@ export function Introduction() {
           ))}
         </ul>
         <p className='mt-10'>
-          <a
+          <ArrowLink
             href='#free-chapters'
-            className='text-base font-bold text-blue-600 hover:text-blue-800'
-          >
-            Learn more <span aria-hidden='true'>&rarr;</span>
-          </a>
+            text='Learn more about the solution'
+          />
         </p>
       </Container>
     </section>
