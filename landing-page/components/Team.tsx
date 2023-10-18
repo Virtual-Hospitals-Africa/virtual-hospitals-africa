@@ -6,7 +6,7 @@ const people = [
   {
     name: 'Jonathan Tagarisa',
     role: 'Chief Executive Officer',
-    imageUrl: '/images/team/jonathan.jpg',
+    imageUrl: '/images/team/jonathan.jpeg',
     bio:
       'Jonathan is a seasoned IT professional with over 20 years in Systems Analysis and Networking Technologies. He has a proven track record of success in leading and managing complex projects as well as a deep understanding of the latest technologies and trends. Passionate advocate for social impact, Jonathan is a board member of several non-profit organizations.',
     linkedinUrl: '#',
@@ -21,7 +21,7 @@ const people = [
   {
     name: 'Dr. Sikhululiwe Ngwenya',
     role: 'Chief Medical Officer',
-    imageUrl: '/images/team/skhu.jpg',
+    imageUrl: '/images/team/skhu.jpeg',
     bio:
       'Sikhululiwe Ngwenya is a medical doctor and digital health leader with a passion for using technology to improve the quality, accessibility and affordability of healthcare. She has a strong track record in the health care sector with experience in clinical care, research and health promotion. Dr Sikhululiwe is passionate about using technology to solve real-world healthcare challenges and improve the lives of patients.',
     linkedinUrl: '#',
