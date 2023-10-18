@@ -36,7 +36,7 @@ export function upsert(trx: TrxOrDb, info: {
   phone_number?: string
   name?: Maybe<string>
   gender?: Maybe<Gender>
-  date_of_birth?: Maybe<Date> | Maybe<string>
+  date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
   location?: Maybe<Location>
   avatar_media_id?: number

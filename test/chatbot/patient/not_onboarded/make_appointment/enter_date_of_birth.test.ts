@@ -60,6 +60,6 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'not_onboarded:make_appointment:enter_national_id_number',
     )
-    assertEquals(patient.date_of_birth, new Date('2023-01-01'))
+    assertEquals(patient.date_of_birth, '2023-01-01T00:00:00.000Z')
   })
 })

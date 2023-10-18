@@ -116,7 +116,7 @@ export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: Maybe<Date> | Maybe<string>
+  date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
 }
 
@@ -124,7 +124,7 @@ export type HasDemographicInfo = {
   phone_number: string
   name: string
   gender: Gender
-  date_of_birth: Date | string
+  date_of_birth: string
   national_id_number: string
 }
 
@@ -160,7 +160,7 @@ export type PatientState = {
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: Maybe<Date> | Maybe<string>
+  date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
   location: Maybe<Location>
