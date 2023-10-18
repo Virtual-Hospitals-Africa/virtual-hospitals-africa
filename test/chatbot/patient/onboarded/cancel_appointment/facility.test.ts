@@ -19,7 +19,7 @@ describe('patient chatbot', () => {
       phone_number,
       name: 'test',
       gender: 'female',
-      date_of_birth: new Date('2023-01-01'),
+      date_of_birth: '2023-01-01',
       national_id_number: '12344',
     })
 

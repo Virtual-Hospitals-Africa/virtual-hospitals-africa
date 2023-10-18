@@ -9,10 +9,8 @@ export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 export function prettyPatientDateOfBirth(
   patient: PatientDemographicInfo,
 ): string {
-  const dobString = typeof (patient.date_of_birth!) === 'string'
-    ? patient.date_of_birth!
-    : patient.date_of_birth!.toISOString()
-  const [y, m, d] = dobString.split('-').map((d) => parseInt(d, 10))
+  const dobString = patient.date_of_birth
+  const [y, m, d] = dobString!.split('-').map((d) => parseInt(d, 10))
   const year = `${y}`
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
