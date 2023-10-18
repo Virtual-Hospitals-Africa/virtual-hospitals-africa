@@ -28,6 +28,14 @@ export default function Document() {
         />
         <link
           rel='stylesheet'
+          href='https://fonts.googleapis.com/css2?family=Roboto'
+        />
+        <link
+          rel='stylesheet'
+          href='/mhi.css'
+        />
+        <link
+          rel='stylesheet'
           href='https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap'
         />
       </head>
