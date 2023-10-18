@@ -50,7 +50,7 @@ export function Hero() {
       >
         Sign In
       </Button>
-      <div className='mx-auto grid max-w-6xl grid-cols-1 grid-rows-[auto_1fr] gap-y-16 pt-16 md:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pb-36 lg:pt-20 xl:py-32'>
+      <div className='mx-auto grid max-w-6xl grid-cols-1 lg:grid-rows-[auto_1fr] gap-y-16 lg:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pb-36 lg:pt-20 xl:py-32'>
         <div className='relative px-4 sm:px-6 lg:col-span-7 lg:pb-14 lg:pl-16 lg:pr-0 xl:pl-20'>
           <div className='hidden lg:absolute lg:-top-32 lg:bottom-0 lg:left-[-100vw] lg:right-[-100vw] lg:block lg:bg-slate-100' />
         </div>
