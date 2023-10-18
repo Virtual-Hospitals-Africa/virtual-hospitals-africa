@@ -125,7 +125,8 @@ const conversationStates: ConversationStates<
       const [day, month, year] = patientState.body.split('/')
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
-      const date_of_birth = `${year}-${monthStr}-${dayStr}`
+      const dob_string = `${year}-${monthStr}-${dayStr}`
+      const date_of_birth = new Date(dob_string)
       await patients.upsert(trx, {
         ...patients.pick(patientState),
         date_of_birth,

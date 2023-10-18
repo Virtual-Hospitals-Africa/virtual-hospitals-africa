@@ -43,7 +43,7 @@ export default function PatientPersonalForm(
         </SelectInput>
         <DateInput
           name='date_of_birth'
-          value={initialData.date_of_birth}
+          value={initialData.date_of_birth?.toISOString()}
           required
         />
       </FormRow>

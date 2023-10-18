@@ -10,7 +10,9 @@ export function prettyPatientDateOfBirth(
   patient: PatientDemographicInfo,
 ): string {
   const dobString = patient.date_of_birth
-  const [y, m, d] = dobString!.split('-').map((d) => parseInt(d, 10))
+  const [y, m, d] = dobString!.toISOString().split('-').map((d) =>
+    parseInt(d, 10)
+  )
   const year = `${y}`
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
