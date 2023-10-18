@@ -1,5 +1,6 @@
 import { Container } from '../../components/library/Container.tsx'
 import { PresentationChartBarIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import ArrowLink from './ArrowLink.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 const features = [
@@ -83,13 +84,10 @@ export function Research() {
           sourced directly from patients
         </p>
         <p className='mt-4'>
-          <a
-            href='#learn-more'
-            className='text-base font-bold text-blue-600 hover:text-blue-800'
-          >
-            Learn more about how your institution can get involved{' '}
-            <span aria-hidden='true'>&rarr;</span>
-          </a>
+          <ArrowLink
+            href='/learn-more?entrypoint=research'
+            text='Learn more about how your institution can get involved'
+          />
         </p>
       </Container>
       <Container size='lg' className='mt-16'>
