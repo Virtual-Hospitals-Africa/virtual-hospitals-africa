@@ -43,7 +43,9 @@ export default function PatientPersonalForm(
         </SelectInput>
         <DateInput
           name='date_of_birth'
-          value={initialData.date_of_birth}
+          value={typeof (initialData.date_of_birth) === 'string'
+            ? initialData.date_of_birth
+            : initialData.date_of_birth?.toISOString()}
           required
         />
       </FormRow>
