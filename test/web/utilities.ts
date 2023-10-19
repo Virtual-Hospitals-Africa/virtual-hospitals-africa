@@ -66,6 +66,7 @@ export const testRegistrationDetails = (
 ): NurseRegistrationDetails => ({
   health_worker_id,
   gender: 'male',
+  date_of_birth: '1979-12-12',
   national_id: '12345678A12',
   date_of_first_practice: '1999-11-11',
   ncz_registration_number: 'GN123456',

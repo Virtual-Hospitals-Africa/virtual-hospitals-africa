@@ -41,7 +41,6 @@ export function approve(
     healthWorkerId: number
   },
 ) {
-  console.log("HEALTH WORKER" + opts.healthWorkerId)
   return trx
     .updateTable('nurse_registration_details')
     .set({
