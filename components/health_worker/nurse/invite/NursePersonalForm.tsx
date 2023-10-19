@@ -62,7 +62,7 @@ export default function NursePersonalForm(
           name='address'
           type='text'
           required
-          label='Nurse home address'
+          label='Home address'
         />
       </FormRow>
       <hr className='my-2' />
