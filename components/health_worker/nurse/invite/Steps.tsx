@@ -51,6 +51,7 @@ export type PersonalFormFields = {
   national_id: string
   email: string
   mobile_number: string
+  address: string
 }
 
 export type ProfessionalInformationFields = {
@@ -67,7 +68,8 @@ function isPersonalFormFields(
     !!fields.last_name &&
     !!fields.gender &&
     !!fields.national_id &&
-    !!fields.mobile_number
+    !!fields.mobile_number &&
+    !!fields.address
 }
 
 function isProfessionalInformationFields(

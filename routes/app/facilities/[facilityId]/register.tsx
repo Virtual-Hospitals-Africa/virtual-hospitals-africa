@@ -105,6 +105,8 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       specialty: formState.specialty,
     })
 
+    console.log("adding registration details")
+    console.log(formState)
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(
         ctx.state.healthWorker,
@@ -133,6 +135,7 @@ function getRegistrationDetails(
     ncz_registration_card_media_id: formState.ncz_registration_card?.id,
     national_id_media_id: formState.national_id_picture?.id,
     approved_by: null,
+    address: formState.address,
   }
 }
 

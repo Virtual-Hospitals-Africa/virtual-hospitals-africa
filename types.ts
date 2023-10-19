@@ -833,6 +833,7 @@ export type NurseRegistrationDetails = {
   ncz_registration_card_media_id: Maybe<number>
   face_picture_media_id: Maybe<number>
   approved_by: Maybe<number>
+  address: string
 }
 
 export type Specialties = {

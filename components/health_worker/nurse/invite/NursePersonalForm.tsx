@@ -57,6 +57,14 @@ export default function NursePersonalForm(
           label='Mobile Phone Number'
         />
       </FormRow>
+      <FormRow>
+        <TextInput
+          name='address'
+          type='text'
+          required
+          label='Nurse home address'
+        />
+      </FormRow>
       <hr className='my-2' />
       <div className='container grid grid-cols-1'>
         <Button type='submit'>Next</Button>
