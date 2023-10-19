@@ -30,10 +30,6 @@ export async function cancelAppointment(
   )
 
   const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
-  console.log(
-    'deleting events, matching health_worker:',
-    matchingHealthWorker.gcal_availability_calendar_id,
-  )
   await healthWorkerGoogleClient.deleteEvent(
     matchingHealthWorker.gcal_appointments_calendar_id,
     patientState.scheduled_appointment.gcal_event_id,

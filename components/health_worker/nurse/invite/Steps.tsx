@@ -73,7 +73,6 @@ function isPersonalFormFields(
 function isProfessionalInformationFields(
   fields: unknown,
 ): fields is ProfessionalInformationFields {
-  console.log(fields)
   return isObjectLike(fields) &&
     !!fields.specialty &&
     !!fields.date_of_first_practice &&

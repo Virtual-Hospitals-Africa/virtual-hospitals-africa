@@ -82,7 +82,6 @@ export default function PersonSearch({
                 person={person}
                 isSelected={selected?.id === person.id}
                 onSelect={() => {
-                  console.log('onSelect')
                   setSelected(person)
                   setSearchImmediate(person.name)
                 }}

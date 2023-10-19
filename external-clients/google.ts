@@ -426,7 +426,6 @@ export async function getLocationAddress(
 ): Promise<string | null> {
   const cachedAddress = await getFacilityAddress(longitude, latitude)
   if (cachedAddress) {
-    console.log('address retreived from redis: ' + cachedAddress)
     return cachedAddress
   }
 
@@ -434,7 +433,6 @@ export async function getLocationAddress(
   const address = getAddressFromData(data)
 
   if (address) {
-    console.log('address stored in redis: ' + cachedAddress)
     await cacheFacilityAddress(longitude, latitude, address)
     return address
   }

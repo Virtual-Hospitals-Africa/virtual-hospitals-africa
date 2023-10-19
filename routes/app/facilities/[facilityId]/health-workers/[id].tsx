@@ -48,7 +48,6 @@ export const handler: LoggedInHealthWorkerHandler<
       health_worker_id,
       facility_id,
     )
-    console.log(employee)
     assertOr404(
       employee,
       `Clinics/facilities not found for health worker ${health_worker_id}`,
