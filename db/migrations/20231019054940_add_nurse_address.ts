@@ -8,6 +8,6 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await sql`
-    ALTER TABLE nurse_registration_details ADD COLUMN address VARCHAR(255)
+    ALTER TABLE nurse_registration_details DROP COLUMN address
   `.execute(db)
 }
