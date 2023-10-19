@@ -100,8 +100,6 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       return redirect(nextPage.toString())
     }
 
-    console.log("FORM STATE" + formState.first_name + formState.middle_names + formState.last_name)
-
     await nurse_specialties.add(ctx.state.trx, {
       employee_id: employee.id,
       specialty: formState.specialty,
