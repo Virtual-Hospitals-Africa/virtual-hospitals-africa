@@ -1,15 +1,18 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { MonthNum, ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
-import { isDate } from 'https://cdn.jsdelivr.net/npm/kysely/dist/esm/util/object-utils.js'
-import { isString } from 'https://deno.land/x/redis@v0.30.0/stream.ts'
+import isDate from './isDate.ts'
+import isString from './isString.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 export function prettyPatientDateOfBirth(
   patient: PatientDemographicInfo,
 ): string {
-  const [y, m, d] = patient.date_of_birth!.split('-').map((d) =>
+  const { date_of_birth } = patient
+  assert(date_of_birth, 'Expected date_of_birth to be defined')
+  assert(isDate(date_of_birth))
+  const [y, m, d] = date_of_birth.toISOString().split('-').map((d) =>
     parseInt(d, 10)
   )
   const year = `${y}`
