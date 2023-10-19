@@ -29,7 +29,7 @@ export function HealthWorkers() {
         </p>
         <p className='mt-10'>
           <ArrowLink
-            href='#free-chapters'
+            href='/learn-more?entrypoint=health-workers'
             text='See how seamless digital systems can help your facility'
           />
         </p>
