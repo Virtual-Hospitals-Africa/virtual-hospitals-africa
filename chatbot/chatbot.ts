@@ -14,7 +14,6 @@ export function createChatbot(): Responder {
     // previous batch of messages to be done processing before starting again.
     timer = setTimeout(respondAndSetTimer, 100)
   }
-  // console.log('Line 50: chatbot at return')
   return {
     start: () => {
       console.log('Starting chatbot')

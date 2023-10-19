@@ -1,5 +1,7 @@
+import { sql } from 'kysely'
 import patientConversationStates from '../../chatbot/patient/conversationStates.ts'
 import selectEnumValues from '../selectEnumValues.ts'
+import db from '../db.ts'
 
 const conversationStates = Object.keys(patientConversationStates)
 
@@ -10,6 +12,5 @@ const missingFromDb = conversationStates.filter((state) =>
 )
 
 for (const missing of missingFromDb) {
-  console.log(`ALTER TYPE conversation_state ADD VALUE '${missing}'`)
-  // await sql`ALTER TYPE conversation_state ADD VALUE ${missing}`.execute(db)
+  await sql`ALTER TYPE conversation_state ADD VALUE ${missing}`.execute(db)
 }
