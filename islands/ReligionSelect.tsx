@@ -25,7 +25,6 @@ export default function ReligionSelect() {
         onChange={(e) => {
           const selectedReligion = e?.currentTarget?.value
           setSelectedReligion(selectedReligion)
-          console.log(selectedReligion)
         }}
       >
         <option value=''>Select</option>

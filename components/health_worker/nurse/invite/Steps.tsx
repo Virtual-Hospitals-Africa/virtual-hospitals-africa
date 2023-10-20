@@ -48,6 +48,7 @@ export type PersonalFormFields = {
   middle_names?: string
   last_name: string
   gender: 'male' | 'female' | 'other'
+  date_of_birth: string
   national_id: string
   email: string
   mobile_number: string
@@ -73,7 +74,6 @@ function isPersonalFormFields(
 function isProfessionalInformationFields(
   fields: unknown,
 ): fields is ProfessionalInformationFields {
-  console.log(fields)
   return isObjectLike(fields) &&
     !!fields.specialty &&
     !!fields.date_of_first_practice &&

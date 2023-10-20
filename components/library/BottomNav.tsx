@@ -12,13 +12,6 @@ function BottomNavLink({
   active,
   Icon,
 }: LinkProps) {
-  console.log(
-    href,
-    active,
-    cls({
-      'text-primary': active,
-    }),
-  )
   return (
     <a
       href={href}

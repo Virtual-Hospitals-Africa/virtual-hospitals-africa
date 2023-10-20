@@ -116,7 +116,7 @@ export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: Maybe<string>
+  date_of_birth: Maybe<Date>
   national_id_number: Maybe<string>
 }
 
@@ -124,7 +124,7 @@ export type HasDemographicInfo = {
   phone_number: string
   name: string
   gender: Gender
-  date_of_birth: string
+  date_of_birth: Date
   national_id_number: string
 }
 
@@ -160,7 +160,7 @@ export type PatientState = {
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: Maybe<string>
+  date_of_birth: Maybe<Date>
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
   location: Maybe<Location>
@@ -825,6 +825,7 @@ export const NurseSpecialties: NurseSpecialty[] = [
 export type NurseRegistrationDetails = {
   health_worker_id: number
   gender: Gender
+  date_of_birth: string
   national_id: string
   date_of_first_practice: string
   ncz_registration_number: string
@@ -853,6 +854,7 @@ export type EmployeeInfo = {
   name: string
   email: string
   gender: Maybe<Gender>
+  date_of_birth: Maybe<string>
   national_id: Maybe<string>
   ncz_registration_number: Maybe<string>
   mobile_number: Maybe<string>

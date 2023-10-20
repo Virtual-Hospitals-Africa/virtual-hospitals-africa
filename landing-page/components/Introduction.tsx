@@ -39,7 +39,7 @@ export function Introduction() {
         </ul>
         <p className='mt-10'>
           <ArrowLink
-            href='#free-chapters'
+            href='/learn-more?entrypoint=introduction'
             text='Learn more about the solution'
           />
         </p>

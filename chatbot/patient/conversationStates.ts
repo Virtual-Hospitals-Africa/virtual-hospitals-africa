@@ -125,7 +125,8 @@ const conversationStates: ConversationStates<
       const [day, month, year] = patientState.body.split('/')
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
-      const date_of_birth = `${year}-${monthStr}-${dayStr}`
+      const dob_string = `${year}-${monthStr}-${dayStr}`
+      const date_of_birth = new Date(dob_string)
       await patients.upsert(trx, {
         ...patients.pick(patientState),
         date_of_birth,
@@ -231,20 +232,13 @@ const conversationStates: ConversationStates<
             description: capLengthAtWhatsAppDescription(description),
             nextState: 'find_nearest_facility:send_facility_location' as const,
             onExit(_trx: TrxOrDb, patientState: PatientState) {
-              console.log('onExit')
-              console.log(patientState)
               return Promise.resolve(patientState)
             },
           },
         }
       })
 
-      console.log('facilities')
-      console.log(facilities)
-
       const sectionTitles = uniq(facilities.map((facility) => facility.section))
-
-      console.log('sectionTitles', sectionTitles)
 
       const sections: ConversationStateHandlerListActionSection<
         PatientState
@@ -256,8 +250,6 @@ const conversationStates: ConversationStates<
             .map((facility) => facility.row)
         ),
       }))
-
-      console.log('sections', sections)
 
       return {
         type: 'list',
@@ -620,10 +612,6 @@ const conversationStates: ConversationStates<
               nextState: 'onboarded:appointment_scheduled',
               async onExit(trx, patientState) {
                 assert(patientState.scheduling_appointment_request)
-                console.log(
-                  'patientState.scheduling_appointment_request.offered_times',
-                  patientState.scheduling_appointment_request.offered_times,
-                )
                 const toDecline = patientState.scheduling_appointment_request
                   .offered_times
                   .filter((aot) => !aot.declined)
