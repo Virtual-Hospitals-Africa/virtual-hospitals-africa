@@ -12,6 +12,7 @@ import {
   TrxOrDb,
 } from '../types.ts'
 import PatientsView from '../components/patients/View.tsx'
+import { firstName } from '../util/name.ts'
 
 type RecentPatientsProps = {
   tab: 'recent'
@@ -97,7 +98,7 @@ export default function AppPage(
 ) {
   return (
     <Layout
-      title={`Good day, ${props.data.healthWorker.name.split(' ')[0]}!`}
+      title={`Good day, ${firstName(props.data.healthWorker.name)}!`}
       route={props.route}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}

@@ -9,7 +9,6 @@ import * as facilities from '../../../../db/models/facilities.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
-import InviteSuccess from '../../../../islands/invite-success.tsx'
 
 type EmployeePageProps = {
   isAdminAtFacility: boolean
@@ -43,8 +42,6 @@ export const handler: LoggedInHealthWorkerHandler<
 export default function EmployeeTable(
   props: PageProps<EmployeePageProps>,
 ) {
-  const urlParams = new URLSearchParams(props.url.search)
-  const invited = urlParams.get('invited')
   return (
     <Layout
       title={`${props.data.facility.name} Employees`}
@@ -54,9 +51,6 @@ export default function EmployeeTable(
       variant='standard'
     >
       <Container size='lg'>
-        <InviteSuccess
-          invited={invited}
-        />
         <EmployeesTable
           isAdmin={props.data.isAdminAtFacility}
           employees={props.data.employees}
