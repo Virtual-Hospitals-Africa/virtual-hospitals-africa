@@ -105,7 +105,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       specialty: formState.specialty,
     })
 
-    console.log("adding registration details")
+    console.log('adding registration details')
     console.log(formState)
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(
