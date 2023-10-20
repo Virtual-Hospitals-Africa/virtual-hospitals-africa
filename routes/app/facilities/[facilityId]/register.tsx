@@ -4,7 +4,7 @@ import {
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { NurseRegistrationDetails, NurseSpecialty } from '../../../../types.ts'
+import { NurseRegistrationDetails } from '../../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
@@ -17,8 +17,7 @@ import { PageProps } from '$fresh/server.ts'
 import { Container } from '../../../../components/library/Container.tsx'
 import NursePersonalForm from '../../../../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../../../../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
-import NurseDocumentForm from '../../../../components/health_worker/nurse/invite/NurseDocumentForm.tsx'
-import * as health_workers from '../../../../db/models/health_workers.ts'
+import NurseDocumentsForm from '../../../../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
 import * as employment from '../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
@@ -154,7 +153,7 @@ export default function register(
           <NursePersonalForm formData={props.data.formState} />
         )}
         {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
-        {stepState.currentStep === 'document' && <NurseDocumentForm />}
+        {stepState.currentStep === 'documents' && <NurseDocumentsForm />}
       </form>
     </Container>
   )

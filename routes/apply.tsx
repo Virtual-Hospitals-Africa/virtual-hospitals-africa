@@ -1,13 +1,13 @@
-import {
-  EmployedHealthWorker,
-  LoggedInHealthWorkerHandler,
-} from '../../types.ts'
+import { EmployedHealthWorker, LoggedInHealthWorkerHandler } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
-import Layout from '../../components/library/Layout.tsx'
-import { FacilityAdmin, getFacilityAdmin } from '../../db/models/employment.ts'
-import { Button } from '../../components/library/Button.tsx'
-import PageHeader from '../../components/library/typography/PageHeader.tsx'
+import Layout from '../components/library/Layout.tsx'
+import { FacilityAdmin, getFacilityAdmin } from '../db/models/employment.ts'
+import { Button } from '../components/library/Button.tsx'
+import PageHeader from '../components/library/typography/PageHeader.tsx'
+import { json } from '../util/responses.ts'
+import { TextInput } from '../components/library/form/Inputs.tsx'
+import FormRow from '../components/library/form/Row.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
@@ -15,29 +15,15 @@ type PendingApprovalPageProps = {
 }
 
 export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
-  async GET(_req, ctx) {
-    const { healthWorker } = ctx.state
-
-    const facilityAdmin = await getFacilityAdmin(ctx.state.trx, {
-      facility_id: healthWorker.employment[0].facility_id,
-    })
-
-    assert(facilityAdmin)
-
-    return ctx.render({
-      healthWorker,
-      facilityAdmin,
-    })
+  POST(_req, ctx) {
+    // TODO
+    return json({ message: 'ok' })
   },
 }
 
-export default function PendingApprovalPage(
+export default function ApplyPage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
-  const { facilityAdmin } = props.data
-  const facilityName = facilityAdmin.facility_name || 'your facility'
-  const facilityAdminName = facilityAdmin.name || 'your facility admin'
-
   return (
     <Layout
       title='Virtual Hospitals Africa'
@@ -49,10 +35,19 @@ export default function PendingApprovalPage(
           <div class='mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
               <PageHeader className='h1'>Application under review</PageHeader>
+              <form
+                method='POST'
+                className='w-full mt-4'
+                encType='multipart/form-data'
+              >
+                <FormRow>
+                  <TextInput name='Name' />
+                </FormRow>
+              </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from {facilityName}{' '}
-                is currently under review by{' '}
-                {facilityAdminName}. You will receive an email once your
+                Your application from facilityName is currently under review by
+                {' '}
+                facilityAdminName. You will receive an email once your
                 application has been approved.
               </p>
               <div class='mt-10 flex'>

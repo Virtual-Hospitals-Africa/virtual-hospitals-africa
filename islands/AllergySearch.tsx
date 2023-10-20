@@ -54,7 +54,7 @@ export default function AllergySearch() {
       <FormRow>
         <SearchInput
           label=''
-          placeholder={'Search for allergies'}
+          placeholder='Search for allergies'
           value={searchTerm}
           onInput={(e) => {
             assert(e.target)

@@ -4,10 +4,8 @@ import {
   PhoneNumberInput,
   TextInput,
 } from '../../../library/form/Inputs.tsx'
-
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { Button } from '../../../library/Button.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
 
 export default function NursePersonalForm(
@@ -55,7 +53,7 @@ export default function NursePersonalForm(
           required
           label='Email'
           value={formData.email}
-          disabled={true}
+          disabled
         />
         <PhoneNumberInput
           name='mobile_number'
@@ -64,9 +62,10 @@ export default function NursePersonalForm(
         />
       </FormRow>
       <hr className='my-2' />
-      <div className='container grid grid-cols-1'>
-        <Button type='submit'>Next</Button>
-      </div>
+      <Buttons
+        submitText='Next'
+        cancelText='Back'
+      />
     </>
   )
 }
