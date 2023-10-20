@@ -51,7 +51,7 @@ export default function Home() {
       <ScheduleADemo />
       <Partners />
       <TeamSection />
-      <Footer />
+      <Footer withMhi />
     </>
   )
 }

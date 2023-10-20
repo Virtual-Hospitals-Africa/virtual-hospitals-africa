@@ -1,29 +1,16 @@
 import { useMemo, useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
 import { SelectInput, TextInput } from '../components/library/form/Inputs.tsx'
-import {
-  AdminDistricts,
-  Country,
-  District,
-  Province,
-  Suburb,
-  Ward,
-} from '../types.ts'
+import { AdminDistricts } from '../types.ts'
 
 export default function PatientAddressForm(
   { adminDistricts = [] }: { adminDistricts?: AdminDistricts },
 ) {
-  const [selectedCountry, setSelectedCountry] = useState<
-    Country['id']
-  >()
-  const [selectedProvince, setSelectedProvince] = useState<
-    Province['id']
-  >()
-  const [selectedDistrict, setSelectedDistrict] = useState<
-    District['id']
-  >()
-  const [selectedWard, setSelectedWard] = useState<Ward['id']>()
-  const [selectedSuburb, setSelectedSuburb] = useState<Suburb['id']>()
+  const [selectedCountry, setSelectedCountry] = useState<number>()
+  const [selectedProvince, setSelectedProvince] = useState<number>()
+  const [selectedDistrict, setSelectedDistrict] = useState<number>()
+  const [selectedWard, setSelectedWard] = useState<number>()
+  const [selectedSuburb, setSelectedSuburb] = useState<number>()
 
   const provinces = useMemo(() => {
     if (!selectedCountry) return []

@@ -104,10 +104,11 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
       invitesWithEmails,
     )
 
+    const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
+    const successMessage = encodeURIComponent(`Successfully invited ${invited}`)
+
     return redirect(
-      `/app/facilities/${ctx.state.facility.id}/employees?invited=${
-        invitesWithEmails.map((invite) => invite.email).join(', ')
-      }`,
+      `/app/facilities/${ctx.state.facility.id}/employees?success=${successMessage}`,
     )
   },
 }
