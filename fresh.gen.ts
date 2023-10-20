@@ -25,13 +25,14 @@ import * as $19 from './routes/app/patients/[id].tsx'
 import * as $20 from './routes/app/patients/[id]/avatar.tsx'
 import * as $21 from './routes/app/patients/add.tsx'
 import * as $22 from './routes/app/pending_approval.tsx'
-import * as $23 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $24 from './routes/full-reset.ts'
-import * as $25 from './routes/index.tsx'
-import * as $26 from './routes/logged-in.tsx'
-import * as $27 from './routes/login.tsx'
-import * as $28 from './routes/logout.tsx'
-import * as $29 from './routes/patient-reset.ts'
+import * as $23 from './routes/apply.tsx'
+import * as $24 from './routes/chatbot/incoming-whatsapp.ts'
+import * as $25 from './routes/full-reset.ts'
+import * as $26 from './routes/index.tsx'
+import * as $27 from './routes/logged-in.tsx'
+import * as $28 from './routes/login.tsx'
+import * as $29 from './routes/logout.tsx'
+import * as $30 from './routes/patient-reset.ts'
 import * as $$0 from './islands/AllergySearch.tsx'
 import * as $$1 from './islands/FacilitySearch.tsx'
 import * as $$2 from './islands/Menu.tsx'
@@ -74,13 +75,14 @@ const manifest = {
     './routes/app/patients/[id]/avatar.tsx': $20,
     './routes/app/patients/add.tsx': $21,
     './routes/app/pending_approval.tsx': $22,
-    './routes/chatbot/incoming-whatsapp.ts': $23,
-    './routes/full-reset.ts': $24,
-    './routes/index.tsx': $25,
-    './routes/logged-in.tsx': $26,
-    './routes/login.tsx': $27,
-    './routes/logout.tsx': $28,
-    './routes/patient-reset.ts': $29,
+    './routes/apply.tsx': $23,
+    './routes/chatbot/incoming-whatsapp.ts': $24,
+    './routes/full-reset.ts': $25,
+    './routes/index.tsx': $26,
+    './routes/logged-in.tsx': $27,
+    './routes/login.tsx': $28,
+    './routes/logout.tsx': $29,
+    './routes/patient-reset.ts': $30,
   },
   islands: {
     './islands/AllergySearch.tsx': $$0,

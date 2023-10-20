@@ -1,9 +1,8 @@
 import FilePreviewInput from '../../../../islands/file-preview-input.tsx'
-
 import FormRow from '../../../library/form/Row.tsx'
-import { Button } from '../../../library/Button.tsx'
+import Buttons from '../../../library/form/buttons.tsx'
 
-export default function NurseDocumentForm() {
+export default function NurseDocumentsForm() {
   return (
     <>
       <FormRow>
@@ -22,9 +21,10 @@ export default function NurseDocumentForm() {
         <FilePreviewInput name='face_picture' label='Identification Photo' />
       </FormRow>
       <hr className='my-2' />
-      <div className='container grid grid-cols-1'>
-        <Button type='submit'>Submit</Button>
-      </div>
+      <Buttons
+        submitText='Submit'
+        cancelText='Back'
+      />
     </>
   )
 }
