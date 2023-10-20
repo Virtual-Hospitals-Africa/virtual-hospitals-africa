@@ -5,6 +5,8 @@ import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
 import { FacilityEmployee } from '../../db/models/facilities.ts'
+import { approveInvitee } from '../../db/models/employment.ts'
+import db from '../../db/db.ts'
 
 type EmployeesTableProps = {
   isAdmin: boolean
@@ -15,6 +17,7 @@ type EmployeesTableProps = {
 }
 
 type Employee = {
+  is_invitee: boolean
   avatar_url: null | string
   display_name: string
   professions: string[]
@@ -27,6 +30,7 @@ export default function EmployeesTable({
   isAdmin,
   employees,
   pathname,
+  health_worker_id,
 }: EmployeesTableProps): JSX.Element {
   const columns: TableColumn<Employee>[] = [
     {

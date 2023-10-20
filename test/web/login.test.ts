@@ -383,7 +383,7 @@ describe('/login', { sanitizeResources: false }, () => {
       )
       assert(
         pageContents.includes(
-          `href="/app/facilities/1/health-workers/${nurse.id}"`,
+          `/app/facilities/1/employees?approved=${nurse.name}`,
         ),
       )
     })
