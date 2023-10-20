@@ -22,13 +22,15 @@ export type LayoutProps =
     avatarUrl?: undefined
   })
 
-export default function Layout(props: LayoutProps) {
-  const success = props.url.searchParams.get('success')
+export default function Layout(
+  { variant, title, url, children, route, head, avatarUrl }: LayoutProps,
+) {
+  const success = url.searchParams.get('success')
 
   return (
     <html className='scroll-smooth bg-white antialiased' lang='en'>
       <Head>
-        <title>{props.title}</title>
+        <title>{title}</title>
         <script
           defer
           src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'
@@ -36,31 +38,32 @@ export default function Layout(props: LayoutProps) {
           crossOrigin='anonymous'
           referrerpolicy='no-referrer'
         />
-        {props.head}
+        {head}
       </Head>
       <body className='h-full relative'>
         <SuccessMessage
           message={success}
           className='absolute z-50 top-0 left-0 right-0 m-12'
         />
-        {props.variant === 'landing-page' ? props.children : (
-          <>
-            {props.variant !== 'just-logo' && <Sidebar route={props.route} />}
-            <section
-              className={cls(
-                props.variant !== 'just-logo' && 'md:pl-48',
-              )}
-            >
-              <Header
-                title={props.title}
-                avatarUrl={props.avatarUrl}
-                variant={props.variant}
-              />
-              {props.children}
-            </section>
-            {props.variant !== 'just-logo' && <BottomNav route={props.route} />}
-          </>
+        {variant === 'landing-page' && children}
+        {variant === 'standard' ||
+          variant === 'form' && <Sidebar route={route} />}
+        {variant !== 'landing-page' && (
+          <section
+            className={cls(
+              variant !== 'just-logo' && 'md:pl-48',
+            )}
+          >
+            <Header
+              title={title}
+              avatarUrl={avatarUrl}
+              variant={variant}
+            />
+            {children}
+          </section>
         )}
+        {variant === 'standard' ||
+          variant === 'form' && <BottomNav route={route} />}
       </body>
     </html>
   )
