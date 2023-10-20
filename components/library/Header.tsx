@@ -2,6 +2,7 @@ import { ArrowLeftIcon, BellIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
 import { LogoWithFullText, LogoWithInitials } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
+import { Maybe } from '../../types.ts'
 
 export type HeaderProps = {
   title: string
@@ -31,7 +32,6 @@ function HeaderLeft(
 ) {
   return (
     <div className='flex items-center gap-2'>
-      <LogoWithFullText variant='indigo' />
       {showBackButton && (
         <a
           className='back'
@@ -72,7 +72,7 @@ function HeaderBase(
 ) {
   return (
     <nav className={className}>
-      <div className='max-w-7xl w-full px-5 py-7'>
+      <div className='w-full p-5'>
         <div className='relative flex h-16 items-center justify-between'>
           {children}
         </div>

@@ -19,10 +19,10 @@ export type LayoutProps =
     avatarUrl: string
   } | {
     variant: 'just-logo' | 'landing-page'
+    avatarUrl?: undefined
   })
 
 export default function Layout(props: LayoutProps) {
-  // console.log("WELKEWLKEW", props)
   const success = props.url.searchParams.get('success')
 
   return (
@@ -48,7 +48,7 @@ export default function Layout(props: LayoutProps) {
             {props.variant !== 'just-logo' && <Sidebar route={props.route} />}
             <section
               className={cls(
-                props.variant !== 'just-logo' && 'md:pl-72',
+                props.variant !== 'just-logo' && 'md:pl-48',
               )}
             >
               <Header
