@@ -1,2 +1,0 @@
-- [x] rounded corners on hero image
-- [x] remove play button while no video

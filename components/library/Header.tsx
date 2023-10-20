@@ -1,9 +1,11 @@
 import { ArrowLeftIcon, BellIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
+import { LogoWithFullText, LogoWithInitials } from './Logo.tsx'
+import { ComponentChildren } from 'preact'
 
 export type HeaderProps = {
   title: string
-  variant: 'standard' | 'form' | 'standard-without-nav'
+  variant: 'standard' | 'form' | 'just-logo'
   avatarUrl?: string
 }
 
@@ -29,6 +31,7 @@ function HeaderLeft(
 ) {
   return (
     <div className='flex items-center gap-2'>
+      <LogoWithFullText variant='indigo' />
       {showBackButton && (
         <a
           className='back'
@@ -64,20 +67,40 @@ function HeaderRight({ avatarUrl }: { avatarUrl: string | undefined }) {
   )
 }
 
-export function Header({ title, avatarUrl, variant }: HeaderProps) {
+function HeaderBase(
+  { className, children }: { className?: string; children: ComponentChildren },
+) {
   return (
-    <nav className='bg-gray-800'>
-      <div className='max-w-7xl w-full px-5'>
+    <nav className={className}>
+      <div className='max-w-7xl w-full px-5 py-7'>
         <div className='relative flex h-16 items-center justify-between'>
-          <HeaderLeft
-            showBackButton={variant === 'form'}
-            title={title}
-          />
-          {variant !== 'standard-without-nav' && (
-            <HeaderRight avatarUrl={avatarUrl} />
-          )}
+          {children}
         </div>
       </div>
     </nav>
+  )
+}
+
+function HeaderWithoutNav() {
+  return (
+    <HeaderBase>
+      <a href='/' className='py-8'>
+        <LogoWithFullText variant='indigo' className='w-60' />
+      </a>
+    </HeaderBase>
+  )
+}
+
+export function Header({ title, avatarUrl, variant }: HeaderProps) {
+  if (variant === 'just-logo') return <HeaderWithoutNav />
+
+  return (
+    <HeaderBase className='bg-gray-800'>
+      <HeaderLeft
+        showBackButton={variant === 'form'}
+        title={title}
+      />
+      <HeaderRight avatarUrl={avatarUrl} />
+    </HeaderBase>
   )
 }
