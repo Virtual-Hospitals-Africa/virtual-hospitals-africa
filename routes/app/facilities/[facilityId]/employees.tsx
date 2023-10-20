@@ -46,7 +46,6 @@ export default function EmployeeTable(
 ) {
   const urlParams = new URLSearchParams(props.url.search)
   const invited = urlParams.get('invited')
-  const approved = urlParams.get('approved')
   return (
     <Layout
       title={`${props.data.facility.name} Employees`}
@@ -57,9 +56,6 @@ export default function EmployeeTable(
       <Container size='lg'>
         <InviteSuccess
           invited={invited}
-        />
-        <ApproveSuccess
-          approved={approved}
         />
         <EmployeesTable
           isAdmin={props.data.isAdminAtFacility}
