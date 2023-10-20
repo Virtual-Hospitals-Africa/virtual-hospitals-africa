@@ -6,6 +6,8 @@ import { FacilityAdmin, getFacilityAdmin } from '../db/models/employment.ts'
 import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import { json } from '../util/responses.ts'
+import { TextInput } from '../components/library/form/Inputs.tsx'
+import FormRow from '../components/library/form/Row.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
@@ -13,7 +15,7 @@ type PendingApprovalPageProps = {
 }
 
 export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
-  async POST(_req, ctx) {
+  POST(_req, ctx) {
     // TODO
     return json({ message: 'ok' })
   },
@@ -33,6 +35,15 @@ export default function ApplyPage(
           <div class='mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
               <PageHeader className='h1'>Application under review</PageHeader>
+              <form
+                method='POST'
+                className='w-full mt-4'
+                encType='multipart/form-data'
+              >
+                <FormRow>
+                  <TextInput name='Name' />
+                </FormRow>
+              </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
                 Your application from facilityName is currently under review by
                 {' '}

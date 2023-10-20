@@ -45,6 +45,7 @@
   "importMap": "./import_map.json",
   "lint": {
     "rules": {
+      "include": ["no-unused-vars"],
       "tags": [
         "fresh",
         "recommended"
