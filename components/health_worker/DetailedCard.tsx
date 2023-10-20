@@ -144,7 +144,7 @@ export default function HealthWorkerDetailedCard(
           </div>
           <div className='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
             <dt className='text-sm font-bold leading-6 text-gray-900'>
-              Clinic
+              {employee.employment.length > 1 ? 'Facilities' : 'Facility'}
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               <ul>
