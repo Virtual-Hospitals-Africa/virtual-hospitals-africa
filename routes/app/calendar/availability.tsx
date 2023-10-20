@@ -175,6 +175,7 @@ export default function SetAvailability(
     <Layout
       title='Set Availability'
       route={props.route}
+      url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='form'
     >

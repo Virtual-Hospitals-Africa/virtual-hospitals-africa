@@ -99,6 +99,7 @@ export default function AppPage(
     <Layout
       title={`Good day, ${props.data.healthWorker.name.split(' ')[0]}!`}
       route={props.route}
+      url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >

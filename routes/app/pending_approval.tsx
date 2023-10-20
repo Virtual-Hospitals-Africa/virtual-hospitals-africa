@@ -42,7 +42,8 @@ export default function PendingApprovalPage(
     <Layout
       title='Virtual Hospitals Africa'
       route={props.route}
-      variant='standard-without-nav'
+      url={props.url}
+      variant='just-logo'
     >
       <div class='overflow-hidden bg-white py-32'>
         <div class='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>

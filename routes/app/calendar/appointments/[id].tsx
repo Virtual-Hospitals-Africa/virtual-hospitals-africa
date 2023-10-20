@@ -45,6 +45,7 @@ export default function AppointmentPage(
     <Layout
       title={`Appointment with ${props.data.appointment.patient.name}`}
       route={props.route}
+      url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >

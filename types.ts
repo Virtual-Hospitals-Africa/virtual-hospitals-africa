@@ -3,7 +3,7 @@ import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact/jsx-runtime'
 import { Handlers } from '$fresh/server.ts'
 import { Session } from 'fresh_session'
-import db, { DatabaseSchema } from './db/db.ts'
+import db from './db/db.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1173,33 +1173,69 @@ export type PatientAppointmentRequestMedia = {
   media_id: number
 }
 
-export type Countries = { id: number; name: string }
+export type Country = { name: string }
 
-export type Provinces = { id: number; name: string; country_id: number }
+export type Province = { name: string; country_id: number }
 
-export type Districts = { id: number; name: string; province_id: number }
+export type District = { name: string; province_id: number }
 
-export type Wards = { id: number; name: string; district_id: number }
+export type Ward = { name: string; district_id: number }
 
-export type Suburbs = { id: number; name: string; ward_id: number }
+export type Suburb = { name: string; ward_id: number }
 
 export type AdminDistricts = {
-  id: Countries['id']
-  name: Countries['name']
+  id: number
+  name: string
   provinces: {
-    id: Provinces['id']
-    name: Provinces['name']
+    id: number
+    name: string
     districts: {
-      id: Districts['id']
-      name: Districts['name']
+      id: number
+      name: string
       wards: {
-        id: Wards['id']
-        name: Wards['name']
+        id: number
+        name: string
         suburbs: {
-          id: Suburbs['id'] | null
-          name: Suburbs['name'] | null
+          id: number | null
+          name: string | null
         }[]
       }[]
     }[]
   }[]
 }[]
+
+export type MailingListRecipient = {
+  name: string
+  email: string
+  entrypoint: string
+}
+
+export type DatabaseSchema = {
+  appointments: SqlRow<Appointment>
+  patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
+  patient_appointment_requests: SqlRow<PatientAppointmentRequest>
+  appointment_health_worker_attendees: SqlRow<AppointmentHealthWorkerAttendee>
+  health_workers: SqlRow<HealthWorker>
+  health_worker_google_tokens: SqlRow<HealthWorkerGoogleToken>
+  patients: SqlRow<Patient>
+  employment: SqlRow<Employee>
+  whatsapp_messages_received: SqlRow<WhatsAppMessageReceived>
+  whatsapp_messages_sent: SqlRow<WhatsAppMessageSent>
+  facilities: SqlRow<Facility>
+  patient_nearest_facilities: {
+    patient_id: number
+    nearest_facilities: ReturnedSqlRow<Facility>[]
+  }
+  health_worker_invitees: SqlRow<HealthWorkerInvitee>
+  media: SqlRow<PatientMedia>
+  nurse_registration_details: SqlRow<NurseRegistrationDetails>
+  nurse_specialties: SqlRow<Specialties>
+  appointment_media: SqlRow<AppointmentMedia>
+  patient_appointment_request_media: SqlRow<PatientAppointmentRequestMedia>
+  countries: SqlRow<Country>
+  provinces: SqlRow<Province>
+  districts: SqlRow<District>
+  wards: SqlRow<Ward>
+  suburbs: SqlRow<Suburb>
+  mailing_list: SqlRow<MailingListRecipient>
+}

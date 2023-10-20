@@ -5,6 +5,7 @@ import PatientsIcon from './icons/patients.tsx'
 import LogoutIcon from './icons/logout.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
+import { LogoWithFullText, LogoWithInitials } from './Logo.tsx'
 
 export type SidebarProps = {
   route: string
@@ -46,15 +47,10 @@ const matchingSidebarLink = matchActiveLink(navLinks)
 export function Sidebar(props: SidebarProps) {
   const activeLink = matchingSidebarLink(props.route)
   return (
-    <div className='hidden fixed inset-y-0 z-50 md:flex w-72 md:flex-col'>
+    <div className='hidden fixed inset-y-0 z-50 md:flex w-48 md:flex-col'>
       <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-5 pb-4'>
-        <a href='/app' className='flex h-16 shrink-0 items-center gap-3'>
-          <img
-            className='h-8 w-auto'
-            src='https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600'
-            alt='Virtual Hospitals Africa'
-          />
-          <h6 class='text-l'>Virtual Hospitals Africa</h6>
+        <a href='/app' className='flex h-20 shrink-0 items-center gap-3'>
+          <LogoWithFullText variant='indigo' className='h-16' />
         </a>
         <nav className='flex flex-1 flex-col'>
           <ul role='list' className='-mx-2 space-y-1'>

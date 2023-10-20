@@ -3,27 +3,27 @@ import FormRow from '../components/library/form/Row.tsx'
 import { SelectInput, TextInput } from '../components/library/form/Inputs.tsx'
 import {
   AdminDistricts,
-  Countries,
-  Districts,
-  Provinces,
-  Suburbs,
-  Wards,
+  Country,
+  District,
+  Province,
+  Suburb,
+  Ward,
 } from '../types.ts'
 
 export default function PatientAddressForm(
   { adminDistricts = [] }: { adminDistricts?: AdminDistricts },
 ) {
   const [selectedCountry, setSelectedCountry] = useState<
-    Countries['id']
+    Country['id']
   >()
   const [selectedProvince, setSelectedProvince] = useState<
-    Provinces['id']
+    Province['id']
   >()
   const [selectedDistrict, setSelectedDistrict] = useState<
-    Districts['id']
+    District['id']
   >()
-  const [selectedWard, setSelectedWard] = useState<Wards['id']>()
-  const [selectedSuburb, setSelectedSuburb] = useState<Suburbs['id']>()
+  const [selectedWard, setSelectedWard] = useState<Ward['id']>()
+  const [selectedSuburb, setSelectedSuburb] = useState<Suburb['id']>()
 
   const provinces = useMemo(() => {
     if (!selectedCountry) return []

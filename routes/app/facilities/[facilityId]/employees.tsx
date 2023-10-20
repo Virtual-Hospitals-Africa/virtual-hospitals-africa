@@ -49,6 +49,7 @@ export default function EmployeeTable(
     <Layout
       title={`${props.data.facility.name} Employees`}
       route={props.route}
+      url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >

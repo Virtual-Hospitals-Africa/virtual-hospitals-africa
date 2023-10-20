@@ -62,6 +62,7 @@ export default function HealthWorkerPage(
     <Layout
       title={props.data.employee.name}
       route={props.route}
+      url={props.url}
       avatarUrl={props.data.employee.avatar_url
         ? props.data.employee.avatar_url
         : 'avatar_url'}

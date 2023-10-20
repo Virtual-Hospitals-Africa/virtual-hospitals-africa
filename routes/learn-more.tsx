@@ -8,6 +8,7 @@ import PageHeader from '../components/library/typography/PageHeader.tsx'
 import { json } from '../util/responses.ts'
 import { TextInput } from '../components/library/form/Inputs.tsx'
 import FormRow from '../components/library/form/Row.tsx'
+import FormButtons from '../components/library/form/buttons.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
@@ -21,12 +22,12 @@ export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
   },
 }
 
-export default function ApplyPage(
+export default function LearnMorePage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
   return (
     <Layout
-      title='Virtual Hospitals Africa'
+      title='Learn More | Virtual Hospitals Africa'
       route={props.route}
       url={props.url}
       variant='just-logo'
@@ -35,27 +36,30 @@ export default function ApplyPage(
         <div class='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>
           <div class='mx-auto grid max-w-2xl grid-cols-1 gap-x-12 gap-y-16 lg:mx-0 lg:min-w-full lg:max-w-none lg:flex-none lg:gap-y-8'>
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
-              <PageHeader className='h1'>Application under review</PageHeader>
+              <PageHeader className='h1'>Join Mailing List</PageHeader>
+              <p class='mt-6 text-xl leading-8 text-gray-600'>
+                <i>
+                  Stay in the loop with updates, new features, and highlights
+                  right to your inbox
+                </i>
+              </p>
               <form
                 method='POST'
                 className='w-full mt-4'
                 encType='multipart/form-data'
               >
                 <FormRow>
-                  <TextInput name='Name' />
+                  <TextInput name='name' />
+                </FormRow>
+                <FormRow>
+                  <TextInput name='email' type='email' />
+                </FormRow>
+                <FormRow>
+                  <Button type='submit'>
+                    Sign up
+                  </Button>
                 </FormRow>
               </form>
-              <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from facilityName is currently under review by
-                {' '}
-                facilityAdminName. You will receive an email once your
-                application has been approved.
-              </p>
-              <div class='mt-10 flex'>
-                <Button href='/'>
-                  Homepage<span aria-hidden='true'>&nbsp;&nbsp;&rarr;</span>
-                </Button>
-              </div>
             </div>
             <div class='flex flex-wrap items-start justify-end gap-6 sm:gap-8 lg:contents'>
               <div class='w-0 flex-auto lg:ml-auto lg:w-auto lg:flex-none lg:self-end'>

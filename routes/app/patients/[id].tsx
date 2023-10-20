@@ -45,6 +45,7 @@ export default function PatientPage(
     <Layout
       title={props.data.patient.name || 'Patient'}
       route={props.route}
+      url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >

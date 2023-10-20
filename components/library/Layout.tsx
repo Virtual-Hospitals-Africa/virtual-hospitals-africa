@@ -3,24 +3,30 @@ import { ComponentChildren } from 'preact'
 import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
+import cls from '../../util/cls.ts'
+import SuccessMessage from '../../islands/SuccessMessage.tsx'
 
 export type LayoutProps =
   & {
     title: string
     route: string
+    url: URL
+    head?: ComponentChildren
     children: ComponentChildren
   }
   & ({
     variant: 'standard' | 'form'
     avatarUrl: string
   } | {
-    variant: 'standard-without-nav'
-    avatarUrl?: string
+    variant: 'just-logo' | 'landing-page'
+    avatarUrl?: undefined
   })
 
 export default function Layout(props: LayoutProps) {
+  const success = props.url.searchParams.get('success')
+
   return (
-    <>
+    <html className='scroll-smooth bg-white antialiased' lang='en'>
       <Head>
         <title>{props.title}</title>
         <script
@@ -30,29 +36,32 @@ export default function Layout(props: LayoutProps) {
           crossOrigin='anonymous'
           referrerpolicy='no-referrer'
         />
+        {props.head}
       </Head>
       <body className='h-full relative'>
-        <section className='pb-14 md:pb-0'>
-          {props.variant != 'standard-without-nav' && (
-            <Sidebar route={props.route} />
-          )}
-          <section
-            className={props.variant != 'standard-without-nav'
-              ? 'md:pl-72'
-              : ''}
-          >
-            <Header
-              title={props.title}
-              avatarUrl={props.avatarUrl}
-              variant={props.variant}
-            />
-            {props.children}
-          </section>
-        </section>
-        {props.variant != 'standard-without-nav' && (
-          <BottomNav route={props.route} />
+        <SuccessMessage
+          message={success}
+          className='absolute z-50 top-0 left-0 right-0 m-12'
+        />
+        {props.variant === 'landing-page' ? props.children : (
+          <>
+            {props.variant !== 'just-logo' && <Sidebar route={props.route} />}
+            <section
+              className={cls(
+                props.variant !== 'just-logo' && 'md:pl-48',
+              )}
+            >
+              <Header
+                title={props.title}
+                avatarUrl={props.avatarUrl}
+                variant={props.variant}
+              />
+              {props.children}
+            </section>
+            {props.variant !== 'just-logo' && <BottomNav route={props.route} />}
+          </>
         )}
       </body>
-    </>
+    </html>
   )
 }

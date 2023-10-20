@@ -1,5 +1,5 @@
 import { Button } from '../../components/library/Button.tsx'
-import { Logo } from '../../components/library/Logo.tsx'
+import { LogoWithFullText } from '../../components/library/Logo.tsx'
 import cls from '../../util/cls.ts'
 import RadialPattern from './RadialPattern.tsx'
 
@@ -61,7 +61,7 @@ export function Hero() {
               <div className='flex flex-col-reverse md:flex-row w-full h-full items-center justify-start lg:justify-end'>
                 <div className='ml-2 lg:ml-auto lg:mr-60 px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0'>
                   <h1 className='flex gap-10 items-center font-display text-5xl font-extrabold text-white sm:text-6xl'>
-                    <Logo variant='white' />
+                    <LogoWithFullText variant='white' />
                   </h1>
                   <p className='mt-8 text-3xl text-white max-w-md'>
                     Bringing accessible health care to Africans
@@ -70,7 +70,11 @@ export function Hero() {
                     <Button href='/learn-more' color='blue'>
                       Learn more
                     </Button>
-                    <Button href='/waitlist' variant='solid' color='white'>
+                    <Button
+                      href='/join-mailing-list?entrypoint=waitlist'
+                      variant='solid'
+                      color='white'
+                    >
                       Join the waitlist
                     </Button>
                   </div>
