@@ -1,4 +1,6 @@
-import { useSteps } from '../../../library/Steps.tsx'
+import { PageProps } from '$fresh/server.ts'
+import { AddPatientStep } from '../../../patients/add/Steps.tsx'
+import { Steps, useSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
@@ -8,12 +10,12 @@ import { Media } from '../../../../types.ts'
 export type NurseRegistrationStep =
   | 'personal'
   | 'professional'
-  | 'documents'
+  | 'document'
 
 export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
   'personal',
   'professional',
-  'documents',
+  'document',
 ]
 
 export const useNurseRegistrationSteps = useSteps(NurseRegistrationStepNames)
@@ -29,7 +31,7 @@ export function getStepFormData(
     case NurseRegistrationStepNames[1]:
       return parseRequest(trx, req, isProfessionalInformationFields)
     case NurseRegistrationStepNames[2]:
-      return parseRequest(trx, req, isDocumentsFormFields)
+      return parseRequest(trx, req, isDocumentFormFields)
     default:
       throw new Error('No step found')
   }
@@ -50,6 +52,7 @@ export type PersonalFormFields = {
   national_id_number: string
   email: string
   mobile_number: string
+  address: string
 }
 
 export type ProfessionalInformationFields = {
@@ -65,8 +68,14 @@ function isPersonalFormFields(
     !!fields.first_name &&
     !!fields.last_name &&
     !!fields.gender &&
+<<<<<<< HEAD
     !!fields.national_id_number &&
     !!fields.mobile_number
+=======
+    !!fields.national_id &&
+    !!fields.mobile_number &&
+    !!fields.address
+>>>>>>> f365954 (Push for address change)
 }
 
 function isProfessionalInformationFields(
@@ -88,7 +97,7 @@ function isMedia(
     media === undefined
 }
 
-function isDocumentsFormFields(
+function isDocumentFormFields(
   fields: unknown,
 ): fields is DocumentFormFields {
   return isObjectLike(fields) &&

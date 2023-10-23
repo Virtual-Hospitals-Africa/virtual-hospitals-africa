@@ -45,4 +45,5 @@ export const testRegistrationDetails = (
   ncz_registration_card_media_id: undefined,
   face_picture_media_id: undefined,
   approved_by: undefined,
+  address: 'Test Address',
 })

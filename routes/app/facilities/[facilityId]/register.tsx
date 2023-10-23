@@ -4,7 +4,7 @@ import {
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { NurseRegistrationDetails } from '../../../../types.ts'
+import { NurseRegistrationDetails, NurseSpecialty } from '../../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
@@ -133,6 +133,7 @@ function getRegistrationDetails(
     ncz_registration_card_media_id: formState.ncz_registration_card?.id,
     national_id_media_id: formState.national_id_picture?.id,
     approved_by: null,
+    address: formState.address,
   }
 }
 
