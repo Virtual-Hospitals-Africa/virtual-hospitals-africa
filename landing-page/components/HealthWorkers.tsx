@@ -27,12 +27,14 @@ export function HealthWorkers() {
           virtual hospitals, granting them a shared digital space to monitor,
           communicate with, and improve outcomes for patients.
         </p>
-        <p className='mt-10'>
+        {
+          /* <p className='mt-10'>
           <ArrowLink
             href='/learn-more?entrypoint=health-workers'
             text='See how seamless digital systems can help your facility'
           />
-        </p>
+        </p> */
+        }
       </Container>
       <FeatureGrid
         features={[

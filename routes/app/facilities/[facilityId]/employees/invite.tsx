@@ -13,7 +13,7 @@ import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
 //   ConnectConfigWithAuthentication,
 //   SmtpClient,
 // } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
-import * as employment from '../../../../../db/models/employment.ts'
+import * as facilities from '../../../../../db/models/facilities.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr403 } from '../../../../../util/assertOr.ts'
@@ -84,25 +84,20 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
 
     const invitesWithEmails = invites.filter((invite) => invite.email)
 
-    const existingEmployees = await employment.getMatching(ctx.state.trx, {
-      facility_id: ctx.state.facility.id,
-      invitees: invitesWithEmails,
-    })
-
-    if (existingEmployees.length) {
-      const url = new URL(req.url)
-      url.searchParams.set(
-        'alreadyEmployees',
-        existingEmployees.map((employee) => employee.email).join(','),
-      )
-      return redirect(url.toString())
-    }
-
-    await employment.addInvitees(
+    const result = await facilities.invite(
       ctx.state.trx,
       ctx.state.facility.id,
       invitesWithEmails,
     )
+
+    if (!result.success) {
+      const url = new URL(req.url)
+      url.searchParams.set(
+        'error',
+        result.error!,
+      )
+      return redirect(url.toString())
+    }
 
     const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
     const successMessage = encodeURIComponent(`Successfully invited ${invited}`)

@@ -4,7 +4,9 @@ import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
+import ErrorMessage from '../../islands/ErrorMessage.tsx'
 import { Footer } from '../../landing-page/components/Footer.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 export type LayoutProps =
   & {
@@ -70,6 +72,9 @@ function JustLogoLayoutContents(
 
 export default function Layout(props: LayoutProps) {
   const success = props.url.searchParams.get('success')
+  const error = props.url.searchParams.get('error')
+
+  assert(!success || !error, 'Cannot have both success and error')
 
   return (
     <html className='scroll-smooth bg-white antialiased' lang='en'>
@@ -87,6 +92,10 @@ export default function Layout(props: LayoutProps) {
       <body className='min-h-screen flex flex-col relative justify-between'>
         <SuccessMessage
           message={success}
+          className='fixed z-50 top-0 left-0 right-0 m-12'
+        />
+        <ErrorMessage
+          message={error}
           className='fixed z-50 top-0 left-0 right-0 m-12'
         />
         {props.variant === 'landing-page' && props.children}

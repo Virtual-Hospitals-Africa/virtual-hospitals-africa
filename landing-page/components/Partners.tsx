@@ -24,12 +24,14 @@ export default function PartnersContent() {
               how higher quality care can be delivered to patients with less
               stress at lower cost.
             </p>
-            <div className='mt-8 flex items-center gap-x-6'>
+            {
+              /* <div className='mt-8 flex items-center gap-x-6'>
               <ArrowLink
                 href='/learn-more?entrypoint=partners'
                 text='Learn More'
               />
-            </div>
+            </div> */
+            }
           </div>
           <div className='mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8'>
             <img

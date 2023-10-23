@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import {
   Employee,
   HealthWorkerInvitee,
@@ -28,6 +29,7 @@ export function add(
   trx: TrxOrDb,
   employees: Employee[],
 ): Promise<ReturnedSqlRow<Employee>[]> {
+  assert(employees.length > 0)
   return trx
     .insertInto('employment')
     .values(employees)
@@ -128,42 +130,6 @@ export function getByHealthWorker(
     .execute()
 }
 
-export function getMatching(
-  trx: TrxOrDb,
-  opts: {
-    facility_id: number
-    invitees: {
-      email: string
-      profession: 'admin' | 'doctor' | 'nurse'
-    }[]
-  },
-) {
-  return trx
-    .selectFrom('employment')
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'facilities',
-      'facilities.id',
-      'employment.facility_id',
-    )
-    .where('facility_id', '=', opts.facility_id)
-    .where(({ and, or, eb }) =>
-      or(opts.invitees.map((invitee) =>
-        and([
-          eb('health_workers.email', '=', invitee.email),
-          eb('profession', '=', invitee.profession),
-        ])
-      ))
-    )
-    .select([
-      'email',
-    ]).execute()
-}
-
 export function addInvitees(
   trx: TrxOrDb,
   facility_id: number,
@@ -172,6 +138,7 @@ export function addInvitees(
     profession: Profession
   }[],
 ) {
+  assert(invites.length > 0)
   return trx
     .insertInto('health_worker_invitees')
     .values(invites.map((invite) => ({
