@@ -4,7 +4,7 @@ import {
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { NurseRegistrationDetails, NurseSpecialty } from '../../../../types.ts'
+import { NurseRegistrationDetails } from '../../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
