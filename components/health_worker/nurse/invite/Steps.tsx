@@ -1,6 +1,4 @@
-import { PageProps } from '$fresh/server.ts'
-import { AddPatientStep } from '../../../patients/add/Steps.tsx'
-import { Steps, useSteps } from '../../../library/Steps.tsx'
+import { useSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
@@ -10,12 +8,12 @@ import { Media } from '../../../../types.ts'
 export type NurseRegistrationStep =
   | 'personal'
   | 'professional'
-  | 'document'
+  | 'documents'
 
 export const NurseRegistrationStepNames: NurseRegistrationStep[] = [
   'personal',
   'professional',
-  'document',
+  'documents',
 ]
 
 export const useNurseRegistrationSteps = useSteps(NurseRegistrationStepNames)
@@ -31,7 +29,7 @@ export function getStepFormData(
     case NurseRegistrationStepNames[1]:
       return parseRequest(trx, req, isProfessionalInformationFields)
     case NurseRegistrationStepNames[2]:
-      return parseRequest(trx, req, isDocumentFormFields)
+      return parseRequest(trx, req, isDocumentsFormFields)
     default:
       throw new Error('No step found')
   }
@@ -97,7 +95,7 @@ function isMedia(
     media === undefined
 }
 
-function isDocumentFormFields(
+function isDocumentsFormFields(
   fields: unknown,
 ): fields is DocumentFormFields {
   return isObjectLike(fields) &&
