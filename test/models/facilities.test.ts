@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
@@ -7,9 +7,8 @@ import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 
-describe('db/models/facilities.ts', () => {
+describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
-  afterEach(() => db.destroy())
 
   describe('getEmployees', () => {
     it('gets the employees of a facility, with or without invitees', async () => {
@@ -154,6 +153,174 @@ describe('db/models/facilities.ts', () => {
           ],
         },
       ])
+    })
+
+    it('can get employees matching emails', async () => {
+      const hw_at_facility1 = await health_workers.upsert(db, {
+        name: 'At Facility 1',
+        email: 'at_facility1@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(hw_at_facility1)
+
+      const hw_at_facility2 = await health_workers.upsert(db, {
+        name: 'At Facility 2',
+        email: 'at_facility2@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(hw_at_facility2)
+
+      const hw_other_facility = await health_workers.upsert(db, {
+        name: 'At Facility 3',
+        email: 'previous3@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(hw_other_facility)
+
+      await employment.add(db, [
+        {
+          health_worker_id: hw_at_facility1.id,
+          facility_id: 3,
+          profession: 'doctor',
+        },
+        {
+          health_worker_id: hw_at_facility1.id,
+          facility_id: 3,
+          profession: 'admin',
+        },
+        {
+          health_worker_id: hw_at_facility2.id,
+          facility_id: 3,
+          profession: 'doctor',
+        },
+        {
+          health_worker_id: hw_at_facility2.id,
+          facility_id: 3,
+          profession: 'nurse',
+        },
+        {
+          health_worker_id: hw_other_facility.id,
+          facility_id: 4,
+          profession: 'doctor',
+        },
+      ])
+
+      await employment.addInvitees(db, 3, [
+        {
+          email: 'invitee@test.com',
+          profession: 'doctor',
+        },
+      ])
+
+      const withInvitees = await facilities.getEmployees(db, {
+        facility_id: 3,
+        include_invitees: true,
+        emails: ['at_facility2@worker.com'],
+      })
+
+      assertEquals(withInvitees, [
+        {
+          avatar_url: 'avatar_url',
+          email: 'at_facility2@worker.com',
+          display_name: 'At Facility 2',
+          health_worker_id: hw_at_facility2.id,
+          is_invitee: false,
+          name: 'At Facility 2',
+          href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          professions: [
+            'doctor',
+            'nurse',
+          ],
+        },
+      ])
+    })
+  })
+
+  describe('invite', () => {
+    it('adds rows to health_worker_invitees if the user is not already a health worker at the facility', async () => {
+      const result = await facilities.invite(db, 1, [
+        { email: 'foo@example.com', profession: 'nurse' },
+      ])
+      assertEquals(result, { success: true })
+      const invitees = await db.selectFrom('health_worker_invitees').selectAll()
+        .execute()
+
+      assertEquals(invitees.length, 1)
+      const invitee = invitees[0]
+      assertEquals(invitee.email, 'foo@example.com')
+      assertEquals(invitee.profession, 'nurse')
+    })
+
+    it('adds the profession if the health worker is already employed at this facility', async () => {
+      const hw_at_facility1 = await health_workers.upsert(db, {
+        name: 'At Facility 1',
+        email: 'at_facility1@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(hw_at_facility1)
+
+      await employment.add(db, [
+        {
+          health_worker_id: hw_at_facility1.id,
+          facility_id: 1,
+          profession: 'admin',
+        },
+      ])
+
+      const result = await facilities.invite(db, 1, [
+        { email: 'at_facility1@worker.com', profession: 'doctor' },
+      ])
+      assertEquals(result, { success: true })
+      const invitees = await db.selectFrom('health_worker_invitees').selectAll()
+        .execute()
+
+      assertEquals(invitees.length, 0)
+
+      const employmentResult = await db.selectFrom('employment').selectAll()
+        .execute()
+      assertEquals(employmentResult.length, 2)
+      assertEquals(
+        employmentResult[0].health_worker_id,
+        employmentResult[1].health_worker_id,
+      )
+      assertEquals(employmentResult[0].profession, 'admin')
+      assertEquals(employmentResult[1].profession, 'doctor')
+    })
+
+    it('fails if the user is already a health worker at the facility with that exact profession', async () => {
+      const hw_at_facility1 = await health_workers.upsert(db, {
+        name: 'At Facility 1',
+        email: 'at_facility1@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(hw_at_facility1)
+
+      await employment.add(db, [
+        {
+          health_worker_id: hw_at_facility1.id,
+          facility_id: 1,
+          profession: 'admin',
+        },
+      ])
+
+      const result = await facilities.invite(db, 1, [
+        { email: 'at_facility1@worker.com', profession: 'admin' },
+      ])
+      assertEquals(result, {
+        success: false,
+        error:
+          'at_facility1@worker.com is already employed as a admin, please remove them from the list',
+      })
     })
   })
 })

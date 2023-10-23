@@ -37,12 +37,14 @@ export function Introduction() {
             </li>
           ))}
         </ul>
-        <p className='mt-10'>
+        {
+          /* <p className='mt-10'>
           <ArrowLink
             href='/learn-more?entrypoint=introduction'
             text='Learn more about the solution'
           />
-        </p>
+        </p> */
+        }
       </Container>
     </section>
   )

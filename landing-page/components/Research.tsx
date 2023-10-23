@@ -83,12 +83,14 @@ export function Research() {
           Monitor and evaluate at a country-wide level, with secure medical data
           sourced directly from patients
         </p>
-        <p className='mt-4'>
+        {
+          /* <p className='mt-4'>
           <ArrowLink
             href='/learn-more?entrypoint=research'
             text='Learn more about how your institution can get involved'
           />
-        </p>
+        </p> */
+        }
       </Container>
       <Container size='lg' className='mt-16'>
         <ol

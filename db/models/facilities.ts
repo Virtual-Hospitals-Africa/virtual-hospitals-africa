@@ -1,6 +1,7 @@
-import { sql } from 'kysely'
+import { SelectQueryBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
+  DatabaseSchema,
   Facility,
   Location,
   Maybe,
@@ -8,6 +9,8 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import * as employment from './employment.ts'
+import partition from '../../util/partition.ts'
 import haveNames from '../../util/haveNames.ts'
 
 export async function nearest(
@@ -115,58 +118,142 @@ export type EmployeeInvitee = {
 
 export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
 
-export async function getEmployees(
+export function getEmployees(
   trx: TrxOrDb,
   opts: {
     facility_id: number
     include_invitees?: boolean
+    emails?: string[]
   },
 ): Promise<FacilityEmployee[]> {
-  const result = await sql<FacilityEmployee>`
-    SELECT
-      FALSE AS is_invitee,
-      health_workers.id AS health_worker_id,
-      health_workers.name AS name,
-      health_workers.email as email,
-      health_workers.name as display_name,
-      JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
-      health_workers.avatar_url AS avatar_url,
-      CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text) as href
-    FROM
-      health_workers
-    INNER JOIN
-      employment
-    ON
-      employment.health_worker_id = health_workers.id
-    WHERE
-      employment.facility_id = ${opts.facility_id}
-    GROUP BY
-      health_workers.id
+  let hwQuery: SelectQueryBuilder<
+    DatabaseSchema,
+    'health_workers',
+    FacilityEmployee
+  > = trx.selectFrom('health_workers')
+    .select([
+      'health_workers.id as health_worker_id',
+      'health_workers.name as name',
+      'health_workers.email as email',
+      'health_workers.name as display_name',
+      'health_workers.avatar_url as avatar_url',
+      sql<false>`FALSE`.as('is_invitee'),
+      sql<
+        Profession[]
+      >`JSON_AGG(employment.profession ORDER BY employment.profession)`.as(
+        'professions',
+      ),
+      sql<
+        string
+      >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text)`
+        .as('href'),
+    ])
+    .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
+    .where('employment.facility_id', '=', opts.facility_id)
+    .groupBy('health_workers.id')
 
-    UNION ALL
+  if (opts.emails) {
+    assert(Array.isArray(opts.emails))
+    assert(opts.emails.length)
+    hwQuery = hwQuery.where('health_workers.email', 'in', opts.emails)
+  }
 
-    SELECT
-      TRUE AS is_invitee,
-      NULL AS health_worker_id,
-      NULL AS name,
-      health_worker_invitees.email as email,
-      health_worker_invitees.email as display_name,
-      JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
-      NULL AS avatar_url,
-      NULL as href
-    FROM
-      health_worker_invitees
-    WHERE
-      health_worker_invitees.facility_id = ${opts.facility_id}
-    AND
-      TRUE = ${opts.include_invitees ? 'TRUE' : 'FALSE'}
-    GROUP BY
-      health_worker_invitees.id
+  if (!opts.include_invitees) {
+    return hwQuery.execute()
+  }
 
-    ORDER BY
-      is_invitee ASC,
-      email ASC
-  `.execute(trx)
+  let inviteeQuery: SelectQueryBuilder<
+    DatabaseSchema,
+    'health_worker_invitees',
+    EmployeeInvitee
+  > = trx.selectFrom('health_worker_invitees')
+    .select([
+      sql<null>`NULL`.as('health_worker_id'),
+      sql<null>`NULL`.as('name'),
+      'health_worker_invitees.email as email',
+      'health_worker_invitees.email as display_name',
+      sql<null>`NULL`.as('avatar_url'),
+      sql<true>`TRUE`.as('is_invitee'),
+      sql<
+        Profession[]
+      >`JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession)`
+        .as('professions'),
+      sql<null>`NULL`.as('href'),
+    ])
+    .where('health_worker_invitees.facility_id', '=', opts.facility_id)
+    .groupBy('health_worker_invitees.id')
 
-  return result.rows
+  if (opts.emails) {
+    assert(Array.isArray(opts.emails))
+    assert(opts.emails.length)
+    inviteeQuery = inviteeQuery.where(
+      'health_worker_invitees.email',
+      'in',
+      opts.emails,
+    )
+  }
+
+  return hwQuery.unionAll(inviteeQuery).execute()
+}
+
+export async function invite(
+  trx: TrxOrDb,
+  facility_id: number,
+  invites: {
+    email: string
+    profession: Profession
+  }[],
+) {
+  const existingEmployees = await getEmployees(trx, {
+    facility_id,
+    include_invitees: true,
+    emails: invites.map((invite) => invite.email),
+  })
+
+  const matchingInvites = invites.filter(
+    (invite) =>
+      existingEmployees.some(
+        (employee) =>
+          invite.email === employee.email &&
+          employee.professions.includes(invite.profession),
+      ),
+  )
+
+  if (matchingInvites.length) {
+    const [first] = matchingInvites
+    const error =
+      `${first.email} is already employed as a ${first.profession}, please remove them from the list`
+    return { success: false, error }
+  }
+
+  const [inEmployeeTable, notInEmployeeTable] = partition(
+    invites,
+    (invite) =>
+      existingEmployees.some((employee) => employee.email === invite.email),
+  )
+
+  if (inEmployeeTable.length) {
+    await employment.add(
+      trx,
+      inEmployeeTable.map((invite) => ({
+        facility_id,
+        profession: invite.profession,
+        health_worker_id: existingEmployees.find((employee) =>
+          employee.email === invite.email
+        )!.health_worker_id as number,
+      })),
+    )
+  }
+
+  if (notInEmployeeTable.length) {
+    await employment.addInvitees(
+      trx,
+      facility_id,
+      notInEmployeeTable,
+    )
+  }
+
+  return {
+    success: true,
+  }
 }
