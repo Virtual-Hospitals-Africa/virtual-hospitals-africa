@@ -220,6 +220,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           ncz_registration_card_media_id: null,
           face_picture_media_id: null,
           approved_by: null,
+          address: 'NA'
         },
       })
 
@@ -320,6 +321,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           ncz_registration_card_media_id: registrationCardMedia.id,
           face_picture_media_id: facePictureMedia.id,
           approved_by: null,
+          address: 'Test Address'
         },
       })
 
