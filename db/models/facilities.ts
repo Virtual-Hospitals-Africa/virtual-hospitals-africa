@@ -100,7 +100,7 @@ export type EmployeeHealthWorker = {
   email: string
   display_name: string
   href: string
-  approved: number
+  registration_status: string
 }
 
 export type EmployeeInvitee = {
@@ -112,11 +112,11 @@ export type EmployeeInvitee = {
   email: string
   display_name: string
   href: null
-  approved: number
+  registration_status: string
 }
 
 export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
-
+// 'approved' | 'pending_approval' | 'incomplete'
 export async function getEmployees(
   trx: TrxOrDb,
   opts: {
@@ -134,7 +134,14 @@ export async function getEmployees(
       JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
       health_workers.avatar_url AS avatar_url,
       CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text) as href,
-      (nurse_registration_details.approved_by IS NOT NULL)::int as approved
+      CASE 
+        WHEN nurse_registration_details.approved_by IS NULL 
+              AND JSON_AGG(employment.profession ORDER BY employment.profession)::text LIKE '%"nurse"%' 
+              THEN 'pending_approval'
+      	ELSE 'approved' END as registration_status
+
+
+
     FROM
       health_workers
     LEFT JOIN
@@ -161,7 +168,10 @@ export async function getEmployees(
       JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
       NULL AS avatar_url,
       NULL as href,
-      0 as approved
+      CASE 
+        WHEN JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession)::text LIKE '%"nurse"%' 
+              THEN 'incomplete'
+      	ELSE 'approved' END as registration_status
     FROM
       health_worker_invitees
     WHERE
