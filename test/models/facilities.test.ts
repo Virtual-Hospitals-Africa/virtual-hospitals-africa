@@ -6,6 +6,7 @@ import { resetInTest } from '../../db/reset.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
+import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -88,6 +89,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           is_invitee: false,
           name: 'At Facility 1',
           href: `/app/facilities/3/health-workers/${hw_at_facility1.id}`,
+          registration_status: 'incomplete',
           professions: [
             'admin',
             'doctor',
@@ -101,6 +103,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           is_invitee: false,
           name: 'At Facility 2',
           href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          registration_status: 'incomplete',
           professions: [
             'doctor',
             'nurse',
@@ -114,6 +117,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           is_invitee: true,
           name: null,
           href: null,
+          registration_status: 'incomplete',
           professions: [
             'doctor',
           ],
@@ -134,6 +138,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           is_invitee: false,
           name: 'At Facility 1',
           href: `/app/facilities/3/health-workers/${hw_at_facility1.id}`,
+          registration_status: 'incomplete',
           professions: [
             'admin',
             'doctor',
@@ -147,6 +152,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           is_invitee: false,
           name: 'At Facility 2',
           href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          registration_status: 'incomplete',
           professions: [
             'doctor',
             'nurse',
@@ -233,9 +239,149 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           is_invitee: false,
           name: 'At Facility 2',
           href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          registration_status: 'incomplete',
           professions: [
             'doctor',
             'nurse',
+          ],
+        },
+      ])
+    })
+
+    it('assures that registration_status is pending_approval for when registration is complete, but hasn\'t been approved', async () => {
+      const hw_at_facility1 = await health_workers.upsert(db, {
+        name: 'At Facility 1',
+        email: 'at_facility1@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(hw_at_facility1)
+
+      await employment.add(db, [
+        {
+          health_worker_id: hw_at_facility1.id,
+          facility_id: 1,
+          profession: 'nurse',
+        },
+      ])
+
+      await nurse_registration_details.add(db, {
+        registrationDetails: {
+          health_worker_id: hw_at_facility1.id,
+          gender: 'female',
+          national_id: '12345678A12',
+          date_of_first_practice: '2020-01-01',
+          ncz_registration_number: 'GN123456',
+          mobile_number: '5555555555',
+          national_id_media_id: null,
+          ncz_registration_card_media_id: null,
+          face_picture_media_id: null,
+          approved_by: null,
+          date_of_birth: '2020-01-01',
+        },
+      })
+
+      const withInvitees = await facilities.getEmployees(db, {
+        facility_id: 1,
+        include_invitees: true,
+      })
+
+      assertEquals(withInvitees, [
+        {
+          avatar_url: 'avatar_url',
+          email: 'at_facility1@worker.com',
+          display_name: 'At Facility 1',
+          health_worker_id: hw_at_facility1.id,
+          is_invitee: false,
+          name: 'At Facility 1',
+          href: `/app/facilities/1/health-workers/${hw_at_facility1.id}`,
+          registration_status: 'pending_approval',
+          professions: [
+            'nurse',
+          ],
+        },
+      ])
+    })
+
+    it('assures that registration_status is approved for when registration is complete, and has been approved', async () => {
+      const nurse = await health_workers.upsert(db, {
+        name: 'Nurse',
+        email: 'nurse@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(nurse)
+
+      const admin = await health_workers.upsert(db, {
+        name: 'Admin',
+        email: 'admin@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+      })
+      assert(admin)
+
+      await employment.add(db, [
+        {
+          health_worker_id: nurse.id,
+          facility_id: 1,
+          profession: 'nurse',
+        },
+        {
+          health_worker_id: admin.id,
+          facility_id: 1,
+          profession: 'admin',
+        },
+      ])
+
+      await nurse_registration_details.add(db, {
+        registrationDetails: {
+          health_worker_id: nurse.id,
+          gender: 'female',
+          national_id: '12345678A12',
+          date_of_first_practice: '2020-01-01',
+          ncz_registration_number: 'GN123456',
+          mobile_number: '5555555555',
+          national_id_media_id: null,
+          ncz_registration_card_media_id: null,
+          face_picture_media_id: null,
+          approved_by: admin.id,
+          date_of_birth: '2020-01-01',
+        },
+      })
+
+      const withInvitees = await facilities.getEmployees(db, {
+        facility_id: 1,
+        include_invitees: true,
+      })
+
+      assertEquals(withInvitees, [
+        {
+          avatar_url: 'avatar_url',
+          email: 'nurse@worker.com',
+          display_name: 'Nurse',
+          health_worker_id: nurse.id,
+          is_invitee: false,
+          name: 'Nurse',
+          href: `/app/facilities/1/health-workers/${nurse.id}`,
+          registration_status: 'approved',
+          professions: [
+            'nurse',
+          ],
+        },
+        {
+          avatar_url: 'avatar_url',
+          email: 'admin@worker.com',
+          display_name: 'Admin',
+          health_worker_id: admin.id,
+          is_invitee: false,
+          name: 'Admin',
+          href: `/app/facilities/1/health-workers/${admin.id}`,
+          registration_status: 'incomplete',
+          professions: [
+            'admin',
           ],
         },
       ])

@@ -11,6 +11,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employee from '../../db/models/employment.ts'
+import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import {
   killWebServer,
@@ -332,18 +333,40 @@ describe('/login', { sanitizeResources: false }, () => {
       assert(pageContents.includes('Calendar'))
     })
 
-    it('allows a health worker employed at a facility to view its employees', async () => {
+    it('allows a health worker employed at a facility to view/approve its employees', async () => {
       const nurse = await upsertWithGoogleCredentials(db, testHealthWorker())
+      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
 
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
-        profession: 'doctor',
+        profession: 'admin',
       }, {
         facility_id: 1,
         health_worker_id: nurse.id,
         profession: 'nurse',
+      }, {
+        facility_id: 1,
+        health_worker_id: admin.id,
+        profession: 'doctor',
       }])
+
+      await nurse_registration_details.add(db, {
+        registrationDetails: {
+          health_worker_id: healthWorker.id,
+          gender: 'female',
+          national_id: '12345678A12',
+          date_of_first_practice: '2020-01-01',
+          ncz_registration_number: 'GN123456',
+          mobile_number: '5555555555',
+          national_id_media_id: null,
+          ncz_registration_card_media_id: null,
+          face_picture_media_id: null,
+          approved_by: healthWorker.id,
+          date_of_birth: '2020-01-01',
+        },
+      })
+
       const response = await fetch(`${ROUTE}/app/employees`, {
         headers: {
           Cookie: `sessionId=${sessionId}`,

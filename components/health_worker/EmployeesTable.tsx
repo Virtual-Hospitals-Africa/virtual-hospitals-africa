@@ -11,6 +11,7 @@ type EmployeesTableProps = {
   employees: FacilityEmployee[]
   pathname: string
   facility_id: number
+  health_worker_id: number
 }
 
 type Employee = {
@@ -19,6 +20,7 @@ type Employee = {
   professions: string[]
   health_worker_id: number | null
   href: string | null
+  registration_status: string
 }
 
 export default function EmployeesTable({
@@ -47,7 +49,17 @@ export default function EmployeesTable({
       type: 'actions',
       actions: {
         ['View'](row: Employee) {
-          return row.href
+          if (
+            row.href &&
+            !(isAdmin && row.registration_status === 'pending_approval')
+          ) {
+            return row.href
+          }
+        },
+        ['Approve'](row: Employee) {
+          if (isAdmin && row.registration_status === 'pending_approval') {
+            return row.href
+          }
         },
       },
     },

@@ -3,7 +3,9 @@ import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
 
-type Row = Record<string, Maybe<string | number | string[]>> & { id?: number }
+type Row = Record<string, string | number | string[] | null | undefined> & {
+  id?: number
+}
 
 export type TableColumn<T extends Row> =
   & {
