@@ -104,6 +104,7 @@ export type EmployeeHealthWorker = {
   display_name: string
   href: string
   approved: number
+  registration_status: 'pending_approval' | 'approved' | 'incomplete'
 }
 
 export type EmployeeInvitee = {
@@ -116,6 +117,7 @@ export type EmployeeInvitee = {
   display_name: string
   href: null
   approved: number
+  registration_status: 'pending_approval' | 'approved' | 'incomplete'
 }
 
 export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
@@ -128,7 +130,6 @@ export function getEmployees(
     emails?: string[]
   },
 ): Promise<FacilityEmployee[]> {
-<<<<<<< HEAD
   let hwQuery: SelectQueryBuilder<
     DatabaseSchema,
     'health_workers',
@@ -150,37 +151,16 @@ export function getEmployees(
         string
       >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text)`
         .as('href'),
+      sql<'pending_approval' | 'approved' | 'incomplete'>`CASE 
+      WHEN nurse_registration_details.approved_by IS NULL 
+            AND JSON_AGG(employment.profession ORDER BY employment.profession)::text LIKE '%"nurse"%' 
+            THEN 'pending_approval'
+      ELSE 'approved' END`.as('registration_status'),
     ])
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
+    .leftJoin('nurse_registration_details', 'nurse_registration_details.health_worker_id', 'health_workers.id')
     .where('employment.facility_id', '=', opts.facility_id)
     .groupBy('health_workers.id')
-=======
-  const result = await sql<FacilityEmployee>`
-    SELECT
-      FALSE AS is_invitee,
-      health_workers.id AS health_worker_id,
-      health_workers.name AS name,
-      health_workers.email as email,
-      health_workers.name as display_name,
-      JSON_AGG(employment.profession ORDER BY employment.profession) AS professions,
-      health_workers.avatar_url AS avatar_url,
-      CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text) as href,
-      (nurse_registration_details.approved_by IS NOT NULL)::int as approved
-    FROM
-      health_workers
-    LEFT JOIN
-      nurse_registration_details
-    ON
-      nurse_registration_details.health_worker_id = health_workers.id
-    INNER JOIN
-      employment
-    ON
-      employment.health_worker_id = health_workers.id
-    WHERE
-      employment.facility_id = ${opts.facility_id}
-    GROUP BY
-      health_workers.id, nurse_registration_details.approved_by
->>>>>>> add353d (moved approve button to nurse registration page)
 
   if (opts.emails) {
     assert(Array.isArray(opts.emails))
@@ -188,30 +168,9 @@ export function getEmployees(
     hwQuery = hwQuery.where('health_workers.email', 'in', opts.emails)
   }
 
-<<<<<<< HEAD
   if (!opts.include_invitees) {
     return hwQuery.execute()
   }
-=======
-    SELECT
-      TRUE AS is_invitee,
-      NULL AS health_worker_id,
-      NULL AS name,
-      health_worker_invitees.email as email,
-      health_worker_invitees.email as display_name,
-      JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession) AS professions,
-      NULL AS avatar_url,
-      NULL as href,
-      0 as approved
-    FROM
-      health_worker_invitees
-    WHERE
-      health_worker_invitees.facility_id = ${opts.facility_id}
-    AND
-      TRUE = ${opts.include_invitees ? 'TRUE' : 'FALSE'}
-    GROUP BY
-      health_worker_invitees.id
->>>>>>> add353d (moved approve button to nurse registration page)
 
   let inviteeQuery: SelectQueryBuilder<
     DatabaseSchema,
@@ -230,6 +189,7 @@ export function getEmployees(
       >`JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession)`
         .as('professions'),
       sql<null>`NULL`.as('href'),
+      sql<'pending_approval' | 'approved' | 'incomplete'>`'incomplete'`.as('registration_status'),
     ])
     .where('health_worker_invitees.facility_id', '=', opts.facility_id)
     .groupBy('health_worker_invitees.id')

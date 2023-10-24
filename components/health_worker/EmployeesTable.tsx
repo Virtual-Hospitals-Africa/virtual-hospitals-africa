@@ -20,7 +20,7 @@ type Employee = {
   professions: string[]
   health_worker_id: number | null
   href: string | null
-  approved: number
+  registration_status: string
 }
 
 export default function EmployeesTable({
@@ -50,7 +50,8 @@ export default function EmployeesTable({
       actions: {
         ['View'](row: Employee) {
           if (
-            row.approved || !row.professions.includes('nurse') ||
+            row.registration_status === 'approved' ||
+            !row.professions.includes('nurse') ||
             row.professions.length > 1
           ) {
             return row.href
@@ -59,7 +60,8 @@ export default function EmployeesTable({
         ['Approve'](row: Employee) {
           if (isAdmin) {
             if (
-              row.health_worker_id && !row.approved &&
+              row.health_worker_id &&
+              row.registration_status === 'pending_approval' &&
               !row.professions.includes('admin')
             ) {
               return row.href

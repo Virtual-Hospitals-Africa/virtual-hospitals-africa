@@ -363,6 +363,7 @@ describe('/login', { sanitizeResources: false }, () => {
           ncz_registration_card_media_id: null,
           face_picture_media_id: null,
           approved_by: healthWorker.id,
+          date_of_birth: '2020-01-01',
         },
       })
 
