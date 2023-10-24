@@ -50,22 +50,15 @@ export default function EmployeesTable({
       actions: {
         ['View'](row: Employee) {
           if (
-            row.registration_status === 'approved' ||
-            !row.professions.includes('nurse') ||
-            row.professions.length > 1
+            row.href &&
+            !(isAdmin && row.registration_status === 'pending_approval')
           ) {
             return row.href
           }
         },
         ['Approve'](row: Employee) {
-          if (isAdmin) {
-            if (
-              row.health_worker_id &&
-              row.registration_status === 'pending_approval' &&
-              !row.professions.includes('admin')
-            ) {
-              return row.href
-            }
+          if (isAdmin && row.registration_status === 'pending_approval') {
+            return row.href
           }
         },
       },

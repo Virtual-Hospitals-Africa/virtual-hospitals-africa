@@ -26,28 +26,31 @@ import * as $20 from './routes/app/patients/[id].tsx'
 import * as $21 from './routes/app/patients/[id]/avatar.tsx'
 import * as $22 from './routes/app/patients/add.tsx'
 import * as $23 from './routes/app/pending_approval.tsx'
-import * as $24 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $25 from './routes/full-reset.ts'
+import * as $24 from './routes/apply.tsx'
+import * as $25 from './routes/chatbot/incoming-whatsapp.ts'
 import * as $26 from './routes/index.tsx'
-import * as $27 from './routes/logged-in.tsx'
-import * as $28 from './routes/login.tsx'
-import * as $29 from './routes/logout.tsx'
-import * as $30 from './routes/patient-reset.ts'
+import * as $27 from './routes/join-mailing-list.tsx'
+import * as $28 from './routes/learn-more.tsx'
+import * as $29 from './routes/logged-in.tsx'
+import * as $30 from './routes/login.tsx'
+import * as $31 from './routes/logout.tsx'
+import * as $32 from './routes/volunteer.tsx'
 import * as $$0 from './islands/AllergySearch.tsx'
 import * as $$1 from './islands/ApproveSuccess.tsx'
-import * as $$2 from './islands/FacilitySearch.tsx'
-import * as $$3 from './islands/Menu.tsx'
-import * as $$4 from './islands/PersonSearch.tsx'
-import * as $$5 from './islands/ReligionSelect.tsx'
-import * as $$6 from './islands/availability-form.tsx'
-import * as $$7 from './islands/file-preview-input.tsx'
-import * as $$8 from './islands/invite-success.tsx'
-import * as $$9 from './islands/invites-form.tsx'
-import * as $$10 from './islands/landing-page/MHIDotsLogo.tsx'
-import * as $$11 from './islands/landing-page/NavBar.tsx'
-import * as $$12 from './islands/patient-address-inputs.tsx'
-import * as $$13 from './islands/patient-cards.tsx'
-import * as $$14 from './islands/schedule-form.tsx'
+import * as $$2 from './islands/ErrorMessage.tsx'
+import * as $$3 from './islands/FacilitySearch.tsx'
+import * as $$4 from './islands/Menu.tsx'
+import * as $$5 from './islands/PersonSearch.tsx'
+import * as $$6 from './islands/ReligionSelect.tsx'
+import * as $$7 from './islands/SuccessMessage.tsx'
+import * as $$8 from './islands/availability-form.tsx'
+import * as $$9 from './islands/file-preview-input.tsx'
+import * as $$10 from './islands/invites-form.tsx'
+import * as $$11 from './islands/landing-page/MHIDotsLogo.tsx'
+import * as $$12 from './islands/landing-page/NavBar.tsx'
+import * as $$13 from './islands/patient-address-inputs.tsx'
+import * as $$14 from './islands/patient-cards.tsx'
+import * as $$15 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
@@ -77,30 +80,33 @@ const manifest = {
     './routes/app/patients/[id]/avatar.tsx': $21,
     './routes/app/patients/add.tsx': $22,
     './routes/app/pending_approval.tsx': $23,
-    './routes/chatbot/incoming-whatsapp.ts': $24,
-    './routes/full-reset.ts': $25,
+    './routes/apply.tsx': $24,
+    './routes/chatbot/incoming-whatsapp.ts': $25,
     './routes/index.tsx': $26,
-    './routes/logged-in.tsx': $27,
-    './routes/login.tsx': $28,
-    './routes/logout.tsx': $29,
-    './routes/patient-reset.ts': $30,
+    './routes/join-mailing-list.tsx': $27,
+    './routes/learn-more.tsx': $28,
+    './routes/logged-in.tsx': $29,
+    './routes/login.tsx': $30,
+    './routes/logout.tsx': $31,
+    './routes/volunteer.tsx': $32,
   },
   islands: {
     './islands/AllergySearch.tsx': $$0,
     './islands/ApproveSuccess.tsx': $$1,
-    './islands/FacilitySearch.tsx': $$2,
-    './islands/Menu.tsx': $$3,
-    './islands/PersonSearch.tsx': $$4,
-    './islands/ReligionSelect.tsx': $$5,
-    './islands/availability-form.tsx': $$6,
-    './islands/file-preview-input.tsx': $$7,
-    './islands/invite-success.tsx': $$8,
-    './islands/invites-form.tsx': $$9,
-    './islands/landing-page/MHIDotsLogo.tsx': $$10,
-    './islands/landing-page/NavBar.tsx': $$11,
-    './islands/patient-address-inputs.tsx': $$12,
-    './islands/patient-cards.tsx': $$13,
-    './islands/schedule-form.tsx': $$14,
+    './islands/ErrorMessage.tsx': $$2,
+    './islands/FacilitySearch.tsx': $$3,
+    './islands/Menu.tsx': $$4,
+    './islands/PersonSearch.tsx': $$5,
+    './islands/ReligionSelect.tsx': $$6,
+    './islands/SuccessMessage.tsx': $$7,
+    './islands/availability-form.tsx': $$8,
+    './islands/file-preview-input.tsx': $$9,
+    './islands/invites-form.tsx': $$10,
+    './islands/landing-page/MHIDotsLogo.tsx': $$11,
+    './islands/landing-page/NavBar.tsx': $$12,
+    './islands/patient-address-inputs.tsx': $$13,
+    './islands/patient-cards.tsx': $$14,
+    './islands/schedule-form.tsx': $$15,
   },
   baseUrl: import.meta.url,
 }

@@ -103,7 +103,6 @@ export type EmployeeHealthWorker = {
   email: string
   display_name: string
   href: string
-  approved: number
   registration_status: 'pending_approval' | 'approved' | 'incomplete'
 }
 
@@ -116,7 +115,6 @@ export type EmployeeInvitee = {
   email: string
   display_name: string
   href: null
-  approved: number
   registration_status: 'pending_approval' | 'approved' | 'incomplete'
 }
 
@@ -132,7 +130,8 @@ export function getEmployees(
 ): Promise<FacilityEmployee[]> {
   let hwQuery: SelectQueryBuilder<
     DatabaseSchema,
-    'health_workers',
+    // deno-lint-ignore no-explicit-any
+    any,
     FacilityEmployee
   > = trx.selectFrom('health_workers')
     .select([
@@ -152,15 +151,24 @@ export function getEmployees(
       >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text)`
         .as('href'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`CASE 
+      WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
       WHEN nurse_registration_details.approved_by IS NULL 
             AND JSON_AGG(employment.profession ORDER BY employment.profession)::text LIKE '%"nurse"%' 
             THEN 'pending_approval'
       ELSE 'approved' END`.as('registration_status'),
     ])
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
-    .leftJoin('nurse_registration_details', 'nurse_registration_details.health_worker_id', 'health_workers.id')
+    .leftJoin(
+      'nurse_registration_details',
+      'nurse_registration_details.health_worker_id',
+      'health_workers.id',
+    )
     .where('employment.facility_id', '=', opts.facility_id)
-    .groupBy('health_workers.id')
+    .groupBy([
+      'health_workers.id',
+      'nurse_registration_details.approved_by',
+      'nurse_registration_details.health_worker_id',
+    ])
 
   if (opts.emails) {
     assert(Array.isArray(opts.emails))
@@ -189,7 +197,9 @@ export function getEmployees(
       >`JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession)`
         .as('professions'),
       sql<null>`NULL`.as('href'),
-      sql<'pending_approval' | 'approved' | 'incomplete'>`'incomplete'`.as('registration_status'),
+      sql<'pending_approval' | 'approved' | 'incomplete'>`'incomplete'`.as(
+        'registration_status',
+      ),
     ])
     .where('health_worker_invitees.facility_id', '=', opts.facility_id)
     .groupBy('health_worker_invitees.id')
