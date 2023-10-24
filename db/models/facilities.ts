@@ -103,6 +103,7 @@ export type EmployeeHealthWorker = {
   email: string
   display_name: string
   href: string
+  approved: boolean
 }
 
 export type EmployeeInvitee = {
@@ -114,6 +115,7 @@ export type EmployeeInvitee = {
   email: string
   display_name: string
   href: null
+  approved: boolean
 }
 
 export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee

@@ -56,6 +56,7 @@ export default function EmployeeTable(
           employees={props.data.employees}
           pathname={props.url.pathname}
           facility_id={props.data.facility.id}
+          health_worker_id={props.data.healthWorker.id}
         />
       </Container>
     </Layout>
