@@ -1,7 +1,6 @@
-import { SelectQueryBuilder, sql } from 'kysely'
+import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
-  DatabaseSchema,
   Facility,
   Location,
   Maybe,
@@ -94,31 +93,17 @@ export function getByHealthWorker(
     .selectAll('facilities')
     .execute()
 }
-export type EmployeeHealthWorker = {
-  name: string
-  is_invitee: false
-  health_worker_id: number
+export type FacilityEmployee = {
+  name: null | string
+  is_invitee: boolean
+  health_worker_id: null | number
   professions: Profession[]
-  avatar_url: string
+  avatar_url: null | string
   email: string
   display_name: string
-  href: string
+  href: null | string
   registration_status: 'pending_approval' | 'approved' | 'incomplete'
 }
-
-export type EmployeeInvitee = {
-  name: null
-  is_invitee: true
-  health_worker_id: null
-  professions: Profession[]
-  avatar_url: null
-  email: string
-  display_name: string
-  href: null
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
-}
-
-export type FacilityEmployee = EmployeeHealthWorker | EmployeeInvitee
 
 export function getEmployees(
   trx: TrxOrDb,
@@ -128,12 +113,7 @@ export function getEmployees(
     emails?: string[]
   },
 ): Promise<FacilityEmployee[]> {
-  let hwQuery: SelectQueryBuilder<
-    DatabaseSchema,
-    // deno-lint-ignore no-explicit-any
-    any,
-    FacilityEmployee
-  > = trx.selectFrom('health_workers')
+  let hwQuery = trx.selectFrom('health_workers')
     .select([
       'health_workers.id as health_worker_id',
       'health_workers.name as name',
@@ -180,18 +160,14 @@ export function getEmployees(
     return hwQuery.execute()
   }
 
-  let inviteeQuery: SelectQueryBuilder<
-    DatabaseSchema,
-    'health_worker_invitees',
-    EmployeeInvitee
-  > = trx.selectFrom('health_worker_invitees')
+  let inviteeQuery = trx.selectFrom('health_worker_invitees')
     .select([
-      sql<null>`NULL`.as('health_worker_id'),
-      sql<null>`NULL`.as('name'),
+      sql<null | number>`NULL`.as('health_worker_id'),
+      sql<null | string>`NULL`.as('name'),
       'health_worker_invitees.email as email',
       'health_worker_invitees.email as display_name',
-      sql<null>`NULL`.as('avatar_url'),
-      sql<true>`TRUE`.as('is_invitee'),
+      sql<null | string>`NULL`.as('avatar_url'),
+      sql<boolean>`TRUE`.as('is_invitee'),
       sql<
         Profession[]
       >`JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession)`
@@ -214,7 +190,8 @@ export function getEmployees(
     )
   }
 
-  return hwQuery.unionAll(inviteeQuery).execute()
+  // deno-lint-ignore no-explicit-any
+  return hwQuery.unionAll(inviteeQuery as any).execute()
 }
 
 export async function invite(
