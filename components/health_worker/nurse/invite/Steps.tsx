@@ -47,7 +47,7 @@ export type PersonalFormFields = {
   last_name: string
   gender: 'male' | 'female' | 'other'
   date_of_birth: string
-  national_id: string
+  national_id_number: string
   email: string
   mobile_number: string
 }
@@ -65,7 +65,7 @@ function isPersonalFormFields(
     !!fields.first_name &&
     !!fields.last_name &&
     !!fields.gender &&
-    !!fields.national_id &&
+    !!fields.national_id_number &&
     !!fields.mobile_number
 }
 

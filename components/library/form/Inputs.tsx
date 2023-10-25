@@ -223,20 +223,31 @@ export function SearchInput(
 }
 
 export function GenderInput(
-  { name = 'gender', label = 'Gender', required, onChange, children }:
-    GenderInputProps,
+  { value }: { value: Maybe<'male' | 'female' | 'other'> },
 ) {
   return (
     <SelectInput
-      name={name}
-      required={required}
-      label={label}
-      onChange={onChange}
+      required
+      name='gender'
+      label='Sex/Gender'
     >
-      <option value='male' label='Male'></option>
-      <option value='female' label='Female'></option>
-      <option value='other' label='Other'></option>
-      {children}
+      <option value=''>Select</option>
+      <option value='female' label='Female' selected={value === 'female'} />
+      <option value='male' label='Male' selected={value === 'male'} />
+      <option value='other' label='Other' selected={value === 'other'} />
     </SelectInput>
+  )
+}
+
+export function NationalIdInput({ value }: { value?: Maybe<string> }) {
+  return (
+    <TextInput
+      name='national_id_number'
+      label='National ID Number'
+      value={value}
+      pattern='^\d{2}-\d{6,7}\s[A-Z]\s\d{2}$'
+      placeholder='00-000000 D 00'
+      required
+    />
   )
 }

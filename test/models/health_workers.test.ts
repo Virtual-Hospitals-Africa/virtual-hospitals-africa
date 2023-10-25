@@ -10,6 +10,7 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
 import { EmployedHealthWorker } from '../../types.ts'
+import { randomNationalId } from '../mocks.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -150,7 +151,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.avatar_url, 'avatar_url')
       assertEquals(result.date_of_first_practice, null)
       assertEquals(result.email, 'test@worker.com')
-      assertEquals(result.national_id, null)
+      assertEquals(result.national_id_number, null)
       assertEquals(result.ncz_registration_number, null)
       assertEquals(result.specialty, null)
       assertEquals(result.registration_completed, false)
@@ -215,7 +216,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           health_worker_id: healthWorker.id,
           gender: 'female',
           date_of_birth: '1999-12-12',
-          national_id: '12345678A12',
+          national_id_number: randomNationalId(),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -241,7 +242,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.avatar_url, 'avatar_url')
       assertEquals(result.date_of_first_practice, '1 January 2020') // <------ this is a problem (date gets moved back 16 hours)
       assertEquals(result.email, 'test@worker.com')
-      assertEquals(result.national_id, '12345678A12')
+      assert(
+        /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),
+      )
       assertEquals(result.ncz_registration_number, 'GN123456')
       assertEquals(result.specialty, 'midwife')
       assertEquals(result.registration_completed, false)
@@ -317,7 +320,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           health_worker_id: healthWorker.id,
           gender: 'female',
           date_of_birth: '1999-12-12',
-          national_id: '12345678A12',
+          national_id_number: randomNationalId(),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -343,7 +346,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.avatar_url, 'avatar_url')
       assertEquals(result.date_of_first_practice, '1 January 2020')
       assertEquals(result.email, 'test@worker.com')
-      assertEquals(result.national_id, '12345678A12')
+      assert(
+        /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),
+      )
       assertEquals(result.ncz_registration_number, 'GN123456')
       assertEquals(result.specialty, 'midwife')
       assertEquals(result.registration_completed, false)

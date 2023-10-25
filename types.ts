@@ -830,7 +830,7 @@ export type NurseRegistrationDetails = {
   health_worker_id: number
   gender: Gender
   date_of_birth: string
-  national_id: string
+  national_id_number: string
   date_of_first_practice: string
   ncz_registration_number: string
   mobile_number: string
@@ -859,7 +859,7 @@ export type EmployeeInfo = {
   email: string
   gender: Maybe<Gender>
   date_of_birth: Maybe<string>
-  national_id: Maybe<string>
+  national_id_number: Maybe<string>
   ncz_registration_number: Maybe<string>
   mobile_number: Maybe<string>
   health_worker_id: Maybe<number>

@@ -1,6 +1,5 @@
 import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
-import { NurseRegistrationDetails } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { afterAll, beforeAll, beforeEach, describe } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
@@ -10,6 +9,7 @@ import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
+import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -76,40 +76,6 @@ export async function killProcessOnPort(port: number) {
     `Failed to kill process ${new TextDecoder().decode(result.stderr)}`,
   )
 }
-
-export const testHealthWorker = () => {
-  const expires_at = new Date()
-  expires_at.setHours(expires_at.getHours() + 1)
-  return {
-    name: 'Test Health Worker',
-    email: generateUUID() + '@example.com',
-    avatar_url: generateUUID() + '.com',
-    gcal_appointments_calendar_id: generateUUID() +
-      '@appointments.calendar.google.com',
-    gcal_availability_calendar_id: generateUUID() +
-      '@availability.calendar.google.com',
-    access_token: 'access.' + generateUUID(),
-    refresh_token: 'refresh.' + generateUUID(),
-    expires_in: 3599,
-    expires_at,
-  }
-}
-
-export const testRegistrationDetails = (
-  { health_worker_id }: { health_worker_id: number },
-): NurseRegistrationDetails => ({
-  health_worker_id,
-  gender: 'male',
-  date_of_birth: '1979-12-12',
-  national_id: '12345678A12',
-  date_of_first_practice: '1999-11-11',
-  ncz_registration_number: 'GN123456',
-  mobile_number: '1111',
-  national_id_media_id: undefined,
-  ncz_registration_card_media_id: undefined,
-  face_picture_media_id: undefined,
-  approved_by: undefined,
-})
 
 /* TODO: figure out how to turn this on
    As it stands if you turn this on you get this

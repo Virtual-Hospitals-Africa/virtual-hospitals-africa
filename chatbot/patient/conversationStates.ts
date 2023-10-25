@@ -322,8 +322,8 @@ const conversationStates: ConversationStates<
         },
       }
     },
-    prompt(patientState: PatientState): string {
-      return `Got it, ${patientState.national_id_number}. What is the reason you want to schedule an appointment?`
+    prompt(_patientState: PatientState): string {
+      return 'What is the reason you want to schedule an appointment?'
     },
     nextState: 'onboarded:make_appointment:initial_ask_for_media',
     async onExit(

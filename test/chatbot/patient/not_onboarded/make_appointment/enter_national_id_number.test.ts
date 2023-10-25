@@ -7,6 +7,7 @@ import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../db/models/patients.ts'
+import { randomNationalId } from '../../../../mocks.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
@@ -24,10 +25,12 @@ describe('patient chatbot', () => {
       national_id_number: null,
     })
 
+    const national_id_number = randomNationalId()
+
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '123456',
+      body: national_id_number,
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -46,7 +49,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Got it, 123456. What is the reason you want to schedule an appointment?',
+            'What is the reason you want to schedule an appointment?',
           type: 'string',
         },
         phone_number,
@@ -61,6 +64,6 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'onboarded:make_appointment:enter_appointment_reason',
     )
-    assertEquals(patient.national_id_number, '123456')
+    assertEquals(patient.national_id_number, national_id_number)
   })
 })

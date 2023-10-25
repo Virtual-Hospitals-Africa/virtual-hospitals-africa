@@ -1,7 +1,8 @@
 import {
   DateInput,
+  GenderInput,
+  NationalIdInput,
   PhoneNumberInput,
-  SelectInput,
   TextInput,
 } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
@@ -29,17 +30,7 @@ export default function PatientPersonalForm(
         />
       </FormRow>
       <FormRow>
-        <SelectInput name='gender' required label='Sex/Gender'>
-          <option value='female' selected={patient.gender === 'female'}>
-            Female
-          </option>
-          <option value='male' selected={patient.gender === 'male'}>
-            Male
-          </option>
-          <option value='other' selected={patient.gender === 'other'}>
-            Other
-          </option>
-        </SelectInput>
+        <GenderInput value={patient.gender} />
         <DateInput
           name='date_of_birth'
           value={patient.date_of_birth}
@@ -47,13 +38,7 @@ export default function PatientPersonalForm(
         />
       </FormRow>
       <FormRow>
-        <TextInput
-          name='national_id_number'
-          required
-          label='National ID Number'
-          value={patient.national_id_number}
-        />
-        {/* TODO: support non-required phone numbers on the backend */}
+        <NationalIdInput value={patient.national_id_number} />
         <PhoneNumberInput
           name='phone_number'
           value={patient.phone_number}

@@ -7,6 +7,7 @@ import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
+import { randomNationalId } from '../../../mocks.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
@@ -14,13 +15,14 @@ describe('patient chatbot', () => {
 
   const phone_number = '00000000'
   it('asks for reason after welcome message', async () => {
+    const national_id_number = randomNationalId()
     await patients.upsert(db, {
       conversation_state: 'onboarded:main_menu',
       phone_number,
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '1233',
+      national_id_number,
     })
 
     await conversations.insertMessageReceived(db, {
@@ -45,7 +47,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Got it, 1233. What is the reason you want to schedule an appointment?',
+            `What is the reason you want to schedule an appointment?`,
           type: 'string',
         },
         phone_number,

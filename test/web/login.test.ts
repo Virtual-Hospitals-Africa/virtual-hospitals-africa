@@ -9,11 +9,14 @@ import * as details from '../../db/models/nurse_registration_details.ts'
 import {
   addTestHealthWorkerWithSession,
   describeWithWebServer,
-  testHealthWorker,
-  testRegistrationDetails,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
 import { GoogleTokens, HealthWorker } from '../../types.ts'
+import {
+  randomNationalId,
+  testHealthWorker,
+  testRegistrationDetails,
+} from '../mocks.ts'
 
 describeWithWebServer('/login', 8002, (route) => {
   it('redirects to google if not already logged in', async () => {
@@ -327,7 +330,7 @@ describeWithWebServer('/login', 8002, (route) => {
         registrationDetails: {
           health_worker_id: nurse.id,
           gender: 'female',
-          national_id: '12345678A12',
+          national_id_number: randomNationalId(),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
