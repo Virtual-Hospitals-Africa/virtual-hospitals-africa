@@ -8,8 +8,8 @@ import * as makeAppointment from '../../scheduling/makeAppointment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { testHealthWorker } from '../web/utilities.ts'
 import { assert } from 'std/assert/assert.ts'
+import { testHealthWorker } from '../mocks.ts'
 
 describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)

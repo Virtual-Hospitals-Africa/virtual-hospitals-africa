@@ -7,6 +7,7 @@ import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
+import { randomNationalId } from '../mocks.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -270,7 +271,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         registrationDetails: {
           health_worker_id: hw_at_facility1.id,
           gender: 'female',
-          national_id: '12345678A12',
+          national_id_number: randomNationalId(),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',
@@ -340,7 +341,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         registrationDetails: {
           health_worker_id: nurse.id,
           gender: 'female',
-          national_id: '12345678A12',
+          national_id_number: randomNationalId(),
           date_of_first_practice: '2020-01-01',
           ncz_registration_number: 'GN123456',
           mobile_number: '5555555555',

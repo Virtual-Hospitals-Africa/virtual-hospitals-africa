@@ -1,6 +1,7 @@
 import {
   DateInput,
   GenderInput,
+  NationalIdInput,
   PhoneNumberInput,
   TextInput,
 } from '../../../library/form/Inputs.tsx'
@@ -35,16 +36,10 @@ export default function NursePersonalForm(
           required
           label='Date of Birth'
         />
-        <GenderInput required />
+        <GenderInput value={formData.gender} />
       </FormRow>
       <FormRow>
-        <TextInput
-          name='national_id'
-          required
-          placeholder='12345678A12'
-          pattern='^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$'
-          label='National ID Number'
-        />
+        <NationalIdInput value={formData.national_id_number} />
       </FormRow>
       <FormRow>
         <TextInput

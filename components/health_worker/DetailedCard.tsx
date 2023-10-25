@@ -97,7 +97,7 @@ export default function HealthWorkerDetailedCard(
               National ID Number
             </dt>
             <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {employee.national_id}
+              {employee.national_id_number}
             </dd>
           </div>
           <div className='px-4 py-6 sm:col-span-1 sm:px-0'>

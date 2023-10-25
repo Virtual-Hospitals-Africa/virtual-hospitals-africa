@@ -45,7 +45,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     body.set('first_name', 'Test')
     body.set('middle_names', 'Zoom Zoom')
     body.set('last_name', 'Patient')
-    body.set('national_id_number', '08- 123456 D 53')
+    body.set('national_id_number', '08-123456 D 53')
     body.set('date_of_birth', '2020-01-01')
     body.set('gender', 'female')
     body.set('phone_number', '5555555555')
@@ -67,7 +67,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patients = await db.selectFrom('patients').selectAll().execute()
     assertEquals(patients.length, 1)
     assertEquals(patients[0].name, 'Test Zoom Zoom Patient')
-    assertEquals(patients[0].national_id_number, '08- 123456 D 53')
+    assertEquals(patients[0].national_id_number, '08-123456 D 53')
 
     assert(
       postResponse.url ===
@@ -90,7 +90,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals($('input[name="last_name"]').val(), 'Patient')
     assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
     assertEquals($('select[name="gender"]').val(), 'female')
-    assertEquals($('input[name="national_id_number"]').val(), '08- 123456 D 53')
+    assertEquals($('input[name="national_id_number"]').val(), '08-123456 D 53')
     assertEquals($('input[name="phone_number"]').val(), '5555555555')
   })
 

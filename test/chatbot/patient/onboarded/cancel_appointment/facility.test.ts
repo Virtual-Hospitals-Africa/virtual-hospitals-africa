@@ -7,6 +7,7 @@ import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../db/models/patients.ts'
+import { randomNationalId } from '../../../../mocks.ts'
 
 describe('patient chatbot', () => {
   beforeEach(resetInTest)
@@ -20,7 +21,7 @@ describe('patient chatbot', () => {
       name: 'test',
       gender: 'female',
       date_of_birth: '2023-01-01',
-      national_id_number: '12344',
+      national_id_number: randomNationalId(),
     })
 
     await conversations.insertMessageReceived(db, {

@@ -125,7 +125,7 @@ function getRegistrationDetails(
     health_worker_id: healthWorker.id,
     gender: formState.gender,
     date_of_birth: formState.date_of_birth,
-    national_id: formState.national_id,
+    national_id_number: formState.national_id_number,
     date_of_first_practice: formState.date_of_first_practice,
     ncz_registration_number: formState.ncz_registration_number,
     mobile_number: formState.mobile_number,

@@ -438,7 +438,7 @@ export function getEmployeeInfo(
         .as('date_of_first_practice'),
       'nurse_registration_details.gender',
       'nurse_registration_details.mobile_number',
-      'nurse_registration_details.national_id',
+      'nurse_registration_details.national_id_number',
       'nurse_registration_details.ncz_registration_number',
       'nurse_specialties.specialty',
       'health_workers.email',

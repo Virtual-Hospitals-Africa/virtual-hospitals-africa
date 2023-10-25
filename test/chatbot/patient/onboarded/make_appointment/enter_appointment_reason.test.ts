@@ -27,7 +27,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '123456',
+      body: '12-345678 A 12',
       media_id: null,
       whatsapp_id: 'whatsapp_id_one',
     })
