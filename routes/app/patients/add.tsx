@@ -32,6 +32,7 @@ import compact from '../../../util/compact.ts'
 import pick from '../../../util/pick.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
+import { assertOr400 } from '../../../util/assertOr.ts'
 
 export type AddPatientDataProps = {
   personal: Omit<PatientPersonal, 'name'> & HasNames
@@ -153,7 +154,10 @@ async function storePatientData(
     ]).join(' '),
     avatar_media_id: personal.avatar_media_id,
   }
-  assert(patients.hasDemographicInfo(personalData))
+  assertOr400(personalData.name)
+  assertOr400(personalData.date_of_birth)
+  assertOr400(personalData.gender)
+  assertOr400(personalData.national_id_number)
 
   await patients.upsert(ctx.state.trx, {
     ...personalData,

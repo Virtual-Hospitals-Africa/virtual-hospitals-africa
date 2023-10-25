@@ -2,12 +2,10 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
   Gender,
-  HasDemographicInfo,
   Location,
   Maybe,
   Patient,
   PatientConversationState,
-  PatientDemographicInfo,
   PatientState,
   PatientWithMedicalRecord,
   RenderedPatient,
@@ -17,15 +15,43 @@ import {
 import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 
+const baseSelect = (trx: TrxOrDb) =>
+  trx
+    .selectFrom('patients')
+    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .select([
+      'patients.id',
+      'patients.name',
+      'patients.phone_number',
+      'patients.location',
+      'patients.gender',
+      sql<string | null>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
+        .as('dob_formatted'),
+      'patients.national_id_number',
+      'patients.conversation_state',
+      'patients.created_at',
+      'patients.updated_at',
+      sql<string | null>`concat('/app/patients/', patients.id::text)`.as(
+        'href',
+      ),
+      sql<
+        string | null
+      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+        .as('avatar_url'),
+      'facilities.name as nearest_facility',
+      sql<null>`NULL`.as('last_visited'),
+    ])
+
+const selectWithName = (trx: TrxOrDb) =>
+  baseSelect(trx).where('patients.name', 'is not', null)
+
 export function getByPhoneNumber(
   trx: TrxOrDb,
   query: { phone_number: string },
 ): Promise<
-  Maybe<ReturnedSqlRow<Patient>>
+  Maybe<ReturnedSqlRow<RenderedPatient>>
 > {
-  return trx
-    .selectFrom('patients')
-    .selectAll()
+  return baseSelect(trx)
     .where('phone_number', '=', query.phone_number)
     .executeTakeFirst()
 }
@@ -36,15 +62,15 @@ export function upsert(trx: TrxOrDb, info: {
   phone_number?: string
   name?: Maybe<string>
   gender?: Maybe<Gender>
-  date_of_birth?: Maybe<Date>
+  date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
   location?: Maybe<Location>
   avatar_media_id?: number
-  country?: Maybe<string>
-  province?: Maybe<string>
-  district?: Maybe<string>
-  ward?: Maybe<string>
-  street?: Maybe<string>
+  country?: Maybe<number>
+  province?: Maybe<number>
+  district?: Maybe<number>
+  ward?: Maybe<number>
+  street?: Maybe<number>
 }): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
     ...info,
@@ -69,40 +95,6 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .where('phone_number', '=', opts.phone_number)
     .executeTakeFirst()
 }
-
-const baseSelect = (trx: TrxOrDb) =>
-  trx
-    .selectFrom('patients')
-    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
-    .select([
-      'patients.id',
-      'patients.name',
-      'patients.phone_number',
-      'patients.location',
-      'patients.gender',
-      'patients.date_of_birth',
-      'patients.national_id_number',
-      'patients.country',
-      'patients.province',
-      'patients.district',
-      'patients.ward',
-      'patients.suburb',
-      'patients.street',
-      'patients.created_at',
-      'patients.updated_at',
-      sql<Maybe<string>>`concat('/app/patients/', patients.id::text)`.as(
-        'href',
-      ),
-      sql<
-        Maybe<string>
-      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
-        .as('avatar_url'),
-      'facilities.name as nearest_facility',
-      sql<null>`NULL`.as('last_visited'),
-    ])
-
-const selectWithName = (trx: TrxOrDb) =>
-  baseSelect(trx).where('patients.name', 'is not', null)
 
 // TODO: implement medical record functionality
 // TODO: only show medical record if health worker has permission
@@ -156,32 +148,14 @@ export function getAvatar(trx: TrxOrDb, opts: { patient_id: number }) {
     .executeTakeFirst()
 }
 
-export function pick(patientState: PatientState) {
-  return {
-    id: patientState.patient_id,
-    phone_number: patientState.phone_number,
-    name: patientState.name,
-    gender: patientState.gender,
-    date_of_birth: patientState.date_of_birth,
-    national_id_number: patientState.national_id_number,
-    conversation_state: patientState.conversation_state,
-    location: patientState.location,
-    country: patientState.country,
-    province: patientState.province,
-    district: patientState.district,
-    ward: patientState.ward,
-    street: patientState.street,
-  }
-}
-
 export function hasDemographicInfo(
-  patient: Partial<PatientDemographicInfo>,
-): patient is HasDemographicInfo {
+  patientState: PatientState,
+): boolean {
   return (
-    !!patient.name &&
-    !!patient.gender &&
-    !!patient.date_of_birth &&
-    !!patient.national_id_number
+    !!patientState.name &&
+    !!patientState.gender &&
+    !!patientState.dob_formatted &&
+    !!patientState.national_id_number
   )
 }
 

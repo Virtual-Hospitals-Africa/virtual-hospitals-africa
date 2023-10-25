@@ -45,7 +45,7 @@ describe('patient chatbot', () => {
       {
         messages: {
           messageBody:
-            'Got it, January 1, 2023. Please enter your national ID number',
+            'Got it, 1 January 2023. Please enter your national ID number',
           type: 'string',
         },
         phone_number,
@@ -61,8 +61,8 @@ describe('patient chatbot', () => {
       'not_onboarded:make_appointment:enter_national_id_number',
     )
     assertEquals(
-      patient.date_of_birth?.toISOString(),
-      '2023-01-01T00:00:00.000Z',
+      patient.dob_formatted,
+      '1 January 2023',
     )
   })
 })

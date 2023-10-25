@@ -161,7 +161,15 @@ export async function getUnhandledPatientMessages(
             , whatsapp_messages_received.body
             , whatsapp_messages_received.has_media
             , whatsapp_messages_received.media_id
-            , patients.*
+            , patients.id
+            , patients.name
+            , patients.phone_number
+            , patients.location
+            , patients.gender
+            , TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY') as dob_formatted
+            , patients.national_id_number
+            , patients.conversation_state
+            , concat('/app/patients/', patients.id::text) as href
             , patient_nearest_facilities.nearest_facilities AS nearest_facilities
             , aot.patient_appointment_request_id as scheduling_appointment_request_id
             , aot.reason as scheduling_appointment_reason
