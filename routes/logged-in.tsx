@@ -55,6 +55,8 @@ export async function initializeHealthWorker(
       facility_id,
       facility_name:
         employedAtFacilities.find((f) => f.id === facility_id)!.name,
+      facility_display_name:
+        employedAtFacilities.find((f) => f.id === facility_id)!.display_name,
       roles: {
         nurse: invitees.some((invitee) =>
             invitee.facility_id === facility_id &&

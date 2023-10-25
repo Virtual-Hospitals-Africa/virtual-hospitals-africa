@@ -298,6 +298,7 @@ export async function get(
           .select([
             'employment.facility_id',
             'facilities.name as facility_name',
+            'facilities.display_name as facility_display_name',
             sql<Profession[]>`JSON_AGG(employment.profession)`.as(
               'professions',
             ),
@@ -307,7 +308,11 @@ export async function get(
             '=',
             'health_workers.id',
           )
-          .groupBy(['employment.facility_id', 'facilities.name']),
+          .groupBy([
+            'employment.facility_id',
+            'facilities.name',
+            'facilities.display_name',
+          ]),
       ).as('facilities'),
     ])
 
@@ -331,6 +336,7 @@ export async function get(
     employment: result.facilities.map((f) => ({
       facility_id: f.facility_id,
       facility_name: f.facility_name,
+      facility_display_name: f.facility_display_name,
       roles: {
         nurse: f.professions.includes('nurse')
           ? {

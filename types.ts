@@ -886,6 +886,7 @@ export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
   employment: {
     facility_id: number
     facility_name: string
+    facility_display_name: string
     roles: {
       nurse: {
         employed_as: boolean
@@ -1121,6 +1122,7 @@ export type Facility = Location & {
   url?: string
   phone?: string
   walking_distance?: string | null
+  display_name: string
 }
 
 export type GoogleAddressComponent = {
