@@ -66,12 +66,11 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = PatientPersonal & PatientAddress & { 
-  primary_doctor_id: Maybe<number>,
-  nearest_facility_id: Maybe<number>,
-  completed_onboarding: boolean 
+export type Patient = PatientPersonal & PatientAddress & {
+  primary_doctor_id: Maybe<number>
+  nearest_facility_id: Maybe<number>
+  completed_onboarding: boolean
 }
-
 
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
@@ -87,14 +86,13 @@ export type PatientPersonal = {
 } & PatientDemographicInfo
 
 export type PatientAddress = {
-  country: Maybe<number>
-  province: Maybe<number>
-  district: Maybe<number>
-  ward: Maybe<number>
-  suburb: Maybe<number>
+  country_id: Maybe<number>
+  province_id: Maybe<number>
+  district_id: Maybe<number>
+  ward_id: Maybe<number>
+  suburb_id: Maybe<number>
   street: Maybe<string>
 }
-
 
 export type RenderedPatient = ReturnedSqlRow<
   Pick<
@@ -117,22 +115,27 @@ export type RenderedPatient = ReturnedSqlRow<
 >
 
 export type OnboardingPatient =
-& { id: number; avatar_url: Maybe<string>; nearest_facility_name: Maybe<string> }
-& Pick<
-  Patient,
-  | 'name'
-  | 'phone_number'
-  | 'gender'
-  | 'date_of_birth'
-  | 'national_id_number'
-  | 'country'
-  | 'province'
-  | 'district'
-  | 'ward'
-  | 'street'
-  | 'nearest_facility_id'
-  | 'completed_onboarding'
->
+  & {
+    id: number
+    avatar_url: Maybe<string>
+    nearest_facility_name: Maybe<string>
+  }
+  & Pick<
+    Patient,
+    | 'name'
+    | 'phone_number'
+    | 'gender'
+    | 'date_of_birth'
+    | 'national_id_number'
+    | 'country_id'
+    | 'province_id'
+    | 'district_id'
+    | 'ward_id'
+    | 'suburb_id'
+    | 'street'
+    | 'nearest_facility_id'
+    | 'completed_onboarding'
+  >
 
 export type PatientFamily = {
   marital_status: string
@@ -1185,7 +1188,7 @@ export type Ward = { name: string; district_id: number }
 
 export type Suburb = { name: string; ward_id: number }
 
-export type AdminDistricts = {
+export type FullCountryInfo = {
   id: number
   name: string
   provinces: {

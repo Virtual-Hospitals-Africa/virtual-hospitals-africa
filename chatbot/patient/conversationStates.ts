@@ -32,7 +32,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
-import { pickPatient } from "./util.ts"
+import { pickPatient } from './util.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,

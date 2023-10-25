@@ -1,9 +1,9 @@
-import { AdminDistricts, TrxOrDb } from '../../types.ts'
+import { FullCountryInfo, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
-export function getAll(
+export function getFullCountryInfo(
   trx: TrxOrDb,
-): Promise<AdminDistricts> {
+): Promise<FullCountryInfo> {
   return trx
     .selectFrom('countries')
     .select((ebProvinces) => [

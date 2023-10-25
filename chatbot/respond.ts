@@ -7,7 +7,6 @@ import {
   ConversationStates,
   PatientConversationState,
   PatientState,
-
   WhatsAppJSONResponse,
   WhatsAppSendable,
   WhatsAppSingleSendable,
@@ -29,7 +28,6 @@ type WhatsApp = {
 }
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
-
 
 async function respondToPatientMessage(
   whatsapp: WhatsApp,

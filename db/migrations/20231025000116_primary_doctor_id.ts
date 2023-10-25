@@ -1,9 +1,13 @@
-import { Kysely } from "kysely";
+import { Kysely } from 'kysely'
 
 export function up(db: Kysely<unknown>) {
   return db.schema
     .alterTable('patients')
-    .addColumn('primary_doctor_id', 'integer', (col) => col.references('health_workers.id'))
+    .addColumn(
+      'primary_doctor_id',
+      'integer',
+      (col) => col.references('health_workers.id'),
+    )
     .execute()
 }
 

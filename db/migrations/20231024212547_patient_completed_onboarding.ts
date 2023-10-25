@@ -1,4 +1,4 @@
-import { Kysely } from "kysely";
+import { Kysely } from 'kysely'
 
 export function up(db: Kysely<unknown>) {
   return db.schema

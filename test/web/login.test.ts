@@ -1,8 +1,4 @@
-import {
-  beforeEach,
-  describe,
-  it,
-} from 'std/testing/bdd.ts'
+import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -11,17 +7,17 @@ import * as employee from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import {
-  describeWithWebServer,
   addTestHealthWorkerWithSession,
+  describeWithWebServer,
   testHealthWorker,
   testRegistrationDetails,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
 import { GoogleTokens, HealthWorker } from '../../types.ts'
 
-describeWithWebServer('/login', 8002, ROUTE => {
+describeWithWebServer('/login', 8002, (route) => {
   it('redirects to google if not already logged in', async () => {
-    const response = await fetch(`${ROUTE}/login`, {
+    const response = await fetch(`${route}/login`, {
       redirect: 'manual',
     })
     const redirectLocation = response.headers.get('location')
@@ -44,7 +40,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
     })
 
     it('doesn\'t allow unemployed access to /app', async () => {
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
@@ -60,13 +56,13 @@ describeWithWebServer('/login', 8002, ROUTE => {
         profession: 'admin',
       }])
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app`, `should be in ${ROUTE}/app`)
+      assert(response.url === `${route}/app`, `should be in ${route}/app`)
       assert(
         (await response.text()).includes('My Patients'),
         'response should contain My Patients',
@@ -80,14 +76,14 @@ describeWithWebServer('/login', 8002, ROUTE => {
         profession: 'doctor',
       }])
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app`, `should be in ${ROUTE}/app`)
+      assert(response.url === `${route}/app`, `should be in ${route}/app`)
       assert(
         (await response.text()).includes('My Patients'),
         'response should contain My Patients',
@@ -101,7 +97,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         profession: sample(['admin', 'doctor', 'nurse']),
       }])
 
-      const response = await fetch(`${ROUTE}/login`, {
+      const response = await fetch(`${route}/login`, {
         redirect: 'manual',
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
@@ -119,15 +115,15 @@ describeWithWebServer('/login', 8002, ROUTE => {
         profession: 'nurse',
       }])
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
       assert(
-        response.url === `${ROUTE}/app/facilities/1/register?step=personal`,
-        `should be in ${ROUTE}/app/facilities/1/register`,
+        response.url === `${route}/app/facilities/1/register?step=personal`,
+        `should be in ${route}/app/facilities/1/register`,
       )
       assert(
         (await response.text()).includes('First Name'),
@@ -147,12 +143,12 @@ describeWithWebServer('/login', 8002, ROUTE => {
         }),
       })
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.url === `${ROUTE}/app/pending_approval`)
+      assert(response.url === `${route}/app/pending_approval`)
       await response.text()
     })
 
@@ -177,14 +173,14 @@ describeWithWebServer('/login', 8002, ROUTE => {
         healthWorkerId: mock.healthWorker.id,
       })
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app`, `should be in ${ROUTE}/app`)
+      assert(response.url === `${route}/app`, `should be in ${route}/app`)
       assert(
         (await response.text()).includes('My Patients'),
         'response should contain My Patients',
@@ -211,7 +207,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         approverId: admin.id,
         healthWorkerId: mock.healthWorker.id,
       })
-      let response = await fetch(`${ROUTE}/app`, {
+      let response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
@@ -227,13 +223,13 @@ describeWithWebServer('/login', 8002, ROUTE => {
         'should include text Add patient',
       )
 
-      response = await fetch(`${ROUTE}/app/patients/add?step=personal`, {
+      response = await fetch(`${route}/app/patients/add?step=personal`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app/patients/add?step=personal`)
+      assert(response.url === `${route}/app/patients/add?step=personal`)
       pageContents = await response.text()
       assert(pageContents.includes('Next Step'), 'should include Next Step')
       assert(
@@ -241,13 +237,13 @@ describeWithWebServer('/login', 8002, ROUTE => {
         'should be a link back to patients screen',
       )
 
-      response = await fetch(`${ROUTE}/app/patients`, {
+      response = await fetch(`${route}/app/patients`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/patients`)
+      assert(response.url === `${route}/app/patients`)
       assert((await response.text()).includes('Add patient'))
     })
 
@@ -257,7 +253,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
-      let response = await fetch(`${ROUTE}/app`, {
+      let response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
@@ -268,27 +264,27 @@ describeWithWebServer('/login', 8002, ROUTE => {
       assert(pageContents.includes('href="/app/patients"'))
       assert(pageContents.includes('My Patients'))
 
-      response = await fetch(`${ROUTE}/app/patients`, {
+      response = await fetch(`${route}/app/patients`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/patients`)
+      assert(response.url === `${route}/app/patients`)
       pageContents = await response.text()
       assert(pageContents.includes('Patients'))
       assert(pageContents.includes('Add patient'))
       assert(pageContents.includes('href="/app"'))
 
-      response = await fetch(`${ROUTE}/app`, {
+      response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app`)
+      assert(response.url === `${route}/app`)
       await response.text()
     })
 
@@ -298,7 +294,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
@@ -324,12 +320,12 @@ describeWithWebServer('/login', 8002, ROUTE => {
       }, {
         facility_id: 1,
         health_worker_id: admin.id,
-        profession: 'doctor',
+        profession: 'admin',
       }])
 
       await nurse_registration_details.add(db, {
         registrationDetails: {
-          health_worker_id: healthWorker.id,
+          health_worker_id: nurse.id,
           gender: 'female',
           national_id: '12345678A12',
           date_of_first_practice: '2020-01-01',
@@ -338,12 +334,12 @@ describeWithWebServer('/login', 8002, ROUTE => {
           national_id_media_id: null,
           ncz_registration_card_media_id: null,
           face_picture_media_id: null,
-          approved_by: healthWorker.id,
+          approved_by: admin.id,
           date_of_birth: '2020-01-01',
         },
       })
 
-      const response = await fetch(`${ROUTE}/app/employees`, {
+      const response = await fetch(`${route}/app/employees`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
@@ -351,7 +347,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
 
       assert(response.ok)
       assert(response.redirected)
-      assert(response.url === `${ROUTE}/app/facilities/1/employees`)
+      assert(response.url === `${route}/app/facilities/1/employees`)
       const pageContents = await response.text()
       assert(
         pageContents.includes(
@@ -371,24 +367,24 @@ describeWithWebServer('/login', 8002, ROUTE => {
         health_worker_id: mock.healthWorker.id,
         profession: 'admin',
       }])
-      let response = await fetch(`${ROUTE}/app/facilities/1/employees`, {
+      let response = await fetch(`${route}/app/facilities/1/employees`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/facilities/1/employees`)
+      assert(response.url === `${route}/app/facilities/1/employees`)
       let pageContents = await response.text()
       assert(pageContents.includes('href="/app/facilities/1/employees/invite"'))
 
-      response = await fetch(`${ROUTE}/app/facilities/1/employees/invite`, {
+      response = await fetch(`${route}/app/facilities/1/employees/invite`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/facilities/1/employees/invite`)
+      assert(response.url === `${route}/app/facilities/1/employees/invite`)
       pageContents = await response.text()
       assert(pageContents.includes('Email'))
       assert(pageContents.includes('Profession'))
@@ -401,7 +397,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
-      const response = await fetch(`${ROUTE}/app/facilities/2/employees`, {
+      const response = await fetch(`${route}/app/facilities/2/employees`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
@@ -417,7 +413,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         profession: 'doctor',
       }])
       const employeesResponse = await fetch(
-        `${ROUTE}/app/facilities/1/employees`,
+        `${route}/app/facilities/1/employees`,
         {
           headers: {
             Cookie: `sessionId=${mock.sessionId}`,
@@ -429,7 +425,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
         employeesResponse.ok,
         'user should still be able to access employees page',
       )
-      assert(employeesResponse.url === `${ROUTE}/app/facilities/1/employees`)
+      assert(employeesResponse.url === `${route}/app/facilities/1/employees`)
       const pageContents = await employeesResponse.text()
       assert(
         !pageContents.includes('href="/app/facilities/1/employees/invite"'),
@@ -437,7 +433,7 @@ describeWithWebServer('/login', 8002, ROUTE => {
       )
 
       const invitesResponse = await fetch(
-        `${ROUTE}/app/facilities/1/employees/invite`,
+        `${route}/app/facilities/1/employees/invite`,
         {
           headers: {
             Cookie: `sessionId=${mock.sessionId}`,

@@ -37,8 +37,6 @@ export function parseFormWithoutFiles<T extends Record<string, unknown>>(
   return parsed
 }
 
-
-
 export async function parseRequest<T extends Record<string, unknown>>(
   trx: TrxOrDb,
   req: Request,
@@ -48,14 +46,11 @@ export async function parseRequest<T extends Record<string, unknown>>(
 
   const contentType = req.headers.get('content-type')
 
-  console.log('let formData: FormData | URLSearchParams')
   let formData: FormData | URLSearchParams | undefined
 
-  // console.log('if (contentType?.startsWith(')
   if (contentType?.startsWith('multipart/form-data')) {
     try {
       formData = await req.formData()
-      console.log('formData', formData)
     } catch (err) {
       console.error(err)
     }

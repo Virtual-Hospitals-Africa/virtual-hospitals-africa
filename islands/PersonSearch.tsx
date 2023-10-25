@@ -1,11 +1,9 @@
-// import SearchResults from '../SearchResults.tsx'
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
   PersonSearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'https://deno.land/std@0.160.0/_util/assert.ts'
-//import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import { HasId } from '../types.ts'
 
@@ -14,9 +12,18 @@ export default function PersonSearch({
   name,
   required,
   label,
-}: { href: string; name: string; required?: boolean; label?: string }) {
+  value,
+}: {
+  href: string
+  name: string
+  required?: boolean
+  label?: string
+  value?: { id: number; name: string }
+}) {
   const [isFocused, setIsFocused] = useState(false)
-  const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
+  const [selected, setSelected] = useState<HasId<{ name: string }> | null>(
+    value || null,
+  )
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
 
   const [search, setSearchImmediate] = useState('')

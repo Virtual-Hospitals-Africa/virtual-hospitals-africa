@@ -54,7 +54,7 @@ export function get(
   trx: TrxOrDb,
   opts: {
     ids: number[]
-  }
+  },
 ) {
   assert(opts.ids.length, 'Must select nonzero facilities')
   return trx

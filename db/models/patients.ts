@@ -70,10 +70,11 @@ export type UpsertablePatient = {
   primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
-  country?: Maybe<number>
-  province?: Maybe<number>
-  district?: Maybe<number>
-  ward?: Maybe<number>
+  country_id?: Maybe<number>
+  province_id?: Maybe<number>
+  district_id?: Maybe<number>
+  ward_id?: Maybe<number>
+  suburb_id?: Maybe<number>
   street?: Maybe<string>
   completed_onboarding?: boolean
   name?: Maybe<string>
@@ -82,9 +83,15 @@ export type UpsertablePatient = {
   last_name?: Maybe<string>
 }
 
-const omitNames = omit<UpsertablePatient, 'first_name' | 'middle_names' | 'last_name'>(['first_name', 'middle_names', 'last_name' ])
+const omitNames = omit<
+  UpsertablePatient,
+  'first_name' | 'middle_names' | 'last_name'
+>(['first_name', 'middle_names', 'last_name'])
 
-export function upsert(trx: TrxOrDb, patient: UpsertablePatient): Promise<ReturnedSqlRow<Patient>> {
+export function upsert(
+  trx: TrxOrDb,
+  patient: UpsertablePatient,
+): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
     ...omitNames(patient),
     location: patient.location
@@ -132,12 +139,15 @@ export function getOnboarding(
       'patients.phone_number',
       'patients.location',
       'patients.gender',
-      'patients.date_of_birth',
+      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
+        'date_of_birth',
+      ),
       'patients.national_id_number',
-      'patients.country',
-      'patients.province',
-      'patients.district',
-      'patients.ward',
+      'patients.country_id',
+      'patients.province_id',
+      'patients.district_id',
+      'patients.ward_id',
+      'patients.suburb_id',
       'patients.street',
       'patients.completed_onboarding',
       sql<

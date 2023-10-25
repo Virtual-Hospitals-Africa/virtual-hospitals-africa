@@ -1,13 +1,11 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
-  AdminDistricts,
   EmployedHealthWorker,
-  LoggedInHealthWorker,
+  FullCountryInfo,
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
-  Patient,
 } from '../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import * as patients from '../../../db/models/patients.ts'
@@ -21,8 +19,8 @@ import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
-import { assertOr400, assertOr404 } from '../../../util/assertOr.ts'
 import omit from '../../../util/omit.ts'
+import Buttons from '../../../components/library/form/buttons.tsx'
 
 type HasNames = {
   first_name: string
@@ -44,15 +42,15 @@ type AddPatientProps =
     adminDistricts?: undefined
   } | {
     step: 'address'
-    adminDistricts: AdminDistricts
+    adminDistricts: FullCountryInfo
   })
 
 type HasAddress = {
-  country: number
-  province: number
-  district: number
-  ward: number
-  suburb?: Maybe<string>
+  country_id: number
+  province_id: number
+  district_id: number
+  ward_id: number
+  suburb_id?: Maybe<number>
   street: string
 }
 
@@ -68,10 +66,10 @@ function hasAddress(
   patient: unknown,
 ): patient is HasAddress {
   return isObjectLike(patient) &&
-    !!patient.country && typeof patient.country === 'number' &&
-    !!patient.province && typeof patient.province === 'number' &&
-    !!patient.district && typeof patient.district === 'number' &&
-    !!patient.ward && typeof patient.ward === 'number' &&
+    !!patient.country_id && typeof patient.country_id === 'number' &&
+    !!patient.province_id && typeof patient.province_id === 'number' &&
+    !!patient.district_id && typeof patient.district_id === 'number' &&
+    !!patient.ward_id && typeof patient.ward_id === 'number' &&
     !!patient.street && typeof patient.street === 'string'
 }
 
@@ -130,7 +128,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'address') {
-      const adminDistricts = await address.getAll(ctx.state.trx)
+      const adminDistricts = await address.getFullCountryInfo(ctx.state.trx)
       return ctx.render({
         healthWorker,
         patient,
@@ -210,25 +208,30 @@ export default function AddPatient(
           method='POST'
           className='w-full mt-4'
           encType='multipart/form-data'
-          autoComplete='off'
         >
           {currentStep === 'personal' && (
-            <PatientPersonalForm initialData={patient} />
+            <PatientPersonalForm patient={patient} />
           )}
           {currentStep === 'address' && (
             <PatientAddressForm
+              patient={patient}
               defaultFacility={{
                 id: healthWorker.employment[0].facility_id,
                 name: healthWorker.employment[0].facility_name,
               }}
-              adminDistricts={adminDistricts}
+              adminDistricts={adminDistricts!}
             />
           )}
-          {currentStep === 'family' && <FamilyForm initialData={patient} />}
+          {currentStep === 'family' && <FamilyForm patient={patient} />}
           {currentStep === 'pre-existing_conditions' && (
-            <PatientConditionsForm />
+            <PatientConditionsForm patient={patient} />
           )}
           {currentStep === 'age_related_questions' && <div>TODO age form</div>}
+          <hr className='my-2' />
+          <Buttons
+            submitText='Next Step'
+            cancelHref='/app/patients'
+          />
         </form>
       </Container>
     </Layout>

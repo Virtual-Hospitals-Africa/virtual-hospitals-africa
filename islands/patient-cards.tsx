@@ -22,7 +22,7 @@ const DISPLAYED_COLUMNS: {
 ]
 
 function CardHeader(
-  { name, avatar_url }: { name: string; avatar_url?: Maybe<string> },
+  { name, avatar_url }: { name: Maybe<string>; avatar_url?: Maybe<string> },
 ) {
   return (
     <div className='flex gap-3 items-center'>

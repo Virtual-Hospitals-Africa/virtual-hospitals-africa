@@ -13,13 +13,13 @@ export default function FacilitySearch({
   name,
   label,
   required,
-  defaultFacility,
+  value,
 }: {
   href: string
   name: string
   label?: string
   required?: boolean
-  defaultFacility?: { id: number; name: string }
+  value?: { id: number; name: string }
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
@@ -73,10 +73,10 @@ export default function FacilitySearch({
   }, [search])
 
   useEffect(() => {
-    if (!defaultFacility) return
-    setSearchImmediate(defaultFacility.name)
-    setSelected(defaultFacility)
-  }, [defaultFacility?.id])
+    if (!value) return
+    setSearchImmediate(value.name)
+    setSelected(value)
+  }, [value?.id])
 
   const showSearchResults = isFocused && facilities.length > 0 &&
     selected?.name !== search

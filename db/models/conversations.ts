@@ -7,7 +7,6 @@ import {
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
-import * as patients from './patients.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
@@ -31,7 +30,6 @@ export function isWhatsAppContents(
     !('has_media' in contents) || !('media_id' in contents) ||
     !('body' in contents)
   ) {
-
     return false
   }
   if (contents.has_media) {
