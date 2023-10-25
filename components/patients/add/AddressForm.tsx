@@ -39,6 +39,7 @@ function NearestHealthCare(
           name='primary_doctor'
           label='Primary/Family Doctor'
           href='/app/health_workers?profession=doctor'
+          required
         />
       </FormRow>
     </section>

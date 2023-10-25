@@ -63,7 +63,7 @@ export async function killProcessOnPort(port: number) {
   const pid = new TextDecoder()
     .decode(lsof.stdout)
     .split('\n')[1]
-    ?.split(/\W+/)?.[1]
+    ?.split(/\s+/)?.[1]
 
   if (!pid) return
 
@@ -160,11 +160,59 @@ export function describeWithWebServer(
   )
 }
 
+export async function addTestHealthWorker(opts: {
+  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin'
+} = { scenario: 'base' }) {
+  const healthWorker = await upsertWithGoogleCredentials(db, testHealthWorker())
+  switch (opts.scenario) {
+    case 'approved-nurse': {
+      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
+      await employee.add(db, [{
+        facility_id: 1,
+        health_worker_id: admin.id,
+        profession: 'admin',
+      }, {
+        facility_id: 1,
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+      }])
+      await details.add(db, {
+        registrationDetails: testRegistrationDetails({
+          health_worker_id: healthWorker.id,
+        }),
+      })
+      await details.approve(db, {
+        approverId: admin.id,
+        healthWorkerId: healthWorker.id,
+      })
+      break
+    }
+    case 'admin': {
+      await employee.add(db, [{
+        facility_id: 1,
+        health_worker_id: healthWorker.id,
+        profession: 'admin',
+      }])
+      break
+    }
+    case 'doctor': {
+      await employee.add(db, [{
+        facility_id: 1,
+        health_worker_id: healthWorker.id,
+        profession: 'doctor',
+      }])
+      break
+    }
+  }
+
+  return healthWorker
+}
+
 export async function addTestHealthWorkerWithSession(opts: {
-  scenario: 'base' | 'approved-nurse'
+  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin'
 } = { scenario: 'base' }) {
   const sessionId = generateUUID()
-  const healthWorker = await upsertWithGoogleCredentials(db, testHealthWorker())
+  const healthWorker = await addTestHealthWorker(opts)
   await redis.set(
     `S_${sessionId}`,
     JSON.stringify({
@@ -172,28 +220,5 @@ export async function addTestHealthWorkerWithSession(opts: {
       _flash: {},
     }),
   )
-
-  if (opts.scenario === 'approved-nurse') {
-    const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
-    await employee.add(db, [{
-      facility_id: 1,
-      health_worker_id: admin.id,
-      profession: 'admin',
-    }, {
-      facility_id: 1,
-      health_worker_id: healthWorker.id,
-      profession: 'nurse',
-    }])
-    await details.add(db, {
-      registrationDetails: testRegistrationDetails({
-        health_worker_id: healthWorker.id,
-      }),
-    })
-    await details.approve(db, {
-      approverId: admin.id,
-      healthWorkerId: healthWorker.id,
-    })
-  }
-
   return { sessionId, healthWorker }
 }

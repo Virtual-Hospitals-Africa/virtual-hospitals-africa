@@ -11,7 +11,7 @@ import { OnboardingPatient } from '../../../types.ts'
 export default function PatientPersonalForm(
   { patient = {} }: { patient?: Partial<OnboardingPatient> },
 ) {
-  const names = patient.name ? patient.name.split(/\W+/) : []
+  const names = patient.name ? patient.name.split(/\s+/) : []
 
   return (
     <>

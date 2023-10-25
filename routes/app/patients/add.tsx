@@ -7,12 +7,14 @@ import {
   Maybe,
   OnboardingPatient,
 } from '../../../types.ts'
-import { assert } from 'std/assert/assert.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
+import {
+  AddPatientStep,
+  useAddPatientSteps,
+} from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
@@ -21,12 +23,7 @@ import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
 import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
-
-type HasNames = {
-  first_name: string
-  last_name: string
-  middle_names?: string
-}
+import { assertOr400 } from '../../../util/assertOr.ts'
 
 type AddPatientProps =
   & {
@@ -38,74 +35,140 @@ type AddPatientProps =
       | 'personal'
       | 'family'
       | 'pre-existing_conditions'
-      | 'age_related_questions'
+      | 'history'
+      | 'occupation'
+      | 'family'
+      | 'lifestyle'
     adminDistricts?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
   })
 
-type HasAddress = {
+type Personal = {
+  first_name: string
+  last_name: string
+  middle_names?: string
+  avatar_media?: Maybe<{ id: number }>
+  national_id_number: string
+  phone_number?: string
+}
+
+type Address = {
   country_id: number
   province_id: number
   district_id: number
   ward_id: number
   suburb_id?: Maybe<number>
   street: string
+  nearest_facility_id: number
+  primary_doctor_id: number
 }
 
-function hasNames(
+type Conditions = Record<string, unknown>
+type Family = Record<string, unknown>
+type History = Record<string, unknown>
+type Occupation = Record<string, unknown>
+type Lifestyle = Record<string, unknown>
+
+function isPersonal(
   patient: unknown,
-): patient is HasNames {
+): patient is Personal {
   return isObjectLike(patient) &&
     !!patient.first_name && typeof patient.first_name === 'string' &&
-    !!patient.last_name && typeof patient.last_name === 'string'
+    !!patient.last_name && typeof patient.last_name === 'string' &&
+    !!patient.national_id_number &&
+    typeof patient.national_id_number === 'string'
 }
 
-function hasAddress(
+function isAddress(
   patient: unknown,
-): patient is HasAddress {
+): patient is Address {
   return isObjectLike(patient) &&
     !!patient.country_id && typeof patient.country_id === 'number' &&
     !!patient.province_id && typeof patient.province_id === 'number' &&
     !!patient.district_id && typeof patient.district_id === 'number' &&
     !!patient.ward_id && typeof patient.ward_id === 'number' &&
-    !!patient.street && typeof patient.street === 'string'
+    !!patient.street && typeof patient.street === 'string' &&
+    !!patient.nearest_facility_id && typeof patient.nearest_facility_id ===
+      'number' &&
+    !!patient.primary_doctor_id && typeof patient.primary_doctor_id === 'number'
 }
 
-function hasConditions(
+function isConditions(
   patient: unknown,
-): patient is Record<string, unknown> {
+): patient is Conditions {
   return true
 }
 
-function hasFamily(
+function isFamily(
   patient: unknown,
-): patient is Record<string, unknown> {
+): patient is Family {
   return true
 }
 
-const typeCheckers = {
-  personal: hasNames,
-  address: hasAddress,
-  'pre-existing_conditions': hasConditions,
-  family: hasFamily,
+function isHistory(
+  patient: unknown,
+): patient is History {
+  return true
+}
+
+function isOccupation(
+  patient: unknown,
+): patient is Occupation {
+  return true
+}
+
+function isLifestyle(
+  patient: unknown,
+): patient is Lifestyle {
+  return true
+}
+
+type Forms = {
+  personal: Personal
+  address: Address
+  'pre-existing_conditions': Conditions
+  family: Family
+  history: History
+  occupation: Occupation
+  lifestyle: Lifestyle
+}
+
+type TypeCheckers = {
+  [key in AddPatientStep]: (
+    patient: unknown,
+  ) => patient is Forms[key]
+}
+
+type Transformers = Partial<
+  {
+    [key in AddPatientStep]: (
+      patient: Forms[key],
+    ) => patients.UpsertablePatient
+  }
+>
+
+const typeCheckers: TypeCheckers = {
+  personal: isPersonal,
+  address: isAddress,
+  'pre-existing_conditions': isConditions,
+  family: isFamily,
+  history: isHistory,
+  occupation: isOccupation,
+  lifestyle: isLifestyle,
 }
 
 const omitNames = omit(['nearest_facility_name', 'primary_doctor_name'])
 
-const transformers = {
+const transformers: Transformers = {
   personal: (
-    { avatar_media, ...patient }: patients.UpsertablePatient & {
-      avatar_media?: { id: number }
-    },
+    { avatar_media, ...patient },
   ): patients.UpsertablePatient => ({
     ...patient,
     avatar_media_id: avatar_media?.id,
   }),
   address: omitNames,
-  'pre-existing_conditions': (patient: patients.UpsertablePatient) => patient,
-  family: (patient: patients.UpsertablePatient) => patient,
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -136,9 +199,10 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         adminDistricts,
       })
     }
-    assert(
-      step === 'personal' || step === 'family' ||
-        step === 'pre-existing_conditions' || step === 'age_related_questions',
+    assertOr400(
+      step === 'personal' ||
+        step === 'pre-existing_conditions' || step === 'family' ||
+        step === 'history' || step === 'occupation' || step === 'lifestyle',
     )
     return ctx.render({ healthWorker, patient, step })
   },
@@ -147,20 +211,22 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const step = searchParams.get('step')
     const id = searchParams.get('patient_id')
 
-    assert(
+    assertOr400(
       step === 'personal' || step === 'address' ||
-        step === 'pre-existing_conditions' || step === 'family',
-      `${step} not supported`,
+        step === 'pre-existing_conditions' || step === 'family' ||
+        step === 'history' || step === 'occupation' || step === 'lifestyle',
     )
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
 
-    const transformedFormData = transformers[step](formData)
+    // deno-lint-ignore no-explicit-any
+    const transformedFormData = transformers[step]?.(formData as any) ||
+      formData
 
     const patient = await patients.upsert(ctx.state.trx, {
       ...transformedFormData,
       id: id ? parseInt(id) : undefined,
-      completed_onboarding: step === 'family',
+      completed_onboarding: step === 'lifestyle',
     })
 
     if (step === 'personal') {
@@ -226,7 +292,6 @@ export default function AddPatient(
           {currentStep === 'pre-existing_conditions' && (
             <PatientConditionsForm patient={patient} />
           )}
-          {currentStep === 'age_related_questions' && <div>TODO age form</div>}
           <hr className='my-2' />
           <Buttons
             submitText='Next Step'

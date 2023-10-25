@@ -1,6 +1,7 @@
 import { it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
+  addTestHealthWorker,
   addTestHealthWorkerWithSession,
   describeWithWebServer,
 } from '../utilities.ts'
@@ -44,7 +45,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     body.set('first_name', 'Test')
     body.set('middle_names', 'Zoom Zoom')
     body.set('last_name', 'Patient')
-    body.set('national_id_number', '123456')
+    body.set('national_id_number', '08- 123456 D 53')
     body.set('date_of_birth', '2020-01-01')
     body.set('gender', 'female')
     body.set('phone_number', '5555555555')
@@ -59,12 +60,15 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       },
     )
 
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+
     const patients = await db.selectFrom('patients').selectAll().execute()
     assertEquals(patients.length, 1)
     assertEquals(patients[0].name, 'Test Zoom Zoom Patient')
-    assertEquals(patients[0].national_id_number, '123456')
+    assertEquals(patients[0].national_id_number, '08- 123456 D 53')
 
-    assert(postResponse.ok, 'should have returned ok')
     assert(
       postResponse.url ===
         `${route}/app/patients/add?step=address&patient_id=${patients[0].id}`,
@@ -86,7 +90,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals($('input[name="last_name"]').val(), 'Patient')
     assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
     assertEquals($('select[name="gender"]').val(), 'female')
-    assertEquals($('input[name="national_id_number"]').val(), '123456')
+    assertEquals($('input[name="national_id_number"]').val(), '08- 123456 D 53')
     assertEquals($('input[name="phone_number"]').val(), '5555555555')
   })
 
@@ -94,6 +98,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
+    const testDoctor = await addTestHealthWorker({ scenario: 'doctor' })
     const { sessionId } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
@@ -114,6 +119,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     if (suburb) body.set('suburb_id', String(suburb.id))
     body.set('street', '120 Main Street')
     body.set('nearest_facility_id', '5')
+    body.set('primary_doctor_id', String(testDoctor.id))
 
     const postResponse = await fetch(
       `${route}/app/patients/add?step=address&patient_id=${patient.id}`,
@@ -126,6 +132,14 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       },
     )
 
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assert(
+      postResponse.url ===
+        `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+    )
+
     const patientResult = await db.selectFrom('patients').selectAll().execute()
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
@@ -134,12 +148,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals(patientResult[0].ward_id, ward.id)
     assertEquals(patientResult[0].suburb_id, suburb?.id || null)
     assertEquals(patientResult[0].street, '120 Main Street')
-
-    assert(postResponse.ok, 'should have returned ok')
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
-    )
 
     const getAddressResponse = await fetch(
       `${route}/app/patients/add?step=address&patient_id=${patient.id}`,
