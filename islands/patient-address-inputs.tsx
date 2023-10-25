@@ -9,8 +9,6 @@ export default function PatientAddressForm(
     adminDistricts: FullCountryInfo
   },
 ) {
-  console.log('patient', patient)
-
   const [selectedCountry, setSelectedCountry] = useState<Maybe<number>>(
     patient?.country_id,
   )

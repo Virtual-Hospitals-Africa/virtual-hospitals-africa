@@ -4,15 +4,19 @@ export type AddPatientStep =
   | 'personal'
   | 'address'
   | 'pre-existing_conditions'
+  | 'history'
+  | 'occupation'
   | 'family'
-  | 'age_related_questions'
+  | 'lifestyle'
 
 const stepNames: AddPatientStep[] = [
   'personal',
   'address',
   'pre-existing_conditions',
+  'history',
+  'occupation',
   'family',
-  'age_related_questions',
+  'lifestyle',
 ]
 
 export function getNextStep(currentStep: AddPatientStep): AddPatientStep {
