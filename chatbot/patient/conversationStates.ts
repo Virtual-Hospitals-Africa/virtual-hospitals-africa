@@ -9,7 +9,6 @@ import {
   Maybe,
   PatientAppointmentOfferedTime,
   PatientConversationState,
-  PatientDemographicInfo,
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
@@ -33,6 +32,7 @@ import {
   capLengthAtWhatsAppTitle,
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
+import { pickPatient } from './util.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -64,14 +64,14 @@ const conversationStates: ConversationStates<
     nextState: 'not_onboarded:make_appointment:enter_gender',
     async onExit(trx, patientState) {
       await patients.upsert(trx, {
-        ...patients.pick(patientState),
+        ...pickPatient(patientState),
         name: patientState.body,
       })
       return { ...patientState, name: patientState.body }
     },
   },
   'not_onboarded:make_appointment:enter_gender': {
-    prompt(patient: PatientDemographicInfo): string {
+    prompt(patient: PatientState): string {
       return `Thanks ${
         patient.name!.split(' ')[0]
       }, I will remember that.\n\nWhat is your gender?`
@@ -84,7 +84,7 @@ const conversationStates: ConversationStates<
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
-            ...patients.pick(patientState),
+            ...pickPatient(patientState),
             gender: 'male',
           })
           return { ...patientState, gender: 'male' }
@@ -96,7 +96,7 @@ const conversationStates: ConversationStates<
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
-            ...patients.pick(patientState),
+            ...pickPatient(patientState),
             gender: 'female',
           })
           return { ...patientState, gender: 'female' }
@@ -108,7 +108,7 @@ const conversationStates: ConversationStates<
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsert(trx, {
-            ...patients.pick(patientState),
+            ...pickPatient(patientState),
             gender: 'other',
           })
           return { ...patientState, gender: 'other' }
@@ -120,33 +120,31 @@ const conversationStates: ConversationStates<
     type: 'date',
     prompt: 'Thanks for that information. What is your date of birth?',
     nextState: 'not_onboarded:make_appointment:enter_national_id_number',
-    async onExit(trx, patientState) {
+    async onExit(trx, patientState): Promise<PatientState> {
       assert(patientState.body)
       const [day, month, year] = patientState.body.split('/')
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
-      const dob_string = `${year}-${monthStr}-${dayStr}`
-      const date_of_birth = new Date(dob_string)
+      const date_of_birth = `${year}-${monthStr}-${dayStr}`
       await patients.upsert(trx, {
-        ...patients.pick(patientState),
+        ...pickPatient(patientState),
         date_of_birth,
       })
-      return { ...patientState, date_of_birth }
+      return {
+        ...patientState,
+        dob_formatted: prettyPatientDateOfBirth(date_of_birth),
+      }
     },
   },
   'not_onboarded:make_appointment:enter_national_id_number': {
     type: 'string',
-    prompt(patient: PatientDemographicInfo): string {
-      return `Got it, ${
-        prettyPatientDateOfBirth(
-          patient,
-        )
-      }. Please enter your national ID number`
+    prompt(patient: PatientState): string {
+      return `Got it, ${patient.dob_formatted}. Please enter your national ID number`
     },
     nextState: 'onboarded:make_appointment:enter_appointment_reason',
     async onExit(trx, patientState) {
       await patients.upsert(trx, {
-        ...patients.pick(patientState),
+        ...pickPatient(patientState),
         national_id_number: patientState.body,
       })
       return { ...patientState, national_id_number: patientState.body }
@@ -165,7 +163,7 @@ const conversationStates: ConversationStates<
         latitude: locationMessage.latitude,
       }
       await patients.upsert(trx, {
-        ...patients.pick(patientState),
+        ...pickPatient(patientState),
         location: currentLocation,
       })
 
@@ -390,11 +388,7 @@ const conversationStates: ConversationStates<
     prompt(patientState: PatientState): string {
       assert(patientState.scheduling_appointment_request)
       assert(patientState.scheduling_appointment_request.reason)
-      return `Got it, ${patientState.scheduling_appointment_request.reason}. In summary, your name is ${patientState.name}, you're messaging from ${patientState.phone_number}, you are a ${patientState.gender} born on ${
-        prettyPatientDateOfBirth(
-          patientState,
-        )
-      } with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. Is this correct?`
+      return `Got it, ${patientState.scheduling_appointment_request.reason}. In summary, your name is ${patientState.name}, you're messaging from ${patientState.phone_number}, you are a ${patientState.gender} born on ${patientState.dob_formatted} with national id number ${patientState.national_id_number} and you want to schedule an appointment for ${patientState.scheduling_appointment_request.reason}. Is this correct?`
     },
     options: [
       {

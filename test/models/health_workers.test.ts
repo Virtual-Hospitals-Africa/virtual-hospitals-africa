@@ -76,6 +76,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         employment: [
           {
             facility_id: 1,
+            facility_name: 'VHA Test Hospital',
             roles: {
               admin: {
                 employed_as: false,

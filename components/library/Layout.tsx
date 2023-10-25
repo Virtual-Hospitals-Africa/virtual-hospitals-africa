@@ -80,13 +80,6 @@ export default function Layout(props: LayoutProps) {
     <html className='scroll-smooth bg-white antialiased' lang='en'>
       <Head>
         <title>{props.title}</title>
-        <script
-          defer
-          src='https://cdnjs.cloudflare.com/ajax/libs/turbolinks/5.2.0/turbolinks.js'
-          integrity='sha512-G3jAqT2eM4MMkLMyQR5YBhvN5/Da3IG6kqgYqU9zlIH4+2a+GuMdLb5Kpxy6ItMdCfgaKlo2XFhI0dHtMJjoRw=='
-          crossOrigin='anonymous'
-          referrerpolicy='no-referrer'
-        />
         {props.head}
       </Head>
       <body className='min-h-screen flex flex-col relative justify-between'>

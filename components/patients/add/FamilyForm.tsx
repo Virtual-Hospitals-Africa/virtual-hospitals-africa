@@ -1,33 +1,35 @@
 import { SelectInput, TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import Buttons from '../../library/form/buttons.tsx'
-import { AddPatientDataProps } from '../../../routes/app/patients/add.tsx'
 import ReligionSelect from '../../../islands/ReligionSelect.tsx'
-type FamilyFormProps = AddPatientDataProps['family']
+import { OnboardingPatient } from '../../../types.ts'
+
+const allRelations = [
+  'Wife',
+  'Husband',
+  'Brother',
+  'Sister',
+  'Grandparent',
+  'Grandchild',
+  'Son',
+  'Daughter',
+  'Uncle',
+  'Aunt',
+  'Cousin',
+  'Other Relative or Friend',
+]
 
 export default function FamilyForm(
-  { initialData = {} }: { initialData: Partial<FamilyFormProps> },
+  { patient = {} }: { patient?: Partial<OnboardingPatient> },
 ) {
-  const allRelations = [
-    'Wife',
-    'Husband',
-    'Brother',
-    'Sister',
-    'Grandparent',
-    'Grandchild',
-    'Son',
-    'Daughter',
-    'Uncle',
-    'Aunt',
-    'Cousin',
-    'Other Relative or Friend',
-  ]
-
   return (
     <>
       <FormRow>
-        <SelectInput name='marital_status' required label='Marital Status'>
+        <SelectInput
+          name='marital_status'
+          required
+          label='Marital Status'
+        >
           <option value=''>Select</option>
           <option value='single'>Single</option>
           <option value='married'>Married</option>
@@ -41,9 +43,13 @@ export default function FamilyForm(
       <section>
         <SectionHeader className='my-5 text-[20px]'>Next of Kin</SectionHeader>
         <FormRow>
-          <TextInput name='name' required label='Name' />
-          <TextInput name='phone_number' />
-          <SelectInput name='relationship' required label='Relationship'>
+          <TextInput name='next_of_kin.name' required label='Name' />
+          <TextInput name='next_of_kin.phone_number' />
+          <SelectInput
+            name='next_of_kin.relationship'
+            required
+            label='Relationship'
+          >
             <option value=''>Select</option>
             {allRelations.map((relation) => <option>{relation}</option>)}
           </SelectInput>
@@ -52,13 +58,6 @@ export default function FamilyForm(
       <section>
         <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
         {/* <AddDependents /> */}
-      </section>
-      <hr className='my-5' />
-      <section>
-        <Buttons
-          submitText='Next Step'
-          cancelHref='/app/patients'
-        />
       </section>
     </>
   )

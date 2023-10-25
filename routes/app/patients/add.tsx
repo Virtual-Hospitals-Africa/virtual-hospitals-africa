@@ -1,51 +1,26 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
-  AdminDistricts,
-  Facility,
-  HealthWorker,
-  LoggedInHealthWorker,
+  EmployedHealthWorker,
+  FullCountryInfo,
   LoggedInHealthWorkerHandler,
-  Media,
-  PatientAddress,
-  PatientFamily,
-  PatientPersonal,
-  ReturnedSqlRow,
+  Maybe,
+  OnboardingPatient,
 } from '../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import { HandlerContext } from '$fresh/src/server/mod.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
-import * as facilities from '../../../db/models/facilities.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import {
-  getNextStep,
-  useAddPatientSteps,
-} from '../../../components/patients/add/Steps.tsx'
+import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
-import compact from '../../../util/compact.ts'
-import pick from '../../../util/pick.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
-
-export type AddPatientDataProps = {
-  personal: Omit<PatientPersonal, 'name'> & HasNames
-  address: PatientAddress
-  family: PatientFamily
-}
-
-type AddPatientProps = {
-  healthWorker: HealthWorker & {
-    facility?: ReturnedSqlRow<Facility>
-  }
-  patient: AddPatientDataProps
-  adminDistricts?: AdminDistricts
-}
+import omit from '../../../util/omit.ts'
+import Buttons from '../../../components/library/form/buttons.tsx'
 
 type HasNames = {
   first_name: string
@@ -53,157 +28,162 @@ type HasNames = {
   middle_names?: string
 }
 
+type AddPatientProps =
+  & {
+    patient?: OnboardingPatient
+    healthWorker: EmployedHealthWorker
+  }
+  & ({
+    step:
+      | 'personal'
+      | 'family'
+      | 'pre-existing_conditions'
+      | 'age_related_questions'
+    adminDistricts?: undefined
+  } | {
+    step: 'address'
+    adminDistricts: FullCountryInfo
+  })
+
 type HasAddress = {
-  country: string
-  province: string
-  district: string
-  ward: string
-  suburb?: string
+  country_id: number
+  province_id: number
+  district_id: number
+  ward_id: number
+  suburb_id?: Maybe<number>
   street: string
 }
 
 function hasNames(
   patient: unknown,
-): patient is HasNames & {
-  avatar_media?: ReturnedSqlRow<Media> & { name: string }
-} {
-  return isObjectLike(patient) && !!patient.first_name && !!patient.last_name
+): patient is HasNames {
+  return isObjectLike(patient) &&
+    !!patient.first_name && typeof patient.first_name === 'string' &&
+    !!patient.last_name && typeof patient.last_name === 'string'
 }
 
 function hasAddress(
   patient: unknown,
 ): patient is HasAddress {
-  return isObjectLike(patient) && !!patient.country && !!patient.province &&
-    !!patient.district && !!patient.ward && !!patient.street
+  return isObjectLike(patient) &&
+    !!patient.country_id && typeof patient.country_id === 'number' &&
+    !!patient.province_id && typeof patient.province_id === 'number' &&
+    !!patient.district_id && typeof patient.district_id === 'number' &&
+    !!patient.ward_id && typeof patient.ward_id === 'number' &&
+    !!patient.street && typeof patient.street === 'string'
 }
 
-const pickDemographics = pick([
-  'phone_number',
-  'gender',
-  'date_of_birth',
-  'national_id_number',
-])
+function hasConditions(
+  patient: unknown,
+): patient is Record<string, unknown> {
+  return true
+}
 
-const pickAddress = pick([
-  'country',
-  'province',
-  'district',
-  'ward',
-  'suburb',
-  'street',
-])
+function hasFamily(
+  patient: unknown,
+): patient is Record<string, unknown> {
+  return true
+}
 
-const pickHealthCare = pick([
-  'nearest_facility_id',
-])
+const typeCheckers = {
+  personal: hasNames,
+  address: hasAddress,
+  'pre-existing_conditions': hasConditions,
+  family: hasFamily,
+}
 
-const PATIENT_SESSION_KEY = 'patient-data'
+const omitNames = omit(['nearest_facility_name', 'primary_doctor_name'])
 
-async function handlePersonalData(
-  req: Request,
-  ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
-) {
-  const { personal } = ctx.state.session.get(PATIENT_SESSION_KEY) || {}
-  const patientData = await parseRequest(ctx.state.trx, req, hasNames)
-  const patient = {
-    step: 'personal',
-    personal: {
-      ...pickDemographics(patientData),
-      first_name: patientData.first_name,
-      middle_names: patientData.middle_names,
-      last_name: patientData.last_name,
-      avatar_media_id: patientData.avatar_media?.id ||
-        personal?.avatar_media_id,
-      avatar_media_name: patientData.avatar_media?.name ||
-        personal?.avatar_media_name,
+const transformers = {
+  personal: (
+    { avatar_media, ...patient }: patients.UpsertablePatient & {
+      avatar_media?: { id: number }
     },
-  }
-  ctx.state.session.set(PATIENT_SESSION_KEY, patient)
-}
-
-async function handleAddressData(
-  req: Request,
-  ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
-) {
-  const personalData = ctx.state.session.get(PATIENT_SESSION_KEY)
-  const patientData = await parseRequest(ctx.state.trx, req, hasAddress)
-  const patient = {
-    ...personalData,
-    step: 'address',
-    address: {
-      ...pickAddress(patientData),
-      ...pickHealthCare(patientData),
-    },
-  }
-  ctx.state.session.set(PATIENT_SESSION_KEY, patient)
-}
-
-async function storePatientData(
-  _req: Request,
-  ctx: HandlerContext<AddPatientProps, LoggedInHealthWorker>,
-) {
-  const { personal, address } = ctx.state.session.get(PATIENT_SESSION_KEY)
-
-  const personalData = {
-    ...pickDemographics(personal),
-    name: compact([
-      personal.first_name,
-      personal.middle_names,
-      personal.last_name,
-    ]).join(' '),
-    avatar_media_id: personal.avatar_media_id,
-  }
-  assert(patients.hasDemographicInfo(personalData))
-
-  await patients.upsert(ctx.state.trx, {
-    ...personalData,
-    ...address,
-    // TODO separate patient's whatsapp conversation_state from patients table
-    conversation_state: 'initial_message',
-  })
+  ): patients.UpsertablePatient => ({
+    ...patient,
+    avatar_media_id: avatar_media?.id,
+  }),
+  address: omitNames,
+  'pre-existing_conditions': (patient: patients.UpsertablePatient) => patient,
+  family: (patient: patients.UpsertablePatient) => patient,
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   async GET(req, ctx) {
     const { healthWorker } = ctx.state
-    const urlStep = new URL(req.url).searchParams.get('step')
-    const { step, ...patient } = ctx.state.session.get(PATIENT_SESSION_KEY) ||
-      {}
-    const cachedLastStep = step
-    if (!urlStep && cachedLastStep) {
-      const nextStep = getNextStep(cachedLastStep)
-      return redirect(`/app/patients/add?step=${nextStep}`)
-    }
-    if (urlStep === 'address') {
-      const adminDistricts = await address.getAll(ctx.state.trx)
-      const facility = await facilities.getFirstByHealthWorker(
-        ctx.state.trx,
-        healthWorker.id,
-      )
-      assert(facility, 'Health worker not employed at any facility')
-      return ctx.render({
-        healthWorker: { ...healthWorker, facility },
-        patient,
-        adminDistricts,
-      })
-    }
-    return ctx.render({ healthWorker, patient })
-  },
-  // TODO: support steps of the form other than personal
-  async POST(req, ctx) {
-    const step = new URL(req.url).searchParams.get('step') || 'personal'
+    const { searchParams } = new URL(req.url)
+    const step = searchParams.get('step')
 
-    if (step === 'personal') {
-      await handlePersonalData(req, ctx)
-      return redirect('/app/patients/add?step=address')
+    let patient: OnboardingPatient | undefined
+
+    const patient_id = parseInt(searchParams.get('patient_id') || '0')
+
+    if (!step) return redirect('/app/patients/add?step=personal')
+
+    if (patient_id) {
+      patient = await patients.getOnboarding(
+        ctx.state.trx,
+        { id: patient_id },
+      )
     }
 
     if (step === 'address') {
-      await handleAddressData(req, ctx)
+      const adminDistricts = await address.getFullCountryInfo(ctx.state.trx)
+      return ctx.render({
+        healthWorker,
+        patient,
+        step,
+        adminDistricts,
+      })
+    }
+    assert(
+      step === 'personal' || step === 'family' ||
+        step === 'pre-existing_conditions' || step === 'age_related_questions',
+    )
+    return ctx.render({ healthWorker, patient, step })
+  },
+  async POST(req, ctx) {
+    const { searchParams } = new URL(req.url)
+    const step = searchParams.get('step')
+    const id = searchParams.get('patient_id')
+
+    assert(
+      step === 'personal' || step === 'address' ||
+        step === 'pre-existing_conditions' || step === 'family',
+      `${step} not supported`,
+    )
+
+    const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
+
+    const transformedFormData = transformers[step](formData)
+
+    const patient = await patients.upsert(ctx.state.trx, {
+      ...transformedFormData,
+      id: id ? parseInt(id) : undefined,
+      completed_onboarding: step === 'family',
+    })
+
+    if (step === 'personal') {
+      return redirect(`/app/patients/add?step=address&patient_id=${patient.id}`)
     }
 
-    await storePatientData(req, ctx)
-    ctx.state.session.set(PATIENT_SESSION_KEY, undefined)
+    if (step === 'address') {
+      return redirect(
+        `/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+      )
+    }
+
+    if (step === 'pre-existing_conditions') {
+      return redirect('/app/patients/add?step=family')
+    }
+
+    if (step === 'family') {
+      const success = encodeURIComponent(
+        `Awesome! ${patient.name} has finished onboarding!`,
+      )
+      return redirect(`/app/patients?success=${success}`)
+    }
+
     return redirect('/app/patients/add?step=family')
   },
 }
@@ -212,14 +192,14 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { stepsTopBar, currentStep } = useAddPatientSteps(props)
-  const { patient, healthWorker: { facility }, adminDistricts } = props.data
+  const { patient, healthWorker, adminDistricts } = props.data
 
   return (
     <Layout
       title='Add Patient'
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      avatarUrl={healthWorker.avatar_url}
       variant='form'
     >
       <Container size='lg'>
@@ -230,21 +210,28 @@ export default function AddPatient(
           encType='multipart/form-data'
         >
           {currentStep === 'personal' && (
-            <PatientPersonalForm initialData={patient.personal} />
+            <PatientPersonalForm patient={patient} />
           )}
           {currentStep === 'address' && (
             <PatientAddressForm
-              defaultFacility={facility}
-              adminDistricts={adminDistricts}
+              patient={patient}
+              defaultFacility={{
+                id: healthWorker.employment[0].facility_id,
+                name: healthWorker.employment[0].facility_name,
+              }}
+              adminDistricts={adminDistricts!}
             />
           )}
-          {currentStep === 'family' && (
-            <FamilyForm initialData={patient.family} />
-          )}
+          {currentStep === 'family' && <FamilyForm patient={patient} />}
           {currentStep === 'pre-existing_conditions' && (
-            <PatientConditionsForm />
+            <PatientConditionsForm patient={patient} />
           )}
           {currentStep === 'age_related_questions' && <div>TODO age form</div>}
+          <hr className='my-2' />
+          <Buttons
+            submitText='Next Step'
+            cancelHref='/app/patients'
+          />
         </form>
       </Container>
     </Layout>

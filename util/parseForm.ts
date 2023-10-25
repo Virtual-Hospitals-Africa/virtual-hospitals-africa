@@ -2,6 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import set from './set.ts'
 import * as media from '../db/models/media.ts'
 import { TrxOrDb } from '../types.ts'
+import { assertOr400 } from './assertOr.ts'
 
 type Primitive = string | number | boolean | Date
 export type FormValue = Primitive | FormValue[]
@@ -45,10 +46,16 @@ export async function parseRequest<T extends Record<string, unknown>>(
 
   const contentType = req.headers.get('content-type')
 
-  let formData: FormData | URLSearchParams
+  let formData: FormData | URLSearchParams | undefined
+
   if (contentType?.startsWith('multipart/form-data')) {
-    formData = await req.formData()
-  } else {
+    try {
+      formData = await req.formData()
+    } catch (err) {
+      console.error(err)
+    }
+  }
+  if (!formData) {
     const text = await req.text()
 
     formData = req.method === 'POST' && text
@@ -56,11 +63,13 @@ export async function parseRequest<T extends Record<string, unknown>>(
       : new URL(req.url).searchParams
   }
 
+  assertOr400(formData)
+
   const files: { [key: string]: File } = {}
   formData.forEach((value, key) => {
     if (value instanceof File) files[key] = value
   })
-  Object.keys(files).forEach((key) => formData.delete(key))
+  Object.keys(files).forEach((key) => formData!.delete(key))
 
   const parsed = parseFormWithoutFilesNoTypeCheck(formData)
 

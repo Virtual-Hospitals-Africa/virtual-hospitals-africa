@@ -2,12 +2,11 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
   Gender,
-  HasDemographicInfo,
   Location,
   Maybe,
+  OnboardingPatient,
   Patient,
   PatientConversationState,
-  PatientDemographicInfo,
   PatientState,
   PatientWithMedicalRecord,
   RenderedPatient,
@@ -16,59 +15,8 @@ import {
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
-
-export function getByPhoneNumber(
-  trx: TrxOrDb,
-  query: { phone_number: string },
-): Promise<
-  Maybe<ReturnedSqlRow<Patient>>
-> {
-  return trx
-    .selectFrom('patients')
-    .selectAll()
-    .where('phone_number', '=', query.phone_number)
-    .executeTakeFirst()
-}
-
-export function upsert(trx: TrxOrDb, info: {
-  id?: number
-  conversation_state?: PatientConversationState
-  phone_number?: string
-  name?: Maybe<string>
-  gender?: Maybe<Gender>
-  date_of_birth?: Maybe<Date>
-  national_id_number?: Maybe<string>
-  location?: Maybe<Location>
-  avatar_media_id?: number
-  country?: Maybe<string>
-  province?: Maybe<string>
-  district?: Maybe<string>
-  ward?: Maybe<string>
-  street?: Maybe<string>
-}): Promise<ReturnedSqlRow<Patient>> {
-  const toInsert = {
-    ...info,
-    location: info.location
-      ? sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)` as unknown as Location
-      : null,
-  }
-  return trx
-    .insertInto('patients')
-    .values({
-      ...toInsert,
-      conversation_state: toInsert.conversation_state || 'initial_message',
-    })
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
-    .returningAll()
-    .executeTakeFirstOrThrow()
-}
-
-export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
-  return trx
-    .deleteFrom('patients')
-    .where('phone_number', '=', opts.phone_number)
-    .executeTakeFirst()
-}
+import omit from '../../util/omit.ts'
+import compact from '../../util/compact.ts'
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
@@ -80,21 +28,18 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.phone_number',
       'patients.location',
       'patients.gender',
-      'patients.date_of_birth',
+      sql<string | null>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
+        .as('dob_formatted'),
       'patients.national_id_number',
-      'patients.country',
-      'patients.province',
-      'patients.district',
-      'patients.ward',
-      'patients.suburb',
-      'patients.street',
+      'patients.conversation_state',
       'patients.created_at',
       'patients.updated_at',
-      sql<Maybe<string>>`concat('/app/patients/', patients.id::text)`.as(
+      'patients.completed_onboarding',
+      sql<string | null>`concat('/app/patients/', patients.id::text)`.as(
         'href',
       ),
       sql<
-        Maybe<string>
+        string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'facilities.name as nearest_facility',
@@ -103,6 +48,118 @@ const baseSelect = (trx: TrxOrDb) =>
 
 const selectWithName = (trx: TrxOrDb) =>
   baseSelect(trx).where('patients.name', 'is not', null)
+
+export function getByPhoneNumber(
+  trx: TrxOrDb,
+  query: { phone_number: string },
+): Promise<
+  Maybe<ReturnedSqlRow<RenderedPatient>>
+> {
+  return baseSelect(trx)
+    .where('phone_number', '=', query.phone_number)
+    .executeTakeFirst()
+}
+
+export type UpsertablePatient = {
+  id?: number
+  conversation_state?: PatientConversationState
+  phone_number?: string
+  gender?: Maybe<Gender>
+  date_of_birth?: Maybe<string>
+  national_id_number?: Maybe<string>
+  primary_doctor_id?: Maybe<number>
+  location?: Maybe<Location>
+  avatar_media_id?: number
+  country_id?: Maybe<number>
+  province_id?: Maybe<number>
+  district_id?: Maybe<number>
+  ward_id?: Maybe<number>
+  suburb_id?: Maybe<number>
+  street?: Maybe<string>
+  completed_onboarding?: boolean
+  name?: Maybe<string>
+  first_name?: Maybe<string>
+  middle_names?: Maybe<string>
+  last_name?: Maybe<string>
+}
+
+const omitNames = omit<
+  UpsertablePatient,
+  'first_name' | 'middle_names' | 'last_name'
+>(['first_name', 'middle_names', 'last_name'])
+
+export function upsert(
+  trx: TrxOrDb,
+  patient: UpsertablePatient,
+): Promise<ReturnedSqlRow<Patient>> {
+  const toInsert = {
+    ...omitNames(patient),
+    location: patient.location
+      ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
+      : null,
+  }
+  if ('first_name' in patient) {
+    assert(!toInsert.name, 'Cannot set both name and first_name')
+    toInsert.name = compact(
+      [patient.first_name, patient.middle_names, patient.last_name],
+    ).join(' ')
+  }
+  return trx
+    .insertInto('patients')
+    .values({
+      ...toInsert,
+      conversation_state: toInsert.conversation_state || 'initial_message',
+      completed_onboarding: toInsert.completed_onboarding || false,
+    })
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
+    .onConflict((oc) => oc.column('id').doUpdateSet(toInsert))
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
+  return trx
+    .deleteFrom('patients')
+    .where('phone_number', '=', opts.phone_number)
+    .executeTakeFirst()
+}
+
+export function getOnboarding(
+  trx: TrxOrDb,
+  opts: {
+    id: number
+  },
+): Promise<OnboardingPatient> {
+  return trx
+    .selectFrom('patients')
+    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .select([
+      'patients.id',
+      'patients.name',
+      'patients.phone_number',
+      'patients.location',
+      'patients.gender',
+      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
+        'date_of_birth',
+      ),
+      'patients.national_id_number',
+      'patients.country_id',
+      'patients.province_id',
+      'patients.district_id',
+      'patients.ward_id',
+      'patients.suburb_id',
+      'patients.street',
+      'patients.completed_onboarding',
+      sql<
+        string | null
+      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+        .as('avatar_url'),
+      'patients.nearest_facility_id',
+      'facilities.name as nearest_facility_name',
+    ])
+    .where('patients.id', '=', opts.id)
+    .executeTakeFirstOrThrow()
+}
 
 // TODO: implement medical record functionality
 // TODO: only show medical record if health worker has permission
@@ -156,32 +213,14 @@ export function getAvatar(trx: TrxOrDb, opts: { patient_id: number }) {
     .executeTakeFirst()
 }
 
-export function pick(patientState: PatientState) {
-  return {
-    id: patientState.patient_id,
-    phone_number: patientState.phone_number,
-    name: patientState.name,
-    gender: patientState.gender,
-    date_of_birth: patientState.date_of_birth,
-    national_id_number: patientState.national_id_number,
-    conversation_state: patientState.conversation_state,
-    location: patientState.location,
-    country: patientState.country,
-    province: patientState.province,
-    district: patientState.district,
-    ward: patientState.ward,
-    street: patientState.street,
-  }
-}
-
 export function hasDemographicInfo(
-  patient: Partial<PatientDemographicInfo>,
-): patient is HasDemographicInfo {
+  patientState: PatientState,
+): boolean {
   return (
-    !!patient.name &&
-    !!patient.gender &&
-    !!patient.date_of_birth &&
-    !!patient.national_id_number
+    !!patientState.name &&
+    !!patientState.gender &&
+    !!patientState.dob_formatted &&
+    !!patientState.national_id_number
   )
 }
 
@@ -198,7 +237,7 @@ export async function nearestFacilities(
 
   assert(patient.nearest_facilities.length > 0)
 
-  const updated_nearest_facilities = await Promise.all(
+  return Promise.all(
     patient.nearest_facilities.map(async (facility) => ({
       ...facility,
       walking_distance: await getWalkingDistance({
@@ -213,6 +252,4 @@ export async function nearestFacilities(
       }),
     })),
   )
-
-  return updated_nearest_facilities
 }

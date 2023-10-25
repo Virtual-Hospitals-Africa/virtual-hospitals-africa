@@ -1,22 +1,17 @@
-import IconButton from '../../library/IconButton.tsx'
-import { SearchInput } from '../../library/form/Inputs.tsx'
-import FormRow from '../../library/form/Row.tsx'
-import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import AllergySearch from '../../../islands/AllergySearch.tsx'
+import { OnboardingPatient } from '../../../types.ts'
 
-export default function PatientConditionsForm() {
+export default function PatientConditionsForm(
+  { patient = {} }: { patient?: Partial<OnboardingPatient> },
+) {
   return (
-    <div style='max-width: 85%; margin: auto;'>
-      <h1
-        className='mb-1'
-        style="font-size: 20px; font-family: 'Ubuntu', sans-serif"
-      >
-        Allergies
-      </h1>
-
+    <>
       <section>
+        <h1 className='mb-1'>
+          Allergies
+        </h1>
         <AllergySearch />
       </section>
-    </div>
+    </>
   )
 }

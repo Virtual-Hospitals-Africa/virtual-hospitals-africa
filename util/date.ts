@@ -1,20 +1,15 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { MonthNum, ParsedDate, PatientDemographicInfo, Time } from '../types.ts'
+import { MonthNum, ParsedDate, Time } from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'
 
 export const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
 
 export function prettyPatientDateOfBirth(
-  patient: PatientDemographicInfo,
+  date_of_birth: string,
 ): string {
-  const { date_of_birth } = patient
-  assert(date_of_birth, 'Expected date_of_birth to be defined')
-  assert(isDate(date_of_birth))
-  const [y, m, d] = date_of_birth.toISOString().split('-').map((d) =>
-    parseInt(d, 10)
-  )
+  const [y, m, d] = date_of_birth.split('-').map((d) => parseInt(d, 10))
   const year = `${y}`
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
@@ -22,7 +17,7 @@ export function prettyPatientDateOfBirth(
   const dtDateOnly = new Date(
     date.valueOf() + date.getTimezoneOffset() * 60 * 1000,
   )
-  return dtDateOnly.toLocaleDateString('en-US', {
+  return dtDateOnly.toLocaleDateString('en-GB', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

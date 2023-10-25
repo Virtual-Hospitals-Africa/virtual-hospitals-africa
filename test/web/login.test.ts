@@ -1,11 +1,4 @@
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  it,
-} from 'std/testing/bdd.ts'
-import { redis } from '../../external-clients/redis.ts'
+import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -14,32 +7,17 @@ import * as employee from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import {
-  killWebServer,
-  startWebServer,
+  addTestHealthWorkerWithSession,
+  describeWithWebServer,
   testHealthWorker,
   testRegistrationDetails,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
-import { resetInTest } from '../../db/reset.ts'
 import { GoogleTokens, HealthWorker } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
 
-describe('/login', { sanitizeResources: false }, () => {
-  const PORT = '8002'
-  const ROUTE = `https://localhost:${PORT}`
-  let process: Deno.ChildProcess
-  beforeAll(async () => {
-    process = await startWebServer(PORT)
-  })
-  beforeEach(resetInTest)
-  afterAll(async () => {
-    await killWebServer(process)
-    await db.destroy()
-    await redis.flushdb()
-  })
-
+describeWithWebServer('/login', 8002, (route) => {
   it('redirects to google if not already logged in', async () => {
-    const response = await fetch(`${ROUTE}/login`, {
+    const response = await fetch(`${route}/login`, {
       redirect: 'manual',
     })
     const redirectLocation = response.headers.get('location')
@@ -53,24 +31,18 @@ describe('/login', { sanitizeResources: false }, () => {
   })
 
   describe('when logged in', () => {
-    let sessionId: string
-    let healthWorker: HealthWorker & GoogleTokens & { id: number }
+    let mock: {
+      sessionId: string
+      healthWorker: HealthWorker & GoogleTokens & { id: number }
+    }
     beforeEach(async () => {
-      sessionId = generateUUID()
-      healthWorker = await upsertWithGoogleCredentials(db, testHealthWorker())
-      await redis.set(
-        `S_${sessionId}`,
-        JSON.stringify({
-          data: { health_worker_id: healthWorker.id },
-          _flash: {},
-        }),
-      )
+      mock = await addTestHealthWorkerWithSession()
     })
 
     it('doesn\'t allow unemployed access to /app', async () => {
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(!response.ok)
@@ -80,17 +52,17 @@ describe('/login', { sanitizeResources: false }, () => {
     it('allows admin access to /app', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'admin',
       }])
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app`, `should be in ${ROUTE}/app`)
+      assert(response.url === `${route}/app`, `should be in ${route}/app`)
       assert(
         (await response.text()).includes('My Patients'),
         'response should contain My Patients',
@@ -100,18 +72,18 @@ describe('/login', { sanitizeResources: false }, () => {
     it('allows doctor access /app', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app`, `should be in ${ROUTE}/app`)
+      assert(response.url === `${route}/app`, `should be in ${route}/app`)
       assert(
         (await response.text()).includes('My Patients'),
         'response should contain My Patients',
@@ -121,14 +93,14 @@ describe('/login', { sanitizeResources: false }, () => {
     it('redirects from /login to /app', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: sample(['admin', 'doctor', 'nurse']),
       }])
 
-      const response = await fetch(`${ROUTE}/login`, {
+      const response = await fetch(`${route}/login`, {
         redirect: 'manual',
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       const redirectLocation = response.headers.get('location')
@@ -139,19 +111,19 @@ describe('/login', { sanitizeResources: false }, () => {
     it('redirects unregistered nurse to registration', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
       assert(
-        response.url === `${ROUTE}/app/facilities/1/register?step=personal`,
-        `should be in ${ROUTE}/app/facilities/1/register`,
+        response.url === `${route}/app/facilities/1/register?step=personal`,
+        `should be in ${route}/app/facilities/1/register`,
       )
       assert(
         (await response.text()).includes('First Name'),
@@ -162,21 +134,21 @@ describe('/login', { sanitizeResources: false }, () => {
     it('redirects unapproved nurse to /app/pending_approval', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
       await details.add(db, {
         registrationDetails: testRegistrationDetails({
-          health_worker_id: healthWorker.id,
+          health_worker_id: mock.healthWorker.id,
         }),
       })
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.url === `${ROUTE}/app/pending_approval`)
+      assert(response.url === `${route}/app/pending_approval`)
       await response.text()
     })
 
@@ -188,27 +160,27 @@ describe('/login', { sanitizeResources: false }, () => {
         profession: 'admin',
       }, {
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
       await details.add(db, {
         registrationDetails: testRegistrationDetails({
-          health_worker_id: healthWorker.id,
+          health_worker_id: mock.healthWorker.id,
         }),
       })
       await details.approve(db, {
         approverId: admin.id,
-        healthWorkerId: healthWorker.id,
+        healthWorkerId: mock.healthWorker.id,
       })
 
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app`, `should be in ${ROUTE}/app`)
+      assert(response.url === `${route}/app`, `should be in ${route}/app`)
       assert(
         (await response.text()).includes('My Patients'),
         'response should contain My Patients',
@@ -223,21 +195,21 @@ describe('/login', { sanitizeResources: false }, () => {
         profession: 'admin',
       }, {
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
       await details.add(db, {
         registrationDetails: testRegistrationDetails({
-          health_worker_id: healthWorker.id,
+          health_worker_id: mock.healthWorker.id,
         }),
       })
       await details.approve(db, {
         approverId: admin.id,
-        healthWorkerId: healthWorker.id,
+        healthWorkerId: mock.healthWorker.id,
       })
-      let response = await fetch(`${ROUTE}/app`, {
+      let response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
@@ -251,13 +223,13 @@ describe('/login', { sanitizeResources: false }, () => {
         'should include text Add patient',
       )
 
-      response = await fetch(`${ROUTE}/app/patients/add`, {
+      response = await fetch(`${route}/app/patients/add?step=personal`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
-      assert(response.url === `${ROUTE}/app/patients/add`)
+      assert(response.url === `${route}/app/patients/add?step=personal`)
       pageContents = await response.text()
       assert(pageContents.includes('Next Step'), 'should include Next Step')
       assert(
@@ -265,25 +237,25 @@ describe('/login', { sanitizeResources: false }, () => {
         'should be a link back to patients screen',
       )
 
-      response = await fetch(`${ROUTE}/app/patients`, {
+      response = await fetch(`${route}/app/patients`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/patients`)
+      assert(response.url === `${route}/app/patients`)
       assert((await response.text()).includes('Add patient'))
     })
 
     it('allows user to go to and from the My Patients page', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
-      let response = await fetch(`${ROUTE}/app`, {
+      let response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
@@ -292,39 +264,39 @@ describe('/login', { sanitizeResources: false }, () => {
       assert(pageContents.includes('href="/app/patients"'))
       assert(pageContents.includes('My Patients'))
 
-      response = await fetch(`${ROUTE}/app/patients`, {
+      response = await fetch(`${route}/app/patients`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/patients`)
+      assert(response.url === `${route}/app/patients`)
       pageContents = await response.text()
       assert(pageContents.includes('Patients'))
       assert(pageContents.includes('Add patient'))
       assert(pageContents.includes('href="/app"'))
 
-      response = await fetch(`${ROUTE}/app`, {
+      response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app`)
+      assert(response.url === `${route}/app`)
       await response.text()
     })
 
     it('allows user can go to calendar', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
-      const response = await fetch(`${ROUTE}/app`, {
+      const response = await fetch(`${route}/app`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
@@ -339,7 +311,7 @@ describe('/login', { sanitizeResources: false }, () => {
 
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'admin',
       }, {
         facility_id: 1,
@@ -348,12 +320,12 @@ describe('/login', { sanitizeResources: false }, () => {
       }, {
         facility_id: 1,
         health_worker_id: admin.id,
-        profession: 'doctor',
+        profession: 'admin',
       }])
 
       await nurse_registration_details.add(db, {
         registrationDetails: {
-          health_worker_id: healthWorker.id,
+          health_worker_id: nurse.id,
           gender: 'female',
           national_id: '12345678A12',
           date_of_first_practice: '2020-01-01',
@@ -362,24 +334,24 @@ describe('/login', { sanitizeResources: false }, () => {
           national_id_media_id: null,
           ncz_registration_card_media_id: null,
           face_picture_media_id: null,
-          approved_by: healthWorker.id,
+          approved_by: admin.id,
           date_of_birth: '2020-01-01',
         },
       })
 
-      const response = await fetch(`${ROUTE}/app/employees`, {
+      const response = await fetch(`${route}/app/employees`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
       assert(response.redirected)
-      assert(response.url === `${ROUTE}/app/facilities/1/employees`)
+      assert(response.url === `${route}/app/facilities/1/employees`)
       const pageContents = await response.text()
       assert(
         pageContents.includes(
-          `href="/app/facilities/1/health-workers/${healthWorker.id}"`,
+          `href="/app/facilities/1/health-workers/${mock.healthWorker.id}"`,
         ),
       )
       assert(
@@ -392,27 +364,27 @@ describe('/login', { sanitizeResources: false }, () => {
     it(`allows admin access to invite`, async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'admin',
       }])
-      let response = await fetch(`${ROUTE}/app/facilities/1/employees`, {
+      let response = await fetch(`${route}/app/facilities/1/employees`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/facilities/1/employees`)
+      assert(response.url === `${route}/app/facilities/1/employees`)
       let pageContents = await response.text()
       assert(pageContents.includes('href="/app/facilities/1/employees/invite"'))
 
-      response = await fetch(`${ROUTE}/app/facilities/1/employees/invite`, {
+      response = await fetch(`${route}/app/facilities/1/employees/invite`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
       assert(response.ok)
-      assert(response.url === `${ROUTE}/app/facilities/1/employees/invite`)
+      assert(response.url === `${route}/app/facilities/1/employees/invite`)
       pageContents = await response.text()
       assert(pageContents.includes('Email'))
       assert(pageContents.includes('Profession'))
@@ -422,12 +394,12 @@ describe('/login', { sanitizeResources: false }, () => {
     it('doesn\'t allow unemployed access to employees', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
-      const response = await fetch(`${ROUTE}/app/facilities/2/employees`, {
+      const response = await fetch(`${route}/app/facilities/2/employees`, {
         headers: {
-          Cookie: `sessionId=${sessionId}`,
+          Cookie: `sessionId=${mock.sessionId}`,
         },
       })
 
@@ -437,14 +409,14 @@ describe('/login', { sanitizeResources: false }, () => {
     it('doesn\'t allow non-admin to invite page', async () => {
       await employee.add(db, [{
         facility_id: 1,
-        health_worker_id: healthWorker.id,
+        health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
       }])
       const employeesResponse = await fetch(
-        `${ROUTE}/app/facilities/1/employees`,
+        `${route}/app/facilities/1/employees`,
         {
           headers: {
-            Cookie: `sessionId=${sessionId}`,
+            Cookie: `sessionId=${mock.sessionId}`,
           },
         },
       )
@@ -453,7 +425,7 @@ describe('/login', { sanitizeResources: false }, () => {
         employeesResponse.ok,
         'user should still be able to access employees page',
       )
-      assert(employeesResponse.url === `${ROUTE}/app/facilities/1/employees`)
+      assert(employeesResponse.url === `${route}/app/facilities/1/employees`)
       const pageContents = await employeesResponse.text()
       assert(
         !pageContents.includes('href="/app/facilities/1/employees/invite"'),
@@ -461,10 +433,10 @@ describe('/login', { sanitizeResources: false }, () => {
       )
 
       const invitesResponse = await fetch(
-        `${ROUTE}/app/facilities/1/employees/invite`,
+        `${route}/app/facilities/1/employees/invite`,
         {
           headers: {
-            Cookie: `sessionId=${sessionId}`,
+            Cookie: `sessionId=${mock.sessionId}`,
           },
         },
       )

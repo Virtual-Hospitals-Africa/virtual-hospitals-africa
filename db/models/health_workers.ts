@@ -290,8 +290,14 @@ export async function get(
       'nurse_registration_details.approved_by',
       jsonArrayFrom(
         eb.selectFrom('employment')
+          .innerJoin(
+            'facilities',
+            'employment.facility_id',
+            'facilities.id',
+          )
           .select([
             'employment.facility_id',
+            'facilities.name as facility_name',
             sql<Profession[]>`JSON_AGG(employment.profession)`.as(
               'professions',
             ),
@@ -301,7 +307,7 @@ export async function get(
             '=',
             'health_workers.id',
           )
-          .groupBy('employment.facility_id'),
+          .groupBy(['employment.facility_id', 'facilities.name']),
       ).as('facilities'),
     ])
 
@@ -324,6 +330,7 @@ export async function get(
     ...pickTokens(result),
     employment: result.facilities.map((f) => ({
       facility_id: f.facility_id,
+      facility_name: f.facility_name,
       roles: {
         nurse: f.professions.includes('nurse')
           ? {
@@ -461,7 +468,7 @@ export function getEmployeeInfo(
             'employment.health_worker_id',
           )
           .where('health_workers.id', '=', health_worker_id)
-          .groupBy('facilities.id')
+          .groupBy(['facilities.id', 'facilities.name'])
           .select([
             'facilities.id as facility_id',
             'facilities.name as facility_name',

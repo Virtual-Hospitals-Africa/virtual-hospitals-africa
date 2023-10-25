@@ -66,67 +66,76 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = PatientPersonal & PatientAddress & PatientHealthCareInfo
-
-export type RenderedPatient = ReturnedSqlRow<
-  Pick<
-    Patient,
-    | 'country'
-    | 'date_of_birth'
-    | 'district'
-    | 'gender'
-    | 'location'
-    | 'national_id_number'
-    | 'phone_number'
-    | 'province'
-    | 'street'
-    | 'suburb'
-    | 'ward'
-  > & {
-    name: string
-    href: Maybe<string>
-    avatar_url: Maybe<string>
-    nearest_facility: Maybe<string>
-    last_visited: null // TODO: implement
-  }
->
-
-export type PatientPersonal = {
-  id: number
-  conversation_state: PatientConversationState
-  avatar_media_id?: Maybe<number>
-  avatar_media_name?: string
-  location?: Maybe<Location>
-} & PatientDemographicInfo
-
-export type PatientHealthCareInfo = {
-  nearest_facility_id?: Maybe<number>
-}
-
-export type PatientAddress = {
-  country?: Maybe<string>
-  province?: Maybe<string>
-  district?: Maybe<string>
-  ward?: Maybe<string>
-  suburb?: Maybe<string>
-  street?: Maybe<string>
+export type Patient = PatientPersonal & PatientAddress & {
+  primary_doctor_id: Maybe<number>
+  nearest_facility_id: Maybe<number>
+  completed_onboarding: boolean
 }
 
 export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: Maybe<Date>
+  date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
 }
+export type PatientPersonal = {
+  conversation_state: PatientConversationState
+  avatar_media_id: Maybe<number>
+  location: Maybe<Location>
+} & PatientDemographicInfo
 
-export type HasDemographicInfo = {
-  phone_number: string
-  name: string
-  gender: Gender
-  date_of_birth: Date
-  national_id_number: string
+export type PatientAddress = {
+  country_id: Maybe<number>
+  province_id: Maybe<number>
+  district_id: Maybe<number>
+  ward_id: Maybe<number>
+  suburb_id: Maybe<number>
+  street: Maybe<string>
 }
+
+export type RenderedPatient = ReturnedSqlRow<
+  Pick<
+    Patient,
+    | 'gender'
+    | 'location'
+    | 'national_id_number'
+    | 'phone_number'
+    | 'name'
+    | 'conversation_state'
+    | 'completed_onboarding'
+  > & {
+    dob_formatted: string | null
+    // age_formatted: Maybe<string> // TODO: implement
+    href: string | null
+    avatar_url: string | null
+    nearest_facility: string | null
+    last_visited: null // TODO: implement
+  }
+>
+
+export type OnboardingPatient =
+  & {
+    id: number
+    avatar_url: Maybe<string>
+    nearest_facility_name: Maybe<string>
+  }
+  & Pick<
+    Patient,
+    | 'name'
+    | 'phone_number'
+    | 'gender'
+    | 'date_of_birth'
+    | 'national_id_number'
+    | 'country_id'
+    | 'province_id'
+    | 'district_id'
+    | 'ward_id'
+    | 'suburb_id'
+    | 'street'
+    | 'nearest_facility_id'
+    | 'completed_onboarding'
+  >
 
 export type PatientFamily = {
   marital_status: string
@@ -160,15 +169,10 @@ export type PatientState = {
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
-  date_of_birth: Maybe<Date>
+  dob_formatted: Maybe<string>
   national_id_number: Maybe<string>
   conversation_state: PatientConversationState
   location: Maybe<Location>
-  country: Maybe<string>
-  province: Maybe<string>
-  district: Maybe<string>
-  ward: Maybe<string>
-  street: Maybe<string>
   scheduling_appointment_request?: {
     id: number
     reason: Maybe<string>
@@ -881,6 +885,7 @@ export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
   id: number
   employment: {
     facility_id: number
+    facility_name: string
     roles: {
       nurse: {
         employed_as: boolean
@@ -1183,7 +1188,7 @@ export type Ward = { name: string; district_id: number }
 
 export type Suburb = { name: string; ward_id: number }
 
-export type AdminDistricts = {
+export type FullCountryInfo = {
   id: number
   name: string
   provinces: {

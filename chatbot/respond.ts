@@ -7,15 +7,14 @@ import {
   ConversationStates,
   PatientConversationState,
   PatientState,
-  TrxOrDb,
   WhatsAppJSONResponse,
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
-import * as patients from '../db/models/patients.ts'
 import patientConversationStates from './patient/conversationStates.ts'
+import { updatePatientState } from './patient/util.ts'
 
 type WhatsApp = {
   sendMessage(opts: {
@@ -29,9 +28,6 @@ type WhatsApp = {
 }
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
-
-const updatePatientState = (trx: TrxOrDb, patientState: PatientState) =>
-  patients.upsert(trx, patients.pick(patientState))
 
 async function respondToPatientMessage(
   whatsapp: WhatsApp,

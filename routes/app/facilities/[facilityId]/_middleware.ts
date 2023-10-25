@@ -28,7 +28,7 @@ export async function handler(
     healthWorker.employment.some((e) => e.facility_id === facility_id),
   )
 
-  const facility = await facilities.get(ctx.state.trx, facility_id)
+  const [facility] = await facilities.get(ctx.state.trx, { ids: [facility_id] })
   assertOr404(facility)
 
   const isAdminAtFacility = healthWorker.employment.some((e) =>

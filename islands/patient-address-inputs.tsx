@@ -1,16 +1,31 @@
 import { useMemo, useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
 import { SelectInput, TextInput } from '../components/library/form/Inputs.tsx'
-import { AdminDistricts } from '../types.ts'
+import { FullCountryInfo, Maybe, OnboardingPatient } from '../types.ts'
 
 export default function PatientAddressForm(
-  { adminDistricts = [] }: { adminDistricts?: AdminDistricts },
+  { patient, adminDistricts }: {
+    patient?: Partial<OnboardingPatient>
+    adminDistricts: FullCountryInfo
+  },
 ) {
-  const [selectedCountry, setSelectedCountry] = useState<number>()
-  const [selectedProvince, setSelectedProvince] = useState<number>()
-  const [selectedDistrict, setSelectedDistrict] = useState<number>()
-  const [selectedWard, setSelectedWard] = useState<number>()
-  const [selectedSuburb, setSelectedSuburb] = useState<number>()
+  console.log('patient', patient)
+
+  const [selectedCountry, setSelectedCountry] = useState<Maybe<number>>(
+    patient?.country_id,
+  )
+  const [selectedProvince, setSelectedProvince] = useState<Maybe<number>>(
+    patient?.province_id,
+  )
+  const [selectedDistrict, setSelectedDistrict] = useState<Maybe<number>>(
+    patient?.district_id,
+  )
+  const [selectedWard, setSelectedWard] = useState<Maybe<number>>(
+    patient?.ward_id,
+  )
+  const [selectedSuburb, setSelectedSuburb] = useState<Maybe<number>>(
+    patient?.suburb_id,
+  )
 
   const provinces = useMemo(() => {
     if (!selectedCountry) return []
@@ -37,7 +52,7 @@ export default function PatientAddressForm(
     <section className='mb-7'>
       <FormRow>
         <SelectInput
-          name='country'
+          name='country_id'
           required
           label='Country'
           onChange={(e) => {
@@ -60,7 +75,7 @@ export default function PatientAddressForm(
           ))}
         </SelectInput>
         <SelectInput
-          name='province'
+          name='province_id'
           required
           label='Province'
           onChange={(e) => {
@@ -84,7 +99,7 @@ export default function PatientAddressForm(
       </FormRow>
       <FormRow>
         <SelectInput
-          name='district'
+          name='district_id'
           required
           label='District'
           onChange={(e) => {
@@ -105,7 +120,7 @@ export default function PatientAddressForm(
           ))}
         </SelectInput>
         <SelectInput
-          name='ward'
+          name='ward_id'
           required
           label='City/Town/Ward'
           onChange={(e) => {
@@ -125,7 +140,7 @@ export default function PatientAddressForm(
       <FormRow>
         {suburbs.length > 0 && (
           <SelectInput
-            name='suburb'
+            name='suburb_id'
             required
             label='Suburb'
           >
@@ -143,7 +158,11 @@ export default function PatientAddressForm(
             ))}
           </SelectInput>
         )}
-        <TextInput name='street' label='Street Address/Village' required />
+        <TextInput
+          name='street'
+          label='Street Address'
+          value={patient?.street}
+        />
       </FormRow>
     </section>
   )
