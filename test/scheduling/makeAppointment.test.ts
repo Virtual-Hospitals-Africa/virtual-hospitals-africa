@@ -91,6 +91,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           phone_number: null,
           updated_at: patient.updated_at,
           conversation_state: 'initial_message',
+          completed_onboarding: false,
         },
         patient_id: patient.id,
         reason: 'back pain',

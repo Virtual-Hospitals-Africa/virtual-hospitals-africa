@@ -18,7 +18,7 @@ function PatientAddress(
 }
 
 function NearestHealthCare(
-  { defaultFacility }: { defaultFacility?: ReturnedSqlRow<Facility> },
+  { defaultFacility }: { defaultFacility?: { id: number; name: string } },
 ) {
   return (
     <section>
@@ -45,7 +45,7 @@ function NearestHealthCare(
 
 export default function PatientAddressForm(
   { defaultFacility, adminDistricts }: {
-    defaultFacility?: ReturnedSqlRow<Facility>
+    defaultFacility?: { id: number; name: string }
     adminDistricts?: AdminDistricts
   },
 ) {

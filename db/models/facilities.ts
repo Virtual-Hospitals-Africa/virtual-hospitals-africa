@@ -52,13 +52,16 @@ export async function getAllWithNames(
 
 export function get(
   trx: TrxOrDb,
-  id: number,
-): Promise<Maybe<ReturnedSqlRow<Facility>>> {
+  opts: {
+    ids: number[]
+  }
+) {
+  assert(opts.ids.length, 'Must select nonzero facilities')
   return trx
     .selectFrom('facilities')
-    .where('id', '=', id)
+    .where('id', 'in', opts.ids)
     .selectAll()
-    .executeTakeFirst()
+    .execute()
 }
 
 export function getFirstByHealthWorker(

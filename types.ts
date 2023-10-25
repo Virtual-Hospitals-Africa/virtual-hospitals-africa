@@ -66,7 +66,11 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = PatientPersonal & PatientAddress & { nearest_facility_id: Maybe<number> }
+export type Patient = PatientPersonal & PatientAddress & { 
+  primary_doctor_id: Maybe<number>,
+  nearest_facility_id: Maybe<number>,
+  completed_onboarding: boolean 
+}
 
 
 export type PatientDemographicInfo = {
@@ -88,7 +92,7 @@ export type PatientAddress = {
   district: Maybe<number>
   ward: Maybe<number>
   suburb: Maybe<number>
-  street: Maybe<number>
+  street: Maybe<string>
 }
 
 
@@ -101,6 +105,7 @@ export type RenderedPatient = ReturnedSqlRow<
     | 'phone_number'
     | 'name'
     | 'conversation_state'
+    | 'completed_onboarding'
   > & {
     dob_formatted: string | null
     // age_formatted: Maybe<string> // TODO: implement
@@ -111,6 +116,23 @@ export type RenderedPatient = ReturnedSqlRow<
   }
 >
 
+export type OnboardingPatient =
+& { id: number; avatar_url: Maybe<string>; nearest_facility_name: Maybe<string> }
+& Pick<
+  Patient,
+  | 'name'
+  | 'phone_number'
+  | 'gender'
+  | 'date_of_birth'
+  | 'national_id_number'
+  | 'country'
+  | 'province'
+  | 'district'
+  | 'ward'
+  | 'street'
+  | 'nearest_facility_id'
+  | 'completed_onboarding'
+>
 
 export type PatientFamily = {
   marital_status: string
@@ -860,6 +882,7 @@ export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
   id: number
   employment: {
     facility_id: number
+    facility_name: string
     roles: {
       nurse: {
         employed_as: boolean

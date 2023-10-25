@@ -4,6 +4,7 @@ import {
   Gender,
   Location,
   Maybe,
+  OnboardingPatient,
   Patient,
   PatientConversationState,
   PatientState,
@@ -14,6 +15,8 @@ import {
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
+import omit from '../../util/omit.ts'
+import compact from '../../util/compact.ts'
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
@@ -31,6 +34,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.conversation_state',
       'patients.created_at',
       'patients.updated_at',
+      'patients.completed_onboarding',
       sql<string | null>`concat('/app/patients/', patients.id::text)`.as(
         'href',
       ),
@@ -56,35 +60,52 @@ export function getByPhoneNumber(
     .executeTakeFirst()
 }
 
-export function upsert(trx: TrxOrDb, info: {
+export type UpsertablePatient = {
   id?: number
   conversation_state?: PatientConversationState
   phone_number?: string
-  name?: Maybe<string>
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
+  primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
   country?: Maybe<number>
   province?: Maybe<number>
   district?: Maybe<number>
   ward?: Maybe<number>
-  street?: Maybe<number>
-}): Promise<ReturnedSqlRow<Patient>> {
+  street?: Maybe<string>
+  completed_onboarding?: boolean
+  name?: Maybe<string>
+  first_name?: Maybe<string>
+  middle_names?: Maybe<string>
+  last_name?: Maybe<string>
+}
+
+const omitNames = omit<UpsertablePatient, 'first_name' | 'middle_names' | 'last_name'>(['first_name', 'middle_names', 'last_name' ])
+
+export function upsert(trx: TrxOrDb, patient: UpsertablePatient): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...info,
-    location: info.location
-      ? sql`ST_SetSRID(ST_MakePoint(${info.location.longitude}, ${info.location.latitude})::geography, 4326)` as unknown as Location
+    ...omitNames(patient),
+    location: patient.location
+      ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,
+  }
+  if ('first_name' in patient) {
+    assert(!toInsert.name, 'Cannot set both name and first_name')
+    toInsert.name = compact(
+      [patient.first_name, patient.middle_names, patient.last_name],
+    ).join(' ')
   }
   return trx
     .insertInto('patients')
     .values({
       ...toInsert,
       conversation_state: toInsert.conversation_state || 'initial_message',
+      completed_onboarding: toInsert.completed_onboarding || false,
     })
     .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
+    .onConflict((oc) => oc.column('id').doUpdateSet(toInsert))
     .returningAll()
     .executeTakeFirstOrThrow()
 }
@@ -94,6 +115,40 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .deleteFrom('patients')
     .where('phone_number', '=', opts.phone_number)
     .executeTakeFirst()
+}
+
+export function getOnboarding(
+  trx: TrxOrDb,
+  opts: {
+    id: number
+  },
+): Promise<OnboardingPatient> {
+  return trx
+    .selectFrom('patients')
+    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .select([
+      'patients.id',
+      'patients.name',
+      'patients.phone_number',
+      'patients.location',
+      'patients.gender',
+      'patients.date_of_birth',
+      'patients.national_id_number',
+      'patients.country',
+      'patients.province',
+      'patients.district',
+      'patients.ward',
+      'patients.street',
+      'patients.completed_onboarding',
+      sql<
+        string | null
+      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+        .as('avatar_url'),
+      'patients.nearest_facility_id',
+      'facilities.name as nearest_facility_name',
+    ])
+    .where('patients.id', '=', opts.id)
+    .executeTakeFirstOrThrow()
 }
 
 // TODO: implement medical record functionality
@@ -172,7 +227,7 @@ export async function nearestFacilities(
 
   assert(patient.nearest_facilities.length > 0)
 
-  const updated_nearest_facilities = await Promise.all(
+  return Promise.all(
     patient.nearest_facilities.map(async (facility) => ({
       ...facility,
       walking_distance: await getWalkingDistance({
@@ -187,6 +242,4 @@ export async function nearestFacilities(
       }),
     })),
   )
-
-  return updated_nearest_facilities
 }

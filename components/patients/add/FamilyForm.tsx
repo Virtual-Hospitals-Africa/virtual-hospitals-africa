@@ -2,12 +2,11 @@ import { SelectInput, TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import Buttons from '../../library/form/buttons.tsx'
-import { AddPatientDataProps } from '../../../routes/app/patients/add.tsx'
+import { OnboardingPatient } from '../../../routes/app/patients/add.tsx'
 import ReligionSelect from '../../../islands/ReligionSelect.tsx'
-type FamilyFormProps = AddPatientDataProps['family']
 
 export default function FamilyForm(
-  { initialData = {} }: { initialData: Partial<FamilyFormProps> },
+  { initialData = {} }: { initialData: Partial<OnboardingPatient> },
 ) {
   const allRelations = [
     'Wife',

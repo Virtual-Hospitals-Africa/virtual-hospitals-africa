@@ -6,13 +6,12 @@ import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
+import * as facilities from '../db/models/facilities.ts'
 import * as google from '../external-clients/google.ts'
 import {
   EmployedHealthWorker,
   GoogleProfile,
-  HealthWorker,
   Profession,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../types.ts'
 import uniq from '../util/uniq.ts'
@@ -48,10 +47,14 @@ export async function initializeHealthWorker(
 
   const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
 
+  const employedAtFacilities = await facilities.get(trx, { ids: facility_ids })
+
   return {
     ...healthWorker,
     employment: facility_ids.map((facility_id) => ({
       facility_id,
+      facility_name:
+        employedAtFacilities.find((f) => f.id === facility_id)!.name,
       roles: {
         nurse: invitees.some((invitee) =>
             invitee.facility_id === facility_id &&

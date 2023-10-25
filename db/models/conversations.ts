@@ -7,7 +7,7 @@ import {
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
-// import { assert } from 'std/assert/assert.ts'
+import * as patients from './patients.ts'
 import compact from '../../util/compact.ts'
 
 export function updateReadStatus(
@@ -24,32 +24,20 @@ export function updateReadStatus(
 export function isWhatsAppContents(
   contents: unknown,
 ): contents is WhatsAppMessageContents {
-  console.log('contents passed to check', contents)
   if (!contents || typeof contents !== 'object') {
-    console.log('failed in here, contents is unknown')
     return false
   }
   if (
     !('has_media' in contents) || !('media_id' in contents) ||
     !('body' in contents)
   ) {
-    console.log(`failed because has_media / media_id / body not in contents`)
+
     return false
   }
   if (contents.has_media) {
-    console.log(
-      `checking here is ${
-        !!contents.media_id && typeof contents.media_id === 'string' &&
-        !contents.body
-      } `,
-    )
     return !!contents.media_id && typeof contents.media_id === 'string' &&
       !contents.body
   }
-  console.log(`last branch, ${
-    contents.media_id === null && !!contents.body &&
-    typeof contents.body === 'string'
-  }`)
   return contents.media_id === null && !!contents.body &&
     typeof contents.body === 'string'
 }
@@ -67,11 +55,14 @@ export async function insertMessageReceived(
 ): Promise<
   ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
+  const { patient_phone_number, ...message_data } = data
+
   const patient = (await trx
     .insertInto('patients')
     .values({
-      phone_number: data.patient_phone_number,
+      phone_number: patient_phone_number,
       conversation_state: 'initial_message',
+      completed_onboarding: false,
     })
     .onConflict((oc) => oc.column('phone_number').doNothing())
     .returningAll()
@@ -79,12 +70,10 @@ export async function insertMessageReceived(
       await trx.selectFrom('patients').where(
         'phone_number',
         '=',
-        data.patient_phone_number,
+        patient_phone_number,
       ).selectAll().executeTakeFirstOrThrow()
     )
 
-  const { patient_phone_number, ...message_data } = data
-  console.log(patient_phone_number)
   const inserted = await trx
     .insertInto('whatsapp_messages_received')
     .values({
@@ -94,12 +83,6 @@ export async function insertMessageReceived(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
-
-  // console.log('inserted stuff', inserted)
-  // assert(
-  //   isWhatsAppContents(inserted),
-  //   'assertion error occured, what happened?',
-  // )
 
   return inserted
 }

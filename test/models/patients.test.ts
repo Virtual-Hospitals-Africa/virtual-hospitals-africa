@@ -47,6 +47,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           updated_at: results[0].updated_at,
           last_visited: null,
           conversation_state: 'initial_message',
+          completed_onboarding: false,
         },
         {
           id: testPatient2.id,
@@ -63,6 +64,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           updated_at: results[1].updated_at,
           last_visited: null,
           conversation_state: 'initial_message',
+          completed_onboarding: false,
         },
       ])
     })
@@ -100,6 +102,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             history: {},
           },
           conversation_state: 'initial_message',
+          completed_onboarding: false,
         },
       ])
     })

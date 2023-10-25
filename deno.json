@@ -2,6 +2,7 @@
   "tasks": {
     "chatbot": "deno task run:trusted chatbot/chatbot.ts",
     "token_refresher": "deno task run:trusted token_refresher/token_refresher.ts",
+    "build": "deno task run:trusted dev.ts build",
     "start": "deno task run:trusted --watch=chatbot/,db/,islands/,scheduling/,util/,components/,external-clients/,landing-page/,routes/,static/ dev.ts",
     "web": "deno task run:trusted main.ts",
     "db:migrate:create": "deno task run:trusted db/create-migration.ts",
@@ -26,7 +27,7 @@
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
     "switch:prod": "cp .env.prod .env",
     "switch:local": "cp .env.local .env",
-    "test": "DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unsafely-ignore-certificate-errors",
+    "test": "deno task build && DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unsafely-ignore-certificate-errors",
     "test:chatbot": "deno task test test/chatbot/patient/*.test.ts"
   },
   "compilerOptions": {

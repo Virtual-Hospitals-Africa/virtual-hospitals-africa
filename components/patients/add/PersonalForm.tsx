@@ -7,12 +7,10 @@ import {
 import FormRow from '../../library/form/Row.tsx'
 import Buttons from '../../library/form/buttons.tsx'
 import FilePreviewInput from '../../../islands/file-preview-input.tsx'
-import { AddPatientDataProps } from '../../../routes/app/patients/add.tsx'
-
-type PatientPersonalFormProps = AddPatientDataProps['personal']
+import { OnboardingPatient } from '../../../routes/app/patients/add.tsx'
 
 export default function PatientPersonalForm(
-  { initialData = {} }: { initialData: Partial<PatientPersonalFormProps> },
+  { initialData = {} }: { initialData: Partial<OnboardingPatient> },
 ) {
   return (
     <>
@@ -43,7 +41,7 @@ export default function PatientPersonalForm(
         </SelectInput>
         <DateInput
           name='date_of_birth'
-          value={initialData.date_of_birth?.toISOString()}
+          value={initialData.date_of_birth}
           required
         />
       </FormRow>
@@ -66,10 +64,7 @@ export default function PatientPersonalForm(
           name='avatar_media'
           label='Photo'
           classNames='w-36 h-36'
-          value={initialData.avatar_media_id
-            ? `/app/patients/avatar/${initialData.avatar_media_id}`
-            : undefined}
-          fileName={initialData.avatar_media_name}
+          value={initialData.avatar_url}
         />
       </FormRow>
       <hr className='my-2' />

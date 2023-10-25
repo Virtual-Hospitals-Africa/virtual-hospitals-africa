@@ -2,15 +2,27 @@ import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import { NurseRegistrationDetails } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  it,
+} from 'std/testing/bdd.ts'
+import { redis } from '../../external-clients/redis.ts'
+import db from '../../db/db.ts'
+import { resetInTest } from '../../db/reset.ts'
+import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 
-export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
+
+export async function startWebServer(port: number): Promise<Deno.ChildProcess> {
   const process = new Deno.Command('deno', {
     args: [
       'task',
-      'start',
+      'web',
     ],
     env: {
-      PORT: port,
+      PORT: String(port),
     },
     stdin: 'null',
     stdout: 'piped',
@@ -36,11 +48,13 @@ export async function startWebServer(port: string): Promise<Deno.ChildProcess> {
 }
 
 export async function killWebServer(process: Deno.ChildProcess) {
+  console.log('killing web server', process.pid)
   await process.stdout.cancel()
   process.kill()
   await new Deno.Command('bash', {
     args: ['-c', `wait ${process.pid}`],
   }).output()
+  console.log('killed web server')
 }
 
 export const testHealthWorker = () => {
@@ -76,3 +90,33 @@ export const testRegistrationDetails = (
   face_picture_media_id: undefined,
   approved_by: undefined,
 })
+
+export function describeWithWebServer(description: string, port: number, callback: (route: string) => void) {
+  describe(description, { sanitizeResources: false}, () => {
+    const route = `https://localhost:${port}`
+    let process: Deno.ChildProcess
+    beforeAll(async () => {
+      process = await startWebServer(port)
+    })
+    beforeEach(resetInTest)
+    afterAll(async () => {
+      await killWebServer(process)
+      await db.destroy()
+      await redis.flushdb()
+    })
+    callback(route)
+  })
+}
+
+export async function addTestHealthWorkerWithSession() {
+  const sessionId = generateUUID()
+  const healthWorker = await upsertWithGoogleCredentials(db, testHealthWorker())
+  await redis.set(
+    `S_${sessionId}`,
+    JSON.stringify({
+      data: { health_worker_id: healthWorker.id },
+      _flash: {},
+    }),
+  )
+  return { sessionId, healthWorker }
+}
