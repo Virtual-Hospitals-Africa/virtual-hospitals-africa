@@ -1,10 +1,10 @@
 import {
   DateInput,
+  DateInput,
   GenderInput,
   NationalIdInput,
   PhoneNumberInput,
   TextInput,
-  DateInput
 } from '../../../library/form/Inputs.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
