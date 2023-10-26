@@ -1,6 +1,5 @@
 import {
   DateInput,
-  DateInput,
   GenderInput,
   NationalIdInput,
   PhoneNumberInput,
