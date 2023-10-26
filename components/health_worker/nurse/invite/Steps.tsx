@@ -66,14 +66,9 @@ function isPersonalFormFields(
     !!fields.first_name &&
     !!fields.last_name &&
     !!fields.gender &&
-<<<<<<< HEAD
     !!fields.national_id_number &&
-    !!fields.mobile_number
-=======
-    !!fields.national_id &&
     !!fields.mobile_number &&
     !!fields.address
->>>>>>> f365954 (Push for address change)
 }
 
 function isProfessionalInformationFields(

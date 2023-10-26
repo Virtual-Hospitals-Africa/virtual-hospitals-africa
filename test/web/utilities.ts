@@ -10,7 +10,6 @@ import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
-import { NurseRegistrationDetails } from '../../types.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
