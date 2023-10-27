@@ -14,8 +14,7 @@ import {
   ReturnedSqlRow,
 } from '../../../../../types.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
-import ApproveSuccess from '../../../../../islands/ApproveSuccess.tsx'
-import { approveInvitee, isAdmin } from '../../../../../db/models/employment.ts'
+import { isAdmin } from '../../../../../db/models/employment.ts'
 import FormButtons from '../../../../../components/library/form/buttons.tsx'
 
 type HealthWorkerPageProps = {
@@ -67,7 +66,6 @@ export const handler: LoggedInHealthWorkerHandler<
 export default function HealthWorkerPage(
   props: PageProps<HealthWorkerPageProps>,
 ) {
-  const approved = props.url.searchParams.get('approve')
   const isAdmin = props.data.isAdminAtFacility
 
   return (
@@ -81,9 +79,6 @@ export default function HealthWorkerPage(
       variant='standard'
     >
       <Container size='lg'>
-        <ApproveSuccess
-          approved={approved}
-        />
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
           <div className='my-6 overflow-hidden bg-slate-50'>
             <img

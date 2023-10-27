@@ -40,8 +40,10 @@ export const handler: LoggedInHealthWorkerHandler<
     )
     console.log('approved!')
 
+    const success = `Successfully approved ${employee.name}`
+
     return redirect(
-      `/app/facilities/${facility_id}/employees?approve=${employee.name}`,
+      `/app/facilities/${facility_id}/employees?success=${success}`,
     )
   },
 }
