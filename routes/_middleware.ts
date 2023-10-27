@@ -35,7 +35,7 @@ export const handler = [
     }).catch((err) => {
       console.error(err)
       const status = err.status || 500
-      return new Response(err.message, { status })
+      return new Response(err.stack || err.message, { status })
     })
   },
 ]

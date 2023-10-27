@@ -10,7 +10,6 @@ import {
 } from '../../types.ts'
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
-import haveNames from '../../util/haveNames.ts'
 
 export async function nearest(
   trx: TrxOrDb,
@@ -32,22 +31,26 @@ export async function nearest(
   return result.rows
 }
 
-export async function getAllWithNames(
+export function search(
   trx: TrxOrDb,
   search?: Maybe<string>,
-): Promise<ReturnedSqlRow<Facility>[]> {
+) {
   let query = trx
     .selectFrom('facilities')
-    .selectAll()
-    .where('name', 'is not', null)
+    .select([
+      'id',
+      'address',
+      sql`ST_X(location::geometry)`.as('longitude'),
+      sql`ST_Y(location::geometry)`.as('latitude'),
+      'category',
+      'display_name',
+      'phone',
+    ])
+    .where('display_name', 'is not', null)
 
-  if (search) query = query.where('name', 'ilike', `%${search}%`)
+  if (search) query = query.where('display_name', 'ilike', `%${search}%`)
 
-  const facilities = await query.execute()
-
-  assert(haveNames(facilities))
-
-  return facilities
+  return query.execute()
 }
 
 export function get(
@@ -64,38 +67,6 @@ export function get(
     .execute()
 }
 
-export function getFirstByHealthWorker(
-  trx: TrxOrDb,
-  healthWorkerId: number,
-): Promise<Maybe<ReturnedSqlRow<Facility>>> {
-  return trx
-    .selectFrom('employment')
-    .innerJoin(
-      'facilities',
-      'facilities.id',
-      'employment.facility_id',
-    )
-    .where('employment.health_worker_id', '=', healthWorkerId)
-    .selectAll('facilities')
-    .executeTakeFirst()
-}
-
-export function getByHealthWorker(
-  trx: TrxOrDb,
-  healthWorkerId: number,
-) {
-  return trx
-    .selectFrom('facilities')
-    .innerJoin(
-      'employment',
-      'facilities.id',
-      'employment.facility_id',
-    )
-    .where('employment.health_worker_id', '=', healthWorkerId)
-    .groupBy('facilities.id')
-    .selectAll('facilities')
-    .execute()
-}
 export type FacilityEmployee = {
   name: null | string
   is_invitee: boolean

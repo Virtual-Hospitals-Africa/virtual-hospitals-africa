@@ -20,7 +20,9 @@ function PatientAddress(
 }
 
 function NearestHealthCare(
-  { nearest_facility }: { nearest_facility?: { id: number; name: string } },
+  { nearest_facility }: {
+    nearest_facility?: { id: number; display_name: string }
+  },
 ) {
   return (
     <section>
@@ -49,13 +51,16 @@ function NearestHealthCare(
 export default function PatientAddressForm(
   { patient = {}, defaultFacility, adminDistricts }: {
     patient?: Partial<OnboardingPatient>
-    defaultFacility: { id: number; name: string }
+    defaultFacility: { id: number; display_name: string }
     adminDistricts: FullCountryInfo
   },
 ) {
   const nearest_facility =
-    patient.nearest_facility_id && patient.nearest_facility_name
-      ? { id: patient.nearest_facility_id, name: patient.nearest_facility_name }
+    patient.nearest_facility_id && patient.nearest_facility_display_name
+      ? {
+        id: patient.nearest_facility_id,
+        display_name: patient.nearest_facility_display_name,
+      }
       : defaultFacility
 
   return (

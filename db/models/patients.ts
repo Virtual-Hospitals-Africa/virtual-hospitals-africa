@@ -155,7 +155,7 @@ export function getOnboarding(
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_facility_id',
-      'facilities.name as nearest_facility_name',
+      'facilities.display_name as nearest_facility_display_name',
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()

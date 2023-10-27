@@ -35,7 +35,8 @@ export default function PendingApprovalPage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
   const { facilityAdmin } = props.data
-  const facilityName = facilityAdmin.facility_name || 'your facility'
+  const facilityDisplayName = facilityAdmin.facility_display_name ||
+    'your facility'
   const facilityAdminName = facilityAdmin.name || 'your facility admin'
 
   return (
@@ -51,7 +52,7 @@ export default function PendingApprovalPage(
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
               <PageHeader className='h1'>Application under review</PageHeader>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from {facilityName}{' '}
+                Your application from {facilityDisplayName}{' '}
                 is currently under review by{' '}
                 {facilityAdminName}. You will receive an email once your
                 application has been approved.

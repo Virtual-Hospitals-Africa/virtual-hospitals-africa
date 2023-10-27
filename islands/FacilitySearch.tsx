@@ -19,12 +19,14 @@ export default function FacilitySearch({
   name: string
   label?: string
   required?: boolean
-  value?: { id: number; name: string }
+  value?: { id: number; display_name: string }
 }) {
   const [isFocused, setIsFocused] = useState(false)
-  const [selected, setSelected] = useState<HasId<{ name: string }> | null>(null)
+  const [selected, setSelected] = useState<
+    HasId<{ display_name: string }> | null
+  >(null)
   const [facilities, setFacilities] = useState<
-    HasId<{ name: string; address: string }>[]
+    HasId<{ display_name: string; address: string }>[]
   >([])
 
   const [search, setSearchImmediate] = useState('')
@@ -37,7 +39,7 @@ export default function FacilitySearch({
   const onDocumentClick = useCallback(() => {
     setIsFocused(
       document.activeElement ===
-        document.querySelector(`input[name="${name}_name"]`),
+        document.querySelector(`input[name="${name}_display_name"]`),
     )
   }, [])
 
@@ -52,6 +54,7 @@ export default function FacilitySearch({
       headers: { accept: 'application/json' },
     }).then(async (response) => {
       const facilities = await response.json()
+      console.log('facilities', facilities)
       assert(Array.isArray(facilities))
       assert(
         facilities.every((facility) =>
@@ -68,23 +71,28 @@ export default function FacilitySearch({
           facility.address && typeof facility.address === 'string'
         ),
       )
+      assert(
+        facilities.every((facility) =>
+          facility.display_name && typeof facility.display_name === 'string'
+        ),
+      )
       setFacilities(facilities)
     }).catch(console.error)
   }, [search])
 
   useEffect(() => {
     if (!value) return
-    setSearchImmediate(value.name)
+    setSearchImmediate(value.display_name)
     setSelected(value)
   }, [value?.id])
 
   const showSearchResults = isFocused && facilities.length > 0 &&
-    selected?.name !== search
+    selected?.display_name !== search
 
   return (
     <div className='w-full'>
       <SearchInput
-        name={`${name}_name`}
+        name={`${name}_display_name`}
         value={search}
         required={required}
         label={label}
@@ -103,7 +111,7 @@ export default function FacilitySearch({
                 isSelected={selected?.id === facility.id}
                 onSelect={() => {
                   setSelected(facility)
-                  setSearchImmediate(facility.name)
+                  setSearchImmediate(facility.display_name)
                 }}
               />
             ))}

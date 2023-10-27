@@ -14,7 +14,7 @@ type PersonSearchResultProps = BasicSelectProps & {
 }
 
 type FacilitySearchResultProps = BasicSelectProps & {
-  facility: HasId<{ name: string; address: string }>
+  facility: HasId<{ display_name: string; address: string }>
 }
 
 type AllergySearchResultProps = BasicSelectProps & {
@@ -91,7 +91,7 @@ export function FacilitySearchResult(
     <SearchResult isSelected={isSelected} onSelect={onSelect}>
       <div className='flex flex-col'>
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
-          {facility.name}
+          {facility.display_name}
         </div>
         <div className={cls('truncate text-xs', isSelected && 'font-bold')}>
           {facility.address}
