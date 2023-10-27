@@ -69,8 +69,7 @@ export default function HealthWorkerPage(
 ) {
   const approved = props.url.searchParams.get('approve')
   const isAdmin = props.data.isAdminAtFacility
-  console.log(props.data.employee.registration_completed)
-  console.log(`/app/facilities/${props.url.toString().split('/')[5]}/employees`)
+
   return (
     <Layout
       title={props.data.employee.name}
@@ -117,7 +116,7 @@ export default function HealthWorkerPage(
             style={{ maxWidth: '200px' }}
             className='mb-5 float-right'
             method='POST'
-            action={`${props.url.href}/approve`}
+            action={`${props.url.pathname}/approve`}
           >
             <FormButtons
               submitText='Approve'
