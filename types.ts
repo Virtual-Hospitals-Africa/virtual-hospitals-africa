@@ -118,7 +118,7 @@ export type OnboardingPatient =
   & {
     id: number
     avatar_url: Maybe<string>
-    nearest_facility_name: Maybe<string>
+    nearest_facility_display_name: Maybe<string>
   }
   & Pick<
     Patient,
@@ -191,7 +191,7 @@ export type PatientState = {
   created_at: Date
   updated_at: Date
   nearest_facilities?: ReturnedSqlRow<Facility>[]
-  nearest_facility_name?: string
+  nearest_facility_display_name?: string
   selectedFacility?: Facility
 }
 
@@ -872,7 +872,7 @@ export type EmployeeInfo = {
   employment: {
     address: string
     facility_id: number
-    facility_name: string
+    facility_display_name: string
     professions: Profession[]
   }[]
   documents: {
@@ -885,7 +885,7 @@ export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
   id: number
   employment: {
     facility_id: number
-    facility_name: string
+    facility_display_name: string
     roles: {
       nurse: {
         employed_as: boolean
@@ -1116,11 +1116,13 @@ export type LoggedInHealthWorkerHandler<
 export type Facility = Location & {
   name: string
   address: string
+  category: string
   distance: number
   vha?: boolean
   url?: string
   phone?: string
   walking_distance?: string | null
+  display_name: string
 }
 
 export type GoogleAddressComponent = {

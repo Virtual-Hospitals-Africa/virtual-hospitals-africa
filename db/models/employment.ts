@@ -22,7 +22,7 @@ export type FacilityAdmin = {
   id: number
   email: string | null
   name: string
-  facility_name: string
+  facility_display_name: string
 } & Employee
 
 export function add(
@@ -88,46 +88,6 @@ export function getEmployee(
     .where('facility_id', '=', opts.facility_id)
     .where('health_worker_id', '=', opts.health_worker_id)
     .executeTakeFirst()
-}
-
-export function getByHealthWorker(
-  trx: TrxOrDb,
-  opts: {
-    health_worker_id: number
-  },
-): Promise<HealthWorkerWithRegistrationState[]> {
-  return trx
-    .selectFrom('employment')
-    .leftJoin('nurse_registration_details', (join) =>
-      join
-        .on(
-          'nurse_registration_details.health_worker_id',
-          '=',
-          opts.health_worker_id,
-        )
-        .on('employment.profession', '=', 'nurse'))
-    .where('employment.health_worker_id', '=', opts.health_worker_id)
-    .select([
-      'employment.id',
-      'employment.facility_id',
-      'employment.profession',
-      ({ eb, and }) =>
-        and([
-          eb('nurse_registration_details.id', 'is not', null),
-          eb('nurse_registration_details.approved_by', 'is', null),
-        ]).as('registration_pending_approval'),
-      ({ eb, and }) =>
-        and([
-          eb('nurse_registration_details.id', 'is', null),
-          eb('employment.profession', '=', 'nurse'),
-        ]).as('registration_needed'),
-      ({ eb, or }) =>
-        or([
-          eb('employment.profession', '!=', 'nurse'),
-          eb('nurse_registration_details.approved_by', 'is not', null),
-        ]).as('registration_completed'),
-    ])
-    .execute()
 }
 
 export function addInvitees(
@@ -208,7 +168,7 @@ export function getFacilityAdmin(
       'email',
       'profession',
       'facility_id',
-      'facilities.name as facility_name',
+      'facilities.display_name as facility_display_name',
     ])
     .executeTakeFirst()
 }

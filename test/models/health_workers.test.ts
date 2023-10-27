@@ -77,7 +77,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         employment: [
           {
             facility_id: 1,
-            facility_name: 'VHA Test Hospital',
+            facility_display_name: 'VHA Test Hospital',
             roles: {
               admin: {
                 employed_as: false,
@@ -162,14 +162,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         [
           {
             facility_id: 1,
-            facility_name: 'VHA Test Hospital',
+            facility_display_name: 'VHA Test Hospital',
             address: 'Bristol, UK',
             professions: ['nurse'],
           },
           {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             facility_id: 2,
-            facility_name: 'Beitbridge',
+            facility_display_name: 'Beitbridge District Hospital',
             professions: ['doctor'],
           },
         ],
@@ -256,14 +256,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         [
           {
             facility_id: 1,
-            facility_name: 'VHA Test Hospital',
+            facility_display_name: 'VHA Test Hospital',
             address: 'Bristol, UK',
             professions: ['nurse'],
           },
           {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             facility_id: 2,
-            facility_name: 'Beitbridge',
+            facility_display_name: 'Beitbridge District Hospital',
             professions: ['nurse'],
           },
         ],
@@ -376,14 +376,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         [
           {
             facility_id: 1,
-            facility_name: 'VHA Test Hospital',
+            facility_display_name: 'VHA Test Hospital',
             address: 'Bristol, UK',
             professions: ['nurse'],
           },
           {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             facility_id: 2,
-            facility_name: 'Beitbridge',
+            facility_display_name: 'Beitbridge District Hospital',
             professions: ['nurse'],
           },
         ],

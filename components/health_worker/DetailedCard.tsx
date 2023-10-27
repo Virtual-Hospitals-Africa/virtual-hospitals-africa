@@ -151,7 +151,7 @@ export default function HealthWorkerDetailedCard(
                 {employee.employment.map((item, index) => (
                   <li key={index}>
                     <div>
-                      {item.facility_name}
+                      {item.facility_display_name}
                     </div>
                     <div className='pl-4 text-xs'>
                       {item.address ? item.address : 'N/A'}

@@ -159,7 +159,7 @@ const typeCheckers: TypeCheckers = {
   lifestyle: isLifestyle,
 }
 
-const omitNames = omit(['nearest_facility_name', 'primary_doctor_name'])
+const omitNames = omit(['nearest_facility_display_name', 'primary_doctor_name'])
 
 const transformers: Transformers = {
   personal: (
@@ -283,7 +283,7 @@ export default function AddPatient(
               patient={patient}
               defaultFacility={{
                 id: healthWorker.employment[0].facility_id,
-                name: healthWorker.employment[0].facility_name,
+                display_name: healthWorker.employment[0].facility_display_name,
               }}
               adminDistricts={adminDistricts!}
             />
