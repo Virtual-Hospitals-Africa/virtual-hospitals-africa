@@ -33,7 +33,11 @@ export const handler: LoggedInHealthWorkerHandler<
       `Health worker ${health_worker_id} not found.`,
     )
 
-    approveInvitee(ctx.state.trx, ctx.state.healthWorker.id, health_worker_id)
+    await approveInvitee(
+      ctx.state.trx,
+      ctx.state.healthWorker.id,
+      health_worker_id,
+    )
     console.log('approved!')
 
     return redirect(

@@ -19,6 +19,7 @@ import { approveInvitee, isAdmin } from '../../../../../db/models/employment.ts'
 import FormButtons from '../../../../../components/library/form/buttons.tsx'
 
 type HealthWorkerPageProps = {
+  facility_id: number
   employee: EmployeeInfo
   isAdminAtFacility: boolean
 }
@@ -56,6 +57,7 @@ export const handler: LoggedInHealthWorkerHandler<
     // maybe should assert nurseRegistrationDetails
 
     return ctx.render({
+      facility_id,
       employee,
       isAdminAtFacility,
     })
@@ -115,12 +117,11 @@ export default function HealthWorkerPage(
             style={{ maxWidth: '200px' }}
             className='mb-5 float-right'
             method='POST'
-            action={props.url + '/approve'}
+            action={`${props.url.href}/approve`}
           >
             <FormButtons
               submitText='Approve'
-              cancelHref={`/app/facilities/${props.url.toString().split('/')[5] // get the facility id here
-              }/employees`}
+              cancelHref={`/app/facilities/${props.data.facility_id}/employees`}
             />
           </form>
         )}
