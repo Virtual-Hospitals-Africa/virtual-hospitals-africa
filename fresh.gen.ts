@@ -30,11 +30,10 @@ import * as $24 from './routes/apply.tsx'
 import * as $25 from './routes/chatbot/incoming-whatsapp.ts'
 import * as $26 from './routes/index.tsx'
 import * as $27 from './routes/join-mailing-list.tsx'
-import * as $28 from './routes/learn-more.tsx'
-import * as $29 from './routes/logged-in.tsx'
-import * as $30 from './routes/login.tsx'
-import * as $31 from './routes/logout.tsx'
-import * as $32 from './routes/volunteer.tsx'
+import * as $28 from './routes/logged-in.tsx'
+import * as $29 from './routes/login.tsx'
+import * as $30 from './routes/logout.tsx'
+import * as $31 from './routes/volunteer.tsx'
 import * as $$0 from './islands/AllergySearch.tsx'
 import * as $$1 from './islands/ErrorMessage.tsx'
 import * as $$2 from './islands/FacilitySearch.tsx'
@@ -83,11 +82,10 @@ const manifest = {
     './routes/chatbot/incoming-whatsapp.ts': $25,
     './routes/index.tsx': $26,
     './routes/join-mailing-list.tsx': $27,
-    './routes/learn-more.tsx': $28,
-    './routes/logged-in.tsx': $29,
-    './routes/login.tsx': $30,
-    './routes/logout.tsx': $31,
-    './routes/volunteer.tsx': $32,
+    './routes/logged-in.tsx': $28,
+    './routes/login.tsx': $29,
+    './routes/logout.tsx': $30,
+    './routes/volunteer.tsx': $31,
   },
   islands: {
     './islands/AllergySearch.tsx': $$0,

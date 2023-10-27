@@ -79,12 +79,12 @@ export default function VolunteerPage(
 ) {
   return (
     <Layout
-      title='Learn More | Virtual Hospitals Africa'
+      title='Volunteer Opportunities | Virtual Hospitals Africa'
       route={props.route}
       url={props.url}
       variant='just-logo'
     >
-      <Container>
+      <Container className='mt-4'>
         <div className='border-b border-gray-200 pb-5'>
           <h2 className='text-xl font-semibold leading-6 text-gray-900'>
             Volunteer Opportunities
