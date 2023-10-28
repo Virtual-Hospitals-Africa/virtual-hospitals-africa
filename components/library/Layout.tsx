@@ -5,7 +5,7 @@ import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import ErrorMessage from '../../islands/ErrorMessage.tsx'
-import { Footer } from '../../landing-page/components/Footer.tsx'
+import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 export type LayoutProps =

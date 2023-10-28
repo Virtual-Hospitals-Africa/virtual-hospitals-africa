@@ -67,13 +67,14 @@ export function Hero() {
                     Bringing accessible health care to Africans
                   </p>
                   <div className='mt-8 flex gap-4'>
-                    <Button href='/learn-more' color='blue'>
+                    {
+                      /* <Button href='/learn-more' color='blue'>
                       Learn more
-                    </Button>
+                    </Button> */
+                    }
                     <Button
                       href='/join-mailing-list?entrypoint=waitlist'
-                      variant='solid'
-                      color='white'
+                      color='blue'
                     >
                       Join the waitlist
                     </Button>

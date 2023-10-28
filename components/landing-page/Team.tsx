@@ -1,5 +1,6 @@
+import { Button } from '../../components/library/Button.tsx'
 import { Container } from '../../components/library/Container.tsx'
-import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import { UsersIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { SectionHeading } from './SectionHeading.tsx'
 
 const people = [
@@ -31,15 +32,29 @@ const people = [
 export function Team() {
   return (
     <div className='bg-white py-24 md:py-32'>
-      <div className='mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-20 px-6 lg:px-8 xl:grid-cols-5'>
+      <div className='mx-auto grid max-w-7xl grid-cols-1 gap-x-6 gap-y-20 xl:grid-cols-5'>
         <div className='max-w-2xl xl:col-span-2'>
           <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
             About the team
           </h2>
           <p className='mt-6 text-lg leading-8 text-gray-600'>
-            We’re a dynamic group of individuals who are passionate about what
-            we do and dedicated to delivering the best results for our clients.
+            Our team believes that the global health space is in need of
+            creative vigor to bring new possibilities forward, advancing how
+            care is delivered.
           </p>
+          <p className='mt-6 text-lg leading-8 text-gray-600'>
+            We bring 45 years of combined experience in bringing technology
+            solutions into resource poor settings, challenging deeply held
+            assumptions about what is possible.
+          </p>
+          <Button
+            className='mt-4'
+            href='/volunteer'
+            variant='solid'
+            color='indigo'
+          >
+            Volunteer Opportunities
+          </Button>
         </div>
         <ul
           role='list'
@@ -104,7 +119,7 @@ export function TeamSection() {
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading id='team-title' icon={<UserCircleIcon />}>
+        <SectionHeading id='team-title' icon={<UsersIcon />}>
           Team
         </SectionHeading>
         <Team />

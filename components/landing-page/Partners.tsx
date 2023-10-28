@@ -1,7 +1,11 @@
 import { SectionHeading } from './SectionHeading.tsx'
-import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import { GlobeEuropeAfricaIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import ArrowLink from './ArrowLink.tsx'
+import { MHILink } from '../../islands/landing-page/MHIDotsLogo.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import USFLogo from './partner-logos/usf.tsx'
+import VCULogo from './partner-logos/vcu.tsx'
 
 export default function PartnersContent() {
   return (
@@ -17,13 +21,21 @@ export default function PartnersContent() {
               global health to pilot this system in 5 rural clinics in Zimbabwe
               in early 2024. Your support will enable software development,
               health worker training, internet access, point of care testing,
-              implementation, other essential services and associated costs.
+              implementation, and other essential services.
             </p>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
               In creating this integrated platform together we can demonstrate
               how higher quality care can be delivered to patients with less
               stress at lower cost.
             </p>
+            <Button
+              className='mt-4'
+              variant='solid'
+              color='indigo'
+              href='/partner'
+            >
+              Join us
+            </Button>
             {
               /* <div className='mt-8 flex items-center gap-x-6'>
               <ArrowLink
@@ -34,48 +46,33 @@ export default function PartnersContent() {
             }
           </div>
           <div className='mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8'>
+            {/* <span className='m-8'> */}
+            <MHILink />
+            {/* </span> */}
             <img
-              className='max-h-12 w-full object-contain object-left'
-              src='https://tailwindui.com/img/logos/tuple-logo-gray-900.svg'
-              alt='Tuple'
-              width={105}
-              height={48}
+              className='max-h-16 w-full object-contain object-left'
+              src='/images/logos/hgat.png'
+              alt='Health Gateway Africa Trust'
+              width={304}
+              // height={48}
             />
+            {/* <span className='m-8'> */}
+            <span className='pr-2'>
+              <USFLogo />
+            </span>
+            {/* </span> */}
+            {/* <span className='m-8'> */}
+            <VCULogo />
+            {/* </span> */}
+            {/* <span className='m-8'> */}
             <img
               className='max-h-12 w-full object-contain object-left'
-              src='https://tailwindui.com/img/logos/reform-logo-gray-900.svg'
-              alt='Reform'
-              width={104}
-              height={48}
-            />
-            <img
-              className='max-h-12 w-full object-contain object-left'
-              src='https://tailwindui.com/img/logos/savvycal-logo-gray-900.svg'
-              alt='SavvyCal'
+              src='/images/logos/bristol.webp'
+              alt='University of Bristol'
               width={140}
               height={48}
             />
-            <img
-              className='max-h-12 w-full object-contain object-left'
-              src='https://tailwindui.com/img/logos/laravel-logo-gray-900.svg'
-              alt='Laravel'
-              width={136}
-              height={48}
-            />
-            <img
-              className='max-h-12 w-full object-contain object-left'
-              src='https://tailwindui.com/img/logos/transistor-logo-gray-900.svg'
-              alt='Transistor'
-              width={158}
-              height={48}
-            />
-            <img
-              className='max-h-12 w-full object-contain object-left'
-              src='https://tailwindui.com/img/logos/statamic-logo-gray-900.svg'
-              alt='Statamic'
-              width={147}
-              height={48}
-            />
+            {/* </span> */}
           </div>
         </div>
       </div>
@@ -89,9 +86,13 @@ export function Partners() {
       id='partners'
       aria-labelledby='partners-title'
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
+      // style={{
+      //   background:
+      //     'radial-gradient(circle at 100% 0%, rgba(255, 234, 202, 0.2) 0%, rgba(255, 255, 255, 0) 100%)',
+      // }}
     >
       <Container>
-        <SectionHeading id='author-title' icon={<UserCircleIcon />}>
+        <SectionHeading id='author-title' icon={<GlobeEuropeAfricaIcon />}>
           Partners
         </SectionHeading>
         <PartnersContent />
