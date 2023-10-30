@@ -43,10 +43,14 @@ function DemoVideoContainer({ className }: { className?: string }) {
 export function Hero() {
   return (
     <header className='overflow-hidden bg-slate-100 lg:bg-transparent lg:px-5'>
+      <LogoWithFullText
+        variant='white'
+        className='absolute left-3 top-3 z-10 md:hidden h-24'
+      />
       <Button
         href='/login'
         color='blue'
-        className='absolute right-3 top-3 z-10'
+        className='absolute right-3 md:top-3 z-10 top-10'
       >
         Sign In
       </Button>
@@ -60,7 +64,7 @@ export function Hero() {
             <div className='lg:absolute w-full h-full lg:pl-80 lg:grid lg:place-items-center'>
               <div className='flex flex-col-reverse md:flex-row w-full h-full items-center justify-start lg:justify-end'>
                 <div className='ml-2 lg:ml-auto lg:mr-60 px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0'>
-                  <h1 className='flex gap-10 items-center font-display text-5xl font-extrabold text-white sm:text-6xl'>
+                  <h1 className='hidden gap-10 items-center font-display text-5xl font-extrabold text-white sm:text-6xl md:flex'>
                     <LogoWithFullText variant='white' />
                   </h1>
                   <p className='mt-8 text-3xl text-white max-w-md'>
@@ -80,7 +84,7 @@ export function Hero() {
                     </Button>
                   </div>
                 </div>
-                <DemoVideoContainer className='flex mb-6 lg:hidden lg:mb-auto' />
+                <DemoVideoContainer className='flex mb-6 lg:hidden lg:mb-auto mt-24 lg:mt-auto' />
               </div>
             </div>
           </div>
