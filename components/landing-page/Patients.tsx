@@ -25,28 +25,28 @@ export function Patients() {
       <FeatureGrid
         features={[
           {
-            title: 'Task with a professional',
+            title: 'Talk with a professional',
             description:
               'Speak with your doctor’s office from your mobile device or get immediate answers from our worldwide network of health professionals.',
-            image: '/images/screencasts/setup.svg',
+            image: '/images/demos/patients/talk_with_professional.png',
           },
           {
             title: 'Check your health status',
             description:
               'With our WhatsApp chatbot, patients have instant access to their medical records, specialist reports, and lab results.',
-            image: '/images/screencasts/grids.svg',
+            image: '/images/demos/patients/health_status.png',
           },
           {
             title: 'Fill prescriptions automatically',
             description:
               'New medications can be sent to your preferred pharmacist. Refill prescriptions with one click from your mobile device.',
-            image: '/images/screencasts/strokes.svg',
+            image: '/images/demos/patients/automatic_prescriptions.png',
           },
           {
             title: 'Follow health plan',
             description:
               'Receive regular reminders to stay on top of your health and fitness.',
-            image: '/images/screencasts/duotone.svg',
+            image: '/images/demos/patients/health_plan.png',
           },
         ]}
       />
