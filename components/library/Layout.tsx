@@ -81,6 +81,7 @@ export default function Layout(props: LayoutProps) {
       <Head>
         <title>{props.title}</title>
         {props.head}
+        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       </Head>
       <body className='min-h-screen flex flex-col relative justify-between'>
         <SuccessMessage

@@ -4,7 +4,7 @@ export default function WifiPattern() {
   return (
     <div
       aria-hidden='true'
-      className='absolute inset-0 h-full w-full'
+      className='hidden md:absolute inset-0 h-full w-full'
     >
       <WifiIcon
         className='absolute -top-24 -right-24 w-72 h-72'

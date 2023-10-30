@@ -23,7 +23,7 @@ export function Testimonial(
         className='relative'
       >
         <figure>
-          <blockquote className='font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-center bg-indigo-900 text-white rounded-lg p-12'>
+          <blockquote className='font-display text-xl md:text-4xl font-medium tracking-tight text-slate-900 sm:text-center bg-indigo-900 text-white rounded-lg md:p-12 p-4'>
             {children}
           </blockquote>
           <figcaption className='mt-6 flex items-center sm:justify-center'>
