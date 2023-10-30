@@ -14,7 +14,7 @@ function DemoVideoContainer({ className }: { className?: string }) {
     >
       <img
         className='w-full rounded-xl'
-        src='images/doctor_using_app.jpg'
+        src='images/doctor_using_app-min.jpg'
         alt=''
       />
       {demoVideoExists && (

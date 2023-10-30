@@ -9,23 +9,24 @@ const people = [
     role: 'Chief Executive Officer',
     imageUrl: '/images/team/jonathan.jpeg',
     bio:
-      'Jonathan is a seasoned IT professional with over 20 years in Systems Analysis and Networking Technologies. He has a proven track record of success in leading and managing complex projects as well as a deep understanding of the latest technologies and trends. Passionate advocate for social impact, Jonathan is a board member of several non-profit organizations.',
-    linkedinUrl: '#',
+      'Jonathan is the founding trustee of Health Gateway Africa Trust  seasoned IT professional with over 20 years in Systems Analysis and Networking Technologies. He has a proven track record of success in leading and managing complex projects as well as a deep understanding of the latest technologies and trends. Passionate advocate for social impact, Jonathan is a board member of several non-profit organizations.',
+    linkedinUrl: 'https://linkedin.com/in/jonathan-tagarisa-07333710',
   },
   {
     name: 'Will Weiss',
     role: 'Chief Technology Officer',
-    imageUrl: '/images/team/will.jpg',
-    bio: '',
-    linkedinUrl: '#',
+    imageUrl: '/images/team/will_2.png',
+    bio:
+      'Will Weiss is a passionate technologist and humanitarian who las led engineering and nonprofit teams in a variety of international settings create systems that scale and improve lives.<br><br>Founder at More Human Internet, Will works extensively with volunteers contributing their expertise to maximize the impact of international causes.',
+    linkedinUrl: 'https://linkedin.com/in/willweiss1',
   },
   {
     name: 'Dr. Sikhululiwe Ngwenya',
     role: 'Chief Medical Officer',
     imageUrl: '/images/team/skhu.jpeg',
     bio:
-      'Sikhululiwe Ngwenya is a medical doctor and digital health leader with a passion for using technology to improve the quality, accessibility and affordability of healthcare. She has a strong track record in the health care sector with experience in clinical care, research and health promotion. Dr Sikhululiwe is passionate about using technology to solve real-world healthcare challenges and improve the lives of patients.',
-    linkedinUrl: '#',
+      'Sikhululiwe Ngwenya is a medical doctor and digital health leader with a passion for using technology to improve the quality, accessibility, and affordability of healthcare. She has a strong track record in the health care sector with experience in clinical care, research and health promotion. Dr. Sikhululiwe is passionate about using technology to solve real-world healthcare challenges and improve the lives of patients.',
+    linkedinUrl: 'https://linkedin.com/in/sikhululiwe-ngwenya-27ab9053',
   },
 ]
 
@@ -80,9 +81,10 @@ export function Team() {
               <p className='text-base leading-7 text-gray-600'>
                 {person.role}
               </p>
-              <p className='mt-6 text-base leading-7 text-gray-600'>
-                {person.bio}
-              </p>
+              <p
+                className='mt-6 text-base leading-7 text-gray-600'
+                dangerouslySetInnerHTML={{ __html: person.bio }}
+              />
               <ul role='list' className='mt-6 flex gap-x-6'>
                 <li>
                   <a
@@ -118,7 +120,7 @@ export function TeamSection() {
     <section
       id='team'
       aria-labelledby='team-title'
-      className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
+      className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-8 lg:py-12'
     >
       <Container>
         <SectionHeading id='team-title' icon={<UsersIcon />}>

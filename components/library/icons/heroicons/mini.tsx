@@ -2,18 +2,18 @@ import { JSX } from 'preact'
 import cls from '../../../../util/cls.ts'
 
 function HeroIconMini(
-  props: JSX.SVGAttributes<SVGSVGElement>,
+  { className, children, ...props }: JSX.SVGAttributes<SVGSVGElement>,
 ) {
   return (
     <svg
-      {...props}
-      className={cls('w-5 h-5', props.className as string)}
       fill='none'
       viewBox='0 0 20 20'
       strokeWidth={1.5}
       stroke='currentColor'
+      className={cls('w-5 h-5', className as string)}
+      {...props}
     >
-      {props.children}
+      {children}
     </svg>
   )
 }

@@ -9,25 +9,25 @@ const features = [
     title: 'Clean Data',
     description:
       'Fully paperless and designed from the ground up to keep patient data in sync across the whole platform',
-    image: '',
+    image: '/images/demos/research/cloud.png',
   },
   {
     title: 'Large Population',
     description:
       'Our cloud-native system can scale to thousands of facilities serving millions of patients',
-    image: '',
+    image: '/images/demos/research/large_population.png',
   },
   {
     title: 'Real-time Dashboards',
     description:
       'Get visibility into health trends with customizable time series graphs',
-    image: '',
+    image: '/images/demos/research/dashboards.png',
   },
   {
     title: 'AI Decision Support',
     description:
       'Proprietary models based on latest medical data can support making diagnoses, prescribing medications, and managing patients',
-    image: '',
+    image: '/images/demos/research/ai_decision_support.png',
   },
 ]
 
@@ -47,7 +47,7 @@ export function Research() {
         </p>
         <p className='mt-4 text-lg tracking-tight text-slate-700'>
           Monitor and evaluate at a country-wide level, with secure medical data
-          sourced directly from patients
+          sourced directly from patients.
         </p>
         {
           /* <p className='mt-4'>
@@ -58,13 +58,8 @@ export function Research() {
         </p> */
         }
       </Container>
-      <Container size='lg' className='mt-16'>
-        <ol
-          role='list'
-          className='-mx-3 grid grid-cols-1 gap-y-10 lg:grid-cols-3 lg:text-center xl:-mx-12 xl:divide-x xl:divide-slate-400/20'
-        >
-          <FeatureGrid features={features} />
-        </ol>
+      <Container size='lg' className='mt-6'>
+        <FeatureGrid features={features} />
       </Container>
     </section>
   )

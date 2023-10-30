@@ -9,12 +9,12 @@ import VCULogo from './partner-logos/vcu.tsx'
 
 export default function PartnersContent() {
   return (
-    <div className='bg-white py-4 sm:py-6'>
+    <div className='py-4 sm:py-6'>
       <div className='mx-auto max-w-7xl'>
         <div className='grid grid-cols-1 items-center gap-x-8 gap-y-16 lg:grid-cols-2'>
           <div className='mx-auto w-full max-w-xl lg:mx-0'>
-            <h2 className='text-3xl font-bold tracking-tight text-gray-900'>
-              Driving innovative health care
+            <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
+              Driving innovative<br />health care
             </h2>
             <p className='mt-6 text-lg leading-8 text-gray-600'>
               We’re interested in collaborating with funders passionate about
@@ -90,6 +90,10 @@ export function Partners() {
       //   background:
       //     'radial-gradient(circle at 100% 0%, rgba(255, 234, 202, 0.2) 0%, rgba(255, 255, 255, 0) 100%)',
       // }}
+      style={{
+        background:
+          'linear-gradient(to bottom, #4F46E5 0%, white 40%, white 100%)',
+      }}
     >
       <Container>
         <SectionHeading id='author-title' icon={<GlobeEuropeAfricaIcon />}>

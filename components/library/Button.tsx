@@ -1,12 +1,10 @@
-// deno-lint-ignore-file no-explicit-any
+import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 
 const baseStyles = {
-  solid:
-    'inline-flex justify-center rounded-md py-1 px-4 text-base font-semibold tracking-tight shadow-sm focus:outline-none',
-  outline:
-    'inline-flex justify-center rounded-md border py-1 px-4 text-base font-semibold tracking-tight focus:outline-none',
-} as any
+  solid: 'shadow-sm',
+  outline: 'border',
+}
 
 const variantStyles = {
   solid: {
@@ -27,7 +25,23 @@ const variantStyles = {
     blue:
       'border-blue-300 text-blue-600 hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
   },
-} as any
+}
+
+type ButtonProps =
+  & JSX.HTMLAttributes<HTMLButtonElement>
+  & {
+    className?: string
+  }
+  & ({
+    variant: 'solid'
+    color?: keyof typeof variantStyles.solid
+  } | {
+    variant: 'outline'
+    color?: keyof typeof variantStyles.outline
+  } | {
+    variant?: undefined
+    color?: keyof typeof variantStyles.solid
+  })
 
 export function Button({
   variant = 'solid',
@@ -35,14 +49,22 @@ export function Button({
   className,
   href,
   ...props
-}: any) {
+}: ButtonProps) {
   className = cls(
+    'inline-flex justify-center rounded-md py-1 px-4 text-base font-semibold tracking-tight focus:outline-none',
     baseStyles[variant],
-    variantStyles[variant][color],
+    // deno-lint-ignore no-explicit-any
+    (variantStyles as any)[variant][color],
     className,
   )
 
   return href
-    ? <a href={href} className={className} {...props} />
+    ? (
+      <a
+        href={href}
+        className={className}
+        {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
+      />
+    )
     : <button className={className} {...props} />
 }

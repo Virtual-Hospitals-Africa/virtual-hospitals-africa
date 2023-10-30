@@ -37,7 +37,7 @@ export default function Home() {
         id='testimonial-from-gerardo-stark'
         author={{
           name: 'Sekuru Dube, 75',
-          role: 'Patient',
+          role: 'Patient, Midlands Province',
           image: '/images/avatars/avatar-2.png',
         }}
       >
