@@ -28,25 +28,25 @@ export function Patients() {
             title: 'Talk with a professional',
             description:
               'Speak with your doctor’s office from your mobile device or get immediate answers from our worldwide network of health professionals.',
-            image: '/images/demos/patients/talk_with_professional.png',
+            image: '/images/demos/talk_with_professional.png',
           },
           {
             title: 'Check your health status',
             description:
               'With our WhatsApp chatbot, patients have instant access to their medical records, specialist reports, and lab results.',
-            image: '/images/demos/patients/health_status.png',
+            image: '/images/demos/health_status.png',
           },
           {
             title: 'Fill prescriptions automatically',
             description:
               'New medications can be sent to your preferred pharmacist. Refill prescriptions with one click from your mobile device.',
-            image: '/images/demos/patients/automatic_prescriptions.png',
+            image: '/images/demos/automatic_prescriptions.png',
           },
           {
             title: 'Follow health plan',
             description:
               'Receive regular reminders to stay on top of your health and fitness.',
-            image: '/images/demos/patients/health_plan.png',
+            image: '/images/demos/health_plan.png',
           },
         ]}
       />

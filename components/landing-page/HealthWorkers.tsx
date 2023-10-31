@@ -42,25 +42,25 @@ export function HealthWorkers() {
             title: 'Crystal Clear Medical Records',
             description:
               'Find and evaluate patient medical records quickly and easily.',
-            image: '/images/demos/health_workers/medical_records.png',
+            image: '/images/demos/medical_records.png',
           },
           {
             title: 'One Click Prescriptions',
             description:
               'Upon making a diagnosis, health workers can send prescriptions to local pharmacies with a single click.',
-            image: '/images/demos/health_workers/one_click_prescriptions.png',
+            image: '/images/demos/one_click_prescriptions.png',
           },
           {
             title: 'Painless Follow Up',
             description:
               'When needed, create follow up appointments with other doctors or specialists even those at other facilities.',
-            image: '/images/demos/health_workers/video_appointments.png',
+            image: '/images/demos/video_appointments.png',
           },
           {
             title: 'Built-in Metrics',
             description:
               'Clinic and hospital leaders can view aggregates at a facility and country wide level to monitor and evaluate how they can improve patient outcomes.',
-            image: '/images/demos/health_workers/metrics.png',
+            image: '/images/demos/metrics.png',
           },
         ]}
       />

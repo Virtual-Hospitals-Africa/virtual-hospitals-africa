@@ -15,7 +15,11 @@ const port = parseInt(Deno.env.get('PORT') || '8000', 10)
 const opts = { port, plugins: [twindPlugin(twindConfig)] }
 const self = Deno.env.get('SELF_URL')
 
-if (self === 'https://localhost:8000') {
+const servePlainHttp = self !== 'https://localhost:8000' || Deno.env.get('SERVE_HTTP')
+
+if (servePlainHttp) {
+  await start(manifest, opts)
+} else {
   const ctx = await ServerContext.fromManifest(manifest, opts)
   // deno-lint-ignore no-explicit-any
   await serveTls(ctx.handler() as any, {
@@ -23,6 +27,4 @@ if (self === 'https://localhost:8000') {
     certFile: './local-certs/localhost.crt',
     keyFile: './local-certs/localhost.key',
   })
-} else {
-  await start(manifest, opts)
 }

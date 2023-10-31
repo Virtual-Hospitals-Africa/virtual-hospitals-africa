@@ -9,25 +9,25 @@ const features = [
     title: 'Clean Data',
     description:
       'Fully paperless and designed from the ground up to keep patient data in sync across the whole platform',
-    image: '/images/demos/research/cloud.png',
+    image: '/images/demos/cloud.png',
   },
   {
     title: 'Large Population',
     description:
       'Our cloud-native system can scale to thousands of facilities serving millions of patients',
-    image: '/images/demos/research/large_population.png',
+    image: '/images/demos/large_population.png',
   },
   {
     title: 'Real-time Dashboards',
     description:
       'Get visibility into health trends with customizable time series graphs',
-    image: '/images/demos/research/dashboards.png',
+    image: '/images/demos/dashboards.png',
   },
   {
     title: 'AI Decision Support',
     description:
       'Proprietary models based on latest medical data can support making diagnoses, prescribing medications, and managing patients',
-    image: '/images/demos/research/ai_decision_support.png',
+    image: '/images/demos/ai_decision_support.png',
   },
 ]
 
@@ -37,6 +37,10 @@ export function Research() {
       id='research'
       aria-labelledby='research-title'
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
+      style={{
+        background:
+          'linear-gradient(to bottom, white 0%, white 50%, rgba(79, 70, 229, 0.47) 100%)',
+      }}
     >
       <Container>
         <SectionHeading id='research-title' icon={<PresentationChartBarIcon />}>
