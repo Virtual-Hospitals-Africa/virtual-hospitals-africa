@@ -50,29 +50,31 @@ export default function PartnersContent() {
             <MHILink />
             {/* </span> */}
             <img
-              className='max-h-16 w-full object-contain object-left'
+              className='max-h-20 w-full object-contain object-left'
               src='/images/logos/hgat.png'
               alt='Health Gateway Africa Trust'
               width={304}
               // height={48}
             />
             {/* <span className='m-8'> */}
-            <span className='pr-2'>
+            <span className='pr-20'>
               <USFLogo />
             </span>
             {/* </span> */}
             {/* <span className='m-8'> */}
-            <VCULogo />
+            <span className='max-h-12'>
+              <VCULogo className='max-h-12' />
+            </span>
+
             {/* </span> */}
             {/* <span className='m-8'> */}
             <img
               className='max-h-12 w-full object-contain object-left'
               src='/images/logos/bristol.webp'
               alt='University of Bristol'
-              width={140}
-              height={48}
+              // width={140}
+              height={64}
             />
-            {/* </span> */}
           </div>
         </div>
       </div>
@@ -86,14 +88,6 @@ export function Partners() {
       id='partners'
       aria-labelledby='partners-title'
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
-      // style={{
-      //   background:
-      //     'radial-gradient(circle at 100% 0%, rgba(255, 234, 202, 0.2) 0%, rgba(255, 255, 255, 0) 100%)',
-      // }}
-      style={{
-        background:
-          'linear-gradient(to bottom, #4F46E5 0%, white 40%, white 100%)',
-      }}
     >
       <Container>
         <SectionHeading id='author-title' icon={<GlobeEuropeAfricaIcon />}>
