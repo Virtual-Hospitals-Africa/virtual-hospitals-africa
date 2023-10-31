@@ -57,7 +57,7 @@ export default function PartnersContent() {
               // height={48}
             />
             {/* <span className='m-8'> */}
-            <span className='pr-20'>
+            <span className='pr-8'>
               <USFLogo />
             </span>
             {/* </span> */}
