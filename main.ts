@@ -15,7 +15,8 @@ const port = parseInt(Deno.env.get('PORT') || '8000', 10)
 const opts = { port, plugins: [twindPlugin(twindConfig)] }
 const self = Deno.env.get('SELF_URL')
 
-const servePlainHttp = self !== 'https://localhost:8000' || Deno.env.get('SERVE_HTTP')
+const servePlainHttp = self !== 'https://localhost:8000' ||
+  Deno.env.get('SERVE_HTTP')
 
 if (servePlainHttp) {
   await start(manifest, opts)
