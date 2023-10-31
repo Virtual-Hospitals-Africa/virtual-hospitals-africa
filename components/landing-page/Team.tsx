@@ -7,7 +7,7 @@ const people = [
   {
     name: 'Jonathan Tagarisa',
     role: 'Chief Executive Officer',
-    imageUrl: '/images/team/jonathan.jpeg',
+    imageUrl: '/images/team/jonathan.webp',
     bio:
       'Jonathan is the founding trustee of Health Gateway Africa Trust  seasoned IT professional with over 20 years in Systems Analysis and Networking Technologies. He has a proven track record of success in leading and managing complex projects as well as a deep understanding of the latest technologies and trends. Passionate advocate for social impact, Jonathan is a board member of several non-profit organizations.',
     linkedinUrl: 'https://linkedin.com/in/jonathan-tagarisa-07333710',
@@ -15,7 +15,7 @@ const people = [
   {
     name: 'Will Weiss',
     role: 'Chief Technology Officer',
-    imageUrl: '/images/team/will_2.png',
+    imageUrl: '/images/team/will_2.webp',
     bio:
       'Will Weiss is a passionate technologist and humanitarian who las led engineering and nonprofit teams in a variety of international settings create systems that scale and improve lives.<br><br>Founder at More Human Internet, Will works extensively with volunteers contributing their expertise to maximize the impact of international causes.',
     linkedinUrl: 'https://linkedin.com/in/willweiss1',
@@ -23,7 +23,7 @@ const people = [
   {
     name: 'Dr. Sikhululiwe Ngwenya',
     role: 'Chief Medical Officer',
-    imageUrl: '/images/team/skhu.jpeg',
+    imageUrl: '/images/team/skhu.webp',
     bio:
       'Sikhululiwe Ngwenya is a medical doctor and digital health leader with a passion for using technology to improve the quality, accessibility, and affordability of healthcare. She has a strong track record in the health care sector with experience in clinical care, research and health promotion. Dr. Sikhululiwe is passionate about using technology to solve real-world healthcare challenges and improve the lives of patients.',
     linkedinUrl: 'https://linkedin.com/in/sikhululiwe-ngwenya-27ab9053',
