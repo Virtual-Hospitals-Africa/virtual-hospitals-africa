@@ -1,6 +1,6 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { LoggedInHealthWorkerHandler } from '../../types.ts'
-import { getAllWithNames } from '../../db/models/health_workers.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
 import { json } from '../../util/responses.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 
@@ -14,7 +14,7 @@ export const handler: LoggedInHealthWorkerHandler<unknown> = {
       profession === null || profession === 'doctor' ||
         profession === 'nurse' || profession === 'admin',
     )
-    const healthWorkers = await getAllWithNames(ctx.state.trx, {
+    const healthWorkers = await health_workers.search(ctx.state.trx, {
       search,
       profession,
     })
