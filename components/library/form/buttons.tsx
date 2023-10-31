@@ -21,7 +21,7 @@ export default function FormButtons(
       <Button
         type='button'
         variant='outline'
-        color='white'
+        color='blue'
         href={cancelHref}
       >
         {cancelText}
