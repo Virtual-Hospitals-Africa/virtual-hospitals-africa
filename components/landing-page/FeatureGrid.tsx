@@ -8,7 +8,7 @@ export function FeatureGrid({ features }: {
   }[]
 }) {
   return (
-    <Container size='lg' className='mt-16'>
+    <Container size='lg' className='mt-4 md:mt-16'>
       <ol
         role='list'
         className='grid grid-cols-1 gap-x-8 gap-y-10 [counter-reset:feature] sm:grid-cols-2 lg:grid-cols-4'

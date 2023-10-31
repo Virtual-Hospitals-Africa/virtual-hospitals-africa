@@ -8,7 +8,7 @@ export function Patients() {
     <section
       id='patients'
       aria-labelledby='patients-title'
-      className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
+      className='scroll-mt-14 mt-12 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
         <SectionHeading id='patients-title' icon={<UserCircleIcon />}>

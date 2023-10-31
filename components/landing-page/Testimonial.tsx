@@ -13,11 +13,9 @@ export function Testimonial(
     <aside
       id={id}
       aria-label={`Testimonial from ${author.name}`}
-      className='relative bg-slate-100 py-16 sm:py-32'
+      className='relative bg-slate-100 sm:py-32'
     >
-      <div className='text-slate-900/10'>
-        <MedicalIconPattern />
-      </div>
+      <MedicalIconPattern />
       <Container
         size='xs'
         className='relative'

@@ -58,9 +58,7 @@ export function Research() {
         </p> */
         }
       </Container>
-      <Container size='lg' className='mt-6'>
-        <FeatureGrid features={features} />
-      </Container>
+      <FeatureGrid features={features} />
     </section>
   )
 }

@@ -120,7 +120,7 @@ export function TeamSection() {
     <section
       id='team'
       aria-labelledby='team-title'
-      className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-8 lg:py-12'
+      className='scroll-mt-14 sm:scroll-mt-32 sm:py-8 lg:py-12'
     >
       <Container>
         <SectionHeading id='team-title' icon={<UsersIcon />}>
