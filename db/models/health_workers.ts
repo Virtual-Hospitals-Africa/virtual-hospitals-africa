@@ -214,7 +214,7 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
-export async function getAllWithNames(
+export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
@@ -223,7 +223,17 @@ export async function getAllWithNames(
 ): Promise<ReturnedSqlRow<HealthWorker & { name: string }>[]> {
   let query = trx
     .selectFrom('health_workers')
-    .select([
+    .innerJoin(
+      'employment',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .innerJoin(
+      'facilities',
+      'employment.facility_id',
+      'facilities.id',
+    )
+    .select((eb) => [
       'health_workers.id',
       'health_workers.avatar_url',
       'health_workers.created_at',
@@ -232,20 +242,39 @@ export async function getAllWithNames(
       'health_workers.gcal_availability_calendar_id',
       'health_workers.name',
       'health_workers.updated_at',
+      jsonArrayFrom(
+        eb.selectFrom('employment')
+          .innerJoin(
+            'facilities',
+            'employment.facility_id',
+            'facilities.id',
+          )
+          .select([
+            'employment.facility_id',
+            'facilities.display_name as facility_display_name',
+            sql<Profession[]>`JSON_AGG(employment.profession)`.as(
+              'professions',
+            ),
+          ])
+          .whereRef(
+            'employment.health_worker_id',
+            '=',
+            'health_workers.id',
+          )
+          .groupBy([
+            'employment.facility_id',
+            'facilities.display_name',
+          ]),
+      ).as('facilities'),
     ])
-    .where('name', 'is not', null)
+    .where('health_workers.name', 'is not', null)
+    .groupBy('health_workers.id')
 
-  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
+  if (opts.search) query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
 
   if (opts.profession) {
     query = query
-      .innerJoin(
-        'employment',
-        'health_workers.id',
-        'employment.health_worker_id',
-      )
       .where('profession', '=', opts.profession)
-      .groupBy('health_workers.id')
   }
 
   const healthWorkers = await query.execute()

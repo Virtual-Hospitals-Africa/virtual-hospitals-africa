@@ -110,6 +110,100 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     })
   })
 
+  describe('search', () => {
+    it('returns health workers matching a search with their employment information', async () => {
+      const healthWorker = await health_workers.upsertWithGoogleCredentials(
+        db,
+        {
+          name: 'Worker',
+          email: 'test@worker.com',
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          access_token: 'access_token',
+          refresh_token: 'refresh_token',
+          expires_at: new Date(),
+        },
+      )
+
+      await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 1,
+      }])
+
+      const result = await health_workers.search(db, { search: 'Worker' })
+      assert(result)
+      assertEquals(result.length, 1)
+
+      assertEquals(omit(['expires_at', 'created_at', 'updated_at'])(result[0]), {
+        avatar_url: 'avatar_url',
+        email: 'test@worker.com',
+        facilities: [
+          {
+            facility_id: 1,
+            facility_display_name: 'VHA Test Hospital',
+            professions: [
+              "nurse",
+            ],
+          },
+        ],
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        id: healthWorker.id,
+        name: 'Worker',
+      })
+    })
+
+    it('searches by profession', async () => {
+      const healthWorker = await health_workers.upsertWithGoogleCredentials(
+        db,
+        {
+          name: 'Worker',
+          email: 'test@worker.com',
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          access_token: 'access_token',
+          refresh_token: 'refresh_token',
+          expires_at: new Date(),
+        },
+      )
+
+      await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 1,
+      }])
+
+      const doctor_result = await health_workers.search(db, { search: 'Worker', profession: 'doctor' })
+      assert(doctor_result)
+      assertEquals(doctor_result.length, 0)
+
+      const nurse_result = await health_workers.search(db, { search: 'Worker', profession: 'nurse' })
+      assert(nurse_result)
+      assertEquals(nurse_result.length, 1)
+
+      assertEquals(omit(['expires_at', 'created_at', 'updated_at'])(nurse_result[0]), {
+        avatar_url: 'avatar_url',
+        email: 'test@worker.com',
+        facilities: [
+          {
+            facility_id: 1,
+            facility_display_name: 'VHA Test Hospital',
+            professions: [
+              "nurse",
+            ],
+          },
+        ],
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        id: healthWorker.id,
+        name: 'Worker',
+      })
+    })
+  })
+
   describe('getEmployeeInfo', () => {
     it('returns the health worker and their employment information if that matches a given facility id', async () => {
       const healthWorker = await health_workers.upsertWithGoogleCredentials(
