@@ -8,7 +8,7 @@ function DemoVideoContainer({ className }: { className?: string }) {
   return (
     <div
       className={cls(
-        'relative z-10 mx-auto w-64 rounded-xl bg-slate-600 shadow-xl md:w-80 lg:w-auto',
+        'relative z-10 mx-6 rounded-xl bg-slate-600 shadow-xl md:w-80 lg:w-auto',
         className,
       )}
     >
@@ -44,20 +44,20 @@ export function Hero() {
   return (
     <header className='overflow-hidden bg-slate-100 lg:bg-transparent'>
       <div className='absolute top-0 w-full z-10'>
-        <div className='flex items-apart justify-center w-full' // style={{ gridTemplateColumns: '1fr max-content' }}
+        <div className='flex justify-between items-center w-full' // style={{ gridTemplateColumns: '1fr max-content' }}
         >
           <LogoWithFullText
             variant='white'
-            className='md:hidden max-h-24 p-2 pr-4'
+            className='md:hidden max-h-24 p-2 pl-5 pr-4'
           />
 
-          <div className='grid place-items-center md:self-end'>
+          <div className='grid place-items-center md:self-end grow p-2 pr-6'>
             <Button
               href='/login'
               color='blue'
               className='md:absolute md:top-3 md:right-3'
             >
-              Sign In
+              Sign&#160;In
             </Button>
           </div>
         </div>
@@ -71,12 +71,12 @@ export function Hero() {
           <div className='lg:absolute w-full lg:w-auto bottom-12 md:-top-20 md:left-0 md:right-0 z-9 lg:p-0 md:p-14 py-8 lg:rounded-br-6xl bg-[#312E81] text-white md:bottom-8 lg:-inset-y-32 lg:left-[-100vw] lg:right-full lg:-mr-40'>
             <RadialPattern />
             <div className='lg:absolute w-full h-full lg:pl-80 lg:grid lg:place-items-center'>
-              <div className='flex flex-col-reverse md:flex-row w-full h-full items-center justify-start lg:justify-end'>
+              <div className='flex flex-col-reverse md:flex-row w-full h-full md:items-center items-start justify-start lg:justify-end'>
                 <div className='ml-2 lg:ml-auto lg:mr-60 px-4 sm:px-6 md:max-w-2xl md:px-4 lg:px-0'>
                   <h1 className='hidden gap-10 items-center font-display text-5xl font-extrabold text-white sm:text-6xl md:flex'>
                     <LogoWithFullText variant='white' />
                   </h1>
-                  <p className='md:mt-8 text-3xl text-white max-w-md'>
+                  <p className='md:mt-8 text-3xl text-white lg:pr-16 max-w-xs md:max-w-md'>
                     Bringing accessible health care to Africans
                   </p>
                   <div className='mt-4 flex gap-4'>
@@ -87,7 +87,7 @@ export function Hero() {
                     }
                     <Button
                       href='/join-mailing-list?entrypoint=waitlist'
-                      color='blue'
+                      color='white'
                     >
                       Join the waitlist
                     </Button>
