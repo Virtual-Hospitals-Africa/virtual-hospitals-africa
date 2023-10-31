@@ -270,7 +270,9 @@ export async function search(
     .where('health_workers.name', 'is not', null)
     .groupBy('health_workers.id')
 
-  if (opts.search) query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
+  if (opts.search) {
+    query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
+  }
 
   if (opts.profession) {
     query = query

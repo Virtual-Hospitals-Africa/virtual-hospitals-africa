@@ -136,23 +136,26 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assert(result)
       assertEquals(result.length, 1)
 
-      assertEquals(omit(['expires_at', 'created_at', 'updated_at'])(result[0]), {
-        avatar_url: 'avatar_url',
-        email: 'test@worker.com',
-        facilities: [
-          {
-            facility_id: 1,
-            facility_display_name: 'VHA Test Hospital',
-            professions: [
-              "nurse",
-            ],
-          },
-        ],
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-        id: healthWorker.id,
-        name: 'Worker',
-      })
+      assertEquals(
+        omit(['expires_at', 'created_at', 'updated_at'])(result[0]),
+        {
+          avatar_url: 'avatar_url',
+          email: 'test@worker.com',
+          facilities: [
+            {
+              facility_id: 1,
+              facility_display_name: 'VHA Test Hospital',
+              professions: [
+                'nurse',
+              ],
+            },
+          ],
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          id: healthWorker.id,
+          name: 'Worker',
+        },
+      )
     })
 
     it('searches by profession', async () => {
@@ -176,31 +179,40 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         facility_id: 1,
       }])
 
-      const doctor_result = await health_workers.search(db, { search: 'Worker', profession: 'doctor' })
+      const doctor_result = await health_workers.search(db, {
+        search: 'Worker',
+        profession: 'doctor',
+      })
       assert(doctor_result)
       assertEquals(doctor_result.length, 0)
 
-      const nurse_result = await health_workers.search(db, { search: 'Worker', profession: 'nurse' })
+      const nurse_result = await health_workers.search(db, {
+        search: 'Worker',
+        profession: 'nurse',
+      })
       assert(nurse_result)
       assertEquals(nurse_result.length, 1)
 
-      assertEquals(omit(['expires_at', 'created_at', 'updated_at'])(nurse_result[0]), {
-        avatar_url: 'avatar_url',
-        email: 'test@worker.com',
-        facilities: [
-          {
-            facility_id: 1,
-            facility_display_name: 'VHA Test Hospital',
-            professions: [
-              "nurse",
-            ],
-          },
-        ],
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-        id: healthWorker.id,
-        name: 'Worker',
-      })
+      assertEquals(
+        omit(['expires_at', 'created_at', 'updated_at'])(nurse_result[0]),
+        {
+          avatar_url: 'avatar_url',
+          email: 'test@worker.com',
+          facilities: [
+            {
+              facility_id: 1,
+              facility_display_name: 'VHA Test Hospital',
+              professions: [
+                'nurse',
+              ],
+            },
+          ],
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          id: healthWorker.id,
+          name: 'Worker',
+        },
+      )
     })
   })
 
