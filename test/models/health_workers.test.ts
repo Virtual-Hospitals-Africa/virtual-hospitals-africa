@@ -464,17 +464,17 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         {
           name: 'Face Picture',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${facePictureMedia.id}`,
+            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
         },
         {
           name: 'National ID',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${nationalIdMedia.id}`,
+            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
         },
         {
           name: 'Registration Card',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${registrationCardMedia.id}`,
+            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
         },
       ])
       assertEquals(

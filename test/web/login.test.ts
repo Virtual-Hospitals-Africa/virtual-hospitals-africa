@@ -354,12 +354,12 @@ describeWithWebServer('/login', 8002, (route) => {
       const pageContents = await response.text()
       assert(
         pageContents.includes(
-          `href="/app/facilities/1/health-workers/${mock.healthWorker.id}"`,
+          `href="/app/facilities/1/employees/${mock.healthWorker.id}"`,
         ),
       )
       assert(
         pageContents.includes(
-          `href="/app/facilities/1/health-workers/${nurse.id}"`,
+          `href="/app/facilities/1/employees/${nurse.id}"`,
         ),
       )
     })

@@ -15,10 +15,10 @@ import * as $9 from './routes/app/employees.tsx'
 import * as $10 from './routes/app/facilities.tsx'
 import * as $11 from './routes/app/facilities/[facilityId]/_middleware.ts'
 import * as $12 from './routes/app/facilities/[facilityId]/employees.tsx'
-import * as $13 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $14 from './routes/app/facilities/[facilityId]/health-workers/[id].tsx'
-import * as $15 from './routes/app/facilities/[facilityId]/health-workers/[id]/approve.tsx'
-import * as $16 from './routes/app/facilities/[facilityId]/health-workers/[id]/media/[mediaId].tsx'
+import * as $13 from './routes/app/facilities/[facilityId]/employees/[id].tsx'
+import * as $14 from './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx'
+import * as $15 from './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx'
+import * as $16 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
 import * as $17 from './routes/app/facilities/[facilityId]/register.tsx'
 import * as $18 from './routes/app/health_workers.tsx'
 import * as $19 from './routes/app/patients.tsx'
@@ -66,11 +66,11 @@ const manifest = {
     './routes/app/facilities.tsx': $10,
     './routes/app/facilities/[facilityId]/_middleware.ts': $11,
     './routes/app/facilities/[facilityId]/employees.tsx': $12,
-    './routes/app/facilities/[facilityId]/employees/invite.tsx': $13,
-    './routes/app/facilities/[facilityId]/health-workers/[id].tsx': $14,
-    './routes/app/facilities/[facilityId]/health-workers/[id]/approve.tsx': $15,
-    './routes/app/facilities/[facilityId]/health-workers/[id]/media/[mediaId].tsx':
-      $16,
+    './routes/app/facilities/[facilityId]/employees/[id].tsx': $13,
+    './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx': $14,
+    './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx':
+      $15,
+    './routes/app/facilities/[facilityId]/employees/invite.tsx': $16,
     './routes/app/facilities/[facilityId]/register.tsx': $17,
     './routes/app/health_workers.tsx': $18,
     './routes/app/patients.tsx': $19,
