@@ -26,10 +26,10 @@ export default function Home() {
         }}
       >
         <p>
-          “Virtual hospitals can help ensure that everyone has access to the
-          healthcare they need. I am excited about the personalized care options
-          that virtual hospitals can offer my patients making much easier and
-          more convenient.”
+          “Virtual hospitals can help provide everyone to the care they need. I
+          am especially excited about the personalized options that I can offer
+          my patients making the whole treatment process much easier and more
+          convenient.”
         </p>
       </Testimonial>
       <Patients />

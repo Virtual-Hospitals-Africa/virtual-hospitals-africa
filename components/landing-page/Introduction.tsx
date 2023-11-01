@@ -21,7 +21,7 @@ export function Introduction() {
           of virtual hospitals with medical professionals all over the globe?
         </p>
         <p className='mt-4'>
-          Our proof of concept telehealth solution supports:
+          We're working on an early stage telehealth solution that will support:
         </p>
         <ul role='list' className='mt-4 space-y-3'>
           {[
@@ -36,13 +36,11 @@ export function Introduction() {
               <span className='ml-4'>{feature}</span>
             </li>
           ))}
-          {
-            /* <ArrowLink
+          <ArrowLink
             href='/learn-more?entrypoint=introduction'
             text='Learn more about the solution'
             className='mt-6'
-          /> */
-          }
+          />
         </ul>
       </Container>
     </section>

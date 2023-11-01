@@ -1,5 +1,4 @@
-import { SectionHeading } from './SectionHeading.tsx'
-import { GlobeEuropeAfricaIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import SectionHeading from './SectionHeading.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import ArrowLink from './ArrowLink.tsx'
 import { MHILink } from '../../islands/landing-page/MHIDotsLogo.tsx'
@@ -36,43 +35,31 @@ export default function PartnersContent() {
             >
               Join us
             </Button>
-            {
-              /* <div className='mt-8 flex items-center gap-x-6'>
+            <div className='mt-8 flex items-center gap-x-6'>
               <ArrowLink
                 href='/learn-more?entrypoint=partners'
                 text='Learn More'
               />
-            </div> */
-            }
+            </div>
           </div>
           <div className='mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8'>
-            {/* <span className='m-8'> */}
             <MHILink />
-            {/* </span> */}
             <img
               className='max-h-20 w-full object-contain object-left'
               src='/images/logos/hgat.png'
               alt='Health Gateway Africa Trust'
               width={304}
-              // height={48}
             />
-            {/* <span className='m-8'> */}
             <span className='pr-8'>
               <USFLogo />
             </span>
-            {/* </span> */}
-            {/* <span className='m-8'> */}
             <span className='max-h-12'>
               <VCULogo className='max-h-12' />
             </span>
-
-            {/* </span> */}
-            {/* <span className='m-8'> */}
             <img
               className='max-h-12 w-full object-contain object-left'
               src='/images/logos/bristol.webp'
               alt='University of Bristol'
-              // width={140}
               height={64}
             />
           </div>
@@ -90,9 +77,7 @@ export function Partners() {
       className='scroll-mt-14 py-16 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading id='author-title' icon={<GlobeEuropeAfricaIcon />}>
-          Partners
-        </SectionHeading>
+        <SectionHeading name='partners' />
         <PartnersContent />
       </Container>
     </section>
