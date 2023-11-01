@@ -526,7 +526,7 @@ export function getEmployeeInfo(
             sql<string>`'National ID'`.as('name'),
             sql<
               string
-            >`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
+            >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
               .as('href'),
           ])
           .union(
@@ -543,7 +543,7 @@ export function getEmployeeInfo(
                 sql<string>`'Face Picture'`.as('name'),
                 sql<
                   string
-                >`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
                   .as('href'),
               ]),
           )
@@ -561,7 +561,7 @@ export function getEmployeeInfo(
                 sql<string>`'Registration Card'`.as('name'),
                 sql<
                   string
-                >`concat('/app/facilities/', facilities.id::text, '/health-workers/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
+                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
                   .as('href'),
               ]),
           )

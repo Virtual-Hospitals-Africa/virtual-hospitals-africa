@@ -102,7 +102,7 @@ export function getEmployees(
       ),
       sql<
         string
-      >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/health-workers/', health_workers.id::text)`
+      >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/employees/', health_workers.id::text)`
         .as('href'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`CASE 
       WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'

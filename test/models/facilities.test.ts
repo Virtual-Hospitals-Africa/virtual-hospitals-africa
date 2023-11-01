@@ -89,7 +89,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: hw_at_facility1.id,
           is_invitee: false,
           name: 'At Facility 1',
-          href: `/app/facilities/3/health-workers/${hw_at_facility1.id}`,
+          href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
           registration_status: 'incomplete',
           professions: [
             'admin',
@@ -103,7 +103,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: hw_at_facility2.id,
           is_invitee: false,
           name: 'At Facility 2',
-          href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
           registration_status: 'incomplete',
           professions: [
             'doctor',
@@ -138,7 +138,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: hw_at_facility1.id,
           is_invitee: false,
           name: 'At Facility 1',
-          href: `/app/facilities/3/health-workers/${hw_at_facility1.id}`,
+          href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
           registration_status: 'incomplete',
           professions: [
             'admin',
@@ -152,7 +152,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: hw_at_facility2.id,
           is_invitee: false,
           name: 'At Facility 2',
-          href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
           registration_status: 'incomplete',
           professions: [
             'doctor',
@@ -239,7 +239,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: hw_at_facility2.id,
           is_invitee: false,
           name: 'At Facility 2',
-          href: `/app/facilities/3/health-workers/${hw_at_facility2.id}`,
+          href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
           registration_status: 'incomplete',
           professions: [
             'doctor',
@@ -296,7 +296,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: hw_at_facility1.id,
           is_invitee: false,
           name: 'At Facility 1',
-          href: `/app/facilities/1/health-workers/${hw_at_facility1.id}`,
+          href: `/app/facilities/1/employees/${hw_at_facility1.id}`,
           registration_status: 'pending_approval',
           professions: [
             'nurse',
@@ -366,7 +366,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: nurse.id,
           is_invitee: false,
           name: 'Nurse',
-          href: `/app/facilities/1/health-workers/${nurse.id}`,
+          href: `/app/facilities/1/employees/${nurse.id}`,
           registration_status: 'approved',
           professions: [
             'nurse',
@@ -379,7 +379,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           health_worker_id: admin.id,
           is_invitee: false,
           name: 'Admin',
-          href: `/app/facilities/1/health-workers/${admin.id}`,
+          href: `/app/facilities/1/employees/${admin.id}`,
           registration_status: 'incomplete',
           professions: [
             'admin',
