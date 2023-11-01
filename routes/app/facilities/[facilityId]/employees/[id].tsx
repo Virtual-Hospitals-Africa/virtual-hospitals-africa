@@ -79,7 +79,7 @@ export default function HealthWorkerPage(
       variant='standard'
     >
       <Container size='lg'>
-        <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
+        <div className='mt-4 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
           <div className='my-6 overflow-hidden bg-slate-50'>
             <img
               className='h-20 w-20 object-cover display:inline rounded-full'
@@ -98,9 +98,6 @@ export default function HealthWorkerPage(
                 .join(', ')}
             </dt>
           </div>
-          <SectionHeader className='mb-1'>
-            Demographic Data
-          </SectionHeader>
           <HealthWorkerDetailedCard
             employee={props.data.employee}
           />
