@@ -1,6 +1,5 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../components/library/Layout.tsx'
-import { Container } from '../components/library/Container.tsx'
 
 import {
   CalendarDaysIcon,
@@ -8,71 +7,145 @@ import {
   UserCircleIcon,
 } from '../components/library/icons/heroicons/solid.tsx'
 import { Button } from '../components/library/Button.tsx'
+import SideBySide from '../components/library/SideBySide.tsx'
+import PageHeader from '../components/library/typography/PageHeader.tsx'
+import { ArrowUpCircleIcon } from '../components/library/icons/heroicons/mini.tsx'
+import { ComponentChildren } from 'preact'
+import JobPost, { JobPostProps } from '../islands/JobPost.tsx'
 
-function Example() {
-  return (
-    <div className='lg:col-start-3 lg:row-end-1'>
-      <h2 className='sr-only'>Summary</h2>
-      <div className='rounded-lg bg-gray-50 shadow-sm ring-1 ring-gray-900/5'>
-        <dl className='flex flex-wrap'>
-          <div className='flex-auto pl-6 pt-6'>
-            <dt className='text-lg font-semibold leading-6 text-gray-900'>
-              Senior Software Engineer
-            </dt>
-            <dd className='mt-1 text-base font-semibold leading-6 text-gray-900'>
-              Remote
-            </dd>
-          </div>
-          <div className='flex-none self-end px-6 pt-4'>
-            <dt className='sr-only'>Status</dt>
-            <dd className='inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20'>
-              Volunteer
-            </dd>
-          </div>
-          <div className='mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6'>
-            <dt className='flex-none'>
-              <span className='sr-only'>Client</span>
-              <UserCircleIcon
-                className='h-6 w-5 text-gray-400'
-                aria-hidden='true'
-              />
-            </dt>
-            <dd className='text-sm font-medium leading-6 text-gray-900'>
-              Alex Curren
-            </dd>
-          </div>
-          <div className='mt-4 flex w-full flex-none gap-x-4 px-6'>
-            <dt className='flex-none'>
-              <span className='sr-only'>Due date</span>
-              <CalendarDaysIcon
-                className='h-6 w-5 text-gray-400'
-                aria-hidden='true'
-              />
-            </dt>
-            <dd className='text-sm leading-6 text-gray-500'>
-              <time dateTime='2023-01-31'>January 31, 2023</time>
-            </dd>
-          </div>
-          <div className='mt-4 flex w-full flex-none gap-x-4 px-6'>
-            <dt className='flex-none'>
-              <span className='sr-only'>Status</span>
-              <CreditCardIcon
-                className='h-6 w-5 text-gray-400'
-                aria-hidden='true'
-              />
-            </dt>
-            <dd className='text-sm leading-6 text-gray-500'>
-              Paid with MasterCard
-            </dd>
-          </div>
-        </dl>
-        <div className='mt-6 border-t border-gray-900/5 px-6 py-6'>
-          <Button href='/apply'>Apply</Button>
-        </div>
+const jobs: JobPostProps[] = [
+  {
+    title: 'Lead UX Designer',
+    location: 'Remote',
+    summary: (
+      <>
+        As a Lead UX Designer, you will be responsible for overseeing the user
+        experience design process, from research and concept development to
+        wireframing and prototyping. You will collaborate with cross-functional
+        teams to create intuitive and user-centered designs for our products or
+        services. Your role will involve both hands-on design work and
+        leadership responsibilities.
+      </>
+    ),
+    fullDescription: (
+      <div>
+        Key Responsibilities:
+
+        User Research: Conduct user research to understand user needs,
+        behaviors, and pain points. Use this data to inform design decisions.
+
+        Information Architecture: Create information architecture, site maps,
+        and user flows to ensure an organized and logical structure for the
+        product.
+
+        Wireframing and Prototyping: Design wireframes, interactive prototypes,
+        and mockups to illustrate design concepts and workflows.
+
+        Usability Testing: Plan and conduct usability tests to gather feedback
+        and iterate on design solutions.
+
+        Team Collaboration: Work closely with product managers, developers, and
+        other stakeholders to ensure the alignment of design with business goals
+        and technical constraints.
+
+        Design Leadership: Mentor and provide guidance to junior designers. Lead
+        and inspire the design team to deliver high-quality work.
+
+        User-Centered Design: Advocate for a user-centered design approach
+        throughout the product development lifecycle.
+
+        UI Design: Collaborate with UI designers to create visually appealing
+        interfaces that align with the overall user experience.
+
+        Documentation: Create design documentation, style guides, and design
+        specifications for developers.
+
+        Stakeholder Communication: Effectively communicate design decisions and
+        rationale to stakeholders and ensure their buy-in.
+
+        Requirements:
+
+        <ol>
+          <li>
+            Education: Bachelor's or Master's degree in a relevant field such as
+            Human-Computer Interaction, UX Design, or Graphic Design.
+          </li>
+
+          <li>
+            Experience: Typically, 5+ years of experience in UX design, with a
+            proven track record of leading and delivering successful design
+            projects.
+          </li>
+
+          <li>
+            Portfolio: A strong portfolio that demonstrates your expertise in
+            user experience design, including examples of your work, process,
+            and the impact on the end user.
+          </li>
+
+          <li>
+            UX Design Tools: Proficiency in design and prototyping tools such as
+            Adobe XD, Sketch, Figma, or similar software.
+          </li>
+
+          <li>
+            User Research: Experience in conducting user research, usability
+            testing, and creating personas.
+          </li>
+
+          <li>
+            Problem-Solving Skills: Strong problem-solving and critical-thinking
+            abilities to address complex design challenges.
+          </li>
+
+          <li>
+            Communication Skills: Excellent communication and presentation
+            skills to convey design ideas and collaborate effectively with
+            cross-functional teams.
+          </li>
+
+          <li>
+            Leadership Skills: Proven leadership and mentoring capabilities to
+            guide and inspire junior designers.
+          </li>
+
+          <li>
+            Adaptability: Ability to adapt to changing project requirements and
+            priorities in a fast-paced environment.
+          </li>
+
+          <li>
+            Knowledge of Accessibility: Familiarity with web accessibility
+            standards (e.g., WCAG) and the ability to design with inclusivity in
+            mind.
+          </li>
+        </ol>
+
+        This job description and requirements may vary depending on the
+        organization, the specific industry, and the product or service being
+        developed. Still, it provides a general overview of the role of a Lead
+        UX Designer and what is typically expected from candidates applying for
+        this position.
       </div>
-    </div>
-  )
-}
+    ),
+  },
+  // {
+  //   title: 'Lead Software Engineer',
+  //   location: 'Remote',
+  // },
+  // {
+  //   title: 'Development Director',
+  //   location: 'Remote',
+  // },
+  // {
+  //   title: 'Virtual Hospital Director',
+  //   location: 'Remote',
+  // },
+  // {
+  //   title: 'Operations Lead',
+  //   location: '🇿🇼 Zimbabwe',
+  // },
+]
 
 export default function VolunteerPage(
   props: PageProps,
@@ -84,17 +157,13 @@ export default function VolunteerPage(
       url={props.url}
       variant='just-logo'
     >
-      <Container className='mt-4'>
-        <div className='border-b border-gray-200 pb-5'>
-          <h2 className='text-xl font-semibold leading-6 text-gray-900'>
-            Volunteer Opportunities
-          </h2>
-          <p className='mt-2 max-w-4xl text-sm text-gray-500'>
-            Virtual Hospitals Africa is exicted to off
-          </p>
-        </div>
-        <Example />
-      </Container>
+      <SideBySide image='https://images.unsplash.com/photo-1670272502246-768d249768ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1152&q=80'>
+        <PageHeader className='h1'>Volunteer Opportunities</PageHeader>
+        <p className='mt-2 max-w-4xl text-sm text-gray-500'>
+          Virtual Hospitals Africa is exicted to off
+        </p>
+        {jobs.map((job) => <JobPost {...job} />)}
+      </SideBySide>
     </Layout>
   )
 }

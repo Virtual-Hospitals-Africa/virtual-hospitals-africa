@@ -1,5 +1,6 @@
 import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
+import sections from './sections.tsx'
 
 type SectionHeadingProps = {
   icon: JSX.Element
@@ -7,7 +8,7 @@ type SectionHeadingProps = {
   className?: string
 } & Omit<JSX.HTMLAttributes<HTMLHeadingElement>, 'icon'>
 
-export function SectionHeading(
+function SectionHeading(
   { icon, children, className, ...props }: SectionHeadingProps,
 ) {
   return (
@@ -27,3 +28,9 @@ export function SectionHeading(
     </h2>
   )
 }
+
+export default ({ name }: { name: keyof typeof sections }) => (
+  <SectionHeading icon={sections[name].icon}>
+    {sections[name].displayName}
+  </SectionHeading>
+)

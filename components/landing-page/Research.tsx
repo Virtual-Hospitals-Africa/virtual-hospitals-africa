@@ -2,7 +2,7 @@ import { Container } from '../../components/library/Container.tsx'
 import { PresentationChartBarIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import ArrowLink from './ArrowLink.tsx'
 import { FeatureGrid } from './FeatureGrid.tsx'
-import { SectionHeading } from './SectionHeading.tsx'
+import SectionHeading from './SectionHeading.tsx'
 
 const features = [
   {
@@ -43,24 +43,20 @@ export function Research() {
       }}
     >
       <Container>
-        <SectionHeading id='research-title' icon={<PresentationChartBarIcon />}>
-          Research
-        </SectionHeading>
+        <SectionHeading name='research' />
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
           Improve health outcomes for millions
         </p>
         <p className='mt-4 text-lg tracking-tight text-slate-700'>
-          Monitor and evaluate at a country-wide level, with secure medical data
-          sourced directly from patients.
+          Our goal is to enable monitoring and evaluation at a country-wide
+          level, with secure medical data sourced directly from patients.
         </p>
-        {
-          /* <p className='mt-4'>
+        <p className='mt-4'>
           <ArrowLink
             href='/learn-more?entrypoint=research'
-            text='Learn more about how your institution can get involved'
+            text='Reach out to see how your institution can get involved'
           />
-        </p> */
-        }
+        </p>
       </Container>
       <FeatureGrid features={features} />
     </section>

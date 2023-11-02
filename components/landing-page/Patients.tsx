@@ -1,7 +1,6 @@
 import { Container } from '../../components/library/Container.tsx'
-import { UserCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { FeatureGrid } from './FeatureGrid.tsx'
-import { SectionHeading } from './SectionHeading.tsx'
+import SectionHeading from './SectionHeading.tsx'
 
 export function Patients() {
   return (
@@ -11,9 +10,7 @@ export function Patients() {
       className='scroll-mt-14 mt-12 sm:scroll-mt-32 sm:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading id='patients-title' icon={<UserCircleIcon />}>
-          Patients
-        </SectionHeading>
+        <SectionHeading name='patients' />
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
           24/7 medical professional services, in person and online
         </p>

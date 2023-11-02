@@ -1,9 +1,8 @@
 import { Container } from '../../components/library/Container.tsx'
-import { IdentificationIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import ArrowLink from './ArrowLink.tsx'
 import { FeatureGrid } from './FeatureGrid.tsx'
 // import { Expandable } from './Expandable.tsx'
-import { SectionHeading } from './SectionHeading.tsx'
+import SectionHeading from './SectionHeading.tsx'
 
 export function HealthWorkers() {
   return (
@@ -13,12 +12,7 @@ export function HealthWorkers() {
       className='scroll-mt-14 sm:scroll-mt-32 md:py-20 lg:py-32'
     >
       <Container>
-        <SectionHeading
-          icon={<IdentificationIcon />}
-          id='health-workers-title'
-        >
-          Health Workers
-        </SectionHeading>
+        <SectionHeading name='health-workers' />
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
           Focus on care, get help with everything else
         </p>
@@ -27,14 +21,12 @@ export function HealthWorkers() {
           virtual hospitals, granting them a shared digital space to monitor,
           communicate with, and improve outcomes for patients.
         </p>
-        {
-          /* <p className='mt-10'>
+        <p className='mt-10'>
           <ArrowLink
             href='/learn-more?entrypoint=health-workers'
             text='See how seamless digital systems can help your facility'
           />
-        </p> */
-        }
+        </p>
       </Container>
       <FeatureGrid
         features={[
