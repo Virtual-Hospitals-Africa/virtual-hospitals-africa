@@ -211,6 +211,7 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
+        console.log(facility)
         const distanceInKM = facility.walking_distance
           ? facility.walking_distance
           : (facility.distance / 1000).toFixed(1) + ' km'
@@ -221,7 +222,7 @@ const conversationStates: ConversationStates<
         const facilityName = facility.vha
           ? `${facility.display_name} (VHA)`
           : facility.display_name
-
+        console.log(facilityName)
         return {
           section: 'Town Name Here',
           row: {

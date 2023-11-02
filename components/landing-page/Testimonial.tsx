@@ -3,15 +3,13 @@ import { Container } from '../../components/library/Container.tsx'
 import MedicalIconPattern from './MedicalIconPattern.tsx'
 
 export function Testimonial(
-  { id, author, children }: {
-    id: string
+  { author, children }: {
     author: { name: string; image: string; role: string }
     children: JSX.Element
   },
 ) {
   return (
     <aside
-      id={id}
       aria-label={`Testimonial from ${author.name}`}
       className='relative bg-slate-100 sm:py-32'
     >

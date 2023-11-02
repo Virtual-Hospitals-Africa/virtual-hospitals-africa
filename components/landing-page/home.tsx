@@ -18,7 +18,6 @@ export default function Home() {
       <NavBar />
       <HealthWorkers />
       <Testimonial
-        id='testimonial-from-tommy-stroman'
         author={{
           name: 'Dr. Buhlebenkosi Ndlovu',
           role: 'Medical Doctor',
@@ -26,15 +25,14 @@ export default function Home() {
         }}
       >
         <p>
-          “Virtual hospitals can help provide everyone to the care they need. I
-          am especially excited about the personalized options that I can offer
-          my patients making the whole treatment process much easier and more
+          “Virtual hospitals can help ensure that everyone has access to the
+          healthcare they need. I am excited about the personalized care options
+          that will make caring for my patients much easier and more
           convenient.”
         </p>
       </Testimonial>
       <Patients />
       <Testimonial
-        id='testimonial-from-gerardo-stark'
         author={{
           name: 'Sekuru Dube, 75',
           role: 'Patient, Midlands Province',
