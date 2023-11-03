@@ -53,7 +53,7 @@ export function Research() {
         </p>
         <p className='mt-4'>
           <ArrowLink
-            href='/learn-more?entrypoint=research'
+            href='/meet-us?entrypoint=research'
             text='Reach out to see how your institution can get involved'
           />
         </p>

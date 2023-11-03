@@ -51,14 +51,16 @@ export function Team() {
           </p>
         </div>
       </div>
-      <Button
+      {
+        /* <Button
         className='mt-6'
         href='/volunteer'
         variant='solid'
         color='indigo'
       >
         Volunteer Opportunities
-      </Button>
+      </Button> */
+      }
       <ul
         role='list'
         className='mt-6 space-y-12 divide-y divide-gray-200 xl:col-span-3'

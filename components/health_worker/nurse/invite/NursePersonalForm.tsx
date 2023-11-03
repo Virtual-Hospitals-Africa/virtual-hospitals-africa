@@ -1,6 +1,6 @@
 import {
   DateInput,
-  GenderInput,
+  GenderSelect,
   NationalIdInput,
   PhoneNumberInput,
   TextInput,
@@ -36,7 +36,7 @@ export default function NursePersonalForm(
           required
           label='Date of Birth'
         />
-        <GenderInput value={formData.gender} />
+        <GenderSelect value={formData.gender} />
       </FormRow>
       <FormRow>
         <NationalIdInput value={formData.national_id_number} />

@@ -24,7 +24,7 @@ export default function HeroContents() {
             </Button> */
                 }
                 <Button
-                  href='/join-mailing-list?entrypoint=waitlist'
+                  href='/waitlist?entrypoint=hero'
                   color='white'
                 >
                   Join the waitlist

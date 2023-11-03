@@ -1,4 +1,5 @@
 import { Container } from '../../components/library/Container.tsx'
+import ArrowLink from './ArrowLink.tsx'
 import { FeatureGrid } from './FeatureGrid.tsx'
 import SectionHeading from './SectionHeading.tsx'
 
@@ -14,9 +15,15 @@ export function Patients() {
         <p className='mt-8 font-display text-4xl font-bold tracking-tight text-slate-900'>
           24/7 medical professional services, in person and online
         </p>
-        <p className='mt-4 text-lg tracking-tight text-slate-700'>
+        <p className='my-t text-lg tracking-tight text-slate-700'>
           Get peace of mind knowing you have instant access to your doctor’s
           office and global system of virtual hospitals anywhere you are.
+        </p>
+        <p className='mt-4'>
+          <ArrowLink
+            href='/waitlist?entrypoint=patients'
+            text="Join the waitlist to see when we're available in your area"
+          />
         </p>
       </Container>
       <FeatureGrid

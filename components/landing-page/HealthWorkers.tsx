@@ -21,10 +21,10 @@ export function HealthWorkers() {
           virtual hospitals, granting them a shared digital space to monitor,
           communicate with, and improve outcomes for patients.
         </p>
-        <p className='mt-10'>
+        <p className='mt-4'>
           <ArrowLink
-            href='/learn-more?entrypoint=health-workers'
-            text='See how seamless digital systems can help your facility'
+            href='/meet-us?entrypoint=health-workers'
+            text='Meet with us to see how seamless digital systems can help your facility'
           />
         </p>
       </Container>

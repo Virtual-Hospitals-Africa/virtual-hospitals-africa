@@ -1,4 +1,3 @@
-// import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import { CheckIcon } from '../library/icons/heroicons/mini.tsx'
 import ArrowLink from './ArrowLink.tsx'
@@ -23,7 +22,7 @@ export function Introduction() {
         <p className='mt-4'>
           We're working on an early stage telehealth solution that will support:
         </p>
-        <ul role='list' className='mt-4 space-y-3'>
+        <ul role='list' className='mt-4 mb-4 space-y-3 ml-1'>
           {[
             'chat, video, and in-person consultations',
             'advanced point-of-care testing and diagnosis',
@@ -36,12 +35,15 @@ export function Introduction() {
               <span className='ml-4'>{feature}</span>
             </li>
           ))}
+        </ul>
+        {
+          /* <p className='mt-8'>
           <ArrowLink
             href='/learn-more?entrypoint=introduction'
             text='Learn more about the solution'
-            className='mt-6'
           />
-        </ul>
+        </p> */
+        }
       </Container>
     </section>
   )

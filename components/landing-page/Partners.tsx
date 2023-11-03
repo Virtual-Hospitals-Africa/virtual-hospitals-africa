@@ -10,8 +10,8 @@ export default function PartnersContent() {
   return (
     <div className='py-4 sm:py-6'>
       <div className='mx-auto max-w-7xl'>
-        <div className='grid grid-cols-1 items-center gap-x-8 gap-y-16 lg:grid-cols-2'>
-          <div className='mx-auto w-full max-w-xl lg:mx-0'>
+        <div className='grid grid-cols-1 lg:items-center gap-x-8 gap-y-16 lg:grid-cols-2'>
+          <div className='mx-0 w-full max-w-xl'>
             <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl'>
               Driving innovative<br />health care
             </h2>
@@ -35,14 +35,8 @@ export default function PartnersContent() {
             >
               Join us
             </Button>
-            <div className='mt-8 flex items-center gap-x-6'>
-              <ArrowLink
-                href='/learn-more?entrypoint=partners'
-                text='Learn More'
-              />
-            </div>
           </div>
-          <div className='mx-auto grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:mx-0 lg:max-w-none lg:pl-8'>
+          <div className='mx-0 grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:max-w-none lg:pl-8'>
             <MHILink />
             <img
               className='max-h-20 w-full object-contain object-left'

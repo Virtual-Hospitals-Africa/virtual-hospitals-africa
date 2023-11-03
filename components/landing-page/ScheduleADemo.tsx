@@ -26,7 +26,7 @@ export function ScheduleADemo() {
               information about the services of Virtual Hospitals Africa.
             </p>
             <Button
-              href='/schedule_demo'
+              href='/meet-us?entrypoint=schedule-a-demo'
               variant='solid'
               color='white'
               className='mt-4'

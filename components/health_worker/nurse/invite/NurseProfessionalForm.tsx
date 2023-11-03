@@ -1,8 +1,4 @@
-import {
-  DateInput,
-  SelectInput,
-  TextInput,
-} from '../../../library/form/Inputs.tsx'
+import { DateInput, Select, TextInput } from '../../../library/form/Inputs.tsx'
 
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
@@ -26,7 +22,7 @@ export default function NurseProfessionalForm() {
         />
       </FormRow>
       <FormRow>
-        <SelectInput name='specialty' label='Specialty' required>
+        <Select name='specialty' label='Specialty' required>
           {NurseSpecialties.map((specialty) => (
             <option
               value={specialty}
@@ -34,7 +30,7 @@ export default function NurseProfessionalForm() {
             >
             </option>
           ))}
-        </SelectInput>
+        </Select>
       </FormRow>
       <hr className='my-2' />
       <Buttons

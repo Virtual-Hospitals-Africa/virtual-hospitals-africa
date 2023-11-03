@@ -1,6 +1,6 @@
 import {
   DateInput,
-  GenderInput,
+  GenderSelect,
   NationalIdInput,
   PhoneNumberInput,
   TextInput,
@@ -30,7 +30,7 @@ export default function PatientPersonalForm(
         />
       </FormRow>
       <FormRow>
-        <GenderInput value={patient.gender} />
+        <GenderSelect value={patient.gender} />
         <DateInput
           name='date_of_birth'
           value={patient.date_of_birth}

@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
-import { SelectInput, TextInput } from '../components/library/form/Inputs.tsx'
+import { Select, TextInput } from '../components/library/form/Inputs.tsx'
 import { FullCountryInfo, Maybe, OnboardingPatient } from '../types.ts'
 
 export default function PatientAddressForm(
@@ -49,7 +49,7 @@ export default function PatientAddressForm(
   return (
     <section className='mb-7'>
       <FormRow>
-        <SelectInput
+        <Select
           name='country_id'
           required
           label='Country'
@@ -71,8 +71,8 @@ export default function PatientAddressForm(
               {country.name}
             </option>
           ))}
-        </SelectInput>
-        <SelectInput
+        </Select>
+        <Select
           name='province_id'
           required
           label='Province'
@@ -93,10 +93,10 @@ export default function PatientAddressForm(
               {province.name}
             </option>
           ))}
-        </SelectInput>
+        </Select>
       </FormRow>
       <FormRow>
-        <SelectInput
+        <Select
           name='district_id'
           required
           label='District'
@@ -116,8 +116,8 @@ export default function PatientAddressForm(
               {district.name}
             </option>
           ))}
-        </SelectInput>
-        <SelectInput
+        </Select>
+        <Select
           name='ward_id'
           required
           label='City/Town/Ward'
@@ -133,11 +133,11 @@ export default function PatientAddressForm(
               {ward.name}
             </option>
           ))}
-        </SelectInput>
+        </Select>
       </FormRow>
       <FormRow>
         {suburbs.length > 0 && (
-          <SelectInput
+          <Select
             name='suburb_id'
             required
             label='Suburb'
@@ -154,7 +154,7 @@ export default function PatientAddressForm(
                 </option>
               ))
             ))}
-          </SelectInput>
+          </Select>
         )}
         <TextInput
           name='street'

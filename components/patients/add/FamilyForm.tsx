@@ -1,4 +1,4 @@
-import { SelectInput, TextInput } from '../../library/form/Inputs.tsx'
+import { Select, TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import ReligionSelect from '../../../islands/ReligionSelect.tsx'
@@ -25,7 +25,7 @@ export default function FamilyForm(
   return (
     <>
       <FormRow>
-        <SelectInput
+        <Select
           name='marital_status'
           required
           label='Marital Status'
@@ -37,7 +37,7 @@ export default function FamilyForm(
           <option value='widow_widower'>Widow/Widower</option>
           <option value='separated'>Separated</option>
           <option value='divorced'>Divorced</option>
-        </SelectInput>
+        </Select>
         <ReligionSelect />
       </FormRow>
       <section>
@@ -45,14 +45,14 @@ export default function FamilyForm(
         <FormRow>
           <TextInput name='next_of_kin.name' required label='Name' />
           <TextInput name='next_of_kin.phone_number' />
-          <SelectInput
+          <Select
             name='next_of_kin.relationship'
             required
             label='Relationship'
           >
             <option value=''>Select</option>
             {allRelations.map((relation) => <option>{relation}</option>)}
-          </SelectInput>
+          </Select>
         </FormRow>
       </section>
       <section>
