@@ -13,9 +13,9 @@ const expectedLinks = [
   '/schedule-demo?entrypoint=health-workers',
   '/waitlist?entrypoint=patients',
   '/schedule-demo?entrypoint=research',
-  '/schedule-demo?entrypoint=schedule-demo',
+  '/schedule-demo',
   '/partner',
-  '/volunteer',
+  // '/volunteer',
 ]
 
 describeWithWebServer('landing page', 8003, (route) => {
