@@ -1217,6 +1217,16 @@ export type MailingListRecipient = {
   entrypoint: string
 }
 
+export type Address = {
+  id: number
+  street: string
+  suburb_id: number
+  ward_id: number
+  district_id: number
+  province_id: number
+  country_id: number
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1245,4 +1255,5 @@ export type DatabaseSchema = {
   wards: SqlRow<Ward>
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
+  address: SqlRow<Address>
 }

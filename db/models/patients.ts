@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
+  Address,
   Gender,
   Location,
   Maybe,
@@ -60,6 +61,21 @@ export function getByPhoneNumber(
     .executeTakeFirst()
 }
 
+export function getAddress(
+  trx: TrxOrDb,
+  query: { street: string, suburb_id: number, ward_id: number, },
+): Promise<
+  Maybe<ReturnedSqlRow<Address>>
+> {
+  return trx
+  .selectFrom('address')
+    .selectAll()
+    .where('street', '=', query.street)
+    .where('suburb_id', '=', query.suburb_id)
+    .where('ward_id', '=', query.ward_id)
+    .executeTakeFirst()
+}
+
 export type UpsertablePatient = {
   id?: number
   conversation_state?: PatientConversationState
@@ -88,12 +104,12 @@ const omitNames = omit<
   'first_name' | 'middle_names' | 'last_name'
 >(['first_name', 'middle_names', 'last_name'])
 
-export function upsert(
+export async function upsert(
   trx: TrxOrDb,
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...omitNames(patient),
+    ...omitNames(patient), // to do: update patient upsert
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,
@@ -104,6 +120,16 @@ export function upsert(
       [patient.first_name, patient.middle_names, patient.last_name],
     ).join(' ')
   }
+
+  const address = await trx.insertInto('address')
+    .values({ /* add values */ })
+    .onConflict((oc) => oc.columns(['street', 'suburb_id', 'ward_id']).doNothing())
+    .returningAll()
+    .executeTakeFirstOrThrow()
+  if (!address) {
+    // to do: get address
+  }
+
   return trx
     .insertInto('patients')
     .values({
