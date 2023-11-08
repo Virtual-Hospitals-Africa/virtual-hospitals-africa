@@ -366,6 +366,11 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           href:
             `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${registrationCardMedia.id}`,
         },
+        {
+          name: 'Nurse Practicing Certificate',
+          href:
+            `/app/facilities/${firstEmployment.facility_id}/health-workers/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
+        }
       ])
       assertEquals(
         result.employment,
