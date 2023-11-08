@@ -70,6 +70,8 @@ function inputValidation(registrationDetails: NurseRegistrationDetails) {
       typeof registrationDetails.ncz_registration_card_media_id === 'number') &&
     (registrationDetails.face_picture_media_id == null ||
       typeof registrationDetails.face_picture_media_id === 'number') &&
+    (registrationDetails.nurse_practicing_cert_media_id == null ||
+      typeof registrationDetails.nurse_practicing_cert_media_id === 'number') &&
     (registrationDetails.approved_by == null ||
       typeof registrationDetails.approved_by === 'number')
 }

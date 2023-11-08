@@ -337,6 +337,7 @@ describeWithWebServer('/login', 8002, (route) => {
           national_id_media_id: null,
           ncz_registration_card_media_id: null,
           face_picture_media_id: null,
+          nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
           date_of_birth: '2020-01-01',
         },
