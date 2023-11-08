@@ -40,7 +40,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('address').execute()
   await db.schema
     .alterTable('patients')
     .dropColumn('address_id')
@@ -55,5 +54,7 @@ export async function down(db: Kysely<unknown>) {
       col.references('provinces.id'))
     .addColumn('country_id', 'integer', (col) =>
       col.references('countries.id'))
+    .execute()
+  await db.schema.dropTable('address')
     .execute()
 }
