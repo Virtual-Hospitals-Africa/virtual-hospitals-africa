@@ -219,6 +219,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           national_id_media_id: null,
           ncz_registration_card_media_id: null,
           face_picture_media_id: null,
+          nurse_practicing_cert_media_id: null,
           approved_by: null,
         },
       })
@@ -308,6 +309,11 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/png',
       })
 
+      const nursePracticingCertMedia = await media.insert(db, {
+        binary_data: new Uint8Array(),
+        mime_type: 'image/png',
+      })
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: healthWorker.id,
@@ -319,6 +325,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           national_id_media_id: nationalIdMedia.id,
           ncz_registration_card_media_id: registrationCardMedia.id,
           face_picture_media_id: facePictureMedia.id,
+          nurse_practicing_cert_media_id: nursePracticingCertMedia.id,
           approved_by: null,
         },
       })

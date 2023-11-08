@@ -832,6 +832,7 @@ export type NurseRegistrationDetails = {
   national_id_media_id: Maybe<number>
   ncz_registration_card_media_id: Maybe<number>
   face_picture_media_id: Maybe<number>
+  nurse_practicing_cert_media_id: Maybe<number>
   approved_by: Maybe<number>
 }
 

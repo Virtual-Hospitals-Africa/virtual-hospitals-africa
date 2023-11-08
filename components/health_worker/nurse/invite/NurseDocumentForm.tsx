@@ -21,6 +21,12 @@ export default function NurseDocumentForm() {
       <FormRow>
         <FilePreviewInput name='face_picture' label='Identification Photo' />
       </FormRow>
+      <FormRow>
+        <FilePreviewInput
+          name='nurse_practicing_cert'
+          label='Nurse Practicing Certificate'
+          />
+      </FormRow>
       <hr className='my-2' />
       <div className='container grid grid-cols-1'>
         <Button type='submit'>Submit</Button>

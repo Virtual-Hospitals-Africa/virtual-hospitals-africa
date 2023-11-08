@@ -41,6 +41,7 @@ export type DocumentFormFields = {
   national_id_picture: Maybe<ReturnedSqlRow<Media>>
   ncz_registration_card: Maybe<ReturnedSqlRow<Media>>
   face_picture: Maybe<ReturnedSqlRow<Media>>
+  nurse_practicing_cert: Maybe<ReturnedSqlRow<Media>>
 }
 
 export type PersonalFormFields = {
@@ -98,5 +99,7 @@ function isDocumentFormFields(
       fields.national_id_picture === '') &&
     (isMedia(fields.ncz_registration_card) ||
       fields.ncz_registration_card === '') &&
-    (isMedia(fields.face_picture) || fields.face_picture === '')
+    (isMedia(fields.face_picture) || fields.face_picture === '') &&
+    (isMedia(fields.nurse_practicing_cert) 
+    || fields.nurse_practicing_cert === '')
 }
