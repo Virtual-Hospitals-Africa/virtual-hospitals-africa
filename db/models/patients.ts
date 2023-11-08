@@ -61,20 +61,20 @@ export function getByPhoneNumber(
     .executeTakeFirst()
 }
 
-export function getAddress(
-  trx: TrxOrDb,
-  query: { street: string, suburb_id: number, ward_id: number, },
-): Promise<
-  Maybe<ReturnedSqlRow<Address>>
-> {
-  return trx
-  .selectFrom('address')
-    .selectAll()
-    .where('street', '=', query.street)
-    .where('suburb_id', '=', query.suburb_id)
-    .where('ward_id', '=', query.ward_id)
-    .executeTakeFirst()
-}
+// export function getAddress(
+//   trx: TrxOrDb,
+//   query: { street: string, suburb_id: number, ward_id: number, },
+// ): Promise<
+//   Maybe<ReturnedSqlRow<Address>>
+// > {
+//   return trx
+//   .selectFrom('address')
+//     .selectAll()
+//     .where('street', '=', query.street)
+//     .where('suburb_id', '=', query.suburb_id)
+//     .where('ward_id', '=', query.ward_id)
+//     .executeTakeFirst()
+// }
 
 export type UpsertablePatient = {
   id?: number
