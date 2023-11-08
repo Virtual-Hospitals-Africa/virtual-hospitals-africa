@@ -66,10 +66,11 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = PatientPersonal & PatientAddress & {
+export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<number>
   nearest_facility_id: Maybe<number>
   completed_onboarding: boolean
+  address_id: Maybe<number>
 }
 
 export type PatientDemographicInfo = {
@@ -85,14 +86,14 @@ export type PatientPersonal = {
   location: Maybe<Location>
 } & PatientDemographicInfo
 
-export type PatientAddress = {
-  country_id: Maybe<number>
-  province_id: Maybe<number>
-  district_id: Maybe<number>
-  ward_id: Maybe<number>
-  suburb_id: Maybe<number>
-  street: Maybe<string>
-}
+// export type PatientAddress = {
+//   country_id: Maybe<number>
+//   province_id: Maybe<number>
+//   district_id: Maybe<number>
+//   ward_id: Maybe<number>
+//   suburb_id: Maybe<number>
+//   street: Maybe<string>
+// }
 
 export type RenderedPatient = ReturnedSqlRow<
   Pick<
@@ -127,14 +128,23 @@ export type OnboardingPatient =
     | 'gender'
     | 'date_of_birth'
     | 'national_id_number'
+    // | 'country_id'
+    // | 'province_id'
+    // | 'district_id'
+    // | 'ward_id'
+    // | 'suburb_id'
+    // | 'street'
+    | 'nearest_facility_id'
+    | 'completed_onboarding'
+  >
+  & Pick<
+    Address,
     | 'country_id'
     | 'province_id'
     | 'district_id'
     | 'ward_id'
     | 'suburb_id'
     | 'street'
-    | 'nearest_facility_id'
-    | 'completed_onboarding'
   >
 
 export type PatientFamily = {
@@ -1218,13 +1228,12 @@ export type MailingListRecipient = {
 }
 
 export type Address = {
-  id: number
-  street: string
-  suburb_id: number
-  ward_id: number
-  district_id: number
-  province_id: number
-  country_id: number
+  street: Maybe<string>
+  suburb_id: Maybe<number>
+  ward_id: Maybe<number>
+  district_id: Maybe<number>
+  province_id: Maybe<number>
+  country_id: Maybe<number>
 }
 
 export type DatabaseSchema = {

@@ -86,12 +86,13 @@ export type UpsertablePatient = {
   primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
-  country_id?: Maybe<number>
-  province_id?: Maybe<number>
-  district_id?: Maybe<number>
-  ward_id?: Maybe<number>
-  suburb_id?: Maybe<number>
-  street?: Maybe<string>
+  address_id?: number
+  // country_id?: Maybe<number>
+  // province_id?: Maybe<number>
+  // district_id?: Maybe<number>
+  // ward_id?: Maybe<number>
+  // suburb_id?: Maybe<number>
+  // street?: Maybe<string>
   completed_onboarding?: boolean
   name?: Maybe<string>
   first_name?: Maybe<string>
@@ -99,12 +100,49 @@ export type UpsertablePatient = {
   last_name?: Maybe<string>
 }
 
+export type UpsertableAddress = {
+  street?: Maybe<string>
+  suburb_id?: Maybe<number>
+  ward_id?: Maybe<number>
+  district_id?: Maybe<number>
+  province_id?: Maybe<number>
+  country_id?: Maybe<number>
+}
+
 const omitNames = omit<
   UpsertablePatient,
   'first_name' | 'middle_names' | 'last_name'
 >(['first_name', 'middle_names', 'last_name'])
 
-export async function upsert(
+
+export function upsertAddress(
+  trx: TrxOrDb,
+  address: UpsertableAddress,
+): Promise<ReturnedSqlRow<Address>> {
+  return trx
+    .insertInto('address')
+    .values({
+      street: address.street,
+      suburb_id: address.suburb_id,
+      ward_id: address.ward_id,
+      district_id: address.district_id,
+      province_id: address.province_id,
+      country_id: address.country_id
+    })
+    .onConflict((oc) => oc.columns(['street', 'suburb_id', 'ward_id']).doNothing())
+    .returningAll()
+    .executeTakeFirstOrThrow() || (
+      trx.selectFrom('address')
+        .where((eb) => eb.and({
+          street: address.street,
+          suburb_id: address.suburb_id,
+          ward_id: address.ward_id
+        })
+      ).selectAll().executeTakeFirstOrThrow()
+    )
+}
+
+export function upsert(
   trx: TrxOrDb,
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
@@ -119,15 +157,6 @@ export async function upsert(
     toInsert.name = compact(
       [patient.first_name, patient.middle_names, patient.last_name],
     ).join(' ')
-  }
-
-  const address = await trx.insertInto('address')
-    .values({ /* add values */ })
-    .onConflict((oc) => oc.columns(['street', 'suburb_id', 'ward_id']).doNothing())
-    .returningAll()
-    .executeTakeFirstOrThrow()
-  if (!address) {
-    // to do: get address
   }
 
   return trx
@@ -158,6 +187,7 @@ export function getOnboarding(
 ): Promise<OnboardingPatient> {
   return trx
     .selectFrom('patients')
+    .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
     .select([
       'patients.id',
@@ -169,12 +199,12 @@ export function getOnboarding(
         'date_of_birth',
       ),
       'patients.national_id_number',
-      'patients.country_id',
-      'patients.province_id',
-      'patients.district_id',
-      'patients.ward_id',
-      'patients.suburb_id',
-      'patients.street',
+      'address.country_id',
+      'address.province_id',
+      'address.district_id',
+      'address.ward_id',
+      'address.suburb_id',
+      'address.street',
       'patients.completed_onboarding',
       sql<
         string | null

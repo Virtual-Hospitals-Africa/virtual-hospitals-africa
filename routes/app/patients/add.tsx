@@ -223,10 +223,17 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
+    const address = await patients.upsertAddress(ctx.state.trx, {
+
+      // add data here
+      
+    })
+
     const patient = await patients.upsert(ctx.state.trx, {
       ...transformedFormData,
       id: id ? parseInt(id) : undefined,
       completed_onboarding: step === 'lifestyle',
+      // address_id: /* address here */
     })
 
     if (step === 'personal') {
