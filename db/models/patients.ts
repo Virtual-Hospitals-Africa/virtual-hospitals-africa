@@ -8,7 +8,6 @@ import {
   OnboardingPatient,
   Patient,
   PatientConversationState,
-  PatientPersonal,
   PatientState,
   PatientWithMedicalRecord,
   RenderedPatient,
@@ -62,21 +61,6 @@ export function getByPhoneNumber(
     .executeTakeFirst()
 }
 
-// export function getAddress(
-//   trx: TrxOrDb,
-//   query: { street: string, suburb_id: number, ward_id: number, },
-// ): Promise<
-//   Maybe<ReturnedSqlRow<Address>>
-// > {
-//   return trx
-//   .selectFrom('address')
-//     .selectAll()
-//     .where('street', '=', query.street)
-//     .where('suburb_id', '=', query.suburb_id)
-//     .where('ward_id', '=', query.ward_id)
-//     .executeTakeFirst()
-// }
-
 export type UpsertablePatient = {
   id?: number
   conversation_state?: PatientConversationState
@@ -88,12 +72,6 @@ export type UpsertablePatient = {
   location?: Maybe<Location>
   avatar_media_id?: number
   address_id?: number
-  // country_id?: Maybe<number>
-  // province_id?: Maybe<number>
-  // district_id?: Maybe<number>
-  // ward_id?: Maybe<number>
-  // suburb_id?: Maybe<number>
-  // street?: Maybe<string>
   completed_onboarding?: boolean
   name?: Maybe<string>
   first_name?: Maybe<string>
@@ -145,7 +123,7 @@ export function upsert(
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...omitNames(patient), // to do: update patient upsert
+    ...omitNames(patient),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,

@@ -86,15 +86,6 @@ export type PatientPersonal = {
   location: Maybe<Location>
 } & PatientDemographicInfo
 
-// export type PatientAddress = {
-//   country_id: Maybe<number>
-//   province_id: Maybe<number>
-//   district_id: Maybe<number>
-//   ward_id: Maybe<number>
-//   suburb_id: Maybe<number>
-//   street: Maybe<string>
-// }
-
 export type RenderedPatient = ReturnedSqlRow<
   Pick<
     Patient,
@@ -128,12 +119,6 @@ export type OnboardingPatient =
     | 'gender'
     | 'date_of_birth'
     | 'national_id_number'
-    // | 'country_id'
-    // | 'province_id'
-    // | 'district_id'
-    // | 'ward_id'
-    // | 'suburb_id'
-    // | 'street'
     | 'nearest_facility_id'
     | 'completed_onboarding'
   >
