@@ -8,6 +8,7 @@ import {
   OnboardingPatient,
   Patient,
   PatientConversationState,
+  PatientPersonal,
   PatientState,
   PatientWithMedicalRecord,
   RenderedPatient,
@@ -114,32 +115,29 @@ const omitNames = omit<
   'first_name' | 'middle_names' | 'last_name'
 >(['first_name', 'middle_names', 'last_name'])
 
-
 export function upsertAddress(
   trx: TrxOrDb,
   address: UpsertableAddress,
 ): Promise<ReturnedSqlRow<Address>> {
+  const addressInfo = {
+    street: address.street,
+    suburb_id: address.suburb_id,
+    ward_id: address.ward_id,
+    district_id: address.district_id,
+    province_id: address.province_id,
+    country_id: address.country_id,
+  }
+
   return trx
     .insertInto('address')
-    .values({
-      street: address.street,
-      suburb_id: address.suburb_id,
-      ward_id: address.ward_id,
-      district_id: address.district_id,
-      province_id: address.province_id,
-      country_id: address.country_id
-    })
-    .onConflict((oc) => oc.columns(['street', 'suburb_id', 'ward_id']).doNothing())
-    .returningAll()
-    .executeTakeFirstOrThrow() || (
-      trx.selectFrom('address')
-        .where((eb) => eb.and({
-          street: address.street,
-          suburb_id: address.suburb_id,
-          ward_id: address.ward_id
-        })
-      ).selectAll().executeTakeFirstOrThrow()
+    .values({ ...addressInfo })
+    .onConflict((oc) =>
+      oc.columns(['street', 'suburb_id', 'ward_id']).doUpdateSet({
+        ...addressInfo,
+      })
     )
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
 export function upsert(
@@ -177,6 +175,15 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .deleteFrom('patients')
     .where('phone_number', '=', opts.phone_number)
     .executeTakeFirst()
+}
+
+export function getByID(
+  trx: TrxOrDb,
+  opts: { id: number },
+): Promise<ReturnedSqlRow<RenderedPatient>> {
+  return baseSelect(trx)
+    .where('patients.id', '=', opts.id)
+    .executeTakeFirstOrThrow()
 }
 
 export function getOnboarding(

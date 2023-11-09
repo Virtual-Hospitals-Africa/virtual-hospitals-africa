@@ -145,7 +145,7 @@ type Transformers = Partial<
   {
     [key in AddPatientStep]: (
       patient: Forms[key],
-    ) => patients.UpsertablePatient
+    ) => patients.UpsertablePatient | patients.UpsertableAddress
   }
 >
 
@@ -159,7 +159,7 @@ const typeCheckers: TypeCheckers = {
   lifestyle: isLifestyle,
 }
 
-const omitNames = omit(['nearest_facility_display_name', 'primary_doctor_name'])
+// const omitNames = omit(['nearest_facility_display_name', 'primary_doctor_name'])
 
 const transformers: Transformers = {
   personal: (
@@ -168,7 +168,16 @@ const transformers: Transformers = {
     ...patient,
     avatar_media_id: avatar_media?.id,
   }),
-  address: omitNames,
+  address: (
+    { ...address },
+  ): patients.UpsertableAddress => ({
+    province_id: address.province_id,
+    district_id: address.district_id,
+    ward_id: address.ward_id,
+    suburb_id: address.suburb_id,
+    street: address.street,
+    country_id: address.country_id,
+  }),
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -199,6 +208,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         adminDistricts,
       })
     }
+
     assertOr400(
       step === 'personal' ||
         step === 'pre-existing_conditions' || step === 'family' ||
@@ -223,18 +233,29 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
-    const address = await patients.upsertAddress(ctx.state.trx, {
+    let address = undefined
+    let patient = undefined
 
-      // add data here
-      
-    })
+    if (step !== 'address') {
+      patient = await patients.upsert(ctx.state.trx, {
+        ...transformedFormData,
+        id: id ? parseInt(id) : undefined,
+        completed_onboarding: step === 'lifestyle',
+      })
+      address = undefined
+    } else {
+      address = await patients.upsertAddress(ctx.state.trx, {
+        ...transformedFormData as patients.UpsertableAddress,
+      })
 
-    const patient = await patients.upsert(ctx.state.trx, {
-      ...transformedFormData,
-      id: id ? parseInt(id) : undefined,
-      completed_onboarding: step === 'lifestyle',
-      // address_id: /* address here */
-    })
+      patient = await patients.upsert(ctx.state.trx, {
+        id: id ? parseInt(id) : undefined,
+        completed_onboarding: false,
+        address_id: address.id,
+      })
+
+      console.log(patient)
+    }
 
     if (step === 'personal') {
       return redirect(`/app/patients/add?step=address&patient_id=${patient.id}`)

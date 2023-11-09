@@ -1,12 +1,11 @@
-import { Kysely } from "kysely";
+import { Kysely } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('address')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('street', 'varchar(255)')
-    .addColumn('suburb_id', 'integer', (col) =>
-      col.references('suburbs.id'))
+    .addColumn('suburb_id', 'integer', (col) => col.references('suburbs.id'))
     .addColumn('ward_id', 'integer', (col) =>
       col.notNull()
         .references('wards.id'))
@@ -34,8 +33,7 @@ export async function up(db: Kysely<unknown>) {
     .dropColumn('district_id')
     .dropColumn('province_id')
     .dropColumn('country_id')
-    .addColumn('address_id', 'integer', (col) =>
-      col.references('address.id'))
+    .addColumn('address_id', 'integer', (col) => col.references('address.id'))
     .execute()
 }
 
@@ -44,16 +42,19 @@ export async function down(db: Kysely<unknown>) {
     .alterTable('patients')
     .dropColumn('address_id')
     .addColumn('street', 'varchar(255)')
-    .addColumn('suburb_id', 'integer', (col) =>
-      col.references('suburbs.id'))
-    .addColumn('ward_id', 'integer', (col) =>
-      col.references('wards.id'))
-    .addColumn('district_id', 'integer', (col) =>
-      col.references('districts.id'))
-    .addColumn('province_id', 'integer', (col) =>
-      col.references('provinces.id'))
-    .addColumn('country_id', 'integer', (col) =>
-      col.references('countries.id'))
+    .addColumn('suburb_id', 'integer', (col) => col.references('suburbs.id'))
+    .addColumn('ward_id', 'integer', (col) => col.references('wards.id'))
+    .addColumn(
+      'district_id',
+      'integer',
+      (col) => col.references('districts.id'),
+    )
+    .addColumn(
+      'province_id',
+      'integer',
+      (col) => col.references('provinces.id'),
+    )
+    .addColumn('country_id', 'integer', (col) => col.references('countries.id'))
     .execute()
   await db.schema.dropTable('address')
     .execute()
