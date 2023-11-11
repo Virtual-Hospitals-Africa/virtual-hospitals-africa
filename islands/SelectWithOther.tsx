@@ -8,7 +8,7 @@ import {
 export default function SelectWithOther(
   { name, children, ...props }: SelectProps,
 ) {
-  const [selected, setSelected] = useState<any>()
+  const [selected, setSelected] = useState<undefined | string>()
 
   const selectedOther = selected === 'other'
 
