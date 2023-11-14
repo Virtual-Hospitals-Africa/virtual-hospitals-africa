@@ -6,10 +6,9 @@ import { FormState } from '../../../../routes/app/facilities/[facilityId]/regist
 import unsavedChangesWarning from '../../../library/form/unsaved_changes_warning.tsx'
 
 export default function NurseDocumentsForm(
-  { formData }: { formData: FormState }
+  { formData }: { formData: FormState },
 ) {
-  
-  unsavedChangesWarning();
+  unsavedChangesWarning()
 
   return (
     <>

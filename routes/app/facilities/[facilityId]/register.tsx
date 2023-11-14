@@ -146,7 +146,10 @@ export default function register(
   return (
     <Container size='lg'>
       {stepState.stepsTopBar}
-      <NurseRegistrationForm currentStep={stepState.currentStep} formData={props.data.formState} />
+      <NurseRegistrationForm
+        currentStep={stepState.currentStep}
+        formData={props.data.formState}
+      />
     </Container>
   )
 }

@@ -3,9 +3,8 @@ import NursePersonalForm from '../components/health_worker/nurse/invite/NursePer
 import NurseProfessionalForm from '../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
 
-
 export default function NurseRegistrationForm(
-  { currentStep, formData }: { currentStep: string, formData: FormState },
+  { currentStep, formData }: { currentStep: string; formData: FormState },
 ) {
   console.log('current step: ', currentStep)
   console.log('formData: ', formData)
@@ -16,11 +15,15 @@ export default function NurseRegistrationForm(
       className='w-full mt-4'
       encType='multipart/form-data'
     >
-      {currentStep === 'personal' && (
-        <NursePersonalForm formData={formData} />
+      {currentStep === 'personal' && <NursePersonalForm formData={formData} />}
+      {currentStep === 'professional' && (
+        <NurseProfessionalForm formData={formData} />
       )}
-      {currentStep === 'professional' && <NurseProfessionalForm formData={formData} />}
-      {currentStep === 'documents' && <NurseDocumentsForm formData={formData} />}
+      {currentStep === 'documents' && (
+        <NurseDocumentsForm
+          formData={formData}
+        />
+      )}
     </form>
   )
 }
