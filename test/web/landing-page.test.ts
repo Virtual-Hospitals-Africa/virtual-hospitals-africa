@@ -1,12 +1,7 @@
 import { it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { describeWithWebServer } from './utilities.ts'
-
 import * as cheerio from 'cheerio'
-
-// Works around incorrect typedefs in the cheerio package
-// deno-lint-ignore no-explicit-any
-const loadHtml: typeof cheerio.load = (cheerio as any).cheerio.load
 
 const expectedLinks = [
   '/waitlist?entrypoint=hero',
@@ -26,7 +21,7 @@ describeWithWebServer('landing page', 8003, (route) => {
 
   it('has links to various signup forms', async () => {
     const response = await fetch(route)
-    const $ = loadHtml(await response.text())
+    const $ = cheerio.load(await response.text())
 
     for (const expectedLink of expectedLinks) {
       assert(

@@ -12,10 +12,6 @@ import * as address from '../../../db/models/address.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 
-// Works around incorrect typedefs in the cheerio package
-// deno-lint-ignore no-explicit-any
-const loadHtml: typeof cheerio.load = (cheerio as any).cheerio.load
-
 describeWithWebServer('/app/patients/add', 8004, (route) => {
   it('loads the personal page', async () => {
     const { sessionId } = await addTestHealthWorkerWithSession({
@@ -30,7 +26,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assert(response.url === `${route}/app/patients/add?step=personal`)
     const pageContents = await response.text()
 
-    const $ = loadHtml(pageContents)
+    const $ = cheerio.load(pageContents)
     assert($('input[name="first_name"]').length === 1)
     assert($('input[name="middle_names"]').length === 1)
     assert($('input[name="last_name"]').length === 1)
@@ -84,7 +80,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     )
 
     const pageContents = await getPersonalResponse.text()
-    const $ = loadHtml(pageContents)
+    const $ = cheerio.load(pageContents)
     assertEquals($('input[name="first_name"]').val(), 'Test')
     assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
     assertEquals($('input[name="last_name"]').val(), 'Patient')
@@ -161,7 +157,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     )
 
     const pageContents = await getAddressResponse.text()
-    const $ = loadHtml(pageContents)
+    const $ = cheerio.load(pageContents)
     assertEquals($('select[name="country_id"]').val(), String(zimbabwe.id))
     assertEquals($('select[name="province_id"]').val(), String(province.id))
     assertEquals($('select[name="ward_id"]').val(), String(ward.id))
