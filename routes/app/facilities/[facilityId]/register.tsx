@@ -26,6 +26,7 @@ import {
   PersonalFormFields,
   ProfessionalInformationFields,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
+import NurseRegistrationForm from '../../../../islands/nurse-registration-form.tsx'
 
 type RegisterPageProps = {
   formState: FormState
@@ -145,17 +146,7 @@ export default function register(
   return (
     <Container size='lg'>
       {stepState.stepsTopBar}
-      <form
-        method='POST'
-        className='w-full mt-4'
-        encType='multipart/form-data'
-      >
-        {stepState.currentStep === 'personal' && (
-          <NursePersonalForm formData={props.data.formState} />
-        )}
-        {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
-        {stepState.currentStep === 'documents' && <NurseDocumentsForm />}
-      </form>
+      <NurseRegistrationForm currentStep={stepState.currentStep} formData={props.data.formState} />
     </Container>
   )
 }
