@@ -66,10 +66,11 @@ export type PatientConversationState =
   | 'find_nearest_facility:send_facility_location'
   | 'other_end_of_demo'
 
-export type Patient = PatientPersonal & PatientAddress & {
+export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<number>
   nearest_facility_id: Maybe<number>
   completed_onboarding: boolean
+  address_id: Maybe<number>
 }
 
 export type PatientDemographicInfo = {
@@ -84,15 +85,6 @@ export type PatientPersonal = {
   avatar_media_id: Maybe<number>
   location: Maybe<Location>
 } & PatientDemographicInfo
-
-export type PatientAddress = {
-  country_id: Maybe<number>
-  province_id: Maybe<number>
-  district_id: Maybe<number>
-  ward_id: Maybe<number>
-  suburb_id: Maybe<number>
-  street: Maybe<string>
-}
 
 export type RenderedPatient = ReturnedSqlRow<
   Pick<
@@ -127,14 +119,17 @@ export type OnboardingPatient =
     | 'gender'
     | 'date_of_birth'
     | 'national_id_number'
+    | 'nearest_facility_id'
+    | 'completed_onboarding'
+  >
+  & Pick<
+    Address,
     | 'country_id'
     | 'province_id'
     | 'district_id'
     | 'ward_id'
     | 'suburb_id'
     | 'street'
-    | 'nearest_facility_id'
-    | 'completed_onboarding'
   >
 
 export type PatientFamily = {
@@ -1217,6 +1212,15 @@ export type MailingListRecipient = {
   entrypoint: string
 }
 
+export type Address = {
+  street: Maybe<string>
+  suburb_id: Maybe<number>
+  ward_id: Maybe<number>
+  district_id: Maybe<number>
+  province_id: Maybe<number>
+  country_id: Maybe<number>
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1245,4 +1249,5 @@ export type DatabaseSchema = {
   wards: SqlRow<Ward>
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
+  address: SqlRow<Address>
 }

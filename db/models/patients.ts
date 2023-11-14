@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
+  Address,
   Gender,
   Location,
   Maybe,
@@ -67,33 +68,64 @@ export type UpsertablePatient = {
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
+  nearest_facility_id?: Maybe<number>
   primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
-  country_id?: Maybe<number>
-  province_id?: Maybe<number>
-  district_id?: Maybe<number>
-  ward_id?: Maybe<number>
-  suburb_id?: Maybe<number>
-  street?: Maybe<string>
+  address_id?: number
   completed_onboarding?: boolean
   name?: Maybe<string>
   first_name?: Maybe<string>
   middle_names?: Maybe<string>
   last_name?: Maybe<string>
+  address?: UpsertableAddress
 }
 
-const omitNames = omit<
-  UpsertablePatient,
-  'first_name' | 'middle_names' | 'last_name'
->(['first_name', 'middle_names', 'last_name'])
+export type UpsertableAddress = {
+  street?: Maybe<string>
+  suburb_id?: Maybe<number>
+  ward_id?: Maybe<number>
+  district_id?: Maybe<number>
+  province_id?: Maybe<number>
+  country_id?: Maybe<number>
+}
 
-export function upsert(
+export function upsertAddress(
+  trx: TrxOrDb,
+  address: UpsertableAddress,
+): Promise<ReturnedSqlRow<Address>> {
+  const addressInfo = {
+    street: address.street,
+    suburb_id: address.suburb_id,
+    ward_id: address.ward_id,
+    district_id: address.district_id,
+    province_id: address.province_id,
+    country_id: address.country_id,
+  }
+
+  return trx
+    .insertInto('address')
+    .values({ ...addressInfo })
+    .onConflict((oc) =>
+      oc.columns(['street', 'suburb_id', 'ward_id']).doUpdateSet({
+        ...addressInfo,
+      })
+    )
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+const omitNamesAndAddress = omit<
+  UpsertablePatient,
+  'first_name' | 'middle_names' | 'last_name' | 'address'
+>(['first_name', 'middle_names', 'last_name', 'address'])
+
+export async function upsert(
   trx: TrxOrDb,
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...omitNames(patient),
+    ...omitNamesAndAddress(patient),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,
@@ -104,6 +136,12 @@ export function upsert(
       [patient.first_name, patient.middle_names, patient.last_name],
     ).join(' ')
   }
+  if ('address' in patient) {
+    assert(!toInsert.address_id, 'Cannot set both address and address_id')
+    toInsert.address_id =
+      (patient.address && await upsertAddress(trx, patient.address))?.id
+  }
+
   return trx
     .insertInto('patients')
     .values({
@@ -124,6 +162,15 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
     .executeTakeFirst()
 }
 
+export function getByID(
+  trx: TrxOrDb,
+  opts: { id: number },
+): Promise<ReturnedSqlRow<RenderedPatient>> {
+  return baseSelect(trx)
+    .where('patients.id', '=', opts.id)
+    .executeTakeFirstOrThrow()
+}
+
 export function getOnboarding(
   trx: TrxOrDb,
   opts: {
@@ -132,6 +179,7 @@ export function getOnboarding(
 ): Promise<OnboardingPatient> {
   return trx
     .selectFrom('patients')
+    .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
     .select([
       'patients.id',
@@ -143,12 +191,12 @@ export function getOnboarding(
         'date_of_birth',
       ),
       'patients.national_id_number',
-      'patients.country_id',
-      'patients.province_id',
-      'patients.district_id',
-      'patients.ward_id',
-      'patients.suburb_id',
-      'patients.street',
+      'address.country_id',
+      'address.province_id',
+      'address.district_id',
+      'address.ward_id',
+      'address.suburb_id',
+      'address.street',
       'patients.completed_onboarding',
       sql<
         string | null

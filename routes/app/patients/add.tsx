@@ -159,7 +159,12 @@ const typeCheckers: TypeCheckers = {
   lifestyle: isLifestyle,
 }
 
-const omitNames = omit(['nearest_facility_display_name', 'primary_doctor_name'])
+const omitNearestCare = omit([
+  'nearest_facility_id',
+  'nearest_facility_display_name',
+  'primary_doctor_id',
+  'primary_doctor_name',
+])
 
 const transformers: Transformers = {
   personal: (
@@ -168,7 +173,13 @@ const transformers: Transformers = {
     ...patient,
     avatar_media_id: avatar_media?.id,
   }),
-  address: omitNames,
+  address: (
+    { ...patient },
+  ): patients.UpsertablePatient => ({
+    nearest_facility_id: patient.nearest_facility_id,
+    primary_doctor_id: patient.primary_doctor_id,
+    address: omitNearestCare(patient),
+  }),
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -199,6 +210,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         adminDistricts,
       })
     }
+
     assertOr400(
       step === 'personal' ||
         step === 'pre-existing_conditions' || step === 'family' ||
