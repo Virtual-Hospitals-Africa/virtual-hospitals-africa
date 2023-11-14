@@ -132,6 +132,7 @@ function getRegistrationDetails(
     face_picture_media_id: formState.face_picture?.id,
     ncz_registration_card_media_id: formState.ncz_registration_card?.id,
     national_id_media_id: formState.national_id_picture?.id,
+    nurse_practicing_cert_media_id: formState.nurse_practicing_cert?.id,
     approved_by: null,
   }
 }

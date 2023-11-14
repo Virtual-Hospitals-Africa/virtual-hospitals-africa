@@ -565,6 +565,24 @@ export function getEmployeeInfo(
                   .as('href'),
               ]),
           )
+          .union(
+            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+              'nd_1.id',
+              '=',
+              'nurse_registration_details.id',
+            ).where(
+              'nurse_registration_details.nurse_practicing_cert_media_id',
+              'is not',
+              null,
+            )
+              .select([
+                sql<string>`'Nurse Practicing Certificate'`.as('name'),
+                sql<
+                  string
+                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
+                  .as('href'),
+              ]),
+          )
           .orderBy('name'),
       ).as('documents'),
     ])

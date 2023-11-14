@@ -44,5 +44,6 @@ export const testRegistrationDetails = (
   national_id_media_id: undefined,
   ncz_registration_card_media_id: undefined,
   face_picture_media_id: undefined,
+  nurse_practicing_cert_media_id: undefined,
   approved_by: undefined,
 })
