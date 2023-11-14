@@ -143,11 +143,14 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patientResult = await db.selectFrom('patients').selectAll().execute()
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
-    assertEquals(patientResult[0].country_id, zimbabwe.id)
-    assertEquals(patientResult[0].province_id, province.id)
-    assertEquals(patientResult[0].ward_id, ward.id)
-    assertEquals(patientResult[0].suburb_id, suburb?.id || null)
-    assertEquals(patientResult[0].street, '120 Main Street')
+
+
+    const patientAddress = await db.selectFrom('address').selectAll().execute()
+    assertEquals(patientAddress[0].country_id, zimbabwe.id)
+    assertEquals(patientAddress[0].province_id, province.id)
+    assertEquals(patientAddress[0].ward_id, ward.id)
+    assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
+    assertEquals(patientAddress[0].street, '120 Main Street')
 
     const getAddressResponse = await fetch(
       `${route}/app/patients/add?step=address&patient_id=${patient.id}`,
