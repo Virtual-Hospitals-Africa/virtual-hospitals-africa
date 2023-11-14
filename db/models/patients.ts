@@ -68,6 +68,7 @@ export type UpsertablePatient = {
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
+  nearest_facility_id?: Maybe<number>
   primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
@@ -77,6 +78,7 @@ export type UpsertablePatient = {
   first_name?: Maybe<string>
   middle_names?: Maybe<string>
   last_name?: Maybe<string>
+  address?: UpsertableAddress
 }
 
 export type UpsertableAddress = {
@@ -87,11 +89,6 @@ export type UpsertableAddress = {
   province_id?: Maybe<number>
   country_id?: Maybe<number>
 }
-
-const omitNames = omit<
-  UpsertablePatient,
-  'first_name' | 'middle_names' | 'last_name'
->(['first_name', 'middle_names', 'last_name'])
 
 export function upsertAddress(
   trx: TrxOrDb,
@@ -118,12 +115,17 @@ export function upsertAddress(
     .executeTakeFirstOrThrow()
 }
 
-export function upsert(
+const omitNamesAndAddress = omit<
+  UpsertablePatient,
+  'first_name' | 'middle_names' | 'last_name' | 'address'
+>(['first_name', 'middle_names', 'last_name', 'address'])
+
+export async function upsert(
   trx: TrxOrDb,
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...omitNames(patient),
+    ...omitNamesAndAddress(patient),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,
@@ -133,6 +135,11 @@ export function upsert(
     toInsert.name = compact(
       [patient.first_name, patient.middle_names, patient.last_name],
     ).join(' ')
+  }
+  if ('address' in patient) {
+    assert(!toInsert.address_id, 'Cannot set both address and address_id')
+    toInsert.address_id =
+      (patient.address && await upsertAddress(trx, patient.address))?.id
   }
 
   return trx
