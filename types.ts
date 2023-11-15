@@ -40,6 +40,8 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'other'
 
+export type Race = 'asian' | 'african' | 'white' | 'other'
+
 export type UserState<CS> = {
   body?: string
   has_media: boolean
@@ -77,6 +79,7 @@ export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
+  race: Maybe<Race>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
 }
@@ -90,6 +93,7 @@ export type RenderedPatient = ReturnedSqlRow<
   Pick<
     Patient,
     | 'gender'
+    | 'race'
     | 'location'
     | 'national_id_number'
     | 'phone_number'
@@ -117,6 +121,7 @@ export type OnboardingPatient =
     | 'name'
     | 'phone_number'
     | 'gender'
+    | 'race'
     | 'date_of_birth'
     | 'national_id_number'
     | 'nearest_facility_id'

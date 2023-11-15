@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Maybe } from '../../../types.ts'
+import { Maybe, Race } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
@@ -280,6 +280,24 @@ export function GenderSelect(
       <option value=''>Select</option>
       <option value='female' label='Female' selected={value === 'female'} />
       <option value='male' label='Male' selected={value === 'male'} />
+      <option value='other' label='Other' selected={value === 'other'} />
+    </Select>
+  )
+}
+
+export function RaceSelect(
+  { value }: {value: Maybe<Race>},
+) {
+  return (
+    <Select
+      required
+      name='race'
+      label='Race/Ethnicity'
+    >
+      <option value=''>Select</option>
+      <option value='african' label='African' selected={value === 'african'} />
+      <option value='asian' label='Asian' selected={value === 'asian'} />
+      <option value='white' label='White' selected={value === 'white'} />
       <option value='other' label='Other' selected={value === 'other'} />
     </Select>
   )
