@@ -6,9 +6,6 @@ import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDo
 export default function NurseRegistrationForm(
   { currentStep, formData }: { currentStep: string; formData: FormState },
 ) {
-  console.log('current step: ', currentStep)
-  console.log('formData: ', formData)
-
   return (
     <form
       method='POST'
