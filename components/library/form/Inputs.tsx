@@ -286,7 +286,7 @@ export function GenderSelect(
 }
 
 export function RaceSelect(
-  { value }: {value: Maybe<Race>},
+  { value }: { value: Maybe<Race> },
 ) {
   return (
     <Select
