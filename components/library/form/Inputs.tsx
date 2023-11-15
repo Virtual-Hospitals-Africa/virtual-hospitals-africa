@@ -14,9 +14,9 @@ type LabeledInputProps<El extends HTMLElement> = {
   readonly?: boolean
   value?: string
   ref?: Ref<HTMLInputElement>
-  onInput?: JSX.GenericEventHandler<HTMLInputElement>
-  onFocus?: JSX.GenericEventHandler<HTMLInputElement>
-  onBlur?: JSX.GenericEventHandler<HTMLInputElement>
+  onInput?: JSX.GenericEventHandler<El>
+  onFocus?: JSX.GenericEventHandler<El>
+  onBlur?: JSX.GenericEventHandler<El>
 }
 
 type SearchInputProps = Partial<LabeledInputProps<HTMLInputElement>> & {
