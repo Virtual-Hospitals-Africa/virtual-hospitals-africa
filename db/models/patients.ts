@@ -29,6 +29,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.phone_number',
       'patients.location',
       'patients.gender',
+      'patients.race',
       sql<string | null>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
         .as('dob_formatted'),
       'patients.national_id_number',
@@ -187,6 +188,7 @@ export function getOnboarding(
       'patients.phone_number',
       'patients.location',
       'patients.gender',
+      'patients.race',
       sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
         'date_of_birth',
       ),
