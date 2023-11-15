@@ -74,7 +74,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           created_at: patient.created_at,
           dob_formatted: null,
           gender: null,
-          race: null,
+          ethnicity: null,
           href: `/app/patients/${patient.id}`,
           id: patient.id,
           last_visited: null,

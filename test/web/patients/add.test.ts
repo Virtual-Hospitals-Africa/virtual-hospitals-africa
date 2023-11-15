@@ -44,7 +44,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     body.set('national_id_number', '08-123456 D 53')
     body.set('date_of_birth', '2020-01-01')
     body.set('gender', 'female')
-    body.set('race', 'african')
+    body.set('ethnicity', 'african')
     body.set('phone_number', '5555555555')
     const postResponse = await fetch(
       `${route}/app/patients/add?step=personal`,
@@ -87,7 +87,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals($('input[name="last_name"]').val(), 'Patient')
     assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
     assertEquals($('select[name="gender"]').val(), 'female')
-    assertEquals($('select[name="race"]').val(), 'african')
+    assertEquals($('select[name="ethnicity"]').val(), 'african')
     assertEquals($('input[name="national_id_number"]').val(), '08-123456 D 53')
     assertEquals($('input[name="phone_number"]').val(), '5555555555')
   })

@@ -1,9 +1,9 @@
 import {
   DateInput,
+  EthnicitySelect,
   GenderSelect,
   NationalIdInput,
   PhoneNumberInput,
-  RaceSelect,
   TextInput,
 } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
@@ -37,7 +37,7 @@ export default function PatientPersonalForm(
           value={patient.date_of_birth}
           required
         />
-        <RaceSelect value={patient.race} />
+        <EthnicitySelect value={patient.ethnicity} />
       </FormRow>
       <FormRow>
         <NationalIdInput value={patient.national_id_number} />

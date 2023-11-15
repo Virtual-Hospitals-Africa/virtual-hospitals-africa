@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Maybe, Race } from '../../../types.ts'
+import { Ethnicity, Maybe } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
@@ -285,19 +285,53 @@ export function GenderSelect(
   )
 }
 
-export function RaceSelect(
-  { value }: { value: Maybe<Race> },
+export function EthnicitySelect(
+  { value }: { value: Maybe<Ethnicity> },
 ) {
   return (
     <Select
       required
-      name='race'
-      label='Race/Ethnicity'
+      name='ethnicity'
+      label='Ethnicity'
     >
       <option value=''>Select</option>
       <option value='african' label='African' selected={value === 'african'} />
+      <option
+        value='african_american'
+        label='African American'
+        selected={value === 'african_american'}
+      />
       <option value='asian' label='Asian' selected={value === 'asian'} />
-      <option value='white' label='White' selected={value === 'white'} />
+      <option
+        value='caribbean'
+        label='Caribbean'
+        selected={value === 'caribbean'}
+      />
+      <option
+        value='caucasian'
+        label='Caucasian'
+        selected={value === 'caucasian'}
+      />
+      <option
+        value='hispanic'
+        label='Hispanic'
+        selected={value === 'hispanic'}
+      />
+      <option
+        value='middle_eastern'
+        label='Middle Eastern'
+        selected={value === 'middle_eastern'}
+      />
+      <option
+        value='native_american'
+        label='Native American'
+        selected={value === 'native_american'}
+      />
+      <option
+        value='pacific_islander'
+        label='Pacific Islander'
+        selected={value === 'pacific_islander'}
+      />
       <option value='other' label='Other' selected={value === 'other'} />
     </Select>
   )
