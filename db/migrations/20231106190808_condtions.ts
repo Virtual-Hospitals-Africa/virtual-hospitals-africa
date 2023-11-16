@@ -1,6 +1,5 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
-//import * as google from '../../external-clients/google.ts'
 import parseJSON from '../../util/parseJSON.ts'
 
 type Condition = {
@@ -21,11 +20,11 @@ export async function up(db: Kysely<any>) {
   await db.schema
     .createTable('conditions')
     .addColumn('key_id', 'varchar(255)', (col) => col.primaryKey())
-    .addColumn('primary_name', 'varchar(255)', col => col.notNull())
+    .addColumn('primary_name', 'varchar(255)', (col) => col.notNull())
     .addColumn('term_icd9_code', 'varchar(255)')
     .addColumn('term_icd9_text', 'varchar(255)')
-    .addColumn('consumer_name', 'varchar(255)', col => col.notNull())
-    .addColumn('is_procedure', 'boolean', col => col.notNull())
+    .addColumn('consumer_name', 'varchar(255)', (col) => col.notNull())
+    .addColumn('is_procedure', 'boolean', (col) => col.notNull())
     .addColumn('info_link_href', 'varchar(255)')
     .addColumn('info_link_text', 'varchar(255)')
     .addColumn(
@@ -43,7 +42,7 @@ export async function up(db: Kysely<any>) {
   await db.schema
     .createTable('icd10_codes')
     .addColumn('code', 'varchar(255)', (col) => col.primaryKey())
-    .addColumn('name', 'varchar(255)', col => col.notNull())
+    .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn(
       'created_at',
       'timestamp',
@@ -58,11 +57,11 @@ export async function up(db: Kysely<any>) {
 
   await db.schema
     .createTable('condition_icd10_codes')
-    .addColumn('condition_key_id', 'varchar(255)', col => 
+    .addColumn('condition_key_id', 'varchar(255)', (col) =>
       col.notNull()
-      .references('conditions.key_id')
-      .onDelete('cascade'))
-    .addColumn('icd10_code', 'varchar(255)', col => 
+        .references('conditions.key_id')
+        .onDelete('cascade'))
+    .addColumn('icd10_code', 'varchar(255)', (col) =>
       col.notNull()
         .references('icd10_codes.code')
         .onDelete('cascade'))
@@ -95,15 +94,14 @@ async function importFromJSON(db: Kysely<any>) {
     './db/resources/cond_proc_download.json',
   )
 
-  for (const row of data){
-    
+  for (const row of data) {
     console.log(row)
-    /* 
-      Populate conditions db, conditions_icd10_codes db and 
+    /*
+      Populate conditions db, conditions_icd10_codes db and
       icd10_codes db from the conditions json file
     */
-      const [info_link_href, info_link_text] = row.info_link_data[0] || [] 
-      const inserted_condition = await db.insertInto('conditions')
+    const [info_link_href, info_link_text] = row.info_link_data[0] || []
+    const inserted_condition = await db.insertInto('conditions')
       .values({
         key_id: row.key_id,
         primary_name: row.primary_name,
@@ -114,38 +112,32 @@ async function importFromJSON(db: Kysely<any>) {
         info_link_href,
         info_link_text,
       })
-
       .returningAll()
       .executeTakeFirstOrThrow()
 
-      if(!row.icd10cm || !row.icd10cm.length){
-        continue
-      }
+    if (!row.icd10cm || !row.icd10cm.length) {
+      continue
+    }
 
-      await db.insertInto('icd10_codes')
+    await db.insertInto('icd10_codes')
       .values(
-        row.icd10cm.map(icd10 => ({
+        row.icd10cm.map((icd10) => ({
           code: icd10.code,
-          name: icd10.name
-        }))
-        )
-        .onConflict((oc) => oc.column('code').doNothing())
-      
+          name: icd10.name,
+        })),
+      )
+      .onConflict((oc) => oc.column('code').doNothing())
       .returningAll()
       .execute()
 
-      await db.insertInto('condition_icd10_codes')
+    await db.insertInto('condition_icd10_codes')
       .values(
-        row.icd10cm.map(icd10 => ({
+        row.icd10cm.map((icd10) => ({
           condition_key_id: row.key_id,
-          icd10_code: icd10.code
-        }))
-      
+          icd10_code: icd10.code,
+        })),
       )
-      
       .returningAll()
       .executeTakeFirstOrThrow()
-      
-      }
-      }
-      
+  }
+}
