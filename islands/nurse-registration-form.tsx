@@ -3,9 +3,10 @@ import NursePersonalForm from '../components/health_worker/nurse/invite/NursePer
 import NurseProfessionalForm from '../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
 import unsavedChangesWarning from '../components/library/form/unsaved_changes_warning.tsx'
+import { FullCountryInfo } from '../types.ts'
 
 export default function NurseRegistrationForm(
-  { currentStep, formData }: { currentStep: string; formData: FormState },
+  { currentStep, formData, adminDistricts}: { currentStep: string; formData: FormState; adminDistricts: FullCountryInfo | undefined},
 ) {
   unsavedChangesWarning()
 
@@ -15,7 +16,7 @@ export default function NurseRegistrationForm(
       className='w-full mt-4'
       encType='multipart/form-data'
     >
-      {currentStep === 'personal' && <NursePersonalForm formData={formData} />}
+      {currentStep === 'personal' && <NursePersonalForm formData={formData} adminDistricts={adminDistricts!}/>}
       {currentStep === 'professional' && (
         <NurseProfessionalForm formData={formData} />
       )}

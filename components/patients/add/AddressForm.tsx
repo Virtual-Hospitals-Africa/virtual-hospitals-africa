@@ -2,7 +2,7 @@ import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import FacilitySearch from '../../../islands/FacilitySearch.tsx'
 import { FullCountryInfo, OnboardingPatient } from '../../../types.ts'
-import PatientAddressInputs from '../../../islands/patient-address-inputs.tsx'
+import AddressForm from '../../../islands/patient-address-inputs.tsx'
 import PersonSearch from '../../../islands/PersonSearch.tsx'
 
 function PatientAddress(
@@ -14,7 +14,7 @@ function PatientAddress(
   return (
     <section className='mb-7'>
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
-      <PatientAddressInputs patient={patient} adminDistricts={adminDistricts} />
+      <AddressForm patient={patient} adminDistricts={adminDistricts} />
     </section>
   )
 }

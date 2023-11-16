@@ -8,9 +8,11 @@ import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
+import { FullCountryInfo } from '../../../../types.ts'
+import AddressForm from '../../../../islands/patient-address-inputs.tsx'
 
 export default function NursePersonalForm(
-  { formData }: { formData: FormState },
+  { formData, adminDistricts }: { formData: FormState, adminDistricts: FullCountryInfo },
 ) {
   return (
     <>
@@ -61,6 +63,9 @@ export default function NursePersonalForm(
           value={formData.mobile_number}
         />
       </FormRow>
+      <hr className='my-2' />
+      {/* Insert Address Component Here */}
+      <AddressForm patient={formData} adminDistricts={adminDistricts} />
       <hr className='my-2' />
       <Buttons
         submitText='Next'
