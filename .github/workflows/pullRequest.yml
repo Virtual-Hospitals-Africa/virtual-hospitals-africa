@@ -37,8 +37,13 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v3
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check out PR branch
+        uses: actions/checkout@v4
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
@@ -58,6 +63,9 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
+      - name: Ensure migrations are in order
+        run: deno run -A db/ensureMigrationsInOrder.ts
+      
       - name: Migrate database
         run: deno task db:migrate:latest
 
