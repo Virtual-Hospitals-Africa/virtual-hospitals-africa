@@ -1,7 +1,7 @@
+//deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import parseJSON from '../../util/parseJSON.ts'
-//deno-lint-ignore-file no-explicit-any
 
 
 type Condition = {
