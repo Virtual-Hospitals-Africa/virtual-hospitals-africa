@@ -1,6 +1,8 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import parseJSON from '../../util/parseJSON.ts'
+//deno-lint-ignore-file no-explicit-any
+
 
 type Condition = {
   key_id: string
@@ -101,7 +103,7 @@ async function importFromJSON(db: Kysely<any>) {
       icd10_codes db from the conditions json file
     */
     const [info_link_href, info_link_text] = row.info_link_data[0] || []
-    const inserted_condition = await db.insertInto('conditions')
+    await db.insertInto('conditions')
       .values({
         key_id: row.key_id,
         primary_name: row.primary_name,
