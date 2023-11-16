@@ -1,5 +1,6 @@
 import {
   DateInput,
+  EthnicitySelect,
   GenderSelect,
   NationalIdInput,
   PhoneNumberInput,
@@ -36,6 +37,7 @@ export default function PatientPersonalForm(
           value={patient.date_of_birth}
           required
         />
+        <EthnicitySelect value={patient.ethnicity} />
       </FormRow>
       <FormRow>
         <NationalIdInput value={patient.national_id_number} />
