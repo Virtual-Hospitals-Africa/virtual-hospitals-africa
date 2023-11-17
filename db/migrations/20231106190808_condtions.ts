@@ -96,7 +96,7 @@ async function importFromJSON(db: Kysely<any>) {
   )
 
   for (const row of data) {
-    console.log(row)
+    
     /*
       Populate conditions db, conditions_icd10_codes db and
       icd10_codes db from the conditions json file
