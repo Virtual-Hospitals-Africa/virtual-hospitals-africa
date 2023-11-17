@@ -13,7 +13,7 @@ type LabeledInputProps<El extends HTMLElement> = {
   disabled?: boolean
   readonly?: boolean
   value?: string
-  ref?: Ref<HTMLInputElement>
+  ref?: Ref<El>
   onInput?: JSX.GenericEventHandler<El>
   onFocus?: JSX.GenericEventHandler<El>
   onBlur?: JSX.GenericEventHandler<El>
