@@ -2,7 +2,7 @@ import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import FacilitySearch from '../../../islands/FacilitySearch.tsx'
 import { FullCountryInfo, OnboardingPatient } from '../../../types.ts'
-import AddressForm from '../../../islands/patient-address-inputs.tsx'
+import AddressForm from '../../../islands/address-inputs.tsx'
 import PersonSearch from '../../../islands/PersonSearch.tsx'
 
 function PatientAddress(

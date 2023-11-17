@@ -9,7 +9,7 @@ import Buttons from '../../../library/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
 import { FullCountryInfo } from '../../../../types.ts'
-import AddressForm from '../../../../islands/patient-address-inputs.tsx'
+import AddressForm from '../../../../islands/address-inputs.tsx'
 
 export default function NursePersonalForm(
   { formData, adminDistricts }: { formData: FormState, adminDistricts: FullCountryInfo },
