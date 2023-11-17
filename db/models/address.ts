@@ -16,7 +16,6 @@ export type UpsertableAddress = {
   country_id?: Maybe<number>
 }
 
-
 export function getFullCountryInfo(
   trx: TrxOrDb,
 ): Promise<FullCountryInfo> {
@@ -64,7 +63,6 @@ export function getFullCountryInfo(
     ])
     .execute()
 }
-
 
 export function upsertAddress(
   trx: TrxOrDb,

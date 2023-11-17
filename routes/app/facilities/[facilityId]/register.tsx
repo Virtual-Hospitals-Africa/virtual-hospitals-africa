@@ -116,8 +116,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       ward_id: formState.ward_id,
       sururb_id: formState.suburb_id,
       street: formState.street,
-    } as address.UpsertableAddress
-    )
+    } as address.UpsertableAddress)
 
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(
@@ -136,7 +135,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 function getRegistrationDetails(
   healthWorker: HealthWorkerWithGoogleTokens,
   formState: FormState,
-  nurse_address_id: number
+  nurse_address_id: number,
 ): NurseRegistrationDetails {
   return {
     health_worker_id: healthWorker.id,
