@@ -58,7 +58,7 @@ export default function PendingApprovalPage(
                 application has been approved.
               </p>
               <div class='mt-10 flex'>
-                <Button href='/'>
+                <Button href='/logout'>
                   Homepage<span aria-hidden='true'>&nbsp;&nbsp;&rarr;</span>
                 </Button>
               </div>
