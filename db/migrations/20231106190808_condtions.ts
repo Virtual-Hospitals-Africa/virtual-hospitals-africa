@@ -3,7 +3,6 @@ import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import parseJSON from '../../util/parseJSON.ts'
 
-
 type Condition = {
   key_id: string
   primary_name: string
