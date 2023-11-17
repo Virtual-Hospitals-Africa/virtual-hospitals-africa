@@ -46,4 +46,5 @@ export const testRegistrationDetails = (
   face_picture_media_id: undefined,
   nurse_practicing_cert_media_id: undefined,
   approved_by: undefined,
+  address_id: undefined
 })

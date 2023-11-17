@@ -1,5 +1,21 @@
-import { FullCountryInfo, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+
+import {
+  Address,
+  FullCountryInfo,
+  Maybe,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from '../../types.ts'
+export type UpsertableAddress = {
+  street?: Maybe<string>
+  suburb_id?: Maybe<number>
+  ward_id?: Maybe<number>
+  district_id?: Maybe<number>
+  province_id?: Maybe<number>
+  country_id?: Maybe<number>
+}
+
 
 export function getFullCountryInfo(
   trx: TrxOrDb,
@@ -47,4 +63,30 @@ export function getFullCountryInfo(
       ).as('provinces'),
     ])
     .execute()
+}
+
+
+export function upsertAddress(
+  trx: TrxOrDb,
+  address: UpsertableAddress,
+): Promise<ReturnedSqlRow<Address>> {
+  const addressInfo = {
+    street: address.street,
+    suburb_id: address.suburb_id,
+    ward_id: address.ward_id,
+    district_id: address.district_id,
+    province_id: address.province_id,
+    country_id: address.country_id,
+  }
+
+  return trx
+    .insertInto('address')
+    .values({ ...addressInfo })
+    .onConflict((oc) =>
+      oc.columns(['street', 'suburb_id', 'ward_id']).doUpdateSet({
+        ...addressInfo,
+      })
+    )
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }

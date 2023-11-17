@@ -854,6 +854,7 @@ export type NurseRegistrationDetails = {
   face_picture_media_id: Maybe<number>
   nurse_practicing_cert_media_id: Maybe<number>
   approved_by: Maybe<number>
+  address_id: Maybe<number>
 }
 
 export type Specialties = {

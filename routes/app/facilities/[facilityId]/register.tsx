@@ -109,10 +109,21 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       specialty: formState.specialty,
     })
 
+    const nurse_address = await address.upsertAddress(ctx.state.trx, {
+      country_id: formState.country_id,
+      province_id: formState.province_id,
+      district_id: formState.district_id,
+      ward_id: formState.ward_id,
+      sururb_id: formState.suburb_id,
+      street: formState.street,
+    } as address.UpsertableAddress
+    )
+
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(
         ctx.state.healthWorker,
         formState,
+        nurse_address.id,
       ),
     })
 
@@ -125,6 +136,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 function getRegistrationDetails(
   healthWorker: HealthWorkerWithGoogleTokens,
   formState: FormState,
+  nurse_address_id: number
 ): NurseRegistrationDetails {
   return {
     health_worker_id: healthWorker.id,
@@ -139,6 +151,7 @@ function getRegistrationDetails(
     national_id_media_id: formState.national_id_picture?.id,
     nurse_practicing_cert_media_id: formState.nurse_practicing_cert?.id,
     approved_by: null,
+    address_id: nurse_address_id,
   }
 }
 
