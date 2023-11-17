@@ -1,8 +1,7 @@
-import { DateInput, Select, TextInput } from '../../../library/form/Inputs.tsx'
+import { DateInput, NurseSpecialtySelect, TextInput } from '../../../library/form/Inputs.tsx'
 
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { NurseSpecialties } from '../../../../types.ts'
 
 import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
 import unsavedChangesWarning from '../../../library/form/unsaved_changes_warning.tsx'
@@ -31,20 +30,7 @@ export default function NurseProfessionalForm(
         />
       </FormRow>
       <FormRow>
-        <Select
-          name='specialty'
-          label='Specialty'
-          value={formData.specialty}
-          required
-        >
-          {NurseSpecialties.map((specialty) => (
-            <option
-              value={specialty}
-              label={prettierSpecialtyName(specialty)}
-            >
-            </option>
-          ))}
-        </Select>
+        <NurseSpecialtySelect value={formData.specialty}/>
       </FormRow>
       <hr className='my-2' />
       <Buttons
@@ -53,9 +39,4 @@ export default function NurseProfessionalForm(
       />
     </>
   )
-}
-
-function prettierSpecialtyName(specialtyName: string): string {
-  const name = specialtyName.replaceAll('\_', ' ')
-  return name.charAt(0).toUpperCase() + name.slice(1)
 }

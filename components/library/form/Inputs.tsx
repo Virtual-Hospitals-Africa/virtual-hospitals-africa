@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Ethnicity, Maybe } from '../../../types.ts'
+import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
@@ -12,7 +12,6 @@ type LabeledInputProps<El extends HTMLElement> = {
   placeholder?: string
   disabled?: boolean
   readonly?: boolean
-  value?: string
   ref?: Ref<El>
   onInput?: JSX.GenericEventHandler<El>
   onFocus?: JSX.GenericEventHandler<El>
@@ -139,13 +138,12 @@ export type SelectProps =
   & Omit<LabeledInputProps<HTMLSelectElement>, 'onInput'>
   & {
     onChange?: JSX.GenericEventHandler<HTMLSelectElement>
-    value?: Maybe<string>
     children: ComponentChildren
   }
 
 export const Select = forwardRef(
   (
-    { name, label, required, onChange, value, children }: SelectProps,
+    { name, label, required, onChange, children }: SelectProps,
     ref: Ref<HTMLSelectElement>,
   ) => {
     return (
@@ -155,7 +153,6 @@ export const Select = forwardRef(
           className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white'
           required={required}
           onChange={onChange}
-          value={value}
           ref={ref}
         >
           {children}
@@ -345,10 +342,33 @@ export function NationalIdInput({ value }: { value?: Maybe<string> }) {
     <TextInput
       name='national_id_number'
       label='National ID Number'
-      value={value || ''}
+      value={value}
       pattern='^\d{2}-\d{6,7}\s[A-Z]\s\d{2}$'
       placeholder='00-000000 D 00'
       required
     />
+  )
+}
+
+export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
+  const prettierSpecialtyName = (specialtyName: string): string => {
+    const name = specialtyName.replaceAll('\_', ' ')
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
+  
+  return (
+    <Select
+      name='specialty'
+      label='Specialty'
+      required
+    >
+      {NurseSpecialties.map((specialty) => (
+        <option
+          value={specialty}
+          label={prettierSpecialtyName(specialty)}
+          selected={value === specialty}
+        />
+      ))}
+    </Select>
   )
 }
