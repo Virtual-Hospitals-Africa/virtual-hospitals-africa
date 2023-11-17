@@ -12,7 +12,10 @@ import { FullCountryInfo } from '../../../../types.ts'
 import AddressForm from '../../../../islands/address-inputs.tsx'
 
 export default function NursePersonalForm(
-  { formData, adminDistricts }: { formData: FormState, adminDistricts: FullCountryInfo },
+  { formData, adminDistricts }: {
+    formData: FormState
+    adminDistricts: FullCountryInfo
+  },
 ) {
   return (
     <>
