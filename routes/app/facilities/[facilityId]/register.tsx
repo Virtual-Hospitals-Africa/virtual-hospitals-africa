@@ -61,9 +61,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 
     formState.email = healthWorker.email
 
-    const adminDistricts = (step == 'personal')
-      ? await address.getFullCountryInfo(ctx.state.trx)
-      : undefined
+    const adminDistricts = step == 'personal' ? await address.getFullCountryInfo(ctx.state.trx) : undefined
 
     return ctx.render({ formState, adminDistricts })
   },
