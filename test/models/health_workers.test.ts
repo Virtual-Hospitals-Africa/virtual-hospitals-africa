@@ -5,6 +5,7 @@ import db from '../../db/db.ts'
 import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { resetInTest } from '../../db/reset.ts'
+import * as address from '../../db/models/address.ts'
 import * as media from '../../db/models/media.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -317,6 +318,16 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         specialty: 'clinical_care_nurse',
       })
 
+      const nurse_address = await address.upsertAddress(db, {
+        street: '111 Ave Park',
+        suburb_id: 4,
+        ward_id: 1,
+        district_id: 1,
+        province_id: 1,
+        country_id: 1,
+      })
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: healthWorker.id,
@@ -331,6 +342,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: null,
+          address_id: nurse_address.id,
         },
       })
 
@@ -427,6 +439,16 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/png',
       })
 
+      const nurse_address = await address.upsertAddress(db, {
+        street: '111 Ave Park',
+        suburb_id: 4,
+        ward_id: 1,
+        district_id: 1,
+        province_id: 1,
+        country_id: 1,
+      })
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: healthWorker.id,
@@ -441,6 +463,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           face_picture_media_id: facePictureMedia.id,
           nurse_practicing_cert_media_id: nursePracticingCertMedia.id,
           approved_by: null,
+          address_id: nurse_address.id,
         },
       })
 

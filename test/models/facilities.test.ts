@@ -3,6 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
+import * as address from '../../db/models/address.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
@@ -267,6 +268,16 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
+      const nurse_address = await address.upsertAddress(db, {
+        street: '111 Ave Park',
+        suburb_id: 4,
+        ward_id: 1,
+        district_id: 1,
+        province_id: 1,
+        country_id: 1,
+      })
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: hw_at_facility1.id,
@@ -281,6 +292,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: null,
           date_of_birth: '2020-01-01',
+          address_id: nurse_address.id,
         },
       })
 
@@ -338,6 +350,16 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
+      const nurse_address = await address.upsertAddress(db, {
+        street: '111 Ave Park',
+        suburb_id: 4,
+        ward_id: 1,
+        district_id: 1,
+        province_id: 1,
+        country_id: 1,
+      })
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: nurse.id,
@@ -352,6 +374,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
           date_of_birth: '2020-01-01',
+          address_id: nurse_address.country_id,
         },
       })
 
