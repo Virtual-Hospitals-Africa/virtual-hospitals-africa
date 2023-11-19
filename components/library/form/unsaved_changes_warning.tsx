@@ -41,7 +41,7 @@ export default function unsavedChangesWarning() {
     // warn before exiting if any inputs are modified
     function onBeforeUnload(event: Event) {
       if (modified_inputs.size) {
-        event.preventDefault();
+        event.preventDefault()
       }
     }
 

@@ -1,4 +1,8 @@
-import { DateInput, NurseSpecialtySelect, TextInput } from '../../../library/form/Inputs.tsx'
+import {
+  DateInput,
+  NurseSpecialtySelect,
+  TextInput,
+} from '../../../library/form/Inputs.tsx'
 
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
@@ -30,7 +34,7 @@ export default function NurseProfessionalForm(
         />
       </FormRow>
       <FormRow>
-        <NurseSpecialtySelect value={formData.specialty}/>
+        <NurseSpecialtySelect value={formData.specialty} />
       </FormRow>
       <hr className='my-2' />
       <Buttons

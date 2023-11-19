@@ -8,7 +8,7 @@ export default function NurseRegistrationForm(
   { currentStep, formData }: { currentStep: string; formData: FormState },
 ) {
   unsavedChangesWarning()
-  
+
   return (
     <form
       method='POST'

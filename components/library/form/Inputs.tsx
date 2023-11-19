@@ -355,7 +355,7 @@ export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
     const name = specialtyName.replaceAll('\_', ' ')
     return name.charAt(0).toUpperCase() + name.slice(1)
   }
-  
+
   return (
     <Select
       name='specialty'
