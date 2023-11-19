@@ -110,6 +110,13 @@ export async function initializeHealthWorker(
   }
 }
 
+async function checkPermissions(
+  googleClient: google.GoogleClient,
+): Promise<boolean> {
+  const tokenInfo = await googleClient.getTokenInfo()
+  return tokenInfo.scope.includes('calendar')
+}
+
 export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
     const { session } = ctx.state
@@ -119,7 +126,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
 
     const gettingTokens = getInitialTokensFromAuthCode(code)
 
-    const authorized = await db.transaction().execute(async (trx) => {
+    const authStatus = await db.transaction().execute(async (trx) => {
       const tokens = await gettingTokens
       const googleClient = new google.GoogleClient(tokens)
       const profile = await googleClient.getProfile()
@@ -143,15 +150,23 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
           )
       )
 
-      if (!healthWorker) return false
+      if (!healthWorker) return 'unauthorized'
 
       session.set('health_worker_id', healthWorker.id)
 
-      return true
+      const hasPermissions = await checkPermissions(googleClient)
+      if (!hasPermissions) return 'insufficient_permissions'
+
+      return 'authorized'
     })
 
-    return authorized
-      ? redirect('/app')
-      : new Response('Not authorized', { status: 401 })
+    if (authStatus === 'insufficient_permissions') {
+      return redirect('/app/insufficient_permissions')
+    }
+    if (authStatus === 'unauthorized') {
+      return new Response('Not authorized', { status: 401 })
+    }
+
+    return redirect('/app')
   },
 }

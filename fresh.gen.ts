@@ -21,23 +21,24 @@ import * as $15 from './routes/app/facilities/[facilityId]/employees/[id]/media/
 import * as $16 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
 import * as $17 from './routes/app/facilities/[facilityId]/register.tsx'
 import * as $18 from './routes/app/health_workers.tsx'
-import * as $19 from './routes/app/patients.tsx'
-import * as $20 from './routes/app/patients/[id].tsx'
-import * as $21 from './routes/app/patients/[id]/avatar.tsx'
-import * as $22 from './routes/app/patients/add.tsx'
-import * as $23 from './routes/app/pending_approval.tsx'
-import * as $24 from './routes/apply.tsx'
-import * as $25 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $26 from './routes/index.tsx'
-import * as $27 from './routes/interest.tsx'
-import * as $28 from './routes/logged-in.tsx'
-import * as $29 from './routes/login.tsx'
-import * as $30 from './routes/logout.tsx'
-import * as $31 from './routes/partner.tsx'
-import * as $32 from './routes/schedule-demo.tsx'
-import * as $33 from './routes/volunteer.tsx'
-import * as $34 from './routes/volunteer/[role].tsx'
-import * as $35 from './routes/waitlist.tsx'
+import * as $19 from './routes/app/insufficient_permissions.tsx'
+import * as $20 from './routes/app/patients.tsx'
+import * as $21 from './routes/app/patients/[id].tsx'
+import * as $22 from './routes/app/patients/[id]/avatar.tsx'
+import * as $23 from './routes/app/patients/add.tsx'
+import * as $24 from './routes/app/pending_approval.tsx'
+import * as $25 from './routes/apply.tsx'
+import * as $26 from './routes/chatbot/incoming-whatsapp.ts'
+import * as $27 from './routes/index.tsx'
+import * as $28 from './routes/interest.tsx'
+import * as $29 from './routes/logged-in.tsx'
+import * as $30 from './routes/login.tsx'
+import * as $31 from './routes/logout.tsx'
+import * as $32 from './routes/partner.tsx'
+import * as $33 from './routes/schedule-demo.tsx'
+import * as $34 from './routes/volunteer.tsx'
+import * as $35 from './routes/volunteer/[role].tsx'
+import * as $36 from './routes/waitlist.tsx'
 import * as $$0 from './islands/AllergySearch.tsx'
 import * as $$1 from './islands/ErrorMessage.tsx'
 import * as $$2 from './islands/FacilitySearch.tsx'
@@ -79,23 +80,24 @@ const manifest = {
     './routes/app/facilities/[facilityId]/employees/invite.tsx': $16,
     './routes/app/facilities/[facilityId]/register.tsx': $17,
     './routes/app/health_workers.tsx': $18,
-    './routes/app/patients.tsx': $19,
-    './routes/app/patients/[id].tsx': $20,
-    './routes/app/patients/[id]/avatar.tsx': $21,
-    './routes/app/patients/add.tsx': $22,
-    './routes/app/pending_approval.tsx': $23,
-    './routes/apply.tsx': $24,
-    './routes/chatbot/incoming-whatsapp.ts': $25,
-    './routes/index.tsx': $26,
-    './routes/interest.tsx': $27,
-    './routes/logged-in.tsx': $28,
-    './routes/login.tsx': $29,
-    './routes/logout.tsx': $30,
-    './routes/partner.tsx': $31,
-    './routes/schedule-demo.tsx': $32,
-    './routes/volunteer.tsx': $33,
-    './routes/volunteer/[role].tsx': $34,
-    './routes/waitlist.tsx': $35,
+    './routes/app/insufficient_permissions.tsx': $19,
+    './routes/app/patients.tsx': $20,
+    './routes/app/patients/[id].tsx': $21,
+    './routes/app/patients/[id]/avatar.tsx': $22,
+    './routes/app/patients/add.tsx': $23,
+    './routes/app/pending_approval.tsx': $24,
+    './routes/apply.tsx': $25,
+    './routes/chatbot/incoming-whatsapp.ts': $26,
+    './routes/index.tsx': $27,
+    './routes/interest.tsx': $28,
+    './routes/logged-in.tsx': $29,
+    './routes/login.tsx': $30,
+    './routes/logout.tsx': $31,
+    './routes/partner.tsx': $32,
+    './routes/schedule-demo.tsx': $33,
+    './routes/volunteer.tsx': $34,
+    './routes/volunteer/[role].tsx': $35,
+    './routes/waitlist.tsx': $36,
   },
   islands: {
     './islands/AllergySearch.tsx': $$0,
