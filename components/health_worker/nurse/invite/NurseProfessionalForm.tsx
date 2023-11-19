@@ -9,7 +9,7 @@ import unsavedChangesWarning from '../../../library/form/unsaved_changes_warning
 export default function NurseProfessionalForm(
   { formData }: { formData: FormState },
 ) {
-  unsavedChangesWarning()
+  // unsavedChangesWarning()
 
   return (
     <>

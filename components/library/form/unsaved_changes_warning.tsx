@@ -6,16 +6,16 @@ export default function unsavedChangesWarning() {
     const defaultValue = ''
 
     // store original values
-    addEventListener('beforeinput', (event) => {
+    function onBeforeInput(event: Event) {
       const target = event.target as HTMLInputElement
 
       if (!(defaultValue in target || defaultValue in target.dataset)) {
         target.dataset[defaultValue] = ('' + target.value).trim()
       }
-    })
+    }
 
     // store modified values
-    addEventListener('input', (event) => {
+    function onInput(event: Event) {
       const target = event.target as HTMLInputElement
 
       let original
@@ -31,19 +31,30 @@ export default function unsavedChangesWarning() {
       } else if (modified_inputs.has(target)) {
         modified_inputs.delete(target)
       }
-    })
+    }
 
     // clear modified inputs on form submission
-    addEventListener('submit', () => {
+    function onSubmit(event: Event) {
       modified_inputs.clear()
-    })
+    }
 
     // warn before exiting if any inputs are modified
-    addEventListener('beforeunload', (event) => {
+    function onBeforeUnload(event: Event) {
       if (modified_inputs.size) {
-        const message = 'Changes made may not be saved.'
-        event.returnValue = message
+        event.preventDefault();
       }
-    })
+    }
+
+    addEventListener('beforeinput', onBeforeInput)
+    addEventListener('input', onInput)
+    addEventListener('submit', onSubmit)
+    addEventListener('beforeunload', onBeforeUnload)
+
+    return () => {
+      removeEventListener('beforeinput', onBeforeInput)
+      removeEventListener('input', onInput)
+      removeEventListener('submit', onSubmit)
+      removeEventListener('beforeunload', onBeforeUnload)
+    }
   }, [])
 }
