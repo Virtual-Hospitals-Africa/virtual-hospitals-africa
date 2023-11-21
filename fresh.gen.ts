@@ -53,9 +53,10 @@ import * as $$10 from './islands/file-preview-input.tsx'
 import * as $$11 from './islands/invites-form.tsx'
 import * as $$12 from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $$13 from './islands/landing-page/NavBar.tsx'
-import * as $$14 from './islands/patient-address-inputs.tsx'
-import * as $$15 from './islands/patient-cards.tsx'
-import * as $$16 from './islands/schedule-form.tsx'
+import * as $$14 from './islands/nurse-registration-form.tsx'
+import * as $$15 from './islands/patient-address-inputs.tsx'
+import * as $$16 from './islands/patient-cards.tsx'
+import * as $$17 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
@@ -114,9 +115,10 @@ const manifest = {
     './islands/invites-form.tsx': $$11,
     './islands/landing-page/MHIDotsLogo.tsx': $$12,
     './islands/landing-page/NavBar.tsx': $$13,
-    './islands/patient-address-inputs.tsx': $$14,
-    './islands/patient-cards.tsx': $$15,
-    './islands/schedule-form.tsx': $$16,
+    './islands/nurse-registration-form.tsx': $$14,
+    './islands/patient-address-inputs.tsx': $$15,
+    './islands/patient-cards.tsx': $$16,
+    './islands/schedule-form.tsx': $$17,
   },
   baseUrl: import.meta.url,
 }
