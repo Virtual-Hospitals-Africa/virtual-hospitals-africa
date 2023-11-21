@@ -560,6 +560,11 @@ export type GoogleTokens = {
   expires_at: Date | string
 }
 
+export type GoogleTokenInfo = {
+  user_id: string
+  scope: string
+}
+
 export type GCalEvent = {
   kind: 'calendar#event'
   etag: etag

@@ -14,6 +14,7 @@ import {
   GoogleAddressComponent,
   GoogleAddressComponentType,
   GoogleProfile,
+  GoogleTokenInfo,
   GoogleTokens,
   HealthWorkerWithGoogleTokens,
   Location,
@@ -72,6 +73,7 @@ export class GoogleClient {
     | { result: 'unauthorized_error' }
     | { result: 'other_error'; error: Error }
     | { result: 'success'; data: any }
+    | { result: 'insufficient_permission' }
   > {
     const url = `${googleApisUrl}${path}`
     const method = opts?.method || 'get'
@@ -99,6 +101,9 @@ export class GoogleClient {
         if (data.error.code === 401) {
           return { result: 'unauthorized_error' }
         }
+        if (data.error.code === 403) {
+          return { result: 'insufficient_permission' }
+        }
         const errorMessage = data.error?.errors?.[0]?.message || data.error
         throw new Error(errorMessage)
       }
@@ -120,6 +125,9 @@ export class GoogleClient {
     if (response.result === 'unauthorized_error') {
       throw new Error('Unauthorized')
     }
+    if (response.result === 'insufficient_permission') {
+      throw new Error('Insufficient Permission')
+    }
     if (response.result === 'other_error') {
       if ('email' in this.tokens) {
         console.error(this.tokens.email)
@@ -135,6 +143,12 @@ export class GoogleClient {
 
   getCalendarList(): Promise<GCalCalendarList> {
     return this.makeCalendarRequest('/users/me/calendarList')
+  }
+
+  getTokenInfo(): Promise<GoogleTokenInfo> {
+    return this.makeRequest(
+      `/oauth2/v1/tokeninfo?access_token=${this.tokens.access_token}`,
+    )
   }
 
   insertCalendar(
