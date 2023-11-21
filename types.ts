@@ -897,33 +897,41 @@ export type EmployeeInfo = {
   }[]
 }
 
-export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
-  id: number
-  employment: {
-    facility_id: number
-    facility_display_name: string
-    roles: {
-      nurse: {
-        employed_as: boolean
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
+export type EmployedHealthWorker = ReturnedSqlRow<
+  HealthWorker & {
+    access_token: Maybe<string>
+    refresh_token: Maybe<string>
+    expires_at: Maybe<Date | string>
+    employment: {
+      facility_id: number
+      facility_display_name: string
+      roles: {
+        nurse: {
+          employed_as: boolean
+          registration_needed: boolean
+          registration_completed: boolean
+          registration_pending_approval: boolean
+        }
+        doctor: {
+          employed_as: boolean
+          registration_needed: boolean
+          registration_completed: boolean
+          registration_pending_approval: boolean
+        }
+        admin: {
+          employed_as: boolean
+          registration_needed: boolean
+          registration_completed: boolean
+          registration_pending_approval: boolean
+        }
       }
-      doctor: {
-        employed_as: boolean
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-      }
-      admin: {
-        employed_as: boolean
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-      }
-    }
-  }[]
-}
+    }[]
+  }
+>
+
+export type EmployedHealthWorkerWithGoogleTokens =
+  & EmployedHealthWorker
+  & GoogleTokens
 
 export type HealthWorkerGoogleToken = GoogleTokens & {
   health_worker_id: number
@@ -1118,7 +1126,7 @@ export type WhatsAppSendableButtons = {
 export type LoggedInHealthWorker = {
   trx: TrxOrDb
   session: Session
-  healthWorker: EmployedHealthWorker
+  healthWorker: EmployedHealthWorkerWithGoogleTokens
 }
 
 export type LoggedInHealthWorkerHandler<

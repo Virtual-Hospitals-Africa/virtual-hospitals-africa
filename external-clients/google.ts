@@ -320,7 +320,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     super(ctx.state.healthWorker)
     this.health_worker = ctx.state.healthWorker
     if (!isHealthWorkerWithGoogleTokens(this.health_worker)) {
-      throw new Error('Ya gotta be a doctah')
+      throw new Error('You must google tokens to use this client')
     }
   }
 

@@ -2,6 +2,7 @@ import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
   EmployedHealthWorker,
+  EmployedHealthWorkerWithGoogleTokens,
   EmployeeInfo,
   GoogleTokens,
   HealthWorker,
@@ -64,11 +65,14 @@ export async function updateTokens(
   trx: TrxOrDb,
   email: string,
   tokens: GoogleTokens,
-) {
+): Promise<Maybe<EmployedHealthWorkerWithGoogleTokens>> {
   const healthWorker = await get(trx, { email })
   if (!healthWorker) return null
   await upsertGoogleTokens(trx, healthWorker.id, tokens)
-  return healthWorker
+  return {
+    ...healthWorker,
+    ...tokens,
+  }
 }
 
 const pickHealthWorkerDetails = pick([
@@ -300,7 +304,7 @@ export async function get(
       'health_workers.id',
       'nurse_registration_details.health_worker_id',
     )
-    .innerJoin(
+    .leftJoin(
       'health_worker_google_tokens',
       'health_workers.id',
       'health_worker_google_tokens.health_worker_id',
