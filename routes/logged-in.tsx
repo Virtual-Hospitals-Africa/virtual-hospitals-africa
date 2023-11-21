@@ -11,6 +11,7 @@ import * as google from '../external-clients/google.ts'
 import {
   EmployedHealthWorker,
   GoogleProfile,
+  GoogleTokens,
   Profession,
   TrxOrDb,
 } from '../types.ts'
@@ -117,6 +118,47 @@ async function checkPermissions(
   return tokenInfo.scope.includes('calendar')
 }
 
+type AuthCheckResult =
+  | { status: 'authorized'; healthWorker: EmployedHealthWorker }
+  | { status: 'unauthorized' }
+  | { status: 'insufficient_permissions' }
+
+function authCheck(
+  gettingTokens: Promise<GoogleTokens>,
+): Promise<AuthCheckResult> {
+  return db.transaction().execute(async (trx) => {
+    const tokens = await gettingTokens
+    const googleClient = new google.GoogleClient(tokens)
+    const profile = await googleClient.getProfile()
+
+    const invitees = await employment.getInvitees(trx, {
+      email: profile.email,
+    })
+
+    const healthWorker = await (
+      invitees.length
+        ? initializeHealthWorker(
+          trx,
+          googleClient,
+          profile,
+          invitees,
+        )
+        : health_workers.updateTokens(
+          trx,
+          profile.email,
+          health_workers.pickTokens(tokens),
+        )
+    )
+
+    if (!healthWorker) return { status: 'unauthorized' }
+
+    const hasPermissions = await checkPermissions(googleClient)
+    if (!hasPermissions) return { status: 'insufficient_permissions' }
+
+    return { status: 'authorized', healthWorker }
+  })
+}
+
 export const handler: Handlers<Record<string, never>, WithSession> = {
   async GET(req, ctx) {
     const { session } = ctx.state
@@ -125,47 +167,16 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     assert(code, 'No code found in query params')
 
     const gettingTokens = getInitialTokensFromAuthCode(code)
+    const result = await authCheck(gettingTokens)
 
-    const authStatus = await db.transaction().execute(async (trx) => {
-      const tokens = await gettingTokens
-      const googleClient = new google.GoogleClient(tokens)
-      const profile = await googleClient.getProfile()
-
-      const invitees = await employment.getInvitees(trx, {
-        email: profile.email,
-      })
-
-      const healthWorker = await (
-        invitees.length
-          ? initializeHealthWorker(
-            trx,
-            googleClient,
-            profile,
-            invitees,
-          )
-          : health_workers.updateTokens(
-            trx,
-            profile.email,
-            health_workers.pickTokens(tokens),
-          )
-      )
-
-      if (!healthWorker) return 'unauthorized'
-
-      session.set('health_worker_id', healthWorker.id)
-
-      const hasPermissions = await checkPermissions(googleClient)
-      if (!hasPermissions) return 'insufficient_permissions'
-
-      return 'authorized'
-    })
-
-    if (authStatus === 'insufficient_permissions') {
+    if (result.status === 'insufficient_permissions') {
       return redirect('/app/insufficient_permissions')
     }
-    if (authStatus === 'unauthorized') {
-      return new Response('Not authorized', { status: 401 })
+    if (result.status === 'unauthorized') {
+      return redirect('/app/unauthorized')
     }
+
+    session.set('health_worker_id', result.healthWorker.id)
 
     return redirect('/app')
   },
