@@ -38,12 +38,14 @@ export default function PartnersContent() {
           </div>
           <div className='mx-0 grid w-full max-w-xl grid-cols-2 items-center gap-y-12 sm:gap-y-14 lg:max-w-none lg:pl-8'>
             <MHILink />
-            <img
-              className='max-h-20 w-full object-contain object-left'
-              src='/images/logos/hgat.png'
-              alt='Health Gateway Africa Trust'
-              width={304}
-            />
+            <a href='https://healthgatewayafrica.org'>
+              <img
+                className='max-h-20 w-full object-contain object-left'
+                src='/images/logos/hgat.png'
+                alt='Health Gateway Africa Trust'
+                width={304}
+              />
+            </a>
             <span className='pr-8'>
               <USFLogo />
             </span>
