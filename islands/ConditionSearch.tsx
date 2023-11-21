@@ -11,7 +11,7 @@ export default function ConditionSearch() {
   const [searchTerm, setSearchTerm] = useState('')
   const [isFocused, setIsFocused] = useState(false)
   const searchInputRef = useRef<HTMLInputElement | null>(null)
-  const [results, setResults] = useState<null|[string, string][]>(null)
+  const [results, setResults] = useState<null | [string, string][]>(null)
   const [selectedConditions, setSelectedConditions] = useState<string[]>([])
 
   const handleSearch = async (query: string) => {
@@ -27,8 +27,6 @@ export default function ConditionSearch() {
       console.error('Error fetching data:', error)
     }
   }
-
-
 
   const toggleConditionList = (condition: string) => {
     if (searchInputRef.current) {
@@ -79,7 +77,7 @@ export default function ConditionSearch() {
       </FormRow>
 
       <FormRow className='mb-3 relative'>
-        {isFocused && searchTerm && results?.length &&(
+        {isFocused && searchTerm && results?.length && (
           <SearchResults>
             {results.map((condition) => (
               <ConditionSearchResult
