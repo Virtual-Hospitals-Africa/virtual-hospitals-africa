@@ -2,26 +2,34 @@ import { JSX } from 'preact'
 import { TextInput } from '../components/library/form/Inputs.tsx'
 import { Maybe } from '../types.ts'
 
-
 export default function NationalIdInput({ value }: { value?: Maybe<string> }) {
-
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
-    if (e.target && 'value' in e.target && typeof e.target.value === 'string') {      
-      let formatted = e.target.value
+    if (e.target && 'value' in e.target && typeof e.target.value === 'string') {
+      const inputElement = e.target as HTMLInputElement
+      const previousValue = inputElement.getAttribute('data-prev-value') || ''
+      const isRemoving = previousValue.length > e.target.value.length
+
+      let formatted = inputElement.value
       //format to match 00-000000 D 00
-      if (formatted.length === 2) {
-        formatted += '-' 
+      if (formatted.length === 2 && !isRemoving) {
+        formatted += '-'
       }
-      if (formatted.length === 9) {
-        formatted += ' D ' 
+      if (formatted.length === 9 && !isRemoving) {
+        formatted += ' '
       }
-      if (formatted.length > 14){
+      if (formatted.length === 11 && !isRemoving) {
+        formatted += ' '
+      }
+
+      if (formatted.length > 14) {
         formatted = formatted.slice(0, 14)
       }
-      e.target.value = formatted
+
+      inputElement.value = formatted
+      inputElement.setAttribute('data-prev-value', formatted)
+    }
   }
-}
-  
+
   return (
     <TextInput
       name='national_id_number'
