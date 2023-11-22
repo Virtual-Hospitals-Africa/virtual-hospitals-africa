@@ -15,9 +15,6 @@ import {
 import redirect from '../../../../util/redirect.ts'
 import { PageProps } from '$fresh/server.ts'
 import { Container } from '../../../../components/library/Container.tsx'
-import NursePersonalForm from '../../../../components/health_worker/nurse/invite/NursePersonalForm.tsx'
-import NurseProfessionalForm from '../../../../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
-import NurseDocumentsForm from '../../../../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
 import * as employment from '../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
@@ -26,6 +23,7 @@ import {
   PersonalFormFields,
   ProfessionalInformationFields,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
+import NurseRegistrationForm from '../../../../islands/nurse-registration-form.tsx'
 
 type RegisterPageProps = {
   formState: FormState
@@ -145,17 +143,10 @@ export default function register(
   return (
     <Container size='lg'>
       {stepState.stepsTopBar}
-      <form
-        method='POST'
-        className='w-full mt-4'
-        encType='multipart/form-data'
-      >
-        {stepState.currentStep === 'personal' && (
-          <NursePersonalForm formData={props.data.formState} />
-        )}
-        {stepState.currentStep === 'professional' && <NurseProfessionalForm />}
-        {stepState.currentStep === 'documents' && <NurseDocumentsForm />}
-      </form>
+      <NurseRegistrationForm
+        currentStep={stepState.currentStep}
+        formData={props.data.formState}
+      />
     </Container>
   )
 }

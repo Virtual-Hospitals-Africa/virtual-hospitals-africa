@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Maybe } from '../../../types.ts'
+import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
@@ -285,15 +285,90 @@ export function GenderSelect(
   )
 }
 
+export function EthnicitySelect(
+  { value }: { value: Maybe<Ethnicity> },
+) {
+  return (
+    <Select
+      required
+      name='ethnicity'
+      label='Ethnicity'
+    >
+      <option value=''>Select</option>
+      <option value='african' label='African' selected={value === 'african'} />
+      <option
+        value='african_american'
+        label='African American'
+        selected={value === 'african_american'}
+      />
+      <option value='asian' label='Asian' selected={value === 'asian'} />
+      <option
+        value='caribbean'
+        label='Caribbean'
+        selected={value === 'caribbean'}
+      />
+      <option
+        value='caucasian'
+        label='Caucasian'
+        selected={value === 'caucasian'}
+      />
+      <option
+        value='hispanic'
+        label='Hispanic'
+        selected={value === 'hispanic'}
+      />
+      <option
+        value='middle_eastern'
+        label='Middle Eastern'
+        selected={value === 'middle_eastern'}
+      />
+      <option
+        value='native_american'
+        label='Native American'
+        selected={value === 'native_american'}
+      />
+      <option
+        value='pacific_islander'
+        label='Pacific Islander'
+        selected={value === 'pacific_islander'}
+      />
+      <option value='other' label='Other' selected={value === 'other'} />
+    </Select>
+  )
+}
+
 export function NationalIdInput({ value }: { value?: Maybe<string> }) {
   return (
     <TextInput
       name='national_id_number'
       label='National ID Number'
-      value={value}
+      value={value || ''}
       pattern='^\d{2}-\d{6,7}\s[A-Z]\s\d{2}$'
       placeholder='00-000000 D 00'
       required
     />
+  )
+}
+
+export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
+  const prettierSpecialtyName = (specialtyName: string): string => {
+    const name = specialtyName.replaceAll('\_', ' ')
+    return name.charAt(0).toUpperCase() + name.slice(1)
+  }
+
+  return (
+    <Select
+      name='specialty'
+      label='Specialty'
+      required
+    >
+      {NurseSpecialties.map((specialty) => (
+        <option
+          value={specialty}
+          label={prettierSpecialtyName(specialty)}
+          selected={value === specialty}
+        />
+      ))}
+    </Select>
   )
 }

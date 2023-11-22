@@ -1,10 +1,20 @@
-import { DateInput, Select, TextInput } from '../../../library/form/Inputs.tsx'
+import {
+  DateInput,
+  NurseSpecialtySelect,
+  TextInput,
+} from '../../../library/form/Inputs.tsx'
 
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { NurseSpecialties } from '../../../../types.ts'
 
-export default function NurseProfessionalForm() {
+import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
+import unsavedChangesWarning from '../../../library/form/unsaved_changes_warning.tsx'
+
+export default function NurseProfessionalForm(
+  { formData }: { formData: FormState },
+) {
+  // unsavedChangesWarning()
+
   return (
     <>
       <FormRow>
@@ -12,6 +22,7 @@ export default function NurseProfessionalForm() {
           name='date_of_first_practice'
           required
           label='Date of First Practice'
+          value={formData.date_of_first_practice}
         />
         <TextInput
           name='ncz_registration_number'
@@ -19,18 +30,11 @@ export default function NurseProfessionalForm() {
           placeholder='GN123456'
           pattern='^[a-zA-Z]{2}[0-9]{6}$'
           label='Nurses Council of Zimbabwe Registration Number'
+          value={formData.ncz_registration_number}
         />
       </FormRow>
       <FormRow>
-        <Select name='specialty' label='Specialty' required>
-          {NurseSpecialties.map((specialty) => (
-            <option
-              value={specialty}
-              label={prettierSpecialtyName(specialty)}
-            >
-            </option>
-          ))}
-        </Select>
+        <NurseSpecialtySelect value={formData.specialty} />
       </FormRow>
       <hr className='my-2' />
       <Buttons
@@ -39,9 +43,4 @@ export default function NurseProfessionalForm() {
       />
     </>
   )
-}
-
-function prettierSpecialtyName(specialtyName: string): string {
-  const name = specialtyName.replaceAll('\_', ' ')
-  return name.charAt(0).toUpperCase() + name.slice(1)
 }

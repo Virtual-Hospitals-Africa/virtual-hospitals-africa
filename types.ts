@@ -40,6 +40,18 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'other'
 
+export type Ethnicity =
+  | 'african'
+  | 'african_american'
+  | 'asian'
+  | 'caribbean'
+  | 'caucasian'
+  | 'hispanic'
+  | 'middle_eastern'
+  | 'native_american'
+  | 'pacific_islander'
+  | 'other'
+
 export type UserState<CS> = {
   body?: string
   has_media: boolean
@@ -77,6 +89,7 @@ export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
+  ethnicity: Maybe<Ethnicity>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
 }
@@ -90,6 +103,7 @@ export type RenderedPatient = ReturnedSqlRow<
   Pick<
     Patient,
     | 'gender'
+    | 'ethnicity'
     | 'location'
     | 'national_id_number'
     | 'phone_number'
@@ -117,6 +131,7 @@ export type OnboardingPatient =
     | 'name'
     | 'phone_number'
     | 'gender'
+    | 'ethnicity'
     | 'date_of_birth'
     | 'national_id_number'
     | 'nearest_facility_id'
@@ -545,6 +560,11 @@ export type GoogleTokens = {
   expires_at: Date | string
 }
 
+export type GoogleTokenInfo = {
+  user_id: string
+  scope: string
+}
+
 export type GCalEvent = {
   kind: 'calendar#event'
   etag: etag
@@ -877,33 +897,41 @@ export type EmployeeInfo = {
   }[]
 }
 
-export type EmployedHealthWorker = HealthWorkerWithGoogleTokens & {
-  id: number
-  employment: {
-    facility_id: number
-    facility_display_name: string
-    roles: {
-      nurse: {
-        employed_as: boolean
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
+export type EmployedHealthWorker = ReturnedSqlRow<
+  HealthWorker & {
+    access_token: Maybe<string>
+    refresh_token: Maybe<string>
+    expires_at: Maybe<Date | string>
+    employment: {
+      facility_id: number
+      facility_display_name: string
+      roles: {
+        nurse: {
+          employed_as: boolean
+          registration_needed: boolean
+          registration_completed: boolean
+          registration_pending_approval: boolean
+        }
+        doctor: {
+          employed_as: boolean
+          registration_needed: boolean
+          registration_completed: boolean
+          registration_pending_approval: boolean
+        }
+        admin: {
+          employed_as: boolean
+          registration_needed: boolean
+          registration_completed: boolean
+          registration_pending_approval: boolean
+        }
       }
-      doctor: {
-        employed_as: boolean
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-      }
-      admin: {
-        employed_as: boolean
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-      }
-    }
-  }[]
-}
+    }[]
+  }
+>
+
+export type EmployedHealthWorkerWithGoogleTokens =
+  & EmployedHealthWorker
+  & GoogleTokens
 
 export type HealthWorkerGoogleToken = GoogleTokens & {
   health_worker_id: number
@@ -1098,7 +1126,7 @@ export type WhatsAppSendableButtons = {
 export type LoggedInHealthWorker = {
   trx: TrxOrDb
   session: Session
-  healthWorker: EmployedHealthWorker
+  healthWorker: EmployedHealthWorkerWithGoogleTokens
 }
 
 export type LoggedInHealthWorkerHandler<
