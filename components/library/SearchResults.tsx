@@ -10,7 +10,7 @@ type BasicSelectProps = {
 }
 
 type PersonSearchResultProps = BasicSelectProps & {
-  person: HasId<{ name: string; avatar_url?: string }>
+  person: HasId<{ name: string; avatar_url?: string; facilities?: {facility_display_name: string}[] }>
 }
 
 type FacilitySearchResultProps = BasicSelectProps & {
@@ -67,7 +67,10 @@ function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
 }
 
 export function PersonSearchResult(
-  { person, isSelected, onSelect }: PersonSearchResultProps,
+  { person, 
+    isSelected, 
+    onSelect
+  }: PersonSearchResultProps,
 ) {
   return (
     <SearchResult isSelected={isSelected} onSelect={onSelect}>
@@ -77,7 +80,10 @@ export function PersonSearchResult(
           className='h-6 w-6 flex-shrink-0 rounded-full'
         />
         <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
-          {person.name}
+          <div>{person.name}</div>
+          {person.facilities && 
+          <div className='font-normal'>{person.facilities[0].facility_display_name}</div>
+        }
         </span>
       </div>
     </SearchResult>
