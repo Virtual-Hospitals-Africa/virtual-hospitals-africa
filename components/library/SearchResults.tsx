@@ -21,6 +21,10 @@ type AllergySearchResultProps = BasicSelectProps & {
   allergy: string
 }
 
+type ConditionSearchResultProps = BasicSelectProps & {
+  condition: string
+}
+
 type SearchResultProps = BasicSelectProps & {
   children: JSX.Element
 }
@@ -136,6 +140,20 @@ export function AllergySearchResult(
       <div className='flex flex-col'>
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
           {allergy}
+        </div>
+      </div>
+    </SearchResult>
+  )
+}
+
+export function ConditionSearchResult(
+  { condition, isSelected, onSelect }: ConditionSearchResultProps,
+) {
+  return (
+    <SearchResult isSelected={isSelected} onSelect={onSelect}>
+      <div className='flex flex-col'>
+        <div className={cls('truncate text-base', isSelected && 'font-bold')}>
+          {condition}
         </div>
       </div>
     </SearchResult>
