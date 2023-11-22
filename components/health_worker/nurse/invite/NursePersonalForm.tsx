@@ -67,7 +67,6 @@ export default function NursePersonalForm(
         />
       </FormRow>
       <hr className='my-2' />
-      {/* Insert Address Component Here */}
       <AddressForm patient={formData} adminDistricts={adminDistricts} />
       <hr className='my-2' />
       <Buttons

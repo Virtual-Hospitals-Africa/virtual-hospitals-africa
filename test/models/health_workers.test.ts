@@ -5,13 +5,12 @@ import db from '../../db/db.ts'
 import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { resetInTest } from '../../db/reset.ts'
-import * as address from '../../db/models/address.ts'
 import * as media from '../../db/models/media.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
 import { EmployedHealthWorker } from '../../types.ts'
-import { randomNationalId } from '../mocks.ts'
+import { randomNationalId, testAddress } from '../mocks.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -318,14 +317,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         specialty: 'clinical_care_nurse',
       })
 
-      const nurse_address = await address.upsertAddress(db, {
-        street: '111 Ave Park',
-        suburb_id: 4,
-        ward_id: 1,
-        district_id: 1,
-        province_id: 1,
-        country_id: 1,
-      })
+      const nurse_address = await testAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
@@ -439,14 +431,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/png',
       })
 
-      const nurse_address = await address.upsertAddress(db, {
-        street: '111 Ave Park',
-        suburb_id: 4,
-        ward_id: 1,
-        district_id: 1,
-        province_id: 1,
-        country_id: 1,
-      })
+      const nurse_address = await testAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {

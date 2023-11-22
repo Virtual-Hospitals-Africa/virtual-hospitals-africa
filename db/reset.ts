@@ -15,6 +15,7 @@ export default async function reset(trx: TrxOrDb = db) {
 // facilities is also top level, but we don't want to delete it
 // as it is seeded by the migrations
 const topLevelTables = [
+  'address' as const,
   'patients' as const,
   'health_workers' as const,
   'health_worker_invitees' as const,

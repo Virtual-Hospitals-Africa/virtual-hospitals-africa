@@ -3,12 +3,11 @@ import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
-import * as address from '../../db/models/address.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import { randomNationalId } from '../mocks.ts'
+import { randomNationalId, testAddress } from '../mocks.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -268,14 +267,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const nurse_address = await address.upsertAddress(db, {
-        street: '111 Ave Park',
-        suburb_id: 4,
-        ward_id: 1,
-        district_id: 1,
-        province_id: 1,
-        country_id: 1,
-      })
+      const nurse_address = await testAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
@@ -350,14 +342,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const nurse_address = await address.upsertAddress(db, {
-        street: '111 Ave Park',
-        suburb_id: 4,
-        ward_id: 1,
-        district_id: 1,
-        province_id: 1,
-        country_id: 1,
-      })
+      const nurse_address = await testAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {

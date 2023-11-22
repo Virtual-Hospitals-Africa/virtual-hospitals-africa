@@ -3,7 +3,6 @@ import db from '../../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
-import * as address from '../../db/models/address.ts'
 import * as employee from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
@@ -15,6 +14,7 @@ import sample from '../../util/sample.ts'
 import { GoogleTokens, HealthWorker } from '../../types.ts'
 import {
   randomNationalId,
+  testAddress,
   testHealthWorker,
   testRegistrationDetails,
 } from '../mocks.ts'
@@ -327,14 +327,7 @@ describeWithWebServer('/login', 8002, (route) => {
         profession: 'admin',
       }])
 
-      const nurse_address = await address.upsertAddress(db, {
-        street: '111 Ave Park',
-        suburb_id: 4,
-        ward_id: 1,
-        district_id: 1,
-        province_id: 1,
-        country_id: 1,
-      })
+      const nurse_address = await testAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
