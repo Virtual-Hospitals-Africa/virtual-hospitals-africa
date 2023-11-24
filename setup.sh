@@ -1,10 +1,10 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
-me=`whoami`
+me=$(whoami)
 
 ensure_you_have() {
-  if ! command -v $1 &> /dev/null
+  if ! command -v "$1" &> /dev/null
   then
     echo "Please install ${2-$1}"
     exit 1
@@ -12,7 +12,7 @@ ensure_you_have() {
 }
 
 db_exists() {
-  psql -lqt | cut -d \| -f 1 | grep -qw $1
+  psql -lqt | cut -d \| -f 1 | grep -qw "$1"
 }
 
 echo "Checking you have the right tools installed..."
@@ -20,12 +20,13 @@ echo "Checking you have the right tools installed..."
 ensure_you_have "git"
 ensure_you_have "deno"
 ensure_you_have "heroku"
+ensure_you_have "redis-server" "redis"
 ensure_you_have "createdb" "postgresql"
 
 echo "Great! You have the right tools installed. Creating a local database..."
 
-db_exists vha_dev || createdb -h localhost -U $me -w vha_dev
-db_exists vha_test || createdb -h localhost -U $me -w vha_test
+db_exists vha_dev || createdb -h localhost -U "$me" -w vha_dev
+db_exists vha_test || createdb -h localhost -U "$me" -w vha_test
 
 echo "Done! Now we'll set up your local environment variables..."
 
@@ -34,33 +35,35 @@ if [ ! -f .env.local ] || [ ! -f .env.prod ]; then
 
   heroku_vars=$(mktemp)
 
-  heroku config -a virtual-hospitals-africa >> $heroku_vars
+  heroku config -a virtual-hospitals-africa >> "$heroku_vars"
 
   echo "SELF_URL=https://localhost:8000" > .env.local
 
-  cat $heroku_vars | awk '/:/ {
+  awk '/:/ {
     if ($1 !~ /^HEROKU/ && $1 != "SELF_URL:" && $1 != "PGSSLMODE:" && $1 != "REDISCLOUD_URL:") {
       print substr($1, 1, length($1) - 1) "=" $2
     }
-  }' >> .env.local
+  }' < "$heroku_vars" >> .env.local
 
   cp .env.local .env.prod
 
-  cat $heroku_vars | awk '/:/ {
+  awk '/:/ {
     if ($1 == "REDISCLOUD_URL:") {
       print substr($1, 1, length($1) - 1) "=" $2
     }
     if ($1 == "HEROKU_POSTGRESQL_MAUVE_URL:") {
       print "DATABASE_URL=" $2
     }
-  }' >> .env.prod
+  }' < "$heroku_vars" >> .env.prod
 
   echo "DATABASE_URL=postgres://${me}@localhost:5432/vha_dev" >> .env.local
 
   echo "Great! You're environment variables are all set up."
 else
-  echo "It looks like you already have a .env.local and .env.prod files, so you're all set"
+  echo "It looks like you already have a .env.local and .env.prod files."
 fi
+
+redis-server --daemonize yes
 
 deno task switch:local
 
