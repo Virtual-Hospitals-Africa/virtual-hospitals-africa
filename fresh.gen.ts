@@ -45,6 +45,7 @@ import * as $$1 from './islands/ErrorMessage.tsx'
 import * as $$2 from './islands/FacilitySearch.tsx'
 import * as $$3 from './islands/JobPost.tsx'
 import * as $$4 from './islands/Menu.tsx'
+<<<<<<< HEAD
 import * as $$5 from './islands/PersonSearch.tsx'
 import * as $$6 from './islands/ReligionSelect.tsx'
 import * as $$7 from './islands/SelectWithOther.tsx'
@@ -55,6 +56,18 @@ import * as $$11 from './islands/invites-form.tsx'
 import * as $$12 from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $$13 from './islands/landing-page/NavBar.tsx'
 import * as $$14 from './islands/nurse-registration-form.tsx'
+=======
+import * as $$5 from './islands/NationalIdInput.tsx'
+import * as $$6 from './islands/PersonSearch.tsx'
+import * as $$7 from './islands/ReligionSelect.tsx'
+import * as $$8 from './islands/SelectWithOther.tsx'
+import * as $$9 from './islands/SuccessMessage.tsx'
+import * as $$10 from './islands/availability-form.tsx'
+import * as $$11 from './islands/file-preview-input.tsx'
+import * as $$12 from './islands/invites-form.tsx'
+import * as $$13 from './islands/landing-page/MHIDotsLogo.tsx'
+import * as $$14 from './islands/landing-page/NavBar.tsx'
+>>>>>>> 0e0dfa6 (insert hyphen and space in id as user is typing)
 import * as $$15 from './islands/patient-address-inputs.tsx'
 import * as $$16 from './islands/patient-cards.tsx'
 import * as $$17 from './islands/schedule-form.tsx'
@@ -118,6 +131,16 @@ const manifest = {
     './islands/landing-page/MHIDotsLogo.tsx': $$12,
     './islands/landing-page/NavBar.tsx': $$13,
     './islands/nurse-registration-form.tsx': $$14,
+    './islands/NationalIdInput.tsx': $$5,
+    './islands/PersonSearch.tsx': $$6,
+    './islands/ReligionSelect.tsx': $$7,
+    './islands/SelectWithOther.tsx': $$8,
+    './islands/SuccessMessage.tsx': $$9,
+    './islands/availability-form.tsx': $$10,
+    './islands/file-preview-input.tsx': $$11,
+    './islands/invites-form.tsx': $$12,
+    './islands/landing-page/MHIDotsLogo.tsx': $$13,
+    './islands/landing-page/NavBar.tsx': $$14,
     './islands/patient-address-inputs.tsx': $$15,
     './islands/patient-cards.tsx': $$16,
     './islands/schedule-form.tsx': $$17,

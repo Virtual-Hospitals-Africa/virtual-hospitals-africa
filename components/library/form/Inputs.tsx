@@ -4,6 +4,7 @@ import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
 import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
+import { useState } from 'preact/hooks'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
