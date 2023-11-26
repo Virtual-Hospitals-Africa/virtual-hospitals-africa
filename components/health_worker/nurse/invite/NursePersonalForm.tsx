@@ -1,20 +1,17 @@
 import {
   DateInput,
   GenderSelect,
-  NationalIdInput,
   PhoneNumberInput,
   TextInput,
 } from '../../../library/form/Inputs.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
-import unsavedChangesWarning from '../../../library/form/unsaved_changes_warning.tsx'
+import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
 
 export default function NursePersonalForm(
   { formData }: { formData: FormState },
 ) {
-  // unsavedChangesWarning()
-
   return (
     <>
       <FormRow>
