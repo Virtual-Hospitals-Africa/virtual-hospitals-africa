@@ -4,7 +4,6 @@ import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
 import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
-import { useState } from 'preact/hooks'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
@@ -335,19 +334,6 @@ export function EthnicitySelect(
       />
       <option value='other' label='Other' selected={value === 'other'} />
     </Select>
-  )
-}
-
-export function NationalIdInput({ value }: { value?: Maybe<string> }) {
-  return (
-    <TextInput
-      name='national_id_number'
-      label='National ID Number'
-      value={value || ''}
-      pattern='^\d{2}-\d{6,7}\s[A-Z]\s\d{2}$'
-      placeholder='00-000000 D 00'
-      required
-    />
   )
 }
 

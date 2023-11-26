@@ -10,7 +10,7 @@ export default function NationalIdInput({ value }: { value?: Maybe<string> }) {
       const isRemoving = previousValue.length > e.target.value.length
 
       let formatted = inputElement.value
-      //format to match 00-000000 D 00
+      // format to match 00-000000 D 00
       if (formatted.length === 2 && !isRemoving) {
         formatted += '-'
       }
@@ -21,10 +21,12 @@ export default function NationalIdInput({ value }: { value?: Maybe<string> }) {
         formatted += ' '
       }
 
+      formatted = formatted.replace('  ', ' ')
+      formatted = formatted.replace('--', '-')
+
       if (formatted.length > 14) {
         formatted = formatted.slice(0, 14)
       }
-
       inputElement.value = formatted
       inputElement.setAttribute('data-prev-value', formatted)
     }
