@@ -24,6 +24,8 @@ import PatientConditionsForm from '../../../components/patients/add/ConditionsFo
 import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
+import { path } from '../../../util/path.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type AddPatientProps =
   & {
@@ -190,9 +192,19 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     let patient: OnboardingPatient | undefined
 
-    const patient_id = parseInt(searchParams.get('patient_id') || '0')
+    let patient_id: undefined | number
+    const patientIdStr = searchParams.get('patient_id')
+    if (patientIdStr) {
+      patient_id = parseInt(patientIdStr)
+      assert(!isNaN(patient_id), 'Invalid patient ID')
+    }
 
-    if (!step) return redirect('/app/patients/add?step=personal')
+    if (!step) {
+      return redirect(path('/app/patients/add', {
+        step: 'personal',
+        patient_id,
+      }))
+    }
 
     if (patient_id) {
       patient = await patients.getOnboarding(
