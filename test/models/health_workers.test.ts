@@ -10,7 +10,7 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
 import { EmployedHealthWorker } from '../../types.ts'
-import { randomNationalId } from '../mocks.ts'
+import { randomNationalId, testAddress } from '../mocks.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -317,6 +317,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         specialty: 'clinical_care_nurse',
       })
 
+      const nurse_address = await testAddress()
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: healthWorker.id,
@@ -331,6 +334,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           face_picture_media_id: null,
           nurse_practicing_cert_media_id: null,
           approved_by: null,
+          address_id: nurse_address.id,
         },
       })
 
@@ -427,6 +431,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/png',
       })
 
+      const nurse_address = await testAddress()
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: healthWorker.id,
@@ -441,6 +448,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           face_picture_media_id: facePictureMedia.id,
           nurse_practicing_cert_media_id: nursePracticingCertMedia.id,
           approved_by: null,
+          address_id: nurse_address.id,
         },
       })
 

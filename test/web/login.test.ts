@@ -14,6 +14,7 @@ import sample from '../../util/sample.ts'
 import { GoogleTokens, HealthWorker } from '../../types.ts'
 import {
   randomNationalId,
+  testAddress,
   testHealthWorker,
   testRegistrationDetails,
 } from '../mocks.ts'
@@ -326,6 +327,9 @@ describeWithWebServer('/login', 8002, (route) => {
         profession: 'admin',
       }])
 
+      const nurse_address = await testAddress()
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: nurse.id,
@@ -340,6 +344,7 @@ describeWithWebServer('/login', 8002, (route) => {
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
           date_of_birth: '2020-01-01',
+          address_id: nurse_address.id,
         },
       })
 

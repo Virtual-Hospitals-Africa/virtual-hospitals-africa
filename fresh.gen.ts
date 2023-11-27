@@ -51,13 +51,13 @@ import * as $$7 from './islands/PersonSearch.tsx'
 import * as $$8 from './islands/ReligionSelect.tsx'
 import * as $$9 from './islands/SelectWithOther.tsx'
 import * as $$10 from './islands/SuccessMessage.tsx'
-import * as $$11 from './islands/availability-form.tsx'
-import * as $$12 from './islands/file-preview-input.tsx'
-import * as $$13 from './islands/invites-form.tsx'
-import * as $$14 from './islands/landing-page/MHIDotsLogo.tsx'
-import * as $$15 from './islands/landing-page/NavBar.tsx'
-import * as $$16 from './islands/nurse-registration-form.tsx'
-import * as $$17 from './islands/patient-address-inputs.tsx'
+import * as $$11 from './islands/address-inputs.tsx'
+import * as $$12 from './islands/availability-form.tsx'
+import * as $$13 from './islands/file-preview-input.tsx'
+import * as $$14 from './islands/invites-form.tsx'
+import * as $$15 from './islands/landing-page/MHIDotsLogo.tsx'
+import * as $$16 from './islands/landing-page/NavBar.tsx'
+import * as $$17 from './islands/nurse-registration-form.tsx'
 import * as $$18 from './islands/patient-cards.tsx'
 import * as $$19 from './islands/schedule-form.tsx'
 
@@ -116,13 +116,13 @@ const manifest = {
     './islands/ReligionSelect.tsx': $$8,
     './islands/SelectWithOther.tsx': $$9,
     './islands/SuccessMessage.tsx': $$10,
-    './islands/availability-form.tsx': $$11,
-    './islands/file-preview-input.tsx': $$12,
-    './islands/invites-form.tsx': $$13,
-    './islands/landing-page/MHIDotsLogo.tsx': $$14,
-    './islands/landing-page/NavBar.tsx': $$15,
-    './islands/nurse-registration-form.tsx': $$16,
-    './islands/patient-address-inputs.tsx': $$17,
+    './islands/address-inputs.tsx': $$11,
+    './islands/availability-form.tsx': $$12,
+    './islands/file-preview-input.tsx': $$13,
+    './islands/invites-form.tsx': $$14,
+    './islands/landing-page/MHIDotsLogo.tsx': $$15,
+    './islands/landing-page/NavBar.tsx': $$16,
+    './islands/nurse-registration-form.tsx': $$17,
     './islands/patient-cards.tsx': $$18,
     './islands/schedule-form.tsx': $$19,
   },

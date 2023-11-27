@@ -16,6 +16,7 @@ export default async function reset(trx: TrxOrDb = db) {
 // as it is seeded by the migrations
 const topLevelTables = [
   'patients' as const,
+  'address' as const,
   'health_workers' as const,
   'health_worker_invitees' as const,
   'media' as const,
