@@ -39,8 +39,7 @@ function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
         isActive ? 'text-white bg-indigo-600' : 'text-gray-900',
       )}
       role='option'
-      tabIndex={-1}
-      onClick={() => onSelect()}
+      onClick={onSelect}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >
@@ -66,6 +65,22 @@ function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
           </svg>
         </span>
       )}
+    </li>
+  )
+}
+
+export function NoSearchResults() {
+  return (
+    <li
+      className={cls(
+        'relative cursor-default select-none py-2 pl-3 pr-9',
+        'text-gray-900',
+      )}
+      role='option'
+    >
+      <div className='flex flex-col'>
+        <div className='ml-3 text-gray-500 text-sm'>No results found</div>
+      </div>
     </li>
   )
 }
@@ -109,7 +124,7 @@ export default function SearchResults({
   children,
   className,
 }: {
-  children: JSX.Element[]
+  children: JSX.Element | JSX.Element[]
   className?: string
 }) {
   return (
