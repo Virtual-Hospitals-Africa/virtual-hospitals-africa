@@ -38,7 +38,7 @@ export default function PersonSearch({
   const onDocumentClick = useCallback(() => {
     setIsFocused(
       document.activeElement ===
-        document.querySelector(`input[name="${name}_name"]`),
+        document.querySelector(`input[name="${name}_display_name"]`),
     )
   }, [])
 
@@ -46,7 +46,7 @@ export default function PersonSearch({
     onDocumentClick()
     self.addEventListener('click', onDocumentClick)
     return () => self.removeEventListener('click', onDocumentClick)
-  }, [])
+  })
 
   useEffect(() => {
     const url = new URL(`${window.location.origin}${href}`)
@@ -65,8 +65,6 @@ export default function PersonSearch({
     }).catch(console.error)
   }, [search])
 
-  const showSearchResults = isFocused && selected?.name !== search
-
   return (
     <div className='w-full'>
       <SearchInput
@@ -82,8 +80,7 @@ export default function PersonSearch({
           setSearch.delay(event.target.value)
         }}
       >
-        {/* TODO add empty state for no results */}
-        {showSearchResults && (
+        {isFocused && (
           <SearchResults>
             {people.length
               ? people.map((person) => (
@@ -93,6 +90,7 @@ export default function PersonSearch({
                   onSelect={() => {
                     setSelected(person)
                     setSearchImmediate(person.name)
+                    setIsFocused(false)
                   }}
                 />
               ))

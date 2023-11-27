@@ -27,8 +27,6 @@ type DateInputProps = Partial<LabeledInputProps<HTMLInputElement>> & {
   value?: Maybe<string>
 }
 
-type GenderSelectProps = Partial<SelectProps>
-
 export type TextInputProps = LabeledInputProps<HTMLInputElement> & {
   type?: 'text' | 'email' | 'tel'
   value?: Maybe<string>
@@ -259,7 +257,7 @@ export function SearchInput(
           required={required}
           value={value}
           onInput={onInput}
-          onFocus={(e) => onFocus && onFocus(e)}
+          onFocus={onFocus}
           onBlur={onBlur}
         />
       </div>

@@ -1,12 +1,14 @@
-// import SearchResults from '../SearchResults.tsx'
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
   FacilitySearchResult,
+  NoSearchResults,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import { HasId } from '../types.ts'
+
+type Facility = HasId<{ display_name: string; address: string }>
 
 export default function FacilitySearch({
   href,
@@ -19,17 +21,14 @@ export default function FacilitySearch({
   name: string
   label?: string
   required?: boolean
-  value?: { id: number; display_name: string }
+  value?: HasId<{ display_name: string }>
 }) {
-  const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
     HasId<{ display_name: string }> | null
-  >(null)
-  const [facilities, setFacilities] = useState<
-    HasId<{ display_name: string; address: string }>[]
-  >([])
-
-  const [search, setSearchImmediate] = useState('')
+  >(value || null)
+  const [facilities, setFacilities] = useState<Facility[]>([])
+  const [isFocused, setIsFocused] = useState(false)
+  const [search, setSearchImmediate] = useState(value?.display_name || '')
 
   // Don't search until the user has stopped typing for a bit
   const [setSearch] = useState({
@@ -54,7 +53,6 @@ export default function FacilitySearch({
       headers: { accept: 'application/json' },
     }).then(async (response) => {
       const facilities = await response.json()
-      console.log('facilities', facilities)
       assert(Array.isArray(facilities))
       assert(
         facilities.every((facility) =>
@@ -80,45 +78,39 @@ export default function FacilitySearch({
     }).catch(console.error)
   }, [search])
 
-  useEffect(() => {
-    if (!value) return
-    setSearchImmediate(value.display_name)
-    setSelected(value)
-  }, [value?.id])
-
-  const showSearchResults = isFocused && facilities.length > 0 &&
-    selected?.display_name !== search
-
   return (
     <div className='w-full'>
       <SearchInput
         name={`${name}_display_name`}
-        value={search}
+        value={selected?.display_name}
         required={required}
         label={label}
         onInput={(event) => {
           assert(event.target)
           assert('value' in event.target)
           assert(typeof event.target.value === 'string')
+          setSelected(null)
           setSearch.delay(event.target.value)
         }}
       >
-        {showSearchResults && (
-          <SearchResults className='max-w-sm'>
-            {facilities.map((facility) => (
-              <FacilitySearchResult
-                facility={facility}
-                isSelected={selected?.id === facility.id}
-                onSelect={() => {
-                  setSelected(facility)
-                  setSearchImmediate(facility.display_name)
-                }}
-              />
-            ))}
+        {isFocused && (
+          <SearchResults>
+            {facilities.length
+              ? facilities.map((facility) => (
+                <FacilitySearchResult
+                  facility={facility}
+                  isSelected={selected?.id === facility.id}
+                  onSelect={() => {
+                    setSelected(facility)
+                    setSearchImmediate(facility.display_name)
+                    setIsFocused(false)
+                  }}
+                />
+              ))
+              : <NoSearchResults />}
           </SearchResults>
         )}
       </SearchInput>
-
       {selected && (
         <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}
