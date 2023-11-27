@@ -359,7 +359,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
           date_of_birth: '2020-01-01',
-          address_id: nurse_address.country_id,
+          address_id: nurse_address.id,
         },
       })
 
