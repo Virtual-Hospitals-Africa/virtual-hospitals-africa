@@ -66,12 +66,18 @@ export default function PatientAddressForm(
       }
       : defaultFacility
 
-  const primary_doctor = patient.primary_doctor_id
-    ? {
-      id: patient.primary_doctor_id,
-      name: '',
-    }
-    : { name: patient.unregistered_primary_doctor_name ?? '', id: Number.NaN }
+  const primary_doctor =
+    patient.primary_doctor_id && patient.primary_doctor_name
+      ? {
+        id: patient.primary_doctor_id,
+        name: patient.primary_doctor_name,
+      }
+      : patient.unregistered_primary_doctor_name
+      ? {
+        name: patient.unregistered_primary_doctor_name,
+        id: Number.NaN,
+      }
+      : undefined
 
   return (
     <>

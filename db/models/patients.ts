@@ -149,6 +149,11 @@ export function getOnboarding(
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'health_workers',
+      'health_workers.id',
+      'patients.primary_doctor_id',
+    )
     .select([
       'patients.id',
       'patients.name',
@@ -175,6 +180,7 @@ export function getOnboarding(
         .as('avatar_url'),
       'patients.nearest_facility_id',
       'facilities.display_name as nearest_facility_display_name',
+      'health_workers.name as primary_doctor_name',
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()

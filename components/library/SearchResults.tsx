@@ -114,7 +114,7 @@ export default function SearchResults({
   children,
   className,
 }: {
-  children: JSX.Element[]
+  children: JSX.Element[] | JSX.Element
   className?: string
 }) {
   return (
@@ -128,6 +128,22 @@ export default function SearchResults({
     >
       {children}
     </ul>
+  )
+}
+
+export function NoSearchResults() {
+  return (
+    <li
+      className={cls(
+        'relative cursor-default select-none py-2 pl-3 pr-9',
+        'text-gray-900',
+      )}
+      role='option'
+    >
+      <div className='flex flex-col'>
+        <div className='ml-3 text-gray-500 text-sm'>No results found</div>
+      </div>
+    </li>
   )
 }
 

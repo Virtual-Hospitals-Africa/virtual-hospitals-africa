@@ -76,12 +76,13 @@ export default function PersonSearch({
       <SearchInput
         name={`${name}_name`}
         label={label}
-        value={search}
+        value={selected?.name}
         required={required}
         onInput={(event) => {
           assert(event.target)
           assert('value' in event.target)
           assert(typeof event.target.value === 'string')
+          setSelected(null)
           setSearch.delay(event.target.value)
         }}
       >

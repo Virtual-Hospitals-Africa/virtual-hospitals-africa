@@ -126,6 +126,7 @@ export type OnboardingPatient =
     id: number
     avatar_url: Maybe<string>
     nearest_facility_display_name: Maybe<string>
+    primary_doctor_name: Maybe<string>
   }
   & Pick<
     Patient,
