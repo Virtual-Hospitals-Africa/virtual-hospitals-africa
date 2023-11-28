@@ -12,3 +12,9 @@ Deno.test('test invalid date in pretty dob', () => {
     prettyPatientDateOfBirth('9999-99-99')
   }, Error, 'The date provided is invalid, please check and try again.')
 })
+
+Deno.test('test incomplete date in pretty dob', () => {
+  assertThrows(() => {
+    prettyPatientDateOfBirth('99999-abc')
+  }, Error, 'The date provided is invalid, please check and try again.')
+})
