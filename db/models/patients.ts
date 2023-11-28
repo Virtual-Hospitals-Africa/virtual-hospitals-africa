@@ -80,6 +80,7 @@ export type UpsertablePatient = {
   middle_names?: Maybe<string>
   last_name?: Maybe<string>
   address?: UpsertableAddress
+  unregistered_primary_doctor_name?: Maybe<string>
 }
 
 const omitNamesAndAddress = omit<
@@ -148,6 +149,11 @@ export function getOnboarding(
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'health_workers',
+      'health_workers.id',
+      'patients.primary_doctor_id',
+    )
     .select([
       'patients.id',
       'patients.name',
@@ -166,12 +172,15 @@ export function getOnboarding(
       'address.suburb_id',
       'address.street',
       'patients.completed_onboarding',
+      'patients.primary_doctor_id',
+      'patients.unregistered_primary_doctor_name',
       sql<
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_facility_id',
       'facilities.display_name as nearest_facility_display_name',
+      'health_workers.name as primary_doctor_name',
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()

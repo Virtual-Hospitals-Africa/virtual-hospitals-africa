@@ -3,6 +3,7 @@ import { useState } from 'preact/hooks'
 import { HasId } from '../../types.ts'
 import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
+import { PlusCircleIcon } from '../library/icons/heroicons/outline.tsx'
 
 type BasicSelectProps = {
   isSelected?: boolean
@@ -27,6 +28,10 @@ type ConditionSearchResultProps = BasicSelectProps & {
 
 type SearchResultProps = BasicSelectProps & {
   children: JSX.Element
+}
+
+type AddButtonSearchResult = BasicSelectProps & {
+  searchedValue: string
 }
 
 function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
@@ -109,7 +114,7 @@ export default function SearchResults({
   children,
   className,
 }: {
-  children: JSX.Element[]
+  children: JSX.Element[] | JSX.Element
   className?: string
 }) {
   return (
@@ -123,6 +128,22 @@ export default function SearchResults({
     >
       {children}
     </ul>
+  )
+}
+
+export function NoSearchResults() {
+  return (
+    <li
+      className={cls(
+        'relative cursor-default select-none py-2 pl-3 pr-9',
+        'text-gray-900',
+      )}
+      role='option'
+    >
+      <div className='flex flex-col'>
+        <div className='ml-3 text-gray-500 text-sm'>No results found</div>
+      </div>
+    </li>
   )
 }
 
@@ -149,6 +170,21 @@ export function ConditionSearchResult(
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
           {condition}
         </div>
+      </div>
+    </SearchResult>
+  )
+}
+
+export function AddButtonSearchResult(
+  { searchedValue, isSelected, onSelect }: AddButtonSearchResult,
+) {
+  return (
+    <SearchResult isSelected={isSelected} onSelect={onSelect}>
+      <div className='flex items-center'>
+        <PlusCircleIcon className='h-6 w-6 flex-shrink-0 rounded-full' />
+        <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
+          Add {searchedValue}
+        </span>
       </div>
     </SearchResult>
   )
