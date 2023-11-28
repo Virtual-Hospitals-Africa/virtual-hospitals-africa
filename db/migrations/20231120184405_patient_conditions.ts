@@ -36,7 +36,6 @@ export async function up(db: Kysely<any>) {
         .onDelete('cascade'))
     .execute()
   await addUpdatedAtTrigger(db, 'patient_conditions')
-  //unimportant Comment to trigger commit
 }
 
 export async function down(db: Kysely<any>) {
