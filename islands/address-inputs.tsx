@@ -3,7 +3,7 @@ import FormRow from '../components/library/form/Row.tsx'
 import { Select, TextInput } from '../components/library/form/Inputs.tsx'
 import { FullCountryInfo, Maybe, OnboardingPatient } from '../types.ts'
 
-export default function PatientAddressForm(
+export default function AddressForm(
   { patient, adminDistricts }: {
     patient?: Partial<OnboardingPatient>
     adminDistricts: FullCountryInfo

@@ -142,7 +142,11 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
 
-    const patientAddress = await db.selectFrom('address').selectAll().execute()
+    const patientAddress = await db.selectFrom('address').selectAll().where(
+      'address.id',
+      '=',
+      patientResult[0].address_id ? patientResult[0].address_id : null,
+    ).execute()
     assertEquals(patientAddress[0].country_id, zimbabwe.id)
     assertEquals(patientAddress[0].province_id, province.id)
     assertEquals(patientAddress[0].ward_id, ward.id)

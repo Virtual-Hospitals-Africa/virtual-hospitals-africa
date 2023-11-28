@@ -337,19 +337,6 @@ export function EthnicitySelect(
   )
 }
 
-export function NationalIdInput({ value }: { value?: Maybe<string> }) {
-  return (
-    <TextInput
-      name='national_id_number'
-      label='National ID Number'
-      value={value || ''}
-      pattern='^\d{2}-\d{6,7}\s[A-Z]\s\d{2}$'
-      placeholder='00-000000 D 00'
-      required
-    />
-  )
-}
-
 export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
   const prettierSpecialtyName = (specialtyName: string): string => {
     const name = specialtyName.replaceAll('\_', ' ')
