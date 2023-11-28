@@ -15,7 +15,7 @@ export default function PatientConditionsForm(
       </section>
       <section>
         <h1 className='mb-1'>
-          Conditions
+          Chronic Conditions & Disabilities
         </h1>
         <ConditionSearch />
       </section>
