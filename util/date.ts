@@ -14,6 +14,7 @@ export function prettyPatientDateOfBirth(
   const month = `${m}`.padStart(2, '0')
   const day = `${d}`.padStart(2, '0')
   const date = new Date(`${year}-${month}-${day}T00:00:00Z`)
+  assert(date.toDateString() !== 'Invalid Date', 'The date provided is invalid, please check and try again.')
   const dtDateOnly = new Date(
     date.valueOf() + date.getTimezoneOffset() * 60 * 1000,
   )
