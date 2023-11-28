@@ -294,11 +294,14 @@ export function convertToTimeString(time: string): string {
 
 // TODO Implement this
 export function isValidDate(messageBody: string): boolean {
-  const [day, month, year] = messageBody.split('/')
+  const [d, m, y] = messageBody.split('/')
+  const year = `${y}`
+  const month = `${m}`.padStart(2, '0')
+  const day = `${d}`.padStart(2, '0')
   const date = new Date(
-    `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T00:00:00Z`,
+    `${year}-${month}-${day}T00:00:00Z`,
   )
-  return !!date
+  return date.toDateString() !== 'Invalid Date'
 }
 
 export function getISOInHarare(date: Date) {
