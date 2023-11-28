@@ -24,6 +24,8 @@ import PatientConditionsForm from '../../../components/patients/add/ConditionsFo
 import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
+import { path } from '../../../util/path.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type AddPatientProps =
   & {
@@ -63,6 +65,7 @@ type Address = {
   street: string
   nearest_facility_id: number
   primary_doctor_id: number
+  primary_doctor_name: string
 }
 
 type Conditions = Record<string, unknown>
@@ -92,7 +95,9 @@ function isAddress(
     !!patient.street && typeof patient.street === 'string' &&
     !!patient.nearest_facility_id && typeof patient.nearest_facility_id ===
       'number' &&
-    !!patient.primary_doctor_id && typeof patient.primary_doctor_id === 'number'
+    !!(patient.primary_doctor_id &&
+        typeof patient.primary_doctor_id === 'number' ||
+      patient.primary_doctor_name)
 }
 
 function isConditions(
@@ -177,7 +182,12 @@ const transformers: Transformers = {
     { ...patient },
   ): patients.UpsertablePatient => ({
     nearest_facility_id: patient.nearest_facility_id,
-    primary_doctor_id: patient.primary_doctor_id,
+    primary_doctor_id: isNaN(patient.primary_doctor_id)
+      ? null
+      : patient.primary_doctor_id,
+    unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
+      ? patient.primary_doctor_name
+      : null,
     address: omitNearestCare(patient),
   }),
 }
@@ -190,9 +200,19 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     let patient: OnboardingPatient | undefined
 
-    const patient_id = parseInt(searchParams.get('patient_id') || '0')
+    let patient_id: undefined | number
+    const patientIdStr = searchParams.get('patient_id')
+    if (patientIdStr) {
+      patient_id = parseInt(patientIdStr)
+      assert(!isNaN(patient_id), 'Invalid patient ID')
+    }
 
-    if (!step) return redirect('/app/patients/add?step=personal')
+    if (!step) {
+      return redirect(path('/app/patients/add', {
+        step: 'personal',
+        patient_id,
+      }))
+    }
 
     if (patient_id) {
       patient = await patients.getOnboarding(
@@ -230,7 +250,6 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     )
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
-
     // deno-lint-ignore no-explicit-any
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData

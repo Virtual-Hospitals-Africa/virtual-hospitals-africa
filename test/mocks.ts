@@ -1,5 +1,7 @@
-import { NurseRegistrationDetails } from '../types.ts'
+import { Address, NurseRegistrationDetails, ReturnedSqlRow } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
+import db from '../db/db.ts'
+import * as address from '../db/models/address.ts'
 
 export const testHealthWorker = () => {
   const expires_at = new Date()
@@ -46,4 +48,16 @@ export const testRegistrationDetails = (
   face_picture_media_id: undefined,
   nurse_practicing_cert_media_id: undefined,
   approved_by: undefined,
+  address_id: undefined,
 })
+
+export function testAddress(): Promise<ReturnedSqlRow<Address>> {
+  return address.upsertAddress(db, {
+    street: '111 Ave Park',
+    suburb_id: 4,
+    ward_id: 1,
+    district_id: 1,
+    province_id: 1,
+    country_id: 1,
+  })
+}

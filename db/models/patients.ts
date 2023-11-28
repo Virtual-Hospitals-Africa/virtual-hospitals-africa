@@ -1,7 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
-  Address,
   Gender,
   Location,
   Maybe,
@@ -18,6 +17,7 @@ import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import omit from '../../util/omit.ts'
 import compact from '../../util/compact.ts'
+import { UpsertableAddress, upsertAddress } from './address.ts'
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
@@ -80,40 +80,7 @@ export type UpsertablePatient = {
   middle_names?: Maybe<string>
   last_name?: Maybe<string>
   address?: UpsertableAddress
-}
-
-export type UpsertableAddress = {
-  street?: Maybe<string>
-  suburb_id?: Maybe<number>
-  ward_id?: Maybe<number>
-  district_id?: Maybe<number>
-  province_id?: Maybe<number>
-  country_id?: Maybe<number>
-}
-
-export function upsertAddress(
-  trx: TrxOrDb,
-  address: UpsertableAddress,
-): Promise<ReturnedSqlRow<Address>> {
-  const addressInfo = {
-    street: address.street,
-    suburb_id: address.suburb_id,
-    ward_id: address.ward_id,
-    district_id: address.district_id,
-    province_id: address.province_id,
-    country_id: address.country_id,
-  }
-
-  return trx
-    .insertInto('address')
-    .values({ ...addressInfo })
-    .onConflict((oc) =>
-      oc.columns(['street', 'suburb_id', 'ward_id']).doUpdateSet({
-        ...addressInfo,
-      })
-    )
-    .returningAll()
-    .executeTakeFirstOrThrow()
+  unregistered_primary_doctor_name?: Maybe<string>
 }
 
 const omitNamesAndAddress = omit<
@@ -182,6 +149,11 @@ export function getOnboarding(
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'health_workers',
+      'health_workers.id',
+      'patients.primary_doctor_id',
+    )
     .select([
       'patients.id',
       'patients.name',
@@ -200,12 +172,15 @@ export function getOnboarding(
       'address.suburb_id',
       'address.street',
       'patients.completed_onboarding',
+      'patients.primary_doctor_id',
+      'patients.unregistered_primary_doctor_name',
       sql<
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_facility_id',
       'facilities.display_name as nearest_facility_display_name',
+      'health_workers.name as primary_doctor_name',
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()

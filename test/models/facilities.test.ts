@@ -7,7 +7,7 @@ import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import { randomNationalId } from '../mocks.ts'
+import { randomNationalId, testAddress } from '../mocks.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -267,6 +267,9 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
+      const nurse_address = await testAddress()
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: hw_at_facility1.id,
@@ -281,6 +284,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: null,
           date_of_birth: '2020-01-01',
+          address_id: nurse_address.id,
         },
       })
 
@@ -338,6 +342,9 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
+      const nurse_address = await testAddress()
+      assert(nurse_address)
+
       await nurse_registration_details.add(db, {
         registrationDetails: {
           health_worker_id: nurse.id,
@@ -352,6 +359,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           nurse_practicing_cert_media_id: null,
           approved_by: admin.id,
           date_of_birth: '2020-01-01',
+          address_id: nurse_address.id,
         },
       })
 

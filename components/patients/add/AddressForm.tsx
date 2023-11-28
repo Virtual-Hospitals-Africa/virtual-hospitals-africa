@@ -2,7 +2,7 @@ import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import FacilitySearch from '../../../islands/FacilitySearch.tsx'
 import { FullCountryInfo, OnboardingPatient } from '../../../types.ts'
-import PatientAddressInputs from '../../../islands/patient-address-inputs.tsx'
+import AddressForm from '../../../islands/address-inputs.tsx'
 import PersonSearch from '../../../islands/PersonSearch.tsx'
 
 function PatientAddress(
@@ -14,14 +14,15 @@ function PatientAddress(
   return (
     <section className='mb-7'>
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
-      <PatientAddressInputs patient={patient} adminDistricts={adminDistricts} />
+      <AddressForm patient={patient} adminDistricts={adminDistricts} />
     </section>
   )
 }
 
 function NearestHealthCare(
-  { nearest_facility }: {
+  { nearest_facility, primary_doctor }: {
     nearest_facility?: { id: number; display_name: string }
+    primary_doctor?: { id: number; name: string }
   },
 ) {
   return (
@@ -42,6 +43,8 @@ function NearestHealthCare(
           label='Primary/Family Doctor'
           href='/app/health_workers?profession=doctor'
           required
+          value={primary_doctor}
+          addable
         />
       </FormRow>
     </section>
@@ -63,10 +66,26 @@ export default function PatientAddressForm(
       }
       : defaultFacility
 
+  const primary_doctor =
+    patient.primary_doctor_id && patient.primary_doctor_name
+      ? {
+        id: patient.primary_doctor_id,
+        name: patient.primary_doctor_name,
+      }
+      : patient.unregistered_primary_doctor_name
+      ? {
+        name: patient.unregistered_primary_doctor_name,
+        id: Number.NaN,
+      }
+      : undefined
+
   return (
     <>
       <PatientAddress patient={patient} adminDistricts={adminDistricts} />
-      <NearestHealthCare nearest_facility={nearest_facility} />
+      <NearestHealthCare
+        nearest_facility={nearest_facility}
+        primary_doctor={primary_doctor}
+      />
     </>
   )
 }
