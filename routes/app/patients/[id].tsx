@@ -11,6 +11,7 @@ import {
 import Layout from '../../../components/library/Layout.tsx'
 import { Container } from '../../../components/library/Container.tsx'
 import SectionHeader from '../../../components/library/typography/SectionHeader.tsx'
+import { Button } from '../../../components/library/Button.tsx'
 
 type PatientPageProps = {
   patient: PatientWithMedicalRecord
@@ -51,6 +52,11 @@ export default function PatientPage(
     >
       <Container size='lg'>
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
+          <Button
+            href={`/app/patients/add?patient_id=${props.data.patient.id}`}
+          >
+            Edit
+          </Button>
           <SectionHeader>
             Demographic Data
           </SectionHeader>

@@ -83,6 +83,7 @@ export type Patient = PatientPersonal & {
   nearest_facility_id: Maybe<number>
   completed_onboarding: boolean
   address_id: Maybe<number>
+  unregistered_primary_doctor_name: Maybe<string>
 }
 
 export type PatientDemographicInfo = {
@@ -125,6 +126,7 @@ export type OnboardingPatient =
     id: number
     avatar_url: Maybe<string>
     nearest_facility_display_name: Maybe<string>
+    primary_doctor_name: Maybe<string>
   }
   & Pick<
     Patient,
@@ -136,6 +138,8 @@ export type OnboardingPatient =
     | 'national_id_number'
     | 'nearest_facility_id'
     | 'completed_onboarding'
+    | 'primary_doctor_id'
+    | 'unregistered_primary_doctor_name'
   >
   & Pick<
     Address,
@@ -854,6 +858,7 @@ export type NurseRegistrationDetails = {
   face_picture_media_id: Maybe<number>
   nurse_practicing_cert_media_id: Maybe<number>
   approved_by: Maybe<number>
+  address_id: Maybe<number>
 }
 
 export type Specialties = {

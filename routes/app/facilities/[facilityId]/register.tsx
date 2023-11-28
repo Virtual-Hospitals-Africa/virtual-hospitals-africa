@@ -1,5 +1,6 @@
 import {
   Facility,
+  FullCountryInfo,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
@@ -18,6 +19,7 @@ import { Container } from '../../../../components/library/Container.tsx'
 import * as employment from '../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
+import * as address from '../../../../db/models/address.ts'
 import {
   DocumentFormFields,
   PersonalFormFields,
@@ -27,6 +29,7 @@ import NurseRegistrationForm from '../../../../islands/nurse-registration-form.t
 
 type RegisterPageProps = {
   formState: FormState
+  adminDistricts: FullCountryInfo | undefined
 }
 
 export type FormState =
@@ -37,7 +40,7 @@ export type FormState =
 export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
   facility: ReturnedSqlRow<Facility>
 }> = {
-  GET(req, ctx) {
+  async GET(req, ctx) {
     const { healthWorker, facility } = ctx.state
 
     const step = new URL(req.url).searchParams.get('step')
@@ -58,7 +61,11 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 
     formState.email = healthWorker.email
 
-    return ctx.render({ formState })
+    const adminDistricts = step == 'personal'
+      ? await address.getFullCountryInfo(ctx.state.trx)
+      : undefined
+
+    return ctx.render({ formState, adminDistricts })
   },
   async POST(req, ctx) {
     const employee = await employment.getEmployee(ctx.state.trx, {
@@ -102,10 +109,20 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       specialty: formState.specialty,
     })
 
+    const nurse_address = await address.upsertAddress(ctx.state.trx, {
+      country_id: formState.country_id,
+      province_id: formState.province_id,
+      district_id: formState.district_id,
+      ward_id: formState.ward_id,
+      sururb_id: formState.suburb_id,
+      street: formState.street,
+    } as address.UpsertableAddress)
+
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(
         ctx.state.healthWorker,
         formState,
+        nurse_address.id,
       ),
     })
 
@@ -118,6 +135,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 function getRegistrationDetails(
   healthWorker: HealthWorkerWithGoogleTokens,
   formState: FormState,
+  nurse_address_id: number,
 ): NurseRegistrationDetails {
   return {
     health_worker_id: healthWorker.id,
@@ -132,6 +150,7 @@ function getRegistrationDetails(
     national_id_media_id: formState.national_id_picture?.id,
     nurse_practicing_cert_media_id: formState.nurse_practicing_cert?.id,
     approved_by: null,
+    address_id: nurse_address_id,
   }
 }
 
@@ -146,6 +165,7 @@ export default function register(
       <NurseRegistrationForm
         currentStep={stepState.currentStep}
         formData={props.data.formState}
+        adminDistricts={props.data.adminDistricts}
       />
     </Container>
   )
