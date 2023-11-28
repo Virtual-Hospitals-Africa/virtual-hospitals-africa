@@ -83,6 +83,7 @@ export type Patient = PatientPersonal & {
   nearest_facility_id: Maybe<number>
   completed_onboarding: boolean
   address_id: Maybe<number>
+  unregistered_primary_doctor_name: Maybe<string>
 }
 
 export type PatientDemographicInfo = {
@@ -136,6 +137,8 @@ export type OnboardingPatient =
     | 'national_id_number'
     | 'nearest_facility_id'
     | 'completed_onboarding'
+    | 'primary_doctor_id'
+    | 'unregistered_primary_doctor_name'
   >
   & Pick<
     Address,

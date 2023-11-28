@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
+  AddButtonSearchResult,
   PersonSearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
@@ -13,12 +14,14 @@ export default function PersonSearch({
   required,
   label,
   value,
+  addable,
 }: {
   href: string
   name: string
   required?: boolean
   label?: string
   value?: { id: number; name: string }
+  addable?: boolean
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<HasId<{ name: string }> | null>(
@@ -26,7 +29,7 @@ export default function PersonSearch({
   )
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
 
-  const [search, setSearchImmediate] = useState('')
+  const [search, setSearchImmediate] = useState(value?.name ?? '')
   //const [profession, setProfession] = useState('')
 
   // Don't search until the user has stopped typing for a bit
@@ -64,11 +67,12 @@ export default function PersonSearch({
     }).catch(console.error)
   }, [search])
 
-  const showSearchResults = isFocused && people.length > 0 &&
-    selected?.name !== search
+  const showSearchResults = isFocused &&
+    selected?.name !== search && (people.length > 0 || search && addable)
 
   return (
     <div className='w-full'>
+      <div>{showSearchResults}</div>
       <SearchInput
         name={`${name}_name`}
         label={label}
@@ -84,16 +88,28 @@ export default function PersonSearch({
         {/* TODO add empty state for no results */}
         {showSearchResults && (
           <SearchResults>
-            {people.map((person) => (
-              <PersonSearchResult
-                person={person}
-                isSelected={selected?.id === person.id}
+            <>
+              {people.map((person) => (
+                <PersonSearchResult
+                  person={person}
+                  isSelected={selected?.id === person.id}
+                  onSelect={() => {
+                    setSelected(person)
+                    setSearchImmediate(person.name)
+                  }}
+                />
+              ))}
+            </>
+            <>
+              <AddButtonSearchResult
+                searchedValue={search}
+                isSelected={selected?.id == Number.NaN}
                 onSelect={() => {
-                  setSelected(person)
-                  setSearchImmediate(person.name)
+                  setSelected({ name: search, id: Number.NaN })
+                  setSearchImmediate(search)
                 }}
               />
-            ))}
+            </>
           </SearchResults>
         )}
       </SearchInput>

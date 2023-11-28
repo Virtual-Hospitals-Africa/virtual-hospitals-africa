@@ -80,6 +80,7 @@ export type UpsertablePatient = {
   middle_names?: Maybe<string>
   last_name?: Maybe<string>
   address?: UpsertableAddress
+  unregistered_primary_doctor_name?: Maybe<string>
 }
 
 export type UpsertableAddress = {
@@ -200,6 +201,8 @@ export function getOnboarding(
       'address.suburb_id',
       'address.street',
       'patients.completed_onboarding',
+      'patients.primary_doctor_id',
+      'patients.unregistered_primary_doctor_name',
       sql<
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`

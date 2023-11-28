@@ -62,3 +62,4 @@ binaries/
 
 # Fresh build directory
 _fresh/
+.vscode/launch.json

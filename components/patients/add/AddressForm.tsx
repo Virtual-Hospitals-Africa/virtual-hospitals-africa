@@ -20,8 +20,9 @@ function PatientAddress(
 }
 
 function NearestHealthCare(
-  { nearest_facility }: {
+  { nearest_facility, primary_doctor }: {
     nearest_facility?: { id: number; display_name: string }
+    primary_doctor?: { id: number; name: string }
   },
 ) {
   return (
@@ -42,6 +43,8 @@ function NearestHealthCare(
           label='Primary/Family Doctor'
           href='/app/health_workers?profession=doctor'
           required
+          value={primary_doctor}
+          addable
         />
       </FormRow>
     </section>
@@ -63,10 +66,20 @@ export default function PatientAddressForm(
       }
       : defaultFacility
 
+  const primary_doctor = patient.primary_doctor_id
+    ? {
+      id: patient.primary_doctor_id,
+      name: '',
+    }
+    : { name: patient.unregistered_primary_doctor_name ?? '', id: Number.NaN }
+
   return (
     <>
       <PatientAddress patient={patient} adminDistricts={adminDistricts} />
-      <NearestHealthCare nearest_facility={nearest_facility} />
+      <NearestHealthCare
+        nearest_facility={nearest_facility}
+        primary_doctor={primary_doctor}
+      />
     </>
   )
 }
