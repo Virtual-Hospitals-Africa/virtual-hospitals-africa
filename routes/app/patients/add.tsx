@@ -187,7 +187,7 @@ const transformers: Transformers = {
       : patient.primary_doctor_id,
     unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
       ? patient.primary_doctor_name
-      : undefined,
+      : null,
     address: omitNearestCare(patient),
   }),
 }
