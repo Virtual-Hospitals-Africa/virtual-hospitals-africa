@@ -1,11 +1,11 @@
-import { Kysely, sql } from 'kysely';
+import { Kysely, sql } from 'kysely'
 import parseJSON from '../../util/parseJSON.ts'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('medications')
-    .addColumn('id', 'varchar(255)', (col) => col.primaryKey())
+    .addColumn('key_id', 'varchar(255)', (col) => col.primaryKey())
     .addColumn('trade_name', 'varchar(512)', (col) => col.notNull())
     .addColumn('generic_name', 'varchar(255)')
     .addColumn('forms', 'varchar(255)')
@@ -20,7 +20,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('updated_at', 'timestamp', (col) =>
       col.defaultTo(sql`now()`).notNull()
     )
-    .execute();
+    .execute()
 
   await db.schema
     .createTable('patient_condition_medications')
@@ -37,29 +37,31 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('condition_key_id', 'varchar(255)', (col) =>
       col.notNull().references('conditions.key_id').onDelete('cascade')
     )
+    .addColumn('medication_key_id', 'varchar(255)', (col) =>
+      col.notNull().references('medications.key_id').onDelete('cascade')
+    )
     .addColumn('dosage', 'varchar(255)')
     .addColumn('intake_frequency', 'varchar(255)')
-    .execute();
+    .execute()
 
-    await addUpdatedAtTrigger(db, 'medications')
-    await addUpdatedAtTrigger(db, 'patient_condition_medications')
-    await seedDataFromJSON(db)
+  await addUpdatedAtTrigger(db, 'medications')
+  await addUpdatedAtTrigger(db, 'patient_condition_medications')
+  await seedDataFromJSON(db)
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_condition_medications').execute();
-  await db.schema.dropTable('medications').execute();
+  await db.schema.dropTable('patient_condition_medications').execute()
+  await db.schema.dropTable('medications').execute()
 }
 
 async function seedDataFromJSON(db: Kysely<any>) {
-  const data = await parseJSON(
-    './db/resources/list_of_medications.json',
-  )
+  const data = await parseJSON('./db/resources/list_of_medications.json')
 
   for (const row of data) {
-    await db.insertInto('medications')
+    await db
+      .insertInto('medications')
       .values({
-        id: row.id,
+        key_id: row.id,
         trade_name: row.trade_name,
         generic_name: row.generic_name,
         forms: row.forms,

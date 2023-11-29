@@ -1255,6 +1255,18 @@ export type Address = {
   country_id: Maybe<number>
 }
 
+export type Medication = {
+  key_id: string
+  trade_name: string
+  generic_name: string
+  forms: Maybe<string>
+  strength: Maybe<string>
+  category: Maybe<string>
+  registration_no: Maybe<string>
+  applicant_name: Maybe<string>
+  manufacturers: Maybe<string>
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1284,4 +1296,5 @@ export type DatabaseSchema = {
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
   address: SqlRow<Address>
+  medications: SqlRow<Medication>
 }
