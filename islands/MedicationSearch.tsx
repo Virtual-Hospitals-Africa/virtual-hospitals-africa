@@ -1,40 +1,60 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
-import { SearchInput } from '../components/library/form/Inputs.tsx'
-import FormRow from '../components/library/form/Row.tsx'
-import { assert } from 'std/assert/assert.ts'
-import SearchResults from '../components/library/SearchResults.tsx'
-import RemoveIcon from '../components/library/icons/remove.tsx'
+import { useCallback, useEffect, useState } from 'preact/hooks'
+import SearchResults, {
+  MedicationSearchResult,
+} from '../components/library/SearchResults.tsx'
+import { SearchInput, Select } from '../components/library/form/Inputs.tsx'
+import { assert } from 'https://deno.land/std@0.160.0/_util/assert.ts'
+import debounce from '../util/debounce.ts'
 import { Medication } from '../types.ts'
+import FormRow from '../components/library/form/Row.tsx'
 
-export default function MedicationSearch() {
-  const [search, setSearch] = useState('')
+export default function MedicationSearch({
+  name,
+  label,
+  required,
+  value,
+  includeIntake,
+  includeDoses,
+}: {
+  name: string
+  label: string
+  required?: boolean
+  value?: { id: number; name: string }
+  includeIntake?: boolean
+  includeDoses?: boolean
+}) {
   const [isFocused, setIsFocused] = useState(false)
-  const searchInputRef = useRef<HTMLInputElement | null>(null)
-
-  const [selectedMedications, setSelectedMedications] = useState<string[]>([])
+  const [selected, setSelected] = useState<Medication | null>()
   const [medications, setMedications] = useState<Medication[]>([])
+  const [search, setSearchImmediate] = useState(value?.name ?? '')
+  const [setSearch] = useState({
+    delay: debounce(setSearchImmediate, 220),
+  })
+  const [doses, setDoses] = useState<string[]>([])
 
-  const toggleMedsList = (med: string) => {
-    if (searchInputRef.current) {
-      setSearch('')
-    }
-
-    setSelectedMedications((prevSelected) =>
-      prevSelected.includes(med)
-        ? prevSelected.filter((item) => item !== med)
-        : [...prevSelected, med]
+  const onDocumentClick = useCallback(() => {
+    setIsFocused(
+      document.activeElement ===
+        document.querySelector(`input[name="${name}_name"]`),
     )
-  }
+  }, [])
 
-  const filteredMedicationsList = medications.map((m) => m.generic_name)
-    .filter((med) => !selectedMedications.includes(med))
-    .filter((med) => med.toLowerCase().includes(search.toLowerCase()))
+  useEffect(() => {
+    onDocumentClick()
+    self.addEventListener('click', onDocumentClick)
+    return () => self.removeEventListener('click', onDocumentClick)
+  })
 
   const getMedications = async () => {
+    if (!search) {
+      setMedications([])
+      return
+    }
+
     const url = new URL(`${window.location.origin}/app/medications`)
     url.searchParams.set('search', search)
 
-    fetch(url, {
+    await fetch(url, {
       headers: { accept: 'application/json' },
     }).then(async (response) => {
       const meds = await response.json()
@@ -44,61 +64,78 @@ export default function MedicationSearch() {
   }
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        searchInputRef.current &&
-        event.target instanceof Node &&
-        event.target !== searchInputRef.current &&
-        searchInputRef.current !== event.target
-      ) {
-        setIsFocused(false)
-      }
-      getMedications()
-    }
+    getMedications()
+  }, [search])
 
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [])
+  const showSearchResults = isFocused &&
+    selected?.generic_name !== search && (medications.length > 0 || search)
 
   return (
-    <>
-      <FormRow>
-        <SearchInput
-          label=''
-          placeholder='Search for medications'
-          value={search}
-          onInput={(e) => {
-            assert(e.target)
-            assert('value' in e.target)
-            assert(typeof e.target.value === 'string')
-            setSearch(e.target.value)
-            setIsFocused(true)
-          }}
-          onFocus={() => setIsFocused(true)}
-          ref={searchInputRef}
-        />
-      </FormRow>
-
-      <FormRow className='mb-3 relative'>
-        {isFocused && search && !!filteredMedicationsList.length && (
+    <FormRow className='w-full'>
+      <SearchInput
+        name={`${name}_name`}
+        label={label}
+        value={selected?.generic_name}
+        required={required}
+        onInput={(event) => {
+          assert(event.target)
+          assert('value' in event.target)
+          assert(typeof event.target.value === 'string')
+          setSelected(null)
+          setSearch.delay(event.target.value)
+        }}
+      >
+        {showSearchResults && (
           <SearchResults>
-            {filteredMedicationsList.map((med) => <div>{med}</div>)}
+            {medications.map((med) => (
+              <MedicationSearchResult
+                medication={{
+                  key_id: med.key_id,
+                  display_name: med.generic_name,
+                }}
+                isSelected={selected?.key_id === med?.key_id}
+                onSelect={() => {
+                  setSelected(med)
+                  setSearchImmediate(med.generic_name)
+                }}
+              />
+            ))}
           </SearchResults>
         )}
-      </FormRow>
-
-      <div className='flex-start flex flex-wrap gap-2 w-full'>
-        {selectedMedications.map((med) => (
-          <button
-            key={med}
-            onClick={() => toggleMedsList(med)}
-            className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
+      </SearchInput>
+      {selected && (
+        <input type='hidden' name={`${name}_id`} value={selected.key_id} />
+      )}
+      {includeDoses && (
+        <>
+          <Select
+            name='dose'
+            required
+            label='Dose'
           >
-            {med}
-            <RemoveIcon />
-          </button>
-        ))}
-      </div>
-    </>
+            <option value=''>Select</option>
+            {selected &&
+              selected.strength?.split(';').map((d) => (
+                <option value='{d}'>{d}</option>
+              ))}
+          </Select>
+          <input type='hidden' name={`${name}_dose`} />
+        </>
+      )}
+      {includeIntake && (
+        <>
+          <Select
+            name='intake_frequency'
+            required
+            label='Intake'
+          >
+            <option value=''>Select</option>
+            <option value=''>Daily</option>
+            <option value=''>Weekly</option>
+          </Select>
+          <input type='hidden' name={`${name}_intake_frequency`} />
+        </>
+      )}
+    </FormRow>
   )
 }

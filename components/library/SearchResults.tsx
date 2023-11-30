@@ -40,6 +40,13 @@ type AddButtonSearchResult = BasicSelectProps & {
   searchedValue: string
 }
 
+type MedicationSearchResultProps = BasicSelectProps & {
+  medication: {
+    key_id: string
+    display_name: string
+  }
+}
+
 function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
   const [isActive, setIsActive] = useState(false)
 
@@ -182,6 +189,20 @@ export function ConditionSearchResult(
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
           {condition}
         </div>
+      </div>
+    </SearchResult>
+  )
+}
+
+export function MedicationSearchResult(
+  { medication, isSelected, onSelect }: MedicationSearchResultProps,
+) {
+  return (
+    <SearchResult isSelected={isSelected} onSelect={onSelect}>
+      <div className='flex items-center'>
+        <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
+          <div>{medication.display_name}</div>
+        </span>
       </div>
     </SearchResult>
   )
