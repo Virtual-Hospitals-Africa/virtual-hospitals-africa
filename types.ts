@@ -120,6 +120,23 @@ export type RenderedPatient = ReturnedSqlRow<
     last_visited: null // TODO: implement
   }
 >
+export type Condition = {
+  key_id: string
+  primary_name: string
+  term_icd9_code: Maybe<string>
+  term_icd9_text: Maybe<string>
+  consumer_name: Maybe<string>
+  is_procedure: boolean
+  info_link_href: Maybe<string>
+  info_link_text: Maybe<string>
+}
+
+export type PatientCondition = {
+  patient_id: number
+  condition_key_id: string
+  start_date: string
+  end_date: Maybe<string>
+}
 
 export type OnboardingPatient =
   & {
@@ -1295,5 +1312,7 @@ export type DatabaseSchema = {
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
   address: SqlRow<Address>
+  condition: Condition
+  patient_conditions: SqlRow<PatientCondition>
   medications: SqlRow<Medication>
 }
