@@ -88,7 +88,6 @@ export default function ConditionSearch() {
           </SearchResults>
         )}
       </FormRow>
-
       <div className='flex-start flex flex-wrap gap-2 w-full'>
         {selectedConditions.map((condition) => (
           <button
@@ -104,3 +103,9 @@ export default function ConditionSearch() {
     </>
   )
 }
+
+// export default function test () {
+//   return (
+//     <button onClick={ConditionSearch}>hello this is a button</button>
+//   )
+// }
