@@ -72,7 +72,6 @@ export default function PersonSearch({
 
   return (
     <div className='w-full'>
-      <div>{showSearchResults}</div>
       <SearchInput
         name={`${name}_name`}
         label={label}
