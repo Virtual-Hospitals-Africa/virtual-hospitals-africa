@@ -1,3 +1,4 @@
+//deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
 import parseJSON from '../../util/parseJSON.ts'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
