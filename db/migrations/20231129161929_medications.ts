@@ -15,31 +15,46 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('registration_no', 'varchar(1024)', (col) => col.notNull())
     .addColumn('applicant_name', 'varchar(1024)')
     .addColumn('manufacturers', 'varchar(2048)')
-    .addColumn('created_at', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .execute()
 
   await db.schema
     .createTable('patient_condition_medications')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn('created_at', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('patient_id', 'integer', (col) =>
-      col.notNull().references('patients.id').onDelete('cascade')
+    .addColumn(
+      'patient_id',
+      'integer',
+      (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
-    .addColumn('condition_key_id', 'varchar(255)', (col) =>
-      col.references('conditions.key_id').onDelete('cascade')
+    .addColumn(
+      'condition_key_id',
+      'varchar(255)',
+      (col) => col.references('conditions.key_id').onDelete('cascade'),
     )
-    .addColumn('medication_key_id', 'varchar(255)', (col) =>
-      col.notNull().references('medications.key_id').onDelete('cascade')
+    .addColumn(
+      'medication_key_id',
+      'varchar(255)',
+      (col) =>
+        col.notNull().references('medications.key_id').onDelete('cascade'),
     )
     .addColumn('dosage', 'varchar(255)')
     .addColumn('intake_frequency', 'varchar(255)')

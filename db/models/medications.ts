@@ -4,7 +4,7 @@ export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-  }
+  },
 ): Promise<Medication[]> {
   const query = trx
     .selectFrom('medications')

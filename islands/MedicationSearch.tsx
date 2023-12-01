@@ -132,9 +132,7 @@ export default function MedicationSearch({
           >
             <option value=''>Select</option>
             {selected &&
-             intakeFrequencies.map((d) => (
-                <option value='{d}'>{d}</option>
-              ))}
+              intakeFrequencies.map((d) => <option value='{d}'>{d}</option>)}
           </Select>
           <input type='hidden' name={`${name}_intake_frequency`} />
         </>
