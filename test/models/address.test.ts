@@ -4,32 +4,14 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
 import * as address from '../../db/models/address.ts'
 import { assert } from 'std/assert/assert.ts'
-import sample from '../../util/sample.ts'
-
-async function createRandomAddress() {
-  const fullCountryInfo = await address.getFullCountryInfo(db)
-  const country = sample(fullCountryInfo)
-  const province = sample(country.provinces)
-  const district = sample(province.districts)
-  const ward = sample(district.wards)
-  const suburb = ward.suburbs.length ? sample(ward.suburbs) : null
-  const street = Math.random().toString(36).substring(7)
-  return {
-    street,
-    suburb_id: suburb?.id,
-    ward_id: ward.id,
-    district_id: district.id,
-    province_id: province.id,
-    country_id: country.id,
-  }
-}
+import { createTestAddress } from '../mocks.ts'
 
 describe('db/models/address.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
 
   describe('upsert', () => {
     it('inserts addresses, returning an already existing address if it matches an existing ward, suburb, and street', async () => {
-      const randomAddress = await createRandomAddress()
+      const randomAddress = await createTestAddress()
 
       const address1 = await address.upsert(db, randomAddress)
       const address2 = await address.upsert(db, randomAddress)

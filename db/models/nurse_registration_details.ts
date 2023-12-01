@@ -1,23 +1,42 @@
+import { sql } from 'kysely'
 import {
+  Address,
   NurseRegistrationDetails,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import { upsert as upsertAddress } from './address.ts'
 
-export function add(
+export type UpsertableNurseRegistrationDetails =
+  | NurseRegistrationDetails & { address?: undefined }
+  | (
+    & Omit<
+      NurseRegistrationDetails,
+      'address_id'
+    >
+    & {
+      address_id?: undefined
+      address: Address
+    }
+  )
+
+export async function add(
   trx: TrxOrDb,
-  opts: {
-    registrationDetails: NurseRegistrationDetails
-  },
+  { address, address_id, ...registrationDetails }:
+    UpsertableNurseRegistrationDetails,
 ) {
   assert(
-    inputValidation(opts.registrationDetails),
+    inputValidation(registrationDetails),
     'failed at input validation',
   )
+  if (address) {
+    address_id = (await upsertAddress(trx, address)).id
+  }
+  assert(address_id, 'address_id must be defined')
   return trx
     .insertInto('nurse_registration_details')
-    .values(opts.registrationDetails)
+    .values({ ...registrationDetails, address_id })
     .execute()
 }
 
@@ -29,7 +48,28 @@ export function get(
 ): Promise<ReturnedSqlRow<NurseRegistrationDetails> | undefined> {
   return trx
     .selectFrom('nurse_registration_details')
-    .selectAll()
+    .select([
+      'id',
+      'created_at',
+      'updated_at',
+      'health_worker_id',
+      'gender',
+      sql<string>`TO_CHAR(date_of_birth, 'YYYY-MM-DD')`.as(
+        'date_of_birth',
+      ),
+      'national_id_number',
+      sql<string>`TO_CHAR(date_of_first_practice, 'YYYY-MM-DD')`.as(
+        'date_of_first_practice',
+      ),
+      'ncz_registration_number',
+      'mobile_number',
+      'national_id_media_id',
+      'ncz_registration_card_media_id',
+      'face_picture_media_id',
+      'nurse_practicing_cert_media_id',
+      'approved_by',
+      'address_id',
+    ])
     .where('health_worker_id', '=', opts.healthWorkerId)
     .executeTakeFirst()
 }
@@ -52,7 +92,8 @@ export function approve(
     .executeTakeFirst()
 }
 
-function inputValidation(registrationDetails: NurseRegistrationDetails) {
+// deno-lint-ignore no-explicit-any
+function inputValidation(registrationDetails: any) {
   return typeof registrationDetails.health_worker_id === 'number' &&
     (registrationDetails.gender === 'male' ||
       registrationDetails.gender === 'female' ||

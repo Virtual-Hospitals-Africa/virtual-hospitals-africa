@@ -5,7 +5,6 @@ import {
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { NurseRegistrationDetails } from '../../../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   getStepFormData,
@@ -18,6 +17,7 @@ import { PageProps } from '$fresh/server.ts'
 import { Container } from '../../../../components/library/Container.tsx'
 import * as employment from '../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../db/models/nurse_specialties.ts'
+import * as health_workers from '../../../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import * as address from '../../../../db/models/address.ts'
 import {
@@ -26,6 +26,7 @@ import {
   ProfessionalInformationFields,
 } from '../../../../components/health_worker/nurse/invite/Steps.tsx'
 import NurseRegistrationForm from '../../../../islands/nurse-registration-form.tsx'
+import compact from '../../../../util/compact.ts'
 
 type RegisterPageProps = {
   formState: FormState
@@ -109,22 +110,25 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       specialty: formState.specialty,
     })
 
-    const nurse_address = await address.upsert(ctx.state.trx, {
-      country_id: formState.country_id,
-      province_id: formState.province_id,
-      district_id: formState.district_id,
-      ward_id: formState.ward_id,
-      suburb_id: formState.suburb_id,
-      street: formState.street,
-    })
+    const registrationDetails = getRegistrationDetails(
+      ctx.state.healthWorker,
+      formState,
+    )
 
-    await nurse_registration_details.add(ctx.state.trx, {
-      registrationDetails: getRegistrationDetails(
-        ctx.state.healthWorker,
-        formState,
-        nurse_address.id,
-      ),
-    })
+    const fullNameInForm = compact([
+      formState.first_name,
+      formState.middle_names,
+      formState.last_name,
+    ]).join(' ')
+    if (fullNameInForm !== ctx.state.healthWorker.name) {
+      await health_workers.updateName(
+        ctx.state.trx,
+        ctx.state.healthWorker.id,
+        fullNameInForm,
+      )
+    }
+
+    await nurse_registration_details.add(ctx.state.trx, registrationDetails)
 
     ctx.state.session.set('registrationFormState', undefined)
 
@@ -135,8 +139,7 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
 function getRegistrationDetails(
   healthWorker: HealthWorkerWithGoogleTokens,
   formState: FormState,
-  nurse_address_id: number,
-): NurseRegistrationDetails {
+): nurse_registration_details.UpsertableNurseRegistrationDetails {
   return {
     health_worker_id: healthWorker.id,
     gender: formState.gender,
@@ -150,7 +153,14 @@ function getRegistrationDetails(
     national_id_media_id: formState.national_id_picture?.id,
     nurse_practicing_cert_media_id: formState.nurse_practicing_cert?.id,
     approved_by: null,
-    address_id: nurse_address_id,
+    address: {
+      country_id: formState.country_id,
+      province_id: formState.province_id,
+      district_id: formState.district_id,
+      ward_id: formState.ward_id,
+      suburb_id: formState.suburb_id,
+      street: formState.street,
+    },
   }
 }
 

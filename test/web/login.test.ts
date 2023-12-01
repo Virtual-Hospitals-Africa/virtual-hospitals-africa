@@ -13,8 +13,8 @@ import {
 import sample from '../../util/sample.ts'
 import { GoogleTokens, HealthWorker } from '../../types.ts'
 import {
+  insertTestAddress,
   randomNationalId,
-  testAddress,
   testHealthWorker,
   testRegistrationDetails,
 } from '../mocks.ts'
@@ -141,11 +141,12 @@ describeWithWebServer('/login', 8002, (route) => {
         health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
-      await details.add(db, {
-        registrationDetails: testRegistrationDetails({
+      await details.add(
+        db,
+        await testRegistrationDetails({
           health_worker_id: mock.healthWorker.id,
         }),
-      })
+      )
 
       const response = await fetch(`${route}/app`, {
         headers: {
@@ -167,11 +168,12 @@ describeWithWebServer('/login', 8002, (route) => {
         health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
-      await details.add(db, {
-        registrationDetails: testRegistrationDetails({
+      await details.add(
+        db,
+        await testRegistrationDetails({
           health_worker_id: mock.healthWorker.id,
         }),
-      })
+      )
       await details.approve(db, {
         approverId: admin.id,
         healthWorkerId: mock.healthWorker.id,
@@ -202,11 +204,12 @@ describeWithWebServer('/login', 8002, (route) => {
         health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
-      await details.add(db, {
-        registrationDetails: testRegistrationDetails({
+      await details.add(
+        db,
+        await testRegistrationDetails({
           health_worker_id: mock.healthWorker.id,
         }),
-      })
+      )
       await details.approve(db, {
         approverId: admin.id,
         healthWorkerId: mock.healthWorker.id,
@@ -327,25 +330,23 @@ describeWithWebServer('/login', 8002, (route) => {
         profession: 'admin',
       }])
 
-      const nurse_address = await testAddress()
+      const nurse_address = await insertTestAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
-        registrationDetails: {
-          health_worker_id: nurse.id,
-          gender: 'female',
-          national_id_number: randomNationalId(),
-          date_of_first_practice: '2020-01-01',
-          ncz_registration_number: 'GN123456',
-          mobile_number: '5555555555',
-          national_id_media_id: null,
-          ncz_registration_card_media_id: null,
-          face_picture_media_id: null,
-          nurse_practicing_cert_media_id: null,
-          approved_by: admin.id,
-          date_of_birth: '2020-01-01',
-          address_id: nurse_address.id,
-        },
+        health_worker_id: nurse.id,
+        gender: 'female',
+        national_id_number: randomNationalId(),
+        date_of_first_practice: '2020-01-01',
+        ncz_registration_number: 'GN123456',
+        mobile_number: '5555555555',
+        national_id_media_id: null,
+        ncz_registration_card_media_id: null,
+        face_picture_media_id: null,
+        nurse_practicing_cert_media_id: null,
+        approved_by: admin.id,
+        date_of_birth: '2020-01-01',
+        address_id: nurse_address.id,
       })
 
       const response = await fetch(`${route}/app/employees`, {
