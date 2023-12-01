@@ -109,14 +109,14 @@ export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
       specialty: formState.specialty,
     })
 
-    const nurse_address = await address.upsertAddress(ctx.state.trx, {
+    const nurse_address = await address.upsert(ctx.state.trx, {
       country_id: formState.country_id,
       province_id: formState.province_id,
       district_id: formState.district_id,
       ward_id: formState.ward_id,
-      sururb_id: formState.suburb_id,
+      suburb_id: formState.suburb_id,
       street: formState.street,
-    } as address.UpsertableAddress)
+    })
 
     await nurse_registration_details.add(ctx.state.trx, {
       registrationDetails: getRegistrationDetails(

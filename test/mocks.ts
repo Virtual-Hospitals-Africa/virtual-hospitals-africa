@@ -52,7 +52,7 @@ export const testRegistrationDetails = (
 })
 
 export function testAddress(): Promise<ReturnedSqlRow<Address>> {
-  return address.upsertAddress(db, {
+  return address.upsert(db, {
     street: '111 Ave Park',
     suburb_id: 4,
     ward_id: 1,

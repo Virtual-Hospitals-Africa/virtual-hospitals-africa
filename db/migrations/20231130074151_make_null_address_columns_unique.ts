@@ -7,9 +7,9 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await sql`
-  ALTER TABLE address
-  ADD CONSTRAINT address_street_suburb_ward UNIQUE NULLS NOT DISTINCT (street, suburb_id, ward_id)`
-    .execute(db)
+    ALTER TABLE address
+    ADD CONSTRAINT address_street_suburb_ward UNIQUE NULLS NOT DISTINCT (street, suburb_id, ward_id)
+  `.execute(db)
 }
 
 export async function down(db: Kysely<unknown>) {
