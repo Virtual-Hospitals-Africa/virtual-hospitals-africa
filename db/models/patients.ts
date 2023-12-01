@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
+  Address,
   Gender,
   Location,
   Maybe,
@@ -17,7 +18,7 @@ import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import omit from '../../util/omit.ts'
 import compact from '../../util/compact.ts'
-import { UpsertableAddress, upsertAddress } from './address.ts'
+import * as address from './address.ts'
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
@@ -79,7 +80,7 @@ export type UpsertablePatient = {
   first_name?: Maybe<string>
   middle_names?: Maybe<string>
   last_name?: Maybe<string>
-  address?: UpsertableAddress
+  address?: Address
   unregistered_primary_doctor_name?: Maybe<string>
 }
 
@@ -107,7 +108,7 @@ export async function upsert(
   if ('address' in patient) {
     assert(!toInsert.address_id, 'Cannot set both address and address_id')
     toInsert.address_id =
-      (patient.address && await upsertAddress(trx, patient.address))?.id
+      (patient.address && await address.upsert(trx, patient.address))?.id
   }
 
   return trx

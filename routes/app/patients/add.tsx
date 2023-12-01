@@ -47,7 +47,7 @@ type AddPatientProps =
     adminDistricts: FullCountryInfo
   })
 
-type Personal = {
+type PersonalFormValues = {
   first_name: string
   last_name: string
   middle_names?: string
@@ -56,7 +56,7 @@ type Personal = {
   phone_number?: string
 }
 
-type Address = {
+type AddressFormValues = {
   country_id: number
   province_id: number
   district_id: number
@@ -68,15 +68,15 @@ type Address = {
   primary_doctor_name: string
 }
 
-type Conditions = Record<string, unknown>
-type Family = Record<string, unknown>
-type History = Record<string, unknown>
-type Occupation = Record<string, unknown>
-type Lifestyle = Record<string, unknown>
+type ConditionsFormValues = Record<string, unknown>
+type FamilyFormValues = Record<string, unknown>
+type HistoryFormValues = Record<string, unknown>
+type OccupationFormValues = Record<string, unknown>
+type LifestyleFormValues = Record<string, unknown>
 
 function isPersonal(
   patient: unknown,
-): patient is Personal {
+): patient is PersonalFormValues {
   return isObjectLike(patient) &&
     !!patient.first_name && typeof patient.first_name === 'string' &&
     !!patient.last_name && typeof patient.last_name === 'string' &&
@@ -86,7 +86,7 @@ function isPersonal(
 
 function isAddress(
   patient: unknown,
-): patient is Address {
+): patient is AddressFormValues {
   return isObjectLike(patient) &&
     !!patient.country_id && typeof patient.country_id === 'number' &&
     !!patient.province_id && typeof patient.province_id === 'number' &&
@@ -102,42 +102,42 @@ function isAddress(
 
 function isConditions(
   patient: unknown,
-): patient is Conditions {
+): patient is ConditionsFormValues {
   return true
 }
 
 function isFamily(
   patient: unknown,
-): patient is Family {
+): patient is FamilyFormValues {
   return true
 }
 
 function isHistory(
   patient: unknown,
-): patient is History {
+): patient is HistoryFormValues {
   return true
 }
 
 function isOccupation(
   patient: unknown,
-): patient is Occupation {
+): patient is OccupationFormValues {
   return true
 }
 
 function isLifestyle(
   patient: unknown,
-): patient is Lifestyle {
+): patient is LifestyleFormValues {
   return true
 }
 
 type Forms = {
-  personal: Personal
-  address: Address
-  'pre-existing_conditions': Conditions
-  family: Family
-  history: History
-  occupation: Occupation
-  lifestyle: Lifestyle
+  personal: PersonalFormValues
+  address: AddressFormValues
+  'pre-existing_conditions': ConditionsFormValues
+  family: FamilyFormValues
+  history: HistoryFormValues
+  occupation: OccupationFormValues
+  lifestyle: LifestyleFormValues
 }
 
 type TypeCheckers = {
@@ -164,13 +164,6 @@ const typeCheckers: TypeCheckers = {
   lifestyle: isLifestyle,
 }
 
-const omitNearestCare = omit([
-  'nearest_facility_id',
-  'nearest_facility_display_name',
-  'primary_doctor_id',
-  'primary_doctor_name',
-])
-
 const transformers: Transformers = {
   personal: (
     { avatar_media, ...patient },
@@ -179,7 +172,7 @@ const transformers: Transformers = {
     avatar_media_id: avatar_media?.id,
   }),
   address: (
-    { ...patient },
+    patient,
   ): patients.UpsertablePatient => ({
     nearest_facility_id: patient.nearest_facility_id,
     primary_doctor_id: isNaN(patient.primary_doctor_id)
@@ -188,7 +181,14 @@ const transformers: Transformers = {
     unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
       ? patient.primary_doctor_name
       : null,
-    address: omitNearestCare(patient),
+    address: {
+      country_id: patient.country_id,
+      province_id: patient.province_id,
+      district_id: patient.district_id,
+      ward_id: patient.ward_id,
+      suburb_id: patient.suburb_id,
+      street: patient.street,
+    },
   }),
 }
 

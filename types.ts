@@ -141,15 +141,14 @@ export type OnboardingPatient =
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
   >
-  & Pick<
-    Address,
-    | 'country_id'
-    | 'province_id'
-    | 'district_id'
-    | 'ward_id'
-    | 'suburb_id'
-    | 'street'
-  >
+  & {
+    street: Maybe<string>
+    suburb_id: Maybe<number>
+    ward_id: Maybe<number>
+    district_id: Maybe<number>
+    province_id: Maybe<number>
+    country_id: Maybe<number>
+  }
 
 export type PatientFamily = {
   marital_status: string
@@ -1249,10 +1248,10 @@ export type MailingListRecipient = {
 export type Address = {
   street: Maybe<string>
   suburb_id: Maybe<number>
-  ward_id: Maybe<number>
-  district_id: Maybe<number>
-  province_id: Maybe<number>
-  country_id: Maybe<number>
+  ward_id: number
+  district_id: number
+  province_id: number
+  country_id: number
 }
 
 export type Medication = {

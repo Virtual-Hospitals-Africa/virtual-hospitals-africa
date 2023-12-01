@@ -74,7 +74,6 @@ function isPersonalFormFields(
     !!fields.gender &&
     !!fields.national_id_number &&
     !!fields.mobile_number &&
-    !!fields.street &&
     !!fields.ward_id &&
     !!fields.district_id &&
     !!fields.province_id &&

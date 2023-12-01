@@ -7,7 +7,7 @@ import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import { randomNationalId, testAddress } from '../mocks.ts'
+import { insertTestAddress, randomNationalId } from '../mocks.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -267,25 +267,23 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const nurse_address = await testAddress()
+      const nurse_address = await insertTestAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
-        registrationDetails: {
-          health_worker_id: hw_at_facility1.id,
-          gender: 'female',
-          national_id_number: randomNationalId(),
-          date_of_first_practice: '2020-01-01',
-          ncz_registration_number: 'GN123456',
-          mobile_number: '5555555555',
-          national_id_media_id: null,
-          ncz_registration_card_media_id: null,
-          face_picture_media_id: null,
-          nurse_practicing_cert_media_id: null,
-          approved_by: null,
-          date_of_birth: '2020-01-01',
-          address_id: nurse_address.id,
-        },
+        health_worker_id: hw_at_facility1.id,
+        gender: 'female',
+        national_id_number: randomNationalId(),
+        date_of_first_practice: '2020-01-01',
+        ncz_registration_number: 'GN123456',
+        mobile_number: '5555555555',
+        national_id_media_id: null,
+        ncz_registration_card_media_id: null,
+        face_picture_media_id: null,
+        nurse_practicing_cert_media_id: null,
+        approved_by: null,
+        date_of_birth: '2020-01-01',
+        address_id: nurse_address.id,
       })
 
       const withInvitees = await facilities.getEmployees(db, {
@@ -342,25 +340,23 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const nurse_address = await testAddress()
+      const nurse_address = await insertTestAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
-        registrationDetails: {
-          health_worker_id: nurse.id,
-          gender: 'female',
-          national_id_number: randomNationalId(),
-          date_of_first_practice: '2020-01-01',
-          ncz_registration_number: 'GN123456',
-          mobile_number: '5555555555',
-          national_id_media_id: null,
-          ncz_registration_card_media_id: null,
-          face_picture_media_id: null,
-          nurse_practicing_cert_media_id: null,
-          approved_by: admin.id,
-          date_of_birth: '2020-01-01',
-          address_id: nurse_address.id,
-        },
+        health_worker_id: nurse.id,
+        gender: 'female',
+        national_id_number: randomNationalId(),
+        date_of_first_practice: '2020-01-01',
+        ncz_registration_number: 'GN123456',
+        mobile_number: '5555555555',
+        national_id_media_id: null,
+        ncz_registration_card_media_id: null,
+        face_picture_media_id: null,
+        nurse_practicing_cert_media_id: null,
+        approved_by: admin.id,
+        date_of_birth: '2020-01-01',
+        address_id: nurse_address.id,
       })
 
       const withInvitees = await facilities.getEmployees(db, {

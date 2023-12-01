@@ -10,7 +10,7 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
 import { EmployedHealthWorker } from '../../types.ts'
-import { randomNationalId, testAddress } from '../mocks.ts'
+import { insertTestAddress, randomNationalId } from '../mocks.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -317,25 +317,23 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         specialty: 'clinical_care_nurse',
       })
 
-      const nurse_address = await testAddress()
+      const nurse_address = await insertTestAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
-        registrationDetails: {
-          health_worker_id: healthWorker.id,
-          gender: 'female',
-          date_of_birth: '1999-12-12',
-          national_id_number: randomNationalId(),
-          date_of_first_practice: '2020-01-01',
-          ncz_registration_number: 'GN123456',
-          mobile_number: '5555555555',
-          national_id_media_id: null,
-          ncz_registration_card_media_id: null,
-          face_picture_media_id: null,
-          nurse_practicing_cert_media_id: null,
-          approved_by: null,
-          address_id: nurse_address.id,
-        },
+        health_worker_id: healthWorker.id,
+        gender: 'female',
+        date_of_birth: '1999-12-12',
+        national_id_number: randomNationalId(),
+        date_of_first_practice: '2020-01-01',
+        ncz_registration_number: 'GN123456',
+        mobile_number: '5555555555',
+        national_id_media_id: null,
+        ncz_registration_card_media_id: null,
+        face_picture_media_id: null,
+        nurse_practicing_cert_media_id: null,
+        approved_by: null,
+        address_id: nurse_address.id,
       })
 
       const result = await health_workers.getEmployeeInfo(
@@ -431,25 +429,23 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/png',
       })
 
-      const nurse_address = await testAddress()
+      const nurse_address = await insertTestAddress()
       assert(nurse_address)
 
       await nurse_registration_details.add(db, {
-        registrationDetails: {
-          health_worker_id: healthWorker.id,
-          gender: 'female',
-          date_of_birth: '1999-12-12',
-          national_id_number: randomNationalId(),
-          date_of_first_practice: '2020-01-01',
-          ncz_registration_number: 'GN123456',
-          mobile_number: '5555555555',
-          national_id_media_id: nationalIdMedia.id,
-          ncz_registration_card_media_id: registrationCardMedia.id,
-          face_picture_media_id: facePictureMedia.id,
-          nurse_practicing_cert_media_id: nursePracticingCertMedia.id,
-          approved_by: null,
-          address_id: nurse_address.id,
-        },
+        health_worker_id: healthWorker.id,
+        gender: 'female',
+        date_of_birth: '1999-12-12',
+        national_id_number: randomNationalId(),
+        date_of_first_practice: '2020-01-01',
+        ncz_registration_number: 'GN123456',
+        mobile_number: '5555555555',
+        national_id_media_id: nationalIdMedia.id,
+        ncz_registration_card_media_id: registrationCardMedia.id,
+        face_picture_media_id: facePictureMedia.id,
+        nurse_practicing_cert_media_id: nursePracticingCertMedia.id,
+        approved_by: null,
+        address_id: nurse_address.id,
       })
 
       const result = await health_workers.getEmployeeInfo(

@@ -1,6 +1,7 @@
+// deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
 
-export async function up(db: Kysely<unknown>) {
+export async function up(db: Kysely<any>) {
   await db.schema.alterTable('whatsapp_messages_received')
     .addColumn(
       'has_media',
@@ -29,9 +30,8 @@ export async function up(db: Kysely<unknown>) {
   ).execute()
 }
 
-export async function down(db: Kysely<unknown>) {
-  // deno-lint-ignore no-explicit-any
-  await (db as any).deleteFrom('whatsapp_messages_received').where(
+export async function down(db: Kysely<any>) {
+  await db.deleteFrom('whatsapp_messages_received').where(
     'has_media',
     '=',
     true,

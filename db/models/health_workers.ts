@@ -34,6 +34,18 @@ export function upsert(
     .executeTakeFirstOrThrow()
 }
 
+export function updateName(
+  trx: TrxOrDb,
+  health_worker_id: number,
+  name: string,
+): Promise<UpdateResult[]> {
+  return trx
+    .updateTable('health_workers')
+    .set({ name })
+    .where('id', '=', health_worker_id)
+    .execute()
+}
+
 export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
 export function upsertGoogleTokens(
