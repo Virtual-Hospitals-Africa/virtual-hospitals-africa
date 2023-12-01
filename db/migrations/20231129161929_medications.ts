@@ -6,14 +6,14 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('medications')
     .addColumn('key_id', 'varchar(255)', (col) => col.primaryKey())
-    .addColumn('trade_name', 'varchar(512)', (col) => col.notNull())
+    .addColumn('trade_name', 'varchar(1024)', (col) => col.notNull())
     .addColumn('generic_name', 'varchar(255)')
     .addColumn('forms', 'varchar(255)')
     .addColumn('strength', 'varchar(255)')
     .addColumn('category', 'varchar(255)')
-    .addColumn('registration_no', 'varchar(255)', (col) => col.notNull())
-    .addColumn('applicant_name', 'varchar(255)')
-    .addColumn('manufacturers', 'varchar(1024)')
+    .addColumn('registration_no', 'varchar(1024)', (col) => col.notNull())
+    .addColumn('applicant_name', 'varchar(1024)')
+    .addColumn('manufacturers', 'varchar(2048)')
     .addColumn('created_at', 'timestamp', (col) =>
       col.defaultTo(sql`now()`).notNull()
     )
@@ -35,7 +35,7 @@ export async function up(db: Kysely<unknown>) {
       col.notNull().references('patients.id').onDelete('cascade')
     )
     .addColumn('condition_key_id', 'varchar(255)', (col) =>
-      col.notNull().references('conditions.key_id').onDelete('cascade')
+      col.references('conditions.key_id').onDelete('cascade')
     )
     .addColumn('medication_key_id', 'varchar(255)', (col) =>
       col.notNull().references('medications.key_id').onDelete('cascade')

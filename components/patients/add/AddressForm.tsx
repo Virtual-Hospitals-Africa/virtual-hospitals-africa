@@ -48,8 +48,6 @@ function NearestHealthCare(
           addable
         />
       </FormRow>
-      {/* TODO remove this before merge into main branch */}
-      <MedicationSearch name='medication' label='' includeDoses includeIntake/>
     </section>
   )
 }

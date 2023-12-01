@@ -7,6 +7,7 @@ import { assert } from 'https://deno.land/std@0.160.0/_util/assert.ts'
 import debounce from '../util/debounce.ts'
 import { Medication } from '../types.ts'
 import FormRow from '../components/library/form/Row.tsx'
+import { MedicinesFrequencyList } from '../db/models/medications.ts'
 
 export default function MedicationSearch({
   name,
@@ -30,7 +31,7 @@ export default function MedicationSearch({
   const [setSearch] = useState({
     delay: debounce(setSearchImmediate, 220),
   })
-  const [doses, setDoses] = useState<string[]>([])
+  const intakeFrequencies = MedicinesFrequencyList
 
   const onDocumentClick = useCallback(() => {
     setIsFocused(
@@ -130,8 +131,10 @@ export default function MedicationSearch({
             label='Intake'
           >
             <option value=''>Select</option>
-            <option value=''>Daily</option>
-            <option value=''>Weekly</option>
+            {selected &&
+             intakeFrequencies.map((d) => (
+                <option value='{d}'>{d}</option>
+              ))}
           </Select>
           <input type='hidden' name={`${name}_intake_frequency`} />
         </>
