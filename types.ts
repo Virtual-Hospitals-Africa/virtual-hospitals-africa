@@ -1312,7 +1312,7 @@ export type DatabaseSchema = {
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
   address: SqlRow<Address>
-  condition: Condition
+  conditions: Condition
   patient_conditions: SqlRow<PatientCondition>
   medications: SqlRow<Medication>
 }
