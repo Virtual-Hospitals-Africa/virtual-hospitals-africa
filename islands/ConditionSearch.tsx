@@ -6,6 +6,7 @@ import SearchResults, {
   ConditionSearchResult,
 } from '../components/library/SearchResults.tsx'
 import RemoveIcon from '../components/library/icons/remove.tsx'
+import MedicationSearch from './MedicationSearch.tsx'
 
 export default function ConditionSearch() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -75,6 +76,8 @@ export default function ConditionSearch() {
           ref={searchInputRef}
         />
       </FormRow>
+       
+      <MedicationSearch name='advil' label='blah' includeDoses includeIntake/> //to be done
 
       <FormRow className='mb-3 relative'>
         {isFocused && searchTerm && results?.length && (
