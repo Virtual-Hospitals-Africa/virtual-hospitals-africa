@@ -6,6 +6,7 @@ import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
+
 import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -127,7 +128,7 @@ export function describeWithWebServer(
 }
 
 export async function addTestHealthWorker(opts: {
-  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin'
+  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
 } = { scenario: 'base' }) {
   const healthWorker = await upsertWithGoogleCredentials(db, testHealthWorker())
   switch (opts.scenario) {
@@ -142,11 +143,12 @@ export async function addTestHealthWorker(opts: {
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }])
-      await details.add(db, {
-        registrationDetails: testRegistrationDetails({
+      await details.add(
+        db,
+        await testRegistrationDetails({
           health_worker_id: healthWorker.id,
         }),
-      })
+      )
       await details.approve(db, {
         approverId: admin.id,
         healthWorkerId: healthWorker.id,
@@ -169,13 +171,21 @@ export async function addTestHealthWorker(opts: {
       }])
       break
     }
+    case 'nurse': {
+      await employee.add(db, [{
+        facility_id: 1,
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+      }])
+      break
+    }
   }
 
   return healthWorker
 }
 
 export async function addTestHealthWorkerWithSession(opts: {
-  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin'
+  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
 } = { scenario: 'base' }) {
   const sessionId = generateUUID()
   const healthWorker = await addTestHealthWorker(opts)

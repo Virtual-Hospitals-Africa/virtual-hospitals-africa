@@ -1,5 +1,6 @@
 import { Address, NurseRegistrationDetails, ReturnedSqlRow } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
+import sample from '../util/sample.ts'
 import db from '../db/db.ts'
 import * as address from '../db/models/address.ts'
 
@@ -33,9 +34,9 @@ export function randomNationalId() {
   return `${randomDigit()}${randomDigit()}-${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()} ${randomLetter()} ${randomDigit()}${randomDigit()}`
 }
 
-export const testRegistrationDetails = (
+export const testRegistrationDetails = async (
   { health_worker_id }: { health_worker_id: number },
-): NurseRegistrationDetails => ({
+): Promise<NurseRegistrationDetails> => ({
   health_worker_id,
   gender: 'male',
   date_of_birth: '1979-12-12',
@@ -48,16 +49,27 @@ export const testRegistrationDetails = (
   face_picture_media_id: undefined,
   nurse_practicing_cert_media_id: undefined,
   approved_by: undefined,
-  address_id: undefined,
+  address_id: (await insertTestAddress()).id,
 })
 
-export function testAddress(): Promise<ReturnedSqlRow<Address>> {
-  return address.upsertAddress(db, {
-    street: '111 Ave Park',
-    suburb_id: 4,
-    ward_id: 1,
-    district_id: 1,
-    province_id: 1,
-    country_id: 1,
-  })
+export async function createTestAddress(): Promise<Address> {
+  const fullCountryInfo = await address.getFullCountryInfo(db)
+  const country = sample(fullCountryInfo)
+  const province = sample(country.provinces)
+  const district = sample(province.districts)
+  const ward = sample(district.wards)
+  const suburb = ward.suburbs.length ? sample(ward.suburbs) : null
+  const street = Math.random().toString(36).substring(7)
+  return {
+    street,
+    suburb_id: suburb?.id || null,
+    ward_id: ward.id,
+    district_id: district.id,
+    province_id: province.id,
+    country_id: country.id,
+  }
+}
+
+export async function insertTestAddress(): Promise<ReturnedSqlRow<Address>> {
+  return address.upsert(db, await createTestAddress())
 }

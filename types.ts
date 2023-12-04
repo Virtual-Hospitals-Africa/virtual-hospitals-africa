@@ -120,6 +120,23 @@ export type RenderedPatient = ReturnedSqlRow<
     last_visited: null // TODO: implement
   }
 >
+export type Condition = {
+  key_id: string
+  primary_name: string
+  term_icd9_code: Maybe<string>
+  term_icd9_text: Maybe<string>
+  consumer_name: Maybe<string>
+  is_procedure: boolean
+  info_link_href: Maybe<string>
+  info_link_text: Maybe<string>
+}
+
+export type PatientCondition = {
+  patient_id: number
+  condition_key_id: string
+  start_date: string
+  end_date: Maybe<string>
+}
 
 export type OnboardingPatient =
   & {
@@ -141,15 +158,14 @@ export type OnboardingPatient =
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
   >
-  & Pick<
-    Address,
-    | 'country_id'
-    | 'province_id'
-    | 'district_id'
-    | 'ward_id'
-    | 'suburb_id'
-    | 'street'
-  >
+  & {
+    street: Maybe<string>
+    suburb_id: Maybe<number>
+    ward_id: Maybe<number>
+    district_id: Maybe<number>
+    province_id: Maybe<number>
+    country_id: Maybe<number>
+  }
 
 export type PatientFamily = {
   marital_status: string
@@ -1249,10 +1265,22 @@ export type MailingListRecipient = {
 export type Address = {
   street: Maybe<string>
   suburb_id: Maybe<number>
-  ward_id: Maybe<number>
-  district_id: Maybe<number>
-  province_id: Maybe<number>
-  country_id: Maybe<number>
+  ward_id: number
+  district_id: number
+  province_id: number
+  country_id: number
+}
+
+export type Medication = {
+  key_id: string
+  trade_name: string
+  generic_name: string
+  forms: Maybe<string>
+  strength: Maybe<string>
+  category: Maybe<string>
+  registration_no: Maybe<string>
+  applicant_name: Maybe<string>
+  manufacturers: Maybe<string>
 }
 
 export type DatabaseSchema = {
@@ -1284,4 +1312,7 @@ export type DatabaseSchema = {
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
   address: SqlRow<Address>
+  condition: Condition
+  patient_conditions: SqlRow<PatientCondition>
+  medications: SqlRow<Medication>
 }

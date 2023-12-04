@@ -1,25 +1,17 @@
 import { jsonArrayFrom } from '../helpers.ts'
-
 import {
   Address,
   FullCountryInfo,
-  Maybe,
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-export type UpsertableAddress = {
-  street?: Maybe<string>
-  suburb_id?: Maybe<number>
-  ward_id?: Maybe<number>
-  district_id?: Maybe<number>
-  province_id?: Maybe<number>
-  country_id?: Maybe<number>
-}
 
-export function getFullCountryInfo(
+let fullCountryInfo: FullCountryInfo | undefined
+export async function getFullCountryInfo(
   trx: TrxOrDb,
 ): Promise<FullCountryInfo> {
-  return trx
+  if (fullCountryInfo) return fullCountryInfo
+  return fullCountryInfo = await trx
     .selectFrom('countries')
     .select((ebProvinces) => [
       'id',
@@ -64,26 +56,15 @@ export function getFullCountryInfo(
     .execute()
 }
 
-export function upsertAddress(
+export function upsert(
   trx: TrxOrDb,
-  address: UpsertableAddress,
+  address: Address,
 ): Promise<ReturnedSqlRow<Address>> {
-  const addressInfo = {
-    street: address.street,
-    suburb_id: address.suburb_id,
-    ward_id: address.ward_id,
-    district_id: address.district_id,
-    province_id: address.province_id,
-    country_id: address.country_id,
-  }
-
   return trx
     .insertInto('address')
-    .values({ ...addressInfo })
+    .values(address)
     .onConflict((oc) =>
-      oc.columns(['street', 'suburb_id', 'ward_id']).doUpdateSet({
-        ...addressInfo,
-      })
+      oc.constraint('address_street_suburb_ward').doUpdateSet(address)
     )
     .returningAll()
     .executeTakeFirstOrThrow()
