@@ -1,9 +1,12 @@
 import AllergySearch from '../../../islands/AllergySearch.tsx'
-import { OnboardingPatient } from '../../../types.ts'
+import { OnboardingPatient, PreExistingConditions } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import ConditionsForm from '../../../islands/ConditionsForm.tsx'
 export default function PatientConditionsForm(
-  { patient = {} }: { patient?: Partial<OnboardingPatient> },
+  { patient = {}, conditions }: {
+    patient?: Partial<OnboardingPatient>
+    conditions?: PreExistingConditions
+  },
 ) {
   return (
     <>
@@ -15,7 +18,7 @@ export default function PatientConditionsForm(
         <SectionHeader className='my-5 text-[20px]'>
           Chronic Conditions & Disabilities
         </SectionHeader>
-        <ConditionsForm />
+        <ConditionsForm conditions={conditions} />
       </section>
     </>
   )

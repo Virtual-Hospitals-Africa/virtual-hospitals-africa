@@ -33,6 +33,7 @@ type AddPatientProps =
   & {
     patient?: OnboardingPatient
     healthWorker: EmployedHealthWorker
+    conditions?: PreExistingConditions
   }
   & ({
     step:
@@ -254,6 +255,16 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       })
     }
 
+    if (step === 'pre-existing_conditions') {
+      const conditions = await patient_conditions.getPatientConditions(ctx.state.trx,  { _patient_id: patient_id! })
+      return ctx.render({
+        healthWorker,
+        patient,
+        step,
+        conditions,
+      })
+    }
+
     assertOr400(
       step === 'personal' ||
         step === 'pre-existing_conditions' || step === 'family' ||
@@ -278,6 +289,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       formData
 
     if (step === 'pre-existing_conditions') {
+      const conditions = Array.from(await req.formData())
       patient_conditions.upsert(ctx.state.trx, parseInt(id!) ,transformedFormData as PreExistingConditions)
     } else {
       const patient = await patients.upsert(ctx.state.trx, {
@@ -316,7 +328,7 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { stepsTopBar, currentStep } = useAddPatientSteps(props)
-  const { patient, healthWorker, adminDistricts } = props.data
+  const { patient, healthWorker, adminDistricts, conditions } = props.data
 
   return (
     <Layout
@@ -348,7 +360,7 @@ export default function AddPatient(
           )}
           {currentStep === 'family' && <FamilyForm patient={patient} />}
           {currentStep === 'pre-existing_conditions' && (
-            <PatientConditionsForm patient={patient} />
+            <PatientConditionsForm patient={patient} conditions={conditions} />
           )}
           <hr className='my-2' />
           <Buttons

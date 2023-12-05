@@ -1315,7 +1315,7 @@ export type Medication = {
 export type PatientMedication = {
   id: number
   patient_id: number
-  patient_condition_id: Maybe<number>
+  condition_id: Maybe<number>
   dosage:  Maybe<string>
   intake_frequency: Maybe<string>
   medication_key_id: string
@@ -1353,5 +1353,5 @@ export type DatabaseSchema = {
   conditions: Condition
   patient_conditions: SqlRow<PatientCondition>
   medications: SqlRow<Medication>
-  patient_medications: SqlRow<PatientMedication>
+  patient_condition_medications: SqlRow<PatientMedication>
 }

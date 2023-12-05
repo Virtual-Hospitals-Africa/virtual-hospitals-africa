@@ -7,7 +7,11 @@ import FormRow from '../components/library/form/Row.tsx'
 import RemoveIcon from '../components/library/icons/remove.tsx'
 import MedicationSearch from './MedicationSearch.tsx'
 
-export default function ConditionsForm() {
+export default function ConditionsForm({
+  conditions,
+}: {
+  conditions?: any
+}) {
   const [patientConditions, setPatientConditions] = useState<any>([])
 
   const addCondition = () => {

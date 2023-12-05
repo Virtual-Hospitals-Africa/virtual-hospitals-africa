@@ -84,11 +84,11 @@ export async function upsert(
               patient_id: _patient_id,
               dosage: c.dose,
               intake_frequency: c.intake_frequency,
-              patient_condition_id: result!.id,
+              condition_id: result!.id,
               medication_key_id: c.medication_id,
             } as PatientMedication)
         )
-        trx.insertInto('patient_medications').values(medications).execute()
+        trx.insertInto('patient_condition_medications').values(medications).execute()
       }
     }
   })
@@ -119,19 +119,19 @@ export async function getPatientConditions(
     .execute()
 
   const _patientMedications = await trx
-    .selectFrom('patient_medications')
+    .selectFrom('patient_condition_medications')
     .innerJoin(
       'medications',
       'medications.key_id',
-      'patient_medications.medication_key_id'
+      'patient_condition_medications.medication_key_id'
     )
-    .where('patient_medications.patient_id', '=', opts._patient_id)
+    .where('patient_condition_medications.patient_id', '=', opts._patient_id)
     .select([
-      'patient_medications.id',
-      'patient_medications.medication_key_id',
-      'patient_medications.patient_condition_id',
-      'patient_medications.dosage',
-      'patient_medications.intake_frequency',
+      'patient_condition_medications.id',
+      'patient_condition_medications.medication_key_id',
+      'patient_condition_medications.condition_id',
+      'patient_condition_medications.dosage',
+      'patient_condition_medications.intake_frequency',
       'medications.generic_name',
     ])
     .execute()
@@ -155,7 +155,7 @@ export async function getPatientConditions(
           removed: false,
         })),
       medications: _patientMedications
-        .filter((m) => m.patient_condition_id === c.id)
+        .filter((m) => m.condition_id === c.id)
         .map((m) => ({
           id: m.id,
           display_name: m.generic_name,
