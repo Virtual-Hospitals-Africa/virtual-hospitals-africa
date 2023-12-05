@@ -6,6 +6,8 @@ import SearchResults, {
   ConditionSearchResult,
 } from '../components/library/SearchResults.tsx'
 import RemoveIcon from '../components/library/icons/remove.tsx'
+import AddIcon from '../components/library/icons/add.tsx'
+
 import MedicationSearch from './MedicationSearch.tsx'
 
 export default function ConditionSearch() {
@@ -76,6 +78,7 @@ export default function ConditionSearch() {
           ref={searchInputRef}
         />
       </FormRow>
+       
        
       <MedicationSearch name='advil' label='blah' includeDoses includeIntake/> //to be done
 
