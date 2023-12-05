@@ -4,7 +4,6 @@ import FacilitySearch from '../../../islands/FacilitySearch.tsx'
 import { FullCountryInfo, OnboardingPatient } from '../../../types.ts'
 import AddressForm from '../../../islands/address-inputs.tsx'
 import PersonSearch from '../../../islands/PersonSearch.tsx'
-import MedicationSearch from '../../../islands/MedicationSearch.tsx'
 
 function PatientAddress(
   { patient, adminDistricts }: {

@@ -68,7 +68,28 @@ type AddressFormValues = {
   primary_doctor_name: string
 }
 
-type ConditionsFormValues = Record<string, unknown>
+type ConditionsFormValues = {
+  conditions: [ { 
+    id: Maybe<number>
+    condition_id: number
+    start_date: Maybe<string>
+    end_date: Maybe<string>
+    removed: Maybe<boolean>
+    cormorbidities: [{
+      id: Maybe<number>
+      cormorbidity_id: string
+      removed: Maybe<boolean>
+    }]
+    medications: [{
+      id: Maybe<number>
+      medication_id: string
+      dose: Maybe<string>
+      intake_frequency: Maybe<string>
+      removed: Maybe<boolean>
+    }]
+  }]
+}
+
 type FamilyFormValues = Record<string, unknown>
 type HistoryFormValues = Record<string, unknown>
 type OccupationFormValues = Record<string, unknown>
