@@ -132,10 +132,38 @@ export type Condition = {
 }
 
 export type PatientCondition = {
+  id: number
   patient_id: number
   condition_key_id: string
   start_date: string
   end_date: Maybe<string>
+  comorbidity_of_condition_id: Maybe<number>
+}
+
+export type PreExistingConditions = {
+  conditions: [{
+    id: Maybe<number>
+    condition_id: string
+    display_name: Maybe<string>
+    start_date: Maybe<string>
+    end_date: Maybe<string>
+    removed: Maybe<boolean>
+    comorbidities: [{
+      id: Maybe<number>
+      display_name: Maybe<string>
+      comorbidity_id: number
+      condition_id: string
+      removed: Maybe<boolean>
+    }]
+    medications: [{
+      id: Maybe<number>
+      medication_id: string
+      dose: Maybe<string>
+      intake_frequency: Maybe<string>
+      removed: Maybe<boolean>
+      display_name: Maybe<string>
+    }]
+  }]
 }
 
 export type OnboardingPatient =
@@ -1283,6 +1311,16 @@ export type Medication = {
   manufacturers: Maybe<string>
 }
 
+
+export type PatientMedication = {
+  id: number
+  patient_id: number
+  patient_condition_id: Maybe<number>
+  dosage:  Maybe<string>
+  intake_frequency: Maybe<string>
+  medication_key_id: string
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1315,4 +1353,5 @@ export type DatabaseSchema = {
   conditions: Condition
   patient_conditions: SqlRow<PatientCondition>
   medications: SqlRow<Medication>
+  patient_medications: SqlRow<PatientMedication>
 }

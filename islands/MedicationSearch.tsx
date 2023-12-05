@@ -105,12 +105,12 @@ export default function MedicationSearch({
         )}
       </SearchInput>
       {selected && (
-        <input type='hidden' name={`${name}_id`} value={selected.key_id} />
+        <input type='hidden' name={`${name}_key_id`} value={selected.key_id} />
       )}
       {includeDoses && (
         <>
           <Select
-            name='dose'
+            name={`${name}_dose`} 
             required
             label='Dose'
           >
@@ -120,13 +120,12 @@ export default function MedicationSearch({
                 <option value='{d}'>{d}</option>
               ))}
           </Select>
-          <input type='hidden' name={`${name}_dose`} />
         </>
       )}
       {includeIntake && (
         <>
           <Select
-            name='intake_frequency'
+            name={`${name}_intake_frequency`}
             required
             label='Intake'
           >
@@ -134,7 +133,6 @@ export default function MedicationSearch({
             {selected &&
               intakeFrequencies.map((d) => <option value='{d}'>{d}</option>)}
           </Select>
-          <input type='hidden' name={`${name}_intake_frequency`} />
         </>
       )}
     </FormRow>

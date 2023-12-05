@@ -6,9 +6,11 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
+  PreExistingConditions
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
+import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import {
@@ -69,15 +71,15 @@ type AddressFormValues = {
 }
 
 type ConditionsFormValues = {
-  conditions: [ { 
+  conditions: [{
     id: Maybe<number>
     condition_id: number
     start_date: Maybe<string>
     end_date: Maybe<string>
     removed: Maybe<boolean>
-    cormorbidities: [{
+    comorbidities: [{
       id: Maybe<number>
-      cormorbidity_id: string
+      comorbidity_id: string
       removed: Maybe<boolean>
     }]
     medications: [{
@@ -275,19 +277,23 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
-    const patient = await patients.upsert(ctx.state.trx, {
-      ...transformedFormData,
-      id: id ? parseInt(id) : undefined,
-      completed_onboarding: step === 'lifestyle',
-    })
+    if (step === 'pre-existing_conditions') {
+      patient_conditions.upsert(ctx.state.trx, parseInt(id!) ,transformedFormData as PreExistingConditions)
+    } else {
+      const patient = await patients.upsert(ctx.state.trx, {
+        ...transformedFormData,
+        id: id ? parseInt(id) : undefined,
+        completed_onboarding: step === 'lifestyle',
+      })
+    }
 
     if (step === 'personal') {
-      return redirect(`/app/patients/add?step=address&patient_id=${patient.id}`)
+      return redirect(`/app/patients/add?step=address&patient_id=${id}`)
     }
 
     if (step === 'address') {
       return redirect(
-        `/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+        `/app/patients/add?step=pre-existing_conditions&patient_id=${id}`,
       )
     }
 
@@ -297,7 +303,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     if (step === 'family') {
       const success = encodeURIComponent(
-        `Awesome! ${patient.name} has finished onboarding!`,
+        `Awesome! ${id} has finished onboarding!`,
       )
       return redirect(`/app/patients?success=${success}`)
     }

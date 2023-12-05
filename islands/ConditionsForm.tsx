@@ -19,8 +19,8 @@ export default function ConditionsForm() {
     setPatientConditions([...patientConditions])
   }
 
-  const addCormorbidity = (condition: any) => {
-    condition.cormorbidities = [...(condition.cormorbidities || []), {}]
+  const addComorbidity = (condition: any) => {
+    condition.comorbidities = [...(condition.comorbidities || []), {}]
     setPatientConditions([...patientConditions])
   }
 
@@ -34,8 +34,8 @@ export default function ConditionsForm() {
     setPatientConditions([...patientConditions])
   }
 
-  const removeConditionCormorbidity = (cormorbidity: any) => {
-    cormorbidity.removed = true
+  const removeConditionComorbidity = (comorbidity: any) => {
+    comorbidity.removed = true
     setPatientConditions([...patientConditions])
   }
 
@@ -56,49 +56,54 @@ export default function ConditionsForm() {
               </a>
               <ConditionSearch
                 label='Condition name'
-                name={`patient_conditions.conditions[${i}].`}
+                name={`conditions[${i}].`}
                 value={c.primary_name}
               />
               <DateInput
-                name={`patient_conditions.conditions[${i}].start_date`}
+                name={`conditions[${i}].start_date`}
                 label='Start Date'
                 value={c.start_date}
               />
               <DateInput
-                name={`patient_conditions.conditions[${i}].end_date`}
+                name={`conditions[${i}].end_date`}
                 label='End Date'
                 value={c.end_date}
               />
             </FormRow>
             <div className='pl-20 mt-4'>
               <div>
-                {c.cormorbidities &&
-                  c.cormorbidities.map((
-                    cormorbidity: any,
+                {c.comorbidities &&
+                  c.comorbidities.map((
+                    comorbidity: any,
                     cIndex: number,
-                  ) => (!cormorbidity.removed &&
+                  ) => (!comorbidity.removed &&
                     (
                       <FormRow className='w-full'>
                         <a
                           className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
                           onClick={() =>
-                            removeConditionCormorbidity(cormorbidity)}
+                            removeConditionComorbidity(comorbidity)}
                         >
                           <RemoveIcon />
                         </a>
                         <ConditionSearch
-                          label='Cormorbidity name'
-                          name={`patient_conditions.conditions[${i}].cormorbidities[${cIndex}]`}
+                          label='Comorbidity name'
+                          name={`conditions[${i}].comorbidities[${cIndex}]`}
+                        />
+                        <input
+                          type='hidden'
+                          name={`conditions[${i}].comorbidities[${cIndex}]`}
+                          value={comorbidity.id}
                         />
                       </FormRow>
                     ))
                   )}
                 <a
                   className='text-sm text-indigo-600 flex mt-1 cursor-pointer'
-                  onClick={() => addCormorbidity(c)}
+                  onClick={() => addComorbidity(c)}
                 >
                   <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full' />
-                  Add Cormorbidity
+                  Add Comorbidity
                 </a>
               </div>
               <hr class='w-48 h-1 mx-auto my-1 bg-gray-100 border-0 rounded dark:bg-gray-700' />
@@ -118,9 +123,14 @@ export default function ConditionsForm() {
                         </a>
                         <MedicationSearch
                           label='Medications'
-                          name={`patient_conditions.conditions[${i}].medications[${mIndex}]`}
+                          name={`conditions[${i}].medications[${mIndex}]`}
                           includeDoses
                           includeIntake
+                        />
+                        <input
+                          type='hidden'
+                          name={`conditions[${i}].medications[${mIndex}].id`}
+                          value={medication.id}
                         />
                       </FormRow>
                     ))
