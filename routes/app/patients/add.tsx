@@ -6,7 +6,7 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
-  PreExistingConditions
+  PreExistingConditions,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
@@ -256,7 +256,10 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'pre-existing_conditions') {
-      const conditions = await patient_conditions.getPatientConditions(ctx.state.trx,  { _patient_id: patient_id! })
+      const conditions = await patient_conditions.getPatientConditions(
+        ctx.state.trx,
+        { _patient_id: patient_id! },
+      )
       return ctx.render({
         healthWorker,
         patient,
@@ -284,13 +287,19 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     )
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
+
+    console.log('formData', formData)
     // deno-lint-ignore no-explicit-any
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
     if (step === 'pre-existing_conditions') {
       const conditions = Array.from(await req.formData())
-      patient_conditions.upsert(ctx.state.trx, parseInt(id!) ,transformedFormData as PreExistingConditions)
+      patient_conditions.upsert(
+        ctx.state.trx,
+        parseInt(id!),
+        transformedFormData as PreExistingConditions,
+      )
     } else {
       const patient = await patients.upsert(ctx.state.trx, {
         ...transformedFormData,

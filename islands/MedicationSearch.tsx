@@ -36,7 +36,7 @@ export default function MedicationSearch({
   const onDocumentClick = useCallback(() => {
     setIsFocused(
       document.activeElement ===
-        document.querySelector(`input[name="${name}_name"]`),
+        document.querySelector(`input[name="${name}.name"]`),
     )
   }, [])
 
@@ -74,7 +74,7 @@ export default function MedicationSearch({
   return (
     <FormRow className='w-full'>
       <SearchInput
-        name={`${name}_name`}
+        name={`${name}.name`}
         label={label}
         value={selected?.generic_name}
         required={required}
@@ -105,19 +105,19 @@ export default function MedicationSearch({
         )}
       </SearchInput>
       {selected && (
-        <input type='hidden' name={`${name}_key_id`} value={selected.key_id} />
+        <input type='hidden' name={`${name}.key_id`} value={selected.key_id} />
       )}
       {includeDoses && (
         <>
           <Select
-            name={`${name}_dose`} 
+            name={`${name}.dose`}
             required
             label='Dose'
           >
             <option value=''>Select</option>
             {selected &&
               selected.strength?.split(';').map((d) => (
-                <option value='{d}'>{d}</option>
+                <option value={d}>{d}</option>
               ))}
           </Select>
         </>
@@ -125,13 +125,13 @@ export default function MedicationSearch({
       {includeIntake && (
         <>
           <Select
-            name={`${name}_intake_frequency`}
+            name={`${name}.intake_frequency`}
             required
             label='Intake'
           >
             <option value=''>Select</option>
             {selected &&
-              intakeFrequencies.map((d) => <option value='{d}'>{d}</option>)}
+              intakeFrequencies.map((d) => <option value={d}>{d}</option>)}
           </Select>
         </>
       )}

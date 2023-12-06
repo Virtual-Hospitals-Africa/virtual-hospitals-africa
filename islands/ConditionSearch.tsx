@@ -34,7 +34,7 @@ export default function ConditionSearch({
   const onDocumentClick = useCallback(() => {
     setIsFocused(
       document.activeElement ===
-        document.querySelector(`input[name="${name}_name"]`),
+        document.querySelector(`input[name="${name}.name"]`),
     )
   }, [])
 
@@ -72,7 +72,7 @@ export default function ConditionSearch({
   return (
     <FormRow className='w-full'>
       <SearchInput
-        name={`${name}_name`}
+        name={`${name}.name`}
         label={label}
         value={selected?.primary_name}
         placeholder='Search for conditions'
@@ -101,7 +101,7 @@ export default function ConditionSearch({
         )}
       </SearchInput>
       {selected && (
-        <input type='hidden' name={`${name}_id`} value={selected.key_id} />
+        <input type='hidden' name={`${name}.id`} value={selected.key_id} />
       )}
     </FormRow>
   )

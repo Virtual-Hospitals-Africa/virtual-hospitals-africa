@@ -60,16 +60,16 @@ export default function ConditionsForm({
               </a>
               <ConditionSearch
                 label='Condition name'
-                name={`conditions[${i}].`}
+                name={`conditions.${i}.`}
                 value={c.primary_name}
               />
               <DateInput
-                name={`conditions[${i}].start_date`}
+                name={`conditions.${i}.start_date`}
                 label='Start Date'
                 value={c.start_date}
               />
               <DateInput
-                name={`conditions[${i}].end_date`}
+                name={`conditions.${i}.end_date`}
                 label='End Date'
                 value={c.end_date}
               />
@@ -92,11 +92,11 @@ export default function ConditionsForm({
                         </a>
                         <ConditionSearch
                           label='Comorbidity name'
-                          name={`conditions[${i}].comorbidities[${cIndex}]`}
+                          name={`conditions.${i}.comorbidities.${cIndex}`}
                         />
                         <input
                           type='hidden'
-                          name={`conditions[${i}].comorbidities[${cIndex}]`}
+                          name={`conditions.${i}.comorbidities.${cIndex}`}
                           value={comorbidity.id}
                         />
                       </FormRow>
@@ -127,14 +127,9 @@ export default function ConditionsForm({
                         </a>
                         <MedicationSearch
                           label='Medications'
-                          name={`conditions[${i}].medications[${mIndex}]`}
+                          name={`conditions.${i}.medications.${mIndex}`}
                           includeDoses
                           includeIntake
-                        />
-                        <input
-                          type='hidden'
-                          name={`conditions[${i}].medications[${mIndex}].id`}
-                          value={medication.id}
                         />
                       </FormRow>
                     ))
