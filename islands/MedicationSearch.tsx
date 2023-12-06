@@ -16,6 +16,8 @@ export default function MedicationSearch({
   value,
   includeIntake,
   includeDoses,
+  doseValue,
+  intakeValue
 }: {
   name: string
   label: string
@@ -23,6 +25,8 @@ export default function MedicationSearch({
   value?: { id: number; name: string }
   includeIntake?: boolean
   includeDoses?: boolean
+  doseValue?: string
+  intakeValue?: string
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<Medication | null>()
@@ -117,7 +121,7 @@ export default function MedicationSearch({
             <option value=''>Select</option>
             {selected &&
               selected.strength?.split(';').map((d) => (
-                <option value={d}>{d}</option>
+                <option value={d} selected={doseValue === d}>{d}</option>
               ))}
           </Select>
         </>
@@ -131,7 +135,7 @@ export default function MedicationSearch({
           >
             <option value=''>Select</option>
             {selected &&
-              intakeFrequencies.map((d) => <option value={d}>{d}</option>)}
+              intakeFrequencies.map((d) => <option value={d} selected={intakeValue === d}>{d}</option>)}
           </Select>
         </>
       )}

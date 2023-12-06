@@ -288,13 +288,11 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
 
-    console.log('formData', formData)
     // deno-lint-ignore no-explicit-any
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
     if (step === 'pre-existing_conditions') {
-      const conditions = Array.from(await req.formData())
       patient_conditions.upsert(
         ctx.state.trx,
         parseInt(id!),

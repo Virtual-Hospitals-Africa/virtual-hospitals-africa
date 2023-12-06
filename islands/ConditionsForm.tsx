@@ -50,8 +50,8 @@ export default function ConditionsForm({
 
   return (
     <div>
-      {patientConditions.map((c: any, i: number) => (!c.removed &&
-        (
+      {patientConditions.map((c: any, i: number) => (!c.removed
+        ? (
           <div>
             <FormRow className='mt-1 w-full'>
               <a
@@ -62,7 +62,7 @@ export default function ConditionsForm({
               </a>
               <ConditionSearch
                 label='Condition name'
-                name={`conditions.${i}`}
+                name={`conditions.${i}.condition`}
                 value={c.primary_name}
               />
               <DateInput
@@ -75,6 +75,11 @@ export default function ConditionsForm({
                 label='End Date'
                 value={c.end_date}
               />
+              <input
+                type='hidden'
+                name={`conditions.${i}.id`}
+                value={c.id}
+              />
             </FormRow>
             <div className='pl-20 mt-4'>
               <div>
@@ -82,8 +87,8 @@ export default function ConditionsForm({
                   c.comorbidities.map((
                     comorbidity: any,
                     cIndex: number,
-                  ) => (!comorbidity.removed &&
-                    (
+                  ) => (!comorbidity.removed
+                    ? (
                       <FormRow className='w-full'>
                         <a
                           className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
@@ -94,9 +99,29 @@ export default function ConditionsForm({
                         </a>
                         <ConditionSearch
                           label='Comorbidity name'
-                          name={`conditions.${i}.comorbidities.${cIndex}`}
+                          name={`conditions.${i}.comorbidities.${cIndex}.condition`}
+                          value={comorbidity?.display_name}
+                        />
+                        <input
+                          type='hidden'
+                          name={`conditions.${i}.comorbidities.${cIndex}.id`}
+                          value={c.id}
                         />
                       </FormRow>
+                    )
+                    : comorbidity.id && comorbidity.removed && (
+                      <>
+                        <input
+                          type='hidden'
+                          name={`conditions.${i}.comorbidities.${cIndex}.id`}
+                          value={c.id}
+                        />
+                        <input
+                          type='hidden'
+                          name={`conditions.${i}.comorbidities.${cIndex}.removed`}
+                          value='true'
+                        />
+                      </>
                     ))
                   )}
                 <a
@@ -113,8 +138,8 @@ export default function ConditionsForm({
                   c.medications.map((
                     medication: any,
                     mIndex: number,
-                  ) => (!medication.removed &&
-                    (
+                  ) => (!medication.removed
+                    ? (
                       <FormRow className='w-full'>
                         <a
                           className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
@@ -125,10 +150,30 @@ export default function ConditionsForm({
                         <MedicationSearch
                           label='Medications'
                           name={`conditions.${i}.medications.${mIndex}`}
+                          value={medication.display_name}
                           includeDoses
                           includeIntake
                         />
+                        <input
+                          type='hidden'
+                          name={`conditions.${i}.medications.${mIndex}.id`}
+                          value={c.id}
+                        />
                       </FormRow>
+                    )
+                    : medication.id && medication.removed && (
+                      <>
+                        <input
+                          type='hidden'
+                          name={`conditions.${i}.medications.${mIndex}.removed`}
+                          value={c.id}
+                        />
+                        <input
+                          type='hidden'
+                          name={`conditions.${i}.medications.${mIndex}.id`}
+                          value='true'
+                        />
+                      </>
                     ))
                   )}
                 <a
@@ -141,6 +186,20 @@ export default function ConditionsForm({
               </div>
             </div>
           </div>
+        )
+        : c.id && c.removed && (
+          <>
+            <input
+              type='hidden'
+              name={`conditions.${i}.id`}
+              value={c.id}
+            />
+            <input
+              type='hidden'
+              name={`conditions.${i}.removed`}
+              value='true'
+            />
+          </>
         ))
       )}
       <div className='row mt-3'>
