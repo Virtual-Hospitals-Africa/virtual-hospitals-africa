@@ -4,7 +4,8 @@ import * as media from '../db/models/media.ts'
 import { TrxOrDb } from '../types.ts'
 import { assertOr400 } from './assertOr.ts'
 
-type Primitive = string | number | boolean | Date
+type Primitive = string | number | boolean
+
 export type FormValue = Primitive | FormValue[]
 
 export function parseParam(param: string): FormValue {

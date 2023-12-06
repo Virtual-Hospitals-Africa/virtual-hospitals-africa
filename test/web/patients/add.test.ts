@@ -4,6 +4,7 @@ import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
   describeWithWebServer,
+  getFormValues,
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
@@ -12,6 +13,7 @@ import * as address from '../../../db/models/address.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
+import deepOmit from '../../../util/deepOmit.ts'
 
 describeWithWebServer('/app/patients/add', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -154,7 +156,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
     assertEquals(patientAddress[0].street, '120 Main Street')
 
-    const getAddressResponse = await fetch(
+    const getResponse = await fetch(
       `${route}/app/patients/add?step=address&patient_id=${patient.id}`,
       {
         headers: {
@@ -163,7 +165,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       },
     )
 
-    const pageContents = await getAddressResponse.text()
+    const pageContents = await getResponse.text()
     const $ = cheerio.load(pageContents)
     assertEquals($('select[name="country_id"]').val(), String(zimbabwe.id))
     assertEquals($('select[name="province_id"]').val(), String(province.id))
@@ -184,10 +186,10 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     })
 
     const body = new FormData()
-    body.set('pre_existing_conditions.0.key_id', '4373')
+    body.set('pre_existing_conditions.0.key_id', 'c_4373')
     body.set('pre_existing_conditions.0.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.0.comorbidities.0.key_id', '8321')
-    body.set('pre_existing_conditions.0.medications.0.key_id', '1')
+    body.set('pre_existing_conditions.0.comorbidities.0.key_id', 'c_8321')
+    body.set('pre_existing_conditions.0.medications.0.medication_id', '1')
     body.set('pre_existing_conditions.0.medications.0.dosage', '0.9% W/W')
     body.set(
       'pre_existing_conditions.0.medications.0.intake_frequency',
@@ -223,11 +225,11 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     assertEquals(preExistingConditions.length, 1)
     const [preExistingCondition] = preExistingConditions
-    assertEquals(preExistingCondition.key_id, '4373')
+    assertEquals(preExistingCondition.key_id, 'c_4373')
     assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
     assertEquals(preExistingCondition.start_date, '1989-01-12')
     assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].key_id, '8321')
+    assertEquals(preExistingCondition.comorbidities[0].key_id, 'c_8321')
     assertEquals(
       preExistingCondition.comorbidities[0].primary_name,
       'Coma - hyperosmolar nonketotic (HONK)',
@@ -243,30 +245,26 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       preExistingCondition.medications[0].intake_frequency,
       'qod / alternate days',
     )
-    assertEquals(preExistingCondition.medications[0].key_id, '1')
+    assertEquals(preExistingCondition.medications[0].medication_id, 1)
     assertEquals(
       preExistingCondition.medications[0].strength,
       '6G/1000 ML;0.9% W/W;0.9%;0.9 % (W/V)',
     )
 
-    // const getAddressResponse = await fetch(
-    //   `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
-    //   {
-    //     headers: {
-    //       Cookie: `sessionId=${sessionId}`,
-    //     },
-    //   },
-    // )
+    const getResponse = await fetch(
+      `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+      {
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+        },
+      },
+    )
 
-    // const pageContents = await getAddressResponse.text()
-    // const $ = cheerio.load(pageContents)
-    // assertEquals($('select[name="country_id"]').val(), String(zimbabwe.id))
-    // assertEquals($('select[name="province_id"]').val(), String(province.id))
-    // assertEquals($('select[name="ward_id"]').val(), String(ward.id))
-    // assertEquals(
-    //   $('select[name="suburb_id"]').val(),
-    //   suburb && String(suburb.id),
-    // )
-    // assertEquals($('input[name="street"]').val(), '120 Main Street')
+    const pageContents = await getResponse.text()
+    const $ = cheerio.load(pageContents)
+    const formValues = getFormValues($)
+    assertEquals(formValues, {
+      pre_existing_conditions: deepOmit(preExistingConditions, 'strength'),
+    })
   })
 })

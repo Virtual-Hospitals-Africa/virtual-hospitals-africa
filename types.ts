@@ -153,7 +153,7 @@ export type PreExistingCondition = {
   }[]
   medications: {
     id: number
-    key_id: string
+    medication_id: number
     dosage: string
     intake_frequency: string
     generic_name: string
@@ -1295,7 +1295,6 @@ export type Address = {
 }
 
 export type Medication = {
-  key_id: string
   trade_name: string
   generic_name: string
   forms: string
@@ -1311,7 +1310,7 @@ export type PatientMedication = {
   condition_id: Maybe<number>
   dosage: string
   intake_frequency: string
-  medication_key_id: string
+  medication_id: number
 }
 
 export type DatabaseSchema = {

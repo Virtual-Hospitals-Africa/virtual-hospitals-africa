@@ -18,7 +18,6 @@ import {
   convertToTime,
   formatHarare,
 } from '../../../util/date.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../db/models/health_workers.ts'
 import { padTime } from '../../../util/pad.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseDate } from '../../../util/date.ts'

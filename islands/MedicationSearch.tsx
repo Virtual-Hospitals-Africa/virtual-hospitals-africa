@@ -3,9 +3,9 @@ import SearchResults, {
   MedicationSearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput, Select } from '../components/library/form/Inputs.tsx'
-import { assert } from 'https://deno.land/std@0.160.0/_util/assert.ts'
+import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
-import { Medication } from '../types.ts'
+import { HasId, Medication } from '../types.ts'
 import FormRow from '../components/library/form/Row.tsx'
 import { MedicinesFrequencyList } from '../db/models/medications.ts'
 
@@ -19,7 +19,7 @@ export default function MedicationSearch({
   label: string
   required?: boolean
   value?: {
-    key_id: string
+    medication_id: number
     generic_name: string
     dosage: string
     intake_frequency: string
@@ -29,14 +29,14 @@ export default function MedicationSearch({
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
     | {
-      key_id: string
+      medication_id: number
       generic_name: string
       dosage?: string
       intake_frequency?: string
     }
     | null
   >(value || null)
-  const [medications, setMedications] = useState<Medication[]>([])
+  const [medications, setMedications] = useState<HasId<Medication>[]>([])
   const [search, setSearchImmediate] = useState(value?.generic_name ?? '')
   const [setSearch] = useState({
     delay: debounce(setSearchImmediate, 220),
@@ -104,10 +104,10 @@ export default function MedicationSearch({
             {medications.map((med) => (
               <MedicationSearchResult
                 generic_name={med.generic_name}
-                isSelected={selected?.key_id === med?.key_id}
+                isSelected={selected?.medication_id === med?.id}
                 onSelect={() => {
                   setSelected({
-                    key_id: med.key_id,
+                    medication_id: med.id,
                     generic_name: med.generic_name,
                   })
                   assert(med.strength)
@@ -120,7 +120,11 @@ export default function MedicationSearch({
         )}
       </SearchInput>
       {selected && (
-        <input type='hidden' name={`${name}.key_id`} value={selected.key_id} />
+        <input
+          type='hidden'
+          name={`${name}.medication_id`}
+          value={selected.medication_id}
+        />
       )}
       <Select
         name={`${name}.dosage`}

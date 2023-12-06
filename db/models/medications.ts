@@ -1,15 +1,15 @@
 import { Maybe, Medication, TrxOrDb } from '../../types.ts'
 
-export async function search(
+export function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
   },
 ): Promise<Medication[]> {
-  const query = trx
+  return trx
     .selectFrom('medications')
     .select([
-      'medications.key_id',
+      'medications.id',
       'medications.trade_name',
       'medications.generic_name',
       'medications.forms',
@@ -20,8 +20,7 @@ export async function search(
       'medications.manufacturers',
     ])
     .where('generic_name', 'ilike', `%${opts.search}%`)
-  const medications = await query.execute()
-  return medications
+    .execute()
 }
 
 export const MedicinesFrequencyList = [
