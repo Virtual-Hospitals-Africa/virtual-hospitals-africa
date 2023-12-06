@@ -1,14 +1,14 @@
 import {
-  PreExistingConditions,
-  TrxOrDb,
   PatientCondition,
   PatientMedication,
+  PreExistingConditions,
+  TrxOrDb,
 } from '../../types.ts'
 
 export async function upsert(
   trx: TrxOrDb,
   _patient_id: number,
-  patientconditions: PreExistingConditions
+  patientconditions: PreExistingConditions,
 ) {
   const removedConditions = patientconditions.conditions
     .filter((c) => c.removed)
@@ -30,7 +30,7 @@ export async function upsert(
     if (condition.id) {
       //update existing condition
       const dbCondition = databaseConditions.conditions.filter(
-        (c) => c.id === condition.id
+        (c) => c.id === condition.id,
       )[0]
 
       if (
@@ -47,10 +47,6 @@ export async function upsert(
           .where('id', '=', condition.id)
           .executeTakeFirstOrThrow()
       }
-
-
-
-
     } else {
       //Add new condition
       const result = await trx
@@ -67,28 +63,27 @@ export async function upsert(
 
       if (condition?.comorbidities?.length > 0) {
         const comorbidities = condition.comorbidities.map(
-          (c) =>
-            ({
-              patient_id: _patient_id,
-              condition_key_id: c.condition_id,
-              comorbidity_of_condition_id: result!.id,
-            } as PatientCondition)
+          (c) => ({
+            patient_id: _patient_id,
+            condition_key_id: c.condition_id,
+            comorbidity_of_condition_id: result!.id,
+          } as PatientCondition),
         )
         trx.insertInto('patient_conditions').values(comorbidities).execute()
       }
 
       if (condition?.medications?.length > 0) {
         const medications = condition.medications.map(
-          (c) =>
-            ({
-              patient_id: _patient_id,
-              dosage: c.dose,
-              intake_frequency: c.intake_frequency,
-              condition_id: result!.id,
-              medication_key_id: c.medication_id,
-            } as PatientMedication)
+          (c) => ({
+            patient_id: _patient_id,
+            dosage: c.dose,
+            intake_frequency: c.intake_frequency,
+            condition_id: result!.id,
+            medication_key_id: c.medication_id,
+          } as PatientMedication),
         )
-        trx.insertInto('patient_condition_medications').values(medications).execute()
+        trx.insertInto('patient_condition_medications').values(medications)
+          .execute()
       }
     }
   })
@@ -98,14 +93,14 @@ export async function getPatientConditions(
   trx: TrxOrDb,
   opts: {
     _patient_id: number
-  }
+  },
 ): Promise<PreExistingConditions> {
   const _patientConditions = await trx
     .selectFrom('patient_conditions')
     .innerJoin(
       'conditions',
       'conditions.key_id',
-      'patient_conditions.condition_key_id'
+      'patient_conditions.condition_key_id',
     )
     .where('patient_conditions.patient_id', '=', opts._patient_id)
     .select([
@@ -123,7 +118,7 @@ export async function getPatientConditions(
     .innerJoin(
       'medications',
       'medications.key_id',
-      'patient_condition_medications.medication_key_id'
+      'patient_condition_medications.medication_key_id',
     )
     .where('patient_condition_medications.patient_id', '=', opts._patient_id)
     .select([

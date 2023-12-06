@@ -87,7 +87,7 @@ export function TextInput(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value || ''}
+        value={value || undefined}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -124,7 +124,7 @@ export function TextArea(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value || ''}
+        value={value || undefined}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -176,7 +176,7 @@ export function DateInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
-        value={value || ''}
+        value={value || undefined}
       />
     </LabeledInput>
   )
@@ -193,7 +193,7 @@ export function PhoneNumberInput(
         type='tel'
         name={name}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
-        value={value || ''}
+        value={value || undefined}
         placeholder={placeholder}
         required={required}
         onInput={onInput}

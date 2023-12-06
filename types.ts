@@ -1311,12 +1311,11 @@ export type Medication = {
   manufacturers: Maybe<string>
 }
 
-
 export type PatientMedication = {
   id: number
   patient_id: number
   condition_id: Maybe<number>
-  dosage:  Maybe<string>
+  dosage: Maybe<string>
   intake_frequency: Maybe<string>
   medication_key_id: string
 }

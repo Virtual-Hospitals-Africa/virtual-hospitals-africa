@@ -10,9 +10,11 @@ import MedicationSearch from './MedicationSearch.tsx'
 export default function ConditionsForm({
   conditions,
 }: {
-  conditions?: any
+  conditions?: any[]
 }) {
-  const [patientConditions, setPatientConditions] = useState<any>([])
+  const [patientConditions, setPatientConditions] = useState<any>(
+    conditions || [],
+  )
 
   const addCondition = () => {
     setPatientConditions([...patientConditions, {}])
@@ -60,7 +62,7 @@ export default function ConditionsForm({
               </a>
               <ConditionSearch
                 label='Condition name'
-                name={`conditions.${i}.`}
+                name={`conditions.${i}`}
                 value={c.primary_name}
               />
               <DateInput
@@ -93,11 +95,6 @@ export default function ConditionsForm({
                         <ConditionSearch
                           label='Comorbidity name'
                           name={`conditions.${i}.comorbidities.${cIndex}`}
-                        />
-                        <input
-                          type='hidden'
-                          name={`conditions.${i}.comorbidities.${cIndex}`}
-                          value={comorbidity.id}
                         />
                       </FormRow>
                     ))

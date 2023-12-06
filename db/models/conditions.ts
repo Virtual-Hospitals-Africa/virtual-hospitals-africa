@@ -1,4 +1,4 @@
-import { Maybe, Condition, TrxOrDb } from '../../types.ts'
+import { Condition, Maybe, TrxOrDb } from '../../types.ts'
 
 export async function search(
   trx: TrxOrDb,

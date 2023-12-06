@@ -8,8 +8,10 @@ export async function up(db: Kysely<unknown>) {
 
   await db.schema
     .alterTable('patient_condition_medications')
-    .addColumn('condition_id', 'integer', (col) =>
-      col.references('patient_conditions.id').onDelete('cascade')
+    .addColumn(
+      'condition_id',
+      'integer',
+      (col) => col.references('patient_conditions.id').onDelete('cascade'),
     )
     .execute()
 }
@@ -17,8 +19,10 @@ export async function up(db: Kysely<unknown>) {
 export function down(db: Kysely<unknown>) {
   db.schema
     .alterTable('patient_condition_medications')
-    .addColumn('condition_key_id', 'varchar(255)', (col) =>
-      col.references('conditions.key_id').onDelete('cascade')
+    .addColumn(
+      'condition_key_id',
+      'varchar(255)',
+      (col) => col.references('conditions.key_id').onDelete('cascade'),
     )
 
   db.schema
