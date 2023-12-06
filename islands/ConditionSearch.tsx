@@ -17,16 +17,16 @@ export default function ConditionSearch({
   name: string
   label: string
   required?: boolean
-  value?: { id: number; name: string }
+  value?: { key_id: string; primary_name: string }
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
-    Condition | null
-  >()
+    { key_id: string; primary_name: string } | null
+  >(value || null)
   const [conditions, setConditions] = useState<
     Condition[]
   >([])
-  const [search, setSearchImmediate] = useState(value?.name ?? '')
+  const [search, setSearchImmediate] = useState(value?.primary_name ?? '')
   const [setSearch] = useState({
     delay: debounce(setSearchImmediate, 220),
   })
@@ -34,7 +34,7 @@ export default function ConditionSearch({
   const onDocumentClick = useCallback(() => {
     setIsFocused(
       document.activeElement ===
-        document.querySelector(`input[name="${name}_name"]`),
+        document.querySelector(`input[name="${name}.primary_name"]`),
     )
   }, [])
 
@@ -72,7 +72,7 @@ export default function ConditionSearch({
   return (
     <FormRow className='w-full'>
       <SearchInput
-        name={`${name}_name`}
+        name={`${name}.primary_name`}
         label={label}
         value={selected?.primary_name}
         placeholder='Search for conditions'
@@ -92,7 +92,10 @@ export default function ConditionSearch({
                 condition={c.primary_name}
                 isSelected={selected?.key_id === c?.key_id}
                 onSelect={() => {
-                  setSelected(c)
+                  setSelected({
+                    key_id: c.key_id,
+                    primary_name: c.primary_name,
+                  })
                   setSearchImmediate(c.primary_name)
                 }}
               />
@@ -101,7 +104,7 @@ export default function ConditionSearch({
         )}
       </SearchInput>
       {selected && (
-        <input type='hidden' name={`${name}_id`} value={selected.key_id} />
+        <input type='hidden' name={`${name}.key_id`} value={selected.key_id} />
       )}
     </FormRow>
   )

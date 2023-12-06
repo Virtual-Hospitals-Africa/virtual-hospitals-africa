@@ -140,30 +140,25 @@ export type PatientCondition = {
   comorbidity_of_condition_id: Maybe<number>
 }
 
-export type PreExistingConditions = {
-  conditions: [{
-    id: Maybe<number>
-    condition_id: string
-    display_name: Maybe<string>
-    start_date: Maybe<string>
-    end_date: Maybe<string>
-    removed: Maybe<boolean>
-    comorbidities: [{
-      id: Maybe<number>
-      display_name: Maybe<string>
-      comorbidity_id: number
-      condition_id: string
-      removed: Maybe<boolean>
-    }]
-    medications: [{
-      id: Maybe<number>
-      medication_id: string
-      dose: Maybe<string>
-      intake_frequency: Maybe<string>
-      removed: Maybe<boolean>
-      display_name: Maybe<string>
-    }]
-  }]
+export type PreExistingCondition = {
+  id: number
+  key_id: string
+  primary_name: string
+  start_date: string
+  comorbidities: {
+    id: number
+    key_id: string
+    primary_name: string
+    start_date?: Maybe<string>
+  }[]
+  medications: {
+    id: number
+    key_id: string
+    dosage: string
+    intake_frequency: string
+    generic_name: string
+    strength: string
+  }[]
 }
 
 export type OnboardingPatient =
@@ -1303,8 +1298,8 @@ export type Medication = {
   key_id: string
   trade_name: string
   generic_name: string
-  forms: Maybe<string>
-  strength: Maybe<string>
+  forms: string
+  strength: string
   category: Maybe<string>
   registration_no: Maybe<string>
   applicant_name: Maybe<string>
@@ -1312,11 +1307,10 @@ export type Medication = {
 }
 
 export type PatientMedication = {
-  id: number
   patient_id: number
   condition_id: Maybe<number>
-  dosage: Maybe<string>
-  intake_frequency: Maybe<string>
+  dosage: string
+  intake_frequency: string
   medication_key_id: string
 }
 

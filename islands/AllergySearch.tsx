@@ -54,6 +54,7 @@ export default function AllergySearch() {
       <FormRow>
         <SearchInput
           label=''
+          name=''
           placeholder='Search for allergies'
           value={searchTerm}
           onInput={(e) => {
@@ -82,15 +83,18 @@ export default function AllergySearch() {
       </FormRow>
 
       <div className='flex-start flex flex-wrap gap-2 w-full'>
-        {selectedAllergies.map((allergy) => (
-          <button
-            key={allergy}
-            onClick={() => toggleAllergyList(allergy)}
-            className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
-          >
-            {allergy}
-            <RemoveIcon />
-          </button>
+        {selectedAllergies.map((allergy, i) => (
+          <>
+            <button
+              key={allergy}
+              onClick={() => toggleAllergyList(allergy)}
+              className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
+            >
+              {allergy}
+              <RemoveIcon />
+            </button>
+            <input type='hidden' name={`allergies.${i}`} value={allergy} />
+          </>
         ))}
       </div>
     </>

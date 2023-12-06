@@ -23,6 +23,7 @@ function parseFormWithoutFilesNoTypeCheck(
   const parsed = {}
   params.forEach((value, key) => {
     assert(typeof value === 'string')
+    if (value === '') return
     set(parsed, key, parseParam(value))
   })
   return parsed

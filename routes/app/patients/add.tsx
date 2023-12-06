@@ -6,7 +6,7 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
-  PreExistingConditions,
+  PreExistingCondition,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
@@ -22,7 +22,7 @@ import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
-import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
+import PatientPreExistingConditions from '../../../components/patients/add/PreExistingConditionsForm.tsx'
 import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
@@ -33,21 +33,25 @@ type AddPatientProps =
   & {
     patient?: OnboardingPatient
     healthWorker: EmployedHealthWorker
-    conditions?: PreExistingConditions
   }
   & ({
     step:
       | 'personal'
       | 'family'
-      | 'pre-existing_conditions'
       | 'history'
       | 'occupation'
       | 'family'
       | 'lifestyle'
     adminDistricts?: undefined
+    preExistingConditions?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
+    preExistingConditions?: undefined
+  } | {
+    step: 'pre-existing_conditions'
+    adminDistricts?: undefined
+    preExistingConditions: PreExistingCondition[]
   })
 
 type PersonalFormValues = {
@@ -72,7 +76,7 @@ type AddressFormValues = {
 }
 
 type ConditionsFormValues = {
-  conditions: [{
+  conditions: {
     id: Maybe<number>
     condition_id: number
     start_date: Maybe<string>
@@ -86,11 +90,11 @@ type ConditionsFormValues = {
     medications: [{
       id: Maybe<number>
       medication_id: string
-      dose: Maybe<string>
+      dosage: Maybe<string>
       intake_frequency: Maybe<string>
       removed: Maybe<boolean>
     }]
-  }]
+  }[]
 }
 
 type FamilyFormValues = Record<string, unknown>
@@ -256,21 +260,24 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'pre-existing_conditions') {
-      const conditions = await patient_conditions.getPatientConditions(
-        ctx.state.trx,
-        { _patient_id: patient_id! },
-      )
+      const preExistingConditions = patient_id
+        ? await patient_conditions
+          .getPreExistingConditions(
+            ctx.state.trx,
+            { patient_id },
+          )
+        : []
       return ctx.render({
         healthWorker,
         patient,
         step,
-        conditions,
+        preExistingConditions,
       })
     }
 
     assertOr400(
       step === 'personal' ||
-        step === 'pre-existing_conditions' || step === 'family' ||
+        step === 'family' ||
         step === 'history' || step === 'occupation' || step === 'lifestyle',
     )
     return ctx.render({ healthWorker, patient, step })
@@ -278,7 +285,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   async POST(req, ctx) {
     const { searchParams } = new URL(req.url)
     const step = searchParams.get('step')
-    const id = searchParams.get('patient_id')
+    const patient_id = searchParams.get('patient_id')
 
     assertOr400(
       step === 'personal' || step === 'address' ||
@@ -292,37 +299,29 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
-    if (step === 'pre-existing_conditions') {
-      patient_conditions.upsert(
-        ctx.state.trx,
-        parseInt(id!),
-        transformedFormData as PreExistingConditions,
-      )
-    } else {
-      const patient = await patients.upsert(ctx.state.trx, {
-        ...transformedFormData,
-        id: id ? parseInt(id) : undefined,
-        completed_onboarding: step === 'lifestyle',
-      })
-    }
+    const patient = await patients.upsert(ctx.state.trx, {
+      ...transformedFormData,
+      id: (patient_id && parseInt(patient_id)) || undefined,
+      completed_onboarding: step === 'lifestyle',
+    })
 
     if (step === 'personal') {
-      return redirect(`/app/patients/add?step=address&patient_id=${id}`)
+      return redirect(`/app/patients/add?step=address&patient_id=${patient.id}`)
     }
 
     if (step === 'address') {
       return redirect(
-        `/app/patients/add?step=pre-existing_conditions&patient_id=${id}`,
+        `/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
       )
     }
 
     if (step === 'pre-existing_conditions') {
-      return redirect('/app/patients/add?step=family')
+      return redirect(`/app/patients/add?step=family&patient_id=${patient.id}`)
     }
 
     if (step === 'family') {
       const success = encodeURIComponent(
-        `Awesome! ${id} has finished onboarding!`,
+        `Awesome! ${patient.id} has finished onboarding!`,
       )
       return redirect(`/app/patients?success=${success}`)
     }
@@ -335,7 +334,10 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { stepsTopBar, currentStep } = useAddPatientSteps(props)
-  const { patient, healthWorker, adminDistricts, conditions } = props.data
+  const { patient, healthWorker, adminDistricts, preExistingConditions } =
+    props.data
+
+  console.log('preExistingConditions', preExistingConditions)
 
   return (
     <Layout
@@ -367,7 +369,11 @@ export default function AddPatient(
           )}
           {currentStep === 'family' && <FamilyForm patient={patient} />}
           {currentStep === 'pre-existing_conditions' && (
-            <PatientConditionsForm patient={patient} conditions={conditions} />
+            <PatientPreExistingConditions
+              patient={patient}
+              preExistingConditions={(assert(preExistingConditions),
+                preExistingConditions)}
+            />
           )}
           <hr className='my-2' />
           <Buttons

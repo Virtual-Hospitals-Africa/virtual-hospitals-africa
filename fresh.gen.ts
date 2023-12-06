@@ -44,14 +44,14 @@ import * as $38 from './routes/volunteer/[role].tsx'
 import * as $39 from './routes/waitlist.tsx'
 import * as $$0 from './islands/AllergySearch.tsx'
 import * as $$1 from './islands/ConditionSearch.tsx'
-import * as $$2 from './islands/ConditionsForm.tsx'
-import * as $$3 from './islands/ErrorMessage.tsx'
-import * as $$4 from './islands/FacilitySearch.tsx'
-import * as $$5 from './islands/JobPost.tsx'
-import * as $$6 from './islands/MedicationSearch.tsx'
-import * as $$7 from './islands/Menu.tsx'
-import * as $$8 from './islands/NationalIdInput.tsx'
-import * as $$9 from './islands/PersonSearch.tsx'
+import * as $$2 from './islands/ErrorMessage.tsx'
+import * as $$3 from './islands/FacilitySearch.tsx'
+import * as $$4 from './islands/JobPost.tsx'
+import * as $$5 from './islands/MedicationSearch.tsx'
+import * as $$6 from './islands/Menu.tsx'
+import * as $$7 from './islands/NationalIdInput.tsx'
+import * as $$8 from './islands/PersonSearch.tsx'
+import * as $$9 from './islands/PreExistingConditionsForm.tsx'
 import * as $$10 from './islands/ReligionSelect.tsx'
 import * as $$11 from './islands/SelectWithOther.tsx'
 import * as $$12 from './islands/SuccessMessage.tsx'
@@ -113,14 +113,14 @@ const manifest = {
   islands: {
     './islands/AllergySearch.tsx': $$0,
     './islands/ConditionSearch.tsx': $$1,
-    './islands/ConditionsForm.tsx': $$2,
-    './islands/ErrorMessage.tsx': $$3,
-    './islands/FacilitySearch.tsx': $$4,
-    './islands/JobPost.tsx': $$5,
-    './islands/MedicationSearch.tsx': $$6,
-    './islands/Menu.tsx': $$7,
-    './islands/NationalIdInput.tsx': $$8,
-    './islands/PersonSearch.tsx': $$9,
+    './islands/ErrorMessage.tsx': $$2,
+    './islands/FacilitySearch.tsx': $$3,
+    './islands/JobPost.tsx': $$4,
+    './islands/MedicationSearch.tsx': $$5,
+    './islands/Menu.tsx': $$6,
+    './islands/NationalIdInput.tsx': $$7,
+    './islands/PersonSearch.tsx': $$8,
+    './islands/PreExistingConditionsForm.tsx': $$9,
     './islands/ReligionSelect.tsx': $$10,
     './islands/SelectWithOther.tsx': $$11,
     './islands/SuccessMessage.tsx': $$12,

@@ -11,6 +11,7 @@ import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
+import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 
 describeWithWebServer('/app/patients/add', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -172,5 +173,100 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       suburb && String(suburb.id),
     )
     assertEquals($('input[name="street"]').val(), '120 Main Street')
+  })
+
+  it('supports POST on the pre-existing_conditions step, moving you to the family step', async () => {
+    const patient = await patients.upsert(db, {
+      name: 'Test Patient',
+    })
+    const { sessionId } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+
+    const body = new FormData()
+    body.set('pre_existing_conditions.0.key_id', '4373')
+    body.set('pre_existing_conditions.0.start_date', '1989-01-12')
+    body.set('pre_existing_conditions.0.comorbidities.0.key_id', '8321')
+    body.set('pre_existing_conditions.0.medications.0.key_id', '1')
+    body.set('pre_existing_conditions.0.medications.0.dosage', '0.9% W/W')
+    body.set(
+      'pre_existing_conditions.0.medications.0.intake_frequency',
+      'qod / alternate days',
+    )
+
+    const postResponse = await fetch(
+      `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+      {
+        method: 'POST',
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+        },
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assert(
+      postResponse.url ===
+        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+    )
+
+    const patientResult = await db.selectFrom('patients').selectAll().execute()
+    assertEquals(patientResult.length, 1)
+    assertEquals(patientResult[0].name, 'Test Patient')
+
+    const preExistingConditions = await getPreExistingConditions(db, {
+      patient_id: patientResult[0].id,
+    })
+
+    assertEquals(preExistingConditions.length, 1)
+    const [preExistingCondition] = preExistingConditions
+    assertEquals(preExistingCondition.key_id, '4373')
+    assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
+    assertEquals(preExistingCondition.start_date, '1989-01-12')
+    assertEquals(preExistingCondition.comorbidities.length, 1)
+    assertEquals(preExistingCondition.comorbidities[0].key_id, '8321')
+    assertEquals(
+      preExistingCondition.comorbidities[0].primary_name,
+      'Coma - hyperosmolar nonketotic (HONK)',
+    )
+    assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
+    assertEquals(preExistingCondition.medications.length, 1)
+    assertEquals(preExistingCondition.medications[0].dosage, '0.9% W/W')
+    assertEquals(
+      preExistingCondition.medications[0].generic_name,
+      'SODIUM CHLORIDE',
+    )
+    assertEquals(
+      preExistingCondition.medications[0].intake_frequency,
+      'qod / alternate days',
+    )
+    assertEquals(preExistingCondition.medications[0].key_id, '1')
+    assertEquals(
+      preExistingCondition.medications[0].strength,
+      '6G/1000 ML;0.9% W/W;0.9%;0.9 % (W/V)',
+    )
+
+    // const getAddressResponse = await fetch(
+    //   `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+    //   {
+    //     headers: {
+    //       Cookie: `sessionId=${sessionId}`,
+    //     },
+    //   },
+    // )
+
+    // const pageContents = await getAddressResponse.text()
+    // const $ = cheerio.load(pageContents)
+    // assertEquals($('select[name="country_id"]').val(), String(zimbabwe.id))
+    // assertEquals($('select[name="province_id"]').val(), String(province.id))
+    // assertEquals($('select[name="ward_id"]').val(), String(ward.id))
+    // assertEquals(
+    //   $('select[name="suburb_id"]').val(),
+    //   suburb && String(suburb.id),
+    // )
+    // assertEquals($('input[name="street"]').val(), '120 Main Street')
   })
 })

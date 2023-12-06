@@ -14,33 +14,42 @@ export default function MedicationSearch({
   label,
   required,
   value,
-  includeIntake,
-  includeDoses,
-  doseValue,
-  intakeValue
 }: {
   name: string
   label: string
   required?: boolean
-  value?: { id: number; name: string }
-  includeIntake?: boolean
-  includeDoses?: boolean
-  doseValue?: string
-  intakeValue?: string
+  value?: {
+    key_id: string
+    generic_name: string
+    dosage: string
+    intake_frequency: string
+    strength: string
+  }
 }) {
   const [isFocused, setIsFocused] = useState(false)
-  const [selected, setSelected] = useState<Medication | null>()
+  const [selected, setSelected] = useState<
+    | {
+      key_id: string
+      generic_name: string
+      dosage?: string
+      intake_frequency?: string
+    }
+    | null
+  >(value || null)
   const [medications, setMedications] = useState<Medication[]>([])
-  const [search, setSearchImmediate] = useState(value?.name ?? '')
+  const [search, setSearchImmediate] = useState(value?.generic_name ?? '')
   const [setSearch] = useState({
     delay: debounce(setSearchImmediate, 220),
   })
+  const [strengthOptions, setStrengthOptions] = useState<string[]>(
+    value?.strength.split(';') || [],
+  )
   const intakeFrequencies = MedicinesFrequencyList
 
   const onDocumentClick = useCallback(() => {
     setIsFocused(
       document.activeElement ===
-        document.querySelector(`input[name="${name}.name"]`),
+        document.querySelector(`input[name="${name}.generic_name"]`),
     )
   }, [])
 
@@ -73,12 +82,12 @@ export default function MedicationSearch({
   }, [search])
 
   const showSearchResults = isFocused &&
-    selected?.generic_name !== search && (medications.length > 0 || search)
+    selected?.generic_name !== search && ((medications.length > 0) || search)
 
   return (
     <FormRow className='w-full'>
       <SearchInput
-        name={`${name}.name`}
+        name={`${name}.generic_name`}
         label={label}
         value={selected?.generic_name}
         required={required}
@@ -94,13 +103,15 @@ export default function MedicationSearch({
           <SearchResults>
             {medications.map((med) => (
               <MedicationSearchResult
-                medication={{
-                  key_id: med.key_id,
-                  display_name: med.generic_name,
-                }}
+                generic_name={med.generic_name}
                 isSelected={selected?.key_id === med?.key_id}
                 onSelect={() => {
-                  setSelected(med)
+                  setSelected({
+                    key_id: med.key_id,
+                    generic_name: med.generic_name,
+                  })
+                  assert(med.strength)
+                  setStrengthOptions(med.strength.split(';'))
                   setSearchImmediate(med.generic_name)
                 }}
               />
@@ -111,34 +122,50 @@ export default function MedicationSearch({
       {selected && (
         <input type='hidden' name={`${name}.key_id`} value={selected.key_id} />
       )}
-      {includeDoses && (
-        <>
-          <Select
-            name={`${name}.dose`}
-            required
-            label='Dose'
-          >
-            <option value=''>Select</option>
-            {selected &&
-              selected.strength?.split(';').map((d) => (
-                <option value={d} selected={doseValue === d}>{d}</option>
-              ))}
-          </Select>
-        </>
-      )}
-      {includeIntake && (
-        <>
-          <Select
-            name={`${name}.intake_frequency`}
-            required
-            label='Intake'
-          >
-            <option value=''>Select</option>
-            {selected &&
-              intakeFrequencies.map((d) => <option value={d} selected={intakeValue === d}>{d}</option>)}
-          </Select>
-        </>
-      )}
+      <Select
+        name={`${name}.dosage`}
+        required
+        label='Dosage'
+        onChange={(event) => {
+          assert(event.target)
+          assert('value' in event.target)
+          assert(typeof event.target.value === 'string')
+          assert(selected)
+          setSelected({
+            ...selected,
+            dosage: event.target.value,
+          })
+        }}
+      >
+        <option value=''>Select</option>
+        {selected &&
+          strengthOptions.map((d) => (
+            <option value={d} selected={selected?.dosage === d}>{d}</option>
+          ))}
+      </Select>
+      <Select
+        name={`${name}.intake_frequency`}
+        required
+        label='Intake'
+        onChange={(event) => {
+          assert(event.target)
+          assert('value' in event.target)
+          assert(typeof event.target.value === 'string')
+          assert(selected)
+          setSelected({
+            ...selected,
+            intake_frequency: event.target.value,
+          })
+        }}
+      >
+        <option value=''>Select</option>
+        {selected &&
+          intakeFrequencies.map((d) => (
+            <option value={d} selected={selected?.intake_frequency === d}>
+              {d}
+            </option>
+          ))}
+      </Select>
     </FormRow>
   )
 }
