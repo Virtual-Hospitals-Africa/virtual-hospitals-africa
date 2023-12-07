@@ -132,10 +132,33 @@ export type Condition = {
 }
 
 export type PatientCondition = {
+  id: number
   patient_id: number
   condition_key_id: string
   start_date: string
   end_date: Maybe<string>
+  comorbidity_of_condition_id: Maybe<number>
+}
+
+export type PreExistingCondition = {
+  id: number
+  key_id: string
+  primary_name: string
+  start_date: string
+  comorbidities: {
+    id: number
+    key_id: string
+    primary_name: string
+    start_date?: Maybe<string>
+  }[]
+  medications: {
+    id: number
+    medication_id: number
+    dosage: string
+    intake_frequency: string
+    generic_name: string
+    strength: string
+  }[]
 }
 
 export type OnboardingPatient =
@@ -1272,15 +1295,22 @@ export type Address = {
 }
 
 export type Medication = {
-  key_id: string
   trade_name: string
   generic_name: string
-  forms: Maybe<string>
-  strength: Maybe<string>
+  forms: string
+  strength: string
   category: Maybe<string>
   registration_no: Maybe<string>
   applicant_name: Maybe<string>
   manufacturers: Maybe<string>
+}
+
+export type PatientMedication = {
+  patient_id: number
+  condition_id: Maybe<number>
+  dosage: string
+  intake_frequency: string
+  medication_id: number
 }
 
 export type DatabaseSchema = {
@@ -1312,7 +1342,8 @@ export type DatabaseSchema = {
   suburbs: SqlRow<Suburb>
   mailing_list: SqlRow<MailingListRecipient>
   address: SqlRow<Address>
-  condition: Condition
+  conditions: Condition
   patient_conditions: SqlRow<PatientCondition>
   medications: SqlRow<Medication>
+  patient_condition_medications: SqlRow<PatientMedication>
 }

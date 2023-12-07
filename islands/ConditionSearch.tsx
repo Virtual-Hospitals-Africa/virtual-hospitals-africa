@@ -1,106 +1,111 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
-import { SearchInput } from '../components/library/form/Inputs.tsx'
-import FormRow from '../components/library/form/Row.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
   ConditionSearchResult,
 } from '../components/library/SearchResults.tsx'
-import RemoveIcon from '../components/library/icons/remove.tsx'
+import { SearchInput } from '../components/library/form/Inputs.tsx'
+import { assert } from 'std/assert/assert.ts'
+import debounce from '../util/debounce.ts'
+import FormRow from '../components/library/form/Row.tsx'
+import { Condition } from '../types.ts'
 
-export default function ConditionSearch() {
-  const [searchTerm, setSearchTerm] = useState('')
+export default function ConditionSearch({
+  name,
+  label,
+  required,
+  value,
+}: {
+  name: string
+  label: string
+  required?: boolean
+  value?: { key_id: string; primary_name: string }
+}) {
   const [isFocused, setIsFocused] = useState(false)
-  const searchInputRef = useRef<HTMLInputElement | null>(null)
-  const [results, setResults] = useState<null | [string, string][]>(null)
-  const [selectedConditions, setSelectedConditions] = useState<string[]>([])
+  const [selected, setSelected] = useState<
+    { key_id: string; primary_name: string } | null
+  >(value || null)
+  const [conditions, setConditions] = useState<
+    Condition[]
+  >([])
+  const [search, setSearchImmediate] = useState(value?.primary_name ?? '')
+  const [setSearch] = useState({
+    delay: debounce(setSearchImmediate, 220),
+  })
 
-  const handleSearch = async (query: string) => {
-    try {
-      const response = await fetch(
-        `https://clinicaltables.nlm.nih.gov/api/conditions/v3/search?terms=${
-          encodeURIComponent(query)
-        }&df=primary_name,term_icd9_code`,
-      )
-      const data = await response.json()
-      setResults(data[3])
-    } catch (error) {
-      console.error('Error fetching data:', error)
-    }
-  }
-
-  const toggleConditionList = (condition: string) => {
-    if (searchInputRef.current) {
-      setSearchTerm('')
-    }
-
-    setSelectedConditions((prevSelectedConditions) =>
-      prevSelectedConditions.includes(condition)
-        ? prevSelectedConditions.filter((item) => item !== condition)
-        : [...prevSelectedConditions, condition]
+  const onDocumentClick = useCallback(() => {
+    setIsFocused(
+      document.activeElement ===
+        document.querySelector(`input[name="${name}.primary_name"]`),
     )
+  }, [])
+
+  useEffect(() => {
+    onDocumentClick()
+    self.addEventListener('click', onDocumentClick)
+    return () => self.removeEventListener('click', onDocumentClick)
+  })
+
+  const getConditions = async () => {
+    if (!search) {
+      setConditions([])
+      return
+    }
+
+    const url = new URL(`${window.location.origin}/app/conditions`)
+    url.searchParams.set('search', search)
+
+    await fetch(url, {
+      headers: { accept: 'application/json' },
+    }).then(async (response) => {
+      const conditionsResult = await response.json()
+      assert(Array.isArray(conditionsResult))
+      setConditions(conditionsResult)
+    }).catch(console.error)
   }
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        searchInputRef.current &&
-        event.target instanceof Node &&
-        event.target !== searchInputRef.current &&
-        searchInputRef.current !== event.target
-      ) {
-        setIsFocused(false)
-      }
-    }
+    getConditions()
+  }, [search])
 
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [])
+  const showSearchResults = isFocused &&
+    selected?.primary_name !== search && (conditions.length > 0 || search)
 
   return (
-    <>
-      <FormRow>
-        <SearchInput
-          label=''
-          placeholder='Search for conditions'
-          value={searchTerm}
-          onInput={(e) => {
-            assert(e.target)
-            assert('value' in e.target)
-            assert(typeof e.target.value === 'string')
-            setSearchTerm(e.target.value)
-            setIsFocused(true)
-            handleSearch(e.target.value)
-          }}
-          onFocus={() => setIsFocused(true)}
-          ref={searchInputRef}
-        />
-      </FormRow>
-
-      <FormRow className='mb-3 relative'>
-        {isFocused && searchTerm && results?.length && (
+    <FormRow className='w-full'>
+      <SearchInput
+        name={`${name}.primary_name`}
+        label={label}
+        value={selected?.primary_name}
+        placeholder='Search for conditions'
+        required={required}
+        onInput={(event) => {
+          assert(event.target)
+          assert('value' in event.target)
+          assert(typeof event.target.value === 'string')
+          setSelected(null)
+          setSearch.delay(event.target.value)
+        }}
+      >
+        {showSearchResults && (
           <SearchResults>
-            {results.map((condition) => (
+            {conditions.map((c) => (
               <ConditionSearchResult
-                condition={condition[0]}
-                onSelect={() => toggleConditionList(condition[0])}
+                condition={c.primary_name}
+                isSelected={selected?.key_id === c?.key_id}
+                onSelect={() => {
+                  setSelected({
+                    key_id: c.key_id,
+                    primary_name: c.primary_name,
+                  })
+                  setSearchImmediate(c.primary_name)
+                }}
               />
             ))}
           </SearchResults>
         )}
-      </FormRow>
-
-      <div className='flex-start flex flex-wrap gap-2 w-full'>
-        {selectedConditions.map((condition) => (
-          <button
-            key={condition}
-            onClick={() => toggleConditionList(condition)}
-            className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
-          >
-            {condition}
-            <RemoveIcon />
-          </button>
-        ))}
-      </div>
-    </>
+      </SearchInput>
+      {selected && (
+        <input type='hidden' name={`${name}.key_id`} value={selected.key_id} />
+      )}
+    </FormRow>
   )
 }

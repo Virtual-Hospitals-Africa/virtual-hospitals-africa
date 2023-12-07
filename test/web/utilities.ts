@@ -1,5 +1,6 @@
 import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
+import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
 import { afterAll, beforeAll, beforeEach, describe } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
@@ -11,6 +12,8 @@ import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
+import set from '../../util/set.ts'
+import { parseParam } from '../../util/parseForm.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -197,4 +200,29 @@ export async function addTestHealthWorkerWithSession(opts: {
     }),
   )
   return { sessionId, healthWorker }
+}
+
+export function getFormValues($: cheerio.CheerioAPI): unknown {
+  const formValues = {}
+  $('form input,textarea').each((_i, el) => {
+    if (el.attribs.name) {
+      set(
+        formValues,
+        el.attribs.name,
+        el.attribs.value && parseParam(el.attribs.value),
+      )
+    }
+  })
+  $('form select').each((_i, el) => {
+    $(el).find('option[selected]').each((_i, option) => {
+      if (el.attribs.name) {
+        set(
+          formValues,
+          el.attribs.name,
+          option.attribs.value && parseParam(option.attribs.value),
+        )
+      }
+    })
+  })
+  return formValues
 }

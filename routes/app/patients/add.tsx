@@ -6,9 +6,11 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
+  PreExistingCondition,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
+import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import {
@@ -20,7 +22,7 @@ import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
-import PatientConditionsForm from '../../../components/patients/add/ConditionsForm.tsx'
+import PatientPreExistingConditions from '../../../components/patients/add/PreExistingConditionsForm.tsx'
 import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
@@ -36,15 +38,20 @@ type AddPatientProps =
     step:
       | 'personal'
       | 'family'
-      | 'pre-existing_conditions'
       | 'history'
       | 'occupation'
       | 'family'
       | 'lifestyle'
     adminDistricts?: undefined
+    preExistingConditions?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
+    preExistingConditions?: undefined
+  } | {
+    step: 'pre-existing_conditions'
+    adminDistricts?: undefined
+    preExistingConditions: PreExistingCondition[]
   })
 
 type PersonalFormValues = {
@@ -68,7 +75,28 @@ type AddressFormValues = {
   primary_doctor_name: string
 }
 
-type ConditionsFormValues = Record<string, unknown>
+type ConditionsFormValues = {
+  conditions: {
+    id: Maybe<number>
+    condition_id: number
+    start_date: Maybe<string>
+    end_date: Maybe<string>
+    removed: Maybe<boolean>
+    comorbidities: [{
+      id: Maybe<number>
+      comorbidity_id: string
+      removed: Maybe<boolean>
+    }]
+    medications: [{
+      id: Maybe<number>
+      medication_id: string
+      dosage: Maybe<string>
+      intake_frequency: Maybe<string>
+      removed: Maybe<boolean>
+    }]
+  }[]
+}
+
 type FamilyFormValues = Record<string, unknown>
 type HistoryFormValues = Record<string, unknown>
 type OccupationFormValues = Record<string, unknown>
@@ -231,9 +259,25 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       })
     }
 
+    if (step === 'pre-existing_conditions') {
+      const preExistingConditions = patient_id
+        ? await patient_conditions
+          .getPreExistingConditions(
+            ctx.state.trx,
+            { patient_id },
+          )
+        : []
+      return ctx.render({
+        healthWorker,
+        patient,
+        step,
+        preExistingConditions,
+      })
+    }
+
     assertOr400(
       step === 'personal' ||
-        step === 'pre-existing_conditions' || step === 'family' ||
+        step === 'family' ||
         step === 'history' || step === 'occupation' || step === 'lifestyle',
     )
     return ctx.render({ healthWorker, patient, step })
@@ -241,7 +285,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   async POST(req, ctx) {
     const { searchParams } = new URL(req.url)
     const step = searchParams.get('step')
-    const id = searchParams.get('patient_id')
+    const patient_id = searchParams.get('patient_id')
 
     assertOr400(
       step === 'personal' || step === 'address' ||
@@ -250,13 +294,14 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     )
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
+
     // deno-lint-ignore no-explicit-any
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
     const patient = await patients.upsert(ctx.state.trx, {
       ...transformedFormData,
-      id: id ? parseInt(id) : undefined,
+      id: (patient_id && parseInt(patient_id)) || undefined,
       completed_onboarding: step === 'lifestyle',
     })
 
@@ -271,12 +316,12 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'pre-existing_conditions') {
-      return redirect('/app/patients/add?step=family')
+      return redirect(`/app/patients/add?step=family&patient_id=${patient.id}`)
     }
 
     if (step === 'family') {
       const success = encodeURIComponent(
-        `Awesome! ${patient.name} has finished onboarding!`,
+        `Awesome! ${patient.id} has finished onboarding!`,
       )
       return redirect(`/app/patients?success=${success}`)
     }
@@ -289,7 +334,10 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { stepsTopBar, currentStep } = useAddPatientSteps(props)
-  const { patient, healthWorker, adminDistricts } = props.data
+  const { patient, healthWorker, adminDistricts, preExistingConditions } =
+    props.data
+
+  console.log('preExistingConditions', preExistingConditions)
 
   return (
     <Layout
@@ -321,7 +369,11 @@ export default function AddPatient(
           )}
           {currentStep === 'family' && <FamilyForm patient={patient} />}
           {currentStep === 'pre-existing_conditions' && (
-            <PatientConditionsForm patient={patient} />
+            <PatientPreExistingConditions
+              patient={patient}
+              preExistingConditions={(assert(preExistingConditions),
+                preExistingConditions)}
+            />
           )}
           <hr className='my-2' />
           <Buttons

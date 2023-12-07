@@ -6,7 +6,7 @@ import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('medications')
-    .addColumn('key_id', 'varchar(255)', (col) => col.primaryKey())
+    .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('trade_name', 'varchar(1024)', (col) => col.notNull())
     .addColumn('generic_name', 'varchar(255)')
     .addColumn('forms', 'varchar(255)')
@@ -51,10 +51,9 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.references('conditions.key_id').onDelete('cascade'),
     )
     .addColumn(
-      'medication_key_id',
-      'varchar(255)',
-      (col) =>
-        col.notNull().references('medications.key_id').onDelete('cascade'),
+      'medication_id',
+      'integer',
+      (col) => col.notNull().references('medications.id').onDelete('cascade'),
     )
     .addColumn('dosage', 'varchar(255)')
     .addColumn('intake_frequency', 'varchar(255)')
@@ -77,7 +76,6 @@ async function seedDataFromJSON(db: Kysely<any>) {
     await db
       .insertInto('medications')
       .values({
-        key_id: row.id,
         trade_name: row.trade_name,
         generic_name: row.generic_name,
         forms: row.forms,

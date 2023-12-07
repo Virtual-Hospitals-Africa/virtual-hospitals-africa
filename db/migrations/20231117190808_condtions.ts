@@ -3,20 +3,6 @@ import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import parseJSON from '../../util/parseJSON.ts'
 
-type Condition = {
-  key_id: string
-  primary_name: string
-  term_icd9_code: string
-  term_icd9_text: string
-  consumer_name: string
-  is_procedure: boolean
-  word_synonyms: string
-  synonyms: string
-  info_link_data: string
-  icd10cm: string
-  icd10cm_codes: string
-}
-
 export async function up(db: Kysely<any>) {
   await db.schema
     .createTable('conditions')
@@ -121,7 +107,7 @@ async function importFromJSON(db: Kysely<any>) {
 
     await db.insertInto('icd10_codes')
       .values(
-        row.icd10cm.map((icd10) => ({
+        row.icd10cm.map((icd10: any) => ({
           code: icd10.code,
           name: icd10.name,
         })),
@@ -132,7 +118,7 @@ async function importFromJSON(db: Kysely<any>) {
 
     await db.insertInto('condition_icd10_codes')
       .values(
-        row.icd10cm.map((icd10) => ({
+        row.icd10cm.map((icd10: any) => ({
           condition_key_id: row.key_id,
           icd10_code: icd10.code,
         })),
