@@ -7,7 +7,7 @@ import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string
-  label?: string
+  label?: Maybe<string>
   required?: boolean
   placeholder?: string
   disabled?: boolean

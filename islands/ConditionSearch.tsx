@@ -6,7 +6,7 @@ import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import FormRow from '../components/library/form/Row.tsx'
-import { Condition } from '../types.ts'
+import { Condition, Maybe } from '../types.ts'
 
 export default function ConditionSearch({
   name,
@@ -15,7 +15,7 @@ export default function ConditionSearch({
   value,
 }: {
   name: string
-  label: string
+  label?: Maybe<string>
   required?: boolean
   value?: { key_id: string; primary_name: string }
 }) {
