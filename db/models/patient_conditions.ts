@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { Maybe, PreExistingCondition, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import { MedicinesFrequencyList } from './medications.ts'
 
 export type PreExistingConditionUpsert = {
   key_id: string
@@ -54,6 +55,12 @@ export async function upsertPreExisting(
       assertOr400(
         medication.intake_frequency,
         'Medication intake frequency must be present',
+      )
+      assertOr400(
+        MedicinesFrequencyList.includes(medication.intake_frequency),
+        `Medication intake frequency must be one of ${
+          MedicinesFrequencyList.join(', ')
+        }`,
       )
       assertOr400(
         !seenMedicationIds.has(medication.medication_id),
