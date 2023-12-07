@@ -208,7 +208,6 @@ function Condition(
             comorbidity_index: number,
           ) => (
             <Comorbidity
-              
               matchingCondition={matchingCondition}
               condition_prefix={prefix}
               comorbidity_id={comorbidity_id}
