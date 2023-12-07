@@ -66,13 +66,13 @@ function Comorbidity({
         <RemoveIcon />
       </a>
       <ConditionSearch
-        label='Comorbidity name'
+        label={null}
         name={prefix}
         value={matchingComorbidity}
       />
       <DateInput
         name={`${prefix}.start_date`}
-        label='Start Date'
+        label={null}
         value={matchingComorbidity?.start_date}
       />
       {typeof comorbidity_id === 'number' && (
@@ -112,7 +112,7 @@ function Medication({
         <RemoveIcon />
       </a>
       <MedicationSearch
-        label='Medications'
+        label={null}
         name={prefix}
         value={matchingMedication}
       />

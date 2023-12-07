@@ -8,6 +8,7 @@ import debounce from '../util/debounce.ts'
 import { HasId, Medication } from '../types.ts'
 import FormRow from '../components/library/form/Row.tsx'
 import { MedicinesFrequencyList } from '../db/models/medications.ts'
+import { Maybe } from '../types.ts'
 
 export default function MedicationSearch({
   name,
@@ -16,7 +17,7 @@ export default function MedicationSearch({
   value,
 }: {
   name: string
-  label: string
+  label?: Maybe<string>
   required?: boolean
   value?: {
     medication_id: number
@@ -129,7 +130,7 @@ export default function MedicationSearch({
       <Select
         name={`${name}.dosage`}
         required
-        label='Dosage'
+        label={label && 'Dosage'}
         onChange={(event) => {
           assert(event.target)
           assert('value' in event.target)
@@ -141,7 +142,7 @@ export default function MedicationSearch({
           })
         }}
       >
-        <option value=''>Select</option>
+        <option value=''>Select Dosage</option>
         {selected &&
           strengthOptions.map((d) => (
             <option value={d} selected={selected?.dosage === d}>{d}</option>
@@ -150,7 +151,7 @@ export default function MedicationSearch({
       <Select
         name={`${name}.intake_frequency`}
         required
-        label='Intake'
+        label={label && 'Intake'}
         onChange={(event) => {
           assert(event.target)
           assert('value' in event.target)
@@ -162,7 +163,7 @@ export default function MedicationSearch({
           })
         }}
       >
-        <option value=''>Select</option>
+        <option value=''>Select Intake</option>
         {selected &&
           intakeFrequencies.map((d) => (
             <option value={d} selected={selected?.intake_frequency === d}>
