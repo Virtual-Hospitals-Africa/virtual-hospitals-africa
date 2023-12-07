@@ -82,18 +82,18 @@ type ConditionsFormValues = {
     start_date: Maybe<string>
     end_date: Maybe<string>
     removed: Maybe<boolean>
-    comorbidities: [{
+    comorbidities: {
       id: Maybe<number>
       comorbidity_id: string
       removed: Maybe<boolean>
-    }]
-    medications: [{
+    }[]
+    medications: {
       id: Maybe<number>
       medication_id: string
       dosage: Maybe<string>
       intake_frequency: Maybe<string>
       removed: Maybe<boolean>
-    }]
+    }[]
   }[]
 }
 
@@ -321,7 +321,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     if (step === 'family') {
       const success = encodeURIComponent(
-        `Awesome! ${patient.id} has finished onboarding!`,
+        `Awesome! ${patient.name} has finished onboarding!`,
       )
       return redirect(`/app/patients?success=${success}`)
     }
