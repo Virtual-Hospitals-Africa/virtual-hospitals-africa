@@ -1313,6 +1313,30 @@ export type PatientMedication = {
   medication_id: number
 }
 
+export type GuardianRelationName =
+  | 'biological parent'
+  | 'grandparent'
+  | 'sibling'
+  | 'sibling of parent'
+  | 'other guardian'
+  | 'foster parent'
+  | 'adopted parent'
+
+export type GuardianRelation = {
+  guardian: GuardianRelationName
+  dependent: string
+  female_guardian?: Maybe<string>
+  male_guardian?: Maybe<string>
+  female_dependent?: Maybe<string>
+  male_dependent?: Maybe<string>
+}
+
+export type PatientGuardian = {
+  guardian_relation: GuardianRelationName
+  guardian_patient_id: number
+  dependent_patient_id: number
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1346,4 +1370,6 @@ export type DatabaseSchema = {
   patient_conditions: SqlRow<PatientCondition>
   medications: SqlRow<Medication>
   patient_condition_medications: SqlRow<PatientMedication>
+  guardian_relations: GuardianRelation
+  patient_guardians: SqlRow<PatientGuardian>
 }
