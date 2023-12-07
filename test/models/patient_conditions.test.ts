@@ -22,7 +22,7 @@ describe(
               {
                 medication_id: 1,
                 dosage: '1 pill',
-                intake_frequency: 'once a day',
+                intake_frequency: 'qw / once a week',
               },
             ],
           },
@@ -45,7 +45,7 @@ describe(
         )
         assertEquals(
           preExistingCondition.medications[0].intake_frequency,
-          'once a day',
+          'qw / once a week',
         )
         assertEquals(preExistingCondition.medications[0].medication_id, 1)
         assertEquals(
