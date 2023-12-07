@@ -50,16 +50,17 @@ export default function ConditionSearch({
       return
     }
 
-    const url = new URL(`${window.location.origin}/app/conditions`)
-    url.searchParams.set('search', search)
-
-    await fetch(url, {
-      headers: { accept: 'application/json' },
-    }).then(async (response) => {
-      const conditionsResult = await response.json()
-      assert(Array.isArray(conditionsResult))
-      setConditions(conditionsResult)
-    }).catch(console.error)
+    const response = await fetch(
+      `https://clinicaltables.nlm.nih.gov/api/conditions/v3/search?terms=${
+        encodeURIComponent(search)
+      }&df=key_id,primary_name`,
+    )
+    const data = await response.json()
+    // deno-lint-ignore no-explicit-any
+    setConditions(data[3].map(([key_id, primary_name]: any) => ({
+      key_id: `c_${key_id}`, // We need to prefix the key_id with c_ to avoid these keys being parsed as numbers
+      primary_name,
+    })))
   }
 
   useEffect(() => {
