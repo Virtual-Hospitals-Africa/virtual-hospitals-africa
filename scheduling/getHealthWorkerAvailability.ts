@@ -9,8 +9,8 @@ import {
   TrxOrDb,
 } from '../types.ts'
 import { assertAllHarare, formatHarare } from '../util/date.ts'
-import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assert } from '$std/assert/assert.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import flatten from '../util/flatten.ts'
 
 export function getAvailability(

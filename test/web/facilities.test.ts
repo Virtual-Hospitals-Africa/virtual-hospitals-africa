@@ -1,10 +1,10 @@
-import { it } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
+import { it } from '$std/testing/bdd.ts'
+import { assert } from '$std/assert/assert.ts'
 import {
   addTestHealthWorkerWithSession,
   describeWithWebServer,
 } from './utilities.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 
 describeWithWebServer('/app/facilities', 8005, (route) => {
   it('can search for facilities by name', async () => {

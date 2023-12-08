@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { afterEach, beforeEach, describe, it } from '$std/testing/bdd.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import sinon from 'npm:sinon'
 import { resetInTest } from '../../db/reset.ts'
@@ -8,7 +8,7 @@ import * as makeAppointment from '../../scheduling/makeAppointment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { testHealthWorker } from '../mocks.ts'
 
 describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {

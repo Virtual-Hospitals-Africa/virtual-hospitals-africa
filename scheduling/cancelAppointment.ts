@@ -1,4 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { PatientState, TrxOrDb } from '../types.ts'
 import * as google from '../external-clients/google.ts'
 import { getWithTokensById } from '../db/models/health_workers.ts'

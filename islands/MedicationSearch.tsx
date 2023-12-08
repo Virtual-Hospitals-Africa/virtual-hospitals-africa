@@ -3,7 +3,7 @@ import SearchResults, {
   MedicationSearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput, Select } from '../components/library/form/Inputs.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import { HasId, Medication } from '../types.ts'
 import FormRow from '../components/library/form/Row.tsx'

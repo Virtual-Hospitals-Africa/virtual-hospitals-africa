@@ -1,5 +1,5 @@
-import { it } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
+import { it } from '$std/testing/bdd.ts'
+import { assert } from '$std/assert/assert.ts'
 import { describeWithWebServer } from './utilities.ts'
 import * as cheerio from 'cheerio'
 

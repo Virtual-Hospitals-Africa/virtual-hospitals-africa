@@ -1,4 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import db from './db.ts'
 import selectAllNonMetaTables from './selectAllNonMetaTables.ts'
 import { TrxOrDb } from '../types.ts'

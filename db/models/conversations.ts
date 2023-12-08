@@ -1,4 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   PatientState,

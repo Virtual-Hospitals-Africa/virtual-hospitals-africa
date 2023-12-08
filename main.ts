@@ -5,26 +5,29 @@
 /// <reference lib="deno.ns" />
 
 import { ServerContext, start } from '$fresh/server.ts'
-import { serveTls } from 'std/http/server.ts'
+import { serveTls } from '$std/http/server.ts'
 import manifest from './fresh.gen.ts'
-
-import twindPlugin from '$fresh/plugins/twind.ts'
-import twindConfig from './twind.config.ts'
+import { defineConfig } from '$fresh/server.ts'
+import tailwind from '$fresh/plugins/tailwind.ts'
 
 const port = parseInt(Deno.env.get('PORT') || '8000', 10)
-const opts = { port, plugins: [twindPlugin(twindConfig)] }
 const self = Deno.env.get('SELF_URL')
 
 const servePlainHttp = self !== 'https://localhost:8000' ||
   Deno.env.get('SERVE_HTTP')
 
+const config = defineConfig({
+  port,
+  plugins: [tailwind()],
+})
+
 if (servePlainHttp) {
-  await start(manifest, opts)
+  await start(manifest, config)
 } else {
-  const ctx = await ServerContext.fromManifest(manifest, opts)
+  const ctx = await ServerContext.fromManifest(manifest, config)
   // deno-lint-ignore no-explicit-any
   await serveTls(ctx.handler() as any, {
-    ...opts,
+    ...config,
     certFile: './local-certs/localhost.crt',
     keyFile: './local-certs/localhost.key',
   })

@@ -1,4 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import { Container } from '../../../../../components/library/Container.tsx'

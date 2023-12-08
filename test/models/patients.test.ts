@@ -1,10 +1,10 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { beforeEach, describe, it } from '$std/testing/bdd.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/reset.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as media from '../../db/models/media.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 
 describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)

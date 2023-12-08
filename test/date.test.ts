@@ -1,4 +1,4 @@
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import { prettyPatientDateOfBirth } from '../util/date.ts'
 
 Deno.test('prettyPatientDateOfBirth', () => {

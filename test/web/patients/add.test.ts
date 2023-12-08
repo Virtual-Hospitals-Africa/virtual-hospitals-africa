@@ -1,5 +1,5 @@
-import { it } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
+import { it } from '$std/testing/bdd.ts'
+import { assert } from '$std/assert/assert.ts'
 import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
@@ -10,7 +10,7 @@ import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 import deepOmit from '../../../util/deepOmit.ts'

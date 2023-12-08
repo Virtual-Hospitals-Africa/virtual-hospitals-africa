@@ -1,6 +1,6 @@
 import { PageProps } from '$fresh/server.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
+import { assert } from '$std/assert/assert.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
   AvailabilityJSON,

@@ -1,5 +1,5 @@
 import { EmployedHealthWorker, LoggedInHealthWorkerHandler } from '../types.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../components/library/Layout.tsx'
 import { FacilityAdmin } from '../db/models/employment.ts'

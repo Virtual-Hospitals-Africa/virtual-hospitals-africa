@@ -27,7 +27,7 @@ import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import { path } from '../../../util/path.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 
 type AddPatientProps =
   & {

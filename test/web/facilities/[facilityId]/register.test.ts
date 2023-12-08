@@ -1,12 +1,12 @@
-import { it } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
+import { it } from '$std/testing/bdd.ts'
+import { assert } from '$std/assert/assert.ts'
 import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
   describeWithWebServer,
 } from '../../utilities.ts'
 import * as cheerio from 'cheerio'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import { createTestAddress } from '../../../mocks.ts'
 import { redis } from '../../../../external-clients/redis.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'

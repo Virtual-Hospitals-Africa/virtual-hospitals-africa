@@ -5,7 +5,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { upsert as upsertAddress } from './address.ts'
 
 export type UpsertableNurseRegistrationDetails =

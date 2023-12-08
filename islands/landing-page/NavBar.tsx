@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks'
 import cls from '../../util/cls.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { ChevronUpDownIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import sections from '../../components/landing-page/sections.tsx'
 

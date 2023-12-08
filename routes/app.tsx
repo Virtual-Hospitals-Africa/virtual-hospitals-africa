@@ -1,4 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import { isHealthWorkerWithGoogleTokens } from '../db/models/health_workers.ts'
 import * as patients from '../db/models/patients.ts'

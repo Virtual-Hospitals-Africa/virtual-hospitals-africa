@@ -3,7 +3,7 @@ import SearchResults, {
   ConditionSearchResult,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import FormRow from '../components/library/form/Row.tsx'
 import { Condition, Maybe } from '../types.ts'

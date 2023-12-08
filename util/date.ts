@@ -1,5 +1,5 @@
-import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assert } from '$std/assert/assert.ts'
+import { assertEquals } from '$std/assert/assert_equals.ts'
 import { MonthNum, ParsedDate, Time } from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'

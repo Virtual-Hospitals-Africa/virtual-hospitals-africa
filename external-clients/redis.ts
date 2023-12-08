@@ -1,6 +1,6 @@
 import 'dotenv'
 import { connect } from 'redis'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import { Location } from '../types.ts'
 
 interface RedisConnectionOptions {

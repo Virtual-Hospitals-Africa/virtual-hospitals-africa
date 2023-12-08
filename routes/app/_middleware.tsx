@@ -4,7 +4,7 @@ import { EmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
 import { assertOr403 } from '../../util/assertOr.ts'
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 
 export async function handler(
   req: Request,

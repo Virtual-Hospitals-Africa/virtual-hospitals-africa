@@ -1,4 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
+import { assert } from '$std/assert/assert.ts'
 import set from './set.ts'
 import * as media from '../db/models/media.ts'
 import { TrxOrDb } from '../types.ts'
