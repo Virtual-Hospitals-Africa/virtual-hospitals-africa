@@ -13,7 +13,7 @@
     "db:migrate:wipe": "deno task run:trusted db/migrate.ts --wipe",
     "db:migrate:redo": "deno task run:trusted db/migrate.ts --down && deno task run:trusted db/migrate.ts --up",
     "db:migrate:redo:all": "deno task run:trusted db/migrate.ts --wipe && deno task run:trusted db/migrate.ts --latest",
-    "db:migrate:local": "./scripts/db:migrate:local.sh $1",
+    "db:migrate:local": "./db/migrate_local.sh",
     "db:reset": "deno task run:trusted db/reset.ts",
     "heroku:chatbot:up": "heroku ps:scale chatbot=1",
     "heroku:chatbot:down": "heroku ps:scale chatbot=0",
