@@ -391,7 +391,7 @@ export async function getPreExistingConditions(
           generic_name: m.generic_name,
           strength: m.strength,
           start_date: m.start_date,
-          end_date: m.end_date
+          end_date: m.end_date,
         })),
     }))
 }

@@ -201,7 +201,10 @@ export function MedicationSearchResult(
     form,
     strengths,
     trade_name,
-    manufacturer_name, isSelected, onSelect }: MedicationSearchResultProps,
+    manufacturer_name,
+    isSelected,
+    onSelect,
+  }: MedicationSearchResultProps,
 ) {
   return (
     <SearchResult isSelected={isSelected} onSelect={onSelect}>

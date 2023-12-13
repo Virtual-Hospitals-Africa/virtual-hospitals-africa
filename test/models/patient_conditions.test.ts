@@ -15,18 +15,24 @@ describe(
       it('upserts pre-existing conditions, those without an end_date', async () => {
         const patient = await patients.upsert(db, { name: 'Billy Bob' })
 
-        const tablet = await db.selectFrom('medications').selectAll().where(
-          'form',
-          '=',
-          'TABLET; ORAL',
-        ).executeTakeFirstOrThrow()
-        const manufactured_tablet = await db.selectFrom(
-          'manufactured_medications',
-        ).selectAll().where('medication_id', '=', tablet.id)
-          .executeTakeFirstOrThrow()
-
-        console.log(tablet)
-        console.log(manufactured_tablet)
+        const tablet = await db
+          .selectFrom('manufactured_medications')
+          .innerJoin(
+            'medications',
+            'manufactured_medications.medication_id',
+            'medications.id',
+          )
+          .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
+          .select([
+            'manufactured_medications.id',
+            'manufactured_medications.strength_numerators',
+            'drugs.generic_name',
+          ])
+          .where(
+            'form',
+            '=',
+            'TABLET; ORAL',
+          ).executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
@@ -34,38 +40,48 @@ describe(
             start_date: '2020-01-01',
             medications: [
               {
-                medication_id: 1,
+                manufactured_medication_id: tablet.id,
+                medication_id: null,
                 dosage: 1,
-                intake_frequency: 'qw / once a week',
+                strength: tablet.strength_numerators[0],
+                intake_frequency: 'qw',
               },
             ],
           },
         ])
-        // const preExistingConditions = await patient_conditions
-        //   .getPreExistingConditions(db, {
-        //     patient_id: patient.id,
-        //   })
-        // assertEquals(preExistingConditions.length, 1)
-        // const [preExistingCondition] = preExistingConditions
-        // assertEquals(preExistingCondition.comorbidities, [])
-        // assertEquals(preExistingCondition.key_id, 'c_22401')
-        // assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
-        // assertEquals(preExistingCondition.start_date, '2020-01-01')
-        // assertEquals(preExistingCondition.medications.length, 1)
-        // assertEquals(preExistingCondition.medications[0].dosage, '1 pill')
-        // assertEquals(
-        //   preExistingCondition.medications[0].generic_name,
-        //   'SODIUM CHLORIDE',
-        // )
-        // assertEquals(
-        //   preExistingCondition.medications[0].intake_frequency,
-        //   'qw / once a week',
-        // )
-        // assertEquals(preExistingCondition.medications[0].medication_id, 1)
-        // assertEquals(
-        //   preExistingCondition.medications[0].strength,
-        //   '6G/1000 ML;0.9% W/W;0.9%;0.9 % (W/V)',
-        // )
+        const preExistingConditions = await patient_conditions
+          .getPreExistingConditions(db, {
+            patient_id: patient.id,
+          })
+        assertEquals(preExistingConditions.length, 1)
+        const [preExistingCondition] = preExistingConditions
+        assertEquals(preExistingCondition.comorbidities, [])
+        assertEquals(preExistingCondition.key_id, 'c_22401')
+        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.start_date, '2020-01-01')
+        assertEquals(preExistingCondition.medications.length, 1)
+        // TODO remove the Number cast
+        // https://github.com/kysely-org/kysely/issues/802
+        assertEquals(Number(preExistingCondition.medications[0].dosage), 1)
+        assertEquals(
+          preExistingCondition.medications[0].generic_name,
+          tablet.generic_name,
+        )
+        assertEquals(
+          preExistingCondition.medications[0].intake_frequency,
+          'qw',
+        )
+        assertEquals(
+          preExistingCondition.medications[0].manufactured_medication_id,
+          tablet.id,
+        )
+        assertEquals(preExistingCondition.medications[0].medication_id, null)
+        // TODO remove the Number cast
+        // https://github.com/kysely-org/kysely/issues/802
+        assertEquals(
+          Number(preExistingCondition.medications[0].strength),
+          Number(tablet.strength_numerators[0]),
+        )
       })
     })
   },

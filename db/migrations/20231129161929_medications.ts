@@ -38,7 +38,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('form', 'varchar(255)', (col) => col.notNull())
     .addColumn(
       'strength_numerators',
-      sql`numeric(10, 2)[]`,
+      sql`real[]`,
       (col) => col.notNull(),
     )
     .addColumn(
@@ -46,7 +46,7 @@ export async function up(db: Kysely<unknown>) {
       'varchar(255)',
       (col) => col.notNull(),
     )
-    .addColumn('strength_denominator', 'numeric(10, 2)', (col) => col.notNull())
+    .addColumn('strength_denominator', 'numeric', (col) => col.notNull())
     .addColumn(
       'strength_denominator_unit',
       'varchar(255)',
@@ -76,7 +76,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('manufacturer_name', 'varchar(2048)', (col) => col.notNull())
     .addColumn(
       'strength_numerators',
-      sql`numeric(10, 2)[]`,
+      sql`real[]`,
       (col) => col.notNull(),
     )
     .addColumn(
@@ -126,8 +126,8 @@ export async function up(db: Kysely<unknown>) {
       (col) =>
         col.references('manufactured_medications.id').onDelete('cascade'),
     )
-    .addColumn('strength', 'numeric(10, 2)')
-    .addColumn('dosage', 'numeric(10, 2)')
+    .addColumn('strength', 'numeric')
+    .addColumn('dosage', 'numeric')
     .addColumn('intake_frequency', 'varchar(255)')
     .addColumn('start_date', 'date', (col) => col.notNull())
     .addColumn('end_date', 'date')
