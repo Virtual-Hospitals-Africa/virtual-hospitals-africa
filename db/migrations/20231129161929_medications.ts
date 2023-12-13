@@ -360,6 +360,7 @@ const forms_with_singular_doses = [
   'CAPSULE',
   'VACCINE',
   'LOZENGE',
+  'INHALATION',
 ]
 
 //TODO: if form is syrup take ml instead of mg
