@@ -12,10 +12,8 @@ export default function ConditionSearch() {
   const [numConditions, setNumConditions] = useState (0)
 
   const showConditionSearchModule = () => {
-    //setAddAnother((prevAddAnother) => prevAddAnother + 1)
     setIsShown(!isShown)
     setNumConditions(numConditions + 1)
-    return <ConditionSearchModule />
   }
 
   useEffect(() => {
@@ -36,17 +34,22 @@ export default function ConditionSearch() {
 
   return (
     <>
-      <button onClick={showConditionSearchModule}>add condition</button>
+      <button onClick={showConditionSearchModule} type="button">add condition</button>
       {/* {isShown && <ConditionSearchModule />} */}
+      {Array.from({ length: numConditions }, (_, index) => (
+        <ConditionSearchModule />
+      ))}
+
+      
       
     
-      <button
+      {/* <button
             onClick={() => showConditionSearchModule()}
             className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
           >
             
             <AddIcon />
-          </button>
+          </button> */}
     </>
   )
 }
