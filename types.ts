@@ -160,6 +160,8 @@ export type PreExistingCondition = {
     dosage: number
     intake_frequency: string
     generic_name: string
+    start_date: string
+    end_date?: Maybe<string>
   }[]
 }
 

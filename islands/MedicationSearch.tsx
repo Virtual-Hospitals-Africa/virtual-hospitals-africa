@@ -23,15 +23,14 @@ export default function MedicationSearch({
   label?: Maybe<string>
   required?: boolean
   value?: {
+    id: number
     drug_id: number
-    drug_generic_name: string
-    medication_id: number | null
     manufactured_medication_id: number | null
-    dosage: number
+    medication_id: number | null
     strength: number
+    dosage: number
     intake_frequency: string
-    start_date: string
-    end_date: string | null
+    generic_name: string
   }
 }) {
   const [shouldSetInitiallySelected, setShouldSetInitiallySelected] = useState(
@@ -64,7 +63,7 @@ export default function MedicationSearch({
   const [drugSearchResults, setDrugSearchResults] = useState<
     DrugSearchResult[]
   >([])
-  const [search, setSearchImmediate] = useState(value?.drug_generic_name ?? '')
+  const [search, setSearchImmediate] = useState(value?.generic_name ?? '')
   const [setSearch] = useState({
     delay: debounce(setSearchImmediate, 220),
   })
@@ -164,126 +163,178 @@ export default function MedicationSearch({
     ((drugSearchResults.length > 0) || search)
 
   return (
-    <FormRow className='w-full'>
-      <SearchInput
-        name={`${name}.drug_generic_name`}
-        label={label}
-        value={selectedDrug?.drug_generic_name}
-        required={required}
-        onInput={(event) => {
-          assert(event.target)
-          assert('value' in event.target)
-          assert(typeof event.target.value === 'string')
-          setSelectedDrug(null)
-          setSelectedMedicationId(null)
-          setSelectedStrength(null)
-          setSelectedDosage(null)
-          setSelectedIntakeFrequency(null)
-          setSearch.delay(event.target.value)
-        }}
-      >
-        {showSearchResults && (
-          <SearchResults>
-            {drugSearchResults.map((drug) => (
-              <MedicationSearchResult
-                generic_name={drug.drug_generic_name}
-                isSelected={drug?.drug_id === drug.drug_id}
-                onSelect={() => {
-                  setSelectedDrug(drug)
-                  setSearchImmediate(drug.drug_generic_name)
-                }}
-              />
+    <FormRow className='w-full justify-normal'>
+      <div class='col-span-3'>
+        <SearchInput
+          name={`${name}.drug_generic_name`}
+          label={label}
+          value={selectedDrug?.drug_generic_name}
+          required={required}
+          onInput={(event) => {
+            assert(event.target)
+            assert('value' in event.target)
+            assert(typeof event.target.value === 'string')
+            setSelectedDrug(null)
+            setSelectedMedicationId(null)
+            setSelectedStrength(null)
+            setSelectedDosage(null)
+            setSelectedIntakeFrequency(null)
+            setSearch.delay(event.target.value)
+          }}
+        >
+          {showSearchResults && (
+            <SearchResults>
+              {drugSearchResults.map((drug) => (
+                <>
+                  {drug.medications.map((medication) => (
+                    <>
+                      <MedicationSearchResult
+                        generic_name={drug.drug_generic_name}
+                        strengths={medication.strength_denominator +
+                          medication.strength_denominator_unit}
+                        form={medication.form}
+                        isSelected={medication?.medication_id ===
+                          value?.medication_id}
+                        onSelect={() => {
+                          setSelectedDrug(drug)
+                          setSearchImmediate(drug.drug_generic_name)
+                        }}
+                      />
+
+                      {medication.manufacturers.map((manufacturer) => (
+                        <MedicationSearchResult
+                          generic_name={drug.drug_generic_name}
+                          strengths={medication.strength_denominator +
+                            medication.strength_denominator_unit}
+                          form={medication.form}
+                          isSelected={manufacturer
+                            ?.manufactured_medication_id ===
+                            value?.manufactured_medication_id}
+                          trade_name={manufacturer.trade_name}
+                          manufacturer_name={manufacturer.manufacturer_name}
+                          onSelect={() => {
+                            setSelectedManufacturedMedicationId(
+                              manufacturer.manufactured_medication_id,
+                            )
+                            setSelectedDrug(drug)
+                            setSearchImmediate(drug.drug_generic_name)
+                          }}
+                        />
+                      ))}
+                    </>
+                  ))}
+                </>
+              ))}
+            </SearchResults>
+          )}
+        </SearchInput>
+        {selectedManufacturedMedicationId
+          ? (
+            <input
+              type='hidden'
+              name={`${name}.manufactured_medication_id`}
+              value={selectedManufacturedMedicationId}
+            />
+          )
+          : (
+            <input
+              type='hidden'
+              name={`${name}.medication_id`}
+              value={selectedMedicationId!}
+            />
+          )}
+      </div>
+      <div class='col-span-1'>
+        <Select
+          name={`${name}.form`}
+          required
+          label={label && 'Form'}
+          disabled={!selectedDrug}
+          onChange={(event) =>
+            event.currentTarget.value &&
+            setSelectedMedicationId(Number(event.currentTarget.value))}
+        >
+          <option value=''>Select Form</option>
+          {selectedDrug &&
+            selectedDrug.medications.map((medication) => (
+              <option
+                value={medication.medication_id}
+                selected={selectedMedicationId === medication.medication_id}
+              >
+                {medication.form}
+              </option>
             ))}
-          </SearchResults>
-        )}
-      </SearchInput>
-      {selectedDrug && (
-        <input
-          type='hidden'
-          name={`${name}.drug_id`}
-          value={selectedDrug.drug_id}
-        />
-      )}
-      <Select
-        name={`${name}.medication_id`}
-        required
-        label={label && 'Form'}
-        disabled={!selectedDrug}
-        onChange={(event) =>
-          event.currentTarget.value &&
-          setSelectedMedicationId(Number(event.currentTarget.value))}
-      >
-        <option value=''>Select Form</option>
-        {selectedDrug &&
-          selectedDrug.medications.map((medication) => (
-            <option
-              value={medication.medication_id}
-              selected={selectedMedicationId === medication.medication_id}
-            >
-              {medication.form}
-            </option>
-          ))}
-      </Select>
-      <Select
-        name={`${name}.strength`}
-        required
-        label={label && 'Strength'}
-        disabled={!selectedMedication}
-        onChange={(event) =>
-          event.currentTarget.value &&
-          setSelectedStrength(Number(event.currentTarget.value))}
-      >
-        <option value=''>Select Strength</option>
-        {selectedMedication &&
-          selectedMedication.strength_numerators.map((numerator) => (
-            <option value={numerator} selected={selectedStrength === numerator}>
-              {numerator}
-              {selectedMedication
-                .strength_numerator_unit}/{selectedMedication
-                  .strength_denominator === 1
-                ? ''
-                : selectedMedication.strength_denominator}
-              {selectedMedication.strength_denominator_unit}
-            </option>
-          ))}
-      </Select>
-      <Select
-        name={`${name}.dosage`}
-        label={label && 'Dosage'}
-        disabled={!(selectedMedication && selectedStrength)}
-      >
-        <option value=''>Select Dosage</option>
-        {selectedMedication && selectedStrength &&
-          Dosages.map(([dosage_text, dosage_value]) => (
-            <option
-              value={dosage_value * selectedMedication.strength_denominator}
-              selected={selectedDosage ===
-                (dosage_value * selectedMedication.strength_denominator)}
-            >
-              {selectedMedication.strength_denominator === 1
-                ? dosage_text
-                : dosage_value * selectedMedication.strength_denominator}
-              {denominatorIsMeasurement ? '' : ' '}
-              {dosage_value > 1 ? denominatorPlural : denominatorUnit}{' '}
-              ({selectedStrength * dosage_value}
-              {selectedMedication?.strength_numerator_unit})
-            </option>
-          ))}
-      </Select>
-      <Select
-        name={`${name}.intake_frequency`}
-        required
-        label={label && 'Intake'}
-        disabled={!selectedDrug}
-      >
-        <option value=''>Select Intake</option>
-        {selectedDrug &&
-          Object.entries(IntakeFrequencies).map(([code, label]) => (
-            <option value={code} selected={selectedIntakeFrequency === code}>
-              {label}
-            </option>
-          ))}
-      </Select>
+        </Select>
+      </div>
+      <div class='col-span-1'>
+        <Select
+          name={`${name}.strength`}
+          required
+          label={label && 'Strength'}
+          disabled={!selectedMedication}
+          onChange={(event) =>
+            event.currentTarget.value &&
+            setSelectedStrength(Number(event.currentTarget.value))}
+        >
+          <option value=''>Select Strength</option>
+          {selectedMedication &&
+            selectedMedication.strength_numerators.map((numerator) => (
+              <option
+                value={numerator}
+                selected={selectedStrength === numerator}
+              >
+                {numerator}
+                {selectedMedication
+                  .strength_numerator_unit}/{selectedMedication
+                    .strength_denominator === 1
+                  ? ''
+                  : selectedMedication.strength_denominator}
+                {selectedMedication.strength_denominator_unit}
+              </option>
+            ))}
+        </Select>
+      </div>
+      <div class='col-span-1'>
+        <Select
+          name={`${name}.dosage`}
+          label={label && 'Dosage'}
+          disabled={!(selectedMedication && selectedStrength)}
+        >
+          <option value=''>Select Dosage</option>
+          {selectedMedication && selectedStrength &&
+            Dosages.map(([dosage_text, dosage_value]) => (
+              <option
+                value={dosage_value * selectedMedication.strength_denominator}
+                selected={selectedDosage ===
+                  (dosage_value * selectedMedication.strength_denominator)}
+              >
+                {selectedMedication.strength_denominator === 1
+                  ? dosage_text
+                  : dosage_value * selectedMedication.strength_denominator}
+                {denominatorIsMeasurement ? '' : ' '}
+                {dosage_value > 1 ? denominatorPlural : denominatorUnit}{' '}
+                ({selectedStrength * dosage_value}
+                {selectedMedication?.strength_numerator_unit})
+              </option>
+            ))}
+        </Select>
+      </div>
+      <div class='col-span-1'>
+        <Select
+          name={`${name}.intake_frequency`}
+          required
+          label={label && 'Intake'}
+          disabled={!selectedDrug}
+        >
+          <option value=''>Select Intake</option>
+          {selectedDrug &&
+            Object.entries(IntakeFrequencies).map(([code, label]) => (
+              <option value={code} selected={selectedIntakeFrequency === code}>
+                {label}
+              </option>
+            ))}
+        </Select>
+      </div>
     </FormRow>
   )
 }

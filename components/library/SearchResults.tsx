@@ -42,6 +42,10 @@ type AddButtonSearchResult = BasicSelectProps & {
 
 type MedicationSearchResultProps = BasicSelectProps & {
   generic_name: string
+  form: string
+  strengths: string
+  trade_name?: string
+  manufacturer_name?: string
 }
 
 function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
@@ -192,13 +196,21 @@ export function ConditionSearchResult(
 }
 
 export function MedicationSearchResult(
-  { generic_name, isSelected, onSelect }: MedicationSearchResultProps,
+  {
+    generic_name,
+    form,
+    strengths,
+    trade_name,
+    manufacturer_name, isSelected, onSelect }: MedicationSearchResultProps,
 ) {
   return (
     <SearchResult isSelected={isSelected} onSelect={onSelect}>
       <div className='flex items-center'>
         <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
-          <div>{generic_name}</div>
+          <b>{generic_name}</b>
+          <div>{form} ({strengths})</div>
+          <div>{trade_name}</div>
+          <div>{manufacturer_name}</div>
         </span>
       </div>
     </SearchResult>

@@ -109,8 +109,8 @@ export async function upsertPreExisting(
     }
     for (const medication of condition.medications || []) {
       assertOr400(
-        medication.medication_id,
-        'Medication medication_id must be present',
+        medication.medication_id || medication.manufactured_medication_id,
+        'Medication medication_id or manufactured_medication_id must be present',
       )
       assertOr400(medication.dosage, 'Medication dosage must be present')
       assertOr400(
@@ -123,11 +123,11 @@ export async function upsertPreExisting(
           Object.keys(IntakeFrequencies).join(', ')
         }`,
       )
-      assertOr400(
-        !seenMedicationIds.has(medication.medication_id),
-        'Medication medication_id must be unique',
-      )
-      seenMedicationIds.add(medication.medication_id)
+      // assertOr400(
+      //   !seenMedicationIds.has(medication.medication_id) ,
+      //   'Medication medication_id must be unique',
+      // )
+      // seenMedicationIds.add(medication.medication_id)
     }
   }
 
@@ -330,7 +330,7 @@ export async function getPreExistingConditions(
         join.on(
           'medications.id',
           '=',
-          sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id))`,
+          sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
         ),
     )
     .innerJoin(
@@ -354,6 +354,8 @@ export async function getPreExistingConditions(
       'patient_condition_medications.dosage',
       'patient_condition_medications.intake_frequency',
       'drugs.generic_name',
+      'patient_condition_medications.start_date',
+      'patient_condition_medications.end_date',
       // 'medications.strength',
     ])
     .execute()
@@ -388,6 +390,8 @@ export async function getPreExistingConditions(
           intake_frequency: m.intake_frequency,
           generic_name: m.generic_name,
           strength: m.strength,
+          start_date: m.start_date,
+          end_date: m.end_date
         })),
     }))
 }

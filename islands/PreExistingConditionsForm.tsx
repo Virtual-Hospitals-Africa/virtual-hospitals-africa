@@ -58,9 +58,9 @@ function Comorbidity({
   )
   const prefix = `${condition_prefix}.comorbidities.${comorbidity_index}`
   return (
-    <FormRow className='w-full' key={comorbidity_id}>
+    <FormRow className='w-full mt-1' key={comorbidity_id}>
       <a
-        className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
+        className='text-sm text-indigo-600 flex mr-5 cursor-pointer items-center'
         onClick={removeComorbidity}
       >
         <RemoveIcon />
@@ -104,9 +104,9 @@ function Medication({
   )
   const prefix = `${condition_prefix}.medications.${medication_index}`
   return (
-    <FormRow className='w-full' key={medication_id}>
+    <FormRow className='w-full mt-1' key={medication_id}>
       <a
-        className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
+        className='text-sm text-indigo-600 flex mr-5 cursor-pointer items-center'
         onClick={removeMedication}
       >
         <RemoveIcon />
@@ -123,6 +123,20 @@ function Medication({
           value={medication_id}
         />
       )}
+      <div class='col-span-2 flex space-x-0.5 '>
+        <DateInput
+          name={`${prefix}.start_date`}
+          placeholder='Start Date'
+          label={null}
+          value={matchingMedication?.start_date}
+        />
+        <DateInput
+          name={`${prefix}.end_date`}
+          placeholder='End Date'
+          label={null}
+          value={matchingMedication?.end_date}
+        />
+      </div>
     </FormRow>
   )
 }
@@ -227,7 +241,7 @@ function Condition(
             className='text-sm text-indigo-600 flex mt-1 cursor-pointer'
             onClick={addComorbidity}
           >
-            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full' />
+            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full items-center mr-5' />
             Add Comorbidity
           </a>
         </div>
@@ -257,7 +271,7 @@ function Condition(
             className='text-sm text-indigo-600 flex mt-1 cursor-pointer'
             onClick={addMedication}
           >
-            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full' />
+            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full items-center mr-5' />
             Add Medication
           </a>
         </div>
@@ -315,7 +329,7 @@ export default function PreExistingConditionsForm({
           className='text-indigo-600 flex cursor-pointer'
           onClick={addCondition}
         >
-          <PlusCircleIcon className='h-6 w-6 flex-shrink-0 rounded-full' />
+          <PlusCircleIcon className='h-6 w-6 flex-shrink-0 rounded-full mr-5' />
           Add Condition
         </a>
       </div>
