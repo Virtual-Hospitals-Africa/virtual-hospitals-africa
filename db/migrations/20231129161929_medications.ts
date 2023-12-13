@@ -69,7 +69,7 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await db.schema
-    .createTable('manufactured_medication')
+    .createTable('manufactured_medications')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('trade_name', 'varchar(1024)', (col) => col.notNull())
     .addColumn('applicant_name', 'varchar(1024)', (col) => col.notNull())
@@ -123,8 +123,10 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'manufactured_medication_id',
       'integer',
-      (col) => col.references('manufactured_medication.id').onDelete('cascade'),
+      (col) =>
+        col.references('manufactured_medications.id').onDelete('cascade'),
     )
+    .addColumn('strength', 'numeric(10, 2)')
     .addColumn('dosage', 'numeric(10, 2)')
     .addColumn('intake_frequency', 'varchar(255)')
     .addColumn('start_date', 'date', (col) => col.notNull())
@@ -141,14 +143,14 @@ export async function up(db: Kysely<unknown>) {
 
   await addUpdatedAtTrigger(db, 'drugs')
   await addUpdatedAtTrigger(db, 'medications')
-  await addUpdatedAtTrigger(db, 'manufactured_medication')
+  await addUpdatedAtTrigger(db, 'manufactured_medications')
   await addUpdatedAtTrigger(db, 'patient_condition_medications')
   await seedDataFromJSON(db)
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_condition_medications').execute()
-  await db.schema.dropTable('manufactured_medication').execute()
+  await db.schema.dropTable('manufactured_medications').execute()
   await db.schema.dropTable('medications').execute()
   await db.schema.dropTable('drugs').execute()
 }
@@ -282,7 +284,7 @@ async function seedDataFromJSON(db: Kysely<any>) {
           .manufactured_medications_with_strengths
       ) {
         await db
-          .insertInto('manufactured_medication')
+          .insertInto('manufactured_medications')
           .values({
             strength_numerators: strengths.strength_numerators,
             trade_name: manufactured_medication.trade_name,

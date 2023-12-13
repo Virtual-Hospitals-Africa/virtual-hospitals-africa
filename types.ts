@@ -153,11 +153,13 @@ export type PreExistingCondition = {
   }[]
   medications: {
     id: number
-    medication_id: number
-    dosage: string
+    drug_id: number
+    manufactured_medication_id: number | null
+    medication_id: number | null
+    strength: number
+    dosage: number
     intake_frequency: string
     generic_name: string
-    strength: string
   }[]
 }
 
@@ -1294,23 +1296,57 @@ export type Address = {
   country_id: number
 }
 
-export type Medication = {
-  trade_name: string
+export type Drug = {
   generic_name: string
-  forms: string
-  strength: string
-  category: Maybe<string>
-  registration_no: Maybe<string>
-  applicant_name: Maybe<string>
-  manufacturers: Maybe<string>
+}
+export type Medication = {
+  drug_id: number
+  form: string
+  strength_numerators: number[]
+  strength_numerator_unit: string
+  strength_denominator: number
+  strength_denominator_unit: string
 }
 
-export type PatientMedication = {
-  patient_id: number
-  condition_id: Maybe<number>
-  dosage: string
-  intake_frequency: string
+export type ManufacturedMedication = {
   medication_id: number
+  trade_name: string
+  applicant_name: string
+  manufacturer_name: string
+  strength_numerators: number[]
+}
+
+export type PatientMedication =
+  & {
+    patient_condition_id: number
+    strength: number
+    dosage: number
+    intake_frequency: string
+    start_date: string
+    end_date: Maybe<string>
+  }
+  & (
+    | { medication_id: null; manufactured_medication_id: number }
+    | { medication_id: number; manufactured_medication_id: null }
+  )
+
+export type DrugSearchResult = {
+  drug_id: number
+  drug_generic_name: string
+  medications: {
+    medication_id: number
+    form: string
+    strength_numerators: number[]
+    strength_numerator_unit: string
+    strength_denominator: number
+    strength_denominator_unit: string
+    manufacturers: {
+      manufactured_medication_id: number
+      strength_numerators: number[]
+      manufacturer_name: string
+      trade_name: string
+    }[]
+  }[]
 }
 
 export type GuardianRelationName =
@@ -1368,7 +1404,9 @@ export type DatabaseSchema = {
   address: SqlRow<Address>
   conditions: Condition
   patient_conditions: SqlRow<PatientCondition>
+  drugs: SqlRow<Drug>
   medications: SqlRow<Medication>
+  manufactured_medications: SqlRow<ManufacturedMedication>
   patient_condition_medications: SqlRow<PatientMedication>
   guardian_relations: GuardianRelation
   patient_guardians: SqlRow<PatientGuardian>

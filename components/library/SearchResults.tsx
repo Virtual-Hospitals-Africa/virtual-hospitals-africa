@@ -50,7 +50,7 @@ function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
   return (
     <li
       className={cls(
-        'relative cursor-default select-none py-2 pl-3 pr-9',
+        'relative cursor-default select-none py-2 pl-3 pr-9 w-max',
         isActive ? 'text-white bg-indigo-600' : 'text-gray-900',
       )}
       role='option'
@@ -136,7 +136,7 @@ export default function SearchResults({
   return (
     <ul
       className={cls(
-        'absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm',
+        'absolute z-10 mt-1 max-h-56 w-full min-w-max overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm',
         className,
       )}
       id='options'

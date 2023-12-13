@@ -1,23 +1,84 @@
 import { sql } from 'kysely'
 import { Maybe, PreExistingCondition, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { MedicinesFrequencyList } from './medications.ts'
+
+type PatientMedicationUpsert =
+  & {
+    id?: Maybe<number>
+    dosage: number
+    strength: number
+    intake_frequency: string
+    start_date?: Maybe<string>
+    end_date?: Maybe<string>
+  }
+  & (
+    | { medication_id: number; manufactured_medication_id: null }
+    | { medication_id: null; manufactured_medication_id: number }
+  )
 
 export type PreExistingConditionUpsert = {
   key_id: string
   start_date: string
   id?: Maybe<number>
   comorbidities?: {
+    id?: Maybe<number>
     key_id: string
     start_date: Maybe<string>
-    id?: Maybe<number>
   }[]
-  medications?: {
-    medication_id: number
-    dosage: string
-    intake_frequency: string
-    id?: Maybe<number>
-  }[]
+  medications?: PatientMedicationUpsert[]
+}
+
+export const Dosages: [string, number][] = [
+  ['¼', 0.25],
+  ['½', 0.5],
+  ['1', 1],
+  ['2', 2],
+  ['3', 3],
+  ['4', 4],
+  ['5', 5],
+  ['6', 6],
+  ['7', 7],
+  ['8', 8],
+  ['9', 9],
+  ['10', 10],
+]
+
+export const IntakeFrequencies = {
+  ac: 'before meals',
+  am: 'morning',
+  bd: '2 times daily',
+  nocte: 'every night',
+  od: 'once a day',
+  pm: 'afternoon or evening',
+  q15: 'every 15 minutes',
+  q30: 'every 30 minutes',
+  q1h: 'every hour',
+  q2h: 'every 2 hours',
+  q4h: 'every 4 hours',
+  q6h: 'every 6 hours',
+  q8h: 'every 8 hours',
+  qd: 'every day',
+  qid: '4 times a day',
+  qod: 'alternate days',
+  qs: 'sufficient enough quantity',
+  mane: 'morning',
+  qmane: 'every morning',
+  qn: 'every night',
+  stat: 'immediately, now',
+  tds: '3 times a day',
+  q24h: 'every 24 hours',
+  q30h: 'every 30 hours',
+  q48h: 'every 48 hours',
+  q72h: 'every 72 hours',
+  hs: 'at bedtime  ',
+  qhs: 'daily at bedtime',
+  qw: 'once a week',
+  bw: 'twice a week',
+  tw: 'three times a week',
+  qm: 'once a month',
+  bm: 'twice a month',
+  tm: 'three times a month',
+  prn: 'when necessary',
 }
 
 export async function upsertPreExisting(
@@ -57,9 +118,9 @@ export async function upsertPreExisting(
         'Medication intake frequency must be present',
       )
       assertOr400(
-        MedicinesFrequencyList.includes(medication.intake_frequency),
+        medication.intake_frequency in IntakeFrequencies,
         `Medication intake frequency must be one of ${
-          MedicinesFrequencyList.join(', ')
+          Object.keys(IntakeFrequencies).join(', ')
         }`,
       )
       assertOr400(
@@ -116,11 +177,11 @@ export async function upsertPreExisting(
   }
 
   for (const condition of patientConditions) {
-    let condition_id: Maybe<number> = condition.id
+    let patient_condition_id: Maybe<number> = condition.id
     const matchingCondition = databaseConditions.find((c) =>
       c.id === condition.id
     )
-    if (condition_id) {
+    if (patient_condition_id) {
       assertOr400(matchingCondition, 'Referenced a non-existent condition')
       if (
         matchingCondition.key_id !== condition.key_id ||
@@ -132,7 +193,7 @@ export async function upsertPreExisting(
             condition_key_id: condition.key_id,
             start_date: condition.start_date,
           })
-          .where('id', '=', condition_id)
+          .where('id', '=', patient_condition_id)
           .executeTakeFirstOrThrow()
       }
     } else {
@@ -158,7 +219,7 @@ export async function upsertPreExisting(
         })
         .returning('id')
         .executeTakeFirstOrThrow()
-      condition_id = parentCondition.id
+      patient_condition_id = parentCondition.id
     }
     for (const comorbidity of condition.comorbidities || []) {
       const matchingComorbidity = matchingCondition?.comorbidities.find((c) =>
@@ -187,7 +248,7 @@ export async function upsertPreExisting(
             patient_id,
             condition_key_id: comorbidity.key_id,
             start_date: comorbidity.start_date || condition.start_date,
-            comorbidity_of_condition_id: condition_id,
+            comorbidity_of_condition_id: patient_condition_id,
           })
           .executeTakeFirstOrThrow()
       }
@@ -198,31 +259,30 @@ export async function upsertPreExisting(
       )
       if (medication.id) {
         assertOr400(matchingMedication, 'Referenced a non-existent medication')
-        if (
-          matchingMedication.medication_id !==
-            medication.medication_id ||
-          matchingMedication.dosage !== medication.dosage ||
-          matchingMedication.intake_frequency !== medication.intake_frequency
-        ) {
-          await trx
-            .updateTable('patient_condition_medications')
-            .set({
-              medication_id: medication.medication_id,
-              dosage: medication.dosage,
-              intake_frequency: medication.intake_frequency,
-            })
-            .where('id', '=', medication.id)
-            .executeTakeFirstOrThrow()
-        }
+        await trx
+          .updateTable('patient_condition_medications')
+          .set({
+            medication_id: medication.medication_id,
+            manufactured_medication_id: medication.manufactured_medication_id,
+            dosage: medication.dosage,
+            intake_frequency: medication.intake_frequency,
+            start_date: medication.start_date || condition.start_date,
+            end_date: medication.end_date,
+          })
+          .where('id', '=', medication.id)
+          .executeTakeFirstOrThrow()
       } else {
         await trx
           .insertInto('patient_condition_medications')
           .values({
-            patient_id,
-            condition_id,
+            patient_condition_id,
             medication_id: medication.medication_id,
+            manufactured_medication_id: medication.manufactured_medication_id,
             dosage: medication.dosage,
+            strength: medication.strength,
             intake_frequency: medication.intake_frequency,
+            start_date: medication.start_date || condition.start_date,
+            end_date: medication.end_date,
           })
           .executeTakeFirstOrThrow()
       }
@@ -260,19 +320,41 @@ export async function getPreExistingConditions(
   const gettingPatientMedications = await trx
     .selectFrom('patient_condition_medications')
     .innerJoin(
-      'medications',
-      'medications.id',
-      'patient_condition_medications.medication_id',
+      'manufactured_medications',
+      'manufactured_medications.id',
+      'patient_condition_medications.manufactured_medication_id',
     )
-    .where('patient_condition_medications.patient_id', '=', opts.patient_id)
+    .innerJoin(
+      'medications',
+      (join) =>
+        join.on(
+          'medications.id',
+          '=',
+          sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id))`,
+        ),
+    )
+    .innerJoin(
+      'drugs',
+      'drugs.id',
+      'medications.drug_id',
+    )
+    .innerJoin(
+      'patient_conditions',
+      'patient_conditions.id',
+      'patient_condition_medications.patient_condition_id',
+    )
+    .where('patient_conditions.patient_id', '=', opts.patient_id)
     .select([
       'patient_condition_medications.id',
+      'medications.drug_id',
       'patient_condition_medications.medication_id',
-      'patient_condition_medications.condition_id',
+      'patient_condition_medications.manufactured_medication_id',
+      'patient_condition_medications.patient_condition_id',
+      'patient_condition_medications.strength',
       'patient_condition_medications.dosage',
       'patient_condition_medications.intake_frequency',
-      'medications.generic_name',
-      'medications.strength',
+      'drugs.generic_name',
+      // 'medications.strength',
     ])
     .execute()
 
@@ -296,10 +378,12 @@ export async function getPreExistingConditions(
           primary_name: comorbidity.primary_name,
         })),
       medications: patientMedications
-        .filter((m) => m.condition_id === parentCondition.id)
+        .filter((m) => m.patient_condition_id === parentCondition.id)
         .map((m) => ({
           id: m.id,
           medication_id: m.medication_id,
+          manufactured_medication_id: m.manufactured_medication_id,
+          drug_id: m.drug_id,
           dosage: m.dosage,
           intake_frequency: m.intake_frequency,
           generic_name: m.generic_name,
