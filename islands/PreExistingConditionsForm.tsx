@@ -5,7 +5,7 @@ import { DateInput } from '../components/library/form/Inputs.tsx'
 import FormRow from '../components/library/form/Row.tsx'
 import RemoveIcon from '../components/library/icons/remove.tsx'
 import MedicationSearch from './MedicationSearch.tsx'
-import { PreExistingCondition } from '../types.ts'
+import { PreExistingConditionWithDrugs } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import { JSX } from 'preact/jsx-runtime'
 
@@ -17,7 +17,7 @@ type ConditionState = {
 type PreExistingConditionsFormState = Map<string | number, ConditionState>
 
 const initialState = (
-  preExistingConditions: PreExistingCondition[],
+  preExistingConditions: PreExistingConditionWithDrugs[],
 ): PreExistingConditionsFormState => {
   if (!preExistingConditions?.length) {
     return new Map()
@@ -47,7 +47,7 @@ function Comorbidity({
   comorbidity_index,
   removeComorbidity,
 }: {
-  matchingCondition?: PreExistingCondition
+  matchingCondition?: PreExistingConditionWithDrugs
   condition_prefix: string
   comorbidity_id: string | number
   comorbidity_index: number
@@ -58,9 +58,9 @@ function Comorbidity({
   )
   const prefix = `${condition_prefix}.comorbidities.${comorbidity_index}`
   return (
-    <FormRow className='w-full' key={comorbidity_id}>
+    <FormRow className='w-full mt-1' key={comorbidity_id}>
       <a
-        className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
+        className='text-sm text-indigo-600 flex mr-5 cursor-pointer items-center'
         onClick={removeComorbidity}
       >
         <RemoveIcon />
@@ -93,7 +93,7 @@ function Medication({
   medication_index,
   removeMedication,
 }: {
-  matchingCondition?: PreExistingCondition
+  matchingCondition?: PreExistingConditionWithDrugs
   condition_prefix: string
   medication_id: string | number
   medication_index: number
@@ -104,15 +104,14 @@ function Medication({
   )
   const prefix = `${condition_prefix}.medications.${medication_index}`
   return (
-    <FormRow className='w-full' key={medication_id}>
+    <FormRow className='w-full mt-1' key={medication_id}>
       <a
-        className='text-sm text-indigo-600 flex mr-5 cursor-pointer'
+        className='text-sm text-indigo-600 flex mr-5 cursor-pointer items-center'
         onClick={removeMedication}
       >
         <RemoveIcon />
       </a>
       <MedicationSearch
-        label={null}
         name={prefix}
         value={matchingMedication}
       />
@@ -139,7 +138,7 @@ function Condition(
     condition_id: string | number
     condition_index: number
     condition_state: ConditionState
-    preExistingConditions: PreExistingCondition[]
+    preExistingConditions: PreExistingConditionWithDrugs[]
     removeCondition(): void
     updateCondition(condition: ConditionState): void
   },
@@ -227,7 +226,7 @@ function Condition(
             className='text-sm text-indigo-600 flex mt-1 cursor-pointer'
             onClick={addComorbidity}
           >
-            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full' />
+            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full items-center mr-5' />
             Add Comorbidity
           </a>
         </div>
@@ -257,7 +256,7 @@ function Condition(
             className='text-sm text-indigo-600 flex mt-1 cursor-pointer'
             onClick={addMedication}
           >
-            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full' />
+            <PlusCircleIcon className='h-6 w-6 flex-shrink-0 bold rounded-full items-center mr-5' />
             Add Medication
           </a>
         </div>
@@ -269,7 +268,7 @@ function Condition(
 export default function PreExistingConditionsForm({
   preExistingConditions,
 }: {
-  preExistingConditions: PreExistingCondition[]
+  preExistingConditions: PreExistingConditionWithDrugs[]
 }): JSX.Element {
   const [patientConditions, setPatientConditions] = useState<
     PreExistingConditionsFormState
@@ -315,7 +314,7 @@ export default function PreExistingConditionsForm({
           className='text-indigo-600 flex cursor-pointer'
           onClick={addCondition}
         >
-          <PlusCircleIcon className='h-6 w-6 flex-shrink-0 rounded-full' />
+          <PlusCircleIcon className='h-6 w-6 flex-shrink-0 rounded-full mr-5' />
           Add Condition
         </a>
       </div>

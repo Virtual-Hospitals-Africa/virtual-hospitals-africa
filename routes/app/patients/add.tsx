@@ -1,12 +1,13 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
+  DrugSearchResult,
   EmployedHealthWorker,
   FullCountryInfo,
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
-  PreExistingCondition,
+  PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
@@ -23,7 +24,6 @@ import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientPreExistingConditions from '../../../components/patients/add/PreExistingConditionsForm.tsx'
-import omit from '../../../util/omit.ts'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import { path } from '../../../util/path.ts'
@@ -44,14 +44,16 @@ type AddPatientProps =
       | 'lifestyle'
     adminDistricts?: undefined
     preExistingConditions?: undefined
+    initialDrugs?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
     preExistingConditions?: undefined
+    initialDrugs?: undefined
   } | {
     step: 'pre-existing_conditions'
     adminDistricts?: undefined
-    preExistingConditions: PreExistingCondition[]
+    preExistingConditions: PreExistingConditionWithDrugs[]
   })
 
 type PersonalFormValues = {
@@ -262,7 +264,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     if (step === 'pre-existing_conditions') {
       const preExistingConditions = patient_id
         ? await patient_conditions
-          .getPreExistingConditions(
+          .getPreExistingConditionsWithDrugs(
             ctx.state.trx,
             { patient_id },
           )
@@ -334,10 +336,12 @@ export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
   const { stepsTopBar, currentStep } = useAddPatientSteps(props)
-  const { patient, healthWorker, adminDistricts, preExistingConditions } =
-    props.data
-
-  console.log('preExistingConditions', preExistingConditions)
+  const {
+    patient,
+    healthWorker,
+    adminDistricts,
+    preExistingConditions,
+  } = props.data
 
   return (
     <Layout
