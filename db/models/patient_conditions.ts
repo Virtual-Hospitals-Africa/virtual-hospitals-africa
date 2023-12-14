@@ -278,7 +278,8 @@ export async function upsertPreExisting(
               : medication.medication_id) || null,
             manufactured_medication_id: medication.manufactured_medication_id ||
               null,
-            schedules: sql`ARRAY[ROW(${medication.dosage}, ${medication.intake_frequency}, 0, 'TODO')]::medication_schedule[]`,
+            schedules:
+              sql`ARRAY[ROW(${medication.dosage}, ${medication.intake_frequency}, 0, 'TODO')]::medication_schedule[]`,
             start_date: medication.start_date || condition.start_date,
             end_date: medication.end_date,
           })
@@ -295,7 +296,8 @@ export async function upsertPreExisting(
             manufactured_medication_id: medication.manufactured_medication_id ||
               null,
             strength: medication.strength,
-            schedules: sql`ARRAY[ROW(${medication.dosage}, ${medication.intake_frequency}, 0, 'TODO')]::medication_schedule[]`,
+            schedules:
+              sql`ARRAY[ROW(${medication.dosage}, ${medication.intake_frequency}, 0, 'TODO')]::medication_schedule[]`,
             start_date: medication.start_date || condition.start_date,
             end_date: medication.end_date,
           })

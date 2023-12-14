@@ -96,8 +96,9 @@ export async function up(db: Kysely<unknown>) {
     )
     .execute()
 
-  await sql`CREATE TYPE medication_schedule AS (dosage numeric, frequency varchar(255), duration integer, duration_units varchar(255))`.execute(db);
-  
+  await sql`CREATE TYPE medication_schedule AS (dosage numeric, frequency varchar(255), duration integer, duration_units varchar(255))`
+    .execute(db)
+
   await db.schema
     .createTable('patient_condition_medications')
     .addColumn('id', 'serial', (col) => col.primaryKey())
