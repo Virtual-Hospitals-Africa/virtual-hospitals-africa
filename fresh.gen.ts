@@ -12,36 +12,37 @@ import * as $6 from './routes/app/calendar/appointments/[id].tsx'
 import * as $7 from './routes/app/calendar/appointments/schedule.tsx'
 import * as $8 from './routes/app/calendar/availability.tsx'
 import * as $9 from './routes/app/conditions.tsx'
-import * as $10 from './routes/app/drugs.tsx'
-import * as $11 from './routes/app/employees.tsx'
-import * as $12 from './routes/app/facilities.tsx'
-import * as $13 from './routes/app/facilities/[facilityId]/_middleware.ts'
-import * as $14 from './routes/app/facilities/[facilityId]/employees.tsx'
-import * as $15 from './routes/app/facilities/[facilityId]/employees/[id].tsx'
-import * as $16 from './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx'
-import * as $17 from './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx'
-import * as $18 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $19 from './routes/app/facilities/[facilityId]/register.tsx'
-import * as $20 from './routes/app/health_workers.tsx'
-import * as $21 from './routes/app/insufficient_permissions.tsx'
-import * as $22 from './routes/app/patients.tsx'
-import * as $23 from './routes/app/patients/[id].tsx'
-import * as $24 from './routes/app/patients/[id]/avatar.tsx'
-import * as $25 from './routes/app/patients/add.tsx'
-import * as $26 from './routes/app/pending_approval.tsx'
-import * as $27 from './routes/app/unauthorized.tsx'
-import * as $28 from './routes/apply.tsx'
-import * as $29 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $30 from './routes/index.tsx'
-import * as $31 from './routes/interest.tsx'
-import * as $32 from './routes/logged-in.tsx'
-import * as $33 from './routes/login.tsx'
-import * as $34 from './routes/logout.tsx'
-import * as $35 from './routes/partner.tsx'
-import * as $36 from './routes/schedule-demo.tsx'
-import * as $37 from './routes/volunteer.tsx'
-import * as $38 from './routes/volunteer/[role].tsx'
-import * as $39 from './routes/waitlist.tsx'
+import * as $10 from './routes/app/drugs.json.tsx'
+import * as $11 from './routes/app/drugs.tsx'
+import * as $12 from './routes/app/employees.tsx'
+import * as $13 from './routes/app/facilities.tsx'
+import * as $14 from './routes/app/facilities/[facilityId]/_middleware.ts'
+import * as $15 from './routes/app/facilities/[facilityId]/employees.tsx'
+import * as $16 from './routes/app/facilities/[facilityId]/employees/[id].tsx'
+import * as $17 from './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx'
+import * as $18 from './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx'
+import * as $19 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
+import * as $20 from './routes/app/facilities/[facilityId]/register.tsx'
+import * as $21 from './routes/app/health_workers.tsx'
+import * as $22 from './routes/app/insufficient_permissions.tsx'
+import * as $23 from './routes/app/patients.tsx'
+import * as $24 from './routes/app/patients/[id].tsx'
+import * as $25 from './routes/app/patients/[id]/avatar.tsx'
+import * as $26 from './routes/app/patients/add.tsx'
+import * as $27 from './routes/app/pending_approval.tsx'
+import * as $28 from './routes/app/unauthorized.tsx'
+import * as $29 from './routes/apply.tsx'
+import * as $30 from './routes/chatbot/incoming-whatsapp.ts'
+import * as $31 from './routes/index.tsx'
+import * as $32 from './routes/interest.tsx'
+import * as $33 from './routes/logged-in.tsx'
+import * as $34 from './routes/login.tsx'
+import * as $35 from './routes/logout.tsx'
+import * as $36 from './routes/partner.tsx'
+import * as $37 from './routes/schedule-demo.tsx'
+import * as $38 from './routes/volunteer.tsx'
+import * as $39 from './routes/volunteer/[role].tsx'
+import * as $40 from './routes/waitlist.tsx'
 import * as $$0 from './islands/AllergySearch.tsx'
 import * as $$1 from './islands/ConditionSearch.tsx'
 import * as $$2 from './islands/ErrorMessage.tsx'
@@ -78,37 +79,38 @@ const manifest = {
     './routes/app/calendar/appointments/schedule.tsx': $7,
     './routes/app/calendar/availability.tsx': $8,
     './routes/app/conditions.tsx': $9,
-    './routes/app/drugs.tsx': $10,
-    './routes/app/employees.tsx': $11,
-    './routes/app/facilities.tsx': $12,
-    './routes/app/facilities/[facilityId]/_middleware.ts': $13,
-    './routes/app/facilities/[facilityId]/employees.tsx': $14,
-    './routes/app/facilities/[facilityId]/employees/[id].tsx': $15,
-    './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx': $16,
+    './routes/app/drugs.json.tsx': $10,
+    './routes/app/drugs.tsx': $11,
+    './routes/app/employees.tsx': $12,
+    './routes/app/facilities.tsx': $13,
+    './routes/app/facilities/[facilityId]/_middleware.ts': $14,
+    './routes/app/facilities/[facilityId]/employees.tsx': $15,
+    './routes/app/facilities/[facilityId]/employees/[id].tsx': $16,
+    './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx': $17,
     './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx':
-      $17,
-    './routes/app/facilities/[facilityId]/employees/invite.tsx': $18,
-    './routes/app/facilities/[facilityId]/register.tsx': $19,
-    './routes/app/health_workers.tsx': $20,
-    './routes/app/insufficient_permissions.tsx': $21,
-    './routes/app/patients.tsx': $22,
-    './routes/app/patients/[id].tsx': $23,
-    './routes/app/patients/[id]/avatar.tsx': $24,
-    './routes/app/patients/add.tsx': $25,
-    './routes/app/pending_approval.tsx': $26,
-    './routes/app/unauthorized.tsx': $27,
-    './routes/apply.tsx': $28,
-    './routes/chatbot/incoming-whatsapp.ts': $29,
-    './routes/index.tsx': $30,
-    './routes/interest.tsx': $31,
-    './routes/logged-in.tsx': $32,
-    './routes/login.tsx': $33,
-    './routes/logout.tsx': $34,
-    './routes/partner.tsx': $35,
-    './routes/schedule-demo.tsx': $36,
-    './routes/volunteer.tsx': $37,
-    './routes/volunteer/[role].tsx': $38,
-    './routes/waitlist.tsx': $39,
+      $18,
+    './routes/app/facilities/[facilityId]/employees/invite.tsx': $19,
+    './routes/app/facilities/[facilityId]/register.tsx': $20,
+    './routes/app/health_workers.tsx': $21,
+    './routes/app/insufficient_permissions.tsx': $22,
+    './routes/app/patients.tsx': $23,
+    './routes/app/patients/[id].tsx': $24,
+    './routes/app/patients/[id]/avatar.tsx': $25,
+    './routes/app/patients/add.tsx': $26,
+    './routes/app/pending_approval.tsx': $27,
+    './routes/app/unauthorized.tsx': $28,
+    './routes/apply.tsx': $29,
+    './routes/chatbot/incoming-whatsapp.ts': $30,
+    './routes/index.tsx': $31,
+    './routes/interest.tsx': $32,
+    './routes/logged-in.tsx': $33,
+    './routes/login.tsx': $34,
+    './routes/logout.tsx': $35,
+    './routes/partner.tsx': $36,
+    './routes/schedule-demo.tsx': $37,
+    './routes/volunteer.tsx': $38,
+    './routes/volunteer/[role].tsx': $39,
+    './routes/waitlist.tsx': $40,
   },
   islands: {
     './islands/AllergySearch.tsx': $$0,
