@@ -24,6 +24,7 @@ import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientPreExistingConditions from '../../../components/patients/add/PreExistingConditionsForm.tsx'
+import PatientOccupationForm from '../../../components/patients/add/OccupationForm.tsx'
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import { path } from '../../../util/path.ts'
@@ -378,6 +379,9 @@ export default function AddPatient(
               preExistingConditions={(assert(preExistingConditions),
                 preExistingConditions)}
             />
+          )}
+          {currentStep === 'occupation' && (
+            <PatientOccupationForm patient={patient} />
           )}
           <hr className='my-2' />
           <Buttons
