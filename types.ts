@@ -1348,15 +1348,21 @@ export type PatientMedication =
   & {
     patient_condition_id: number
     strength: number
-    dosage: number
-    intake_frequency: string
     start_date: string
     end_date: Maybe<string>
+    schedules: MedicationSchedule[]
   }
   & (
     | { medication_id: null; manufactured_medication_id: number }
     | { medication_id: number; manufactured_medication_id: null }
   )
+
+export type MedicationSchedule = {
+  dosage: number
+  frequency: string
+  duration: number
+  duration_units: string
+}
 
 export type DrugSearchResultMedication = {
   medication_id: number

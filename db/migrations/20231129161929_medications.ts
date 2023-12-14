@@ -96,6 +96,8 @@ export async function up(db: Kysely<unknown>) {
     )
     .execute()
 
+  await sql`CREATE TYPE medication_schedule AS (dosage numeric, frequency varchar(255), duration integer, duration_units varchar(255))`.execute(db);
+  
   await db.schema
     .createTable('patient_condition_medications')
     .addColumn('id', 'serial', (col) => col.primaryKey())
@@ -127,10 +129,9 @@ export async function up(db: Kysely<unknown>) {
         col.references('manufactured_medications.id').onDelete('cascade'),
     )
     .addColumn('strength', 'numeric')
-    .addColumn('dosage', 'numeric')
-    .addColumn('intake_frequency', 'varchar(255)')
     .addColumn('start_date', 'date', (col) => col.notNull())
     .addColumn('end_date', 'date')
+    .addColumn('schedules', sql`medication_schedule[]`)
     .addCheckConstraint(
       'patient_condition_medications_med_id_check',
       sql`(manufactured_medication_id IS NOT NULL AND medication_id IS NULL) OR (medication_id IS NOT NULL AND manufactured_medication_id IS NULL)`,
@@ -139,6 +140,7 @@ export async function up(db: Kysely<unknown>) {
       'end_date_after_start_date_if_present_check',
       sql`end_date IS NULL OR end_date >= start_date`,
     )
+    .addCheckConstraint('schedules_check', sql`cardinality(schedules) > 0`)
     .execute()
 
   await addUpdatedAtTrigger(db, 'drugs')
@@ -153,6 +155,7 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('manufactured_medications').execute()
   await db.schema.dropTable('medications').execute()
   await db.schema.dropTable('drugs').execute()
+  await db.schema.dropType('medication_schedule').execute()
 }
 
 type ManufacturedMedicationCsvRow = {

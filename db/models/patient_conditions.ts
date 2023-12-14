@@ -278,8 +278,7 @@ export async function upsertPreExisting(
               : medication.medication_id) || null,
             manufactured_medication_id: medication.manufactured_medication_id ||
               null,
-            dosage: medication.dosage,
-            intake_frequency: medication.intake_frequency,
+            schedules: sql`ARRAY[ROW(${medication.dosage}, ${medication.intake_frequency}, 0, 'TODO')]::medication_schedule[]`,
             start_date: medication.start_date || condition.start_date,
             end_date: medication.end_date,
           })
@@ -295,9 +294,8 @@ export async function upsertPreExisting(
               : medication.medication_id) || null,
             manufactured_medication_id: medication.manufactured_medication_id ||
               null,
-            dosage: medication.dosage,
             strength: medication.strength,
-            intake_frequency: medication.intake_frequency,
+            schedules: sql`ARRAY[ROW(${medication.dosage}, ${medication.intake_frequency}, 0, 'TODO')]::medication_schedule[]`,
             start_date: medication.start_date || condition.start_date,
             end_date: medication.end_date,
           })
@@ -368,8 +366,7 @@ export async function getPreExistingConditions(
       'patient_condition_medications.manufactured_medication_id',
       'patient_condition_medications.patient_condition_id',
       'patient_condition_medications.strength',
-      'patient_condition_medications.dosage',
-      'patient_condition_medications.intake_frequency',
+      'patient_condition_medications.schedules',
       'drugs.generic_name',
       sql<
         string
@@ -412,8 +409,8 @@ export async function getPreExistingConditions(
           drug_id: m.drug_id,
           // TODO remove the Number cast
           // https://github.com/kysely-org/kysely/issues/802
-          dosage: Number(m.dosage),
-          intake_frequency: m.intake_frequency,
+          dosage: Number(m.schedules[0].dosage),
+          intake_frequency: m.schedules[0].frequency,
           generic_name: m.generic_name,
           // TODO remove the Number cast
           // https://github.com/kysely-org/kysely/issues/802
