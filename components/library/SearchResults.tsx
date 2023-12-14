@@ -1,9 +1,15 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
-import { HasId } from '../../types.ts'
+import {
+  DrugSearchResult as DrugSearchResultData,
+  DrugSearchResultMedication,
+  HasId,
+} from '../../types.ts'
 import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
 import { PlusCircleIcon } from '../library/icons/heroicons/outline.tsx'
+import { isUnits } from '../../util/units.ts'
+import uniq from '../../util/uniq.ts'
 
 type BasicSelectProps = {
   isSelected?: boolean
@@ -40,15 +46,9 @@ type AddButtonSearchResult = BasicSelectProps & {
   searchedValue: string
 }
 
-type MedicationSearchResultProps = BasicSelectProps & {
-  generic_name: string
-  form: string
-  strengths: string
-  trade_name?: string
-  manufacturer_name?: string
-}
-
-function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
+export function SearchResult(
+  { isSelected, onSelect, children }: SearchResultProps,
+) {
   const [isActive, setIsActive] = useState(false)
 
   return (
@@ -86,6 +86,56 @@ function SearchResult({ isSelected, onSelect, children }: SearchResultProps) {
         </span>
       )}
     </li>
+  )
+}
+
+function medicationFormAndStrength(medication: DrugSearchResultMedication) {
+  const strengths = medication.strength_numerators.join(', ')
+  const denominator_text = isUnits(medication.strength_denominator_unit)
+    ? `/${medication.strength_denominator_unit}`
+    : ''
+  return `${medication.form} (${strengths}${medication.strength_numerator_unit}${denominator_text})`
+}
+
+export function DrugSearchResult({ drug, isSelected, onSelect }: {
+  drug: DrugSearchResultData
+  isSelected?: boolean
+  onSelect: () => void
+}) {
+  const trade_names = uniq(
+    drug.medications.flatMap((medication) =>
+      medication.manufacturers.map((manufacturer) => manufacturer.trade_name)
+    ),
+  )
+
+  const distinct_trade_names = trade_names.filter((trade_name) =>
+    trade_name !== drug.drug_generic_name
+  )
+
+  return (
+    <SearchResult
+      isSelected={isSelected}
+      onSelect={onSelect}
+    >
+      <div className='flex items-center'>
+        <span
+          className={cls(
+            'ml-3 truncate',
+            isSelected && 'font-bold',
+          )}
+        >
+          <b>{drug.drug_generic_name}</b>
+          {drug.medications.map(medicationFormAndStrength).map(
+            (form_and_strength) => <div>{form_and_strength}</div>,
+          )}
+          {distinct_trade_names.length > 0 && (
+            <div className='text-s italic'>
+              {distinct_trade_names.join(', ')}
+            </div>
+          )}
+        </span>
+      </div>
+    </SearchResult>
   )
 }
 
@@ -190,31 +240,6 @@ export function ConditionSearchResult(
         <div className={cls('truncate text-base', isSelected && 'font-bold')}>
           {condition}
         </div>
-      </div>
-    </SearchResult>
-  )
-}
-
-export function MedicationSearchResult(
-  {
-    generic_name,
-    form,
-    strengths,
-    trade_name,
-    manufacturer_name,
-    isSelected,
-    onSelect,
-  }: MedicationSearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <div className='flex items-center'>
-        <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
-          <b>{generic_name}</b>
-          <div>{form} ({strengths})</div>
-          <div>{trade_name}</div>
-          <div>{manufacturer_name}</div>
-        </span>
       </div>
     </SearchResult>
   )

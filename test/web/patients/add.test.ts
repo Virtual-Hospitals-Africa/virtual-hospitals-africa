@@ -4,6 +4,7 @@ import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
   describeWithWebServer,
+  getFormDisplay,
   getFormValues,
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
@@ -13,7 +14,6 @@ import * as address from '../../../db/models/address.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
-import deepOmit from '../../../util/deepOmit.ts'
 
 describeWithWebServer('/app/patients/add', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -190,10 +190,11 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     body.set('pre_existing_conditions.0.start_date', '1989-01-12')
     body.set('pre_existing_conditions.0.comorbidities.0.key_id', 'c_8321')
     body.set('pre_existing_conditions.0.medications.0.medication_id', '1')
-    body.set('pre_existing_conditions.0.medications.0.dosage', '0.9% W/W')
+    body.set('pre_existing_conditions.0.medications.0.strength', '150')
+    body.set('pre_existing_conditions.0.medications.0.dosage', '2')
     body.set(
       'pre_existing_conditions.0.medications.0.intake_frequency',
-      'qod / alternate days',
+      'qod',
     )
 
     const postResponse = await fetch(
@@ -219,12 +220,12 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
 
-    const preExistingConditions = await getPreExistingConditions(db, {
+    const pre_existing_conditions = await getPreExistingConditions(db, {
       patient_id: patientResult[0].id,
     })
 
-    assertEquals(preExistingConditions.length, 1)
-    const [preExistingCondition] = preExistingConditions
+    assertEquals(pre_existing_conditions.length, 1)
+    const [preExistingCondition] = pre_existing_conditions
     assertEquals(preExistingCondition.key_id, 'c_4373')
     assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
     assertEquals(preExistingCondition.start_date, '1989-01-12')
@@ -236,19 +237,19 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     )
     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
     assertEquals(preExistingCondition.medications.length, 1)
-    assertEquals(preExistingCondition.medications[0].dosage, '0.9% W/W')
+    assertEquals(preExistingCondition.medications[0].dosage, 2)
     assertEquals(
       preExistingCondition.medications[0].generic_name,
-      'SODIUM CHLORIDE',
+      'LAMIVUDINE',
     )
     assertEquals(
       preExistingCondition.medications[0].intake_frequency,
-      'qod / alternate days',
+      'qod',
     )
     assertEquals(preExistingCondition.medications[0].medication_id, 1)
     assertEquals(
       preExistingCondition.medications[0].strength,
-      '6G/1000 ML;0.9% W/W;0.9%;0.9 % (W/V)',
+      150,
     )
 
     const getResponse = await fetch(
@@ -263,8 +264,36 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const pageContents = await getResponse.text()
     const $ = cheerio.load(pageContents)
     const formValues = getFormValues($)
-    assertEquals(formValues, {
-      pre_existing_conditions: deepOmit(preExistingConditions, 'strength'),
-    })
+    const formDisplay = getFormDisplay($)
+    assertEquals(
+      formValues,
+      { pre_existing_conditions },
+      'The form should be 1:1 with the conditions in the DB',
+    )
+    assertEquals(formDisplay, {
+      pre_existing_conditions: [
+        {
+          primary_name: 'Cigarette smoker',
+          start_date: '1989-01-12',
+          comorbidities: [
+            {
+              primary_name: 'Coma - hyperosmolar nonketotic (HONK)',
+              start_date: '1989-01-12',
+            },
+          ],
+          medications: [
+            {
+              generic_name: 'LAMIVUDINE',
+              start_date: '1989-01-12',
+              end_date: null,
+              medication_id: 'TABLET, COATED; ORAL',
+              strength: '150MG/TABLET',
+              dosage: '2 TABLETS (300MG)',
+              intake_frequency: 'alternate days',
+            },
+          ],
+        },
+      ],
+    }, 'The form should display the medications in a human-readable format')
   })
 })

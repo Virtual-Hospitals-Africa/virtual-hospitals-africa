@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 
@@ -5,9 +6,12 @@ export function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
+    ids?: Maybe<number[]>
   },
 ): Promise<DrugSearchResult[]> {
-  return trx
+  assert(opts.search || opts.ids, 'must provide search or ids')
+  if (opts.ids) assert(opts.ids.length, 'must provide at least one id')
+  let query = trx
     .selectFrom('drugs')
     .select((eb_drugs) => [
       'drugs.id as drug_id',
@@ -43,6 +47,11 @@ export function search(
           ),
       ).as('medications'),
     ])
-    .where('generic_name', 'ilike', `%${opts.search}%`)
-    .execute()
+
+  if (opts.search) {
+    query = query.where('generic_name', 'ilike', `%${opts.search}%`)
+  }
+  if (opts.ids) query = query.where('drugs.id', 'in', opts.ids)
+
+  return query.execute()
 }

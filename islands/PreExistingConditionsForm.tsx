@@ -5,7 +5,7 @@ import { DateInput } from '../components/library/form/Inputs.tsx'
 import FormRow from '../components/library/form/Row.tsx'
 import RemoveIcon from '../components/library/icons/remove.tsx'
 import MedicationSearch from './MedicationSearch.tsx'
-import { PreExistingCondition } from '../types.ts'
+import { PreExistingConditionWithDrugs } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import { JSX } from 'preact/jsx-runtime'
 
@@ -17,7 +17,7 @@ type ConditionState = {
 type PreExistingConditionsFormState = Map<string | number, ConditionState>
 
 const initialState = (
-  preExistingConditions: PreExistingCondition[],
+  preExistingConditions: PreExistingConditionWithDrugs[],
 ): PreExistingConditionsFormState => {
   if (!preExistingConditions?.length) {
     return new Map()
@@ -47,7 +47,7 @@ function Comorbidity({
   comorbidity_index,
   removeComorbidity,
 }: {
-  matchingCondition?: PreExistingCondition
+  matchingCondition?: PreExistingConditionWithDrugs
   condition_prefix: string
   comorbidity_id: string | number
   comorbidity_index: number
@@ -93,7 +93,7 @@ function Medication({
   medication_index,
   removeMedication,
 }: {
-  matchingCondition?: PreExistingCondition
+  matchingCondition?: PreExistingConditionWithDrugs
   condition_prefix: string
   medication_id: string | number
   medication_index: number
@@ -112,7 +112,6 @@ function Medication({
         <RemoveIcon />
       </a>
       <MedicationSearch
-        label={null}
         name={prefix}
         value={matchingMedication}
       />
@@ -123,20 +122,6 @@ function Medication({
           value={medication_id}
         />
       )}
-      <div class='col-span-2 flex space-x-0.5 '>
-        <DateInput
-          name={`${prefix}.start_date`}
-          placeholder='Start Date'
-          label={null}
-          value={matchingMedication?.start_date}
-        />
-        <DateInput
-          name={`${prefix}.end_date`}
-          placeholder='End Date'
-          label={null}
-          value={matchingMedication?.end_date}
-        />
-      </div>
     </FormRow>
   )
 }
@@ -153,7 +138,7 @@ function Condition(
     condition_id: string | number
     condition_index: number
     condition_state: ConditionState
-    preExistingConditions: PreExistingCondition[]
+    preExistingConditions: PreExistingConditionWithDrugs[]
     removeCondition(): void
     updateCondition(condition: ConditionState): void
   },
@@ -283,7 +268,7 @@ function Condition(
 export default function PreExistingConditionsForm({
   preExistingConditions,
 }: {
-  preExistingConditions: PreExistingCondition[]
+  preExistingConditions: PreExistingConditionWithDrugs[]
 }): JSX.Element {
   const [patientConditions, setPatientConditions] = useState<
     PreExistingConditionsFormState

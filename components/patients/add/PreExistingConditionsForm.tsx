@@ -1,12 +1,15 @@
 import AllergySearch from '../../../islands/AllergySearch.tsx'
-import { OnboardingPatient, PreExistingCondition } from '../../../types.ts'
+import {
+  OnboardingPatient,
+  PreExistingConditionWithDrugs,
+} from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import PreExistingConditionsForm from '../../../islands/PreExistingConditionsForm.tsx'
 
 export default function PatientPreExistingConditions(
   { patient = {}, preExistingConditions }: {
     patient?: Partial<OnboardingPatient>
-    preExistingConditions: PreExistingCondition[]
+    preExistingConditions: PreExistingConditionWithDrugs[]
   },
 ) {
   return (

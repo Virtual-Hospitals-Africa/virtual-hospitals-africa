@@ -1,6 +1,14 @@
 import { sql } from 'kysely'
-import { Maybe, PreExistingCondition, TrxOrDb } from '../../types.ts'
+import {
+  Maybe,
+  PreExistingCondition,
+  PreExistingConditionWithDrugs,
+  TrxOrDb,
+} from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import * as drugs from './drugs.ts'
+import uniq from '../../util/uniq.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type PatientMedicationUpsert =
   & {
@@ -123,11 +131,13 @@ export async function upsertPreExisting(
           Object.keys(IntakeFrequencies).join(', ')
         }`,
       )
-      // assertOr400(
-      //   !seenMedicationIds.has(medication.medication_id) ,
-      //   'Medication medication_id must be unique',
-      // )
-      // seenMedicationIds.add(medication.medication_id)
+      if (medication.medication_id) {
+        assertOr400(
+          !seenMedicationIds.has(medication.medication_id),
+          'Medication medication_id must be unique as medications are related to one condition at a time',
+        )
+        seenMedicationIds.add(medication.medication_id)
+      }
     }
   }
 
@@ -253,6 +263,7 @@ export async function upsertPreExisting(
           .executeTakeFirstOrThrow()
       }
     }
+
     for (const medication of condition.medications || []) {
       const matchingMedication = matchingCondition?.medications.find((c) =>
         c.id === medication.id
@@ -262,8 +273,11 @@ export async function upsertPreExisting(
         await trx
           .updateTable('patient_condition_medications')
           .set({
-            medication_id: medication.medication_id,
-            manufactured_medication_id: medication.manufactured_medication_id,
+            medication_id: (medication.manufactured_medication_id
+              ? null
+              : medication.medication_id) || null,
+            manufactured_medication_id: medication.manufactured_medication_id ||
+              null,
             dosage: medication.dosage,
             intake_frequency: medication.intake_frequency,
             start_date: medication.start_date || condition.start_date,
@@ -276,8 +290,11 @@ export async function upsertPreExisting(
           .insertInto('patient_condition_medications')
           .values({
             patient_condition_id,
-            medication_id: medication.medication_id,
-            manufactured_medication_id: medication.manufactured_medication_id,
+            medication_id: (medication.manufactured_medication_id
+              ? null
+              : medication.medication_id) || null,
+            manufactured_medication_id: medication.manufactured_medication_id ||
+              null,
             dosage: medication.dosage,
             strength: medication.strength,
             intake_frequency: medication.intake_frequency,
@@ -319,7 +336,7 @@ export async function getPreExistingConditions(
 
   const gettingPatientMedications = await trx
     .selectFrom('patient_condition_medications')
-    .innerJoin(
+    .leftJoin(
       'manufactured_medications',
       'manufactured_medications.id',
       'patient_condition_medications.manufactured_medication_id',
@@ -347,16 +364,23 @@ export async function getPreExistingConditions(
     .select([
       'patient_condition_medications.id',
       'medications.drug_id',
-      'patient_condition_medications.medication_id',
+      'medications.id as medication_id',
       'patient_condition_medications.manufactured_medication_id',
       'patient_condition_medications.patient_condition_id',
       'patient_condition_medications.strength',
       'patient_condition_medications.dosage',
       'patient_condition_medications.intake_frequency',
       'drugs.generic_name',
-      'patient_condition_medications.start_date',
-      'patient_condition_medications.end_date',
-      // 'medications.strength',
+      sql<
+        string
+      >`TO_CHAR(patient_condition_medications.start_date, 'YYYY-MM-DD')`.as(
+        'start_date',
+      ),
+      sql<
+        string | null
+      >`TO_CHAR(patient_condition_medications.end_date, 'YYYY-MM-DD')`.as(
+        'end_date',
+      ),
     ])
     .execute()
 
@@ -386,12 +410,40 @@ export async function getPreExistingConditions(
           medication_id: m.medication_id,
           manufactured_medication_id: m.manufactured_medication_id,
           drug_id: m.drug_id,
-          dosage: m.dosage,
+          // TODO remove the Number cast
+          // https://github.com/kysely-org/kysely/issues/802
+          dosage: Number(m.dosage),
           intake_frequency: m.intake_frequency,
           generic_name: m.generic_name,
-          strength: m.strength,
+          // TODO remove the Number cast
+          // https://github.com/kysely-org/kysely/issues/802
+          strength: Number(m.strength),
           start_date: m.start_date,
           end_date: m.end_date,
         })),
     }))
+}
+
+export async function getPreExistingConditionsWithDrugs(
+  trx: TrxOrDb,
+  opts: { patient_id: number },
+): Promise<PreExistingConditionWithDrugs[]> {
+  const preExistingConditions = await getPreExistingConditions(trx, opts)
+  const drug_ids = uniq(
+    preExistingConditions.flatMap((c) =>
+      c.medications.map((medication) => medication.drug_id)
+    ),
+  )
+  const matchingDrugs = drug_ids.length
+    ? await drugs.search(trx, { ids: drug_ids })
+    : []
+
+  return preExistingConditions.map((c) => ({
+    ...c,
+    medications: c.medications.map((m) => {
+      const drug = matchingDrugs.find((d) => d.drug_id === m.drug_id)
+      assert(drug, `Could not find drug with id ${m.drug_id}`)
+      return { ...m, drug }
+    }),
+  }))
 }

@@ -209,7 +209,34 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
       set(
         formValues,
         el.attribs.name,
-        el.attribs.value && parseParam(el.attribs.value),
+        el.attribs.value ? parseParam(el.attribs.value) : null,
+      )
+    }
+  })
+  $('form select').each((_i, el) => {
+    let value = null
+    $(el).find('option[selected]').each((_i, option) => {
+      value = option.attribs.value && parseParam(option.attribs.value)
+    })
+    if (el.attribs.name) {
+      set(
+        formValues,
+        el.attribs.name,
+        value,
+      )
+    }
+  })
+  return formValues
+}
+
+export function getFormDisplay($: cheerio.CheerioAPI): unknown {
+  const formDisplay = {}
+  $('form input,textarea').each((_i, el) => {
+    if (el.attribs.type !== 'hidden' && el.attribs.name) {
+      set(
+        formDisplay,
+        el.attribs.name,
+        el.attribs.value ?? null,
       )
     }
   })
@@ -217,12 +244,12 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
     $(el).find('option[selected]').each((_i, option) => {
       if (el.attribs.name) {
         set(
-          formValues,
+          formDisplay,
           el.attribs.name,
-          option.attribs.value && parseParam(option.attribs.value),
+          $(option).text(),
         )
       }
     })
   })
-  return formValues
+  return formDisplay
 }

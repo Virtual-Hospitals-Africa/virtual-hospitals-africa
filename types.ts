@@ -155,6 +155,32 @@ export type PreExistingCondition = {
     id: number
     drug_id: number
     manufactured_medication_id: number | null
+    medication_id: number
+    strength: number
+    dosage: number
+    intake_frequency: string
+    generic_name: string
+    start_date: string
+    end_date?: Maybe<string>
+  }[]
+}
+
+export type PreExistingConditionWithDrugs = {
+  id: number
+  key_id: string
+  primary_name: string
+  start_date: string
+  comorbidities: {
+    id: number
+    key_id: string
+    primary_name: string
+    start_date?: Maybe<string>
+  }[]
+  medications: {
+    id: number
+    drug_id: number
+    drug: DrugSearchResult
+    manufactured_medication_id: number | null
     medication_id: number | null
     strength: number
     dosage: number
@@ -1332,23 +1358,25 @@ export type PatientMedication =
     | { medication_id: number; manufactured_medication_id: null }
   )
 
+export type DrugSearchResultMedication = {
+  medication_id: number
+  form: string
+  strength_numerators: number[]
+  strength_numerator_unit: string
+  strength_denominator: number
+  strength_denominator_unit: string
+  manufacturers: {
+    manufactured_medication_id: number
+    strength_numerators: number[]
+    manufacturer_name: string
+    trade_name: string
+  }[]
+}
+
 export type DrugSearchResult = {
   drug_id: number
   drug_generic_name: string
-  medications: {
-    medication_id: number
-    form: string
-    strength_numerators: number[]
-    strength_numerator_unit: string
-    strength_denominator: number
-    strength_denominator_unit: string
-    manufacturers: {
-      manufactured_medication_id: number
-      strength_numerators: number[]
-      manufacturer_name: string
-      trade_name: string
-    }[]
-  }[]
+  medications: DrugSearchResultMedication[]
 }
 
 export type GuardianRelationName =
