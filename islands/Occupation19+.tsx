@@ -3,7 +3,7 @@ import FormRow from '../components/library/form/Row.tsx'
 import { TextInput } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 
-export default function Occupation19+() {
+export default function Occupation19() {
   const [Education, setEducation] = useState<boolean>(false)
   const [Appropriate, setAppropriate] = useState<boolean>(true)
   const [GradesDropping, setGradesDropping] = useState<boolean>(false)
