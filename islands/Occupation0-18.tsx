@@ -2,23 +2,33 @@ import { useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
 import { Select, TextInput } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
+import { assert } from 'std/assert/assert.ts'
 
+
+type School = {
+  grade: string,
+  grades_dropping: boolean,
+  happy: boolean,
+  sports: boolean,
+  inappropriate_reason: string | null,
+}
 export default function Occupation0_18() {
-  const [School, setSchool] = useState<boolean>(false)
-  const [Appropriate, setAppropriate] = useState<boolean>(true)
-  const [GradesDropping, setGradesDropping] = useState<boolean>(false)
+  const [school, setSchool] = useState<null|School>(null)
+  console.log(school)
+  //const [Appropriate, setAppropriate] = useState<boolean>(true)
 
-  const setSchoolHandler = () => {
-    setSchool((prevSchool) => !prevSchool)
-  }
-
-  const setAppropriateHandler = () => {
-    setAppropriate((prevAppropriate) => !prevAppropriate)
-  }
-
-  const setGradesDroppingHandler = () => {
-    setGradesDropping((prevGrade) => !prevGrade)
-  }
+  //const setSchoolHandler = () => {
+  //  setSchool((prevSchool) => !prevSchool)
+  //}
+  //const setSchoolHandler = 
+//
+  //const setAppropriateHandler = () => {
+  //  setAppropriate((prevAppropriate) => !prevAppropriate)
+  //}
+//
+  //const setGradesDroppingHandler = () => {
+  //  setGradesDropping((prevGrade) => !prevGrade)
+  //}
   const class_inappropriate_reason = [
     'Change of town',
     'Repeated a class',
@@ -73,32 +83,49 @@ export default function Occupation0_18() {
             type='checkbox'
             value=''
             class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-            onClick={setSchoolHandler}
+            onClick={(event) => {
+              assert(event.target instanceof HTMLInputElement)
+              const nextSchool: null | School = event.target.checked
+                ? {
+                  grade: 'ECD 1',
+                  grades_dropping: false,
+                  happy: true,
+                  sports: true,
+                  inappropriate_reason: null,
+                }
+                : null
+              setSchool(nextSchool)
+            }}
           >
           </input>
         </div>
       </div>
       
 
-      {School && (
+      {school && (
         <div class='flex right'>
           <div class='flex-1'>
-            <text>Is the class not appopriate for their Age?</text>
+            <text>Is class appopriate for their age?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
             <input
               id='class_appropriate'
               type='checkbox'
-              
-              value=''
+              checked={!school?.inappropriate_reason}
               class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              onClick={setAppropriateHandler}
+              onClick={(event) => {
+                assert(event.target instanceof HTMLInputElement)
+                setSchool({
+                  ...school,
+                  inappropriate_reason: event.target.checked ? null : class_inappropriate_reason[0],
+                })
+              }}
             >
             </input>
           </div>
         </div>
       )}
-      {School && (
+      {school && (
         <div class='flex items-center'>
           <div class='flex-1'>
             <text>Are the patient's grades dropping?</text>
@@ -109,13 +136,13 @@ export default function Occupation0_18() {
               type='checkbox'
               value=''
               class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              onClick={setGradesDroppingHandler}
+              //onClick={setGradesDroppingHandler}
             >
             </input>
           </div>
         </div>
       )}
-      {School && (
+      {school && (
         <div class='flex right'>
           <div class='flex-1'>
             <text>Is the patient happy at school?</text>
@@ -154,20 +181,19 @@ export default function Occupation0_18() {
             name='patient_class'
             
           >
-            <option value=''>Select</option>
             {grades.map((grade) => (
               <option value={grade}>
                 {grade}
               </option>
             ))}
           </Select>
-          {!Appropriate && School &&(
+          {school?.inappropriate_reason && (
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
               name='class_inappropriate_reason'
             >
               {class_inappropriate_reason.map((reason) => (
-                <option value={reason}>
+                <option value={reason} selected={reason === school.inappropriate_reason}>
                   {reason}
                 </option>
               ))}
@@ -179,14 +205,13 @@ export default function Occupation0_18() {
             label='What grade was the patient in last school term?'
             name='grade'
           >
-            <option value=''>Select</option>
             {grades.map((grade) => (
               <option value={grade}>
                 {grade}
               </option>
             ))}
             </Select>
-          {GradesDropping && (
+          {/* {GradesDropping && (
             <SelectWithOther
               label='If the grades are dropping, why?'
               name='grades_dropping_reason'
@@ -197,7 +222,7 @@ export default function Occupation0_18() {
               </option>
             ))}
             </SelectWithOther>
-          )}
+          )} */}
         </FormRow>
         <FormRow>
           <SelectWithOther

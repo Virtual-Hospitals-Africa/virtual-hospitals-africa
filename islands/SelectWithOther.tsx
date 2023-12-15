@@ -22,7 +22,6 @@ export default function SelectWithOther(
           setSelected(e?.currentTarget?.value)
         }}
       >
-        <option>Select</option>
         {children}
         <option value='other'>Other</option>
       </Select>
