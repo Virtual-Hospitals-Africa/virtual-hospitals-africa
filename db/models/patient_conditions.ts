@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import {
   Maybe,
+  MedicationSchedule,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
   TrxOrDb,
@@ -368,7 +369,11 @@ export async function getPreExistingConditions(
       'patient_condition_medications.manufactured_medication_id',
       'patient_condition_medications.patient_condition_id',
       'patient_condition_medications.strength',
-      'patient_condition_medications.schedules',
+      sql<
+        MedicationSchedule[]
+      >`TO_JSON(patient_condition_medications.schedules)`.as(
+        'schedules',
+      ),
       'drugs.generic_name',
       sql<
         string
