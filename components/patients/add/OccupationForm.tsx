@@ -7,5 +7,6 @@ import { TextInput } from '../../library/form/Inputs.tsx'
 export default function PatientOccupationForm(
   { patient = {} }: { patient?: Partial<OnboardingPatient> },
 ) {
+  //Or determine Patients age here
   return <Occupation0_18 />
 }
