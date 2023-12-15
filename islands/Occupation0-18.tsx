@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
-import { TextInput } from '../components/library/form/Inputs.tsx'
+import { Select, TextInput } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 
 export default function Occupation0_18() {
@@ -20,19 +20,45 @@ export default function Occupation0_18() {
     setGradesDropping((prevGrade) => !prevGrade)
   }
   const class_inappropriate_reason = [
-    'Reason 1',
-    'Reason 2',
+    'Change of town',
+    'Repeated a class',
+    'Problems at home',
+    'Loss of parent/s',
   ]
   const gradeDropReasons = [
-    'Trouble at Home',
-    'Drugs',
-    'Transportation',
+    'Problems at Home',
+    'Low self esteem',
+    'Abuse',
+    'Loss of parent/s',
+    'Use of Harmful Substances',
+    'Associating with Wrong Crowds',
   ]
   const stopEducationReasons = [
-    'Trouble at Home',
-    'Drugs',
-    'Transportation',
-    'Financial Problem',
+    'Problems at Home',
+    'Low self esteem',
+    'Lack of funds',
+    'Had to be a breadwinner',
+    'Lack of opportunity',
+    'Loss of parent/s',
+    'Substance misuse',
+    'Happy with current level of education',
+  ]
+  const grades = [
+    'ECD 1',
+    'ECD 2',
+    'Grade 1',
+    'Grade 2',
+    'Grade 3',
+    'Grade 4',
+    'Grade 5',
+    'Grade 6',
+    'Grade 7',
+    'Form 1',
+    'Form 2',
+    'Form 3',
+    'Form 4',
+    'Form 5',
+    'Form 6',
   ]
   return (
     <>
@@ -52,6 +78,7 @@ export default function Occupation0_18() {
           </input>
         </div>
       </div>
+      
 
       {School && (
         <div class='flex right'>
@@ -122,10 +149,18 @@ export default function Occupation0_18() {
       <div style={{ height: '20px' }}></div>
       <section>
         <FormRow>
-          <TextInput
+          <Select
             label='Which class is the patient doing?'
             name='patient_class'
-          />
+            
+          >
+            <option value=''>Select</option>
+            {grades.map((grade) => (
+              <option value={grade}>
+                {grade}
+              </option>
+            ))}
+          </Select>
           {!Appropriate && School &&(
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
@@ -140,15 +175,28 @@ export default function Occupation0_18() {
           )}
         </FormRow>
         <FormRow>
-          <TextInput
+          <Select
             label='What grade was the patient in last school term?'
             name='grade'
-          />
+          >
+            <option value=''>Select</option>
+            {grades.map((grade) => (
+              <option value={grade}>
+                {grade}
+              </option>
+            ))}
+            </Select>
           {GradesDropping && (
-            <TextInput
+            <SelectWithOther
               label='If the grades are dropping, why?'
               name='grades_dropping_reason'
-            />
+            >
+               {gradeDropReasons.map((reason) => (
+              <option value={reason}>
+                {reason}
+              </option>
+            ))}
+            </SelectWithOther>
           )}
         </FormRow>
         <FormRow>
