@@ -9,7 +9,6 @@ export function search(
     ids?: Maybe<number[]>
   },
 ): Promise<DrugSearchResult[]> {
-  assert(opts.search || opts.ids, 'must provide search or ids')
   if (opts.ids) assert(opts.ids.length, 'must provide at least one id')
   let query = trx
     .selectFrom('drugs')
