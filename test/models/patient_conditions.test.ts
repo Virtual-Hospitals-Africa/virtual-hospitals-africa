@@ -1,3 +1,4 @@
+import { sql } from 'kysely'
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
@@ -84,6 +85,27 @@ describe(
           preExistingCondition.medications[0].strength,
           Number(tablet.strength_numerators[0]),
         )
+        assertEquals(
+          preExistingCondition.medications[0].start_date,
+          '2020-01-01',
+        )
+        assertEquals(
+          preExistingCondition.medications[0].end_date,
+          null,
+        )
+
+        const patient_medication = await db
+          .selectFrom('patient_condition_medications')
+          .where('manufactured_medication_id', '=', tablet.id)
+          .select(sql`TO_JSON(schedules)`.as('schedules'))
+          .executeTakeFirstOrThrow()
+
+        assertEquals(patient_medication.schedules, [{
+          dosage: 1,
+          duration: 1,
+          duration_unit: 'indefinitely',
+          frequency: 'qw',
+        }])
       })
 
       it('upserts pre-existing conditions (those without an end_date) where the manufacturer is unknown', async () => {
@@ -152,6 +174,118 @@ describe(
           preExistingCondition.medications[0].strength,
           Number(tablet.strength_numerators[0]),
         )
+        assertEquals(
+          preExistingCondition.medications[0].start_date,
+          '2020-01-01',
+        )
+        assertEquals(
+          preExistingCondition.medications[0].end_date,
+          null,
+        )
+
+        const patient_medication = await db
+          .selectFrom('patient_condition_medications')
+          .where('medication_id', '=', tablet.id)
+          .select(sql`TO_JSON(schedules)`.as('schedules'))
+          .executeTakeFirstOrThrow()
+
+        assertEquals(patient_medication.schedules, [{
+          dosage: 1,
+          duration: 1,
+          duration_unit: 'indefinitely',
+          frequency: 'qw',
+        }])
+      })
+
+      it('converts medication end_date into a proper schedule', async () => {
+        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+
+        const tablet = await db
+          .selectFrom('medications')
+          .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
+          .select([
+            'medications.id',
+            'medications.strength_numerators',
+            'drugs.generic_name',
+          ])
+          .where(
+            'form',
+            '=',
+            'TABLET; ORAL',
+          ).executeTakeFirstOrThrow()
+
+        await patient_conditions.upsertPreExisting(db, patient.id, [
+          {
+            key_id: 'c_22401',
+            start_date: '2020-01-01',
+            medications: [
+              {
+                manufactured_medication_id: null,
+                medication_id: tablet.id,
+                dosage: 1,
+                strength: tablet.strength_numerators[0],
+                intake_frequency: 'qw',
+                start_date: '2021-01-01',
+                end_date: '2021-01-16',
+              },
+            ],
+          },
+        ])
+        const preExistingConditions = await patient_conditions
+          .getPreExistingConditions(db, {
+            patient_id: patient.id,
+          })
+        assertEquals(preExistingConditions.length, 1)
+        const [preExistingCondition] = preExistingConditions
+        assertEquals(preExistingCondition.comorbidities, [])
+        assertEquals(preExistingCondition.key_id, 'c_22401')
+        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.start_date, '2020-01-01')
+        assertEquals(preExistingCondition.medications.length, 1)
+        assertEquals(preExistingCondition.medications[0].dosage, 1)
+        assertEquals(
+          preExistingCondition.medications[0].generic_name,
+          tablet.generic_name,
+        )
+        assertEquals(
+          preExistingCondition.medications[0].intake_frequency,
+          'qw',
+        )
+        assertEquals(
+          preExistingCondition.medications[0].manufactured_medication_id,
+          null,
+        )
+        assertEquals(
+          preExistingCondition.medications[0].medication_id,
+          tablet.id,
+        )
+        // TODO remove the Number cast
+        // https://github.com/kysely-org/kysely/issues/802
+        assertEquals(
+          preExistingCondition.medications[0].strength,
+          Number(tablet.strength_numerators[0]),
+        )
+        assertEquals(
+          preExistingCondition.medications[0].start_date,
+          '2021-01-01',
+        )
+        assertEquals(
+          preExistingCondition.medications[0].end_date,
+          '2021-01-16',
+        )
+
+        const patient_medication = await db
+          .selectFrom('patient_condition_medications')
+          .where('medication_id', '=', tablet.id)
+          .select(sql`TO_JSON(schedules)`.as('schedules'))
+          .executeTakeFirstOrThrow()
+
+        assertEquals(patient_medication.schedules, [{
+          dosage: 1,
+          duration: 15,
+          duration_unit: 'days',
+          frequency: 'qw',
+        }])
       })
     })
   },
