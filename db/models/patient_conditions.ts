@@ -1,6 +1,7 @@
-import { sql } from 'kysely'
+import { RawBuilder, sql } from 'kysely'
 import {
   Maybe,
+  MedicationSchedule,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
   TrxOrDb,
@@ -9,20 +10,19 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import * as drugs from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
+import { differenceInDays, durationEndDate } from '../../util/date.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
-type PatientMedicationUpsert =
-  & {
-    id?: Maybe<number>
-    dosage: number
-    strength: number
-    intake_frequency: string
-    start_date?: Maybe<string>
-    end_date?: Maybe<string>
-  }
-  & (
-    | { medication_id: number; manufactured_medication_id: null }
-    | { medication_id: null; manufactured_medication_id: number }
-  )
+type PatientMedicationUpsert = {
+  id?: Maybe<number>
+  dosage: number
+  strength: number
+  intake_frequency: string
+  start_date?: Maybe<string>
+  end_date?: Maybe<string>
+  medication_id: null | number
+  manufactured_medication_id: null | number
+}
 
 export type PreExistingConditionUpsert = {
   key_id: string
@@ -31,7 +31,7 @@ export type PreExistingConditionUpsert = {
   comorbidities?: {
     id?: Maybe<number>
     key_id: string
-    start_date: Maybe<string>
+    start_date?: Maybe<string>
   }[]
   medications?: PatientMedicationUpsert[]
 }
@@ -89,11 +89,9 @@ export const IntakeFrequencies = {
   prn: 'when necessary',
 }
 
-export async function upsertPreExisting(
-  trx: TrxOrDb,
-  patient_id: number,
+function assertPreExistingConditions(
   patientConditions: PreExistingConditionUpsert[],
-): Promise<void> {
+) {
   const seenConditionKeyIds = new Set<string>()
   const seenMedicationIds = new Set<number>()
   for (const condition of patientConditions) {
@@ -140,9 +138,13 @@ export async function upsertPreExisting(
       }
     }
   }
+}
 
-  const databaseConditions = await getPreExistingConditions(trx, { patient_id })
-
+async function removeEntitiesNoLongerPresent(
+  trx: TrxOrDb,
+  patientConditions: PreExistingConditionUpsert[],
+  databaseConditions: PreExistingCondition[],
+) {
   const patientConditionsToRemove: number[] = []
   const patientMedicationsToRemove: number[] = []
   for (const dbCondition of databaseConditions) {
@@ -173,138 +175,154 @@ export async function upsertPreExisting(
       }
     }
   }
-  if (patientConditionsToRemove.length) {
-    await trx
-      .deleteFrom('patient_conditions')
-      .where('id', 'in', patientConditionsToRemove)
-      .execute()
-  }
-  if (patientMedicationsToRemove.length) {
-    await trx
-      .deleteFrom('patient_condition_medications')
-      .where('id', 'in', patientMedicationsToRemove)
-      .execute()
-  }
+  const removingConditions = patientConditionsToRemove.length && trx
+    .deleteFrom('patient_conditions')
+    .where('id', 'in', patientConditionsToRemove)
+    .execute()
 
-  for (const condition of patientConditions) {
-    let patient_condition_id: Maybe<number> = condition.id
-    const matchingCondition = databaseConditions.find((c) =>
-      c.id === condition.id
-    )
-    if (patient_condition_id) {
-      assertOr400(matchingCondition, 'Referenced a non-existent condition')
-      if (
-        matchingCondition.key_id !== condition.key_id ||
-        matchingCondition.start_date !== condition.start_date
-      ) {
-        await trx
-          .updateTable('patient_conditions')
-          .set({
-            condition_key_id: condition.key_id,
-            start_date: condition.start_date,
-          })
-          .where('id', '=', patient_condition_id)
-          .executeTakeFirstOrThrow()
-      }
-    } else {
-      for (const comorbidity of condition.comorbidities || []) {
-        assertOr400(
-          !comorbidity.id,
-          'Cannot create a new comorbidity with an id for a parent condition without one',
-        )
-      }
-      for (const medication of condition.medications || []) {
-        assertOr400(
-          !medication.id,
-          'Cannot create a new medication with an id for a parent condition without one',
-        )
-      }
-      const parentCondition = await trx
-        .insertInto('patient_conditions')
-        .values({
-          patient_id,
+  const removingMedications = patientMedicationsToRemove.length && trx
+    .deleteFrom('patient_condition_medications')
+    .where('id', 'in', patientMedicationsToRemove)
+    .execute()
+
+  await Promise.all([removingConditions, removingMedications])
+}
+
+async function upsertPreExistingCondition(
+  trx: TrxOrDb,
+  patient_id: number,
+  databaseConditions: PreExistingCondition[],
+  condition: PreExistingConditionUpsert,
+) {
+  let patient_condition_id: Maybe<number> = condition.id
+  const matchingCondition = databaseConditions.find((c) =>
+    c.id === condition.id
+  )
+  if (patient_condition_id) {
+    assertOr400(matchingCondition, 'Referenced a non-existent condition')
+    if (
+      matchingCondition.key_id !== condition.key_id ||
+      matchingCondition.start_date !== condition.start_date
+    ) {
+      await trx
+        .updateTable('patient_conditions')
+        .set({
           condition_key_id: condition.key_id,
           start_date: condition.start_date,
-          comorbidity_of_condition_id: null,
         })
-        .returning('id')
+        .where('id', '=', patient_condition_id)
         .executeTakeFirstOrThrow()
-      patient_condition_id = parentCondition.id
     }
+  } else {
     for (const comorbidity of condition.comorbidities || []) {
+      assertOr400(
+        !comorbidity.id,
+        'Cannot create a new comorbidity with an id for a parent condition without one',
+      )
+    }
+    for (const medication of condition.medications || []) {
+      assertOr400(
+        !medication.id,
+        'Cannot create a new medication with an id for a parent condition without one',
+      )
+    }
+    const parentCondition = await trx
+      .insertInto('patient_conditions')
+      .values({
+        patient_id,
+        condition_key_id: condition.key_id,
+        start_date: condition.start_date,
+        comorbidity_of_condition_id: null,
+      })
+      .returning('id')
+      .executeTakeFirstOrThrow()
+    patient_condition_id = parentCondition.id
+  }
+  for (const comorbidity of condition.comorbidities || []) {
+    const values = {
+      patient_id,
+      condition_key_id: comorbidity.key_id,
+      start_date: comorbidity.start_date || condition.start_date,
+      comorbidity_of_condition_id: patient_condition_id,
+    }
+    if (comorbidity.id) {
       const matchingComorbidity = matchingCondition?.comorbidities.find((c) =>
         c.id === comorbidity.id
       )
-      if (comorbidity.id) {
-        assertOr400(matchingComorbidity, 'Referenced a non-existent condition')
-        if (
-          matchingComorbidity.key_id !==
-            comorbidity.key_id ||
-          matchingComorbidity.start_date !== comorbidity.start_date
-        ) {
-          await trx
-            .updateTable('patient_conditions')
-            .set({
-              condition_key_id: comorbidity.key_id,
-              start_date: comorbidity.start_date || condition.start_date,
-            })
-            .where('id', '=', comorbidity.id)
-            .executeTakeFirstOrThrow()
-        }
-      } else {
-        await trx
-          .insertInto('patient_conditions')
-          .values({
-            patient_id,
-            condition_key_id: comorbidity.key_id,
-            start_date: comorbidity.start_date || condition.start_date,
-            comorbidity_of_condition_id: patient_condition_id,
-          })
-          .executeTakeFirstOrThrow()
-      }
-    }
-
-    for (const medication of condition.medications || []) {
-      const matchingMedication = matchingCondition?.medications.find((c) =>
-        c.id === medication.id
-      )
-      if (medication.id) {
-        assertOr400(matchingMedication, 'Referenced a non-existent medication')
-        await trx
-          .updateTable('patient_condition_medications')
-          .set({
-            medication_id: (medication.manufactured_medication_id
-              ? null
-              : medication.medication_id) || null,
-            manufactured_medication_id: medication.manufactured_medication_id ||
-              null,
-            dosage: medication.dosage,
-            intake_frequency: medication.intake_frequency,
-            start_date: medication.start_date || condition.start_date,
-            end_date: medication.end_date,
-          })
-          .where('id', '=', medication.id)
-          .executeTakeFirstOrThrow()
-      } else {
-        await trx
-          .insertInto('patient_condition_medications')
-          .values({
-            patient_condition_id,
-            medication_id: (medication.manufactured_medication_id
-              ? null
-              : medication.medication_id) || null,
-            manufactured_medication_id: medication.manufactured_medication_id ||
-              null,
-            dosage: medication.dosage,
-            strength: medication.strength,
-            intake_frequency: medication.intake_frequency,
-            start_date: medication.start_date || condition.start_date,
-            end_date: medication.end_date,
-          })
-          .executeTakeFirstOrThrow()
-      }
+      assert(matchingComorbidity, 'Referenced a non-existent comorbidity')
+      await trx
+        .updateTable('patient_conditions')
+        .set(values)
+        .where('id', '=', comorbidity.id)
+        .executeTakeFirstOrThrow()
+    } else {
+      await trx
+        .insertInto('patient_conditions')
+        .values(values)
+        .executeTakeFirstOrThrow()
     }
   }
+  for (const medication of condition.medications || []) {
+    const start_date = medication.start_date || condition.start_date
+
+    const { duration, duration_unit } = medication.end_date
+      ? {
+        duration: differenceInDays(medication.end_date, start_date),
+        duration_unit: 'days',
+      }
+      : { duration: 1, duration_unit: 'indefinitely' }
+
+    const values = {
+      patient_condition_id,
+      medication_id: (!medication.manufactured_medication_id &&
+        medication.medication_id) || null,
+      manufactured_medication_id: medication.manufactured_medication_id ||
+        null,
+      strength: medication.strength,
+      schedules: sql`
+        ARRAY[
+          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
+        ]::medication_schedule[]
+      ` as RawBuilder<MedicationSchedule[]>,
+      start_date,
+    }
+    if (medication.id) {
+      const matchingMedication = matchingCondition?.medications.find((m) =>
+        m.id === medication.id
+      )
+      assertOr400(matchingMedication, 'Referenced a non-existent medication')
+      await trx
+        .updateTable('patient_condition_medications')
+        .set(values)
+        .where('id', '=', medication.id)
+        .executeTakeFirstOrThrow()
+    } else {
+      await trx
+        .insertInto('patient_condition_medications')
+        .values(values)
+        .executeTakeFirstOrThrow()
+    }
+  }
+}
+
+export async function upsertPreExisting(
+  trx: TrxOrDb,
+  patient_id: number,
+  patientConditions: PreExistingConditionUpsert[],
+): Promise<void> {
+  assertPreExistingConditions(patientConditions)
+  const databaseConditions = await getPreExistingConditions(trx, { patient_id })
+  const removingEntitiesNoLongerPresent = removeEntitiesNoLongerPresent(
+    trx,
+    patientConditions,
+    databaseConditions,
+  )
+  await Promise.all(
+    patientConditions.map((condition) =>
+      upsertPreExistingCondition(trx, patient_id, databaseConditions, condition)
+    ),
+  )
+  await removingEntitiesNoLongerPresent
 }
 
 // Note: Pre-existing conditions are just conditions that have not ended yet
@@ -368,18 +386,16 @@ export async function getPreExistingConditions(
       'patient_condition_medications.manufactured_medication_id',
       'patient_condition_medications.patient_condition_id',
       'patient_condition_medications.strength',
-      'patient_condition_medications.dosage',
-      'patient_condition_medications.intake_frequency',
+      sql<
+        MedicationSchedule[]
+      >`TO_JSON(patient_condition_medications.schedules)`.as(
+        'schedules',
+      ),
       'drugs.generic_name',
       sql<
         string
       >`TO_CHAR(patient_condition_medications.start_date, 'YYYY-MM-DD')`.as(
         'start_date',
-      ),
-      sql<
-        string | null
-      >`TO_CHAR(patient_condition_medications.end_date, 'YYYY-MM-DD')`.as(
-        'end_date',
       ),
     ])
     .execute()
@@ -405,22 +421,26 @@ export async function getPreExistingConditions(
         })),
       medications: patientMedications
         .filter((m) => m.patient_condition_id === parentCondition.id)
-        .map((m) => ({
-          id: m.id,
-          medication_id: m.medication_id,
-          manufactured_medication_id: m.manufactured_medication_id,
-          drug_id: m.drug_id,
-          // TODO remove the Number cast
-          // https://github.com/kysely-org/kysely/issues/802
-          dosage: Number(m.dosage),
-          intake_frequency: m.intake_frequency,
-          generic_name: m.generic_name,
-          // TODO remove the Number cast
-          // https://github.com/kysely-org/kysely/issues/802
-          strength: Number(m.strength),
-          start_date: m.start_date,
-          end_date: m.end_date,
-        })),
+        .map((m) => {
+          assertEquals(m.schedules.length, 1)
+          const [schedule] = m.schedules
+          return {
+            id: m.id,
+            medication_id: m.medication_id,
+            manufactured_medication_id: m.manufactured_medication_id,
+            drug_id: m.drug_id,
+            // TODO remove the Number cast
+            // https://github.com/kysely-org/kysely/issues/802
+            dosage: Number(schedule.dosage),
+            intake_frequency: schedule.frequency,
+            generic_name: m.generic_name,
+            // TODO remove the Number cast
+            // https://github.com/kysely-org/kysely/issues/802
+            strength: Number(m.strength),
+            start_date: m.start_date,
+            end_date: durationEndDate(m.start_date, schedule),
+          }
+        }),
     }))
 }
 

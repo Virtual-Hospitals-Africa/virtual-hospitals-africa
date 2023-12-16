@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { MonthNum, ParsedDate, Time } from '../types.ts'
+import { Duration, MonthNum, ParsedDate, Time } from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'
 
@@ -68,6 +68,13 @@ export function stringify(date: ParsedDate | Date): string {
   assert(date.format === 'numeric')
   const { day, month, year, hour, minute, second } = date
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
+}
+
+export function stringifyJustDate(date: ParsedDate | Date): string {
+  if (isDate(date)) date = parseDate(date, 'numeric')
+  assert(date.format === 'numeric')
+  const { day, month, year } = date
+  return `${year}-${month}-${day}`
 }
 
 export function todayISOInHarare() {
@@ -322,4 +329,30 @@ export function prettyMinimal(day: string, today: string) {
   return sameYearAsToday
     ? `${parseInt(date)} ${monthStr}`
     : `${parseInt(date)} ${monthStr} ${year}`
+}
+
+export function durationEndDate(
+  start_date: Date | string,
+  duration: Duration,
+): null | string {
+  if (duration.duration_unit === 'indefinitely') return null
+  const start = new Date(start_date)
+  const end = new Date(start)
+  switch (duration.duration_unit) {
+    case 'days':
+      end.setDate(start.getDate() + duration.duration)
+      break
+    case 'weeks':
+      end.setDate(start.getDate() + duration.duration * 7)
+      break
+    case 'months':
+      end.setMonth(start.getMonth() + duration.duration)
+      break
+    case 'years':
+      end.setFullYear(start.getFullYear() + duration.duration)
+      break
+    default:
+      throw new Error(`Invalid duration unit: ${duration.duration_unit}`)
+  }
+  return stringifyJustDate(end)
 }
