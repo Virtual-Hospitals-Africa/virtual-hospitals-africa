@@ -102,7 +102,10 @@ type ConditionsFormValues = {
 
 type FamilyFormValues = Record<string, unknown>
 type HistoryFormValues = Record<string, unknown>
-type OccupationFormValues = Record<string, unknown>
+type OccupationFormValues = {
+  school: JSON
+}
+
 type LifestyleFormValues = Record<string, unknown>
 
 function isPersonal(
@@ -148,11 +151,25 @@ function isHistory(
 ): patient is HistoryFormValues {
   return true
 }
+//Confirm is occupation
+//json variable named school
+// function isOccupation(
+//   patient: unknown,
+// ): patient is OccupationFormValues {
+//   return true
+// }
 
 function isOccupation(
   patient: unknown,
 ): patient is OccupationFormValues {
-  return true
+  console.log('Patient stuff: ', patient)
+  //return true
+  return isObjectLike(patient) &&
+    !!patient.patient_class && typeof patient.patient_class == 'string'
+
+  //   !!occupation.id && typeof occupation == 'json'
+  // !!patient.id && typeof patient.id === 'number'
+  //   !!patient.occupation && typeof patient.occupation === 'string'
 }
 
 function isLifestyle(
@@ -213,6 +230,7 @@ const transformers: Transformers = {
       ? patient.primary_doctor_name
       : null,
     address: {
+      //Address Table has these values:id, street, suburb_id, ward_id, district_id,province_id, country_id
       country_id: patient.country_id,
       province_id: patient.province_id,
       district_id: patient.district_id,
@@ -221,6 +239,11 @@ const transformers: Transformers = {
       street: patient.street,
     },
   }),
+  // occupation: (
+  //   patient,
+  // ): patients.UpsertablePatient => ({
+  //   patient_occupations: {},
+  // }),
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -297,11 +320,11 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     )
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
-
+    console.log('form data::::::', formData)
     // deno-lint-ignore no-explicit-any
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
-
+    console.log('Transformed: ', transformedFormData)
     const patient = await patients.upsert(ctx.state.trx, {
       ...transformedFormData,
       id: (patient_id && parseInt(patient_id)) || undefined,

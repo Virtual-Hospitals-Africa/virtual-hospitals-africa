@@ -4,28 +4,28 @@ import { Select, TextInput } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { assert } from 'std/assert/assert.ts'
 
-
 type School = {
-  grade: string,
-  grades_dropping: boolean,
-  happy: boolean,
-  sports: boolean,
-  inappropriate_reason: string | null,
+  grade: string
+  grades_dropping_reason: string | null
+  happy: boolean
+  sports: boolean
+  inappropriate_reason: string | null
+  stopped_education_reason: string | null
 }
 export default function Occupation0_18() {
-  const [school, setSchool] = useState<null|School>(null)
+  const [school, setSchool] = useState<null | School>(null)
   console.log(school)
   //const [Appropriate, setAppropriate] = useState<boolean>(true)
 
   //const setSchoolHandler = () => {
   //  setSchool((prevSchool) => !prevSchool)
   //}
-  //const setSchoolHandler = 
-//
+  //const setSchoolHandler =
+  //
   //const setAppropriateHandler = () => {
   //  setAppropriate((prevAppropriate) => !prevAppropriate)
   //}
-//
+  //
   //const setGradesDroppingHandler = () => {
   //  setGradesDropping((prevGrade) => !prevGrade)
   //}
@@ -88,7 +88,7 @@ export default function Occupation0_18() {
               const nextSchool: null | School = event.target.checked
                 ? {
                   grade: 'ECD 1',
-                  grades_dropping: false,
+                  grades_dropping_reason: null,
                   happy: true,
                   sports: true,
                   inappropriate_reason: null,
@@ -100,7 +100,6 @@ export default function Occupation0_18() {
           </input>
         </div>
       </div>
-      
 
       {school && (
         <div class='flex right'>
@@ -117,7 +116,9 @@ export default function Occupation0_18() {
                 assert(event.target instanceof HTMLInputElement)
                 setSchool({
                   ...school,
-                  inappropriate_reason: event.target.checked ? null : class_inappropriate_reason[0],
+                  inappropriate_reason: event.target.checked
+                    ? null
+                    : class_inappropriate_reason[0],
                 })
               }}
             >
@@ -137,6 +138,15 @@ export default function Occupation0_18() {
               value=''
               class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
               //onClick={setGradesDroppingHandler}
+              onClick={(event) => {
+                assert(event.target instanceof HTMLInputElement)
+                setSchool({
+                  ...school,
+                  grades_dropping_reason: event.target.checked
+                    ? gradeDropReasons[0]
+                    : null,
+                })
+              }}
             >
             </input>
           </div>
@@ -179,7 +189,6 @@ export default function Occupation0_18() {
           <Select
             label='Which class is the patient doing?'
             name='patient_class'
-            
           >
             {grades.map((grade) => (
               <option value={grade}>
@@ -193,7 +202,10 @@ export default function Occupation0_18() {
               name='class_inappropriate_reason'
             >
               {class_inappropriate_reason.map((reason) => (
-                <option value={reason} selected={reason === school.inappropriate_reason}>
+                <option
+                  value={reason}
+                  selected={reason === school.inappropriate_reason}
+                >
                   {reason}
                 </option>
               ))}
@@ -210,19 +222,19 @@ export default function Occupation0_18() {
                 {grade}
               </option>
             ))}
-            </Select>
-          {/* {GradesDropping && (
+          </Select>
+          {school?.grades_dropping_reason && (
             <SelectWithOther
               label='If the grades are dropping, why?'
               name='grades_dropping_reason'
             >
-               {gradeDropReasons.map((reason) => (
-              <option value={reason}>
-                {reason}
-              </option>
-            ))}
+              {gradeDropReasons.map((reason) => (
+                <option value={reason}>
+                  {reason}
+                </option>
+              ))}
             </SelectWithOther>
-          )} */}
+          )}
         </FormRow>
         <FormRow>
           <SelectWithOther

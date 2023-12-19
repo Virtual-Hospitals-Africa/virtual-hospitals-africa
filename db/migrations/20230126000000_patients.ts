@@ -35,6 +35,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('phone_number', 'varchar(255)', (col) => col.notNull())
     .addColumn('name', 'varchar(255)')
     .addColumn('gender', sql`gender`)
+    //.addColumn('occupation_id', 'integer', (col) => col.references('patient_occupations.id'))
     .addColumn('date_of_birth', 'varchar(50)')
     .addColumn('national_id_number', 'varchar(50)')
     .addColumn('avatar_url', 'varchar(255)')
