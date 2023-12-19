@@ -1,6 +1,7 @@
+import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 
 export function search(
   trx: TrxOrDb,
@@ -15,15 +16,56 @@ export function search(
     .select((eb_drugs) => [
       'drugs.id as drug_id',
       'drugs.generic_name as drug_generic_name',
+      jsonArrayFromColumn(
+        'trade_name',
+        eb_drugs
+          .selectFrom('medications')
+          .innerJoin(
+            'manufactured_medications',
+            'manufactured_medications.medication_id',
+            'medications.id',
+          )
+          .whereRef(
+            'medications.drug_id',
+            '=',
+            'drugs.id',
+          )
+          .where(
+            'manufactured_medications.trade_name',
+            '!=',
+            eb_drugs.ref('drugs.generic_name'),
+          )
+          .select('manufactured_medications.trade_name')
+          .distinct(),
+      ).as('distinct_trade_names'),
       jsonArrayFrom(
         eb_drugs.selectFrom('medications')
           .select((eb_medications) => [
             'medications.id as medication_id',
             'medications.form',
+            'medications.form_route',
+            'medications.routes',
             'medications.strength_numerators',
             'medications.strength_numerator_unit',
             'medications.strength_denominator',
             'medications.strength_denominator_unit',
+            'medications.strength_denominator_is_units',
+            sql<string>`
+              array_to_string(strength_numerators, ', ') ||
+              strength_numerator_unit || (
+                CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
+                  THEN ''
+                  ELSE (
+                    '/' || (
+                      CASE WHEN strength_denominator = 1 
+                        THEN ''
+                        ELSE strength_denominator::text
+                      END
+                    ) || strength_denominator_unit
+                  )
+                END
+              )
+            `.as('strength_summary'),
             jsonArrayFrom(
               eb_medications.selectFrom('manufactured_medications')
                 .select([
@@ -46,6 +88,7 @@ export function search(
           ),
       ).as('medications'),
     ])
+    .limit(20)
 
   if (opts.search) {
     query = query.where('generic_name', 'ilike', `%${opts.search}%`)

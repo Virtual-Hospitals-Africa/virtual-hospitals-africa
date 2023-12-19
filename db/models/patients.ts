@@ -87,29 +87,19 @@ export type UpsertablePatient = {
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
-const omitNonPatientFields = omit<
-  UpsertablePatient,
-  | 'first_name'
-  | 'middle_names'
-  | 'last_name'
-  | 'address'
-  | 'pre_existing_conditions'
-  | 'allergies'
->([
-  'first_name',
-  'middle_names',
-  'last_name',
-  'address',
-  'pre_existing_conditions',
-  'allergies',
-])
-
 export async function upsert(
   trx: TrxOrDb,
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...omitNonPatientFields(patient),
+    ...omit(patient, [
+      'first_name',
+      'middle_names',
+      'last_name',
+      'address',
+      'pre_existing_conditions',
+      'allergies',
+    ]),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,

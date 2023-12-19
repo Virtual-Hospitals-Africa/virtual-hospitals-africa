@@ -4,7 +4,7 @@ import ConditionSearch from './ConditionSearch.tsx'
 import { DateInput } from '../components/library/form/Inputs.tsx'
 import FormRow from '../components/library/form/Row.tsx'
 import RemoveIcon from '../components/library/icons/remove.tsx'
-import MedicationSearch from './MedicationSearch.tsx'
+import MedicationInput from './medication/Input.tsx'
 import { PreExistingConditionWithDrugs } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import { JSX } from 'preact/jsx-runtime'
@@ -111,7 +111,7 @@ function Medication({
       >
         <RemoveIcon />
       </a>
-      <MedicationSearch
+      <MedicationInput
         name={prefix}
         value={matchingMedication}
       />

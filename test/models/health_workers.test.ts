@@ -71,7 +71,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       const result = await health_workers.get(db, { email: 'test@worker.com' })
       assert(result)
 
-      assertEquals(omit(['expires_at', 'created_at', 'updated_at'])(result), {
+      assertEquals(omit(result, ['expires_at', 'created_at', 'updated_at']), {
         avatar_url: 'avatar_url',
         email: 'test@worker.com',
         employment: [
@@ -137,7 +137,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.length, 1)
 
       assertEquals(
-        omit(['expires_at', 'created_at', 'updated_at'])(result[0]),
+        omit(result[0], ['created_at', 'updated_at']),
         {
           avatar_url: 'avatar_url',
           email: 'test@worker.com',
@@ -194,7 +194,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(nurse_result.length, 1)
 
       assertEquals(
-        omit(['expires_at', 'created_at', 'updated_at'])(nurse_result[0]),
+        omit(nurse_result[0], ['created_at', 'updated_at']),
         {
           avatar_url: 'avatar_url',
           email: 'test@worker.com',

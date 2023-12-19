@@ -185,12 +185,34 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       scenario: 'approved-nurse',
     })
 
+    const tablet = await db.selectFrom('medications')
+      .selectAll()
+      .where(
+        'medications.form_route',
+        '=',
+        'TABLET, COATED; ORAL',
+      )
+      .executeTakeFirstOrThrow()
+
+    const drug = await db.selectFrom('drugs').select('generic_name').where(
+      'id',
+      '=',
+      tablet.drug_id,
+    ).executeTakeFirstOrThrow()
+
     const body = new FormData()
     body.set('pre_existing_conditions.0.key_id', 'c_4373')
     body.set('pre_existing_conditions.0.start_date', '1989-01-12')
     body.set('pre_existing_conditions.0.comorbidities.0.key_id', 'c_8321')
-    body.set('pre_existing_conditions.0.medications.0.medication_id', '1')
-    body.set('pre_existing_conditions.0.medications.0.strength', '150')
+    body.set(
+      'pre_existing_conditions.0.medications.0.medication_id',
+      String(tablet.id),
+    )
+    body.set(
+      'pre_existing_conditions.0.medications.0.strength',
+      String(tablet.strength_numerators[0]),
+    )
+    body.set('pre_existing_conditions.0.medications.0.route', tablet.routes[0])
     body.set('pre_existing_conditions.0.medications.0.dosage', '2')
     body.set(
       'pre_existing_conditions.0.medications.0.intake_frequency',
@@ -240,7 +262,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals(preExistingCondition.medications[0].dosage, 2)
     assertEquals(
       preExistingCondition.medications[0].generic_name,
-      'LAMIVUDINE',
+      drug.generic_name,
     )
     assertEquals(
       preExistingCondition.medications[0].intake_frequency,
@@ -283,13 +305,14 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
           ],
           medications: [
             {
-              generic_name: 'LAMIVUDINE',
+              generic_name: drug.generic_name,
               start_date: '1989-01-12',
               end_date: null,
               medication_id: 'TABLET, COATED; ORAL',
               strength: '150MG/TABLET',
               dosage: '2 TABLETS (300MG)',
               intake_frequency: 'alternate days',
+              special_instructions: null,
             },
           ],
         },

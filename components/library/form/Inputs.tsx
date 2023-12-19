@@ -13,6 +13,7 @@ type LabeledInputProps<El extends HTMLElement> = {
   disabled?: boolean
   readonly?: boolean
   ref?: Ref<El>
+  className?: string
   onInput?: JSX.GenericEventHandler<El>
   onFocus?: JSX.GenericEventHandler<El>
   onBlur?: JSX.GenericEventHandler<El>
@@ -41,14 +42,19 @@ export type TextAreaProps = LabeledInputProps<HTMLTextAreaElement> & {
 }
 
 function LabeledInput(
-  { name, label = capitalize(name), required, children }:
+  { name, label = capitalize(name), required, children, className }:
     & LabeledInputProps<HTMLInputElement>
     & {
       children: ComponentChildren
     },
 ) {
   return (
-    <label className='block text-sm font-medium leading-6 text-gray-500 w-full relative'>
+    <label
+      className={cls(
+        'block text-sm font-medium leading-6 text-gray-500 w-full relative',
+        className,
+      )}
+    >
       {label}
       {label && required && '*'}
       <div className='mt-2'>

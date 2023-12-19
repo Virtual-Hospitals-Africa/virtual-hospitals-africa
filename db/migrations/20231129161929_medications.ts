@@ -37,6 +37,7 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.notNull().references('drugs.id').onDelete('cascade'),
     )
     .addColumn('form', 'varchar(255)', (col) => col.notNull())
+    .addColumn('routes', sql`varchar(255)[]`, (col) => col.notNull())
     .addColumn(
       'strength_numerators',
       sql`real[]`,
@@ -67,7 +68,33 @@ export async function up(db: Kysely<unknown>) {
       'at_least_one_strength_check',
       sql`array_length(strength_numerators, 1) >= 1`,
     )
+    .addCheckConstraint(
+      'at_least_one_route_check',
+      sql`array_length(routes, 1) >= 1`,
+    )
     .execute()
+
+  await sql`
+    ALTER TABLE medications
+    ADD form_route TEXT
+    GENERATED ALWAYS AS (
+      form || (
+        CASE WHEN array_length(routes, 1) = 1 
+          THEN '; ' || routes[1]
+          ELSE ''
+        END
+      )
+    ) STORED
+  `.execute(db)
+
+  await sql`
+    ALTER TABLE medications
+    ADD strength_denominator_is_units BOOLEAN
+    GENERATED ALWAYS AS (
+      strength_denominator_unit IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
+    )
+    STORED
+  `.execute(db)
 
   await db.schema
     .createTable('manufactured_medications')
@@ -152,12 +179,17 @@ export async function up(db: Kysely<unknown>) {
       (col) =>
         col.references('manufactured_medications.id').onDelete('cascade'),
     )
-    .addColumn('strength', 'numeric')
+    .addColumn('strength', 'numeric', (col) => col.notNull())
+    .addColumn('route', 'varchar(255)', (col) => col.notNull())
+    .addColumn('special_instructions', 'text')
     .addColumn('start_date', 'date', (col) => col.notNull())
     .addColumn('schedules', sql`medication_schedule[]`)
     .addCheckConstraint(
       'patient_condition_medications_med_id_check',
-      sql`(manufactured_medication_id IS NOT NULL AND medication_id IS NULL) OR (medication_id IS NOT NULL AND manufactured_medication_id IS NULL)`,
+      sql`
+        (manufactured_medication_id IS NOT NULL AND medication_id IS NULL) OR
+        (medication_id IS NOT NULL AND manufactured_medication_id IS NULL)
+      `,
     )
     .addCheckConstraint('schedules_check', sql`cardinality(schedules) > 0`)
     .execute()
@@ -177,6 +209,24 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropType('medication_schedule').execute()
   await db.schema.dropType('duration_units').execute()
   await db.schema.dropType('intake_frequency').execute()
+}
+
+const unaffiliated_form_to_route = {
+  BALSAM: ['ORAL', 'TOPICAL'],
+  CAPSULE: ['ORAL', 'RECTAL', 'VAGINAL'],
+  CREAM: ['TOPICAL', 'VAGINAL', 'RECTAL'],
+  GEL: ['ORAL', 'TOPICAL'],
+  INJECTABLE: ['INJECTION'],
+  INHALATION: ['INHALATION'],
+  LIQUID: ['INHALATION', 'INJECTION', 'ORAL', 'TOPICAL'],
+  LOTION: ['TOPICAL'],
+  PELLETS: ['ORAL', 'RECTAL', 'VAGINAL'],
+  SOLUTION: ['INJECTION', 'ORAL', 'INHALATION', 'TOPICAL'],
+  SUSPENSION: ['ORAL', 'INJECTION'],
+  TABLET: ['ORAL', 'RECTAL', 'VAGINAL', 'SUBLINGUAL', 'BUCCAL'],
+  'TABLET, COATED': ['ORAL', 'RECTAL', 'VAGINAL', 'SUBLINGUAL', 'BUCCAL'],
+  VACCINE: ['ORAL', 'INJECTION'],
+  WAFER: ['TOPICAL'],
 }
 
 type ManufacturedMedicationCsvRow = {
@@ -199,10 +249,25 @@ type ParsedStrengths = {
 
 const skippedDrugs: { drug: any; reason: string }[] = []
 
+const form_rewrite = {
+  'GRANULES, FOR SUSPENSION; ORAL': 'GRANULE, FOR SUSPENSION; ORAL',
+  'CAPSULES RECTAL': 'CAPSULE; RECTAL',
+  'LOTIONS': 'LOTION; TOPICAL',
+  'PELLETS': 'PELLET',
+  'WAFERS': 'WAFER',
+  'CREAMS': 'CREAM',
+}
+
 async function seedDataFromJSON(db: Kysely<any>) {
   const data: ManufacturedMedicationCsvRow[] = await parseJSON(
     './db/resources/list_of_medications.json',
   )
+
+  for (const row of data) {
+    if (row.forms in form_rewrite) {
+      row.forms = (form_rewrite as any)[row.forms]
+    }
+  }
 
   const drugs = groupBy(data, (d) => d.generic_name)
 
@@ -293,11 +358,20 @@ async function seedDataFromJSON(db: Kysely<any>) {
       .executeTakeFirstOrThrow()
 
     for (const medication of medications) {
+      const [form, route] = medication.form.split(';').map((s) => s.trim())
+      const routes = route ? [route] : (unaffiliated_form_to_route as any)[form]
+      if (!routes) {
+        console.error(generic_name)
+        console.error(medication)
+        throw new Error(`No route found for ${form}`)
+      }
+
       const { id: medication_id } = await db
         .insertInto('medications')
         .values({
           drug_id,
-          form: medication.form,
+          form,
+          routes,
           ...medication.strengths,
         })
         .returning('id')
@@ -484,69 +558,3 @@ function getStrengthUnitAndValues(str: string, form: string): ParsedStrengths {
 
   throw new Error(`Not sure what's going on with ${str} ${form}`)
 }
-
-/* Unique Forms
-  AEROSOL; INHALATION
-  BALSAM
-  CAPSULE
-  CAPSULE; ORAL
-  CAPSULES RECTAL
-  CREAM; TOPICAL
-  CREAMS
-  ELIXIR; ORAL
-  EMULSION; TOPICAL
-  EMULSIONS; INJECTABLE
-  GAS; INHALATION
-  GEL
-  GRANULE, EFFERVESCENT; ORAL
-  GRANULE, FOR SUSPENSION; ORAL
-  GRANULES, FOR SUSPENSION; ORAL
-  IMPLANT; SUBCUTANEOUS
-  INHALATION
-  INJECTABLE; INJECTION
-  INJECTABLE; INJECTION, AMPOULE
-  INJECTABLE; IV (INFUSION)
-  LINCTUS; ORAL
-  LINIMENT; TOPICAL
-  LIQUID
-  LIQUID; ORAL
-  LOTION; TOPICAL
-  LOTIONS
-  MIXTURE; ORAL
-  OINTMENT; OPHTHALMIC
-  OINTMENT; TOPICAL
-  PAINT; TOPICAL
-  PELLETS
-  PESSARY; VAGINAL
-  POWDER, FOR SUSPENSION; ORAL
-  POWDER, SOLUBLE; ORAL
-  POWDER/INJECTABLE; INJECTION
-  POWDER/SATCHETS; ORAL
-  POWDER; ORAL
-  SHAMPOO; TOPICAL
-  SOLUTION
-  SOLUTION, GARGEL; ORAL
-  SOLUTION/DROPS; NASAL
-  SOLUTION/DROPS; OPHTHALMIC
-  SOLUTION/DROPS; ORAL
-  SOLUTION/DROPS; OTIC
-  SOLUTION/MOUTHWASH; ORAL
-  SOLUTION; INFUSION
-  SOLUTION; INJECTION
-  SOLUTION; INTRAPERIOTONEAL
-  SOLUTION; IRRIGATION
-  SPRAY, METERED; NASAL
-  SUPPOSITORY; RECTAL
-  SUSPENSION
-  SUSPENSION/DROPS; OPHTHALMIC
-  SUSPENSION; ORAL
-  SYRUP; ORAL
-  TABLET
-  TABLET, COATED; ORAL
-  TABLET, EFFERVESCENT; ORAL
-  TABLET; ORAL
-  TROCHE/LOZENGE; ORAL
-  VACCINE
-  WAFERS
-  WATERS, AROMATIC; ORAL
-*/
