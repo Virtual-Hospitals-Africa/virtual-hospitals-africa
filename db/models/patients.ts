@@ -130,21 +130,19 @@ export async function upsert(
     .returningAll()
     .executeTakeFirstOrThrow()
 
-  if (patient.pre_existing_conditions) {
-    await patient_conditions.upsertPreExisting(
+  const upserting_conditions = patient.pre_existing_conditions &&
+    patient_conditions.upsertPreExisting(
       trx,
       upsertedPatient.id,
       patient.pre_existing_conditions,
     )
-  }
-
-  if (patient.allergies) {
-    await patient_allergies.upsertAllergies(
+  const upserting_allergies = patient.allergies &&
+    patient_allergies.upsert(
       trx,
       upsertedPatient.id,
       patient.allergies,
     )
-  }
+  await Promise.all([upserting_conditions, upserting_allergies])
 
   return upsertedPatient
 }

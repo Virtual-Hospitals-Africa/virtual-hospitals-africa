@@ -70,9 +70,8 @@ export function jsonArrayFromColumn<
   column: K,
   expr: Expression<O>,
 ): RawBuilder<Simplify<O[K]>[]> {
-  // deno-lint-ignore no-explicit-any
-  const column_ref = expressionBuilder<any, any>().ref(column as any)
-  return sql`(select coalesce(json_agg(${column_ref}), '[]') from ${expr} as agg)`
+  const col_ref = expressionBuilder().ref(column as never)
+  return sql`(select coalesce(json_agg(${col_ref}), '[]') from ${expr} as agg)`
 }
 
 /**

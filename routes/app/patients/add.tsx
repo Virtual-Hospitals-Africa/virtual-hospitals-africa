@@ -26,6 +26,7 @@ import PatientPreExistingConditions from '../../../components/patients/add/PreEx
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import { path } from '../../../util/path.ts'
+import omit from '../../../util/omit.ts'
 
 type AddPatientProps =
   & {
@@ -79,6 +80,8 @@ type AddressFormValues = {
 }
 
 type ConditionsFormValues = {
+  allergy_search?: string
+  allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
@@ -208,8 +211,9 @@ const transformers: Transformers = {
   'pre-existing_conditions': (
     patient,
   ): patients.UpsertablePatient => ({
-    ...patient,
+    ...omit(patient, ['allergy_search']),
     pre_existing_conditions: patient.pre_existing_conditions || [],
+    allergies: patient.allergies || [],
   }),
 }
 
@@ -253,27 +257,28 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'pre-existing_conditions') {
-      const preExistingConditions = patient_id
-        ? await patient_conditions
+      const gettingPreExistingConditions = patient_id
+        ? patient_conditions
           .getPreExistingConditionsWithDrugs(
             ctx.state.trx,
             { patient_id },
           )
-        : []
+        : Promise.resolve([])
 
-      const allergies = patient_id
-        ? await patient_allergies
-          .getPatientAllergies(
+      const gettingAllergies = patient_id
+        ? patient_allergies
+          .getWithName(
             ctx.state.trx,
             patient_id,
           )
-        : []
+        : Promise.resolve([])
+
       return ctx.render({
         healthWorker,
         patient,
         step,
-        preExistingConditions,
-        allergies,
+        preExistingConditions: await gettingPreExistingConditions,
+        allergies: await gettingAllergies,
       })
     }
 

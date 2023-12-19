@@ -5,6 +5,7 @@ export function search(
   opts: {
     search?: Maybe<string>
     ids?: Maybe<number[]>
+    without_ids?: Maybe<number[]>
   },
 ): Promise<Allergy[]> {
   let query = trx
@@ -16,6 +17,12 @@ export function search(
 
   if (opts.search) {
     query = query.where('name', 'ilike', `%${opts.search}%`)
+  }
+  if (opts.ids) {
+    query = query.where('id', 'in', opts.ids)
+  }
+  if (opts.without_ids) {
+    query = query.where('id', 'not in', opts.without_ids)
   }
 
   return query.execute()

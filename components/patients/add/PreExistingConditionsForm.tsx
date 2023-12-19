@@ -1,4 +1,4 @@
-import AllergySearch from '../../../islands/AllergySearch.tsx'
+import AllergyInput from '../../../islands/allergy/Input.tsx'
 import {
   OnboardingPatient,
   PreExistingAllergy,
@@ -18,7 +18,7 @@ export default function PatientPreExistingConditions(
     <>
       <section>
         <SectionHeader className='my-5 text-[20px]'>Allergies</SectionHeader>
-        <AllergySearch name='allergies' value={allergies} />
+        <AllergyInput allergies={allergies} />
       </section>
       <section>
         <SectionHeader className='my-5 text-[20px]'>

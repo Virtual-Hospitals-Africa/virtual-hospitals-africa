@@ -199,7 +199,6 @@ export type PreExistingAllergy = {
   id?: Maybe<number>
   allergy_id: number
   name?: Maybe<string>
-  removed?: Maybe<boolean>
 }
 
 export type OnboardingPatient =
