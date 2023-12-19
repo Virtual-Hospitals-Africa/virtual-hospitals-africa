@@ -1,230 +1,81 @@
 [
-  {
-    "name": "Wheat"
-  },
-  {
-    "name": "Cereals"
-  },
-  {
-    "name": "Celery"
-  },
-  {
-    "name": "Carrots"
-  },
-  {
-    "name": "Potatoes"
-  },
-  {
-    "name": "Eggs"
-  },
-  {
-    "name": "Fish"
-  },
-  {
-    "name": "Melon"
-  },
-  {
-    "name": "Mangos"
-  },
-  {
-    "name": "Pawpaws"
-  },
-  {
-    "name": "Pineapples"
-  },
-  {
-    "name": "Strawberries"
-  },
-  {
-    "name": "Apples"
-  },
-  {
-    "name": "Bananas"
-  },
-  {
-    "name": "Avocados"
-  },
-  {
-    "name": "Garlic"
-  },
-  {
-    "name": "Oats"
-  },
-  {
-    "name": "Maize"
-  },
-  {
-    "name": "Milk"
-  },
-  {
-    "name": "Butter"
-  },
-  {
-    "name": "Cheese"
-  },
-  {
-    "name": "Cream/ Sour Cream"
-  },
-  {
-    "name": "Yogurt"
-  },
-  {
-    "name": "Custard"
-  },
-  {
-    "name": "Ice cream"
-  },
-  {
-    "name": "Pudding"
-  },
-  {
-    "name": "Peanuts"
-  },
-  {
-    "name": "Poultry Meat"
-  },
-  {
-    "name": "Red Meat"
-  },
-  {
-    "name": "Rice"
-  },
-  {
-    "name": "Shellfish"
-  },
-  {
-    "name": "Soya beans"
-  },
-  {
-    "name": "Preservatives"
-  },
-  {
-    "name": "Hayfever"
-  },
-  {
-    "name": "Asthma"
-  },
-  {
-    "name": "Eczema"
-  },
-  {
-    "name": "Tetracycline"
-  },
-  {
-    "name": "Carbamazepine"
-  },
-  {
-    "name": "Penicillins"
-  },
-  {
-    "name": "Cephalosporins"
-  },
-  {
-    "name": "Sulfonamides"
-  },
-  {
-    "name": "Non-steroidal anti-inflammatory drugs"
-  },
-  {
-    "name": "Contrast dye"
-  },
-  {
-    "name": "Local anaesthetics"
-  },
-  {
-    "name": "Pollen"
-  },
-  {
-    "name": "Grass Trees"
-  },
-  {
-    "name": "Cats"
-  },
-  {
-    "name": "Dogs"
-  },
-  {
-    "name": "Insect sting"
-  },
-  {
-    "name": "Poison Ivy"
-  },
-  {
-    "name": "Mold"
-  },
-  {
-    "name": "Perfume"
-  },
-  {
-    "name": "Cosmetics"
-  },
-  {
-    "name": "Semen"
-  },
-  {
-    "name": "Water"
-  },
-  {
-    "name": "Latex"
-  },
-  {
-    "name": "Cold stimuli"
-  },
-  {
-    "name": "House dust mites"
-  },
-  {
-    "name": "Gold"
-  },
-  {
-    "name": "Nickel"
-  },
-  {
-    "name": "Chromium"
-  },
-  {
-    "name": "Cobalt chloride"
-  },
-  {
-    "name": "Formaldehye"
-  },
-  {
-    "name": "Photographic developers"
-  },
-  {
-    "name": "Fungicide"
-  },
-  {
-    "name": "Liquid soap"
-  },
-  {
-    "name": "Shampoos"
-  },
-  {
-    "name": "Latex"
-  },
-  {
-    "name": "Hair dyes"
-  },
-  {
-    "name": "Colour developers"
-  },
-  {
-    "name": "Body paints/ Henna"
-  },
-  {
-    "name": "Nail polish"
-  },
-  {
-    "name": "Swimming gear"
-  },
-  {
-    "name": "Cotton"
-  },
-  {
-    "name": "Wool"
-  },
-  {
-    "name": "Synthetics"
-  }
+  { "type": "food", "name": "Wheat" },
+  { "type": "food", "name": "Cereals" },
+  { "type": "food", "name": "Celery" },
+  { "type": "food", "name": "Carrots" },
+  { "type": "food", "name": "Potatoes" },
+  { "type": "food", "name": "Eggs" },
+  { "type": "food", "name": "Fish" },
+  { "type": "food", "name": "Melon" },
+  { "type": "food", "name": "Mangos" },
+  { "type": "food", "name": "Pawpaws" },
+  { "type": "food", "name": "Pineapples" },
+  { "type": "food", "name": "Strawberries" },
+  { "type": "food", "name": "Apples" },
+  { "type": "food", "name": "Bananas" },
+  { "type": "food", "name": "Avocados" },
+  { "type": "food", "name": "Garlic" },
+  { "type": "food", "name": "Oats" },
+  { "type": "food", "name": "Maize" },
+  { "type": "food", "name": "Milk" },
+  { "type": "food", "name": "Butter" },
+  { "type": "food", "name": "Cheese" },
+  { "type": "food", "name": "Cream/ Sour Cream" },
+  { "type": "food", "name": "Yogurt" },
+  { "type": "food", "name": "Custard" },
+  { "type": "food", "name": "Ice cream" },
+  { "type": "food", "name": "Pudding" },
+  { "type": "food", "name": "Peanuts" },
+  { "type": "food", "name": "Poultry Meat" },
+  { "type": "food", "name": "Red Meat" },
+  { "type": "food", "name": "Rice" },
+  { "type": "food", "name": "Shellfish" },
+  { "type": "food", "name": "Soya beans" },
+  { "type": "food", "name": "Sulfites" },
+  { "type": "food", "name": "Preservatives" },
+  { "type": "food", "name": "Other" },
+  { "type": "medical", "name": "Hayfever" },
+  { "type": "medical", "name": "Asthma" },
+  { "type": "medical", "name": "Eczema" },
+  { "type": "medical", "name": "Tetracycline" },
+  { "type": "medical", "name": "Carbamazepine" },
+  { "type": "medical", "name": "Penicillins" },
+  { "type": "medical", "name": "Cephalosporins" },
+  { "type": "medical", "name": "Sulfonamides" },
+  { "type": "medical", "name": "Non-steroidal anti-inflammatory drugs" },
+  { "type": "medical", "name": "Contrast dye" },
+  { "type": "medical", "name": "Local anaesthetics" },
+  { "type": "medical", "name": "Other" },
+  { "type": "environmental", "name": "Pollen" },
+  { "type": "environmental", "name": "Grass" },
+  { "type": "environmental", "name": "Trees" },
+  { "type": "environmental", "name": "Cats" },
+  { "type": "environmental", "name": "Dogs" },
+  { "type": "environmental", "name": "Insect sting" },
+  { "type": "environmental", "name": "Poison Ivy" },
+  { "type": "environmental", "name": "Mold" },
+  { "type": "environmental", "name": "Perfume" },
+  { "type": "environmental", "name": "Cosmetics" },
+  { "type": "environmental", "name": "Semen" },
+  { "type": "environmental", "name": "Water" },
+  { "type": "environmental", "name": "Latex" },
+  { "type": "environmental", "name": "Cold stimuli" },
+  { "type": "environmental", "name": "House dust mites" },
+  { "type": "environmental", "name": "Gold• Nickel" },
+  { "type": "environmental", "name": "Chromium" },
+  { "type": "environmental", "name": "Cobalt chloride" },
+  { "type": "environmental", "name": "Formaldehye" },
+  { "type": "environmental", "name": "Photographic developers" },
+  { "type": "environmental", "name": "Fungicide" },
+  { "type": "contact", "name": "Liquid soap" },
+  { "type": "contact", "name": "Shampoos" },
+  { "type": "contact", "name": "Latex" },
+  { "type": "contact", "name": "Hair dyes" },
+  { "type": "contact", "name": "Colour developers" },
+  { "type": "contact", "name": "Body paints/ Henna" },
+  { "type": "contact", "name": "Nail polish" },
+  { "type": "contact", "name": "Swimming gear" },
+  { "type": "contact", "name": "Cotton" },
+  { "type": "contact", "name": "Wool" },
+  { "type": "contact", "name": "Synthetics" }
 ]

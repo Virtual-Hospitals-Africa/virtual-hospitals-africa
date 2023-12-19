@@ -56,12 +56,12 @@ export async function down(db: Kysely<unknown>) {
 }
 
 async function seedDataFromJSON(db: Kysely<any>) {
-  const data: { name: string }[] = await parseJSON(
+  const data: { name: string, type: string }[] = await parseJSON(
     './db/resources/allergies.json',
   )
 
   await db
     .insertInto('allergies')
-    .values(data)
+    .values(data.map(c=> ({name: c.name})))
     .executeTakeFirstOrThrow()
 }
