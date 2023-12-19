@@ -195,6 +195,12 @@ export type PreExistingConditionWithDrugs = {
   }[]
 }
 
+export type PreExistingAllergy = {
+  id?: Maybe<number>
+  allergy_id: number
+  name?: Maybe<string>
+}
+
 export type OnboardingPatient =
   & {
     id: number
@@ -1432,6 +1438,17 @@ export type PatientGuardian = {
   dependent_patient_id: number
 }
 
+export type Allergy = {
+  id: number
+  name: string
+}
+
+export type PatientAllergies = {
+  id: number
+  patient_id: number
+  allergy_id: number
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1469,4 +1486,6 @@ export type DatabaseSchema = {
   patient_condition_medications: SqlRow<PatientMedication>
   guardian_relations: GuardianRelation
   patient_guardians: SqlRow<PatientGuardian>
+  allergies: SqlRow<Allergy>
+  patient_allergies: SqlRow<PatientAllergies>
 }

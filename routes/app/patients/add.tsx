@@ -7,11 +7,13 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
+  PreExistingAllergy,
   PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
+import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
@@ -24,6 +26,7 @@ import PatientPreExistingConditions from '../../../components/patients/add/PreEx
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import { path } from '../../../util/path.ts'
+import omit from '../../../util/omit.ts'
 
 type AddPatientProps =
   & {
@@ -41,15 +44,18 @@ type AddPatientProps =
     adminDistricts?: undefined
     preExistingConditions?: undefined
     initialDrugs?: undefined
+    allergies?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
     preExistingConditions?: undefined
     initialDrugs?: undefined
+    allergies?: undefined
   } | {
     step: 'pre-existing_conditions'
     adminDistricts?: undefined
     preExistingConditions: PreExistingConditionWithDrugs[]
+    allergies?: PreExistingAllergy[]
   })
 
 type PersonalFormValues = {
@@ -74,6 +80,8 @@ type AddressFormValues = {
 }
 
 type ConditionsFormValues = {
+  allergy_search?: string
+  allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
@@ -203,8 +211,9 @@ const transformers: Transformers = {
   'pre-existing_conditions': (
     patient,
   ): patients.UpsertablePatient => ({
-    ...patient,
+    ...omit(patient, ['allergy_search']),
     pre_existing_conditions: patient.pre_existing_conditions || [],
+    allergies: patient.allergies || [],
   }),
 }
 
@@ -248,18 +257,28 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'pre-existing_conditions') {
-      const preExistingConditions = patient_id
-        ? await patient_conditions
+      const gettingPreExistingConditions = patient_id
+        ? patient_conditions
           .getPreExistingConditionsWithDrugs(
             ctx.state.trx,
             { patient_id },
           )
-        : []
+        : Promise.resolve([])
+
+      const gettingAllergies = patient_id
+        ? patient_allergies
+          .getWithName(
+            ctx.state.trx,
+            patient_id,
+          )
+        : Promise.resolve([])
+
       return ctx.render({
         healthWorker,
         patient,
         step,
-        preExistingConditions,
+        preExistingConditions: await gettingPreExistingConditions,
+        allergies: await gettingAllergies,
       })
     }
 
@@ -327,6 +346,7 @@ export default function AddPatient(
     healthWorker,
     adminDistricts,
     preExistingConditions,
+    allergies,
   } = props.data
 
   return (
@@ -361,6 +381,7 @@ export default function AddPatient(
           {currentStep === 'pre-existing_conditions' && (
             <PatientPreExistingConditions
               patient={patient}
+              allergies={(assert(allergies), allergies)}
               preExistingConditions={(assert(preExistingConditions),
                 preExistingConditions)}
             />

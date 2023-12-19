@@ -6,7 +6,7 @@ import cls from '../../../util/cls.ts'
 import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
-  name: string
+  name: string | null
   label?: Maybe<string>
   required?: boolean
   placeholder?: string
@@ -42,7 +42,7 @@ export type TextAreaProps = LabeledInputProps<HTMLTextAreaElement> & {
 }
 
 function LabeledInput(
-  { name, label = capitalize(name), required, children, className }:
+  { name, label = name && capitalize(name), required, children, className }:
     & LabeledInputProps<HTMLInputElement>
     & {
       children: ComponentChildren
@@ -84,7 +84,7 @@ export function TextInput(
     <LabeledInput name={name} label={label} required={required}>
       <input
         type={type}
-        name={name}
+        {...(name && { name })}
         className={cls(
           'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
           disabled && 'bg-gray-300',
@@ -121,7 +121,7 @@ export function TextArea(
   return (
     <LabeledInput name={name} label={label} required={required}>
       <textarea
-        name={name}
+        {...(name && { name })}
         className={cls(
           'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2',
           disabled && 'bg-gray-300',
@@ -155,7 +155,7 @@ export const Select = forwardRef(
     return (
       <LabeledInput name={name} label={label} required={required}>
         <select
-          name={name}
+          {...(name && { name })}
           className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white'
           required={required}
           onChange={onChange}
@@ -176,7 +176,7 @@ export function DateInput(
     <LabeledInput name={name} label={label} required={required}>
       <input
         type='date'
-        name={name}
+        {...(name && { name })}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         required={required}
         onInput={onInput}
@@ -197,7 +197,7 @@ export function PhoneNumberInput(
     <LabeledInput name={name} label={label} required={required}>
       <input
         type='tel'
-        name={name}
+        {...(name && { name })}
         className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
         value={value || undefined}
         placeholder={placeholder}
@@ -221,7 +221,7 @@ export function ImageInput(
       <input
         type='file'
         accept='.jpg,.jpeg,.png'
-        name={name}
+        {...(name && { name })}
         className='w-0 h-0 overflow-hidden'
         placeholder={placeholder}
         required={required}
@@ -259,7 +259,7 @@ export function SearchInput(
         <input
           ref={ref}
           type='search'
-          name={name}
+          {...(name && { name })}
           className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8'
           placeholder={placeholder}
           required={required}
