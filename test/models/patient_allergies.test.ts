@@ -1,4 +1,3 @@
-import { sql } from 'kysely'
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
