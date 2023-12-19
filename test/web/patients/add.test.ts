@@ -10,6 +10,7 @@ import {
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
 import * as patients from '../../../db/models/patients.ts'
+import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as address from '../../../db/models/address.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
@@ -318,5 +319,46 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
         },
       ],
     }, 'The form should display the medications in a human-readable format')
+  })
+
+  it('can remove all pre_existing_conditions on POST', async () => {
+    const patient = await patients.upsert(db, {
+      name: 'Test Patient',
+    })
+    const { sessionId } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+
+    await patient_conditions.upsertPreExisting(db, patient.id, [
+      {
+        key_id: 'c_4373',
+        start_date: '1989-01-12',
+      },
+    ])
+
+    const postResponse = await fetch(
+      `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+      {
+        method: 'POST',
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+        },
+        body: new FormData(),
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assert(
+      postResponse.url ===
+        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+    )
+
+    const pre_existing_conditions = await getPreExistingConditions(db, {
+      patient_id: patient.id,
+    })
+
+    assertEquals(pre_existing_conditions.length, 0)
   })
 })
