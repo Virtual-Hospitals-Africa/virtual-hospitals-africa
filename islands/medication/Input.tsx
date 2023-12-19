@@ -250,7 +250,7 @@ export default function MedicationInput({
         <Select
           name={`${name}.intake_frequency`}
           required
-          label='Intake'
+          label='Frequency'
           disabled={!selectedDrug}
         >
           <option value=''>Select Intake</option>
