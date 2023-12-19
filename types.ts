@@ -158,6 +158,8 @@ export type PreExistingCondition = {
     medication_id: number
     strength: number
     dosage: number
+    route: string
+    special_instructions?: Maybe<string>
     intake_frequency: string
     generic_name: string
     start_date: string
@@ -183,11 +185,13 @@ export type PreExistingConditionWithDrugs = {
     manufactured_medication_id: number | null
     medication_id: number | null
     strength: number
+    route: string
     dosage: number
     intake_frequency: string
     generic_name: string
     start_date: string
     end_date?: Maybe<string>
+    special_instructions?: Maybe<string>
   }[]
 }
 
@@ -1330,10 +1334,13 @@ export type Drug = {
 export type Medication = {
   drug_id: number
   form: string
+  routes: string[]
+  form_route: string
   strength_numerators: number[]
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
+  strength_denominator_is_units: boolean
 }
 
 export type ManufacturedMedication = {
@@ -1350,6 +1357,8 @@ export type PatientMedication =
     strength: number
     start_date: string
     schedules: MedicationSchedule[]
+    route: string
+    special_instructions: string | null
   }
   & (
     | { medication_id: null; manufactured_medication_id: number }
@@ -1376,10 +1385,14 @@ export type MedicationSchedule = Duration & {
 export type DrugSearchResultMedication = {
   medication_id: number
   form: string
+  form_route: string
+  strength_summary: string
+  routes: string[]
   strength_numerators: number[]
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
+  strength_denominator_is_units: boolean
   manufacturers: {
     manufactured_medication_id: number
     strength_numerators: number[]
@@ -1391,6 +1404,7 @@ export type DrugSearchResultMedication = {
 export type DrugSearchResult = {
   drug_id: number
   drug_generic_name: string
+  distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
 }
 

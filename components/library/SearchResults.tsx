@@ -1,15 +1,9 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
-import {
-  DrugSearchResult as DrugSearchResultData,
-  DrugSearchResultMedication,
-  HasId,
-} from '../../types.ts'
+import { DrugSearchResult as DrugSearchResultData, HasId } from '../../types.ts'
 import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
 import { PlusCircleIcon } from '../library/icons/heroicons/outline.tsx'
-import { isUnits } from '../../util/units.ts'
-import uniq from '../../util/uniq.ts'
 
 type BasicSelectProps = {
   isSelected?: boolean
@@ -54,7 +48,7 @@ export function SearchResult(
   return (
     <li
       className={cls(
-        'relative cursor-default select-none py-2 pl-3 pr-9 w-max',
+        'relative cursor-default select-none py-2 pl-3 pr-9 w-fit',
         isActive ? 'text-white bg-indigo-600' : 'text-gray-900',
       )}
       role='option'
@@ -89,29 +83,11 @@ export function SearchResult(
   )
 }
 
-function medicationFormAndStrength(medication: DrugSearchResultMedication) {
-  const strengths = medication.strength_numerators.join(', ')
-  const denominator_text = isUnits(medication.strength_denominator_unit)
-    ? `/${medication.strength_denominator_unit}`
-    : ''
-  return `${medication.form} (${strengths}${medication.strength_numerator_unit}${denominator_text})`
-}
-
 export function DrugSearchResult({ drug, isSelected, onSelect }: {
   drug: DrugSearchResultData
   isSelected?: boolean
   onSelect: () => void
 }) {
-  const trade_names = uniq(
-    drug.medications.flatMap((medication) =>
-      medication.manufacturers.map((manufacturer) => manufacturer.trade_name)
-    ),
-  )
-
-  const distinct_trade_names = trade_names.filter((trade_name) =>
-    trade_name !== drug.drug_generic_name
-  )
-
   return (
     <SearchResult
       isSelected={isSelected}
@@ -125,12 +101,14 @@ export function DrugSearchResult({ drug, isSelected, onSelect }: {
           )}
         >
           <b>{drug.drug_generic_name}</b>
-          {drug.medications.map(medicationFormAndStrength).map(
-            (form_and_strength) => <div>{form_and_strength}</div>,
+          {drug.medications.map(
+            (medication) => (
+              <div>{medication.form_route} ({medication.strength_summary})</div>
+            ),
           )}
-          {distinct_trade_names.length > 0 && (
+          {drug.distinct_trade_names.length > 0 && (
             <div className='text-s italic'>
-              {distinct_trade_names.join(', ')}
+              {drug.distinct_trade_names.join(', ')}
             </div>
           )}
         </span>

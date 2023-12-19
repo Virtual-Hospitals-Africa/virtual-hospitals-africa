@@ -12,16 +12,19 @@ import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
 import { differenceInDays, durationEndDate } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import omit from '../../util/omit.ts'
 
 type PatientMedicationUpsert = {
   id?: Maybe<number>
   dosage: number
   strength: number
   intake_frequency: string
+  route: string
   start_date?: Maybe<string>
   end_date?: Maybe<string>
   medication_id: null | number
   manufactured_medication_id: null | number
+  special_instructions?: Maybe<string>
 }
 
 export type PreExistingConditionUpsert = {
@@ -275,16 +278,18 @@ async function upsertPreExistingCondition(
     const values = {
       patient_condition_id,
       medication_id: (!medication.manufactured_medication_id &&
-        medication.medication_id) || null,
+        medication.medication_id) || null, // omit medication_id if manufactured_medication_id is present
       manufactured_medication_id: medication.manufactured_medication_id ||
         null,
       strength: medication.strength,
+      route: medication.route,
       schedules: sql`
         ARRAY[
           ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
         ]::medication_schedule[]
       ` as RawBuilder<MedicationSchedule[]>,
       start_date,
+      special_instructions: medication.special_instructions || null,
     }
     if (medication.id) {
       const matchingMedication = matchingCondition?.medications.find((m) =>
@@ -386,6 +391,8 @@ export async function getPreExistingConditions(
       'patient_condition_medications.manufactured_medication_id',
       'patient_condition_medications.patient_condition_id',
       'patient_condition_medications.strength',
+      'patient_condition_medications.route',
+      'patient_condition_medications.special_instructions',
       sql<
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as(
@@ -421,24 +428,17 @@ export async function getPreExistingConditions(
         })),
       medications: patientMedications
         .filter((m) => m.patient_condition_id === parentCondition.id)
-        .map((m) => {
-          assertEquals(m.schedules.length, 1)
-          const [schedule] = m.schedules
+        .map(({ schedules, ...medication }) => {
+          assertEquals(schedules.length, 1)
+          const [schedule] = schedules
           return {
-            id: m.id,
-            medication_id: m.medication_id,
-            manufactured_medication_id: m.manufactured_medication_id,
-            drug_id: m.drug_id,
-            // TODO remove the Number cast
+            ...omit(medication, ['patient_condition_id']),
+            intake_frequency: schedule.frequency,
+            end_date: durationEndDate(medication.start_date, schedule),
+            // TODO remove the Number casts
             // https://github.com/kysely-org/kysely/issues/802
             dosage: Number(schedule.dosage),
-            intake_frequency: schedule.frequency,
-            generic_name: m.generic_name,
-            // TODO remove the Number cast
-            // https://github.com/kysely-org/kysely/issues/802
-            strength: Number(m.strength),
-            start_date: m.start_date,
-            end_date: durationEndDate(m.start_date, schedule),
+            strength: Number(medication.strength),
           }
         }),
     }))

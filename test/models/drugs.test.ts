@@ -10,7 +10,6 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
   describe('search', () => {
     it('gets search results for drugs with their forms, strengths, and manufacturers', async () => {
       const results = await drugs.search(db, { search: 'abacavir' })
-      // console.log(JSON.stringify(results, null, 2))
       assertEquals(results, expected_results)
     })
   })
@@ -20,16 +19,23 @@ const expected_results = [
   {
     'drug_id': 2,
     'drug_generic_name': 'ABACAVIR',
+    'distinct_trade_names': [],
     'medications': [
       {
         'medication_id': 3,
-        'form': 'TABLET, COATED; ORAL',
+        'form': 'TABLET, COATED',
+        'form_route': 'TABLET, COATED; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           300,
         ],
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 9,
@@ -46,10 +52,17 @@ const expected_results = [
   {
     'drug_id': 3,
     'drug_generic_name': 'ABACAVIR SULFATE; LAMIVUDINE',
+    'distinct_trade_names': [
+      'ABACAVIR SULPHATE; LAMIVUDINE',
+    ],
     'medications': [
       {
         'medication_id': 4,
-        'form': 'TABLET; ORAL',
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           30,
           60,
@@ -58,6 +71,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '30, 60, 120MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 10,
@@ -81,7 +96,11 @@ const expected_results = [
       },
       {
         'medication_id': 5,
-        'form': 'TABLET, COATED; ORAL',
+        'form': 'TABLET, COATED',
+        'form_route': 'TABLET, COATED; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           30,
           60,
@@ -91,6 +110,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '30, 60, 300, 600MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 12,
@@ -125,6 +146,14 @@ const expected_results = [
       {
         'medication_id': 6,
         'form': 'TABLET',
+        'form_route': 'TABLET',
+        'routes': [
+          'ORAL',
+          'RECTAL',
+          'VAGINAL',
+          'SUBLINGUAL',
+          'BUCCAL',
+        ],
         'strength_numerators': [
           300,
           600,
@@ -132,6 +161,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300, 600MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 15,
@@ -150,16 +181,26 @@ const expected_results = [
   {
     'drug_id': 4,
     'drug_generic_name': 'ABACAVIR SULPHATE',
+    'distinct_trade_names': [
+      'ABAMAT TABLETS',
+      'ZIAGEN',
+    ],
     'medications': [
       {
         'medication_id': 7,
-        'form': 'TABLET, COATED; ORAL',
+        'form': 'TABLET, COATED',
+        'form_route': 'TABLET, COATED; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           300,
         ],
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 16,
@@ -200,12 +241,21 @@ const expected_results = [
       {
         'medication_id': 8,
         'form': 'SOLUTION',
+        'form_route': 'SOLUTION',
+        'routes': [
+          'INJECTION',
+          'ORAL',
+          'INHALATION',
+          'TOPICAL',
+        ],
         'strength_numerators': [
           20,
         ],
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'ML',
+        'strength_denominator_is_units': true,
+        'strength_summary': '20MG/ML',
         'manufacturers': [
           {
             'manufactured_medication_id': 20,
@@ -227,13 +277,19 @@ const expected_results = [
       },
       {
         'medication_id': 9,
-        'form': 'TABLET; ORAL',
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           300,
         ],
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 22,
@@ -250,10 +306,15 @@ const expected_results = [
   {
     'drug_id': 5,
     'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE',
+    'distinct_trade_names': [],
     'medications': [
       {
         'medication_id': 10,
-        'form': 'TABLET; ORAL',
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           30,
           60,
@@ -263,6 +324,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '30, 60, 300, 600MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 23,
@@ -287,7 +350,11 @@ const expected_results = [
       },
       {
         'medication_id': 11,
-        'form': 'TABLET, COATED; ORAL',
+        'form': 'TABLET, COATED',
+        'form_route': 'TABLET, COATED; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           300,
           600,
@@ -295,6 +362,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300, 600MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 25,
@@ -312,10 +381,15 @@ const expected_results = [
   {
     'drug_id': 6,
     'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
+    'distinct_trade_names': [],
     'medications': [
       {
         'medication_id': 12,
-        'form': 'TABLET; ORAL',
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           150,
           300,
@@ -323,6 +397,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '150, 300MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 26,
@@ -341,10 +417,15 @@ const expected_results = [
   {
     'drug_id': 7,
     'drug_generic_name': 'ABACAVIR; DOLUTEGRAVIR; LAMIVUDINE',
+    'distinct_trade_names': [],
     'medications': [
       {
         'medication_id': 13,
-        'form': 'TABLET, COATED; ORAL',
+        'form': 'TABLET, COATED',
+        'form_route': 'TABLET, COATED; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           50,
           300,
@@ -353,6 +434,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '50, 300, 600MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 27,
@@ -371,10 +454,18 @@ const expected_results = [
   {
     'drug_id': 8,
     'drug_generic_name': 'ABACAVIR; LAMIVUDINE',
+    'distinct_trade_names': [
+      'ABAMUNE L BABY',
+      'KIVEXA',
+    ],
     'medications': [
       {
         'medication_id': 14,
-        'form': 'CAPSULE; ORAL',
+        'form': 'CAPSULE',
+        'form_route': 'CAPSULE; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           30,
           60,
@@ -382,6 +473,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'CAPSULE',
+        'strength_denominator_is_units': false,
+        'strength_summary': '30, 60MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 28,
@@ -396,7 +489,11 @@ const expected_results = [
       },
       {
         'medication_id': 15,
-        'form': 'TABLET; ORAL',
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
         'strength_numerators': [
           300,
           600,
@@ -404,6 +501,8 @@ const expected_results = [
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300, 600MG',
         'manufacturers': [
           {
             'manufactured_medication_id': 29,

@@ -236,7 +236,16 @@ export async function search(
     search?: Maybe<string>
     profession?: Maybe<Profession>
   },
-): Promise<ReturnedSqlRow<HealthWorker & { name: string }>[]> {
+): Promise<ReturnedSqlRow<
+  HealthWorker & {
+    name: string
+    facilities: {
+      facility_id: number
+      facility_display_name: string
+      professions: Profession[]
+    }[]
+  }
+>[]> {
   let query = trx
     .selectFrom('health_workers')
     .innerJoin(

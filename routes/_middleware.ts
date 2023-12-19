@@ -6,6 +6,14 @@ import { TrxOrDb } from '../types.ts'
 import db from '../db/db.ts'
 import { redis } from '../external-clients/redis.ts'
 
+const error_log = 'test_error.log'
+const logError = (err: Error) => {
+  const log = `${new Date().toISOString()}\n${
+    err.stack || err.message || err
+  }\n\n`
+  Deno.writeTextFileSync(error_log, log, { append: true })
+}
+
 export const handler = [
   redisSession(redis, {
     keyPrefix: 'S_',
@@ -35,7 +43,9 @@ export const handler = [
     }).catch((err) => {
       console.error(err)
       const status = err.status || 500
-      return new Response(err.stack || err.message, { status })
+      const stack: string = err.stack || err.message || 'Internal Server Error'
+      logError(err)
+      return new Response(stack, { status })
     })
   },
 ]
