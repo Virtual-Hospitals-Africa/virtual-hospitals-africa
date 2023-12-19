@@ -31,7 +31,9 @@ export default function AllergySearch({
   const [allergies, setAllergies] = useState<Allergy[]>([])
 
   const addAllergy = (allergy: PreExistingAllergy) => {
-    const allergyExist = selectedAllergies.find((c) => c.allergy_id === allergy.allergy_id)
+    const allergyExist = selectedAllergies.find((c) =>
+      c.allergy_id === allergy.allergy_id
+    )
     if (allergyExist) {
       allergyExist.removed = false
       return
@@ -42,7 +44,11 @@ export default function AllergySearch({
   const removeAllergy = (allergy: PreExistingAllergy) => {
     if (allergy.id) {
       allergy.removed = true
-      setSelectedAllergies(selectedAllergies.map(item => (item.id === allergy.id ? { ...item, allergy } : item)))
+      setSelectedAllergies(
+        selectedAllergies.map(
+          (item) => (item.id === allergy.id ? { ...item, allergy } : item),
+        ),
+      )
     } else {
       setSelectedAllergies(selectedAllergies.filter((item) => item !== allergy))
     }

@@ -1,8 +1,8 @@
 import AllergySearch from '../../../islands/AllergySearch.tsx'
 import {
   OnboardingPatient,
+  PreExistingAllergy,
   PreExistingConditionWithDrugs,
-  PreExistingAllergy
 } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import PreExistingConditionsForm from '../../../islands/PreExistingConditionsForm.tsx'

@@ -3,21 +3,21 @@ import { assertOr400 } from '../../util/assertOr.ts'
 export async function upsertAllergies(
   trx: TrxOrDb,
   patient_id: number,
-  allergies: PreExistingAllergy[]
+  allergies: PreExistingAllergy[],
 ) {
   assertOr400(
     allergies.length === new Set(allergies.map((item) => item.allergy_id)).size,
-    'Allergy ids must be unique'
+    'Allergy ids must be unique',
   )
 
   const dbAllergies = await getPatientAllergies(trx, patient_id)
 
-  const removedAllergies = allergies.filter(c=> c.removed).map(c=> c.id!)
+  const removedAllergies = allergies.filter((c) => c.removed).map((c) => c.id!)
 
   removedAllergies.length && assertOr400(
-       dbAllergies.some(c=> removedAllergies.includes(c.id!)),
-      'Can`t remove patient allergy, invalid Id!'
-    ) 
+    dbAllergies.some((c) => removedAllergies.includes(c.id!)),
+    'Can`t remove patient allergy, invalid Id!',
+  )
 
   removedAllergies.length &&
     trx
@@ -25,7 +25,7 @@ export async function upsertAllergies(
       .where('id', 'in', removedAllergies)
       .execute()
 
-  const newAllergies = allergies.filter(c=> !c.id)
+  const newAllergies = allergies.filter((c) => !c.id)
     .map((m) => ({ allergy_id: m.allergy_id, patient_id }))
 
   newAllergies.length &&
@@ -37,7 +37,7 @@ export async function upsertAllergies(
 
 export async function getPatientAllergies(
   trx: TrxOrDb,
-  patient_id: number
+  patient_id: number,
 ): Promise<PreExistingAllergy[]> {
   return await trx
     .selectFrom('patient_allergies')

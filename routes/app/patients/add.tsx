@@ -273,7 +273,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
         patient,
         step,
         preExistingConditions,
-        allergies
+        allergies,
       })
     }
 

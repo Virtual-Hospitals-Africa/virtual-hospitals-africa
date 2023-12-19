@@ -8,15 +8,19 @@ export async function up(db: Kysely<unknown>) {
     .createTable('allergies')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('created_at', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'created_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('updated_at', 'timestamp', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'updated_at',
+      'timestamp',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .execute()
 
-    await db.schema
+  await db.schema
     .createTable('patient_allergies')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
@@ -32,14 +36,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'allergy_id',
       'integer',
-      (col) =>
-        col.notNull().references('allergies.id').onDelete('cascade'),
+      (col) => col.notNull().references('allergies.id').onDelete('cascade'),
     )
     .addColumn(
       'patient_id',
       'integer',
-      (col) =>
-        col.notNull().references('patients.id').onDelete('cascade'),
+      (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
     .execute()
 
@@ -55,7 +57,7 @@ export async function down(db: Kysely<unknown>) {
 
 async function seedDataFromJSON(db: Kysely<any>) {
   const data: { name: string }[] = await parseJSON(
-    './db/resources/allergies.json'
+    './db/resources/allergies.json',
   )
 
   await db

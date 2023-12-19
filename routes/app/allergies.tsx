@@ -1,7 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  LoggedInHealthWorkerHandler,
-} from '../../types.ts'
+import { LoggedInHealthWorkerHandler } from '../../types.ts'
 import * as allergies from '../../db/models/allergies.ts'
 import { json } from '../../util/responses.ts'
 

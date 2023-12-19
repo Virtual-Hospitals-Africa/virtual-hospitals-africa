@@ -11,7 +11,7 @@ export function search(
     .selectFrom('allergies')
     .select([
       'id',
-      'name'
+      'name',
     ])
 
   if (opts.search) {

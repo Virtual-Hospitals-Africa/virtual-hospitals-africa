@@ -85,7 +85,7 @@ export type UpsertablePatient = {
   last_name?: Maybe<string>
   address?: Address
   unregistered_primary_doctor_name?: Maybe<string>
-  allergies?:  PreExistingAllergy[]
+  allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
@@ -138,7 +138,7 @@ export async function upsert(
     )
   }
 
-  if(patient.allergies) {
+  if (patient.allergies) {
     await patient_allergies.upsertAllergies(
       trx,
       upsertedPatient.id,
