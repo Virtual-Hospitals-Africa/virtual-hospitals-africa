@@ -1,81 +1,120 @@
-import { useEffect, useRef, useState } from 'preact/hooks'
+import { useCallback, useEffect, useState } from 'preact/hooks'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
-import { allAllergies } from '../util/allergyList.ts'
 import FormRow from '../components/library/form/Row.tsx'
 import { assert } from 'std/assert/assert.ts'
 import SearchResults, {
   AllergySearchResult,
 } from '../components/library/SearchResults.tsx'
+import debounce from '../util/debounce.ts'
 import RemoveIcon from '../components/library/icons/remove.tsx'
+import { Allergy, PreExistingAllergy } from '../types.ts'
 
-export default function AllergySearch() {
-  const [searchTerm, setSearchTerm] = useState('')
+export default function AllergySearch({
+  name,
+  value,
+}: {
+  name: string
+  value?: PreExistingAllergy[]
+}) {
+  const [shouldSetInitiallySelected, setShouldSetInitiallySelected] = useState(
+    !!value,
+  )
+  const [search, setSearchImmediate] = useState('')
+  const [setSearch] = useState({
+    delay: debounce(setSearchImmediate, 220),
+  })
   const [isFocused, setIsFocused] = useState(false)
-  const searchInputRef = useRef<HTMLInputElement | null>(null)
 
-  const [selectedAllergies, setSelectedAllergies] = useState<string[]>([])
+  const [selectedAllergies, setSelectedAllergies] = useState<
+    PreExistingAllergy[]
+  >([])
+  const [allergies, setAllergies] = useState<Allergy[]>([])
 
-  const toggleAllergyList = (allergy: string) => {
-    if (searchInputRef.current) {
-      setSearchTerm('')
+  const addAllergy = (allergy: PreExistingAllergy) => {
+    const allergyExist = selectedAllergies.find((c) => c.allergy_id === allergy.allergy_id)
+    if (allergyExist) {
+      allergyExist.removed = false
+      return
     }
-
-    setSelectedAllergies((prevSelectedAllergies) =>
-      prevSelectedAllergies.includes(allergy)
-        ? prevSelectedAllergies.filter((item) => item !== allergy)
-        : [...prevSelectedAllergies, allergy]
-    )
+    setSelectedAllergies([...selectedAllergies, allergy])
   }
 
-  const filteredAllergyList = allAllergies
-    .filter((allergy) => !selectedAllergies.includes(allergy))
-    .filter((allergy) =>
-      allergy.toLowerCase().includes(searchTerm.toLowerCase())
-    )
+  const removeAllergy = (allergy: PreExistingAllergy) => {
+    if (allergy.id) {
+      allergy.removed = true
+      setSelectedAllergies(selectedAllergies.map(item => (item.id === allergy.id ? { ...item, allergy } : item)))
+    } else {
+      setSelectedAllergies(selectedAllergies.filter((item) => item !== allergy))
+    }
+  }
+
+  const getAllergies = async () => {
+    const url = new URL(`${window.location.origin}/app/allergies`)
+    url.searchParams.set('search', search)
+
+    await fetch(url, {
+      headers: { accept: 'application/json' },
+    }).then(async (response) => {
+      const allergiesList = await response.json()
+      assert(Array.isArray(allergiesList))
+      setAllergies(allergiesList)
+
+      if (shouldSetInitiallySelected && value && value?.length > 0) {
+        const selected = value.map((c) => ({
+          id: c.id,
+          allergy_id: c.allergy_id,
+          name: allergiesList.find((d) => d.id === c.allergy_id)?.name,
+        }))
+        setSelectedAllergies(selected)
+        setShouldSetInitiallySelected(false)
+      }
+    }).catch(console.error)
+  }
 
   useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (
-        searchInputRef.current &&
-        event.target instanceof Node &&
-        event.target !== searchInputRef.current &&
-        searchInputRef.current !== event.target
-      ) {
-        setIsFocused(false)
-      }
-    }
+    getAllergies()
+  }, [search, selectedAllergies])
 
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
+  const onDocumentClick = useCallback(() => {
+    setIsFocused(
+      document.activeElement ===
+        document.querySelector(`input[name="${name}.search"]`),
+    )
   }, [])
+
+  useEffect(() => {
+    onDocumentClick()
+    self.addEventListener('click', onDocumentClick)
+    return () => self.removeEventListener('click', onDocumentClick)
+  })
 
   return (
     <>
       <FormRow>
         <SearchInput
-          label=''
-          name=''
-          placeholder='Search for allergies'
-          value={searchTerm}
-          onInput={(e) => {
-            assert(e.target)
-            assert('value' in e.target)
-            assert(typeof e.target.value === 'string')
-            setSearchTerm(e.target.value)
-            setIsFocused(true)
+          name={`${name}.search`}
+          label='Allergies'
+          value={search}
+          onInput={(event) => {
+            assert(event.target)
+            assert('value' in event.target)
+            assert(typeof event.target.value === 'string')
+            setSearch.delay(event.target.value)
           }}
-          onFocus={() => setIsFocused(true)}
-          ref={searchInputRef}
         />
       </FormRow>
 
       <FormRow className='mb-3 relative'>
-        {isFocused && searchTerm && !!filteredAllergyList.length && (
+        {isFocused && search && allergies.length > 0 && (
           <SearchResults>
-            {filteredAllergyList.map((allergy) => (
+            {allergies.map((allergy) => (
               <AllergySearchResult
-                allergy={allergy}
-                onSelect={() => toggleAllergyList(allergy)}
+                allergy={allergy.name}
+                isSelected={selectedAllergies?.some((c) => c.id === allergy.id)}
+                onSelect={() => {
+                  addAllergy({ allergy_id: allergy.id, name: allergy.name })
+                  setSearchImmediate('')
+                }}
               />
             ))}
           </SearchResults>
@@ -85,15 +124,49 @@ export default function AllergySearch() {
       <div className='flex-start flex flex-wrap gap-2 w-full'>
         {selectedAllergies.map((allergy, i) => (
           <>
-            <button
-              key={allergy}
-              onClick={() => toggleAllergyList(allergy)}
-              className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
-            >
-              {allergy}
-              <RemoveIcon />
-            </button>
-            <input type='hidden' name={`allergies.${i}`} value={allergy} />
+            {!allergy.removed
+              ? (
+                <>
+                  <button
+                    key={allergy.name}
+                    type='button'
+                    onClick={() => removeAllergy(allergy)}
+                    className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
+                  >
+                    {allergy.name}
+                    <RemoveIcon />
+                  </button>
+                  <input
+                    type='hidden'
+                    name={`${name}.${i}.allergy_id`}
+                    value={allergy.allergy_id}
+                  />
+                  <input
+                    type='hidden'
+                    name={`${name}.${i}.id`}
+                    value={allergy?.id ?? undefined}
+                  />
+                </>
+              )
+              : allergy.id && (
+                <>
+                  <input
+                    type='hidden'
+                    name={`${name}.${i}.id`}
+                    value={allergy.id}
+                  />
+                  <input
+                    type='hidden'
+                    name={`${name}.${i}.allergy_id`}
+                    value={allergy.allergy_id}
+                  />
+                  <input
+                    type='hidden'
+                    name={`${name}.${i}.removed`}
+                    value='true'
+                  />
+                </>
+              )}
           </>
         ))}
       </div>

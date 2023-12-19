@@ -10,6 +10,7 @@ import {
   PatientConversationState,
   PatientState,
   PatientWithMedicalRecord,
+  PreExistingAllergy,
   RenderedPatient,
   ReturnedSqlRow,
   TrxOrDb,
@@ -20,6 +21,7 @@ import omit from '../../util/omit.ts'
 import compact from '../../util/compact.ts'
 import * as address from './address.ts'
 import * as patient_conditions from './patient_conditions.ts'
+import * as patient_allergies from './patient_allergies.ts'
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
@@ -83,7 +85,7 @@ export type UpsertablePatient = {
   last_name?: Maybe<string>
   address?: Address
   unregistered_primary_doctor_name?: Maybe<string>
-  allergies?: string[]
+  allergies?:  PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
@@ -133,6 +135,14 @@ export async function upsert(
       trx,
       upsertedPatient.id,
       patient.pre_existing_conditions,
+    )
+  }
+
+  if(patient.allergies) {
+    await patient_allergies.upsertAllergies(
+      trx,
+      upsertedPatient.id,
+      patient.allergies,
     )
   }
 

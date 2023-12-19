@@ -7,11 +7,13 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
+  PreExistingAllergy,
   PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
+import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
@@ -41,15 +43,18 @@ type AddPatientProps =
     adminDistricts?: undefined
     preExistingConditions?: undefined
     initialDrugs?: undefined
+    allergies?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
     preExistingConditions?: undefined
     initialDrugs?: undefined
+    allergies?: undefined
   } | {
     step: 'pre-existing_conditions'
     adminDistricts?: undefined
     preExistingConditions: PreExistingConditionWithDrugs[]
+    allergies?: PreExistingAllergy[]
   })
 
 type PersonalFormValues = {
@@ -255,11 +260,20 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
             { patient_id },
           )
         : []
+
+      const allergies = patient_id
+        ? await patient_allergies
+          .getPatientAllergies(
+            ctx.state.trx,
+            patient_id,
+          )
+        : []
       return ctx.render({
         healthWorker,
         patient,
         step,
         preExistingConditions,
+        allergies
       })
     }
 
@@ -327,6 +341,7 @@ export default function AddPatient(
     healthWorker,
     adminDistricts,
     preExistingConditions,
+    allergies,
   } = props.data
 
   return (
@@ -361,6 +376,7 @@ export default function AddPatient(
           {currentStep === 'pre-existing_conditions' && (
             <PatientPreExistingConditions
               patient={patient}
+              allergies={(assert(allergies), allergies)}
               preExistingConditions={(assert(preExistingConditions),
                 preExistingConditions)}
             />
