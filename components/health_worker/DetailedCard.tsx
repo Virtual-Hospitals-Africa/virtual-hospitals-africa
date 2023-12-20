@@ -81,7 +81,7 @@ export default function HealthWorkerDetailedCard(
                 {employee.gender}
               </dd>
             </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
                 Date of Birth
               </dt>
@@ -89,28 +89,36 @@ export default function HealthWorkerDetailedCard(
                 {employee.date_of_birth ? employee.date_of_birth : 'TBD'}
               </dd>
             </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Nurse Registration Number
+                National ID Number
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {employee.national_id_number}
               </dd>
             </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Email address
+                Email
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {employee.email}
               </dd>
             </div>
-            <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
+            <div class='py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
                 Phone Number
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {employee.mobile_number || 'N/A'}
+              </dd>
+            </div>
+            <div class='py-6 sm:col-span-4 sm:px-0'>
+              <dt class='text-sm font-bold leading-6 text-gray-900'>
+                Address
+              </dt>
+              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+                {employee.address || 'N/A'}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
