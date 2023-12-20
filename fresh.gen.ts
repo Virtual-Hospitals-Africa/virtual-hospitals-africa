@@ -34,16 +34,17 @@ import * as $28 from './routes/app/pending_approval.tsx'
 import * as $29 from './routes/app/unauthorized.tsx'
 import * as $30 from './routes/apply.tsx'
 import * as $31 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $32 from './routes/index.tsx'
-import * as $33 from './routes/interest.tsx'
-import * as $34 from './routes/logged-in.tsx'
-import * as $35 from './routes/login.tsx'
-import * as $36 from './routes/logout.tsx'
-import * as $37 from './routes/partner.tsx'
-import * as $38 from './routes/schedule-demo.tsx'
-import * as $39 from './routes/volunteer.tsx'
-import * as $40 from './routes/volunteer/[role].tsx'
-import * as $41 from './routes/waitlist.tsx'
+import * as $32 from './routes/heroku/webhook.tsx'
+import * as $33 from './routes/index.tsx'
+import * as $34 from './routes/interest.tsx'
+import * as $35 from './routes/logged-in.tsx'
+import * as $36 from './routes/login.tsx'
+import * as $37 from './routes/logout.tsx'
+import * as $38 from './routes/partner.tsx'
+import * as $39 from './routes/schedule-demo.tsx'
+import * as $40 from './routes/volunteer.tsx'
+import * as $41 from './routes/volunteer/[role].tsx'
+import * as $42 from './routes/waitlist.tsx'
 import * as $$0 from './islands/ConditionSearch.tsx'
 import * as $$1 from './islands/ErrorMessage.tsx'
 import * as $$2 from './islands/FacilitySearch.tsx'
@@ -105,16 +106,17 @@ const manifest = {
     './routes/app/unauthorized.tsx': $29,
     './routes/apply.tsx': $30,
     './routes/chatbot/incoming-whatsapp.ts': $31,
-    './routes/index.tsx': $32,
-    './routes/interest.tsx': $33,
-    './routes/logged-in.tsx': $34,
-    './routes/login.tsx': $35,
-    './routes/logout.tsx': $36,
-    './routes/partner.tsx': $37,
-    './routes/schedule-demo.tsx': $38,
-    './routes/volunteer.tsx': $39,
-    './routes/volunteer/[role].tsx': $40,
-    './routes/waitlist.tsx': $41,
+    './routes/heroku/webhook.tsx': $32,
+    './routes/index.tsx': $33,
+    './routes/interest.tsx': $34,
+    './routes/logged-in.tsx': $35,
+    './routes/login.tsx': $36,
+    './routes/logout.tsx': $37,
+    './routes/partner.tsx': $38,
+    './routes/schedule-demo.tsx': $39,
+    './routes/volunteer.tsx': $40,
+    './routes/volunteer/[role].tsx': $41,
+    './routes/waitlist.tsx': $42,
   },
   islands: {
     './islands/ConditionSearch.tsx': $$0,
