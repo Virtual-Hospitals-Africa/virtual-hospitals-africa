@@ -128,7 +128,8 @@ export default function Occupation0_18() {
           </div>
         </div>
       )}
-      {/* {!school && (
+      {
+        /* {!school && (
         <div class='flex right'>
           <div class='flex-1'>
             <text>Did the patient stop their education?</text>
@@ -153,7 +154,8 @@ export default function Occupation0_18() {
             </input>
           </div>
         </div>
-      )} */}
+      )} */
+      }
 
       {school && (
         <div class='flex items-center'>
