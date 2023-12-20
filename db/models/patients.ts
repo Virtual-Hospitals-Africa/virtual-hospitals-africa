@@ -10,6 +10,7 @@ import {
   PatientConversationState,
   PatientState,
   PatientWithMedicalRecord,
+  PreExistingAllergy,
   RenderedPatient,
   ReturnedSqlRow,
   TrxOrDb,
@@ -20,6 +21,7 @@ import omit from '../../util/omit.ts'
 import compact from '../../util/compact.ts'
 import * as address from './address.ts'
 import * as patient_conditions from './patient_conditions.ts'
+import * as patient_allergies from './patient_allergies.ts'
 
 const baseSelect = (trx: TrxOrDb) =>
   trx
@@ -83,33 +85,23 @@ export type UpsertablePatient = {
   last_name?: Maybe<string>
   address?: Address
   unregistered_primary_doctor_name?: Maybe<string>
-  allergies?: string[]
+  allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
-
-const omitNonPatientFields = omit<
-  UpsertablePatient,
-  | 'first_name'
-  | 'middle_names'
-  | 'last_name'
-  | 'address'
-  | 'pre_existing_conditions'
-  | 'allergies'
->([
-  'first_name',
-  'middle_names',
-  'last_name',
-  'address',
-  'pre_existing_conditions',
-  'allergies',
-])
 
 export async function upsert(
   trx: TrxOrDb,
   patient: UpsertablePatient,
 ): Promise<ReturnedSqlRow<Patient>> {
   const toInsert = {
-    ...omitNonPatientFields(patient),
+    ...omit(patient, [
+      'first_name',
+      'middle_names',
+      'last_name',
+      'address',
+      'pre_existing_conditions',
+      'allergies',
+    ]),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
       : null,
@@ -138,13 +130,19 @@ export async function upsert(
     .returningAll()
     .executeTakeFirstOrThrow()
 
-  if (patient.pre_existing_conditions) {
-    await patient_conditions.upsertPreExisting(
+  const upserting_conditions = patient.pre_existing_conditions &&
+    patient_conditions.upsertPreExisting(
       trx,
       upsertedPatient.id,
       patient.pre_existing_conditions,
     )
-  }
+  const upserting_allergies = patient.allergies &&
+    patient_allergies.upsert(
+      trx,
+      upsertedPatient.id,
+      patient.allergies,
+    )
+  await Promise.all([upserting_conditions, upserting_allergies])
 
   return upsertedPatient
 }

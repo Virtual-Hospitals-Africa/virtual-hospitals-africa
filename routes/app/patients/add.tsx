@@ -1,23 +1,22 @@
 import { PageProps } from '$fresh/server.ts'
+import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import {
-  DrugSearchResult,
   EmployedHealthWorker,
   FullCountryInfo,
   LoggedInHealthWorkerHandler,
   Maybe,
   OnboardingPatient,
+  PreExistingAllergy,
   PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
+import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import {
-  AddPatientStep,
-  useAddPatientSteps,
-} from '../../../components/patients/add/Steps.tsx'
+import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
@@ -28,7 +27,7 @@ import PatientOccupationForm from '../../../components/patients/add/OccupationFo
 import Buttons from '../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import { path } from '../../../util/path.ts'
-import { assert } from 'std/assert/assert.ts'
+import omit from '../../../util/omit.ts'
 
 type AddPatientProps =
   & {
@@ -46,15 +45,18 @@ type AddPatientProps =
     adminDistricts?: undefined
     preExistingConditions?: undefined
     initialDrugs?: undefined
+    allergies?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
     preExistingConditions?: undefined
     initialDrugs?: undefined
+    allergies?: undefined
   } | {
     step: 'pre-existing_conditions'
     adminDistricts?: undefined
     preExistingConditions: PreExistingConditionWithDrugs[]
+    allergies?: PreExistingAllergy[]
   })
 
 type PersonalFormValues = {
@@ -79,25 +81,9 @@ type AddressFormValues = {
 }
 
 type ConditionsFormValues = {
-  conditions: {
-    id: Maybe<number>
-    condition_id: number
-    start_date: Maybe<string>
-    end_date: Maybe<string>
-    removed: Maybe<boolean>
-    comorbidities: {
-      id: Maybe<number>
-      comorbidity_id: string
-      removed: Maybe<boolean>
-    }[]
-    medications: {
-      id: Maybe<number>
-      medication_id: string
-      dosage: Maybe<string>
-      intake_frequency: Maybe<string>
-      removed: Maybe<boolean>
-    }[]
-  }[]
+  allergy_search?: string
+  allergies?: PreExistingAllergy[]
+  pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
 type FamilyFormValues = Record<string, unknown>
@@ -178,7 +164,7 @@ function isLifestyle(
   return true
 }
 
-type Forms = {
+type FormValuesByStep = {
   personal: PersonalFormValues
   address: AddressFormValues
   'pre-existing_conditions': ConditionsFormValues
@@ -188,16 +174,18 @@ type Forms = {
   lifestyle: LifestyleFormValues
 }
 
+type FormValues = FormValuesByStep[keyof FormValuesByStep]
+
 type TypeCheckers = {
-  [key in AddPatientStep]: (
+  [key in keyof FormValuesByStep]: (
     patient: unknown,
-  ) => patient is Forms[key]
+  ) => patient is FormValuesByStep[key]
 }
 
 type Transformers = Partial<
   {
-    [key in AddPatientStep]: (
-      patient: Forms[key],
+    [key in keyof FormValuesByStep]: (
+      patient: FormValuesByStep[key],
     ) => patients.UpsertablePatient
   }
 >
@@ -239,11 +227,13 @@ const transformers: Transformers = {
       street: patient.street,
     },
   }),
-  // occupation: (
-  //   patient,
-  // ): patients.UpsertablePatient => ({
-  //   patient_occupations: {},
-  // }),
+  'pre-existing_conditions': (
+    patient,
+  ): patients.UpsertablePatient => ({
+    ...omit(patient, ['allergy_search']),
+    pre_existing_conditions: patient.pre_existing_conditions || [],
+    allergies: patient.allergies || [],
+  }),
 }
 
 export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
@@ -286,18 +276,28 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     }
 
     if (step === 'pre-existing_conditions') {
-      const preExistingConditions = patient_id
-        ? await patient_conditions
+      const gettingPreExistingConditions = patient_id
+        ? patient_conditions
           .getPreExistingConditionsWithDrugs(
             ctx.state.trx,
             { patient_id },
           )
-        : []
+        : Promise.resolve([])
+
+      const gettingAllergies = patient_id
+        ? patient_allergies
+          .getWithName(
+            ctx.state.trx,
+            patient_id,
+          )
+        : Promise.resolve([])
+
       return ctx.render({
         healthWorker,
         patient,
         step,
-        preExistingConditions,
+        preExistingConditions: await gettingPreExistingConditions,
+        allergies: await gettingAllergies,
       })
     }
 
@@ -365,6 +365,7 @@ export default function AddPatient(
     healthWorker,
     adminDistricts,
     preExistingConditions,
+    allergies,
   } = props.data
 
   return (
@@ -399,6 +400,7 @@ export default function AddPatient(
           {currentStep === 'pre-existing_conditions' && (
             <PatientPreExistingConditions
               patient={patient}
+              allergies={(assert(allergies), allergies)}
               preExistingConditions={(assert(preExistingConditions),
                 preExistingConditions)}
             />

@@ -1,22 +1,24 @@
-import AllergySearch from '../../../islands/AllergySearch.tsx'
+import AllergyInput from '../../../islands/allergy/Input.tsx'
 import {
   OnboardingPatient,
+  PreExistingAllergy,
   PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import PreExistingConditionsForm from '../../../islands/PreExistingConditionsForm.tsx'
+import PreExistingConditionsForm from '../../../islands/pre-existing-conditions/Form.tsx'
 
 export default function PatientPreExistingConditions(
-  { patient = {}, preExistingConditions }: {
+  { patient = {}, preExistingConditions, allergies }: {
     patient?: Partial<OnboardingPatient>
     preExistingConditions: PreExistingConditionWithDrugs[]
+    allergies: PreExistingAllergy[]
   },
 ) {
   return (
     <>
       <section>
         <SectionHeader className='my-5 text-[20px]'>Allergies</SectionHeader>
-        <AllergySearch />
+        <AllergyInput allergies={allergies} />
       </section>
       <section>
         <SectionHeader className='my-5 text-[20px]'>

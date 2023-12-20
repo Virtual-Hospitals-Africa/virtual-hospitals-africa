@@ -29,11 +29,12 @@ describe(
             'manufactured_medications.medication_id',
             'manufactured_medications.strength_numerators',
             'drugs.generic_name',
+            'routes',
           ])
           .where(
             'form',
             '=',
-            'TABLET; ORAL',
+            'TABLET',
           ).executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
@@ -47,6 +48,7 @@ describe(
                 dosage: 1,
                 strength: tablet.strength_numerators[0],
                 intake_frequency: 'qw',
+                route: tablet.routes[0],
               },
             ],
           },
@@ -118,11 +120,12 @@ describe(
             'medications.id',
             'medications.strength_numerators',
             'drugs.generic_name',
+            'routes',
           ])
           .where(
             'form',
             '=',
-            'TABLET; ORAL',
+            'TABLET',
           ).executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
@@ -136,6 +139,7 @@ describe(
                 dosage: 1,
                 strength: tablet.strength_numerators[0],
                 intake_frequency: 'qw',
+                route: tablet.routes[0],
               },
             ],
           },
@@ -207,11 +211,12 @@ describe(
             'medications.id',
             'medications.strength_numerators',
             'drugs.generic_name',
+            'routes',
           ])
           .where(
             'form',
             '=',
-            'TABLET; ORAL',
+            'TABLET',
           ).executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
@@ -227,6 +232,7 @@ describe(
                 intake_frequency: 'qw',
                 start_date: '2021-01-01',
                 end_date: '2021-01-16',
+                route: tablet.routes[0],
               },
             ],
           },
@@ -370,11 +376,12 @@ describe(
             'medications.id',
             'medications.strength_numerators',
             'drugs.generic_name',
+            'routes',
           ])
           .where(
             'form',
             '=',
-            'INJECTABLE; INJECTION',
+            'INJECTABLE',
           ).executeTakeFirstOrThrow()
 
         const capsule = await db
@@ -384,11 +391,12 @@ describe(
             'medications.id',
             'medications.strength_numerators',
             'drugs.generic_name',
+            'routes',
           ])
           .where(
             'form',
             '=',
-            'CAPSULE; ORAL',
+            'CAPSULE',
           ).executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
@@ -402,6 +410,7 @@ describe(
                 strength: injection.strength_numerators[0],
                 dosage: 1,
                 intake_frequency: 'qw',
+                route: injection.routes[0],
               },
               {
                 medication_id: capsule.id,
@@ -409,6 +418,7 @@ describe(
                 strength: capsule.strength_numerators[0],
                 dosage: 2,
                 intake_frequency: 'qw',
+                route: capsule.routes[0],
               },
             ],
           },
@@ -430,6 +440,7 @@ describe(
             intake_frequency: 'qid',
             dosage: 3,
             strength: capsule.strength_numerators[0],
+            route: capsule.routes[0],
           }],
         }])
 

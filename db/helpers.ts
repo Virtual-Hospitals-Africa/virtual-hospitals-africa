@@ -1,5 +1,11 @@
 // Taken from https://github.com/kysely-org/kysely/blob/master/src/helpers/postgres.ts
-import { Expression, RawBuilder, Simplify, sql } from 'kysely'
+import {
+  Expression,
+  expressionBuilder,
+  RawBuilder,
+  Simplify,
+  sql,
+} from 'kysely'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -54,6 +60,18 @@ export function jsonArrayFrom<O>(
   expr: Expression<O>,
 ): RawBuilder<Simplify<O>[]> {
   return sql`(select coalesce(json_agg(agg), '[]') from ${expr} as agg)`
+}
+
+// Like the above, but extracts a given column from the subquery.
+export function jsonArrayFromColumn<
+  O extends Record<string, unknown>,
+  K extends keyof O,
+>(
+  column: K,
+  expr: Expression<O>,
+): RawBuilder<Simplify<O[K]>[]> {
+  const col_ref = expressionBuilder().ref(column as never)
+  return sql`(select coalesce(json_agg(${col_ref}), '[]') from ${expr} as agg)`
 }
 
 /**

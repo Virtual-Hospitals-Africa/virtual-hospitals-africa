@@ -236,7 +236,16 @@ export async function search(
     search?: Maybe<string>
     profession?: Maybe<Profession>
   },
-): Promise<ReturnedSqlRow<HealthWorker & { name: string }>[]> {
+): Promise<ReturnedSqlRow<
+  HealthWorker & {
+    name: string
+    facilities: {
+      facility_id: number
+      facility_display_name: string
+      professions: Profession[]
+    }[]
+  }
+>[]> {
   let query = trx
     .selectFrom('health_workers')
     .innerJoin(
@@ -476,6 +485,31 @@ export function getEmployeeInfo(
       'nurse_specialties.employee_id',
       'all_employment.id',
     )
+    .leftJoin(
+      (eb) =>
+        eb
+          .selectFrom('address')
+          .leftJoin('suburbs', 'suburbs.id', 'address.suburb_id')
+          .leftJoin('wards', 'wards.id', 'address.ward_id')
+          .leftJoin('districts', 'districts.id', 'address.district_id')
+          .leftJoin('provinces', 'provinces.id', 'address.province_id')
+          .leftJoin('countries', 'countries.id', 'address.country_id')
+          .select([
+            'address.id',
+            sql<
+              string
+            >`CONCAT_WS(', ', address.street, suburbs.name, wards.name, districts.name, provinces.name, countries.name)`
+              .as('address'),
+          ])
+          .as('address_subquery'),
+      (join) =>
+        join
+          .onRef(
+            'address_subquery.id',
+            '=',
+            'nurse_registration_details.address_id',
+          ),
+    )
     .select((eb) => [
       'all_employment.health_worker_id as health_worker_id',
       sql<
@@ -494,6 +528,7 @@ export function getEmployeeInfo(
       'health_workers.email',
       'health_workers.name',
       'health_workers.avatar_url',
+      'address_subquery.address',
       ({ eb, and }) =>
         and([
           eb('nurse_registration_details.id', 'is not', null),

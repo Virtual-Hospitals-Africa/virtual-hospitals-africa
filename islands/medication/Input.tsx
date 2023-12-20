@@ -1,33 +1,28 @@
-import { useCallback, useEffect, useState } from 'preact/hooks'
-import SearchResults, {
-  DrugSearchResult,
-} from '../components/library/SearchResults.tsx'
+import { useEffect, useState } from 'preact/hooks'
 import {
+  CheckboxInput,
   DateInput,
-  SearchInput,
   Select,
-} from '../components/library/form/Inputs.tsx'
-import { assert } from 'std/assert/assert.ts'
-import debounce from '../util/debounce.ts'
+  TextArea,
+} from '../../components/library/form/Inputs.tsx'
 import {
   DrugSearchResult as DrugSearchResultData,
   PreExistingConditionWithDrugs,
-} from '../types.ts'
-import FormRow from '../components/library/form/Row.tsx'
-import { Dosages, IntakeFrequencies } from '../db/models/patient_conditions.ts'
-import { isUnits } from '../util/units.ts'
+} from '../../types.ts'
+import FormRow from '../../components/library/form/Row.tsx'
+import {
+  Dosages,
+  IntakeFrequencies,
+} from '../../db/models/patient_conditions.ts'
+import MedicationSearch from './Search.tsx'
 
-export default function MedicationSearch({
+export default function MedicationInput({
   name,
   value,
 }: {
   name: string
   value?: PreExistingConditionWithDrugs['medications'][0]
 }) {
-  const [shouldSetInitiallySelected, setShouldSetInitiallySelected] = useState(
-    !!value,
-  )
-  const [isFocused, setIsFocused] = useState(false)
   const [selectedDrug, setSelectedDrug] = useState<DrugSearchResultData | null>(
     value?.drug || null,
   )
@@ -52,15 +47,9 @@ export default function MedicationSearch({
   const [selectedDosage, setSelectedDosage] = useState<number | null>(
     value?.dosage ?? null,
   )
-
-  const [drugSearchResults, setDrugSearchResults] = useState<
-    DrugSearchResultData[]
-  >(value ? [value.drug] : [])
-  const [search, setSearchImmediate] = useState(value?.generic_name ?? '')
-  const [setSearch] = useState({
-    delay: debounce(setSearchImmediate, 220),
-  })
-
+  const [selectedRoute, setSelectedRoute] = useState<string | null>(
+    value?.route ?? null,
+  )
   const selectedMedication = selectedDrug?.medications.find(
     (medication) => medication.medication_id === selectedMedicationId,
   )
@@ -74,7 +63,8 @@ export default function MedicationSearch({
     selectedMedication?.strength_numerators
 
   const denominatorUnit = selectedMedication?.strength_denominator_unit
-  const denominatorIsMeasurement = denominatorUnit && isUnits(denominatorUnit)
+  const denominatorIsMeasurement = selectedMedication
+    ?.strength_denominator_is_units
   const denominatorPlural = denominatorUnit &&
     (denominatorIsMeasurement
       ? denominatorUnit
@@ -92,9 +82,13 @@ export default function MedicationSearch({
 
   useEffect(() => {
     if (!selectedMedication) return
-    if (selectedStrength) return
-    if (selectedMedication.strength_numerators.length === 1) {
+    if (
+      !selectedStrength && selectedMedication.strength_numerators.length === 1
+    ) {
       setSelectedStrength(selectedMedication.strength_numerators[0])
+    }
+    if (!selectedRoute && selectedMedication.routes.length === 1) {
+      setSelectedRoute(selectedMedication.routes[0])
     }
   }, [selectedMedication])
 
@@ -105,99 +99,27 @@ export default function MedicationSearch({
     setSelectedDosage(selectedMedication.strength_denominator)
   }, [selectedMedication, selectedStrength])
 
-  const onDocumentClick = useCallback(() => {
-    setIsFocused(
-      document.activeElement ===
-        document.querySelector(`input[name="${name}.generic_name"]`),
-    )
-  }, [])
-
-  useEffect(() => {
-    onDocumentClick()
-    self.addEventListener('click', onDocumentClick)
-    return () => self.removeEventListener('click', onDocumentClick)
-  })
-
-  const getMedications = async () => {
-    if (!search) {
-      setDrugSearchResults([])
-      return
-    }
-
-    const url = new URL(`${window.location.origin}/app/drugs`)
-    url.searchParams.set('search', search)
-
-    await fetch(url, {
-      headers: { accept: 'application/json' },
-    }).then(async (response) => {
-      const drugs = await response.json()
-      assert(Array.isArray(drugs))
-      setDrugSearchResults(drugs)
-      if (shouldSetInitiallySelected) {
-        const drug = drugs.find((d) => d.drug_id === value?.drug_id)
-        if (drug) {
-          setSelectedDrug(drug)
-          setShouldSetInitiallySelected(false)
-        }
-      }
-    }).catch(console.error)
-  }
-
-  useEffect(() => {
-    getMedications()
-  }, [search])
-
-  const showSearchResults = isFocused &&
-    selectedDrug?.drug_generic_name !== search &&
-    ((drugSearchResults.length > 0) || search)
-
   return (
-    <div className='w-full justify-normal'>
+    <div className='w-full justify-normal flex flex-col gap-2'>
       <FormRow className='w-full justify-normal'>
-        <SearchInput
-          name={`${name}.generic_name`}
-          label='Drug'
-          value={selectedDrug?.drug_generic_name}
-          required
-          onInput={(event) => {
-            assert(event.target)
-            assert('value' in event.target)
-            assert(typeof event.target.value === 'string')
+        <MedicationSearch
+          name={name}
+          selectedDrug={selectedDrug}
+          setSelectedDrug={setSelectedDrug}
+          clearSelected={() => {
             setSelectedDrug(null)
             setSelectedMedicationId(null)
             setSelectedStrength(null)
             setSelectedDosage(null)
             setSelectedIntakeFrequency(null)
-            setSearch.delay(event.target.value)
           }}
-        >
-          {showSearchResults && (
-            <SearchResults>
-              {drugSearchResults.map((drug) => (
-                <DrugSearchResult
-                  drug={drug}
-                  isSelected={selectedDrug?.drug_id === drug.drug_id}
-                  onSelect={() => {
-                    setSelectedDrug(drug)
-                    setSearchImmediate(drug.drug_generic_name)
-                  }}
-                />
-              ))}
-            </SearchResults>
-          )}
-        </SearchInput>
-        {selectedDrug && (
-          <input
-            type='hidden'
-            name={`${name}.drug_id`}
-            value={selectedDrug.drug_id}
-          />
-        )}
+        />
         <Select
           name={`${name}.medication_id`}
           required
           label='Form'
           disabled={!selectedDrug}
+          selectClassName='w-56'
           onChange={(event) =>
             event.currentTarget.value &&
             setSelectedMedicationId(Number(event.currentTarget.value))}
@@ -209,10 +131,39 @@ export default function MedicationSearch({
                 value={medication.medication_id}
                 selected={selectedMedicationId === medication.medication_id}
               >
-                {medication.form}
+                {medication.form_route}
               </option>
             ))}
         </Select>
+        {selectedMedication && (selectedMedication.routes.length > 1) && (
+          <Select
+            name={`${name}.route`}
+            required
+            label='Route'
+            selectClassName='w-28'
+            disabled={!selectedDrug}
+            onChange={(event) =>
+              event.currentTarget.value &&
+              setSelectedRoute(event.currentTarget.value)}
+          >
+            <option value=''>Select Form</option>
+            {selectedMedication.routes.map((route) => (
+              <option
+                value={route}
+                selected={selectedRoute === route}
+              >
+                {route}
+              </option>
+            ))}
+          </Select>
+        )}
+        {selectedMedication && (selectedMedication.routes.length === 1) && (
+          <input
+            name={`${name}.route`}
+            type='hidden'
+            value={selectedMedication.routes[0]}
+          />
+        )}
         {
           /* TODO: revisit using manufactured medications.
             Could be valuable for prescriptions based on facility availability, but for now just gumming things up. */
@@ -253,6 +204,7 @@ export default function MedicationSearch({
           required
           label='Strength'
           disabled={!selectedMedication}
+          selectClassName='w-56'
           onChange={(event) =>
             event.currentTarget.value &&
             setSelectedStrength(Number(event.currentTarget.value))}
@@ -278,6 +230,8 @@ export default function MedicationSearch({
         <Select
           name={`${name}.dosage`}
           label='Dosage'
+          className='w-full'
+          selectClassName='min-w-full'
           disabled={!(selectedMedication && selectedStrength)}
         >
           <option value=''>Select Dosage</option>
@@ -301,7 +255,7 @@ export default function MedicationSearch({
         <Select
           name={`${name}.intake_frequency`}
           required
-          label='Intake'
+          label='Frequency'
           disabled={!selectedDrug}
         >
           <option value=''>Select Intake</option>
@@ -325,6 +279,16 @@ export default function MedicationSearch({
           name={`${name}.end_date`}
           label='End Date'
           value={value?.end_date}
+        />
+      </FormRow>
+      <FormRow>
+        <TextArea
+          name={`${name}.special_instructions`}
+          className='w-full animate-[height 0.2s ease-in-out]'
+          label='Special Instructions'
+          value={value?.special_instructions}
+          required={selectedRoute === 'INJECTION'}
+          rows={2}
         />
       </FormRow>
     </div>

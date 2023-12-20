@@ -158,6 +158,8 @@ export type PreExistingCondition = {
     medication_id: number
     strength: number
     dosage: number
+    route: string
+    special_instructions?: Maybe<string>
     intake_frequency: string
     generic_name: string
     start_date: string
@@ -183,12 +185,20 @@ export type PreExistingConditionWithDrugs = {
     manufactured_medication_id: number | null
     medication_id: number | null
     strength: number
+    route: string
     dosage: number
     intake_frequency: string
     generic_name: string
     start_date: string
     end_date?: Maybe<string>
+    special_instructions?: Maybe<string>
   }[]
+}
+
+export type PreExistingAllergy = {
+  id?: Maybe<number>
+  allergy_id: number
+  name?: Maybe<string>
 }
 
 export type OnboardingPatient =
@@ -959,6 +969,7 @@ export type EmployeeInfo = {
   registration_completed: SqlBool
   registration_needed: SqlBool
   registration_pending_approval: SqlBool
+  address: Maybe<string>
   employment: {
     address: string
     facility_id: number
@@ -1330,10 +1341,13 @@ export type Drug = {
 export type Medication = {
   drug_id: number
   form: string
+  routes: string[]
+  form_route: string
   strength_numerators: number[]
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
+  strength_denominator_is_units: boolean
 }
 
 export type ManufacturedMedication = {
@@ -1350,6 +1364,8 @@ export type PatientMedication =
     strength: number
     start_date: string
     schedules: MedicationSchedule[]
+    route: string
+    special_instructions: string | null
   }
   & (
     | { medication_id: null; manufactured_medication_id: number }
@@ -1376,10 +1392,14 @@ export type MedicationSchedule = Duration & {
 export type DrugSearchResultMedication = {
   medication_id: number
   form: string
+  form_route: string
+  strength_summary: string
+  routes: string[]
   strength_numerators: number[]
   strength_numerator_unit: string
   strength_denominator: number
   strength_denominator_unit: string
+  strength_denominator_is_units: boolean
   manufacturers: {
     manufactured_medication_id: number
     strength_numerators: number[]
@@ -1391,6 +1411,7 @@ export type DrugSearchResultMedication = {
 export type DrugSearchResult = {
   drug_id: number
   drug_generic_name: string
+  distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
 }
 
@@ -1416,6 +1437,17 @@ export type PatientGuardian = {
   guardian_relation: GuardianRelationName
   guardian_patient_id: number
   dependent_patient_id: number
+}
+
+export type Allergy = {
+  id: number
+  name: string
+}
+
+export type PatientAllergies = {
+  id: number
+  patient_id: number
+  allergy_id: number
 }
 
 export type DatabaseSchema = {
@@ -1455,4 +1487,6 @@ export type DatabaseSchema = {
   patient_condition_medications: SqlRow<PatientMedication>
   guardian_relations: GuardianRelation
   patient_guardians: SqlRow<PatientGuardian>
+  allergies: SqlRow<Allergy>
+  patient_allergies: SqlRow<PatientAllergies>
 }
