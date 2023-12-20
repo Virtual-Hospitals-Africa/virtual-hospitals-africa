@@ -1,1 +1,0 @@
-import{a as e}from"./chunk-7QVJUEYK.js";import{a as o}from"./chunk-D7WMKMTL.js";function r({className:n,children:l}){return o("div",{className:e("flex w-full justify-between gap-3",n),children:l})}export{r as a};
