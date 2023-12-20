@@ -10,11 +10,13 @@ type School = {
   happy: boolean
   sports: boolean
   inappropriate_reason: string | null
+}
+type stopSchool = {
   stopped_education_reason: string | null
 }
 export default function Occupation0_18() {
   const [school, setSchool] = useState<null | School>(null)
-  console.log(school)
+  const [stopSchool, setStopSchool] = useState<null | stopSchool>(null)
   //const [Appropriate, setAppropriate] = useState<boolean>(true)
 
   //const setSchoolHandler = () => {
@@ -126,6 +128,33 @@ export default function Occupation0_18() {
           </div>
         </div>
       )}
+      {!school && (
+        <div class='flex right'>
+          <div class='flex-1'>
+            <text>Did the patient stop their education?</text>
+          </div>
+          <div style={{ marginleft: 'auto' }}>
+            <input
+              id='class_appropriate'
+              type='checkbox'
+              //checked={!school?.stopped_education_reason}
+              class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+              onClick={(event) => {
+                assert(event.target instanceof HTMLInputElement)
+                const nextstopSchool: null | stopSchool = event.target.checked
+                  ? {
+                    ...stopSchool,
+                    stopped_education_reason: event.target.checked,
+                  }
+                  : null
+                setStopSchool(nextstopSchool)
+              }}
+            >
+            </input>
+          </div>
+        </div>
+      )}
+
       {school && (
         <div class='flex items-center'>
           <div class='flex-1'>
@@ -237,16 +266,18 @@ export default function Occupation0_18() {
           )}
         </FormRow>
         <FormRow>
-          <SelectWithOther
-            label='If the patient stopped their education, why?'
-            name='stopped_education_reason'
-          >
-            {stopEducationReasons.map((reason) => (
-              <option value={reason}>
-                {reason}
-              </option>
-            ))}
-          </SelectWithOther>
+          {stopSchool?.stopped_education_reason && (
+            <SelectWithOther
+              label='If the patient stopped their education, why?'
+              name='stopped_education_reason'
+            >
+              {stopEducationReasons.map((reason) => (
+                <option value={reason}>
+                  {reason}
+                </option>
+              ))}
+            </SelectWithOther>
+          )}
         </FormRow>
       </section>
     </>
