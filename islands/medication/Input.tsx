@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'preact/hooks'
 import {
+  CheckboxInput,
   DateInput,
   Select,
   TextArea,
@@ -14,7 +15,6 @@ import {
   IntakeFrequencies,
 } from '../../db/models/patient_conditions.ts'
 import MedicationSearch from './Search.tsx'
-import Form from '../../components/library/form/Form.tsx'
 
 export default function MedicationInput({
   name,
@@ -50,10 +50,6 @@ export default function MedicationInput({
   const [selectedRoute, setSelectedRoute] = useState<string | null>(
     value?.route ?? null,
   )
-  const [drugSearchResults, setDrugSearchResults] = useState<
-    DrugSearchResultData[]
-  >(value ? [value.drug] : [])
-
   const selectedMedication = selectedDrug?.medications.find(
     (medication) => medication.medication_id === selectedMedicationId,
   )
@@ -86,9 +82,13 @@ export default function MedicationInput({
 
   useEffect(() => {
     if (!selectedMedication) return
-    if (selectedStrength) return
-    if (selectedMedication.strength_numerators.length === 1) {
+    if (
+      !selectedStrength && selectedMedication.strength_numerators.length === 1
+    ) {
       setSelectedStrength(selectedMedication.strength_numerators[0])
+    }
+    if (!selectedRoute && selectedMedication.routes.length === 1) {
+      setSelectedRoute(selectedMedication.routes[0])
     }
   }, [selectedMedication])
 
@@ -100,7 +100,7 @@ export default function MedicationInput({
   }, [selectedMedication, selectedStrength])
 
   return (
-    <div className='w-full justify-normal'>
+    <div className='w-full justify-normal flex flex-col gap-2'>
       <FormRow className='w-full justify-normal'>
         <MedicationSearch
           name={name}
@@ -119,6 +119,7 @@ export default function MedicationInput({
           required
           label='Form'
           disabled={!selectedDrug}
+          selectClassName='w-56'
           onChange={(event) =>
             event.currentTarget.value &&
             setSelectedMedicationId(Number(event.currentTarget.value))}
@@ -139,6 +140,7 @@ export default function MedicationInput({
             name={`${name}.route`}
             required
             label='Route'
+            selectClassName='w-28'
             disabled={!selectedDrug}
             onChange={(event) =>
               event.currentTarget.value &&
@@ -202,6 +204,7 @@ export default function MedicationInput({
           required
           label='Strength'
           disabled={!selectedMedication}
+          selectClassName='w-56'
           onChange={(event) =>
             event.currentTarget.value &&
             setSelectedStrength(Number(event.currentTarget.value))}
@@ -227,6 +230,8 @@ export default function MedicationInput({
         <Select
           name={`${name}.dosage`}
           label='Dosage'
+          className='w-full'
+          selectClassName='min-w-full'
           disabled={!(selectedMedication && selectedStrength)}
         >
           <option value=''>Select Dosage</option>
@@ -279,9 +284,11 @@ export default function MedicationInput({
       <FormRow>
         <TextArea
           name={`${name}.special_instructions`}
-          className='w-full'
+          className='w-full animate-[height 0.2s ease-in-out]'
           label='Special Instructions'
           value={value?.special_instructions}
+          required={selectedRoute === 'INJECTION'}
+          rows={2}
         />
       </FormRow>
     </div>

@@ -9,7 +9,6 @@ type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
   label?: Maybe<string>
   required?: boolean
-  placeholder?: string
   disabled?: boolean
   readonly?: boolean
   ref?: Ref<El>
@@ -19,25 +18,30 @@ type LabeledInputProps<El extends HTMLElement> = {
   onBlur?: JSX.GenericEventHandler<El>
 }
 
-type SearchInputProps = Partial<LabeledInputProps<HTMLInputElement>> & {
+type WrapperInputProps<El extends HTMLElement> = LabeledInputProps<El> & {
+  inputClassName?: string
+}
+
+type SearchInputProps = Partial<WrapperInputProps<HTMLInputElement>> & {
   value?: string
+  placeholder?: string
   children?: ComponentChildren
 }
 
-type DateInputProps = Partial<LabeledInputProps<HTMLInputElement>> & {
+type DateInputProps = Partial<WrapperInputProps<HTMLInputElement>> & {
   value?: Maybe<string>
 }
 
-type GenderSelectProps = Partial<SelectProps>
-
-export type TextInputProps = LabeledInputProps<HTMLInputElement> & {
+export type TextInputProps = WrapperInputProps<HTMLInputElement> & {
   type?: 'text' | 'email' | 'tel'
   value?: Maybe<string>
+  placeholder?: string
   pattern?: string
 }
 
-export type TextAreaProps = LabeledInputProps<HTMLTextAreaElement> & {
+export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement> & {
   value?: Maybe<string>
+  placeholder?: string
   rows?: number
 }
 
@@ -51,15 +55,17 @@ function LabeledInput(
   return (
     <label
       className={cls(
-        'block text-sm font-medium leading-6 text-gray-500 w-full relative',
+        'block text-sm font-medium leading-6 text-gray-500 relative',
         className,
       )}
     >
-      {label}
-      {label && required && '*'}
-      <div className='mt-2'>
-        {children}
-      </div>
+      {label && (
+        <span className='mb-1 ml-0.5'>
+          {label}
+          {label && required && '*'}
+        </span>
+      )}
+      {children}
     </label>
   )
 }
@@ -78,15 +84,23 @@ export function TextInput(
     disabled,
     readonly,
     pattern,
+    className,
+    inputClassName,
   }: TextInputProps,
 ) {
   return (
-    <LabeledInput name={name} label={label} required={required}>
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('w-full', className)}
+    >
       <input
         type={type}
         {...(name && { name })}
         className={cls(
           'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
+          inputClassName,
           disabled && 'bg-gray-300',
         )}
         placeholder={placeholder}
@@ -98,6 +112,52 @@ export function TextInput(
         onFocus={onFocus}
         onBlur={onBlur}
         pattern={pattern}
+      />
+    </LabeledInput>
+  )
+}
+
+export function CheckboxInput(
+  {
+    name,
+    label,
+    required,
+    onInput,
+    onFocus,
+    onBlur,
+    checked,
+    disabled,
+    readonly,
+    className,
+    inputClassName,
+  }: WrapperInputProps<HTMLInputElement> & {
+    checked?: boolean
+    onInput?: JSX.GenericEventHandler<HTMLInputElement>
+  },
+) {
+  return (
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('flex flex-col', className)}
+    >
+      <input
+        type='checkbox'
+        {...(name && { name })}
+        className={cls(
+          className =
+            'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
+        required={required}
+        disabled={disabled}
+        readonly={readonly}
+        checked={checked}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
       />
     </LabeledInput>
   )
@@ -115,15 +175,23 @@ export function TextArea(
     onBlur,
     disabled,
     readonly,
+    className,
+    inputClassName,
     rows = 3,
   }: TextAreaProps,
 ) {
   return (
-    <LabeledInput name={name} label={label} required={required}>
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('w-full', className)}
+    >
       <textarea
         {...(name && { name })}
         className={cls(
           'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 p-2',
+          inputClassName,
           disabled && 'bg-gray-300',
         )}
         placeholder={placeholder}
@@ -144,21 +212,42 @@ export type SelectProps =
   & Omit<LabeledInputProps<HTMLSelectElement>, 'onInput'>
   & {
     onChange?: JSX.GenericEventHandler<HTMLSelectElement>
+    selectClassName?: string
     children: ComponentChildren
   }
 
 export const Select = forwardRef(
   (
-    { name, label, required, onChange, children }: SelectProps,
+    {
+      name,
+      label,
+      required,
+      onChange,
+      className,
+      selectClassName,
+      children,
+      disabled,
+    }: SelectProps,
     ref: Ref<HTMLSelectElement>,
   ) => {
     return (
-      <LabeledInput name={name} label={label} required={required}>
+      <LabeledInput
+        name={name}
+        label={label}
+        required={required}
+        disabled={disabled}
+        className={className}
+      >
         <select
           {...(name && { name })}
-          className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white'
+          className={cls(
+            'block w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
+            selectClassName,
+            disabled && 'text-gray-600',
+          )}
           required={required}
           onChange={onChange}
+          disabled={disabled}
           ref={ref}
         >
           {children}
@@ -169,16 +258,36 @@ export const Select = forwardRef(
 )
 
 export function DateInput(
-  { name = 'date', value, label, required, onInput, onFocus, onBlur }:
-    DateInputProps,
+  {
+    name = 'date',
+    value,
+    label,
+    required,
+    className,
+    inputClassName,
+    disabled,
+    onInput,
+    onFocus,
+    onBlur,
+  }: DateInputProps,
 ) {
   return (
-    <LabeledInput name={name} label={label} required={required}>
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('w-40', className)}
+    >
       <input
         type='date'
         {...(name && { name })}
-        className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
+        className={cls(
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
         required={required}
+        disabled={disabled}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -190,18 +299,39 @@ export function DateInput(
 
 // Make this pretty with an icon and/or flag + area code helper
 export function PhoneNumberInput(
-  { name, label, placeholder, required, onInput, onFocus, onBlur, value }:
-    TextInputProps,
+  {
+    name,
+    label,
+    placeholder,
+    required,
+    disabled,
+    className,
+    inputClassName,
+    onInput,
+    onFocus,
+    onBlur,
+    value,
+  }: TextInputProps,
 ) {
   return (
-    <LabeledInput name={name} label={label} required={required}>
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={className}
+    >
       <input
         type='tel'
         {...(name && { name })}
-        className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2'
+        className={cls(
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
         value={value || undefined}
         placeholder={placeholder}
         required={required}
+        disabled={disabled}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -210,19 +340,39 @@ export function PhoneNumberInput(
   )
 }
 
-// TODO
 export function ImageInput(
-  { name, label, placeholder, required, onInput, onFocus, onBlur }:
+  {
+    name,
+    label,
+    placeholder,
+    required,
+    disabled,
+    className,
+    inputClassName,
+    onInput,
+    onFocus,
+    onBlur,
+  }:
     & TextInputProps
     & { isHidden?: boolean },
 ) {
   return (
-    <LabeledInput name={name} label={label} required={required}>
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      disabled={disabled}
+      className={className}
+    >
       <input
         type='file'
         accept='.jpg,.jpeg,.png'
         {...(name && { name })}
-        className='w-0 h-0 overflow-hidden'
+        className={cls(
+          'w-0 h-0 overflow-hidden',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
         placeholder={placeholder}
         required={required}
         onInput={onInput}
@@ -243,6 +393,9 @@ export function SearchInput(
     value,
     placeholder,
     required,
+    disabled,
+    className,
+    inputClassName,
     onInput,
     onFocus,
     onBlur,
@@ -251,7 +404,12 @@ export function SearchInput(
   }: SearchInputProps,
 ) {
   return (
-    <LabeledInput name={name} label={label} required={required}>
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('w-full', className)}
+    >
       <div className='relative flex items-center'>
         <div className='absolute inset-y-0 left-0 pl-1.5 grid place-items-center'>
           <MagnifyingGlassIcon />
@@ -260,9 +418,14 @@ export function SearchInput(
           ref={ref}
           type='search'
           {...(name && { name })}
-          className='block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8'
+          className={cls(
+            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8',
+            inputClassName,
+            disabled && 'bg-gray-300',
+          )}
           placeholder={placeholder}
           required={required}
+          disabled={disabled}
           value={value}
           onInput={onInput}
           onFocus={(e) => onFocus && onFocus(e)}
