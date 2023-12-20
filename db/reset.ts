@@ -23,7 +23,7 @@ const topLevelTables = [
 ]
 
 export async function resetInTest(trx: TrxOrDb = db) {
-  assert(Deno.env.get('IS_TEST'), 'Don\'t run this outside tests!')
+  assert(Deno.env.get('IS_TEST'), "Don't run this outside tests!")
 
   await Promise.all(
     topLevelTables.map((table) => trx.deleteFrom(table).execute()),

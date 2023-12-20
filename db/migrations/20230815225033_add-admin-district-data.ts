@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import parseJSON from '../../util/parseJSON.ts'
-import { DatabaseSchema } from '../../db/db.ts'
+import { DatabaseSchema } from '../../types.ts'
 
 type AdminDistrict = {
   countries: Country[]

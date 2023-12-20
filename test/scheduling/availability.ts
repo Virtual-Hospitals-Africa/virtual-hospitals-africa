@@ -100,7 +100,7 @@ Deno.test('overlaps returns true when the second window includes the first', () 
   )
 })
 
-Deno.test('overlaps returns false even if the windows don\'t overlap, even if the windows are not in chronological order', () => {
+Deno.test("overlaps returns false even if the windows don't overlap, even if the windows are not in chronological order", () => {
   assertEquals(
     overlaps(
       {

@@ -43,7 +43,7 @@ describeWithWebServer('/login', 8002, (route) => {
       mock = await addTestHealthWorkerWithSession()
     })
 
-    it('doesn\'t allow unemployed access to /app', async () => {
+    it("doesn't allow unemployed access to /app", async () => {
       const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
@@ -401,7 +401,7 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('Invite'))
     })
 
-    it('doesn\'t allow unemployed access to employees', async () => {
+    it("doesn't allow unemployed access to employees", async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
@@ -416,7 +416,7 @@ describeWithWebServer('/login', 8002, (route) => {
       assertEquals(response.status, 403)
     })
 
-    it('doesn\'t allow non-admin to invite page', async () => {
+    it("doesn't allow non-admin to invite page", async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
@@ -439,7 +439,7 @@ describeWithWebServer('/login', 8002, (route) => {
       const pageContents = await employeesResponse.text()
       assert(
         !pageContents.includes('href="/app/facilities/1/employees/invite"'),
-        'there shouldn\'t be a link to the invite page',
+        "there shouldn't be a link to the invite page",
       )
 
       const invitesResponse = await fetch(
