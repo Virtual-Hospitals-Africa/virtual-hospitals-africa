@@ -969,6 +969,7 @@ export type EmployeeInfo = {
   registration_completed: SqlBool
   registration_needed: SqlBool
   registration_pending_approval: SqlBool
+  address: Maybe<string>
   employment: {
     address: string
     facility_id: number
