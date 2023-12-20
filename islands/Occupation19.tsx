@@ -53,7 +53,6 @@ export default function Occupation19() {
             <input
               id='class_appropriate'
               type='checkbox'
-              
               value=''
               class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
               onClick={setAppropriateHandler}
@@ -117,7 +116,7 @@ export default function Occupation19() {
             label='Which class is the patient doing?'
             name='patient_class'
           />
-          {!Appropriate && School &&(
+          {!Appropriate && School && (
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
               name='class_inappropriate_reason'
