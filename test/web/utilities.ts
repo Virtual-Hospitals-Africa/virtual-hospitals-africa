@@ -49,7 +49,7 @@ export async function startWebServer(
       throw new Error('hung process')
     }
     line = (await lineReader.next()).value
-  } while (line !== `Listening on https://localhost:${port}/`)
+  } while (!line.includes(`http://localhost:${port}/`))
 
   async function kill() {
     stdout.releaseLock()

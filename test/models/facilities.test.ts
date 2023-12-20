@@ -249,7 +249,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       ])
     })
 
-    it('assures that registration_status is pending_approval for when registration is complete, but hasn\'t been approved', async () => {
+    it("assures that registration_status is pending_approval for when registration is complete, but hasn't been approved", async () => {
       const hw_at_facility1 = await health_workers.upsert(db, {
         name: 'At Facility 1',
         email: 'at_facility1@worker.com',

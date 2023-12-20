@@ -2,155 +2,169 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
-import * as $0 from './routes/_404.tsx'
-import * as $1 from './routes/_middleware.ts'
-import * as $2 from './routes/app.tsx'
-import * as $3 from './routes/app/_middleware.tsx'
-import * as $4 from './routes/app/allergies.tsx'
-import * as $5 from './routes/app/calendar.tsx'
-import * as $6 from './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx'
-import * as $7 from './routes/app/calendar/appointments/[id].tsx'
-import * as $8 from './routes/app/calendar/appointments/schedule.tsx'
-import * as $9 from './routes/app/calendar/availability.tsx'
-import * as $10 from './routes/app/conditions.tsx'
-import * as $11 from './routes/app/drugs.json.tsx'
-import * as $12 from './routes/app/drugs.tsx'
-import * as $13 from './routes/app/employees.tsx'
-import * as $14 from './routes/app/facilities.tsx'
-import * as $15 from './routes/app/facilities/[facilityId]/_middleware.ts'
-import * as $16 from './routes/app/facilities/[facilityId]/employees.tsx'
-import * as $17 from './routes/app/facilities/[facilityId]/employees/[id].tsx'
-import * as $18 from './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx'
-import * as $19 from './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx'
-import * as $20 from './routes/app/facilities/[facilityId]/employees/invite.tsx'
-import * as $21 from './routes/app/facilities/[facilityId]/register.tsx'
-import * as $22 from './routes/app/health_workers.tsx'
-import * as $23 from './routes/app/insufficient_permissions.tsx'
-import * as $24 from './routes/app/patients.tsx'
-import * as $25 from './routes/app/patients/[id].tsx'
-import * as $26 from './routes/app/patients/[id]/avatar.tsx'
-import * as $27 from './routes/app/patients/add.tsx'
-import * as $28 from './routes/app/pending_approval.tsx'
-import * as $29 from './routes/app/unauthorized.tsx'
-import * as $30 from './routes/apply.tsx'
-import * as $31 from './routes/chatbot/incoming-whatsapp.ts'
-import * as $32 from './routes/index.tsx'
-import * as $33 from './routes/interest.tsx'
-import * as $34 from './routes/logged-in.tsx'
-import * as $35 from './routes/login.tsx'
-import * as $36 from './routes/logout.tsx'
-import * as $37 from './routes/partner.tsx'
-import * as $38 from './routes/schedule-demo.tsx'
-import * as $39 from './routes/volunteer.tsx'
-import * as $40 from './routes/volunteer/[role].tsx'
-import * as $41 from './routes/waitlist.tsx'
-import * as $$0 from './islands/AddRemove.tsx'
-import * as $$1 from './islands/ConditionSearch.tsx'
-import * as $$2 from './islands/ErrorMessage.tsx'
-import * as $$3 from './islands/FacilitySearch.tsx'
-import * as $$4 from './islands/JobPost.tsx'
-import * as $$5 from './islands/Menu.tsx'
-import * as $$6 from './islands/NationalIdInput.tsx'
-import * as $$7 from './islands/PersonSearch.tsx'
-import * as $$8 from './islands/ReligionSelect.tsx'
-import * as $$9 from './islands/SelectWithOther.tsx'
-import * as $$10 from './islands/SuccessMessage.tsx'
-import * as $$11 from './islands/address-inputs.tsx'
-import * as $$12 from './islands/allergy/Input.tsx'
-import * as $$13 from './islands/allergy/Search.tsx'
-import * as $$14 from './islands/availability-form.tsx'
-import * as $$15 from './islands/file-preview-input.tsx'
-import * as $$16 from './islands/invites-form.tsx'
-import * as $$17 from './islands/landing-page/MHIDotsLogo.tsx'
-import * as $$18 from './islands/landing-page/NavBar.tsx'
-import * as $$19 from './islands/medication/Input.tsx'
-import * as $$20 from './islands/medication/Search.tsx'
-import * as $$21 from './islands/nurse-registration-form.tsx'
-import * as $$22 from './islands/patient-cards.tsx'
-import * as $$23 from './islands/pre-existing-conditions/Comorbidity.tsx'
-import * as $$24 from './islands/pre-existing-conditions/Condition.tsx'
-import * as $$25 from './islands/pre-existing-conditions/Form.tsx'
-import * as $$26 from './islands/pre-existing-conditions/Medication.tsx'
-import * as $$27 from './islands/schedule-form.tsx'
+import * as $_404 from './routes/_404.tsx'
+import * as $_app from './routes/_app.tsx'
+import * as $_middleware from './routes/_middleware.ts'
+import * as $app from './routes/app.tsx'
+import * as $app_middleware from './routes/app/_middleware.tsx'
+import * as $app_allergies from './routes/app/allergies.tsx'
+import * as $app_calendar from './routes/app/calendar.tsx'
+import * as $app_calendar_appointments_appointmentId_media_mediaId_ from './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx'
+import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
+import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
+import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
+import * as $app_conditions from './routes/app/conditions.tsx'
+import * as $app_drugs_json from './routes/app/drugs.json.tsx'
+import * as $app_drugs from './routes/app/drugs.tsx'
+import * as $app_employees from './routes/app/employees.tsx'
+import * as $app_facilities from './routes/app/facilities.tsx'
+import * as $app_facilities_facilityId_middleware from './routes/app/facilities/[facilityId]/_middleware.ts'
+import * as $app_facilities_facilityId_employees from './routes/app/facilities/[facilityId]/employees.tsx'
+import * as $app_facilities_facilityId_employees_id_ from './routes/app/facilities/[facilityId]/employees/[id].tsx'
+import * as $app_facilities_facilityId_employees_id_approve from './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx'
+import * as $app_facilities_facilityId_employees_id_media_mediaId_ from './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx'
+import * as $app_facilities_facilityId_employees_invite from './routes/app/facilities/[facilityId]/employees/invite.tsx'
+import * as $app_facilities_facilityId_register from './routes/app/facilities/[facilityId]/register.tsx'
+import * as $app_health_workers from './routes/app/health_workers.tsx'
+import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
+import * as $app_patients from './routes/app/patients.tsx'
+import * as $app_patients_id_ from './routes/app/patients/[id].tsx'
+import * as $app_patients_id_avatar from './routes/app/patients/[id]/avatar.tsx'
+import * as $app_patients_add from './routes/app/patients/add.tsx'
+import * as $app_pending_approval from './routes/app/pending_approval.tsx'
+import * as $app_unauthorized from './routes/app/unauthorized.tsx'
+import * as $apply from './routes/apply.tsx'
+import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
+import * as $index from './routes/index.tsx'
+import * as $interest from './routes/interest.tsx'
+import * as $logged_in from './routes/logged-in.tsx'
+import * as $login from './routes/login.tsx'
+import * as $logout from './routes/logout.tsx'
+import * as $partner from './routes/partner.tsx'
+import * as $schedule_demo from './routes/schedule-demo.tsx'
+import * as $volunteer from './routes/volunteer.tsx'
+import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
+import * as $waitlist from './routes/waitlist.tsx'
+import * as $AddRemove from './islands/AddRemove.tsx'
+import * as $ConditionSearch from './islands/ConditionSearch.tsx'
+import * as $ErrorMessage from './islands/ErrorMessage.tsx'
+import * as $FacilitySearch from './islands/FacilitySearch.tsx'
+import * as $JobPost from './islands/JobPost.tsx'
+import * as $Menu from './islands/Menu.tsx'
+import * as $NationalIdInput from './islands/NationalIdInput.tsx'
+import * as $PersonSearch from './islands/PersonSearch.tsx'
+import * as $ReligionSelect from './islands/ReligionSelect.tsx'
+import * as $SelectWithOther from './islands/SelectWithOther.tsx'
+import * as $SuccessMessage from './islands/SuccessMessage.tsx'
+import * as $address_inputs from './islands/address-inputs.tsx'
+import * as $allergy_Input from './islands/allergy/Input.tsx'
+import * as $allergy_Search from './islands/allergy/Search.tsx'
+import * as $availability_form from './islands/availability-form.tsx'
+import * as $file_preview_input from './islands/file-preview-input.tsx'
+import * as $invites_form from './islands/invites-form.tsx'
+import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
+import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
+import * as $medication_Input from './islands/medication/Input.tsx'
+import * as $medication_Search from './islands/medication/Search.tsx'
+import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
+import * as $patient_cards from './islands/patient-cards.tsx'
+import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
+import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
+import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
+import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
+import * as $schedule_form from './islands/schedule-form.tsx'
+import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
   routes: {
-    './routes/_404.tsx': $0,
-    './routes/_middleware.ts': $1,
-    './routes/app.tsx': $2,
-    './routes/app/_middleware.tsx': $3,
-    './routes/app/allergies.tsx': $4,
-    './routes/app/calendar.tsx': $5,
+    './routes/_404.tsx': $_404,
+    './routes/_app.tsx': $_app,
+    './routes/_middleware.ts': $_middleware,
+    './routes/app.tsx': $app,
+    './routes/app/_middleware.tsx': $app_middleware,
+    './routes/app/allergies.tsx': $app_allergies,
+    './routes/app/calendar.tsx': $app_calendar,
     './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx':
-      $6,
-    './routes/app/calendar/appointments/[id].tsx': $7,
-    './routes/app/calendar/appointments/schedule.tsx': $8,
-    './routes/app/calendar/availability.tsx': $9,
-    './routes/app/conditions.tsx': $10,
-    './routes/app/drugs.json.tsx': $11,
-    './routes/app/drugs.tsx': $12,
-    './routes/app/employees.tsx': $13,
-    './routes/app/facilities.tsx': $14,
-    './routes/app/facilities/[facilityId]/_middleware.ts': $15,
-    './routes/app/facilities/[facilityId]/employees.tsx': $16,
-    './routes/app/facilities/[facilityId]/employees/[id].tsx': $17,
-    './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx': $18,
+      $app_calendar_appointments_appointmentId_media_mediaId_,
+    './routes/app/calendar/appointments/[id].tsx':
+      $app_calendar_appointments_id_,
+    './routes/app/calendar/appointments/schedule.tsx':
+      $app_calendar_appointments_schedule,
+    './routes/app/calendar/availability.tsx': $app_calendar_availability,
+    './routes/app/conditions.tsx': $app_conditions,
+    './routes/app/drugs.json.tsx': $app_drugs_json,
+    './routes/app/drugs.tsx': $app_drugs,
+    './routes/app/employees.tsx': $app_employees,
+    './routes/app/facilities.tsx': $app_facilities,
+    './routes/app/facilities/[facilityId]/_middleware.ts':
+      $app_facilities_facilityId_middleware,
+    './routes/app/facilities/[facilityId]/employees.tsx':
+      $app_facilities_facilityId_employees,
+    './routes/app/facilities/[facilityId]/employees/[id].tsx':
+      $app_facilities_facilityId_employees_id_,
+    './routes/app/facilities/[facilityId]/employees/[id]/approve.tsx':
+      $app_facilities_facilityId_employees_id_approve,
     './routes/app/facilities/[facilityId]/employees/[id]/media/[mediaId].tsx':
-      $19,
-    './routes/app/facilities/[facilityId]/employees/invite.tsx': $20,
-    './routes/app/facilities/[facilityId]/register.tsx': $21,
-    './routes/app/health_workers.tsx': $22,
-    './routes/app/insufficient_permissions.tsx': $23,
-    './routes/app/patients.tsx': $24,
-    './routes/app/patients/[id].tsx': $25,
-    './routes/app/patients/[id]/avatar.tsx': $26,
-    './routes/app/patients/add.tsx': $27,
-    './routes/app/pending_approval.tsx': $28,
-    './routes/app/unauthorized.tsx': $29,
-    './routes/apply.tsx': $30,
-    './routes/chatbot/incoming-whatsapp.ts': $31,
-    './routes/index.tsx': $32,
-    './routes/interest.tsx': $33,
-    './routes/logged-in.tsx': $34,
-    './routes/login.tsx': $35,
-    './routes/logout.tsx': $36,
-    './routes/partner.tsx': $37,
-    './routes/schedule-demo.tsx': $38,
-    './routes/volunteer.tsx': $39,
-    './routes/volunteer/[role].tsx': $40,
-    './routes/waitlist.tsx': $41,
+      $app_facilities_facilityId_employees_id_media_mediaId_,
+    './routes/app/facilities/[facilityId]/employees/invite.tsx':
+      $app_facilities_facilityId_employees_invite,
+    './routes/app/facilities/[facilityId]/register.tsx':
+      $app_facilities_facilityId_register,
+    './routes/app/health_workers.tsx': $app_health_workers,
+    './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
+    './routes/app/patients.tsx': $app_patients,
+    './routes/app/patients/[id].tsx': $app_patients_id_,
+    './routes/app/patients/[id]/avatar.tsx': $app_patients_id_avatar,
+    './routes/app/patients/add.tsx': $app_patients_add,
+    './routes/app/pending_approval.tsx': $app_pending_approval,
+    './routes/app/unauthorized.tsx': $app_unauthorized,
+    './routes/apply.tsx': $apply,
+    './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
+    './routes/index.tsx': $index,
+    './routes/interest.tsx': $interest,
+    './routes/logged-in.tsx': $logged_in,
+    './routes/login.tsx': $login,
+    './routes/logout.tsx': $logout,
+    './routes/partner.tsx': $partner,
+    './routes/schedule-demo.tsx': $schedule_demo,
+    './routes/volunteer.tsx': $volunteer,
+    './routes/volunteer/[role].tsx': $volunteer_role_,
+    './routes/waitlist.tsx': $waitlist,
   },
   islands: {
-    './islands/AddRemove.tsx': $$0,
-    './islands/ConditionSearch.tsx': $$1,
-    './islands/ErrorMessage.tsx': $$2,
-    './islands/FacilitySearch.tsx': $$3,
-    './islands/JobPost.tsx': $$4,
-    './islands/Menu.tsx': $$5,
-    './islands/NationalIdInput.tsx': $$6,
-    './islands/PersonSearch.tsx': $$7,
-    './islands/ReligionSelect.tsx': $$8,
-    './islands/SelectWithOther.tsx': $$9,
-    './islands/SuccessMessage.tsx': $$10,
-    './islands/address-inputs.tsx': $$11,
-    './islands/allergy/Input.tsx': $$12,
-    './islands/allergy/Search.tsx': $$13,
-    './islands/availability-form.tsx': $$14,
-    './islands/file-preview-input.tsx': $$15,
-    './islands/invites-form.tsx': $$16,
-    './islands/landing-page/MHIDotsLogo.tsx': $$17,
-    './islands/landing-page/NavBar.tsx': $$18,
-    './islands/medication/Input.tsx': $$19,
-    './islands/medication/Search.tsx': $$20,
-    './islands/nurse-registration-form.tsx': $$21,
-    './islands/patient-cards.tsx': $$22,
-    './islands/pre-existing-conditions/Comorbidity.tsx': $$23,
-    './islands/pre-existing-conditions/Condition.tsx': $$24,
-    './islands/pre-existing-conditions/Form.tsx': $$25,
-    './islands/pre-existing-conditions/Medication.tsx': $$26,
-    './islands/schedule-form.tsx': $$27,
+    './islands/AddRemove.tsx': $AddRemove,
+    './islands/ConditionSearch.tsx': $ConditionSearch,
+    './islands/ErrorMessage.tsx': $ErrorMessage,
+    './islands/FacilitySearch.tsx': $FacilitySearch,
+    './islands/JobPost.tsx': $JobPost,
+    './islands/Menu.tsx': $Menu,
+    './islands/NationalIdInput.tsx': $NationalIdInput,
+    './islands/PersonSearch.tsx': $PersonSearch,
+    './islands/ReligionSelect.tsx': $ReligionSelect,
+    './islands/SelectWithOther.tsx': $SelectWithOther,
+    './islands/SuccessMessage.tsx': $SuccessMessage,
+    './islands/address-inputs.tsx': $address_inputs,
+    './islands/allergy/Input.tsx': $allergy_Input,
+    './islands/allergy/Search.tsx': $allergy_Search,
+    './islands/availability-form.tsx': $availability_form,
+    './islands/file-preview-input.tsx': $file_preview_input,
+    './islands/invites-form.tsx': $invites_form,
+    './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
+    './islands/landing-page/NavBar.tsx': $landing_page_NavBar,
+    './islands/medication/Input.tsx': $medication_Input,
+    './islands/medication/Search.tsx': $medication_Search,
+    './islands/nurse-registration-form.tsx': $nurse_registration_form,
+    './islands/patient-cards.tsx': $patient_cards,
+    './islands/pre-existing-conditions/Comorbidity.tsx':
+      $pre_existing_conditions_Comorbidity,
+    './islands/pre-existing-conditions/Condition.tsx':
+      $pre_existing_conditions_Condition,
+    './islands/pre-existing-conditions/Form.tsx': $pre_existing_conditions_Form,
+    './islands/pre-existing-conditions/Medication.tsx':
+      $pre_existing_conditions_Medication,
+    './islands/schedule-form.tsx': $schedule_form,
   },
   baseUrl: import.meta.url,
-}
+} satisfies Manifest
 
 export default manifest

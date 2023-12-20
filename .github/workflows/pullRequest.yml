@@ -38,25 +38,28 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.37.1
+          deno-version: v1.39.0
       
-      - name: Run lint
-        run: deno lint
+      - name: Run check
+        run: deno task check
 
-      - name: Run fmt --check
-        run: deno fmt --check
-  
-      - name: Test setup
+      - name: Write .env file
         run: |
           echo "DATABASE_URL=postgres://testuser:testpw@localhost:5432/vha_test" > .env
           echo "SELF_URL=https://localhost:8000" >> .env
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
+
+      # - name: Ensure build is the same
+      #   run: |
+      #     mv _fresh _fresh_checked_in
+      #     deno task build
+      #     diff -bur _fresh _fresh_checked_in
 
       - name: Migrate database
         run: deno task db:migrate:latest
@@ -69,12 +72,12 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.37.1
+          deno-version: v1.39.0
 
       - name: Compile chatbot
         run: deno task compile:chatbot

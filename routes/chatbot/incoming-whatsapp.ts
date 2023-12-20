@@ -104,18 +104,18 @@ export const handler: Handlers = {
     }
     const [entry, ...otherEntries] = incomingMessage.entry
     if (otherEntries.length) {
-      console.error('More than one entry in the message, that\'s weird')
+      console.error("More than one entry in the message, that's weird")
     }
 
     const [change, ...otherChanges] = entry.changes
     if (otherChanges.length) {
-      console.error('More than one change in the entry, that\'s weird')
+      console.error("More than one change in the entry, that's weird")
     }
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses
       if (otherStatuses.length) {
-        console.error('More than one status in the change, that\'s weird')
+        console.error("More than one status in the change, that's weird")
       }
       await conversations.updateReadStatus(db, {
         whatsapp_id: status.id,
@@ -126,7 +126,7 @@ export const handler: Handlers = {
     if (change.value.messages) {
       const [message, ...otherMessages] = change.value.messages
       if (otherMessages.length) {
-        console.error('More than one message in the change, that\'s weird')
+        console.error("More than one message in the change, that's weird")
       }
       const timestamp = 1000 * parseInt(message.timestamp, 10)
       const now = Date.now()
