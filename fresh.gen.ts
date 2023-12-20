@@ -44,14 +44,14 @@ import * as $38 from './routes/schedule-demo.tsx'
 import * as $39 from './routes/volunteer.tsx'
 import * as $40 from './routes/volunteer/[role].tsx'
 import * as $41 from './routes/waitlist.tsx'
-import * as $$0 from './islands/ConditionSearch.tsx'
-import * as $$1 from './islands/ErrorMessage.tsx'
-import * as $$2 from './islands/FacilitySearch.tsx'
-import * as $$3 from './islands/JobPost.tsx'
-import * as $$4 from './islands/Menu.tsx'
-import * as $$5 from './islands/NationalIdInput.tsx'
-import * as $$6 from './islands/PersonSearch.tsx'
-import * as $$7 from './islands/PreExistingConditionsForm.tsx'
+import * as $$0 from './islands/AddRemove.tsx'
+import * as $$1 from './islands/ConditionSearch.tsx'
+import * as $$2 from './islands/ErrorMessage.tsx'
+import * as $$3 from './islands/FacilitySearch.tsx'
+import * as $$4 from './islands/JobPost.tsx'
+import * as $$5 from './islands/Menu.tsx'
+import * as $$6 from './islands/NationalIdInput.tsx'
+import * as $$7 from './islands/PersonSearch.tsx'
 import * as $$8 from './islands/ReligionSelect.tsx'
 import * as $$9 from './islands/SelectWithOther.tsx'
 import * as $$10 from './islands/SuccessMessage.tsx'
@@ -67,7 +67,11 @@ import * as $$19 from './islands/medication/Input.tsx'
 import * as $$20 from './islands/medication/Search.tsx'
 import * as $$21 from './islands/nurse-registration-form.tsx'
 import * as $$22 from './islands/patient-cards.tsx'
-import * as $$23 from './islands/schedule-form.tsx'
+import * as $$23 from './islands/pre-existing-conditions/Comorbidity.tsx'
+import * as $$24 from './islands/pre-existing-conditions/Condition.tsx'
+import * as $$25 from './islands/pre-existing-conditions/Form.tsx'
+import * as $$26 from './islands/pre-existing-conditions/Medication.tsx'
+import * as $$27 from './islands/schedule-form.tsx'
 
 const manifest = {
   routes: {
@@ -117,14 +121,14 @@ const manifest = {
     './routes/waitlist.tsx': $41,
   },
   islands: {
-    './islands/ConditionSearch.tsx': $$0,
-    './islands/ErrorMessage.tsx': $$1,
-    './islands/FacilitySearch.tsx': $$2,
-    './islands/JobPost.tsx': $$3,
-    './islands/Menu.tsx': $$4,
-    './islands/NationalIdInput.tsx': $$5,
-    './islands/PersonSearch.tsx': $$6,
-    './islands/PreExistingConditionsForm.tsx': $$7,
+    './islands/AddRemove.tsx': $$0,
+    './islands/ConditionSearch.tsx': $$1,
+    './islands/ErrorMessage.tsx': $$2,
+    './islands/FacilitySearch.tsx': $$3,
+    './islands/JobPost.tsx': $$4,
+    './islands/Menu.tsx': $$5,
+    './islands/NationalIdInput.tsx': $$6,
+    './islands/PersonSearch.tsx': $$7,
     './islands/ReligionSelect.tsx': $$8,
     './islands/SelectWithOther.tsx': $$9,
     './islands/SuccessMessage.tsx': $$10,
@@ -140,7 +144,11 @@ const manifest = {
     './islands/medication/Search.tsx': $$20,
     './islands/nurse-registration-form.tsx': $$21,
     './islands/patient-cards.tsx': $$22,
-    './islands/schedule-form.tsx': $$23,
+    './islands/pre-existing-conditions/Comorbidity.tsx': $$23,
+    './islands/pre-existing-conditions/Condition.tsx': $$24,
+    './islands/pre-existing-conditions/Form.tsx': $$25,
+    './islands/pre-existing-conditions/Medication.tsx': $$26,
+    './islands/schedule-form.tsx': $$27,
   },
   baseUrl: import.meta.url,
 }

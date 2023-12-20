@@ -67,35 +67,33 @@ export default function MedicationSearch({
     ((drugSearchResults.length > 0) || search)
 
   return (
-    <>
-      <SearchInput
-        name={`${name}.generic_name`}
-        label='Drug'
-        value={selectedDrug?.drug_generic_name}
-        required
-        onInput={(event) => {
-          assert(event.target)
-          assert('value' in event.target)
-          assert(typeof event.target.value === 'string')
-          clearSelected()
-          setSearch.delay(event.target.value)
-        }}
-      >
-        {showSearchResults && (
-          <SearchResults>
-            {drugSearchResults.map((drug) => (
-              <DrugSearchResult
-                drug={drug}
-                isSelected={selectedDrug?.drug_id === drug.drug_id}
-                onSelect={() => {
-                  setSelectedDrug(drug)
-                  setSearchImmediate(drug.drug_generic_name)
-                }}
-              />
-            ))}
-          </SearchResults>
-        )}
-      </SearchInput>
+    <SearchInput
+      name={`${name}.generic_name`}
+      label='Drug'
+      value={selectedDrug?.drug_generic_name}
+      required
+      onInput={(event) => {
+        assert(event.target)
+        assert('value' in event.target)
+        assert(typeof event.target.value === 'string')
+        clearSelected()
+        setSearch.delay(event.target.value)
+      }}
+    >
+      {showSearchResults && (
+        <SearchResults>
+          {drugSearchResults.map((drug) => (
+            <DrugSearchResult
+              drug={drug}
+              isSelected={selectedDrug?.drug_id === drug.drug_id}
+              onSelect={() => {
+                setSelectedDrug(drug)
+                setSearchImmediate(drug.drug_generic_name)
+              }}
+            />
+          ))}
+        </SearchResults>
+      )}
       {selectedDrug && (
         <input
           type='hidden'
@@ -103,6 +101,6 @@ export default function MedicationSearch({
           value={selectedDrug.drug_id}
         />
       )}
-    </>
+    </SearchInput>
   )
 }

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import { SearchInput } from '../../components/library/form/Inputs.tsx'
-import FormRow from '../../components/library/form/Row.tsx'
 import { assert } from 'std/assert/assert.ts'
 import SearchResults, {
   AllergySearchResult,
@@ -57,33 +56,30 @@ export default function AllergySearch({
   })
 
   return (
-    <>
-      <FormRow>
-        <SearchInput
-          name='allergy_search'
-          label='Allergies'
-          value={search}
-          onInput={(event) => {
-            assert(event.target)
-            assert('value' in event.target)
-            assert(typeof event.target.value === 'string')
-            setSearch.delay(event.target.value)
-          }}
-        />
-        {isFocused && search && searchResults.length > 0 && (
-          <SearchResults>
-            {searchResults.map((allergy) => (
-              <AllergySearchResult
-                allergy={allergy.name}
-                onSelect={() => {
-                  addAllergy({ allergy_id: allergy.id, name: allergy.name })
-                  setSearchImmediate('')
-                }}
-              />
-            ))}
-          </SearchResults>
-        )}
-      </FormRow>
-    </>
+    <SearchInput
+      name='allergy_search'
+      label='Allergies'
+      value={search}
+      onInput={(event) => {
+        assert(event.target)
+        assert('value' in event.target)
+        assert(typeof event.target.value === 'string')
+        setSearch.delay(event.target.value)
+      }}
+    >
+      {isFocused && search && searchResults.length > 0 && (
+        <SearchResults>
+          {searchResults.map((allergy) => (
+            <AllergySearchResult
+              allergy={allergy.name}
+              onSelect={() => {
+                addAllergy({ allergy_id: allergy.id, name: allergy.name })
+                setSearchImmediate('')
+              }}
+            />
+          ))}
+        </SearchResults>
+      )}
+    </SearchInput>
   )
 }

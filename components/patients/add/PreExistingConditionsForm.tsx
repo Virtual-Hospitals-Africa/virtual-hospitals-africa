@@ -5,7 +5,7 @@ import {
   PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import PreExistingConditionsForm from '../../../islands/PreExistingConditionsForm.tsx'
+import PreExistingConditionsForm from '../../../islands/pre-existing-conditions/Form.tsx'
 
 export default function PatientPreExistingConditions(
   { patient = {}, preExistingConditions, allergies }: {
