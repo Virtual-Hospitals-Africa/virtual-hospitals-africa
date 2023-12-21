@@ -1,8 +1,9 @@
 import { useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
-import { Select, TextInput } from '../components/library/form/Inputs.tsx'
+import { Select } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { CheckboxInput } from '../components/library/form/Inputs.tsx'
 
 type School = {
   grade: string
@@ -16,21 +17,7 @@ type stopSchool = {
 }
 export default function Occupation0_18() {
   const [school, setSchool] = useState<null | School>(null)
-  const [stopSchool, setStopSchool] = useState<null | stopSchool>(null)
-  //const [Appropriate, setAppropriate] = useState<boolean>(true)
 
-  //const setSchoolHandler = () => {
-  //  setSchool((prevSchool) => !prevSchool)
-  //}
-  //const setSchoolHandler =
-  //
-  //const setAppropriateHandler = () => {
-  //  setAppropriate((prevAppropriate) => !prevAppropriate)
-  //}
-  //
-  //const setGradesDroppingHandler = () => {
-  //  setGradesDropping((prevGrade) => !prevGrade)
-  //}
   const class_inappropriate_reason = [
     'Change of town',
     'Repeated a class',
@@ -80,12 +67,14 @@ export default function Occupation0_18() {
         </div>
 
         <div style={{ marginleft: 'auto' }}>
-          <input
-            id='in_school'
-            type='checkbox'
-            value=''
-            class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-            onClick={(event) => {
+          <CheckboxInput
+            name='in_school'
+            label=''
+            required={true}
+            disabled={false}
+            readonly={false}
+            className='in_school_classname'
+            onInput={(event) => {
               assert(event.target instanceof HTMLInputElement)
               const nextSchool: null | School = event.target.checked
                 ? {
@@ -98,8 +87,7 @@ export default function Occupation0_18() {
                 : null
               setSchool(nextSchool)
             }}
-          >
-          </input>
+          />
         </div>
       </div>
 
@@ -109,12 +97,15 @@ export default function Occupation0_18() {
             <text>Is class appopriate for their age?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
-            <input
-              id='class_appropriate'
-              type='checkbox'
+            <CheckboxInput
+              name='class_appropriate'
+              label=''
+              required={true}
               checked={!school?.inappropriate_reason}
-              class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              onClick={(event) => {
+              disabled={false}
+              readonly={false}
+              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+              onInput={(event) => {
                 assert(event.target instanceof HTMLInputElement)
                 setSchool({
                   ...school,
@@ -123,39 +114,10 @@ export default function Occupation0_18() {
                     : class_inappropriate_reason[0],
                 })
               }}
-            >
-            </input>
+            />
           </div>
         </div>
       )}
-      {
-        /* {!school && (
-        <div class='flex right'>
-          <div class='flex-1'>
-            <text>Did the patient stop their education?</text>
-          </div>
-          <div style={{ marginleft: 'auto' }}>
-            <input
-              id='class_appropriate'
-              type='checkbox'
-              //checked={!school?.stopped_education_reason}
-              class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              onClick={(event) => {
-                assert(event.target instanceof HTMLInputElement)
-                const nextstopSchool: null | stopSchool = event.target.checked
-                  ? {
-                    ...stopSchool,
-                    stopped_education_reason: event.target.checked,
-                  }
-                  : null
-                setStopSchool(nextstopSchool)
-              }}
-            >
-            </input>
-          </div>
-        </div>
-      )} */
-      }
 
       {school && (
         <div class='flex items-center'>
@@ -163,13 +125,15 @@ export default function Occupation0_18() {
             <text>Are the patient's grades dropping?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
-            <input
-              id='grades_dropping'
-              type='checkbox'
-              value=''
-              class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              //onClick={setGradesDroppingHandler}
-              onClick={(event) => {
+            <CheckboxInput
+              name='grades_dropping'
+              label=''
+              required={true}
+              checked={!!school?.grades_dropping_reason}
+              disabled={false}
+              readonly={false}
+              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+              onInput={(event) => {
                 assert(event.target instanceof HTMLInputElement)
                 setSchool({
                   ...school,
@@ -178,8 +142,7 @@ export default function Occupation0_18() {
                     : null,
                 })
               }}
-            >
-            </input>
+            />
           </div>
         </div>
       )}
@@ -189,13 +152,15 @@ export default function Occupation0_18() {
             <text>Is the patient happy at school?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
-            <input
-              id='patient_happy_at_school'
-              type='checkbox'
-              value=''
-              class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-            >
-            </input>
+            <CheckboxInput
+              name='school.happy'
+              label=''
+              required={false}
+              checked={true}
+              disabled={false}
+              readonly={false}
+              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+            />
           </div>
         </div>
       )}
@@ -204,22 +169,24 @@ export default function Occupation0_18() {
           <text>Does the patient play any sports?</text>
         </div>
         <div style={{ marginleft: 'auto' }}>
-          <input
-            id='play_sports'
-            type='checkbox'
-            value=''
-            class='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-          >
-          </input>
+          <CheckboxInput
+            name='play_sports'
+            label=''
+            required={false}
+            checked={false}
+            disabled={false}
+            readonly={false}
+            className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+          />
         </div>
       </div>
 
-      <div style={{ height: '20px' }}></div>
-      <section>
+      <section class='pt-6'>
         <FormRow>
           <Select
             label='Which class is the patient doing?'
-            name='patient_class'
+            name='school.grade_level'
+            selectClassName='w-full'
           >
             {grades.map((grade) => (
               <option value={grade}>
@@ -230,7 +197,7 @@ export default function Occupation0_18() {
           {school?.inappropriate_reason && (
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
-              name='class_inappropriate_reason'
+              name='school.grade_inappropriate_reason'
             >
               {class_inappropriate_reason.map((reason) => (
                 <option
@@ -243,6 +210,7 @@ export default function Occupation0_18() {
             </SelectWithOther>
           )}
         </FormRow>
+
         <FormRow>
           <Select
             label='What grade was the patient in last school term?'
@@ -257,7 +225,7 @@ export default function Occupation0_18() {
           {school?.grades_dropping_reason && (
             <SelectWithOther
               label='If the grades are dropping, why?'
-              name='grades_dropping_reason'
+              name='school.grades_dropping_reason'
             >
               {gradeDropReasons.map((reason) => (
                 <option value={reason}>
@@ -268,18 +236,16 @@ export default function Occupation0_18() {
           )}
         </FormRow>
         <FormRow>
-          {stopSchool?.stopped_education_reason && (
-            <SelectWithOther
-              label='If the patient stopped their education, why?'
-              name='stopped_education_reason'
-            >
-              {stopEducationReasons.map((reason) => (
-                <option value={reason}>
-                  {reason}
-                </option>
-              ))}
-            </SelectWithOther>
-          )}
+          <SelectWithOther
+            label='If the patient stopped their education, why?'
+            name='school.stopped_reason'
+          >
+            {stopEducationReasons.map((reason) => (
+              <option value={reason}>
+                {reason}
+              </option>
+            ))}
+          </SelectWithOther>
         </FormRow>
       </section>
     </>

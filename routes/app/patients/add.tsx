@@ -89,9 +89,8 @@ type ConditionsFormValues = {
 type FamilyFormValues = Record<string, unknown>
 type HistoryFormValues = Record<string, unknown>
 type OccupationFormValues = {
-  school: JSON
+  school?: Maybe<Record<string, unknown>>
 }
-
 type LifestyleFormValues = Record<string, unknown>
 
 function isPersonal(
