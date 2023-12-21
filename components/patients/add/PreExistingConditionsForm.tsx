@@ -18,7 +18,7 @@ export default function PatientPreExistingConditions(
     <>
       <section>
         <SectionHeader className='my-5 text-[20px]'>Allergies</SectionHeader>
-        <AllergyInput allergies={allergies} />
+        {/* <AllergyInput allergies={allergies} /> */}
       </section>
       <section>
         <SectionHeader className='my-5 text-[20px]'>

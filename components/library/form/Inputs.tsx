@@ -229,32 +229,30 @@ export const Select = forwardRef(
       disabled,
     }: SelectProps,
     ref: Ref<HTMLSelectElement>,
-  ) => {
-    return (
-      <LabeledInput
-        name={name}
-        label={label}
+  ) => (
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      disabled={disabled}
+      className={className}
+    >
+      <select
+        {...(name && { name })}
+        className={cls(
+          'block w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
+          selectClassName,
+          disabled && 'text-gray-600',
+        )}
         required={required}
+        onChange={onChange}
         disabled={disabled}
-        className={className}
+        ref={ref}
       >
-        <select
-          {...(name && { name })}
-          className={cls(
-            'block w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
-            selectClassName,
-            disabled && 'text-gray-600',
-          )}
-          required={required}
-          onChange={onChange}
-          disabled={disabled}
-          ref={ref}
-        >
-          {children}
-        </select>
-      </LabeledInput>
-    )
-  },
+        {children}
+      </select>
+    </LabeledInput>
+  ),
 )
 
 export function DateInput(
@@ -386,7 +384,7 @@ export function ImageInput(
   )
 }
 
-export function SearchInput(
+export const SearchInput = forwardRef((
   {
     name = 'search',
     label,
@@ -402,40 +400,38 @@ export function SearchInput(
     children,
     ref,
   }: SearchInputProps,
-) {
-  return (
-    <LabeledInput
-      name={name}
-      label={label}
-      required={required}
-      className={cls('w-full', className)}
-    >
-      <div className='relative flex items-center'>
-        <div className='absolute inset-y-0 left-0 pl-1.5 grid place-items-center'>
-          <MagnifyingGlassIcon />
-        </div>
-        <input
-          ref={ref}
-          type='search'
-          {...(name && { name })}
-          className={cls(
-            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8',
-            inputClassName,
-            disabled && 'bg-gray-300',
-          )}
-          placeholder={placeholder}
-          required={required}
-          disabled={disabled}
-          value={value}
-          onInput={onInput}
-          onFocus={(e) => onFocus && onFocus(e)}
-          onBlur={onBlur}
-        />
+) => (
+  <LabeledInput
+    name={name}
+    label={label}
+    required={required}
+    className={cls('w-full', className)}
+  >
+    <div className='relative flex items-center'>
+      <div className='absolute inset-y-0 left-0 pl-1.5 grid place-items-center'>
+        <MagnifyingGlassIcon />
       </div>
+      <input
+        ref={ref}
+        type='search'
+        {...(name && { name })}
+        className={cls(
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 pl-8 peer',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
+        placeholder={placeholder}
+        required={required}
+        disabled={disabled}
+        value={value}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
       {children}
-    </LabeledInput>
-  )
-}
+    </div>
+  </LabeledInput>
+))
 
 export function GenderSelect(
   { value }: { value: Maybe<'male' | 'female' | 'other'> },

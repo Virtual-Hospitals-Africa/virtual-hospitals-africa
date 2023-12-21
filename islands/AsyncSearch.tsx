@@ -1,14 +1,12 @@
 import { useCallback, useEffect, useState } from 'preact/hooks'
-import SearchResults, {
-  ConditionSearchResult,
-} from '../components/library/SearchResults.tsx'
+import SearchResults from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import FormRow from '../components/library/form/Row.tsx'
-import { Condition, Maybe } from '../types.ts'
+import { Maybe } from '../types.ts'
 
-export default function ConditionSearch({
+export default function AsyncSearch<Result>({
   name,
   label,
   required,
@@ -22,8 +20,8 @@ export default function ConditionSearch({
   const [selected, setSelected] = useState<
     { key_id: string; primary_name: string } | null
   >(value || null)
-  const [conditions, setConditions] = useState<
-    Condition[]
+  const [searchResults, setResults] = useState<
+    Result[]
   >([])
   const [search, setSearchImmediate] = useState(value?.primary_name ?? '')
   const [setSearch] = useState({
@@ -31,16 +29,16 @@ export default function ConditionSearch({
   })
 
   useEffect(() => {
-    const onDocumentClick = (event: any) => {
+    const onDocumentClick = useCallback((event: any) => {
       console.log('awklealkwelkewa', event)
-    }
+    }, [])
     self.addEventListener('click', onDocumentClick)
     return () => self.removeEventListener('click', onDocumentClick)
   })
 
   const getConditions = async () => {
     if (!search) {
-      setConditions([])
+      setResults([])
       return
     }
 
@@ -51,7 +49,7 @@ export default function ConditionSearch({
     )
     const data = await response.json()
     // deno-lint-ignore no-explicit-any
-    setConditions(data[3].map(([key_id, primary_name]: any) => ({
+    setResults(data[3].map(([key_id, primary_name]: any) => ({
       key_id: `c_${key_id}`, // We need to prefix the key_id with c_ to avoid these keys being parsed as numbers
       primary_name,
     })))
@@ -62,44 +60,41 @@ export default function ConditionSearch({
   }, [search])
 
   return (
-    <SearchInput
-      name={`${name}.primary_name`}
-      label={label}
-      value={selected?.primary_name}
-      placeholder='Search for conditions'
-      required={required}
-      onFocus={(event) => {
-        console.log('focus', event)
-      }}
-      onBlur={(event) => {
-        console.log('blur', event)
-      }}
-      onInput={(event) => {
-        assert(event.target)
-        assert('value' in event.target)
-        assert(typeof event.target.value === 'string')
-        setSelected(null)
-        setSearch.delay(event.target.value)
-      }}
-    >
-      <SearchResults>
-        {conditions.map((c) => (
-          <ConditionSearchResult
-            condition={c.primary_name}
-            isSelected={selected?.key_id === c?.key_id}
-            onSelect={() => {
-              setSelected({
-                key_id: c.key_id,
-                primary_name: c.primary_name,
-              })
-              setSearchImmediate(c.primary_name)
-            }}
-          />
-        ))}
-      </SearchResults>
+    <FormRow className='w-full'>
+      <SearchInput
+        name={`${name}.primary_name`}
+        label={label}
+        value={selected?.primary_name}
+        placeholder='Search for conditions'
+        required={required}
+        onInput={(event) => {
+          assert(event.target)
+          assert('value' in event.target)
+          assert(typeof event.target.value === 'string')
+          setSelected(null)
+          setSearch.delay(event.target.value)
+        }}
+      >
+        <SearchResults>
+          {searchResults.map((c) => (
+            <ConditionSearchResult
+              condition={c.primary_name}
+              isSelected={selected?.key_id === c?.key_id}
+              onSelect={() => {
+                console.log('received click')
+                setSelected({
+                  key_id: c.key_id,
+                  primary_name: c.primary_name,
+                })
+                setSearchImmediate(c.primary_name)
+              }}
+            />
+          ))}
+        </SearchResults>
+      </SearchInput>
       {selected && (
         <input type='hidden' name={`${name}.key_id`} value={selected.key_id} />
       )}
-    </SearchInput>
+    </FormRow>
   )
 }
