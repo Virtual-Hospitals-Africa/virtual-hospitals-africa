@@ -10,8 +10,8 @@ export function search(
     ids?: Maybe<number[]>
   },
 ): Promise<DrugSearchResult[]> {
-  if (opts.ids) assert(opts.ids.length, 'must provide at least one id')
-  let query = trx
+  if (opts?.ids) assert(opts.ids.length, 'must provide at least one id')
+  let drugsQuery = trx
     .selectFrom('drugs')
     .select((eb_drugs) => [
       'drugs.id as drug_id',
@@ -88,12 +88,19 @@ export function search(
           ),
       ).as('medications'),
     ])
-    .limit(20)
 
-  if (opts.search) {
-    query = query.where('generic_name', 'ilike', `%${opts.search}%`)
-  }
-  if (opts.ids) query = query.where('drugs.id', 'in', opts.ids)
+  if (opts?.ids) drugsQuery = drugsQuery.where('drugs.id', 'in', opts.ids)
 
+  const searchQuery = trx.selectFrom(drugsQuery.as('drugs')).selectAll().where((
+    eb,
+  ) =>
+    eb.or([
+      eb('drugs.drug_generic_name', 'ilike', `%${opts.search}%`),
+      sql`EXISTS (select 1 from json_array_elements_text("drugs"."distinct_trade_names") AS trade_name
+        WHERE trade_name ILIKE ${'%' + opts?.search + '%'})`,
+    ])
+  )
+
+  const query = (opts?.search ? searchQuery : drugsQuery).limit(20)
   return query.execute()
 }
