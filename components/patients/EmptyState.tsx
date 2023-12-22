@@ -1,5 +1,5 @@
 import EmptyState from '../library/EmptyState.tsx'
-import MakeAppointmentIcon from '../library/icons/make-appointment.tsx'
+import AddPatientIcon from '../library/icons/AddPatient.tsx'
 
 export default function PatientsEmptyState() {
   return (
@@ -8,7 +8,7 @@ export default function PatientsEmptyState() {
       explanation='Add a patient'
       buttonText='Add patient'
       href='/app/patients/add'
-      icon={<MakeAppointmentIcon className='mx-auto h-12 w-12 text-gray-400' />}
+      icon={<AddPatientIcon className='mx-auto h-12 w-12 text-gray-400' />}
     />
   )
 }

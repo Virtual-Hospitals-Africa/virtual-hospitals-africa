@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import { padTime } from '../util/pad.ts'
-import { AvailabilityJSON, DayOfWeek, Time, TimeWindow } from '../types.ts'
+import { AvailabilityJSON, Time, TimeWindow } from '../types.ts'
 import PlusIcon from '../components/library/icons/plus.tsx'
 import TrashIcon from '../components/library/icons/trash.tsx'
 import WarningModal from '../components/library/modals/Warning.tsx'
@@ -205,7 +205,7 @@ export default function AvailabilityForm(
       }}
     >
       <div
-        className='px-4 py-6 grid gap-4 px-0 divide-y divide-gray-100'
+        className='py-6 grid gap-4 px-0 divide-y divide-gray-100'
         style={{
           gridTemplateColumns: 'max-content 1fr',
         }}

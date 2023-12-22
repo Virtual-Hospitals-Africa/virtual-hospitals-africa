@@ -14,6 +14,7 @@ import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
+import { HealthWorkerWithGoogleTokens } from '../../types.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -130,22 +131,25 @@ export function describeWithWebServer(
   )
 }
 
-export async function addTestHealthWorker(opts: {
+export async function addTestHealthWorker({ scenario }: {
   scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
 } = { scenario: 'base' }) {
-  const healthWorker = await upsertWithGoogleCredentials(db, testHealthWorker())
-  switch (opts.scenario) {
+  const healthWorker: HealthWorkerWithGoogleTokens & {
+    employee_id?: number
+  } = await upsertWithGoogleCredentials(db, testHealthWorker())
+  switch (scenario) {
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
-      await employee.add(db, [{
-        facility_id: 1,
-        health_worker_id: admin.id,
-        profession: 'admin',
-      }, {
+      const [created_employee] = await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
+      }, {
+        facility_id: 1,
+        health_worker_id: admin.id,
+        profession: 'admin',
       }])
+      healthWorker.employee_id = created_employee.id
       await details.add(
         db,
         await testRegistrationDetails({
@@ -159,27 +163,30 @@ export async function addTestHealthWorker(opts: {
       break
     }
     case 'admin': {
-      await employee.add(db, [{
+      const [created_employee] = await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
         profession: 'admin',
       }])
+      healthWorker.employee_id = created_employee.id
       break
     }
     case 'doctor': {
-      await employee.add(db, [{
+      const [created_employee] = await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
       }])
+      healthWorker.employee_id = created_employee.id
       break
     }
     case 'nurse': {
-      await employee.add(db, [{
+      const [created_employee] = await employee.add(db, [{
         facility_id: 1,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }])
+      healthWorker.employee_id = created_employee.id
       break
     }
   }

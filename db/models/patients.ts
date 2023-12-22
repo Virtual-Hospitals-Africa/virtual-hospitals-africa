@@ -23,6 +23,17 @@ import * as address from './address.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 
+export const href_sql = sql<string>`
+  concat('/app/patients/', patients.id::text)
+`
+
+export const avatar_url_sql = sql<string | null>`
+  CASE WHEN patients.avatar_media_id IS NOT NULL 
+    THEN concat('/app/patients/', patients.id::text, '/avatar') 
+    ELSE NULL 
+  END
+`
+
 const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('patients')
@@ -41,13 +52,8 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.created_at',
       'patients.updated_at',
       'patients.completed_onboarding',
-      sql<string | null>`concat('/app/patients/', patients.id::text)`.as(
-        'href',
-      ),
-      sql<
-        string | null
-      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
-        .as('avatar_url'),
+      href_sql.as('href'),
+      avatar_url_sql.as('avatar_url'),
       'facilities.name as nearest_facility',
       sql<null>`NULL`.as('last_visited'),
     ])
