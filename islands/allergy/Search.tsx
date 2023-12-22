@@ -5,7 +5,7 @@ import SearchResults, {
   AllergySearchResult,
 } from '../../components/library/SearchResults.tsx'
 import debounce from '../../util/debounce.ts'
-import { Allergy, PreExistingAllergy } from '../../types.ts'
+import { Allergy, HasId, PreExistingAllergy } from '../../types.ts'
 
 export default function AllergySearch({
   without_ids,
@@ -15,7 +15,7 @@ export default function AllergySearch({
   addAllergy(allergy: PreExistingAllergy): void
 }) {
   const [search, setSearchImmediate] = useState('')
-  const [searchResults, setSearchResults] = useState<Allergy[]>([])
+  const [searchResults, setSearchResults] = useState<HasId<Allergy>[]>([])
   const [setSearch] = useState({
     delay: debounce(setSearchImmediate, 220),
   })
