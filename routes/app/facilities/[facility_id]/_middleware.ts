@@ -21,7 +21,7 @@ export async function handler(
   >,
 ) {
   const { healthWorker } = ctx.state
-  const facility_id = parseInt(ctx.params.facilityId)
+  const facility_id = parseInt(ctx.params.facility_id)
   assertOr404(facility_id)
 
   assertOr403(

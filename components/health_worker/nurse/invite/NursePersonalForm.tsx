@@ -6,7 +6,7 @@ import {
 } from '../../../library/form/Inputs.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { FormState } from '../../../../routes/app/facilities/[facilityId]/register.tsx'
+import { FormState } from '../../../../routes/app/facilities/[facility_id]/register.tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
 import { FullCountryInfo } from '../../../../types.ts'
 import AddressForm from '../../../../islands/address-inputs.tsx'

@@ -29,7 +29,7 @@ export const handler: LoggedInHealthWorkerHandler<
 > = {
   async GET(_, ctx) {
     // get facility id
-    const facility_id = parseInt(ctx.params.facilityId)
+    const facility_id = parseInt(ctx.params.facility_id)
     assert(!isNaN(facility_id), 'Invalid facility ID')
 
     // get health worker id
