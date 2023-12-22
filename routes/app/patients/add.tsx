@@ -150,11 +150,7 @@ function isOccupation(
   console.log('Patient stuff: ', patient)
   //return true
   return isObjectLike(patient) &&
-    !!patient.patient_class && typeof patient.patient_class == 'string'
-
-  //   !!occupation.id && typeof occupation == 'json'
-  // !!patient.id && typeof patient.id === 'number'
-  //   !!patient.occupation && typeof patient.occupation === 'string'
+    isObjectLike(patient.occupation)
 }
 
 function isLifestyle(
@@ -319,7 +315,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     )
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
-    console.log('form data::::::', formData)
+
     // deno-lint-ignore no-explicit-any
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData

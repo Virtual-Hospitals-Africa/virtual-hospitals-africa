@@ -1450,6 +1450,12 @@ export type PatientAllergies = {
   allergy_id: number
 }
 
+export type PatientOccupation = {
+  patient_id: number
+  school: any
+  job: any
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1489,4 +1495,5 @@ export type DatabaseSchema = {
   patient_guardians: SqlRow<PatientGuardian>
   allergies: SqlRow<Allergy>
   patient_allergies: SqlRow<PatientAllergies>
+  patient_occupations: SqlRow<PatientOccupation>
 }

@@ -68,11 +68,8 @@ export default function Occupation0_18() {
 
         <div style={{ marginleft: 'auto' }}>
           <CheckboxInput
-            name='in_school'
+            name={null}
             label=''
-            required={true}
-            disabled={false}
-            readonly={false}
             className='in_school_classname'
             onInput={(event) => {
               assert(event.target instanceof HTMLInputElement)
@@ -98,7 +95,7 @@ export default function Occupation0_18() {
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='class_appropriate'
+              name={null}
               label=''
               required={true}
               checked={!school?.inappropriate_reason}
@@ -126,7 +123,7 @@ export default function Occupation0_18() {
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='grades_dropping'
+              name={null}
               label=''
               required={true}
               checked={!!school?.grades_dropping_reason}
@@ -153,7 +150,7 @@ export default function Occupation0_18() {
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='school.happy'
+              name='occupation.school.happy'
               label=''
               required={false}
               checked={true}
@@ -170,7 +167,7 @@ export default function Occupation0_18() {
         </div>
         <div style={{ marginleft: 'auto' }}>
           <CheckboxInput
-            name='play_sports'
+            name='occupation.school.play_sports'
             label=''
             required={false}
             checked={false}
@@ -185,7 +182,7 @@ export default function Occupation0_18() {
         <FormRow>
           <Select
             label='Which class is the patient doing?'
-            name='school.grade_level'
+            name='occupation.school.grade_level'
             selectClassName='w-full'
           >
             {grades.map((grade) => (
@@ -197,7 +194,7 @@ export default function Occupation0_18() {
           {school?.inappropriate_reason && (
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
-              name='school.grade_inappropriate_reason'
+              name='occupation.school.grade_inappropriate_reason'
             >
               {class_inappropriate_reason.map((reason) => (
                 <option
@@ -214,7 +211,7 @@ export default function Occupation0_18() {
         <FormRow>
           <Select
             label='What grade was the patient in last school term?'
-            name='grade'
+            name='occupation.school.grade'
           >
             {grades.map((grade) => (
               <option value={grade}>
@@ -225,7 +222,7 @@ export default function Occupation0_18() {
           {school?.grades_dropping_reason && (
             <SelectWithOther
               label='If the grades are dropping, why?'
-              name='school.grades_dropping_reason'
+              name='occupation.school.grades_dropping_reason'
             >
               {gradeDropReasons.map((reason) => (
                 <option value={reason}>
@@ -238,7 +235,7 @@ export default function Occupation0_18() {
         <FormRow>
           <SelectWithOther
             label='If the patient stopped their education, why?'
-            name='school.stopped_reason'
+            name='occupation.school.stopped_reason'
           >
             {stopEducationReasons.map((reason) => (
               <option value={reason}>

@@ -8,18 +8,15 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('patient_id', 'integer', (col) =>
       col
         .notNull()
-        .references('patients.id'))
+        .references('patients.id')
+        .onDelete('cascade'))
     .addColumn('school', 'json') //All Information Collect
     .addColumn('job', 'json')
     .execute()
   await addUpdatedAtTrigger(db, 'patient_occupations')
 
-  // await db.schema
-  // .createTable('patient_occupations')
-  // .addColumn('id', 'serial', (col) => col.primaryKey())
-  // .addColumn('school', 'json') //All Information Collect
-  // .execute()
-  //  await addUpdatedAtTrigger(db, 'patient_occupations')
+  //change migration date
+  //Created at and updated at columns
 }
 
 export async function down(db: Kysely<unknown>) {
