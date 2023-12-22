@@ -7,5 +7,6 @@ export default function WaitingRoomAdd(
 ) {
   console.log('ctx', ctx)
   console.log('req', req)
+
   return 'TODO: WaitingRoomAdd'
 }
