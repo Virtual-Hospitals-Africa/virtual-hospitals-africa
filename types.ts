@@ -1440,12 +1440,10 @@ export type PatientGuardian = {
 }
 
 export type Allergy = {
-  id: number
   name: string
 }
 
 export type PatientAllergies = {
-  id: number
   patient_id: number
   allergy_id: number
 }
@@ -1454,6 +1452,59 @@ export type PatientOccupation = {
   patient_id: number
   school: any
   job: any
+}
+
+export type PatientEncounterReason =
+  | 'seeking_treatment'
+  | 'appointment'
+  | 'follow_up'
+  | 'referral'
+  | 'checkup'
+  | 'emergency'
+  | 'other'
+
+export type PatientEncounter = {
+  patient_id: number
+  reason: PatientEncounterReason
+  closed_at: null | Date
+  appointment_id: null | number
+  notes: null | string
+}
+
+export type PatientEncounterProvider = {
+  patient_encounter_id: number
+  provider_id: number
+  seen_at: null | Date
+}
+
+export type WaitingRoom = {
+  facility_id: number
+  patient_encounter_id: number
+}
+
+export type RenderedWaitingRoom = {
+  patient: {
+    id: number
+    name: string
+    href: string
+    avatar_url: string | null
+  }
+  reason: PatientEncounterReason
+  appointment: null | {
+    id: number
+    start: Date
+    health_workers: {
+      id: number
+      name: string
+    }[]
+  }
+  providers: {
+    health_worker_id: number
+    employee_id: number
+    name: string
+    profession: string
+    seen_at: Date | null
+  }[]
 }
 
 export type DatabaseSchema = {
@@ -1496,4 +1547,7 @@ export type DatabaseSchema = {
   allergies: SqlRow<Allergy>
   patient_allergies: SqlRow<PatientAllergies>
   patient_occupations: SqlRow<PatientOccupation>
+  patient_encounters: SqlRow<PatientEncounter>
+  patient_encounter_providers: SqlRow<PatientEncounterProvider>
+  waiting_room: SqlRow<WaitingRoom>
 }

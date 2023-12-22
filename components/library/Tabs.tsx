@@ -1,5 +1,6 @@
 import Badge from './Badge.tsx'
 import cls from '../../util/cls.ts'
+import words from '../../util/words.ts'
 
 export type TabsProps<Tab extends string> = {
   route: string
@@ -7,6 +8,8 @@ export type TabsProps<Tab extends string> = {
   activeTab: Tab
   counts: Partial<Record<Tab, number>>
 }
+
+const display = (tab: string) => words(tab).join(' ')
 
 function Tab(
   { tab, href, active, count }: {
@@ -28,7 +31,7 @@ function Tab(
       )}
       aria-current={active ? 'page' : undefined}
     >
-      {tab}
+      {display(tab)}
       {count != null && <Badge content={count} color='gray' />}
     </a>
   )
@@ -50,7 +53,7 @@ export function Tabs<Tab extends string>(
             className='block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
             defaultValue={activeTab}
           >
-            {tabs.map((tab) => <option key={tab}>{tab}</option>)}
+            {tabs.map((tab) => <option key={tab}>{display(tab)}</option>)}
           </select>
         </div>
         <div className='hidden sm:block'>

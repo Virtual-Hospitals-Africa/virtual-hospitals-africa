@@ -1,4 +1,3 @@
-import { Head } from '$fresh/runtime.ts'
 import { ComponentChildren } from 'preact'
 import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
@@ -13,7 +12,6 @@ export type LayoutProps =
     title: string
     route: string
     url: URL
-    head?: ComponentChildren
     children: ComponentChildren
   }
   & ({
@@ -77,26 +75,19 @@ export default function Layout(props: LayoutProps) {
   assert(!success || !error, 'Cannot have both success and error')
 
   return (
-    <html className='scroll-smooth bg-white antialiased' lang='en'>
-      <Head>
-        <title>{props.title}</title>
-        {props.head}
-        <meta name='viewport' content='width=device-width, initial-scale=1.0' />
-      </Head>
-      <body className='min-h-screen flex flex-col relative justify-between'>
-        <SuccessMessage
-          message={success}
-          className='fixed z-50 top-0 left-0 right-0 m-12'
-        />
-        <ErrorMessage
-          message={error}
-          className='fixed z-50 top-0 left-0 right-0 m-12'
-        />
-        {props.variant === 'landing-page' && props.children}
-        {(props.variant === 'standard' ||
-          props.variant === 'form') && <AppLayoutContents {...props} />}
-        {props.variant === 'just-logo' && <JustLogoLayoutContents {...props} />}
-      </body>
-    </html>
+    <>
+      <SuccessMessage
+        message={success}
+        className='fixed z-50 top-0 left-0 right-0 m-12'
+      />
+      <ErrorMessage
+        message={error}
+        className='fixed z-50 top-0 left-0 right-0 m-12'
+      />
+      {props.variant === 'landing-page' && props.children}
+      {(props.variant === 'standard' ||
+        props.variant === 'form') && <AppLayoutContents {...props} />}
+      {props.variant === 'just-logo' && <JustLogoLayoutContents {...props} />}
+    </>
   )
 }

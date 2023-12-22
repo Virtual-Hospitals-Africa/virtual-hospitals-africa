@@ -30,33 +30,43 @@
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
     "switch:prod": "cp .env.prod .env",
     "switch:local": "cp .env.local .env",
-    "test": "deno task build && DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unsafely-ignore-certificate-errors",
-    "test:chatbot": "deno task test test/chatbot/patient/*.test.ts"
+    "test": "DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unsafely-ignore-certificate-errors",
+    "test:chatbot": "deno task test test/chatbot/patient/*.test.ts",
+    "preview": "deno run -A main.ts",
+    "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
+    "manifest": "deno task cli manifest $(pwd)"
   },
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
-  },
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
   "fmt": {
     "indentWidth": 2,
     "semiColons": false,
     "singleQuote": true,
-    "proseWrap": "preserve",
-    "exclude": [
-      "_fresh"
-    ]
+    "proseWrap": "preserve"
   },
-  "importMap": "./import_map.json",
   "lint": {
-    "rules": {
-      "include": ["no-unused-vars"],
-      "tags": [
-        "fresh",
-        "recommended"
-      ]
-    },
-    "exclude": [
-      "_fresh"
-    ]
-  }
+    "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
+  },
+  "imports": {
+    "$fresh/": "https://deno.land/x/fresh@1.6.1/",
+    "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
+    "kysely/": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/",
+    "kysely-deno-postgres": "https://deno.land/x/kysely_deno_postgres@v0.4.0/mod.ts",
+    "preact": "https://esm.sh/preact@10.19.2",
+    "preact/": "https://esm.sh/preact@10.19.2/",
+    "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.1.0",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
+    "fresh_session": "https://deno.land/x/fresh_session@0.2.2/mod.ts",
+    "redis": "https://deno.land/x/redis@v0.30.0/mod.ts",
+    "std/": "https://deno.land/std@0.208.0/",
+    "dotenv": "https://deno.land/x/dotenv@v3.2.2/load.ts",
+    "tailwindcss": "npm:tailwindcss@3.3.5",
+    "tailwindcss/": "npm:/tailwindcss@3.3.5/",
+    "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
+    "cheerio": "https://esm.sh/cheerio@1.0.0-rc.12"
+  },
+  "exclude": ["**/_fresh/*"],
+  "nodeModulesDir": true
 }

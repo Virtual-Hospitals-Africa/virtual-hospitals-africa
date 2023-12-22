@@ -1,7 +1,8 @@
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
-import db from '../../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import * as cheerio from 'cheerio'
+import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employee from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
@@ -43,7 +44,7 @@ describeWithWebServer('/login', 8002, (route) => {
       mock = await addTestHealthWorkerWithSession()
     })
 
-    it('doesn\'t allow unemployed access to /app', async () => {
+    it("doesn't allow unemployed access to /app", async () => {
       const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
@@ -193,7 +194,7 @@ describeWithWebServer('/login', 8002, (route) => {
       )
     })
 
-    it('allows user to go to and from the add patient page', async () => {
+    it('starts in an empty waiting room with sidebar links', async () => {
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
       await employee.add(db, [{
         facility_id: 1,
@@ -214,102 +215,33 @@ describeWithWebServer('/login', 8002, (route) => {
         approverId: admin.id,
         healthWorkerId: mock.healthWorker.id,
       })
-      let response = await fetch(`${route}/app`, {
-        headers: {
-          Cookie: `sessionId=${mock.sessionId}`,
-        },
-      })
-      assert(response.ok, 'should have returned ok')
-      let pageContents = await response.text()
-      assert(
-        pageContents.includes('href="/app/patients/add"'),
-        'should include a href to patient screen',
-      )
-      assert(
-        pageContents.includes('Add patient'),
-        'should include text Add patient',
-      )
-
-      response = await fetch(`${route}/app/patients/add?step=personal`, {
-        headers: {
-          Cookie: `sessionId=${mock.sessionId}`,
-        },
-      })
-      assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/app/patients/add?step=personal`)
-      pageContents = await response.text()
-      assert(pageContents.includes('Next Step'), 'should include Next Step')
-      assert(
-        pageContents.includes('href="/app/patients"'),
-        'should be a link back to patients screen',
-      )
-
-      response = await fetch(`${route}/app/patients`, {
-        headers: {
-          Cookie: `sessionId=${mock.sessionId}`,
-        },
-      })
-      assert(response.ok)
-      assert(response.url === `${route}/app/patients`)
-      assert((await response.text()).includes('Add patient'))
-    })
-
-    it('allows user to go to and from the My Patients page', async () => {
-      await employee.add(db, [{
-        facility_id: 1,
-        health_worker_id: mock.healthWorker.id,
-        profession: 'doctor',
-      }])
-      let response = await fetch(`${route}/app`, {
-        headers: {
-          Cookie: `sessionId=${mock.sessionId}`,
-        },
-      })
-
-      assert(response.ok)
-      let pageContents = await response.text()
-      assert(pageContents.includes('href="/app/patients"'))
-      assert(pageContents.includes('My Patients'))
-
-      response = await fetch(`${route}/app/patients`, {
-        headers: {
-          Cookie: `sessionId=${mock.sessionId}`,
-        },
-      })
-
-      assert(response.ok)
-      assert(response.url === `${route}/app/patients`)
-      pageContents = await response.text()
-      assert(pageContents.includes('Patients'))
-      assert(pageContents.includes('Add patient'))
-      assert(pageContents.includes('href="/app"'))
-
-      response = await fetch(`${route}/app`, {
-        headers: {
-          Cookie: `sessionId=${mock.sessionId}`,
-        },
-      })
-
-      assert(response.ok)
-      assert(response.url === `${route}/app`)
-      await response.text()
-    })
-
-    it('allows user can go to calendar', async () => {
-      await employee.add(db, [{
-        facility_id: 1,
-        health_worker_id: mock.healthWorker.id,
-        profession: 'doctor',
-      }])
       const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
       assert(response.ok, 'should have returned ok')
-      const pageContents = await response.text()
-      assert(pageContents.includes('href="/app/calendar"'))
-      assert(pageContents.includes('Calendar'))
+      const $ = cheerio.load(await response.text())
+
+      const waiting_room_add_link = $(
+        'a[href="/app/facilities/1/waiting-room/add"]',
+      )
+      assert(waiting_room_add_link.first().text().includes('Add patient'))
+
+      const patients_link = $('a[href="/app/patients"]')
+      assert(patients_link.first().text().includes('My Patients'))
+
+      const employees_link = $('a[href="/app/employees"]')
+      assert(employees_link.first().text().includes('Employees'))
+
+      const calendar_link = $('a[href="/app/calendar"]')
+      assert(calendar_link.first().text().includes('Calendar'))
+
+      const dispensary_link = $('a[href="/app/dispensary"]')
+      assert(dispensary_link.first().text().includes('Dispensary'))
+
+      const logout_link = $('a[href="/logout"]')
+      assert(logout_link.first().text().includes('Log Out'))
     })
 
     it('allows a health worker employed at a facility to view/approve its employees', async () => {
@@ -401,7 +333,7 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('Invite'))
     })
 
-    it('doesn\'t allow unemployed access to employees', async () => {
+    it("doesn't allow unemployed access to employees", async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
@@ -416,7 +348,7 @@ describeWithWebServer('/login', 8002, (route) => {
       assertEquals(response.status, 403)
     })
 
-    it('doesn\'t allow non-admin to invite page', async () => {
+    it("doesn't allow non-admin to invite page", async () => {
       await employee.add(db, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
@@ -439,7 +371,7 @@ describeWithWebServer('/login', 8002, (route) => {
       const pageContents = await employeesResponse.text()
       assert(
         !pageContents.includes('href="/app/facilities/1/employees/invite"'),
-        'there shouldn\'t be a link to the invite page',
+        "there shouldn't be a link to the invite page",
       )
 
       const invitesResponse = await fetch(

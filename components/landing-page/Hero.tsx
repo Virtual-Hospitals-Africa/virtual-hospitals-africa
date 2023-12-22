@@ -4,10 +4,9 @@ import HeroContents from './HeroContents.tsx'
 
 export function Hero() {
   return (
-    <header className='overflow-hidden bg-slate-100 lg:bg-transparent'>
+    <header className='overflow-hidden bg-transparent'>
       <div className='absolute top-2 w-full z-10'>
-        <div className='flex justify-between items-center w-full' // style={{ gridTemplateColumns: '1fr max-content' }}
-        >
+        <div className='flex justify-between items-center w-full'>
           <div className='md:hidden'>
             <LogoWithFullText
               variant='white'
@@ -27,9 +26,9 @@ export function Hero() {
         </div>
       </div>
 
-      <div className='mx-auto grid max-w-6xl grid-cols-1 lg:grid-rows-[auto_1fr] lg:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pb-36 lg:pt-20 xl:py-32'>
+      <div className='mx-auto grid max-w-6xl grid-cols-1 lg:grid-rows-[auto_1fr] lg:pt-20 lg:grid-cols-12 lg:gap-y-20 lg:px-3 lg:pb-36 xl:py-32'>
         <div className='relative px-4 sm:px-6 lg:col-span-7 lg:pb-14 lg:pl-16 lg:pr-0 xl:pl-20'>
-          <div className='hidden lg:absolute lg:-top-32 lg:bottom-0 lg:left-[-100vw] lg:right-[-100vw] lg:block lg:bg-slate-100' />
+          <div className='hidden lg:absolute lg:-top-32 lg:bottom-0 lg:left-[-100vw] lg:right-[-100vw] lg:block' />
         </div>
         <HeroContents />
       </div>

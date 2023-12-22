@@ -1,0 +1,2 @@
+node_modules/**/*.* linguist-generated=true
+_fresh/**/*.* linguist-generated=true
