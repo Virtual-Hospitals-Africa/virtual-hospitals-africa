@@ -49,8 +49,7 @@
   },
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.6.1/",
-    "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
-    "kysely/": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/",
+    "kysely": "https://esm.sh/v135/kysely@0.26.3/es2022/kysely.mjs",
     "kysely-deno-postgres": "https://deno.land/x/kysely_deno_postgres@v0.4.0/mod.ts",
     "preact": "https://esm.sh/preact@10.19.2",
     "preact/": "https://esm.sh/preact@10.19.2/",
@@ -65,7 +64,7 @@
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
-    "cheerio": "https://esm.sh/cheerio@1.0.0-rc.12"
+    "cheerio": "https://esm.sh/v135/cheerio@1.0.0-rc.12"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": true
