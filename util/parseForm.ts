@@ -3,6 +3,7 @@ import set from './set.ts'
 import * as media from '../db/models/media.ts'
 import { TrxOrDb } from '../types.ts'
 import { assertOr400 } from './assertOr.ts'
+import deepRemoveHoles from './deepRemoveHoles.ts'
 
 type Primitive = string | number | boolean
 
@@ -27,7 +28,7 @@ function parseFormWithoutFilesNoTypeCheck(
     if (value === '') return
     set(parsed, key, parseParam(value))
   })
-  return parsed
+  return deepRemoveHoles(parsed)
 }
 
 export function parseFormWithoutFiles<T extends Record<string, unknown>>(
