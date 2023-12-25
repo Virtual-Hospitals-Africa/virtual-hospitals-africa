@@ -5,24 +5,28 @@ import { JSX } from 'preact/jsx-runtime'
 import { AddRow } from '../AddRemove.tsx'
 import Condition, { ConditionState } from './Condition.tsx'
 
-type PreExistingConditionsFormState = Map<string | number, ConditionState>
+type PreExistingConditionsFormState = Map<
+  string | number,
+  ConditionState | { removed: true }
+>
 
 const initialState = (
   preExistingConditions: PreExistingConditionWithDrugs[] = [],
 ): PreExistingConditionsFormState => {
   const state = new Map()
   for (const preExistingCondition of preExistingConditions) {
-    const comorbidities = new Set()
-    const medications = new Set()
-    for (const comorbidity of preExistingCondition.comorbidities) {
-      comorbidities.add(comorbidity.id)
-    }
-    for (const medication of preExistingCondition.medications) {
-      medications.add(medication.id)
-    }
+    const comorbidities = preExistingCondition.comorbidities.map(({ id }) => ({
+      id,
+      removed: false,
+    }))
+    const medications = preExistingCondition.medications.map(({ id }) => ({
+      id,
+      removed: false,
+    }))
     state.set(preExistingCondition.id, {
       comorbidities,
       medications,
+      removed: false,
     })
   }
   return state
@@ -43,8 +47,9 @@ export default function PreExistingConditionsForm({
     const id = generateUUID()
     const nextPatientConditions = new Map(patientConditions)
     nextPatientConditions.set(id, {
-      comorbidities: new Set(),
-      medications: new Set(),
+      comorbidities: [],
+      medications: [],
+      removed: false,
     })
     setPatientConditions(new Map(nextPatientConditions))
   }
@@ -54,24 +59,28 @@ export default function PreExistingConditionsForm({
       {Array.from(patientConditions.entries()).map((
         [condition_id, condition_state],
         i: number,
-      ) => (
-        <Condition
-          condition_id={condition_id}
-          condition_index={i}
-          condition_state={condition_state}
-          preExistingConditions={preExistingConditions}
-          removeCondition={() => {
-            const nextPatientConditions = new Map(patientConditions)
-            nextPatientConditions.delete(condition_id)
-            setPatientConditions(new Map(nextPatientConditions))
-          }}
-          updateCondition={(updatedCondition) => {
-            const nextPatientConditions = new Map(patientConditions)
-            nextPatientConditions.set(condition_id, updatedCondition)
-            setPatientConditions(new Map(nextPatientConditions))
-          }}
-        />
-      ))}
+      ) =>
+        !condition_state.removed && (
+          <Condition
+            condition_id={condition_id}
+            condition_index={i}
+            condition_state={condition_state}
+            preExistingConditions={preExistingConditions}
+            removeCondition={() => {
+              const nextPatientConditions = new Map(patientConditions)
+              nextPatientConditions.set(condition_id, {
+                removed: true,
+              })
+              setPatientConditions(new Map(nextPatientConditions))
+            }}
+            updateCondition={(updatedCondition) => {
+              const nextPatientConditions = new Map(patientConditions)
+              nextPatientConditions.set(condition_id, updatedCondition)
+              setPatientConditions(new Map(nextPatientConditions))
+            }}
+          />
+        )
+      )}
       <AddRow
         text='Add Condition'
         onClick={addCondition}

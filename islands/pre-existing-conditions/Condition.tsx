@@ -1,4 +1,3 @@
-import { PlusCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import ConditionSearch from '../ConditionSearch.tsx'
 import { DateInput } from '../../components/library/form/Inputs.tsx'
 import { PreExistingConditionWithDrugs } from '../../types.ts'
@@ -10,8 +9,13 @@ import Medication from './Medication.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 
 export type ConditionState = {
-  comorbidities: Set<string | number>
-  medications: Set<string | number>
+  removed: false
+  comorbidities: Array<
+    { id: string | number; removed: false } | { removed: true }
+  >
+  medications: Array<
+    { id: string | number; removed: false } | { removed: true }
+  >
 }
 
 export default function Condition(
@@ -40,22 +44,22 @@ export default function Condition(
 
   const addComorbidity = () => {
     const id = generateUUID()
-    const nextComorbidities = new Set(comorbidities)
-    nextComorbidities.add(id)
+    const nextComorbidities = [...comorbidities, { id, removed: false }]
     const nextConditionState = {
       medications: condition_state.medications,
       comorbidities: nextComorbidities,
+      removed: false as const,
     }
     updateCondition(nextConditionState)
   }
 
   const addMedication = () => {
     const id = generateUUID()
-    const nextMedications = new Set(medications)
-    nextMedications.add(id)
+    const nextMedications = [...medications, { id, removed: false }]
     const nextConditionState = {
       medications: nextMedications,
       comorbidities: condition_state.comorbidities,
+      removed: false as const,
     }
     updateCondition(nextConditionState)
   }
@@ -84,46 +88,54 @@ export default function Condition(
           )}
         </FormRow>
         {comorbidities.map((
-          comorbidity_id: string | number,
-          comorbidity_index: number,
-        ) => (
-          <Comorbidity
-            matchingCondition={matchingCondition}
-            condition_prefix={prefix}
-            comorbidity_id={comorbidity_id}
-            comorbidity_index={comorbidity_index}
-            removeComorbidity={() => {
-              const nextComorbidities = new Set(comorbidities)
-              nextComorbidities.delete(comorbidity_id)
-              const nextConditionState = {
-                medications: condition_state.medications,
-                comorbidities: nextComorbidities,
-              }
-              updateCondition(nextConditionState)
-            }}
-          />
-        ))}
+          comorbidity,
+          comorbidity_index,
+        ) =>
+          !comorbidity.removed && (
+            <Comorbidity
+              matchingCondition={matchingCondition}
+              condition_prefix={prefix}
+              comorbidity_id={comorbidity.id}
+              comorbidity_index={comorbidity_index}
+              removeComorbidity={() => {
+                const nextComorbidities = comorbidities.map((c) =>
+                  c === comorbidity ? { removed: true as const } : c
+                )
+                const nextConditionState = {
+                  medications: condition_state.medications,
+                  comorbidities: nextComorbidities,
+                  removed: false as const,
+                }
+                updateCondition(nextConditionState)
+              }}
+            />
+          )
+        )}
         <AddRow onClick={addComorbidity} text='Add Comorbidity' />
         {medications.map((
-          medication_id: string | number,
-          mIndex: number,
-        ) => (
-          <Medication
-            matchingCondition={matchingCondition}
-            condition_prefix={prefix}
-            medication_id={medication_id}
-            medication_index={mIndex}
-            removeMedication={() => {
-              const nextMedications = new Set(medications)
-              nextMedications.delete(medication_id)
-              const nextConditionState = {
-                medications: nextMedications,
-                comorbidities: condition_state.comorbidities,
-              }
-              updateCondition(nextConditionState)
-            }}
-          />
-        ))}
+          medication,
+          medication_index,
+        ) =>
+          !medication.removed && (
+            <Medication
+              matchingCondition={matchingCondition}
+              condition_prefix={prefix}
+              medication_id={medication.id}
+              medication_index={medication_index}
+              removeMedication={() => {
+                const nextMedications = medications.map((m) =>
+                  m === medication ? { removed: true as const } : m
+                )
+                const nextConditionState = {
+                  medications: nextMedications,
+                  comorbidities: condition_state.comorbidities,
+                  removed: false as const,
+                }
+                updateCondition(nextConditionState)
+              }}
+            />
+          )
+        )}
         <AddRow onClick={addMedication} text='Add Medication' labelled />
       </div>
     </RemoveRow>
