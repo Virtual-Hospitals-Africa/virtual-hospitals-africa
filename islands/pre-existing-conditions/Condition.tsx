@@ -1,7 +1,7 @@
 import { PlusCircleIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import ConditionSearch from '../ConditionSearch.tsx'
 import { DateInput } from '../../components/library/form/Inputs.tsx'
-import { PreExistingConditionWithDrugs } from '../../types.ts'
+import { Maybe, PreExistingConditionWithDrugs } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { JSX } from 'preact/jsx-runtime'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
@@ -10,8 +10,22 @@ import Medication from './Medication.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 
 export type ConditionState = {
-  comorbidities: Set<string | number>
-  medications: Set<string | number>
+  id: string | number
+  key_id: string | null
+  primary_name: string | null
+  start_date: string | null
+  comorbidities: {
+    id: number | string
+    key_id: string | null
+    primary_name: string | null
+    start_date?: Maybe<string>
+  }[]
+  medications: {
+    id: number | string
+    key_id: string | null
+    primary_name: string | null
+    start_date?: Maybe<string>
+  }[]
 }
 
 export default function Condition(
