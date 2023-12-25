@@ -65,7 +65,7 @@
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
-    "cheerio": "https://esm.sh/cheerio@1.0.0-rc.12"
+    "cheerio": "https://esm.sh/v136/cheerio@1.0.0-rc.12"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": true
