@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { Maybe, PatientEncounterReason, TrxOrDb } from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
@@ -6,17 +5,16 @@ import { assertOr400 } from '../../util/assertOr.ts'
 
 export type Create = {
   patient_id: number
-  facility_id: number
   reason: PatientEncounterReason
   provider_id?: Maybe<number>
   appointment_id?: Maybe<number>
   notes?: Maybe<string>
 }
 
-const reasons = new Set<PatientEncounterReason>([
-  'seeking_treatment',
+export const reasons = new Set<PatientEncounterReason>([
+  'seeking treatment',
   'appointment',
-  'follow_up',
+  'follow up',
   'referral',
   'checkup',
   'emergency',
@@ -32,9 +30,9 @@ export function assertIsEncounterReason(
 export function assertIsCreate(
   obj: unknown,
 ): asserts obj is Create {
+  console.log('obj', obj)
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.patient_id === 'number')
-  assertOr400(typeof obj.facility_id === 'number')
   assertOr400(typeof obj.reason === 'string')
   assertIsEncounterReason(obj.reason)
   assertOr400(obj.provider_id == null || typeof obj.provider_id === 'number')
@@ -44,7 +42,8 @@ export function assertIsCreate(
 
 export async function create(
   trx: TrxOrDb,
-  { facility_id, provider_id, ...encounter }: Create,
+  facility_id: number,
+  { provider_id, ...encounter }: Create,
 ) {
   const created = await trx
     .insertInto('patient_encounters')

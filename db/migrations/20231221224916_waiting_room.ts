@@ -6,9 +6,9 @@ export async function up(db: Kysely<unknown>) {
     .schema
     .createType('encounter_reason')
     .asEnum([
-      'seeking_treatment',
+      'seeking treatment',
       'appointment',
-      'follow_up',
+      'follow up',
       'referral',
       'checkup',
       'emergency',

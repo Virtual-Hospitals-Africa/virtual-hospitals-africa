@@ -12,17 +12,27 @@ import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
 import FormButtons from '../../../../../components/library/form/buttons.tsx'
+import {
+  RadioGroup,
+  TextArea,
+} from '../../../../../components/library/form/Inputs.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
 }> = {
   async POST(req, ctx) {
+    const facility_id = parseInt(ctx.params.facility_id)
+    assert(facility_id)
     const to_create = await parseRequestAsserts(
       ctx.state.trx,
       req,
       patient_encounters.assertIsCreate,
     )
-    const created = await patient_encounters.create(ctx.state.trx, to_create)
+    const created = await patient_encounters.create(
+      ctx.state.trx,
+      facility_id,
+      to_create,
+    )
     return redirect(
       `/app/facilities/1/waiting-room?just_encountered_id=${created.id}`,
     )
@@ -59,11 +69,25 @@ export default function WaitingRoomAdd(
           </FormRow>
           <FormRow>
             <PersonSearch
-              name='health_worker'
+              name='provider'
+              // TODO: instead search for employees of facility
               href={`/app/health_workers?facility_id=${facility_id}&profession=doctor,nurse&include_next_available=true`}
               required
               value={{ id: 'next_available', name: 'Next Available' }}
             />
+          </FormRow>
+          <FormRow>
+            <RadioGroup
+              name='reason'
+              label='Reason for visit'
+              options={Array.from(patient_encounters.reasons).map((value) => ({
+                value,
+              }))}
+              value='seeking treatment'
+            />
+          </FormRow>
+          <FormRow>
+            <TextArea name='notes' />
           </FormRow>
           <FormButtons />
         </form>

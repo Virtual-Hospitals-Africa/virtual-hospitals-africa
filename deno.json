@@ -64,6 +64,7 @@
     "tailwindcss": "npm:tailwindcss@3.3.5",
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
     "tailwindcss/plugin": "npm:/tailwindcss@3.3.5/plugin.js",
+    "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "cheerio": "https://esm.sh/v136/cheerio@1.0.0-rc.12"
   },

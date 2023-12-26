@@ -1,4 +1,5 @@
 import { type Config } from 'tailwindcss'
+import formsPlugin from '@tailwindcss/forms'
 
 export default {
   content: [
@@ -32,4 +33,7 @@ export default {
       '9xl': ['8rem', { lineHeight: '1' }],
     },
   },
+  plugins: [
+    formsPlugin,
+  ]
 } satisfies Config

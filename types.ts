@@ -1449,9 +1449,9 @@ export type PatientAllergies = {
 }
 
 export type PatientEncounterReason =
-  | 'seeking_treatment'
+  | 'seeking treatment'
   | 'appointment'
-  | 'follow_up'
+  | 'follow up'
   | 'referral'
   | 'checkup'
   | 'emergency'
