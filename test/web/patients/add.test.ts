@@ -36,7 +36,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assert($('input[name="first_name"]').length === 1)
     assert($('input[name="middle_names"]').length === 1)
     assert($('input[name="last_name"]').length === 1)
-    assert($('input[name="foo"]').length === 0)
+    assert($('input[name="nonexistant"]').length === 0)
   })
 
   it('supports POST on the personal step, moving you to the address step', async () => {

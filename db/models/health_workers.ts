@@ -230,11 +230,13 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
+// TODO: limit to approved nurses & doctors
 export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    profession?: Maybe<Profession>
+    facility_id?: Maybe<number>
+    professions?: Maybe<Profession[]>
   },
 ): Promise<ReturnedSqlRow<
   HealthWorker & {
@@ -286,6 +288,7 @@ export async function search(
             '=',
             'health_workers.id',
           )
+          .where(opts.facility_id ? sql<boolean>`employment.facility_id = ${opts.facility_id}` : sql<boolean>`TRUE`)
           .groupBy([
             'employment.facility_id',
             'facilities.display_name',
@@ -294,14 +297,19 @@ export async function search(
     ])
     .where('health_workers.name', 'is not', null)
     .groupBy('health_workers.id')
+    .limit(20)
 
   if (opts.search) {
     query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
   }
 
-  if (opts.profession) {
+  if (opts.professions) {
     query = query
-      .where('profession', '=', opts.profession)
+      .where('profession', 'in', opts.professions)
+  }
+
+  if (opts.facility_id) {
+    query = query.where('employment.facility_id', '=', opts.facility_id)
   }
 
   const healthWorkers = await query.execute()

@@ -13,7 +13,7 @@ import * as nurse_registration_details from '../../../../db/models/nurse_registr
 import db from '../../../../db/db.ts'
 
 describeWithWebServer(
-  '/app/facilities/[facilityId]/register',
+  '/app/facilities/[facility_id]/register',
   8008,
   (route) => {
     it('renders a registration page on GET', async () => {

@@ -133,11 +133,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       }])
 
       const result = await health_workers.search(db, { search: 'Worker' })
-      assert(result)
       assertEquals(result.length, 1)
-
       assertEquals(
-        omit(result[0], ['created_at', 'updated_at']),
+        result[0],
         {
           avatar_url: 'avatar_url',
           email: 'test@worker.com',
@@ -152,8 +150,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           ],
           gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
           gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          id: healthWorker.id,
           name: 'Worker',
+          id: healthWorker.id,
+          created_at: result[0].created_at,
+          updated_at: result[0].updated_at,
         },
       )
     })
@@ -181,14 +181,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       const doctor_result = await health_workers.search(db, {
         search: 'Worker',
-        profession: 'doctor',
+        professions: ['doctor'],
       })
       assert(doctor_result)
       assertEquals(doctor_result.length, 0)
 
       const nurse_result = await health_workers.search(db, {
         search: 'Worker',
-        profession: 'nurse',
+        professions: ['nurse'],
       })
       assert(nurse_result)
       assertEquals(nurse_result.length, 1)
@@ -379,7 +379,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       )
     })
 
-    it('returns the documents where applicable', async () => {
+    it('returns documents where applicable', async () => {
       const healthWorker = await health_workers.upsertWithGoogleCredentials(
         db,
         {
@@ -510,6 +510,60 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           },
         ],
       )
+    })
+
+    it('can filter by facility_id', async () => {
+      const healthWorker = await health_workers.upsertWithGoogleCredentials(
+        db,
+        {
+          name: 'Worker',
+          email: 'test@worker.com',
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          access_token: 'access_token',
+          refresh_token: 'refresh_token',
+          expires_at: new Date(),
+        },
+      )
+
+      await employment.add(db, [{
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 1,
+      }, {
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+        facility_id: 2,
+      }])
+
+      const same_facility_result = await health_workers.search(db, { search: 'Worker', facility_id: 1 })
+      assertEquals(same_facility_result.length, 1)
+      assertEquals(
+        same_facility_result[0],
+        {
+          avatar_url: 'avatar_url',
+          email: 'test@worker.com',
+          facilities: [
+            {
+              facility_id: 1,
+              facility_display_name: 'VHA Test Hospital',
+              professions: [
+                'nurse',
+              ],
+            },
+          ],
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          name: 'Worker',
+          id: healthWorker.id,
+          created_at: same_facility_result[0].created_at,
+          updated_at: same_facility_result[0].updated_at,
+        },
+      )
+
+      const other_facility_result = await health_workers.search(db, { search: 'Worker', facility_id: 10 })
+      assertEquals(other_facility_result.length, 0)
     })
   })
 })
