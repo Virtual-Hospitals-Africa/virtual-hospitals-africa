@@ -6,15 +6,15 @@ import WaitingRoomView from '../../../../components/waiting-room/View.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 
 export default async function WaitingRoomPage(
+  _req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
 ) {
   const facility_id = parseInt(ctx.params.facility_id)
-
   assertOr404(facility_id)
 
   return (
     <Layout
-      title={'Waiting Room'}
+      title='Waiting Room'
       route={ctx.route}
       url={ctx.url}
       avatarUrl={ctx.state.healthWorker.avatar_url}

@@ -537,7 +537,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         facility_id: 2,
       }])
 
-      const same_facility_result = await health_workers.search(db, { search: 'Worker', facility_id: 1 })
+      const same_facility_result = await health_workers.search(db, {
+        search: 'Worker',
+        facility_id: 1,
+      })
       assertEquals(same_facility_result.length, 1)
       assertEquals(
         same_facility_result[0],
@@ -562,7 +565,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         },
       )
 
-      const other_facility_result = await health_workers.search(db, { search: 'Worker', facility_id: 10 })
+      const other_facility_result = await health_workers.search(db, {
+        search: 'Worker',
+        facility_id: 10,
+      })
       assertEquals(other_facility_result.length, 0)
     })
   })

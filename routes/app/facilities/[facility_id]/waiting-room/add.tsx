@@ -65,6 +65,9 @@ export default function WaitingRoomAdd(
               name='patient'
               href='/app/patients'
               required
+              value={(patient_id && patient_name)
+                ? { id: patient_id, name: patient_name }
+                : undefined}
             />
           </FormRow>
           <FormRow>

@@ -212,7 +212,8 @@ export async function addTestHealthWorkerWithSession(opts: {
 export function getFormValues($: cheerio.CheerioAPI): unknown {
   const formValues = {}
   $('form input,textarea').each((_i, el) => {
-    if (el.attribs.name) {
+    if (!el.attribs.name) return
+    if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
       set(
         formValues,
         el.attribs.name,

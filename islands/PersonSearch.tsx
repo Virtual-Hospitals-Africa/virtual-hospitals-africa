@@ -38,15 +38,13 @@ export default function PersonSearch({
     delay: debounce(setSearchImmediate, 220),
   })
 
-  const onDocumentClick = useCallback((event?: any) => {
+  const onDocumentClick = useCallback(() => {
     const nextIsFocused = document.activeElement ===
       document.querySelector(`input[name="${name}_name"]`)
-    console.log('onDocumentClick', event, nextIsFocused)
     setIsFocused(nextIsFocused)
   }, [setIsFocused])
 
   useEffect(() => {
-    // onDocumentClick()
     self.addEventListener('click', onDocumentClick)
     self.addEventListener('focus', onDocumentClick)
     self.addEventListener('blur', onDocumentClick)
@@ -74,8 +72,6 @@ export default function PersonSearch({
 
   const showSearchResults = isFocused &&
     (people.length > 0 || (search && addable))
-
-  console.log('showSearchResults', showSearchResults, people, search)
 
   return (
     <div className='w-full'>

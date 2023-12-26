@@ -6,7 +6,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 export type Create = {
   patient_id: number
   reason: PatientEncounterReason
-  provider_id?: Maybe<number>
+  provider_id: number | 'next_available'
   appointment_id?: Maybe<number>
   notes?: Maybe<string>
 }
@@ -30,28 +30,36 @@ export function assertIsEncounterReason(
 export function assertIsCreate(
   obj: unknown,
 ): asserts obj is Create {
-  console.log('obj', obj)
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.patient_id === 'number')
+  assertOr400(typeof obj.patient_id === 'number', JSON.stringify(obj))
   assertOr400(typeof obj.reason === 'string')
   assertIsEncounterReason(obj.reason)
-  assertOr400(obj.provider_id == null || typeof obj.provider_id === 'number')
-  assertOr400(obj.appointment_id == null || typeof obj.appointment_id === 'number')
+  assertOr400(
+    obj.provider_id === 'next_available' || typeof obj.provider_id === 'number',
+  )
+  assertOr400(
+    obj.appointment_id == null || typeof obj.appointment_id === 'number',
+  )
   assertOr400(obj.notes == null || typeof obj.notes === 'string')
 }
 
 export async function create(
   trx: TrxOrDb,
   facility_id: number,
-  { provider_id, ...encounter }: Create,
+  { patient_id, reason, appointment_id, notes, provider_id }: Create,
 ) {
   const created = await trx
     .insertInto('patient_encounters')
-    .values(encounter)
+    .values({
+      patient_id,
+      reason,
+      notes,
+      appointment_id: appointment_id || null,
+    })
     .returning('id')
     .executeTakeFirstOrThrow()
 
-  const adding_provider = provider_id && trx
+  const adding_provider = provider_id && typeof provider_id === 'number' && trx
     .insertInto('patient_encounter_providers')
     .values({
       patient_encounter_id: created.id,

@@ -16,10 +16,10 @@ describe(
     describe('create', () => {
       it('creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room', async () => {
         const patient = await patients.upsert(db, { name: 'Test Patient' })
-        await patient_encounters.create(db, {
+        await patient_encounters.create(db, 1, {
           patient_id: patient.id,
-          facility_id: 1,
           reason: 'seeking treatment',
+          provider_id: 'next_available',
         })
 
         assertEquals(await waiting_room.get(db, { facility_id: 1 }), [
@@ -40,11 +40,10 @@ describe(
       it('creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room', async () => {
         const nurse = await addTestHealthWorker({ scenario: 'approved-nurse' })
         const patient = await patients.upsert(db, { name: 'Test Patient' })
-        await patient_encounters.create(db, {
+        await patient_encounters.create(db, 1, {
           patient_id: patient.id,
-          facility_id: 1,
           reason: 'seeking treatment',
-          provider_id: nurse.employee_id,
+          provider_id: nurse.employee_id!,
         })
 
         assertEquals(await waiting_room.get(db, { facility_id: 1 }), [

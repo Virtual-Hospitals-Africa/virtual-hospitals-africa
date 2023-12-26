@@ -471,6 +471,7 @@ export function RadioGroup(
                 name={name}
                 type='radio'
                 checked={value === option.value}
+                value={option.value}
                 className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
               />
               <label

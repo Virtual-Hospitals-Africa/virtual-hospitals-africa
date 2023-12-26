@@ -11,12 +11,15 @@ describeWithWebServer('/app/health_workers', 8006, (route) => {
     const { sessionId, healthWorker } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
-    const response = await fetch(`${route}/app/health_workers?include_next_available=true&profession=nurse`, {
-      headers: {
-        Cookie: `sessionId=${sessionId}`,
-        Accept: 'application/json',
+    const response = await fetch(
+      `${route}/app/health_workers?include_next_available=true&profession=nurse`,
+      {
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+          Accept: 'application/json',
+        },
       },
-    })
+    )
     if (!response.ok) throw new Error(await response.text())
     const json = await response.json()
     assert(Array.isArray(json))

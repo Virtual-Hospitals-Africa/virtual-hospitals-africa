@@ -288,7 +288,11 @@ export async function search(
             '=',
             'health_workers.id',
           )
-          .where(opts.facility_id ? sql<boolean>`employment.facility_id = ${opts.facility_id}` : sql<boolean>`TRUE`)
+          .where(
+            opts.facility_id
+              ? sql<boolean>`employment.facility_id = ${opts.facility_id}`
+              : sql<boolean>`TRUE`,
+          )
           .groupBy([
             'employment.facility_id',
             'facilities.display_name',

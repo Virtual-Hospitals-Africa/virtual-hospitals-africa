@@ -35,5 +35,5 @@ export default {
   },
   plugins: [
     formsPlugin,
-  ]
+  ],
 } satisfies Config
