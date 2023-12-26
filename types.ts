@@ -1484,6 +1484,7 @@ export type RenderedWaitingRoom = {
     avatar_url: string | null
   }
   reason: PatientEncounterReason
+  is_emergency: boolean
   appointment: null | {
     id: number
     start: Date

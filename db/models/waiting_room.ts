@@ -1,10 +1,6 @@
+import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import {
-  Maybe,
-  RenderedWaitingRoom,
-  TrxOrDb,
-  WaitingRoom,
-} from '../../types.ts'
+import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { hasName } from '../../util/haveNames.ts'
@@ -23,7 +19,6 @@ export function add(
 export async function get(
   trx: TrxOrDb,
   { facility_id }: {
-    search?: Maybe<string> // TODO: decide whether to use this
     facility_id: number
   },
 ): Promise<RenderedWaitingRoom[]> {
@@ -49,6 +44,7 @@ export async function get(
         avatar_url: patients.avatar_url_sql,
       }).as('patient'),
       'patient_encounters.reason',
+      sql<boolean>`patient_encounters.reason = 'emergency'`.as('is_emergency'),
       'patient_encounters.closed_at',
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
@@ -95,6 +91,7 @@ export async function get(
           ]),
       ).as('providers'),
     ])
+    .orderBy(['is_emergency desc', 'waiting_room.created_at asc'])
     .execute()
 
   return patients_in_waiting_room.map(

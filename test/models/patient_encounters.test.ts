@@ -33,11 +33,12 @@ describe(
             },
             providers: [],
             reason: 'seeking treatment',
+            is_emergency: false,
           },
         ])
       })
 
-      it('creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room', async () => {
+      it('creates a new patient encounter for a patient seeking treatment with a specific provider, adding the patient to the waiting room', async () => {
         const nurse = await addTestHealthWorker({ scenario: 'approved-nurse' })
         const patient = await patients.upsert(db, { name: 'Test Patient' })
         await patient_encounters.create(db, 1, {
@@ -65,6 +66,7 @@ describe(
               },
             ],
             reason: 'seeking treatment',
+            is_emergency: false,
           },
         ])
       })

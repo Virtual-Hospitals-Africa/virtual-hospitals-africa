@@ -1,4 +1,5 @@
 import { RenderedWaitingRoom } from '../../types.ts'
+import capitalize from '../../util/capitalize.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
@@ -13,7 +14,14 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Reason for visit',
     dataKey(row) {
-      return row.reason
+      return capitalize(row.reason)
+    },
+    type: 'content',
+  },
+  {
+    label: 'Arrived',
+    dataKey(row) {
+      return 'Just now' // TODO: implement this
     },
     type: 'content',
   },
@@ -35,7 +43,6 @@ export default function WaitingRoomTable(
     <Table
       columns={columns}
       rows={waiting_room}
-      className='hidden sm:block'
     />
   )
 }

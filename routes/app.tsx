@@ -75,7 +75,7 @@ async function fetchNeededData(
       return {
         tab: 'waiting_room',
         facility_id,
-        waiting_room: await waiting_room.get(trx, { search, facility_id }),
+        waiting_room: await waiting_room.get(trx, { facility_id }),
         counts,
       }
     }
