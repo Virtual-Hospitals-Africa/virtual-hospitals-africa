@@ -19,6 +19,16 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     type: 'content',
   },
   {
+    label: 'Waiting for',
+    dataKey(row) {
+      if (!row.providers.length) return 'Next Available'
+      return row.providers.map((p) => (
+        <a key={p.health_worker_id} href={p.href}>{p.name}</a>
+      ))
+    },
+    type: 'content',
+  },
+  {
     label: 'Arrived',
     dataKey(row) {
       return 'Just now' // TODO: implement this

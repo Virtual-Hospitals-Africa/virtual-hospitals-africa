@@ -79,6 +79,12 @@ export type FacilityEmployee = {
   registration_status: 'pending_approval' | 'approved' | 'incomplete'
 }
 
+export function employeeHrefSql(facility_id: number) {
+  return sql<
+    string
+  >`CONCAT('/app/facilities/', ${facility_id}::text, '/employees/', health_workers.id::text)`
+}
+
 export function getEmployees(
   trx: TrxOrDb,
   opts: {
@@ -100,10 +106,7 @@ export function getEmployees(
       >`JSON_AGG(employment.profession ORDER BY employment.profession)`.as(
         'professions',
       ),
-      sql<
-        string
-      >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/employees/', health_workers.id::text)`
-        .as('href'),
+      employeeHrefSql(opts.facility_id).as('href'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`CASE 
       WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
       WHEN nurse_registration_details.approved_by IS NULL 

@@ -63,6 +63,7 @@ describe(
                 name: nurse.name,
                 profession: 'nurse',
                 seen_at: null,
+                href: `/app/facilities/1/employees/${nurse.id}`,
               },
             ],
             reason: 'seeking treatment',

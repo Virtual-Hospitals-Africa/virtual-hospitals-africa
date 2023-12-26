@@ -1498,6 +1498,7 @@ export type RenderedWaitingRoom = {
     employee_id: number
     name: string
     profession: string
+    href: string
     seen_at: Date | null
   }[]
 }
