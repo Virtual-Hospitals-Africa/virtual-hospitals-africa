@@ -88,6 +88,7 @@ export function search(
           ),
       ).as('medications'),
     ])
+    .limit(20)
 
   if (opts?.ids) drugsQuery = drugsQuery.where('drugs.id', 'in', opts.ids)
 

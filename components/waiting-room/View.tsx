@@ -5,10 +5,12 @@ import { SearchInput } from '../library/form/Inputs.tsx'
 import FormRow from '../library/form/Row.tsx'
 import WaitingRoomEmptyState from './EmptyState.tsx'
 import WaitingRoomTable from './Table.tsx'
-import PatientCards from '../../islands/patient-cards.tsx'
 
 function NonEmptyWaitingRoomView(
-  { waiting_room }: { waiting_room: RenderedWaitingRoom[] },
+  { waiting_room, add_href }: {
+    waiting_room: RenderedWaitingRoom[]
+    add_href: string
+  },
 ) {
   return (
     <>
@@ -18,7 +20,7 @@ function NonEmptyWaitingRoomView(
         </form>
         <Button
           type='button'
-          href='/app/waiting-room/add'
+          href={add_href}
           className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
         >
           Add Patient
@@ -40,7 +42,12 @@ export default function WaitingRoomView(
   return (
     <Container size='lg'>
       {waiting_room.length
-        ? <NonEmptyWaitingRoomView waiting_room={waiting_room} />
+        ? (
+          <NonEmptyWaitingRoomView
+            waiting_room={waiting_room}
+            add_href={add_href}
+          />
+        )
         : <WaitingRoomEmptyState add_href={add_href} />}
     </Container>
   )

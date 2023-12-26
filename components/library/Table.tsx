@@ -1,9 +1,16 @@
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
+import isString from '../../util/isString.ts'
 
-type Showable = string | number | string[] | null | undefined
+type Showable =
+  | string
+  | number
+  | string[]
+  | null
+  | undefined
+  | ComponentChildren
 
 type Row = Record<string, unknown> & {
   id?: number
@@ -50,8 +57,10 @@ function TableCellInnerContents<T extends Row>(
       ? column.dataKey(row)
       : row[column.dataKey]
 
-    // deno-lint-ignore no-explicit-any
-    const display = Array.isArray(value) ? value.join(', ') : (value as any)
+    const display = Array.isArray(value) && value.every(isString)
+      ? value.join(', ')
+      // deno-lint-ignore no-explicit-any
+      : (value as any)
 
     return (
       <div

@@ -398,7 +398,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   describe('invite', () => {
     it('adds rows to health_worker_invitees if the user is not already a health worker at the facility', async () => {
       const result = await facilities.invite(db, 1, [
-        { email: 'foo@example.com', profession: 'nurse' },
+        { email: 'test@example.com', profession: 'nurse' },
       ])
       assertEquals(result, { success: true })
       const invitees = await db.selectFrom('health_worker_invitees').selectAll()
@@ -406,7 +406,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
 
       assertEquals(invitees.length, 1)
       const invitee = invitees[0]
-      assertEquals(invitee.email, 'foo@example.com')
+      assertEquals(invitee.email, 'test@example.com')
       assertEquals(invitee.profession, 'nurse')
     })
 

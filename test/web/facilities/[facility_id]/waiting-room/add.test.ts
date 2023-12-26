@@ -1,0 +1,97 @@
+import { it } from 'std/testing/bdd.ts'
+import { assert } from 'std/assert/assert.ts'
+import {
+  addTestHealthWorkerWithSession,
+  describeWithWebServer,
+  getFormValues,
+} from '../../../utilities.ts'
+import * as cheerio from 'cheerio'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import * as patients from '../../../../../db/models/patients.ts'
+import db from '../../../../../db/db.ts'
+
+describeWithWebServer(
+  '/app/facilities/[facility_id]/waiting-room/add',
+  8007,
+  (route) => {
+    it('renders a page on GET', async () => {
+      const { sessionId } = await addTestHealthWorkerWithSession({
+        scenario: 'approved-nurse',
+      })
+
+      const response = await fetch(
+        `${route}/app/facilities/1/waiting-room/add`,
+        {
+          headers: {
+            Cookie: `sessionId=${sessionId}`,
+          },
+        },
+      )
+
+      assert(response.ok, 'should have returned ok')
+      const pageContents = await response.text()
+
+      const $ = cheerio.load(pageContents)
+
+      const formValues = getFormValues($)
+      assertEquals(formValues, {
+        notes: null,
+        patient_name: null,
+        provider_id: 'next_available',
+        provider_name: 'Next Available',
+        reason: 'seeking treatment',
+      })
+    })
+
+    it('creates a patient encounter on POST', async () => {
+      const testPatient = await patients.upsert(db, {
+        name: 'Test Patient',
+      })
+      const { sessionId } = await addTestHealthWorkerWithSession({
+        scenario: 'approved-nurse',
+      })
+
+      const body = new FormData()
+      body.set('notes', 'Test notes')
+      body.set('patient_id', String(testPatient.id))
+      body.set('provider_id', 'next_available')
+      body.set('provider_name', 'Next Available')
+      body.set('reason', 'seeking treatment')
+
+      const response = await fetch(
+        `${route}/app/facilities/1/waiting-room/add`,
+        {
+          method: 'POST',
+          headers: {
+            Cookie: `sessionId=${sessionId}`,
+          },
+          body,
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error(await response.text())
+      }
+
+      // Assert that the patient encounter is created and added to the waiting room
+      const patientEncounter = await db
+        .selectFrom('patient_encounters')
+        .selectAll()
+        .executeTakeFirstOrThrow()
+
+      const waiting_room = await db
+        .selectFrom('waiting_room')
+        .selectAll()
+        .executeTakeFirstOrThrow()
+
+      assertEquals(patientEncounter.appointment_id, null)
+      assertEquals(patientEncounter.closed_at, null)
+      assertEquals(patientEncounter.notes, 'Test notes')
+      assertEquals(patientEncounter.patient_id, testPatient.id)
+      assertEquals(patientEncounter.reason, 'seeking treatment')
+
+      assertEquals(waiting_room.facility_id, 1)
+      assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
+    })
+  },
+)

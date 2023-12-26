@@ -1,4 +1,4 @@
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import { useState } from 'preact/hooks'
 import { DrugSearchResult as DrugSearchResultData, HasId } from '../../types.ts'
 import Avatar from './Avatar.tsx'
@@ -162,7 +162,7 @@ export default function SearchResults({
   children,
   className,
 }: {
-  children: JSX.Element[] | JSX.Element
+  children: ComponentChildren
   className?: string
 }) {
   return (
