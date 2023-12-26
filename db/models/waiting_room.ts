@@ -4,6 +4,7 @@ import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { hasName } from '../../util/haveNames.ts'
+import { employeeHrefSql } from './facilities.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -88,6 +89,7 @@ export async function get(
             'health_workers.name',
             'employment.profession',
             'patient_encounter_providers.seen_at',
+            employeeHrefSql(facility_id).as('href'),
           ]),
       ).as('providers'),
     ])
