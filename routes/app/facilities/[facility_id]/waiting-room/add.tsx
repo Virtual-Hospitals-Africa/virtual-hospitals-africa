@@ -17,7 +17,7 @@ import {
   RadioGroup,
   TextArea,
 } from '../../../../../components/library/form/Inputs.tsx'
-import ProviderSelect from '../../../../../islands/ProviderSelect.tsx'
+import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -80,7 +80,7 @@ export default async function WaitingRoomAdd(
             />
           </FormRow>
           <FormRow>
-            <ProviderSelect providers={providers} />
+            <ProvidersSelect providers={providers} />
           </FormRow>
 
           {

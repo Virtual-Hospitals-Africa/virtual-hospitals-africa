@@ -3,7 +3,6 @@ import { FacilityDoctorOrNurse, Maybe } from '../types.ts'
 import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
 import words from '../util/words.ts'
-import capitalize from '../util/capitalize.ts'
 
 function ProviderSelectOption(
   { provider, selected, toggleSelection }: {
@@ -84,7 +83,7 @@ function ProviderSelectOption(
   )
 }
 
-export default function ProviderSelect(
+export default function ProvidersSelect(
   { providers }: { providers: FacilityDoctorOrNurse[] },
 ) {
   const selected = useSignal<Set<FacilityDoctorOrNurse>>(new Set())
@@ -116,7 +115,7 @@ export default function ProviderSelect(
       {selected.value.size > 0 && (
         <input
           type='hidden'
-          name='provider'
+          name='provider_ids'
           value={JSON.stringify([...selected.value].map((p) => p.employee_id))}
         />
       )}

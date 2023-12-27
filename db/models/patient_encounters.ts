@@ -6,7 +6,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 export type Create = {
   patient_id: number
   reason: PatientEncounterReason
-  providers?: number[]
+  provider_ids?: number[]
   appointment_id?: Maybe<number>
   notes?: Maybe<string>
 }
@@ -35,9 +35,9 @@ export function assertIsCreate(
   assertOr400(typeof obj.reason === 'string')
   assertIsEncounterReason(obj.reason)
   assertOr400(
-    !obj.providers ||
-      (Array.isArray(obj.providers) &&
-        obj.providers.every((id: unknown) => typeof id === 'number')),
+    !obj.provider_ids ||
+      (Array.isArray(obj.provider_ids) &&
+        obj.provider_ids.every((id: unknown) => typeof id === 'number')),
   )
   assertOr400(
     obj.appointment_id == null || typeof obj.appointment_id === 'number',
@@ -48,7 +48,7 @@ export function assertIsCreate(
 export async function create(
   trx: TrxOrDb,
   facility_id: number,
-  { patient_id, reason, appointment_id, notes, providers }: Create,
+  { patient_id, reason, appointment_id, notes, provider_ids }: Create,
 ) {
   const created = await trx
     .insertInto('patient_encounters')
@@ -61,9 +61,9 @@ export async function create(
     .returning('id')
     .executeTakeFirstOrThrow()
 
-  const adding_provider = providers?.length && trx
+  const adding_providers = provider_ids?.length && trx
     .insertInto('patient_encounter_providers')
-    .values(providers.map((provider_id) => ({
+    .values(provider_ids.map((provider_id) => ({
       patient_encounter_id: created.id,
       provider_id,
     })))
@@ -74,7 +74,7 @@ export async function create(
     facility_id,
   })
 
-  await Promise.all([adding_provider, adding_to_waiting_room])
+  await Promise.all([adding_providers, adding_to_waiting_room])
 
   return created
 }
