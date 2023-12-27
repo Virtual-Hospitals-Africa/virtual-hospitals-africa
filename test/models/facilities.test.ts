@@ -204,6 +204,11 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           profession: 'admin',
         },
         {
+          health_worker_id: hw_at_facility2.id,
+          facility_id: 4,
+          profession: 'doctor',
+        },
+        {
           health_worker_id: hw_other_facility.id,
           facility_id: 4,
           profession: 'doctor',
