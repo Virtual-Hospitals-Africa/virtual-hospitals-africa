@@ -180,7 +180,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     assertEquals($('input[name="street"]').val(), '120 Main Street')
   })
 
-  it('supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the family step', async () => {
+  it('supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the history step', async () => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
@@ -238,7 +238,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+        `${route}/app/patients/add?step=history&patient_id=${patient.id}`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
@@ -321,7 +321,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     }, 'The form should display the medications in a human-readable format')
   })
 
-  it('supports POST of allergies on the pre-existing_conditions step, moving you to the family step', async () => {
+  it('supports POST of allergies on the pre-existing_conditions step, moving you to the history step', async () => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
@@ -349,7 +349,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+        `${route}/app/patients/add?step=history&patient_id=${patient.id}`,
     )
 
     const allergies = await patient_allergies.get(db, patient.id)
@@ -409,7 +409,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+        `${route}/app/patients/add?step=history&patient_id=${patient.id}`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
@@ -477,7 +477,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+        `${route}/app/patients/add?step=history&patient_id=${patient.id}`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {

@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import * as patients from '../../../db/models/patients.ts'
 import PatientDetailedCard from '../../../components/patients/DetailedCard.tsx'
@@ -12,6 +11,7 @@ import Layout from '../../../components/library/Layout.tsx'
 import { Container } from '../../../components/library/Container.tsx'
 import SectionHeader from '../../../components/library/typography/SectionHeader.tsx'
 import { Button } from '../../../components/library/Button.tsx'
+import { assertOr404 } from '../../../util/assertOr.ts'
 
 type PatientPageProps = {
   patient: PatientWithMedicalRecord
@@ -23,14 +23,14 @@ export const handler: LoggedInHealthWorkerHandler<PatientPageProps> = {
     const { healthWorker } = ctx.state
 
     const id = parseInt(ctx.params.id)
-    assert(!isNaN(id), 'Invalid appointment ID')
+    assertOr404(!isNaN(id), 'Invalid patient id')
 
     const [patient] = await patients.getWithMedicalRecords(ctx.state.trx, {
       ids: [id],
       health_worker_id: healthWorker.id,
     })
 
-    assert(patient, 'Patient not found')
+    assertOr404(patient, 'Patient not found')
 
     return ctx.render({
       patient,

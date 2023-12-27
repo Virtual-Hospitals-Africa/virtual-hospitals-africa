@@ -69,10 +69,7 @@ export default function NursePersonalForm(
       <hr className='my-2' />
       <AddressForm patient={formData} adminDistricts={adminDistricts} />
       <hr className='my-2' />
-      <Buttons
-        submitText='Next'
-        cancelText='Back'
-      />
+      <Buttons submitText='Next' />
     </>
   )
 }
