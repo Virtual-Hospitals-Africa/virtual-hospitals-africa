@@ -21,6 +21,16 @@ export const reasons = new Set<PatientEncounterReason>([
   'other',
 ])
 
+export const drop_in_reasons: PatientEncounterReason[] = [
+  'seeking treatment',
+  'appointment',
+  'follow up',
+  'referral',
+  'checkup',
+  'emergency',
+  'other',
+]
+
 export function assertIsEncounterReason(
   str: string,
 ): asserts str is PatientEncounterReason {
