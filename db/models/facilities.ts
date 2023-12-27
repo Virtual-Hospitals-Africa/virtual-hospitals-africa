@@ -125,6 +125,7 @@ export function getEmployeesQuery(
             '=',
             'health_workers.id',
           )
+          .where('employment.facility_id', '=', opts.facility_id)
           .groupBy([
             'employment.id',
             'nurse_specialties.specialty',
