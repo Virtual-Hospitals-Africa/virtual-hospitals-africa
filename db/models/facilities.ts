@@ -262,9 +262,30 @@ export async function invite(
     profession: Profession
   }[],
 ) {
+  const invitedByEmail = new Map<string, Set<Profession>>()
+  for (const { email, profession } of invites) {
+    const professions = invitedByEmail.get(email)
+    if (!professions) {
+      invitedByEmail.set(email, new Set([profession]))
+      continue
+    }
+    if (professions.has(profession)) {
+      const error = `Cannot invite ${email} as a ${profession} more than once.`
+      return { success: false, error }
+    }
+    if (
+      (profession === 'doctor' && professions.has('nurse')) ||
+      (profession === 'nurse' && professions.has('doctor'))
+    ) {
+      const error = `Cannot invite ${email} as both a doctor and a nurse..`
+      return { success: false, error }
+    }
+    professions.add(profession)
+  }
+
   const existingEmployees = await getEmployeesAndInvitees(trx, {
     facility_id,
-    emails: invites.map((invite) => invite.email),
+    emails: [...invitedByEmail.keys()],
   })
 
   const exactMatchingInvites = invites.filter(
