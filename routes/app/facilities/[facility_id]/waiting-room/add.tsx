@@ -98,7 +98,9 @@ export default async function WaitingRoomAdd(
             <RadioGroup
               name='reason'
               label='Reason for visit'
-              options={Array.from(patient_encounters.reasons).map((value) => ({
+              options={patient_encounters.drop_in_reasons.map((
+                value,
+              ) => ({
                 value,
               }))}
               value='seeking treatment'
