@@ -20,7 +20,7 @@ const rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange +
   rsSpaceRange
 
 /** Used to compose unicode capture groups. */
-const rsApos = '[\'\u2019]'
+const rsApos = "['\u2019]"
 const rsBreak = `[${rsBreakRange}]`
 const rsCombo = `[${rsComboRange}]`
 const rsDigit = '\\d'

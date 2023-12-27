@@ -8,7 +8,6 @@ import {
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
 } from '../../../../types.ts'
-import { isHealthWorkerWithGoogleTokens } from '../../../../db/models/health_workers.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 

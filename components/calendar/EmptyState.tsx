@@ -1,4 +1,4 @@
-import MakeAppointmentIcon from '../library/icons/make-appointment.tsx'
+import MakeAppointmentIcon from '../library/icons/MakeAppointment.tsx'
 import EmptyState from '../library/EmptyState.tsx'
 
 export default function CalendarEmptyState() {

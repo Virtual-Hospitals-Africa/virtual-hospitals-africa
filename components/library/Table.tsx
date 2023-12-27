@@ -1,9 +1,18 @@
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
+import isString from '../../util/isString.ts'
 
-type Row = Record<string, string | number | string[] | null | undefined> & {
+type Showable =
+  | string
+  | number
+  | string[]
+  | null
+  | undefined
+  | ComponentChildren
+
+type Row = Record<string, unknown> & {
   id?: number
 }
 
@@ -13,8 +22,8 @@ export type TableColumn<T extends Row> =
     cellClassName?: string
   }
   & (
-    | { type: 'content'; dataKey: keyof T }
-    | { type: 'avatar'; dataKey: keyof T }
+    | { type: 'content'; dataKey: keyof T | ((row: T) => Showable) }
+    | { type: 'avatar'; dataKey: keyof T | ((row: T) => Showable) }
     | {
       type: 'actions'
       actions: Record<string, (row: T) => Maybe<string>>
@@ -44,7 +53,14 @@ function TableCellInnerContents<T extends Row>(
   { row, column }: { row: T; column: TableColumn<T> },
 ) {
   if (column.type === 'content') {
-    const value = row[column.dataKey]
+    const value = typeof column.dataKey === 'function'
+      ? column.dataKey(row)
+      : row[column.dataKey]
+
+    const display = Array.isArray(value) && value.every(isString)
+      ? value.join(', ')
+      // deno-lint-ignore no-explicit-any
+      : (value as any)
 
     return (
       <div
@@ -53,13 +69,15 @@ function TableCellInnerContents<T extends Row>(
           column.cellClassName,
         )}
       >
-        {Array.isArray(value) ? value.join(', ') : value}
+        {display}
       </div>
     )
   }
 
   if (column.type === 'avatar') {
-    const src = row[column.dataKey]
+    const src = typeof column.dataKey === 'function'
+      ? column.dataKey(row)
+      : row[column.dataKey]
     if (!src) return <></>
     if (typeof src === 'string') {
       return (
@@ -73,7 +91,11 @@ function TableCellInnerContents<T extends Row>(
         </div>
       )
     }
-    throw new Error(`Expected ${column.dataKey as string} to be of type string`)
+    throw new Error(
+      `Expected ${
+        column.label || column.dataKey as string
+      } to be of type string`,
+    )
   }
 
   if (column.type === 'actions') {

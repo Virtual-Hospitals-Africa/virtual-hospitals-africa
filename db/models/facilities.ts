@@ -2,6 +2,9 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   Facility,
+  FacilityDoctorOrNurse,
+  FacilityEmployee,
+  FacilityEmployeeOrInvitee,
   Location,
   Maybe,
   Profession,
@@ -10,6 +13,12 @@ import {
 } from '../../types.ts'
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  jsonBuildObject,
+} from '../helpers.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export async function nearest(
   trx: TrxOrDb,
@@ -67,56 +76,77 @@ export function get(
     .execute()
 }
 
-export type FacilityEmployee = {
-  name: null | string
-  is_invitee: boolean
-  health_worker_id: null | number
-  professions: Profession[]
-  avatar_url: null | string
-  email: string
-  display_name: string
-  href: null | string
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+export function employeeHrefSql(facility_id: number) {
+  return sql<
+    string
+  >`CONCAT('/app/facilities/', ${facility_id}::text, '/employees/', health_workers.id::text)`
 }
 
-export function getEmployees(
+export function getEmployeesQuery(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-    include_invitees?: boolean
+    professions?: Profession[]
     emails?: string[]
+    is_approved?: boolean
   },
-): Promise<FacilityEmployee[]> {
+) {
   let hwQuery = trx.selectFrom('health_workers')
-    .select([
-      'health_workers.id as health_worker_id',
-      'health_workers.name as name',
-      'health_workers.email as email',
-      'health_workers.name as display_name',
-      'health_workers.avatar_url as avatar_url',
-      sql<false>`FALSE`.as('is_invitee'),
-      sql<
-        Profession[]
-      >`JSON_AGG(employment.profession ORDER BY employment.profession)`.as(
-        'professions',
-      ),
-      sql<
-        string
-      >`CONCAT('/app/facilities/', ${opts.facility_id}::text, '/employees/', health_workers.id::text)`
-        .as('href'),
-      sql<'pending_approval' | 'approved' | 'incomplete'>`CASE 
-      WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
-      WHEN nurse_registration_details.approved_by IS NULL 
-            AND JSON_AGG(employment.profession ORDER BY employment.profession)::text LIKE '%"nurse"%' 
-            THEN 'pending_approval'
-      ELSE 'approved' END`.as('registration_status'),
-    ])
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
     .leftJoin(
       'nurse_registration_details',
       'nurse_registration_details.health_worker_id',
       'health_workers.id',
     )
+    .select((eb) => [
+      'health_workers.id as health_worker_id',
+      'health_workers.name as name',
+      'health_workers.email as email',
+      'health_workers.name as display_name',
+      'health_workers.avatar_url as avatar_url',
+      sql<false>`FALSE`.as('is_invitee'),
+      jsonArrayFromColumn(
+        'profession_details',
+        eb.selectFrom('employment')
+          .leftJoin(
+            'nurse_specialties',
+            'nurse_specialties.employee_id',
+            'employment.id',
+          )
+          .select((inner) => [
+            jsonBuildObject({
+              employee_id: inner.ref('employment.id'),
+              profession: inner.ref('employment.profession'),
+              specialty: inner.ref('nurse_specialties.specialty'),
+            }).as('profession_details'),
+          ])
+          .whereRef(
+            'employment.health_worker_id',
+            '=',
+            'health_workers.id',
+          )
+          .where('employment.facility_id', '=', opts.facility_id)
+          .where(
+            'employment.profession',
+            'in',
+            opts.professions || ['admin', 'doctor', 'nurse'],
+          )
+          .groupBy([
+            'employment.id',
+            'nurse_specialties.specialty',
+          ]).orderBy(['employment.profession asc']),
+      ).as('professions'),
+      employeeHrefSql(opts.facility_id).as('href'),
+      sql<'pending_approval' | 'approved' | 'incomplete'>`
+        CASE
+          WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
+          WHEN nurse_registration_details.approved_by IS NULL
+              AND JSON_AGG(employment.profession ORDER BY employment.profession)::text LIKE '%"nurse"%'
+              THEN 'pending_approval'
+          ELSE 'approved'
+        END
+      `.as('registration_status'),
+    ])
     .where('employment.facility_id', '=', opts.facility_id)
     .groupBy([
       'health_workers.id',
@@ -129,23 +159,79 @@ export function getEmployees(
     assert(opts.emails.length)
     hwQuery = hwQuery.where('health_workers.email', 'in', opts.emails)
   }
-
-  if (!opts.include_invitees) {
-    return hwQuery.execute()
+  if (opts.professions) {
+    assert(opts.professions.length)
+    hwQuery = hwQuery.where('employment.profession', 'in', opts.professions)
+  }
+  if (opts.is_approved) {
+    console.log('TODO implement is_approved for doctors')
   }
 
+  return hwQuery
+}
+
+export function getEmployees(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    professions?: Profession[]
+    emails?: string[]
+    registration_status?: 'pending_approval' | 'approved' | 'incomplete'
+  },
+): Promise<FacilityEmployee[]> {
+  return getEmployeesQuery(trx, opts).execute()
+}
+
+export async function getApprovedDoctorsAndNurses(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    emails?: string[]
+  },
+): Promise<FacilityDoctorOrNurse[]> {
+  const employees = await getEmployees(trx, {
+    ...opts,
+    professions: ['doctor', 'nurse'],
+    registration_status: 'approved',
+  })
+
+  return employees.map(({ is_invitee, professions, ...rest }) => {
+    assert(!is_invitee)
+    assertEquals(professions.length, 1)
+    const [{ profession, employee_id, specialty }] = professions
+    assert(profession === 'doctor' || profession === 'nurse')
+
+    return {
+      ...rest,
+      profession,
+      employee_id,
+      specialty,
+    }
+  })
+}
+
+export function getEmployeesAndInvitees(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    professions?: Profession[]
+    emails?: string[]
+  },
+): Promise<FacilityEmployeeOrInvitee[]> {
+  const hwQuery = getEmployeesQuery(trx, opts)
   let inviteeQuery = trx.selectFrom('health_worker_invitees')
-    .select([
+    .select((eb) => [
       sql<null | number>`NULL`.as('health_worker_id'),
       sql<null | string>`NULL`.as('name'),
       'health_worker_invitees.email as email',
       'health_worker_invitees.email as display_name',
       sql<null | string>`NULL`.as('avatar_url'),
       sql<boolean>`TRUE`.as('is_invitee'),
-      sql<
-        Profession[]
-      >`JSON_AGG(health_worker_invitees.profession ORDER BY health_worker_invitees.profession)`
-        .as('professions'),
+      jsonArrayFrom(
+        jsonBuildObject({
+          profession: eb.ref('health_worker_invitees.profession'),
+        }),
+      ).as('professions'),
       sql<null>`NULL`.as('href'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`'incomplete'`.as(
         'registration_status',
@@ -176,25 +262,45 @@ export async function invite(
     profession: Profession
   }[],
 ) {
-  const existingEmployees = await getEmployees(trx, {
+  const existingEmployees = await getEmployeesAndInvitees(trx, {
     facility_id,
-    include_invitees: true,
     emails: invites.map((invite) => invite.email),
   })
 
-  const matchingInvites = invites.filter(
+  const exactMatchingInvites = invites.filter(
     (invite) =>
       existingEmployees.some(
         (employee) =>
           invite.email === employee.email &&
-          employee.professions.includes(invite.profession),
+          employee.professions.some(({ profession }) =>
+            profession === invite.profession
+          ),
       ),
   )
-
-  if (matchingInvites.length) {
-    const [first] = matchingInvites
+  if (exactMatchingInvites.length) {
+    const [{ email, profession }] = exactMatchingInvites
     const error =
-      `${first.email} is already employed as a ${first.profession}, please remove them from the list`
+      `${email} is already employed as a ${profession}. Please remove them from the list.`
+    return { success: false, error }
+  }
+
+  const alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa = invites.filter(
+    (invite) =>
+      existingEmployees.some(
+        (employee) =>
+          invite.email === employee.email &&
+          employee.professions.some(({ profession }) => (
+            (profession === 'doctor' && invite.profession === 'nurse') ||
+            (profession === 'nurse' && invite.profession === 'doctor')
+          )),
+      ),
+  )
+  if (alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa.length) {
+    const [{ email, profession }] =
+      alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa
+    const error = `${email} is already employed as a ${
+      profession === 'nurse' ? 'doctor' : 'nurse'
+    } so they can't also be employed as a ${profession}. Please remove them from the list.`
     return { success: false, error }
   }
 

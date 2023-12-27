@@ -4,23 +4,14 @@ import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../library/form/Row.tsx'
 import { SearchInput } from '../library/form/Inputs.tsx'
-import { FacilityEmployee } from '../../db/models/facilities.ts'
+import { FacilityEmployeeOrInvitee } from '../../types.ts'
 
 type EmployeesTableProps = {
   isAdmin: boolean
-  employees: FacilityEmployee[]
+  employees: FacilityEmployeeOrInvitee[]
   pathname: string
   facility_id: number
   health_worker_id: number
-}
-
-type Employee = {
-  avatar_url: null | string
-  display_name: string
-  professions: string[]
-  health_worker_id: number | null
-  href: string | null
-  registration_status: string
 }
 
 export default function EmployeesTable({
@@ -28,7 +19,7 @@ export default function EmployeesTable({
   employees,
   pathname,
 }: EmployeesTableProps): JSX.Element {
-  const columns: TableColumn<Employee>[] = [
+  const columns: TableColumn<FacilityEmployeeOrInvitee>[] = [
     {
       label: null,
       dataKey: 'avatar_url',
@@ -41,14 +32,16 @@ export default function EmployeesTable({
     },
     {
       label: 'Profession',
-      dataKey: 'professions',
+      dataKey(row) {
+        return row.professions.map(({ profession }) => profession).join(', ')
+      },
       type: 'content',
     },
     {
       label: 'Actions',
       type: 'actions',
       actions: {
-        ['View'](row: Employee) {
+        ['View'](row: FacilityEmployeeOrInvitee) {
           if (
             row.href &&
             !(isAdmin && row.registration_status === 'pending_approval')
@@ -56,7 +49,7 @@ export default function EmployeesTable({
             return row.href
           }
         },
-        ['Approve'](row: Employee) {
+        ['Approve'](row: FacilityEmployeeOrInvitee) {
           if (isAdmin && row.registration_status === 'pending_approval') {
             return row.href
           }
@@ -74,7 +67,7 @@ export default function EmployeesTable({
             <Button
               type='button'
               href={`${pathname}/invite`}
-              className='block w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+              className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
             >
               Invite
             </Button>

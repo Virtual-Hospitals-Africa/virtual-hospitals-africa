@@ -20,17 +20,18 @@ export default function PersonSearch({
   name: string
   required?: boolean
   label?: string
-  value?: { id: number; name: string }
+  value?: { id: number | 'next_available'; name: string }
   addable?: boolean
 }) {
   const [isFocused, setIsFocused] = useState(false)
-  const [selected, setSelected] = useState<HasId<{ name: string }> | null>(
+  const [selected, setSelected] = useState<
+    { id: number | 'next_available' | 'add'; name: string } | null
+  >(
     value || null,
   )
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
 
   const [search, setSearchImmediate] = useState(value?.name ?? '')
-  //const [profession, setProfession] = useState('')
 
   // Don't search until the user has stopped typing for a bit
   const [setSearch] = useState({
@@ -38,37 +39,39 @@ export default function PersonSearch({
   })
 
   const onDocumentClick = useCallback(() => {
-    setIsFocused(
-      document.activeElement ===
-        document.querySelector(`input[name="${name}_name"]`),
-    )
-  }, [])
+    const nextIsFocused = document.activeElement ===
+      document.querySelector(`input[name="${name}_name"]`)
+    setIsFocused(nextIsFocused)
+  }, [setIsFocused])
 
   useEffect(() => {
-    onDocumentClick()
     self.addEventListener('click', onDocumentClick)
-    return () => self.removeEventListener('click', onDocumentClick)
+    self.addEventListener('focus', onDocumentClick)
+    self.addEventListener('blur', onDocumentClick)
+    return () => {
+      self.removeEventListener('click', onDocumentClick)
+      self.removeEventListener('focus', onDocumentClick)
+      self.removeEventListener('blur', onDocumentClick)
+    }
   })
 
   useEffect(() => {
     const url = new URL(`${window.location.origin}${href}`)
-    url.searchParams.set('search', search)
+    if (search && search !== value?.name) {
+      url.searchParams.set('search', search)
+    }
 
     fetch(url, {
       headers: { accept: 'application/json' },
     }).then(async (response) => {
       const people = await response.json()
       assert(Array.isArray(people))
-      assert(people.every((person) => person && typeof person === 'object'))
-      assert(
-        people.every((person) => person.id && typeof person.id === 'number'),
-      )
       setPeople(people)
     }).catch(console.error)
   }, [search])
 
   const showSearchResults = isFocused &&
-    selected?.name !== search && (people.length > 0 || search && addable)
+    (people.length > 0 || (search && addable))
 
   return (
     <div className='w-full'>
@@ -88,31 +91,52 @@ export default function PersonSearch({
         {/* TODO add empty state for no results */}
         {showSearchResults && (
           <SearchResults>
-            <>
-              {people.map((person) => (
-                <PersonSearchResult
-                  person={person}
-                  isSelected={selected?.id === person.id}
-                  onSelect={() => {
-                    setSelected(person)
-                    setSearchImmediate(person.name)
-                  }}
-                />
-              ))}
-            </>
-            <>
-              <AddButtonSearchResult
-                searchedValue={search}
-                isSelected={selected?.id == Number.NaN}
+            {people.map((person) => (
+              <PersonSearchResult
+                person={person}
+                isSelected={selected?.id === person.id}
                 onSelect={() => {
-                  setSelected({ name: search, id: Number.NaN })
-                  setSearchImmediate(search)
+                  setIsFocused(false)
+                  setSelected(person)
+                  setSearchImmediate(person.name)
+
+                  const input = document.querySelector(
+                    `input[name="${name}_name"]`,
+                  )
+                  assert(input instanceof HTMLInputElement)
+
+                  // Create a new keyboard event for the 'Tab' key
+                  const tabKeyEvent = new KeyboardEvent('keydown', {
+                    key: 'Tab',
+                    code: 'Tab',
+                    keyCode: 9,
+                    which: 9,
+                    bubbles: true,
+                    cancelable: true,
+                  })
+
+                  // Dispatch the event to the input
+                  input.dispatchEvent(tabKeyEvent)
+                  // console.log('ELWE:LWE', input)
+                  // const blur = new Event('blur')
+                  // input.dispatchEvent(blur)
+                  // console.log('MMMMMM:LWE', input)
                 }}
               />
-            </>
+            ))}
+            {addable && search
+              ? (
+                <AddButtonSearchResult
+                  searchedValue={search}
+                  isSelected={selected?.id === 'add'}
+                  onSelect={() => setSelected({ name: search, id: 'add' })}
+                />
+              )
+              : null}
           </SearchResults>
         )}
       </SearchInput>
+      <span id='nonsense' />
       {selected && (
         <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}

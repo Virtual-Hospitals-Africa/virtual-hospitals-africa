@@ -1,4 +1,4 @@
-import { FormState } from '../routes/app/facilities/[facilityId]/register.tsx'
+import { FormState } from '../routes/app/facilities/[facility_id]/register.tsx'
 import NursePersonalForm from '../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'

@@ -27,7 +27,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
   })
 
   describe('makeAppointmentWeb', () => {
-    it('inserts an event on the specified health worker\'s google calendar, adding that event to the db', async () => {
+    it("inserts an event on the specified health worker's google calendar, adding that event to the db", async () => {
       const healthWorker = await health_workers.upsertWithGoogleCredentials(
         db,
         testHealthWorker(),

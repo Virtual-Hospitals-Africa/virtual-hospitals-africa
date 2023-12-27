@@ -195,7 +195,7 @@ const conversationStates: ConversationStates<
         return {
           type: 'select',
           prompt:
-            'We\'re sorry that no facilities were found in your area. Our team has been notified and will follow up with you soon.',
+            "We're sorry that no facilities were found in your area. Our team has been notified and will follow up with you soon.",
           options: [
             {
               id: 'main_menu',

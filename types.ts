@@ -878,6 +878,50 @@ export type HealthWorkerInvitee = {
   profession: Profession
 }
 
+export type FacilityEmployeeOrInvitee =
+  | FacilityEmployee
+  | FacilityEmployeeInvitee
+
+export type FacilityEmployee = {
+  name: string
+  is_invitee: false
+  health_worker_id: number
+  professions: {
+    employee_id: number
+    profession: Profession
+    specialty: NurseSpecialty | null
+  }[]
+  avatar_url: null | string
+  email: string
+  display_name: string
+  href: string
+  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+}
+
+export type FacilityDoctorOrNurse =
+  & Omit<FacilityEmployee, 'is_invitee' | 'professions'>
+  & {
+    profession: 'doctor' | 'nurse'
+    employee_id: number
+    specialty: NurseSpecialty | null
+  }
+
+export type FacilityEmployeeInvitee = {
+  name: null
+  is_invitee: true
+  health_worker_id: null | number
+  professions: {
+    employee_id?: undefined
+    profession: Profession
+    specialty?: undefined
+  }[]
+  avatar_url: null
+  email: string
+  display_name: string
+  href: null
+  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'
@@ -1440,14 +1484,68 @@ export type PatientGuardian = {
 }
 
 export type Allergy = {
-  id: number
   name: string
 }
 
 export type PatientAllergies = {
-  id: number
   patient_id: number
   allergy_id: number
+}
+
+export type PatientEncounterReason =
+  | 'seeking treatment'
+  | 'appointment'
+  | 'follow up'
+  | 'referral'
+  | 'checkup'
+  | 'emergency'
+  | 'other'
+
+export type PatientEncounter = {
+  patient_id: number
+  reason: PatientEncounterReason
+  closed_at: null | Date
+  appointment_id: null | number
+  notes: null | string
+}
+
+export type PatientEncounterProvider = {
+  patient_encounter_id: number
+  provider_id: number
+  seen_at: null | Date
+}
+
+export type WaitingRoom = {
+  facility_id: number
+  patient_encounter_id: number
+}
+
+export type RenderedProvider = {
+  health_worker_id: number
+  employee_id: number
+  name: string
+  profession: string
+  href: string
+  seen_at: Date | null
+}
+export type RenderedWaitingRoom = {
+  patient: {
+    id: number
+    name: string
+    href: string
+    avatar_url: string | null
+  }
+  reason: PatientEncounterReason
+  is_emergency: boolean
+  appointment: null | {
+    id: number
+    start: Date
+    health_workers: {
+      id: number
+      name: string
+    }[]
+  }
+  providers: RenderedProvider[]
 }
 
 export type PatientOccupation = {
@@ -1495,5 +1593,8 @@ export type DatabaseSchema = {
   patient_guardians: SqlRow<PatientGuardian>
   allergies: SqlRow<Allergy>
   patient_allergies: SqlRow<PatientAllergies>
+  patient_encounters: SqlRow<PatientEncounter>
+  patient_encounter_providers: SqlRow<PatientEncounterProvider>
+  waiting_room: SqlRow<WaitingRoom>
   patient_occupations: SqlRow<PatientOccupation>
 }
