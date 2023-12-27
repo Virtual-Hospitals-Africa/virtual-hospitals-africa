@@ -1532,8 +1532,11 @@ export type RenderedWaitingRoom = {
   patient: {
     id: number
     name: string
-    href: string
     avatar_url: string | null
+  }
+  actions: {
+    view_href: string | null
+    intake_href: string | null
   }
   reason: PatientEncounterReason
   is_emergency: boolean

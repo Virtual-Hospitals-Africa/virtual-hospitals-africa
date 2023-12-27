@@ -157,7 +157,6 @@ type FormValuesByStep = {
 }
 
 type FormValues = FormValuesByStep[keyof FormValuesByStep]
-
 type TypeCheckers = {
   [key in keyof FormValuesByStep]: (
     patient: unknown,

@@ -32,9 +32,12 @@ describe(
             appointment: null,
             patient: {
               avatar_url: null,
-              href: `/app/patients/${patient1.id}`,
               id: patient1.id,
               name: 'Test Patient 1',
+            },
+            actions: {
+              view_href: null,
+              intake_href: `/app/patients/${patient1.id}/intake`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -44,9 +47,12 @@ describe(
             appointment: null,
             patient: {
               avatar_url: null,
-              href: `/app/patients/${patient2.id}`,
               id: patient2.id,
               name: 'Test Patient 2',
+            },
+            actions: {
+              view_href: null,
+              intake_href: `/app/patients/${patient2.id}/intake`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -74,9 +80,12 @@ describe(
             appointment: null,
             patient: {
               avatar_url: null,
-              href: `/app/patients/${patient2.id}`,
               id: patient2.id,
               name: 'Test Patient 2',
+            },
+            actions: {
+              view_href: null,
+              intake_href: `/app/patients/${patient2.id}/intake`,
             },
             providers: [],
             reason: 'emergency',
@@ -86,9 +95,12 @@ describe(
             appointment: null,
             patient: {
               avatar_url: null,
-              href: `/app/patients/${patient1.id}`,
               id: patient1.id,
               name: 'Test Patient 1',
+            },
+            actions: {
+              view_href: null,
+              intake_href: `/app/patients/${patient1.id}/intake`,
             },
             providers: [],
             reason: 'seeking treatment',

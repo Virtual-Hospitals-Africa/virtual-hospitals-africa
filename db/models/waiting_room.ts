@@ -41,10 +41,23 @@ export async function get(
       jsonBuildObject({
         id: eb.ref('patients.id'),
         name: eb.ref('patients.name'),
-        href: patients.href_sql,
         avatar_url: patients.avatar_url_sql,
       }).as('patient'),
       'patient_encounters.reason',
+      jsonBuildObject({
+        view_href: eb.case()
+          .when(
+            eb('patients.completed_onboarding', '=', true),
+          ).then(sql<string>`concat('/app/patients/', patients.id::text)`)
+          .else(null).end(),
+        intake_href: eb.case()
+          .when(
+            eb('patients.completed_onboarding', '=', false),
+          ).then(
+            sql<string>`concat('/app/patients/', patients.id::text, '/intake')`,
+          )
+          .else(null).end(),
+      }).as('actions'),
       sql<boolean>`patient_encounters.reason = 'emergency'`.as('is_emergency'),
       'patient_encounters.closed_at',
       'appointments.id as appointment_id',
