@@ -37,8 +37,6 @@ describeWithWebServer(
       assertEquals(formValues, {
         notes: null,
         patient_name: null,
-        provider_id: 'next_available',
-        provider_name: 'Next Available',
         reason: 'seeking treatment',
       })
     })

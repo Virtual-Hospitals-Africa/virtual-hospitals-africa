@@ -4,6 +4,7 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import FormRow from '../../../../../components/library/form/Row.tsx'
 import PersonSearch from '../../../../../islands/PersonSearch.tsx'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
+import * as facilities from '../../../../../db/models/facilities.ts'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
@@ -16,6 +17,7 @@ import {
   RadioGroup,
   TextArea,
 } from '../../../../../components/library/form/Inputs.tsx'
+import ProviderSelect from '../../../../../islands/ProviderSelect.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -39,9 +41,9 @@ export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   },
 }
 
-export default function WaitingRoomAdd(
+export default async function WaitingRoomAdd(
+  _req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
-  req: Request,
 ) {
   const { searchParams } = ctx.url
   const patient_id = parseInt(searchParams.get('patient_id')!) || null
@@ -49,6 +51,13 @@ export default function WaitingRoomAdd(
 
   const facility_id = parseInt(ctx.params.facility_id)
   assert(facility_id)
+
+  const providers = await facilities.getApprovedDoctorsAndNurses(
+    ctx.state.trx,
+    {
+      facility_id,
+    },
+  )
 
   return (
     <Layout
@@ -71,14 +80,20 @@ export default function WaitingRoomAdd(
             />
           </FormRow>
           <FormRow>
-            <PersonSearch
-              name='provider'
-              // TODO: instead search for employees of facility
-              href={`/app/health_workers?facility_id=${facility_id}&profession=doctor,nurse&include_next_available=true`}
-              required
-              value={{ id: 'next_available', name: 'Next Available' }}
-            />
+            <ProviderSelect providers={providers} />
           </FormRow>
+
+          {
+            /*
+              TODO: Decide if we want to allow selection of providers from other facilities
+              <PersonSearch
+                name='provider'
+                href={`/app/health_workers?facility_id=${facility_id}&profession=doctor,nurse&include_next_available=true`}
+                required
+                value={{ id: 'next_available', name: 'Next Available' }}
+              />
+            */
+          }
           <FormRow>
             <RadioGroup
               name='reason'

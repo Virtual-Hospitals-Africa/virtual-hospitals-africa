@@ -8,6 +8,7 @@ import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { insertTestAddress, randomNationalId } from '../mocks.ts'
+import omit from '../../util/omit.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -45,7 +46,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         {
           health_worker_id: hw_at_facility1.id,
           facility_id: 3,
-          profession: 'doctor',
+          profession: 'nurse',
         },
         {
           health_worker_id: hw_at_facility1.id,
@@ -60,7 +61,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         {
           health_worker_id: hw_at_facility2.id,
           facility_id: 3,
-          profession: 'nurse',
+          profession: 'admin',
         },
         {
           health_worker_id: hw_other_facility.id,
@@ -76,90 +77,81 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const withInvitees = await facilities.getEmployees(db, {
+      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
         facility_id: 3,
-        include_invitees: true,
       })
 
-      assertEquals(withInvitees, [
-        {
-          avatar_url: 'avatar_url',
-          email: 'at_facility1@worker.com',
-          display_name: 'At Facility 1',
-          health_worker_id: hw_at_facility1.id,
-          is_invitee: false,
-          name: 'At Facility 1',
-          href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
-          registration_status: 'incomplete',
-          professions: [
-            'admin',
-            'doctor',
-          ],
-        },
-        {
-          avatar_url: 'avatar_url',
-          email: 'at_facility2@worker.com',
-          display_name: 'At Facility 2',
-          health_worker_id: hw_at_facility2.id,
-          is_invitee: false,
-          name: 'At Facility 2',
-          href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
-          registration_status: 'incomplete',
-          professions: [
-            'doctor',
-            'nurse',
-          ],
-        },
-        {
-          avatar_url: null,
-          email: 'invitee@test.com',
-          display_name: 'invitee@test.com',
-          health_worker_id: null,
-          is_invitee: true,
-          name: null,
-          href: null,
-          registration_status: 'incomplete',
-          professions: [
-            'doctor',
-          ],
-        },
-      ])
+      assertEquals(withInvitees.length, 3)
+      assertEquals(omit(withInvitees[0], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'at_facility1@worker.com',
+        display_name: 'At Facility 1',
+        health_worker_id: hw_at_facility1.id,
+        is_invitee: false,
+        name: 'At Facility 1',
+        href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withInvitees[0].professions.length, 2)
+      assertEquals(withInvitees[0].professions[0].profession, 'admin')
+      assertEquals(withInvitees[0].professions[1].profession, 'nurse')
+      assertEquals(omit(withInvitees[1], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'at_facility2@worker.com',
+        display_name: 'At Facility 2',
+        health_worker_id: hw_at_facility2.id,
+        is_invitee: false,
+        name: 'At Facility 2',
+        href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withInvitees[1].professions.length, 2)
+      assertEquals(withInvitees[1].professions[0].profession, 'admin')
+      assertEquals(withInvitees[1].professions[1].profession, 'doctor')
+      assertEquals(omit(withInvitees[2], ['professions']), {
+        avatar_url: null,
+        email: 'invitee@test.com',
+        display_name: 'invitee@test.com',
+        health_worker_id: null,
+        is_invitee: true,
+        name: null,
+        href: null,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withInvitees[2].professions.length, 1)
+      assertEquals(withInvitees[2].professions[0].profession, 'doctor')
 
       const withoutInvitees = await facilities.getEmployees(db, {
         facility_id: 3,
-        include_invitees: false,
       })
 
-      assertEquals(withoutInvitees, [
-        {
-          avatar_url: 'avatar_url',
-          email: 'at_facility1@worker.com',
-          display_name: 'At Facility 1',
-          health_worker_id: hw_at_facility1.id,
-          is_invitee: false,
-          name: 'At Facility 1',
-          href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
-          registration_status: 'incomplete',
-          professions: [
-            'admin',
-            'doctor',
-          ],
-        },
-        {
-          avatar_url: 'avatar_url',
-          email: 'at_facility2@worker.com',
-          display_name: 'At Facility 2',
-          health_worker_id: hw_at_facility2.id,
-          is_invitee: false,
-          name: 'At Facility 2',
-          href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
-          registration_status: 'incomplete',
-          professions: [
-            'doctor',
-            'nurse',
-          ],
-        },
-      ])
+      assertEquals(withoutInvitees.length, 2)
+      assertEquals(omit(withoutInvitees[0], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'at_facility1@worker.com',
+        display_name: 'At Facility 1',
+        health_worker_id: hw_at_facility1.id,
+        is_invitee: false,
+        name: 'At Facility 1',
+        href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withoutInvitees[0].professions.length, 2)
+      assertEquals(withoutInvitees[0].professions[0].profession, 'admin')
+      assertEquals(withoutInvitees[0].professions[1].profession, 'nurse')
+      assertEquals(omit(withoutInvitees[1], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'at_facility2@worker.com',
+        display_name: 'At Facility 2',
+        health_worker_id: hw_at_facility2.id,
+        is_invitee: false,
+        name: 'At Facility 2',
+        href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withoutInvitees[1].professions.length, 2)
+      assertEquals(withoutInvitees[1].professions[0].profession, 'admin')
+      assertEquals(withoutInvitees[1].professions[1].profession, 'doctor')
     })
 
     it('can get employees matching emails', async () => {
@@ -194,7 +186,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         {
           health_worker_id: hw_at_facility1.id,
           facility_id: 3,
-          profession: 'doctor',
+          profession: 'nurse',
         },
         {
           health_worker_id: hw_at_facility1.id,
@@ -209,7 +201,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         {
           health_worker_id: hw_at_facility2.id,
           facility_id: 3,
-          profession: 'nurse',
+          profession: 'admin',
         },
         {
           health_worker_id: hw_other_facility.id,
@@ -225,28 +217,25 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const withInvitees = await facilities.getEmployees(db, {
+      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
         facility_id: 3,
-        include_invitees: true,
         emails: ['at_facility2@worker.com'],
       })
 
-      assertEquals(withInvitees, [
-        {
-          avatar_url: 'avatar_url',
-          email: 'at_facility2@worker.com',
-          display_name: 'At Facility 2',
-          health_worker_id: hw_at_facility2.id,
-          is_invitee: false,
-          name: 'At Facility 2',
-          href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
-          registration_status: 'incomplete',
-          professions: [
-            'doctor',
-            'nurse',
-          ],
-        },
-      ])
+      assertEquals(withInvitees.length, 1)
+      assertEquals(omit(withInvitees[0], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'at_facility2@worker.com',
+        display_name: 'At Facility 2',
+        health_worker_id: hw_at_facility2.id,
+        is_invitee: false,
+        name: 'At Facility 2',
+        href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withInvitees[0].professions.length, 2)
+      assertEquals(withInvitees[0].professions[0].profession, 'admin')
+      assertEquals(withInvitees[0].professions[1].profession, 'doctor')
     })
 
     it("assures that registration_status is pending_approval for when registration is complete, but hasn't been approved", async () => {
@@ -286,26 +275,23 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         address_id: nurse_address.id,
       })
 
-      const withInvitees = await facilities.getEmployees(db, {
+      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
         facility_id: 1,
-        include_invitees: true,
       })
 
-      assertEquals(withInvitees, [
-        {
-          avatar_url: 'avatar_url',
-          email: 'at_facility1@worker.com',
-          display_name: 'At Facility 1',
-          health_worker_id: hw_at_facility1.id,
-          is_invitee: false,
-          name: 'At Facility 1',
-          href: `/app/facilities/1/employees/${hw_at_facility1.id}`,
-          registration_status: 'pending_approval',
-          professions: [
-            'nurse',
-          ],
-        },
-      ])
+      assertEquals(withInvitees.length, 1)
+      assertEquals(omit(withInvitees[0], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'at_facility1@worker.com',
+        display_name: 'At Facility 1',
+        health_worker_id: hw_at_facility1.id,
+        is_invitee: false,
+        name: 'At Facility 1',
+        href: `/app/facilities/1/employees/${hw_at_facility1.id}`,
+        registration_status: 'pending_approval',
+      })
+      assertEquals(withInvitees[0].professions.length, 1)
+      assertEquals(withInvitees[0].professions[0].profession, 'nurse')
     })
 
     it('assures that registration_status is approved for when registration is complete, and has been approved', async () => {
@@ -359,39 +345,35 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         address_id: nurse_address.id,
       })
 
-      const withInvitees = await facilities.getEmployees(db, {
+      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
         facility_id: 1,
-        include_invitees: true,
       })
 
-      assertEquals(withInvitees, [
-        {
-          avatar_url: 'avatar_url',
-          email: 'nurse@worker.com',
-          display_name: 'Nurse',
-          health_worker_id: nurse.id,
-          is_invitee: false,
-          name: 'Nurse',
-          href: `/app/facilities/1/employees/${nurse.id}`,
-          registration_status: 'approved',
-          professions: [
-            'nurse',
-          ],
-        },
-        {
-          avatar_url: 'avatar_url',
-          email: 'admin@worker.com',
-          display_name: 'Admin',
-          health_worker_id: admin.id,
-          is_invitee: false,
-          name: 'Admin',
-          href: `/app/facilities/1/employees/${admin.id}`,
-          registration_status: 'incomplete',
-          professions: [
-            'admin',
-          ],
-        },
-      ])
+      assertEquals(withInvitees.length, 2)
+      assertEquals(omit(withInvitees[0], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'nurse@worker.com',
+        display_name: 'Nurse',
+        health_worker_id: nurse.id,
+        is_invitee: false,
+        name: 'Nurse',
+        href: `/app/facilities/1/employees/${nurse.id}`,
+        registration_status: 'approved',
+      })
+      assertEquals(withInvitees[0].professions.length, 1)
+      assertEquals(withInvitees[0].professions[0].profession, 'nurse')
+      assertEquals(omit(withInvitees[1], ['professions']), {
+        avatar_url: 'avatar_url',
+        email: 'admin@worker.com',
+        display_name: 'Admin',
+        health_worker_id: admin.id,
+        is_invitee: false,
+        name: 'Admin',
+        href: `/app/facilities/1/employees/${admin.id}`,
+        registration_status: 'incomplete',
+      })
+      assertEquals(withInvitees[1].professions.length, 1)
+      assertEquals(withInvitees[1].professions[0].profession, 'admin')
     })
   })
 
@@ -472,7 +454,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(result, {
         success: false,
         error:
-          'at_facility1@worker.com is already employed as a admin, please remove them from the list',
+          'at_facility1@worker.com is already employed as a admin. Please remove them from the list.',
       })
     })
   })

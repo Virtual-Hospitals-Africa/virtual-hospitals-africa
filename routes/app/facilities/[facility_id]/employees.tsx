@@ -1,6 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import {
   Facility,
+  FacilityEmployeeOrInvitee,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
   ReturnedSqlRow,
@@ -12,7 +13,7 @@ import { Container } from '../../../../components/library/Container.tsx'
 
 type EmployeePageProps = {
   isAdminAtFacility: boolean
-  employees: facilities.FacilityEmployee[]
+  employees: FacilityEmployeeOrInvitee[]
   healthWorker: HealthWorkerWithGoogleTokens
   facility: ReturnedSqlRow<Facility>
 }
@@ -24,11 +25,14 @@ export const handler: LoggedInHealthWorkerHandler<
   async GET(_req, ctx) {
     const { healthWorker, facility, isAdminAtFacility } = ctx.state
 
-    const employees = await facilities
-      .getEmployees(
-        ctx.state.trx,
-        { facility_id: facility.id, include_invitees: isAdminAtFacility },
-      )
+    const getEmployees = isAdminAtFacility
+      ? facilities.getEmployeesAndInvitees
+      : facilities.getEmployees
+
+    const employees = await getEmployees(
+      ctx.state.trx,
+      { facility_id: facility.id },
+    )
 
     return ctx.render({
       isAdminAtFacility,

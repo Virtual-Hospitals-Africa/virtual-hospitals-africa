@@ -20,13 +20,11 @@ describe(
         await patient_encounters.create(db, 1, {
           patient_id: patient1.id,
           reason: 'seeking treatment',
-          provider_id: 'next_available',
         })
 
         await patient_encounters.create(db, 1, {
           patient_id: patient2.id,
           reason: 'seeking treatment',
-          provider_id: 'next_available',
         })
 
         assertEquals(await waiting_room.get(db, { facility_id: 1 }), [
@@ -64,13 +62,11 @@ describe(
         await patient_encounters.create(db, 1, {
           patient_id: patient1.id,
           reason: 'seeking treatment',
-          provider_id: 'next_available',
         })
 
         await patient_encounters.create(db, 1, {
           patient_id: patient2.id,
           reason: 'emergency',
-          provider_id: 'next_available',
         })
 
         assertEquals(await waiting_room.get(db, { facility_id: 1 }), [

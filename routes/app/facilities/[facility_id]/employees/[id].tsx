@@ -17,14 +17,14 @@ import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { isAdmin } from '../../../../../db/models/employment.ts'
 import FormButtons from '../../../../../components/library/form/buttons.tsx'
 
-type HealthWorkerPageProps = {
+type EmployeePageProps = {
   facility_id: number
   employee: EmployeeInfo
   isAdminAtFacility: boolean
 }
 
 export const handler: LoggedInHealthWorkerHandler<
-  HealthWorkerPageProps,
+  EmployeePageProps,
   { facility: ReturnedSqlRow<Facility>; isAdminAtFacility: boolean }
 > = {
   async GET(_, ctx) {
@@ -63,8 +63,8 @@ export const handler: LoggedInHealthWorkerHandler<
   },
 }
 
-export default function HealthWorkerPage(
-  props: PageProps<HealthWorkerPageProps>,
+export default function EmployeePage(
+  props: PageProps<EmployeePageProps>,
 ) {
   const isAdmin = props.data.isAdminAtFacility
 
