@@ -52,6 +52,7 @@ describeWithWebServer(
       const body = new FormData()
       body.set('notes', 'Test notes')
       body.set('patient_id', String(testPatient.id))
+      body.set('patient_name', 'Test Patient')
       body.set('provider_id', 'next_available')
       body.set('provider_name', 'Next Available')
       body.set('reason', 'seeking treatment')
@@ -90,6 +91,60 @@ describeWithWebServer(
 
       assertEquals(waiting_room.facility_id, 1)
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
+    })
+
+    it('can create a patient encounter for a new patient on POST', async () => {
+      const { sessionId } = await addTestHealthWorkerWithSession({
+        scenario: 'approved-nurse',
+      })
+
+      const body = new FormData()
+      body.set('notes', 'Test notes')
+      body.set('patient_name', 'New Patient')
+      body.set('provider_id', 'next_available')
+      body.set('provider_name', 'Next Available')
+      body.set('reason', 'seeking treatment')
+
+      const response = await fetch(
+        `${route}/app/facilities/1/waiting-room/add`,
+        {
+          method: 'POST',
+          headers: {
+            Cookie: `sessionId=${sessionId}`,
+          },
+          body,
+        },
+      )
+
+      if (!response.ok) {
+        throw new Error(await response.text())
+      }
+
+      // Assert that the patient encounter is created and added to the waiting room
+      const patientEncounter = await db
+        .selectFrom('patient_encounters')
+        .selectAll()
+        .executeTakeFirstOrThrow()
+
+      const waiting_room = await db
+        .selectFrom('waiting_room')
+        .selectAll()
+        .executeTakeFirstOrThrow()
+
+      assertEquals(patientEncounter.appointment_id, null)
+      assertEquals(patientEncounter.closed_at, null)
+      assertEquals(patientEncounter.notes, 'Test notes')
+      assertEquals(patientEncounter.reason, 'seeking treatment')
+
+      assertEquals(waiting_room.facility_id, 1)
+      assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
+
+      const { name } = await db.selectFrom('patients').select(['name']).where(
+        'id',
+        '=',
+        patientEncounter.patient_id,
+      ).executeTakeFirstOrThrow()
+      assertEquals(name, 'New Patient')
     })
   },
 )
