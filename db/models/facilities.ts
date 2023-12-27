@@ -126,6 +126,11 @@ export function getEmployeesQuery(
             'health_workers.id',
           )
           .where('employment.facility_id', '=', opts.facility_id)
+          .where(
+            'employment.profession',
+            'in',
+            opts.professions || ['admin', 'doctor', 'nurse'],
+          )
           .groupBy([
             'employment.id',
             'nurse_specialties.specialty',
