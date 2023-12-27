@@ -20,12 +20,12 @@ export default function PersonSearch({
   name: string
   required?: boolean
   label?: string
-  value?: { id: number | 'next_available'; name: string }
+  value?: { id: number; name: string }
   addable?: boolean
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
-    { id: number | 'next_available' | 'add'; name: string } | null
+    { id: number | 'add'; name: string } | null
   >(
     value || null,
   )
@@ -137,7 +137,7 @@ export default function PersonSearch({
         )}
       </SearchInput>
       <span id='nonsense' />
-      {selected && (
+      {(typeof selected?.id === 'number') && (
         <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}
     </div>
