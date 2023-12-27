@@ -26,7 +26,7 @@
     "compile:token_refresher": "deno task compile --output binaries/token_refresher token_refresher/token_refresher.ts",
     "compile:web": "deno task compile --output binaries/web main.ts",
     "lock:reset": "rm -f deno.lock && deno cache --reload main.ts chatbot/chatbot.ts token_refresher/token_refresher.ts",
-    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors",
+    "repl": "DENO_TLS_CA_STORE=system deno repl -A --unsafely-ignore-certificate-errors --eval-file=repl.ts",
     "run:trusted": "DENO_TLS_CA_STORE=system deno run -A --unsafely-ignore-certificate-errors",
     "switch:prod": "cp .env.prod .env",
     "switch:local": "cp .env.local .env",

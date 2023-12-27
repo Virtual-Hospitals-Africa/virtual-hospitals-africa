@@ -878,6 +878,50 @@ export type HealthWorkerInvitee = {
   profession: Profession
 }
 
+export type FacilityEmployeeOrInvitee =
+  | FacilityEmployee
+  | FacilityEmployeeInvitee
+
+export type FacilityEmployee = {
+  name: string
+  is_invitee: false
+  health_worker_id: number
+  professions: {
+    employee_id: number
+    profession: Profession
+    specialty: NurseSpecialty | null
+  }[]
+  avatar_url: null | string
+  email: string
+  display_name: string
+  href: string
+  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+}
+
+export type FacilityDoctorOrNurse =
+  & Omit<FacilityEmployee, 'is_invitee' | 'professions'>
+  & {
+    profession: 'doctor' | 'nurse'
+    employee_id: number
+    specialty: NurseSpecialty | null
+  }
+
+export type FacilityEmployeeInvitee = {
+  name: null
+  is_invitee: true
+  health_worker_id: null | number
+  professions: {
+    employee_id?: undefined
+    profession: Profession
+    specialty?: undefined
+  }[]
+  avatar_url: null
+  email: string
+  display_name: string
+  href: null
+  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'
@@ -1476,6 +1520,14 @@ export type WaitingRoom = {
   patient_encounter_id: number
 }
 
+export type RenderedProvider = {
+  health_worker_id: number
+  employee_id: number
+  name: string
+  profession: string
+  href: string
+  seen_at: Date | null
+}
 export type RenderedWaitingRoom = {
   patient: {
     id: number
@@ -1493,14 +1545,7 @@ export type RenderedWaitingRoom = {
       name: string
     }[]
   }
-  providers: {
-    health_worker_id: number
-    employee_id: number
-    name: string
-    profession: string
-    href: string
-    seen_at: Date | null
-  }[]
+  providers: RenderedProvider[]
 }
 
 export type DatabaseSchema = {
