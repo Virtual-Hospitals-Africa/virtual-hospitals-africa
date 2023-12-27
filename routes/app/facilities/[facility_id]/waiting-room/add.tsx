@@ -74,6 +74,7 @@ export default async function WaitingRoomAdd(
               name='patient'
               href='/app/patients'
               required
+              addable
               value={(patient_id && patient_name)
                 ? { id: patient_id, name: patient_name }
                 : undefined}
