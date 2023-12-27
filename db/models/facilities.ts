@@ -293,10 +293,9 @@ export async function invite(
   if (alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa.length) {
     const [{ email, profession }] =
       alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa
-    const error =
-      `${email} is already employed as a ${profession} so they can't also be employed as a ${
-        profession === 'nurse' ? 'doctor' : 'nurse'
-      }. Please remove them from the list.`
+    const error = `${email} is already employed as a ${
+      profession === 'nurse' ? 'doctor' : 'nurse'
+    } so they can't also be employed as a ${profession}. Please remove them from the list.`
     return { success: false, error }
   }
 
