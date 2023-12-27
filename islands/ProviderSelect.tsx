@@ -2,6 +2,8 @@ import { useSignal } from '@preact/signals'
 import { FacilityDoctorOrNurse, Maybe } from '../types.ts'
 import cls from '../util/cls.ts'
 import Avatar from '../components/library/Avatar.tsx'
+import words from '../util/words.ts'
+import capitalize from '../util/capitalize.ts'
 
 function ProviderSelectOption(
   { provider, selected, toggleSelection }: {
@@ -53,13 +55,17 @@ function ProviderSelectOption(
               id={`provider-${provider.employee_id}-description-0`}
               className='text-gray-500'
             >
-              <span className='block sm:inline'>{provider.profession}</span>
+              <span className='block sm:inline capitalize'>
+                {provider.profession}
+              </span>
               {provider.specialty && (
                 <>
                   <span className='hidden sm:mx-1 sm:inline' aria-hidden='true'>
                     ·
                   </span>
-                  <span className='block sm:inline'>{provider.specialty}</span>
+                  <span className='block sm:inline capitalize'>
+                    {words(provider.specialty).join(' ')}
+                  </span>
                 </>
               )}
             </span>
