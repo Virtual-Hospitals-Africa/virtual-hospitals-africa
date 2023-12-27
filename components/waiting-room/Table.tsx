@@ -40,7 +40,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     type: 'actions',
     actions: {
       View(row) {
-        return row.patient.href
+        return row.actions.view_href
+      },
+      Intake(row) {
+        return row.actions.intake_href
       },
     },
   },
