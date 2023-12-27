@@ -40,10 +40,7 @@ export default function NurseDocumentsForm(
         />
       </FormRow>
       <hr className='my-2' />
-      <Buttons
-        submitText='Submit'
-        cancelText='Back'
-      />
+      <Buttons submitText='Submit' />
     </>
   )
 }

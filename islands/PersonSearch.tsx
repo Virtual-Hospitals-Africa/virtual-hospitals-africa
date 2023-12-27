@@ -7,7 +7,18 @@ import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
 import { HasId } from '../types.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 
+function hasId(value: unknown): value is HasId {
+  return isObjectLike(value) && typeof value.id === 'number'
+}
+
+/* TODO
+  - [ ] Handle focus/blur
+  - [ ] Handle no results
+  - [ ] Show avatar in input
+  - [ ] For patients, show date of birth, gender, and national id
+*/
 export default function PersonSearch({
   href,
   name,
@@ -20,14 +31,14 @@ export default function PersonSearch({
   name: string
   required?: boolean
   label?: string
-  value?: { id: number; name: string }
+  value?: { id?: number; name: string }
   addable?: boolean
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
     { id: number | 'add'; name: string } | null
   >(
-    value || null,
+    hasId(value) ? value : null,
   )
   const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
 
