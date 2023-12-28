@@ -1,3 +1,3 @@
-web: { deno task build & ; deno task db:migrate:latest & ; wait } && deno task web
+web: ./heroku-web.sh
 chatbot: deno task chatbot
 token_refresher: deno task token_refresher
