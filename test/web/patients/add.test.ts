@@ -418,4 +418,62 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     assertEquals(pre_existing_conditions.length, 0)
   })
+  it('supports POST on the occupation step, moving you to the Family-Form step', async () => {
+    const { sessionId } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+    const body = new FormData()
+    body.set('occupation.school.first_name', 'Test')
+    body.set('middle_names', 'Zoom Zoom')
+    body.set('last_name', 'Patient')
+    body.set('national_id_number', '08-123456 D 53')
+    body.set('date_of_birth', '2020-01-01')
+    body.set('gender', 'female')
+    body.set('ethnicity', 'african')
+    body.set('phone_number', '5555555555')
+    const postResponse = await fetch(
+      `${route}/app/patients/add?step=occupation`,
+      {
+        method: 'POST',
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+        },
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+
+    const patients = await db.selectFrom('patients').selectAll().execute()
+    assertEquals(patients.length, 1)
+    assertEquals(patients[0].name, 'Test Zoom Zoom Patient')
+    assertEquals(patients[0].national_id_number, '08-123456 D 53')
+
+    assert(
+      postResponse.url ===
+        `${route}/app/patients/add?step=address&patient_id=${patients[0].id}`,
+    )
+
+    const getPersonalResponse = await fetch(
+      `${route}/app/patients/add?step=personal&patient_id=${patients[0].id}`,
+      {
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+        },
+      },
+    )
+
+    const pageContents = await getPersonalResponse.text()
+    const $ = cheerio.load(pageContents)
+    assertEquals($('input[name="first_name"]').val(), 'Test')
+    assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
+    assertEquals($('input[name="last_name"]').val(), 'Patient')
+    assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
+    assertEquals($('select[name="gender"]').val(), 'female')
+    assertEquals($('select[name="ethnicity"]').val(), 'african')
+    assertEquals($('input[name="national_id_number"]').val(), '08-123456 D 53')
+    assertEquals($('input[name="phone_number"]').val(), '5555555555')
+  })
 })
