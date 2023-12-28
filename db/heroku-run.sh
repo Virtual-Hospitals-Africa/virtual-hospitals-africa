@@ -50,15 +50,15 @@ download_and_run_artifact() {
 }
 
 # TODO try this later
-# make_deno_script > $SCRIPT
-# ARTIFACT_URL=$(deno run $SCRIPT)
+make_deno_script > $SCRIPT
+ARTIFACT_URL=$(deno run $SCRIPT)
 
-# if [ -z "$ARTIFACT_URL" ]; then
-#   echo "No matching artifact found, running $ARTIFACT_NAME from source"
-#   deno task $ARTIFACT_NAME
-# else
-#   download_and_run_artifact || {
-#     echo "Failed to download and run artifact, running $ARTIFACT_NAME from source"
-#     deno task $ARTIFACT_NAME
-#   }
-# fi
+if [ -z "$ARTIFACT_URL" ]; then
+  echo "No matching artifact found, running $ARTIFACT_NAME from source"
+  deno task $ARTIFACT_NAME
+else
+  download_and_run_artifact || {
+    echo "Failed to download and run artifact, running $ARTIFACT_NAME from source"
+    deno task $ARTIFACT_NAME
+  }
+fi

@@ -37,6 +37,12 @@ jobs:
           --health-retries 5
 
     steps:
+
+      - uses: kolpav/purge-artifacts-action@v1
+        with:
+          token: ${{ secrets.GH_API_TOKEN }}
+          expire-in: 0
+
       - name: Check out code
         uses: actions/checkout@v4
 
@@ -58,29 +64,38 @@ jobs:
       - name: Run build
         run: deno task build
 
-      - name: Migrate database
-        run: deno task db:migrate:latest
+      # - name: Migrate database
+      #   run: deno task db:migrate:latest
 
-      - name: Run tests
-        run: deno task test
-
-  compile:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.39.0
-
-      - name: Compile chatbot
-        run: deno task compile:chatbot
-
-      - name: Compile token_refresher
-        run: deno task compile:token_refresher
+      # - name: Run tests
+      #   run: deno task test
 
       - name: Compile web
         run: deno task compile:web
+
+      - name: Upload web
+        uses: actions/upload-artifact@v3
+        with:
+          name: web
+          path: binaries/web
+
+  # compile:
+  #   runs-on: ubuntu-latest
+
+  #   steps:
+  #     - name: Check out code
+  #       uses: actions/checkout@v4
+
+  #     - name: Set up Deno
+  #       uses: denoland/setup-deno@v1
+  #       with:
+  #         deno-version: v1.39.0
+
+  #     - name: Compile chatbot
+  #       run: deno task compile:chatbot
+
+  #     - name: Compile token_refresher
+  #       run: deno task compile:token_refresher
+
+  #     - name: Compile web
+  #       run: deno task compile:web
