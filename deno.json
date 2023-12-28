@@ -4,6 +4,7 @@
     "token_refresher": "deno task run:trusted token_refresher/token_refresher.ts",
     "build": "deno task run:trusted dev.ts build",
     "start": "deno task run:trusted --watch=chatbot/,db/,islands/,scheduling/,util/,components/,external-clients/,routes/,static/ dev.ts",
+    "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
     "web": "deno task run:trusted main.ts",
     "db:migrate:create": "deno task run:trusted db/create-migration.ts",
     "db:migrate:up": "deno task run:trusted db/migrate.ts --up",

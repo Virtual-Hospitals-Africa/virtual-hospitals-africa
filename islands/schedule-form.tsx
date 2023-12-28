@@ -28,7 +28,6 @@ export default function ScheduleForm() {
       <FormButtons
         className='mt-4'
         submitText='Next Available'
-        cancelHref='/app/calendar'
       />
     </form>
   )

@@ -3,11 +3,14 @@ import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import FormRow from '../../../../../components/library/form/Row.tsx'
 import PersonSearch from '../../../../../islands/PersonSearch.tsx'
+import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as facilities from '../../../../../db/models/facilities.ts'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
+  Patient,
+  ReturnedSqlRow,
 } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
@@ -18,6 +21,8 @@ import {
   TextArea,
 } from '../../../../../components/library/form/Inputs.tsx'
 import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
+import { assertOr400, assertOr404 } from '../../../../../util/assertOr.ts'
+import { hasName } from '../../../../../util/haveNames.ts'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -43,28 +48,47 @@ export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
 
 export default async function WaitingRoomAdd(
   _req: Request,
-  ctx: FreshContext<LoggedInHealthWorker>,
+  { url, state, params, route }: FreshContext<LoggedInHealthWorker>,
 ) {
-  const { searchParams } = ctx.url
+  const { trx } = state
+  const { searchParams } = url
   const patient_id = parseInt(searchParams.get('patient_id')!) || null
   const patient_name = searchParams.get('patient_name')
+  const just_completed_intake = url.searchParams.get('intake') === 'completed'
 
-  const facility_id = parseInt(ctx.params.facility_id)
+  let completing_intake: Promise<ReturnedSqlRow<Patient>> | undefined
+  if (just_completed_intake) {
+    assertOr400(patient_id, 'patient_id is required')
+    completing_intake = patients.upsert(trx, {
+      id: patient_id,
+      completed_onboarding: true,
+    })
+  }
+
+  const facility_id = parseInt(params.facility_id)
   assert(facility_id)
 
-  const providers = await facilities.getApprovedDoctorsAndNurses(
-    ctx.state.trx,
-    {
-      facility_id,
-    },
-  )
+  const gettingProviders = facilities.getApprovedDoctorsAndNurses(trx, {
+    facility_id,
+  })
+
+  let patient: { id?: number; name: string } | undefined
+  if (patient_id) {
+    const fetched_patient = await (completing_intake || patients.getByID(trx, {
+      id: patient_id,
+    }))
+    assert(hasName(fetched_patient))
+    patient = fetched_patient
+  } else if (patient_name) {
+    patient = { name: patient_name }
+  }
 
   return (
     <Layout
       title={'Add patient to waiting room'}
-      route={ctx.route}
-      url={ctx.url}
-      avatarUrl={ctx.state.healthWorker.avatar_url}
+      route={route}
+      url={url}
+      avatarUrl={state.healthWorker.avatar_url}
       variant='standard'
     >
       <Container size='lg'>
@@ -74,13 +98,12 @@ export default async function WaitingRoomAdd(
               name='patient'
               href='/app/patients'
               required
-              value={(patient_id && patient_name)
-                ? { id: patient_id, name: patient_name }
-                : undefined}
+              addable
+              value={patient}
             />
           </FormRow>
           <FormRow>
-            <ProvidersSelect providers={providers} />
+            <ProvidersSelect providers={await gettingProviders} />
           </FormRow>
 
           {

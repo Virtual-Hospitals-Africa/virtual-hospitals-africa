@@ -26,9 +26,12 @@ describe(
             appointment: null,
             patient: {
               avatar_url: null,
-              href: `/app/patients/${patient.id}`,
               id: patient.id,
               name: 'Test Patient',
+            },
+            actions: {
+              view_href: null,
+              intake_href: `/app/patients/${patient.id}/intake`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -51,9 +54,12 @@ describe(
             appointment: null,
             patient: {
               avatar_url: null,
-              href: `/app/patients/${patient.id}`,
               id: patient.id,
               name: 'Test Patient',
+            },
+            actions: {
+              view_href: null,
+              intake_href: `/app/patients/${patient.id}/intake`,
             },
             providers: [
               {

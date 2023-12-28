@@ -32,10 +32,7 @@ export default function NurseProfessionalForm(
         <NurseSpecialtySelect value={formData.specialty} />
       </FormRow>
       <hr className='my-2' />
-      <Buttons
-        submitText='Next'
-        cancelText='Back'
-      />
+      <Buttons submitText='Next' />
     </>
   )
 }

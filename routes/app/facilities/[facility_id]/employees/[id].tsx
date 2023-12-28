@@ -110,10 +110,7 @@ export default function EmployeePage(
             method='POST'
             action={`${props.url.pathname}/approve`}
           >
-            <FormButtons
-              submitText='Approve'
-              cancelHref={`/app/facilities/${props.data.facility_id}/employees`}
-            />
+            <FormButtons submitText='Approve' />
           </form>
         )}
       </Container>

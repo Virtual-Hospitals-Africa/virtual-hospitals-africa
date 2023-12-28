@@ -19,16 +19,20 @@ import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import * as patient_family from '../../../db/models/family.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import { useAddPatientSteps } from '../../../components/patients/add/Steps.tsx'
+import {
+  getNextStep,
+  isStep,
+  useAddPatientSteps,
+} from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
+import PatientReview from '../../../components/patients/add/Review.tsx'
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import PatientPreExistingConditions from '../../../components/patients/add/PreExistingConditionsForm.tsx'
 import Buttons from '../../../components/library/form/buttons.tsx'
-import { assertOr400 } from '../../../util/assertOr.ts'
-import { path } from '../../../util/path.ts'
+import { assertOr400, assertOr404 } from '../../../util/assertOr.ts'
 import omit from '../../../util/omit.ts'
 
 type AddPatientProps =
@@ -43,6 +47,7 @@ type AddPatientProps =
       | 'occupation'
       | 'family'
       | 'lifestyle'
+      | 'review'
     adminDistricts?: undefined
     preExistingConditions?: undefined
     initialDrugs?: undefined
@@ -101,6 +106,7 @@ type FamilyFormValues = Record<string, unknown>
 type HistoryFormValues = Record<string, unknown>
 type OccupationFormValues = Record<string, unknown>
 type LifestyleFormValues = Record<string, unknown>
+type ReviewFormValues = { completed_onboarding: boolean }
 
 function isPersonal(
   patient: unknown,
@@ -158,6 +164,14 @@ function isLifestyle(
   return true
 }
 
+function isReview(
+  patient: unknown,
+): patient is ReviewFormValues {
+  return isObjectLike(patient) &&
+    typeof patient.completed_onboarding === 'boolean' &&
+    patient.completed_onboarding
+}
+
 type FormValuesByStep = {
   personal: PersonalFormValues
   address: AddressFormValues
@@ -166,23 +180,15 @@ type FormValuesByStep = {
   history: HistoryFormValues
   occupation: OccupationFormValues
   lifestyle: LifestyleFormValues
+  review: ReviewFormValues
 }
 
 type FormValues = FormValuesByStep[keyof FormValuesByStep]
-
 type TypeCheckers = {
   [key in keyof FormValuesByStep]: (
     patient: unknown,
   ) => patient is FormValuesByStep[key]
 }
-
-type Transformers = Partial<
-  {
-    [key in keyof FormValuesByStep]: (
-      patient: FormValuesByStep[key],
-    ) => patients.UpsertablePatient
-  }
->
 
 const typeCheckers: TypeCheckers = {
   personal: isPersonal,
@@ -192,7 +198,16 @@ const typeCheckers: TypeCheckers = {
   history: isHistory,
   occupation: isOccupation,
   lifestyle: isLifestyle,
+  review: isReview,
 }
+
+type Transformers = Partial<
+  {
+    [key in keyof FormValuesByStep]: (
+      patient: FormValuesByStep[key],
+    ) => patients.UpsertablePatient
+  }
+>
 
 const transformers: Transformers = {
   personal: (
@@ -241,7 +256,8 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   async GET(req, ctx) {
     const { healthWorker } = ctx.state
     const { searchParams } = new URL(req.url)
-    const step = searchParams.get('step')
+    const step = searchParams.get('step') || 'personal'
+    assertOr404(isStep(step))
 
     let patient: OnboardingPatient | undefined
 
@@ -250,13 +266,6 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     if (patientIdStr) {
       patient_id = parseInt(patientIdStr)
       assert(!isNaN(patient_id), 'Invalid patient ID')
-    }
-
-    if (!step) {
-      return redirect(path('/app/patients/add', {
-        step: 'personal',
-        patient_id,
-      }))
     }
 
     if (patient_id) {
@@ -319,7 +328,6 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 
     assertOr400(
       step === 'personal' ||
-        step === 'family' ||
         step === 'history' || step === 'occupation' || step === 'lifestyle',
     )
     return ctx.render({ healthWorker, patient, step })
@@ -329,11 +337,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const step = searchParams.get('step')
     const patient_id = searchParams.get('patient_id')
 
-    assertOr400(
-      step === 'personal' || step === 'address' ||
-        step === 'pre-existing_conditions' || step === 'family' ||
-        step === 'history' || step === 'occupation' || step === 'lifestyle',
-    )
+    assertOr400(isStep(step))
 
     const formData = await parseRequest(ctx.state.trx, req, typeCheckers[step])
 
@@ -344,31 +348,18 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
     const patient = await patients.upsert(ctx.state.trx, {
       ...transformedFormData,
       id: (patient_id && parseInt(patient_id)) || undefined,
-      completed_onboarding: step === 'lifestyle',
     })
 
-    if (step === 'personal') {
-      return redirect(`/app/patients/add?step=address&patient_id=${patient.id}`)
-    }
-
-    if (step === 'address') {
-      return redirect(
-        `/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
-      )
-    }
-
-    if (step === 'pre-existing_conditions') {
-      return redirect(`/app/patients/add?step=family&patient_id=${patient.id}`)
-    }
-
-    if (step === 'family') {
+    if (patient.completed_onboarding) {
       const success = encodeURIComponent(
         `Awesome! ${patient.name} has finished onboarding!`,
       )
       return redirect(`/app/patients?success=${success}`)
     }
 
-    return redirect('/app/patients/add?step=family')
+    return redirect(
+      `/app/patients/add?step=${getNextStep(step)}&patient_id=${patient.id}`,
+    )
   },
 }
 
@@ -424,10 +415,21 @@ export default function AddPatient(
                 preExistingConditions)}
             />
           )}
+          {currentStep === 'history' && <div>TODO History</div>}
+          {currentStep === 'review' && <PatientReview patient={patient!} />}
           <hr className='my-2' />
           <Buttons
-            submitText='Next Step'
-            cancelHref='/app/patients'
+            submitText={currentStep === 'review'
+              ? 'Continue to vitals'
+              : 'Next Step'}
+            cancel={currentStep === 'review'
+              ? {
+                href: `/app/facilities/${
+                  healthWorker.employment[0].facility_id
+                }/waiting-room/add?patient_id=${patient!.id}&intake=completed`,
+                text: 'Add patient to waiting room',
+              }
+              : undefined}
           />
         </form>
       </Container>
