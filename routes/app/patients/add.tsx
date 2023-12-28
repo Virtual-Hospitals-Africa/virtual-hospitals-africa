@@ -339,7 +339,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   async POST(req, ctx) {
     const { searchParams } = new URL(req.url)
-    const step = searchParams.get('step')
+    const step = searchParams.get('step') || 'personal'
     const patient_id = searchParams.get('patient_id')
 
     assertOr400(isStep(step))
