@@ -39,11 +39,15 @@ describe(
               patient_id: guardian.id,
               patient_name: 'Billy Bob',
               patient_phone_number: null,
+              guardian_relation: 'biological parent',
               family_relation: 'biological parent',
               family_relation_gendered: 'biological father',
+              patient_gender: 'male',
             },
           ],
           dependents: [],
+          marital_status: 'TODO',
+          religion: 'TODO',
         })
         assertEquals(guardian_relations, {
           guardians: [],
@@ -53,10 +57,14 @@ describe(
               patient_id: dependent.id,
               patient_name: 'Janey Jane',
               patient_phone_number: null,
+              guardian_relation: 'biological parent',
               family_relation: 'biological child',
               family_relation_gendered: 'biological daughter',
+              patient_gender: 'female',
             },
           ],
+          marital_status: 'TODO',
+          religion: 'TODO',
         })
       })
     })

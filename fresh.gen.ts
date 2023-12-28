@@ -27,6 +27,7 @@ import * as $app_facilities_facility_id_employees_invite from './routes/app/faci
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
 import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
+import * as $app_family from './routes/app/family.tsx'
 import * as $app_health_workers from './routes/app/health_workers.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_patients from './routes/app/patients.tsx'
@@ -64,6 +65,10 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $family_Dependent from './islands/family/Dependent.tsx'
+import * as $family_Form from './islands/family/Form.tsx'
+import * as $family_Guardian from './islands/family/Guardian.tsx'
+import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
@@ -118,6 +123,7 @@ const manifest = {
       $app_facilities_facility_id_waiting_room,
     './routes/app/facilities/[facility_id]/waiting-room/add.tsx':
       $app_facilities_facility_id_waiting_room_add,
+    './routes/app/family.tsx': $app_family,
     './routes/app/health_workers.tsx': $app_health_workers,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/patients.tsx': $app_patients,
@@ -157,6 +163,10 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/family/Dependent.tsx': $family_Dependent,
+    './islands/family/Form.tsx': $family_Form,
+    './islands/family/Guardian.tsx': $family_Guardian,
+    './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,

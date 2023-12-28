@@ -2,29 +2,19 @@ import { Select, TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import ReligionSelect from '../../../islands/ReligionSelect.tsx'
-import { OnboardingPatient } from '../../../types.ts'
-
-const allRelations = [
-  'Wife',
-  'Husband',
-  'Brother',
-  'Sister',
-  'Grandparent',
-  'Grandchild',
-  'Son',
-  'Daughter',
-  'Uncle',
-  'Aunt',
-  'Cousin',
-  'Other Relative or Friend',
-]
+import { OnboardingPatient, PatientFamily } from '../../../types.ts'
+import PatientFamilyForm from '../../../islands/family/Form.tsx'
 
 export default function FamilyForm(
-  { patient = {} }: { patient?: Partial<OnboardingPatient> },
+  { patient = {}, family }: {
+    patient?: Partial<OnboardingPatient>
+    family: PatientFamily
+  },
 ) {
   return (
     <>
-      <FormRow>
+      {
+        /* <FormRow>
         <Select
           name='marital_status'
           required
@@ -39,25 +29,10 @@ export default function FamilyForm(
           <option value='divorced'>Divorced</option>
         </Select>
         <ReligionSelect />
-      </FormRow>
+      </FormRow> */
+      }
       <section>
-        <SectionHeader className='my-5 text-[20px]'>Next of Kin</SectionHeader>
-        <FormRow>
-          <TextInput name='next_of_kin.name' required label='Name' />
-          <TextInput name='next_of_kin.phone_number' />
-          <Select
-            name='next_of_kin.relationship'
-            required
-            label='Relationship'
-          >
-            <option value=''>Select</option>
-            {allRelations.map((relation) => <option>{relation}</option>)}
-          </Select>
-        </FormRow>
-      </section>
-      <section>
-        <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
-        {/* <AddDependents /> */}
+        <PatientFamilyForm family={family} />
       </section>
     </>
   )

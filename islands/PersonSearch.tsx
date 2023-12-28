@@ -6,7 +6,7 @@ import SearchResults, {
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
-import { HasId } from '../types.ts'
+import { HasId, PatientDemographicInfo } from '../types.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 
 function hasId(value: unknown): value is HasId {
@@ -26,6 +26,7 @@ export default function PersonSearch({
   label,
   value,
   addable,
+  onSelect,
 }: {
   href: string
   name: string
@@ -33,6 +34,7 @@ export default function PersonSearch({
   label?: string
   value?: { id?: number; name: string }
   addable?: boolean
+  onSelect?: (person: PatientDemographicInfo) => void
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
@@ -40,7 +42,7 @@ export default function PersonSearch({
   >(
     hasId(value) ? value : null,
   )
-  const [people, setPeople] = useState<HasId<{ name: string }>[]>([])
+  const [people, setPeople] = useState<HasId<PatientDemographicInfo>[]>([])
 
   const [search, setSearchImmediate] = useState(value?.name ?? '')
 
@@ -104,13 +106,13 @@ export default function PersonSearch({
           <SearchResults>
             {people.map((person) => (
               <PersonSearchResult
-                person={person}
+                person={{ id: person.id, name: person.name! }}
                 isSelected={selected?.id === person.id}
                 onSelect={() => {
                   setIsFocused(false)
-                  setSelected(person)
-                  setSearchImmediate(person.name)
-
+                  setSelected({ id: person.id, name: person.name! })
+                  setSearchImmediate(person!.name!)
+                  onSelect && onSelect(person)
                   const input = document.querySelector(
                     `input[name="${name}_name"]`,
                   )
@@ -140,7 +142,18 @@ export default function PersonSearch({
                 <AddButtonSearchResult
                   searchedValue={search}
                   isSelected={selected?.id === 'add'}
-                  onSelect={() => setSelected({ name: search, id: 'add' })}
+                  onSelect={() => {
+                    setSelected({ name: search, id: 'add' })
+                    onSelect &&
+                      onSelect({
+                        name: search,
+                        phone_number: undefined,
+                        date_of_birth: undefined,
+                        ethnicity: undefined,
+                        national_id_number: undefined,
+                        gender: undefined,
+                      })
+                  }}
                 />
               )
               : null}
