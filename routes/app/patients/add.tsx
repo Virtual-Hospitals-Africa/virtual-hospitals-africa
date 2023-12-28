@@ -102,7 +102,12 @@ type ConditionsFormValues = {
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
-type FamilyFormValues = Record<string, unknown>
+type FamilyFormValues = {
+  family?: {
+    guardians?: FamilyRelation[]
+    dependents?: FamilyRelation[]
+  }
+}
 type HistoryFormValues = Record<string, unknown>
 type OccupationFormValues = Record<string, unknown>
 type LifestyleFormValues = Record<string, unknown>
@@ -246,8 +251,8 @@ const transformers: Transformers = {
     patient,
   ): patients.UpsertablePatient => ({
     family: {
-      guardians: patient.guardians as FamilyRelation[],
-      dependents: patient.dependents as FamilyRelation[],
+      guardians: patient?.family?.guardians || [],
+      dependents: patient?.family?.dependents || [],
     },
   }),
 }

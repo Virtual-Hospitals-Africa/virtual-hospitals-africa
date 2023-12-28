@@ -6,6 +6,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import partition from '../../util/partition.ts'
 
 let allGuardianRelations: GuardianRelation[] | null = null
 export async function getAllGuardianRelationships(
@@ -54,6 +55,7 @@ export async function get(
     .select(({ eb, and }) => [
       'patient_guardians.id as relation_id',
       'guardian_relations.guardian as family_relation',
+      'guardian_relations.guardian as guardian_relation',
       'guardian.id as patient_id',
       'guardian.name as patient_name',
       'guardian.gender as patient_gender',
@@ -104,6 +106,7 @@ export async function get(
       'dependent.name as patient_name',
       'dependent.phone_number as patient_phone_number',
       'guardian_relations.dependent as family_relation',
+      'guardian_relations.guardian as guardian_relation',
       'dependent.gender as patient_gender',
       eb
         .case()
@@ -135,23 +138,23 @@ export async function get(
   }
 }
 
+function relationIds({ guardians, dependents }: PatientFamily): number[] {
+  return dependents.map((c) => c.relation_id)
+    .concat(guardians.map((c) => c.relation_id))
+}
+
 export async function upsert(
   trx: TrxOrDb,
   patient_id: number,
-  patientFamily: PatientFamily,
+  patient_family: PatientFamily,
 ): Promise<void> {
   const existing_family = await get(trx, { patient_id })
 
-  const exisitngIds = (
-    existing_family?.dependents?.map((c) => c.relation_id) ?? []
-  ).concat(existing_family?.guardians?.map((c) => c.relation_id) ?? [])
+  const existing_ids = relationIds(existing_family)
 
-  const familyIds = (
-    patientFamily?.dependents?.map((c) => c.relation_id) ?? []
-  ).concat(patientFamily?.guardians?.map((c) => c.relation_id!))
-  const ids_to_remove = exisitngIds
-    ?.filter((id) => !familyIds.includes(id))
-    .map((id) => id!)
+  const family_ids = relationIds(patient_family)
+
+  const ids_to_remove = existing_ids.filter((id) => !family_ids.includes(id))
 
   const removing_relations = ids_to_remove.length &&
     trx
@@ -159,74 +162,80 @@ export async function upsert(
       .where('id', 'in', ids_to_remove)
       .execute()
 
-  for (
-    const guardian of patientFamily.guardians?.filter(
-      (c) => c.relation_id,
-    ) || []
-  ) {
-    const values = {
-      guardian_relation: guardian.family_relation,
+  const [existing_guardians, new_guardians] = partition(
+    patient_family.guardians,
+    (g) => !!g.relation_id,
+  )
+  const [existing_dependents, new_dependents] = partition(
+    patient_family.dependents,
+    (g) => !!g.relation_id,
+  )
+
+  const updating_relations: Promise<unknown>[] = []
+  for (const guardian of existing_guardians) {
+    const values: PatientGuardian = {
+      guardian_relation: guardian.guardian_relation,
       guardian_patient_id: guardian.patient_id,
       dependent_patient_id: patient_id,
-    } as PatientGuardian
-    const matchingGuardian = existing_family?.guardians!.find(
+    }
+    const matchingGuardian = existing_family.guardians.find(
       (c) => c.relation_id === guardian.relation_id,
     )
     assert(matchingGuardian, 'Referenced a non-existent guardian')
 
-    await trx
-      .updateTable('patient_guardians')
-      .set(values)
-      .where('id', '=', guardian.relation_id!)
-      .executeTakeFirstOrThrow()
+    updating_relations.push(
+      trx
+        .updateTable('patient_guardians')
+        .set(values)
+        .where('id', '=', guardian.relation_id)
+        .executeTakeFirstOrThrow(),
+    )
   }
 
-  for (
-    const dependent of patientFamily.dependents?.filter(
-      (c) => c.relation_id,
-    ) || []
-  ) {
-    const values = {
-      guardian_relation: dependent.family_relation,
+  for (const dependent of existing_dependents) {
+    const values: PatientGuardian = {
+      guardian_relation: dependent.guardian_relation,
       guardian_patient_id: patient_id,
       dependent_patient_id: dependent.patient_id,
-    } as PatientGuardian
-    const matchingDependent = existing_family?.dependents!.find(
+    }
+    const matchingDependent = existing_family.dependents.find(
       (c) => c.relation_id === dependent.relation_id,
     )
     assert(matchingDependent, 'Referenced a non-existent dependent')
 
-    await trx
-      .updateTable('patient_guardians')
-      .set(values)
-      .where('id', '=', dependent.relation_id!)
-      .executeTakeFirstOrThrow()
+    updating_relations.push(
+      trx
+        .updateTable('patient_guardians')
+        .set(values)
+        .where('id', '=', dependent.relation_id)
+        .executeTakeFirstOrThrow(),
+    )
   }
 
-  const new_guardians = patientFamily?.guardians
-    ?.filter((c) => !c.relation_id)
-    .map(
-      (guardian) => ({
-        guardian_relation: guardian.family_relation,
-        guardian_patient_id: guardian.patient_id,
-        dependent_patient_id: patient_id,
-      } as PatientGuardian),
-    )
+  const new_guardians_to_insert: PatientGuardian[] = new_guardians.map(
+    (guardian) => ({
+      guardian_relation: guardian.guardian_relation,
+      guardian_patient_id: guardian.patient_id,
+      dependent_patient_id: patient_id,
+    }),
+  )
 
-  const new_dependents = patientFamily?.dependents
-    ?.filter((c) => !c.relation_id)
-    .map(
-      (dependent) => ({
-        guardian_relation: dependent.family_relation,
-        guardian_patient_id: patient_id,
-        dependent_patient_id: dependent.patient_id,
-      } as PatientGuardian),
-    )
+  const new_dependents_to_insert: PatientGuardian[] = new_dependents.map(
+    (dependent) => ({
+      guardian_relation: dependent.guardian_relation,
+      guardian_patient_id: patient_id,
+      dependent_patient_id: dependent.patient_id,
+    }),
+  )
 
-  const new_relations = (new_guardians ?? []).concat(new_dependents ?? [])
+  const new_relations = new_guardians_to_insert.concat(new_dependents_to_insert)
 
   const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
-  await Promise.all([removing_relations, adding_relations])
+  await Promise.all([
+    removing_relations,
+    adding_relations,
+    ...updating_relations,
+  ])
 }

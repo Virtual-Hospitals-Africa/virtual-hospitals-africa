@@ -33,10 +33,10 @@ export default function PatientFamilyForm({
   family: PatientFamily
 }): JSX.Element {
   const [patientGuardians, setPatientGuardians] = useState<
-    Map<string, FamilyRelation & { removed: boolean }>
+    Map<string, Partial<FamilyRelation> & { removed: boolean }>
   >(initialStateGuardians(family.guardians))
   const [patientDependents, setPatientDependents] = useState<
-    Map<string, FamilyRelation & { removed: boolean }>
+    Map<string, Partial<FamilyRelation> & { removed: boolean }>
   >(initialStateDependents(family.dependents))
 
   const addGuardian = () => {
@@ -63,7 +63,7 @@ export default function PatientFamilyForm({
             <Guardian
               value={guardian}
               key={key}
-              name={`guardians.${i}`}
+              name={`family.guardians.${i}`}
               onRemove={() => {
                 const nextGuardians = new Map(patientGuardians)
                 const removedGuardian = nextGuardians.get(key)
@@ -86,7 +86,7 @@ export default function PatientFamilyForm({
             <Dependent
               key={key}
               value={dependent}
-              name={`dependents.${i}`}
+              name={`family.dependents.${i}`}
               onRemove={() => {
                 const nextDependents = new Map(patientDependents)
                 const removedDependent = nextDependents.get(key)

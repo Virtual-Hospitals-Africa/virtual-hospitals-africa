@@ -233,18 +233,19 @@ export type OnboardingPatient =
 export type PatientFamily = {
   marital_status?: Maybe<string>
   religion?: Maybe<string>
-  guardians?: FamilyRelation[]
-  dependents?: FamilyRelation[]
+  guardians: FamilyRelation[]
+  dependents: FamilyRelation[]
 }
 
 export type FamilyRelation = {
-  relation_id?: Maybe<number>
-  family_relation?: Maybe<string>
-  patient_id?: Maybe<number>
-  patient_name?: Maybe<string>
-  patient_phone_number?: Maybe<string>
-  patient_gender?: Maybe<Gender>
-  family_relation_gendered?: Maybe<string>
+  relation_id: number
+  family_relation: string
+  guardian_relation: GuardianRelationName
+  patient_id: number
+  patient_name: Maybe<string>
+  patient_phone_number: Maybe<string>
+  patient_gender: Maybe<Gender>
+  family_relation_gendered: Maybe<string>
 }
 
 // TODO: actually define this

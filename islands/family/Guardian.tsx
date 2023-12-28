@@ -17,11 +17,11 @@ export default function Guardian({
 }: {
   key: string
   name: string
-  value?: FamilyRelation
+  value?: Partial<FamilyRelation>
   onRemove(): void
 }) {
   const [patientGuardian, setPatientGuardian] = useState<
-    FamilyRelation | undefined
+    Partial<FamilyRelation> | undefined
   >(value ?? undefined)
 
   return (
@@ -44,8 +44,8 @@ export default function Guardian({
               })}
           />
           <RelationshipSelect
-            name={`${name}.family_relation`}
-            value={patientGuardian?.family_relation ?? undefined}
+            name={`${name}.guardian_relation`}
+            value={patientGuardian?.guardian_relation ?? undefined}
             type='guardian'
             gender={patientGuardian?.patient_gender ?? undefined}
           />

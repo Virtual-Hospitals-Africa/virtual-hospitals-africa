@@ -24,11 +24,11 @@ export default function Dependent({
 }: {
   key: string
   name: string
-  value?: FamilyRelation
+  value?: Partial<FamilyRelation>
   onRemove(): void
 }) {
   const [patientDependent, setPatientDependent] = useState<
-    FamilyRelation | undefined
+    Partial<FamilyRelation> | undefined
   >(value ?? undefined)
 
   return (
@@ -56,8 +56,8 @@ export default function Dependent({
             value={patientDependent?.patient_phone_number}
           />
           <RelationshipSelect
-            name={`${name}.family_relation`}
-            value={patientDependent?.family_relation ?? undefined}
+            name={`${name}.guardian_relation`}
+            value={patientDependent?.guardian_relation ?? undefined}
             type='dependent'
             gender={patientDependent?.patient_gender ?? undefined}
           />
