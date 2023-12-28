@@ -55,11 +55,8 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
-      # - name: Ensure build is the same
-      #   run: |
-      #     mv _fresh _fresh_checked_in
-      #     deno task build
-      #     diff -bur _fresh _fresh_checked_in
+      - name: Run build
+        run: deno task build
 
       - name: Migrate database
         run: deno task db:migrate:latest
