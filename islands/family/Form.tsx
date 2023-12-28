@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { PreExistingConditionWithDrugs } from '../../types.ts'
+import { FamilyRelation, PatientFamily } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
 import { JSX } from 'preact/jsx-runtime'
 import { AddRow } from '../AddRemove.tsx'
@@ -7,23 +7,49 @@ import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Dependent from './Dependent.tsx'
 
-export default function PatientFamilyForm(): JSX.Element {
-  const [patientGuardians, setPatientGuardians] = useState<Map<string, any>>([])
-  const [patientDependents, setPatientDependents] = useState<Map<string, any>>(
-    [],
-  )
+const initialStateGuardians = (
+  guardians: FamilyRelation[] = [],
+) => {
+  const state = new Map()
+  for (const guardian of guardians) {
+    state.set(guardian.relation_id, guardian)
+  }
+  return state
+}
+
+const initialStateDependents = (
+  dependents: FamilyRelation[] = [],
+) => {
+  const state = new Map()
+  for (const dependent of dependents) {
+    state.set(dependent.relation_id, dependent)
+  }
+  return state
+}
+
+export default function PatientFamilyForm({
+  family,
+}: {
+  family: PatientFamily
+}): JSX.Element {
+  const [patientGuardians, setPatientGuardians] = useState<
+    Map<string, FamilyRelation & { removed: boolean }>
+  >(initialStateGuardians(family.guardians))
+  const [patientDependents, setPatientDependents] = useState<
+    Map<string, FamilyRelation & { removed: boolean }>
+  >(initialStateDependents(family.dependents))
 
   const addGuardian = () => {
     const id = generateUUID()
     const guardians = new Map(patientGuardians)
-    guardians.set(id, {})
+    guardians.set(id, { removed: false })
     setPatientGuardians(new Map(guardians))
   }
 
   const addDependent = () => {
     const id = generateUUID()
     const dependents = new Map(patientDependents)
-    dependents.set(id, {})
+    dependents.set(id, { removed: false })
     setPatientDependents(new Map(dependents))
   }
 
@@ -31,16 +57,17 @@ export default function PatientFamilyForm(): JSX.Element {
     <div>
       <div>
         <SectionHeader className='my-5 text-[20px]'>Guardians</SectionHeader>
-        {Array.from(patientGuardians.entries()).map(([key, guardian], i) => (
+        {Array.from(patientGuardians!.entries()).map(([key, guardian], i) => (
           !guardian.removed &&
           (
             <Guardian
+              value={guardian}
               key={key}
               name={`guardians.${i}`}
               onRemove={() => {
                 const nextGuardians = new Map(patientGuardians)
                 const removedGuardian = nextGuardians.get(key)
-                removedGuardian.removed = true
+                removedGuardian!.removed = true
                 setPatientGuardians(nextGuardians)
               }}
             />
@@ -53,16 +80,17 @@ export default function PatientFamilyForm(): JSX.Element {
       </div>
       <div>
         <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
-        {Array.from(patientDependents.entries()).map(([key, dependent], i) => (
+        {Array.from(patientDependents!.entries()).map(([key, dependent], i) => (
           !dependent.removed &&
           (
             <Dependent
               key={key}
+              value={dependent}
               name={`dependents.${i}`}
               onRemove={() => {
                 const nextDependents = new Map(patientDependents)
                 const removedDependent = nextDependents.get(key)
-                removedDependent.removed = true
+                removedDependent!.removed = true
                 setPatientDependents(nextDependents)
               }}
             />

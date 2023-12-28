@@ -2,15 +2,15 @@ import { Select, TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import ReligionSelect from '../../../islands/ReligionSelect.tsx'
-import { OnboardingPatient } from '../../../types.ts'
+import { OnboardingPatient, PatientFamily } from '../../../types.ts'
 import PatientFamilyForm from '../../../islands/family/Form.tsx'
 
 export default function FamilyForm(
-  { patient = {} }: { patient?: Partial<OnboardingPatient> },
+  { patient = {}, family }: { patient?: Partial<OnboardingPatient>, family: PatientFamily },
 ) {
   return (
     <>
-      <FormRow>
+      {/* <FormRow>
         <Select
           name='marital_status'
           required
@@ -25,9 +25,9 @@ export default function FamilyForm(
           <option value='divorced'>Divorced</option>
         </Select>
         <ReligionSelect />
-      </FormRow>
+      </FormRow> */}
       <section>
-        <PatientFamilyForm />
+        <PatientFamilyForm family={family} />
       </section>
     </>
   )

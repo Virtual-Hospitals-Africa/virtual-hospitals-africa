@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'preact/hooks'
 import { assert } from 'std/assert/assert.ts'
-import debounce from '../../util/debounce.ts'
 import { GuardianRelation, HasId } from '../../types.ts'
 import { Select } from '../../components/library/form/Inputs.tsx'
 
@@ -13,7 +12,7 @@ export default function RelationshipSelect({
 }: {
   name: string
   required?: boolean
-  value?: { id: number | 'next_available'; name: string }
+  value?: string
   type?: 'guardian' | 'dependent'
   gender?: 'male' | 'female' | 'other'
 }) {
@@ -35,7 +34,7 @@ export default function RelationshipSelect({
   useEffect(() => {
     getRelationships()
   }, [type, gender])
-
+  
   return (
     <Select
       name={`${name}`}
@@ -49,13 +48,13 @@ export default function RelationshipSelect({
                 <>
                   {(!gender || gender === 'male' || gender === 'other') &&
                       (
-                        <option value={relation.guardian}>
+                        <option value={relation.guardian} selected={value === relation.guardian}>
                           {relation.male_guardian ?? relation.guardian}
                         </option>
                       )}
                   {(!gender || gender === 'female' || gender === 'other') &&
                       (
-                        <option value={relation.guardian}>
+                        <option value={relation.guardian} selected={value === relation.guardian}>
                           {relation.female_guardian ?? relation.guardian}
                         </option>
                       )}
@@ -67,13 +66,13 @@ export default function RelationshipSelect({
                 <>
                   {(!gender || gender === 'male' || gender === 'other') &&
                       (
-                        <option value={relation.dependent}>
+                        <option value={relation.guardian} selected={value === relation.guardian}>
                           {relation.male_dependent ?? relation.dependent}
                         </option>
                       )}
                   {(!gender || gender === 'female' || gender === 'other') &&
                       (
-                        <option value={relation.dependent}>
+                        <option value={relation.guardian} selected={value === relation.guardian}>
                           {relation.female_dependent ?? relation.dependent}
                         </option>
                       )}

@@ -13,6 +13,7 @@ import {
   PreExistingAllergy,
   RenderedPatient,
   ReturnedSqlRow,
+  PatientFamily,
   TrxOrDb,
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
@@ -22,6 +23,7 @@ import compact from '../../util/compact.ts'
 import * as address from './address.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
+import * as patient_family from './family.ts'
 
 export const href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -93,6 +95,7 @@ export type UpsertablePatient = {
   unregistered_primary_doctor_name?: Maybe<string>
   allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
+  family?: PatientFamily
 }
 
 export async function upsert(
@@ -107,6 +110,7 @@ export async function upsert(
       'address',
       'pre_existing_conditions',
       'allergies',
+      'family',
     ]),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
@@ -148,7 +152,41 @@ export async function upsert(
       upsertedPatient.id,
       patient.allergies,
     )
-  await Promise.all([upserting_conditions, upserting_allergies])
+
+  //TODO: handle this better
+  if(patient.family){
+    if (patient?.family?.guardians)
+      for (const guardian_patient of patient?.family?.guardians) {
+        const new_patient = await upsert(trx, {
+          id: guardian_patient.patient_id ?? undefined,
+          name: guardian_patient.patient_name,
+          phone_number: guardian_patient.patient_phone_number ?? undefined,
+          gender: guardian_patient.patient_gender,
+          family: undefined,
+        })
+        guardian_patient.patient_id = new_patient.id
+      }
+
+    if (patient?.family?.dependents)
+      for (const depndent_patient of patient?.family?.dependents) {
+        const new_patient = await upsert(trx, { 
+          id: depndent_patient.patient_id ?? undefined,
+          name: depndent_patient.patient_name,
+          phone_number: depndent_patient.patient_phone_number ?? undefined, 
+          gender: depndent_patient.patient_gender,
+          family: undefined
+        })
+        depndent_patient.patient_id= new_patient.id
+      }  
+  }
+
+  const upserting_family = patient.family &&
+    patient_family.upsert(
+      trx,
+      upsertedPatient.id,
+      patient.family,
+    )
+  await Promise.all([upserting_conditions, upserting_allergies, upserting_family])
 
   return upsertedPatient
 }

@@ -150,7 +150,7 @@ export default function PersonSearch({
         )}
       </SearchInput>
       <span id='nonsense' />
-      {selected && (
+      {selected && selected.id !== 'add' && (
         <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}
     </div>
