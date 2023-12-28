@@ -6,7 +6,9 @@ import { json } from '../../util/responses.ts'
 export const handler: LoggedInHealthWorkerHandler<unknown> = {
   async GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
-    const guardianRelationships = await family.getAllGuardianRelationships(ctx.state.trx)
+    const guardianRelationships = await family.getAllGuardianRelationships(
+      ctx.state.trx,
+    )
     return json(guardianRelationships)
   },
 }

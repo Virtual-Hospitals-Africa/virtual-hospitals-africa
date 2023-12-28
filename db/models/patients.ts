@@ -8,12 +8,12 @@ import {
   OnboardingPatient,
   Patient,
   PatientConversationState,
+  PatientFamily,
   PatientState,
   PatientWithMedicalRecord,
   PreExistingAllergy,
   RenderedPatient,
   ReturnedSqlRow,
-  PatientFamily,
   TrxOrDb,
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
@@ -154,8 +154,8 @@ export async function upsert(
     )
 
   //TODO: handle this better
-  if(patient.family){
-    if (patient?.family?.guardians)
+  if (patient.family) {
+    if (patient?.family?.guardians) {
       for (const guardian_patient of patient?.family?.guardians) {
         const new_patient = await upsert(trx, {
           id: guardian_patient.patient_id ?? undefined,
@@ -166,18 +166,20 @@ export async function upsert(
         })
         guardian_patient.patient_id = new_patient.id
       }
+    }
 
-    if (patient?.family?.dependents)
+    if (patient?.family?.dependents) {
       for (const depndent_patient of patient?.family?.dependents) {
-        const new_patient = await upsert(trx, { 
+        const new_patient = await upsert(trx, {
           id: depndent_patient.patient_id ?? undefined,
           name: depndent_patient.patient_name,
-          phone_number: depndent_patient.patient_phone_number ?? undefined, 
+          phone_number: depndent_patient.patient_phone_number ?? undefined,
           gender: depndent_patient.patient_gender,
-          family: undefined
+          family: undefined,
         })
-        depndent_patient.patient_id= new_patient.id
-      }  
+        depndent_patient.patient_id = new_patient.id
+      }
+    }
   }
 
   const upserting_family = patient.family &&
@@ -186,7 +188,11 @@ export async function upsert(
       upsertedPatient.id,
       patient.family,
     )
-  await Promise.all([upserting_conditions, upserting_allergies, upserting_family])
+  await Promise.all([
+    upserting_conditions,
+    upserting_allergies,
+    upserting_family,
+  ])
 
   return upsertedPatient
 }

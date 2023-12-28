@@ -6,11 +6,15 @@ import { OnboardingPatient, PatientFamily } from '../../../types.ts'
 import PatientFamilyForm from '../../../islands/family/Form.tsx'
 
 export default function FamilyForm(
-  { patient = {}, family }: { patient?: Partial<OnboardingPatient>, family: PatientFamily },
+  { patient = {}, family }: {
+    patient?: Partial<OnboardingPatient>
+    family: PatientFamily
+  },
 ) {
   return (
     <>
-      {/* <FormRow>
+      {
+        /* <FormRow>
         <Select
           name='marital_status'
           required
@@ -25,7 +29,8 @@ export default function FamilyForm(
           <option value='divorced'>Divorced</option>
         </Select>
         <ReligionSelect />
-      </FormRow> */}
+      </FormRow> */
+      }
       <section>
         <PatientFamilyForm family={family} />
       </section>

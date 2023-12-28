@@ -64,7 +64,11 @@ export default function Dependent({
         </FormRow>
       </div>
       {patientDependent && patientDependent.relation_id && (
-        <input type='hidden' name={`${name}.relation_id`} value={patientDependent.relation_id} />
+        <input
+          type='hidden'
+          name={`${name}.relation_id`}
+          value={patientDependent.relation_id}
+        />
       )}
     </RemoveRow>
   )

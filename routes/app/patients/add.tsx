@@ -230,10 +230,10 @@ const transformers: Transformers = {
   'family': (
     patient,
   ): patients.UpsertablePatient => ({
-     family:{
+    family: {
       guardians: patient.guardians as FamilyRelation[],
       dependents: patient.dependents as FamilyRelation[],
-     }
+    },
   }),
 }
 

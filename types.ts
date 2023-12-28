@@ -238,13 +238,13 @@ export type PatientFamily = {
 }
 
 export type FamilyRelation = {
-    relation_id?: Maybe<number>
-    family_relation?:  Maybe<string>
-    patient_id?: Maybe<number>
-    patient_name?: Maybe<string>
-    patient_phone_number?: Maybe<string>
-    patient_gender?: Maybe<Gender>
-    family_relation_gendered?: Maybe<string>
+  relation_id?: Maybe<number>
+  family_relation?: Maybe<string>
+  patient_id?: Maybe<number>
+  patient_name?: Maybe<string>
+  patient_phone_number?: Maybe<string>
+  patient_gender?: Maybe<Gender>
+  family_relation_gendered?: Maybe<string>
 }
 
 // TODO: actually define this

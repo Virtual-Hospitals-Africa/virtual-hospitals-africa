@@ -85,7 +85,11 @@ export default function Guardian({
         }
       </div>
       {patientGuardian && patientGuardian.relation_id && (
-        <input type='hidden' name={`${name}.relation_id`} value={patientGuardian.relation_id} />
+        <input
+          type='hidden'
+          name={`${name}.relation_id`}
+          value={patientGuardian.relation_id}
+        />
       )}
     </RemoveRow>
   )

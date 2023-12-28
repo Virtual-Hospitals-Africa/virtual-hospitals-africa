@@ -34,7 +34,7 @@ export default function RelationshipSelect({
   useEffect(() => {
     getRelationships()
   }, [type, gender])
-  
+
   return (
     <Select
       name={`${name}`}
@@ -44,40 +44,52 @@ export default function RelationshipSelect({
       {relations.map((relation) => (
         <>
           {(!type || type === 'guardian') &&
-              (
-                <>
-                  {(!gender || gender === 'male' || gender === 'other') &&
-                      (
-                        <option value={relation.guardian} selected={value === relation.guardian}>
-                          {relation.male_guardian ?? relation.guardian}
-                        </option>
-                      )}
-                  {(!gender || gender === 'female' || gender === 'other') &&
-                      (
-                        <option value={relation.guardian} selected={value === relation.guardian}>
-                          {relation.female_guardian ?? relation.guardian}
-                        </option>
-                      )}
-                </>
-              )}
+            (
+              <>
+                {(!gender || gender === 'male' || gender === 'other') &&
+                  (
+                    <option
+                      value={relation.guardian}
+                      selected={value === relation.guardian}
+                    >
+                      {relation.male_guardian ?? relation.guardian}
+                    </option>
+                  )}
+                {(!gender || gender === 'female' || gender === 'other') &&
+                  (
+                    <option
+                      value={relation.guardian}
+                      selected={value === relation.guardian}
+                    >
+                      {relation.female_guardian ?? relation.guardian}
+                    </option>
+                  )}
+              </>
+            )}
 
           {(!type || type === 'dependent') &&
-              (
-                <>
-                  {(!gender || gender === 'male' || gender === 'other') &&
-                      (
-                        <option value={relation.guardian} selected={value === relation.guardian}>
-                          {relation.male_dependent ?? relation.dependent}
-                        </option>
-                      )}
-                  {(!gender || gender === 'female' || gender === 'other') &&
-                      (
-                        <option value={relation.guardian} selected={value === relation.guardian}>
-                          {relation.female_dependent ?? relation.dependent}
-                        </option>
-                      )}
-                </>
-              )}
+            (
+              <>
+                {(!gender || gender === 'male' || gender === 'other') &&
+                  (
+                    <option
+                      value={relation.guardian}
+                      selected={value === relation.guardian}
+                    >
+                      {relation.male_dependent ?? relation.dependent}
+                    </option>
+                  )}
+                {(!gender || gender === 'female' || gender === 'other') &&
+                  (
+                    <option
+                      value={relation.guardian}
+                      selected={value === relation.guardian}
+                    >
+                      {relation.female_dependent ?? relation.dependent}
+                    </option>
+                  )}
+              </>
+            )}
         </>
       ))}
     </Select>

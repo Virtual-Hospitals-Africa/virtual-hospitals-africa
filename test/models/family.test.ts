@@ -41,7 +41,7 @@ describe(
               patient_phone_number: null,
               family_relation: 'biological parent',
               family_relation_gendered: 'biological father',
-              patient_gender: 'male'
+              patient_gender: 'male',
             },
           ],
           dependents: [],
@@ -56,7 +56,7 @@ describe(
               patient_phone_number: null,
               family_relation: 'biological child',
               family_relation_gendered: 'biological daughter',
-              patient_gender: 'female'
+              patient_gender: 'female',
             },
           ],
         })

@@ -9,7 +9,7 @@ import { assert } from 'std/assert/assert.ts'
 
 let allGuardianRelations: GuardianRelation[] | null = null
 export async function getAllGuardianRelationships(
-  trx: TrxOrDb
+  trx: TrxOrDb,
 ): Promise<GuardianRelation[]> {
   if (allGuardianRelations) return allGuardianRelations
   return (allGuardianRelations = await trx
@@ -20,7 +20,7 @@ export async function getAllGuardianRelationships(
 
 export function addGuardian(
   trx: TrxOrDb,
-  guardian: PatientGuardian
+  guardian: PatientGuardian,
 ): Promise<{ id: number }> {
   return trx
     .insertInto('patient_guardians')
@@ -31,24 +31,24 @@ export function addGuardian(
 
 export async function get(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: number }
+  { patient_id }: { patient_id: number },
 ): Promise<PatientFamily> {
   const gettingGuardians = trx
     .selectFrom('patient_guardians')
     .innerJoin(
       'guardian_relations',
       'patient_guardians.guardian_relation',
-      'guardian_relations.guardian'
+      'guardian_relations.guardian',
     )
     .innerJoin(
       'patients as guardian',
       'patient_guardians.guardian_patient_id',
-      'guardian.id'
+      'guardian.id',
     )
     .innerJoin(
       'patients as dependent',
       'patient_guardians.dependent_patient_id',
-      'dependent.id'
+      'dependent.id',
     )
     .where('dependent.id', '=', patient_id)
     .select(({ eb, and }) => [
@@ -64,14 +64,14 @@ export async function get(
           and([
             eb('guardian.gender', '=', 'female'),
             eb('guardian_relations.female_guardian', 'is not', null),
-          ])
+          ]),
         )
         .then(sql`guardian_relations.female_guardian`)
         .when(
           and([
             eb('guardian.gender', '=', 'male'),
             eb('guardian_relations.male_guardian', 'is not', null),
-          ])
+          ]),
         )
         .then(sql`guardian_relations.male_guardian`)
         .else('guardian_relations.guardian')
@@ -85,17 +85,17 @@ export async function get(
     .innerJoin(
       'guardian_relations',
       'patient_guardians.guardian_relation',
-      'guardian_relations.guardian'
+      'guardian_relations.guardian',
     )
     .innerJoin(
       'patients as guardian',
       'patient_guardians.guardian_patient_id',
-      'guardian.id'
+      'guardian.id',
     )
     .innerJoin(
       'patients as dependent',
       'patient_guardians.dependent_patient_id',
-      'dependent.id'
+      'dependent.id',
     )
     .where('guardian.id', '=', patient_id)
     .select(({ eb, and }) => [
@@ -111,14 +111,14 @@ export async function get(
           and([
             eb('dependent.gender', '=', 'female'),
             eb('guardian_relations.female_dependent', 'is not', null),
-          ])
+          ]),
         )
         .then(sql`guardian_relations.female_dependent`)
         .when(
           and([
             eb('dependent.gender', '=', 'male'),
             eb('guardian_relations.male_dependent', 'is not', null),
-          ])
+          ]),
         )
         .then(sql`guardian_relations.male_dependent`)
         .else('guardian_relations.guardian')
@@ -138,7 +138,7 @@ export async function get(
 export async function upsert(
   trx: TrxOrDb,
   patient_id: number,
-  patientFamily: PatientFamily
+  patientFamily: PatientFamily,
 ): Promise<void> {
   const existing_family = await get(trx, { patient_id })
 
@@ -153,23 +153,24 @@ export async function upsert(
     ?.filter((id) => !familyIds.includes(id))
     .map((id) => id!)
 
-  const removing_relations =
-    ids_to_remove.length &&
+  const removing_relations = ids_to_remove.length &&
     trx
       .deleteFrom('patient_guardians')
       .where('id', 'in', ids_to_remove)
       .execute()
 
-  for (const guardian of patientFamily.guardians?.filter(
-    (c) => c.relation_id
-  ) || []) {
+  for (
+    const guardian of patientFamily.guardians?.filter(
+      (c) => c.relation_id,
+    ) || []
+  ) {
     const values = {
       guardian_relation: guardian.family_relation,
       guardian_patient_id: guardian.patient_id,
       dependent_patient_id: patient_id,
     } as PatientGuardian
     const matchingGuardian = existing_family?.guardians!.find(
-      (c) => c.relation_id === guardian.relation_id
+      (c) => c.relation_id === guardian.relation_id,
     )
     assert(matchingGuardian, 'Referenced a non-existent guardian')
 
@@ -180,16 +181,18 @@ export async function upsert(
       .executeTakeFirstOrThrow()
   }
 
-  for (const dependent of patientFamily.dependents?.filter(
-    (c) => c.relation_id
-  ) || []) {
+  for (
+    const dependent of patientFamily.dependents?.filter(
+      (c) => c.relation_id,
+    ) || []
+  ) {
     const values = {
       guardian_relation: dependent.family_relation,
       guardian_patient_id: patient_id,
       dependent_patient_id: dependent.patient_id,
     } as PatientGuardian
     const matchingDependent = existing_family?.dependents!.find(
-      (c) => c.relation_id === dependent.relation_id
+      (c) => c.relation_id === dependent.relation_id,
     )
     assert(matchingDependent, 'Referenced a non-existent dependent')
 
@@ -203,29 +206,26 @@ export async function upsert(
   const new_guardians = patientFamily?.guardians
     ?.filter((c) => !c.relation_id)
     .map(
-      (guardian) =>
-        ({
-          guardian_relation: guardian.family_relation,
-          guardian_patient_id: guardian.patient_id,
-          dependent_patient_id: patient_id,
-        } as PatientGuardian)
+      (guardian) => ({
+        guardian_relation: guardian.family_relation,
+        guardian_patient_id: guardian.patient_id,
+        dependent_patient_id: patient_id,
+      } as PatientGuardian),
     )
 
   const new_dependents = patientFamily?.dependents
     ?.filter((c) => !c.relation_id)
     .map(
-      (dependent) =>
-        ({
-          guardian_relation: dependent.family_relation,
-          guardian_patient_id: patient_id,
-          dependent_patient_id: dependent.patient_id,
-        } as PatientGuardian)
+      (dependent) => ({
+        guardian_relation: dependent.family_relation,
+        guardian_patient_id: patient_id,
+        dependent_patient_id: dependent.patient_id,
+      } as PatientGuardian),
     )
 
   const new_relations = (new_guardians ?? []).concat(new_dependents ?? [])
 
-  const adding_relations =
-    new_relations.length &&
+  const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
   await Promise.all([removing_relations, adding_relations])
