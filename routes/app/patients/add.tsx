@@ -26,6 +26,7 @@ import {
 } from '../../../components/patients/add/Steps.tsx'
 import PatientPersonalForm from '../../../components/patients/add/PersonalForm.tsx'
 import PatientAddressForm from '../../../components/patients/add/AddressForm.tsx'
+import PatientOccupationForm from '../../../components/patients/add/OccupationForm.tsx'
 import PatientReview from '../../../components/patients/add/Review.tsx'
 import FamilyForm from '../../../components/patients/add/FamilyForm.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
@@ -109,7 +110,9 @@ type FamilyFormValues = {
   }
 }
 type HistoryFormValues = Record<string, unknown>
-type OccupationFormValues = Record<string, unknown>
+type OccupationFormValues = {
+  school?: Maybe<Record<string, unknown>>
+}
 type LifestyleFormValues = Record<string, unknown>
 type ReviewFormValues = { completed_onboarding: boolean }
 
@@ -160,7 +163,8 @@ function isHistory(
 function isOccupation(
   patient: unknown,
 ): patient is OccupationFormValues {
-  return true
+  return isObjectLike(patient) &&
+    isObjectLike(patient.occupation)
 }
 
 function isLifestyle(
@@ -339,7 +343,7 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
   },
   async POST(req, ctx) {
     const { searchParams } = new URL(req.url)
-    const step = searchParams.get('step')
+    const step = searchParams.get('step') || 'personal'
     const patient_id = searchParams.get('patient_id')
 
     assertOr400(isStep(step))
@@ -421,6 +425,9 @@ export default function AddPatient(
             />
           )}
           {currentStep === 'history' && <div>TODO History</div>}
+          {currentStep === 'occupation' && (
+            <PatientOccupationForm patient={patient} />
+          )}
           {currentStep === 'review' && <PatientReview patient={patient!} />}
           <hr className='my-2' />
           <Buttons
