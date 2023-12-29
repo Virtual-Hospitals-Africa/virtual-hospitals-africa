@@ -35,7 +35,8 @@ const connectionOpts = () => {
 
 const opts = connectionOpts()
 
-export const redis = (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
+export const redis =
+  (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
 
 export async function cacheFacilityAddress(
   longitude: number,
