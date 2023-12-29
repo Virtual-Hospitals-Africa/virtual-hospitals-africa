@@ -46,33 +46,17 @@ type AddPatientProps =
       | 'personal'
       | 'history'
       | 'occupation'
-      | 'family'
       | 'lifestyle'
       | 'review'
-    adminDistricts?: undefined
-    preExistingConditions?: undefined
-    initialDrugs?: undefined
-    allergies?: undefined
-    family?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
-    preExistingConditions?: undefined
-    initialDrugs?: undefined
-    allergies?: undefined
-    family?: undefined
   } | {
     step: 'pre-existing_conditions'
-    adminDistricts?: undefined
     preExistingConditions: PreExistingConditionWithDrugs[]
-    allergies?: PreExistingAllergy[]
-    family?: undefined
+    allergies: PreExistingAllergy[]
   } | {
     step: 'family'
-    adminDistricts?: undefined
-    preExistingConditions?: undefined
-    initialDrugs?: undefined
-    allergies?: undefined
     family: PatientFamily
   })
 
@@ -375,15 +359,8 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
 export default function AddPatient(
   props: PageProps<AddPatientProps>,
 ) {
-  const { stepsTopBar, currentStep } = useAddPatientSteps(props)
-  const {
-    patient,
-    healthWorker,
-    adminDistricts,
-    preExistingConditions,
-    allergies,
-    family,
-  } = props.data
+  const { stepsTopBar } = useAddPatientSteps(props)
+  const { patient, healthWorker } = props.data
 
   return (
     <Layout
@@ -400,41 +377,40 @@ export default function AddPatient(
           className='w-full mt-4'
           encType='multipart/form-data'
         >
-          {currentStep === 'personal' && (
+          {props.data.step === 'personal' && (
             <PatientPersonalForm patient={patient} />
           )}
-          {currentStep === 'address' && (
+          {props.data.step === 'address' && (
             <PatientAddressForm
               patient={patient}
               defaultFacility={{
                 id: healthWorker.employment[0].facility_id,
                 display_name: healthWorker.employment[0].facility_display_name,
               }}
-              adminDistricts={adminDistricts!}
+              adminDistricts={props.data.adminDistricts}
             />
           )}
-          {currentStep === 'family' && (
-            <FamilyForm patient={patient} family={(assert(family), family)} />
+          {props.data.step === 'family' && (
+            <FamilyForm patient={patient} family={props.data.family} />
           )}
-          {currentStep === 'pre-existing_conditions' && (
+          {props.data.step === 'pre-existing_conditions' && (
             <PatientPreExistingConditions
               patient={patient}
-              allergies={(assert(allergies), allergies)}
-              preExistingConditions={(assert(preExistingConditions),
-                preExistingConditions)}
+              allergies={props.data.allergies}
+              preExistingConditions={props.data.preExistingConditions}
             />
           )}
-          {currentStep === 'history' && <div>TODO History</div>}
-          {currentStep === 'occupation' && (
+          {props.data.step === 'occupation' && (
             <PatientOccupationForm patient={patient} />
           )}
-          {currentStep === 'review' && <PatientReview patient={patient!} />}
+          {props.data.step === 'history' && <div>TODO History</div>}
+          {props.data.step === 'review' && <PatientReview patient={patient!} />}
           <hr className='my-2' />
           <Buttons
-            submitText={currentStep === 'review'
+            submitText={props.data.step === 'review'
               ? 'Continue to vitals'
               : 'Next Step'}
-            cancel={currentStep === 'review'
+            cancel={props.data.step === 'review'
               ? {
                 href: `/app/facilities/${
                   healthWorker.employment[0].facility_id
