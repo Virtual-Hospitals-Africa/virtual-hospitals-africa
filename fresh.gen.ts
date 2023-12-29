@@ -54,6 +54,8 @@ import * as $FacilitySearch from './islands/FacilitySearch.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
+import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
+import * as $Occupation19 from './islands/Occupation19.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
@@ -146,6 +148,8 @@ const manifest = {
     './islands/JobPost.tsx': $JobPost,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
+    './islands/Occupation0-18.tsx': $Occupation0_18,
+    './islands/Occupation19.tsx': $Occupation19,
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,

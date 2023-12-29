@@ -418,51 +418,21 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     assertEquals(pre_existing_conditions.length, 0)
   })
-
-  it('handles holes in an array of pre_existing_conditions on POST', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
-    })
+  it('supports POST on the occupation step, moving you to the Family-Form step', async () => {
     const { sessionId } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
-
-    const tablet = await db.selectFrom('medications')
-      .selectAll()
-      .where(
-        'medications.form_route',
-        '=',
-        'TABLET, COATED; ORAL',
-      )
-      .executeTakeFirstOrThrow()
-
-    const drug = await db.selectFrom('drugs').select('generic_name').where(
-      'id',
-      '=',
-      tablet.drug_id,
-    ).executeTakeFirstOrThrow()
-
     const body = new FormData()
-    body.set('pre_existing_conditions.1.key_id', 'c_4373')
-    body.set('pre_existing_conditions.1.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.1.comorbidities.0.key_id', 'c_8321')
-    body.set(
-      'pre_existing_conditions.1.medications.0.medication_id',
-      String(tablet.id),
-    )
-    body.set(
-      'pre_existing_conditions.1.medications.0.strength',
-      String(tablet.strength_numerators[0]),
-    )
-    body.set('pre_existing_conditions.1.medications.0.route', tablet.routes[0])
-    body.set('pre_existing_conditions.1.medications.0.dosage', '2')
-    body.set(
-      'pre_existing_conditions.1.medications.0.intake_frequency',
-      'qod',
-    )
-
+    body.set('occupation.school.first_name', 'Test')
+    body.set('middle_names', 'Zoom Zoom')
+    body.set('last_name', 'Patient')
+    body.set('national_id_number', '08-123456 D 53')
+    body.set('date_of_birth', '2020-01-01')
+    body.set('gender', 'female')
+    body.set('ethnicity', 'african')
+    body.set('phone_number', '5555555555')
     const postResponse = await fetch(
-      `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
+      `${route}/app/patients/add?step=occupation`,
       {
         method: 'POST',
         headers: {
@@ -475,41 +445,35 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
+
+    const patients = await db.selectFrom('patients').selectAll().execute()
+    assertEquals(patients.length, 1)
+    assertEquals(patients[0].name, 'Test Zoom Zoom Patient')
+    assertEquals(patients[0].national_id_number, '08-123456 D 53')
+
     assert(
       postResponse.url ===
-        `${route}/app/patients/add?step=family&patient_id=${patient.id}`,
+        `${route}/app/patients/add?step=address&patient_id=${patients[0].id}`,
     )
 
-    const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient.id,
-    })
+    const getPersonalResponse = await fetch(
+      `${route}/app/patients/add?step=personal&patient_id=${patients[0].id}`,
+      {
+        headers: {
+          Cookie: `sessionId=${sessionId}`,
+        },
+      },
+    )
 
-    assertEquals(pre_existing_conditions.length, 1)
-    const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.key_id, 'c_4373')
-    assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
-    assertEquals(preExistingCondition.start_date, '1989-01-12')
-    assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].key_id, 'c_8321')
-    assertEquals(
-      preExistingCondition.comorbidities[0].primary_name,
-      'Coma - hyperosmolar nonketotic (HONK)',
-    )
-    assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
-    assertEquals(preExistingCondition.medications.length, 1)
-    assertEquals(preExistingCondition.medications[0].dosage, 2)
-    assertEquals(
-      preExistingCondition.medications[0].generic_name,
-      drug.generic_name,
-    )
-    assertEquals(
-      preExistingCondition.medications[0].intake_frequency,
-      'qod',
-    )
-    assertEquals(preExistingCondition.medications[0].medication_id, 1)
-    assertEquals(
-      preExistingCondition.medications[0].strength,
-      150,
-    )
+    const pageContents = await getPersonalResponse.text()
+    const $ = cheerio.load(pageContents)
+    assertEquals($('input[name="first_name"]').val(), 'Test')
+    assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
+    assertEquals($('input[name="last_name"]').val(), 'Patient')
+    assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
+    assertEquals($('select[name="gender"]').val(), 'female')
+    assertEquals($('select[name="ethnicity"]').val(), 'african')
+    assertEquals($('input[name="national_id_number"]').val(), '08-123456 D 53')
+    assertEquals($('input[name="phone_number"]').val(), '5555555555')
   })
 })

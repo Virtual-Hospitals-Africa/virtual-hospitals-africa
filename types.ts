@@ -1492,6 +1492,12 @@ export type PatientAllergies = {
   allergy_id: number
 }
 
+export type PatientOccupation = {
+  patient_id: number
+  school: any
+  job: any
+}
+
 export type PatientEncounterReason =
   | 'seeking treatment'
   | 'appointment'
@@ -1545,13 +1551,25 @@ export type RenderedWaitingRoom = {
       name: string
     }[]
   }
-  providers: RenderedProvider[]
-}
+  providers: {
+    health_worker_id: number
+    employee_id: number
+    name: string
+    profession: string
+    seen_at: Date | null
+  }[]
 
+  export type PatientOccupation = {
+    patient_id: number
+    school: any
+    job: any
+  }
+=========
 export type PatientOccupation = {
   patient_id: number
   school: any
   job: any
+>>>>>>>>> Temporary merge branch 2
 }
 
 export type DatabaseSchema = {
@@ -1593,8 +1611,8 @@ export type DatabaseSchema = {
   patient_guardians: SqlRow<PatientGuardian>
   allergies: SqlRow<Allergy>
   patient_allergies: SqlRow<PatientAllergies>
+  patient_occupations: SqlRow<PatientOccupation>
   patient_encounters: SqlRow<PatientEncounter>
   patient_encounter_providers: SqlRow<PatientEncounterProvider>
   waiting_room: SqlRow<WaitingRoom>
-  patient_occupations: SqlRow<PatientOccupation>
 }
