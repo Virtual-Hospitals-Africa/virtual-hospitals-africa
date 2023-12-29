@@ -1496,6 +1496,12 @@ export type PatientGuardian = {
   dependent_patient_id: number
 }
 
+export type PatientOccupation = {
+  patient_id: number
+  school: any
+  job: any
+}
+
 export type Allergy = {
   name: string
 }
@@ -1603,6 +1609,7 @@ export type DatabaseSchema = {
   patient_guardians: SqlRow<PatientGuardian>
   allergies: SqlRow<Allergy>
   patient_allergies: SqlRow<PatientAllergies>
+  patient_occupations: SqlRow<PatientOccupation>
   patient_encounters: SqlRow<PatientEncounter>
   patient_encounter_providers: SqlRow<PatientEncounterProvider>
   waiting_room: SqlRow<WaitingRoom>

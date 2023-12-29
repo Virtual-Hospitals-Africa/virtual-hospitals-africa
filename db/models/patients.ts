@@ -9,6 +9,7 @@ import {
   Patient,
   PatientConversationState,
   PatientFamily,
+  PatientOccupation,
   PatientState,
   PatientWithMedicalRecord,
   PreExistingAllergy,
@@ -21,6 +22,7 @@ import { getWalkingDistance } from '../../external-clients/google.ts'
 import omit from '../../util/omit.ts'
 import compact from '../../util/compact.ts'
 import * as address from './address.ts'
+import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as patient_family from './family.ts'
@@ -96,6 +98,7 @@ export type UpsertablePatient = {
   allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
   family?: PatientFamily
+  occupation?: Omit<PatientOccupation, 'patient_id'>
 }
 
 export async function upsert(
@@ -111,6 +114,7 @@ export async function upsert(
       'pre_existing_conditions',
       'allergies',
       'family',
+      'occupation',
     ]),
     location: patient.location
       ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
@@ -139,6 +143,13 @@ export async function upsert(
     .onConflict((oc) => oc.column('id').doUpdateSet(toInsert))
     .returningAll()
     .executeTakeFirstOrThrow()
+
+  if (patient.occupation) {
+    await patient_occupations.upsert(trx, {
+      ...patient.occupation,
+      patient_id: upsertedPatient.id,
+    })
+  }
 
   const upserting_conditions = patient.pre_existing_conditions &&
     patient_conditions.upsertPreExisting(
