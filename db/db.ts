@@ -12,6 +12,10 @@ import { PostgreSQLDriver } from 'kysely-deno-postgres'
 let DATABASE_URL = Deno.env.get('DATABASE_URL') ||
   Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL')
 
+if (!DATABASE_URL && Deno.env.get('BUILDING')) {
+  DATABASE_URL = 'THIS SHOULD NOT GET USED'
+}
+
 assert(DATABASE_URL)
 
 // Connect with vha_test database instead of vha_dev when running tests

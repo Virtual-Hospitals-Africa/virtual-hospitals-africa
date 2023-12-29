@@ -64,7 +64,6 @@ import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
-import * as $availability_form from './islands/availability-form.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_Form from './islands/family/Form.tsx'
 import * as $family_Guardian from './islands/family/Guardian.tsx'
@@ -162,7 +161,6 @@ const manifest = {
     './islands/address-inputs.tsx': $address_inputs,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
-    './islands/availability-form.tsx': $availability_form,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/Form.tsx': $family_Form,
     './islands/family/Guardian.tsx': $family_Guardian,

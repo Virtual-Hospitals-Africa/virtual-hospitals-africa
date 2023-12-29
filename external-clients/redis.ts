@@ -28,7 +28,6 @@ export function parseRedisConnectionString(
 
 const connectionOpts = () => {
   const redisUrl = Deno.env.get('REDISCLOUD_URL')
-
   return redisUrl
     ? parseRedisConnectionString(redisUrl)
     : { hostname: 'localhost', port: 6379 }
@@ -36,7 +35,7 @@ const connectionOpts = () => {
 
 const opts = connectionOpts()
 
-export const redis = await connect(opts)
+export const redis = Deno.env.get('BUILDING') ? undefined : await connect(opts)
 
 export async function cacheFacilityAddress(
   longitude: number,
@@ -45,7 +44,7 @@ export async function cacheFacilityAddress(
 ) {
   const key = `facility:${longitude},${latitude}`
 
-  await redis.set(key, address)
+  await redis!.set(key, address)
   console.log('cache address into redis: ' + key + ': ' + address)
 }
 
@@ -54,7 +53,7 @@ export async function getFacilityAddress(
   latitude: number,
 ): Promise<string | null> {
   const key = `facility:${longitude},${latitude}`
-  const address = await redis.get(key)
+  const address = await redis!.get(key)
   return address
 }
 
@@ -63,7 +62,7 @@ export async function getDistanceFromRedis(
   destination: Location,
 ): Promise<string | null> {
   const key = constructKey(origin, destination)
-  return await redis.get(key)
+  return await redis!.get(key)
 }
 
 export async function cacheDistanceInRedis(
@@ -72,7 +71,7 @@ export async function cacheDistanceInRedis(
   distance: string,
 ) {
   const key = constructKey(origin, destination)
-  await redis.set(key, distance)
+  await redis!.set(key, distance)
   console.log('cache distance successfully ' + key + ': ' + distance)
 }
 

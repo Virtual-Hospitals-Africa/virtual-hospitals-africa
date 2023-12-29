@@ -124,7 +124,7 @@ export function describeWithWebServer(
       afterAll(async () => {
         await webserver.kill()
         await db.destroy()
-        await redis.flushdb()
+        await redis!.flushdb()
       })
       callback(route)
     },
@@ -199,7 +199,7 @@ export async function addTestHealthWorkerWithSession(opts: {
 } = { scenario: 'base' }) {
   const sessionId = generateUUID()
   const healthWorker = await addTestHealthWorker(opts)
-  await redis.set(
+  await redis!.set(
     `S_${sessionId}`,
     JSON.stringify({
       data: { health_worker_id: healthWorker.id },

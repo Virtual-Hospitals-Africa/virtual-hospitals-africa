@@ -11,7 +11,7 @@ import {
   LoggedInHealthWorkerHandler,
   Time,
 } from '../../../types.ts'
-import SetAvailabilityForm from '../../../islands/availability-form.tsx'
+import SetAvailabilityForm from '../../../db/availability-form.tsx'
 import { HealthWorkerGoogleClient } from '../../../external-clients/google.ts'
 import {
   assertAllHarare,

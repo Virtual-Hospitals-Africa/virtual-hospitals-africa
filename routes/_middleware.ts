@@ -15,7 +15,7 @@ const logError = (err: Error) => {
 }
 
 export const handler = [
-  redisSession(redis, {
+  redisSession(redis!, {
     keyPrefix: 'S_',
     maxAge: 10000000,
   }),
