@@ -39,6 +39,7 @@ import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
+import * as $foo from './routes/foo.tsx'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
@@ -50,6 +51,7 @@ import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
+import * as $Combobox from './islands/Combobox.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FacilitySearch from './islands/FacilitySearch.tsx'
@@ -135,6 +137,7 @@ const manifest = {
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
+    './routes/foo.tsx': $foo,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/logged-in.tsx': $logged_in,
@@ -148,6 +151,7 @@ const manifest = {
   },
   islands: {
     './islands/AddRemove.tsx': $AddRemove,
+    './islands/Combobox.tsx': $Combobox,
     './islands/ConditionSearch.tsx': $ConditionSearch,
     './islands/ErrorMessage.tsx': $ErrorMessage,
     './islands/FacilitySearch.tsx': $FacilitySearch,
