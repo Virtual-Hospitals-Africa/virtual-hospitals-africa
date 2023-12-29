@@ -1,0 +1,11 @@
+.git
+.gitignore
+.github
+.vscode
+Dockerfile
+.dockerignore
+node_modules
+tmp
+README.md
+_fresh
+.env

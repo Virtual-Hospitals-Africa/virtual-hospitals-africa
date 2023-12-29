@@ -1,0 +1,21 @@
+version: '3.4'
+services:
+  virtualhospitalsafrica:
+    container_name: vha
+    image: virtualhospitalsafrica:latest
+    environment:
+      - REDISCLOUD_URL=redis://redis-docker:6379
+      - SAME_AS_ENV_PROD=prod
+    ports:
+      - '8000:8000'
+    depends_on:
+      - redis-docker
+  redis-docker:
+    container_name: redis-docker
+    image: "redis:7.2.3-alpine"
+    ports:
+      - '6380:6379'
+    sysctls:
+      - net.core.somaxconn=511
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
