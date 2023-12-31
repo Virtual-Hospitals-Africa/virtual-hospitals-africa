@@ -1,1 +1,0 @@
-function i(){let t=new Uint8Array(16);crypto.getRandomValues(t),t[6]=t[6]&15|64,t[8]=t[8]&63|128;let e=Array.from(t).map(n=>n.toString(16).padStart(2,"0"));return`${e.slice(0,4).join("")}-${e.slice(4,6).join("")}-${e.slice(6,8).join("")}-${e.slice(8,10).join("")}-${e.slice(10).join("")}`}export{i as a};
