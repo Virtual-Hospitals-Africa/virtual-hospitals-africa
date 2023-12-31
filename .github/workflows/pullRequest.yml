@@ -55,11 +55,8 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
-      # - name: Ensure build is the same
-      #   run: |
-      #     mv _fresh _fresh_checked_in
-      #     deno task build
-      #     diff -bur _fresh _fresh_checked_in
+      - name: Run build
+        run: deno task build
 
       - name: Migrate database
         run: deno task db:migrate:latest
@@ -67,7 +64,7 @@ jobs:
       - name: Run tests
         run: deno task test
 
-  compile:
+  compile_others:
     runs-on: ubuntu-latest
 
     steps:
@@ -85,5 +82,20 @@ jobs:
       - name: Compile token_refresher
         run: deno task compile:token_refresher
 
+  compile_web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.39.0
+
+      - name: Build web
+        run: deno task build
+
       - name: Compile web
-        run: deno task compile:web
+        run:  deno task compile:web
