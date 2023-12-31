@@ -60,6 +60,6 @@ dump.rdb
 binaries/
 
 # Fresh build directory
-_fresh/
-node_modules
+# _fresh/
+
 .vscode/launch.json
