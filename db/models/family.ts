@@ -1,4 +1,3 @@
-import { sql } from 'kysely'
 import {
   GuardianRelation,
   PatientFamily,
@@ -68,14 +67,14 @@ export async function get(
             eb('guardian_relations.female_guardian', 'is not', null),
           ]),
         )
-        .then(sql`guardian_relations.female_guardian`)
+        .then(eb.ref('guardian_relations.female_guardian'))
         .when(
           and([
             eb('guardian.gender', '=', 'male'),
             eb('guardian_relations.male_guardian', 'is not', null),
           ]),
         )
-        .then(sql`guardian_relations.male_guardian`)
+        .then(eb.ref('guardian_relations.male_guardian'))
         .else('guardian_relations.guardian')
         .end()
         .as('family_relation_gendered'),
@@ -116,14 +115,14 @@ export async function get(
             eb('guardian_relations.female_dependent', 'is not', null),
           ]),
         )
-        .then(sql`guardian_relations.female_dependent`)
+        .then(eb.ref('guardian_relations.female_dependent'))
         .when(
           and([
             eb('dependent.gender', '=', 'male'),
             eb('guardian_relations.male_dependent', 'is not', null),
           ]),
         )
-        .then(sql`guardian_relations.male_dependent`)
+        .then(eb.ref('guardian_relations.male_dependent'))
         .else('guardian_relations.guardian')
         .end()
         .as('family_relation_gendered'),
