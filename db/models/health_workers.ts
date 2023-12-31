@@ -202,7 +202,7 @@ export async function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
     await getWithTokensQuery(trx).where(
       'health_worker_google_tokens.expires_at',
       '<',
-      sql`now() + (5 * interval '1 minute')`,
+      sql<Date>`now() + (5 * interval '1 minute')`,
     ).execute(),
   )
 }

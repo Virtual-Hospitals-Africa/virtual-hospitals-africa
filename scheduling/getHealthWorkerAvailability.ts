@@ -204,7 +204,6 @@ function generateSlots(
     durationMinutes?: number
   },
 ): { start: string; end: string; durationMinutes: number }[] {
-  const slots: { start: string; end: string; durationMinutes: number }[] = []
   const durationMillis = durationMinutes * 60 * 1000
   const current = new Date(start)
   current.setMinutes(
@@ -213,7 +212,10 @@ function generateSlots(
   current.setSeconds(0)
   current.setMilliseconds(0)
 
-  while (current.getTime() + durationMillis <= new Date(end).getTime()) {
+  const endTime = new Date(end).getTime()
+
+  const slots: { start: string; end: string; durationMinutes: number }[] = []
+  while (current.getTime() + durationMillis <= endTime) {
     const startDate = formatHarare(current)
     current.setTime(current.getTime() + durationMillis)
     const endDate = formatHarare(current)

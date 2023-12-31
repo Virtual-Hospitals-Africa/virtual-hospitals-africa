@@ -97,7 +97,9 @@ export function search(
   ) =>
     eb.or([
       eb('drugs.drug_generic_name', 'ilike', `%${opts.search}%`),
-      sql`EXISTS (select 1 from json_array_elements_text("drugs"."distinct_trade_names") AS trade_name
+      sql<
+        boolean
+      >`EXISTS (select 1 from json_array_elements_text("drugs"."distinct_trade_names") AS trade_name
         WHERE trade_name ILIKE ${'%' + opts?.search + '%'})`,
     ])
   )
