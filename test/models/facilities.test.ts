@@ -9,6 +9,8 @@ import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import { insertTestAddress, randomNationalId } from '../mocks.ts'
 import omit from '../../util/omit.ts'
+import { assertRejects } from 'std/assert/assert_rejects.ts'
+import { StatusError } from '../../util/assertOr.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -384,10 +386,9 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
 
   describe('invite', () => {
     it('adds rows to health_worker_invitees if the user is not already a health worker at the facility', async () => {
-      const result = await facilities.invite(db, 1, [
+      await facilities.invite(db, 1, [
         { email: 'test@example.com', profession: 'nurse' },
       ])
-      assertEquals(result, { success: true })
       const invitees = await db.selectFrom('health_worker_invitees').selectAll()
         .execute()
 
@@ -415,10 +416,9 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const result = await facilities.invite(db, 1, [
+      await facilities.invite(db, 1, [
         { email: 'at_facility1@worker.com', profession: 'doctor' },
       ])
-      assertEquals(result, { success: true })
       const invitees = await db.selectFrom('health_worker_invitees').selectAll()
         .execute()
 
@@ -453,14 +453,42 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      const result = await facilities.invite(db, 1, [
-        { email: 'at_facility1@worker.com', profession: 'admin' },
-      ])
-      assertEquals(result, {
-        success: false,
-        error:
-          'at_facility1@worker.com is already employed as a admin. Please remove them from the list.',
+      await assertRejects(
+        () =>
+          facilities.invite(db, 1, [
+            { email: 'at_facility1@worker.com', profession: 'admin' },
+          ]),
+        StatusError,
+        'at_facility1@worker.com is already employed as a admin. Please remove them from the list.',
+      )
+    })
+
+    it('fails on an attempt to invite an existing nurse as a doctor ', async () => {
+      const hw_at_facility1 = await health_workers.upsert(db, {
+        name: 'At Facility 1',
+        email: 'at_facility1@worker.com',
+        avatar_url: 'avatar_url',
+        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
+      assert(hw_at_facility1)
+
+      await employment.add(db, [
+        {
+          health_worker_id: hw_at_facility1.id,
+          facility_id: 1,
+          profession: 'nurse',
+        },
+      ])
+
+      await assertRejects(
+        () =>
+          facilities.invite(db, 1, [
+            { email: 'at_facility1@worker.com', profession: 'doctor' },
+          ]),
+        StatusError,
+        "at_facility1@worker.com is already employed as a nurse so they can't also be employed as a doctor. Please remove them from the list.",
+      )
     })
   })
 })

@@ -51,6 +51,7 @@ import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
+import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FacilitySearch from './islands/FacilitySearch.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
@@ -150,6 +151,7 @@ const manifest = {
   islands: {
     './islands/AddRemove.tsx': $AddRemove,
     './islands/ConditionSearch.tsx': $ConditionSearch,
+    './islands/ErrorListener.tsx': $ErrorListener,
     './islands/ErrorMessage.tsx': $ErrorMessage,
     './islands/FacilitySearch.tsx': $FacilitySearch,
     './islands/JobPost.tsx': $JobPost,

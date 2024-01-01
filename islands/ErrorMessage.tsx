@@ -1,19 +1,18 @@
 import CrossIcon from '../components/library/icons/cross.tsx'
-import { useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import { ExclamationTriangleIcon } from '../components/library/icons/heroicons/solid.tsx'
+import { Signal } from '@preact/signals'
 
 interface ErrorMessageProps {
   className?: string
-  message: string | null
+  error: Signal<string | null>
 }
 
 export default function ErrorMessage(
-  { className, message }: ErrorMessageProps,
-): JSX.Element | null {
-  const [isVisible, setIsVisible] = useState(!!message)
-  return isVisible
+  { className, error }: ErrorMessageProps,
+): null | JSX.Element {
+  return error.value
     ? (
       <div className={cls('rounded-md bg-red-50 p-4', className)}>
         <div className='flex justify-between'>
@@ -26,14 +25,14 @@ export default function ErrorMessage(
             </div>
             <div className='ml-3'>
               <h3 className='text-sm font-medium text-red-800'>
-                {message}
+                {error.value}
               </h3>
             </div>
           </div>
           <button
             className='ml-auto'
             type='button'
-            onClick={() => setIsVisible(false)}
+            onClick={() => error.value = null}
           >
             <CrossIcon
               type='button'
