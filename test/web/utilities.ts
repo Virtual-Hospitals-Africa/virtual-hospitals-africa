@@ -206,7 +206,24 @@ export async function addTestHealthWorkerWithSession(opts: {
       _flash: {},
     }),
   )
-  return { sessionId, healthWorker }
+  const fetchWithSession: typeof fetch = (
+    input: URL | RequestInfo,
+    { headers, ...rest }: RequestInit = {},
+  ) => {
+    return fetch(input, {
+      headers: {
+        ...headers,
+        Cookie: `sessionId=${sessionId}`,
+      },
+      ...rest,
+    })
+  }
+
+  return {
+    sessionId,
+    healthWorker,
+    fetch: fetchWithSession,
+  }
 }
 
 export function getFormValues($: cheerio.CheerioAPI): unknown {

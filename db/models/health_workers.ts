@@ -16,6 +16,7 @@ import { jsonArrayFrom } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import haveNames from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
+import groupBy from '../../util/groupBy.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -366,20 +367,15 @@ export async function get(
           .select([
             'employment.facility_id',
             'facilities.display_name as facility_display_name',
-            sql<Profession[]>`JSON_AGG(employment.profession)`.as(
-              'professions',
-            ),
+            'employment.id as employment_id',
+            'employment.profession',
           ])
           .whereRef(
             'employment.health_worker_id',
             '=',
             'health_workers.id',
-          )
-          .groupBy([
-            'employment.facility_id',
-            'facilities.display_name',
-          ]),
-      ).as('facilities'),
+          ),
+      ).as('employment'),
     ])
 
   if (opts.email) query = query.where('health_workers.email', '=', opts.email)
@@ -392,58 +388,54 @@ export async function get(
   }
 
   const result = await query.executeTakeFirst()
+  if (!result) return null
 
-  return result && {
+  const employment_by_facility = groupBy(
+    result.employment,
+    (e) => e.facility_id,
+  )
+
+  return {
     id: result.id,
     created_at: result.created_at,
     updated_at: result.updated_at,
     ...pickHealthWorkerDetails(result),
     ...pickTokens(result),
-    employment: result.facilities.map((f) => ({
-      facility_id: f.facility_id,
-      facility_display_name: f.facility_display_name,
-      roles: {
-        nurse: f.professions.includes('nurse')
-          ? {
-            employed_as: true,
-            registration_needed: !result.health_worker_id,
-            registration_completed: !!result.approved_by,
-            registration_pending_approval: !result.approved_by,
-          }
-          : {
-            employed_as: false,
-            registration_needed: false,
-            registration_completed: false,
-            registration_pending_approval: false,
+    employment: [...employment_by_facility.entries()].map(
+      ([facility_id, roles]) => {
+        const nurse_role = roles.find((r) => r.profession === 'nurse') || null
+        const doctor_role = roles.find((r) => r.profession === 'doctor') || null
+        const admin_role = roles.find((r) => r.profession === 'admin') || null
+        assert(nurse_role || doctor_role || admin_role)
+        if (nurse_role) assert(!doctor_role)
+        if (doctor_role) assert(!nurse_role)
+
+        return {
+          facility_id,
+          facility_display_name: roles[0].facility_display_name,
+          roles: {
+            nurse: nurse_role && {
+              registration_needed: !result.health_worker_id,
+              registration_completed: !!result.approved_by,
+              registration_pending_approval: !result.approved_by,
+              employment_id: nurse_role.employment_id,
+            },
+            doctor: doctor_role && {
+              registration_needed: false,
+              registration_completed: true,
+              registration_pending_approval: false,
+              employment_id: doctor_role.employment_id,
+            },
+            admin: admin_role && {
+              registration_needed: false,
+              registration_completed: true,
+              registration_pending_approval: false,
+              employment_id: admin_role.employment_id,
+            },
           },
-        doctor: f.professions.includes('doctor')
-          ? {
-            employed_as: true,
-            registration_needed: false,
-            registration_completed: true,
-            registration_pending_approval: false,
-          }
-          : {
-            employed_as: false,
-            registration_needed: false,
-            registration_completed: false,
-            registration_pending_approval: false,
-          },
-        admin: f.professions.includes('admin')
-          ? {
-            employed_as: true,
-            registration_needed: false,
-            registration_completed: true,
-            registration_pending_approval: false,
-          }
-          : {
-            employed_as: false,
-            registration_needed: false,
-            registration_completed: false,
-            registration_pending_approval: false,
-          },
+        }
       },
-    })),
+    ),
   }
 }
 

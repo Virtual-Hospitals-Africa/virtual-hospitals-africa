@@ -1,13 +1,20 @@
-import { Maybe, PatientEncounterReason, TrxOrDb } from '../../types.ts'
+import { sql } from 'kysely'
+import {
+  Maybe,
+  PatientEncounterReason,
+  RenderedPatientEncounter,
+  TrxOrDb,
+} from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 
 export type Create =
   & {
     reason: PatientEncounterReason
-    provider_ids?: number[]
+    employment_ids?: number[]
     appointment_id?: Maybe<number>
     notes?: Maybe<string>
   }
@@ -64,9 +71,13 @@ export function assertIsCreate(
 export async function create(
   trx: TrxOrDb,
   facility_id: number,
-  { patient_id, patient_name, reason, appointment_id, notes, provider_ids }:
+  { patient_id, patient_name, reason, appointment_id, notes, employment_ids }:
     Create,
-) {
+): Promise<{
+  id: number
+  created_at: Date
+  provider_ids: number[]
+}> {
   if (!patient_id) {
     assertOr400(patient_name)
     patient_id = (await patients.upsert(trx, { name: patient_name })).id
@@ -80,23 +91,122 @@ export async function create(
       notes,
       appointment_id: appointment_id || null,
     })
-    .returning('id')
+    .returning(['id', 'created_at'])
     .executeTakeFirstOrThrow()
 
-  const adding_providers = provider_ids?.length && trx
-    .insertInto('patient_encounter_providers')
-    .values(provider_ids.map((provider_id) => ({
-      patient_encounter_id: created.id,
-      provider_id,
-    })))
-    .execute()
+  const adding_providers = employment_ids?.length
+    ? trx
+      .insertInto('patient_encounter_providers')
+      .values(employment_ids.map((provider_id) => ({
+        patient_encounter_id: created.id,
+        provider_id,
+      })))
+      .returning('id')
+      .execute()
+    : Promise.resolve([])
 
-  const adding_to_waiting_room = waiting_room.add(trx, {
+  await waiting_room.add(trx, {
     patient_encounter_id: created.id,
     facility_id,
   })
 
-  await Promise.all([adding_providers, adding_to_waiting_room])
+  const providers = await adding_providers
 
-  return created
+  return {
+    ...created,
+    provider_ids: providers.map((p) => p.id),
+  }
+}
+
+export function addProvider(
+  trx: TrxOrDb,
+  { encounter_id, provider_id, seen_now }: {
+    encounter_id: number
+    provider_id: number
+    seen_now?: boolean
+  },
+) {
+  return trx
+    .insertInto('patient_encounter_providers')
+    .values({
+      patient_encounter_id: encounter_id,
+      provider_id,
+      seen_at: seen_now ? sql<Date>`now()` : null,
+    })
+    .returning(['id', 'seen_at'])
+    .executeTakeFirstOrThrow()
+}
+
+export function markProviderSeen(
+  trx: TrxOrDb,
+  { patient_encounter_provider_id }: {
+    patient_encounter_provider_id: number
+  },
+) {
+  return trx
+    .updateTable('patient_encounter_providers')
+    .set({ seen_at: sql<Date>`now()` })
+    .where('patient_encounter_providers.id', '=', patient_encounter_provider_id)
+    .returning(['id', 'seen_at'])
+    .executeTakeFirstOrThrow()
+}
+
+export function get(
+  trx: TrxOrDb,
+  { patient_id, encounter_id }: {
+    patient_id: number
+    encounter_id: number | 'open'
+  },
+): Promise<Maybe<RenderedPatientEncounter>> {
+  let query = trx
+    .selectFrom('patient_encounters')
+    .leftJoin(
+      'waiting_room',
+      'waiting_room.patient_encounter_id',
+      'patient_encounters.id',
+    )
+    .select((eb) => [
+      'patient_encounters.id as encounter_id',
+      'patient_encounters.created_at',
+      'patient_encounters.closed_at',
+      'patient_encounters.reason',
+      'patient_encounters.notes',
+      'patient_encounters.appointment_id',
+      'waiting_room.id as waiting_room_id',
+      'waiting_room.facility_id as waiting_room_facility_id',
+      jsonArrayFrom(
+        eb.selectFrom('patient_encounter_providers')
+          .innerJoin(
+            'employment',
+            'employment.id',
+            'patient_encounter_providers.provider_id',
+          )
+          .innerJoin(
+            'health_workers',
+            'health_workers.id',
+            'employment.health_worker_id',
+          )
+          .select([
+            'patient_encounter_providers.id as patient_encounter_provider_id',
+            'employment.id as employment_id',
+            'employment.facility_id',
+            'employment.profession',
+            'health_workers.id as health_worker_id',
+            'health_workers.name as health_worker_name',
+            'patient_encounter_providers.seen_at',
+          ])
+          .whereRef(
+            'patient_encounter_providers.patient_encounter_id',
+            '=',
+            'patient_encounters.id',
+          ),
+      ).as('providers'),
+    ])
+    .where('patient_encounters.patient_id', '=', patient_id)
+
+  query = encounter_id === 'open'
+    ? query.where('patient_encounters.closed_at', 'is', null)
+    : query.where('patient_encounters.id', '=', encounter_id)
+
+  return query.executeTakeFirst()
 }

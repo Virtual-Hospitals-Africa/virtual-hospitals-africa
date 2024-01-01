@@ -22,11 +22,11 @@ export const handler: LoggedInHealthWorkerHandler<PatientPageProps> = {
   async GET(_, ctx) {
     const { healthWorker } = ctx.state
 
-    const id = parseInt(ctx.params.id)
-    assertOr404(!isNaN(id), 'Invalid patient id')
+    const patient_id = parseInt(ctx.params.patient_id)
+    assertOr404(patient_id, 'Invalid patient id')
 
     const [patient] = await patients.getWithMedicalRecords(ctx.state.trx, {
-      ids: [id],
+      ids: [patient_id],
       health_worker_id: healthWorker.id,
     })
 

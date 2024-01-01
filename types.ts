@@ -1048,23 +1048,23 @@ export type EmployedHealthWorker = ReturnedSqlRow<
       facility_id: number
       facility_display_name: string
       roles: {
-        nurse: {
-          employed_as: boolean
+        nurse: null | {
           registration_needed: boolean
           registration_completed: boolean
           registration_pending_approval: boolean
+          employment_id: number
         }
-        doctor: {
-          employed_as: boolean
+        doctor: null | {
           registration_needed: boolean
           registration_completed: boolean
           registration_pending_approval: boolean
+          employment_id: number
         }
-        admin: {
-          employed_as: boolean
+        admin: null | {
           registration_needed: boolean
           registration_completed: boolean
           registration_pending_approval: boolean
+          employment_id: number
         }
       }
     }[]
@@ -1082,20 +1082,6 @@ export type HealthWorkerGoogleToken = GoogleTokens & {
 export type HealthWorkerWithGoogleTokens = ReturnedSqlRow<
   HealthWorker & GoogleTokens
 >
-
-export type HealthWorkerWithFacilityRoles = HealthWorkerWithGoogleTokens & {
-  facilities: {
-    id: number
-    roles: {
-      nurse: {
-        employed_as: boolean
-        approved: boolean
-      }
-      doctor?: boolean
-      admin?: boolean
-    }
-  }[]
-}
 
 export type Availability = {
   start: string
@@ -1570,6 +1556,50 @@ export type RenderedWaitingRoom = {
   providers: RenderedProvider[]
 }
 
+export type RenderedPatientEncounterProvider = {
+  patient_encounter_provider_id: number
+  employment_id: number
+  facility_id: number
+  profession: Profession
+  health_worker_id: number
+  health_worker_name: string
+  seen_at: null | Date
+}
+
+export type RenderedPatientEncounter = {
+  encounter_id: number
+  created_at: Date
+  closed_at: null | Date
+  reason: PatientEncounterReason
+  notes: null | string
+  appointment_id: null | number
+  waiting_room_id: null | number
+  waiting_room_facility_id: null | number
+  providers: RenderedPatientEncounterProvider[]
+}
+
+export type Measurements = {
+  height: [number, 'cm']
+  weight: [number, 'kg']
+  temperature: [number, 'celsius']
+  blood_pressure_diastolic: [number, 'mmHg']
+  blood_pressure_systolic: [number, 'mmHg']
+  blood_oxygen_saturation: [number, '%']
+  blood_glucose: [number, 'mg/dL']
+}
+export type Measurement<Name extends keyof Measurements> = {
+  name: Name
+  units: Measurements[Name][1]
+}
+
+export type PatientMeasurement = {
+  patient_id: number
+  encounter_id: number
+  encounter_provider_id: number
+  measurement_name: keyof Measurements
+  value: number
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1613,4 +1643,6 @@ export type DatabaseSchema = {
   patient_encounters: SqlRow<PatientEncounter>
   patient_encounter_providers: SqlRow<PatientEncounterProvider>
   waiting_room: SqlRow<WaitingRoom>
+  measurements: Measurement<keyof Measurements>
+  patient_measurements: SqlRow<PatientMeasurement>
 }

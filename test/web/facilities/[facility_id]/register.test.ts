@@ -17,18 +17,11 @@ describeWithWebServer(
   8008,
   (route) => {
     it('renders a registration page on GET', async () => {
-      const { sessionId } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession({
         scenario: 'nurse',
       })
 
-      const response = await fetch(
-        `${route}/app/facilities/1/register`,
-        {
-          headers: {
-            Cookie: `sessionId=${sessionId}`,
-          },
-        },
-      )
+      const response = await fetch(`${route}/app/facilities/1/register`)
 
       assert(response.ok, 'should have returned ok')
       assert(
@@ -60,7 +53,7 @@ describeWithWebServer(
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
       await addTestHealthWorker({ scenario: 'admin' })
-      const { sessionId, healthWorker: nurse } =
+      const { fetch, sessionId, healthWorker: nurse } =
         await addTestHealthWorkerWithSession({
           scenario: 'nurse',
         })
@@ -89,9 +82,6 @@ describeWithWebServer(
           `${route}/app/facilities/1/register?step=personal`,
           {
             method: 'POST',
-            headers: {
-              Cookie: `sessionId=${sessionId}`,
-            },
             body,
           },
         )
@@ -129,11 +119,6 @@ describeWithWebServer(
 
         const getPersonalResponse = await fetch(
           `${route}/app/facilities/1/register?step=personal`,
-          {
-            headers: {
-              Cookie: `sessionId=${sessionId}`,
-            },
-          },
         )
 
         const pageContents = await getPersonalResponse.text()
@@ -181,9 +166,6 @@ describeWithWebServer(
           `${route}/app/facilities/1/register?step=professional`,
           {
             method: 'POST',
-            headers: {
-              Cookie: `sessionId=${sessionId}`,
-            },
             body,
           },
         )
@@ -224,11 +206,6 @@ describeWithWebServer(
 
         const getProfessionalResponse = await fetch(
           `${route}/app/facilities/1/register?step=professional`,
-          {
-            headers: {
-              Cookie: `sessionId=${sessionId}`,
-            },
-          },
         )
 
         const pageContents = await getProfessionalResponse.text()
@@ -255,9 +232,6 @@ describeWithWebServer(
           `${route}/app/facilities/1/register?step=documents`,
           {
             method: 'POST',
-            headers: {
-              Cookie: `sessionId=${sessionId}`,
-            },
             body,
           },
         )

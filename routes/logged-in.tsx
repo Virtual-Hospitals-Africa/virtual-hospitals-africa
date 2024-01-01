@@ -23,6 +23,8 @@ export async function initializeHealthWorker(
   profile: GoogleProfile,
   invitees: { id: number; facility_id: number; profession: Profession }[],
 ): Promise<EmployedHealthWorker> {
+  assert(invitees.length, 'No invitees found')
+
   const calendars = await googleClient
     .ensureHasAppointmentsAndAvailabilityCalendars()
 
@@ -35,7 +37,17 @@ export async function initializeHealthWorker(
     ...health_workers.pickTokens(googleClient.tokens),
   })
 
-  await employment.add(
+  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
+
+  // Fire off async operations in parallel
+  const removing_invites = employment.removeInvitees(
+    trx,
+    invitees.map((invitee) => invitee.id),
+  )
+
+  const getting_facilities = facilities.get(trx, { ids: facility_ids })
+
+  const adding_roles = employment.add(
     trx,
     invitees.map((invitee) => ({
       health_worker_id: healthWorker.id,
@@ -44,70 +56,51 @@ export async function initializeHealthWorker(
     })),
   )
 
-  await employment.removeInvitees(trx, invitees.map((invitee) => invitee.id))
-
-  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
-
-  const employedAtFacilities = await facilities.get(trx, { ids: facility_ids })
+  await removing_invites
+  const employed_at_facilities = await getting_facilities
+  const roles = await adding_roles
 
   return {
     ...healthWorker,
-    employment: facility_ids.map((facility_id) => ({
-      facility_id,
-      facility_display_name:
-        employedAtFacilities.find((f) => f.id === facility_id)!.display_name,
-      roles: {
-        nurse: invitees.some((invitee) =>
-            invitee.facility_id === facility_id &&
-            invitee.profession === 'nurse'
-          )
-          ? {
-            employed_as: true,
+    employment: facility_ids.map((facility_id) => {
+      const facility_display_name = employed_at_facilities.find((f) =>
+        f.id === facility_id
+      )!.display_name
+      const nurse_role = roles.find(
+        (r) => r.facility_id === facility_id && r.profession === 'nurse',
+      ) || null
+      const doctor_role = roles.find(
+        (r) => r.facility_id === facility_id && r.profession === 'doctor',
+      ) || null
+      const admin_role = roles.find(
+        (r) => r.facility_id === facility_id && r.profession === 'admin',
+      ) || null
+
+      return {
+        facility_id,
+        facility_display_name,
+        roles: {
+          nurse: nurse_role && {
             registration_needed: true,
             registration_completed: false,
             registration_pending_approval: true,
-          }
-          : {
-            employed_as: false,
-            registration_needed: false,
-            registration_completed: false,
-            registration_pending_approval: false,
+            employment_id: nurse_role.id,
           },
-        doctor:
-          invitees.some((invitee) =>
-              invitee.facility_id === facility_id &&
-              invitee.profession === 'doctor'
-            )
-            ? {
-              employed_as: true,
-              registration_needed: false,
-              registration_completed: true,
-              registration_pending_approval: false,
-            }
-            : {
-              employed_as: false,
-              registration_needed: false,
-              registration_completed: false,
-              registration_pending_approval: false,
-            },
-        admin: invitees.some((invitee) =>
-            invitee.facility_id === facility_id &&
-            invitee.profession === 'admin'
-          )
-          ? {
-            employed_as: true,
+          doctor: doctor_role && {
             registration_needed: false,
             registration_completed: true,
             registration_pending_approval: false,
-          }
-          : {
-            employed_as: false,
-            registration_needed: false,
-            registration_completed: false,
-            registration_pending_approval: false,
+            employment_id: doctor_role.id,
           },
-      },
-    })),
+          admin: admin_role && {
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+            employment_id: admin_role.id,
+          },
+        },
+      }
+    }),
   }
 }
 

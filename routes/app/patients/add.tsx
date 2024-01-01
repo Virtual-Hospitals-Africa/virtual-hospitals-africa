@@ -319,10 +319,6 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       })
     }
 
-    assertOr400(
-      step === 'personal' ||
-        step === 'history' || step === 'occupation' || step === 'lifestyle',
-    )
     return ctx.render({ healthWorker, patient, step })
   },
   async POST(req, ctx) {
@@ -343,16 +339,11 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       id: (patient_id && parseInt(patient_id)) || undefined,
     })
 
-    if (patient.completed_onboarding) {
-      const success = encodeURIComponent(
-        `Awesome! ${patient.name} has finished onboarding!`,
-      )
-      return redirect(`/app/patients?success=${success}`)
-    }
+    const redirect_to = patient.completed_onboarding
+      ? `/app/patients/${patient.id}/encounters/open/vitals`
+      : `/app/patients/add?step=${getNextStep(step)}&patient_id=${patient.id}`
 
-    return redirect(
-      `/app/patients/add?step=${getNextStep(step)}&patient_id=${patient.id}`,
-    )
+    return redirect(redirect_to)
   },
 }
 

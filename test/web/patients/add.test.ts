@@ -20,14 +20,10 @@ import omit from '../../../util/omit.ts'
 
 describeWithWebServer('/app/patients/add', 8004, (route) => {
   it('loads the personal page', async () => {
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
-    const response = await fetch(`${route}/app/patients/add?step=personal`, {
-      headers: {
-        Cookie: `sessionId=${sessionId}`,
-      },
-    })
+    const response = await fetch(`${route}/app/patients/add?step=personal`)
     assert(response.ok, 'should have returned ok')
     assert(response.url === `${route}/app/patients/add?step=personal`)
     const pageContents = await response.text()
@@ -40,7 +36,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
   })
 
   it('supports POST on the personal step, moving you to the address step', async () => {
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
     const body = new FormData()
@@ -56,9 +52,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       `${route}/app/patients/add?step=personal`,
       {
         method: 'POST',
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
         body,
       },
     )
@@ -79,11 +72,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     const getPersonalResponse = await fetch(
       `${route}/app/patients/add?step=personal&patient_id=${patients[0].id}`,
-      {
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
-      },
     )
 
     const pageContents = await getPersonalResponse.text()
@@ -103,7 +91,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       name: 'Test Patient',
     })
     const testDoctor = await addTestHealthWorker({ scenario: 'doctor' })
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
     const countryInfo = await address.getFullCountryInfo(db)
@@ -129,9 +117,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       `${route}/app/patients/add?step=address&patient_id=${patient.id}`,
       {
         method: 'POST',
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
         body,
       },
     )
@@ -161,11 +146,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     const getResponse = await fetch(
       `${route}/app/patients/add?step=address&patient_id=${patient.id}`,
-      {
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
-      },
     )
 
     const pageContents = await getResponse.text()
@@ -184,7 +164,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
 
@@ -226,9 +206,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
       {
         method: 'POST',
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
         body,
       },
     )
@@ -275,11 +252,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     const getResponse = await fetch(
       `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
-      {
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
-      },
+      {},
     )
 
     const pageContents = await getResponse.text()
@@ -325,7 +298,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
 
@@ -337,9 +310,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
       {
         method: 'POST',
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
         body,
       },
     )
@@ -360,11 +330,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
 
     const getResponse = await fetch(
       `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
-      {
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
-      },
+      {},
     )
 
     const pageContents = await getResponse.text()
@@ -382,7 +348,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
 
@@ -397,9 +363,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
       {
         method: 'POST',
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
         body: new FormData(),
       },
     )
@@ -423,7 +386,7 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
     const patient = await patients.upsert(db, {
       name: 'Test Patient',
     })
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
 
@@ -465,9 +428,6 @@ describeWithWebServer('/app/patients/add', 8004, (route) => {
       `${route}/app/patients/add?step=pre-existing_conditions&patient_id=${patient.id}`,
       {
         method: 'POST',
-        headers: {
-          Cookie: `sessionId=${sessionId}`,
-        },
         body,
       },
     )

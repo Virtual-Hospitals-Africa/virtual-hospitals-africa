@@ -1,5 +1,5 @@
 import { redisSession } from 'fresh_session'
-import { MiddlewareHandlerContext } from '$fresh/server.ts'
+import { FreshContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
 import redirect from '../util/redirect.ts'
 import { TrxOrDb } from '../types.ts'
@@ -21,7 +21,7 @@ export const handler = [
   }),
   (
     req: Request,
-    ctx: MiddlewareHandlerContext<
+    ctx: FreshContext<
       WithSession & {
         trx: TrxOrDb
       }
