@@ -42,10 +42,10 @@ export const handler = [
       return ctx.next()
     }).catch((err) => {
       console.error(err)
-      const status = err.status || 500
-      const stack: string = err.stack || err.message || 'Internal Server Error'
       logError(err)
-      return new Response(stack, { status })
+      const status = err.status || 500
+      const message: string = err.message || 'Internal Server Error'
+      return new Response(message, { status })
     })
   },
 ]

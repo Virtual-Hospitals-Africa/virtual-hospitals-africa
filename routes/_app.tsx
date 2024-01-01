@@ -43,6 +43,9 @@ export default function App({ Component, ...props }: PageProps) {
             />
           </>
         )}
+        {props.route.startsWith('/app') && (
+          <script src='/hijack-form-submission.js' defer />
+        )}
       </head>
       <body className='min-h-screen flex flex-col relative justify-between'>
         <Component />

@@ -84,24 +84,19 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
 
     const invitesWithEmails = invites.filter((invite) => invite.email)
 
-    const result = await facilities.invite(
+    await facilities.invite(
       ctx.state.trx,
       ctx.state.facility.id,
       invitesWithEmails,
     )
 
-    if (!result.success) {
-      const url = new URL(req.url)
-      url.searchParams.set(
-        'error',
-        result.error!,
-      )
-      return redirect(url.toString())
-    }
-
     const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
     const successMessage = encodeURIComponent(`Successfully invited ${invited}`)
 
+    console.log(
+      'redirecting',
+      `/app/facilities/${ctx.state.facility.id}/employees?success=${successMessage}`,
+    )
     return redirect(
       `/app/facilities/${ctx.state.facility.id}/employees?success=${successMessage}`,
     )

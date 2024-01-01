@@ -3,9 +3,9 @@ import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
 import { Sidebar } from './Sidebar.tsx'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
-import ErrorMessage from '../../islands/ErrorMessage.tsx'
 import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { ErrorListener } from '../../islands/ErrorListener.tsx'
 
 export type LayoutProps =
   & {
@@ -80,9 +80,8 @@ export default function Layout(props: LayoutProps) {
         message={success}
         className='fixed z-50 top-0 left-0 right-0 m-12'
       />
-      <ErrorMessage
-        message={error}
-        className='fixed z-50 top-0 left-0 right-0 m-12'
+      <ErrorListener
+        initialError={error}
       />
       {props.variant === 'landing-page' && props.children}
       {(props.variant === 'standard' ||

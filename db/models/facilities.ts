@@ -19,6 +19,7 @@ import {
   jsonBuildObject,
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertOr400, StatusError } from '../../util/assertOr.ts'
 
 export async function nearest(
   trx: TrxOrDb,
@@ -269,17 +270,15 @@ export async function invite(
       invitedByEmail.set(email, new Set([profession]))
       continue
     }
-    if (professions.has(profession)) {
-      const error = `Cannot invite ${email} as a ${profession} more than once.`
-      return { success: false, error }
-    }
-    if (
-      (profession === 'doctor' && professions.has('nurse')) ||
-      (profession === 'nurse' && professions.has('doctor'))
-    ) {
-      const error = `Cannot invite ${email} as both a doctor and a nurse..`
-      return { success: false, error }
-    }
+    assertOr400(
+      !professions.has(profession),
+      `Cannot invite ${email} as a ${profession} more than once.`,
+    )
+    assertOr400(
+      !((profession === 'doctor' && professions.has('nurse')) ||
+        (profession === 'nurse' && professions.has('doctor'))),
+      `Cannot invite ${email} as both a doctor and a nurse..`,
+    )
     professions.add(profession)
   }
 
@@ -298,11 +297,12 @@ export async function invite(
           ),
       ),
   )
+
   if (exactMatchingInvites.length) {
     const [{ email, profession }] = exactMatchingInvites
-    const error =
+    const message =
       `${email} is already employed as a ${profession}. Please remove them from the list.`
-    return { success: false, error }
+    throw new StatusError(message, 400)
   }
 
   const alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa = invites.filter(
@@ -319,10 +319,10 @@ export async function invite(
   if (alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa.length) {
     const [{ email, profession }] =
       alreadyDoctorAndTryingToInviteAsNurseOrVisaVersa
-    const error = `${email} is already employed as a ${
+    const message = `${email} is already employed as a ${
       profession === 'nurse' ? 'doctor' : 'nurse'
     } so they can't also be employed as a ${profession}. Please remove them from the list.`
-    return { success: false, error }
+    throw new StatusError(message, 400)
   }
 
   const [inEmployeeTable, notInEmployeeTable] = partition(
@@ -350,9 +350,5 @@ export async function invite(
       facility_id,
       notInEmployeeTable,
     )
-  }
-
-  return {
-    success: true,
   }
 }
