@@ -248,6 +248,20 @@ export type FamilyRelation = {
   family_relation_gendered: Maybe<string>
 }
 
+export type FamilyRelationInsert = {
+  patient_id?: Maybe<number>
+  patient_name: Maybe<string>
+  patient_phone_number: Maybe<string>
+  family_relation_gendered: string
+}
+
+export type FamilyUpsert = {
+  marital_status?: Maybe<string>
+  religion?: Maybe<string>
+  guardians: FamilyRelationInsert[]
+  dependents: FamilyRelationInsert[]
+}
+
 // TODO: actually define this
 export type PatientMedicalRecord = {
   allergies: string[]
@@ -1615,7 +1629,7 @@ export type DatabaseSchema = {
   appointment_health_worker_attendees: SqlRow<AppointmentHealthWorkerAttendee>
   health_workers: SqlRow<HealthWorker>
   health_worker_google_tokens: SqlRow<HealthWorkerGoogleToken>
-  patients: SqlRow<Patient>
+  patients: SqlRow<Omit<Patient, 'conversation'>>
   employment: SqlRow<Employee>
   whatsapp_messages_received: SqlRow<WhatsAppMessageReceived>
   whatsapp_messages_sent: SqlRow<WhatsAppMessageSent>

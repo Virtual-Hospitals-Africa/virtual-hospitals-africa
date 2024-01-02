@@ -1,6 +1,6 @@
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  FamilyRelation,
+  FamilyRelationInsert,
   FullCountryInfo,
   LoggedInHealthWorkerContext,
   LoggedInHealthWorkerHandler,
@@ -83,8 +83,8 @@ type ConditionsFormValues = {
 
 type FamilyFormValues = {
   family?: {
-    guardians?: FamilyRelation[]
-    dependents?: FamilyRelation[]
+    guardians?: FamilyRelationInsert[]
+    dependents?: FamilyRelationInsert[]
   }
 }
 type HistoryFormValues = Record<string, unknown>
@@ -196,20 +196,20 @@ type Transformers = Partial<
   {
     [key in keyof FormValuesByStep]: (
       patient: FormValuesByStep[key],
-    ) => patients.UpsertablePatient
+    ) => Omit<patients.UpsertPatientIntake, 'id'>
   }
 >
 
 const transformers: Transformers = {
   personal: (
     { avatar_media, ...patient },
-  ): patients.UpsertablePatient => ({
+  ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     ...patient,
     avatar_media_id: avatar_media?.id,
   }),
   address: (
     patient,
-  ): patients.UpsertablePatient => ({
+  ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     nearest_facility_id: patient.nearest_facility_id,
     primary_doctor_id: isNaN(patient.primary_doctor_id)
       ? null
@@ -228,14 +228,14 @@ const transformers: Transformers = {
   }),
   'pre-existing_conditions': (
     patient,
-  ): patients.UpsertablePatient => ({
+  ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     ...omit(patient, ['allergy_search']),
     pre_existing_conditions: patient.pre_existing_conditions || [],
     allergies: patient.allergies || [],
   }),
   'family': (
     patient,
-  ): patients.UpsertablePatient => ({
+  ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     family: {
       guardians: patient?.family?.guardians || [],
       dependents: patient?.family?.dependents || [],
@@ -260,14 +260,14 @@ export const handler: LoggedInHealthWorkerHandler<IntakePatientProps> = {
     const transformedFormData = transformers[step]?.(formData as any) ||
       formData
 
-    const patient = await patients.upsert(ctx.state.trx, {
-      id: patient_id,
+    await patients.upsertIntake(ctx.state.trx, {
       ...transformedFormData,
+      id: patient_id,
     })
 
-    const redirect_to = patient.completed_onboarding
-      ? `/app/patients/${patient.id}/encounters/open/vitals`
-      : `/app/patients/${patient.id}/intake/${getNextStep(step)}`
+    const redirect_to = transformedFormData.completed_onboarding
+      ? `/app/patients/${patient_id}/encounters/open/vitals`
+      : `/app/patients/${patient_id}/intake/${getNextStep(step)}`
 
     return redirect(redirect_to)
   },

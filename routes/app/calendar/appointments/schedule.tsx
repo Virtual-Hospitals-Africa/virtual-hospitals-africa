@@ -15,7 +15,7 @@ import * as patients from '../../../../db/models/patients.ts'
 import { parseRequest } from '../../../../util/parseForm.ts'
 import {
   availableSlots,
-} from '../../../../scheduling/getHealthWorkerAvailability.ts'
+} from '../../../../shared/scheduling/getHealthWorkerAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
@@ -23,7 +23,7 @@ import { hasName } from '../../../../util/haveNames.ts'
 import {
   isScheduleFormValues,
   makeAppointmentWeb,
-} from '../../../../scheduling/makeAppointment.ts'
+} from '../../../../shared/scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
 
 type SearchFormValues = {

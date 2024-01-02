@@ -1,5 +1,5 @@
-import * as google from '../external-clients/google.ts'
-import { getAllWithExtantTokens } from '../db/models/health_workers.ts'
+import * as google from '../../external-clients/google.ts'
+import { getAllWithExtantTokens } from '../../db/models/health_workers.ts'
 import {
   Availability,
   GCalFreeBusy,
@@ -7,11 +7,11 @@ import {
   ReturnedSqlRow,
   TimeRange,
   TrxOrDb,
-} from '../types.ts'
-import { assertAllHarare, formatHarare } from '../util/date.ts'
+} from '../../types.ts'
+import { assertAllHarare, formatHarare } from '../../util/date.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import flatten from '../util/flatten.ts'
+import flatten from '../../util/flatten.ts'
 
 export function getAvailability(
   health_worker: {

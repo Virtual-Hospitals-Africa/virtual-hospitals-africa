@@ -13,4 +13,4 @@ export const pickPatient = pick([
 ])
 
 export const updatePatientState = (trx: TrxOrDb, patientState: PatientState) =>
-  patients.upsert(trx, pickPatient(patientState))
+  patients.upsertIntake(trx, pickPatient(patientState))

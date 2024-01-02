@@ -25,29 +25,35 @@ export default function Guardian({
   >(value ?? undefined)
 
   return (
-    <RemoveRow onClick={onRemove} key={'test'} labelled>
+    <RemoveRow onClick={onRemove} key={key} labelled>
       <div class='w-full justify-normal'>
         <FormRow>
           <PersonSearch
             name={`${name}.patient`}
             href='/app/patients'
             label='Name'
-            value={{ id: value?.patient_id!, name: value!.patient_name! }}
+            value={patientGuardian &&
+              {
+                id: patientGuardian.patient_id,
+                name: patientGuardian.patient_name,
+              }}
             required
             addable
             onSelect={(person) =>
               setPatientGuardian({
-                ...value!,
-                patient_gender: person.gender,
-                patient_phone_number: person.phone_number,
-                patient_name: person.name,
+                patient_gender: person.gender ||
+                  patientGuardian?.patient_gender,
+                patient_phone_number: person.phone_number ||
+                  patientGuardian?.patient_phone_number,
+                patient_name: person.name || patientGuardian?.patient_name,
               })}
           />
           <RelationshipSelect
-            name={`${name}.guardian_relation`}
-            value={patientGuardian?.guardian_relation ?? undefined}
+            name={`${name}.family_relation_gendered`}
+            family_relation_gendered={patientGuardian
+              ?.family_relation_gendered ?? undefined}
             type='guardian'
-            gender={patientGuardian?.patient_gender ?? undefined}
+            gender={patientGuardian?.patient_gender}
           />
           <CheckboxInput
             name={`${name}.next_of_kin`}
@@ -84,13 +90,6 @@ export default function Guardian({
         </FormRow> */
         }
       </div>
-      {patientGuardian && patientGuardian.relation_id && (
-        <input
-          type='hidden'
-          name={`${name}.relation_id`}
-          value={patientGuardian.relation_id}
-        />
-      )}
     </RemoveRow>
   )
 }

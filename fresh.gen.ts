@@ -27,7 +27,6 @@ import * as $app_facilities_facility_id_employees_invite from './routes/app/faci
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
 import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
-import * as $app_family from './routes/app/family.tsx'
 import * as $app_health_workers from './routes/app/health_workers.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_patients from './routes/app/patients.tsx'
@@ -126,7 +125,6 @@ const manifest = {
       $app_facilities_facility_id_waiting_room,
     './routes/app/facilities/[facility_id]/waiting-room/add.tsx':
       $app_facilities_facility_id_waiting_room_add,
-    './routes/app/family.tsx': $app_family,
     './routes/app/health_workers.tsx': $app_health_workers,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/patients.tsx': $app_patients,

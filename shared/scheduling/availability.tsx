@@ -1,8 +1,8 @@
-import range from '../util/range.ts'
-import { AvailabilityJSON, DayOfWeek, TimeWindow } from '../types.ts'
-import timeToMin from '../util/timeToMin.ts'
-import isObjectLike from '../util/isObjectLike.ts'
-import { parseFormWithoutFiles } from '../util/parseForm.ts'
+import range from '../../util/range.ts'
+import { AvailabilityJSON, DayOfWeek, TimeWindow } from '../../types.ts'
+import timeToMin from '../../util/timeToMin.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import { parseFormWithoutFiles } from '../../util/parseForm.ts'
 
 export const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 export const minutes = range(0, 60, 5)

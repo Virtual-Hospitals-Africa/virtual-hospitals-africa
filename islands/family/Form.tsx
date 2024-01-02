@@ -32,6 +32,8 @@ export default function PatientFamilyForm({
 }: {
   family: PatientFamily
 }): JSX.Element {
+  console.log('family', family)
+
   const [patientGuardians, setPatientGuardians] = useState<
     Map<string, Partial<FamilyRelation> & { removed: boolean }>
   >(initialStateGuardians(family.guardians))

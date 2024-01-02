@@ -10,8 +10,8 @@ import getNumericParam from '../../../util/getNumericParam.ts'
 import redirect from '../../../util/redirect.ts'
 
 export default async function PatientPage(
-  ctx: LoggedInHealthWorkerContext,
   req: Request,
+  ctx: LoggedInHealthWorkerContext,
 ) {
   const { healthWorker } = ctx.state
   const patient_id = getNumericParam(ctx, 'patient_id')

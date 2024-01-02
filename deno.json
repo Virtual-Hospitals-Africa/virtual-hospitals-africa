@@ -3,7 +3,7 @@
     "chatbot": "deno task run:trusted chatbot/chatbot.ts",
     "token_refresher": "deno task run:trusted token_refresher/token_refresher.ts",
     "build": "BUILDING=true deno task run:trusted dev.ts build",
-    "start": "deno task run:trusted --watch=chatbot/,db/,islands/,scheduling/,util/,components/,external-clients/,routes/,static/ dev.ts",
+    "start": "deno task run:trusted --watch=chatbot/,db/,islands/,util/,components/,external-clients/,routes/,static/,shared/ dev.ts",
     "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
     "web": "deno task run:trusted main.ts",
     "db:migrate:create": "deno task run:trusted db/create-migration.ts",

@@ -1,9 +1,13 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { differenceInMinutes, formatHarare, isIsoHarare } from '../util/date.ts'
-import * as google from '../external-clients/google.ts'
-import { getWithTokensById } from '../db/models/health_workers.ts'
-import * as appointments from '../db/models/appointments.ts'
+import {
+  differenceInMinutes,
+  formatHarare,
+  isIsoHarare,
+} from '../../util/date.ts'
+import * as google from '../../external-clients/google.ts'
+import { getWithTokensById } from '../../db/models/health_workers.ts'
+import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
   GCalEvent,
@@ -11,7 +15,7 @@ import {
   PatientState,
   ReturnedSqlRow,
   TrxOrDb,
-} from '../types.ts'
+} from '../../types.ts'
 
 function gcal({ start, end }: {
   start: string

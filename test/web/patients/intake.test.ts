@@ -13,6 +13,7 @@ import * as patients from '../../../db/models/patients.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import * as address from '../../../db/models/address.ts'
+import * as family from '../../../db/models/family.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
@@ -489,5 +490,64 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       preExistingCondition.medications[0].strength,
       150,
     )
+  })
+
+  it('supports POST on the family step, moving you to the lifestyle step', async () => {
+    const patient = await patients.upsert(db, { name: 'Test Patient' })
+    const { fetch } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+    const body = new FormData()
+    body.set('family.guardians.0.patient_name', 'New Guardian')
+    body.set('family.guardians.0.family_relation_gendered', 'biological mother')
+    body.set('family.guardians.0.patient_phone_number', '3333333333')
+    const postResponse = await fetch(
+      `${route}/app/patients/${patient.id}/intake/family`,
+      {
+        method: 'POST',
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient.id}/intake/lifestyle`,
+    )
+
+    const patient_family = await family.get(db, { patient_id: patient.id })
+
+    assertEquals(patient_family.dependents.length, 0)
+    assertEquals(patient_family.guardians.length, 1)
+    assertEquals(patient_family.guardians[0].patient_name, 'New Guardian')
+    assertEquals(
+      patient_family.guardians[0].family_relation_gendered,
+      'biological mother',
+    )
+    assertEquals(patient_family.guardians[0].patient_phone_number, '3333333333')
+    assertEquals(patient_family.guardians[0].patient_gender, 'female')
+
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient.id}/intake/family`,
+    )
+
+    const pageContents = await getResponse.text()
+    const $ = cheerio.load(pageContents)
+    const formValues = getFormValues($)
+    assertEquals(formValues, {
+      family: {
+        guardians: [
+          {
+            family_relation_gendered: 'biological mother',
+            next_of_kin: null,
+            patient_id: patient_family.guardians[0].patient_id,
+            patient_name: 'New Guardian',
+            patient_phone_number: 3333333333,
+          },
+        ],
+      },
+    })
   })
 })

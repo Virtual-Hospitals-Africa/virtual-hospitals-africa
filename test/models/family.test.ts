@@ -68,5 +68,129 @@ describe(
         })
       })
     })
+
+    describe('upsert', () => {
+      it("updates an existing patient's gender if the provided family relation is gendered", async () => {
+        const dependent = await patients.upsert(db, { name: 'Billy Bob' })
+        const guardian = await patients.upsert(db, { name: 'Janey Jane' })
+        await family.upsert(db, dependent.id, {
+          guardians: [{
+            family_relation_gendered: 'biological mother',
+            patient_id: guardian.id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+          }],
+          dependents: [],
+        })
+        const relations = await family.get(db, { patient_id: dependent.id })
+        assertEquals(relations, {
+          dependents: [],
+          guardians: [{
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological mother',
+            guardian_relation: 'biological parent',
+            patient_gender: 'female',
+            patient_id: guardian.id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation_id: relations['guardians'][0].relation_id,
+          }],
+          marital_status: 'TODO',
+          religion: 'TODO',
+        })
+      })
+
+      it("does not update an existing patient's gender if the provided family relation is not gendered", async () => {
+        const dependent = await patients.upsert(db, { name: 'Billy Bob' })
+        const guardian = await patients.upsert(db, {
+          name: 'Janey Jane',
+          gender: 'female',
+        })
+        await family.upsert(db, dependent.id, {
+          guardians: [{
+            family_relation_gendered: 'biological parent',
+            patient_id: guardian.id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+          }],
+          dependents: [],
+        })
+        const relations = await family.get(db, { patient_id: dependent.id })
+        assertEquals(relations, {
+          dependents: [],
+          guardians: [{
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological mother',
+            guardian_relation: 'biological parent',
+            patient_gender: 'female',
+            patient_id: guardian.id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation_id: relations['guardians'][0].relation_id,
+          }],
+          marital_status: 'TODO',
+          religion: 'TODO',
+        })
+      })
+
+      it('inserts a new patient if a specified guardian does not already exist', async () => {
+        const dependent = await patients.upsert(db, { name: 'Billy Bob' })
+
+        await family.upsert(db, dependent.id, {
+          guardians: [{
+            family_relation_gendered: 'biological mother',
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+          }],
+          dependents: [],
+        })
+        const relations = await family.get(db, { patient_id: dependent.id })
+        assertEquals(relations, {
+          dependents: [],
+          guardians: [{
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological mother',
+            guardian_relation: 'biological parent',
+            patient_gender: 'female',
+            patient_id: relations['guardians'][0].patient_id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation_id: relations['guardians'][0].relation_id,
+          }],
+          marital_status: 'TODO',
+          religion: 'TODO',
+        })
+      })
+
+      it('removes an existing relation, but not the patient if not present', async () => {
+        const dependent = await patients.upsert(db, { name: 'Billy Bob' })
+        const guardian = await patients.upsert(db, {
+          name: 'Janey Jane',
+          gender: 'female',
+        })
+
+        await family.addGuardian(db, {
+          guardian_relation: 'biological parent',
+          guardian_patient_id: guardian.id,
+          dependent_patient_id: dependent.id,
+        })
+
+        await family.upsert(db, dependent.id, {
+          guardians: [],
+          dependents: [],
+        })
+        const relations = await family.get(db, { patient_id: dependent.id })
+        assertEquals(relations, {
+          dependents: [],
+          guardians: [],
+          marital_status: 'TODO',
+          religion: 'TODO',
+        })
+        assertEquals(
+          (await patients.getByID(db, { id: guardian.id })).name,
+          'Janey Jane',
+        )
+      })
+    })
   },
 )
