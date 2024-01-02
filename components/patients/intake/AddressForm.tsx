@@ -7,14 +7,17 @@ import PersonSearch from '../../../islands/PersonSearch.tsx'
 
 function PatientAddress(
   { patient, adminDistricts }: {
-    patient: Partial<OnboardingPatient>
+    patient: OnboardingPatient
     adminDistricts: FullCountryInfo
   },
 ) {
   return (
     <section className='mb-7'>
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
-      <AddressForm patient={patient} adminDistricts={adminDistricts} />
+      <AddressForm
+        address={patient.address}
+        adminDistricts={adminDistricts}
+      />
     </section>
   )
 }
@@ -52,8 +55,8 @@ function NearestHealthCare(
 }
 
 export default function PatientAddressForm(
-  { patient = {}, defaultFacility, adminDistricts }: {
-    patient?: Partial<OnboardingPatient>
+  { patient, defaultFacility, adminDistricts }: {
+    patient: OnboardingPatient
     defaultFacility: { id: number; display_name: string }
     adminDistricts: FullCountryInfo
   },

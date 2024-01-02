@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
-import { useSteps } from '../../../components/library/Steps.tsx'
+import { useSteps } from '../../library/Steps.tsx'
 
-export type AddPatientStep =
+export type IntakePatientStep =
   | 'personal'
   | 'address'
   | 'pre-existing_conditions'
@@ -11,7 +11,7 @@ export type AddPatientStep =
   | 'lifestyle'
   | 'review'
 
-const stepNames: AddPatientStep[] = [
+const stepNames: IntakePatientStep[] = [
   'personal',
   'address',
   'pre-existing_conditions',
@@ -22,11 +22,11 @@ const stepNames: AddPatientStep[] = [
   'review',
 ]
 
-export function isStep(step: string | null): step is AddPatientStep {
-  return stepNames.includes(step as AddPatientStep)
+export function isStep(step: string | null): step is IntakePatientStep {
+  return stepNames.includes(step as IntakePatientStep)
 }
 
-export function getNextStep(currentStep: AddPatientStep): AddPatientStep {
+export function getNextStep(currentStep: IntakePatientStep): IntakePatientStep {
   const currentIndex = stepNames.indexOf(currentStep)
   assert(currentIndex !== -1, `Invalid step: ${currentStep}`)
   assert(
@@ -37,4 +37,4 @@ export function getNextStep(currentStep: AddPatientStep): AddPatientStep {
   return stepNames[nextIndex]
 }
 
-export const useAddPatientSteps = useSteps(stepNames)
+export const useIntakePatientSteps = useSteps(stepNames)

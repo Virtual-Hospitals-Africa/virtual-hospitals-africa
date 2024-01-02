@@ -5,10 +5,10 @@ import {
 } from '../../../library/form/Inputs.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { FormState } from '../../../../routes/app/facilities/[facility_id]/register.tsx'
+import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
 
 export default function NurseProfessionalForm(
-  { formData }: { formData: FormState },
+  { formData }: { formData: Partial<FormState> },
 ) {
   return (
     <>

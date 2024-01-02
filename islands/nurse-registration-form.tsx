@@ -1,4 +1,4 @@
-import { FormState } from '../routes/app/facilities/[facility_id]/register.tsx'
+import { FormState } from '../routes/app/facilities/[facility_id]/register/[step].tsx'
 import NursePersonalForm from '../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
@@ -8,7 +8,7 @@ import { FullCountryInfo } from '../types.ts'
 export default function NurseRegistrationForm(
   { currentStep, formData, adminDistricts }: {
     currentStep: string
-    formData: FormState
+    formData: Partial<FormState>
     adminDistricts: FullCountryInfo | undefined
   },
 ) {

@@ -1,9 +1,10 @@
 import { useSteps } from '../../../library/Steps.tsx'
 import { NurseSpecialty, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
-import { parseRequest } from '../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 import { Maybe } from '../../../../types.ts'
 import { Media } from '../../../../types.ts'
+import { assertOr400 } from '../../../../util/assertOr.ts'
 
 export type NurseRegistrationStep =
   | 'personal'
@@ -25,11 +26,15 @@ export function getStepFormData(
 ) {
   switch (currentStep) {
     case NurseRegistrationStepNames[0]:
-      return parseRequest(trx, req, isPersonalFormFields)
+      return parseRequestAsserts(trx, req, assertIsPersonalFormFields)
     case NurseRegistrationStepNames[1]:
-      return parseRequest(trx, req, isProfessionalInformationFields)
+      return parseRequestAsserts(
+        trx,
+        req,
+        assertIsProfessionalInformationFields,
+      )
     case NurseRegistrationStepNames[2]:
-      return parseRequest(trx, req, isDocumentsFormFields)
+      return parseRequestAsserts(trx, req, assertIsDocumentsFormFields)
     default:
       throw new Error('No step found')
   }
@@ -51,12 +56,14 @@ export type PersonalFormFields = {
   national_id_number: string
   email: string
   mobile_number: string
-  street: string
-  suburb_id: number
-  ward_id: number
-  district_id: number
-  province_id: number
-  country_id: number
+  address: {
+    street: string
+    suburb_id: number
+    ward_id: number
+    district_id: number
+    province_id: number
+    country_id: number
+  }
 }
 
 export type ProfessionalInformationFields = {
@@ -65,49 +72,47 @@ export type ProfessionalInformationFields = {
   ncz_registration_number: string
 }
 
-function isPersonalFormFields(
+function assertIsPersonalFormFields(
   fields: unknown,
-): fields is PersonalFormFields {
-  return isObjectLike(fields) &&
-    !!fields.first_name &&
-    !!fields.last_name &&
-    !!fields.gender &&
-    !!fields.national_id_number &&
-    !!fields.mobile_number &&
-    !!fields.ward_id &&
-    !!fields.district_id &&
-    !!fields.province_id &&
-    !!fields.country_id
+): asserts fields is PersonalFormFields {
+  assertOr400(isObjectLike(fields))
+  assertOr400(!!fields.first_name)
+  assertOr400(!!fields.last_name)
+  assertOr400(!!fields.gender)
+  assertOr400(!!fields.national_id_number)
+  assertOr400(!!fields.mobile_number)
+  assertOr400(isObjectLike(fields.address))
+  assertOr400(!!fields.address.country_id)
+  assertOr400(!!fields.address.province_id)
+  assertOr400(!!fields.address.district_id)
+  assertOr400(!!fields.address.ward_id)
 }
 
-function isProfessionalInformationFields(
+function assertIsProfessionalInformationFields(
   fields: unknown,
-): fields is ProfessionalInformationFields {
-  return isObjectLike(fields) &&
-    !!fields.specialty &&
-    !!fields.date_of_first_practice &&
-    !!fields.ncz_registration_number
+): asserts fields is ProfessionalInformationFields {
+  assertOr400(isObjectLike(fields))
+  assertOr400(!!fields.specialty)
+  assertOr400(!!fields.date_of_first_practice)
+  assertOr400(!!fields.ncz_registration_number)
 }
 
-function isMedia(
+function assertIsMedia(
   media: unknown,
-): media is Maybe<Media> {
-  return isObjectLike(media) &&
-      !!media.mime_type &&
-      !!media.binary_data &&
-      !!media.id ||
-    media === undefined
+): asserts media is Media | null | undefined | '' {
+  if (media == null || media === '') return
+  assertOr400(isObjectLike(media))
+  assertOr400(!!media.mime_type)
+  assertOr400(!!media.binary_data)
+  assertOr400(!!media.id)
 }
 
-function isDocumentsFormFields(
+function assertIsDocumentsFormFields(
   fields: unknown,
-): fields is DocumentFormFields {
-  return isObjectLike(fields) &&
-    (isMedia(fields.national_id_picture) ||
-      fields.national_id_picture === '') &&
-    (isMedia(fields.ncz_registration_card) ||
-      fields.ncz_registration_card === '') &&
-    (isMedia(fields.face_picture) || fields.face_picture === '') &&
-    (isMedia(fields.nurse_practicing_cert) ||
-      fields.nurse_practicing_cert === '')
+): asserts fields is DocumentFormFields {
+  assertOr400(isObjectLike(fields))
+  assertIsMedia(fields.national_id_picture)
+  assertIsMedia(fields.ncz_registration_card)
+  assertIsMedia(fields.face_picture)
+  assertIsMedia(fields.nurse_practicing_cert)
 }

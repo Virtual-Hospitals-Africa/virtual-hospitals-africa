@@ -26,6 +26,7 @@ import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as patient_family from './family.ts'
+import { jsonBuildObject } from '../helpers.ts'
 
 export const href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -229,7 +230,7 @@ export function getOnboarding(
   opts: {
     id: number
   },
-): Promise<OnboardingPatient> {
+): Promise<Maybe<OnboardingPatient>> {
   return trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
@@ -239,7 +240,7 @@ export function getOnboarding(
       'health_workers.id',
       'patients.primary_doctor_id',
     )
-    .select([
+    .select((eb) => [
       'patients.id',
       'patients.name',
       'patients.phone_number',
@@ -250,12 +251,14 @@ export function getOnboarding(
         'date_of_birth',
       ),
       'patients.national_id_number',
-      'address.country_id',
-      'address.province_id',
-      'address.district_id',
-      'address.ward_id',
-      'address.suburb_id',
-      'address.street',
+      jsonBuildObject({
+        country_id: eb.ref('address.country_id'),
+        province_id: eb.ref('address.province_id'),
+        district_id: eb.ref('address.district_id'),
+        ward_id: eb.ref('address.ward_id'),
+        suburb_id: eb.ref('address.suburb_id'),
+        street: eb.ref('address.street'),
+      }).as('address'),
       'patients.completed_onboarding',
       'patients.primary_doctor_id',
       'patients.unregistered_primary_doctor_name',
@@ -268,7 +271,7 @@ export function getOnboarding(
       'health_workers.name as primary_doctor_name',
     ])
     .where('patients.id', '=', opts.id)
-    .executeTakeFirstOrThrow()
+    .executeTakeFirst()
 }
 
 // TODO: implement medical record functionality

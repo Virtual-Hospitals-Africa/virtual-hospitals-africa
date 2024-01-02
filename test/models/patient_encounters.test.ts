@@ -31,7 +31,7 @@ describe(
             },
             actions: {
               view_href: null,
-              intake_href: `/app/patients/${patient.id}/intake`,
+              intake_href: `/app/patients/${patient.id}/intake/personal`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -59,7 +59,7 @@ describe(
             },
             actions: {
               view_href: null,
-              intake_href: `/app/patients/${patient.id}/intake`,
+              intake_href: `/app/patients/${patient.id}/intake/personal`,
             },
             providers: [
               {

@@ -85,7 +85,7 @@ export async function killProcessOnPort(port: number) {
 /* TODO: figure out how to turn this on
    As it stands if you turn this on you get this
 
-./test/web/patients/add.test.ts (uncaught error)
+./test/web/patients/intake.test.ts (uncaught error)
 error: (in promise) TypeError: The reader was released.
     stdout.releaseLock()
            ^

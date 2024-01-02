@@ -1,4 +1,5 @@
-import { PageProps } from '$fresh/server.ts'
+import { FreshContext } from '$fresh/server.ts'
+import { assert } from 'std/assert/assert.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
 import { CheckIcon } from './CheckIcon.tsx'
@@ -9,7 +10,7 @@ type Step<S> = {
 }
 
 export type StepsProps<S extends string> = {
-  url: URL
+  baseUrl: string
   steps: Step<S>[]
 }
 
@@ -18,11 +19,10 @@ function Step(
     index: number
     step: Step<string>
     steps: Step<string>[]
-    baseUrl: URL
+    baseUrl: string
   },
 ) {
-  const url = new URL(baseUrl)
-  url.searchParams.set('step', step.name)
+  const href = baseUrl + '/' + step.name
   return (
     <li key={index} className='relative overflow-hidden lg:flex-1'>
       <div
@@ -35,7 +35,7 @@ function Step(
         {step.status === 'complete'
           ? (
             <a
-              href={url.href}
+              href={href}
               className='group'
             >
               <span
@@ -67,7 +67,7 @@ function Step(
           : step.status === 'current'
           ? (
             <a
-              href={url.href}
+              href={href}
               aria-current='step'
             >
               <span
@@ -97,7 +97,7 @@ function Step(
           )
           : (
             <a
-              href={url.href}
+              href={href}
               className='group'
             >
               <span
@@ -156,7 +156,7 @@ function Step(
 }
 
 export function Steps<S extends string>(
-  { url, steps }: StepsProps<S>,
+  { baseUrl, steps }: StepsProps<S>,
 ) {
   return (
     <div className='lg:border-b lg:border-t lg:border-gray-200'>
@@ -169,7 +169,7 @@ export function Steps<S extends string>(
           className='overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200'
         >
           {steps.map((step, index) => (
-            <Step step={step} index={index} baseUrl={url} steps={steps} />
+            <Step step={step} index={index} baseUrl={baseUrl} steps={steps} />
           ))}
         </ol>
       </nav>
@@ -180,13 +180,13 @@ export function Steps<S extends string>(
 export function useSteps<Step extends string>(
   stepNames: Step[],
 ) {
-  const isStep = (step: string | null): step is Step => {
-    return !!step && stepNames.includes(step as Step)
-  }
-
-  return function (props: PageProps) {
-    const stepQuery = props.url.searchParams.get('step')
-    const currentStep = isStep(stepQuery) ? stepQuery : stepNames[0]
+  return function (ctx: FreshContext) {
+    assert(
+      ctx.route.endsWith('/:step'),
+      'useSteps must be used with a route ending in :step',
+    )
+    const currentStep = ctx.params.step
+    const baseUrl = ctx.url.toString().split('/').slice(0, -1).join('/')
 
     let completed = false
 
@@ -203,7 +203,7 @@ export function useSteps<Step extends string>(
 
     return {
       currentStep,
-      stepsTopBar: <Steps url={props.url} steps={steps} />,
+      stepsTopBar: <Steps baseUrl={baseUrl} steps={steps} />,
       steps,
     }
   }

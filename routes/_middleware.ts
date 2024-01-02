@@ -6,6 +6,7 @@ import { TrxOrDb } from '../types.ts'
 import db from '../db/db.ts'
 import { redis } from '../external-clients/redis.ts'
 
+// TODO: only do this on dev & test?
 const error_log = 'test_error.log'
 const logError = (err: Error) => {
   const log = `${new Date().toISOString()}\n${

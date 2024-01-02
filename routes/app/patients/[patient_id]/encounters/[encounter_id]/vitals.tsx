@@ -68,7 +68,7 @@ export const handler: LoggedInHealthWorkerHandler<unknown, {
   },
 }
 
-export default function VitalsPage(ctx: EncounterContext, req: Request) {
+export default function VitalsPage(ctx: EncounterContext) {
   return (
     <Layout
       title='Patient Vitals'

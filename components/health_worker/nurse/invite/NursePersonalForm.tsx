@@ -6,14 +6,14 @@ import {
 } from '../../../library/form/Inputs.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-import { FormState } from '../../../../routes/app/facilities/[facility_id]/register.tsx'
+import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
 import { FullCountryInfo } from '../../../../types.ts'
 import AddressForm from '../../../../islands/address-inputs.tsx'
 
 export default function NursePersonalForm(
   { formData, adminDistricts }: {
-    formData: FormState
+    formData: Partial<FormState>
     adminDistricts: FullCountryInfo
   },
 ) {
@@ -67,7 +67,10 @@ export default function NursePersonalForm(
         />
       </FormRow>
       <hr className='my-2' />
-      <AddressForm patient={formData} adminDistricts={adminDistricts} />
+      <AddressForm
+        address={formData.address || {}}
+        adminDistricts={adminDistricts}
+      />
       <hr className='my-2' />
       <Buttons submitText='Next' />
     </>

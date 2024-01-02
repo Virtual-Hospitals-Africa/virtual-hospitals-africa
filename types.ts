@@ -1,8 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact/jsx-runtime'
-import { Handlers } from '$fresh/server.ts'
-import { Session } from 'fresh_session'
+import { FreshContext, Handlers } from '$fresh/server.ts'
+import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
 
 export type Maybe<T> = T | null | undefined
@@ -207,6 +207,14 @@ export type OnboardingPatient =
     avatar_url: Maybe<string>
     nearest_facility_display_name: Maybe<string>
     primary_doctor_name: Maybe<string>
+    address: {
+      street: Maybe<string>
+      suburb_id: Maybe<number>
+      ward_id: Maybe<number>
+      district_id: Maybe<number>
+      province_id: Maybe<number>
+      country_id: Maybe<number>
+    }
   }
   & Pick<
     Patient,
@@ -221,14 +229,6 @@ export type OnboardingPatient =
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
   >
-  & {
-    street: Maybe<string>
-    suburb_id: Maybe<number>
-    ward_id: Maybe<number>
-    district_id: Maybe<number>
-    province_id: Maybe<number>
-    country_id: Maybe<number>
-  }
 
 export type PatientFamily = {
   marital_status?: Maybe<string>
@@ -1256,6 +1256,14 @@ export type LoggedInHealthWorker = {
   session: Session
   healthWorker: EmployedHealthWorkerWithGoogleTokens
 }
+
+export type LoggedInHealthWorkerContext<T = Record<string, never>> =
+  FreshContext<
+    WithSession & {
+      trx: TrxOrDb
+      healthWorker: EmployedHealthWorker
+    } & T
+  >
 
 export type LoggedInHealthWorkerHandler<
   Props = Record<string, never>,

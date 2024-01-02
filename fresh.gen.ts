@@ -24,7 +24,7 @@ import * as $app_facilities_facility_id_employees_id_ from './routes/app/facilit
 import * as $app_facilities_facility_id_employees_id_approve from './routes/app/facilities/[facility_id]/employees/[id]/approve.tsx'
 import * as $app_facilities_facility_id_employees_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[id]/media/[mediaId].tsx'
 import * as $app_facilities_facility_id_employees_invite from './routes/app/facilities/[facility_id]/employees/invite.tsx'
-import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
+import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
 import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
 import * as $app_family from './routes/app/family.tsx'
@@ -35,8 +35,7 @@ import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].t
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
-import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
-import * as $app_patients_add from './routes/app/patients/add.tsx'
+import * as $app_patients_patient_id_intake_step_ from './routes/app/patients/[patient_id]/intake/[step].tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
@@ -121,8 +120,8 @@ const manifest = {
       $app_facilities_facility_id_employees_id_media_mediaId_,
     './routes/app/facilities/[facility_id]/employees/invite.tsx':
       $app_facilities_facility_id_employees_invite,
-    './routes/app/facilities/[facility_id]/register.tsx':
-      $app_facilities_facility_id_register,
+    './routes/app/facilities/[facility_id]/register/[step].tsx':
+      $app_facilities_facility_id_register_step_,
     './routes/app/facilities/[facility_id]/waiting-room.tsx':
       $app_facilities_facility_id_waiting_room,
     './routes/app/facilities/[facility_id]/waiting-room/add.tsx':
@@ -138,9 +137,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_middleware,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
       $app_patients_patient_id_encounters_encounter_id_vitals,
-    './routes/app/patients/[patient_id]/intake.tsx':
-      $app_patients_patient_id_intake,
-    './routes/app/patients/add.tsx': $app_patients_add,
+    './routes/app/patients/[patient_id]/intake/[step].tsx':
+      $app_patients_patient_id_intake_step_,
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
