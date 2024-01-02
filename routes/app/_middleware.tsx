@@ -39,8 +39,10 @@ export async function handler(
       `/app/facilities/${roleNeedingRegistration.facility_id}/register`
 
     const url = new URL(req.url)
-    const onRegistrationPage = url.pathname === registrationPage
-    return onRegistrationPage ? ctx.next() : redirect(registrationPage)
+    const onRegistrationPage = url.pathname.startsWith(registrationPage)
+    return onRegistrationPage
+      ? ctx.next()
+      : redirect(`${registrationPage}/personal`)
   }
 
   // TODO make a page for this purpose

@@ -1,25 +1,20 @@
-import { FreshContext } from '$fresh/server.ts'
-import { WithSession } from 'fresh_session'
 import {
-  EmployedHealthWorker,
   Facility,
+  LoggedInHealthWorkerContext,
   ReturnedSqlRow,
-  TrxOrDb,
 } from '../../../../types.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
 import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
 import getNumericParam from '../../../../util/getNumericParam.ts'
 
+export type FacilityContext = LoggedInHealthWorkerContext<{
+  facility: ReturnedSqlRow<Facility>
+  isAdminAtFacility: boolean
+}>
+
 export async function handler(
   _req: Request,
-  ctx: FreshContext<
-    WithSession & {
-      trx: TrxOrDb
-      facility: ReturnedSqlRow<Facility>
-      isAdminAtFacility: boolean
-      healthWorker: EmployedHealthWorker
-    }
-  >,
+  ctx: FacilityContext,
 ) {
   const { healthWorker } = ctx.state
   const facility_id = getNumericParam(ctx, 'facility_id')

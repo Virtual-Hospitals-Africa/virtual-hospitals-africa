@@ -1,10 +1,8 @@
 import { FreshContext } from '$fresh/server.ts'
-import { WithSession } from 'fresh_session'
 import {
-  EmployedHealthWorker,
+  LoggedInHealthWorkerContext,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
-  TrxOrDb,
 } from '../../../../../../types.ts'
 import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../../../../../db/models/waiting_room.ts'
@@ -23,12 +21,10 @@ function getEncounterId(ctx: FreshContext): 'open' | number {
   return getNumericParam(ctx, 'encounter_id')
 }
 
-export type EncounterContext = FreshContext<
-  WithSession & {
-    trx: TrxOrDb
+export type EncounterContext = LoggedInHealthWorkerContext<
+  {
     encounter: RenderedPatientEncounter
     encounter_provider: RenderedPatientEncounterProvider
-    healthWorker: EmployedHealthWorker
   }
 >
 

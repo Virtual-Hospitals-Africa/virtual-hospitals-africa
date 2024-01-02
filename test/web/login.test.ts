@@ -66,12 +66,10 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/app`, `should be in ${route}/app`)
-      assert(
-        (await response.text()).includes('My Patients'),
-        'response should contain My Patients',
-      )
+      assert(response.ok)
+      assertEquals(response.url, `${route}/app`)
+      const pageContents = await response.text()
+      assert(pageContents.includes('My Patients'))
     })
 
     it('allows doctor access /app', async () => {
@@ -87,12 +85,10 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
 
-      assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/app`, `should be in ${route}/app`)
-      assert(
-        (await response.text()).includes('My Patients'),
-        'response should contain My Patients',
-      )
+      assert(response.ok)
+      assertEquals(response.url, `${route}/app`)
+      const pageContents = await response.text()
+      assert(pageContents.includes('My Patients'))
     })
 
     it('redirects from /login to /app', async () => {
@@ -125,15 +121,13 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok, 'should have returned ok')
-      assert(
-        response.url === `${route}/app/facilities/1/register?step=personal`,
-        `should be in ${route}/app/facilities/1/register`,
+      assert(response.ok)
+      assertEquals(
+        response.url,
+        `${route}/app/facilities/1/register/personal`,
       )
-      assert(
-        (await response.text()).includes('First Name'),
-        'response should contain First Name',
-      )
+      const pageContents = await response.text()
+      assert(pageContents.includes('First Name'))
     })
 
     it('redirects unapproved nurse to /app/pending_approval', async () => {
@@ -154,7 +148,7 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.url === `${route}/app/pending_approval`)
+      assertEquals(response.url, `${route}/app/pending_approval`)
       await response.text()
     })
 
@@ -186,12 +180,10 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
 
-      assert(response.ok, 'should have returned ok')
-      assert(response.url === `${route}/app`, `should be in ${route}/app`)
-      assert(
-        (await response.text()).includes('My Patients'),
-        'response should contain My Patients',
-      )
+      assert(response.ok)
+      assertEquals(response.url, `${route}/app`)
+      const pageContents = await response.text()
+      assert(pageContents.includes('My Patients'))
     })
 
     it('starts in an empty waiting room with sidebar links', async () => {
@@ -220,7 +212,7 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok, 'should have returned ok')
+      assert(response.ok)
       const $ = cheerio.load(await response.text())
 
       const waiting_room_add_link = $(
@@ -289,7 +281,7 @@ describeWithWebServer('/login', 8002, (route) => {
 
       assert(response.ok)
       assert(response.redirected)
-      assert(response.url === `${route}/app/facilities/1/employees`)
+      assertEquals(response.url, `${route}/app/facilities/1/employees`)
       const pageContents = await response.text()
       assert(
         pageContents.includes(
@@ -315,7 +307,7 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
       assert(response.ok)
-      assert(response.url === `${route}/app/facilities/1/employees`)
+      assertEquals(response.url, `${route}/app/facilities/1/employees`)
       let pageContents = await response.text()
       assert(pageContents.includes('href="/app/facilities/1/employees/invite"'))
 
@@ -326,7 +318,7 @@ describeWithWebServer('/login', 8002, (route) => {
       })
 
       assert(response.ok)
-      assert(response.url === `${route}/app/facilities/1/employees/invite`)
+      assertEquals(response.url, `${route}/app/facilities/1/employees/invite`)
       pageContents = await response.text()
       assert(pageContents.includes('Email'))
       assert(pageContents.includes('Profession'))
@@ -365,13 +357,11 @@ describeWithWebServer('/login', 8002, (route) => {
 
       assert(
         employeesResponse.ok,
-        'user should still be able to access employees page',
       )
       assert(employeesResponse.url === `${route}/app/facilities/1/employees`)
       const pageContents = await employeesResponse.text()
       assert(
         !pageContents.includes('href="/app/facilities/1/employees/invite"'),
-        "there shouldn't be a link to the invite page",
       )
 
       const invitesResponse = await fetch(

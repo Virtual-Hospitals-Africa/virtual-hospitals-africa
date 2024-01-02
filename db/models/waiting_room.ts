@@ -64,7 +64,9 @@ export async function get(
           .when(
             eb('patients.completed_onboarding', '=', false),
           ).then(
-            sql<string>`concat('/app/patients/', patients.id::text, '/intake')`,
+            sql<
+              string
+            >`concat('/app/patients/', patients.id::text, '/intake/personal')`,
           )
           .else(null).end(),
       }).as('actions'),

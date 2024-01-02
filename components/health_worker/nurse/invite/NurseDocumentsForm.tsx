@@ -1,15 +1,11 @@
 import FilePreviewInput from '../../../../islands/file-preview-input.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
-
-import { FormState } from '../../../../routes/app/facilities/[facility_id]/register.tsx'
-import unsavedChangesWarning from '../../../library/form/unsaved_changes_warning.tsx'
+import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
 
 export default function NurseDocumentsForm(
-  { formData }: { formData: FormState },
+  { formData }: { formData: Partial<FormState> },
 ) {
-  // unsavedChangesWarning()
-
   return (
     <>
       <FormRow>

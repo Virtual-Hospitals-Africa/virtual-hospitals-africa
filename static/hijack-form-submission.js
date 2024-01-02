@@ -28,6 +28,7 @@ window.addEventListener('submit', function (event) {
       case 200:
         return response.text().then(function (text) {
           window.document.body.innerHTML = text
+          history.pushState({}, '', response.url)
         })
       case 400:
         return response.text().then(onError)

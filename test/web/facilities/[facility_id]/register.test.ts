@@ -21,11 +21,13 @@ describeWithWebServer(
         scenario: 'nurse',
       })
 
-      const response = await fetch(`${route}/app/facilities/1/register`)
+      const response = await fetch(
+        `${route}/app/facilities/1/register/personal`,
+      )
 
       assert(response.ok, 'should have returned ok')
       assert(
-        response.url === `${route}/app/facilities/1/register?step=personal`,
+        response.url === `${route}/app/facilities/1/register/personal`,
       )
       const pageContents = await response.text()
 
@@ -40,13 +42,13 @@ describeWithWebServer(
       assert($('input[name="national_id_number"]').length === 1)
       assert($('input[name="mobile_number"]').length === 1)
 
-      assert($('select[name="country_id"]').length === 1)
-      assert($('select[name="province_id"]').length === 1)
-      assert($('select[name="district_id"]').length === 1)
-      assert($('select[name="ward_id"]').length === 1)
-      assert($('input[name="street"]').length === 1)
+      assert($('input[name="address.country_id"]').length === 1)
+      assert($('select[name="address.province_id"]').length === 1)
+      assert($('select[name="address.district_id"]').length === 1)
+      assert($('select[name="address.ward_id"]').length === 1)
+      assert($('input[name="address.street"]').length === 1)
       assert(
-        $('select[name="suburb_id"]').length === 0,
+        $('select[name="address.suburb_id"]').length === 0,
         'suburb is only necessary for certain wards',
       )
     })
@@ -69,17 +71,17 @@ describeWithWebServer(
         body.set('date_of_birth', '2020-01-01')
         body.set('mobile_number', '5555555555')
 
-        body.set('country_id', address.country_id.toString())
-        body.set('province_id', address.province_id.toString())
-        body.set('district_id', address.district_id.toString())
-        body.set('ward_id', address.ward_id.toString())
+        body.set('address.country_id', address.country_id.toString())
+        body.set('address.province_id', address.province_id.toString())
+        body.set('address.district_id', address.district_id.toString())
+        body.set('address.ward_id', address.ward_id.toString())
         if (address.suburb_id) {
-          body.set('suburb_id', address.suburb_id.toString())
+          body.set('address.suburb_id', address.suburb_id.toString())
         }
-        if (address.street) body.set('street', address.street)
+        if (address.street) body.set('address.street', address.street)
 
         const postResponse = await fetch(
-          `${route}/app/facilities/1/register?step=personal`,
+          `${route}/app/facilities/1/register/personal`,
           {
             method: 'POST',
             body,
@@ -100,7 +102,10 @@ describeWithWebServer(
 
         assertEquals({
           ...registrationFormState,
-          suburb_id: registrationFormState.suburb_id || null,
+          address: {
+            ...registrationFormState.address,
+            suburb_id: registrationFormState.address.suburb_id || null,
+          },
         }, {
           date_of_birth: '2020-01-01',
           first_name: 'Test',
@@ -109,16 +114,16 @@ describeWithWebServer(
           middle_names: 'Zoom Zoom',
           mobile_number: 5555555555,
           national_id_number: '08-123456 D 53',
-          ...address,
+          address,
         })
 
         assertEquals(
           postResponse.url,
-          `${route}/app/facilities/1/register?step=professional`,
+          `${route}/app/facilities/1/register/professional`,
         )
 
         const getPersonalResponse = await fetch(
-          `${route}/app/facilities/1/register?step=personal`,
+          `${route}/app/facilities/1/register/personal`,
         )
 
         const pageContents = await getPersonalResponse.text()
@@ -135,22 +140,28 @@ describeWithWebServer(
         assertEquals($('input[name="mobile_number"]').val(), '5555555555')
 
         assert(
-          $('select[name="country_id"]').val(),
+          $('input[name="address.country_id"]').val(),
           address.country_id.toString(),
         )
         assert(
-          $('select[name="province_id"]').val(),
+          $('select[name="address.province_id"]').val(),
           address.province_id.toString(),
         )
         assert(
-          $('select[name="district_id"]').val(),
+          $('select[name="address.district_id"]').val(),
           address.district_id.toString(),
         )
-        assert($('select[name="ward_id"]').val(), address.ward_id.toString())
-        assert($('input[name="street"]').val(), address.street!.toString())
+        assert(
+          $('select[name="address.ward_id"]').val(),
+          address.ward_id.toString(),
+        )
+        assert(
+          $('input[name="address.street"]').val(),
+          address.street!.toString(),
+        )
         if (address.suburb_id) {
           assert(
-            $('select[name="suburb_id"]').val(),
+            $('select[name="address.suburb_id"]').val(),
             address.suburb_id.toString(),
           )
         }
@@ -163,7 +174,7 @@ describeWithWebServer(
         body.set('specialty', 'oncology_and_palliative_care_nurse')
 
         const postResponse = await fetch(
-          `${route}/app/facilities/1/register?step=professional`,
+          `${route}/app/facilities/1/register/professional`,
           {
             method: 'POST',
             body,
@@ -184,7 +195,10 @@ describeWithWebServer(
 
         assertEquals({
           ...registrationFormState,
-          suburb_id: registrationFormState.suburb_id || null,
+          address: {
+            ...registrationFormState.address,
+            suburb_id: registrationFormState.address.suburb_id || null,
+          },
         }, {
           date_of_birth: '2020-01-01',
           first_name: 'Test',
@@ -193,19 +207,19 @@ describeWithWebServer(
           middle_names: 'Zoom Zoom',
           mobile_number: 5555555555,
           national_id_number: '08-123456 D 53',
-          ...address,
           date_of_first_practice: '2022-01-01',
           ncz_registration_number: 'GN123456',
           specialty: 'oncology_and_palliative_care_nurse',
+          address,
         })
 
         assertEquals(
           postResponse.url,
-          `${route}/app/facilities/1/register?step=documents`,
+          `${route}/app/facilities/1/register/documents`,
         )
 
         const getProfessionalResponse = await fetch(
-          `${route}/app/facilities/1/register?step=professional`,
+          `${route}/app/facilities/1/register/professional`,
         )
 
         const pageContents = await getProfessionalResponse.text()
@@ -229,7 +243,7 @@ describeWithWebServer(
         const body = new FormData()
 
         const postResponse = await fetch(
-          `${route}/app/facilities/1/register?step=documents`,
+          `${route}/app/facilities/1/register/documents`,
           {
             method: 'POST',
             body,

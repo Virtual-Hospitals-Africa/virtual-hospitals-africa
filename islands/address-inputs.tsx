@@ -1,94 +1,78 @@
-import { useMemo, useState } from 'preact/hooks'
 import FormRow from '../components/library/form/Row.tsx'
 import { Select, TextInput } from '../components/library/form/Inputs.tsx'
 import { FullCountryInfo, Maybe, OnboardingPatient } from '../types.ts'
+import { computed, effect, useSignal } from '@preact/signals'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export default function AddressForm(
-  { patient, adminDistricts }: {
-    patient?: Partial<OnboardingPatient>
+  { address, adminDistricts }: {
+    address: Partial<OnboardingPatient['address']>
     adminDistricts: FullCountryInfo
   },
 ) {
-  const [selectedCountry, setSelectedCountry] = useState<Maybe<number>>(
-    patient?.country_id,
-  )
-  const [selectedProvince, setSelectedProvince] = useState<Maybe<number>>(
-    patient?.province_id,
-  )
-  const [selectedDistrict, setSelectedDistrict] = useState<Maybe<number>>(
-    patient?.district_id,
-  )
-  const [selectedWard, setSelectedWard] = useState<Maybe<number>>(
-    patient?.ward_id,
-  )
-  const [selectedSuburb, setSelectedSuburb] = useState<Maybe<number>>(
-    patient?.suburb_id,
+  // Zimbabwe has id: 1, that's the only country we support for now
+  assertEquals(adminDistricts.length, 1, 'Only Zimbabwe supported')
+  assertEquals(adminDistricts[0].id, 1, 'Only Zimbabwe supported')
+
+  const province_id = useSignal(address.province_id)
+  const district_id = useSignal(address.district_id)
+  const ward_id = useSignal(address.ward_id)
+  const suburb_id = useSignal(address.suburb_id)
+
+  const { provinces } = adminDistricts[0]
+
+  const districts = computed(() =>
+    province_id.value
+      ? provinces.find((province) => province.id === province_id.value)!
+        .districts
+      : []
   )
 
-  const provinces = useMemo(() => {
-    if (!selectedCountry) return []
-    return adminDistricts.find((country) => country.id === selectedCountry)
-      ?.provinces || []
-  }, [selectedCountry])
+  const wards = computed(() =>
+    district_id.value
+      ? districts.value.find((district) => district.id === district_id.value)!
+        .wards
+      : []
+  )
 
-  const districts = useMemo(() => {
-    if (!selectedProvince) return []
-    return provinces.find((province) => province.id === selectedProvince)
-      ?.districts || []
-  }, [selectedProvince])
-  const wards = useMemo(() => {
-    if (!selectedDistrict) return []
-    return districts.find((district) => district.id === selectedDistrict)
-      ?.wards || []
-  }, [selectedDistrict])
-  const suburbs = useMemo(() => {
-    if (!selectedWard) return []
-    return wards.find((ward) => ward.id === selectedWard)?.suburbs || []
-  }, [selectedWard])
+  const suburbs = computed(() =>
+    ward_id.value
+      ? wards.value.find((ward) => ward.id === ward_id.value)!.suburbs
+      : []
+  )
+
+  effect(() => {
+    if (districts.value.length === 1) district_id.value = districts.value[0].id
+  })
+  effect(() => {
+    if (wards.value.length === 1) ward_id.value = wards.value[0].id
+  })
+  effect(() => {
+    if (suburbs.value.length === 1) suburb_id.value = suburbs.value[0].id
+  })
 
   return (
     <section className='mb-7'>
       <FormRow>
+        <input type='hidden' name='address.country_id' value='1' />
         <Select
-          name='country_id'
-          required
-          label='Country'
-          onChange={(e) => {
-            const selectedCountry = e?.currentTarget?.value
-            if (selectedCountry === undefined) return
-            setSelectedCountry(Number(selectedCountry))
-            setSelectedProvince(undefined)
-            setSelectedDistrict(undefined)
-            setSelectedWard(undefined)
-          }}
-        >
-          <option value=''>Select</option>
-          {adminDistricts.map((country) => (
-            <option
-              value={country.id}
-              selected={selectedCountry === country.id}
-            >
-              {country.name}
-            </option>
-          ))}
-        </Select>
-        <Select
-          name='province_id'
+          name='address.province_id'
           required
           label='Province'
           onChange={(e) => {
             const selectedProvince = e?.currentTarget?.value
-            if (selectedProvince === undefined) return
-            setSelectedProvince(Number(selectedProvince))
-            setSelectedDistrict(undefined)
-            setSelectedWard(undefined)
+            if (!selectedProvince) return
+            suburb_id.value = undefined
+            ward_id.value = undefined
+            district_id.value = undefined
+            province_id.value = Number(selectedProvince)
           }}
         >
           <option value=''>Select</option>
           {provinces.map((province) => (
             <option
               value={province.id}
-              selected={selectedProvince === province.id}
+              selected={province_id.value === province.id}
             >
               {province.name}
             </option>
@@ -97,58 +81,65 @@ export default function AddressForm(
       </FormRow>
       <FormRow>
         <Select
-          name='district_id'
+          name='address.district_id'
           required
           label='District'
           onChange={(e) => {
             const selectedDistrict = e?.currentTarget?.value
-            if (selectedDistrict === undefined) return
-            setSelectedDistrict(Number(selectedDistrict))
-            setSelectedWard(undefined)
+            if (!selectedDistrict) return
+            suburb_id.value = undefined
+            ward_id.value = undefined
+            district_id.value = Number(selectedDistrict)
           }}
         >
           <option value=''>Select</option>
-          {districts.map((district) => (
+          {districts.value.map((district) => (
             <option
               value={district.id}
-              selected={selectedDistrict === district.id}
+              selected={district_id.value === district.id}
             >
               {district.name}
             </option>
           ))}
         </Select>
         <Select
-          name='ward_id'
+          name='address.ward_id'
           required
           label='City/Town/Ward'
           onChange={(e) => {
             const selectedWard = e?.currentTarget?.value
-            if (selectedWard === undefined) return
-            setSelectedWard(Number(selectedWard))
+            if (!selectedWard) return
+            suburb_id.value = undefined
+            ward_id.value = Number(selectedWard)
           }}
         >
           <option value=''>Select</option>
-          {wards.map((ward) => (
-            <option value={ward.id} selected={selectedWard === ward.id}>
+          {wards.value.map((ward) => (
+            <option value={ward.id} selected={ward_id.value === ward.id}>
               {ward.name}
             </option>
           ))}
         </Select>
       </FormRow>
       <FormRow>
-        {suburbs.length > 0 && (
+        {suburbs.value.length > 0 && (
           <Select
-            name='suburb_id'
+            name='address.suburb_id'
             required
             label='Suburb'
+            onChange={(e) => {
+              const selectedSuburb = e?.currentTarget?.value
+              if (!selectedSuburb) return
+              suburb_id.value = Number(selectedSuburb)
+            }}
           >
             <option value=''>Select</option>
-            {suburbs.map((suburb) => (
+            {suburbs.value.map((suburb) => (
               suburb.name && suburb.id &&
               ((
                 <option
                   value={suburb.id}
-                  selected={selectedSuburb === suburb.id}
+                  selected={suburb_id.value === suburb.id}
                 >
                   {suburb.name}
                 </option>
@@ -157,9 +148,9 @@ export default function AddressForm(
           </Select>
         )}
         <TextInput
-          name='street'
+          name='address.street'
           label='Street Address'
-          value={patient?.street}
+          value={address?.street}
         />
       </FormRow>
     </section>
