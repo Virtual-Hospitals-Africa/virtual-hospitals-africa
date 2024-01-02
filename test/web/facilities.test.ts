@@ -8,12 +8,11 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 
 describeWithWebServer('/app/facilities', 8005, (route) => {
   it('can search for facilities by name', async () => {
-    const { sessionId } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
     const response = await fetch(`${route}/app/facilities?search=VHA Test`, {
       headers: {
-        Cookie: `sessionId=${sessionId}`,
         Accept: 'application/json',
       },
     })

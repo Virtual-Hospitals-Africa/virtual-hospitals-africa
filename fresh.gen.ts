@@ -31,9 +31,11 @@ import * as $app_family from './routes/app/family.tsx'
 import * as $app_health_workers from './routes/app/health_workers.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_patients from './routes/app/patients.tsx'
-import * as $app_patients_id_ from './routes/app/patients/[id].tsx'
-import * as $app_patients_id_avatar from './routes/app/patients/[id]/avatar.tsx'
-import * as $app_patients_id_intake from './routes/app/patients/[id]/intake.tsx'
+import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
+import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
+import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
 import * as $app_patients_add from './routes/app/patients/add.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
@@ -129,9 +131,15 @@ const manifest = {
     './routes/app/health_workers.tsx': $app_health_workers,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/patients.tsx': $app_patients,
-    './routes/app/patients/[id].tsx': $app_patients_id_,
-    './routes/app/patients/[id]/avatar.tsx': $app_patients_id_avatar,
-    './routes/app/patients/[id]/intake.tsx': $app_patients_id_intake,
+    './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
+    './routes/app/patients/[patient_id]/avatar.tsx':
+      $app_patients_patient_id_avatar,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx':
+      $app_patients_patient_id_encounters_encounter_id_middleware,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
+      $app_patients_patient_id_encounters_encounter_id_vitals,
+    './routes/app/patients/[patient_id]/intake.tsx':
+      $app_patients_patient_id_intake,
     './routes/app/patients/add.tsx': $app_patients_add,
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/unauthorized.tsx': $app_unauthorized,

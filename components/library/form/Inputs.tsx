@@ -117,6 +117,50 @@ export function TextInput(
   )
 }
 
+export function NumberInput(
+  {
+    name,
+    label,
+    required,
+    value,
+    onInput,
+    onFocus,
+    onBlur,
+    disabled,
+    readonly,
+    className,
+    inputClassName,
+  }: WrapperInputProps<HTMLInputElement> & {
+    value?: Maybe<number>
+  },
+) {
+  return (
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      className={cls('w-full', className)}
+    >
+      <input
+        type='number'
+        {...(name && { name })}
+        className={cls(
+          'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
+        required={required}
+        disabled={disabled}
+        readonly={readonly}
+        value={value || undefined}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
+    </LabeledInput>
+  )
+}
+
 export function CheckboxInput(
   {
     name,

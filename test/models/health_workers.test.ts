@@ -62,7 +62,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         },
       )
 
-      await employment.add(db, [{
+      const employee = await employment.add(db, [{
         health_worker_id: healthWorker.id,
         profession: 'nurse',
         facility_id: 1,
@@ -79,23 +79,13 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             facility_id: 1,
             facility_display_name: 'VHA Test Hospital',
             roles: {
-              admin: {
-                employed_as: false,
-                registration_completed: false,
-                registration_needed: false,
-                registration_pending_approval: false,
-              },
-              doctor: {
-                employed_as: false,
-                registration_completed: false,
-                registration_needed: false,
-                registration_pending_approval: false,
-              },
+              admin: null,
+              doctor: null,
               nurse: {
-                employed_as: true,
                 registration_completed: false,
                 registration_needed: true,
                 registration_pending_approval: true,
+                employment_id: employee[0].id,
               },
             },
           },

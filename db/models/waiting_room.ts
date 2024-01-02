@@ -17,6 +17,16 @@ export function add(
     .executeTakeFirstOrThrow()
 }
 
+export function remove(
+  trx: TrxOrDb,
+  { id }: { id: number },
+) {
+  return trx
+    .deleteFrom('waiting_room')
+    .where('id', '=', id)
+    .execute()
+}
+
 export async function get(
   trx: TrxOrDb,
   { facility_id }: {

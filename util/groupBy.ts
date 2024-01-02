@@ -1,15 +1,16 @@
-// deno-lint-ignore-file no-prototype-builtins no-explicit-any
-export default function groupBy<T extends Record<string, any>>(
+// deno-lint-ignore no-explicit-any
+export default function groupBy<T extends Record<string, any>, K>(
   array: T[],
-  iteratee: (value: T) => string,
-): Record<string, T[]> {
-  return array.reduce((result, item) => {
+  iteratee: (value: T) => K,
+): Map<K, T[]> {
+  const result = new Map<K, T[]>()
+  for (const item of array) {
     const key = iteratee(item)
-    if (result.hasOwnProperty(key)) {
-      result[key].push(item)
+    if (result.has(key)) {
+      result.get(key)!.push(item)
     } else {
-      result[key] = [item]
+      result.set(key, [item])
     }
-    return result
-  }, {} as Record<string, T[]>)
+  }
+  return result
 }

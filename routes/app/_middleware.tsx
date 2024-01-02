@@ -1,4 +1,4 @@
-import { MiddlewareHandlerContext } from '$fresh/server.ts'
+import { FreshContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
 import { EmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
@@ -8,7 +8,7 @@ import { assert } from 'std/assert/assert.ts'
 
 export async function handler(
   req: Request,
-  ctx: MiddlewareHandlerContext<
+  ctx: FreshContext<
     WithSession & {
       trx: TrxOrDb
       healthWorker: EmployedHealthWorker
@@ -25,14 +25,14 @@ export async function handler(
   ctx.state.healthWorker = healthWorker
 
   const roleNeedingRegistration = healthWorker.employment.find((e) =>
-    e.roles.nurse.registration_needed || e.roles.doctor.registration_needed ||
-    e.roles.admin.registration_needed
+    e.roles.nurse?.registration_needed || e.roles.doctor?.registration_needed ||
+    e.roles.admin?.registration_needed
   )
 
   const rolePendingApproval = healthWorker.employment.find((e) =>
-    e.roles.nurse.registration_pending_approval ||
-    e.roles.doctor.registration_pending_approval ||
-    e.roles.admin.registration_pending_approval
+    e.roles.nurse?.registration_pending_approval ||
+    e.roles.doctor?.registration_pending_approval ||
+    e.roles.admin?.registration_pending_approval
   )
   if (roleNeedingRegistration) {
     const registrationPage =

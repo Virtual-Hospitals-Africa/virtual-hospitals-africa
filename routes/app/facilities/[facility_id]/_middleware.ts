@@ -1,4 +1,4 @@
-import { MiddlewareHandlerContext } from '$fresh/server.ts'
+import { FreshContext } from '$fresh/server.ts'
 import { WithSession } from 'fresh_session'
 import {
   EmployedHealthWorker,
@@ -8,10 +8,11 @@ import {
 } from '../../../../types.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
 import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
+import getNumericParam from '../../../../util/getNumericParam.ts'
 
 export async function handler(
   _req: Request,
-  ctx: MiddlewareHandlerContext<
+  ctx: FreshContext<
     WithSession & {
       trx: TrxOrDb
       facility: ReturnedSqlRow<Facility>
@@ -21,8 +22,7 @@ export async function handler(
   >,
 ) {
   const { healthWorker } = ctx.state
-  const facility_id = parseInt(ctx.params.facility_id)
-  assertOr404(facility_id)
+  const facility_id = getNumericParam(ctx, 'facility_id')
 
   assertOr403(
     healthWorker.employment.some((e) => e.facility_id === facility_id),
@@ -32,7 +32,7 @@ export async function handler(
   assertOr404(facility)
 
   const isAdminAtFacility = healthWorker.employment.some((e) =>
-    e.facility_id === facility.id && e.roles.admin.employed_as
+    e.facility_id === facility.id && e.roles.admin
   )
 
   ctx.state.facility = facility

@@ -15,17 +15,13 @@ describeWithWebServer(
   8007,
   (route) => {
     it('renders a page on GET', async () => {
-      const { sessionId } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession({
         scenario: 'approved-nurse',
       })
 
       const response = await fetch(
         `${route}/app/facilities/1/waiting-room/add`,
-        {
-          headers: {
-            Cookie: `sessionId=${sessionId}`,
-          },
-        },
+        {},
       )
 
       assert(response.ok, 'should have returned ok')
@@ -45,7 +41,7 @@ describeWithWebServer(
       const testPatient = await patients.upsert(db, {
         name: 'Test Patient',
       })
-      const { sessionId } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession({
         scenario: 'approved-nurse',
       })
 
@@ -61,9 +57,6 @@ describeWithWebServer(
         `${route}/app/facilities/1/waiting-room/add`,
         {
           method: 'POST',
-          headers: {
-            Cookie: `sessionId=${sessionId}`,
-          },
           body,
         },
       )
@@ -94,7 +87,7 @@ describeWithWebServer(
     })
 
     it('can create a patient encounter for a new patient on POST', async () => {
-      const { sessionId } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession({
         scenario: 'approved-nurse',
       })
 
@@ -109,9 +102,6 @@ describeWithWebServer(
         `${route}/app/facilities/1/waiting-room/add`,
         {
           method: 'POST',
-          headers: {
-            Cookie: `sessionId=${sessionId}`,
-          },
           body,
         },
       )

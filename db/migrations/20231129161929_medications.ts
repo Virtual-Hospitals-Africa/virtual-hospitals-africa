@@ -275,12 +275,12 @@ async function seedDataFromJSON(db: Kysely<any>) {
   // console.log(uniq(data.map(d => d.forms)).sort())
 
   for (
-    const [generic_name, manufactured_medications] of Object.entries(drugs)
+    const [generic_name, manufactured_medications] of drugs.entries()
   ) {
     const forms = groupBy(manufactured_medications, (m) => m.forms)
 
     const medications = compact(
-      Object.entries(forms).map(([form, manufactured_medications]) => {
+      [...forms.entries()].map(([form, manufactured_medications]) => {
         const manufactured_medications_with_strengths = compact(
           manufactured_medications.map((manufactured_medication) => {
             try {
