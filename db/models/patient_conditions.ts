@@ -4,6 +4,7 @@ import {
   MedicationSchedule,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
+  PastMedicalCondition,
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -13,6 +14,7 @@ import { assert } from 'std/assert/assert.ts'
 import { differenceInDays, durationEndDate } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
+import { re } from 'std/semver/_shared.ts'
 
 type PatientMedicationUpsert = {
   id?: Maybe<number>
@@ -466,4 +468,35 @@ export async function getPreExistingConditionsWithDrugs(
       return { ...m, drug }
     }),
   }))
+}
+
+export async function getPastMedicalConditions(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: number
+  },
+): Promise<PastMedicalCondition[]>{
+  const gettingPatientConditions = await trx
+    .selectFrom('patient_conditions')
+    .innerJoin(
+      'conditions',
+      'conditions.key_id',
+      'patient_conditions.condition_key_id',
+    )
+    .where('patient_conditions.patient_id', '=', opts.patient_id)
+    .where('patient_conditions.end_date', 'is not', null)
+    .select([
+      'patient_conditions.id as id',
+      'patient_conditions.condition_key_id as key_id',
+      sql<string>`TO_CHAR(patient_conditions.start_date, 'YYYY-MM-DD')`.as(
+        'start_date',
+      ),
+      sql<string>`TO_CHAR(patient_conditions.end_date, 'YYYY-MM-DD')`.as(
+        'end_date',
+      ),
+      'conditions.primary_name as primary_name',
+    ])
+    .execute()
+
+    return gettingPatientConditions
 }

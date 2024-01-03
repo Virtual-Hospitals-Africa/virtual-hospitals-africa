@@ -89,6 +89,8 @@ import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
 import * as $medication_Input from './islands/medication/Input.tsx'
 import * as $medication_Search from './islands/medication/Search.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
+import * as $past_conditions_Condition from './islands/past-conditions/Condition.tsx'
+import * as $past_conditions_Form from './islands/past-conditions/Form.tsx'
 import * as $patient_cards from './islands/patient-cards.tsx'
 import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-conditions/Comorbidity.tsx'
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
@@ -214,6 +216,8 @@ const manifest = {
     './islands/medication/Input.tsx': $medication_Input,
     './islands/medication/Search.tsx': $medication_Search,
     './islands/nurse-registration-form.tsx': $nurse_registration_form,
+    './islands/past-conditions/Condition.tsx': $past_conditions_Condition,
+    './islands/past-conditions/Form.tsx': $past_conditions_Form,
     './islands/patient-cards.tsx': $patient_cards,
     './islands/pre-existing-conditions/Comorbidity.tsx':
       $pre_existing_conditions_Comorbidity,
