@@ -6,7 +6,7 @@ import SearchResults, {
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
-import { HasId, PatientDemographicInfo } from '../types.ts'
+import { HasId, Maybe, PatientDemographicInfo } from '../types.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 
 function hasId(value: unknown): value is HasId {
@@ -32,13 +32,13 @@ export default function PersonSearch({
   name: string
   required?: boolean
   label?: string
-  value?: { id?: number; name: string }
+  value?: { id?: Maybe<number>; name?: Maybe<string> }
   addable?: boolean
   onSelect?: (person: PatientDemographicInfo) => void
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
-    { id: number | 'add'; name: string } | null
+    { id: number | 'add'; name?: string } | null
   >(
     hasId(value) ? value : null,
   )

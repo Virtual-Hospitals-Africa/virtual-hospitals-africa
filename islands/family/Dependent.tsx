@@ -1,18 +1,8 @@
 import { useState } from 'preact/hooks'
-import {
-  FamilyRelation,
-  PatientDemographicInfo,
-  PreExistingConditionWithDrugs,
-} from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
-import { JSX } from 'preact/jsx-runtime'
-import { AddRow, RemoveRow } from '../AddRemove.tsx'
+import { FamilyRelation } from '../../types.ts'
+import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
-import {
-  CheckboxInput,
-  Select,
-  TextInput,
-} from '../../components/library/form/Inputs.tsx'
+import { TextInput } from '../../components/library/form/Inputs.tsx'
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 
@@ -41,13 +31,18 @@ export default function Dependent({
             label='Name'
             required
             addable
-            value={{ id: value?.patient_id!, name: value!.patient_name! }}
+            value={patientDependent &&
+              {
+                id: patientDependent.patient_id,
+                name: patientDependent.patient_name,
+              }}
             onSelect={(person) =>
               setPatientDependent({
-                ...value!,
-                patient_gender: person.gender,
-                patient_phone_number: person.phone_number,
-                patient_name: person.name,
+                patient_gender: person.gender ||
+                  patientDependent?.patient_gender,
+                patient_phone_number: person.phone_number ||
+                  patientDependent?.patient_phone_number,
+                patient_name: person.name || patientDependent?.patient_name,
               })}
           />
           <TextInput
@@ -56,20 +51,14 @@ export default function Dependent({
             value={patientDependent?.patient_phone_number}
           />
           <RelationshipSelect
-            name={`${name}.guardian_relation`}
-            value={patientDependent?.guardian_relation ?? undefined}
+            name={`${name}.family_relation_gendered`}
+            family_relation_gendered={patientDependent
+              ?.family_relation_gendered ?? undefined}
             type='dependent'
-            gender={patientDependent?.patient_gender ?? undefined}
+            gender={patientDependent?.patient_gender}
           />
         </FormRow>
       </div>
-      {patientDependent && patientDependent.relation_id && (
-        <input
-          type='hidden'
-          name={`${name}.relation_id`}
-          value={patientDependent.relation_id}
-        />
-      )}
     </RemoveRow>
   )
 }

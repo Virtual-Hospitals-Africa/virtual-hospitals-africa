@@ -11,7 +11,7 @@ import {
   findDaysWithOverlap,
   hours,
   minutes,
-} from '../scheduling/availability.tsx'
+} from '../shared/scheduling/availability.tsx'
 
 function HourInput({ name, current }: { name: string; current: number }) {
   return (

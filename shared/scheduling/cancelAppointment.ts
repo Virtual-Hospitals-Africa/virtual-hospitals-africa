@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
-import { PatientState, TrxOrDb } from '../types.ts'
-import * as google from '../external-clients/google.ts'
-import { getWithTokensById } from '../db/models/health_workers.ts'
-import { remove } from '../db/models/appointments.ts'
+import { PatientState, TrxOrDb } from '../../types.ts'
+import * as google from '../../external-clients/google.ts'
+import { getWithTokensById } from '../../db/models/health_workers.ts'
+import { remove } from '../../db/models/appointments.ts'
 
 // This should remove the scheduled appointment from the database and from google calendar
 export async function cancelAppointment(

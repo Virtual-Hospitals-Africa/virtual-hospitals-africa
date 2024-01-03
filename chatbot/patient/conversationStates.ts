@@ -23,9 +23,9 @@ import {
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { availableSlots } from '../../scheduling/getHealthWorkerAvailability.ts'
-import { cancelAppointment } from '../../scheduling/cancelAppointment.ts'
-import { makeAppointmentChatbot } from '../../scheduling/makeAppointment.ts'
+import { availableSlots } from '../../shared/scheduling/getHealthWorkerAvailability.ts'
+import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
+import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
 import {
   capLengthAtWhatsAppDescription,
@@ -63,7 +63,7 @@ const conversationStates: ConversationStates<
       'Sure, I can help you make an appointment with a health_worker.\n\nTo start, what is your name?',
     nextState: 'not_onboarded:make_appointment:enter_gender',
     async onExit(trx, patientState) {
-      await patients.upsert(trx, {
+      await patients.upsertIntake(trx, {
         ...pickPatient(patientState),
         name: patientState.body,
       })
@@ -83,7 +83,7 @@ const conversationStates: ConversationStates<
         title: 'Male',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
-          await patients.upsert(trx, {
+          await patients.upsertIntake(trx, {
             ...pickPatient(patientState),
             gender: 'male',
           })
@@ -95,7 +95,7 @@ const conversationStates: ConversationStates<
         title: 'Female',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
-          await patients.upsert(trx, {
+          await patients.upsertIntake(trx, {
             ...pickPatient(patientState),
             gender: 'female',
           })
@@ -107,7 +107,7 @@ const conversationStates: ConversationStates<
         title: 'Other',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
-          await patients.upsert(trx, {
+          await patients.upsertIntake(trx, {
             ...pickPatient(patientState),
             gender: 'other',
           })
@@ -126,7 +126,7 @@ const conversationStates: ConversationStates<
       const monthStr = month.padStart(2, '0')
       const dayStr = day.padStart(2, '0')
       const date_of_birth = `${year}-${monthStr}-${dayStr}`
-      await patients.upsert(trx, {
+      await patients.upsertIntake(trx, {
         ...pickPatient(patientState),
         date_of_birth,
       })
@@ -143,7 +143,7 @@ const conversationStates: ConversationStates<
     },
     nextState: 'onboarded:make_appointment:enter_appointment_reason',
     async onExit(trx, patientState) {
-      await patients.upsert(trx, {
+      await patients.upsertIntake(trx, {
         ...pickPatient(patientState),
         national_id_number: patientState.body,
       })
@@ -162,7 +162,7 @@ const conversationStates: ConversationStates<
         longitude: locationMessage.longitude,
         latitude: locationMessage.latitude,
       }
-      await patients.upsert(trx, {
+      await patients.upsertIntake(trx, {
         ...pickPatient(patientState),
         location: currentLocation,
       })

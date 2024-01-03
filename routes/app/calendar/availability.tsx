@@ -23,7 +23,7 @@ import redirect from '../../../util/redirect.ts'
 import { parseDate } from '../../../util/date.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { parseRequest } from '../../../util/parseForm.ts'
-import { isPartialAvailability } from '../../../scheduling/availability.tsx'
+import { isPartialAvailability } from '../../../shared/scheduling/availability.tsx'
 
 const days: Array<DayOfWeek> = [
   'Sunday',

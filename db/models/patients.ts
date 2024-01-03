@@ -2,13 +2,13 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
   Address,
+  FamilyUpsert,
   Gender,
   Location,
   Maybe,
   OnboardingPatient,
   Patient,
   PatientConversationState,
-  PatientFamily,
   PatientOccupation,
   PatientState,
   PatientWithMedicalRecord,
@@ -19,14 +19,14 @@ import {
 } from '../../types.ts'
 import haveNames from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
-import omit from '../../util/omit.ts'
 import compact from '../../util/compact.ts'
-import * as address from './address.ts'
+import { upsert as upsertAddress } from './address.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as patient_family from './family.ts'
 import { jsonBuildObject } from '../helpers.ts'
+import isEmpty from '../../util/isEmpty.ts'
 
 export const href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -77,8 +77,8 @@ export function getByPhoneNumber(
     .executeTakeFirst()
 }
 
-export type UpsertablePatient = {
-  id?: number
+export type UpsertPatientIntake = {
+  id: number
   conversation_state?: PatientConversationState
   phone_number?: string
   gender?: Maybe<Gender>
@@ -98,115 +98,119 @@ export type UpsertablePatient = {
   unregistered_primary_doctor_name?: Maybe<string>
   allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
-  family?: PatientFamily
+  family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
 }
 
-export async function upsert(
+export function insertMany(
   trx: TrxOrDb,
-  patient: UpsertablePatient,
-): Promise<ReturnedSqlRow<Patient>> {
-  const toInsert = {
-    ...omit(patient, [
-      'first_name',
-      'middle_names',
-      'last_name',
-      'address',
-      'pre_existing_conditions',
-      'allergies',
-      'family',
-      'occupation',
-    ]),
-    location: patient.location
-      ? sql`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)` as unknown as Location
-      : null,
-  }
-  if ('first_name' in patient) {
-    assert(!toInsert.name, 'Cannot set both name and first_name')
-    toInsert.name = compact(
-      [patient.first_name, patient.middle_names, patient.last_name],
-    ).join(' ')
-  }
-  if ('address' in patient) {
-    assert(!toInsert.address_id, 'Cannot set both address and address_id')
-    toInsert.address_id =
-      (patient.address && await address.upsert(trx, patient.address))?.id
-  }
-
-  const upsertedPatient = await trx
+  patients: Array<Partial<Patient>>,
+): Promise<ReturnedSqlRow<Patient>[]> {
+  assert(patients.length > 0, 'Must insert at least one patient')
+  return trx
     .insertInto('patients')
-    .values({
-      ...toInsert,
-      conversation_state: toInsert.conversation_state || 'initial_message',
-      completed_onboarding: toInsert.completed_onboarding || false,
-    })
-    .onConflict((oc) => oc.column('phone_number').doUpdateSet(toInsert))
-    .onConflict((oc) => oc.column('id').doUpdateSet(toInsert))
+    .values(patients.map((patient) => ({
+      ...patient,
+      location: patient.location
+        ? sql<
+          Location
+        >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
+        : null,
+      conversation_state: patient.conversation_state || 'initial_message',
+      completed_onboarding: patient.completed_onboarding || false,
+    })))
+    .returningAll()
+    .execute()
+}
+
+export function upsert(
+  trx: TrxOrDb,
+  patient: Partial<Patient> & { id?: number },
+) {
+  const to_upsert = {
+    ...patient,
+    location: patient.location
+      ? sql<
+        Location
+      >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
+      : null,
+    conversation_state: patient.conversation_state || 'initial_message',
+    completed_onboarding: patient.completed_onboarding || false,
+  }
+  return trx
+    .insertInto('patients')
+    .values(to_upsert)
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(to_upsert))
+    .onConflict((oc) => oc.column('id').doUpdateSet(to_upsert))
     .returningAll()
     .executeTakeFirstOrThrow()
+}
 
-  if (patient.occupation) {
-    await patient_occupations.upsert(trx, {
-      ...patient.occupation,
-      patient_id: upsertedPatient.id,
-    })
-  }
+export async function upsertIntake(
+  trx: TrxOrDb,
+  {
+    id,
+    first_name,
+    middle_names,
+    last_name,
+    address,
+    family,
+    pre_existing_conditions,
+    allergies,
+    occupation,
+    ...patient_updates
+  }: UpsertPatientIntake,
+): Promise<void> {
+  const upserting_occupation = occupation && patient_occupations.upsert(trx, {
+    ...occupation,
+    patient_id: id,
+  })
 
-  const upserting_conditions = patient.pre_existing_conditions &&
+  const upserting_conditions = pre_existing_conditions &&
     patient_conditions.upsertPreExisting(
       trx,
-      upsertedPatient.id,
-      patient.pre_existing_conditions,
+      id,
+      pre_existing_conditions,
     )
-  const upserting_allergies = patient.allergies &&
+
+  const upserting_allergies = allergies &&
     patient_allergies.upsert(
       trx,
-      upsertedPatient.id,
-      patient.allergies,
+      id,
+      allergies,
     )
 
-  //TODO: handle this better
-  if (patient.family) {
-    if (patient?.family?.guardians) {
-      for (const guardian_patient of patient?.family?.guardians) {
-        const new_patient = await upsert(trx, {
-          id: guardian_patient.patient_id ?? undefined,
-          name: guardian_patient.patient_name,
-          phone_number: guardian_patient.patient_phone_number ?? undefined,
-          gender: guardian_patient.patient_gender,
-          family: undefined,
-        })
-        guardian_patient.patient_id = new_patient.id
-      }
-    }
-
-    if (patient?.family?.dependents) {
-      for (const depndent_patient of patient?.family?.dependents) {
-        const new_patient = await upsert(trx, {
-          id: depndent_patient.patient_id ?? undefined,
-          name: depndent_patient.patient_name,
-          phone_number: depndent_patient.patient_phone_number ?? undefined,
-          gender: depndent_patient.patient_gender,
-          family: undefined,
-        })
-        depndent_patient.patient_id = new_patient.id
-      }
-    }
-  }
-
-  const upserting_family = patient.family &&
+  const upserting_family = family &&
     patient_family.upsert(
       trx,
-      upsertedPatient.id,
-      patient.family,
+      id,
+      family,
     )
+
+  if (first_name) {
+    assert(!patient_updates.name, 'Cannot set both name and first_name')
+    patient_updates.name = compact(
+      [first_name, middle_names, last_name],
+    ).join(' ')
+  }
+  if (address) {
+    assert(
+      !patient_updates.address_id,
+      'Cannot set both address and address_id',
+    )
+    patient_updates.address_id = (await upsertAddress(trx, address)).id
+  }
+
+  const upserting_patient = !isEmpty(patient_updates) &&
+    upsert(trx, { ...patient_updates, id })
+
   await Promise.all([
+    upserting_patient,
     upserting_conditions,
     upserting_allergies,
     upserting_family,
+    upserting_occupation,
   ])
-
-  return upsertedPatient
 }
 
 export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
