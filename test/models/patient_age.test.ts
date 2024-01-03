@@ -5,7 +5,7 @@ import { resetInTest } from '../../db/reset.ts'
 import * as patients from '../../db/models/patients.ts'
 import { sql } from 'kysely'
 
-describe('db/models/patient_age.ts', { sanitizeResources: false }, () => {
+describe('db/models/patients.ts view', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
 
   describe('getPatientAges', () => {
