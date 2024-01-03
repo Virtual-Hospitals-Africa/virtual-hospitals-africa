@@ -1622,6 +1622,17 @@ export type PatientMeasurement = {
   value: number
 }
 
+export type AgeUnit =
+  | 'days'
+  | 'weeks'
+  | 'months'
+  | 'years'
+
+export type Age = {
+  number: number
+  units: AgeUnit
+}
+
 export type DatabaseSchema = {
   appointments: SqlRow<Appointment>
   patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
@@ -1667,4 +1678,8 @@ export type DatabaseSchema = {
   waiting_room: SqlRow<WaitingRoom>
   measurements: Measurement<keyof Measurements>
   patient_measurements: SqlRow<PatientMeasurement>
+  patient_age: {
+    patient_id: number
+    age: Age
+  }
 }
