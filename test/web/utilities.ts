@@ -131,8 +131,9 @@ export function describeWithWebServer(
   )
 }
 
-export async function addTestHealthWorker({ scenario }: {
+export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
   scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
+  facility_id?: number
 } = { scenario: 'base' }) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
@@ -141,11 +142,11 @@ export async function addTestHealthWorker({ scenario }: {
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
       const [created_employee] = await employee.add(db, [{
-        facility_id: 1,
+        facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }, {
-        facility_id: 1,
+        facility_id,
         health_worker_id: admin.id,
         profession: 'admin',
       }])
@@ -164,7 +165,7 @@ export async function addTestHealthWorker({ scenario }: {
     }
     case 'admin': {
       const [created_employee] = await employee.add(db, [{
-        facility_id: 1,
+        facility_id,
         health_worker_id: healthWorker.id,
         profession: 'admin',
       }])
@@ -173,7 +174,7 @@ export async function addTestHealthWorker({ scenario }: {
     }
     case 'doctor': {
       const [created_employee] = await employee.add(db, [{
-        facility_id: 1,
+        facility_id,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
       }])
@@ -182,7 +183,7 @@ export async function addTestHealthWorker({ scenario }: {
     }
     case 'nurse': {
       const [created_employee] = await employee.add(db, [{
-        facility_id: 1,
+        facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }])

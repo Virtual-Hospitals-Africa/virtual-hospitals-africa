@@ -11,6 +11,7 @@ import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
 import { EmployedHealthWorker } from '../../types.ts'
 import { insertTestAddress, randomNationalId } from '../mocks.ts'
+import { addTestHealthWorker } from '../web/utilities.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -203,6 +204,38 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           name: 'Worker',
         },
       )
+    })
+
+    it('can prioritize a given facility, while still returning results from another facility', async () => {
+      const [doctor1, doctor2] = await Promise.all([
+        addTestHealthWorker({
+          scenario: 'doctor',
+          facility_id: 1,
+        }),
+        addTestHealthWorker({
+          scenario: 'doctor',
+          facility_id: 2,
+        }),
+      ])
+      await employment.add(db, [{
+        health_worker_id: doctor2.id,
+        profession: 'doctor',
+        facility_id: 3,
+      }])
+
+      const results1 = await health_workers.search(db, {
+        search: 'Test Health Worker',
+        prioritize_facility_id: 1,
+      })
+      assertEquals(results1.length, 2)
+      assertEquals(results1[0].id, doctor1.id)
+
+      const results2 = await health_workers.search(db, {
+        search: 'Test Health Worker',
+        prioritize_facility_id: 2,
+      })
+      assertEquals(results2.length, 2)
+      assertEquals(results2[0].id, doctor2.id)
     })
   })
 
