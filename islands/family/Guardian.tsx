@@ -15,7 +15,7 @@ export default function Guardian({
   onRemove,
 }: {
   name: string
-  value?: Partial<Omit<FamilyRelation, 'relation_id'>>
+  value?: Partial<FamilyRelation>
   onRemove(): void
 }) {
   const [patientGuardian, setPatientGuardian] = useState<
