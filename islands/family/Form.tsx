@@ -1,30 +1,15 @@
-import { useState } from 'preact/hooks'
+import { JSX } from 'preact'
+import { Signal, useSignal } from '@preact/signals'
 import { FamilyRelation, PatientFamily } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { JSX } from 'preact/jsx-runtime'
 import { AddRow } from '../AddRemove.tsx'
 import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Dependent from './Dependent.tsx'
 
-const initialStateGuardians = (
-  guardians: FamilyRelation[] = [],
-) => {
-  const state = new Map()
-  for (const guardian of guardians) {
-    state.set(guardian.relation_id, guardian)
-  }
-  return state
-}
-
-const initialStateDependents = (
-  dependents: FamilyRelation[] = [],
-) => {
-  const state = new Map()
-  for (const dependent of dependents) {
-    state.set(dependent.relation_id, dependent)
-  }
-  return state
+type FamilyRelationState = Partial<Omit<FamilyRelation, 'relation_id'>> & {
+  removed?: boolean
+  relation_id?: number | string
 }
 
 export default function PatientFamilyForm({
@@ -32,45 +17,36 @@ export default function PatientFamilyForm({
 }: {
   family: PatientFamily
 }): JSX.Element {
-  console.log('family', family)
-
-  const [patientGuardians, setPatientGuardians] = useState<
-    Map<string, Partial<FamilyRelation> & { removed: boolean }>
-  >(initialStateGuardians(family.guardians))
-  const [patientDependents, setPatientDependents] = useState<
-    Map<string, Partial<FamilyRelation> & { removed: boolean }>
-  >(initialStateDependents(family.dependents))
+  const guardians: Signal<FamilyRelationState[]> = useSignal(family.guardians)
+  const dependents: Signal<FamilyRelationState[]> = useSignal(family.dependents)
 
   const addGuardian = () => {
-    const id = generateUUID()
-    const guardians = new Map(patientGuardians)
-    guardians.set(id, { removed: false })
-    setPatientGuardians(new Map(guardians))
+    const relation_id = generateUUID()
+    guardians.value = guardians.value.concat([{ relation_id }])
   }
 
   const addDependent = () => {
-    const id = generateUUID()
-    const dependents = new Map(patientDependents)
-    dependents.set(id, { removed: false })
-    setPatientDependents(new Map(dependents))
+    const relation_id = generateUUID()
+    dependents.value = dependents.value.concat([{ relation_id }])
   }
 
   return (
     <div>
       <div>
         <SectionHeader className='my-5 text-[20px]'>Guardians</SectionHeader>
-        {Array.from(patientGuardians!.entries()).map(([key, guardian], i) => (
+        {guardians.value.map((guardian, i) => (
           !guardian.removed &&
           (
             <Guardian
               value={guardian}
-              key={key}
+              key={guardian.relation_id}
               name={`family.guardians.${i}`}
               onRemove={() => {
-                const nextGuardians = new Map(patientGuardians)
-                const removedGuardian = nextGuardians.get(key)
-                removedGuardian!.removed = true
-                setPatientGuardians(nextGuardians)
+                guardians.value = guardians.value.map((g) =>
+                  g.relation_id === guardian.relation_id
+                    ? { ...g, removed: true }
+                    : g
+                )
               }}
             />
           )
@@ -82,18 +58,19 @@ export default function PatientFamilyForm({
       </div>
       <div>
         <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
-        {Array.from(patientDependents!.entries()).map(([key, dependent], i) => (
+        {dependents.value.map((dependent, i) => (
           !dependent.removed &&
           (
             <Dependent
-              key={key}
+              key={dependent.relation_id}
               value={dependent}
               name={`family.dependents.${i}`}
               onRemove={() => {
-                const nextDependents = new Map(patientDependents)
-                const removedDependent = nextDependents.get(key)
-                removedDependent!.removed = true
-                setPatientDependents(nextDependents)
+                dependents.value = dependents.value.map((d) =>
+                  d.relation_id === dependent.relation_id
+                    ? { ...d, removed: true }
+                    : d
+                )
               }}
             />
           )
