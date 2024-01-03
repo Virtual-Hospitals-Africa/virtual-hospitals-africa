@@ -12,7 +12,7 @@ export default function Dependent({
   onRemove,
 }: {
   name: string
-  value?: Partial<Omit<FamilyRelation, 'relation_id'>>
+  value?: Partial<FamilyRelation>
   onRemove(): void
 }) {
   const [patientDependent, setPatientDependent] = useState<
