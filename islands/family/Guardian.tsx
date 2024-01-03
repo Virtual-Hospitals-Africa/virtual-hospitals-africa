@@ -10,14 +10,12 @@ import PersonSearch from '../PersonSearch.tsx'
 import { FamilyRelation } from '../../types.ts'
 
 export default function Guardian({
-  key,
   name,
   value,
   onRemove,
 }: {
-  key: string
   name: string
-  value?: Partial<FamilyRelation>
+  value?: Partial<Omit<FamilyRelation, 'relation_id'>>
   onRemove(): void
 }) {
   const [patientGuardian, setPatientGuardian] = useState<
@@ -25,7 +23,7 @@ export default function Guardian({
   >(value ?? undefined)
 
   return (
-    <RemoveRow onClick={onRemove} key={key} labelled>
+    <RemoveRow onClick={onRemove} labelled>
       <div class='w-full justify-normal'>
         <FormRow>
           <PersonSearch

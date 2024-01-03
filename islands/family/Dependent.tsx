@@ -7,14 +7,12 @@ import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 
 export default function Dependent({
-  key,
   name,
   value,
   onRemove,
 }: {
-  key: string
   name: string
-  value?: Partial<FamilyRelation>
+  value?: Partial<Omit<FamilyRelation, 'relation_id'>>
   onRemove(): void
 }) {
   const [patientDependent, setPatientDependent] = useState<
@@ -22,7 +20,7 @@ export default function Dependent({
   >(value ?? undefined)
 
   return (
-    <RemoveRow onClick={onRemove} key={key} labelled>
+    <RemoveRow onClick={onRemove} labelled>
       <div class='w-full justify-normal'>
         <FormRow>
           <PersonSearch
