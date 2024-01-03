@@ -238,6 +238,7 @@ export async function search(
     search?: Maybe<string>
     facility_id?: Maybe<number>
     professions?: Maybe<Profession[]>
+    prioritize_facility_id?: Maybe<number>
   },
 ): Promise<ReturnedSqlRow<
   HealthWorker & {
@@ -307,20 +308,25 @@ export async function search(
   if (opts.search) {
     query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
   }
-
   if (opts.professions) {
     query = query
       .where('profession', 'in', opts.professions)
   }
-
   if (opts.facility_id) {
     query = query.where('employment.facility_id', '=', opts.facility_id)
   }
+  if (opts.prioritize_facility_id) {
+    query = query
+      .orderBy(
+        sql<
+          boolean
+        >`ARRAY_AGG(distinct employment.facility_id) @> ARRAY[${opts.prioritize_facility_id}::integer]`,
+        'desc',
+      )
+  }
 
   const healthWorkers = await query.execute()
-
   assert(haveNames(healthWorkers))
-
   return healthWorkers
 }
 

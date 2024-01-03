@@ -4,11 +4,12 @@ import sample from '../util/sample.ts'
 import db from '../db/db.ts'
 import * as address from '../db/models/address.ts'
 
+let health_worker_counter = 0
 export const testHealthWorker = () => {
   const expires_at = new Date()
   expires_at.setHours(expires_at.getHours() + 1)
   return {
-    name: 'Test Health Worker',
+    name: `Test Health Worker ${++health_worker_counter}`,
     email: generateUUID() + '@example.com',
     avatar_url: generateUUID() + '.com',
     gcal_appointments_calendar_id: generateUUID() +

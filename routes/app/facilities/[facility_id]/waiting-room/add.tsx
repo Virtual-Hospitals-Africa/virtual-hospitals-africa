@@ -105,18 +105,6 @@ export default async function WaitingRoomAdd(
           <FormRow>
             <ProvidersSelect providers={await gettingProviders} />
           </FormRow>
-
-          {
-            /*
-              TODO: Decide if we want to allow selection of providers from other facilities
-              <PersonSearch
-                name='provider'
-                href={`/app/health_workers?facility_id=${facility_id}&profession=doctor,nurse&include_next_available=true`}
-                required
-                value={{ id: 'next_available', name: 'Next Available' }}
-              />
-            */
-          }
           <FormRow>
             <RadioGroup
               name='reason'

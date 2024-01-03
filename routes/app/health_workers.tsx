@@ -16,20 +16,14 @@ function assertIsProfessions(
   }
 }
 
-const next_available = {
-  id: 'next_available',
-  name: 'Next Available',
-  avatar_url: null, // TODO: add avatar_url for next available
-}
-
 export const handler: LoggedInHealthWorkerHandler<unknown> = {
   async GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
     const { searchParams } = ctx.url
     const search = searchParams.get('search')
-    const include_next_available = !search &&
-      searchParams.has('include_next_available')
     const facility_id = parseInt(searchParams.get('facility_id')!) || undefined
+    const prioritize_facility_id =
+      parseInt(searchParams.get('prioritize_facility_id')!) || undefined
     const professions = searchParams.has('profession')
       ? searchParams.get('profession')!.split(',')
       : undefined
@@ -39,12 +33,9 @@ export const handler: LoggedInHealthWorkerHandler<unknown> = {
       search,
       facility_id,
       professions,
+      prioritize_facility_id,
     })
 
-    const toSend = include_next_available
-      ? [next_available, ...healthWorkers]
-      : healthWorkers
-
-    return json(toSend)
+    return json(healthWorkers)
   },
 }

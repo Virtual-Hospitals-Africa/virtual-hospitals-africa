@@ -14,12 +14,14 @@ export default function FacilitySearch({
   label,
   required,
   value,
+  onSelect,
 }: {
   href: string
   name: string
   label?: string
   required?: boolean
   value?: { id: number; display_name: string }
+  onSelect?: (facility: { id: number; display_name: string }) => void
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
@@ -84,6 +86,7 @@ export default function FacilitySearch({
     if (!value) return
     setSearchImmediate(value.display_name)
     setSelected(value)
+    onSelect?.(value)
   }, [value?.id])
 
   const showSearchResults = isFocused && facilities.length > 0 &&

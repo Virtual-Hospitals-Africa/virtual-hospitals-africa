@@ -1,9 +1,7 @@
-import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import FacilitySearch from '../../../islands/FacilitySearch.tsx'
 import { FullCountryInfo, OnboardingPatient } from '../../../types.ts'
 import AddressForm from '../../../islands/address-inputs.tsx'
-import PersonSearch from '../../../islands/PersonSearch.tsx'
+import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
 
 function PatientAddress(
   { patient, adminDistricts }: {
@@ -18,38 +16,6 @@ function PatientAddress(
         address={patient.address}
         adminDistricts={adminDistricts}
       />
-    </section>
-  )
-}
-
-function NearestHealthCare(
-  { nearest_facility, primary_doctor }: {
-    nearest_facility?: { id: number; display_name: string }
-    primary_doctor?: { id: number; name: string }
-  },
-) {
-  return (
-    <section>
-      <SectionHeader className='mb-3'>Nearest Health Care</SectionHeader>
-      <FormRow>
-        <FacilitySearch
-          name='nearest_facility'
-          href='/app/facilities'
-          label='Nearest Facility'
-          required
-          value={nearest_facility}
-        />
-      </FormRow>
-      <FormRow>
-        <PersonSearch
-          name='primary_doctor'
-          label='Primary/Family Doctor'
-          href='/app/health_workers?profession=doctor'
-          required
-          value={primary_doctor}
-          addable
-        />
-      </FormRow>
     </section>
   )
 }
