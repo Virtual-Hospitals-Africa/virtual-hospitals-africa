@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { FamilyRelation } from '../../types.ts'
+import { FamilyRelation, PatientDemographicInfo } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 import { TextInput } from '../../components/library/form/Inputs.tsx'
@@ -32,9 +32,9 @@ export default function Dependent({
             value={patientDependent &&
               {
                 id: patientDependent.patient_id,
-                name: patientDependent.patient_name,
+                name: patientDependent.patient_name!,
               }}
-            onSelect={(person) =>
+            onSelect={(person: PatientDemographicInfo) =>
               setPatientDependent({
                 patient_gender: person.gender ||
                   patientDependent?.patient_gender,

@@ -2,11 +2,12 @@ import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
   AddButtonSearchResult,
   PersonSearchResult,
+  PersonSearchResultData,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
 import debounce from '../util/debounce.ts'
-import { HasId, Maybe, PatientDemographicInfo } from '../types.ts'
+import { HasId, Maybe } from '../types.ts'
 import isObjectLike from '../util/isObjectLike.ts'
 
 function hasId(value: unknown): value is HasId {
@@ -19,7 +20,7 @@ function hasId(value: unknown): value is HasId {
   - [ ] Show avatar in input
   - [ ] For patients, show date of birth, gender, and national id
 */
-export default function PersonSearch({
+export default function PersonSearch<Person extends PersonSearchResultData>({
   href,
   name,
   required,
@@ -32,17 +33,18 @@ export default function PersonSearch({
   name: string
   required?: boolean
   label?: string
-  value?: { id?: Maybe<number>; name?: Maybe<string> }
+  value?: Maybe<{ id?: Maybe<number>; name: string }>
   addable?: boolean
-  onSelect?: (person: PatientDemographicInfo) => void
+  // deno-lint-ignore no-explicit-any
+  onSelect?: (person: any) => void
 }) {
   const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
-    { id: number | 'add'; name?: string } | null
+    { id: number | 'add'; name: string } | null
   >(
     hasId(value) ? value : null,
   )
-  const [people, setPeople] = useState<HasId<PatientDemographicInfo>[]>([])
+  const [people, setPeople] = useState<Person[]>([])
 
   const [search, setSearchImmediate] = useState(value?.name ?? '')
 
@@ -106,7 +108,7 @@ export default function PersonSearch({
           <SearchResults>
             {people.map((person) => (
               <PersonSearchResult
-                person={{ id: person.id, name: person.name! }}
+                person={person}
                 isSelected={selected?.id === person.id}
                 onSelect={() => {
                   setIsFocused(false)
@@ -130,10 +132,6 @@ export default function PersonSearch({
 
                   // Dispatch the event to the input
                   input.dispatchEvent(tabKeyEvent)
-                  // console.log('ELWE:LWE', input)
-                  // const blur = new Event('blur')
-                  // input.dispatchEvent(blur)
-                  // console.log('MMMMMM:LWE', input)
                 }}
               />
             ))}
@@ -147,11 +145,6 @@ export default function PersonSearch({
                     onSelect &&
                       onSelect({
                         name: search,
-                        phone_number: undefined,
-                        date_of_birth: undefined,
-                        ethnicity: undefined,
-                        national_id_number: undefined,
-                        gender: undefined,
                       })
                   }}
                 />
@@ -160,7 +153,6 @@ export default function PersonSearch({
           </SearchResults>
         )}
       </SearchInput>
-      <span id='nonsense' />
       {(typeof selected?.id === 'number') && (
         <input type='hidden' name={`${name}_id`} value={selected.id} />
       )}

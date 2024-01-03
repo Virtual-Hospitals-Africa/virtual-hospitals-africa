@@ -145,6 +145,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           id: healthWorker.id,
           created_at: result[0].created_at,
           updated_at: result[0].updated_at,
+          description: [
+            'nurse @ VHA Test Hospital',
+          ],
         },
       )
     })
@@ -202,6 +205,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           gcal_availability_calendar_id: 'gcal_availability_calendar_id',
           id: healthWorker.id,
           name: 'Worker',
+          description: [
+            'nurse @ VHA Test Hospital',
+          ],
         },
       )
     })
@@ -585,6 +591,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           id: healthWorker.id,
           created_at: same_facility_result[0].created_at,
           updated_at: same_facility_result[0].updated_at,
+          description: [
+            'nurse @ VHA Test Hospital',
+          ],
         },
       )
 

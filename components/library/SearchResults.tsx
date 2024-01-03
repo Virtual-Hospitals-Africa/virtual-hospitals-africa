@@ -10,14 +10,14 @@ type BasicSelectProps = {
   onSelect: () => void
 }
 
+export type PersonSearchResultData = {
+  id: number | 'add'
+  name: string
+  avatar_url?: string
+  description?: ComponentChildren
+}
 type PersonSearchResultProps = BasicSelectProps & {
-  person: HasId<
-    {
-      name: string
-      avatar_url?: string
-      facilities?: { facility_display_name: string }[]
-    }
-  >
+  person: PersonSearchResultData
 }
 
 type FacilitySearchResultProps = BasicSelectProps & {
@@ -129,12 +129,11 @@ export function PersonSearchResult(
         />
         <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
           <div>{person.name}</div>
-          {person.facilities &&
-            (
-              <div className='font-normal'>
-                {person.facilities[0].facility_display_name}
-              </div>
-            )}
+          {person.description && (
+            <div className='font-normal capitalize'>
+              {person.description}
+            </div>
+          )}
         </span>
       </div>
     </SearchResult>

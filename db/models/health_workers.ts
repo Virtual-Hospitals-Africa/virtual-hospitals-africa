@@ -14,7 +14,7 @@ import {
 } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
-import haveNames from '../../util/haveNames.ts'
+import { hasName } from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
 
@@ -248,6 +248,7 @@ export async function search(
       facility_display_name: string
       professions: Profession[]
     }[]
+    description: string[]
   }
 >[]> {
   let query = trx
@@ -326,8 +327,16 @@ export async function search(
   }
 
   const healthWorkers = await query.execute()
-  assert(haveNames(healthWorkers))
-  return healthWorkers
+
+  return healthWorkers.map((hw) => {
+    assert(hasName(hw))
+    return {
+      ...hw,
+      description: hw.facilities.map(({ professions, facility_display_name }) =>
+        `${professions.join(', ')} @ ${facility_display_name}`
+      ),
+    }
+  })
 }
 
 export async function get(
