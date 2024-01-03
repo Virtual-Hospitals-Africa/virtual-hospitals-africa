@@ -33,7 +33,7 @@ export default function Guardian({
             value={patientGuardian &&
               {
                 id: patientGuardian.patient_id,
-                name: patientGuardian.patient_name,
+                name: patientGuardian.patient_name!,
               }}
             required
             addable
