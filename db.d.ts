@@ -587,4 +587,5 @@ export interface DB {
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
 }
+
 type Buffer = Uint8Array
