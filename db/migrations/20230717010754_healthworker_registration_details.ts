@@ -62,8 +62,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('gender', sql`gender`, (column) => column.notNull())
     .addColumn('national_id', 'varchar(255)', (column) =>
       column
-        .notNull()
-        .check(sql`national_id ~ '^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$'`))
+        .notNull())
     .addColumn('date_of_first_practice', 'date', (column) => column.notNull())
     .addColumn('ncz_registration_number', 'varchar(255)', (column) =>
       column
@@ -86,6 +85,10 @@ export async function up(db: Kysely<unknown>) {
       column
         .references('health_workers.id')
         .onDelete('cascade'))
+    .addCheckConstraint(
+      'nurse_registration_details_national_id_number_check',
+      sql`national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
+    )
     .execute()
 
   await addUpdatedAtTrigger(db, 'nurse_registration_details')
