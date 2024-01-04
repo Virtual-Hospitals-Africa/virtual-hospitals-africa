@@ -60,15 +60,15 @@ export async function up(db: Kysely<unknown>) {
         .notNull()
         .unique())
     .addColumn('gender', sql`gender`, (column) => column.notNull())
-    .addColumn('national_id', 'varchar(255)', (column) =>
+    .addColumn('national_id_number', 'varchar(50)', (column) =>
       column
         .notNull())
     .addColumn('date_of_first_practice', 'date', (column) => column.notNull())
-    .addColumn('ncz_registration_number', 'varchar(255)', (column) =>
+    .addColumn('ncz_registration_number', 'varchar(50)', (column) =>
       column
         .notNull()
         .check(sql`ncz_registration_number ~ '^[a-zA-Z]{2}[0-9]{6}$'`))
-    .addColumn('mobile_number', 'varchar(255)', (column) => column.notNull())
+    .addColumn('mobile_number', 'varchar(50)', (column) => column.notNull())
     .addColumn('national_id_media_id', 'integer', (column) =>
       column
         .references('media.id')
