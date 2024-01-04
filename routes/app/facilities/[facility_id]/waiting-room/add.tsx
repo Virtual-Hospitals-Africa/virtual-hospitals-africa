@@ -92,7 +92,7 @@ export default async function WaitingRoomAdd(
       avatarUrl={state.healthWorker.avatar_url}
       variant='standard'
     >
-      <Container size='lg'>
+      <Container size='md'>
         <Form method='POST'>
           <FormRow>
             <PersonSearch

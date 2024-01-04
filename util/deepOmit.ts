@@ -8,19 +8,21 @@ type DeepOmit<T, K extends string | number | symbol> = T extends object
 export default function deepOmit<
   T extends object,
   K extends string | number | symbol,
->(obj: T, key: K): DeepOmit<T, K> {
+>(obj: T, keys: K | K[]): DeepOmit<T, K> {
   if (!isObjectLike(obj)) return obj as any
+  if (!Array.isArray(keys)) keys = [keys]
   if (Array.isArray(obj)) {
-    return obj.map((item: any) => deepOmit(item as any, key as any)) as any
+    return obj.map((item: any) => deepOmit(item as any, keys)) as any
   }
+
   const result: any = {}
 
   for (const prop in obj) {
     if (obj.hasOwnProperty(prop)) {
-      if (prop === key as any) {
+      if (keys.some((key) => prop === key)) {
         continue
       }
-      result[prop] = deepOmit(obj[prop] as any, key as any)
+      result[prop] = deepOmit(obj[prop] as any, keys)
     }
   }
 

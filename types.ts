@@ -955,44 +955,42 @@ export type Profession =
   | 'nurse'
 
 export type NurseSpecialty =
-  | 'primary_care_nurse'
-  | 'registered_general_nurse'
+  | 'primary care'
+  | 'registered general'
   | 'midwife'
-  | 'intensive_and_coronary_care_nurse'
-  | 'renal_nurse'
-  | 'neonatal_intensive_care_and_paediatric_nurse'
-  | 'psychiatric_mental_health_nurse'
-  | 'operating_theatre_nurse'
-  | 'community_nurse'
-  | 'opthalmic_nurse'
-  | 'nurse_administrator'
-  | 'nurse_anaesthetist'
-  | 'trauma_care_nurse'
-  | 'clinical_care_nurse'
-  | 'clinical_officer'
-  | 'orthopaedic_nurse'
-  | 'oncology_and_palliative_care_nurse'
-  | 'dental_nurse'
+  | 'intensive and coronary care'
+  | 'renal'
+  | 'neonatal intensive care and paediatric'
+  | 'psychiatric mental health'
+  | 'operating theatre'
+  | 'community'
+  | 'opthalmic'
+  | 'anaesthetist'
+  | 'trauma care'
+  | 'clinical care'
+  | 'clinical officer'
+  | 'orthopaedic'
+  | 'oncology and palliative care'
+  | 'dental'
 
-export const NurseSpecialties: NurseSpecialty[] = [
-  'primary_care_nurse',
-  'clinical_care_nurse',
-  'clinical_officer',
-  'community_nurse',
-  'dental_nurse',
-  'intensive_and_coronary_care_nurse',
+export const NURSE_SPECIALTIES: NurseSpecialty[] = [
+  'primary care',
+  'registered general',
   'midwife',
-  'neonatal_intensive_care_and_paediatric_nurse',
-  'nurse_administrator',
-  'nurse_anaesthetist',
-  'oncology_and_palliative_care_nurse',
-  'operating_theatre_nurse',
-  'opthalmic_nurse',
-  'orthopaedic_nurse',
-  'psychiatric_mental_health_nurse',
-  'registered_general_nurse',
-  'renal_nurse',
-  'trauma_care_nurse',
+  'intensive and coronary care',
+  'renal',
+  'neonatal intensive care and paediatric',
+  'psychiatric mental health',
+  'operating theatre',
+  'community',
+  'opthalmic',
+  'anaesthetist',
+  'trauma care',
+  'clinical care',
+  'clinical officer',
+  'orthopaedic',
+  'oncology and palliative care',
+  'dental',
 ]
 
 export type NurseRegistrationDetails = {
