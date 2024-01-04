@@ -171,7 +171,7 @@ describeWithWebServer(
         const body = new FormData()
         body.set('date_of_first_practice', '2022-01-01')
         body.set('ncz_registration_number', 'GN123456')
-        body.set('specialty', 'oncology_and_palliative_care_nurse')
+        body.set('specialty', 'oncology and palliative care')
 
         const postResponse = await fetch(
           `${route}/app/facilities/1/register/professional`,
@@ -209,7 +209,7 @@ describeWithWebServer(
           national_id_number: '08-123456 D 53',
           date_of_first_practice: '2022-01-01',
           ncz_registration_number: 'GN123456',
-          specialty: 'oncology_and_palliative_care_nurse',
+          specialty: 'oncology and palliative care',
           address,
         })
 
@@ -234,7 +234,7 @@ describeWithWebServer(
         )
         assertEquals(
           $('select[name="specialty"]').val(),
-          'oncology_and_palliative_care_nurse',
+          'oncology and palliative care',
         )
       }
 
@@ -288,7 +288,7 @@ describeWithWebServer(
         assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
         assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
         assertEquals(specialty.employee_id, nurseEmployment.id)
-        assertEquals(specialty.specialty, 'oncology_and_palliative_care_nurse')
+        assertEquals(specialty.specialty, 'oncology and palliative care')
 
         assertEquals(
           postResponse.url,

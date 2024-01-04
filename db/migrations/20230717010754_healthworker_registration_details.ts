@@ -1,30 +1,12 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { NURSE_SPECIALTIES } from '../../types.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db
     .schema
     .createType('nurse_speciality')
-    .asEnum([
-      'primary_care_nurse',
-      'registered_general_nurse',
-      'midwife',
-      'intensive_and_coronary_care_nurse',
-      'renal_nurse',
-      'neonatal_intensive_care_and_paediatric_nurse',
-      'psychiatric_mental_health_nurse',
-      'operating_theatre_nurse',
-      'community_nurse',
-      'opthalmic_nurse',
-      'nurse_administrator',
-      'nurse_anaesthetist',
-      'trauma_care_nurse',
-      'clinical_care_nurse',
-      'clinical_officer',
-      'orthopaedic_nurse',
-      'oncology_and_palliative_care_nurse',
-      'dental_nurse',
-    ])
+    .asEnum(NURSE_SPECIALTIES)
     .execute()
 
   await db

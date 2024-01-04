@@ -28,6 +28,8 @@ import NurseRegistrationForm from '../../../../../islands/nurse-registration-for
 import compact from '../../../../../util/compact.ts'
 import { FacilityContext } from '../_middleware.ts'
 import omit from '../../../../../util/omit.ts'
+import Layout from '../../../../../components/library/Layout.tsx'
+import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 
 type RegisterPageProps = {
   formState: FormState
@@ -167,13 +169,23 @@ export default async function RegisterPage(
   const stepState = useNurseRegistrationSteps(ctx)
 
   return (
-    <Container size='lg'>
-      {stepState.stepsTopBar}
-      <NurseRegistrationForm
-        currentStep={stepState.currentStep}
-        formData={formState}
-        adminDistricts={adminDistricts}
-      />
-    </Container>
+    <Layout
+      variant='just-logo'
+      title='Register as a nurse'
+      route={ctx.route}
+      url={ctx.url}
+    >
+      <Container size='xl'>
+        <SectionHeader>
+          Registration
+        </SectionHeader>
+        {stepState.stepsTopBar}
+        <NurseRegistrationForm
+          currentStep={stepState.currentStep}
+          formData={formState}
+          adminDistricts={adminDistricts}
+        />
+      </Container>
+    </Layout>
   )
 }
