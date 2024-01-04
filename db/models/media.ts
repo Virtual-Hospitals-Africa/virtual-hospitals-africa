@@ -4,7 +4,8 @@ export function insert(
   trx: TrxOrDb,
   opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<ReturnedSqlRow<PatientMedia>> {
-  return trx.insertInto('media').values(opts).returningAll()
+  // deno-lint-ignore no-explicit-any
+  return trx.insertInto('media').values(opts as any).returningAll()
     .executeTakeFirstOrThrow()
 }
 

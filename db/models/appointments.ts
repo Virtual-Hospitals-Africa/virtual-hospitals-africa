@@ -1,7 +1,6 @@
 import { sql } from 'kysely'
 import {
   Appointment,
-  AppointmentMedia,
   AppointmentWithAllPatientInfo,
   Maybe,
   NonNull,
@@ -103,8 +102,8 @@ export function upsert(
 
 export function upsertRequest(
   trx: TrxOrDb,
-  info: PatientAppointmentRequest & { id?: number },
-): Promise<Maybe<ReturnedSqlRow<PatientAppointmentRequest>>> {
+  info: { id?: number; patient_id: number; reason?: string | null },
+): Promise<ReturnedSqlRow<PatientAppointmentRequest>> {
   return trx
     .insertInto('patient_appointment_requests')
     .values(info)
@@ -320,7 +319,7 @@ export function insertMedia(
     appointment_id: number
     media_ids: number[]
   },
-): Promise<ReturnedSqlRow<AppointmentMedia>> {
+) {
   assert(opts.appointment_id)
   assert(opts.media_ids.length)
   const toInsert = opts.media_ids.map((media_id) => ({

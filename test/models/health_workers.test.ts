@@ -376,9 +376,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.gender, 'female')
       assertEquals(result.name, 'Worker')
       assertEquals(result.date_of_birth, '12 December 1999')
-      assertEquals(result.mobile_number, '5555555555') // <------ this is a problem (phone number formatting happens on display)
+      assertEquals(result.mobile_number, '5555555555')
       assertEquals(result.avatar_url, 'avatar_url')
-      assertEquals(result.date_of_first_practice, '1 January 2020') // <------ this is a problem (date gets moved back 16 hours)
+      assertEquals(result.date_of_first_practice, '1 January 2020')
       assertEquals(result.email, 'test@worker.com')
       assert(
         /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),

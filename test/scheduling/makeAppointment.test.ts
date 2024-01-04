@@ -78,7 +78,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           href: `/app/patients/${patient.id}`,
           id: patient.id,
           last_visited: null,
-          location: null,
+          location: { longitude: null, latitude: null },
           medical_record: {
             allergies: [
               'chocolate',
@@ -92,7 +92,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           phone_number: null,
           updated_at: patient.updated_at,
           conversation_state: 'initial_message',
-          completed_onboarding: false,
+          completed_intake: false,
         },
         patient_id: patient.id,
         reason: 'back pain',

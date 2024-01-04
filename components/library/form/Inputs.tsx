@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Ethnicity, Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
+import { Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -567,7 +567,7 @@ export function GenderSelect(
 }
 
 export function EthnicitySelect(
-  { value }: { value: Maybe<Ethnicity> },
+  { value }: { value: Maybe<string> },
 ) {
   return (
     <Select
@@ -578,9 +578,9 @@ export function EthnicitySelect(
       <option value=''>Select</option>
       <option value='african' label='African' selected={value === 'african'} />
       <option
-        value='african_american'
+        value='african american'
         label='African American'
-        selected={value === 'african_american'}
+        selected={value === 'african american'}
       />
       <option value='asian' label='Asian' selected={value === 'asian'} />
       <option
@@ -599,19 +599,19 @@ export function EthnicitySelect(
         selected={value === 'hispanic'}
       />
       <option
-        value='middle_eastern'
+        value='middle eastern'
         label='Middle Eastern'
-        selected={value === 'middle_eastern'}
+        selected={value === 'middle eastern'}
       />
       <option
-        value='native_american'
+        value='native american'
         label='Native American'
-        selected={value === 'native_american'}
+        selected={value === 'native american'}
       />
       <option
-        value='pacific_islander'
+        value='pacific islander'
         label='Pacific Islander'
-        selected={value === 'pacific_islander'}
+        selected={value === 'pacific islander'}
       />
       <option value='other' label='Other' selected={value === 'other'} />
     </Select>

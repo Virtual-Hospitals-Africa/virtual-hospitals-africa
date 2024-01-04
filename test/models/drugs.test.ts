@@ -11,6 +11,7 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
   describe('search', () => {
     it('gets search results for drugs with their forms, strengths, and manufacturers', async () => {
       const results = await drugs.search(db, { search: 'abacavir' })
+      console.log(JSON.stringify(results, null, 2))
       assertEquals(
         deepOmit(results, [
           'drug_id',
@@ -385,6 +386,146 @@ const expected_results = [
             ],
             'trade_name': 'ABACAVIR SULPHATE; LAMIVUDINE',
             'manufacturer_name': 'HETERO LABS LTD, ANDHRA PRADESH INDIA;',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    'drug_id': 733,
+    'drug_generic_name': 'ABACAVIR; LAMIVUDINE',
+    'distinct_trade_names': [
+      'ABAMUNE L BABY',
+      'KIVEXA',
+    ],
+    'medications': [
+      {
+        'medication_id': 1004,
+        'form': 'CAPSULE',
+        'form_route': 'CAPSULE; ORAL',
+        'routes': [
+          'ORAL',
+        ],
+        'strength_numerators': [
+          30,
+          60,
+        ],
+        'strength_numerator_unit': 'MG',
+        'strength_denominator': 1,
+        'strength_denominator_unit': 'CAPSULE',
+        'strength_denominator_is_units': false,
+        'strength_summary': '30, 60MG',
+        'manufacturers': [
+          {
+            'manufactured_medication_id': 1857,
+            'strength_numerators': [
+              30,
+              60,
+            ],
+            'trade_name': 'ABAMUNE L BABY',
+            'manufacturer_name': 'CIPLA LTD MAHAD INDIA;',
+          },
+        ],
+      },
+      {
+        'medication_id': 1009,
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
+        'strength_numerators': [
+          300,
+          600,
+        ],
+        'strength_numerator_unit': 'MG',
+        'strength_denominator': 1,
+        'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '300, 600MG',
+        'manufacturers': [
+          {
+            'manufactured_medication_id': 1867,
+            'strength_numerators': [
+              300,
+              600,
+            ],
+            'trade_name': 'KIVEXA',
+            'manufacturer_name':
+              'GLAXOSMITHKLINE S.A (PTY) LTD BRYANSTON SOUTH AFRICA;',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    'drug_id': 734,
+    'drug_generic_name': 'ABACAVIR; DOLUTEGRAVIR; LAMIVUDINE',
+    'distinct_trade_names': [],
+    'medications': [
+      {
+        'medication_id': 1005,
+        'form': 'TABLET, COATED',
+        'form_route': 'TABLET, COATED; ORAL',
+        'routes': [
+          'ORAL',
+        ],
+        'strength_numerators': [
+          50,
+          300,
+          600,
+        ],
+        'strength_numerator_unit': 'MG',
+        'strength_denominator': 1,
+        'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '50, 300, 600MG',
+        'manufacturers': [
+          {
+            'manufactured_medication_id': 1861,
+            'strength_numerators': [
+              50,
+              300,
+              600,
+            ],
+            'trade_name': 'ABACAVIR; DOLUTEGRAVIR; LAMIVUDINE',
+            'manufacturer_name': 'CIPLA LTD  INDIA;',
+          },
+        ],
+      },
+    ],
+  },
+  {
+    'drug_id': 735,
+    'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
+    'distinct_trade_names': [],
+    'medications': [
+      {
+        'medication_id': 1008,
+        'form': 'TABLET',
+        'form_route': 'TABLET; ORAL',
+        'routes': [
+          'ORAL',
+        ],
+        'strength_numerators': [
+          150,
+          300,
+        ],
+        'strength_numerator_unit': 'MG',
+        'strength_denominator': 1,
+        'strength_denominator_unit': 'TABLET',
+        'strength_denominator_is_units': false,
+        'strength_summary': '150, 300MG',
+        'manufacturers': [
+          {
+            'manufactured_medication_id': 1866,
+            'strength_numerators': [
+              150,
+              300,
+              300,
+            ],
+            'trade_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
+            'manufacturer_name': 'MYLAN LABORATORIES LTD SINNAR INDIA;',
           },
         ],
       },

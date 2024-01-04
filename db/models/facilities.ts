@@ -68,12 +68,23 @@ export function get(
   opts: {
     ids: number[]
   },
-) {
+): Promise<ReturnedSqlRow<Facility>[]> {
   assert(opts.ids.length, 'Must select nonzero facilities')
   return trx
     .selectFrom('facilities')
     .where('id', 'in', opts.ids)
-    .selectAll()
+    .select([
+      'id',
+      'created_at',
+      'updated_at',
+      'name',
+      'address',
+      'category',
+      'phone',
+      'display_name',
+      sql<number>`ST_X(location::geometry)`.as('longitude'),
+      sql<number>`ST_Y(location::geometry)`.as('latitude'),
+    ])
     .execute()
 }
 

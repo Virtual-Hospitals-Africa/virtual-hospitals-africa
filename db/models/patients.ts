@@ -9,6 +9,7 @@ import {
   OnboardingPatient,
   Patient,
   PatientConversationState,
+  PatientNearestFacility,
   PatientOccupation,
   PatientState,
   PatientWithMedicalRecord,
@@ -27,6 +28,8 @@ import * as patient_allergies from './patient_allergies.ts'
 import * as patient_family from './family.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import isNumber from '../../util/isNumber.ts'
 
 export const href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -47,7 +50,6 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.id',
       'patients.name',
       'patients.phone_number',
-      'patients.location',
       'patients.gender',
       'patients.ethnicity',
       sql<string | null>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
@@ -56,11 +58,15 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.conversation_state',
       'patients.created_at',
       'patients.updated_at',
-      'patients.completed_onboarding',
+      'patients.completed_intake',
       href_sql.as('href'),
       avatar_url_sql.as('avatar_url'),
       'facilities.name as nearest_facility',
       sql<null>`NULL`.as('last_visited'),
+      jsonBuildObject({
+        longitude: sql<number | null>`ST_X(patients.location::geometry)`,
+        latitude: sql<number | null>`ST_Y(patients.location::geometry)`,
+      }).as('location'),
     ])
 
 const selectWithName = (trx: TrxOrDb) =>
@@ -77,6 +83,17 @@ export function getByPhoneNumber(
     .executeTakeFirst()
 }
 
+// export function getByPhoneNumber(
+//   trx: TrxOrDb,
+//   query: { phone_number: string },
+// ): Promise<
+//   Maybe<ReturnedSqlRow<RenderedPatient>>
+// > {
+//   return baseSelect(trx)
+//     .where('phone_number', '=', query.phone_number)
+//     .executeTakeFirst()
+// }
+
 export type UpsertPatientIntake = {
   id: number
   conversation_state?: PatientConversationState
@@ -89,7 +106,7 @@ export type UpsertPatientIntake = {
   location?: Maybe<Location>
   avatar_media_id?: number
   address_id?: number
-  completed_onboarding?: boolean
+  completed_intake?: boolean
   name?: Maybe<string>
   first_name?: Maybe<string>
   middle_names?: Maybe<string>
@@ -105,7 +122,7 @@ export type UpsertPatientIntake = {
 export function insertMany(
   trx: TrxOrDb,
   patients: Array<Partial<Patient>>,
-): Promise<ReturnedSqlRow<Patient>[]> {
+) {
   assert(patients.length > 0, 'Must insert at least one patient')
   return trx
     .insertInto('patients')
@@ -113,11 +130,11 @@ export function insertMany(
       ...patient,
       location: patient.location
         ? sql<
-          Location
+          string
         >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
         : null,
       conversation_state: patient.conversation_state || 'initial_message',
-      completed_onboarding: patient.completed_onboarding || false,
+      completed_intake: patient.completed_intake || false,
     })))
     .returningAll()
     .execute()
@@ -131,11 +148,11 @@ export function upsert(
     ...patient,
     location: patient.location
       ? sql<
-        Location
+        string
       >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
       : null,
     conversation_state: patient.conversation_state || 'initial_message',
-    completed_onboarding: patient.completed_onboarding || false,
+    completed_intake: patient.completed_intake || false,
   }
   return trx
     .insertInto('patients')
@@ -263,7 +280,7 @@ export function getOnboarding(
         suburb_id: eb.ref('address.suburb_id'),
         street: eb.ref('address.street'),
       }).as('address'),
-      'patients.completed_onboarding',
+      'patients.completed_intake',
       'patients.primary_doctor_id',
       'patients.unregistered_primary_doctor_name',
       sql<
@@ -352,21 +369,27 @@ export async function nearestFacilities(
     .where('patient_id', '=', patient_id)
     .executeTakeFirstOrThrow()
 
+  assert(Array.isArray(patient.nearest_facilities))
   assert(patient.nearest_facilities.length > 0)
 
   return Promise.all(
-    patient.nearest_facilities.map(async (facility) => ({
-      ...facility,
-      walking_distance: await getWalkingDistance({
-        origin: {
-          longitude: currentLocation.longitude,
-          latitude: currentLocation.latitude,
-        },
-        destination: {
-          longitude: facility.longitude,
-          latitude: facility.latitude,
-        },
-      }),
-    })),
+    patient.nearest_facilities.map(async (facility) => (
+      assert(isObjectLike(facility)),
+        assert(isNumber(facility.longitude)),
+        assert(isNumber(facility.latitude)),
+        {
+          ...facility,
+          walking_distance: await getWalkingDistance({
+            origin: {
+              longitude: currentLocation.longitude,
+              latitude: currentLocation.latitude,
+            },
+            destination: {
+              longitude: facility.longitude,
+              latitude: facility.latitude,
+            },
+          }),
+        } as ReturnedSqlRow<PatientNearestFacility>
+    )),
   )
 }

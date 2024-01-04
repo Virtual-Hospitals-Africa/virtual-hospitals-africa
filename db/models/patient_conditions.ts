@@ -1,4 +1,4 @@
-import { RawBuilder, sql } from 'kysely'
+import { sql } from 'kysely'
 import {
   Maybe,
   MedicationSchedule,
@@ -283,11 +283,11 @@ async function upsertPreExistingCondition(
         null,
       strength: medication.strength,
       route: medication.route,
-      schedules: sql`
+      schedules: sql<string[]>`
         ARRAY[
           ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
         ]::medication_schedule[]
-      ` as RawBuilder<MedicationSchedule[]>,
+      `,
       start_date,
       special_instructions: medication.special_instructions || null,
     }
