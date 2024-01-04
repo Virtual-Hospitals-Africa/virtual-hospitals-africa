@@ -4,6 +4,7 @@ import { JSX } from 'preact/jsx-runtime'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
+import { DB } from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -40,18 +41,6 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'other'
 
-export type Ethnicity =
-  | 'african'
-  | 'african_american'
-  | 'asian'
-  | 'caribbean'
-  | 'caucasian'
-  | 'hispanic'
-  | 'middle_eastern'
-  | 'native_american'
-  | 'pacific_islander'
-  | 'other'
-
 export type UserState<CS> = {
   body?: string
   has_media: boolean
@@ -81,7 +70,7 @@ export type PatientConversationState =
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<number>
   nearest_facility_id: Maybe<number>
-  completed_onboarding: boolean
+  completed_intake: boolean
   address_id: Maybe<number>
   unregistered_primary_doctor_name: Maybe<string>
 }
@@ -90,7 +79,7 @@ export type PatientDemographicInfo = {
   phone_number: Maybe<string>
   name: Maybe<string>
   gender: Maybe<Gender>
-  ethnicity: Maybe<Ethnicity>
+  ethnicity: Maybe<string>
   date_of_birth: Maybe<string>
   national_id_number: Maybe<string>
 }
@@ -105,12 +94,11 @@ export type RenderedPatient = ReturnedSqlRow<
     Patient,
     | 'gender'
     | 'ethnicity'
-    | 'location'
     | 'national_id_number'
     | 'phone_number'
     | 'name'
     | 'conversation_state'
-    | 'completed_onboarding'
+    | 'completed_intake'
   > & {
     dob_formatted: string | null
     // age_formatted: Maybe<string> // TODO: implement
@@ -118,6 +106,10 @@ export type RenderedPatient = ReturnedSqlRow<
     avatar_url: string | null
     nearest_facility: string | null
     last_visited: null // TODO: implement
+    location: {
+      longitude: number | null
+      latitude: number | null
+    }
   }
 >
 export type Condition = {
@@ -225,7 +217,7 @@ export type OnboardingPatient =
     | 'date_of_birth'
     | 'national_id_number'
     | 'nearest_facility_id'
-    | 'completed_onboarding'
+    | 'completed_intake'
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
   >
@@ -310,7 +302,7 @@ export type PatientState = {
   }
   created_at: Date
   updated_at: Date
-  nearest_facilities?: ReturnedSqlRow<Facility>[]
+  nearest_facilities?: ReturnedSqlRow<PatientNearestFacility>[]
   nearest_facility_display_name?: string
   selectedFacility?: Facility
 }
@@ -468,7 +460,7 @@ export type AppointmentHealthWorkerAttendee = {
 
 export type PatientAppointmentRequest = {
   patient_id: number
-  reason?: string
+  reason: string | null
 }
 
 export type MatchingState<US extends UserState<any>> = {
@@ -1292,12 +1284,14 @@ export type Facility = Location & {
   name: string
   address: string
   category: string
-  distance: number
-  vha?: boolean
-  url?: string
-  phone?: string
-  walking_distance?: string | null
+  phone: string | null
   display_name: string
+}
+
+export type PatientNearestFacility = Facility & {
+  walking_distance: null | number
+  distance: number
+  vha: boolean
 }
 
 export type GoogleAddressComponent = {
@@ -1411,7 +1405,7 @@ export type Medication = {
   form_route: string
   strength_numerators: number[]
   strength_numerator_unit: string
-  strength_denominator: number
+  strength_denominator: string
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
 }
@@ -1634,53 +1628,4 @@ export type Age = {
   units: AgeUnit
 }
 
-export type DatabaseSchema = {
-  appointments: SqlRow<Appointment>
-  patient_appointment_offered_times: SqlRow<PatientAppointmentOfferedTime>
-  patient_appointment_requests: SqlRow<PatientAppointmentRequest>
-  appointment_health_worker_attendees: SqlRow<AppointmentHealthWorkerAttendee>
-  health_workers: SqlRow<HealthWorker>
-  health_worker_google_tokens: SqlRow<HealthWorkerGoogleToken>
-  patients: SqlRow<Omit<Patient, 'conversation'>>
-  employment: SqlRow<Employee>
-  whatsapp_messages_received: SqlRow<WhatsAppMessageReceived>
-  whatsapp_messages_sent: SqlRow<WhatsAppMessageSent>
-  facilities: SqlRow<Facility>
-  patient_nearest_facilities: {
-    patient_id: number
-    nearest_facilities: ReturnedSqlRow<Facility>[]
-  }
-  health_worker_invitees: SqlRow<HealthWorkerInvitee>
-  media: SqlRow<PatientMedia>
-  nurse_registration_details: SqlRow<NurseRegistrationDetails>
-  nurse_specialties: SqlRow<Specialties>
-  appointment_media: SqlRow<AppointmentMedia>
-  patient_appointment_request_media: SqlRow<PatientAppointmentRequestMedia>
-  countries: SqlRow<Country>
-  provinces: SqlRow<Province>
-  districts: SqlRow<District>
-  wards: SqlRow<Ward>
-  suburbs: SqlRow<Suburb>
-  mailing_list: SqlRow<MailingListRecipient>
-  address: SqlRow<Address>
-  conditions: Condition
-  patient_conditions: SqlRow<PatientCondition>
-  drugs: SqlRow<Drug>
-  medications: SqlRow<Medication>
-  manufactured_medications: SqlRow<ManufacturedMedication>
-  patient_condition_medications: SqlRow<PatientMedication>
-  guardian_relations: GuardianRelation
-  patient_guardians: SqlRow<PatientGuardian>
-  allergies: SqlRow<Allergy>
-  patient_allergies: SqlRow<PatientAllergies>
-  patient_occupations: SqlRow<PatientOccupation>
-  patient_encounters: SqlRow<PatientEncounter>
-  patient_encounter_providers: SqlRow<PatientEncounterProvider>
-  waiting_room: SqlRow<WaitingRoom>
-  measurements: Measurement<keyof Measurements>
-  patient_measurements: SqlRow<PatientMeasurement>
-  patient_age: {
-    patient_id: number
-    age: Age
-  }
-}
+export type DatabaseSchema = DB

@@ -93,7 +93,7 @@ type OccupationFormValues = {
   school?: Maybe<Record<string, unknown>>
 }
 type LifestyleFormValues = Record<string, unknown>
-type ReviewFormValues = { completed_onboarding: boolean }
+type ReviewFormValues = { completed_intake: boolean }
 
 function assertIsPersonal(
   patient: unknown,
@@ -161,8 +161,8 @@ function assertIsReview(
 ): asserts patient is ReviewFormValues {
   assertOr400(isObjectLike(patient))
   assertOr400(
-    typeof patient.completed_onboarding === 'boolean' &&
-      patient.completed_onboarding,
+    typeof patient.completed_intake === 'boolean' &&
+      patient.completed_intake,
   )
 }
 
@@ -266,7 +266,7 @@ export const handler: LoggedInHealthWorkerHandler<IntakePatientProps> = {
       id: patient_id,
     })
 
-    const redirect_to = transformedFormData.completed_onboarding
+    const redirect_to = transformedFormData.completed_intake
       ? `/app/patients/${patient_id}/encounters/open/vitals`
       : `/app/patients/${patient_id}/intake/${getNextStep(step)}`
 

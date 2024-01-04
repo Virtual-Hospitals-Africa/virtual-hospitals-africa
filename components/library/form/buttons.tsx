@@ -1,3 +1,4 @@
+import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 import cls from '../../../util/cls.ts'
 import { Button } from '../Button.tsx'
 
@@ -10,6 +11,16 @@ type FormButtonsProps = {
   }
 }
 
+export function ButtonsContainer(
+  { className, children }: { className?: string; children: ComponentChildren },
+) {
+  return (
+    <div className={cls('container grid gap-x-2 grid-cols-2', className)}>
+      {children}
+    </div>
+  )
+}
+
 export default function FormButtons(
   {
     className,
@@ -18,7 +29,7 @@ export default function FormButtons(
   }: FormButtonsProps = {},
 ) {
   return (
-    <div className={cls('container grid gap-x-2 grid-cols-2', className)}>
+    <ButtonsContainer className={className}>
       {cancel && (
         <Button
           type='button'
@@ -30,6 +41,6 @@ export default function FormButtons(
         </Button>
       )}
       <Button type='submit'>{submitText}</Button>
-    </div>
+    </ButtonsContainer>
   )
 }

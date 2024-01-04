@@ -40,7 +40,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           dob_formatted: null,
           gender: null,
           ethnicity: null,
-          location: null,
+          location: { longitude: null, latitude: null },
           national_id_number: null,
           nearest_facility: null,
           phone_number: null,
@@ -48,7 +48,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           updated_at: results[0].updated_at,
           last_visited: null,
           conversation_state: 'initial_message',
-          completed_onboarding: false,
+          completed_intake: false,
         },
         {
           id: testPatient2.id,
@@ -58,7 +58,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           dob_formatted: null,
           gender: null,
           ethnicity: null,
-          location: null,
+          location: { longitude: null, latitude: null },
           national_id_number: null,
           nearest_facility: null,
           phone_number: null,
@@ -66,7 +66,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           updated_at: results[1].updated_at,
           last_visited: null,
           conversation_state: 'initial_message',
-          completed_onboarding: false,
+          completed_intake: false,
         },
       ])
     })
@@ -90,7 +90,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           dob_formatted: null,
           gender: null,
           ethnicity: null,
-          location: null,
+          location: { longitude: null, latitude: null },
           national_id_number: null,
           nearest_facility: null,
           phone_number: null,
@@ -105,7 +105,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             history: {},
           },
           conversation_state: 'initial_message',
-          completed_onboarding: false,
+          completed_intake: false,
         },
       ])
     })

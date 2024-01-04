@@ -17,10 +17,10 @@ export async function up(db: Kysely<unknown>) {
       'timestamp',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('name', 'varchar(255)')
-    .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
-    .addColumn('address', 'text')
-    .addColumn('category', 'text')
+    .addColumn('name', 'varchar(255)', (col) => col.notNull())
+    .addColumn('location', sql`GEOGRAPHY(POINT,4326)`, (col) => col.notNull())
+    .addColumn('address', 'text', (col) => col.notNull())
+    .addColumn('category', 'varchar(255)', (col) => col.notNull())
     .addColumn('phone', 'varchar(255)')
     .execute()
 
@@ -54,14 +54,13 @@ async function importDataFromCSV(db: Kysely<unknown>) {
   for await (
     const row of parseCsv('./db/resources/zimbabwe-health-facilities.csv')
   ) {
-    const address = row.address === 'UNKNOWN'
-      ? Deno.env.get('SKIP_GOOGLE_MAPS')
-        ? null
-        : await google.getLocationAddress({
-          longitude: Number(row.longitude),
-          latitude: Number(row.latitude),
-        })
-      : row.address
+    let address = row.address
+    if (address === 'UNKNOWN' && !Deno.env.get('SKIP_GOOGLE_MAPS')) {
+      address = await google.getLocationAddress({
+        longitude: Number(row.longitude),
+        latitude: Number(row.latitude),
+      })
+    }
 
     await sql`
       INSERT INTO facilities (
@@ -73,7 +72,7 @@ async function importDataFromCSV(db: Kysely<unknown>) {
       ) VALUES (
         ${row.name},
         ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
-        ${address || 'UNKNOWN'},
+        ${address},
         ${row.category},
         ${row.phone}
       )

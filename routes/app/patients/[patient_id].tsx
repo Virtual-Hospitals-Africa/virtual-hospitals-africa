@@ -23,7 +23,7 @@ export default async function PatientPage(
 
   assertOr404(patient, 'Patient not found')
 
-  if (!patient.completed_onboarding) {
+  if (!patient.completed_intake) {
     return redirect(`${req.url}/intake`)
   }
 

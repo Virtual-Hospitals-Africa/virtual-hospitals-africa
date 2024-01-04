@@ -47,7 +47,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'conversation_state',
       sql`patient_conversation_state`,
-      (column) => column.defaultTo('initial_message'),
+      (column) => column.notNull().defaultTo('initial_message'),
     )
     .addUniqueConstraint('patient_national_id_number', ['national_id_number'])
     .addUniqueConstraint('patient_phone_number', ['phone_number'])

@@ -68,7 +68,7 @@ export async function up(db: Kysely<unknown>) {
 
   await sql`
     ALTER TABLE medications
-    ADD form_route TEXT
+    ADD form_route TEXT NOT NULL
     GENERATED ALWAYS AS (
       form || (
         CASE WHEN array_length(routes, 1) = 1 
@@ -81,7 +81,7 @@ export async function up(db: Kysely<unknown>) {
 
   await sql`
     ALTER TABLE medications
-    ADD strength_denominator_is_units BOOLEAN
+    ADD strength_denominator_is_units BOOLEAN NOT NULL
     GENERATED ALWAYS AS (
       strength_denominator_unit IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
     )

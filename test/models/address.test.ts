@@ -5,6 +5,7 @@ import { resetInTest } from '../../db/reset.ts'
 import * as address from '../../db/models/address.ts'
 import { assert } from 'std/assert/assert.ts'
 import { createTestAddress } from '../mocks.ts'
+import omit from '../../util/omit.ts'
 
 describe('db/models/address.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -16,7 +17,10 @@ describe('db/models/address.ts', { sanitizeResources: false }, () => {
       const address1 = await address.upsert(db, randomAddress)
       const address2 = await address.upsert(db, randomAddress)
 
-      assertEquals(address1, address2)
+      assertEquals(
+        omit(address1, ['updated_at']),
+        omit(address2, ['updated_at']),
+      )
       const { countAfterInitialInsert } = await db
         .selectFrom('address')
         .select(db.fn.countAll().as('countAfterInitialInsert'))

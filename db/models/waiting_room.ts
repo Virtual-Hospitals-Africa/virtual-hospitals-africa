@@ -57,12 +57,12 @@ export async function get(
       jsonBuildObject({
         view_href: eb.case()
           .when(
-            eb('patients.completed_onboarding', '=', true),
+            eb('patients.completed_intake', '=', true),
           ).then(sql<string>`concat('/app/patients/', patients.id::text)`)
           .else(null).end(),
         intake_href: eb.case()
           .when(
-            eb('patients.completed_onboarding', '=', false),
+            eb('patients.completed_intake', '=', false),
           ).then(
             sql<
               string

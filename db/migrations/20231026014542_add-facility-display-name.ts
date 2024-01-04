@@ -4,7 +4,7 @@ import * as patient_nearest_facilities_migration from './20230629185250_patient_
 
 export async function up(db: Kysely<any>) {
   await sql`
-    ALTER TABLE facilities ADD display_name TEXT GENERATED ALWAYS AS (name || ' ' || INITCAP(category)) STORED
+    ALTER TABLE facilities ADD display_name TEXT NOT NULL GENERATED ALWAYS AS (name || ' ' || INITCAP(category)) STORED
   `.execute(db)
 
   await db.updateTable('facilities')

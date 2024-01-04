@@ -19,12 +19,14 @@ export async function up(db: Kysely<unknown>) {
       'patient_appointment_request_id',
       'integer',
       (col) =>
-        col.references('patient_appointment_requests.id').onDelete('cascade'),
+        col.notNull().references('patient_appointment_requests.id').onDelete(
+          'cascade',
+        ),
     )
     .addColumn(
       'media_id',
       'integer',
-      (col) => col.references('media.id').onDelete('cascade'),
+      (col) => col.notNull().references('media.id').onDelete('cascade'),
     )
     .execute()
 
@@ -32,12 +34,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'appointment_id',
       'integer',
-      (col) => col.references('appointments.id').onDelete('cascade'),
+      (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
     .addColumn(
       'media_id',
       'integer',
-      (col) => col.references('media.id').onDelete('cascade'),
+      (col) => col.notNull().references('media.id').onDelete('cascade'),
     )
     .execute()
 }

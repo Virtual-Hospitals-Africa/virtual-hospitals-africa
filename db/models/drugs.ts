@@ -3,7 +3,7 @@ import { assert } from 'std/assert/assert.ts'
 import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 
-export function search(
+export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
@@ -88,7 +88,6 @@ export function search(
           ),
       ).as('medications'),
     ])
-    .limit(20)
 
   if (opts?.ids) drugsQuery = drugsQuery.where('drugs.id', 'in', opts.ids)
 
@@ -105,5 +104,14 @@ export function search(
   )
 
   const query = (opts?.search ? searchQuery : drugsQuery).limit(20)
-  return query.execute()
+  const results = await query.execute()
+
+  // TODO: do the float parsing in SQL?
+  return results.map((r) => ({
+    ...r,
+    medications: r.medications.map((m) => ({
+      ...m,
+      strength_denominator: parseFloat(m.strength_denominator),
+    })),
+  }))
 }
