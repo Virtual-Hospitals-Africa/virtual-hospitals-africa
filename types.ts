@@ -1220,6 +1220,9 @@ export type ParsedDate = {
   format: 'numeric' | 'twoDigit'
 }
 
+export type ISODateString = string & {
+  __ISODateString__: true
+}
 export type WhatsAppSendableString = {
   type: 'string'
   messageBody: string
