@@ -337,7 +337,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       await nurse_specialties.add(db, {
         employee_id: secondEmployment.id,
-        specialty: 'clinical_care_nurse',
+        specialty: 'clinical care',
       })
 
       const nurse_address = await insertTestAddress()

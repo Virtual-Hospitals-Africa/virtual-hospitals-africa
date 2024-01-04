@@ -973,7 +973,7 @@ export type NurseSpecialty =
   | 'oncology and palliative care'
   | 'dental'
 
-export const NurseSpecialties: NurseSpecialty[] = [
+export const NURSE_SPECIALTIES: NurseSpecialty[] = [
   'primary care',
   'registered general',
   'midwife',
