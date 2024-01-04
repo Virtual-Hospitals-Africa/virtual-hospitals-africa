@@ -51,6 +51,10 @@ export async function up(db: Kysely<unknown>) {
     )
     .addUniqueConstraint('patient_national_id_number', ['national_id_number'])
     .addUniqueConstraint('patient_phone_number', ['phone_number'])
+    .addCheckConstraint(
+      'patient_national_id_number_format',
+      sql`national_id_number IS NULL OR national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
+    )
     .execute()
 
   await addUpdatedAtTrigger(db, 'patients')
