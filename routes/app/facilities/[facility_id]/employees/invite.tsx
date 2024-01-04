@@ -7,16 +7,12 @@ import {
   Profession,
   ReturnedSqlRow,
 } from '../../../../../types.ts'
-import { parseRequest } from '../../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
-// import {
-//   ConnectConfigWithAuthentication,
-//   SmtpClient,
-// } from 'https://deno.land/x/smtp@v0.7.0/mod.ts'
 import * as facilities from '../../../../../db/models/facilities.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
-import { assertOr403 } from '../../../../../util/assertOr.ts'
+import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 
 type InvitePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -35,39 +31,14 @@ function isInvite(
   )
 }
 
-function isInvites(
+function assertIsInvites(
   values: unknown,
-): values is { invites: Invite[] } {
-  return isObjectLike(values) &&
-    Array.isArray(values.invites) &&
-    isInvite(values.invites[0]) &&
-    // The last may be incomplete
-    values.invites.slice(0, -1).every(isInvite)
+): asserts values is { invites: Invite[] } {
+  assertOr400(isObjectLike(values))
+  assertOr400(Array.isArray(values.invites))
+  assertOr400(isInvite(values.invites[0]))
+  assertOr400(values.invites.slice(0, -1).every(isInvite))
 }
-
-// async function sendInviteMail(
-//   email: string,
-//   facility_id: number,
-// ) {
-//   const client = new SmtpClient()
-//   const { SEND_EMAIL, PWD } = Deno.env.toObject()
-//   const connectConfig: ConnectConfigWithAuthentication = {
-//     hostname: 'smtp.gmail.com',
-//     port: 465,
-//     username: SEND_EMAIL,
-//     password: PWD,
-//   }
-//   await client.connect(connectConfig)
-
-//   await client.send({
-//     from: SEND_EMAIL,
-//     to: email,
-//     subject: 'Welcome to VHA',
-//     content: `Please visit ${origin}/login?invited=true`,
-//   })
-
-//   await client.close()
-// }
 
 export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
   facility: ReturnedSqlRow<Facility>
@@ -80,7 +51,11 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
   async POST(req, ctx) {
     assertOr403(ctx.state.isAdminAtFacility)
 
-    const { invites } = await parseRequest(ctx.state.trx, req, isInvites)
+    const { invites } = await parseRequestAsserts(
+      ctx.state.trx,
+      req,
+      assertIsInvites,
+    )
 
     const invitesWithEmails = invites.filter((invite) => invite.email)
 
@@ -93,10 +68,6 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
     const invited = invitesWithEmails.map((invite) => invite.email).join(', ')
     const successMessage = encodeURIComponent(`Successfully invited ${invited}`)
 
-    console.log(
-      'redirecting',
-      `/app/facilities/${ctx.state.facility.id}/employees?success=${successMessage}`,
-    )
     return redirect(
       `/app/facilities/${ctx.state.facility.id}/employees?success=${successMessage}`,
     )
@@ -104,8 +75,6 @@ export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
 }
 
 export default function InviteEmployees(props: PageProps) {
-  const alreadyEmployees = props.url.searchParams.get('alreadyEmployees')
-
   return (
     <Layout
       title='Invite Employees'
@@ -114,9 +83,7 @@ export default function InviteEmployees(props: PageProps) {
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='standard'
     >
-      <InviteEmployeesForm
-        alreadyEmployees={alreadyEmployees ? alreadyEmployees.split(',') : null}
-      />
+      <InviteEmployeesForm />
     </Layout>
   )
 }

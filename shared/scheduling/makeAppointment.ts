@@ -16,6 +16,8 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
+import { assertOr400 } from '../../util/assertOr.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
 
 function gcal({ start, end }: {
   start: string
@@ -132,21 +134,19 @@ export type ScheduleFormValues = {
   health_worker_ids: number[]
 }
 
-export function isScheduleFormValues(
+export function assertIsScheduleFormValues(
   values: unknown,
-): values is ScheduleFormValues {
-  return (
-    !!values && typeof values === 'object' &&
-    'start' in values && typeof values.start === 'string' &&
-    isIsoHarare(values.start) &&
-    'end' in values && typeof values.end === 'string' &&
-    isIsoHarare(values.end) &&
-    'durationMinutes' in values && typeof values.durationMinutes === 'number' &&
-    'reason' in values && typeof values.reason === 'string' &&
-    'patient_id' in values && typeof values.patient_id === 'number' &&
-    'health_worker_ids' in values && Array.isArray(values.health_worker_ids) &&
-    values.health_worker_ids.every((id) => typeof id === 'number')
-  )
+): asserts values is ScheduleFormValues {
+  assertOr400(isObjectLike(values))
+  assertOr400(typeof values.start === 'string')
+  assertOr400(isIsoHarare(values.start))
+  assertOr400(typeof values.end === 'string')
+  assertOr400(isIsoHarare(values.end))
+  assertOr400(typeof values.durationMinutes === 'number')
+  assertOr400(typeof values.reason === 'string')
+  assertOr400(typeof values.patient_id === 'number')
+  assertOr400(Array.isArray(values.health_worker_ids))
+  assertOr400(values.health_worker_ids.every((id) => typeof id === 'number'))
 }
 
 export async function makeAppointmentWeb(

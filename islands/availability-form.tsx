@@ -12,6 +12,7 @@ import {
   hours,
   minutes,
 } from '../shared/scheduling/availability.tsx'
+import Form from '../components/library/form/Form.tsx'
 
 function HourInput({ name, current }: { name: string; current: number }) {
   return (
@@ -192,7 +193,7 @@ export default function AvailabilityForm(
   const [overlappingDays, setOverlappingDays] = useState<string[]>([])
 
   return (
-    <form
+    <Form
       method='POST'
       className='container p-1'
       onSubmit={(event) => {
@@ -226,6 +227,6 @@ export default function AvailabilityForm(
         )
         : null}
       <FormButtons />
-    </form>
+    </Form>
   )
 }

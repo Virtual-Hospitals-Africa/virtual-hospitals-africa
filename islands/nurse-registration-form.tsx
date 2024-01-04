@@ -4,6 +4,7 @@ import NurseProfessionalForm from '../components/health_worker/nurse/invite/Nurs
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
 import unsavedChangesWarning from '../components/library/form/unsaved_changes_warning.tsx'
 import { FullCountryInfo } from '../types.ts'
+import Form from '../components/library/form/Form.tsx'
 
 export default function NurseRegistrationForm(
   { currentStep, formData, adminDistricts }: {
@@ -15,9 +16,9 @@ export default function NurseRegistrationForm(
   unsavedChangesWarning()
 
   return (
-    <form
+    <Form
       method='POST'
-      className='w-full mt-4'
+      className='w-full'
       encType='multipart/form-data'
     >
       {currentStep === 'personal' && (
@@ -34,6 +35,6 @@ export default function NurseRegistrationForm(
           formData={formData}
         />
       )}
-    </form>
+    </Form>
   )
 }

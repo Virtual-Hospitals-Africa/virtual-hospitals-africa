@@ -21,8 +21,9 @@ import {
   TextArea,
 } from '../../../../../components/library/form/Inputs.tsx'
 import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
-import { assertOr400, assertOr404 } from '../../../../../util/assertOr.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
+import Form from '../../../../../components/library/form/Form.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -92,7 +93,7 @@ export default async function WaitingRoomAdd(
       variant='standard'
     >
       <Container size='lg'>
-        <form method='POST'>
+        <Form method='POST'>
           <FormRow>
             <PersonSearch
               name='patient'
@@ -121,7 +122,7 @@ export default async function WaitingRoomAdd(
             <TextArea name='notes' />
           </FormRow>
           <FormButtons />
-        </form>
+        </Form>
       </Container>
     </Layout>
   )

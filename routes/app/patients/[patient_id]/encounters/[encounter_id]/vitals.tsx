@@ -15,6 +15,7 @@ import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import capitalize from '../../../../../../util/capitalize.ts'
 import getNumericParam from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
+import Form from '../../../../../../components/library/form/Form.tsx'
 
 function assertIsVitals(
   values: unknown,
@@ -78,7 +79,7 @@ export default function VitalsPage(ctx: EncounterContext) {
       variant='standard'
     >
       <Container size='lg'>
-        <form method='POST'>
+        <Form method='POST'>
           {Object.entries(patient_measurements.MEASUREMENTS).map(
             ([measurement_name, units]) => (
               <>
@@ -95,7 +96,7 @@ export default function VitalsPage(ctx: EncounterContext) {
             ),
           )}
           <FormButtons />
-        </form>
+        </Form>
       </Container>
     </Layout>
   )

@@ -12,7 +12,7 @@ import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
 import * as health_workers from '../../../../db/models/health_workers.ts'
 import * as patients from '../../../../db/models/patients.ts'
-import { parseRequest } from '../../../../util/parseForm.ts'
+import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import {
   availableSlots,
 } from '../../../../shared/scheduling/getHealthWorkerAvailability.ts'
@@ -21,10 +21,12 @@ import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
 import { parseDate } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
 import {
-  isScheduleFormValues,
+  assertIsScheduleFormValues,
   makeAppointmentWeb,
 } from '../../../../shared/scheduling/makeAppointment.ts'
 import redirect from '../../../../util/redirect.ts'
+import { assertOr400 } from '../../../../util/assertOr.ts'
+import isObjectLike from '../../../../util/isObjectLike.ts'
 
 type SearchFormValues = {
   health_worker_id?: number
@@ -46,21 +48,26 @@ type SchedulePageProps = {
   slots?: HealthWorkerAppointmentSlot[]
 }
 
-// TODO implement
-function isSearchFormValues(
-  _values: unknown,
-): _values is SearchFormValues {
-  return true
+function assertIsSearchFormValues(
+  values: unknown,
+): asserts values is SearchFormValues {
+  assertOr400(isObjectLike(values))
+  for (const key in values) {
+    assertOr400(
+      ['health_worker_id', 'patient_id', 'date'].includes(key),
+      `Invalid key ${key}`,
+    )
+  }
 }
 
 export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
   async GET(req, ctx) {
     const { healthWorker } = ctx.state
 
-    const search = await parseRequest<SearchFormValues>(
+    const search = await parseRequestAsserts<SearchFormValues>(
       ctx.state.trx,
       req,
-      isSearchFormValues,
+      assertIsSearchFormValues,
     )
 
     if (!search.patient_id) {
@@ -110,10 +117,10 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     })
   },
   async POST(req, ctx) {
-    const schedule = await parseRequest<ScheduleFormValues>(
+    const schedule = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      isScheduleFormValues,
+      assertIsScheduleFormValues,
     )
 
     await makeAppointmentWeb(ctx.state.trx, schedule)

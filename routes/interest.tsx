@@ -1,31 +1,26 @@
 import { MailingListRecipient } from '../types.ts'
-import { Handlers, PageProps } from '$fresh/server.ts'
-import Layout from '../components/library/Layout.tsx'
-import { Button } from '../components/library/Button.tsx'
-import PageHeader from '../components/library/typography/PageHeader.tsx'
-import { TextInput } from '../components/library/form/Inputs.tsx'
-import FormRow from '../components/library/form/Row.tsx'
-import Form from '../components/library/form/Form.tsx'
-import { parseRequest } from '../util/parseForm.ts'
+import { Handlers } from '$fresh/server.ts'
+import { parseRequestAsserts } from '../util/parseForm.ts'
 import * as slack from '../external-clients/slack.ts'
 import * as mailing_list from '../db/models/mailing_list.ts'
 import db from '../db/db.ts'
 import redirect from '../util/redirect.ts'
+import { assertOr400 } from '../util/assertOr.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 
-function isMailingListRecipient(
+function assertIsMailingListRecipient(
   formValues: unknown,
-): formValues is {
+): asserts formValues is {
   name: string
   email: string
   interest?: string
   message?: string
   support?: string
 } {
-  return typeof formValues == 'object' &&
-    formValues != null &&
-    'name' in formValues && typeof formValues['name'] == 'string' &&
-    'email' in formValues && typeof formValues['email'] == 'string' &&
-    formValues['email'].includes('@')
+  assertOr400(isObjectLike(formValues))
+  assertOr400('name' in formValues && typeof formValues['name'] == 'string')
+  assertOr400('email' in formValues && typeof formValues['email'] == 'string')
+  assertOr400(formValues['email'].includes('@'))
 }
 
 const successMessages = {
@@ -41,10 +36,10 @@ export const handler: Handlers = {
   async POST(req, ctx) {
     const referer = req.headers.get('referer')
 
-    const formValues = await parseRequest(
+    const formValues = await parseRequestAsserts(
       db,
       req,
-      isMailingListRecipient,
+      assertIsMailingListRecipient,
     )
 
     const recipient: MailingListRecipient = {

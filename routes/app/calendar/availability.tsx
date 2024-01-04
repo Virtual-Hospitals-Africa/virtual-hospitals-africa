@@ -22,8 +22,8 @@ import { padTime } from '../../../util/pad.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseDate } from '../../../util/date.ts'
 import { Container } from '../../../components/library/Container.tsx'
-import { parseRequest } from '../../../util/parseForm.ts'
-import { isPartialAvailability } from '../../../shared/scheduling/availability.tsx'
+import { parseRequestAsserts } from '../../../util/parseForm.ts'
+import { assertIsPartialAvailability } from '../../../shared/scheduling/availability.tsx'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -132,10 +132,10 @@ export const handler: LoggedInHealthWorkerHandler<
     return ctx.render({ availability, healthWorker })
   },
   async POST(req, ctx) {
-    const availability = await parseRequest(
+    const availability = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      isPartialAvailability,
+      assertIsPartialAvailability,
     )
 
     const gcal_availability_calendar_id = ctx.state.session.get(
