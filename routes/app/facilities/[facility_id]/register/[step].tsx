@@ -124,6 +124,7 @@ function getRegistrationDetails(
     ncz_registration_card,
     national_id_picture,
     nurse_practicing_cert,
+    mobile_number,
     ...rest
   }: FormState,
 ): nurse_registration_details.UpsertableNurseRegistrationDetails {
@@ -133,6 +134,9 @@ function getRegistrationDetails(
     ncz_registration_card_media_id: ncz_registration_card?.id,
     national_id_media_id: national_id_picture?.id,
     nurse_practicing_cert_media_id: nurse_practicing_cert?.id,
+    mobile_number: typeof mobile_number === 'number'
+      ? String(mobile_number)
+      : mobile_number?.replace(/[^0-9]/g, ''),
     approved_by: null,
     ...rest,
   }
