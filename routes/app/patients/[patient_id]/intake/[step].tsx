@@ -34,6 +34,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400, assertOr404 } from '../../../../../util/assertOr.ts'
 import omit from '../../../../../util/omit.ts'
 import getNumericParam from '../../../../../util/getNumericParam.ts'
+import Form from '../../../../../components/library/form/Form.tsx'
 
 type IntakePatientProps = {
   step:
@@ -337,9 +338,9 @@ export default async function IntakePatientPage(
     >
       <Container size='lg'>
         {stepsTopBar}
-        <form
+        <Form
           method='POST'
-          className='w-full mt-4'
+          className='w-full'
           encType='multipart/form-data'
         >
           {props.step === 'personal' && (
@@ -384,7 +385,7 @@ export default async function IntakePatientPage(
               }
               : undefined}
           />
-        </form>
+        </Form>
       </Container>
     </Layout>
   )

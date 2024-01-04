@@ -3,18 +3,19 @@ import { AvailabilityJSON, DayOfWeek, TimeWindow } from '../../types.ts'
 import timeToMin from '../../util/timeToMin.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { parseFormWithoutFiles } from '../../util/parseForm.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const hours = [12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 export const minutes = range(0, 60, 5)
 
-export function isPartialAvailability(
+export function assertIsPartialAvailability(
   values: unknown,
-): values is Partial<AvailabilityJSON> {
-  return isObjectLike(values) &&
-    Object.keys(values).every((day) =>
-      // deno-lint-ignore no-explicit-any
-      days.includes(day as any) && Array.isArray(values[day])
-    )
+): asserts values is Partial<AvailabilityJSON> {
+  assert(isObjectLike(values))
+  for (const day of Object.keys(values)) {
+    assert(days.includes(day as DayOfWeek))
+    assert(Array.isArray(values[day as DayOfWeek]))
+  }
 }
 
 export const defaultTimeWindow: TimeWindow = {
@@ -58,7 +59,7 @@ export function windowsOverlap(timeWindows: TimeWindow[]): boolean {
 export function findDaysWithOverlap(event: HTMLFormElement) {
   const availability = parseFormWithoutFiles(
     new FormData(event),
-    isPartialAvailability,
+    assertIsPartialAvailability,
   )
   return Object.keys(availability).filter((day) => {
     const timeWindows = availability[day as DayOfWeek]
