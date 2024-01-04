@@ -128,11 +128,55 @@ export async function get(
     ])
     .execute()
 
+  const gettingNextOfKin = trx
+    .selectFrom('patient_kin')
+    .innerJoin(
+      'guardian_relations',
+      'patient_kin.relationship',
+      'guardian_relations.guardian',
+    )
+    .innerJoin(
+      'patients as kin',
+      'patient_kin.next_of_kin_patient_id',
+      'kin.id',
+    )
+    .where('patient_kin.patient_id', '=', patient_id)
+    .select(({ eb, and }) => [
+      'patient_kin.id as relation_id',
+      'patient_kin.relationship as guardian_relation',
+      'kin.id as patient_id',
+      'kin.name as patient_name',
+      'kin.phone_number as patient_phone_number',
+      'guardian_relations.dependent as family_relation',
+      'kin.gender as patient_gender',
+      eb
+        .case()
+        .when(
+          and([
+            eb('kin.gender', '=', 'female'),
+            eb('guardian_relations.female_dependent', 'is not', null),
+          ]),
+        )
+        .then(eb.ref('guardian_relations.female_dependent'))
+        .when(
+          and([
+            eb('kin.gender', '=', 'male'),
+            eb('guardian_relations.male_dependent', 'is not', null),
+          ]),
+        )
+        .then(eb.ref('guardian_relations.male_dependent'))
+        .else(eb.ref('guardian_relations.dependent'))
+        .end()
+        .as('family_relation_gendered'),
+    ])
+    .execute()
+
   return {
     marital_status: 'TODO',
     religion: 'TODO',
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
+    next_of_kin: await gettingNextOfKin
   }
 }
 

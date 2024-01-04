@@ -10,7 +10,9 @@ export default function FamilyForm(
     patient?: Partial<OnboardingPatient>
     family: PatientFamily
   },
-) {
+) 
+{
+  const age = new Date(patient.date_of_birth!)
   return (
     <>
       {
@@ -32,7 +34,7 @@ export default function FamilyForm(
       </FormRow> */
       }
       <section>
-        <PatientFamilyForm family={family} />
+        <PatientFamilyForm family={family} age={20} />
       </section>
     </>
   )

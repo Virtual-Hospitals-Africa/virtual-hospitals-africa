@@ -207,6 +207,7 @@ export type OnboardingPatient =
     avatar_url: Maybe<string>
     nearest_facility_display_name: Maybe<string>
     primary_doctor_name: Maybe<string>
+    date_of_birth: Maybe<string>
     address: {
       street: Maybe<string>
       suburb_id: Maybe<number>
@@ -235,6 +236,7 @@ export type PatientFamily = {
   religion?: Maybe<string>
   guardians: FamilyRelation[]
   dependents: FamilyRelation[]
+  next_of_kin: FamilyRelation[]
 }
 
 export type FamilyRelation = {
@@ -1622,6 +1624,13 @@ export type PatientMeasurement = {
   value: number
 }
 
+export type PatientKin = {
+  id: number
+  patient_id: number
+  next_of_kin_patient_id: number
+  relationship: string
+}
+
 export type AgeUnit =
   | 'days'
   | 'weeks'
@@ -1682,4 +1691,5 @@ export type DatabaseSchema = {
     patient_id: number
     age: Age
   }
+  patient_kin: SqlRow<PatientKin>
 }
