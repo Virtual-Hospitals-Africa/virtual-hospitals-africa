@@ -11,12 +11,14 @@ import {
   PatientFamily,
   PreExistingAllergy,
   PreExistingConditionWithDrugs,
+  PatientOccupation
 } from '../../../types.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as address from '../../../db/models/address.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import * as patient_family from '../../../db/models/family.ts'
+import * as patient_occupation from '../../../db/models/patient_occupations.ts'
 import redirect from '../../../util/redirect.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import {
@@ -54,6 +56,7 @@ type AddPatientProps =
     initialDrugs?: undefined
     allergies?: undefined
     family?: undefined
+    occupation?: undefined
   } | {
     step: 'address'
     adminDistricts: FullCountryInfo
@@ -61,11 +64,20 @@ type AddPatientProps =
     initialDrugs?: undefined
     allergies?: undefined
     family?: undefined
+    occupation?: undefined
   } | {
     step: 'pre-existing_conditions'
     adminDistricts?: undefined
     preExistingConditions: PreExistingConditionWithDrugs[]
     allergies?: PreExistingAllergy[]
+    family?: undefined
+    occupation?: undefined
+  } | {
+    step: 'occupation'
+    adminDistricts?: undefined
+    preExistingConditions?: undefined
+    allergies?: undefined
+    occupation: PatientOccupation
     family?: undefined
   } | {
     step: 'family'
@@ -74,6 +86,7 @@ type AddPatientProps =
     initialDrugs?: undefined
     allergies?: undefined
     family: PatientFamily
+    occupation?: undefined
   })
 
 type PersonalFormValues = {
@@ -320,6 +333,20 @@ export const handler: LoggedInHealthWorkerHandler<AddPatientProps> = {
       })
     }
 
+    if (step === 'occupation'){
+      const gettingOccupation = patient_occupation
+        .get(
+          ctx.state.trx,
+          { patient_id: patient_id! },
+        )
+      return ctx.render({
+        healthWorker,
+        patient,
+        step,
+        occupation: await gettingOccupation,
+      })
+    }
+
     if (step === 'family') {
       const gettingFamily = patient_family
         .get(
@@ -383,6 +410,7 @@ export default function AddPatient(
     preExistingConditions,
     allergies,
     family,
+    occupation
   } = props.data
 
   return (

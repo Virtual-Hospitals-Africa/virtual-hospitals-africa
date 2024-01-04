@@ -4,7 +4,12 @@ import { Select } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { CheckboxInput } from '../components/library/form/Inputs.tsx'
+import { PatientOccupation } from '../types.ts'
 
+type Occupation = {
+  school?: School;
+  stopSchool?: stopSchool;
+};
 type School = {
   grade: string
   grades_dropping_reason: string | null
@@ -15,7 +20,11 @@ type School = {
 type stopSchool = {
   stopped_education_reason: string | null
 }
-export default function Occupation0_18() {
+export default function Occupation0_18({
+  occupation,
+}: {
+  occupation: PatientOccupation
+}) {
   const [school, setSchool] = useState<null | School>(null)
 
   const class_inappropriate_reason = [
