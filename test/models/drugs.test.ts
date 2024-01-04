@@ -1,7 +1,7 @@
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import * as drugs from '../../db/models/drugs.ts'
 import deepOmit from '../../util/deepOmit.ts'
 
