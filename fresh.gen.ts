@@ -162,7 +162,7 @@ const manifest = {
     './islands/JobPost.tsx': $JobPost,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
-    './islands/NearestHealthcare.tsx': $NearestHealthCare,
+    './islands/NearestHealthCare.tsx': $NearestHealthCare,
     './islands/Occupation0-18.tsx': $Occupation0_18,
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
