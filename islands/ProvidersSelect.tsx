@@ -37,22 +37,22 @@ function ProviderSelectOption(
         aria-describedby={`provider-${provider.employee_id}-description-0 ${provider.employee_id}-description-1`}
         onInput={toggleSelection}
       />
-      <span className='flex items-center gap-2'>
+      <span className='flex items-center gap-3'>
         <Avatar
           src={provider.avatar_url}
           className='h-14 w-14'
         />
-        <span className='flex flex-col text-sm'>
+        <span className='flex flex-col'>
           <span
             id={`provider-${provider.employee_id}-label`}
-            className='font-medium text-gray-900'
+            className='font-medium text-gray-900 text-md'
           >
             {provider.name}
           </span>
           {provider.profession && (
             <span
               id={`provider-${provider.employee_id}-description-0`}
-              className='text-gray-500'
+              className='text-gray-500 text-sm'
             >
               <span className='block sm:inline capitalize'>
                 {provider.profession}
@@ -89,29 +89,27 @@ export default function ProvidersSelect(
   const selected = useSignal<Set<FacilityDoctorOrNurse>>(new Set())
 
   return (
-    <fieldset>
-      <div className='space-y-4'>
+    <fieldset className='grid grid-cols-2 gap-2 w-full'>
+      <ProviderSelectOption
+        key='next_available'
+        provider={{ employee_id: 'next_available', name: 'Next Available' }}
+        selected={selected.value.size === 0}
+        toggleSelection={() => selected.value = new Set()}
+      />
+      {providers.map((provider) => (
         <ProviderSelectOption
-          key='next_available'
-          provider={{ employee_id: 'next_available', name: 'Next Available' }}
-          selected={selected.value.size === 0}
-          toggleSelection={() => selected.value = new Set()}
+          key={provider.employee_id}
+          provider={provider}
+          selected={selected.value.has(provider)}
+          toggleSelection={() => {
+            const newSelected = new Set(selected.value)
+            selected.value.has(provider)
+              ? newSelected.delete(provider)
+              : newSelected.add(provider)
+            selected.value = newSelected
+          }}
         />
-        {providers.map((provider) => (
-          <ProviderSelectOption
-            key={provider.employee_id}
-            provider={provider}
-            selected={selected.value.has(provider)}
-            toggleSelection={() => {
-              const newSelected = new Set(selected.value)
-              selected.value.has(provider)
-                ? newSelected.delete(provider)
-                : newSelected.add(provider)
-              selected.value = newSelected
-            }}
-          />
-        ))}
-      </div>
+      ))}
       {selected.value.size > 0 && (
         <input
           type='hidden'
