@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import patientConversationStates from '../../chatbot/patient/conversationStates.ts'
-import selectEnumValues from '../selectEnumValues.ts'
+import { selectEnumValues } from '../meta.ts'
 import db from '../db.ts'
 
 const conversationStates = Object.keys(patientConversationStates)

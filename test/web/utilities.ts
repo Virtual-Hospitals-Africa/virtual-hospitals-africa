@@ -5,7 +5,7 @@ import generateUUID from '../../util/uuid.ts'
 import { afterAll, beforeAll, beforeEach, describe } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 
 import * as employee from '../../db/models/employment.ts'

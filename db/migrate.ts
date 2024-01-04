@@ -1,13 +1,6 @@
 import { Migration, MigrationResult, Migrator, sql } from 'kysely'
 import db from './db.ts'
 
-if (!Deno.args.length) {
-  console.error(
-    'Please provide a migration name as in\ndeno task migrate:create name',
-  )
-  Deno.exit(1)
-}
-
 const migrations: Record<string, Migration> = {}
 for (const migrationFile of Deno.readDirSync('./db/migrations')) {
   const migrationName = migrationFile.name
@@ -33,18 +26,17 @@ async function wipe() {
   return { error: null, results }
 }
 
-async function startMigrating() {
-  switch (Deno.args[0]) {
-    case '--latest':
+async function startMigrating(cmd: string, target?: string) {
+  switch (cmd) {
+    case 'latest':
       return migrator.migrateToLatest()
-    case '--up':
+    case 'up':
       return migrator.migrateUp()
-    case '--down':
+    case 'down':
       return migrator.migrateDown()
-    case '--wipe':
+    case 'wipe':
       return wipe()
-    case '--to': {
-      const target = Deno.args[1]
+    case 'to': {
       if (!target) {
         const migrations = await sql<
           { name: string }
@@ -65,8 +57,8 @@ async function startMigrating() {
   }
 }
 
-async function migrate() {
-  const { error, results } = await startMigrating()
+export async function migrate(cmd: string, target?: string) {
+  const { error, results } = await startMigrating(cmd, target)
 
   results?.forEach((it) => {
     if (it.status === 'Success') {
@@ -84,4 +76,13 @@ async function migrate() {
   }
 }
 
-migrate()
+if (import.meta.main) {
+  if (!Deno.args.length) {
+    console.error(
+      'Please provide a migration name as in\ndeno task migrate:create name',
+    )
+    Deno.exit(1)
+  }
+
+  migrate(Deno.args[0], Deno.args[1])
+}
