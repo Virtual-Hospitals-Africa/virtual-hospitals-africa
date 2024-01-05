@@ -89,7 +89,7 @@ export default async function WaitingRoomAdd(
   return (
     <Layout
       title={'Add patient to waiting room'}
-      sidebar={<HomePageSidebar route={route} />}
+      route={route}
       url={url}
       avatarUrl={state.healthWorker.avatar_url}
       variant='home page'

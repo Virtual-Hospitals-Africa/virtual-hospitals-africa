@@ -13,7 +13,6 @@ import * as facilities from '../../../../../db/models/facilities.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
-import { HomePageSidebar } from '../../../../../components/library/Sidebar.tsx'
 
 type InvitePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
@@ -79,7 +78,7 @@ export default function InviteEmployees(props: PageProps) {
   return (
     <Layout
       title='Invite Employees'
-      sidebar={<HomePageSidebar route={props.route} />}
+      route={props.route}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
       variant='home page'

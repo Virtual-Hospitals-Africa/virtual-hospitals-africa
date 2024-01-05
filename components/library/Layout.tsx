@@ -5,6 +5,7 @@ import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
+import { HomePageSidebar } from './Sidebar.tsx'
 
 export type LayoutProps =
   & {
@@ -15,7 +16,7 @@ export type LayoutProps =
   & ({
     variant: 'home page'
     avatarUrl?: string
-    sidebar: ComponentChild
+    route: string
   } | {
     variant: 'form'
     sidebar?: ComponentChild
@@ -84,7 +85,12 @@ export default function Layout(props: LayoutProps) {
         initialError={error}
       />
       {props.variant === 'landing page' && props.children}
-      {props.variant === 'home page' && <AppLayoutContents {...props} />}
+      {props.variant === 'home page' && (
+        <AppLayoutContents
+          {...props}
+          sidebar={<HomePageSidebar route={props.route} />}
+        />
+      )}
       {props.variant === 'form' && <AppLayoutContents {...props} />}
       {props.variant === 'just logo' && <JustLogoLayoutContents {...props} />}
     </>

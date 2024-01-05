@@ -111,12 +111,11 @@ export function addInvitees(
 
 export function approveInvitee(
   trx: TrxOrDb,
-  admin_id: number,
-  invitee_id: number,
+  { admin_id, approving_id }: { admin_id: number; approving_id: number },
 ) {
   return trx.updateTable('nurse_registration_details')
     .set({ approved_by: admin_id })
-    .where('health_worker_id', '=', invitee_id)
+    .where('health_worker_id', '=', approving_id)
     .execute()
 }
 

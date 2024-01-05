@@ -74,7 +74,6 @@ export const handler: LoggedInHealthWorkerHandler<unknown, {
 }
 
 export default function VitalsPage(ctx: EncounterContext) {
-  console.log('ctx.params', ctx.params)
   return (
     <Layout
       title='Patient Vitals'
