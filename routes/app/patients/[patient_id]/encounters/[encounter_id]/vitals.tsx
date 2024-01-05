@@ -16,6 +16,10 @@ import capitalize from '../../../../../../util/capitalize.ts'
 import getNumericParam from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 import Form from '../../../../../../components/library/form/Form.tsx'
+import {
+  HomePageSidebar,
+  SeekingTreatmentSidebar,
+} from '../../../../../../components/library/Sidebar.tsx'
 
 function assertIsVitals(
   values: unknown,
@@ -73,10 +77,11 @@ export default function VitalsPage(ctx: EncounterContext) {
   return (
     <Layout
       title='Patient Vitals'
-      route={ctx.route}
+      sidebar={
+        <SeekingTreatmentSidebar route={ctx.route} params={ctx.params} />
+      }
       url={ctx.url}
-      avatarUrl={ctx.state.healthWorker.avatar_url}
-      variant='standard'
+      variant='form'
     >
       <Container size='lg'>
         <Form method='POST'>

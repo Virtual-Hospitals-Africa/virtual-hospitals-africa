@@ -18,7 +18,7 @@ export default async function WaitingRoomPage(
       route={ctx.route}
       url={ctx.url}
       avatarUrl={ctx.state.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <WaitingRoomView
         facility_id={facility_id}

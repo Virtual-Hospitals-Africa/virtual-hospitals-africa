@@ -24,6 +24,7 @@ import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
+import { HomePageSidebar } from '../../../../../components/library/Sidebar.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -91,7 +92,7 @@ export default async function WaitingRoomAdd(
       route={route}
       url={url}
       avatarUrl={state.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Container size='md'>
         <Form method='POST'>

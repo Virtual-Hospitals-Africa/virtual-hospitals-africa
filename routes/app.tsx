@@ -146,7 +146,7 @@ export default function AppPage(
       route={props.route}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Tabs
         route={props.route}

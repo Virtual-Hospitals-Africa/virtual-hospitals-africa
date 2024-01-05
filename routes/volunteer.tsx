@@ -153,9 +153,8 @@ export default function VolunteerPage(
   return (
     <Layout
       title='Volunteer Opportunities | Virtual Hospitals Africa'
-      route={props.route}
       url={props.url}
-      variant='just-logo'
+      variant='just logo'
     >
       <SideBySide
         image='https://images.unsplash.com/photo-1670272502246-768d249768ca?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1152&q=80'

@@ -8,7 +8,7 @@ export const handler: LoggedInHealthWorkerHandler = {
     const media_id = parseInt(ctx.params.mediaId)
     assert(media_id)
 
-    //possibly add assertion here ensuring the media belongs to the nurse.
+    // possibly add assertion here ensuring the media belongs to the nurse.
     const health_worker_media = await media.get(ctx.state.trx, { media_id })
 
     return file(health_worker_media.binary_data, health_worker_media.mime_type)
