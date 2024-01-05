@@ -11,6 +11,7 @@ import { parseDate, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import Layout from '../../components/library/Layout.tsx'
+import { HomePageSidebar } from '../../components/library/Sidebar.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<CalendarPageProps> = {
   async GET(req, ctx) {
@@ -82,10 +83,10 @@ export default function Calendar(
   return (
     <Layout
       title='My Calendar'
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Container size='lg'>
         <AppointmentsCalendar url={props.url} {...props.data} />

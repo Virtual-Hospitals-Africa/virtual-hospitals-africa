@@ -331,9 +331,7 @@ export default async function IntakePatientPage(
   return (
     <Layout
       title='Intake Patient'
-      route={ctx.route}
       url={ctx.url}
-      avatarUrl={ctx.state.healthWorker.avatar_url}
       variant='form'
     >
       <Container size='lg'>

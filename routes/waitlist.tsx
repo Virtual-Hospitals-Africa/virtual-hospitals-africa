@@ -12,9 +12,8 @@ export default function WaitlistPage(
   return (
     <Layout
       title='Join Waitlist | Virtual Hospitals Africa'
-      route={props.route}
       url={props.url}
-      variant='just-logo'
+      variant='just logo'
     >
       <SideBySide
         h1='Join Waitlist'

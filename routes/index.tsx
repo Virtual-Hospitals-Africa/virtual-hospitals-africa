@@ -6,7 +6,7 @@ export default function Index(props: PageProps) {
   return (
     <Layout
       {...props}
-      variant='landing-page'
+      variant='landing page'
       title='Virtual Hospitals Africa'
     >
       <Home />

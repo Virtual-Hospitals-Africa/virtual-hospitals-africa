@@ -15,9 +15,8 @@ export default function InsufficientPermissionsPage(props: PageProps) {
   return (
     <Layout
       title='Virtual Hospitals Africa'
-      route={props.route}
       url={props.url}
-      variant='just-logo'
+      variant='just logo'
     >
       <main class='grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8'>
         <div class='text-center'>

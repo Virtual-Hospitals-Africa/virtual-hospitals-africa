@@ -8,6 +8,7 @@ import {
 import PatientsView from '../../components/patients/View.tsx'
 import { getAllWithNames } from '../../db/models/patients.ts'
 import { json } from '../../util/responses.ts'
+import { HomePageSidebar } from '../../components/library/Sidebar.tsx'
 
 type PatientsProps = {
   healthWorker: HealthWorkerWithGoogleTokens
@@ -37,10 +38,10 @@ export default function PatientsPage(
   return (
     <Layout
       title='Patients'
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <PatientsView patients={props.data.patients} />
     </Layout>

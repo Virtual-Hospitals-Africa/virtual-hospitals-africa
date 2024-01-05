@@ -16,6 +16,7 @@ import WaitingRoomView from '../components/waiting-room/View.tsx'
 import PatientsView from '../components/patients/View.tsx'
 import { firstName } from '../util/name.ts'
 import redirect from '../util/redirect.ts'
+import { HomePageSidebar } from '../components/library/Sidebar.tsx'
 
 type WaitingRoomProps = {
   tab: 'waiting_room'
@@ -143,10 +144,10 @@ export default function AppPage(
   return (
     <Layout
       title={`Good day, ${firstName(props.data.healthWorker.name)}!`}
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Tabs
         route={props.route}

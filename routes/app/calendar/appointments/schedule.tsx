@@ -27,6 +27,7 @@ import {
 import redirect from '../../../../util/redirect.ts'
 import { assertOr400 } from '../../../../util/assertOr.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
+import { HomePageSidebar } from '../../../../components/library/Sidebar.tsx'
 
 type SearchFormValues = {
   health_worker_id?: number
@@ -134,10 +135,10 @@ export default function SchedulePage(
   return (
     <Layout
       title='Schedule Appointment'
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='form'
+      variant='home page'
     >
       <Container size='lg'>
         <ScheduleForm />

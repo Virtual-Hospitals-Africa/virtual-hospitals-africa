@@ -174,9 +174,8 @@ export default async function RegisterPage(
 
   return (
     <Layout
-      variant='just-logo'
+      variant='just logo'
       title='Register as a nurse'
-      route={ctx.route}
       url={ctx.url}
     >
       <Container size='xl'>

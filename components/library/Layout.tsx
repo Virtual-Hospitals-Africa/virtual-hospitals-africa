@@ -1,7 +1,6 @@
-import { ComponentChildren } from 'preact'
-import BottomNav from './BottomNav.tsx'
+import { ComponentChild, ComponentChildren } from 'preact'
+// import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
-import { Sidebar } from './Sidebar.tsx'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -10,30 +9,32 @@ import { ErrorListener } from '../../islands/ErrorListener.tsx'
 export type LayoutProps =
   & {
     title: string
-    route: string
     url: URL
     children: ComponentChildren
   }
   & ({
-    variant: 'standard' | 'form'
-    avatarUrl: string
+    variant: 'home page'
+    avatarUrl?: string
+    sidebar: ComponentChild
   } | {
-    variant: 'just-logo' | 'landing-page'
-    avatarUrl?: undefined
+    variant: 'form'
+    sidebar?: ComponentChild
+  } | {
+    variant: 'just logo' | 'landing page'
   })
 
 function AppLayoutContents(
-  { title, route, avatarUrl, variant, children }: {
+  { title, avatarUrl, variant, sidebar, children }: {
     title: string
-    route: string
-    avatarUrl: string
-    variant: 'standard' | 'form'
+    avatarUrl?: string
+    variant: 'home page' | 'form'
+    sidebar?: ComponentChild
     children: ComponentChildren
   },
 ) {
   return (
     <>
-      <Sidebar route={route} />
+      {sidebar}
       <section className='md:pl-48'>
         <Header
           title={title}
@@ -42,7 +43,7 @@ function AppLayoutContents(
         />
         {children}
       </section>
-      <BottomNav route={route} />
+      {/* <BottomNav route={route} /> */}
     </>
   )
 }
@@ -50,7 +51,6 @@ function AppLayoutContents(
 function JustLogoLayoutContents(
   { title, children }: {
     title: string
-    route: string
     children: ComponentChildren
   },
 ) {
@@ -58,7 +58,7 @@ function JustLogoLayoutContents(
     <>
       <Header
         title={title}
-        variant='just-logo'
+        variant='just logo'
       />
       <section className='min-h-full flex flex-col align-center justify-between flex-grow'>
         {children}
@@ -83,10 +83,10 @@ export default function Layout(props: LayoutProps) {
       <ErrorListener
         initialError={error}
       />
-      {props.variant === 'landing-page' && props.children}
-      {(props.variant === 'standard' ||
-        props.variant === 'form') && <AppLayoutContents {...props} />}
-      {props.variant === 'just-logo' && <JustLogoLayoutContents {...props} />}
+      {props.variant === 'landing page' && props.children}
+      {props.variant === 'home page' && <AppLayoutContents {...props} />}
+      {props.variant === 'form' && <AppLayoutContents {...props} />}
+      {props.variant === 'just logo' && <JustLogoLayoutContents {...props} />}
     </>
   )
 }

@@ -4,6 +4,7 @@ import Layout from '../../../../components/library/Layout.tsx'
 import { LoggedInHealthWorker } from '../../../../types.ts'
 import WaitingRoomView from '../../../../components/waiting-room/View.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
+import { HomePageSidebar } from '../../../../components/library/Sidebar.tsx'
 
 export default async function WaitingRoomPage(
   _req: Request,
@@ -15,10 +16,10 @@ export default async function WaitingRoomPage(
   return (
     <Layout
       title='Waiting Room'
-      route={ctx.route}
+      sidebar={<HomePageSidebar route={ctx.route} />}
       url={ctx.url}
       avatarUrl={ctx.state.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <WaitingRoomView
         facility_id={facility_id}

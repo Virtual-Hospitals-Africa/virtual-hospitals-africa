@@ -16,6 +16,7 @@ import {
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { isAdmin } from '../../../../../db/models/employment.ts'
 import FormButtons from '../../../../../components/library/form/buttons.tsx'
+import { HomePageSidebar } from '../../../../../components/library/Sidebar.tsx'
 
 type EmployeePageProps = {
   facility_id: number
@@ -71,12 +72,12 @@ export default function EmployeePage(
   return (
     <Layout
       title={props.data.employee.name}
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.employee.avatar_url
         ? props.data.employee.avatar_url
         : 'avatar_url'}
-      variant='standard'
+      variant='home page'
     >
       <Container size='lg'>
         <div className='mt-4 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>

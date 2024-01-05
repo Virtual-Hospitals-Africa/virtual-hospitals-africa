@@ -27,9 +27,8 @@ export default function ApplyPage(
   return (
     <Layout
       title='Virtual Hospitals Africa'
-      route={props.route}
       url={props.url}
-      variant='just-logo'
+      variant='just logo'
     >
       <div class='overflow-hidden bg-white py-32'>
         <div class='mx-auto max-w-7xl px-6 lg:flex lg:px-8'>

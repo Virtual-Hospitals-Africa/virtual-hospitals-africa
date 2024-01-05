@@ -8,6 +8,7 @@ import { assertOr404 } from '../../../util/assertOr.ts'
 import { LoggedInHealthWorkerContext } from '../../../types.ts'
 import getNumericParam from '../../../util/getNumericParam.ts'
 import redirect from '../../../util/redirect.ts'
+import { HomePageSidebar } from '../../../components/library/Sidebar.tsx'
 
 export default async function PatientPage(
   req: Request,
@@ -30,10 +31,10 @@ export default async function PatientPage(
   return (
     <Layout
       title='Patient Profile'
-      route={ctx.route}
+      sidebar={<HomePageSidebar route={ctx.route} />}
       url={ctx.url}
       avatarUrl={ctx.state.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Container size='lg'>
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>

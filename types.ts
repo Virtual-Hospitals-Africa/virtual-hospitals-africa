@@ -1316,7 +1316,11 @@ export type LinkProps = {
   Icon: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
 }
 
-export type LinkDef = Omit<LinkProps, 'active'>
+export type LinkDef = {
+  route: string
+  title: string
+  Icon: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
+}
 
 export type CalendarPageProps = {
   appointments: HealthWorkerAppointment[]

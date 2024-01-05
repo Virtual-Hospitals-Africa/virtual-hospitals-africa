@@ -10,6 +10,7 @@ import {
 } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
+import { HomePageSidebar } from '../../../../components/library/Sidebar.tsx'
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
@@ -43,10 +44,10 @@ export default function AppointmentPage(
   return (
     <Layout
       title={`Appointment with ${props.data.appointment.patient.name}`}
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <PatientDetailedCard patient={props.data.appointment.patient} />
       <AppointmentDetail

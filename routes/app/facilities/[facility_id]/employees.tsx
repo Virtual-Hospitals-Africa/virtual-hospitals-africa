@@ -10,6 +10,7 @@ import * as facilities from '../../../../db/models/facilities.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
+import { HomePageSidebar } from '../../../../components/library/Sidebar.tsx'
 
 type EmployeePageProps = {
   isAdminAtFacility: boolean
@@ -49,10 +50,10 @@ export default function EmployeeTable(
   return (
     <Layout
       title={`${props.data.facility.display_name} Employees`}
-      route={props.route}
+      sidebar={<HomePageSidebar route={props.route} />}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Container size='lg'>
         <EmployeesTable
