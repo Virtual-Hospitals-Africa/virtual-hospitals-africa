@@ -18,7 +18,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import haveNames from '../../util/haveNames.ts'
+import haveNames, { hasName } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import compact from '../../util/compact.ts'
 import { upsert as upsertAddress } from './address.ts'
@@ -30,6 +30,7 @@ import { jsonBuildObject } from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
+import { assertOr404 } from '../../util/assertOr.ts'
 
 export const href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -321,6 +322,26 @@ export async function getWithMedicalRecords(
       history: {},
     },
   }))
+}
+
+export async function getCard(trx: TrxOrDb, opts: { id: number }) {
+  const patient = await trx.selectFrom('patients')
+    .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .select([
+      'patients.id',
+      'patients.name',
+      sql<string | null>`patients.gender || ', ' || patient_age.age_display`.as(
+        'description',
+      ),
+      avatar_url_sql.as('avatar_url'),
+    ])
+    .where('patients.id', '=', opts.id)
+    .executeTakeFirst()
+
+  assertOr404(patient)
+  assert(hasName(patient))
+
+  return patient
 }
 
 export async function getAllWithNames(

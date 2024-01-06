@@ -6,6 +6,7 @@ import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import { HomePageSidebar } from './Sidebar.tsx'
+import { Maybe } from '../../types.ts'
 
 export type LayoutProps =
   & {
@@ -15,7 +16,7 @@ export type LayoutProps =
   }
   & ({
     variant: 'home page'
-    avatarUrl?: string
+    avatarUrl?: Maybe<string>
     route: string
   } | {
     variant: 'form'
@@ -27,7 +28,7 @@ export type LayoutProps =
 function AppLayoutContents(
   { title, avatarUrl, variant, sidebar, children }: {
     title: string
-    avatarUrl?: string
+    avatarUrl?: Maybe<string>
     variant: 'home page' | 'form'
     sidebar?: ComponentChild
     children: ComponentChildren

@@ -39,7 +39,7 @@ export type Location = {
   latitude: number
 }
 
-export type Gender = 'male' | 'female' | 'other'
+export type Gender = 'male' | 'female' | 'non-binary'
 
 export type UserState<CS> = {
   body?: string

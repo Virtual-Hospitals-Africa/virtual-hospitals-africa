@@ -4,8 +4,9 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import { sql } from 'kysely'
+import pick from '../../util/pick.ts'
 
-describe('db/models/patients.ts view', { sanitizeResources: false }, () => {
+describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
 
   describe('getPatientAges', () => {
@@ -60,34 +61,34 @@ describe('db/models/patients.ts view', { sanitizeResources: false }, () => {
         .select(['patient_id', sql`TO_JSON(age)`.as('age')])
         .execute()
 
-      assertEquals(patient_ages, [
+      assertEquals(patient_ages.map(pick(['patient_id', 'age'])), [
         {
           patient_id: testPatient1.id,
-          age: { number: 0, units: 'days' },
+          age: { number: 0, unit: 'day' },
         },
         {
           patient_id: testPatient2.id,
-          age: { number: 1, units: 'days' },
+          age: { number: 1, unit: 'day' },
         },
         {
           patient_id: testPatient3.id,
-          age: { number: 20, units: 'days' },
+          age: { number: 20, unit: 'day' },
         },
         {
           patient_id: testPatient4.id,
-          age: { number: 3, units: 'weeks' },
+          age: { number: 3, unit: 'week' },
         },
         {
           patient_id: testPatient5.id,
-          age: { number: 3, units: 'months' },
+          age: { number: 3, unit: 'month' },
         },
         {
           patient_id: testPatient6.id,
-          age: { number: 23, units: 'months' },
+          age: { number: 23, unit: 'month' },
         },
         {
           patient_id: testPatient7.id,
-          age: { number: 2, units: 'years' },
+          age: { number: 2, unit: 'year' },
         },
       ])
 
@@ -106,12 +107,12 @@ describe('db/models/patients.ts view', { sanitizeResources: false }, () => {
       try {
         assertEquals(patient_age, {
           patient_id: testPatient8.id,
-          age: { number: 12, units: 'weeks' },
+          age: { number: 12, unit: 'weeks' },
         })
       } catch {
         assertEquals(patient_age, {
           patient_id: testPatient8.id,
-          age: { number: 13, units: 'weeks' },
+          age: { number: 13, unit: 'weeks' },
         })
       }
     })

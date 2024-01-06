@@ -1,11 +1,12 @@
 import { ComponentChildren, JSX } from 'preact'
 import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
+import { Maybe } from '../../types.ts'
 
 export type PersonData = {
   id: number | 'add'
   name: string
-  avatar_url?: string
+  avatar_url?: Maybe<string>
   description?: ComponentChildren
 }
 

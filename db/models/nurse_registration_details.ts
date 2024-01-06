@@ -106,7 +106,7 @@ function assertIsRegistrationDetails(
   assertOr400(
     (registration_details.gender === 'male') ||
       (registration_details.gender === 'female') ||
-      (registration_details.gender === 'other'),
+      (registration_details.gender === 'non-binary'),
   )
   assertOr400(typeof registration_details.national_id_number === 'string')
   assertOr400(/^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(

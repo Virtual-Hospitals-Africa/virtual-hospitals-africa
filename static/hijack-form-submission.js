@@ -33,9 +33,13 @@ window.addEventListener('submit', function (event) {
       case 400:
         return response.text().then(onError)
       case 401:
-        return onError('Unauthorized')
+        return response.text().then(function (text) {
+          return onError(text ? 'Unauthorized: ' + text : 'Unauthorized')
+        })
       case 403:
-        return onError('Forbidden')
+        return response.text().then(function (text) {
+          return onError(text ? 'Forbidden: ' + text : 'Forbidden')
+        })
       case 500:
         return response.text().then(function (text) {
           return onError('Internal Server Error: ' + text)
