@@ -86,6 +86,7 @@ type FamilyFormValues = {
   family?: {
     guardians?: FamilyRelationInsert[]
     dependents?: FamilyRelationInsert[]
+    next_of_kin?: Maybe<FamilyRelationInsert>
   }
 }
 type HistoryFormValues = Record<string, unknown>
@@ -240,6 +241,7 @@ const transformers: Transformers = {
     family: {
       guardians: patient?.family?.guardians || [],
       dependents: patient?.family?.dependents || [],
+      next_of_kin: patient?.family?.next_of_kin
     },
   }),
 }

@@ -13,10 +13,12 @@ export default function Guardian({
   name,
   value,
   onRemove,
+  onSelect,
 }: {
   name: string
   value?: Partial<FamilyRelation>
   onRemove(): void
+  onSelect(guardian : Partial<FamilyRelation>): void
 }) {
   const [patientGuardian, setPatientGuardian] = useState<
     Partial<FamilyRelation> | undefined
@@ -38,13 +40,17 @@ export default function Guardian({
             required
             addable
             onSelect={(person) =>
-              setPatientGuardian({
-                patient_gender: person.gender ||
-                  patientGuardian?.patient_gender,
-                patient_phone_number: person.phone_number ||
-                  patientGuardian?.patient_phone_number,
-                patient_name: person.name || patientGuardian?.patient_name,
-              })}
+              {
+                setPatientGuardian({
+                  patient_gender: person.gender ||
+                    patientGuardian?.patient_gender,
+                  patient_phone_number: person.phone_number ||
+                    patientGuardian?.patient_phone_number,
+                  patient_name: person.name || patientGuardian?.patient_name,
+                })
+                onSelect(person)
+              }
+            }
           />
           <RelationshipSelect
             name={`${name}.family_relation_gendered`}
@@ -69,6 +75,10 @@ export default function Guardian({
                     input.checked = false
                   }
                 })
+
+                const guardian = {...patientGuardian, next_of_kin: true, }
+                setPatientGuardian(guardian)
+                onSelect(guardian)
               }
             }}
           />

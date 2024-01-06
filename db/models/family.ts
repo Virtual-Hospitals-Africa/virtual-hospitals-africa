@@ -5,6 +5,7 @@ import {
   Patient,
   PatientFamily,
   PatientGuardian,
+  PatientKin,
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -169,14 +170,14 @@ export async function get(
         .end()
         .as('family_relation_gendered'),
     ])
-    .execute()
+    .executeTakeFirst()
 
   return {
     marital_status: 'TODO',
     religion: 'TODO',
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
-    next_of_kin: await gettingNextOfKin
+    next_of_kin: (await gettingNextOfKin)!
   }
 }
 
@@ -254,6 +255,14 @@ export async function upsert(
     hasPatientId,
   )
 
+  //currently, we have one kin, but doing this will help us future changes if we have many and be more consistent
+  const kinList : FamilyRelationInsert[] = 
+  family_to_upsert?.next_of_kin? [family_to_upsert?.next_of_kin] : []
+  const [existing_kin, new_kin] = partition(
+    kinList,
+    hasPatientId,
+  )
+
   // Update patients that already exist
   const updating_existing_patients: Promise<unknown>[] = []
 
@@ -267,6 +276,10 @@ export async function upsert(
     number,
     GuardianRelationName
   >()
+  const kin_upserts_with_patient_ids = new Map<
+  number,
+  GuardianRelationName
+>()
   for (const guardian of existing_guardians) {
     assertOr400(
       !guardian_upserts_with_patient_ids.has(guardian.patient_id) &&
@@ -307,6 +320,24 @@ export async function upsert(
       }),
     )
   }
+  for (const kin of existing_kin) {
+    assertOr400(
+      !kin_upserts_with_patient_ids.has(kin.patient_id) &&
+        !kin_upserts_with_patient_ids.has(kin.patient_id),
+      `Cannot have two relations to the same patient: ${kin.patient_name}`,
+    )
+    const relation = inverseGuardianRelation(kin.family_relation_gendered)
+    kin_upserts_with_patient_ids.set(
+      kin.patient_id,
+      relation.guardian_relation,
+    )
+    updating_existing_patients.push(upsertPatient(trx, {
+      id: kin.patient_id,
+      name: kin.patient_name,
+      phone_number: kin.patient_phone_number,
+      gender: relation.gender,
+    }))
+  }
 
   // Insert patients that don't already exist. For each family relation keep track of the index and the calculated relation
   // so we can look them up later. After the insertion resolves, the db will give us back the patients in the same order, so
@@ -336,6 +367,18 @@ export async function upsert(
     }) - 1
     inserted.set(dependent, [index, relation.guardian_relation])
   }
+  for (const kin of new_kin) {
+    const relation = inverseDependentRelation(
+      kin.family_relation_gendered,
+    )
+    const index = to_insert.push({
+      name: kin.patient_name,
+      phone_number: kin.patient_phone_number,
+      gender: relation.gender,
+    }) - 1
+    inserted.set(kin, [index, relation.guardian_relation])
+  }
+
   const inserting_new_patients = to_insert.length
     ? insertManyPatients(trx, to_insert)
     : Promise.resolve([])
@@ -353,6 +396,10 @@ export async function upsert(
     existing_family.dependents,
     ({ patient_id }) => dependent_upserts_with_patient_ids.has(patient_id),
   )
+  const [kin_to_update, kin_to_remove] = partition(
+    existing_family.next_of_kin ? [existing_family.next_of_kin] : [],
+    ({ patient_id }) => kin_upserts_with_patient_ids.has(patient_id!),
+  )
 
   // 1. Remove: The relation exists in the db as given by its patient_id, but not in the upsert
   const to_remove = guardians_to_remove.concat(dependents_to_remove).map((
@@ -363,10 +410,17 @@ export async function upsert(
       .deleteFrom('patient_guardians')
       .where('id', 'in', to_remove)
       .execute()
+  const removing_kin = kin_to_remove.length &&
+    trx
+      .deleteFrom('patient_kin')
+      .where('id', 'in', kin_to_remove[0].relation_id)
+      .execute()
+  
 
   // 2. Update: The relation exists in the db as given by its patient_id and the upsert
   const updated_guardian_patient_ids = new Set<number>()
   const updating_relations: Promise<unknown>[] = []
+  const updating_kin: Promise<unknown>[] = []
   for (const guardian_relation_in_db of guardians_to_update) {
     const guardian_relation = guardian_upserts_with_patient_ids.get(
       guardian_relation_in_db.patient_id,
@@ -403,6 +457,26 @@ export async function upsert(
         .executeTakeFirstOrThrow(),
     )
     updated_dependent_patient_ids.add(dependent_relation_in_db.patient_id)
+  }
+  const updated_kin_patient_ids = new Set<number>()
+  for (const kin_relation_in_db of kin_to_update) {
+    const kin_relation = kin_upserts_with_patient_ids.get(
+      kin_relation_in_db.patient_id,
+    )!
+    const values: PatientKin = {
+      id:kin_relation_in_db.relation_id,
+      patient_id: patient_id,
+      next_of_kin_patient_id: kin_relation_in_db.patient_id,
+      relationship: kin_relation,
+    }
+    updating_relations.push(
+      trx
+        .updateTable('patient_kin')
+        .set(values)
+        .where('id', '=', kin_relation_in_db.relation_id)
+        .executeTakeFirstOrThrow(),
+    )
+    updated_kin_patient_ids.add(kin_relation_in_db.patient_id)
   }
 
   // 3. Insert: The relation doesn't exist in the db as given by its patient_id
@@ -471,14 +545,53 @@ export async function upsert(
       },
     )
 
+  const new_kin_to_insert: PatientKin[] =   
+     kinList
+    .filter((kin) =>
+      kin &&
+      !kin.patient_id ||
+      !updated_kin_patient_ids.has(kin!.patient_id!)
+    )
+    .map(
+      (kin) => {
+        let next_of_kin_patient_id: number
+        let relationship: GuardianRelationName
+        // a. The patient already exists
+        if (kin!.patient_id) {
+          next_of_kin_patient_id = kin!.patient_id
+          relationship = kin_upserts_with_patient_ids.get(
+            kin!.patient_id,
+          )!
+          // b. The patient is new
+        } else {
+          const [index, guardian_relation_calculated] = inserted.get(kin!)!
+          const new_patient = new_patients[index]
+          assert(new_patient.id)
+          next_of_kin_patient_id = new_patient.id
+          relationship = guardian_relation_calculated
+        }
+        return {
+          patient_id,
+          next_of_kin_patient_id,
+          relationship,
+        }
+      },
+    )
+
   const new_relations = new_guardians_to_insert.concat(new_dependents_to_insert)
 
   const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
+  const adding_kin = new_kin_to_insert.length &&
+    trx.insertInto('patient_kin').values(new_kin_to_insert).execute()
+
   await Promise.all([
     removing_relations,
     adding_relations,
     ...updating_relations,
+    removing_kin,
+    adding_kin,
+    updating_kin,
   ])
 }

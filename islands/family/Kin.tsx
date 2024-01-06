@@ -23,7 +23,6 @@ export default function Kin({
             name={`${name}.patient`}
             href='/app/patients'
             label='Name'
-            required
             addable
             value={patientKin &&
               {
@@ -48,7 +47,7 @@ export default function Kin({
             name={`${name}.family_relation_gendered`}
             family_relation_gendered={patientKin
               ?.family_relation_gendered ?? undefined}
-            type='dependent'
+            type='guardian'
             gender={patientKin?.patient_gender}
           />
         </FormRow>

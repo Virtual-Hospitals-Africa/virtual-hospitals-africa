@@ -28,16 +28,16 @@ export default function PatientFamilyForm({
   const showGuardians = age <= 18
   const showDependents = age >= 10
   const showNextOfKin = age >= 19
+  const hideNextofKinForm = showGuardians && !showNextOfKin
 
   return (
     <div>
-      {showNextOfKin && (
-        <div>
+      {showNextOfKin || true && (
+        <div style={{display: hideNextofKinForm ? 'none' : 'block' }}>
           <SectionHeader className='my-5 text-[20px]'>
             Next Of Kin
           </SectionHeader>
-          <Kin name='next_of_kin' value={nextOfKin.value}>
-          </Kin>
+          <Kin name='family.next_of_kin' value={nextOfKin.value} />
         </div>
       )}
 
@@ -55,6 +55,11 @@ export default function PatientFamilyForm({
                   guardians.value = guardians.value.map((guardian, ix) =>
                     i === ix ? { removed: true } : guardian
                   )}
+                onSelect={(guardian) => {
+                  if(guardian.next_of_kin){
+                   nextOfKin.value = guardian
+                  }
+                }}
               />
             )
           ))}

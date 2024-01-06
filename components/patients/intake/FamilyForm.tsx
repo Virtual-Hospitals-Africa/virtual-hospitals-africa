@@ -34,7 +34,7 @@ export default function FamilyForm(
       </FormRow> */
       }
       <section>
-        <PatientFamilyForm family={family} age={20} />
+        <PatientFamilyForm family={family} age={12} />
       </section>
     </>
   )

@@ -236,7 +236,7 @@ export type PatientFamily = {
   religion?: Maybe<string>
   guardians: FamilyRelation[]
   dependents: FamilyRelation[]
-  next_of_kin: FamilyRelation[]
+  next_of_kin: FamilyRelation
 }
 
 export type FamilyRelation = {
@@ -248,6 +248,7 @@ export type FamilyRelation = {
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
   family_relation_gendered: Maybe<string>
+  next_of_kin: Maybe<boolean>
 }
 
 export type FamilyRelationInsert = {
@@ -262,6 +263,7 @@ export type FamilyUpsert = {
   religion?: Maybe<string>
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
+  next_of_kin: Maybe<FamilyRelationInsert>
 }
 
 // TODO: actually define this
@@ -1625,10 +1627,10 @@ export type PatientMeasurement = {
 }
 
 export type PatientKin = {
-  id: number
+  id?: number
   patient_id: number
   next_of_kin_patient_id: number
-  relationship: string
+  relationship: GuardianRelationName
 }
 
 export type AgeUnit =
