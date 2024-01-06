@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../../../db/reset.ts'
+import { resetInTest } from '../../../../../db/meta.ts'
 import db from '../../../../../db/db.ts'
 import respond from '../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../db/models/conversations.ts'
@@ -26,7 +26,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: 'other',
+      body: 'non-binary',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -60,6 +60,6 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'not_onboarded:make_appointment:enter_date_of_birth',
     )
-    assertEquals(patient.gender, 'other')
+    assertEquals(patient.gender, 'non-binary')
   })
 })

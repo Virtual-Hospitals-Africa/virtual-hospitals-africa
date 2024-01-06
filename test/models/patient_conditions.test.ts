@@ -2,7 +2,7 @@ import { sql } from 'kysely'
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 

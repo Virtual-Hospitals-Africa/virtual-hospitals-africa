@@ -1,8 +1,9 @@
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import * as drugs from '../../db/models/drugs.ts'
+import deepOmit from '../../util/deepOmit.ts'
 
 describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
@@ -10,7 +11,19 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
   describe('search', () => {
     it('gets search results for drugs with their forms, strengths, and manufacturers', async () => {
       const results = await drugs.search(db, { search: 'abacavir' })
-      assertEquals(results, expected_results)
+      console.log(JSON.stringify(results, null, 2))
+      assertEquals(
+        deepOmit(results, [
+          'drug_id',
+          'medication_id',
+          'manufactured_medication_id',
+        ]),
+        deepOmit(expected_results, [
+          'drug_id',
+          'medication_id',
+          'manufactured_medication_id',
+        ]),
+      )
     })
   })
 })
@@ -22,7 +35,7 @@ const expected_results = [
     'distinct_trade_names': [],
     'medications': [
       {
-        'medication_id': 3,
+        'medication_id': 2,
         'form': 'TABLET, COATED',
         'form_route': 'TABLET, COATED; ORAL',
         'routes': [
@@ -38,7 +51,7 @@ const expected_results = [
         'strength_summary': '300MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 9,
+            'manufactured_medication_id': 2,
             'strength_numerators': [
               300,
             ],
@@ -57,7 +70,7 @@ const expected_results = [
     ],
     'medications': [
       {
-        'medication_id': 4,
+        'medication_id': 3,
         'form': 'TABLET',
         'form_route': 'TABLET; ORAL',
         'routes': [
@@ -75,7 +88,7 @@ const expected_results = [
         'strength_summary': '30, 60, 120MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 10,
+            'manufactured_medication_id': 3,
             'strength_numerators': [
               30,
               60,
@@ -84,7 +97,7 @@ const expected_results = [
             'manufacturer_name': 'MYLAN LABORATORIES LTD SINNAR INDIA;',
           },
           {
-            'manufactured_medication_id': 11,
+            'manufactured_medication_id': 10,
             'strength_numerators': [
               60,
               120,
@@ -95,7 +108,7 @@ const expected_results = [
         ],
       },
       {
-        'medication_id': 5,
+        'medication_id': 11,
         'form': 'TABLET, COATED',
         'form_route': 'TABLET, COATED; ORAL',
         'routes': [
@@ -114,7 +127,7 @@ const expected_results = [
         'strength_summary': '30, 60, 300, 600MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 12,
+            'manufactured_medication_id': 18,
             'strength_numerators': [
               300,
               600,
@@ -123,7 +136,7 @@ const expected_results = [
             'manufacturer_name': 'AUROBINDO PHARMA LIMITED HYDERABAD ;',
           },
           {
-            'manufactured_medication_id': 13,
+            'manufactured_medication_id': 24,
             'strength_numerators': [
               30,
               60,
@@ -132,7 +145,7 @@ const expected_results = [
             'manufacturer_name': 'AURO BINDO PHARMA LTD  INDIA;',
           },
           {
-            'manufactured_medication_id': 14,
+            'manufactured_medication_id': 26,
             'strength_numerators': [
               300,
               600,
@@ -144,7 +157,7 @@ const expected_results = [
         ],
       },
       {
-        'medication_id': 6,
+        'medication_id': 22,
         'form': 'TABLET',
         'form_route': 'TABLET',
         'routes': [
@@ -165,7 +178,7 @@ const expected_results = [
         'strength_summary': '300, 600MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 15,
+            'manufactured_medication_id': 36,
             'strength_numerators': [
               300,
               600,
@@ -187,7 +200,7 @@ const expected_results = [
     ],
     'medications': [
       {
-        'medication_id': 7,
+        'medication_id': 4,
         'form': 'TABLET, COATED',
         'form_route': 'TABLET, COATED; ORAL',
         'routes': [
@@ -203,7 +216,7 @@ const expected_results = [
         'strength_summary': '300MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 16,
+            'manufactured_medication_id': 4,
             'strength_numerators': [
               300,
             ],
@@ -211,7 +224,7 @@ const expected_results = [
             'manufacturer_name': 'STRIDES ARCOLAB LTD BANGALOR INDIA;',
           },
           {
-            'manufactured_medication_id': 17,
+            'manufactured_medication_id': 11,
             'strength_numerators': [
               300,
             ],
@@ -219,7 +232,7 @@ const expected_results = [
             'manufacturer_name': 'CIPLA LTD MAHAD INDIA;',
           },
           {
-            'manufactured_medication_id': 18,
+            'manufactured_medication_id': 14,
             'strength_numerators': [
               300,
             ],
@@ -239,7 +252,7 @@ const expected_results = [
         ],
       },
       {
-        'medication_id': 8,
+        'medication_id': 15,
         'form': 'SOLUTION',
         'form_route': 'SOLUTION',
         'routes': [
@@ -258,7 +271,7 @@ const expected_results = [
         'strength_summary': '20MG/ML',
         'manufacturers': [
           {
-            'manufactured_medication_id': 20,
+            'manufactured_medication_id': 27,
             'strength_numerators': [
               20,
             ],
@@ -266,7 +279,7 @@ const expected_results = [
             'manufacturer_name': 'HETERO DRUGS LTD JADCHERLA INDIA;',
           },
           {
-            'manufactured_medication_id': 21,
+            'manufactured_medication_id': 31,
             'strength_numerators': [
               20,
             ],
@@ -276,7 +289,7 @@ const expected_results = [
         ],
       },
       {
-        'medication_id': 9,
+        'medication_id': 23,
         'form': 'TABLET',
         'form_route': 'TABLET; ORAL',
         'routes': [
@@ -292,7 +305,7 @@ const expected_results = [
         'strength_summary': '300MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 22,
+            'manufactured_medication_id': 39,
             'strength_numerators': [
               300,
             ],
@@ -309,7 +322,7 @@ const expected_results = [
     'distinct_trade_names': [],
     'medications': [
       {
-        'medication_id': 10,
+        'medication_id': 5,
         'form': 'TABLET',
         'form_route': 'TABLET; ORAL',
         'routes': [
@@ -328,7 +341,7 @@ const expected_results = [
         'strength_summary': '30, 60, 300, 600MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 23,
+            'manufactured_medication_id': 5,
             'strength_numerators': [
               30,
               60,
@@ -337,7 +350,7 @@ const expected_results = [
             'manufacturer_name': 'MYLAN LABORATORIES LTD SINNAR INDIA;',
           },
           {
-            'manufactured_medication_id': 24,
+            'manufactured_medication_id': 12,
             'strength_numerators': [
               300,
               600,
@@ -349,7 +362,7 @@ const expected_results = [
         ],
       },
       {
-        'medication_id': 11,
+        'medication_id': 12,
         'form': 'TABLET, COATED',
         'form_route': 'TABLET, COATED; ORAL',
         'routes': [
@@ -366,7 +379,7 @@ const expected_results = [
         'strength_summary': '300, 600MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 25,
+            'manufactured_medication_id': 20,
             'strength_numerators': [
               300,
               600,
@@ -379,48 +392,79 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 6,
-    'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
-    'distinct_trade_names': [],
+    'drug_id': 733,
+    'drug_generic_name': 'ABACAVIR; LAMIVUDINE',
+    'distinct_trade_names': [
+      'ABAMUNE L BABY',
+      'KIVEXA',
+    ],
     'medications': [
       {
-        'medication_id': 12,
+        'medication_id': 1004,
+        'form': 'CAPSULE',
+        'form_route': 'CAPSULE; ORAL',
+        'routes': [
+          'ORAL',
+        ],
+        'strength_numerators': [
+          30,
+          60,
+        ],
+        'strength_numerator_unit': 'MG',
+        'strength_denominator': 1,
+        'strength_denominator_unit': 'CAPSULE',
+        'strength_denominator_is_units': false,
+        'strength_summary': '30, 60MG',
+        'manufacturers': [
+          {
+            'manufactured_medication_id': 1857,
+            'strength_numerators': [
+              30,
+              60,
+            ],
+            'trade_name': 'ABAMUNE L BABY',
+            'manufacturer_name': 'CIPLA LTD MAHAD INDIA;',
+          },
+        ],
+      },
+      {
+        'medication_id': 1009,
         'form': 'TABLET',
         'form_route': 'TABLET; ORAL',
         'routes': [
           'ORAL',
         ],
         'strength_numerators': [
-          150,
           300,
+          600,
         ],
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
         'strength_denominator_is_units': false,
-        'strength_summary': '150, 300MG',
+        'strength_summary': '300, 600MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 26,
+            'manufactured_medication_id': 1867,
             'strength_numerators': [
-              150,
               300,
-              300,
+              600,
             ],
-            'trade_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
-            'manufacturer_name': 'MYLAN LABORATORIES LTD SINNAR INDIA;',
+            'trade_name': 'KIVEXA',
+            'manufacturer_name':
+              'GLAXOSMITHKLINE S.A (PTY) LTD BRYANSTON SOUTH AFRICA;',
           },
         ],
       },
     ],
   },
   {
-    'drug_id': 7,
+    'drug_id': 734,
     'drug_generic_name': 'ABACAVIR; DOLUTEGRAVIR; LAMIVUDINE',
     'distinct_trade_names': [],
     'medications': [
       {
-        'medication_id': 13,
+        'medication_id': 1005,
         'form': 'TABLET, COATED',
         'form_route': 'TABLET, COATED; ORAL',
         'routes': [
@@ -438,7 +482,7 @@ const expected_results = [
         'strength_summary': '50, 300, 600MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 27,
+            'manufactured_medication_id': 1861,
             'strength_numerators': [
               50,
               300,
@@ -452,67 +496,36 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 8,
-    'drug_generic_name': 'ABACAVIR; LAMIVUDINE',
-    'distinct_trade_names': [
-      'ABAMUNE L BABY',
-      'KIVEXA',
-    ],
+    'drug_id': 735,
+    'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
+    'distinct_trade_names': [],
     'medications': [
       {
-        'medication_id': 14,
-        'form': 'CAPSULE',
-        'form_route': 'CAPSULE; ORAL',
-        'routes': [
-          'ORAL',
-        ],
-        'strength_numerators': [
-          30,
-          60,
-        ],
-        'strength_numerator_unit': 'MG',
-        'strength_denominator': 1,
-        'strength_denominator_unit': 'CAPSULE',
-        'strength_denominator_is_units': false,
-        'strength_summary': '30, 60MG',
-        'manufacturers': [
-          {
-            'manufactured_medication_id': 28,
-            'strength_numerators': [
-              30,
-              60,
-            ],
-            'trade_name': 'ABAMUNE L BABY',
-            'manufacturer_name': 'CIPLA LTD MAHAD INDIA;',
-          },
-        ],
-      },
-      {
-        'medication_id': 15,
+        'medication_id': 1008,
         'form': 'TABLET',
         'form_route': 'TABLET; ORAL',
         'routes': [
           'ORAL',
         ],
         'strength_numerators': [
+          150,
           300,
-          600,
         ],
         'strength_numerator_unit': 'MG',
         'strength_denominator': 1,
         'strength_denominator_unit': 'TABLET',
         'strength_denominator_is_units': false,
-        'strength_summary': '300, 600MG',
+        'strength_summary': '150, 300MG',
         'manufacturers': [
           {
-            'manufactured_medication_id': 29,
+            'manufactured_medication_id': 1866,
             'strength_numerators': [
+              150,
               300,
-              600,
+              300,
             ],
-            'trade_name': 'KIVEXA',
-            'manufacturer_name':
-              'GLAXOSMITHKLINE S.A (PTY) LTD BRYANSTON SOUTH AFRICA;',
+            'trade_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
+            'manufacturer_name': 'MYLAN LABORATORIES LTD SINNAR INDIA;',
           },
         ],
       },

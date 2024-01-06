@@ -60,7 +60,7 @@ export async function insertMessageReceived(
     .values({
       phone_number: patient_phone_number,
       conversation_state: 'initial_message',
-      completed_onboarding: false,
+      completed_intake: false,
     })
     .onConflict((oc) => oc.column('phone_number').doNothing())
     .returningAll()

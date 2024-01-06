@@ -1,11 +1,11 @@
-import { GuardianRelationName, Maybe } from '../../types.ts'
+import { Gender, GuardianRelationName, Maybe } from '../../types.ts'
 import { Select } from '../../components/library/form/Inputs.tsx'
 import { Signal, useSignal } from '@preact/signals'
 import { JSX } from 'preact'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 
 type OptionsProps = {
-  gender?: Maybe<'male' | 'female' | 'other'>
+  gender?: Maybe<Gender>
   selected_family_relation_gendered: Signal<string | undefined>
   relation: {
     guardian: GuardianRelationName
@@ -46,7 +46,7 @@ function GuardianOptions({
     )
   }
   if (
-    (!gender || gender === 'other') ||
+    (!gender || gender === 'non-binary') ||
     (gender === 'female' && !relation.female_guardian) ||
     (gender === 'male' && !relation.male_guardian)
   ) {
@@ -92,7 +92,7 @@ function DependentOptions({
     )
   }
   if (
-    (!gender || gender === 'other' ||
+    (!gender || gender === 'non-binary' ||
       (gender === 'female' && !relation.female_dependent) ||
       (gender === 'male' && !relation.male_dependent))
   ) {
@@ -120,7 +120,7 @@ export default function RelationshipSelect({
   required?: boolean
   family_relation_gendered?: string
   type: 'guardian' | 'dependent'
-  gender?: Maybe<'male' | 'female' | 'other'>
+  gender?: Maybe<Gender>
 }) {
   const selected_family_relation_gendered = useSignal(family_relation_gendered)
   const Options = (type === 'guardian') ? GuardianOptions : DependentOptions

@@ -1,23 +1,16 @@
 import { ComponentChildren, JSX } from 'preact'
 import { useState } from 'preact/hooks'
 import { DrugSearchResult as DrugSearchResultData, HasId } from '../../types.ts'
-import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
 import { PlusCircleIcon } from '../library/icons/heroicons/outline.tsx'
+import { Person, PersonData } from './Person.tsx'
 
 type BasicSelectProps = {
   isSelected?: boolean
   onSelect: () => void
 }
-
-export type PersonSearchResultData = {
-  id: number | 'add'
-  name: string
-  avatar_url?: string
-  description?: ComponentChildren
-}
 type PersonSearchResultProps = BasicSelectProps & {
-  person: PersonSearchResultData
+  person: PersonData
 }
 
 type FacilitySearchResultProps = BasicSelectProps & {
@@ -122,20 +115,7 @@ export function PersonSearchResult(
 ) {
   return (
     <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <div className='flex items-center'>
-        <Avatar
-          src={person.avatar_url}
-          className='h-6 w-6 flex-shrink-0 rounded-full'
-        />
-        <span className={cls('ml-3 truncate', isSelected && 'font-bold')}>
-          <div>{person.name}</div>
-          {person.description && (
-            <div className='font-normal capitalize'>
-              {person.description}
-            </div>
-          )}
-        </span>
-      </div>
+      <Person person={person} bold={isSelected} />
     </SearchResult>
   )
 }

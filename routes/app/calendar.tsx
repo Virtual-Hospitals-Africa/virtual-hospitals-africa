@@ -85,7 +85,7 @@ export default function Calendar(
       route={props.route}
       url={props.url}
       avatarUrl={props.data.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Container size='lg'>
         <AppointmentsCalendar url={props.url} {...props.data} />

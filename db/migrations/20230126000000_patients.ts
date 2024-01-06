@@ -15,7 +15,7 @@ export async function up(db: Kysely<unknown>) {
     .asEnum([
       'male',
       'female',
-      'other',
+      'non-binary',
     ])
     .execute()
 
@@ -47,10 +47,14 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'conversation_state',
       sql`patient_conversation_state`,
-      (column) => column.defaultTo('initial_message'),
+      (column) => column.notNull().defaultTo('initial_message'),
     )
     .addUniqueConstraint('patient_national_id_number', ['national_id_number'])
     .addUniqueConstraint('patient_phone_number', ['phone_number'])
+    .addCheckConstraint(
+      'patient_national_id_number_format',
+      sql`national_id_number IS NULL OR national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
+    )
     .execute()
 
   await addUpdatedAtTrigger(db, 'patients')

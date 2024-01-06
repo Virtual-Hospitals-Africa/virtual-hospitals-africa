@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import * as google from '../../external-clients/google.ts'
 import * as makeAppointment from '../../shared/scheduling/makeAppointment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
@@ -78,7 +78,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           href: `/app/patients/${patient.id}`,
           id: patient.id,
           last_visited: null,
-          location: null,
+          location: { longitude: null, latitude: null },
           medical_record: {
             allergies: [
               'chocolate',
@@ -92,7 +92,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           phone_number: null,
           updated_at: patient.updated_at,
           conversation_state: 'initial_message',
-          completed_onboarding: false,
+          completed_intake: false,
         },
         patient_id: patient.id,
         reason: 'back pain',

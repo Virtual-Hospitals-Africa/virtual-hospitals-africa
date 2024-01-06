@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Ethnicity, Maybe, NurseSpecialties } from '../../../types.ts'
+import { Gender, Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -55,7 +55,7 @@ function LabeledInput(
   return (
     <label
       className={cls(
-        'block text-sm font-medium leading-6 text-gray-500 relative',
+        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max flex-1',
         className,
       )}
     >
@@ -285,7 +285,7 @@ export const Select = forwardRef(
         <select
           {...(name && { name })}
           className={cls(
-            'block w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
+            'block w-full rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 bg-white',
             selectClassName,
             disabled && 'text-gray-600',
           )}
@@ -346,7 +346,6 @@ export function PhoneNumberInput(
   {
     name,
     label,
-    placeholder,
     required,
     disabled,
     className,
@@ -373,7 +372,7 @@ export function PhoneNumberInput(
           disabled && 'bg-gray-300',
         )}
         value={value || undefined}
-        placeholder={placeholder}
+        placeholder='+263 777 777 777'
         required={required}
         disabled={disabled}
         onInput={onInput}
@@ -381,6 +380,19 @@ export function PhoneNumberInput(
         onBlur={onBlur}
       />
     </LabeledInput>
+  )
+}
+
+export default function Example() {
+  return (
+    <div>
+      <label
+        htmlFor='phone-number'
+        className='block text-sm font-medium leading-6 text-gray-900'
+      >
+        Phone Number
+      </label>
+    </div>
   )
 }
 
@@ -538,7 +550,7 @@ export function RadioGroup(
 }
 
 export function GenderSelect(
-  { value }: { value: Maybe<'male' | 'female' | 'other'> },
+  { value }: { value: Maybe<Gender> },
 ) {
   return (
     <Select
@@ -549,13 +561,17 @@ export function GenderSelect(
       <option value=''>Select</option>
       <option value='female' label='Female' selected={value === 'female'} />
       <option value='male' label='Male' selected={value === 'male'} />
-      <option value='other' label='Other' selected={value === 'other'} />
+      <option
+        value='non-binary'
+        label='Non-binary'
+        selected={value === 'non-binary'}
+      />
     </Select>
   )
 }
 
 export function EthnicitySelect(
-  { value }: { value: Maybe<Ethnicity> },
+  { value }: { value: Maybe<string> },
 ) {
   return (
     <Select
@@ -566,9 +582,9 @@ export function EthnicitySelect(
       <option value=''>Select</option>
       <option value='african' label='African' selected={value === 'african'} />
       <option
-        value='african_american'
+        value='african american'
         label='African American'
-        selected={value === 'african_american'}
+        selected={value === 'african american'}
       />
       <option value='asian' label='Asian' selected={value === 'asian'} />
       <option
@@ -587,19 +603,19 @@ export function EthnicitySelect(
         selected={value === 'hispanic'}
       />
       <option
-        value='middle_eastern'
+        value='middle eastern'
         label='Middle Eastern'
-        selected={value === 'middle_eastern'}
+        selected={value === 'middle eastern'}
       />
       <option
-        value='native_american'
+        value='native american'
         label='Native American'
-        selected={value === 'native_american'}
+        selected={value === 'native american'}
       />
       <option
-        value='pacific_islander'
+        value='pacific islander'
         label='Pacific Islander'
-        selected={value === 'pacific_islander'}
+        selected={value === 'pacific islander'}
       />
       <option value='other' label='Other' selected={value === 'other'} />
     </Select>
@@ -618,7 +634,7 @@ export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
       label='Specialty'
       required
     >
-      {NurseSpecialties.map((specialty) => (
+      {NURSE_SPECIALTIES.map((specialty) => (
         <option
           value={specialty}
           label={prettierSpecialtyName(specialty)}

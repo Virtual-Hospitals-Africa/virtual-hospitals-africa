@@ -6,7 +6,7 @@ export async function up(db: Kysely<any>) {
     .addColumn(
       'has_media',
       'boolean',
-      (col) => col.defaultTo(false),
+      (col) => col.notNull().defaultTo(false),
     )
     .addColumn(
       'media_id',

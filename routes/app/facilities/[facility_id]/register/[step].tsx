@@ -28,6 +28,8 @@ import NurseRegistrationForm from '../../../../../islands/nurse-registration-for
 import compact from '../../../../../util/compact.ts'
 import { FacilityContext } from '../_middleware.ts'
 import omit from '../../../../../util/omit.ts'
+import Layout from '../../../../../components/library/Layout.tsx'
+import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
 
 type RegisterPageProps = {
   formState: FormState
@@ -122,6 +124,7 @@ function getRegistrationDetails(
     ncz_registration_card,
     national_id_picture,
     nurse_practicing_cert,
+    mobile_number,
     ...rest
   }: FormState,
 ): nurse_registration_details.UpsertableNurseRegistrationDetails {
@@ -131,6 +134,9 @@ function getRegistrationDetails(
     ncz_registration_card_media_id: ncz_registration_card?.id,
     national_id_media_id: national_id_picture?.id,
     nurse_practicing_cert_media_id: nurse_practicing_cert?.id,
+    mobile_number: typeof mobile_number === 'number'
+      ? String(mobile_number)
+      : mobile_number?.replace(/[^0-9]/g, ''),
     approved_by: null,
     ...rest,
   }
@@ -167,13 +173,22 @@ export default async function RegisterPage(
   const stepState = useNurseRegistrationSteps(ctx)
 
   return (
-    <Container size='lg'>
-      {stepState.stepsTopBar}
-      <NurseRegistrationForm
-        currentStep={stepState.currentStep}
-        formData={formState}
-        adminDistricts={adminDistricts}
-      />
-    </Container>
+    <Layout
+      variant='just logo'
+      title='Register as a nurse'
+      url={ctx.url}
+    >
+      <Container size='xl'>
+        <SectionHeader>
+          Registration
+        </SectionHeader>
+        {stepState.stepsTopBar}
+        <NurseRegistrationForm
+          currentStep={stepState.currentStep}
+          formData={formState}
+          adminDistricts={adminDistricts}
+        />
+      </Container>
+    </Layout>
   )
 }

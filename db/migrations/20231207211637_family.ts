@@ -5,8 +5,13 @@ import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
   await db.schema
+    .createType('guardian_relation')
+    .asEnum(GUARDIAN_RELATIONS.map(({ guardian }) => guardian))
+    .execute()
+
+  await db.schema
     .createTable('guardian_relations')
-    .addColumn('guardian', 'varchar(255)', (col) => col.primaryKey())
+    .addColumn('guardian', sql`guardian_relation`, (col) => col.primaryKey())
     .addColumn('dependent', 'varchar(255)', (col) => col.notNull())
     .addColumn('female_guardian', 'varchar(255)')
     .addColumn('male_guardian', 'varchar(255)')
@@ -39,7 +44,7 @@ export async function up(db: Kysely<any>) {
     )
     .addColumn(
       'guardian_relation',
-      'varchar(255)',
+      sql`guardian_relation`,
       (col) =>
         col.notNull().references('guardian_relations.guardian').onDelete(
           'cascade',
@@ -76,4 +81,5 @@ export async function up(db: Kysely<any>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_guardians').execute()
   await db.schema.dropTable('guardian_relations').execute()
+  await db.schema.dropType('guardian_relation').execute()
 }

@@ -4,7 +4,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import * as media from '../../db/models/media.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -343,7 +343,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       await nurse_specialties.add(db, {
         employee_id: secondEmployment.id,
-        specialty: 'clinical_care_nurse',
+        specialty: 'clinical care',
       })
 
       const nurse_address = await insertTestAddress()
@@ -376,9 +376,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(result.gender, 'female')
       assertEquals(result.name, 'Worker')
       assertEquals(result.date_of_birth, '12 December 1999')
-      assertEquals(result.mobile_number, '5555555555') // <------ this is a problem (phone number formatting happens on display)
+      assertEquals(result.mobile_number, '5555555555')
       assertEquals(result.avatar_url, 'avatar_url')
-      assertEquals(result.date_of_first_practice, '1 January 2020') // <------ this is a problem (date gets moved back 16 hours)
+      assertEquals(result.date_of_first_practice, '1 January 2020')
       assertEquals(result.email, 'test@worker.com')
       assert(
         /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),

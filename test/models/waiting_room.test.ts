@@ -1,6 +1,6 @@
 import { beforeEach, describe, it } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/reset.ts'
+import { resetInTest } from '../../db/meta.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'

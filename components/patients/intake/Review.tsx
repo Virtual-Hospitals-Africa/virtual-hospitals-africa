@@ -10,7 +10,7 @@ export default function PatientReview(
   return (
     <div>
       <PatientDetailedCard patient={patient as any} />
-      <input type='hidden' name='completed_onboarding' value='on' />
+      <input type='hidden' name='completed_intake' value='on' />
     </div>
   )
 }

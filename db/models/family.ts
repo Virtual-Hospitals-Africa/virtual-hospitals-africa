@@ -1,3 +1,4 @@
+import { sql } from 'kysely'
 import {
   FamilyRelationInsert,
   FamilyUpsert,
@@ -75,7 +76,7 @@ export async function get(
           ]),
         )
         .then(eb.ref('guardian_relations.male_guardian'))
-        .else(eb.ref('guardian_relations.guardian'))
+        .else(sql<string>`guardian_relations.guardian::text`)
         .end()
         .as('family_relation_gendered'),
     ])

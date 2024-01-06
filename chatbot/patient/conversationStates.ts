@@ -103,15 +103,15 @@ const conversationStates: ConversationStates<
         },
       },
       {
-        id: 'other',
-        title: 'Other',
+        id: 'non-binary',
+        title: 'Non-binary',
         nextState: 'not_onboarded:make_appointment:enter_date_of_birth',
         async onExit(trx, patientState) {
           await patients.upsertIntake(trx, {
             ...pickPatient(patientState),
-            gender: 'other',
+            gender: 'non-binary',
           })
-          return { ...patientState, gender: 'other' }
+          return { ...patientState, gender: 'non-binary' }
         },
       },
     ],
@@ -211,9 +211,8 @@ const conversationStates: ConversationStates<
       }
 
       const facilities = nearest_facilities.map((facility) => {
-        const distanceInKM = facility.walking_distance
-          ? facility.walking_distance
-          : (facility.distance / 1000).toFixed(1) + ' km'
+        const distanceInKM = facility.walking_distance ||
+          (facility.distance / 1000).toFixed(1) + ' km'
         const description = distanceInKM
           ? `${facility.address} (${distanceInKM})`
           : facility.address

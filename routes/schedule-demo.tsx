@@ -23,9 +23,8 @@ export default function PartnerPage(
   return (
     <Layout
       title='Schedule a demo | Virtual Hospitals Africa'
-      route={props.route}
       url={props.url}
-      variant='just-logo'
+      variant='just logo'
     >
       <SideBySide
         image='https://live.staticflickr.com/8877/29095571713_eb20065354_b.jpg'

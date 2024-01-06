@@ -1,9 +1,9 @@
 import sortBy from './sortBy.ts'
 
-export default function matchActiveLink<T extends { href: string }>(
-  links: T[],
+export default function matchActiveLink<LinkDef extends { route: string }>(
+  links: LinkDef[],
+  route: string,
 ) {
-  const linksSorted = sortBy(links, (link) => -link.href.length)
-  return (route: string) =>
-    linksSorted.find((link: T) => route.startsWith(link.href))
+  const linksSorted = sortBy(links, (link) => -link.route.length)
+  return linksSorted.find((link: LinkDef) => route.startsWith(link.route))
 }

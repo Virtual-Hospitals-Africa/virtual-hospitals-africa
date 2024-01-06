@@ -119,7 +119,7 @@ export default function Appointment(
   }
 
   return (
-    <li className='relative flex space-x-6 py-6 xl:static hover:bg-gray-50 px-2 py-3'>
+    <li className='relative flex space-x-6 xl:static hover:bg-gray-50 px-2 py-3'>
       <AppointmentContents appointment={appointment} href={href} />
       {appointment.type === 'slot'
         ? (

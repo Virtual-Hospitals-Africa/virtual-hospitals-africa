@@ -20,9 +20,9 @@ import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_facilities from './routes/app/facilities.tsx'
 import * as $app_facilities_facility_id_middleware from './routes/app/facilities/[facility_id]/_middleware.ts'
 import * as $app_facilities_facility_id_employees from './routes/app/facilities/[facility_id]/employees.tsx'
-import * as $app_facilities_facility_id_employees_id_ from './routes/app/facilities/[facility_id]/employees/[id].tsx'
-import * as $app_facilities_facility_id_employees_id_approve from './routes/app/facilities/[facility_id]/employees/[id]/approve.tsx'
-import * as $app_facilities_facility_id_employees_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[id]/media/[mediaId].tsx'
+import * as $app_facilities_facility_id_employees_health_worker_id_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx'
+import * as $app_facilities_facility_id_employees_health_worker_id_approve from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/approve.tsx'
+import * as $app_facilities_facility_id_employees_health_worker_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx'
 import * as $app_facilities_facility_id_employees_invite from './routes/app/facilities/[facility_id]/employees/invite.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
@@ -113,12 +113,12 @@ const manifest = {
       $app_facilities_facility_id_middleware,
     './routes/app/facilities/[facility_id]/employees.tsx':
       $app_facilities_facility_id_employees,
-    './routes/app/facilities/[facility_id]/employees/[id].tsx':
-      $app_facilities_facility_id_employees_id_,
-    './routes/app/facilities/[facility_id]/employees/[id]/approve.tsx':
-      $app_facilities_facility_id_employees_id_approve,
-    './routes/app/facilities/[facility_id]/employees/[id]/media/[mediaId].tsx':
-      $app_facilities_facility_id_employees_id_media_mediaId_,
+    './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx':
+      $app_facilities_facility_id_employees_health_worker_id_,
+    './routes/app/facilities/[facility_id]/employees/[health_worker_id]/approve.tsx':
+      $app_facilities_facility_id_employees_health_worker_id_approve,
+    './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx':
+      $app_facilities_facility_id_employees_health_worker_id_media_mediaId_,
     './routes/app/facilities/[facility_id]/employees/invite.tsx':
       $app_facilities_facility_id_employees_invite,
     './routes/app/facilities/[facility_id]/register/[step].tsx':

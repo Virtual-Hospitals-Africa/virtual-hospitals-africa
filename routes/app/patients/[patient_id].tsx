@@ -23,8 +23,8 @@ export default async function PatientPage(
 
   assertOr404(patient, 'Patient not found')
 
-  if (!patient.completed_onboarding) {
-    return redirect(`${req.url}/intake`)
+  if (!patient.completed_intake) {
+    return redirect(`${req.url}/intake/personal`)
   }
 
   return (
@@ -33,7 +33,7 @@ export default async function PatientPage(
       route={ctx.route}
       url={ctx.url}
       avatarUrl={ctx.state.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
       <Container size='lg'>
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>

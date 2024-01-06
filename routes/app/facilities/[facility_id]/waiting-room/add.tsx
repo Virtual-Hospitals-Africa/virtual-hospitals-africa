@@ -24,6 +24,7 @@ import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
+import { HomePageSidebar } from '../../../../../components/library/Sidebar.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -57,12 +58,12 @@ export default async function WaitingRoomAdd(
   const patient_name = searchParams.get('patient_name')
   const just_completed_intake = url.searchParams.get('intake') === 'completed'
 
-  let completing_intake: Promise<ReturnedSqlRow<Patient>> | undefined
+  let completing_intake: Promise<unknown> = Promise.resolve()
   if (just_completed_intake) {
     assertOr400(patient_id, 'patient_id is required')
     completing_intake = patients.upsert(trx, {
       id: patient_id,
-      completed_onboarding: true,
+      completed_intake: true,
     })
   }
 
@@ -75,9 +76,10 @@ export default async function WaitingRoomAdd(
 
   let patient: { id?: number; name: string } | undefined
   if (patient_id) {
-    const fetched_patient = await (completing_intake || patients.getByID(trx, {
+    await completing_intake
+    const fetched_patient = await patients.getByID(trx, {
       id: patient_id,
-    }))
+    })
     assert(hasName(fetched_patient))
     patient = fetched_patient
   } else if (patient_name) {
@@ -90,9 +92,9 @@ export default async function WaitingRoomAdd(
       route={route}
       url={url}
       avatarUrl={state.healthWorker.avatar_url}
-      variant='standard'
+      variant='home page'
     >
-      <Container size='lg'>
+      <Container size='md'>
         <Form method='POST'>
           <FormRow>
             <PersonSearch

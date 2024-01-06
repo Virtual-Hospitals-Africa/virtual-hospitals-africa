@@ -1,13 +1,13 @@
-import { ArrowLeftIcon, BellIcon } from './icons/heroicons/outline.tsx'
+import { BellIcon, XMarkIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
-import { LogoWithFullText, LogoWithInitials } from './Logo.tsx'
+import { LogoWithFullText } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
 
 export type HeaderProps = {
   title: string
-  variant: 'standard' | 'form' | 'just-logo'
-  avatarUrl?: string
+  variant: 'home page' | 'form' | 'just logo'
+  avatarUrl?: Maybe<string>
 }
 
 function Notification() {
@@ -28,30 +28,28 @@ function Notification() {
 }
 
 function HeaderLeft(
-  { showBackButton, title }: { showBackButton: boolean; title: string },
+  { title }: { title: string },
 ) {
   return (
     <div className='flex items-center gap-2'>
-      {showBackButton && (
-        <a
-          className='back'
-          onClick={() => window.history.back()}
-        >
-          <ArrowLeftIcon
-            className='back-arrow w-4 h-4 fill-white md:hide'
-            stroke-width='1'
-            stroke='currentColor'
-          />
-        </a>
-      )}
-      <h6 className='text-xl text-white'>{title}</h6>
+      <h1 className='text-xl text-white'>{title}</h1>
     </div>
   )
 }
 
-function HeaderRight({ avatarUrl }: { avatarUrl: string | undefined }) {
+function HeaderRight({ children }: { children: ComponentChildren }) {
   return (
     <div className='absolute inset-y-0 right-0 flex gap-4 items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0'>
+      {children}
+    </div>
+  )
+}
+
+function HeaderRightWithAvatar(
+  { avatarUrl }: { avatarUrl?: Maybe<string> },
+) {
+  return (
+    <HeaderRight>
       <Notification />
       <button
         type='button'
@@ -63,7 +61,17 @@ function HeaderRight({ avatarUrl }: { avatarUrl: string | undefined }) {
         <span className='sr-only'>To user profile</span>
         <Avatar src={avatarUrl} className='h-8 w-8' />
       </button>
-    </div>
+    </HeaderRight>
+  )
+}
+
+function HeaderRightClose() {
+  return (
+    <HeaderRight>
+      <a onClick={() => window.history.back()} className='h-6 w-6'>
+        <XMarkIcon stroke='white' />
+      </a>
+    </HeaderRight>
   )
 }
 
@@ -92,15 +100,15 @@ function HeaderWithoutNav() {
 }
 
 export function Header({ title, avatarUrl, variant }: HeaderProps) {
-  if (variant === 'just-logo') return <HeaderWithoutNav />
+  if (variant === 'just logo') return <HeaderWithoutNav />
+  const right = variant === 'home page'
+    ? <HeaderRightWithAvatar avatarUrl={avatarUrl} />
+    : <HeaderRightClose />
 
   return (
     <HeaderBase className='bg-gray-800'>
-      <HeaderLeft
-        showBackButton={variant === 'form'}
-        title={title}
-      />
-      <HeaderRight avatarUrl={avatarUrl} />
+      <HeaderLeft title={title} />
+      {right}
     </HeaderBase>
   )
 }

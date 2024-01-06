@@ -1,30 +1,12 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { NURSE_SPECIALTIES } from '../../types.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db
     .schema
     .createType('nurse_speciality')
-    .asEnum([
-      'primary_care_nurse',
-      'registered_general_nurse',
-      'midwife',
-      'intensive_and_coronary_care_nurse',
-      'renal_nurse',
-      'neonatal_intensive_care_and_paediatric_nurse',
-      'psychiatric_mental_health_nurse',
-      'operating_theatre_nurse',
-      'community_nurse',
-      'opthalmic_nurse',
-      'nurse_administrator',
-      'nurse_anaesthetist',
-      'trauma_care_nurse',
-      'clinical_care_nurse',
-      'clinical_officer',
-      'orthopaedic_nurse',
-      'oncology_and_palliative_care_nurse',
-      'dental_nurse',
-    ])
+    .asEnum(NURSE_SPECIALTIES)
     .execute()
 
   await db
@@ -78,16 +60,15 @@ export async function up(db: Kysely<unknown>) {
         .notNull()
         .unique())
     .addColumn('gender', sql`gender`, (column) => column.notNull())
-    .addColumn('national_id', 'varchar(255)', (column) =>
+    .addColumn('national_id_number', 'varchar(50)', (column) =>
       column
-        .notNull()
-        .check(sql`national_id ~ '^[0-9]{8}[a-zA-Z]{1}[0-9]{2}$'`))
+        .notNull())
     .addColumn('date_of_first_practice', 'date', (column) => column.notNull())
-    .addColumn('ncz_registration_number', 'varchar(255)', (column) =>
+    .addColumn('ncz_registration_number', 'varchar(50)', (column) =>
       column
         .notNull()
         .check(sql`ncz_registration_number ~ '^[a-zA-Z]{2}[0-9]{6}$'`))
-    .addColumn('mobile_number', 'varchar(255)', (column) => column.notNull())
+    .addColumn('mobile_number', 'varchar(50)', (column) => column.notNull())
     .addColumn('national_id_media_id', 'integer', (column) =>
       column
         .references('media.id')
@@ -104,6 +85,10 @@ export async function up(db: Kysely<unknown>) {
       column
         .references('health_workers.id')
         .onDelete('cascade'))
+    .addCheckConstraint(
+      'nurse_registration_details_national_id_number_check',
+      sql`national_id_number ~ '^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$'`,
+    )
     .execute()
 
   await addUpdatedAtTrigger(db, 'nurse_registration_details')

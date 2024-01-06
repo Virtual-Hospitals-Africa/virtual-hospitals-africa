@@ -437,21 +437,16 @@ export async function refreshTokens(
 
 export async function getLocationAddress(
   { longitude, latitude }: Location,
-): Promise<string | null> {
+): Promise<string> {
   const cachedAddress = await getFacilityAddress(longitude, latitude)
-  if (cachedAddress) {
-    return cachedAddress
-  }
+  if (cachedAddress) return cachedAddress
 
   const data = await getGeocodeData(latitude, longitude)
   const address = getAddressFromData(data)
 
-  if (address) {
-    await cacheFacilityAddress(longitude, latitude, address)
-    return address
-  }
-
-  return null
+  assert(address)
+  await cacheFacilityAddress(longitude, latitude, address)
+  return address
 }
 
 async function getGeocodeData(
