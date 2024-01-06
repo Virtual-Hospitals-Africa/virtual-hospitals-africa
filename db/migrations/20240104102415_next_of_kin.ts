@@ -15,7 +15,7 @@ export async function up(db: Kysely<unknown>) {
       'timestamp',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('relationship', 'varchar(255)', (col) =>
+    .addColumn('relationship', sql`guardian_relation`, (col) =>
       col
         .notNull()
         .references('guardian_relations.guardian')
