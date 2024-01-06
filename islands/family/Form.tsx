@@ -28,13 +28,12 @@ export default function PatientFamilyForm({
   const showGuardians = age <= 18
   const showDependents = age >= 10
   const showNextOfKin = age >= 19
-  const hideNextofKinForm = showGuardians && !showNextOfKin
-
+  const hideNextofKinForm = showGuardians
+  
   return (
     <div>
-      {showNextOfKin ||
-        true && (
-            <div style={{ display: hideNextofKinForm ? 'none' : 'block' }}>
+      {showNextOfKin && (
+            <div style={{ display: hideNextofKinForm ? 'none' : 'unset' }}>
               <SectionHeader className='my-5 text-[20px]'>
                 Next Of Kin
               </SectionHeader>

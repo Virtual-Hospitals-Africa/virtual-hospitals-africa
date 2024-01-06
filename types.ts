@@ -228,7 +228,7 @@ export type PatientFamily = {
   religion?: Maybe<string>
   guardians: FamilyRelation[]
   dependents: FamilyRelation[]
-  next_of_kin: FamilyRelation
+  next_of_kin?: FamilyRelation
 }
 
 export type FamilyRelation = {
@@ -240,7 +240,7 @@ export type FamilyRelation = {
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
   family_relation_gendered: Maybe<string>
-  next_of_kin: Maybe<boolean>
+  next_of_kin?: Maybe<boolean>
 }
 
 export type FamilyRelationInsert = {
