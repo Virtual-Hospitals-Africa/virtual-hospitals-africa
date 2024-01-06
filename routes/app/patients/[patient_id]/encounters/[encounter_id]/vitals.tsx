@@ -2,6 +2,7 @@ import { Container } from '../../../../../../components/library/Container.tsx'
 import Layout from '../../../../../../components/library/Layout.tsx'
 import { NumberInput } from '../../../../../../components/library/form/Inputs.tsx'
 import { EncounterContext } from './_middleware.tsx'
+import * as patients from '../../../../../../db/models/patients.ts'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {
   LoggedInHealthWorkerHandler,
@@ -16,10 +17,7 @@ import capitalize from '../../../../../../util/capitalize.ts'
 import getNumericParam from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 import Form from '../../../../../../components/library/form/Form.tsx'
-import {
-  HomePageSidebar,
-  SeekingTreatmentSidebar,
-} from '../../../../../../components/library/Sidebar.tsx'
+import { SeekingTreatmentSidebar } from '../../../../../../components/library/Sidebar.tsx'
 
 function assertIsVitals(
   values: unknown,
@@ -73,12 +71,19 @@ export const handler: LoggedInHealthWorkerHandler<unknown, {
   },
 }
 
-export default function VitalsPage(ctx: EncounterContext) {
+export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
+  const patient_id = getNumericParam(ctx, 'patient_id')
+  const card = await patients.getCard(ctx.state.trx, { id: patient_id })
+
   return (
     <Layout
       title='Patient Vitals'
       sidebar={
-        <SeekingTreatmentSidebar route={ctx.route} params={ctx.params} />
+        <SeekingTreatmentSidebar
+          route={ctx.route}
+          params={ctx.params}
+          patient={card}
+        />
       }
       url={ctx.url}
       variant='form'

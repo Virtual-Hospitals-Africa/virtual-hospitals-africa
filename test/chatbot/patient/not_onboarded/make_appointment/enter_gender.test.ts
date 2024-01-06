@@ -26,7 +26,7 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: 'other',
+      body: 'non-binary',
       media_id: null,
       whatsapp_id: 'whatsapp_id',
     })
@@ -60,6 +60,6 @@ describe('patient chatbot', () => {
       patient.conversation_state,
       'not_onboarded:make_appointment:enter_date_of_birth',
     )
-    assertEquals(patient.gender, 'other')
+    assertEquals(patient.gender, 'non-binary')
   })
 })

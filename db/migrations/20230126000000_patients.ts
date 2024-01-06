@@ -15,7 +15,7 @@ export async function up(db: Kysely<unknown>) {
     .asEnum([
       'male',
       'female',
-      'other',
+      'non-binary',
     ])
     .execute()
 

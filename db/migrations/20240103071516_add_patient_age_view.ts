@@ -2,37 +2,59 @@ import { Kysely, sql } from 'kysely'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createType('age_units')
+    .createType('age_unit')
     .asEnum([
-      'days',
-      'weeks',
-      'months',
-      'years',
+      'day',
+      'week',
+      'month',
+      'year',
     ])
     .execute()
 
   await sql`
     CREATE TYPE age AS (
       number INTEGER,
-      units AGE_UNITS
+      unit AGE_UNIT
     )
   `.execute(db)
 
   await sql`
     CREATE VIEW patient_age AS
-    SELECT
-      id AS patient_id,
-      CASE
-        WHEN EXTRACT(YEAR FROM AGE(CURRENT_DATE, date_of_birth)) >= 2 THEN
-          (EXTRACT(YEAR FROM AGE(CURRENT_DATE, date_of_birth)), 'years')::AGE
-        WHEN EXTRACT(year FROM AGE(CURRENT_DATE, date_of_birth)) * 12 + EXTRACT(MONTH FROM AGE(CURRENT_DATE, date_of_birth)) >= 3 THEN
-          (EXTRACT(year FROM AGE(CURRENT_DATE, date_of_birth)) * 12 + EXTRACT(MONTH FROM AGE(CURRENT_DATE, date_of_birth)), 'months')::AGE
-        WHEN DATE_PART('day', CURRENT_DATE::timestamp - date_of_birth::timestamp) >= 21 THEN
-          (TRUNC(DATE_PART('day', CURRENT_DATE::timestamp - date_of_birth::timestamp)/7), 'weeks')::AGE
+
+    WITH a1 AS (
+      SELECT id,
+             AGE(CURRENT_DATE, date_of_birth) as age,
+             CURRENT_DATE::timestamp - date_of_birth::timestamp as diff
+        from patients
+       WHERE date_of_birth IS NOT NULL
+    ),
+
+    a2 AS (
+      SELECT id AS patient_id,
+        CASE WHEN age >= INTERVAL '2 years'
+          THEN (EXTRACT(YEAR FROM age), 'year')::AGE
+        WHEN age >= INTERVAL '3 months'
+          THEN (EXTRACT(YEAR FROM age) * 12 + EXTRACT(MONTH FROM age), 'month')::AGE
+        WHEN age >= interval '21 days'
+          THEN (
+            TRUNC(DATE_PART('day', diff) / 7),
+            'week'
+          )::AGE
         ELSE
-          (DATE_PART('day', CURRENT_DATE::timestamp - date_of_birth::timestamp), 'days')::AGE
-      END AS age
-    FROM patients
+          (DATE_PART('day', diff),
+          'day'
+        )::AGE END AS age
+      FROM a1
+    )
+
+    SELECT 
+      patient_id, 
+      age, 
+      (age).number AS age_number, 
+      (age).unit AS age_unit,
+      (age).number::TEXT || ' ' || (age).unit::TEXT || (CASE WHEN (age).number = 1 THEN '' ELSE 's' END) AS age_display
+    FROM a2
+    WHERE age IS NOT NULL
   `.execute(db)
 }
 

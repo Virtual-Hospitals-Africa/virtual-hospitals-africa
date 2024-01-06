@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'preact/hooks'
 import SearchResults, {
   AddButtonSearchResult,
   PersonSearchResult,
-  PersonSearchResultData,
 } from '../components/library/SearchResults.tsx'
 import { SearchInput } from '../components/library/form/Inputs.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -20,7 +19,7 @@ function hasId(value: unknown): value is HasId {
   - [ ] Show avatar in input
   - [ ] For patients, show date of birth, gender, and national id
 */
-export default function PersonSearch<Person extends PersonSearchResultData>({
+export default function PersonSearch({
   href,
   name,
   required,
@@ -44,7 +43,8 @@ export default function PersonSearch<Person extends PersonSearchResultData>({
   >(
     hasId(value) ? value : null,
   )
-  const [people, setPeople] = useState<Person[]>([])
+  // deno-lint-ignore no-explicit-any
+  const [people, setPeople] = useState<any[]>([])
 
   const [search, setSearchImmediate] = useState(value?.name ?? '')
 

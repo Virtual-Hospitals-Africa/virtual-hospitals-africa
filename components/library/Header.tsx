@@ -2,11 +2,12 @@ import { BellIcon, XMarkIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
 import { LogoWithFullText } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
+import { Maybe } from '../../types.ts'
 
 export type HeaderProps = {
   title: string
   variant: 'home page' | 'form' | 'just logo'
-  avatarUrl?: string
+  avatarUrl?: Maybe<string>
 }
 
 function Notification() {
@@ -45,7 +46,7 @@ function HeaderRight({ children }: { children: ComponentChildren }) {
 }
 
 function HeaderRightWithAvatar(
-  { avatarUrl }: { avatarUrl: string | undefined },
+  { avatarUrl }: { avatarUrl?: Maybe<string> },
 ) {
   return (
     <HeaderRight>
@@ -68,7 +69,7 @@ function HeaderRightClose() {
   return (
     <HeaderRight>
       <a onClick={() => window.history.back()} className='h-6 w-6'>
-        <XMarkIcon />
+        <XMarkIcon stroke='white' />
       </a>
     </HeaderRight>
   )

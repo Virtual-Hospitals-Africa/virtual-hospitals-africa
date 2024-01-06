@@ -8,6 +8,7 @@ import { FacilityContext } from '../_middleware.ts'
 import getNumericParam from '../../../../../util/getNumericParam.ts'
 
 export default async function EmployeePage(
+  _req: Request,
   ctx: FacilityContext,
 ) {
   const { trx, facility, healthWorker, isAdminAtFacility } = ctx.state

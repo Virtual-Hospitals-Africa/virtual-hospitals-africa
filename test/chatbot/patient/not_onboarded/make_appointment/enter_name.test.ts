@@ -51,7 +51,7 @@ describe('patient chatbot', () => {
           options: [
             { id: 'male', title: 'Male' },
             { id: 'female', title: 'Female' },
-            { id: 'other', title: 'Other' },
+            { id: 'non-binary', title: 'Non-binary' },
           ],
         },
         phone_number,

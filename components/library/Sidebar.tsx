@@ -6,6 +6,7 @@ import LogoutIcon from './icons/logout.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
+import { Person, PersonData } from './Person.tsx'
 
 export type SidebarProps = {
   top: {
@@ -115,26 +116,23 @@ function replaceParams(route: string, params: Record<string, string>) {
   return route
 }
 
-function GenericSidebar({ navLinks, route, params }: SidebarProps) {
+function GenericSidebar({ navLinks, route, params, top }: SidebarProps) {
   const activeLink = matchActiveLink(navLinks, route)
   return (
     <div className='hidden fixed inset-y-0 z-40 md:flex w-48 md:flex-col'>
       <div className='flex flex-auto flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-5 pb-4'>
-        <a href='/app' className='flex h-20 shrink-0 items-center gap-3'>
-          <LogoWithFullText variant='indigo' className='h-16' />
+        <a href={top.href} className='flex h-20 shrink-0 items-center gap-3'>
+          {top.child}
         </a>
         <nav className='flex flex-1 flex-col'>
           <ul role='list' className='-mx-2 space-y-1'>
             {navLinks.map((link) => (
-              console.log('link', link),
-                (
-                  <NavItem
-                    href={replaceParams(link.route, params || {})}
-                    active={link === activeLink}
-                    title={link.title}
-                    Icon={link.Icon}
-                  />
-                )
+              <NavItem
+                href={replaceParams(link.route, params || {})}
+                active={link === activeLink}
+                title={link.title}
+                Icon={link.Icon}
+              />
             ))}
           </ul>
         </nav>
@@ -157,7 +155,11 @@ export function HomePageSidebar({ route }: { route: string }) {
 }
 
 export function SeekingTreatmentSidebar(
-  { route, params }: { route: string; params: Record<string, string> },
+  { route, params, patient }: {
+    route: string
+    params: Record<string, string>
+    patient: PersonData
+  },
 ) {
   return (
     <GenericSidebar
@@ -166,7 +168,7 @@ export function SeekingTreatmentSidebar(
       navLinks={seeking_treatment_nav_links}
       top={{
         href: replaceParams('/app/patients/:patient_id', params),
-        child: <LogoWithFullText variant='indigo' className='h-16' />,
+        child: <Person person={patient} />,
       }}
     />
   )

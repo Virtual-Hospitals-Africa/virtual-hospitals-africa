@@ -3,7 +3,7 @@ import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
+import { Gender, Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -550,7 +550,7 @@ export function RadioGroup(
 }
 
 export function GenderSelect(
-  { value }: { value: Maybe<'male' | 'female' | 'other'> },
+  { value }: { value: Maybe<Gender> },
 ) {
   return (
     <Select
@@ -561,7 +561,11 @@ export function GenderSelect(
       <option value=''>Select</option>
       <option value='female' label='Female' selected={value === 'female'} />
       <option value='male' label='Male' selected={value === 'male'} />
-      <option value='other' label='Other' selected={value === 'other'} />
+      <option
+        value='non-binary'
+        label='Non-binary'
+        selected={value === 'non-binary'}
+      />
     </Select>
   )
 }

@@ -1,5 +1,7 @@
 import type { ColumnType } from 'kysely'
 
+export type AgeUnit = 'day' | 'month' | 'week' | 'year'
+
 export type EncounterReason =
   | 'appointment'
   | 'checkup'
@@ -9,7 +11,7 @@ export type EncounterReason =
   | 'referral'
   | 'seeking treatment'
 
-export type Gender = 'female' | 'male' | 'other'
+export type Gender = 'female' | 'male' | 'non-binary'
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
@@ -336,6 +338,9 @@ export interface NurseSpecialties {
 
 export interface PatientAge {
   age: string | null
+  age_display: string | null
+  age_number: number | null
+  age_unit: AgeUnit | null
   patient_id: number | null
 }
 
@@ -587,5 +592,4 @@ export interface DB {
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
 }
-
 type Buffer = Uint8Array
