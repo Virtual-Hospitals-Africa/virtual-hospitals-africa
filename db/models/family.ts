@@ -177,7 +177,7 @@ export async function get(
     religion: 'TODO',
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
-    next_of_kin: (await gettingNextOfKin)!
+    next_of_kin: (await gettingNextOfKin)!,
   }
 }
 
@@ -256,8 +256,9 @@ export async function upsert(
   )
 
   //currently, we have one kin, but doing this will help us future changes if we have many and be more consistent
-  const kinList : FamilyRelationInsert[] = 
-  family_to_upsert?.next_of_kin? [family_to_upsert?.next_of_kin] : []
+  const kinList: FamilyRelationInsert[] = family_to_upsert?.next_of_kin
+    ? [family_to_upsert?.next_of_kin]
+    : []
   const [existing_kin, new_kin] = partition(
     kinList,
     hasPatientId,
@@ -277,9 +278,9 @@ export async function upsert(
     GuardianRelationName
   >()
   const kin_upserts_with_patient_ids = new Map<
-  number,
-  GuardianRelationName
->()
+    number,
+    GuardianRelationName
+  >()
   for (const guardian of existing_guardians) {
     assertOr400(
       !guardian_upserts_with_patient_ids.has(guardian.patient_id) &&
@@ -415,7 +416,6 @@ export async function upsert(
       .deleteFrom('patient_kin')
       .where('id', 'in', kin_to_remove[0].relation_id)
       .execute()
-  
 
   // 2. Update: The relation exists in the db as given by its patient_id and the upsert
   const updated_guardian_patient_ids = new Set<number>()
@@ -464,7 +464,7 @@ export async function upsert(
       kin_relation_in_db.patient_id,
     )!
     const values: PatientKin = {
-      id:kin_relation_in_db.relation_id,
+      id: kin_relation_in_db.relation_id,
       patient_id: patient_id,
       next_of_kin_patient_id: kin_relation_in_db.patient_id,
       relationship: kin_relation,
@@ -545,11 +545,10 @@ export async function upsert(
       },
     )
 
-  const new_kin_to_insert: PatientKin[] =   
-     kinList
+  const new_kin_to_insert: PatientKin[] = kinList
     .filter((kin) =>
       kin &&
-      !kin.patient_id ||
+        !kin.patient_id ||
       !updated_kin_patient_ids.has(kin!.patient_id!)
     )
     .map(

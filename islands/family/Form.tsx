@@ -32,14 +32,15 @@ export default function PatientFamilyForm({
 
   return (
     <div>
-      {showNextOfKin || true && (
-        <div style={{display: hideNextofKinForm ? 'none' : 'block' }}>
-          <SectionHeader className='my-5 text-[20px]'>
-            Next Of Kin
-          </SectionHeader>
-          <Kin name='family.next_of_kin' value={nextOfKin.value} />
-        </div>
-      )}
+      {showNextOfKin ||
+        true && (
+            <div style={{ display: hideNextofKinForm ? 'none' : 'block' }}>
+              <SectionHeader className='my-5 text-[20px]'>
+                Next Of Kin
+              </SectionHeader>
+              <Kin name='family.next_of_kin' value={nextOfKin.value} />
+            </div>
+          )}
 
       {showGuardians && (
         <div>
@@ -56,8 +57,8 @@ export default function PatientFamilyForm({
                     i === ix ? { removed: true } : guardian
                   )}
                 onSelect={(guardian) => {
-                  if(guardian.next_of_kin){
-                   nextOfKin.value = guardian
+                  if (guardian.next_of_kin) {
+                    nextOfKin.value = guardian
                   }
                 }}
               />
