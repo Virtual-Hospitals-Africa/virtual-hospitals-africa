@@ -66,7 +66,8 @@ export const handler: LoggedInHealthWorkerHandler<
 }
 
 export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
-  log('VitalsPage')
+  console.log('req', _req)
+  console.log('ctx', ctx)
   const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
     patient_id: ctx.state.patient.id,

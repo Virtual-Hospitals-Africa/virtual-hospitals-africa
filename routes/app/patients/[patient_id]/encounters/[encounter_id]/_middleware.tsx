@@ -143,7 +143,6 @@ export async function handler(
 
   ctx.state.encounter = encounter
   ctx.state.patient = await getting_patient_card
-  log('encounter handler 6')
   return ctx.next()
 }
 
