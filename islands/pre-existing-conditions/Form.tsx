@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
 import { PreExistingConditionWithDrugs } from '../../types.ts'
 import generateUUID from '../../util/uuid.ts'
-import { JSX } from 'preact/jsx-runtime'
+import { JSX } from 'preact'
 import { AddRow } from '../AddRemove.tsx'
 import Condition, { ConditionState } from './Condition.tsx'
 

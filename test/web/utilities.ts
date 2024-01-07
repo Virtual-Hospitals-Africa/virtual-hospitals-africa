@@ -31,6 +31,7 @@ export async function startWebServer(
       'web',
     ],
     env: {
+      LOG_FILE: 'test_server.log',
       PORT: String(port),
     },
     stdin: 'null',

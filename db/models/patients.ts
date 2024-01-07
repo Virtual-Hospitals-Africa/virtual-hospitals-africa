@@ -325,9 +325,12 @@ export type PatientCard = {
   avatar_url: string | null
 }
 
-export async function getCard(trx: TrxOrDb, opts: { id: number }): Promise<PatientCard> {
+export async function getCard(
+  trx: TrxOrDb,
+  opts: { id: number },
+): Promise<PatientCard> {
   const patient = await trx.selectFrom('patients')
-    .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select([
       'patients.id',
       'patients.name',

@@ -11,6 +11,7 @@ import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import capitalize from '../../../../../../util/capitalize.ts'
 import getNumericParam from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
+import { log } from '../../../../../_middleware.ts'
 
 function assertIsVitals(
   values: unknown,
@@ -65,6 +66,7 @@ export const handler: LoggedInHealthWorkerHandler<
 }
 
 export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
+  log('VitalsPage')
   const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
     patient_id: ctx.state.patient.id,

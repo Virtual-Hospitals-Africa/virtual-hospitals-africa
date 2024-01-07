@@ -1,6 +1,5 @@
 import { Measurements, PatientMeasurement, TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { jsonBuildObject } from '../helpers.ts'
 
 export const MEASUREMENTS: {
   [Name in keyof Measurements]: Measurements[Name][1]
@@ -62,11 +61,18 @@ export function add(
 
 export async function getEncounterVitals(
   trx: TrxOrDb,
-  { patient_id, encounter_id }: { patient_id: number, encounter_id: number | 'open' },
+  { patient_id, encounter_id }: {
+    patient_id: number
+    encounter_id: number | 'open'
+  },
 ): Promise<Partial<Measurements>> {
   let query = trx
     .selectFrom('patient_measurements')
-    .innerJoin('measurements', 'measurements.name', 'patient_measurements.measurement_name')
+    .innerJoin(
+      'measurements',
+      'measurements.name',
+      'patient_measurements.measurement_name',
+    )
     .where('patient_measurements.patient_id', '=', patient_id)
     .select([
       'measurement_name',
@@ -77,7 +83,11 @@ export async function getEncounterVitals(
   if (encounter_id !== 'open') {
     query = query.where('patient_measurements.encounter_id', '=', encounter_id)
   } else {
-    query = query.innerJoin('patient_encounters', 'patient_encounters.id', 'patient_measurements.encounter_id')
+    query = query.innerJoin(
+      'patient_encounters',
+      'patient_encounters.id',
+      'patient_measurements.encounter_id',
+    )
       .where('patient_encounters.patient_id', '=', patient_id)
       .where('patient_encounters.closed_at', 'is', null)
   }
@@ -87,7 +97,8 @@ export async function getEncounterVitals(
   const measurements: Partial<Measurements> = {}
   for (const { measurement_name, value, units } of measurement_rows) {
     // deno-lint-ignore no-explicit-any
-    measurements[(measurement_name as keyof Measurements)] = [parseFloat(value), units] as any
+    const measurement: any = [parseFloat(value), units]
+    measurements[measurement_name as keyof Measurements] = measurement
   }
   return measurements
 }

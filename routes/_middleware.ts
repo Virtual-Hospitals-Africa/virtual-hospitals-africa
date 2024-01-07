@@ -7,12 +7,15 @@ import db from '../db/db.ts'
 import { redis } from '../external-clients/redis.ts'
 
 // TODO: only do this on dev & test?
-const error_log = 'test_error.log'
-const logError = (err: Error) => {
-  const log = `${new Date().toISOString()}\n${
-    err.stack || err.message || err
-  }\n\n`
-  Deno.writeTextFileSync(error_log, log, { append: true })
+const log_file = Deno.env.get('LOG_FILE') || 'server.log'
+export const log = (msg: string) => {
+  const log = `${new Date().toISOString()}\n${msg}\n\n`
+  return Deno.writeTextFile(log_file, log, { append: true })
+}
+
+export const logError = (err: Error) => {
+  // deno-lint-ignore no-explicit-any
+  return log((err.stack || err.message || err) as any)
 }
 
 export const handler = [

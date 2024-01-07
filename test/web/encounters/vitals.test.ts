@@ -8,6 +8,7 @@ import {
 } from '../utilities.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
+import * as patient_measurements from '../../../db/models/patient_measurements.ts'
 import db from '../../../db/db.ts'
 
 describeWithWebServer(
@@ -63,6 +64,59 @@ describeWithWebServer(
     })
 
     it('can save vitals on POST', async () => {
+      const patient = await patients.upsert(db, { name: 'Test Patient' })
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+        scenario: 'approved-nurse',
+      })
+      const encounter = await patient_encounters.create(db, 1, {
+        patient_id: patient.id,
+        reason: 'seeking treatment',
+        employment_ids: [healthWorker.employee_id!],
+      })
+
+      const body = new FormData()
+      body.append('measurements.height.0', '123')
+      body.append('measurements.height.1', 'cm')
+
+      const response = await fetch(
+        `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
+      if (!response.ok) throw new Error(await response.text())
+      const vitals = await patient_measurements.getEncounterVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: patient.id,
+      })
+      assertEquals(vitals, {
+        height: [123, 'cm'],
+      })
+
+      {
+        const response = await fetch(
+          `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+        )
+
+        if (!response.ok) throw new Error(await response.text())
+        const pageContents = await response.text()
+
+        const $ = cheerio.load(pageContents)
+
+        const formValues = getFormValues($)
+        assertEquals(formValues, {
+          measurements: {
+            height: [123, 'cm'],
+            weight: [null, 'kg'],
+            temperature: [null, 'celsius'],
+            blood_pressure_diastolic: [null, 'mmHg'],
+            blood_pressure_systolic: [null, 'mmHg'],
+            blood_oxygen_saturation: [null, '%'],
+            blood_glucose: [null, 'mg/dL'],
+          },
+        })
+      }
     })
   },
 )
