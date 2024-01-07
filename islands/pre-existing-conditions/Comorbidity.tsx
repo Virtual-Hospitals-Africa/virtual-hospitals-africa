@@ -1,4 +1,4 @@
-import { JSX } from 'preact/jsx-runtime'
+import { JSX } from 'preact'
 import ConditionSearch from '../ConditionSearch.tsx'
 import { DateInput } from '../../components/library/form/Inputs.tsx'
 import { PreExistingConditionWithDrugs } from '../../types.ts'

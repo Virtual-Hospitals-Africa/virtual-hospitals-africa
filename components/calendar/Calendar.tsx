@@ -3,7 +3,7 @@ import {
   ChevronRightIcon,
 } from '../library/icons/heroicons/outline.tsx'
 import cls from '../../util/cls.ts'
-import { JSX } from 'preact/jsx-runtime'
+import { JSX } from 'preact'
 import { monthName, numberOfDaysInMonth } from '../../util/date.ts'
 import range from '../../util/range.ts'
 import { padTime } from '../../util/pad.ts'

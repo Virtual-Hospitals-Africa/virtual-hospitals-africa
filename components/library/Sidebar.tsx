@@ -6,7 +6,6 @@ import LogoutIcon from './icons/logout.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
-import { Person, PersonData } from './Person.tsx'
 
 export type SidebarProps = {
   top: {
@@ -48,66 +47,7 @@ const home_page_nav_links: LinkDef[] = [
   { route: '/logout', title: 'Log Out', Icon: LogoutIcon },
 ]
 
-const seeking_treatment_nav_links: LinkDef[] = [
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/vitals',
-    title: 'Vitals',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/symptoms',
-    title: 'Symptoms',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/risk_factors',
-    title: 'risk factors',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/examinations',
-    title: 'examinations',
-    Icon: CalendarIcon,
-  },
-  {
-    route:
-      '/app/patients/:patient_id/encounters/:encounter_id/diagnostic_tests',
-    title: 'diagnostic tests',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/diagnosis',
-    title: 'diagnosis',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/prescription',
-    title: 'prescription',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/orders',
-    title: 'orders',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/clinical_notes',
-    title: 'clinical notes',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/referral',
-    title: 'referral',
-    Icon: CalendarIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/close_visit',
-    title: 'close visit',
-    Icon: CalendarIcon,
-  },
-]
-
-function replaceParams(route: string, params: Record<string, string>) {
+export function replaceParams(route: string, params: Record<string, string>) {
   for (const param in params) {
     const placeholder = `/:${param}`
     const paramValue = `/${params[param]}`
@@ -116,7 +56,7 @@ function replaceParams(route: string, params: Record<string, string>) {
   return route
 }
 
-function GenericSidebar({ navLinks, route, params, top }: SidebarProps) {
+export function GenericSidebar({ navLinks, route, params, top }: SidebarProps) {
   const activeLink = matchActiveLink(navLinks, route)
   return (
     <div className='hidden fixed inset-y-0 z-40 md:flex w-48 md:flex-col'>
@@ -149,26 +89,6 @@ export function HomePageSidebar({ route }: { route: string }) {
       top={{
         href: '/app',
         child: <LogoWithFullText variant='indigo' className='h-16' />,
-      }}
-    />
-  )
-}
-
-export function SeekingTreatmentSidebar(
-  { route, params, patient }: {
-    route: string
-    params: Record<string, string>
-    patient: PersonData
-  },
-) {
-  return (
-    <GenericSidebar
-      route={route}
-      params={params}
-      navLinks={seeking_treatment_nav_links}
-      top={{
-        href: replaceParams('/app/patients/:patient_id', params),
-        child: <Person person={patient} />,
       }}
     />
   )

@@ -1,4 +1,4 @@
-import { JSX } from 'preact/jsx-runtime'
+import { JSX } from 'preact'
 
 export default function PlusIcon(
   props: JSX.SVGAttributes<SVGSVGElement>,

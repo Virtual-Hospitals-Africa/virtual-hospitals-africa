@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
-import { JSX } from 'preact/jsx-runtime'
+import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'

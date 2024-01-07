@@ -1,14 +1,9 @@
-import { Container } from '../../../../../../components/library/Container.tsx'
-import Layout from '../../../../../../components/library/Layout.tsx'
 import { NumberInput } from '../../../../../../components/library/form/Inputs.tsx'
-import { EncounterContext } from './_middleware.tsx'
-import * as patients from '../../../../../../db/models/patients.ts'
+import { EncounterContext, EncounterLayout } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {
   LoggedInHealthWorkerHandler,
   Measurements,
-  RenderedPatientEncounter,
-  RenderedPatientEncounterProvider,
 } from '../../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
@@ -16,8 +11,7 @@ import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import capitalize from '../../../../../../util/capitalize.ts'
 import getNumericParam from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
-import Form from '../../../../../../components/library/form/Form.tsx'
-import { SeekingTreatmentSidebar } from '../../../../../../components/library/Sidebar.tsx'
+import { log } from '../../../../../_middleware.ts'
 
 function assertIsVitals(
   values: unknown,
@@ -47,10 +41,10 @@ function assertIsVitals(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<unknown, {
-  encounter: RenderedPatientEncounter
-  encounter_provider: RenderedPatientEncounterProvider
-}> = {
+export const handler: LoggedInHealthWorkerHandler<
+  unknown,
+  EncounterContext['state']
+> = {
   async POST(req, ctx: EncounterContext) {
     const { measurements } = await parseRequestAsserts(
       ctx.state.trx,
@@ -72,42 +66,31 @@ export const handler: LoggedInHealthWorkerHandler<unknown, {
 }
 
 export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
-  const patient_id = getNumericParam(ctx, 'patient_id')
-  const card = await patients.getCard(ctx.state.trx, { id: patient_id })
+  log('VitalsPage')
+  const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
+    encounter_id: ctx.state.encounter.encounter_id,
+    patient_id: ctx.state.patient.id,
+  })
 
   return (
-    <Layout
-      title='Patient Vitals'
-      sidebar={
-        <SeekingTreatmentSidebar
-          route={ctx.route}
-          params={ctx.params}
-          patient={card}
-        />
-      }
-      url={ctx.url}
-      variant='form'
-    >
-      <Container size='lg'>
-        <Form method='POST'>
-          {Object.entries(patient_measurements.MEASUREMENTS).map(
-            ([measurement_name, units]) => (
-              <>
-                <NumberInput
-                  name={`measurements.${measurement_name}.0`}
-                  label={capitalize(measurement_name) + ` (${units})`}
-                />
-                <input
-                  type='hidden'
-                  name={`measurements.${measurement_name}.1`}
-                  value={units}
-                />
-              </>
-            ),
-          )}
-          <FormButtons />
-        </Form>
-      </Container>
-    </Layout>
+    <EncounterLayout ctx={ctx}>
+      {Object.entries(patient_measurements.MEASUREMENTS).map(
+        ([measurement_name, units]) => (
+          <>
+            <NumberInput
+              name={`measurements.${measurement_name}.0`}
+              label={capitalize(measurement_name) + ` (${units})`}
+              value={vitals[measurement_name as keyof Measurements]?.[0]}
+            />
+            <input
+              type='hidden'
+              name={`measurements.${measurement_name}.1`}
+              value={units}
+            />
+          </>
+        ),
+      )}
+      <FormButtons />
+    </EncounterLayout>
   )
 }

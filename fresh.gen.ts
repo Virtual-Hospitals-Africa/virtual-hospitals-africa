@@ -33,6 +33,16 @@ import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_clinical_notes from './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_close_visit from './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_diagnosis from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_prescription from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescription.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_risk_factors from './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
 import * as $app_patients_patient_id_intake_step_ from './routes/app/patients/[patient_id]/intake/[step].tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
@@ -134,6 +144,26 @@ const manifest = {
       $app_patients_patient_id_avatar,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx':
       $app_patients_patient_id_encounters_encounter_id_middleware,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx':
+      $app_patients_patient_id_encounters_encounter_id_clinical_notes,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx':
+      $app_patients_patient_id_encounters_encounter_id_close_visit,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx':
+      $app_patients_patient_id_encounters_encounter_id_diagnosis,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx':
+      $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
+      $app_patients_patient_id_encounters_encounter_id_examinations,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':
+      $app_patients_patient_id_encounters_encounter_id_orders,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescription.tsx':
+      $app_patients_patient_id_encounters_encounter_id_prescription,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx':
+      $app_patients_patient_id_encounters_encounter_id_referral,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx':
+      $app_patients_patient_id_encounters_encounter_id_risk_factors,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx':
+      $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
       $app_patients_patient_id_encounters_encounter_id_vitals,
     './routes/app/patients/[patient_id]/intake/[step].tsx':
