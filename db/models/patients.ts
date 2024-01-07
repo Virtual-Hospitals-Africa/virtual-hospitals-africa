@@ -318,7 +318,14 @@ export async function getWithMedicalRecords(
   }))
 }
 
-export async function getCard(trx: TrxOrDb, opts: { id: number }) {
+export type PatientCard = {
+  id: number
+  name: string
+  description: string | null
+  avatar_url: string | null
+}
+
+export async function getCard(trx: TrxOrDb, opts: { id: number }): Promise<PatientCard> {
   const patient = await trx.selectFrom('patients')
     .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select([

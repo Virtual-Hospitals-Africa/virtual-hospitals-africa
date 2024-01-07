@@ -1,9 +1,16 @@
+import { JSX } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
+import { assert } from 'std/assert/assert.ts'
+import { Container } from '../../../../../../components/library/Container.tsx'
+import Layout from '../../../../../../components/library/Layout.tsx'
+import Form from '../../../../../../components/library/form/Form.tsx'
+import { SeekingTreatmentSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import {
   LoggedInHealthWorkerContext,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
 } from '../../../../../../types.ts'
+import * as patients from '../../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../../../../../db/models/waiting_room.ts'
 import {
@@ -12,7 +19,7 @@ import {
   StatusError,
 } from '../../../../../../util/assertOr.ts'
 import getNumericParam from '../../../../../../util/getNumericParam.ts'
-import { assert } from 'std/assert/assert.ts'
+import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -25,6 +32,7 @@ export type EncounterContext = LoggedInHealthWorkerContext<
   {
     encounter: RenderedPatientEncounter
     encounter_provider: RenderedPatientEncounterProvider
+    patient: patients.PatientCard
   }
 >
 
@@ -35,6 +43,8 @@ export async function handler(
   const encounter_id = getEncounterId(ctx)
   const patient_id = getNumericParam(ctx, 'patient_id')
   const { trx, healthWorker } = ctx.state
+
+  const getting_patient_card = patients.getCard(trx, { id: patient_id })
 
   const encounter = await patient_encounters.get(trx, {
     encounter_id,
@@ -111,5 +121,32 @@ export async function handler(
   await removing_from_waiting_room
 
   ctx.state.encounter = encounter
+  ctx.state.patient = await getting_patient_card
   return ctx.next()
+}
+
+export function EncounterLayout({
+  ctx,
+  children,
+}: { ctx: EncounterContext; children: ComponentChildren }): JSX.Element {
+  return (
+    <Layout
+      title='Patient Vitals'
+      sidebar={
+        <SeekingTreatmentSidebar
+          route={ctx.route}
+          params={ctx.params}
+          patient={ctx.state.patient}
+        />
+      }
+      url={ctx.url}
+      variant='form'
+    >
+      <Container size='lg'>
+        <Form method='POST'>
+          {children}
+        </Form>
+      </Container>
+    </Layout>
+  )
 }
