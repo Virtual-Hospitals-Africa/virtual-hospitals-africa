@@ -39,7 +39,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_diagnosis from './r
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_prescription from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescription.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_prescription from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_risk_factors from './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'

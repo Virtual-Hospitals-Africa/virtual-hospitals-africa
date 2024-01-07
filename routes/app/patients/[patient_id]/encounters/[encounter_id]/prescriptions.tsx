@@ -11,7 +11,7 @@ export const handler: LoggedInHealthWorkerHandler<
   },
 }
 
-export default function PrescriptionPage(
+export default function PrescriptionsPage(
   _req: Request,
   ctx: EncounterContext,
 ) {

@@ -24,12 +24,14 @@ import {
   Person,
   PersonData,
 } from '../../../../../../components/library/Person.tsx'
-import CalendarIcon from '../../../../../../components/library/icons/calendar.tsx'
+import * as SeekingTreatmentIcons from '../../../../../../components/library/icons/SeekingTreatment.tsx'
+import * as HeroIcons from '../../../../../../components/library/icons/heroicons/outline.tsx'
 import {
   GenericSidebar,
   replaceParams,
 } from '../../../../../../components/library/Sidebar.tsx'
 import { log } from '../../../../../_middleware.ts'
+import LogoutIcon from '../../../../../../components/library/icons/logout.tsx'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -149,58 +151,58 @@ export const seeking_treatment_nav_links: LinkDef[] = [
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/vitals',
     title: 'Vitals',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.Vitals,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/symptoms',
     title: 'Symptoms',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.Symptoms,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/risk_factors',
     title: 'risk factors',
-    Icon: CalendarIcon,
+    Icon: HeroIcons.ExclamationTriangleIcon,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/examinations',
     title: 'examinations',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.Examinations,
   },
   {
     route:
       '/app/patients/:patient_id/encounters/:encounter_id/diagnostic_tests',
     title: 'diagnostic tests',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.DiagnosticTests,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/diagnosis',
     title: 'diagnosis',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.Diagnosis,
   },
   {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/prescription',
-    title: 'prescription',
-    Icon: CalendarIcon,
+    route: '/app/patients/:patient_id/encounters/:encounter_id/prescriptions',
+    title: 'prescriptions',
+    Icon: SeekingTreatmentIcons.Prescriptions,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/orders',
     title: 'orders',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.Orders,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/clinical_notes',
     title: 'clinical notes',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.ClinicalNotes,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/referral',
     title: 'referral',
-    Icon: CalendarIcon,
+    Icon: SeekingTreatmentIcons.Referral,
   },
   {
     route: '/app/patients/:patient_id/encounters/:encounter_id/close_visit',
     title: 'close visit',
-    Icon: CalendarIcon,
+    Icon: LogoutIcon,
   },
 ]
 
