@@ -32,7 +32,7 @@ function NavItem({
           active ? 'text-gray-900 bg-gray-50' : 'text-gray-700',
         )}
       >
-        <Icon className='stroke-black w-5' />
+        <Icon className='w-5' />
         {title}
       </a>
     </li>

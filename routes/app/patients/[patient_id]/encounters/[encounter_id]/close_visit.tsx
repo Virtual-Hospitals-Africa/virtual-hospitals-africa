@@ -11,7 +11,11 @@ export const handler: LoggedInHealthWorkerHandler<
   },
 }
 
-export default function CloseVisitPage(_req: Request, ctx: EncounterContext) {
+// deno-lint-ignore require-await
+export default async function CloseVisitPage(
+  _req: Request,
+  ctx: EncounterContext,
+) {
   return (
     <EncounterLayout ctx={ctx}>
       <FormButtons />

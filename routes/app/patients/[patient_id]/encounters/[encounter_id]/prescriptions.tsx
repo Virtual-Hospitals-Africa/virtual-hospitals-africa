@@ -11,7 +11,8 @@ export const handler: LoggedInHealthWorkerHandler<
   },
 }
 
-export default function PrescriptionPage(
+// deno-lint-ignore require-await
+export default async function PrescriptionsPage(
   _req: Request,
   ctx: EncounterContext,
 ) {

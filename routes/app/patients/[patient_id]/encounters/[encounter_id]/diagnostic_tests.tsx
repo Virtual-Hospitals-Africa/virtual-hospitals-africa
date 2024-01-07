@@ -11,7 +11,8 @@ export const handler: LoggedInHealthWorkerHandler<
   },
 }
 
-export default function DiagnosticTestsPage(
+// deno-lint-ignore require-await
+export default async function DiagnosticTestsPage(
   _req: Request,
   ctx: EncounterContext,
 ) {
