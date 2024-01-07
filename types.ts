@@ -101,6 +101,7 @@ export type RenderedPatient = ReturnedSqlRow<
     | 'completed_intake'
   > & {
     dob_formatted: string | null
+    description: string | null
     // age_formatted: Maybe<string> // TODO: implement
     href: string | null
     avatar_url: string | null
@@ -1392,7 +1393,7 @@ export type MailingListRecipient = {
 
 export type Address = {
   street: Maybe<string>
-  suburb_id: Maybe<number>
+  suburb_id?: Maybe<number>
   ward_id: number
   district_id: number
   province_id: number

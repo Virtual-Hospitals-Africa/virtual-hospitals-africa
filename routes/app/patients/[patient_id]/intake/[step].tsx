@@ -65,13 +65,16 @@ type PersonalFormValues = {
 }
 
 type AddressFormValues = {
-  country_id: number
-  province_id: number
-  district_id: number
-  ward_id: number
-  suburb_id?: Maybe<number>
-  street: string
+  address: {
+    country_id: number
+    province_id: number
+    district_id: number
+    ward_id: number
+    suburb_id?: Maybe<number>
+    street: string
+  }
   nearest_facility_id: number
+  nearest_facility_display_name: string
   primary_doctor_id: number
   primary_doctor_name: string
 }
@@ -109,11 +112,25 @@ function assertIsAddress(
   patient: unknown,
 ): asserts patient is AddressFormValues {
   assertOr400(isObjectLike(patient))
-  assertOr400(!!patient.country_id && typeof patient.country_id === 'number')
-  assertOr400(!!patient.province_id && typeof patient.province_id === 'number')
-  assertOr400(!!patient.district_id && typeof patient.district_id === 'number')
-  assertOr400(!!patient.ward_id && typeof patient.ward_id === 'number')
-  assertOr400(!!patient.street && typeof patient.street === 'string')
+  assertOr400(isObjectLike(patient.address))
+  assertOr400(
+    !!patient.address.country_id &&
+      typeof patient.address.country_id === 'number',
+  )
+  assertOr400(
+    !!patient.address.province_id &&
+      typeof patient.address.province_id === 'number',
+  )
+  assertOr400(
+    !!patient.address.district_id &&
+      typeof patient.address.district_id === 'number',
+  )
+  assertOr400(
+    !!patient.address.ward_id && typeof patient.address.ward_id === 'number',
+  )
+  assertOr400(
+    !!patient.address.street && typeof patient.address.street === 'string',
+  )
   assertOr400(
     !!patient.nearest_facility_id &&
       typeof patient.nearest_facility_id === 'number',
@@ -209,23 +226,12 @@ const transformers: Transformers = {
     avatar_media_id: avatar_media?.id,
   }),
   address: (
-    patient,
+    { primary_doctor_name, nearest_facility_display_name, ...patient },
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
-    nearest_facility_id: patient.nearest_facility_id,
-    primary_doctor_id: isNaN(patient.primary_doctor_id)
-      ? null
-      : patient.primary_doctor_id,
+    ...patient,
     unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
-      ? patient.primary_doctor_name
+      ? primary_doctor_name
       : null,
-    address: {
-      country_id: patient.country_id,
-      province_id: patient.province_id,
-      district_id: patient.district_id,
-      ward_id: patient.ward_id,
-      suburb_id: patient.suburb_id,
-      street: patient.street,
-    },
   }),
   'pre-existing_conditions': (
     patient,

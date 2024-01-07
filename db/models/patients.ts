@@ -55,6 +55,11 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.ethnicity',
       sql<string | null>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
         .as('dob_formatted'),
+      sql<
+        string | null
+      >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
+        'description',
+      ),
       'patients.national_id_number',
       'patients.conversation_state',
       'patients.created_at',
@@ -83,17 +88,6 @@ export function getByPhoneNumber(
     .where('phone_number', '=', query.phone_number)
     .executeTakeFirst()
 }
-
-// export function getByPhoneNumber(
-//   trx: TrxOrDb,
-//   query: { phone_number: string },
-// ): Promise<
-//   Maybe<ReturnedSqlRow<RenderedPatient>>
-// > {
-//   return baseSelect(trx)
-//     .where('phone_number', '=', query.phone_number)
-//     .executeTakeFirst()
-// }
 
 export type UpsertPatientIntake = {
   id: number

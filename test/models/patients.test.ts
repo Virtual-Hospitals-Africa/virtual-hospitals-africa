@@ -16,12 +16,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/jpeg',
       })
 
-      const testPatient1 = await patients.upsert(db, {
+      const test_patient1 = await patients.upsert(db, {
         name: 'Test Patient 1',
         conversation_state: 'initial_message',
       })
 
-      const testPatient2 = await patients.upsert(db, {
+      const test_patient2 = await patients.upsert(db, {
         name: 'Test Patient 2',
         avatar_media_id: insertedMedia.id,
       })
@@ -33,11 +33,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       const results = await patients.getAllWithNames(db, 'Test')
       assertEquals(results, [
         {
-          id: testPatient1.id,
-          href: `/app/patients/${testPatient1.id}`,
+          id: test_patient1.id,
+          href: `/app/patients/${test_patient1.id}`,
           avatar_url: null,
           name: 'Test Patient 1',
           dob_formatted: null,
+          description: null,
           gender: null,
           ethnicity: null,
           location: { longitude: null, latitude: null },
@@ -51,11 +52,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           completed_intake: false,
         },
         {
-          id: testPatient2.id,
-          href: `/app/patients/${testPatient2.id}`,
-          avatar_url: `/app/patients/${testPatient2.id}/avatar`,
+          id: test_patient2.id,
+          href: `/app/patients/${test_patient2.id}`,
+          avatar_url: `/app/patients/${test_patient2.id}/avatar`,
           name: 'Test Patient 2',
           dob_formatted: null,
+          description: null,
           gender: null,
           ethnicity: null,
           location: { longitude: null, latitude: null },
@@ -70,24 +72,37 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         },
       ])
     })
+
+    it("gives a description formed by the patient's gender and date of birth", async () => {
+      await patients.upsert(db, {
+        name: 'Test Patient',
+        date_of_birth: '2021-03-01',
+        gender: 'female',
+      })
+
+      const results = await patients.getAllWithNames(db, 'Test')
+      assertEquals(results.length, 1)
+      assertEquals(results[0].description, 'female, 01/03/2021')
+    })
   })
 
   describe('getWithMedicalRecords', () => {
     it('finds patients by their name with a dummy medical record', async () => {
-      const testPatient = await patients.upsert(db, {
+      const test_patient = await patients.upsert(db, {
         name: 'Test Patient',
       })
 
       const results = await patients.getWithMedicalRecords(db, {
-        ids: [testPatient.id],
+        ids: [test_patient.id],
       })
       assertEquals(results, [
         {
-          id: testPatient.id,
-          href: `/app/patients/${testPatient.id}`,
+          id: test_patient.id,
+          href: `/app/patients/${test_patient.id}`,
           avatar_url: null,
           name: 'Test Patient',
           dob_formatted: null,
+          description: null,
           gender: null,
           ethnicity: null,
           location: { longitude: null, latitude: null },
@@ -118,14 +133,14 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/jpeg',
       })
 
-      const testPatient = await patients.upsert(db, {
+      const test_patient = await patients.upsert(db, {
         name: 'Test Patient 1',
         conversation_state: 'initial_message',
         avatar_media_id: insertedMedia.id,
       })
 
       const avatar = await patients.getAvatar(db, {
-        patient_id: testPatient.id,
+        patient_id: test_patient.id,
       })
 
       assertEquals(avatar, {

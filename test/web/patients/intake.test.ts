@@ -112,12 +112,12 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     const suburb = ward.suburbs.length ? sample(ward.suburbs) : undefined
 
     const body = new FormData()
-    body.set('country_id', String(zimbabwe.id))
-    body.set('province_id', String(province.id))
-    body.set('district_id', String(district.id))
-    body.set('ward_id', String(ward.id))
-    if (suburb) body.set('suburb_id', String(suburb.id))
-    body.set('street', '120 Main Street')
+    body.set('address.country_id', String(zimbabwe.id))
+    body.set('address.province_id', String(province.id))
+    body.set('address.district_id', String(district.id))
+    body.set('address.ward_id', String(ward.id))
+    if (suburb) body.set('address.suburb_id', String(suburb.id))
+    body.set('address.street', '120 Main Street')
     body.set('nearest_facility_id', '5')
     body.set('primary_doctor_id', String(testDoctor.id))
 
