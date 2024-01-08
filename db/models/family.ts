@@ -408,8 +408,8 @@ export async function upsert(
   let upsert_kin: Promise<unknown> = Promise.resolve()
   let removing_kin: Promise<unknown> = Promise.resolve()
   if (
-    family_to_upsert.guardians.filter((c) => c.next_of_kin) ||
-    existing_family.guardians.filter((c) => c.next_of_kin)
+    family_to_upsert.guardians.find((c) => c.next_of_kin) ||
+    existing_family.guardians.find((c) => c.next_of_kin)
   ) {
     const newKin = family_to_upsert.guardians.find((c) => c.next_of_kin)
     const existingKin = existing_family.guardians.find((c) => c.next_of_kin)

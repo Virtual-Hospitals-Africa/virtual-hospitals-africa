@@ -32,6 +32,7 @@ describe(
         const guardian_relations = await family.get(db, {
           patient_id: guardian.id,
         })
+
         assertEquals(dependent_relations, {
           guardians: [
             {
@@ -43,6 +44,7 @@ describe(
               family_relation: 'biological parent',
               family_relation_gendered: 'biological father',
               patient_gender: 'male',
+              next_of_kin: null,
             },
           ],
           dependents: [],
@@ -130,7 +132,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
-            next_of_kin: false,
+            next_of_kin: null,
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -161,7 +163,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
-            next_of_kin: false,
+            next_of_kin: null,
           }],
           marital_status: 'TODO',
           religion: 'TODO',
