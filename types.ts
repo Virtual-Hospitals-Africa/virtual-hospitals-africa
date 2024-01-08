@@ -239,6 +239,7 @@ export type FamilyRelation = {
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
   family_relation_gendered: Maybe<string>
+  next_of_kin?: SqlBool 
 }
 
 export type FamilyRelationInsert = {
@@ -246,6 +247,7 @@ export type FamilyRelationInsert = {
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
   family_relation_gendered: string
+  next_of_kin: boolean
 }
 
 export type FamilyUpsert = {

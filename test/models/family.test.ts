@@ -79,6 +79,7 @@ describe(
             patient_id: guardian.id,
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
+            next_of_kin: true
           }],
           dependents: [],
         })
@@ -94,6 +95,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
+            next_of_kin: true
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -112,6 +114,7 @@ describe(
             patient_id: guardian.id,
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
+            next_of_kin: false
           }],
           dependents: [],
         })
@@ -127,6 +130,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
+            next_of_kin: false
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -141,6 +145,7 @@ describe(
             family_relation_gendered: 'biological mother',
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
+            next_of_kin: false
           }],
           dependents: [],
         })
@@ -156,6 +161,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
+            next_of_kin: false
           }],
           marital_status: 'TODO',
           religion: 'TODO',

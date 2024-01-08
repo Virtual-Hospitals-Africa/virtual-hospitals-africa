@@ -56,6 +56,7 @@ export default function Guardian({
           <CheckboxInput
             name={`${name}.next_of_kin`}
             label='Next of kin'
+            checked={!!(value?.next_of_kin)}
             onInput={(event) => {
               //Only one kin allowed
               const target = event.target as HTMLInputElement
