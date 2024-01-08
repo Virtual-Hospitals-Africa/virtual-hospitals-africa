@@ -45,7 +45,7 @@ describe(
               family_relation: 'biological parent',
               family_relation_gendered: 'biological father',
               patient_gender: 'male',
-              next_of_kin: false,
+              next_of_kin: null,
             },
           ],
           dependents: [],
@@ -133,7 +133,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
-            next_of_kin: false,
+            next_of_kin: null,
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -164,7 +164,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
-            next_of_kin: false,
+            next_of_kin: null,
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -201,8 +201,97 @@ describe(
         )
       })
 
-      it('supports changing your next of kin', () => {
-        assert(false, 'TODO')
+      it('supports changing your next of kin', async () => {
+        const dependent = await patients.upsert(db, { name: 'Billy Bob' })
+
+        await family.upsert(db, dependent.id, {
+          guardians: [{
+            family_relation_gendered: 'biological mother',
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            next_of_kin: false,
+          }, {
+            family_relation_gendered: 'biological father',
+            patient_name: 'James Doe',
+            patient_phone_number: '555-555-5556',
+            next_of_kin: true,
+          }],
+          dependents: [],
+        })
+        const relations = await family.get(db, { patient_id: dependent.id })
+        assertEquals(relations, {
+          dependents: [],
+          guardians: [{
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological mother',
+            guardian_relation: 'biological parent',
+            patient_gender: 'female',
+            patient_id: relations['guardians'][0].patient_id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation_id: relations['guardians'][0].relation_id,
+            next_of_kin: false,
+          }, {
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological father',
+            guardian_relation: 'biological parent',
+            patient_gender: 'male',
+            patient_id: relations['guardians'][1].patient_id,
+            patient_name: 'James Doe',
+            patient_phone_number: '555-555-5556',
+            relation_id: relations['guardians'][1].relation_id,
+            next_of_kin: true,
+          }],
+          marital_status: 'TODO',
+          religion: 'TODO',
+        })
+
+        await family.upsert(db, dependent.id, {
+          guardians: [{
+            family_relation_gendered: 'biological mother',
+            patient_id: relations['guardians'][0].patient_id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            next_of_kin: true,
+          }, {
+            family_relation_gendered: 'biological father',
+            patient_id: relations['guardians'][1].patient_id,
+            patient_name: 'James Doe',
+            patient_phone_number: '555-555-5556',
+            next_of_kin: false,
+          }],
+          dependents: [],
+        })
+
+        const modified_relations = await family.get(db, {
+          patient_id: dependent.id,
+        })
+        assertEquals(modified_relations, {
+          dependents: [],
+          guardians: [{
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological mother',
+            guardian_relation: 'biological parent',
+            patient_gender: 'female',
+            patient_id: relations['guardians'][0].patient_id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation_id: relations['guardians'][0].relation_id,
+            next_of_kin: true,
+          }, {
+            family_relation: 'biological parent',
+            family_relation_gendered: 'biological father',
+            guardian_relation: 'biological parent',
+            patient_gender: 'male',
+            patient_id: relations['guardians'][1].patient_id,
+            patient_name: 'James Doe',
+            patient_phone_number: '555-555-5556',
+            relation_id: relations['guardians'][1].relation_id,
+            next_of_kin: false,
+          }],
+          marital_status: 'TODO',
+          religion: 'TODO',
+        })
       })
     })
   },

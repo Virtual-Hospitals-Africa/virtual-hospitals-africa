@@ -242,7 +242,7 @@ export type FamilyRelation = {
 }
 
 export type GuardianFamilyRelation = FamilyRelation & {
-  next_of_kin: SqlBool
+  next_of_kin: Maybe<SqlBool>
 }
 
 export type FamilyRelationInsert = {

@@ -65,7 +65,7 @@ export async function get(
       'guardian.name as patient_name',
       'guardian.gender as patient_gender',
       'guardian.phone_number as patient_phone_number',
-      eb('kin.next_of_kin_patient_id', 'is not', null).as(
+      eb('kin.next_of_kin_patient_id', '=', eb.ref('guardian.id')).as(
         'next_of_kin',
       ),
       eb
