@@ -226,7 +226,7 @@ export type OnboardingPatient =
 export type PatientFamily = {
   marital_status?: Maybe<string>
   religion?: Maybe<string>
-  guardians: FamilyRelation[]
+  guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
 }
 
@@ -239,7 +239,10 @@ export type FamilyRelation = {
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
   family_relation_gendered: Maybe<string>
-  next_of_kin?: Maybe<SqlBool>
+}
+
+export type GuardianFamilyRelation = FamilyRelation & {
+  next_of_kin: SqlBool
 }
 
 export type FamilyRelationInsert = {

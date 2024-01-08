@@ -4,6 +4,7 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as family from '../../db/models/family.ts'
+import { assert } from 'std/assert/assert.ts'
 
 describe(
   'db/models/family.ts',
@@ -44,7 +45,7 @@ describe(
               family_relation: 'biological parent',
               family_relation_gendered: 'biological father',
               patient_gender: 'male',
-              next_of_kin: null,
+              next_of_kin: false,
             },
           ],
           dependents: [],
@@ -132,7 +133,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
-            next_of_kin: null,
+            next_of_kin: false,
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -163,7 +164,7 @@ describe(
             patient_name: 'Janey Jane',
             patient_phone_number: '555-555-5555',
             relation_id: relations['guardians'][0].relation_id,
-            next_of_kin: null,
+            next_of_kin: false,
           }],
           marital_status: 'TODO',
           religion: 'TODO',
@@ -198,6 +199,10 @@ describe(
           (await patients.getByID(db, { id: guardian.id })).name,
           'Janey Jane',
         )
+      })
+
+      it('supports changing your next of kin', () => {
+        assert(false, 'TODO')
       })
     })
   },

@@ -1,5 +1,6 @@
 import { sql } from 'kysely'
 import {
+  FamilyRelation,
   FamilyRelationInsert,
   FamilyUpsert,
   GuardianRelationName,
@@ -64,7 +65,7 @@ export async function get(
       'guardian.name as patient_name',
       'guardian.gender as patient_gender',
       'guardian.phone_number as patient_phone_number',
-      eb('kin.next_of_kin_patient_id', '=', eb.ref('guardian.id')).as(
+      eb('kin.next_of_kin_patient_id', 'is not', null).as(
         'next_of_kin',
       ),
       eb
@@ -320,7 +321,9 @@ export async function upsert(
   )
 
   // 1. Remove: The relation exists in the db as given by its patient_id, but not in the upsert
-  const to_remove = guardians_to_remove.concat(dependents_to_remove).map((
+  const to_remove = (guardians_to_remove as FamilyRelation[]).concat(
+    dependents_to_remove,
+  ).map((
     { relation_id },
   ) => relation_id)
   const removing_relations = to_remove.length &&
