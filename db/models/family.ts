@@ -64,7 +64,9 @@ export async function get(
       'guardian.name as patient_name',
       'guardian.gender as patient_gender',
       'guardian.phone_number as patient_phone_number',
-      eb('kin.next_of_kin_patient_id', '=', eb.ref('guardian.id')).as('next_of_kin'),
+      eb('kin.next_of_kin_patient_id', '=', eb.ref('guardian.id')).as(
+        'next_of_kin',
+      ),
       eb
         .case()
         .when(
@@ -405,19 +407,21 @@ export async function upsert(
 
   let upsert_kin: Promise<unknown> = Promise.resolve()
   let removing_kin: Promise<unknown> = Promise.resolve()
-  if(family_to_upsert.guardians.filter(c=> c.next_of_kin) ||
-    existing_family.guardians.filter(c=> c.next_of_kin)){
-    const newKin = family_to_upsert.guardians.find(c=> c.next_of_kin)
-    const existingKin = existing_family.guardians.find(c=> c.next_of_kin)
+  if (
+    family_to_upsert.guardians.filter((c) => c.next_of_kin) ||
+    existing_family.guardians.filter((c) => c.next_of_kin)
+  ) {
+    const newKin = family_to_upsert.guardians.find((c) => c.next_of_kin)
+    const existingKin = existing_family.guardians.find((c) => c.next_of_kin)
 
     //kins is removed
-    if(existingKin && !newKin)  {
+    if (existingKin && !newKin) {
       removing_kin = trx
-      .deleteFrom('patient_kin')
-      .where('patient_id', '=', patient_id)
-      .execute()
-    }else{
-      let next_of_kin_patient_id : number
+        .deleteFrom('patient_kin')
+        .where('patient_id', '=', patient_id)
+        .execute()
+    } else {
+      let next_of_kin_patient_id: number
       if (newKin?.patient_id) {
         next_of_kin_patient_id = newKin!.patient_id
       } else {
@@ -426,26 +430,26 @@ export async function upsert(
         assert(new_patient.id)
         next_of_kin_patient_id = new_patient.id
       }
-  
-      if(newKin && !existingKin){
+
+      if (newKin && !existingKin) {
         upsert_kin = trx
-        .insertInto('patient_kin')
-        .values({
-          patient_id,
-          next_of_kin_patient_id: next_of_kin_patient_id,
-          relationship: newKin.family_relation_gendered!
-        })
-        .returning('id')
-        .executeTakeFirstOrThrow()
-      }else{
-        upsert_kin =  trx
-        .updateTable('patient_kin')
-        .set({
-          next_of_kin_patient_id: next_of_kin_patient_id,
-          relationship: newKin!.family_relation_gendered!
-        })
-        .where('patient_id', '=', patient_id)
-        .executeTakeFirstOrThrow()
+          .insertInto('patient_kin')
+          .values({
+            patient_id,
+            next_of_kin_patient_id: next_of_kin_patient_id,
+            relationship: newKin.family_relation_gendered!,
+          })
+          .returning('id')
+          .executeTakeFirstOrThrow()
+      } else {
+        upsert_kin = trx
+          .updateTable('patient_kin')
+          .set({
+            next_of_kin_patient_id: next_of_kin_patient_id,
+            relationship: newKin!.family_relation_gendered!,
+          })
+          .where('patient_id', '=', patient_id)
+          .executeTakeFirstOrThrow()
       }
     }
   }
@@ -486,7 +490,7 @@ export async function upsert(
 
   const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
-  
+
   await Promise.all([
     removing_relations,
     adding_relations,
