@@ -543,6 +543,13 @@ export interface WhatsappMessagesSent {
   whatsapp_id: string
 }
 
+export interface PatientKin {
+  id: Generated<number>
+  patient_id: number
+  next_of_kin_patient_id: number
+  relationship: string
+}
+
 export interface DB {
   address: Address
   allergies: Allergies
@@ -591,5 +598,6 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
+  patient_kin: PatientKin
 }
 type Buffer = Uint8Array

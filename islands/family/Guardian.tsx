@@ -7,7 +7,7 @@ import {
 } from '../../components/library/form/Inputs.tsx'
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
-import { FamilyRelation } from '../../types.ts'
+import { GuardianFamilyRelation } from '../../types.ts'
 
 export default function Guardian({
   name,
@@ -15,11 +15,11 @@ export default function Guardian({
   onRemove,
 }: {
   name: string
-  value?: Partial<FamilyRelation>
+  value?: Partial<GuardianFamilyRelation>
   onRemove(): void
 }) {
   const [patientGuardian, setPatientGuardian] = useState<
-    Partial<FamilyRelation> | undefined
+    Partial<GuardianFamilyRelation> | undefined
   >(value ?? undefined)
 
   return (
@@ -56,6 +56,7 @@ export default function Guardian({
           <CheckboxInput
             name={`${name}.next_of_kin`}
             label='Next of kin'
+            checked={!!(value?.next_of_kin)}
             onInput={(event) => {
               //Only one kin allowed
               const target = event.target as HTMLInputElement

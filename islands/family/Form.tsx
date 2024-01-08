@@ -1,22 +1,37 @@
 import { JSX } from 'preact'
 import { Signal, useSignal } from '@preact/signals'
-import { FamilyRelation, PatientFamily } from '../../types.ts'
+import {
+  FamilyRelation,
+  GuardianFamilyRelation,
+  PatientFamily,
+} from '../../types.ts'
 import { AddRow } from '../AddRemove.tsx'
 import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Dependent from './Dependent.tsx'
 
-type FamilyRelationState = Partial<Omit<FamilyRelation, 'relation_id'>> & {
-  removed?: boolean
-}
+type GuardianFamilyRelationState =
+  & Partial<Omit<GuardianFamilyRelation, 'relation_id'>>
+  & {
+    removed?: boolean
+  }
+type DependentFamilyRelationState =
+  & Partial<Omit<FamilyRelation, 'relation_id'>>
+  & {
+    removed?: boolean
+  }
 
 export default function PatientFamilyForm({
   family,
 }: {
   family: PatientFamily
 }): JSX.Element {
-  const guardians: Signal<FamilyRelationState[]> = useSignal(family.guardians)
-  const dependents: Signal<FamilyRelationState[]> = useSignal(family.dependents)
+  const guardians: Signal<GuardianFamilyRelationState[]> = useSignal(
+    family.guardians,
+  )
+  const dependents: Signal<DependentFamilyRelationState[]> = useSignal(
+    family.dependents,
+  )
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
