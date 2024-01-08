@@ -4,7 +4,6 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as family from '../../db/models/family.ts'
-import { assert } from 'std/assert/assert.ts'
 
 describe(
   'db/models/family.ts',
