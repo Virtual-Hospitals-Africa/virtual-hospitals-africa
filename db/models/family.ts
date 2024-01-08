@@ -53,8 +53,9 @@ export async function get(
     )
     .leftJoin(
       'patient_kin as kin',
-      'kin.patient_id',
-      'dependent.id',
+      (join) =>
+        join.on('kin.patient_id', '=', patient_id)
+          .onRef('kin.next_of_kin_patient_id', '=', 'guardian.id'),
     )
     .where('dependent.id', '=', patient_id)
     .select(({ eb, and }) => [
@@ -65,7 +66,7 @@ export async function get(
       'guardian.name as patient_name',
       'guardian.gender as patient_gender',
       'guardian.phone_number as patient_phone_number',
-      eb('kin.next_of_kin_patient_id', '=', eb.ref('guardian.id')).as(
+      eb('kin.next_of_kin_patient_id', 'is not', null).as(
         'next_of_kin',
       ),
       eb
@@ -410,37 +411,37 @@ export async function upsert(
 
   let upsert_kin: Promise<unknown> = Promise.resolve()
   let removing_kin: Promise<unknown> = Promise.resolve()
-  if (
-    family_to_upsert.guardians.find((c) => c.next_of_kin) ||
-    existing_family.guardians.find((c) => c.next_of_kin)
-  ) {
-    const newKin = family_to_upsert.guardians.find((c) => c.next_of_kin)
+  const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin)
+  const existing_kin = existing_family.guardians.find((c) => c.next_of_kin)
+  if (new_kin || existing_kin) {
+    const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin)
     const existingKin = existing_family.guardians.find((c) => c.next_of_kin)
 
-    //kins is removed
-    if (existingKin && !newKin) {
+    // kins is removed
+    if (existingKin && !new_kin) {
       removing_kin = trx
         .deleteFrom('patient_kin')
         .where('patient_id', '=', patient_id)
         .execute()
     } else {
+      assert(new_kin)
       let next_of_kin_patient_id: number
-      if (newKin?.patient_id) {
-        next_of_kin_patient_id = newKin!.patient_id
+      if (new_kin?.patient_id) {
+        next_of_kin_patient_id = new_kin.patient_id
       } else {
-        const [index] = inserted.get(newKin!)!
+        const [index] = inserted.get(new_kin)!
         const new_patient = new_patients[index]
         assert(new_patient.id)
         next_of_kin_patient_id = new_patient.id
       }
 
-      if (newKin && !existingKin) {
+      if (new_kin && !existingKin) {
         upsert_kin = trx
           .insertInto('patient_kin')
           .values({
             patient_id,
             next_of_kin_patient_id: next_of_kin_patient_id,
-            relationship: newKin.family_relation_gendered!,
+            relationship: new_kin.family_relation_gendered,
           })
           .returning('id')
           .executeTakeFirstOrThrow()
@@ -449,7 +450,7 @@ export async function upsert(
           .updateTable('patient_kin')
           .set({
             next_of_kin_patient_id: next_of_kin_patient_id,
-            relationship: newKin!.family_relation_gendered!,
+            relationship: new_kin.family_relation_gendered,
           })
           .where('patient_id', '=', patient_id)
           .executeTakeFirstOrThrow()
