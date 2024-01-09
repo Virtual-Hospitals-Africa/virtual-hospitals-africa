@@ -20,7 +20,7 @@ describeWithWebServer(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
         scenario: 'approved-nurse',
       })
-      await patient_encounters.create(db, 1, {
+      await patient_encounters.upsert(db, 1, {
         patient_id: patient.id,
         reason: 'seeking treatment',
         employment_ids: [healthWorker.employee_id!],
@@ -68,7 +68,7 @@ describeWithWebServer(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.create(db, 1, {
+      const encounter = await patient_encounters.upsert(db, 1, {
         patient_id: patient.id,
         reason: 'seeking treatment',
         employment_ids: [healthWorker.employee_id!],

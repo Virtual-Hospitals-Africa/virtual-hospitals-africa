@@ -17,12 +17,12 @@ describe(
         const patient1 = await patients.upsert(db, { name: 'Test Patient 1' })
         const patient2 = await patients.upsert(db, { name: 'Test Patient 2' })
 
-        await patient_encounters.create(db, 1, {
+        await patient_encounters.upsert(db, 1, {
           patient_id: patient1.id,
           reason: 'seeking treatment',
         })
 
-        await patient_encounters.create(db, 1, {
+        await patient_encounters.upsert(db, 1, {
           patient_id: patient2.id,
           reason: 'seeking treatment',
         })
@@ -65,12 +65,12 @@ describe(
         const patient1 = await patients.upsert(db, { name: 'Test Patient 1' })
         const patient2 = await patients.upsert(db, { name: 'Test Patient 2' })
 
-        await patient_encounters.create(db, 1, {
+        await patient_encounters.upsert(db, 1, {
           patient_id: patient1.id,
           reason: 'seeking treatment',
         })
 
-        await patient_encounters.create(db, 1, {
+        await patient_encounters.upsert(db, 1, {
           patient_id: patient2.id,
           reason: 'emergency',
         })

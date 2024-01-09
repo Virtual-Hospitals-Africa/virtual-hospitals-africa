@@ -47,10 +47,10 @@ export async function up(db: Kysely<unknown>) {
       FROM a1
     )
 
-    SELECT 
-      patient_id, 
-      age, 
-      (age).number AS age_number, 
+    SELECT
+      patient_id,
+      age,
+      (age).number AS age_number,
       (age).unit AS age_unit,
       (age).number::TEXT || ' ' || (age).unit::TEXT || (CASE WHEN (age).number = 1 THEN '' ELSE 's' END) AS age_display
     FROM a2
@@ -61,5 +61,5 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await sql`DROP VIEW patient_age`.execute(db)
   await db.schema.dropType('age').execute()
-  await db.schema.dropType('age_units').execute()
+  await db.schema.dropType('age_unit').execute()
 }

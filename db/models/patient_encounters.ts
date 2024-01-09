@@ -12,8 +12,9 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { log } from '../../routes/_middleware.ts'
 
-export type Create =
+export type Upsert =
   & {
+    encounter_id?: Maybe<number>
     reason: PatientEncounterReason
     employment_ids?: number[]
     appointment_id?: Maybe<number>
@@ -50,11 +51,12 @@ export function assertIsEncounterReason(
   assertOr400(reasons.has(str as PatientEncounterReason))
 }
 
-export function assertIsCreate(
+export function assertIsUpsert(
   obj: unknown,
-): asserts obj is Create {
+): asserts obj is Upsert {
+  console.log(obj)
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.patient_name === 'string')
+  assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'number')
   assertOr400(obj.patient_id == null || typeof obj.patient_id === 'number')
   assertOr400(typeof obj.reason === 'string')
   assertIsEncounterReason(obj.reason)
@@ -69,37 +71,56 @@ export function assertIsCreate(
   assertOr400(obj.notes == null || typeof obj.notes === 'string')
 }
 
-export async function create(
+export async function upsert(
   trx: TrxOrDb,
   facility_id: number,
-  { patient_id, patient_name, reason, appointment_id, notes, employment_ids }:
-    Create,
+  {
+    encounter_id,
+    patient_id,
+    patient_name,
+    reason,
+    appointment_id,
+    notes,
+    employment_ids,
+  }: Upsert,
 ): Promise<{
   id: number
   created_at: Date
   provider_ids: number[]
 }> {
   if (!patient_id) {
+    assertOr400(!encounter_id)
     assertOr400(patient_name)
     patient_id = (await patients.upsert(trx, { name: patient_name })).id
   }
 
-  const created = await trx
-    .insertInto('patient_encounters')
-    .values({
-      patient_id,
-      reason,
-      notes,
-      appointment_id: appointment_id || null,
-    })
-    .returning(['id', 'created_at'])
-    .executeTakeFirstOrThrow()
+  const values = {
+    patient_id,
+    reason,
+    notes,
+    appointment_id: appointment_id || null,
+  }
+
+  const upserted = await (
+    encounter_id
+      ? trx
+        .updateTable('patient_encounters')
+        .set(values)
+        .where('id', '=', encounter_id)
+        .returning(['id', 'created_at'])
+        .executeTakeFirstOrThrow()
+      : trx
+        .insertInto('patient_encounters')
+        .values(values)
+        .returning(['id', 'created_at'])
+        .executeTakeFirstOrThrow()
+  )
 
   const adding_providers = employment_ids?.length
     ? trx
       .insertInto('patient_encounter_providers')
       .values(employment_ids.map((provider_id) => ({
-        patient_encounter_id: created.id,
+        patient_encounter_id: upserted.id,
         provider_id,
       })))
       .returning('id')
@@ -107,14 +128,14 @@ export async function create(
     : Promise.resolve([])
 
   await waiting_room.add(trx, {
-    patient_encounter_id: created.id,
+    patient_encounter_id: upserted.id,
     facility_id,
   })
 
   const providers = await adding_providers
 
   return {
-    ...created,
+    ...upserted,
     provider_ids: providers.map((p) => p.id),
   }
 }
@@ -158,11 +179,7 @@ export function get(
     patient_id: number
     encounter_id: number | 'open'
   },
-): Promise<Maybe<RenderedPatientEncounter>> {
-  log(
-    'get patient encounter\n' +
-      JSON.stringify({ patient_id, encounter_id }, null, 2),
-  )
+): Promise<RenderedPatientEncounter | undefined> {
   let query = trx
     .selectFrom('patient_encounters')
     .leftJoin(
@@ -214,4 +231,8 @@ export function get(
     : query.where('patient_encounters.id', '=', encounter_id)
 
   return query.executeTakeFirst()
+}
+
+export function getOpen(trx: TrxOrDb, patient_id: number) {
+  return get(trx, { patient_id, encounter_id: 'open' })
 }
