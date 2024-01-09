@@ -36,8 +36,8 @@ describe(
               name: 'Test Patient 1',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient1.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient1.id}/intake/personal`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -51,8 +51,8 @@ describe(
               name: 'Test Patient 2',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient2.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient2.id}/intake/personal`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -84,8 +84,8 @@ describe(
               name: 'Test Patient 2',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient2.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient2.id}/intake/personal`,
             },
             providers: [],
             reason: 'emergency',
@@ -99,8 +99,8 @@ describe(
               name: 'Test Patient 1',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient1.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient1.id}/intake/personal`,
             },
             providers: [],
             reason: 'seeking treatment',

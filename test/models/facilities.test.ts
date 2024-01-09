@@ -91,8 +91,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: hw_at_facility1.id,
         is_invitee: false,
         name: 'At Facility 1',
-        href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
         registration_status: 'incomplete',
+        actions: {
+          view: `/app/facilities/3/employees/${hw_at_facility1.id}`,
+        },
       })
       assertEquals(withInvitees[0].professions.length, 2)
       assertEquals(withInvitees[0].professions[0].profession, 'admin')
@@ -104,8 +106,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
         name: 'At Facility 2',
-        href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
         registration_status: 'incomplete',
+        actions: {
+          view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+        },
       })
       assertEquals(withInvitees[1].professions.length, 2)
       assertEquals(withInvitees[1].professions[0].profession, 'admin')
@@ -117,8 +121,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: null,
         is_invitee: true,
         name: null,
-        href: null,
         registration_status: 'incomplete',
+        actions: {
+          view: null,
+        },
       })
       assertEquals(withInvitees[2].professions.length, 1)
       assertEquals(withInvitees[2].professions[0].profession, 'doctor')
@@ -135,8 +141,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: hw_at_facility1.id,
         is_invitee: false,
         name: 'At Facility 1',
-        href: `/app/facilities/3/employees/${hw_at_facility1.id}`,
         registration_status: 'incomplete',
+        actions: {
+          view: `/app/facilities/3/employees/${hw_at_facility1.id}`,
+        },
       })
       assertEquals(withoutInvitees[0].professions.length, 2)
       assertEquals(withoutInvitees[0].professions[0].profession, 'admin')
@@ -148,8 +156,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
         name: 'At Facility 2',
-        href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
         registration_status: 'incomplete',
+        actions: {
+          view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+        },
       })
       assertEquals(withoutInvitees[1].professions.length, 2)
       assertEquals(withoutInvitees[1].professions[0].profession, 'admin')
@@ -237,8 +247,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
         name: 'At Facility 2',
-        href: `/app/facilities/3/employees/${hw_at_facility2.id}`,
         registration_status: 'incomplete',
+        actions: {
+          view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+        },
       })
       assertEquals(withInvitees[0].professions.length, 2)
       assertEquals(withInvitees[0].professions[0].profession, 'admin')
@@ -294,8 +306,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: hw_at_facility1.id,
         is_invitee: false,
         name: 'At Facility 1',
-        href: `/app/facilities/1/employees/${hw_at_facility1.id}`,
         registration_status: 'pending_approval',
+        actions: {
+          view: `/app/facilities/1/employees/${hw_at_facility1.id}`,
+        },
       })
       assertEquals(withInvitees[0].professions.length, 1)
       assertEquals(withInvitees[0].professions[0].profession, 'nurse')
@@ -364,8 +378,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: nurse.id,
         is_invitee: false,
         name: 'Nurse',
-        href: `/app/facilities/1/employees/${nurse.id}`,
         registration_status: 'approved',
+        actions: {
+          view: `/app/facilities/1/employees/${nurse.id}`,
+        },
       })
       assertEquals(withInvitees[0].professions.length, 1)
       assertEquals(withInvitees[0].professions[0].profession, 'nurse')
@@ -376,8 +392,10 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         health_worker_id: admin.id,
         is_invitee: false,
         name: 'Admin',
-        href: `/app/facilities/1/employees/${admin.id}`,
         registration_status: 'incomplete',
+        actions: {
+          view: `/app/facilities/1/employees/${admin.id}`,
+        },
       })
       assertEquals(withInvitees[1].professions.length, 1)
       assertEquals(withInvitees[1].professions[0].profession, 'admin')

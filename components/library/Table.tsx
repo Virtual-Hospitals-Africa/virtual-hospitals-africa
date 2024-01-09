@@ -3,6 +3,8 @@ import cls from '../../util/cls.ts'
 import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
+import { assert } from 'std/assert/assert.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
 
 type Showable =
   | string
@@ -15,19 +17,20 @@ type Showable =
 type Row = Record<string, unknown> & {
   id?: number
 }
-
 export type TableColumn<T extends Row> =
   & {
-    label: null | string
+    label?: Maybe<string>
     cellClassName?: string
+    dataKey?: unknown
   }
   & (
     | { type: 'content'; dataKey: keyof T | ((row: T) => Showable) }
     | { type: 'avatar'; dataKey: keyof T | ((row: T) => Showable) }
-    | {
-      type: 'actions'
-      actions: Record<string, (row: T) => Maybe<string>>
-    }
+    | (T extends { actions: Record<string, string | null> } ? {
+        label: 'Actions'
+        type: 'actions'
+      }
+      : never)
   )
 
 type TableProps<T extends Row> = {
@@ -42,7 +45,7 @@ function ActionButton(
   return !action ? null : (
     <a
       href={typeof action === 'string' ? action : undefined}
-      className='text-indigo-600 hover:text-indigo-900'
+      className='text-indigo-600 hover:text-indigo-900 capitalize'
     >
       {name}
     </a>
@@ -99,13 +102,16 @@ function TableCellInnerContents<T extends Row>(
   }
 
   if (column.type === 'actions') {
-    const actions = Object.entries(column.actions).map(([name, action]) => ({
-      name,
-      action: action(row),
-    }))
+    assert('actions' in row)
+    assert(isObjectLike(row.actions))
     return (
       <>
-        {actions.map((action) => <ActionButton {...action} />)}
+        {Object.entries(row.actions).map((
+          [name, action],
+        ) => (
+          assert(action == null || typeof action === 'string'),
+            <ActionButton name={name} action={action} />
+        ))}
       </>
     )
   }

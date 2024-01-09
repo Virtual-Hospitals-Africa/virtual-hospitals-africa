@@ -36,7 +36,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       assertEquals(results, [
         {
           id: test_patient1.id,
-          href: `/app/patients/${test_patient1.id}`,
           avatar_url: null,
           name: 'Test Patient 1',
           dob_formatted: null,
@@ -52,10 +51,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           last_visited: null,
           conversation_state: 'initial_message',
           completed_intake: false,
+          actions: {
+            view: `/app/patients/${test_patient1.id}`,
+          },
         },
         {
           id: test_patient2.id,
-          href: `/app/patients/${test_patient2.id}`,
           avatar_url: `/app/patients/${test_patient2.id}/avatar`,
           name: 'Test Patient 2',
           dob_formatted: null,
@@ -71,6 +72,9 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           last_visited: null,
           conversation_state: 'initial_message',
           completed_intake: false,
+          actions: {
+            view: `/app/patients/${test_patient2.id}`,
+          },
         },
       ])
     })
@@ -100,7 +104,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       assertEquals(results, [
         {
           id: test_patient.id,
-          href: `/app/patients/${test_patient.id}`,
           avatar_url: null,
           name: 'Test Patient',
           dob_formatted: null,
@@ -123,6 +126,9 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           },
           conversation_state: 'initial_message',
           completed_intake: false,
+          actions: {
+            view: `/app/patients/${test_patient.id}`,
+          },
         },
       ])
     })

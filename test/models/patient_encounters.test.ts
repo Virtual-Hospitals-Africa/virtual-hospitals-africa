@@ -30,8 +30,8 @@ describe(
               name: 'Test Patient',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient.id}/intake/personal`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -58,8 +58,8 @@ describe(
               name: 'Test Patient',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient.id}/intake/personal`,
             },
             providers: [
               {

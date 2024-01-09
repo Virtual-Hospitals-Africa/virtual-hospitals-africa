@@ -40,21 +40,6 @@ export default function EmployeesTable({
     {
       label: 'Actions',
       type: 'actions',
-      actions: {
-        ['View'](row: FacilityEmployeeOrInvitee) {
-          if (
-            row.href &&
-            !(isAdmin && row.registration_status === 'pending_approval')
-          ) {
-            return row.href
-          }
-        },
-        ['Approve'](row: FacilityEmployeeOrInvitee) {
-          if (isAdmin && row.registration_status === 'pending_approval') {
-            return row.href
-          }
-        },
-      },
     },
   ]
 

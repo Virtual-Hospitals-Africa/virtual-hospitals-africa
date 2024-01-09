@@ -32,7 +32,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
 
-export const href_sql = sql<string>`
+export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
 `
 
@@ -65,7 +65,6 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.created_at',
       'patients.updated_at',
       'patients.completed_intake',
-      href_sql.as('href'),
       avatar_url_sql.as('avatar_url'),
       'facilities.name as nearest_facility',
       sql<null>`NULL`.as('last_visited'),
@@ -73,6 +72,9 @@ const baseSelect = (trx: TrxOrDb) =>
         longitude: sql<number | null>`ST_X(patients.location::geometry)`,
         latitude: sql<number | null>`ST_Y(patients.location::geometry)`,
       }).as('location'),
+      jsonBuildObject({
+        view: view_href_sql,
+      }).as('actions'),
     ])
 
 const selectWithName = (trx: TrxOrDb) =>

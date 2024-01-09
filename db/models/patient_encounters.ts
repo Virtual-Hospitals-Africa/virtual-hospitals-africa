@@ -10,7 +10,6 @@ import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { log } from '../../routes/_middleware.ts'
 
 export type Upsert =
   & {
@@ -85,6 +84,7 @@ export async function upsert(
   }: Upsert,
 ): Promise<{
   id: number
+  patient_id: number
   created_at: Date
   provider_ids: number[]
 }> {
@@ -107,12 +107,12 @@ export async function upsert(
         .updateTable('patient_encounters')
         .set(values)
         .where('id', '=', encounter_id)
-        .returning(['id', 'created_at'])
+        .returning(['id', 'patient_id', 'created_at'])
         .executeTakeFirstOrThrow()
       : trx
         .insertInto('patient_encounters')
         .values(values)
-        .returning(['id', 'created_at'])
+        .returning(['id', 'patient_id', 'created_at'])
         .executeTakeFirstOrThrow()
   )
 
