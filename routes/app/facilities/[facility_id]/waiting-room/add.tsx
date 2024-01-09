@@ -9,8 +9,7 @@ import * as facilities from '../../../../../db/models/facilities.ts'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandler,
-  Patient,
-  ReturnedSqlRow,
+  Maybe,
 } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
@@ -24,7 +23,7 @@ import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
-import { HomePageSidebar } from '../../../../../components/library/Sidebar.tsx'
+import { EncounterReason } from '../../../../../db.d.ts'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   facility: { id: number; display_name: string }
@@ -32,18 +31,18 @@ export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
   async POST(req, ctx) {
     const facility_id = parseInt(ctx.params.facility_id)
     assert(facility_id)
-    const to_create = await parseRequestAsserts(
+    const to_upsert = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      patient_encounters.assertIsCreate,
+      patient_encounters.assertIsUpsert,
     )
-    const created = await patient_encounters.create(
+    const upserted = await patient_encounters.upsert(
       ctx.state.trx,
       facility_id,
-      to_create,
+      to_upsert,
     )
     return redirect(
-      `/app/facilities/1/waiting-room?just_encountered_id=${created.id}`,
+      `/app/facilities/1/waiting-room?just_encountered_id=${upserted.id}`,
     )
   },
 }
@@ -55,6 +54,9 @@ export default async function WaitingRoomAdd(
   const { trx } = state
   const { searchParams } = url
   const patient_id = parseInt(searchParams.get('patient_id')!) || null
+  const encounter_id = parseInt(searchParams.get('encounter_id')!) || null
+  assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
+
   const patient_name = searchParams.get('patient_name')
   const just_completed_intake = url.searchParams.get('intake') === 'completed'
 
@@ -74,14 +76,20 @@ export default async function WaitingRoomAdd(
     facility_id,
   })
 
+  let open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
   let patient: { id?: number; name: string } | undefined
   if (patient_id) {
+    const getting_open_encounter = patient_encounters.get(trx, {
+      patient_id,
+      encounter_id: 'open',
+    })
     await completing_intake
     const fetched_patient = await patients.getByID(trx, {
       id: patient_id,
     })
     assert(hasName(fetched_patient))
     patient = fetched_patient
+    open_encounter = await getting_open_encounter
   } else if (patient_name) {
     patient = { name: patient_name }
   }
@@ -96,6 +104,13 @@ export default async function WaitingRoomAdd(
     >
       <Container size='md'>
         <Form method='POST'>
+          {open_encounter && (
+            <input
+              type='hidden'
+              name='encounter_id'
+              value={open_encounter.encounter_id}
+            />
+          )}
           <FormRow>
             <PersonSearch
               name='patient'
@@ -103,6 +118,7 @@ export default async function WaitingRoomAdd(
               required
               addable
               value={patient}
+              disabled={!!patient}
             />
           </FormRow>
           <FormRow>
@@ -117,7 +133,7 @@ export default async function WaitingRoomAdd(
               ) => ({
                 value,
               }))}
-              value='seeking treatment'
+              value={open_encounter?.reason || 'seeking treatment'}
             />
           </FormRow>
           <FormRow>

@@ -148,7 +148,9 @@ export function getEmployeesQuery(
             'nurse_specialties.specialty',
           ]).orderBy(['employment.profession asc']),
       ).as('professions'),
-      employeeHrefSql(opts.facility_id).as('href'),
+      jsonBuildObject({
+        view: employeeHrefSql(opts.facility_id),
+      }).as('actions'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`
         CASE
           WHEN nurse_registration_details.health_worker_id IS NULL THEN 'incomplete'
@@ -244,7 +246,9 @@ export function getEmployeesAndInvitees(
           profession: eb.ref('health_worker_invitees.profession'),
         }),
       ).as('professions'),
-      sql<null>`NULL`.as('href'),
+      jsonBuildObject({
+        view: sql<null>`NULL`,
+      }).as('actions'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`'incomplete'`.as(
         'registration_status',
       ),

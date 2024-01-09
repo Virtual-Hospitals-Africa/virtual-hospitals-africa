@@ -76,7 +76,6 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           description: null,
           gender: null,
           ethnicity: null,
-          href: `/app/patients/${patient.id}`,
           id: patient.id,
           last_visited: null,
           location: { longitude: null, latitude: null },
@@ -94,6 +93,9 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           updated_at: patient.updated_at,
           conversation_state: 'initial_message',
           completed_intake: false,
+          actions: {
+            view: `/app/patients/${patient.id}`,
+          },
         },
         patient_id: patient.id,
         reason: 'back pain',

@@ -26,6 +26,7 @@ export default function PersonSearch({
   label,
   value,
   addable,
+  disabled,
   onSelect,
 }: {
   href: string
@@ -34,6 +35,7 @@ export default function PersonSearch({
   label?: string
   value?: Maybe<{ id?: Maybe<number>; name: string }>
   addable?: boolean
+  disabled?: boolean
   // deno-lint-ignore no-explicit-any
   onSelect?: (person: any) => void
 }) {
@@ -102,6 +104,7 @@ export default function PersonSearch({
           setSelected(null)
           setSearch.delay(event.target.value)
         }}
+        disabled={disabled}
       >
         {/* TODO add empty state for no results */}
         {showSearchResults && (

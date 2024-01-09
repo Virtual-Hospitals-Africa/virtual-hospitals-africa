@@ -52,22 +52,16 @@ export async function handler(
   _req: Request,
   ctx: EncounterContext,
 ) {
-  log('encounter handler')
-
   const encounter_id = getEncounterId(ctx)
   const patient_id = getNumericParam(ctx, 'patient_id')
   const { trx, healthWorker } = ctx.state
 
-  log('encounter handler zz' + encounter_id + ' ' + patient_id)
   const getting_patient_card = await patients.getCard(trx, { id: patient_id })
 
-  log('encounter handler 1.1')
   const encounter = await patient_encounters.get(trx, {
     encounter_id,
     patient_id,
   })
-
-  log('encounter handler 2')
 
   // TODO: start an encounter if it doesn't exist?
   assertOr404(encounter, 'No open visit with this patient')

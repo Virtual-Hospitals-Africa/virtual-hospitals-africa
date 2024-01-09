@@ -38,14 +38,6 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Actions',
     type: 'actions',
-    actions: {
-      View(row) {
-        return row.actions.view_href
-      },
-      Intake(row) {
-        return row.actions.intake_href
-      },
-    },
   },
 ]
 

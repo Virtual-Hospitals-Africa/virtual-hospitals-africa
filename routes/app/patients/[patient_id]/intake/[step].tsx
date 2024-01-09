@@ -12,9 +12,11 @@ import {
   TrxOrDb,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
+import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as address from '../../../../../db/models/address.ts'
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
+import * as waiting_room from '../../../../../db/models/waiting_room.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
@@ -343,11 +345,39 @@ export default async function IntakePatientPage(
 
   const { trx, healthWorker } = ctx.state
 
-  const patient = await patients.getOnboarding(trx, { id: patient_id })
+  const getting_onboarding_patient = patients.getOnboarding(trx, {
+    id: patient_id,
+  })
+  const encounter = await patient_encounters.getOpen(
+    ctx.state.trx,
+    patient_id,
+  )
+
+  if (!encounter) {
+    const { facility_id } = healthWorker.employment[0]
+    const error = 'No open visit with this patient'
+    const search_params = new URLSearchParams({
+      error,
+      patient_id: String(patient_id),
+    })
+    return redirect(
+      `/app/facilities/${facility_id}/waiting-room/add?${search_params}`,
+    )
+  }
+
+  const removing_from_waiting_room = encounter.waiting_room_id && (
+    waiting_room.remove(ctx.state.trx, {
+      id: encounter.waiting_room_id,
+    })
+  )
+
+  const patient = await getting_onboarding_patient
   assertOr404(patient, 'Patient not found')
 
   const props = await getIntakePatientProps(trx, patient_id, step)
   const { stepsTopBar } = useIntakePatientSteps(ctx)
+
+  await removing_from_waiting_room
 
   return (
     <Layout

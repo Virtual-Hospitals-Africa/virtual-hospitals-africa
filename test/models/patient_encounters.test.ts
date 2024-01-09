@@ -16,7 +16,7 @@ describe(
     describe('create', () => {
       it('creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room', async () => {
         const patient = await patients.upsert(db, { name: 'Test Patient' })
-        await patient_encounters.create(db, 1, {
+        await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,
           reason: 'seeking treatment',
         })
@@ -30,8 +30,8 @@ describe(
               name: 'Test Patient',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient.id}/intake/personal`,
             },
             providers: [],
             reason: 'seeking treatment',
@@ -43,7 +43,7 @@ describe(
       it('creates a new patient encounter for a patient seeking treatment with a specific provider, adding the patient to the waiting room', async () => {
         const nurse = await addTestHealthWorker({ scenario: 'approved-nurse' })
         const patient = await patients.upsert(db, { name: 'Test Patient' })
-        await patient_encounters.create(db, 1, {
+        await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,
           reason: 'seeking treatment',
           employment_ids: [nurse.employee_id!],
@@ -58,8 +58,8 @@ describe(
               name: 'Test Patient',
             },
             actions: {
-              view_href: null,
-              intake_href: `/app/patients/${patient.id}/intake/personal`,
+              view: null,
+              intake: `/app/patients/${patient.id}/intake/personal`,
             },
             providers: [
               {

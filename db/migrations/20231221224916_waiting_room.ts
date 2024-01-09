@@ -111,6 +111,10 @@ export async function up(db: Kysely<unknown>) {
       'timestamp',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
+    .addUniqueConstraint('facility_patient_encounter', [
+      'facility_id',
+      'patient_encounter_id',
+    ])
     .execute()
 
   await addUpdatedAtTrigger(db, 'patient_encounters')

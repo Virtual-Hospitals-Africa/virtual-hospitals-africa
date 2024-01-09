@@ -103,13 +103,15 @@ export type RenderedPatient = ReturnedSqlRow<
     dob_formatted: string | null
     description: string | null
     // age_formatted: Maybe<string> // TODO: implement
-    href: string | null
     avatar_url: string | null
     nearest_facility: string | null
     last_visited: null // TODO: implement
     location: {
       longitude: number | null
       latitude: number | null
+    }
+    actions: {
+      view: string | null
     }
   }
 >
@@ -922,8 +924,10 @@ export type FacilityEmployee = {
   avatar_url: null | string
   email: string
   display_name: string
-  href: string
   registration_status: 'pending_approval' | 'approved' | 'incomplete'
+  actions: {
+    view: string
+  }
 }
 
 export type FacilityDoctorOrNurse =
@@ -946,8 +950,10 @@ export type FacilityEmployeeInvitee = {
   avatar_url: null
   email: string
   display_name: string
-  href: null
   registration_status: 'pending_approval' | 'approved' | 'incomplete'
+  actions: {
+    view: null
+  }
 }
 
 export type Profession =
@@ -1570,8 +1576,8 @@ export type RenderedWaitingRoom = {
     avatar_url: string | null
   }
   actions: {
-    view_href: string | null
-    intake_href: string | null
+    view: string | null
+    intake: string | null
   }
   reason: PatientEncounterReason
   is_emergency: boolean

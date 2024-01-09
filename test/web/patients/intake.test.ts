@@ -9,7 +9,7 @@ import {
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
-import * as patients from '../../../db/models/patients.ts'
+import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../db/models/patient_allergies.ts'
 import * as address from '../../../db/models/address.ts'
@@ -21,16 +21,19 @@ import omit from '../../../util/omit.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   it('loads the personal page', async () => {
-    const patient = await patients.upsert(db, { name: 'Test Patient' })
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
     const response = await fetch(
-      `${route}/app/patients/${patient.id}/intake/personal`,
+      `${route}/app/patients/${patient_id}/intake/personal`,
     )
     assert(response.ok, 'should have returned ok')
     assert(
-      response.url === `${route}/app/patients/${patient.id}/intake/personal`,
+      response.url === `${route}/app/patients/${patient_id}/intake/personal`,
     )
     const pageContents = await response.text()
 
@@ -42,7 +45,10 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   })
 
   it('supports POST on the personal step, moving you to the address step', async () => {
-    const patient = await patients.upsert(db, { name: 'Test Patient' })
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
@@ -56,7 +62,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     body.set('ethnicity', 'african')
     body.set('phone_number', '5555555555')
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/personal`,
+      `${route}/app/patients/${patient_id}/intake/personal`,
       {
         method: 'POST',
         body,
@@ -75,11 +81,11 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient.id}/intake/address`,
+      `${route}/app/patients/${patient_id}/intake/address`,
     )
 
     const getPersonalResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/personal`,
+      `${route}/app/patients/${patient_id}/intake/personal`,
     )
 
     const pageContents = await getPersonalResponse.text()
@@ -95,8 +101,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   })
 
   it('supports POST on the address step, moving you to the pre-existing_conditions step', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
     })
     const testDoctor = await addTestHealthWorker({ scenario: 'doctor' })
     const { fetch } = await addTestHealthWorkerWithSession({
@@ -122,7 +129,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     body.set('primary_doctor_id', String(testDoctor.id))
 
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/address`,
+      `${route}/app/patients/${patient_id}/intake/address`,
       {
         method: 'POST',
         body,
@@ -134,7 +141,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
     )
 
     const patientResult = await db.selectFrom('patients').selectAll().execute()
@@ -154,7 +161,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals(patientAddress[0].street, '120 Main Street')
 
     const getResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/address`,
+      `${route}/app/patients/${patient_id}/intake/address`,
     )
 
     const pageContents = await getResponse.text()
@@ -180,8 +187,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   })
 
   it('supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the history step', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
     })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
@@ -222,7 +230,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
 
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
       {
         method: 'POST',
         body,
@@ -234,11 +242,11 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/${patient.id}/intake/history`,
+        `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient.id,
+      patient_id: patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 1)
@@ -270,7 +278,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
 
     const getResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
       {},
     )
 
@@ -314,8 +322,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   })
 
   it('supports POST of allergies on the pre-existing_conditions step, moving you to the history step', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
     })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
@@ -326,7 +335,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     body.set('allergies.1.allergy_id', '13')
 
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
       {
         method: 'POST',
         body,
@@ -338,17 +347,17 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/${patient.id}/intake/history`,
+        `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const allergies = await patient_allergies.get(db, patient.id)
+    const allergies = await patient_allergies.get(db, patient_id)
 
     assertEquals(allergies.length, 2)
     assertEquals(allergies[0].allergy_id, 7)
     assertEquals(allergies[1].allergy_id, 13)
 
     const getResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
       {},
     )
 
@@ -364,14 +373,15 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   })
 
   it('can remove all pre_existing_conditions on POST', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
     })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
 
-    await patient_conditions.upsertPreExisting(db, patient.id, [
+    await patient_conditions.upsertPreExisting(db, patient_id, [
       {
         key_id: 'c_4373',
         start_date: '1989-01-12',
@@ -379,7 +389,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     ])
 
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
       {
         method: 'POST',
         body: new FormData(),
@@ -391,19 +401,20 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/${patient.id}/intake/history`,
+        `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient.id,
+      patient_id: patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 0)
   })
 
   it('handles holes in an array of pre_existing_conditions on POST', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
     })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
@@ -444,7 +455,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
 
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
       {
         method: 'POST',
         body,
@@ -456,11 +467,11 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/${patient.id}/intake/history`,
+        `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient.id,
+      patient_id: patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 1)
@@ -493,7 +504,10 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   })
 
   it('supports POST on the family step, moving you to the lifestyle step', async () => {
-    const patient = await patients.upsert(db, { name: 'Test Patient' })
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
@@ -502,7 +516,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     body.set('family.guardians.0.family_relation_gendered', 'biological mother')
     body.set('family.guardians.0.patient_phone_number', '3333333333')
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/family`,
+      `${route}/app/patients/${patient_id}/intake/family`,
       {
         method: 'POST',
         body,
@@ -514,10 +528,10 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient.id}/intake/lifestyle`,
+      `${route}/app/patients/${patient_id}/intake/lifestyle`,
     )
 
-    const patient_family = await family.get(db, { patient_id: patient.id })
+    const patient_family = await family.get(db, { patient_id: patient_id })
 
     assertEquals(patient_family.dependents.length, 0)
     assertEquals(patient_family.guardians.length, 1)
@@ -530,7 +544,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals(patient_family.guardians[0].patient_gender, 'female')
 
     const getResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/family`,
+      `${route}/app/patients/${patient_id}/intake/family`,
     )
 
     const pageContents = await getResponse.text()

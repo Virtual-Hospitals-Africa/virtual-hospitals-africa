@@ -33,7 +33,7 @@ export async function get(
     facility_id: number
   },
 ): Promise<RenderedWaitingRoom[]> {
-  const patients_in_waiting_room = await trx
+  const query = trx
     .selectFrom('waiting_room')
     .innerJoin(
       'patient_encounters',
@@ -55,12 +55,12 @@ export async function get(
       }).as('patient'),
       'patient_encounters.reason',
       jsonBuildObject({
-        view_href: eb.case()
+        view: eb.case()
           .when(
             eb('patients.completed_intake', '=', true),
           ).then(sql<string>`concat('/app/patients/', patients.id::text)`)
           .else(null).end(),
-        intake_href: eb.case()
+        intake: eb.case()
           .when(
             eb('patients.completed_intake', '=', false),
           ).then(
@@ -119,7 +119,8 @@ export async function get(
       ).as('providers'),
     ])
     .orderBy(['is_emergency desc', 'waiting_room.created_at asc'])
-    .execute()
+
+  const patients_in_waiting_room = await query.execute()
 
   return patients_in_waiting_room.map(
     (

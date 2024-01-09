@@ -1,12 +1,7 @@
 import { RenderedPatient } from '../../types.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 
-const columns: TableColumn<
-  Pick<
-    RenderedPatient,
-    'avatar_url' | 'name' | 'last_visited' | 'nearest_facility' | 'href'
-  >
->[] = [
+const columns: TableColumn<RenderedPatient>[] = [
   {
     label: null,
     dataKey: 'avatar_url',
@@ -31,11 +26,6 @@ const columns: TableColumn<
   {
     label: 'Actions',
     type: 'actions',
-    actions: {
-      View(patient) {
-        return patient.href
-      },
-    },
   },
 ]
 
