@@ -5,6 +5,7 @@ import {
   LoggedInHealthWorkerContext,
   LoggedInHealthWorkerHandler,
   Maybe,
+  PastMedicalCondition,
   PatientFamily,
   PreExistingAllergy,
   PreExistingConditionWithDrugs,
@@ -30,6 +31,7 @@ import FamilyForm from '../../../../../components/patients/intake/FamilyForm.tsx
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
+import PatientHistory from '../../../../../components/patients/intake/HistoryForm.tsx'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400, assertOr404 } from '../../../../../util/assertOr.ts'
 import omit from '../../../../../util/omit.ts'
@@ -39,7 +41,6 @@ import Form from '../../../../../components/library/form/Form.tsx'
 type IntakePatientProps = {
   step:
     | 'personal'
-    | 'history'
     | 'occupation'
     | 'lifestyle'
     | 'review'
@@ -53,6 +54,9 @@ type IntakePatientProps = {
 } | {
   step: 'family'
   family: PatientFamily
+} | {
+  step: 'history'
+  pastMedicalConditions: PastMedicalCondition[]
 }
 
 type PersonalFormValues = {
@@ -91,7 +95,9 @@ type FamilyFormValues = {
     dependents?: FamilyRelationInsert[]
   }
 }
-type HistoryFormValues = Record<string, unknown>
+type HistoryFormValues = {
+  past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
+}
 type OccupationFormValues = {
   school?: Maybe<Record<string, unknown>>
 }
@@ -240,6 +246,11 @@ const transformers: Transformers = {
     pre_existing_conditions: patient.pre_existing_conditions || [],
     allergies: patient.allergies || [],
   }),
+  history: (
+    patient,
+  ): Omit<patients.UpsertPatientIntake, 'id'> => ({
+    past_medical_conditions: patient.past_medical_conditions || [],
+  }),
   'family': (
     patient,
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
@@ -256,7 +267,6 @@ export const handler: LoggedInHealthWorkerHandler<IntakePatientProps> = {
     const patient_id = getNumericParam(ctx, 'patient_id')
 
     assertOr400(isStep(step))
-
     const formData = await parseRequestAsserts(
       ctx.state.trx,
       req,
@@ -308,6 +318,11 @@ async function getIntakePatientProps(
         preExistingConditions: await gettingPreExistingConditions,
         allergies: await gettingAllergies,
       }
+    }
+    case 'history': {
+      const pastMedicalConditions = await patient_conditions
+        .getPastMedicalConditions(trx, { patient_id })
+      return { step, pastMedicalConditions }
     }
     case 'family': {
       const family = await patient_family.get(trx, { patient_id })
@@ -373,7 +388,12 @@ export default async function IntakePatientPage(
           {props.step === 'occupation' && (
             <PatientOccupationForm patient={patient} />
           )}
-          {props.step === 'history' && <div>TODO History</div>}
+          {props.step === 'history' && (
+            <PatientHistory
+              patient={patient}
+              pastMedicalConditions={props.pastMedicalConditions}
+            />
+          )}
           {props.step === 'review' && <PatientReview patient={patient} />}
           <hr className='my-2' />
           <Buttons
