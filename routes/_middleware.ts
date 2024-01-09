@@ -18,6 +18,13 @@ export const logError = (err: Error) => {
   return log((err.stack || err.message || err) as any)
 }
 
+export function grokPostgresError(err: Error) {
+  // deno-lint-ignore no-explicit-any
+  const cause: any = err.cause || err
+  if (!('fields' in cause)) return
+  return `${cause.name}: ${cause.fields.message}`
+}
+
 export const handler = [
   redisSession(redis, {
     keyPrefix: 'S_',
@@ -48,7 +55,8 @@ export const handler = [
       console.error(err)
       logError(err)
       const status = err.status || 500
-      const message: string = err.message || 'Internal Server Error'
+      const message: string = grokPostgresError(err) || err.message ||
+        'Internal Server Error'
       return new Response(message, { status })
     })
   },

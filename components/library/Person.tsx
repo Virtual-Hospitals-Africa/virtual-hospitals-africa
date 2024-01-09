@@ -6,6 +6,7 @@ import { Maybe } from '../../types.ts'
 export type PersonData = {
   id: number | 'add'
   name: string
+  display_name?: Maybe<string>
   avatar_url?: Maybe<string>
   description?: ComponentChildren
 }
@@ -20,7 +21,7 @@ export function Person(
         className='h-6 w-6 flex-shrink-0 rounded-full'
       />
       <span className={cls('ml-3 truncate', bold && 'font-bold')}>
-        <div>{person.name}</div>
+        <div>{person.display_name || person.name}</div>
         {person.description && (
           <div className='font-normal capitalize'>
             {person.description}
