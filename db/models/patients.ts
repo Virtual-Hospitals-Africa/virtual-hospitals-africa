@@ -110,6 +110,7 @@ export type UpsertPatientIntake = {
   unregistered_primary_doctor_name?: Maybe<string>
   allergies?: PreExistingAllergy[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
+  past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
   family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
 }
@@ -168,6 +169,7 @@ export async function upsertIntake(
     address,
     family,
     pre_existing_conditions,
+    past_medical_conditions,
     allergies,
     occupation,
     ...patient_updates
@@ -183,6 +185,13 @@ export async function upsertIntake(
       trx,
       id,
       pre_existing_conditions,
+    )
+
+  const upserting_past_conditions = past_medical_conditions &&
+    patient_conditions.upsertPastMedical(
+      trx,
+      id,
+      past_medical_conditions,
     )
 
   const upserting_allergies = allergies &&
@@ -219,6 +228,7 @@ export async function upsertIntake(
   await Promise.all([
     upserting_patient,
     upserting_conditions,
+    upserting_past_conditions,
     upserting_allergies,
     upserting_family,
     upserting_occupation,

@@ -28,7 +28,7 @@ export default function PastMedicalConditionsForm({
   pastMedicalConditions: PastMedicalCondition[]
 }): JSX.Element {
   const [patientConditions, setPatientConditions] = useState<
-  pastConditionsFormState
+    pastConditionsFormState
   >(
     initialState(pastMedicalConditions),
   )
@@ -52,6 +52,7 @@ export default function PastMedicalConditionsForm({
           <Condition
             condition_id={condition_id}
             condition_index={i}
+            condition_state={condition_state}
             pastMedicalConditions={pastMedicalConditions}
             removeCondition={() => {
               const nextPatientConditions = new Map(patientConditions)

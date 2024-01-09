@@ -1,10 +1,7 @@
 import AllergyInput from '../../../islands/allergy/Input.tsx'
-import {
-  OnboardingPatient,
-  PastMedicalCondition
-} from '../../../types.ts'
+import { OnboardingPatient, PastMedicalCondition } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import PastMedicalConditionsForm from '../../../islands/past-conditions/Form.tsx'
+import PastMedicalConditionsForm from '../../../islands/past-medical-conditions/Form.tsx'
 
 export default function History(
   { patient, pastMedicalConditions }: {

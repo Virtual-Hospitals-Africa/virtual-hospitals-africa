@@ -5,10 +5,10 @@ import {
   LoggedInHealthWorkerContext,
   LoggedInHealthWorkerHandler,
   Maybe,
+  PastMedicalCondition,
   PatientFamily,
   PreExistingAllergy,
   PreExistingConditionWithDrugs,
-  PastMedicalCondition,
   TrxOrDb,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
@@ -55,9 +55,9 @@ type IntakePatientProps = {
   step: 'family'
   family: PatientFamily
 } | {
-    step: 'history'
-    pastMedicalConditions: PastMedicalCondition[]
-  }
+  step: 'history'
+  pastMedicalConditions: PastMedicalCondition[]
+}
 
 type PersonalFormValues = {
   first_name: string
@@ -95,7 +95,9 @@ type FamilyFormValues = {
     dependents?: FamilyRelationInsert[]
   }
 }
-type HistoryFormValues = Record<string, unknown>
+type HistoryFormValues = {
+  past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
+}
 type OccupationFormValues = {
   school?: Maybe<Record<string, unknown>>
 }
@@ -244,6 +246,11 @@ const transformers: Transformers = {
     pre_existing_conditions: patient.pre_existing_conditions || [],
     allergies: patient.allergies || [],
   }),
+  history: (
+    patient
+  ): Omit<patients.UpsertPatientIntake, 'id'> => ({
+    past_medical_conditions: patient.past_medical_conditions || [],
+  }),
   'family': (
     patient,
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
@@ -260,7 +267,6 @@ export const handler: LoggedInHealthWorkerHandler<IntakePatientProps> = {
     const patient_id = getNumericParam(ctx, 'patient_id')
 
     assertOr400(isStep(step))
-
     const formData = await parseRequestAsserts(
       ctx.state.trx,
       req,
@@ -382,7 +388,12 @@ export default async function IntakePatientPage(
           {props.step === 'occupation' && (
             <PatientOccupationForm patient={patient} />
           )}
-          {props.step === 'history' && <PatientHistory patient={patient} pastMedicalConditions={props.pastMedicalConditions} />}
+          {props.step === 'history' && (
+            <PatientHistory
+              patient={patient}
+              pastMedicalConditions={props.pastMedicalConditions}
+            />
+          )}
           {props.step === 'review' && <PatientReview patient={patient} />}
           <hr className='my-2' />
           <Buttons

@@ -133,11 +133,14 @@ export type PatientCondition = {
   comorbidity_of_condition_id: Maybe<number>
 }
 
-export type PreExistingCondition = {
+export type MedicalConditionBase = {
   id: number
   key_id: string
   primary_name: string
   start_date: string
+}
+
+export type PreExistingCondition = MedicalConditionBase & {
   comorbidities: {
     id: number
     key_id: string
@@ -160,11 +163,7 @@ export type PreExistingCondition = {
   }[]
 }
 
-export type PreExistingConditionWithDrugs = {
-  id: number
-  key_id: string
-  primary_name: string
-  start_date: string
+export type PreExistingConditionWithDrugs = MedicalConditionBase & {
   comorbidities: {
     id: number
     key_id: string
@@ -194,14 +193,9 @@ export type PreExistingAllergy = {
   name?: Maybe<string>
 }
 
-export type PastMedicalCondition = {
-  id: number
-  key_id: string
-  primary_name: string
-  start_date: string
+export type PastMedicalCondition = MedicalConditionBase & {
   end_date: string
 }
-
 
 export type OnboardingPatient =
   & {

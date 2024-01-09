@@ -13,11 +13,13 @@ export default function Condition(
   {
     condition_id,
     condition_index,
+    condition_state,
     pastMedicalConditions,
     removeCondition,
   }: {
     condition_id: string | number
     condition_index: number
+    condition_state: ConditionState
     pastMedicalConditions: PastMedicalCondition[]
     removeCondition(): void
   },
@@ -25,7 +27,7 @@ export default function Condition(
   const matchingCondition = pastMedicalConditions.find(
     (condition) => condition.id === condition_id,
   )
-  const prefix = `past_conditions.${condition_index}`
+  const prefix = `past_medical_conditions.${condition_index}`
 
   return (
     <RemoveRow onClick={removeCondition} key={condition_id} labelled>
@@ -46,7 +48,8 @@ export default function Condition(
             name={`${prefix}.end_date`}
             label='End Date'
             value={matchingCondition?.end_date}
-            required />
+            required
+          />
           {typeof condition_id === 'number' && (
             <input
               type='hidden'
