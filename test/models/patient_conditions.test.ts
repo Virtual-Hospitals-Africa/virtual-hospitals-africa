@@ -5,6 +5,8 @@ import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
+import { assertRejects } from 'std/assert/assert_rejects.ts'
+import { StatusError } from '../../util/assertOr.ts'
 
 describe(
   'db/models/patient_conditions.ts',
@@ -468,6 +470,46 @@ describe(
         )
         assertEquals(medicationAfter.start_date, '2020-01-01')
         assertEquals(medicationAfter.strength, medication_to_keep.strength)
+      })
+    })
+
+    describe('upsertPastMedical', () => {
+      it('upserts past conditions, those with an end_date', async () => {
+        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+
+        await patient_conditions.upsertPastMedical(db, patient.id, [
+          {
+            key_id: 'c_22401',
+            start_date: '2020-01-01',
+            end_date: '2021-03-01',
+          },
+        ])
+        const past_conditions = await patient_conditions
+          .getPastMedicalConditions(db, {
+            patient_id: patient.id,
+          })
+        assertEquals(past_conditions.length, 1)
+        const [preExistingCondition] = past_conditions
+        assertEquals(preExistingCondition.key_id, 'c_22401')
+        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.start_date, '2020-01-01')
+        assertEquals(preExistingCondition.end_date, '2021-03-01')
+      })
+      it('400s if no end date is provided', async () => {
+        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+
+        await assertRejects(
+          () =>
+            patient_conditions.upsertPastMedical(db, patient.id, [
+              {
+                key_id: 'c_22401',
+                start_date: '2020-01-01',
+                end_date: 'not a date',
+              },
+            ]),
+          StatusError,
+          'Condition end_date must be an ISO Date',
+        )
       })
     })
   },

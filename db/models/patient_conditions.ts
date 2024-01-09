@@ -11,7 +11,11 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import * as drugs from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
-import { differenceInDays, durationEndDate } from '../../util/date.ts'
+import {
+  differenceInDays,
+  durationEndDate,
+  isISODateString,
+} from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 
@@ -101,13 +105,16 @@ export const IntakeFrequencies = {
 }
 
 function assertPreExistingConditions(
-  patientConditions: PreExistingConditionUpsert[],
+  patient_conditions: PreExistingConditionUpsert[],
 ) {
   const seenConditionKeyIds = new Set<string>()
   const seenMedicationIds = new Set<number>()
-  for (const condition of patientConditions) {
+  for (const condition of patient_conditions) {
     assertOr400(condition.key_id, 'Condition key id must be present')
-    assertOr400(condition.start_date, 'Condition start_date must be present')
+    assertOr400(
+      isISODateString(condition.start_date),
+      'Condition start_date must be present',
+    )
     assertOr400(
       !seenConditionKeyIds.has(condition.key_id),
       'Condition key_id must be unique',
@@ -152,32 +159,32 @@ function assertPreExistingConditions(
 
 async function removeEntitiesNoLongerPresent(
   trx: TrxOrDb,
-  patientConditions: PreExistingConditionUpsert[],
-  databaseConditions: PreExistingCondition[],
+  patient_conditions: PreExistingConditionUpsert[],
+  database_conditions: PreExistingCondition[],
 ) {
-  const patientConditionsToRemove: number[] = []
+  const conditions_to_remove: number[] = []
   const patientMedicationsToRemove: number[] = []
-  for (const dbCondition of databaseConditions) {
-    const matchingCondition = patientConditions.find(
+  for (const dbCondition of database_conditions) {
+    const matching_condition = patient_conditions.find(
       (c) => c.id === dbCondition.id,
     )
-    if (!matchingCondition) {
-      patientConditionsToRemove.push(dbCondition.id)
-      patientConditionsToRemove.push(
+    if (!matching_condition) {
+      conditions_to_remove.push(dbCondition.id)
+      conditions_to_remove.push(
         ...dbCondition.comorbidities.map((c) => c.id),
       )
       continue
     }
     for (const comorbidity of dbCondition.comorbidities) {
-      const matchingComorbidity = matchingCondition.comorbidities?.find(
+      const matchingComorbidity = matching_condition.comorbidities?.find(
         (c) => c.id === comorbidity.id,
       )
       if (!matchingComorbidity) {
-        patientConditionsToRemove.push(comorbidity.id)
+        conditions_to_remove.push(comorbidity.id)
       }
     }
     for (const medication of dbCondition.medications) {
-      const matchingMedication = matchingCondition.medications?.find(
+      const matchingMedication = matching_condition.medications?.find(
         (m) => m.id === medication.id,
       )
       if (!matchingMedication) {
@@ -185,10 +192,10 @@ async function removeEntitiesNoLongerPresent(
       }
     }
   }
-  const removingConditions = patientConditionsToRemove.length &&
+  const removingConditions = conditions_to_remove.length &&
     trx
       .deleteFrom('patient_conditions')
-      .where('id', 'in', patientConditionsToRemove)
+      .where('id', 'in', conditions_to_remove)
       .execute()
 
   const removingMedications = patientMedicationsToRemove.length &&
@@ -203,18 +210,18 @@ async function removeEntitiesNoLongerPresent(
 async function upsertPreExistingCondition(
   trx: TrxOrDb,
   patient_id: number,
-  databaseConditions: PreExistingCondition[],
+  database_conditions: PreExistingCondition[],
   condition: PreExistingConditionUpsert,
 ) {
   let patient_condition_id: Maybe<number> = condition.id
-  const matchingCondition = databaseConditions.find(
+  const matching_condition = database_conditions.find(
     (c) => c.id === condition.id,
   )
   if (patient_condition_id) {
-    assertOr400(matchingCondition, 'Referenced a non-existent condition')
+    assertOr400(matching_condition, 'Referenced a non-existent condition')
     if (
-      matchingCondition.key_id !== condition.key_id ||
-      matchingCondition.start_date !== condition.start_date
+      matching_condition.key_id !== condition.key_id ||
+      matching_condition.start_date !== condition.start_date
     ) {
       await trx
         .updateTable('patient_conditions')
@@ -258,7 +265,7 @@ async function upsertPreExistingCondition(
       comorbidity_of_condition_id: patient_condition_id,
     }
     if (comorbidity.id) {
-      const matchingComorbidity = matchingCondition?.comorbidities.find(
+      const matchingComorbidity = matching_condition?.comorbidities.find(
         (c) => c.id === comorbidity.id,
       )
       assert(matchingComorbidity, 'Referenced a non-existent comorbidity')
@@ -301,7 +308,7 @@ async function upsertPreExistingCondition(
       special_instructions: medication.special_instructions || null,
     }
     if (medication.id) {
-      const matchingMedication = matchingCondition?.medications.find(
+      const matchingMedication = matching_condition?.medications.find(
         (m) => m.id === medication.id,
       )
       assertOr400(matchingMedication, 'Referenced a non-existent medication')
@@ -322,20 +329,25 @@ async function upsertPreExistingCondition(
 export async function upsertPreExisting(
   trx: TrxOrDb,
   patient_id: number,
-  patientConditions: PreExistingConditionUpsert[],
+  patient_conditions: PreExistingConditionUpsert[],
 ): Promise<void> {
-  assertPreExistingConditions(patientConditions)
-  const databaseConditions = await getPreExistingConditions(trx, {
+  assertPreExistingConditions(patient_conditions)
+  const database_conditions = await getPreExistingConditions(trx, {
     patient_id,
   })
   const removingEntitiesNoLongerPresent = removeEntitiesNoLongerPresent(
     trx,
-    patientConditions,
-    databaseConditions,
+    patient_conditions,
+    database_conditions,
   )
   await Promise.all(
-    patientConditions.map((condition) =>
-      upsertPreExistingCondition(trx, patient_id, databaseConditions, condition)
+    patient_conditions.map((condition) =>
+      upsertPreExistingCondition(
+        trx,
+        patient_id,
+        database_conditions,
+        condition,
+      )
     ),
   )
   await removingEntitiesNoLongerPresent
@@ -348,7 +360,7 @@ export async function getPreExistingConditions(
     patient_id: number
   },
 ): Promise<PreExistingCondition[]> {
-  const gettingPatientConditions = await trx
+  const gettingpatient_conditions = await trx
     .selectFrom('patient_conditions')
     .innerJoin(
       'conditions',
@@ -409,17 +421,17 @@ export async function getPreExistingConditions(
     ])
     .execute()
 
-  const patientConditions = await gettingPatientConditions
+  const patient_conditions = await gettingpatient_conditions
   const patientMedications = await gettingPatientMedications
 
-  return patientConditions
+  return patient_conditions
     .filter((condition) => !condition.comorbidity_of_condition_id)
     .map((parentCondition) => ({
       id: parentCondition.id,
       key_id: parentCondition.key_id,
       start_date: parentCondition.start_date,
       primary_name: parentCondition.primary_name,
-      comorbidities: patientConditions
+      comorbidities: patient_conditions
         .filter(
           (comorbidity) =>
             comorbidity.comorbidity_of_condition_id === parentCondition.id,
@@ -472,13 +484,13 @@ export async function getPreExistingConditionsWithDrugs(
   }))
 }
 
-export async function getPastMedicalConditions(
+export function getPastMedicalConditions(
   trx: TrxOrDb,
   opts: {
     patient_id: number
   },
 ): Promise<PastMedicalCondition[]> {
-  const gettingPatientConditions = await trx
+  return trx
     .selectFrom('patient_conditions')
     .innerJoin(
       'conditions',
@@ -499,76 +511,80 @@ export async function getPastMedicalConditions(
       'conditions.primary_name as primary_name',
     ])
     .execute()
-
-  return gettingPatientConditions
 }
 
 export async function upsertPastMedical(
   trx: TrxOrDb,
   patient_id: number,
-  patientConditions: PastMedicalConditionUpsert[],
+  patient_conditions: PastMedicalConditionUpsert[],
 ): Promise<void> {
-  console.log(`condition passed in ${patientConditions}`)
-  assertPreExistingConditions(patientConditions)
-  const databaseConditions = await getPastMedicalConditions(trx, {
+  assertPreExistingConditions(patient_conditions)
+  for (const condition of patient_conditions) {
+    assertOr400(
+      isISODateString(condition.end_date),
+      'Condition end_date must be an ISO Date',
+    )
+  }
+  const database_conditions = await getPastMedicalConditions(trx, {
     patient_id,
   })
-
-  console.log(`databaseConditions ${JSON.stringify(databaseConditions)}`)
-
   const removingEntitiesNoLongerPresent = removePastConditionNoLongerPresent(
     trx,
-    patientConditions,
-    databaseConditions,
+    patient_conditions,
+    database_conditions,
   )
   await Promise.all(
-    patientConditions.map((condition) =>
-      upsertPastMedicalCondition(trx, patient_id, databaseConditions, condition)
+    patient_conditions.map((condition) =>
+      upsertPastMedicalCondition(
+        trx,
+        patient_id,
+        database_conditions,
+        condition,
+      )
     ),
   )
   await removingEntitiesNoLongerPresent
 }
 
-export async function removePastConditionNoLongerPresent(
+function removePastConditionNoLongerPresent(
   trx: TrxOrDb,
-  patientConditions: PastMedicalConditionUpsert[],
-  databaseConditions: PastMedicalCondition[],
-) {
-  const patientConditionsToRemove: number[] = []
-  for (const dbCondition of databaseConditions) {
-    const matchingCondition = patientConditions.find(
+  patient_conditions: PastMedicalConditionUpsert[],
+  database_conditions: PastMedicalCondition[],
+): Promise<unknown> {
+  const conditions_to_remove: number[] = []
+  for (const dbCondition of database_conditions) {
+    const matching_condition = patient_conditions.find(
       (c) => c.id === dbCondition.id,
     )
-    if (!matchingCondition) {
-      patientConditionsToRemove.push(dbCondition.id)
+    if (!matching_condition) {
+      conditions_to_remove.push(dbCondition.id)
       continue
     }
   }
-  const removingConditions = patientConditionsToRemove.length &&
-    trx
+  return conditions_to_remove.length
+    ? trx
       .deleteFrom('patient_conditions')
-      .where('id', 'in', patientConditionsToRemove)
+      .where('id', 'in', conditions_to_remove)
       .execute()
-
-  await removingConditions
+    : Promise.resolve()
 }
 
 async function upsertPastMedicalCondition(
   trx: TrxOrDb,
   patient_id: number,
-  databaseConditions: PastMedicalCondition[],
+  database_conditions: PastMedicalCondition[],
   condition: PastMedicalConditionUpsert,
 ) {
   const patient_condition_id: Maybe<number> = condition.id
-  const matchingCondition = databaseConditions.find(
+  const matching_condition = database_conditions.find(
     (c) => c.id === condition.id,
   )
   if (patient_condition_id) {
-    assertOr400(matchingCondition, 'Referenced a non-existent condition')
+    assertOr400(matching_condition, 'Referenced a non-existent condition')
     if (
-      matchingCondition.key_id !== condition.key_id ||
-      matchingCondition.start_date !== condition.start_date ||
-      matchingCondition.end_date !== condition.end_date
+      matching_condition.key_id !== condition.key_id ||
+      matching_condition.start_date !== condition.start_date ||
+      matching_condition.end_date !== condition.end_date
     ) {
       await trx
         .updateTable('patient_conditions')
@@ -578,6 +594,7 @@ async function upsertPastMedicalCondition(
           end_date: condition.end_date,
         })
         .where('id', '=', patient_condition_id)
+        .where('patient_id', '=', patient_id)
         .executeTakeFirstOrThrow()
     }
   } else {
