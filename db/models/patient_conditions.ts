@@ -14,7 +14,6 @@ import { assert } from 'std/assert/assert.ts'
 import { differenceInDays, durationEndDate } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
-import { re } from 'std/semver/_shared.ts'
 
 type PatientMedicationUpsert = {
   id?: Maybe<number>
@@ -524,7 +523,7 @@ export async function upsertPastMedical(
   )
   await Promise.all(
     patientConditions.map((condition) =>
-    upsertPastMedicalCondition(trx, patient_id, databaseConditions, condition)
+      upsertPastMedicalCondition(trx, patient_id, databaseConditions, condition)
     ),
   )
   await removingEntitiesNoLongerPresent

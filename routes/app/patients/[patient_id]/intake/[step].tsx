@@ -247,7 +247,7 @@ const transformers: Transformers = {
     allergies: patient.allergies || [],
   }),
   history: (
-    patient
+    patient,
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     past_medical_conditions: patient.past_medical_conditions || [],
   }),
