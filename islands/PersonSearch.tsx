@@ -1,24 +1,20 @@
-import { useCallback, useEffect, useState } from 'preact/hooks'
-import SearchResults, {
-  AddButtonSearchResult,
-  PersonSearchResult,
-} from '../components/library/SearchResults.tsx'
-import { SearchInput } from '../components/library/form/Inputs.tsx'
-import { assert } from 'std/assert/assert.ts'
-import debounce from '../util/debounce.ts'
+import { useState } from 'react'
+import { Combobox } from '@headlessui/react'
+import cls from '../util/cls.ts'
 import { HasId, Maybe } from '../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import { useEffect } from 'preact/hooks'
 import isObjectLike from '../util/isObjectLike.ts'
+import {
+  CheckIcon,
+  ChevronUpDownIcon,
+} from '../components/library/icons/heroicons/outline.tsx'
+import { Person } from '../components/library/Person.tsx'
 
 function hasId(value: unknown): value is HasId {
   return isObjectLike(value) && typeof value.id === 'number'
 }
 
-/* TODO
-  - [ ] Handle focus/blur
-  - [ ] Handle no results
-  - [ ] Show avatar in input
-  - [ ] For patients, show date of birth, gender, and national id
-*/
 export default function PersonSearch({
   href,
   name,
@@ -39,126 +35,155 @@ export default function PersonSearch({
   // deno-lint-ignore no-explicit-any
   onSelect?: (person: any) => void
 }) {
-  const [isFocused, setIsFocused] = useState(false)
   const [selected, setSelected] = useState<
     { id: number | 'add'; name: string } | null
   >(
     hasId(value) ? value : null,
   )
-  // deno-lint-ignore no-explicit-any
-  const [people, setPeople] = useState<any[]>([])
 
-  const [search, setSearchImmediate] = useState(value?.name ?? '')
-
-  // Don't search until the user has stopped typing for a bit
-  const [setSearch] = useState({
-    delay: debounce(setSearchImmediate, 220),
-  })
-
-  const onDocumentClick = useCallback(() => {
-    const nextIsFocused = document.activeElement ===
-      document.querySelector(`input[name="${name}_name"]`)
-    setIsFocused(nextIsFocused)
-  }, [setIsFocused])
-
-  useEffect(() => {
-    self.addEventListener('click', onDocumentClick)
-    self.addEventListener('focus', onDocumentClick)
-    self.addEventListener('blur', onDocumentClick)
-    return () => {
-      self.removeEventListener('click', onDocumentClick)
-      self.removeEventListener('focus', onDocumentClick)
-      self.removeEventListener('blur', onDocumentClick)
-    }
+  const [search, setSearch] = useState({
+    query: value?.name ?? '',
+    delay: null as null | number,
+    active_request: null as null | XMLHttpRequest,
+    // deno-lint-ignore no-explicit-any
+    results: [] as any[],
   })
 
   useEffect(() => {
     const url = new URL(`${window.location.origin}${href}`)
-    if (search && search !== value?.name) {
-      url.searchParams.set('search', search)
+    if (search.query) {
+      url.searchParams.set('search', search.query)
+    }
+    if (search.active_request) {
+      search.active_request.abort()
+    }
+    if (search.delay) {
+      clearTimeout(search.delay)
+    }
+    const request = new XMLHttpRequest()
+    request.open('GET', url.toString())
+    request.setRequestHeader('accept', 'application/json')
+    request.onload = () => {
+      if (request.status !== 200) {
+        const event = new CustomEvent('request-error', {
+          detail: request.responseText,
+        })
+        return self.dispatchEvent(event)
+      }
+      const people = JSON.parse(request.responseText)
+      assert(Array.isArray(people))
+      setSearch((search) => {
+        if (search.active_request === request) {
+          return {
+            query: search.query,
+            delay: null,
+            active_request: null,
+            results: people,
+          }
+        }
+        return search
+      })
     }
 
-    fetch(url, {
-      headers: { accept: 'application/json' },
-    }).then(async (response) => {
-      const people = await response.json()
-      assert(Array.isArray(people))
-      setPeople(people)
-    }).catch(console.error)
-  }, [search])
+    const delay = setTimeout(() => {
+      request.send()
+      setSearch((search) => ({
+        ...search,
+        delay: null,
+        active_request: request,
+      }))
+    }, 220)
 
-  const showSearchResults = isFocused &&
-    (people.length > 0 || (search && addable))
+    setSearch((search) => ({
+      ...search,
+      delay,
+      active_request: null,
+    }))
+  }, [search.query])
+
+  const options = addable
+    ? [...search.results, {
+      id: 'add' as const,
+      name: search.query,
+      display_name: `Add "${search.query}"`,
+    }]
+    : search.results
 
   return (
-    <div className='w-full'>
-      <SearchInput
-        name={`${name}_name`}
-        label={label}
-        value={selected?.name}
-        required={required}
-        onInput={(event) => {
-          assert(event.target)
-          assert('value' in event.target)
-          assert(typeof event.target.value === 'string')
-          setSelected(null)
-          setSearch.delay(event.target.value)
-        }}
-        disabled={disabled}
-      >
-        {/* TODO add empty state for no results */}
-        {showSearchResults && (
-          <SearchResults>
-            {people.map((person) => (
-              <PersonSearchResult
-                person={person}
-                isSelected={selected?.id === person.id}
-                onSelect={() => {
-                  setIsFocused(false)
-                  setSelected({ id: person.id, name: person.name! })
-                  setSearchImmediate(person!.name!)
-                  onSelect && onSelect(person)
-                  const input = document.querySelector(
-                    `input[name="${name}_name"]`,
-                  )
-                  assert(input instanceof HTMLInputElement)
-
-                  // Create a new keyboard event for the 'Tab' key
-                  const tabKeyEvent = new KeyboardEvent('keydown', {
-                    key: 'Tab',
-                    code: 'Tab',
-                    keyCode: 9,
-                    which: 9,
-                    bubbles: true,
-                    cancelable: true,
-                  })
-
-                  // Dispatch the event to the input
-                  input.dispatchEvent(tabKeyEvent)
-                }}
-              />
-            ))}
-            {addable && search
-              ? (
-                <AddButtonSearchResult
-                  searchedValue={search}
-                  isSelected={selected?.id === 'add'}
-                  onSelect={() => {
-                    setSelected({ name: search, id: 'add' })
-                    onSelect &&
-                      onSelect({
-                        name: search,
-                      })
-                  }}
-                />
-              )
-              : null}
-          </SearchResults>
+    <Combobox
+      value={selected}
+      onChange={(value) => {
+        setSelected(value)
+        onSelect?.(value)
+      }}
+    >
+      <div className='w-full'>
+        {label && (
+          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-900'>
+            {label}
+          </Combobox.Label>
         )}
-      </SearchInput>
-      {(typeof selected?.id === 'number') && (
-        <input type='hidden' name={`${name}_id`} value={selected.id} />
-      )}
-    </div>
+        <div className='relative mt-2'>
+          <Combobox.Input
+            name={`${name}_name`}
+            className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+            onChange={(
+              event,
+            ) => {
+              assert(event.target instanceof HTMLInputElement)
+              setSelected(null)
+              setSearch({
+                ...search,
+                query: event.target.value,
+              })
+            }}
+            value={selected?.name}
+            required={required}
+            aria-disabled={disabled}
+          />
+          <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
+            <ChevronUpDownIcon
+              className='h-5 w-5 text-gray-400'
+              aria-hidden='true'
+            />
+          </Combobox.Button>
+
+          {(options.length > 0) && (
+            <Combobox.Options className='absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm'>
+              {options.map((person) => (
+                <Combobox.Option
+                  key={person.id}
+                  value={person}
+                  className={({ active }) =>
+                    cls(
+                      'relative cursor-default select-none py-2 pl-3 pr-9',
+                      active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                    )}
+                >
+                  {({ active, selected }) => (
+                    <>
+                      <Person person={person} bold={selected} />
+                      {selected && (
+                        <span
+                          className={cls(
+                            'absolute inset-y-0 right-0 flex items-center pr-4',
+                            active ? 'text-white' : 'text-indigo-600',
+                          )}
+                        >
+                          <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                        </span>
+                      )}
+                    </>
+                  )}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          )}
+        </div>
+        {(typeof selected?.id === 'number') && (
+          <input type='hidden' name={`${name}_id`} value={selected.id} />
+        )}
+      </div>
+    </Combobox>
   )
 }
