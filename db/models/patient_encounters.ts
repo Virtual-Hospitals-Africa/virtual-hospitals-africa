@@ -10,7 +10,6 @@ import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom } from '../helpers.ts'
-import { log } from '../../routes/_middleware.ts'
 
 export type Create =
   & {
@@ -159,10 +158,6 @@ export function get(
     encounter_id: number | 'open'
   },
 ): Promise<Maybe<RenderedPatientEncounter>> {
-  log(
-    'get patient encounter\n' +
-      JSON.stringify({ patient_id, encounter_id }, null, 2),
-  )
   let query = trx
     .selectFrom('patient_encounters')
     .leftJoin(

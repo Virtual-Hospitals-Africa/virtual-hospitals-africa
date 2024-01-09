@@ -356,3 +356,8 @@ export function durationEndDate(
   }
   return stringifyJustDate(end)
 }
+
+export function isISODateString(date: unknown): date is string {
+  return isString(date) && /^\d{4}-\d{2}-\d{2}$/.test(date) &&
+    (new Date(date).toDateString() !== 'Invalid Date')
+}
