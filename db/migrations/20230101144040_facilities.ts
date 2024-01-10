@@ -2,6 +2,7 @@ import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import * as google from '../../external-clients/google.ts'
 import parseCsv from '../../util/parseCsv.ts'
+import capitalize from '../../util/capitalize.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -62,6 +63,12 @@ async function importDataFromCSV(db: Kysely<unknown>) {
       })
     }
 
+    const category = row.category?.trim()
+    const category_capitalized = category && capitalize(category)
+    const name = category_capitalized
+      ? (row.name + ' ' + category_capitalized)
+      : row.name
+
     await sql`
       INSERT INTO facilities (
         name,
@@ -70,10 +77,10 @@ async function importDataFromCSV(db: Kysely<unknown>) {
         category,
         phone
       ) VALUES (
-        ${row.name},
+        ${name},
         ST_SetSRID(ST_MakePoint(${row.longitude}, ${row.latitude}), 4326),
         ${address},
-        ${row.category},
+        ${category_capitalized},
         ${row.phone}
       )
     `.execute(db)

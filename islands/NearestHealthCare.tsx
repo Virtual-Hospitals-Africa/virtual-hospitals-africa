@@ -6,7 +6,7 @@ import PersonSearch from './PersonSearch.tsx'
 
 export function NearestHealthCare(
   { nearest_facility, primary_doctor }: {
-    nearest_facility?: { id: number; display_name: string }
+    nearest_facility?: { id: number; name: string; address: string }
     primary_doctor?: { id: number; name: string }
   },
 ) {
@@ -25,9 +25,9 @@ export function NearestHealthCare(
           name='nearest_facility'
           href='/app/facilities'
           label='Nearest Facility'
-          required
           value={nearest_facility_signal.value}
           onSelect={(facility) => nearest_facility_signal.value = facility}
+          required
         />
       </FormRow>
       <FormRow>

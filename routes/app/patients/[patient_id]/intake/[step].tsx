@@ -80,7 +80,7 @@ type AddressFormValues = {
     street: string
   }
   nearest_facility_id: number
-  nearest_facility_display_name: string
+  nearest_facility_name: string
   primary_doctor_id: number
   primary_doctor_name: string
 }
@@ -234,7 +234,7 @@ const transformers: Transformers = {
     avatar_media_id: avatar_media?.id,
   }),
   address: (
-    { primary_doctor_name, nearest_facility_display_name, ...patient },
+    { primary_doctor_name, nearest_facility_name, ...patient },
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     ...patient,
     unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
@@ -400,7 +400,7 @@ export default async function IntakePatientPage(
               patient={patient}
               defaultFacility={{
                 id: healthWorker.employment[0].facility_id,
-                display_name: healthWorker.employment[0].facility_display_name,
+                name: healthWorker.employment[0].facility_name,
               }}
               adminDistricts={props.adminDistricts}
             />

@@ -245,7 +245,7 @@ export async function search(
     name: string
     facilities: {
       facility_id: number
-      facility_display_name: string
+      facility_name: string
       professions: Profession[]
     }[]
     description: string[]
@@ -281,7 +281,7 @@ export async function search(
           )
           .select([
             'employment.facility_id',
-            'facilities.display_name as facility_display_name',
+            'facilities.name as facility_name',
             sql<Profession[]>`JSON_AGG(employment.profession)`.as(
               'professions',
             ),
@@ -298,7 +298,7 @@ export async function search(
           )
           .groupBy([
             'employment.facility_id',
-            'facilities.display_name',
+            'facilities.name',
           ]),
       ).as('facilities'),
     ])
@@ -332,8 +332,8 @@ export async function search(
     assert(hasName(hw))
     return {
       ...hw,
-      description: hw.facilities.map(({ professions, facility_display_name }) =>
-        `${professions.join(', ')} @ ${facility_display_name}`
+      description: hw.facilities.map(({ professions, facility_name }) =>
+        `${professions.join(', ')} @ ${facility_name}`
       ),
     }
   })
@@ -381,7 +381,7 @@ export async function get(
           )
           .select([
             'employment.facility_id',
-            'facilities.display_name as facility_display_name',
+            'facilities.name as facility_name',
             'employment.id as employment_id',
             'employment.profession',
           ])
@@ -427,7 +427,7 @@ export async function get(
 
         return {
           facility_id,
-          facility_display_name: roles[0].facility_display_name,
+          facility_name: roles[0].facility_name,
           roles: {
             nurse: nurse_role && {
               registration_needed: !result.health_worker_id,
@@ -575,7 +575,7 @@ export function getEmployeeInfo(
           .groupBy(['facilities.id', 'facilities.name'])
           .select([
             'facilities.id as facility_id',
-            'facilities.display_name as facility_display_name',
+            'facilities.name as facility_name',
             'facilities.address',
             sql<Profession[]>`array_agg(employment.profession)`.as(
               'professions',

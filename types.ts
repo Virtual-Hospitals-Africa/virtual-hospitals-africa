@@ -203,7 +203,7 @@ export type OnboardingPatient =
   & {
     id: number
     avatar_url: Maybe<string>
-    nearest_facility_display_name: Maybe<string>
+    nearest_facility_name: Maybe<string>
     primary_doctor_name: Maybe<string>
     address: {
       street: Maybe<string>
@@ -314,7 +314,7 @@ export type PatientState = {
   created_at: Date
   updated_at: Date
   nearest_facilities?: ReturnedSqlRow<PatientNearestFacility>[]
-  nearest_facility_display_name?: string
+  nearest_facility_name?: string
   selectedFacility?: Facility
 }
 
@@ -1049,7 +1049,7 @@ export type EmployeeInfo = {
   employment: {
     address: string
     facility_id: number
-    facility_display_name: string
+    facility_name: string
     professions: Profession[]
   }[]
   documents: {
@@ -1065,7 +1065,7 @@ export type EmployedHealthWorker = ReturnedSqlRow<
     expires_at: Maybe<Date | string>
     employment: {
       facility_id: number
-      facility_display_name: string
+      facility_name: string
       roles: {
         nurse: null | {
           registration_needed: boolean
@@ -1300,7 +1300,6 @@ export type Facility = Location & {
   address: string
   category: string
   phone: string | null
-  display_name: string
 }
 
 export type PatientNearestFacility = Facility & {

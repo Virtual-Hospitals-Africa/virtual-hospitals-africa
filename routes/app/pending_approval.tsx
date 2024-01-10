@@ -35,7 +35,7 @@ export default function PendingApprovalPage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
   const { facilityAdmin } = props.data
-  const facilityDisplayName = facilityAdmin.facility_display_name ||
+  const facilityDisplayName = facilityAdmin.facility_name ||
     'your facility'
   const facilityAdminName = facilityAdmin.name || 'your facility admin'
 

@@ -182,7 +182,6 @@ export interface Facilities {
   address: string
   category: string
   created_at: Generated<Timestamp>
-  display_name: Generated<string>
   id: Generated<number>
   location: string
   name: string
@@ -432,6 +431,15 @@ export interface PatientGuardians {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientKin {
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  next_of_kin_patient_id: number
+  patient_id: number
+  relationship: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientMeasurements {
   created_at: Generated<Timestamp>
   encounter_id: number
@@ -543,13 +551,6 @@ export interface WhatsappMessagesSent {
   whatsapp_id: string
 }
 
-export interface PatientKin {
-  id: Generated<number>
-  patient_id: number
-  next_of_kin_patient_id: number
-  relationship: string
-}
-
 export interface DB {
   address: Address
   allergies: Allergies
@@ -587,6 +588,7 @@ export interface DB {
   patient_encounter_providers: PatientEncounterProviders
   patient_encounters: PatientEncounters
   patient_guardians: PatientGuardians
+  patient_kin: PatientKin
   patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
@@ -598,6 +600,5 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
-  patient_kin: PatientKin
 }
 type Buffer = Uint8Array

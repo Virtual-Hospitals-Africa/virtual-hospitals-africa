@@ -53,12 +53,11 @@ export function search(
       sql`ST_X(location::geometry)`.as('longitude'),
       sql`ST_Y(location::geometry)`.as('latitude'),
       'category',
-      'display_name',
+      'name',
       'phone',
     ])
-    .where('display_name', 'is not', null)
 
-  if (search) query = query.where('display_name', 'ilike', `%${search}%`)
+  if (search) query = query.where('name', 'ilike', `%${search}%`)
 
   return query.execute()
 }
@@ -81,7 +80,6 @@ export function get(
       'address',
       'category',
       'phone',
-      'display_name',
       sql<number>`ST_X(location::geometry)`.as('longitude'),
       sql<number>`ST_Y(location::geometry)`.as('latitude'),
     ])

@@ -63,9 +63,9 @@ export async function initializeHealthWorker(
   return {
     ...healthWorker,
     employment: facility_ids.map((facility_id) => {
-      const facility_display_name = employed_at_facilities.find((f) =>
+      const facility_name = employed_at_facilities.find((f) =>
         f.id === facility_id
-      )!.display_name
+      )!.name
       const nurse_role = roles.find(
         (r) => r.facility_id === facility_id && r.profession === 'nurse',
       ) || null
@@ -78,7 +78,7 @@ export async function initializeHealthWorker(
 
       return {
         facility_id,
-        facility_display_name,
+        facility_name,
         roles: {
           nurse: nurse_role && {
             registration_needed: true,

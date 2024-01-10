@@ -25,7 +25,7 @@ describeWithWebServer('/app/facilities', 8005, (route) => {
       id: 1,
       address: 'Bristol, UK',
       category: 'Hospital',
-      display_name: 'VHA Test Hospital',
+      name: 'VHA Test Hospital',
       latitude: '51',
       longitude: '2.25',
       phone: null,

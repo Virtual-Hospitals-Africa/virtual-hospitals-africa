@@ -7,16 +7,8 @@ import { Person, PersonData } from './Person.tsx'
 
 type BasicSelectProps = {
   isSelected?: boolean
-  onSelect: () => void
+  onSelect?: () => void
 }
-type PersonSearchResultProps = BasicSelectProps & {
-  person: PersonData
-}
-
-type FacilitySearchResultProps = BasicSelectProps & {
-  facility: HasId<{ display_name: string; address: string }>
-}
-
 type AllergySearchResultProps = BasicSelectProps & {
   allergy: string
 }
@@ -76,64 +68,31 @@ export function SearchResult(
   )
 }
 
-export function DrugSearchResult({ drug, isSelected, onSelect }: {
+export function DrugSearchResult({ drug, isSelected }: {
   drug: DrugSearchResultData
   isSelected?: boolean
-  onSelect: () => void
 }) {
   return (
-    <SearchResult
-      isSelected={isSelected}
-      onSelect={onSelect}
-    >
-      <div className='flex items-center'>
-        <span
-          className={cls(
-            'ml-3 truncate',
-            isSelected && 'font-bold',
-          )}
-        >
-          <b>{drug.drug_generic_name}</b>
-          {drug.medications.map(
-            (medication) => (
-              <div>{medication.form_route} ({medication.strength_summary})</div>
-            ),
-          )}
-          {drug.distinct_trade_names.length > 0 && (
-            <div className='text-s italic'>
-              {drug.distinct_trade_names.join(', ')}
-            </div>
-          )}
-        </span>
-      </div>
-    </SearchResult>
-  )
-}
-
-export function PersonSearchResult(
-  { person, isSelected, onSelect }: PersonSearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <Person person={person} bold={isSelected} />
-    </SearchResult>
-  )
-}
-
-export function FacilitySearchResult(
-  { facility, isSelected, onSelect }: FacilitySearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <div className='flex flex-col'>
-        <div className={cls('truncate text-base', isSelected && 'font-bold')}>
-          {facility.display_name}
-        </div>
-        <div className={cls('truncate text-xs', isSelected && 'font-bold')}>
-          {facility.address}
-        </div>
-      </div>
-    </SearchResult>
+    <div className='flex items-center'>
+      <span
+        className={cls(
+          'ml-3 truncate',
+          isSelected && 'font-bold',
+        )}
+      >
+        <b>{drug.drug_generic_name}</b>
+        {drug.medications.map(
+          (medication) => (
+            <div>{medication.form_route} ({medication.strength_summary})</div>
+          ),
+        )}
+        {drug.distinct_trade_names.length > 0 && (
+          <div className='text-s italic'>
+            {drug.distinct_trade_names.join(', ')}
+          </div>
+        )}
+      </span>
+    </div>
   )
 }
 
