@@ -1,7 +1,6 @@
 import { sql } from 'kysely'
 import {
   Maybe,
-  MedicalConditionBase,
   MedicationSchedule,
   PastMedicalCondition,
   PreExistingCondition,
@@ -155,127 +154,34 @@ function assertPreExistingConditions(
   }
 }
 
-async function removeEntitiesNoLongerPresent(
-  trx: TrxOrDb,
-  patient_conditions: PreExistingConditionUpsert[],
-  database_conditions: Array<
-    MedicalConditionBase & Partial<PreExistingCondition>
-  >,
-) {
-  const conditions_to_remove: number[] = []
-  const patient_medications_to_remove: number[] = []
-  for (const db_condition of database_conditions) {
-    const matching_condition = patient_conditions.find(
-      (c) => c.id === db_condition.id,
-    )
-    if (!matching_condition) {
-      conditions_to_remove.push(db_condition.patient_condition_id)
-      conditions_to_remove.push(
-        ...(db_condition.comorbidities || []).map((c) =>
-          c.patient_condition_id
-        ),
-      )
-      continue
-    }
-    for (const comorbidity of (db_condition.comorbidities || [])) {
-      const matching_comorbidity = matching_condition.comorbidities?.find(
-        (c) => c.id === comorbidity.id,
-      )
-      if (!matching_comorbidity) {
-        conditions_to_remove.push(comorbidity.patient_condition_id)
-      }
-    }
-    for (const medication of (db_condition.medications || [])) {
-      const matching_medication = matching_condition.medications?.find(
-        (m) => (
-          (medication.medication_id &&
-            (medication.medication_id === m.medication_id)) ||
-          (medication.manufactured_medication_id &&
-            (medication.manufactured_medication_id ===
-              m.manufactured_medication_id))
-        ),
-      )
-      if (!matching_medication) {
-        patient_medications_to_remove.push(
-          medication.patient_condition_medication_id,
-        )
-      }
-    }
-  }
-
-  const removing_conditions = conditions_to_remove.length &&
-    trx
-      .deleteFrom('patient_conditions')
-      .where('id', 'in', conditions_to_remove)
-      .execute()
-
-  const removing_medications = patient_medications_to_remove.length &&
-    trx
-      .deleteFrom('patient_condition_medications')
-      .where('id', 'in', patient_medications_to_remove)
-      .execute()
-
-  await Promise.all([removing_conditions, removing_medications])
-}
-
 async function upsertPreExistingCondition(
   trx: TrxOrDb,
   patient_id: number,
-  database_conditions: PreExistingCondition[],
   condition: PreExistingConditionUpsert,
 ) {
-  const matching_condition = database_conditions.find(
-    (c) => c.id === condition.id,
-  )
-  let patient_condition_id: number
-  if (matching_condition) {
-    patient_condition_id = matching_condition.patient_condition_id
-    if (
-      matching_condition.start_date !== condition.start_date
-    ) {
-      await trx
-        .updateTable('patient_conditions')
-        .set({ start_date: condition.start_date })
-        .where('id', '=', matching_condition.patient_condition_id)
-        .executeTakeFirstOrThrow()
-    }
-  } else {
-    const parent_condition = await trx
-      .insertInto('patient_conditions')
-      .values({
-        patient_id,
-        condition_id: condition.id,
-        start_date: condition.start_date,
-        comorbidity_of_condition_id: null,
-      })
-      .returning('id')
-      .executeTakeFirstOrThrow()
-    patient_condition_id = parent_condition.id
-  }
-  for (const comorbidity of condition.comorbidities || []) {
-    const values = {
+  const parent_condition = await trx
+    .insertInto('patient_conditions')
+    .values({
       patient_id,
-      condition_id: comorbidity.id,
-      start_date: comorbidity.start_date || condition.start_date,
-      comorbidity_of_condition_id: patient_condition_id,
-    }
-    const matching_comorbidity = matching_condition?.comorbidities.find(
-      (c) => c.id === comorbidity.id,
-    )
-    if (matching_comorbidity) {
-      await trx
-        .updateTable('patient_conditions')
-        .set(values)
-        .where('id', '=', matching_comorbidity.patient_condition_id)
-        .executeTakeFirstOrThrow()
-    } else {
-      await trx
-        .insertInto('patient_conditions')
-        .values(values)
-        .executeTakeFirstOrThrow()
-    }
-  }
-  for (const medication of condition.medications || []) {
+      condition_id: condition.id,
+      start_date: condition.start_date,
+      comorbidity_of_condition_id: null,
+    })
+    .returning('id')
+    .executeTakeFirstOrThrow()
+
+  const comorbidities = (condition.comorbidities || []).map((comorbidity) => ({
+    patient_id,
+    condition_id: comorbidity.id,
+    start_date: comorbidity.start_date || condition.start_date,
+    comorbidity_of_condition_id: parent_condition.id,
+  }))
+  const inserting_comorbidities = comorbidities.length && trx
+    .insertInto('patient_conditions')
+    .values(comorbidities)
+    .execute()
+
+  const medications = (condition.medications || []).map((medication) => {
     const start_date = medication.start_date || condition.start_date
 
     const { duration, duration_unit } = medication.end_date
@@ -285,8 +191,8 @@ async function upsertPreExistingCondition(
       }
       : { duration: 1, duration_unit: 'indefinitely' }
 
-    const values = {
-      patient_condition_id,
+    return {
+      patient_condition_id: parent_condition.id,
       medication_id:
         (!medication.manufactured_medication_id && medication.medication_id) ||
         null, // omit medication_id if manufactured_medication_id is present
@@ -301,28 +207,13 @@ async function upsertPreExistingCondition(
       start_date,
       special_instructions: medication.special_instructions || null,
     }
-    const matching_medication = matching_condition?.medications.find(
-      (m) => (
-        (medication.medication_id &&
-          (medication.medication_id === m.medication_id)) ||
-        (medication.manufactured_medication_id &&
-          (medication.manufactured_medication_id ===
-            m.manufactured_medication_id))
-      ),
-    )
-    if (matching_medication) {
-      await trx
-        .updateTable('patient_condition_medications')
-        .set(values)
-        .where('id', '=', matching_medication.patient_condition_medication_id)
-        .executeTakeFirstOrThrow()
-    } else {
-      await trx
-        .insertInto('patient_condition_medications')
-        .values(values)
-        .executeTakeFirstOrThrow()
-    }
-  }
+  })
+  const inserting_medications = medications.length && trx
+    .insertInto('patient_condition_medications')
+    .values(medications)
+    .execute()
+
+  await Promise.all([inserting_comorbidities, inserting_medications])
 }
 
 export async function upsertPreExisting(
@@ -331,25 +222,24 @@ export async function upsertPreExisting(
   patient_conditions: PreExistingConditionUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
-  const database_conditions = await getPreExistingConditions(trx, {
-    patient_id,
-  })
-  const removing_entities_no_longer_present = removeEntitiesNoLongerPresent(
-    trx,
-    patient_conditions,
-    database_conditions,
+  const removing = trx.deleteFrom(
+    'patient_conditions',
   )
+    .where('patient_id', '=', patient_id)
+    .where('end_date', 'is', null)
+    .where('created_at', '<', sql<Date>`now()`)
+    .execute()
+
   await Promise.all(
     patient_conditions.map((condition) =>
       upsertPreExistingCondition(
         trx,
         patient_id,
-        database_conditions,
         condition,
       )
     ),
   )
-  await removing_entities_no_longer_present
+  await removing
 }
 
 // Note: Pre-existing conditions are just conditions that have not ended yet
@@ -527,60 +417,25 @@ export async function upsertPastMedical(
       'Condition end_date must be an ISO Date',
     )
   }
-  const database_conditions = await getPastMedicalConditions(trx, {
-    patient_id,
-  })
-  const removing_entities_no_longer_present = removeEntitiesNoLongerPresent(
-    trx,
-    patient_conditions,
-    database_conditions,
+  const removing = trx.deleteFrom(
+    'patient_conditions',
   )
-  await Promise.all(
-    patient_conditions.map((condition) =>
-      upsertPastMedicalCondition(
-        trx,
-        patient_id,
-        database_conditions,
-        condition,
-      )
-    ),
-  )
-  await removing_entities_no_longer_present
-}
+    .where('patient_id', '=', patient_id)
+    .where('end_date', 'is not', null)
+    .where('created_at', '<', sql<Date>`now()`)
+    .execute()
 
-function upsertPastMedicalCondition(
-  trx: TrxOrDb,
-  patient_id: number,
-  database_conditions: PastMedicalCondition[],
-  condition: PastMedicalConditionUpsert,
-) {
-  const matching_condition = database_conditions.find(
-    (c) => c.id === condition.id,
-  )
-  if (!matching_condition) {
-    return trx
-      .insertInto('patient_conditions')
-      .values({
-        patient_id,
-        condition_id: condition.id,
-        start_date: condition.start_date,
-        end_date: condition.end_date,
-      })
-      .returning('id')
-      .executeTakeFirstOrThrow()
-  }
-  if (
-    matching_condition.start_date !== condition.start_date ||
-    matching_condition.end_date !== condition.end_date
-  ) {
-    return trx
-      .updateTable('patient_conditions')
-      .set({
-        start_date: condition.start_date,
-        end_date: condition.end_date,
-      })
-      .where('id', '=', matching_condition.patient_condition_id)
-      .where('patient_id', '=', patient_id)
-      .executeTakeFirstOrThrow()
-  }
+  const to_insert = patient_conditions.map((condition) => ({
+    patient_id,
+    condition_id: condition.id,
+    start_date: condition.start_date,
+    end_date: condition.end_date,
+  }))
+
+  await trx
+    .insertInto('patient_conditions')
+    .values(to_insert)
+    .execute()
+
+  await removing
 }
