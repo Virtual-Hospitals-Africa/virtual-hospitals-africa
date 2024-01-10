@@ -18,6 +18,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 import omit from '../../../util/omit.ts'
+import deepOmit from '../../../util/deepOmit.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -211,9 +212,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     ).executeTakeFirstOrThrow()
 
     const body = new FormData()
-    body.set('pre_existing_conditions.0.key_id', 'c_4373')
+    body.set('pre_existing_conditions.0.id', 'c_4373')
     body.set('pre_existing_conditions.0.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.0.comorbidities.0.key_id', 'c_8321')
+    body.set('pre_existing_conditions.0.comorbidities.0.id', 'c_8321')
     body.set(
       'pre_existing_conditions.0.medications.0.medication_id',
       String(tablet.id),
@@ -251,20 +252,20 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     assertEquals(pre_existing_conditions.length, 1)
     const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.key_id, 'c_4373')
-    assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
+    assertEquals(preExistingCondition.id, 'c_4373')
+    assertEquals(preExistingCondition.name, 'Cigarette smoker')
     assertEquals(preExistingCondition.start_date, '1989-01-12')
     assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].key_id, 'c_8321')
+    assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
     assertEquals(
-      preExistingCondition.comorbidities[0].primary_name,
+      preExistingCondition.comorbidities[0].name,
       'Coma - hyperosmolar nonketotic (HONK)',
     )
     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
     assertEquals(preExistingCondition.medications.length, 1)
     assertEquals(preExistingCondition.medications[0].dosage, 2)
     assertEquals(
-      preExistingCondition.medications[0].generic_name,
+      preExistingCondition.medications[0].name,
       drug.generic_name,
     )
     assertEquals(
@@ -289,24 +290,27 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals(
       // deno-lint-ignore no-explicit-any
       omit(formValues as any, ['allergy_search']),
-      { pre_existing_conditions },
+      deepOmit({ pre_existing_conditions }, [
+        'patient_condition_id',
+        'patient_condition_medication_id',
+      ]),
       'The form should be 1:1 with the conditions in the DB',
     )
     assertEquals(formDisplay, {
       allergy_search: '',
       pre_existing_conditions: [
         {
-          primary_name: 'Cigarette smoker',
+          name: 'Cigarette smoker',
           start_date: '1989-01-12',
           comorbidities: [
             {
-              primary_name: 'Coma - hyperosmolar nonketotic (HONK)',
+              name: 'Coma - hyperosmolar nonketotic (HONK)',
               start_date: '1989-01-12',
             },
           ],
           medications: [
             {
-              generic_name: drug.generic_name,
+              name: drug.generic_name,
               start_date: '1989-01-12',
               end_date: null,
               medication_id: 'TABLET, COATED; ORAL',
@@ -383,7 +387,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     await patient_conditions.upsertPreExisting(db, patient_id, [
       {
-        key_id: 'c_4373',
+        id: 'c_4373',
         start_date: '1989-01-12',
       },
     ])
@@ -436,9 +440,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     ).executeTakeFirstOrThrow()
 
     const body = new FormData()
-    body.set('pre_existing_conditions.1.key_id', 'c_4373')
+    body.set('pre_existing_conditions.1.id', 'c_4373')
     body.set('pre_existing_conditions.1.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.1.comorbidities.0.key_id', 'c_8321')
+    body.set('pre_existing_conditions.1.comorbidities.0.id', 'c_8321')
     body.set(
       'pre_existing_conditions.1.medications.0.medication_id',
       String(tablet.id),
@@ -476,20 +480,20 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     assertEquals(pre_existing_conditions.length, 1)
     const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.key_id, 'c_4373')
-    assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
+    assertEquals(preExistingCondition.id, 'c_4373')
+    assertEquals(preExistingCondition.name, 'Cigarette smoker')
     assertEquals(preExistingCondition.start_date, '1989-01-12')
     assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].key_id, 'c_8321')
+    assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
     assertEquals(
-      preExistingCondition.comorbidities[0].primary_name,
+      preExistingCondition.comorbidities[0].name,
       'Coma - hyperosmolar nonketotic (HONK)',
     )
     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
     assertEquals(preExistingCondition.medications.length, 1)
     assertEquals(preExistingCondition.medications[0].dosage, 2)
     assertEquals(
-      preExistingCondition.medications[0].generic_name,
+      preExistingCondition.medications[0].name,
       drug.generic_name,
     )
     assertEquals(

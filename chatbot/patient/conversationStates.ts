@@ -218,8 +218,8 @@ const conversationStates: ConversationStates<
           : facility.address
 
         const facilityName = facility.vha
-          ? `${facility.display_name} (VHA)`
-          : facility.display_name
+          ? `${facility.name} (VHA)`
+          : facility.name
         return {
           section: 'Town Name Here',
           row: {
@@ -267,11 +267,11 @@ const conversationStates: ConversationStates<
 
       const locationMessage: WhatsAppSingleSendable = {
         type: 'location',
-        messageBody: selectedFacility.display_name,
+        messageBody: selectedFacility.name,
         location: {
           longitude: selectedFacility.longitude,
           latitude: selectedFacility.latitude,
-          name: selectedFacility.display_name,
+          name: selectedFacility.name,
           address: selectedFacility.address,
         },
       }

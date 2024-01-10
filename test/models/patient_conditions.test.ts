@@ -37,11 +37,13 @@ describe(
             'form',
             '=',
             'TABLET',
-          ).executeTakeFirstOrThrow()
+          )
+          .orderBy('drugs.generic_name desc')
+          .executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
             medications: [
               {
@@ -62,13 +64,13 @@ describe(
         assertEquals(preExistingConditions.length, 1)
         const [preExistingCondition] = preExistingConditions
         assertEquals(preExistingCondition.comorbidities, [])
-        assertEquals(preExistingCondition.key_id, 'c_22401')
-        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.id, 'c_22401')
+        assertEquals(preExistingCondition.name, 'Filtering bleb failed')
         assertEquals(preExistingCondition.start_date, '2020-01-01')
         assertEquals(preExistingCondition.medications.length, 1)
         assertEquals(preExistingCondition.medications[0].dosage, 1)
         assertEquals(
-          preExistingCondition.medications[0].generic_name,
+          preExistingCondition.medications[0].name,
           tablet.generic_name,
         )
         assertEquals(
@@ -132,7 +134,7 @@ describe(
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
             medications: [
               {
@@ -153,13 +155,13 @@ describe(
         assertEquals(preExistingConditions.length, 1)
         const [preExistingCondition] = preExistingConditions
         assertEquals(preExistingCondition.comorbidities, [])
-        assertEquals(preExistingCondition.key_id, 'c_22401')
-        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.id, 'c_22401')
+        assertEquals(preExistingCondition.name, 'Filtering bleb failed')
         assertEquals(preExistingCondition.start_date, '2020-01-01')
         assertEquals(preExistingCondition.medications.length, 1)
         assertEquals(preExistingCondition.medications[0].dosage, 1)
         assertEquals(
-          preExistingCondition.medications[0].generic_name,
+          preExistingCondition.medications[0].name,
           tablet.generic_name,
         )
         assertEquals(
@@ -223,7 +225,7 @@ describe(
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
             medications: [
               {
@@ -246,13 +248,13 @@ describe(
         assertEquals(preExistingConditions.length, 1)
         const [preExistingCondition] = preExistingConditions
         assertEquals(preExistingCondition.comorbidities, [])
-        assertEquals(preExistingCondition.key_id, 'c_22401')
-        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.id, 'c_22401')
+        assertEquals(preExistingCondition.name, 'Filtering bleb failed')
         assertEquals(preExistingCondition.start_date, '2020-01-01')
         assertEquals(preExistingCondition.medications.length, 1)
         assertEquals(preExistingCondition.medications[0].dosage, 1)
         assertEquals(
-          preExistingCondition.medications[0].generic_name,
+          preExistingCondition.medications[0].name,
           tablet.generic_name,
         )
         assertEquals(
@@ -301,9 +303,9 @@ describe(
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
-            comorbidities: [{ key_id: 'c_10846' }],
+            comorbidities: [{ id: 'c_10846' }],
           },
         ])
         const preExistingConditions = await patient_conditions
@@ -312,15 +314,16 @@ describe(
           })
         assertEquals(preExistingConditions.length, 1)
         const [preExistingCondition] = preExistingConditions
-        assertEquals(preExistingCondition.key_id, 'c_22401')
-        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.id, 'c_22401')
+        assertEquals(preExistingCondition.name, 'Filtering bleb failed')
         assertEquals(preExistingCondition.start_date, '2020-01-01')
         assertEquals(preExistingCondition.comorbidities.length, 1)
         assertEquals(preExistingCondition.comorbidities[0], {
-          id: preExistingCondition.comorbidities[0].id,
-          key_id: 'c_10846',
-          primary_name: 'Histiocytosis - malignant',
+          id: 'c_10846',
+          name: 'Histiocytosis - malignant',
           start_date: '2020-01-01',
+          patient_condition_id:
+            preExistingCondition.comorbidities[0].patient_condition_id,
         })
       })
 
@@ -329,9 +332,9 @@ describe(
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
-            comorbidities: [{ key_id: 'c_8251' }, { key_id: 'c_10846' }],
+            comorbidities: [{ id: 'c_8251' }, { id: 'c_10846' }],
           },
         ])
         const [preExistingConditionBefore] = await patient_conditions
@@ -339,13 +342,10 @@ describe(
             patient_id: patient.id,
           })
 
-        const comorbidity_to_keep = preExistingConditionBefore.comorbidities
-          .find((c) => c.key_id === 'c_8251')!
         await patient_conditions.upsertPreExisting(db, patient.id, [{
           ...preExistingConditionBefore,
           comorbidities: [{
-            id: comorbidity_to_keep.id,
-            key_id: 'c_8251',
+            id: 'c_8251',
             start_date: '2020-01-03',
           }],
         }])
@@ -355,14 +355,17 @@ describe(
             patient_id: patient.id,
           })
 
+        const comorbidity_kept = preExistingConditionBefore.comorbidities.find(
+          (c) => c.id === 'c_8251',
+        )!
         assertEquals(preExistingConditionAfter, {
           ...preExistingConditionBefore,
           comorbidities: [
             {
-              id: comorbidity_to_keep.id,
-              key_id: 'c_8251',
-              primary_name: 'Esophageal dysphagia',
+              id: 'c_8251',
+              name: 'Esophageal dysphagia',
               start_date: '2020-01-03',
+              patient_condition_id: comorbidity_kept.patient_condition_id,
             },
           ],
         })
@@ -384,7 +387,7 @@ describe(
             'form',
             '=',
             'INJECTABLE',
-          ).executeTakeFirstOrThrow()
+          ).orderBy('drugs.generic_name desc').executeTakeFirstOrThrow()
 
         const capsule = await db
           .selectFrom('medications')
@@ -399,11 +402,12 @@ describe(
             'form',
             '=',
             'CAPSULE',
-          ).executeTakeFirstOrThrow()
+          ).orderBy('drugs.generic_name desc')
+          .executeTakeFirstOrThrow()
 
         await patient_conditions.upsertPreExisting(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
             medications: [
               {
@@ -436,7 +440,6 @@ describe(
         await patient_conditions.upsertPreExisting(db, patient.id, [{
           ...preExistingConditionBefore,
           medications: [{
-            id: medication_to_keep.id,
             medication_id: capsule.id,
             manufactured_medication_id: null,
             intake_frequency: 'qid',
@@ -457,12 +460,12 @@ describe(
         assertEquals(medicationAfter.dosage, 3)
         assertEquals(medicationAfter.end_date, null)
         assertEquals(
-          medicationAfter.generic_name,
-          medication_to_keep.generic_name,
+          medicationAfter.name,
+          medication_to_keep.name,
         )
         assertEquals(medicationAfter.intake_frequency, 'qid')
         assertEquals(medicationAfter.manufactured_medication_id, null)
-        assertEquals(medicationAfter.drug_id, medication_to_keep.drug_id)
+        assertEquals(medicationAfter.id, medication_to_keep.id)
         assertEquals(medicationAfter.id, medication_to_keep.id)
         assertEquals(
           medicationAfter.medication_id,
@@ -479,7 +482,7 @@ describe(
 
         await patient_conditions.upsertPastMedical(db, patient.id, [
           {
-            key_id: 'c_22401',
+            id: 'c_22401',
             start_date: '2020-01-01',
             end_date: '2021-03-01',
           },
@@ -490,8 +493,8 @@ describe(
           })
         assertEquals(past_conditions.length, 1)
         const [preExistingCondition] = past_conditions
-        assertEquals(preExistingCondition.key_id, 'c_22401')
-        assertEquals(preExistingCondition.primary_name, 'Filtering bleb failed')
+        assertEquals(preExistingCondition.id, 'c_22401')
+        assertEquals(preExistingCondition.name, 'Filtering bleb failed')
         assertEquals(preExistingCondition.start_date, '2020-01-01')
         assertEquals(preExistingCondition.end_date, '2021-03-01')
       })
@@ -502,7 +505,7 @@ describe(
           () =>
             patient_conditions.upsertPastMedical(db, patient.id, [
               {
-                key_id: 'c_22401',
+                id: 'c_22401',
                 start_date: '2020-01-01',
                 end_date: 'not a date',
               },

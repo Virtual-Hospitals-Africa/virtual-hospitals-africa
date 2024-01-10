@@ -128,7 +128,7 @@ export interface Appointments {
 }
 
 export interface ConditionIcd10Codes {
-  condition_key_id: string
+  condition_id: string
   created_at: Generated<Timestamp>
   icd10_code: string
   updated_at: Generated<Timestamp>
@@ -137,11 +137,11 @@ export interface ConditionIcd10Codes {
 export interface Conditions {
   consumer_name: string
   created_at: Generated<Timestamp>
+  id: string
   info_link_href: string | null
   info_link_text: string | null
   is_procedure: boolean
-  key_id: string
-  primary_name: string
+  name: string
   term_icd9_code: string | null
   term_icd9_text: string | null
   updated_at: Generated<Timestamp>
@@ -182,7 +182,6 @@ export interface Facilities {
   address: string
   category: string
   created_at: Generated<Timestamp>
-  display_name: Generated<string>
   id: Generated<number>
   location: string
   name: string
@@ -394,7 +393,7 @@ export interface PatientConditionMedications {
 
 export interface PatientConditions {
   comorbidity_of_condition_id: number | null
-  condition_key_id: string
+  condition_id: string
   created_at: Generated<Timestamp>
   end_date: Timestamp | null
   id: Generated<number>
@@ -429,6 +428,15 @@ export interface PatientGuardians {
   guardian_patient_id: number
   guardian_relation: GuardianRelation
   id: Generated<number>
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientKin {
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  next_of_kin_patient_id: number
+  patient_id: number
+  relationship: string
   updated_at: Generated<Timestamp>
 }
 
@@ -543,13 +551,6 @@ export interface WhatsappMessagesSent {
   whatsapp_id: string
 }
 
-export interface PatientKin {
-  id: Generated<number>
-  patient_id: number
-  next_of_kin_patient_id: number
-  relationship: string
-}
-
 export interface DB {
   address: Address
   allergies: Allergies
@@ -587,6 +588,7 @@ export interface DB {
   patient_encounter_providers: PatientEncounterProviders
   patient_encounters: PatientEncounters
   patient_guardians: PatientGuardians
+  patient_kin: PatientKin
   patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
@@ -598,6 +600,5 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
-  patient_kin: PatientKin
 }
 type Buffer = Uint8Array

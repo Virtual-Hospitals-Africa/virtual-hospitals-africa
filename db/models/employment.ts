@@ -22,7 +22,7 @@ export type FacilityAdmin = {
   id: number
   email: string | null
   name: string
-  facility_display_name: string
+  facility_name: string
 } & Employee
 
 export function add(
@@ -167,7 +167,7 @@ export function getFacilityAdmin(
       'email',
       'profession',
       'facility_id',
-      'facilities.display_name as facility_display_name',
+      'facilities.name as facility_name',
     ])
     .executeTakeFirst()
 }

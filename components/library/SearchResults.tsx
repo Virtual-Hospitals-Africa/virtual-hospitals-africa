@@ -1,28 +1,14 @@
 import { ComponentChildren, JSX } from 'preact'
 import { useState } from 'preact/hooks'
-import { DrugSearchResult as DrugSearchResultData, HasId } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import { PlusCircleIcon } from '../library/icons/heroicons/outline.tsx'
-import { Person, PersonData } from './Person.tsx'
 
 type BasicSelectProps = {
   isSelected?: boolean
-  onSelect: () => void
+  onSelect?: () => void
 }
-type PersonSearchResultProps = BasicSelectProps & {
-  person: PersonData
-}
-
-type FacilitySearchResultProps = BasicSelectProps & {
-  facility: HasId<{ display_name: string; address: string }>
-}
-
 type AllergySearchResultProps = BasicSelectProps & {
   allergy: string
-}
-
-type ConditionSearchResultProps = BasicSelectProps & {
-  condition: string
 }
 
 type SearchResultProps = BasicSelectProps & {
@@ -46,7 +32,7 @@ export function SearchResult(
       )}
       role='option'
       tabIndex={-1}
-      onClick={() => onSelect()}
+      onClick={() => onSelect && onSelect()}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >
@@ -73,67 +59,6 @@ export function SearchResult(
         </span>
       )}
     </li>
-  )
-}
-
-export function DrugSearchResult({ drug, isSelected, onSelect }: {
-  drug: DrugSearchResultData
-  isSelected?: boolean
-  onSelect: () => void
-}) {
-  return (
-    <SearchResult
-      isSelected={isSelected}
-      onSelect={onSelect}
-    >
-      <div className='flex items-center'>
-        <span
-          className={cls(
-            'ml-3 truncate',
-            isSelected && 'font-bold',
-          )}
-        >
-          <b>{drug.drug_generic_name}</b>
-          {drug.medications.map(
-            (medication) => (
-              <div>{medication.form_route} ({medication.strength_summary})</div>
-            ),
-          )}
-          {drug.distinct_trade_names.length > 0 && (
-            <div className='text-s italic'>
-              {drug.distinct_trade_names.join(', ')}
-            </div>
-          )}
-        </span>
-      </div>
-    </SearchResult>
-  )
-}
-
-export function PersonSearchResult(
-  { person, isSelected, onSelect }: PersonSearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <Person person={person} bold={isSelected} />
-    </SearchResult>
-  )
-}
-
-export function FacilitySearchResult(
-  { facility, isSelected, onSelect }: FacilitySearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <div className='flex flex-col'>
-        <div className={cls('truncate text-base', isSelected && 'font-bold')}>
-          {facility.display_name}
-        </div>
-        <div className={cls('truncate text-xs', isSelected && 'font-bold')}>
-          {facility.address}
-        </div>
-      </div>
-    </SearchResult>
   )
 }
 
@@ -188,20 +113,7 @@ export function AllergySearchResult(
   )
 }
 
-export function ConditionSearchResult(
-  { condition, isSelected, onSelect }: ConditionSearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <div className='flex flex-col'>
-        <div className={cls('truncate text-base', isSelected && 'font-bold')}>
-          {condition}
-        </div>
-      </div>
-    </SearchResult>
-  )
-}
-
+// TODO: use this for add
 export function AddButtonSearchResult(
   { searchedValue, isSelected, onSelect }: AddButtonSearchResult,
 ) {

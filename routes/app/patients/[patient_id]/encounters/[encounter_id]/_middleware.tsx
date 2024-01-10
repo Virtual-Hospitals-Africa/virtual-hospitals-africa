@@ -85,7 +85,7 @@ export async function handler(
     )
     assert(encounter.waiting_room_id)
     const employment = healthWorker.employment.find(
-      (e) => e.facility_id === facility_id,
+      (e) => e.facility.id === facility_id,
     )
     assertOr403(
       employment,
@@ -112,7 +112,7 @@ export async function handler(
     ctx.state.encounter_provider = {
       patient_encounter_provider_id: added_provider.id,
       employment_id: provider.employment_id,
-      facility_id: employment.facility_id,
+      facility_id: employment.facility.id,
       profession: employment.roles.doctor ? 'doctor' : 'nurse',
       health_worker_id: healthWorker.id,
       health_worker_name: healthWorker.name,

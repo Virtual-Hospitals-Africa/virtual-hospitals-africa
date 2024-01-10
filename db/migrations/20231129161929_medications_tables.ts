@@ -184,6 +184,12 @@ export async function up(db: Kysely<unknown>) {
       `,
     )
     .addCheckConstraint('schedules_check', sql`cardinality(schedules) > 0`)
+    .addUniqueConstraint('patient_condition_medication_unique', [
+      'patient_condition_id',
+      'medication_id',
+      'manufactured_medication_id',
+      'start_date',
+    ], (constraint) => constraint.nullsNotDistinct())
     .execute()
 
   await addUpdatedAtTrigger(db, 'drugs')

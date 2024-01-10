@@ -19,7 +19,7 @@ export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
     const { healthWorker } = ctx.state
 
     const facilityAdmin = await getFacilityAdmin(ctx.state.trx, {
-      facility_id: healthWorker.employment[0].facility_id,
+      facility_id: healthWorker.employment[0].facility.id,
     })
 
     assert(facilityAdmin)
@@ -35,7 +35,7 @@ export default function PendingApprovalPage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
   const { facilityAdmin } = props.data
-  const facilityDisplayName = facilityAdmin.facility_display_name ||
+  const facilityDisplayName = facilityAdmin.facility_name ||
     'your facility'
   const facilityAdminName = facilityAdmin.name || 'your facility admin'
 

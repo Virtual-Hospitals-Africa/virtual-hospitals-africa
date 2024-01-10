@@ -116,8 +116,8 @@ export type RenderedPatient = ReturnedSqlRow<
   }
 >
 export type Condition = {
-  key_id: string
-  primary_name: string
+  id: string
+  name: string
   term_icd9_code: Maybe<string>
   term_icd9_text: Maybe<string>
   consumer_name: Maybe<string>
@@ -129,64 +129,64 @@ export type Condition = {
 export type PatientCondition = {
   id: number
   patient_id: number
-  condition_key_id: string
+  condition_id: string
   start_date: string
   end_date: Maybe<string>
   comorbidity_of_condition_id: Maybe<number>
 }
 
 export type MedicalConditionBase = {
-  id: number
-  key_id: string
-  primary_name: string
+  id: string
+  name: string
   start_date: string
+  patient_condition_id: number
 }
 
 export type PreExistingCondition = MedicalConditionBase & {
   comorbidities: {
-    id: number
-    key_id: string
-    primary_name: string
+    id: string
+    patient_condition_id: number
+    name: string
     start_date?: Maybe<string>
   }[]
   medications: {
     id: number
-    drug_id: number
-    manufactured_medication_id: number | null
     medication_id: number
+    manufactured_medication_id: number | null
+    patient_condition_medication_id: number
     strength: number
     dosage: number
     route: string
     special_instructions?: Maybe<string>
     intake_frequency: string
-    generic_name: string
+    name: string
     start_date: string
     end_date?: Maybe<string>
   }[]
 }
 
+export type PatientConditionMedication = {
+  id: number
+  drug: DrugSearchResult
+  manufactured_medication_id: number | null
+  medication_id: number | null
+  strength: number
+  route: string
+  dosage: number
+  intake_frequency: string
+  name: string
+  start_date: string
+  end_date?: Maybe<string>
+  special_instructions?: Maybe<string>
+}
+
 export type PreExistingConditionWithDrugs = MedicalConditionBase & {
   comorbidities: {
-    id: number
-    key_id: string
-    primary_name: string
+    id: string
+    name: string
     start_date?: Maybe<string>
   }[]
-  medications: {
-    id: number
-    drug_id: number
-    drug: DrugSearchResult
-    manufactured_medication_id: number | null
-    medication_id: number | null
-    strength: number
-    route: string
-    dosage: number
-    intake_frequency: string
-    generic_name: string
-    start_date: string
-    end_date?: Maybe<string>
-    special_instructions?: Maybe<string>
-  }[]
+  medications: PatientConditionMedication[]
 }
 
 export type PreExistingAllergy = {
@@ -203,7 +203,8 @@ export type OnboardingPatient =
   & {
     id: number
     avatar_url: Maybe<string>
-    nearest_facility_display_name: Maybe<string>
+    nearest_facility_name: Maybe<string>
+    nearest_facility_address: Maybe<string>
     primary_doctor_name: Maybe<string>
     address: {
       street: Maybe<string>
@@ -314,7 +315,7 @@ export type PatientState = {
   created_at: Date
   updated_at: Date
   nearest_facilities?: ReturnedSqlRow<PatientNearestFacility>[]
-  nearest_facility_display_name?: string
+  nearest_facility_name?: string
   selectedFacility?: Facility
 }
 
@@ -1049,7 +1050,7 @@ export type EmployeeInfo = {
   employment: {
     address: string
     facility_id: number
-    facility_display_name: string
+    facility_name: string
     professions: Profession[]
   }[]
   documents: {
@@ -1064,8 +1065,11 @@ export type EmployedHealthWorker = ReturnedSqlRow<
     refresh_token: Maybe<string>
     expires_at: Maybe<Date | string>
     employment: {
-      facility_id: number
-      facility_display_name: string
+      facility: {
+        id: number
+        name: string
+        address: string
+      }
       roles: {
         nurse: null | {
           registration_needed: boolean
@@ -1300,7 +1304,6 @@ export type Facility = Location & {
   address: string
   category: string
   phone: string | null
-  display_name: string
 }
 
 export type PatientNearestFacility = Facility & {
@@ -1488,8 +1491,8 @@ export type DrugSearchResultMedication = {
 }
 
 export type DrugSearchResult = {
-  drug_id: number
-  drug_generic_name: string
+  id: number
+  name: string
   distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
 }

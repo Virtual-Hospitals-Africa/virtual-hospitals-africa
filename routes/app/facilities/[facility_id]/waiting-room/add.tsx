@@ -26,7 +26,7 @@ import Form from '../../../../../components/library/form/Form.tsx'
 import { EncounterReason } from '../../../../../db.d.ts'
 
 export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
-  facility: { id: number; display_name: string }
+  facility: { id: number; name: string }
 }> = {
   async POST(req, ctx) {
     const facility_id = parseInt(ctx.params.facility_id)

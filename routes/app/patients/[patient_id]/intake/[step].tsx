@@ -80,7 +80,7 @@ type AddressFormValues = {
     street: string
   }
   nearest_facility_id: number
-  nearest_facility_display_name: string
+  nearest_facility_name: string
   primary_doctor_id: number
   primary_doctor_name: string
 }
@@ -234,7 +234,7 @@ const transformers: Transformers = {
     avatar_media_id: avatar_media?.id,
   }),
   address: (
-    { primary_doctor_name, nearest_facility_display_name, ...patient },
+    { primary_doctor_name, nearest_facility_name, ...patient },
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     ...patient,
     unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
@@ -354,14 +354,14 @@ export default async function IntakePatientPage(
   )
 
   if (!encounter) {
-    const { facility_id } = healthWorker.employment[0]
+    const { facility } = healthWorker.employment[0]
     const error = 'No open visit with this patient'
     const search_params = new URLSearchParams({
       error,
       patient_id: String(patient_id),
     })
     return redirect(
-      `/app/facilities/${facility_id}/waiting-room/add?${search_params}`,
+      `/app/facilities/${facility.id}/waiting-room/add?${search_params}`,
     )
   }
 
@@ -399,8 +399,9 @@ export default async function IntakePatientPage(
             <PatientAddressForm
               patient={patient}
               defaultFacility={{
-                id: healthWorker.employment[0].facility_id,
-                display_name: healthWorker.employment[0].facility_display_name,
+                id: healthWorker.employment[0].facility.id,
+                name: healthWorker.employment[0].facility.name,
+                address: healthWorker.employment[0].facility.address,
               }}
               adminDistricts={props.adminDistricts}
             />
@@ -433,7 +434,7 @@ export default async function IntakePatientPage(
             cancel={props.step === 'review'
               ? {
                 href: `/app/facilities/${
-                  healthWorker.employment[0].facility_id
+                  healthWorker.employment[0].facility.id
                 }/waiting-room/add?patient_id=${patient.id}&intake=completed`,
                 text: 'Add patient to waiting room',
               }

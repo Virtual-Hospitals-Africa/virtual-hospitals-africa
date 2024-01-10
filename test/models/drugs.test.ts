@@ -11,15 +11,14 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
   describe('search', () => {
     it('gets search results for drugs with their forms, strengths, and manufacturers', async () => {
       const results = await drugs.search(db, { search: 'abacavir' })
-      console.log(JSON.stringify(results, null, 2))
       assertEquals(
         deepOmit(results, [
-          'drug_id',
+          'id',
           'medication_id',
           'manufactured_medication_id',
         ]),
         deepOmit(expected_results, [
-          'drug_id',
+          'id',
           'medication_id',
           'manufactured_medication_id',
         ]),
@@ -30,8 +29,8 @@ describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
 
 const expected_results = [
   {
-    'drug_id': 2,
-    'drug_generic_name': 'ABACAVIR',
+    'id': 2,
+    'name': 'ABACAVIR',
     'distinct_trade_names': [],
     'medications': [
       {
@@ -63,8 +62,8 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 3,
-    'drug_generic_name': 'ABACAVIR SULFATE; LAMIVUDINE',
+    'id': 3,
+    'name': 'ABACAVIR SULFATE; LAMIVUDINE',
     'distinct_trade_names': [
       'ABACAVIR SULPHATE; LAMIVUDINE',
     ],
@@ -192,8 +191,8 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 4,
-    'drug_generic_name': 'ABACAVIR SULPHATE',
+    'id': 4,
+    'name': 'ABACAVIR SULPHATE',
     'distinct_trade_names': [
       'ABAMAT TABLETS',
       'ZIAGEN',
@@ -317,8 +316,8 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 5,
-    'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE',
+    'id': 5,
+    'name': 'ABACAVIR SULPHATE; LAMIVUDINE',
     'distinct_trade_names': [],
     'medications': [
       {
@@ -392,8 +391,8 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 733,
-    'drug_generic_name': 'ABACAVIR; LAMIVUDINE',
+    'id': 733,
+    'name': 'ABACAVIR; LAMIVUDINE',
     'distinct_trade_names': [
       'ABAMUNE L BABY',
       'KIVEXA',
@@ -459,8 +458,8 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 734,
-    'drug_generic_name': 'ABACAVIR; DOLUTEGRAVIR; LAMIVUDINE',
+    'id': 734,
+    'name': 'ABACAVIR; DOLUTEGRAVIR; LAMIVUDINE',
     'distinct_trade_names': [],
     'medications': [
       {
@@ -496,8 +495,8 @@ const expected_results = [
     ],
   },
   {
-    'drug_id': 735,
-    'drug_generic_name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
+    'id': 735,
+    'name': 'ABACAVIR SULPHATE; LAMIVUDINE; ZIDOVUDINE',
     'distinct_trade_names': [],
     'medications': [
       {

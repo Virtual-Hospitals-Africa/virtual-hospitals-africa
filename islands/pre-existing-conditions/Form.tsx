@@ -1,83 +1,51 @@
-import { useState } from 'preact/hooks'
 import { PreExistingConditionWithDrugs } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
 import { JSX } from 'preact'
 import { AddRow } from '../AddRemove.tsx'
 import Condition, { ConditionState } from './Condition.tsx'
+import { useSignal } from '@preact/signals'
 
-type PreExistingConditionsFormState = Map<
-  string | number,
+type PreExistingConditionsFormState = Array<
   ConditionState | { removed: true }
 >
-
-const initialState = (
-  preExistingConditions: PreExistingConditionWithDrugs[] = [],
-): PreExistingConditionsFormState => {
-  const state = new Map()
-  for (const preExistingCondition of preExistingConditions) {
-    const comorbidities = preExistingCondition.comorbidities.map(({ id }) => ({
-      id,
-      removed: false,
-    }))
-    const medications = preExistingCondition.medications.map(({ id }) => ({
-      id,
-      removed: false,
-    }))
-    state.set(preExistingCondition.id, {
-      comorbidities,
-      medications,
-      removed: false,
-    })
-  }
-  return state
-}
 
 export default function PreExistingConditionsForm({
   preExistingConditions,
 }: {
   preExistingConditions: PreExistingConditionWithDrugs[]
 }): JSX.Element {
-  const [patientConditions, setPatientConditions] = useState<
-    PreExistingConditionsFormState
-  >(
-    initialState(preExistingConditions),
+  const conditions = useSignal<PreExistingConditionsFormState>(
+    preExistingConditions,
   )
 
-  const addCondition = () => {
-    const id = generateUUID()
-    const nextPatientConditions = new Map(patientConditions)
-    nextPatientConditions.set(id, {
-      comorbidities: [],
-      medications: [],
-      removed: false,
-    })
-    setPatientConditions(new Map(nextPatientConditions))
-  }
+  const addCondition = () =>
+    conditions.value = [
+      ...conditions.value,
+      { comorbidities: [], medications: [] },
+    ]
 
   return (
     <div>
-      {Array.from(patientConditions.entries()).map((
-        [condition_id, condition_state],
-        i: number,
+      {conditions.value.map((
+        state,
+        index,
       ) =>
-        !condition_state.removed && (
+        !state.removed && (
           <Condition
-            condition_id={condition_id}
-            condition_index={i}
-            condition_state={condition_state}
-            preExistingConditions={preExistingConditions}
-            removeCondition={() => {
-              const nextPatientConditions = new Map(patientConditions)
-              nextPatientConditions.set(condition_id, {
-                removed: true,
-              })
-              setPatientConditions(new Map(nextPatientConditions))
-            }}
-            updateCondition={(updatedCondition) => {
-              const nextPatientConditions = new Map(patientConditions)
-              nextPatientConditions.set(condition_id, updatedCondition)
-              setPatientConditions(new Map(nextPatientConditions))
-            }}
+            index={index}
+            state={state}
+            value={state.id
+              ? preExistingConditions.find(
+                (condition) => condition.id === state.id,
+              )
+              : undefined}
+            remove={() =>
+              conditions.value = conditions.value.map((condition, j) =>
+                j === index ? { removed: true } : condition
+              )}
+            update={(updatedCondition) =>
+              conditions.value = conditions.value.map((condition, j) =>
+                j === index ? updatedCondition : condition
+              )}
           />
         )
       )}

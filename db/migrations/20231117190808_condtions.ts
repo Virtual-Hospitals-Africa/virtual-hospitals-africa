@@ -6,8 +6,8 @@ import parseJSON from '../../util/parseJSON.ts'
 export async function up(db: Kysely<any>) {
   await db.schema
     .createTable('conditions')
-    .addColumn('key_id', 'varchar(255)', (col) => col.primaryKey())
-    .addColumn('primary_name', 'varchar(255)', (col) => col.notNull())
+    .addColumn('id', 'varchar(255)', (col) => col.primaryKey())
+    .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('term_icd9_code', 'varchar(255)')
     .addColumn('term_icd9_text', 'varchar(255)')
     .addColumn('consumer_name', 'varchar(255)', (col) => col.notNull())
@@ -44,9 +44,9 @@ export async function up(db: Kysely<any>) {
 
   await db.schema
     .createTable('condition_icd10_codes')
-    .addColumn('condition_key_id', 'varchar(255)', (col) =>
+    .addColumn('condition_id', 'varchar(255)', (col) =>
       col.notNull()
-        .references('conditions.key_id')
+        .references('conditions.id')
         .onDelete('cascade'))
     .addColumn('icd10_code', 'varchar(255)', (col) =>
       col.notNull()
@@ -89,8 +89,8 @@ async function importFromJSON(db: Kysely<any>) {
     const [info_link_href, info_link_text] = row.info_link_data[0] || []
     await db.insertInto('conditions')
       .values({
-        key_id: row.key_id,
-        primary_name: row.primary_name,
+        id: row.key_id,
+        name: row.primary_name,
         term_icd9_code: row.term_icd9_code,
         term_icd9_text: row.term_icd9_text,
         consumer_name: row.consumer_name,
@@ -119,7 +119,7 @@ async function importFromJSON(db: Kysely<any>) {
     await db.insertInto('condition_icd10_codes')
       .values(
         row.icd10cm.map((icd10: any) => ({
-          condition_key_id: row.key_id,
+          condition_id: row.key_id,
           icd10_code: icd10.code,
         })),
       )

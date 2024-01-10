@@ -115,17 +115,17 @@ export const handler: LoggedInHealthWorkerHandler<AppProps> = {
 
     // facility_id is required for waiting_room tab
     let facility_id = parseInt(searchParams.get('facility_id')!) || undefined
-    if (facility_id && !employment.some((e) => e.facility_id === facility_id)) {
-      searchParams.set('facility_id', employment[0].facility_id.toString())
+    if (facility_id && !employment.some((e) => e.facility.id === facility_id)) {
+      searchParams.set('facility_id', employment[0].facility.id.toString())
       return redirect(`/app?${searchParams.toString()}`)
     }
     if (tab === 'waiting_room' && !facility_id) {
       if (employment.length > 1) {
         console.warn('TODO: select facility?')
-        searchParams.set('facility_id', employment[0].facility_id.toString())
+        searchParams.set('facility_id', employment[0].facility.id.toString())
         return redirect(`/app?${searchParams.toString()}`)
       }
-      facility_id = employment[0].facility_id
+      facility_id = employment[0].facility.id
     }
 
     const search = searchParams.get('search')

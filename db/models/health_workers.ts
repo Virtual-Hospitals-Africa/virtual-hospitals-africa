@@ -12,7 +12,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
@@ -245,7 +245,7 @@ export async function search(
     name: string
     facilities: {
       facility_id: number
-      facility_display_name: string
+      facility_name: string
       professions: Profession[]
     }[]
     description: string[]
@@ -281,7 +281,7 @@ export async function search(
           )
           .select([
             'employment.facility_id',
-            'facilities.display_name as facility_display_name',
+            'facilities.name as facility_name',
             sql<Profession[]>`JSON_AGG(employment.profession)`.as(
               'professions',
             ),
@@ -298,7 +298,7 @@ export async function search(
           )
           .groupBy([
             'employment.facility_id',
-            'facilities.display_name',
+            'facilities.name',
           ]),
       ).as('facilities'),
     ])
@@ -332,8 +332,8 @@ export async function search(
     assert(hasName(hw))
     return {
       ...hw,
-      description: hw.facilities.map(({ professions, facility_display_name }) =>
-        `${professions.join(', ')} @ ${facility_display_name}`
+      description: hw.facilities.map(({ professions, facility_name }) =>
+        `${professions.join(', ')} @ ${facility_name}`
       ),
     }
   })
@@ -379,11 +379,14 @@ export async function get(
             'employment.facility_id',
             'facilities.id',
           )
-          .select([
-            'employment.facility_id',
-            'facilities.display_name as facility_display_name',
+          .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
+            jsonBuildObject({
+              id: eb_employment.ref('employment.facility_id'),
+              name: eb_employment.ref('facilities.name'),
+              address: eb_employment.ref('facilities.address'),
+            }).as('facility'),
           ])
           .whereRef(
             'employment.health_worker_id',
@@ -407,7 +410,7 @@ export async function get(
 
   const employment_by_facility = groupBy(
     result.employment,
-    (e) => e.facility_id,
+    (e) => e.facility.id,
   )
 
   return {
@@ -417,7 +420,7 @@ export async function get(
     ...pickHealthWorkerDetails(result),
     ...pickTokens(result),
     employment: [...employment_by_facility.entries()].map(
-      ([facility_id, roles]) => {
+      ([_facility_id, roles]) => {
         const nurse_role = roles.find((r) => r.profession === 'nurse') || null
         const doctor_role = roles.find((r) => r.profession === 'doctor') || null
         const admin_role = roles.find((r) => r.profession === 'admin') || null
@@ -426,8 +429,7 @@ export async function get(
         if (doctor_role) assert(!nurse_role)
 
         return {
-          facility_id,
-          facility_display_name: roles[0].facility_display_name,
+          facility: roles[0].facility,
           roles: {
             nurse: nurse_role && {
               registration_needed: !result.health_worker_id,
@@ -575,7 +577,7 @@ export function getEmployeeInfo(
           .groupBy(['facilities.id', 'facilities.name'])
           .select([
             'facilities.id as facility_id',
-            'facilities.display_name as facility_display_name',
+            'facilities.name as facility_name',
             'facilities.address',
             sql<Profession[]>`array_agg(employment.profession)`.as(
               'professions',

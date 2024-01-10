@@ -77,8 +77,11 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         email: 'test@worker.com',
         employment: [
           {
-            facility_id: 1,
-            facility_display_name: 'VHA Test Hospital',
+            facility: {
+              id: 1,
+              name: 'VHA Test Hospital',
+              address: 'Bristol, UK',
+            },
             roles: {
               admin: null,
               doctor: null,
@@ -133,7 +136,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           facilities: [
             {
               facility_id: 1,
-              facility_display_name: 'VHA Test Hospital',
+              facility_name: 'VHA Test Hospital',
               professions: [
                 'nurse',
               ],
@@ -195,7 +198,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           facilities: [
             {
               facility_id: 1,
-              facility_display_name: 'VHA Test Hospital',
+              facility_name: 'VHA Test Hospital',
               professions: [
                 'nurse',
               ],
@@ -297,14 +300,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         [
           {
             facility_id: 1,
-            facility_display_name: 'VHA Test Hospital',
+            facility_name: 'VHA Test Hospital',
             address: 'Bristol, UK',
             professions: ['nurse'],
           },
           {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             facility_id: 2,
-            facility_display_name: 'Beitbridge District Hospital',
+            facility_name: 'Beitbridge District Hospital',
             professions: ['doctor'],
           },
         ],
@@ -394,14 +397,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         [
           {
             facility_id: 1,
-            facility_display_name: 'VHA Test Hospital',
+            facility_name: 'VHA Test Hospital',
             address: 'Bristol, UK',
             professions: ['nurse'],
           },
           {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             facility_id: 2,
-            facility_display_name: 'Beitbridge District Hospital',
+            facility_name: 'Beitbridge District Hospital',
             professions: ['nurse'],
           },
         ],
@@ -527,14 +530,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         [
           {
             facility_id: 1,
-            facility_display_name: 'VHA Test Hospital',
+            facility_name: 'VHA Test Hospital',
             address: 'Bristol, UK',
             professions: ['nurse'],
           },
           {
             address: 'Beitbridge, Matabeleland South Province, ZW',
             facility_id: 2,
-            facility_display_name: 'Beitbridge District Hospital',
+            facility_name: 'Beitbridge District Hospital',
             professions: ['nurse'],
           },
         ],
@@ -579,7 +582,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           facilities: [
             {
               facility_id: 1,
-              facility_display_name: 'VHA Test Hospital',
+              facility_name: 'VHA Test Hospital',
               professions: [
                 'nurse',
               ],

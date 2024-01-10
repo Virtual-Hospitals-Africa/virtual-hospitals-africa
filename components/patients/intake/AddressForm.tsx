@@ -23,15 +23,17 @@ function PatientAddress(
 export default function PatientAddressForm(
   { patient, defaultFacility, adminDistricts }: {
     patient: OnboardingPatient
-    defaultFacility: { id: number; display_name: string }
+    defaultFacility: { id: number; name: string; address: string }
     adminDistricts: FullCountryInfo
   },
 ) {
   const nearest_facility =
-    patient.nearest_facility_id && patient.nearest_facility_display_name
+    patient.nearest_facility_id && patient.nearest_facility_name &&
+      patient.nearest_facility_address
       ? {
         id: patient.nearest_facility_id,
-        display_name: patient.nearest_facility_display_name,
+        name: patient.nearest_facility_name,
+        address: patient.nearest_facility_address,
       }
       : defaultFacility
 

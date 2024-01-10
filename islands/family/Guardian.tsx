@@ -37,14 +37,17 @@ export default function Guardian({
               }}
             required
             addable
-            onSelect={(person) =>
-              setPatientGuardian({
-                patient_gender: person.gender ||
-                  patientGuardian?.patient_gender,
-                patient_phone_number: person.phone_number ||
-                  patientGuardian?.patient_phone_number,
-                patient_name: person.name || patientGuardian?.patient_name,
-              })}
+            // deno-lint-ignore no-explicit-any
+            onSelect={(person: any) =>
+              setPatientGuardian(
+                person && {
+                  patient_gender: person.gender ||
+                    patientGuardian?.patient_gender,
+                  patient_phone_number: person.phone_number ||
+                    patientGuardian?.patient_phone_number,
+                  patient_name: person.name || patientGuardian?.patient_name,
+                },
+              )}
           />
           <RelationshipSelect
             name={`${name}.family_relation_gendered`}
