@@ -3,7 +3,7 @@ import { DateInput } from '../../components/library/form/Inputs.tsx'
 import { PreExistingConditionWithDrugs } from '../../types.ts'
 import { JSX } from 'preact'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
-// import Comorbidity from './Comorbidity.tsx'
+import Comorbidity from './Comorbidity.tsx'
 import Medication from './Medication.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 
@@ -33,19 +33,18 @@ export default function Condition(
     update(condition: ConditionState): void
   },
 ): JSX.Element {
-  // const comorbidities = Array.from(state.comorbidities)
-
+  console.log('value', value)
   const prefix = `pre_existing_conditions.${index}`
 
-  // const addComorbidity = () => {
-  //   const nextComorbidities = [...comorbidities, { removed: false }]
-  //   const nextConditionState = {
-  //     medications,
-  //     comorbidities: nextComorbidities,
-  //     removed: false as const,
-  //   }
-  //   update(nextConditionState)
-  // }
+  const addComorbidity = () => {
+    const nextComorbidities = [...comorbidities, { removed: false }]
+    const nextConditionState = {
+      medications,
+      comorbidities: nextComorbidities,
+      removed: false as const,
+    }
+    update(nextConditionState)
+  }
 
   const addMedication = () => {
     const nextMedications = [...medications, { removed: false }]
@@ -73,32 +72,31 @@ export default function Condition(
             required
           />
         </FormRow>
-        {
-          /* {comorbidities.map((
+        {comorbidities.map((
           comorbidity,
-          comorbidity_index,
+          index,
         ) =>
           !comorbidity.removed && (
             <Comorbidity
-              value={value}
-              condition_prefix={prefix}
-              comorbidity_id={comorbidity.id}
-              comorbidity_index={comorbidity_index}
-              removeComorbidity={() => {
-                const nextComorbidities = comorbidities.map((c) =>
+              value={value?.comorbidities.find(
+                (c) => c.id === comorbidity.id,
+              )}
+              prefix={prefix}
+              index={index}
+              remove={() => {
+                const next_comorbidities = comorbidities.map((c) =>
                   c === comorbidity ? { removed: true as const } : c
                 )
                 const nextConditionState = {
-                  medications: state.medications,
-                  comorbidities: nextComorbidities,
+                  medications,
+                  comorbidities: next_comorbidities,
                 }
                 update(nextConditionState)
               }}
             />
           )
         )}
-        <AddRow onClick={addComorbidity} text='Add Comorbidity' /> */
-        }
+        <AddRow onClick={addComorbidity} text='Add Comorbidity' />
         {medications.map((
           medication,
           index,

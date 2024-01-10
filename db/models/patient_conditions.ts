@@ -411,7 +411,7 @@ export async function getPreExistingConditions(
       sql<
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-      'drugs.generic_name',
+      'drugs.generic_name as name',
       sql<
         string
       >`TO_CHAR(patient_condition_medications.start_date, 'YYYY-MM-DD')`.as(

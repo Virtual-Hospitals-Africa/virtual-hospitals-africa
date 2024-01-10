@@ -70,7 +70,7 @@ describe(
         assertEquals(preExistingCondition.medications.length, 1)
         assertEquals(preExistingCondition.medications[0].dosage, 1)
         assertEquals(
-          preExistingCondition.medications[0].generic_name,
+          preExistingCondition.medications[0].name,
           tablet.generic_name,
         )
         assertEquals(
@@ -161,7 +161,7 @@ describe(
         assertEquals(preExistingCondition.medications.length, 1)
         assertEquals(preExistingCondition.medications[0].dosage, 1)
         assertEquals(
-          preExistingCondition.medications[0].generic_name,
+          preExistingCondition.medications[0].name,
           tablet.generic_name,
         )
         assertEquals(
@@ -254,7 +254,7 @@ describe(
         assertEquals(preExistingCondition.medications.length, 1)
         assertEquals(preExistingCondition.medications[0].dosage, 1)
         assertEquals(
-          preExistingCondition.medications[0].generic_name,
+          preExistingCondition.medications[0].name,
           tablet.generic_name,
         )
         assertEquals(
@@ -355,6 +355,9 @@ describe(
             patient_id: patient.id,
           })
 
+        const comorbidity_kept = preExistingConditionBefore.comorbidities.find(
+          (c) => c.id === 'c_8251',
+        )!
         assertEquals(preExistingConditionAfter, {
           ...preExistingConditionBefore,
           comorbidities: [
@@ -362,8 +365,7 @@ describe(
               id: 'c_8251',
               name: 'Esophageal dysphagia',
               start_date: '2020-01-03',
-              patient_condition_id: preExistingConditionBefore.comorbidities[0]
-                .patient_condition_id,
+              patient_condition_id: comorbidity_kept.patient_condition_id,
             },
           ],
         })
@@ -458,8 +460,8 @@ describe(
         assertEquals(medicationAfter.dosage, 3)
         assertEquals(medicationAfter.end_date, null)
         assertEquals(
-          medicationAfter.generic_name,
-          medication_to_keep.generic_name,
+          medicationAfter.name,
+          medication_to_keep.name,
         )
         assertEquals(medicationAfter.intake_frequency, 'qid')
         assertEquals(medicationAfter.manufactured_medication_id, null)

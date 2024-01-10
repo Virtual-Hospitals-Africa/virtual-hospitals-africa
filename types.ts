@@ -159,7 +159,7 @@ export type PreExistingCondition = MedicalConditionBase & {
     route: string
     special_instructions?: Maybe<string>
     intake_frequency: string
-    generic_name: string
+    name: string
     start_date: string
     end_date?: Maybe<string>
   }[]
@@ -174,7 +174,7 @@ export type PatientConditionMedication = {
   route: string
   dosage: number
   intake_frequency: string
-  generic_name: string
+  name: string
   start_date: string
   end_date?: Maybe<string>
   special_instructions?: Maybe<string>

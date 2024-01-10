@@ -14,6 +14,7 @@ export default function PatientPreExistingConditions(
     allergies: PreExistingAllergy[]
   },
 ) {
+  console.log('preExistingConditions', preExistingConditions)
   return (
     <>
       <section>

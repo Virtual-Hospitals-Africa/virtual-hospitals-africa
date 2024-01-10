@@ -10,8 +10,8 @@ import {
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
 
-function hasId(value: unknown): value is HasId {
-  return isObjectLike(value) && typeof value.id === 'number'
+function hasId(value: unknown): value is { id: unknown } {
+  return isObjectLike(value) && !!value.id
 }
 
 export type AsyncSearchProps<
@@ -137,7 +137,7 @@ export default function AsyncSearch<
         )}
         <div className='relative'>
           <Combobox.Input
-            name={`${name}_name`}
+            name={/\d$/.test(name) ? `${name}.name` : `${name}_name`}
             className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
             onChange={(
               event,
@@ -196,8 +196,13 @@ export default function AsyncSearch<
             </Combobox.Options>
           )}
         </div>
-        {(typeof selected?.id === 'number') && (
-          <input type='hidden' name={`${name}_id`} value={selected.id} />
+        {(selected?.id && selected.id !== 'add') && (
+          <input
+            type='hidden'
+            name={/\d$/.test(name) ? `${name}.id` : `${name}_id`}
+            // deno-lint-ignore no-explicit-any
+            value={selected.id as any}
+          />
         )}
       </div>
     </Combobox>

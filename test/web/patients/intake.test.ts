@@ -18,6 +18,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 import omit from '../../../util/omit.ts'
+import deepOmit from '../../../util/deepOmit.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -264,7 +265,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals(preExistingCondition.medications.length, 1)
     assertEquals(preExistingCondition.medications[0].dosage, 2)
     assertEquals(
-      preExistingCondition.medications[0].generic_name,
+      preExistingCondition.medications[0].name,
       drug.generic_name,
     )
     assertEquals(
@@ -289,24 +290,27 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals(
       // deno-lint-ignore no-explicit-any
       omit(formValues as any, ['allergy_search']),
-      { pre_existing_conditions },
+      deepOmit({ pre_existing_conditions }, [
+        'patient_condition_id',
+        'patient_condition_medication_id',
+      ]),
       'The form should be 1:1 with the conditions in the DB',
     )
     assertEquals(formDisplay, {
       allergy_search: '',
       pre_existing_conditions: [
         {
-          primary_name: 'Cigarette smoker',
+          name: 'Cigarette smoker',
           start_date: '1989-01-12',
           comorbidities: [
             {
-              primary_name: 'Coma - hyperosmolar nonketotic (HONK)',
+              name: 'Coma - hyperosmolar nonketotic (HONK)',
               start_date: '1989-01-12',
             },
           ],
           medications: [
             {
-              generic_name: drug.generic_name,
+              name: drug.generic_name,
               start_date: '1989-01-12',
               end_date: null,
               medication_id: 'TABLET, COATED; ORAL',
@@ -489,7 +493,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals(preExistingCondition.medications.length, 1)
     assertEquals(preExistingCondition.medications[0].dosage, 2)
     assertEquals(
-      preExistingCondition.medications[0].generic_name,
+      preExistingCondition.medications[0].name,
       drug.generic_name,
     )
     assertEquals(
