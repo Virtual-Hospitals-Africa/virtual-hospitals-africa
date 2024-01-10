@@ -77,8 +77,11 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         email: 'test@worker.com',
         employment: [
           {
-            facility_id: 1,
-            facility_name: 'VHA Test Hospital',
+            facility: {
+              id: 1,
+              name: 'VHA Test Hospital',
+              address: 'Bristol, UK',
+            },
             roles: {
               admin: null,
               doctor: null,

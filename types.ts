@@ -116,8 +116,8 @@ export type RenderedPatient = ReturnedSqlRow<
   }
 >
 export type Condition = {
-  key_id: string
-  primary_name: string
+  id: string
+  name: string
   term_icd9_code: Maybe<string>
   term_icd9_text: Maybe<string>
   consumer_name: Maybe<string>
@@ -129,31 +129,31 @@ export type Condition = {
 export type PatientCondition = {
   id: number
   patient_id: number
-  condition_key_id: string
+  condition_id: string
   start_date: string
   end_date: Maybe<string>
   comorbidity_of_condition_id: Maybe<number>
 }
 
 export type MedicalConditionBase = {
-  id: number
-  key_id: string
-  primary_name: string
+  id: string
+  name: string
   start_date: string
+  patient_condition_id: number
 }
 
 export type PreExistingCondition = MedicalConditionBase & {
   comorbidities: {
-    id: number
-    key_id: string
-    primary_name: string
+    id: string
+    patient_condition_id: number
+    name: string
     start_date?: Maybe<string>
   }[]
   medications: {
     id: number
-    drug_id: number
-    manufactured_medication_id: number | null
     medication_id: number
+    manufactured_medication_id: number | null
+    patient_condition_medication_id: number
     strength: number
     dosage: number
     route: string
@@ -165,28 +165,28 @@ export type PreExistingCondition = MedicalConditionBase & {
   }[]
 }
 
+export type PatientConditionMedication = {
+  id: number
+  drug: DrugSearchResult
+  manufactured_medication_id: number | null
+  medication_id: number | null
+  strength: number
+  route: string
+  dosage: number
+  intake_frequency: string
+  generic_name: string
+  start_date: string
+  end_date?: Maybe<string>
+  special_instructions?: Maybe<string>
+}
+
 export type PreExistingConditionWithDrugs = MedicalConditionBase & {
   comorbidities: {
-    id: number
-    key_id: string
-    primary_name: string
+    id: string
+    name: string
     start_date?: Maybe<string>
   }[]
-  medications: {
-    id: number
-    drug_id: number
-    drug: DrugSearchResult
-    manufactured_medication_id: number | null
-    medication_id: number | null
-    strength: number
-    route: string
-    dosage: number
-    intake_frequency: string
-    generic_name: string
-    start_date: string
-    end_date?: Maybe<string>
-    special_instructions?: Maybe<string>
-  }[]
+  medications: PatientConditionMedication[]
 }
 
 export type PreExistingAllergy = {

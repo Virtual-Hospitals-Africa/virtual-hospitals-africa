@@ -36,7 +36,7 @@ export async function handler(
   )
   if (roleNeedingRegistration) {
     const registrationPage =
-      `/app/facilities/${roleNeedingRegistration.facility_id}/register`
+      `/app/facilities/${roleNeedingRegistration.facility.id}/register`
 
     const url = new URL(req.url)
     const onRegistrationPage = url.pathname.startsWith(registrationPage)

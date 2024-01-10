@@ -34,14 +34,17 @@ export default function Dependent({
                 id: patientDependent.patient_id,
                 name: patientDependent.patient_name!,
               }}
-            onSelect={(person: PatientDemographicInfo) =>
-              setPatientDependent({
-                patient_gender: person.gender ||
-                  patientDependent?.patient_gender,
-                patient_phone_number: person.phone_number ||
-                  patientDependent?.patient_phone_number,
-                patient_name: person.name || patientDependent?.patient_name,
-              })}
+            // deno-lint-ignore no-explicit-any
+            onSelect={(person: any) =>
+              setPatientDependent(
+                person && {
+                  patient_gender: person.gender ||
+                    patientDependent?.patient_gender,
+                  patient_phone_number: person.phone_number ||
+                    patientDependent?.patient_phone_number,
+                  patient_name: person.name || patientDependent?.patient_name,
+                },
+              )}
           />
           <TextInput
             name={`${name}.patient_phone_number`}

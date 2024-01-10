@@ -128,7 +128,7 @@ export interface Appointments {
 }
 
 export interface ConditionIcd10Codes {
-  condition_key_id: string
+  condition_id: string
   created_at: Generated<Timestamp>
   icd10_code: string
   updated_at: Generated<Timestamp>
@@ -137,11 +137,11 @@ export interface ConditionIcd10Codes {
 export interface Conditions {
   consumer_name: string
   created_at: Generated<Timestamp>
+  id: string
   info_link_href: string | null
   info_link_text: string | null
   is_procedure: boolean
-  key_id: string
-  primary_name: string
+  name: string
   term_icd9_code: string | null
   term_icd9_text: string | null
   updated_at: Generated<Timestamp>
@@ -393,7 +393,7 @@ export interface PatientConditionMedications {
 
 export interface PatientConditions {
   comorbidity_of_condition_id: number | null
-  condition_key_id: string
+  condition_id: string
   created_at: Generated<Timestamp>
   end_date: Timestamp | null
   id: Generated<number>

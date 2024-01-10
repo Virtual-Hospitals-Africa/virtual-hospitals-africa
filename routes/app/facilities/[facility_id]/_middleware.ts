@@ -20,14 +20,14 @@ export async function handler(
   const facility_id = getNumericParam(ctx, 'facility_id')
 
   assertOr403(
-    healthWorker.employment.some((e) => e.facility_id === facility_id),
+    healthWorker.employment.some((e) => e.facility.id === facility_id),
   )
 
   const [facility] = await facilities.get(ctx.state.trx, { ids: [facility_id] })
   assertOr404(facility)
 
   const isAdminAtFacility = healthWorker.employment.some((e) =>
-    e.facility_id === facility.id && e.roles.admin
+    e.facility.id === facility.id && e.roles.admin
   )
 
   ctx.state.facility = facility

@@ -211,9 +211,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     ).executeTakeFirstOrThrow()
 
     const body = new FormData()
-    body.set('pre_existing_conditions.0.key_id', 'c_4373')
+    body.set('pre_existing_conditions.0.id', 'c_4373')
     body.set('pre_existing_conditions.0.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.0.comorbidities.0.key_id', 'c_8321')
+    body.set('pre_existing_conditions.0.comorbidities.0.id', 'c_8321')
     body.set(
       'pre_existing_conditions.0.medications.0.medication_id',
       String(tablet.id),
@@ -251,13 +251,13 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     assertEquals(pre_existing_conditions.length, 1)
     const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.key_id, 'c_4373')
-    assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
+    assertEquals(preExistingCondition.id, 'c_4373')
+    assertEquals(preExistingCondition.name, 'Cigarette smoker')
     assertEquals(preExistingCondition.start_date, '1989-01-12')
     assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].key_id, 'c_8321')
+    assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
     assertEquals(
-      preExistingCondition.comorbidities[0].primary_name,
+      preExistingCondition.comorbidities[0].name,
       'Coma - hyperosmolar nonketotic (HONK)',
     )
     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
@@ -383,7 +383,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     await patient_conditions.upsertPreExisting(db, patient_id, [
       {
-        key_id: 'c_4373',
+        id: 'c_4373',
         start_date: '1989-01-12',
       },
     ])
@@ -436,9 +436,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     ).executeTakeFirstOrThrow()
 
     const body = new FormData()
-    body.set('pre_existing_conditions.1.key_id', 'c_4373')
+    body.set('pre_existing_conditions.1.id', 'c_4373')
     body.set('pre_existing_conditions.1.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.1.comorbidities.0.key_id', 'c_8321')
+    body.set('pre_existing_conditions.1.comorbidities.0.id', 'c_8321')
     body.set(
       'pre_existing_conditions.1.medications.0.medication_id',
       String(tablet.id),
@@ -476,13 +476,13 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
 
     assertEquals(pre_existing_conditions.length, 1)
     const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.key_id, 'c_4373')
-    assertEquals(preExistingCondition.primary_name, 'Cigarette smoker')
+    assertEquals(preExistingCondition.id, 'c_4373')
+    assertEquals(preExistingCondition.name, 'Cigarette smoker')
     assertEquals(preExistingCondition.start_date, '1989-01-12')
     assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].key_id, 'c_8321')
+    assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
     assertEquals(
-      preExistingCondition.comorbidities[0].primary_name,
+      preExistingCondition.comorbidities[0].name,
       'Coma - hyperosmolar nonketotic (HONK)',
     )
     assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')

@@ -354,14 +354,14 @@ export default async function IntakePatientPage(
   )
 
   if (!encounter) {
-    const { facility_id } = healthWorker.employment[0]
+    const { facility } = healthWorker.employment[0]
     const error = 'No open visit with this patient'
     const search_params = new URLSearchParams({
       error,
       patient_id: String(patient_id),
     })
     return redirect(
-      `/app/facilities/${facility_id}/waiting-room/add?${search_params}`,
+      `/app/facilities/${facility.id}/waiting-room/add?${search_params}`,
     )
   }
 
@@ -399,9 +399,9 @@ export default async function IntakePatientPage(
             <PatientAddressForm
               patient={patient}
               defaultFacility={{
-                id: healthWorker.employment[0].facility_id,
-                name: healthWorker.employment[0].facility_name,
-                address: healthWorker.employment[0].facility_address,
+                id: healthWorker.employment[0].facility.id,
+                name: healthWorker.employment[0].facility.name,
+                address: healthWorker.employment[0].facility.address,
               }}
               adminDistricts={props.adminDistricts}
             />
@@ -434,7 +434,7 @@ export default async function IntakePatientPage(
             cancel={props.step === 'review'
               ? {
                 href: `/app/facilities/${
-                  healthWorker.employment[0].facility_id
+                  healthWorker.employment[0].facility.id
                 }/waiting-room/add?patient_id=${patient.id}&intake=completed`,
                 text: 'Add patient to waiting room',
               }

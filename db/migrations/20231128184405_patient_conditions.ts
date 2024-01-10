@@ -21,10 +21,10 @@ export async function up(db: Kysely<any>) {
         .notNull()
         .references('patients.id')
         .onDelete('cascade'))
-    .addColumn('condition_key_id', 'varchar(255)', (col) =>
+    .addColumn('condition_id', 'varchar(255)', (col) =>
       col
         .notNull()
-        .references('conditions.key_id')
+        .references('conditions.id')
         .onDelete('cascade'))
     .addColumn('start_date', 'date', (col) =>
       col
@@ -34,6 +34,11 @@ export async function up(db: Kysely<any>) {
       col
         .references('patient_conditions.id')
         .onDelete('cascade'))
+    .addUniqueConstraint('patient_condition_start_date', [
+      'patient_id',
+      'condition_id',
+      'start_date',
+    ], (constraint) => constraint.nullsNotDistinct())
     .execute()
   await addUpdatedAtTrigger(db, 'patient_conditions')
 }
