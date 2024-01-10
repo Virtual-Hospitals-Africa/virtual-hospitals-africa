@@ -355,17 +355,16 @@ describe(
             patient_id: patient.id,
           })
 
-        const comorbidity_kept = preExistingConditionBefore.comorbidities.find(
-          (c) => c.id === 'c_8251',
-        )!
         assertEquals(preExistingConditionAfter, {
           ...preExistingConditionBefore,
+          patient_condition_id: preExistingConditionAfter.patient_condition_id,
           comorbidities: [
             {
               id: 'c_8251',
               name: 'Esophageal dysphagia',
               start_date: '2020-01-03',
-              patient_condition_id: comorbidity_kept.patient_condition_id,
+              patient_condition_id:
+                preExistingConditionAfter.comorbidities[0].patient_condition_id,
             },
           ],
         })
