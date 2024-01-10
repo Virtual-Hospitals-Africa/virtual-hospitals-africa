@@ -8,6 +8,7 @@ import {
   Maybe,
   OnboardingPatient,
   Patient,
+  PatientAge,
   PatientConversationState,
   PatientNearestFacility,
   PatientOccupation,
@@ -268,6 +269,7 @@ export function getOnboarding(
       'health_workers.id',
       'patients.primary_doctor_id',
     )
+    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
       'patients.id',
       'patients.name',
@@ -298,6 +300,7 @@ export function getOnboarding(
       'facilities.name as nearest_facility_name',
       'facilities.address as nearest_facility_address',
       'health_workers.name as primary_doctor_name',
+      sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirst()

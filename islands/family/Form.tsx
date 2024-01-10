@@ -23,8 +23,10 @@ type DependentFamilyRelationState =
 
 export default function PatientFamilyForm({
   family,
+  age,
 }: {
   family: PatientFamily
+  age: number
 }): JSX.Element {
   const guardians: Signal<GuardianFamilyRelationState[]> = useSignal(
     family.guardians,
@@ -35,50 +37,68 @@ export default function PatientFamilyForm({
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
+  const showGuardians = age <= 18
+  const showDependents = age >= 10
+  const showNextOfKin = age >= 19
+
   return (
     <div>
-      <div>
-        <SectionHeader className='my-5 text-[20px]'>Guardians</SectionHeader>
-        {guardians.value.map((guardian, i) => (
-          !guardian.removed &&
-          (
-            <Guardian
-              value={guardian}
-              key={i}
-              name={`family.guardians.${i}`}
-              onRemove={() =>
-                guardians.value = guardians.value.map((guardian, ix) =>
-                  i === ix ? { removed: true } : guardian
-                )}
+      {showNextOfKin &&
+        <span>Todo: next of kin</span>}
+
+      {showGuardians &&
+        (
+          <div>
+            <SectionHeader className='my-5 text-[20px]'>
+              Guardians
+            </SectionHeader>
+            {guardians.value.map((guardian, i) => (
+              !guardian.removed &&
+              (
+                <Guardian
+                  value={guardian}
+                  key={i}
+                  name={`family.guardians.${i}`}
+                  onRemove={() =>
+                    guardians.value = guardians.value.map((guardian, ix) =>
+                      i === ix ? { removed: true } : guardian
+                    )}
+                />
+              )
+            ))}
+            <AddRow
+              text='Add Guardian'
+              onClick={addGuardian}
             />
-          )
-        ))}
-        <AddRow
-          text='Add Guardian'
-          onClick={addGuardian}
-        />
-      </div>
-      <div>
-        <SectionHeader className='my-5 text-[20px]'>Dependents</SectionHeader>
-        {dependents.value.map((dependent, i) => (
-          !dependent.removed &&
-          (
-            <Dependent
-              key={i}
-              value={dependent}
-              name={`family.dependents.${i}`}
-              onRemove={() =>
-                dependents.value = dependents.value.map((dependent, ix) =>
-                  i === ix ? { removed: true } : dependent
-                )}
+          </div>
+        )}
+
+      {showDependents &&
+        (
+          <div>
+            <SectionHeader className='my-5 text-[20px]'>
+              Dependents
+            </SectionHeader>
+            {dependents.value.map((dependent, i) => (
+              !dependent.removed &&
+              (
+                <Dependent
+                  key={i}
+                  value={dependent}
+                  name={`family.dependents.${i}`}
+                  onRemove={() =>
+                    dependents.value = dependents.value.map((dependent, ix) =>
+                      i === ix ? { removed: true } : dependent
+                    )}
+                />
+              )
+            ))}
+            <AddRow
+              text='Add Dependents'
+              onClick={addDependent}
             />
-          )
-        ))}
-        <AddRow
-          text='Add Dependents'
-          onClick={addDependent}
-        />
-      </div>
+          </div>
+        )}
     </div>
   )
 }
