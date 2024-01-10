@@ -1,4 +1,5 @@
 export class StatusError extends Error {
+  location?: string
   constructor(message: string, public status: number) {
     super(message)
   }
@@ -37,6 +38,17 @@ export function assertOr404(
 ): asserts condition {
   if (!condition) {
     throw new StatusError(message, 404)
+  }
+}
+
+export function assertOrRedirect(
+  condition: unknown,
+  location: string,
+): asserts condition {
+  if (!condition) {
+    const error = new StatusError('redirect', 302)
+    error.location = location
+    throw error
   }
 }
 

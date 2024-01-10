@@ -38,7 +38,11 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import PatientHistory from '../../../../../components/patients/intake/HistoryForm.tsx'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400, assertOr404 } from '../../../../../util/assertOr.ts'
+import {
+  assertOr400,
+  assertOr404,
+  assertOrRedirect,
+} from '../../../../../util/assertOr.ts'
 import omit from '../../../../../util/omit.ts'
 import getNumericParam from '../../../../../util/getNumericParam.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
@@ -338,6 +342,13 @@ async function getIntakePatientProps(
     }
     case 'occupation': {
       const age = await patient_age.get(trx, { patient_id })
+      const warning = encodeURIComponent(
+        "Please fill out the patient's personal information beforehand.",
+      )
+      assertOrRedirect(
+        age,
+        `/app/patients/${patient_id}/intake/personal?warning=${warning}`,
+      )
       return { step, age }
     }
     default:

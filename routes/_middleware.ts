@@ -52,6 +52,9 @@ export const handler = [
       ctx.state.trx = trx
       return ctx.next()
     }).catch((err) => {
+      if (err.status === 302) {
+        return redirect(err.location)
+      }
       console.error(err)
       logError(err)
       const status = err.status || 500

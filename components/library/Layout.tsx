@@ -7,6 +7,7 @@ import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import { HomePageSidebar } from './Sidebar.tsx'
 import { Maybe } from '../../types.ts'
+import WarningMessage from '../../islands/WarningMessage.tsx'
 
 export type LayoutProps =
   & {
@@ -73,6 +74,7 @@ function JustLogoLayoutContents(
 export default function Layout(props: LayoutProps) {
   const success = props.url.searchParams.get('success')
   const error = props.url.searchParams.get('error')
+  const warning = props.url.searchParams.get('warning')
 
   assert(!success || !error, 'Cannot have both success and error')
 
@@ -80,6 +82,10 @@ export default function Layout(props: LayoutProps) {
     <>
       <SuccessMessage
         message={success}
+        className='fixed z-50 top-0 left-0 right-0 m-12'
+      />
+      <WarningMessage
+        message={warning}
         className='fixed z-50 top-0 left-0 right-0 m-12'
       />
       <ErrorListener

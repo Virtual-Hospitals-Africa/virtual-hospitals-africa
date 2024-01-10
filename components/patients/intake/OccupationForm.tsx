@@ -7,7 +7,7 @@ function under19(patientAge: PatientAge): boolean {
     return false
   }
   return patientAge.age_unit != 'year' ||
-    (patientAge.age_unit == 'year' && patientAge.age_number < 19)
+    (patientAge.age_unit === 'year' && patientAge.age_number < 19)
 }
 
 export default function PatientOccupationForm(
