@@ -7,9 +7,6 @@ type BasicSelectProps = {
   isSelected?: boolean
   onSelect?: () => void
 }
-type AllergySearchResultProps = BasicSelectProps & {
-  allergy: string
-}
 
 type SearchResultProps = BasicSelectProps & {
   children: JSX.Element
@@ -96,20 +93,6 @@ export function NoSearchResults() {
         <div className='ml-3 text-gray-500 text-sm'>No results found</div>
       </div>
     </li>
-  )
-}
-
-export function AllergySearchResult(
-  { allergy, isSelected, onSelect }: AllergySearchResultProps,
-) {
-  return (
-    <SearchResult isSelected={isSelected} onSelect={onSelect}>
-      <div className='flex flex-col'>
-        <div className={cls('truncate text-base', isSelected && 'font-bold')}>
-          {allergy}
-        </div>
-      </div>
-    </SearchResult>
   )
 }
 

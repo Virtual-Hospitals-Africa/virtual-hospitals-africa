@@ -7,7 +7,6 @@ import * as $_app from './routes/_app.tsx'
 import * as $_middleware from './routes/_middleware.ts'
 import * as $app from './routes/app.tsx'
 import * as $app_middleware from './routes/app/_middleware.tsx'
-import * as $app_allergies from './routes/app/allergies.tsx'
 import * as $app_calendar from './routes/app/calendar.tsx'
 import * as $app_calendar_appointments_appointmentId_media_mediaId_ from './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx'
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
@@ -73,6 +72,7 @@ import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
+import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $address_inputs from './islands/address-inputs.tsx'
@@ -107,7 +107,6 @@ const manifest = {
     './routes/_middleware.ts': $_middleware,
     './routes/app.tsx': $app,
     './routes/app/_middleware.tsx': $app_middleware,
-    './routes/app/allergies.tsx': $app_allergies,
     './routes/app/calendar.tsx': $app_calendar,
     './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx':
       $app_calendar_appointments_appointmentId_media_mediaId_,
@@ -201,6 +200,7 @@ const manifest = {
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,
+    './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/address-inputs.tsx': $address_inputs,

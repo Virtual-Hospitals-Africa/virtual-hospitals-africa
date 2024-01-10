@@ -14,7 +14,6 @@ import {
   PatientOccupation,
   PatientState,
   PatientWithMedicalRecord,
-  PreExistingAllergy,
   RenderedPatient,
   ReturnedSqlRow,
   TrxOrDb,
@@ -111,7 +110,7 @@ export type UpsertPatientIntake = {
   last_name?: Maybe<string>
   address?: Address
   unregistered_primary_doctor_name?: Maybe<string>
-  allergies?: PreExistingAllergy[]
+  allergies?: { id: number }[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
   family?: FamilyUpsert

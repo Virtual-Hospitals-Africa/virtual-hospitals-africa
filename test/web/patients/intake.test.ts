@@ -297,7 +297,6 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       'The form should be 1:1 with the conditions in the DB',
     )
     assertEquals(formDisplay, {
-      allergy_search: '',
       pre_existing_conditions: [
         {
           name: 'Cigarette smoker',
@@ -335,8 +334,8 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     })
 
     const body = new FormData()
-    body.set('allergies.0.allergy_id', '7')
-    body.set('allergies.1.allergy_id', '13')
+    body.set('allergies.0.id', '7')
+    body.set('allergies.1.id', '13')
 
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
@@ -357,8 +356,8 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     const allergies = await patient_allergies.get(db, patient_id)
 
     assertEquals(allergies.length, 2)
-    assertEquals(allergies[0].allergy_id, 7)
-    assertEquals(allergies[1].allergy_id, 13)
+    assertEquals(allergies[0].id, 7)
+    assertEquals(allergies[1].id, 13)
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
@@ -369,8 +368,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     const $ = cheerio.load(pageContents)
     const formValues = getFormValues($)
     assertEquals(
-      // deno-lint-ignore no-explicit-any
-      omit(formValues as any, ['allergy_search']),
+      formValues,
       { allergies },
       'The form should be 1:1 with the conditions in the DB',
     )
