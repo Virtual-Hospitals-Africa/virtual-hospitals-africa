@@ -76,7 +76,8 @@ export default function Layout(props: LayoutProps) {
   const error = props.url.searchParams.get('error')
   const warning = props.url.searchParams.get('warning')
 
-  assert(!success || !error, 'Cannot have both success and error')
+  const flags = Number(!!success) + Number(!!error) + Number(!!warning)
+  assert(flags <= 1, 'Cannot have more than one of success, error, or warning')
 
   return (
     <>
