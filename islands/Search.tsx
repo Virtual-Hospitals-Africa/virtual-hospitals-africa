@@ -23,6 +23,7 @@ export type SearchProps<
   addable?: boolean
   disabled?: boolean
   value?: Maybe<T>
+  multi?: boolean
   options: T[]
   onQuery: (query: string) => void
   onSelect?: (value: T | undefined) => void
@@ -42,6 +43,7 @@ export default function Search<
   required,
   label,
   value,
+  multi,
   addable,
   disabled,
   options,
@@ -75,12 +77,9 @@ export default function Search<
     <Combobox
       value={selected}
       onChange={(value) => {
-        // If an onSelect is specified, the parent component is the source of truth for the value
-        if (onSelect) {
-          onSelect(value ?? undefined)
-        } else {
-          setSelected(value)
-        }
+        onSelect?.(value ?? undefined)
+        // Clear the selection for a multiselect so the user now has space to enter another value
+        setSelected(multi ? null : value)
       }}
     >
       <div className='grow'>

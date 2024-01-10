@@ -38,7 +38,7 @@ export default function AllergySearch({
 
   return (
     <Search
-      name=''
+      multi
       options={filtered_options.value}
       onQuery={(new_query) => query.value = new_query}
       onSelect={(allergy) => {
