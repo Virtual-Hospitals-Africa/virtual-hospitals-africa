@@ -36,7 +36,7 @@ export default function PatientFamilyForm({
   )
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
-  
+
   const showGuardians = age <= 18
   const showDependents = age >= 10
   const showNextOfKin = age >= 19

@@ -2,13 +2,13 @@ import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import {
   Address,
-  PatientAge,
   FamilyUpsert,
   Gender,
   Location,
   Maybe,
   OnboardingPatient,
   Patient,
+  PatientAge,
   PatientConversationState,
   PatientNearestFacility,
   PatientOccupation,
