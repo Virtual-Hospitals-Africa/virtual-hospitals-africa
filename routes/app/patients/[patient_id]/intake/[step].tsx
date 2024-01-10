@@ -7,6 +7,7 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   PastMedicalCondition,
+  PatientAge,
   PatientFamily,
   PreExistingConditionWithDrugs,
   TrxOrDb,
@@ -19,6 +20,7 @@ import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import * as waiting_room from '../../../../../db/models/waiting_room.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
+import * as patient_age from '../../../../../db/models/patient_age.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import {
@@ -44,7 +46,6 @@ import Form from '../../../../../components/library/form/Form.tsx'
 type IntakePatientProps = {
   step:
     | 'personal'
-    | 'occupation'
     | 'lifestyle'
     | 'review'
 } | {
@@ -61,6 +62,9 @@ type IntakePatientProps = {
 } | {
   step: 'history'
   past_medical_conditions: PastMedicalCondition[]
+} | {
+  step: 'occupation'
+  age: PatientAge
 }
 
 type PersonalFormValues = {
@@ -332,6 +336,10 @@ async function getIntakePatientProps(
       const family = await patient_family.get(trx, { patient_id })
       return { step, family }
     }
+    case 'occupation': {
+      const age = await patient_age.get(trx, { patient_id })
+      return { step, age }
+    }
     default:
       return { step }
   }
@@ -420,7 +428,10 @@ export default async function IntakePatientPage(
             />
           )}
           {props.step === 'occupation' && (
-            <PatientOccupationForm patient={patient} />
+            <PatientOccupationForm
+              patient={patient}
+              patientAge={props.age}
+            />
           )}
           {props.step === 'history' && (
             <PatientHistory
