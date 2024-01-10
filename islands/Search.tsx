@@ -51,6 +51,12 @@ export default function Search<
   onSelect,
   Option,
 }: SearchProps<T>) {
+  if (multi) {
+    assert(
+      typeof onSelect === 'function',
+      'onSelect must be provided for a multi search',
+    )
+  }
   const [selected, setSelected] = useState<
     T | null
   >(

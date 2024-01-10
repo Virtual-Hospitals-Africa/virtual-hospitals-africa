@@ -22,8 +22,6 @@ export default function AsyncSearch<
     results: [] as T[],
   })
 
-  console.log('search', search)
-
   useEffect(() => {
     const url = new URL(`${window.location.origin}${href}`)
     if (search.query) {

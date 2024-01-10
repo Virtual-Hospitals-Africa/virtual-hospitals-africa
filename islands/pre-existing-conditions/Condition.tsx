@@ -33,7 +33,6 @@ export default function Condition(
     update(condition: ConditionState): void
   },
 ): JSX.Element {
-  console.log('value', value)
   const prefix = `pre_existing_conditions.${index}`
 
   const addComorbidity = () => {
