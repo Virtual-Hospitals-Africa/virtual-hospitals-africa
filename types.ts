@@ -206,6 +206,7 @@ export type OnboardingPatient =
     nearest_facility_name: Maybe<string>
     nearest_facility_address: Maybe<string>
     primary_doctor_name: Maybe<string>
+    age: PatientAge
     address: {
       street: Maybe<string>
       suburb_id: Maybe<number>
@@ -1639,15 +1640,19 @@ export type PatientMeasurement = {
   value: number
 }
 
-export type AgeUnit =
-  | 'days'
-  | 'weeks'
-  | 'months'
-  | 'years'
+export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
 export type Age = {
   number: number
-  units: AgeUnit
+  unit: AgeUnit
+}
+
+export type PatientAge = {
+  patient_id: number | null
+  age: string | null
+  age_number: number | null
+  age_unit: AgeUnit | null
+  age_display: string | null
 }
 
 export type DatabaseSchema = DB
