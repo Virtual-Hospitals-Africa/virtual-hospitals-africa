@@ -1,4 +1,5 @@
-import { Maybe, PatientAge, TrxOrDb } from '../../types.ts'
+import { PatientAge } from '../../db.d.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
 
 export function get(
   trx: TrxOrDb,

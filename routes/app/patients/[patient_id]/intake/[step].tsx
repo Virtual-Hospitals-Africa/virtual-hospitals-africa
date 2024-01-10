@@ -7,7 +7,6 @@ import {
   LoggedInHealthWorkerHandler,
   Maybe,
   PastMedicalCondition,
-  PatientAge,
   PatientFamily,
   PreExistingConditionWithDrugs,
   TrxOrDb,
@@ -46,6 +45,7 @@ import {
 import omit from '../../../../../util/omit.ts'
 import getNumericParam from '../../../../../util/getNumericParam.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
+import { PatientAge } from '../../../../../db.d.ts'
 
 type IntakePatientProps = {
   step:

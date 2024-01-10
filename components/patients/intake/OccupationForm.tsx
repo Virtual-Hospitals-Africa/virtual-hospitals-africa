@@ -1,12 +1,13 @@
+import { PatientAge } from '../../../db.d.ts'
 import Occupation0_18 from '../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../islands/Occupation19.tsx'
-import { OnboardingPatient, PatientAge } from '../../../types.ts'
+import { OnboardingPatient } from '../../../types.ts'
 
 function under19(patientAge: PatientAge): boolean {
   if (patientAge.age_number == null) {
     return false
   }
-  return patientAge.age_unit != 'year' ||
+  return patientAge.age_unit !== 'year' ||
     (patientAge.age_unit === 'year' && patientAge.age_number < 19)
 }
 
