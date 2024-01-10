@@ -296,6 +296,7 @@ export function getOnboarding(
         .as('avatar_url'),
       'patients.nearest_facility_id',
       'facilities.name as nearest_facility_name',
+      'facilities.address as nearest_facility_address',
       'health_workers.name as primary_doctor_name',
     ])
     .where('patients.id', '=', opts.id)

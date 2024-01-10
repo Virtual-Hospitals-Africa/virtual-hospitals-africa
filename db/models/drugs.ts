@@ -14,8 +14,8 @@ export async function search(
   let drugsQuery = trx
     .selectFrom('drugs')
     .select((eb_drugs) => [
-      'drugs.id as drug_id',
-      'drugs.generic_name as drug_generic_name',
+      'drugs.id',
+      'drugs.generic_name as name',
       jsonArrayFromColumn(
         'trade_name',
         eb_drugs
@@ -91,17 +91,18 @@ export async function search(
 
   if (opts?.ids) drugsQuery = drugsQuery.where('drugs.id', 'in', opts.ids)
 
-  const searchQuery = trx.selectFrom(drugsQuery.as('drugs')).selectAll().where((
-    eb,
-  ) =>
-    eb.or([
-      eb('drugs.drug_generic_name', 'ilike', `%${opts.search}%`),
-      sql<
-        boolean
-      >`EXISTS (select 1 from json_array_elements_text("drugs"."distinct_trade_names") AS trade_name
+  const searchQuery = trx.selectFrom(drugsQuery.as('drug_search_results'))
+    .selectAll().where((
+      eb,
+    ) =>
+      eb.or([
+        eb('drug_search_results.name', 'ilike', `%${opts.search}%`),
+        sql<
+          boolean
+        >`EXISTS (select 1 from json_array_elements_text("drug_search_results"."distinct_trade_names") AS trade_name
         WHERE trade_name ILIKE ${'%' + opts?.search + '%'})`,
-    ])
-  )
+      ])
+    )
 
   const query = (opts?.search ? searchQuery : drugsQuery).limit(20)
   const results = await query.execute()

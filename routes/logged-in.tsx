@@ -63,9 +63,8 @@ export async function initializeHealthWorker(
   return {
     ...healthWorker,
     employment: facility_ids.map((facility_id) => {
-      const facility_name = employed_at_facilities.find((f) =>
-        f.id === facility_id
-      )!.name
+      const facility = employed_at_facilities.find((f) => f.id === facility_id)
+      assert(facility, 'Could not find facility')
       const nurse_role = roles.find(
         (r) => r.facility_id === facility_id && r.profession === 'nurse',
       ) || null
@@ -77,8 +76,7 @@ export async function initializeHealthWorker(
       ) || null
 
       return {
-        facility_id,
-        facility_name,
+        facility,
         roles: {
           nurse: nurse_role && {
             registration_needed: true,

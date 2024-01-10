@@ -401,6 +401,7 @@ export default async function IntakePatientPage(
               defaultFacility={{
                 id: healthWorker.employment[0].facility_id,
                 name: healthWorker.employment[0].facility_name,
+                address: healthWorker.employment[0].facility_address,
               }}
               adminDistricts={props.adminDistricts}
             />

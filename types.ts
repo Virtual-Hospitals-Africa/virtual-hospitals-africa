@@ -204,6 +204,7 @@ export type OnboardingPatient =
     id: number
     avatar_url: Maybe<string>
     nearest_facility_name: Maybe<string>
+    nearest_facility_address: Maybe<string>
     primary_doctor_name: Maybe<string>
     address: {
       street: Maybe<string>
@@ -1064,8 +1065,11 @@ export type EmployedHealthWorker = ReturnedSqlRow<
     refresh_token: Maybe<string>
     expires_at: Maybe<Date | string>
     employment: {
-      facility_id: number
-      facility_name: string
+      facility: {
+        id: number
+        name: string
+        address: string
+      }
       roles: {
         nurse: null | {
           registration_needed: boolean
@@ -1487,8 +1491,8 @@ export type DrugSearchResultMedication = {
 }
 
 export type DrugSearchResult = {
-  drug_id: number
-  drug_generic_name: string
+  id: number
+  name: string
   distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
 }

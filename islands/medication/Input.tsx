@@ -103,11 +103,12 @@ export default function MedicationInput({
     <div className='w-full justify-normal'>
       <FormRow className='w-full justify-normal'>
         <MedicationSearch
+          label='Drug'
           name={name}
-          selectedDrug={selectedDrug}
-          setSelectedDrug={setSelectedDrug}
-          clearSelected={() => {
-            setSelectedDrug(null)
+          value={selectedDrug}
+          required
+          onSelect={(drug) => {
+            setSelectedDrug(drug ?? null)
             setSelectedMedicationId(null)
             setSelectedStrength(null)
             setSelectedDosage(null)

@@ -87,7 +87,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'at_facility1@worker.com',
-        name: 'At Facility 1',
+        display_name: 'At Facility 1',
         health_worker_id: hw_at_facility1.id,
         is_invitee: false,
         name: 'At Facility 1',
@@ -102,7 +102,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[1], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'at_facility2@worker.com',
-        name: 'At Facility 2',
+        display_name: 'At Facility 2',
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
         name: 'At Facility 2',
@@ -117,7 +117,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[2], ['professions']), {
         avatar_url: null,
         email: 'invitee@test.com',
-        name: 'invitee@test.com',
+        display_name: 'invitee@test.com',
         health_worker_id: null,
         is_invitee: true,
         name: null,
@@ -137,7 +137,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withoutInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'at_facility1@worker.com',
-        name: 'At Facility 1',
+        display_name: 'At Facility 1',
         health_worker_id: hw_at_facility1.id,
         is_invitee: false,
         name: 'At Facility 1',
@@ -152,7 +152,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withoutInvitees[1], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'at_facility2@worker.com',
-        name: 'At Facility 2',
+        display_name: 'At Facility 2',
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
         name: 'At Facility 2',
@@ -243,7 +243,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'at_facility2@worker.com',
-        name: 'At Facility 2',
+        display_name: 'At Facility 2',
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
         name: 'At Facility 2',
@@ -302,7 +302,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'at_facility1@worker.com',
-        name: 'At Facility 1',
+        display_name: 'At Facility 1',
         health_worker_id: hw_at_facility1.id,
         is_invitee: false,
         name: 'At Facility 1',
@@ -374,7 +374,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'nurse@worker.com',
-        name: 'Nurse',
+        display_name: 'Nurse',
         health_worker_id: nurse.id,
         is_invitee: false,
         name: 'Nurse',
@@ -388,7 +388,7 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[1], ['professions']), {
         avatar_url: 'avatar_url',
         email: 'admin@worker.com',
-        name: 'Admin',
+        display_name: 'Admin',
         health_worker_id: admin.id,
         is_invitee: false,
         name: 'Admin',

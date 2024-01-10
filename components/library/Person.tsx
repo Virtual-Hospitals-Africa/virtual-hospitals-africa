@@ -4,7 +4,7 @@ import cls from '../../util/cls.ts'
 import { Maybe } from '../../types.ts'
 
 export type PersonData = {
-  id: number | 'add'
+  id?: number | 'add'
   name: string
   display_name?: Maybe<string>
   avatar_url?: Maybe<string>

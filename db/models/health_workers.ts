@@ -12,7 +12,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
@@ -379,11 +379,14 @@ export async function get(
             'employment.facility_id',
             'facilities.id',
           )
-          .select([
-            'employment.facility_id',
-            'facilities.name as facility_name',
+          .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
+            jsonBuildObject({
+              id: eb_employment.ref('employment.facility_id'),
+              name: eb_employment.ref('facilities.name'),
+              address: eb_employment.ref('facilities.address'),
+            }).as('facility'),
           ])
           .whereRef(
             'employment.health_worker_id',
@@ -407,7 +410,7 @@ export async function get(
 
   const employment_by_facility = groupBy(
     result.employment,
-    (e) => e.facility_id,
+    (e) => e.facility.id,
   )
 
   return {
@@ -417,7 +420,7 @@ export async function get(
     ...pickHealthWorkerDetails(result),
     ...pickTokens(result),
     employment: [...employment_by_facility.entries()].map(
-      ([facility_id, roles]) => {
+      ([_facility_id, roles]) => {
         const nurse_role = roles.find((r) => r.profession === 'nurse') || null
         const doctor_role = roles.find((r) => r.profession === 'doctor') || null
         const admin_role = roles.find((r) => r.profession === 'admin') || null
@@ -426,8 +429,7 @@ export async function get(
         if (doctor_role) assert(!nurse_role)
 
         return {
-          facility_id,
-          facility_name: roles[0].facility_name,
+          facility: roles[0].facility,
           roles: {
             nurse: nurse_role && {
               registration_needed: !result.health_worker_id,

@@ -15,13 +15,12 @@ function hasId(value: unknown): value is HasId {
 }
 
 export type AsyncSearchProps<
-  T extends { id: unknown; name: string },
+  T extends { id?: unknown; name: string },
 > = {
   href: string
   name: string
   required?: boolean
   label?: string
-
   addable?: boolean
   disabled?: boolean
   value?: Maybe<T>
@@ -36,7 +35,7 @@ export type AsyncSearchProps<
 }
 
 export default function AsyncSearch<
-  T extends { id: unknown; name: string },
+  T extends { id?: unknown; name: string },
 >({
   href,
   name,
@@ -129,13 +128,14 @@ export default function AsyncSearch<
         onSelect?.(value ?? undefined)
       }}
     >
-      <div className='w-full'>
+      <div className='grow'>
         {label && (
-          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-900'>
+          <Combobox.Label className='block text-sm font-medium leading-6 text-gray-500 mb-0 ml-0.5'>
             {label}
+            {required && '*'}
           </Combobox.Label>
         )}
-        <div className='relative mt-2'>
+        <div className='relative'>
           <Combobox.Input
             name={`${name}_name`}
             className='w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'

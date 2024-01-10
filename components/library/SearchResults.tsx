@@ -1,9 +1,7 @@
 import { ComponentChildren, JSX } from 'preact'
 import { useState } from 'preact/hooks'
-import { DrugSearchResult as DrugSearchResultData, HasId } from '../../types.ts'
 import cls from '../../util/cls.ts'
 import { PlusCircleIcon } from '../library/icons/heroicons/outline.tsx'
-import { Person, PersonData } from './Person.tsx'
 
 type BasicSelectProps = {
   isSelected?: boolean
@@ -38,7 +36,7 @@ export function SearchResult(
       )}
       role='option'
       tabIndex={-1}
-      onClick={() => onSelect()}
+      onClick={() => onSelect && onSelect()}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
     >
@@ -65,34 +63,6 @@ export function SearchResult(
         </span>
       )}
     </li>
-  )
-}
-
-export function DrugSearchResult({ drug, isSelected }: {
-  drug: DrugSearchResultData
-  isSelected?: boolean
-}) {
-  return (
-    <div className='flex items-center'>
-      <span
-        className={cls(
-          'ml-3 truncate',
-          isSelected && 'font-bold',
-        )}
-      >
-        <b>{drug.drug_generic_name}</b>
-        {drug.medications.map(
-          (medication) => (
-            <div>{medication.form_route} ({medication.strength_summary})</div>
-          ),
-        )}
-        {drug.distinct_trade_names.length > 0 && (
-          <div className='text-s italic'>
-            {drug.distinct_trade_names.join(', ')}
-          </div>
-        )}
-      </span>
-    </div>
   )
 }
 
@@ -161,6 +131,7 @@ export function ConditionSearchResult(
   )
 }
 
+// TODO: use this for add
 export function AddButtonSearchResult(
   { searchedValue, isSelected, onSelect }: AddButtonSearchResult,
 ) {
