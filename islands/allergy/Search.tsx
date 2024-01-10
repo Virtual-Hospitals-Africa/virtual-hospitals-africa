@@ -1,85 +1,53 @@
-import { useCallback, useEffect, useState } from 'preact/hooks'
-import { SearchInput } from '../../components/library/form/Inputs.tsx'
-import { assert } from 'std/assert/assert.ts'
-import SearchResults, {
-  AllergySearchResult,
-} from '../../components/library/SearchResults.tsx'
-import debounce from '../../util/debounce.ts'
-import { Allergy, HasId, PreExistingAllergy } from '../../types.ts'
+import { Allergy } from '../../types.ts'
+import Search from '../Search.tsx'
+import cls from '../../util/cls.ts'
+import { computed, useSignal } from '@preact/signals'
+
+function AllergyResult({
+  option,
+  selected,
+}: {
+  option: Allergy
+  selected: boolean
+}) {
+  return (
+    <div className='flex flex-col'>
+      <div className={cls('truncate text-base', selected && 'font-bold')}>
+        {option.name}
+      </div>
+    </div>
+  )
+}
 
 export default function AllergySearch({
-  without_ids,
-  addAllergy,
+  options,
+  add,
 }: {
-  without_ids: number[]
-  addAllergy(allergy: PreExistingAllergy): void
+  options: Allergy[]
+  add(allergy: Allergy): void
 }) {
-  const [search, setSearchImmediate] = useState('')
-  const [searchResults, setSearchResults] = useState<HasId<Allergy>[]>([])
-  const [setSearch] = useState({
-    delay: debounce(setSearchImmediate, 220),
-  })
-  const [isFocused, setIsFocused] = useState(false)
-
-  const getAllergies = async () => {
-    if (!search) return setSearchResults([])
-    const url = new URL(`${window.location.origin}/app/allergies`)
-    url.searchParams.set('search', search)
-    if (without_ids?.length) {
-      url.searchParams.set('without_ids', without_ids.join(','))
-    }
-
-    await fetch(url, {
-      headers: { accept: 'application/json' },
-    }).then(async (response) => {
-      const allergiesList = await response.json()
-      assert(Array.isArray(allergiesList))
-      setSearchResults(allergiesList)
-    }).catch(console.error)
-  }
-
-  useEffect(() => {
-    getAllergies()
-  }, [search])
-
-  const onDocumentClick = useCallback(() => {
-    setIsFocused(
-      document.activeElement ===
-        document.querySelector(`input[name="allergy_search"]`),
-    )
-  }, [])
-
-  useEffect(() => {
-    onDocumentClick()
-    self.addEventListener('click', onDocumentClick)
-    return () => self.removeEventListener('click', onDocumentClick)
+  const query = useSignal('')
+  const filtered_options = computed(() => {
+    const query_value = query.value
+    return query_value.length > 0
+      ? options.filter((allergy) =>
+        allergy.name.toLowerCase().includes(query_value.toLowerCase())
+      )
+      : []
   })
 
   return (
-    <SearchInput
-      name='allergy_search'
-      label='Allergies'
-      value={search}
-      onInput={(event) => {
-        assert(event.target)
-        assert('value' in event.target)
-        assert(typeof event.target.value === 'string')
-        setSearch.delay(event.target.value)
+    <Search
+      name=''
+      options={filtered_options.value}
+      onQuery={(new_query) => query.value = new_query}
+      onSelect={(allergy) => {
+        if (allergy) {
+          add(allergy)
+          query.value = ''
+        }
       }}
-    >
-      {isFocused && search && searchResults.length > 0 && (
-        <SearchResults>
-          {searchResults.map((allergy) => (
-            <AllergySearchResult
-              allergy={allergy.name}
-              onSelect={() => {
-                addAllergy({ allergy_id: allergy.id, name: allergy.name })
-                setSearchImmediate('')
-              }}
-            />
-          ))}
-        </SearchResults>
-      )}
-    </SearchInput>
+      Option={AllergyResult}
+    />
   )
 }

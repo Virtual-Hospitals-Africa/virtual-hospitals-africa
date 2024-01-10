@@ -1,44 +1,42 @@
-import { useState } from 'preact/hooks'
-import { PreExistingAllergy } from '../../types.ts'
+import { computed, useSignal } from '@preact/signals'
+import { Allergy } from '../../types.ts'
 import AllergySearch from './Search.tsx'
 import { MinusCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
 
-export default function AllergyInput({
-  allergies,
-}: {
-  allergies: PreExistingAllergy[]
+export default function AllergyInput(props: {
+  allergies: Allergy[]
+  patient_allergies: Allergy[]
 }) {
-  const [selectedAllergies, setSelectedAllergies] = useState<
-    PreExistingAllergy[]
-  >(allergies)
+  const patient_allergies = useSignal(props.patient_allergies)
 
-  const addAllergy = (allergy: PreExistingAllergy) =>
-    setSelectedAllergies([...selectedAllergies, allergy])
-
-  const removeAllergy = (allergy: PreExistingAllergy) => {
-    setSelectedAllergies(
-      selectedAllergies.filter(
-        (item) => item.allergy_id !== allergy.allergy_id,
-      ),
+  const options = computed(() =>
+    props.allergies.filter((a) =>
+      patient_allergies.value.every((pa) => pa.id !== a.id)
     )
-  }
+  )
+
+  const add = (allergy: Allergy) =>
+    patient_allergies.value = [...patient_allergies.value, allergy]
+
+  const remove = (allergy: Allergy) =>
+    patient_allergies.value = patient_allergies.value.filter((a) =>
+      a.id !== allergy.id
+    )
 
   return (
     <div className='flex flex-col gap-1'>
       <AllergySearch
-        without_ids={selectedAllergies.map(
-          (allergy) => allergy.allergy_id,
-        )}
-        addAllergy={addAllergy}
+        options={options.value}
+        add={add}
       />
-      {selectedAllergies.length > 0 && (
+      {patient_allergies.value.length > 0 && (
         <div className='flex-start flex flex-wrap gap-2 w-full'>
-          {selectedAllergies.map((allergy, i) => (
+          {patient_allergies.value.map((allergy, i) => (
             <>
               <button
                 key={allergy.name}
                 type='button'
-                onClick={() => removeAllergy(allergy)}
+                onClick={() => remove(allergy)}
                 className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
               >
                 {allergy.name}
@@ -46,16 +44,9 @@ export default function AllergyInput({
               </button>
               <input
                 type='hidden'
-                name={`allergies.${i}.allergy_id`}
-                value={allergy.allergy_id}
+                name={`allergies.${i}.id`}
+                value={allergy.id}
               />
-              {allergy.id && (
-                <input
-                  type='hidden'
-                  name={`allergies.${i}.id`}
-                  value={allergy.id}
-                />
-              )}
             </>
           ))}
         </div>

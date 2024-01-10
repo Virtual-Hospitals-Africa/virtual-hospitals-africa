@@ -1,16 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 export default function memoize<
-  Args extends Array<any>,
-  Func extends (...args: Args) => any,
+  Func extends (...args: any[]) => any,
   CacheKey,
->(func: Func, resolver?: (...args: Args) => CacheKey): Func {
-  if (
-    typeof func !== 'function' ||
-    (resolver != null && typeof resolver !== 'function')
-  ) {
+>(func: Func, resolver?: (...args: Parameters<Func>) => CacheKey): Func {
+  if (typeof func !== 'function') {
     throw new TypeError('Expected a function')
   }
-  const memoized = function (...args: Args) {
+  const memoized = function (...args: Parameters<Func>) {
     // @ts-ignore allow this
     const key: CacheKey = resolver ? resolver.apply(this, args) : args[0]
     const cache = memoized.cache

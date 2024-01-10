@@ -43,6 +43,7 @@ export async function up(db: Kysely<unknown>) {
       'integer',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
+    .addUniqueConstraint('patient_allergy', ['allergy_id', 'patient_id'])
     .execute()
 
   await addUpdatedAtTrigger(db, 'patient_allergies')

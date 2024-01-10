@@ -1,5 +1,6 @@
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
+  Allergy,
   FamilyRelationInsert,
   FullCountryInfo,
   LoggedInHealthWorkerContext,
@@ -7,7 +8,6 @@ import {
   Maybe,
   PastMedicalCondition,
   PatientFamily,
-  PreExistingAllergy,
   PreExistingConditionWithDrugs,
   TrxOrDb,
 } from '../../../../../types.ts'
@@ -15,6 +15,7 @@ import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as address from '../../../../../db/models/address.ts'
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
+import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import * as waiting_room from '../../../../../db/models/waiting_room.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
@@ -51,14 +52,15 @@ type IntakePatientProps = {
   adminDistricts: FullCountryInfo
 } | {
   step: 'pre-existing_conditions'
-  preExistingConditions: PreExistingConditionWithDrugs[]
-  allergies: PreExistingAllergy[]
+  pre_existing_conditions: PreExistingConditionWithDrugs[]
+  allergies: Allergy[]
+  patient_allergies: Allergy[]
 } | {
   step: 'family'
   family: PatientFamily
 } | {
   step: 'history'
-  pastMedicalConditions: PastMedicalCondition[]
+  past_medical_conditions: PastMedicalCondition[]
 }
 
 type PersonalFormValues = {
@@ -86,8 +88,7 @@ type AddressFormValues = {
 }
 
 type ConditionsFormValues = {
-  allergy_search?: string
-  allergies?: PreExistingAllergy[]
+  allergies?: { id: number; name: string }[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 
@@ -244,7 +245,6 @@ const transformers: Transformers = {
   'pre-existing_conditions': (
     patient,
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
-    ...omit(patient, ['allergy_search']),
     pre_existing_conditions: patient.pre_existing_conditions || [],
     allergies: patient.allergies || [],
   }),
@@ -303,13 +303,14 @@ async function getIntakePatientProps(
       return { step, adminDistricts }
     }
     case 'pre-existing_conditions': {
-      const gettingPreExistingConditions = patient_conditions
+      const getting_pre_existing_conditions = patient_conditions
         .getPreExistingConditionsWithDrugs(
           trx,
           { patient_id },
         )
 
-      const gettingAllergies = patient_allergies
+      const getting_allergies = allergies.getAll(trx)
+      const getting_patient_allergies = patient_allergies
         .getWithName(
           trx,
           patient_id,
@@ -317,14 +318,15 @@ async function getIntakePatientProps(
 
       return {
         step,
-        preExistingConditions: await gettingPreExistingConditions,
-        allergies: await gettingAllergies,
+        pre_existing_conditions: await getting_pre_existing_conditions,
+        allergies: await getting_allergies,
+        patient_allergies: await getting_patient_allergies,
       }
     }
     case 'history': {
-      const pastMedicalConditions = await patient_conditions
+      const past_medical_conditions = await patient_conditions
         .getPastMedicalConditions(trx, { patient_id })
-      return { step, pastMedicalConditions }
+      return { step, past_medical_conditions }
     }
     case 'family': {
       const family = await patient_family.get(trx, { patient_id })
@@ -413,7 +415,8 @@ export default async function IntakePatientPage(
             <PatientPreExistingConditions
               patient={patient}
               allergies={props.allergies}
-              preExistingConditions={props.preExistingConditions}
+              patient_allergies={props.patient_allergies}
+              pre_existing_conditions={props.pre_existing_conditions}
             />
           )}
           {props.step === 'occupation' && (
@@ -422,7 +425,7 @@ export default async function IntakePatientPage(
           {props.step === 'history' && (
             <PatientHistory
               patient={patient}
-              pastMedicalConditions={props.pastMedicalConditions}
+              pastMedicalConditions={props.past_medical_conditions}
             />
           )}
           {props.step === 'review' && <PatientReview patient={patient} />}

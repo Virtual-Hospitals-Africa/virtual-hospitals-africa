@@ -1529,6 +1529,7 @@ export type PatientOccupation = {
 }
 
 export type Allergy = {
+  id: number
   name: string
 }
 

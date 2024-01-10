@@ -1,32 +1,35 @@
 import AllergyInput from '../../../islands/allergy/Input.tsx'
 import {
+  Allergy,
   OnboardingPatient,
-  PreExistingAllergy,
   PreExistingConditionWithDrugs,
 } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import PreExistingConditionsForm from '../../../islands/pre-existing-conditions/Form.tsx'
 
 export default function PatientPreExistingConditions(
-  { patient = {}, preExistingConditions, allergies }: {
+  { patient = {}, pre_existing_conditions, allergies, patient_allergies }: {
     patient?: Partial<OnboardingPatient>
-    preExistingConditions: PreExistingConditionWithDrugs[]
-    allergies: PreExistingAllergy[]
+    pre_existing_conditions: PreExistingConditionWithDrugs[]
+    allergies: Allergy[]
+    patient_allergies: Allergy[]
   },
 ) {
-  console.log('preExistingConditions', preExistingConditions)
   return (
     <>
       <section>
         <SectionHeader className='my-5 text-[20px]'>Allergies</SectionHeader>
-        <AllergyInput allergies={allergies} />
+        <AllergyInput
+          allergies={allergies}
+          patient_allergies={patient_allergies}
+        />
       </section>
       <section>
         <SectionHeader className='my-5 text-[20px]'>
           Chronic Conditions & Disabilities
         </SectionHeader>
         <PreExistingConditionsForm
-          preExistingConditions={preExistingConditions}
+          pre_existing_conditions={pre_existing_conditions}
         />
       </section>
     </>

@@ -9,12 +9,12 @@ type PreExistingConditionsFormState = Array<
 >
 
 export default function PreExistingConditionsForm({
-  preExistingConditions,
+  pre_existing_conditions,
 }: {
-  preExistingConditions: PreExistingConditionWithDrugs[]
+  pre_existing_conditions: PreExistingConditionWithDrugs[]
 }): JSX.Element {
   const conditions = useSignal<PreExistingConditionsFormState>(
-    preExistingConditions,
+    pre_existing_conditions,
   )
 
   const addCondition = () =>
@@ -34,7 +34,7 @@ export default function PreExistingConditionsForm({
             index={index}
             state={state}
             value={state.id
-              ? preExistingConditions.find(
+              ? pre_existing_conditions.find(
                 (condition) => condition.id === state.id,
               )
               : undefined}
