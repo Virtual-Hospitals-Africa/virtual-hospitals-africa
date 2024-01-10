@@ -17,9 +17,6 @@ export default function JobPost(
 ) {
   const [open, setOpen] = useState(false)
 
-  console.log('open', open)
-  console.log(title, location, summary, fullDescription)
-
   return (
     <div className='lg:col-start-3 lg:row-end-1'>
       <div className='rounded-lg bg-gray-50 shadow-sm ring-1 ring-gray-900/5'>
@@ -88,12 +85,7 @@ export default function JobPost(
             </a>
           )
           : (
-            <button
-              onClick={() => {
-                console.log('klklkkl'), setOpen(true)
-              }}
-              className='mt-6 border-t border-gray-900/5 px-6 py-6 w-full grid place-items-center text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-            >
+            <button className='mt-6 border-t border-gray-900/5 px-6 py-6 w-full grid place-items-center text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50'>
               <span className='flex items-center justify-between'>
                 <MagnifyingGlassIcon className='mr-1.5' />
                 Learn More
