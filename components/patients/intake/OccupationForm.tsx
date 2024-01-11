@@ -3,7 +3,7 @@ import Occupation0_18 from '../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../islands/Occupation19.tsx'
 import { OnboardingPatient } from '../../../types.ts'
 
-function under19(patientAge: PatientAge): boolean {
+function isPatientUnder19(patientAge: PatientAge): boolean {
   if (patientAge.age_number == null) {
     return false
   }
@@ -19,7 +19,7 @@ export default function PatientOccupationForm(
 ) {
   return (
     <>
-      {under19(patientAge) ? <Occupation0_18 /> : <Occupation19 />}
+      {isPatientUnder19(patientAge) ? <Occupation0_18 /> : <Occupation19 />}
     </>
   )
 }

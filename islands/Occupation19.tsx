@@ -1,4 +1,4 @@
-export default function Occupation0_18() {
+export default function Occupation19() {
   return (
     <>
       <div class='flex right'>
