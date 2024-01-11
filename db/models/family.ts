@@ -139,11 +139,30 @@ export async function get(
     ])
     .execute()
 
+  const gettingNextOfKin = trx
+    .selectFrom('patient_kin')
+    .innerJoin(
+      'patients as kin',
+      'patient_kin.next_of_kin_patient_id',
+      'kin.id',
+    )
+    .where('patient_kin.patient_id', '=', patient_id)
+    .select([
+      'patient_kin.id as relation_id',
+      'patient_kin.relationship as relation',
+      'kin.id as patient_id',
+      'kin.name as patient_name',
+      'kin.phone_number as patient_phone_number',
+      'kin.gender as patient_gender',
+    ])
+    .executeTakeFirst()
+
   return {
     marital_status: 'TODO',
     religion: 'TODO',
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
+    other_next_of_kin: await gettingNextOfKin
   }
 }
 
@@ -220,6 +239,7 @@ export async function upsert(
     family_to_upsert.dependents,
     hasPatientId,
   )
+  const other_kin = family_to_upsert.other_next_of_kin
 
   // Update patients that already exist
   const updating_existing_patients: Promise<unknown>[] = []
@@ -274,7 +294,15 @@ export async function upsert(
       }),
     )
   }
-
+  if(other_kin && other_kin.patient_id){
+      const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
+      updating_existing_patients.push(upsertPatient(trx, {
+        id: other_kin.patient_id!,
+        name: other_kin.patient_name,
+        phone_number: other_kin.patient_phone_number,
+        gender: relation.gender,
+      }))
+  }
   // Insert patients that don't already exist. For each family relation keep track of the index and the calculated relation
   // so we can look them up later. After the insertion resolves, the db will give us back the patients in the same order, so
   // we can use the index to look up the patient
@@ -302,6 +330,15 @@ export async function upsert(
       gender: relation.gender,
     }) - 1
     inserted.set(dependent, [index, relation.guardian_relation])
+  }
+  if(other_kin && !other_kin.patient_id){
+    const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
+    const index = to_insert.push({
+      name: other_kin.patient_name,
+      phone_number: other_kin.patient_phone_number,
+      gender: relation.gender,
+    }) - 1
+    inserted.set(other_kin, [index, relation.guardian_relation])
   }
   const inserting_new_patients = to_insert.length
     ? insertManyPatients(trx, to_insert)
@@ -413,9 +450,9 @@ export async function upsert(
   let removing_kin: Promise<unknown> = Promise.resolve()
   const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin)
   const existing_kin = existing_family.guardians.find((c) => c.next_of_kin)
-  if (new_kin || existing_kin) {
-    const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin)
-    const existingKin = existing_family.guardians.find((c) => c.next_of_kin)
+  if (new_kin || existing_kin || other_kin) {
+    const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ?? other_kin
+    const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ?? existing_family.other_next_of_kin
 
     // kins is removed
     if (existingKin && !new_kin) {

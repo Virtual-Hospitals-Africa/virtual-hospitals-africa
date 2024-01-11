@@ -85,6 +85,7 @@ import * as $availability_form from './islands/availability-form.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_Form from './islands/family/Form.tsx'
 import * as $family_Guardian from './islands/family/Guardian.tsx'
+import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
@@ -217,6 +218,7 @@ const manifest = {
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/Form.tsx': $family_Form,
     './islands/family/Guardian.tsx': $family_Guardian,
+    './islands/family/NextOfKin.tsx': $family_NextOfKin,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/invites-form.tsx': $invites_form,
