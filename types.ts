@@ -1332,13 +1332,13 @@ export type LinkProps = {
   href: string
   title: string
   active: boolean
-  Icon: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
+  Icon?: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
 }
 
 export type LinkDef = {
   route: string
-  title: string
-  Icon: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
+  title?: string
+  Icon?: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
 }
 
 export type CalendarPageProps = {

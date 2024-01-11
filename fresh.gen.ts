@@ -44,6 +44,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_risk_factors from '
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
 import * as $app_patients_patient_id_intake_step_ from './routes/app/patients/[patient_id]/intake/[step].tsx'
+import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
@@ -172,6 +173,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_vitals,
     './routes/app/patients/[patient_id]/intake/[step].tsx':
       $app_patients_patient_id_intake_step_,
+    './routes/app/patients/[patient_id]/intake/_middleware.tsx':
+      $app_patients_patient_id_intake_middleware,
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,

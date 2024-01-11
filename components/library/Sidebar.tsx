@@ -6,6 +6,8 @@ import LogoutIcon from './icons/logout.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
+import words from '../../util/words.ts'
+import capitalize from '../../util/capitalize.ts'
 
 export type SidebarProps = {
   top: {
@@ -32,7 +34,7 @@ function NavItem({
           active ? 'text-gray-900 bg-gray-50' : 'text-gray-700',
         )}
       >
-        <Icon className='w-5' />
+        {Icon && <Icon className='w-5' />}
         {title}
       </a>
     </li>
@@ -70,7 +72,8 @@ export function GenericSidebar({ navLinks, route, params, top }: SidebarProps) {
               <NavItem
                 href={replaceParams(link.route, params || {})}
                 active={link === activeLink}
-                title={link.title}
+                title={link.title ||
+                  capitalize(link.route.match(/\/(.*)$/)?.[1] || '')}
                 Icon={link.Icon}
               />
             ))}
@@ -81,15 +84,17 @@ export function GenericSidebar({ navLinks, route, params, top }: SidebarProps) {
   )
 }
 
+export const DefaultTop = {
+  href: '/app',
+  child: <LogoWithFullText variant='indigo' className='h-16' />,
+}
+
 export function HomePageSidebar({ route }: { route: string }) {
   return (
     <GenericSidebar
       route={route}
       navLinks={home_page_nav_links}
-      top={{
-        href: '/app',
-        child: <LogoWithFullText variant='indigo' className='h-16' />,
-      }}
+      top={DefaultTop}
     />
   )
 }
