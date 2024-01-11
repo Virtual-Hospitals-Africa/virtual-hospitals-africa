@@ -5,6 +5,7 @@
       "npm:@tailwindcss/forms@0.5.7": "npm:@tailwindcss/forms@0.5.7_tailwindcss@3.3.5__postcss@8.4.31",
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:autoprefixer@10.4.16": "npm:autoprefixer@10.4.16_postcss@8.4.31",
+      "npm:bluebird": "npm:bluebird@3.7.2",
       "npm:cssnano@6.0.1": "npm:cssnano@6.0.1_postcss@8.4.31",
       "npm:postcss@8.4.31": "npm:postcss@8.4.31",
       "npm:sinon": "npm:sinon@17.0.1",
@@ -171,6 +172,10 @@
       },
       "binary-extensions@2.2.0": {
         "integrity": "sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==",
+        "dependencies": {}
+      },
+      "bluebird@3.7.2": {
+        "integrity": "sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==",
         "dependencies": {}
       },
       "boolbase@1.0.0": {

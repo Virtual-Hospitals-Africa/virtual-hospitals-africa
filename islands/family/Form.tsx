@@ -9,6 +9,7 @@ import { AddRow } from '../AddRemove.tsx'
 import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Dependent from './Dependent.tsx'
+import NextOfKin from './NextOfKin.tsx'
 
 type GuardianFamilyRelationState =
   & Partial<Omit<GuardianFamilyRelation, 'relation_id'>>
@@ -44,7 +45,17 @@ export default function PatientFamilyForm({
   return (
     <div>
       {showNextOfKin &&
-        <span>Todo: next of kin</span>}
+        (
+          <div>
+            <SectionHeader className='my-5 text-[20px]'>
+              Next Of Kin
+            </SectionHeader>
+            <NextOfKin
+              name='family.other_next_of_kin'
+              value={family.other_next_of_kin ?? undefined}
+            />
+          </div>
+        )}
 
       {showGuardians &&
         (
