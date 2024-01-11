@@ -139,14 +139,27 @@ export async function get(
     ])
     .execute()
 
-  const gettingNextOfKin = trx
+  const gettingOtherNextOfKin = trx
     .selectFrom('patient_kin')
     .innerJoin(
       'patients as kin',
       'patient_kin.next_of_kin_patient_id',
       'kin.id',
     )
+    .leftJoin('patient_guardians', (join) =>
+      join
+        .onRef(
+          'patient_guardians.dependent_patient_id',
+          '=',
+          'patient_kin.patient_id',
+        )
+        .onRef(
+          'patient_guardians.guardian_patient_id',
+          '=',
+          'patient_kin.next_of_kin_patient_id',
+        ))
     .where('patient_kin.patient_id', '=', patient_id)
+    .where('patient_guardians.id', 'is', null)
     .select([
       'patient_kin.id as id',
       'patient_kin.relationship as relation',
@@ -162,7 +175,7 @@ export async function get(
     religion: 'TODO',
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
-    other_next_of_kin: await gettingNextOfKin,
+    other_next_of_kin: await gettingOtherNextOfKin,
   }
 }
 
@@ -231,6 +244,11 @@ export async function upsert(
   patient_id: number,
   family_to_upsert: FamilyUpsert,
 ): Promise<void> {
+  const total_next_of_kin =
+    family_to_upsert.guardians.filter((c) => c.next_of_kin).length +
+    Number(!!family_to_upsert.other_next_of_kin)
+  assertOr400(total_next_of_kin <= 1, 'Cannot have more than one next of kin')
+
   const [existing_guardians, new_guardians] = partition(
     family_to_upsert.guardians,
     hasPatientId,

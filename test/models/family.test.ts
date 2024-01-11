@@ -104,14 +104,7 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
-          other_next_of_kin: {
-            patient_gender: 'female',
-            patient_id: guardian.id,
-            patient_name: 'Janey Jane',
-            patient_phone_number: '555-555-5555',
-            relation: 'biological mother',
-            id: relations['other_next_of_kin']?.id,
-          },
+          other_next_of_kin: undefined,
         })
       })
 
@@ -261,14 +254,7 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
-          other_next_of_kin: {
-            patient_gender: 'male',
-            patient_id: relations['guardians'][1].patient_id,
-            patient_name: 'James Doe',
-            patient_phone_number: '555-555-5556',
-            relation: 'biological father',
-            id: relations['other_next_of_kin']?.id,
-          },
+          other_next_of_kin: undefined,
         })
 
         await family.upsert(db, dependent.id, {
@@ -317,14 +303,7 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
-          other_next_of_kin: {
-            patient_gender: 'female',
-            patient_id: relations['guardians'][0].patient_id,
-            patient_name: 'Janey Jane',
-            patient_phone_number: '555-555-5555',
-            relation: 'biological mother',
-            id: relations['other_next_of_kin']?.id,
-          },
+          other_next_of_kin: undefined,
         })
       })
 
