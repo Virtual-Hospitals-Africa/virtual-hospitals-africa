@@ -148,7 +148,7 @@ export async function get(
     )
     .where('patient_kin.patient_id', '=', patient_id)
     .select([
-      'patient_kin.id as relation_id',
+      'patient_kin.id as id',
       'patient_kin.relationship as relation',
       'kin.id as patient_id',
       'kin.name as patient_name',

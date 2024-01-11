@@ -50,6 +50,7 @@ describe(
           dependents: [],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: undefined,
         })
         assertEquals(guardian_relations, {
           guardians: [],
@@ -67,6 +68,7 @@ describe(
           ],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: undefined,
         })
       })
     })
@@ -84,6 +86,7 @@ describe(
             next_of_kin: true,
           }],
           dependents: [],
+          other_next_of_kin: undefined,
         })
         const relations = await family.get(db, { patient_id: dependent.id })
         assertEquals(relations, {
@@ -101,6 +104,14 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: {
+            patient_gender: 'female',
+            patient_id: guardian.id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation: 'biological mother',
+            id: relations['other_next_of_kin']?.id,
+          },
         })
       })
 
@@ -119,6 +130,7 @@ describe(
             next_of_kin: false,
           }],
           dependents: [],
+          other_next_of_kin: undefined,
         })
         const relations = await family.get(db, { patient_id: dependent.id })
         assertEquals(relations, {
@@ -136,6 +148,7 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: undefined,
         })
       })
 
@@ -150,6 +163,7 @@ describe(
             next_of_kin: false,
           }],
           dependents: [],
+          other_next_of_kin: undefined,
         })
         const relations = await family.get(db, { patient_id: dependent.id })
         assertEquals(relations, {
@@ -167,6 +181,7 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: undefined,
         })
       })
 
@@ -186,6 +201,7 @@ describe(
         await family.upsert(db, dependent.id, {
           guardians: [],
           dependents: [],
+          other_next_of_kin: undefined,
         })
         const relations = await family.get(db, { patient_id: dependent.id })
         assertEquals(relations, {
@@ -193,6 +209,7 @@ describe(
           guardians: [],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: undefined,
         })
         assertEquals(
           (await patients.getByID(db, { id: guardian.id })).name,
@@ -216,6 +233,7 @@ describe(
             next_of_kin: true,
           }],
           dependents: [],
+          other_next_of_kin: undefined,
         })
         const relations = await family.get(db, { patient_id: dependent.id })
         assertEquals(relations, {
@@ -243,6 +261,14 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: {
+            patient_gender: 'male',
+            patient_id: relations['guardians'][1].patient_id,
+            patient_name: 'James Doe',
+            patient_phone_number: '555-555-5556',
+            relation: 'biological father',
+            id: relations['other_next_of_kin']?.id,
+          },
         })
 
         await family.upsert(db, dependent.id, {
@@ -260,6 +286,7 @@ describe(
             next_of_kin: false,
           }],
           dependents: [],
+          other_next_of_kin: undefined,
         })
 
         const modified_relations = await family.get(db, {
@@ -290,6 +317,44 @@ describe(
           }],
           marital_status: 'TODO',
           religion: 'TODO',
+          other_next_of_kin: {
+            patient_gender: 'female',
+            patient_id: relations['guardians'][0].patient_id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation: 'biological mother',
+            id: relations['other_next_of_kin']?.id,
+          },
+        })
+      })
+
+      it('inserts a new patient other next of kin', async () => {
+        const dependent = await patients.upsert(db, { name: 'Billy Bob' })
+
+        await family.upsert(db, dependent.id, {
+          guardians: [],
+          dependents: [],
+          other_next_of_kin: {
+            family_relation_gendered: 'biological mother',
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            next_of_kin: true,
+          },
+        })
+        const relations = await family.get(db, { patient_id: dependent.id })
+        assertEquals(relations, {
+          dependents: [],
+          guardians: [],
+          marital_status: 'TODO',
+          religion: 'TODO',
+          other_next_of_kin: {
+            patient_gender: 'female',
+            patient_id: relations['other_next_of_kin']!.patient_id,
+            patient_name: 'Janey Jane',
+            patient_phone_number: '555-555-5555',
+            relation: 'biological mother',
+            id: relations['other_next_of_kin']?.id,
+          },
         })
       })
     })

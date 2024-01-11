@@ -239,6 +239,7 @@ export type PatientFamily = {
 }
 
 export type NextOfKin = {
+  id: Maybe<number>
   patient_id: number
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
