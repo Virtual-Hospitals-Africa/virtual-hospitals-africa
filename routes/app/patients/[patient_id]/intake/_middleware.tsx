@@ -69,7 +69,7 @@ export async function handler(
 export const intake_nav_links: LinkDef[] = [
   { route: '/app/patients/:patient_id/intake/personal' },
   { route: '/app/patients/:patient_id/intake/address' },
-  { route: '/app/patients/:patient_id/intake/pre-existing-conditions' },
+  { route: '/app/patients/:patient_id/intake/pre-existing_conditions' },
   { route: '/app/patients/:patient_id/intake/history' },
   { route: '/app/patients/:patient_id/intake/occupation' },
   { route: '/app/patients/:patient_id/intake/family' },
