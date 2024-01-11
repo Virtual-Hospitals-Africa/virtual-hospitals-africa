@@ -50,7 +50,10 @@ export default function PatientFamilyForm({
             <SectionHeader className='my-5 text-[20px]'>
               Next Of Kin
             </SectionHeader>
-            <NextOfKin name='family.other_next_of_kin' value={family.other_next_of_kin ?? undefined} />
+            <NextOfKin
+              name='family.other_next_of_kin'
+              value={family.other_next_of_kin ?? undefined}
+            />
           </div>
         )}
 

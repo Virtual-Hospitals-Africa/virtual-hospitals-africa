@@ -262,7 +262,7 @@ const transformers: Transformers = {
     family: {
       guardians: patient?.family?.guardians || [],
       dependents: patient?.family?.dependents || [],
-      other_next_of_kin:  patient?.family?.other_next_of_kin
+      other_next_of_kin: patient?.family?.other_next_of_kin,
     },
   }),
 }

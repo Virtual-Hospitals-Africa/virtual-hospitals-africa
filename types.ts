@@ -274,7 +274,7 @@ export type FamilyUpsert = {
   religion?: Maybe<string>
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
-  other_next_of_kin: Maybe<FamilyRelationInsert> 
+  other_next_of_kin: Maybe<FamilyRelationInsert>
 }
 
 // TODO: actually define this

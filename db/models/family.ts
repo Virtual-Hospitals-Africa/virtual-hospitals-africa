@@ -162,7 +162,7 @@ export async function get(
     religion: 'TODO',
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
-    other_next_of_kin: await gettingNextOfKin
+    other_next_of_kin: await gettingNextOfKin,
   }
 }
 
@@ -294,14 +294,14 @@ export async function upsert(
       }),
     )
   }
-  if(other_kin && other_kin.patient_id){
-      const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
-      updating_existing_patients.push(upsertPatient(trx, {
-        id: other_kin.patient_id!,
-        name: other_kin.patient_name,
-        phone_number: other_kin.patient_phone_number,
-        gender: relation.gender,
-      }))
+  if (other_kin && other_kin.patient_id) {
+    const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
+    updating_existing_patients.push(upsertPatient(trx, {
+      id: other_kin.patient_id!,
+      name: other_kin.patient_name,
+      phone_number: other_kin.patient_phone_number,
+      gender: relation.gender,
+    }))
   }
   // Insert patients that don't already exist. For each family relation keep track of the index and the calculated relation
   // so we can look them up later. After the insertion resolves, the db will give us back the patients in the same order, so
@@ -331,7 +331,7 @@ export async function upsert(
     }) - 1
     inserted.set(dependent, [index, relation.guardian_relation])
   }
-  if(other_kin && !other_kin.patient_id){
+  if (other_kin && !other_kin.patient_id) {
     const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
     const index = to_insert.push({
       name: other_kin.patient_name,
@@ -451,8 +451,10 @@ export async function upsert(
   const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin)
   const existing_kin = existing_family.guardians.find((c) => c.next_of_kin)
   if (new_kin || existing_kin || other_kin) {
-    const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ?? other_kin
-    const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ?? existing_family.other_next_of_kin
+    const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ??
+      other_kin
+    const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ??
+      existing_family.other_next_of_kin
 
     // kins is removed
     if (existingKin && !new_kin) {
