@@ -69,12 +69,14 @@ import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
+import * as $Occupation19 from './islands/Occupation19.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
+import * as $WarningMessage from './islands/WarningMessage.tsx'
 import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
@@ -197,12 +199,14 @@ const manifest = {
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,
     './islands/Occupation0-18.tsx': $Occupation0_18,
+    './islands/Occupation19.tsx': $Occupation19,
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
     './islands/SuccessMessage.tsx': $SuccessMessage,
+    './islands/WarningMessage.tsx': $WarningMessage,
     './islands/address-inputs.tsx': $address_inputs,
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,

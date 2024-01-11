@@ -8,7 +8,6 @@ import {
   Maybe,
   OnboardingPatient,
   Patient,
-  PatientAge,
   PatientConversationState,
   PatientNearestFacility,
   PatientOccupation,
@@ -31,6 +30,7 @@ import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
+import { PatientAge } from '../../db.d.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)

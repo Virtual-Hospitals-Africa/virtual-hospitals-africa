@@ -4,7 +4,7 @@ import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
-import { DB } from './db.d.ts'
+import { DB, PatientAge } from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1639,21 +1639,6 @@ export type PatientMeasurement = {
   encounter_provider_id: number
   measurement_name: keyof Measurements
   value: number
-}
-
-export type AgeUnit = 'day' | 'month' | 'week' | 'year'
-
-export type Age = {
-  number: number
-  unit: AgeUnit
-}
-
-export type PatientAge = {
-  patient_id: number | null
-  age: string | null
-  age_number: number | null
-  age_unit: AgeUnit | null
-  age_display: string | null
 }
 
 export type DatabaseSchema = DB

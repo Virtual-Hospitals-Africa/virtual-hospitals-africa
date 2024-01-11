@@ -19,6 +19,7 @@ import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import * as waiting_room from '../../../../../db/models/waiting_room.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
+import * as patient_age from '../../../../../db/models/patient_age.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import {
@@ -36,15 +37,19 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import PatientHistory from '../../../../../components/patients/intake/HistoryForm.tsx'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400, assertOr404 } from '../../../../../util/assertOr.ts'
+import {
+  assertOr400,
+  assertOr404,
+  assertOrRedirect,
+} from '../../../../../util/assertOr.ts'
 import omit from '../../../../../util/omit.ts'
 import getNumericParam from '../../../../../util/getNumericParam.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
+import { PatientAge } from '../../../../../db.d.ts'
 
 type IntakePatientProps = {
   step:
     | 'personal'
-    | 'occupation'
     | 'lifestyle'
     | 'review'
 } | {
@@ -61,6 +66,9 @@ type IntakePatientProps = {
 } | {
   step: 'history'
   past_medical_conditions: PastMedicalCondition[]
+} | {
+  step: 'occupation'
+  age: PatientAge
 }
 
 type PersonalFormValues = {
@@ -332,6 +340,17 @@ async function getIntakePatientProps(
       const family = await patient_family.get(trx, { patient_id })
       return { step, family }
     }
+    case 'occupation': {
+      const age = await patient_age.get(trx, { patient_id })
+      const warning = encodeURIComponent(
+        "Please fill out the patient's personal information beforehand.",
+      )
+      assertOrRedirect(
+        age,
+        `/app/patients/${patient_id}/intake/personal?warning=${warning}`,
+      )
+      return { step, age }
+    }
     default:
       return { step }
   }
@@ -420,7 +439,10 @@ export default async function IntakePatientPage(
             />
           )}
           {props.step === 'occupation' && (
-            <PatientOccupationForm patient={patient} />
+            <PatientOccupationForm
+              patient={patient}
+              patientAge={props.age}
+            />
           )}
           {props.step === 'history' && (
             <PatientHistory
