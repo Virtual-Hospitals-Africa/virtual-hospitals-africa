@@ -73,7 +73,7 @@ export function GenericSidebar({ navLinks, route, params, top }: SidebarProps) {
                 href={replaceParams(link.route, params || {})}
                 active={link === activeLink}
                 title={link.title ||
-                  capitalize(link.route.match(/\/(.*)$/)?.[1] || '')}
+                  capitalize(link.route.split('/').pop()!)}
                 Icon={link.Icon}
               />
             ))}

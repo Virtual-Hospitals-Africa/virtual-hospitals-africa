@@ -1,4 +1,3 @@
-import Layout from '../../../../../components/library/Layout.tsx'
 import {
   Allergy,
   FamilyRelationInsert,
@@ -18,11 +17,9 @@ import * as patient_allergies from '../../../../../db/models/patient_allergies.t
 import * as patient_family from '../../../../../db/models/family.ts'
 import * as patient_age from '../../../../../db/models/patient_age.ts'
 import redirect from '../../../../../util/redirect.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import {
   getNextStep,
   isStep,
-  useIntakePatientSteps,
 } from '../../../../../components/patients/intake/Steps.tsx'
 import PatientPersonalForm from '../../../../../components/patients/intake/PersonalForm.tsx'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
@@ -42,7 +39,7 @@ import {
 import getNumericParam from '../../../../../util/getNumericParam.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
 import { PatientAge } from '../../../../../db.d.ts'
-import { IntakeContext } from './_middleware.tsx'
+import { IntakeContext, IntakeLayout } from './_middleware.tsx'
 
 type IntakePatientProps = {
   step:
@@ -363,75 +360,59 @@ export default async function IntakePatientPage(
 
   const { patient, trx, healthWorker } = ctx.state
   const props = await getIntakePatientProps(trx, patient_id, step)
-  const { stepsTopBar } = useIntakePatientSteps(ctx)
 
   return (
-    <Layout
-      title='Intake Patient'
-      url={ctx.url}
-      variant='form'
-    >
-      <Container size='lg'>
-        {stepsTopBar}
-        <Form
-          method='POST'
-          className='w-full'
-          encType='multipart/form-data'
-        >
-          {props.step === 'personal' && (
-            <PatientPersonalForm patient={patient} />
-          )}
-          {props.step === 'address' && (
-            <PatientAddressForm
-              patient={patient}
-              defaultFacility={{
-                id: healthWorker.employment[0].facility.id,
-                name: healthWorker.employment[0].facility.name,
-                address: healthWorker.employment[0].facility.address,
-              }}
-              adminDistricts={props.adminDistricts}
-            />
-          )}
-          {props.step === 'family' && (
-            <FamilyForm patient={patient} family={props.family} />
-          )}
-          {props.step === 'pre-existing_conditions' && (
-            <PatientPreExistingConditions
-              patient={patient}
-              allergies={props.allergies}
-              patient_allergies={props.patient_allergies}
-              pre_existing_conditions={props.pre_existing_conditions}
-            />
-          )}
-          {props.step === 'occupation' && (
-            <PatientOccupationForm
-              patient={patient}
-              patientAge={props.age}
-            />
-          )}
-          {props.step === 'history' && (
-            <PatientHistory
-              patient={patient}
-              pastMedicalConditions={props.past_medical_conditions}
-            />
-          )}
-          {props.step === 'review' && <PatientReview patient={patient} />}
-          <hr className='my-2' />
-          <Buttons
-            submitText={props.step === 'review'
-              ? 'Continue to vitals'
-              : 'Next Step'}
-            cancel={props.step === 'review'
-              ? {
-                href: `/app/facilities/${
-                  healthWorker.employment[0].facility.id
-                }/waiting-room/add?patient_id=${patient.id}&intake=completed`,
-                text: 'Add patient to waiting room',
-              }
-              : undefined}
-          />
-        </Form>
-      </Container>
-    </Layout>
+    <IntakeLayout ctx={ctx}>
+      {props.step === 'personal' && <PatientPersonalForm patient={patient} />}
+      {props.step === 'address' && (
+        <PatientAddressForm
+          patient={patient}
+          defaultFacility={{
+            id: healthWorker.employment[0].facility.id,
+            name: healthWorker.employment[0].facility.name,
+            address: healthWorker.employment[0].facility.address,
+          }}
+          adminDistricts={props.adminDistricts}
+        />
+      )}
+      {props.step === 'family' && (
+        <FamilyForm patient={patient} family={props.family} />
+      )}
+      {props.step === 'pre-existing_conditions' && (
+        <PatientPreExistingConditions
+          patient={patient}
+          allergies={props.allergies}
+          patient_allergies={props.patient_allergies}
+          pre_existing_conditions={props.pre_existing_conditions}
+        />
+      )}
+      {props.step === 'occupation' && (
+        <PatientOccupationForm
+          patient={patient}
+          patientAge={props.age}
+        />
+      )}
+      {props.step === 'history' && (
+        <PatientHistory
+          patient={patient}
+          pastMedicalConditions={props.past_medical_conditions}
+        />
+      )}
+      {props.step === 'review' && <PatientReview patient={patient} />}
+      <hr className='my-2' />
+      <Buttons
+        submitText={props.step === 'review'
+          ? 'Continue to vitals'
+          : 'Next Step'}
+        cancel={props.step === 'review'
+          ? {
+            href: `/app/facilities/${
+              healthWorker.employment[0].facility.id
+            }/waiting-room/add?patient_id=${patient.id}&intake=completed`,
+            text: 'Add patient to waiting room',
+          }
+          : undefined}
+      />
+    </IntakeLayout>
   )
 }
