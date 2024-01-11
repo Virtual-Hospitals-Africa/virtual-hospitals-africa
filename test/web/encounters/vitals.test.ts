@@ -23,7 +23,7 @@ describeWithWebServer(
       await patient_encounters.upsert(db, 1, {
         patient_id: patient.id,
         reason: 'seeking treatment',
-        employment_ids: [healthWorker.employee_id!],
+        provider_ids: [healthWorker.employee_id!],
       })
 
       const response = await fetch(
@@ -71,7 +71,7 @@ describeWithWebServer(
       const encounter = await patient_encounters.upsert(db, 1, {
         patient_id: patient.id,
         reason: 'seeking treatment',
-        employment_ids: [healthWorker.employee_id!],
+        provider_ids: [healthWorker.employee_id!],
       })
 
       const body = new FormData()

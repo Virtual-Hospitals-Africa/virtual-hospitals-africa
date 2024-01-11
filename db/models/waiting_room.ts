@@ -4,7 +4,6 @@ import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { hasName } from '../../util/haveNames.ts'
-import { employeeHrefSql } from './facilities.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -27,16 +26,37 @@ export function remove(
     .execute()
 }
 
+// A slight misnomer, this function returns the patients in the waiting room
+// and the patients who are actively being seen by a provider at the facility.
 export async function get(
   trx: TrxOrDb,
   { facility_id }: {
     facility_id: number
   },
 ): Promise<RenderedWaitingRoom[]> {
-  const query = trx
+  const facility_waiting_room = trx
     .selectFrom('waiting_room')
+    .where('waiting_room.facility_id', '=', facility_id)
+    .select('patient_encounter_id')
+
+  const seeing_facility_providers = trx
+    .selectFrom('patient_encounter_providers')
     .innerJoin(
-      'patient_encounters',
+      'employment',
+      'patient_encounter_providers.provider_id',
+      'employment.id',
+    )
+    .where('employment.facility_id', '=', facility_id)
+    .select('patient_encounter_providers.patient_encounter_id')
+
+  const encounters_to_show = facility_waiting_room.union(
+    seeing_facility_providers,
+  ).distinct()
+
+  const query = trx
+    .selectFrom('patient_encounters')
+    .leftJoin(
+      'waiting_room',
       'patient_encounters.id',
       'waiting_room.patient_encounter_id',
     )
@@ -46,12 +66,14 @@ export async function get(
       'appointments.id',
       'patient_encounters.appointment_id',
     )
-    .where('waiting_room.facility_id', '=', facility_id)
     .select((eb) => [
       jsonBuildObject({
         id: eb.ref('patients.id'),
         name: eb.ref('patients.name'),
         avatar_url: patients.avatar_url_sql,
+        description: sql<
+          string | null
+        >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`,
       }).as('patient'),
       'patient_encounters.reason',
       jsonBuildObject({
@@ -70,10 +92,12 @@ export async function get(
           )
           .else(null).end(),
       }).as('actions'),
-      sql<boolean>`patient_encounters.reason = 'emergency'`.as('is_emergency'),
+      eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
       'patient_encounters.closed_at',
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
+      'patient_encounters.created_at',
+      eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
       jsonArrayFrom(
         eb.selectFrom('appointment_health_worker_attendees')
           .innerJoin(
@@ -108,16 +132,23 @@ export async function get(
             '=',
             'patient_encounters.id',
           )
-          .select([
+          .select(({ fn, val }) => [
             'employment.health_worker_id',
             'employment.id as employee_id',
             'health_workers.name',
             'employment.profession',
+            'employment.facility_id',
             'patient_encounter_providers.seen_at',
-            employeeHrefSql(facility_id).as('href'),
+            fn<string>('concat', [
+              val('/app/facilities/'),
+              'employment.facility_id',
+              val('/employees/'),
+              'health_workers.id',
+            ]).as('href'),
           ]),
       ).as('providers'),
-    ])
+    ]).where('patient_encounters.id', 'in', encounters_to_show)
+    .where('patient_encounters.closed_at', 'is', null)
     .orderBy(['is_emergency desc', 'waiting_room.created_at asc'])
 
   const patients_in_waiting_room = await query.execute()

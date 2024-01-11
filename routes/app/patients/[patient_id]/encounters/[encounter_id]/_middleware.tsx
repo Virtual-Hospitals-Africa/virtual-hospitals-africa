@@ -30,7 +30,6 @@ import {
   GenericSidebar,
   replaceParams,
 } from '../../../../../../components/library/Sidebar.tsx'
-import { log } from '../../../../../_middleware.ts'
 import LogoutIcon from '../../../../../../components/library/icons/logout.tsx'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
@@ -48,15 +47,12 @@ export type EncounterContext = LoggedInHealthWorkerContext<
   }
 >
 
-export async function handler(
-  _req: Request,
-  ctx: EncounterContext,
+export async function removeFromWaitingRoomAndAddSelfAsProvider(
+  ctx: LoggedInHealthWorkerContext,
+  encounter_id: number | 'open',
 ) {
-  const encounter_id = getEncounterId(ctx)
   const patient_id = getNumericParam(ctx, 'patient_id')
   const { trx, healthWorker } = ctx.state
-
-  const getting_patient_card = await patients.getCard(trx, { id: patient_id })
 
   const encounter = await patient_encounters.get(trx, {
     encounter_id,
@@ -72,12 +68,11 @@ export async function handler(
     })
   )
 
-  const matching_provider = encounter.providers.find(
+  let matching_provider = encounter.providers.find(
     (provider) => provider.health_worker_id === healthWorker.id,
   )
 
   if (!matching_provider) {
-    log('encounter handler 3')
     const facility_id = encounter.waiting_room_facility_id
     assertOr403(
       facility_id,
@@ -92,6 +87,7 @@ export async function handler(
       'You do not have access to this patient at this time. The patient is being seen at a facility you do not work at. Please contact the facility to get access to the patient.',
     )
     const provider = employment.roles.doctor || employment.roles.nurse
+
     if (!provider) {
       assert(employment.roles.admin)
       // TODO: revisit whether this is true
@@ -109,7 +105,7 @@ export async function handler(
 
     assert(added_provider.seen_at)
 
-    ctx.state.encounter_provider = {
+    matching_provider = {
       patient_encounter_provider_id: added_provider.id,
       employment_id: provider.employment_id,
       facility_id: employment.facility.id,
@@ -118,25 +114,36 @@ export async function handler(
       health_worker_name: healthWorker.name,
       seen_at: added_provider.seen_at,
     }
-    encounter.providers.push(ctx.state.encounter_provider)
+    encounter.providers.push(matching_provider)
   } else if (!matching_provider.seen_at) {
-    log('encounter handler 4')
     const { seen_at } = await patient_encounters.markProviderSeen(trx, {
       patient_encounter_provider_id:
         matching_provider.patient_encounter_provider_id,
     })
     assert(seen_at)
     matching_provider.seen_at = seen_at
-    ctx.state.encounter_provider = matching_provider
-  } else {
-    ctx.state.encounter_provider = matching_provider
   }
 
-  log('encounter handler 5')
   await removing_from_waiting_room
 
-  ctx.state.encounter = encounter
-  ctx.state.patient = await getting_patient_card
+  return {
+    encounter,
+    encounter_provider: matching_provider,
+  }
+}
+
+export async function handler(
+  _req: Request,
+  ctx: EncounterContext,
+) {
+  const encounter_id = getEncounterId(ctx)
+  const patient_id = getNumericParam(ctx, 'patient_id')
+
+  ctx.state.patient = await patients.getCard(ctx.state.trx, { id: patient_id })
+  Object.assign(
+    ctx.state,
+    await removeFromWaitingRoomAndAddSelfAsProvider(ctx, encounter_id),
+  )
   return ctx.next()
 }
 

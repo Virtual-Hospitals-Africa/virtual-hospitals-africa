@@ -46,7 +46,7 @@ describe(
         await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,
           reason: 'seeking treatment',
-          employment_ids: [nurse.employee_id!],
+          provider_ids: [nurse.employee_id!],
         })
 
         assertEquals(await waiting_room.get(db, { facility_id: 1 }), [

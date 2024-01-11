@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
+  DatabaseSchema,
   Facility,
   FacilityDoctorOrNurse,
   FacilityEmployee,
@@ -86,12 +87,6 @@ export function get(
     .execute()
 }
 
-export function employeeHrefSql(facility_id: number) {
-  return sql<
-    string
-  >`CONCAT('/app/facilities/', ${facility_id}::text, '/employees/', health_workers.id::text)`
-}
-
 export function getEmployeesQuery(
   trx: TrxOrDb,
   opts: {
@@ -108,7 +103,7 @@ export function getEmployeesQuery(
       'nurse_registration_details.health_worker_id',
       'health_workers.id',
     )
-    .select((eb) => [
+    .select(({ selectFrom, fn, val }) => [
       'health_workers.id as health_worker_id',
       'health_workers.name as name',
       'health_workers.email as email',
@@ -117,7 +112,7 @@ export function getEmployeesQuery(
       sql<false>`FALSE`.as('is_invitee'),
       jsonArrayFromColumn(
         'profession_details',
-        eb.selectFrom('employment')
+        selectFrom('employment')
           .leftJoin(
             'nurse_specialties',
             'nurse_specialties.employee_id',
@@ -147,7 +142,12 @@ export function getEmployeesQuery(
           ]).orderBy(['employment.profession asc']),
       ).as('professions'),
       jsonBuildObject({
-        view: employeeHrefSql(opts.facility_id),
+        view: fn<string>('concat', [
+          val('/app/facilities/'),
+          val(opts.facility_id),
+          val('/employees/'),
+          'health_workers.id',
+        ]),
       }).as('actions'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`
         CASE

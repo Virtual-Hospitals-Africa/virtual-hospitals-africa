@@ -15,7 +15,7 @@ export type Upsert =
   & {
     encounter_id?: Maybe<number>
     reason: PatientEncounterReason
-    employment_ids?: number[]
+    provider_ids?: number[]
     appointment_id?: Maybe<number>
     notes?: Maybe<string>
   }
@@ -80,7 +80,7 @@ export async function upsert(
     reason,
     appointment_id,
     notes,
-    employment_ids,
+    provider_ids,
   }: Upsert,
 ): Promise<{
   id: number
@@ -116,10 +116,10 @@ export async function upsert(
         .executeTakeFirstOrThrow()
   )
 
-  const adding_providers = employment_ids?.length
+  const adding_providers = provider_ids?.length
     ? trx
       .insertInto('patient_encounter_providers')
-      .values(employment_ids.map((provider_id) => ({
+      .values(provider_ids.map((provider_id) => ({
         patient_encounter_id: upserted.id,
         provider_id,
       })))

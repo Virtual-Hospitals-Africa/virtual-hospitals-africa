@@ -20,7 +20,7 @@ describe(
         const encounter = await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,
           reason: 'seeking treatment',
-          employment_ids: [nurse.employee_id!],
+          provider_ids: [nurse.employee_id!],
         })
         assertEquals(encounter.provider_ids.length, 1)
         await patient_measurements.add(db, {
@@ -42,7 +42,7 @@ describe(
     //     const encounter = await patient_encounters.create(db, 1, {
     //       patient_id: patient.id,
     //       reason: 'seeking treatment',
-    //       employment_ids: [nurse.employee_id!],
+    //       provider_ids: [nurse.employee_id!],
     //     })
     //     assertEquals(encounter.provider_ids.length, 1)
     //     await patient_measurements.add(db, {

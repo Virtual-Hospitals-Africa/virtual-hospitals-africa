@@ -1,12 +1,13 @@
 import { RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
+import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Patient',
     dataKey(row) {
-      return row.patient.name
+      return <Person person={row.patient} />
     },
     type: 'content',
     cellClassName: 'mb-1 font-medium',
@@ -19,7 +20,14 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     type: 'content',
   },
   {
-    label: 'Waiting for',
+    label: 'Status',
+    type: 'content',
+    dataKey(row) {
+      return row.in_waiting_room ? 'Waiting' : 'In Consultation'
+    },
+  },
+  {
+    label: 'Provider',
     dataKey(row) {
       if (!row.providers.length) return 'Next Available'
       return row.providers.map((p) => (
