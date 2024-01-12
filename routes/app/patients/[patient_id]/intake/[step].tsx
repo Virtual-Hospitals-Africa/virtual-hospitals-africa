@@ -343,7 +343,7 @@ async function getIntakePatientProps(
     }
     case 'occupation': {
       const occupation = await patient_occupation.get(trx, { patient_id })
-      console.log('Occupation in [step].ts: ', occupation)
+
       const age = await patient_age.get(trx, { patient_id })
       const warning = encodeURIComponent(
         "Please fill out the patient's personal information beforehand.",

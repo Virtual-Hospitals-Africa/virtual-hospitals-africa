@@ -6,28 +6,6 @@ import { assert } from 'std/assert/assert.ts'
 import { CheckboxInput } from '../components/library/form/Inputs.tsx'
 import { Maybe, Occupation, PatientOccupation, School } from '../types.ts'
 
-//Questions for will
-//code stink on sports
-//school status not being sent to database.
-//Here is what we want in the occupation column of the database:
-// occupation: {
-//   school:{
-//     status: 'in school',
-//     happy: true
-//     grade: ECD
-//     ...
-//   }
-//   sport:{
-//     true
-//   }
-//   job:{
-//     //job information here
-//   }
-// }
-
-//Ideally, we could send the Occupation object below to the
-//database under the occupation column solving all of our problems.
-
 export default function Occupation0_18({
   occupation = {
     school: {
@@ -37,32 +15,11 @@ export default function Occupation0_18({
 }: {
   occupation?: Occupation
 }) {
-  console.log('asdfghjkl ', occupation)
-
   const [school, setSchool] = useState<School>(
     occupation.school || {
       status: 'never attended',
     },
   )
-  // console.log("school state before new if statement: ", school)
-  // if(school.status){
-  //   const nextSchool: School =
-  //                {
-  //                 status: 'in school',
-  //                 current: {
-  //                   status: 'in school',
-  //                   grade: 'ECD 1',
-  //                   grades_dropping_reason: null,
-  //                   happy: true,
-  //                   //sports: true,
-  //                   inappropriate_reason: null,
-  //                 },
-  //               }
-
-  //             setSchool(nextSchool)
-  // }
-
-  console.log('school state after new if statement: ', school)
 
   const school_status = [
     'in school',
@@ -243,7 +200,7 @@ export default function Occupation0_18({
             <CheckboxInput
               name='occupation.school.current.happy'
               label=''
-              checked={school.current.happy || true}
+              checked={school.current.happy}
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
             />
           </div>

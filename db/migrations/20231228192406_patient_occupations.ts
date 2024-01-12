@@ -23,7 +23,7 @@ export async function up(db: Kysely<unknown>) {
     )
     .addUniqueConstraint('patient_id', ['patient_id'])
     .execute()
-    
+
   await addUpdatedAtTrigger(db, 'patient_occupations')
 
   //change migration date

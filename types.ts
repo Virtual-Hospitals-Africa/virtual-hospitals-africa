@@ -1557,18 +1557,14 @@ export type PastSchool = {
 
 export type Occupation = {
   school: School
-  sport?: boolean 
-  job?: string | null 
+  sport?: boolean
+  job?: string | null
 }
-
-
 
 export type PatientOccupation = {
   patient_id: number
   occupation: Occupation
- 
 }
-
 
 export type Allergy = {
   id: number

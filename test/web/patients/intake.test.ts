@@ -9,6 +9,7 @@ import {
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
+import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../db/models/patient_allergies.ts'
@@ -19,6 +20,7 @@ import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 import omit from '../../../util/omit.ts'
 import deepOmit from '../../../util/deepOmit.ts'
+import * as patient_occupations from '../../../db/models/patient_occupations.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -567,48 +569,54 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     })
   })
 
-
-
-
-
-
-  it('supports POST on the occupation step, moving you to the family step', async () => {
-    const patient = await patients.upsert(db, {
-      name: 'Test Patient',
+  it('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
     })
-    const testDoctor = await addTestHealthWorker({ scenario: 'doctor' })
+
     const { fetch } = await addTestHealthWorkerWithSession({
       scenario: 'approved-nurse',
     })
-    // const countryInfo = await address.getFullCountryInfo(db)
-    // const zimbabwe = countryInfo[0]
-    // assertEquals(zimbabwe.name, 'Zimbabwe')
 
-    // const province = sample(zimbabwe.provinces)
-    // const district = sample(province.districts)
-    // const ward = sample(district.wards)
-    // const suburb = ward.suburbs.length ? sample(ward.suburbs) : undefined
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {},
+    )
+    assertEquals(
+      getResponse.url,
+      `${route}/app/patients/${patient_id}/intake/personal?warning=Please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
+    )
+  })
 
-    // body.set('country_id', String(zimbabwe.id))
-    // body.set('province_id', String(province.id))
-    // body.set('district_id', String(district.id))
-    // body.set('ward_id', String(ward.id))
-    // if (suburb) body.set('suburb_id', String(suburb.id))
-    // body.set('street', '120 Main Street')
-    // body.set('nearest_facility_id', '5')
-    // body.set('primary_doctor_id', String(testDoctor.id))
+  it('supports POST on the occupation step, moving you to the family step', async () => {
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
+
+    await patients.upsert(db, {
+      id: patient_id,
+      date_of_birth: '2020-01-01',
+    })
+
+    const { fetch } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+
     const body = new FormData()
-    body.set('school.inappropriate_reason', String('Bad Teacher'))
-    body.set('school.grades_dropping_reason', String('Worse Teacher'))
-    body.set('school.play_sports', Boolean(true))
-    body.set('school.grade_level', String('Grade 3'))
-    body.set('school.last_grade', String('Grade 2'))
-    body.set('stopSchool.stop_education_reason', String('Low self esteem'))
-    body.set('school.happy', Boolean(true))
-    body.set('')
+    body.set('occupation.school.status', 'in school')
+    body.set('occupation.school.current.inappropriate_reason', 'Change of town')
+    body.set(
+      'occupation.school.current.grades_dropping_reason',
+      'Abuse',
+    )
+    body.set('occupation.sport', 'on')
+    body.set('occupation.school.current.grade', 'Grade 3')
+    body.set('occupation.school.current.happy', 'on')
 
     const postResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/address`,
+      `${route}/app/patients/${patient_id}/intake/occupation`,
       {
         method: 'POST',
         body,
@@ -620,49 +628,51 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }
     assert(
       postResponse.url ===
-        `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+        `${route}/app/patients/${patient_id}/intake/family`,
     )
 
-    const patientResult = await db.selectFrom('patients').selectAll().execute()
-    assertEquals(patientResult.length, 1)
-    assertEquals(patientResult[0].name, 'Test Patient')
-
-    const patientAddress = await db.selectFrom('address').selectAll().where(
-      'address.id',
-      '=',
-      patientResult[0].address_id ? patientResult[0].address_id : null,
-    ).execute()
-    assertEquals(patientAddress[0].country_id, zimbabwe.id)
-    assertEquals(patientAddress[0].province_id, province.id)
-    assertEquals(patientAddress[0].district_id, district.id)
-    assertEquals(patientAddress[0].ward_id, ward.id)
-    assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
-    assertEquals(patientAddress[0].street, '120 Main Street')
+    const occupation = await patient_occupations.get(db, {
+      patient_id,
+    })
+    assert(occupation)
+    assertEquals(occupation, {
+      school: {
+        current: {
+          grade: 'Grade 3',
+          grades_dropping_reason: 'Abuse',
+          happy: true,
+          inappropriate_reason: 'Change of town',
+        },
+        status: 'in school',
+      },
+      sport: true,
+    })
 
     const getResponse = await fetch(
-      `${route}/app/patients/${patient.id}/intake/address`,
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {},
     )
 
-    
     const pageContents = await getResponse.text()
     const $ = cheerio.load(pageContents)
+    const formValues = getFormValues($)
     assertEquals(
-      $('input[name="address.country_id"]').val(),
-      String(zimbabwe.id),
+      formValues,
+      {
+        occupation: {
+          school: {
+            current: {
+              grade: 'Grade 3',
+              grades_dropping_reason: 'Abuse',
+              happy: true,
+              inappropriate_reason: 'Change of town',
+            },
+            status: 'in school',
+          },
+          sport: true,
+        },
+      },
+      'The form should be 1:1 with the occupations in the DB',
     )
-    assertEquals(
-      $('select[name="address.province_id"]').val(),
-      String(province.id),
-    )
-    assertEquals(
-      $('select[name="address.district_id"]').val(),
-      String(district.id),
-    )
-    assertEquals($('select[name="address.ward_id"]').val(), String(ward.id))
-    assertEquals(
-      $('select[name="address.suburb_id"]').val(),
-      suburb && String(suburb.id),
-    )
-    assertEquals($('input[name="address.street"]').val(), '120 Main Street')
   })
 })
