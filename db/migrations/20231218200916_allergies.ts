@@ -10,12 +10,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .execute()
@@ -25,12 +25,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(

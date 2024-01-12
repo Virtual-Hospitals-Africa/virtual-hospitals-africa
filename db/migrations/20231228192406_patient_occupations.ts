@@ -14,12 +14,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('job', 'json')
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .execute()

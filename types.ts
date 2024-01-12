@@ -1295,7 +1295,7 @@ export type LoggedInHealthWorker = {
   healthWorker: EmployedHealthWorkerWithGoogleTokens
 }
 
-export type LoggedInHealthWorkerContext<T = Record<string, never>> =
+export type LoggedInHealthWorkerContext<T = Record<never, never>> =
   FreshContext<
     WithSession & {
       trx: TrxOrDb
@@ -1590,13 +1590,16 @@ export type RenderedWaitingRoom = {
     id: number
     name: string
     avatar_url: string | null
+    description: string | null
   }
   actions: {
     view: string | null
     intake: string | null
   }
   reason: PatientEncounterReason
-  is_emergency: boolean
+  is_emergency: SqlBool
+  in_waiting_room: SqlBool
+  arrived_ago_display: string
   appointment: null | {
     id: number
     start: Date

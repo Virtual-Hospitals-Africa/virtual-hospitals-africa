@@ -8,8 +8,6 @@ import {
   OnboardingPatient,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
-import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import * as waiting_room from '../../../../../db/models/waiting_room.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import getNumericParam from '../../../../../util/getNumericParam.ts'
 import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
@@ -17,7 +15,7 @@ import {
   DefaultTop,
   GenericSidebar,
 } from '../../../../../components/library/Sidebar.tsx'
-import redirect from '../../../../../util/redirect.ts'
+import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encounter_id]/_middleware.tsx'
 
 export type IntakeContext = LoggedInHealthWorkerContext<{
   patient: OnboardingPatient
@@ -29,38 +27,15 @@ export async function handler(
 ) {
   const patient_id = getNumericParam(ctx, 'patient_id')
 
-  const { trx, healthWorker } = ctx.state
-
-  const getting_onboarding_patient = patients.getOnboarding(trx, {
+  const getting_onboarding_patient = patients.getOnboarding(ctx.state.trx, {
     id: patient_id,
   })
-  const encounter = await patient_encounters.getOpen(
-    ctx.state.trx,
-    patient_id,
-  )
 
-  if (!encounter) {
-    const { facility } = healthWorker.employment[0]
-    const error = 'No open visit with this patient'
-    const search_params = new URLSearchParams({
-      error,
-      patient_id: String(patient_id),
-    })
-    return redirect(
-      `/app/facilities/${facility.id}/waiting-room/add?${search_params}`,
-    )
-  }
-
-  const removing_from_waiting_room = encounter.waiting_room_id && (
-    waiting_room.remove(ctx.state.trx, {
-      id: encounter.waiting_room_id,
-    })
-  )
+  // TODO: use the encounter as part of intake?
+  await removeFromWaitingRoomAndAddSelfAsProvider(ctx, 'open')
 
   const patient = await getting_onboarding_patient
   assertOr404(patient, 'Patient not found')
-
-  await removing_from_waiting_room
 
   ctx.state.patient = patient
   return ctx.next()

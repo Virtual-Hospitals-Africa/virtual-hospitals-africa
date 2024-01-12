@@ -33,17 +33,17 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('notes', 'text')
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'closed_at',
-      'timestamp',
+      'timestamptz',
     )
     .addCheckConstraint(
       'appointment_has_appointment',
@@ -74,15 +74,15 @@ export async function up(db: Kysely<unknown>) {
       'integer',
       (col) => col.references('employment.id').onDelete('cascade'),
     )
-    .addColumn('seen_at', 'timestamp')
+    .addColumn('seen_at', 'timestamptz')
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .execute()
@@ -103,12 +103,12 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addUniqueConstraint('facility_patient_encounter', [

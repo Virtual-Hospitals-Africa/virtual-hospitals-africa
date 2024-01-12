@@ -28,7 +28,10 @@ describe(
               avatar_url: null,
               id: patient.id,
               name: 'Test Patient',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient.id}/intake/personal`,
@@ -46,7 +49,7 @@ describe(
         await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,
           reason: 'seeking treatment',
-          employment_ids: [nurse.employee_id!],
+          provider_ids: [nurse.employee_id!],
         })
 
         assertEquals(await waiting_room.get(db, { facility_id: 1 }), [
@@ -56,7 +59,10 @@ describe(
               avatar_url: null,
               id: patient.id,
               name: 'Test Patient',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient.id}/intake/personal`,

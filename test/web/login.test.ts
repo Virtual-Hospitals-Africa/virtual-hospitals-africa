@@ -66,7 +66,7 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       assertEquals(response.url, `${route}/app`)
       const pageContents = await response.text()
       assert(pageContents.includes('My Patients'))
@@ -85,7 +85,7 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
 
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       assertEquals(response.url, `${route}/app`)
       const pageContents = await response.text()
       assert(pageContents.includes('My Patients'))
@@ -121,7 +121,7 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       assertEquals(
         response.url,
         `${route}/app/facilities/1/register/personal`,
@@ -180,7 +180,7 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
 
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       assertEquals(response.url, `${route}/app`)
       const pageContents = await response.text()
       assert(pageContents.includes('My Patients'))
@@ -212,7 +212,7 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       const $ = cheerio.load(await response.text())
 
       const waiting_room_add_link = $(
@@ -279,7 +279,7 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
 
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       assert(response.redirected)
       assertEquals(response.url, `${route}/app/facilities/1/employees`)
       const pageContents = await response.text()
@@ -306,7 +306,9 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(response.ok)
+      if (!response.ok) {
+        throw new Error(await response.text())
+      }
       assertEquals(response.url, `${route}/app/facilities/1/employees`)
       let pageContents = await response.text()
       assert(pageContents.includes('href="/app/facilities/1/employees/invite"'))
@@ -317,7 +319,7 @@ describeWithWebServer('/login', 8002, (route) => {
         },
       })
 
-      assert(response.ok)
+      if (!response.ok) throw new Error(await response.text())
       assertEquals(response.url, `${route}/app/facilities/1/employees/invite`)
       pageContents = await response.text()
       assert(pageContents.includes('Email'))
