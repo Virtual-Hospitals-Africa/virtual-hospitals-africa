@@ -4,8 +4,7 @@ import { Select } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { CheckboxInput } from '../components/library/form/Inputs.tsx'
-import { Maybe, PatientOccupation } from '../types.ts'
-
+import { Maybe, Occupation, PatientOccupation, School } from '../types.ts'
 
 //Questions for will
 //code stink on sports
@@ -15,7 +14,7 @@ import { Maybe, PatientOccupation } from '../types.ts'
 //   school:{
 //     status: 'in school',
 //     happy: true
-//     grade: ECD 
+//     grade: ECD
 //     ...
 //   }
 //   sport:{
@@ -26,50 +25,22 @@ import { Maybe, PatientOccupation } from '../types.ts'
 //   }
 // }
 
-//Ideally, we could send the Occupation object below to the 
-//database under the occupation column solving all of our problems. 
+//Ideally, we could send the Occupation object below to the
+//database under the occupation column solving all of our problems.
 
-
-
-type Occupation = {
-  school: School
-  sport?: boolean //If occupation is the JSON we will put in patient_occupations shouldnt it be able to have school + sport + job
-  job?: string | null //create job type
-}
-
-type School = {
-  status: 'never attended'
-} | {
-  status: 'in school'
-  current: CurrentSchool
-} | {
-  status: 'stopped school'
-  past: PastSchool
-}
-
-type CurrentSchool = {
-  status: string
-  grade: string
-  grades_dropping_reason: string | null
-  happy: boolean
-  //sports: boolean
-  inappropriate_reason: string | null
-}
-
-type PastSchool = {
-  status: string
-  last_grade: string
-  reason: string
-}
 export default function Occupation0_18({
-  occupation,
+  occupation = {
+    school: {
+      status: 'never attended',
+    },
+  },
 }: {
-  occupation?: PatientOccupation
+  occupation?: Occupation
 }) {
   console.log('asdfghjkl ', occupation)
 
   const [school, setSchool] = useState<School>(
-    occupation?.occupation.school || {
+    occupation.school || {
       status: 'never attended',
     },
   )
@@ -87,12 +58,11 @@ export default function Occupation0_18({
   //                   inappropriate_reason: null,
   //                 },
   //               }
-                
+
   //             setSchool(nextSchool)
   // }
 
-  console.log("school state after new if statement: ", school)
-
+  console.log('school state after new if statement: ', school)
 
   const school_status = [
     'in school',
@@ -148,7 +118,7 @@ export default function Occupation0_18({
         </div>
         <div style={{ marginLeft: 'auto' }}>
           <CheckboxInput
-            name={'occupation.school.status'} //If we could put school.status here it would be ideal but it would be a boolean
+            name={null} //If we could put school.status here it would be ideal but it would be a boolean
             label=''
             checked={school.status !== 'never attended'}
             onInput={(event) => {
@@ -157,7 +127,6 @@ export default function Occupation0_18({
                 ? {
                   status: 'in school',
                   current: {
-                    status: 'in school',
                     grade: 'ECD 1',
                     grades_dropping_reason: null,
                     happy: true,
@@ -172,6 +141,11 @@ export default function Occupation0_18({
             }}
           />
         </div>
+        <input
+          type='hidden'
+          name='occupation.school.status'
+          value={school.status}
+        />
       </div>
       {
         school.status !== 'in school' && (
@@ -190,7 +164,6 @@ export default function Occupation0_18({
                     ? {
                       status: 'stopped school',
                       past: {
-                        status: 'stopped school',
                         last_grade: 'Grade 1',
                         reason: 'Problems at home',
                       },
@@ -268,7 +241,7 @@ export default function Occupation0_18({
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='occupation.school.happy'
+              name='occupation.school.current.happy'
               label=''
               checked={school.current.happy || true}
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
@@ -286,7 +259,7 @@ export default function Occupation0_18({
               name='occupation.sport'
               label=''
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              checked={occupation.occupation.sport}
+              checked={occupation.sport}
             />
           </div>
         </div>
@@ -298,7 +271,7 @@ export default function Occupation0_18({
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='occupation.play_sports'
+              name='occupation.sport'
               label=''
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
             />
@@ -311,7 +284,7 @@ export default function Occupation0_18({
           {school.status === 'in school' && (
             <Select
               label='Which class is the patient doing?'
-              name='occupation.school.grade'
+              name='occupation.school.current.grade'
               selectClassName='w-full'
               required
             >
@@ -327,7 +300,7 @@ export default function Occupation0_18({
             school.current.inappropriate_reason !== null && (
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
-              name='occupation.school.inappropriate_reason'
+              name='occupation.school.current.inappropriate_reason'
             >
               {class_inappropriate_reason.map((reason) => (
                 <option
@@ -348,7 +321,7 @@ export default function Occupation0_18({
             school.current.grades_dropping_reason !== null && (
             <SelectWithOther
               label='If the grades are dropping, why?'
-              name='occupation.school.grades_dropping_reason'
+              name='occupation.school.current.grades_dropping_reason'
             >
               {gradeDropReasons.map((reason) => (
                 <option
@@ -365,7 +338,7 @@ export default function Occupation0_18({
           {school.status === 'stopped school' && (
             <SelectWithOther
               label='If the patient stopped their education, why?'
-              name='occupation.school.stopped_reason'
+              name='occupation.school.past.stopped_reason'
             >
               {stopEducationReasons.map((reason) => (
                 <option
@@ -381,7 +354,7 @@ export default function Occupation0_18({
           {school.status === 'stopped school' && (
             <Select
               label='What grade was the patient in last school term?'
-              name='occupation.stopped_last_grade'
+              name='occupation.past.stopped_last_grade'
             >
               {grades.map((grade) => (
                 <option

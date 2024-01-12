@@ -1,4 +1,6 @@
-import { PatientOccupation, TrxOrDb } from '../../types.ts'
+import { sql } from 'kysely'
+import { TrxOrDb, Maybe, Occupation } from '../../types.ts'
+
 //import sql from Kysley
 //TODO: upsert instead of add
 // export function upsert(
@@ -14,7 +16,8 @@ import { PatientOccupation, TrxOrDb } from '../../types.ts'
 
 export function upsert(
   trx: TrxOrDb,
-  opts: PatientOccupation,
+  // deno-lint-ignore no-explicit-any
+  opts: any,
 ) {
   //if(sql'{opts.patient_id})
   return trx
@@ -27,13 +30,15 @@ export function upsert(
     .executeTakeFirstOrThrow()
 }
 
-export function get(
+export async function get(
   trx: TrxOrDb, 
-  {patient_id}: { patient_id: number }
-) {
-  return trx
+  { patient_id }: { patient_id: number }
+) : Promise<Occupation | undefined> {
+  const patient_occupation = await trx
     .selectFrom('patient_occupations')
     .where('patient_id', '=', patient_id)
-    .selectAll()
+    .select(sql<Occupation>`TO_JSON(occupation)`.as('occupation'))
     .executeTakeFirst()
+  
+  return patient_occupation?.occupation
 }

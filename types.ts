@@ -1533,12 +1533,42 @@ export type PatientGuardian = {
   dependent_patient_id: number
 }
 
+export type School = {
+  status: 'never attended'
+} | {
+  status: 'in school'
+  current: CurrentSchool
+} | {
+  status: 'stopped school'
+  past: PastSchool
+}
+
+export type CurrentSchool = {
+  grade: string
+  grades_dropping_reason: string | null
+  happy: boolean
+  inappropriate_reason: string | null
+}
+
+export type PastSchool = {
+  last_grade: string
+  reason: string
+}
+
+export type Occupation = {
+  school: School
+  sport?: boolean 
+  job?: string | null 
+}
+
+
+
 export type PatientOccupation = {
   patient_id: number
-  occupation: any
-  //school: any
-  //job: any
+  occupation: Occupation
+ 
 }
+
 
 export type Allergy = {
   id: number
