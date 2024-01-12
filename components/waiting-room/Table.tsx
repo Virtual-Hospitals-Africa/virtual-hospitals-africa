@@ -9,7 +9,6 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     dataKey(row) {
       return <Person person={row.patient} />
     },
-    type: 'content',
     cellClassName: 'mb-1 font-medium',
   },
   {
@@ -17,11 +16,9 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     dataKey(row) {
       return capitalize(row.reason)
     },
-    type: 'content',
   },
   {
     label: 'Status',
-    type: 'content',
     dataKey(row) {
       return row.in_waiting_room ? 'Waiting' : 'In Consultation'
     },
@@ -34,14 +31,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
         <a key={p.health_worker_id} href={p.href}>{p.name}</a>
       ))
     },
-    type: 'content',
   },
   {
     label: 'Arrived',
-    dataKey(row) {
-      return 'Just now' // TODO: implement this
-    },
-    type: 'content',
+    dataKey: 'arrived_ago_display',
   },
   {
     label: 'Actions',

@@ -9,12 +9,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('generic_name', 'varchar(255)', (col) => col.notNull())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addUniqueConstraint('drugs_generic_name_unique', ['generic_name'])
@@ -48,12 +48,12 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addCheckConstraint(
@@ -106,12 +106,12 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .execute()
@@ -146,12 +146,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(

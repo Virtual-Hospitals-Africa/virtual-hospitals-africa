@@ -24,7 +24,7 @@ export type TableColumn<T extends Row> =
     dataKey?: unknown
   }
   & (
-    | { type: 'content'; dataKey: keyof T | ((row: T) => Showable) }
+    | { type?: 'content'; dataKey: keyof T | ((row: T) => Showable) }
     | { type: 'avatar'; dataKey: keyof T | ((row: T) => Showable) }
     | (T extends { actions: Record<string, string | null> } ? {
         label: 'Actions'
@@ -55,7 +55,7 @@ function ActionButton(
 function TableCellInnerContents<T extends Row>(
   { row, column }: { row: T; column: TableColumn<T> },
 ) {
-  if (column.type === 'content') {
+  if (column.type === 'content' || column.type === undefined) {
     const value = typeof column.dataKey === 'function'
       ? column.dataKey(row)
       : row[column.dataKey]

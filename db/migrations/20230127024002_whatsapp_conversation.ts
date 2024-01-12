@@ -7,12 +7,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
@@ -22,7 +22,7 @@ export async function up(db: Kysely<unknown>) {
     )
     .addColumn(
       'started_responding_at',
-      'timestamp',
+      'timestamptz',
     )
     .addColumn(
       'error_commit_hash',
@@ -54,12 +54,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(

@@ -28,14 +28,12 @@ export default function EmployeesTable({
     {
       label: 'Health Worker',
       dataKey: 'display_name',
-      type: 'content',
     },
     {
       label: 'Profession',
       dataKey(row) {
         return row.professions.map(({ profession }) => profession).join(', ')
       },
-      type: 'content',
     },
     {
       label: 'Actions',

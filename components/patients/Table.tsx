@@ -10,18 +10,15 @@ const columns: TableColumn<RenderedPatient>[] = [
   {
     label: 'Patient',
     dataKey: 'name',
-    type: 'content',
     cellClassName: 'mb-1 font-medium',
   },
   {
     label: 'Last Visit',
     dataKey: 'last_visited',
-    type: 'content',
   },
   {
     label: 'Nearest Facility',
     dataKey: 'nearest_facility',
-    type: 'content',
   },
   {
     label: 'Actions',

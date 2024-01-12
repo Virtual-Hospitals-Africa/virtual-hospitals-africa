@@ -7,12 +7,12 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(
       'updated_at',
-      'timestamp',
+      'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn(

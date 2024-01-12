@@ -34,7 +34,10 @@ describe(
               avatar_url: null,
               id: patient1.id,
               name: 'Test Patient 1',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient1.id}/intake/personal`,
@@ -49,7 +52,10 @@ describe(
               avatar_url: null,
               id: patient2.id,
               name: 'Test Patient 2',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient2.id}/intake/personal`,
@@ -82,7 +88,10 @@ describe(
               avatar_url: null,
               id: patient2.id,
               name: 'Test Patient 2',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient2.id}/intake/personal`,
@@ -97,7 +106,10 @@ describe(
               avatar_url: null,
               id: patient1.id,
               name: 'Test Patient 1',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient1.id}/intake/personal`,

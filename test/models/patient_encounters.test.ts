@@ -28,7 +28,10 @@ describe(
               avatar_url: null,
               id: patient.id,
               name: 'Test Patient',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient.id}/intake/personal`,
@@ -56,7 +59,10 @@ describe(
               avatar_url: null,
               id: patient.id,
               name: 'Test Patient',
+              description: null,
             },
+            in_waiting_room: true,
+            arrived_ago_display: 'Just now',
             actions: {
               view: null,
               intake: `/app/patients/${patient.id}/intake/personal`,
