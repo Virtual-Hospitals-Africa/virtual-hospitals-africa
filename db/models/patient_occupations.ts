@@ -1,25 +1,11 @@
 import { sql } from 'kysely'
-import { Maybe, Occupation, TrxOrDb } from '../../types.ts'
-
-//import sql from Kysley
-//TODO: upsert instead of add
-// export function upsert(
-//   trx: TrxOrDb,
-//   opts: PatientOccupation,
-// ) {
-//   console.log('opts', opts)
-//   return trx
-//     .insertInto('patient_occupations')
-//     .values(opts)
-//     .execute()
-// }
+import { Occupation, TrxOrDb } from '../../types.ts'
 
 export function upsert(
   trx: TrxOrDb,
   // deno-lint-ignore no-explicit-any
   opts: any,
 ) {
-  //if(sql'{opts.patient_id})
   return trx
     .insertInto('patient_occupations')
     .values(opts)

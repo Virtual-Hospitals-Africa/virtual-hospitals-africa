@@ -559,7 +559,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         guardians: [
           {
             family_relation_gendered: 'biological mother',
-            next_of_kin: null,
+            next_of_kin: false,
             patient_id: patient_family.guardians[0].patient_id,
             patient_name: 'New Guardian',
             patient_phone_number: 3333333333,

@@ -1,8 +1,7 @@
 import { PatientAge } from '../../../db.d.ts'
 import Occupation0_18 from '../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../islands/Occupation19.tsx'
-import { OnboardingPatient, PatientOccupation } from '../../../types.ts'
-import { Occupation } from '../../../islands/Occupation0-18.tsx'
+import { Occupation, OnboardingPatient } from '../../../types.ts'
 
 function isPatientUnder19(patientAge: PatientAge): boolean {
   if (patientAge.age_number == null) {
