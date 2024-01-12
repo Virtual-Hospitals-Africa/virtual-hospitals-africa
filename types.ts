@@ -1073,9 +1073,9 @@ export type EmployeeInfo = {
 
 export type EmployedHealthWorker = ReturnedSqlRow<
   HealthWorker & {
-    access_token: Maybe<string>
-    refresh_token: Maybe<string>
-    expires_at: Maybe<Date | string>
+    access_token: string
+    refresh_token: string
+    expires_at: Date | string
     employment: {
       facility: {
         id: number
@@ -1103,12 +1103,9 @@ export type EmployedHealthWorker = ReturnedSqlRow<
         }
       }
     }[]
+    open_encounters: RenderedPatientEncounter[]
   }
 >
-
-export type EmployedHealthWorkerWithGoogleTokens =
-  & EmployedHealthWorker
-  & GoogleTokens
 
 export type HealthWorkerGoogleToken = GoogleTokens & {
   health_worker_id: number
@@ -1292,7 +1289,7 @@ export type WhatsAppSendableButtons = {
 export type LoggedInHealthWorker = {
   trx: TrxOrDb
   session: Session
-  healthWorker: EmployedHealthWorkerWithGoogleTokens
+  healthWorker: EmployedHealthWorker
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
@@ -1654,6 +1651,7 @@ export type RenderedPatientEncounter = {
   closed_at: null | Date
   reason: PatientEncounterReason
   notes: null | string
+  patient_id: number
   appointment_id: null | number
   waiting_room_id: null | number
   waiting_room_facility_id: null | number

@@ -3,7 +3,7 @@ import { WithSession } from 'fresh_session'
 import { EmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
-import { assertOr403 } from '../../util/assertOr.ts'
+import { assertOr403, StatusError } from '../../util/assertOr.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export async function handler(
@@ -21,7 +21,13 @@ export async function handler(
     health_worker_id,
   })
 
-  assertOr403(health_workers.isEmployed(healthWorker))
+  if (!health_workers.isEmployed(healthWorker)) {
+    ctx.state.session.clear()
+    const warning = encodeURIComponent(
+      "Could not locate your account. Please try logging in once more. If this issue persists, please contact your facility's administrator.",
+    )
+    return redirect(`/?warning=${warning}`)
+  }
   ctx.state.healthWorker = healthWorker
 
   const roleNeedingRegistration = healthWorker.employment.find((e) =>

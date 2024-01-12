@@ -583,6 +583,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       `${route}/app/patients/${patient_id}/intake/occupation`,
       {},
     )
+
     assertEquals(
       getResponse.url,
       `${route}/app/patients/${patient_id}/intake/personal?warning=Please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,

@@ -4,12 +4,12 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as media from '../../db/models/media.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
-import { EmployedHealthWorker } from '../../types.ts'
 import { insertTestAddress, randomNationalId } from '../mocks.ts'
 import { addTestHealthWorker } from '../web/utilities.ts'
 
@@ -40,7 +40,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assert(result)
       assertEquals(
         await health_workers.get(db, { health_worker_id: result.id }),
-        { ...result, employment: [] as EmployedHealthWorker['employment'] },
+        { ...result, employment: [], open_encounters: [] },
       )
       assertEquals(result.access_token, 'test_access_token')
       assertEquals(result.refresh_token, 'test_refresh_token')
@@ -69,7 +69,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         facility_id: 1,
       }])
 
-      const result = await health_workers.get(db, { email: 'test@worker.com' })
+      const result = await health_workers.get(db, {
+        health_worker_id: healthWorker.id,
+      })
       assert(result)
 
       assertEquals(omit(result, ['expires_at', 'created_at', 'updated_at']), {
@@ -100,7 +102,50 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         name: 'Worker',
         access_token: 'access_token',
         refresh_token: 'refresh_token',
+        open_encounters: [],
       })
+    })
+
+    it('returns open encounters', async () => {
+      const nurse1 = await addTestHealthWorker({ scenario: 'approved-nurse' })
+      const nurse2 = await addTestHealthWorker({ scenario: 'approved-nurse' })
+
+      const just_nurse1 = await patient_encounters.upsert(db, 1, {
+        patient_name: 'Test Patient 1',
+        reason: 'seeking treatment',
+        provider_ids: [nurse1.employee_id!],
+      })
+
+      const both = await patient_encounters.upsert(db, 1, {
+        patient_name: 'Test Patient 2',
+        reason: 'seeking treatment',
+        provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
+      })
+
+      const encounters = await db.selectFrom('patient_encounters').selectAll()
+        .execute()
+      const providers = await db.selectFrom('patient_encounter_providers')
+        .selectAll().execute()
+      console.log('encounters', encounters)
+      console.log('providers', providers)
+
+      const result1 = await health_workers.get(db, {
+        health_worker_id: nurse1.id,
+      })
+      assert(result1)
+      assertEquals(result1.open_encounters.length, 2)
+      assertEquals(result1.open_encounters[0].encounter_id, both.id)
+      assertEquals(result1.open_encounters[0].providers.length, 2)
+      assertEquals(result1.open_encounters[1].encounter_id, just_nurse1.id)
+      assertEquals(result1.open_encounters[1].providers.length, 1)
+
+      const result2 = await health_workers.get(db, {
+        health_worker_id: nurse2.id,
+      })
+      assert(result2)
+      assertEquals(result2.open_encounters.length, 1)
+      assertEquals(result1.open_encounters[0].encounter_id, both.id)
+      assertEquals(result1.open_encounters[0].providers.length, 2)
     })
   })
 

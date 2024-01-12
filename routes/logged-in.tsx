@@ -6,27 +6,25 @@ import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
-import * as facilities from '../db/models/facilities.ts'
 import * as google from '../external-clients/google.ts'
-import {
-  EmployedHealthWorker,
-  GoogleProfile,
-  GoogleTokens,
-  Profession,
-  TrxOrDb,
-} from '../types.ts'
-import uniq from '../util/uniq.ts'
+import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   profile: GoogleProfile,
   invitees: { id: number; facility_id: number; profession: Profession }[],
-): Promise<EmployedHealthWorker> {
+): Promise<{ id: number }> {
   assert(invitees.length, 'No invitees found')
 
   const calendars = await googleClient
     .ensureHasAppointmentsAndAvailabilityCalendars()
+
+  // Fire off async operations in parallel
+  const removing_invites = employment.removeInvitees(
+    trx,
+    invitees.map((invitee) => invitee.id),
+  )
 
   const healthWorker = await health_workers.upsertWithGoogleCredentials(trx, {
     name: profile.name,
@@ -36,16 +34,6 @@ export async function initializeHealthWorker(
     gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
     ...health_workers.pickTokens(googleClient.tokens),
   })
-
-  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
-
-  // Fire off async operations in parallel
-  const removing_invites = employment.removeInvitees(
-    trx,
-    invitees.map((invitee) => invitee.id),
-  )
-
-  const getting_facilities = facilities.get(trx, { ids: facility_ids })
 
   const adding_roles = employment.add(
     trx,
@@ -57,49 +45,9 @@ export async function initializeHealthWorker(
   )
 
   await removing_invites
-  const employed_at_facilities = await getting_facilities
-  const roles = await adding_roles
+  await adding_roles
 
-  return {
-    ...healthWorker,
-    employment: facility_ids.map((facility_id) => {
-      const facility = employed_at_facilities.find((f) => f.id === facility_id)
-      assert(facility, 'Could not find facility')
-      const nurse_role = roles.find(
-        (r) => r.facility_id === facility_id && r.profession === 'nurse',
-      ) || null
-      const doctor_role = roles.find(
-        (r) => r.facility_id === facility_id && r.profession === 'doctor',
-      ) || null
-      const admin_role = roles.find(
-        (r) => r.facility_id === facility_id && r.profession === 'admin',
-      ) || null
-
-      return {
-        facility,
-        roles: {
-          nurse: nurse_role && {
-            registration_needed: true,
-            registration_completed: false,
-            registration_pending_approval: true,
-            employment_id: nurse_role.id,
-          },
-          doctor: doctor_role && {
-            registration_needed: false,
-            registration_completed: true,
-            registration_pending_approval: false,
-            employment_id: doctor_role.id,
-          },
-          admin: admin_role && {
-            registration_needed: false,
-            registration_completed: true,
-            registration_pending_approval: false,
-            employment_id: admin_role.id,
-          },
-        },
-      }
-    }),
-  }
+  return { id: healthWorker.id }
 }
 
 async function checkPermissions(
@@ -110,7 +58,7 @@ async function checkPermissions(
 }
 
 type AuthCheckResult =
-  | { status: 'authorized'; healthWorker: EmployedHealthWorker }
+  | { status: 'authorized'; healthWorker: { id: number } }
   | { status: 'unauthorized' }
   | { status: 'insufficient_permissions' }
 
@@ -160,15 +108,10 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     const gettingTokens = getInitialTokensFromAuthCode(code)
     const result = await authCheck(gettingTokens)
 
-    if (result.status === 'insufficient_permissions') {
-      return redirect('/app/insufficient_permissions')
+    if (result.status === 'authorized') {
+      session.set('health_worker_id', result.healthWorker.id)
+      return redirect('/app')
     }
-    if (result.status === 'unauthorized') {
-      return redirect('/app/unauthorized')
-    }
-
-    session.set('health_worker_id', result.healthWorker.id)
-
-    return redirect('/app')
+    return redirect(`/app/${result.status}`)
   },
 }

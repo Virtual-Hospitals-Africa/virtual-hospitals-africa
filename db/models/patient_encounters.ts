@@ -173,14 +173,20 @@ export function markProviderSeen(
     .executeTakeFirstOrThrow()
 }
 
-export function get(
-  trx: TrxOrDb,
-  { patient_id, encounter_id }: {
-    patient_id: number
-    encounter_id: number | 'open'
-  },
-): Promise<RenderedPatientEncounter | undefined> {
-  let query = trx
+export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: number) =>
+  trx
+    .selectFrom('patient_encounter_providers')
+    .innerJoin(
+      'employment',
+      'patient_encounter_providers.provider_id',
+      'employment.id',
+    )
+    .where('employment.health_worker_id', '=', health_worker_id)
+    .select('patient_encounter_providers.patient_encounter_id')
+    .distinct()
+
+export const baseQuery = (trx: TrxOrDb) =>
+  trx
     .selectFrom('patient_encounters')
     .leftJoin(
       'waiting_room',
@@ -194,6 +200,7 @@ export function get(
       'patient_encounters.reason',
       'patient_encounters.notes',
       'patient_encounters.appointment_id',
+      'patient_encounters.patient_id',
       'waiting_room.id as waiting_room_id',
       'waiting_room.facility_id as waiting_room_facility_id',
       jsonArrayFrom(
@@ -224,6 +231,16 @@ export function get(
           ),
       ).as('providers'),
     ])
+    .orderBy('patient_encounters.created_at', 'desc')
+
+export function get(
+  trx: TrxOrDb,
+  { patient_id, encounter_id }: {
+    patient_id: number
+    encounter_id: number | 'open'
+  },
+): Promise<RenderedPatientEncounter | undefined> {
+  let query = baseQuery(trx)
     .where('patient_encounters.patient_id', '=', patient_id)
 
   query = encounter_id === 'open'

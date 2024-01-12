@@ -54,7 +54,9 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
   const { trx, healthWorker } = ctx.state
 
-  const encounter = await patient_encounters.get(trx, {
+  const encounter = healthWorker.open_encounters.find(
+    (e) => encounter_id === 'open' && (e.patient_id === patient_id),
+  ) || await patient_encounters.get(trx, {
     encounter_id,
     patient_id,
   })
