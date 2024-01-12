@@ -1,105 +1,32 @@
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
-import * as patients from '../db/models/patients.ts'
 import * as waiting_room from '../db/models/waiting_room.ts'
+import * as appointments from '../db/models/appointments.ts'
 import Layout from '../components/library/Layout.tsx'
-import { activeTab, Tabs } from '../components/library/Tabs.tsx'
+import { activeTab, Tabs, TabsProps } from '../components/library/Tabs.tsx'
 import {
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandler,
-  Maybe,
-  RenderedPatient,
   RenderedWaitingRoom,
-  TrxOrDb,
 } from '../types.ts'
 import WaitingRoomView from '../components/waiting-room/View.tsx'
-import PatientsView from '../components/patients/View.tsx'
 import { firstName } from '../util/name.ts'
 import redirect from '../util/redirect.ts'
+import { getNumericParam } from '../util/getNumericParam.ts'
 
-type WaitingRoomProps = {
-  tab: 'waiting_room'
-  facility_id: number
-  waiting_room: RenderedWaitingRoom[]
-}
+type Tab = 'waiting_room' | 'appointments' | 'orders'
 
-type RecentPatientsProps = {
-  tab: 'recent'
-  patients: RenderedPatient[]
-}
-
-type AppointmentsProps = {
-  tab: 'appointments'
-  appointments: unknown
-}
-
-type OrdersProps = {
-  tab: 'orders'
-  orders: unknown
-}
-
-type AppTypedProps =
-  | WaitingRoomProps
-  | RecentPatientsProps
-  | AppointmentsProps
-  | OrdersProps
-
-type Tab = AppTypedProps['tab']
-
-const tabs = [
+const tabs: TabsProps<Tab>['tabs'] = [
   'waiting_room' as const,
-  'recent' as const,
-  'appointments' as const,
-  'orders' as const,
+  ['appointments' as const, '/app/calendar'],
+  ['orders' as const, '/app/orders'],
 ]
 
 type AppProps = {
   healthWorker: HealthWorkerWithGoogleTokens
   counts: Partial<Record<Tab, number>>
-} & AppTypedProps
-
-async function fetchNeededData(
-  trx: TrxOrDb,
-  tab: AppTypedProps['tab'],
-  search?: Maybe<string>,
-  facility_id?: number,
-): Promise<AppTypedProps & Pick<AppProps, 'counts'>> {
-  const counts = {
-    orders: 5,
-    appointments: 10,
-  }
-
-  switch (tab) {
-    case 'waiting_room': {
-      assert(facility_id)
-      return {
-        tab: 'waiting_room',
-        facility_id,
-        waiting_room: await waiting_room.get(trx, { facility_id }),
-        counts,
-      }
-    }
-    case 'recent': {
-      return {
-        tab: 'recent',
-        patients: await patients.getAllWithNames(trx, search),
-        counts,
-      }
-    }
-    case 'appointments': {
-      return {
-        tab: 'appointments',
-        appointments: [],
-        counts,
-      }
-    }
-    case 'orders':
-      return {
-        tab: 'orders',
-        orders: [],
-        counts,
-      }
-  }
+  facility_id: number
+  waiting_room: RenderedWaitingRoom[]
 }
 
 export const handler: LoggedInHealthWorkerHandler<AppProps> = {
@@ -111,15 +38,17 @@ export const handler: LoggedInHealthWorkerHandler<AppProps> = {
     )
     const { searchParams } = new URL(req.url)
 
-    const tab = activeTab(tabs, req.url)
+    // We may revisit this, but for now there's only one tab
+    // that actually displays on this page, the waiting room
+    // while the rest link out to other pages
+    // const tab = activeTab(tabs, req.url)
 
-    // facility_id is required for waiting_room tab
-    let facility_id = parseInt(searchParams.get('facility_id')!) || undefined
+    let facility_id = getNumericParam(searchParams, 'facility_id')
     if (facility_id && !employment.some((e) => e.facility.id === facility_id)) {
       searchParams.set('facility_id', employment[0].facility.id.toString())
       return redirect(`/app?${searchParams.toString()}`)
     }
-    if (tab === 'waiting_room' && !facility_id) {
+    if (!facility_id) {
       if (employment.length > 1) {
         console.warn('TODO: select facility?')
         searchParams.set('facility_id', employment[0].facility.id.toString())
@@ -127,12 +56,25 @@ export const handler: LoggedInHealthWorkerHandler<AppProps> = {
       }
       facility_id = employment[0].facility.id
     }
+    assert(facility_id)
 
-    const search = searchParams.get('search')
+    const getting_waiting_room = waiting_room.get(ctx.state.trx, {
+      facility_id,
+    })
+    const getting_appointments_count = appointments.countUpcoming(
+      ctx.state.trx,
+      {
+        health_worker_id: ctx.state.healthWorker.id,
+      },
+    )
 
     return ctx.render({
       healthWorker: ctx.state.healthWorker,
-      ...(await fetchNeededData(ctx.state.trx, tab, search, facility_id)),
+      facility_id,
+      waiting_room: await getting_waiting_room,
+      counts: {
+        appointments: await getting_appointments_count,
+      },
     })
   },
 }
@@ -151,20 +93,13 @@ export default function AppPage(
       <Tabs
         route={props.route}
         tabs={tabs}
-        activeTab={props.data.tab}
+        activeTab='waiting_room'
         counts={props.data.counts}
       />
-      {props.data.tab === 'waiting_room' && (
-        <WaitingRoomView
-          facility_id={props.data.facility_id}
-          waiting_room={props.data.waiting_room}
-        />
-      )}
-      {props.data.tab === 'recent' && (
-        <PatientsView patients={props.data.patients} />
-      )}
-      {props.data.tab === 'appointments' && <p>TODO: appointments</p>}
-      {props.data.tab === 'orders' && <p>TODO: orders</p>}
+      <WaitingRoomView
+        facility_id={props.data.facility_id}
+        waiting_room={props.data.waiting_room}
+      />
     </Layout>
   )
 }

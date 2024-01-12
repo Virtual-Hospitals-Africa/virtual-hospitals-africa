@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import set from './set.ts'
 import * as media from '../db/models/media.ts'
-import { TrxOrDb } from '../types.ts'
+import { Maybe, TrxOrDb } from '../types.ts'
 import { assertOr400 } from './assertOr.ts'
 import deepRemoveHoles from './deepRemoveHoles.ts'
 
@@ -28,6 +28,7 @@ function parseFormWithoutFilesNoTypeCheck(
     if (value === '') return
     set(parsed, key, parseParam(value))
   })
+  console.log('parseFormWithoutFilesNoTypeCheck', params, parsed)
   return deepRemoveHoles(parsed)
 }
 
@@ -40,6 +41,14 @@ export function parseFormWithoutFiles<T extends Record<string, unknown>>(
   return parsed
 }
 
+function isBlank(formData: Maybe<FormData>) {
+  if (!formData) return true
+  for (const _key of formData.keys()) {
+    return false
+  }
+  return true
+}
+
 export async function parseRequestAsserts<T extends Record<string, unknown>>(
   trx: TrxOrDb,
   req: Request,
@@ -49,32 +58,33 @@ export async function parseRequestAsserts<T extends Record<string, unknown>>(
 
   const contentType = req.headers.get('content-type')
 
-  let formData: FormData | URLSearchParams | undefined
-
+  let bodyConsumed = false
+  let formData: FormData | undefined
   if (contentType?.startsWith('multipart/form-data')) {
-    try {
-      formData = await req.formData()
-    } catch (err) {
-      console.error(err)
-    }
+    bodyConsumed = true
+    formData = await req.formData()
   }
-  if (!formData) {
-    const text = await req.text()
 
-    formData = req.method === 'POST' && text
+  let valuesMap: URLSearchParams | FormData
+  if (isBlank(formData)) {
+    const text = !bodyConsumed ? await req.text() : undefined
+
+    valuesMap = (req.method === 'POST' && text)
       ? new URLSearchParams(text)
       : new URL(req.url).searchParams
+  } else {
+    valuesMap = formData!
   }
 
-  assertOr400(formData)
+  assertOr400(valuesMap)
 
   const files: { [key: string]: File } = {}
-  formData.forEach((value, key) => {
+  valuesMap.forEach((value, key) => {
     if (value instanceof File) files[key] = value
   })
-  Object.keys(files).forEach((key) => formData!.delete(key))
+  Object.keys(files).forEach((key) => valuesMap.delete(key))
 
-  const parsed = parseFormWithoutFilesNoTypeCheck(formData)
+  const parsed = parseFormWithoutFilesNoTypeCheck(valuesMap)
 
   await Promise.all(
     Object.entries(files).map(async ([key, value]) => {

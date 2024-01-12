@@ -4,7 +4,7 @@ import words from '../../util/words.ts'
 
 export type TabsProps<Tab extends string> = {
   route: string
-  tabs: Tab[]
+  tabs: Array<Tab | [Tab, string]>
   activeTab: Tab
   counts: Partial<Record<Tab, number>>
 }
@@ -32,7 +32,7 @@ function Tab(
       aria-current={active ? 'page' : undefined}
     >
       {display(tab)}
-      {count != null && <Badge content={count} color='gray' />}
+      {count ? <Badge content={count} color='gray' /> : null}
     </a>
   )
 }
@@ -40,6 +40,12 @@ function Tab(
 export function Tabs<Tab extends string>(
   { route, tabs, activeTab, counts }: TabsProps<Tab>,
 ) {
+  const use_tabs = tabs.map((tab) =>
+    Array.isArray(tab)
+      ? { tab: tab[0], href: tab[1] }
+      : { tab, href: `${route}?tab=${tab}` }
+  )
+
   return (
     <div className='border-b border-gray-200 pb-5 sm:pb-0'>
       <div className='mt-3 sm:mt-4'>
@@ -53,16 +59,17 @@ export function Tabs<Tab extends string>(
             className='block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm'
             defaultValue={activeTab}
           >
-            {tabs.map((tab) => <option key={tab}>{display(tab)}</option>)}
+            {use_tabs.map(({ tab }) => <option key={tab}>{display(tab)}
+            </option>)}
           </select>
         </div>
         <div className='hidden sm:block'>
           <nav className='-mb-px flex space-x-8 px-5'>
-            {tabs.map((tab) => (
+            {use_tabs.map(({ tab, href }) => (
               <Tab
                 tab={tab}
                 active={tab === activeTab}
-                href={`${route}?tab=${tab}`}
+                href={href}
                 count={counts[tab]}
               />
             ))}
@@ -73,7 +80,23 @@ export function Tabs<Tab extends string>(
   )
 }
 
-export function activeTab<Tab extends string>(tabs: Tab[], url: string): Tab {
+export function activeTab<Tab extends string>(
+  tabs: Array<Tab | [Tab, string]>,
+  url: string,
+): Tab {
   const tabQuery = new URL(url).searchParams.get('tab')
-  return tabs.find((tab) => tab === tabQuery) || tabs[0]
+  for (const tab of tabs) {
+    if (Array.isArray(tab)) {
+      if (tab[0] === tabQuery) {
+        return tab[0]
+      }
+    } else if (tab === tabQuery) {
+      return tab
+    }
+  }
+  const first = tabs[0]
+  if (Array.isArray(first)) {
+    return first[0]
+  }
+  return first
 }

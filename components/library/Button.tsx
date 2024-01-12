@@ -66,5 +66,5 @@ export function Button({
         {...(props as unknown as JSX.HTMLAttributes<HTMLAnchorElement>)}
       />
     )
-    : <button className={className} {...props} />
+    : <button className={className} type='submit' {...props} />
 }

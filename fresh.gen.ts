@@ -17,6 +17,7 @@ import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_facilities from './routes/app/facilities.tsx'
+import * as $app_facilities_facility_id_ from './routes/app/facilities/[facility_id].tsx'
 import * as $app_facilities_facility_id_middleware from './routes/app/facilities/[facility_id]/_middleware.ts'
 import * as $app_facilities_facility_id_employees from './routes/app/facilities/[facility_id]/employees.tsx'
 import * as $app_facilities_facility_id_employees_health_worker_id_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx'
@@ -124,6 +125,7 @@ const manifest = {
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
     './routes/app/facilities.tsx': $app_facilities,
+    './routes/app/facilities/[facility_id].tsx': $app_facilities_facility_id_,
     './routes/app/facilities/[facility_id]/_middleware.ts':
       $app_facilities_facility_id_middleware,
     './routes/app/facilities/[facility_id]/employees.tsx':

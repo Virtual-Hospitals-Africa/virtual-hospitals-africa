@@ -5,14 +5,14 @@ import * as health_workers from '../../../../../db/models/health_workers.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import FormButtons from '../../../../../components/library/form/buttons.tsx'
 import { FacilityContext } from '../_middleware.ts'
-import getNumericParam from '../../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 
 export default async function EmployeePage(
   _req: Request,
   ctx: FacilityContext,
 ) {
   const { trx, facility, healthWorker, isAdminAtFacility } = ctx.state
-  const health_worker_id = getNumericParam(ctx, 'health_worker_id')
+  const health_worker_id = getRequiredNumericParam(ctx, 'health_worker_id')
 
   const employee = await health_workers.getEmployeeInfo(
     trx,

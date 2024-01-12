@@ -30,8 +30,11 @@ import isObjectLike from '../../../../util/isObjectLike.ts'
 
 type SearchFormValues = {
   health_worker_id?: number
+  health_worker_name?: string
   patient_id?: number
+  patient_name?: string
   date?: string
+  reason?: string
 }
 
 export type ScheduleFormValues = {
@@ -54,7 +57,14 @@ function assertIsSearchFormValues(
   assertOr400(isObjectLike(values))
   for (const key in values) {
     assertOr400(
-      ['health_worker_id', 'patient_id', 'date'].includes(key),
+      [
+        'health_worker_id',
+        'health_worker_name',
+        'patient_id',
+        'patient_name',
+        'date',
+        'reason',
+      ].includes(key),
       `Invalid key ${key}`,
     )
   }
@@ -117,11 +127,15 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     })
   },
   async POST(req, ctx) {
+    console.log('POST schedule')
+    console.log('req', req)
+    console.log('ctx', ctx)
     const schedule = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsScheduleFormValues,
     )
+    console.log('schedule', schedule)
 
     await makeAppointmentWeb(ctx.state.trx, schedule)
     return redirect('/app/calendar')

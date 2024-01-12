@@ -8,6 +8,7 @@ export default {
   theme: {
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
+      ubuntu: ['Ubuntu', 'sans-serif'],
       display: ['Cabinet Grotesk', 'sans-serif'],
     },
     extend: {

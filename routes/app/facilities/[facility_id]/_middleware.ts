@@ -5,7 +5,7 @@ import {
 } from '../../../../types.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
 import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
-import getNumericParam from '../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../util/getNumericParam.ts'
 
 export type FacilityContext = LoggedInHealthWorkerContext<{
   facility: ReturnedSqlRow<Facility>
@@ -17,7 +17,7 @@ export async function handler(
   ctx: FacilityContext,
 ) {
   const { healthWorker } = ctx.state
-  const facility_id = getNumericParam(ctx, 'facility_id')
+  const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
   assertOr403(
     healthWorker.employment.some((e) => e.facility.id === facility_id),

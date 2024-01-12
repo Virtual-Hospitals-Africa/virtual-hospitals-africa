@@ -127,7 +127,11 @@ export default function Appointment(
             action={`${url.pathname}?${search}`}
             method='POST'
           >
-            <Button>
+            <Button
+              onClick={(event) => {
+                console.log('event', event)
+              }}
+            >
               Book
             </Button>
           </form>

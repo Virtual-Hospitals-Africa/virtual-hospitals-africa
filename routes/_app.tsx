@@ -31,6 +31,10 @@ export default function App({ Component, ...props }: PageProps) {
             />
             <link
               rel='stylesheet'
+              href='https://fonts.googleapis.com/css2?family=Ubuntu:wght@100..900&display=swap'
+            />
+            <link
+              rel='stylesheet'
               href='https://fonts.googleapis.com/css2?family=Roboto'
             />
             <link

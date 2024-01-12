@@ -137,6 +137,7 @@ export type ScheduleFormValues = {
 export function assertIsScheduleFormValues(
   values: unknown,
 ): asserts values is ScheduleFormValues {
+  console.log('values', values)
   assertOr400(isObjectLike(values))
   assertOr400(typeof values.start === 'string')
   assertOr400(isIsoHarare(values.start))

@@ -3,7 +3,7 @@ import { LoggedInHealthWorkerHandler } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import redirect from '../../../../../../util/redirect.ts'
-import getNumericParam from '../../../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { FacilityContext } from '../../_middleware.ts'
 
 export const handler: LoggedInHealthWorkerHandler<
@@ -15,7 +15,7 @@ export const handler: LoggedInHealthWorkerHandler<
 
     assertOr403(isAdminAtFacility)
 
-    const health_worker_id = getNumericParam(ctx, 'health_worker_id')
+    const health_worker_id = getRequiredNumericParam(ctx, 'health_worker_id')
 
     const getting_employee = health_workers.getEmployeeInfo(
       trx,

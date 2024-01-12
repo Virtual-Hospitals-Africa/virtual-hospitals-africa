@@ -186,3 +186,5 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
     )
   })`
 }
+
+export const now = sql<Date>`now()`

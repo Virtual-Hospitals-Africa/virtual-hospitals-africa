@@ -9,7 +9,7 @@ import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import capitalize from '../../../../../../util/capitalize.ts'
-import getNumericParam from '../../../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 import { log } from '../../../../../_middleware.ts'
 
@@ -51,7 +51,7 @@ export const handler: LoggedInHealthWorkerHandler<
       req,
       assertIsVitals,
     )
-    const patient_id = getNumericParam(ctx, 'patient_id')
+    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
     await patient_measurements.add(ctx.state.trx, {
       patient_id,

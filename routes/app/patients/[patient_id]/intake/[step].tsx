@@ -36,7 +36,7 @@ import {
   assertOr404,
   assertOrRedirect,
 } from '../../../../../util/assertOr.ts'
-import getNumericParam from '../../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
 import { PatientAge } from '../../../../../db.d.ts'
 import { IntakeContext, IntakeLayout } from './_middleware.tsx'
@@ -270,7 +270,7 @@ const transformers: Transformers = {
 export const handler: LoggedInHealthWorkerHandler<IntakePatientProps> = {
   async POST(req, ctx) {
     const { step } = ctx.params
-    const patient_id = getNumericParam(ctx, 'patient_id')
+    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
     assertOr400(isStep(step))
     const formData = await parseRequestAsserts(
@@ -356,7 +356,7 @@ export default async function IntakePatientPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
-  const patient_id = getNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
   const { step } = ctx.params
   assertOr404(isStep(step))
 

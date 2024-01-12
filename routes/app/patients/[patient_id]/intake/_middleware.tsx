@@ -9,7 +9,7 @@ import {
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
-import getNumericParam from '../../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 import {
   DefaultTop,
@@ -25,7 +25,7 @@ export async function handler(
   _req: Request,
   ctx: IntakeContext,
 ) {
-  const patient_id = getNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
   const getting_onboarding_patient = patients.getOnboarding(ctx.state.trx, {
     id: patient_id,

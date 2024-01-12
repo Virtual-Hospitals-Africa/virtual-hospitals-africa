@@ -14,7 +14,7 @@ function Notification() {
   return (
     <button
       type='button'
-      className='rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
+      className='rounded-full bg-white p-1 text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-900 focus:ring-offset-2 focus:ring-offset-gray-800'
     >
       <span className='sr-only'>View notifications</span>
       <BellIcon
@@ -106,7 +106,7 @@ export function Header({ title, avatarUrl, variant }: HeaderProps) {
     : <HeaderRightClose />
 
   return (
-    <HeaderBase className='bg-gray-800'>
+    <HeaderBase className='bg-indigo-900 font-ubuntu'>
       <HeaderLeft title={title} />
       {right}
     </HeaderBase>

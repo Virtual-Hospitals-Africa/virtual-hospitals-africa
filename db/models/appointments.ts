@@ -15,7 +15,7 @@ import uniq from '../../util/uniq.ts'
 import { getWithMedicalRecords } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, now } from '../helpers.ts'
 
 export async function addOfferedTime(
   trx: TrxOrDb,
@@ -210,6 +210,31 @@ export async function schedule(
     gcal_event_id: appointment.gcal_event_id,
     start,
   }
+}
+
+export async function countUpcoming(
+  trx: TrxOrDb,
+  opts: { health_worker_id: number },
+): Promise<number> {
+  const { count } = await trx
+    .selectFrom('appointments')
+    .innerJoin(
+      'appointment_health_worker_attendees',
+      'appointments.id',
+      'appointment_health_worker_attendees.appointment_id',
+    )
+    .where(
+      'appointment_health_worker_attendees.health_worker_id',
+      '=',
+      opts.health_worker_id,
+    )
+    .where('start', '>=', now)
+    .select([
+      sql<number>`count(appointments.id)`.as('count'),
+    ])
+    .executeTakeFirstOrThrow()
+
+  return count
 }
 
 export async function getWithPatientInfo(

@@ -18,7 +18,7 @@ import {
   assertOr404,
   StatusError,
 } from '../../../../../../util/assertOr.ts'
-import getNumericParam from '../../../../../../util/getNumericParam.ts'
+import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 import {
   Person,
@@ -36,7 +36,7 @@ function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
     return 'open'
   }
-  return getNumericParam(ctx, 'encounter_id')
+  return getRequiredNumericParam(ctx, 'encounter_id')
 }
 
 export type EncounterContext = LoggedInHealthWorkerContext<
@@ -51,7 +51,7 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
   ctx: LoggedInHealthWorkerContext,
   encounter_id: number | 'open',
 ) {
-  const patient_id = getNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
   const { trx, healthWorker } = ctx.state
 
   const encounter = await patient_encounters.get(trx, {
@@ -137,7 +137,7 @@ export async function handler(
   ctx: EncounterContext,
 ) {
   const encounter_id = getEncounterId(ctx)
-  const patient_id = getNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
   ctx.state.patient = await patients.getCard(ctx.state.trx, { id: patient_id })
   Object.assign(
