@@ -566,4 +566,103 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       },
     })
   })
+
+
+
+
+
+
+  it('supports POST on the occupation step, moving you to the family step', async () => {
+    const patient = await patients.upsert(db, {
+      name: 'Test Patient',
+    })
+    const testDoctor = await addTestHealthWorker({ scenario: 'doctor' })
+    const { fetch } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+    // const countryInfo = await address.getFullCountryInfo(db)
+    // const zimbabwe = countryInfo[0]
+    // assertEquals(zimbabwe.name, 'Zimbabwe')
+
+    // const province = sample(zimbabwe.provinces)
+    // const district = sample(province.districts)
+    // const ward = sample(district.wards)
+    // const suburb = ward.suburbs.length ? sample(ward.suburbs) : undefined
+
+    // body.set('country_id', String(zimbabwe.id))
+    // body.set('province_id', String(province.id))
+    // body.set('district_id', String(district.id))
+    // body.set('ward_id', String(ward.id))
+    // if (suburb) body.set('suburb_id', String(suburb.id))
+    // body.set('street', '120 Main Street')
+    // body.set('nearest_facility_id', '5')
+    // body.set('primary_doctor_id', String(testDoctor.id))
+    const body = new FormData()
+    body.set('school.inappropriate_reason', String('Bad Teacher'))
+    body.set('school.grades_dropping_reason', String('Worse Teacher'))
+    body.set('school.play_sports', Boolean(true))
+    body.set('school.grade_level', String('Grade 3'))
+    body.set('school.last_grade', String('Grade 2'))
+    body.set('stopSchool.stop_education_reason', String('Low self esteem'))
+    body.set('school.happy', Boolean(true))
+    body.set('')
+
+    const postResponse = await fetch(
+      `${route}/app/patients/${patient.id}/intake/address`,
+      {
+        method: 'POST',
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assert(
+      postResponse.url ===
+        `${route}/app/patients/${patient.id}/intake/pre-existing_conditions`,
+    )
+
+    const patientResult = await db.selectFrom('patients').selectAll().execute()
+    assertEquals(patientResult.length, 1)
+    assertEquals(patientResult[0].name, 'Test Patient')
+
+    const patientAddress = await db.selectFrom('address').selectAll().where(
+      'address.id',
+      '=',
+      patientResult[0].address_id ? patientResult[0].address_id : null,
+    ).execute()
+    assertEquals(patientAddress[0].country_id, zimbabwe.id)
+    assertEquals(patientAddress[0].province_id, province.id)
+    assertEquals(patientAddress[0].district_id, district.id)
+    assertEquals(patientAddress[0].ward_id, ward.id)
+    assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
+    assertEquals(patientAddress[0].street, '120 Main Street')
+
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient.id}/intake/address`,
+    )
+
+    
+    const pageContents = await getResponse.text()
+    const $ = cheerio.load(pageContents)
+    assertEquals(
+      $('input[name="address.country_id"]').val(),
+      String(zimbabwe.id),
+    )
+    assertEquals(
+      $('select[name="address.province_id"]').val(),
+      String(province.id),
+    )
+    assertEquals(
+      $('select[name="address.district_id"]').val(),
+      String(district.id),
+    )
+    assertEquals($('select[name="address.ward_id"]').val(), String(ward.id))
+    assertEquals(
+      $('select[name="address.suburb_id"]').val(),
+      suburb && String(suburb.id),
+    )
+    assertEquals($('input[name="address.street"]').val(), '120 Main Street')
+  })
 })

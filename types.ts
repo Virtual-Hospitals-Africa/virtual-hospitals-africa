@@ -1535,8 +1535,9 @@ export type PatientGuardian = {
 
 export type PatientOccupation = {
   patient_id: number
-  school: any
-  job: any
+  occupation: any
+  //school: any
+  //job: any
 }
 
 export type Allergy = {

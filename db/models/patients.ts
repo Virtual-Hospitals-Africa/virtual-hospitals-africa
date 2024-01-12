@@ -178,7 +178,7 @@ export async function upsertIntake(
   }: UpsertPatientIntake,
 ): Promise<void> {
   const upserting_occupation = occupation && patient_occupations.upsert(trx, {
-    ...occupation,
+    occupation,
     patient_id: id,
   })
 
