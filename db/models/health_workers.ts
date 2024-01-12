@@ -2,7 +2,6 @@ import { DeleteResult, sql, UpdateResult } from 'kysely'
 import isDate from '../../util/isDate.ts'
 import {
   EmployedHealthWorker,
-  EmployedHealthWorkerWithGoogleTokens,
   EmployeeInfo,
   GoogleTokens,
   HealthWorker,
@@ -17,6 +16,8 @@ import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
+import * as patient_encounters from './patient_encounters.ts'
+import { assertOr401 } from '../../util/assertOr.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -78,14 +79,15 @@ export async function updateTokens(
   trx: TrxOrDb,
   email: string,
   tokens: GoogleTokens,
-): Promise<Maybe<EmployedHealthWorkerWithGoogleTokens>> {
-  const healthWorker = await get(trx, { email })
+): Promise<null | { id: number }> {
+  const healthWorker = await trx.selectFrom('health_workers').where(
+    'email',
+    '=',
+    email,
+  ).select('id').executeTakeFirst()
   if (!healthWorker) return null
   await upsertGoogleTokens(trx, healthWorker.id, tokens)
-  return {
-    ...healthWorker,
-    ...tokens,
-  }
+  return healthWorker
 }
 
 const pickHealthWorkerDetails = pick([
@@ -159,7 +161,7 @@ export function isHealthWorkerWithGoogleTokens(
 
 export function isEmployed(
   health_worker: unknown,
-): health_worker is EmployedHealthWorker & HealthWorkerWithGoogleTokens {
+): health_worker is EmployedHealthWorker {
   return isHealthWorkerWithGoogleTokens(health_worker) &&
     'employment' in health_worker &&
     Array.isArray(health_worker.employment) &&
@@ -341,12 +343,9 @@ export async function search(
 
 export async function get(
   trx: TrxOrDb,
-  opts: {
-    email?: string
-    health_worker_id?: number
-  },
+  { health_worker_id }: { health_worker_id: number },
 ): Promise<Maybe<EmployedHealthWorker>> {
-  let query = trx
+  const result = await trx
     .selectFrom('health_workers')
     .leftJoin(
       'nurse_registration_details',
@@ -370,7 +369,9 @@ export async function get(
       'health_worker_google_tokens.access_token',
       'health_worker_google_tokens.refresh_token',
       'health_worker_google_tokens.expires_at',
-      'nurse_registration_details.health_worker_id',
+      eb('nurse_registration_details.health_worker_id', 'is', null).as(
+        'registration_needed',
+      ),
       'nurse_registration_details.approved_by',
       jsonArrayFrom(
         eb.selectFrom('employment')
@@ -394,33 +395,47 @@ export async function get(
             'health_workers.id',
           ),
       ).as('employment'),
-    ])
-
-  if (opts.email) query = query.where('health_workers.email', '=', opts.email)
-  if (opts.health_worker_id) {
-    query = query.where(
+      jsonArrayFrom(
+        patient_encounters.baseQuery(trx)
+          .where('patient_encounters.closed_at', 'is', null)
+          .where(
+            'patient_encounters.id',
+            'in',
+            patient_encounters.ofHealthWorker(trx, health_worker_id),
+          ),
+      ).as('open_encounters'),
+    ]).where(
       'health_workers.id',
       '=',
-      opts.health_worker_id,
-    )
-  }
+      health_worker_id,
+    ).executeTakeFirst()
 
-  const result = await query.executeTakeFirst()
   if (!result) return null
+  const {
+    access_token,
+    refresh_token,
+    expires_at,
+    registration_needed,
+    approved_by,
+    employment,
+    ...health_worker
+  } = result
+  assertOr401(access_token)
+  assertOr401(refresh_token)
+  assertOr401(expires_at)
 
   const employment_by_facility = groupBy(
-    result.employment,
+    employment,
     (e) => e.facility.id,
   )
 
   return {
-    id: result.id,
-    created_at: result.created_at,
-    updated_at: result.updated_at,
-    ...pickHealthWorkerDetails(result),
-    ...pickTokens(result),
-    employment: [...employment_by_facility.entries()].map(
-      ([_facility_id, roles]) => {
+    ...health_worker,
+    access_token,
+    refresh_token,
+    expires_at,
+    employment: [...employment_by_facility.values()].map(
+      (roles) => {
         const nurse_role = roles.find((r) => r.profession === 'nurse') || null
         const doctor_role = roles.find((r) => r.profession === 'doctor') || null
         const admin_role = roles.find((r) => r.profession === 'admin') || null
@@ -432,8 +447,8 @@ export async function get(
           facility: roles[0].facility,
           roles: {
             nurse: nurse_role && {
-              registration_needed: !result.health_worker_id,
-              registration_completed: !!result.approved_by,
+              registration_needed: !!registration_needed,
+              registration_completed: !!approved_by,
               registration_pending_approval: !result.approved_by,
               employment_id: nurse_role.employment_id,
             },

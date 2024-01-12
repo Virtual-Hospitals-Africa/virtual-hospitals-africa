@@ -50,8 +50,11 @@ describeWithWebServer('/login', 8002, (route) => {
           Cookie: `sessionId=${mock.sessionId}`,
         },
       })
-      assert(!response.ok)
-      response.body?.cancel()
+      assert(response.ok)
+      assert(
+        response.url ===
+          `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20facility%27s%20administrator.`,
+      )
     })
 
     it('allows admin access to /app', async () => {
