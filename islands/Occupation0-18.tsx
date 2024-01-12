@@ -6,6 +6,31 @@ import { assert } from 'std/assert/assert.ts'
 import { CheckboxInput } from '../components/library/form/Inputs.tsx'
 import { Maybe, PatientOccupation } from '../types.ts'
 
+
+//Questions for will
+//code stink on sports
+//school status not being sent to database.
+//Here is what we want in the occupation column of the database:
+// occupation: {
+//   school:{
+//     status: 'in school',
+//     happy: true
+//     grade: ECD 
+//     ...
+//   }
+//   sport:{
+//     true
+//   }
+//   job:{
+//     //job information here
+//   }
+// }
+
+//Ideally, we could send the Occupation object below to the 
+//database under the occupation column solving all of our problems. 
+
+
+
 type Occupation = {
   school: School
   sport?: boolean //If occupation is the JSON we will put in patient_occupations shouldnt it be able to have school + sport + job
@@ -23,37 +48,51 @@ type School = {
 }
 
 type CurrentSchool = {
+  status: string
   grade: string
   grades_dropping_reason: string | null
   happy: boolean
-  sports: boolean
+  //sports: boolean
   inappropriate_reason: string | null
 }
 
 type PastSchool = {
+  status: string
   last_grade: string
   reason: string
 }
 export default function Occupation0_18({
   occupation,
 }: {
-  occupation?: Occupation
+  occupation?: PatientOccupation
 }) {
   console.log('asdfghjkl ', occupation)
-  // const [occupationstate, setOccupation] = useState<Occupation>(
-  //   () =>
-  //     occupation ? occupation : {
-  //       school: {
-  //         status: 'never attended',
-  //       },
-  //     },
-  // )
+
   const [school, setSchool] = useState<School>(
-    occupation?.school || {
+    occupation?.occupation.school || {
       status: 'never attended',
     },
   )
-  //console.log('occupationState', occupationstate)
+  // console.log("school state before new if statement: ", school)
+  // if(school.status){
+  //   const nextSchool: School =
+  //                {
+  //                 status: 'in school',
+  //                 current: {
+  //                   status: 'in school',
+  //                   grade: 'ECD 1',
+  //                   grades_dropping_reason: null,
+  //                   happy: true,
+  //                   //sports: true,
+  //                   inappropriate_reason: null,
+  //                 },
+  //               }
+                
+  //             setSchool(nextSchool)
+  // }
+
+  console.log("school state after new if statement: ", school)
+
 
   const school_status = [
     'in school',
@@ -107,21 +146,22 @@ export default function Occupation0_18({
         <div class='flex-1'>
           <text>Does the patient go to school?</text>
         </div>
-        <div style={{ marginleft: 'auto' }}>
+        <div style={{ marginLeft: 'auto' }}>
           <CheckboxInput
-            name={null}
+            name={'occupation.school.status'} //If we could put school.status here it would be ideal but it would be a boolean
             label=''
-            checked={occupation?.school?.status === 'in school'}
+            checked={school.status !== 'never attended'}
             onInput={(event) => {
               assert(event.target instanceof HTMLInputElement)
               const nextSchool: School = event.target.checked
                 ? {
                   status: 'in school',
                   current: {
+                    status: 'in school',
                     grade: 'ECD 1',
                     grades_dropping_reason: null,
                     happy: true,
-                    sports: true,
+                    //sports: true,
                     inappropriate_reason: null,
                   },
                 }
@@ -150,6 +190,7 @@ export default function Occupation0_18({
                     ? {
                       status: 'stopped school',
                       past: {
+                        status: 'stopped school',
                         last_grade: 'Grade 1',
                         reason: 'Problems at home',
                       },
@@ -168,7 +209,7 @@ export default function Occupation0_18({
       {school.status === 'in school' && (
         <div class='flex right'>
           <div class='flex-1'>
-            <text>Is class appopriate for their age?</text>
+            <text>Is class appropriate for their age?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
@@ -242,10 +283,10 @@ export default function Occupation0_18({
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='occupation.play_sports'
+              name='occupation.sport'
               label=''
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-              checked={occupation.sport}
+              checked={occupation.occupation.sport}
             />
           </div>
         </div>

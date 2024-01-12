@@ -177,6 +177,7 @@ export async function upsertIntake(
     ...patient_updates
   }: UpsertPatientIntake,
 ): Promise<void> {
+  console.log("Good occupation in patient.ts", occupation)
   const upserting_occupation = occupation && patient_occupations.upsert(trx, {
     occupation,
     patient_id: id,

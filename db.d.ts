@@ -78,7 +78,6 @@ export interface Appointments {
 }
 
 export interface ConditionIcd10Codes {
-<<<<<<< HEAD
   condition_id: string
   created_at: Generated<Timestamp>
   icd10_code: string
@@ -96,25 +95,6 @@ export interface Conditions {
   term_icd9_code: string | null
   term_icd9_text: string | null
   updated_at: Generated<Timestamp>
-=======
-  condition_key_id: string;
-  created_at: Generated<Timestamp>;
-  icd10_code: string;
-  updated_at: Generated<Timestamp>;
-}
-
-export interface Conditions {
-  consumer_name: string;
-  created_at: Generated<Timestamp>;
-  info_link_href: string | null;
-  info_link_text: string | null;
-  is_procedure: boolean;
-  key_id: string;
-  primary_name: string;
-  term_icd9_code: string | null;
-  term_icd9_text: string | null;
-  updated_at: Generated<Timestamp>;
->>>>>>> ac6405ad (wip morning of 8th of january)
 }
 
 export interface Countries {
@@ -149,7 +129,6 @@ export interface Employment {
 }
 
 export interface Facilities {
-<<<<<<< HEAD
   address: string
   category: string
   created_at: Generated<Timestamp>
@@ -158,17 +137,6 @@ export interface Facilities {
   name: string
   phone: string | null
   updated_at: Generated<Timestamp>
-=======
-  address: string;
-  category: string;
-  created_at: Generated<Timestamp>;
-  display_name: Generated<string>;
-  id: Generated<number>;
-  location: string;
-  name: string;
-  phone: string | null;
-  updated_at: Generated<Timestamp>;
->>>>>>> ac6405ad (wip morning of 8th of january)
 }
 
 export interface GeographyColumns {
@@ -374,7 +342,6 @@ export interface PatientConditionMedications {
 }
 
 export interface PatientConditions {
-<<<<<<< HEAD
   comorbidity_of_condition_id: number | null
   condition_id: string
   created_at: Generated<Timestamp>
@@ -383,16 +350,6 @@ export interface PatientConditions {
   patient_id: number
   start_date: Timestamp
   updated_at: Generated<Timestamp>
-=======
-  comorbidity_of_condition_id: number | null;
-  condition_key_id: string;
-  created_at: Generated<Timestamp>;
-  end_date: Timestamp | null;
-  id: Generated<number>;
-  patient_id: number;
-  start_date: Timestamp;
-  updated_at: Generated<Timestamp>;
->>>>>>> ac6405ad (wip morning of 8th of january)
 }
 
 export interface PatientEncounterProviders {
@@ -544,7 +501,6 @@ export interface WhatsappMessagesSent {
 }
 
 export interface DB {
-<<<<<<< HEAD
   address: Address
   allergies: Allergies
   appointment_health_worker_attendees: AppointmentHealthWorkerAttendees
@@ -593,54 +549,5 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
-=======
-  address: Address;
-  allergies: Allergies;
-  appointment_health_worker_attendees: AppointmentHealthWorkerAttendees;
-  appointment_media: AppointmentMedia;
-  appointments: Appointments;
-  condition_icd10_codes: ConditionIcd10Codes;
-  conditions: Conditions;
-  countries: Countries;
-  districts: Districts;
-  drugs: Drugs;
-  employment: Employment;
-  facilities: Facilities;
-  geography_columns: GeographyColumns;
-  geometry_columns: GeometryColumns;
-  guardian_relations: GuardianRelations;
-  health_worker_google_tokens: HealthWorkerGoogleTokens;
-  health_worker_invitees: HealthWorkerInvitees;
-  health_workers: HealthWorkers;
-  icd10_codes: Icd10Codes;
-  mailing_list: MailingList;
-  manufactured_medications: ManufacturedMedications;
-  measurements: Measurements;
-  media: Media;
-  medications: Medications;
-  nurse_registration_details: NurseRegistrationDetails;
-  nurse_specialties: NurseSpecialties;
-  patient_age: PatientAge;
-  patient_allergies: PatientAllergies;
-  patient_appointment_offered_times: PatientAppointmentOfferedTimes;
-  patient_appointment_request_media: PatientAppointmentRequestMedia;
-  patient_appointment_requests: PatientAppointmentRequests;
-  patient_condition_medications: PatientConditionMedications;
-  patient_conditions: PatientConditions;
-  patient_encounter_providers: PatientEncounterProviders;
-  patient_encounters: PatientEncounters;
-  patient_guardians: PatientGuardians;
-  patient_measurements: PatientMeasurements;
-  patient_nearest_facilities: PatientNearestFacilities;
-  patient_occupations: PatientOccupations;
-  patients: Patients;
-  provinces: Provinces;
-  spatial_ref_sys: SpatialRefSys;
-  suburbs: Suburbs;
-  waiting_room: WaitingRoom;
-  wards: Wards;
-  whatsapp_messages_received: WhatsappMessagesReceived;
-  whatsapp_messages_sent: WhatsappMessagesSent;
->>>>>>> ac6405ad (wip morning of 8th of january)
 }
 type Buffer = Uint8Array
