@@ -4,20 +4,28 @@ import { Select } from '../components/library/form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { CheckboxInput } from '../components/library/form/Inputs.tsx'
+import { Maybe, Occupation, PatientOccupation, School } from '../types.ts'
 
-type School = {
-  grade: string
-  grades_dropping_reason: string | null
-  happy: boolean
-  sports: boolean
-  inappropriate_reason: string | null
-}
-type stopSchool = {
-  stopped_education_reason: string | null
-}
-export default function Occupation0_18() {
-  const [school, setSchool] = useState<null | School>(null)
+export default function Occupation0_18({
+  occupation = {
+    school: {
+      status: 'never attended',
+    },
+  },
+}: {
+  occupation?: Occupation
+}) {
+  const [school, setSchool] = useState<School>(
+    occupation.school || {
+      status: 'never attended',
+    },
+  )
 
+  const school_status = [
+    'in school',
+    'never attended',
+    'stopped school',
+  ]
   const class_inappropriate_reason = [
     'Change of town',
     'Repeated a class',
@@ -65,50 +73,90 @@ export default function Occupation0_18() {
         <div class='flex-1'>
           <text>Does the patient go to school?</text>
         </div>
-
-        <div style={{ marginleft: 'auto' }}>
+        <div style={{ marginLeft: 'auto' }}>
           <CheckboxInput
-            name={null}
+            name={null} //If we could put school.status here it would be ideal but it would be a boolean
             label=''
-            className='in_school_classname'
+            checked={school.status !== 'never attended'}
             onInput={(event) => {
               assert(event.target instanceof HTMLInputElement)
-              const nextSchool: null | School = event.target.checked
+              const nextSchool: School = event.target.checked
                 ? {
-                  grade: 'ECD 1',
-                  grades_dropping_reason: null,
-                  happy: true,
-                  sports: true,
-                  inappropriate_reason: null,
+                  status: 'in school',
+                  current: {
+                    grade: 'ECD 1',
+                    grades_dropping_reason: null,
+                    happy: true,
+                    //sports: true,
+                    inappropriate_reason: null,
+                  },
                 }
-                : null
+                : {
+                  status: 'never attended',
+                }
               setSchool(nextSchool)
             }}
           />
         </div>
+        <input
+          type='hidden'
+          name='occupation.school.status'
+          value={school.status}
+        />
       </div>
-
-      {school && (
+      {
+        school.status !== 'in school' && (
+          <div class='flex right'>
+            <div class='flex-1'>
+              <text>Has the patient ever gone to school?</text>
+            </div>
+            <div style={{ marginleft: 'auto' }}>
+              <CheckboxInput
+                name={null}
+                label=''
+                checked={school.status === 'stopped school'}
+                onInput={(event) => {
+                  assert(event.target instanceof HTMLInputElement)
+                  const nextSchool: School = event.target.checked
+                    ? {
+                      status: 'stopped school',
+                      past: {
+                        last_grade: 'Grade 1',
+                        reason: 'Problems at home',
+                      },
+                    }
+                    : {
+                      status: 'never attended',
+                    }
+                  setSchool(nextSchool)
+                }}
+              />
+            </div>
+          </div>
+        )
+        //If no, condition add another checkbox that asks "Has the patient ever been to school?"
+      }
+      {school.status === 'in school' && (
         <div class='flex right'>
           <div class='flex-1'>
-            <text>Is class appopriate for their age?</text>
+            <text>Is class appropriate for their age?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
               name={null}
               label=''
-              required={true}
-              checked={!school?.inappropriate_reason}
-              disabled={false}
-              readonly={false}
+              checked={school.current.inappropriate_reason === null}
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
               onInput={(event) => {
                 assert(event.target instanceof HTMLInputElement)
                 setSchool({
                   ...school,
-                  inappropriate_reason: event.target.checked
-                    ? null
-                    : class_inappropriate_reason[0],
+                  current: {
+                    ...school.current,
+                    inappropriate_reason: event.target.checked
+                      ? null
+                      : class_inappropriate_reason[0],
+                  },
                 })
               }}
             />
@@ -116,7 +164,7 @@ export default function Occupation0_18() {
         </div>
       )}
 
-      {school && (
+      {school.status === 'in school' && (
         <div class='flex items-center'>
           <div class='flex-1'>
             <text>Are the patient's grades dropping?</text>
@@ -125,81 +173,96 @@ export default function Occupation0_18() {
             <CheckboxInput
               name={null}
               label=''
-              required={true}
-              checked={!!school?.grades_dropping_reason}
-              disabled={false}
-              readonly={false}
+              checked={!!school.current.grades_dropping_reason}
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
               onInput={(event) => {
                 assert(event.target instanceof HTMLInputElement)
                 setSchool({
                   ...school,
-                  grades_dropping_reason: event.target.checked
-                    ? gradeDropReasons[0]
-                    : null,
+                  current: {
+                    ...school.current,
+                    grades_dropping_reason: event.target.checked
+                      ? gradeDropReasons[0]
+                      : null,
+                  },
                 })
               }}
             />
           </div>
         </div>
       )}
-      {school && (
+      {school.status === 'in school' && (
         <div class='flex right'>
           <div class='flex-1'>
             <text>Is the patient happy at school?</text>
           </div>
           <div style={{ marginleft: 'auto' }}>
             <CheckboxInput
-              name='occupation.school.happy'
+              name='occupation.school.current.happy'
               label=''
-              required={false}
-              checked={true}
-              disabled={false}
-              readonly={false}
+              checked={school.current.happy}
               className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
             />
           </div>
         </div>
       )}
-      <div class='flex right'>
-        <div class='flex-1'>
-          <text>Does the patient play any sports?</text>
+      {occupation && (
+        <div class='flex right'>
+          <div class='flex-1'>
+            <text>Does the patient play any sports?</text>
+          </div>
+          <div style={{ marginleft: 'auto' }}>
+            <CheckboxInput
+              name='occupation.sport'
+              label=''
+              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+              checked={occupation.sport}
+            />
+          </div>
         </div>
-        <div style={{ marginleft: 'auto' }}>
-          <CheckboxInput
-            name='occupation.school.play_sports'
-            label=''
-            required={false}
-            checked={false}
-            disabled={false}
-            readonly={false}
-            className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-          />
+      )}
+      {!occupation && (
+        <div class='flex right'>
+          <div class='flex-1'>
+            <text>Does the patient play any sports?</text>
+          </div>
+          <div style={{ marginleft: 'auto' }}>
+            <CheckboxInput
+              name='occupation.sport'
+              label=''
+              className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <section class='pt-6'>
         <FormRow>
-          <Select
-            label='Which class is the patient doing?'
-            name='occupation.school.grade_level'
-            selectClassName='w-full'
-          >
-            {grades.map((grade) => (
-              <option value={grade}>
-                {grade}
-              </option>
-            ))}
-          </Select>
-          {school?.inappropriate_reason && (
+          {school.status === 'in school' && (
+            <Select
+              label='Which class is the patient doing?'
+              name='occupation.school.current.grade'
+              selectClassName='w-full'
+              required
+            >
+              {grades.map((grade) => (
+                <option value={grade} selected={grade === school.current.grade}>
+                  {grade}
+                </option>
+              ))}
+            </Select>
+          )}
+
+          {school.status === 'in school' &&
+            school.current.inappropriate_reason !== null && (
             <SelectWithOther
               label='If the class is not appropriate, what was the reason?'
-              name='occupation.school.grade_inappropriate_reason'
+              name='occupation.school.current.inappropriate_reason'
             >
               {class_inappropriate_reason.map((reason) => (
                 <option
                   value={reason}
-                  selected={reason === school.inappropriate_reason}
+                  selected={reason === school.current.inappropriate_reason}
                 >
                   {reason}
                 </option>
@@ -209,23 +272,19 @@ export default function Occupation0_18() {
         </FormRow>
 
         <FormRow>
-          <Select
-            label='What grade was the patient in last school term?'
-            name='occupation.school.grade'
-          >
-            {grades.map((grade) => (
-              <option value={grade}>
-                {grade}
-              </option>
-            ))}
-          </Select>
-          {school?.grades_dropping_reason && (
+          {/* last grade only applies to stopSchool */}
+
+          {school.status === 'in school' &&
+            school.current.grades_dropping_reason !== null && (
             <SelectWithOther
               label='If the grades are dropping, why?'
-              name='occupation.school.grades_dropping_reason'
+              name='occupation.school.current.grades_dropping_reason'
             >
               {gradeDropReasons.map((reason) => (
-                <option value={reason}>
+                <option
+                  value={reason}
+                  selected={reason === school.current.grades_dropping_reason}
+                >
                   {reason}
                 </option>
               ))}
@@ -233,16 +292,37 @@ export default function Occupation0_18() {
           )}
         </FormRow>
         <FormRow>
-          <SelectWithOther
-            label='If the patient stopped their education, why?'
-            name='occupation.school.stopped_reason'
-          >
-            {stopEducationReasons.map((reason) => (
-              <option value={reason}>
-                {reason}
-              </option>
-            ))}
-          </SelectWithOther>
+          {school.status === 'stopped school' && (
+            <SelectWithOther
+              label='If the patient stopped their education, why?'
+              name='occupation.school.past.stopped_reason'
+            >
+              {stopEducationReasons.map((reason) => (
+                <option
+                  value={reason}
+                  selected={reason === school?.past.reason}
+                >
+                  {reason}
+                </option>
+              ))}
+            </SelectWithOther>
+          )}
+
+          {school.status === 'stopped school' && (
+            <Select
+              label='What grade was the patient in last school term?'
+              name='occupation.past.stopped_last_grade'
+            >
+              {grades.map((grade) => (
+                <option
+                  value={grade}
+                  selected={grade === school.past.last_grade}
+                >
+                  {grade}
+                </option>
+              ))}
+            </Select>
+          )}
         </FormRow>
       </section>
     </>

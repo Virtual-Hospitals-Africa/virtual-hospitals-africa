@@ -4,8 +4,11 @@ import {
   FullCountryInfo,
   LoggedInHealthWorkerHandler,
   Maybe,
+  Occupation,
   PastMedicalCondition,
   PatientFamily,
+  PatientOccupation,
+  PreExistingAllergy,
   PreExistingConditionWithDrugs,
   TrxOrDb,
 } from '../../../../../types.ts'
@@ -16,6 +19,7 @@ import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
 import * as patient_age from '../../../../../db/models/patient_age.ts'
+import * as patient_occupation from '../../../../../db/models/patient_occupations.ts'
 import redirect from '../../../../../util/redirect.ts'
 import {
   getNextStep,
@@ -55,14 +59,15 @@ type IntakePatientProps = {
   allergies: Allergy[]
   patient_allergies: Allergy[]
 } | {
+  step: 'occupation'
+  occupation?: Occupation
+  age: PatientAge
+} | {
   step: 'family'
   family: PatientFamily
 } | {
   step: 'history'
   past_medical_conditions: PastMedicalCondition[]
-} | {
-  step: 'occupation'
-  age: PatientAge
 }
 
 type PersonalFormValues = {
@@ -337,6 +342,8 @@ async function getIntakePatientProps(
       return { step, family }
     }
     case 'occupation': {
+      const occupation = await patient_occupation.get(trx, { patient_id })
+
       const age = await patient_age.get(trx, { patient_id })
       const warning = encodeURIComponent(
         "Please fill out the patient's personal information beforehand.",
@@ -345,8 +352,9 @@ async function getIntakePatientProps(
         age,
         `/app/patients/${patient_id}/intake/personal?warning=${warning}`,
       )
-      return { step, age }
+      return { step, age, occupation }
     }
+
     default:
       return { step }
   }
@@ -392,6 +400,7 @@ export default async function IntakePatientPage(
         <PatientOccupationForm
           patient={patient}
           patientAge={props.age}
+          occupation={props.occupation}
         />
       )}
       {props.step === 'history' && (

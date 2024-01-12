@@ -1,7 +1,7 @@
 import { PatientAge } from '../../../db.d.ts'
 import Occupation0_18 from '../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../islands/Occupation19.tsx'
-import { OnboardingPatient } from '../../../types.ts'
+import { Occupation, OnboardingPatient } from '../../../types.ts'
 
 function isPatientUnder19(patientAge: PatientAge): boolean {
   if (patientAge.age_number == null) {
@@ -12,14 +12,21 @@ function isPatientUnder19(patientAge: PatientAge): boolean {
 }
 
 export default function PatientOccupationForm(
-  { patient = {}, patientAge }: {
+  { patient = {}, patientAge, occupation }: {
     patient?: Partial<OnboardingPatient>
     patientAge: PatientAge
+    occupation: Occupation | undefined
   },
 ) {
   return (
     <>
-      {isPatientUnder19(patientAge) ? <Occupation0_18 /> : <Occupation19 />}
+      {isPatientUnder19(patientAge)
+        ? (
+          <Occupation0_18
+            occupation={occupation}
+          />
+        )
+        : <Occupation19 />}
     </>
   )
 }

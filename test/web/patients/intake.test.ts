@@ -9,6 +9,7 @@ import {
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
+import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
 import * as patient_allergies from '../../../db/models/patient_allergies.ts'
@@ -19,6 +20,7 @@ import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 import omit from '../../../util/omit.ts'
 import deepOmit from '../../../util/deepOmit.ts'
+import * as patient_occupations from '../../../db/models/patient_occupations.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -557,7 +559,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         guardians: [
           {
             family_relation_gendered: 'biological mother',
-            next_of_kin: null,
+            next_of_kin: false,
             patient_id: patient_family.guardians[0].patient_id,
             patient_name: 'New Guardian',
             patient_phone_number: 3333333333,
@@ -565,5 +567,112 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         ],
       },
     })
+  })
+
+  it('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
+
+    const { fetch } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {},
+    )
+    assertEquals(
+      getResponse.url,
+      `${route}/app/patients/${patient_id}/intake/personal?warning=Please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
+    )
+  })
+
+  it('supports POST on the occupation step, moving you to the family step', async () => {
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
+
+    await patients.upsert(db, {
+      id: patient_id,
+      date_of_birth: '2020-01-01',
+    })
+
+    const { fetch } = await addTestHealthWorkerWithSession({
+      scenario: 'approved-nurse',
+    })
+
+    const body = new FormData()
+    body.set('occupation.school.status', 'in school')
+    body.set('occupation.school.current.inappropriate_reason', 'Change of town')
+    body.set(
+      'occupation.school.current.grades_dropping_reason',
+      'Abuse',
+    )
+    body.set('occupation.sport', 'on')
+    body.set('occupation.school.current.grade', 'Grade 3')
+    body.set('occupation.school.current.happy', 'on')
+
+    const postResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {
+        method: 'POST',
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assert(
+      postResponse.url ===
+        `${route}/app/patients/${patient_id}/intake/family`,
+    )
+
+    const occupation = await patient_occupations.get(db, {
+      patient_id,
+    })
+    assert(occupation)
+    assertEquals(occupation, {
+      school: {
+        current: {
+          grade: 'Grade 3',
+          grades_dropping_reason: 'Abuse',
+          happy: true,
+          inappropriate_reason: 'Change of town',
+        },
+        status: 'in school',
+      },
+      sport: true,
+    })
+
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {},
+    )
+
+    const pageContents = await getResponse.text()
+    const $ = cheerio.load(pageContents)
+    const formValues = getFormValues($)
+    assertEquals(
+      formValues,
+      {
+        occupation: {
+          school: {
+            current: {
+              grade: 'Grade 3',
+              grades_dropping_reason: 'Abuse',
+              happy: true,
+              inappropriate_reason: 'Change of town',
+            },
+            status: 'in school',
+          },
+          sport: true,
+        },
+      },
+      'The form should be 1:1 with the occupations in the DB',
+    )
   })
 })

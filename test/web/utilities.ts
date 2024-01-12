@@ -232,6 +232,13 @@ export function getFormValues($: cheerio.CheerioAPI): unknown {
   const formValues = {}
   $('form input,textarea').each((_i, el) => {
     if (!el.attribs.name) return
+    if (el.attribs.type === 'checkbox') {
+      return set(
+        formValues,
+        el.attribs.name,
+        'checked' in el.attribs,
+      )
+    }
     if (el.attribs.type !== 'radio' || ('checked' in el.attribs)) {
       set(
         formValues,

@@ -10,8 +10,7 @@ export async function up(db: Kysely<unknown>) {
         .notNull()
         .references('patients.id')
         .onDelete('cascade'))
-    .addColumn('school', 'json') //All Information Collect
-    .addColumn('job', 'json')
+    .addColumn('occupation', 'json')
     .addColumn(
       'created_at',
       'timestamptz',
@@ -22,6 +21,7 @@ export async function up(db: Kysely<unknown>) {
       'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
+    .addUniqueConstraint('patient_id', ['patient_id'])
     .execute()
 
   await addUpdatedAtTrigger(db, 'patient_occupations')

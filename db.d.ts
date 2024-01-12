@@ -459,9 +459,8 @@ export interface PatientNearestFacilities {
 export interface PatientOccupations {
   created_at: Generated<Timestamp>
   id: Generated<number>
-  job: Json | null
+  occupation: Json | null
   patient_id: number
-  school: Json | null
   updated_at: Generated<Timestamp>
 }
 
