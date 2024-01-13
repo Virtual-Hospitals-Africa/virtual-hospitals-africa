@@ -1,5 +1,5 @@
 import { NumberInput } from '../../../../../../components/library/form/Inputs.tsx'
-import { EncounterContext, EncounterLayout } from './_middleware.tsx'
+import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {
   LoggedInHealthWorkerHandler,
@@ -12,6 +12,7 @@ import capitalize from '../../../../../../util/capitalize.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 import { log } from '../../../../../_middleware.ts'
+import redirect from '../../../../../../util/redirect.ts'
 
 function assertIsVitals(
   values: unknown,
@@ -61,7 +62,7 @@ export const handler: LoggedInHealthWorkerHandler<
       measurements,
     })
 
-    return new Response('OK')
+    return redirect(nextLink(ctx))
   },
 }
 

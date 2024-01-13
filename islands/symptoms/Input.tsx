@@ -1,72 +1,61 @@
-import { computed, useSignal } from '@preact/signals'
-import SymptomSearch from './Search.tsx'
-import { MinusCircleIcon } from '../../components/library/icons/heroicons/mini.tsx'
-import { SYMPTOMS } from '../../shared/symptoms.ts'
-import { PatientSymptomUpsert } from '../../types.ts'
+import {
+  DateInput,
+  SelectWithOptions,
+  TextArea,
+  TextInput,
+} from '../../components/library/form/Inputs.tsx'
+import FormRow from '../../components/library/form/Row.tsx'
+import { EditingSymptom } from './Section.tsx'
+import { useSignal } from '@preact/signals'
+import { RemoveRow } from '../AddRemove.tsx'
+import range from '../../util/range.ts'
 
-const all_symptoms_options = SYMPTOMS.map(({ symptom, category, aliases }) => ({
-  id: symptom,
-  name: symptom,
-  category,
-  aliases,
-}))
-
-export type SymptomOption = typeof all_symptoms_options[number]
-
-export default function SymptomInput(props: {
-  patient_symptoms: PatientSymptomUpsert[]
+export default function SymptomInput({
+  name,
+  value,
+}: {
+  name: string
+  value: EditingSymptom
 }) {
-  const patient_symptoms = useSignal(props.patient_symptoms)
-
-  const options = computed(() =>
-    all_symptoms_options.filter((o) =>
-      patient_symptoms.value.every((ps) => ps.symptom !== o.id)
-    )
-  )
-
-  const add = (symptom: SymptomOption) =>
-    patient_symptoms.value = [...patient_symptoms.value, {
-      symptom: symptom.id,
-      severity: 1,
-      start_date: '',
-      end_date: null,
-      site: null,
-      notes: null,
-    }]
-
-  const remove = (symptom: PatientSymptomUpsert) =>
-    patient_symptoms.value = patient_symptoms.value.filter((ps) =>
-      ps.symptom !== symptom.symptom
-    )
+  const is_removed = useSignal(false)
+  if (is_removed.value) return null
 
   return (
-    <div className='flex flex-col gap-1'>
-      <SymptomSearch
-        options={options.value}
-        add={add}
-      />
-      {patient_symptoms.value.length > 0 && (
-        <div className='flex-start flex flex-wrap gap-2 w-full'>
-          {patient_symptoms.value.map((symptom, i) => (
-            <>
-              <button
-                key={symptom.symptom}
-                type='button'
-                onClick={() => remove(symptom)}
-                className='flex flex-row gap-2 items-center justify-between rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 h-9 p-2 cursor-pointer'
-              >
-                {symptom.symptom}
-                <MinusCircleIcon className='text-indigo-600' />
-              </button>
-            </>
-          ))}
-        </div>
-      )}
-      <input
-        type='hidden'
-        name='symptoms'
-        value={JSON.stringify(patient_symptoms.value)}
-      />
-    </div>
+    <RemoveRow onClick={() => is_removed.value = true} labelled>
+      <div className='w-full justify-normal'>
+        <FormRow className='w-full justify-normal'>
+          <TextInput
+            name={`${name}.symptom`}
+            required
+            readonly
+            value={value.symptom}
+          />
+          <SelectWithOptions
+            name={`${name}.severity`}
+            required
+            options={range(1, 10)}
+            value={value.severity}
+          />
+          <DateInput
+            name={`${name}.start_date`}
+            value={value.start_date}
+            required
+          />
+          <DateInput
+            name={`${name}.end_date`}
+            value={value.end_date}
+          />
+        </FormRow>
+        <FormRow>
+          <TextArea
+            name={`${name}.notes`}
+            className='w-full'
+            label='Notes'
+            value={value.notes}
+            rows={2}
+          />
+        </FormRow>
+      </div>
+    </RemoveRow>
   )
 }

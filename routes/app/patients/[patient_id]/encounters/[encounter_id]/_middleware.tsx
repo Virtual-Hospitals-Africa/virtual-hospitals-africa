@@ -31,6 +31,7 @@ import {
   replaceParams,
 } from '../../../../../../components/library/Sidebar.tsx'
 import LogoutIcon from '../../../../../../components/library/icons/logout.tsx'
+import capitalize from '../../../../../../util/capitalize.ts'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -208,6 +209,16 @@ export const seeking_treatment_nav_links: LinkDef[] = [
   },
 ]
 
+export const nextLink = ({ route, params }: FreshContext) => {
+  const current_index = seeking_treatment_nav_links.findIndex(
+    (link) => link.route === route,
+  )
+  assert(current_index >= 0)
+  const next_link = seeking_treatment_nav_links[current_index + 1]
+  assert(next_link)
+  return replaceParams(next_link.route, params)
+}
+
 export function SeekingTreatmentSidebar(
   { route, params, patient }: {
     route: string
@@ -234,7 +245,7 @@ export function EncounterLayout({
 }: { ctx: EncounterContext; children: ComponentChildren }): JSX.Element {
   return (
     <Layout
-      title='Patient Vitals'
+      title={capitalize(ctx.state.encounter.reason)}
       sidebar={
         <SeekingTreatmentSidebar
           route={ctx.route}

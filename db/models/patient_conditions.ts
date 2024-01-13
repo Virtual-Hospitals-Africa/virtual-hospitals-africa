@@ -302,7 +302,9 @@ export async function getPreExistingConditions(
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
       'drugs.generic_name as name',
-      isoDate(eb.ref('patient_condition_medications.start_date')).as('start_date'),
+      isoDate(eb.ref('patient_condition_medications.start_date')).as(
+        'start_date',
+      ),
     ])
     .execute()
 

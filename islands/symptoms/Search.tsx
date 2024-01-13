@@ -1,7 +1,7 @@
+import { computed, useSignal } from '@preact/signals'
 import Search from '../Search.tsx'
 import cls from '../../util/cls.ts'
-import { computed, useSignal } from '@preact/signals'
-import { SymptomOption } from './Input.tsx'
+import { SymptomOption } from './Section.tsx'
 
 function SymptomsResult({
   option,
