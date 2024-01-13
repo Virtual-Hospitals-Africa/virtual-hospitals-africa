@@ -28,7 +28,6 @@ function parseFormWithoutFilesNoTypeCheck(
     if (value === '') return
     set(parsed, key, parseParam(value))
   })
-  console.log('parseFormWithoutFilesNoTypeCheck', params, parsed)
   return deepRemoveHoles(parsed)
 }
 

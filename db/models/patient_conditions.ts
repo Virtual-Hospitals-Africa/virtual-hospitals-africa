@@ -18,6 +18,8 @@ import {
 } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
+import { isoDate } from '../helpers.ts'
+import assertAllNotNull from '../../util/assertAllNotNull.ts'
 
 type PatientMedicationUpsert = {
   id?: Maybe<number>
@@ -258,13 +260,11 @@ export async function getPreExistingConditions(
     )
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is', null)
-    .select([
+    .select((eb) => [
       'conditions.id',
       'conditions.name',
       'patient_conditions.id as patient_condition_id',
-      sql<string>`TO_CHAR(patient_conditions.start_date, 'YYYY-MM-DD')`.as(
-        'start_date',
-      ),
+      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
       'patient_conditions.comorbidity_of_condition_id',
     ])
     .execute()
@@ -289,7 +289,7 @@ export async function getPreExistingConditions(
       'patient_condition_medications.patient_condition_id',
     )
     .where('patient_conditions.patient_id', '=', opts.patient_id)
-    .select([
+    .select((eb) => [
       'drugs.id',
       'medications.id as medication_id',
       'patient_condition_medications.manufactured_medication_id',
@@ -302,11 +302,7 @@ export async function getPreExistingConditions(
         MedicationSchedule[]
       >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
       'drugs.generic_name as name',
-      sql<
-        string
-      >`TO_CHAR(patient_condition_medications.start_date, 'YYYY-MM-DD')`.as(
-        'start_date',
-      ),
+      isoDate(eb.ref('patient_condition_medications.start_date')).as('start_date'),
     ])
     .execute()
 
@@ -376,13 +372,13 @@ export async function getPreExistingConditionsWithDrugs(
   }))
 }
 
-export function getPastMedicalConditions(
+export async function getPastMedicalConditions(
   trx: TrxOrDb,
   opts: {
     patient_id: number
   },
 ): Promise<PastMedicalCondition[]> {
-  return trx
+  const results = await trx
     .selectFrom('patient_conditions')
     .innerJoin(
       'conditions',
@@ -391,18 +387,17 @@ export function getPastMedicalConditions(
     )
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is not', null)
-    .select([
+    .select((eb) => [
       'conditions.id',
       'conditions.name',
       'patient_conditions.id as patient_condition_id',
-      sql<string>`TO_CHAR(patient_conditions.start_date, 'YYYY-MM-DD')`.as(
-        'start_date',
-      ),
-      sql<string>`TO_CHAR(patient_conditions.end_date, 'YYYY-MM-DD')`.as(
-        'end_date',
-      ),
+      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+      isoDate(eb.ref('patient_conditions.end_date')).as('end_date'),
     ])
     .execute()
+
+  assertAllNotNull(results, 'end_date')
+  return results
 }
 
 export async function upsertPastMedical(

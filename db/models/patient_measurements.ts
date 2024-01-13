@@ -80,6 +80,7 @@ export async function getEncounterVitals(
       'measurements.units',
     ])
 
+  // TODO: abstract this out into patient_encounters model
   if (encounter_id !== 'open') {
     query = query.where('patient_measurements.encounter_id', '=', encounter_id)
   } else {

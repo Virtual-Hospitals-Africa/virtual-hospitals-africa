@@ -1680,4 +1680,13 @@ export type PatientMeasurement = {
   value: number
 }
 
+export type PatientSymptomUpsert = {
+  symptom: string
+  severity: number
+  start_date: string
+  end_date: string | null
+  site: string | null
+  notes: string | null
+}
+
 export type DatabaseSchema = DB

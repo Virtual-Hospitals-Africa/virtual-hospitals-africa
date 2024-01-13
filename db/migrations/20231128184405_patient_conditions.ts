@@ -39,6 +39,12 @@ export async function up(db: Kysely<any>) {
       'condition_id',
       'start_date',
     ], (constraint) => constraint.nullsNotDistinct())
+    .addCheckConstraint(
+      'patient_condition_date_range',
+      sql`
+      end_date IS NULL OR end_date >= start_date
+    `,
+    )
     .execute()
   await addUpdatedAtTrigger(db, 'patient_conditions')
 }
