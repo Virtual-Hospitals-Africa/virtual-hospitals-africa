@@ -2,7 +2,7 @@ import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
-import { afterAll, beforeAll, beforeEach, describe } from 'std/testing/bdd.ts'
+import { afterAll, beforeAll, beforeEach, it, describe } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
@@ -14,7 +14,7 @@ import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
-import { HealthWorkerWithGoogleTokens } from '../../types.ts'
+import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -293,4 +293,10 @@ export function getFormDisplay($: cheerio.CheerioAPI): unknown {
     })
   })
   return formDisplay
+}
+
+export function itUsesTrxAnd(description: string, callback: (trx: TrxOrDb) => Promise<void>, opts: { only?: boolean, skip?: boolean } = {}) {
+  const { only, skip } = opts
+  const _it = only ? it.only : skip ? it.skip : it
+  _it(description, () => db.transaction().execute(callback))
 }
