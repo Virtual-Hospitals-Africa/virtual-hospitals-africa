@@ -1,26 +1,25 @@
-import { it } from 'std/testing/bdd.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   addTestHealthWorkerWithSession,
   describeWithWebServer,
   getFormValues,
+  itUsesTrxAnd,
 } from '../utilities.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_measurements from '../../../db/models/patient_measurements.ts'
-import db from '../../../db/db.ts'
 
 describeWithWebServer(
   '/app/patients/[patient_id]/encounters/open/vitals',
   8009,
   (route) => {
-    it('renders a page on GET for an open encounter', async () => {
-      const patient = await patients.upsert(db, { name: 'Test Patient' })
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('renders a page on GET for an open encounter', async (trx) => {
+      const patient = await patients.upsert(trx, { name: 'Test Patient' })
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
-      await patient_encounters.upsert(db, 1, {
+      await patient_encounters.upsert(trx, 1, {
         patient_id: patient.id,
         reason: 'seeking treatment',
         provider_ids: [healthWorker.employee_id!],
@@ -49,9 +48,9 @@ describeWithWebServer(
       })
     })
 
-    it('404s on a GET for a patient with no open encounter', async () => {
-      const patient = await patients.upsert(db, { name: 'Test Patient' })
-      const { fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('404s on a GET for a patient with no open encounter', async (trx) => {
+      const patient = await patients.upsert(trx, { name: 'Test Patient' })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
 
@@ -63,11 +62,11 @@ describeWithWebServer(
       assertEquals(await response.text(), 'No open visit with this patient')
     })
 
-    it('can save vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('can save vitals on POST', async (trx) => {
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(db, 1, {
+      const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
         provider_ids: [healthWorker.employee_id!],
@@ -84,7 +83,7 @@ describeWithWebServer(
         },
       )
       if (!response.ok) throw new Error(await response.text())
-      const vitals = await patient_measurements.getEncounterVitals(db, {
+      const vitals = await patient_measurements.getEncounterVitals(trx, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
       })
@@ -117,16 +116,16 @@ describeWithWebServer(
       }
     })
 
-    it('can overwrite existing vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('can overwrite existing vitals on POST', async (trx) => {
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(db, 1, {
+      const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
         provider_ids: [healthWorker.employee_id!],
       })
-      await patient_measurements.upsertVitals(db, {
+      await patient_measurements.upsertVitals(trx, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
         encounter_provider_id: encounter.provider_ids[0],
@@ -148,7 +147,7 @@ describeWithWebServer(
         },
       )
       if (!response.ok) throw new Error(await response.text())
-      const vitals = await patient_measurements.getEncounterVitals(db, {
+      const vitals = await patient_measurements.getEncounterVitals(trx, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
       })
@@ -182,16 +181,16 @@ describeWithWebServer(
       }
     })
 
-    it('can remove existing vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('can remove existing vitals on POST', async (trx) => {
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(db, 1, {
+      const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
         provider_ids: [healthWorker.employee_id!],
       })
-      await patient_measurements.upsertVitals(db, {
+      await patient_measurements.upsertVitals(trx, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
         encounter_provider_id: encounter.provider_ids[0],
@@ -214,7 +213,7 @@ describeWithWebServer(
         },
       )
       if (!response.ok) throw new Error(await response.text())
-      const vitals = await patient_measurements.getEncounterVitals(db, {
+      const vitals = await patient_measurements.getEncounterVitals(trx, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
       })

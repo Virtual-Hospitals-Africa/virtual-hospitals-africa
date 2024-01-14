@@ -6,7 +6,6 @@ import {
 } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import sample from '../util/sample.ts'
-import db from '../db/db.ts'
 import * as address from '../db/models/address.ts'
 
 let health_worker_counter = 0
@@ -32,6 +31,14 @@ export function randomDigit() {
   return Math.floor(Math.random() * 10)
 }
 
+export function randomDigits(length: number) {
+  return Array.from({ length }, randomDigit).join('')
+}
+
+export function randomPhoneNumber() {
+  return '+263 ' + randomDigits(9)
+}
+
 export function randomLetter() {
   return 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[Math.floor(Math.random() * 26)]
 }
@@ -41,6 +48,7 @@ export function randomNationalId() {
 }
 
 export const testRegistrationDetails = async (
+  trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: number },
 ): Promise<NurseRegistrationDetails> => ({
   health_worker_id,
@@ -48,24 +56,24 @@ export const testRegistrationDetails = async (
   date_of_birth: '1979-12-12',
   national_id_number: randomNationalId(),
   date_of_first_practice: '1999-11-11',
-  ncz_registration_number: 'GN123456',
-  mobile_number: '1111',
+  ncz_registration_number: 'GN' + randomDigits(6),
+  mobile_number: randomPhoneNumber(),
   national_id_media_id: undefined,
   ncz_registration_card_media_id: undefined,
   face_picture_media_id: undefined,
   nurse_practicing_cert_media_id: undefined,
   approved_by: undefined,
-  address_id: (await insertTestAddress()).id,
+  address_id: (await insertTestAddress(trx)).id,
 })
 
-export async function createTestAddress(trx: TrxOrDb = db): Promise<Address> {
+export async function createTestAddress(trx: TrxOrDb): Promise<Address> {
   const fullCountryInfo = await address.getFullCountryInfo(trx)
   const country = sample(fullCountryInfo)
   const province = sample(country.provinces)
   const district = sample(province.districts)
   const ward = sample(district.wards)
   const suburb = ward.suburbs.length ? sample(ward.suburbs) : null
-  const street = Math.random().toString(36).substring(7)
+  const street = Math.random().toString(36).substring(7) + ' Main Street'
   return {
     street,
     suburb_id: suburb?.id || null,
@@ -77,7 +85,7 @@ export async function createTestAddress(trx: TrxOrDb = db): Promise<Address> {
 }
 
 export async function insertTestAddress(
-  trx: TrxOrDb = db,
+  trx: TrxOrDb,
 ): Promise<ReturnedSqlRow<Address>> {
   return address.upsert(trx, await createTestAddress(trx))
 }

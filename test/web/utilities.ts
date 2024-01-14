@@ -13,7 +13,6 @@ import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
-
 import * as employee from '../../db/models/employment.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -138,17 +137,19 @@ export function describeWithWebServer(
   )
 }
 
-export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
+export async function addTestHealthWorker(
+  trx: TrxOrDb,
+  { scenario, facility_id = 1 }: {
   scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
   facility_id?: number
 } = { scenario: 'base' }) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
-  } = await upsertWithGoogleCredentials(db, testHealthWorker())
+  } = await upsertWithGoogleCredentials(trx, testHealthWorker())
   switch (scenario) {
     case 'approved-nurse': {
-      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
-      const [created_employee] = await employee.add(db, [{
+      const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
+      const [created_employee] = await employee.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
@@ -159,19 +160,19 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
       }])
       healthWorker.employee_id = created_employee.id
       await details.add(
-        db,
-        await testRegistrationDetails({
+        trx,
+        await testRegistrationDetails(trx, {
           health_worker_id: healthWorker.id,
         }),
       )
-      await details.approve(db, {
+      await details.approve(trx, {
         approverId: admin.id,
         healthWorkerId: healthWorker.id,
       })
       break
     }
     case 'admin': {
-      const [created_employee] = await employee.add(db, [{
+      const [created_employee] = await employee.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'admin',
@@ -180,7 +181,7 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
       break
     }
     case 'doctor': {
-      const [created_employee] = await employee.add(db, [{
+      const [created_employee] = await employee.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
@@ -189,7 +190,7 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
       break
     }
     case 'nurse': {
-      const [created_employee] = await employee.add(db, [{
+      const [created_employee] = await employee.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
@@ -202,11 +203,11 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
   return healthWorker
 }
 
-export async function addTestHealthWorkerWithSession(opts: {
+export async function addTestHealthWorkerWithSession(trx: TrxOrDb, opts: {
   scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
 } = { scenario: 'base' }) {
   const sessionId = generateUUID()
-  const healthWorker = await addTestHealthWorker(opts)
+  const healthWorker = await addTestHealthWorker(trx, opts)
   await redis.set(
     `S_${sessionId}`,
     JSON.stringify({

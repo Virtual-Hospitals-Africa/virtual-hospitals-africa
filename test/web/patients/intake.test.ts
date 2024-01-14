@@ -1,4 +1,3 @@
-import { it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorker,
@@ -6,9 +5,9 @@ import {
   describeWithWebServer,
   getFormDisplay,
   getFormValues,
+  itUsesTrxAnd,
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
-import db from '../../../db/db.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../../db/models/patient_conditions.ts'
@@ -23,12 +22,12 @@ import deepOmit from '../../../util/deepOmit.ts'
 import * as patient_occupations from '../../../db/models/patient_occupations.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
-  it('loads the personal page', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('loads the personal page', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
     const response = await fetch(
@@ -47,12 +46,12 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assert($('input[name="nonexistant"]').length === 0)
   })
 
-  it('supports POST on the personal step, moving you to the address step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('supports POST on the personal step, moving you to the address step', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
     const body = new FormData()
@@ -76,7 +75,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       throw new Error(await postResponse.text())
     }
 
-    const patients_after_update = await db.selectFrom('patients').selectAll()
+    const patients_after_update = await trx.selectFrom('patients').selectAll()
       .execute()
     assertEquals(patients_after_update.length, 1)
     assertEquals(patients_after_update[0].name, 'Test Zoom Zoom Patient')
@@ -103,16 +102,16 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals($('input[name="phone_number"]').val(), '5555555555')
   })
 
-  it('supports POST on the address step, moving you to the pre-existing_conditions step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('supports POST on the address step, moving you to the pre-existing_conditions step', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const testDoctor = await addTestHealthWorker({ scenario: 'doctor' })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const testDoctor = await addTestHealthWorker(trx, { scenario: 'doctor' })
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
-    const countryInfo = await address.getFullCountryInfo(db)
+    const countryInfo = await address.getFullCountryInfo(trx)
     const zimbabwe = countryInfo[0]
     assertEquals(zimbabwe.name, 'Zimbabwe')
 
@@ -147,11 +146,11 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
     )
 
-    const patientResult = await db.selectFrom('patients').selectAll().execute()
+    const patientResult = await trx.selectFrom('patients').selectAll().execute()
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
 
-    const patientAddress = await db.selectFrom('address').selectAll().where(
+    const patientAddress = await trx.selectFrom('address').selectAll().where(
       'address.id',
       '=',
       patientResult[0].address_id ? patientResult[0].address_id : null,
@@ -189,16 +188,16 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals($('input[name="address.street"]').val(), '120 Main Street')
   })
 
-  it('supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the history step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the history step', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
 
-    const tablet = await db.selectFrom('medications')
+    const tablet = await trx.selectFrom('medications')
       .selectAll()
       .where(
         'medications.form_route',
@@ -207,7 +206,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       )
       .executeTakeFirstOrThrow()
 
-    const drug = await db.selectFrom('drugs').select('generic_name').where(
+    const drug = await trx.selectFrom('drugs').select('generic_name').where(
       'id',
       '=',
       tablet.drug_id,
@@ -248,7 +247,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const pre_existing_conditions = await getPreExistingConditions(db, {
+    const pre_existing_conditions = await getPreExistingConditions(trx, {
       patient_id: patient_id,
     })
 
@@ -326,12 +325,12 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     }, 'The form should display the medications in a human-readable format')
   })
 
-  it('supports POST of allergies on the pre-existing_conditions step, moving you to the history step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('supports POST of allergies on the pre-existing_conditions step, moving you to the history step', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
 
@@ -355,7 +354,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const allergies = await patient_allergies.get(db, patient_id)
+    const allergies = await patient_allergies.get(trx, patient_id)
 
     assertEquals(allergies.length, 2)
     assertEquals(allergies[0].id, 7)
@@ -376,16 +375,16 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
   })
 
-  it('can remove all pre_existing_conditions on POST', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('can remove all pre_existing_conditions on POST', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
 
-    await patient_conditions.upsertPreExisting(db, patient_id, [
+    await patient_conditions.upsertPreExisting(trx, patient_id, [
       {
         id: 'c_4373',
         start_date: '1989-01-12',
@@ -408,23 +407,23 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const pre_existing_conditions = await getPreExistingConditions(db, {
+    const pre_existing_conditions = await getPreExistingConditions(trx, {
       patient_id: patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 0)
   })
 
-  it('handles holes in an array of pre_existing_conditions on POST', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('handles holes in an array of pre_existing_conditions on POST', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
 
-    const tablet = await db.selectFrom('medications')
+    const tablet = await trx.selectFrom('medications')
       .selectAll()
       .where(
         'medications.form_route',
@@ -433,7 +432,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       )
       .executeTakeFirstOrThrow()
 
-    const drug = await db.selectFrom('drugs').select('generic_name').where(
+    const drug = await trx.selectFrom('drugs').select('generic_name').where(
       'id',
       '=',
       tablet.drug_id,
@@ -474,7 +473,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const pre_existing_conditions = await getPreExistingConditions(db, {
+    const pre_existing_conditions = await getPreExistingConditions(trx, {
       patient_id: patient_id,
     })
 
@@ -507,12 +506,12 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
   })
 
-  it('supports POST on the family step, moving you to the lifestyle step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('supports POST on the family step, moving you to the lifestyle step', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
     const body = new FormData()
@@ -535,7 +534,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       `${route}/app/patients/${patient_id}/intake/lifestyle`,
     )
 
-    const patient_family = await family.get(db, { patient_id: patient_id })
+    const patient_family = await family.get(trx, { patient_id: patient_id })
 
     assertEquals(patient_family.dependents.length, 0)
     assertEquals(patient_family.guardians.length, 1)
@@ -569,13 +568,13 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     })
   })
 
-  it('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
 
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
 
@@ -590,18 +589,18 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
   })
 
-  it('supports POST on the occupation step, moving you to the family step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+  itUsesTrxAnd('supports POST on the occupation step, moving you to the family step', async (trx) => {
+    const { patient_id } = await patient_encounters.upsert(trx, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
 
-    await patients.upsert(db, {
+    await patients.upsert(trx, {
       id: patient_id,
       date_of_birth: '2020-01-01',
     })
 
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(trx, {
       scenario: 'approved-nurse',
     })
 
@@ -632,7 +631,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         `${route}/app/patients/${patient_id}/intake/family`,
     )
 
-    const occupation = await patient_occupations.get(db, {
+    const occupation = await patient_occupations.get(trx, {
       patient_id,
     })
     assert(occupation)

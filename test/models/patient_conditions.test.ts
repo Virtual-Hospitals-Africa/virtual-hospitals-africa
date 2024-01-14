@@ -1,12 +1,12 @@
 import { sql } from 'kysely'
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { beforeEach, describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
+import { itUsesTrxAnd } from '../web/utilities.ts'
 
 describe(
   'db/models/patient_conditions.ts',
@@ -15,10 +15,10 @@ describe(
     beforeEach(resetInTest)
 
     describe('upsertPreExisting', () => {
-      it('upserts pre-existing conditions (those without an end_date) where the manufacturer is known', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('upserts pre-existing conditions (those without an end_date) where the manufacturer is known', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        const tablet = await db
+        const tablet = await trx
           .selectFrom('manufactured_medications')
           .innerJoin(
             'medications',
@@ -41,7 +41,7 @@ describe(
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [
+        await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -58,7 +58,7 @@ describe(
           },
         ])
         const preExistingConditions = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
         assertEquals(preExistingConditions.length, 1)
@@ -100,7 +100,7 @@ describe(
           null,
         )
 
-        const patient_medication = await db
+        const patient_medication = await trx
           .selectFrom('patient_condition_medications')
           .where('manufactured_medication_id', '=', tablet.id)
           .select(sql`TO_JSON(schedules)`.as('schedules'))
@@ -114,10 +114,10 @@ describe(
         }])
       })
 
-      it('upserts pre-existing conditions (those without an end_date) where the manufacturer is unknown', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('upserts pre-existing conditions (those without an end_date) where the manufacturer is unknown', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        const tablet = await db
+        const tablet = await trx
           .selectFrom('medications')
           .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
           .select([
@@ -132,7 +132,7 @@ describe(
             'TABLET',
           ).executeTakeFirstOrThrow()
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [
+        await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -149,7 +149,7 @@ describe(
           },
         ])
         const preExistingConditions = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
         assertEquals(preExistingConditions.length, 1)
@@ -191,7 +191,7 @@ describe(
           null,
         )
 
-        const patient_medication = await db
+        const patient_medication = await trx
           .selectFrom('patient_condition_medications')
           .where('medication_id', '=', tablet.id)
           .select(sql`TO_JSON(schedules)`.as('schedules'))
@@ -205,10 +205,10 @@ describe(
         }])
       })
 
-      it('converts a medication with an end_date into schedule with a duration in days', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('converts a medication with an end_date into schedule with a duration in days', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        const tablet = await db
+        const tablet = await trx
           .selectFrom('medications')
           .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
           .select([
@@ -223,7 +223,7 @@ describe(
             'TABLET',
           ).executeTakeFirstOrThrow()
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [
+        await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -242,7 +242,7 @@ describe(
           },
         ])
         const preExistingConditions = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
         assertEquals(preExistingConditions.length, 1)
@@ -284,7 +284,7 @@ describe(
           '2021-01-16',
         )
 
-        const patient_medication = await db
+        const patient_medication = await trx
           .selectFrom('patient_condition_medications')
           .where('medication_id', '=', tablet.id)
           .select(sql`TO_JSON(schedules)`.as('schedules'))
@@ -298,10 +298,10 @@ describe(
         }])
       })
 
-      it('handles comorbidities', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('handles comorbidities', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [
+        await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -309,7 +309,7 @@ describe(
           },
         ])
         const preExistingConditions = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
         assertEquals(preExistingConditions.length, 1)
@@ -327,10 +327,10 @@ describe(
         })
       })
 
-      it('removes comorbidities if not present by their id, while editing others', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('removes comorbidities if not present by their id, while editing others', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [
+        await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -338,11 +338,11 @@ describe(
           },
         ])
         const [preExistingConditionBefore] = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [{
+        await patient_conditions.upsertPreExisting(trx, patient.id, [{
           ...preExistingConditionBefore,
           comorbidities: [{
             id: 'c_8251',
@@ -351,7 +351,7 @@ describe(
         }])
 
         const [preExistingConditionAfter] = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
 
@@ -370,10 +370,10 @@ describe(
         })
       })
 
-      it('removes medications if not present by their id, while editing others', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('removes medications if not present by their id, while editing others', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        const injection = await db
+        const injection = await trx
           .selectFrom('medications')
           .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
           .select([
@@ -388,7 +388,7 @@ describe(
             'INJECTABLE',
           ).orderBy('drugs.generic_name desc').executeTakeFirstOrThrow()
 
-        const capsule = await db
+        const capsule = await trx
           .selectFrom('medications')
           .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
           .select([
@@ -404,7 +404,7 @@ describe(
           ).orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        await patient_conditions.upsertPreExisting(db, patient.id, [
+        await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -429,14 +429,14 @@ describe(
           },
         ])
         const [preExistingConditionBefore] = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
 
         const medication_to_keep = preExistingConditionBefore.medications.find(
           (m) => m.medication_id === capsule.id,
         )!
-        await patient_conditions.upsertPreExisting(db, patient.id, [{
+        await patient_conditions.upsertPreExisting(trx, patient.id, [{
           ...preExistingConditionBefore,
           medications: [{
             medication_id: capsule.id,
@@ -449,7 +449,7 @@ describe(
         }])
 
         const [preExistingConditionAfter] = await patient_conditions
-          .getPreExistingConditions(db, {
+          .getPreExistingConditions(trx, {
             patient_id: patient.id,
           })
 
@@ -476,10 +476,10 @@ describe(
     })
 
     describe('upsertPastMedical', () => {
-      it('upserts past conditions, those with an end_date', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('upserts past conditions, those with an end_date', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-        await patient_conditions.upsertPastMedical(db, patient.id, [
+        await patient_conditions.upsertPastMedical(trx, patient.id, [
           {
             id: 'c_22401',
             start_date: '2020-01-01',
@@ -487,7 +487,7 @@ describe(
           },
         ])
         const past_conditions = await patient_conditions
-          .getPastMedicalConditions(db, {
+          .getPastMedicalConditions(trx, {
             patient_id: patient.id,
           })
         assertEquals(past_conditions.length, 1)
@@ -497,12 +497,12 @@ describe(
         assertEquals(preExistingCondition.start_date, '2020-01-01')
         assertEquals(preExistingCondition.end_date, '2021-03-01')
       })
-      it('400s if no end date is provided', async () => {
-        const patient = await patients.upsert(db, { name: 'Billy Bob' })
+      itUsesTrxAnd('400s if no end date is provided', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
         await assertRejects(
           () =>
-            patient_conditions.upsertPastMedical(db, patient.id, [
+            patient_conditions.upsertPastMedical(trx, patient.id, [
               {
                 id: 'c_22401',
                 start_date: '2020-01-01',

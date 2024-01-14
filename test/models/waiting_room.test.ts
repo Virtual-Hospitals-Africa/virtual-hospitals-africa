@@ -1,10 +1,10 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
-import db from '../../db/db.ts'
+import { beforeEach, describe } from 'std/testing/bdd.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { itUsesTrxAnd } from '../web/utilities.ts'
 
 describe(
   'db/models/waiting_room.ts',
@@ -13,21 +13,21 @@ describe(
     beforeEach(resetInTest)
 
     describe('get', () => {
-      it('orders the waiting room by when people first arrived', async () => {
-        const patient1 = await patients.upsert(db, { name: 'Test Patient 1' })
-        const patient2 = await patients.upsert(db, { name: 'Test Patient 2' })
+      itUsesTrxAnd('orders the waiting room by when people first arrived', async (trx) => {
+        const patient1 = await patients.upsert(trx, { name: 'Test Patient 1' })
+        const patient2 = await patients.upsert(trx, { name: 'Test Patient 2' })
 
-        await patient_encounters.upsert(db, 1, {
+        await patient_encounters.upsert(trx, 1, {
           patient_id: patient1.id,
           reason: 'seeking treatment',
         })
 
-        await patient_encounters.upsert(db, 1, {
+        await patient_encounters.upsert(trx, 1, {
           patient_id: patient2.id,
           reason: 'seeking treatment',
         })
 
-        assertEquals(await waiting_room.get(db, { facility_id: 1 }), [
+        assertEquals(await waiting_room.get(trx, { facility_id: 1 }), [
           {
             appointment: null,
             patient: {
@@ -67,21 +67,21 @@ describe(
         ])
       })
 
-      it('orders emergencies at the top, even if they arrived later', async () => {
-        const patient1 = await patients.upsert(db, { name: 'Test Patient 1' })
-        const patient2 = await patients.upsert(db, { name: 'Test Patient 2' })
+      itUsesTrxAnd('orders emergencies at the top, even if they arrived later', async (trx) => {
+        const patient1 = await patients.upsert(trx, { name: 'Test Patient 1' })
+        const patient2 = await patients.upsert(trx, { name: 'Test Patient 2' })
 
-        await patient_encounters.upsert(db, 1, {
+        await patient_encounters.upsert(trx, 1, {
           patient_id: patient1.id,
           reason: 'seeking treatment',
         })
 
-        await patient_encounters.upsert(db, 1, {
+        await patient_encounters.upsert(trx, 1, {
           patient_id: patient2.id,
           reason: 'emergency',
         })
 
-        assertEquals(await waiting_room.get(db, { facility_id: 1 }), [
+        assertEquals(await waiting_room.get(trx, { facility_id: 1 }), [
           {
             appointment: null,
             patient: {

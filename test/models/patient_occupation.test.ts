@@ -1,9 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
-import db from '../../db/db.ts'
+import { beforeEach, describe } from 'std/testing/bdd.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patient_occupations from '../../db/models/patient_occupations.ts'
 import * as patients from '../../db/models/patients.ts'
+import { itUsesTrxAnd } from '../web/utilities.ts'
 
 describe(
   'db/models/patient_occupation.ts',
@@ -12,10 +12,10 @@ describe(
     beforeEach(resetInTest)
 
     describe('upsert', () => {
-      it('inserts patient_occupations', async () => {
-        const patient = await patients.upsert(db, { name: 'Test Patient' })
+      itUsesTrxAnd('inserts patient_occupations', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Test Patient' })
 
-        const patient_occupation = await patient_occupations.upsert(db, {
+        const patient_occupation = await patient_occupations.upsert(trx, {
           patient_id: patient.id,
           occupation: {
             school: {
@@ -28,10 +28,10 @@ describe(
         assert(patient_occupation)
       })
 
-      it('can replace an existing patient occupation', async () => {
-        const patient = await patients.upsert(db, { name: 'Test Patient' })
+      itUsesTrxAnd('can replace an existing patient occupation', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Test Patient' })
 
-        await patient_occupations.upsert(db, {
+        await patient_occupations.upsert(trx, {
           patient_id: patient.id,
           occupation: {
             school: {
@@ -41,7 +41,7 @@ describe(
           },
         })
 
-        await patient_occupations.upsert(db, {
+        await patient_occupations.upsert(trx, {
           patient_id: patient.id,
           occupation: {
             school: {
@@ -50,7 +50,7 @@ describe(
           },
         })
 
-        const occupation = await patient_occupations.get(db, {
+        const occupation = await patient_occupations.get(trx, {
           patient_id: patient.id,
         })
         assert(occupation)

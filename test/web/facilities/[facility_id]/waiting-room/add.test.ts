@@ -1,21 +1,20 @@
-import { it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorkerWithSession,
   describeWithWebServer,
   getFormValues,
+  itUsesTrxAnd,
 } from '../../../utilities.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../../../../db/models/patients.ts'
-import db from '../../../../../db/db.ts'
 
 describeWithWebServer(
   '/app/facilities/[facility_id]/waiting-room/add',
   8007,
   (route) => {
-    it('renders a page on GET', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('renders a page on GET', async (trx) => {
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
 
@@ -37,11 +36,11 @@ describeWithWebServer(
       })
     })
 
-    it('creates a patient encounter on POST', async () => {
-      const testPatient = await patients.upsert(db, {
+    itUsesTrxAnd('creates a patient encounter on POST', async (trx) => {
+      const testPatient = await patients.upsert(trx, {
         name: 'Test Patient',
       })
-      const { fetch } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
 
@@ -66,12 +65,12 @@ describeWithWebServer(
       }
 
       // Assert that the patient encounter is created and added to the waiting room
-      const patientEncounter = await db
+      const patientEncounter = await trx
         .selectFrom('patient_encounters')
         .selectAll()
         .executeTakeFirstOrThrow()
 
-      const waiting_room = await db
+      const waiting_room = await trx
         .selectFrom('waiting_room')
         .selectAll()
         .executeTakeFirstOrThrow()
@@ -86,8 +85,8 @@ describeWithWebServer(
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
     })
 
-    it('can create a patient encounter for a new patient on POST', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('can create a patient encounter for a new patient on POST', async (trx) => {
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'approved-nurse',
       })
 
@@ -111,12 +110,12 @@ describeWithWebServer(
       }
 
       // Assert that the patient encounter is created and added to the waiting room
-      const patientEncounter = await db
+      const patientEncounter = await trx
         .selectFrom('patient_encounters')
         .selectAll()
         .executeTakeFirstOrThrow()
 
-      const waiting_room = await db
+      const waiting_room = await trx
         .selectFrom('waiting_room')
         .selectAll()
         .executeTakeFirstOrThrow()
@@ -129,7 +128,7 @@ describeWithWebServer(
       assertEquals(waiting_room.facility_id, 1)
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
 
-      const { name } = await db.selectFrom('patients').select(['name']).where(
+      const { name } = await trx.selectFrom('patients').select(['name']).where(
         'id',
         '=',
         patientEncounter.patient_id,

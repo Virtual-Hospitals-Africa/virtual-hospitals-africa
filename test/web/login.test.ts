@@ -1,8 +1,7 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as cheerio from 'cheerio'
-import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employee from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
@@ -10,9 +9,9 @@ import * as details from '../../db/models/nurse_registration_details.ts'
 import {
   addTestHealthWorkerWithSession,
   describeWithWebServer,
+  itUsesTrxAnd,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
-import { GoogleTokens, HealthWorker } from '../../types.ts'
 import {
   insertTestAddress,
   randomNationalId,
@@ -36,15 +35,8 @@ describeWithWebServer('/login', 8002, (route) => {
   })
 
   describe('when logged in', () => {
-    let mock: {
-      sessionId: string
-      healthWorker: HealthWorker & GoogleTokens & { id: number }
-    }
-    beforeEach(async () => {
-      mock = await addTestHealthWorkerWithSession()
-    })
-
-    it("doesn't allow unemployed access to /app", async () => {
+    itUsesTrxAnd("doesn't allow unemployed access to /app", async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
       const response = await fetch(`${route}/app`, {
         headers: {
           Cookie: `sessionId=${mock.sessionId}`,
@@ -57,8 +49,9 @@ describeWithWebServer('/login', 8002, (route) => {
       )
     })
 
-    it('allows admin access to /app', async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd('allows admin access to /app', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'admin',
@@ -75,8 +68,9 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('My Patients'))
     })
 
-    it('allows doctor access /app', async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd('allows doctor access /app', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
@@ -94,8 +88,9 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('My Patients'))
     })
 
-    it('redirects from /login to /app', async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd('redirects from /login to /app', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: sample(['admin', 'doctor', 'nurse']),
@@ -112,8 +107,9 @@ describeWithWebServer('/login', 8002, (route) => {
       response.body?.cancel()
     })
 
-    it('redirects unregistered nurse to registration', async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd('redirects unregistered nurse to registration', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
@@ -133,15 +129,16 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('First Name'))
     })
 
-    it('redirects unapproved nurse to /app/pending_approval', async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd('redirects unapproved nurse to /app/pending_approval', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'nurse',
       }])
       await details.add(
-        db,
-        await testRegistrationDetails({
+        trx,
+        await testRegistrationDetails(trx, {
           health_worker_id: mock.healthWorker.id,
         }),
       )
@@ -155,9 +152,10 @@ describeWithWebServer('/login', 8002, (route) => {
       await response.text()
     })
 
-    it('allows approved nurse access to /app', async () => {
-      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
-      await employee.add(db, [{
+    itUsesTrxAnd('allows approved nurse access to /app', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: admin.id,
         profession: 'admin',
@@ -167,12 +165,12 @@ describeWithWebServer('/login', 8002, (route) => {
         profession: 'nurse',
       }])
       await details.add(
-        db,
-        await testRegistrationDetails({
+        trx,
+        await testRegistrationDetails(trx, {
           health_worker_id: mock.healthWorker.id,
         }),
       )
-      await details.approve(db, {
+      await details.approve(trx, {
         approverId: admin.id,
         healthWorkerId: mock.healthWorker.id,
       })
@@ -189,9 +187,10 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('My Patients'))
     })
 
-    it('starts in an empty waiting room with sidebar links', async () => {
-      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
-      await employee.add(db, [{
+    itUsesTrxAnd('starts in an empty waiting room with sidebar links', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: admin.id,
         profession: 'admin',
@@ -201,12 +200,12 @@ describeWithWebServer('/login', 8002, (route) => {
         profession: 'nurse',
       }])
       await details.add(
-        db,
-        await testRegistrationDetails({
+        trx,
+        await testRegistrationDetails(trx, {
           health_worker_id: mock.healthWorker.id,
         }),
       )
-      await details.approve(db, {
+      await details.approve(trx, {
         approverId: admin.id,
         healthWorkerId: mock.healthWorker.id,
       })
@@ -239,11 +238,12 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(logout_link.first().text().includes('Log Out'))
     })
 
-    it('allows a health worker employed at a facility to view/approve its employees', async () => {
-      const nurse = await upsertWithGoogleCredentials(db, testHealthWorker())
-      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
+    itUsesTrxAnd('allows a health worker employed at a facility to view/approve its employees', async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      const nurse = await upsertWithGoogleCredentials(trx, testHealthWorker())
+      const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
 
-      await employee.add(db, [{
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'admin',
@@ -257,10 +257,10 @@ describeWithWebServer('/login', 8002, (route) => {
         profession: 'admin',
       }])
 
-      const nurse_address = await insertTestAddress()
+      const nurse_address = await insertTestAddress(trx)
       assert(nurse_address)
 
-      await nurse_registration_details.add(db, {
+      await nurse_registration_details.add(trx, {
         health_worker_id: nurse.id,
         gender: 'female',
         national_id_number: randomNationalId(),
@@ -298,8 +298,9 @@ describeWithWebServer('/login', 8002, (route) => {
       )
     })
 
-    it(`allows admin access to invite`, async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd(`allows admin access to invite`, async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'admin',
@@ -330,8 +331,9 @@ describeWithWebServer('/login', 8002, (route) => {
       assert(pageContents.includes('Invite'))
     })
 
-    it("doesn't allow unemployed access to employees", async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd("doesn't allow unemployed access to employees", async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'doctor',
@@ -345,8 +347,9 @@ describeWithWebServer('/login', 8002, (route) => {
       assertEquals(response.status, 403)
     })
 
-    it("doesn't allow non-admin to invite page", async () => {
-      await employee.add(db, [{
+    itUsesTrxAnd("doesn't allow non-admin to invite page", async (trx) => {
+      const mock = await addTestHealthWorkerWithSession(trx)
+      await employee.add(trx, [{
         facility_id: 1,
         health_worker_id: mock.healthWorker.id,
         profession: 'doctor',

@@ -1,9 +1,9 @@
-import { it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
   describeWithWebServer,
+  itUsesTrxAnd,
 } from '../../utilities.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -16,8 +16,8 @@ describeWithWebServer(
   '/app/facilities/[facility_id]/register',
   8008,
   (route) => {
-    it('renders a registration page on GET', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession({
+    itUsesTrxAnd('renders a registration page on GET', async (trx) => {
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
         scenario: 'nurse',
       })
 
@@ -53,13 +53,13 @@ describeWithWebServer(
       )
     })
 
-    it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
-      await addTestHealthWorker({ scenario: 'admin' })
+    itUsesTrxAnd('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async (trx) => {
+      await addTestHealthWorker(trx, { scenario: 'admin' })
       const { fetch, sessionId, healthWorker: nurse } =
-        await addTestHealthWorkerWithSession({
+        await addTestHealthWorkerWithSession(trx, {
           scenario: 'nurse',
         })
-      const address = await createTestAddress()
+      const address = await createTestAddress(trx)
 
       {
         const body = new FormData()

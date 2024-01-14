@@ -1,11 +1,11 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { beforeEach, describe } from 'std/testing/bdd.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patient_measurements from '../../db/models/patient_measurements.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { addTestHealthWorker } from '../web/utilities.ts'
+import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 
 describe(
   'db/models/patient_measurements.ts',
@@ -14,8 +14,8 @@ describe(
     beforeEach(resetInTest)
 
     describe('upsert', () => {
-      it('can add height and weight in cm and kg', async () => {
-        const nurse = await addTestHealthWorker({ scenario: 'approved-nurse' })
+      itUsesTrxAnd('can add height and weight in cm and kg', async (trx) => {
+        const nurse = await addTestHealthWorker(trx, { scenario: 'approved-nurse' })
         const patient = await patients.upsert(db, { name: 'Test Patient' })
         const encounter = await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,
