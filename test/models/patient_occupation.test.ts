@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { beforeEach, describe } from 'std/testing/bdd.ts'
-import { resetInTest } from '../../db/meta.ts'
+import { describe } from 'std/testing/bdd.ts'
 import * as patient_occupations from '../../db/models/patient_occupations.ts'
 import * as patients from '../../db/models/patients.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
@@ -9,8 +8,6 @@ describe(
   'db/models/patient_occupation.ts',
   { sanitizeResources: false },
   () => {
-    beforeEach(resetInTest)
-
     describe('upsert', () => {
       itUsesTrxAnd('inserts patient_occupations', async (trx) => {
         const patient = await patients.upsert(trx, { name: 'Test Patient' })

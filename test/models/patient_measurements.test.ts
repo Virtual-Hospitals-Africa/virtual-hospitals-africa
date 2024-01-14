@@ -1,6 +1,4 @@
-import { beforeEach, describe } from 'std/testing/bdd.ts'
-import db from '../../db/db.ts'
-import { resetInTest } from '../../db/meta.ts'
+import { describe } from 'std/testing/bdd.ts'
 import * as patient_measurements from '../../db/models/patient_measurements.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as patients from '../../db/models/patients.ts'
@@ -11,8 +9,6 @@ describe(
   'db/models/patient_measurements.ts',
   { sanitizeResources: false },
   () => {
-    beforeEach(resetInTest)
-
     describe('upsert', () => {
       itUsesTrxAnd('can add height and weight in cm and kg', async (trx) => {
         const nurse = await addTestHealthWorker(trx, {

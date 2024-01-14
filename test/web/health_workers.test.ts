@@ -1,14 +1,15 @@
+import { it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorkerWithSession,
   describeWithWebServer,
-  itUsesTrxAnd,
 } from './utilities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import db from '../../db/db.ts'
 
 describeWithWebServer('/app/health_workers', 8006, (route) => {
-  itUsesTrxAnd('can return a health worker', async (trx) => {
-    const { fetch, healthWorker } = await addTestHealthWorkerWithSession(trx, {
+  it('can return a health worker', async () => {
+    const { fetch, healthWorker } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
     const response = await fetch(

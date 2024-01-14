@@ -2,7 +2,6 @@ import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../db/meta.ts'
 import * as google from '../../external-clients/google.ts'
 import * as makeAppointment from '../../shared/scheduling/makeAppointment.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
@@ -12,8 +11,6 @@ import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker } from '../mocks.ts'
 
 describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
   // deno-lint-ignore no-explicit-any
   let insertEvent: any
   beforeEach(() => {

@@ -1,7 +1,6 @@
 import { sql } from 'kysely'
-import { beforeEach, describe } from 'std/testing/bdd.ts'
+import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
@@ -10,8 +9,6 @@ import pick from '../../util/pick.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 
 describe('db/models/patients.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
   describe('getAllWithNames', () => {
     itUsesTrxAnd('finds patients by their name', async (trx) => {
       const insertedMedia = await media.insert(trx, {

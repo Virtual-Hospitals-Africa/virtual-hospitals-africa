@@ -1,5 +1,4 @@
-import { beforeEach, describe } from 'std/testing/bdd.ts'
-import { resetInTest } from '../../db/meta.ts'
+import { describe } from 'std/testing/bdd.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
@@ -10,8 +9,6 @@ describe(
   'db/models/patient_encounters.ts',
   { sanitizeResources: false },
   () => {
-    beforeEach(resetInTest)
-
     describe('create', () => {
       itUsesTrxAnd(
         'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',

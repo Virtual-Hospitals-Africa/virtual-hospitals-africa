@@ -1,6 +1,5 @@
 import { sql } from 'kysely'
-import { beforeEach, describe } from 'std/testing/bdd.ts'
-import { resetInTest } from '../../db/meta.ts'
+import { describe } from 'std/testing/bdd.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
@@ -12,8 +11,6 @@ describe(
   'db/models/waiting_room.ts',
   { sanitizeResources: false },
   () => {
-    beforeEach(resetInTest)
-
     describe('get', () => {
       itUsesTrxAnd(
         'orders the waiting room by when people first arrived',

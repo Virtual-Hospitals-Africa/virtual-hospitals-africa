@@ -2241,6 +2241,8 @@
     "https://esm.sh/v135/@preact/signals@1.2.1/X-ZS8q/denonext/signals.mjs": "90531451d474fa35205f5f54e512ed566093722cb2a004316dc7b8d4b8122961",
     "https://esm.sh/v135/boolbase@1.0.0/denonext/boolbase.mjs": "4e3bd67e9b1c5c55094eae98345d0107c6a44ef57bd3d4b9579698fa44722280",
     "https://esm.sh/v135/cheerio-select@2.1.0/denonext/cheerio-select.mjs": "5b882e2ef61d79044badb386948403758e0b171f54bcd2f4975c502c8096a2df",
+    "https://esm.sh/v135/cheerio-select@2.1.0/denonext/lib.js": "99127615cebca394ee035a5bc41f1701b8ce7ab36a2cfd47c648c6106a4da145",
+    "https://esm.sh/v135/cheerio-select@2.1.0/lib/index.js": "7de73c7263a3721702176e062b8de12ae3b493ede13588fb74229c1752df9bec",
     "https://esm.sh/v135/cheerio@1.0.0-rc.12/denonext/cheerio.mjs": "857011c7a0c086bf86d6215e73851251dce13d4489d82b9a614de34d2696ce41",
     "https://esm.sh/v135/cheerio@1.0.0-rc.12/denonext/lib/utils.js": "23db4ab02bf34f134210e809b1bd4e8bc0115ce79dc0581d7a47e1a6b39fb379",
     "https://esm.sh/v135/css-select@5.1.0/denonext/css-select.mjs": "7f4fb680eff2223a68fb5a1efa12e905077d7e6c44ae66c01fc437fe7af58f8b",
