@@ -1,7 +1,6 @@
 import { sql } from 'kysely'
-import { beforeEach, describe } from 'std/testing/bdd.ts'
+import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
@@ -12,8 +11,6 @@ describe(
   'db/models/patient_conditions.ts',
   { sanitizeResources: false },
   () => {
-    beforeEach(resetInTest)
-
     describe('upsertPreExisting', () => {
       itUsesTrxAnd(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is known',
@@ -294,7 +291,9 @@ describe(
 
           const patient_medication = await trx
             .selectFrom('patient_condition_medications')
+            .innerJoin('patient_conditions', 'patient_conditions.id', 'patient_condition_medications.patient_condition_id')
             .where('medication_id', '=', tablet.id)
+            .where('patient_id', '=', patient.id)
             .select(sql`TO_JSON(schedules)`.as('schedules'))
             .executeTakeFirstOrThrow()
 

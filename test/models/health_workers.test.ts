@@ -243,7 +243,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'can prioritize a given facility, while still returning results from another facility',
       async (trx) => {
-        const [doctor1, doctor2] = await Promise.all([
+        const [_doctor1, doctor2] = await Promise.all([
           addTestHealthWorker(trx, {
             scenario: 'doctor',
             facility_id: 1,
