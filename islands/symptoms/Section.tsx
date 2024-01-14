@@ -45,9 +45,7 @@ export default function SymptomSection(props: {
         <EmptyState
           header='No symptoms'
           explanation='Use the search box above to add symptoms.'
-          buttonText='New Appointment'
           icon={<Symptoms className='mx-auto h-12 w-12 text-gray-400' />}
-          href='/app/calendar/appointments/schedule'
         />
       )}
       {patient_symptoms.value.map((symptom, i) => (

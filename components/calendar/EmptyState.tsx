@@ -6,9 +6,11 @@ export default function CalendarEmptyState() {
     <EmptyState
       header='No appointments'
       explanation='Create an appointment with a new or existing patient'
-      buttonText='New Appointment'
       icon={<MakeAppointmentIcon className='mx-auto h-12 w-12 text-gray-400' />}
-      href='/app/calendar/appointments/schedule'
+      button={{
+        text: 'New Appointment',
+        href: '/app/calendar/appointments/schedule',
+      }}
     />
   )
 }

@@ -7,15 +7,16 @@ type EmptyStateProps = {
   className?: string
   header: string
   explanation: string
-  buttonText: string
   icon: JSX.Element
-  href?: string
-  onClick?: () => void
+  button?: {
+    text: string
+    href?: string
+    onClick?: () => void
+  }
 }
 
 export default function EmptyState(
-  { className, header, explanation, buttonText, icon, href, onClick }:
-    EmptyStateProps,
+  { className, header, explanation, icon, button }: EmptyStateProps,
 ) {
   return (
     <div className={cls('text-center p-2', className)}>
@@ -26,15 +27,17 @@ export default function EmptyState(
       <p className='mt-1 text-sm text-gray-500'>
         {explanation}
       </p>
-      <div className='mt-6'>
-        <Button href={href} onClick={onClick}>
-          <PlusIcon
-            className='-ml-0.5 mr-1.5 h-5 w-5 white'
-            aria-hidden='true'
-          />
-          {buttonText}
-        </Button>
-      </div>
+      {button && (
+        <div className='mt-6'>
+          <Button href={button.href} onClick={button.onClick}>
+            <PlusIcon
+              className='-ml-0.5 mr-1.5 h-5 w-5 white'
+              aria-hidden='true'
+            />
+            {button.text}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -19,7 +19,6 @@ window.addEventListener('submit', function (event) {
   submitButton.disabled = true
 
   // TODO: Add a loading indicator
-
   fetch(form.action, {
     method: 'POST',
     body: formData,
@@ -27,7 +26,7 @@ window.addEventListener('submit', function (event) {
     switch (response.status) {
       case 200:
         return response.text().then(function (text) {
-          window.document.body.innerHTML = text
+          window.document.documentElement.innerHTML = text
           history.pushState({}, '', response.url)
         })
       case 400:

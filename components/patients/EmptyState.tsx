@@ -6,9 +6,11 @@ export default function PatientsEmptyState() {
     <EmptyState
       header='No patients'
       explanation='Add a patient'
-      buttonText='Add patient'
-      href='/app/patients/add'
       icon={<AddPatientIcon className='mx-auto h-12 w-12 text-gray-400' />}
+      button={{
+        text: 'Add patient',
+        href: '/app/patients/add',
+      }}
     />
   )
 }
