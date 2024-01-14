@@ -18,6 +18,7 @@ import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
+import sortBy from '../../util/sortBy.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -318,19 +319,10 @@ export async function search(
   if (opts.facility_id) {
     query = query.where('employment.facility_id', '=', opts.facility_id)
   }
-  if (opts.prioritize_facility_id) {
-    query = query
-      .orderBy(
-        sql<
-          boolean
-        >`ARRAY_AGG(distinct employment.facility_id) @> ARRAY[${opts.prioritize_facility_id}::integer]`,
-        'desc',
-      )
-  }
 
   const healthWorkers = await query.execute()
 
-  return healthWorkers.map((hw) => {
+  const results_with_description =  healthWorkers.map((hw) => {
     assert(hasName(hw))
     return {
       ...hw,
@@ -339,6 +331,10 @@ export async function search(
       ),
     }
   })
+
+  if (!opts.prioritize_facility_id) return results_with_description
+
+  return sortBy(results_with_description, (hw) => hw.facilities.some(facility => facility.facility_id === opts.prioritize_facility_id) ? 0 : 1)
 }
 
 export async function get(

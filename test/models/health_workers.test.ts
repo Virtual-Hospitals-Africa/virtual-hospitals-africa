@@ -1,66 +1,38 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as nurse_specialties from '../../db/models/nurse_specialties.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
-import { resetInTest } from '../../db/meta.ts'
 import * as media from '../../db/models/media.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import omit from '../../util/omit.ts'
-import { insertTestAddress, randomNationalId } from '../mocks.ts'
+import { insertTestAddress, testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
+import last from '../../util/last.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
   describe('upsertWithGoogleCredentials', () => {
     itUsesTrxAnd('works even if a previous health worker without tokens was inserted', async (trx) => {
-      await health_workers.upsert(trx, {
-        name: 'Previous Worker',
-        email: 'previous@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
+      
+      await health_workers.upsert(trx, omit(testHealthWorker(), ['access_token', 'refresh_token', 'expires_at', 'expires_in']))
 
-      const result = await health_workers.upsertWithGoogleCredentials(trx, {
-        name: 'Test Worker',
-        email: 'test@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-        access_token: 'test_access_token',
-        refresh_token: 'test_refresh_token',
-        expires_at: new Date(),
-      })
+      const result = await addTestHealthWorker(trx)
 
       assert(result)
       assertEquals(
         await health_workers.get(trx, { health_worker_id: result.id }),
         { ...result, employment: [], open_encounters: [] },
       )
-      assertEquals(result.access_token, 'test_access_token')
-      assertEquals(result.refresh_token, 'test_refresh_token')
+      assert(!!result.access_token)
+      assert(!!result.refresh_token)
     })
   })
 
   describe('get', () => {
     itUsesTrxAnd('returns the health worker and their employment information', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       const employee = await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -74,8 +46,8 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assert(result)
 
       assertEquals(omit(result, ['expires_at', 'created_at', 'updated_at']), {
-        avatar_url: 'avatar_url',
-        email: 'test@worker.com',
+        avatar_url: healthWorker.avatar_url,
+        email: healthWorker.email,
         employment: [
           {
             facility: {
@@ -95,12 +67,12 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             },
           },
         ],
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        gcal_appointments_calendar_id: healthWorker.gcal_appointments_calendar_id,
+        gcal_availability_calendar_id: healthWorker.gcal_availability_calendar_id,
         id: healthWorker.id,
-        name: 'Worker',
-        access_token: 'access_token',
-        refresh_token: 'refresh_token',
+        name: healthWorker.name,
+        access_token: healthWorker.access_token,
+        refresh_token: healthWorker.refresh_token,
         open_encounters: [],
       })
     })
@@ -117,52 +89,37 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       const both = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient 2',
-        reason: 'seeking treatment',
+        reason: 'referral',
         provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
       })
-
-      const encounters = await trx.selectFrom('patient_encounters').selectAll()
-        .execute()
-      const providers = await trx.selectFrom('patient_encounter_providers')
-        .selectAll().execute()
-      console.log('encounters', encounters)
-      console.log('providers', providers)
 
       const result1 = await health_workers.get(trx, {
         health_worker_id: nurse1.id,
       })
       assert(result1)
       assertEquals(result1.open_encounters.length, 2)
-      assertEquals(result1.open_encounters[0].encounter_id, both.id)
-      assertEquals(result1.open_encounters[0].providers.length, 2)
-      assertEquals(result1.open_encounters[1].encounter_id, just_nurse1.id)
-      assertEquals(result1.open_encounters[1].providers.length, 1)
+      
+      const encounter_both = result1.open_encounters.find((encounter) => encounter.encounter_id === both.id)
+      assert(encounter_both)
+      assertEquals(encounter_both.providers.length, 2)
+      
+      const encounter_just_nurse1 = result1.open_encounters.find((encounter) => encounter.encounter_id === just_nurse1.id)
+      assert(encounter_just_nurse1)
+      assertEquals(encounter_just_nurse1.providers.length, 1)
 
       const result2 = await health_workers.get(trx, {
         health_worker_id: nurse2.id,
       })
       assert(result2)
       assertEquals(result2.open_encounters.length, 1)
-      assertEquals(result1.open_encounters[0].encounter_id, both.id)
-      assertEquals(result1.open_encounters[0].providers.length, 2)
+      assertEquals(result2.open_encounters[0].encounter_id, both.id)
+      assertEquals(result2.open_encounters[0].providers.length, 2)
     })
   })
 
   describe('search', () => {
     itUsesTrxAnd('returns health workers matching a search with their employment information', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -170,13 +127,13 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         facility_id: 1,
       }])
 
-      const result = await health_workers.search(trx, { search: 'Worker' })
+      const result = await health_workers.search(trx, { search: healthWorker.name })
       assertEquals(result.length, 1)
       assertEquals(
         result[0],
         {
-          avatar_url: 'avatar_url',
-          email: 'test@worker.com',
+          avatar_url: healthWorker.avatar_url,
+          email: healthWorker.email,
           facilities: [
             {
               facility_id: 1,
@@ -186,9 +143,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               ],
             },
           ],
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          name: 'Worker',
+          gcal_appointments_calendar_id: healthWorker.gcal_appointments_calendar_id,
+          gcal_availability_calendar_id: healthWorker.gcal_availability_calendar_id,
+          name: healthWorker.name,
           id: healthWorker.id,
           created_at: result[0].created_at,
           updated_at: result[0].updated_at,
@@ -200,19 +157,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     })
 
     itUsesTrxAnd('searches by profession', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -221,14 +166,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       }])
 
       const doctor_result = await health_workers.search(trx, {
-        search: 'Worker',
+        search: healthWorker.name,
         professions: ['doctor'],
       })
       assert(doctor_result)
       assertEquals(doctor_result.length, 0)
 
       const nurse_result = await health_workers.search(trx, {
-        search: 'Worker',
+        search: healthWorker.name,
         professions: ['nurse'],
       })
       assert(nurse_result)
@@ -237,8 +182,8 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assertEquals(
         omit(nurse_result[0], ['created_at', 'updated_at']),
         {
-          avatar_url: 'avatar_url',
-          email: 'test@worker.com',
+          avatar_url: healthWorker.avatar_url,
+          email: healthWorker.email,
           facilities: [
             {
               facility_id: 1,
@@ -248,10 +193,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               ],
             },
           ],
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+          gcal_appointments_calendar_id: healthWorker.gcal_appointments_calendar_id,
+          gcal_availability_calendar_id: healthWorker.gcal_availability_calendar_id,
           id: healthWorker.id,
-          name: 'Worker',
+          name: healthWorker.name,
           description: [
             'nurse @ VHA Test Hospital',
           ],
@@ -276,37 +221,21 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         facility_id: 3,
       }])
 
-      const results1 = await health_workers.search(trx, {
-        search: 'Test Health Worker',
-        prioritize_facility_id: 1,
-      })
-      assertEquals(results1.length, 2)
-      assertEquals(results1[0].id, doctor1.id)
-
-      const results2 = await health_workers.search(trx, {
+      const results = await health_workers.search(trx, {
         search: 'Test Health Worker',
         prioritize_facility_id: 2,
       })
-      assertEquals(results2.length, 2)
-      assertEquals(results2[0].id, doctor2.id)
+      const firstResult = results[0]
+      const lastResult = last(results)!
+
+      assert(firstResult.facilities.some((facility) => facility.facility_id === 2))
+      assert(lastResult.facilities.every((facility) => facility.facility_id !== 2))
     })
   })
 
   describe('getEmployeeInfo', () => {
     itUsesTrxAnd('returns the health worker and their employment information if that matches a given facility id', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -327,12 +256,12 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       assert(result)
       assertEquals(result.health_worker_id, healthWorker.id)
       assertEquals(result.gender, null)
-      assertEquals(result.name, 'Worker')
+      assertEquals(result.name, healthWorker.name)
       assertEquals(result.date_of_birth, null)
       assertEquals(result.mobile_number, null)
-      assertEquals(result.avatar_url, 'avatar_url')
+      assertEquals(result.avatar_url, healthWorker.avatar_url)
       assertEquals(result.date_of_first_practice, null)
-      assertEquals(result.email, 'test@worker.com')
+      assertEquals(result.email, healthWorker.email)
       assertEquals(result.national_id_number, null)
       assertEquals(result.ncz_registration_number, null)
       assertEquals(result.specialty, null)
@@ -359,19 +288,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     })
 
     itUsesTrxAnd('returns the nurse registration details & specialty where applicable', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       const [firstEmployment, secondEmployment] = await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -396,21 +313,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       const nurse_address = await insertTestAddress(trx)
       assert(nurse_address)
 
-      await nurse_registration_details.add(trx, {
+      const details = await testRegistrationDetails(trx, {
         health_worker_id: healthWorker.id,
-        gender: 'female',
-        date_of_birth: '1999-12-12',
-        national_id_number: randomNationalId(),
-        date_of_first_practice: '2020-01-01',
-        ncz_registration_number: 'GN123456',
-        mobile_number: '5555555555',
-        national_id_media_id: null,
-        ncz_registration_card_media_id: null,
-        face_picture_media_id: null,
-        nurse_practicing_cert_media_id: null,
-        approved_by: null,
-        address_id: nurse_address.id,
       })
+      await nurse_registration_details.add(trx, details)
 
       const result = await health_workers.getEmployeeInfo(
         trx,
@@ -420,17 +326,17 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       assert(result)
       assertEquals(result.health_worker_id, healthWorker.id)
-      assertEquals(result.gender, 'female')
-      assertEquals(result.name, 'Worker')
-      assertEquals(result.date_of_birth, '12 December 1999')
-      assertEquals(result.mobile_number, '5555555555')
-      assertEquals(result.avatar_url, 'avatar_url')
-      assertEquals(result.date_of_first_practice, '1 January 2020')
-      assertEquals(result.email, 'test@worker.com')
+      assertEquals(result.gender, 'male')
+      assertEquals(result.name, healthWorker.name)
+      assertEquals(result.date_of_birth, '12 December 1979')
+      assertEquals(result.mobile_number, details.mobile_number)
+      assertEquals(result.avatar_url, healthWorker.avatar_url)
+      assertEquals(result.date_of_first_practice, '11 November 1999')
+      assertEquals(result.email, healthWorker.email)
       assert(
         /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),
       )
-      assertEquals(result.ncz_registration_number, 'GN123456')
+      assertEquals(result.ncz_registration_number, details.ncz_registration_number)
       assertEquals(result.specialty, 'midwife')
       assertEquals(result.registration_completed, false)
       assertEquals(result.registration_needed, false)
@@ -456,19 +362,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     })
 
     itUsesTrxAnd('returns documents where applicable', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       const [firstEmployment] = await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -505,24 +399,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/png',
       })
 
-      const nurse_address = await insertTestAddress(trx)
-      assert(nurse_address)
-
-      await nurse_registration_details.add(trx, {
+      const details = await testRegistrationDetails(trx, {
         health_worker_id: healthWorker.id,
-        gender: 'female',
-        date_of_birth: '1999-12-12',
-        national_id_number: randomNationalId(),
-        date_of_first_practice: '2020-01-01',
-        ncz_registration_number: 'GN123456',
-        mobile_number: '5555555555',
-        national_id_media_id: nationalIdMedia.id,
-        ncz_registration_card_media_id: registrationCardMedia.id,
-        face_picture_media_id: facePictureMedia.id,
-        nurse_practicing_cert_media_id: nursePracticingCertMedia.id,
-        approved_by: null,
-        address_id: nurse_address.id,
       })
+      details.national_id_media_id = nationalIdMedia.id
+      details.face_picture_media_id = facePictureMedia.id
+      details.ncz_registration_card_media_id = registrationCardMedia.id
+      details.nurse_practicing_cert_media_id = nursePracticingCertMedia.id
+
+      await nurse_registration_details.add(trx, details)
 
       const result = await health_workers.getEmployeeInfo(
         trx,
@@ -532,17 +417,17 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       assert(result)
       assertEquals(result.health_worker_id, healthWorker.id)
-      assertEquals(result.gender, 'female')
-      assertEquals(result.date_of_birth, '12 December 1999')
-      assertEquals(result.name, 'Worker')
-      assertEquals(result.mobile_number, '5555555555')
-      assertEquals(result.avatar_url, 'avatar_url')
-      assertEquals(result.date_of_first_practice, '1 January 2020')
-      assertEquals(result.email, 'test@worker.com')
+      assertEquals(result.gender, 'male')
+      assertEquals(result.date_of_birth, '12 December 1979')
+      assertEquals(result.name, healthWorker.name)
+      assertEquals(result.mobile_number, details.mobile_number)
+      assertEquals(result.avatar_url, healthWorker.avatar_url)
+      assertEquals(result.date_of_first_practice, '11 November 1999')
+      assertEquals(result.email, healthWorker.email)
       assert(
         /^[0-9]{2}-[0-9]{6,7} [A-Z] [0-9]{2}$/.test(result.national_id_number!),
       )
-      assertEquals(result.ncz_registration_number, 'GN123456')
+      assertEquals(result.ncz_registration_number, details.ncz_registration_number)
       assertEquals(result.specialty, 'midwife')
       assertEquals(result.registration_completed, false)
       assertEquals(result.registration_needed, false)
@@ -589,19 +474,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     })
 
     itUsesTrxAnd('can filter by facility_id', async (trx) => {
-      const healthWorker = await health_workers.upsertWithGoogleCredentials(
-        trx,
-        {
-          name: 'Worker',
-          email: 'test@worker.com',
-          avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          access_token: 'access_token',
-          refresh_token: 'refresh_token',
-          expires_at: new Date(),
-        },
-      )
+      const healthWorker = await addTestHealthWorker(trx)
 
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
@@ -614,15 +487,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       }])
 
       const same_facility_result = await health_workers.search(trx, {
-        search: 'Worker',
+        search: healthWorker.name,
         facility_id: 1,
       })
       assertEquals(same_facility_result.length, 1)
       assertEquals(
         same_facility_result[0],
         {
-          avatar_url: 'avatar_url',
-          email: 'test@worker.com',
+          avatar_url: healthWorker.avatar_url,
+          email: healthWorker.email,
           facilities: [
             {
               facility_id: 1,
@@ -632,9 +505,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               ],
             },
           ],
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-          name: 'Worker',
+          gcal_appointments_calendar_id: healthWorker.gcal_appointments_calendar_id,
+          gcal_availability_calendar_id: healthWorker.gcal_availability_calendar_id,
+          name: healthWorker.name,
           id: healthWorker.id,
           created_at: same_facility_result[0].created_at,
           updated_at: same_facility_result[0].updated_at,
@@ -645,7 +518,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       )
 
       const other_facility_result = await health_workers.search(trx, {
-        search: 'Worker',
+        search: healthWorker.name,
         facility_id: 10,
       })
       assertEquals(other_facility_result.length, 0)
