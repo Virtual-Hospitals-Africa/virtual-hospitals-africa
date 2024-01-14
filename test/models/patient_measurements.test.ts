@@ -18,14 +18,14 @@ describe(
         const nurse = await addTestHealthWorker(trx, {
           scenario: 'approved-nurse',
         })
-        const patient = await patients.upsert(db, { name: 'Test Patient' })
-        const encounter = await patient_encounters.upsert(db, 1, {
+        const patient = await patients.upsert(trx, { name: 'Test Patient' })
+        const encounter = await patient_encounters.upsert(trx, 1, {
           patient_id: patient.id,
           reason: 'seeking treatment',
           provider_ids: [nurse.employee_id!],
         })
         assertEquals(encounter.provider_ids.length, 1)
-        await patient_measurements.upsertVitals(db, {
+        await patient_measurements.upsertVitals(trx, {
           patient_id: patient.id,
           encounter_id: encounter.id,
           encounter_provider_id: encounter.provider_ids[0],
