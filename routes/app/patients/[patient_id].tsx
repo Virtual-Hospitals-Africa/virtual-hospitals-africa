@@ -16,7 +16,7 @@ export default async function PatientPage(
   const { healthWorker } = ctx.state
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-  const [patient] = await patients.getWithMedicalRecords(ctx.state.trx, {
+  const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {
     ids: [patient_id],
     health_worker_id: healthWorker.id,
   })
@@ -37,9 +37,12 @@ export default async function PatientPage(
     >
       <Container size='lg'>
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-          <Button href={`${req.url}/edit`}>
-            Edit
-          </Button>
+          {patient.open_encounter && (
+            <Button href={`${req.url}/encounters/open/vitals`}>
+              Go to open encounter
+            </Button>
+          )}
+
           <SectionHeader>
             Demographic Data
           </SectionHeader>

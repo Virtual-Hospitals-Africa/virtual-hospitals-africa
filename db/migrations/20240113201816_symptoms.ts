@@ -97,7 +97,7 @@ export async function up(db: Kysely<any>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_symptom_media')
-  await db.schema.dropTable('patient_symptoms')
-  await db.schema.dropTable('symptoms')
+  await db.schema.dropTable('patient_symptom_media').execute()
+  await db.schema.dropTable('patient_symptoms').execute()
+  await db.schema.dropTable('symptoms').execute()
 }

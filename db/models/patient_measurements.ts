@@ -1,4 +1,9 @@
-import { Measurements, PatientMeasurement, TrxOrDb } from '../../types.ts'
+import {
+  Measurements,
+  MeasurementsUpsert,
+  PatientMeasurement,
+  TrxOrDb,
+} from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 
 export const MEASUREMENTS: {
@@ -13,16 +18,18 @@ export const MEASUREMENTS: {
   blood_glucose: 'mg/dL',
 }
 
-export function add(
+export async function upsertVitals(
   trx: TrxOrDb,
-  { measurements, ...rest }: {
+  { measurements, patient_id, encounter_id, encounter_provider_id }: {
     patient_id: number
     encounter_id: number
     encounter_provider_id: number
-    measurements: Partial<Measurements>
+    measurements: MeasurementsUpsert
   },
 ) {
   const measurement_names = Object.keys(measurements) as (keyof Measurements)[]
+
+  const unseen_vitals = new Set(Object.keys(MEASUREMENTS))
   assertOr400(
     measurement_names.length > 0,
     'Must provide at least one measurement',
@@ -30,7 +37,7 @@ export function add(
 
   const patient_measurements: PatientMeasurement[] = measurement_names.map(
     (name) => {
-      const [value, units] = measurements[name]!
+      const value = measurements[name]!
       assertOr400(value != null, `Must provide a value for ${name}`)
       assertOr400(
         typeof value === 'number',
@@ -40,23 +47,34 @@ export function add(
         value >= 0,
         `Value for ${name} must be greater than or equal to 0`,
       )
-      assertOr400(
-        units === MEASUREMENTS[name],
-        `Units for ${name} must be ${MEASUREMENTS[name]}`,
-      )
+      unseen_vitals.delete(name)
       return {
-        ...rest,
-        measurement_name: name,
+        patient_id,
+        encounter_id,
+        encounter_provider_id,
         value,
+        measurement_name: name,
       }
     },
   )
 
-  return trx
+  const removing_vitals = trx.deleteFrom('patient_measurements')
+    .where('patient_id', '=', patient_id)
+    .where('encounter_id', '=', encounter_id)
+    .where('measurement_name', 'in', [...unseen_vitals])
+    .execute()
+
+  const updating_vitals = trx
     .insertInto('patient_measurements')
     .values(patient_measurements)
-    .returning('id')
+    .onConflict((oc) =>
+      oc.constraint('one_measurement_per_encounter').doUpdateSet((eb) => ({
+        value: eb.ref('excluded.value'),
+      }))
+    )
     .execute()
+
+  await Promise.all([removing_vitals, updating_vitals])
 }
 
 export async function getEncounterVitals(
@@ -103,15 +121,3 @@ export async function getEncounterVitals(
   }
   return measurements
 }
-
-// export async function getGraph(
-//   trx: TrxOrDb,
-//   { patient_id, measurement_name }: { patient_id: number, measurement_name: keyof Measurements },
-// ) {
-//   return trx
-//     .selectFrom('patient_measurements')
-//     .where('patient_measurements.patient_id', '=', patient_id)
-//     .where('patient_measurements.measurement_name', '=', measurement_name)
-//     .orderBy('created_at', 'asc')
-//     .execute()
-// }

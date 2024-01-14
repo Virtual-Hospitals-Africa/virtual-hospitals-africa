@@ -4,6 +4,7 @@ import * as patient_measurements from '../../../../../../db/models/patient_measu
 import {
   LoggedInHealthWorkerHandler,
   Measurements,
+  MeasurementsUpsert,
 } from '../../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
@@ -11,12 +12,13 @@ import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
-import { log } from '../../../../../_middleware.ts'
 import redirect from '../../../../../../util/redirect.ts'
 
 function assertIsVitals(
   values: unknown,
-): asserts values is { measurements: Partial<Measurements> } {
+): asserts values is {
+  measurements: MeasurementsUpsert
+} {
   assertOr400(isObjectLike(values), 'Invalid form values')
   assertOr400(isObjectLike(values.measurements), 'Invalid form values')
   for (
@@ -28,16 +30,8 @@ function assertIsVitals(
       `${measurement_name} is not a valid measurement`,
     )
     assertOr400(
-      Array.isArray(measurement),
-      `${measurement_name} must be an array of [number, string]`,
-    )
-    assertOr400(
-      typeof measurement[0] === 'number',
-      `${measurement_name} must be an array of [number, string]`,
-    )
-    assertOr400(
-      typeof measurement[1] === 'string',
-      `${measurement_name} must be an array of [number, string]`,
+      typeof measurement === 'number',
+      `${measurement_name} must be a number`,
     )
   }
 }
@@ -54,7 +48,7 @@ export const handler: LoggedInHealthWorkerHandler<
     )
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-    await patient_measurements.add(ctx.state.trx, {
+    await patient_measurements.upsertVitals(ctx.state.trx, {
       patient_id,
       encounter_id: ctx.state.encounter.encounter_id,
       encounter_provider_id:
@@ -78,14 +72,9 @@ export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
         ([measurement_name, units]) => (
           <>
             <NumberInput
-              name={`measurements.${measurement_name}.0`}
+              name={`measurements.${measurement_name}`}
               label={capitalize(measurement_name) + ` (${units})`}
               value={vitals[measurement_name as keyof Measurements]?.[0]}
-            />
-            <input
-              type='hidden'
-              name={`measurements.${measurement_name}.1`}
-              value={units}
             />
           </>
         ),

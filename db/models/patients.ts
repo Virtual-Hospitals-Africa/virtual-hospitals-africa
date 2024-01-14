@@ -12,7 +12,7 @@ import {
   PatientNearestFacility,
   PatientOccupation,
   PatientState,
-  PatientWithMedicalRecord,
+  PatientWithOpenEncounter,
   RenderedPatient,
   ReturnedSqlRow,
   TrxOrDb,
@@ -22,6 +22,7 @@ import { getWalkingDistance } from '../../external-clients/google.ts'
 import compact from '../../util/compact.ts'
 import { upsert as upsertAddress } from './address.ts'
 import * as patient_occupations from './patient_occupations.ts'
+import * as patient_encounters from './patient_encounters.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as patient_family from './family.ts'
@@ -305,32 +306,45 @@ export function getOnboarding(
     .executeTakeFirst()
 }
 
-// TODO: implement medical record functionality
 // TODO: only show medical record if health worker has permission
-export async function getWithMedicalRecords(
+export async function getWithOpenEncounter(
   trx: TrxOrDb,
   opts: {
     ids: number[]
     health_worker_id?: number
   },
-): Promise<ReturnedSqlRow<PatientWithMedicalRecord>[]> {
+): Promise<ReturnedSqlRow<PatientWithOpenEncounter>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')
+
+  const open_encounters = patient_encounters.openQuery(trx)
+    .where('patient_encounters.patient_id', 'in', opts.ids)
+    .as('open_encounters')
+
   const patients = await selectWithName(trx)
     .where('patients.id', 'in', opts.ids)
+    .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
+    .select((eb) => [
+      eb.case().when(eb('open_encounters.encounter_id', 'is', null)).then(null)
+        .else(jsonBuildObject({
+          encounter_id: eb.ref('open_encounters.encounter_id').$notNull(),
+          created_at: eb.ref('open_encounters.created_at').$notNull(),
+          closed_at: eb.ref('open_encounters.closed_at'),
+          reason: eb.ref('open_encounters.reason').$notNull(),
+          notes: eb.ref('open_encounters.notes'),
+          patient_id: eb.ref('open_encounters.patient_id').$notNull(),
+          appointment_id: eb.ref('open_encounters.appointment_id'),
+          waiting_room_id: eb.ref('open_encounters.waiting_room_id'),
+          waiting_room_facility_id: eb.ref(
+            'open_encounters.waiting_room_facility_id',
+          ),
+          providers: eb.ref('open_encounters.providers').$notNull(),
+        })).end().as('open_encounter'),
+    ])
     .execute()
 
   assert(haveNames(patients))
 
-  return patients.map((patient) => ({
-    ...patient,
-    medical_record: {
-      allergies: [
-        'chocolate',
-        'bananas',
-      ],
-      history: {},
-    },
-  }))
+  return patients
 }
 
 export type PatientCard = {

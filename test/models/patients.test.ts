@@ -4,6 +4,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
@@ -92,13 +93,13 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     })
   })
 
-  describe('getWithMedicalRecords', () => {
-    it('finds patients by their name with a dummy medical record', async () => {
+  describe('getWithOpenEncounter', () => {
+    it('finds patients without an open encounter', async () => {
       const test_patient = await patients.upsert(db, {
         name: 'Test Patient',
       })
 
-      const results = await patients.getWithMedicalRecords(db, {
+      const results = await patients.getWithOpenEncounter(db, {
         ids: [test_patient.id],
       })
       assertEquals(results, [
@@ -117,17 +118,58 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           created_at: results[0].created_at,
           updated_at: results[0].updated_at,
           last_visited: null,
-          medical_record: {
-            allergies: [
-              'chocolate',
-              'bananas',
-            ],
-            history: {},
-          },
           conversation_state: 'initial_message',
           completed_intake: false,
           actions: {
             view: `/app/patients/${test_patient.id}`,
+          },
+          open_encounter: null,
+        },
+      ])
+    })
+
+    it('finds patients with an open encounter', async () => {
+      const encounter = await patient_encounters.upsert(db, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { patient_id } = encounter
+
+      const results = await patients.getWithOpenEncounter(db, {
+        ids: [patient_id],
+      })
+      assertEquals(results, [
+        {
+          id: patient_id,
+          avatar_url: null,
+          name: 'Test Patient',
+          dob_formatted: null,
+          description: null,
+          gender: null,
+          ethnicity: null,
+          location: { longitude: null, latitude: null },
+          national_id_number: null,
+          nearest_facility: null,
+          phone_number: null,
+          created_at: results[0].created_at,
+          updated_at: results[0].updated_at,
+          last_visited: null,
+          conversation_state: 'initial_message',
+          completed_intake: false,
+          actions: {
+            view: `/app/patients/${patient_id}`,
+          },
+          open_encounter: {
+            encounter_id: encounter.id,
+            patient_id,
+            reason: 'seeking treatment',
+            providers: [],
+            created_at: results[0].open_encounter!.created_at,
+            closed_at: null,
+            notes: null,
+            appointment_id: null,
+            waiting_room_id: encounter.waiting_room_id,
+            waiting_room_facility_id: 1,
           },
         },
       ])

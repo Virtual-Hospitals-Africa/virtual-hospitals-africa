@@ -211,20 +211,27 @@ export async function addTestHealthWorkerWithSession(opts: {
   const fetchWithSession: typeof fetch = (
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},
-  ) => {
-    return fetch(input, {
+  ) =>
+    fetch(input, {
       headers: {
         ...headers,
         Cookie: `sessionId=${sessionId}`,
       },
       ...rest,
     })
+
+  const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
+    const response = await fetchWithSession(...args)
+    if (!response.ok) throw new Error(await response.text())
+    const html = await response.text()
+    return cheerio.load(html)
   }
 
   return {
     sessionId,
     healthWorker,
     fetch: fetchWithSession,
+    fetchCheerio,
   }
 }
 

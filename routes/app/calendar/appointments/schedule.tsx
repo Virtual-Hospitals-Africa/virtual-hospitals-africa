@@ -83,7 +83,7 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     if (!search.patient_id) {
       return ctx.render({ healthWorker })
     }
-    const gettingPatient = patients.getWithMedicalRecords(ctx.state.trx, {
+    const gettingPatient = patients.getWithOpenEncounter(ctx.state.trx, {
       ids: [search.patient_id],
     })
 
