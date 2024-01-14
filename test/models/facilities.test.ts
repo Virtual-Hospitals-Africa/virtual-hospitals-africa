@@ -1,8 +1,6 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
-import { resetInTest } from '../../db/meta.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
@@ -11,40 +9,216 @@ import { insertTestAddress, randomNationalId } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
+import { itUsesTrxAnd } from '../web/utilities.ts'
+import generateUUID from '../../util/uuid.ts'
 
 describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
   describe('getEmployees', () => {
-    it('gets the employees of a facility, with or without invitees', async () => {
-      const hw_at_facility1 = await health_workers.upsert(db, {
+    itUsesTrxAnd(
+      'gets the employees of a facility, with or without invitees',
+      async (trx) => {
+        const hw_at_facility1 = await health_workers.upsert(trx, {
+          name: 'At Facility 1',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_at_facility1)
+
+        const hw_at_facility2 = await health_workers.upsert(trx, {
+          name: 'At Facility 2',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_at_facility2)
+
+        const hw_other_facility = await health_workers.upsert(trx, {
+          name: 'At Facility 3',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_other_facility)
+
+        await employment.add(trx, [
+          {
+            health_worker_id: hw_at_facility1.id,
+            facility_id: 3,
+            profession: 'nurse',
+          },
+          {
+            health_worker_id: hw_at_facility1.id,
+            facility_id: 3,
+            profession: 'admin',
+          },
+          {
+            health_worker_id: hw_at_facility2.id,
+            facility_id: 3,
+            profession: 'doctor',
+          },
+          {
+            health_worker_id: hw_at_facility2.id,
+            facility_id: 3,
+            profession: 'admin',
+          },
+          {
+            health_worker_id: hw_other_facility.id,
+            facility_id: 4,
+            profession: 'doctor',
+          },
+        ])
+
+        const [invited] = await employment.addInvitees(trx, 3, [
+          {
+            email: `${generateUUID()}@test.com`,
+            profession: 'doctor',
+          },
+        ])
+
+        const withInvitees = await facilities.getEmployeesAndInvitees(trx, {
+          facility_id: 3,
+        })
+
+        const hw_1 = withInvitees.find((hw) =>
+          hw.health_worker_id === hw_at_facility1.id
+        )
+        assert(hw_1)
+        assertEquals(omit(hw_1, ['professions']), {
+          avatar_url: 'avatar_url',
+          email: hw_at_facility1.email,
+          display_name: 'At Facility 1',
+          health_worker_id: hw_at_facility1.id,
+          is_invitee: false,
+          name: 'At Facility 1',
+          registration_status: 'incomplete',
+          actions: {
+            view: `/app/facilities/3/employees/${hw_at_facility1.id}`,
+          },
+        })
+        assertEquals(hw_1.professions.length, 2)
+        assertEquals(hw_1.professions[0].profession, 'admin')
+        assertEquals(hw_1.professions[1].profession, 'nurse')
+
+        const hw_2 = withInvitees.find((hw) =>
+          hw.health_worker_id === hw_at_facility2.id
+        )
+        assert(hw_2)
+        assertEquals(omit(hw_2, ['professions']), {
+          avatar_url: 'avatar_url',
+          email: hw_at_facility2.email,
+          display_name: 'At Facility 2',
+          health_worker_id: hw_at_facility2.id,
+          is_invitee: false,
+          name: 'At Facility 2',
+          registration_status: 'incomplete',
+          actions: {
+            view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+          },
+        })
+        assertEquals(hw_2.professions.length, 2)
+        assertEquals(hw_2.professions[0].profession, 'admin')
+        assertEquals(hw_2.professions[1].profession, 'doctor')
+
+        const invitedHw = withInvitees.find((hw) => hw.email === invited.email)!
+        assertEquals(omit(invitedHw, ['professions']), {
+          avatar_url: null,
+          email: invited.email,
+          display_name: invited.email,
+          health_worker_id: null,
+          is_invitee: true,
+          name: null,
+          registration_status: 'incomplete',
+          actions: {
+            view: null,
+          },
+        })
+
+        assertEquals(invitedHw.professions.length, 1)
+        assertEquals(invitedHw.professions[0].profession, 'doctor')
+
+        {
+          const withoutInvitees = await facilities.getEmployees(trx, {
+            facility_id: 3,
+          })
+
+          const hw_1 = withoutInvitees.find((hw) =>
+            hw.health_worker_id === hw_at_facility1.id
+          )
+          assert(hw_1)
+          assertEquals(omit(hw_1, ['professions']), {
+            avatar_url: 'avatar_url',
+            email: hw_at_facility1.email,
+            display_name: 'At Facility 1',
+            health_worker_id: hw_at_facility1.id,
+            is_invitee: false,
+            name: 'At Facility 1',
+            registration_status: 'incomplete',
+            actions: {
+              view: `/app/facilities/3/employees/${hw_at_facility1.id}`,
+            },
+          })
+          assertEquals(hw_1.professions.length, 2)
+          assertEquals(hw_1.professions[0].profession, 'admin')
+          assertEquals(hw_1.professions[1].profession, 'nurse')
+
+          const hw_2 = withoutInvitees.find((hw) =>
+            hw.health_worker_id === hw_at_facility2.id
+          )
+          assert(hw_2)
+          assertEquals(omit(hw_2, ['professions']), {
+            avatar_url: 'avatar_url',
+            email: hw_at_facility2.email,
+            display_name: 'At Facility 2',
+            health_worker_id: hw_at_facility2.id,
+            is_invitee: false,
+            name: 'At Facility 2',
+            registration_status: 'incomplete',
+            actions: {
+              view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
+            },
+          })
+          assertEquals(hw_2.professions.length, 2)
+          assertEquals(hw_2.professions[0].profession, 'admin')
+          assertEquals(hw_2.professions[1].profession, 'doctor')
+
+          assert(withoutInvitees.every((hw) => !hw.is_invitee))
+        }
+      },
+    )
+
+    itUsesTrxAnd('can get employees matching emails', async (trx) => {
+      const hw_at_facility1 = await health_workers.upsert(trx, {
         name: 'At Facility 1',
-        email: 'at_facility1@worker.com',
+        email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
         gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
         gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_at_facility1)
 
-      const hw_at_facility2 = await health_workers.upsert(db, {
+      const hw_at_facility2 = await health_workers.upsert(trx, {
         name: 'At Facility 2',
-        email: 'at_facility2@worker.com',
+        email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
         gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
         gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_at_facility2)
 
-      const hw_other_facility = await health_workers.upsert(db, {
+      const hw_other_facility = await health_workers.upsert(trx, {
         name: 'At Facility 3',
-        email: 'previous3@worker.com',
+        email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
         gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
         gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_other_facility)
 
-      await employment.add(db, [
+      await employment.add(trx, [
         {
           health_worker_id: hw_at_facility1.id,
           facility_id: 3,
@@ -66,156 +240,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           profession: 'admin',
         },
         {
-          health_worker_id: hw_other_facility.id,
-          facility_id: 4,
-          profession: 'doctor',
-        },
-      ])
-
-      await employment.addInvitees(db, 3, [
-        {
-          email: 'invitee@test.com',
-          profession: 'doctor',
-        },
-      ])
-
-      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
-        facility_id: 3,
-      })
-
-      assertEquals(withInvitees.length, 3)
-      assertEquals(omit(withInvitees[0], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'at_facility1@worker.com',
-        display_name: 'At Facility 1',
-        health_worker_id: hw_at_facility1.id,
-        is_invitee: false,
-        name: 'At Facility 1',
-        registration_status: 'incomplete',
-        actions: {
-          view: `/app/facilities/3/employees/${hw_at_facility1.id}`,
-        },
-      })
-      assertEquals(withInvitees[0].professions.length, 2)
-      assertEquals(withInvitees[0].professions[0].profession, 'admin')
-      assertEquals(withInvitees[0].professions[1].profession, 'nurse')
-      assertEquals(omit(withInvitees[1], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'at_facility2@worker.com',
-        display_name: 'At Facility 2',
-        health_worker_id: hw_at_facility2.id,
-        is_invitee: false,
-        name: 'At Facility 2',
-        registration_status: 'incomplete',
-        actions: {
-          view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
-        },
-      })
-      assertEquals(withInvitees[1].professions.length, 2)
-      assertEquals(withInvitees[1].professions[0].profession, 'admin')
-      assertEquals(withInvitees[1].professions[1].profession, 'doctor')
-      assertEquals(omit(withInvitees[2], ['professions']), {
-        avatar_url: null,
-        email: 'invitee@test.com',
-        display_name: 'invitee@test.com',
-        health_worker_id: null,
-        is_invitee: true,
-        name: null,
-        registration_status: 'incomplete',
-        actions: {
-          view: null,
-        },
-      })
-      assertEquals(withInvitees[2].professions.length, 1)
-      assertEquals(withInvitees[2].professions[0].profession, 'doctor')
-
-      const withoutInvitees = await facilities.getEmployees(db, {
-        facility_id: 3,
-      })
-
-      assertEquals(withoutInvitees.length, 2)
-      assertEquals(omit(withoutInvitees[0], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'at_facility1@worker.com',
-        display_name: 'At Facility 1',
-        health_worker_id: hw_at_facility1.id,
-        is_invitee: false,
-        name: 'At Facility 1',
-        registration_status: 'incomplete',
-        actions: {
-          view: `/app/facilities/3/employees/${hw_at_facility1.id}`,
-        },
-      })
-      assertEquals(withoutInvitees[0].professions.length, 2)
-      assertEquals(withoutInvitees[0].professions[0].profession, 'admin')
-      assertEquals(withoutInvitees[0].professions[1].profession, 'nurse')
-      assertEquals(omit(withoutInvitees[1], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'at_facility2@worker.com',
-        display_name: 'At Facility 2',
-        health_worker_id: hw_at_facility2.id,
-        is_invitee: false,
-        name: 'At Facility 2',
-        registration_status: 'incomplete',
-        actions: {
-          view: `/app/facilities/3/employees/${hw_at_facility2.id}`,
-        },
-      })
-      assertEquals(withoutInvitees[1].professions.length, 2)
-      assertEquals(withoutInvitees[1].professions[0].profession, 'admin')
-      assertEquals(withoutInvitees[1].professions[1].profession, 'doctor')
-    })
-
-    it('can get employees matching emails', async () => {
-      const hw_at_facility1 = await health_workers.upsert(db, {
-        name: 'At Facility 1',
-        email: 'at_facility1@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_at_facility1)
-
-      const hw_at_facility2 = await health_workers.upsert(db, {
-        name: 'At Facility 2',
-        email: 'at_facility2@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_at_facility2)
-
-      const hw_other_facility = await health_workers.upsert(db, {
-        name: 'At Facility 3',
-        email: 'previous3@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_other_facility)
-
-      await employment.add(db, [
-        {
-          health_worker_id: hw_at_facility1.id,
-          facility_id: 3,
-          profession: 'nurse',
-        },
-        {
-          health_worker_id: hw_at_facility1.id,
-          facility_id: 3,
-          profession: 'admin',
-        },
-        {
-          health_worker_id: hw_at_facility2.id,
-          facility_id: 3,
-          profession: 'doctor',
-        },
-        {
-          health_worker_id: hw_at_facility2.id,
-          facility_id: 3,
-          profession: 'admin',
-        },
-        {
           health_worker_id: hw_at_facility2.id,
           facility_id: 4,
           profession: 'doctor',
@@ -227,22 +251,22 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         },
       ])
 
-      await employment.addInvitees(db, 3, [
+      await employment.addInvitees(trx, 3, [
         {
-          email: 'invitee@test.com',
+          email: `${generateUUID()}@test.com`,
           profession: 'doctor',
         },
       ])
 
-      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
+      const withInvitees = await facilities.getEmployeesAndInvitees(trx, {
         facility_id: 3,
-        emails: ['at_facility2@worker.com'],
+        emails: [hw_at_facility2.email],
       })
 
       assertEquals(withInvitees.length, 1)
       assertEquals(omit(withInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
-        email: 'at_facility2@worker.com',
+        email: hw_at_facility2.email,
         display_name: 'At Facility 2',
         health_worker_id: hw_at_facility2.id,
         is_invitee: false,
@@ -257,256 +281,291 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
       assertEquals(withInvitees[0].professions[1].profession, 'doctor')
     })
 
-    it("assures that registration_status is pending_approval for when registration is complete, but hasn't been approved", async () => {
-      const hw_at_facility1 = await health_workers.upsert(db, {
-        name: 'At Facility 1',
-        email: 'at_facility1@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_at_facility1)
+    itUsesTrxAnd(
+      "assures that registration_status is pending_approval for when registration is complete, but hasn't been approved",
+      async (trx) => {
+        const hw_at_facility1 = await health_workers.upsert(trx, {
+          name: 'At Facility 1',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_at_facility1)
 
-      await employment.add(db, [
-        {
+        await employment.add(trx, [
+          {
+            health_worker_id: hw_at_facility1.id,
+            facility_id: 1,
+            profession: 'nurse',
+          },
+        ])
+
+        const nurse_address = await insertTestAddress(trx)
+        assert(nurse_address)
+
+        await nurse_registration_details.add(trx, {
           health_worker_id: hw_at_facility1.id,
+          gender: 'female',
+          national_id_number: randomNationalId(),
+          date_of_first_practice: '2020-01-01',
+          ncz_registration_number: 'GN123456',
+          mobile_number: '5555555555',
+          national_id_media_id: null,
+          ncz_registration_card_media_id: null,
+          face_picture_media_id: null,
+          nurse_practicing_cert_media_id: null,
+          approved_by: null,
+          date_of_birth: '2020-01-01',
+          address_id: nurse_address.id,
+        })
+
+        const withInvitees = await facilities.getEmployeesAndInvitees(trx, {
           facility_id: 1,
-          profession: 'nurse',
-        },
-      ])
+          emails: [hw_at_facility1.email],
+        })
 
-      const nurse_address = await insertTestAddress()
-      assert(nurse_address)
+        assertEquals(withInvitees.length, 1)
+        assertEquals(omit(withInvitees[0], ['professions']), {
+          avatar_url: 'avatar_url',
+          email: hw_at_facility1.email,
+          display_name: 'At Facility 1',
+          health_worker_id: hw_at_facility1.id,
+          is_invitee: false,
+          name: 'At Facility 1',
+          registration_status: 'pending_approval',
+          actions: {
+            view: `/app/facilities/1/employees/${hw_at_facility1.id}`,
+          },
+        })
+        assertEquals(withInvitees[0].professions.length, 1)
+        assertEquals(withInvitees[0].professions[0].profession, 'nurse')
+      },
+    )
 
-      await nurse_registration_details.add(db, {
-        health_worker_id: hw_at_facility1.id,
-        gender: 'female',
-        national_id_number: randomNationalId(),
-        date_of_first_practice: '2020-01-01',
-        ncz_registration_number: 'GN123456',
-        mobile_number: '5555555555',
-        national_id_media_id: null,
-        ncz_registration_card_media_id: null,
-        face_picture_media_id: null,
-        nurse_practicing_cert_media_id: null,
-        approved_by: null,
-        date_of_birth: '2020-01-01',
-        address_id: nurse_address.id,
-      })
+    itUsesTrxAnd(
+      'assures that registration_status is approved for when registration is complete, and has been approved',
+      async (trx) => {
+        const nurse = await health_workers.upsert(trx, {
+          name: 'Nurse',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(nurse)
 
-      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
-        facility_id: 1,
-      })
+        const admin = await health_workers.upsert(trx, {
+          name: 'Admin',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(admin)
 
-      assertEquals(withInvitees.length, 1)
-      assertEquals(omit(withInvitees[0], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'at_facility1@worker.com',
-        display_name: 'At Facility 1',
-        health_worker_id: hw_at_facility1.id,
-        is_invitee: false,
-        name: 'At Facility 1',
-        registration_status: 'pending_approval',
-        actions: {
-          view: `/app/facilities/1/employees/${hw_at_facility1.id}`,
-        },
-      })
-      assertEquals(withInvitees[0].professions.length, 1)
-      assertEquals(withInvitees[0].professions[0].profession, 'nurse')
-    })
+        await employment.add(trx, [
+          {
+            health_worker_id: nurse.id,
+            facility_id: 1,
+            profession: 'nurse',
+          },
+          {
+            health_worker_id: admin.id,
+            facility_id: 1,
+            profession: 'admin',
+          },
+        ])
 
-    it('assures that registration_status is approved for when registration is complete, and has been approved', async () => {
-      const nurse = await health_workers.upsert(db, {
-        name: 'Nurse',
-        email: 'nurse@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(nurse)
+        const nurse_address = await insertTestAddress(trx)
+        assert(nurse_address)
 
-      const admin = await health_workers.upsert(db, {
-        name: 'Admin',
-        email: 'admin@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(admin)
-
-      await employment.add(db, [
-        {
+        await nurse_registration_details.add(trx, {
           health_worker_id: nurse.id,
+          gender: 'female',
+          national_id_number: randomNationalId(),
+          date_of_first_practice: '2020-01-01',
+          ncz_registration_number: 'GN123456',
+          mobile_number: '5555555555',
+          national_id_media_id: null,
+          ncz_registration_card_media_id: null,
+          face_picture_media_id: null,
+          nurse_practicing_cert_media_id: null,
+          approved_by: admin.id,
+          date_of_birth: '2020-01-01',
+          address_id: nurse_address.id,
+        })
+
+        const withInvitees = await facilities.getEmployeesAndInvitees(trx, {
           facility_id: 1,
-          profession: 'nurse',
-        },
-        {
+          emails: [nurse.email, admin.email],
+        })
+
+        assertEquals(withInvitees.length, 2)
+        assertEquals(omit(withInvitees[0], ['professions']), {
+          avatar_url: 'avatar_url',
+          email: nurse.email,
+          display_name: 'Nurse',
+          health_worker_id: nurse.id,
+          is_invitee: false,
+          name: 'Nurse',
+          registration_status: 'approved',
+          actions: {
+            view: `/app/facilities/1/employees/${nurse.id}`,
+          },
+        })
+        assertEquals(withInvitees[0].professions.length, 1)
+        assertEquals(withInvitees[0].professions[0].profession, 'nurse')
+        assertEquals(omit(withInvitees[1], ['professions']), {
+          avatar_url: 'avatar_url',
+          email: admin.email,
+          display_name: 'Admin',
           health_worker_id: admin.id,
-          facility_id: 1,
-          profession: 'admin',
-        },
-      ])
-
-      const nurse_address = await insertTestAddress()
-      assert(nurse_address)
-
-      await nurse_registration_details.add(db, {
-        health_worker_id: nurse.id,
-        gender: 'female',
-        national_id_number: randomNationalId(),
-        date_of_first_practice: '2020-01-01',
-        ncz_registration_number: 'GN123456',
-        mobile_number: '5555555555',
-        national_id_media_id: null,
-        ncz_registration_card_media_id: null,
-        face_picture_media_id: null,
-        nurse_practicing_cert_media_id: null,
-        approved_by: admin.id,
-        date_of_birth: '2020-01-01',
-        address_id: nurse_address.id,
-      })
-
-      const withInvitees = await facilities.getEmployeesAndInvitees(db, {
-        facility_id: 1,
-      })
-
-      assertEquals(withInvitees.length, 2)
-      assertEquals(omit(withInvitees[0], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'nurse@worker.com',
-        display_name: 'Nurse',
-        health_worker_id: nurse.id,
-        is_invitee: false,
-        name: 'Nurse',
-        registration_status: 'approved',
-        actions: {
-          view: `/app/facilities/1/employees/${nurse.id}`,
-        },
-      })
-      assertEquals(withInvitees[0].professions.length, 1)
-      assertEquals(withInvitees[0].professions[0].profession, 'nurse')
-      assertEquals(omit(withInvitees[1], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: 'admin@worker.com',
-        display_name: 'Admin',
-        health_worker_id: admin.id,
-        is_invitee: false,
-        name: 'Admin',
-        registration_status: 'incomplete',
-        actions: {
-          view: `/app/facilities/1/employees/${admin.id}`,
-        },
-      })
-      assertEquals(withInvitees[1].professions.length, 1)
-      assertEquals(withInvitees[1].professions[0].profession, 'admin')
-    })
+          is_invitee: false,
+          name: 'Admin',
+          registration_status: 'incomplete',
+          actions: {
+            view: `/app/facilities/1/employees/${admin.id}`,
+          },
+        })
+        assertEquals(withInvitees[1].professions.length, 1)
+        assertEquals(withInvitees[1].professions[0].profession, 'admin')
+      },
+    )
   })
 
   describe('invite', () => {
-    it('adds rows to health_worker_invitees if the user is not already a health worker at the facility', async () => {
-      await facilities.invite(db, 1, [
-        { email: 'test@example.com', profession: 'nurse' },
-      ])
-      const invitees = await db.selectFrom('health_worker_invitees').selectAll()
-        .execute()
+    itUsesTrxAnd(
+      'adds rows to health_worker_invitees if the user is not already a health worker at the facility',
+      async (trx) => {
+        const email = `${generateUUID()}@example.com`
+        await facilities.invite(trx, 1, [
+          { email, profession: 'nurse' },
+        ])
+        const invitees = await trx.selectFrom('health_worker_invitees').where(
+          'email',
+          '=',
+          email,
+        ).selectAll()
+          .execute()
 
-      assertEquals(invitees.length, 1)
-      const invitee = invitees[0]
-      assertEquals(invitee.email, 'test@example.com')
-      assertEquals(invitee.profession, 'nurse')
-    })
+        assertEquals(invitees.length, 1)
+        const invitee = invitees[0]
+        assertEquals(invitee.email, email)
+        assertEquals(invitee.profession, 'nurse')
+      },
+    )
 
-    it('adds the profession if the health worker is already employed at this facility', async () => {
-      const hw_at_facility1 = await health_workers.upsert(db, {
-        name: 'At Facility 1',
-        email: 'at_facility1@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_at_facility1)
+    itUsesTrxAnd(
+      'adds the profession if the health worker is already employed at this facility',
+      async (trx) => {
+        const hw_at_facility1 = await health_workers.upsert(trx, {
+          name: 'At Facility 1',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_at_facility1)
 
-      await employment.add(db, [
-        {
-          health_worker_id: hw_at_facility1.id,
-          facility_id: 1,
-          profession: 'admin',
-        },
-      ])
+        await employment.add(trx, [
+          {
+            health_worker_id: hw_at_facility1.id,
+            facility_id: 1,
+            profession: 'admin',
+          },
+        ])
 
-      await facilities.invite(db, 1, [
-        { email: 'at_facility1@worker.com', profession: 'doctor' },
-      ])
-      const invitees = await db.selectFrom('health_worker_invitees').selectAll()
-        .execute()
+        await facilities.invite(trx, 1, [
+          { email: hw_at_facility1.email, profession: 'doctor' },
+        ])
+        const invitees = await trx.selectFrom('health_worker_invitees').where(
+          'email',
+          '=',
+          hw_at_facility1.email,
+        ).selectAll()
+          .execute()
 
-      assertEquals(invitees.length, 0)
+        assertEquals(invitees.length, 0)
 
-      const employmentResult = await db.selectFrom('employment').selectAll()
-        .execute()
-      assertEquals(employmentResult.length, 2)
-      assertEquals(
-        employmentResult[0].health_worker_id,
-        employmentResult[1].health_worker_id,
-      )
-      assertEquals(employmentResult[0].profession, 'admin')
-      assertEquals(employmentResult[1].profession, 'doctor')
-    })
+        const employmentResult = await trx.selectFrom('employment').where(
+          'health_worker_id',
+          '=',
+          hw_at_facility1.id,
+        ).selectAll()
+          .execute()
+        assertEquals(employmentResult.length, 2)
+        assertEquals(
+          employmentResult[0].health_worker_id,
+          employmentResult[1].health_worker_id,
+        )
+        assertEquals(employmentResult[0].profession, 'admin')
+        assertEquals(employmentResult[1].profession, 'doctor')
+      },
+    )
 
-    it('fails if the user is already a health worker at the facility with that exact profession', async () => {
-      const hw_at_facility1 = await health_workers.upsert(db, {
-        name: 'At Facility 1',
-        email: 'at_facility1@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_at_facility1)
+    itUsesTrxAnd(
+      'fails if the user is already a health worker at the facility with that exact profession',
+      async (trx) => {
+        const same_email = `${generateUUID()}@worker.com`
+        const hw_at_facility1 = await health_workers.upsert(trx, {
+          name: 'At Facility 1',
+          email: same_email,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_at_facility1)
 
-      await employment.add(db, [
-        {
-          health_worker_id: hw_at_facility1.id,
-          facility_id: 1,
-          profession: 'admin',
-        },
-      ])
+        await employment.add(trx, [
+          {
+            health_worker_id: hw_at_facility1.id,
+            facility_id: 1,
+            profession: 'admin',
+          },
+        ])
 
-      await assertRejects(
-        () =>
-          facilities.invite(db, 1, [
-            { email: 'at_facility1@worker.com', profession: 'admin' },
-          ]),
-        StatusError,
-        'at_facility1@worker.com is already employed as a admin. Please remove them from the list.',
-      )
-    })
+        await assertRejects(
+          () =>
+            facilities.invite(trx, 1, [
+              { email: same_email, profession: 'admin' },
+            ]),
+          StatusError,
+          `${same_email} is already employed as a admin. Please remove them from the list.`,
+        )
+      },
+    )
 
-    it('fails on an attempt to invite an existing nurse as a doctor ', async () => {
-      const hw_at_facility1 = await health_workers.upsert(db, {
-        name: 'At Facility 1',
-        email: 'at_facility1@worker.com',
-        avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      })
-      assert(hw_at_facility1)
+    itUsesTrxAnd(
+      'fails on an attempt to invite an existing nurse as a doctor ',
+      async (trx) => {
+        const same_email = `${generateUUID()}@worker.com`
+        const hw_at_facility1 = await health_workers.upsert(trx, {
+          name: 'At Facility 1',
+          email: same_email,
+          avatar_url: 'avatar_url',
+          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
+          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
+        })
+        assert(hw_at_facility1)
 
-      await employment.add(db, [
-        {
-          health_worker_id: hw_at_facility1.id,
-          facility_id: 1,
-          profession: 'nurse',
-        },
-      ])
+        await employment.add(trx, [
+          {
+            health_worker_id: hw_at_facility1.id,
+            facility_id: 1,
+            profession: 'nurse',
+          },
+        ])
 
-      await assertRejects(
-        () =>
-          facilities.invite(db, 1, [
-            { email: 'at_facility1@worker.com', profession: 'doctor' },
-          ]),
-        StatusError,
-        "at_facility1@worker.com is already employed as a nurse so they can't also be employed as a doctor. Please remove them from the list.",
-      )
-    })
+        await assertRejects(
+          () =>
+            facilities.invite(trx, 1, [
+              { email: same_email, profession: 'doctor' },
+            ]),
+          StatusError,
+          `${same_email} is already employed as a nurse so they can't also be employed as a doctor. Please remove them from the list.`,
+        )
+      },
+    )
   })
 })

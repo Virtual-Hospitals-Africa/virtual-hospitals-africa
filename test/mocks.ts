@@ -1,4 +1,9 @@
-import { Address, NurseRegistrationDetails, ReturnedSqlRow } from '../types.ts'
+import {
+  Address,
+  NurseRegistrationDetails,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import sample from '../util/sample.ts'
 import db from '../db/db.ts'
@@ -53,8 +58,8 @@ export const testRegistrationDetails = async (
   address_id: (await insertTestAddress()).id,
 })
 
-export async function createTestAddress(): Promise<Address> {
-  const fullCountryInfo = await address.getFullCountryInfo(db)
+export async function createTestAddress(trx: TrxOrDb = db): Promise<Address> {
+  const fullCountryInfo = await address.getFullCountryInfo(trx)
   const country = sample(fullCountryInfo)
   const province = sample(country.provinces)
   const district = sample(province.districts)
@@ -71,6 +76,8 @@ export async function createTestAddress(): Promise<Address> {
   }
 }
 
-export async function insertTestAddress(): Promise<ReturnedSqlRow<Address>> {
-  return address.upsert(db, await createTestAddress())
+export async function insertTestAddress(
+  trx: TrxOrDb = db,
+): Promise<ReturnedSqlRow<Address>> {
+  return address.upsert(trx, await createTestAddress(trx))
 }

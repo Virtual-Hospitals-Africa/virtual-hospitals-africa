@@ -2,7 +2,13 @@ import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
-import { afterAll, beforeAll, beforeEach, it, describe } from 'std/testing/bdd.ts'
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  it,
+} from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
@@ -295,8 +301,22 @@ export function getFormDisplay($: cheerio.CheerioAPI): unknown {
   return formDisplay
 }
 
-export function itUsesTrxAnd(description: string, callback: (trx: TrxOrDb) => Promise<void>, opts: { only?: boolean, skip?: boolean } = {}) {
+export function itUsesTrxAnd(
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+  opts: { only?: boolean; skip?: boolean } = {},
+) {
   const { only, skip } = opts
   const _it = only ? it.only : skip ? it.skip : it
   _it(description, () => db.transaction().execute(callback))
 }
+
+itUsesTrxAnd.only = (
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+) => itUsesTrxAnd(description, callback, { only: true })
+
+itUsesTrxAnd.skip = (
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+) => itUsesTrxAnd(description, callback, { skip: true })

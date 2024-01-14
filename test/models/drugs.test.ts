@@ -6,21 +6,24 @@ import { itUsesTrxAnd } from '../web/utilities.ts'
 
 describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
   describe('search', () => {
-    itUsesTrxAnd('gets search results for drugs with their forms, strengths, and manufacturers', async (trx) => {
-      const results = await drugs.search(trx, { search: 'abacavir' })
-      assertEquals(
-        deepOmit(results, [
-          'id',
-          'medication_id',
-          'manufactured_medication_id',
-        ]),
-        deepOmit(expected_results, [
-          'id',
-          'medication_id',
-          'manufactured_medication_id',
-        ]),
-      )
-    })
+    itUsesTrxAnd(
+      'gets search results for drugs with their forms, strengths, and manufacturers',
+      async (trx) => {
+        const results = await drugs.search(trx, { search: 'abacavir' })
+        assertEquals(
+          deepOmit(results, [
+            'id',
+            'medication_id',
+            'manufactured_medication_id',
+          ]),
+          deepOmit(expected_results, [
+            'id',
+            'medication_id',
+            'manufactured_medication_id',
+          ]),
+        )
+      },
+    )
   })
 })
 
