@@ -322,7 +322,7 @@ export async function search(
 
   const healthWorkers = await query.execute()
 
-  const results_with_description =  healthWorkers.map((hw) => {
+  const results_with_description = healthWorkers.map((hw) => {
     assert(hasName(hw))
     return {
       ...hw,
@@ -334,7 +334,15 @@ export async function search(
 
   if (!opts.prioritize_facility_id) return results_with_description
 
-  return sortBy(results_with_description, (hw) => hw.facilities.some(facility => facility.facility_id === opts.prioritize_facility_id) ? 0 : 1)
+  return sortBy(
+    results_with_description,
+    (hw) =>
+      hw.facilities.some((facility) =>
+          facility.facility_id === opts.prioritize_facility_id
+        )
+        ? 0
+        : 1,
+  )
 }
 
 export async function get(

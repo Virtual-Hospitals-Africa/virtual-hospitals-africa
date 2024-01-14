@@ -1,6 +1,6 @@
-import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import { now } from '../helpers.ts'
 
 export async function upsert(
   trx: TrxOrDb,
@@ -15,7 +15,7 @@ export async function upsert(
   const removing_allergies = trx
     .deleteFrom('patient_allergies')
     .where('patient_id', '=', patient_id)
-    .where('created_at', '<', sql<Date>`now()`)
+    .where('created_at', '<=', now)
     .execute()
 
   const adding_allergies = allergies.length && trx

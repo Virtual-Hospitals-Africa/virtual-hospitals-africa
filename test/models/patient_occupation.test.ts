@@ -28,34 +28,37 @@ describe(
         assert(patient_occupation)
       })
 
-      itUsesTrxAnd('can replace an existing patient occupation', async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Test Patient' })
+      itUsesTrxAnd(
+        'can replace an existing patient occupation',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Test Patient' })
 
-        await patient_occupations.upsert(trx, {
-          patient_id: patient.id,
-          occupation: {
-            school: {
-              status: 'in school',
-              grade: 'ECD 1',
+          await patient_occupations.upsert(trx, {
+            patient_id: patient.id,
+            occupation: {
+              school: {
+                status: 'in school',
+                grade: 'ECD 1',
+              },
             },
-          },
-        })
+          })
 
-        await patient_occupations.upsert(trx, {
-          patient_id: patient.id,
-          occupation: {
-            school: {
-              status: 'never attended',
+          await patient_occupations.upsert(trx, {
+            patient_id: patient.id,
+            occupation: {
+              school: {
+                status: 'never attended',
+              },
             },
-          },
-        })
+          })
 
-        const occupation = await patient_occupations.get(trx, {
-          patient_id: patient.id,
-        })
-        assert(occupation)
-        assert(occupation.school.status === 'never attended')
-      })
+          const occupation = await patient_occupations.get(trx, {
+            patient_id: patient.id,
+          })
+          assert(occupation)
+          assert(occupation.school.status === 'never attended')
+        },
+      )
     })
   },
 )

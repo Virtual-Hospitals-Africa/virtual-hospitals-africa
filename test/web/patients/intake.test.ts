@@ -46,633 +46,688 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assert($('input[name="nonexistant"]').length === 0)
   })
 
-  itUsesTrxAnd('supports POST on the personal step, moving you to the address step', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-    const body = new FormData()
-    body.set('first_name', 'Test')
-    body.set('middle_names', 'Zoom Zoom')
-    body.set('last_name', 'Patient')
-    body.set('national_id_number', '08-123456 D 53')
-    body.set('date_of_birth', '2020-01-01')
-    body.set('gender', 'female')
-    body.set('ethnicity', 'african')
-    body.set('phone_number', '5555555555')
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/personal`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
-
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-
-    const patients_after_update = await trx.selectFrom('patients').selectAll()
-      .execute()
-    assertEquals(patients_after_update.length, 1)
-    assertEquals(patients_after_update[0].name, 'Test Zoom Zoom Patient')
-    assertEquals(patients_after_update[0].national_id_number, '08-123456 D 53')
-
-    assertEquals(
-      postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/address`,
-    )
-
-    const getPersonalResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/personal`,
-    )
-
-    const pageContents = await getPersonalResponse.text()
-    const $ = cheerio.load(pageContents)
-    assertEquals($('input[name="first_name"]').val(), 'Test')
-    assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
-    assertEquals($('input[name="last_name"]').val(), 'Patient')
-    assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
-    assertEquals($('select[name="gender"]').val(), 'female')
-    assertEquals($('select[name="ethnicity"]').val(), 'african')
-    assertEquals($('input[name="national_id_number"]').val(), '08-123456 D 53')
-    assertEquals($('input[name="phone_number"]').val(), '5555555555')
-  })
-
-  itUsesTrxAnd('supports POST on the address step, moving you to the pre-existing_conditions step', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const testDoctor = await addTestHealthWorker(trx, { scenario: 'doctor' })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-    const countryInfo = await address.getFullCountryInfo(trx)
-    const zimbabwe = countryInfo[0]
-    assertEquals(zimbabwe.name, 'Zimbabwe')
-
-    const province = sample(zimbabwe.provinces)
-    const district = sample(province.districts)
-    const ward = sample(district.wards)
-    const suburb = ward.suburbs.length ? sample(ward.suburbs) : undefined
-
-    const body = new FormData()
-    body.set('address.country_id', String(zimbabwe.id))
-    body.set('address.province_id', String(province.id))
-    body.set('address.district_id', String(district.id))
-    body.set('address.ward_id', String(ward.id))
-    if (suburb) body.set('address.suburb_id', String(suburb.id))
-    body.set('address.street', '120 Main Street')
-    body.set('nearest_facility_id', '5')
-    body.set('primary_doctor_id', String(testDoctor.id))
-
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/address`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
-
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-    )
-
-    const patientResult = await trx.selectFrom('patients').selectAll().execute()
-    assertEquals(patientResult.length, 1)
-    assertEquals(patientResult[0].name, 'Test Patient')
-
-    const patientAddress = await trx.selectFrom('address').selectAll().where(
-      'address.id',
-      '=',
-      patientResult[0].address_id ? patientResult[0].address_id : null,
-    ).execute()
-    assertEquals(patientAddress[0].country_id, zimbabwe.id)
-    assertEquals(patientAddress[0].province_id, province.id)
-    assertEquals(patientAddress[0].district_id, district.id)
-    assertEquals(patientAddress[0].ward_id, ward.id)
-    assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
-    assertEquals(patientAddress[0].street, '120 Main Street')
-
-    const getResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/address`,
-    )
-
-    const pageContents = await getResponse.text()
-    const $ = cheerio.load(pageContents)
-    assertEquals(
-      $('input[name="address.country_id"]').val(),
-      String(zimbabwe.id),
-    )
-    assertEquals(
-      $('select[name="address.province_id"]').val(),
-      String(province.id),
-    )
-    assertEquals(
-      $('select[name="address.district_id"]').val(),
-      String(district.id),
-    )
-    assertEquals($('select[name="address.ward_id"]').val(), String(ward.id))
-    assertEquals(
-      $('select[name="address.suburb_id"]').val(),
-      suburb && String(suburb.id),
-    )
-    assertEquals($('input[name="address.street"]').val(), '120 Main Street')
-  })
-
-  itUsesTrxAnd('supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the history step', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-
-    const tablet = await trx.selectFrom('medications')
-      .selectAll()
-      .where(
-        'medications.form_route',
-        '=',
-        'TABLET, COATED; ORAL',
-      )
-      .executeTakeFirstOrThrow()
-
-    const drug = await trx.selectFrom('drugs').select('generic_name').where(
-      'id',
-      '=',
-      tablet.drug_id,
-    ).executeTakeFirstOrThrow()
-
-    const body = new FormData()
-    body.set('pre_existing_conditions.0.id', 'c_4373')
-    body.set('pre_existing_conditions.0.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.0.comorbidities.0.id', 'c_8321')
-    body.set(
-      'pre_existing_conditions.0.medications.0.medication_id',
-      String(tablet.id),
-    )
-    body.set(
-      'pre_existing_conditions.0.medications.0.strength',
-      String(tablet.strength_numerators[0]),
-    )
-    body.set('pre_existing_conditions.0.medications.0.route', tablet.routes[0])
-    body.set('pre_existing_conditions.0.medications.0.dosage', '2')
-    body.set(
-      'pre_existing_conditions.0.medications.0.intake_frequency',
-      'qod',
-    )
-
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
-
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
-    )
-
-    const pre_existing_conditions = await getPreExistingConditions(trx, {
-      patient_id: patient_id,
-    })
-
-    assertEquals(pre_existing_conditions.length, 1)
-    const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.id, 'c_4373')
-    assertEquals(preExistingCondition.name, 'Cigarette smoker')
-    assertEquals(preExistingCondition.start_date, '1989-01-12')
-    assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
-    assertEquals(
-      preExistingCondition.comorbidities[0].name,
-      'Coma - hyperosmolar nonketotic (HONK)',
-    )
-    assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
-    assertEquals(preExistingCondition.medications.length, 1)
-    assertEquals(preExistingCondition.medications[0].dosage, 2)
-    assertEquals(
-      preExistingCondition.medications[0].name,
-      drug.generic_name,
-    )
-    assertEquals(
-      preExistingCondition.medications[0].intake_frequency,
-      'qod',
-    )
-    assertEquals(preExistingCondition.medications[0].medication_id, 1)
-    assertEquals(
-      preExistingCondition.medications[0].strength,
-      150,
-    )
-
-    const getResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-      {},
-    )
-
-    const pageContents = await getResponse.text()
-    const $ = cheerio.load(pageContents)
-    const formValues = getFormValues($)
-    const formDisplay = getFormDisplay($)
-    assertEquals(
-      // deno-lint-ignore no-explicit-any
-      omit(formValues as any, ['allergy_search']),
-      deepOmit({ pre_existing_conditions }, [
-        'patient_condition_id',
-        'patient_condition_medication_id',
-      ]),
-      'The form should be 1:1 with the conditions in the DB',
-    )
-    assertEquals(formDisplay, {
-      pre_existing_conditions: [
+  itUsesTrxAnd(
+    'supports POST on the personal step, moving you to the address step',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+      const body = new FormData()
+      body.set('first_name', 'Test')
+      body.set('middle_names', 'Zoom Zoom')
+      body.set('last_name', 'Patient')
+      body.set('national_id_number', '08-123456 D 53')
+      body.set('date_of_birth', '2020-01-01')
+      body.set('gender', 'female')
+      body.set('ethnicity', 'african')
+      body.set('phone_number', '5555555555')
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/personal`,
         {
-          name: 'Cigarette smoker',
-          start_date: '1989-01-12',
-          comorbidities: [
-            {
-              name: 'Coma - hyperosmolar nonketotic (HONK)',
-              start_date: '1989-01-12',
-            },
-          ],
-          medications: [
-            {
-              name: drug.generic_name,
-              start_date: '1989-01-12',
-              end_date: null,
-              medication_id: 'TABLET, COATED; ORAL',
-              strength: '150MG/TABLET',
-              dosage: '2 TABLETS (300MG)',
-              intake_frequency: 'alternate days',
-              special_instructions: null,
-            },
-          ],
+          method: 'POST',
+          body,
         },
-      ],
-    }, 'The form should display the medications in a human-readable format')
-  })
-
-  itUsesTrxAnd('supports POST of allergies on the pre-existing_conditions step, moving you to the history step', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-
-    const body = new FormData()
-    body.set('allergies.0.id', '7')
-    body.set('allergies.1.id', '13')
-
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
-
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
-    )
-
-    const allergies = await patient_allergies.get(trx, patient_id)
-
-    assertEquals(allergies.length, 2)
-    assertEquals(allergies[0].id, 7)
-    assertEquals(allergies[1].id, 13)
-
-    const getResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-      {},
-    )
-
-    const pageContents = await getResponse.text()
-    const $ = cheerio.load(pageContents)
-    const formValues = getFormValues($)
-    assertEquals(
-      formValues,
-      { allergies },
-      'The form should be 1:1 with the conditions in the DB',
-    )
-  })
-
-  itUsesTrxAnd('can remove all pre_existing_conditions on POST', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-
-    await patient_conditions.upsertPreExisting(trx, patient_id, [
-      {
-        id: 'c_4373',
-        start_date: '1989-01-12',
-      },
-    ])
-
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-      {
-        method: 'POST',
-        body: new FormData(),
-      },
-    )
-
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
-    )
-
-    const pre_existing_conditions = await getPreExistingConditions(trx, {
-      patient_id: patient_id,
-    })
-
-    assertEquals(pre_existing_conditions.length, 0)
-  })
-
-  itUsesTrxAnd('handles holes in an array of pre_existing_conditions on POST', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-
-    const tablet = await trx.selectFrom('medications')
-      .selectAll()
-      .where(
-        'medications.form_route',
-        '=',
-        'TABLET, COATED; ORAL',
       )
-      .executeTakeFirstOrThrow()
 
-    const drug = await trx.selectFrom('drugs').select('generic_name').where(
-      'id',
-      '=',
-      tablet.drug_id,
-    ).executeTakeFirstOrThrow()
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
 
-    const body = new FormData()
-    body.set('pre_existing_conditions.1.id', 'c_4373')
-    body.set('pre_existing_conditions.1.start_date', '1989-01-12')
-    body.set('pre_existing_conditions.1.comorbidities.0.id', 'c_8321')
-    body.set(
-      'pre_existing_conditions.1.medications.0.medication_id',
-      String(tablet.id),
-    )
-    body.set(
-      'pre_existing_conditions.1.medications.0.strength',
-      String(tablet.strength_numerators[0]),
-    )
-    body.set('pre_existing_conditions.1.medications.0.route', tablet.routes[0])
-    body.set('pre_existing_conditions.1.medications.0.dosage', '2')
-    body.set(
-      'pre_existing_conditions.1.medications.0.intake_frequency',
-      'qod',
-    )
+      const patients_after_update = await trx.selectFrom('patients').selectAll()
+        .execute()
+      assertEquals(patients_after_update.length, 1)
+      assertEquals(patients_after_update[0].name, 'Test Zoom Zoom Patient')
+      assertEquals(
+        patients_after_update[0].national_id_number,
+        '08-123456 D 53',
+      )
 
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
+      assertEquals(
+        postResponse.url,
+        `${route}/app/patients/${patient_id}/intake/address`,
+      )
 
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
-    )
+      const getPersonalResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/personal`,
+      )
 
-    const pre_existing_conditions = await getPreExistingConditions(trx, {
-      patient_id: patient_id,
-    })
+      const pageContents = await getPersonalResponse.text()
+      const $ = cheerio.load(pageContents)
+      assertEquals($('input[name="first_name"]').val(), 'Test')
+      assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
+      assertEquals($('input[name="last_name"]').val(), 'Patient')
+      assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
+      assertEquals($('select[name="gender"]').val(), 'female')
+      assertEquals($('select[name="ethnicity"]').val(), 'african')
+      assertEquals(
+        $('input[name="national_id_number"]').val(),
+        '08-123456 D 53',
+      )
+      assertEquals($('input[name="phone_number"]').val(), '5555555555')
+    },
+  )
 
-    assertEquals(pre_existing_conditions.length, 1)
-    const [preExistingCondition] = pre_existing_conditions
-    assertEquals(preExistingCondition.id, 'c_4373')
-    assertEquals(preExistingCondition.name, 'Cigarette smoker')
-    assertEquals(preExistingCondition.start_date, '1989-01-12')
-    assertEquals(preExistingCondition.comorbidities.length, 1)
-    assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
-    assertEquals(
-      preExistingCondition.comorbidities[0].name,
-      'Coma - hyperosmolar nonketotic (HONK)',
-    )
-    assertEquals(preExistingCondition.comorbidities[0].start_date, '1989-01-12')
-    assertEquals(preExistingCondition.medications.length, 1)
-    assertEquals(preExistingCondition.medications[0].dosage, 2)
-    assertEquals(
-      preExistingCondition.medications[0].name,
-      drug.generic_name,
-    )
-    assertEquals(
-      preExistingCondition.medications[0].intake_frequency,
-      'qod',
-    )
-    assertEquals(preExistingCondition.medications[0].medication_id, 1)
-    assertEquals(
-      preExistingCondition.medications[0].strength,
-      150,
-    )
-  })
+  itUsesTrxAnd(
+    'supports POST on the address step, moving you to the pre-existing_conditions step',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const testDoctor = await addTestHealthWorker(trx, { scenario: 'doctor' })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+      const countryInfo = await address.getFullCountryInfo(trx)
+      const zimbabwe = countryInfo[0]
+      assertEquals(zimbabwe.name, 'Zimbabwe')
 
-  itUsesTrxAnd('supports POST on the family step, moving you to the lifestyle step', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
-    const body = new FormData()
-    body.set('family.guardians.0.patient_name', 'New Guardian')
-    body.set('family.guardians.0.family_relation_gendered', 'biological mother')
-    body.set('family.guardians.0.patient_phone_number', '3333333333')
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/family`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
+      const province = sample(zimbabwe.provinces)
+      const district = sample(province.districts)
+      const ward = sample(district.wards)
+      const suburb = ward.suburbs.length ? sample(ward.suburbs) : undefined
 
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assertEquals(
-      postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/lifestyle`,
-    )
+      const body = new FormData()
+      body.set('address.country_id', String(zimbabwe.id))
+      body.set('address.province_id', String(province.id))
+      body.set('address.district_id', String(district.id))
+      body.set('address.ward_id', String(ward.id))
+      if (suburb) body.set('address.suburb_id', String(suburb.id))
+      body.set('address.street', '120 Main Street')
+      body.set('nearest_facility_id', '5')
+      body.set('primary_doctor_id', String(testDoctor.id))
 
-    const patient_family = await family.get(trx, { patient_id: patient_id })
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/address`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
 
-    assertEquals(patient_family.dependents.length, 0)
-    assertEquals(patient_family.guardians.length, 1)
-    assertEquals(patient_family.guardians[0].patient_name, 'New Guardian')
-    assertEquals(
-      patient_family.guardians[0].family_relation_gendered,
-      'biological mother',
-    )
-    assertEquals(patient_family.guardians[0].patient_phone_number, '3333333333')
-    assertEquals(patient_family.guardians[0].patient_gender, 'female')
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assert(
+        postResponse.url ===
+          `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+      )
 
-    const getResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/family`,
-    )
+      const patientResult = await trx.selectFrom('patients').selectAll()
+        .execute()
+      assertEquals(patientResult.length, 1)
+      assertEquals(patientResult[0].name, 'Test Patient')
 
-    const pageContents = await getResponse.text()
-    const $ = cheerio.load(pageContents)
-    const formValues = getFormValues($)
-    assertEquals(formValues, {
-      family: {
-        guardians: [
+      const patientAddress = await trx.selectFrom('address').selectAll().where(
+        'address.id',
+        '=',
+        patientResult[0].address_id ? patientResult[0].address_id : null,
+      ).execute()
+      assertEquals(patientAddress[0].country_id, zimbabwe.id)
+      assertEquals(patientAddress[0].province_id, province.id)
+      assertEquals(patientAddress[0].district_id, district.id)
+      assertEquals(patientAddress[0].ward_id, ward.id)
+      assertEquals(patientAddress[0].suburb_id, suburb?.id || null)
+      assertEquals(patientAddress[0].street, '120 Main Street')
+
+      const getResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/address`,
+      )
+
+      const pageContents = await getResponse.text()
+      const $ = cheerio.load(pageContents)
+      assertEquals(
+        $('input[name="address.country_id"]').val(),
+        String(zimbabwe.id),
+      )
+      assertEquals(
+        $('select[name="address.province_id"]').val(),
+        String(province.id),
+      )
+      assertEquals(
+        $('select[name="address.district_id"]').val(),
+        String(district.id),
+      )
+      assertEquals($('select[name="address.ward_id"]').val(), String(ward.id))
+      assertEquals(
+        $('select[name="address.suburb_id"]').val(),
+        suburb && String(suburb.id),
+      )
+      assertEquals($('input[name="address.street"]').val(), '120 Main Street')
+    },
+  )
+
+  itUsesTrxAnd(
+    'supports POST of pre_existing_conditions on the pre-existing_conditions step, moving you to the history step',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+
+      const tablet = await trx.selectFrom('medications')
+        .selectAll()
+        .where(
+          'medications.form_route',
+          '=',
+          'TABLET, COATED; ORAL',
+        )
+        .executeTakeFirstOrThrow()
+
+      const drug = await trx.selectFrom('drugs').select('generic_name').where(
+        'id',
+        '=',
+        tablet.drug_id,
+      ).executeTakeFirstOrThrow()
+
+      const body = new FormData()
+      body.set('pre_existing_conditions.0.id', 'c_4373')
+      body.set('pre_existing_conditions.0.start_date', '1989-01-12')
+      body.set('pre_existing_conditions.0.comorbidities.0.id', 'c_8321')
+      body.set(
+        'pre_existing_conditions.0.medications.0.medication_id',
+        String(tablet.id),
+      )
+      body.set(
+        'pre_existing_conditions.0.medications.0.strength',
+        String(tablet.strength_numerators[0]),
+      )
+      body.set(
+        'pre_existing_conditions.0.medications.0.route',
+        tablet.routes[0],
+      )
+      body.set('pre_existing_conditions.0.medications.0.dosage', '2')
+      body.set(
+        'pre_existing_conditions.0.medications.0.intake_frequency',
+        'qod',
+      )
+
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
+
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assert(
+        postResponse.url ===
+          `${route}/app/patients/${patient_id}/intake/history`,
+      )
+
+      const pre_existing_conditions = await getPreExistingConditions(trx, {
+        patient_id: patient_id,
+      })
+
+      assertEquals(pre_existing_conditions.length, 1)
+      const [preExistingCondition] = pre_existing_conditions
+      assertEquals(preExistingCondition.id, 'c_4373')
+      assertEquals(preExistingCondition.name, 'Cigarette smoker')
+      assertEquals(preExistingCondition.start_date, '1989-01-12')
+      assertEquals(preExistingCondition.comorbidities.length, 1)
+      assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
+      assertEquals(
+        preExistingCondition.comorbidities[0].name,
+        'Coma - hyperosmolar nonketotic (HONK)',
+      )
+      assertEquals(
+        preExistingCondition.comorbidities[0].start_date,
+        '1989-01-12',
+      )
+      assertEquals(preExistingCondition.medications.length, 1)
+      assertEquals(preExistingCondition.medications[0].dosage, 2)
+      assertEquals(
+        preExistingCondition.medications[0].name,
+        drug.generic_name,
+      )
+      assertEquals(
+        preExistingCondition.medications[0].intake_frequency,
+        'qod',
+      )
+      assertEquals(preExistingCondition.medications[0].medication_id, 1)
+      assertEquals(
+        preExistingCondition.medications[0].strength,
+        150,
+      )
+
+      const getResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+        {},
+      )
+
+      const pageContents = await getResponse.text()
+      const $ = cheerio.load(pageContents)
+      const formValues = getFormValues($)
+      const formDisplay = getFormDisplay($)
+      assertEquals(
+        // deno-lint-ignore no-explicit-any
+        omit(formValues as any, ['allergy_search']),
+        deepOmit({ pre_existing_conditions }, [
+          'patient_condition_id',
+          'patient_condition_medication_id',
+        ]),
+        'The form should be 1:1 with the conditions in the DB',
+      )
+      assertEquals(formDisplay, {
+        pre_existing_conditions: [
           {
-            family_relation_gendered: 'biological mother',
-            next_of_kin: false,
-            patient_id: patient_family.guardians[0].patient_id,
-            patient_name: 'New Guardian',
-            patient_phone_number: 3333333333,
+            name: 'Cigarette smoker',
+            start_date: '1989-01-12',
+            comorbidities: [
+              {
+                name: 'Coma - hyperosmolar nonketotic (HONK)',
+                start_date: '1989-01-12',
+              },
+            ],
+            medications: [
+              {
+                name: drug.generic_name,
+                start_date: '1989-01-12',
+                end_date: null,
+                medication_id: 'TABLET, COATED; ORAL',
+                strength: '150MG/TABLET',
+                dosage: '2 TABLETS (300MG)',
+                intake_frequency: 'alternate days',
+                special_instructions: null,
+              },
+            ],
           },
         ],
-      },
-    })
-  })
+      }, 'The form should display the medications in a human-readable format')
+    },
+  )
 
-  itUsesTrxAnd('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+  itUsesTrxAnd(
+    'supports POST of allergies on the pre-existing_conditions step, moving you to the history step',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
 
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
+      const body = new FormData()
+      body.set('allergies.0.id', '7')
+      body.set('allergies.1.id', '13')
 
-    const getResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/occupation`,
-      {},
-    )
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
 
-    assertEquals(
-      getResponse.url,
-      `${route}/app/patients/${patient_id}/intake/personal?warning=Please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
-    )
-  })
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assert(
+        postResponse.url ===
+          `${route}/app/patients/${patient_id}/intake/history`,
+      )
 
-  itUsesTrxAnd('supports POST on the occupation step, moving you to the family step', async (trx) => {
-    const { patient_id } = await patient_encounters.upsert(trx, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+      const allergies = await patient_allergies.get(trx, patient_id)
 
-    await patients.upsert(trx, {
-      id: patient_id,
-      date_of_birth: '2020-01-01',
-    })
+      assertEquals(allergies.length, 2)
+      assertEquals(allergies[0].id, 7)
+      assertEquals(allergies[1].id, 13)
 
-    const { fetch } = await addTestHealthWorkerWithSession(trx, {
-      scenario: 'approved-nurse',
-    })
+      const getResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+        {},
+      )
 
-    const body = new FormData()
-    body.set('occupation.school.status', 'in school')
-    body.set('occupation.school.current.inappropriate_reason', 'Change of town')
-    body.set(
-      'occupation.school.current.grades_dropping_reason',
-      'Abuse',
-    )
-    body.set('occupation.sport', 'on')
-    body.set('occupation.school.current.grade', 'Grade 3')
-    body.set('occupation.school.current.happy', 'on')
+      const pageContents = await getResponse.text()
+      const $ = cheerio.load(pageContents)
+      const formValues = getFormValues($)
+      assertEquals(
+        formValues,
+        { allergies },
+        'The form should be 1:1 with the conditions in the DB',
+      )
+    },
+  )
 
-    const postResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/occupation`,
-      {
-        method: 'POST',
-        body,
-      },
-    )
+  itUsesTrxAnd(
+    'can remove all pre_existing_conditions on POST',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
 
-    if (!postResponse.ok) {
-      throw new Error(await postResponse.text())
-    }
-    assert(
-      postResponse.url ===
+      await patient_conditions.upsertPreExisting(trx, patient_id, [
+        {
+          id: 'c_4373',
+          start_date: '1989-01-12',
+        },
+      ])
+
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+        {
+          method: 'POST',
+          body: new FormData(),
+        },
+      )
+
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assert(
+        postResponse.url ===
+          `${route}/app/patients/${patient_id}/intake/history`,
+      )
+
+      const pre_existing_conditions = await getPreExistingConditions(trx, {
+        patient_id: patient_id,
+      })
+
+      assertEquals(pre_existing_conditions.length, 0)
+    },
+  )
+
+  itUsesTrxAnd(
+    'handles holes in an array of pre_existing_conditions on POST',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+
+      const tablet = await trx.selectFrom('medications')
+        .selectAll()
+        .where(
+          'medications.form_route',
+          '=',
+          'TABLET, COATED; ORAL',
+        )
+        .executeTakeFirstOrThrow()
+
+      const drug = await trx.selectFrom('drugs').select('generic_name').where(
+        'id',
+        '=',
+        tablet.drug_id,
+      ).executeTakeFirstOrThrow()
+
+      const body = new FormData()
+      body.set('pre_existing_conditions.1.id', 'c_4373')
+      body.set('pre_existing_conditions.1.start_date', '1989-01-12')
+      body.set('pre_existing_conditions.1.comorbidities.0.id', 'c_8321')
+      body.set(
+        'pre_existing_conditions.1.medications.0.medication_id',
+        String(tablet.id),
+      )
+      body.set(
+        'pre_existing_conditions.1.medications.0.strength',
+        String(tablet.strength_numerators[0]),
+      )
+      body.set(
+        'pre_existing_conditions.1.medications.0.route',
+        tablet.routes[0],
+      )
+      body.set('pre_existing_conditions.1.medications.0.dosage', '2')
+      body.set(
+        'pre_existing_conditions.1.medications.0.intake_frequency',
+        'qod',
+      )
+
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
+
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assert(
+        postResponse.url ===
+          `${route}/app/patients/${patient_id}/intake/history`,
+      )
+
+      const pre_existing_conditions = await getPreExistingConditions(trx, {
+        patient_id: patient_id,
+      })
+
+      assertEquals(pre_existing_conditions.length, 1)
+      const [preExistingCondition] = pre_existing_conditions
+      assertEquals(preExistingCondition.id, 'c_4373')
+      assertEquals(preExistingCondition.name, 'Cigarette smoker')
+      assertEquals(preExistingCondition.start_date, '1989-01-12')
+      assertEquals(preExistingCondition.comorbidities.length, 1)
+      assertEquals(preExistingCondition.comorbidities[0].id, 'c_8321')
+      assertEquals(
+        preExistingCondition.comorbidities[0].name,
+        'Coma - hyperosmolar nonketotic (HONK)',
+      )
+      assertEquals(
+        preExistingCondition.comorbidities[0].start_date,
+        '1989-01-12',
+      )
+      assertEquals(preExistingCondition.medications.length, 1)
+      assertEquals(preExistingCondition.medications[0].dosage, 2)
+      assertEquals(
+        preExistingCondition.medications[0].name,
+        drug.generic_name,
+      )
+      assertEquals(
+        preExistingCondition.medications[0].intake_frequency,
+        'qod',
+      )
+      assertEquals(preExistingCondition.medications[0].medication_id, 1)
+      assertEquals(
+        preExistingCondition.medications[0].strength,
+        150,
+      )
+    },
+  )
+
+  itUsesTrxAnd(
+    'supports POST on the family step, moving you to the lifestyle step',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+      const body = new FormData()
+      body.set('family.guardians.0.patient_name', 'New Guardian')
+      body.set(
+        'family.guardians.0.family_relation_gendered',
+        'biological mother',
+      )
+      body.set('family.guardians.0.patient_phone_number', '3333333333')
+      const postResponse = await fetch(
         `${route}/app/patients/${patient_id}/intake/family`,
-    )
-
-    const occupation = await patient_occupations.get(trx, {
-      patient_id,
-    })
-    assert(occupation)
-    assertEquals(occupation, {
-      school: {
-        current: {
-          grade: 'Grade 3',
-          grades_dropping_reason: 'Abuse',
-          happy: true,
-          inappropriate_reason: 'Change of town',
+        {
+          method: 'POST',
+          body,
         },
-        status: 'in school',
-      },
-      sport: true,
-    })
+      )
 
-    const getResponse = await fetch(
-      `${route}/app/patients/${patient_id}/intake/occupation`,
-      {},
-    )
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assertEquals(
+        postResponse.url,
+        `${route}/app/patients/${patient_id}/intake/lifestyle`,
+      )
 
-    const pageContents = await getResponse.text()
-    const $ = cheerio.load(pageContents)
-    const formValues = getFormValues($)
-    assertEquals(
-      formValues,
-      {
-        occupation: {
-          school: {
-            current: {
-              grade: 'Grade 3',
-              grades_dropping_reason: 'Abuse',
-              happy: true,
-              inappropriate_reason: 'Change of town',
+      const patient_family = await family.get(trx, { patient_id: patient_id })
+
+      assertEquals(patient_family.dependents.length, 0)
+      assertEquals(patient_family.guardians.length, 1)
+      assertEquals(patient_family.guardians[0].patient_name, 'New Guardian')
+      assertEquals(
+        patient_family.guardians[0].family_relation_gendered,
+        'biological mother',
+      )
+      assertEquals(
+        patient_family.guardians[0].patient_phone_number,
+        '3333333333',
+      )
+      assertEquals(patient_family.guardians[0].patient_gender, 'female')
+
+      const getResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/family`,
+      )
+
+      const pageContents = await getResponse.text()
+      const $ = cheerio.load(pageContents)
+      const formValues = getFormValues($)
+      assertEquals(formValues, {
+        family: {
+          guardians: [
+            {
+              family_relation_gendered: 'biological mother',
+              next_of_kin: false,
+              patient_id: patient_family.guardians[0].patient_id,
+              patient_name: 'New Guardian',
+              patient_phone_number: 3333333333,
             },
-            status: 'in school',
-          },
-          sport: true,
+          ],
         },
-      },
-      'The form should be 1:1 with the occupations in the DB',
-    )
-  })
+      })
+    },
+  )
+
+  itUsesTrxAnd(
+    'redirects you to the personal step if no DOB was yet filled out and you try to access occupation',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+
+      const getResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/occupation`,
+        {},
+      )
+
+      assertEquals(
+        getResponse.url,
+        `${route}/app/patients/${patient_id}/intake/personal?warning=Please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
+      )
+    },
+  )
+
+  itUsesTrxAnd(
+    'supports POST on the occupation step, moving you to the family step',
+    async (trx) => {
+      const { patient_id } = await patient_encounters.upsert(trx, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      })
+
+      await patients.upsert(trx, {
+        id: patient_id,
+        date_of_birth: '2020-01-01',
+      })
+
+      const { fetch } = await addTestHealthWorkerWithSession(trx, {
+        scenario: 'approved-nurse',
+      })
+
+      const body = new FormData()
+      body.set('occupation.school.status', 'in school')
+      body.set(
+        'occupation.school.current.inappropriate_reason',
+        'Change of town',
+      )
+      body.set(
+        'occupation.school.current.grades_dropping_reason',
+        'Abuse',
+      )
+      body.set('occupation.sport', 'on')
+      body.set('occupation.school.current.grade', 'Grade 3')
+      body.set('occupation.school.current.happy', 'on')
+
+      const postResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/occupation`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
+
+      if (!postResponse.ok) {
+        throw new Error(await postResponse.text())
+      }
+      assert(
+        postResponse.url ===
+          `${route}/app/patients/${patient_id}/intake/family`,
+      )
+
+      const occupation = await patient_occupations.get(trx, {
+        patient_id,
+      })
+      assert(occupation)
+      assertEquals(occupation, {
+        school: {
+          current: {
+            grade: 'Grade 3',
+            grades_dropping_reason: 'Abuse',
+            happy: true,
+            inappropriate_reason: 'Change of town',
+          },
+          status: 'in school',
+        },
+        sport: true,
+      })
+
+      const getResponse = await fetch(
+        `${route}/app/patients/${patient_id}/intake/occupation`,
+        {},
+      )
+
+      const pageContents = await getResponse.text()
+      const $ = cheerio.load(pageContents)
+      const formValues = getFormValues($)
+      assertEquals(
+        formValues,
+        {
+          occupation: {
+            school: {
+              current: {
+                grade: 'Grade 3',
+                grades_dropping_reason: 'Abuse',
+                happy: true,
+                inappropriate_reason: 'Change of town',
+              },
+              status: 'in school',
+            },
+            sport: true,
+          },
+        },
+        'The form should be 1:1 with the occupations in the DB',
+      )
+    },
+  )
 })

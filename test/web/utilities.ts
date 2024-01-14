@@ -140,9 +140,10 @@ export function describeWithWebServer(
 export async function addTestHealthWorker(
   trx: TrxOrDb,
   { scenario, facility_id = 1 }: {
-  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
-  facility_id?: number
-} = { scenario: 'base' }) {
+    scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
+    facility_id?: number
+  } = { scenario: 'base' },
+) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
   } = await upsertWithGoogleCredentials(trx, testHealthWorker())

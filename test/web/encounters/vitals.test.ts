@@ -16,9 +16,12 @@ describeWithWebServer(
   (route) => {
     itUsesTrxAnd('renders a page on GET for an open encounter', async (trx) => {
       const patient = await patients.upsert(trx, { name: 'Test Patient' })
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
-        scenario: 'approved-nurse',
-      })
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+        trx,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       await patient_encounters.upsert(trx, 1, {
         patient_id: patient.id,
         reason: 'seeking treatment',
@@ -48,24 +51,30 @@ describeWithWebServer(
       })
     })
 
-    itUsesTrxAnd('404s on a GET for a patient with no open encounter', async (trx) => {
-      const patient = await patients.upsert(trx, { name: 'Test Patient' })
-      const { fetch } = await addTestHealthWorkerWithSession(trx, {
-        scenario: 'approved-nurse',
-      })
+    itUsesTrxAnd(
+      '404s on a GET for a patient with no open encounter',
+      async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Test Patient' })
+        const { fetch } = await addTestHealthWorkerWithSession(trx, {
+          scenario: 'approved-nurse',
+        })
 
-      const response = await fetch(
-        `${route}/app/patients/${patient.id}/encounters/open/vitals`,
-      )
+        const response = await fetch(
+          `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+        )
 
-      assertEquals(response.status, 404)
-      assertEquals(await response.text(), 'No open visit with this patient')
-    })
+        assertEquals(response.status, 404)
+        assertEquals(await response.text(), 'No open visit with this patient')
+      },
+    )
 
     itUsesTrxAnd('can save vitals on POST', async (trx) => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
-        scenario: 'approved-nurse',
-      })
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+        trx,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
@@ -117,9 +126,12 @@ describeWithWebServer(
     })
 
     itUsesTrxAnd('can overwrite existing vitals on POST', async (trx) => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
-        scenario: 'approved-nurse',
-      })
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+        trx,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
@@ -182,9 +194,12 @@ describeWithWebServer(
     })
 
     itUsesTrxAnd('can remove existing vitals on POST', async (trx) => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(trx, {
-        scenario: 'approved-nurse',
-      })
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(
+        trx,
+        {
+          scenario: 'approved-nurse',
+        },
+      )
       const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',

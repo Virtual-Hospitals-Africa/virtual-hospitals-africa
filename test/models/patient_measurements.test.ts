@@ -15,7 +15,9 @@ describe(
 
     describe('upsert', () => {
       itUsesTrxAnd('can add height and weight in cm and kg', async (trx) => {
-        const nurse = await addTestHealthWorker(trx, { scenario: 'approved-nurse' })
+        const nurse = await addTestHealthWorker(trx, {
+          scenario: 'approved-nurse',
+        })
         const patient = await patients.upsert(db, { name: 'Test Patient' })
         const encounter = await patient_encounters.upsert(db, 1, {
           patient_id: patient.id,

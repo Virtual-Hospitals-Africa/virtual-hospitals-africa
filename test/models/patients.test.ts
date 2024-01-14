@@ -80,17 +80,20 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       ])
     })
 
-    itUsesTrxAnd("gives a description formed by the patient's gender and date of birth", async (trx) => {
-      await patients.upsert(trx, {
-        name: 'Test Patient',
-        date_of_birth: '2021-03-01',
-        gender: 'female',
-      })
+    itUsesTrxAnd(
+      "gives a description formed by the patient's gender and date of birth",
+      async (trx) => {
+        await patients.upsert(trx, {
+          name: 'Test Patient',
+          date_of_birth: '2021-03-01',
+          gender: 'female',
+        })
 
-      const results = await patients.getAllWithNames(trx, 'Test')
-      assertEquals(results.length, 1)
-      assertEquals(results[0].description, 'female, 01/03/2021')
-    })
+        const results = await patients.getAllWithNames(trx, 'Test')
+        assertEquals(results.length, 1)
+        assertEquals(results[0].description, 'female, 01/03/2021')
+      },
+    )
   })
 
   describe('getWithOpenEncounter', () => {
@@ -177,27 +180,30 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   })
 
   describe('getAvatar', () => {
-    itUsesTrxAnd('gets the binary data and mime_type of the avatar', async (trx) => {
-      const insertedMedia = await media.insert(trx, {
-        binary_data: new Uint8Array([1, 2, 3]),
-        mime_type: 'image/jpeg',
-      })
+    itUsesTrxAnd(
+      'gets the binary data and mime_type of the avatar',
+      async (trx) => {
+        const insertedMedia = await media.insert(trx, {
+          binary_data: new Uint8Array([1, 2, 3]),
+          mime_type: 'image/jpeg',
+        })
 
-      const test_patient = await patients.upsert(trx, {
-        name: 'Test Patient 1',
-        conversation_state: 'initial_message',
-        avatar_media_id: insertedMedia.id,
-      })
+        const test_patient = await patients.upsert(trx, {
+          name: 'Test Patient 1',
+          conversation_state: 'initial_message',
+          avatar_media_id: insertedMedia.id,
+        })
 
-      const avatar = await patients.getAvatar(trx, {
-        patient_id: test_patient.id,
-      })
+        const avatar = await patients.getAvatar(trx, {
+          patient_id: test_patient.id,
+        })
 
-      assertEquals(avatar, {
-        binary_data: new Uint8Array([1, 2, 3]),
-        mime_type: 'image/jpeg',
-      })
-    })
+        assertEquals(avatar, {
+          binary_data: new Uint8Array([1, 2, 3]),
+          mime_type: 'image/jpeg',
+        })
+      },
+    )
   })
 
   describe('getByPhoneNumber', () => {

@@ -18,7 +18,7 @@ import {
 } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
-import { isoDate } from '../helpers.ts'
+import { isoDate, now } from '../helpers.ts'
 import assertAllNotNull from '../../util/assertAllNotNull.ts'
 
 type PatientMedicationUpsert = {
@@ -229,7 +229,7 @@ export async function upsertPreExisting(
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is', null)
-    .where('created_at', '<', sql<Date>`now()`)
+    .where('created_at', '<=', now)
     .execute()
 
   await Promise.all(
@@ -419,7 +419,7 @@ export async function upsertPastMedical(
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is not', null)
-    .where('created_at', '<', sql<Date>`now()`)
+    .where('created_at', '<=', now)
     .execute()
 
   const to_insert = patient_conditions.map((condition) => ({

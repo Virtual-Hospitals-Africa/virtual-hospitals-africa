@@ -53,248 +53,251 @@ describeWithWebServer(
       )
     })
 
-    itUsesTrxAnd('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async (trx) => {
-      await addTestHealthWorker(trx, { scenario: 'admin' })
-      const { fetch, sessionId, healthWorker: nurse } =
-        await addTestHealthWorkerWithSession(trx, {
-          scenario: 'nurse',
-        })
-      const address = await createTestAddress(trx)
+    itUsesTrxAnd(
+      'supports POSTs on the personal, professional, and documents step, moving you into /pending_approval',
+      async (trx) => {
+        await addTestHealthWorker(trx, { scenario: 'admin' })
+        const { fetch, sessionId, healthWorker: nurse } =
+          await addTestHealthWorkerWithSession(trx, {
+            scenario: 'nurse',
+          })
+        const address = await createTestAddress(trx)
 
-      {
-        const body = new FormData()
-        body.set('first_name', 'Test')
-        body.set('middle_names', 'Zoom Zoom')
-        body.set('last_name', 'Nurse')
-        body.set('gender', 'female')
-        body.set('national_id_number', '08-123456 D 53')
-        body.set('date_of_birth', '2020-01-01')
-        body.set('mobile_number', '5555555555')
+        {
+          const body = new FormData()
+          body.set('first_name', 'Test')
+          body.set('middle_names', 'Zoom Zoom')
+          body.set('last_name', 'Nurse')
+          body.set('gender', 'female')
+          body.set('national_id_number', '08-123456 D 53')
+          body.set('date_of_birth', '2020-01-01')
+          body.set('mobile_number', '5555555555')
 
-        body.set('address.country_id', address.country_id.toString())
-        body.set('address.province_id', address.province_id.toString())
-        body.set('address.district_id', address.district_id.toString())
-        body.set('address.ward_id', address.ward_id.toString())
-        if (address.suburb_id) {
-          body.set('address.suburb_id', address.suburb_id.toString())
-        }
-        if (address.street) body.set('address.street', address.street)
+          body.set('address.country_id', address.country_id.toString())
+          body.set('address.province_id', address.province_id.toString())
+          body.set('address.district_id', address.district_id.toString())
+          body.set('address.ward_id', address.ward_id.toString())
+          if (address.suburb_id) {
+            body.set('address.suburb_id', address.suburb_id.toString())
+          }
+          if (address.street) body.set('address.street', address.street)
 
-        const postResponse = await fetch(
-          `${route}/app/facilities/1/register/personal`,
-          {
-            method: 'POST',
-            body,
-          },
-        )
+          const postResponse = await fetch(
+            `${route}/app/facilities/1/register/personal`,
+            {
+              method: 'POST',
+              body,
+            },
+          )
 
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
-        }
+          if (!postResponse.ok) {
+            throw new Error(await postResponse.text())
+          }
 
-        const session = await redis.get(`S_${sessionId}`)
-        assert(session)
-        const sessionData = JSON.parse(session)
-        assert(sessionData.data.registrationFormState)
-        const registrationFormState = JSON.parse(
-          sessionData.data.registrationFormState,
-        )
+          const session = await redis.get(`S_${sessionId}`)
+          assert(session)
+          const sessionData = JSON.parse(session)
+          assert(sessionData.data.registrationFormState)
+          const registrationFormState = JSON.parse(
+            sessionData.data.registrationFormState,
+          )
 
-        assertEquals({
-          ...registrationFormState,
-          address: {
-            ...registrationFormState.address,
-            suburb_id: registrationFormState.address.suburb_id || null,
-          },
-        }, {
-          date_of_birth: '2020-01-01',
-          first_name: 'Test',
-          gender: 'female',
-          last_name: 'Nurse',
-          middle_names: 'Zoom Zoom',
-          mobile_number: 5555555555,
-          national_id_number: '08-123456 D 53',
-          address,
-        })
+          assertEquals({
+            ...registrationFormState,
+            address: {
+              ...registrationFormState.address,
+              suburb_id: registrationFormState.address.suburb_id || null,
+            },
+          }, {
+            date_of_birth: '2020-01-01',
+            first_name: 'Test',
+            gender: 'female',
+            last_name: 'Nurse',
+            middle_names: 'Zoom Zoom',
+            mobile_number: 5555555555,
+            national_id_number: '08-123456 D 53',
+            address,
+          })
 
-        assertEquals(
-          postResponse.url,
-          `${route}/app/facilities/1/register/professional`,
-        )
+          assertEquals(
+            postResponse.url,
+            `${route}/app/facilities/1/register/professional`,
+          )
 
-        const getPersonalResponse = await fetch(
-          `${route}/app/facilities/1/register/personal`,
-        )
+          const getPersonalResponse = await fetch(
+            `${route}/app/facilities/1/register/personal`,
+          )
 
-        const pageContents = await getPersonalResponse.text()
-        const $ = cheerio.load(pageContents)
-        assertEquals($('input[name="first_name"]').val(), 'Test')
-        assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
-        assertEquals($('input[name="last_name"]').val(), 'Nurse')
-        assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
-        assertEquals($('select[name="gender"]').val(), 'female')
-        assertEquals(
-          $('input[name="national_id_number"]').val(),
-          '08-123456 D 53',
-        )
-        assertEquals($('input[name="mobile_number"]').val(), '5555555555')
+          const pageContents = await getPersonalResponse.text()
+          const $ = cheerio.load(pageContents)
+          assertEquals($('input[name="first_name"]').val(), 'Test')
+          assertEquals($('input[name="middle_names"]').val(), 'Zoom Zoom')
+          assertEquals($('input[name="last_name"]').val(), 'Nurse')
+          assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
+          assertEquals($('select[name="gender"]').val(), 'female')
+          assertEquals(
+            $('input[name="national_id_number"]').val(),
+            '08-123456 D 53',
+          )
+          assertEquals($('input[name="mobile_number"]').val(), '5555555555')
 
-        assert(
-          $('input[name="address.country_id"]').val(),
-          address.country_id.toString(),
-        )
-        assert(
-          $('select[name="address.province_id"]').val(),
-          address.province_id.toString(),
-        )
-        assert(
-          $('select[name="address.district_id"]').val(),
-          address.district_id.toString(),
-        )
-        assert(
-          $('select[name="address.ward_id"]').val(),
-          address.ward_id.toString(),
-        )
-        assert(
-          $('input[name="address.street"]').val(),
-          address.street!.toString(),
-        )
-        if (address.suburb_id) {
           assert(
-            $('select[name="address.suburb_id"]').val(),
-            address.suburb_id.toString(),
+            $('input[name="address.country_id"]').val(),
+            address.country_id.toString(),
+          )
+          assert(
+            $('select[name="address.province_id"]').val(),
+            address.province_id.toString(),
+          )
+          assert(
+            $('select[name="address.district_id"]').val(),
+            address.district_id.toString(),
+          )
+          assert(
+            $('select[name="address.ward_id"]').val(),
+            address.ward_id.toString(),
+          )
+          assert(
+            $('input[name="address.street"]').val(),
+            address.street!.toString(),
+          )
+          if (address.suburb_id) {
+            assert(
+              $('select[name="address.suburb_id"]').val(),
+              address.suburb_id.toString(),
+            )
+          }
+        }
+
+        {
+          const body = new FormData()
+          body.set('date_of_first_practice', '2022-01-01')
+          body.set('ncz_registration_number', 'GN123456')
+          body.set('specialty', 'oncology and palliative care')
+
+          const postResponse = await fetch(
+            `${route}/app/facilities/1/register/professional`,
+            {
+              method: 'POST',
+              body,
+            },
+          )
+
+          if (!postResponse.ok) {
+            throw new Error(await postResponse.text())
+          }
+
+          const session = await redis.get(`S_${sessionId}`)
+          assert(session)
+          const sessionData = JSON.parse(session)
+          assert(sessionData.data.registrationFormState)
+          const registrationFormState = JSON.parse(
+            sessionData.data.registrationFormState,
+          )
+
+          assertEquals({
+            ...registrationFormState,
+            address: {
+              ...registrationFormState.address,
+              suburb_id: registrationFormState.address.suburb_id || null,
+            },
+          }, {
+            date_of_birth: '2020-01-01',
+            first_name: 'Test',
+            gender: 'female',
+            last_name: 'Nurse',
+            middle_names: 'Zoom Zoom',
+            mobile_number: 5555555555,
+            national_id_number: '08-123456 D 53',
+            date_of_first_practice: '2022-01-01',
+            ncz_registration_number: 'GN123456',
+            specialty: 'oncology and palliative care',
+            address,
+          })
+
+          assertEquals(
+            postResponse.url,
+            `${route}/app/facilities/1/register/documents`,
+          )
+
+          const getProfessionalResponse = await fetch(
+            `${route}/app/facilities/1/register/professional`,
+          )
+
+          const pageContents = await getProfessionalResponse.text()
+          const $ = cheerio.load(pageContents)
+          assertEquals(
+            $('input[name="date_of_first_practice"]').val(),
+            '2022-01-01',
+          )
+          assertEquals(
+            $('input[name="ncz_registration_number"]').val(),
+            'GN123456',
+          )
+          assertEquals(
+            $('select[name="specialty"]').val(),
+            'oncology and palliative care',
           )
         }
-      }
 
-      {
-        const body = new FormData()
-        body.set('date_of_first_practice', '2022-01-01')
-        body.set('ncz_registration_number', 'GN123456')
-        body.set('specialty', 'oncology and palliative care')
+        {
+          // TODO: upload documents
+          const body = new FormData()
 
-        const postResponse = await fetch(
-          `${route}/app/facilities/1/register/professional`,
-          {
-            method: 'POST',
-            body,
-          },
-        )
+          const postResponse = await fetch(
+            `${route}/app/facilities/1/register/documents`,
+            {
+              method: 'POST',
+              body,
+            },
+          )
 
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
+          if (!postResponse.ok) {
+            throw new Error(await postResponse.text())
+          }
+
+          const session = await redis.get(`S_${sessionId}`)
+          assert(session)
+          const sessionData = JSON.parse(session)
+          assert(!sessionData.data.registrationFormState)
+
+          const registrationDetails = await nurse_registration_details.get(db, {
+            healthWorkerId: nurse.id,
+          })
+
+          const newNurse = await db.selectFrom('health_workers').where(
+            'id',
+            '=',
+            nurse.id,
+          ).selectAll().executeTakeFirst()
+          const nurseEmployment = await db.selectFrom('employment').where(
+            'health_worker_id',
+            '=',
+            nurse.id,
+          ).selectAll().executeTakeFirst()
+          const specialty = await db.selectFrom('nurse_specialties').selectAll()
+            .executeTakeFirst()
+          assert(registrationDetails)
+          assert(newNurse)
+          assert(nurseEmployment)
+          assert(specialty)
+
+          assertEquals(registrationDetails.date_of_birth, '2020-01-01')
+          assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
+          assertEquals(registrationDetails.gender, 'female')
+          assertEquals(registrationDetails.mobile_number, '5555555555')
+          assertEquals(registrationDetails.national_id_number, '08-123456 D 53')
+          assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
+          assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
+          assertEquals(specialty.employee_id, nurseEmployment.id)
+          assertEquals(specialty.specialty, 'oncology and palliative care')
+
+          assertEquals(
+            postResponse.url,
+            `${route}/app/pending_approval`,
+          )
         }
-
-        const session = await redis.get(`S_${sessionId}`)
-        assert(session)
-        const sessionData = JSON.parse(session)
-        assert(sessionData.data.registrationFormState)
-        const registrationFormState = JSON.parse(
-          sessionData.data.registrationFormState,
-        )
-
-        assertEquals({
-          ...registrationFormState,
-          address: {
-            ...registrationFormState.address,
-            suburb_id: registrationFormState.address.suburb_id || null,
-          },
-        }, {
-          date_of_birth: '2020-01-01',
-          first_name: 'Test',
-          gender: 'female',
-          last_name: 'Nurse',
-          middle_names: 'Zoom Zoom',
-          mobile_number: 5555555555,
-          national_id_number: '08-123456 D 53',
-          date_of_first_practice: '2022-01-01',
-          ncz_registration_number: 'GN123456',
-          specialty: 'oncology and palliative care',
-          address,
-        })
-
-        assertEquals(
-          postResponse.url,
-          `${route}/app/facilities/1/register/documents`,
-        )
-
-        const getProfessionalResponse = await fetch(
-          `${route}/app/facilities/1/register/professional`,
-        )
-
-        const pageContents = await getProfessionalResponse.text()
-        const $ = cheerio.load(pageContents)
-        assertEquals(
-          $('input[name="date_of_first_practice"]').val(),
-          '2022-01-01',
-        )
-        assertEquals(
-          $('input[name="ncz_registration_number"]').val(),
-          'GN123456',
-        )
-        assertEquals(
-          $('select[name="specialty"]').val(),
-          'oncology and palliative care',
-        )
-      }
-
-      {
-        // TODO: upload documents
-        const body = new FormData()
-
-        const postResponse = await fetch(
-          `${route}/app/facilities/1/register/documents`,
-          {
-            method: 'POST',
-            body,
-          },
-        )
-
-        if (!postResponse.ok) {
-          throw new Error(await postResponse.text())
-        }
-
-        const session = await redis.get(`S_${sessionId}`)
-        assert(session)
-        const sessionData = JSON.parse(session)
-        assert(!sessionData.data.registrationFormState)
-
-        const registrationDetails = await nurse_registration_details.get(db, {
-          healthWorkerId: nurse.id,
-        })
-
-        const newNurse = await db.selectFrom('health_workers').where(
-          'id',
-          '=',
-          nurse.id,
-        ).selectAll().executeTakeFirst()
-        const nurseEmployment = await db.selectFrom('employment').where(
-          'health_worker_id',
-          '=',
-          nurse.id,
-        ).selectAll().executeTakeFirst()
-        const specialty = await db.selectFrom('nurse_specialties').selectAll()
-          .executeTakeFirst()
-        assert(registrationDetails)
-        assert(newNurse)
-        assert(nurseEmployment)
-        assert(specialty)
-
-        assertEquals(registrationDetails.date_of_birth, '2020-01-01')
-        assertEquals(newNurse.name, 'Test Zoom Zoom Nurse')
-        assertEquals(registrationDetails.gender, 'female')
-        assertEquals(registrationDetails.mobile_number, '5555555555')
-        assertEquals(registrationDetails.national_id_number, '08-123456 D 53')
-        assertEquals(registrationDetails.date_of_first_practice, '2022-01-01')
-        assertEquals(registrationDetails.ncz_registration_number, 'GN123456')
-        assertEquals(specialty.employee_id, nurseEmployment.id)
-        assertEquals(specialty.specialty, 'oncology and palliative care')
-
-        assertEquals(
-          postResponse.url,
-          `${route}/app/pending_approval`,
-        )
-      }
-    })
+      },
+    )
   },
 )
