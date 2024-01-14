@@ -85,6 +85,7 @@ export async function upsert(
 ): Promise<{
   id: number
   patient_id: number
+  waiting_room_id: number
   created_at: Date
   provider_ids: number[]
 }> {
@@ -127,7 +128,7 @@ export async function upsert(
       .execute()
     : Promise.resolve([])
 
-  await waiting_room.add(trx, {
+  const waiting_room_added = await waiting_room.add(trx, {
     patient_encounter_id: upserted.id,
     facility_id,
   })
@@ -136,6 +137,7 @@ export async function upsert(
 
   return {
     ...upserted,
+    waiting_room_id: waiting_room_added.id,
     provider_ids: providers.map((p) => p.id),
   }
 }
@@ -232,6 +234,9 @@ export const baseQuery = (trx: TrxOrDb) =>
       ).as('providers'),
     ])
     .orderBy('patient_encounters.created_at', 'desc')
+
+export const openQuery = (trx: TrxOrDb) =>
+  baseQuery(trx).where('patient_encounters.closed_at', 'is', null)
 
 export function get(
   trx: TrxOrDb,

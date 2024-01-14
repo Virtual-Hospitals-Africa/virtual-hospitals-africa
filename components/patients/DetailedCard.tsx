@@ -1,8 +1,8 @@
-import { PatientWithMedicalRecord } from '../../types.ts'
+import { PatientWithOpenEncounter } from '../../types.ts'
 import { PaperClipIcon } from '../library/icons/heroicons/outline.tsx'
 
 type PatientDetailedCardProps = {
-  patient: PatientWithMedicalRecord
+  patient: PatientWithOpenEncounter
 }
 
 export default function PatientDetailedCard(

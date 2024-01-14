@@ -278,14 +278,8 @@ export type FamilyUpsert = {
   other_next_of_kin: Maybe<FamilyRelationInsert>
 }
 
-// TODO: actually define this
-export type PatientMedicalRecord = {
-  allergies: string[]
-  history: any
-}
-
-export type PatientWithMedicalRecord = RenderedPatient & {
-  medical_record: PatientMedicalRecord
+export type PatientWithOpenEncounter = RenderedPatient & {
+  open_encounter: Maybe<RenderedPatientEncounter>
 }
 
 export type PatientAppointmentOfferedTime = {
@@ -469,7 +463,7 @@ export type Appointment = {
 }
 
 export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
-  patient: PatientWithMedicalRecord
+  patient: PatientWithOpenEncounter
   media: {
     media_id: number
     mime_type: string
@@ -1672,12 +1666,25 @@ export type Measurement<Name extends keyof Measurements> = {
   units: Measurements[Name][1]
 }
 
+export type MeasurementsUpsert = {
+  [Name in keyof Measurements]?: number
+}
+
 export type PatientMeasurement = {
   patient_id: number
   encounter_id: number
   encounter_provider_id: number
   measurement_name: keyof Measurements
   value: number
+}
+
+export type PatientSymptomUpsert = {
+  symptom: string
+  severity: number
+  start_date: string
+  end_date: string | null
+  site: string | null
+  notes: string | null
 }
 
 export type DatabaseSchema = DB

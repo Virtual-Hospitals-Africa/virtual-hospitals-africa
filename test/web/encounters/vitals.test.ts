@@ -38,13 +38,13 @@ describeWithWebServer(
       const formValues = getFormValues($)
       assertEquals(formValues, {
         measurements: {
-          height: [null, 'cm'],
-          weight: [null, 'kg'],
-          temperature: [null, 'celsius'],
-          blood_pressure_diastolic: [null, 'mmHg'],
-          blood_pressure_systolic: [null, 'mmHg'],
-          blood_oxygen_saturation: [null, '%'],
-          blood_glucose: [null, 'mg/dL'],
+          height: null,
+          weight: null,
+          temperature: null,
+          blood_pressure_diastolic: null,
+          blood_pressure_systolic: null,
+          blood_oxygen_saturation: null,
+          blood_glucose: null,
         },
       })
     })
@@ -64,22 +64,20 @@ describeWithWebServer(
     })
 
     it('can save vitals on POST', async () => {
-      const patient = await patients.upsert(db, { name: 'Test Patient' })
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
         scenario: 'approved-nurse',
       })
       const encounter = await patient_encounters.upsert(db, 1, {
-        patient_id: patient.id,
+        patient_name: 'Test Patient',
         reason: 'seeking treatment',
         provider_ids: [healthWorker.employee_id!],
       })
 
       const body = new FormData()
-      body.append('measurements.height.0', '123')
-      body.append('measurements.height.1', 'cm')
+      body.append('measurements.height', '123')
 
       const response = await fetch(
-        `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
         {
           method: 'POST',
           body,
@@ -88,7 +86,7 @@ describeWithWebServer(
       if (!response.ok) throw new Error(await response.text())
       const vitals = await patient_measurements.getEncounterVitals(db, {
         encounter_id: encounter.id,
-        patient_id: patient.id,
+        patient_id: encounter.patient_id,
       })
       assertEquals(vitals, {
         height: [123, 'cm'],
@@ -96,7 +94,7 @@ describeWithWebServer(
 
       {
         const response = await fetch(
-          `${route}/app/patients/${patient.id}/encounters/open/vitals`,
+          `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
         )
 
         if (!response.ok) throw new Error(await response.text())
@@ -107,16 +105,123 @@ describeWithWebServer(
         const formValues = getFormValues($)
         assertEquals(formValues, {
           measurements: {
-            height: [123, 'cm'],
-            weight: [null, 'kg'],
-            temperature: [null, 'celsius'],
-            blood_pressure_diastolic: [null, 'mmHg'],
-            blood_pressure_systolic: [null, 'mmHg'],
-            blood_oxygen_saturation: [null, '%'],
-            blood_glucose: [null, 'mg/dL'],
+            height: 123,
+            weight: null,
+            temperature: null,
+            blood_pressure_diastolic: null,
+            blood_pressure_systolic: null,
+            blood_oxygen_saturation: null,
+            blood_glucose: null,
           },
         })
       }
+    })
+
+    it('can overwrite existing vitals on POST', async () => {
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+        scenario: 'approved-nurse',
+      })
+      const encounter = await patient_encounters.upsert(db, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+        provider_ids: [healthWorker.employee_id!],
+      })
+      await patient_measurements.upsertVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: encounter.patient_id,
+        encounter_provider_id: encounter.provider_ids[0],
+        measurements: {
+          height: 100,
+          weight: 100,
+        },
+      })
+
+      const body = new FormData()
+      body.append('measurements.height', '123')
+      body.append('measurements.weight', '456')
+
+      const response = await fetch(
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
+      if (!response.ok) throw new Error(await response.text())
+      const vitals = await patient_measurements.getEncounterVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: encounter.patient_id,
+      })
+      assertEquals(vitals, {
+        height: [123, 'cm'],
+        weight: [456, 'kg'],
+      })
+
+      {
+        const response = await fetch(
+          `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+        )
+
+        if (!response.ok) throw new Error(await response.text())
+        const pageContents = await response.text()
+
+        const $ = cheerio.load(pageContents)
+
+        const formValues = getFormValues($)
+        assertEquals(formValues, {
+          measurements: {
+            height: 123,
+            weight: 456,
+            temperature: null,
+            blood_pressure_diastolic: null,
+            blood_pressure_systolic: null,
+            blood_oxygen_saturation: null,
+            blood_glucose: null,
+          },
+        })
+      }
+    })
+
+    it('can remove existing vitals on POST', async () => {
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+        scenario: 'approved-nurse',
+      })
+      const encounter = await patient_encounters.upsert(db, 1, {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+        provider_ids: [healthWorker.employee_id!],
+      })
+      await patient_measurements.upsertVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: encounter.patient_id,
+        encounter_provider_id: encounter.provider_ids[0],
+        measurements: {
+          height: 100,
+          weight: 100,
+          temperature: 50,
+        },
+      })
+
+      const body = new FormData()
+      body.append('measurements.height', '123')
+      body.append('measurements.weight', '456')
+
+      const response = await fetch(
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/vitals`,
+        {
+          method: 'POST',
+          body,
+        },
+      )
+      if (!response.ok) throw new Error(await response.text())
+      const vitals = await patient_measurements.getEncounterVitals(db, {
+        encounter_id: encounter.id,
+        patient_id: encounter.patient_id,
+      })
+      assertEquals(vitals, {
+        height: [123, 'cm'],
+        weight: [456, 'kg'],
+      })
     })
   },
 )

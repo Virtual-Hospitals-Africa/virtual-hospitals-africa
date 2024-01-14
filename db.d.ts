@@ -484,6 +484,29 @@ export interface Patients {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientSymptomMedia {
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  media_id: number
+  patient_symptom_id: number
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientSymptoms {
+  created_at: Generated<Timestamp>
+  encounter_id: number
+  encounter_provider_id: number
+  end_date: Timestamp | null
+  id: Generated<number>
+  notes: string | null
+  patient_id: number
+  severity: number
+  site: string | null
+  start_date: Timestamp
+  symptom: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface Provinces {
   country_id: number
   created_at: Generated<Timestamp>
@@ -506,6 +529,12 @@ export interface Suburbs {
   name: string
   updated_at: Generated<Timestamp>
   ward_id: number
+}
+
+export interface Symptoms {
+  aliases: string[]
+  category: string
+  symptom: string
 }
 
 export interface WaitingRoom {
@@ -591,10 +620,13 @@ export interface DB {
   patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
+  patient_symptom_media: PatientSymptomMedia
+  patient_symptoms: PatientSymptoms
   patients: Patients
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs
+  symptoms: Symptoms
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived

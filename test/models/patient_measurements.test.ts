@@ -13,7 +13,7 @@ describe(
   () => {
     beforeEach(resetInTest)
 
-    describe('add', () => {
+    describe('upsert', () => {
       it('can add height and weight in cm and kg', async () => {
         const nurse = await addTestHealthWorker({ scenario: 'approved-nurse' })
         const patient = await patients.upsert(db, { name: 'Test Patient' })
@@ -23,50 +23,16 @@ describe(
           provider_ids: [nurse.employee_id!],
         })
         assertEquals(encounter.provider_ids.length, 1)
-        await patient_measurements.add(db, {
+        await patient_measurements.upsertVitals(db, {
           patient_id: patient.id,
           encounter_id: encounter.id,
           encounter_provider_id: encounter.provider_ids[0],
           measurements: {
-            height: [170.3, 'cm'],
-            weight: [70.4, 'kg'],
+            height: 170.3,
+            weight: 70.4,
           },
         })
       })
     })
-
-    // describe('getVitals', () => {
-    //   it('can get vitals for a patient across time', async () => {
-    //     const nurse = await addTestHealthWorker({ scenario: 'approved-nurse' })
-    //     const patient = await patients.upsert(db, { name: 'Test Patient' })
-    //     const encounter = await patient_encounters.create(db, 1, {
-    //       patient_id: patient.id,
-    //       reason: 'seeking treatment',
-    //       provider_ids: [nurse.employee_id!],
-    //     })
-    //     assertEquals(encounter.provider_ids.length, 1)
-    //     await patient_measurements.add(db, {
-    //       patient_id: patient.id,
-    //       encounter_id: encounter.id,
-    //       encounter_provider_id: encounter.provider_ids[0],
-    //       measurements: {
-    //         height: [170.3, 'cm'],
-    //         weight: [70.4, 'kg'],
-    //       }
-    //     })
-    //     const vitals = await patient_measurements.getVitals(db, {
-    //       patient_id: patient.id,
-    //     })
-    //     assertEquals(vitals, [
-    //       {
-    //         encounter,
-    //         measurements: {
-    //           height: [170.3, 'cm'],
-    //           weight: [70.4, 'kg'],
-    //         }
-    //       }
-    //     ])
-    //   })
-    // })
   },
 )

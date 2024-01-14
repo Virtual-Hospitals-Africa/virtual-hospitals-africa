@@ -103,6 +103,9 @@ import * as $pre_existing_conditions_Condition from './islands/pre-existing-cond
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
 import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
 import * as $schedule_form from './islands/schedule-form.tsx'
+import * as $symptoms_Input from './islands/symptoms/Input.tsx'
+import * as $symptoms_Search from './islands/symptoms/Search.tsx'
+import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
@@ -241,6 +244,9 @@ const manifest = {
     './islands/pre-existing-conditions/Medication.tsx':
       $pre_existing_conditions_Medication,
     './islands/schedule-form.tsx': $schedule_form,
+    './islands/symptoms/Input.tsx': $symptoms_Input,
+    './islands/symptoms/Search.tsx': $symptoms_Search,
+    './islands/symptoms/Section.tsx': $symptoms_Section,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest

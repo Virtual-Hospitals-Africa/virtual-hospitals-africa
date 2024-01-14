@@ -4,6 +4,8 @@ import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
 import { Gender, Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
+import last from '../../../util/last.ts'
+import isObjectLike from '../../../util/isObjectLike.ts'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -46,7 +48,13 @@ export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement> & {
 }
 
 function LabeledInput(
-  { name, label = name && capitalize(name), required, children, className }:
+  {
+    name,
+    label = name && capitalize(last(name.split('.'))!),
+    required,
+    children,
+    className,
+  }:
     & LabeledInputProps<HTMLInputElement>
     & {
       children: ComponentChildren
@@ -297,6 +305,51 @@ export const Select = forwardRef(
           {children}
         </select>
       </LabeledInput>
+    )
+  },
+)
+
+export const SelectWithOptions = forwardRef(
+  function SelectWithOptions<
+    V extends JSX.HTMLAttributes<HTMLOptionElement>['value'],
+  >(
+    {
+      options,
+      blank_option,
+      value,
+      ...rest
+    }: Omit<SelectProps, 'children'> & {
+      blank_option?: string | true
+      value?: V
+      options: { value: V; label?: string }[] | V[]
+    },
+    ref: Ref<HTMLSelectElement>,
+  ) {
+    return (
+      <Select {...rest} ref={ref}>
+        {blank_option && (
+          <option value=''>
+            {typeof blank_option === 'string' ? blank_option : 'Select'}
+          </option>
+        )}
+        {options.map((option) => (
+          (isObjectLike(option) && 'value' in option)
+            ? (
+              <option
+                value={option.value}
+                label={'label' in option ? option.label : String(option.value)}
+                selected={value === option.value}
+              />
+            )
+            : (
+              <option
+                value={option}
+                label={String(option)}
+                selected={value === option}
+              />
+            )
+        ))}
+      </Select>
     )
   },
 )

@@ -12,7 +12,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
-import { getWithMedicalRecords } from './patients.ts'
+import { getWithOpenEncounter } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
 import { jsonArrayFrom, now } from '../helpers.ts'
@@ -285,7 +285,7 @@ export async function getWithPatientInfo(
 
   const patient_ids = uniq(appointments.map((a) => a.patient_id))
 
-  const patients = await getWithMedicalRecords(trx, {
+  const patients = await getWithOpenEncounter(trx, {
     ids: patient_ids,
     health_worker_id: opts.health_worker_id,
   })

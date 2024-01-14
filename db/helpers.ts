@@ -2,10 +2,12 @@
 import {
   Expression,
   expressionBuilder,
+  ExpressionWrapper,
   RawBuilder,
   Simplify,
   sql,
 } from 'kysely'
+import { DB } from '../db.d.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -188,3 +190,17 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
 }
 
 export const now = sql<Date>`now()`
+
+export function isoDate(
+  // deno-lint-ignore no-explicit-any
+  ref: ExpressionWrapper<DB, any, Date>,
+): RawBuilder<string>
+
+export function isoDate(
+  // deno-lint-ignore no-explicit-any
+  ref: ExpressionWrapper<DB, any, Date | null>,
+): RawBuilder<string | null>
+
+export function isoDate(ref: unknown): unknown {
+  return sql<string>`TO_CHAR(${ref}, 'YYYY-MM-DD')`
+}

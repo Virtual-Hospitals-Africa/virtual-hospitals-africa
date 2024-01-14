@@ -1,4 +1,3 @@
-import { sql } from 'kysely'
 import {
   Address,
   ISODateString,
@@ -11,6 +10,7 @@ import { assert } from 'std/assert/assert.ts'
 import { upsert as upsertAddress } from './address.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
+import { isoDate } from '../helpers.ts'
 
 export type UpsertableNurseRegistrationDetails =
   | NurseRegistrationDetails & { address?: undefined }
@@ -53,19 +53,15 @@ export function get(
 ): Promise<ReturnedSqlRow<NurseRegistrationDetails> | undefined> {
   return trx
     .selectFrom('nurse_registration_details')
-    .select([
+    .select((eb) => [
       'id',
       'created_at',
       'updated_at',
       'health_worker_id',
       'gender',
-      sql<string>`TO_CHAR(date_of_birth, 'YYYY-MM-DD')`.as(
-        'date_of_birth',
-      ),
+      isoDate(eb.ref('date_of_birth')).as('date_of_birth'),
+      isoDate(eb.ref('date_of_first_practice')).as('date_of_first_practice'),
       'national_id_number',
-      sql<string>`TO_CHAR(date_of_first_practice, 'YYYY-MM-DD')`.as(
-        'date_of_first_practice',
-      ),
       'ncz_registration_number',
       'mobile_number',
       'national_id_media_id',

@@ -58,6 +58,11 @@ export async function up(db: Kysely<any>) {
         col.notNull().references('measurements.name').onDelete('cascade'),
     )
     .addColumn('value', 'numeric', (col) => col.notNull())
+    .addUniqueConstraint('one_measurement_per_encounter', [
+      'patient_id',
+      'encounter_id',
+      'measurement_name',
+    ])
     .execute()
 
   return addUpdatedAtTrigger(db, 'patient_measurements')
