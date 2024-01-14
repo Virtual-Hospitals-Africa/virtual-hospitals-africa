@@ -13,7 +13,8 @@ import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { resetInTest } from '../../db/meta.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
-import * as employee from '../../db/models/employment.ts'
+import * as employment from '../../db/models/employment.ts'
+import * as facilities from '../../db/models/facilities.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
@@ -150,7 +151,7 @@ export async function addTestHealthWorker(
   switch (scenario) {
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
-      const [created_employee] = await employee.add(trx, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
@@ -173,7 +174,7 @@ export async function addTestHealthWorker(
       break
     }
     case 'admin': {
-      const [created_employee] = await employee.add(trx, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'admin',
@@ -182,7 +183,7 @@ export async function addTestHealthWorker(
       break
     }
     case 'doctor': {
-      const [created_employee] = await employee.add(trx, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
@@ -191,7 +192,7 @@ export async function addTestHealthWorker(
       break
     }
     case 'nurse': {
-      const [created_employee] = await employee.add(trx, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
@@ -310,7 +311,11 @@ export function itUsesTrxAnd(
 ) {
   const { only, skip } = opts
   const _it = only ? it.only : skip ? it.skip : it
-  _it(description, () => db.transaction().execute(callback))
+  _it(
+    description,
+    () =>
+      db.transaction().setIsolationLevel('read committed').execute(callback),
+  )
 }
 
 itUsesTrxAnd.only = (
@@ -322,3 +327,19 @@ itUsesTrxAnd.skip = (
   description: string,
   callback: (trx: TrxOrDb) => Promise<void>,
 ) => itUsesTrxAnd(description, callback, { skip: true })
+
+export async function withTestFacility(
+  trx: TrxOrDb,
+  callback: (facility_id: number) => Promise<void>,
+) {
+  const facility = await facilities.add(trx, {
+    name: 'Test Clinic',
+    category: 'Clinic',
+    phone: null,
+    address: '123 Test St',
+    latitude: 0,
+    longitude: 0,
+  })
+  await callback(facility.id)
+  await facilities.remove(trx, facility)
+}

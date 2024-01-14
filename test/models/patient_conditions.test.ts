@@ -291,7 +291,11 @@ describe(
 
           const patient_medication = await trx
             .selectFrom('patient_condition_medications')
-            .innerJoin('patient_conditions', 'patient_conditions.id', 'patient_condition_medications.patient_condition_id')
+            .innerJoin(
+              'patient_conditions',
+              'patient_conditions.id',
+              'patient_condition_medications.patient_condition_id',
+            )
             .where('medication_id', '=', tablet.id)
             .where('patient_id', '=', patient.id)
             .select(sql`TO_JSON(schedules)`.as('schedules'))
