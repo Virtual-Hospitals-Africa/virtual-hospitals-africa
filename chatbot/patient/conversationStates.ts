@@ -33,6 +33,7 @@ import {
 } from '../../util/capLengthAt.ts'
 import uniq from '../../util/uniq.ts'
 import { pickPatient } from './util.ts'
+import { GoogleClient } from '../../external-clients/google.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -669,7 +670,16 @@ const conversationStates: ConversationStates<
 
   'onboarded:appointment_scheduled': {
     type: 'select',
-    onEnter: makeAppointmentChatbot,
+    onEnter(trx, patientState) {
+      return makeAppointmentChatbot(
+        trx,
+        patientState,
+        function insertEvent(health_worker, calendar_id, event) {
+          const healthWorkerGoogleClient = new GoogleClient(health_worker)
+          return healthWorkerGoogleClient.insertEvent(calendar_id, event)
+        },
+      )
+    },
     prompt(patientState: PatientState) {
       assert(patientState.scheduled_appointment)
       assert(patientState.scheduled_appointment.gcal_event_id)

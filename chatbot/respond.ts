@@ -40,6 +40,7 @@ async function respondToPatientMessage(
   try {
     const responseToSend = await db
       .transaction()
+      .setIsolationLevel('read committed')
       .execute((trx) =>
         determineResponse(
           trx,
@@ -88,9 +89,13 @@ async function respondToPatientMessage(
   }
 }
 
-export default async function respond(whatsapp: WhatsApp) {
+export default async function respond(
+  whatsapp: WhatsApp,
+  phone_number?: string,
+) {
   const unhandledMessages = await getUnhandledPatientMessages(db, {
     commitHash,
+    phone_number,
   })
   return Promise.all(
     unhandledMessages.map((msg) =>

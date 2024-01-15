@@ -27,6 +27,7 @@ import {
 import redirect from '../../../../util/redirect.ts'
 import { assertOr400 } from '../../../../util/assertOr.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
+import { insertEvent } from '../../../../external-clients/google.ts'
 
 type SearchFormValues = {
   health_worker_id?: number
@@ -127,17 +128,17 @@ export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
     })
   },
   async POST(req, ctx) {
-    console.log('POST schedule')
-    console.log('req', req)
-    console.log('ctx', ctx)
     const schedule = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsScheduleFormValues,
     )
-    console.log('schedule', schedule)
 
-    await makeAppointmentWeb(ctx.state.trx, schedule)
+    await makeAppointmentWeb(
+      ctx.state.trx,
+      schedule,
+      insertEvent,
+    )
     return redirect('/app/calendar')
   },
 }

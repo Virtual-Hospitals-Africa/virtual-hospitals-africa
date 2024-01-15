@@ -48,10 +48,12 @@ export const handler = [
 
     if (!ctx.state.session.get('health_worker_id')) return redirect('/')
 
-    return db.transaction().execute((trx) => {
-      ctx.state.trx = trx
-      return ctx.next()
-    }).catch((err) => {
+    return db.transaction().setIsolationLevel('read committed').execute(
+      (trx) => {
+        ctx.state.trx = trx
+        return ctx.next()
+      },
+    ).catch((err) => {
       if (err.status === 302) {
         return redirect(err.location)
       }

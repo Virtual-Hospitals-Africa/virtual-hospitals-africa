@@ -17,7 +17,7 @@ describeWithWebServer(
   (route) => {
     it('renders a page on GET for an open encounter', async () => {
       const patient = await patients.upsert(db, { name: 'Test Patient' })
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
       await patient_encounters.upsert(db, 1, {
@@ -51,7 +51,7 @@ describeWithWebServer(
 
     it('404s on a GET for a patient with no open encounter', async () => {
       const patient = await patients.upsert(db, { name: 'Test Patient' })
-      const { fetch } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
 
@@ -64,7 +64,7 @@ describeWithWebServer(
     })
 
     it('can save vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
       const encounter = await patient_encounters.upsert(db, 1, {
@@ -118,7 +118,7 @@ describeWithWebServer(
     })
 
     it('can overwrite existing vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
       const encounter = await patient_encounters.upsert(db, 1, {
@@ -183,7 +183,7 @@ describeWithWebServer(
     })
 
     it('can remove existing vitals on POST', async () => {
-      const { healthWorker, fetch } = await addTestHealthWorkerWithSession({
+      const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
       const encounter = await patient_encounters.upsert(db, 1, {

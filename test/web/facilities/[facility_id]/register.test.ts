@@ -17,7 +17,7 @@ describeWithWebServer(
   8008,
   (route) => {
     it('renders a registration page on GET', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'nurse',
       })
 
@@ -54,12 +54,12 @@ describeWithWebServer(
     })
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
-      await addTestHealthWorker({ scenario: 'admin' })
+      await addTestHealthWorker(db, { scenario: 'admin' })
       const { fetch, sessionId, healthWorker: nurse } =
-        await addTestHealthWorkerWithSession({
+        await addTestHealthWorkerWithSession(db, {
           scenario: 'nurse',
         })
-      const address = await createTestAddress()
+      const address = await createTestAddress(db)
 
       {
         const body = new FormData()
@@ -272,8 +272,10 @@ describeWithWebServer(
           'health_worker_id',
           '=',
           nurse.id,
-        ).selectAll().executeTakeFirst()
-        const specialty = await db.selectFrom('nurse_specialties').selectAll()
+        ).selectAll().executeTakeFirstOrThrow()
+        const specialty = await db.selectFrom('nurse_specialties')
+          .where('employee_id', '=', nurseEmployment.id)
+          .selectAll()
           .executeTakeFirst()
         assert(registrationDetails)
         assert(newNurse)

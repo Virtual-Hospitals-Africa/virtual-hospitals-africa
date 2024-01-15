@@ -1,29 +1,29 @@
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
-import { resetInTest } from '../../db/meta.ts'
 import * as drugs from '../../db/models/drugs.ts'
 import deepOmit from '../../util/deepOmit.ts'
+import { itUsesTrxAnd } from '../web/utilities.ts'
 
 describe('db/models/drugs.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
   describe('search', () => {
-    it('gets search results for drugs with their forms, strengths, and manufacturers', async () => {
-      const results = await drugs.search(db, { search: 'abacavir' })
-      assertEquals(
-        deepOmit(results, [
-          'id',
-          'medication_id',
-          'manufactured_medication_id',
-        ]),
-        deepOmit(expected_results, [
-          'id',
-          'medication_id',
-          'manufactured_medication_id',
-        ]),
-      )
-    })
+    itUsesTrxAnd(
+      'gets search results for drugs with their forms, strengths, and manufacturers',
+      async (trx) => {
+        const results = await drugs.search(trx, { search: 'abacavir' })
+        assertEquals(
+          deepOmit(results, [
+            'id',
+            'medication_id',
+            'manufactured_medication_id',
+          ]),
+          deepOmit(expected_results, [
+            'id',
+            'medication_id',
+            'manufactured_medication_id',
+          ]),
+        )
+      },
+    )
   })
 })
 

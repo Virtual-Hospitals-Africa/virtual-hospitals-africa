@@ -1,44 +1,45 @@
 import { sql } from 'kysely'
-import { beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
-import { resetInTest } from '../../db/meta.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
+import { itUsesTrxAnd } from '../web/utilities.ts'
+import generateUUID from '../../util/uuid.ts'
+import { randomPhoneNumber } from '../mocks.ts'
 
 describe('db/models/patients.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
   describe('getAllWithNames', () => {
-    it('finds patients by their name', async () => {
-      const insertedMedia = await media.insert(db, {
+    itUsesTrxAnd('finds patients by their name', async (trx) => {
+      const insertedMedia = await media.insert(trx, {
         binary_data: new Uint8Array(),
         mime_type: 'image/jpeg',
       })
 
-      const test_patient1 = await patients.upsert(db, {
-        name: 'Test Patient 1',
+      const baseUUID = generateUUID()
+
+      const test_patient1 = await patients.upsert(trx, {
+        name: baseUUID + generateUUID(),
         conversation_state: 'initial_message',
       })
 
-      const test_patient2 = await patients.upsert(db, {
-        name: 'Test Patient 2',
+      const test_patient2 = await patients.upsert(trx, {
+        name: baseUUID + generateUUID(),
         avatar_media_id: insertedMedia.id,
       })
 
-      await patients.upsert(db, {
+      await patients.upsert(trx, {
         name: 'Other Foo',
       })
 
-      const results = await patients.getAllWithNames(db, 'Test')
+      const results = await patients.getAllWithNames(trx, baseUUID)
       assertEquals(results, [
         {
           id: test_patient1.id,
           avatar_url: null,
-          name: 'Test Patient 1',
+          name: test_patient1.name,
           dob_formatted: null,
           description: null,
           gender: null,
@@ -59,7 +60,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         {
           id: test_patient2.id,
           avatar_url: `/app/patients/${test_patient2.id}/avatar`,
-          name: 'Test Patient 2',
+          name: test_patient2.name,
           dob_formatted: null,
           description: null,
           gender: null,
@@ -80,26 +81,30 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       ])
     })
 
-    it("gives a description formed by the patient's gender and date of birth", async () => {
-      await patients.upsert(db, {
-        name: 'Test Patient',
-        date_of_birth: '2021-03-01',
-        gender: 'female',
-      })
+    itUsesTrxAnd(
+      "gives a description formed by the patient's gender and date of birth",
+      async (trx) => {
+        const name = generateUUID()
+        await patients.upsert(trx, {
+          name,
+          date_of_birth: '2021-03-01',
+          gender: 'female',
+        })
 
-      const results = await patients.getAllWithNames(db, 'Test')
-      assertEquals(results.length, 1)
-      assertEquals(results[0].description, 'female, 01/03/2021')
-    })
+        const results = await patients.getAllWithNames(trx, name)
+        assertEquals(results.length, 1)
+        assertEquals(results[0].description, 'female, 01/03/2021')
+      },
+    )
   })
 
   describe('getWithOpenEncounter', () => {
-    it('finds patients without an open encounter', async () => {
-      const test_patient = await patients.upsert(db, {
+    itUsesTrxAnd('finds patients without an open encounter', async (trx) => {
+      const test_patient = await patients.upsert(trx, {
         name: 'Test Patient',
       })
 
-      const results = await patients.getWithOpenEncounter(db, {
+      const results = await patients.getWithOpenEncounter(trx, {
         ids: [test_patient.id],
       })
       assertEquals(results, [
@@ -128,14 +133,14 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       ])
     })
 
-    it('finds patients with an open encounter', async () => {
-      const encounter = await patient_encounters.upsert(db, 1, {
+    itUsesTrxAnd('finds patients with an open encounter', async (trx) => {
+      const encounter = await patient_encounters.upsert(trx, 1, {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
       })
       const { patient_id } = encounter
 
-      const results = await patients.getWithOpenEncounter(db, {
+      const results = await patients.getWithOpenEncounter(trx, {
         ids: [patient_id],
       })
       assertEquals(results, [
@@ -177,37 +182,41 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   })
 
   describe('getAvatar', () => {
-    it('gets the binary data and mime_type of the avatar', async () => {
-      const insertedMedia = await media.insert(db, {
-        binary_data: new Uint8Array([1, 2, 3]),
-        mime_type: 'image/jpeg',
-      })
+    itUsesTrxAnd(
+      'gets the binary data and mime_type of the avatar',
+      async (trx) => {
+        const insertedMedia = await media.insert(trx, {
+          binary_data: new Uint8Array([1, 2, 3]),
+          mime_type: 'image/jpeg',
+        })
 
-      const test_patient = await patients.upsert(db, {
-        name: 'Test Patient 1',
-        conversation_state: 'initial_message',
-        avatar_media_id: insertedMedia.id,
-      })
+        const test_patient = await patients.upsert(trx, {
+          name: 'Test Patient 1',
+          conversation_state: 'initial_message',
+          avatar_media_id: insertedMedia.id,
+        })
 
-      const avatar = await patients.getAvatar(db, {
-        patient_id: test_patient.id,
-      })
+        const avatar = await patients.getAvatar(trx, {
+          patient_id: test_patient.id,
+        })
 
-      assertEquals(avatar, {
-        binary_data: new Uint8Array([1, 2, 3]),
-        mime_type: 'image/jpeg',
-      })
-    })
+        assertEquals(avatar, {
+          binary_data: new Uint8Array([1, 2, 3]),
+          mime_type: 'image/jpeg',
+        })
+      },
+    )
   })
 
   describe('getByPhoneNumber', () => {
-    it('reads out a formatted date of birth', async () => {
-      await patients.upsert(db, {
+    itUsesTrxAnd('reads out a formatted date of birth', async (trx) => {
+      const phone_number = randomPhoneNumber()
+      await patients.upsert(trx, {
         date_of_birth: '2021-01-01',
-        phone_number: '15555555555',
+        phone_number,
       })
-      const result = await patients.getByPhoneNumber(db, {
-        phone_number: '15555555555',
+      const result = await patients.getByPhoneNumber(trx, {
+        phone_number,
       })
 
       assert(result)
@@ -221,33 +230,33 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   describe.skip('getPatientAges', () => {
     const today = new Date()
 
-    it('finds patient ages', async () => {
-      const testPatient1 = await patients.upsert(db, {
+    itUsesTrxAnd('finds patient ages', async (trx) => {
+      const testPatient1 = await patients.upsert(trx, {
         name: 'Test Patient 1',
         date_of_birth: today.toISOString().split('T')[0],
       })
 
       const yesterday = new Date(today.getTime() - 86400000)
-      const testPatient2 = await patients.upsert(db, {
+      const testPatient2 = await patients.upsert(trx, {
         name: 'Test Patient 2',
         date_of_birth: yesterday.toISOString().split('T')[0],
       })
 
       const twentyDays = new Date(today.getTime() - (86400000 * 20))
-      const testPatient3 = await patients.upsert(db, {
+      const testPatient3 = await patients.upsert(trx, {
         name: 'Test Patient 3',
         date_of_birth: twentyDays.toISOString().split('T')[0],
       })
 
       const threeWeeks = new Date(today.getTime() - (86400000 * 21))
-      const testPatient4 = await patients.upsert(db, {
+      const testPatient4 = await patients.upsert(trx, {
         name: 'Test Patient 4',
         date_of_birth: threeWeeks.toISOString().split('T')[0],
       })
 
       const threeMonths = new Date(today)
       threeMonths.setMonth(today.getMonth() - 3)
-      const testPatient5 = await patients.upsert(db, {
+      const testPatient5 = await patients.upsert(trx, {
         name: 'Test Patient 5',
         date_of_birth: threeMonths.toISOString().split('T')[0],
       })
@@ -255,17 +264,17 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       const twoYears = new Date(today)
       twoYears.setFullYear(today.getFullYear() - 2)
       const oneDayBelowTwoYears = new Date(twoYears.getTime() + 86400000)
-      const testPatient6 = await patients.upsert(db, {
+      const testPatient6 = await patients.upsert(trx, {
         name: 'Test Patient 6',
         date_of_birth: oneDayBelowTwoYears.toISOString().split('T')[0],
       })
 
-      const testPatient7 = await patients.upsert(db, {
+      const testPatient7 = await patients.upsert(trx, {
         name: 'Test Patient 7',
         date_of_birth: twoYears.toISOString().split('T')[0],
       })
 
-      const patient_ages = await db
+      const patient_ages = await trx
         .selectFrom('patient_age')
         .select(['patient_id', sql`TO_JSON(age)`.as('age')])
         .execute()
@@ -302,12 +311,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       ])
 
       const oneDayBelowThreeMonths = new Date(threeMonths.getTime() + 86400000)
-      const testPatient8 = await patients.upsert(db, {
+      const testPatient8 = await patients.upsert(trx, {
         name: 'Test Patient 8',
         date_of_birth: oneDayBelowThreeMonths.toISOString().split('T')[0],
       })
 
-      const patient_age = await db
+      const patient_age = await trx
         .selectFrom('patient_age')
         .select(['patient_id', sql`TO_JSON(age)`.as('age')])
         .where('patient_id', '=', testPatient8.id)

@@ -14,7 +14,7 @@ describeWithWebServer(
   (route) => {
     it('renders a page on GET for an open encounter', async () => {
       const { healthWorker, fetchCheerio } =
-        await addTestHealthWorkerWithSession({
+        await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
         })
       const { patient_id } = await patient_encounters.upsert(db, 1, {

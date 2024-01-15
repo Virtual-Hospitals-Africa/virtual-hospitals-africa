@@ -1,19 +1,17 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../../../../../db/meta.ts'
 import db from '../../../../../../../db/db.ts'
 import respond from '../../../../../../../chatbot/respond.ts'
 import * as conversations from '../../../../../../../db/models/conversations.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
+import { randomNationalId, randomPhoneNumber } from '../../../../../../mocks.ts'
+import generateUUID from '../../../../../../../util/uuid.ts'
 
-describe('patient chatbot', () => {
-  beforeEach(resetInTest)
-  afterEach(() => db.destroy())
-
-  const phone_number = '00000000'
+describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for media after inquiring appointment reason', async () => {
+    const phone_number = randomPhoneNumber()
     await patients.upsert(db, {
       conversation_state:
         'not_onboarded:make_appointment:enter_national_id_number',
@@ -27,35 +25,35 @@ describe('patient chatbot', () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '12-345678 A 12',
+      body: randomNationalId(),
       media_id: null,
-      whatsapp_id: 'whatsapp_id_one',
+      whatsapp_id: `wamid.${generateUUID()}`,
     })
 
     const fakeWhatsAppOne = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.12341',
+          id: `wamid.${generateUUID()}`,
         }],
       }]),
     }
 
-    await respond(fakeWhatsAppOne)
+    await respond(fakeWhatsAppOne, phone_number)
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
       body: 'pain',
       media_id: null,
-      whatsapp_id: 'whatsapp_id_two',
+      whatsapp_id: `wamid.${generateUUID()}`,
     })
 
     const fakeWhatsAppTwo = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.12342',
+          id: `wamid.${generateUUID()}`,
         }],
       }]),
     }

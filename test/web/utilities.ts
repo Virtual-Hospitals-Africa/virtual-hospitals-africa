@@ -2,19 +2,18 @@ import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
-import { afterAll, beforeAll, beforeEach, describe } from 'std/testing/bdd.ts'
+import { afterAll, beforeAll, describe, it } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/meta.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
-
-import * as employee from '../../db/models/employment.ts'
+import * as employment from '../../db/models/employment.ts'
+import * as facilities from '../../db/models/facilities.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
-import { HealthWorkerWithGoogleTokens } from '../../types.ts'
+import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -121,28 +120,33 @@ export function describeWithWebServer(
         webserver = await startWebServer(port)
         // logLines(webserver.lineReader)
       })
-      beforeEach(resetInTest)
       afterAll(async () => {
         await webserver.kill()
         await db.destroy()
-        await redis.flushdb()
       })
       callback(route)
     },
   )
 }
 
-export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
-  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
-  facility_id?: number
-} = { scenario: 'base' }) {
+export async function addTestHealthWorker(
+  trx: TrxOrDb,
+  { scenario, facility_id = 1, health_worker_attrs }: {
+    scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
+    facility_id?: number
+    health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
+  } = { scenario: 'base' },
+) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
-  } = await upsertWithGoogleCredentials(db, testHealthWorker())
+  } = await upsertWithGoogleCredentials(trx, {
+    ...testHealthWorker(),
+    ...health_worker_attrs,
+  })
   switch (scenario) {
     case 'approved-nurse': {
-      const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
-      const [created_employee] = await employee.add(db, [{
+      const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
@@ -153,19 +157,19 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
       }])
       healthWorker.employee_id = created_employee.id
       await details.add(
-        db,
-        await testRegistrationDetails({
+        trx,
+        await testRegistrationDetails(trx, {
           health_worker_id: healthWorker.id,
         }),
       )
-      await details.approve(db, {
+      await details.approve(trx, {
         approverId: admin.id,
         healthWorkerId: healthWorker.id,
       })
       break
     }
     case 'admin': {
-      const [created_employee] = await employee.add(db, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'admin',
@@ -174,7 +178,7 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
       break
     }
     case 'doctor': {
-      const [created_employee] = await employee.add(db, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
@@ -183,7 +187,7 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
       break
     }
     case 'nurse': {
-      const [created_employee] = await employee.add(db, [{
+      const [created_employee] = await employment.add(trx, [{
         facility_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
@@ -196,11 +200,11 @@ export async function addTestHealthWorker({ scenario, facility_id = 1 }: {
   return healthWorker
 }
 
-export async function addTestHealthWorkerWithSession(opts: {
+export async function addTestHealthWorkerWithSession(trx: TrxOrDb, opts: {
   scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
 } = { scenario: 'base' }) {
   const sessionId = generateUUID()
-  const healthWorker = await addTestHealthWorker(opts)
+  const healthWorker = await addTestHealthWorker(trx, opts)
   await redis.set(
     `S_${sessionId}`,
     JSON.stringify({
@@ -293,4 +297,44 @@ export function getFormDisplay($: cheerio.CheerioAPI): unknown {
     })
   })
   return formDisplay
+}
+
+export function itUsesTrxAnd(
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+  opts: { only?: boolean; skip?: boolean } = {},
+) {
+  const { only, skip } = opts
+  const _it = only ? it.only : skip ? it.skip : it
+  _it(
+    description,
+    () =>
+      db.transaction().setIsolationLevel('read committed').execute(callback),
+  )
+}
+
+itUsesTrxAnd.only = (
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+) => itUsesTrxAnd(description, callback, { only: true })
+
+itUsesTrxAnd.skip = (
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+) => itUsesTrxAnd(description, callback, { skip: true })
+
+export async function withTestFacility(
+  trx: TrxOrDb,
+  callback: (facility_id: number) => Promise<void>,
+) {
+  const facility = await facilities.add(trx, {
+    name: 'Test Clinic',
+    category: 'Clinic',
+    phone: null,
+    address: '123 Test St',
+    latitude: 0,
+    longitude: 0,
+  })
+  await callback(facility.id)
+  await facilities.remove(trx, facility)
 }

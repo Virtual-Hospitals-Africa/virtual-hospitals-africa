@@ -1,33 +1,20 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../db/db.ts'
+import db from '../../../db/db.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../db/meta.ts'
-import * as google from '../../external-clients/google.ts'
-import * as makeAppointment from '../../shared/scheduling/makeAppointment.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
-import * as appointments from '../../db/models/appointments.ts'
-import * as patients from '../../db/models/patients.ts'
+import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
+import * as health_workers from '../../../db/models/health_workers.ts'
+import * as appointments from '../../../db/models/appointments.ts'
+import * as patients from '../../../db/models/patients.ts'
 import { assert } from 'std/assert/assert.ts'
-import { testHealthWorker } from '../mocks.ts'
+import { testHealthWorker } from '../../mocks.ts'
 
 describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
-  beforeEach(resetInTest)
-
-  // deno-lint-ignore no-explicit-any
-  let insertEvent: any
-  beforeEach(() => {
-    insertEvent = sinon.stub(google.GoogleClient.prototype, 'insertEvent')
-      .resolves({
-        id: 'inserted google event id',
-      })
-  })
-  afterEach(() => {
-    insertEvent.restore()
-  })
-
   describe('makeAppointmentWeb', () => {
     it("inserts an event on the specified health worker's google calendar, adding that event to the db", async () => {
+      const insertEvent = sinon.stub().resolves({
+        id: 'inserted google event id',
+      })
       const healthWorker = await health_workers.upsertWithGoogleCredentials(
         db,
         testHealthWorker(),
@@ -43,10 +30,11 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
         durationMinutes: 30,
         patient_id: patient.id,
         health_worker_ids: [healthWorker.id],
-      })
+      }, insertEvent)
 
       assert(insertEvent.calledOnce)
       assertEquals(insertEvent.firstCall.args, [
+        healthWorker,
         healthWorker.gcal_appointments_calendar_id,
         {
           start: {

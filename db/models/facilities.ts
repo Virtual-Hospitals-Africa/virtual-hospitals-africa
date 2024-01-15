@@ -361,3 +361,31 @@ export async function invite(
     )
   }
 }
+
+export function add(
+  trx: TrxOrDb,
+  { latitude, longitude, ...facility }: Omit<
+    Facility,
+    'id' | 'created_at' | 'updated_at'
+  >,
+) {
+  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode')
+  return trx
+    .insertInto('facilities')
+    .values({
+      ...facility,
+      location: sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+export function remove(
+  trx: TrxOrDb,
+  opts: {
+    id: number
+  },
+) {
+  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode')
+  return trx.deleteFrom('facilities').where('id', '=', opts.id).execute()
+}

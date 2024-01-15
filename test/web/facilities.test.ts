@@ -5,10 +5,11 @@ import {
   describeWithWebServer,
 } from './utilities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import db from '../../db/db.ts'
 
 describeWithWebServer('/app/facilities', 8005, (route) => {
   it('can search for facilities by name', async () => {
-    const { fetch } = await addTestHealthWorkerWithSession({
+    const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
     const response = await fetch(`${route}/app/facilities?search=VHA Test`, {

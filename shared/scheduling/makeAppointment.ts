@@ -5,12 +5,12 @@ import {
   formatHarare,
   isIsoHarare,
 } from '../../util/date.ts'
-import * as google from '../../external-clients/google.ts'
 import { getWithTokensById } from '../../db/models/health_workers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
   GCalEvent,
+  HealthWorkerWithGoogleTokens,
   PatientAppointmentOfferedTime,
   PatientState,
   ReturnedSqlRow,
@@ -69,9 +69,16 @@ export function gcalAppointmentDetails(
   }
 }
 
+type InsertEvent = (
+  health_worker: HealthWorkerWithGoogleTokens,
+  calendar_id: string,
+  event: DeepPartial<GCalEvent>,
+) => Promise<GCalEvent>
+
 export async function makeAppointmentChatbot(
   trx: TrxOrDb,
   patientState: PatientState,
+  insertEvent: InsertEvent,
 ): Promise<PatientState> {
   assertEquals(
     patientState.conversation_state,
@@ -103,12 +110,11 @@ export async function makeAppointmentChatbot(
     `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
   )
 
-  const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
-
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
-  const insertedEvent = await healthWorkerGoogleClient.insertEvent(
+  const insertedEvent = await insertEvent(
+    matchingHealthWorker,
     matchingHealthWorker.gcal_appointments_calendar_id,
     gcal,
   )
@@ -153,6 +159,7 @@ export function assertIsScheduleFormValues(
 export async function makeAppointmentWeb(
   trx: TrxOrDb,
   values: ScheduleFormValues,
+  insertEvent: InsertEvent,
 ): Promise<void> {
   assertEquals(
     values.health_worker_ids.length,
@@ -186,9 +193,8 @@ export async function makeAppointmentWeb(
     }`,
   )
 
-  const healthWorkerGoogleClient = new google.GoogleClient(matchingHealthWorker)
-
-  const insertedEvent = await healthWorkerGoogleClient.insertEvent(
+  const insertedEvent = await insertEvent(
+    matchingHealthWorker,
     matchingHealthWorker.gcal_appointments_calendar_id,
     gcal({
       start: values.start,

@@ -5,14 +5,15 @@ import {
   describeWithWebServer,
 } from './utilities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import db from '../../db/db.ts'
 
 describeWithWebServer('/app/health_workers', 8006, (route) => {
   it('can return a health worker', async () => {
-    const { fetch, healthWorker } = await addTestHealthWorkerWithSession({
+    const { fetch, healthWorker } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
     const response = await fetch(
-      `${route}/app/health_workers?profession=nurse`,
+      `${route}/app/health_workers?profession=nurse&search=${healthWorker.name}`,
       {
         headers: {
           Accept: 'application/json',
@@ -22,7 +23,9 @@ describeWithWebServer('/app/health_workers', 8006, (route) => {
     if (!response.ok) throw new Error(await response.text())
     const json = await response.json()
     assert(Array.isArray(json))
-    assertEquals(json.length, 1)
-    assertEquals(json[0].id, healthWorker.id)
+
+    const found = json.find((hw) => hw.id === healthWorker.id)
+    assert(found)
+    assertEquals(found.name, healthWorker.name)
   })
 })

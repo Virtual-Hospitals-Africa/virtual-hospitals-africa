@@ -2,22 +2,23 @@ import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../../../../../db/meta.ts'
 import db from '../../../../../../../db/db.ts'
 import respond from '../../../../../../../chatbot/respond.ts'
 import * as google from '../../../../../../../external-clients/google.ts'
 import * as conversations from '../../../../../../../db/models/conversations.ts'
-import * as health_workers from '../../../../../../../db/models/health_workers.ts'
 import * as patients from '../../../../../../../db/models/patients.ts'
 import * as appointments from '../../../../../../../db/models/appointments.ts'
 import {
   formatHarare,
   prettyAppointmentTime,
 } from '../../../../../../../util/date.ts'
+import { randomPhoneNumber } from '../../../../../../mocks.ts'
+import generateUUID from '../../../../../../../util/uuid.ts'
+import { addTestHealthWorker } from '../../../../../../web/utilities.ts'
+import { resetInTest } from '../../../../../../../db/meta.ts'
 
-describe('patient chatbot', () => {
+describe('patient chatbot', { sanitizeResources: false }, () => {
   beforeEach(resetInTest)
-  afterEach(() => db.destroy())
   // deno-lint-ignore no-explicit-any
   let getFreeBusy: any
   beforeEach(() => {
@@ -26,9 +27,8 @@ describe('patient chatbot', () => {
   afterEach(() => {
     getFreeBusy.restore()
   })
-
-  const phone_number = '00000000'
   it('provides with first_scheduling_option details after confirming details', async () => {
+    const phone_number = randomPhoneNumber()
     const patientBefore = await patients.upsert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
@@ -50,21 +50,7 @@ describe('patient chatbot', () => {
       reason: 'pain',
     })
 
-    // Insert health worker
-    const expires_at = new Date()
-    expires_at.setSeconds(expires_at.getSeconds() + 3600000)
-
-    await health_workers.upsertWithGoogleCredentials(db, {
-      name: 'Test Doctor',
-      email: 'test@doctor.com',
-      avatar_url: 'https://placekitten/200/200',
-      phone_number: '129010920192',
-      gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-      gcal_availability_calendar_id: 'gcal_availability_calendar_id',
-      access_token: 'test:access_token',
-      refresh_token: 'test:refresh_token',
-      expires_at,
-    })
+    const health_worker = await addTestHealthWorker(db)
 
     // Insert google calender
     const currentTime = new Date()
@@ -93,7 +79,7 @@ describe('patient chatbot', () => {
         timeMin: timeMin,
         timeMax: timeMax,
         calendars: {
-          'gcal_appointments_calendar_id': {
+          [health_worker.gcal_appointments_calendar_id]: {
             busy: [
               {
                 start: secondDayStart,
@@ -101,7 +87,7 @@ describe('patient chatbot', () => {
               },
             ],
           },
-          'gcal_availability_calendar_id': {
+          [health_worker.gcal_availability_calendar_id]: {
             busy: [
               {
                 start: secondDayStart,
@@ -118,19 +104,19 @@ describe('patient chatbot', () => {
       has_media: false,
       body: 'confirm',
       media_id: null,
-      whatsapp_id: 'whatsapp_id_one',
+      whatsapp_id: `wamid.${generateUUID()}`,
     })
 
     const fakeWhatsApp = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.1234',
+          id: `wamid.${generateUUID()}`,
         }],
       }]),
     }
 
-    await respond(fakeWhatsApp)
+    await respond(fakeWhatsApp, phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {

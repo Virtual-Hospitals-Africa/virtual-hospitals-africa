@@ -9,13 +9,14 @@ import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import db from '../../../../../db/db.ts'
+import generateUUID from '../../../../../util/uuid.ts'
 
 describeWithWebServer(
   '/app/facilities/[facility_id]/waiting-room/add',
   8007,
   (route) => {
     it('renders a page on GET', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
 
@@ -41,7 +42,7 @@ describeWithWebServer(
       const testPatient = await patients.upsert(db, {
         name: 'Test Patient',
       })
-      const { fetch } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
 
@@ -68,11 +69,13 @@ describeWithWebServer(
       // Assert that the patient encounter is created and added to the waiting room
       const patientEncounter = await db
         .selectFrom('patient_encounters')
+        .where('patient_id', '=', testPatient.id)
         .selectAll()
         .executeTakeFirstOrThrow()
 
       const waiting_room = await db
         .selectFrom('waiting_room')
+        .where('patient_encounter_id', '=', patientEncounter.id)
         .selectAll()
         .executeTakeFirstOrThrow()
 
@@ -87,13 +90,14 @@ describeWithWebServer(
     })
 
     it('can create a patient encounter for a new patient on POST', async () => {
-      const { fetch } = await addTestHealthWorkerWithSession({
+      const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
 
+      const patient_name = generateUUID()
       const body = new FormData()
       body.set('notes', 'Test notes')
-      body.set('patient_name', 'New Patient')
+      body.set('patient_name', patient_name)
       body.set('provider_id', 'next_available')
       body.set('provider_name', 'Next Available')
       body.set('reason', 'seeking treatment')
@@ -113,11 +117,21 @@ describeWithWebServer(
       // Assert that the patient encounter is created and added to the waiting room
       const patientEncounter = await db
         .selectFrom('patient_encounters')
+        .where(
+          'patient_id',
+          '=',
+          db.selectFrom('patients').select('id').where(
+            'name',
+            '=',
+            patient_name,
+          ),
+        )
         .selectAll()
         .executeTakeFirstOrThrow()
 
       const waiting_room = await db
         .selectFrom('waiting_room')
+        .where('patient_encounter_id', '=', patientEncounter.id)
         .selectAll()
         .executeTakeFirstOrThrow()
 
@@ -134,7 +148,7 @@ describeWithWebServer(
         '=',
         patientEncounter.patient_id,
       ).executeTakeFirstOrThrow()
-      assertEquals(name, 'New Patient')
+      assertEquals(name, patient_name)
     })
   },
 )
