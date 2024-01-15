@@ -130,7 +130,6 @@ export function describeWithWebServer(
       afterAll(async () => {
         await webserver.kill()
         await db.destroy()
-        await redis.flushdb()
       })
       callback(route)
     },

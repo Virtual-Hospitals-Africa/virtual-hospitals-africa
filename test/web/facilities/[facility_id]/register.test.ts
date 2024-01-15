@@ -272,8 +272,10 @@ describeWithWebServer(
           'health_worker_id',
           '=',
           nurse.id,
-        ).selectAll().executeTakeFirst()
-        const specialty = await db.selectFrom('nurse_specialties').selectAll()
+        ).selectAll().executeTakeFirstOrThrow()
+        const specialty = await db.selectFrom('nurse_specialties')
+          .where('employee_id', '=', nurseEmployment.id)
+          .selectAll()
           .executeTakeFirst()
         assert(registrationDetails)
         assert(newNurse)

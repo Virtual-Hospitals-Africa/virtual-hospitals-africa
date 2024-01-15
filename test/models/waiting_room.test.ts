@@ -6,7 +6,6 @@ import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
 
-
 describe(
   'db/models/waiting_room.ts',
   { sanitizeResources: false },
@@ -98,11 +97,12 @@ describe(
               reason: 'emergency',
             })
 
-            const seeking_treatment = await trx.insertInto('patient_encounters').values({
-              patient_id: patient2.id,
-              reason: 'seeking treatment',
-              created_at: sql`NOW() - INTERVAL '1 hour'`,
-            }).returning('id').executeTakeFirstOrThrow()
+            const seeking_treatment = await trx.insertInto('patient_encounters')
+              .values({
+                patient_id: patient2.id,
+                reason: 'seeking treatment',
+                created_at: sql`NOW() - INTERVAL '1 hour'`,
+              }).returning('id').executeTakeFirstOrThrow()
 
             await trx.insertInto('waiting_room').values({
               facility_id,

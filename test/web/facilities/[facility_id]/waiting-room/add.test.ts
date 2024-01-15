@@ -10,7 +10,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import db from '../../../../../db/db.ts'
 import generateUUID from '../../../../../util/uuid.ts'
-import { select } from 'https://esm.sh/v135/cheerio-select@2.1.0/lib/index.js'
 
 describeWithWebServer(
   '/app/facilities/[facility_id]/waiting-room/add',
@@ -118,7 +117,15 @@ describeWithWebServer(
       // Assert that the patient encounter is created and added to the waiting room
       const patientEncounter = await db
         .selectFrom('patient_encounters')
-        .where('patient_id', '=', db.selectFrom('patients').select('id').where('name', '=', patient_name))
+        .where(
+          'patient_id',
+          '=',
+          db.selectFrom('patients').select('id').where(
+            'name',
+            '=',
+            patient_name,
+          ),
+        )
         .selectAll()
         .executeTakeFirstOrThrow()
 

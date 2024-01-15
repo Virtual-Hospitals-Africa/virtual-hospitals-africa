@@ -21,6 +21,7 @@ import { getPreExistingConditions } from '../../../db/models/patient_conditions.
 import omit from '../../../util/omit.ts'
 import deepOmit from '../../../util/deepOmit.ts'
 import * as patient_occupations from '../../../db/models/patient_occupations.ts'
+import { randomNationalId, randomPhoneNumber } from '../../mocks.ts'
 
 describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
   it('loads the personal page', async () => {
@@ -55,15 +56,17 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
+    const national_id_number = randomNationalId()
+    const phone_number = randomPhoneNumber()
     const body = new FormData()
     body.set('first_name', 'Test')
     body.set('middle_names', 'Zoom Zoom')
     body.set('last_name', 'Patient')
-    body.set('national_id_number', '08-123456 D 53')
+    body.set('national_id_number', national_id_number)
     body.set('date_of_birth', '2020-01-01')
     body.set('gender', 'female')
     body.set('ethnicity', 'african')
-    body.set('phone_number', '5555555555')
+    body.set('phone_number', phone_number)
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/personal`,
       {
@@ -76,11 +79,18 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       throw new Error(await postResponse.text())
     }
 
-    const patients_after_update = await db.selectFrom('patients').selectAll()
+    const patients_after_update = await db.selectFrom('patients').where(
+      'id',
+      '=',
+      patient_id,
+    ).selectAll()
       .execute()
     assertEquals(patients_after_update.length, 1)
     assertEquals(patients_after_update[0].name, 'Test Zoom Zoom Patient')
-    assertEquals(patients_after_update[0].national_id_number, '08-123456 D 53')
+    assertEquals(
+      patients_after_update[0].national_id_number,
+      national_id_number,
+    )
 
     assertEquals(
       postResponse.url,
@@ -99,8 +109,11 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     assertEquals($('input[name="date_of_birth"]').val(), '2020-01-01')
     assertEquals($('select[name="gender"]').val(), 'female')
     assertEquals($('select[name="ethnicity"]').val(), 'african')
-    assertEquals($('input[name="national_id_number"]').val(), '08-123456 D 53')
-    assertEquals($('input[name="phone_number"]').val(), '5555555555')
+    assertEquals(
+      $('input[name="national_id_number"]').val(),
+      national_id_number,
+    )
+    assertEquals($('input[name="phone_number"]').val(), phone_number)
   })
 
   it('supports POST on the address step, moving you to the pre-existing_conditions step', async () => {
@@ -142,12 +155,16 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/pre-existing_conditions`,
     )
 
-    const patientResult = await db.selectFrom('patients').selectAll().execute()
+    const patientResult = await db.selectFrom('patients').where(
+      'id',
+      '=',
+      patient_id,
+    ).selectAll().execute()
     assertEquals(patientResult.length, 1)
     assertEquals(patientResult[0].name, 'Test Patient')
 
@@ -243,13 +260,19 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
+
+    const xyz = await patient_conditions.getPreExistingConditions(db, {
+      patient_id,
+    })
+    console.log('xyz'), xyz
+
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient_id,
+      patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 1)
@@ -290,8 +313,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     const formValues = getFormValues($)
     const formDisplay = getFormDisplay($)
     assertEquals(
-      // deno-lint-ignore no-explicit-any
-      omit(formValues as any, ['allergy_search']),
+      formValues,
       deepOmit({ pre_existing_conditions }, [
         'patient_condition_id',
         'patient_condition_medication_id',
@@ -350,9 +372,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const allergies = await patient_allergies.get(db, patient_id)
@@ -403,9 +425,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
@@ -469,9 +491,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/history`,
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/history`,
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
@@ -515,10 +537,11 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
+    const guardian_phone = randomPhoneNumber()
     const body = new FormData()
     body.set('family.guardians.0.patient_name', 'New Guardian')
     body.set('family.guardians.0.family_relation_gendered', 'biological mother')
-    body.set('family.guardians.0.patient_phone_number', '3333333333')
+    body.set('family.guardians.0.patient_phone_number', guardian_phone)
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/family`,
       {
@@ -535,7 +558,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       `${route}/app/patients/${patient_id}/intake/lifestyle`,
     )
 
-    const patient_family = await family.get(db, { patient_id: patient_id })
+    const patient_family = await family.get(db, { patient_id })
 
     assertEquals(patient_family.dependents.length, 0)
     assertEquals(patient_family.guardians.length, 1)
@@ -544,7 +567,10 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       patient_family.guardians[0].family_relation_gendered,
       'biological mother',
     )
-    assertEquals(patient_family.guardians[0].patient_phone_number, '3333333333')
+    assertEquals(
+      patient_family.guardians[0].patient_phone_number,
+      guardian_phone,
+    )
     assertEquals(patient_family.guardians[0].patient_gender, 'female')
 
     const getResponse = await fetch(
@@ -562,7 +588,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
             next_of_kin: false,
             patient_id: patient_family.guardians[0].patient_id,
             patient_name: 'New Guardian',
-            patient_phone_number: 3333333333,
+            patient_phone_number: Number(guardian_phone),
           },
         ],
       },
@@ -627,9 +653,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-    assert(
-      postResponse.url ===
-        `${route}/app/patients/${patient_id}/intake/family`,
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/family`,
     )
 
     const occupation = await patient_occupations.get(db, {
