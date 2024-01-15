@@ -19,6 +19,8 @@ function SymptomsResult({
   )
 }
 
+const matchLower = (a: string, b: string) => a.toLowerCase().includes(b)
+
 export default function SymptomsSearch({
   options,
   add,
@@ -28,12 +30,20 @@ export default function SymptomsSearch({
 }) {
   const query = useSignal('')
   const filtered_options = computed(() => {
-    const query_value = query.value
-    return query_value.length > 0
-      ? options.filter((symptom) =>
-        symptom.name.toLowerCase().includes(query_value.toLowerCase())
-      )
-      : []
+    const query_value = query.value.toLowerCase()
+    if (!query_value) return []
+    const matches: SymptomOption[] = []
+    for (const option of options) {
+      if (
+        matchLower(option.name, query_value) ||
+        option.aliases.some((alias) => matchLower(alias, query_value))
+      ) {
+        matches.unshift(option)
+      } else if (matchLower(option.category, query_value)) {
+        matches.push(option)
+      }
+    }
+    return matches.slice(0, 10)
   })
 
   return (
