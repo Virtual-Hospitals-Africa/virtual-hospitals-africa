@@ -1,20 +1,17 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../../db/meta.ts'
 import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
-import { randomNationalId } from '../../../mocks.ts'
+import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
+import generateUUID from '../../../../util/uuid.ts'
 
-describe('patient chatbot', () => {
-  beforeEach(resetInTest)
-  afterEach(() => db.destroy())
-
-  const phone_number = '00000000'
+describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends nearest facilities list after invitation', async () => {
+    const phone_number = randomPhoneNumber()
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
       phone_number,
@@ -33,19 +30,20 @@ describe('patient chatbot', () => {
         longitude: 31.047979354858,
       }),
       media_id: null,
-      whatsapp_id: 'whatsapp_id',
+      whatsapp_id: `wamid.${generateUUID()}`,
     })
 
     const fakeWhatsApp = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.1234',
+          id: `wamid.${generateUUID()}`,
         }],
       }]),
     }
 
-    await respond(fakeWhatsApp)
+    await respond(fakeWhatsApp, phone_number)
+
     const callArgs = fakeWhatsApp.sendMessages.firstCall.args[0]
 
     assertEquals(callArgs.messages.type, 'list')

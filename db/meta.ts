@@ -65,6 +65,9 @@ const topLevelTables = [
 ]
 export async function resetInTest(trx: TrxOrDb = db) {
   assert(Deno.env.get('IS_TEST'), "Don't run this outside tests!")
+  console.warn(
+    'Deprecation warning: resetInTest is deprecated. Try to structure your test and/or code so it can run on a database in any state',
+  )
 
   await Promise.all(
     topLevelTables.map((table) => trx.deleteFrom(table).execute()),

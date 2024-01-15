@@ -7,6 +7,8 @@ import * as media from '../../db/models/media.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
+import generateUUID from '../../util/uuid.ts'
+import { randomPhoneNumber } from '../mocks.ts'
 
 describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   describe('getAllWithNames', () => {
@@ -16,13 +18,15 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         mime_type: 'image/jpeg',
       })
 
+      const baseUUID = generateUUID()
+
       const test_patient1 = await patients.upsert(trx, {
-        name: 'Test Patient 1',
+        name: baseUUID + generateUUID(),
         conversation_state: 'initial_message',
       })
 
       const test_patient2 = await patients.upsert(trx, {
-        name: 'Test Patient 2',
+        name: baseUUID + generateUUID(),
         avatar_media_id: insertedMedia.id,
       })
 
@@ -30,12 +34,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         name: 'Other Foo',
       })
 
-      const results = await patients.getAllWithNames(trx, 'Test')
+      const results = await patients.getAllWithNames(trx, baseUUID)
       assertEquals(results, [
         {
           id: test_patient1.id,
           avatar_url: null,
-          name: 'Test Patient 1',
+          name: test_patient1.name,
           dob_formatted: null,
           description: null,
           gender: null,
@@ -56,7 +60,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         {
           id: test_patient2.id,
           avatar_url: `/app/patients/${test_patient2.id}/avatar`,
-          name: 'Test Patient 2',
+          name: test_patient2.name,
           dob_formatted: null,
           description: null,
           gender: null,
@@ -80,13 +84,14 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       "gives a description formed by the patient's gender and date of birth",
       async (trx) => {
+        const name = generateUUID()
         await patients.upsert(trx, {
-          name: 'Test Patient',
+          name,
           date_of_birth: '2021-03-01',
           gender: 'female',
         })
 
-        const results = await patients.getAllWithNames(trx, 'Test')
+        const results = await patients.getAllWithNames(trx, name)
         assertEquals(results.length, 1)
         assertEquals(results[0].description, 'female, 01/03/2021')
       },
@@ -205,12 +210,13 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
   describe('getByPhoneNumber', () => {
     itUsesTrxAnd('reads out a formatted date of birth', async (trx) => {
+      const phone_number = randomPhoneNumber()
       await patients.upsert(trx, {
         date_of_birth: '2021-01-01',
-        phone_number: '15555555555',
+        phone_number,
       })
       const result = await patients.getByPhoneNumber(trx, {
-        phone_number: '15555555555',
+        phone_number,
       })
 
       assert(result)

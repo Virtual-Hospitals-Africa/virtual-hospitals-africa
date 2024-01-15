@@ -5,7 +5,6 @@ import * as cheerio from 'cheerio'
 import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import {
@@ -260,17 +259,6 @@ describeWithWebServer('/login', 8002, (route) => {
       })
 
       await nurse_registration_details.add(db, details)
-
-      const all_health_workers = await db.selectFrom('health_workers')
-        .selectAll().execute()
-      Deno.writeTextFileSync(
-        '/Users/willweiss/Desktop/foo.json',
-        JSON.stringify(all_health_workers, null, 2),
-      )
-      const foo = await health_workers.get(db, {
-        health_worker_id: mock.healthWorker.id,
-      })
-      console.log('AKLWEKLEWKL', foo)
 
       const response = await fetch(`${route}/app/employees`, {
         headers: {

@@ -43,7 +43,9 @@ export function randomLetter() {
 }
 
 export function randomNationalId() {
-  return `${randomDigit()}${randomDigit()}-${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()}${randomDigit()} ${randomLetter()} ${randomDigit()}${randomDigit()}`
+  return `${randomDigits(2)}-${randomDigits(7)} ${randomLetter()} ${
+    randomDigits(2)
+  }`
 }
 
 export const testRegistrationDetails = async (

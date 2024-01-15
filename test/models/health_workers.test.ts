@@ -15,6 +15,7 @@ import {
 } from '../mocks.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 import last from '../../util/last.ts'
+import generateUUID from '../../util/uuid.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   describe('upsertWithGoogleCredentials', () => {
@@ -243,14 +244,21 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'can prioritize a given facility, while still returning results from another facility',
       async (trx) => {
+        const name_base = generateUUID()
         const [_doctor1, doctor2] = await Promise.all([
           addTestHealthWorker(trx, {
             scenario: 'doctor',
             facility_id: 1,
+            health_worker_attrs: {
+              name: name_base + generateUUID(),
+            },
           }),
           addTestHealthWorker(trx, {
             scenario: 'doctor',
             facility_id: 2,
+            health_worker_attrs: {
+              name: name_base + generateUUID(),
+            },
           }),
         ])
         await employment.add(trx, [{
@@ -260,7 +268,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         }])
 
         const results = await health_workers.search(trx, {
-          search: 'Test Health Worker',
+          search: name_base,
           prioritize_facility_id: 2,
         })
         const firstResult = results[0]

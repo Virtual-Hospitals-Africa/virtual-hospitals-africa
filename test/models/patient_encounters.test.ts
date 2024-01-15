@@ -16,34 +16,35 @@ describe(
     describe('create', () => {
       itUsesTrxAnd(
         'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',
-        async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Test Patient' })
-          await patient_encounters.upsert(trx, 1, {
-            patient_id: patient.id,
-            reason: 'seeking treatment',
-          })
-
-          assertEquals(await waiting_room.get(trx, { facility_id: 1 }), [
-            {
-              appointment: null,
-              patient: {
-                avatar_url: null,
-                id: patient.id,
-                name: 'Test Patient',
-                description: null,
-              },
-              in_waiting_room: true,
-              arrived_ago_display: 'Just now',
-              actions: {
-                view: null,
-                intake: `/app/patients/${patient.id}/intake/personal`,
-              },
-              providers: [],
+        (trx) =>
+          withTestFacility(trx, async (facility_id) => {
+            const patient = await patients.upsert(trx, { name: 'Test Patient' })
+            await patient_encounters.upsert(trx, facility_id, {
+              patient_id: patient.id,
               reason: 'seeking treatment',
-              is_emergency: false,
-            },
-          ])
-        },
+            })
+
+            assertEquals(await waiting_room.get(trx, { facility_id }), [
+              {
+                appointment: null,
+                patient: {
+                  avatar_url: null,
+                  id: patient.id,
+                  name: 'Test Patient',
+                  description: null,
+                },
+                in_waiting_room: true,
+                arrived_ago_display: 'Just now',
+                actions: {
+                  view: null,
+                  intake: `/app/patients/${patient.id}/intake/personal`,
+                },
+                providers: [],
+                reason: 'seeking treatment',
+                is_emergency: false,
+              },
+            ])
+          }),
       )
 
       itUsesTrxAnd(

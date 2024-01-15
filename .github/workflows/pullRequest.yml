@@ -64,6 +64,9 @@ jobs:
       - name: Run tests
         run: deno task test
 
+      - name: Run chatbot tests
+        run: deno task test:chatbot
+
   compile_others:
     runs-on: ubuntu-latest
 

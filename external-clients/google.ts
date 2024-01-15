@@ -381,8 +381,6 @@ export async function getInitialTokensFromAuthCode(
 
   const tokens = await result.json()
 
-  console.log('tokens', JSON.stringify(tokens))
-
   assert(tokens)
   assertEquals(typeof tokens.access_token, 'string')
   assertEquals(typeof tokens.refresh_token, 'string')
@@ -564,4 +562,12 @@ export async function getWalkingDistance(
   )
 
   return distance
+}
+
+export function insertEvent(
+  health_worker: HealthWorkerWithGoogleTokens,
+  calendar_id: string,
+  event: DeepPartial<GCalEvent>,
+): Promise<GCalEvent> {
+  return new GoogleClient(health_worker).insertEvent(calendar_id, event)
 }

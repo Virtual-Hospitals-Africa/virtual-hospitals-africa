@@ -18,7 +18,6 @@ import * as family from '../../../db/models/family.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
-import omit from '../../../util/omit.ts'
 import deepOmit from '../../../util/deepOmit.ts'
 import * as patient_occupations from '../../../db/models/patient_occupations.ts'
 import { randomNationalId, randomPhoneNumber } from '../../mocks.ts'
@@ -260,11 +259,6 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     if (!postResponse.ok) {
       throw new Error(await postResponse.text())
     }
-
-    const xyz = await patient_conditions.getPreExistingConditions(db, {
-      patient_id,
-    })
-    console.log('xyz'), xyz
 
     assertEquals(
       postResponse.url,

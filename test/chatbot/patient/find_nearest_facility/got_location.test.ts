@@ -1,20 +1,17 @@
-import { afterEach, beforeEach, describe, it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import sinon from 'npm:sinon'
-import { resetInTest } from '../../../../db/meta.ts'
 import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
-import { randomNationalId } from '../../../mocks.ts'
+import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
+import generateUUID from '../../../../util/uuid.ts'
 
-describe('patient chatbot', () => {
-  beforeEach(resetInTest)
-  afterEach(() => db.destroy())
-
-  const phone_number = '00000000'
+describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends a facility link and back_to_main_menu button after selecting a facility', async () => {
+    const phone_number = randomPhoneNumber()
     // Step 1: share location
     await patients.upsert(db, {
       conversation_state: 'find_nearest_facility:share_location',
@@ -33,14 +30,14 @@ describe('patient chatbot', () => {
         longitude: 31.047979354858,
       }),
       media_id: null,
-      whatsapp_id: 'whatsapp_id',
+      whatsapp_id: `wamid.${generateUUID()}`,
     })
 
     const fakeWhatsAppOne = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.1234',
+          id: `wamid.${generateUUID()}`,
         }],
       }]),
     }
@@ -53,14 +50,14 @@ describe('patient chatbot', () => {
       has_media: false,
       body: '657',
       media_id: null,
-      whatsapp_id: 'whatsapp_id123',
+      whatsapp_id: `wamid.${generateUUID()}`,
     })
 
     const fakeWhatsAppTwo = {
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
-          id: 'wamid.5678',
+          id: `wamid.${generateUUID()}`,
         }],
       }]),
     }
@@ -71,11 +68,11 @@ describe('patient chatbot', () => {
         messages: [
           {
             type: 'location',
-            messageBody: 'Arcadia',
+            messageBody: 'Arcadia Clinic',
             location: {
               longitude: 31.0546,
               latitude: -17.8468,
-              name: 'Arcadia',
+              name: 'Arcadia Clinic',
               address: 'Harare, Harare Province, ZW',
             },
           },

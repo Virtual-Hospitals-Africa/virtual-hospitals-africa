@@ -13,7 +13,7 @@ describeWithWebServer('/app/health_workers', 8006, (route) => {
       scenario: 'approved-nurse',
     })
     const response = await fetch(
-      `${route}/app/health_workers?profession=nurse`,
+      `${route}/app/health_workers?profession=nurse&search=${healthWorker.name}`,
       {
         headers: {
           Accept: 'application/json',
@@ -23,7 +23,9 @@ describeWithWebServer('/app/health_workers', 8006, (route) => {
     if (!response.ok) throw new Error(await response.text())
     const json = await response.json()
     assert(Array.isArray(json))
-    assertEquals(json.length, 1)
-    assertEquals(json[0].id, healthWorker.id)
+
+    const found = json.find((hw) => hw.id === healthWorker.id)
+    assert(found)
+    assertEquals(found.name, healthWorker.name)
   })
 })

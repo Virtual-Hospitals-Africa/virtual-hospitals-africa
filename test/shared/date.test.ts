@@ -1,5 +1,5 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { prettyPatientDateOfBirth } from '../util/date.ts'
+import { prettyPatientDateOfBirth } from '../../util/date.ts'
 import { describe, it } from 'std/testing/bdd.ts'
 
 describe('date', () => {

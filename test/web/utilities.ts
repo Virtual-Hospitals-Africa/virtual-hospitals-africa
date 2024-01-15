@@ -2,16 +2,9 @@ import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
-import {
-  afterAll,
-  beforeAll,
-  beforeEach,
-  describe,
-  it,
-} from 'std/testing/bdd.ts'
+import { afterAll, beforeAll, describe, it } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
-import { resetInTest } from '../../db/meta.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
@@ -138,14 +131,18 @@ export function describeWithWebServer(
 
 export async function addTestHealthWorker(
   trx: TrxOrDb,
-  { scenario, facility_id = 1 }: {
+  { scenario, facility_id = 1, health_worker_attrs }: {
     scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
     facility_id?: number
+    health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
   } = { scenario: 'base' },
 ) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
-  } = await upsertWithGoogleCredentials(trx, testHealthWorker())
+  } = await upsertWithGoogleCredentials(trx, {
+    ...testHealthWorker(),
+    ...health_worker_attrs,
+  })
   switch (scenario) {
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())

@@ -102,19 +102,30 @@ export function insertMessageSent(
 
 export async function getUnhandledPatientMessages(
   trx: TrxOrDb,
-  { commitHash }: { commitHash: string },
+  { commitHash, phone_number }: { commitHash: string; phone_number?: string },
 ): Promise<
   PatientState[]
 > {
   // deno-lint-ignore no-explicit-any
   const result = await sql<any>`
-    WITH responding_to_messages as (
-          UPDATE whatsapp_messages_received
-             SET started_responding_at = now()
-               , error_commit_hash = NULL
-               , error_message = NULL
-           WHERE (started_responding_at is null
-             OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash}))
+    WITH eligible_messages as (
+      SELECT whatsapp_messages_received.id
+        FROM whatsapp_messages_received
+        JOIN patients ON patients.id = whatsapp_messages_received.patient_id
+       WHERE (started_responding_at is null
+              OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash})
+             )
+         AND (${
+    phone_number ? sql`patients.phone_number = ${phone_number}` : sql`true`
+  })
+    ),
+
+    responding_to_messages as (
+         UPDATE whatsapp_messages_received
+            SET started_responding_at = now()
+              , error_commit_hash = NULL
+              , error_message = NULL
+          WHERE (id IN (SELECT id FROM eligible_messages))
       RETURNING id
     ),
 
