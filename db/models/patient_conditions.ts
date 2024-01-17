@@ -5,6 +5,7 @@ import {
   PastMedicalCondition,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
+  MajorSurgery,
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -48,6 +49,11 @@ export type PastMedicalConditionUpsert = {
   id: string
   start_date: string
   end_date: string
+}
+
+export type MajorSurgeryUpsert = {
+  id: string
+  start_date: string
 }
 
 export const Dosages: [string, number][] = [
@@ -436,3 +442,67 @@ export async function upsertPastMedical(
 
   await removing
 }
+
+export async function getMajorSurgeries(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: number
+  },
+): Promise<MajorSurgery[]> {
+  const results = await trx
+    .selectFrom('patient_conditions')
+    .innerJoin(
+      'conditions',
+      'conditions.id',
+      'patient_conditions.condition_id',
+    )
+    .where('patient_conditions.patient_id', '=', opts.patient_id)
+    .where('conditions.is_procedure', '=', true)
+    .select((eb) => [
+      'conditions.id',
+      'conditions.name',
+      'patient_conditions.id as patient_condition_id',
+      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+    ])
+    .execute()
+
+  return results
+}
+
+export async function upsertMajorSurgery(
+  trx: TrxOrDb,
+  patient_id: number,
+  major_surgeries: MajorSurgeryUpsert[],
+): Promise<void> {
+  assertPreExistingConditions(major_surgeries)
+  for (const surgery of major_surgeries) {
+    const result = await trx.selectFrom('conditions').where('id', '=', surgery.id).select('is_procedure').executeTakeFirstOrThrow()
+    assertOr400(result.is_procedure, 'Condition is not a major surgery')
+  }
+
+  const patientSurgeries = await getMajorSurgeries(trx, { patient_id })
+
+  const removing = patientSurgeries.map(async (surgery) => {
+    await trx.deleteFrom(
+      'patient_conditions',
+    )
+      .where('patient_id', '=', patient_id)
+      .where('condition_id', '=', surgery.id)
+      .where('created_at', '<=', now)
+      .execute()
+  })
+  
+  const to_insert = major_surgeries.map((surgery) => ({
+    patient_id,
+    condition_id: surgery.id,
+    start_date: surgery.start_date,
+  }))
+
+  await trx
+    .insertInto('patient_conditions')
+    .values(to_insert)
+    .execute()
+
+  await Promise.all(removing)
+}
+
