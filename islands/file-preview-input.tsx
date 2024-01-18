@@ -4,6 +4,7 @@ import {
   TextInputProps,
 } from '../components/library/form/Inputs.tsx'
 import cls from '../util/cls.ts'
+import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 
 type FilePreviewInputProps = TextInputProps & {
   classNames?: string
@@ -37,18 +38,20 @@ function PreviewImage(
 }
 
 export default function FilePreviewInput(
-  props: FilePreviewInputProps,
+  { value, ...props }: FilePreviewInputProps,
 ) {
+  const [initialImageRemoved, setInitialImageRemoved] = useState(false)
   const [image, setImage] = useState<
     null | {
       name: string
       url: string
     }
   >(null)
-  const isShowPreview = image || props.value
+  const isShowPreview = image || (value && !initialImageRemoved)
   return (
     <>
       <ImageInput
+        value={initialImageRemoved ? null : value}
         {...props}
         onInput={(e) => {
           const files = (e.target as HTMLInputElement).files
@@ -65,9 +68,16 @@ export default function FilePreviewInput(
       />
       {isShowPreview && (
         <PreviewImage
-          image={image?.url || props.value || ''}
+          image={image?.url || value || ''}
           name={image?.name || props.fileName || ''}
           classNames={props.classNames}
+        />
+      )}
+      {isShowPreview && (
+        <XMarkIcon
+          onClick={() => {
+            setInitialImageRemoved(true)
+          }}
         />
       )}
     </>

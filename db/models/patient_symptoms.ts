@@ -1,5 +1,11 @@
-import { PatientSymptomUpsert, TrxOrDb } from '../../types.ts'
-import { isoDate } from '../helpers.ts'
+import { sql } from 'kysely'
+import {
+  PatientSymptomUpsert,
+  RenderedPatientSymptom,
+  TrxOrDb,
+} from '../../types.ts'
+import { isoDate, jsonArrayFromColumn } from '../helpers.ts'
+import omit from '../../util/omit.ts'
 
 export async function upsert(
   trx: TrxOrDb,
@@ -10,13 +16,29 @@ export async function upsert(
     symptoms: PatientSymptomUpsert[]
   },
 ) {
+  const patient_symptom_media_to_remove = trx.selectFrom(
+    'patient_symptom_media',
+  )
+    .innerJoin(
+      'patient_symptoms',
+      'patient_symptoms.id',
+      'patient_symptom_media.patient_symptom_id',
+    )
+    .where('patient_symptoms.patient_id', '=', patient_id)
+    .where('patient_symptoms.encounter_id', '=', encounter_id)
+    .select('media_id')
+
+  const removing_media = trx.deleteFrom('media')
+    .where('media.id', 'in', patient_symptom_media_to_remove)
+    .execute()
+
   const removing_symptoms = trx.deleteFrom('patient_symptoms')
     .where('patient_symptoms.patient_id', '=', patient_id)
     .where('patient_symptoms.encounter_id', '=', encounter_id)
     .execute()
 
   const to_insert = symptoms.map((s) => ({
-    ...s,
+    ...omit(s, ['media']),
     patient_id,
     encounter_id,
     encounter_provider_id,
@@ -28,7 +50,25 @@ export async function upsert(
     .returning('id')
     .execute()
 
+  const patient_symptom_media_to_insert = symptoms.flatMap(
+    ({ media }, index) => {
+      if (!media?.length) return []
+      return media.map(({ id }) => ({
+        patient_symptom_id: results[index].id,
+        media_id: id,
+      }))
+    },
+  )
+
+  if (patient_symptom_media_to_insert.length) {
+    await trx
+      .insertInto('patient_symptom_media')
+      .values(patient_symptom_media_to_insert)
+      .execute()
+  }
+
   await removing_symptoms
+  await removing_media
   return results
 }
 
@@ -38,7 +78,7 @@ export function getEncounter(
     patient_id: number
     encounter_id: number | 'open'
   },
-): Promise<PatientSymptomUpsert[]> {
+): Promise<RenderedPatientSymptom[]> {
   let query = trx
     .selectFrom('patient_symptoms')
     .where('patient_symptoms.patient_id', '=', patient_id)
@@ -49,6 +89,20 @@ export function getEncounter(
       isoDate(eb.ref('start_date')).as('start_date'),
       isoDate(eb.ref('end_date')).as('end_date'),
       'notes',
+      jsonArrayFromColumn(
+        'media_url',
+        eb
+          .selectFrom('patient_symptom_media')
+          .innerJoin('media', 'media.id', 'patient_symptom_media.media_id')
+          .select(
+            sql<string>`concat('/app/media/', media.uuid)`.as('media_url'),
+          )
+          .whereRef(
+            'patient_symptom_media.patient_symptom_id',
+            '=',
+            'patient_symptoms.id',
+          ),
+      ).as('media_urls'),
     ])
 
   // TODO: abstract this out into patient_encounters model
