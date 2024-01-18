@@ -29,6 +29,7 @@ import * as $app_facilities_facility_id_waiting_room from './routes/app/faciliti
 import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
 import * as $app_health_workers from './routes/app/health_workers.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
+import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
@@ -149,6 +150,7 @@ const manifest = {
       $app_facilities_facility_id_waiting_room_add,
     './routes/app/health_workers.tsx': $app_health_workers,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
+    './routes/app/media/[uuid].tsx': $app_media_uuid_,
     './routes/app/patients.tsx': $app_patients,
     './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
     './routes/app/patients/[patient_id]/avatar.tsx':

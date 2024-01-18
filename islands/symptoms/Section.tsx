@@ -1,7 +1,7 @@
 import { computed, useSignal } from '@preact/signals'
 import SymptomSearch from './Search.tsx'
 import { SYMPTOMS } from '../../shared/symptoms.ts'
-import { PatientSymptomUpsert } from '../../types.ts'
+import { PatientSymptomUpsert, RenderedPatientSymptom } from '../../types.ts'
 import SymptomInput from './Input.tsx'
 import EmptyState from '../../components/library/EmptyState.tsx'
 import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
@@ -17,10 +17,10 @@ export type SymptomOption = typeof all_symptoms_options[number]
 
 export type EditingSymptom = {
   symptom: string
-} & Partial<PatientSymptomUpsert>
+} & Partial<RenderedPatientSymptom>
 
 export default function SymptomSection(props: {
-  patient_symptoms: PatientSymptomUpsert[]
+  patient_symptoms: RenderedPatientSymptom[]
 }) {
   const patient_symptoms = useSignal<EditingSymptom[]>(props.patient_symptoms)
 

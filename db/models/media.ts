@@ -1,4 +1,10 @@
-import { Media, PatientMedia, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
+import {
+  Maybe,
+  Media,
+  PatientMedia,
+  ReturnedSqlRow,
+  TrxOrDb,
+} from './../../types.ts'
 
 export function insert(
   trx: TrxOrDb,
@@ -47,4 +53,24 @@ export function get(
       'media.updated_at',
     ])
     .executeTakeFirstOrThrow()
+}
+
+export function getByUUID(
+  trx: TrxOrDb,
+  uuid: string,
+): Promise<Maybe<ReturnedSqlRow<Media>>> {
+  return trx
+    .selectFrom('media')
+    .where(
+      'media.uuid',
+      '=',
+      uuid,
+    ).select([
+      'media.id',
+      'media.mime_type',
+      'media.binary_data',
+      'media.created_at',
+      'media.updated_at',
+    ])
+    .executeTakeFirst()
 }

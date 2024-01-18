@@ -9,6 +9,7 @@ import { EditingSymptom } from './Section.tsx'
 import { useSignal } from '@preact/signals'
 import { RemoveRow } from '../AddRemove.tsx'
 import range from '../../util/range.ts'
+import FilePreviewInput from '../file-preview-input.tsx'
 
 export default function SymptomInput({
   name,
@@ -22,7 +23,7 @@ export default function SymptomInput({
 
   return (
     <RemoveRow onClick={() => is_removed.value = true} labelled>
-      <div className='w-full justify-normal'>
+      <div className='md:col-span-8 justify-normal'>
         <FormRow className='w-full justify-normal'>
           <TextInput
             name={`${name}.symptom`}
@@ -53,6 +54,16 @@ export default function SymptomInput({
             label='Notes'
             value={value.notes}
             rows={2}
+          />
+        </FormRow>
+      </div>
+      <div className='md:col-span-4'>
+        <FormRow className='flex-wrap'>
+          <FilePreviewInput
+            name={`${name}.media.0`}
+            label='Photo'
+            classNames='w-36 h-36'
+            value={value.media_urls?.[0]}
           />
         </FormRow>
       </div>

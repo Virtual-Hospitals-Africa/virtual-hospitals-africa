@@ -1678,13 +1678,21 @@ export type PatientMeasurement = {
   value: number
 }
 
-export type PatientSymptomUpsert = {
+export type PatientInsertShared = {
   symptom: string
   severity: number
   start_date: string
   end_date: string | null
   site: string | null
   notes: string | null
+}
+
+export type PatientSymptomUpsert = PatientInsertShared & {
+  media: { id: number }[]
+}
+
+export type RenderedPatientSymptom = PatientInsertShared & {
+  media_urls: string[]
 }
 
 export type DatabaseSchema = DB

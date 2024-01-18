@@ -291,6 +291,7 @@ export interface Media {
   id: Generated<number>
   mime_type: string
   updated_at: Generated<Timestamp>
+  uuid: Generated<string>
 }
 
 export interface Medications {
