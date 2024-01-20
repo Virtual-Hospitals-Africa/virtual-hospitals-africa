@@ -451,10 +451,12 @@ export async function upsertPastMedical(
     end_date: condition.end_date,
   }))
 
-  await trx
-    .insertInto('patient_conditions')
-    .values(to_insert)
-    .execute()
+  
+  to_insert.length && await trx
+  .insertInto('patient_conditions')
+  .values(to_insert)
+  .execute()
+
 
   await removing
 }
@@ -512,16 +514,20 @@ export async function upsertMajorSurgery(
       .execute()
   })
 
+
   const to_insert = major_surgeries.map((surgery) => ({
     patient_id,
     condition_id: surgery.id,
     start_date: surgery.start_date,
   }))
 
-  await trx
-    .insertInto('patient_conditions')
-    .values(to_insert)
-    .execute()
+
+  to_insert.length && await trx
+  .insertInto('patient_conditions')
+  .values(to_insert)
+  .execute()
+
+  
 
   await Promise.all(removing)
 }
