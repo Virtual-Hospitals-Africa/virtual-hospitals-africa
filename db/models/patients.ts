@@ -198,14 +198,14 @@ export async function upsertIntake(
       id,
       past_medical_conditions,
     )
-  
+
   const upserting_major_surgeries = major_surgeries &&
     patient_conditions.upsertMajorSurgery(
       trx,
       id,
       major_surgeries,
     )
-  
+
   const upserting_allergies = allergies &&
     patient_allergies.upsert(
       trx,

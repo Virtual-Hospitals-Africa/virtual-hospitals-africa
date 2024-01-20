@@ -537,5 +537,45 @@ describe(
         )
       })
     })
-  },
+
+    describe('upsertMajorSurgeries', () => {
+      itUsesTrxAnd(
+        'upserts major surgery, those condition with is_procedure = true',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+  
+          await patient_conditions.upsertMajorSurgery(trx, patient.id, [
+            { id: 'c_4145', start_date: '2020-02-01' },
+          ])
+  
+          const major_surgeries = await patient_conditions.getMajorSurgeries(
+            trx,
+            {
+              patient_id: patient.id,
+            },
+          )
+          assertEquals(major_surgeries.length, 1)
+          const [major_surgery] = major_surgeries
+          assertEquals(major_surgery.id, 'c_4145')
+          assertEquals(major_surgery.name, 'Breast surgery')
+          assertEquals(major_surgery.start_date, '2020-02-01')
+        },
+      )
+      itUsesTrxAnd('400s if the condition is not a procedure', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+  
+        await assertRejects(
+          () =>
+            patient_conditions.upsertMajorSurgery(trx, patient.id, [
+              {
+                id: 'c_22401',
+                start_date: '2020-01-01',
+              },
+            ]),
+          StatusError,
+          'Condition is not a major surgery',
+        )
+      })
+    })
+  }
 )

@@ -1,11 +1,11 @@
 import { sql } from 'kysely'
 import {
+  MajorSurgery,
   Maybe,
   MedicationSchedule,
   PastMedicalCondition,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
-  MajorSurgery,
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -476,7 +476,11 @@ export async function upsertMajorSurgery(
 ): Promise<void> {
   assertPreExistingConditions(major_surgeries)
   for (const surgery of major_surgeries) {
-    const result = await trx.selectFrom('conditions').where('id', '=', surgery.id).select('is_procedure').executeTakeFirstOrThrow()
+    const result = await trx.selectFrom('conditions').where(
+      'id',
+      '=',
+      surgery.id,
+    ).select('is_procedure').executeTakeFirstOrThrow()
     assertOr400(result.is_procedure, 'Condition is not a major surgery')
   }
 
@@ -491,7 +495,7 @@ export async function upsertMajorSurgery(
       .where('created_at', '<=', now)
       .execute()
   })
-  
+
   const to_insert = major_surgeries.map((surgery) => ({
     patient_id,
     condition_id: surgery.id,
@@ -505,4 +509,3 @@ export async function upsertMajorSurgery(
 
   await Promise.all(removing)
 }
-

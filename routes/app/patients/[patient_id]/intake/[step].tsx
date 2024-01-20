@@ -3,6 +3,7 @@ import {
   FamilyRelationInsert,
   FullCountryInfo,
   LoggedInHealthWorkerHandler,
+  MajorSurgery,
   Maybe,
   Occupation,
   PastMedicalCondition,
@@ -11,7 +12,6 @@ import {
   PreExistingAllergy,
   PreExistingConditionWithDrugs,
   TrxOrDb,
-  MajorSurgery,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as address from '../../../../../db/models/address.ts'
