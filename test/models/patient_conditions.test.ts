@@ -493,23 +493,24 @@ describe(
           assertEquals(medicationAfter.strength, medication_to_keep.strength)
         },
       )
-      
-      itUsesTrxAnd('400s if the condition is a procedure or surgery', async (trx) =>{
-        const patient = await patients.upsert(trx, {name: 'Billy Bob'})
-        await assertRejects(
-          () =>
-            patient_conditions.upsertPreExisting(trx, patient.id, [
-              {
-                id: 'c_4145',
-                start_date: '2020-01-01',
-              },
-            ]),
-          StatusError,
-          'Pre-Existing Condition cannot be a surgery or procedure',
-        )
 
-      })
-
+      itUsesTrxAnd(
+        '400s if the condition is a procedure or surgery',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          await assertRejects(
+            () =>
+              patient_conditions.upsertPreExisting(trx, patient.id, [
+                {
+                  id: 'c_4145',
+                  start_date: '2020-01-01',
+                },
+              ]),
+            StatusError,
+            'Pre-Existing Condition cannot be a surgery or procedure',
+          )
+        },
+      )
     })
 
     describe('upsertPastMedical', () => {
@@ -560,11 +561,11 @@ describe(
         'upserts major surgery, those condition with is_procedure = true',
         async (trx) => {
           const patient = await patients.upsert(trx, { name: 'Billy Bob' })
-  
+
           await patient_conditions.upsertMajorSurgery(trx, patient.id, [
             { id: 'c_4145', start_date: '2020-02-01' },
           ])
-  
+
           const major_surgeries = await patient_conditions.getMajorSurgeries(
             trx,
             {
@@ -580,7 +581,7 @@ describe(
       )
       itUsesTrxAnd('400s if the condition is not a procedure', async (trx) => {
         const patient = await patients.upsert(trx, { name: 'Billy Bob' })
-  
+
         await assertRejects(
           () =>
             patient_conditions.upsertMajorSurgery(trx, patient.id, [
@@ -594,5 +595,5 @@ describe(
         )
       })
     })
-  }
+  },
 )
