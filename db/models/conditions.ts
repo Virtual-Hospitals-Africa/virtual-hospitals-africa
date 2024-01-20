@@ -8,6 +8,7 @@ export function search(
 ): Promise<Condition[]> {
   return trx
     .selectFrom('conditions')
+    .where('is_procedure', '=', false)
     .select([
       'conditions.id',
       'conditions.name',

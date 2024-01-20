@@ -230,13 +230,27 @@ export async function upsertPreExisting(
   patient_conditions: PreExistingConditionUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
-  const removing = trx.deleteFrom(
-    'patient_conditions',
+  
+  for (const condition of patient_conditions){
+    const isProcedure = await trx.selectFrom('conditions').where(
+      'id', '=', condition.id).select('is_procedure').executeTakeFirstOrThrow()
+    assertOr400(isProcedure, 'Pre Existing Condition cannot be a surgery or procedure')
+  }
+
+  const patient_pre_existing_conditions = await getPreExistingConditions(
+    trx,
+    { patient_id },
   )
-    .where('patient_id', '=', patient_id)
-    .where('end_date', 'is', null)
-    .where('created_at', '<=', now)
-    .execute()
+
+  const removing = patient_pre_existing_conditions.map(async (condition) => {
+    await trx.deleteFrom(
+      'patient_conditions',
+    )
+      .where('patient_id', '=', patient_id)
+      .where('condition_id', '=', condition.id)
+      .where('created_at', '<=', now)
+      .execute()
+  })
 
   await Promise.all(
     patient_conditions.map((condition) =>
@@ -247,7 +261,7 @@ export async function upsertPreExisting(
       )
     ),
   )
-  await removing
+  await Promise.all(removing)
 }
 
 // Note: Pre-existing conditions are just conditions that have not ended yet
@@ -264,6 +278,7 @@ export async function getPreExistingConditions(
       'conditions.id',
       'patient_conditions.condition_id',
     )
+    .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is', null)
     .select((eb) => [
@@ -393,6 +408,7 @@ export async function getPastMedicalConditions(
       'conditions.id',
       'patient_conditions.condition_id',
     )
+    .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is not', null)
     .select((eb) => [
