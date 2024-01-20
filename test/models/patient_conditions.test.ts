@@ -493,6 +493,23 @@ describe(
           assertEquals(medicationAfter.strength, medication_to_keep.strength)
         },
       )
+      
+      itUsesTrxAnd('400s if the condition is a procedure or surgery', async (trx) =>{
+        const patient = await patients.upsert(trx, {name: 'Billy Bob'})
+        await assertRejects(
+          () =>
+            patient_conditions.upsertPreExisting(trx, patient.id, [
+              {
+                id: 'c_4145',
+                start_date: '2020-01-01',
+              },
+            ]),
+          StatusError,
+          'Pre-Existing Condition cannot be a surgery or procedure',
+        )
+
+      })
+
     })
 
     describe('upsertPastMedical', () => {

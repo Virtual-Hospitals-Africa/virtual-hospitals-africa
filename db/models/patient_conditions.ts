@@ -232,9 +232,9 @@ export async function upsertPreExisting(
   assertPreExistingConditions(patient_conditions)
   
   for (const condition of patient_conditions){
-    const isProcedure = await trx.selectFrom('conditions').where(
+    const {is_procedure} = await trx.selectFrom('conditions').where(
       'id', '=', condition.id).select('is_procedure').executeTakeFirstOrThrow()
-    assertOr400(isProcedure, 'Pre Existing Condition cannot be a surgery or procedure')
+    assertOr400(!is_procedure, 'Pre-Existing Condition cannot be a surgery or procedure')
   }
 
   const patient_pre_existing_conditions = await getPreExistingConditions(
