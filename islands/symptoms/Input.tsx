@@ -40,11 +40,8 @@ export default function SymptomInput({
           <DateInput
             name={`${name}.start_date`}
             value={value.start_date}
+            label='Estimated Start Date'
             required
-          />
-          <DateInput
-            name={`${name}.end_date`}
-            value={value.end_date}
           />
         </FormRow>
         <FormRow>

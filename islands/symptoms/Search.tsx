@@ -13,7 +13,7 @@ function SymptomsResult({
   return (
     <div className='flex flex-col'>
       <div className={cls('truncate text-base', selected && 'font-bold')}>
-        {option.name}
+        {option.name} <em>({option.category})</em>
       </div>
     </div>
   )
