@@ -231,32 +231,28 @@ export async function upsertPreExisting(
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
 
-  for (const condition of patient_conditions) {
-    const { is_procedure } = await trx.selectFrom('conditions').where(
+  const getting_procedures = patient_conditions.length
+    ? trx.selectFrom('conditions').where(
       'id',
-      '=',
-      condition.id,
-    ).select('is_procedure').executeTakeFirstOrThrow()
-    assertOr400(
-      !is_procedure,
-      'Pre-Existing Condition cannot be a surgery or procedure',
-    )
-  }
+      'in',
+      patient_conditions.map((condition) => condition.id),
+    ).where('is_procedure', '=', true).select('id').execute()
+    : Promise.resolve([])
 
-  const patient_pre_existing_conditions = await getPreExistingConditions(
-    trx,
-    { patient_id },
+  const removing = trx.deleteFrom(
+    'patient_conditions',
   )
-
-  const removing = patient_pre_existing_conditions.map(async (condition) => {
-    await trx.deleteFrom(
-      'patient_conditions',
+    .where('patient_id', '=', patient_id)
+    .where('end_date', 'is', null)
+    .where(
+      'condition_id',
+      'in',
+      trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+        'id',
+      ),
     )
-      .where('patient_id', '=', patient_id)
-      .where('condition_id', '=', condition.id)
-      .where('created_at', '<=', now)
-      .execute()
-  })
+    .where('created_at', '<=', now)
+    .execute()
 
   await Promise.all(
     patient_conditions.map((condition) =>
@@ -267,7 +263,13 @@ export async function upsertPreExisting(
       )
     ),
   )
-  await Promise.all(removing)
+  await removing
+
+  const procedures = await getting_procedures
+  assertOr400(
+    procedures.length === 0,
+    'Pre-Existing Condition cannot be a surgery or procedure',
+  )
 }
 
 // Note: Pre-existing conditions are just conditions that have not ended yet
@@ -447,6 +449,13 @@ export async function upsertPastMedical(
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is not', null)
+    .where(
+      'condition_id',
+      'in',
+      trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+        'id',
+      ),
+    )
     .where('created_at', '<=', now)
     .execute()
 
@@ -497,26 +506,28 @@ export async function upsertMajorSurgery(
   major_surgeries: MajorSurgeryUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(major_surgeries)
-  for (const surgery of major_surgeries) {
-    const result = await trx.selectFrom('conditions').where(
+
+  const getting_non_procedures = major_surgeries.length
+    ? trx.selectFrom('conditions').where(
       'id',
-      '=',
-      surgery.id,
-    ).select('is_procedure').executeTakeFirstOrThrow()
-    assertOr400(result.is_procedure, 'Condition is not a major surgery')
-  }
+      'in',
+      major_surgeries.map((surgery) => surgery.id),
+    ).where('is_procedure', '=', false).select('id').execute()
+    : Promise.resolve([])
 
-  const patientSurgeries = await getMajorSurgeries(trx, { patient_id })
-
-  const removing = patientSurgeries.map(async (surgery) => {
-    await trx.deleteFrom(
-      'patient_conditions',
+  const removing = trx.deleteFrom(
+    'patient_conditions',
+  )
+    .where('patient_id', '=', patient_id)
+    .where(
+      'condition_id',
+      'in',
+      trx.selectFrom('conditions').where('is_procedure', '=', true).select(
+        'id',
+      ),
     )
-      .where('patient_id', '=', patient_id)
-      .where('condition_id', '=', surgery.id)
-      .where('created_at', '<=', now)
-      .execute()
-  })
+    .where('created_at', '<=', now)
+    .execute()
 
   const to_insert = major_surgeries.map((surgery) => ({
     patient_id,
@@ -529,5 +540,8 @@ export async function upsertMajorSurgery(
     .values(to_insert)
     .execute()
 
-  await Promise.all(removing)
+  await removing
+
+  const non_procedures = await getting_non_procedures
+  assertOr400(non_procedures.length === 0, 'Condition is not a major surgery')
 }

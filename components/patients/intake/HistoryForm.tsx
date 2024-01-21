@@ -25,7 +25,7 @@ export default function History(
           pastMedicalConditions={pastMedicalConditions}
         />
         <SectionHeader className='my-5 text-[20px]'>
-          Major Sergeries and Procedures
+          Major Surgeries and Procedures
         </SectionHeader>
         <MajorSurgeriesForm majorSurgeries={majorSurgeries} />
       </section>

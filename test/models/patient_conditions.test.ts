@@ -496,6 +496,34 @@ describe(
       )
 
       itUsesTrxAnd(
+        'removes pre-existing conditions no longer present',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+
+          await patient_conditions.upsertPreExisting(trx, patient.id, [
+            {
+              id: 'c_22401',
+              start_date: '2020-01-01',
+            },
+          ])
+
+          await patient_conditions.upsertPreExisting(trx, patient.id, [
+            {
+              id: 'c_8815',
+              start_date: '2020-01-01',
+            },
+          ])
+
+          const preExistingConditions = await patient_conditions
+            .getPreExistingConditions(trx, {
+              patient_id: patient.id,
+            })
+          assertEquals(preExistingConditions.length, 1)
+          assertEquals(preExistingConditions[0].id, 'c_8815')
+        },
+      )
+
+      itUsesTrxAnd(
         '400s if the condition is a procedure or surgery',
         async (trx) => {
           const patient = await patients.upsert(trx, { name: 'Billy Bob' })
@@ -605,22 +633,25 @@ describe(
           let patient: { id: number }
 
           const insertions = [
-            () => patient_conditions.upsertPreExisting(trx, patient.id, [
-              {
-                id: 'c_22401',
-                start_date: '2020-01-01',
-              },
-            ]),
-            () => patient_conditions.upsertPastMedical(trx, patient.id, [
-              {
-                id: 'c_8815',
-                start_date: '2020-01-01',
-                end_date: '2021-03-01',
-              },
-            ]),
-            () => patient_conditions.upsertMajorSurgery(trx, patient.id, [
-              { id: 'c_4145', start_date: '2020-02-01' },
-            ]),
+            () =>
+              patient_conditions.upsertPreExisting(trx, patient.id, [
+                {
+                  id: 'c_22401',
+                  start_date: '2020-01-01',
+                },
+              ]),
+            () =>
+              patient_conditions.upsertPastMedical(trx, patient.id, [
+                {
+                  id: 'c_8815',
+                  start_date: '2020-01-01',
+                  end_date: '2021-03-01',
+                },
+              ]),
+            () =>
+              patient_conditions.upsertMajorSurgery(trx, patient.id, [
+                { id: 'c_4145', start_date: '2020-02-01' },
+              ]),
           ]
 
           const insertionOrders = permutations(insertions)
@@ -629,18 +660,20 @@ describe(
             for (const insertion of insertionOrder) {
               await insertion()
             }
-            const pre_existing_conditions = await patient_conditions.getPreExistingConditions(
-              trx,
-              {
-                patient_id: patient.id,
-              },
-            )
-            const past_conditions = await patient_conditions.getPastMedicalConditions(
-              trx,
-              {
-                patient_id: patient.id,
-              },
-            )
+            const pre_existing_conditions = await patient_conditions
+              .getPreExistingConditions(
+                trx,
+                {
+                  patient_id: patient.id,
+                },
+              )
+            const past_conditions = await patient_conditions
+              .getPastMedicalConditions(
+                trx,
+                {
+                  patient_id: patient.id,
+                },
+              )
             const major_surgeries = await patient_conditions.getMajorSurgeries(
               trx,
               {
@@ -654,7 +687,6 @@ describe(
             assertEquals(pre_existing_conditions[0].id, 'c_22401')
             assertEquals(past_conditions[0].id, 'c_8815')
             assertEquals(major_surgeries[0].id, 'c_4145')
-            
           }
         },
       )
