@@ -48,6 +48,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_vitals from './rout
 import * as $app_patients_patient_id_intake_step_ from './routes/app/patients/[patient_id]/intake/[step].tsx'
 import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
+import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
@@ -79,6 +80,7 @@ import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
+import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
 import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
@@ -93,6 +95,8 @@ import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
+import * as $major_surgeries_Form from './islands/major-surgeries/Form.tsx'
+import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx'
 import * as $medication_Input from './islands/medication/Input.tsx'
 import * as $medication_Search from './islands/medication/Search.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
@@ -184,6 +188,7 @@ const manifest = {
     './routes/app/patients/[patient_id]/intake/_middleware.tsx':
       $app_patients_patient_id_intake_middleware,
     './routes/app/pending_approval.tsx': $app_pending_approval,
+    './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
@@ -217,6 +222,7 @@ const manifest = {
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
     './islands/SuccessMessage.tsx': $SuccessMessage,
+    './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
     './islands/address-inputs.tsx': $address_inputs,
     './islands/allergy/Input.tsx': $allergy_Input,
@@ -231,6 +237,8 @@ const manifest = {
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,
+    './islands/major-surgeries/Form.tsx': $major_surgeries_Form,
+    './islands/major-surgeries/Surgery.tsx': $major_surgeries_Surgery,
     './islands/medication/Input.tsx': $medication_Input,
     './islands/medication/Search.tsx': $medication_Search,
     './islands/nurse-registration-form.tsx': $nurse_registration_form,

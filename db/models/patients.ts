@@ -114,6 +114,7 @@ export type UpsertPatientIntake = {
   allergies?: { id: number }[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
+  major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
   family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
 }
@@ -173,6 +174,7 @@ export async function upsertIntake(
     family,
     pre_existing_conditions,
     past_medical_conditions,
+    major_surgeries,
     allergies,
     occupation,
     ...patient_updates
@@ -195,6 +197,13 @@ export async function upsertIntake(
       trx,
       id,
       past_medical_conditions,
+    )
+
+  const upserting_major_surgeries = major_surgeries &&
+    patient_conditions.upsertMajorSurgery(
+      trx,
+      id,
+      major_surgeries,
     )
 
   const upserting_allergies = allergies &&
@@ -235,6 +244,7 @@ export async function upsertIntake(
     upserting_allergies,
     upserting_family,
     upserting_occupation,
+    upserting_major_surgeries,
   ])
 }
 

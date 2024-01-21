@@ -1,5 +1,6 @@
 import { sql } from 'kysely'
 import {
+  MajorSurgery,
   Maybe,
   MedicationSchedule,
   PastMedicalCondition,
@@ -48,6 +49,11 @@ export type PastMedicalConditionUpsert = {
   id: string
   start_date: string
   end_date: string
+}
+
+export type MajorSurgeryUpsert = {
+  id: string
+  start_date: string
 }
 
 export const Dosages: [string, number][] = [
@@ -224,11 +230,27 @@ export async function upsertPreExisting(
   patient_conditions: PreExistingConditionUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
+
+  const getting_procedures = patient_conditions.length
+    ? trx.selectFrom('conditions').where(
+      'id',
+      'in',
+      patient_conditions.map((condition) => condition.id),
+    ).where('is_procedure', '=', true).select('id').execute()
+    : Promise.resolve([])
+
   const removing = trx.deleteFrom(
     'patient_conditions',
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is', null)
+    .where(
+      'condition_id',
+      'in',
+      trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+        'id',
+      ),
+    )
     .where('created_at', '<=', now)
     .execute()
 
@@ -242,6 +264,12 @@ export async function upsertPreExisting(
     ),
   )
   await removing
+
+  const procedures = await getting_procedures
+  assertOr400(
+    procedures.length === 0,
+    'Pre-Existing Condition cannot be a surgery or procedure',
+  )
 }
 
 // Note: Pre-existing conditions are just conditions that have not ended yet
@@ -258,6 +286,7 @@ export async function getPreExistingConditions(
       'conditions.id',
       'patient_conditions.condition_id',
     )
+    .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is', null)
     .select((eb) => [
@@ -387,6 +416,7 @@ export async function getPastMedicalConditions(
       'conditions.id',
       'patient_conditions.condition_id',
     )
+    .where('conditions.is_procedure', '=', false)
     .where('patient_conditions.patient_id', '=', opts.patient_id)
     .where('patient_conditions.end_date', 'is not', null)
     .select((eb) => [
@@ -419,6 +449,13 @@ export async function upsertPastMedical(
   )
     .where('patient_id', '=', patient_id)
     .where('end_date', 'is not', null)
+    .where(
+      'condition_id',
+      'in',
+      trx.selectFrom('conditions').where('is_procedure', '=', false).select(
+        'id',
+      ),
+    )
     .where('created_at', '<=', now)
     .execute()
 
@@ -429,10 +466,82 @@ export async function upsertPastMedical(
     end_date: condition.end_date,
   }))
 
-  await trx
+  to_insert.length && await trx
     .insertInto('patient_conditions')
     .values(to_insert)
     .execute()
 
   await removing
+}
+
+export async function getMajorSurgeries(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: number
+  },
+): Promise<MajorSurgery[]> {
+  const results = await trx
+    .selectFrom('patient_conditions')
+    .innerJoin(
+      'conditions',
+      'conditions.id',
+      'patient_conditions.condition_id',
+    )
+    .where('patient_conditions.patient_id', '=', opts.patient_id)
+    .where('conditions.is_procedure', '=', true)
+    .select((eb) => [
+      'conditions.id',
+      'conditions.name',
+      'patient_conditions.id as patient_condition_id',
+      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+    ])
+    .execute()
+
+  return results
+}
+
+export async function upsertMajorSurgery(
+  trx: TrxOrDb,
+  patient_id: number,
+  major_surgeries: MajorSurgeryUpsert[],
+): Promise<void> {
+  assertPreExistingConditions(major_surgeries)
+
+  const getting_non_procedures = major_surgeries.length
+    ? trx.selectFrom('conditions').where(
+      'id',
+      'in',
+      major_surgeries.map((surgery) => surgery.id),
+    ).where('is_procedure', '=', false).select('id').execute()
+    : Promise.resolve([])
+
+  const removing = trx.deleteFrom(
+    'patient_conditions',
+  )
+    .where('patient_id', '=', patient_id)
+    .where(
+      'condition_id',
+      'in',
+      trx.selectFrom('conditions').where('is_procedure', '=', true).select(
+        'id',
+      ),
+    )
+    .where('created_at', '<=', now)
+    .execute()
+
+  const to_insert = major_surgeries.map((surgery) => ({
+    patient_id,
+    condition_id: surgery.id,
+    start_date: surgery.start_date,
+  }))
+
+  to_insert.length && await trx
+    .insertInto('patient_conditions')
+    .values(to_insert)
+    .execute()
+
+  await removing
+
+  const non_procedures = await getting_non_procedures
+  assertOr400(non_procedures.length === 0, 'Condition is not a major surgery')
 }

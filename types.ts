@@ -199,6 +199,8 @@ export type PastMedicalCondition = MedicalConditionBase & {
   end_date: string
 }
 
+export type MajorSurgery = MedicalConditionBase
+
 export type OnboardingPatient =
   & {
     id: number

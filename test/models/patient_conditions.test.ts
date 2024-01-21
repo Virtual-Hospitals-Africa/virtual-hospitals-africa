@@ -6,6 +6,7 @@ import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
+import permutations from '../../util/permutations.ts'
 
 describe(
   'db/models/patient_conditions.ts',
@@ -493,6 +494,52 @@ describe(
           assertEquals(medicationAfter.strength, medication_to_keep.strength)
         },
       )
+
+      itUsesTrxAnd(
+        'removes pre-existing conditions no longer present',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+
+          await patient_conditions.upsertPreExisting(trx, patient.id, [
+            {
+              id: 'c_22401',
+              start_date: '2020-01-01',
+            },
+          ])
+
+          await patient_conditions.upsertPreExisting(trx, patient.id, [
+            {
+              id: 'c_8815',
+              start_date: '2020-01-01',
+            },
+          ])
+
+          const preExistingConditions = await patient_conditions
+            .getPreExistingConditions(trx, {
+              patient_id: patient.id,
+            })
+          assertEquals(preExistingConditions.length, 1)
+          assertEquals(preExistingConditions[0].id, 'c_8815')
+        },
+      )
+
+      itUsesTrxAnd(
+        '400s if the condition is a procedure or surgery',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          await assertRejects(
+            () =>
+              patient_conditions.upsertPreExisting(trx, patient.id, [
+                {
+                  id: 'c_4145',
+                  start_date: '2020-01-01',
+                },
+              ]),
+            StatusError,
+            'Pre-Existing Condition cannot be a surgery or procedure',
+          )
+        },
+      )
     })
 
     describe('upsertPastMedical', () => {
@@ -536,6 +583,113 @@ describe(
           'Condition end_date must be an ISO Date',
         )
       })
+    })
+
+    describe('upsertMajorSurgeries', () => {
+      itUsesTrxAnd(
+        'upserts major surgery, those condition with is_procedure = true',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+
+          await patient_conditions.upsertMajorSurgery(trx, patient.id, [
+            { id: 'c_4145', start_date: '2020-02-01' },
+          ])
+
+          const major_surgeries = await patient_conditions.getMajorSurgeries(
+            trx,
+            {
+              patient_id: patient.id,
+            },
+          )
+          assertEquals(major_surgeries.length, 1)
+          const [major_surgery] = major_surgeries
+          assertEquals(major_surgery.id, 'c_4145')
+          assertEquals(major_surgery.name, 'Breast surgery')
+          assertEquals(major_surgery.start_date, '2020-02-01')
+        },
+      )
+
+      itUsesTrxAnd('400s if the condition is not a procedure', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+
+        await assertRejects(
+          () =>
+            patient_conditions.upsertMajorSurgery(trx, patient.id, [
+              {
+                id: 'c_22401',
+                start_date: '2020-01-01',
+              },
+            ]),
+          StatusError,
+          'Condition is not a major surgery',
+        )
+      })
+    })
+
+    describe('onboarding', () => {
+      itUsesTrxAnd(
+        'can add conditions and surgeries in any order, with all being preserved',
+        async (trx) => {
+          let patient: { id: number }
+
+          const insertions = [
+            () =>
+              patient_conditions.upsertPreExisting(trx, patient.id, [
+                {
+                  id: 'c_22401',
+                  start_date: '2020-01-01',
+                },
+              ]),
+            () =>
+              patient_conditions.upsertPastMedical(trx, patient.id, [
+                {
+                  id: 'c_8815',
+                  start_date: '2020-01-01',
+                  end_date: '2021-03-01',
+                },
+              ]),
+            () =>
+              patient_conditions.upsertMajorSurgery(trx, patient.id, [
+                { id: 'c_4145', start_date: '2020-02-01' },
+              ]),
+          ]
+
+          const insertionOrders = permutations(insertions)
+          for (const insertionOrder of insertionOrders) {
+            patient = await patients.upsert(trx, { name: 'Billy Bob' })
+            for (const insertion of insertionOrder) {
+              await insertion()
+            }
+            const pre_existing_conditions = await patient_conditions
+              .getPreExistingConditions(
+                trx,
+                {
+                  patient_id: patient.id,
+                },
+              )
+            const past_conditions = await patient_conditions
+              .getPastMedicalConditions(
+                trx,
+                {
+                  patient_id: patient.id,
+                },
+              )
+            const major_surgeries = await patient_conditions.getMajorSurgeries(
+              trx,
+              {
+                patient_id: patient.id,
+              },
+            )
+
+            assertEquals(pre_existing_conditions.length, 1)
+            assertEquals(past_conditions.length, 1)
+            assertEquals(major_surgeries.length, 1)
+            assertEquals(pre_existing_conditions[0].id, 'c_22401')
+            assertEquals(past_conditions[0].id, 'c_8815')
+            assertEquals(major_surgeries[0].id, 'c_4145')
+          }
+        },
+      )
     })
   },
 )

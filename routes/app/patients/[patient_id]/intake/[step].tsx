@@ -3,6 +3,7 @@ import {
   FamilyRelationInsert,
   FullCountryInfo,
   LoggedInHealthWorkerHandler,
+  MajorSurgery,
   Maybe,
   Occupation,
   PastMedicalCondition,
@@ -68,6 +69,7 @@ type IntakePatientProps = {
 } | {
   step: 'history'
   past_medical_conditions: PastMedicalCondition[]
+  major_surgeries: MajorSurgery[]
 }
 
 type PersonalFormValues = {
@@ -108,6 +110,7 @@ type FamilyFormValues = {
 }
 type HistoryFormValues = {
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
+  major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
 }
 type OccupationFormValues = {
   school?: Maybe<Record<string, unknown>>
@@ -260,6 +263,7 @@ const transformers: Transformers = {
     patient,
   ): Omit<patients.UpsertPatientIntake, 'id'> => ({
     past_medical_conditions: patient.past_medical_conditions || [],
+    major_surgeries: patient.major_surgeries || [],
   }),
   'family': (
     patient,
@@ -335,7 +339,9 @@ async function getIntakePatientProps(
     case 'history': {
       const past_medical_conditions = await patient_conditions
         .getPastMedicalConditions(trx, { patient_id })
-      return { step, past_medical_conditions }
+      const major_surgeries = await patient_conditions
+        .getMajorSurgeries(trx, { patient_id })
+      return { step, past_medical_conditions, major_surgeries }
     }
     case 'family': {
       const family = await patient_family.get(trx, { patient_id })
@@ -407,6 +413,7 @@ export default async function IntakePatientPage(
         <PatientHistory
           patient={patient}
           pastMedicalConditions={props.past_medical_conditions}
+          majorSurgeries={props.major_surgeries}
         />
       )}
       {props.step === 'review' && <PatientReview patient={patient} />}
