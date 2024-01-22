@@ -1,0 +1,72 @@
+import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import * as patient_age from '../../../../../db/models/patient_age.ts'
+import * as patient_occupation from '../../../../../db/models/patient_occupations.ts'
+import * as patients from '../../../../../db/models/patients.ts'
+import redirect from '../../../../../util/redirect.ts'
+import PatientOccupationForm from '../../../../../components/patients/intake/OccupationForm.tsx'
+import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
+import isObjectLike from '../../../../../util/isObjectLike.ts'
+import Buttons from '../../../../../components/library/form/buttons.tsx'
+import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
+import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+
+type OccupationFormValues = {
+  school?: Maybe<Record<string, unknown>>
+}
+
+function assertIsOccupation(
+  patient: unknown,
+): asserts patient is OccupationFormValues {
+  assertOr400(isObjectLike(patient))
+  assertOr400(isObjectLike(patient.occupation))
+}
+
+export const handler: LoggedInHealthWorkerHandler = {
+  async POST(req, ctx) {
+    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+
+    const patient = await parseRequestAsserts(
+      ctx.state.trx,
+      req,
+      assertIsOccupation,
+    )
+    await patients.upsertIntake(ctx.state.trx, {
+      ...patient,
+      id: patient_id,
+    })
+
+    return redirect(nextLink(ctx))
+  },
+}
+
+export default async function OccupationPage(
+  _req: Request,
+  ctx: IntakeContext,
+) {
+  const { healthWorker, patient, trx } = ctx.state
+  const patient_id = patient.id
+
+  const getting_occupation = patient_occupation.get(trx, { patient_id })
+  const age = await patient_age.get(trx, { patient_id })
+
+  const warning = encodeURIComponent(
+    "Please fill out the patient's personal information beforehand.",
+  )
+  assertOrRedirect(
+    age,
+    `/app/patients/${patient_id}/intake/personal?warning=${warning}`,
+  )
+
+  return (
+    <IntakeLayout ctx={ctx}>
+      <PatientOccupationForm
+        patient={patient}
+        patientAge={age}
+        occupation={await getting_occupation}
+      />
+      <hr className='my-2' />
+      <Buttons submitText='Next Step' />
+    </IntakeLayout>
+  )
+}
