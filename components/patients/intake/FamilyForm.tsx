@@ -2,12 +2,12 @@ import { Select, TextInput } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import ReligionSelect from '../../../islands/ReligionSelect.tsx'
-import { OnboardingPatient, PatientFamily } from '../../../types.ts'
+import { PatientFamily, PatientIntake } from '../../../types.ts'
 import PatientFamilyForm from '../../../islands/family/Form.tsx'
 
 export default function FamilyForm(
   { patient = {}, family }: {
-    patient?: Partial<OnboardingPatient>
+    patient?: Partial<PatientIntake>
     family: PatientFamily
   },
 ) {

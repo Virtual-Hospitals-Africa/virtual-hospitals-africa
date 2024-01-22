@@ -201,7 +201,7 @@ export type PastMedicalCondition = MedicalConditionBase & {
 
 export type MajorSurgery = MedicalConditionBase
 
-export type OnboardingPatient =
+export type PatientIntake =
   & {
     id: number
     avatar_url: Maybe<string>

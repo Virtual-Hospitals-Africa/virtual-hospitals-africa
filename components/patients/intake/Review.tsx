@@ -1,16 +1,20 @@
-// deno-lint-ignore-file no-explicit-any
-import { OnboardingPatient } from '../../../types.ts'
-import PatientDetailedCard from '../DetailedCard.tsx'
+import { getIntakeReview } from '../../../db/models/patients.ts'
+import { DescriptionList } from '../../library/DescriptionList.tsx'
 
 export default function PatientReview(
   { patient }: {
-    patient: OnboardingPatient
+    patient: Awaited<ReturnType<typeof getIntakeReview>>
   },
 ) {
   return (
-    <div>
-      <PatientDetailedCard patient={patient as any} />
-      <input type='hidden' name='completed_intake' value='on' />
-    </div>
+    <DescriptionList
+      title='Review Patient Details'
+      items={[
+        { label: 'Name', children: patient.name },
+        { label: 'Phone', children: patient.phone_number },
+        { label: 'Date of Birth', children: patient.date_of_birth },
+        { label: 'Address', children: patient.address },
+      ]}
+    />
   )
 }

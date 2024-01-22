@@ -11,6 +11,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type ConditionsFormValues = {
   allergies?: { id: number; name: string }[]
@@ -44,11 +45,12 @@ export const handler: LoggedInHealthWorkerHandler = {
   },
 }
 
-export default async function AddressPage(
+export default async function PreExistingConditionsPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
-  const { healthWorker, patient, trx } = ctx.state
+  assert(!ctx.state.is_review)
+  const { patient, trx } = ctx.state
   const patient_id = patient.id
 
   const getting_pre_existing_conditions = patient_conditions

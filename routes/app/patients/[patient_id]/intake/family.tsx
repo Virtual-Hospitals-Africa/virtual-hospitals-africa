@@ -12,6 +12,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type FamilyFormValues = {
   family?: {
@@ -54,6 +55,7 @@ export default async function FamilyPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
+  assert(!ctx.state.is_review)
   const { patient, trx } = ctx.state
   const family = await patient_family.get(trx, { patient_id: patient.id })
 

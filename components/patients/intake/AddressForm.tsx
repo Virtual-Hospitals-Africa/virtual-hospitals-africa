@@ -1,11 +1,11 @@
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import { FullCountryInfo, OnboardingPatient } from '../../../types.ts'
+import { FullCountryInfo, PatientIntake } from '../../../types.ts'
 import AddressForm from '../../../islands/address-inputs.tsx'
 import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
 
 function PatientAddress(
   { patient, adminDistricts }: {
-    patient: OnboardingPatient
+    patient: PatientIntake
     adminDistricts: FullCountryInfo
   },
 ) {
@@ -22,7 +22,7 @@ function PatientAddress(
 
 export default function PatientAddressForm(
   { patient, defaultFacility, adminDistricts }: {
-    patient: OnboardingPatient
+    patient: PatientIntake
     defaultFacility: { id: number; name: string; address: string }
     adminDistricts: FullCountryInfo
   },

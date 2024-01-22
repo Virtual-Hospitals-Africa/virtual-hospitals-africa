@@ -8,6 +8,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type PersonalFormValues = {
   first_name: string
@@ -52,6 +53,7 @@ export default async function PersonalPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
+  assert(!ctx.state.is_review)
   return (
     <IntakeLayout ctx={ctx}>
       <PatientPersonalForm patient={ctx.state.patient} />

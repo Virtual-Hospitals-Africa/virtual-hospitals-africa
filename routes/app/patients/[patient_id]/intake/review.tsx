@@ -8,6 +8,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { IntakeContext, IntakeLayout } from './_middleware.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type ReviewFormValues = { completed_intake: boolean }
 
@@ -40,17 +41,16 @@ export const handler: LoggedInHealthWorkerHandler = {
 }
 
 // deno-lint-ignore require-await
-export default async function AddressPage(
+export default async function ReviewPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
+  assert(ctx.state.is_review)
   const { healthWorker, patient } = ctx.state
 
   return (
     <IntakeLayout ctx={ctx}>
-      <PatientReview
-        patient={patient}
-      />
+      <PatientReview patient={patient} />
       <hr className='my-2' />
       <Buttons
         submitText='Continue to vitals'
