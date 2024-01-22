@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
-import { IntakeFrequencies } from '../models/patient_conditions.ts'
+import { IntakeFrequencies } from '../../shared/medication.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema

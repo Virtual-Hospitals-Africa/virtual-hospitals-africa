@@ -342,20 +342,20 @@ export async function getIntakeReview(
       'address_formatted.id',
       'patients.address_id',
     )
-    .select((_eb) => [
+    .select((eb) => [
       'patients.id',
-      'patients.name',
+      eb.ref('patients.name').$notNull().as('name'),
       'patients.phone_number',
-      'patients.location',
       'patients.gender',
       'patients.ethnicity',
       sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
         'date_of_birth',
       ),
       'patients.national_id_number',
-      'patients.completed_intake',
-      'patients.primary_doctor_id',
-      'patients.unregistered_primary_doctor_name',
+      sql<
+        string
+      >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
+        .as('primary_doctor_name'),
       'address_formatted.address',
       sql<
         string | null
@@ -363,8 +363,6 @@ export async function getIntakeReview(
         .as('avatar_url'),
       'patients.nearest_facility_id',
       'facilities.name as nearest_facility_name',
-      'facilities.address as nearest_facility_address',
-      'health_workers.name as primary_doctor_name',
       sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
     ])
     .where('patients.id', '=', opts.id)
@@ -373,8 +371,8 @@ export async function getIntakeReview(
   const q = { patient_id: opts.id }
   const getting_family = patient_family.get(trx, q)
   const getting_occupation = patient_occupations.get(trx, q)
-  const getting_pre_existing_conditions_with_drugs = patient_conditions
-    .getPreExistingConditionsWithDrugs(trx, q)
+  const getting_pre_existing_conditions = patient_conditions
+    .getPreExistingConditionsReview(trx, q)
   const getting_past_medical_conditions = patient_conditions
     .getPastMedicalConditions(trx, q)
   const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, q)
@@ -386,7 +384,7 @@ export async function getIntakeReview(
     ...review,
     family: await getting_family,
     occupation: await getting_occupation,
-    pre_existing_conditions: await getting_pre_existing_conditions_with_drugs,
+    pre_existing_conditions: await getting_pre_existing_conditions,
     past_medical_conditions: await getting_past_medical_conditions,
     major_surgeries: await getting_major_surgeries,
   }

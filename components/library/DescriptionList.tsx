@@ -1,8 +1,9 @@
 import { ComponentChildren, JSX } from 'preact'
+import { Maybe } from '../../types.ts'
 
 export type DescriptionListItemProps = {
   label: string
-  children?: ComponentChildren
+  children: Maybe<ComponentChildren>
 }
 
 function DescriptionListItem(

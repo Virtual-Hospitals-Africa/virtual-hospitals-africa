@@ -19,8 +19,9 @@ import {
 } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
-import { isoDate, now } from '../helpers.ts'
+import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import assertAllNotNull from '../../util/assertAllNotNull.ts'
+import { IntakeFrequencies } from '../../shared/medication.ts'
 
 type PatientMedicationUpsert = {
   id?: Maybe<number>
@@ -54,59 +55,6 @@ export type PastMedicalConditionUpsert = {
 export type MajorSurgeryUpsert = {
   id: string
   start_date: string
-}
-
-export const Dosages: [string, number][] = [
-  ['¼', 0.25],
-  ['½', 0.5],
-  ['1', 1],
-  ['2', 2],
-  ['3', 3],
-  ['4', 4],
-  ['5', 5],
-  ['6', 6],
-  ['7', 7],
-  ['8', 8],
-  ['9', 9],
-  ['10', 10],
-]
-
-export const IntakeFrequencies = {
-  ac: 'before meals',
-  am: 'morning',
-  bd: '2 times daily',
-  nocte: 'every night',
-  od: 'once a day',
-  pm: 'afternoon or evening',
-  q15: 'every 15 minutes',
-  q30: 'every 30 minutes',
-  q1h: 'every hour',
-  q2h: 'every 2 hours',
-  q4h: 'every 4 hours',
-  q6h: 'every 6 hours',
-  q8h: 'every 8 hours',
-  qd: 'every day',
-  qid: '4 times a day',
-  qod: 'alternate days',
-  qs: 'sufficient enough quantity',
-  mane: 'morning',
-  qmane: 'every morning',
-  qn: 'every night',
-  stat: 'immediately, now',
-  tds: '3 times a day',
-  q24h: 'every 24 hours',
-  q30h: 'every 30 hours',
-  q48h: 'every 48 hours',
-  q72h: 'every 72 hours',
-  hs: 'at bedtime  ',
-  qhs: 'daily at bedtime',
-  qw: 'once a week',
-  bw: 'twice a week',
-  tw: 'three times a week',
-  qm: 'once a month',
-  bm: 'twice a month',
-  tm: 'three times a month',
-  prn: 'when necessary',
 }
 
 function assertPreExistingConditions(
@@ -270,6 +218,131 @@ export async function upsertPreExisting(
     procedures.length === 0,
     'Pre-Existing Condition cannot be a surgery or procedure',
   )
+}
+
+export type MedicationReview = {
+  id: number
+  name: string
+  medication_id: number
+  manufactured_medication_id: Maybe<number>
+  patient_condition_medication_id: number
+
+  strength: string
+  route: string
+  schedules: MedicationSchedule[]
+  start_date: string
+
+  form: string
+  strength_numerator_unit: string
+  strength_denominator: string
+  strength_denominator_unit: string
+  strength_denominator_is_units: boolean
+
+  special_instructions: string | null
+}
+
+export type PreExistingConditionReview = {
+  id: string
+  patient_condition_id: number
+  start_date: string
+  name: string
+  comorbidities: {
+    id: string
+    comorbidity_id: number
+    start_date: string
+    name: string
+  }[]
+  medications: MedicationReview[]
+}
+
+export function getPreExistingConditionsReview(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: number
+  },
+): Promise<PreExistingConditionReview[]> {
+  return trx
+    .selectFrom('patient_conditions')
+    .innerJoin(
+      'conditions',
+      'conditions.id',
+      'patient_conditions.condition_id',
+    )
+    .where('conditions.is_procedure', '=', false)
+    .where('patient_conditions.patient_id', '=', opts.patient_id)
+    .where('patient_conditions.end_date', 'is', null)
+    .where('patient_conditions.comorbidity_of_condition_id', 'is', null)
+    .select((eb) => [
+      'conditions.id',
+      'conditions.name',
+      'patient_conditions.id as patient_condition_id',
+      isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
+      jsonArrayFrom(
+        eb
+          .selectFrom('patient_condition_medications')
+          .leftJoin(
+            'manufactured_medications',
+            'manufactured_medications.id',
+            'patient_condition_medications.manufactured_medication_id',
+          )
+          .innerJoin('medications', (join) =>
+            join.on(
+              'medications.id',
+              '=',
+              sql`coalesce(patient_condition_medications.medication_id, manufactured_medications.medication_id)`,
+            ))
+          .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+          .whereRef(
+            'patient_condition_medications.patient_condition_id',
+            '=',
+            'patient_conditions.id',
+          )
+          .select((eb_med) => [
+            'drugs.id',
+            'drugs.generic_name as name',
+            'medications.id as medication_id',
+            'medications.form',
+            'medications.strength_numerator_unit',
+            'medications.strength_denominator',
+            'medications.strength_denominator_unit',
+            'medications.strength_denominator_is_units',
+            'patient_condition_medications.manufactured_medication_id',
+            'patient_condition_medications.id as patient_condition_medication_id',
+            'patient_condition_medications.strength',
+            'patient_condition_medications.route',
+            'patient_condition_medications.special_instructions',
+            sql<
+              MedicationSchedule[]
+            >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
+            isoDate(eb_med.ref('patient_condition_medications.start_date')).as(
+              'start_date',
+            ),
+          ]),
+      ).as('medications'),
+      jsonArrayFrom(
+        eb
+          .selectFrom('patient_conditions as comorbidities')
+          .innerJoin(
+            'conditions',
+            'conditions.id',
+            'comorbidities.condition_id',
+          )
+          .whereRef(
+            'comorbidities.comorbidity_of_condition_id',
+            '=',
+            'patient_conditions.id',
+          )
+          .select((eb_com) => [
+            'conditions.id',
+            'conditions.name',
+            'comorbidities.id as comorbidity_id',
+            isoDate(eb_com.ref('comorbidities.start_date')).as('start_date'),
+            isoDate(eb_com.ref('comorbidities.end_date')).as('end_date'),
+          ]),
+      )
+        .as('comorbidities'),
+    ])
+    .execute()
 }
 
 // Note: Pre-existing conditions are just conditions that have not ended yet
