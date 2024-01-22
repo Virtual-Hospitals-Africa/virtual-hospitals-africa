@@ -9,11 +9,12 @@ import {
   PreExistingConditionWithDrugs,
 } from '../../types.ts'
 import FormRow from '../../components/library/form/Row.tsx'
+import MedicationSearch from './Search.tsx'
 import {
+  dosageDisplay,
   Dosages,
   IntakeFrequencies,
-} from '../../db/models/patient_conditions.ts'
-import MedicationSearch from './Search.tsx'
+} from '../../shared/medication.ts'
 
 export default function MedicationInput({
   name,
@@ -22,51 +23,51 @@ export default function MedicationInput({
   name: string
   value?: PreExistingConditionWithDrugs['medications'][0]
 }) {
-  const [selectedDrug, setSelectedDrug] = useState<DrugSearchResultData | null>(
+  const [drug, setDrug] = useState<DrugSearchResultData | null>(
     value?.drug || null,
   )
-  const [selectedMedicationId, setSelectedMedicationId] = useState<
+  const [medication_id, setMedicationId] = useState<
     number | null
   >(
     value?.medication_id || null,
   )
 
   const [
-    selectedManufacturedMedicationId,
-    setSelectedManufacturedMedicationId,
+    manufactured_medication_id,
+    setManufacturedMedicationId,
   ] = useState<
     number | null
   >(value?.manufactured_medication_id ?? null)
-  const [selectedStrength, setSelectedStrength] = useState<
+
+  const [strength, setStrength] = useState<
     number | null
   >(value?.strength ?? null)
-  const [selectedIntakeFrequency, setSelectedIntakeFrequency] = useState<
+  const [intake_frequency, setIntakeFrequency] = useState<
     string | null
   >(value?.intake_frequency ?? null)
-  const [selectedDosage, setSelectedDosage] = useState<number | null>(
+  const [dosage, setDosage] = useState<number | null>(
     value?.dosage ?? null,
   )
-  const [selectedRoute, setSelectedRoute] = useState<string | null>(
+  const [route, setRoute] = useState<string | null>(
     value?.route ?? null,
   )
-  const [drugSearchResults, setDrugSearchResults] = useState<
-    DrugSearchResultData[]
-  >(value ? [value.drug] : [])
-
-  const selectedMedication = selectedDrug?.medications.find(
-    (medication) => medication.medication_id === selectedMedicationId,
+  const [specialInstructions, setSpecialInstructions] = useState<string | null>(
+    value?.special_instructions ?? null,
   )
-  const selectedManufacturedMedication = selectedMedication?.manufacturers.find(
-    (manufactured_medication) =>
-      manufactured_medication.manufactured_medication_id ===
-        selectedManufacturedMedicationId,
-  )
-  const strength_options =
-    selectedManufacturedMedication?.strength_numerators ||
-    selectedMedication?.strength_numerators
 
-  const denominatorUnit = selectedMedication?.strength_denominator_unit
-  const denominatorIsMeasurement = selectedMedication
+  const medication = drug?.medications.find(
+    (m) => m.medication_id === medication_id,
+  )
+  const manufactured_medication = medication?.manufacturers.find(
+    (mm) =>
+      mm.manufactured_medication_id ===
+        manufactured_medication_id,
+  )
+  const strength_options = manufactured_medication?.strength_numerators ||
+    medication?.strength_numerators
+
+  const denominatorUnit = medication?.strength_denominator_unit
+  const denominatorIsMeasurement = medication
     ?.strength_denominator_is_units
   const denominatorPlural = denominatorUnit &&
     (denominatorIsMeasurement
@@ -76,27 +77,27 @@ export default function MedicationInput({
       : denominatorUnit + 'S')
 
   useEffect(() => {
-    if (!selectedDrug) return
-    if (selectedMedicationId) return
-    if (selectedDrug.medications.length === 1) {
-      setSelectedMedicationId(selectedDrug.medications[0].medication_id)
+    if (!drug) return
+    if (medication_id) return
+    if (drug.medications.length === 1) {
+      setMedicationId(drug.medications[0].medication_id)
     }
-  }, [selectedDrug])
+  }, [drug])
 
   useEffect(() => {
-    if (!selectedMedication) return
-    if (selectedStrength) return
-    if (selectedMedication.strength_numerators.length === 1) {
-      setSelectedStrength(selectedMedication.strength_numerators[0])
+    if (!medication) return
+    if (strength) return
+    if (medication.strength_numerators.length === 1) {
+      setStrength(medication.strength_numerators[0])
     }
-  }, [selectedMedication])
+  }, [medication])
 
   useEffect(() => {
-    if (!selectedMedication) return
-    if (!selectedStrength) return
-    if (selectedDosage) return
-    setSelectedDosage(selectedMedication.strength_denominator)
-  }, [selectedMedication, selectedStrength])
+    if (!medication) return
+    if (!strength) return
+    if (dosage) return
+    setDosage(medication.strength_denominator)
+  }, [medication, strength])
 
   return (
     <div className='w-full justify-normal'>
@@ -104,62 +105,62 @@ export default function MedicationInput({
         <MedicationSearch
           label='Drug'
           name={name}
-          value={selectedDrug}
+          value={drug}
           required
           onSelect={(drug) => {
-            setSelectedDrug(drug ?? null)
-            setSelectedMedicationId(null)
-            setSelectedStrength(null)
-            setSelectedDosage(null)
-            setSelectedIntakeFrequency(null)
+            setDrug(drug ?? null)
+            setMedicationId(null)
+            setStrength(null)
+            setDosage(null)
+            setIntakeFrequency(null)
           }}
         />
         <Select
           name={`${name}.medication_id`}
           required
           label='Form'
-          disabled={!selectedDrug}
+          disabled={!drug}
           onChange={(event) =>
             event.currentTarget.value &&
-            setSelectedMedicationId(Number(event.currentTarget.value))}
+            setMedicationId(Number(event.currentTarget.value))}
         >
           <option value=''>Select Form</option>
-          {selectedDrug &&
-            selectedDrug.medications.map((medication) => (
+          {drug &&
+            drug.medications.map((medication) => (
               <option
                 value={medication.medication_id}
-                selected={selectedMedicationId === medication.medication_id}
+                selected={medication_id === medication.medication_id}
               >
                 {medication.form_route}
               </option>
             ))}
         </Select>
-        {selectedMedication && (selectedMedication.routes.length > 1) && (
+        {medication && (medication.routes.length > 1) && (
           <Select
             name={`${name}.route`}
             required
             label='Route'
-            disabled={!selectedDrug}
+            disabled={!drug}
             onChange={(event) =>
               event.currentTarget.value &&
-              setSelectedRoute(event.currentTarget.value)}
+              setRoute(event.currentTarget.value)}
           >
             <option value=''>Select Form</option>
-            {selectedMedication.routes.map((route) => (
+            {medication.routes.map((route) => (
               <option
                 value={route}
-                selected={selectedRoute === route}
+                selected={route === route}
               >
                 {route}
               </option>
             ))}
           </Select>
         )}
-        {selectedMedication && (selectedMedication.routes.length === 1) && (
+        {medication && (medication.routes.length === 1) && (
           <input
             name={`${name}.route`}
             type='hidden'
-            value={selectedMedication.routes[0]}
+            value={medication.routes[0]}
           />
         )}
         {
@@ -170,25 +171,25 @@ export default function MedicationInput({
           type='hidden'
           className='hidden'
           name={`${name}.manufactured_medication_id`}
-          value={selectedManufacturedMedicationId || ''}
+          value={manufactured_medication_id || ''}
         />
         {
           /* <Select
           name={`${name}.manufactured_medication_id`}
           label='Trade Name'
-          disabled={!selectedMedication}
+          disabled={!medication}
           onChange={(event) =>
             event.currentTarget.value &&
-            setSelectedManufacturedMedicationId(
+            setManufacturedMedicationId(
               Number(event.currentTarget.value),
             )}
         >
           <option value=''>Select Trade Name</option>
-          {selectedMedication &&
-            selectedMedication.manufacturers.map((manufactured_medication) => (
+          {medication &&
+            medication.manufacturers.map((manufactured_medication) => (
               <option
                 value={manufactured_medication.manufactured_medication_id}
-                selected={selectedManufacturedMedicationId ===
+                selected={manufactured_medication_id ===
                   manufactured_medication.manufactured_medication_id}
               >
                 {manufactured_medication.trade_name}{' '}
@@ -201,24 +202,24 @@ export default function MedicationInput({
           name={`${name}.strength`}
           required
           label='Strength'
-          disabled={!selectedMedication}
+          disabled={!medication}
           onChange={(event) =>
             event.currentTarget.value &&
-            setSelectedStrength(Number(event.currentTarget.value))}
+            setStrength(Number(event.currentTarget.value))}
         >
           <option value=''>Select Strength</option>
-          {selectedMedication && strength_options?.map((numerator) => (
+          {medication && strength_options?.map((numerator) => (
             <option
               value={numerator}
-              selected={selectedStrength === numerator}
+              selected={strength === numerator}
             >
               {numerator}
-              {selectedMedication
-                .strength_numerator_unit}/{selectedMedication
+              {medication
+                .strength_numerator_unit}/{medication
                   .strength_denominator === 1
                 ? ''
-                : selectedMedication.strength_denominator}
-              {selectedMedication.strength_denominator_unit}
+                : medication.strength_denominator}
+              {medication.strength_denominator_unit}
             </option>
           ))}
         </Select>
@@ -227,23 +228,22 @@ export default function MedicationInput({
         <Select
           name={`${name}.dosage`}
           label='Dosage'
-          disabled={!(selectedMedication && selectedStrength)}
+          disabled={!(medication && strength)}
         >
           <option value=''>Select Dosage</option>
-          {selectedMedication && selectedStrength &&
+          {medication && strength &&
             Dosages.map(([dosage_text, dosage_value]) => (
               <option
-                value={dosage_value * selectedMedication.strength_denominator}
-                selected={selectedDosage ===
-                  (dosage_value * selectedMedication.strength_denominator)}
+                value={dosage_value * medication.strength_denominator}
+                selected={dosage ===
+                  (dosage_value * medication.strength_denominator)}
               >
-                {selectedMedication.strength_denominator === 1
-                  ? dosage_text
-                  : dosage_value * selectedMedication.strength_denominator}
-                {denominatorIsMeasurement ? '' : ' '}
-                {dosage_value > 1 ? denominatorPlural : denominatorUnit}{' '}
-                ({selectedStrength * dosage_value}
-                {selectedMedication?.strength_numerator_unit})
+                {dosageDisplay({
+                  dosage_text,
+                  dosage: dosage_value,
+                  strength,
+                  ...medication,
+                })}
               </option>
             ))}
         </Select>
@@ -251,14 +251,14 @@ export default function MedicationInput({
           name={`${name}.intake_frequency`}
           required
           label='Frequency'
-          disabled={!selectedDrug}
+          disabled={!drug}
         >
           <option value=''>Select Intake</option>
-          {selectedDrug &&
+          {drug &&
             Object.entries(IntakeFrequencies).map(([code, label]) => (
               <option
                 value={code}
-                selected={selectedIntakeFrequency === code}
+                selected={intake_frequency === code}
               >
                 {label}
               </option>
@@ -281,7 +281,8 @@ export default function MedicationInput({
           name={`${name}.special_instructions`}
           className='w-full'
           label='Special Instructions'
-          value={value?.special_instructions}
+          value={specialInstructions}
+          onInput={(event) => setSpecialInstructions(event.currentTarget.value)}
         />
       </FormRow>
     </div>
