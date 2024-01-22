@@ -1,12 +1,12 @@
 import FormRow from '../components/library/form/Row.tsx'
 import { Select, TextInput } from '../components/library/form/Inputs.tsx'
-import { FullCountryInfo, Maybe, OnboardingPatient } from '../types.ts'
+import { FullCountryInfo, Maybe, PatientIntake } from '../types.ts'
 import { computed, effect, useSignal } from '@preact/signals'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export default function AddressForm(
   { address, adminDistricts }: {
-    address: Partial<OnboardingPatient['address']>
+    address: Partial<PatientIntake['address']>
     adminDistricts: FullCountryInfo
   },
 ) {

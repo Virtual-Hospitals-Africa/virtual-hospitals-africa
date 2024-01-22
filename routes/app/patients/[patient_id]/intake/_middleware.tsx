@@ -5,7 +5,7 @@ import Form from '../../../../../components/library/form/Form.tsx'
 import {
   LinkDef,
   LoggedInHealthWorkerContext,
-  OnboardingPatient,
+  PatientIntake,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
@@ -20,9 +20,15 @@ import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encoun
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 
-export type IntakeContext = LoggedInHealthWorkerContext<{
-  patient: OnboardingPatient
-}>
+type AdditionalContext = {
+  is_review: false
+  patient: PatientIntake
+} | {
+  is_review: true
+  patient: Awaited<ReturnType<typeof patients.getIntakeReview>>
+}
+
+export type IntakeContext = LoggedInHealthWorkerContext<AdditionalContext>
 
 export async function handler(
   _req: Request,
@@ -30,16 +36,21 @@ export async function handler(
 ) {
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-  const getting_onboarding_patient = patients.getOnboarding(ctx.state.trx, {
+  const is_review = ctx.route.endsWith('/review')
+
+  const getPatient = is_review ? patients.getIntakeReview : patients.getIntake
+
+  const getting_patient = getPatient(ctx.state.trx, {
     id: patient_id,
   })
 
   // TODO: use the encounter as part of intake?
   await removeFromWaitingRoomAndAddSelfAsProvider(ctx, 'open')
 
-  const patient = await getting_onboarding_patient
+  const patient = await getting_patient
   assertOr404(patient, 'Patient not found')
 
+  ctx.state.is_review = is_review
   ctx.state.patient = patient
   return ctx.next()
 }

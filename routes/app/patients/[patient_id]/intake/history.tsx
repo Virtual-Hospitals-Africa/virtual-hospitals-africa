@@ -9,6 +9,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type HistoryFormValues = {
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
@@ -45,6 +46,7 @@ export default async function HistoryPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
+  assert(!ctx.state.is_review)
   const { patient, trx } = ctx.state
   const patient_id = patient.id
   const getting_past_medical_conditions = patient_conditions

@@ -10,6 +10,7 @@ import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type OccupationFormValues = {
   school?: Maybe<Record<string, unknown>>
@@ -44,7 +45,8 @@ export default async function OccupationPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
-  const { healthWorker, patient, trx } = ctx.state
+  assert(!ctx.state.is_review)
+  const { patient, trx } = ctx.state
   const patient_id = patient.id
 
   const getting_occupation = patient_occupation.get(trx, { patient_id })

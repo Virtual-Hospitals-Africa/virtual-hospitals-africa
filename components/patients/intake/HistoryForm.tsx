@@ -1,8 +1,8 @@
 import AllergyInput from '../../../islands/allergy/Input.tsx'
 import {
   MajorSurgery,
-  OnboardingPatient,
   PastMedicalCondition,
+  PatientIntake,
 } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import PastMedicalConditionsForm from '../../../islands/past-medical-conditions/Form.tsx'
@@ -10,7 +10,7 @@ import MajorSurgeriesForm from '../../../islands/major-surgeries/Form.tsx'
 
 export default function History(
   { patient, pastMedicalConditions, majorSurgeries }: {
-    patient?: Partial<OnboardingPatient>
+    patient?: Partial<PatientIntake>
     pastMedicalConditions: PastMedicalCondition[]
     majorSurgeries: MajorSurgery[]
   },

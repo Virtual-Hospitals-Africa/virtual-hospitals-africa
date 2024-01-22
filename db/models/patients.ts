@@ -6,9 +6,9 @@ import {
   Gender,
   Location,
   Maybe,
-  OnboardingPatient,
   Patient,
   PatientConversationState,
+  PatientIntake,
   PatientNearestFacility,
   PatientOccupation,
   PatientState,
@@ -25,6 +25,7 @@ import * as patient_occupations from './patient_occupations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
+import * as address from './address.ts'
 import * as patient_family from './family.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
@@ -44,6 +45,11 @@ export const avatar_url_sql = sql<string | null>`
   END
 `
 
+const dob_formatted = sql<
+  string | null
+>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
+  .as('dob_formatted')
+
 const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('patients')
@@ -54,8 +60,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.phone_number',
       'patients.gender',
       'patients.ethnicity',
-      sql<string | null>`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
-        .as('dob_formatted'),
+      dob_formatted,
       sql<
         string | null
       >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`.as(
@@ -264,12 +269,12 @@ export function getByID(
     .executeTakeFirstOrThrow()
 }
 
-export function getOnboarding(
+export function getIntake(
   trx: TrxOrDb,
   opts: {
     id: number
   },
-): Promise<Maybe<OnboardingPatient>> {
+): Promise<Maybe<PatientIntake>> {
   return trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
@@ -314,6 +319,77 @@ export function getOnboarding(
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirst()
+}
+
+export async function getIntakeReview(
+  trx: TrxOrDb,
+  opts: {
+    id: number
+  },
+) {
+  const getting_review = trx
+    .selectFrom('patients')
+    .leftJoin('address', 'address.id', 'patients.address_id')
+    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'health_workers',
+      'health_workers.id',
+      'patients.primary_doctor_id',
+    )
+    .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
+    .leftJoin(
+      address.formatted(trx),
+      'address_formatted.id',
+      'patients.address_id',
+    )
+    .select((_eb) => [
+      'patients.id',
+      'patients.name',
+      'patients.phone_number',
+      'patients.location',
+      'patients.gender',
+      'patients.ethnicity',
+      sql<null | string>`TO_CHAR(patients.date_of_birth, 'YYYY-MM-DD')`.as(
+        'date_of_birth',
+      ),
+      'patients.national_id_number',
+      'patients.completed_intake',
+      'patients.primary_doctor_id',
+      'patients.unregistered_primary_doctor_name',
+      'address_formatted.address',
+      sql<
+        string | null
+      >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
+        .as('avatar_url'),
+      'patients.nearest_facility_id',
+      'facilities.name as nearest_facility_name',
+      'facilities.address as nearest_facility_address',
+      'health_workers.name as primary_doctor_name',
+      sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
+    ])
+    .where('patients.id', '=', opts.id)
+    .executeTakeFirst()
+
+  const q = { patient_id: opts.id }
+  const getting_family = patient_family.get(trx, q)
+  const getting_occupation = patient_occupations.get(trx, q)
+  const getting_pre_existing_conditions_with_drugs = patient_conditions
+    .getPreExistingConditionsWithDrugs(trx, q)
+  const getting_past_medical_conditions = patient_conditions
+    .getPastMedicalConditions(trx, q)
+  const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, q)
+
+  const review = await getting_review
+  assertOr404(review)
+
+  return {
+    ...review,
+    family: await getting_family,
+    occupation: await getting_occupation,
+    pre_existing_conditions: await getting_pre_existing_conditions_with_drugs,
+    past_medical_conditions: await getting_past_medical_conditions,
+    major_surgeries: await getting_major_surgeries,
+  }
 }
 
 // TODO: only show medical record if health worker has permission

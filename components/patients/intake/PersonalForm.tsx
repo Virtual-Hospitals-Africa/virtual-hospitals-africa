@@ -7,11 +7,11 @@ import {
 } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
 import FilePreviewInput from '../../../islands/file-preview-input.tsx'
-import { OnboardingPatient } from '../../../types.ts'
+import { PatientIntake } from '../../../types.ts'
 import NationalIdInput from '../../../islands/NationalIdInput.tsx'
 
 export default function PatientPersonalForm(
-  { patient = {} }: { patient?: Partial<OnboardingPatient> },
+  { patient = {} }: { patient?: Partial<PatientIntake> },
 ) {
   const names = patient.name ? patient.name.split(/\s+/) : []
 
