@@ -45,8 +45,15 @@ import * as $app_patients_patient_id_encounters_encounter_id_referral from './ro
 import * as $app_patients_patient_id_encounters_encounter_id_risk_factors from './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
-import * as $app_patients_patient_id_intake_step_ from './routes/app/patients/[patient_id]/intake/[step].tsx'
 import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
+import * as $app_patients_patient_id_intake_address from './routes/app/patients/[patient_id]/intake/address.tsx'
+import * as $app_patients_patient_id_intake_family from './routes/app/patients/[patient_id]/intake/family.tsx'
+import * as $app_patients_patient_id_intake_history from './routes/app/patients/[patient_id]/intake/history.tsx'
+import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patients/[patient_id]/intake/lifestyle.tsx'
+import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
+import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
+import * as $app_patients_patient_id_intake_pre_existing_conditions from './routes/app/patients/[patient_id]/intake/pre-existing_conditions.tsx'
+import * as $app_patients_patient_id_intake_review from './routes/app/patients/[patient_id]/intake/review.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
@@ -183,10 +190,24 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
       $app_patients_patient_id_encounters_encounter_id_vitals,
-    './routes/app/patients/[patient_id]/intake/[step].tsx':
-      $app_patients_patient_id_intake_step_,
     './routes/app/patients/[patient_id]/intake/_middleware.tsx':
       $app_patients_patient_id_intake_middleware,
+    './routes/app/patients/[patient_id]/intake/address.tsx':
+      $app_patients_patient_id_intake_address,
+    './routes/app/patients/[patient_id]/intake/family.tsx':
+      $app_patients_patient_id_intake_family,
+    './routes/app/patients/[patient_id]/intake/history.tsx':
+      $app_patients_patient_id_intake_history,
+    './routes/app/patients/[patient_id]/intake/lifestyle.tsx':
+      $app_patients_patient_id_intake_lifestyle,
+    './routes/app/patients/[patient_id]/intake/occupation.tsx':
+      $app_patients_patient_id_intake_occupation,
+    './routes/app/patients/[patient_id]/intake/personal.tsx':
+      $app_patients_patient_id_intake_personal,
+    './routes/app/patients/[patient_id]/intake/pre-existing_conditions.tsx':
+      $app_patients_patient_id_intake_pre_existing_conditions,
+    './routes/app/patients/[patient_id]/intake/review.tsx':
+      $app_patients_patient_id_intake_review,
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/unauthorized.tsx': $app_unauthorized,

@@ -14,8 +14,11 @@ import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.
 import {
   DefaultTop,
   GenericSidebar,
+  replaceParams,
 } from '../../../../../components/library/Sidebar.tsx'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encounter_id]/_middleware.tsx'
+import { FreshContext } from '$fresh/server.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<{
   patient: OnboardingPatient
@@ -51,6 +54,16 @@ export const intake_nav_links: LinkDef[] = [
   { route: '/app/patients/:patient_id/intake/lifestyle' },
   { route: '/app/patients/:patient_id/intake/review' },
 ]
+
+export const nextLink = ({ route, params }: FreshContext) => {
+  const current_index = intake_nav_links.findIndex(
+    (link) => link.route === route,
+  )
+  assert(current_index >= 0)
+  const next_link = intake_nav_links[current_index + 1]
+  assert(next_link)
+  return replaceParams(next_link.route, params)
+}
 
 export function IntakeSidebar(
   { route, params }: {
