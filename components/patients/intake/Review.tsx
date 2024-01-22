@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import {
   MedicationReview,
   PreExistingConditionReview,
@@ -45,16 +46,32 @@ function Medication({ medication }: { medication: MedicationReview }) {
     return { dosage, frequency, start_date, end_date }
   })
 
+  assert(display_schedules.length > 0)
+  const multiple_schedules = display_schedules.length > 1
+
   return (
     <div className='flex flex-row'>
       <Prescriptions className='w-6 h-6 mr-1' />
       <div className='flex flex-col'>
         <span className='font-semibold'>{medication.name}</span>
+        <span>{medication.form}; {medication.route}</span>
         {display_schedules.map((schedule) => (
           <span>
-            {schedule.dosage} {schedule.frequency} <DateRange {...schedule} />
+            {schedule.dosage} {schedule.frequency}
+            {multiple_schedules && (
+              <>
+                {' from '}
+                <DateRange {...schedule} />
+              </>
+            )}
           </span>
         ))}
+        {!multiple_schedules && <DateRange {...display_schedules[0]} />}
+        {medication.special_instructions && (
+          <span className='text-xs'>
+            {medication.special_instructions}
+          </span>
+        )}
       </div>
     </div>
   )
@@ -74,11 +91,11 @@ function PreExistingConditionsReview(
           <span className='font-semibold'>{condition.name}</span>
           <DateRange {...condition} />
           {condition.medications.length > 0 && (
-            <span className='mt-1.5'>
+            <div className='mt-1.5 flex flex-col gap-1'>
               {condition.medications.map((medication) => (
                 <Medication medication={medication} />
               ))}
-            </span>
+            </div>
           )}
         </div>
       ))}
