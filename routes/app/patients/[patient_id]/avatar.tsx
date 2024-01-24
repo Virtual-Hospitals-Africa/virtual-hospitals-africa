@@ -1,9 +1,9 @@
 import * as patients from '../../../../db/models/patients.ts'
-import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../types.ts'
 import { file } from '../../../../util/responses.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandlerWithProps = {
   async GET(_, ctx) {
     const patient_id = parseInt(ctx.params.patient_id)
     assertOr404(patient_id, 'Invalid patient ID')

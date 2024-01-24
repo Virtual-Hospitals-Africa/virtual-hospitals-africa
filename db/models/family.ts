@@ -89,6 +89,7 @@ export async function get(
         .end()
         .as('family_relation_gendered'),
     ])
+    .orderBy('family_relation_gendered desc')
     .execute()
 
   const gettingDependents = trx

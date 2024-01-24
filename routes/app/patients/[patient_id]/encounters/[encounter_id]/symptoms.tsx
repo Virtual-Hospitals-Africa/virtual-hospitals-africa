@@ -1,6 +1,6 @@
 import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
 import {
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   PatientSymptomUpsert,
 } from '../../../../../../types.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
@@ -45,7 +45,7 @@ function assertIsSymptoms(body: unknown): asserts body is {
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<
+export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {

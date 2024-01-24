@@ -1,6 +1,7 @@
 import {
   FamilyRelationInsert,
   LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
 import * as patients from '../../../../../db/models/patients.ts'
@@ -11,7 +12,12 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  nextLink,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 type FamilyFormValues = {
@@ -28,26 +34,21 @@ function assertIsFamily(
   assertOr400(isObjectLike(patient))
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
     const { family, ...patient } = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsFamily,
     )
-    await patients.upsertIntake(ctx.state.trx, {
+    return upsertPatientAndRedirect(ctx, {
       ...patient,
-      id: patient_id,
       family: {
         guardians: family?.guardians || [],
         dependents: family?.dependents || [],
         other_next_of_kin: family?.other_next_of_kin,
       },
     })
-
-    return redirect(nextLink(ctx))
   },
 }
 

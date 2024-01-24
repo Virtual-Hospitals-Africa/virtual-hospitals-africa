@@ -28,6 +28,16 @@ export type GuardianRelation =
 
 export type HealthWorkerProfessions = 'admin' | 'doctor' | 'nurse'
 
+export type IntakeStep =
+  | 'address'
+  | 'family'
+  | 'history'
+  | 'lifestyle'
+  | 'occupation'
+  | 'personal'
+  | 'pre-existing_conditions'
+  | 'review'
+
 export type Json = ColumnType<JsonValue, string, string>
 
 export type JsonArray = JsonValue[]
@@ -475,6 +485,7 @@ export interface Patients {
   ethnicity: string | null
   gender: Gender | null
   id: Generated<number>
+  intake_steps_completed: Generated<IntakeStep[]>
   location: string | null
   name: string | null
   national_id_number: string | null

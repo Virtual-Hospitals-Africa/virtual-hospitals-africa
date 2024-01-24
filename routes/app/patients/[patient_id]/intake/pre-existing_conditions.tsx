@@ -1,16 +1,17 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
 import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 type ConditionsFormValues = {
@@ -24,24 +25,19 @@ function assertIsConditions(
   assertOr400(isObjectLike(patient))
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
     const { pre_existing_conditions, allergies, ...patient } =
       await parseRequestAsserts(
         ctx.state.trx,
         req,
         assertIsConditions,
       )
-    await patients.upsertIntake(ctx.state.trx, {
+    return upsertPatientAndRedirect(ctx, {
       ...patient,
-      id: patient_id,
       pre_existing_conditions: pre_existing_conditions || [],
       allergies: allergies || [],
     })
-
-    return redirect(nextLink(ctx))
   },
 }
 

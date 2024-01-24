@@ -2,9 +2,9 @@ import Layout from '../../components/library/Layout.tsx'
 import { PageProps } from '$fresh/server.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
-import { LoggedInHealthWorkerHandler } from '../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../types.ts'
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandlerWithProps = {
   GET(_, ctx) {
     ctx.state.session.destroy()
     return ctx.render()

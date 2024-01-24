@@ -3,7 +3,7 @@ import {
   Facility,
   FacilityEmployeeOrInvitee,
   HealthWorkerWithGoogleTokens,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   ReturnedSqlRow,
 } from '../../../../types.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
@@ -18,7 +18,7 @@ type EmployeePageProps = {
   facility: ReturnedSqlRow<Facility>
 }
 
-export const handler: LoggedInHealthWorkerHandler<
+export const handler: LoggedInHealthWorkerHandlerWithProps<
   EmployeePageProps,
   { facility: ReturnedSqlRow<Facility>; isAdminAtFacility: boolean }
 > = {

@@ -74,6 +74,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           updated_at: patient.updated_at,
           conversation_state: 'initial_message',
           completed_intake: false,
+          intake_steps_completed: [],
           actions: {
             view: `/app/patients/${patient.id}`,
           },

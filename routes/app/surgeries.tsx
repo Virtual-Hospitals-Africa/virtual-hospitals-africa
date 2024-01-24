@@ -1,9 +1,9 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { LoggedInHealthWorkerHandler } from '../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../types.ts'
 import * as conditions from '../../db/models/conditions.ts'
 import { json } from '../../util/responses.ts'
 
-export const handler: LoggedInHealthWorkerHandler<unknown> = {
+export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   async GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')

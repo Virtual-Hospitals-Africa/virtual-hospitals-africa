@@ -6,7 +6,6 @@ import LogoutIcon from './icons/logout.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
-import words from '../../util/words.ts'
 import capitalize from '../../util/capitalize.ts'
 
 export type SidebarProps = {
@@ -34,7 +33,7 @@ function NavItem({
           active ? 'text-gray-900 bg-gray-50' : 'text-gray-700',
         )}
       >
-        {Icon && <Icon className='w-5' />}
+        {Icon && <Icon className='w-5' active={active} />}
         {title}
       </a>
     </li>

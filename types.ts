@@ -4,7 +4,7 @@ import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
-import { DB, PatientAge } from './db.d.ts'
+import { DB, IntakeStep, PatientAge } from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -73,6 +73,7 @@ export type Patient = PatientPersonal & {
   completed_intake: boolean
   address_id: Maybe<number>
   unregistered_primary_doctor_name: Maybe<string>
+  intake_steps_completed: IntakeStep[]
 }
 
 export type PatientDemographicInfo = {
@@ -99,6 +100,7 @@ export type RenderedPatient = ReturnedSqlRow<
     | 'name'
     | 'conversation_state'
     | 'completed_intake'
+    | 'intake_steps_completed'
   > & {
     dob_formatted: string | null
     description: string | null
@@ -228,6 +230,7 @@ export type PatientIntake =
     | 'national_id_number'
     | 'nearest_facility_id'
     | 'completed_intake'
+    | 'intake_steps_completed'
     | 'primary_doctor_id'
     | 'unregistered_primary_doctor_name'
   >
@@ -1296,13 +1299,18 @@ export type LoggedInHealthWorkerContext<T = Record<never, never>> =
     } & T
   >
 
-export type LoggedInHealthWorkerHandler<
+export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
   Extra = Record<string, never>,
 > = Handlers<
   Props,
   LoggedInHealthWorker & Extra
 >
+
+export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
+  Context extends { state: infer State }
+    ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
+    : LoggedInHealthWorkerHandlerWithProps<unknown, Context>
 
 export type Facility = Location & {
   name: string
@@ -1336,13 +1344,17 @@ export type LinkProps = {
   href: string
   title: string
   active: boolean
-  Icon?: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
+  Icon?: (
+    props: JSX.SVGAttributes<SVGSVGElement> & { active: boolean },
+  ) => JSX.Element
 }
 
 export type LinkDef = {
   route: string
   title?: string
-  Icon?: (props: JSX.SVGAttributes<SVGSVGElement>) => JSX.Element
+  Icon?: (
+    props: JSX.SVGAttributes<SVGSVGElement> & { active: boolean },
+  ) => JSX.Element
 }
 
 export type CalendarPageProps = {

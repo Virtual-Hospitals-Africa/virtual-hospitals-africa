@@ -1,43 +1,37 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import * as patient_age from '../../../../../db/models/patient_age.ts'
 import * as patient_occupation from '../../../../../db/models/patient_occupations.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
 import PatientOccupationForm from '../../../../../components/patients/intake/OccupationForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 type OccupationFormValues = {
-  school?: Maybe<Record<string, unknown>>
+  // deno-lint-ignore no-explicit-any
+  occupation: any
 }
 
 function assertIsOccupation(
   patient: unknown,
 ): asserts patient is OccupationFormValues {
   assertOr400(isObjectLike(patient))
-  assertOr400(isObjectLike(patient.occupation))
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
     const patient = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsOccupation,
     )
-    await patients.upsertIntake(ctx.state.trx, {
-      ...patient,
-      id: patient_id,
-    })
-
-    return redirect(nextLink(ctx))
+    return upsertPatientAndRedirect(ctx, patient)
   },
 }
 
