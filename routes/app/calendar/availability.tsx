@@ -8,7 +8,7 @@ import {
   DeepPartial,
   GCalEvent,
   HealthWorker,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   Time,
 } from '../../../types.ts'
 import SetAvailabilityForm from '../../../islands/availability-form.tsx'
@@ -92,7 +92,7 @@ function* availabilityBlocks(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<
+export const handler: LoggedInHealthWorkerHandlerWithProps<
   { availability: AvailabilityJSON; healthWorker: HealthWorker }
 > = {
   async GET(_, ctx) {

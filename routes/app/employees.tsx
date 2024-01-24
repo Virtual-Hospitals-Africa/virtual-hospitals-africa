@@ -1,7 +1,7 @@
-import { LoggedInHealthWorkerHandler } from '../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../types.ts'
 import redirect from '../../util/redirect.ts'
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandlerWithProps = {
   GET(_req, ctx) {
     return redirect(
       `/app/facilities/${

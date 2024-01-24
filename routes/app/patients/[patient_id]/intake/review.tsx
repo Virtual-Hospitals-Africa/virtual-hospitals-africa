@@ -1,42 +1,21 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
 import PatientReview from '../../../../../components/patients/intake/Review.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
-import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
+import redirect from '../../../../../util/redirect.ts'
+import words from '../../../../../util/words.ts'
+import capitalize from '../../../../../util/capitalize.ts'
 
-type ReviewFormValues = { completed_intake: boolean }
-
-function assertIsReview(
-  patient: unknown,
-): asserts patient is ReviewFormValues {
-  assertOr400(isObjectLike(patient))
-  assertOr400(
-    typeof patient.completed_intake === 'boolean' &&
-      patient.completed_intake,
-  )
-}
-
-export const handler: LoggedInHealthWorkerHandler = {
-  async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
-    const patient = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsReview,
-    )
-    await patients.upsertIntake(ctx.state.trx, {
-      ...patient,
-      id: patient_id,
-    })
-
-    return redirect(`/app/patients/${patient_id}/encounters/open/vitals`)
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
+  // deno-lint-ignore require-await
+  async POST(_req, ctx) {
+    return upsertPatientAndRedirect(ctx, {})
   },
 }
 
@@ -46,6 +25,24 @@ export default async function ReviewPage(
   ctx: IntakeContext,
 ) {
   assert(ctx.state.is_review)
+
+  const steps_completed = new Set(ctx.state.patient.intake_steps_completed)
+  const incomplete = INTAKE_STEPS.find((step) =>
+    step !== 'review' && !steps_completed.has(step)
+  )
+  if (incomplete) {
+    const is_plural = incomplete.endsWith('s')
+    const pretty_name = is_plural ? incomplete : incomplete + ' information'
+    const warning = encodeURIComponent(
+      `Please fill out the patient's ${
+        pretty_name.replace('_', ' ')
+      } completing the review process`,
+    )
+    return redirect(
+      `/app/patients/${ctx.params.patient_id}/intake/${incomplete}?warning=${warning}`,
+    )
+  }
+
   const { healthWorker, patient } = ctx.state
 
   return (

@@ -32,7 +32,7 @@ import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
-import { PatientAge } from '../../db.d.ts'
+import { IntakeStep, PatientAge } from '../../db.d.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -54,7 +54,7 @@ const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('patients')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
-    .select([
+    .select((eb) => [
       'patients.id',
       'patients.name',
       'patients.phone_number',
@@ -70,6 +70,9 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.conversation_state',
       'patients.created_at',
       'patients.updated_at',
+      eb.fn<IntakeStep[]>('TO_JSON', ['patients.intake_steps_completed']).as(
+        'intake_steps_completed',
+      ),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
       'facilities.name as nearest_facility',
@@ -122,6 +125,7 @@ export type UpsertPatientIntake = {
   major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
   family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
+  intake_steps_completed?: IntakeStep[]
 }
 
 export function insertMany(
@@ -138,8 +142,6 @@ export function insertMany(
           string
         >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
         : null,
-      conversation_state: patient.conversation_state || 'initial_message',
-      completed_intake: patient.completed_intake || false,
     })))
     .returningAll()
     .execute()
@@ -147,17 +149,14 @@ export function insertMany(
 
 export function upsert(
   trx: TrxOrDb,
-  patient: Partial<Patient> & { id?: number },
+  { location, ...patient }: Partial<Patient> & { id?: number },
 ) {
   const to_upsert = {
     ...patient,
-    location: patient.location
-      ? sql<
+    location: location &&
+      sql<
         string
-      >`ST_SetSRID(ST_MakePoint(${patient.location.longitude}, ${patient.location.latitude})::geography, 4326)`
-      : null,
-    conversation_state: patient.conversation_state || 'initial_message',
-    completed_intake: patient.completed_intake || false,
+      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
   }
   return trx
     .insertInto('patients')
@@ -305,6 +304,9 @@ export function getIntake(
         street: eb.ref('address.street'),
       }).as('address'),
       'patients.completed_intake',
+      eb.fn<IntakeStep[]>('TO_JSON', ['patients.intake_steps_completed']).as(
+        'intake_steps_completed',
+      ),
       'patients.primary_doctor_id',
       'patients.unregistered_primary_doctor_name',
       sql<
@@ -364,6 +366,10 @@ export async function getIntakeReview(
       'patients.nearest_facility_id',
       'facilities.name as nearest_facility_name',
       sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
+      eb.fn<IntakeStep[]>('TO_JSON', ['patients.intake_steps_completed']).as(
+        'intake_steps_completed',
+      ),
+      'completed_intake',
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirst()

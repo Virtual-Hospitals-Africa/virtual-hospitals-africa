@@ -1,12 +1,12 @@
 import { approveInvitee } from '../../../../../../db/models/employment.ts'
-import { LoggedInHealthWorkerHandler } from '../../../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { FacilityContext } from '../../_middleware.ts'
 
-export const handler: LoggedInHealthWorkerHandler<
+export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<string, never>,
   FacilityContext['state']
 > = {

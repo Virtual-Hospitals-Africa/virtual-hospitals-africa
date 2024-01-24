@@ -3,7 +3,7 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   Facility,
   HealthWorker,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   Profession,
   ReturnedSqlRow,
 } from '../../../../../types.ts'
@@ -40,7 +40,7 @@ function assertIsInvites(
   assertOr400(values.invites.slice(0, -1).every(isInvite))
 }
 
-export const handler: LoggedInHealthWorkerHandler<InvitePageProps, {
+export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
   facility: ReturnedSqlRow<Facility>
   isAdminAtFacility: boolean
 }> = {

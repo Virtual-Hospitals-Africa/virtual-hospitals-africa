@@ -3,7 +3,7 @@ import {
   Facility,
   FullCountryInfo,
   HealthWorkerWithGoogleTokens,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   ReturnedSqlRow,
 } from '../../../../../types.ts'
 import {
@@ -41,7 +41,7 @@ export type FormState =
   & ProfessionalInformationFields
   & DocumentFormFields
 
-export const handler: LoggedInHealthWorkerHandler<RegisterPageProps, {
+export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
   facility: ReturnedSqlRow<Facility>
 }> = {
   async POST(req, ctx) {

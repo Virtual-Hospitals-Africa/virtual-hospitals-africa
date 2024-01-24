@@ -1,6 +1,6 @@
 import {
   EmployedHealthWorker,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
@@ -14,7 +14,9 @@ type PendingApprovalPageProps = {
   facilityAdmin: FacilityAdmin
 }
 
-export const handler: LoggedInHealthWorkerHandler<PendingApprovalPageProps> = {
+export const handler: LoggedInHealthWorkerHandlerWithProps<
+  PendingApprovalPageProps
+> = {
   async GET(_req, ctx) {
     const { healthWorker } = ctx.state
 

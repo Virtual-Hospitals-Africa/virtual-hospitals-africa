@@ -2,7 +2,7 @@ import { NumberInput } from '../../../../../../components/library/form/Inputs.ts
 import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
 import {
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   Measurements,
   MeasurementsUpsert,
 } from '../../../../../../types.ts'
@@ -36,7 +36,7 @@ function assertIsVitals(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<
+export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {

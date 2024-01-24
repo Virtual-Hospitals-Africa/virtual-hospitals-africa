@@ -1,13 +1,14 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
+import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 // import PatientLifestyleForm from '../../../../../components/patients/intake/LifestyleForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 
 type LifestyleFormValues = Record<string, unknown>
 
@@ -17,21 +18,14 @@ function assertIsLifestyle(
   assertOr400(isObjectLike(patient))
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
     const patient = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsLifestyle,
     )
-    await patients.upsertIntake(ctx.state.trx, {
-      ...patient,
-      id: patient_id,
-    })
-
-    return redirect(nextLink(ctx))
+    return upsertPatientAndRedirect(ctx, patient)
   },
 }
 

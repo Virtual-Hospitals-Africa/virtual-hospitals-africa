@@ -1,4 +1,8 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import {
+  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
+  Maybe,
+} from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import redirect from '../../../../../util/redirect.ts'
@@ -8,7 +12,12 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  nextLink,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 type AddressFormValues = {
@@ -60,25 +69,20 @@ function assertIsAddress(
   )
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
     const { primary_doctor_name, nearest_facility_name, ...patient } =
       await parseRequestAsserts(
         ctx.state.trx,
         req,
         assertIsAddress,
       )
-    await patients.upsertIntake(ctx.state.trx, {
+    return upsertPatientAndRedirect(ctx, {
       ...patient,
-      id: patient_id,
       unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
         ? primary_doctor_name
         : null,
     })
-
-    return redirect(nextLink(ctx))
   },
 }
 

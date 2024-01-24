@@ -6,7 +6,7 @@ import Layout from '../components/library/Layout.tsx'
 import { activeTab, Tabs, TabsProps } from '../components/library/Tabs.tsx'
 import {
   HealthWorkerWithGoogleTokens,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   RenderedWaitingRoom,
 } from '../types.ts'
 import WaitingRoomView from '../components/waiting-room/View.tsx'
@@ -29,7 +29,7 @@ type AppProps = {
   waiting_room: RenderedWaitingRoom[]
 }
 
-export const handler: LoggedInHealthWorkerHandler<AppProps> = {
+export const handler: LoggedInHealthWorkerHandlerWithProps<AppProps> = {
   async GET(req, ctx) {
     const { employment } = ctx.state.healthWorker
     assert(

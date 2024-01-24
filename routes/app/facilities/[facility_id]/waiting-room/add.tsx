@@ -8,7 +8,7 @@ import * as patient_encounters from '../../../../../db/models/patient_encounters
 import * as facilities from '../../../../../db/models/facilities.ts'
 import {
   LoggedInHealthWorker,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   Maybe,
 } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
@@ -25,9 +25,12 @@ import { hasName } from '../../../../../util/haveNames.ts'
 import Form from '../../../../../components/library/form/Form.tsx'
 import { EncounterReason } from '../../../../../db.d.ts'
 
-export const handler: LoggedInHealthWorkerHandler<Record<never, unknown>, {
-  facility: { id: number; name: string }
-}> = {
+export const handler: LoggedInHealthWorkerHandlerWithProps<
+  Record<never, unknown>,
+  {
+    facility: { id: number; name: string }
+  }
+> = {
   async POST(req, ctx) {
     const facility_id = parseInt(ctx.params.facility_id)
     assert(facility_id)

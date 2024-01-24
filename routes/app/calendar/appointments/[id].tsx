@@ -5,7 +5,7 @@ import PatientDetailedCard from '../../../../components/patients/DetailedCard.ts
 import {
   AppointmentWithAllPatientInfo,
   HealthWorker,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   ReturnedSqlRow,
 } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
@@ -16,7 +16,9 @@ type AppointmentPageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
 }
 
-export const handler: LoggedInHealthWorkerHandler<AppointmentPageProps> = {
+export const handler: LoggedInHealthWorkerHandlerWithProps<
+  AppointmentPageProps
+> = {
   async GET(_, ctx) {
     const { healthWorker } = ctx.state
 

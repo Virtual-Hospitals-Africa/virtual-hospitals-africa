@@ -1,8 +1,8 @@
 import { EncounterContext, EncounterLayout } from './_middleware.tsx'
-import { LoggedInHealthWorkerHandler } from '../../../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 
-export const handler: LoggedInHealthWorkerHandler<
+export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {

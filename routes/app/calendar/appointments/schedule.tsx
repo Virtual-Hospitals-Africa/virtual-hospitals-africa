@@ -3,7 +3,7 @@ import { PageProps } from '$fresh/server.ts'
 import {
   HealthWorker,
   HealthWorkerWithGoogleTokens,
-  LoggedInHealthWorkerHandler,
+  LoggedInHealthWorkerHandlerWithProps,
   Maybe,
   ReturnedSqlRow,
 } from '../../../../types.ts'
@@ -71,77 +71,78 @@ function assertIsSearchFormValues(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<SchedulePageProps> = {
-  async GET(req, ctx) {
-    const { healthWorker } = ctx.state
+export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
+  {
+    async GET(req, ctx) {
+      const { healthWorker } = ctx.state
 
-    const search = await parseRequestAsserts<SearchFormValues>(
-      ctx.state.trx,
-      req,
-      assertIsSearchFormValues,
-    )
-
-    if (!search.patient_id) {
-      return ctx.render({ healthWorker })
-    }
-    const gettingPatient = patients.getWithOpenEncounter(ctx.state.trx, {
-      ids: [search.patient_id],
-    })
-
-    let toScheduleWith: Maybe<
-      ReturnedSqlRow<
-        HealthWorkerWithGoogleTokens
-      >
-    >
-
-    if (search.health_worker_id) {
-      toScheduleWith = await health_workers.getWithTokensById(
+      const search = await parseRequestAsserts<SearchFormValues>(
         ctx.state.trx,
-        search.health_worker_id,
+        req,
+        assertIsSearchFormValues,
       )
 
-      assert(toScheduleWith)
-    }
+      if (!search.patient_id) {
+        return ctx.render({ healthWorker })
+      }
+      const gettingPatient = patients.getWithOpenEncounter(ctx.state.trx, {
+        ids: [search.patient_id],
+      })
 
-    const availability = await availableSlots(ctx.state.trx, {
-      count: 10,
-      dates: search.date ? [search.date] : undefined,
-      health_workers: toScheduleWith ? [toScheduleWith] : undefined,
-    })
+      let toScheduleWith: Maybe<
+        ReturnedSqlRow<
+          HealthWorkerWithGoogleTokens
+        >
+      >
 
-    const [patient] = await gettingPatient
-    assert(hasName(patient))
+      if (search.health_worker_id) {
+        toScheduleWith = await health_workers.getWithTokensById(
+          ctx.state.trx,
+          search.health_worker_id,
+        )
 
-    const slots: HealthWorkerAppointmentSlot[] = availability.map((slot) => ({
-      type: 'slot',
-      patient,
-      id: `${slot.health_worker.id}-${slot.start}`,
-      durationMinutes: slot.durationMinutes,
-      start: parseDate(new Date(slot.start), 'numeric'),
-      end: parseDate(new Date(slot.end), 'numeric'),
-      health_workers: [slot.health_worker],
-    }))
+        assert(toScheduleWith)
+      }
 
-    return ctx.render({
-      healthWorker,
-      slots,
-    })
-  },
-  async POST(req, ctx) {
-    const schedule = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsScheduleFormValues,
-    )
+      const availability = await availableSlots(ctx.state.trx, {
+        count: 10,
+        dates: search.date ? [search.date] : undefined,
+        health_workers: toScheduleWith ? [toScheduleWith] : undefined,
+      })
 
-    await makeAppointmentWeb(
-      ctx.state.trx,
-      schedule,
-      insertEvent,
-    )
-    return redirect('/app/calendar')
-  },
-}
+      const [patient] = await gettingPatient
+      assert(hasName(patient))
+
+      const slots: HealthWorkerAppointmentSlot[] = availability.map((slot) => ({
+        type: 'slot',
+        patient,
+        id: `${slot.health_worker.id}-${slot.start}`,
+        durationMinutes: slot.durationMinutes,
+        start: parseDate(new Date(slot.start), 'numeric'),
+        end: parseDate(new Date(slot.end), 'numeric'),
+        health_workers: [slot.health_worker],
+      }))
+
+      return ctx.render({
+        healthWorker,
+        slots,
+      })
+    },
+    async POST(req, ctx) {
+      const schedule = await parseRequestAsserts(
+        ctx.state.trx,
+        req,
+        assertIsScheduleFormValues,
+      )
+
+      await makeAppointmentWeb(
+        ctx.state.trx,
+        schedule,
+        insertEvent,
+      )
+      return redirect('/app/calendar')
+    },
+  }
 
 export default function SchedulePage(
   props: PageProps<SchedulePageProps>,

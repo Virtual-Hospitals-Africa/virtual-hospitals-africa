@@ -53,6 +53,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           last_visited: null,
           conversation_state: 'initial_message',
           completed_intake: false,
+          intake_steps_completed: [],
           actions: {
             view: `/app/patients/${test_patient1.id}`,
           },
@@ -74,6 +75,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           last_visited: null,
           conversation_state: 'initial_message',
           completed_intake: false,
+          intake_steps_completed: [],
           actions: {
             view: `/app/patients/${test_patient2.id}`,
           },
@@ -125,6 +127,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           last_visited: null,
           conversation_state: 'initial_message',
           completed_intake: false,
+          intake_steps_completed: [],
           actions: {
             view: `/app/patients/${test_patient.id}`,
           },
@@ -161,6 +164,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           last_visited: null,
           conversation_state: 'initial_message',
           completed_intake: false,
+          intake_steps_completed: [],
           actions: {
             view: `/app/patients/${patient_id}`,
           },

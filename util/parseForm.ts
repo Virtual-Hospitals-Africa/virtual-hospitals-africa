@@ -75,6 +75,11 @@ export async function parseRequestAsserts<T extends Record<string, unknown>>(
     valuesMap = formData!
   }
 
+  // Remove error, warning, success, which may appear in the URL but are never part of form data
+  for (const key of ['error', 'warning', 'success']) {
+    valuesMap.delete(key)
+  }
+
   assertOr400(valuesMap)
 
   const files: { [key: string]: File } = {}

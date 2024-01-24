@@ -1,13 +1,14 @@
 import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
 import PatientPersonalForm from '../../../../../components/patients/intake/PersonalForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { IntakeContext, IntakeLayout, nextLink } from './_middleware.tsx'
+import {
+  IntakeContext,
+  IntakeLayout,
+  upsertPatientAndRedirect,
+} from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 type PersonalFormValues = {
@@ -29,22 +30,17 @@ function assertIsPersonal(
   assertOr400(typeof patient.national_id_number === 'string')
 }
 
-export const handler: LoggedInHealthWorkerHandler = {
+export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
     const { avatar_media, ...patient } = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsPersonal,
     )
-    await patients.upsertIntake(ctx.state.trx, {
+    return upsertPatientAndRedirect(ctx, {
       ...patient,
-      id: patient_id,
       avatar_media_id: avatar_media?.id,
     })
-
-    return redirect(nextLink(ctx))
   },
 }
 
