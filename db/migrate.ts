@@ -28,6 +28,17 @@ async function wipe() {
 
 async function startMigrating(cmd: string, target?: string) {
   switch (cmd) {
+    case 'check': {
+      const migrations = await migrator.getMigrations()
+      const migrations_not_yet_run = migrations.filter((it) => !it.executedAt)
+      if (!migrations_not_yet_run.length) return {}
+      console.error('The following migrations have not yet been run:')
+      migrations_not_yet_run.forEach((it) => {
+        console.error(`  ${it.name}`)
+      })
+      console.error('Please run "deno task db:migrate:latest" and try again.')
+      return Deno.exit(1)
+    }
     case 'latest':
       return migrator.migrateToLatest()
     case 'up':
@@ -37,23 +48,21 @@ async function startMigrating(cmd: string, target?: string) {
     case 'wipe':
       return wipe()
     case 'to': {
-      if (!target) {
-        const migrations = await sql<
-          { name: string }
-        >`SELECT name from kysely_migration`.execute(db)
-        const migrationTargets = migrations.rows.map(({ name }) => name)
-        console.error(
-          `Please specify a valid target as in\n\n  deno task migrate:to ${
-            migrationTargets[0]
-          }\n\nValid targets:\n${migrationTargets.join('\n')}`,
-        )
-        Deno.exit(1)
-      }
-      return migrator.migrateTo(target)
+      if (target) return migrator.migrateTo(target)
+      const migrations = await sql<
+        { name: string }
+      >`SELECT name from kysely_migration`.execute(db)
+      const migrationTargets = migrations.rows.map(({ name }) => name)
+      console.error(
+        `Please specify a valid target as in\n\n  deno task migrate:to ${
+          migrationTargets[0]
+        }\n\nValid targets:\n${migrationTargets.join('\n')}`,
+      )
+      return Deno.exit(1)
     }
 
     default:
-      throw new Error('Invalid command')
+      throw new Error(`Invalid command ${cmd}`)
   }
 }
 
