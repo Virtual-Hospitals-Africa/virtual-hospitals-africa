@@ -528,6 +528,10 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
+    await patients.upsert(db, {
+      id: patient_id,
+      date_of_birth: '2020-01-01',
+    })
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
