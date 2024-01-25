@@ -35,7 +35,7 @@ export type IntakeStep =
   | 'lifestyle'
   | 'occupation'
   | 'personal'
-  | 'pre-existing_conditions'
+  | 'conditions'
   | 'review'
 
 export type Json = ColumnType<JsonValue, string, string>

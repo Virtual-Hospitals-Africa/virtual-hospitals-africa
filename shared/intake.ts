@@ -3,7 +3,7 @@ import { IntakeStep } from '../db.d.ts'
 export const INTAKE_STEPS: IntakeStep[] = [
   'personal',
   'address',
-  'pre-existing_conditions',
+  'conditions',
   'history',
   'occupation',
   'family',
