@@ -4,7 +4,7 @@ import { useSteps } from '../../library/Steps.tsx'
 export type IntakePatientStep =
   | 'personal'
   | 'address'
-  | 'pre-existing_conditions'
+  | 'conditions'
   | 'history'
   | 'occupation'
   | 'family'
@@ -14,7 +14,7 @@ export type IntakePatientStep =
 const stepNames: IntakePatientStep[] = [
   'personal',
   'address',
-  'pre-existing_conditions',
+  'conditions',
   'history',
   'occupation',
   'family',
