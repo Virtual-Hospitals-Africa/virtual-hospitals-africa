@@ -1,7 +1,12 @@
 import { Kysely, sql } from 'kysely'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
 
-export async function up(db: Kysely<unknown>) {
+// deno-lint-ignore no-explicit-any
+export async function up(db: Kysely<any>) {
+  await db.updateTable('patients')
+    .set('completed_intake', false)
+    .execute()
+
   await db.schema.createType('intake_step')
     .asEnum(INTAKE_STEPS)
     .execute()
@@ -24,10 +29,6 @@ export async function up(db: Kysely<unknown>) {
 
 // deno-lint-ignore no-explicit-any
 export async function down(db: Kysely<any>) {
-  await db.updateTable('patients')
-    .set('completed_intake', false)
-    .execute()
-
   await db.schema.alterTable('patients')
     .dropColumn('intake_steps_completed')
     .execute()
