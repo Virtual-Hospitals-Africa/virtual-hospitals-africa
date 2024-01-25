@@ -27,6 +27,12 @@ window.addEventListener('submit', function (event) {
   function load(innerHTML) {
     var htmlElement = document.createElement('html')
     htmlElement.innerHTML = innerHTML
+    var hijackScript = htmlElement.querySelector(
+      'script[src="/hijack-form-submission.js"]',
+    )
+    if (hijackScript) {
+      hijackScript.parentNode.removeChild(hijackScript)
+    }
     var newHead = htmlElement.querySelector('head')
     var newBody = htmlElement.querySelector('body')
     document.documentElement.replaceChild(newHead, document.head)
