@@ -1,4 +1,5 @@
 import {
+  CheckboxInput,
   DateInput,
   SelectWithOptions,
   TextArea,
@@ -40,9 +41,11 @@ export default function SymptomInput({
           <DateInput
             name={`${name}.start_date`}
             value={value.start_date}
-            label='Estimated Start Date'
+            label='Onset'
             required
           />
+          <CheckboxInput name={`${name}.ongoing`} label='Ongoing' />
+          <TextInput label='Duration' disabled value='8 days' />
         </FormRow>
         <FormRow>
           <TextArea
