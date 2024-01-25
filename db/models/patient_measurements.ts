@@ -16,6 +16,8 @@ export const MEASUREMENTS: {
   blood_pressure_systolic: 'mmHg',
   blood_oxygen_saturation: '%',
   blood_glucose: 'mg/dL',
+  pulse: 'bpm',
+  respiratory_rate: 'bpm',
 }
 
 export async function upsertVitals(

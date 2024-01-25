@@ -1,3 +1,4 @@
+import { ComponentChildren, JSX } from 'preact'
 import { NumberInput } from '../../../../../../components/library/form/Inputs.tsx'
 import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
@@ -12,6 +13,7 @@ import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
+import * as VitalsIcons from '../../../../../../components/library/icons/vitals.tsx'
 import redirect from '../../../../../../util/redirect.ts'
 
 function assertIsVitals(
@@ -60,6 +62,67 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
+type NormalVitalInput = Exclude<keyof typeof VitalsIcons, 'blood_pressure'>
+
+const required_inputs: NormalVitalInput[] = [
+  'height',
+  'weight',
+  'temperature',
+]
+
+const other_inputs: NormalVitalInput[] = [
+  'blood_oxygen_saturation',
+  'blood_glucose',
+  'pulse',
+  'respiratory_rate',
+]
+
+type VitalInputProps = {
+  required?: boolean
+  measurement: NormalVitalInput
+  vitals?: Partial<Measurements>
+}
+
+function VitalInputDefined({ Icon, name, units, required, children }: {
+  name: string
+  units: string
+  required?: boolean
+  Icon(props: JSX.SVGAttributes<SVGSVGElement>): JSX.Element
+  children: ComponentChildren
+}) {
+  return (
+    <>
+      <Icon className='w-6 col-start-1' />
+      <span className='col-start-2'>
+        {capitalize(name)}
+        {required && <sup>*</sup>}
+      </span>
+      {children}
+      <span className='col-start-7'>{units}</span>
+    </>
+  )
+}
+
+function VitalInput({ required, measurement, vitals }: VitalInputProps) {
+  return (
+    <VitalInputDefined
+      required={required}
+      name={measurement}
+      Icon={VitalsIcons[measurement]}
+      units={patient_measurements.MEASUREMENTS[measurement]}
+    >
+      <NumberInput
+        required={required}
+        name={`measurements.${measurement}`}
+        label={null}
+        value={vitals?.[measurement]?.[0]}
+        className='col-start-6'
+        min={0}
+      />
+    </VitalInputDefined>
+  )
+}
+
 export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
   const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
@@ -68,17 +131,47 @@ export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
 
   return (
     <EncounterLayout ctx={ctx}>
-      {Object.entries(patient_measurements.MEASUREMENTS).map(
-        ([measurement_name, units]) => (
-          <>
-            <NumberInput
-              name={`measurements.${measurement_name}`}
-              label={capitalize(measurement_name) + ` (${units})`}
-              value={vitals[measurement_name as keyof Measurements]?.[0]}
-            />
-          </>
-        ),
-      )}
+      <div className='grid gap-1.5 items-center grid-cols-[24px_max-content_1fr_max-content_min-content_max-content_max-content]'>
+        {required_inputs.map((measurement) => (
+          <VitalInput
+            required
+            measurement={measurement}
+            vitals={vitals}
+          />
+        ))}
+        {/* Blood pressure is weird because it's two measurements in one */}
+        <VitalInputDefined
+          required
+          name='blood_pressure'
+          Icon={VitalsIcons.blood_pressure}
+          units={patient_measurements.MEASUREMENTS.blood_pressure_diastolic[1]}
+        >
+          <NumberInput
+            required
+            name='measurements.blood_pressure_diastolic'
+            label={null}
+            value={vitals?.blood_pressure_diastolic?.[0]}
+            className='col-start-4'
+            min={0}
+          />
+          <span className='col-start-5'>/</span>
+          <NumberInput
+            required
+            name='measurements.blood_pressure_systolic'
+            label={null}
+            value={vitals?.blood_pressure_systolic?.[0]}
+            className='col-start-6'
+            min={0}
+          />
+        </VitalInputDefined>
+
+        {other_inputs.map((measurement) => (
+          <VitalInput
+            measurement={measurement}
+            vitals={vitals}
+          />
+        ))}
+      </div>
       <FormButtons />
     </EncounterLayout>
   )

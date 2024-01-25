@@ -1674,6 +1674,8 @@ export type Measurements = {
   blood_pressure_systolic: [number, 'mmHg']
   blood_oxygen_saturation: [number, '%']
   blood_glucose: [number, 'mg/dL']
+  pulse: [number, 'bpm']
+  respiratory_rate: [number, 'bpm']
 }
 export type Measurement<Name extends keyof Measurements> = {
   name: Name

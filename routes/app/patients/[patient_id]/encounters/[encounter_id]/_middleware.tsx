@@ -256,7 +256,7 @@ export function EncounterLayout({
       url={ctx.url}
       variant='form'
     >
-      <Container size='lg'>
+      <Container size='md'>
         <Form method='POST'>
           {children}
         </Form>
