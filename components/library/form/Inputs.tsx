@@ -70,7 +70,7 @@ function LabeledInput(
       {label && (
         <span className='mb-1 ml-0.5'>
           {label}
-          {label && required && '*'}
+          {label && required && <sup>*</sup>}
         </span>
       )}
       {children}
@@ -138,8 +138,12 @@ export function NumberInput(
     readonly,
     className,
     inputClassName,
+    min,
+    max,
   }: WrapperInputProps<HTMLInputElement> & {
     value?: Maybe<number>
+    min?: number
+    max?: number
   },
 ) {
   return (
@@ -164,6 +168,8 @@ export function NumberInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
+        min={min}
+        max={max}
       />
     </LabeledInput>
   )

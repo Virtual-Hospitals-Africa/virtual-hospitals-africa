@@ -45,6 +45,8 @@ describeWithWebServer(
           blood_pressure_systolic: null,
           blood_oxygen_saturation: null,
           blood_glucose: null,
+          pulse: null,
+          respiratory_rate: null,
         },
       })
     })
@@ -112,6 +114,8 @@ describeWithWebServer(
             blood_pressure_systolic: null,
             blood_oxygen_saturation: null,
             blood_glucose: null,
+            pulse: null,
+            respiratory_rate: null,
           },
         })
       }
@@ -177,6 +181,8 @@ describeWithWebServer(
             blood_pressure_systolic: null,
             blood_oxygen_saturation: null,
             blood_glucose: null,
+            pulse: null,
+            respiratory_rate: null,
           },
         })
       }
