@@ -10,7 +10,7 @@ import PatientFamilyForm from '../../../../../components/patients/intake/FamilyF
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
+import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import {
   IntakeContext,
@@ -59,6 +59,14 @@ export default async function FamilyPage(
   assert(!ctx.state.is_review)
   const { patient, trx } = ctx.state
   const family = await patient_family.get(trx, { patient_id: patient.id })
+
+  const warning = encodeURIComponent(
+    "Please fill out the patient's personal information beforehand.",
+  )
+  assertOrRedirect(
+    patient.age,
+    `/app/patients/${patient.id}/intake/personal?warning=${warning}`,
+  )
 
   return (
     <IntakeLayout ctx={ctx}>
