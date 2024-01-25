@@ -31,7 +31,7 @@ export default function NextOfKin({
             }}
           // deno-lint-ignore no-explicit-any
           onSelect={(person: any) =>
-            setPatientKin({
+            person && setPatientKin({
               patient_gender: person.gender ||
                 patientKin?.patient_gender,
               patient_phone_number: person.phone_number ||
@@ -50,6 +50,10 @@ export default function NextOfKin({
             ?.relation ?? undefined}
           type='guardian'
           gender={patientKin?.patient_gender}
+          additionalRelations={new Map([
+            ['friend', 'friend'],
+            ['spouse', 'spouse'],
+          ])}
         />
       </FormRow>
     </div>

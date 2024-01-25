@@ -346,7 +346,7 @@ describe(
           marital_status: 'TODO',
           religion: 'TODO',
           other_next_of_kin: {
-            patient_gender: 'female',
+            patient_gender: null,
             patient_id: relations['other_next_of_kin']!.patient_id,
             patient_name: 'Janey Jane',
             patient_phone_number,
