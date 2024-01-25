@@ -115,12 +115,14 @@ export default function RelationshipSelect({
   family_relation_gendered,
   type,
   gender,
+  additionalRelations,
 }: {
   name: string
   required?: boolean
   family_relation_gendered?: string
   type: 'guardian' | 'dependent'
   gender?: Maybe<Gender>
+  additionalRelations?: Map<string, string>
 }) {
   const selected_family_relation_gendered = useSignal(family_relation_gendered)
   const Options = (type === 'guardian') ? GuardianOptions : DependentOptions
@@ -130,13 +132,27 @@ export default function RelationshipSelect({
       label='Relationship'
       required={required}
     >
-      {GUARDIAN_RELATIONS.flatMap((relation) =>
-        Options({
-          gender,
-          relation,
-          selected_family_relation_gendered,
-        })
-      )}
+      <>
+        {GUARDIAN_RELATIONS.flatMap((relation) =>
+          Options({
+            gender,
+            relation,
+            selected_family_relation_gendered,
+          })
+        )}
+
+        {additionalRelations && (
+          Array.from(additionalRelations.entries()).map(([key, name]) => (
+            <option
+              key={key}
+              value={key}
+              selected={selected_family_relation_gendered.value === key}
+            >
+              {name}
+            </option>
+          ))
+        )}
+      </>
     </Select>
   )
 }

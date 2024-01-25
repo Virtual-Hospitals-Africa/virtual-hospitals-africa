@@ -314,12 +314,10 @@ export async function upsert(
     )
   }
   if (other_kin && other_kin.patient_id) {
-    const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
     updating_existing_patients.push(upsertPatient(trx, {
       id: other_kin.patient_id!,
       name: other_kin.patient_name,
       phone_number: other_kin.patient_phone_number,
-      gender: relation.gender,
     }))
   }
   // Insert patients that don't already exist. For each family relation keep track of the index and the calculated relation
@@ -351,13 +349,12 @@ export async function upsert(
     inserted.set(dependent, [index, relation.guardian_relation])
   }
   if (other_kin && !other_kin.patient_id) {
-    const relation = inverseGuardianRelation(other_kin.family_relation_gendered)
     const index = to_insert.push({
       name: other_kin.patient_name,
       phone_number: other_kin.patient_phone_number,
-      gender: relation.gender,
     }) - 1
-    inserted.set(other_kin, [index, relation.guardian_relation])
+    // deno-lint-ignore no-explicit-any
+    inserted.set(other_kin, [index, other_kin.family_relation_gendered as any])
   }
   const inserting_new_patients = to_insert.length
     ? insertManyPatients(trx, to_insert)
