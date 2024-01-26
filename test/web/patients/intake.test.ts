@@ -614,7 +614,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     )
   })
 
-  it('supports POST on the occupation step, moving you to the family step', async () => {
+  it('supports POST on the occupation step(0-18), moving you to the family step', async () => {
     const { patient_id } = await patient_encounters.upsert(db, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
@@ -695,6 +695,96 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
             status: 'in school',
           },
           sport: true,
+        },
+      },
+      'The form should be 1:1 with the occupations in the DB',
+    )
+  })
+
+  it('supports POST on the occupation step(19+), moving you to the family step', async () => {
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient 19',
+      reason: 'seeking treatment',
+    })
+
+    await patients.upsert(db, {
+      id: patient_id,
+      date_of_birth: '2000-01-01',
+    })
+
+    const { fetch } = await addTestHealthWorkerWithSession(db, {
+      scenario: 'approved-nurse',
+    })
+
+    const body = new FormData()
+    body.set('occupation.school.status', 'adult in school')
+    body.set('occupation.job.happy', 'on')
+    body.set(
+      'occupation.job.descendants_employed',
+      'on',
+    )
+    body.set('occupation.job.require_assistance', 'on')
+    body.set('occupation.job.profession', 'Accountant')
+    body.set('occupation.job.work_satisfaction', 'Excellent')
+    body.set('occupation.school.education_level', 'Elementary School')
+
+    const postResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {
+        method: 'POST',
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/family`,
+    )
+
+    const occupation = await patient_occupations.get(db, {
+      patient_id,
+    })
+    assert(occupation)
+    assertEquals(occupation, {
+      school: {
+        status: 'adult in school',
+        education_level: 'Elementary School',
+      },
+      job: {
+        happy: true,
+        descendants_employed: true,
+        require_assistance: true,
+        profession: 'Accountant',
+        work_satisfaction: 'Excellent',
+      },
+    })
+
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/occupation`,
+      {},
+    )
+
+    const pageContents = await getResponse.text()
+    const $ = cheerio.load(pageContents)
+    const formValues = getFormValues($)
+    assertEquals(
+      formValues,
+      {
+        occupation: {
+          school: {
+            status: 'adult in school',
+            education_level: 'Elementary School',
+          },
+          job: {
+            happy: true,
+            descendants_employed: true,
+            require_assistance: true,
+            profession: 'Accountant',
+            work_satisfaction: 'Excellent',
+          },
         },
       },
       'The form should be 1:1 with the occupations in the DB',

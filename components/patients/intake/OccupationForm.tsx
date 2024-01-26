@@ -26,7 +26,7 @@ export default function PatientOccupationForm(
             occupation={occupation}
           />
         )
-        : <Occupation19 />}
+        : <Occupation19 occupation={occupation} />}
     </>
   )
 }

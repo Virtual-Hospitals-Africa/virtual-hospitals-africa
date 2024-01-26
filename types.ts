@@ -1546,6 +1546,14 @@ export type School = {
 } | {
   status: 'stopped school'
   past: PastSchool
+} | {
+  status: 'adult in school'
+  education_level: string
+} | {
+  status: 'adult stopped school'
+  education_level: string
+  reason: string
+  desire_to_return: boolean
 }
 
 export type CurrentSchool = {
@@ -1560,10 +1568,18 @@ export type PastSchool = {
   reason: string
 }
 
+export type Job = {
+  happy: boolean
+  descendants_employed: boolean
+  require_assistance: boolean
+  profession: string
+  work_satisfaction: string
+}
+
 export type Occupation = {
   school: School
   sport?: boolean
-  job?: string | null
+  job?: Job | null
 }
 
 export type PatientOccupation = {
