@@ -11,6 +11,18 @@ export type EncounterReason =
   | 'referral'
   | 'seeking treatment'
 
+export type EncounterStep =
+  | 'clinical_notes'
+  | 'close_visit'
+  | 'diagnosis'
+  | 'diagnostic_tests'
+  | 'examinations'
+  | 'orders'
+  | 'prescriptions'
+  | 'referral'
+  | 'symptoms'
+  | 'vitals'
+
 export type Gender = 'female' | 'male' | 'non-binary'
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
@@ -30,12 +42,12 @@ export type HealthWorkerProfessions = 'admin' | 'doctor' | 'nurse'
 
 export type IntakeStep =
   | 'address'
+  | 'conditions'
   | 'family'
   | 'history'
   | 'lifestyle'
   | 'occupation'
   | 'personal'
-  | 'conditions'
   | 'review'
 
 export type Json = ColumnType<JsonValue, string, string>
@@ -430,6 +442,7 @@ export interface PatientEncounters {
   notes: string | null
   patient_id: number
   reason: EncounterReason
+  steps_completed: Generated<EncounterStep[]>
   updated_at: Generated<Timestamp>
 }
 

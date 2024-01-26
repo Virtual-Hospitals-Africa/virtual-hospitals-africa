@@ -179,6 +179,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             appointment_id: null,
             waiting_room_id: encounter.waiting_room_id,
             waiting_room_facility_id: 1,
+            steps_completed: [],
           },
         },
       ])

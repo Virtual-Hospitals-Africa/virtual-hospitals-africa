@@ -1,20 +1,17 @@
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../components/library/form/Form.tsx'
 import {
-  LinkDef,
   LoggedInHealthWorkerContext,
   PatientIntake,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 import {
-  DefaultTop,
-  GenericSidebar,
   replaceParams,
+  StepsSidebar,
 } from '../../../../../components/library/Sidebar.tsx'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encounter_id]/_middleware.tsx'
 import { FreshContext } from '$fresh/server.ts'
@@ -22,9 +19,6 @@ import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
 import uniq from '../../../../../util/uniq.ts'
 import { INTAKE_STEPS, isIntakeStep } from '../../../../../shared/intake.ts'
-import { IntakeStep } from '../../../../../db.d.ts'
-import { CheckCircleIcon } from '../../../../../components/library/icons/heroicons/outline.tsx'
-import cls from '../../../../../util/cls.ts'
 
 type AdditionalContext = {
   is_review: false
@@ -106,62 +100,6 @@ export async function upsertPatientAndRedirect(
   return redirect(nextLink(ctx))
 }
 
-export function IntakeSidebar(
-  { route, params, intake_steps_completed }: {
-    route: string
-    params: Record<string, string>
-    intake_steps_completed: IntakeStep[]
-  },
-) {
-  return (
-    <GenericSidebar
-      route={route}
-      params={params}
-      navLinks={intake_nav_links.map((link) => ({
-        ...link,
-        Icon: intake_steps_completed.includes(link.step)
-          ? function Check({ active, className }) {
-            return (
-              <span
-                className={cls(
-                  'relative flex flex-shrink-0 items-center justify-center',
-                  className as string,
-                )}
-              >
-                <CheckCircleIcon
-                  className='text-indigo-600 group-hover:text-indigo-800'
-                  aria-hidden='true'
-                />
-              </span>
-            )
-          }
-          : function Dot({ active }) {
-            if (active) {
-              return (
-                <span
-                  className='relative flex h-5 w-5 flex-shrink-0 items-center justify-center'
-                  aria-hidden='true'
-                >
-                  <span className='absolute h-4 w-4 rounded-full bg-indigo-200' />
-                  <span className='relative block h-2 w-2 rounded-full bg-indigo-600' />
-                </span>
-              )
-            }
-            return (
-              <div
-                className='relative flex h-5 w-5 flex-shrink-0 items-center justify-center'
-                aria-hidden='true'
-              >
-                <div className='h-2 w-2 rounded-full bg-gray-300 group-hover:bg-gray-400' />
-              </div>
-            )
-          },
-      }))}
-      top={DefaultTop}
-    />
-  )
-}
-
 export function IntakeLayout({
   ctx,
   children,
@@ -170,10 +108,10 @@ export function IntakeLayout({
     <Layout
       title='Patient Intake'
       sidebar={
-        <IntakeSidebar
-          route={ctx.route}
-          params={ctx.params}
-          intake_steps_completed={ctx.state.patient.intake_steps_completed}
+        <StepsSidebar
+          ctx={ctx}
+          nav_links={intake_nav_links}
+          steps_completed={ctx.state.patient.intake_steps_completed}
         />
       }
       url={ctx.url}

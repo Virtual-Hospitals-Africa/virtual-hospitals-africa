@@ -5,7 +5,6 @@ import { Container } from '../../../../../../components/library/Container.tsx'
 import Layout from '../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../components/library/form/Form.tsx'
 import {
-  LinkDef,
   LoggedInHealthWorkerContext,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
@@ -20,18 +19,13 @@ import {
 } from '../../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
+import { Person } from '../../../../../../components/library/Person.tsx'
 import {
-  Person,
-  PersonData,
-} from '../../../../../../components/library/Person.tsx'
-import * as SeekingTreatmentIcons from '../../../../../../components/library/icons/SeekingTreatment.tsx'
-import * as HeroIcons from '../../../../../../components/library/icons/heroicons/outline.tsx'
-import {
-  GenericSidebar,
   replaceParams,
+  StepsSidebar,
 } from '../../../../../../components/library/Sidebar.tsx'
-import LogoutIcon from '../../../../../../components/library/icons/logout.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
+import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -149,94 +143,25 @@ export async function handler(
   )
   return ctx.next()
 }
-
-export const seeking_treatment_nav_links: LinkDef[] = [
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/vitals',
-    title: 'Vitals',
-    Icon: SeekingTreatmentIcons.Vitals,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/symptoms',
-    title: 'Symptoms',
-    Icon: SeekingTreatmentIcons.Symptoms,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/risk_factors',
-    title: 'risk factors',
-    Icon: HeroIcons.ExclamationTriangleIcon,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/examinations',
-    title: 'examinations',
-    Icon: SeekingTreatmentIcons.Examinations,
-  },
-  {
-    route:
-      '/app/patients/:patient_id/encounters/:encounter_id/diagnostic_tests',
-    title: 'diagnostic tests',
-    Icon: SeekingTreatmentIcons.DiagnosticTests,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/diagnosis',
-    title: 'diagnosis',
-    Icon: SeekingTreatmentIcons.Diagnosis,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/prescriptions',
-    title: 'prescriptions',
-    Icon: SeekingTreatmentIcons.Prescriptions,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/orders',
-    title: 'orders',
-    Icon: SeekingTreatmentIcons.Orders,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/clinical_notes',
-    title: 'clinical notes',
-    Icon: SeekingTreatmentIcons.ClinicalNotes,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/referral',
-    title: 'referral',
-    Icon: SeekingTreatmentIcons.Referral,
-  },
-  {
-    route: '/app/patients/:patient_id/encounters/:encounter_id/close_visit',
-    title: 'close visit',
-    Icon: LogoutIcon,
-  },
-]
+const nav_links = ENCOUNTER_STEPS.map((step) => ({
+  step,
+  route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,
+}))
 
 export const nextLink = ({ route, params }: FreshContext) => {
-  const current_index = seeking_treatment_nav_links.findIndex(
+  const current_index = nav_links.findIndex(
     (link) => link.route === route,
   )
   assert(current_index >= 0)
-  const next_link = seeking_treatment_nav_links[current_index + 1]
+  const next_link = nav_links[current_index + 1]
+  if (!next_link) {
+    return replaceParams(
+      `/app/patients/:patient_id/encounters/open/vitals`,
+      params,
+    )
+  }
   assert(next_link)
   return replaceParams(next_link.route, params)
-}
-
-export function SeekingTreatmentSidebar(
-  { route, params, patient }: {
-    route: string
-    params: Record<string, string>
-    patient: PersonData
-  },
-) {
-  return (
-    <GenericSidebar
-      route={route}
-      params={params}
-      navLinks={seeking_treatment_nav_links}
-      top={{
-        href: replaceParams('/app/patients/:patient_id', params),
-        child: <Person person={patient} />,
-      }}
-    />
-  )
 }
 
 export function EncounterLayout({
@@ -247,10 +172,14 @@ export function EncounterLayout({
     <Layout
       title={capitalize(ctx.state.encounter.reason)}
       sidebar={
-        <SeekingTreatmentSidebar
-          route={ctx.route}
-          params={ctx.params}
-          patient={ctx.state.patient}
+        <StepsSidebar
+          ctx={ctx}
+          nav_links={nav_links}
+          top={{
+            href: replaceParams('/app/patients/:patient_id', ctx.params),
+            child: <Person person={ctx.state.patient} />,
+          }}
+          steps_completed={ctx.state.encounter.steps_completed}
         />
       }
       url={ctx.url}

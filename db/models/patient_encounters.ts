@@ -9,7 +9,8 @@ import * as waiting_room from './waiting_room.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, toJSON } from '../helpers.ts'
+import { EncounterStep } from '../../db.d.ts'
 
 export type Upsert =
   & {
@@ -205,6 +206,7 @@ export const baseQuery = (trx: TrxOrDb) =>
       'patient_encounters.patient_id',
       'waiting_room.id as waiting_room_id',
       'waiting_room.facility_id as waiting_room_facility_id',
+      toJSON(eb, 'steps_completed'),
       jsonArrayFrom(
         eb.selectFrom('patient_encounter_providers')
           .innerJoin(
@@ -252,9 +254,26 @@ export function get(
     ? query.where('patient_encounters.closed_at', 'is', null)
     : query.where('patient_encounters.id', '=', encounter_id)
 
+  console.log(query.compile().sql)
+
   return query.executeTakeFirst()
 }
 
 export function getOpen(trx: TrxOrDb, patient_id: number) {
   return get(trx, { patient_id, encounter_id: 'open' })
+}
+
+export function completedStep(
+  trx: TrxOrDb,
+  { encounter_id, step }: {
+    encounter_id: number
+    step: EncounterStep
+  },
+) {
+  return sql`
+    UPDATE patient_encounters
+    SET steps_completed = steps_completed || ARRAY[${step}]::encounter_step[]
+    WHERE id = ${encounter_id}
+    AND NOT ${step} = ANY(steps_completed)
+  `.execute(trx)
 }
