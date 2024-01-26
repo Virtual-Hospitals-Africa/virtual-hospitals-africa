@@ -4,7 +4,7 @@ import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
-import { DB, IntakeStep, PatientAge } from './db.d.ts'
+import { DB, EncounterStep, IntakeStep, PatientAge } from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1345,7 +1345,10 @@ export type LinkProps = {
   title: string
   active: boolean
   Icon?: (
-    props: JSX.SVGAttributes<SVGSVGElement> & { active: boolean },
+    props: Omit<JSX.SVGAttributes<SVGSVGElement>, 'className'> & {
+      active: boolean
+      className?: string
+    },
   ) => JSX.Element
 }
 
@@ -1353,7 +1356,10 @@ export type LinkDef = {
   route: string
   title?: string
   Icon?: (
-    props: JSX.SVGAttributes<SVGSVGElement> & { active: boolean },
+    props: Omit<JSX.SVGAttributes<SVGSVGElement>, 'className'> & {
+      active: boolean
+      className?: string
+    },
   ) => JSX.Element
 }
 
@@ -1680,6 +1686,7 @@ export type RenderedPatientEncounter = {
   waiting_room_id: null | number
   waiting_room_facility_id: null | number
   providers: RenderedPatientEncounterProvider[]
+  steps_completed: EncounterStep[]
 }
 
 export type Measurements = {

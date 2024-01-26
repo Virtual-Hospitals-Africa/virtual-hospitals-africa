@@ -2,8 +2,9 @@ import { ComponentChildren, JSX } from 'preact'
 import { NumberInput } from '../../../../../../components/library/form/Inputs.tsx'
 import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
+import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
 import {
-  LoggedInHealthWorkerHandlerWithProps,
+  LoggedInHealthWorkerHandler,
   Measurements,
   MeasurementsUpsert,
 } from '../../../../../../types.ts'
@@ -38,10 +39,7 @@ function assertIsVitals(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  unknown,
-  EncounterContext['state']
-> = {
+export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
   async POST(req, ctx: EncounterContext) {
     const { measurements } = await parseRequestAsserts(
       ctx.state.trx,
@@ -50,6 +48,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
+    const completing_step = patient_encounters.completedStep(ctx.state.trx, {
+      encounter_id: ctx.state.encounter.encounter_id,
+      step: 'vitals',
+    })
+
     await patient_measurements.upsertVitals(ctx.state.trx, {
       patient_id,
       encounter_id: ctx.state.encounter.encounter_id,
@@ -57,6 +60,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         ctx.state.encounter_provider.patient_encounter_provider_id,
       measurements,
     })
+
+    await completing_step
 
     return redirect(nextLink(ctx))
   },

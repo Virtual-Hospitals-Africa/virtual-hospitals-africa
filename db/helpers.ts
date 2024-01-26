@@ -1,11 +1,14 @@
 // Taken from https://github.com/kysely-org/kysely/blob/master/src/helpers/postgres.ts
 import {
   Expression,
+  ExpressionBuilder,
   expressionBuilder,
   ExpressionWrapper,
+  ExtractTypeFromReferenceExpression,
   RawBuilder,
   Simplify,
   sql,
+  StringReference,
 } from 'kysely'
 import { DB } from '../db.d.ts'
 
@@ -187,6 +190,15 @@ export function jsonBuildObject<O extends Record<string, Expression<unknown>>>(
       Object.keys(obj).flatMap((k) => [sql.lit(k), obj[k]]),
     )
   })`
+}
+
+export function toJSON<
+  Tables extends keyof DB,
+  Ref extends StringReference<DB, Tables>,
+>(eb: ExpressionBuilder<DB, Tables>, ref: Ref) {
+  return eb.fn<ExtractTypeFromReferenceExpression<DB, Tables, Ref>>('TO_JSON', [
+    ref,
+  ]).as(ref)
 }
 
 export const now = sql<Date>`now()`

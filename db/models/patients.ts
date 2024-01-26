@@ -27,7 +27,7 @@ import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as address from './address.ts'
 import * as patient_family from './family.ts'
-import { jsonBuildObject } from '../helpers.ts'
+import { jsonBuildObject, toJSON } from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
@@ -70,9 +70,7 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.conversation_state',
       'patients.created_at',
       'patients.updated_at',
-      eb.fn<IntakeStep[]>('TO_JSON', ['patients.intake_steps_completed']).as(
-        'intake_steps_completed',
-      ),
+      toJSON(eb, 'intake_steps_completed'),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
       'facilities.name as nearest_facility',
@@ -304,9 +302,7 @@ export function getIntake(
         street: eb.ref('address.street'),
       }).as('address'),
       'patients.completed_intake',
-      eb.fn<IntakeStep[]>('TO_JSON', ['patients.intake_steps_completed']).as(
-        'intake_steps_completed',
-      ),
+      toJSON(eb, 'intake_steps_completed'),
       'patients.primary_doctor_id',
       'patients.unregistered_primary_doctor_name',
       sql<
@@ -428,6 +424,7 @@ export async function getWithOpenEncounter(
             'open_encounters.waiting_room_facility_id',
           ),
           providers: eb.ref('open_encounters.providers').$notNull(),
+          steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
         })).end().as('open_encounter'),
     ])
     .execute()

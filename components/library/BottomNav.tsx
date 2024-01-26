@@ -29,20 +29,20 @@
 //   )
 // }
 
-// const bottomNavLinks: LinkDef[] = [
+// const bottomnav_links: LinkDef[] = [
 //   { href: '/app', title: 'Home', Icon: HomeIcon },
 //   { href: '/app/calendar', title: 'Calendar', Icon: CalendarIcon },
 //   { href: '/app/patients', title: 'My Patients', Icon: PatientsIcon },
 //   { href: '/app/profile', title: 'My Profile', Icon: ProfileIcon },
 // ]
 
-// const matchingButtonNavLink = matchActiveLink(bottomNavLinks)
+// const matchingButtonNavLink = matchActiveLink(bottomnav_links)
 
 // export default function BottomNav({ route }: { route: string }) {
 //   const activeLink = matchingButtonNavLink(route)
 //   return (
 //     <footer className='fixed bottom-0 w-full flex justify-around gap-2 p-1 md:hidden bg-white border-t border-gray-200 h-14'>
-//       {bottomNavLinks.map((link) => (
+//       {bottomnav_links.map((link) => (
 //         <BottomNavLink {...link} active={link === activeLink} />
 //       ))}
 //     </footer>
