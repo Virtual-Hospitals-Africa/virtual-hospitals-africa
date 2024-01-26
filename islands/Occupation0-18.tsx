@@ -48,6 +48,7 @@ export default function Occupation0_18({
     'Lack of opportunity',
     'Loss of parent/s',
     'Substance misuse',
+    'Health issues',
     'Happy with current level of education',
   ]
   const grades = [
