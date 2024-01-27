@@ -20,7 +20,7 @@ import {
 } from '../../../util/date.ts'
 import { padTime } from '../../../util/pad.ts'
 import redirect from '../../../util/redirect.ts'
-import { parseDate } from '../../../util/date.ts'
+import { parseDateTime } from '../../../util/date.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertIsPartialAvailability } from '../../../shared/scheduling/availability.tsx'
@@ -56,7 +56,7 @@ const toHarare = (time: Time) => {
 function* availabilityBlocks(
   availability: Partial<AvailabilityJSON>,
 ): Generator<DeepPartial<GCalEvent>> {
-  const today = parseDate(new Date(), 'twoDigit')
+  const today = parseDateTime(new Date(), 'twoDigit')
   const todayIndex = days.indexOf(today.weekday as DayOfWeek)
   for (const day of days) {
     const dayAvailability = availability[day]

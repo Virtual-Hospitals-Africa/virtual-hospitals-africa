@@ -21,6 +21,7 @@ export type EditingSymptom = {
 
 export default function SymptomSection(props: {
   patient_symptoms: RenderedPatientSymptom[]
+  today: string
 }) {
   const patient_symptoms = useSignal<EditingSymptom[]>(props.patient_symptoms)
 
@@ -30,10 +31,11 @@ export default function SymptomSection(props: {
     )
   )
 
-  const add = (symptom: SymptomOption) =>
-    patient_symptoms.value = [...patient_symptoms.value, {
+  const add = (symptom: SymptomOption) => {
+    patient_symptoms.value = [{
       symptom: symptom.id,
-    }]
+    }, ...patient_symptoms.value]
+  }
 
   return (
     <div className='flex flex-col gap-1'>
@@ -50,9 +52,10 @@ export default function SymptomSection(props: {
       )}
       {patient_symptoms.value.map((symptom, i) => (
         <SymptomInput
-          key={i}
+          key={symptom.symptom + i}
           name={`symptoms.${i}`}
           value={symptom}
+          today={props.today}
         />
       ))}
     </div>

@@ -1200,8 +1200,8 @@ export type HealthWorkerAppointmentSlot = {
     phone_number: Maybe<string>
   }
   durationMinutes: number
-  start: ParsedDate
-  end: ParsedDate
+  start: ParsedDateTime
+  end: ParsedDateTime
   health_workers: ReturnedSqlRow<HealthWorker>[]
   physicalLocation?: undefined
   virtualLocation?: undefined
@@ -1217,8 +1217,8 @@ export type HealthWorkerAppointment = {
     phone_number: Maybe<string>
   }
   durationMinutes: number
-  start: ParsedDate
-  end: ParsedDate
+  start: ParsedDateTime
+  end: ParsedDateTime
   health_workers?: ReturnedSqlRow<HealthWorker>[]
   physicalLocation?: {
     facility: ReturnedSqlRow<Facility>
@@ -1229,6 +1229,12 @@ export type HealthWorkerAppointment = {
 }
 
 export type ParsedDate = {
+  day: string
+  month: string
+  year: string
+}
+
+export type ParsedDateTime = {
   weekday: string
   day: string
   month: string

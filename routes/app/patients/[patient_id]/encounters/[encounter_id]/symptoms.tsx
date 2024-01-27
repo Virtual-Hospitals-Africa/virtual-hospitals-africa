@@ -10,7 +10,10 @@ import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
-import { isISODateString } from '../../../../../../util/date.ts'
+import {
+  isISODateString,
+  todayISOInHarare,
+} from '../../../../../../util/date.ts'
 import redirect from '../../../../../../util/redirect.ts'
 
 function assertIsSymptoms(body: unknown): asserts body is {
@@ -78,9 +81,11 @@ export default async function SymptomsPage(
     patient_id: ctx.state.patient.id,
   })
 
+  const today = todayISOInHarare()
+
   return (
     <EncounterLayout ctx={ctx}>
-      <SymptomSection patient_symptoms={symptoms} />
+      <SymptomSection patient_symptoms={symptoms} today={today} />
       <FormButtons />
     </EncounterLayout>
   )
