@@ -1,4 +1,4 @@
-import { parseDate } from '../util/date.ts'
+import { parseDateTime } from '../util/date.ts'
 
 const [migrationName] = Deno.args
 
@@ -8,7 +8,7 @@ if (!migrationName) {
   )
 }
 
-const { year, month, day, hour, minute, second } = parseDate(
+const { year, month, day, hour, minute, second } = parseDateTime(
   new Date(),
   'twoDigit',
 )

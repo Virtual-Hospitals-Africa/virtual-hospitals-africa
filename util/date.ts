@@ -1,6 +1,12 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { Duration, MonthNum, ParsedDate, Time } from '../types.ts'
+import {
+  Duration,
+  MonthNum,
+  ParsedDate,
+  ParsedDateTime,
+  Time,
+} from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'
 
@@ -49,12 +55,18 @@ export const formats = {
     second: '2-digit',
     timeZone: 'Africa/Johannesburg',
   }),
+  justDate: new Intl.DateTimeFormat('en-gb', {
+    month: '2-digit',
+    year: 'numeric',
+    day: '2-digit',
+    timeZone: 'Africa/Johannesburg',
+  }),
 }
 
-export function parseDate(
+export function parseDateTime(
   date: string | Date,
-  format: keyof typeof formats,
-): ParsedDate {
+  format: 'numeric' | 'twoDigit',
+): ParsedDateTime {
   const formatter = formats[format]
   const dateString = formatter.format(new Date(date))
   const [weekday, dateParts, timeParts] = dateString.split(', ')
@@ -63,43 +75,52 @@ export function parseDate(
   return { weekday, day, month, year, hour, minute, second, format }
 }
 
-export function stringify(date: ParsedDate | Date): string {
-  if (isDate(date)) date = parseDate(date, 'numeric')
+export function parseDate(
+  date: string | Date,
+): ParsedDate {
+  const dateString = formats.justDate.format(new Date(date))
+  const [day, month, year] = dateString.split('/')
+  return { day, month, year }
+}
+
+export function stringify(date: ParsedDateTime | Date): string {
+  if (isDate(date)) date = parseDateTime(date, 'numeric')
   assert(date.format === 'numeric')
   const { day, month, year, hour, minute, second } = date
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
 }
 
-export function stringifyJustDate(date: ParsedDate | Date): string {
-  if (isDate(date)) date = parseDate(date, 'numeric')
-  assert(date.format === 'numeric')
+export function stringifyJustDate(
+  date: ParsedDateTime | ParsedDate | Date | string,
+): string {
+  if (isDate(date) || isString(date)) date = parseDate(date)
   const { day, month, year } = date
   return `${year}-${month}-${day}`
 }
 
 export function todayISOInHarare() {
-  const { day, month, year } = parseDate(new Date(), 'twoDigit')
+  const { day, month, year } = parseDateTime(new Date(), 'twoDigit')
   return `${year}-${month}-${day}`
 }
 
 export function tomorrowISOInHarare() {
   const date = new Date()
   date.setDate(date.getDate() + 1)
-  const { day, month, year } = parseDate(date, 'twoDigit')
+  const { day, month, year } = parseDateTime(date, 'twoDigit')
   return `${year}-${month}-${day}`
 }
 
 export function formatHarare(
   date: Date | string = new Date(),
 ): string {
-  const { day, month, year, hour, minute, second } = parseDate(
+  const { day, month, year, hour, minute, second } = parseDateTime(
     date,
     'twoDigit',
   )
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
 }
 
-const dateRegex = /^\d{4}-\d{2}-\d{2}$/
+export const dateRegex = /^\d{4}-\d{2}-\d{2}$/
 const rfc3339Regex =
   /^((?:(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2}(?:\.\d+)?))(Z|[\+-]\d{2}:\d{2})?)$/
 
@@ -171,7 +192,7 @@ export function prettyAppointmentTime(startTime: string | Date): string {
   return `${dateStr} at ${prettyTime}`
 }
 
-export function timeInSimpleAmPm(parsed: ParsedDate): string {
+export function timeInSimpleAmPm(parsed: ParsedDateTime): string {
   const hour = parseInt(parsed.hour)
 
   if (hour === 0) return `12:${parsed.minute}am`
@@ -182,8 +203,8 @@ export function timeInSimpleAmPm(parsed: ParsedDate): string {
 }
 
 export function timeRangeInSimpleAmPm(
-  start: ParsedDate,
-  end: ParsedDate,
+  start: ParsedDateTime,
+  end: ParsedDateTime,
 ): string {
   const timeStart = timeInSimpleAmPm(start)
   const timeEnd = timeInSimpleAmPm(end)
@@ -312,7 +333,7 @@ export function isValidDate(messageBody: string): boolean {
 }
 
 export function getISOInHarare(date: Date) {
-  const { day, month, year } = parseDate(date, 'twoDigit')
+  const { day, month, year } = parseDateTime(date, 'twoDigit')
   return `${year}-${month}-${day}`
 }
 
@@ -355,6 +376,21 @@ export function durationEndDate(
       throw new Error(`Invalid duration unit: ${duration.duration_unit}`)
   }
   return stringifyJustDate(end)
+}
+
+export function durationBetween(
+  start_date: Date | string,
+  end_date: Date | string,
+): Duration {
+  const start = new Date(start_date)
+  const end = new Date(end_date)
+  const duration = end.valueOf() - start.valueOf()
+  const days = duration / (1000 * 60 * 60 * 24)
+  if (days % 1 !== 0) throw new Error('Duration is not a whole number of days')
+  return {
+    duration: days,
+    duration_unit: 'days',
+  }
 }
 
 export function isISODateString(date: unknown): date is string {

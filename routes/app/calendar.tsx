@@ -7,7 +7,7 @@ import {
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../types.ts'
 import { getWithPatientInfo as getAppointments } from '../../db/models/appointments.ts'
-import { parseDate, todayISOInHarare } from '../../util/date.ts'
+import { parseDateTime, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import Layout from '../../components/library/Layout.tsx'
@@ -64,8 +64,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<CalendarPageProps> =
             id: appt.id,
             patient: { ...appt.patient, age: 30 },
             durationMinutes: Math.round(duration / (1000 * 60)),
-            start: parseDate(startTime, 'numeric'),
-            end: parseDate(endTime, 'numeric'),
+            start: parseDateTime(startTime, 'numeric'),
+            end: parseDateTime(endTime, 'numeric'),
             virtualLocation: gcalItem.hangoutLink && {
               href: gcalItem.hangoutLink,
             },

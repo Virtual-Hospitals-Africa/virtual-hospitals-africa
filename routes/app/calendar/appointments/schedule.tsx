@@ -18,7 +18,7 @@ import {
 } from '../../../../shared/scheduling/getHealthWorkerAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
 import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
-import { parseDate } from '../../../../util/date.ts'
+import { parseDateTime } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
 import {
   assertIsScheduleFormValues,
@@ -118,8 +118,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
         patient,
         id: `${slot.health_worker.id}-${slot.start}`,
         durationMinutes: slot.durationMinutes,
-        start: parseDate(new Date(slot.start), 'numeric'),
-        end: parseDate(new Date(slot.end), 'numeric'),
+        start: parseDateTime(new Date(slot.start), 'numeric'),
+        end: parseDateTime(new Date(slot.end), 'numeric'),
         health_workers: [slot.health_worker],
       }))
 
