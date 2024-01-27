@@ -471,9 +471,7 @@ export function ImageInput(
     onInput,
     onFocus,
     onBlur,
-  }:
-    & TextInputProps
-    & { isHidden?: boolean },
+  }: TextInputProps,
 ) {
   return (
     <LabeledInput
@@ -486,6 +484,55 @@ export function ImageInput(
       <input
         type='file'
         accept='.jpg,.jpeg,.png'
+        {...(name && { name })}
+        className={cls(
+          'w-0 h-0 overflow-hidden',
+          inputClassName,
+          disabled && 'bg-gray-300',
+        )}
+        placeholder={placeholder}
+        required={required}
+        onInput={onInput}
+        onFocus={onFocus}
+        onBlur={onBlur}
+      />
+      <span className='inline-block w-full rounded-md border-0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 text-gray-600 text-center cursor-pointer'>
+        Upload
+      </span>
+    </LabeledInput>
+  )
+}
+
+export function ImageOrVideoInput(
+  {
+    name,
+    label,
+    placeholder,
+    required,
+    disabled,
+    className,
+    inputClassName,
+    onInput,
+    onFocus,
+    onBlur,
+  }: Omit<TextInputProps, 'value'> & {
+    value?: Maybe<{
+      mime_type: string
+      url: string
+    }>
+  },
+) {
+  return (
+    <LabeledInput
+      name={name}
+      label={label}
+      required={required}
+      disabled={disabled}
+      className={className}
+    >
+      <input
+        type='file'
+        accept='.jpg,.jpeg,.png,.gif,.mov,.mp4,.avi,.wav,.webm'
         {...(name && { name })}
         className={cls(
           'w-0 h-0 overflow-hidden',
@@ -547,7 +594,7 @@ export function SearchInput(
           disabled={disabled}
           value={value}
           onInput={onInput}
-          onFocus={(e) => onFocus && onFocus(e)}
+          onFocus={onFocus}
           onBlur={onBlur}
         />
       </div>

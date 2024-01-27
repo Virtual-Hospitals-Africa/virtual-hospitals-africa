@@ -41,10 +41,10 @@ export function getStepFormData(
 }
 
 export type DocumentFormFields = {
-  national_id_picture: Maybe<ReturnedSqlRow<Media>>
-  ncz_registration_card: Maybe<ReturnedSqlRow<Media>>
-  face_picture: Maybe<ReturnedSqlRow<Media>>
-  nurse_practicing_cert: Maybe<ReturnedSqlRow<Media>>
+  national_id_picture: Maybe<{ id: number; url: string }>
+  ncz_registration_card: Maybe<{ id: number; url: string }>
+  face_picture: Maybe<{ id: number; url: string }>
+  nurse_practicing_cert: Maybe<{ id: number; url: string }>
 }
 
 export type PersonalFormFields = {

@@ -1737,7 +1737,10 @@ export type PatientSymptomUpsert = PatientInsertShared & {
 }
 
 export type RenderedPatientSymptom = PatientInsertShared & {
-  media_urls: string[]
+  media: {
+    mime_type: string
+    url: string
+  }[]
 }
 
 export type DatabaseSchema = DB

@@ -219,6 +219,7 @@ export default function SymptomInput({
             label='Notes'
             value={value.notes}
             rows={2}
+            placeholder='Describe the symptom’s intermittency, frequency, character, radiation, timing, exacerbating/relieving factors where applicable'
           />
         </FormRow>
       </div>
@@ -226,9 +227,9 @@ export default function SymptomInput({
         <FormRow className='flex-wrap'>
           <FilePreviewInput
             name={`${name}.media.0`}
-            label='Photo'
-            classNames='w-36 h-36'
-            value={value.media_urls?.[0]}
+            label='Photo/Video'
+            className='w-36 h-36'
+            value={value.media?.[0]}
           />
         </FormRow>
       </div>

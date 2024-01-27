@@ -1,17 +1,22 @@
-import {
-  Maybe,
-  Media,
-  PatientMedia,
-  ReturnedSqlRow,
-  TrxOrDb,
-} from './../../types.ts'
+import { sql } from 'kysely'
+import { Maybe, Media, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
 
 export function insert(
   trx: TrxOrDb,
   opts: { binary_data: Uint8Array; mime_type: string },
-): Promise<ReturnedSqlRow<PatientMedia>> {
-  // deno-lint-ignore no-explicit-any
-  return trx.insertInto('media').values(opts as any).returningAll()
+): Promise<{
+  id: number
+  mime_type: string
+  url: string
+}> {
+  return trx.insertInto('media')
+    // deno-lint-ignore no-explicit-any
+    .values(opts as any)
+    .returning([
+      'id',
+      'mime_type',
+      sql<string>`concat('/app/media/', uuid)`.as('url'),
+    ])
     .executeTakeFirstOrThrow()
 }
 

@@ -73,7 +73,8 @@
     "@headlessui/react": "https://esm.sh/*@headlessui/react@1.7.17?alias=react:preact/compat,react-dom:preact/compat,client-only:preact/compat",
     "react": "https://esm.sh/preact@10.19.2/compat",
     "$fresh-testing-library": "https://deno.land/x/fresh_testing_library@0.12.0/mod.ts",
-    "$fresh-testing-library/": "https://deno.land/x/fresh_testing_library@0.12.0/"
+    "$fresh-testing-library/": "https://deno.land/x/fresh_testing_library@0.12.0/",
+    "ffmpeg": "https://deno.land/x/deno_ffmpeg@v3.1.0/mod.ts"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": true

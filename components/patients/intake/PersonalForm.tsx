@@ -6,7 +6,7 @@ import {
   TextInput,
 } from '../../library/form/Inputs.tsx'
 import FormRow from '../../library/form/Row.tsx'
-import FilePreviewInput from '../../../islands/file-preview-input.tsx'
+import { ImagePreviewInput } from '../../../islands/file-preview-input.tsx'
 import { PatientIntake } from '../../../types.ts'
 import NationalIdInput from '../../../islands/NationalIdInput.tsx'
 
@@ -47,10 +47,10 @@ export default function PatientPersonalForm(
         />
       </FormRow>
       <FormRow className='flex-wrap'>
-        <FilePreviewInput
+        <ImagePreviewInput
           name='avatar_media'
           label='Photo'
-          classNames='w-36 h-36'
+          className='w-36 h-36'
           value={patient.avatar_url}
         />
       </FormRow>

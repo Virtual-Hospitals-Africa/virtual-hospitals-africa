@@ -4,7 +4,7 @@ import {
   RenderedPatientSymptom,
   TrxOrDb,
 } from '../../types.ts'
-import { isoDate, jsonArrayFromColumn } from '../helpers.ts'
+import { isoDate, jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 import omit from '../../util/omit.ts'
 
 export async function upsert(
@@ -89,20 +89,20 @@ export function getEncounter(
       isoDate(eb.ref('start_date')).as('start_date'),
       isoDate(eb.ref('end_date')).as('end_date'),
       'notes',
-      jsonArrayFromColumn(
-        'media_url',
+      jsonArrayFrom(
         eb
           .selectFrom('patient_symptom_media')
           .innerJoin('media', 'media.id', 'patient_symptom_media.media_id')
-          .select(
-            sql<string>`concat('/app/media/', media.uuid)`.as('media_url'),
-          )
+          .select([
+            'media.mime_type',
+            sql<string>`concat('/app/media/', media.uuid)`.as('url'),
+          ])
           .whereRef(
             'patient_symptom_media.patient_symptom_id',
             '=',
             'patient_symptoms.id',
           ),
-      ).as('media_urls'),
+      ).as('media'),
     ])
 
   // TODO: abstract this out into patient_encounters model

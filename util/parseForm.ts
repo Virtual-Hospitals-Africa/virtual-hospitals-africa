@@ -92,10 +92,13 @@ export async function parseRequestAsserts<T extends Record<string, unknown>>(
 
   await Promise.all(
     Object.entries(files).map(async ([key, value]) => {
+      const buffer = await value.arrayBuffer()
+      const binary_data = new Uint8Array(buffer)
       const inserted = await media.insert(trx, {
         mime_type: value.type,
-        binary_data: new Uint8Array(await value.arrayBuffer()),
+        binary_data,
       })
+
       set(parsed, key, {
         ...inserted,
         name: value.name,

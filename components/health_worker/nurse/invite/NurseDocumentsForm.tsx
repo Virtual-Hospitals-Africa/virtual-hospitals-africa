@@ -1,4 +1,4 @@
-import FilePreviewInput from '../../../../islands/file-preview-input.tsx'
+import { ImagePreviewInput } from '../../../../islands/file-preview-input.tsx'
 import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
@@ -9,30 +9,31 @@ export default function NurseDocumentsForm(
   return (
     <>
       <FormRow>
-        <FilePreviewInput
+        <ImagePreviewInput
           name='national_id_picture'
           label='National Identity Card'
-          value={formData.national_id_picture?.mime_type}
+          value={formData.national_id_picture?.url}
         />
       </FormRow>
       <FormRow>
-        <FilePreviewInput
+        <ImagePreviewInput
           name='ncz_registration_card'
           label='Nurses Council Of Zimbabwe Registration Identity Card'
-          value={formData.ncz_registration_card?.mime_type}
+          value={formData.ncz_registration_card?.url}
         />
       </FormRow>
       <FormRow>
-        <FilePreviewInput
+        <ImagePreviewInput
           name='face_picture'
           label='Identification Photo'
-          value={formData.face_picture?.mime_type}
+          value={formData.face_picture?.url}
         />
       </FormRow>
       <FormRow>
-        <FilePreviewInput
+        <ImagePreviewInput
           name='nurse_practicing_cert'
           label='Nurse Practicing Certificate'
+          value={formData.nurse_practicing_cert?.url}
         />
       </FormRow>
       <hr className='my-2' />
