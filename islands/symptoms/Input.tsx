@@ -33,7 +33,6 @@ function DurationInput(
         className='w-24'
         value={value.duration}
         onInput={(e) => {
-          assert(e.target instanceof HTMLInputElement)
           onChange({
             duration: Number(e.target.value),
             duration_unit: value.duration_unit,
@@ -64,7 +63,6 @@ function DurationInput(
         ]}
         className='w-24'
         onChange={(e) => {
-          assert(e.target instanceof HTMLSelectElement)
           assert(
             e.target.value === 'days' || e.target.value === 'weeks' ||
               e.target.value === 'months' || e.target.value === 'years',
@@ -147,7 +145,7 @@ export default function SymptomInput({
           <SelectWithOptions
             name={`${name}.severity`}
             required
-            options={range(1, 10)}
+            options={range(1, 11)} // 1-10
             value={value.severity}
           />
         </FormRow>

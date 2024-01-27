@@ -1,6 +1,12 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { Duration, MonthNum, ParsedDate, ParsedDateTime, Time } from '../types.ts'
+import {
+  Duration,
+  MonthNum,
+  ParsedDate,
+  ParsedDateTime,
+  Time,
+} from '../types.ts'
 import isDate from './isDate.ts'
 import isString from './isString.ts'
 
@@ -70,7 +76,7 @@ export function parseDateTime(
 }
 
 export function parseDate(
-  date: string | Date
+  date: string | Date,
 ): ParsedDate {
   const dateString = formats.justDate.format(new Date(date))
   const [day, month, year] = dateString.split('/')
@@ -84,7 +90,9 @@ export function stringify(date: ParsedDateTime | Date): string {
   return `${year}-${month}-${day}T${hour}:${minute}:${second}+02:00`
 }
 
-export function stringifyJustDate(date: ParsedDateTime | ParsedDate | Date | string): string {
+export function stringifyJustDate(
+  date: ParsedDateTime | ParsedDate | Date | string,
+): string {
   if (isDate(date) || isString(date)) date = parseDate(date)
   const { day, month, year } = date
   return `${year}-${month}-${day}`
@@ -384,7 +392,6 @@ export function durationBetween(
     duration_unit: 'days',
   }
 }
-
 
 export function isISODateString(date: unknown): date is string {
   return isString(date) && /^\d{4}-\d{2}-\d{2}$/.test(date) &&

@@ -15,9 +15,9 @@ type LabeledInputProps<El extends HTMLElement> = {
   readonly?: boolean
   ref?: Ref<El>
   className?: string
-  onInput?: JSX.GenericEventHandler<El>
-  onFocus?: JSX.GenericEventHandler<El>
-  onBlur?: JSX.GenericEventHandler<El>
+  onInput?(e: JSX.TargetedEvent<El, Event> & { target: El }): void
+  onFocus?(e: JSX.TargetedEvent<El, Event>): void
+  onBlur?(e: JSX.TargetedEvent<El, Event>): void
 }
 
 type WrapperInputProps<El extends HTMLElement> = LabeledInputProps<El> & {
@@ -269,7 +269,11 @@ export function TextArea(
 export type SelectProps =
   & Omit<LabeledInputProps<HTMLSelectElement>, 'onInput'>
   & {
-    onChange?: JSX.GenericEventHandler<HTMLSelectElement>
+    onChange?: (
+      e: JSX.TargetedEvent<HTMLSelectElement, Event> & {
+        target: HTMLSelectElement
+      },
+    ) => void
     selectClassName?: string
     children: ComponentChildren
   }

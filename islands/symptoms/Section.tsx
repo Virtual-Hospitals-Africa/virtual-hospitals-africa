@@ -1,7 +1,7 @@
 import { computed, useSignal } from '@preact/signals'
 import SymptomSearch from './Search.tsx'
 import { SYMPTOMS } from '../../shared/symptoms.ts'
-import { PatientSymptomUpsert, RenderedPatientSymptom } from '../../types.ts'
+import { RenderedPatientSymptom } from '../../types.ts'
 import SymptomInput from './Input.tsx'
 import EmptyState from '../../components/library/EmptyState.tsx'
 import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
@@ -32,9 +32,9 @@ export default function SymptomSection(props: {
   )
 
   const add = (symptom: SymptomOption) => {
-    patient_symptoms.value = [{
+    patient_symptoms.value = [...patient_symptoms.value, {
       symptom: symptom.id,
-    }, ...patient_symptoms.value]
+    }]
   }
 
   return (
@@ -50,14 +50,17 @@ export default function SymptomSection(props: {
           icon={<Symptoms className='mx-auto h-12 w-12 text-gray-400' />}
         />
       )}
-      {patient_symptoms.value.map((symptom, i) => (
-        <SymptomInput
-          key={symptom.symptom + i}
-          name={`symptoms.${i}`}
-          value={symptom}
-          today={props.today}
-        />
-      ))}
+      {/* Reverse to show the most recently inserted symptom at the top without messing with the indexes */}
+      <div className='flex flex-col-reverse gap-1'>
+        {patient_symptoms.value.map((symptom, i) => (
+          <SymptomInput
+            key={i}
+            name={`symptoms.${i}`}
+            value={symptom}
+            today={props.today}
+          />
+        ))}
+      </div>
     </div>
   )
 }
