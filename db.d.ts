@@ -40,6 +40,12 @@ export type GuardianRelation =
 
 export type HealthWorkerProfessions = 'admin' | 'doctor' | 'nurse'
 
+export type Int8 = ColumnType<
+  string,
+  bigint | number | string,
+  bigint | number | string
+>
+
 export type IntakeStep =
   | 'address'
   | 'conditions'
@@ -200,6 +206,11 @@ export interface Employment {
   updated_at: Generated<Timestamp>
 }
 
+export interface Encounter {
+  order: Int8
+  step: EncounterStep
+}
+
 export interface Facilities {
   address: string
   category: string
@@ -277,6 +288,11 @@ export interface Icd10Codes {
   created_at: Generated<Timestamp>
   name: string
   updated_at: Generated<Timestamp>
+}
+
+export interface Intake {
+  order: Int8
+  step: IntakeStep
 }
 
 export interface MailingList {
@@ -442,7 +458,14 @@ export interface PatientEncounters {
   notes: string | null
   patient_id: number
   reason: EncounterReason
-  steps_completed: Generated<EncounterStep[]>
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientEncounterSteps {
+  created_at: Generated<Timestamp>
+  encounter_step: EncounterStep
+  id: Generated<number>
+  patient_encounter_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -452,6 +475,14 @@ export interface PatientGuardians {
   guardian_patient_id: number
   guardian_relation: GuardianRelation
   id: Generated<number>
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientIntake {
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  intake_step: IntakeStep
+  patient_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -498,7 +529,6 @@ export interface Patients {
   ethnicity: string | null
   gender: Gender | null
   id: Generated<number>
-  intake_steps_completed: Generated<IntakeStep[]>
   location: string | null
   name: string | null
   national_id_number: string | null
@@ -616,6 +646,7 @@ export interface DB {
   districts: Districts
   drugs: Drugs
   employment: Employment
+  encounter: Encounter
   facilities: Facilities
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns
@@ -624,6 +655,7 @@ export interface DB {
   health_worker_invitees: HealthWorkerInvitees
   health_workers: HealthWorkers
   icd10_codes: Icd10Codes
+  intake: Intake
   mailing_list: MailingList
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
@@ -639,8 +671,10 @@ export interface DB {
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
   patient_encounter_providers: PatientEncounterProviders
+  patient_encounter_steps: PatientEncounterSteps
   patient_encounters: PatientEncounters
   patient_guardians: PatientGuardians
+  patient_intake: PatientIntake
   patient_kin: PatientKin
   patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities

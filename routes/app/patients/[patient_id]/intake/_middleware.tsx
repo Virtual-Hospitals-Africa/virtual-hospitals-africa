@@ -83,18 +83,12 @@ export async function upsertPatientAndRedirect(
   const step = ctx.route.split('/').pop()
   assert(step)
   assert(isIntakeStep(step))
-  const intake_steps_completed = uniq([
-    ...ctx.state.patient.intake_steps_completed,
-    step,
-  ])
-  const completed_intake = intake_steps_completed.length === INTAKE_STEPS.length
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
   await patients.upsertIntake(ctx.state.trx, {
     ...patient,
-    id: patient_id,
-    intake_steps_completed,
-    completed_intake,
+    id: ctx.state.patient.id,
+    completed_intake: step === 'review',
+    intake_step_just_completed: step,
   })
 
   return redirect(nextLink(ctx))

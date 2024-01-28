@@ -9,7 +9,7 @@ import * as waiting_room from './waiting_room.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { jsonArrayFrom, toJSON } from '../helpers.ts'
+import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 import { EncounterStep } from '../../db.d.ts'
 
 export type Upsert =
@@ -206,7 +206,18 @@ export const baseQuery = (trx: TrxOrDb) =>
       'patient_encounters.patient_id',
       'waiting_room.id as waiting_room_id',
       'waiting_room.facility_id as waiting_room_facility_id',
-      toJSON(eb, 'steps_completed'),
+      jsonArrayFromColumn(
+        'encounter_step',
+        eb.selectFrom('patient_encounter_steps')
+          .innerJoin(
+            'encounter',
+            'encounter.step',
+            'patient_encounter_steps.encounter_step',
+          )
+          .whereRef('patient_encounter_id', '=', 'patient_encounters.id')
+          .orderBy(['encounter.order desc'])
+          .select(['encounter_step']),
+      ).as('steps_completed'),
       jsonArrayFrom(
         eb.selectFrom('patient_encounter_providers')
           .innerJoin(
@@ -270,10 +281,8 @@ export function completedStep(
     step: EncounterStep
   },
 ) {
-  return sql`
-    UPDATE patient_encounters
-    SET steps_completed = steps_completed || ARRAY[${step}]::encounter_step[]
-    WHERE id = ${encounter_id}
-    AND NOT ${step} = ANY(steps_completed)
-  `.execute(trx)
+  return trx.insertInto('patient_encounter_steps')
+    .values({ patient_encounter_id: encounter_id, encounter_step: step })
+    .onConflict((oc) => oc.doNothing())
+    .execute()
 }
