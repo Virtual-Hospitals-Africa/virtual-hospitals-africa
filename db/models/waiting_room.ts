@@ -109,9 +109,78 @@ export async function get(
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
+      'completed_intake',
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
+      eb.selectFrom('intake')
+        .leftJoin(
+          'patient_intake',
+          (join) =>
+            join
+              .onRef('patient_intake.intake_step', '=', 'intake.step')
+              .onRef('patient_intake.patient_id', '=', 'patients.id'),
+        )
+        .where('patient_intake.id', 'is', null)
+        .orderBy('intake.order', 'asc')
+        .select('step')
+        .limit(1)
+        .as('awaiting_intake_step'),
+      eb.selectFrom('intake')
+        .innerJoin(
+          'patient_intake',
+          (join) =>
+            join
+              .onRef('patient_intake.intake_step', '=', 'intake.step')
+              .onRef('patient_intake.patient_id', '=', 'patients.id'),
+        )
+        .orderBy('intake.order', 'desc')
+        .select('step')
+        .limit(1)
+        .as('last_completed_intake_step'),
+
+      eb.selectFrom('encounter')
+        .leftJoin(
+          'patient_encounter_steps',
+          (join) =>
+            join
+              .onRef(
+                'patient_encounter_steps.encounter_step',
+                '=',
+                'encounter.step',
+              )
+              .onRef(
+                'patient_encounter_steps.patient_encounter_id',
+                '=',
+                'patient_encounters.id',
+              ),
+        )
+        .where('patient_encounter_steps.id', 'is', null)
+        .orderBy('encounter.order', 'asc')
+        .select('step')
+        .limit(1)
+        .as('awaiting_encounter_step'),
+
+      eb.selectFrom('encounter')
+        .innerJoin(
+          'patient_encounter_steps',
+          (join) =>
+            join
+              .onRef(
+                'patient_encounter_steps.encounter_step',
+                '=',
+                'encounter.step',
+              )
+              .onRef(
+                'patient_encounter_steps.patient_encounter_id',
+                '=',
+                'patient_encounters.id',
+              ),
+        )
+        .orderBy('encounter.order', 'desc')
+        .select('step')
+        .limit(1)
+        .as('last_completed_encounter_step'),
       jsonArrayFrom(
         eb.selectFrom('appointment_health_worker_attendees')
           .innerJoin(
@@ -172,6 +241,12 @@ export async function get(
         appointment_start,
         appointment_health_workers,
         wait_time,
+        completed_intake,
+        in_waiting_room,
+        awaiting_intake_step,
+        last_completed_intake_step,
+        awaiting_encounter_step,
+        last_completed_encounter_step,
         ...rest
       },
     ) => {
@@ -191,9 +266,36 @@ export async function get(
         }
       }
 
+      // TODO: clean this up?
+      let status: string
+      if (completed_intake) {
+        if (in_waiting_room) {
+          if (last_completed_encounter_step) {
+            status = `Awaiting Consultation (${awaiting_encounter_step})`
+          } else {
+            status = 'Awaiting Consultation'
+          }
+        } else {
+          status = `In Consultation (${awaiting_encounter_step})`
+        }
+      } else {
+        if (in_waiting_room) {
+          if (last_completed_intake_step) {
+            status = `Awaiting Intake (${awaiting_intake_step})`
+          } else {
+            status = 'Awaiting Intake'
+          }
+        } else {
+          status = `In Intake (${awaiting_intake_step})`
+        }
+      }
+      assert(status)
+
       return {
         ...rest,
         patient,
+        status,
+        in_waiting_room,
         appointment,
         arrived_ago_display: arrivedAgoDisplay(wait_time),
       }

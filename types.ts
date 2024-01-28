@@ -1659,6 +1659,7 @@ export type RenderedWaitingRoom = {
   reason: PatientEncounterReason
   is_emergency: SqlBool
   in_waiting_room: SqlBool
+  status: string
   arrived_ago_display: string
   appointment: null | {
     id: number

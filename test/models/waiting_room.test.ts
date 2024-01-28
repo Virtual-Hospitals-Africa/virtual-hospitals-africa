@@ -52,6 +52,7 @@ describe(
               },
               in_waiting_room: true,
               arrived_ago_display: 'Just now',
+              status: 'Awaiting Intake',
               actions: {
                 view: null,
                 intake: `/app/patients/${patient1.id}/intake/personal`,
@@ -70,6 +71,7 @@ describe(
               },
               in_waiting_room: true,
               arrived_ago_display: 'Just now',
+              status: 'Awaiting Intake',
               actions: {
                 view: null,
                 intake: `/app/patients/${patient2.id}/intake/personal`,
@@ -120,6 +122,7 @@ describe(
                 },
                 in_waiting_room: true,
                 arrived_ago_display: 'Just now',
+                status: 'Awaiting Intake',
                 actions: {
                   view: null,
                   intake: `/app/patients/${patient1.id}/intake/personal`,
@@ -138,6 +141,7 @@ describe(
                 },
                 in_waiting_room: true,
                 arrived_ago_display: '60 minutes ago',
+                status: 'Awaiting Intake',
                 actions: {
                   view: null,
                   intake: `/app/patients/${patient2.id}/intake/personal`,
