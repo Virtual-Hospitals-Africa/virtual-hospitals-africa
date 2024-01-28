@@ -27,9 +27,13 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     label: 'Provider',
     dataKey(row) {
       if (!row.providers.length) return 'Next Available'
-      return row.providers.map((p) => (
-        <a key={p.health_worker_id} href={p.href}>{p.name}</a>
-      ))
+      return (
+        <div className='flex flex-col'>
+          {row.providers.map((p) => (
+            <a key={p.health_worker_id} href={p.href}>{p.name}</a>
+          ))}
+        </div>
+      )
     },
   },
   {

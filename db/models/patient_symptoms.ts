@@ -4,7 +4,7 @@ import {
   RenderedPatientSymptom,
   TrxOrDb,
 } from '../../types.ts'
-import { isoDate, jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
+import { isoDate, jsonArrayFrom } from '../helpers.ts'
 import omit from '../../util/omit.ts'
 
 export async function upsert(

@@ -27,7 +27,7 @@ import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as address from './address.ts'
 import * as patient_family from './family.ts'
-import { jsonBuildObject, toJSON } from '../helpers.ts'
+import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
@@ -70,7 +70,18 @@ const baseSelect = (trx: TrxOrDb) =>
       'patients.conversation_state',
       'patients.created_at',
       'patients.updated_at',
-      toJSON(eb, 'intake_steps_completed'),
+      jsonArrayFromColumn(
+        'intake_step',
+        eb.selectFrom('patient_intake')
+          .innerJoin(
+            'intake',
+            'intake.step',
+            'patient_intake.intake_step',
+          )
+          .whereRef('patient_id', '=', 'patients.id')
+          .orderBy(['intake.order desc'])
+          .select(['intake_step']),
+      ).as('intake_steps_completed'),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
       'facilities.name as nearest_facility',
@@ -123,7 +134,7 @@ export type UpsertPatientIntake = {
   major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
   family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
-  intake_steps_completed?: IntakeStep[]
+  intake_step_just_completed?: IntakeStep
 }
 
 export function insertMany(
@@ -179,6 +190,7 @@ export async function upsertIntake(
     major_surgeries,
     allergies,
     occupation,
+    intake_step_just_completed,
     ...patient_updates
   }: UpsertPatientIntake,
 ): Promise<void> {
@@ -222,6 +234,16 @@ export async function upsertIntake(
       family,
     )
 
+  const upserting_intake_step = intake_step_just_completed &&
+    trx
+      .insertInto('patient_intake')
+      .values({
+        patient_id: id,
+        intake_step: intake_step_just_completed,
+      })
+      .onConflict((oc) => oc.doNothing())
+      .execute()
+
   if (first_name) {
     assert(!patient_updates.name, 'Cannot set both name and first_name')
     patient_updates.name = compact(
@@ -247,6 +269,7 @@ export async function upsertIntake(
     upserting_family,
     upserting_occupation,
     upserting_major_surgeries,
+    upserting_intake_step,
   ])
 }
 
@@ -302,7 +325,18 @@ export function getIntake(
         street: eb.ref('address.street'),
       }).as('address'),
       'patients.completed_intake',
-      toJSON(eb, 'intake_steps_completed'),
+      jsonArrayFromColumn(
+        'intake_step',
+        eb.selectFrom('patient_intake')
+          .innerJoin(
+            'intake',
+            'intake.step',
+            'patient_intake.intake_step',
+          )
+          .whereRef('patient_id', '=', 'patients.id')
+          .orderBy(['intake.order desc'])
+          .select(['intake_step']),
+      ).as('intake_steps_completed'),
       'patients.primary_doctor_id',
       'patients.unregistered_primary_doctor_name',
       sql<
@@ -362,9 +396,18 @@ export async function getIntakeReview(
       'patients.nearest_facility_id',
       'facilities.name as nearest_facility_name',
       sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
-      eb.fn<IntakeStep[]>('TO_JSON', ['patients.intake_steps_completed']).as(
-        'intake_steps_completed',
-      ),
+      jsonArrayFromColumn(
+        'intake_step',
+        eb.selectFrom('patient_intake')
+          .innerJoin(
+            'intake',
+            'intake.step',
+            'patient_intake.intake_step',
+          )
+          .whereRef('patient_id', '=', 'patients.id')
+          .orderBy(['intake.order desc'])
+          .select(['intake_step']),
+      ).as('intake_steps_completed'),
       'completed_intake',
     ])
     .where('patients.id', '=', opts.id)
