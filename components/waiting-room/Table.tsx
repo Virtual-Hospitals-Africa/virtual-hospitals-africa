@@ -19,9 +19,7 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
   },
   {
     label: 'Status',
-    dataKey(row) {
-      return row.in_waiting_room ? 'Waiting' : 'In Consultation'
-    },
+    dataKey: 'status',
   },
   {
     label: 'Provider',
