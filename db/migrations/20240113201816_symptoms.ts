@@ -60,6 +60,12 @@ export async function up(db: Kysely<any>) {
     .addColumn('site', 'varchar(255)')
     .addColumn('notes', 'text')
     .addCheckConstraint(
+      'symptom_starts_before_today',
+      sql`
+      start_date <= TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'Africa/Johannesburg', 'YYYY-MM-DD')::date
+    `,
+    )
+    .addCheckConstraint(
       'symptom_date_range',
       sql`
         end_date IS NULL OR (

@@ -32,6 +32,8 @@ type SearchInputProps = Partial<WrapperInputProps<HTMLInputElement>> & {
 
 type DateInputProps = Partial<WrapperInputProps<HTMLInputElement>> & {
   value?: Maybe<string>
+  min?: Maybe<string>
+  max?: Maybe<string>
 }
 
 export type TextInputProps = WrapperInputProps<HTMLInputElement> & {
@@ -164,7 +166,7 @@ export function NumberInput(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value || undefined}
+        value={value ?? undefined}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -256,7 +258,7 @@ export function TextArea(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value || undefined}
+        value={value ?? undefined}
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
@@ -376,6 +378,8 @@ export function DateInput(
     onInput,
     onFocus,
     onBlur,
+    min,
+    max,
   }: DateInputProps,
 ) {
   return (
@@ -398,7 +402,9 @@ export function DateInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
-        value={value || undefined}
+        value={value ?? undefined}
+        min={min ?? undefined}
+        max={max ?? undefined}
       />
     </LabeledInput>
   )
@@ -434,7 +440,7 @@ export function PhoneNumberInput(
           inputClassName,
           disabled && 'bg-gray-300',
         )}
-        value={value || undefined}
+        value={value ?? undefined}
         placeholder='+263 777 777 777'
         required={required}
         disabled={disabled}
