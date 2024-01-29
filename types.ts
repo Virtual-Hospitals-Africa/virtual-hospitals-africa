@@ -1584,7 +1584,7 @@ export type School = {
 export type CurrentSchool = {
   grade: string
   grades_dropping_reason: string | null
-  happy: boolean
+  happy: boolean | null
   inappropriate_reason: string | null
 }
 
@@ -1616,6 +1616,72 @@ export type Question = {
   name?: string
   label: string
   value?: boolean
+}
+
+export type Lifestyle = {
+  sexual_activity: SexualActivity | null
+  alcohol: Alcohol | null
+  smoking: Smoking | null
+} //fix type names
+
+export type SexualActivity = {
+  ever_been_sexually_active: false
+} | {
+  ever_been_sexually_active: true
+  currently_sexually_active?: Maybe<boolean>
+  first_encounter?: Maybe<number>
+  current_sexual_partners?: Maybe<number>
+  attracted_to?: Maybe<string>
+  has_traded_sex_for_favors?: Maybe<boolean>
+  had_sex_after_drugs?: Maybe<boolean>
+  recently_treated_for_stis?: Maybe<boolean>
+  recently_hiv_tested?: Maybe<boolean>
+  know_partner_hiv_status?: Maybe<boolean>
+}
+
+export type Alcohol = {
+  has_ever_drank: false
+} | {
+  has_ever_drank: true
+  currently_drinks: boolean | null
+  binge_drinking: boolean | null
+  drawn_to_cut_down: boolean | null
+  annoyed_by_critics: boolean | null
+  eye_opener: boolean | null
+  guilty: boolean | null
+  missed_work: boolean | null
+  criticized: boolean | null
+  arrested: boolean | null
+  attempted_to_stop: boolean | null
+  withdrawal: boolean | null
+  quit_for_six_or_more_months: boolean | null
+  abstinence_length: boolean | null
+  first_drink: number | null
+  years_drinking: number | null
+  number_drinks_per_sitting: number | null
+  quit_smoking_years: number | null
+}
+
+export type Smoking = {
+  has_ever_smoked: false
+} | {
+  has_ever_smoked: true
+  currently_smokes: boolean | null
+  first_smoke_age: number
+  weekly_smokes: number | null
+  number_of_products: number | null
+  felt_to_cutdown: boolean | null
+  annoyed_by_critisism: boolean | null
+  guilty: boolean | null
+  forbidden_place: boolean | null
+  attempt_to_quit: boolean | null
+  quit_more_than_six_months: boolean | null
+  quit_smoking_years: number | null
+}
+
+export type PatientLifestyle = {
+  patient_id: number
+  lifestyle: Lifestyle
 }
 
 export type Allergy = {

@@ -3,7 +3,6 @@
   "packages": {
     "specifiers": {
       "npm:@tailwindcss/forms@0.5.7": "npm:@tailwindcss/forms@0.5.7_tailwindcss@3.3.5__postcss@8.4.31",
-      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:autoprefixer@10.4.16": "npm:autoprefixer@10.4.16_postcss@8.4.31",
       "npm:bluebird": "npm:bluebird@3.7.2",
       "npm:cssnano@6.0.1": "npm:cssnano@6.0.1_postcss@8.4.31",
@@ -281,7 +280,7 @@
         "integrity": "sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==",
         "dependencies": {
           "browserslist": "browserslist@4.22.3",
-          "caniuse-lite": "caniuse-lite@1.0.30001585",
+          "caniuse-lite": "caniuse-lite@1.0.30001587",
           "fraction.js": "fraction.js@4.3.7",
           "normalize-range": "normalize-range@0.1.2",
           "picocolors": "picocolors@1.0.0",
@@ -320,8 +319,8 @@
       "browserslist@4.22.3": {
         "integrity": "sha512-UAp55yfwNv0klWNapjs/ktHoguxuQNGnOzxYmfnXIS+8AsRDZkSDxg7R1AX3GKzn078SBI5dzwzj/Yx0Or0e3A==",
         "dependencies": {
-          "caniuse-lite": "caniuse-lite@1.0.30001585",
-          "electron-to-chromium": "electron-to-chromium@1.4.661",
+          "caniuse-lite": "caniuse-lite@1.0.30001587",
+          "electron-to-chromium": "electron-to-chromium@1.4.665",
           "node-releases": "node-releases@2.0.14",
           "update-browserslist-db": "update-browserslist-db@1.0.13_browserslist@4.22.3"
         }
@@ -334,13 +333,13 @@
         "integrity": "sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==",
         "dependencies": {
           "browserslist": "browserslist@4.22.3",
-          "caniuse-lite": "caniuse-lite@1.0.30001585",
+          "caniuse-lite": "caniuse-lite@1.0.30001587",
           "lodash.memoize": "lodash.memoize@4.1.2",
           "lodash.uniq": "lodash.uniq@4.5.0"
         }
       },
-      "caniuse-lite@1.0.30001585": {
-        "integrity": "sha512-yr2BWR1yLXQ8fMpdS/4ZZXpseBgE7o4g41x3a6AJOqZuOi+iE/WdJYAuZ6Y95i4Ohd2Y+9MzIWRR+uGABH4s3Q==",
+      "caniuse-lite@1.0.30001587": {
+        "integrity": "sha512-HMFNotUmLXn71BQxg8cijvqxnIAofforZOwGsxyXJ0qugTdspUF4sPSJ2vhgprHCB996tIDzEq1ubumPDV8ULA==",
         "dependencies": {}
       },
       "chalk@2.4.2": {
@@ -594,8 +593,8 @@
         "integrity": "sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==",
         "dependencies": {}
       },
-      "electron-to-chromium@1.4.661": {
-        "integrity": "sha512-AFg4wDHSOk5F+zA8aR+SVIOabu7m0e7BiJnigCvPXzIGy731XENw/lmNxTySpVFtkFEy+eyt4oHhh5FF3NjQNw==",
+      "electron-to-chromium@1.4.665": {
+        "integrity": "sha512-UpyCWObBoD+nSZgOC2ToaIdZB0r9GhqT2WahPKiSki6ckkSuKhQNso8V2PrFcHBMleI/eqbKgVQgVC4Wni4ilw==",
         "dependencies": {}
       },
       "emoji-regex@8.0.0": {
@@ -731,8 +730,8 @@
         "integrity": "sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==",
         "dependencies": {}
       },
-      "hasown@2.0.0": {
-        "integrity": "sha512-vUptKVTpIJhcczKBbgnS+RtcuYMB8+oNzPK2/Hp3hanz8JmpATdmmgLgSaadVREkDm+e2giHwY3ZRkyjSIDDFA==",
+      "hasown@2.0.1": {
+        "integrity": "sha512-1/th4MHjnwncwXsIW6QMzlvYL9kG5e/CpVvLRZe4XPa8TOUNbCELqmvhDmnkNsAjwaG4+I8gJJL0JBvTTLO9qA==",
         "dependencies": {
           "function-bind": "function-bind@1.1.2"
         }
@@ -773,7 +772,7 @@
       "is-core-module@2.13.1": {
         "integrity": "sha512-hHrIjvZsftOsvKSn2TRYl63zvxsgE0K+0mYMoH6gD4omR5IWB2KynivBQczo3+wF1cCkjzvptnI9Q0sPU66ilw==",
         "dependencies": {
-          "hasown": "hasown@2.0.0"
+          "hasown": "hasown@2.0.1"
         }
       },
       "is-extglob@2.1.1": {
@@ -2846,14 +2845,5 @@
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie.ts": "5ba819ee6fbbeb35950a626b93afd4c671e09df6247df3deb8749a6ac25606c5",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie_option.ts": "ecf48fd5e779ab767b94881d8305e8925849246f461a25c6979067046c1077e0",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/redis.ts": "fd5c14e1ea7c5269ed4f2e5a24823a665429ce873885825962aade103fefcc02"
-  },
-  "workspace": {
-    "dependencies": [
-      "npm:@tailwindcss/forms@0.5.7",
-      "npm:fast-levenshtein@3.0.0",
-      "npm:fast-xml-parser@4.3.4",
-      "npm:natural@6.10.4",
-      "npm:tailwindcss@3.3.5"
-    ]
   }
 }

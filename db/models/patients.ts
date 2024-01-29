@@ -5,6 +5,7 @@ import {
   FamilyUpsert,
   Gender,
   HasId,
+  Lifestyle,
   Location,
   Maybe,
   Patient,
@@ -25,6 +26,7 @@ import * as patient_occupations from './patient_occupations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
+import * as patient_lifestyle from './patient_lifestyle.ts'
 import * as address from './address.ts'
 import * as patient_family from './family.ts'
 import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
@@ -132,6 +134,7 @@ export type UpsertPatientIntake = {
   major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
   family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
+  lifestyle?: Omit<Lifestyle, 'patient_id'>
   intake_step_just_completed?: IntakeStep
 }
 
@@ -188,6 +191,7 @@ export async function upsertIntake(
     major_surgeries,
     allergies,
     occupation,
+    lifestyle,
     intake_step_just_completed,
     ...patient_updates
   }: UpsertPatientIntake,
@@ -232,6 +236,11 @@ export async function upsertIntake(
       family,
     )
 
+  const upserting_lifestyle = lifestyle && patient_lifestyle.upsert(
+    trx,
+    { lifestyle, patient_id: id },
+  )
+
   const upserting_intake_step = intake_step_just_completed &&
     trx
       .insertInto('patient_intake')
@@ -267,6 +276,7 @@ export async function upsertIntake(
     upserting_family,
     upserting_occupation,
     upserting_major_surgeries,
+    upserting_lifestyle,
     upserting_intake_step,
   ])
 }
