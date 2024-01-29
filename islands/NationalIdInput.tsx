@@ -37,7 +37,7 @@ export default function NationalIdInput({ value }: { value?: Maybe<string> }) {
       name='national_id_number'
       label='National ID Number'
       value={value}
-      pattern='^\d{2}-\d{6,7}\s[A-Z]\s\d{2}$'
+      pattern='^\d{2}-\d{6,7}\s[a-zA-Z]\s\d{2}$'
       placeholder='00-000000 D 00'
       onInput={handleIdInput}
       required
