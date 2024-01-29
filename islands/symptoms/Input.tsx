@@ -8,7 +8,7 @@ import {
 } from '../../components/library/form/Inputs.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 import { EditingSymptom } from './Section.tsx'
-import { computed, useSignal } from '@preact/signals'
+import { computed, effect, useSignal } from '@preact/signals'
 import { RemoveRow } from '../AddRemove.tsx'
 import range from '../../util/range.ts'
 import FilePreviewInput from '../file-preview-input.tsx'
@@ -23,6 +23,7 @@ function DurationInput(
     onChange(duration: Duration): void
   },
 ) {
+  console.log('DurationInput', value)
   return (
     <div className='flex flex-col md:flex-row md:items-center gap-2'>
       <NumberInput
@@ -79,6 +80,7 @@ function DurationInput(
 
 function approximateDuration(start_date: string, end_date: string): Duration {
   const duration_in_days = durationBetween(start_date, end_date)
+  console.log('duration_in_days', duration_in_days)
   assertEquals(duration_in_days.duration_unit, 'days')
   if (duration_in_days.duration <= 14) {
     return duration_in_days
@@ -125,12 +127,20 @@ export default function SymptomInput({
 
   const entered_duration = useSignal<Duration | null>(null)
 
-  if (is_removed.value) return null
+  const duration = computed(() => {
+    console.log(
+      'duration',
+      start_date.value,
+      end_date.value,
+      entered_duration.value,
+    )
+    const end = end_date.value || today
+    return entered_duration.value || approximateDuration(start_date.value, end)
+  })
 
-  const duration = computed(() =>
-    entered_duration.value ||
-    approximateDuration(start_date.value, end_date.value || today)
-  )
+  console.log('durationzzz', duration.value)
+
+  if (is_removed.value) return null
 
   return (
     <RemoveRow onClick={() => is_removed.value = true} labelled>
@@ -184,6 +194,7 @@ export default function SymptomInput({
             name={`${name}.start_date`}
             value={start_date.value}
             label='Onset'
+            max={today}
             required
             onInput={(e) => {
               assert(e.target instanceof HTMLInputElement)
@@ -204,6 +215,8 @@ export default function SymptomInput({
               name={`${name}.end_date`}
               value={end_date.value}
               label='End'
+              min={start_date.value}
+              max={today}
               onInput={(e) => {
                 assert(e.target instanceof HTMLInputElement)
                 end_date.value = e.target.value
