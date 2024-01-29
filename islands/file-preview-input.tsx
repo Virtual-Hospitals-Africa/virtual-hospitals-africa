@@ -62,6 +62,7 @@ function Preview(
             className='w-full h-full object-cover'
             src={url}
             alt={name ? `Uploaded ${name}` : ''}
+            controls
           />
         )}
       </div>
