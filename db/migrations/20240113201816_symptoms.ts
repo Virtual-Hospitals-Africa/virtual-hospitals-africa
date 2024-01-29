@@ -62,8 +62,11 @@ export async function up(db: Kysely<any>) {
     .addCheckConstraint(
       'symptom_date_range',
       sql`
-      end_date IS NULL OR end_date >= start_date
-    `,
+        end_date IS NULL OR (
+          end_date >= start_date AND
+          end_date <= TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'Africa/Johannesburg', 'YYYY-MM-DD')::date
+        )
+      `,
     )
     .execute()
 
