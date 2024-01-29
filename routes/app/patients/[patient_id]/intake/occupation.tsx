@@ -31,7 +31,7 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
       req,
       assertIsOccupation,
     )
-    return upsertPatientAndRedirect(ctx, patient)
+    return upsertPatientAndRedirect(ctx, { occupation: patient.occupation })
   },
 }
 

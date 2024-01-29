@@ -1618,6 +1618,12 @@ export type PatientOccupation = {
   occupation: Occupation
 }
 
+export type Question = {
+  name?: string
+  label: string
+  value?: boolean
+}
+
 export type Allergy = {
   id: number
   name: string

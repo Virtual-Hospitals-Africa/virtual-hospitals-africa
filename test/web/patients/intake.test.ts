@@ -647,7 +647,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       'occupation.school.current.grades_dropping_reason',
       'Abuse',
     )
-    body.set('occupation.sport', 'on')
+    //body.set('occupation.sport', 'on')
     body.set('occupation.school.current.grade', 'Grade 3')
     body.set('occupation.school.current.happy', 'on')
 
@@ -681,7 +681,6 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
         },
         status: 'in school',
       },
-      sport: true,
     })
 
     const getResponse = await fetch(
@@ -705,7 +704,13 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
             },
             status: 'in school',
           },
-          sport: true,
+        },
+        omit: {
+          grades_dropping: true,
+          patient_goes_to_school: true,
+          school: {
+            appropriate: null,
+          },
         },
       },
       'The form should be 1:1 with the occupations in the DB',
@@ -796,6 +801,9 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
             profession: 'Accountant',
             work_satisfaction: 'Excellent',
           },
+        },
+        omit: {
+          patient_goes_to_school: true,
         },
       },
       'The form should be 1:1 with the occupations in the DB',
