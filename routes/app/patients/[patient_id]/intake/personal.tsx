@@ -32,13 +32,15 @@ function assertIsPersonal(
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const { avatar_media, ...patient } = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsPersonal,
-    )
+    const { avatar_media, national_id_number, ...patient } =
+      await parseRequestAsserts(
+        ctx.state.trx,
+        req,
+        assertIsPersonal,
+      )
     return upsertPatientAndRedirect(ctx, {
       ...patient,
+      national_id_number: national_id_number.toUpperCase(),
       avatar_media_id: avatar_media?.id,
     })
   },
