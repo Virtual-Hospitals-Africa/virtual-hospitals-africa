@@ -149,7 +149,7 @@ export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
           required
           name='blood_pressure'
           Icon={VitalsIcons.blood_pressure}
-          units={patient_measurements.MEASUREMENTS.blood_pressure_diastolic[1]}
+          units='mmHg'
         >
           <NumberInput
             required
