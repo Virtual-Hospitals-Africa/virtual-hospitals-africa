@@ -1,14 +1,17 @@
-import { readCSV } from 'csv'
+import { CommonCSVReaderOptions, readCSV } from 'csv'
 
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
-export default async function* parseCsv(filePath: string) {
+export default async function* parseCsv(
+  filePath: string,
+  opts: Partial<CommonCSVReaderOptions> = {},
+) {
   const file = await Deno.open(filePath)
 
   let header: string[] = []
   let isFirstRow = true
 
-  for await (const row of readCSV(file)) {
+  for await (const row of readCSV(file, opts)) {
     // Collecting data from the async iterable row into an array
     const rowDataArray: string[] = []
     for await (const cell of row) {

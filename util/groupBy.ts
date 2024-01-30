@@ -1,5 +1,4 @@
-// deno-lint-ignore no-explicit-any
-export default function groupBy<T extends Record<string, any>, K>(
+export default function groupBy<T extends Record<string, unknown>, K>(
   array: T[],
   iteratee: (value: T) => K,
 ): Map<K, T[]> {

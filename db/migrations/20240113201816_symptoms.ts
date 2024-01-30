@@ -9,6 +9,7 @@ export async function up(db: Kysely<any>) {
     .addColumn('symptom', 'varchar(40)', (col) => col.primaryKey())
     .addColumn('category', 'varchar(40)', (col) => col.notNull())
     .addColumn('aliases', sql`varchar(40)[]`, (col) => col.notNull())
+    .addColumn('sites', sql`varchar(40)[]`, (col) => col.notNull())
     .execute()
 
   await db.insertInto('symptoms').values(SYMPTOMS).execute()

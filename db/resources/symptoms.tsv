@@ -1,0 +1,135 @@
+symptom	category	aliases	sites
+chills	General	["rigor","shivering and feeling very cold","shivers","shakes"]	n/a
+cold intolerance	General	["cold sensitive"]	n/a
+constipation	General	["difficulty passing stool","low or no bowel movement","difficult or infrequent feces evacuation"]	n/a
+cough	General	["wheeze","tussis"]	n/a
+diarrhea	General	["loose stool","watery stool","running stomach","loose bowels","dysentry"]	n/a
+dizziness	General	["fainting","lightheadedness","vertigo","woozy","giddiness"]	n/a
+dyspepsia	General	["agita","indigestion","upset stomach"]	n/a
+dyspnea	General	["shortness of breath","breathlessness","orthopnea","difficulty breathing"]	n/a
+fatigue	General	[]	n/a
+fever	General	[]	n/a
+flatulence	General	[]	n/a
+halitosis	General	[]	n/a
+heartburn	General	[]	n/a
+heat intolerance	General	[]	n/a
+hiccups	General	[]	n/a
+hoarse voice	General	[]	n/a
+nausea	General	[]	n/a
+night sweats	General	[]	n/a
+palpitations	General	[]	n/a
+paresthesia	General	[]	["*"]
+polydipsia	General	[]	n/a
+polyphagia	General	[]	n/a
+polyuria	General	[]	n/a
+pruritis	General	["itchy skin"]	["*"]
+red eye	General	[]	["both eyes","left eye","right eye"]
+salt, craving	General	[]	n/a
+skin rash	General	[]	["*"]
+vomiting	General	[]	n/a
+abdominal pain	Pain	["abdominal discomfort","bloated","stomach gases","stomach pain","bellyaches","abdominal pangs","stomach pangs"]	["generalized","left abdomen","right abdomen"]
+ankle pain	Pain	["sprained ankles","twisted ankles","sore ankles","ankle discomfort"]	["both ankles","left ankle","right ankle"]
+arm pain	Pain	["sore arm","aching arm","arm discomfort"]	["both arms","left arm","right arm"]
+back pain	Pain	["backache","back discomfort","sore back","back pangs"]	["generalized","upper back","lower back","central"]
+breast pain	Pain	["breast discomfort"]	["both breasts","left breast","right breast"]
+chest pain	Pain	["pain in the chest","angina","pectoralgia","angina","pectoris","cardiac chest pain","discomfort in the chest","heart pain","heaviness in the chest","pressure in the chest","thoracic pain","tightness in the chest","chest cramp","chest tightness"]	["generalized","left side","right side","central"]
+dysmenorrhea	Pain	["menstrual cramps","menstrual pain","period pain","period cramps","painful menstrustion","painful periods"," period pain"]	["lower abdomen"]
+dysuria	Pain	["painful urination","difficult urination","urinary discomfort","urinary burning","mictrution pain"]	["generalized","urethra"]
+earache	Pain	["ear pain","otalgia"]	["both ears","left ear","right ear"]
+elbow pain	Pain	["sprained elbow","dislocated elbow","fractured elbow"]	["both elbows","left elbow","right elbow"]
+eye pain	Pain	["opthalmagia","ocular pain","orbirtal pain","sore eyes","eye discomfort","eye ache"]	["both eyes","left eye","right eye"]
+facial pain	Pain	[]	["generalized","left side","right side"]
+foot and toe pain	Pain	[]	n/a
+girdle pain	Pain	[]	["generalized","pelvis","lower back","left thigh_right thigh","left hip","right hip"]
+hand pain	Pain	[]	["both hands","left hand","right hand"]
+headache	Pain	[]	["generalized","left side","right side","back side","front side"]
+finger pain	Pain	[]	["left thumb","left index finger","left middle finger","left ring finger","left little finger","right thumb","right index finger","right middle finger","right ring finger","right little finger"]
+hip pain	Pain	[]	["both hips","left hip","right hip"]
+jaw pain	Pain	[]	["both jaws","left jaw","right jaw"]
+joint pain	Pain	[]	["*"]
+knee pain	Pain	[]	["both knees","left knee","right knee"]
+leg pain	Pain	[]	["both legs","left leg","right leg"]
+musculoskeletal pain, generalized	Pain	[]	n/a
+neck pain	Pain	[]	["generalized","left side","right side","back side","front side","throat"]
+scrotal pain	Pain	[]	["scrotum"]
+shoulder pain	Pain	[]	["both shoulders","left shoulder","right shoulder"]
+toothache	Pain	[]	["generalized","right molars","left molars","incisor","canine"]
+throat pain	Pain	[]	["throat"]
+wrist pain	Pain	[]	["both wrists","left wrist","right wrist"]
+abdominal mass	Wound/mass	["swollen abdomen"]	["generalized","left abdomen","right abdomen"]
+abrasion	Wound/mass	["scratch","injury","lesion","cut","laceration"]	["*"]
+bite	Wound/mass	["pierce","gnaw","sting"]	["*"]
+sting	Wound/mass	[]	["*"]
+bone mass or swelling	Wound/mass	[]	["*"]
+breast mass	Wound/mass	["breast lump","breast cyst","swollen breast"]	["both breasts","left breast","right breast"]
+bruise	Wound/mass	[]	["*"]
+burn	Wound/mass	["thermal burns","burn injuries","scalds"]	["*"]
+laceration	Wound/mass	["cut"]	["*"]
+groin mass	Wound/mass	[]	["groin"]
+facial swelling	Wound/mass	[]	["generalized","left side","right side"]
+foot ulcer	Wound/mass	[]	["both feet","right foot","left foot"]
+foreign body	Wound/mass	[]	["*"]
+genital lesions	Wound/mass	[]	["penis","urethra","vagina","clitoris","vulva","anus","scrotum"]
+gum swelling	Wound/mass	[]	n/a
+head mass or swelling	Wound/mass	[]	["generalized","left side","right side","back side","front side"]
+jaw swelling	Wound/mass	[]	["both jaws","left jaw","right jaw"]
+joint swelling	Wound/mass	[]	["*"]
+leg ulcer	Wound/mass	[]	["both legs","left leg","right leg"]
+mouth lesions	Wound/mass	[]	["mouth"]
+scrotal swelling	Wound/mass	[]	["scrotum"]
+ulcer	Wound/mass	[]	["*"]
+enuresis	Discharge	["bed wetting"]	n/a
+eye discharge	Discharge	["eye secretions","conjuctival discharge","excessive rheum","ocular discharge"]	["both eyes","left eye","right eye"]
+fecal incontinence	Discharge	[]	n/a
+otorrhea	Discharge	["ear discharge"]	["both ears","left ear","right ear"]
+rhinorrhea	Discharge	["nasal discharge"]	["generalized","left side","right side"]
+urethral discharge	Discharge	[]	["urethra"]
+urinary incontinence	Discharge	[]	["urethra"]
+vaginal discharge	Discharge	[]	["vagina"]
+gum bleeding	Bleeding	[]	["both gums","upper gums","lower gums"]
+epistaxis	Bleeding	["nosebleed","bleeding from the nose"]	["both nostrils","left nose","right nose"]
+hematemesis	Bleeding	[]	n/a
+hematuria	Bleeding	[]	["urethra"]
+hemoptysis	Bleeding	["coughing up blood"]	n/a
+melena	Bleeding	[]	n/a
+menorrhagia	Bleeding	[]	n/a
+rectal bleeding	Bleeding	[]	["rectum"]
+vaginal bleeding	Bleeding	[]	["vagina"]
+alopecia	Loss/difficulty	["hair loss","baldness","male pattern hair loss"]	["head"]
+amenorrhea	Loss/difficulty	["no monthly flow","no monthly periods","abnormal menstruation"]	n/a
+anosmia	Loss/difficulty	["loss of smell","smell blindness","odor blindness"]	["nose"]
+aphasia	Loss/difficulty	["communication disorder","inarticulate","without or deprived of speech or words"]	n/a
+dysphagia	Loss/difficulty	["swallowing disorders","difficulty swallowing"]	n/a
+difficulty urinating	Loss/difficulty	["urinary hesitancy","urinary retention"]	n/a
+erectile dysfunction	Loss/difficulty	["impotence","inability to copulate","difficulty getting an erection","difficulty keeping an erection"]	n/a
+hearing loss	Loss/difficulty	[]	["both ears","left ear","right ear"]
+infertility	Loss/difficulty	[]	n/a
+insomnia	Loss/difficulty	[]	n/a
+memory loss	Loss/difficulty	[]	n/a
+vision loss	Loss/difficulty	[]	["both eyes","left eye","right eye"]
+confusion	Abnormal behavior	["distracted","unhinged","unsettled","deranged","disheveled","discomposed","agitated","fazed","mortified","distracted "]	n/a
+convulsions	Abnormal behavior	["involuntary body movements","irregular body movements","fit","paroxysm","seizure"]	n/a
+delusions	Abnormal behavior	["paranoid","hallucinating","neurotic"]	n/a
+depression	Abnormal behavior	["mood disorder","gloomy","dejected","desolate"]	n/a
+drop attack	Abnormal behavior	["sudden fall without loss of conciousness","atonic seizures","drop seizures","akinetic seizures"]	n/a
+hallucinations	Abnormal behavior	[]	n/a
+mood changes	Abnormal behavior	[]	n/a
+psychotic behavior	Abnormal behavior	[]	n/a
+violent behavior	Abnormal behavior	[]	n/a
+appetite problems	Abnormal function	["loss of appetite","decreased appetite","unable to eat","does not feel hunger","absence of desire to eat","food aversion","ravenous","always hungry","the munchies","extreme appetite"]	n/a
+hearing problems	Abnormal function	[]	["both ears","left ear","right ear"]
+movement problems	Abnormal function	[]	["*"]
+menstruation problems	Abnormal function	[]	n/a
+salivation problems	Abnormal function	[]	["mouth"]
+sleep problems	Abnormal function	[]	n/a
+speech problems	Abnormal function	[]	n/a
+sexual problems	Abnormal function	[]	n/a
+sweat problems	Abnormal function	[]	n/a
+taste problems	Abnormal function	[]	n/a
+thirst problems	Abnormal function	[]	n/a
+tremors	Abnormal function	[]	["*"]
+trismus	Abnormal function	["lockjaw"]	["jaw"]
+visual problems	Abnormal function	[]	["both eyes","left eye","right eye"]
+voice problems	Abnormal function	[]	n/a
+writing problems	Abnormal function	[]	n/a
+weight problems	Abnormal function	[]	n/a

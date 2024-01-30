@@ -378,6 +378,36 @@ export function durationEndDate(
   return stringifyJustDate(end)
 }
 
+export function approximateDuration(
+  start_date: string,
+  end_date: string,
+): Duration & { approximate: true } {
+  const duration_in_days = durationBetween(start_date, end_date)
+  assertEquals(duration_in_days.duration_unit, 'days')
+  if (duration_in_days.duration <= 14) {
+    return { ...duration_in_days, approximate: true }
+  }
+  if (duration_in_days.duration <= 60) {
+    return {
+      duration: Math.round(duration_in_days.duration / 7),
+      duration_unit: 'weeks',
+      approximate: true,
+    }
+  }
+  if (duration_in_days.duration <= 730) {
+    return {
+      duration: Math.round(duration_in_days.duration / 30),
+      duration_unit: 'months',
+      approximate: true,
+    }
+  }
+  return {
+    duration: Math.round(duration_in_days.duration / 365),
+    duration_unit: 'years',
+    approximate: true,
+  }
+}
+
 export function durationBetween(
   start_date: Date | string,
   end_date: Date | string,

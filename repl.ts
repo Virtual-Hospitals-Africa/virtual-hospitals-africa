@@ -1,11 +1,9 @@
 // deno-lint-ignore-file no-explicit-any no-unused-vars
-// deno-lint-ignore-file no-unused-vars
-import { load } from 'std/dotenv/mod.ts'
 import db from './db/db.ts'
-import { assert } from 'std/assert/assert.ts'
 
 async function loadAllModules(dir: string) {
   const modules: any = {}
+  const importing: Promise<any>[] = []
   for await (const inDir of Deno.readDir(dir)) {
     if (inDir.isSymlink) {
       throw new Error('Symlinks are not supported: ' + inDir.name)
@@ -16,12 +14,43 @@ async function loadAllModules(dir: string) {
     }
     const file = inDir
     const [fileName, fileExt] = file.name.split('.')
-    const module = await import(`${dir}/${file.name}`)
-    modules[fileName] = module
+    const importing_module = import(`${dir}/${file.name}`).then((module) => {
+      let just_default_export = true
+      if (!module.default) {
+        just_default_export = false
+      } else {
+        for (const key in module) {
+          if (key !== 'default') {
+            just_default_export = false
+            break
+          }
+        }
+      }
+      return modules[fileName] = just_default_export ? module.default : module
+    })
+    importing.push(importing_module)
   }
+  await Promise.all(importing)
   return modules
 }
 
-const models: any = await loadAllModules('./db/models')
-const util: any = await loadAllModules('./util')
-const routes: any = await loadAllModules('./routes')
+async function loadAll(to_import: string[]) {
+  const modules: any[] = []
+  const importing: Promise<any>[] = []
+  to_import.forEach((dir, i) => {
+    const importing_module = loadAllModules(dir).then((module) => {
+      modules[i] = module
+    })
+    importing.push(importing_module)
+  })
+  await Promise.all(importing)
+  return modules
+}
+
+const [models, migrations, util, routes, shared] = await loadAll([
+  './db/models',
+  './db/migrations',
+  './util',
+  './routes',
+  './shared',
+])

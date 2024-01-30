@@ -15,6 +15,7 @@ import {
   todayISOInHarare,
 } from '../../../../../../util/date.ts'
 import redirect from '../../../../../../util/redirect.ts'
+import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
 
 function assertIsSymptoms(body: unknown): asserts body is {
   symptoms: PatientSymptomUpsert[]
@@ -60,6 +61,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
+    const completing_step = completedStep(ctx.state.trx, {
+      encounter_id: ctx.state.encounter.encounter_id,
+      step: 'symptoms',
+    })
+
     await patient_symptoms.upsert(ctx.state.trx, {
       patient_id,
       encounter_id: ctx.state.encounter.encounter_id,
@@ -67,6 +73,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         ctx.state.encounter_provider.patient_encounter_provider_id,
       symptoms,
     })
+
+    await completing_step
 
     return redirect(nextLink(ctx))
   },

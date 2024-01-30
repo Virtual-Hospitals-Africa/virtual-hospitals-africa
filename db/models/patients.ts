@@ -17,7 +17,7 @@ import {
   ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import haveNames, { hasName } from '../../util/haveNames.ts'
+import { hasName, haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import compact from '../../util/compact.ts'
 import { upsert as upsertAddress } from './address.ts'
