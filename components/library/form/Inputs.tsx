@@ -452,19 +452,6 @@ export function PhoneNumberInput(
   )
 }
 
-export default function Example() {
-  return (
-    <div>
-      <label
-        htmlFor='phone-number'
-        className='block text-sm font-medium leading-6 text-gray-900'
-      >
-        Phone Number
-      </label>
-    </div>
-  )
-}
-
 export function ImageInput(
   {
     name,

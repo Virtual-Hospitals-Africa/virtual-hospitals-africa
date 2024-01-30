@@ -122,6 +122,8 @@ export default async function WaitingRoomAdd(
               addable
               value={patient}
               disabled={!!patient}
+              onSelect={(patient) => {
+              }}
             />
           </FormRow>
           <FormRow>

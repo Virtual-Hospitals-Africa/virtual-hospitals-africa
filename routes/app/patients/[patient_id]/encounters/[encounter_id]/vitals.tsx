@@ -2,7 +2,6 @@ import { ComponentChildren, JSX } from 'preact'
 import { NumberInput } from '../../../../../../components/library/form/Inputs.tsx'
 import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
-import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
 import {
   LoggedInHealthWorkerHandler,
   Measurements,
@@ -16,6 +15,7 @@ import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 import * as VitalsIcons from '../../../../../../components/library/icons/vitals.tsx'
 import redirect from '../../../../../../util/redirect.ts'
+import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
 
 function assertIsVitals(
   values: unknown,
@@ -48,7 +48,7 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
     )
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-    const completing_step = patient_encounters.completedStep(ctx.state.trx, {
+    const completing_step = completedStep(ctx.state.trx, {
       encounter_id: ctx.state.encounter.encounter_id,
       step: 'vitals',
     })

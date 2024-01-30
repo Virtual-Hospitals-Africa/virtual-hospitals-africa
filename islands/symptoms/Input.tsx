@@ -1,107 +1,26 @@
 import {
   CheckboxInput,
   DateInput,
-  NumberInput,
   SelectWithOptions,
   TextArea,
   TextInput,
 } from '../../components/library/form/Inputs.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 import { EditingSymptom } from './Section.tsx'
-import { computed, effect, useSignal } from '@preact/signals'
+import { computed, useSignal } from '@preact/signals'
 import { RemoveRow } from '../AddRemove.tsx'
 import range from '../../util/range.ts'
 import FilePreviewInput from '../file-preview-input.tsx'
 import { Duration } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
-import { dateRegex, durationBetween, durationEndDate } from '../../util/date.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-
-function DurationInput(
-  { value, onChange }: {
-    value: Duration
-    onChange(duration: Duration): void
-  },
-) {
-  console.log('DurationInput', value)
-  return (
-    <div className='flex flex-col md:flex-row md:items-center gap-2'>
-      <NumberInput
-        name={null}
-        label='Duration'
-        min={0}
-        max={999}
-        className='w-24'
-        value={value.duration}
-        onInput={(e) => {
-          onChange({
-            duration: Number(e.target.value),
-            duration_unit: value.duration_unit,
-          })
-        }}
-      />
-      <SelectWithOptions
-        name={null}
-        label=' '
-        value={value.duration_unit}
-        options={[
-          {
-            value: 'days',
-            label: value.duration === 1 ? 'day' : 'days',
-          },
-          {
-            value: 'weeks',
-            label: value.duration === 1 ? 'week' : 'weeks',
-          },
-          {
-            value: 'months',
-            label: value.duration === 1 ? 'month' : 'months',
-          },
-          {
-            value: 'years',
-            label: value.duration === 1 ? 'year' : 'years',
-          },
-        ]}
-        className='w-24'
-        onChange={(e) => {
-          assert(
-            e.target.value === 'days' || e.target.value === 'weeks' ||
-              e.target.value === 'months' || e.target.value === 'years',
-          )
-          onChange({
-            duration: value.duration,
-            duration_unit: e.target.value,
-          })
-        }}
-      />
-    </div>
-  )
-}
-
-function approximateDuration(start_date: string, end_date: string): Duration {
-  const duration_in_days = durationBetween(start_date, end_date)
-  console.log('duration_in_days', duration_in_days)
-  assertEquals(duration_in_days.duration_unit, 'days')
-  if (duration_in_days.duration <= 14) {
-    return duration_in_days
-  }
-  if (duration_in_days.duration <= 60) {
-    return {
-      duration: Math.round(duration_in_days.duration / 7),
-      duration_unit: 'weeks',
-    }
-  }
-  if (duration_in_days.duration <= 730) {
-    return {
-      duration: Math.round(duration_in_days.duration / 30),
-      duration_unit: 'months',
-    }
-  }
-  return {
-    duration: Math.round(duration_in_days.duration / 365),
-    duration_unit: 'years',
-  }
-}
+import {
+  approximateDuration,
+  dateRegex,
+  durationEndDate,
+} from '../../util/date.ts'
+import { SYMPTOMS_BY_NAME } from '../../shared/symptoms.ts'
+import { DurationInput } from './DurationInput.tsx'
+import { SiteSelect } from './SiteSelect.tsx'
 
 export default function SymptomInput({
   name,
@@ -112,6 +31,8 @@ export default function SymptomInput({
   value: EditingSymptom
   today: string
 }) {
+  const symptom = SYMPTOMS_BY_NAME.get(value.symptom)
+  assert(symptom)
   assert(dateRegex.test(today))
   const yesterday = durationEndDate(today, {
     duration: -1,
@@ -127,18 +48,10 @@ export default function SymptomInput({
 
   const entered_duration = useSignal<Duration | null>(null)
 
-  const duration = computed(() => {
-    console.log(
-      'duration',
-      start_date.value,
-      end_date.value,
-      entered_duration.value,
-    )
-    const end = end_date.value || today
-    return entered_duration.value || approximateDuration(start_date.value, end)
-  })
-
-  console.log('durationzzz', duration.value)
+  const duration = computed(() =>
+    entered_duration.value ||
+    approximateDuration(start_date.value, end_date.value || today)
+  )
 
   if (is_removed.value) return null
 
@@ -167,11 +80,7 @@ export default function SymptomInput({
             onInput={(e) => {
               assert(e.target instanceof HTMLInputElement)
               entered_duration.value = null
-              if (e.target.checked) {
-                end_date.value = null
-              } else {
-                end_date.value = yesterday
-              }
+              end_date.value = e.target.checked ? null : yesterday
             }}
           />
           <DurationInput
@@ -218,12 +127,16 @@ export default function SymptomInput({
               min={start_date.value}
               max={today}
               onInput={(e) => {
-                assert(e.target instanceof HTMLInputElement)
                 end_date.value = e.target.value
                 entered_duration.value = null
               }}
             />
           )}
+          <SiteSelect
+            name={`${name}.site`}
+            sites={symptom.sites}
+            value={value.site}
+          />
         </FormRow>
         <FormRow className='w-full justify-normal'>
           <TextArea
