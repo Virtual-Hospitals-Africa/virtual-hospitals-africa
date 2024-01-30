@@ -1,55 +1,63 @@
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
-import Layout from '../../../../../components/library/Layout.tsx'
-import FormRow from '../../../../../components/library/form/Row.tsx'
-import PersonSearch from '../../../../../islands/PersonSearch.tsx'
-import * as patients from '../../../../../db/models/patients.ts'
-import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import * as facilities from '../../../../../db/models/facilities.ts'
+import { Container } from '../../components/library/Container.tsx'
+import Layout from '../../components/library/Layout.tsx'
+import FormRow from '../../components/library/form/Row.tsx'
+import PersonSearch from '../../islands/PersonSearch.tsx'
+import * as patients from '../../db/models/patients.ts'
+import * as patient_encounters from '../../db/models/patient_encounters.ts'
+import * as facilities from '../../db/models/facilities.ts'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   Maybe,
-} from '../../../../../types.ts'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
-import redirect from '../../../../../util/redirect.ts'
+  TrxOrDb,
+} from '../../types.ts'
+import { parseRequestAsserts } from '../../util/parseForm.ts'
+import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import FormButtons from '../../../../../components/library/form/buttons.tsx'
+import FormButtons from '../../components/library/form/buttons.tsx'
 import {
   RadioGroup,
   TextArea,
-} from '../../../../../components/library/form/Inputs.tsx'
-import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
-import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { hasName } from '../../../../../util/haveNames.ts'
-import Form from '../../../../../components/library/form/Form.tsx'
-import { EncounterReason } from '../../../../../db.d.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
+} from '../../components/library/form/Inputs.tsx'
+import ProvidersSelect from '../../islands/ProvidersSelect.tsx'
+import { assertOr400 } from '../../util/assertOr.ts'
+import { hasName } from '../../util/haveNames.ts'
+import Form from '../../components/library/form/Form.tsx'
+import { EncounterReason } from '../../db.d.ts'
+import { Button } from '../../components/library/Button.tsx'
+import {useState} from 'preact/hooks'
+import { PersonData } from '../../components/library/Person.tsx'
 
-export const handler: LoggedInHealthWorkerHandlerWithProps<
-  Record<never, unknown>,
-  {
-    facility: { id: number; name: string }
-  }
-> = {
-  async POST(req, ctx) {
-    const facility_id = parseInt(ctx.params.facility_id)
-    assert(facility_id)
-    const to_upsert = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      patient_encounters.assertIsUpsert,
-    )
-    const upserted = await patient_encounters.upsert(
-      ctx.state.trx,
-      facility_id,
-      to_upsert,
-    )
-    return redirect(
-      `/app/facilities/1/waiting-room?just_encountered_id=${upserted.id}`,
-    )
-  },
+const [selectedPatient, setSelectedPatient] = useState<PersonData | undefined>(undefined)
+const [isReturningPatient, setIsReturningPatient] = useState(false)
+
+function handlePatientSearch(
+  patient: PersonData | undefined,
+){
+  setSelectedPatient(patient)
 }
+
+async function checkReturningPatient(
+  patient: PersonData | undefined,
+  trx: TrxOrDb,
+){
+  if (patient && patient.id){
+    if (patient.id != 'add'){
+      const {completed_intake} = await patients.getByID(trx, {
+        id: patient.id
+      })
+      setIsReturningPatient(completed_intake)
+    }
+  }
+}
+
+async function displayIntakeOrReviewPage(){
+
+}
+
+
+
 
 export default async function WaitingRoomAdd(
   _req: Request,
@@ -81,7 +89,8 @@ export default async function WaitingRoomAdd(
   })
 
   let open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
-    let patient: { id?: number; name: string } | undefined
+  let patient: { id?: number; name: string } | undefined
+  let completed_intake: boolean | undefined
   if (patient_id) {
     const getting_open_encounter = patient_encounters.get(trx, {
       patient_id,
@@ -91,6 +100,7 @@ export default async function WaitingRoomAdd(
     const fetched_patient = await patients.getByID(trx, {
       id: patient_id,
     })
+    completed_intake = fetched_patient.completed_intake
 
     assert(hasName(fetched_patient))
     patient = fetched_patient
@@ -124,8 +134,7 @@ export default async function WaitingRoomAdd(
               addable
               value={patient}
               disabled={!!patient}
-              onSelect={(patient) => {
-              }}
+              onSelect={handlePatientSearch}
             />
           </FormRow>
           <FormRow>
@@ -148,7 +157,15 @@ export default async function WaitingRoomAdd(
           </FormRow>
           <FormRow>
           <FormButtons submitText='Add to waiting room'/>
-          
+          {selectedPatient && isReturningPatient && (
+            <Button 
+            href={`/app/patients/${selectedPatient.id}`}>
+              Review and begin visit
+            </Button>
+          )}
+          {selectedPatient && !isReturningPatient && (
+            <Button>Start Intake</Button>
+          )}
           </FormRow>
 
         </Form>
