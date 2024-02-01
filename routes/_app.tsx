@@ -12,7 +12,7 @@ export default function App({ Component, ...props }: PageProps) {
           <>
             <meta
               name='description'
-              content='A telemedicine platform for African health workers providing accessible care'
+              content='Bringing accessible health care to Africans'
             />
             <link rel='preconnect' href='https://fonts.googleapis.com' />
             <link
@@ -44,6 +44,29 @@ export default function App({ Component, ...props }: PageProps) {
             <link
               rel='stylesheet'
               href='https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap'
+            />
+            <meta name='og:type' content='website' />
+            <meta name='og:title' content='Virtual Hospitals Africa' />
+            <meta
+              name='og:description'
+              content='Bringing accessible health care to Africans'
+            />
+            <meta name='og:local' content='en_GB' />
+            <meta
+              name='og:image'
+              content='https://virtualhospitalsafrica.org/ogimage.png'
+            />
+
+            <meta name='og:image:type' content={`image/png`} />
+            <meta name='og:image:width' content='256' />
+            <meta name='og:image:height' content='256' />
+
+            <meta name='og:site_name' content='Virtual Hospitals Africa' />
+            <meta name='og:url' content='https://virtualhospitalsafrica.org' />
+            <link
+              rel='apple-touch-icon'
+              sizes='180x180'
+              href='https://virtualhospitalsafrica.org/ogimage.png'
             />
           </>
         )}
