@@ -45,24 +45,27 @@ export default function App({ Component, ...props }: PageProps) {
               rel='stylesheet'
               href='https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@800,500,700&display=swap'
             />
-            <meta name='og:type' content='website' />
-            <meta name='og:title' content='Virtual Hospitals Africa' />
+            <meta property='og:type' content='website' />
+            <meta property='og:title' content='Virtual Hospitals Africa' />
             <meta
-              name='og:description'
+              property='og:description'
               content='Bringing accessible health care to Africans'
             />
-            <meta name='og:local' content='en_GB' />
+            <meta property='og:local' content='en_GB' />
             <meta
-              name='og:image'
+              property='og:image'
               content='https://virtualhospitalsafrica.org/images/ogimage.png'
             />
 
-            <meta name='og:image:type' content={`image/png`} />
-            <meta name='og:image:width' content='256' />
-            <meta name='og:image:height' content='256' />
+            <meta property='og:image:type' content={`image/png`} />
+            <meta property='og:image:width' content='256' />
+            <meta property='og:image:height' content='256' />
 
-            <meta name='og:site_name' content='Virtual Hospitals Africa' />
-            <meta name='og:url' content='https://virtualhospitalsafrica.org' />
+            <meta property='og:site_name' content='Virtual Hospitals Africa' />
+            <meta
+              property='og:url'
+              content='https://virtualhospitalsafrica.org'
+            />
             <link
               rel='apple-touch-icon'
               sizes='180x180'
