@@ -253,6 +253,60 @@ export interface GuardianRelations {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientFamily {
+  id: Generated<number>
+  patient_id: number
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+  home_satisfaction: number
+  spiritual_satisfaction: number
+  social_satisfaction: number
+  religion: Religion
+  family_type: FamilyType
+  marital_status: MaritalStatus
+  patient_cohabitation: PatientCohabitation
+}
+
+export type MaritalStatus =
+  | 'Never Married'
+  | 'Married'
+  | 'Single'
+  | 'Divorced'
+  | 'Separated'
+  | 'Co-habiting'
+
+export type FamilyType =
+  | '2 married parents'
+  | 'Divorced, staying with mother'
+  | 'Divorced, staying with father'
+  | 'Extended'
+  | 'Child-headed'
+  | 'Childless'
+  | 'Polygamous/Compound'
+  | 'Single Parent'
+  | 'Same-sex marriage'
+  | 'Blended'
+  | 'Grandparent-led- Orphan'
+
+export type Religion =
+  | 'Roman Catholic'
+  | 'Pentecostal/Protestant Christianity'
+  | 'Islam'
+  | 'Apostolic Sect'
+  | 'African Traditional Religion'
+  | 'Non-Religious'
+  | 'Other'
+
+export type PatientCohabitation =
+  | 'Mother'
+  | 'Father'
+  | 'Grandparent(s)'
+  | 'Sibling'
+  | 'Uncle or Aunt'
+  | 'Other Relative'
+  | 'Foster Parent'
+  | 'Orphanage'
+
 export interface HealthWorkerGoogleTokens {
   access_token: string
   created_at: Generated<Timestamp>
