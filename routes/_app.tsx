@@ -54,7 +54,7 @@ export default function App({ Component, ...props }: PageProps) {
             <meta name='og:local' content='en_GB' />
             <meta
               name='og:image'
-              content='https://virtualhospitalsafrica.org/ogimage.png'
+              content='https://virtualhospitalsafrica.org/images/ogimage.png'
             />
 
             <meta name='og:image:type' content={`image/png`} />
@@ -66,7 +66,7 @@ export default function App({ Component, ...props }: PageProps) {
             <link
               rel='apple-touch-icon'
               sizes='180x180'
-              href='https://virtualhospitalsafrica.org/ogimage.png'
+              href='https://virtualhospitalsafrica.org/images/ogimage.png'
             />
           </>
         )}
