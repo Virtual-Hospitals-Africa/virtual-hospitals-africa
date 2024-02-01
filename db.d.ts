@@ -744,5 +744,6 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
+  patient_family: PatientFamily
 }
 type Buffer = Uint8Array

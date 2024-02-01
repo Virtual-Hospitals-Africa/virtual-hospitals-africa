@@ -1,23 +1,13 @@
+import { RELIGIONS } from '../shared/family.ts'
 import SelectWithOther from './SelectWithOther.tsx'
 
-const allReligions = [
-  'Roman Catholic',
-  'Pentecostal/Protestant',
-  'Christianity',
-  'Islam',
-  'Buddhism',
-  'Apostolic Sect',
-  'African Traditional Religion',
-  'Non-Religious',
-]
-
-export default function ReligionSelect() {
+export default function ReligionSelect({ name }: { name: string }) {
   return (
     <SelectWithOther
-      name='religion'
+      name={name}
       required
     >
-      {allReligions.map((religion) => (
+      {RELIGIONS.map((religion) => (
         <option value={religion}>
           {religion}
         </option>

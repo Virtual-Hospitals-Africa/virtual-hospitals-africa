@@ -10,6 +10,10 @@ import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Dependent from './Dependent.tsx'
 import NextOfKin from './NextOfKin.tsx'
+import MaritalStatusSelect from './MaritalStatusSelect.tsx'
+import PatientCohabitationSelect from './PatientCohabitationSelect.tsx'
+import FamilyTypeSelect from './FamilyTypeSelect.tsx'
+import ReligionSelect from '../ReligionSelect.tsx'
 
 type GuardianFamilyRelationState =
   & Partial<Omit<GuardianFamilyRelation, 'relation_id'>>
@@ -110,6 +114,13 @@ export default function PatientFamilyForm({
             />
           </div>
         )}
+
+      <div>
+        <MaritalStatusSelect name='' />
+        <PatientCohabitationSelect name='' />
+        <FamilyTypeSelect name='' />
+        <ReligionSelect name='' />
+      </div>
     </div>
   )
 }

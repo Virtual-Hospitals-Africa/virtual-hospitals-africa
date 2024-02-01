@@ -171,9 +171,20 @@ export async function get(
     ])
     .executeTakeFirst()
 
+  const patient_family = await trx
+      .selectFrom('patient_family')
+      .selectAll()
+      .where('patient_id', '=', patient_id)
+      .executeTakeFirst()
+
   return {
-    marital_status: 'TODO',
-    religion: 'TODO',
+    marital_status: patient_family?.marital_status,
+    religion: patient_family?.religion,
+    home_satisfaction: patient_family?.home_satisfaction,
+    spiritual_satisfaction: patient_family?.spiritual_satisfaction,
+    social_satisfaction: patient_family?.social_satisfaction,
+    family_type: patient_family?.family_type,
+    patient_cohabitation: patient_family?.patient_cohabitation,
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
     other_next_of_kin: await gettingOtherNextOfKin,
