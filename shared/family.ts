@@ -80,7 +80,8 @@ export const FAMILY_TYPES: FamilyType[] = [
   'Single Parent',
   'Same-sex marriage',
   'Blended',
-  'Grandparent-led- Orphan',
+  'Grandparent-led',
+  'Orphan',
 ]
 
 export const RELIGIONS: Religion[] = [

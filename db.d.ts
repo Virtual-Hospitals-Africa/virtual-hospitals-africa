@@ -285,7 +285,8 @@ export type FamilyType =
   | 'Single Parent'
   | 'Same-sex marriage'
   | 'Blended'
-  | 'Grandparent-led- Orphan'
+  | 'Grandparent-led'
+  | 'Orphan'
 
 export type Religion =
   | 'Roman Catholic'
