@@ -1,17 +1,24 @@
+import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 import { MARITAL_STATUS } from '../../shared/family.ts'
-import SelectWithOther from '../SelectWithOther.tsx'
 
-export default function MaritalStatusSelect({ name }: { name: string }) {
+export default function MaritalStatusSelect(
+  { name, required, label, value }: {
+    name: string
+    label: string
+    required?: boolean
+    value?: string
+  },
+) {
   return (
-    <SelectWithOther
+    <SelectWithOptions
+      label={label}
       name={name}
-      required
-    >
-      {MARITAL_STATUS.map((status) => (
-        <option value={status}>
-          {status}
-        </option>
+      required={required}
+      blank_option
+      value={value}
+      options={MARITAL_STATUS.map((status) => (
+        { value: status }
       ))}
-    </SelectWithOther>
+    />
   )
 }

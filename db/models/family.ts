@@ -464,7 +464,6 @@ export async function upsert(
           guardian_patient_id = new_patient.id
           guardian_relation = guardian_relation_calculated
         }
-
         return {
           guardian_relation,
           guardian_patient_id,
@@ -561,9 +560,27 @@ export async function upsert(
   const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
+    const familyValues = {
+      patient_id: patient_id,
+      home_satisfaction: family_to_upsert.home_satisfaction ?? null,
+      spiritual_satisfaction: family_to_upsert.spiritual_satisfaction ?? null,
+      social_satisfaction:family_to_upsert.social_satisfaction ?? null,
+      religion: family_to_upsert.religion ?? null,
+      family_type: family_to_upsert.family_type ?? null,
+      marital_status: family_to_upsert?.marital_status ?? null,
+      patient_cohabitation: family_to_upsert.patient_cohabitation ?? null,
+    }
+    const family_form_upsert = trx
+      .insertInto('patient_family')
+      .values(familyValues)
+      .onConflict((oc) => oc.column('patient_id').doUpdateSet(familyValues))
+      .returningAll()
+      .executeTakeFirstOrThrow()
+
   await Promise.all([
     removing_relations,
     adding_relations,
+    family_form_upsert,
     ...updating_relations,
     removing_kin,
     upsert_kin,

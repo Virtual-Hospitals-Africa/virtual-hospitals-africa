@@ -14,6 +14,9 @@ import MaritalStatusSelect from './MaritalStatusSelect.tsx'
 import PatientCohabitationSelect from './PatientCohabitationSelect.tsx'
 import FamilyTypeSelect from './FamilyTypeSelect.tsx'
 import ReligionSelect from '../ReligionSelect.tsx'
+import FormRow from '../../components/library/form/Row.tsx'
+import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
+import range from '../../util/range.ts'
 
 type GuardianFamilyRelationState =
   & Partial<Omit<GuardianFamilyRelation, 'relation_id'>>
@@ -41,6 +44,11 @@ export default function PatientFamilyForm({
   )
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
+
+  const satisfactionValues = range(0, 11).map((n) => ({
+    value: n,
+    label: n.toString(),
+  }))
 
   const showGuardians = age <= 18
   const showDependents = age >= 10
@@ -116,10 +124,53 @@ export default function PatientFamilyForm({
         )}
 
       <div>
-        <MaritalStatusSelect name='' />
-        <PatientCohabitationSelect name='' />
-        <FamilyTypeSelect name='' />
-        <ReligionSelect name='' />
+        <FormRow>
+          <MaritalStatusSelect
+            label='Marital Status'
+            name='family.marital_status'
+            value={family.marital_status as string}
+          />
+          <FamilyTypeSelect
+            label='Type of Family'
+            name='family.family_type'
+            value={family.family_type as string}
+          />
+        </FormRow>
+        <FormRow className='mt-2'>
+          <SelectWithOptions
+            label={'Home Environment/Family Satisfaction'}
+            name='family.home_satisfaction'
+            blank_option
+            options={satisfactionValues}
+            value={family.home_satisfaction ?? undefined}
+          />
+          <SelectWithOptions
+            label={'Spiritual Environment/Religion Satisfaction'}
+            name='family.spiritual_satisfaction'
+            blank_option
+            options={satisfactionValues}
+            value={family.spiritual_satisfaction ?? undefined}
+          />
+          <SelectWithOptions
+            label={'Social Environment/Community Satisfaction'}
+            name='family.social_satisfaction'
+            blank_option
+            options={satisfactionValues}
+            value={family.social_satisfaction ?? undefined}
+          />
+        </FormRow>
+        <FormRow className='mt-2'>
+          <PatientCohabitationSelect
+            label='If parents don`t live together, who usually stays with the patient?'
+            name='family.patient_cohabitation'
+            value={family.patient_cohabitation as string}
+          />
+          <ReligionSelect
+            label='Religion'
+            name='family.religion'
+            value={family.religion as string}
+          />
+        </FormRow>
       </div>
     </div>
   )

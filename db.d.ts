@@ -258,13 +258,13 @@ export interface PatientFamily {
   patient_id: number
   created_at: Generated<Timestamp>
   updated_at: Generated<Timestamp>
-  home_satisfaction: number
-  spiritual_satisfaction: number
-  social_satisfaction: number
-  religion: Religion
-  family_type: FamilyType
-  marital_status: MaritalStatus
-  patient_cohabitation: PatientCohabitation
+  home_satisfaction: number | null
+  spiritual_satisfaction: number | null
+  social_satisfaction: number | null
+  religion: Religion | null
+  family_type: FamilyType | null
+  marital_status: MaritalStatus | null
+  patient_cohabitation: PatientCohabitation | null
 }
 
 export type MaritalStatus =

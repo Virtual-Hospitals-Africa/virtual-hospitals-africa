@@ -1,17 +1,24 @@
+import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 import { FAMILY_TYPES } from '../../shared/family.ts'
-import SelectWithOther from '../SelectWithOther.tsx'
 
-export default function FamilyTypeSelect({ name }: { name: string }) {
+export default function FamilyTypeSelect(
+  { name, required, label, value }: {
+    name: string
+    label: string
+    required?: boolean
+    value?: string
+  },
+) {
   return (
-    <SelectWithOther
+    <SelectWithOptions
+      label={label}
       name={name}
-      required
-    >
-      {FAMILY_TYPES.map((type) => (
-        <option value={type}>
-          {type}
-        </option>
+      required={required}
+      blank_option
+      value={value}
+      options={FAMILY_TYPES.map((type) => (
+        { value: type }
       ))}
-    </SelectWithOther>
+    />
   )
 }

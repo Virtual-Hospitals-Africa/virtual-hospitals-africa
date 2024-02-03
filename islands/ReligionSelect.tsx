@@ -1,17 +1,24 @@
+import { SelectWithOptions } from '../components/library/form/Inputs.tsx'
 import { RELIGIONS } from '../shared/family.ts'
-import SelectWithOther from './SelectWithOther.tsx'
 
-export default function ReligionSelect({ name }: { name: string }) {
+export default function ReligionSelect(
+  { name, required, label, value }: {
+    name: string
+    label: string
+    required?: boolean
+    value?: string
+  },
+) {
   return (
-    <SelectWithOther
+    <SelectWithOptions
+      label={label}
       name={name}
-      required
-    >
-      {RELIGIONS.map((religion) => (
-        <option value={religion}>
-          {religion}
-        </option>
+      required={required}
+      blank_option
+      value={value}
+      options={RELIGIONS.map((r) => (
+        { value: r }
       ))}
-    </SelectWithOther>
+    />
   )
 }

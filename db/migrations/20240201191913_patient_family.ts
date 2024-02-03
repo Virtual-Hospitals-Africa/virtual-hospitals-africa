@@ -29,7 +29,7 @@ export async function up(db: Kysely<unknown>) {
       col.defaultTo(sql`now()`).notNull()
     )
     .addColumn('patient_id', 'integer', (col) =>
-      col.notNull().references('patients.id').onDelete('cascade')
+      col.unique().notNull().references('patients.id').onDelete('cascade')
     )
     .addColumn('home_satisfaction', 'int2', (col) =>
       col.check(sql`home_satisfaction >= 0 AND home_satisfaction <= 10`)
@@ -42,12 +42,10 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('social_satisfaction', 'int2', (col) =>
       col.check(sql`social_satisfaction >= 0 AND social_satisfaction <= 10`)
     )
-    .addColumn('religion', sql`religion`, (col) => col.notNull())
-    .addColumn('family_type', sql`family_type`, (col) => col.notNull())
-    .addColumn('marital_status', sql`marital_status`, (col) => col.notNull())
-    .addColumn('patient_cohabitation', sql`patient_cohabitation`, (col) =>
-      col.notNull()
-    )
+    .addColumn('religion', sql`religion`)
+    .addColumn('family_type', sql`family_type`)
+    .addColumn('marital_status', sql`marital_status`)
+    .addColumn('patient_cohabitation', sql`patient_cohabitation`)
     .execute()
 
     await addUpdatedAtTrigger(db, 'patient_family')

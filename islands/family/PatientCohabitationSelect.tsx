@@ -1,17 +1,25 @@
+import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 import { PATIENT_COHABITATIONS } from '../../shared/family.ts'
-import SelectWithOther from '../SelectWithOther.tsx'
+import Select from '../SelectWithOther.tsx'
 
-export default function PatientCohabitationSelect({ name }: { name: string }) {
+export default function PatientCohabitationSelect(
+  { name, required, label, value }: {
+    name: string
+    label: string
+    required?: boolean
+    value?: string
+  },
+) {
   return (
-    <SelectWithOther
+    <SelectWithOptions
+      label={label}
       name={name}
-      required
-    >
-      {PATIENT_COHABITATIONS.map((c) => (
-        <option value={c}>
-          {c}
-        </option>
+      required={required}
+      blank_option
+      value={value}
+      options={PATIENT_COHABITATIONS.map((p) => (
+        { value: p }
       ))}
-    </SelectWithOther>
+    />
   )
 }
