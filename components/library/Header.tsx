@@ -68,7 +68,7 @@ function HeaderRightWithAvatar(
 function HeaderRightClose() {
   return (
     <HeaderRight>
-      <a onClick={() => window.history.back()} className='h-6 w-6'>
+      <a onClick={() => history.back()} className='h-6 w-6'>
         <XMarkIcon stroke='white' />
       </a>
     </HeaderRight>

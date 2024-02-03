@@ -5,12 +5,12 @@
 // The logic for 200s is to replace the current page with the response text. This is more complicated than I'd like,
 // but there's no way to manually get the 302 location without following the redirect and getting the whole HTML, so
 // rather than fetch the page twice, we replace the current page with the response text.
-window.addEventListener('submit', function (event) {
+addEventListener('submit', function (event) {
   var submitButton
 
   function onError(errorMessage) {
     var event = new CustomEvent('request-error', { detail: errorMessage })
-    window.dispatchEvent(event)
+    dispatchEvent(event)
     submitButton.disabled = false
   }
 

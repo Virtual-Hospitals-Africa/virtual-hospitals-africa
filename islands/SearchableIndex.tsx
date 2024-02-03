@@ -1,15 +1,10 @@
-import { JSX } from 'preact'
 import { Combobox } from '@headlessui/react'
 import { assert } from 'std/assert/assert.ts'
-import { useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
-import { Maybe } from '../types.ts'
-import isObjectLike from '../util/isObjectLike.ts'
 import {
-  CheckIcon,
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
-import { ICD10Searchable } from '../shared/icd10.ts'
+import { ICD10Searchable, ICD10SearchableSerialized } from '../shared/icd10.ts'
 import { computed, useSignal } from '@preact/signals'
 
 function Internal({ icd10_searchable }: {
@@ -76,12 +71,11 @@ function Internal({ icd10_searchable }: {
 export default function SearchableIndex({
   serialized_icd10_searchable,
 }: {
-  serialized_icd10_searchable: any
+  serialized_icd10_searchable: ICD10SearchableSerialized
 }) {
   const icd10_searchable = ICD10Searchable.deserialize(
     serialized_icd10_searchable,
   )
 
-  console.log(icd10_searchable)
   return <Internal icd10_searchable={icd10_searchable} />
 }

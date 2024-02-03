@@ -1,4 +1,4 @@
-import { TrigramIndex } from '../util/trigram.ts'
+import * as trigram from '../util/trigram.ts'
 
 type Path = Array<number | 'term' | 'mainTerm'>
 
@@ -24,10 +24,17 @@ function* indexableTerms(
   }
 }
 
+export type ICD10SearchableSerialized = {
+  terms: string[]
+  paths: Path[]
+  icd10_index: ICD10Index
+  index: trigram.Serialized
+}
+
 export class ICD10Searchable {
   public terms: string[] = []
   public paths: Path[] = []
-  public index: TrigramIndex
+  public index: trigram.TrigramIndex
   constructor(public icd10_index: ICD10Index) {
     for (const [i, letter] of icd10_index['ICD10CM.index'].letter.entries()) {
       for (const [j, mainTerm] of letter.mainTerm.entries()) {
@@ -39,19 +46,19 @@ export class ICD10Searchable {
         }
       }
     }
-    this.index = new TrigramIndex(this.terms)
+    this.index = new trigram.TrigramIndex(this.terms)
   }
 
-  static deserialize(serialized: any): ICD10Searchable {
+  static deserialize(serialized: ICD10SearchableSerialized): ICD10Searchable {
     return Object.setPrototypeOf({
       terms: serialized.terms,
       paths: serialized.paths,
       icd10_index: serialized.icd10_index,
-      index: TrigramIndex.deserialize(serialized.index),
+      index: trigram.TrigramIndex.deserialize(serialized.index),
     }, ICD10Searchable.prototype)
   }
 
-  serialize() {
+  serialize(): ICD10SearchableSerialized {
     return {
       terms: this.terms,
       paths: this.paths,
@@ -66,8 +73,10 @@ export class ICD10Searchable {
     return results.flatMap((result) =>
       result.indexes.map((index) => {
         const path = this.paths[index]
+        // deno-lint-ignore no-explicit-any
         let current: any = this.icd10_index['ICD10CM.index'].letter
         for (const step of path) {
+          // deno-lint-ignore no-explicit-any
           current = current[step as any]
         }
         return { result, term: current, path }

@@ -10,7 +10,7 @@ function* asTrigrams(phrase: string) {
 
 type SearchResult = { phrase: string; distance: number; indexes: number[] }
 
-type Serialized = {
+export type Serialized = {
   phrases: string[]
   trigram_index: [string, string[]][]
   terms: [string, string[]][]

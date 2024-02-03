@@ -23,7 +23,7 @@ export default function AsyncSearch<
   })
 
   useEffect(() => {
-    const url = new URL(`${window.location.origin}${href}`)
+    const url = new URL(`${location.origin}${href}`)
     if (search.query) {
       url.searchParams.set('search', search.query)
     }
