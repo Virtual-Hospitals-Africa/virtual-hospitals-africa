@@ -1,4 +1,3 @@
-import 'dotenv'
 import { assert } from 'std/assert/assert.ts'
 import {
   Kysely,

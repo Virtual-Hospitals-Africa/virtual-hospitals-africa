@@ -1,4 +1,3 @@
-import 'dotenv'
 import { assert } from 'std/assert/assert.ts'
 
 const APPLICATION_EVENTS_SLACK_WEBHOOK_URL = Deno.env.get(

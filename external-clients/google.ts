@@ -1,9 +1,7 @@
-// deno-lint-ignore-file no-explicit-any
-import 'dotenv'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import moment from 'https://deno.land/x/momentjs@2.29.1-deno/mod.ts'
-// const formatRFC3339 = require("date-fns/formatRFC3339");
+
 import {
   DeepPartial,
   GCalCalendarList,
@@ -72,7 +70,7 @@ export class GoogleClient {
   ): Promise<
     | { result: 'unauthorized_error' }
     | { result: 'other_error'; error: Error }
-    | { result: 'success'; data: any }
+    | { result: 'success'; data: T }
     | { result: 'insufficient_permission' }
   > {
     const url = `${googleApisUrl}${path}`
@@ -112,7 +110,7 @@ export class GoogleClient {
       try {
         const text = await response.text()
         console.log(`${method} ${url}`, text)
-        return { result: 'success', data: text }
+        return { result: 'success', data: text as T }
       } catch (error) {
         console.error(`${method} ${url}`, error)
         return { result: 'other_error', error }
@@ -134,10 +132,10 @@ export class GoogleClient {
       }
       throw response.error
     }
-    return response.data
+    return response.data as T
   }
 
-  private makeCalendarRequest(path: string, opts?: RequestOpts): Promise<any> {
+  private makeCalendarRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
     return this.makeRequest(`/calendar/v3${path}`, opts)
   }
 
@@ -315,6 +313,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   public health_worker: HealthWorkerWithGoogleTokens
 
   constructor(
+    // deno-lint-ignore no-explicit-any
     public ctx: HandlerContext<any, LoggedInHealthWorker>,
   ) {
     super(ctx.state.healthWorker)
@@ -324,7 +323,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
     }
   }
 
-  async makeRequest(path: string, opts?: RequestOpts): Promise<any> {
+  async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
     try {
       return await super.makeRequest(path, opts)
     } catch (err) {
@@ -341,6 +340,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
         return await super.makeRequest(path, opts)
       }
     }
+    throw new Error('Unreachable')
   }
 }
 

@@ -1,4 +1,3 @@
-import 'dotenv'
 import {
   WhatsAppJSONResponse,
   WhatsAppLocation,
