@@ -48,9 +48,14 @@ describe(
               },
             ],
             dependents: [],
-            marital_status: 'TODO',
-            religion: 'TODO',
             other_next_of_kin: undefined,
+            home_satisfaction: undefined,
+            spiritual_satisfaction: undefined,
+            social_satisfaction: undefined,
+            religion: undefined,
+            family_type: undefined,
+            marital_status: undefined,
+            patient_cohabitation: undefined,
           })
           assertEquals(guardian_relations, {
             guardians: [],
@@ -66,9 +71,14 @@ describe(
                 patient_gender: 'female',
               },
             ],
-            marital_status: 'TODO',
-            religion: 'TODO',
             other_next_of_kin: undefined,
+            home_satisfaction: undefined,
+            spiritual_satisfaction: undefined,
+            social_satisfaction: undefined,
+            religion: undefined,
+            family_type: undefined,
+            marital_status: undefined,
+            patient_cohabitation: undefined,
           })
         },
       )
@@ -91,6 +101,13 @@ describe(
             }],
             dependents: [],
             other_next_of_kin: undefined,
+            home_satisfaction: 8,
+            spiritual_satisfaction: 7,
+            social_satisfaction: 6,
+            religion: 'Other',
+            family_type: '2 married parents',
+            marital_status: 'Single',
+            patient_cohabitation: 'Sibling',
           })
           const relations = await family.get(trx, { patient_id: dependent.id })
           assertEquals(relations, {
@@ -106,9 +123,14 @@ describe(
               relation_id: relations['guardians'][0].relation_id,
               next_of_kin: true,
             }],
-            marital_status: 'TODO',
-            religion: 'TODO',
             other_next_of_kin: undefined,
+            home_satisfaction: 8,
+            spiritual_satisfaction: 7,
+            social_satisfaction: 6,
+            religion: 'Other',
+            family_type: '2 married parents',
+            marital_status: 'Single',
+            patient_cohabitation: 'Sibling',
           })
         },
       )
@@ -132,6 +154,13 @@ describe(
             }],
             dependents: [],
             other_next_of_kin: undefined,
+            home_satisfaction: null,
+            spiritual_satisfaction: null,
+            social_satisfaction: null,
+            religion: null,
+            family_type: null,
+            marital_status: null,
+            patient_cohabitation: null,
           })
           const relations = await family.get(trx, { patient_id: dependent.id })
           assertEquals(relations, {
@@ -147,9 +176,14 @@ describe(
               relation_id: relations['guardians'][0].relation_id,
               next_of_kin: false,
             }],
-            marital_status: 'TODO',
-            religion: 'TODO',
             other_next_of_kin: undefined,
+            home_satisfaction: null,
+            spiritual_satisfaction: null,
+            social_satisfaction: null,
+            religion: null,
+            family_type: null,
+            marital_status: null,
+            patient_cohabitation: null,
           })
         },
       )
@@ -169,6 +203,13 @@ describe(
             }],
             dependents: [],
             other_next_of_kin: undefined,
+            home_satisfaction: null,
+            spiritual_satisfaction: null,
+            social_satisfaction: null,
+            religion: null,
+            family_type: null,
+            marital_status: null,
+            patient_cohabitation: null,
           })
           const relations = await family.get(trx, { patient_id: dependent.id })
           assertEquals(relations, {
@@ -184,9 +225,14 @@ describe(
               relation_id: relations['guardians'][0].relation_id,
               next_of_kin: false,
             }],
-            marital_status: 'TODO',
-            religion: 'TODO',
             other_next_of_kin: undefined,
+            home_satisfaction: null,
+            spiritual_satisfaction: null,
+            social_satisfaction: null,
+            religion: null,
+            family_type: null,
+            marital_status: null,
+            patient_cohabitation: null,
           })
         },
       )
@@ -210,14 +256,26 @@ describe(
             guardians: [],
             dependents: [],
             other_next_of_kin: undefined,
+            home_satisfaction: null,
+            spiritual_satisfaction: null,
+            social_satisfaction: null,
+            religion: null,
+            family_type: null,
+            marital_status: null,
+            patient_cohabitation: null,
           })
           const relations = await family.get(trx, { patient_id: dependent.id })
           assertEquals(relations, {
             dependents: [],
             guardians: [],
-            marital_status: 'TODO',
-            religion: 'TODO',
             other_next_of_kin: undefined,
+            home_satisfaction: null,
+            spiritual_satisfaction: null,
+            social_satisfaction: null,
+            religion: null,
+            family_type: null,
+            marital_status: null,
+            patient_cohabitation: null,
           })
           assertEquals(
             (await patients.getByID(trx, { id: guardian.id })).name,
@@ -245,6 +303,13 @@ describe(
           }],
           dependents: [],
           other_next_of_kin: undefined,
+          home_satisfaction: null,
+          spiritual_satisfaction: null,
+          social_satisfaction: null,
+          religion: null,
+          family_type: null,
+          marital_status: null,
+          patient_cohabitation: null,
         })
         const relations = await family.get(trx, { patient_id: dependent.id })
         assertEquals(relations, {
@@ -270,9 +335,14 @@ describe(
             relation_id: relations['guardians'][1].relation_id,
             next_of_kin: true,
           }],
-          marital_status: 'TODO',
-          religion: 'TODO',
           other_next_of_kin: undefined,
+          home_satisfaction: null,
+          spiritual_satisfaction: null,
+          social_satisfaction: null,
+          religion: null,
+          family_type: null,
+          marital_status: null,
+          patient_cohabitation: null,
         })
 
         await family.upsert(trx, dependent.id, {
@@ -291,6 +361,13 @@ describe(
           }],
           dependents: [],
           other_next_of_kin: undefined,
+          home_satisfaction: null,
+          spiritual_satisfaction: null,
+          social_satisfaction: null,
+          religion: null,
+          family_type: null,
+          marital_status: null,
+          patient_cohabitation: null,
         })
 
         const modified_relations = await family.get(trx, {
@@ -319,9 +396,14 @@ describe(
             relation_id: relations['guardians'][1].relation_id,
             next_of_kin: false,
           }],
-          marital_status: 'TODO',
-          religion: 'TODO',
           other_next_of_kin: undefined,
+          home_satisfaction: null,
+          spiritual_satisfaction: null,
+          social_satisfaction: null,
+          religion: null,
+          family_type: null,
+          marital_status: null,
+          patient_cohabitation: null,
         })
       })
 
@@ -338,13 +420,18 @@ describe(
             patient_phone_number,
             next_of_kin: true,
           },
+          home_satisfaction: null,
+          spiritual_satisfaction: null,
+          social_satisfaction: null,
+          religion: null,
+          family_type: null,
+          marital_status: null,
+          patient_cohabitation: null,
         })
         const relations = await family.get(trx, { patient_id: dependent.id })
         assertEquals(relations, {
           dependents: [],
           guardians: [],
-          marital_status: 'TODO',
-          religion: 'TODO',
           other_next_of_kin: {
             patient_gender: null,
             patient_id: relations['other_next_of_kin']!.patient_id,
@@ -353,6 +440,13 @@ describe(
             relation: 'biological mother',
             id: relations['other_next_of_kin']?.id,
           },
+          home_satisfaction: null,
+          spiritual_satisfaction: null,
+          social_satisfaction: null,
+          religion: null,
+          family_type: null,
+          marital_status: null,
+          patient_cohabitation: null,
         })
       })
     })

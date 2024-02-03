@@ -19,12 +19,25 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
+import {
+  FamilyType,
+  MaritalStatus,
+  PatientCohabitation,
+  Religion,
+} from '../../../../../db.d.ts'
 
 type FamilyFormValues = {
   family?: {
     guardians?: FamilyRelationInsert[]
     dependents?: FamilyRelationInsert[]
     other_next_of_kin?: FamilyRelationInsert
+    home_satisfaction?: number
+    spiritual_satisfaction?: number
+    social_satisfaction?: number
+    religion?: Religion
+    family_type?: FamilyType
+    marital_status?: MaritalStatus
+    patient_cohabitation?: PatientCohabitation
   }
 }
 
@@ -47,6 +60,13 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
         guardians: family?.guardians || [],
         dependents: family?.dependents || [],
         other_next_of_kin: family?.other_next_of_kin,
+        home_satisfaction: family?.home_satisfaction,
+        spiritual_satisfaction: family?.spiritual_satisfaction,
+        social_satisfaction: family?.social_satisfaction,
+        religion: family?.religion,
+        family_type: family?.family_type,
+        marital_status: family?.marital_status,
+        patient_cohabitation: family?.patient_cohabitation,
       },
     })
   },

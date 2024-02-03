@@ -4,7 +4,16 @@ import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
-import { DB, EncounterStep, IntakeStep, PatientAge } from './db.d.ts'
+import {
+  DB,
+  EncounterStep,
+  FamilyType,
+  IntakeStep,
+  MaritalStatus,
+  PatientAge,
+  PatientCohabitation,
+  Religion,
+} from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -236,11 +245,16 @@ export type PatientIntake =
   >
 
 export type PatientFamily = {
-  marital_status?: Maybe<string>
-  religion?: Maybe<string>
   guardians: GuardianFamilyRelation[]
   dependents: FamilyRelation[]
   other_next_of_kin: Maybe<NextOfKin>
+  home_satisfaction: Maybe<number>
+  spiritual_satisfaction: Maybe<number>
+  social_satisfaction: Maybe<number>
+  religion: Maybe<Religion>
+  family_type: Maybe<FamilyType>
+  marital_status: Maybe<MaritalStatus>
+  patient_cohabitation: Maybe<PatientCohabitation>
 }
 
 export type NextOfKin = {
@@ -276,11 +290,16 @@ export type FamilyRelationInsert = {
 }
 
 export type FamilyUpsert = {
-  marital_status?: Maybe<string>
-  religion?: Maybe<string>
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
   other_next_of_kin: Maybe<FamilyRelationInsert>
+  home_satisfaction: Maybe<number>
+  spiritual_satisfaction: Maybe<number>
+  social_satisfaction: Maybe<number>
+  religion: Maybe<Religion>
+  family_type: Maybe<FamilyType>
+  marital_status: Maybe<MaritalStatus>
+  patient_cohabitation: Maybe<PatientCohabitation>
 }
 
 export type PatientWithOpenEncounter = RenderedPatient & {

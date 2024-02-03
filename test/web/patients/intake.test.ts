@@ -540,6 +540,8 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
     body.set('family.guardians.0.patient_name', 'New Guardian')
     body.set('family.guardians.0.family_relation_gendered', 'biological mother')
     body.set('family.guardians.0.patient_phone_number', guardian_phone)
+    body.set('family.marital_status', 'Single')
+    body.set('family.religion', 'Non-Religious')
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/family`,
       {
@@ -570,6 +572,8 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
       guardian_phone,
     )
     assertEquals(patient_family.guardians[0].patient_gender, 'female')
+    assertEquals(patient_family.religion, 'Non-Religious')
+    assertEquals(patient_family.marital_status, 'Single')
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/family`,
@@ -589,6 +593,13 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
             patient_phone_number: Number(guardian_phone),
           },
         ],
+        home_satisfaction: null,
+        spiritual_satisfaction: null,
+        social_satisfaction: null,
+        religion: 'Non-Religious',
+        family_type: null,
+        marital_status: 'Single',
+        patient_cohabitation: null,
       },
     })
   })

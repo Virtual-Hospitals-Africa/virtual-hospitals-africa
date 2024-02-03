@@ -1,7 +1,7 @@
-import { SelectWithOptions } from '../components/library/form/Inputs.tsx'
-import { RELIGIONS } from '../shared/family.ts'
+import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
+import { FAMILY_TYPES } from '../../shared/family.ts'
 
-export default function ReligionSelect(
+export default function FamilyTypeSelect(
   { name, required, label, value }: {
     name: string
     label: string
@@ -16,8 +16,8 @@ export default function ReligionSelect(
       required={required}
       blank_option
       value={value}
-      options={RELIGIONS.map((r) => (
-        { value: r }
+      options={FAMILY_TYPES.map((type) => (
+        { value: type }
       ))}
     />
   )

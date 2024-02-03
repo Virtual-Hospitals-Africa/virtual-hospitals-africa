@@ -171,9 +171,20 @@ export async function get(
     ])
     .executeTakeFirst()
 
+  const patient_family = await trx
+    .selectFrom('patient_family')
+    .selectAll()
+    .where('patient_id', '=', patient_id)
+    .executeTakeFirst()
+
   return {
-    marital_status: 'TODO',
-    religion: 'TODO',
+    marital_status: patient_family?.marital_status,
+    religion: patient_family?.religion,
+    home_satisfaction: patient_family?.home_satisfaction,
+    spiritual_satisfaction: patient_family?.spiritual_satisfaction,
+    social_satisfaction: patient_family?.social_satisfaction,
+    family_type: patient_family?.family_type,
+    patient_cohabitation: patient_family?.patient_cohabitation,
     guardians: await gettingGuardians,
     dependents: await gettingDependents,
     other_next_of_kin: await gettingOtherNextOfKin,
@@ -453,7 +464,6 @@ export async function upsert(
           guardian_patient_id = new_patient.id
           guardian_relation = guardian_relation_calculated
         }
-
         return {
           guardian_relation,
           guardian_patient_id,
@@ -550,9 +560,27 @@ export async function upsert(
   const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
+  const familyValues = {
+    patient_id: patient_id,
+    home_satisfaction: family_to_upsert.home_satisfaction ?? null,
+    spiritual_satisfaction: family_to_upsert.spiritual_satisfaction ?? null,
+    social_satisfaction: family_to_upsert.social_satisfaction ?? null,
+    religion: family_to_upsert.religion ?? null,
+    family_type: family_to_upsert.family_type ?? null,
+    marital_status: family_to_upsert?.marital_status ?? null,
+    patient_cohabitation: family_to_upsert.patient_cohabitation ?? null,
+  }
+  const family_form_upsert = trx
+    .insertInto('patient_family')
+    .values(familyValues)
+    .onConflict((oc) => oc.column('patient_id').doUpdateSet(familyValues))
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
   await Promise.all([
     removing_relations,
     adding_relations,
+    family_form_upsert,
     ...updating_relations,
     removing_kin,
     upsert_kin,

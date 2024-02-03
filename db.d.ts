@@ -253,6 +253,60 @@ export interface GuardianRelations {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientFamily {
+  id: Generated<number>
+  patient_id: number
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+  home_satisfaction: number | null
+  spiritual_satisfaction: number | null
+  social_satisfaction: number | null
+  religion: Religion | null
+  family_type: FamilyType | null
+  marital_status: MaritalStatus | null
+  patient_cohabitation: PatientCohabitation | null
+}
+
+export type MaritalStatus =
+  | 'Never Married'
+  | 'Married'
+  | 'Single'
+  | 'Divorced'
+  | 'Separated'
+  | 'Co-habiting'
+
+export type FamilyType =
+  | '2 married parents'
+  | 'Divorced'
+  | 'Extended'
+  | 'Child-headed'
+  | 'Childless'
+  | 'Polygamous/Compound'
+  | 'Single Parent'
+  | 'Same-sex marriage'
+  | 'Blended'
+  | 'Grandparent-led'
+  | 'Orphan'
+
+export type Religion =
+  | 'Roman Catholic'
+  | 'Pentecostal/Protestant Christianity'
+  | 'Islam'
+  | 'Apostolic Sect'
+  | 'African Traditional Religion'
+  | 'Non-Religious'
+  | 'Other'
+
+export type PatientCohabitation =
+  | 'Mother'
+  | 'Father'
+  | 'Grandparent(s)'
+  | 'Sibling'
+  | 'Uncle or Aunt'
+  | 'Other Relative'
+  | 'Foster Parent'
+  | 'Orphanage'
+
 export interface HealthWorkerGoogleTokens {
   access_token: string
   created_at: Generated<Timestamp>
@@ -690,5 +744,6 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
+  patient_family: PatientFamily
 }
 type Buffer = Uint8Array
