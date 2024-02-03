@@ -1,22 +1,11 @@
-import { XMLParser } from 'fast-xml-parser'
 import { TrigramIndex } from '../util/trigram.ts'
-import compact from '../util/compact.ts'
-import { assert } from 'std/assert/assert.ts'
-
-const parser = new XMLParser()
-
-export const icd10_index: ICD10Index = await Deno.readTextFile('db/resources/icd10/icd10cm-index-April-2024.xml').then(
-  (data) => parser.parse(data),
-)
-
-export const icd10_eindex = await Deno.readTextFile('db/resources/icd10/icd10cm-eindex-April-2024.xml').then(
-  (data) => parser.parse(data),
-)
 
 type Path = Array<number | 'term' | 'mainTerm'>
 
-function * indexableTerms(term: ICD10IndexTerm, path: Path): Generator<[string, Path]> {
-  
+function* indexableTerms(
+  term: ICD10IndexTerm,
+  path: Path,
+): Generator<[string, Path]> {
   if (typeof term.title === 'string') {
     yield [term.title, path]
   } else if (term.title['#text']) {
@@ -26,46 +15,70 @@ function * indexableTerms(term: ICD10IndexTerm, path: Path): Generator<[string, 
 
   if (Array.isArray(term.term)) {
     for (const [i, subTerm] of term.term.entries()) {
-      yield * indexableTerms(subTerm, [...path, 'term', i])
+      yield* indexableTerms(subTerm, [...path, 'term', i])
     }
   } else if (typeof term.term === 'string') {
     yield [term.term, [...path, 'term']]
   } else if (typeof term.term === 'object') {
-    yield * indexableTerms(term.term, [...path, 'term'])
+    yield* indexableTerms(term.term, [...path, 'term'])
   }
 }
 
-const terms: string[] = []
-const paths: Path[] = []
-for (const [i, letter] of icd10_index['ICD10CM.index'].letter.entries()) {
-  for (const [j, mainTerm] of letter.mainTerm.entries()) {
-    for (const [term, path] of indexableTerms(mainTerm, [i, 'mainTerm', j])) {
-      terms.push(term.toLowerCase())
-      paths.push(path)
+export class ICD10Searchable {
+  public terms: string[] = []
+  public paths: Path[] = []
+  public index: TrigramIndex
+  constructor(public icd10_index: ICD10Index) {
+    for (const [i, letter] of icd10_index['ICD10CM.index'].letter.entries()) {
+      for (const [j, mainTerm] of letter.mainTerm.entries()) {
+        for (
+          const [term, path] of indexableTerms(mainTerm, [i, 'mainTerm', j])
+        ) {
+          this.terms.push(term.toLowerCase())
+          this.paths.push(path)
+        }
+      }
+    }
+    this.index = new TrigramIndex(this.terms)
+  }
+
+  static deserialize(serialized: any): ICD10Searchable {
+    return Object.setPrototypeOf({
+      terms: serialized.terms,
+      paths: serialized.paths,
+      icd10_index: serialized.icd10_index,
+      index: TrigramIndex.deserialize(serialized.index),
+    }, ICD10Searchable.prototype)
+  }
+
+  serialize() {
+    return {
+      terms: this.terms,
+      paths: this.paths,
+      icd10_index: this.icd10_index,
+      index: this.index.serialize(),
     }
   }
-}
 
-export const searchable = new TrigramIndex(terms)
+  search(query: string) {
+    const results = this.index.find(query)
 
-export function search(query: string) {
-  const results = searchable.find(query)
-  
-  return results.flatMap(result => 
-    result.indexes.map(index => {
-      const path = paths[index]
-      let current: any = icd10_index['ICD10CM.index'].letter
-      for (const step of path) {
-        current = current[step as any]
-      }
-      return { result, term: current, path }
-    })
-  )
+    return results.flatMap((result) =>
+      result.indexes.map((index) => {
+        const path = this.paths[index]
+        let current: any = this.icd10_index['ICD10CM.index'].letter
+        for (const step of path) {
+          current = current[step as any]
+        }
+        return { result, term: current, path }
+      })
+    )
+  }
 }
 
 type ICD10IndexTitle = string | {
   nemod: string
-  "#text": string | number
+  '#text': string | number
 }
 
 type ICD10IndexTerm = {
@@ -76,9 +89,11 @@ type ICD10IndexTerm = {
   term?: ICD10IndexTerm | ICD10IndexTerm[]
 }
 
-type ICD10Index = { 'ICD10CM.index': {
-  letter: {
-    title: string
-    mainTerm: ICD10IndexTerm[]
-  }[]
-}}
+export type ICD10Index = {
+  'ICD10CM.index': {
+    letter: {
+      title: string
+      mainTerm: ICD10IndexTerm[]
+    }[]
+  }
+}
