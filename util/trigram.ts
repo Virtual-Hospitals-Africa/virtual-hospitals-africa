@@ -8,14 +8,14 @@ function * asTrigrams(phrase: string) {
   }
 }
 
-type SearchResult = { phrase: string, distance: number, index: number }
+type SearchResult = { phrase: string, distance: number, indexes: number[] }
 
 export class TrigramIndex {
-  public trigram_index = new Map<string, number[]>();
-  public terms: string[][] = []
+  public trigram_index = new Map<string, string[]>();
+  public terms = new Map<string, string[]>()
+  public unique_phrases = new Map<string, number[]>();
   constructor(public phrases: string[]) {
     this.phrases.forEach((phrase, index) => this.index(phrase, index));
-    assertEquals(this.phrases.length, this.terms.length)
   }
 
   static deserialize(data: { phrases: string[], trigram_index: [string, number[]][] }): TrigramIndex {
@@ -28,15 +28,20 @@ export class TrigramIndex {
   index(phrase: string, index: number) {
     assert(phrase, "phrase is required");
     assert(phrase === phrase.toLowerCase(), "phrase must be lowercase");
+    if (this.unique_phrases.has(phrase)) {
+      this.unique_phrases.get(phrase)!.push(index);
+      return
+    }
+    this.unique_phrases.set(phrase, [index]);
     for (const trigram of asTrigrams(phrase)) {
       if (!this.trigram_index.has(trigram)) {
-        this.trigram_index.set(trigram, [index]);
+        this.trigram_index.set(trigram, [phrase]);
       } else {
-        this.trigram_index.get(trigram)!.push(index);
+        this.trigram_index.get(trigram)!.push(phrase);
       }
     }
     const terms = phrase.split(' ')
-    this.terms.push(terms)
+    this.terms.set(phrase, terms)
   }
 
   serialize() {
@@ -48,7 +53,7 @@ export class TrigramIndex {
 
   find(search: string, max_results = 25): SearchResult[] {
     search = search.toLowerCase();
-    const phrase_matches = new Set<number>();
+    const phrase_matches = new Set<string>();
     const results: SearchResult[] = [];
     
     let at_max_results = false;
@@ -58,16 +63,16 @@ export class TrigramIndex {
     for (const trigram of asTrigrams(search)) {
       const phrases_with_trigram = this.trigram_index.get(trigram);
       if (!phrases_with_trigram) continue
-      for (const index of phrases_with_trigram) {
-        if (phrase_matches.has(index)) continue
-        phrase_matches.add(index);
-        const phrase = this.phrases[index];
-        const terms = this.terms[index]
+      for (const phrase of phrases_with_trigram) {
+        if (phrase_matches.has(phrase)) continue
+        phrase_matches.add(phrase);
+        const terms = this.terms.get(phrase)!
         const overall_distance = levenshtein.get(search, phrase);
         const min_term_distance = Math.min(...terms.map(term => levenshtein.get(search, term)));
         const distance = Math.min(overall_distance, min_term_distance)
         if (at_max_results && (distance >= threshold_distance)) continue
-        const result = { phrase, distance, index }
+        const indexes = this.unique_phrases.get(phrase)!
+        const result = { phrase, distance, indexes }
 
         if (distance <= best_distance) {
           results.unshift(result);

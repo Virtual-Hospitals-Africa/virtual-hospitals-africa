@@ -53,46 +53,18 @@ export function search(query: string) {
   const results = searchable.find(query)
   console.log('results', results)
   
-  return results.map(result => {
-    const path = paths[result.index]
-    console.log('path', path)
-    let current: any = icd10_index['ICD10CM.index'].letter
-    for (const step of path) {
-      current = current[step as any]
-    }
-    return { result, term: current, path }
-  })
+  return results.flatMap(result => 
+    result.indexes.map(index => {
+      const path = paths[index]
+      console.log('path', path)
+      let current: any = icd10_index['ICD10CM.index'].letter
+      for (const step of path) {
+        current = current[step as any]
+      }
+      return { result, term: current, path }
+    })
+  )
 }
-
-// export const searchable = new TrigramIndex(
-//   .flatMap((letter) => compact(letter.mainTerm.map((term) => typeof term.title === 'string' ? term.title.toLowerCase() : null))),
-// )
-
-// const ignore = new Set(['title', 'code', 'see', 'seeAlso'])
-
-// function logKeys(obj: any) {
-//   if (Array.isArray(obj)) {
-//     for (const item of obj) {
-//       logKeys(item)
-//     }
-//     return
-//   }
-//   for (const key in obj) {
-//     console.log(key)
-//   }
-// }
-
-// function findXerosis() {
-//   for (const letter of icd10_index.letter) {
-//     if (letter.title !== 'X') continue
-//     for (const mainTerm of letter.mainTerm) {
-//       console.log('mainTerm', mainTerm)
-//       if (mainTerm.title === 'Xerosis') {
-//         return mainTerm
-//       }
-//     }
-//   }
-// }
 
 type ICD10IndexTitle = string | {
   nemod: string
