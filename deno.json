@@ -51,7 +51,7 @@
     "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
   },
   "imports": {
-    "$fresh/": "https://deno.land/x/fresh@1.6.1/",
+    "$fresh/": "https://deno.land/x/fresh@1.6.3/",
     "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
     "kysely/": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/",
     "kysely-deno-postgres": "https://deno.land/x/kysely_deno_postgres@v0.4.0/mod.ts",
@@ -62,7 +62,7 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "fresh_session": "https://deno.land/x/fresh_session@0.2.2/mod.ts",
     "redis": "https://deno.land/x/redis@v0.30.0/mod.ts",
-    "std/": "https://deno.land/std@0.208.0/",
+    "std/": "https://deno.land/std@0.214.0/",
     "dotenv": "https://deno.land/x/dotenv@v3.2.2/load.ts",
     "tailwindcss": "npm:tailwindcss@3.3.5",
     "tailwindcss/": "npm:/tailwindcss@3.3.5/",
@@ -74,7 +74,9 @@
     "react": "https://esm.sh/preact@10.19.2/compat",
     "$fresh-testing-library": "https://deno.land/x/fresh_testing_library@0.12.0/mod.ts",
     "$fresh-testing-library/": "https://deno.land/x/fresh_testing_library@0.12.0/",
-    "ffmpeg": "https://deno.land/x/deno_ffmpeg@v3.1.0/mod.ts"
+    "ffmpeg": "https://deno.land/x/deno_ffmpeg@v3.1.0/mod.ts",
+    "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
+    "fast-levenshtein": "npm:fast-levenshtein@3.0.0"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": true

@@ -26,14 +26,14 @@ export default function NavBar() {
       assert(navBarRef.current)
       const offset = bodyRect.top + navBarRef.current.offsetHeight + 1
 
-      if (window.scrollY >= Math.floor(bodyRect.height) - window.innerHeight) {
+      if (scrollY >= Math.floor(bodyRect.height) - innerHeight) {
         setActiveIndex(sectionIds.length - 1)
         return
       }
 
       for (let index = 0; index < elements.length; index++) {
         if (
-          window.scrollY >=
+          scrollY >=
             elements[index].getBoundingClientRect().top - offset
         ) {
           newActiveIndex = index
