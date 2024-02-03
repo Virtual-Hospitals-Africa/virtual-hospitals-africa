@@ -1,7 +1,7 @@
 import { Kysely, sql } from 'kysely'
 import {
-  MARITAL_STATUS,
   FAMILY_TYPES,
+  MARITAL_STATUS,
   PATIENT_COHABITATIONS,
   RELIGIONS,
 } from '../../shared/family.ts'
@@ -22,25 +22,37 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('patient_family')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn('created_at', 'timestamptz', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'created_at',
+      'timestamptz',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('updated_at', 'timestamptz', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'updated_at',
+      'timestamptz',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('patient_id', 'integer', (col) =>
-      col.unique().notNull().references('patients.id').onDelete('cascade')
+    .addColumn(
+      'patient_id',
+      'integer',
+      (col) =>
+        col.unique().notNull().references('patients.id').onDelete('cascade'),
     )
-    .addColumn('home_satisfaction', 'int2', (col) =>
-      col.check(sql`home_satisfaction >= 0 AND home_satisfaction <= 10`)
+    .addColumn(
+      'home_satisfaction',
+      'int2',
+      (col) =>
+        col.check(sql`home_satisfaction >= 0 AND home_satisfaction <= 10`),
     )
     .addColumn('spiritual_satisfaction', 'int2', (col) =>
       col.check(
-        sql`spiritual_satisfaction >= 0 AND spiritual_satisfaction <= 10`
-      )
-    )
-    .addColumn('social_satisfaction', 'int2', (col) =>
-      col.check(sql`social_satisfaction >= 0 AND social_satisfaction <= 10`)
+        sql`spiritual_satisfaction >= 0 AND spiritual_satisfaction <= 10`,
+      ))
+    .addColumn(
+      'social_satisfaction',
+      'int2',
+      (col) =>
+        col.check(sql`social_satisfaction >= 0 AND social_satisfaction <= 10`),
     )
     .addColumn('religion', sql`religion`)
     .addColumn('family_type', sql`family_type`)
@@ -48,7 +60,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('patient_cohabitation', sql`patient_cohabitation`)
     .execute()
 
-    await addUpdatedAtTrigger(db, 'patient_family')
+  await addUpdatedAtTrigger(db, 'patient_family')
 }
 
 export async function down(db: Kysely<unknown>) {

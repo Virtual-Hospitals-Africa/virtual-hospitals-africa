@@ -1,8 +1,8 @@
 import {
-  MaritalStatus,
   FamilyType,
-  Religion,
+  MaritalStatus,
   PatientCohabitation,
+  Religion,
 } from '../db.d.ts'
 import { GuardianRelationName } from '../types.ts'
 
@@ -11,7 +11,7 @@ type GenderedRelation = [
   GuardianRelationName,
   string,
   [string, string],
-  [string, string]
+  [string, string],
 ]
 type Relation = UngenderedRelation | GenderedRelation
 
@@ -58,7 +58,7 @@ export const GUARDIAN_RELATIONS = relations.map(
     male_guardian: gendered_guardian?.[1] ?? null,
     female_dependent: gendered_dependent?.[0] ?? null,
     male_dependent: gendered_dependent?.[1] ?? null,
-  })
+  }),
 )
 
 export const MARITAL_STATUS: MaritalStatus[] = [

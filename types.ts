@@ -4,7 +4,16 @@ import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
-import { DB, EncounterStep, FamilyType, IntakeStep, MaritalStatus, PatientAge, PatientCohabitation, Religion } from './db.d.ts'
+import {
+  DB,
+  EncounterStep,
+  FamilyType,
+  IntakeStep,
+  MaritalStatus,
+  PatientAge,
+  PatientCohabitation,
+  Religion,
+} from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 

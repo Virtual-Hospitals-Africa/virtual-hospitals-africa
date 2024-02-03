@@ -7,9 +7,8 @@ export default function FamilyForm(
     family: PatientFamily
   },
 ) {
-  const age_number = (patient.age?.age_unit === 'year'
-    ? patient.age?.age_number
-    : 0) ?? 0
+  const age_number =
+    (patient.age?.age_unit === 'year' ? patient.age?.age_number : 0) ?? 0
   return (
     <>
       <section>

@@ -19,7 +19,12 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { Religion, FamilyType , MaritalStatus, PatientCohabitation } from '../../../../../db.d.ts'
+import {
+  FamilyType,
+  MaritalStatus,
+  PatientCohabitation,
+  Religion,
+} from '../../../../../db.d.ts'
 
 type FamilyFormValues = {
   family?: {
@@ -57,7 +62,7 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
         other_next_of_kin: family?.other_next_of_kin,
         home_satisfaction: family?.home_satisfaction,
         spiritual_satisfaction: family?.spiritual_satisfaction,
-        social_satisfaction:family?.social_satisfaction,
+        social_satisfaction: family?.social_satisfaction,
         religion: family?.religion,
         family_type: family?.family_type,
         marital_status: family?.marital_status,
