@@ -1,4 +1,3 @@
-import 'dotenv'
 import { assert } from 'std/assert/assert.ts'
 import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
