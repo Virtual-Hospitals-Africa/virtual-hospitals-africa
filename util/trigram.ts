@@ -55,8 +55,8 @@ export class TrigramIndex {
     search = search.toLowerCase();
     const phrase_matches = new Set<string>();
     const results: SearchResult[] = [];
-    
-    let at_max_results = false;
+
+    let results_size = 0;
     let best_distance = Infinity;
     let threshold_distance = Infinity;
   
@@ -70,7 +70,10 @@ export class TrigramIndex {
         const overall_distance = levenshtein.get(search, phrase);
         const min_term_distance = Math.min(...terms.map(term => levenshtein.get(search, term)));
         const distance = Math.min(overall_distance, min_term_distance)
-        if (at_max_results && (distance >= threshold_distance)) continue
+
+        assertEquals(results_size, results.reduce((acc, result) => acc + result.indexes.length, 0))
+        if ((results_size >= max_results) && (distance >= threshold_distance)) continue
+
         const indexes = this.unique_phrases.get(phrase)!
         const result = { phrase, distance, indexes }
 
@@ -95,12 +98,12 @@ export class TrigramIndex {
           results.splice(low, 0, result);
         }
 
-        if (at_max_results) {
-          results.pop()
+        results_size += indexes.length
+
+        while (results_size - results[results.length - 1].indexes.length >= max_results) {
+          const removed_result = results.pop()!
           threshold_distance = results[results.length - 1].distance
-        } else if (results.length === max_results) {
-          at_max_results = true
-          threshold_distance = results[results.length - 1].distance
+          results_size -= removed_result.indexes.length
         }
       }
     }

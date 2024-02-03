@@ -40,7 +40,6 @@ const paths: Path[] = []
 for (const [i, letter] of icd10_index['ICD10CM.index'].letter.entries()) {
   for (const [j, mainTerm] of letter.mainTerm.entries()) {
     for (const [term, path] of indexableTerms(mainTerm, [i, 'mainTerm', j])) {
-      console.log('term', term, 'path', path)
       terms.push(term.toLowerCase())
       paths.push(path)
     }
@@ -51,12 +50,10 @@ export const searchable = new TrigramIndex(terms)
 
 export function search(query: string) {
   const results = searchable.find(query)
-  console.log('results', results)
   
   return results.flatMap(result => 
     result.indexes.map(index => {
       const path = paths[index]
-      console.log('path', path)
       let current: any = icd10_index['ICD10CM.index'].letter
       for (const step of path) {
         current = current[step as any]
