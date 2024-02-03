@@ -45,7 +45,7 @@ export default function PatientFamilyForm({
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
-  const satisfactionValues = range(0, 11).map((n) => ({
+  const satisfactionValues = range(1, 11).map((n) => ({
     value: n,
     label: n.toString(),
   }))

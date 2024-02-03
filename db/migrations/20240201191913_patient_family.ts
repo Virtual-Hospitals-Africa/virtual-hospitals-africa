@@ -42,17 +42,17 @@ export async function up(db: Kysely<unknown>) {
       'home_satisfaction',
       'int2',
       (col) =>
-        col.check(sql`home_satisfaction >= 0 AND home_satisfaction <= 10`),
+        col.check(sql`home_satisfaction >= 1 AND home_satisfaction <= 10`),
     )
     .addColumn('spiritual_satisfaction', 'int2', (col) =>
       col.check(
-        sql`spiritual_satisfaction >= 0 AND spiritual_satisfaction <= 10`,
+        sql`spiritual_satisfaction >= 1 AND spiritual_satisfaction <= 10`,
       ))
     .addColumn(
       'social_satisfaction',
       'int2',
       (col) =>
-        col.check(sql`social_satisfaction >= 0 AND social_satisfaction <= 10`),
+        col.check(sql`social_satisfaction >= 1 AND social_satisfaction <= 10`),
     )
     .addColumn('religion', sql`religion`)
     .addColumn('family_type', sql`family_type`)
