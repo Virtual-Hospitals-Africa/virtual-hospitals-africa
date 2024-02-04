@@ -1,8 +1,6 @@
 import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
-import FormRow from '../../../../../components/library/form/Row.tsx'
-import PersonSearch from '../../../../../islands/PersonSearch.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import * as facilities from '../../../../../db/models/facilities.ts'
@@ -14,17 +12,10 @@ import {
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import FormButtons from '../../../../../components/library/form/buttons.tsx'
-import {
-  RadioGroup,
-  TextArea,
-} from '../../../../../components/library/form/Inputs.tsx'
-import ProvidersSelect from '../../../../../islands/ProvidersSelect.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
-import Form from '../../../../../components/library/form/Form.tsx'
 import { EncounterReason } from '../../../../../db.d.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
+import AddPatientForm from '../../../../../islands/waiting-room/AddPatientForm.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -81,7 +72,7 @@ export default async function WaitingRoomAdd(
   })
 
   let open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
-    let patient: { id?: number; name: string } | undefined
+  let patient: { id?: number; name: string } | undefined
   if (patient_id) {
     const getting_open_encounter = patient_encounters.get(trx, {
       patient_id,
@@ -108,50 +99,11 @@ export default async function WaitingRoomAdd(
       variant='home page'
     >
       <Container size='md'>
-        <Form method='POST'>
-          {open_encounter && (
-            <input
-              type='hidden'
-              name='encounter_id'
-              value={open_encounter.encounter_id}
-            />
-          )}
-          <FormRow>
-            <PersonSearch
-              name='patient'
-              href='/app/patients'
-              required
-              addable
-              value={patient}
-              disabled={!!patient}
-              onSelect={(patient) => {
-              }}
-            />
-          </FormRow>
-          <FormRow>
-            <ProvidersSelect providers={await gettingProviders} />
-          </FormRow>
-          <FormRow>
-            <RadioGroup
-              name='reason'
-              label='Reason for visit'
-              options={patient_encounters.drop_in_reasons.map((
-                value,
-              ) => ({
-                value,
-              }))}
-              value={open_encounter?.reason || 'seeking treatment'}
-            />
-          </FormRow>
-          <FormRow>
-            <TextArea name='notes' />
-          </FormRow>
-          <FormRow>
-          <FormButtons submitText='Add to waiting room'/>
-          
-          </FormRow>
-
-        </Form>
+        <AddPatientForm
+          providers={await gettingProviders}
+          open_encounter={open_encounter}
+          patient={patient}
+        />
       </Container>
     </Layout>
   )
