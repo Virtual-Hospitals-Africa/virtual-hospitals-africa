@@ -2,8 +2,9 @@ import { assert } from 'std/assert/assert.ts'
 import { CheckboxInput } from '../components/library/form/Inputs.tsx'
 import FormRow from '../components/library/form/Row.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
-import { Job, Occupation, School } from '../types.ts'
+import { Job, Occupation, Question, School } from '../types.ts'
 import { useState } from 'preact/hooks'
+import { YesNoGrid, YesNoQuestion } from '../components/library/form/Inputs.tsx'
 
 export default function Occupation19({
   occupation = {
@@ -19,7 +20,7 @@ export default function Occupation19({
       status: 'adult stopped school',
     },
   )
-  console.log('School Status', school.status)
+
   const [job, setJob] = useState<Job>(
     occupation.job || {
       happy: false,
@@ -30,7 +31,6 @@ export default function Occupation19({
     },
   )
 
-  //const example_answers = ['answer 1', 'answer 2', 'answer 3']
   const professions = [
     'Accountant',
     'Assistant',
@@ -72,142 +72,96 @@ export default function Occupation19({
 
   return (
     <>
-      <div class='flex right'>
-        <div class='flex 1'>
-          <text>Is the patient advancing their education?</text>
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <CheckboxInput
-            name={null}
-            label=''
-            checked={school.status === 'adult in school'}
-            onInput={(event) => {
-              assert(event.target instanceof HTMLInputElement)
-              const thisSchool: School = event.target.checked
-                ? {
-                  status: 'adult in school',
-                  education_level: '',
-                }
-                : {
-                  status: 'never attended',
-                }
-              setSchool(thisSchool)
-            }}
-          />
-        </div>
+      <YesNoGrid>
+        <YesNoQuestion
+          name='omit.patient_goes_to_school'
+          label='Is the patient advancing their education?'
+          value={school.status === 'adult in school'}
+          onChange={(value) => {
+            const thisSchool: School = value
+              ? {
+                status: 'adult in school',
+                education_level: '',
+              }
+              : {
+                status: 'never attended',
+              }
+            setSchool(thisSchool)
+          }}
+        />
         <input
           type='hidden'
           name='occupation.school.status'
           value={school.status}
         />
-      </div>
-      {school.status !== 'adult in school' && (
-        <div class='flex right'>
-          <div class='flex-1'>
-            <text>Has the patient ever gone to school?</text>
-          </div>
-          <div style={{ marginleft: 'auto' }}>
-            <CheckboxInput
-              name={null}
-              label=''
-              checked={school.status === 'adult stopped school'}
-              onInput={(event) => {
-                assert(event.target instanceof HTMLInputElement)
-                const nextSchool: School = event.target.checked
-                  ? {
-                    status: 'adult stopped school',
-                    education_level: 'grade 1',
-                    reason: 'Home life',
-                    desire_to_return: false,
-                  }
-                  : {
-                    status: 'never attended',
-                  }
-                setSchool(nextSchool)
+        {school.status !== 'adult in school' && (
+          <YesNoQuestion
+            name='omit.school.never_gone'
+            label='Has the patient ever gone to school?'
+            value={school.status === 'adult stopped school'}
+            onChange={(value) => {
+              const nextSchool: School = value
+                ? {
+                  status: 'adult stopped school',
+                  education_level: 'grade 1',
+                  reason: 'Home life',
+                  desire_to_return: false,
+                }
+                : {
+                  status: 'never attended',
+                }
+              setSchool(nextSchool)
+            }}
+          />
+        )}
+        {school.status === 'adult stopped school' &&
+          (
+            <YesNoQuestion
+              name='occupation.school.desire_to_return'
+              label='Do they want to return to education if they left?'
+              value={school.desire_to_return}
+              onChange={(value) => {
+                setSchool({
+                  ...school,
+                  desire_to_return: value ? true : false,
+                })
               }}
             />
-          </div>
-        </div>
-      )}
-      {school.status === 'adult stopped school' &&
-        (
-          <div class='flex right'>
-            <div class='flex-1'>
-              <text>Do they want to return to education if they left?</text>
-            </div>
-            <div style={{ marginLeft: 'auto' }}>
-              <CheckboxInput
-                name='occupation.school.desire_to_return'
-                label=''
-                checked={school.desire_to_return}
-                onInput={(event) => {
-                  assert(event.target instanceof HTMLInputElement)
-                  setSchool({
-                    ...school,
-                    desire_to_return: event.target.checked ? true : false,
-                  })
-                }}
-              />
-            </div>
-          </div>
-        )}
-      <div class='flex right'>
-        <div class='flex-1'>
-          <text>Is the patient happy with life and achievements?</text>
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <CheckboxInput
-            name='occupation.job.happy'
-            label=''
-            checked={job.happy}
-            onInput={(event) => {
-              assert(event.target instanceof HTMLInputElement)
-              setJob({
-                ...job,
-                happy: event.target.checked ? true : false,
-              })
-            }}
-          />
-        </div>
-      </div>
-      <div class='flex right'>
-        <div class='flex-1'>
-          <text>Are patient's descendants employed or in the diaspora?</text>
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <CheckboxInput
-            name='occupation.job.descendants_employed'
-            label=''
-            checked={job.descendants_employed}
-            onInput={(event) => {
-              assert(event.target instanceof HTMLInputElement)
-              setJob({
-                ...job,
-                descendants_employed: event.target.checked ? true : false,
-              })
-            }}
-          />
-        </div>
-      </div>
-      <div class='flex right'>
-        <div class='flex-1'>
-          <text>Does the patient need assistance with daily activities?</text>
-        </div>
-        <div style={{ marginLeft: 'auto' }}>
-          <CheckboxInput
-            name='occupation.job.require_assistance'
-            label=''
-            checked={job.require_assistance}
-            onInput={(event) => {
-              assert(event.target instanceof HTMLInputElement)
-              setJob({
-                ...job,
-                require_assistance: event.target.checked ? true : false,
-              })
-            }}
-          />
-        </div>
-      </div>
+          )}
+        <YesNoQuestion
+          name='occupation.job.happy'
+          label='Is the patient happy with life and achievements?'
+          value={job.happy}
+          onChange={(value) => {
+            setJob({
+              ...job,
+              happy: value ? true : false,
+            })
+          }}
+        />
+        <YesNoQuestion
+          name='occupation.job.descendants_employed'
+          label="Are patient's descendants employed or in the diaspora?"
+          value={job.descendants_employed}
+          onChange={(value) => {
+            setJob({
+              ...job,
+              descendants_employed: value ? true : false,
+            })
+          }}
+        />
+        <YesNoQuestion
+          name='occupation.job.require_assistance'
+          label='Does the patient need assistance with daily activities?'
+          value={job.require_assistance}
+          onChange={(value) => {
+            setJob({
+              ...job,
+              require_assistance: value ? true : false,
+            })
+          }}
+        />
+      </YesNoGrid>
       <section>
         <FormRow>
           <SelectWithOther

@@ -1,9 +1,10 @@
+import { assert } from 'std/assert/assert.ts'
 import { ComponentChildren, JSX, Ref } from 'preact'
 import { forwardRef } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
 import capitalize from '../../../util/capitalize.ts'
 import cls from '../../../util/cls.ts'
-import { Gender, Maybe, NURSE_SPECIALTIES } from '../../../types.ts'
+import { Gender, Maybe, NURSE_SPECIALTIES, Question } from '../../../types.ts'
 import last from '../../../util/last.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 
@@ -593,6 +594,55 @@ export function SearchInput(
       </div>
       {children}
     </LabeledInput>
+  )
+}
+
+export function YesNoQuestion(
+  { name, label, value, onChange }: {
+    name: string
+    label: string
+    value?: boolean
+    onChange?(value: boolean): void
+  },
+) {
+  return (
+    <>
+      <label>{label}</label>
+      <div />
+      <div className='grid place-items-center'>
+        <input
+          name={name}
+          type='radio'
+          checked={value}
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          value='on'
+          onChange={() => onChange?.(true)}
+        />
+      </div>
+      <div className='grid place-items-center'>
+        <input
+          name={name}
+          type='radio'
+          checked={!value}
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          onChange={() => onChange?.(false)}
+        />
+      </div>
+    </>
+  )
+}
+
+export function YesNoGrid(
+  { children }: { children: ComponentChildren },
+) {
+  return (
+    <div className='w-full grid grid-cols-[max-content_1fr_30px_30px] gap-2'>
+      <div></div>
+      <div></div>
+      <div className='grid place-items-center'>Yes</div>
+      <div className='grid place-items-center'>No</div>
+      {children}
+    </div>
   )
 }
 
