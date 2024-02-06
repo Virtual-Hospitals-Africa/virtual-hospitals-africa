@@ -31,11 +31,17 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       patient_encounters.assertIsUpsert,
     )
+
     const upserted = await patient_encounters.upsert(
       ctx.state.trx,
       facility_id,
       to_upsert,
     )
+    const { intake } = to_upsert
+
+    if (intake) {
+      return redirect(`/app/patients/${upserted.patient_id}/intake/personal`)
+    }
     return redirect(
       `/app/facilities/1/waiting-room?just_encountered_id=${upserted.id}`,
     )

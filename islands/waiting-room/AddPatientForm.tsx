@@ -1,15 +1,15 @@
+import { signal } from '@preact/signals'
 import FormRow from '../../components/library/form/Row.tsx'
 import PersonSearch from '../../islands/PersonSearch.tsx'
-import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import { FacilityDoctorOrNurse, Maybe } from '../../types.ts'
 import FormButtons from '../../components/library/form/buttons.tsx'
 import { RadioGroup, TextArea } from '../../components/library/form/Inputs.tsx'
 import ProvidersSelect from '../../islands/ProvidersSelect.tsx'
 import Form from '../../components/library/form/Form.tsx'
-import { EncounterReason } from '../../db.d.ts'
 import { Button } from '../../components/library/Button.tsx'
 import { PersonData } from '../../components/library/Person.tsx'
-import { signal } from '@preact/signals'
+import { reasons } from '../../shared/encounter.ts'
+import { EncounterReason } from '../../db.d.ts'
 
 const selectedPatient = signal<PersonData | undefined>(undefined)
 const isReturningPatient = signal<boolean>(false)
@@ -42,9 +42,9 @@ export default function AddPatientForm({
           disabled={!!patient}
           onSelect={(patient) => {
             selectedPatient.value = patient
-            patient?.id !== 'add'
-              ? isReturningPatient.value = true
-              : isReturningPatient.value = false
+            selectedPatient.value?.id === 'add'
+              ? isReturningPatient.value = false
+              : isReturningPatient.value = true
           }}
         />
       </FormRow>
@@ -55,7 +55,7 @@ export default function AddPatientForm({
         <RadioGroup
           name='reason'
           label='Reason for visit'
-          options={patient_encounters.drop_in_reasons.map((
+          options={Array.from(reasons).map((
             value,
           ) => ({
             value,
@@ -67,16 +67,20 @@ export default function AddPatientForm({
         <TextArea name='notes' />
       </FormRow>
       <FormRow>
-        <FormButtons submitText='Add to waiting room' />
-        {selectedPatient.value && isReturningPatient && (
+        <Button type='submit' name='waiting_room' value='waiting_room'>
+          Add to waiting room
+        </Button>
+        {selectedPatient.value && !isReturningPatient.value && (
+          <Button type='submit' name='intake' value='intake'>
+            Start Intake
+          </Button>
+        )}
+        {selectedPatient.value && isReturningPatient.value && (
           <Button
             href={`/app/patients/${selectedPatient.value.id}`}
           >
             Review and begin visit
           </Button>
-        )}
-        {selectedPatient.value && !isReturningPatient && (
-          <Button>Start Intake</Button>
         )}
       </FormRow>
     </Form>

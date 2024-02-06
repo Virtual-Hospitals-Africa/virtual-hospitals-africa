@@ -11,6 +11,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 import { EncounterStep } from '../../db.d.ts'
+import { reasons } from '../../shared/encounter.ts'
 
 export type Upsert =
   & {
@@ -19,31 +20,12 @@ export type Upsert =
     provider_ids?: number[]
     appointment_id?: Maybe<number>
     notes?: Maybe<string>
+    intake?: Maybe<string>
   }
   & (
     | { patient_id: number; patient_name?: Maybe<string> }
     | { patient_id?: Maybe<number>; patient_name: string }
   )
-
-export const reasons = new Set<PatientEncounterReason>([
-  'seeking treatment',
-  'appointment',
-  'follow up',
-  'referral',
-  'checkup',
-  'emergency',
-  'other',
-])
-
-export const drop_in_reasons: PatientEncounterReason[] = [
-  'seeking treatment',
-  'appointment',
-  'follow up',
-  'referral',
-  'checkup',
-  'emergency',
-  'other',
-]
 
 export function assertIsEncounterReason(
   str: string,
@@ -69,6 +51,7 @@ export function assertIsUpsert(
     obj.appointment_id == null || typeof obj.appointment_id === 'number',
   )
   assertOr400(obj.notes == null || typeof obj.notes === 'string')
+  assertOr400(obj.intake == null || typeof obj.intake === 'string')
 }
 
 export async function upsert(
