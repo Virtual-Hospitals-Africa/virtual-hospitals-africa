@@ -1,0 +1,538 @@
+{
+  "title": "Poisoning",
+  "title_lower_words": [
+    "poisoning"
+  ],
+  "nemod": "(acute)",
+  "term": [
+    {
+      "title": "algae and toxins",
+      "title_lower_words": [
+        "algae",
+        "and",
+        "toxins"
+      ],
+      "code": "T65.82-"
+    },
+    {
+      "title": "Bacillus B",
+      "title_lower_words": [
+        "bacillus",
+        "b"
+      ],
+      "nemod": "(aertrycke) (cholerae (suis)) (paratyphosus) (suipestifer)",
+      "term": [
+        {
+          "title": "botulinus",
+          "title_lower_words": [
+            "botulinus"
+          ],
+          "code": "A05.1"
+        }
+      ],
+      "code": "A02.9"
+    },
+    {
+      "title": "bacterial toxins",
+      "title_lower_words": [
+        "bacterial",
+        "toxins"
+      ],
+      "code": "A05.9"
+    },
+    {
+      "title": "berries, noxious",
+      "title_lower_words": [
+        "berries",
+        "noxious"
+      ],
+      "see": "Poisoning, food, noxious, berries"
+    },
+    {
+      "title": "botulism",
+      "title_lower_words": [
+        "botulism"
+      ],
+      "code": "A05.1"
+    },
+    {
+      "title": "ciguatera fish",
+      "title_lower_words": [
+        "ciguatera",
+        "fish"
+      ],
+      "code": "T61.0-"
+    },
+    {
+      "title": "Clostridium botulinum",
+      "title_lower_words": [
+        "clostridium",
+        "botulinum"
+      ],
+      "code": "A05.1"
+    },
+    {
+      "title": "death-cap",
+      "title_lower_words": [
+        "death",
+        "cap"
+      ],
+      "nemod": "(Amanita phalloides) (Amanita verna)",
+      "see": "Poisoning, food, noxious, mushrooms"
+    },
+    {
+      "title": "drug",
+      "title_lower_words": [
+        "drug"
+      ],
+      "see": "Table of Drugs and Chemicals, by drug, poisoning"
+    },
+    {
+      "title": "epidemic, fish",
+      "title_lower_words": [
+        "epidemic",
+        "fish"
+      ],
+      "nemod": "(noxious)",
+      "term": [
+        {
+          "title": "bacterial",
+          "title_lower_words": [
+            "bacterial"
+          ],
+          "code": "A05.9"
+        }
+      ],
+      "see": "Poisoning, seafood"
+    },
+    {
+      "title": "fava bean",
+      "title_lower_words": [
+        "fava",
+        "bean"
+      ],
+      "code": "D55.0"
+    },
+    {
+      "title": "fish",
+      "title_lower_words": [
+        "fish"
+      ],
+      "nemod": "(noxious)",
+      "term": [
+        {
+          "title": "bacterial",
+          "title_lower_words": [
+            "bacterial"
+          ],
+          "see": "Intoxication, foodborne, by agent"
+        },
+        {
+          "title": "ciguatera fish",
+          "title_lower_words": [
+            "ciguatera",
+            "fish"
+          ],
+          "see": "Poisoning, ciguatera fish"
+        },
+        {
+          "title": "scombroid fish",
+          "title_lower_words": [
+            "scombroid",
+            "fish"
+          ],
+          "see": "Poisoning, scombroid fish"
+        },
+        {
+          "title": "specified type NEC",
+          "title_lower_words": [
+            "specified",
+            "type",
+            "nec"
+          ],
+          "code": "T61.77-"
+        }
+      ],
+      "code": "T61.9-"
+    },
+    {
+      "title": "food NEC",
+      "title_lower_words": [
+        "food",
+        "nec"
+      ],
+      "term": [
+        {
+          "title": "bacterial",
+          "title_lower_words": [
+            "bacterial"
+          ],
+          "see": "Intoxication, foodborne, by agent"
+        },
+        {
+          "title": "due to",
+          "title_lower_words": [
+            "due",
+            "to"
+          ],
+          "term": [
+            {
+              "title": "Bacillus",
+              "title_lower_words": [
+                "bacillus"
+              ],
+              "nemod": "(aertrycke) (choleraesuis) (paratyphosus) (suipestifer)",
+              "term": [
+                {
+                  "title": "botulinus",
+                  "title_lower_words": [
+                    "botulinus"
+                  ],
+                  "code": "A05.1"
+                }
+              ],
+              "code": "A02.9"
+            },
+            {
+              "title": "Clostridium",
+              "title_lower_words": [
+                "clostridium"
+              ],
+              "nemod": "(perfringens) (Welchii)",
+              "code": "A05.2"
+            },
+            {
+              "title": "salmonella",
+              "title_lower_words": [
+                "salmonella"
+              ],
+              "nemod": "(aertrycke) (callinarum) (choleraesuis) (enteritidis) (paratyphi) (suipestifer)",
+              "term": [
+                {
+                  "title": "with",
+                  "title_lower_words": [
+                    "with"
+                  ],
+                  "term": [
+                    {
+                      "title": "gastroenteritis",
+                      "title_lower_words": [
+                        "gastroenteritis"
+                      ],
+                      "code": "A02.0"
+                    },
+                    {
+                      "title": "sepsis",
+                      "title_lower_words": [
+                        "sepsis"
+                      ],
+                      "code": "A02.1"
+                    }
+                  ]
+                }
+              ],
+              "code": "A02.9"
+            },
+            {
+              "title": "staphylococcus",
+              "title_lower_words": [
+                "staphylococcus"
+              ],
+              "code": "A05.0"
+            },
+            {
+              "title": "Vibrio",
+              "title_lower_words": [
+                "vibrio"
+              ],
+              "term": [
+                {
+                  "title": "parahaemolyticus",
+                  "title_lower_words": [
+                    "parahaemolyticus"
+                  ],
+                  "code": "A05.3"
+                },
+                {
+                  "title": "vulnificus",
+                  "title_lower_words": [
+                    "vulnificus"
+                  ],
+                  "code": "A05.5"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "title": "noxious or naturally toxic",
+          "title_lower_words": [
+            "noxious",
+            "or",
+            "naturally",
+            "toxic"
+          ],
+          "term": [
+            {
+              "title": "berries",
+              "title_lower_words": [
+                "berries"
+              ],
+              "code": "T62.1-",
+              "is_subcat": true
+            },
+            {
+              "title": "fish",
+              "title_lower_words": [
+                "fish"
+              ],
+              "see": "Poisoning, seafood"
+            },
+            {
+              "title": "mushrooms",
+              "title_lower_words": [
+                "mushrooms"
+              ],
+              "code": "T62.0X-",
+              "is_subcat": true
+            },
+            {
+              "title": "plants NEC",
+              "title_lower_words": [
+                "plants",
+                "nec"
+              ],
+              "code": "T62.2X-",
+              "is_subcat": true,
+              "aliases": [
+                "Poisoning, food, noxious, plant"
+              ]
+            },
+            {
+              "title": "seafood",
+              "title_lower_words": [
+                "seafood"
+              ],
+              "see": "Poisoning, seafood"
+            },
+            {
+              "title": "specified NEC",
+              "title_lower_words": [
+                "specified",
+                "nec"
+              ],
+              "code": "T62.8X-",
+              "is_subcat": true
+            }
+          ],
+          "code": "T62.9-"
+        }
+      ],
+      "code": "A05.9"
+    },
+    {
+      "title": "ichthyotoxism",
+      "title_lower_words": [
+        "ichthyotoxism"
+      ],
+      "see": "Poisoning, seafood"
+    },
+    {
+      "title": "kreotoxism, food",
+      "title_lower_words": [
+        "kreotoxism",
+        "food"
+      ],
+      "code": "A05.9"
+    },
+    {
+      "title": "latex",
+      "title_lower_words": [
+        "latex"
+      ],
+      "code": "T65.81-"
+    },
+    {
+      "title": "lead",
+      "title_lower_words": [
+        "lead"
+      ],
+      "code": "T56.0-"
+    },
+    {
+      "title": "mushroom",
+      "title_lower_words": [
+        "mushroom"
+      ],
+      "see": "Poisoning, food, noxious, mushroom"
+    },
+    {
+      "title": "mussels",
+      "title_lower_words": [
+        "mussels"
+      ],
+      "term": [
+        {
+          "title": "bacterial",
+          "title_lower_words": [
+            "bacterial"
+          ],
+          "see": "Intoxication, foodborne, by agent"
+        }
+      ],
+      "seeAlso": "Poisoning, shellfish"
+    },
+    {
+      "title": "nicotine",
+      "title_lower_words": [
+        "nicotine"
+      ],
+      "nemod": "(tobacco)",
+      "code": "T65.2-"
+    },
+    {
+      "title": "noxious foodstuffs",
+      "title_lower_words": [
+        "noxious",
+        "foodstuffs"
+      ],
+      "see": "Poisoning, food, noxious"
+    },
+    {
+      "title": "plants, noxious",
+      "title_lower_words": [
+        "plants",
+        "noxious"
+      ],
+      "see": "Poisoning, food, noxious, plants NEC"
+    },
+    {
+      "title": "ptomaine",
+      "title_lower_words": [
+        "ptomaine"
+      ],
+      "see": "Poisoning, food"
+    },
+    {
+      "title": "radiation",
+      "title_lower_words": [
+        "radiation"
+      ],
+      "code": "J70.0"
+    },
+    {
+      "title": "Salmonella",
+      "title_lower_words": [
+        "salmonella"
+      ],
+      "nemod": "(arizonae) (cholerae-suis) (enteritidis) (typhimurium)",
+      "code": "A02.9"
+    },
+    {
+      "title": "scombroid fish",
+      "title_lower_words": [
+        "scombroid",
+        "fish"
+      ],
+      "code": "T61.1-"
+    },
+    {
+      "title": "seafood",
+      "title_lower_words": [
+        "seafood"
+      ],
+      "nemod": "(noxious)",
+      "term": [
+        {
+          "title": "bacterial",
+          "title_lower_words": [
+            "bacterial"
+          ],
+          "see": "Intoxication, foodborne, by agent"
+        },
+        {
+          "title": "fish",
+          "title_lower_words": [
+            "fish"
+          ],
+          "see": "Poisoning, fish"
+        },
+        {
+          "title": "shellfish",
+          "title_lower_words": [
+            "shellfish"
+          ],
+          "see": "Poisoning, shellfish"
+        },
+        {
+          "title": "specified NEC",
+          "title_lower_words": [
+            "specified",
+            "nec"
+          ],
+          "code": "T61.8X-",
+          "is_subcat": true
+        }
+      ],
+      "code": "T61.9-"
+    },
+    {
+      "title": "shellfish",
+      "title_lower_words": [
+        "shellfish"
+      ],
+      "nemod": "(amnesic) (azaspiracid) (diarrheic) (neurotoxic) (noxious) (paralytic)",
+      "term": [
+        {
+          "title": "bacterial",
+          "title_lower_words": [
+            "bacterial"
+          ],
+          "see": "Intoxication, foodborne, by agent"
+        },
+        {
+          "title": "ciguatera mollusk",
+          "title_lower_words": [
+            "ciguatera",
+            "mollusk"
+          ],
+          "see": "Poisoning, ciguatera fish"
+        }
+      ],
+      "code": "T61.78-"
+    },
+    {
+      "title": "specified substance NEC",
+      "title_lower_words": [
+        "specified",
+        "substance",
+        "nec"
+      ],
+      "code": "T65.891"
+    },
+    {
+      "title": "Staphylococcus, food",
+      "title_lower_words": [
+        "staphylococcus",
+        "food"
+      ],
+      "code": "A05.0"
+    },
+    {
+      "title": "tobacco",
+      "title_lower_words": [
+        "tobacco"
+      ],
+      "nemod": "(nicotine)",
+      "code": "T65.2-"
+    },
+    {
+      "title": "water",
+      "title_lower_words": [
+        "water"
+      ],
+      "code": "E87.79"
+    }
+  ],
+  "seeAlso": "Table of Drugs and Chemicals"
+}

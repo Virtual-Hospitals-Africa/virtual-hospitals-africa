@@ -1,0 +1,1320 @@
+[
+  {
+    "title": "Hypertension, hypertensive",
+    "title_lower_words": [
+      "hypertension",
+      "hypertensive"
+    ],
+    "nemod": "(accelerated) (benign) (essential) (idiopathic) (malignant) (systemic)",
+    "term": [
+      {
+        "title": "with",
+        "title_lower_words": [
+          "with"
+        ],
+        "term": [
+          {
+            "title": "heart failure",
+            "title_lower_words": [
+              "heart",
+              "failure"
+            ],
+            "nemod": "(congestive)",
+            "code": "I11.0"
+          },
+          {
+            "title": "heart involvement",
+            "title_lower_words": [
+              "heart",
+              "involvement"
+            ],
+            "nemod": "(conditions in I50.- or I51.4-I51.7, I51.89, I51.9, due to hypertension)",
+            "see": "Hypertension, heart"
+          },
+          {
+            "title": "kidney involvement",
+            "title_lower_words": [
+              "kidney",
+              "involvement"
+            ],
+            "see": "Hypertension, kidney"
+          }
+        ]
+      },
+      {
+        "title": "benign, intracranial",
+        "title_lower_words": [
+          "benign",
+          "intracranial"
+        ],
+        "code": "G93.2"
+      },
+      {
+        "title": "borderline",
+        "title_lower_words": [
+          "borderline"
+        ],
+        "code": "R03.0"
+      },
+      {
+        "title": "cardiorenal",
+        "title_lower_words": [
+          "cardiorenal"
+        ],
+        "nemod": "(disease)",
+        "term": [
+          {
+            "title": "with heart failure",
+            "title_lower_words": [
+              "with",
+              "heart",
+              "failure"
+            ],
+            "term": [
+              {
+                "title": "with stage 1 through stage 4 chronic kidney disease",
+                "title_lower_words": [
+                  "with",
+                  "stage",
+                  "1",
+                  "through",
+                  "stage",
+                  "4",
+                  "chronic",
+                  "kidney",
+                  "disease"
+                ],
+                "code": "I13.0"
+              },
+              {
+                "title": "with stage 5 or end stage renal disease",
+                "title_lower_words": [
+                  "with",
+                  "stage",
+                  "5",
+                  "or",
+                  "end",
+                  "stage",
+                  "renal",
+                  "disease"
+                ],
+                "code": "I13.2"
+              }
+            ],
+            "code": "I13.0"
+          },
+          {
+            "title": "without heart failure",
+            "title_lower_words": [
+              "without",
+              "heart",
+              "failure"
+            ],
+            "term": [
+              {
+                "title": "with stage 1 through stage 4 chronic kidney disease",
+                "title_lower_words": [
+                  "with",
+                  "stage",
+                  "1",
+                  "through",
+                  "stage",
+                  "4",
+                  "chronic",
+                  "kidney",
+                  "disease"
+                ],
+                "code": "I13.10"
+              },
+              {
+                "title": "with stage 5 or end stage renal disease",
+                "title_lower_words": [
+                  "with",
+                  "stage",
+                  "5",
+                  "or",
+                  "end",
+                  "stage",
+                  "renal",
+                  "disease"
+                ],
+                "code": "I13.11"
+              }
+            ],
+            "code": "I13.10"
+          }
+        ],
+        "code": "I13.10"
+      },
+      {
+        "title": "cardiovascular",
+        "title_lower_words": [
+          "cardiovascular"
+        ],
+        "term": [
+          {
+            "title": "disease",
+            "title_lower_words": [
+              "disease"
+            ],
+            "nemod": "(arteriosclerotic) (sclerotic)",
+            "see": "Hypertension, heart"
+          },
+          {
+            "title": "renal",
+            "title_lower_words": [
+              "renal"
+            ],
+            "nemod": "(disease)",
+            "see": "Hypertension, cardiorenal"
+          }
+        ]
+      },
+      {
+        "title": "chronic venous",
+        "title_lower_words": [
+          "chronic",
+          "venous"
+        ],
+        "see": "Hypertension, venous (chronic)"
+      },
+      {
+        "title": "complicating",
+        "title_lower_words": [
+          "complicating"
+        ],
+        "term": [
+          {
+            "title": "childbirth",
+            "title_lower_words": [
+              "childbirth"
+            ],
+            "nemod": "(labor)",
+            "term": [
+              {
+                "title": "pre-existing",
+                "title_lower_words": [
+                  "pre",
+                  "existing"
+                ],
+                "term": [
+                  {
+                    "title": "with",
+                    "title_lower_words": [
+                      "with"
+                    ],
+                    "term": [
+                      {
+                        "title": "heart disease",
+                        "title_lower_words": [
+                          "heart",
+                          "disease"
+                        ],
+                        "term": [
+                          {
+                            "title": "with renal disease",
+                            "title_lower_words": [
+                              "with",
+                              "renal",
+                              "disease"
+                            ],
+                            "code": "O10.32"
+                          }
+                        ],
+                        "code": "O10.12"
+                      },
+                      {
+                        "title": "pre-eclampsia",
+                        "title_lower_words": [
+                          "pre",
+                          "eclampsia"
+                        ],
+                        "code": "O11.4"
+                      },
+                      {
+                        "title": "renal disease",
+                        "title_lower_words": [
+                          "renal",
+                          "disease"
+                        ],
+                        "term": [
+                          {
+                            "title": "with heart disease",
+                            "title_lower_words": [
+                              "with",
+                              "heart",
+                              "disease"
+                            ],
+                            "code": "O10.32"
+                          }
+                        ],
+                        "code": "O10.22"
+                      }
+                    ]
+                  },
+                  {
+                    "title": "essential",
+                    "title_lower_words": [
+                      "essential"
+                    ],
+                    "code": "O10.02"
+                  }
+                ],
+                "code": "O10.92"
+              },
+              {
+                "title": "secondary",
+                "title_lower_words": [
+                  "secondary"
+                ],
+                "code": "O10.42"
+              }
+            ],
+            "code": "O16.4"
+          },
+          {
+            "title": "pregnancy",
+            "title_lower_words": [
+              "pregnancy"
+            ],
+            "term": [
+              {
+                "title": "with edema",
+                "title_lower_words": [
+                  "with",
+                  "edema"
+                ],
+                "code": "O14.9-",
+                "seeAlso": "Pre-eclampsia"
+              },
+              {
+                "title": "gestational",
+                "title_lower_words": [
+                  "gestational"
+                ],
+                "nemod": "(pregnancy induced) (without proteinuria)",
+                "term": [
+                  {
+                    "title": "with proteinuria",
+                    "title_lower_words": [
+                      "with",
+                      "proteinuria"
+                    ],
+                    "term": [
+                      {
+                        "title": "mild pre-eclampsia",
+                        "title_lower_words": [
+                          "mild",
+                          "pre",
+                          "eclampsia"
+                        ],
+                        "code": "O14.0-"
+                      },
+                      {
+                        "title": "moderate pre-eclampsia",
+                        "title_lower_words": [
+                          "moderate",
+                          "pre",
+                          "eclampsia"
+                        ],
+                        "code": "O14.0-"
+                      },
+                      {
+                        "title": "severe pre-eclampsia",
+                        "title_lower_words": [
+                          "severe",
+                          "pre",
+                          "eclampsia"
+                        ],
+                        "term": [
+                          {
+                            "title": "with hemolysis, elevated liver enzymes and low platelet count",
+                            "title_lower_words": [
+                              "with",
+                              "hemolysis",
+                              "elevated",
+                              "liver",
+                              "enzymes",
+                              "and",
+                              "low",
+                              "platelet",
+                              "count"
+                            ],
+                            "nemod": "(HELLP)",
+                            "code": "O14.2-"
+                          }
+                        ],
+                        "code": "O14.1-"
+                      }
+                    ],
+                    "code": "O14.9-"
+                  }
+                ],
+                "code": "O13.-"
+              },
+              {
+                "title": "pre-existing",
+                "title_lower_words": [
+                  "pre",
+                  "existing"
+                ],
+                "term": [
+                  {
+                    "title": "with",
+                    "title_lower_words": [
+                      "with"
+                    ],
+                    "term": [
+                      {
+                        "title": "heart disease",
+                        "title_lower_words": [
+                          "heart",
+                          "disease"
+                        ],
+                        "term": [
+                          {
+                            "title": "with renal disease",
+                            "title_lower_words": [
+                              "with",
+                              "renal",
+                              "disease"
+                            ],
+                            "code": "O10.31-"
+                          }
+                        ],
+                        "code": "O10.11-"
+                      },
+                      {
+                        "title": "pre-eclampsia",
+                        "title_lower_words": [
+                          "pre",
+                          "eclampsia"
+                        ],
+                        "seecat": "O11"
+                      },
+                      {
+                        "title": "renal disease",
+                        "title_lower_words": [
+                          "renal",
+                          "disease"
+                        ],
+                        "term": [
+                          {
+                            "title": "with heart disease",
+                            "title_lower_words": [
+                              "with",
+                              "heart",
+                              "disease"
+                            ],
+                            "code": "O10.31-"
+                          }
+                        ],
+                        "code": "O10.21-"
+                      }
+                    ]
+                  },
+                  {
+                    "title": "essential",
+                    "title_lower_words": [
+                      "essential"
+                    ],
+                    "code": "O10.01-"
+                  },
+                  {
+                    "title": "secondary",
+                    "title_lower_words": [
+                      "secondary"
+                    ],
+                    "code": "O10.41-"
+                  }
+                ],
+                "code": "O10.91-"
+              },
+              {
+                "title": "transient",
+                "title_lower_words": [
+                  "transient"
+                ],
+                "code": "O13.-"
+              }
+            ],
+            "code": "O16.-"
+          },
+          {
+            "title": "puerperium, pre-existing",
+            "title_lower_words": [
+              "puerperium",
+              "pre",
+              "existing"
+            ],
+            "term": [
+              {
+                "title": "pre-existing",
+                "title_lower_words": [
+                  "pre",
+                  "existing"
+                ],
+                "term": [
+                  {
+                    "title": "with",
+                    "title_lower_words": [
+                      "with"
+                    ],
+                    "term": [
+                      {
+                        "title": "heart disease",
+                        "title_lower_words": [
+                          "heart",
+                          "disease"
+                        ],
+                        "term": [
+                          {
+                            "title": "with renal disease",
+                            "title_lower_words": [
+                              "with",
+                              "renal",
+                              "disease"
+                            ],
+                            "code": "O10.33"
+                          }
+                        ],
+                        "code": "O10.13"
+                      },
+                      {
+                        "title": "pre-eclampsia",
+                        "title_lower_words": [
+                          "pre",
+                          "eclampsia"
+                        ],
+                        "code": "O11.5"
+                      },
+                      {
+                        "title": "renal disease",
+                        "title_lower_words": [
+                          "renal",
+                          "disease"
+                        ],
+                        "term": [
+                          {
+                            "title": "with heart disease",
+                            "title_lower_words": [
+                              "with",
+                              "heart",
+                              "disease"
+                            ],
+                            "code": "O10.33"
+                          }
+                        ],
+                        "code": "O10.23"
+                      }
+                    ]
+                  },
+                  {
+                    "title": "essential",
+                    "title_lower_words": [
+                      "essential"
+                    ],
+                    "code": "O10.03"
+                  }
+                ]
+              },
+              {
+                "title": "pregnancy-induced",
+                "title_lower_words": [
+                  "pregnancy",
+                  "induced"
+                ],
+                "code": "O13.9"
+              },
+              {
+                "title": "secondary",
+                "title_lower_words": [
+                  "secondary"
+                ],
+                "code": "O10.43"
+              }
+            ],
+            "code": "O16.5"
+          }
+        ]
+      },
+      {
+        "title": "crisis",
+        "title_lower_words": [
+          "crisis"
+        ],
+        "code": "I16.9"
+      },
+      {
+        "title": "due to",
+        "title_lower_words": [
+          "due",
+          "to"
+        ],
+        "term": [
+          {
+            "title": "endocrine disorders",
+            "title_lower_words": [
+              "endocrine",
+              "disorders"
+            ],
+            "code": "I15.2"
+          },
+          {
+            "title": "pheochromocytoma",
+            "title_lower_words": [
+              "pheochromocytoma"
+            ],
+            "code": "I15.2"
+          },
+          {
+            "title": "renal disorders NEC",
+            "title_lower_words": [
+              "renal",
+              "disorders",
+              "nec"
+            ],
+            "term": [
+              {
+                "title": "arterial",
+                "title_lower_words": [
+                  "arterial"
+                ],
+                "code": "I15.0"
+              }
+            ],
+            "code": "I15.1"
+          },
+          {
+            "title": "renovascular disorders",
+            "title_lower_words": [
+              "renovascular",
+              "disorders"
+            ],
+            "code": "I15.0"
+          },
+          {
+            "title": "specified disease NEC",
+            "title_lower_words": [
+              "specified",
+              "disease",
+              "nec"
+            ],
+            "code": "I15.8"
+          }
+        ]
+      },
+      {
+        "title": "emergency",
+        "title_lower_words": [
+          "emergency"
+        ],
+        "code": "I16.1"
+      },
+      {
+        "title": "encephalopathy",
+        "title_lower_words": [
+          "encephalopathy"
+        ],
+        "code": "I67.4"
+      },
+      {
+        "title": "gestational",
+        "title_lower_words": [
+          "gestational"
+        ],
+        "nemod": "(without significant proteinuria) (pregnancy-induced) (transient)",
+        "term": [
+          {
+            "title": "with significant proteinuria",
+            "title_lower_words": [
+              "with",
+              "significant",
+              "proteinuria"
+            ],
+            "see": "Pre-eclampsia"
+          },
+          {
+            "title": "complicating",
+            "title_lower_words": [
+              "complicating"
+            ],
+            "term": [
+              {
+                "title": "delivery",
+                "title_lower_words": [
+                  "delivery"
+                ],
+                "code": "O13.4"
+              },
+              {
+                "title": "puerperium",
+                "title_lower_words": [
+                  "puerperium"
+                ],
+                "code": "O13.5"
+              }
+            ]
+          }
+        ],
+        "code": "O13.-"
+      },
+      {
+        "title": "Goldblatt's",
+        "title_lower_words": [
+          "goldblatt's"
+        ],
+        "code": "I70.1"
+      },
+      {
+        "title": "heart",
+        "title_lower_words": [
+          "heart"
+        ],
+        "nemod": "(disease) (conditions in I51.4-I51.9 due to hypertension)",
+        "term": [
+          {
+            "title": "with",
+            "title_lower_words": [
+              "with"
+            ],
+            "term": [
+              {
+                "title": "heart failure",
+                "title_lower_words": [
+                  "heart",
+                  "failure"
+                ],
+                "nemod": "(congestive)",
+                "code": "I11.0"
+              },
+              {
+                "title": "kidney disease",
+                "title_lower_words": [
+                  "kidney",
+                  "disease"
+                ],
+                "nemod": "(chronic)",
+                "see": "Hypertension, cardiorenal"
+              }
+            ]
+          }
+        ],
+        "code": "I11.9"
+      },
+      {
+        "title": "intracranial, benign",
+        "title_lower_words": [
+          "intracranial",
+          "benign"
+        ],
+        "code": "G93.2"
+      },
+      {
+        "title": "kidney",
+        "title_lower_words": [
+          "kidney"
+        ],
+        "term": [
+          {
+            "title": "with",
+            "title_lower_words": [
+              "with"
+            ],
+            "term": [
+              {
+                "title": "heart disease",
+                "title_lower_words": [
+                  "heart",
+                  "disease"
+                ],
+                "see": "Hypertension, cardiorenal"
+              },
+              {
+                "title": "stage 5 chronic kidney disease",
+                "title_lower_words": [
+                  "stage",
+                  "5",
+                  "chronic",
+                  "kidney",
+                  "disease"
+                ],
+                "nemod": "(CKD) or end stage renal disease (ESRD)",
+                "code": "I12.0"
+              },
+              {
+                "title": "stage 1 through stage 4 chronic kidney disease",
+                "title_lower_words": [
+                  "stage",
+                  "1",
+                  "through",
+                  "stage",
+                  "4",
+                  "chronic",
+                  "kidney",
+                  "disease"
+                ],
+                "code": "I12.9"
+              }
+            ]
+          }
+        ],
+        "code": "I12.9"
+      },
+      {
+        "title": "lesser circulation",
+        "title_lower_words": [
+          "lesser",
+          "circulation"
+        ],
+        "code": "I27.0"
+      },
+      {
+        "title": "maternal",
+        "title_lower_words": [
+          "maternal"
+        ],
+        "code": "O16.-"
+      },
+      {
+        "title": "newborn",
+        "title_lower_words": [
+          "newborn"
+        ],
+        "term": [
+          {
+            "title": "pulmonary",
+            "title_lower_words": [
+              "pulmonary"
+            ],
+            "nemod": "(persistent)",
+            "code": "P29.30"
+          }
+        ],
+        "code": "P29.2"
+      },
+      {
+        "title": "ocular",
+        "title_lower_words": [
+          "ocular"
+        ],
+        "code": "H40.05-"
+      },
+      {
+        "title": "pancreatic duct",
+        "title_lower_words": [
+          "pancreatic",
+          "duct"
+        ],
+        "coding_notes": "to underlying condition",
+        "term": [
+          {
+            "title": "with chronic pancreatitis",
+            "title_lower_words": [
+              "with",
+              "chronic",
+              "pancreatitis"
+            ],
+            "code": "K86.1"
+          }
+        ]
+      },
+      {
+        "title": "portal",
+        "title_lower_words": [
+          "portal"
+        ],
+        "nemod": "(due to chronic liver disease) (idiopathic)",
+        "term": [
+          {
+            "title": "gastropathy",
+            "title_lower_words": [
+              "gastropathy"
+            ],
+            "code": "K31.89"
+          },
+          {
+            "title": "in",
+            "title_lower_words": [
+              "in"
+            ],
+            "nemod": "(due to) schistosomiasis (bilharziasis)",
+            "code": "B65.9",
+            "manif": "K77"
+          }
+        ],
+        "code": "K76.6"
+      },
+      {
+        "title": "postoperative",
+        "title_lower_words": [
+          "postoperative"
+        ],
+        "code": "I97.3"
+      },
+      {
+        "title": "psychogenic",
+        "title_lower_words": [
+          "psychogenic"
+        ],
+        "code": "F45.8"
+      },
+      {
+        "title": "pulmonary",
+        "title_lower_words": [
+          "pulmonary"
+        ],
+        "term": [
+          {
+            "title": "with",
+            "title_lower_words": [
+              "with"
+            ],
+            "term": [
+              {
+                "title": "cor pulmonale",
+                "title_lower_words": [
+                  "cor",
+                  "pulmonale"
+                ],
+                "nemod": "(chronic)",
+                "term": [
+                  {
+                    "title": "acute",
+                    "title_lower_words": [
+                      "acute"
+                    ],
+                    "code": "I26.09"
+                  }
+                ],
+                "code": "I27.29"
+              },
+              {
+                "title": "right heart ventricular strain/failure",
+                "title_lower_words": [
+                  "right",
+                  "heart",
+                  "ventricular",
+                  "strain",
+                  "failure"
+                ],
+                "term": [
+                  {
+                    "title": "acute",
+                    "title_lower_words": [
+                      "acute"
+                    ],
+                    "code": "I26.09"
+                  }
+                ],
+                "code": "I27.29"
+              },
+              {
+                "title": "right to left shunt related to congenital heart disease",
+                "title_lower_words": [
+                  "right",
+                  "to",
+                  "left",
+                  "shunt",
+                  "related",
+                  "to",
+                  "congenital",
+                  "heart",
+                  "disease"
+                ],
+                "code": "I27.83"
+              },
+              {
+                "title": "unclear multifactorial mechanisms",
+                "title_lower_words": [
+                  "unclear",
+                  "multifactorial",
+                  "mechanisms"
+                ],
+                "code": "I27.29"
+              }
+            ]
+          },
+          {
+            "title": "arterial",
+            "title_lower_words": [
+              "arterial"
+            ],
+            "nemod": "(associated) (drug-induced) (toxin-induced)",
+            "code": "I27.21"
+          },
+          {
+            "title": "chronic thromboembolic",
+            "title_lower_words": [
+              "chronic",
+              "thromboembolic"
+            ],
+            "code": "I27.24"
+          },
+          {
+            "title": "due to",
+            "title_lower_words": [
+              "due",
+              "to"
+            ],
+            "term": [
+              {
+                "title": "hematologic disorders",
+                "title_lower_words": [
+                  "hematologic",
+                  "disorders"
+                ],
+                "code": "I27.29"
+              },
+              {
+                "title": "kyphoscoliotic heart disease",
+                "title_lower_words": [
+                  "kyphoscoliotic",
+                  "heart",
+                  "disease"
+                ],
+                "code": "I27.1"
+              },
+              {
+                "title": "left heart disease",
+                "title_lower_words": [
+                  "left",
+                  "heart",
+                  "disease"
+                ],
+                "code": "I27.22"
+              },
+              {
+                "title": "lung diseases and hypoxia",
+                "title_lower_words": [
+                  "lung",
+                  "diseases",
+                  "and",
+                  "hypoxia"
+                ],
+                "code": "I27.23"
+              },
+              {
+                "title": "metabolic disorders",
+                "title_lower_words": [
+                  "metabolic",
+                  "disorders"
+                ],
+                "code": "I27.29"
+              },
+              {
+                "title": "specified systemic disorders NEC",
+                "title_lower_words": [
+                  "specified",
+                  "systemic",
+                  "disorders",
+                  "nec"
+                ],
+                "code": "I27.29"
+              }
+            ]
+          },
+          {
+            "title": "group 1",
+            "title_lower_words": [
+              "group",
+              "1"
+            ],
+            "nemod": "(associated) (drug-induced) (toxin-induced)",
+            "code": "I27.21"
+          },
+          {
+            "title": "group 2",
+            "title_lower_words": [
+              "group",
+              "2"
+            ],
+            "code": "I27.22"
+          },
+          {
+            "title": "group 3",
+            "title_lower_words": [
+              "group",
+              "3"
+            ],
+            "code": "I27.23"
+          },
+          {
+            "title": "group 4",
+            "title_lower_words": [
+              "group",
+              "4"
+            ],
+            "code": "I27.24"
+          },
+          {
+            "title": "group 5",
+            "title_lower_words": [
+              "group",
+              "5"
+            ],
+            "code": "I27.29"
+          },
+          {
+            "title": "of newborn",
+            "title_lower_words": [
+              "of",
+              "newborn"
+            ],
+            "nemod": "(persistent)",
+            "code": "P29.30"
+          },
+          {
+            "title": "primary",
+            "title_lower_words": [
+              "primary"
+            ],
+            "nemod": "(idiopathic)",
+            "code": "I27.0"
+          },
+          {
+            "title": "secondary",
+            "title_lower_words": [
+              "secondary"
+            ],
+            "term": [
+              {
+                "title": "arterial",
+                "title_lower_words": [
+                  "arterial"
+                ],
+                "code": "I27.21"
+              },
+              {
+                "title": "specified NEC",
+                "title_lower_words": [
+                  "specified",
+                  "nec"
+                ],
+                "code": "I27.29"
+              }
+            ]
+          }
+        ],
+        "code": "I27.20"
+      },
+      {
+        "title": "renal",
+        "title_lower_words": [
+          "renal"
+        ],
+        "see": "Hypertension, kidney"
+      },
+      {
+        "title": "renovascular",
+        "title_lower_words": [
+          "renovascular"
+        ],
+        "code": "I15.0"
+      },
+      {
+        "title": "resistant",
+        "title_lower_words": [
+          "resistant"
+        ],
+        "nemod": "(apparent treatment) (treatment) (true)",
+        "code": "I1A.0"
+      },
+      {
+        "title": "secondary NEC",
+        "title_lower_words": [
+          "secondary",
+          "nec"
+        ],
+        "term": [
+          {
+            "title": "due to",
+            "title_lower_words": [
+              "due",
+              "to"
+            ],
+            "term": [
+              {
+                "title": "endocrine disorders",
+                "title_lower_words": [
+                  "endocrine",
+                  "disorders"
+                ],
+                "code": "I15.2"
+              },
+              {
+                "title": "pheochromocytoma",
+                "title_lower_words": [
+                  "pheochromocytoma"
+                ],
+                "code": "I15.2"
+              },
+              {
+                "title": "renal disorders NEC",
+                "title_lower_words": [
+                  "renal",
+                  "disorders",
+                  "nec"
+                ],
+                "term": [
+                  {
+                    "title": "arterial",
+                    "title_lower_words": [
+                      "arterial"
+                    ],
+                    "code": "I15.0"
+                  }
+                ],
+                "code": "I15.1"
+              },
+              {
+                "title": "renovascular disorders",
+                "title_lower_words": [
+                  "renovascular",
+                  "disorders"
+                ],
+                "code": "I15.0"
+              }
+            ]
+          },
+          {
+            "title": "specified NEC",
+            "title_lower_words": [
+              "specified",
+              "nec"
+            ],
+            "code": "I15.8"
+          }
+        ],
+        "code": "I15.9"
+      },
+      {
+        "title": "transient",
+        "title_lower_words": [
+          "transient"
+        ],
+        "term": [
+          {
+            "title": "of pregnancy",
+            "title_lower_words": [
+              "of",
+              "pregnancy"
+            ],
+            "code": "O13.-"
+          }
+        ],
+        "code": "R03.0"
+      },
+      {
+        "title": "urgency",
+        "title_lower_words": [
+          "urgency"
+        ],
+        "code": "I16.0"
+      },
+      {
+        "title": "venous",
+        "title_lower_words": [
+          "venous"
+        ],
+        "nemod": "(chronic)",
+        "term": [
+          {
+            "title": "due to",
+            "title_lower_words": [
+              "due",
+              "to"
+            ],
+            "term": [
+              {
+                "title": "deep vein thrombosis",
+                "title_lower_words": [
+                  "deep",
+                  "vein",
+                  "thrombosis"
+                ],
+                "see": "Syndrome, postthrombotic"
+              }
+            ]
+          },
+          {
+            "title": "idiopathic",
+            "title_lower_words": [
+              "idiopathic"
+            ],
+            "term": [
+              {
+                "title": "with",
+                "title_lower_words": [
+                  "with"
+                ],
+                "term": [
+                  {
+                    "title": "inflammation",
+                    "title_lower_words": [
+                      "inflammation"
+                    ],
+                    "term": [
+                      {
+                        "title": "with ulcer",
+                        "title_lower_words": [
+                          "with",
+                          "ulcer"
+                        ],
+                        "code": "I87.33-"
+                      }
+                    ],
+                    "code": "I87.32-"
+                  },
+                  {
+                    "title": "specified complication NEC",
+                    "title_lower_words": [
+                      "specified",
+                      "complication",
+                      "nec"
+                    ],
+                    "code": "I87.39-"
+                  },
+                  {
+                    "title": "ulcer",
+                    "title_lower_words": [
+                      "ulcer"
+                    ],
+                    "term": [
+                      {
+                        "title": "with inflammation",
+                        "title_lower_words": [
+                          "with",
+                          "inflammation"
+                        ],
+                        "code": "I87.33-"
+                      }
+                    ],
+                    "code": "I87.31-"
+                  }
+                ]
+              },
+              {
+                "title": "asymptomatic",
+                "title_lower_words": [
+                  "asymptomatic"
+                ],
+                "code": "I87.30-"
+              }
+            ],
+            "code": "I87.309"
+          }
+        ]
+      }
+    ],
+    "code": "I10"
+  },
+  {
+    "title": "Hypertensive urgency",
+    "title_lower_words": [
+      "hypertensive",
+      "urgency"
+    ],
+    "see": "Hypertension"
+  }
+]

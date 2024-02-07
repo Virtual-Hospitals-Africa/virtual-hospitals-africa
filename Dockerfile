@@ -1,6 +1,7 @@
 FROM denoland/deno:alpine-1.39.1 as build
 WORKDIR /app
 COPY ./ /app
+RUN touch .env
 RUN deno task build
 EXPOSE 8000
 

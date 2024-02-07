@@ -1,0 +1,52 @@
+[
+  {
+    "title": "Adverse effect",
+    "title_lower_words": [
+      "adverse",
+      "effect"
+    ],
+    "see": "Table of Drugs and Chemicals, categories T36-T50, with 6th character 5"
+  },
+  {
+    "title": "Medicine poisoning",
+    "title_lower_words": [
+      "medicine",
+      "poisoning"
+    ],
+    "see": "Table of Drugs and Chemicals, by drug, poisoning"
+  },
+  {
+    "title": "Overdose, overdosage",
+    "title_lower_words": [
+      "overdose",
+      "overdosage"
+    ],
+    "nemod": "(drug)",
+    "see": "Table of Drugs and Chemicals, by drug, poisoning"
+  },
+  {
+    "title": "Sting",
+    "title_lower_words": [
+      "sting"
+    ],
+    "nemod": "(venomous) (with allergic or anaphylactic shock)",
+    "see": "Table of Drugs and Chemicals, by animal or substance, poisoning"
+  },
+  {
+    "title": "Venom, venomous",
+    "title_lower_words": [
+      "venom",
+      "venomous"
+    ],
+    "see": "Table of Drugs and Chemicals, by animal or substance, poisoning"
+  },
+  {
+    "title": "Wrong drug",
+    "title_lower_words": [
+      "wrong",
+      "drug"
+    ],
+    "nemod": "(by accident) (given in error)",
+    "see": "Table of Drugs and Chemicals, by drug, poisoning"
+  }
+]

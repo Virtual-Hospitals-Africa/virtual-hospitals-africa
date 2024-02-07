@@ -1,0 +1,843 @@
+[
+  {
+    "title": "Acrospiroma, eccrine",
+    "title_lower_words": [
+      "acrospiroma",
+      "eccrine"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Adenoacanthoma",
+    "title_lower_words": [
+      "adenoacanthoma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Adenocarcinoid",
+    "title_lower_words": [
+      "adenocarcinoid"
+    ],
+    "nemod": "(tumor)",
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Adenolipoma",
+    "title_lower_words": [
+      "adenolipoma"
+    ],
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Adenosarcoma",
+    "title_lower_words": [
+      "adenosarcoma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Angioblastoma",
+    "title_lower_words": [
+      "angioblastoma"
+    ],
+    "see": "Neoplasm, connective tissue, uncertain behavior"
+  },
+  {
+    "title": "Angioleiomyoma",
+    "title_lower_words": [
+      "angioleiomyoma"
+    ],
+    "see": "Neoplasm, connective tissue, benign"
+  },
+  {
+    "title": "Angiomyoliposarcoma",
+    "title_lower_words": [
+      "angiomyoliposarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Angiomyoma",
+    "title_lower_words": [
+      "angiomyoma"
+    ],
+    "see": "Neoplasm, connective tissue, benign"
+  },
+  {
+    "title": "Angiomyosarcoma",
+    "title_lower_words": [
+      "angiomyosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Angiomyxoma",
+    "title_lower_words": [
+      "angiomyxoma"
+    ],
+    "see": "Neoplasm, connective tissue, uncertain behavior"
+  },
+  {
+    "title": "Apudoma",
+    "title_lower_words": [
+      "apudoma"
+    ],
+    "see": "Neoplasm, uncertain behavior, by site"
+  },
+  {
+    "title": "Askin's tumor",
+    "title_lower_words": [
+      "askin's",
+      "tumor"
+    ],
+    "see": "Neoplasm,  connective tissue, malignant"
+  },
+  {
+    "title": "Blastoma",
+    "title_lower_words": [
+      "blastoma"
+    ],
+    "term": [
+      {
+        "title": "pulmonary",
+        "title_lower_words": [
+          "pulmonary"
+        ],
+        "see": "Neoplasm,  lung, malignant"
+      }
+    ],
+    "see": "Neoplasm,  malignant, by site"
+  },
+  {
+    "title": "Brooke's tumor",
+    "title_lower_words": [
+      "brooke's",
+      "tumor"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Cancerous",
+    "title_lower_words": [
+      "cancerous"
+    ],
+    "see": "Neoplasm,  malignant, by site"
+  },
+  {
+    "title": "Carcinosarcoma",
+    "title_lower_words": [
+      "carcinosarcoma"
+    ],
+    "term": [
+      {
+        "title": "embryonal",
+        "title_lower_words": [
+          "embryonal"
+        ],
+        "see": "Neoplasm,  malignant, by site"
+      }
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Chondromyxosarcoma",
+    "title_lower_words": [
+      "chondromyxosarcoma"
+    ],
+    "see": "Neoplasm, cartilage, malignant"
+  },
+  {
+    "title": "Chondro-osteoma",
+    "title_lower_words": [
+      "chondro",
+      "osteoma"
+    ],
+    "see": "Neoplasm, bone, benign"
+  },
+  {
+    "title": "Chondrosarcoma",
+    "title_lower_words": [
+      "chondrosarcoma"
+    ],
+    "term": [
+      {
+        "title": "juxtacortical",
+        "title_lower_words": [
+          "juxtacortical"
+        ],
+        "see": "Neoplasm, bone, malignant"
+      },
+      {
+        "title": "mesenchymal",
+        "title_lower_words": [
+          "mesenchymal"
+        ],
+        "see": "Neoplasm, connective tissue, malignant"
+      },
+      {
+        "title": "myxoid",
+        "title_lower_words": [
+          "myxoid"
+        ],
+        "see": "Neoplasm, cartilage, malignant"
+      }
+    ],
+    "see": "Neoplasm, cartilage, malignant"
+  },
+  {
+    "title": "Chordoma",
+    "title_lower_words": [
+      "chordoma"
+    ],
+    "see": "Neoplasm, vertebral (column), malignant"
+  },
+  {
+    "title": "Codman's tumor",
+    "title_lower_words": [
+      "codman's",
+      "tumor"
+    ],
+    "see": "Neoplasm, bone, benign"
+  },
+  {
+    "title": "Dermatofibroma",
+    "title_lower_words": [
+      "dermatofibroma"
+    ],
+    "nemod": "(lenticulare)",
+    "term": [
+      {
+        "title": "protuberans",
+        "title_lower_words": [
+          "protuberans"
+        ],
+        "see": "Neoplasm, skin, uncertain behavior"
+      }
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Dermatofibrosarcoma",
+    "title_lower_words": [
+      "dermatofibrosarcoma"
+    ],
+    "nemod": "(pigmented) (protuberans)",
+    "see": "Neoplasm, skin, malignant"
+  },
+  {
+    "title": "Diktyoma",
+    "title_lower_words": [
+      "diktyoma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Ecchondroma",
+    "title_lower_words": [
+      "ecchondroma"
+    ],
+    "see": "Neoplasm,  bone, benign"
+  },
+  {
+    "title": "Elastofibroma",
+    "title_lower_words": [
+      "elastofibroma"
+    ],
+    "see": "Neoplasm,  connective tissue, benign"
+  },
+  {
+    "title": "Endothelioma, bone",
+    "title_lower_words": [
+      "endothelioma",
+      "bone"
+    ],
+    "see": "Neoplasm, bone, malignant"
+  },
+  {
+    "title": "Ewing's sarcoma or tumor",
+    "title_lower_words": [
+      "ewing's",
+      "sarcoma",
+      "or",
+      "tumor"
+    ],
+    "see": "Neoplasm, bone, malignant"
+  },
+  {
+    "title": "Fibrochondrosarcoma",
+    "title_lower_words": [
+      "fibrochondrosarcoma"
+    ],
+    "see": "Neoplasm, cartilage, malignant"
+  },
+  {
+    "title": "Fibroliposarcoma",
+    "title_lower_words": [
+      "fibroliposarcoma"
+    ],
+    "see": "Neoplasm, connective tissue,  malignant"
+  },
+  {
+    "title": "Fibromyxoma",
+    "title_lower_words": [
+      "fibromyxoma"
+    ],
+    "see": "Neoplasm,  connective tissue, benign"
+  },
+  {
+    "title": "Fibromyxosarcoma",
+    "title_lower_words": [
+      "fibromyxosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue,  malignant"
+  },
+  {
+    "title": "Fibro-osteoma",
+    "title_lower_words": [
+      "fibro",
+      "osteoma"
+    ],
+    "see": "Neoplasm,  bone, benign"
+  },
+  {
+    "title": "Fibroxanthosarcoma",
+    "title_lower_words": [
+      "fibroxanthosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue,  malignant"
+  },
+  {
+    "title": "Ganglioglioma",
+    "title_lower_words": [
+      "ganglioglioma"
+    ],
+    "see": "Neoplasm, uncertain behavior, by site"
+  },
+  {
+    "title": "Ganglioneuroblastoma",
+    "title_lower_words": [
+      "ganglioneuroblastoma"
+    ],
+    "see": "Neoplasm, nerve, malignant"
+  },
+  {
+    "title": "Gastrocarcinoma",
+    "title_lower_words": [
+      "gastrocarcinoma"
+    ],
+    "see": "Neoplasm, malignant, stomach"
+  },
+  {
+    "title": "Germinoma",
+    "title_lower_words": [
+      "germinoma"
+    ],
+    "see": "Neoplasm,  malignant, by site"
+  },
+  {
+    "title": "Glioneuroma",
+    "title_lower_words": [
+      "glioneuroma"
+    ],
+    "see": "Neoplasm,  uncertain behavior, by site"
+  },
+  {
+    "title": "Glomangiosarcoma",
+    "title_lower_words": [
+      "glomangiosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue,  malignant"
+  },
+  {
+    "title": "Hemangioblastoma",
+    "title_lower_words": [
+      "hemangioblastoma"
+    ],
+    "term": [
+      {
+        "title": "malignant",
+        "title_lower_words": [
+          "malignant"
+        ],
+        "see": "Neoplasm, connective tissue, malignant"
+      }
+    ],
+    "see": "Neoplasm, connective tissue, uncertain behavior"
+  },
+  {
+    "title": "Hemangiofibroma",
+    "title_lower_words": [
+      "hemangiofibroma"
+    ],
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Hemangiosarcoma",
+    "title_lower_words": [
+      "hemangiosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue,  malignant"
+  },
+  {
+    "title": "Hidrocystoma",
+    "title_lower_words": [
+      "hidrocystoma"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Hydrocystoma",
+    "title_lower_words": [
+      "hydrocystoma"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Leiomyoblastoma",
+    "title_lower_words": [
+      "leiomyoblastoma"
+    ],
+    "see": "Neoplasm, connective tissue, benign"
+  },
+  {
+    "title": "Leiomyoma, leiomyomatosis",
+    "title_lower_words": [
+      "leiomyoma",
+      "leiomyomatosis"
+    ],
+    "nemod": "(intravascular)",
+    "see": "Neoplasm, connective tissue, uncertain behavior"
+  },
+  {
+    "title": "Lipoadenoma",
+    "title_lower_words": [
+      "lipoadenoma"
+    ],
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Lipomyxosarcoma",
+    "title_lower_words": [
+      "lipomyxosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Lymphangiosarcoma",
+    "title_lower_words": [
+      "lymphangiosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Lymphoepithelioma",
+    "title_lower_words": [
+      "lymphoepithelioma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Malherbe's tumor",
+    "title_lower_words": [
+      "malherbe's",
+      "tumor"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Melanoameloblastoma",
+    "title_lower_words": [
+      "melanoameloblastoma"
+    ],
+    "see": "Neoplasm, bone, benign"
+  },
+  {
+    "title": "Meningiomatosis",
+    "title_lower_words": [
+      "meningiomatosis"
+    ],
+    "nemod": "(diffuse)",
+    "see": "Neoplasm, meninges, uncertain behavior"
+  },
+  {
+    "title": "Mesonephroma",
+    "title_lower_words": [
+      "mesonephroma"
+    ],
+    "nemod": "(malignant)",
+    "term": [
+      {
+        "title": "benign",
+        "title_lower_words": [
+          "benign"
+        ],
+        "see": "Neoplasm, benign, by site"
+      }
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Myoepithelioma",
+    "title_lower_words": [
+      "myoepithelioma"
+    ],
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Myosarcoma",
+    "title_lower_words": [
+      "myosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Myxochondrosarcoma",
+    "title_lower_words": [
+      "myxochondrosarcoma"
+    ],
+    "see": "Neoplasm, cartilage, malignant"
+  },
+  {
+    "title": "Myxofibroma",
+    "title_lower_words": [
+      "myxofibroma"
+    ],
+    "term": [
+      {
+        "title": "odontogenic",
+        "title_lower_words": [
+          "odontogenic"
+        ],
+        "see": "Cyst, calcifying odontogenic"
+      }
+    ],
+    "see": "Neoplasm, connective tissue, benign"
+  },
+  {
+    "title": "Myxofibrosarcoma",
+    "title_lower_words": [
+      "myxofibrosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Myxoliposarcoma",
+    "title_lower_words": [
+      "myxoliposarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Myxosarcoma",
+    "title_lower_words": [
+      "myxosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Neurilemmosarcoma",
+    "title_lower_words": [
+      "neurilemmosarcoma"
+    ],
+    "see": "Neoplasm, nerve, malignant"
+  },
+  {
+    "title": "Neurinoma",
+    "title_lower_words": [
+      "neurinoma"
+    ],
+    "see": "Neoplasm, nerve, benign"
+  },
+  {
+    "title": "Neurinomatosis",
+    "title_lower_words": [
+      "neurinomatosis"
+    ],
+    "see": "Neoplasm, nerve, uncertain behavior"
+  },
+  {
+    "title": "Neuroastrocytoma",
+    "title_lower_words": [
+      "neuroastrocytoma"
+    ],
+    "see": "Neoplasm, uncertain behavior, by site"
+  },
+  {
+    "title": "Neurocytoma",
+    "title_lower_words": [
+      "neurocytoma"
+    ],
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Neurofibrosarcoma",
+    "title_lower_words": [
+      "neurofibrosarcoma"
+    ],
+    "see": "Neoplasm, nerve, malignant"
+  },
+  {
+    "title": "Neuroglioma",
+    "title_lower_words": [
+      "neuroglioma"
+    ],
+    "see": "Neoplasm, uncertain behavior, by site"
+  },
+  {
+    "title": "Neurosarcoma",
+    "title_lower_words": [
+      "neurosarcoma"
+    ],
+    "see": "Neoplasm, nerve, malignant"
+  },
+  {
+    "title": "Neurothekeoma",
+    "title_lower_words": [
+      "neurothekeoma"
+    ],
+    "see": "Neoplasm, nerve, benign"
+  },
+  {
+    "title": "Oncocytoma",
+    "title_lower_words": [
+      "oncocytoma"
+    ],
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Osteoblastoma",
+    "title_lower_words": [
+      "osteoblastoma"
+    ],
+    "term": [
+      {
+        "title": "aggressive",
+        "title_lower_words": [
+          "aggressive"
+        ],
+        "see": "Neoplasm, bone, uncertain behavior"
+      }
+    ],
+    "see": "Neoplasm, bone, benign"
+  },
+  {
+    "title": "Osteochondroma",
+    "title_lower_words": [
+      "osteochondroma"
+    ],
+    "see": "Neoplasm, bone, benign"
+  },
+  {
+    "title": "Osteochondromyxosarcoma",
+    "title_lower_words": [
+      "osteochondromyxosarcoma"
+    ],
+    "see": "Neoplasm, bone, malignant"
+  },
+  {
+    "title": "Osteochondrosarcoma",
+    "title_lower_words": [
+      "osteochondrosarcoma"
+    ],
+    "see": "Neoplasm, bone, malignant"
+  },
+  {
+    "title": "Osteofibroma",
+    "title_lower_words": [
+      "osteofibroma"
+    ],
+    "see": "Neoplasm, bone, benign"
+  },
+  {
+    "title": "Osteofibrosarcoma",
+    "title_lower_words": [
+      "osteofibrosarcoma"
+    ],
+    "see": "Neoplasm, bone, malignant"
+  },
+  {
+    "title": "Osteosarcoma",
+    "title_lower_words": [
+      "osteosarcoma"
+    ],
+    "nemod": "(any form)",
+    "see": "Neoplasm, bone, malignant"
+  },
+  {
+    "title": "Pacinian tumor",
+    "title_lower_words": [
+      "pacinian",
+      "tumor"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Pancreatoblastoma",
+    "title_lower_words": [
+      "pancreatoblastoma"
+    ],
+    "see": "Neoplasm, pancreas, malignant"
+  },
+  {
+    "title": "Pilomatrixoma",
+    "title_lower_words": [
+      "pilomatrixoma"
+    ],
+    "term": [
+      {
+        "title": "malignant",
+        "title_lower_words": [
+          "malignant"
+        ],
+        "see": "Neoplasm, skin, malignant"
+      }
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Pneumoblastoma",
+    "title_lower_words": [
+      "pneumoblastoma"
+    ],
+    "see": "Neoplasm, lung, malignant"
+  },
+  {
+    "title": "Polyembryoma",
+    "title_lower_words": [
+      "polyembryoma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Poroma, eccrine",
+    "title_lower_words": [
+      "poroma",
+      "eccrine"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Progonoma",
+    "title_lower_words": [
+      "progonoma"
+    ],
+    "nemod": "(melanotic)",
+    "see": "Neoplasm, benign, by site"
+  },
+  {
+    "title": "Rhabdomyosarcoma",
+    "title_lower_words": [
+      "rhabdomyosarcoma"
+    ],
+    "nemod": "(any type)",
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Schmincke's carcinoma or tumor",
+    "title_lower_words": [
+      "schmincke's",
+      "carcinoma",
+      "or",
+      "tumor"
+    ],
+    "see": "Neoplasm, nasopharynx, malignant"
+  },
+  {
+    "title": "Spiradenoma",
+    "title_lower_words": [
+      "spiradenoma"
+    ],
+    "nemod": "(eccrine)",
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Spongioneuroblastoma",
+    "title_lower_words": [
+      "spongioneuroblastoma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Synovial sarcoma",
+    "title_lower_words": [
+      "synovial",
+      "sarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Synoviosarcoma",
+    "title_lower_words": [
+      "synoviosarcoma"
+    ],
+    "see": "Neoplasm, connective tissue, malignant"
+  },
+  {
+    "title": "Syringocystadenoma",
+    "title_lower_words": [
+      "syringocystadenoma"
+    ],
+    "term": [
+      {
+        "title": "papillary",
+        "title_lower_words": [
+          "papillary"
+        ],
+        "see": "Neoplasm, skin, benign"
+      }
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Teratoblastoma",
+    "title_lower_words": [
+      "teratoblastoma"
+    ],
+    "nemod": "(malignant)",
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Trichofolliculoma",
+    "title_lower_words": [
+      "trichofolliculoma"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Tricholemmoma",
+    "title_lower_words": [
+      "tricholemmoma"
+    ],
+    "see": "Neoplasm, skin, benign"
+  },
+  {
+    "title": "Tumorlet",
+    "title_lower_words": [
+      "tumorlet"
+    ],
+    "see": "Neoplasm, uncertain behavior, by site"
+  },
+  {
+    "title": "Vipoma",
+    "title_lower_words": [
+      "vipoma"
+    ],
+    "see": "Neoplasm, malignant, by site"
+  },
+  {
+    "title": "Warthin's tumor",
+    "title_lower_words": [
+      "warthin's",
+      "tumor"
+    ],
+    "see": "Neoplasm, salivary gland, benign"
+  },
+  {
+    "title": "Xanthofibroma",
+    "title_lower_words": [
+      "xanthofibroma"
+    ],
+    "see": "Neoplasm, connective tissue, benign"
+  }
+]
