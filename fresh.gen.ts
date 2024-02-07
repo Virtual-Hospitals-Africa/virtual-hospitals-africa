@@ -125,6 +125,7 @@ import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Search from './islands/symptoms/Search.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $symptoms_SiteSelect from './islands/symptoms/SiteSelect.tsx'
+import * as $waiting_room_AddPatientForm from './islands/waiting-room/AddPatientForm.tsx'
 import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
@@ -293,6 +294,7 @@ const manifest = {
     './islands/symptoms/Search.tsx': $symptoms_Search,
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/symptoms/SiteSelect.tsx': $symptoms_SiteSelect,
+    './islands/waiting-room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest

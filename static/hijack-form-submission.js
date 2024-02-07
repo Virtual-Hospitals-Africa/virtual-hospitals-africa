@@ -20,6 +20,10 @@ addEventListener('submit', function (event) {
   event.preventDefault()
   var formData = new FormData(form)
 
+  if (event.submitter) {
+    formData.append(event.submitter.name, event.submitter.value)
+  }
+
   submitButton = form.querySelector('button[type="submit"]')
   submitButton.disabled = true
 

@@ -9,6 +9,8 @@ type FormButtonsProps = {
     text?: string
     href: string
   }
+  name?: string
+  value?: string
 }
 
 export function ButtonsContainer(
@@ -26,6 +28,8 @@ export default function FormButtons(
     className,
     submitText = 'Submit',
     cancel,
+    name,
+    value,
   }: FormButtonsProps = {},
 ) {
   return (
@@ -40,7 +44,7 @@ export default function FormButtons(
           {cancel.text || 'Cancel'}
         </Button>
       )}
-      <Button type='submit'>{submitText}</Button>
+      <Button type='submit' name={name} value={value}>{submitText}</Button>
     </ButtonsContainer>
   )
 }

@@ -1,0 +1,88 @@
+import { signal } from '@preact/signals'
+import FormRow from '../../components/library/form/Row.tsx'
+import PersonSearch from '../../islands/PersonSearch.tsx'
+import { FacilityDoctorOrNurse, Maybe } from '../../types.ts'
+import FormButtons from '../../components/library/form/buttons.tsx'
+import { RadioGroup, TextArea } from '../../components/library/form/Inputs.tsx'
+import ProvidersSelect from '../../islands/ProvidersSelect.tsx'
+import Form from '../../components/library/form/Form.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import { PersonData } from '../../components/library/Person.tsx'
+import { reasons } from '../../shared/encounter.ts'
+import { EncounterReason } from '../../db.d.ts'
+
+const selectedPatient = signal<PersonData | undefined>(undefined)
+const isReturningPatient = signal<boolean>(false)
+
+export default function AddPatientForm({
+  open_encounter,
+  providers,
+  patient,
+}: {
+  open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
+  providers: FacilityDoctorOrNurse[]
+  patient: { id?: number; name: string } | undefined
+}) {
+  return (
+    <Form method='post'>
+      {open_encounter && (
+        <input
+          type='hidden'
+          name='encounter_id'
+          value={open_encounter.encounter_id}
+        />
+      )}
+      <FormRow>
+        <PersonSearch
+          name='patient'
+          href='/app/patients'
+          required
+          addable
+          value={patient}
+          disabled={!!patient}
+          onSelect={(patient) => {
+            selectedPatient.value = patient
+            selectedPatient.value?.id === 'add'
+              ? isReturningPatient.value = false
+              : isReturningPatient.value = true
+          }}
+        />
+      </FormRow>
+      <FormRow>
+        <ProvidersSelect providers={providers} />
+      </FormRow>
+      <FormRow>
+        <RadioGroup
+          name='reason'
+          label='Reason for visit'
+          options={Array.from(reasons).map((
+            value,
+          ) => ({
+            value,
+          }))}
+          value={open_encounter?.reason || 'seeking treatment'}
+        />
+      </FormRow>
+      <FormRow>
+        <TextArea name='notes' />
+      </FormRow>
+      <FormRow>
+        <Button type='submit' name='waiting_room' value='waiting_room'>
+          Add to waiting room
+        </Button>
+        {selectedPatient.value && !isReturningPatient.value && (
+          <Button type='submit' name='intake' value='intake'>
+            Start Intake
+          </Button>
+        )}
+        {selectedPatient.value && isReturningPatient.value && (
+          <Button
+            href={`/app/patients/${selectedPatient.value.id}`}
+          >
+            Review and begin visit
+          </Button>
+        )}
+      </FormRow>
+    </Form>
+  )
+}

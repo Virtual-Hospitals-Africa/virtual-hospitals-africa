@@ -22,6 +22,7 @@ export default function AsyncSearch<
     results: [] as T[],
   })
 
+  // Make a cancellable request when the query changes
   useEffect(() => {
     const url = new URL(`${location.origin}${href}`)
     if (search.query) {
