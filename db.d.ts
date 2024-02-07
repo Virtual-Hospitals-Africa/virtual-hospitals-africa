@@ -23,6 +23,19 @@ export type EncounterStep =
   | 'symptoms'
   | 'vitals'
 
+export type FamilyType =
+  | '2 married parents'
+  | 'Blended'
+  | 'Child-headed'
+  | 'Childless'
+  | 'Divorced'
+  | 'Extended'
+  | 'Grandparent-led'
+  | 'Orphan'
+  | 'Polygamous/Compound'
+  | 'Same-sex marriage'
+  | 'Single Parent'
+
 export type Gender = 'female' | 'male' | 'non-binary'
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
@@ -68,6 +81,14 @@ export type JsonPrimitive = boolean | number | string | null
 
 export type JsonValue = JsonArray | JsonObject | JsonPrimitive
 
+export type MaritalStatus =
+  | 'Co-habiting'
+  | 'Divorced'
+  | 'Married'
+  | 'Never Married'
+  | 'Separated'
+  | 'Single'
+
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type NurseSpecialty =
@@ -89,6 +110,16 @@ export type NurseSpecialty =
   | 'renal'
   | 'trauma care'
 
+export type PatientCohabitation =
+  | 'Father'
+  | 'Foster Parent'
+  | 'Grandparent(s)'
+  | 'Mother'
+  | 'Orphanage'
+  | 'Other Relative'
+  | 'Sibling'
+  | 'Uncle or Aunt'
+
 export type PatientConversationState =
   | 'find_nearest_facility:got_location'
   | 'find_nearest_facility:send_facility_location'
@@ -109,6 +140,15 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:other_scheduling_options'
   | 'onboarded:make_appointment:subsequent_ask_for_media'
   | 'other_end_of_demo'
+
+export type Religion =
+  | 'African Traditional Religion'
+  | 'Apostolic Sect'
+  | 'Islam'
+  | 'Non-Religious'
+  | 'Other'
+  | 'Pentecostal/Protestant Christianity'
+  | 'Roman Catholic'
 
 export type Timestamp = ColumnType<Date, Date | string, Date | string>
 
@@ -252,60 +292,6 @@ export interface GuardianRelations {
   male_guardian: string | null
   updated_at: Generated<Timestamp>
 }
-
-export interface PatientFamily {
-  id: Generated<number>
-  patient_id: number
-  created_at: Generated<Timestamp>
-  updated_at: Generated<Timestamp>
-  home_satisfaction: number | null
-  spiritual_satisfaction: number | null
-  social_satisfaction: number | null
-  religion: Religion | null
-  family_type: FamilyType | null
-  marital_status: MaritalStatus | null
-  patient_cohabitation: PatientCohabitation | null
-}
-
-export type MaritalStatus =
-  | 'Never Married'
-  | 'Married'
-  | 'Single'
-  | 'Divorced'
-  | 'Separated'
-  | 'Co-habiting'
-
-export type FamilyType =
-  | '2 married parents'
-  | 'Divorced'
-  | 'Extended'
-  | 'Child-headed'
-  | 'Childless'
-  | 'Polygamous/Compound'
-  | 'Single Parent'
-  | 'Same-sex marriage'
-  | 'Blended'
-  | 'Grandparent-led'
-  | 'Orphan'
-
-export type Religion =
-  | 'Roman Catholic'
-  | 'Pentecostal/Protestant Christianity'
-  | 'Islam'
-  | 'Apostolic Sect'
-  | 'African Traditional Religion'
-  | 'Non-Religious'
-  | 'Other'
-
-export type PatientCohabitation =
-  | 'Mother'
-  | 'Father'
-  | 'Grandparent(s)'
-  | 'Sibling'
-  | 'Uncle or Aunt'
-  | 'Other Relative'
-  | 'Foster Parent'
-  | 'Orphanage'
 
 export interface HealthWorkerGoogleTokens {
   access_token: string
@@ -523,6 +509,20 @@ export interface PatientEncounterSteps {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientFamily {
+  created_at: Generated<Timestamp>
+  family_type: FamilyType | null
+  home_satisfaction: number | null
+  id: Generated<number>
+  marital_status: MaritalStatus | null
+  patient_cohabitation: PatientCohabitation | null
+  patient_id: number
+  religion: Religion | null
+  social_satisfaction: number | null
+  spiritual_satisfaction: number | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientGuardians {
   created_at: Generated<Timestamp>
   dependent_patient_id: number
@@ -643,6 +643,7 @@ export interface Suburbs {
 export interface Symptoms {
   aliases: string[]
   category: string
+  sites: string[]
   symptom: string
 }
 
@@ -727,6 +728,7 @@ export interface DB {
   patient_encounter_providers: PatientEncounterProviders
   patient_encounter_steps: PatientEncounterSteps
   patient_encounters: PatientEncounters
+  patient_family: PatientFamily
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
   patient_kin: PatientKin
@@ -744,6 +746,5 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
-  patient_family: PatientFamily
 }
 type Buffer = Uint8Array

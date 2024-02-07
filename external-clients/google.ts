@@ -354,7 +354,7 @@ export const oauthParams = new URLSearchParams({
   response_type: 'code',
   client_id: Deno.env.get('GOOGLE_CLIENT_ID')!,
   scope:
-    'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile https://mail.google.com https://www.googleapis.com/auth/gmail.modify https://www.googleapis.com/auth/gmail.compose https://www.googleapis.com/auth/gmail.send',
+    'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
   access_type: 'offline',
   service: 'lso',
   o2v: '2',

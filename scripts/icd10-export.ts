@@ -1,10 +1,6 @@
 import { XMLParser } from 'fast-xml-parser'
 // import { Handlers, PageProps } from '$fresh/server.ts'
-import {
-  ICD10Index,
-  ICD10IndexTerm,
-  ICD10Searchable,
-} from '../shared/icd10.ts'
+import { ICD10Index, ICD10IndexTerm, ICD10Searchable } from '../shared/icd10.ts'
 import { assert } from 'std/assert/assert.ts'
 import partition from '../util/partition.ts'
 import words from '../util/words.ts'
@@ -15,7 +11,13 @@ const parser = new XMLParser()
 export const icd10_index: ICD10Index = await Deno.readTextFile(
   'db/resources/icd10/icd10cm-index-April-2024.xml',
 ).then(
-  (data) => parser.parse(data.replace('<title>false</title>', '<title>False</title>').replace('<title>true</title>', '<title>True</title>')),
+  (data) =>
+    parser.parse(
+      data.replace('<title>false</title>', '<title>False</title>').replace(
+        '<title>true</title>',
+        '<title>True</title>',
+      ),
+    ),
 )
 
 const to_export = []
@@ -33,7 +35,7 @@ type TidiedTerm = {
   aliases?: string[]
 }
 
-const nounInflector = new natural.NounInflector();
+const nounInflector = new natural.NounInflector()
 
 function lowerWords(x: string) {
   x = x?.toLowerCase().replace(',', '').replace('(of)', '')
@@ -50,21 +52,23 @@ function tidyTerm(x: any): TidiedTerm {
   } else if (title === true) {
     title = 'true'
   }
-  if (!title)  {
+  if (!title) {
     console.log(x)
     throw new Error('no title')
   }
   let split_title: string
   let nemod = null
   if (typeof title === 'object' && title['#text']) {
-    if (typeof title['#text'] !== 'string' && typeof title['#text'] !== 'number') {
+    if (
+      typeof title['#text'] !== 'string' && typeof title['#text'] !== 'number'
+    ) {
       console.log(x)
       throw new Error('title is not a string')
     }
     assert(typeof title.nemod === 'string', JSON.stringify(title))
     split_title = String(title['#text'])
     nemod = title.nemod
-  } else  {
+  } else {
     split_title = String(title)
   }
   const [use_title_pre2, coding_notes] = split_title.split(' - code ')
@@ -94,7 +98,7 @@ function tidyTerm(x: any): TidiedTerm {
 
   if (term) {
     if (Array.isArray(term)) {
-      extra.term = term.map(t => tidyTerm(t))
+      extra.term = term.map((t) => tidyTerm(t))
     } else {
       extra.term = [tidyTerm(term)]
     }
@@ -125,7 +129,7 @@ function hasAnyCode(x: TidiedTerm) {
   return false
 }
 
-const [with_codes, without_codes] = partition(to_export, x => hasAnyCode(x))
+const [with_codes, without_codes] = partition(to_export, (x) => hasAnyCode(x))
 
 function assertAllHaveSeeOrSeeAlsoOrCodingNotes(x: TidiedTerm) {
   if (!x.term) {
@@ -138,35 +142,48 @@ function assertAllHaveSeeOrSeeAlsoOrCodingNotes(x: TidiedTerm) {
   }
 }
 
-const [neoplasms, other_without_codes_pre2] = partition(without_codes, x => !!x.see?.startsWith('Neoplasm'))
-const [drugs, other_without_codes_pre1] = partition(other_without_codes_pre2, x => !!x.see?.startsWith('Table of Drugs'))
-const [injury, other_without_codes] = partition(other_without_codes_pre1, x => !!x.see?.startsWith('Index to External Causes of Injury'))
+const [neoplasms, other_without_codes_pre2] = partition(
+  without_codes,
+  (x) => !!x.see?.startsWith('Neoplasm'),
+)
+const [drugs, other_without_codes_pre1] = partition(
+  other_without_codes_pre2,
+  (x) => !!x.see?.startsWith('Table of Drugs'),
+)
+const [injury, other_without_codes] = partition(
+  other_without_codes_pre1,
+  (x) => !!x.see?.startsWith('Index to External Causes of Injury'),
+)
 
 const matching_words = [
-  [["b", "cell", "type"], []]
+  [['b', 'cell', 'type'], []],
 ]
 
 function wordsMatch(test_words: string[], candidate_words: string[]) {
-  
   test_words.every((word, i) => {
     const candidate_word = candidate_words[i]
     if (!candidate_word) return false
-    return word === candidate_word || 
-      nounInflector.singularize(word) === nounInflector.singularize(candidate_word) ||
-      natural.PorterStemmer.stem(word) === natural.PorterStemmer.stem(candidate_word)
+    return word === candidate_word ||
+      nounInflector.singularize(word) ===
+        nounInflector.singularize(candidate_word) ||
+      natural.PorterStemmer.stem(word) ===
+        natural.PorterStemmer.stem(candidate_word)
   })
 }
 
 function findMatchingTerm(
   see_words: string[],
   candidates: TidiedTerm[],
-): { found: true, match: TidiedTerm } | { found: false, candidates?: TidiedTerm[] } {
+): { found: true; match: TidiedTerm } | {
+  found: false
+  candidates?: TidiedTerm[]
+} {
   let testLength: number = see_words.length
   let bestMatch: TidiedTerm | undefined
-  
+
   while (testLength) {
     const test_words = see_words.slice(0, testLength)
-    const matching_candidates = candidates.filter(candidate => {
+    const matching_candidates = candidates.filter((candidate) => {
       if (!candidate.title_lower_words) {
         console.log(candidate)
         throw new Error('no title_lower_words')
@@ -175,9 +192,11 @@ function findMatchingTerm(
       return test_words.every((word, i) => {
         const candidate_word = candidate_words[i]
         if (!candidate_word) return false
-        return word === candidate_word || 
-          nounInflector.singularize(word) === nounInflector.singularize(candidate_word) ||
-          natural.PorterStemmer.stem(word) === natural.PorterStemmer.stem(candidate_word)
+        return word === candidate_word ||
+          nounInflector.singularize(word) ===
+            nounInflector.singularize(candidate_word) ||
+          natural.PorterStemmer.stem(word) ===
+            natural.PorterStemmer.stem(candidate_word)
       })
     })
     if (matching_candidates.length === 1) {
@@ -188,15 +207,15 @@ function findMatchingTerm(
       if (testLength > 1) {
         return { found: false, candidates: matching_candidates }
       }
-      const candidates_with_one_word = matching_candidates.filter(candidates => 
-        candidates.title_lower_words.length === 1
+      const candidates_with_one_word = matching_candidates.filter(
+        (candidates) => candidates.title_lower_words.length === 1,
       )
       if (candidates_with_one_word.length === 1) {
         bestMatch = candidates_with_one_word[0]
         break
       }
       if (candidates_with_one_word.length > 1) {
-        const exact_matches = candidates_with_one_word.filter(candidate => {
+        const exact_matches = candidates_with_one_word.filter((candidate) => {
           return candidate.title_lower_words[0] === see_words[0]
         })
         if (exact_matches.length === 1) {
@@ -216,7 +235,10 @@ function findMatchingTerm(
   }
 
   if (!bestMatch) {
-    return { found: false, candidates: candidates.length > 100 ? undefined : candidates }
+    return {
+      found: false,
+      candidates: candidates.length > 100 ? undefined : candidates,
+    }
   }
 
   const see_words_remaining = see_words.slice(testLength)
@@ -232,9 +254,13 @@ function findMatchingTerm(
     const nemod_words = lowerWords(bestMatch.nemod)
     assert(nemod_words.length === 1)
     const nemod_word = nemod_words[0]
-    const title_lower_words_remaining = bestMatch.title_lower_words.slice(testLength)
+    const title_lower_words_remaining = bestMatch.title_lower_words.slice(
+      testLength,
+    )
     const with_nemod_in_front = [nemod_word, ...title_lower_words_remaining]
-    if (see_words_remaining.every((word, i) => word === with_nemod_in_front[i])) {
+    if (
+      see_words_remaining.every((word, i) => word === with_nemod_in_front[i])
+    ) {
       return { found: true, match: bestMatch }
     }
 
@@ -252,16 +278,17 @@ for (const term of other_without_codes) {
   if (!see) continue
 
   const see_words = lowerWords(see)
-  
-  
-    const matching_term = findMatchingTerm(see_words, with_codes)
-    if (!matching_term?.found) {
-      no_matching_could_be_found.push({ term, candidates: matching_term?.candidates})
-      continue
-    }
-    matching_term.match.aliases = matching_term.match.aliases || []
-    matching_term.match.aliases.push(term.title)
-  
+
+  const matching_term = findMatchingTerm(see_words, with_codes)
+  if (!matching_term?.found) {
+    no_matching_could_be_found.push({
+      term,
+      candidates: matching_term?.candidates,
+    })
+    continue
+  }
+  matching_term.match.aliases = matching_term.match.aliases || []
+  matching_term.match.aliases.push(term.title)
 
   // console.log('without', term)
   // console.log('zzz', matching_first_word)
