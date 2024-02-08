@@ -54,6 +54,9 @@ export default function PatientFamilyForm({
   const showDependents = age >= 10
   const showNextOfKin = age >= 19
 
+  //Default values
+  family.marital_status ??= age <= 18 ? 'Never Married' : null
+
   return (
     <div>
       {showNextOfKin &&
