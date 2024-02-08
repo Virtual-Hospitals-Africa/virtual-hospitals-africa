@@ -27,7 +27,6 @@ export type FamilyType =
   | '2 married parents'
   | 'Blended'
   | 'Child-headed'
-  | 'Childless'
   | 'Divorced'
   | 'Extended'
   | 'Grandparent-led'
