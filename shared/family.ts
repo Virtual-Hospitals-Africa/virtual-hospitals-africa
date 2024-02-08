@@ -68,6 +68,7 @@ export const MARITAL_STATUS: MaritalStatus[] = [
   'Divorced',
   'Separated',
   'Co-habiting',
+  'Widowed',
 ]
 
 export const FAMILY_TYPES: FamilyType[] = [

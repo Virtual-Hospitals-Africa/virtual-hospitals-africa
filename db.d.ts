@@ -87,6 +87,7 @@ export type MaritalStatus =
   | 'Never Married'
   | 'Separated'
   | 'Single'
+  | 'Widowed'
 
 export type Numeric = ColumnType<string, number | string, number | string>
 
