@@ -22,7 +22,7 @@ export default function PatientCohabitationSelect(
       case 'Blended':
         return true
       case 'Child-headed':
-        return ['Sibling', 'Uncle', 'Aunt', 'Other Relative'].includes(val!)
+        return ['Sibling', 'Uncle or Aunt', 'Other Relative'].includes(val!)
       case 'Polygamous/Compound':
       case 'Single Parent':
         return val !== 'Orphanage'

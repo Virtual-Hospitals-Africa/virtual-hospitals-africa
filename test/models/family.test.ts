@@ -105,7 +105,7 @@ describe(
             spiritual_satisfaction: 7,
             social_satisfaction: 6,
             religion: 'Other',
-            family_type: '2 married parents',
+            family_type: 'Single Parent',
             marital_status: 'Single',
             patient_cohabitation: 'Sibling',
           })
@@ -128,7 +128,7 @@ describe(
             spiritual_satisfaction: 7,
             social_satisfaction: 6,
             religion: 'Other',
-            family_type: '2 married parents',
+            family_type: 'Single Parent',
             marital_status: 'Single',
             patient_cohabitation: 'Sibling',
           })
