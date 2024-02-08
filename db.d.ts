@@ -27,7 +27,6 @@ export type FamilyType =
   | '2 married parents'
   | 'Blended'
   | 'Child-headed'
-  | 'Childless'
   | 'Divorced'
   | 'Extended'
   | 'Grandparent-led'
@@ -88,6 +87,7 @@ export type MaritalStatus =
   | 'Never Married'
   | 'Separated'
   | 'Single'
+  | 'Widowed'
 
 export type Numeric = ColumnType<string, number | string, number | string>
 

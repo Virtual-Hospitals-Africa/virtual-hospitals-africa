@@ -2,11 +2,12 @@ import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 import { FAMILY_TYPES } from '../../shared/family.ts'
 
 export default function FamilyTypeSelect(
-  { name, required, label, value }: {
+  { name, required, label, value, onSelect }: {
     name: string
     label: string
     required?: boolean
     value?: string
+    onSelect?(type: string): void
   },
 ) {
   return (
@@ -16,6 +17,9 @@ export default function FamilyTypeSelect(
       required={required}
       blank_option
       value={value}
+      onChange={(e) => {
+        onSelect && onSelect(e.target.value)
+      }}
       options={FAMILY_TYPES.map((type) => (
         { value: type }
       ))}

@@ -266,7 +266,7 @@
         "integrity": "sha512-7vd3UC6xKp0HLfua5IjZlcXvGAGy7cBAXTg2lyQ/8WpNhd6SiZ8Be+xm3FyBSYJx5GKcpRCzBh7RH4/0dnY+uQ==",
         "dependencies": {
           "browserslist": "browserslist@4.22.3",
-          "caniuse-lite": "caniuse-lite@1.0.30001584",
+          "caniuse-lite": "caniuse-lite@1.0.30001585",
           "fraction.js": "fraction.js@4.3.7",
           "normalize-range": "normalize-range@0.1.2",
           "picocolors": "picocolors@1.0.0",
@@ -305,8 +305,8 @@
       "browserslist@4.22.3": {
         "integrity": "sha512-UAp55yfwNv0klWNapjs/ktHoguxuQNGnOzxYmfnXIS+8AsRDZkSDxg7R1AX3GKzn078SBI5dzwzj/Yx0Or0e3A==",
         "dependencies": {
-          "caniuse-lite": "caniuse-lite@1.0.30001584",
-          "electron-to-chromium": "electron-to-chromium@1.4.656",
+          "caniuse-lite": "caniuse-lite@1.0.30001585",
+          "electron-to-chromium": "electron-to-chromium@1.4.661",
           "node-releases": "node-releases@2.0.14",
           "update-browserslist-db": "update-browserslist-db@1.0.13_browserslist@4.22.3"
         }
@@ -319,13 +319,13 @@
         "integrity": "sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==",
         "dependencies": {
           "browserslist": "browserslist@4.22.3",
-          "caniuse-lite": "caniuse-lite@1.0.30001584",
+          "caniuse-lite": "caniuse-lite@1.0.30001585",
           "lodash.memoize": "lodash.memoize@4.1.2",
           "lodash.uniq": "lodash.uniq@4.5.0"
         }
       },
-      "caniuse-lite@1.0.30001584": {
-        "integrity": "sha512-LOz7CCQ9M1G7OjJOF9/mzmqmj3jE/7VOmrfw6Mgs0E8cjOsbRXQJHsPBfmBOXDskXKrHLyyW3n7kpDW/4BsfpQ==",
+      "caniuse-lite@1.0.30001585": {
+        "integrity": "sha512-yr2BWR1yLXQ8fMpdS/4ZZXpseBgE7o4g41x3a6AJOqZuOi+iE/WdJYAuZ6Y95i4Ohd2Y+9MzIWRR+uGABH4s3Q==",
         "dependencies": {}
       },
       "chalk@2.4.2": {
@@ -343,8 +343,8 @@
           "supports-color": "supports-color@7.2.0"
         }
       },
-      "chokidar@3.5.3": {
-        "integrity": "sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==",
+      "chokidar@3.6.0": {
+        "integrity": "sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==",
         "dependencies": {
           "anymatch": "anymatch@3.1.3",
           "braces": "braces@3.0.2",
@@ -579,8 +579,8 @@
         "integrity": "sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==",
         "dependencies": {}
       },
-      "electron-to-chromium@1.4.656": {
-        "integrity": "sha512-9AQB5eFTHyR3Gvt2t/NwR0le2jBSUNwCnMbUCejFWHD+so4tH40/dRLgoE+jxlPeWS43XJewyvCv+I8LPMl49Q==",
+      "electron-to-chromium@1.4.661": {
+        "integrity": "sha512-AFg4wDHSOk5F+zA8aR+SVIOabu7m0e7BiJnigCvPXzIGy731XENw/lmNxTySpVFtkFEy+eyt4oHhh5FF3NjQNw==",
         "dependencies": {}
       },
       "emoji-regex@8.0.0": {
@@ -1504,7 +1504,7 @@
         "dependencies": {
           "@alloc/quick-lru": "@alloc/quick-lru@5.2.0",
           "arg": "arg@5.0.2",
-          "chokidar": "chokidar@3.5.3",
+          "chokidar": "chokidar@3.6.0",
           "didyoumean": "didyoumean@1.2.2",
           "dlv": "dlv@1.1.3",
           "fast-glob": "fast-glob@3.3.2",

@@ -42,6 +42,9 @@ export default function PatientFamilyForm({
   const dependents: Signal<DependentFamilyRelationState[]> = useSignal(
     family.dependents,
   )
+  const family_type: Signal<string | undefined> = useSignal(
+    family.family_type ?? undefined,
+  )
   const addGuardian = () => guardians.value = guardians.value.concat([{}])
   const addDependent = () => dependents.value = dependents.value.concat([{}])
 
@@ -53,6 +56,10 @@ export default function PatientFamilyForm({
   const showGuardians = age <= 18
   const showDependents = age >= 10
   const showNextOfKin = age >= 19
+  const showPatientCohabitation = age <= 18
+
+  //Default values
+  family.marital_status ??= age <= 18 ? 'Never Married' : null
 
   return (
     <div>
@@ -130,10 +137,10 @@ export default function PatientFamilyForm({
             name='family.marital_status'
             value={family.marital_status as string}
           />
-          <FamilyTypeSelect
-            label='Type of Family'
-            name='family.family_type'
-            value={family.family_type as string}
+          <ReligionSelect
+            label='Religion'
+            name='family.religion'
+            value={family.religion as string}
           />
         </FormRow>
         <FormRow className='mt-2'>
@@ -160,16 +167,20 @@ export default function PatientFamilyForm({
           />
         </FormRow>
         <FormRow className='mt-2'>
-          <PatientCohabitationSelect
-            label='If parents don`t live together, who usually stays with the patient?'
-            name='family.patient_cohabitation'
-            value={family.patient_cohabitation as string}
+          <FamilyTypeSelect
+            label='Type of Family'
+            name='family.family_type'
+            value={family_type.value as string}
+            onSelect={(t) => family_type.value = t}
           />
-          <ReligionSelect
-            label='Religion'
-            name='family.religion'
-            value={family.religion as string}
-          />
+          {showPatientCohabitation && (
+            <PatientCohabitationSelect
+              label='If parents don`t live together, who usually stays with the patient?'
+              name='family.patient_cohabitation'
+              value={family.patient_cohabitation as string}
+              type={family_type.value}
+            />
+          )}
         </FormRow>
       </div>
     </div>
