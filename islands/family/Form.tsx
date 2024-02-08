@@ -56,6 +56,7 @@ export default function PatientFamilyForm({
   const showGuardians = age <= 18
   const showDependents = age >= 10
   const showNextOfKin = age >= 19
+  const showPatientCohabitation = age <= 18
 
   //Default values
   family.marital_status ??= age <= 18 ? 'Never Married' : null
@@ -172,12 +173,14 @@ export default function PatientFamilyForm({
             value={family_type.value as string}
             onSelect={(t) => family_type.value = t}
           />
-          <PatientCohabitationSelect
-            label='If parents don`t live together, who usually stays with the patient?'
-            name='family.patient_cohabitation'
-            value={family.patient_cohabitation as string}
-            type={family_type.value}
-          />
+          {showPatientCohabitation && (
+            <PatientCohabitationSelect
+              label='If parents don`t live together, who usually stays with the patient?'
+              name='family.patient_cohabitation'
+              value={family.patient_cohabitation as string}
+              type={family_type.value}
+            />
+          )}
         </FormRow>
       </div>
     </div>
