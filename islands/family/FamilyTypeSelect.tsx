@@ -7,7 +7,7 @@ export default function FamilyTypeSelect(
     label: string
     required?: boolean
     value?: string
-    onSelect?(type: string): void 
+    onSelect?(type: string): void
   },
 ) {
   return (

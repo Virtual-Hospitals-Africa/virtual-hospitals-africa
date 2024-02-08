@@ -22,7 +22,7 @@ import * as patient_age from './patient_age.ts'
 
 export function addGuardian(
   trx: TrxOrDb,
-  guardian: PatientGuardian
+  guardian: PatientGuardian,
 ): Promise<{ id: number }> {
   return trx
     .insertInto('patient_guardians')
@@ -33,30 +33,29 @@ export function addGuardian(
 
 export async function get(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: number }
+  { patient_id }: { patient_id: number },
 ): Promise<PatientFamily> {
   const gettingGuardians = trx
     .selectFrom('patient_guardians')
     .innerJoin(
       'guardian_relations',
       'patient_guardians.guardian_relation',
-      'guardian_relations.guardian'
+      'guardian_relations.guardian',
     )
     .innerJoin(
       'patients as guardian',
       'patient_guardians.guardian_patient_id',
-      'guardian.id'
+      'guardian.id',
     )
     .innerJoin(
       'patients as dependent',
       'patient_guardians.dependent_patient_id',
-      'dependent.id'
+      'dependent.id',
     )
     .leftJoin('patient_kin as kin', (join) =>
       join
         .on('kin.patient_id', '=', patient_id)
-        .onRef('kin.next_of_kin_patient_id', '=', 'guardian.id')
-    )
+        .onRef('kin.next_of_kin_patient_id', '=', 'guardian.id'))
     .where('dependent.id', '=', patient_id)
     .select(({ eb, and }) => [
       'patient_guardians.id as relation_id',
@@ -73,14 +72,14 @@ export async function get(
           and([
             eb('guardian.gender', '=', 'female'),
             eb('guardian_relations.female_guardian', 'is not', null),
-          ])
+          ]),
         )
         .then(eb.ref('guardian_relations.female_guardian'))
         .when(
           and([
             eb('guardian.gender', '=', 'male'),
             eb('guardian_relations.male_guardian', 'is not', null),
-          ])
+          ]),
         )
         .then(eb.ref('guardian_relations.male_guardian'))
         .else(sql<string>`guardian_relations.guardian::text`)
@@ -95,17 +94,17 @@ export async function get(
     .innerJoin(
       'guardian_relations',
       'patient_guardians.guardian_relation',
-      'guardian_relations.guardian'
+      'guardian_relations.guardian',
     )
     .innerJoin(
       'patients as guardian',
       'patient_guardians.guardian_patient_id',
-      'guardian.id'
+      'guardian.id',
     )
     .innerJoin(
       'patients as dependent',
       'patient_guardians.dependent_patient_id',
-      'dependent.id'
+      'dependent.id',
     )
     .where('guardian.id', '=', patient_id)
     .select(({ eb, and }) => [
@@ -122,14 +121,14 @@ export async function get(
           and([
             eb('dependent.gender', '=', 'female'),
             eb('guardian_relations.female_dependent', 'is not', null),
-          ])
+          ]),
         )
         .then(eb.ref('guardian_relations.female_dependent'))
         .when(
           and([
             eb('dependent.gender', '=', 'male'),
             eb('guardian_relations.male_dependent', 'is not', null),
-          ])
+          ]),
         )
         .then(eb.ref('guardian_relations.male_dependent'))
         .else(eb.ref('guardian_relations.dependent'))
@@ -143,21 +142,20 @@ export async function get(
     .innerJoin(
       'patients as kin',
       'patient_kin.next_of_kin_patient_id',
-      'kin.id'
+      'kin.id',
     )
     .leftJoin('patient_guardians', (join) =>
       join
         .onRef(
           'patient_guardians.dependent_patient_id',
           '=',
-          'patient_kin.patient_id'
+          'patient_kin.patient_id',
         )
         .onRef(
           'patient_guardians.guardian_patient_id',
           '=',
-          'patient_kin.next_of_kin_patient_id'
-        )
-    )
+          'patient_kin.next_of_kin_patient_id',
+        ))
     .where('patient_kin.patient_id', '=', patient_id)
     .where('patient_guardians.id', 'is', null)
     .select([
@@ -237,7 +235,7 @@ const inverseDependentRelation = memoize((family_relation_gendered: string) => {
 })
 
 function hasPatientId(
-  relation: FamilyRelationInsert
+  relation: FamilyRelationInsert,
 ): relation is FamilyRelationInsert & { patient_id: number } {
   return !!relation.patient_id
 }
@@ -253,7 +251,7 @@ function hasPatientId(
 export async function upsert(
   trx: TrxOrDb,
   patient_id: number,
-  family_to_upsert: FamilyUpsert
+  family_to_upsert: FamilyUpsert,
 ): Promise<void> {
   const total_next_of_kin =
     family_to_upsert.guardians.filter((c) => c.next_of_kin).length +
@@ -265,28 +263,29 @@ export async function upsert(
   if (age_number <= 18 && family_to_upsert.family_type) {
     assertOr400(
       (['2 married parents', 'Same-sex marriage'].includes(
-        family_to_upsert.family_type
-      ) && family_to_upsert.guardians.length >= 2) || 
-      !(['2 married parents', 'Same-sex marriage'].includes(
-        family_to_upsert.family_type
-      )),
-      'Please include the patient parents as guardians'
+        family_to_upsert.family_type,
+      ) && family_to_upsert.guardians.length >= 2) ||
+        !(['2 married parents', 'Same-sex marriage'].includes(
+          family_to_upsert.family_type,
+        )),
+      'Please include the patient parents as guardians',
     )
 
     assertOr400(
       (family_to_upsert.family_type === 'Single Parent' &&
-        family_to_upsert.guardians.length >= 1) || family_to_upsert.family_type !== 'Single Parent',
-      'Please include patient parent as a guardian'
+        family_to_upsert.guardians.length >= 1) ||
+        family_to_upsert.family_type !== 'Single Parent',
+      'Please include patient parent as a guardian',
     )
   }
 
   const [existing_guardians, new_guardians] = partition(
     family_to_upsert.guardians,
-    hasPatientId
+    hasPatientId,
   )
   const [existing_dependents, new_dependents] = partition(
     family_to_upsert.dependents,
-    hasPatientId
+    hasPatientId,
   )
   const other_kin = family_to_upsert.other_next_of_kin
 
@@ -307,12 +306,12 @@ export async function upsert(
     assertOr400(
       !guardian_upserts_with_patient_ids.has(guardian.patient_id) &&
         !dependent_upserts_with_patient_ids.has(guardian.patient_id),
-      `Cannot have two relations to the same patient: ${guardian.patient_name}`
+      `Cannot have two relations to the same patient: ${guardian.patient_name}`,
     )
     const relation = inverseGuardianRelation(guardian.family_relation_gendered)
     guardian_upserts_with_patient_ids.set(
       guardian.patient_id,
-      relation.guardian_relation
+      relation.guardian_relation,
     )
     updating_existing_patients.push(
       upsertPatient(trx, {
@@ -320,21 +319,21 @@ export async function upsert(
         name: guardian.patient_name,
         phone_number: guardian.patient_phone_number,
         gender: relation.gender,
-      })
+      }),
     )
   }
   for (const dependent of existing_dependents) {
     assertOr400(
       !guardian_upserts_with_patient_ids.has(dependent.patient_id) &&
         !dependent_upserts_with_patient_ids.has(dependent.patient_id),
-      `Cannot have two relations to the same patient: ${dependent.patient_name}`
+      `Cannot have two relations to the same patient: ${dependent.patient_name}`,
     )
     const relation = inverseDependentRelation(
-      dependent.family_relation_gendered
+      dependent.family_relation_gendered,
     )
     dependent_upserts_with_patient_ids.set(
       dependent.patient_id,
-      relation.guardian_relation
+      relation.guardian_relation,
     )
     updating_existing_patients.push(
       upsertPatient(trx, {
@@ -342,7 +341,7 @@ export async function upsert(
         name: dependent.patient_name,
         phone_number: dependent.patient_phone_number,
         gender: relation.gender,
-      })
+      }),
     )
   }
   if (other_kin && other_kin.patient_id) {
@@ -351,7 +350,7 @@ export async function upsert(
         id: other_kin.patient_id!,
         name: other_kin.patient_name,
         phone_number: other_kin.patient_phone_number,
-      })
+      }),
     )
   }
   // Insert patients that don't already exist. For each family relation keep track of the index and the calculated relation
@@ -364,32 +363,29 @@ export async function upsert(
   const to_insert: Partial<Patient>[] = []
   for (const guardian of new_guardians) {
     const relation = inverseGuardianRelation(guardian.family_relation_gendered)
-    const index =
-      to_insert.push({
-        name: guardian.patient_name,
-        phone_number: guardian.patient_phone_number,
-        gender: relation.gender,
-      }) - 1
+    const index = to_insert.push({
+      name: guardian.patient_name,
+      phone_number: guardian.patient_phone_number,
+      gender: relation.gender,
+    }) - 1
     inserted.set(guardian, [index, relation.guardian_relation])
   }
   for (const dependent of new_dependents) {
     const relation = inverseDependentRelation(
-      dependent.family_relation_gendered
+      dependent.family_relation_gendered,
     )
-    const index =
-      to_insert.push({
-        name: dependent.patient_name,
-        phone_number: dependent.patient_phone_number,
-        gender: relation.gender,
-      }) - 1
+    const index = to_insert.push({
+      name: dependent.patient_name,
+      phone_number: dependent.patient_phone_number,
+      gender: relation.gender,
+    }) - 1
     inserted.set(dependent, [index, relation.guardian_relation])
   }
   if (other_kin && !other_kin.patient_id) {
-    const index =
-      to_insert.push({
-        name: other_kin.patient_name,
-        phone_number: other_kin.patient_phone_number,
-      }) - 1
+    const index = to_insert.push({
+      name: other_kin.patient_name,
+      phone_number: other_kin.patient_phone_number,
+    }) - 1
     // deno-lint-ignore no-explicit-any
     inserted.set(other_kin, [index, other_kin.family_relation_gendered as any])
   }
@@ -404,19 +400,18 @@ export async function upsert(
   // Use the existing family to find those eligible for update & removal
   const [guardians_to_update, guardians_to_remove] = partition(
     existing_family.guardians,
-    ({ patient_id }) => guardian_upserts_with_patient_ids.has(patient_id)
+    ({ patient_id }) => guardian_upserts_with_patient_ids.has(patient_id),
   )
   const [dependents_to_update, dependents_to_remove] = partition(
     existing_family.dependents,
-    ({ patient_id }) => dependent_upserts_with_patient_ids.has(patient_id)
+    ({ patient_id }) => dependent_upserts_with_patient_ids.has(patient_id),
   )
 
   // 1. Remove: The relation exists in the db as given by its patient_id, but not in the upsert
   const to_remove = (guardians_to_remove as FamilyRelation[])
     .concat(dependents_to_remove)
     .map(({ relation_id }) => relation_id)
-  const removing_relations =
-    to_remove.length &&
+  const removing_relations = to_remove.length &&
     trx.deleteFrom('patient_guardians').where('id', 'in', to_remove).execute()
 
   // 2. Update: The relation exists in the db as given by its patient_id and the upsert
@@ -424,7 +419,7 @@ export async function upsert(
   const updating_relations: Promise<unknown>[] = []
   for (const guardian_relation_in_db of guardians_to_update) {
     const guardian_relation = guardian_upserts_with_patient_ids.get(
-      guardian_relation_in_db.patient_id
+      guardian_relation_in_db.patient_id,
     )!
     const values: PatientGuardian = {
       guardian_relation,
@@ -436,14 +431,14 @@ export async function upsert(
         .updateTable('patient_guardians')
         .set(values)
         .where('id', '=', guardian_relation_in_db.relation_id)
-        .executeTakeFirstOrThrow()
+        .executeTakeFirstOrThrow(),
     )
     updated_guardian_patient_ids.add(guardian_relation_in_db.patient_id)
   }
   const updated_dependent_patient_ids = new Set<number>()
   for (const dependent_relation_in_db of dependents_to_update) {
     const guardian_relation = dependent_upserts_with_patient_ids.get(
-      dependent_relation_in_db.patient_id
+      dependent_relation_in_db.patient_id,
     )!
     const values: PatientGuardian = {
       guardian_relation,
@@ -455,7 +450,7 @@ export async function upsert(
         .updateTable('patient_guardians')
         .set(values)
         .where('id', '=', dependent_relation_in_db.relation_id)
-        .executeTakeFirstOrThrow()
+        .executeTakeFirstOrThrow(),
     )
     updated_dependent_patient_ids.add(dependent_relation_in_db.patient_id)
   }
@@ -467,7 +462,7 @@ export async function upsert(
     .filter(
       (guardian) =>
         !guardian.patient_id ||
-        !updated_guardian_patient_ids.has(guardian.patient_id)
+        !updated_guardian_patient_ids.has(guardian.patient_id),
     )
     .map((guardian) => {
       let guardian_patient_id: number
@@ -476,7 +471,7 @@ export async function upsert(
       if (guardian.patient_id) {
         guardian_patient_id = guardian.patient_id
         guardian_relation = guardian_upserts_with_patient_ids.get(
-          guardian.patient_id
+          guardian.patient_id,
         )!
         // b. The patient is new
       } else {
@@ -498,10 +493,9 @@ export async function upsert(
   const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin)
   const existing_kin = existing_family.guardians.find((c) => c.next_of_kin)
   if (new_kin || existing_kin || other_kin) {
-    const new_kin =
-      family_to_upsert.guardians.find((c) => c.next_of_kin) ?? other_kin
-    const existingKin =
-      existing_family.guardians.find((c) => c.next_of_kin) ??
+    const new_kin = family_to_upsert.guardians.find((c) => c.next_of_kin) ??
+      other_kin
+    const existingKin = existing_family.guardians.find((c) => c.next_of_kin) ??
       existing_family.other_next_of_kin
 
     // kins is removed
@@ -545,41 +539,40 @@ export async function upsert(
     }
   }
 
-  const new_dependents_to_insert: PatientGuardian[] =
-    family_to_upsert.dependents
-      .filter(
-        (dependent) =>
-          !dependent.patient_id ||
-          !updated_dependent_patient_ids.has(dependent.patient_id)
-      )
-      .map((dependent) => {
-        let dependent_patient_id: number
-        let guardian_relation: GuardianRelationName
-        // a. The patient already exists
-        if (dependent.patient_id) {
-          dependent_patient_id = dependent.patient_id
-          guardian_relation = dependent_upserts_with_patient_ids.get(
-            dependent.patient_id
-          )!
-          // b. The patient is new
-        } else {
-          const [index, guardian_relation_calculated] = inserted.get(dependent)!
-          const new_patient = new_patients[index]
-          assert(new_patient.id)
-          dependent_patient_id = new_patient.id
-          guardian_relation = guardian_relation_calculated
-        }
-        return {
-          guardian_relation,
-          guardian_patient_id: patient_id,
-          dependent_patient_id,
-        }
-      })
+  const new_dependents_to_insert: PatientGuardian[] = family_to_upsert
+    .dependents
+    .filter(
+      (dependent) =>
+        !dependent.patient_id ||
+        !updated_dependent_patient_ids.has(dependent.patient_id),
+    )
+    .map((dependent) => {
+      let dependent_patient_id: number
+      let guardian_relation: GuardianRelationName
+      // a. The patient already exists
+      if (dependent.patient_id) {
+        dependent_patient_id = dependent.patient_id
+        guardian_relation = dependent_upserts_with_patient_ids.get(
+          dependent.patient_id,
+        )!
+        // b. The patient is new
+      } else {
+        const [index, guardian_relation_calculated] = inserted.get(dependent)!
+        const new_patient = new_patients[index]
+        assert(new_patient.id)
+        dependent_patient_id = new_patient.id
+        guardian_relation = guardian_relation_calculated
+      }
+      return {
+        guardian_relation,
+        guardian_patient_id: patient_id,
+        dependent_patient_id,
+      }
+    })
 
   const new_relations = new_guardians_to_insert.concat(new_dependents_to_insert)
 
-  const adding_relations =
-    new_relations.length &&
+  const adding_relations = new_relations.length &&
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
   const familyValues = {
