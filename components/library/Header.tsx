@@ -1,8 +1,9 @@
-import { BellIcon, XMarkIcon } from './icons/heroicons/outline.tsx'
+import { BellIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
 import { LogoWithFullText } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
+import BackLink from '../../islands/BackLink.tsx'
 
 export type HeaderProps = {
   title: string
@@ -68,9 +69,7 @@ function HeaderRightWithAvatar(
 function HeaderRightClose() {
   return (
     <HeaderRight>
-      <a onClick={() => history.back()} className='h-6 w-6'>
-        <XMarkIcon stroke='white' />
-      </a>
+      <BackLink />
     </HeaderRight>
   )
 }
