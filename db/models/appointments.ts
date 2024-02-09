@@ -28,9 +28,16 @@ export async function addOfferedTime(
       PatientAppointmentOfferedTime & { health_worker_name: string }
     >
   >`
+    WITH confirmed_provider as (
+      SELECT id
+        FROM employment
+       WHERE provider_id = ${opts.provider_id}
+         AND profession IN ('doctor', 'nurse')
+    ),
+
     WITH inserted_offered_time as (
       INSERT INTO patient_appointment_offered_times(patient_appointment_request_id, provider_id, start)
-          VALUES (${opts.patient_appointment_request_id}, ${opts.provider_id}, ${opts.start})
+          VALUES (${opts.patient_appointment_request_id}, confirmed_provider.id, ${opts.start})
         RETURNING *
     )
 
@@ -220,7 +227,7 @@ export async function schedule(
 
 export async function countUpcoming(
   trx: TrxOrDb,
-  opts: { provider_id: number },
+  opts: { health_worker_id: number },
 ): Promise<number> {
   const { count } = await trx
     .selectFrom('appointments')
@@ -229,10 +236,15 @@ export async function countUpcoming(
       'appointments.id',
       'appointment_providers.appointment_id',
     )
-    .where(
+    .innerJoin(
+      'employment',
+      'employment.id',
       'appointment_providers.provider_id',
+    )
+    .where(
+      'employment.health_worker_id',
       '=',
-      opts.provider_id,
+      opts.health_worker_id,
     )
     .where('start', '>=', now)
     .select([

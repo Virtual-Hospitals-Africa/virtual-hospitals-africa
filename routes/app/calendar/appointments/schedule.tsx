@@ -15,9 +15,9 @@ import * as patients from '../../../../db/models/patients.ts'
 import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import {
   availableSlots,
-} from '../../../../shared/scheduling/getHealthWorkerAvailability.ts'
+} from '../../../../shared/scheduling/getProviderAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
-import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
+import { ProviderAppointmentSlot } from '../../../../types.ts'
 import { parseDateTime } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
 import {
@@ -30,7 +30,7 @@ import isObjectLike from '../../../../util/isObjectLike.ts'
 import { insertEvent } from '../../../../external-clients/google.ts'
 
 type SearchFormValues = {
-  health_worker_id?: number
+  provider_id?: number
   health_worker_name?: string
   patient_id?: number
   patient_name?: string
@@ -49,7 +49,7 @@ export type ScheduleFormValues = {
 
 type SchedulePageProps = {
   healthWorker: ReturnedSqlRow<HealthWorker>
-  slots?: HealthWorkerAppointmentSlot[]
+  slots?: ProviderAppointmentSlot[]
 }
 
 function assertIsSearchFormValues(
@@ -89,38 +89,23 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
         ids: [search.patient_id],
       })
 
-      let toScheduleWith: Maybe<
-        ReturnedSqlRow<
-          HealthWorkerWithGoogleTokens
-        >
-      >
-
-      if (search.health_worker_id) {
-        toScheduleWith = await health_workers.getWithTokensById(
-          ctx.state.trx,
-          search.health_worker_id,
-        )
-
-        assert(toScheduleWith)
-      }
-
       const availability = await availableSlots(ctx.state.trx, {
         count: 10,
         dates: search.date ? [search.date] : undefined,
-        health_workers: toScheduleWith ? [toScheduleWith] : undefined,
+        provider_ids: search.provider_id ? [search.provider_id] : undefined,
       })
 
       const [patient] = await gettingPatient
       assert(hasName(patient))
 
-      const slots: HealthWorkerAppointmentSlot[] = availability.map((slot) => ({
+      const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
         type: 'slot',
         patient,
-        id: `${slot.health_worker.id}-${slot.start}`,
+        id: `${slot.provider.id}-${slot.start}`,
         durationMinutes: slot.durationMinutes,
         start: parseDateTime(new Date(slot.start), 'numeric'),
         end: parseDateTime(new Date(slot.end), 'numeric'),
-        health_workers: [slot.health_worker],
+        providers: [slot.provider],
       }))
 
       return ctx.render({

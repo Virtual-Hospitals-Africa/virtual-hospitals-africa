@@ -1210,7 +1210,7 @@ export type WhatsAppSingleSendable =
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
-export type HealthWorkerAppointmentSlot = {
+export type ProviderAppointmentSlot = {
   type: 'slot'
   id: string
   patient?: {
@@ -1222,12 +1222,12 @@ export type HealthWorkerAppointmentSlot = {
   durationMinutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  health_workers: ReturnedSqlRow<HealthWorker>[]
+  providers: Provider[]
   physicalLocation?: undefined
   virtualLocation?: undefined
 }
 
-export type HealthWorkerAppointment = {
+export type ProviderAppointment = {
   type: 'appointment'
   id: number
   patient: {
@@ -1239,7 +1239,7 @@ export type HealthWorkerAppointment = {
   durationMinutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  health_workers?: ReturnedSqlRow<HealthWorker>[]
+  providers?: Provider[]
   physicalLocation?: {
     facility: ReturnedSqlRow<Facility>
   }
@@ -1390,7 +1390,7 @@ export type LinkDef = {
 }
 
 export type CalendarPageProps = {
-  appointments: HealthWorkerAppointment[]
+  appointments: ProviderAppointment[]
   day: string
   today: string
   healthWorker: HealthWorker
@@ -1690,8 +1690,9 @@ export type RenderedWaitingRoom = {
   appointment: null | {
     id: number
     start: Date
-    health_workers: {
-      id: number
+    providers: {
+      health_worker_id: number
+      provider_id: number
       name: string
     }[]
   }
@@ -1768,6 +1769,23 @@ export type RenderedPatientSymptom = PatientInsertShared & {
     mime_type: string
     url: string
   }[]
+}
+
+export type Provider = {
+  avatar_url: string
+  created_at: Date
+  email: string
+  id: number
+  name: string
+  updated_at: Date
+  access_token: string
+  refresh_token: string
+  expires_at: Date
+  profession: 'doctor' | 'nurse'
+  availability_set: boolean
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  provider_id: number
 }
 
 export type DatabaseSchema = DB

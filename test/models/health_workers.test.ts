@@ -49,7 +49,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx, { scenario: 'nurse' })
+        const healthWorker = await addTestHealthWorker(trx, {
+          scenario: 'nurse',
+        })
 
         const result = await health_workers.get(trx, {
           health_worker_id: healthWorker.id,
@@ -77,9 +79,9 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
                 },
               },
               gcal_appointments_calendar_id:
-                healthWorker.gcal_appointments_calendar_id,
+                healthWorker.calendars!.gcal_appointments_calendar_id,
               gcal_availability_calendar_id:
-                healthWorker.gcal_availability_calendar_id,
+                healthWorker.calendars!.gcal_availability_calendar_id,
               availability_set: false,
             },
           ],
@@ -170,10 +172,6 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
                 ],
               },
             ],
-            gcal_appointments_calendar_id:
-              healthWorker.gcal_appointments_calendar_id,
-            gcal_availability_calendar_id:
-              healthWorker.gcal_availability_calendar_id,
             name: healthWorker.name,
             id: healthWorker.id,
             created_at: result[0].created_at,
@@ -223,10 +221,6 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               ],
             },
           ],
-          gcal_appointments_calendar_id:
-            healthWorker.gcal_appointments_calendar_id,
-          gcal_availability_calendar_id:
-            healthWorker.gcal_availability_calendar_id,
           id: healthWorker.id,
           name: healthWorker.name,
           description: [
@@ -565,10 +559,6 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               ],
             },
           ],
-          gcal_appointments_calendar_id:
-            healthWorker.gcal_appointments_calendar_id,
-          gcal_availability_calendar_id:
-            healthWorker.gcal_availability_calendar_id,
           name: healthWorker.name,
           id: healthWorker.id,
           created_at: same_facility_result[0].created_at,

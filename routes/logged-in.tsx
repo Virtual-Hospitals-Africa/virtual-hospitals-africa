@@ -10,6 +10,8 @@ import * as facilities from '../db/models/facilities.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
+import zip from '../util/zip.ts'
+import { addCalendars } from '../db/models/providers.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
@@ -26,15 +28,21 @@ export async function initializeHealthWorker(
   )
 
   const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
-  const getting_facilities = facilities.get(trx, { ids: facility_ids }).then(
-    async (facilities) => {
-      const calendars = await googleClient
-        .ensureHasAppointmentsAndAvailabilityCalendars(facilities)
-      zip()
-    },
-  )
+  const getting_calendars = facilities.get(trx, { ids: facility_ids })
+    .then(
+      async (facilities) => {
+        const calendars = await googleClient
+          .ensureHasAppointmentsAndAvailabilityCalendars(facilities)
+        return Array.from(zip(facilities, calendars)).map((
+          [facility, calendars],
+        ) => ({
+          facility_id: facility.id,
+          ...calendars,
+        }))
+      },
+    )
 
-  const upsertting_health_worker = health_workers.upsertWithGoogleCredentials(
+  const health_worker = await health_workers.upsertWithGoogleCredentials(
     trx,
     {
       name: profile.name,
@@ -47,16 +55,17 @@ export async function initializeHealthWorker(
   const adding_roles = employment.add(
     trx,
     invitees.map((invitee) => ({
-      health_worker_id: healthWorker.id,
+      health_worker_id: health_worker.id,
       facility_id: invitee.facility_id,
       profession: invitee.profession,
     })),
   )
 
+  await addCalendars(trx, health_worker.id, await getting_calendars)
   await removing_invites
   await adding_roles
 
-  return { id: healthWorker.id }
+  return { id: health_worker.id }
 }
 
 async function checkPermissions(

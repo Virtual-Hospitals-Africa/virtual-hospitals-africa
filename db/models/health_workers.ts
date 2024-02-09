@@ -183,12 +183,6 @@ function withTokens(health_workers: unknown[]) {
   return withTokens
 }
 
-export async function getAllWithExtantTokens(trx: TrxOrDb): Promise<
-  HealthWorkerWithGoogleTokens[]
-> {
-  return withTokens(await getAllWithTokens(trx))
-}
-
 export async function getWithTokensById(
   trx: TrxOrDb,
   health_worker_id: number,

@@ -5,7 +5,7 @@ import {
   formatHarare,
   isIsoHarare,
 } from '../../util/date.ts'
-import { getWithCalendarAndTokensById } from '../../db/models/providers.ts'
+import { get } from '../../db/models/providers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
@@ -96,7 +96,7 @@ export async function makeAppointmentChatbot(
     'No provider_id found',
   )
 
-  const matchingHealthWorker = await getWithCalendarAndTokensById(
+  const matchingHealthWorker = await get(
     trx,
     acceptedTime.provider_id,
   )
@@ -165,7 +165,7 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matchingHealthWorker = await getWithCalendarAndTokensById(
+  const matchingHealthWorker = await get(
     trx,
     values.provider_ids[0],
   )

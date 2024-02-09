@@ -23,7 +23,7 @@ import {
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { availableSlots } from '../../shared/scheduling/getHealthWorkerAvailability.ts'
+import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
 import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
@@ -418,7 +418,7 @@ const conversationStates: ConversationStates<
       const offeredTime = await appointments.addOfferedTime(trx, {
         patient_appointment_request_id:
           patientState.scheduling_appointment_request.id,
-        health_worker_id: firstAvailable[0].health_worker.id,
+        provider_id: firstAvailable[0].provider.provider_id,
         start: firstAvailable[0].start,
       })
 
@@ -527,7 +527,7 @@ const conversationStates: ConversationStates<
           appointments.addOfferedTime(trx, {
             patient_appointment_request_id:
               patientState.scheduling_appointment_request!.id,
-            health_worker_id: timeslot.health_worker.id,
+            provider_id: timeslot.provider.provider_id,
             start: timeslot.start,
           }),
       ))

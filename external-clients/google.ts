@@ -229,10 +229,10 @@ export class GoogleClient {
   async ensureCalendarExists(
     items: GCalCalendarListEntry[],
     name: string,
-   ) {
+  ) {
     const calendar = items.find((calendar) => calendar.summary === name)
     if (calendar) return calendar
-    
+
     const inserted = await this.insertCalendar({
       summary: name,
       description: name,
@@ -242,27 +242,33 @@ export class GoogleClient {
     await this.insertCalendarIntoList(
       inserted.id,
     )
-    
+
     return inserted
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(
-    facilities: { id: number; name: string; }[]
+    facilities: { id: number; name: string }[],
   ): Promise<{
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
   }[]> {
     const { items } = await this.getCalendarList()
 
-    const calendars:  {
+    const calendars: {
       gcal_appointments_calendar_id: string
       gcal_availability_calendar_id: string
     }[] = []
     for (const facility of facilities) {
       const appointments_calendar_name = `${facility.name} Appointments`
       const availability_calendar_name = `${facility.name} Availability`
-      const appointments_calendar = await this.ensureCalendarExists(items, appointments_calendar_name)
-      const availability_calendar = await this.ensureCalendarExists(items, availability_calendar_name)
+      const appointments_calendar = await this.ensureCalendarExists(
+        items,
+        appointments_calendar_name,
+      )
+      const availability_calendar = await this.ensureCalendarExists(
+        items,
+        availability_calendar_name,
+      )
       calendars.push({
         gcal_appointments_calendar_id: appointments_calendar.id,
         gcal_availability_calendar_id: availability_calendar.id,

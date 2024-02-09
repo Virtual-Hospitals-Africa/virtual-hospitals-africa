@@ -46,7 +46,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       reason: 'pain',
     })
 
-    const health_worker = await addTestHealthWorker(db)
+    const health_worker = await addTestHealthWorker(db, { scenario: 'doctor' })
 
     assert(health_worker)
 
@@ -56,7 +56,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     time.setHours(9, 30, 0, 0)
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
-      health_worker_id: health_worker.id,
+      provider_id: health_worker.employee_id!,
       start: time,
     })
 

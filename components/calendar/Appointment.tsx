@@ -2,10 +2,7 @@ import {
   CalendarIcon,
   MapPinIcon,
 } from '../library/icons/heroicons/outline.tsx'
-import {
-  HealthWorkerAppointment,
-  HealthWorkerAppointmentSlot,
-} from '../../types.ts'
+import { ProviderAppointment, ProviderAppointmentSlot } from '../../types.ts'
 import { stringify, timeRangeInSimpleAmPm } from '../../util/date.ts'
 import GoogleMeetIcon from '../library/icons/google-meet.tsx'
 import WhatsAppIcon from '../library/icons/whatsapp.tsx'
@@ -15,7 +12,7 @@ import { Button } from '../library/Button.tsx'
 
 function AppointmentContents(
   { appointment, href }: {
-    appointment: HealthWorkerAppointment | HealthWorkerAppointmentSlot
+    appointment: ProviderAppointment | ProviderAppointmentSlot
     href?: string
   },
 ) {
@@ -23,7 +20,7 @@ function AppointmentContents(
   // the patient for the actual appointment
   // TODO: revisit whether we want to show all participants
   const featuring = appointment.type === 'slot'
-    ? appointment.health_workers[0]
+    ? appointment.providers[0]
     : appointment.patient
 
   const header = (
@@ -78,7 +75,7 @@ function AppointmentContents(
               </dt>
             </div>
           )}
-          {featuring.phone_number && (
+          {'phone_number' in featuring && featuring.phone_number && (
             <div className='mt-2 flex items-start space-x-3 xl:ml-3.5 xl:mt-0 xl:border-l xl:border-gray-400 xl:border-opacity-50 xl:pl-3.5'>
               <dt>
                 <a
@@ -100,7 +97,7 @@ function AppointmentContents(
 export default function Appointment(
   { url, appointment }: {
     url: URL
-    appointment: HealthWorkerAppointment | HealthWorkerAppointmentSlot
+    appointment: ProviderAppointment | ProviderAppointmentSlot
   },
 ) {
   const href = appointment.type === 'appointment'
@@ -111,10 +108,10 @@ export default function Appointment(
   search.set('start', stringify(appointment.start))
   search.set('end', stringify(appointment.end))
   search.set('durationMinutes', String(appointment.durationMinutes))
-  if (appointment.health_workers) {
+  if (appointment.providers) {
     search.set(
-      'health_worker_ids',
-      JSON.stringify(appointment.health_workers.map((hw) => hw.id)),
+      'provider_ids',
+      JSON.stringify(appointment.providers.map((hw) => hw.id)),
     )
   }
 

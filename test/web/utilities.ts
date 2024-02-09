@@ -15,6 +15,7 @@ import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
 import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 import { testCalendars } from '../mocks.ts'
+import { addCalendars } from '../../db/models/providers.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -140,11 +141,15 @@ export async function addTestHealthWorker(
 ) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
+    calendars?: {
+      gcal_appointments_calendar_id: string
+      gcal_availability_calendar_id: string
+    }
   } = await upsertWithGoogleCredentials(trx, {
     ...testHealthWorker(),
     ...health_worker_attrs,
   })
-  const calendars = testCalendars()
+
   switch (scenario) {
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
@@ -158,6 +163,11 @@ export async function addTestHealthWorker(
         profession: 'admin',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       await details.add(
         trx,
         await testRegistrationDetails(trx, {
@@ -177,6 +187,11 @@ export async function addTestHealthWorker(
         profession: 'admin',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       break
     }
     case 'doctor': {
@@ -186,6 +201,11 @@ export async function addTestHealthWorker(
         profession: 'doctor',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       break
     }
     case 'nurse': {
@@ -195,6 +215,11 @@ export async function addTestHealthWorker(
         profession: 'nurse',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       break
     }
   }
