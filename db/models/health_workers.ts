@@ -384,26 +384,26 @@ export async function get(
             'facilities.id',
           )
           .innerJoin(
-            'employment_calendars',
+            'provider_calendars',
             (join) =>
               join
                 .onRef(
                   'employment.facility_id',
                   '=',
-                  'employment_calendars.facility_id',
+                  'provider_calendars.facility_id',
                 )
                 .onRef(
                   'employment.health_worker_id',
                   '=',
-                  'employment_calendars.health_worker_id',
+                  'provider_calendars.health_worker_id',
                 ),
           )
           .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
-            'employment_calendars.gcal_appointments_calendar_id',
-            'employment_calendars.gcal_availability_calendar_id',
-            'employment_calendars.availability_set',
+            'provider_calendars.gcal_appointments_calendar_id',
+            'provider_calendars.gcal_availability_calendar_id',
+            'provider_calendars.availability_set',
             jsonBuildObject({
               id: eb_employment.ref('employment.facility_id'),
               name: eb_employment.ref('facilities.name'),

@@ -13,18 +13,18 @@ export async function getWithCalendarAndTokensById(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'employment_calendars',
+      'provider_calendars',
       (join) =>
         join
           .onRef(
             'employment.facility_id',
             '=',
-            'employment_calendars.facility_id',
+            'provider_calendars.facility_id',
           )
           .onRef(
             'employment.health_worker_id',
             '=',
-            'employment_calendars.health_worker_id',
+            'provider_calendars.health_worker_id',
           ),
     )
     .where(
@@ -34,9 +34,9 @@ export async function getWithCalendarAndTokensById(
     )
     .select([
       'employment.profession',
-      'employment_calendars.gcal_appointments_calendar_id',
-      'employment_calendars.gcal_availability_calendar_id',
-      'employment_calendars.availability_set',
+      'provider_calendars.gcal_appointments_calendar_id',
+      'provider_calendars.gcal_availability_calendar_id',
+      'provider_calendars.availability_set',
     ])
     .executeTakeFirst()
 

@@ -46,7 +46,7 @@ export async function up(db: Kysely<unknown>) {
 
   await addUpdatedAtTrigger(db, 'employment')
 
-  await db.schema.createTable('employment_calendars')
+  await db.schema.createTable('provider_calendars')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
@@ -81,11 +81,11 @@ export async function up(db: Kysely<unknown>) {
     ])
     .execute()
 
-  await addUpdatedAtTrigger(db, 'employment_calendars')
+  await addUpdatedAtTrigger(db, 'provider_calendars')
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('employment_calendars').execute()
+  await db.schema.dropTable('provider_calendars').execute()
   await db.schema.dropTable('employment').execute()
   await db.schema.dropType('health_worker_professions').execute()
 }

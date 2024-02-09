@@ -710,7 +710,7 @@ export interface DB {
   districts: Districts
   drugs: Drugs
   employment: Employment
-  employment_calendars: EmploymentCalendars
+  provider_calendars: EmploymentCalendars
   encounter: Encounter
   facilities: Facilities
   geography_columns: GeographyColumns
