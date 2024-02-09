@@ -49,13 +49,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx)
-
-        const employee = await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
-          profession: 'nurse',
-          facility_id: 1,
-        }])
+        const healthWorker = await addTestHealthWorker(trx, { scenario: 'nurse' })
 
         const result = await health_workers.get(trx, {
           health_worker_id: healthWorker.id,
@@ -79,15 +73,16 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
                   registration_completed: false,
                   registration_needed: true,
                   registration_pending_approval: true,
-                  employment_id: employee[0].id,
+                  employment_id: healthWorker.employee_id!,
                 },
               },
+              gcal_appointments_calendar_id:
+                healthWorker.gcal_appointments_calendar_id,
+              gcal_availability_calendar_id:
+                healthWorker.gcal_availability_calendar_id,
+              availability_set: false,
             },
           ],
-          gcal_appointments_calendar_id:
-            healthWorker.gcal_appointments_calendar_id,
-          gcal_availability_calendar_id:
-            healthWorker.gcal_availability_calendar_id,
           id: healthWorker.id,
           name: healthWorker.name,
           access_token: healthWorker.access_token,

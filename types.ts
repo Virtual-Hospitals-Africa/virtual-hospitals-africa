@@ -308,7 +308,7 @@ export type PatientWithOpenEncounter = RenderedPatient & {
 
 export type PatientAppointmentOfferedTime = {
   patient_appointment_request_id: number
-  health_worker_id: number
+  provider_id: number
   start: Date
   declined: boolean
 }
@@ -337,7 +337,7 @@ export type PatientState = {
   scheduled_appointment?: {
     id: number
     reason: string
-    health_worker_id: number
+    provider_id: number
     health_worker_name: string
     gcal_event_id: string
     start: Date
@@ -1057,8 +1057,6 @@ export type HealthWorker = {
   email: string
   avatar_url: string
   phone_number?: Maybe<string>
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
 }
 
 export type EmployeeInfo = {
@@ -1120,6 +1118,9 @@ export type EmployedHealthWorker = ReturnedSqlRow<
           employment_id: number
         }
       }
+      gcal_appointments_calendar_id: string
+      gcal_availability_calendar_id: string
+      availability_set: boolean
     }[]
     open_encounters: RenderedPatientEncounter[]
   }

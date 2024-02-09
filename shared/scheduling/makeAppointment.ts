@@ -5,7 +5,7 @@ import {
   formatHarare,
   isIsoHarare,
 } from '../../util/date.ts'
-import { getWithTokensById } from '../../db/models/health_workers.ts'
+import { getWithCalendarAndTokensById } from '../../db/models/providers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
@@ -92,22 +92,13 @@ export async function makeAppointmentChatbot(
 
   const { acceptedTime, gcal } = details
   assert(
-    acceptedTime.health_worker_id,
-    'No health_worker_id found',
+    acceptedTime.provider_id,
+    'No provider_id found',
   )
 
-  const matchingHealthWorker = await getWithTokensById(
+  const matchingHealthWorker = await getWithCalendarAndTokensById(
     trx,
-    acceptedTime.health_worker_id,
-  )
-
-  assert(
-    matchingHealthWorker,
-    `No health_worker session found for health_worker_id ${acceptedTime.health_worker_id}`,
-  )
-  assert(
-    matchingHealthWorker.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
+    acceptedTime.provider_id,
   )
 
   const end = new Date(acceptedTime.start)
@@ -137,13 +128,12 @@ export type ScheduleFormValues = {
   reason: string
   durationMinutes: number
   patient_id: number
-  health_worker_ids: number[]
+  provider_ids: number[]
 }
 
 export function assertIsScheduleFormValues(
   values: unknown,
 ): asserts values is ScheduleFormValues {
-  console.log('values', values)
   assertOr400(isObjectLike(values))
   assertOr400(typeof values.start === 'string')
   assertOr400(isIsoHarare(values.start))
@@ -162,7 +152,7 @@ export async function makeAppointmentWeb(
   insertEvent: InsertEvent,
 ): Promise<void> {
   assertEquals(
-    values.health_worker_ids.length,
+    values.provider_ids.length,
     1,
     'TODO support multiple health workers',
   )
@@ -175,22 +165,9 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matchingHealthWorker = await getWithTokensById(
+  const matchingHealthWorker = await getWithCalendarAndTokensById(
     trx,
-    values.health_worker_ids[0],
-  )
-
-  assert(
-    matchingHealthWorker,
-    `No health_worker session found for health_worker_id ${
-      values.health_worker_ids[0]
-    }`,
-  )
-  assert(
-    matchingHealthWorker.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for health_worker_id ${
-      values.health_worker_ids[0]
-    }`,
+    values.provider_ids[0],
   )
 
   const insertedEvent = await insertEvent(
@@ -211,6 +188,6 @@ export async function makeAppointmentWeb(
 
   await appointments.addAttendees(trx, {
     appointment_id: appointment.id,
-    health_worker_ids: values.health_worker_ids,
+    provider_ids: values.provider_ids,
   })
 }

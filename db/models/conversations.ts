@@ -168,7 +168,7 @@ export async function getUnhandledPatientMessages(
             , aot.offered_times as scheduling_appointment_offered_times
             , appointments.id as scheduled_appointment_id
             , appointments.reason as scheduled_appointment_reason
-            , appointment_health_worker_attendees.health_worker_id as scheduled_appointment_health_worker_id
+            , appointment_providers.health_worker_id as scheduled_appointment_health_worker_id
             , health_workers.name as scheduled_appointment_health_worker_name
             , appointments.gcal_event_id as scheduled_appointment_gcal_event_id
             , appointments.start as scheduled_appointment_start
@@ -178,8 +178,8 @@ export async function getUnhandledPatientMessages(
     LEFT JOIN aot ON aot.patient_id = patients.id
     LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id AND patients.conversation_state = 'find_nearest_facility:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
-    LEFT JOIN appointment_health_worker_attendees ON appointment_health_worker_attendees.appointment_id = appointments.id
-    LEFT JOIN health_workers ON health_workers.id = appointment_health_worker_attendees.health_worker_id
+    LEFT JOIN appointment_providers ON appointment_providers.appointment_id = appointments.id
+    LEFT JOIN health_workers ON health_workers.id = appointment_providers.health_worker_id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 

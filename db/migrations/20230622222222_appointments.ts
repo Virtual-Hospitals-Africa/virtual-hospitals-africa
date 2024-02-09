@@ -26,7 +26,7 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await db.schema
-    .createTable('appointment_health_worker_attendees')
+    .createTable('appointment_providers')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn(
       'created_at',
@@ -44,10 +44,9 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
     .addColumn(
-      'health_worker_id',
+      'provider_id',
       'integer',
-      (col) =>
-        col.notNull().references('health_workers.id').onDelete('cascade'),
+      (col) => col.notNull().references('employment.id').onDelete('cascade'),
     )
     .addColumn(
       'confirmed',
@@ -99,17 +98,16 @@ export async function up(db: Kysely<unknown>) {
         ),
     )
     .addColumn(
-      'health_worker_id',
+      'provider_id',
       'integer',
-      (col) =>
-        col.notNull().references('health_workers.id').onDelete('cascade'),
+      (col) => col.notNull().references('employment.id').onDelete('cascade'),
     )
     .addColumn('start', 'timestamptz', (col) => col.notNull())
     .addColumn('declined', 'boolean', (col) => col.defaultTo(false))
     .execute()
 
   await addUpdatedAtTrigger(db, 'appointments')
-  await addUpdatedAtTrigger(db, 'appointment_health_worker_attendees')
+  await addUpdatedAtTrigger(db, 'appointment_providers')
   await addUpdatedAtTrigger(db, 'patient_appointment_requests')
   await addUpdatedAtTrigger(db, 'patient_appointment_offered_times')
 }
@@ -117,6 +115,6 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_appointment_offered_times').execute()
   await db.schema.dropTable('patient_appointment_requests').execute()
-  await db.schema.dropTable('appointment_health_worker_attendees').execute()
+  await db.schema.dropTable('appointment_providers').execute()
   await db.schema.dropTable('appointments').execute()
 }

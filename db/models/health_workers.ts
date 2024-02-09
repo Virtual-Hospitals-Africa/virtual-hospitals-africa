@@ -96,8 +96,6 @@ const pickHealthWorkerDetails = pick([
   'name',
   'email',
   'avatar_url',
-  'gcal_appointments_calendar_id',
-  'gcal_availability_calendar_id',
 ])
 
 export async function upsertWithGoogleCredentials(
@@ -117,7 +115,7 @@ export async function upsertWithGoogleCredentials(
   return { ...health_worker, ...tokens }
 }
 
-const getWithTokensQuery = (trx: TrxOrDb) =>
+export const getWithTokensQuery = (trx: TrxOrDb) =>
   trx
     .selectFrom('health_workers')
     .leftJoin(
@@ -126,9 +124,17 @@ const getWithTokensQuery = (trx: TrxOrDb) =>
       'health_worker_google_tokens.health_worker_id',
     )
     .selectAll('health_workers')
-    .select('health_worker_google_tokens.access_token')
-    .select('health_worker_google_tokens.refresh_token')
-    .select('health_worker_google_tokens.expires_at')
+    .select((eb) => [
+      eb.ref('health_worker_google_tokens.access_token').$notNull().as(
+        'access_token',
+      ),
+      eb.ref('health_worker_google_tokens.refresh_token').$notNull().as(
+        'refresh_token',
+      ),
+      eb.ref('health_worker_google_tokens.expires_at').$notNull().as(
+        'expires_at',
+      ),
+    ])
     .where('health_worker_google_tokens.access_token', 'is not', null)
     .where('health_worker_google_tokens.refresh_token', 'is not', null)
 
@@ -154,11 +160,7 @@ export function isHealthWorkerWithGoogleTokens(
       isDate(health_worker.expires_at)) &&
     'id' in health_worker && typeof health_worker.id === 'number' &&
     'name' in health_worker && typeof health_worker.name === 'string' &&
-    'email' in health_worker && typeof health_worker.email === 'string' &&
-    'gcal_appointments_calendar_id' in health_worker &&
-    typeof health_worker.gcal_appointments_calendar_id === 'string' &&
-    'gcal_availability_calendar_id' in health_worker &&
-    typeof health_worker.gcal_availability_calendar_id === 'string'
+    'email' in health_worker && typeof health_worker.email === 'string'
 }
 
 export function isEmployed(
@@ -272,8 +274,6 @@ export async function search(
       'health_workers.avatar_url',
       'health_workers.created_at',
       'health_workers.email',
-      'health_workers.gcal_appointments_calendar_id',
-      'health_workers.gcal_availability_calendar_id',
       'health_workers.name',
       'health_workers.updated_at',
       jsonArrayFrom(
@@ -369,8 +369,6 @@ export async function get(
       'health_workers.name',
       'health_workers.email',
       'health_workers.avatar_url',
-      'health_workers.gcal_appointments_calendar_id',
-      'health_workers.gcal_availability_calendar_id',
       'health_worker_google_tokens.access_token',
       'health_worker_google_tokens.refresh_token',
       'health_worker_google_tokens.expires_at',
@@ -385,9 +383,27 @@ export async function get(
             'employment.facility_id',
             'facilities.id',
           )
+          .innerJoin(
+            'employment_calendars',
+            (join) =>
+              join
+                .onRef(
+                  'employment.facility_id',
+                  '=',
+                  'employment_calendars.facility_id',
+                )
+                .onRef(
+                  'employment.health_worker_id',
+                  '=',
+                  'employment_calendars.health_worker_id',
+                ),
+          )
           .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
+            'employment_calendars.gcal_appointments_calendar_id',
+            'employment_calendars.gcal_availability_calendar_id',
+            'employment_calendars.availability_set',
             jsonBuildObject({
               id: eb_employment.ref('employment.facility_id'),
               name: eb_employment.ref('facilities.name'),
@@ -450,6 +466,9 @@ export async function get(
 
         return {
           facility: roles[0].facility,
+          gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
+          gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
+          availability_set: roles[0].availability_set,
           roles: {
             nurse: nurse_role && {
               registration_needed: !!registration_needed,

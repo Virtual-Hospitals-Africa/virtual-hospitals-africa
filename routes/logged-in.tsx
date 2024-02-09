@@ -6,8 +6,10 @@ import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
+import * as facilities from '../db/models/facilities.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
+import uniq from '../util/uniq.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
@@ -17,23 +19,30 @@ export async function initializeHealthWorker(
 ): Promise<{ id: number }> {
   assert(invitees.length, 'No invitees found')
 
-  const calendars = await googleClient
-    .ensureHasAppointmentsAndAvailabilityCalendars()
-
   // Fire off async operations in parallel
   const removing_invites = employment.removeInvitees(
     trx,
     invitees.map((invitee) => invitee.id),
   )
 
-  const healthWorker = await health_workers.upsertWithGoogleCredentials(trx, {
-    name: profile.name,
-    email: profile.email,
-    avatar_url: profile.picture,
-    gcal_appointments_calendar_id: calendars.vhaAppointmentsCalendar.id,
-    gcal_availability_calendar_id: calendars.vhaAvailabilityCalendar.id,
-    ...health_workers.pickTokens(googleClient.tokens),
-  })
+  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
+  const getting_facilities = facilities.get(trx, { ids: facility_ids }).then(
+    async (facilities) => {
+      const calendars = await googleClient
+        .ensureHasAppointmentsAndAvailabilityCalendars(facilities)
+      zip()
+    },
+  )
+
+  const upsertting_health_worker = health_workers.upsertWithGoogleCredentials(
+    trx,
+    {
+      name: profile.name,
+      email: profile.email,
+      avatar_url: profile.picture,
+      ...health_workers.pickTokens(googleClient.tokens),
+    },
+  )
 
   const adding_roles = employment.add(
     trx,

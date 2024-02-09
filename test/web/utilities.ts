@@ -14,6 +14,7 @@ import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
 import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import { testCalendars } from '../mocks.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -143,6 +144,7 @@ export async function addTestHealthWorker(
     ...testHealthWorker(),
     ...health_worker_attrs,
   })
+  const calendars = testCalendars()
   switch (scenario) {
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())

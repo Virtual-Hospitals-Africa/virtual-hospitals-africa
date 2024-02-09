@@ -226,47 +226,49 @@ export class GoogleClient {
     )
   }
 
-  async ensureHasAppointmentsAndAvailabilityCalendars(): Promise<{
-    vhaAppointmentsCalendar: GCalCalendarListEntry
-    vhaAvailabilityCalendar: GCalCalendarListEntry
-  }> {
-    const list = await this.getCalendarList()
+  async ensureCalendarExists(
+    items: GCalCalendarListEntry[],
+    name: string,
+   ) {
+    const calendar = items.find((calendar) => calendar.summary === name)
+    if (calendar) return calendar
+    
+    const inserted = await this.insertCalendar({
+      summary: name,
+      description: name,
+      timeZone: 'Africa/Johannesburg',
+    })
 
-    let vhaAppointmentsCalendar = list.items.find(
-      (calendar) => calendar.summary === 'VHA Appointments',
+    await this.insertCalendarIntoList(
+      inserted.id,
     )
+    
+    return inserted
+  }
 
-    if (!vhaAppointmentsCalendar) {
-      vhaAppointmentsCalendar = await this.insertCalendar({
-        summary: 'VHA Appointments',
-        description: 'Appointments for VHA',
-        timeZone: 'Africa/Johannesburg',
+  async ensureHasAppointmentsAndAvailabilityCalendars(
+    facilities: { id: number; name: string; }[]
+  ): Promise<{
+    gcal_appointments_calendar_id: string
+    gcal_availability_calendar_id: string
+  }[]> {
+    const { items } = await this.getCalendarList()
+
+    const calendars:  {
+      gcal_appointments_calendar_id: string
+      gcal_availability_calendar_id: string
+    }[] = []
+    for (const facility of facilities) {
+      const appointments_calendar_name = `${facility.name} Appointments`
+      const availability_calendar_name = `${facility.name} Availability`
+      const appointments_calendar = await this.ensureCalendarExists(items, appointments_calendar_name)
+      const availability_calendar = await this.ensureCalendarExists(items, availability_calendar_name)
+      calendars.push({
+        gcal_appointments_calendar_id: appointments_calendar.id,
+        gcal_availability_calendar_id: availability_calendar.id,
       })
-
-      vhaAppointmentsCalendar = await this.insertCalendarIntoList(
-        vhaAppointmentsCalendar.id,
-      )
-      console.log('Created Cppointments Calendar')
     }
-
-    let vhaAvailabilityCalendar = list.items.find(
-      (calendar) => calendar.summary === 'VHA Availability',
-    )
-
-    if (!vhaAvailabilityCalendar) {
-      vhaAvailabilityCalendar = await this.insertCalendar({
-        summary: 'VHA Availability',
-        description: 'Availability for VHA',
-        timeZone: 'Africa/Johannesburg',
-      })
-
-      vhaAvailabilityCalendar = await this.insertCalendarIntoList(
-        vhaAvailabilityCalendar.id,
-      )
-      console.log('Created Availability Calendar')
-    }
-
-    return { vhaAppointmentsCalendar, vhaAvailabilityCalendar }
+    return calendars
   }
 
   async getFreeBusy({

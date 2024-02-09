@@ -182,14 +182,14 @@ export async function get(
         .limit(1)
         .as('last_completed_encounter_step'),
       jsonArrayFrom(
-        eb.selectFrom('appointment_health_worker_attendees')
+        eb.selectFrom('appointment_providers')
           .innerJoin(
             'health_workers',
             'health_workers.id',
-            'appointment_health_worker_attendees.health_worker_id',
+            'appointment_providers.health_worker_id',
           )
           .whereRef(
-            'appointment_health_worker_attendees.appointment_id',
+            'appointment_providers.appointment_id',
             '=',
             'appointments.id',
           )

@@ -24,6 +24,8 @@ import { parseDateTime } from '../../../util/date.ts'
 import { Container } from '../../../components/library/Container.tsx'
 import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertIsPartialAvailability } from '../../../shared/scheduling/availability.tsx'
+import { getNumericParam } from '../../../util/getNumericParam.ts'
+import { assertOr403 } from '../../../util/assertOr.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -95,12 +97,35 @@ function* availabilityBlocks(
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   { availability: AvailabilityJSON; healthWorker: HealthWorker }
 > = {
-  async GET(_, ctx) {
+  async GET(_req, ctx) {
     const { healthWorker } = ctx.state
+
+    const facility_id_param = getNumericParam(ctx, 'facility_id')
+
+    if (healthWorker.employment.length > 1 && !facility_id_param) {
+      const url = new URL(ctx.url)
+      url.searchParams.set(
+        'facility_id',
+        String(healthWorker.employment[0].facility.id),
+      )
+      return redirect(url.toString())
+    }
+
+    const facility_id = facility_id_param ||
+      healthWorker.employment[0].facility.id
+    const matching_employment = healthWorker.employment.find(
+      (employment) => employment.facility.id === facility_id,
+    )
+    assertOr403(
+      matching_employment,
+      'Health worker not employed at this facility',
+    )
+    const gcal_availability_calendar_id =
+      matching_employment!.gcal_availability_calendar_id
 
     const googleClient = new HealthWorkerGoogleClient(ctx)
     const events = await googleClient.getActiveEvents(
-      healthWorker.gcal_availability_calendar_id,
+      gcal_availability_calendar_id,
     )
 
     const availability: AvailabilityJSON = {
@@ -132,17 +157,31 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     return ctx.render({ availability, healthWorker })
   },
   async POST(req, ctx) {
+    const { healthWorker } = ctx.state
     const availability = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsPartialAvailability,
     )
 
-    const gcal_availability_calendar_id = ctx.state.session.get(
-      'gcal_availability_calendar_id',
+    const facility_id_param = getNumericParam(ctx, 'facility_id')
+
+    assertOr403(
+      healthWorker.employment.length > 1 && !facility_id_param,
+      'Must specify facility_id when health worker has multiple employments',
     )
 
-    assert(gcal_availability_calendar_id, 'No calendar ID found in session')
+    const facility_id = facility_id_param ||
+      healthWorker.employment[0].facility.id
+    const matching_employment = healthWorker.employment.find(
+      (employment) => employment.facility.id === facility_id,
+    )
+    assertOr403(
+      matching_employment,
+      'Health worker not employed at this facility',
+    )
+    const gcal_availability_calendar_id =
+      matching_employment!.gcal_availability_calendar_id
 
     const googleClient = new HealthWorkerGoogleClient(ctx)
 
