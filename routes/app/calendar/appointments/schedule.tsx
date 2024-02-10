@@ -1,11 +1,11 @@
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import {
+  HasId,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
   Maybe,
-  ReturnedSqlRow,
 } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
@@ -47,7 +47,7 @@ export type ScheduleFormValues = {
 }
 
 type SchedulePageProps = {
-  healthWorker: ReturnedSqlRow<HealthWorker>
+  healthWorker: HasId<HealthWorker>
   slots?: ProviderAppointmentSlot[]
 }
 

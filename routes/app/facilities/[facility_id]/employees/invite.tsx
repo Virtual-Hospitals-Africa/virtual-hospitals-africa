@@ -2,10 +2,10 @@ import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   Facility,
+  HasId,
   HealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   Profession,
-  ReturnedSqlRow,
 } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import InviteEmployeesForm from '../../../../../islands/invites-form.tsx'
@@ -15,7 +15,7 @@ import redirect from '../../../../../util/redirect.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 
 type InvitePageProps = {
-  healthWorker: ReturnedSqlRow<HealthWorker>
+  healthWorker: HasId<HealthWorker>
 }
 
 type Invite = { email: string; profession: Profession }
@@ -41,7 +41,7 @@ function assertIsInvites(
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
-  facility: ReturnedSqlRow<Facility>
+  facility: HasId<Facility>
   isAdminAtFacility: boolean
 }> = {
   GET(_req, ctx) {

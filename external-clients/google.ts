@@ -573,9 +573,9 @@ export async function getWalkingDistance(
 }
 
 export function insertEvent(
-  health_worker: HealthWorkerWithGoogleTokens,
+  tokens: GoogleTokens,
   calendar_id: string,
   event: DeepPartial<GCalEvent>,
 ): Promise<GCalEvent> {
-  return new GoogleClient(health_worker).insertEvent(calendar_id, event)
+  return new GoogleClient(tokens).insertEvent(calendar_id, event)
 }

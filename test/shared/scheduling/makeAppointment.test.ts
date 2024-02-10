@@ -1,6 +1,5 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import db from '../../../db/db.ts'
 import sinon from 'npm:sinon'
 import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
 import * as appointments from '../../../db/models/appointments.ts'
@@ -21,11 +20,11 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           scenario: 'doctor',
         })
 
-        const patient = await patients.upsert(db, {
+        const patient = await patients.upsert(trx, {
           name: 'Test',
         })
 
-        await makeAppointment.makeAppointmentWeb(db, {
+        await makeAppointment.makeAppointmentWeb(trx, {
           start: '2023-10-12T12:30:00+02:00',
           end: '2023-10-12T13:00:00+02:00',
           reason: 'back pain',
@@ -35,21 +34,30 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
         }, insertEvent)
 
         assert(insertEvent.calledOnce)
-        assertEquals(insertEvent.firstCall.args, [
-          healthWorker,
+        assertEquals(insertEvent.firstCall.args.length, 3)
+        assertEquals(
+          insertEvent.firstCall.args[0].access_token,
+          healthWorker.access_token,
+        )
+        assertEquals(
+          insertEvent.firstCall.args[0].refresh_token,
+          healthWorker.refresh_token,
+        )
+        assertEquals(
+          insertEvent.firstCall.args[1],
           healthWorker.calendars!.gcal_appointments_calendar_id,
-          {
-            start: {
-              dateTime: '2023-10-12T12:30:00+02:00',
-            },
-            end: {
-              dateTime: '2023-10-12T13:00:00+02:00',
-            },
-            summary: 'Appointment',
+        )
+        assertEquals(insertEvent.firstCall.args[2], {
+          start: {
+            dateTime: '2023-10-12T12:30:00+02:00',
           },
-        ])
+          end: {
+            dateTime: '2023-10-12T13:00:00+02:00',
+          },
+          summary: 'Appointment',
+        })
 
-        const result = await appointments.getWithPatientInfo(db, {
+        const result = await appointments.getWithPatientInfo(trx, {
           health_worker_id: healthWorker.id,
         })
 
@@ -61,7 +69,6 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           media: [],
           patient: {
             avatar_url: null,
-            created_at: patient.created_at,
             dob_formatted: null,
             description: null,
             gender: null,
@@ -73,7 +80,6 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
             national_id_number: null,
             nearest_facility: null,
             phone_number: null,
-            updated_at: patient.updated_at,
             conversation_state: 'initial_message',
             completed_intake: false,
             intake_steps_completed: [],

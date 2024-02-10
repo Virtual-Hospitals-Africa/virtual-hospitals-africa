@@ -8,7 +8,6 @@ import {
   Location,
   Maybe,
   Profession,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import * as employment from './employment.ts'
@@ -20,12 +19,13 @@ import {
 } from '../helpers.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
+import { HasId } from '../../types.ts'
 
 export async function nearest(
   trx: TrxOrDb,
   location: Location,
-): Promise<ReturnedSqlRow<Facility>[]> {
-  const result = await sql<ReturnedSqlRow<Facility>>`
+): Promise<HasId<Facility>[]> {
+  const result = await sql<HasId<Facility>>`
       SELECT *,
              ST_Distance(
                   location,
@@ -67,7 +67,7 @@ export function get(
   opts: {
     ids: number[]
   },
-): Promise<ReturnedSqlRow<Facility>[]> {
+): Promise<HasId<Facility>[]> {
   assert(opts.ids.length, 'Must select nonzero facilities')
   return trx
     .selectFrom('facilities')

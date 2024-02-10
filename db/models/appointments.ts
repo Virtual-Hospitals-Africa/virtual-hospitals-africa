@@ -2,13 +2,14 @@ import { sql } from 'kysely'
 import {
   Appointment,
   AppointmentWithAllPatientInfo,
+  HasId,
   Maybe,
   NonNull,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
   PatientAppointmentRequestMedia,
   PatientState,
-  ReturnedSqlRow,
+  SchedulingAppointmentOfferedTime,
   TrxOrDb,
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
@@ -16,39 +17,43 @@ import { getWithOpenEncounter } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
 import isDate from '../../util/isDate.ts'
 import { jsonArrayFrom, now } from '../helpers.ts'
+import { ensureProviderId } from './providers.ts'
 
-export async function addOfferedTime(
+export function addOfferedTime(
   trx: TrxOrDb,
   opts: Omit<PatientAppointmentOfferedTime, 'declined'>,
-): Promise<
-  ReturnedSqlRow<PatientAppointmentOfferedTime & { health_worker_name: string }>
-> {
-  const result = await sql<
-    ReturnedSqlRow<
-      PatientAppointmentOfferedTime & { health_worker_name: string }
-    >
-  >`
-    WITH confirmed_provider as (
-      SELECT id
-        FROM employment
-       WHERE provider_id = ${opts.provider_id}
-         AND profession IN ('doctor', 'nurse')
-    ),
-
-    WITH inserted_offered_time as (
-      INSERT INTO patient_appointment_offered_times(patient_appointment_request_id, provider_id, start)
-          VALUES (${opts.patient_appointment_request_id}, confirmed_provider.id, ${opts.start})
-        RETURNING *
-    )
-
-    SELECT inserted_offered_time.*,
-           health_workers.name as health_worker_name
-      FROM inserted_offered_time
-      JOIN employment ON inserted_offered_time.provider_id = employment.id
-      JOIN health_workers ON employment.health_worker_id = health_workers.id
-  `.execute(trx)
-
-  return result.rows[0]
+): Promise<SchedulingAppointmentOfferedTime> {
+  return trx.with(
+    'inserted_offer_time',
+    (qb) =>
+      qb.insertInto('patient_appointment_offered_times')
+        .values({
+          patient_appointment_request_id: opts.patient_appointment_request_id,
+          provider_id: ensureProviderId(trx, opts.provider_id),
+          start: opts.start,
+        })
+        .returningAll(),
+  ).with(
+    'inserted_with_health_worker_name',
+    (qb) =>
+      qb.selectFrom('health_workers')
+        .innerJoin(
+          'employment',
+          'employment.health_worker_id',
+          'health_workers.id',
+        )
+        .innerJoin(
+          'inserted_offer_time',
+          'employment.id',
+          'inserted_offer_time.provider_id',
+        )
+        .selectAll('inserted_offer_time')
+        .select('health_workers.name as health_worker_name')
+        .select('employment.profession'),
+  )
+    .selectFrom('inserted_with_health_worker_name')
+    .selectAll()
+    .executeTakeFirstOrThrow()
 }
 
 export function declineOfferedTimes(trx: TrxOrDb, ids: number[]) {
@@ -88,7 +93,7 @@ export async function getPatientDeclinedTimes(
 export function createNewRequest(
   trx: TrxOrDb,
   opts: { patient_id: number },
-): Promise<ReturnedSqlRow<PatientAppointmentRequest>> {
+): Promise<HasId<PatientAppointmentRequest>> {
   return trx
     .insertInto('patient_appointment_requests')
     .values({ patient_id: opts.patient_id })
@@ -99,7 +104,7 @@ export function createNewRequest(
 export function upsert(
   trx: TrxOrDb,
   info: Appointment & { id?: number },
-): Promise<ReturnedSqlRow<Appointment>> {
+): Promise<HasId<Appointment>> {
   return trx
     .insertInto('appointments')
     .values(info)
@@ -111,7 +116,7 @@ export function upsert(
 export function upsertRequest(
   trx: TrxOrDb,
   info: { id?: number; patient_id: number; reason?: string | null },
-): Promise<ReturnedSqlRow<PatientAppointmentRequest>> {
+): Promise<HasId<PatientAppointmentRequest>> {
   return trx
     .insertInto('patient_appointment_requests')
     .values(info)
@@ -133,7 +138,7 @@ export function addAttendees(
       appointment_id,
       confirmed: false,
       // Only add the provider if they are a doctor or nurse
-      provider_id: trx.selectFrom('employment').where('profession', 'in', ['doctor', 'nurse']).where('id', '=', provider_id).select('id'),
+      provider_id: ensureProviderId(trx, provider_id),
     })))
     .returningAll()
     .execute()
@@ -340,7 +345,7 @@ export function insertRequestMedia(
     patient_appointment_request_id: number
     media_id: number
   },
-): Promise<ReturnedSqlRow<PatientAppointmentRequestMedia>> {
+): Promise<HasId<PatientAppointmentRequestMedia>> {
   assert(toInsert.patient_appointment_request_id)
   assert(toInsert.media_id)
   return trx

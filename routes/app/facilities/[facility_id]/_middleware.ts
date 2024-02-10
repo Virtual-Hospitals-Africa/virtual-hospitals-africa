@@ -1,14 +1,14 @@
 import {
   Facility,
+  HasId,
   LoggedInHealthWorkerContext,
-  ReturnedSqlRow,
 } from '../../../../types.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
 import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../util/getNumericParam.ts'
 
 export type FacilityContext = LoggedInHealthWorkerContext<{
-  facility: ReturnedSqlRow<Facility>
+  facility: HasId<Facility>
   isAdminAtFacility: boolean
 }>
 

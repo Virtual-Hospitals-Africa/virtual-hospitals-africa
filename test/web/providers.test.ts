@@ -24,7 +24,7 @@ describeWithWebServer('/app/providers', 8006, (route) => {
     const json = await response.json()
     assert(Array.isArray(json))
 
-    const found = json.find((hw) => hw.id === healthWorker.id)
+    const found = json.find((hw) => hw.health_worker_id === healthWorker.id)
     assert(found)
     assertEquals(found.name, healthWorker.name)
   })

@@ -16,8 +16,10 @@ export default async function EmployeePage(
 
   const employee = await health_workers.getEmployeeInfo(
     trx,
-    health_worker_id,
-    facility.id,
+    {
+      health_worker_id,
+      facility_id: facility.id,
+    },
   )
 
   assertOr404(
@@ -47,8 +49,7 @@ export default async function EmployeePage(
               {employee.name}
             </dt>
             <dt className='text-sm font-sm leading-6 text-gray-400'>
-              {employee.employment.find((e) => e.facility_id === facility.id)!
-                .professions.join(', ')}
+              {employee.professions.join(', ')}
             </dt>
           </div>
           <HealthWorkerDetailedCard

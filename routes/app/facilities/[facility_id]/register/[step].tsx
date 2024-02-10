@@ -2,9 +2,9 @@ import { assert } from 'std/assert/assert.ts'
 import {
   Facility,
   FullCountryInfo,
+  HasId,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
-  ReturnedSqlRow,
 } from '../../../../../types.ts'
 import {
   getStepFormData,
@@ -42,7 +42,7 @@ export type FormState =
   & DocumentFormFields
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
-  facility: ReturnedSqlRow<Facility>
+  facility: HasId<Facility>
 }> = {
   async POST(req, ctx) {
     const employee = await employment.getEmployee(ctx.state.trx, {

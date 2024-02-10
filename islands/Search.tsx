@@ -42,7 +42,7 @@ export default function Search<
 >({
   name,
   required,
-  label = capitalize(name ?? ''),
+  label = name && capitalize(name),
   value,
   multi,
   addable,

@@ -9,6 +9,13 @@ import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
 
+// Ensures that the provider_id represents a row in the employment table for a doctor or nurse
+export const ensureProviderId = (trx: TrxOrDb, provider_id: number) =>
+  trx.selectFrom('employment')
+    .select('id')
+    .where('id', '=', provider_id)
+    .where('profession', 'in', ['doctor', 'nurse'])
+
 const getQuery = (trx: TrxOrDb) =>
   getWithTokensQuery(trx)
     .innerJoin(
@@ -46,7 +53,6 @@ function assertProvider(
     profession: HealthWorkerProfessions
   },
 ): asserts provider is Provider {
-  console.log('provider', provider)
   assertOr400(
     provider.profession === 'doctor' || provider.profession === 'nurse',
     'Invalid profession',
@@ -57,7 +63,6 @@ export async function get(
   trx: TrxOrDb,
   provider_id: number,
 ): Promise<Provider> {
-  console.log('provider_id', provider_id)
   const provider = await getQuery(trx)
     .where(
       'employment.id',
@@ -164,7 +169,10 @@ export async function search(
               ? sql<boolean>`employment.facility_id = ${opts.facility_id}`
               : sql<boolean>`TRUE`,
           )
-          .where('employment.profession', 'in', ['doctor' as const, 'nurse' as const])
+          .where('employment.profession', 'in', [
+            'doctor' as const,
+            'nurse' as const,
+          ])
           .groupBy([
             'employment.id',
             'employment.facility_id',
@@ -180,7 +188,7 @@ export async function search(
   if (opts.search) {
     query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
   }
-  
+
   if (opts.facility_id) {
     query = query.where('employment.facility_id', '=', opts.facility_id)
   }
@@ -213,9 +221,9 @@ export async function search(
 export function markAvailabilitySet(
   trx: TrxOrDb,
   opts: {
-    facility_id: number,
-    health_worker_id: number,
-  }
+    facility_id: number
+    health_worker_id: number
+  },
 ) {
   return trx.updateTable('provider_calendars')
     .set({ availability_set: true })

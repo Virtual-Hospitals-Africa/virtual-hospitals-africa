@@ -149,21 +149,15 @@ export default function HealthWorkerDetailedCard(
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                {employee.employment.length > 1 ? 'Facilities' : 'Facility'}
+                Facility
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                <ul>
-                  {employee.employment.map((item, index) => (
-                    <li key={index}>
-                      <div>
-                        {item.facility_name}
-                      </div>
-                      <div className='pl-4 text-xs'>
-                        {item.address ? item.address : 'N/A'}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                <div>
+                  {employee.facility_name}
+                </div>
+                <div className='pl-4 text-xs'>
+                  {employee.facility_address || 'N/A'}
+                </div>
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-3 sm:px-0'>

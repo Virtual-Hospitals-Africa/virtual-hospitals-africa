@@ -17,10 +17,7 @@ export default function SelectWithOther(
       <Select
         {...props}
         name={selectedOther ? '' : name}
-        onChange={(e) => {
-          console.log('e', e)
-          setSelected(e?.currentTarget?.value)
-        }}
+        onChange={(e) => setSelected(e?.currentTarget?.value)}
       >
         <option value=''>Select</option>
         {children}

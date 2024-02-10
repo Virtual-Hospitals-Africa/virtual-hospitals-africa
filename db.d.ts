@@ -430,7 +430,7 @@ export interface PatientAllergies {
 
 export interface PatientAppointmentOfferedTimes {
   created_at: Generated<Timestamp>
-  declined: Generated<boolean | null>
+  declined: Generated<boolean>
   id: Generated<number>
   patient_appointment_request_id: number
   provider_id: number

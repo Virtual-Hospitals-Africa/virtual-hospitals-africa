@@ -106,9 +106,7 @@ export function getAllProviderAvailability(
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   return Promise.all(
-    providers.map((provider) =>
-      provider_availability(provider, timeRange)
-    ),
+    providers.map((provider) => provider_availability(provider, timeRange)),
   )
 }
 

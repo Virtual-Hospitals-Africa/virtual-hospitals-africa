@@ -1,10 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import {
   Employee,
+  HasId,
   HealthWorkerInvitee,
   Maybe,
   Profession,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { SqlBool } from 'kysely'
@@ -28,7 +28,7 @@ export type FacilityAdmin = {
 export function add(
   trx: TrxOrDb,
   employees: Employee[],
-): Promise<ReturnedSqlRow<Employee>[]> {
+): Promise<HasId<Employee>[]> {
   assert(employees.length > 0)
   return trx
     .insertInto('employment')
@@ -124,7 +124,7 @@ export function getInvitees(
   opts: {
     email: string
   },
-): Promise<ReturnedSqlRow<HealthWorkerInvitee>[]> {
+): Promise<HasId<HealthWorkerInvitee>[]> {
   return trx
     .selectFrom('health_worker_invitees')
     .where('email', '=', opts.email)

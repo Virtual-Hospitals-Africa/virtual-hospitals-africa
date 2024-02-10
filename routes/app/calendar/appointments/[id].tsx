@@ -4,16 +4,16 @@ import * as appointments from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
 import {
   AppointmentWithAllPatientInfo,
+  HasId,
   HealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
-  ReturnedSqlRow,
 } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import AppointmentDetail from '../../../../components/patients/AppointmentDetail.tsx'
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
-  healthWorker: ReturnedSqlRow<HealthWorker>
+  healthWorker: HasId<HealthWorker>
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<

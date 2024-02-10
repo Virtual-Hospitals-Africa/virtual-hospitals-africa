@@ -103,7 +103,7 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.notNull().references('employment.id').onDelete('cascade'),
     )
     .addColumn('start', 'timestamptz', (col) => col.notNull())
-    .addColumn('declined', 'boolean', (col) => col.defaultTo(false))
+    .addColumn('declined', 'boolean', (col) => col.notNull().defaultTo(false))
     .execute()
 
   await addUpdatedAtTrigger(db, 'appointments')

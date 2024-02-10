@@ -19,8 +19,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     const getting_employee = health_workers.getEmployeeInfo(
       trx,
-      health_worker_id,
-      facility.id,
+      {
+        health_worker_id,
+        facility_id: facility.id,
+      },
     )
 
     await approveInvitee(

@@ -5,15 +5,14 @@ import {
   formatHarare,
   isIsoHarare,
 } from '../../util/date.ts'
-import { get } from '../../db/models/providers.ts'
+import { get as getProvider } from '../../db/models/providers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
   GCalEvent,
-  HealthWorkerWithGoogleTokens,
-  PatientAppointmentOfferedTime,
+  GoogleTokens,
   PatientState,
-  ReturnedSqlRow,
+  SchedulingAppointmentOfferedTime,
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -33,11 +32,7 @@ function gcal({ start, end }: {
 export function gcalAppointmentDetails(
   patientState: PatientState,
 ): {
-  acceptedTime: ReturnedSqlRow<
-    PatientAppointmentOfferedTime & {
-      health_worker_name: string
-    }
-  >
+  acceptedTime: SchedulingAppointmentOfferedTime
   gcal: DeepPartial<GCalEvent>
 } {
   assert(patientState.scheduling_appointment_request)
@@ -70,7 +65,7 @@ export function gcalAppointmentDetails(
 }
 
 type InsertEvent = (
-  health_worker: HealthWorkerWithGoogleTokens,
+  tokens: GoogleTokens,
   calendar_id: string,
   event: DeepPartial<GCalEvent>,
 ) => Promise<GCalEvent>
@@ -96,7 +91,7 @@ export async function makeAppointmentChatbot(
     'No provider_id found',
   )
 
-  const matchingHealthWorker = await get(
+  const matchingProvider = await getProvider(
     trx,
     acceptedTime.provider_id,
   )
@@ -105,8 +100,8 @@ export async function makeAppointmentChatbot(
   end.setMinutes(end.getMinutes() + 30)
 
   const insertedEvent = await insertEvent(
-    matchingHealthWorker,
-    matchingHealthWorker.gcal_appointments_calendar_id,
+    matchingProvider,
+    matchingProvider.gcal_appointments_calendar_id,
     gcal,
   )
 
@@ -165,14 +160,14 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matchingHealthWorker = await get(
+  const matchingProvider = await getProvider(
     trx,
     values.provider_ids[0],
   )
 
   const insertedEvent = await insertEvent(
-    matchingHealthWorker,
-    matchingHealthWorker.gcal_appointments_calendar_id,
+    matchingProvider,
+    matchingProvider.gcal_appointments_calendar_id,
     gcal({
       start: values.start,
       end: values.end,

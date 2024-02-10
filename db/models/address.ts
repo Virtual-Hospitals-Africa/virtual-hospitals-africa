@@ -1,11 +1,6 @@
 import { sql } from 'kysely'
 import { jsonArrayFrom } from '../helpers.ts'
-import {
-  Address,
-  FullCountryInfo,
-  ReturnedSqlRow,
-  TrxOrDb,
-} from '../../types.ts'
+import { Address, FullCountryInfo, TrxOrDb } from '../../types.ts'
 
 let fullCountryInfo: FullCountryInfo | undefined
 export async function getFullCountryInfo(
@@ -60,7 +55,7 @@ export async function getFullCountryInfo(
 export function upsert(
   trx: TrxOrDb,
   address: Address,
-): Promise<ReturnedSqlRow<Address>> {
+) {
   return trx
     .insertInto('address')
     .values(address)

@@ -4,6 +4,7 @@ import {
   Address,
   FamilyUpsert,
   Gender,
+  HasId,
   Location,
   Maybe,
   Patient,
@@ -14,7 +15,6 @@ import {
   PatientState,
   PatientWithOpenEncounter,
   RenderedPatient,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { hasName, haveNames } from '../../util/haveNames.ts'
@@ -68,8 +68,6 @@ const baseSelect = (trx: TrxOrDb) =>
       ),
       'patients.national_id_number',
       'patients.conversation_state',
-      'patients.created_at',
-      'patients.updated_at',
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -102,7 +100,7 @@ export function getByPhoneNumber(
   trx: TrxOrDb,
   query: { phone_number: string },
 ): Promise<
-  Maybe<ReturnedSqlRow<RenderedPatient>>
+  Maybe<HasId<RenderedPatient>>
 > {
   return baseSelect(trx)
     .where('phone_number', '=', query.phone_number)
@@ -283,7 +281,7 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 export function getByID(
   trx: TrxOrDb,
   opts: { id: number },
-): Promise<ReturnedSqlRow<RenderedPatient>> {
+): Promise<HasId<RenderedPatient>> {
   return baseSelect(trx)
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()
@@ -442,7 +440,7 @@ export async function getWithOpenEncounter(
     ids: number[]
     health_worker_id?: number
   },
-): Promise<ReturnedSqlRow<PatientWithOpenEncounter>[]> {
+): Promise<HasId<PatientWithOpenEncounter>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')
 
   const open_encounters = patient_encounters.openQuery(trx)
@@ -573,7 +571,7 @@ export async function nearestFacilities(
               latitude: facility.latitude,
             },
           }),
-        } as ReturnedSqlRow<PatientNearestFacility>
+        } as HasId<PatientNearestFacility>
     )),
   )
 }

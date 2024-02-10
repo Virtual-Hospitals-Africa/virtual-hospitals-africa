@@ -4,14 +4,17 @@ import {
   EmployedHealthWorker,
   EmployeeInfo,
   GoogleTokens,
+  HasId,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
-  Profession,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  jsonBuildObject,
+} from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
@@ -27,12 +30,12 @@ const expiresInAnHourSql = sql<
 export function upsert(
   trx: TrxOrDb,
   details: HealthWorker,
-): Promise<ReturnedSqlRow<HealthWorker>> {
+): Promise<HasId<HealthWorker>> {
   return trx
     .insertInto('health_workers')
     .values(details)
     .onConflict((oc) => oc.column('email').doUpdateSet(details))
-    .returningAll()
+    .returning(['id', 'name', 'email', 'avatar_url'])
     .executeTakeFirstOrThrow()
 }
 
@@ -54,7 +57,7 @@ export function upsertGoogleTokens(
   trx: TrxOrDb,
   health_worker_id: number,
   tokens: GoogleTokens,
-): Promise<ReturnedSqlRow<GoogleTokens> | undefined> {
+): Promise<HasId<GoogleTokens> | undefined> {
   assert(health_worker_id)
   return trx
     .insertInto('health_worker_google_tokens')
@@ -189,7 +192,6 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
-
 export async function get(
   trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: number },
@@ -208,8 +210,6 @@ export async function get(
     )
     .select((eb) => [
       'health_workers.id',
-      'health_workers.created_at',
-      'health_workers.updated_at',
       'health_workers.name',
       'health_workers.email',
       'health_workers.avatar_url',
@@ -356,171 +356,181 @@ export async function getInviteesAtFacility(
 
 export function getEmployeeInfo(
   trx: TrxOrDb,
-  health_worker_id: number,
-  facility_id: number,
+  opts: {
+    health_worker_id: number
+    facility_id: number
+  },
 ): Promise<Maybe<EmployeeInfo>> {
-  const query = trx
-    .selectFrom('facilities')
-    .innerJoin('employment', 'employment.facility_id', 'facilities.id')
-    .innerJoin(
-      'health_workers',
-      'health_worker_id',
-      'employment.health_worker_id',
-    )
-    .where('health_workers.id', '=', health_worker_id)
-    .where('facilities.id', '=', facility_id)
-    .innerJoin(
-      'employment as all_employment',
-      'all_employment.health_worker_id',
-      'health_workers.id',
-    )
-    .innerJoin(
-      'facilities as all_facilities',
-      'all_employment.facility_id',
-      'all_facilities.id',
-    )
-    .leftJoin(
-      'nurse_registration_details',
-      'nurse_registration_details.health_worker_id',
-      'health_workers.id',
-    )
-    .leftJoin(
-      'nurse_specialties',
-      'nurse_specialties.employee_id',
-      'all_employment.id',
-    )
-    .leftJoin(
-      address.formatted(trx),
-      'address_formatted.id',
-      'nurse_registration_details.address_id',
-    )
-    .select((eb) => [
-      'all_employment.health_worker_id as health_worker_id',
-      sql<
-        Maybe<string>
-      >`TO_CHAR(nurse_registration_details.date_of_birth, 'FMDD FMMonth YYYY')`
-        .as('date_of_birth'),
-      sql<
-        Maybe<string>
-      >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
-        .as('date_of_first_practice'),
-      'nurse_registration_details.gender',
-      'nurse_registration_details.mobile_number',
-      'nurse_registration_details.national_id_number',
-      'nurse_registration_details.ncz_registration_number',
-      'nurse_specialties.specialty',
-      'health_workers.email',
-      'health_workers.name',
-      'health_workers.avatar_url',
-      'address_formatted.address',
-      ({ eb, and }) =>
-        and([
-          eb('nurse_registration_details.id', 'is not', null),
-          eb('nurse_registration_details.approved_by', 'is', null),
-        ]).as('registration_pending_approval'),
-      ({ eb, and }) =>
-        and([
-          eb('nurse_registration_details.id', 'is', null),
-          eb('employment.profession', '=', 'nurse'),
-        ]).as('registration_needed'),
-      ({ eb, or }) =>
-        or([
-          eb('employment.profession', '!=', 'nurse'),
-          eb('nurse_registration_details.approved_by', 'is not', null),
-        ]).as('registration_completed'),
-      jsonArrayFrom(
-        eb.selectFrom('facilities')
-          .innerJoin('employment', 'employment.facility_id', 'facilities.id')
-          .innerJoin(
-            'health_workers',
-            'health_workers.id',
-            'employment.health_worker_id',
-          )
-          .where('health_workers.id', '=', health_worker_id)
-          .groupBy(['facilities.id', 'facilities.name'])
-          .select([
-            'facilities.id as facility_id',
-            'facilities.name as facility_name',
-            'facilities.address',
-            sql<Profession[]>`array_agg(employment.profession)`.as(
-              'professions',
-            ),
-          ]),
-      ).as('employment'),
-      jsonArrayFrom(
-        eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-          'nd_1.id',
-          '=',
-          'nurse_registration_details.id',
-        ).where(
-          'nurse_registration_details.national_id_media_id',
-          'is not',
-          null,
+  return trx.with('health_worker_at_facility', (qb) =>
+    qb
+      .selectFrom('employment')
+      .where('employment.health_worker_id', '=', opts.health_worker_id)
+      .where('employment.facility_id', '=', opts.facility_id)
+      .select('health_worker_id')
+      .distinct()).with('employee_info', (qb) =>
+      qb
+        .selectFrom('health_worker_at_facility')
+        .innerJoin(
+          'health_workers',
+          'health_workers.id',
+          'health_worker_at_facility.health_worker_id',
         )
-          .select([
-            sql<string>`'National ID'`.as('name'),
-            sql<
-              string
-            >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
-              .as('href'),
-          ])
-          .union(
+        .innerJoin(
+          'facilities',
+          (join) => join.on('facilities.id', '=', opts.facility_id),
+        )
+        .leftJoin(
+          'employment as nurse_employment',
+          (join) =>
+            join
+              .onRef(
+                'nurse_employment.health_worker_id',
+                '=',
+                'health_workers.id',
+              )
+              .on('nurse_employment.profession', '=', 'nurse')
+              .on('nurse_employment.facility_id', '=', opts.facility_id),
+        )
+        .leftJoin(
+          'nurse_specialties',
+          'nurse_specialties.employee_id',
+          'nurse_employment.id',
+        )
+        .leftJoin(
+          'nurse_registration_details',
+          'nurse_registration_details.health_worker_id',
+          'health_workers.id',
+        )
+        .leftJoin(
+          address.formatted(trx),
+          'address_formatted.id',
+          'nurse_registration_details.address_id',
+        )
+        .select((eb) => [
+          'health_workers.id as health_worker_id',
+          sql<
+            Maybe<string>
+          >`TO_CHAR(nurse_registration_details.date_of_birth, 'FMDD FMMonth YYYY')`
+            .as('date_of_birth'),
+          sql<
+            Maybe<string>
+          >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
+            .as('date_of_first_practice'),
+          'nurse_registration_details.gender',
+          'nurse_registration_details.mobile_number',
+          'nurse_registration_details.national_id_number',
+          'nurse_registration_details.ncz_registration_number',
+          'nurse_specialties.specialty',
+          'health_workers.email',
+          'health_workers.name',
+          'health_workers.avatar_url',
+          'address_formatted.address',
+          'facilities.id as facility_id',
+          'facilities.name as facility_name',
+          'facilities.address as facility_address',
+          jsonArrayFromColumn(
+            'profession',
+            eb
+              .selectFrom('employment')
+              .where(
+                'health_worker_id',
+                '=',
+                opts.health_worker_id,
+              )
+              .where('facility_id', '=', opts.facility_id)
+              .select(['employment.profession']),
+          ).as('professions'),
+          ({ eb, and }) =>
+            and([
+              eb('nurse_employment.id', 'is not', null),
+              eb('nurse_registration_details.id', 'is not', null),
+              eb('nurse_registration_details.approved_by', 'is', null),
+            ]).as('registration_pending_approval'),
+          ({ eb, and }) =>
+            and([
+              eb('nurse_employment.id', 'is not', null),
+              eb('nurse_registration_details.id', 'is', null),
+            ]).as('registration_needed'),
+          ({ eb, or }) =>
+            or([
+              eb('nurse_employment.id', 'is', null),
+              eb('nurse_registration_details.approved_by', 'is not', null),
+            ]).as('registration_completed'),
+          jsonArrayFrom(
             eb.selectFrom('nurse_registration_details as nd_1').whereRef(
               'nd_1.id',
               '=',
               'nurse_registration_details.id',
             ).where(
-              'nurse_registration_details.face_picture_media_id',
+              'nurse_registration_details.national_id_media_id',
               'is not',
               null,
             )
               .select([
-                sql<string>`'Face Picture'`.as('name'),
+                sql<string>`'National ID'`.as('name'),
                 sql<
                   string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
                   .as('href'),
-              ]),
-          )
-          .union(
-            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-              'nd_1.id',
-              '=',
-              'nurse_registration_details.id',
-            ).where(
-              'nurse_registration_details.ncz_registration_card_media_id',
-              'is not',
-              null,
-            )
-              .select([
-                sql<string>`'Registration Card'`.as('name'),
-                sql<
-                  string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
-                  .as('href'),
-              ]),
-          )
-          .union(
-            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-              'nd_1.id',
-              '=',
-              'nurse_registration_details.id',
-            ).where(
-              'nurse_registration_details.nurse_practicing_cert_media_id',
-              'is not',
-              null,
-            )
-              .select([
-                sql<string>`'Nurse Practicing Certificate'`.as('name'),
-                sql<
-                  string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
-                  .as('href'),
-              ]),
-          )
-          .orderBy('name'),
-      ).as('documents'),
-    ])
-
-  return query.executeTakeFirst()
+              ])
+              .union(
+                eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+                  'nd_1.id',
+                  '=',
+                  'nurse_registration_details.id',
+                ).where(
+                  'nurse_registration_details.face_picture_media_id',
+                  'is not',
+                  null,
+                )
+                  .select([
+                    sql<string>`'Face Picture'`.as('name'),
+                    sql<
+                      string
+                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                      .as('href'),
+                  ]),
+              )
+              .union(
+                eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+                  'nd_1.id',
+                  '=',
+                  'nurse_registration_details.id',
+                ).where(
+                  'nurse_registration_details.ncz_registration_card_media_id',
+                  'is not',
+                  null,
+                )
+                  .select([
+                    sql<string>`'Registration Card'`.as('name'),
+                    sql<
+                      string
+                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
+                      .as('href'),
+                  ]),
+              )
+              .union(
+                eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+                  'nd_1.id',
+                  '=',
+                  'nurse_registration_details.id',
+                ).where(
+                  'nurse_registration_details.nurse_practicing_cert_media_id',
+                  'is not',
+                  null,
+                )
+                  .select([
+                    sql<string>`'Nurse Practicing Certificate'`.as('name'),
+                    sql<
+                      string
+                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
+                      .as('href'),
+                  ]),
+              )
+              .orderBy('name'),
+          ).as('documents'),
+        ]))
+    .selectFrom('employee_info')
+    .selectAll()
+    .executeTakeFirst()
 }
