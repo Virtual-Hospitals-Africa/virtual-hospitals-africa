@@ -22,6 +22,7 @@ export type EncounterStep =
   | 'referral'
   | 'symptoms'
   | 'vitals'
+  | 'general_assessments'
 
 export type FamilyType =
   | '2 married parents'

@@ -191,9 +191,11 @@ export function CheckboxInput(
     readonly,
     className,
     inputClassName,
+    value,
   }: WrapperInputProps<HTMLInputElement> & {
     checked?: boolean
     onInput?: JSX.GenericEventHandler<HTMLInputElement>
+    value?: string
   },
 ) {
   return (
@@ -219,8 +221,39 @@ export function CheckboxInput(
         onInput={onInput}
         onFocus={onFocus}
         onBlur={onBlur}
+        value={value}
       />
     </LabeledInput>
+  )
+}
+
+export function CheckboxList(
+  {
+    name,
+    values,
+    className,
+    inputClassName,
+    useIndex,
+    onInput,
+  }: WrapperInputProps<HTMLInputElement> & {
+    values: Record<string, {value : string, checked : boolean}>;
+    useIndex?: boolean
+  },
+) {
+  return (
+    <div>
+       {Object.entries(values).map(([key, { value, checked }], index) => (
+        <CheckboxInput
+            name={`${name}.${useIndex ? index : value}`}
+            className={className}
+            label={key}
+            checked={checked}
+            value={value}
+            inputClassName={inputClassName}
+            onInput={onInput}
+          />      
+          ))}
+    </div>
   )
 }
 

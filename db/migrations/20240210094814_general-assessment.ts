@@ -5,7 +5,7 @@ import parseJSON from '../../util/parseJSON.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createTable('general_assessment')
+    .createTable('general_assessments')
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('type', 'varchar(255)', (col) => col.notNull())
@@ -37,7 +37,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'general_assessment_id',
       'integer',
-      (col) => col.notNull().references('general_assessment.id').onDelete('cascade'),
+      (col) => col.notNull().references('general_assessments.id').onDelete('cascade'),
     )
     .addColumn(
       'patient_id',
@@ -48,13 +48,13 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await addUpdatedAtTrigger(db, 'patient_general_assessment')
-  await addUpdatedAtTrigger(db, 'general_assessment')
+  await addUpdatedAtTrigger(db, 'general_assessments')
   await seedDataFromJSON(db)
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_general_assessment').execute()
-  await db.schema.dropTable('general_assessment').execute()
+  await db.schema.dropTable('general_assessments').execute()
 }
 
 async function seedDataFromJSON(db: Kysely<any>) {
