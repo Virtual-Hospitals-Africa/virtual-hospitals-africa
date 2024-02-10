@@ -1,7 +1,4 @@
-import {
-  HealthWorkerAppointment,
-  HealthWorkerAppointmentSlot,
-} from '../../types.ts'
+import { ProviderAppointment, ProviderAppointmentSlot } from '../../types.ts'
 import AppointmentsEmptyState from './EmptyState.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Appointment from './Appointment.tsx'
@@ -12,7 +9,7 @@ const className =
 export default function Appointments(
   { headerText, appointments, url }: {
     headerText: string
-    appointments: (HealthWorkerAppointment | HealthWorkerAppointmentSlot)[]
+    appointments: (ProviderAppointment | ProviderAppointmentSlot)[]
     url: URL
   },
 ) {

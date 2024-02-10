@@ -59,7 +59,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       reason: 'pain',
     })
 
-    const health_worker = await addTestHealthWorker(db)
+    const health_worker = await addTestHealthWorker(db, { scenario: 'doctor' })
     assert(health_worker)
 
     //  Insert google calender
@@ -95,7 +95,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         timeMin,
         timeMax,
         calendars: {
-          [health_worker.gcal_appointments_calendar_id]: {
+          [health_worker.calendars!.gcal_appointments_calendar_id]: {
             busy: [
               {
                 start: secondDayStart,
@@ -103,7 +103,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
               },
             ],
           },
-          [health_worker.gcal_availability_calendar_id]: {
+          [health_worker.calendars!.gcal_availability_calendar_id]: {
             busy: [
               {
                 start: secondDayStart,
@@ -119,7 +119,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     const start = new Date(secondDayBusyTime)
     await appointments.addOfferedTime(db, {
       patient_appointment_request_id: scheduling_appointment_request.id,
-      health_worker_id: health_worker.id,
+      provider_id: health_worker.employee_id!,
       start: start,
     })
 

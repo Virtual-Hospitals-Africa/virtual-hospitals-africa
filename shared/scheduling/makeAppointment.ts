@@ -5,15 +5,14 @@ import {
   formatHarare,
   isIsoHarare,
 } from '../../util/date.ts'
-import { getWithTokensById } from '../../db/models/health_workers.ts'
+import { get as getProvider } from '../../db/models/providers.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
   GCalEvent,
-  HealthWorkerWithGoogleTokens,
-  PatientAppointmentOfferedTime,
+  GoogleTokens,
   PatientState,
-  ReturnedSqlRow,
+  SchedulingAppointmentOfferedTime,
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -33,11 +32,7 @@ function gcal({ start, end }: {
 export function gcalAppointmentDetails(
   patientState: PatientState,
 ): {
-  acceptedTime: ReturnedSqlRow<
-    PatientAppointmentOfferedTime & {
-      health_worker_name: string
-    }
-  >
+  acceptedTime: SchedulingAppointmentOfferedTime
   gcal: DeepPartial<GCalEvent>
 } {
   assert(patientState.scheduling_appointment_request)
@@ -70,7 +65,7 @@ export function gcalAppointmentDetails(
 }
 
 type InsertEvent = (
-  health_worker: HealthWorkerWithGoogleTokens,
+  tokens: GoogleTokens,
   calendar_id: string,
   event: DeepPartial<GCalEvent>,
 ) => Promise<GCalEvent>
@@ -92,30 +87,21 @@ export async function makeAppointmentChatbot(
 
   const { acceptedTime, gcal } = details
   assert(
-    acceptedTime.health_worker_id,
-    'No health_worker_id found',
+    acceptedTime.provider_id,
+    'No provider_id found',
   )
 
-  const matchingHealthWorker = await getWithTokensById(
+  const matchingProvider = await getProvider(
     trx,
-    acceptedTime.health_worker_id,
-  )
-
-  assert(
-    matchingHealthWorker,
-    `No health_worker session found for health_worker_id ${acceptedTime.health_worker_id}`,
-  )
-  assert(
-    matchingHealthWorker.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for health_worker_id ${acceptedTime.health_worker_id}`,
+    acceptedTime.provider_id,
   )
 
   const end = new Date(acceptedTime.start)
   end.setMinutes(end.getMinutes() + 30)
 
   const insertedEvent = await insertEvent(
-    matchingHealthWorker,
-    matchingHealthWorker.gcal_appointments_calendar_id,
+    matchingProvider,
+    matchingProvider.gcal_appointments_calendar_id,
     gcal,
   )
 
@@ -137,13 +123,12 @@ export type ScheduleFormValues = {
   reason: string
   durationMinutes: number
   patient_id: number
-  health_worker_ids: number[]
+  provider_ids: number[]
 }
 
 export function assertIsScheduleFormValues(
   values: unknown,
 ): asserts values is ScheduleFormValues {
-  console.log('values', values)
   assertOr400(isObjectLike(values))
   assertOr400(typeof values.start === 'string')
   assertOr400(isIsoHarare(values.start))
@@ -152,8 +137,8 @@ export function assertIsScheduleFormValues(
   assertOr400(typeof values.durationMinutes === 'number')
   assertOr400(typeof values.reason === 'string')
   assertOr400(typeof values.patient_id === 'number')
-  assertOr400(Array.isArray(values.health_worker_ids))
-  assertOr400(values.health_worker_ids.every((id) => typeof id === 'number'))
+  assertOr400(Array.isArray(values.provider_ids))
+  assertOr400(values.provider_ids.every((id) => typeof id === 'number'))
 }
 
 export async function makeAppointmentWeb(
@@ -162,7 +147,7 @@ export async function makeAppointmentWeb(
   insertEvent: InsertEvent,
 ): Promise<void> {
   assertEquals(
-    values.health_worker_ids.length,
+    values.provider_ids.length,
     1,
     'TODO support multiple health workers',
   )
@@ -175,27 +160,14 @@ export async function makeAppointmentWeb(
     differenceInMinutes(end, start),
   )
 
-  const matchingHealthWorker = await getWithTokensById(
+  const matchingProvider = await getProvider(
     trx,
-    values.health_worker_ids[0],
-  )
-
-  assert(
-    matchingHealthWorker,
-    `No health_worker session found for health_worker_id ${
-      values.health_worker_ids[0]
-    }`,
-  )
-  assert(
-    matchingHealthWorker.gcal_appointments_calendar_id,
-    `No gcal_appointments_calendar_id found for health_worker_id ${
-      values.health_worker_ids[0]
-    }`,
+    values.provider_ids[0],
   )
 
   const insertedEvent = await insertEvent(
-    matchingHealthWorker,
-    matchingHealthWorker.gcal_appointments_calendar_id,
+    matchingProvider,
+    matchingProvider.gcal_appointments_calendar_id,
     gcal({
       start: values.start,
       end: values.end,
@@ -211,6 +183,6 @@ export async function makeAppointmentWeb(
 
   await appointments.addAttendees(trx, {
     appointment_id: appointment.id,
-    health_worker_ids: values.health_worker_ids,
+    provider_ids: values.provider_ids,
   })
 }

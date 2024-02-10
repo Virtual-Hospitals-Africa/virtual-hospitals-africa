@@ -1,6 +1,7 @@
 import { Kysely, sql } from 'kysely'
 
-export function addUpdatedAtTrigger(db: Kysely<unknown>, table: string) {
+// deno-lint-ignore no-explicit-any
+export function addUpdatedAtTrigger(db: Kysely<any>, table: string) {
   return sql`
     CREATE TRIGGER update_updated_at_trigger
            BEFORE UPDATE ON ${sql.id(table)}

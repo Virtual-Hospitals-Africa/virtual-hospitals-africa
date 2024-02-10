@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
+  HasId,
   PatientState,
-  ReturnedSqlRow,
   TrxOrDb,
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
@@ -51,7 +51,7 @@ export async function insertMessageReceived(
       'whatsapp_id' | 'has_media' | 'body' | 'media_id'
     >,
 ): Promise<
-  ReturnedSqlRow<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
+  HasId<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
   const { patient_phone_number, ...message_data } = data
 
@@ -131,9 +131,11 @@ export async function getUnhandledPatientMessages(
 
     aot_pre as (
       SELECT patient_appointment_offered_times.*,
-             health_workers.name as health_worker_name
+             health_workers.name as health_worker_name,
+             employment.profession
         FROM patient_appointment_offered_times
-        JOIN health_workers ON patient_appointment_offered_times.health_worker_id = health_workers.id
+        JOIN employment ON patient_appointment_offered_times.provider_id = employment.id
+        JOIN health_workers ON employment.health_worker_id = health_workers.id
     ),
 
     aot as (
@@ -168,7 +170,7 @@ export async function getUnhandledPatientMessages(
             , aot.offered_times as scheduling_appointment_offered_times
             , appointments.id as scheduled_appointment_id
             , appointments.reason as scheduled_appointment_reason
-            , appointment_health_worker_attendees.health_worker_id as scheduled_appointment_health_worker_id
+            , appointment_providers.provider_id as scheduled_appointment_provider_id
             , health_workers.name as scheduled_appointment_health_worker_name
             , appointments.gcal_event_id as scheduled_appointment_gcal_event_id
             , appointments.start as scheduled_appointment_start
@@ -178,47 +180,46 @@ export async function getUnhandledPatientMessages(
     LEFT JOIN aot ON aot.patient_id = patients.id
     LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id AND patients.conversation_state = 'find_nearest_facility:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
-    LEFT JOIN appointment_health_worker_attendees ON appointment_health_worker_attendees.appointment_id = appointments.id
-    LEFT JOIN health_workers ON health_workers.id = appointment_health_worker_attendees.health_worker_id
+    LEFT JOIN appointment_providers ON appointment_providers.appointment_id = appointments.id
+    LEFT JOIN employment ON employment.id = appointment_providers.provider_id
+    LEFT JOIN health_workers ON health_workers.id = employment.health_worker_id
         WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
-  const rows: PatientState[] = await Promise.all(result.rows.map((row) => {
+  return result.rows.map((row) => {
     const {
       scheduling_appointment_request_id,
       scheduling_appointment_reason,
       scheduling_appointment_offered_times,
       scheduled_appointment_id,
       scheduled_appointment_reason,
-      scheduled_appointment_health_worker_id,
+      scheduled_appointment_provider_id,
       scheduled_appointment_health_worker_name,
       scheduled_appointment_gcal_event_id,
       scheduled_appointment_start,
       ...rest
     } = row
-    const toPush = { ...rest }
+    const patient_state: PatientState = { ...rest }
     if (scheduling_appointment_request_id) {
-      toPush.scheduling_appointment_request = {
+      patient_state.scheduling_appointment_request = {
         id: scheduling_appointment_request_id,
         reason: scheduling_appointment_reason,
         offered_times: compact(scheduling_appointment_offered_times),
       }
     }
     if (scheduled_appointment_id) {
-      toPush.scheduled_appointment = {
+      patient_state.scheduled_appointment = {
         id: scheduled_appointment_id,
         reason: scheduled_appointment_reason,
-        health_worker_id: scheduled_appointment_health_worker_id,
+        provider_id: scheduled_appointment_provider_id,
         health_worker_name: scheduled_appointment_health_worker_name,
         gcal_event_id: scheduled_appointment_gcal_event_id,
         start: scheduled_appointment_start,
       }
     }
 
-    return toPush
-  }))
-
-  return rows
+    return patient_state
+  })
 }
 
 export function markChatbotError(

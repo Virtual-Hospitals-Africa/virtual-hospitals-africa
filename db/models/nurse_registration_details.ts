@@ -1,9 +1,9 @@
 import {
   Address,
+  HasId,
   ISODateString,
   Maybe,
   NurseRegistrationDetails,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -50,7 +50,7 @@ export function get(
   opts: {
     healthWorkerId: number
   },
-): Promise<ReturnedSqlRow<NurseRegistrationDetails> | undefined> {
+): Promise<HasId<NurseRegistrationDetails> | undefined> {
   return trx
     .selectFrom('nurse_registration_details')
     .select((eb) => [

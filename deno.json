@@ -35,6 +35,7 @@
     "switch:local": "cp .env.local .env",
     "test": "rm -f test_server.log && deno task db:migrate:check && DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --env --unsafely-ignore-certificate-errors --ignore=test/chatbot --parallel",
     "test:chatbot": "DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --env --unsafely-ignore-certificate-errors test/chatbot",
+    "test:one": "rm -f test_server.log && deno task db:migrate:check && DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --env --unsafely-ignore-certificate-errors",
     "preview": "deno run -A main.ts",
     "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",

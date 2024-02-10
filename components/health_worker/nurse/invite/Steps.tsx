@@ -1,5 +1,5 @@
 import { useSteps } from '../../../library/Steps.tsx'
-import { NurseSpecialty, ReturnedSqlRow, TrxOrDb } from '../../../../types.ts'
+import { NurseSpecialty, TrxOrDb } from '../../../../types.ts'
 import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 import { Maybe } from '../../../../types.ts'

@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { Maybe, Media, ReturnedSqlRow, TrxOrDb } from './../../types.ts'
+import { HasId, Maybe, Media, TrxOrDb } from './../../types.ts'
 
 export function insert(
   trx: TrxOrDb,
@@ -26,7 +26,7 @@ export function get(
     media_id: number
     appointment_id?: number
   },
-): Promise<ReturnedSqlRow<Media>> {
+): Promise<HasId<Media>> {
   let query = trx
     .selectFrom('media')
     .where(
@@ -63,7 +63,7 @@ export function get(
 export function getByUUID(
   trx: TrxOrDb,
   uuid: string,
-): Promise<Maybe<ReturnedSqlRow<Media>>> {
+): Promise<Maybe<HasId<Media>>> {
   return trx
     .selectFrom('media')
     .where(

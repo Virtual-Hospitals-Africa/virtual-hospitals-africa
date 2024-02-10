@@ -38,11 +38,6 @@ export type HasId<T extends Record<string, unknown> = Record<string, unknown>> =
     id: number
   }
 
-export type ReturnedSqlRow<T extends Record<string, unknown>> = HasId<T> & {
-  created_at: Date
-  updated_at: Date
-}
-
 export type Location = {
   longitude: number
   latitude: number
@@ -99,8 +94,8 @@ export type PatientPersonal = {
   location: Maybe<Location>
 } & PatientDemographicInfo
 
-export type RenderedPatient = ReturnedSqlRow<
-  Pick<
+export type RenderedPatient =
+  & Pick<
     Patient,
     | 'gender'
     | 'ethnicity'
@@ -110,7 +105,9 @@ export type RenderedPatient = ReturnedSqlRow<
     | 'conversation_state'
     | 'completed_intake'
     | 'intake_steps_completed'
-  > & {
+  >
+  & {
+    id: number
     dob_formatted: string | null
     description: string | null
     // age_formatted: Maybe<string> // TODO: implement
@@ -125,7 +122,6 @@ export type RenderedPatient = ReturnedSqlRow<
       view: string | null
     }
   }
->
 export type Condition = {
   id: string
   name: string
@@ -308,9 +304,15 @@ export type PatientWithOpenEncounter = RenderedPatient & {
 
 export type PatientAppointmentOfferedTime = {
   patient_appointment_request_id: number
-  health_worker_id: number
+  provider_id: number
   start: Date
   declined: boolean
+}
+
+export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
+  id: number
+  health_worker_name: string
+  profession: Profession
 }
 
 export type PatientState = {
@@ -330,21 +332,19 @@ export type PatientState = {
   scheduling_appointment_request?: {
     id: number
     reason: Maybe<string>
-    offered_times: ReturnedSqlRow<
-      PatientAppointmentOfferedTime & { health_worker_name: string }
-    >[]
+    offered_times: SchedulingAppointmentOfferedTime[]
   }
   scheduled_appointment?: {
     id: number
     reason: string
-    health_worker_id: number
+    provider_id: number
     health_worker_name: string
     gcal_event_id: string
     start: Date
   }
   created_at: Date
   updated_at: Date
-  nearest_facilities?: ReturnedSqlRow<PatientNearestFacility>[]
+  nearest_facilities?: HasId<PatientNearestFacility>[]
   nearest_facility_name?: string
   selectedFacility?: Facility
 }
@@ -486,7 +486,7 @@ export type Appointment = {
   gcal_event_id: string
 }
 
-export type AppointmentWithAllPatientInfo = ReturnedSqlRow<Appointment> & {
+export type AppointmentWithAllPatientInfo = HasId<Appointment> & {
   patient: PatientWithOpenEncounter
   media: {
     media_id: number
@@ -1057,8 +1057,6 @@ export type HealthWorker = {
   email: string
   avatar_url: string
   phone_number?: Maybe<string>
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
 }
 
 export type EmployeeInfo = {
@@ -1077,61 +1075,57 @@ export type EmployeeInfo = {
   registration_needed: SqlBool
   registration_pending_approval: SqlBool
   address: Maybe<string>
-  employment: {
-    address: string
-    facility_id: number
-    facility_name: string
-    professions: Profession[]
-  }[]
+  facility_address: string
+  facility_id: number
+  facility_name: string
+  professions: Profession[]
   documents: {
     name: string
     href: string
   }[]
 }
 
-export type EmployedHealthWorker = ReturnedSqlRow<
-  HealthWorker & {
-    access_token: string
-    refresh_token: string
-    expires_at: Date | string
-    employment: {
-      facility: {
-        id: number
-        name: string
-        address: string
+export type EmployedHealthWorker = HealthWorker & {
+  id: number
+  access_token: string
+  refresh_token: string
+  expires_at: Date | string
+  employment: {
+    facility: {
+      id: number
+      name: string
+      address: string
+    }
+    roles: {
+      nurse: null | {
+        registration_needed: boolean
+        registration_completed: boolean
+        registration_pending_approval: boolean
+        employment_id: number
       }
-      roles: {
-        nurse: null | {
-          registration_needed: boolean
-          registration_completed: boolean
-          registration_pending_approval: boolean
-          employment_id: number
-        }
-        doctor: null | {
-          registration_needed: boolean
-          registration_completed: boolean
-          registration_pending_approval: boolean
-          employment_id: number
-        }
-        admin: null | {
-          registration_needed: boolean
-          registration_completed: boolean
-          registration_pending_approval: boolean
-          employment_id: number
-        }
+      doctor: null | {
+        registration_needed: boolean
+        registration_completed: boolean
+        registration_pending_approval: boolean
+        employment_id: number
       }
-    }[]
-    open_encounters: RenderedPatientEncounter[]
-  }
->
-
-export type HealthWorkerGoogleToken = GoogleTokens & {
-  health_worker_id: number
+      admin: null | {
+        registration_needed: boolean
+        registration_completed: boolean
+        registration_pending_approval: boolean
+        employment_id: number
+      }
+    }
+    gcal_appointments_calendar_id: string
+    gcal_availability_calendar_id: string
+    availability_set: boolean
+  }[]
+  open_encounters: RenderedPatientEncounter[]
 }
 
-export type HealthWorkerWithGoogleTokens = ReturnedSqlRow<
-  HealthWorker & GoogleTokens
->
+export type HealthWorkerWithGoogleTokens = HealthWorker & GoogleTokens & {
+  id: number
+}
 
 export type Availability = {
   start: string
@@ -1209,7 +1203,7 @@ export type WhatsAppSingleSendable =
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
-export type HealthWorkerAppointmentSlot = {
+export type ProviderAppointmentSlot = {
   type: 'slot'
   id: string
   patient?: {
@@ -1221,12 +1215,12 @@ export type HealthWorkerAppointmentSlot = {
   durationMinutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  health_workers: ReturnedSqlRow<HealthWorker>[]
+  providers: Provider[]
   physicalLocation?: undefined
   virtualLocation?: undefined
 }
 
-export type HealthWorkerAppointment = {
+export type ProviderAppointment = {
   type: 'appointment'
   id: number
   patient: {
@@ -1238,9 +1232,9 @@ export type HealthWorkerAppointment = {
   durationMinutes: number
   start: ParsedDateTime
   end: ParsedDateTime
-  health_workers?: ReturnedSqlRow<HealthWorker>[]
+  providers?: Provider[]
   physicalLocation?: {
-    facility: ReturnedSqlRow<Facility>
+    facility: HasId<Facility>
   }
   virtualLocation?: {
     href: string
@@ -1389,7 +1383,7 @@ export type LinkDef = {
 }
 
 export type CalendarPageProps = {
-  appointments: HealthWorkerAppointment[]
+  appointments: ProviderAppointment[]
   day: string
   today: string
   healthWorker: HealthWorker
@@ -1689,8 +1683,9 @@ export type RenderedWaitingRoom = {
   appointment: null | {
     id: number
     start: Date
-    health_workers: {
-      id: number
+    providers: {
+      health_worker_id: number
+      provider_id: number
       name: string
     }[]
   }
@@ -1767,6 +1762,21 @@ export type RenderedPatientSymptom = PatientInsertShared & {
     mime_type: string
     url: string
   }[]
+}
+
+export type Provider = {
+  avatar_url: string
+  email: string
+  name: string
+  access_token: string
+  refresh_token: string
+  expires_at: Date
+  profession: 'doctor' | 'nurse'
+  availability_set: boolean
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  health_worker_id: number
+  provider_id: number
 }
 
 export type DatabaseSchema = DB

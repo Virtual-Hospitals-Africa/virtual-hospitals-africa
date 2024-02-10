@@ -50,7 +50,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       reason: 'pain',
     })
 
-    const health_worker = await addTestHealthWorker(db)
+    const health_worker = await addTestHealthWorker(db, { scenario: 'doctor' })
 
     // Insert google calender
     const currentTime = new Date()
@@ -79,7 +79,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         timeMin: timeMin,
         timeMax: timeMax,
         calendars: {
-          [health_worker.gcal_appointments_calendar_id]: {
+          [health_worker.calendars!.gcal_appointments_calendar_id]: {
             busy: [
               {
                 start: secondDayStart,
@@ -87,7 +87,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
               },
             ],
           },
-          [health_worker.gcal_availability_calendar_id]: {
+          [health_worker.calendars!.gcal_availability_calendar_id]: {
             busy: [
               {
                 start: secondDayStart,

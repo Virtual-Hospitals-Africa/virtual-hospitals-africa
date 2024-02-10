@@ -21,8 +21,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 1',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_at_facility1)
 
@@ -30,8 +28,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 2',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_at_facility2)
 
@@ -39,8 +35,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 3',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_other_facility)
 
@@ -195,8 +189,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         name: 'At Facility 1',
         email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_at_facility1)
 
@@ -204,8 +196,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         name: 'At Facility 2',
         email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_at_facility2)
 
@@ -213,8 +203,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
         name: 'At Facility 3',
         email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
-        gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-        gcal_availability_calendar_id: 'gcal_availability_calendar_id',
       })
       assert(hw_other_facility)
 
@@ -288,8 +276,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 1',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_at_facility1)
 
@@ -350,8 +336,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'Nurse',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(nurse)
 
@@ -359,8 +343,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'Admin',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(admin)
 
@@ -463,8 +445,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 1',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_at_facility1)
 
@@ -512,8 +492,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 1',
           email: same_email,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_at_facility1)
 
@@ -544,8 +522,6 @@ describe('db/models/facilities.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 1',
           email: same_email,
           avatar_url: 'avatar_url',
-          gcal_appointments_calendar_id: 'gcal_appointments_calendar_id',
-          gcal_availability_calendar_id: 'gcal_availability_calendar_id',
         })
         assert(hw_at_facility1)
 

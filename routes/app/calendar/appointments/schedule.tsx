@@ -1,23 +1,22 @@
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import {
+  HasId,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
   Maybe,
-  ReturnedSqlRow,
 } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
-import * as health_workers from '../../../../db/models/health_workers.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import {
   availableSlots,
-} from '../../../../shared/scheduling/getHealthWorkerAvailability.ts'
+} from '../../../../shared/scheduling/getProviderAvailability.ts'
 import Appointments from '../../../../components/calendar/Appointments.tsx'
-import { HealthWorkerAppointmentSlot } from '../../../../types.ts'
+import { ProviderAppointmentSlot } from '../../../../types.ts'
 import { parseDateTime } from '../../../../util/date.ts'
 import { hasName } from '../../../../util/haveNames.ts'
 import {
@@ -30,8 +29,8 @@ import isObjectLike from '../../../../util/isObjectLike.ts'
 import { insertEvent } from '../../../../external-clients/google.ts'
 
 type SearchFormValues = {
-  health_worker_id?: number
-  health_worker_name?: string
+  provider_id?: number
+  provider_name?: string
   patient_id?: number
   patient_name?: string
   date?: string
@@ -44,12 +43,12 @@ export type ScheduleFormValues = {
   durationMinutes: number
   reason: string
   patient_id: number
-  health_worker_ids: number[]
+  provider_ids: number[]
 }
 
 type SchedulePageProps = {
-  healthWorker: ReturnedSqlRow<HealthWorker>
-  slots?: HealthWorkerAppointmentSlot[]
+  healthWorker: HasId<HealthWorker>
+  slots?: ProviderAppointmentSlot[]
 }
 
 function assertIsSearchFormValues(
@@ -59,8 +58,8 @@ function assertIsSearchFormValues(
   for (const key in values) {
     assertOr400(
       [
-        'health_worker_id',
-        'health_worker_name',
+        'provider_id',
+        'provider_name',
         'patient_id',
         'patient_name',
         'date',
@@ -89,38 +88,23 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
         ids: [search.patient_id],
       })
 
-      let toScheduleWith: Maybe<
-        ReturnedSqlRow<
-          HealthWorkerWithGoogleTokens
-        >
-      >
-
-      if (search.health_worker_id) {
-        toScheduleWith = await health_workers.getWithTokensById(
-          ctx.state.trx,
-          search.health_worker_id,
-        )
-
-        assert(toScheduleWith)
-      }
-
       const availability = await availableSlots(ctx.state.trx, {
         count: 10,
         dates: search.date ? [search.date] : undefined,
-        health_workers: toScheduleWith ? [toScheduleWith] : undefined,
+        provider_ids: search.provider_id ? [search.provider_id] : undefined,
       })
 
       const [patient] = await gettingPatient
       assert(hasName(patient))
 
-      const slots: HealthWorkerAppointmentSlot[] = availability.map((slot) => ({
+      const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
         type: 'slot',
         patient,
-        id: `${slot.health_worker.id}-${slot.start}`,
+        id: `${slot.provider.provider_id}-${slot.start}`,
         durationMinutes: slot.durationMinutes,
         start: parseDateTime(new Date(slot.start), 'numeric'),
         end: parseDateTime(new Date(slot.end), 'numeric'),
-        health_workers: [slot.health_worker],
+        providers: [slot.provider],
       }))
 
       return ctx.render({

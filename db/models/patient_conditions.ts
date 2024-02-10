@@ -20,7 +20,7 @@ import {
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
-import assertAllNotNull from '../../util/assertAllNotNull.ts'
+import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
 
 type PatientMedicationUpsert = {

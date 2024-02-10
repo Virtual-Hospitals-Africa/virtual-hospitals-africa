@@ -14,17 +14,17 @@ import {
   testRegistrationDetails,
 } from '../mocks.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
-import last from '../../util/last.ts'
-import generateUUID from '../../util/uuid.ts'
+import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 
 describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
   describe('upsertWithGoogleCredentials', () => {
     itUsesTrxAnd(
       'works even if a previous health worker without tokens was inserted',
       async (trx) => {
+        const health_worker_data = testHealthWorker()
         await health_workers.upsert(
           trx,
-          omit(testHealthWorker(), [
+          omit(health_worker_data, [
             'access_token',
             'refresh_token',
             'expires_at',
@@ -32,7 +32,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           ]),
         )
 
-        const result = await addTestHealthWorker(trx)
+        const result = await upsertWithGoogleCredentials(
+          trx,
+          health_worker_data,
+        )
 
         assert(result)
         assertEquals(
@@ -49,20 +52,16 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx)
-
-        const employee = await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
-          profession: 'nurse',
-          facility_id: 1,
-        }])
+        const healthWorker = await addTestHealthWorker(trx, {
+          scenario: 'nurse',
+        })
 
         const result = await health_workers.get(trx, {
           health_worker_id: healthWorker.id,
         })
         assert(result)
 
-        assertEquals(omit(result, ['expires_at', 'created_at', 'updated_at']), {
+        assertEquals(omit(result, ['expires_at']), {
           avatar_url: healthWorker.avatar_url,
           email: healthWorker.email,
           employment: [
@@ -79,15 +78,16 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
                   registration_completed: false,
                   registration_needed: true,
                   registration_pending_approval: true,
-                  employment_id: employee[0].id,
+                  employment_id: healthWorker.employee_id!,
                 },
               },
+              gcal_appointments_calendar_id:
+                healthWorker.calendars!.gcal_appointments_calendar_id,
+              gcal_availability_calendar_id:
+                healthWorker.calendars!.gcal_availability_calendar_id,
+              availability_set: false,
             },
           ],
-          gcal_appointments_calendar_id:
-            healthWorker.gcal_appointments_calendar_id,
-          gcal_availability_calendar_id:
-            healthWorker.gcal_availability_calendar_id,
           id: healthWorker.id,
           name: healthWorker.name,
           access_token: healthWorker.access_token,
@@ -145,156 +145,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
     })
   })
 
-  describe('search', () => {
-    itUsesTrxAnd(
-      'returns health workers matching a search with their employment information',
-      async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx)
-
-        await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
-          profession: 'nurse',
-          facility_id: 1,
-        }])
-
-        const result = await health_workers.search(trx, {
-          search: healthWorker.name,
-        })
-        assertEquals(result.length, 1)
-        assertEquals(
-          result[0],
-          {
-            avatar_url: healthWorker.avatar_url,
-            email: healthWorker.email,
-            facilities: [
-              {
-                facility_id: 1,
-                facility_name: 'VHA Test Hospital',
-                professions: [
-                  'nurse',
-                ],
-              },
-            ],
-            gcal_appointments_calendar_id:
-              healthWorker.gcal_appointments_calendar_id,
-            gcal_availability_calendar_id:
-              healthWorker.gcal_availability_calendar_id,
-            name: healthWorker.name,
-            id: healthWorker.id,
-            created_at: result[0].created_at,
-            updated_at: result[0].updated_at,
-            description: [
-              'nurse @ VHA Test Hospital',
-            ],
-          },
-        )
-      },
-    )
-
-    itUsesTrxAnd('searches by profession', async (trx) => {
-      const healthWorker = await addTestHealthWorker(trx)
-
-      await employment.add(trx, [{
-        health_worker_id: healthWorker.id,
-        profession: 'nurse',
-        facility_id: 1,
-      }])
-
-      const doctor_result = await health_workers.search(trx, {
-        search: healthWorker.name,
-        professions: ['doctor'],
-      })
-      assert(doctor_result)
-      assertEquals(doctor_result.length, 0)
-
-      const nurse_result = await health_workers.search(trx, {
-        search: healthWorker.name,
-        professions: ['nurse'],
-      })
-      assert(nurse_result)
-      assertEquals(nurse_result.length, 1)
-
-      assertEquals(
-        omit(nurse_result[0], ['created_at', 'updated_at']),
-        {
-          avatar_url: healthWorker.avatar_url,
-          email: healthWorker.email,
-          facilities: [
-            {
-              facility_id: 1,
-              facility_name: 'VHA Test Hospital',
-              professions: [
-                'nurse',
-              ],
-            },
-          ],
-          gcal_appointments_calendar_id:
-            healthWorker.gcal_appointments_calendar_id,
-          gcal_availability_calendar_id:
-            healthWorker.gcal_availability_calendar_id,
-          id: healthWorker.id,
-          name: healthWorker.name,
-          description: [
-            'nurse @ VHA Test Hospital',
-          ],
-        },
-      )
-    })
-
-    itUsesTrxAnd(
-      'can prioritize a given facility, while still returning results from another facility',
-      async (trx) => {
-        const name_base = generateUUID()
-        const [_doctor1, doctor2] = await Promise.all([
-          addTestHealthWorker(trx, {
-            scenario: 'doctor',
-            facility_id: 1,
-            health_worker_attrs: {
-              name: name_base + generateUUID(),
-            },
-          }),
-          addTestHealthWorker(trx, {
-            scenario: 'doctor',
-            facility_id: 2,
-            health_worker_attrs: {
-              name: name_base + generateUUID(),
-            },
-          }),
-        ])
-        await employment.add(trx, [{
-          health_worker_id: doctor2.id,
-          profession: 'doctor',
-          facility_id: 3,
-        }])
-
-        const results = await health_workers.search(trx, {
-          search: name_base,
-          prioritize_facility_id: 2,
-        })
-        const firstResult = results[0]
-        const lastResult = last(results)!
-
-        assert(
-          firstResult.facilities.some((facility) => facility.facility_id === 2),
-        )
-        assert(
-          lastResult.facilities.every((facility) => facility.facility_id !== 2),
-        )
-      },
-    )
-  })
-
   describe('getEmployeeInfo', () => {
     itUsesTrxAnd(
       'returns the health worker and their employment information if that matches a given facility id',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx)
+        const healthWorker = await addTestHealthWorker(trx, {
+          scenario: 'nurse',
+        })
 
         await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
-          profession: 'nurse',
-          facility_id: 1,
-        }, {
           health_worker_id: healthWorker.id,
           profession: 'doctor',
           facility_id: 2,
@@ -302,8 +161,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
         const result = await health_workers.getEmployeeInfo(
           trx,
-          healthWorker.id,
-          1,
+          {
+            health_worker_id: healthWorker.id,
+            facility_id: 1,
+          },
         )
 
         assert(result)
@@ -321,43 +182,28 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_completed, false)
         assertEquals(result.registration_needed, true)
         assertEquals(result.registration_pending_approval, false)
-        assertEquals(
-          result.employment,
-          [
-            {
-              facility_id: 1,
-              facility_name: 'VHA Test Hospital',
-              address: 'Bristol, UK',
-              professions: ['nurse'],
-            },
-            {
-              address: 'Beitbridge, Matabeleland South Province, ZW',
-              facility_id: 2,
-              facility_name: 'Beitbridge District Hospital',
-              professions: ['doctor'],
-            },
-          ],
-        )
+        assertEquals(result.facility_id, 1)
+        assertEquals(result.facility_name, 'VHA Test Hospital')
+        assertEquals(result.facility_address, 'Bristol, UK')
+        assertEquals(result.professions, ['nurse'])
       },
     )
 
     itUsesTrxAnd(
       'returns the nurse registration details & specialty where applicable',
       async (trx) => {
-        const healthWorker = await addTestHealthWorker(trx)
+        const healthWorker = await addTestHealthWorker(trx, {
+          scenario: 'nurse',
+        })
 
-        const [firstEmployment, secondEmployment] = await employment.add(trx, [{
-          health_worker_id: healthWorker.id,
-          profession: 'nurse',
-          facility_id: 1,
-        }, {
+        const [secondEmployment] = await employment.add(trx, [{
           health_worker_id: healthWorker.id,
           profession: 'nurse',
           facility_id: 2,
         }])
 
         await nurse_specialties.add(trx, {
-          employee_id: firstEmployment.id,
+          employee_id: healthWorker.employee_id!,
           specialty: 'midwife',
         })
 
@@ -376,8 +222,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
         const result = await health_workers.getEmployeeInfo(
           trx,
-          healthWorker.id,
-          1,
+          {
+            health_worker_id: healthWorker.id,
+            facility_id: 1,
+          },
         )
 
         assert(result)
@@ -403,41 +251,24 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_needed, false)
         assertEquals(result.registration_pending_approval, true)
         assertEquals(result.documents, [])
-        assertEquals(
-          result.employment,
-          [
-            {
-              facility_id: 1,
-              facility_name: 'VHA Test Hospital',
-              address: 'Bristol, UK',
-              professions: ['nurse'],
-            },
-            {
-              address: 'Beitbridge, Matabeleland South Province, ZW',
-              facility_id: 2,
-              facility_name: 'Beitbridge District Hospital',
-              professions: ['nurse'],
-            },
-          ],
-        )
+        assertEquals(result.facility_id, 1)
+        assertEquals(result.facility_name, 'VHA Test Hospital')
+        assertEquals(result.facility_address, 'Bristol, UK')
+        assertEquals(result.professions, ['nurse'])
       },
     )
 
     itUsesTrxAnd('returns documents where applicable', async (trx) => {
-      const healthWorker = await addTestHealthWorker(trx)
+      const healthWorker = await addTestHealthWorker(trx, { scenario: 'nurse' })
 
-      const [firstEmployment] = await employment.add(trx, [{
-        health_worker_id: healthWorker.id,
-        profession: 'nurse',
-        facility_id: 1,
-      }, {
+      await employment.add(trx, [{
         health_worker_id: healthWorker.id,
         profession: 'nurse',
         facility_id: 2,
       }])
 
       await nurse_specialties.add(trx, {
-        employee_id: firstEmployment.id,
+        employee_id: healthWorker.employee_id!,
         specialty: 'midwife',
       })
 
@@ -473,8 +304,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
       const result = await health_workers.getEmployeeInfo(
         trx,
-        healthWorker.id,
-        1,
+        {
+          health_worker_id: healthWorker.id,
+          facility_id: 1,
+        },
       )
 
       assert(result)
@@ -501,94 +334,28 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         {
           name: 'Face Picture',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
+            `/app/facilities/1/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
         },
         {
           name: 'National ID',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
+            `/app/facilities/1/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
         },
         {
           name: 'Nurse Practicing Certificate',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
+            `/app/facilities/1/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
         },
         {
           name: 'Registration Card',
           href:
-            `/app/facilities/${firstEmployment.facility_id}/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
+            `/app/facilities/1/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
         },
       ])
-      assertEquals(
-        result.employment,
-        [
-          {
-            facility_id: 1,
-            facility_name: 'VHA Test Hospital',
-            address: 'Bristol, UK',
-            professions: ['nurse'],
-          },
-          {
-            address: 'Beitbridge, Matabeleland South Province, ZW',
-            facility_id: 2,
-            facility_name: 'Beitbridge District Hospital',
-            professions: ['nurse'],
-          },
-        ],
-      )
-    })
-
-    itUsesTrxAnd('can filter by facility_id', async (trx) => {
-      const healthWorker = await addTestHealthWorker(trx)
-
-      await employment.add(trx, [{
-        health_worker_id: healthWorker.id,
-        profession: 'nurse',
-        facility_id: 1,
-      }, {
-        health_worker_id: healthWorker.id,
-        profession: 'nurse',
-        facility_id: 2,
-      }])
-
-      const same_facility_result = await health_workers.search(trx, {
-        search: healthWorker.name,
-        facility_id: 1,
-      })
-      assertEquals(same_facility_result.length, 1)
-      assertEquals(
-        same_facility_result[0],
-        {
-          avatar_url: healthWorker.avatar_url,
-          email: healthWorker.email,
-          facilities: [
-            {
-              facility_id: 1,
-              facility_name: 'VHA Test Hospital',
-              professions: [
-                'nurse',
-              ],
-            },
-          ],
-          gcal_appointments_calendar_id:
-            healthWorker.gcal_appointments_calendar_id,
-          gcal_availability_calendar_id:
-            healthWorker.gcal_availability_calendar_id,
-          name: healthWorker.name,
-          id: healthWorker.id,
-          created_at: same_facility_result[0].created_at,
-          updated_at: same_facility_result[0].updated_at,
-          description: [
-            'nurse @ VHA Test Hospital',
-          ],
-        },
-      )
-
-      const other_facility_result = await health_workers.search(trx, {
-        search: healthWorker.name,
-        facility_id: 10,
-      })
-      assertEquals(other_facility_result.length, 0)
+      assertEquals(result.facility_id, 1)
+      assertEquals(result.facility_name, 'VHA Test Hospital')
+      assertEquals(result.facility_address, 'Bristol, UK')
+      assertEquals(result.professions, ['nurse'])
     })
   })
 })

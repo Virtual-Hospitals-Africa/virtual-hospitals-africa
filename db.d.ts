@@ -171,18 +171,18 @@ export interface Allergies {
   updated_at: Generated<Timestamp>
 }
 
-export interface AppointmentHealthWorkerAttendees {
-  appointment_id: number
-  confirmed: Generated<boolean>
-  created_at: Generated<Timestamp>
-  health_worker_id: number
-  id: Generated<number>
-  updated_at: Generated<Timestamp>
-}
-
 export interface AppointmentMedia {
   appointment_id: number
   media_id: number
+}
+
+export interface AppointmentProviders {
+  appointment_id: number
+  confirmed: Generated<boolean>
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  provider_id: number
+  updated_at: Generated<Timestamp>
 }
 
 export interface Appointments {
@@ -316,8 +316,6 @@ export interface HealthWorkers {
   avatar_url: string
   created_at: Generated<Timestamp>
   email: string
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
   id: Generated<number>
   name: string
   updated_at: Generated<Timestamp>
@@ -432,10 +430,10 @@ export interface PatientAllergies {
 
 export interface PatientAppointmentOfferedTimes {
   created_at: Generated<Timestamp>
-  declined: Generated<boolean | null>
-  health_worker_id: number
+  declined: Generated<boolean>
   id: Generated<number>
   patient_appointment_request_id: number
+  provider_id: number
   start: Timestamp
   updated_at: Generated<Timestamp>
 }
@@ -616,6 +614,17 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
+export interface ProviderCalendars {
+  availability_set: Generated<boolean>
+  created_at: Generated<Timestamp>
+  facility_id: number
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  health_worker_id: number
+  id: Generated<number>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Provinces {
   country_id: number
   created_at: Generated<Timestamp>
@@ -692,8 +701,8 @@ export interface WhatsappMessagesSent {
 export interface DB {
   address: Address
   allergies: Allergies
-  appointment_health_worker_attendees: AppointmentHealthWorkerAttendees
   appointment_media: AppointmentMedia
+  appointment_providers: AppointmentProviders
   appointments: Appointments
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
@@ -738,6 +747,7 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
+  provider_calendars: ProviderCalendars
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs

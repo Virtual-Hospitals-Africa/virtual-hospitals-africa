@@ -1,10 +1,9 @@
 import * as google from '../../external-clients/google.ts'
-import { getAllWithExtantTokens } from '../../db/models/health_workers.ts'
+import { getMany } from '../../db/models/providers.ts'
 import {
   Availability,
   GCalFreeBusy,
-  HealthWorkerWithGoogleTokens,
-  ReturnedSqlRow,
+  Provider,
   TimeRange,
   TrxOrDb,
 } from '../../types.ts'
@@ -14,18 +13,18 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import flatten from '../../util/flatten.ts'
 
 export function getAvailability(
-  health_worker: {
+  provider: {
     gcal_availability_calendar_id: string
     gcal_appointments_calendar_id: string
   },
   freeBusy: GCalFreeBusy,
 ): Availability {
   const availability = [
-    ...freeBusy.calendars[health_worker.gcal_availability_calendar_id].busy,
+    ...freeBusy.calendars[provider.gcal_availability_calendar_id].busy,
   ]
 
   const appointments =
-    freeBusy.calendars[health_worker.gcal_appointments_calendar_id].busy
+    freeBusy.calendars[provider.gcal_appointments_calendar_id].busy
 
   appointments.forEach((appointment) => {
     const conflictIndex = availability.findIndex((availabilityBlock) =>
@@ -75,7 +74,7 @@ export function getAvailability(
   return availability
 }
 
-// By default, leave health_worker 2 hours to be able to confirm the appointment
+// By default, leave provider 2 hours to be able to confirm the appointment
 // and look for appointments within the next week
 export function defaultTimeRange(): TimeRange {
   const timeMin = new Date()
@@ -84,32 +83,30 @@ export function defaultTimeRange(): TimeRange {
   timeMax.setDate(timeMin.getDate() + 7)
   return { timeMin, timeMax }
 }
-export async function getHealthWorkerAvailability(
-  health_worker: HealthWorkerWithGoogleTokens,
+export async function provider_availability(
+  provider: Provider,
   timeRange = defaultTimeRange(),
 ) {
-  const healthWorkerGoogleClient = new google.GoogleClient(health_worker)
+  const healthWorkerGoogleClient = new google.GoogleClient(provider)
   const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
     ...timeRange,
     calendarIds: [
-      health_worker.gcal_appointments_calendar_id,
-      health_worker.gcal_availability_calendar_id,
+      provider.gcal_appointments_calendar_id,
+      provider.gcal_availability_calendar_id,
     ],
   })
   return {
-    health_worker,
-    availability: getAvailability(health_worker, freeBusy),
+    provider,
+    availability: getAvailability(provider, freeBusy),
   }
 }
 
-export function getAllHealthWorkerAvailability(
-  health_workers: ReturnedSqlRow<HealthWorkerWithGoogleTokens>[],
+export function getAllProviderAvailability(
+  providers: Provider[],
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   return Promise.all(
-    health_workers.map((health_worker) =>
-      getHealthWorkerAvailability(health_worker, timeRange)
-    ),
+    providers.map((provider) => provider_availability(provider, timeRange)),
   )
 }
 
@@ -119,15 +116,15 @@ export function getAllHealthWorkerAvailability(
  */
 export async function availableSlots(
   trx: TrxOrDb,
-  { dates, declinedTimes = [], count, health_workers, durationMinutes = 30 }: {
+  { dates, declinedTimes = [], count, provider_ids, durationMinutes = 30 }: {
     count: number
     declinedTimes?: string[]
     dates?: string[]
-    health_workers?: ReturnedSqlRow<HealthWorkerWithGoogleTokens>[]
+    provider_ids?: number[]
     durationMinutes?: number
   },
 ): Promise<{
-  health_worker: ReturnedSqlRow<HealthWorkerWithGoogleTokens>
+  provider: Provider
   start: Date
   end: Date
   durationMinutes: number
@@ -135,17 +132,17 @@ export async function availableSlots(
   assert(count > 0, 'count must be greater than 0')
   assertAllHarare(declinedTimes)
 
-  const healthWorkerAvailability = await getAllHealthWorkerAvailability(
-    health_workers || await getAllWithExtantTokens(trx),
+  const provider_availability = await getAllProviderAvailability(
+    await getMany(trx, { provider_ids }),
   )
 
   const slots: {
-    health_worker: HealthWorkerWithGoogleTokens
+    provider: Provider
     start: string
     end: string
     durationMinutes: number
   }[] = []
-  for (const { health_worker, availability } of healthWorkerAvailability) {
+  for (const { provider, availability } of provider_availability) {
     for (const { start, end } of availability) {
       const moreSlots = generateSlots({ start, end, durationMinutes })
         .filter((slot) => !declinedTimes.includes(slot.start))
@@ -155,7 +152,7 @@ export async function availableSlots(
           return dates.includes(appointment_date)
         })
         .map((slot) => ({
-          health_worker,
+          provider,
           ...slot,
         }))
 
@@ -176,7 +173,7 @@ export async function availableSlots(
   assert(uniqueSlots.length > 0, 'No availability found')
 
   const slotsWithDates = uniqueSlots.map((slot) => ({
-    health_worker: slot.health_worker,
+    provider: slot.provider,
     start: new Date(slot.start),
     end: new Date(slot.end),
     durationMinutes: slot.durationMinutes,

@@ -4,22 +4,23 @@ import {
   EmployedHealthWorker,
   EmployeeInfo,
   GoogleTokens,
+  HasId,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
-  Profession,
-  ReturnedSqlRow,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  jsonBuildObject,
+} from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
-import { hasName } from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as address from './address.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
-import sortBy from '../../util/sortBy.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -29,12 +30,12 @@ const expiresInAnHourSql = sql<
 export function upsert(
   trx: TrxOrDb,
   details: HealthWorker,
-): Promise<ReturnedSqlRow<HealthWorker>> {
+): Promise<HasId<HealthWorker>> {
   return trx
     .insertInto('health_workers')
     .values(details)
     .onConflict((oc) => oc.column('email').doUpdateSet(details))
-    .returningAll()
+    .returning(['id', 'name', 'email', 'avatar_url'])
     .executeTakeFirstOrThrow()
 }
 
@@ -56,7 +57,7 @@ export function upsertGoogleTokens(
   trx: TrxOrDb,
   health_worker_id: number,
   tokens: GoogleTokens,
-): Promise<ReturnedSqlRow<GoogleTokens> | undefined> {
+): Promise<HasId<GoogleTokens> | undefined> {
   assert(health_worker_id)
   return trx
     .insertInto('health_worker_google_tokens')
@@ -96,8 +97,6 @@ const pickHealthWorkerDetails = pick([
   'name',
   'email',
   'avatar_url',
-  'gcal_appointments_calendar_id',
-  'gcal_availability_calendar_id',
 ])
 
 export async function upsertWithGoogleCredentials(
@@ -117,28 +116,22 @@ export async function upsertWithGoogleCredentials(
   return { ...health_worker, ...tokens }
 }
 
-const getWithTokensQuery = (trx: TrxOrDb) =>
+export const getWithTokensQuery = (trx: TrxOrDb) =>
   trx
     .selectFrom('health_workers')
-    .leftJoin(
+    .innerJoin(
       'health_worker_google_tokens',
       'health_workers.id',
       'health_worker_google_tokens.health_worker_id',
     )
-    .selectAll('health_workers')
-    .select('health_worker_google_tokens.access_token')
-    .select('health_worker_google_tokens.refresh_token')
-    .select('health_worker_google_tokens.expires_at')
-    .where('health_worker_google_tokens.access_token', 'is not', null)
-    .where('health_worker_google_tokens.refresh_token', 'is not', null)
-
-// TODO: Store auth tokens in a way that we can more easily refresh them and find the ones for a specific health_worker
-export async function getAllWithTokens(
-  trx: TrxOrDb,
-): Promise<HealthWorkerWithGoogleTokens[]> {
-  const result = await getWithTokensQuery(trx).execute()
-  return withTokens(result)
-}
+    .select([
+      'avatar_url',
+      'email',
+      'name',
+      'access_token',
+      'refresh_token',
+      'expires_at',
+    ])
 
 export function isHealthWorkerWithGoogleTokens(
   health_worker: unknown,
@@ -154,11 +147,7 @@ export function isHealthWorkerWithGoogleTokens(
       isDate(health_worker.expires_at)) &&
     'id' in health_worker && typeof health_worker.id === 'number' &&
     'name' in health_worker && typeof health_worker.name === 'string' &&
-    'email' in health_worker && typeof health_worker.email === 'string' &&
-    'gcal_appointments_calendar_id' in health_worker &&
-    typeof health_worker.gcal_appointments_calendar_id === 'string' &&
-    'gcal_availability_calendar_id' in health_worker &&
-    typeof health_worker.gcal_availability_calendar_id === 'string'
+    'email' in health_worker && typeof health_worker.email === 'string'
 }
 
 export function isEmployed(
@@ -170,46 +159,14 @@ export function isEmployed(
     !!health_worker.employment.length
 }
 
-function withTokens(health_workers: unknown[]) {
-  const withTokens: HealthWorkerWithGoogleTokens[] = []
-  for (const health_worker of health_workers) {
-    if (!isHealthWorkerWithGoogleTokens(health_worker)) {
-      throw new Error('HealthWorker has no access token or refresh token')
-    }
-    withTokens.push(health_worker)
-  }
-  return withTokens
-}
-
-export async function getAllWithExtantTokens(trx: TrxOrDb): Promise<
+export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
   HealthWorkerWithGoogleTokens[]
 > {
-  return withTokens(await getAllWithTokens(trx))
-}
-
-export async function getWithTokensById(
-  trx: TrxOrDb,
-  health_worker_id: number,
-): Promise<Maybe<HealthWorkerWithGoogleTokens>> {
-  const health_worker = await getWithTokensQuery(trx).where(
-    'health_workers.id',
-    '=',
-    health_worker_id,
-  )
-    .executeTakeFirstOrThrow()
-  return withTokens([health_worker])[0]
-}
-
-export async function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
-  HealthWorkerWithGoogleTokens[]
-> {
-  return withTokens(
-    await getWithTokensQuery(trx).where(
-      'health_worker_google_tokens.expires_at',
-      '<',
-      sql<Date>`now() + (5 * interval '1 minute')`,
-    ).execute(),
-  )
+  return getWithTokensQuery(trx).select('id').where(
+    'health_worker_google_tokens.expires_at',
+    '<',
+    sql<Date>`now() + (5 * interval '1 minute')`,
+  ).execute()
 }
 
 export function updateAccessToken(
@@ -235,117 +192,6 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
-// TODO: limit to approved nurses & doctors
-export async function search(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-    facility_id?: Maybe<number>
-    professions?: Maybe<Profession[]>
-    prioritize_facility_id?: Maybe<number>
-  },
-): Promise<ReturnedSqlRow<
-  HealthWorker & {
-    name: string
-    facilities: {
-      facility_id: number
-      facility_name: string
-      professions: Profession[]
-    }[]
-    description: string[]
-  }
->[]> {
-  let query = trx
-    .selectFrom('health_workers')
-    .innerJoin(
-      'employment',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'facilities',
-      'employment.facility_id',
-      'facilities.id',
-    )
-    .select((eb) => [
-      'health_workers.id',
-      'health_workers.avatar_url',
-      'health_workers.created_at',
-      'health_workers.email',
-      'health_workers.gcal_appointments_calendar_id',
-      'health_workers.gcal_availability_calendar_id',
-      'health_workers.name',
-      'health_workers.updated_at',
-      jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'facilities',
-            'employment.facility_id',
-            'facilities.id',
-          )
-          .select([
-            'employment.facility_id',
-            'facilities.name as facility_name',
-            sql<Profession[]>`JSON_AGG(employment.profession)`.as(
-              'professions',
-            ),
-          ])
-          .whereRef(
-            'employment.health_worker_id',
-            '=',
-            'health_workers.id',
-          )
-          .where(
-            opts.facility_id
-              ? sql<boolean>`employment.facility_id = ${opts.facility_id}`
-              : sql<boolean>`TRUE`,
-          )
-          .groupBy([
-            'employment.facility_id',
-            'facilities.name',
-          ]),
-      ).as('facilities'),
-    ])
-    .where('health_workers.name', 'is not', null)
-    .groupBy('health_workers.id')
-    .limit(20)
-
-  if (opts.search) {
-    query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
-  }
-  if (opts.professions) {
-    query = query
-      .where('profession', 'in', opts.professions)
-  }
-  if (opts.facility_id) {
-    query = query.where('employment.facility_id', '=', opts.facility_id)
-  }
-
-  const healthWorkers = await query.execute()
-
-  const results_with_description = healthWorkers.map((hw) => {
-    assert(hasName(hw))
-    return {
-      ...hw,
-      description: hw.facilities.map(({ professions, facility_name }) =>
-        `${professions.join(', ')} @ ${facility_name}`
-      ),
-    }
-  })
-
-  if (!opts.prioritize_facility_id) return results_with_description
-
-  return sortBy(
-    results_with_description,
-    (hw) =>
-      hw.facilities.some((facility) =>
-          facility.facility_id === opts.prioritize_facility_id
-        )
-        ? 0
-        : 1,
-  )
-}
-
 export async function get(
   trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: number },
@@ -364,13 +210,9 @@ export async function get(
     )
     .select((eb) => [
       'health_workers.id',
-      'health_workers.created_at',
-      'health_workers.updated_at',
       'health_workers.name',
       'health_workers.email',
       'health_workers.avatar_url',
-      'health_workers.gcal_appointments_calendar_id',
-      'health_workers.gcal_availability_calendar_id',
       'health_worker_google_tokens.access_token',
       'health_worker_google_tokens.refresh_token',
       'health_worker_google_tokens.expires_at',
@@ -385,9 +227,27 @@ export async function get(
             'employment.facility_id',
             'facilities.id',
           )
+          .innerJoin(
+            'provider_calendars',
+            (join) =>
+              join
+                .onRef(
+                  'employment.facility_id',
+                  '=',
+                  'provider_calendars.facility_id',
+                )
+                .onRef(
+                  'employment.health_worker_id',
+                  '=',
+                  'provider_calendars.health_worker_id',
+                ),
+          )
           .select((eb_employment) => [
             'employment.id as employment_id',
             'employment.profession',
+            'provider_calendars.gcal_appointments_calendar_id',
+            'provider_calendars.gcal_availability_calendar_id',
+            'provider_calendars.availability_set',
             jsonBuildObject({
               id: eb_employment.ref('employment.facility_id'),
               name: eb_employment.ref('facilities.name'),
@@ -450,6 +310,9 @@ export async function get(
 
         return {
           facility: roles[0].facility,
+          gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
+          gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
+          availability_set: roles[0].availability_set,
           roles: {
             nurse: nurse_role && {
               registration_needed: !!registration_needed,
@@ -493,171 +356,181 @@ export async function getInviteesAtFacility(
 
 export function getEmployeeInfo(
   trx: TrxOrDb,
-  health_worker_id: number,
-  facility_id: number,
+  opts: {
+    health_worker_id: number
+    facility_id: number
+  },
 ): Promise<Maybe<EmployeeInfo>> {
-  const query = trx
-    .selectFrom('facilities')
-    .innerJoin('employment', 'employment.facility_id', 'facilities.id')
-    .innerJoin(
-      'health_workers',
-      'health_worker_id',
-      'employment.health_worker_id',
-    )
-    .where('health_workers.id', '=', health_worker_id)
-    .where('facilities.id', '=', facility_id)
-    .innerJoin(
-      'employment as all_employment',
-      'all_employment.health_worker_id',
-      'health_workers.id',
-    )
-    .innerJoin(
-      'facilities as all_facilities',
-      'all_employment.facility_id',
-      'all_facilities.id',
-    )
-    .leftJoin(
-      'nurse_registration_details',
-      'nurse_registration_details.health_worker_id',
-      'health_workers.id',
-    )
-    .leftJoin(
-      'nurse_specialties',
-      'nurse_specialties.employee_id',
-      'all_employment.id',
-    )
-    .leftJoin(
-      address.formatted(trx),
-      'address_formatted.id',
-      'nurse_registration_details.address_id',
-    )
-    .select((eb) => [
-      'all_employment.health_worker_id as health_worker_id',
-      sql<
-        Maybe<string>
-      >`TO_CHAR(nurse_registration_details.date_of_birth, 'FMDD FMMonth YYYY')`
-        .as('date_of_birth'),
-      sql<
-        Maybe<string>
-      >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
-        .as('date_of_first_practice'),
-      'nurse_registration_details.gender',
-      'nurse_registration_details.mobile_number',
-      'nurse_registration_details.national_id_number',
-      'nurse_registration_details.ncz_registration_number',
-      'nurse_specialties.specialty',
-      'health_workers.email',
-      'health_workers.name',
-      'health_workers.avatar_url',
-      'address_formatted.address',
-      ({ eb, and }) =>
-        and([
-          eb('nurse_registration_details.id', 'is not', null),
-          eb('nurse_registration_details.approved_by', 'is', null),
-        ]).as('registration_pending_approval'),
-      ({ eb, and }) =>
-        and([
-          eb('nurse_registration_details.id', 'is', null),
-          eb('employment.profession', '=', 'nurse'),
-        ]).as('registration_needed'),
-      ({ eb, or }) =>
-        or([
-          eb('employment.profession', '!=', 'nurse'),
-          eb('nurse_registration_details.approved_by', 'is not', null),
-        ]).as('registration_completed'),
-      jsonArrayFrom(
-        eb.selectFrom('facilities')
-          .innerJoin('employment', 'employment.facility_id', 'facilities.id')
-          .innerJoin(
-            'health_workers',
-            'health_workers.id',
-            'employment.health_worker_id',
-          )
-          .where('health_workers.id', '=', health_worker_id)
-          .groupBy(['facilities.id', 'facilities.name'])
-          .select([
-            'facilities.id as facility_id',
-            'facilities.name as facility_name',
-            'facilities.address',
-            sql<Profession[]>`array_agg(employment.profession)`.as(
-              'professions',
-            ),
-          ]),
-      ).as('employment'),
-      jsonArrayFrom(
-        eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-          'nd_1.id',
-          '=',
-          'nurse_registration_details.id',
-        ).where(
-          'nurse_registration_details.national_id_media_id',
-          'is not',
-          null,
+  return trx.with('health_worker_at_facility', (qb) =>
+    qb
+      .selectFrom('employment')
+      .where('employment.health_worker_id', '=', opts.health_worker_id)
+      .where('employment.facility_id', '=', opts.facility_id)
+      .select('health_worker_id')
+      .distinct()).with('employee_info', (qb) =>
+      qb
+        .selectFrom('health_worker_at_facility')
+        .innerJoin(
+          'health_workers',
+          'health_workers.id',
+          'health_worker_at_facility.health_worker_id',
         )
-          .select([
-            sql<string>`'National ID'`.as('name'),
-            sql<
-              string
-            >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
-              .as('href'),
-          ])
-          .union(
+        .innerJoin(
+          'facilities',
+          (join) => join.on('facilities.id', '=', opts.facility_id),
+        )
+        .leftJoin(
+          'employment as nurse_employment',
+          (join) =>
+            join
+              .onRef(
+                'nurse_employment.health_worker_id',
+                '=',
+                'health_workers.id',
+              )
+              .on('nurse_employment.profession', '=', 'nurse')
+              .on('nurse_employment.facility_id', '=', opts.facility_id),
+        )
+        .leftJoin(
+          'nurse_specialties',
+          'nurse_specialties.employee_id',
+          'nurse_employment.id',
+        )
+        .leftJoin(
+          'nurse_registration_details',
+          'nurse_registration_details.health_worker_id',
+          'health_workers.id',
+        )
+        .leftJoin(
+          address.formatted(trx),
+          'address_formatted.id',
+          'nurse_registration_details.address_id',
+        )
+        .select((eb) => [
+          'health_workers.id as health_worker_id',
+          sql<
+            Maybe<string>
+          >`TO_CHAR(nurse_registration_details.date_of_birth, 'FMDD FMMonth YYYY')`
+            .as('date_of_birth'),
+          sql<
+            Maybe<string>
+          >`TO_CHAR(nurse_registration_details.date_of_first_practice, 'FMDD FMMonth YYYY')`
+            .as('date_of_first_practice'),
+          'nurse_registration_details.gender',
+          'nurse_registration_details.mobile_number',
+          'nurse_registration_details.national_id_number',
+          'nurse_registration_details.ncz_registration_number',
+          'nurse_specialties.specialty',
+          'health_workers.email',
+          'health_workers.name',
+          'health_workers.avatar_url',
+          'address_formatted.address',
+          'facilities.id as facility_id',
+          'facilities.name as facility_name',
+          'facilities.address as facility_address',
+          jsonArrayFromColumn(
+            'profession',
+            eb
+              .selectFrom('employment')
+              .where(
+                'health_worker_id',
+                '=',
+                opts.health_worker_id,
+              )
+              .where('facility_id', '=', opts.facility_id)
+              .select(['employment.profession']),
+          ).as('professions'),
+          ({ eb, and }) =>
+            and([
+              eb('nurse_employment.id', 'is not', null),
+              eb('nurse_registration_details.id', 'is not', null),
+              eb('nurse_registration_details.approved_by', 'is', null),
+            ]).as('registration_pending_approval'),
+          ({ eb, and }) =>
+            and([
+              eb('nurse_employment.id', 'is not', null),
+              eb('nurse_registration_details.id', 'is', null),
+            ]).as('registration_needed'),
+          ({ eb, or }) =>
+            or([
+              eb('nurse_employment.id', 'is', null),
+              eb('nurse_registration_details.approved_by', 'is not', null),
+            ]).as('registration_completed'),
+          jsonArrayFrom(
             eb.selectFrom('nurse_registration_details as nd_1').whereRef(
               'nd_1.id',
               '=',
               'nurse_registration_details.id',
             ).where(
-              'nurse_registration_details.face_picture_media_id',
+              'nurse_registration_details.national_id_media_id',
               'is not',
               null,
             )
               .select([
-                sql<string>`'Face Picture'`.as('name'),
+                sql<string>`'National ID'`.as('name'),
                 sql<
                   string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
                   .as('href'),
-              ]),
-          )
-          .union(
-            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-              'nd_1.id',
-              '=',
-              'nurse_registration_details.id',
-            ).where(
-              'nurse_registration_details.ncz_registration_card_media_id',
-              'is not',
-              null,
-            )
-              .select([
-                sql<string>`'Registration Card'`.as('name'),
-                sql<
-                  string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
-                  .as('href'),
-              ]),
-          )
-          .union(
-            eb.selectFrom('nurse_registration_details as nd_1').whereRef(
-              'nd_1.id',
-              '=',
-              'nurse_registration_details.id',
-            ).where(
-              'nurse_registration_details.nurse_practicing_cert_media_id',
-              'is not',
-              null,
-            )
-              .select([
-                sql<string>`'Nurse Practicing Certificate'`.as('name'),
-                sql<
-                  string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
-                  .as('href'),
-              ]),
-          )
-          .orderBy('name'),
-      ).as('documents'),
-    ])
-
-  return query.executeTakeFirst()
+              ])
+              .union(
+                eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+                  'nd_1.id',
+                  '=',
+                  'nurse_registration_details.id',
+                ).where(
+                  'nurse_registration_details.face_picture_media_id',
+                  'is not',
+                  null,
+                )
+                  .select([
+                    sql<string>`'Face Picture'`.as('name'),
+                    sql<
+                      string
+                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                      .as('href'),
+                  ]),
+              )
+              .union(
+                eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+                  'nd_1.id',
+                  '=',
+                  'nurse_registration_details.id',
+                ).where(
+                  'nurse_registration_details.ncz_registration_card_media_id',
+                  'is not',
+                  null,
+                )
+                  .select([
+                    sql<string>`'Registration Card'`.as('name'),
+                    sql<
+                      string
+                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
+                      .as('href'),
+                  ]),
+              )
+              .union(
+                eb.selectFrom('nurse_registration_details as nd_1').whereRef(
+                  'nd_1.id',
+                  '=',
+                  'nurse_registration_details.id',
+                ).where(
+                  'nurse_registration_details.nurse_practicing_cert_media_id',
+                  'is not',
+                  null,
+                )
+                  .select([
+                    sql<string>`'Nurse Practicing Certificate'`.as('name'),
+                    sql<
+                      string
+                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
+                      .as('href'),
+                  ]),
+              )
+              .orderBy('name'),
+          ).as('documents'),
+        ]))
+    .selectFrom('employee_info')
+    .selectAll()
+    .executeTakeFirst()
 }

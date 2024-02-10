@@ -16,8 +16,8 @@ export default function ScheduleForm() {
       </FormRow>
       <FormRow>
         <PersonSearch
-          name='health_worker'
-          href='/app/health_workers'
+          name='provider'
+          href='/app/providers'
         />
       </FormRow>
       <FormRow>

@@ -16,19 +16,8 @@ export async function up(db: Kysely<unknown>) {
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('email', 'varchar(255)', (col) => col.notNull())
+    .addColumn('email', 'varchar(255)', (col) => col.notNull().unique())
     .addColumn('avatar_url', 'text', (col) => col.notNull())
-    .addColumn(
-      'gcal_appointments_calendar_id',
-      'varchar(255)',
-      (col) => col.notNull(),
-    )
-    .addColumn(
-      'gcal_availability_calendar_id',
-      'varchar(255)',
-      (col) => col.notNull(),
-    )
-    .addUniqueConstraint('health_worker_email', ['email'])
     .execute()
 
   await addUpdatedAtTrigger(db, 'health_workers')

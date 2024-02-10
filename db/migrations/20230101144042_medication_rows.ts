@@ -14,7 +14,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<any>) {
-  await db.deleteFrom('patient_condition_medications').execute()
   await db.deleteFrom('manufactured_medications').execute()
   await db.deleteFrom('medications').execute()
   await db.deleteFrom('drugs').execute()

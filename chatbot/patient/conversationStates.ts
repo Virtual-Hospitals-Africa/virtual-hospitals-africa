@@ -7,10 +7,9 @@ import {
   Facility,
   Location,
   Maybe,
-  PatientAppointmentOfferedTime,
   PatientConversationState,
   PatientState,
-  ReturnedSqlRow,
+  SchedulingAppointmentOfferedTime,
   TrxOrDb,
   WhatsAppSendable,
   WhatsAppSingleSendable,
@@ -23,7 +22,7 @@ import {
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import { availableSlots } from '../../shared/scheduling/getHealthWorkerAvailability.ts'
+import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
 import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
 import mainMenuOptions from './mainMenuOptions.ts'
@@ -418,13 +417,11 @@ const conversationStates: ConversationStates<
       const offeredTime = await appointments.addOfferedTime(trx, {
         patient_appointment_request_id:
           patientState.scheduling_appointment_request.id,
-        health_worker_id: firstAvailable[0].health_worker.id,
+        provider_id: firstAvailable[0].provider.provider_id,
         start: firstAvailable[0].start,
       })
 
-      const nextOfferedTimes: ReturnedSqlRow<
-        PatientAppointmentOfferedTime & { health_worker_name: string }
-      >[] = [
+      const nextOfferedTimes: SchedulingAppointmentOfferedTime[] = [
         offeredTime,
         ...patientState.scheduling_appointment_request.offered_times,
       ]
@@ -520,17 +517,16 @@ const conversationStates: ConversationStates<
       )
 
       // TODO: get this down to a single DB call
-      const newlyOfferedTimes: ReturnedSqlRow<
-        PatientAppointmentOfferedTime & { health_worker_name: string }
-      >[] = await Promise.all(filteredAvailableTimes.map(
-        (timeslot) =>
-          appointments.addOfferedTime(trx, {
-            patient_appointment_request_id:
-              patientState.scheduling_appointment_request!.id,
-            health_worker_id: timeslot.health_worker.id,
-            start: timeslot.start,
-          }),
-      ))
+      const newlyOfferedTimes: SchedulingAppointmentOfferedTime[] =
+        await Promise.all(filteredAvailableTimes.map(
+          (timeslot) =>
+            appointments.addOfferedTime(trx, {
+              patient_appointment_request_id:
+                patientState.scheduling_appointment_request!.id,
+              provider_id: timeslot.provider.provider_id,
+              start: timeslot.start,
+            }),
+        ))
 
       const nextOfferedTimes = [
         ...newlyOfferedTimes,
@@ -576,9 +572,7 @@ const conversationStates: ConversationStates<
         )
 
       const appointmentsByDate: {
-        [date: string]: ReturnedSqlRow<
-          PatientAppointmentOfferedTime & { health_worker_name: string }
-        >[]
+        [date: string]: SchedulingAppointmentOfferedTime[]
       } = nonDeclinedTimes.reduce((acc, appointment) => {
         const date = formatHarare(appointment.start).substring(0, 10)
         if (!acc[date]) {

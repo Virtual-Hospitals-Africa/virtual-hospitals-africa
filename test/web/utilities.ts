@@ -14,6 +14,9 @@ import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
 import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
+import { testCalendars } from '../mocks.ts'
+import { addCalendars } from '../../db/models/providers.ts'
+import { assertRejects } from 'std/assert/assert_rejects.ts'
 
 type WebServer = {
   process: Deno.ChildProcess
@@ -129,21 +132,56 @@ export function describeWithWebServer(
   )
 }
 
+type TestHealthWorkerOpts = {
+  scenario:
+    | 'base'
+    | 'doctor'
+    | 'admin'
+    | 'nurse'
+    | 'approved-nurse'
+    | 'awaiting-approval-nurse'
+  facility_id?: number
+  health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
+}
+
 export async function addTestHealthWorker(
   trx: TrxOrDb,
-  { scenario, facility_id = 1, health_worker_attrs }: {
-    scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
-    facility_id?: number
-    health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
-  } = { scenario: 'base' },
+  { scenario, facility_id = 1, health_worker_attrs }: TestHealthWorkerOpts = {
+    scenario: 'base',
+  },
 ) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
+    calendars?: {
+      gcal_appointments_calendar_id: string
+      gcal_availability_calendar_id: string
+    }
   } = await upsertWithGoogleCredentials(trx, {
     ...testHealthWorker(),
     ...health_worker_attrs,
   })
+
   switch (scenario) {
+    case 'awaiting-approval-nurse': {
+      const [created_employee] = await employment.add(trx, [{
+        facility_id,
+        health_worker_id: healthWorker.id,
+        profession: 'nurse',
+      }])
+      healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
+      await details.add(
+        trx,
+        await testRegistrationDetails(trx, {
+          health_worker_id: healthWorker.id,
+        }),
+      )
+      break
+    }
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
       const [created_employee] = await employment.add(trx, [{
@@ -156,6 +194,11 @@ export async function addTestHealthWorker(
         profession: 'admin',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       await details.add(
         trx,
         await testRegistrationDetails(trx, {
@@ -175,6 +218,11 @@ export async function addTestHealthWorker(
         profession: 'admin',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       break
     }
     case 'doctor': {
@@ -184,6 +232,11 @@ export async function addTestHealthWorker(
         profession: 'doctor',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       break
     }
     case 'nurse': {
@@ -193,6 +246,11 @@ export async function addTestHealthWorker(
         profession: 'nurse',
       }])
       healthWorker.employee_id = created_employee.id
+      healthWorker.calendars = testCalendars()
+      await addCalendars(trx, healthWorker.id, [{
+        facility_id,
+        ...healthWorker.calendars,
+      }])
       break
     }
   }
@@ -200,9 +258,10 @@ export async function addTestHealthWorker(
   return healthWorker
 }
 
-export async function addTestHealthWorkerWithSession(trx: TrxOrDb, opts: {
-  scenario: 'base' | 'approved-nurse' | 'doctor' | 'admin' | 'nurse'
-} = { scenario: 'base' }) {
+export async function addTestHealthWorkerWithSession(
+  trx: TrxOrDb,
+  opts: TestHealthWorkerOpts = { scenario: 'base' },
+) {
   const sessionId = generateUUID()
   const healthWorker = await addTestHealthWorker(trx, opts)
   await redis.set(
@@ -228,7 +287,9 @@ export async function addTestHealthWorkerWithSession(trx: TrxOrDb, opts: {
     const response = await fetchWithSession(...args)
     if (!response.ok) throw new Error(await response.text())
     const html = await response.text()
-    return cheerio.load(html)
+    return cheerio.load(html, {
+      baseURI: response.url,
+    })
   }
 
   return {
@@ -299,6 +360,9 @@ export function getFormDisplay($: cheerio.CheerioAPI): unknown {
   return formDisplay
 }
 
+const withTrx = (callback: (trx: TrxOrDb) => Promise<void>) =>
+  db.transaction().setIsolationLevel('read committed').execute(callback)
+
 export function itUsesTrxAnd(
   description: string,
   callback: (trx: TrxOrDb) => Promise<void>,
@@ -308,8 +372,7 @@ export function itUsesTrxAnd(
   const _it = only ? it.only : skip ? it.skip : it
   _it(
     description,
-    () =>
-      db.transaction().setIsolationLevel('read committed').execute(callback),
+    () => withTrx(callback),
   )
 }
 
@@ -322,6 +385,14 @@ itUsesTrxAnd.skip = (
   description: string,
   callback: (trx: TrxOrDb) => Promise<void>,
 ) => itUsesTrxAnd(description, callback, { skip: true })
+
+itUsesTrxAnd.rejects = (
+  description: string,
+  callback: (trx: TrxOrDb) => Promise<void>,
+) =>
+  it(description, async () => {
+    await assertRejects(() => withTrx(callback), Error)
+  })
 
 export async function withTestFacility(
   trx: TrxOrDb,

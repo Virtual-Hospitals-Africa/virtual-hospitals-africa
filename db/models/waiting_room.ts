@@ -182,22 +182,28 @@ export async function get(
         .limit(1)
         .as('last_completed_encounter_step'),
       jsonArrayFrom(
-        eb.selectFrom('appointment_health_worker_attendees')
+        eb.selectFrom('appointment_providers')
+          .innerJoin(
+            'employment',
+            'employment.id',
+            'appointment_providers.provider_id',
+          )
           .innerJoin(
             'health_workers',
             'health_workers.id',
-            'appointment_health_worker_attendees.health_worker_id',
+            'employment.health_worker_id',
           )
           .whereRef(
-            'appointment_health_worker_attendees.appointment_id',
+            'appointment_providers.appointment_id',
             '=',
             'appointments.id',
           )
           .select([
-            'health_workers.id',
+            'health_workers.id as health_worker_id',
+            'employment.id as provider_id',
             'health_workers.name',
           ]),
-      ).as('appointment_health_workers'),
+      ).as('appointment_providers'),
       jsonArrayFrom(
         eb.selectFrom('patient_encounter_providers')
           .innerJoin(
@@ -239,7 +245,7 @@ export async function get(
         patient,
         appointment_id,
         appointment_start,
-        appointment_health_workers,
+        appointment_providers,
         wait_time,
         completed_intake,
         in_waiting_room,
@@ -256,13 +262,13 @@ export async function get(
       if (appointment_id) {
         assert(appointment_start, 'Appointment must have a start time')
         assert(
-          appointment_health_workers?.length,
+          appointment_providers?.length,
           'Appointment must have at least one health worker',
         )
         appointment = {
           id: appointment_id,
           start: appointment_start,
-          health_workers: appointment_health_workers,
+          providers: appointment_providers,
         }
       }
 

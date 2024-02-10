@@ -1,9 +1,4 @@
-import {
-  Address,
-  NurseRegistrationDetails,
-  ReturnedSqlRow,
-  TrxOrDb,
-} from '../types.ts'
+import { Address, NurseRegistrationDetails, TrxOrDb } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import sample from '../util/sample.ts'
 import * as address from '../db/models/address.ts'
@@ -15,16 +10,19 @@ export const testHealthWorker = () => {
     name: `Test Health Worker ${generateUUID()}`,
     email: generateUUID() + '@example.com',
     avatar_url: generateUUID() + '.com',
-    gcal_appointments_calendar_id: generateUUID() +
-      '@appointments.calendar.google.com',
-    gcal_availability_calendar_id: generateUUID() +
-      '@availability.calendar.google.com',
     access_token: 'access.' + generateUUID(),
     refresh_token: 'refresh.' + generateUUID(),
     expires_in: 3599,
     expires_at,
   }
 }
+
+export const testCalendars = () => ({
+  gcal_appointments_calendar_id: generateUUID() +
+    '@appointments.calendar.google.com',
+  gcal_availability_calendar_id: generateUUID() +
+    '@availability.calendar.google.com',
+})
 
 export function randomDigit() {
   return Math.floor(Math.random() * 10)
@@ -87,6 +85,6 @@ export async function createTestAddress(trx: TrxOrDb): Promise<Address> {
 
 export async function insertTestAddress(
   trx: TrxOrDb,
-): Promise<ReturnedSqlRow<Address>> {
+) {
   return address.upsert(trx, await createTestAddress(trx))
 }
