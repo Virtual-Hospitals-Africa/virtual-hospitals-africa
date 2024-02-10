@@ -23,6 +23,12 @@ export default function AppointmentsCalendar(
         >
           Schedule Appointment
         </Button>
+        <Button
+          className='mt-2 w-full'
+          href={`${url.pathname}/availability`}
+        >
+          Set Availability
+        </Button>
       </Calendar>
       <Appointments
         headerText={formHeaderText({ day, today })}

@@ -165,6 +165,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsPartialAvailability,
     )
 
+    const initial = !!ctx.url.searchParams.get('initial')
     const facility_id_param = getNumericParam(ctx, 'facility_id')
 
     const facility_id = facility_id_param ||
@@ -209,7 +210,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const success = encodeURIComponent(
       'Thanks! With your availability updated your coworkers can now book appointments with you and know when you are available 📆',
     )
-    return redirect(`/app/calendar?success=${success}`)
+    const next_page = initial ? '/app' : '/app/calendar'
+    return redirect(`${next_page}?success=${success}`)
   },
 }
 

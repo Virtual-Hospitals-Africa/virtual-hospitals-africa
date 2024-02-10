@@ -83,6 +83,7 @@ export function addCalendars(
     facility_id: number
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
+    availability_set?: boolean
   }[],
 ) {
   return trx

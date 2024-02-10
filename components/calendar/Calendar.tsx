@@ -3,11 +3,11 @@ import {
   ChevronRightIcon,
 } from '../library/icons/heroicons/outline.tsx'
 import cls from '../../util/cls.ts'
-import { JSX } from 'preact'
 import { monthName, numberOfDaysInMonth } from '../../util/date.ts'
 import range from '../../util/range.ts'
 import { padTime } from '../../util/pad.ts'
 import { MonthNum } from '../../types.ts'
+import { ComponentChildren } from 'preact'
 
 type CalendarDayProps = {
   date: string
@@ -89,7 +89,7 @@ export default function Calendar(
     day: string
     today: string
     url: URL
-    children?: JSX.Element
+    children?: ComponentChildren
   },
 ) {
   const [yearInt, monthInt] = day.split('-').map((n) => parseInt(n, 10))

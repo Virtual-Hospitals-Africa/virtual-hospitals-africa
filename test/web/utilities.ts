@@ -173,6 +173,7 @@ export async function addTestHealthWorker(
       await addCalendars(trx, healthWorker.id, [{
         facility_id,
         ...healthWorker.calendars,
+        availability_set: true,
       }])
       await details.add(
         trx,
@@ -198,6 +199,7 @@ export async function addTestHealthWorker(
       await addCalendars(trx, healthWorker.id, [{
         facility_id,
         ...healthWorker.calendars,
+        availability_set: true,
       }])
       await details.add(
         trx,
@@ -222,6 +224,7 @@ export async function addTestHealthWorker(
       await addCalendars(trx, healthWorker.id, [{
         facility_id,
         ...healthWorker.calendars,
+        availability_set: true,
       }])
       break
     }
@@ -236,6 +239,7 @@ export async function addTestHealthWorker(
       await addCalendars(trx, healthWorker.id, [{
         facility_id,
         ...healthWorker.calendars,
+        availability_set: true,
       }])
       break
     }
@@ -250,6 +254,7 @@ export async function addTestHealthWorker(
       await addCalendars(trx, healthWorker.id, [{
         facility_id,
         ...healthWorker.calendars,
+        availability_set: true,
       }])
       break
     }

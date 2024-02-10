@@ -39,7 +39,7 @@ export default function AsyncSearch<
     request.setRequestHeader('accept', 'application/json')
     request.onload = () => {
       if (request.status !== 200) {
-        const event = new CustomEvent('request-error', {
+        const event = new CustomEvent('show-error', {
           detail: request.responseText,
         })
         return self.dispatchEvent(event)
