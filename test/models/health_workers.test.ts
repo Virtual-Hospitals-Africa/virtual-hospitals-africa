@@ -85,7 +85,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
                 healthWorker.calendars!.gcal_appointments_calendar_id,
               gcal_availability_calendar_id:
                 healthWorker.calendars!.gcal_availability_calendar_id,
-              availability_set: false,
+              availability_set: true,
             },
           ],
           id: healthWorker.id,

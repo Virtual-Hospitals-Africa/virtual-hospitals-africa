@@ -9,7 +9,7 @@ addEventListener('submit', function (event) {
   var submitButton
 
   function onError(errorMessage) {
-    var event = new CustomEvent('request-error', { detail: errorMessage })
+    var event = new CustomEvent('show-error', { detail: errorMessage })
     dispatchEvent(event)
     submitButton.disabled = false
   }

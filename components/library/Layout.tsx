@@ -27,8 +27,9 @@ export type LayoutProps =
   })
 
 function AppLayoutContents(
-  { title, avatarUrl, variant, sidebar, children }: {
+  { title, avatarUrl, variant, sidebar, route, children }: {
     title: string
+    route: string
     avatarUrl?: Maybe<string>
     variant: 'home page' | 'form'
     sidebar?: ComponentChild
@@ -37,7 +38,7 @@ function AppLayoutContents(
 ) {
   return (
     <>
-      {sidebar}
+      {sidebar || <HomePageSidebar route={route} />}
       <section className='md:pl-48'>
         <Header
           title={title}
@@ -99,7 +100,9 @@ export default function Layout(props: LayoutProps) {
           sidebar={<HomePageSidebar route={props.route} />}
         />
       )}
-      {props.variant === 'form' && <AppLayoutContents {...props} />}
+      {props.variant === 'form' && (
+        <AppLayoutContents route={props.url.pathname} {...props} />
+      )}
       {props.variant === 'just logo' && <JustLogoLayoutContents {...props} />}
     </>
   )

@@ -14,9 +14,9 @@ export function ErrorListener({
       assert(event instanceof CustomEvent)
       error.value = event.detail
     }
-    self.addEventListener('request-error', listener)
+    self.addEventListener('show-error', listener)
     return () => {
-      self.removeEventListener('request-error', listener)
+      self.removeEventListener('show-error', listener)
     }
   }, [])
   return (

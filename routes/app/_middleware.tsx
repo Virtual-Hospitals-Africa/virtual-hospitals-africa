@@ -3,7 +3,6 @@ import { WithSession } from 'fresh_session'
 import { EmployedHealthWorker, TrxOrDb } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
-import { assertOr403, StatusError } from '../../util/assertOr.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export async function handler(
@@ -30,33 +29,47 @@ export async function handler(
   }
   ctx.state.healthWorker = healthWorker
 
-  const roleNeedingRegistration = healthWorker.employment.find((e) =>
+  const role_needing_registration = healthWorker.employment.find((e) =>
     e.roles.nurse?.registration_needed || e.roles.doctor?.registration_needed ||
     e.roles.admin?.registration_needed
   )
 
-  const rolePendingApproval = healthWorker.employment.find((e) =>
+  // This is not quite right as this will mean that you can't log in if you're pending approval at one facility, even if you're not
+  // pending approval at another but not at another.
+  // TODO deal with this as part of doctor registration
+  const role_pending_approval = healthWorker.employment.find((e) =>
     e.roles.nurse?.registration_pending_approval ||
     e.roles.doctor?.registration_pending_approval ||
     e.roles.admin?.registration_pending_approval
   )
-  if (roleNeedingRegistration) {
-    const registrationPage =
-      `/app/facilities/${roleNeedingRegistration.facility.id}/register`
 
-    const url = new URL(req.url)
-    const onRegistrationPage = url.pathname.startsWith(registrationPage)
-    return onRegistrationPage
-      ? ctx.next()
-      : redirect(`${registrationPage}/personal`)
+  const availability_not_set = healthWorker.employment.find((e) =>
+    !e.availability_set
+  )
+
+  function redirectIfNotAlreadyOnPage(page: string) {
+    const on_page = (ctx.url.pathname + ctx.url.search).startsWith(page)
+    return on_page ? ctx.next() : redirect(page)
+  }
+
+  if (role_needing_registration) {
+    return redirectIfNotAlreadyOnPage(
+      `/app/facilities/${role_needing_registration.facility.id}/register`,
+    )
   }
 
   // TODO make a page for this purpose
-  if (rolePendingApproval) {
-    const pendingApprovalPage = '/app/pending_approval'
-    const url = new URL(req.url)
-    const onPendingApprovalPage = url.pathname === pendingApprovalPage
-    return onPendingApprovalPage ? ctx.next() : redirect(pendingApprovalPage)
+  if (role_pending_approval) {
+    return redirectIfNotAlreadyOnPage('/app/pending_approval')
+  }
+
+  if (availability_not_set) {
+    const warning = encodeURIComponent(
+      'Please set your availability to be able to receive appointments',
+    )
+    return redirectIfNotAlreadyOnPage(
+      `/app/calendar/availability?facility_id=${availability_not_set.facility.id}&initial=true&warning=${warning}`,
+    )
   }
 
   return ctx.next()
