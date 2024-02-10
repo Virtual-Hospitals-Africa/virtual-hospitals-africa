@@ -20,8 +20,11 @@ function assertIsAssessments(
   all_normal: boolean
 } {
   assertOr400(isObjectLike(values), 'Invalid form values')
-  assertOr400(values.all_normal || (values.patient_assessments as number [] ?? []).length > 0 ,
-   'Please select one item before proceeding')
+  assertOr400(
+    values.all_normal ||
+      (values.patient_assessments as number[] ?? []).length > 0,
+    'Please select one item before proceeding',
+  )
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -36,7 +39,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-    const completing_step =  completedStep(ctx.state.trx, {
+    const completing_step = completedStep(ctx.state.trx, {
       encounter_id: ctx.state.encounter.encounter_id,
       step: 'general_assessments',
     })
@@ -44,7 +47,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     await patient_general_assessments.upsert(
       ctx.state.trx,
       patient_id,
-      (patient_assessments?.map((c) => ({ id: c })) ?? []),
+      patient_assessments?.map((c) => ({ id: c })) ?? [],
     )
 
     await completing_step

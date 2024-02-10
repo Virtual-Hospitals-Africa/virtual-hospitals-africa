@@ -15,8 +15,8 @@ export default function GeneralAssessmentForm({
 }): JSX.Element {
   globalThis.onbeforeunload = function () {
     if (document.URL.includes('general_assessments')) {
-      const submitButton = document.querySelector('button[type="submit"]');
-      (submitButton as HTMLButtonElement).click()
+      const submitButton = document.querySelector('button[type="submit"]')
+      ;(submitButton as HTMLButtonElement).click()
     }
   }
   const selectedIds = selectedItems?.map((c) => c.id) ?? []

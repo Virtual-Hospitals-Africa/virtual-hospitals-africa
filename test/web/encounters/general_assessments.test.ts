@@ -32,12 +32,12 @@ describeWithWebServer(
         {
           method: 'POST',
           body,
-        }
+        },
       )
       if (!response.ok) throw new Error(await response.text())
       const assessments = await patient_general_assessment.get(
         db,
-        encounter.patient_id
+        encounter.patient_id,
       )
       assertEquals(assessments, [{ id: 1 }, { id: 2 }, { id: 5 }])
     })
@@ -66,12 +66,12 @@ describeWithWebServer(
         {
           method: 'POST',
           body,
-        }
+        },
       )
       if (!response.ok) throw new Error(await response.text())
       const assessments = await patient_general_assessment.get(
         db,
-        encounter.patient_id
+        encounter.patient_id,
       )
       assertEquals(assessments, [{ id: 6 }, { id: 8 }])
     })
@@ -99,14 +99,14 @@ describeWithWebServer(
         {
           method: 'POST',
           body,
-        }
+        },
       )
       if (!response.ok) throw new Error(await response.text())
       const assessments = await patient_general_assessment.get(
         db,
-        encounter.patient_id
+        encounter.patient_id,
       )
       assertEquals(assessments.length, 0)
     })
-  }
+  },
 )

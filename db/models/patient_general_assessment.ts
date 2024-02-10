@@ -8,7 +8,8 @@ export async function upsert(
   general_assessments: { id: number }[],
 ): Promise<void> {
   assertOr400(
-    general_assessments.length === new Set(general_assessments.map((item) => item.id)).size,
+    general_assessments.length ===
+      new Set(general_assessments.map((item) => item.id)).size,
     'Assessment ids must be unique',
   )
 

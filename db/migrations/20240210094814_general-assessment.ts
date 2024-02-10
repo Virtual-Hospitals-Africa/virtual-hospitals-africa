@@ -37,14 +37,18 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'general_assessment_id',
       'integer',
-      (col) => col.notNull().references('general_assessments.id').onDelete('cascade'),
+      (col) =>
+        col.notNull().references('general_assessments.id').onDelete('cascade'),
     )
     .addColumn(
       'patient_id',
       'integer',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
-    .addUniqueConstraint('patient_general_assessment_unique', ['general_assessment_id', 'patient_id'])
+    .addUniqueConstraint('patient_general_assessment_unique', [
+      'general_assessment_id',
+      'patient_id',
+    ])
     .execute()
 
   await addUpdatedAtTrigger(db, 'patient_general_assessment')

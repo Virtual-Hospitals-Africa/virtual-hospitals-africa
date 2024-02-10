@@ -18,11 +18,11 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
         ])
         const patientAssessments = await patient_general_assessment.get(
           trx,
-          patient.id
+          patient.id,
         )
 
         assertEquals(patientAssessments.length, 3)
-      }
+      },
     )
 
     itUsesTrxAnd(
@@ -37,7 +37,7 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
         ])
         const patientAssessments = await patient_general_assessment.get(
           trx,
-          patient.id
+          patient.id,
         )
 
         assertEquals(patientAssessments.length, 3)
@@ -47,19 +47,19 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
           { id: 5 },
         ])
 
-        const patientAssessmentsAfterRemoving =
-          await patient_general_assessment.get(trx, patient.id)
+        const patientAssessmentsAfterRemoving = await patient_general_assessment
+          .get(trx, patient.id)
 
         assertEquals(patientAssessmentsAfterRemoving.length, 2)
         assertEquals(
           patientAssessmentsAfterRemoving.some((c) => c.id === 1),
-          true
+          true,
         )
         assertEquals(
           patientAssessmentsAfterRemoving.some((c) => c.id === 5),
-          true
+          true,
         )
-      }
+      },
     )
   })
 })
