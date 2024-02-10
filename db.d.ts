@@ -773,6 +773,6 @@ export interface DB {
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
   patient_general_assessment: PatientGeneralAssessment
-  general_assessment: GeneralAssessment
+  general_assessments: GeneralAssessment
 }
 type Buffer = Uint8Array
