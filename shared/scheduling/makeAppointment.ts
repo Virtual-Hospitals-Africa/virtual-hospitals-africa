@@ -142,8 +142,8 @@ export function assertIsScheduleFormValues(
   assertOr400(typeof values.durationMinutes === 'number')
   assertOr400(typeof values.reason === 'string')
   assertOr400(typeof values.patient_id === 'number')
-  assertOr400(Array.isArray(values.health_worker_ids))
-  assertOr400(values.health_worker_ids.every((id) => typeof id === 'number'))
+  assertOr400(Array.isArray(values.provider_ids))
+  assertOr400(values.provider_ids.every((id) => typeof id === 'number'))
 }
 
 export async function makeAppointmentWeb(

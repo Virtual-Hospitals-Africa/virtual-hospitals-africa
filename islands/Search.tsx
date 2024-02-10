@@ -9,6 +9,7 @@ import {
   CheckIcon,
   ChevronUpDownIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
+import capitalize from '../util/capitalize.ts'
 
 function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
@@ -41,7 +42,7 @@ export default function Search<
 >({
   name,
   required,
-  label,
+  label = capitalize(name ?? ''),
   value,
   multi,
   addable,

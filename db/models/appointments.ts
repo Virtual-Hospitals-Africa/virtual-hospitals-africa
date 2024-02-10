@@ -131,8 +131,9 @@ export function addAttendees(
     .insertInto('appointment_providers')
     .values(provider_ids.map((provider_id) => ({
       appointment_id,
-      provider_id,
       confirmed: false,
+      // Only add the provider if they are a doctor or nurse
+      provider_id: trx.selectFrom('employment').where('profession', 'in', ['doctor', 'nurse']).where('id', '=', provider_id).select('id'),
     })))
     .returningAll()
     .execute()

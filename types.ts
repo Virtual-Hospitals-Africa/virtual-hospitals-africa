@@ -1126,13 +1126,9 @@ export type EmployedHealthWorker = ReturnedSqlRow<
   }
 >
 
-export type HealthWorkerGoogleToken = GoogleTokens & {
-  health_worker_id: number
+export type HealthWorkerWithGoogleTokens = HealthWorker & GoogleTokens & {
+  id: number
 }
-
-export type HealthWorkerWithGoogleTokens = ReturnedSqlRow<
-  HealthWorker & GoogleTokens
->
 
 export type Availability = {
   start: string
@@ -1773,11 +1769,8 @@ export type RenderedPatientSymptom = PatientInsertShared & {
 
 export type Provider = {
   avatar_url: string
-  created_at: Date
   email: string
-  id: number
   name: string
-  updated_at: Date
   access_token: string
   refresh_token: string
   expires_at: Date
@@ -1785,6 +1778,7 @@ export type Provider = {
   availability_set: boolean
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
+  health_worker_id: number
   provider_id: number
 }
 

@@ -13,13 +13,11 @@ import {
 } from '../../types.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
-import { hasName } from '../../util/haveNames.ts'
 import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as address from './address.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
-import sortBy from '../../util/sortBy.ts'
 
 // Shave a minute so that we refresh too early rather than too late
 const expiresInAnHourSql = sql<
@@ -118,33 +116,19 @@ export async function upsertWithGoogleCredentials(
 export const getWithTokensQuery = (trx: TrxOrDb) =>
   trx
     .selectFrom('health_workers')
-    .leftJoin(
+    .innerJoin(
       'health_worker_google_tokens',
       'health_workers.id',
       'health_worker_google_tokens.health_worker_id',
     )
-    .selectAll('health_workers')
-    .select((eb) => [
-      eb.ref('health_worker_google_tokens.access_token').$notNull().as(
-        'access_token',
-      ),
-      eb.ref('health_worker_google_tokens.refresh_token').$notNull().as(
-        'refresh_token',
-      ),
-      eb.ref('health_worker_google_tokens.expires_at').$notNull().as(
-        'expires_at',
-      ),
+    .select([
+      'avatar_url',
+      'email',
+      'name',
+      'access_token',
+      'refresh_token',
+      'expires_at',
     ])
-    .where('health_worker_google_tokens.access_token', 'is not', null)
-    .where('health_worker_google_tokens.refresh_token', 'is not', null)
-
-// TODO: Store auth tokens in a way that we can more easily refresh them and find the ones for a specific health_worker
-export async function getAllWithTokens(
-  trx: TrxOrDb,
-): Promise<HealthWorkerWithGoogleTokens[]> {
-  const result = await getWithTokensQuery(trx).execute()
-  return withTokens(result)
-}
 
 export function isHealthWorkerWithGoogleTokens(
   health_worker: unknown,
@@ -172,40 +156,14 @@ export function isEmployed(
     !!health_worker.employment.length
 }
 
-function withTokens(health_workers: unknown[]) {
-  const withTokens: HealthWorkerWithGoogleTokens[] = []
-  for (const health_worker of health_workers) {
-    if (!isHealthWorkerWithGoogleTokens(health_worker)) {
-      throw new Error('HealthWorker has no access token or refresh token')
-    }
-    withTokens.push(health_worker)
-  }
-  return withTokens
-}
-
-export async function getWithTokensById(
-  trx: TrxOrDb,
-  health_worker_id: number,
-): Promise<Maybe<HealthWorkerWithGoogleTokens>> {
-  const health_worker = await getWithTokensQuery(trx).where(
-    'health_workers.id',
-    '=',
-    health_worker_id,
-  )
-    .executeTakeFirstOrThrow()
-  return withTokens([health_worker])[0]
-}
-
-export async function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
+export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
   HealthWorkerWithGoogleTokens[]
 > {
-  return withTokens(
-    await getWithTokensQuery(trx).where(
-      'health_worker_google_tokens.expires_at',
-      '<',
-      sql<Date>`now() + (5 * interval '1 minute')`,
-    ).execute(),
-  )
+  return getWithTokensQuery(trx).select('id').where(
+    'health_worker_google_tokens.expires_at',
+    '<',
+    sql<Date>`now() + (5 * interval '1 minute')`,
+  ).execute()
 }
 
 export function updateAccessToken(
@@ -231,114 +189,6 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
-// TODO: limit to approved nurses & doctors
-export async function search(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-    facility_id?: Maybe<number>
-    professions?: Maybe<Profession[]>
-    prioritize_facility_id?: Maybe<number>
-  },
-): Promise<ReturnedSqlRow<
-  HealthWorker & {
-    name: string
-    facilities: {
-      facility_id: number
-      facility_name: string
-      professions: Profession[]
-    }[]
-    description: string[]
-  }
->[]> {
-  let query = trx
-    .selectFrom('health_workers')
-    .innerJoin(
-      'employment',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin(
-      'facilities',
-      'employment.facility_id',
-      'facilities.id',
-    )
-    .select((eb) => [
-      'health_workers.id',
-      'health_workers.avatar_url',
-      'health_workers.created_at',
-      'health_workers.email',
-      'health_workers.name',
-      'health_workers.updated_at',
-      jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'facilities',
-            'employment.facility_id',
-            'facilities.id',
-          )
-          .select([
-            'employment.facility_id',
-            'facilities.name as facility_name',
-            sql<Profession[]>`JSON_AGG(employment.profession)`.as(
-              'professions',
-            ),
-          ])
-          .whereRef(
-            'employment.health_worker_id',
-            '=',
-            'health_workers.id',
-          )
-          .where(
-            opts.facility_id
-              ? sql<boolean>`employment.facility_id = ${opts.facility_id}`
-              : sql<boolean>`TRUE`,
-          )
-          .groupBy([
-            'employment.facility_id',
-            'facilities.name',
-          ]),
-      ).as('facilities'),
-    ])
-    .where('health_workers.name', 'is not', null)
-    .groupBy('health_workers.id')
-    .limit(20)
-
-  if (opts.search) {
-    query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
-  }
-  if (opts.professions) {
-    query = query
-      .where('profession', 'in', opts.professions)
-  }
-  if (opts.facility_id) {
-    query = query.where('employment.facility_id', '=', opts.facility_id)
-  }
-
-  const healthWorkers = await query.execute()
-
-  const results_with_description = healthWorkers.map((hw) => {
-    assert(hasName(hw))
-    return {
-      ...hw,
-      description: hw.facilities.map(({ professions, facility_name }) =>
-        `${professions.join(', ')} @ ${facility_name}`
-      ),
-    }
-  })
-
-  if (!opts.prioritize_facility_id) return results_with_description
-
-  return sortBy(
-    results_with_description,
-    (hw) =>
-      hw.facilities.some((facility) =>
-          facility.facility_id === opts.prioritize_facility_id
-        )
-        ? 0
-        : 1,
-  )
-}
 
 export async function get(
   trx: TrxOrDb,

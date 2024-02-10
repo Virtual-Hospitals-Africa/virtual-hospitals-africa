@@ -26,6 +26,7 @@ import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertIsPartialAvailability } from '../../../shared/scheduling/availability.tsx'
 import { getNumericParam } from '../../../util/getNumericParam.ts'
 import { assertOr403 } from '../../../util/assertOr.ts'
+import { markAvailabilitySet } from '../../../db/models/providers.ts'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -166,11 +167,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     const facility_id_param = getNumericParam(ctx, 'facility_id')
 
-    assertOr403(
-      healthWorker.employment.length > 1 && !facility_id_param,
-      'Must specify facility_id when health worker has multiple employments',
-    )
-
     const facility_id = facility_id_param ||
       healthWorker.employment[0].facility.id
     const matching_employment = healthWorker.employment.find(
@@ -180,6 +176,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       matching_employment,
       'Health worker not employed at this facility',
     )
+
+    const marking_availability_set = markAvailabilitySet(
+      ctx.state.trx,
+      {
+        health_worker_id: healthWorker.id,
+        facility_id,
+      },
+    )
+
     const gcal_availability_calendar_id =
       matching_employment!.gcal_availability_calendar_id
 
@@ -200,7 +205,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       await googleClient.insertEvent(gcal_availability_calendar_id, event)
     }
 
-    return redirect('/app/calendar?availability-set=true')
+    await marking_availability_set
+    const success = encodeURIComponent(
+      'Thanks! With your availability updated your coworkers can now book appointments with you and know when you are available 📆',
+    )
+    return redirect(`/app/calendar?success=${success}`)
   },
 }
 

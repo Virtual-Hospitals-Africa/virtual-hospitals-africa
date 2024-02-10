@@ -11,10 +11,9 @@ export default function* zip<T, U>(
     const result2 = iter2.next()
     if (result1.done) {
       assert(result2.done, 'iterable2 is longer than iterable1')
+      break
     }
-    if (result2.done) {
-      assert(result1.done, 'iterable1 is longer than iterable2')
-    }
+    assert(!result2.done, 'iterable1 is longer than iterable2')
     yield [result1.value, result2.value]
   }
 }

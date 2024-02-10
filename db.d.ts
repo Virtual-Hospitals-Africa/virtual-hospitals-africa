@@ -246,17 +246,6 @@ export interface Employment {
   updated_at: Generated<Timestamp>
 }
 
-export interface EmploymentCalendars {
-  availability_set: Generated<boolean>
-  created_at: Generated<Timestamp>
-  facility_id: number
-  gcal_appointments_calendar_id: string
-  gcal_availability_calendar_id: string
-  health_worker_id: number
-  id: Generated<number>
-  updated_at: Generated<Timestamp>
-}
-
 export interface Encounter {
   order: Int8
   step: EncounterStep
@@ -625,6 +614,17 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
+export interface ProviderCalendars {
+  availability_set: Generated<boolean>
+  created_at: Generated<Timestamp>
+  facility_id: number
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  health_worker_id: number
+  id: Generated<number>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Provinces {
   country_id: number
   created_at: Generated<Timestamp>
@@ -710,7 +710,6 @@ export interface DB {
   districts: Districts
   drugs: Drugs
   employment: Employment
-  provider_calendars: EmploymentCalendars
   encounter: Encounter
   facilities: Facilities
   geography_columns: GeographyColumns
@@ -748,6 +747,7 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
+  provider_calendars: ProviderCalendars
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs

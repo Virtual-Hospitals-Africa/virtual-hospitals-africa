@@ -83,7 +83,7 @@ export function defaultTimeRange(): TimeRange {
   timeMax.setDate(timeMin.getDate() + 7)
   return { timeMin, timeMax }
 }
-export async function getHealthWorkerAvailability(
+export async function provider_availability(
   provider: Provider,
   timeRange = defaultTimeRange(),
 ) {
@@ -107,7 +107,7 @@ export function getAllProviderAvailability(
 ) {
   return Promise.all(
     providers.map((provider) =>
-      getHealthWorkerAvailability(provider, timeRange)
+      provider_availability(provider, timeRange)
     ),
   )
 }
@@ -134,7 +134,7 @@ export async function availableSlots(
   assert(count > 0, 'count must be greater than 0')
   assertAllHarare(declinedTimes)
 
-  const healthWorkerAvailability = await getAllProviderAvailability(
+  const provider_availability = await getAllProviderAvailability(
     await getMany(trx, { provider_ids }),
   )
 
@@ -144,7 +144,7 @@ export async function availableSlots(
     end: string
     durationMinutes: number
   }[] = []
-  for (const { provider, availability } of healthWorkerAvailability) {
+  for (const { provider, availability } of provider_availability) {
     for (const { start, end } of availability) {
       const moreSlots = generateSlots({ start, end, durationMinutes })
         .filter((slot) => !declinedTimes.includes(slot.start))

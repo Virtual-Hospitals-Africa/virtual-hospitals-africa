@@ -27,7 +27,6 @@ import * as $app_facilities_facility_id_employees_invite from './routes/app/faci
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
 import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
-import * as $app_health_workers from './routes/app/health_workers.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_patients from './routes/app/patients.tsx'
@@ -55,6 +54,7 @@ import * as $app_patients_patient_id_intake_occupation from './routes/app/patien
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
 import * as $app_patients_patient_id_intake_review from './routes/app/patients/[patient_id]/intake/review.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
+import * as $app_providers from './routes/app/providers.tsx'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
@@ -72,6 +72,7 @@ import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
+import * as $BackLink from './islands/BackLink.tsx'
 import * as $ConditionSearch from './islands/ConditionSearch.tsx'
 import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
@@ -167,7 +168,6 @@ const manifest = {
       $app_facilities_facility_id_waiting_room,
     './routes/app/facilities/[facility_id]/waiting-room/add.tsx':
       $app_facilities_facility_id_waiting_room_add,
-    './routes/app/health_workers.tsx': $app_health_workers,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
     './routes/app/patients.tsx': $app_patients,
@@ -217,6 +217,7 @@ const manifest = {
     './routes/app/patients/[patient_id]/intake/review.tsx':
       $app_patients_patient_id_intake_review,
     './routes/app/pending_approval.tsx': $app_pending_approval,
+    './routes/app/providers.tsx': $app_providers,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
@@ -236,6 +237,7 @@ const manifest = {
   islands: {
     './islands/AddRemove.tsx': $AddRemove,
     './islands/AsyncSearch.tsx': $AsyncSearch,
+    './islands/BackLink.tsx': $BackLink,
     './islands/ConditionSearch.tsx': $ConditionSearch,
     './islands/ErrorListener.tsx': $ErrorListener,
     './islands/ErrorMessage.tsx': $ErrorMessage,

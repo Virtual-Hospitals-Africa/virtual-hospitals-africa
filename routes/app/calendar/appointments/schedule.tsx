@@ -10,7 +10,6 @@ import {
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
-import * as health_workers from '../../../../db/models/health_workers.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import {
@@ -31,7 +30,7 @@ import { insertEvent } from '../../../../external-clients/google.ts'
 
 type SearchFormValues = {
   provider_id?: number
-  health_worker_name?: string
+  provider_name?: string
   patient_id?: number
   patient_name?: string
   date?: string
@@ -44,7 +43,7 @@ export type ScheduleFormValues = {
   durationMinutes: number
   reason: string
   patient_id: number
-  health_worker_ids: number[]
+  provider_ids: number[]
 }
 
 type SchedulePageProps = {
@@ -59,8 +58,8 @@ function assertIsSearchFormValues(
   for (const key in values) {
     assertOr400(
       [
-        'health_worker_id',
-        'health_worker_name',
+        'provider_id',
+        'provider_name',
         'patient_id',
         'patient_name',
         'date',
@@ -101,7 +100,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
       const slots: ProviderAppointmentSlot[] = availability.map((slot) => ({
         type: 'slot',
         patient,
-        id: `${slot.provider.id}-${slot.start}`,
+        id: `${slot.provider.provider_id}-${slot.start}`,
         durationMinutes: slot.durationMinutes,
         start: parseDateTime(new Date(slot.start), 'numeric'),
         end: parseDateTime(new Date(slot.end), 'numeric'),

@@ -111,7 +111,9 @@ export default function Appointment(
   if (appointment.providers) {
     search.set(
       'provider_ids',
-      JSON.stringify(appointment.providers.map((hw) => hw.id)),
+      JSON.stringify(
+        appointment.providers.map((provider) => provider.provider_id),
+      ),
     )
   }
 
@@ -124,11 +126,7 @@ export default function Appointment(
             action={`${url.pathname}?${search}`}
             method='POST'
           >
-            <Button
-              onClick={(event) => {
-                console.log('event', event)
-              }}
-            >
+            <Button>
               Book
             </Button>
           </form>
