@@ -698,6 +698,22 @@ export interface WhatsappMessagesSent {
   whatsapp_id: string
 }
 
+export interface GeneralAssessment {
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+  id: Generated<number>
+  name: string
+  type: string
+}
+
+export interface PatientGeneralAssessment {
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+  general_assessment_id: number
+  id: Generated<number>
+  patient_id: number
+}
+
 export interface DB {
   address: Address
   allergies: Allergies
@@ -756,5 +772,7 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
+  patient_general_assessment: PatientGeneralAssessment
+  general_assessment: GeneralAssessment
 }
 type Buffer = Uint8Array
