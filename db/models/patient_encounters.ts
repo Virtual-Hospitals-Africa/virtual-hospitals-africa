@@ -12,6 +12,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 import { EncounterStep } from '../../db.d.ts'
 import { reasons } from '../../shared/encounter.ts'
+import { ensureProviderId } from './providers.ts'
 
 export type Upsert =
   & {
@@ -71,7 +72,10 @@ export async function upsert(
   patient_id: number
   waiting_room_id: number
   created_at: Date
-  provider_ids: number[]
+  providers: {
+    encounter_provider_id: number
+    provider_id: number
+  }[]
 }> {
   if (!patient_id) {
     assertOr400(!encounter_id)
@@ -106,9 +110,12 @@ export async function upsert(
       .insertInto('patient_encounter_providers')
       .values(provider_ids.map((provider_id) => ({
         patient_encounter_id: upserted.id,
-        provider_id,
+        provider_id: ensureProviderId(trx, provider_id),
       })))
-      .returning('id')
+      .returning([
+        'id as encounter_provider_id',
+        'provider_id',
+      ])
       .execute()
     : Promise.resolve([])
 
@@ -117,12 +124,10 @@ export async function upsert(
     facility_id,
   })
 
-  const providers = await adding_providers
-
   return {
     ...upserted,
     waiting_room_id: waiting_room_added.id,
-    provider_ids: providers.map((p) => p.id),
+    providers: await adding_providers,
   }
 }
 

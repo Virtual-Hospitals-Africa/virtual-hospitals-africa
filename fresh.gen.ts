@@ -39,6 +39,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_close_visit from '.
 import * as $app_patients_patient_id_encounters_encounter_id_diagnosis from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_general_assessments from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
@@ -106,6 +107,7 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
+import * as $general_assessment_Form from './islands/general-assessment/Form.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
@@ -189,6 +191,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
       $app_patients_patient_id_encounters_encounter_id_examinations,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx':
+      $app_patients_patient_id_encounters_encounter_id_general_assessments,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':
       $app_patients_patient_id_encounters_encounter_id_orders,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx':
@@ -274,6 +278,7 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
+    './islands/general-assessment/Form.tsx': $general_assessment_Form,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,

@@ -1764,6 +1764,11 @@ export type RenderedPatientSymptom = PatientInsertShared & {
   }[]
 }
 
+export interface GeneralAssessment {
+  assessment: string
+  category: string
+}
+
 export type Provider = {
   avatar_url: string
   email: string
@@ -1777,6 +1782,14 @@ export type Provider = {
   gcal_availability_calendar_id: string
   health_worker_id: number
   provider_id: number
+}
+
+export type GeneralAssessmentCategory = {
+  category: string
+  assessments: {
+    assessment: string
+    checked: SqlBool
+  }[]
 }
 
 export type DatabaseSchema = DB
