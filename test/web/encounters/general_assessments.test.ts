@@ -39,7 +39,9 @@ describeWithWebServer(
         db,
         encounter.patient_id,
       )
-      assertEquals(assessments, [{ id: 'cold' }, { id: 'musty' }, { id: 'alcohol' }])
+      assertEquals(assessments, [{ id: 'cold' }, { id: 'musty' }, {
+        id: 'alcohol',
+      }])
     })
 
     it('can overwrite existing asssessments on POST', async () => {
@@ -73,7 +75,7 @@ describeWithWebServer(
         db,
         encounter.patient_id,
       )
-      assertEquals(assessments, [{ id:'cold' }, { id: 'thin' }])
+      assertEquals(assessments, [{ id: 'cold' }, { id: 'thin' }])
     })
 
     it('can remove existing asssessments with all All Normal on POST', async () => {

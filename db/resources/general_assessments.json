@@ -28,7 +28,10 @@
   { "assessment": "erythema", "category": "Palms" },
   { "assessment": "Dupuytren’s contracture", "category": "Palms" },
   { "assessment": "Joints", "category": "Palms" },
-  { "assessment": "skin swellings (symmetrical, asymmetrical)", "category": "Palms" },
+  {
+    "assessment": "skin swellings (symmetrical, asymmetrical)",
+    "category": "Palms"
+  },
   { "assessment": "pigment", "category": "Colour" },
   { "assessment": "jaundice", "category": "Colour" },
   { "assessment": "pale", "category": "Colour" },

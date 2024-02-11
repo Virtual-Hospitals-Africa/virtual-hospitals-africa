@@ -27,7 +27,9 @@ export async function up(db: Kysely<unknown>) {
       'general_assessment_id',
       'varchar(255)',
       (col) =>
-        col.notNull().references('general_assessments.assessment').onDelete('cascade'),
+        col.notNull().references('general_assessments.assessment').onDelete(
+          'cascade',
+        ),
     )
     .addColumn(
       'patient_id',
@@ -56,6 +58,8 @@ async function seedDataFromJSON(db: Kysely<any>) {
 
   await db
     .insertInto('general_assessments')
-    .values(data.map((c) => ({ assessment: c.assessment, category: c.category })))
+    .values(
+      data.map((c) => ({ assessment: c.assessment, category: c.category })),
+    )
     .executeTakeFirstOrThrow()
 }

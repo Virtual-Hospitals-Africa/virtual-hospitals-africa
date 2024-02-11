@@ -51,7 +51,8 @@ export default function GeneralAssessmentForm({
               <CheckboxList
                 name={'patient_assessments'}
                 values={getCheckBoxValues(assessmentGroups[key]!)}
-                startIndex={(indexCounter += assessmentGroups[key]!.length) - assessmentGroups[key]!.length}
+                startIndex={(indexCounter += assessmentGroups[key]!.length) -
+                  assessmentGroups[key]!.length}
                 onInput={(e) => {
                   const target = e.target as HTMLInputElement
                   if (target.value && target.value === 'All Normal') {

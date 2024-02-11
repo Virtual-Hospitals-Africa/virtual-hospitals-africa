@@ -45,7 +45,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     await patient_general_assessments.upsert(
       ctx.state.trx,
       patient_id,
-      patient_assessments.includes('All Normal') ? [] : patient_assessments?.map((c) => ({ id: c })),
+      patient_assessments.includes('All Normal')
+        ? []
+        : patient_assessments?.map((c) => ({ id: c })),
     )
 
     await completing_step

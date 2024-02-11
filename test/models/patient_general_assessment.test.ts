@@ -4,7 +4,9 @@ import * as patients from '../../db/models/patients.ts'
 import * as patient_general_assessment from '../../db/models/patient_general_assessment.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 
-describe('db/models/patient_general_assessment.ts', { sanitizeResources: false }, () => {
+describe('db/models/patient_general_assessment.ts', {
+  sanitizeResources: false,
+}, () => {
   describe('upsertPatientGeneralAssessment', () => {
     itUsesTrxAnd(
       'upserts Assessments when no Assessment exist',
