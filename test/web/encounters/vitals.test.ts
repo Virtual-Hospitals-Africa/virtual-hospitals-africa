@@ -133,7 +133,7 @@ describeWithWebServer(
       await patient_measurements.upsertVitals(db, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
-        encounter_provider_id: encounter.provider_ids[0],
+        encounter_provider_id: encounter.providers[0].encounter_provider_id,
         measurements: {
           height: 100,
           weight: 100,
@@ -200,7 +200,7 @@ describeWithWebServer(
       await patient_measurements.upsertVitals(db, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
-        encounter_provider_id: encounter.provider_ids[0],
+        encounter_provider_id: encounter.providers[0].encounter_provider_id,
         measurements: {
           height: 100,
           weight: 100,

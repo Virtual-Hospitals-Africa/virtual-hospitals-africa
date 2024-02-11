@@ -20,11 +20,11 @@ describe(
           reason: 'seeking treatment',
           provider_ids: [nurse.employee_id!],
         })
-        assertEquals(encounter.provider_ids.length, 1)
+        assertEquals(encounter.providers.length, 1)
         await patient_measurements.upsertVitals(trx, {
           patient_id: patient.id,
           encounter_id: encounter.id,
-          encounter_provider_id: encounter.provider_ids[0],
+          encounter_provider_id: encounter.providers[0].encounter_provider_id,
           measurements: {
             height: 170.3,
             weight: 70.4,

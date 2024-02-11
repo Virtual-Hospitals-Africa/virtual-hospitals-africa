@@ -72,7 +72,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn(
       'provider_id',
       'integer',
-      (col) => col.references('employment.id').onDelete('cascade'),
+      (col) => col.notNull().references('employment.id').onDelete('cascade'),
     )
     .addColumn('seen_at', 'timestamptz')
     .addColumn(

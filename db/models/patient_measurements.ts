@@ -53,8 +53,8 @@ export async function upsertVitals(
       return {
         patient_id,
         encounter_id,
-        encounter_provider_id,
         value,
+        encounter_provider_id,
         measurement_name: name,
       }
     },

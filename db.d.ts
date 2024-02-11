@@ -17,12 +17,12 @@ export type EncounterStep =
   | 'diagnosis'
   | 'diagnostic_tests'
   | 'examinations'
+  | 'general_assessments'
   | 'orders'
   | 'prescriptions'
   | 'referral'
   | 'symptoms'
   | 'vitals'
-  | 'general_assessments'
 
 export type FamilyType =
   | '2 married parents'
@@ -263,6 +263,16 @@ export interface Facilities {
   updated_at: Generated<Timestamp>
 }
 
+export interface GeneralAssessmentCategories {
+  category: string
+  order: number
+}
+
+export interface GeneralAssessments {
+  assessment: string
+  category: string
+}
+
 export interface GeographyColumns {
   coord_dimension: number | null
   f_geography_column: string | null
@@ -484,7 +494,7 @@ export interface PatientEncounterProviders {
   created_at: Generated<Timestamp>
   id: Generated<number>
   patient_encounter_id: number
-  provider_id: number | null
+  provider_id: number
   seen_at: Timestamp | null
   updated_at: Generated<Timestamp>
 }
@@ -519,6 +529,16 @@ export interface PatientFamily {
   religion: Religion | null
   social_satisfaction: number | null
   spiritual_satisfaction: number | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientGeneralAssessments {
+  assessment: string
+  created_at: Generated<Timestamp>
+  encounter_id: number
+  encounter_provider_id: number
+  id: Generated<number>
+  patient_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -699,19 +719,6 @@ export interface WhatsappMessagesSent {
   whatsapp_id: string
 }
 
-export interface GeneralAssessment {
-  assessment: string
-  category: string
-}
-
-export interface PatientGeneralAssessment {
-  created_at: Generated<Timestamp>
-  updated_at: Generated<Timestamp>
-  general_assessment_id: string
-  id: Generated<number>
-  patient_id: number
-}
-
 export interface DB {
   address: Address
   allergies: Allergies
@@ -726,6 +733,8 @@ export interface DB {
   employment: Employment
   encounter: Encounter
   facilities: Facilities
+  general_assessment_categories: GeneralAssessmentCategories
+  general_assessments: GeneralAssessments
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns
   guardian_relations: GuardianRelations
@@ -752,6 +761,7 @@ export interface DB {
   patient_encounter_steps: PatientEncounterSteps
   patient_encounters: PatientEncounters
   patient_family: PatientFamily
+  patient_general_assessments: PatientGeneralAssessments
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
   patient_kin: PatientKin
@@ -770,7 +780,5 @@ export interface DB {
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
   whatsapp_messages_sent: WhatsappMessagesSent
-  patient_general_assessment: PatientGeneralAssessment
-  general_assessments: GeneralAssessment
 }
 type Buffer = Uint8Array

@@ -1784,4 +1784,12 @@ export type Provider = {
   provider_id: number
 }
 
+export type GeneralAssessmentCategory = {
+  category: string
+  assessments: {
+    assessment: string
+    checked: SqlBool
+  }[]
+}
+
 export type DatabaseSchema = DB

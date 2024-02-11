@@ -1,11 +1,11 @@
 [
   { "assessment": "ill", "category": "Patient state" },
-  { "assessment": "alert", "category": "Patient state" },
+  { "assessment": "unalert", "category": "Patient state" },
   { "assessment": "confused", "category": "Patient state" },
   { "assessment": "drowsy", "category": "Patient state" },
   { "assessment": "febrile", "category": "Patient state" },
   { "assessment": "dehydrated", "category": "Patient state" },
-  { "assessment": "cooperative", "category": "Patient state" },
+  { "assessment": "uncooperative", "category": "Patient state" },
   { "assessment": "happy", "category": "Patient state" },
   { "assessment": "sad", "category": "Patient state" },
   { "assessment": "resentful", "category": "Patient state" },
@@ -29,13 +29,11 @@
   { "assessment": "Dupuytren’s contracture", "category": "Palms" },
   { "assessment": "Joints", "category": "Palms" },
   {
-    "assessment": "skin swellings (symmetrical, asymmetrical)",
+    "assessment": "skin swelling",
     "category": "Palms"
   },
-  { "assessment": "pigment", "category": "Colour" },
   { "assessment": "jaundice", "category": "Colour" },
   { "assessment": "pale", "category": "Colour" },
-  { "assessment": "normal", "category": "Texture" },
   { "assessment": "thin", "category": "Texture" },
   { "assessment": "thick", "category": "Texture" },
   { "assessment": "dry", "category": "Texture" },
@@ -45,10 +43,9 @@
   { "assessment": "flexural surfaces", "category": "Distribution" },
   { "assessment": "truncal", "category": "Distribution" },
   {
-    "assessment": "exposed sites (shoes, gloves, cosmetics)",
+    "assessment": "exposed sites",
     "category": "Distribution"
   },
-  { "assessment": "symmetrical", "category": "Distribution" },
   { "assessment": "asymmetrical", "category": "Distribution" },
   { "assessment": "discrete", "category": "Distribution" },
   { "assessment": "confluent", "category": "Distribution" },
@@ -70,13 +67,29 @@
   { "assessment": "shiny", "category": "Surface" },
   { "assessment": "well demarcated edges", "category": "Surface" },
   {
-    "assessment": "pigment color (grey, white, red, blue, brown, black)",
+    "assessment": "red pigment",
+    "category": "Surface"
+  },
+  {
+    "assessment": "white pigment",
+    "category": "Surface"
+  },
+  {
+    "assessment": "blue pigment",
+    "category": "Surface"
+  },
+  {
+    "assessment": "brown pigment",
+    "category": "Surface"
+  },
+  {
+    "assessment": "black pigment",
     "category": "Surface"
   },
   { "assessment": "cold", "category": "Character" },
   { "assessment": "tender", "category": "Character" },
   { "assessment": "blanching", "category": "Character" },
-  { "assessment": "purpura Character", "category": "Character" },
+  { "assessment": "purpura character", "category": "Character" },
   { "assessment": "central cyanosis", "category": "Tongue" },
   { "assessment": "moist", "category": "Tongue" },
   { "assessment": "dry tongue", "category": "Tongue" },
@@ -88,7 +101,7 @@
   { "assessment": "swelling", "category": "Tonsils" },
   { "assessment": "redness tonsils", "category": "Tonsils" },
   { "assessment": "ulceration", "category": "Tonsils" },
-  { "assessment": "swelling Pharynx", "category": "Pharynx" },
+  { "assessment": "swelling pharynx", "category": "Pharynx" },
   { "assessment": "redness pharynx", "category": "Pharynx" },
   { "assessment": "ulceration pharynx", "category": "Pharynx" },
   { "assessment": "ketosis", "category": "Breath" },

@@ -3,8 +3,7 @@ import {
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../../types.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
-import * as general_assessments from '../../../../../../db/models/general_assessments.ts'
-import * as patient_general_assessments from '../../../../../../db/models/patient_general_assessment.ts'
+import * as patient_general_assessments from '../../../../../../db/models/patient_general_assessments.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
@@ -15,14 +14,11 @@ import GeneralAssessmentForm from '../../../../../../islands/general-assessment/
 
 function assertIsAssessments(
   values: unknown,
-): asserts values is {
-  patient_assessments: string[]
-} {
+): asserts values is Record<string, true> {
   assertOr400(isObjectLike(values), 'Invalid form values')
-  assertOr400(
-    (values.patient_assessments as number[] ?? []).length > 0,
-    'Please select one item before proceeding',
-  )
+  for (const key in values) {
+    assertOr400(values[key] === true, 'Only checkboxes supported')
+  }
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -30,7 +26,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   EncounterContext['state']
 > = {
   async POST(req, ctx: EncounterContext) {
-    const { patient_assessments } = await parseRequestAsserts(
+    const assessment_form_values = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsAssessments,
@@ -44,10 +40,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     await patient_general_assessments.upsert(
       ctx.state.trx,
-      patient_id,
-      patient_assessments.includes('All Normal')
-        ? []
-        : patient_assessments?.map((c) => ({ id: c })),
+      {
+        patient_id,
+        encounter_id: ctx.state.encounter.encounter_id,
+        encounter_provider_id:
+          ctx.state.encounter_provider.patient_encounter_provider_id,
+        assessments: Object.keys(assessment_form_values),
+      },
     )
 
     await completing_step
@@ -59,17 +58,24 @@ export default async function GeneralAssessmentsPage(
   _req: Request,
   ctx: EncounterContext,
 ) {
-  const list = await general_assessments.getAll(ctx.state.trx)
-  const patientAssessments = await patient_general_assessments.get(
-    ctx.state.trx,
-    ctx.state.patient.id,
+  const { trx, patient, encounter } = ctx.state
+  const previously_filled = encounter.steps_completed.includes(
+    'general_assessments',
   )
+  const categories = await patient_general_assessments
+    .getByCategory(
+      trx,
+      {
+        encounter_id: encounter.encounter_id,
+        patient_id: patient.id,
+      },
+    )
 
   return (
     <EncounterLayout ctx={ctx}>
       <GeneralAssessmentForm
-        assessmentList={list}
-        selectedItems={patientAssessments}
+        previously_filled={previously_filled}
+        categories={categories}
       />
       <FormButtons />
     </EncounterLayout>

@@ -7,6 +7,8 @@ import cls from '../../../util/cls.ts'
 import { Gender, Maybe, NURSE_SPECIALTIES, Question } from '../../../types.ts'
 import last from '../../../util/last.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
+import { ComponentChild } from 'preact'
+import SectionHeader from '../typography/SectionHeader.tsx'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -50,6 +52,28 @@ export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement> & {
   rows?: number
 }
 
+export function Label({
+  label,
+  className,
+  children,
+}: {
+  label: null | ComponentChild
+  className?: string
+  children?: ComponentChildren
+}) {
+  return (
+    <label
+      className={cls(
+        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max flex-1',
+        className,
+      )}
+    >
+      {label}
+      {children}
+    </label>
+  )
+}
+
 function LabeledInput(
   {
     name,
@@ -64,20 +88,17 @@ function LabeledInput(
     },
 ) {
   return (
-    <label
-      className={cls(
-        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max flex-1',
-        className,
-      )}
-    >
-      {label && (
+    <Label
+      className={className}
+      label={label && (
         <span className='mb-1 ml-0.5'>
           {label}
           {label && required && <sup>*</sup>}
         </span>
       )}
+    >
       {children}
-    </label>
+    </Label>
   )
 }
 
@@ -675,6 +696,57 @@ export function YesNoGrid(
       <div className='grid place-items-center'>Yes</div>
       <div className='grid place-items-center'>No</div>
       {children}
+    </div>
+  )
+}
+
+// export function CheckboxGrid(
+//   { children }: { children: ComponentChildren },
+// ) {
+//   return (
+//     <div className='w-full grid grid-cols-[max-content_30px] gap-2'>
+//       {children}
+//     </div>
+//   )
+// }
+
+export function CheckboxGridSectionLabel({ label }: {
+  label: string
+}) {
+  return (
+    <SectionHeader className='my-5 text-[20px] col-start-1 col-end-2'>
+      {label}
+    </SectionHeader>
+  )
+}
+
+export function CheckboxGridItem(
+  { name, label, required, disabled, checked, onChange }: {
+    name?: string
+    label: string
+    required?: boolean
+    disabled?: boolean
+    checked?: boolean
+    onChange?(value: boolean): void
+  },
+) {
+  return (
+    <div className='w-full flex justify-between'>
+      <Label label={label} />
+      <div className='grid items-center'>
+        <input
+          name={name}
+          type='checkbox'
+          checked={checked}
+          required={required}
+          disabled={disabled}
+          className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          onInput={(e) => {
+            assert(e.target instanceof HTMLInputElement)
+            onChange?.(e.target.checked)
+          }}
+        />
+      </div>
     </div>
   )
 }
