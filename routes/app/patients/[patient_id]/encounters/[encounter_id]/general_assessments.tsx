@@ -16,13 +16,11 @@ import GeneralAssessmentForm from '../../../../../../islands/general-assessment/
 function assertIsAssessments(
   values: unknown,
 ): asserts values is {
-  patient_assessments: number[]
-  all_normal: boolean
+  patient_assessments: string[]
 } {
   assertOr400(isObjectLike(values), 'Invalid form values')
   assertOr400(
-    values.all_normal ||
-      (values.patient_assessments as number[] ?? []).length > 0,
+    (values.patient_assessments as number[] ?? []).length > 0,
     'Please select one item before proceeding',
   )
 }
@@ -47,7 +45,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     await patient_general_assessments.upsert(
       ctx.state.trx,
       patient_id,
-      patient_assessments?.map((c) => ({ id: c })) ?? [],
+      patient_assessments.includes('All Normal') ? [] : patient_assessments?.map((c) => ({ id: c })),
     )
 
     await completing_step

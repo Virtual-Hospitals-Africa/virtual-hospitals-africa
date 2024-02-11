@@ -700,17 +700,14 @@ export interface WhatsappMessagesSent {
 }
 
 export interface GeneralAssessment {
-  created_at: Generated<Timestamp>
-  updated_at: Generated<Timestamp>
-  id: Generated<number>
-  name: string
-  type: string
+  assessment: string
+  category: string
 }
 
 export interface PatientGeneralAssessment {
   created_at: Generated<Timestamp>
   updated_at: Generated<Timestamp>
-  general_assessment_id: number
+  general_assessment_id: string
   id: Generated<number>
   patient_id: number
 }

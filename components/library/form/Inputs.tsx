@@ -233,18 +233,18 @@ export function CheckboxList(
     values,
     className,
     inputClassName,
-    useIndex,
+    startIndex,
     onInput,
   }: WrapperInputProps<HTMLInputElement> & {
     values: Record<string, { value: string; checked: boolean }>
-    useIndex?: boolean
+    startIndex?: number
   },
 ) {
   return (
     <div>
       {Object.entries(values).map(([key, { value, checked }], index) => (
         <CheckboxInput
-          name={`${name}.${useIndex ? index : value}`}
+          name={`${name}.${(startIndex ?? 0) + index}`}
           className={className}
           label={key}
           checked={checked}

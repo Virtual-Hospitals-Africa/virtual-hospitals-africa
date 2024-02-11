@@ -1765,9 +1765,8 @@ export type RenderedPatientSymptom = PatientInsertShared & {
 }
 
 export interface GeneralAssessment {
-  id: number
-  name: string
-  type: string
+  assessment: string
+  category: string
 }
 
 export type Provider = {

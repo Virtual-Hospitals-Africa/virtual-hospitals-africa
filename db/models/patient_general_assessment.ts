@@ -5,7 +5,7 @@ import { now } from '../helpers.ts'
 export async function upsert(
   trx: TrxOrDb,
   patient_id: number,
-  general_assessments: { id: number }[],
+  general_assessments: { id: string }[],
 ): Promise<void> {
   assertOr400(
     general_assessments.length ===
@@ -33,7 +33,7 @@ export async function upsert(
 export function get(
   trx: TrxOrDb,
   patient_id: number,
-): Promise<{ id: number }[]> {
+): Promise<{ id: string }[]> {
   return trx
     .selectFrom('patient_general_assessment')
     .where('patient_general_assessment.patient_id', '=', patient_id)

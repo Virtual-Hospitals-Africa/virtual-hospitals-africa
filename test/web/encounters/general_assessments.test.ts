@@ -10,7 +10,7 @@ import db from '../../../db/db.ts'
 
 describeWithWebServer(
   '/app/patients/[patient_id]/encounters/open/general_assessments',
-  8009,
+  8011,
   (route) => {
     it('can save asssessments on POST', async () => {
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
@@ -23,9 +23,9 @@ describeWithWebServer(
       })
 
       const body = new FormData()
-      body.append('patient_assessments.0', '1')
-      body.append('patient_assessments.1', '2')
-      body.append('patient_assessments.2', '5')
+      body.append('patient_assessments.0', 'cold')
+      body.append('patient_assessments.1', 'musty')
+      body.append('patient_assessments.2', 'alcohol')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
@@ -39,7 +39,7 @@ describeWithWebServer(
         db,
         encounter.patient_id,
       )
-      assertEquals(assessments, [{ id: 1 }, { id: 2 }, { id: 5 }])
+      assertEquals(assessments, [{ id: 'cold' }, { id: 'musty' }, { id: 'alcohol' }])
     })
 
     it('can overwrite existing asssessments on POST', async () => {
@@ -52,14 +52,14 @@ describeWithWebServer(
         provider_ids: [healthWorker.employee_id!],
       })
       await patient_general_assessment.upsert(db, encounter.patient_id, [
-        { id: 1 },
-        { id: 2 },
-        { id: 5 },
+        { id: 'cold' },
+        { id: 'musty' },
+        { id: 'alcohol' },
       ])
 
       const body = new FormData()
-      body.append('patient_assessments.0', '6')
-      body.append('patient_assessments.1', '8')
+      body.append('patient_assessments.0', 'cold')
+      body.append('patient_assessments.1', 'thin')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
@@ -73,10 +73,10 @@ describeWithWebServer(
         db,
         encounter.patient_id,
       )
-      assertEquals(assessments, [{ id: 6 }, { id: 8 }])
+      assertEquals(assessments, [{ id:'cold' }, { id: 'thin' }])
     })
 
-    it('can remove existing asssessments with all all_normal on POST', async () => {
+    it('can remove existing asssessments with all All Normal on POST', async () => {
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
@@ -86,13 +86,13 @@ describeWithWebServer(
         provider_ids: [healthWorker.employee_id!],
       })
       await patient_general_assessment.upsert(db, encounter.patient_id, [
-        { id: 1 },
-        { id: 2 },
-        { id: 5 },
+        { id: 'thin' },
+        { id: 'cold' },
+        { id: 'alcohol' },
       ])
 
       const body = new FormData()
-      body.append('all_normal', 'true')
+      body.append('patient_assessments.0', 'All Normal')
 
       const response = await fetch(
         `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,

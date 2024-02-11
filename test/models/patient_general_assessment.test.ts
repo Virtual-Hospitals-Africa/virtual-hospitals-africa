@@ -4,7 +4,7 @@ import * as patients from '../../db/models/patients.ts'
 import * as patient_general_assessment from '../../db/models/patient_general_assessment.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 
-describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
+describe('db/models/patient_general_assessment.ts', { sanitizeResources: false }, () => {
   describe('upsertPatientGeneralAssessment', () => {
     itUsesTrxAnd(
       'upserts Assessments when no Assessment exist',
@@ -12,9 +12,9 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
         const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
         await patient_general_assessment.upsert(trx, patient.id, [
-          { id: 1 },
-          { id: 2 },
-          { id: 3 },
+          { id: 'thin' },
+          { id: 'cold' },
+          { id: 'alcohol' },
         ])
         const patientAssessments = await patient_general_assessment.get(
           trx,
@@ -31,9 +31,9 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
         const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
         await patient_general_assessment.upsert(trx, patient.id, [
-          { id: 1 },
-          { id: 2 },
-          { id: 3 },
+          { id: 'thin' },
+          { id: 'cold' },
+          { id: 'alcohol' },
         ])
         const patientAssessments = await patient_general_assessment.get(
           trx,
@@ -43,8 +43,8 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
         assertEquals(patientAssessments.length, 3)
 
         await patient_general_assessment.upsert(trx, patient.id, [
-          { id: 1 },
-          { id: 5 },
+          { id: 'cold' },
+          { id: 'rash' },
         ])
 
         const patientAssessmentsAfterRemoving = await patient_general_assessment
@@ -52,11 +52,11 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
 
         assertEquals(patientAssessmentsAfterRemoving.length, 2)
         assertEquals(
-          patientAssessmentsAfterRemoving.some((c) => c.id === 1),
+          patientAssessmentsAfterRemoving.some((c) => c.id === 'cold'),
           true,
         )
         assertEquals(
-          patientAssessmentsAfterRemoving.some((c) => c.id === 5),
+          patientAssessmentsAfterRemoving.some((c) => c.id === 'rash'),
           true,
         )
       },

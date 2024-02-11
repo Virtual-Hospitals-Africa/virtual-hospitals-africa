@@ -6,9 +6,8 @@ export const getAll = memoize(
     trx
       .selectFrom('general_assessments')
       .select([
-        'id',
-        'name',
-        'type',
+        'assessment',
+        'category',
       ])
       .execute(),
   () => 'general_assessments',
