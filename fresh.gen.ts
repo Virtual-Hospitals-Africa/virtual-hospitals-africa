@@ -80,6 +80,7 @@ import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FacilitySearch from './islands/FacilitySearch.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
+import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
@@ -250,6 +251,7 @@ const manifest = {
     './islands/ErrorMessage.tsx': $ErrorMessage,
     './islands/FacilitySearch.tsx': $FacilitySearch,
     './islands/JobPost.tsx': $JobPost,
+    './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,

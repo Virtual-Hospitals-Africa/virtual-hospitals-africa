@@ -1,0 +1,37 @@
+Type '{ drinks_alcohol: { status: true; }; sexually_active: SexuallyActive | null; patient_smokes: Smokes | null; } | { drinks_alcohol: { status: false; }; sexually_active: SexuallyActive | null; patient_smokes: Smokes | null; }' is not assignable to type 'Lifestyle'.
+  Type '{ drinks_alcohol: { status: true; }; sexually_active: SexuallyActive | null; patient_smokes: Smokes | null; }' is not assignable to type 'Lifestyle'.
+    Types of property 'drinks_alcohol' are incompatible.
+      Type '{ status: true; }' is missing the following properties from type 'drinks_alcohol': current, binge_drinking, drawn_to_cut_down, annoyed_by_critics, and 13 more
+
+
+
+for multiselect:
+import { useState } from 'react'
+import { Listbox } from '@headlessui/react'
+
+const people = [
+  { id: 1, name: 'Durward Reynolds' },
+  { id: 2, name: 'Kenton Towne' },
+  { id: 3, name: 'Therese Wunsch' },
+  { id: 4, name: 'Benedict Kessler' },
+  { id: 5, name: 'Katelyn Rohan' },
+]
+
+function MyListbox() {
+  const [selectedPeople, setSelectedPeople] = useState([people[0], people[1]])
+
+  return (
+    <Listbox value={selectedPeople} onChange={setSelectedPeople} multiple>
+      <Listbox.Button>
+        {selectedPeople.map((person) => person.name).join(', ')}
+      </Listbox.Button>
+      <Listbox.Options>
+        {people.map((person) => (
+          <Listbox.Option key={person.id} value={person}>
+            {person.name}
+          </Listbox.Option>
+        ))}
+      </Listbox.Options>
+    </Listbox>
+  )
+}

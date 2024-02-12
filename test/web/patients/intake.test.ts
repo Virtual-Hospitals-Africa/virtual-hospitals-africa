@@ -709,7 +709,7 @@ describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
           grades_dropping: true,
           patient_goes_to_school: true,
           school: {
-            appropriate: null,
+            appropriate: false,
           },
         },
       },

@@ -49,5 +49,6 @@ export default function AllergySearch({
       }}
       Option={AllergyResult}
     />
+    // create drinksSearch
   )
 }

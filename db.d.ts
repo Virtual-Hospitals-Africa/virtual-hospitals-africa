@@ -339,6 +339,15 @@ export interface Icd10Codes {
   updated_at: Generated<Timestamp>
 }
 
+export interface Icd10Tabular {
+  code: string
+  description: string
+  excludes1: string | null
+  excludes2: string | null
+  includes: string | null
+  parent_code: string | null
+}
+
 export interface Intake {
   order: Int8
   step: IntakeStep
@@ -568,6 +577,17 @@ export interface PatientKin {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientLifestyle {
+  alcohol: Json | null
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  patient_id: number
+  pregnant: boolean | null
+  sexual_activity: Json | null
+  smoking: Json | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface PatientMeasurements {
   created_at: Generated<Timestamp>
   encounter_id: number
@@ -742,6 +762,7 @@ export interface DB {
   health_worker_invitees: HealthWorkerInvitees
   health_workers: HealthWorkers
   icd10_codes: Icd10Codes
+  icd10_tabular: Icd10Tabular
   intake: Intake
   mailing_list: MailingList
   manufactured_medications: ManufacturedMedications
@@ -765,6 +786,7 @@ export interface DB {
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
   patient_kin: PatientKin
+  patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
