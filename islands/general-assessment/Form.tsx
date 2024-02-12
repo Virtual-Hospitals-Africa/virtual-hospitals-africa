@@ -24,7 +24,7 @@ function AssessmentCategory(
   )
   return (
     <div className='flex flex-col'>
-      <SectionHeader className='my-5 text-[20px]'>
+      <SectionHeader className='mt-5 mb-1 text-[20px]'>
         {category.category}
       </SectionHeader>
       <CheckboxGridItem
