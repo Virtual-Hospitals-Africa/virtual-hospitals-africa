@@ -700,26 +700,6 @@ export function YesNoGrid(
   )
 }
 
-// export function CheckboxGrid(
-//   { children }: { children: ComponentChildren },
-// ) {
-//   return (
-//     <div className='w-full grid grid-cols-[max-content_30px] gap-2'>
-//       {children}
-//     </div>
-//   )
-// }
-
-export function CheckboxGridSectionLabel({ label }: {
-  label: string
-}) {
-  return (
-    <SectionHeader className='my-5 text-[20px] col-start-1 col-end-2'>
-      {label}
-    </SectionHeader>
-  )
-}
-
 export function CheckboxGridItem(
   { name, label, required, disabled, checked, onChange }: {
     name?: string
