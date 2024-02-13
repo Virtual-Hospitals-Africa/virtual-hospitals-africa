@@ -44,6 +44,7 @@ export default function AddPatientForm({
           <PersonSearch
             name='patient'
             href='/app/patients'
+            label=''
             required
             addable
             value={patient}
@@ -77,7 +78,12 @@ export default function AddPatientForm({
           />
         </FormRow>
         <FormRow>
-          <TextArea name='notes' />
+          <label className='text-base font-semibold text-gray-900'>
+            Notes
+          </label>
+        </FormRow>
+        <FormRow>
+          <TextArea name='notes' label='' />
         </FormRow>
         <FormRow>
           <Button type='submit' name='waiting_room' value='waiting_room'>
