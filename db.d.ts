@@ -340,6 +340,7 @@ export interface Icd10Codes {
 }
 
 export interface Icd10Tabular {
+  category: string
   code: string
   description: string
   excludes1: string | null
@@ -577,17 +578,6 @@ export interface PatientKin {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientLifestyle {
-  alcohol: Json | null
-  created_at: Generated<Timestamp>
-  id: Generated<number>
-  patient_id: number
-  pregnant: boolean | null
-  sexual_activity: Json | null
-  smoking: Json | null
-  updated_at: Generated<Timestamp>
-}
-
 export interface PatientMeasurements {
   created_at: Generated<Timestamp>
   encounter_id: number
@@ -786,7 +776,6 @@ export interface DB {
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
   patient_kin: PatientKin
-  patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
   patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
