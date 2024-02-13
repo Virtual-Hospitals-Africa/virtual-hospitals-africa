@@ -44,7 +44,10 @@ export default function PatientPersonalForm(
       </FormRow>
       <FormRow>
         <NationalIdInputCheckbox no_national_id={no_national_id} />
-        <NationalIdInput value={patient.national_id_number} no_national_id={no_national_id}/>
+        <NationalIdInput
+          value={patient.national_id_number}
+          no_national_id={no_national_id}
+        />
         <PhoneNumberInput
           name='phone_number'
           value={patient.phone_number}

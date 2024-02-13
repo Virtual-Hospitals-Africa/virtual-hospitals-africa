@@ -3,7 +3,12 @@ import { TextInput } from '../components/library/form/Inputs.tsx'
 import { Maybe } from '../types.ts'
 import { Signal } from '@preact/signals'
 
-export default function NationalIdInput({ value, no_national_id }: { value?: Maybe<string>, no_national_id: Signal<boolean> }) {
+export default function NationalIdInput(
+  { value, no_national_id }: {
+    value?: Maybe<string>
+    no_national_id: Signal<boolean>
+  },
+) {
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     if (e.target && 'value' in e.target && typeof e.target.value === 'string') {
       const inputElement = e.target as HTMLInputElement

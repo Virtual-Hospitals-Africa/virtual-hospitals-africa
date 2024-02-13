@@ -29,8 +29,9 @@ function assertIsPersonal(
   assertOr400(!!patient.first_name && typeof patient.first_name === 'string')
   assertOr400(!!patient.last_name && typeof patient.last_name === 'string')
   assertOr400(
-    (!!patient.national_id_number && typeof patient.national_id_number === 'string') 
-    || patient.no_national_id
+    (!!patient.national_id_number &&
+      typeof patient.national_id_number === 'string') ||
+      patient.no_national_id,
   )
 }
 
@@ -44,7 +45,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
       )
     return upsertPatientAndRedirect(ctx, {
       ...omit(patient, ['no_national_id']),
-      national_id_number: national_id_number ? national_id_number.toUpperCase() : null,
+      national_id_number: national_id_number
+        ? national_id_number.toUpperCase()
+        : null,
       avatar_media_id: avatar_media?.id,
     })
   },
