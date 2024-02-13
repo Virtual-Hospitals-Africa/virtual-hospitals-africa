@@ -25,64 +25,78 @@ export default function AddPatientForm({
 }) {
   return (
     <Form method='post'>
-      {open_encounter && (
-        <input
-          type='hidden'
-          name='encounter_id'
-          value={open_encounter.encounter_id}
-        />
-      )}
-      <FormRow>
-        <PersonSearch
-          name='patient'
-          href='/app/patients'
-          required
-          addable
-          value={patient}
-          disabled={!!patient}
-          onSelect={(patient) => {
-            selectedPatient.value = patient
-            selectedPatient.value?.id === 'add'
-              ? isReturningPatient.value = false
-              : isReturningPatient.value = true
-          }}
-        />
-      </FormRow>
-      <FormRow>
-        <ProvidersSelect providers={providers} />
-      </FormRow>
-      <FormRow>
-        <RadioGroup
-          name='reason'
-          label='Reason for visit'
-          options={Array.from(reasons).map((
-            value,
-          ) => ({
-            value,
-          }))}
-          value={open_encounter?.reason || 'seeking treatment'}
-        />
-      </FormRow>
-      <FormRow>
-        <TextArea name='notes' />
-      </FormRow>
-      <FormRow>
-        <Button type='submit' name='waiting_room' value='waiting_room'>
-          Add to waiting room
-        </Button>
-        {selectedPatient.value && !isReturningPatient.value && (
-          <Button type='submit' name='intake' value='intake'>
-            Start Intake
+      <div className='flex flex-col w-full gap-2'>
+        <FormRow>
+          {open_encounter && (
+            <input
+              type='hidden'
+              name='encounter_id'
+              value={open_encounter.encounter_id}
+            />
+          )}
+        </FormRow>
+        <FormRow>
+          <label className='text-base font-semibold text-gray-900'>
+            Patient
+          </label>
+        </FormRow>
+        <FormRow>
+          <PersonSearch
+            name='patient'
+            href='/app/patients'
+            required
+            addable
+            value={patient}
+            disabled={!!patient}
+            onSelect={(patient) => {
+              selectedPatient.value = patient
+              selectedPatient.value?.id === 'add'
+                ? isReturningPatient.value = false
+                : isReturningPatient.value = true
+            }}
+          />
+        </FormRow>
+        <FormRow>
+          <label className='text-base font-semibold text-gray-900'>
+            Health Workers at Facilities
+          </label>
+        </FormRow>
+        <FormRow>
+          <ProvidersSelect providers={providers} />
+        </FormRow>
+        <FormRow>
+          <RadioGroup
+            name='reason'
+            label='Reason for visit'
+            options={Array.from(reasons).map((
+              value,
+            ) => ({
+              value,
+            }))}
+            value={open_encounter?.reason || 'seeking treatment'}
+          />
+        </FormRow>
+        <FormRow>
+          <TextArea name='notes' />
+        </FormRow>
+        <FormRow>
+          <Button type='submit' name='waiting_room' value='waiting_room'>
+            Add to waiting room
           </Button>
-        )}
-        {selectedPatient.value && isReturningPatient.value && (
-          <Button
-            href={`/app/patients/${selectedPatient.value.id}`}
-          >
-            Review and begin visit
-          </Button>
-        )}
-      </FormRow>
+          {selectedPatient.value && !isReturningPatient.value && (
+            <Button type='submit' name='intake' value='intake'>
+              Start Intake
+            </Button>
+          )}
+          {selectedPatient.value && isReturningPatient.value && (
+            <Button
+              href={`/app/patients/${selectedPatient.value.id}`}
+            >
+              Review and begin visit
+            </Button>
+          )}
+        </FormRow>
+      </div>
     </Form>
   )
 }
