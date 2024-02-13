@@ -722,8 +722,7 @@ export function CheckboxGridItem(
   },
 ) {
   return (
-    <div className='w-full flex justify-between'>
-      <Label label={label} />
+    <div className='w-full flex justify-start gap-2.5'>
       <div className='grid items-center'>
         <input
           name={name}
@@ -738,6 +737,7 @@ export function CheckboxGridItem(
           }}
         />
       </div>
+      <Label label={label} />
     </div>
   )
 }
