@@ -51,7 +51,7 @@ describe(
                 description: null,
               },
               in_waiting_room: true,
-              arrived_ago_display: 'Just now',
+              arrived_at: new Date(),
               status: 'Awaiting Intake',
               actions: {
                 view: null,
@@ -70,7 +70,7 @@ describe(
                 description: null,
               },
               in_waiting_room: true,
-              arrived_ago_display: 'Just now',
+              arrived_at: new Date(),
               status: 'Awaiting Intake',
               actions: {
                 view: null,
@@ -121,7 +121,7 @@ describe(
                   description: null,
                 },
                 in_waiting_room: true,
-                arrived_ago_display: 'Just now',
+                arrived_at: new Date(),
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
@@ -140,7 +140,7 @@ describe(
                   description: null,
                 },
                 in_waiting_room: true,
-                arrived_ago_display: '60 minutes ago',
+                arrived_at: new Date(Date.now() - 3600 * 1000),
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
