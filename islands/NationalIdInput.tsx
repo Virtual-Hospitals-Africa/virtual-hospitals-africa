@@ -6,7 +6,7 @@ import { Signal } from '@preact/signals'
 export default function NationalIdInput(
   { value, no_national_id }: {
     value?: Maybe<string>
-    no_national_id: Signal<boolean>
+    no_national_id?: Signal<boolean>
   },
 ) {
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
@@ -38,6 +38,8 @@ export default function NationalIdInput(
     }
   }
 
+  const required = no_national_id ? !no_national_id.value : true
+
   return (
     <TextInput
       name='national_id_number'
@@ -46,7 +48,7 @@ export default function NationalIdInput(
       pattern='^\d{2}-\d{6,7}\s[a-zA-Z]\s\d{2}$'
       placeholder='00-000000 D 00'
       onInput={handleIdInput}
-      required={!no_national_id?.value}
+      required={required}
     />
   )
 }
