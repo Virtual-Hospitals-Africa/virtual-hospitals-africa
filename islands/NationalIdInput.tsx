@@ -1,8 +1,9 @@
 import { JSX } from 'preact'
 import { TextInput } from '../components/library/form/Inputs.tsx'
 import { Maybe } from '../types.ts'
+import { Signal } from '@preact/signals'
 
-export default function NationalIdInput({ value }: { value?: Maybe<string> }) {
+export default function NationalIdInput({ value, no_national_id }: { value?: Maybe<string>, no_national_id: Signal<boolean> }) {
   const handleIdInput = (e: JSX.TargetedEvent<HTMLInputElement>) => {
     if (e.target && 'value' in e.target && typeof e.target.value === 'string') {
       const inputElement = e.target as HTMLInputElement
@@ -40,7 +41,7 @@ export default function NationalIdInput({ value }: { value?: Maybe<string> }) {
       pattern='^\d{2}-\d{6,7}\s[a-zA-Z]\s\d{2}$'
       placeholder='00-000000 D 00'
       onInput={handleIdInput}
-      required
+      required={!no_national_id?.value}
     />
   )
 }

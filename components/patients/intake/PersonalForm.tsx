@@ -1,4 +1,5 @@
 import {
+  CheckboxInput,
   DateInput,
   EthnicitySelect,
   GenderSelect,
@@ -9,12 +10,14 @@ import FormRow from '../../library/form/Row.tsx'
 import { ImagePreviewInput } from '../../../islands/file-preview-input.tsx'
 import { PatientIntake } from '../../../types.ts'
 import NationalIdInput from '../../../islands/NationalIdInput.tsx'
+import { useSignal } from '@preact/signals'
+import NationalIdInputCheckbox from '../../../islands/NationalIdInputCheckbox.tsx'
 
 export default function PatientPersonalForm(
   { patient = {} }: { patient?: Partial<PatientIntake> },
 ) {
   const names = patient.name ? patient.name.split(/\s+/) : []
-
+  const no_national_id = useSignal<boolean>(!patient.national_id_number)
   return (
     <>
       <FormRow>
@@ -40,7 +43,8 @@ export default function PatientPersonalForm(
         <EthnicitySelect value={patient.ethnicity} />
       </FormRow>
       <FormRow>
-        <NationalIdInput value={patient.national_id_number} />
+        <NationalIdInputCheckbox no_national_id={no_national_id} />
+        <NationalIdInput value={patient.national_id_number} no_national_id={no_national_id}/>
         <PhoneNumberInput
           name='phone_number'
           value={patient.phone_number}

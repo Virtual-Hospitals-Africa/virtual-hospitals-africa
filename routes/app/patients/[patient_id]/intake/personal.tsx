@@ -10,13 +10,15 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
+import omit from '../../../../../util/omit.ts'
 
 type PersonalFormValues = {
   first_name: string
   last_name: string
   middle_names?: string
   avatar_media?: Maybe<{ id: number }>
-  national_id_number: string
+  national_id_number?: string
+  no_national_id: boolean
   phone_number?: string
 }
 
@@ -26,8 +28,10 @@ function assertIsPersonal(
   assertOr400(isObjectLike(patient))
   assertOr400(!!patient.first_name && typeof patient.first_name === 'string')
   assertOr400(!!patient.last_name && typeof patient.last_name === 'string')
-  assertOr400(!!patient.national_id_number)
-  assertOr400(typeof patient.national_id_number === 'string')
+  assertOr400(
+    (!!patient.national_id_number && typeof patient.national_id_number === 'string') 
+    || patient.no_national_id
+  )
 }
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
@@ -39,8 +43,8 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
         assertIsPersonal,
       )
     return upsertPatientAndRedirect(ctx, {
-      ...patient,
-      national_id_number: national_id_number.toUpperCase(),
+      ...omit(patient, ['no_national_id']),
+      national_id_number: national_id_number ? national_id_number.toUpperCase() : null,
       avatar_media_id: avatar_media?.id,
     })
   },
