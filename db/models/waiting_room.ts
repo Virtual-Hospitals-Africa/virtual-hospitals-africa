@@ -26,20 +26,6 @@ export function remove(
     .execute()
 }
 
-function arrivedAgoDisplay(wait_time: string) {
-  const [hours, minutes] = wait_time.split(':').map(Number)
-  if (!hours && !minutes) {
-    return 'Just now'
-  }
-  if (hours > 1) {
-    return `${hours} hours ago`
-  }
-  if (hours === 0 && minutes === 1) {
-    return '1 minute ago'
-  }
-  return `${(60 * hours) + minutes} minutes ago`
-}
-
 // A slight misnomer, this function returns the patients in the waiting room
 // and the patients who are actively being seen by a provider at the facility.
 export async function get(
@@ -110,6 +96,7 @@ export async function get(
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
       'completed_intake',
+      'patient_encounters.created_at as arrived_at',
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
@@ -246,7 +233,7 @@ export async function get(
         appointment_id,
         appointment_start,
         appointment_providers,
-        wait_time,
+        arrived_at,
         completed_intake,
         in_waiting_room,
         awaiting_intake_step,
@@ -303,7 +290,7 @@ export async function get(
         status,
         in_waiting_room,
         appointment,
-        arrived_ago_display: arrivedAgoDisplay(wait_time),
+        arrived_at,
       }
     },
   )

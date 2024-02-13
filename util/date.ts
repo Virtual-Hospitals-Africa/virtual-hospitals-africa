@@ -427,3 +427,17 @@ export function isISODateString(date: unknown): date is string {
   return isString(date) && /^\d{4}-\d{2}-\d{2}$/.test(date) &&
     (new Date(date).toDateString() !== 'Invalid Date')
 }
+
+export function arrivedAgoDisplay(wait_time: string) {
+  const [hours, minutes] = wait_time.split(':').map(Number)
+  if (!hours && !minutes) {
+    return 'Just now'
+  }
+  if (hours > 1) {
+    return `${hours} hours ago`
+  }
+  if (hours === 0 && minutes === 1) {
+    return '1 minute ago'
+  }
+  return `${(60 * hours) + minutes} minutes ago`
+}

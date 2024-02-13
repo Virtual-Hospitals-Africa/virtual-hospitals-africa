@@ -2,6 +2,7 @@ import { RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
+import { prettyAppointmentTime } from '../../util/date.ts'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
@@ -35,8 +36,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     },
   },
   {
-    label: 'Arrived',
-    dataKey: 'arrived_ago_display',
+    label: 'Arrived at',
+    dataKey(row) {
+      return prettyAppointmentTime(row.arrived_at)
+    },
   },
   {
     label: 'Actions',
