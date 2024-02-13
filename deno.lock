@@ -2845,5 +2845,14 @@
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie.ts": "5ba819ee6fbbeb35950a626b93afd4c671e09df6247df3deb8749a6ac25606c5",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/cookie_option.ts": "ecf48fd5e779ab767b94881d8305e8925849246f461a25c6979067046c1077e0",
     "https://raw.githubusercontent.com/will-weiss/fresh-session/main/src/stores/redis.ts": "fd5c14e1ea7c5269ed4f2e5a24823a665429ce873885825962aade103fefcc02"
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:@tailwindcss/forms@0.5.7",
+      "npm:fast-levenshtein@3.0.0",
+      "npm:fast-xml-parser@4.3.4",
+      "npm:natural@6.10.4",
+      "npm:tailwindcss@3.3.5"
+    ]
   }
 }
