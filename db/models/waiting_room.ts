@@ -97,8 +97,6 @@ export async function get(
       'appointments.start as appointment_start',
       'completed_intake',
       'patient_encounters.created_at as arrived_at',
-      sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
-        .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
       eb.selectFrom('intake')
         .leftJoin(
@@ -245,6 +243,10 @@ export async function get(
     ) => {
       assert(hasName(patient), 'Patient must have a name')
 
+      const rounded_arrived_at = new Date(arrived_at)
+      rounded_arrived_at.setSeconds(0)
+      rounded_arrived_at.setMilliseconds(0)
+
       let appointment: RenderedWaitingRoom['appointment'] = null
       if (appointment_id) {
         assert(appointment_start, 'Appointment must have a start time')
@@ -290,7 +292,7 @@ export async function get(
         status,
         in_waiting_room,
         appointment,
-        arrived_at,
+        arrived_at: rounded_arrived_at,
       }
     },
   )

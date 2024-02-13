@@ -14,6 +14,9 @@ describe(
   { sanitizeResources: false },
   () => {
     describe('create', () => {
+      const now = new Date()
+      now.setMilliseconds(0)
+      now.setSeconds(0)
       itUsesTrxAnd(
         'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',
         (trx) =>
@@ -34,7 +37,7 @@ describe(
                   description: null,
                 },
                 in_waiting_room: true,
-                arrived_at: new Date(),
+                arrived_at: now,
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
@@ -72,7 +75,7 @@ describe(
                   description: null,
                 },
                 in_waiting_room: true,
-                arrived_at: new Date(),
+                arrived_at: now,
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,

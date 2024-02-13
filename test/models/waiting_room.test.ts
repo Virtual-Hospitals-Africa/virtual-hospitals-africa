@@ -10,6 +10,13 @@ describe(
   'db/models/waiting_room.ts',
   { sanitizeResources: false },
   () => {
+    const now = new Date()
+    now.setMilliseconds(0)
+    now.setSeconds(0)
+    const one_hour_ago = new Date(Date.now() - 3600 * 1000)
+    one_hour_ago.setMilliseconds(0)
+    one_hour_ago.setSeconds(0)
+
     describe('get', () => {
       itUsesTrxAnd(
         'orders the waiting room by when people first arrived',
@@ -51,7 +58,7 @@ describe(
                 description: null,
               },
               in_waiting_room: true,
-              arrived_at: new Date(),
+              arrived_at: now,
               status: 'Awaiting Intake',
               actions: {
                 view: null,
@@ -70,7 +77,7 @@ describe(
                 description: null,
               },
               in_waiting_room: true,
-              arrived_at: new Date(),
+              arrived_at: now,
               status: 'Awaiting Intake',
               actions: {
                 view: null,
@@ -121,7 +128,7 @@ describe(
                   description: null,
                 },
                 in_waiting_room: true,
-                arrived_at: new Date(),
+                arrived_at: now,
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
@@ -140,7 +147,7 @@ describe(
                   description: null,
                 },
                 in_waiting_room: true,
-                arrived_at: new Date(Date.now() - 3600 * 1000),
+                arrived_at: one_hour_ago,
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
