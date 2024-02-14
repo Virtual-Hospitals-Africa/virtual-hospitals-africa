@@ -26,8 +26,16 @@ export function remove(
     .execute()
 }
 
-function arrivedAgoDisplay(wait_time: string) {
+export function arrivedAgoDisplay(wait_time: string) {
+  const day_regex = /(^\d+ days?)/
+
+  const day_match = wait_time.match(day_regex)
+
+  if (day_match) {
+    return `${day_match[1]} ago`
+  }
   const [hours, minutes] = wait_time.split(':').map(Number)
+
   if (!hours && !minutes) {
     return 'Just now'
   }

@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { describe } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
@@ -153,6 +153,38 @@ describe(
             ])
           }),
       )
+    })
+    describe('arrivedAgoDisplay', () => {
+      it('returns "Just now" for a patient who arrived less than 1 minute ago', () => {
+        assertEquals(
+          waiting_room.arrivedAgoDisplay('00:00:02.0'),
+          'Just now',
+        )
+      }),
+        it('returns "5 minutes ago" for a patient who arrived 5 minutes ago', () => {
+          assertEquals(
+            waiting_room.arrivedAgoDisplay('00:05:02.0'),
+            '5 minutes ago',
+          )
+        }),
+        it('returns "2 hours ago" for a patient who arrived 2 hours ago', () => {
+          assertEquals(
+            waiting_room.arrivedAgoDisplay('02:05:02.0'),
+            '2 hours ago',
+          )
+        }),
+        it('returns "1 day ago" for a patient who arrived 1 day ago', () => {
+          assertEquals(
+            waiting_room.arrivedAgoDisplay('1 day 02:05:02.0'),
+            '1 day ago',
+          )
+        }),
+        it('returns "2 days ago" for a patient who arrived 2 days ago', () => {
+          assertEquals(
+            waiting_room.arrivedAgoDisplay('2 days 02:05:02.0'),
+            '2 days ago',
+          )
+        })
     })
   },
 )
