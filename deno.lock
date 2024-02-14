@@ -3,6 +3,7 @@
   "packages": {
     "specifiers": {
       "npm:@tailwindcss/forms@0.5.7": "npm:@tailwindcss/forms@0.5.7_tailwindcss@3.3.5__postcss@8.4.31",
+      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:autoprefixer@10.4.16": "npm:autoprefixer@10.4.16_postcss@8.4.31",
       "npm:bluebird": "npm:bluebird@3.7.2",
       "npm:cssnano@6.0.1": "npm:cssnano@6.0.1_postcss@8.4.31",
