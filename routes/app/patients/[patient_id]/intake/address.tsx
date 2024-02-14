@@ -56,7 +56,8 @@ function assertIsAddress(
     !!patient.address.ward_id && typeof patient.address.ward_id === 'number',
   )
   assertOr400(
-    !!patient.address.street && typeof patient.address.street === 'string',
+    (!!patient.address.street && typeof patient.address.street === 'string') ||
+      !patient.address.street,
   )
   assertOr400(
     !!patient.nearest_facility_id &&
