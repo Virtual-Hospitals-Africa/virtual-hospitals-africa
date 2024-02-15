@@ -332,6 +332,12 @@ export interface HealthWorkers {
   updated_at: Generated<Timestamp>
 }
 
+export interface Icd10Category {
+  category: string
+  description: string
+  section: string
+}
+
 export interface Icd10Codes {
   code: string
   created_at: Generated<Timestamp>
@@ -339,13 +345,46 @@ export interface Icd10Codes {
   updated_at: Generated<Timestamp>
 }
 
-export interface Icd10Tabular {
+export interface Icd10Diagnosis {
+  category: string
   code: string
   description: string
-  excludes1: string | null
-  excludes2: string | null
   includes: string | null
   parent_code: string | null
+}
+
+export interface Icd10DiagnosisExclude {
+  code: string
+  id: Generated<number>
+  note: string
+  pure: boolean
+}
+
+export interface Icd10DiagnosisExcludeCategory {
+  category: string
+  exclude_id: number
+  id: Generated<number>
+}
+
+export interface Icd10DiagnosisExcludeCode {
+  code: string
+  dash: Generated<boolean>
+  exclude_id: number
+  id: Generated<number>
+}
+
+export interface Icd10DiagnosisExcludeCodeRange {
+  code_range_end: string
+  code_range_end_dash: Generated<boolean>
+  code_range_start: string
+  code_range_start_dash: Generated<boolean>
+  exclude_id: number
+  id: Generated<number>
+}
+
+export interface Icd10Section {
+  description: string
+  section: string
 }
 
 export interface Intake {
@@ -761,8 +800,14 @@ export interface DB {
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
   health_workers: HealthWorkers
+  icd10_category: Icd10Category
   icd10_codes: Icd10Codes
-  icd10_tabular: Icd10Tabular
+  icd10_diagnosis: Icd10Diagnosis
+  icd10_diagnosis_exclude: Icd10DiagnosisExclude
+  icd10_diagnosis_exclude_category: Icd10DiagnosisExcludeCategory
+  icd10_diagnosis_exclude_code: Icd10DiagnosisExcludeCode
+  icd10_diagnosis_exclude_code_range: Icd10DiagnosisExcludeCodeRange
+  icd10_section: Icd10Section
   intake: Intake
   mailing_list: MailingList
   manufactured_medications: ManufacturedMedications

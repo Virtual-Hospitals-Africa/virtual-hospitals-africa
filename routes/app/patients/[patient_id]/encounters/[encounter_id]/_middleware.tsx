@@ -1,4 +1,4 @@
-import { JSX } from 'preact'
+import { ComponentChildren, JSX } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import { Container } from '../../../../../../components/library/Container.tsx'
@@ -18,7 +18,6 @@ import {
   StatusError,
 } from '../../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
-import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 import { Person } from '../../../../../../components/library/Person.tsx'
 import {
   replaceParams,

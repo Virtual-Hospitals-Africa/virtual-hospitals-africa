@@ -1,4 +1,4 @@
-import { ComponentChildren } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
+import { ComponentChildren } from 'preact'
 import cls from '../../../util/cls.ts'
 import { Button } from '../Button.tsx'
 

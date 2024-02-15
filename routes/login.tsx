@@ -1,7 +1,7 @@
 import { Handlers } from '$fresh/server.ts'
 import { oauthParams } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
-import { WithSession } from 'https://raw.githubusercontent.com/will-weiss/fresh-session/main/mod.ts'
+import { WithSession } from 'fresh_session'
 
 export const handler: Handlers<unknown, WithSession> = {
   GET(_req, ctx) {

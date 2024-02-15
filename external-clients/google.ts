@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import moment from 'https://deno.land/x/momentjs@2.29.1-deno/mod.ts'
 
 import {
   DeepPartial,
@@ -33,6 +32,7 @@ import {
   getDistanceFromRedis,
   getFacilityAddress,
 } from './redis.ts'
+import { formatHarare } from '../util/date.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 if (!Deno.env.get('BUILDING')) assert(GOOGLE_MAPS_API_KEY)
@@ -289,8 +289,8 @@ export class GoogleClient {
     const freeBusy: GCalFreeBusy = await this.makeCalendarRequest('/freeBusy', {
       method: 'post',
       data: {
-        timeMin: moment(timeMin).format(),
-        timeMax: moment(timeMax).format(),
+        timeMin: formatHarare(timeMin),
+        timeMax: formatHarare(timeMax),
         timeZone: 'Africa/Johannesburg',
         items: calendarIds.map((id) => ({ id })),
       },
