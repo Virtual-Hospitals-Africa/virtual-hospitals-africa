@@ -26,6 +26,7 @@ import {
 } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
+import uniq from '../../../../../../util/uniq.ts'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -68,21 +69,21 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
   let matching_provider = encounter.providers.find(
     (provider) => provider.health_worker_id === healthWorker.id,
   )
-
   if (!matching_provider) {
-    const facility_id = encounter.waiting_room_facility_id
-    assertOr403(
-      facility_id,
-      'You do not have access to this patient at this time. The patient is being seen at a facility you do not work at. Please contact the facility to get access to the patient.',
-    )
-    assert(encounter.waiting_room_id)
+    const being_seen_at_facilities = encounter.waiting_room_facility_id
+      ? [encounter.waiting_room_facility_id]
+      : uniq(
+        encounter.providers.map((p) => p.facility_id),
+      )
+
     const employment = healthWorker.employment.find(
-      (e) => e.facility.id === facility_id,
+      (e) => being_seen_at_facilities.includes(e.facility.id),
     )
     assertOr403(
       employment,
       'You do not have access to this patient at this time. The patient is being seen at a facility you do not work at. Please contact the facility to get access to the patient.',
     )
+
     const provider = employment.roles.doctor || employment.roles.nurse
 
     if (!provider) {
