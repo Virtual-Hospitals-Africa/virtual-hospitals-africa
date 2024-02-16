@@ -1,118 +1,13 @@
 // deno-lint-ignore-file no-explicit-any
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
 import { XMLParser } from 'fast-xml-parser'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assert } from 'std/assert/assert.ts'
 import compact from '../../util/compact.ts'
 import range from '../../util/range.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import inParallel from '../../util/inParallel.ts'
 
-async function makeTables(db: Kysely<any>) {
-  await db.schema.createTable('icd10_section')
-    .addColumn('section', 'varchar(7)', (col) => col.primaryKey())
-    .addColumn('description', 'varchar(255)', (col) => col.notNull())
-    .execute()
-
-  await db.schema.createTable('icd10_category')
-    .addColumn('category', 'varchar(3)', (col) => col.primaryKey())
-    .addColumn(
-      'section',
-      'varchar(8)',
-      (col) => col.notNull().references('icd10_section.section'),
-    )
-    .addColumn('description', 'varchar(255)', (col) => col.notNull())
-    .execute()
-
-  await db.schema.createTable('icd10_diagnosis')
-    .addColumn('code', 'varchar(8)', (col) => col.primaryKey())
-    .addColumn(
-      'category',
-      'varchar(3)',
-      (col) => col.notNull().references('icd10_category.category'),
-    )
-    .addColumn('description', 'varchar(255)', (col) => col.notNull())
-    .addColumn('includes', 'text')
-    .addColumn(
-      'parent_code',
-      'varchar(8)',
-      (col) => col.references('icd10_diagnosis.code'),
-    )
-    .execute()
-
-  await db.schema.createTable('icd10_diagnosis_exclude')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'code',
-      'varchar(8)',
-      (col) => col.notNull().references('icd10_diagnosis.code'),
-    )
-    .addColumn('note', 'varchar(255)', (col) => col.notNull())
-    .addColumn('pure', 'boolean', (col) => col.notNull())
-    .execute()
-
-  await db.schema.createTable('icd10_diagnosis_exclude_category')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'exclude_id',
-      'integer',
-      (col) => col.notNull().references('icd10_diagnosis_exclude.id'),
-    )
-    .addColumn(
-      'category',
-      'varchar(3)',
-      (col) => col.notNull().references('icd10_category.category'),
-    )
-    .execute()
-
-  await db.schema.createTable('icd10_diagnosis_exclude_code')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'exclude_id',
-      'integer',
-      (col) => col.notNull().references('icd10_diagnosis_exclude.id'),
-    )
-    .addColumn(
-      'code',
-      'varchar(8)',
-      (col) => col.notNull().references('icd10_diagnosis.code'),
-    )
-    .addColumn('dash', 'boolean', (col) => col.notNull().defaultTo(false))
-    .execute()
-
-  await db.schema.createTable('icd10_diagnosis_exclude_code_range')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'exclude_id',
-      'integer',
-      (col) => col.notNull().references('icd10_diagnosis_exclude.id'),
-    )
-    .addColumn(
-      'code_range_start',
-      'varchar(8)',
-      (col) => col.notNull().references('icd10_diagnosis.code'),
-    )
-    .addColumn(
-      'code_range_end',
-      'varchar(8)',
-      (col) => col.notNull().references('icd10_diagnosis.code'),
-    )
-    .addColumn(
-      'code_range_start_dash',
-      'boolean',
-      (col) => col.notNull().defaultTo(false),
-    )
-    .addColumn(
-      'code_range_end_dash',
-      'boolean',
-      (col) => col.notNull().defaultTo(false),
-    )
-    .execute()
-
-  await sql`
-    CREATE INDEX trgm_icd10_diagnosis_desc ON icd10_diagnosis USING GIN ("description" gin_trgm_ops);
-    CREATE INDEX trgm_icd10_diagnosis_includes ON icd10_diagnosis USING GIN ("includes" gin_trgm_ops);
-  `.execute(db)
-}
 type Exclude = {
   note: string
   code: string
@@ -486,34 +381,26 @@ async function insertExclude(
 }
 
 export async function up(db: Kysely<any>) {
-  await makeTables(db)
   const sections = await readICD10TabularSections()
 
   // Excludes refer to other codes, so we need to insert the codes
   // first so that the foreign key constraints are satisfied
   const insert_excludes: Exclude[] = []
-  for (const to_insert of iterSections(sections)) {
+  await inParallel(iterSections(sections), async (to_insert) => {
+    console.log(to_insert.row)
     if (to_insert.table === 'icd10_diagnosis_exclude') {
       insert_excludes.push(to_insert.row as any)
-      continue
+      return
     }
     await db.insertInto(to_insert.table)
       .values(to_insert.row)
       .execute()
-  }
-  for (const exclude of insert_excludes) {
-    await insertExclude(db, exclude)
-  }
+  })
+  await inParallel(insert_excludes, (exclude) => insertExclude(db, exclude))
 }
 
-export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('icd10_diagnosis_exclude_code').execute()
-  await db.schema.dropTable('icd10_diagnosis_exclude_code_range').execute()
-  await db.schema.dropTable('icd10_diagnosis_exclude_category').execute()
-  await db.schema.dropTable('icd10_diagnosis_exclude').execute()
-  await db.schema.dropTable('icd10_diagnosis').execute()
-  await db.schema.dropTable('icd10_category').execute()
-  await db.schema.dropTable('icd10_section').execute()
+export async function down(db: Kysely<any>) {
+  await db.deleteFrom('icd10_section').execute()
 }
 
 /*
