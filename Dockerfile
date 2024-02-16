@@ -1,4 +1,4 @@
-FROM denoland/deno:alpine-1.39.1 as build
+FROM denoland/deno:alpine-1.40.3 as build
 WORKDIR /app
 COPY ./ /app
 RUN touch .env
