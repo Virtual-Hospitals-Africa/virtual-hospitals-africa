@@ -37,6 +37,7 @@
     "test:chatbot": "DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unstable-temporal --env --unsafely-ignore-certificate-errors test/chatbot",
     "test:one": "rm -f test_server.log && deno task db:migrate:check && DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unstable-temporal --env --unsafely-ignore-certificate-errors",
     "test:watch": "./scripts/watch_and_beep.sh FAILED deno task test --watch",
+    "tmux": "./scripts/tmux.sh",
     "preview": "deno run -A main.ts",
     "check": "deno fmt --check && deno lint && find . -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs deno check",
     "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",

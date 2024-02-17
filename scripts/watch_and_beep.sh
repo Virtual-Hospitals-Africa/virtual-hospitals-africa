@@ -1,16 +1,16 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
+# The first argument is the pattern to watch for, the rest is the script to run
 pattern=$1
 shift
 
-# Function to beep
 beep() {
   printf '\a'
 }
 
-# Function to run the script and monitor for errors
-run_script() {
+# Echo each line of output, and beep if it matches the pattern
+watch_output() {
   while IFS= read -r line; do
     echo "$line"
     if [[ $line =~ $pattern ]]; then
@@ -19,5 +19,5 @@ run_script() {
   done
 }
 
-# Run the script and monitor for errors
-"$@" 2>&1 | run_script
+# Run the script, piping stdout & stderr to the watch_output function
+"$@" 2>&1 | watch_output
