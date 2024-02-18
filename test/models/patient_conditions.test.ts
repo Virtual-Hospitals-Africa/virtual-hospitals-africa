@@ -591,7 +591,7 @@ describe(
         async (trx) => {
           const patient = await patients.upsert(trx, { name: 'Billy Bob' })
 
-          await patient_conditions.upsertMajorSurgery(trx, patient.id, [
+          await patient_conditions.upsertMajorSurgeries(trx, patient.id, [
             { id: 'c_4145', start_date: '2020-02-01' },
           ])
 
@@ -614,7 +614,7 @@ describe(
 
         await assertRejects(
           () =>
-            patient_conditions.upsertMajorSurgery(trx, patient.id, [
+            patient_conditions.upsertMajorSurgeries(trx, patient.id, [
               {
                 id: 'c_22401',
                 start_date: '2020-01-01',
@@ -623,6 +623,41 @@ describe(
           StatusError,
           'Condition is not a major surgery',
         )
+      })
+
+      itUsesTrxAnd(
+        'allows 2 surgeries if the dates are distinct',
+        async (trx) => {
+          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+
+          await patient_conditions.upsertMajorSurgeries(trx, patient.id, [
+            { id: 'c_4145', start_date: '2020-02-01' },
+            { id: 'c_4145', start_date: '2020-03-01' },
+          ])
+
+          const major_surgeries = await patient_conditions.getMajorSurgeries(
+            trx,
+            {
+              patient_id: patient.id,
+            },
+          )
+          assertEquals(major_surgeries.length, 2)
+        },
+      )
+
+      itUsesTrxAnd('400s if 2 surgeries have the same date', async (trx) => {
+        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+
+        const error = await assertRejects(
+          () =>
+            patient_conditions.upsertMajorSurgeries(trx, patient.id, [
+              { id: 'c_4145', start_date: '2020-02-01' },
+              { id: 'c_4145', start_date: '2020-02-01' },
+            ]),
+          StatusError,
+        )
+
+        assertEquals(error.status, 400)
       })
     })
 
@@ -649,7 +684,7 @@ describe(
                 },
               ]),
             () =>
-              patient_conditions.upsertMajorSurgery(trx, patient.id, [
+              patient_conditions.upsertMajorSurgeries(trx, patient.id, [
                 { id: 'c_4145', start_date: '2020-02-01' },
               ]),
           ]

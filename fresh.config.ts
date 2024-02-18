@@ -2,7 +2,6 @@ import { assert } from 'std/assert/assert.ts'
 import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
-import range from './util/range.ts'
 
 const { BUILDING, SELF_URL, SERVE_HTTP, PORT } = Deno.env.toObject()
 
@@ -23,8 +22,6 @@ export default defineConfig({
     port: PORT ? parseInt(PORT, 10) : 8000,
     ...httpsOpts,
   },
-  // TODO remove when PR into fresh merged
-  // https://github.com/denoland/fresh/pull/2321
   onListen(params) {
     const protocol = serveHttps ? 'https:' : 'http:'
     const address = colors.cyan(

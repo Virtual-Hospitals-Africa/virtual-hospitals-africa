@@ -21,6 +21,7 @@ export async function handler(
 
   assertOr403(
     healthWorker.employment.some((e) => e.facility.id === facility_id),
+    'Must be employed at this facility to access it',
   )
 
   const [facility] = await facilities.get(ctx.state.trx, { ids: [facility_id] })

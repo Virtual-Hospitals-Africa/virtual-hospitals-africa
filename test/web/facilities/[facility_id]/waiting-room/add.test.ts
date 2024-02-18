@@ -1,9 +1,9 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorkerWithSession,
-  describeWithWebServer,
   getFormValues,
+  route,
 } from '../../../utilities.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -11,10 +11,10 @@ import * as patients from '../../../../../db/models/patients.ts'
 import db from '../../../../../db/db.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
-describeWithWebServer(
+describe(
   '/app/facilities/[facility_id]/waiting-room/add',
-  8007,
-  (route) => {
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
     it('renders a page on GET', async () => {
       const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',

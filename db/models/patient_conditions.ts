@@ -60,7 +60,7 @@ export type MajorSurgeryUpsert = {
 function assertPreExistingConditions(
   patient_conditions: PreExistingConditionUpsert[],
 ) {
-  const seen_condition_ids = new Set<string>()
+  const condition_unique_indexes = new Set<string>()
   const seen_medication_ids = new Set<number>()
   for (const condition of patient_conditions) {
     assertOr400(condition.id, 'Condition id must be present')
@@ -68,18 +68,21 @@ function assertPreExistingConditions(
       isISODateString(condition.start_date),
       'Condition start_date must be present',
     )
+    const unique_index = `${condition.id}:${condition.start_date}`
     assertOr400(
-      !seen_condition_ids.has(condition.id),
-      'Condition id must be unique',
+      !condition_unique_indexes.has(unique_index),
+      'Condition id and start_date must be unique',
     )
-    seen_condition_ids.add(condition.id)
+    condition_unique_indexes.add(unique_index)
     for (const comorbidity of condition.comorbidities || []) {
       assertOr400(comorbidity.id, 'Comorbidity id must be present')
+      const start_date = comorbidity.start_date || condition.start_date
+      const unique_index = `${comorbidity.id}:${start_date}`
       assertOr400(
-        !seen_condition_ids.has(comorbidity.id),
-        'Comorbidity id must be unique',
+        !condition_unique_indexes.has(unique_index),
+        'Comorbidity id and start_date must be unique',
       )
-      seen_condition_ids.add(comorbidity.id)
+      condition_unique_indexes.add(unique_index)
     }
     for (const medication of condition.medications || []) {
       assertOr400(
@@ -547,13 +550,13 @@ export async function upsertPastMedical(
   await removing
 }
 
-export async function getMajorSurgeries(
+export function getMajorSurgeries(
   trx: TrxOrDb,
   opts: {
     patient_id: number
   },
 ): Promise<MajorSurgery[]> {
-  const results = await trx
+  return trx
     .selectFrom('patient_conditions')
     .innerJoin(
       'conditions',
@@ -569,11 +572,9 @@ export async function getMajorSurgeries(
       isoDate(eb.ref('patient_conditions.start_date')).as('start_date'),
     ])
     .execute()
-
-  return results
 }
 
-export async function upsertMajorSurgery(
+export async function upsertMajorSurgeries(
   trx: TrxOrDb,
   patient_id: number,
   major_surgeries: MajorSurgeryUpsert[],

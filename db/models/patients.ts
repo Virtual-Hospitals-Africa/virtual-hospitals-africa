@@ -216,7 +216,7 @@ export async function upsertIntake(
     )
 
   const upserting_major_surgeries = major_surgeries &&
-    patient_conditions.upsertMajorSurgery(
+    patient_conditions.upsertMajorSurgeries(
       trx,
       id,
       major_surgeries,

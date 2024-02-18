@@ -1,18 +1,15 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import {
-  addTestHealthWorkerWithSession,
-  describeWithWebServer,
-} from '../utilities.ts'
+import { addTestHealthWorkerWithSession, route } from '../utilities.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_general_assessments from '../../../db/models/patient_general_assessments.ts'
 import db from '../../../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 
-describeWithWebServer(
+describe(
   '/app/patients/[patient_id]/encounters/open/general_assessments',
-  8011,
-  (route) => {
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
     it('can save asssessments on POST', async () => {
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',

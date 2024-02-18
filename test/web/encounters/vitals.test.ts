@@ -1,20 +1,20 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   addTestHealthWorkerWithSession,
-  describeWithWebServer,
   getFormValues,
+  route,
 } from '../utilities.ts'
 import * as patients from '../../../db/models/patients.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import * as patient_measurements from '../../../db/models/patient_measurements.ts'
 import db from '../../../db/db.ts'
 
-describeWithWebServer(
+describe(
   '/app/patients/[patient_id]/encounters/open/vitals',
-  8009,
-  (route) => {
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
     it('renders a page on GET for an open encounter', async () => {
       const patient = await patients.upsert(db, { name: 'Test Patient' })
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {

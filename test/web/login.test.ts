@@ -7,13 +7,13 @@ import * as employment from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import {
   addTestHealthWorkerWithSession,
-  describeWithWebServer,
+  route,
   withTestFacility,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 
-describeWithWebServer('/login', 8002, (route) => {
+describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
   it('redirects to google if not already logged in', async () => {
     const response = await fetch(`${route}/login`, {
       redirect: 'manual',
@@ -207,6 +207,7 @@ describeWithWebServer('/login', 8002, (route) => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'doctor',
       })
+
       const employeesResponse = await mock.fetch(
         `${route}/app/facilities/1/employees`,
       )
@@ -222,11 +223,6 @@ describeWithWebServer('/login', 8002, (route) => {
 
       const invitesResponse = await mock.fetch(
         `${route}/app/facilities/1/employees/invite`,
-        {
-          headers: {
-            Cookie: `sessionId=${mock.sessionId}`,
-          },
-        },
       )
 
       assertEquals(invitesResponse.status, 403)

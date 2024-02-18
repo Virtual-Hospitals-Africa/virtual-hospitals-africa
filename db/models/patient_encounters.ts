@@ -37,7 +37,6 @@ export function assertIsEncounterReason(
 export function assertIsUpsert(
   obj: unknown,
 ): asserts obj is Upsert {
-  console.log(obj)
   assertOr400(isObjectLike(obj))
   assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'number')
   assertOr400(obj.patient_id == null || typeof obj.patient_id === 'number')
@@ -252,8 +251,6 @@ export function get(
   query = encounter_id === 'open'
     ? query.where('patient_encounters.closed_at', 'is', null)
     : query.where('patient_encounters.id', '=', encounter_id)
-
-  console.log(query.compile().sql)
 
   return query.executeTakeFirst()
 }

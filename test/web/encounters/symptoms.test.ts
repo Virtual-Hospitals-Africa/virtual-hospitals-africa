@@ -1,17 +1,17 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   addTestHealthWorkerWithSession,
-  describeWithWebServer,
   getFormValues,
+  route,
 } from '../utilities.ts'
 import * as patient_encounters from '../../../db/models/patient_encounters.ts'
 import db from '../../../db/db.ts'
 
-describeWithWebServer(
+describe(
   '/app/patients/[patient_id]/encounters/open/symptoms',
-  8010,
-  (route) => {
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
     it('renders a page on GET for an open encounter', async () => {
       const { healthWorker, fetchCheerio } =
         await addTestHealthWorkerWithSession(db, {
