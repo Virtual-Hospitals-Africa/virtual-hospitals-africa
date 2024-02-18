@@ -349,6 +349,7 @@ export interface Icd10Diagnosis {
   category: string
   code: string
   description: string
+  general: Generated<boolean>
   includes: string | null
   parent_code: string | null
 }

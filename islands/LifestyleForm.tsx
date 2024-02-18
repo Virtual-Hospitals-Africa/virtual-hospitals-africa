@@ -60,7 +60,6 @@ function SexualActivitySection(
             sexual_activity.value = { ever_been_sexually_active: !!value }}
         />
       </YesNoGrid>
-      {console.log('Sex variable:', sexual_activity)}
       {sexual_activity.value.ever_been_sexually_active === true && (
         <>
           <NumberInput

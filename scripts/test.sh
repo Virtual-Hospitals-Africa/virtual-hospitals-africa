@@ -21,6 +21,7 @@ start_test_server() {
   fi
 }
 
+# In watch mode, this may happen several times
 wait_until_test_server_ready() {
   while ! grep -q "Virtual Hospitals Africa ready" "$test_server_output"; do
     sleep 0.1
@@ -63,5 +64,5 @@ while true; do
   run_tests "$@" &
   tests_pid=$!
   wait_until_test_server_ready
-  kill "$tests_pid" 2>/dev/null
+  pkill -TERM -P "$tests_pid"
 done

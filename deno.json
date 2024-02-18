@@ -57,7 +57,7 @@
     "$fresh/": "https://deno.land/x/fresh@1.6.3/",
     "kysely": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/index.js",
     "kysely/": "https://cdn.jsdelivr.net/npm/kysely/dist/esm/",
-    "kysely-deno-postgres": "https://deno.land/x/kysely_deno_postgres@v0.4.0/mod.ts",
+    "kysely-deno-postgres": "https://raw.githubusercontent.com/will-weiss/kysely-deno-postgres/main/mod.ts",
     "preact": "https://esm.sh/preact@10.19.2",
     "preact/": "https://esm.sh/preact@10.19.2/",
     "preact-render-to-string": "https://esm.sh/*preact-render-to-string@6.1.0",
