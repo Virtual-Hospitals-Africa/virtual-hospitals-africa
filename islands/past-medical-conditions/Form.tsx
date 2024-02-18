@@ -1,66 +1,42 @@
-import { useState } from 'preact/hooks'
+import { JSX } from 'preact'
+import { useSignal } from '@preact/signals'
 import { PastMedicalCondition } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
-import { JSX } from 'preact/jsx-runtime'
 import { AddRow } from '../AddRemove.tsx'
-import Condition, { ConditionState } from './Condition.tsx'
+import Condition from './Condition.tsx'
 
-type pastConditionsFormState = Map<
-  string | number,
-  ConditionState | { removed: true }
->
-
-const initialState = (
-  pastMedicalConditions: PastMedicalCondition[] = [],
-): pastConditionsFormState => {
-  const state = new Map()
-  for (const pastMedicalCondition of pastMedicalConditions) {
-    state.set(pastMedicalCondition.id, {
-      removed: false,
-    })
-  }
-  return state
-}
-
-export default function PastMedicalConditionsForm({
-  pastMedicalConditions,
-}: {
-  pastMedicalConditions: PastMedicalCondition[]
+export default function PastMedicalConditionsForm(props: {
+  past_medical_conditions: PastMedicalCondition[]
 }): JSX.Element {
-  const [patientConditions, setPatientConditions] = useState<
-    pastConditionsFormState
+  const past_medical_conditions = useSignal<
+    (Partial<PastMedicalCondition> & { removed?: boolean })[]
   >(
-    initialState(pastMedicalConditions),
+    props.past_medical_conditions,
   )
 
-  const addCondition = () => {
-    const id = generateUUID()
-    const nextPatientConditions = new Map(patientConditions)
-    nextPatientConditions.set(id, {
-      removed: false,
-    })
-    setPatientConditions(new Map(nextPatientConditions))
-  }
+  const addCondition = () =>
+    past_medical_conditions.value = [
+      ...past_medical_conditions.value,
+      {},
+    ]
 
   return (
-    <div>
-      {Array.from(patientConditions.entries()).map((
-        [condition_id, condition_state],
-        i: number,
-      ) =>
-        !condition_state.removed && (
+    <div className='flex flex-col space-y-2'>
+      {past_medical_conditions.value.map((state, index) =>
+        !state.removed && (
           <Condition
-            condition_id={condition_id}
-            condition_index={i}
-            condition_state={condition_state}
-            pastMedicalConditions={pastMedicalConditions}
-            removeCondition={() => {
-              const nextPatientConditions = new Map(patientConditions)
-              nextPatientConditions.set(condition_id, {
-                removed: true,
-              })
-              setPatientConditions(new Map(nextPatientConditions))
-            }}
+            key={index}
+            index={index}
+            value={state.id
+              ? props.past_medical_conditions.find(
+                (condition) =>
+                  condition.id === state.id &&
+                  condition.start_date === state.start_date,
+              )
+              : undefined}
+            remove={() =>
+              past_medical_conditions.value = past_medical_conditions.value.map(
+                (condition, j) => j === index ? { removed: true } : condition,
+              )}
           />
         )
       )}

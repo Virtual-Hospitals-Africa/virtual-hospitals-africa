@@ -2,7 +2,7 @@ import SurgerySearch from '../SurgerySearch.tsx'
 import { DateInput } from '../../components/library/form/Inputs.tsx'
 import { MajorSurgery } from '../../types.ts'
 import { JSX } from 'preact/jsx-runtime'
-import { AddRow, RemoveRow } from '../AddRemove.tsx'
+import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
 
 export type SurgeryState = {
@@ -11,46 +11,33 @@ export type SurgeryState = {
 
 export default function Surgery(
   {
-    surgery_id,
-    surgery_index,
-    surgery_state,
-    majorSurgeries,
-    removeSurgery,
+    index,
+    value,
+    remove,
   }: {
-    surgery_id: string | number
-    surgery_index: number
-    surgery_state: SurgeryState
-    majorSurgeries: MajorSurgery[]
-    removeSurgery(): void
+    index: number
+    value?: MajorSurgery
+    remove(): void
   },
 ): JSX.Element {
-  const matchingSurgery = majorSurgeries.find(
-    (surgery) => surgery.id === surgery_id,
-  )
-  const prefix = `major_surgeries.${surgery_index}`
+  const prefix = `major_surgeries.${index}`
+  const labelled = index === 0
 
   return (
-    <RemoveRow onClick={removeSurgery} key={surgery_id} labelled>
+    <RemoveRow onClick={remove} labelled={labelled}>
       <div className='flex flex-col w-full gap-2'>
         <FormRow>
           <SurgerySearch
-            label='Surgery name'
+            label={labelled ? 'Surgery Name' : null}
             name={prefix}
-            value={matchingSurgery}
+            value={value}
           />
           <DateInput
+            label={labelled ? 'Surgery Date' : null}
             name={`${prefix}.start_date`}
-            label='Surgery Date'
-            value={matchingSurgery?.start_date}
+            value={value?.start_date}
             required
           />
-          {typeof surgery_id === 'number' && (
-            <input
-              type='hidden'
-              name={`${prefix}.id`}
-              value={surgery_id}
-            />
-          )}
         </FormRow>
       </div>
     </RemoveRow>

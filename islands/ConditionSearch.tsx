@@ -1,13 +1,11 @@
 import cls from '../util/cls.ts'
 import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
 
-type ConditionData = { id: string; name: string }
-
 function ConditionOption({
   option,
   selected,
 }: {
-  option: ConditionData
+  option: { name: string }
   selected: boolean
 }) {
   return (
@@ -20,7 +18,7 @@ function ConditionOption({
 }
 
 export default function ConditionSearch(
-  props: Omit<AsyncSearchProps<ConditionData>, 'Option' | 'href'>,
+  props: Omit<AsyncSearchProps, 'Option' | 'href'>,
 ) {
   return (
     <AsyncSearch {...props} href='/app/conditions' Option={ConditionOption} />

@@ -20,7 +20,7 @@ export type SearchProps<
 > = {
   name?: string
   required?: boolean
-  label?: string
+  label?: Maybe<string>
   addable?: boolean
   disabled?: boolean
   value?: Maybe<T>

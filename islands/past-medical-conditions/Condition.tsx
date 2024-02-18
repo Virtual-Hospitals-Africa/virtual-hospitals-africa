@@ -2,61 +2,44 @@ import ConditionSearch from '../ConditionSearch.tsx'
 import { DateInput } from '../../components/library/form/Inputs.tsx'
 import { PastMedicalCondition } from '../../types.ts'
 import { JSX } from 'preact/jsx-runtime'
-import { AddRow, RemoveRow } from '../AddRemove.tsx'
+import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
-
-export type ConditionState = {
-  removed: false
-}
 
 export default function Condition(
   {
-    condition_id,
-    condition_index,
-    condition_state,
-    pastMedicalConditions,
-    removeCondition,
+    index,
+    value,
+    remove,
   }: {
-    condition_id: string | number
-    condition_index: number
-    condition_state: ConditionState
-    pastMedicalConditions: PastMedicalCondition[]
-    removeCondition(): void
+    index: number
+    value?: PastMedicalCondition
+    remove(): void
   },
 ): JSX.Element {
-  const matchingCondition = pastMedicalConditions.find(
-    (condition) => condition.id === condition_id,
-  )
-  const prefix = `past_medical_conditions.${condition_index}`
+  const prefix = `past_medical_conditions.${index}`
+  const labelled = index === 0
 
   return (
-    <RemoveRow onClick={removeCondition} key={condition_id} labelled>
+    <RemoveRow onClick={remove} labelled={labelled}>
       <div className='flex flex-col w-full gap-2'>
         <FormRow>
           <ConditionSearch
-            label='Condition name'
             name={prefix}
-            value={matchingCondition}
+            label={labelled ? 'Condition name' : null}
+            value={value}
           />
           <DateInput
             name={`${prefix}.start_date`}
-            label='Start Date'
-            value={matchingCondition?.start_date}
+            label={labelled ? 'Start Date' : null}
+            value={value?.start_date}
             required
           />
           <DateInput
             name={`${prefix}.end_date`}
-            label='End Date'
-            value={matchingCondition?.end_date}
+            label={labelled ? 'End Date' : null}
+            value={value?.end_date}
             required
           />
-          {typeof condition_id === 'number' && (
-            <input
-              type='hidden'
-              name={`${prefix}.id`}
-              value={condition_id}
-            />
-          )}
         </FormRow>
       </div>
     </RemoveRow>

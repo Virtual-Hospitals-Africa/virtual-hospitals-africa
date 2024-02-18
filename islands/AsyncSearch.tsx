@@ -3,7 +3,7 @@ import { useEffect, useState } from 'preact/hooks'
 import Search, { SearchProps } from './Search.tsx'
 
 export type AsyncSearchProps<
-  T extends { id?: unknown; name: string },
+  T extends { id?: unknown; name: string } = { id?: unknown; name: string },
 > = Omit<SearchProps<T>, 'onQuery' | 'options'> & {
   href: string
 }
