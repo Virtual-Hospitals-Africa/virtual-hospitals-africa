@@ -16,7 +16,7 @@ kill_test_server() {
 start_test_server() {
   if $watch_mode; then
     deno task start
-  else 
+  else
     deno task web
   fi
 }
@@ -51,6 +51,14 @@ trap "kill_test_server" EXIT
 
 wait_until_test_server_ready
 
+if ! $watch_mode; then
+  run_tests "$@"
+  exit 0
+fi
+
+# In watch mode, run the tests in a background process
+# If the test server restarts (due to a file change), kill and restart the tests
+# We do this because deno test --watch only watches local files from entry point module graph
 while true; do
   run_tests "$@" &
   tests_pid=$!
