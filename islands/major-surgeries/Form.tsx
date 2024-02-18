@@ -1,66 +1,45 @@
-import { useState } from 'preact/hooks'
+import { JSX } from 'preact'
+import { useSignal } from '@preact/signals'
 import { MajorSurgery } from '../../types.ts'
-import generateUUID from '../../util/uuid.ts'
-import { JSX } from 'preact/jsx-runtime'
 import { AddRow } from '../AddRemove.tsx'
-import Surgery, { SurgeryState } from './Surgery.tsx'
+import Surgery from './Surgery.tsx'
 
-type pastSurgeriesFormState = Map<
-  string | number,
-  SurgeryState | { removed: true }
->
-
-const initialState = (
-  majorSurgeries: MajorSurgery[] = [],
-): pastSurgeriesFormState => {
-  const state = new Map()
-  for (const MajorSurgery of majorSurgeries) {
-    state.set(MajorSurgery.id, {
-      removed: false,
-    })
-  }
-  return state
-}
-
-export default function majorSurgeriesForm({
-  majorSurgeries,
-}: {
-  majorSurgeries: MajorSurgery[]
+export default function majorSurgeriesForm(props: {
+  major_surgeries: MajorSurgery[]
 }): JSX.Element {
-  const [patientSurgeries, setPatientSurgeries] = useState<
-    pastSurgeriesFormState
+  const major_surgeries = useSignal<
+    (Partial<MajorSurgery> & { removed?: boolean })[]
   >(
-    initialState(majorSurgeries),
+    props.major_surgeries,
   )
 
-  const addSurgery = () => {
-    const id = generateUUID()
-    const nextMajorSurgery = new Map(patientSurgeries)
-    nextMajorSurgery.set(id, {
-      removed: false,
-    })
-    setPatientSurgeries(new Map(nextMajorSurgery))
-  }
+  const addSurgery = () =>
+    major_surgeries.value = [
+      ...major_surgeries.value,
+      {},
+    ]
 
   return (
-    <div>
-      {Array.from(patientSurgeries.entries()).map((
-        [surgery_id, surgery_state],
-        i: number,
+    <div className='flex flex-col space-y-2'>
+      {major_surgeries.value.map((
+        state,
+        index,
       ) =>
-        !surgery_state.removed && (
+        !state.removed && (
           <Surgery
-            surgery_id={surgery_id}
-            surgery_index={i}
-            surgery_state={surgery_state}
-            majorSurgeries={majorSurgeries}
-            removeSurgery={() => {
-              const nextMajorSurgery = new Map(patientSurgeries)
-              nextMajorSurgery.set(surgery_id, {
-                removed: true,
-              })
-              setPatientSurgeries(new Map(nextMajorSurgery))
-            }}
+            key={index}
+            index={index}
+            value={state.id
+              ? props.major_surgeries.find(
+                (surgery) =>
+                  surgery.id === state.id &&
+                  surgery.start_date === state.start_date,
+              )
+              : undefined}
+            remove={() =>
+              major_surgeries.value = major_surgeries.value.map((surgery, j) =>
+                j === index ? { removed: true } : surgery
+              )}
           />
         )
       )}

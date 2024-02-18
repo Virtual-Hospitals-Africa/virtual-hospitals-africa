@@ -54,9 +54,8 @@ export default async function HistoryPage(
   return (
     <IntakeLayout ctx={ctx}>
       <PatientHistoryForm
-        patient={patient}
-        pastMedicalConditions={await getting_past_medical_conditions}
-        majorSurgeries={await getting_major_surgeries}
+        past_medical_conditions={await getting_past_medical_conditions}
+        major_surgeries={await getting_major_surgeries}
       />
       <hr className='my-2' />
       <Buttons submitText='Next Step' />
