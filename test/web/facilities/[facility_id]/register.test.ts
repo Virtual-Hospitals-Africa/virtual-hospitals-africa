@@ -1,9 +1,9 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
-  describeWithWebServer,
+  route,
 } from '../../utilities.ts'
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -12,10 +12,10 @@ import { redis } from '../../../../external-clients/redis.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import db from '../../../../db/db.ts'
 
-describeWithWebServer(
+describe(
   '/app/facilities/[facility_id]/register',
-  8008,
-  (route) => {
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
     it('renders a registration page on GET', async () => {
       const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'nurse',

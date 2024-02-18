@@ -1,15 +1,12 @@
-import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
-import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
-import { afterAll, beforeAll, describe, it } from 'std/testing/bdd.ts'
+import { it } from 'std/testing/bdd.ts'
 import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
 import * as facilities from '../../db/models/facilities.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
-import { assert } from 'std/assert/assert.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
@@ -17,120 +14,6 @@ import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 import { testCalendars } from '../mocks.ts'
 import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
-
-type WebServer = {
-  process: Deno.ChildProcess
-  lineReader: AsyncIterableIterator<string>
-  kill: () => Promise<void>
-}
-
-export async function startWebServer(
-  port: number,
-): Promise<WebServer> {
-  const process = new Deno.Command('deno', {
-    args: [
-      'task',
-      'web',
-    ],
-    env: {
-      LOG_FILE: 'test_server.log',
-      PORT: String(port),
-    },
-    stdin: 'null',
-    stdout: 'piped',
-    stderr: 'null',
-  }).spawn()
-
-  const stdout = process.stdout.getReader()
-  const lineReader = readLines(readerFromStreamReader(stdout))
-  const ___timeout___ = Date.now()
-
-  let line: string
-  do {
-    if (Date.now() > ___timeout___ + 7000) {
-      stdout.releaseLock()
-      await process.stdout.cancel()
-      throw new Error('hung process')
-    }
-    line = (await lineReader.next()).value
-  } while (!line.includes(`http://localhost:${port}/`))
-
-  async function kill() {
-    stdout.releaseLock()
-    await process.stdout.cancel()
-    process.kill()
-  }
-  return { process, lineReader, kill }
-}
-
-export async function killProcessOnPort(port: number) {
-  const lsof = await new Deno.Command('bash', {
-    args: ['-c', `lsof -i tcp:${port}`],
-  }).output()
-
-  const pid = new TextDecoder()
-    .decode(lsof.stdout)
-    .split('\n')[1]
-    ?.split(/\s+/)?.[1]
-
-  if (!pid) return
-
-  const result = await new Deno.Command('bash', {
-    args: ['-c', `kill ${pid}`],
-  }).output()
-
-  assert(
-    result.success,
-    `Failed to kill process ${new TextDecoder().decode(result.stderr)}`,
-  )
-}
-
-/* TODO: figure out how to turn this on
-   As it stands if you turn this on you get this
-
-./test/web/patients/intake.test.ts (uncaught error)
-error: (in promise) TypeError: The reader was released.
-    stdout.releaseLock()
-           ^
-    at readableStreamDefaultReaderRelease (ext:deno_web/06_streams.js:2469:13)
-    at ReadableStreamDefaultReader.releaseLock (ext:deno_web/06_streams.js:5318:5)
-    at Object.kill (file:///Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/test/web/utilities.ts:56:12)
-    at Object.<anonymous> (file:///Users/willweiss/dev/morehumaninternet/virtual-hospitals-africa/test/web/utilities.ts:151:23)
-    at fn (https://deno.land/std@0.204.0/testing/_test_suite.ts:145:32)
-*/
-export function logLines(lineReader: AsyncIterableIterator<string>) {
-  ;(async () => {
-    for await (const line of lineReader) {
-      console.log(line)
-    }
-  })()
-}
-
-export function describeWithWebServer(
-  description: string,
-  port: number,
-  callback: (route: string) => void,
-) {
-  describe(
-    description,
-    { sanitizeResources: false, sanitizeOps: false },
-    () => {
-      const route = `https://localhost:${port}`
-      let webserver: WebServer
-      beforeAll(async () => {
-        // TODO: figure out why these processes are being orphaned
-        await killProcessOnPort(port)
-        webserver = await startWebServer(port)
-        // logLines(webserver.lineReader)
-      })
-      afterAll(async () => {
-        await webserver.kill()
-        await db.destroy()
-      })
-      callback(route)
-    },
-  )
-}
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -143,6 +26,8 @@ type TestHealthWorkerOpts = {
   facility_id?: number
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
 }
+
+export const route = `https://localhost:8005`
 
 export async function addTestHealthWorker(
   trx: TrxOrDb,

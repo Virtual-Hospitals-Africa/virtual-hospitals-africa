@@ -1,11 +1,11 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
   addTestHealthWorker,
   addTestHealthWorkerWithSession,
-  describeWithWebServer,
   getFormDisplay,
   getFormValues,
+  route,
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
 import db from '../../../db/db.ts'
@@ -22,7 +22,10 @@ import deepOmit from '../../../util/deepOmit.ts'
 import * as patient_occupations from '../../../db/models/patient_occupations.ts'
 import { randomNationalId, randomPhoneNumber } from '../../mocks.ts'
 
-describeWithWebServer('/app/patients/[patient_id]/intake', 8004, (route) => {
+describe('/app/patients/[patient_id]/intake', {
+  sanitizeResources: false,
+  sanitizeOps: false,
+}, () => {
   it('loads the personal page', async () => {
     const { patient_id } = await patient_encounters.upsert(db, 1, {
       patient_name: 'Test Patient',

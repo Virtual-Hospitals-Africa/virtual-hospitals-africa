@@ -1,6 +1,6 @@
-import { it } from 'std/testing/bdd.ts'
+import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
-import { describeWithWebServer } from './utilities.ts'
+import { route } from './utilities.ts'
 import * as cheerio from 'cheerio'
 
 const expectedLinks = [
@@ -13,28 +13,32 @@ const expectedLinks = [
   // '/volunteer',
 ]
 
-describeWithWebServer('landing page', 8003, (route) => {
-  it('can be accessed', async () => {
-    const response = await fetch(route)
-    assert((await response.text()).includes('Virtual Hospitals Africa'))
-  })
+describe(
+  'landing page',
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
+    it('can be accessed', async () => {
+      const response = await fetch(route)
+      assert((await response.text()).includes('Virtual Hospitals Africa'))
+    })
 
-  it('has links to various signup forms', async () => {
-    const response = await fetch(route)
-    const $ = cheerio.load(await response.text())
+    it('has links to various signup forms', async () => {
+      const response = await fetch(route)
+      const $ = cheerio.load(await response.text())
+
+      for (const expectedLink of expectedLinks) {
+        assert(
+          $(`a[href="${expectedLink}"]`).length === 1,
+          `expected to find a link to ${expectedLink}`,
+        )
+      }
+    })
 
     for (const expectedLink of expectedLinks) {
-      assert(
-        $(`a[href="${expectedLink}"]`).length === 1,
-        `expected to find a link to ${expectedLink}`,
-      )
+      it(`can load ${expectedLink}`, async () => {
+        const response = await fetch(`${route}${expectedLink}`)
+        if (!response.ok) throw new Error(await response.text())
+      })
     }
-  })
-
-  for (const expectedLink of expectedLinks) {
-    it(`can load ${expectedLink}`, async () => {
-      const response = await fetch(`${route}${expectedLink}`)
-      if (!response.ok) throw new Error(await response.text())
-    })
-  }
-})
+  },
+)
