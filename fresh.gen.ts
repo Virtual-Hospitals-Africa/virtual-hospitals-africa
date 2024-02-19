@@ -69,7 +69,6 @@ import * as $login from './routes/login.tsx'
 import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
-import * as $searchable_index from './routes/searchable-index.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
@@ -92,7 +91,6 @@ import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
-import * as $SearchableIndex from './islands/SearchableIndex.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
@@ -129,6 +127,7 @@ import * as $pre_existing_conditions_Medication from './islands/pre-existing-con
 import * as $schedule_form from './islands/schedule-form.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
+import * as $symptoms_SearchSpecific from './islands/symptoms/SearchSpecific.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting-room/AddPatientForm.tsx'
 import { type Manifest } from '$fresh/server.ts'
@@ -238,7 +237,6 @@ const manifest = {
     './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
     './routes/schedule-demo.tsx': $schedule_demo,
-    './routes/searchable-index.tsx': $searchable_index,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
     './routes/waitlist.tsx': $waitlist,
@@ -263,7 +261,6 @@ const manifest = {
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
-    './islands/SearchableIndex.tsx': $SearchableIndex,
     './islands/SelectWithOther.tsx': $SelectWithOther,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
@@ -305,6 +302,7 @@ const manifest = {
     './islands/schedule-form.tsx': $schedule_form,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
+    './islands/symptoms/SearchSpecific.tsx': $symptoms_SearchSpecific,
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/waiting-room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
   },

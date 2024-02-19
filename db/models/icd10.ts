@@ -6,7 +6,7 @@ import natural from 'natural'
 
 // Yield the tree of sub_diagnoses
 // We need not do this recursively, as we know the maximum depth of the tree
-function tree(trx: TrxOrDb) {
+export function tree(trx: TrxOrDb) {
   return trx.selectFrom('icd10_diagnosis as tree')
     .selectAll('tree')
     .select([
@@ -106,9 +106,6 @@ export async function search(
     .where('has_parent_in_matches.code', 'is', null)
     .select('matches.code')
     .distinct()
-
-  console.log(tree(trx)
-  .where('tree.code', 'in', matching_parents).compile().sql)
 
   const results = await tree(trx)
     .where('tree.code', 'in', matching_parents)

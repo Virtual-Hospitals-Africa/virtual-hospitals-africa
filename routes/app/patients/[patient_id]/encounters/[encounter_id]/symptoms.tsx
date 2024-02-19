@@ -20,6 +20,7 @@ import { completedStep } from '../../../../../../db/models/patient_encounters.ts
 function assertIsSymptoms(body: unknown): asserts body is {
   symptoms: PatientSymptomUpsert[]
 } {
+  console.log(body)
   assertOr400(isObjectLike(body))
   assertOr400(Array.isArray(body.symptoms), 'Invalid symptoms')
   for (const symptom of body.symptoms) {

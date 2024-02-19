@@ -1822,12 +1822,40 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
   media: { id: number }[]
 }
 
-export type RenderedPatientSymptom = PatientSymptomInsertShared & {
+export type RenderedPatientSymptom =
+  & PatientSymptomInsertShared
+  & RenderedICD10Diagnosis
+  & {
+    media: {
+      mime_type: string
+      url: string
+    }[]
+  }
+
+export type RenderedICD10Diagnosis = {
   id: string
+  description: string
   name: string
-  media: {
-    mime_type: string
-    url: string
+  includes: string | null
+  sub_diagnoses?: {
+    code: string
+    includes: string | null
+    description: string
+    sub_diagnoses?: {
+      code: string
+      includes: string | null
+      description: string
+      sub_diagnoses?: {
+        code: string
+        includes: string | null
+        description: string
+        sub_diagnoses?: {
+          code: string
+          includes: string | null
+          description: string
+        }[]
+      }[]
+    }[]
   }[]
 }
 

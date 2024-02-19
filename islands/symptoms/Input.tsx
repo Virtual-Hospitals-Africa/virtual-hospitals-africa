@@ -17,36 +17,8 @@ import {
   durationEndDate,
 } from '../../util/date.ts'
 import { DurationInput } from './DurationInput.tsx'
-import AsyncSearch from '../AsyncSearch.tsx'
-import cls from '../../util/cls.ts'
-import { EditingSymptom } from './Section.tsx'
-import { hasName } from '../../util/haveNames.ts'
-
-function SymptomOption({
-  option,
-  selected,
-}: {
-  option: {
-    id: string
-    name: string
-    includes: string | null
-  }
-  selected: boolean
-}) {
-  return (
-    <div className='flex flex-col'>
-      <div className={cls('truncate text-base', selected && 'font-bold')}>
-        {option.name}
-      </div>
-      {option.includes &&
-        (
-          <div className={cls('truncate text-xs', selected && 'font-bold')}>
-            {option.includes}
-          </div>
-        )}
-    </div>
-  )
-}
+import { RenderedPatientSymptom } from '../../types.ts'
+import { SearchSpecificSymptom } from './SearchSpecific.tsx'
 
 export default function SymptomInput({
   name,
@@ -55,7 +27,7 @@ export default function SymptomInput({
   remove,
 }: {
   name: string
-  value: EditingSymptom
+  value?: RenderedPatientSymptom
   today: string
   remove(): void
 }) {
@@ -66,10 +38,10 @@ export default function SymptomInput({
   })!
 
   const start_date = useSignal(
-    value.start_date ||
+    value?.start_date ||
       durationEndDate(today, { duration: -1, duration_unit: 'days' })!,
   )
-  const end_date = useSignal(value.end_date || null)
+  const end_date = useSignal(value?.end_date || null)
   const ongoing = computed(() => !end_date.value)
 
   const entered_duration = useSignal<Duration | null>(null)
@@ -83,14 +55,7 @@ export default function SymptomInput({
     <RemoveRow onClick={remove} labelled>
       <div className='flex flex-col space-y-1 w-full'>
         <FormRow className='w-full'>
-          <AsyncSearch
-            name={`${name}.symptom`}
-            required
-            href='/app/symptoms'
-            label='Symptom'
-            value={hasName(value) ? value : null}
-            Option={SymptomOption}
-          />
+          <SearchSpecificSymptom name={`${name}.code`} value={value} />
         </FormRow>
         <div className='md:col-span-8 justify-normal flex flex-col gap-1.5'>
           <FormRow className='w-full justify-normal'>
@@ -158,7 +123,7 @@ export default function SymptomInput({
               name={`${name}.severity`}
               required
               options={range(1, 11)} // 1-10
-              value={value.severity}
+              value={value?.severity}
             />
           </FormRow>
           <FormRow className='w-full justify-normal'>
@@ -166,7 +131,7 @@ export default function SymptomInput({
               name={`${name}.notes`}
               className='w-full'
               label='Notes'
-              value={value.notes}
+              value={value?.notes}
               rows={2}
               placeholder='Describe the symptom’s intermittency, frequency, character, radiation, timing, exacerbating/relieving factors where applicable'
             />
@@ -178,7 +143,7 @@ export default function SymptomInput({
               name={`${name}.media.0`}
               label='Photo/Video'
               className='w-36 h-36'
-              value={value.media?.[0]}
+              value={value?.media?.[0]}
             />
           </FormRow>
         </div>

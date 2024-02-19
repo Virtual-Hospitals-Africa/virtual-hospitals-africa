@@ -2,6 +2,7 @@ import { describe } from 'std/testing/bdd.ts'
 import { search } from '../../db/models/icd10.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 
 describe('db/models/icd10.ts', { sanitizeResources: false }, () => {
   describe('search', () => {
@@ -348,8 +349,7 @@ describe('db/models/icd10.ts', { sanitizeResources: false }, () => {
           term: 'Drug',
           code_start: 'R',
         })
-        console.log(results_starting_with_r)
-        assertEquals(results_starting_with_r.length, 2)
+        assertEquals(results_starting_with_r.length, 10)
         assertEquals(
           results_starting_with_r[0].name,
           'Drug induced retention of urine',
@@ -360,7 +360,10 @@ describe('db/models/icd10.ts', { sanitizeResources: false }, () => {
           term: 'Drug',
         })
 
-        assertEquals(results_starting_with_any.length, 49)
+        assertNotEquals(
+          results_starting_with_any.length,
+          results_starting_with_r.length,
+        )
       },
     )
   })

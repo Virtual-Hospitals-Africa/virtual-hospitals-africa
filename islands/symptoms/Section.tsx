@@ -5,9 +5,10 @@ import EmptyState from '../../components/library/EmptyState.tsx'
 import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
 import { AddRow } from '../AddRemove.tsx'
 
-export type EditingSymptom = Partial<RenderedPatientSymptom> & {
-  removed?: boolean
-}
+export type EditingSymptom =
+  | RenderedPatientSymptom & { removed?: false; is_new?: false }
+  | { removed: true; is_new?: false }
+  | { removed?: false; is_new: true }
 
 export default function SymptomSection(props: {
   patient_symptoms: RenderedPatientSymptom[]
@@ -15,7 +16,8 @@ export default function SymptomSection(props: {
 }) {
   const patient_symptoms = useSignal<EditingSymptom[]>(props.patient_symptoms)
 
-  const add = () => patient_symptoms.value = [...patient_symptoms.value, {}]
+  const add = () =>
+    patient_symptoms.value = [...patient_symptoms.value, { is_new: true }]
 
   return (
     <div className='flex flex-col space-y-2'>
@@ -24,11 +26,11 @@ export default function SymptomSection(props: {
           <SymptomInput
             key={index}
             name={`symptoms.${index}`}
-            value={symptom}
+            value={!symptom.is_new && !symptom.removed ? symptom : undefined}
             today={props.today}
             remove={() =>
               patient_symptoms.value = patient_symptoms.value.map(
-                (s, i) => (i === index ? { ...s, removed: true } : s),
+                (s, i) => (i === index ? { removed: true } : s),
               )}
           />
         )
