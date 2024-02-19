@@ -33,6 +33,7 @@ async function makeTables(db: Kysely<any>) {
       'varchar(8)',
       (col) => col.references('icd10_diagnosis.code').onDelete('cascade'),
     )
+    .addColumn('general', 'boolean', (col) => col.notNull().defaultTo(false))
     .execute()
 
   await db.schema.createTable('icd10_diagnosis_exclude')
@@ -119,7 +120,7 @@ async function makeTables(db: Kysely<any>) {
     .execute()
 
   await sql`
-    CREATE INDEX trgm_icd10_diagnosis_desc ON icd10_diagnosis USING GIN ("description" gin_trgm_ops);
+    CREATE INDEX trgm_icd10_diagnosis_description ON icd10_diagnosis USING GIN ("description" gin_trgm_ops);
     CREATE INDEX trgm_icd10_diagnosis_includes ON icd10_diagnosis USING GIN ("includes" gin_trgm_ops);
   `.execute(db)
 }

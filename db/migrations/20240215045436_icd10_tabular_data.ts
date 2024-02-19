@@ -7,6 +7,7 @@ import compact from '../../util/compact.ts'
 import range from '../../util/range.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import inParallel from '../../util/inParallel.ts'
+import words from '../../util/words.ts'
 
 type Exclude = {
   note: string
@@ -242,6 +243,7 @@ type ToInsert =
       category: string
       description: string
       parent_code: string | null
+      general: boolean
       includes: string | null
     }
   }
@@ -262,13 +264,14 @@ function* iterTree(
   const {
     name: code,
     desc: description,
-    includes,
+    includes: includes_xml,
     inclusionTerm,
   } = tree
   if (code) {
     const [category] = code.split('.')
     assert(category.length === 3)
-    const includes_col = collapseNotes(includes) || collapseNotes(inclusionTerm)
+    const includes_col = collapseNotes(includes_xml) ||
+      collapseNotes(inclusionTerm)
 
     const excludes1 = parseExcludes(collapseNotes(tree.excludes1))
     const excludes2 = parseExcludes(collapseNotes(tree.excludes2))
@@ -292,6 +295,19 @@ function* iterTree(
         row: { category, section, description: tree.desc },
       }
     }
+    const includes: string | null = Array.isArray(includes_col)
+      ? includes_col.join('\n')
+      : includes_col
+
+    const general_words = new Set([
+      'nos',
+      'unspecified',
+      'not otherwise specified',
+      'generalized',
+    ])
+    const general = !!parent_code &&
+      words(description.toLowerCase()).some((word) => general_words.has(word))
+
     yield {
       table: 'icd10_diagnosis' as const,
       row: {
@@ -299,9 +315,8 @@ function* iterTree(
         category,
         description,
         parent_code,
-        includes: Array.isArray(includes_col)
-          ? includes_col.join('\n')
-          : includes_col,
+        includes,
+        general,
       },
     }
   }
