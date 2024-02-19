@@ -58,6 +58,7 @@ import * as $app_patients_patient_id_intake_review from './routes/app/patients/[
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
+import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
@@ -128,9 +129,7 @@ import * as $pre_existing_conditions_Medication from './islands/pre-existing-con
 import * as $schedule_form from './islands/schedule-form.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
-import * as $symptoms_Search from './islands/symptoms/Search.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
-import * as $symptoms_SiteSelect from './islands/symptoms/SiteSelect.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting-room/AddPatientForm.tsx'
 import { type Manifest } from '$fresh/server.ts'
 
@@ -228,6 +227,7 @@ const manifest = {
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/providers.tsx': $app_providers,
     './routes/app/surgeries.tsx': $app_surgeries,
+    './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
@@ -305,9 +305,7 @@ const manifest = {
     './islands/schedule-form.tsx': $schedule_form,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
-    './islands/symptoms/Search.tsx': $symptoms_Search,
     './islands/symptoms/Section.tsx': $symptoms_Section,
-    './islands/symptoms/SiteSelect.tsx': $symptoms_SiteSelect,
     './islands/waiting-room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
   },
   baseUrl: import.meta.url,

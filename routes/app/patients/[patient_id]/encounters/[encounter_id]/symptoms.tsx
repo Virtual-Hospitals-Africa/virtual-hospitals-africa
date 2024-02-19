@@ -24,7 +24,7 @@ function assertIsSymptoms(body: unknown): asserts body is {
   assertOr400(Array.isArray(body.symptoms), 'Invalid symptoms')
   for (const symptom of body.symptoms) {
     assertOr400(isObjectLike(symptom), 'Invalid symptom')
-    assertOr400(typeof symptom.symptom === 'string', 'Invalid symptom')
+    assertOr400(typeof symptom.code === 'string', 'Invalid symptom')
     assertOr400(
       typeof symptom.severity === 'number' &&
         symptom.severity >= 1 &&

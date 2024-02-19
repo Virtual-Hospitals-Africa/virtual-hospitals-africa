@@ -1,23 +1,13 @@
-import { computed, useSignal } from '@preact/signals'
-import SymptomSearch from './Search.tsx'
-import { SYMPTOMS } from '../../shared/symptoms.ts'
+import { useSignal } from '@preact/signals'
 import { RenderedPatientSymptom } from '../../types.ts'
 import SymptomInput from './Input.tsx'
 import EmptyState from '../../components/library/EmptyState.tsx'
 import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
+import { AddRow } from '../AddRemove.tsx'
 
-const all_symptoms_options = SYMPTOMS.map(({ symptom, category, aliases }) => ({
-  id: symptom,
-  name: symptom,
-  category,
-  aliases,
-}))
-
-export type SymptomOption = typeof all_symptoms_options[number]
-
-export type EditingSymptom = {
-  symptom: string
-} & Partial<RenderedPatientSymptom>
+export type EditingSymptom = Partial<RenderedPatientSymptom> & {
+  removed?: boolean
+}
 
 export default function SymptomSection(props: {
   patient_symptoms: RenderedPatientSymptom[]
@@ -25,42 +15,34 @@ export default function SymptomSection(props: {
 }) {
   const patient_symptoms = useSignal<EditingSymptom[]>(props.patient_symptoms)
 
-  const options = computed(() =>
-    all_symptoms_options.filter((o) =>
-      patient_symptoms.value.every((ps) => ps.symptom !== o.id)
-    )
-  )
-
-  const add = (symptom: SymptomOption) => {
-    patient_symptoms.value = [...patient_symptoms.value, {
-      symptom: symptom.id,
-    }]
-  }
+  const add = () => patient_symptoms.value = [...patient_symptoms.value, {}]
 
   return (
-    <div className='flex flex-col gap-1'>
-      <SymptomSearch
-        options={options.value}
-        add={add}
-      />
-      {patient_symptoms.value.length === 0 && (
+    <div className='flex flex-col space-y-2'>
+      {patient_symptoms.value.map((symptom, index) => (
+        !symptom.removed && (
+          <SymptomInput
+            key={index}
+            name={`symptoms.${index}`}
+            value={symptom}
+            today={props.today}
+            remove={() =>
+              patient_symptoms.value = patient_symptoms.value.map(
+                (s, i) => (i === index ? { ...s, removed: true } : s),
+              )}
+          />
+        )
+      ))}
+      {
+        /* {patient_symptoms.value.length === 0 && (
         <EmptyState
           header='No symptoms'
           explanation='Use the search box above to add symptoms.'
           icon={<Symptoms className='mx-auto h-12 w-12 text-gray-400' />}
         />
-      )}
-      {/* Reverse to show the most recently inserted symptom at the top without messing with the indexes */}
-      <div className='flex flex-col-reverse gap-1'>
-        {patient_symptoms.value.map((symptom, i) => (
-          <SymptomInput
-            key={i}
-            name={`symptoms.${i}`}
-            value={symptom}
-            today={props.today}
-          />
-        ))}
-      </div>
+      )} */
+      }
+      <AddRow text='Add Symptom' onClick={add} />
     </div>
   )
 }

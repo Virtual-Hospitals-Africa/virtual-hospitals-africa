@@ -81,11 +81,14 @@ export function getEncounter(
 ): Promise<RenderedPatientSymptom[]> {
   let query = trx
     .selectFrom('patient_symptoms')
+    .innerJoin('icd10_diagnosis', 'icd10_diagnosis.code', 'patient_symptoms.code')
     .where('patient_symptoms.patient_id', '=', patient_id)
     .select((eb) => [
-      'symptom',
+      'patient_symptoms.code as id',
+      'patient_symptoms.code as code',
+      'description',
+      'description as name',
       'severity',
-      'site',
       isoDate(eb.ref('start_date')).as('start_date'),
       isoDate(eb.ref('end_date')).as('end_date'),
       'notes',

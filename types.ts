@@ -1810,20 +1810,21 @@ export type PatientMeasurement = {
   value: number
 }
 
-export type PatientInsertShared = {
-  symptom: string
+export type PatientSymptomInsertShared = {
+  code: string
   severity: number
   start_date: string
   end_date: string | null
-  site: string | null
   notes: string | null
 }
 
-export type PatientSymptomUpsert = PatientInsertShared & {
+export type PatientSymptomUpsert = PatientSymptomInsertShared & {
   media: { id: number }[]
 }
 
-export type RenderedPatientSymptom = PatientInsertShared & {
+export type RenderedPatientSymptom = PatientSymptomInsertShared & {
+  id: string
+  name: string
   media: {
     mime_type: string
     url: string
