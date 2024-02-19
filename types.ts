@@ -1839,18 +1839,22 @@ export type RenderedICD10Diagnosis = {
   includes: string | null
   sub_diagnoses?: {
     code: string
+    general: boolean
     includes: string | null
     description: string
     sub_diagnoses?: {
       code: string
+      general: boolean
       includes: string | null
       description: string
       sub_diagnoses?: {
         code: string
+        general: boolean
         includes: string | null
         description: string
         sub_diagnoses?: {
           code: string
+          general: boolean
           includes: string | null
           description: string
         }[]

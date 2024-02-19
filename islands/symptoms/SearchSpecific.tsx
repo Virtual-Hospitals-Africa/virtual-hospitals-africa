@@ -1,7 +1,7 @@
+import { useSignal } from '@preact/signals'
 import AsyncSearch from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 import { RenderedICD10Diagnosis } from '../../types.ts'
-import { useSignal } from '@preact/signals'
 import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 
 function SymptomOption({
@@ -31,6 +31,22 @@ type SubDiag1 = NonNullable<SubDiag0['sub_diagnoses']>[0]
 type SubDiag2 = NonNullable<SubDiag1['sub_diagnoses']>[0]
 type SubDiag3 = NonNullable<SubDiag2['sub_diagnoses']>[0]
 
+function options(sub_diagnoses: {
+  code: string
+  general: boolean
+  description: string
+}[]) {
+  const opts = sub_diagnoses.map((s) => ({
+    value: s.code,
+    label: s.description,
+  }))
+  const general_option = sub_diagnoses.some((sd) => sd.general)
+  if (!general_option) {
+    opts.unshift({ value: '', label: 'Select' })
+  }
+  return opts
+}
+
 export function SearchSpecificSymptom({
   name,
   value,
@@ -54,8 +70,11 @@ export function SearchSpecificSymptom({
         value={value}
         Option={SymptomOption}
         onSelect={(symptom) => {
+          const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
+            sd.general
+          )
           selected_parent.value = symptom
-          selected_c0.value = undefined
+          selected_c0.value = general_subdiagnosis
           selected_c1.value = undefined
           selected_c2.value = undefined
           selected_c3.value = undefined
@@ -65,16 +84,17 @@ export function SearchSpecificSymptom({
         <SelectWithOptions
           name={selected_c1.value ? null : name}
           label='More specific'
-          options={selected_parent.value.sub_diagnoses.map((s) => ({
-            value: s.code,
-            label: s.description,
-          }))}
+          options={options(selected_parent.value.sub_diagnoses)}
           value={selected_c0.value?.code}
           onChange={(e) => {
-            selected_c0.value = selected_parent.value!.sub_diagnoses!.find(
+            const symptom = selected_parent.value!.sub_diagnoses!.find(
               (s) => s.code === e.target.value,
             )
-            selected_c1.value = undefined
+            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
+              sd.general
+            )
+            selected_c0.value = symptom
+            selected_c1.value = general_subdiagnosis
             selected_c2.value = undefined
             selected_c3.value = undefined
           }}
@@ -84,16 +104,17 @@ export function SearchSpecificSymptom({
         <SelectWithOptions
           name={selected_c2.value ? null : name}
           label='Even more specific'
-          options={selected_c0.value.sub_diagnoses.map((s) => ({
-            value: s.code,
-            label: s.description,
-          }))}
+          options={options(selected_c0.value.sub_diagnoses)}
           value={selected_c1.value?.code}
           onChange={(e) => {
-            selected_c1.value = selected_c0.value!.sub_diagnoses!.find(
+            const symptom = selected_c0.value!.sub_diagnoses!.find(
               (s) => s.code === e.target.value,
             )
-            selected_c2.value = undefined
+            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
+              sd.general
+            )
+            selected_c1.value = symptom
+            selected_c2.value = general_subdiagnosis
             selected_c3.value = undefined
           }}
         />
@@ -102,16 +123,17 @@ export function SearchSpecificSymptom({
         <SelectWithOptions
           name={selected_c3.value ? null : name}
           label='Even even more specific'
-          options={selected_c1.value.sub_diagnoses.map((s) => ({
-            value: s.code,
-            label: s.description,
-          }))}
+          options={options(selected_c1.value.sub_diagnoses)}
           value={selected_c2.value?.code}
           onChange={(e) => {
-            selected_c2.value = selected_c1.value!.sub_diagnoses!.find(
+            const symptom = selected_c1.value!.sub_diagnoses!.find(
               (s) => s.code === e.target.value,
             )
-            selected_c3.value = undefined
+            const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
+              sd.general
+            )
+            selected_c2.value = symptom
+            selected_c3.value = general_subdiagnosis
           }}
         />
       )}
@@ -119,15 +141,13 @@ export function SearchSpecificSymptom({
         <SelectWithOptions
           name={name}
           label='Even even even more specific'
-          options={selected_c2.value.sub_diagnoses.map((s) => ({
-            value: s.code,
-            label: s.description,
-          }))}
+          options={options(selected_c2.value.sub_diagnoses)}
           value={selected_c3.value?.code}
           onChange={(e) => {
-            selected_c3.value = selected_c2.value!.sub_diagnoses!.find(
+            const symptom = selected_c2.value!.sub_diagnoses!.find(
               (s) => s.code === e.target.value,
             )
+            selected_c3.value = symptom
           }}
         />
       )}
