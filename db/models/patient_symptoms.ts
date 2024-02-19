@@ -6,6 +6,7 @@ import {
 } from '../../types.ts'
 import { isoDate, jsonArrayFrom } from '../helpers.ts'
 import omit from '../../util/omit.ts'
+import { tree } from './icd10.ts'
 
 export async function upsert(
   trx: TrxOrDb,
@@ -79,16 +80,14 @@ export function getEncounter(
     encounter_id: number | 'open'
   },
 ): Promise<RenderedPatientSymptom[]> {
-  let query = trx
-    .selectFrom('patient_symptoms')
+  let query = tree(trx)
+    .innerJoin('patient_symptoms', 'patient_symptoms.code', 'tree.code')
     .where('patient_symptoms.patient_id', '=', patient_id)
     .select((eb) => [
-      'symptom',
       'severity',
-      'site',
+      'notes',
       isoDate(eb.ref('start_date')).as('start_date'),
       isoDate(eb.ref('end_date')).as('end_date'),
-      'notes',
       jsonArrayFrom(
         eb
           .selectFrom('patient_symptom_media')

@@ -1,19 +1,8 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
-import { SYMPTOMS } from '../../shared/symptoms.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
-  await db.schema
-    .createTable('symptoms')
-    .addColumn('symptom', 'varchar(40)', (col) => col.primaryKey())
-    .addColumn('category', 'varchar(40)', (col) => col.notNull())
-    .addColumn('aliases', sql`varchar(40)[]`, (col) => col.notNull())
-    .addColumn('sites', sql`varchar(40)[]`, (col) => col.notNull())
-    .execute()
-
-  await db.insertInto('symptoms').values(SYMPTOMS).execute()
-
   await db.schema
     .createTable('patient_symptoms')
     .addColumn('id', 'serial', (col) => col.primaryKey())
@@ -47,9 +36,10 @@ export async function up(db: Kysely<any>) {
         ),
     )
     .addColumn(
-      'symptom',
-      'varchar(40)',
-      (col) => col.notNull().references('symptoms.symptom').onDelete('cascade'),
+      'code',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_diagnosis.code').onDelete('cascade'),
     )
     .addColumn(
       'severity',
@@ -58,7 +48,6 @@ export async function up(db: Kysely<any>) {
     )
     .addColumn('start_date', 'date', (col) => col.notNull())
     .addColumn('end_date', 'date')
-    .addColumn('site', 'varchar(255)')
     .addColumn('notes', 'text')
     .addCheckConstraint(
       'symptom_starts_before_today',
@@ -109,5 +98,4 @@ export async function up(db: Kysely<any>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_symptom_media').execute()
   await db.schema.dropTable('patient_symptoms').execute()
-  await db.schema.dropTable('symptoms').execute()
 }

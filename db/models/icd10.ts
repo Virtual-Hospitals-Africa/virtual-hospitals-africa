@@ -4,76 +4,21 @@ import { jsonArrayFrom } from '../helpers.ts'
 import sortBy from '../../util/sortBy.ts'
 import natural from 'natural'
 
-export async function search(
-  trx: TrxOrDb,
-  { term, code_start }: {
-    term: string
-    code_start?: string | string[]
-  },
-) {
-  const query = trx.with('matches', (qb) => {
-    const matches_query = qb.selectFrom('icd10_diagnosis')
-      .selectAll()
-      .where(
-        sql<boolean>`(
-          icd10_diagnosis.description % ${term} OR
-          icd10_diagnosis.description ilike ${term + '%'} OR
-          icd10_diagnosis.includes % ${term} OR
-          icd10_diagnosis.includes ilike ${term + '%'}
-        )`,
-      )
-
-    // return matches_query
-    if (!code_start) {
-      return matches_query
-    }
-    const code_start_array = Array.isArray(code_start)
-      ? code_start
-      : [code_start]
-
-    return matches_query.where(
-      (eb) =>
-        eb.or(
-          code_start_array.map((code_start) =>
-            sql<
-              boolean
-            >`LEFT(icd10_diagnosis.code, ${code_start.length}) = ${code_start}`
-          ),
-        ),
-    )
-  })
-    .with('has_parent_in_matches', (qb) =>
-      qb.selectFrom('matches as children')
-        .innerJoin(
-          'matches as parents',
-          'parents.code',
-          'children.parent_code',
-        )
-        .select('children.code')
-        .distinct())
-    .with('parents', (qb) =>
-      qb.selectFrom('matches')
-        .leftJoin(
-          'has_parent_in_matches',
-          'has_parent_in_matches.code',
-          'matches.code',
-        )
-        .where('has_parent_in_matches.code', 'is', null)
-        .selectAll('matches'))
-    .selectFrom('parents')
-    .selectAll('parents')
+// Yield the tree of sub_diagnoses
+// We need not do this recursively, as we know the maximum depth of the tree
+export function tree(trx: TrxOrDb) {
+  return trx.selectFrom('icd10_diagnosis as tree')
+    .selectAll('tree')
     .select([
-      'code as id',
-      'description as name',
+      'tree.code as id',
+      'tree.description as name',
       sql<number>`0`.as('rank'),
     ])
-    // Yield the tree of sub_diagnoses
-    // We need not do this recursively, as we know the maximum depth of the tree
     .select((eb_parent0) => [
       jsonArrayFrom(
         eb_parent0
           .selectFrom('icd10_diagnosis as c0')
-          .whereRef('c0.parent_code', '=', 'parents.code')
+          .whereRef('c0.parent_code', '=', 'tree.code')
           .selectAll('c0')
           .select((eb_c0) => [
             jsonArrayFrom(
@@ -101,10 +46,72 @@ export async function search(
           ]),
       ).as('sub_diagnoses'),
     ])
+}
+
+export async function search(
+  trx: TrxOrDb,
+  { term, code_start }: {
+    term: string
+    code_start?: string | string[]
+  },
+) {
+  const matching_parents = trx.with('matches', (qb) => {
+    const matches_query = qb.selectFrom('icd10_diagnosis')
+      .selectAll()
+      .where(
+        sql<boolean>`(
+          icd10_diagnosis.description % ${term} OR
+          icd10_diagnosis.description ilike ${'%' + term + '%'} OR
+          icd10_diagnosis.includes % ${term} OR
+          icd10_diagnosis.includes ilike ${'%' + term + '%'}
+        )`,
+      )
+
+    // return matches_query
+    if (!code_start) {
+      return matches_query
+    }
+    const code_start_array = Array.isArray(code_start)
+      ? code_start
+      : [code_start]
+
+    return matches_query.where(
+      (eb) =>
+        eb.or(
+          code_start_array.map((code_start) =>
+            sql<
+              boolean
+            >`LEFT(icd10_diagnosis.code, ${code_start.length}) = ${code_start}`
+          ),
+        ),
+    )
+  })
+    // We can omit children whose parents match as the children will appear in the tree
+    // as sub_diagnoses of the parent
+    .with('has_parent_in_matches', (qb) =>
+      qb.selectFrom('matches as children')
+        .innerJoin(
+          'matches as parents',
+          'parents.code',
+          'children.parent_code',
+        )
+        .select('children.code')
+        .distinct())
+    .selectFrom('matches')
+    .leftJoin(
+      'has_parent_in_matches',
+      'has_parent_in_matches.code',
+      'matches.code',
+    )
+    .where('has_parent_in_matches.code', 'is', null)
+    .select('matches.code')
+    .distinct()
+
+  const results = await tree(trx)
+    .where('tree.code', 'in', matching_parents)
+    .execute()
 
   const tfidf = new natural.TfIdf()
-
-  const results = await query.execute()
 
   for (const result of results) {
     tfidf.addDocument(result.description)
@@ -115,4 +122,11 @@ export async function search(
   })
 
   return sortBy(results, (result) => -result.rank)
+}
+
+export function searchSymptoms(
+  trx: TrxOrDb,
+  term: string,
+) {
+  return search(trx, { term, code_start: 'R' })
 }

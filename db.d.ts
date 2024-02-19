@@ -681,6 +681,7 @@ export interface PatientSymptomMedia {
 }
 
 export interface PatientSymptoms {
+  code: string
   created_at: Generated<Timestamp>
   encounter_id: number
   encounter_provider_id: number
@@ -689,9 +690,7 @@ export interface PatientSymptoms {
   notes: string | null
   patient_id: number
   severity: number
-  site: string | null
   start_date: Timestamp
-  symptom: string
   updated_at: Generated<Timestamp>
 }
 
@@ -728,13 +727,6 @@ export interface Suburbs {
   name: string
   updated_at: Generated<Timestamp>
   ward_id: number
-}
-
-export interface Symptoms {
-  aliases: string[]
-  category: string
-  sites: string[]
-  symptom: string
 }
 
 export interface WaitingRoom {
@@ -843,7 +835,6 @@ export interface DB {
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs
-  symptoms: Symptoms
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived

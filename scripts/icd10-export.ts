@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { XMLParser } from 'fast-xml-parser'
-import { ICD10Index } from '../shared/icd10.ts'
+import { ICD10Index } from '../shared/eindex_icd10.ts'
 import { assert } from 'std/assert/assert.ts'
 import partition from '../util/partition.ts'
 import words from '../util/words.ts'

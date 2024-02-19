@@ -64,7 +64,7 @@ export function Label({
   return (
     <label
       className={cls(
-        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max flex-1',
+        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max',
         className,
       )}
     >
@@ -125,7 +125,7 @@ export function TextInput(
       name={name}
       label={label}
       required={required}
-      className={cls('w-full', className)}
+      className={cls('w-full flex-1', className)}
     >
       <input
         type={type}
@@ -175,7 +175,7 @@ export function NumberInput(
       name={name}
       label={label}
       required={required}
-      className={cls('w-full', className)}
+      className={cls('w-full flex-1', className)}
     >
       <input
         type='number'
@@ -224,26 +224,27 @@ export function CheckboxInput(
       name={name}
       label={label}
       required={required}
-      className={cls('flex flex-col', className)}
+      className={cls('flex flex-col flex-grow-0', className)}
     >
-      <input
-        type='checkbox'
-        {...(name && { name })}
-        className={cls(
-          className =
-            'h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600',
-          inputClassName,
-          disabled && 'bg-gray-300',
-        )}
-        required={required}
-        disabled={disabled}
-        readonly={readonly}
-        checked={checked}
-        onInput={onInput}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        value={value}
-      />
+      <div className='grid place-items-center h-full'>
+        <input
+          type='checkbox'
+          {...(name && { name })}
+          className={cls(
+            'h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600',
+            inputClassName,
+            disabled && 'bg-gray-300',
+          )}
+          required={required}
+          disabled={disabled}
+          readonly={readonly}
+          checked={checked}
+          onInput={onInput}
+          onFocus={onFocus}
+          onBlur={onBlur}
+          value={value}
+        />
+      </div>
     </LabeledInput>
   )
 }
@@ -355,7 +356,7 @@ export const Select = forwardRef(
         label={label}
         required={required}
         disabled={disabled}
-        className={className}
+        className={cls('flex-grow', className)}
       >
         <select
           {...(name && { name })}

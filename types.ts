@@ -1810,23 +1810,52 @@ export type PatientMeasurement = {
   value: number
 }
 
-export type PatientInsertShared = {
-  symptom: string
+export type PatientSymptomInsertShared = {
+  code: string
   severity: number
   start_date: string
   end_date: string | null
-  site: string | null
   notes: string | null
 }
 
-export type PatientSymptomUpsert = PatientInsertShared & {
+export type PatientSymptomUpsert = PatientSymptomInsertShared & {
   media: { id: number }[]
 }
 
-export type RenderedPatientSymptom = PatientInsertShared & {
-  media: {
-    mime_type: string
-    url: string
+export type RenderedPatientSymptom =
+  & PatientSymptomInsertShared
+  & RenderedICD10Diagnosis
+  & {
+    media: {
+      mime_type: string
+      url: string
+    }[]
+  }
+
+export type RenderedICD10Diagnosis = {
+  id: string
+  description: string
+  name: string
+  includes: string | null
+  sub_diagnoses?: {
+    code: string
+    includes: string | null
+    description: string
+    sub_diagnoses?: {
+      code: string
+      includes: string | null
+      description: string
+      sub_diagnoses?: {
+        code: string
+        includes: string | null
+        description: string
+        sub_diagnoses?: {
+          code: string
+          includes: string | null
+          description: string
+        }[]
+      }[]
+    }[]
   }[]
 }
 
