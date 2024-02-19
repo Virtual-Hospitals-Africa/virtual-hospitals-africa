@@ -2,7 +2,7 @@ import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import sortBy from '../../util/sortBy.ts'
-import natural from 'natural'
+// import natural from 'natural'
 
 // Yield the tree of sub_diagnoses
 // We need not do this recursively, as we know the maximum depth of the tree
@@ -12,7 +12,6 @@ export function tree(trx: TrxOrDb) {
     .select([
       'tree.code as id',
       'tree.description as name',
-      sql<number>`0`.as('rank'),
     ])
     .select((eb_parent0) => [
       jsonArrayFrom(
@@ -109,19 +108,32 @@ export async function search(
 
   const results = await tree(trx)
     .where('tree.code', 'in', matching_parents)
+    .select(
+      sql<
+        number
+      >`similarity(tree.description || ' ' || coalesce(tree.includes, ''), ${term})`
+        .as(
+          'rank',
+        ),
+    )
+    .orderBy('rank', 'desc')
+    .limit(20)
     .execute()
 
-  const tfidf = new natural.TfIdf()
+  // const tfidf = new natural.TfIdf()
 
-  for (const result of results) {
-    tfidf.addDocument(result.description)
-  }
+  // for (const result of results) {
+  //   const document = result.includes
+  //     ? result.description + ' ' + result.includes
+  //     : result.description
+  //   tfidf.addDocument(document)
+  // }
 
-  tfidf.tfidfs(term, (i, rank) => {
-    results[i].rank = rank
-  })
+  // tfidf.tfidfs(term, (i, rank) => {
+  //   Object.assign(results[i], {natural_rank: rank})
+  // })
 
-  return sortBy(results, (result) => -result.rank)
+  return sortBy(results, (result) => -result.rank).slice(0, 20)
 }
 
 export function searchSymptoms(
