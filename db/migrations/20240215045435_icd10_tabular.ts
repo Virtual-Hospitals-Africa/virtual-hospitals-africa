@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import { Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 import { XMLParser } from 'fast-xml-parser'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -8,6 +8,164 @@ import range from '../../util/range.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import inParallel from '../../util/inParallel.ts'
 import words from '../../util/words.ts'
+
+export async function up(db: Kysely<any>) {
+  await makeTables(db)
+  await loadData(db)
+}
+
+export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('icd10_diagnoses_excludes_codes').execute()
+  await db.schema.dropTable('icd10_diagnoses_excludes_code_ranges').execute()
+  await db.schema.dropTable('icd10_diagnoses_excludes_categories').execute()
+  await db.schema.dropTable('icd10_diagnoses_excludes').execute()
+  await db.schema.dropTable('icd10_diagnoses_includes').execute()
+  await db.schema.dropTable('icd10_diagnoses').execute()
+  await db.schema.dropTable('icd10_categories').execute()
+  await db.schema.dropTable('icd10_sections').execute()
+}
+
+async function makeTables(db: Kysely<any>) {
+  await db.schema.createTable('icd10_sections')
+    .addColumn('section', 'varchar(7)', (col) => col.primaryKey())
+    .addColumn('description', 'varchar(255)', (col) => col.notNull())
+    .execute()
+
+  await db.schema.createTable('icd10_categories')
+    .addColumn('category', 'varchar(3)', (col) => col.primaryKey())
+    .addColumn(
+      'section',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_sections.section').onDelete('cascade'),
+    )
+    .addColumn('description', 'varchar(255)', (col) => col.notNull())
+    .execute()
+
+  await db.schema.createTable('icd10_diagnoses')
+    .addColumn('code', 'varchar(8)', (col) => col.primaryKey())
+    .addColumn(
+      'category',
+      'varchar(3)',
+      (col) =>
+        col.notNull().references('icd10_categories.category').onDelete(
+          'cascade',
+        ),
+    )
+    .addColumn('description', 'varchar(255)', (col) => col.notNull())
+    .addColumn(
+      'parent_code',
+      'varchar(8)',
+      (col) => col.references('icd10_diagnoses.code').onDelete('cascade'),
+    )
+    .addColumn('general', 'boolean', (col) => col.notNull().defaultTo(false))
+    .execute()
+
+  await db.schema.createTable('icd10_diagnoses_includes')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'code',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+    )
+    .addColumn('note', 'text', (col) => col.notNull())
+    .addColumn('sourced_from_index', 'boolean', (col) => col.notNull())
+    .execute()
+
+  await db.schema.createTable('icd10_diagnoses_excludes')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'code',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+    )
+    .addColumn('note', 'text', (col) => col.notNull())
+    .addColumn('pure', 'boolean', (col) => col.notNull())
+    .execute()
+
+  await db.schema.createTable('icd10_diagnoses_excludes_categories')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'exclude_id',
+      'integer',
+      (col) =>
+        col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
+          'cascade',
+        ),
+    )
+    .addColumn(
+      'category',
+      'varchar(3)',
+      (col) =>
+        col.notNull().references('icd10_categories.category').onDelete(
+          'cascade',
+        ),
+    )
+    .execute()
+
+  await db.schema.createTable('icd10_diagnoses_excludes_codes')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'exclude_id',
+      'integer',
+      (col) =>
+        col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
+          'cascade',
+        ),
+    )
+    .addColumn(
+      'code',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+    )
+    .addColumn('dash', 'boolean', (col) => col.notNull().defaultTo(false))
+    .execute()
+
+  await db.schema.createTable('icd10_diagnoses_excludes_code_ranges')
+    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'exclude_id',
+      'integer',
+      (col) =>
+        col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
+          'cascade',
+        ),
+    )
+    .addColumn(
+      'code_range_start',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+    )
+    .addColumn(
+      'code_range_end',
+      'varchar(8)',
+      (col) =>
+        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
+    )
+    .addColumn(
+      'code_range_start_dash',
+      'boolean',
+      (col) => col.notNull().defaultTo(false),
+    )
+    .addColumn(
+      'code_range_end_dash',
+      'boolean',
+      (col) => col.notNull().defaultTo(false),
+    )
+    .execute()
+
+  await sql`
+    CREATE INDEX trgm_icd10_diagnoses_description ON icd10_diagnoses USING GIN ("description" gin_trgm_ops);
+  `.execute(db)
+
+  await sql`
+    CREATE INDEX trgm_icd10_diagnoses_includes_note ON icd10_diagnoses_includes USING GIN ("note" gin_trgm_ops);
+  `.execute(db)
+}
 
 type Exclude = {
   note: string
@@ -98,6 +256,7 @@ function parseCode(code_to_parse: string): ExcludeRow | null {
 function parseExclude(
   exclude: string,
 ): null | Pick<Exclude, 'note' | 'excludes'> {
+  exclude = human_readable(exclude)
   // e.g., dementia as classified in F01-F02
   if (exclude.includes(' as classified in ')) {
     const [note, code] = exclude.split(' as classified in ')
@@ -233,21 +392,32 @@ function collapseNotes(term: unknown): string[] | string | null {
 type ToInsert =
   | { table: 'icd10_section'; row: { section: string; description: string } }
   | {
-    table: 'icd10_category'
+    table: 'icd10_categories'
     row: { category: string; section: string; description: string }
   }
   | {
-    table: 'icd10_diagnosis'
+    table: 'icd10_diagnoses'
     row: {
       code: string
       category: string
       description: string
       parent_code: string | null
       general: boolean
-      includes: string | null
     }
   }
-  | { table: 'icd10_diagnosis_exclude'; row: Exclude }
+  | {
+    table: 'icd10_diagnoses_includes'
+    row: {
+      code: string
+      note: string
+      sourced_from_index: boolean
+    }
+  }
+  | { table: 'icd10_diagnoses_excludes'; row: Exclude }
+
+export const human_readable = (str: string) =>
+  str.replace(/\bnos\b/gi, 'not otherwise specified')
+    .replace(/nec/gi, 'not elsewhere classified')
 
 function* iterTree(
   tree: any,
@@ -261,63 +431,69 @@ function* iterTree(
     }
     return
   }
-  const {
-    name: code,
-    desc: description,
-    includes: includes_xml,
-    inclusionTerm,
-  } = tree
+  const code = tree.name
+  const description = human_readable(tree.desc)
   if (code) {
     const [category] = code.split('.')
     assert(category.length === 3)
-    const includes_col = collapseNotes(includes_xml) ||
-      collapseNotes(inclusionTerm)
+    const is_category = code === category
+    const includes_col = collapseNotes(tree.includes) ||
+      collapseNotes(tree.inclusionTerm)
 
     const excludes1 = parseExcludes(collapseNotes(tree.excludes1))
     const excludes2 = parseExcludes(collapseNotes(tree.excludes2))
 
     for (const exclude of excludes1) {
       yield {
-        table: 'icd10_diagnosis_exclude' as const,
+        table: 'icd10_diagnoses_excludes' as const,
         row: { code, ...exclude, pure: true },
       }
     }
     for (const exclude of excludes2) {
       yield {
-        table: 'icd10_diagnosis_exclude' as const,
+        table: 'icd10_diagnoses_excludes' as const,
         row: { code, ...exclude, pure: false },
       }
     }
     if (!seen_categories.has(category)) {
       seen_categories.add(category)
       yield {
-        table: 'icd10_category' as const,
+        table: 'icd10_categories' as const,
         row: { category, section, description: tree.desc },
       }
     }
-    const includes: string | null = Array.isArray(includes_col)
-      ? includes_col.join('\n')
-      : includes_col
+    const includes: string[] = (Array.isArray(includes_col)
+      ? includes_col
+      : (typeof includes_col === 'string' ? [includes_col] : [])).map(
+        human_readable,
+      )
 
     const general_words = new Set([
-      'nos',
       'unspecified',
       'not otherwise specified',
       'generalized',
     ])
+
     const general = !!parent_code &&
-      words(description.toLowerCase()).some((word) => general_words.has(word))
+      words(description.toLowerCase()).some((word) =>
+        general_words.has(word)
+      )
 
     yield {
-      table: 'icd10_diagnosis' as const,
+      table: 'icd10_diagnoses' as const,
       row: {
         code,
         category,
         description,
         parent_code,
-        includes,
         general,
       },
+    }
+    for (const include of includes) {
+      yield {
+        table: 'icd10_diagnoses_includes' as const,
+        row: { code, note: include, sourced_from_index: false },
+      }
     }
   }
   if (tree.diag) {
@@ -331,9 +507,11 @@ function* iterSections(sections: any) {
     if (!section['@_id']) {
       throw new Error('no id in section: ' + section.desc)
     }
+    const id = section['@_id']
+    assert(section.desc.endsWith(`(${id})`))
     yield {
-      table: 'icd10_section',
-      row: { section: section['@_id'], description: section.desc },
+      table: 'icd10_sections' as const,
+      row: { section: id, description: section.desc.replace(` (${id})`, '') },
     }
     yield* iterTree(section, seen_categories, section['@_id'])
   }
@@ -359,22 +537,22 @@ async function insertExcludeRow(
   { check_referrant_code_before_insertion, ...row }: ExcludeRow,
 ) {
   if (row.category) {
-    return db.insertInto('icd10_diagnosis_exclude_category')
+    return db.insertInto('icd10_diagnoses_excludes_categories')
       .values({ exclude_id, ...row })
       .execute()
   }
   if (row.code_range_start && row.code_range_end) {
-    return db.insertInto('icd10_diagnosis_exclude_code_range')
+    return db.insertInto('icd10_diagnoses_excludes_code_ranges')
       .values({ exclude_id, ...row })
       .execute()
   }
   if (row.code) {
     if (check_referrant_code_before_insertion) {
-      const exists = await db.selectFrom('icd10_diagnosis').select('code')
+      const exists = await db.selectFrom('icd10_diagnoses').select('code')
         .where('code', '=', row.code).executeTakeFirst()
       if (!exists) return
     }
-    return db.insertInto('icd10_diagnosis_exclude_code')
+    return db.insertInto('icd10_diagnoses_excludes_codes')
       .values({ exclude_id, ...row })
       .execute()
   }
@@ -385,7 +563,7 @@ async function insertExclude(
   db: Kysely<any>,
   { excludes, ...exclude }: Exclude,
 ) {
-  const { id: exclude_id } = await db.insertInto('icd10_diagnosis_exclude')
+  const { id: exclude_id } = await db.insertInto('icd10_diagnoses_excludes')
     .values(exclude)
     .returning('id')
     .executeTakeFirstOrThrow()
@@ -395,7 +573,7 @@ async function insertExclude(
   }
 }
 
-export async function up(db: Kysely<any>) {
+export async function loadData(db: Kysely<any>) {
   const sections = await readICD10TabularSections()
 
   // Excludes refer to other codes, so we need to insert the codes
@@ -403,7 +581,7 @@ export async function up(db: Kysely<any>) {
   const insert_excludes: Exclude[] = []
   await inParallel(iterSections(sections), async (to_insert) => {
     console.log(to_insert.row)
-    if (to_insert.table === 'icd10_diagnosis_exclude') {
+    if (to_insert.table === 'icd10_diagnoses_excludes') {
       insert_excludes.push(to_insert.row as any)
       return
     }
@@ -412,10 +590,6 @@ export async function up(db: Kysely<any>) {
       .execute()
   })
   await inParallel(insert_excludes, (exclude) => insertExclude(db, exclude))
-}
-
-export async function down(db: Kysely<any>) {
-  await db.deleteFrom('icd10_section').execute()
 }
 
 /*

@@ -39,7 +39,7 @@ export async function up(db: Kysely<any>) {
       'code',
       'varchar(8)',
       (col) =>
-        col.notNull().references('icd10_diagnosis.code').onDelete('cascade'),
+        col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn(
       'severity',
