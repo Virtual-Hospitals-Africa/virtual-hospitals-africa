@@ -14,7 +14,7 @@ const results: any[] = []
 
 for await (const { code_range } of symptoms_candidates) {
   if (code_range.includes('-')) {
-    const section = await db.selectFrom('icd10_section')
+    const section = await db.selectFrom('icd10_sections')
       .where('section', '=', code_range)
       .selectAll()
       .executeTakeFirst()

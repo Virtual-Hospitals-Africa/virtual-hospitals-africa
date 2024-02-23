@@ -1,65 +1,71 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { TrxOrDb } from '../../types.ts'
-import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 
 // Yield the tree of sub_diagnoses
 // We need not do this recursively, as we know the maximum depth of the tree
 export function tree(trx: TrxOrDb) {
-  return trx.selectFrom('icd10_diagnoses as scoped')
-    .selectAll('scoped')
-    .select([
-      'scoped.code as id',
-      'scoped.description as name',
-    ])
-    .select((eb_parent0) => [
-      jsonArrayFrom(
-        eb_parent0
-          .selectFrom('icd10_diagnoses as sd0')
-          .whereRef('sd0.parent_code', '=', 'scoped.code')
-          .selectAll('sd0')
-          .select((eb_sd0) => [
-            jsonArrayFrom(
-              eb_sd0
-                .selectFrom('icd10_diagnoses as sd1')
-                .whereRef('sd1.parent_code', '=', 'sd0.code')
-                .selectAll('sd1')
-                .select((eb_sd1) => [
-                  jsonArrayFrom(
-                    eb_sd1
-                      .selectFrom('icd10_diagnoses as sd2')
-                      .whereRef('sd2.parent_code', '=', 'sd1.code')
-                      .selectAll('sd2')
-                      .select((eb_sd2) => [
-                        jsonArrayFrom(
-                          eb_sd2
-                            .selectFrom('icd10_diagnoses as sd3')
-                            .whereRef('sd3.parent_code', '=', 'sd2.code')
-                            .selectAll('sd3'),
-                        ).as('sub_diagnoses'),
-                      ]),
-                  ).as('sub_diagnoses'),
-                ]),
-            ).as('sub_diagnoses'),
-          ]),
-      ).as('sub_diagnoses'),
-    ])
+  return trx.with(
+    'icd10_diagnoses_tree',
+    (qb) =>
+      qb.selectFrom('icd10_diagnoses as icd10_diagnoses_tree')
+        .selectAll('icd10_diagnoses_tree')
+        .select([
+          'icd10_diagnoses_tree.code as id',
+          sql<
+            string
+          >`icd10_diagnoses_tree.description || ' (' || icd10_diagnoses_tree.code || ')'`
+            .as('name'),
+        ])
+        .select((eb_parent0) => [
+          jsonArrayFrom(
+            eb_parent0
+              .selectFrom('icd10_diagnoses as sd0')
+              .whereRef('sd0.parent_code', '=', 'icd10_diagnoses_tree.code')
+              .selectAll('sd0')
+              .select((eb_sd0) => [
+                jsonArrayFrom(
+                  eb_sd0
+                    .selectFrom('icd10_diagnoses as sd1')
+                    .whereRef('sd1.parent_code', '=', 'sd0.code')
+                    .selectAll('sd1')
+                    .select((eb_sd1) => [
+                      jsonArrayFrom(
+                        eb_sd1
+                          .selectFrom('icd10_diagnoses as sd2')
+                          .whereRef('sd2.parent_code', '=', 'sd1.code')
+                          .selectAll('sd2')
+                          .select((eb_sd2) => [
+                            jsonArrayFrom(
+                              eb_sd2
+                                .selectFrom('icd10_diagnoses as sd3')
+                                .whereRef('sd3.parent_code', '=', 'sd2.code')
+                                .selectAll('sd3'),
+                            ).as('sub_diagnoses'),
+                          ]),
+                      ).as('sub_diagnoses'),
+                    ]),
+                ).as('sub_diagnoses'),
+              ]),
+          ).as('sub_diagnoses'),
+        ]),
+  )
 }
 
-function searchBaseQuery(
+export function searchBaseQuery(
   trx: TrxOrDb,
   { term, code_range }: {
     term: string
     code_range?: string | string[]
   },
 ) {
-  return trx.with('matches', (qb) => {
-    const matches_query = qb.selectFrom('icd10_diagnoses')
+  return trx.with('raw_matches', (qb) =>
+    qb.selectFrom('icd10_diagnoses')
       .select('code')
       .where(
         sql<boolean>`(
-          description % ${term} OR
-          description ilike ${'%' + term + '%'}
+          description % ${term}
         )`,
       )
       .unionAll(
@@ -67,39 +73,50 @@ function searchBaseQuery(
           .select('code')
           .where(
             sql<boolean>`(
-              note % ${term} OR
-              note ilike ${'%' + term + '%'}
+              note % ${term}
             )`,
           ),
-      ).distinct()
+      )).with('matches', (qb) => {
+      const matches_query = qb
+        .selectFrom('icd10_diagnoses')
+        .where(
+          'icd10_diagnoses.code',
+          'in',
+          qb.selectFrom('raw_matches').select('code'),
+        )
+        .select('icd10_diagnoses.code')
 
-    if (!code_range) {
-      return matches_query
-    }
-    const code_range_array = Array.isArray(code_range)
-      ? code_range
-      : [code_range]
+      if (!code_range) {
+        return matches_query
+      }
+      const code_range_array = Array.isArray(code_range)
+        ? code_range
+        : [code_range]
 
-    assert(code_range_array.length)
+      assert(code_range_array.length)
 
-    return matches_query.where(
-      (eb) =>
-        eb.or(
-          code_range_array.map((code_range) => {
-            const [category] = code_range.split('.')
-            const category_equality_clause = eb('category', '=', category)
-            return code_range.length === 3
-              ? category_equality_clause
-              // redundant to also check by category, but category is indexed
-              : eb.and([
-                category_equality_clause,
-                sql<boolean>`LEFT(code, ${code_range.length}) = ${code_range}`,
-              ])
-          }),
-        ),
-    )
-  })
+      return matches_query.where(
+        (eb) =>
+          eb.or(
+            code_range_array.map((code_range) => {
+              const [category] = code_range.split('.')
+              const category_equality_clause = eb('category', '=', category)
+              return code_range.length === 3
+                ? category_equality_clause
+                // redundant to also check by category, but category is indexed
+                : eb.and([
+                  category_equality_clause,
+                  sql<
+                    boolean
+                  >`LEFT(code, ${code_range.length}) = ${code_range}`,
+                ])
+            }),
+          ),
+      )
+    })
 }
+
+const code_regex = /^[A-Z][A-Z0-9][A-Z0-9]\.?\d?\d?\d?\d?$/
 
 export function searchTree(
   trx: TrxOrDb,
@@ -109,23 +126,183 @@ export function searchTree(
     limit?: number
   },
 ) {
-  const matching_parents = searchBaseQuery(trx, { term, code_range })
-    .with('has_parent_in_matches', (qb) =>
-      qb.selectFrom('matches')
+  const is_code = code_regex.test(term)
+
+  if (is_code) {
+    return tree(trx)
+      .selectFrom('icd10_diagnoses_tree')
+      .where('icd10_diagnoses_tree.code', '=', term)
+      .selectAll('icd10_diagnoses_tree')
+      .select((eb) => [
+        jsonArrayFrom(
+          eb.selectFrom('icd10_diagnoses_includes')
+            .whereRef(
+              'icd10_diagnoses_includes.code',
+              '=',
+              'icd10_diagnoses_tree.code',
+            )
+            .select('icd10_diagnoses_includes.note'),
+        ).as('includes'),
+      ])
+      .execute()
+  }
+
+  const base = searchBaseQuery(trx, { term, code_range })
+
+  console.log(base.selectFrom('matches').selectAll('matches').compile().sql)
+
+  base.selectFrom('matches').selectAll('matches').execute().then((r) => {
+    console.log('wwwww', r)
+  })
+
+  base.with(
+    'with_ancestors',
+    (qb) =>
+      qb.selectFrom('matches as descendant_matches')
         .innerJoin(
-          'icd10_diagnoses as children',
-          'children.code',
-          'matches.code',
+          'icd10_diagnoses as descendants',
+          'descendants.code',
+          'descendant_matches.code',
         )
+        .leftJoin(
+          'icd10_diagnoses as ancestors0',
+          'ancestors0.code',
+          'descendants.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors1',
+          'ancestors1.code',
+          'ancestors0.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors2',
+          'ancestors2.code',
+          'ancestors1.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors3',
+          'ancestors3.code',
+          'ancestors2.parent_code',
+        )
+        .select([
+          'descendants.code as code',
+          'ancestors0.code as ancestor0',
+          'ancestors1.code as ancestor1',
+          'ancestors2.code as ancestor2',
+          'ancestors3.code as ancestor3',
+        ]),
+  ).selectFrom('with_ancestors').selectAll('with_ancestors').execute().then(
+    (r) => {
+      console.log('xxxxxx', r)
+    },
+  )
+
+  base.with(
+    'with_ancestors',
+    (qb) =>
+      qb.selectFrom('matches as descendant_matches')
         .innerJoin(
-          'matches as parents',
-          'parents.code',
-          'children.parent_code',
+          'icd10_diagnoses as descendants',
+          'descendants.code',
+          'descendant_matches.code',
         )
-        .select('children.code')
-        .distinct())
-    // We can omit children whose parents match as the children will appear in the tree
-    // as sub_diagnoses of the parent
+        .leftJoin(
+          'icd10_diagnoses as ancestors0',
+          'ancestors0.code',
+          'descendants.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors1',
+          'ancestors1.code',
+          'ancestors0.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors2',
+          'ancestors2.code',
+          'ancestors1.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors3',
+          'ancestors3.code',
+          'ancestors2.parent_code',
+        )
+        .select([
+          'descendants.code as code',
+          'ancestors0.code as ancestor0',
+          'ancestors1.code as ancestor1',
+          'ancestors2.code as ancestor2',
+          'ancestors3.code as ancestor3',
+        ]),
+  ).with('has_parent_in_matches', (qb) =>
+    qb.selectFrom('with_ancestors')
+      .innerJoin(
+        'matches',
+        (join) =>
+          join.on((eb) =>
+            eb.or([
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor0')),
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor1')),
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor2')),
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor3')),
+            ])
+          ),
+      )
+      .select('with_ancestors.code')).selectFrom('has_parent_in_matches')
+    .selectAll('has_parent_in_matches').execute().then((r) => {
+      console.log('yyyyyy', r)
+    })
+
+  const parents = base.with(
+    'with_ancestors',
+    (qb) =>
+      qb.selectFrom('matches as descendant_matches')
+        .innerJoin(
+          'icd10_diagnoses as descendants',
+          'descendants.code',
+          'descendant_matches.code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors0',
+          'ancestors0.code',
+          'descendants.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors1',
+          'ancestors1.code',
+          'ancestors0.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors2',
+          'ancestors2.code',
+          'ancestors1.parent_code',
+        )
+        .leftJoin(
+          'icd10_diagnoses as ancestors3',
+          'ancestors3.code',
+          'ancestors2.parent_code',
+        )
+        .select([
+          'descendants.code as code',
+          'ancestors0.code as ancestor0',
+          'ancestors1.code as ancestor1',
+          'ancestors2.code as ancestor2',
+          'ancestors3.code as ancestor3',
+        ]),
+  ).with('has_parent_in_matches', (qb) =>
+    qb.selectFrom('with_ancestors')
+      .innerJoin(
+        'matches',
+        (join) =>
+          join.on((eb) =>
+            eb.or([
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor0')),
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor1')),
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor2')),
+              eb('matches.code', '=', eb.ref('with_ancestors.ancestor3')),
+            ])
+          ),
+      )
+      .select('with_ancestors.code'))
     .selectFrom('matches')
     .leftJoin(
       'has_parent_in_matches',
@@ -134,10 +311,11 @@ export function searchTree(
     )
     .where('has_parent_in_matches.code', 'is', null)
     .select('matches.code')
-    .distinct()
 
   const with_includes = tree(trx)
-    .where('scoped.code', 'in', matching_parents)
+    .selectFrom('icd10_diagnoses_tree')
+    .where('icd10_diagnoses_tree.code', 'in', parents)
+    .selectAll('icd10_diagnoses_tree')
     .select(
       sql<number>`
         similarity(description, ${term})
@@ -145,10 +323,14 @@ export function searchTree(
     ).select((eb) => [
       jsonArrayFrom(
         eb.selectFrom('icd10_diagnoses_includes')
-          .whereRef('icd10_diagnoses_includes.code', '=', 'scoped.code')
+          .whereRef(
+            'icd10_diagnoses_includes.code',
+            '=',
+            'icd10_diagnoses_tree.code',
+          )
           .select('icd10_diagnoses_includes.note')
           .select(sql<number>`
-            similarity(description, ${term})
+            similarity(note, ${term})
           `.as('similarity')),
       ).as('includes'),
     ])
@@ -157,11 +339,15 @@ export function searchTree(
   return trx.selectFrom(with_includes)
     .selectAll('with_includes')
     .select([
-      sql<number>`MAX((with_includes.includes->>'similarity')::numeric)`.as(
-        'max_includes_similarity',
-      ),
+      sql<number>`
+        GREATEST(
+          with_includes.similarity,
+          (SELECT max((include->>'similarity')::real)
+             FROM json_array_elements(includes) AS include)
+        )
+      `.as('best_similarity'),
     ])
-    .orderBy('similarity', 'desc')
+    .orderBy('best_similarity', 'desc')
     .limit(limit)
     .execute()
 }

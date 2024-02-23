@@ -13,6 +13,8 @@
     "db:migrate:latest": "deno task run:trusted db/migrate.ts latest",
     "db:migrate:down": "deno task run:trusted db/migrate.ts down",
     "db:migrate:to": "deno task run:trusted db/migrate.ts to",
+    "db:migrate:seeds:dump": "deno task run:trusted db/migrate.ts seeds:dump",
+    "db:migrate:seeds:load": "deno task run:trusted db/migrate.ts seeds:load",
     "db:migrate:wipe": "deno task run:trusted db/migrate.ts wipe",
     "db:migrate:redo": "deno task run:trusted db/migrate.ts down && deno task run:trusted db/migrate.ts up",
     "db:migrate:redo:all": "deno task run:trusted db/redo_all.ts",

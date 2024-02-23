@@ -61,6 +61,9 @@ jobs:
       - name: Migrate database
         run: deno task db:migrate:latest
 
+      - name: Load seeds
+        run: deno task db:migrate:seeds:load
+
       - name: Run tests
         run: |
           deno task test

@@ -81,8 +81,14 @@ export function getEncounter(
   },
 ): Promise<RenderedPatientSymptom[]> {
   let query = tree(trx)
-    .innerJoin('patient_symptoms', 'patient_symptoms.code', 'tree.code')
+    .selectFrom('icd10_diagnoses_tree')
+    .innerJoin(
+      'patient_symptoms',
+      'patient_symptoms.code',
+      'icd10_diagnoses_tree.code',
+    )
     .where('patient_symptoms.patient_id', '=', patient_id)
+    .selectAll('icd10_diagnoses_tree')
     .select((eb) => [
       'severity',
       'notes',

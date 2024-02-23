@@ -386,6 +386,7 @@ export interface Icd10DiagnosesIncludes {
   code: string
   id: Generated<number>
   note: string
+  sourced_from_index: boolean
 }
 
 export interface Icd10Sections {

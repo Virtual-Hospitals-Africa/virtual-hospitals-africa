@@ -1,12 +1,22 @@
-import { Migration, MigrationResult, Migrator, sql } from 'kysely'
+import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
+import last from '../util/last.ts'
+import { assert } from 'std/assert/assert.ts'
 
-const migrations: Record<string, Migration> = {}
+const migrations: Record<
+  string,
+  Migration & {
+    load?: () => Promise<Deno.CommandOutput>
+    dump?: () => Promise<Deno.CommandOutput>
+  }
+> = {}
 for (const migrationFile of Deno.readDirSync('./db/migrations')) {
   const migrationName = migrationFile.name
   const migration = await import(`./migrations/${migrationName}`)
-  migrations[migrationName] = migration
+  migrations[migrationName] = migration.default || migration
 }
+
+const migrationTargets = Object.keys(migrations).sort()
 
 const migrator = new Migrator({
   db,
@@ -27,6 +37,27 @@ async function wipe() {
 }
 
 async function startMigrating(cmd: string, target?: string) {
+  function targetError() {
+    console.error(
+      `Please specify a valid target as in\n\n  deno task migrate:${cmd} ${
+        migrationTargets[0]
+      }\n\nValid targets:\n${migrationTargets.join('\n')}`,
+    )
+    return Deno.exit(1)
+  }
+
+  function findTarget(target: string) {
+    const target_file = last(target.split('/'))
+    assert(target_file)
+    const matching_targets = migrationTargets.filter((it) =>
+      it.includes(target_file)
+    )
+    if (matching_targets.length === 1) {
+      return matching_targets[0]
+    }
+    return targetError()
+  }
+
   switch (cmd) {
     case 'check': {
       const migrations = await migrator.getMigrations()
@@ -48,19 +79,46 @@ async function startMigrating(cmd: string, target?: string) {
     case 'wipe':
       return wipe()
     case 'to': {
-      if (target) return migrator.migrateTo(target)
-      const migrations = await sql<
-        { name: string }
-      >`SELECT name from kysely_migration`.execute(db)
-      const migrationTargets = migrations.rows.map(({ name }) => name)
-      console.error(
-        `Please specify a valid target as in\n\n  deno task migrate:to ${
-          migrationTargets[0]
-        }\n\nValid targets:\n${migrationTargets.join('\n')}`,
-      )
-      return Deno.exit(1)
+      if (!target) return targetError()
+      return migrator.migrateTo(findTarget(target))
     }
-
+    case 'seeds:dump': {
+      if (target) {
+        const migration = migrations[findTarget(target)]
+        if (!migration.dump) {
+          console.error(`Migration ${target} does not support seeds:dump`)
+          return Deno.exit(1)
+        }
+        await migration.dump()
+        return {}
+      }
+      for (const migrationName of migrationTargets) {
+        const migration = migrations[migrationName]
+        if (migration.dump) {
+          await migration.dump()
+        }
+      }
+      return {}
+    }
+    case 'seeds:load': {
+      if (target) {
+        const migration = migrations[findTarget(target)]
+        if (!migration.load) {
+          console.error(`Migration ${target} does not support seeds:load`)
+          return Deno.exit(1)
+        }
+        await migration.load()
+        return {}
+      }
+      for (const migrationName of migrationTargets) {
+        console.log('migrationName', migrationName)
+        const migration = migrations[migrationName]
+        if (migration.load) {
+          await migration.load()
+        }
+      }
+      return {}
+    }
     default:
       throw new Error(`Invalid command ${cmd}`)
   }
@@ -76,8 +134,6 @@ export async function migrate(cmd: string, target?: string) {
       console.error(`failed to execute migration "${it.migrationName}"`)
     }
   })
-
-  await db.destroy()
 
   if (error) {
     console.error('failed to migrate')

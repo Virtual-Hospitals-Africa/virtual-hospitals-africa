@@ -5,13 +5,13 @@ import { NURSE_SPECIALTIES } from '../../types.ts'
 export async function up(db: Kysely<unknown>) {
   await db
     .schema
-    .createType('nurse_speciality')
+    .createType('nurse_specialty')
     .asEnum(NURSE_SPECIALTIES)
     .execute()
 
   await db
     .schema
-    .createTable('nurse_specialities')
+    .createTable('nurse_specialties')
     .addColumn('id', 'serial', (column) => column.primaryKey())
     .addColumn(
       'created_at',
@@ -29,13 +29,13 @@ export async function up(db: Kysely<unknown>) {
         .references('employment.id')
         .onDelete('cascade'))
     .addColumn(
-      'speciality',
-      sql`nurse_speciality`,
+      'specialty',
+      sql`nurse_specialty`,
       (column) => column.notNull(),
     )
-    .addUniqueConstraint('one_unique_speciality_per_employee', [
+    .addUniqueConstraint('one_unique_specialty_per_employee', [
       'employee_id',
-      'speciality',
+      'specialty',
     ])
     .execute()
 
@@ -92,11 +92,11 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await addUpdatedAtTrigger(db, 'nurse_registration_details')
-  await addUpdatedAtTrigger(db, 'nurse_specialities')
+  await addUpdatedAtTrigger(db, 'nurse_specialties')
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('nurse_registration_details').execute()
-  await db.schema.dropTable('nurse_specialities').execute()
-  await db.schema.dropType('nurse_speciality').execute()
+  await db.schema.dropTable('nurse_specialties').execute()
+  await db.schema.dropType('nurse_specialty').execute()
 }

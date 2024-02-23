@@ -32,10 +32,10 @@ export async function up(db: Kysely<unknown>) {
       'timestamptz',
       (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('phone_number', 'varchar(255)', (col) => col.notNull())
+    .addColumn('phone_number', 'varchar(255)')
     .addColumn('name', 'varchar(255)')
     .addColumn('gender', sql`gender`)
-    .addColumn('date_of_birth', 'varchar(50)')
+    .addColumn('date_of_birth', 'date')
     .addColumn('national_id_number', 'varchar(50)')
     .addColumn('avatar_url', 'varchar(255)')
     .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)

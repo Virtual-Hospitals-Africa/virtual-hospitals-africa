@@ -1,5 +1,5 @@
 import { redis } from '../external-clients/redis.ts'
-import { dropEverything } from './meta.ts'
+import { dropEverything } from './dropEverything.ts'
 import { migrate } from './migrate.ts'
 
 console.log('Flushing redis...')
@@ -12,3 +12,6 @@ await dropEverything()
 
 console.log('Migrating to latest...')
 await migrate('latest')
+
+console.log('Loading seeds...')
+await migrate('seeds:load')
