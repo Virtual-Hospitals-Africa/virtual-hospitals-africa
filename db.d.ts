@@ -388,6 +388,18 @@ export interface Icd10Section {
   section: string
 }
 
+export interface Icd9Icd10 {
+  approximate: boolean
+  choice_list: boolean
+  combination: boolean
+  created_at: Generated<Timestamp>
+  id10_code: string | null
+  id9_code: string
+  no_map: boolean
+  scenario: number
+  updated_at: Generated<Timestamp>
+}
+
 export interface Intake {
   order: Int8
   step: IntakeStep
@@ -801,6 +813,7 @@ export interface DB {
   icd10_diagnosis_exclude_code: Icd10DiagnosisExcludeCode
   icd10_diagnosis_exclude_code_range: Icd10DiagnosisExcludeCodeRange
   icd10_section: Icd10Section
+  icd9_icd10: Icd9Icd10
   intake: Intake
   mailing_list: MailingList
   manufactured_medications: ManufacturedMedications
