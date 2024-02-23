@@ -9,7 +9,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     const search = ctx.url.searchParams.get('search')
     if (!search) return json([])
     const results = await searchSymptoms(ctx.state.trx, search)
-    console.log('results', results)
     return json(results)
   },
 }

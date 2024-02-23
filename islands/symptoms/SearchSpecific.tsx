@@ -1,14 +1,14 @@
 import { useSignal } from '@preact/signals'
 import AsyncSearch from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
-import { RenderedICD10Diagnosis } from '../../types.ts'
+import { RenderedICD10DiagnosisTreeWithIncludes } from '../../types.ts'
 import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 
 function SymptomOption({
   option,
   selected,
 }: {
-  option: RenderedICD10Diagnosis
+  option: RenderedICD10DiagnosisTreeWithIncludes
   selected: boolean
 }) {
   return (
@@ -16,17 +16,20 @@ function SymptomOption({
       <div className={cls('truncate text-base', selected && 'font-bold')}>
         {option.name}
       </div>
-      {option.includes &&
+      {!!option.includes?.length &&
         (
           <div className={cls('truncate text-xs', selected && 'font-bold')}>
-            {option.includes}
+            Includes:
+            {option.includes.map((i) => <div key={i.note}>{i.note}</div>)}
           </div>
         )}
     </div>
   )
 }
 
-type SubDiag0 = NonNullable<RenderedICD10Diagnosis['sub_diagnoses']>[0]
+type SubDiag0 = NonNullable<
+  RenderedICD10DiagnosisTreeWithIncludes['sub_diagnoses']
+>[0]
 type SubDiag1 = NonNullable<SubDiag0['sub_diagnoses']>[0]
 type SubDiag2 = NonNullable<SubDiag1['sub_diagnoses']>[0]
 type SubDiag3 = NonNullable<SubDiag2['sub_diagnoses']>[0]
@@ -52,7 +55,7 @@ export function SearchSpecificSymptom({
   value,
 }: {
   name: string
-  value?: RenderedICD10Diagnosis
+  value?: RenderedICD10DiagnosisTreeWithIncludes
 }) {
   const selected_parent = useSignal(value)
   const selected_c0 = useSignal<SubDiag0 | undefined>(undefined)

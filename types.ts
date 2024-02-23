@@ -1824,7 +1824,7 @@ export type PatientSymptomUpsert = PatientSymptomInsertShared & {
 
 export type RenderedPatientSymptom =
   & PatientSymptomInsertShared
-  & RenderedICD10Diagnosis
+  & RenderedICD10DiagnosisTree
   & {
     media: {
       mime_type: string
@@ -1832,36 +1832,40 @@ export type RenderedPatientSymptom =
     }[]
   }
 
-export type RenderedICD10Diagnosis = {
+export type RenderedICD10DiagnosisTree = {
   id: string
   description: string
   name: string
-  includes: string | null
   sub_diagnoses?: {
     code: string
     general: boolean
-    includes: string | null
     description: string
     sub_diagnoses?: {
       code: string
       general: boolean
-      includes: string | null
       description: string
       sub_diagnoses?: {
         code: string
         general: boolean
-        includes: string | null
         description: string
         sub_diagnoses?: {
           code: string
           general: boolean
-          includes: string | null
           description: string
         }[]
       }[]
     }[]
   }[]
 }
+
+export type RenderedICD10DiagnosisTreeWithIncludes =
+  & RenderedICD10DiagnosisTree
+  & {
+    includes?: {
+      note: string
+      similarity: number
+    }[]
+  }
 
 export interface GeneralAssessment {
   assessment: string
