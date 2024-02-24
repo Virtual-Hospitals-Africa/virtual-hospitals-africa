@@ -18,7 +18,7 @@ import {
 } from '../../util/date.ts'
 import { DurationInput } from './DurationInput.tsx'
 import { RenderedPatientSymptom } from '../../types.ts'
-import { SearchSpecificSymptom } from './SearchSpecific.tsx'
+import { ICD10SearchSpecific } from '../icd10/SearchSpecific.tsx'
 
 export default function SymptomInput({
   name,
@@ -55,7 +55,12 @@ export default function SymptomInput({
     <RemoveRow onClick={remove} labelled>
       <div className='flex flex-col space-y-1 w-full'>
         <FormRow className='w-full'>
-          <SearchSpecificSymptom name={`${name}.code`} value={value} />
+          <ICD10SearchSpecific
+            name={`${name}.code`}
+            label='Symptom'
+            value={value}
+            href='/app/symptoms'
+          />
         </FormRow>
         <div className='md:col-span-8 justify-normal flex flex-col gap-1.5'>
           <FormRow className='w-full justify-normal'>

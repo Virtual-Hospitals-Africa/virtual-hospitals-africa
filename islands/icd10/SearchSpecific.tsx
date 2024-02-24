@@ -50,12 +50,18 @@ function options(sub_diagnoses: {
   return opts
 }
 
-export function SearchSpecificSymptom({
+export function ICD10SearchSpecific({
   name,
+  label,
+  href,
   value,
+  className,
 }: {
   name: string
+  label: string
+  href: string
   value?: RenderedICD10DiagnosisTreeWithIncludes
+  className?: string
 }) {
   const selected_parent = useSignal(value)
   const selected_c0 = useSignal<SubDiag0 | undefined>(undefined)
@@ -68,9 +74,10 @@ export function SearchSpecificSymptom({
       <AsyncSearch
         name={selected_c0.value ? undefined : name}
         required
-        href='/app/symptoms'
-        label='Symptom'
+        href={href}
+        label={label}
         value={value}
+        className={className}
         Option={SymptomOption}
         onSelect={(symptom) => {
           const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>

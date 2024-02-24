@@ -28,6 +28,8 @@ import * as $app_facilities_facility_id_register from './routes/app/facilities/[
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
 import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
+import * as $app_icd10 from './routes/app/icd10.tsx'
+import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_patients from './routes/app/patients.tsx'
@@ -109,6 +111,7 @@ import * as $family_PatientCohabitationSelect from './islands/family/PatientCoha
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $general_assessment_Form from './islands/general-assessment/Form.tsx'
+import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
@@ -127,7 +130,6 @@ import * as $pre_existing_conditions_Medication from './islands/pre-existing-con
 import * as $schedule_form from './islands/schedule-form.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
-import * as $symptoms_SearchSpecific from './islands/symptoms/SearchSpecific.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting-room/AddPatientForm.tsx'
 import { type Manifest } from '$fresh/server.ts'
@@ -173,6 +175,8 @@ const manifest = {
       $app_facilities_facility_id_waiting_room,
     './routes/app/facilities/[facility_id]/waiting-room/add.tsx':
       $app_facilities_facility_id_waiting_room_add,
+    './routes/app/icd10.tsx': $app_icd10,
+    './routes/app/icd10_search.tsx': $app_icd10_search,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
     './routes/app/patients.tsx': $app_patients,
@@ -280,6 +284,7 @@ const manifest = {
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/general-assessment/Form.tsx': $general_assessment_Form,
+    './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,
@@ -302,7 +307,6 @@ const manifest = {
     './islands/schedule-form.tsx': $schedule_form,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
-    './islands/symptoms/SearchSpecific.tsx': $symptoms_SearchSpecific,
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/waiting-room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
   },

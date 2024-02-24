@@ -25,6 +25,7 @@ export type SearchProps<
   disabled?: boolean
   value?: Maybe<T>
   multi?: boolean
+  className?: string
   options: T[]
   onQuery: (query: string) => void
   onSelect?: (value: T | undefined) => void
@@ -48,6 +49,7 @@ export default function Search<
   addable,
   disabled,
   options,
+  className,
   onQuery,
   onSelect,
   Option,
@@ -88,6 +90,7 @@ export default function Search<
         // Clear the selection for a multiselect so the user now has space to enter another value
         setSelected(multi ? null : value)
       }}
+      className={className}
     >
       <div className='grow'>
         {label && (
