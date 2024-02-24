@@ -1,0 +1,170 @@
+code_range	jonathan_dr_skhu_symptom_name	jonathan_dr_skhu_category
+B00.2	Painful blisters	Symptom
+D69.6	Abnormal bleeding	Symptom
+D73.1	Enlarged spleen	Examination Finding
+E86.0	Dehydration	Symptom
+F20-F29	Psychosis	Symptom
+G43	migraines	Symptom
+G47.9	Sleep disturbances	Symptom
+G50.1	atypical face pain	Symptom
+G80-G83	Paralysis	Examination finding
+G82.5	Quadriplegia	Examination finding
+H00.0	Eye swelling	Symptom
+H02.4	Eye drooping	Symptom
+H04.123	Eye dryness	Symptom
+H04.123	Eye tearing	Symptom
+H04.123	Tearing eyes	Symptom
+H10.13	Eye itching	Symptom
+H10.89	Eye discharge	Symptom
+H10.9	Eye redness	Symptom
+H10.9	Pink eye	Symptom
+H10.9	Redness	Symptom
+H33.2	Retinal tear	Examination finding
+H35.5	Retinal hemorrhage	Examination finding
+H43.9	Eye floaters	Symptom
+H50.9	Strabismus	Examination finding
+H53.1	Photophobia	Examination finding
+H53.12	Eye sensitivity to light	Symptom
+H53.8	Blurred vision	Symptom
+H53.9	Vision problems	Symptom
+H53.9	Visual disturbances	Symptom
+H54.4	Reduced visual acuity	Examination finding
+H57.1	eye pain	Symptom
+H59.0	Eye twitching	Symptom
+H72.9	Ruptured eardrum	Examination finding
+H81.9	Vertigo	Symptom
+H90.9	Hearing loss	Symptom
+H92.0	Ear congestion	Symptom
+H92.0	Ear pain	Symptom
+H92.13	Ear itching	Symptom
+H92.3	Ear bleeding	Symptom
+H92.8	Ear discharge	Symptom
+H93.1	Ringing in the ears	Symptom
+H93.1	Tinnitus	Symptom
+H93.19	Ear fullness or pressure	Symptom
+I10	High blood pressure	Vital Sign
+I47.2	Ventricular tachycardia	Examination finding
+I49.01	Ventricular fibrillation	Examination finding
+I49.9	Arrhythmia	Examination sign
+I73.0	Raynaud's phenomenon	Examination finding
+I73.9	Claudication	Symptom
+I73.9	Leg pain with activity	Symptom
+I83.9	Varicose veins	Symptom
+I83.90	Varicose veins	Examination finding
+I95.9	Low blood pressure	Vital Sign
+J02.9	Sore throat	Symptom
+K03.9	Tooth discoloration	Symptom
+K05.6	Gum swelling	Symptom
+K08.8	Tooth sensitivity	Symptom
+K08.8	Toothache	Symptom
+K08.8	tooth pain	Symptom
+K12.0	Mouth ulcers	Symptom
+K12.0	Oral ulcers	Symptom
+K14.6	tongue pain	Symptom
+K52.9	Diarrhea	Symptom
+K59	Constipation	Symptom
+K59.0	Constipation	Symptom
+K62.5	Rectal bleeding	Symptom
+K92.0	Hematemesis	Symptom
+K92.1	Black, tarry stool	Symptom
+K92.1	Blood in stool	Symptom
+K92.1	Melena	Symptom
+L01.9	Skin blisters	Symptom
+L04.9	Swollen lymph nodes	Symptom
+L29	Pruritus	Examination finding
+L29.9	Itching	Symptom
+L30.9	Skin rash	Symptom
+L50.9	Skin swelling	Symptom
+L53.9	Skin redness	Symptom
+L60.2	Nail brittleness	Examination Finding
+L60.3	Nail discoloration	Examination Finding
+L60.8	Nail pitting	Examination Finding
+L60.8	Nail ridges	Examination Finding
+L60.8	Nail splitting	Examination Finding
+L60.9	Nail abnormalities	Symptom
+L63.9	Hair loss	Symptom
+L68.0	Abnormal hair growth	Symptom
+L81.4	Skin discoloration	Symptom
+L85.1	Skin peeling	Symptom
+L85.3	Skin dryness	Symptom
+L85.9	Skin scaling	Symptom
+L92.9	Skin nodules	Symptom
+L94.9	Skin thickening	Symptom
+L98.4	Skin ulcers	Symptom
+L98.4	Slow-healing sores or cuts	Symptom
+L98.9	Skin lesions	Symptom
+M25.5	Joint deformity	Symptom
+M25.5	Joint pain	Symptom
+M25.5	Joint redness	Symptom
+M25.5	Joint swelling	Symptom
+M25.5	Joint warmth	Symptom
+M25.51	Shoulder pain	Symptom
+M25.52	Elbow pain	Symptom
+M25.53	Wrist pain	Symptom
+M25.53	Wrist pain	Symptom
+M25.54	Hand pain	Symptom
+M25.551	Hip pain	Symptom
+M25.561	Knee pain	Symptom
+M25.57	Foot pain	Symptom
+M25.571	Ankle pain	Symptom
+M25.6	Joint stiffness	Symptom
+M25.9	Joint instability	Symptom
+M41.9	Spinal deformity	Symptom
+M43.6	Spinal stiffness	Symptom
+M43.6	Stiff neck	Symptom
+M54	spine pain	Symptom
+M54.2	Neck pain	Symptom
+M54.5	Back pain	Symptom
+M54.5	Lower back pain	Symptom
+M54.5	lumbar region pain	Symptom
+M54.6	Upper back pain	Symptom
+M54.8	Spinal numbness	Symptom
+M54.8	Spinal tingling	Symptom
+M54.8	Spinal weakness	Symptom
+M54.9	Spinal swelling	Symptom
+M54.9	Spinal tenderness	Symptom
+M54.9	back pain	Symptom
+M62.8	Muscle cramps	Symptom
+M62.81	Muscle weakness	Symptom
+M62.83	Muscle spasms	Symptom
+M62.9	Muscle stiffness	Symptom
+M79.1	Muscle pain	Symptom
+M79.1	myalgia	Symptom
+M79.2	Nerve pain	Symptom
+M79.6	limb pain	Symptom
+M79.641	Finger pain	Symptom
+M79.671	Toe pain	Symptom
+M79.671b	Toe pain	Symptom
+M79.672	Heel pain	Symptom
+N23	renal colic	Symptom
+N39.43	Post-void dribbling 	Symptom
+N50.9	Scrotal pain	Symptom
+N50.9	Testicular pain	Symptom
+N52.9	Erectile dysfunction	Symptom
+N53.11	Premature ejaculation	Symptom
+N63	Lump or mass in breast	Symptom
+N64.3	Galactorrhea	Symptom
+N64.4	Mastodynia	Symptom
+N64.4	breast pain	Symptom
+N76.0	Vaginal discharge	Symptom
+N92.4	Perimenopausal menorrhagia 	Symptom
+N93.9	Vaginal bleeding	Symptom
+N94.0	Mittelschmerz	Symptom
+N94.1	Dyspareunia	Symptom
+N94.81	vulvodynia	Symptom
+N94.810	vulvar vestibulitis	Symptom
+N94.819	Vulvar pain	Symptom
+N95.0	Postmenopausal bleeding	Symptom
+N95.4-6	Dysmenorrhea	Symptom
+O00-O99	Pregnancy-related symptoms	Symptom
+R79.89	Abnormal finding on examination of blood, without diagnosis	Examination finding
+R80.9	Isolated proteinuria	Examination finding
+R82.3	Dark urine	Symptom
+R82.9	Isolated hematuria	Examination finding
+T82.84	pain from prosthetic devices, implants, and grafts	Symptom
+T83.84	pain from prosthetic devices, implants, and grafts	Symptom
+T84.84	pain from prosthetic devices, implants, and grafts	Symptom
+T85.84	pain from prosthetic devices, implants, and grafts	Symptom
+V00-V99	Vehicle accident	Symptom
+X85-Y09	Violence-related injury	Symptom
+Y00-Y09	Youth violence	Symptom

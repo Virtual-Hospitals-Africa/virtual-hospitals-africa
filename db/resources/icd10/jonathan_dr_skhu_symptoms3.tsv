@@ -1,0 +1,170 @@
+code_range	jonathan_dr_skhu_symptom_name	jonathan_dr_skhu_category	exists_with_that_code	actual_name_of_code	is_duplicate	present_in_other_spreadsheet
+B00.2	Painful blisters	Symptom	true	Herpesviral gingivostomatitis and pharyngotonsillitis	false	true
+D69.6	Abnormal bleeding	Symptom	true	Thrombocytopenia, unspecified	false	true
+D73.1	Enlarged spleen	Examination Finding	true	Hypersplenism	false	true
+E86.0	Dehydration	Symptom	true	Dehydration	false	true
+F20-F29	Psychosis	Symptom	true	Schizophrenia, schizotypal, delusional, and other non-mood psychotic disorders	false	true
+G43	migraines	Symptom	true	Migraine	false	true
+G47.9	Sleep disturbances	Symptom	true	Sleep disorder, unspecified	false	true
+G50.1	atypical face pain	Symptom	true	Atypical facial pain	false	true
+G80-G83	Paralysis	Examination finding	true	Cerebral palsy and other paralytic syndromes	false	true
+G82.5	Quadriplegia	Examination finding	true	Quadriplegia	false	true
+H00.0	Eye swelling	Symptom	true	Hordeolum (externum) (internum) of eyelid	false	true
+H02.4	Eye drooping	Symptom	true	Ptosis of eyelid	false	true
+H04.123	Eye dryness	Symptom	true	Dry eye syndrome of bilateral lacrimal glands	true	true
+H04.123	Eye tearing	Symptom	true	Dry eye syndrome of bilateral lacrimal glands	true	true
+H04.123	Tearing eyes	Symptom	true	Dry eye syndrome of bilateral lacrimal glands	true	true
+H10.13	Eye itching	Symptom	true	Acute atopic conjunctivitis, bilateral	false	true
+H10.89	Eye discharge	Symptom	true	Other conjunctivitis	false	true
+H10.9	Eye redness	Symptom	true	Unspecified conjunctivitis	true	true
+H10.9	Pink eye	Symptom	true	Unspecified conjunctivitis	true	true
+H10.9	Redness	Symptom	true	Unspecified conjunctivitis	true	true
+H33.2	Retinal tear	Examination finding	true	Serous retinal detachment	false	true
+H35.5	Retinal hemorrhage	Examination finding	true	Hereditary retinal dystrophy	false	true
+H43.9	Eye floaters	Symptom	true	Unspecified disorder of vitreous body	false	true
+H50.9	Strabismus	Examination finding	true	Unspecified strabismus	false	true
+H53.1	Photophobia	Examination finding	true	Subjective visual disturbances	false	true
+H53.12	Eye sensitivity to light	Symptom	true	Transient visual loss	false	true
+H53.8	Blurred vision	Symptom	true	Other visual disturbances	false	true
+H53.9	Vision problems	Symptom	true	Unspecified visual disturbance	true	true
+H53.9	Visual disturbances	Symptom	true	Unspecified visual disturbance	true	true
+H54.4	Reduced visual acuity	Examination finding	true	Blindness, one eye	false	true
+H57.1	eye pain	Symptom	true	Ocular pain	false	true
+H59.0	Eye twitching	Symptom	true	Disorders of the eye following cataract surgery	false	true
+H72.9	Ruptured eardrum	Examination finding	true	Unspecified perforation of tympanic membrane	false	true
+H81.9	Vertigo	Symptom	true	Unspecified disorder of vestibular function	false	true
+H90.9	Hearing loss	Symptom			false	false
+H92.0	Ear congestion	Symptom	true	Otalgia	true	true
+H92.0	Ear pain	Symptom	true	Otalgia	true	true
+H92.13	Ear itching	Symptom	true	Otorrhea, bilateral	false	false
+H92.3	Ear bleeding	Symptom			false	false
+H92.8	Ear discharge	Symptom			false	false
+H93.1	Ringing in the ears	Symptom	true	Tinnitus	true	true
+H93.1	Tinnitus	Symptom	true	Tinnitus	true	true
+H93.19	Ear fullness or pressure	Symptom	true	Tinnitus, unspecified ear	false	false
+I10	High blood pressure	Vital Sign	true	Essential (primary) hypertension	false	true
+I47.2	Ventricular tachycardia	Examination finding	true	Ventricular tachycardia	false	true
+I49.01	Ventricular fibrillation	Examination finding	true	Ventricular fibrillation	false	true
+I49.9	Arrhythmia	Examination sign	true	Cardiac arrhythmia, unspecified	false	true
+I73.0	Raynaud's phenomenon	Examination finding	true	Raynaud's syndrome	false	true
+I73.9	Claudication	Symptom	true	Peripheral vascular disease, unspecified	true	true
+I73.9	Leg pain with activity	Symptom	true	Peripheral vascular disease, unspecified	true	true
+I83.9	Varicose veins	Symptom	true	Asymptomatic varicose veins of lower extremities	false	true
+I83.90	Varicose veins	Examination finding	true	Asymptomatic varicose veins of unspecified lower extremity	false	true
+I95.9	Low blood pressure	Vital Sign	true	Hypotension, unspecified	false	true
+J02.9	Sore throat	Symptom	true	Acute pharyngitis, unspecified	false	true
+K03.9	Tooth discoloration	Symptom	true	Disease of hard tissues of teeth, unspecified	false	true
+K05.6	Gum swelling	Symptom	true	Periodontal disease, unspecified	false	true
+K08.8	Tooth sensitivity	Symptom	true	Other specified disorders of teeth and supporting structures	true	true
+K08.8	Toothache	Symptom	true	Other specified disorders of teeth and supporting structures	true	true
+K08.8	tooth pain	Symptom	true	Other specified disorders of teeth and supporting structures	true	true
+K12.0	Mouth ulcers	Symptom	true	Recurrent oral aphthae	true	true
+K12.0	Oral ulcers	Symptom	true	Recurrent oral aphthae	true	true
+K14.6	tongue pain	Symptom	true	Glossodynia	false	true
+K52.9	Diarrhea	Symptom	true	Noninfective gastroenteritis and colitis, unspecified	false	false
+K59	Constipation	Symptom	true	Other functional intestinal disorders	false	false
+K59.0	Constipation	Symptom	true	Constipation	false	true
+K62.5	Rectal bleeding	Symptom	true	Hemorrhage of anus and rectum	false	true
+K92.0	Hematemesis	Symptom	true	Hematemesis	false	false
+K92.1	Black, tarry stool	Symptom	true	Melena	true	true
+K92.1	Blood in stool	Symptom	true	Melena	true	true
+K92.1	Melena	Symptom	true	Melena	true	true
+L01.9	Skin blisters	Symptom			false	false
+L04.9	Swollen lymph nodes	Symptom	true	Acute lymphadenitis, unspecified	false	true
+L29	Pruritus	Examination finding	true	Pruritus	false	true
+L29.9	Itching	Symptom	true	Pruritus, unspecified	false	false
+L30.9	Skin rash	Symptom	true	Dermatitis, unspecified	false	true
+L50.9	Skin swelling	Symptom	true	Urticaria, unspecified	false	true
+L53.9	Skin redness	Symptom	true	Erythematous condition, unspecified	false	true
+L60.2	Nail brittleness	Examination Finding	true	Onychogryphosis	false	true
+L60.3	Nail discoloration	Examination Finding	true	Nail dystrophy	false	true
+L60.8	Nail pitting	Examination Finding	true	Other nail disorders	true	true
+L60.8	Nail ridges	Examination Finding	true	Other nail disorders	true	true
+L60.8	Nail splitting	Examination Finding	true	Other nail disorders	true	true
+L60.9	Nail abnormalities	Symptom	true	Nail disorder, unspecified	false	true
+L63.9	Hair loss	Symptom	true	Alopecia areata, unspecified	false	true
+L68.0	Abnormal hair growth	Symptom	true	Hirsutism	false	true
+L81.4	Skin discoloration	Symptom	true	Other melanin hyperpigmentation	false	true
+L85.1	Skin peeling	Symptom	true	Acquired keratosis [keratoderma] palmaris et plantaris	false	true
+L85.3	Skin dryness	Symptom	true	Xerosis cutis	false	true
+L85.9	Skin scaling	Symptom	true	Epidermal thickening, unspecified	false	true
+L92.9	Skin nodules	Symptom	true	Granulomatous disorder of the skin and subcutaneous tissue, unspecified	false	true
+L94.9	Skin thickening	Symptom	true	Localized connot elsewhere classifiedtive tissue disorder, unspecified	false	true
+L98.4	Skin ulcers	Symptom	true	Non-pressure chronic ulcer of skin, not elsewhere classified	true	true
+L98.4	Slow-healing sores or cuts	Symptom	true	Non-pressure chronic ulcer of skin, not elsewhere classified	true	true
+L98.9	Skin lesions	Symptom	true	Disorder of the skin and subcutaneous tissue, unspecified	false	true
+M25.5	Joint deformity	Symptom	true	Pain in joint	true	true
+M25.5	Joint pain	Symptom	true	Pain in joint	true	true
+M25.5	Joint redness	Symptom	true	Pain in joint	true	true
+M25.5	Joint swelling	Symptom	true	Pain in joint	true	true
+M25.5	Joint warmth	Symptom	true	Pain in joint	true	true
+M25.51	Shoulder pain	Symptom	true	Pain in shoulder	false	false
+M25.52	Elbow pain	Symptom	true	Pain in elbow	false	false
+M25.53	Wrist pain	Symptom	true	Pain in wrist	true	false
+M25.53	Wrist pain	Symptom	true	Pain in wrist	true	false
+M25.54	Hand pain	Symptom	true	Pain in joints of hand	false	false
+M25.551	Hip pain	Symptom	true	Pain in right hip	false	false
+M25.561	Knee pain	Symptom	true	Pain in right knee	false	false
+M25.57	Foot pain	Symptom	true	Pain in ankle and joints of foot	false	false
+M25.571	Ankle pain	Symptom	true	Pain in right ankle and joints of right foot	false	false
+M25.6	Joint stiffness	Symptom	true	Stiffness of joint, not elsewhere classified	false	false
+M25.9	Joint instability	Symptom	true	Joint disorder, unspecified	false	false
+M41.9	Spinal deformity	Symptom	true	Scoliosis, unspecified	false	true
+M43.6	Spinal stiffness	Symptom	true	Torticollis	true	true
+M43.6	Stiff neck	Symptom	true	Torticollis	true	true
+M54	spine pain	Symptom	true	Dorsalgia	false	true
+M54.2	Neck pain	Symptom	true	Cervicalgia	false	true
+M54.5	Back pain	Symptom	true	Low back pain	true	true
+M54.5	Lower back pain	Symptom	true	Low back pain	true	true
+M54.5	lumbar region pain	Symptom	true	Low back pain	true	true
+M54.6	Upper back pain	Symptom	true	Pain in thoracic spine	false	true
+M54.8	Spinal numbness	Symptom	true	Other dorsalgia	true	true
+M54.8	Spinal tingling	Symptom	true	Other dorsalgia	true	true
+M54.8	Spinal weakness	Symptom	true	Other dorsalgia	true	true
+M54.9	Spinal swelling	Symptom	true	Dorsalgia, unspecified	true	true
+M54.9	Spinal tenderness	Symptom	true	Dorsalgia, unspecified	true	true
+M54.9	back pain	Symptom	true	Dorsalgia, unspecified	true	true
+M62.8	Muscle cramps	Symptom	true	Other specified disorders of muscle	false	true
+M62.81	Muscle weakness	Symptom	true	Muscle weakness (generalized)	false	true
+M62.83	Muscle spasms	Symptom	true	Muscle spasm	false	true
+M62.9	Muscle stiffness	Symptom	true	Disorder of muscle, unspecified	false	true
+M79.1	Muscle pain	Symptom	true	Myalgia	true	true
+M79.1	myalgia	Symptom	true	Myalgia	true	true
+M79.2	Nerve pain	Symptom	true	Neuralgia and neuritis, unspecified	false	true
+M79.6	limb pain	Symptom	true	Pain in limb, hand, foot, fingers and toes	false	true
+M79.641	Finger pain	Symptom	true	Pain in right hand	false	true
+M79.671	Toe pain	Symptom	true	Pain in right foot	false	true
+M79.671b	Toe pain	Symptom			false	false
+M79.672	Heel pain	Symptom	true	Pain in left foot	false	true
+N23	renal colic	Symptom	true	Unspecified renal colic	false	true
+N39.43	Post-void dribbling 	Symptom	true	Post-void dribbling	false	false
+N50.9	Scrotal pain	Symptom	true	Disorder of male genital organs, unspecified	true	true
+N50.9	Testicular pain	Symptom	true	Disorder of male genital organs, unspecified	true	true
+N52.9	Erectile dysfunction	Symptom	true	Male erectile dysfunction, unspecified	false	true
+N53.11	Premature ejaculation	Symptom	true	Retarded ejaculation	false	true
+N63	Lump or mass in breast	Symptom	true	Unspecified lump in breast	false	false
+N64.3	Galactorrhea	Symptom	true	Galactorrhea not associated with childbirth	false	false
+N64.4	Mastodynia	Symptom	true	Mastodynia	true	true
+N64.4	breast pain	Symptom	true	Mastodynia	true	true
+N76.0	Vaginal discharge	Symptom	true	Acute vaginitis	false	true
+N92.4	Perimenopausal menorrhagia 	Symptom	true	Excessive bleeding in the premenopausal period	false	false
+N93.9	Vaginal bleeding	Symptom	true	Abnormal uterine and vaginal bleeding, unspecified	false	true
+N94.0	Mittelschmerz	Symptom	true	Mittelschmerz	false	false
+N94.1	Dyspareunia	Symptom	true	Dyspareunia	false	false
+N94.81	vulvodynia	Symptom	true	Vulvodynia	false	true
+N94.810	vulvar vestibulitis	Symptom	true	Vulvar vestibulitis	false	true
+N94.819	Vulvar pain	Symptom	true	Vulvodynia, unspecified	false	true
+N95.0	Postmenopausal bleeding	Symptom	true	Postmenopausal bleeding	false	false
+N95.4-6	Dysmenorrhea	Symptom			false	false
+O00-O99	Pregnancy-related symptoms	Symptom			false	false
+R79.89	Abnormal finding on examination of blood, without diagnosis	Examination finding	true	Other specified abnormal findings of blood chemistry	false	true
+R80.9	Isolated proteinuria	Examination finding	true	Proteinuria, unspecified	false	true
+R82.3	Dark urine	Symptom	true	Hemoglobinuria	false	true
+R82.9	Isolated hematuria	Examination finding	true	Other and unspecified abnormal findings in urine	false	true
+T82.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to cardiac and vascular prosthetic devices, implants and grafts	false	true
+T83.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to genitourinary prosthetic devices, implants and grafts	false	true
+T84.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to internal orthopedic prosthetic devices, implants and grafts	false	true
+T85.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to internal prosthetic devices, implants and grafts, not elsewhere classified	false	true
+V00-V99	Vehicle accident	Symptom	true	Transport accidents	false	false
+X85-Y09	Violence-related injury	Symptom			false	false
+Y00-Y09	Youth violence	Symptom			false	false

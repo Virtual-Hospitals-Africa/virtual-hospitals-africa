@@ -1,0 +1,170 @@
+code_rangejonathan_dr_skhu_symptom_name	jonathan_dr_skhu_category	exists_with_that_code	actual_name_of_code	duplicate
+B00.2	Painful blisters	Symptom	true	Herpesviral gingivostomatitis and pharyngotonsillitis	false
+D69.6	Abnormal bleeding	Symptom	true	Thrombocytopenia, unspecified	false
+D73.1	Enlarged spleen	Examination Finding	true	Hypersplenism	false
+E86.0	Dehydration	Symptom	true	Dehydration	false
+F20-F29	Psychosis	Symptom	true	Schizophrenia, schizotypal, delusional, and other non-mood psychotic disorders	false
+G43	migraines	Symptom	true	Migraine	false
+G47.9	Sleep disturbances	Symptom	true	Sleep disorder, unspecified	false
+G50.1	atypical face pain	Symptom	true	Atypical facial pain	false
+G80-G83	Paralysis	Examination finding	true	Cerebral palsy and other paralytic syndromes	false
+G82.5	Quadriplegia	Examination finding	true	Quadriplegia	false
+H00.0	Eye swelling	Symptom	true	Hordeolum (externum) (internum) of eyelid	false
+H02.4	Eye drooping	Symptom	true	Ptosis of eyelid	false
+H04.123	Eye dryness	Symptom	true	Dry eye syndrome of bilateral lacrimal glands	true
+H04.123	Eye tearing	Symptom	true	Dry eye syndrome of bilateral lacrimal glands	true
+H04.123	Tearing eyes	Symptom	true	Dry eye syndrome of bilateral lacrimal glands	true
+H10.13	Eye itching	Symptom	true	Acute atopic conjunctivitis, bilateral	false
+H10.89	Eye discharge	Symptom	true	Other conjunctivitis	false
+H10.9	Eye redness	Symptom	true	Unspecified conjunctivitis	true
+H10.9	Pink eye	Symptom	true	Unspecified conjunctivitis	true
+H10.9	Redness	Symptom	true	Unspecified conjunctivitis	true
+H33.2	Retinal tear	Examination finding	true	Serous retinal detachment	false
+H35.5	Retinal hemorrhage	Examination finding	true	Hereditary retinal dystrophy	false
+H43.9	Eye floaters	Symptom	true	Unspecified disorder of vitreous body	false
+H50.9	Strabismus	Examination finding	true	Unspecified strabismus	false
+H53.1	Photophobia	Examination finding	true	Subjective visual disturbances	false
+H53.12	Eye sensitivity to light	Symptom	true	Transient visual loss	false
+H53.8	Blurred vision	Symptom	true	Other visual disturbances	false
+H53.9	Vision problems	Symptom	true	Unspecified visual disturbance	true
+H53.9	Visual disturbances	Symptom	true	Unspecified visual disturbance	true
+H54.4	Reduced visual acuity	Examination finding	true	Blindness, one eye	false
+H57.1	eye pain	Symptom	true	Ocular pain	false
+H59.0	Eye twitching	Symptom	true	Disorders of the eye following cataract surgery	false
+H72.9	Ruptured eardrum	Examination finding	true	Unspecified perforation of tympanic membrane	false
+H81.9	Vertigo	Symptom	true	Unspecified disorder of vestibular function	false
+H90.9	Hearing loss	Symptom	false	undefined	false
+H92.0	Ear congestion	Symptom	true	Otalgia	true
+H92.0	Ear pain	Symptom	true	Otalgia	true
+H92.13	Ear itching	Symptom	true	Otorrhea, bilateral	false
+H92.3	Ear bleeding	Symptom	false	undefined	false
+H92.8	Ear discharge	Symptom	false	undefined	false
+H93.1	Ringing in the ears	Symptom	true	Tinnitus	true
+H93.1	Tinnitus	Symptom	true	Tinnitus	true
+H93.19	Ear fullness or pressure	Symptom	true	Tinnitus, unspecified ear	false
+I10	High blood pressure	Vital Sign	true	Essential (primary) hypertension	false
+I47.2	Ventricular tachycardia	Examination finding	true	Ventricular tachycardia	false
+I49.01	Ventricular fibrillation	Examination finding	true	Ventricular fibrillation	false
+I49.9	Arrhythmia	Examination sign	true	Cardiac arrhythmia, unspecified	false
+I73.0	Raynaud's phenomenon	Examination finding	true	Raynaud's syndrome	false
+I73.9	Claudication	Symptom	true	Peripheral vascular disease, unspecified	true
+I73.9	Leg pain with activity	Symptom	true	Peripheral vascular disease, unspecified	true
+I83.9	Varicose veins	Symptom	true	Asymptomatic varicose veins of lower extremities	false
+I83.90	Varicose veins	Examination finding	true	Asymptomatic varicose veins of unspecified lower extremity	false
+I95.9	Low blood pressure	Vital Sign	true	Hypotension, unspecified	false
+J02.9	Sore throat	Symptom	true	Acute pharyngitis, unspecified	false
+K03.9	Tooth discoloration	Symptom	true	Disease of hard tissues of teeth, unspecified	false
+K05.6	Gum swelling	Symptom	true	Periodontal disease, unspecified	false
+K08.8	Tooth sensitivity	Symptom	true	Other specified disorders of teeth and supporting structures	true
+K08.8	Toothache	Symptom	true	Other specified disorders of teeth and supporting structures	true
+K08.8	tooth pain	Symptom	true	Other specified disorders of teeth and supporting structures	true
+K12.0	Mouth ulcers	Symptom	true	Recurrent oral aphthae	true
+K12.0	Oral ulcers	Symptom	true	Recurrent oral aphthae	true
+K14.6	tongue pain	Symptom	true	Glossodynia	false
+K52.9	Diarrhea	Symptom	true	Noninfective gastroenteritis and colitis, unspecified	false
+K59	Constipation	Symptom	true	Other functional intestinal disorders	false
+K59.0	Constipation	Symptom	true	Constipation	false
+K62.5	Rectal bleeding	Symptom	true	Hemorrhage of anus and rectum	false
+K92.0	Hematemesis	Symptom	true	Hematemesis	false
+K92.1	Black, tarry stool	Symptom	true	Melena	true
+K92.1	Blood in stool	Symptom	true	Melena	true
+K92.1	Melena	Symptom	true	Melena	true
+L01.9	Skin blisters	Symptom	false	undefined	false
+L04.9	Swollen lymph nodes	Symptom	true	Acute lymphadenitis, unspecified	false
+L29	Pruritus	Examination finding	true	Pruritus	false
+L29.9	Itching	Symptom	true	Pruritus, unspecified	false
+L30.9	Skin rash	Symptom	true	Dermatitis, unspecified	false
+L50.9	Skin swelling	Symptom	true	Urticaria, unspecified	false
+L53.9	Skin redness	Symptom	true	Erythematous condition, unspecified	false
+L60.2	Nail brittleness	Examination Finding	true	Onychogryphosis	false
+L60.3	Nail discoloration	Examination Finding	true	Nail dystrophy	false
+L60.8	Nail pitting	Examination Finding	true	Other nail disorders	true
+L60.8	Nail ridges	Examination Finding	true	Other nail disorders	true
+L60.8	Nail splitting	Examination Finding	true	Other nail disorders	true
+L60.9	Nail abnormalities	Symptom	true	Nail disorder, unspecified	false
+L63.9	Hair loss	Symptom	true	Alopecia areata, unspecified	false
+L68.0	Abnormal hair growth	Symptom	true	Hirsutism	false
+L81.4	Skin discoloration	Symptom	true	Other melanin hyperpigmentation	false
+L85.1	Skin peeling	Symptom	true	Acquired keratosis [keratoderma] palmaris et plantaris	false
+L85.3	Skin dryness	Symptom	true	Xerosis cutis	false
+L85.9	Skin scaling	Symptom	true	Epidermal thickening, unspecified	false
+L92.9	Skin nodules	Symptom	true	Granulomatous disorder of the skin and subcutaneous tissue, unspecified	false
+L94.9	Skin thickening	Symptom	true	Localized connot elsewhere classifiedtive tissue disorder, unspecified	false
+L98.4	Skin ulcers	Symptom	true	Non-pressure chronic ulcer of skin, not elsewhere classified	true
+L98.4	Slow-healing sores or cuts	Symptom	true	Non-pressure chronic ulcer of skin, not elsewhere classified	true
+L98.9	Skin lesions	Symptom	true	Disorder of the skin and subcutaneous tissue, unspecified	false
+M25.5	Joint deformity	Symptom	true	Pain in joint	true
+M25.5	Joint pain	Symptom	true	Pain in joint	true
+M25.5	Joint redness	Symptom	true	Pain in joint	true
+M25.5	Joint swelling	Symptom	true	Pain in joint	true
+M25.5	Joint warmth	Symptom	true	Pain in joint	true
+M25.51	Shoulder pain	Symptom	true	Pain in shoulder	false
+M25.52	Elbow pain	Symptom	true	Pain in elbow	false
+M25.53	Wrist pain	Symptom	true	Pain in wrist	true
+M25.53	Wrist pain	Symptom	true	Pain in wrist	true
+M25.54	Hand pain	Symptom	true	Pain in joints of hand	false
+M25.551	Hip pain	Symptom	true	Pain in right hip	false
+M25.561	Knee pain	Symptom	true	Pain in right knee	false
+M25.57	Foot pain	Symptom	true	Pain in ankle and joints of foot	false
+M25.571	Ankle pain	Symptom	true	Pain in right ankle and joints of right foot	false
+M25.6	Joint stiffness	Symptom	true	Stiffness of joint, not elsewhere classified	false
+M25.9	Joint instability	Symptom	true	Joint disorder, unspecified	false
+M41.9	Spinal deformity	Symptom	true	Scoliosis, unspecified	false
+M43.6	Spinal stiffness	Symptom	true	Torticollis	true
+M43.6	Stiff neck	Symptom	true	Torticollis	true
+M54	spine pain	Symptom	true	Dorsalgia	false
+M54.2	Neck pain	Symptom	true	Cervicalgia	false
+M54.5	Back pain	Symptom	true	Low back pain	true
+M54.5	Lower back pain	Symptom	true	Low back pain	true
+M54.5	lumbar region pain	Symptom	true	Low back pain	true
+M54.6	Upper back pain	Symptom	true	Pain in thoracic spine	false
+M54.8	Spinal numbness	Symptom	true	Other dorsalgia	true
+M54.8	Spinal tingling	Symptom	true	Other dorsalgia	true
+M54.8	Spinal weakness	Symptom	true	Other dorsalgia	true
+M54.9	Spinal swelling	Symptom	true	Dorsalgia, unspecified	true
+M54.9	Spinal tenderness	Symptom	true	Dorsalgia, unspecified	true
+M54.9	back pain	Symptom	true	Dorsalgia, unspecified	true
+M62.8	Muscle cramps	Symptom	true	Other specified disorders of muscle	false
+M62.81	Muscle weakness	Symptom	true	Muscle weakness (generalized)	false
+M62.83	Muscle spasms	Symptom	true	Muscle spasm	false
+M62.9	Muscle stiffness	Symptom	true	Disorder of muscle, unspecified	false
+M79.1	Muscle pain	Symptom	true	Myalgia	true
+M79.1	myalgia	Symptom	true	Myalgia	true
+M79.2	Nerve pain	Symptom	true	Neuralgia and neuritis, unspecified	false
+M79.6	limb pain	Symptom	true	Pain in limb, hand, foot, fingers and toes	false
+M79.641	Finger pain	Symptom	true	Pain in right hand	false
+M79.671	Toe pain	Symptom	true	Pain in right foot	false
+M79.671b	Toe pain	Symptom	false	undefined	false
+M79.672	Heel pain	Symptom	true	Pain in left foot	false
+N23	renal colic	Symptom	true	Unspecified renal colic	false
+N39.43	Post-void dribbling 	Symptom	true	Post-void dribbling	false
+N50.9	Scrotal pain	Symptom	true	Disorder of male genital organs, unspecified	true
+N50.9	Testicular pain	Symptom	true	Disorder of male genital organs, unspecified	true
+N52.9	Erectile dysfunction	Symptom	true	Male erectile dysfunction, unspecified	false
+N53.11	Premature ejaculation	Symptom	true	Retarded ejaculation	false
+N63	Lump or mass in breast	Symptom	true	Unspecified lump in breast	false
+N64.3	Galactorrhea	Symptom	true	Galactorrhea not associated with childbirth	false
+N64.4	Mastodynia	Symptom	true	Mastodynia	true
+N64.4	breast pain	Symptom	true	Mastodynia	true
+N76.0	Vaginal discharge	Symptom	true	Acute vaginitis	false
+N92.4	Perimenopausal menorrhagia 	Symptom	true	Excessive bleeding in the premenopausal period	false
+N93.9	Vaginal bleeding	Symptom	true	Abnormal uterine and vaginal bleeding, unspecified	false
+N94.0	Mittelschmerz	Symptom	true	Mittelschmerz	false
+N94.1	Dyspareunia	Symptom	true	Dyspareunia	false
+N94.81	vulvodynia	Symptom	true	Vulvodynia	false
+N94.810	vulvar vestibulitis	Symptom	true	Vulvar vestibulitis	false
+N94.819	Vulvar pain	Symptom	true	Vulvodynia, unspecified	false
+N95.0	Postmenopausal bleeding	Symptom	true	Postmenopausal bleeding	false
+N95.4-6	Dysmenorrhea	Symptom	false	undefined	false
+O00-O99	Pregnancy-related symptoms	Symptom	false	undefined	false
+R79.89	Abnormal finding on examination of blood, without diagnosis	Examination finding	true	Other specified abnormal findings of blood chemistry	false
+R80.9	Isolated proteinuria	Examination finding	true	Proteinuria, unspecified	false
+R82.3	Dark urine	Symptom	true	Hemoglobinuria	false
+R82.9	Isolated hematuria	Examination finding	true	Other and unspecified abnormal findings in urine	false
+T82.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to cardiac and vascular prosthetic devices, implants and grafts	false
+T83.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to genitourinary prosthetic devices, implants and grafts	false
+T84.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to internal orthopedic prosthetic devices, implants and grafts	false
+T85.84	pain from prosthetic devices, implants, and grafts	Symptom	true	Pain due to internal prosthetic devices, implants and grafts, not elsewhere classified	false
+V00-V99	Vehicle accident	Symptom	true	Transport accidents	false
+X85-Y09	Violence-related injury	Symptom	false	undefined	false
+Y00-Y09	Youth violence	Symptom	false	undefined	false
