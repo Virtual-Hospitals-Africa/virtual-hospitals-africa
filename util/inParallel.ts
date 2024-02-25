@@ -48,3 +48,16 @@ export default async function inParallel<T>(
   }
   return allDone
 }
+
+// Does not respect the order of the input iterable
+export async function collectInParallel<T, U>(
+  generator: Iterable<T> | AsyncIterable<T>,
+  fn: (item: T) => Promise<U>,
+  { concurrency } = { concurrency: 10 },
+): Promise<U[]> {
+  const results: U[] = []
+  await inParallel(generator, async (item) => {
+    results.push(await fn(item))
+  }, { concurrency })
+  return results
+}

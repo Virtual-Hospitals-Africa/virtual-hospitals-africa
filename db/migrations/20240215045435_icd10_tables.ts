@@ -29,6 +29,7 @@ export async function up(db: Kysely<any>) {
         ),
     )
     .addColumn('description', 'varchar(255)', (col) => col.notNull())
+    .addColumn('description_vector', sql`tsvector`, (col) => col.notNull())
     .addColumn(
       'parent_code',
       'varchar(8)',
@@ -46,6 +47,7 @@ export async function up(db: Kysely<any>) {
         col.notNull().references('icd10_diagnoses.code').onDelete('cascade'),
     )
     .addColumn('note', 'text', (col) => col.notNull())
+    .addColumn('note_vector', sql`tsvector`, (col) => col.notNull())
     .addColumn('sourced_from_index', 'boolean', (col) => col.notNull())
     .execute()
 
@@ -134,28 +136,49 @@ export async function up(db: Kysely<any>) {
     )
     .execute()
 
+
   await sql`
-    ALTER TABLE icd10_diagnoses
-    ADD vector tsvector NOT NULL
-    GENERATED ALWAYS AS
-      to_tsvector(description)
-    STORED
+    CREATE FUNCTION icd10_diagnoses_description_tsvector_trigger() RETURNS trigger AS $$
+      begin
+        new.description_vector :=
+          to_tsvector('english', new.description);
+        return new;
+      end
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER icd10_diagnoses_description_tsvector_update
+      BEFORE INSERT OR UPDATE
+      ON icd10_diagnoses
+      FOR EACH ROW EXECUTE
+      PROCEDURE icd10_diagnoses_description_tsvector_trigger();
   `.execute(db)
 
   await sql`
-    ALTER TABLE icd10_diagnoses_includes
-    ADD vector tsvector NOT NULL
-    GENERATED ALWAYS AS
-      to_tsvector(note)
-    STORED
+    CREATE FUNCTION icd10_diagnoses_includes_note_tsvector_trigger() RETURNS trigger AS $$
+      begin
+        new.note_vector :=
+          to_tsvector('english', new.note);
+        return new;
+      end
+    $$ LANGUAGE plpgsql;
+
+    CREATE TRIGGER icd10_diagnoses_includes_note_tsvector_update
+      BEFORE INSERT OR UPDATE
+      ON icd10_diagnoses_includes
+      FOR EACH ROW EXECUTE 
+      PROCEDURE icd10_diagnoses_includes_note_tsvector_trigger();
   `.execute(db)
 
   await sql`
-    CREATE INDEX ts_icd10_diagnoses_description ON icd10_diagnoses USING GIN ("description");
+    CREATE INDEX ts_icd10_diagnoses_description
+    ON icd10_diagnoses
+    USING GIN ("description_vector");
   `.execute(db)
 
   await sql`
-    CREATE INDEX ts_icd10_diagnoses_includes_note ON icd10_diagnoses_includes USING GIN ("note");
+    CREATE INDEX ts_icd10_diagnoses_includes_note
+    ON icd10_diagnoses_includes
+    USING GIN ("note_vector");
   `.execute(db)
 }
 
