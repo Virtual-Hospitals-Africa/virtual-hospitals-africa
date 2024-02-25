@@ -1,6 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
 import db from './db.ts'
+import { runCommand } from '../util/command.ts'
+import * as inParallel from '../util/inParallel.ts'
 
 const SEED_DIRECTORY = './db/seeds'
 
@@ -28,52 +30,25 @@ export function createSeedMigration(
       }
     },
     async load() {
-      for (const table_name of table_names) {
-        const row = await db
-          .selectFrom(table_name as any)
-          .selectAll()
-          .executeTakeFirst()
-        if (row) {
-          throw new Error(`Table ${table_name} is not empty`)
-        }
-      }
+      const load_tables = await inParallel.filter(
+        table_names,
+        async (table_name) => {
+          const row = await db
+            .selectFrom(table_name as any)
+            .selectAll()
+            .executeTakeFirst()
+          return !row
+        },
+      )
 
-      let result: Deno.CommandOutput
-      if (Deno.build.os === 'windows') {
-        result = await new Deno.Command(
-          'C:\\Program Files\\Git\\bin\\sh.exe',
-          {
-            args: ['./db/tsv_load_seeds.sh'].concat(table_names),
-          },
-        ).output()
-      } else {
-        result = await new Deno.Command('./db/tsv_load_seeds.sh', {
-          args: table_names,
-        }).output()
-      }
-      if (result.code) {
-        console.error(new TextDecoder().decode(result.stderr))
-        return Deno.exit(result.code)
-      }
+      await runCommand('./db/tsv_load_seeds.sh', {
+        args: load_tables,
+      })
     },
     async dump() {
-      let result: Deno.CommandOutput
-      if (Deno.build.os === 'windows') {
-        result = await new Deno.Command(
-          'C:\\Program Files\\Git\\bin\\sh.exe',
-          {
-            args: ['./db/tsv_dump_seeds.sh'].concat(table_names),
-          },
-        ).output()
-      } else {
-        result = await new Deno.Command('./db/tsv_dump_seeds.sh', {
-          args: table_names,
-        }).output()
-      }
-      if (result.code) {
-        console.error(new TextDecoder().decode(result.stderr))
-        return Deno.exit(result.code)
-      }
+      await runCommand('./db/tsv_dump_seeds.sh', {
+        args: table_names,
+      })
     },
   }
 }
