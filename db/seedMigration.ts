@@ -4,7 +4,7 @@ import db from './db.ts'
 
 const SEED_DIRECTORY = './db/seeds'
 
-await Deno.mkdir(SEED_DIRECTORY, { recursive: true });
+await Deno.mkdir(SEED_DIRECTORY, { recursive: true })
 
 const seeds = Array.from(Deno.readDirSync(SEED_DIRECTORY))
 
@@ -28,7 +28,7 @@ export function createSeedMigration(
       }
     },
     async load() {
-      if (Deno.build.os === 'windows') return;
+      if (Deno.build.os === 'windows') return
       for (const table_name of table_names) {
         const row = await db.selectFrom(table_name as any).selectAll()
           .executeTakeFirst()
@@ -45,7 +45,7 @@ export function createSeedMigration(
       }
     },
     async dump() {
-      if (Deno.build.os === 'windows') return;
+      if (Deno.build.os === 'windows') return
       const result = await new Deno.Command('./db/tsv_dump_seeds.sh', {
         args: table_names,
       }).output()
