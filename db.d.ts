@@ -349,6 +349,7 @@ export interface Icd10Diagnoses {
   category: string
   code: string
   description: string
+  description_vector: string
   general: Generated<boolean>
   parent_code: string | null
 }
@@ -386,6 +387,7 @@ export interface Icd10DiagnosesIncludes {
   code: string
   id: Generated<number>
   note: string
+  note_vector: string
   sourced_from_index: boolean
 }
 

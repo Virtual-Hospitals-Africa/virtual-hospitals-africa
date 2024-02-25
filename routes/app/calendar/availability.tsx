@@ -139,6 +139,18 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       Saturday: [],
     }
 
+    // If initially directed here by _middleware, but you already have availability in google calendar, mark that the availability is set
+    if (events.items.length && !!ctx.url.searchParams.get('initial')) {
+      await markAvailabilitySet(
+        ctx.state.trx,
+        {
+          health_worker_id: healthWorker.id,
+          facility_id,
+        },
+      )
+      return redirect('/app')
+    }
+
     events.items.forEach((item) => {
       assertAllHarare([item.start.dateTime, item.end.dateTime])
       assert(Array.isArray(item.recurrence))

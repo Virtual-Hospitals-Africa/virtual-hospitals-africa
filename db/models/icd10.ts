@@ -65,7 +65,7 @@ export function searchBaseQuery(
       .select('code')
       .where(
         sql<boolean>`(
-          description % ${term}
+          description_vector @@ plainto_tsquery(${term})
         )`,
       )
       .unionAll(
@@ -73,7 +73,7 @@ export function searchBaseQuery(
           .select('code')
           .where(
             sql<boolean>`(
-              note % ${term}
+              note_vector @@ plainto_tsquery(${term})
             )`,
           ),
       )).with('matches', (qb) => {
@@ -318,7 +318,7 @@ export function searchTree(
     .selectAll('icd10_diagnoses_tree')
     .select(
       sql<number>`
-        similarity(description, ${term})
+        ts_rank(description_vector, plainto_tsquery(${term}))
       `.as('similarity'),
     ).select((eb) => [
       jsonArrayFrom(
@@ -330,7 +330,7 @@ export function searchTree(
           )
           .select('icd10_diagnoses_includes.note')
           .select(sql<number>`
-            similarity(note, ${term})
+            ts_rank(note_vector, plainto_tsquery(${term}))
           `.as('similarity')),
       ).as('includes'),
     ])
@@ -370,7 +370,7 @@ export function searchFlat(
     .selectAll('icd10_diagnoses')
     .select(
       sql<number>`
-        similarity(icd10_diagnoses.description, ${term})
+        ts_rank(icd10_diagnoses.description_vector, plainto_tsquery(${term}))
       `.as('similarity'),
     )
     .select((eb) => [
@@ -379,7 +379,7 @@ export function searchFlat(
           .whereRef('icd10_diagnoses_includes.code', '=', 'matches.code')
           .select('icd10_diagnoses_includes.note')
           .select(sql<number>`
-            similarity(note, ${term})
+            ts_rank(note_vector, plainto_tsquery(${term}))
           `.as('similarity')),
       ).as('includes'),
     ]).as('with_includes')
@@ -464,7 +464,7 @@ export function byCodeWithSimilarity(trx: TrxOrDb, code: string, term: string) {
     .selectAll()
     .select(
       sql<number>`
-        similarity(description, ${term})
+        ts_rank(description_vector, plainto_tsquery(${term}))
       `.as('similarity'),
     ).select((eb) => [
       jsonArrayFrom(
@@ -476,7 +476,7 @@ export function byCodeWithSimilarity(trx: TrxOrDb, code: string, term: string) {
           )
           .select('icd10_diagnoses_includes.note')
           .select(sql<number>`
-            similarity(note, ${term})
+            ts_rank(note_vector, plainto_tsquery(${term}))
           `.as('similarity')),
       ).as('includes'),
     ]).as('with_includes')

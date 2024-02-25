@@ -136,9 +136,9 @@ export async function up(db: Kysely<any>) {
     )
     .execute()
 
-
   await sql`
-    CREATE FUNCTION icd10_diagnoses_description_tsvector_trigger() RETURNS trigger AS $$
+    CREATE OR REPLACE FUNCTION icd10_diagnoses_description_tsvector_trigger()
+    RETURNS trigger AS $$
       begin
         new.description_vector :=
           to_tsvector('english', new.description);
@@ -154,7 +154,8 @@ export async function up(db: Kysely<any>) {
   `.execute(db)
 
   await sql`
-    CREATE FUNCTION icd10_diagnoses_includes_note_tsvector_trigger() RETURNS trigger AS $$
+    CREATE OR REPLACE FUNCTION icd10_diagnoses_includes_note_tsvector_trigger()
+    RETURNS trigger AS $$
       begin
         new.note_vector :=
           to_tsvector('english', new.note);
@@ -191,4 +192,9 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('icd10_diagnoses').execute()
   await db.schema.dropTable('icd10_categories').execute()
   await db.schema.dropTable('icd10_sections').execute()
+  await sql`DROP FUNCTION icd10_diagnoses_description_tsvector_trigger`.execute(
+    db,
+  )
+  await sql`DROP FUNCTION icd10_diagnoses_includes_note_tsvector_trigger`
+    .execute(db)
 }
