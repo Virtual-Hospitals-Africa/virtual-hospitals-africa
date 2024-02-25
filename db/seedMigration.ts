@@ -28,27 +28,48 @@ export function createSeedMigration(
       }
     },
     async load() {
-      if (Deno.build.os === 'windows') return
       for (const table_name of table_names) {
-        const row = await db.selectFrom(table_name as any).selectAll()
+        const row = await db
+          .selectFrom(table_name as any)
+          .selectAll()
           .executeTakeFirst()
         if (row) {
           throw new Error(`Table ${table_name} is not empty`)
         }
       }
-      const result = await new Deno.Command('./db/tsv_load_seeds.sh', {
-        args: table_names,
-      }).output()
+
+      let result: Deno.CommandOutput
+      if (Deno.build.os === 'windows') {
+        result = await new Deno.Command(
+          'C:\\Program Files\\Git\\bin\\sh.exe',
+          {
+            args: ['./db/tsv_load_seeds.sh'].concat(table_names),
+          },
+        ).output()
+      } else {
+        result = await new Deno.Command('./db/tsv_load_seeds.sh', {
+          args: table_names,
+        }).output()
+      }
       if (result.code) {
         console.error(new TextDecoder().decode(result.stderr))
         return Deno.exit(result.code)
       }
     },
     async dump() {
-      if (Deno.build.os === 'windows') return
-      const result = await new Deno.Command('./db/tsv_dump_seeds.sh', {
-        args: table_names,
-      }).output()
+      let result: Deno.CommandOutput
+      if (Deno.build.os === 'windows') {
+        result = await new Deno.Command(
+          'C:\\Program Files\\Git\\bin\\sh.exe',
+          {
+            args: ['./db/tsv_dump_seeds.sh'].concat(table_names),
+          },
+        ).output()
+      } else {
+        result = await new Deno.Command('./db/tsv_dump_seeds.sh', {
+          args: table_names,
+        }).output()
+      }
       if (result.code) {
         console.error(new TextDecoder().decode(result.stderr))
         return Deno.exit(result.code)
