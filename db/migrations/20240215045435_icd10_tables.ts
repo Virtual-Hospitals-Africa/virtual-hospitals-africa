@@ -135,11 +135,27 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await sql`
-    CREATE INDEX trgm_icd10_diagnoses_description ON icd10_diagnoses USING GIN ("description" gin_trgm_ops);
+    ALTER TABLE icd10_diagnoses
+    ADD vector tsvector NOT NULL
+    GENERATED ALWAYS AS
+      to_tsvector(description)
+    STORED
   `.execute(db)
 
   await sql`
-    CREATE INDEX trgm_icd10_diagnoses_includes_note ON icd10_diagnoses_includes USING GIN ("note" gin_trgm_ops);
+    ALTER TABLE icd10_diagnoses_includes
+    ADD vector tsvector NOT NULL
+    GENERATED ALWAYS AS
+      to_tsvector(note)
+    STORED
+  `.execute(db)
+
+  await sql`
+    CREATE INDEX ts_icd10_diagnoses_description ON icd10_diagnoses USING GIN ("description");
+  `.execute(db)
+
+  await sql`
+    CREATE INDEX ts_icd10_diagnoses_includes_note ON icd10_diagnoses_includes USING GIN ("note");
   `.execute(db)
 }
 

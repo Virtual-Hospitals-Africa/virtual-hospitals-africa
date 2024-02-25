@@ -25,7 +25,7 @@ export default createSeedMigration([
   'icd10_diagnoses_excludes_codes',
 ], async (db: Kysely<any>) => {
   await loadTabularData(db)
-  await loadIndexData(db)
+  // await loadIndexData(db)
 })
 
 type Exclude = {
