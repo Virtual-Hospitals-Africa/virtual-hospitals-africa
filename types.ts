@@ -993,6 +993,13 @@ export type FacilityDevice = {
   room_id: number
 }
 
+export type FacilityDeviceTable = {
+  serial: number
+  name: string
+  manufacturer: string
+  test_availability: DeviceTestsAvailablity[]
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'
@@ -1193,6 +1200,17 @@ export type AvailabilityJSON = {
 }
 
 export type DayOfWeek = keyof AvailabilityJSON
+
+export type Device = {
+  id: string
+  name: string
+  manufacturer: string
+  test_availability: DeviceTestsAvailablity[]
+}
+
+export type DeviceTestsAvailablity = {
+  name: string
+}
 
 export type WhatsAppMessageOption = {
   id: string
