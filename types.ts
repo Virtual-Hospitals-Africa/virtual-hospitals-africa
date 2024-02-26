@@ -987,6 +987,12 @@ export type FacilityEmployeeInvitee = {
   }
 }
 
+export type FacilityDevice = {
+  device_serial: number
+  device_id: number
+  room_id: number
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'

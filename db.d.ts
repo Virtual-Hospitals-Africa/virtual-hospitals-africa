@@ -223,6 +223,13 @@ export interface Countries {
   updated_at: Generated<Timestamp>
 }
 
+export interface Device {
+  id: Generated<number>
+  name: string
+  manufacturer: string
+  test_availability: Json | null
+}
+
 export interface Districts {
   created_at: Generated<Timestamp>
   id: Generated<number>
@@ -261,6 +268,22 @@ export interface Facilities {
   name: string
   phone: string | null
   updated_at: Generated<Timestamp>
+}
+
+export interface FacilityRoom {
+  id: Generated<number>
+  facility_id: number
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+  name: string
+}
+
+export interface FacilityDevice {
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+  device_serial: Generated<number>
+  device_id: number
+  room_id: number
 }
 
 export interface GeneralAssessmentCategories {
@@ -427,6 +450,10 @@ export interface ManufacturedMedications {
 export interface Measurements {
   name: string
   units: string
+}
+
+export interface MedicalTest {
+  name: string
 }
 
 export interface Media {
@@ -788,11 +815,14 @@ export interface DB {
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
   countries: Countries
+  devices: Device
   districts: Districts
   drugs: Drugs
   employment: Employment
   encounter: Encounter
   facilities: Facilities
+  facility_rooms: FacilityRoom
+  facility_devices: FacilityDevice
   general_assessment_categories: GeneralAssessmentCategories
   general_assessments: GeneralAssessments
   geography_columns: GeographyColumns
@@ -814,6 +844,7 @@ export interface DB {
   mailing_list: MailingList
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
+  medical_tests: MedicalTest
   media: Media
   medications: Medications
   nurse_registration_details: NurseRegistrationDetails

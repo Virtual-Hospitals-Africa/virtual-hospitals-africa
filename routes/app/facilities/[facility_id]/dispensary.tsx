@@ -7,6 +7,7 @@ import {
 import * as facilities from '../../../../db/models/facilities.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
+import FacilityDeviceForm from '../../../../islands/dispensary/inventory/Device.tsx'
 
 type DispensaryPageProps = {
     facility: HasId<Facility>
@@ -36,7 +37,7 @@ export default function EmployeeTable(
       variant='home page'
     >
       <Container size='lg'>
-       <a href={"/ss"}>Inventory</a>
+       <FacilityDeviceForm />
       </Container>
     </Layout>
   )

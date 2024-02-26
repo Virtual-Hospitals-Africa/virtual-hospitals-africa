@@ -7,6 +7,12 @@ import parseJSON from '../../util/parseJSON.ts'
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('facility_rooms')
+    .addColumn('created_at', 'timestamptz', (col) =>
+      col.defaultTo(sql`now()`).notNull()
+    )
+    .addColumn('updated_at', 'timestamptz', (col) =>
+      col.defaultTo(sql`now()`).notNull()
+    )
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('facility_id', 'integer', (col) =>
@@ -46,6 +52,7 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await addUpdatedAtTrigger(db, 'facility_rooms')
+  await addUpdatedAtTrigger(db, 'facility_devices')
   await seedDataFromJSON(db)
 }
 
@@ -63,9 +70,15 @@ async function seedDataFromJSON(db: Kysely<any>) {
   const devices: {
     name: string
     manufacturer: string
-    tests: { name: string }
+    test_availability: { name: string }
   }[] = await parseJSON('./db/resources/devices.json')
 
-  await db.insertInto('devices').values(uniq(devices)).execute()
+  const devicesModel = devices.map(c=> ({
+    name : c.name,
+    manufacturer: c.manufacturer,
+    test_availability : JSON.stringify(c.test_availability)
+  }))
+
+  await db.insertInto('devices').values(uniq(devicesModel)).execute()
   await db.insertInto('medical_tests').values(uniq(tests)).execute()
 }
