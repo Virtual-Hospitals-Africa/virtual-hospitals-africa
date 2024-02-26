@@ -1,7 +1,18 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { TrxOrDb } from '../../types.ts'
+import {
+  RenderedICD10DiagnosisTreeWithOptionalIncludes,
+  TrxOrDb,
+} from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+
+function name(table_name: string) {
+  return sql<
+    string
+  >`${sql.ref(table_name)}.description || ' (' || ${
+    sql.ref(table_name)
+  }.code || ')'`.as('name')
+}
 
 // Yield the tree of sub_diagnoses
 // We need not do this recursively, as we know the maximum depth of the tree
@@ -13,10 +24,7 @@ export function tree(trx: TrxOrDb) {
         .selectAll('icd10_diagnoses_tree')
         .select([
           'icd10_diagnoses_tree.code as id',
-          sql<
-            string
-          >`icd10_diagnoses_tree.description || ' (' || icd10_diagnoses_tree.code || ')'`
-            .as('name'),
+          name('icd10_diagnoses_tree'),
         ])
         .select((eb_parent0) => [
           jsonArrayFrom(
@@ -24,24 +32,28 @@ export function tree(trx: TrxOrDb) {
               .selectFrom('icd10_diagnoses as sd0')
               .whereRef('sd0.parent_code', '=', 'icd10_diagnoses_tree.code')
               .selectAll('sd0')
+              .select(name('sd0'))
               .select((eb_sd0) => [
                 jsonArrayFrom(
                   eb_sd0
                     .selectFrom('icd10_diagnoses as sd1')
                     .whereRef('sd1.parent_code', '=', 'sd0.code')
                     .selectAll('sd1')
+                    .select(name('sd1'))
                     .select((eb_sd1) => [
                       jsonArrayFrom(
                         eb_sd1
                           .selectFrom('icd10_diagnoses as sd2')
                           .whereRef('sd2.parent_code', '=', 'sd1.code')
                           .selectAll('sd2')
+                          .select(name('sd2'))
                           .select((eb_sd2) => [
                             jsonArrayFrom(
                               eb_sd2
                                 .selectFrom('icd10_diagnoses as sd3')
                                 .whereRef('sd3.parent_code', '=', 'sd2.code')
-                                .selectAll('sd3'),
+                                .selectAll('sd3')
+                                .select(name('sd3')),
                             ).as('sub_diagnoses'),
                           ]),
                       ).as('sub_diagnoses'),
@@ -125,7 +137,7 @@ export function searchTree(
     code_range?: string | string[]
     limit?: number
   },
-) {
+): Promise<RenderedICD10DiagnosisTreeWithOptionalIncludes[]> {
   const is_code = code_regex.test(term)
 
   if (is_code) {
@@ -148,109 +160,6 @@ export function searchTree(
   }
 
   const base = searchBaseQuery(trx, { term, code_range })
-
-  console.log(base.selectFrom('matches').selectAll('matches').compile().sql)
-
-  base.selectFrom('matches').selectAll('matches').execute().then((r) => {
-    console.log('wwwww', r)
-  })
-
-  base.with(
-    'with_ancestors',
-    (qb) =>
-      qb.selectFrom('matches as descendant_matches')
-        .innerJoin(
-          'icd10_diagnoses as descendants',
-          'descendants.code',
-          'descendant_matches.code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors0',
-          'ancestors0.code',
-          'descendants.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors1',
-          'ancestors1.code',
-          'ancestors0.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors2',
-          'ancestors2.code',
-          'ancestors1.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors3',
-          'ancestors3.code',
-          'ancestors2.parent_code',
-        )
-        .select([
-          'descendants.code as code',
-          'ancestors0.code as ancestor0',
-          'ancestors1.code as ancestor1',
-          'ancestors2.code as ancestor2',
-          'ancestors3.code as ancestor3',
-        ]),
-  ).selectFrom('with_ancestors').selectAll('with_ancestors').execute().then(
-    (r) => {
-      console.log('xxxxxx', r)
-    },
-  )
-
-  base.with(
-    'with_ancestors',
-    (qb) =>
-      qb.selectFrom('matches as descendant_matches')
-        .innerJoin(
-          'icd10_diagnoses as descendants',
-          'descendants.code',
-          'descendant_matches.code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors0',
-          'ancestors0.code',
-          'descendants.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors1',
-          'ancestors1.code',
-          'ancestors0.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors2',
-          'ancestors2.code',
-          'ancestors1.parent_code',
-        )
-        .leftJoin(
-          'icd10_diagnoses as ancestors3',
-          'ancestors3.code',
-          'ancestors2.parent_code',
-        )
-        .select([
-          'descendants.code as code',
-          'ancestors0.code as ancestor0',
-          'ancestors1.code as ancestor1',
-          'ancestors2.code as ancestor2',
-          'ancestors3.code as ancestor3',
-        ]),
-  ).with('has_parent_in_matches', (qb) =>
-    qb.selectFrom('with_ancestors')
-      .innerJoin(
-        'matches',
-        (join) =>
-          join.on((eb) =>
-            eb.or([
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor0')),
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor1')),
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor2')),
-              eb('matches.code', '=', eb.ref('with_ancestors.ancestor3')),
-            ])
-          ),
-      )
-      .select('with_ancestors.code')).selectFrom('has_parent_in_matches')
-    .selectAll('has_parent_in_matches').execute().then((r) => {
-      console.log('yyyyyy', r)
-    })
 
   const parents = base.with(
     'with_ancestors',

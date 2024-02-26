@@ -1840,18 +1840,22 @@ export type RenderedICD10DiagnosisTree = {
     code: string
     general: boolean
     description: string
+    name: string
     sub_diagnoses?: {
       code: string
       general: boolean
       description: string
+      name: string
       sub_diagnoses?: {
         code: string
         general: boolean
         description: string
+        name: string
         sub_diagnoses?: {
           code: string
           general: boolean
           description: string
+          name: string
         }[]
       }[]
     }[]
@@ -1861,11 +1865,15 @@ export type RenderedICD10DiagnosisTree = {
 export type RenderedICD10DiagnosisTreeWithIncludes =
   & RenderedICD10DiagnosisTree
   & {
-    includes?: {
+    includes: {
       note: string
-      similarity: number
+      similarity?: number
     }[]
   }
+
+export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
+  & Omit<RenderedICD10DiagnosisTreeWithIncludes, 'includes'>
+  & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
 export interface GeneralAssessment {
   assessment: string
