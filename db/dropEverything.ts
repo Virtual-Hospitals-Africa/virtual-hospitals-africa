@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import db from './db.ts'
 import { TrxOrDb } from '../types.ts'
 import { selectAllTables, selectAllViews } from './meta.ts'
+import { selectAllTypes } from './meta.ts'
 
 export async function dropEverything(trx: TrxOrDb = db) {
   await sql`DROP EXTENSION IF EXISTS pg_trgm CASCADE`.execute(trx)
@@ -17,16 +18,12 @@ export async function dropEverything(trx: TrxOrDb = db) {
     await trx.schema.dropView(view_name).cascade().execute()
   }
 
-  const types = await sql<{ typname: string }>`
-    SELECT typname FROM pg_type
-    WHERE typnamespace = 2200
-    AND typcategory != 'A'
-    ORDER BY oid desc
-  `.execute(trx)
-
+  const types = await selectAllTypes(trx)
   for (const { typname } of types.rows) {
     await trx.schema.dropType(typname).execute()
   }
+
+  // Can skip dropping functions by always using `CREATE OR REPLACE FUNCTION`
 }
 
 if (import.meta.main) {

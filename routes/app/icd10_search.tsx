@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../components/library/Container.tsx'
 import { ICD10SearchSpecific } from '../../islands/icd10/SearchSpecific.tsx'
 
 // deno-lint-ignore require-await

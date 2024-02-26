@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import db from './db.ts'
 import { TrxOrDb } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
+import { jsonArrayFrom } from './helpers.ts'
 
 export async function selectAllNonMetaTables(
   trx: TrxOrDb,
@@ -42,6 +43,41 @@ export async function selectAllViews(
   `.execute(trx)
 
   return tables.rows.map(({ table_name }) => table_name)
+}
+
+export function selectAllTypes(trx: TrxOrDb) {
+  return sql<{ typname: string }>`
+    SELECT typname
+      FROM pg_type
+     WHERE typnamespace = 2200
+       AND typcategory != 'A'
+     ORDER BY oid desc
+  `.execute(trx)
+}
+
+export function selectAllFunctions(
+  trx: TrxOrDb,
+) {
+  // deno-lint-ignore no-explicit-any
+  return trx.selectFrom('information_schema.routines' as any)
+    .selectAll('information_schema.routines')
+    .select((eb) => [
+      jsonArrayFrom(
+        // deno-lint-ignore no-explicit-any
+        eb.selectFrom('information_schema.parameters' as any)
+          .selectAll('parameters')
+          .whereRef(
+            'parameters.specific_name',
+            '=',
+            'routines.specific_name',
+          ),
+      ).as('parameters'),
+    ])
+    // deno-lint-ignore no-explicit-any
+    .where('routines.specific_schema' as any, '=', 'public')
+    // deno-lint-ignore no-explicit-any
+    .where('routines.routine_type' as any, '=', 'FUNCTION')
+    .execute()
 }
 
 export async function selectEnumValues(enum_name: string) {

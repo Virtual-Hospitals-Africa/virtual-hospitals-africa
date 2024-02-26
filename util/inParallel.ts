@@ -1,4 +1,4 @@
-export default async function inParallel<T>(
+export default async function forEach<T>(
   generator: Iterable<T> | AsyncIterable<T>,
   fn: (item: T) => Promise<unknown>,
   { concurrency } = { concurrency: 10 },
@@ -47,4 +47,32 @@ export default async function inParallel<T>(
     resolveAllDone()
   }
   return allDone
+}
+
+// Does not respect the order of the input iterable, hence the name collect instead of map
+export async function collect<T, U>(
+  generator: Iterable<T> | AsyncIterable<T>,
+  fn: (item: T) => Promise<U>,
+  { concurrency } = { concurrency: 10 },
+): Promise<U[]> {
+  const results: U[] = []
+  await forEach(generator, async (item) => {
+    results.push(await fn(item))
+  }, { concurrency })
+  return results
+}
+
+// Does not respect the order of the input iterable
+export async function filter<T>(
+  generator: Iterable<T> | AsyncIterable<T>,
+  fn: (item: T) => Promise<boolean>,
+  { concurrency } = { concurrency: 10 },
+): Promise<T[]> {
+  const results: T[] = []
+  await forEach(generator, async (item) => {
+    if (await fn(item)) {
+      results.push(item)
+    }
+  }, { concurrency })
+  return results
 }

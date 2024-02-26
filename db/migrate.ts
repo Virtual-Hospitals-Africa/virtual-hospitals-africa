@@ -111,10 +111,10 @@ async function startMigrating(cmd: string, target?: string) {
         return {}
       }
       for (const migrationName of migrationTargets) {
-        console.log('migrationName', migrationName)
         const migration = migrations[migrationName]
         if (migration.load) {
           await migration.load()
+          console.log(`seeds loaded for ${migrationName}`)
         }
       }
       return {}

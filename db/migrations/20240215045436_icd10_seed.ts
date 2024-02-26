@@ -9,7 +9,7 @@ import words from '../../util/words.ts'
 import natural from 'natural'
 import { assert } from 'std/assert/assert.ts'
 // import partition from '../../util/partition.ts'
-import inParallel from '../../util/inParallel.ts'
+import forEach from '../../util/inParallel.ts'
 import { byCodeWithSimilarity } from '../models/icd10.ts'
 import { searchFlat } from '../models/icd10.ts'
 import { createSeedMigration } from '../seedMigration.ts'
@@ -439,7 +439,7 @@ export async function loadTabularData(db: Kysely<any>) {
   // Excludes refer to other codes, so we need to insert the codes
   // first so that the foreign key constraints are satisfied
   const insert_excludes: Exclude[] = []
-  await inParallel(iterSections(sections), async (to_insert) => {
+  await forEach(iterSections(sections), async (to_insert) => {
     console.log(to_insert.row)
     if (to_insert.table === 'icd10_diagnoses_excludes') {
       insert_excludes.push(to_insert.row as any)
@@ -449,7 +449,7 @@ export async function loadTabularData(db: Kysely<any>) {
       .values(to_insert.row)
       .execute()
   })
-  await inParallel(insert_excludes, (exclude) => insertExclude(db, exclude))
+  await forEach(insert_excludes, (exclude) => insertExclude(db, exclude))
 }
 
 /*
@@ -628,7 +628,7 @@ type TidiedTerm = {
 */
 async function loadIndexData(db: Kysely<any>) {
   const icd10_index = await readICD10Index()
-  await inParallel(parse(icd10_index), async (parsed) => {
+  await forEach(parse(icd10_index), async (parsed) => {
     if (parsed.type === 'code') {
       const diag = await byCodeWithSimilarity(db, parsed.code, parsed.note)
       assert(diag)

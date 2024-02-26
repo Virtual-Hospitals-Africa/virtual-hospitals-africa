@@ -1,12 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
 import db from './db.ts'
+import { runCommand } from '../util/command.ts'
+import * as inParallel from '../util/inParallel.ts'
 
 const SEED_DIRECTORY = './db/seeds'
 
-await new Deno.Command('mkdir', {
-  args: ['-p', SEED_DIRECTORY],
-}).output()
+await Deno.mkdir(SEED_DIRECTORY, { recursive: true })
 
 const seeds = Array.from(Deno.readDirSync(SEED_DIRECTORY))
 
@@ -30,29 +30,25 @@ export function createSeedMigration(
       }
     },
     async load() {
-      for (const table_name of table_names) {
-        const row = await db.selectFrom(table_name as any).selectAll()
-          .executeTakeFirst()
-        if (row) {
-          throw new Error(`Table ${table_name} is not empty`)
-        }
-      }
-      const result = await new Deno.Command('./db/tsv_load_seeds.sh', {
-        args: table_names,
-      }).output()
-      if (result.code) {
-        console.error(new TextDecoder().decode(result.stderr))
-        return Deno.exit(result.code)
-      }
+      const load_tables = await inParallel.filter(
+        table_names,
+        async (table_name) => {
+          const row = await db
+            .selectFrom(table_name as any)
+            .selectAll()
+            .executeTakeFirst()
+          return !row
+        },
+      )
+
+      await runCommand('./db/tsv_load_seeds.sh', {
+        args: load_tables,
+      })
     },
     async dump() {
-      const result = await new Deno.Command('./db/tsv_dump_seeds.sh', {
+      await runCommand('./db/tsv_dump_seeds.sh', {
         args: table_names,
-      }).output()
-      if (result.code) {
-        console.error(new TextDecoder().decode(result.stderr))
-        return Deno.exit(result.code)
-      }
+      })
     },
   }
 }

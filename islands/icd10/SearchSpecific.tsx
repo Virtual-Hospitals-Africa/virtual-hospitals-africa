@@ -1,14 +1,14 @@
 import { useSignal } from '@preact/signals'
 import AsyncSearch from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
-import { RenderedICD10DiagnosisTreeWithIncludes } from '../../types.ts'
+import { RenderedICD10DiagnosisTreeWithOptionalIncludes } from '../../types.ts'
 import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
 
 function SymptomOption({
   option,
   selected,
 }: {
-  option: RenderedICD10DiagnosisTreeWithIncludes
+  option: RenderedICD10DiagnosisTreeWithOptionalIncludes
   selected: boolean
 }) {
   return (
@@ -28,7 +28,7 @@ function SymptomOption({
 }
 
 type SubDiag0 = NonNullable<
-  RenderedICD10DiagnosisTreeWithIncludes['sub_diagnoses']
+  RenderedICD10DiagnosisTreeWithOptionalIncludes['sub_diagnoses']
 >[0]
 type SubDiag1 = NonNullable<SubDiag0['sub_diagnoses']>[0]
 type SubDiag2 = NonNullable<SubDiag1['sub_diagnoses']>[0]
@@ -37,11 +37,11 @@ type SubDiag3 = NonNullable<SubDiag2['sub_diagnoses']>[0]
 function options(sub_diagnoses: {
   code: string
   general: boolean
-  description: string
+  name: string
 }[]) {
   const opts = sub_diagnoses.map((s) => ({
     value: s.code,
-    label: s.description,
+    label: s.name,
   }))
   const general_option = sub_diagnoses.some((sd) => sd.general)
   if (!general_option) {
@@ -60,7 +60,7 @@ export function ICD10SearchSpecific({
   name: string
   label: string
   href: string
-  value?: RenderedICD10DiagnosisTreeWithIncludes
+  value?: RenderedICD10DiagnosisTreeWithOptionalIncludes
   className?: string
 }) {
   const selected_parent = useSignal(value)

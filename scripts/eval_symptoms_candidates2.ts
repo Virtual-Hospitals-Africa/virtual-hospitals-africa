@@ -1,6 +1,5 @@
-import { assert } from 'std/assert/assert.ts'
+// deno-lint-ignore-file no-explicit-any
 import db from '../db/db.ts'
-import * as icd10 from '../db/models/icd10.ts'
 import parseCsv from '../util/parseCsv.ts'
 
 const original_symptoms_candidates = parseCsv(
@@ -22,7 +21,6 @@ for await (const row of original_symptoms_candidates) {
   already_spotted.add(row.code_range)
 }
 
-// deno-lint-ignore no-explicit-any
 const results: any[] = []
 
 // console.log('code_range\tdescription\tjonathan_dr_skhu_category')
