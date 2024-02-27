@@ -1834,6 +1834,7 @@ export type RenderedPatientSymptom =
 
 export type RenderedICD10DiagnosisTree = {
   id: string
+  code: string
   description: string
   name: string
   sub_diagnoses?: {

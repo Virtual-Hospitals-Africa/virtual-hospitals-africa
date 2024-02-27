@@ -38,7 +38,7 @@ describe(
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
-                  intake: `/app/patients/${patient.id}/intake/personal`,
+                  intake: `/app/patients/${patient.id}`,
                 },
                 providers: [],
                 reason: 'seeking treatment',
@@ -76,7 +76,7 @@ describe(
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
-                  intake: `/app/patients/${patient.id}/intake/personal`,
+                  intake: `/app/patients/${patient.id}`,
                 },
                 providers: [
                   {

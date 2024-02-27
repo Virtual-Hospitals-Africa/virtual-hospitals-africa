@@ -35,7 +35,7 @@ describe('/app/patients/[patient_id]/intake', {
       scenario: 'approved-nurse',
     })
     const response = await fetch(
-      `${route}/app/patients/${patient_id}/intake/personal`,
+      `${route}/app/patients/${patient_id}`,
     )
     assert(response.ok, 'should have returned ok')
     assert(
