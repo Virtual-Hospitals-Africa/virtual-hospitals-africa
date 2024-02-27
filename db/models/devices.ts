@@ -1,4 +1,5 @@
-import { Maybe, TrxOrDb } from '../../types.ts'
+import { sql } from 'kysely/index.js'
+import { DeviceTestsAvailablity, Maybe, TrxOrDb } from '../../types.ts'
 
 export function search(
     trx: TrxOrDb,
@@ -6,7 +7,14 @@ export function search(
   ) {
     let query = trx
       .selectFrom('devices')
-      .selectAll()
+      .select([
+        'devices.id',
+        'devices.name',
+        'devices.manufacturer',
+        sql<DeviceTestsAvailablity[]>`TO_JSON(devices.test_availability)`.as(
+          'test_availability'
+        ),
+      ])
   
     if (search) query = query.where('name', 'ilike', `%${search}%`)
   

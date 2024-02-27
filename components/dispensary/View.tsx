@@ -15,7 +15,7 @@ export default function DispensaryView(
   return (
     <Container size='lg'>
       <FormRow>
-        <div>
+        <div class='mb-2'>
           <Button
             type='button'
             href={add_href}
@@ -23,13 +23,6 @@ export default function DispensaryView(
           >
             Add Device
           </Button>
-        </div>
-        <div>
-          Available test at this facility:
-          <ul>
-            {available_tests.length &&
-              available_tests.map((c) => <li>{c}</li>)}
-          </ul>
         </div>
       </FormRow>
 
