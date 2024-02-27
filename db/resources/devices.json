@@ -46,7 +46,9 @@
   {
     "name": "ADF-B06 Pulse Oximeter",
     "manufacturer": "Andesfit",
-    "test_availability": [{ "name": "Blood Oxygen Saturation", "consumables": [] }]
+    "test_availability": [
+      { "name": "Blood Oxygen Saturation", "consumables": [] }
+    ]
   },
   {
     "name": "ADF-B885T Body Fat & Hydration Scale",
@@ -114,7 +116,9 @@
   {
     "name": "Herpes Simplex Diagnostic Test Kit",
     "manufacturer": "Jncmed",
-    "test_availability": [{ "name": "Herpes Simplex Virus 1 & 2", "consumables": [] }]
+    "test_availability": [
+      { "name": "Herpes Simplex Virus 1 & 2", "consumables": [] }
+    ]
   },
   {
     "name": "Trichomonas Diagnostic Test Kit",
