@@ -36,6 +36,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
+// deno-lint-ignore require-await
 export default async function DeviceAdd(
   _req: Request,
   { url, state, params, route }: FreshContext<LoggedInHealthWorker>,
