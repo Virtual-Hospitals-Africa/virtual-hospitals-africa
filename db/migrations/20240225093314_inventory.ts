@@ -37,7 +37,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('updated_at', 'timestamptz', (col) =>
       col.defaultTo(sql`now()`).notNull()
     )
-    .addColumn('device_serial', 'serial', (col) => col.primaryKey())
+    .addColumn('device_serial', 'varchar(255)', (col) => col.notNull().primaryKey())
     .addColumn('device_id', 'integer', (col) =>
       col.notNull().references('devices.id').onDelete('cascade')
     )

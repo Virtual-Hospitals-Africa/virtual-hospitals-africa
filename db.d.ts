@@ -281,7 +281,7 @@ export interface FacilityRoom {
 export interface FacilityDevice {
   created_at: Generated<Timestamp>
   updated_at: Generated<Timestamp>
-  device_serial: Generated<number>
+  device_serial: string
   device_id: number
   room_id: number
 }

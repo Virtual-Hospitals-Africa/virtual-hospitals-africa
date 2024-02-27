@@ -988,17 +988,14 @@ export type FacilityEmployeeInvitee = {
 }
 
 export type FacilityDevice = {
-  device_serial?: number
+  device_serial?: string
   device_id: number
   room_id: number
 }
 
 export type FacilityDeviceTable = {
-  serial: number
-  name: string
-  manufacturer: string
-  test_availability: DeviceTestsAvailablity[]
-}
+  serial: string
+} & Device
 
 export type Profession =
   | 'admin'
@@ -1202,7 +1199,7 @@ export type AvailabilityJSON = {
 export type DayOfWeek = keyof AvailabilityJSON
 
 export type Device = {
-  id: string
+  id?: number
   name: string
   manufacturer: string
   test_availability: DeviceTestsAvailablity[]

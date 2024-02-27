@@ -48,15 +48,15 @@ export async function getAvailableTestsInFacility(
     facility_id: number
   }
 ): Promise<string[]> {
-  const tests= await trx
+  const tests = await trx
     .selectFrom('facility_devices')
     .leftJoin('devices', 'facility_devices.device_id', 'devices.id')
     .leftJoin('facility_rooms', 'facility_devices.room_id', 'facility_rooms.id')
     .where('facility_rooms.facility_id', '=', opts.facility_id)
     .select([
-      sql<string[]>`jsonb_path_query_array(devices.test_availability, '$.name')`.as(
-        'test'
-      ),
+      sql<
+        string[]
+      >`jsonb_path_query_array(devices.test_availability, '$.name')`.as('test'),
     ])
     .distinct()
     .execute()
@@ -87,6 +87,10 @@ export async function addFacilityDevice(
 
   await trx
     .insertInto('facility_devices')
-    .values({ device_id: model.device_id, room_id: room?.id! })
+    .values({
+      device_serial: model.device_serial!,
+      device_id: model.device_id,
+      room_id: room?.id!,
+    })
     .execute()
 }

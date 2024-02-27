@@ -13,6 +13,7 @@ describe('db/models/facility_rooms.ts', { sanitizeResources: false }, () => {
         const availableTest = device.test_availability[0]
 
         facility_rooms.addFacilityDevice(trx, 1, {
+          device_serial: '01',
           device_id: device.id,
           room_id: 0,
         })
@@ -23,7 +24,9 @@ describe('db/models/facility_rooms.ts', { sanitizeResources: false }, () => {
           })
 
         assertEquals(
-          facilityAvailableTests.indexOf(availableTest.name) > -1, true)
+          facilityAvailableTests.indexOf(availableTest.name) > -1,
+          true
+        )
       }
     )
   })
