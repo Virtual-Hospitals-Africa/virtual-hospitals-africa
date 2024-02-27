@@ -19,16 +19,16 @@ describe('db/models/facility_rooms.ts', { sanitizeResources: false }, () => {
           room_id: 0,
         })
 
-        const facilityAvailableTests =
-          await facility_rooms.getAvailableTestsInFacility(trx, {
+        const facilityAvailableTests = await facility_rooms
+          .getAvailableTestsInFacility(trx, {
             facility_id: 1,
           })
 
         assertEquals(
           facilityAvailableTests.indexOf(availableTest.name) > -1,
-          true
+          true,
         )
-      }
+      },
     )
   })
 })

@@ -11,14 +11,14 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import DispensaryView from '../../../../components/dispensary/View.tsx'
 
 type DispensaryPageProps = {
-    facility: HasId<Facility>
+  facility: HasId<Facility>
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
-    DispensaryPageProps,
+  DispensaryPageProps,
   { facility: HasId<Facility>; isAdminAtFacility: boolean }
 > = {
-   GET(_req, ctx) {
+  GET(_req, ctx) {
     const { healthWorker, facility, isAdminAtFacility } = ctx.state
 
     return ctx.render({
@@ -34,12 +34,15 @@ export default async function DispensaryPage(
   const facility_id = parseInt(ctx.params.facility_id)
   assertOr404(facility_id)
 
-  const facility_devices= await facility_rooms.getFacilityDevices(  
+  const facility_devices = await facility_rooms.getFacilityDevices(
     ctx.state.trx,
-    { facility_id: facility_id },)
+    { facility_id: facility_id },
+  )
 
-  const available_tests = await facility_rooms.getAvailableTestsInFacility( ctx.state.trx,
-    { facility_id: facility_id });
+  const available_tests = await facility_rooms.getAvailableTestsInFacility(
+    ctx.state.trx,
+    { facility_id: facility_id },
+  )
 
   return (
     <Layout

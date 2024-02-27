@@ -1,9 +1,9 @@
 import { sql } from 'kysely'
 import {
-  TrxOrDb,
-  FacilityDevice,
   DeviceTestsAvailablity,
+  FacilityDevice,
   FacilityDeviceTable,
+  TrxOrDb,
 } from '../../types.ts'
 import uniq from '../../util/uniq.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -18,7 +18,7 @@ export async function getFacilityDevices(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<FacilityDeviceTable[]> {
   const devices = await trx
     .selectFrom('facility_devices')
@@ -26,7 +26,7 @@ export async function getFacilityDevices(
     .innerJoin(
       'facility_rooms',
       'facility_devices.room_id',
-      'facility_rooms.id'
+      'facility_rooms.id',
     )
     .where('facility_rooms.facility_id', '=', opts.facility_id)
     .select([
@@ -34,7 +34,7 @@ export async function getFacilityDevices(
       'devices.name',
       'devices.manufacturer',
       sql<DeviceTestsAvailablity[]>`TO_JSON(devices.test_availability)`.as(
-        'test_availability'
+        'test_availability',
       ),
     ])
     .execute()
@@ -46,12 +46,16 @@ export async function getAvailableTestsInFacility(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<string[]> {
   const tests = await trx
     .selectFrom('facility_devices')
     .innerJoin('devices', 'facility_devices.device_id', 'devices.id')
-    .innerJoin('facility_rooms', 'facility_devices.room_id', 'facility_rooms.id')
+    .innerJoin(
+      'facility_rooms',
+      'facility_devices.room_id',
+      'facility_rooms.id',
+    )
     .where('facility_rooms.facility_id', '=', opts.facility_id)
     .select([
       sql<
@@ -67,7 +71,7 @@ export async function getAvailableTestsInFacility(
 export async function addFacilityDevice(
   trx: TrxOrDb,
   facility_id: number,
-  model: FacilityDevice
+  model: FacilityDevice,
 ): Promise<void> {
   //TODO:Handle rooms at next stage
   let room = await trx
@@ -75,7 +79,7 @@ export async function addFacilityDevice(
     .where('facility_rooms.facility_id', '=', facility_id)
     .select('id')
     .executeTakeFirst()
-  if (!room)
+  if (!room) {
     room = await trx
       .insertInto('facility_rooms')
       .values({
@@ -84,6 +88,7 @@ export async function addFacilityDevice(
       })
       .returning('id')
       .executeTakeFirst()
+  }
 
   await trx
     .insertInto('facility_devices')

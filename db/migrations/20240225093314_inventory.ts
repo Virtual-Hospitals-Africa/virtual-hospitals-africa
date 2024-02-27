@@ -7,16 +7,22 @@ import parseJSON from '../../util/parseJSON.ts'
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('facility_rooms')
-    .addColumn('created_at', 'timestamptz', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'created_at',
+      'timestamptz',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('updated_at', 'timestamptz', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'updated_at',
+      'timestamptz',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
     .addColumn('id', 'serial', (col) => col.primaryKey())
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('facility_id', 'integer', (col) =>
-      col.notNull().references('facilities.id').onDelete('cascade')
+    .addColumn(
+      'facility_id',
+      'integer',
+      (col) => col.notNull().references('facilities.id').onDelete('cascade'),
     )
     .execute()
 
@@ -31,18 +37,31 @@ export async function up(db: Kysely<unknown>) {
   //Todo: We should set patterns for serial
   await db.schema
     .createTable('facility_devices')
-    .addColumn('created_at', 'timestamptz', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'created_at',
+      'timestamptz',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('updated_at', 'timestamptz', (col) =>
-      col.defaultTo(sql`now()`).notNull()
+    .addColumn(
+      'updated_at',
+      'timestamptz',
+      (col) => col.defaultTo(sql`now()`).notNull(),
     )
-    .addColumn('device_serial', 'varchar(255)', (col) => col.notNull().primaryKey())
-    .addColumn('device_id', 'integer', (col) =>
-      col.notNull().references('devices.id').onDelete('cascade')
+    .addColumn(
+      'device_serial',
+      'varchar(255)',
+      (col) => col.notNull().primaryKey(),
     )
-    .addColumn('room_id', 'integer', (col) =>
-      col.notNull().references('facility_rooms.id').onDelete('cascade')
+    .addColumn(
+      'device_id',
+      'integer',
+      (col) => col.notNull().references('devices.id').onDelete('cascade'),
+    )
+    .addColumn(
+      'room_id',
+      'integer',
+      (col) =>
+        col.notNull().references('facility_rooms.id').onDelete('cascade'),
     )
     .execute()
 
@@ -65,7 +84,7 @@ export async function down(db: Kysely<unknown>) {
 
 async function seedDataFromJSON(db: Kysely<any>) {
   const tests: { name: string }[] = await parseJSON(
-    './db/resources/medical_tests.json'
+    './db/resources/medical_tests.json',
   )
   const devices: {
     name: string
@@ -73,10 +92,10 @@ async function seedDataFromJSON(db: Kysely<any>) {
     test_availability: { name: string }
   }[] = await parseJSON('./db/resources/devices.json')
 
-  const devicesModel = devices.map(c=> ({
-    name : c.name,
+  const devicesModel = devices.map((c) => ({
+    name: c.name,
     manufacturer: c.manufacturer,
-    test_availability : JSON.stringify(c.test_availability)
+    test_availability: JSON.stringify(c.test_availability),
   }))
 
   await db.insertInto('devices').values(uniq(devicesModel)).execute()
