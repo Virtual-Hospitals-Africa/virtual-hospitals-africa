@@ -48,6 +48,7 @@ import * as $app_patients_patient_id_encounters_encounter_id_referral from './ro
 import * as $app_patients_patient_id_encounters_encounter_id_risk_factors from './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
+import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
 import * as $app_patients_patient_id_intake_middleware from './routes/app/patients/[patient_id]/intake/_middleware.tsx'
 import * as $app_patients_patient_id_intake_address from './routes/app/patients/[patient_id]/intake/address.tsx'
 import * as $app_patients_patient_id_intake_conditions from './routes/app/patients/[patient_id]/intake/conditions.tsx'
@@ -209,6 +210,8 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
       $app_patients_patient_id_encounters_encounter_id_vitals,
+    './routes/app/patients/[patient_id]/intake.tsx':
+      $app_patients_patient_id_intake,
     './routes/app/patients/[patient_id]/intake/_middleware.tsx':
       $app_patients_patient_id_intake_middleware,
     './routes/app/patients/[patient_id]/intake/address.tsx':

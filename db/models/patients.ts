@@ -550,6 +550,27 @@ export function hasDemographicInfo(
   )
 }
 
+export async function getFirstIncompletedIntakeStep(
+  trx: TrxOrDb,
+  patient_id: number,
+): Promise<IntakeStep> {
+  const { step } = await trx
+    .selectFrom('intake')
+    .leftJoin(
+      'patient_intake',
+      (join) =>
+        join
+          .onRef('patient_intake.intake_step', '=', 'intake.step')
+          .on('patient_intake.patient_id', '=', patient_id),
+    )
+    .where('patient_intake.id', 'is', null)
+    .orderBy('intake.order', 'asc')
+    .select('step')
+    .limit(1)
+    .executeTakeFirst() || { step: 'personal' }
+  return step
+}
+
 export async function nearestFacilities(
   trx: TrxOrDb,
   patient_id: number,

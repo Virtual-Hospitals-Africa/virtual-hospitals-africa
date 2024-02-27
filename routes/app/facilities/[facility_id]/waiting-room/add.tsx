@@ -40,7 +40,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const { intake } = to_upsert
 
     if (intake) {
-      return redirect(`/app/patients/${upserted.patient_id}/intake/personal`)
+      return redirect(`/app/patients/${upserted.patient_id}`)
     }
     return redirect(
       `/app/facilities/1/waiting-room?just_encountered_id=${upserted.id}`,
