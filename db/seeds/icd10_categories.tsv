@@ -1,0 +1,1918 @@
+category	section	description
+A00	A00-A09	Cholera
+A01	A00-A09	Typhoid and paratyphoid fevers
+A02	A00-A09	Other salmonella infections
+A03	A00-A09	Shigellosis
+A04	A00-A09	Other bacterial intestinal infections
+A05	A00-A09	Other bacterial foodborne intoxications, not elsewhere classified
+A06	A00-A09	Amebiasis
+A07	A00-A09	Other protozoal intestinal diseases
+A08	A00-A09	Viral and other specified intestinal infections
+A09	A00-A09	Infectious gastroenteritis and colitis, unspecified
+A15	A15-A19	Respiratory tuberculosis
+A17	A15-A19	Tuberculosis of nervous system
+A18	A15-A19	Tuberculosis of other organs
+A19	A15-A19	Miliary tuberculosis
+A20	A20-A28	Plague
+A21	A20-A28	Tularemia
+A22	A20-A28	Anthrax
+A23	A20-A28	Brucellosis
+A24	A20-A28	Glanders and melioidosis
+A25	A20-A28	Rat-bite fevers
+A26	A20-A28	Erysipeloid
+A27	A20-A28	Leptospirosis
+A28	A20-A28	Other zoonotic bacterial diseases, not elsewhere classified
+A30	A30-A49	Leprosy [Hansen's disease]
+A31	A30-A49	Infection due to other mycobacteria
+A32	A30-A49	Listeriosis
+A33	A30-A49	Tetanus neonatorum
+A34	A30-A49	Obstetrical tetanus
+A35	A30-A49	Other tetanus
+A36	A30-A49	Diphtheria
+A37	A30-A49	Whooping cough
+A38	A30-A49	Scarlet fever
+A39	A30-A49	Meningococcal infection
+A40	A30-A49	Streptococcal sepsis
+A41	A30-A49	Other sepsis
+A42	A30-A49	Actinomycosis
+A43	A30-A49	Nocardiosis
+A44	A30-A49	Bartonellosis
+A46	A30-A49	Erysipelas
+A48	A30-A49	Other bacterial diseases, not elsewhere classified
+A49	A30-A49	Bacterial infection of unspecified site
+A50	A50-A64	Congenital syphilis
+A51	A50-A64	Early syphilis
+A52	A50-A64	Late syphilis
+A53	A50-A64	Other and unspecified syphilis
+A54	A50-A64	Gonococcal infection
+A55	A50-A64	Chlamydial lymphogranuloma (venereum)
+A56	A50-A64	Other sexually transmitted chlamydial diseases
+A57	A50-A64	Chancroid
+A58	A50-A64	Granuloma inguinale
+A59	A50-A64	Trichomoniasis
+A60	A50-A64	Anogenital herpesviral [herpes simplex] infections
+A63	A50-A64	Other predominantly sexually transmitted diseases, not elsewhere classified
+A64	A50-A64	Unspecified sexually transmitted disease
+A65	A65-A69	Nonvenereal syphilis
+A66	A65-A69	Yaws
+A67	A65-A69	Pinta [carate]
+A68	A65-A69	Relapsing fevers
+A69	A65-A69	Other spirochetal infections
+A70	A70-A74	Chlamydia psittaci infections
+A71	A70-A74	Trachoma
+A74	A70-A74	Other diseases caused by chlamydiae
+A75	A75-A79	Typhus fever
+A77	A75-A79	Spotted fever [tick-borne rickettsioses]
+A78	A75-A79	Q fever
+A79	A75-A79	Other rickettsioses
+A80	A80-A89	Acute poliomyelitis
+A81	A80-A89	Atypical virus infections of central nervous system
+A82	A80-A89	Rabies
+A83	A80-A89	Mosquito-borne viral encephalitis
+A84	A80-A89	Tick-borne viral encephalitis
+A85	A80-A89	Other viral encephalitis, not elsewhere classified
+A86	A80-A89	Unspecified viral encephalitis
+A87	A80-A89	Viral meningitis
+A88	A80-A89	Other viral infections of central nervous system, not elsewhere classified
+A89	A80-A89	Unspecified viral infection of central nervous system
+A90	A90-A99	Dengue fever [classical dengue]
+A91	A90-A99	Dengue hemorrhagic fever
+A92	A90-A99	Other mosquito-borne viral fevers
+A93	A90-A99	Other arthropod-borne viral fevers, not elsewhere classified
+A94	A90-A99	Unspecified arthropod-borne viral fever
+A95	A90-A99	Yellow fever
+A96	A90-A99	Arenaviral hemorrhagic fever
+A98	A90-A99	Other viral hemorrhagic fevers, not elsewhere classified
+A99	A90-A99	Unspecified viral hemorrhagic fever
+B00	B00-B09	Herpesviral [herpes simplex] infections
+B01	B00-B09	Varicella [chickenpox]
+B02	B00-B09	Zoster [herpes zoster]
+B03	B00-B09	Smallpox
+B04	B00-B09	Monkeypox
+B05	B00-B09	Measles
+B06	B00-B09	Rubella [German measles]
+B07	B00-B09	Viral warts
+B08	B00-B09	Other viral infections characterized by skin and mucous membrane lesions, not elsewhere classified
+B09	B00-B09	Unspecified viral infection characterized by skin and mucous membrane lesions
+B10	B10	Other human herpesviruses
+B15	B15-B19	Acute hepatitis A
+B16	B15-B19	Acute hepatitis B
+B17	B15-B19	Other acute viral hepatitis
+B18	B15-B19	Chronic viral hepatitis
+B19	B15-B19	Unspecified viral hepatitis
+B20	B20	Human immunodeficiency virus [HIV] disease
+B25	B25-B34	Cytomegaloviral disease
+B26	B25-B34	Mumps
+B27	B25-B34	Infectious mononucleosis
+B30	B25-B34	Viral conjunctivitis
+B33	B25-B34	Other viral diseases, not elsewhere classified
+B34	B25-B34	Viral infection of unspecified site
+B35	B35-B49	Dermatophytosis
+B36	B35-B49	Other superficial mycoses
+B37	B35-B49	Candidiasis
+B38	B35-B49	Coccidioidomycosis
+B39	B35-B49	Histoplasmosis
+B40	B35-B49	Blastomycosis
+B41	B35-B49	Paracoccidioidomycosis
+B42	B35-B49	Sporotrichosis
+B43	B35-B49	Chromomycosis and pheomycotic abscess
+B44	B35-B49	Aspergillosis
+B45	B35-B49	Cryptococcosis
+B46	B35-B49	Zygomycosis
+B47	B35-B49	Mycetoma
+B48	B35-B49	Other mycoses, not elsewhere classified
+B49	B35-B49	Unspecified mycosis
+B50	B50-B64	Plasmodium falciparum malaria
+B51	B50-B64	Plasmodium vivax malaria
+B52	B50-B64	Plasmodium malariae malaria
+B53	B50-B64	Other specified malaria
+B54	B50-B64	Unspecified malaria
+B55	B50-B64	Leishmaniasis
+B56	B50-B64	African trypanosomiasis
+B57	B50-B64	Chagas' disease
+B58	B50-B64	Toxoplasmosis
+B59	B50-B64	Pneumocystosis
+B60	B50-B64	Other protozoal diseases, not elsewhere classified
+B64	B50-B64	Unspecified protozoal disease
+B65	B65-B83	Schistosomiasis [bilharziasis]
+B66	B65-B83	Other fluke infections
+B67	B65-B83	Echinococcosis
+B68	B65-B83	Taeniasis
+B69	B65-B83	Cysticercosis
+B70	B65-B83	Diphyllobothriasis and sparganosis
+B71	B65-B83	Other cestode infections
+B72	B65-B83	Dracunculiasis
+B73	B65-B83	Onchocerciasis
+B74	B65-B83	Filariasis
+B75	B65-B83	Trichinellosis
+B76	B65-B83	Hookworm diseases
+B77	B65-B83	Ascariasis
+B78	B65-B83	Strongyloidiasis
+B79	B65-B83	Trichuriasis
+B80	B65-B83	Enterobiasis
+B81	B65-B83	Other intestinal helminthiases, not elsewhere classified
+B82	B65-B83	Unspecified intestinal parasitism
+B83	B65-B83	Other helminthiases
+B85	B85-B89	Pediculosis and phthiriasis
+B86	B85-B89	Scabies
+B87	B85-B89	Myiasis
+B88	B85-B89	Other infestations
+B89	B85-B89	Unspecified parasitic disease
+B90	B90-B94	Sequelae of tuberculosis
+B91	B90-B94	Sequelae of poliomyelitis
+B92	B90-B94	Sequelae of leprosy
+B94	B90-B94	Sequelae of other and unspecified infectious and parasitic diseases
+B95	B95-B97	Streptococcus, Staphylococcus, and Enterococcus as the cause of diseases classified elsewhere
+B96	B95-B97	Other bacterial agents as the cause of diseases classified elsewhere
+B97	B95-B97	Viral agents as the cause of diseases classified elsewhere
+B99	B99	Other and unspecified infectious diseases
+C00	C00-C14	Malignant neoplasm of lip
+C01	C00-C14	Malignant neoplasm of base of tongue
+C02	C00-C14	Malignant neoplasm of other and unspecified parts of tongue
+C03	C00-C14	Malignant neoplasm of gum
+C04	C00-C14	Malignant neoplasm of floor of mouth
+C05	C00-C14	Malignant neoplasm of palate
+C06	C00-C14	Malignant neoplasm of other and unspecified parts of mouth
+C07	C00-C14	Malignant neoplasm of parotid gland
+C08	C00-C14	Malignant neoplasm of other and unspecified major salivary glands
+C09	C00-C14	Malignant neoplasm of tonsil
+C10	C00-C14	Malignant neoplasm of oropharynx
+C11	C00-C14	Malignant neoplasm of nasopharynx
+C12	C00-C14	Malignant neoplasm of pyriform sinus
+C13	C00-C14	Malignant neoplasm of hypopharynx
+C14	C00-C14	Malignant neoplasm of other and ill-defined sites in the lip, oral cavity and pharynx
+C15	C15-C26	Malignant neoplasm of esophagus
+C16	C15-C26	Malignant neoplasm of stomach
+C17	C15-C26	Malignant neoplasm of small intestine
+C18	C15-C26	Malignant neoplasm of colon
+C19	C15-C26	Malignant neoplasm of rectosigmoid junction
+C20	C15-C26	Malignant neoplasm of rectum
+C21	C15-C26	Malignant neoplasm of anus and anal canal
+C22	C15-C26	Malignant neoplasm of liver and intrahepatic bile ducts
+C23	C15-C26	Malignant neoplasm of gallbladder
+C24	C15-C26	Malignant neoplasm of other and unspecified parts of biliary tract
+C25	C15-C26	Malignant neoplasm of pancreas
+C26	C15-C26	Malignant neoplasm of other and ill-defined digestive organs
+C30	C30-C39	Malignant neoplasm of nasal cavity and middle ear
+C31	C30-C39	Malignant neoplasm of accessory sinuses
+C32	C30-C39	Malignant neoplasm of larynx
+C33	C30-C39	Malignant neoplasm of trachea
+C34	C30-C39	Malignant neoplasm of bronchus and lung
+C37	C30-C39	Malignant neoplasm of thymus
+C38	C30-C39	Malignant neoplasm of heart, mediastinum and pleura
+C39	C30-C39	Malignant neoplasm of other and ill-defined sites in the respiratory system and intrathoracic organs
+C40	C40-C41	Malignant neoplasm of bone and articular cartilage of limbs
+C41	C40-C41	Malignant neoplasm of bone and articular cartilage of other and unspecified sites
+C43	C43-C44	Malignant melanoma of skin
+C4A	C43-C44	Merkel cell carcinoma
+C44	C43-C44	Other and unspecified malignant neoplasm of skin
+C45	C45-C49	Mesothelioma
+C46	C45-C49	Kaposi's sarcoma
+C47	C45-C49	Malignant neoplasm of peripheral nerves and autonomic nervous system
+C48	C45-C49	Malignant neoplasm of retroperitoneum and peritoneum
+C49	C45-C49	Malignant neoplasm of other connective and soft tissue
+C50	C50	Malignant neoplasm of breast
+C51	C51-C58	Malignant neoplasm of vulva
+C52	C51-C58	Malignant neoplasm of vagina
+C53	C51-C58	Malignant neoplasm of cervix uteri
+C54	C51-C58	Malignant neoplasm of corpus uteri
+C55	C51-C58	Malignant neoplasm of uterus, part unspecified
+C56	C51-C58	Malignant neoplasm of ovary
+C57	C51-C58	Malignant neoplasm of other and unspecified female genital organs
+C58	C51-C58	Malignant neoplasm of placenta
+C60	C60-C63	Malignant neoplasm of penis
+C61	C60-C63	Malignant neoplasm of prostate
+C62	C60-C63	Malignant neoplasm of testis
+C63	C60-C63	Malignant neoplasm of other and unspecified male genital organs
+C64	C64-C68	Malignant neoplasm of kidney, except renal pelvis
+C65	C64-C68	Malignant neoplasm of renal pelvis
+C66	C64-C68	Malignant neoplasm of ureter
+C67	C64-C68	Malignant neoplasm of bladder
+C68	C64-C68	Malignant neoplasm of other and unspecified urinary organs
+C69	C69-C72	Malignant neoplasm of eye and adnexa
+C70	C69-C72	Malignant neoplasm of meninges
+C71	C69-C72	Malignant neoplasm of brain
+C72	C69-C72	Malignant neoplasm of spinal cord, cranial nerves and other parts of central nervous system
+C73	C73-C75	Malignant neoplasm of thyroid gland
+C74	C73-C75	Malignant neoplasm of adrenal gland
+C75	C73-C75	Malignant neoplasm of other endocrine glands and related structures
+C7A	C7A	Malignant neuroendocrine tumors
+C7B	C7B	Secondary neuroendocrine tumors
+C76	C76-C80	Malignant neoplasm of other and ill-defined sites
+C77	C76-C80	Secondary and unspecified malignant neoplasm of lymph nodes
+C78	C76-C80	Secondary malignant neoplasm of respiratory and digestive organs
+C79	C76-C80	Secondary malignant neoplasm of other and unspecified sites
+C80	C76-C80	Malignant neoplasm without specification of site
+C81	C81-C96	Hodgkin lymphoma
+C82	C81-C96	Follicular lymphoma
+C83	C81-C96	Non-follicular lymphoma
+C84	C81-C96	Mature T/NK-cell lymphomas
+C85	C81-C96	Other specified and unspecified types of non-Hodgkin lymphoma
+C86	C81-C96	Other specified types of T/NK-cell lymphoma
+C88	C81-C96	Malignant immunoproliferative diseases and certain other B-cell lymphomas
+C90	C81-C96	Multiple myeloma and malignant plasma cell neoplasms
+C91	C81-C96	Lymphoid leukemia
+C92	C81-C96	Myeloid leukemia
+C93	C81-C96	Monocytic leukemia
+C94	C81-C96	Other leukemias of specified cell type
+C95	C81-C96	Leukemia of unspecified cell type
+C96	C81-C96	Other and unspecified malignant neoplasms of lymphoid, hematopoietic and related tissue
+D00	D00-D09	Carcinoma in situ of oral cavity, esophagus and stomach
+D01	D00-D09	Carcinoma in situ of other and unspecified digestive organs
+D02	D00-D09	Carcinoma in situ of middle ear and respiratory system
+D03	D00-D09	Melanoma in situ
+D04	D00-D09	Carcinoma in situ of skin
+D05	D00-D09	Carcinoma in situ of breast
+D06	D00-D09	Carcinoma in situ of cervix uteri
+D07	D00-D09	Carcinoma in situ of other and unspecified genital organs
+D09	D00-D09	Carcinoma in situ of other and unspecified sites
+D10	D10-D36	Benign neoplasm of mouth and pharynx
+D11	D10-D36	Benign neoplasm of major salivary glands
+D12	D10-D36	Benign neoplasm of colon, rectum, anus and anal canal
+D13	D10-D36	Benign neoplasm of other and ill-defined parts of digestive system
+D14	D10-D36	Benign neoplasm of middle ear and respiratory system
+D15	D10-D36	Benign neoplasm of other and unspecified intrathoracic organs
+D16	D10-D36	Benign neoplasm of bone and articular cartilage
+D17	D10-D36	Benign lipomatous neoplasm
+D18	D10-D36	Hemangioma and lymphangioma, any site
+D19	D10-D36	Benign neoplasm of mesothelial tissue
+D20	D10-D36	Benign neoplasm of soft tissue of retroperitoneum and peritoneum
+D21	D10-D36	Other benign neoplasms of connective and other soft tissue
+D22	D10-D36	Melanocytic nevi
+D23	D10-D36	Other benign neoplasms of skin
+D24	D10-D36	Benign neoplasm of breast
+D25	D10-D36	Leiomyoma of uterus
+D26	D10-D36	Other benign neoplasms of uterus
+D27	D10-D36	Benign neoplasm of ovary
+D28	D10-D36	Benign neoplasm of other and unspecified female genital organs
+D29	D10-D36	Benign neoplasm of male genital organs
+D30	D10-D36	Benign neoplasm of urinary organs
+D31	D10-D36	Benign neoplasm of eye and adnexa
+D32	D10-D36	Benign neoplasm of meninges
+D33	D10-D36	Benign neoplasm of brain and other parts of central nervous system
+D34	D10-D36	Benign neoplasm of thyroid gland
+D35	D10-D36	Benign neoplasm of other and unspecified endocrine glands
+D36	D10-D36	Benign neoplasm of other and unspecified sites
+D3A	D3A	Benign neuroendocrine tumors
+D37	D37-D48	Neoplasm of uncertain behavior of oral cavity and digestive organs
+D38	D37-D48	Neoplasm of uncertain behavior of middle ear and respiratory and intrathoracic organs
+D39	D37-D48	Neoplasm of uncertain behavior of female genital organs
+D40	D37-D48	Neoplasm of uncertain behavior of male genital organs
+D41	D37-D48	Neoplasm of uncertain behavior of urinary organs
+D42	D37-D48	Neoplasm of uncertain behavior of meninges
+D43	D37-D48	Neoplasm of uncertain behavior of brain and central nervous system
+D44	D37-D48	Neoplasm of uncertain behavior of endocrine glands
+D45	D37-D48	Polycythemia vera
+D46	D37-D48	Myelodysplastic syndromes
+D47	D37-D48	Other neoplasms of uncertain behavior of lymphoid, hematopoietic and related tissue
+D48	D37-D48	Neoplasm of uncertain behavior of other and unspecified sites
+D49	D49	Neoplasms of unspecified behavior
+D50	D50-D53	Iron deficiency anemia
+D51	D50-D53	Vitamin B12 deficiency anemia
+D52	D50-D53	Folate deficiency anemia
+D53	D50-D53	Other nutritional anemias
+D55	D55-D59	Anemia due to enzyme disorders
+D56	D55-D59	Thalassemia
+D57	D55-D59	Sickle-cell disorders
+D58	D55-D59	Other hereditary hemolytic anemias
+D59	D55-D59	Acquired hemolytic anemia
+D60	D60-D64	Acquired pure red cell aplasia [erythroblastopenia]
+D61	D60-D64	Other aplastic anemias and other bone marrow failure syndromes
+D62	D60-D64	Acute posthemorrhagic anemia
+D63	D60-D64	Anemia in chronic diseases classified elsewhere
+D64	D60-D64	Other anemias
+D65	D65-D69	Disseminated intravascular coagulation [defibrination syndrome]
+D66	D65-D69	Hereditary factor VIII deficiency
+D67	D65-D69	Hereditary factor IX deficiency
+D68	D65-D69	Other coagulation defects
+D69	D65-D69	Purpura and other hemorrhagic conditions
+D70	D70-D77	Neutropenia
+D71	D70-D77	Functional disorders of polymorphonuclear neutrophils
+D72	D70-D77	Other disorders of white blood cells
+D73	D70-D77	Diseases of spleen
+D74	D70-D77	Methemoglobinemia
+D75	D70-D77	Other and unspecified diseases of blood and blood-forming organs
+D76	D70-D77	Other specified diseases with participation of lymphoreticular and reticulohistiocytic tissue
+D77	D70-D77	Other disorders of blood and blood-forming organs in diseases classified elsewhere
+D78	D78	Intraoperative and postprocedural complications of the spleen
+D80	D80-D89	Immunodeficiency with predominantly antibody defects
+D81	D80-D89	Combined immunodeficiencies
+D82	D80-D89	Immunodeficiency associated with other major defects
+D83	D80-D89	Common variable immunodeficiency
+D84	D80-D89	Other immunodeficiencies
+D86	D80-D89	Sarcoidosis
+D89	D80-D89	Other disorders involving the immune mechanism, not elsewhere classified
+E00	E00-E07	Congenital iodine-deficiency syndrome
+E01	E00-E07	Iodine-deficiency related thyroid disorders and allied conditions
+E02	E00-E07	Subclinical iodine-deficiency hypothyroidism
+E03	E00-E07	Other hypothyroidism
+E04	E00-E07	Other nontoxic goiter
+E05	E00-E07	Thyrotoxicosis [hyperthyroidism]
+E06	E00-E07	Thyroiditis
+E07	E00-E07	Other disorders of thyroid
+E08	E08-E13	Diabetes mellitus due to underlying condition
+E09	E08-E13	Drug or chemical induced diabetes mellitus
+E10	E08-E13	Type 1 diabetes mellitus
+E11	E08-E13	Type 2 diabetes mellitus
+E13	E08-E13	Other specified diabetes mellitus
+E15	E15-E16	Nondiabetic hypoglycemic coma
+E16	E15-E16	Other disorders of pancreatic internal secretion
+E20	E20-E35	Hypoparathyroidism
+E21	E20-E35	Hyperparathyroidism and other disorders of parathyroid gland
+E22	E20-E35	Hyperfunction of pituitary gland
+E23	E20-E35	Hypofunction and other disorders of the pituitary gland
+E24	E20-E35	Cushing's syndrome
+E25	E20-E35	Adrenogenital disorders
+E26	E20-E35	Hyperaldosteronism
+E27	E20-E35	Other disorders of adrenal gland
+E28	E20-E35	Ovarian dysfunction
+E29	E20-E35	Testicular dysfunction
+E30	E20-E35	Disorders of puberty, not elsewhere classified
+E31	E20-E35	Polyglandular dysfunction
+E32	E20-E35	Diseases of thymus
+E34	E20-E35	Other endocrine disorders
+E35	E20-E35	Disorders of endocrine glands in diseases classified elsewhere
+E36	E36	Intraoperative complications of endocrine system
+E40	E40-E46	Kwashiorkor
+E41	E40-E46	Nutritional marasmus
+E42	E40-E46	Marasmic kwashiorkor
+E43	E40-E46	Unspecified severe protein-calorie malnutrition
+E44	E40-E46	Protein-calorie malnutrition of moderate and mild degree
+E45	E40-E46	Retarded development following protein-calorie malnutrition
+E46	E40-E46	Unspecified protein-calorie malnutrition
+E50	E50-E64	Vitamin A deficiency
+E51	E50-E64	Thiamine deficiency
+E52	E50-E64	Niacin deficiency [pellagra]
+E53	E50-E64	Deficiency of other B group vitamins
+E54	E50-E64	Ascorbic acid deficiency
+E55	E50-E64	Vitamin D deficiency
+E56	E50-E64	Other vitamin deficiencies
+E58	E50-E64	Dietary calcium deficiency
+E59	E50-E64	Dietary selenium deficiency
+E60	E50-E64	Dietary zinc deficiency
+E61	E50-E64	Deficiency of other nutrient elements
+E63	E50-E64	Other nutritional deficiencies
+E64	E50-E64	Sequelae of malnutrition and other nutritional deficiencies
+E65	E65-E68	Localized adiposity
+E66	E65-E68	Overweight and obesity
+E67	E65-E68	Other hyperalimentation
+E68	E65-E68	Sequelae of hyperalimentation
+E70	E70-E88	Disorders of aromatic amino-acid metabolism
+E71	E70-E88	Disorders of branched-chain amino-acid metabolism and fatty-acid metabolism
+E72	E70-E88	Other disorders of amino-acid metabolism
+E73	E70-E88	Lactose intolerance
+E74	E70-E88	Other disorders of carbohydrate metabolism
+E75	E70-E88	Disorders of sphingolipid metabolism and other lipid storage disorders
+E76	E70-E88	Disorders of glycosaminoglycan metabolism
+E77	E70-E88	Disorders of glycoprotein metabolism
+E78	E70-E88	Disorders of lipoprotein metabolism and other lipidemias
+E79	E70-E88	Disorders of purine and pyrimidine metabolism
+E80	E70-E88	Disorders of porphyrin and bilirubin metabolism
+E83	E70-E88	Disorders of mineral metabolism
+E84	E70-E88	Cystic fibrosis
+E85	E70-E88	Amyloidosis
+E86	E70-E88	Volume depletion
+E87	E70-E88	Other disorders of fluid, electrolyte and acid-base balance
+E88	E70-E88	Other and unspecified metabolic disorders
+E89	E89	Postprocedural endocrine and metabolic complications and disorders, not elsewhere classified
+F01	F01-F09	Vascular dementia
+F02	F01-F09	Dementia in other diseases classified elsewhere
+F03	F01-F09	Unspecified dementia
+F04	F01-F09	Amnestic disorder due to known physiological condition
+F05	F01-F09	Delirium due to known physiological condition
+F06	F01-F09	Other mental disorders due to known physiological condition
+F07	F01-F09	Personality and behavioral disorders due to known physiological condition
+F09	F01-F09	Unspecified mental disorder due to known physiological condition
+F10	F10-F19	Alcohol related disorders
+F11	F10-F19	Opioid related disorders
+F12	F10-F19	Cannabis related disorders
+F13	F10-F19	Sedative, hypnotic, or anxiolytic related disorders
+F14	F10-F19	Cocaine related disorders
+F15	F10-F19	Other stimulant related disorders
+F16	F10-F19	Hallucinogen related disorders
+F17	F10-F19	Nicotine dependence
+F18	F10-F19	Inhalant related disorders
+F19	F10-F19	Other psychoactive substance related disorders
+F20	F20-F29	Schizophrenia
+F21	F20-F29	Schizotypal disorder
+F22	F20-F29	Delusional disorders
+F23	F20-F29	Brief psychotic disorder
+F24	F20-F29	Shared psychotic disorder
+F25	F20-F29	Schizoaffective disorders
+F28	F20-F29	Other psychotic disorder not due to a substance or known physiological condition
+F29	F20-F29	Unspecified psychosis not due to a substance or known physiological condition
+F30	F30-F39	Manic episode
+F31	F30-F39	Bipolar disorder
+F32	F30-F39	Depressive episode
+F33	F30-F39	Major depressive disorder, recurrent
+F34	F30-F39	Persistent mood [affective] disorders
+F39	F30-F39	Unspecified mood [affective] disorder
+F40	F40-F48	Phobic anxiety disorders
+F41	F40-F48	Other anxiety disorders
+F42	F40-F48	Obsessive-compulsive disorder
+F43	F40-F48	Reaction to severe stress, and adjustment disorders
+F44	F40-F48	Dissociative and conversion disorders
+F45	F40-F48	Somatoform disorders
+F48	F40-F48	Other nonpsychotic mental disorders
+F50	F50-F59	Eating disorders
+F51	F50-F59	Sleep disorders not due to a substance or known physiological condition
+F52	F50-F59	Sexual dysfunction not due to a substance or known physiological condition
+F53	F50-F59	Mental and behavioral disorders associated with the puerperium, not elsewhere classified
+F54	F50-F59	Psychological and behavioral factors associated with disorders or diseases classified elsewhere
+F55	F50-F59	Abuse of non-psychoactive substances
+F59	F50-F59	Unspecified behavioral syndromes associated with physiological disturbances and physical factors
+F60	F60-F69	Specific personality disorders
+F63	F60-F69	Impulse disorders
+F64	F60-F69	Gender identity disorders
+F65	F60-F69	Paraphilias
+F66	F60-F69	Other sexual disorders
+F68	F60-F69	Other disorders of adult personality and behavior
+F69	F60-F69	Unspecified disorder of adult personality and behavior
+F70	F70-F79	Mild intellectual disabilities
+F71	F70-F79	Moderate intellectual disabilities
+F72	F70-F79	Severe intellectual disabilities
+F73	F70-F79	Profound intellectual disabilities
+F78	F70-F79	Other intellectual disabilities
+F79	F70-F79	Unspecified intellectual disabilities
+F80	F80-F89	Specific developmental disorders of speech and language
+F81	F80-F89	Specific developmental disorders of scholastic skills
+F82	F80-F89	Specific developmental disorder of motor function
+F84	F80-F89	Pervasive developmental disorders
+F88	F80-F89	Other disorders of psychological development
+F89	F80-F89	Unspecified disorder of psychological development
+F90	F90-F98	Attention-deficit hyperactivity disorders
+F91	F90-F98	Conduct disorders
+F93	F90-F98	Emotional disorders with onset specific to childhood
+F94	F90-F98	Disorders of social functioning with onset specific to childhood and adolescence
+F95	F90-F98	Tic disorder
+F98	F90-F98	Other behavioral and emotional disorders with onset usually occurring in childhood and adolescence
+F99	F99	Mental disorder, not otherwise specified
+G00	G00-G09	Bacterial meningitis, not elsewhere classified
+G01	G00-G09	Meningitis in bacterial diseases classified elsewhere
+G02	G00-G09	Meningitis in other infectious and parasitic diseases classified elsewhere
+G03	G00-G09	Meningitis due to other and unspecified causes
+G04	G00-G09	Encephalitis, myelitis and encephalomyelitis
+G05	G00-G09	Encephalitis, myelitis and encephalomyelitis in diseases classified elsewhere
+G06	G00-G09	Intracranial and intraspinal abscess and granuloma
+G07	G00-G09	Intracranial and intraspinal abscess and granuloma in diseases classified elsewhere
+G08	G00-G09	Intracranial and intraspinal phlebitis and thrombophlebitis
+G09	G00-G09	Sequelae of inflammatory diseases of central nervous system
+G10	G10-G14	Huntington's disease
+G11	G10-G14	Hereditary ataxia
+G12	G10-G14	Spinal muscular atrophy and related syndromes
+G13	G10-G14	Systemic atrophies primarily affecting central nervous system in diseases classified elsewhere
+G14	G10-G14	Postpolio syndrome
+G20	G20-G26	Parkinson's disease
+G21	G20-G26	Secondary parkinsonism
+G23	G20-G26	Other degenerative diseases of basal ganglia
+G24	G20-G26	Dystonia
+G25	G20-G26	Other extrapyramidal and movement disorders
+G26	G20-G26	Extrapyramidal and movement disorders in diseases classified elsewhere
+G30	G30-G32	Alzheimer's disease
+G31	G30-G32	Other degenerative diseases of nervous system, not elsewhere classified
+G32	G30-G32	Other degenerative disorders of nervous system in diseases classified elsewhere
+G35	G35-G37	Multiple sclerosis
+G36	G35-G37	Other acute disseminated demyelination
+G37	G35-G37	Other demyelinating diseases of central nervous system
+G40	G40-G47	Epilepsy and recurrent seizures
+G43	G40-G47	Migraine
+G44	G40-G47	Other headache syndromes
+G45	G40-G47	Transient cerebral ischemic attacks and related syndromes
+G46	G40-G47	Vascular syndromes of brain in cerebrovascular diseases
+G47	G40-G47	Sleep disorders
+G50	G50-G59	Disorders of trigeminal nerve
+G51	G50-G59	Facial nerve disorders
+G52	G50-G59	Disorders of other cranial nerves
+G53	G50-G59	Cranial nerve disorders in diseases classified elsewhere
+G54	G50-G59	Nerve root and plexus disorders
+G55	G50-G59	Nerve root and plexus compressions in diseases classified elsewhere
+G56	G50-G59	Mononeuropathies of upper limb
+G57	G50-G59	Mononeuropathies of lower limb
+G58	G50-G59	Other mononeuropathies
+G59	G50-G59	Mononeuropathy in diseases classified elsewhere
+G60	G60-G65	Hereditary and idiopathic neuropathy
+G61	G60-G65	Inflammatory polyneuropathy
+G62	G60-G65	Other and unspecified polyneuropathies
+G63	G60-G65	Polyneuropathy in diseases classified elsewhere
+G64	G60-G65	Other disorders of peripheral nervous system
+G65	G60-G65	Sequelae of inflammatory and toxic polyneuropathies
+G70	G70-G73	Myasthenia gravis and other myoneural disorders
+G71	G70-G73	Primary disorders of muscles
+G72	G70-G73	Other and unspecified myopathies
+G73	G70-G73	Disorders of myoneural junction and muscle in diseases classified elsewhere
+G80	G80-G83	Cerebral palsy
+G81	G80-G83	Hemiplegia and hemiparesis
+G82	G80-G83	Paraplegia (paraparesis) and quadriplegia (quadriparesis)
+G83	G80-G83	Other paralytic syndromes
+G89	G89-G99	Pain, not elsewhere classified
+G90	G89-G99	Disorders of autonomic nervous system
+G91	G89-G99	Hydrocephalus
+G92	G89-G99	Toxic encephalopathy
+G93	G89-G99	Other disorders of brain
+G94	G89-G99	Other disorders of brain in diseases classified elsewhere
+G95	G89-G99	Other and unspecified diseases of spinal cord
+G96	G89-G99	Other disorders of central nervous system
+G97	G89-G99	Intraoperative and postprocedural complications and disorders of nervous system, not elsewhere classified
+G98	G89-G99	Other disorders of nervous system not elsewhere classified
+G99	G89-G99	Other disorders of nervous system in diseases classified elsewhere
+H00	H00-H05	Hordeolum and chalazion
+H01	H00-H05	Other inflammation of eyelid
+H02	H00-H05	Other disorders of eyelid
+H04	H00-H05	Disorders of lacrimal system
+H05	H00-H05	Disorders of orbit
+H10	H10-H11	Conjunctivitis
+H11	H10-H11	Other disorders of conjunctiva
+H15	H15-H22	Disorders of sclera
+H16	H15-H22	Keratitis
+H17	H15-H22	Corneal scars and opacities
+H18	H15-H22	Other disorders of cornea
+H20	H15-H22	Iridocyclitis
+H21	H15-H22	Other disorders of iris and ciliary body
+H22	H15-H22	Disorders of iris and ciliary body in diseases classified elsewhere
+H25	H25-H28	Age-related cataract
+H26	H25-H28	Other cataract
+H27	H25-H28	Other disorders of lens
+H28	H25-H28	Cataract in diseases classified elsewhere
+H30	H30-H36	Chorioretinal inflammation
+H31	H30-H36	Other disorders of choroid
+H32	H30-H36	Chorioretinal disorders in diseases classified elsewhere
+H33	H30-H36	Retinal detachments and breaks
+H34	H30-H36	Retinal vascular occlusions
+H35	H30-H36	Other retinal disorders
+H36	H30-H36	Retinal disorders in diseases classified elsewhere
+H40	H40-H42	Glaucoma
+H42	H40-H42	Glaucoma in diseases classified elsewhere
+H43	H43-H44	Disorders of vitreous body
+H44	H43-H44	Disorders of globe
+H46	H46-H47	Optic neuritis
+H47	H46-H47	Other disorders of optic [2nd] nerve and visual pathways
+H49	H49-H52	Paralytic strabismus
+H50	H49-H52	Other strabismus
+H51	H49-H52	Other disorders of binocular movement
+H52	H49-H52	Disorders of refraction and accommodation
+H53	H53-H54	Visual disturbances
+H54	H53-H54	Blindness and low vision
+H55	H55-H57	Nystagmus and other irregular eye movements
+H57	H55-H57	Other disorders of eye and adnexa
+H59	H59	Intraoperative and postprocedural complications and disorders of eye and adnexa, not elsewhere classified
+H60	H60-H62	Otitis externa
+H61	H60-H62	Other disorders of external ear
+H62	H60-H62	Disorders of external ear in diseases classified elsewhere
+H65	H65-H75	Nonsuppurative otitis media
+H66	H65-H75	Suppurative and unspecified otitis media
+H67	H65-H75	Otitis media in diseases classified elsewhere
+H68	H65-H75	Eustachian salpingitis and obstruction
+H69	H65-H75	Other and unspecified disorders of Eustachian tube
+H70	H65-H75	Mastoiditis and related conditions
+H71	H65-H75	Cholesteatoma of middle ear
+H72	H65-H75	Perforation of tympanic membrane
+H73	H65-H75	Other disorders of tympanic membrane
+H74	H65-H75	Other disorders of middle ear mastoid
+H75	H65-H75	Other disorders of middle ear and mastoid in diseases classified elsewhere
+H80	H80-H83	Otosclerosis
+H81	H80-H83	Disorders of vestibular function
+H82	H80-H83	Vertiginous syndromes in diseases classified elsewhere
+H83	H80-H83	Other diseases of inner ear
+M16	M15-M19	Osteoarthritis of hip
+H90	H90-H94	Conductive and sensorineural hearing loss
+H91	H90-H94	Other and unspecified hearing loss
+H92	H90-H94	Otalgia and effusion of ear
+H93	H90-H94	Other disorders of ear, not elsewhere classified
+H94	H90-H94	Other disorders of ear in diseases classified elsewhere
+H95	H95	Intraoperative and postprocedural complications and disorders of ear and mastoid process, not elsewhere classified
+I00	I00-I02	Rheumatic fever without heart involvement
+I01	I00-I02	Rheumatic fever with heart involvement
+I02	I00-I02	Rheumatic chorea
+I05	I05-I09	Rheumatic mitral valve diseases
+I06	I05-I09	Rheumatic aortic valve diseases
+I07	I05-I09	Rheumatic tricuspid valve diseases
+I08	I05-I09	Multiple valve diseases
+I09	I05-I09	Other rheumatic heart diseases
+I10	I10-I1A	Essential (primary) hypertension
+I11	I10-I1A	Hypertensive heart disease
+I12	I10-I1A	Hypertensive chronic kidney disease
+I13	I10-I1A	Hypertensive heart and chronic kidney disease
+I15	I10-I1A	Secondary hypertension
+I16	I10-I1A	Hypertensive crisis
+I1A	I10-I1A	Other hypertension
+I20	I20-I25	Angina pectoris
+I21	I20-I25	Acute myocardial infarction
+I22	I20-I25	Subsequent ST elevation (STEMI) and non-ST elevation (NSTEMI) myocardial infarction
+I23	I20-I25	Certain current complications following ST elevation (STEMI) and non-ST elevation (NSTEMI) myocardial infarction (within the 28 day period)
+I24	I20-I25	Other acute ischemic heart diseases
+I25	I20-I25	Chronic ischemic heart disease
+I26	I26-I28	Pulmonary embolism
+I27	I26-I28	Other pulmonary heart diseases
+I28	I26-I28	Other diseases of pulmonary vessels
+I30	I30-I5A	Acute pericarditis
+I31	I30-I5A	Other diseases of pericardium
+I32	I30-I5A	Pericarditis in diseases classified elsewhere
+I33	I30-I5A	Acute and subacute endocarditis
+I34	I30-I5A	Nonrheumatic mitral valve disorders
+I35	I30-I5A	Nonrheumatic aortic valve disorders
+I36	I30-I5A	Nonrheumatic tricuspid valve disorders
+I37	I30-I5A	Nonrheumatic pulmonary valve disorders
+I38	I30-I5A	Endocarditis, valve unspecified
+I39	I30-I5A	Endocarditis and heart valve disorders in diseases classified elsewhere
+I40	I30-I5A	Acute myocarditis
+I41	I30-I5A	Myocarditis in diseases classified elsewhere
+I42	I30-I5A	Cardiomyopathy
+I43	I30-I5A	Cardiomyopathy in diseases classified elsewhere
+I44	I30-I5A	Atrioventricular and left bundle-branch block
+I45	I30-I5A	Other conduction disorders
+I46	I30-I5A	Cardiac arrest
+I47	I30-I5A	Paroxysmal tachycardia
+I48	I30-I5A	Atrial fibrillation and flutter
+I49	I30-I5A	Other cardiac arrhythmias
+I50	I30-I5A	Heart failure
+I51	I30-I5A	Complications and ill-defined descriptions of heart disease
+I52	I30-I5A	Other heart disorders in diseases classified elsewhere
+I5A	I30-I5A	Non-ischemic myocardial injury (non-traumatic)
+I60	I60-I69	Nontraumatic subarachnoid hemorrhage
+I61	I60-I69	Nontraumatic intracerebral hemorrhage
+I62	I60-I69	Other and unspecified nontraumatic intracranial hemorrhage
+I63	I60-I69	Cerebral infarction
+I65	I60-I69	Occlusion and stenosis of precerebral arteries, not resulting in cerebral infarction
+I66	I60-I69	Occlusion and stenosis of cerebral arteries, not resulting in cerebral infarction
+I67	I60-I69	Other cerebrovascular diseases
+I68	I60-I69	Cerebrovascular disorders in diseases classified elsewhere
+I69	I60-I69	Sequelae of cerebrovascular disease
+I70	I70-I79	Atherosclerosis
+I71	I70-I79	Aortic aneurysm and dissection
+I72	I70-I79	Other aneurysm
+I73	I70-I79	Other peripheral vascular diseases
+I74	I70-I79	Arterial embolism and thrombosis
+I75	I70-I79	Atheroembolism
+I76	I70-I79	Septic arterial embolism
+I77	I70-I79	Other disorders of arteries and arterioles
+I78	I70-I79	Diseases of capillaries
+I79	I70-I79	Disorders of arteries, arterioles and capillaries in diseases classified elsewhere
+I80	I80-I89	Phlebitis and thrombophlebitis
+I81	I80-I89	Portal vein thrombosis
+I82	I80-I89	Other venous embolism and thrombosis
+I83	I80-I89	Varicose veins of lower extremities
+I85	I80-I89	Esophageal varices
+I86	I80-I89	Varicose veins of other sites
+I87	I80-I89	Other disorders of veins
+I88	I80-I89	Nonspecific lymphadenitis
+I89	I80-I89	Other noninfective disorders of lymphatic vessels and lymph nodes
+I95	I95-I99	Hypotension
+I96	I95-I99	Gangrene, not elsewhere classified
+I97	I95-I99	Intraoperative and postprocedural complications and disorders of circulatory system, not elsewhere classified
+I99	I95-I99	Other and unspecified disorders of circulatory system
+J00	J00-J06	Acute nasopharyngitis [common cold]
+J01	J00-J06	Acute sinusitis
+J02	J00-J06	Acute pharyngitis
+J03	J00-J06	Acute tonsillitis
+J04	J00-J06	Acute laryngitis and tracheitis
+J05	J00-J06	Acute obstructive laryngitis [croup] and epiglottitis
+J06	J00-J06	Acute upper respiratory infections of multiple and unspecified sites
+J09	J09-J18	Influenza due to certain identified influenza viruses
+J10	J09-J18	Influenza due to other identified influenza virus
+J11	J09-J18	Influenza due to unidentified influenza virus
+J12	J09-J18	Viral pneumonia, not elsewhere classified
+J13	J09-J18	Pneumonia due to Streptococcus pneumoniae
+J14	J09-J18	Pneumonia due to Hemophilus influenzae
+J15	J09-J18	Bacterial pneumonia, not elsewhere classified
+J16	J09-J18	Pneumonia due to other infectious organisms, not elsewhere classified
+J17	J09-J18	Pneumonia in diseases classified elsewhere
+J18	J09-J18	Pneumonia, unspecified organism
+J20	J20-J22	Acute bronchitis
+J21	J20-J22	Acute bronchiolitis
+J22	J20-J22	Unspecified acute lower respiratory infection
+J30	J30-J39	Vasomotor and allergic rhinitis
+J31	J30-J39	Chronic rhinitis, nasopharyngitis and pharyngitis
+J32	J30-J39	Chronic sinusitis
+J33	J30-J39	Nasal polyp
+J34	J30-J39	Other and unspecified disorders of nose and nasal sinuses
+J35	J30-J39	Chronic diseases of tonsils and adenoids
+J36	J30-J39	Peritonsillar abscess
+J37	J30-J39	Chronic laryngitis and laryngotracheitis
+J38	J30-J39	Diseases of vocal cords and larynx, not elsewhere classified
+J39	J30-J39	Other diseases of upper respiratory tract
+J40	J40-J4A	Bronchitis, not specified as acute or chronic
+J41	J40-J4A	Simple and mucopurulent chronic bronchitis
+J42	J40-J4A	Unspecified chronic bronchitis
+J43	J40-J4A	Emphysema
+J44	J40-J4A	Other chronic obstructive pulmonary disease
+J4A	J40-J4A	Chronic lung allograft dysfunction
+J45	J40-J4A	Asthma
+J47	J40-J4A	Bronchiectasis
+J60	J60-J70	Coalworker's pneumoconiosis
+J61	J60-J70	Pneumoconiosis due to asbestos and other mineral fibers
+J62	J60-J70	Pneumoconiosis due to dust containing silica
+J63	J60-J70	Pneumoconiosis due to other inorganic dusts
+J64	J60-J70	Unspecified pneumoconiosis
+J65	J60-J70	Pneumoconiosis associated with tuberculosis
+J66	J60-J70	Airway disease due to specific organic dust
+J67	J60-J70	Hypersensitivity pneumonitis due to organic dust
+J68	J60-J70	Respiratory conditions due to inhalation of chemicals, gases, fumes and vapors
+J69	J60-J70	Pneumonitis due to solids and liquids
+J70	J60-J70	Respiratory conditions due to other external agents
+J80	J80-J84	Acute respiratory distress syndrome
+J81	J80-J84	Pulmonary edema
+J82	J80-J84	Pulmonary eosinophilia, not elsewhere classified
+J84	J80-J84	Other interstitial pulmonary diseases
+J85	J85-J86	Abscess of lung and mediastinum
+J86	J85-J86	Pyothorax
+J90	J90-J94	Pleural effusion, not elsewhere classified
+J91	J90-J94	Pleural effusion in conditions classified elsewhere
+J92	J90-J94	Pleural plaque
+J93	J90-J94	Pneumothorax and air leak
+J94	J90-J94	Other pleural conditions
+J95	J95	Intraoperative and postprocedural complications and disorders of respiratory system, not elsewhere classified
+J96	J96-J99	Respiratory failure, not elsewhere classified
+J98	J96-J99	Other respiratory disorders
+J99	J96-J99	Respiratory disorders in diseases classified elsewhere
+K00	K00-K14	Disorders of tooth development and eruption
+K01	K00-K14	Embedded and impacted teeth
+K02	K00-K14	Dental caries
+K03	K00-K14	Other diseases of hard tissues of teeth
+K04	K00-K14	Diseases of pulp and periapical tissues
+K05	K00-K14	Gingivitis and periodontal diseases
+K06	K00-K14	Other disorders of gingiva and edentulous alveolar ridge
+K08	K00-K14	Other disorders of teeth and supporting structures
+K09	K00-K14	Cysts of oral region, not elsewhere classified
+K11	K00-K14	Diseases of salivary glands
+K12	K00-K14	Stomatitis and related lesions
+K13	K00-K14	Other diseases of lip and oral mucosa
+K14	K00-K14	Diseases of tongue
+K20	K20-K31	Esophagitis
+K21	K20-K31	Gastro-esophageal reflux disease
+K22	K20-K31	Other diseases of esophagus
+K23	K20-K31	Disorders of esophagus in diseases classified elsewhere
+K25	K20-K31	Gastric ulcer
+K26	K20-K31	Duodenal ulcer
+K27	K20-K31	Peptic ulcer, site unspecified
+K28	K20-K31	Gastrojejunal ulcer
+K29	K20-K31	Gastritis and duodenitis
+K30	K20-K31	Functional dyspepsia
+K31	K20-K31	Other diseases of stomach and duodenum
+K35	K35-K38	Acute appendicitis
+K36	K35-K38	Other appendicitis
+K37	K35-K38	Unspecified appendicitis
+K38	K35-K38	Other diseases of appendix
+K40	K40-K46	Inguinal hernia
+K41	K40-K46	Femoral hernia
+K42	K40-K46	Umbilical hernia
+K43	K40-K46	Ventral hernia
+K44	K40-K46	Diaphragmatic hernia
+K45	K40-K46	Other abdominal hernia
+K46	K40-K46	Unspecified abdominal hernia
+K50	K50-K52	Crohn's disease [regional enteritis]
+K51	K50-K52	Ulcerative colitis
+K52	K50-K52	Other and unspecified noninfective gastroenteritis and colitis
+K55	K55-K64	Vascular disorders of intestine
+K56	K55-K64	Paralytic ileus and intestinal obstruction without hernia
+K57	K55-K64	Diverticular disease of intestine
+K58	K55-K64	Irritable bowel syndrome
+K59	K55-K64	Other functional intestinal disorders
+K60	K55-K64	Fissure and fistula of anal and rectal regions
+K61	K55-K64	Abscess of anal and rectal regions
+K62	K55-K64	Other diseases of anus and rectum
+K63	K55-K64	Other diseases of intestine
+K64	K55-K64	Hemorrhoids and perianal venous thrombosis
+K65	K65-K68	Peritonitis
+K66	K65-K68	Other disorders of peritoneum
+K67	K65-K68	Disorders of peritoneum in infectious diseases classified elsewhere
+K68	K65-K68	Disorders of retroperitoneum
+K70	K70-K77	Alcoholic liver disease
+K71	K70-K77	Toxic liver disease
+K72	K70-K77	Hepatic failure, not elsewhere classified
+K73	K70-K77	Chronic hepatitis, not elsewhere classified
+K74	K70-K77	Fibrosis and cirrhosis of liver
+K75	K70-K77	Other inflammatory liver diseases
+K76	K70-K77	Other diseases of liver
+K77	K70-K77	Liver disorders in diseases classified elsewhere
+K80	K80-K87	Cholelithiasis
+K81	K80-K87	Cholecystitis
+K82	K80-K87	Other diseases of gallbladder
+K83	K80-K87	Other diseases of biliary tract
+K85	K80-K87	Acute pancreatitis
+K86	K80-K87	Other diseases of pancreas
+K87	K80-K87	Disorders of gallbladder, biliary tract and pancreas in diseases classified elsewhere
+K90	K90-K95	Intestinal malabsorption
+K91	K90-K95	Intraoperative and postprocedural complications and disorders of digestive system, not elsewhere classified
+K92	K90-K95	Other diseases of digestive system
+K94	K90-K95	Complications of artificial openings of the digestive system
+K95	K90-K95	Complications of bariatric procedures
+L00	L00-L08	Staphylococcal scalded skin syndrome
+L01	L00-L08	Impetigo
+L02	L00-L08	Cutaneous abscess, furuncle and carbuncle
+L03	L00-L08	Cellulitis and acute lymphangitis
+L04	L00-L08	Acute lymphadenitis
+L05	L00-L08	Pilonidal cyst and sinus
+L08	L00-L08	Other local infections of skin and subcutaneous tissue
+L10	L10-L14	Pemphigus
+L11	L10-L14	Other acantholytic disorders
+L12	L10-L14	Pemphigoid
+L13	L10-L14	Other bullous disorders
+L14	L10-L14	Bullous disorders in diseases classified elsewhere
+L20	L20-L30	Atopic dermatitis
+L21	L20-L30	Seborrheic dermatitis
+L22	L20-L30	Diaper dermatitis
+L23	L20-L30	Allergic contact dermatitis
+L24	L20-L30	Irritant contact dermatitis
+L25	L20-L30	Unspecified contact dermatitis
+L26	L20-L30	Exfoliative dermatitis
+L27	L20-L30	Dermatitis due to substances taken internally
+L28	L20-L30	Lichen simplex chronicus and prurigo
+L29	L20-L30	Pruritus
+L30	L20-L30	Other and unspecified dermatitis
+L40	L40-L45	Psoriasis
+L41	L40-L45	Parapsoriasis
+L42	L40-L45	Pityriasis rosea
+L43	L40-L45	Lichen planus
+L44	L40-L45	Other papulosquamous disorders
+L45	L40-L45	Papulosquamous disorders in diseases classified elsewhere
+L49	L49-L54	Exfoliation due to erythematous conditions according to extent of body surface involved
+L50	L49-L54	Urticaria
+L51	L49-L54	Erythema multiforme
+L52	L49-L54	Erythema nodosum
+L53	L49-L54	Other erythematous conditions
+L54	L49-L54	Erythema in diseases classified elsewhere
+L55	L55-L59	Sunburn
+L56	L55-L59	Other acute skin changes due to ultraviolet radiation
+L57	L55-L59	Skin changes due to chronic exposure to nonionizing radiation
+L58	L55-L59	Radiodermatitis
+L59	L55-L59	Other disorders of skin and subcutaneous tissue related to radiation
+L60	L60-L75	Nail disorders
+L62	L60-L75	Nail disorders in diseases classified elsewhere
+L63	L60-L75	Alopecia areata
+L64	L60-L75	Androgenic alopecia
+L65	L60-L75	Other nonscarring hair loss
+L66	L60-L75	Cicatricial alopecia [scarring hair loss]
+L67	L60-L75	Hair color and hair shaft abnormalities
+L68	L60-L75	Hypertrichosis
+L70	L60-L75	Acne
+L71	L60-L75	Rosacea
+L72	L60-L75	Follicular cysts of skin and subcutaneous tissue
+L73	L60-L75	Other follicular disorders
+L74	L60-L75	Eccrine sweat disorders
+L75	L60-L75	Apocrine sweat disorders
+L76	L76	Intraoperative and postprocedural complications of skin and subcutaneous tissue
+L80	L80-L99	Vitiligo
+L81	L80-L99	Other disorders of pigmentation
+L82	L80-L99	Seborrheic keratosis
+L83	L80-L99	Acanthosis nigricans
+L84	L80-L99	Corns and callosities
+L85	L80-L99	Other epidermal thickening
+L86	L80-L99	Keratoderma in diseases classified elsewhere
+L87	L80-L99	Transepidermal elimination disorders
+L88	L80-L99	Pyoderma gangrenosum
+L89	L80-L99	Pressure ulcer
+L90	L80-L99	Atrophic disorders of skin
+L91	L80-L99	Hypertrophic disorders of skin
+L92	L80-L99	Granulomatous disorders of skin and subcutaneous tissue
+L93	L80-L99	Lupus erythematosus
+L94	L80-L99	Other localized connective tissue disorders
+L95	L80-L99	Vasculitis limited to skin, not elsewhere classified
+L97	L80-L99	Non-pressure chronic ulcer of lower limb, not elsewhere classified
+L98	L80-L99	Other disorders of skin and subcutaneous tissue, not elsewhere classified
+L99	L80-L99	Other disorders of skin and subcutaneous tissue in diseases classified elsewhere
+M00	M00-M02	Pyogenic arthritis
+M01	M00-M02	Direct infections of joint in infectious and parasitic diseases classified elsewhere
+M02	M00-M02	Postinfective and reactive arthropathies
+M04	M04	Autoinflammatory syndromes
+M05	M05-M14	Rheumatoid arthritis with rheumatoid factor
+M06	M05-M14	Other rheumatoid arthritis
+M07	M05-M14	Enteropathic arthropathies
+M08	M05-M14	Juvenile arthritis
+M1A	M05-M14	Chronic gout
+M10	M05-M14	Gout
+M11	M05-M14	Other crystal arthropathies
+M12	M05-M14	Other and unspecified arthropathy
+M13	M05-M14	Other arthritis
+M14	M05-M14	Arthropathies in other diseases classified elsewhere
+M15	M15-M19	Polyosteoarthritis
+M17	M15-M19	Osteoarthritis of knee
+M18	M15-M19	Osteoarthritis of first carpometacarpal joint
+M19	M15-M19	Other and unspecified osteoarthritis
+M20	M20-M25	Acquired deformities of fingers and toes
+M21	M20-M25	Other acquired deformities of limbs
+M22	M20-M25	Disorder of patella
+M23	M20-M25	Internal derangement of knee
+M24	M20-M25	Other specific joint derangements
+M25	M20-M25	Other joint disorder, not elsewhere classified
+M26	M26-M27	Dentofacial anomalies [including malocclusion]
+M27	M26-M27	Other diseases of jaws
+M30	M30-M36	Polyarteritis nodosa and related conditions
+M31	M30-M36	Other necrotizing vasculopathies
+M32	M30-M36	Systemic lupus erythematosus (SLE)
+M33	M30-M36	Dermatopolymyositis
+M34	M30-M36	Systemic sclerosis [scleroderma]
+M35	M30-M36	Other systemic involvement of connective tissue
+M36	M30-M36	Systemic disorders of connective tissue in diseases classified elsewhere
+M40	M40-M43	Kyphosis and lordosis
+M41	M40-M43	Scoliosis
+M42	M40-M43	Spinal osteochondrosis
+M43	M40-M43	Other deforming dorsopathies
+M45	M45-M49	Ankylosing spondylitis
+M46	M45-M49	Other inflammatory spondylopathies
+M47	M45-M49	Spondylosis
+M48	M45-M49	Other spondylopathies
+M49	M45-M49	Spondylopathies in diseases classified elsewhere
+M50	M50-M54	Cervical disc disorders
+M51	M50-M54	Thoracic, thoracolumbar, and lumbosacral intervertebral disc disorders
+M53	M50-M54	Other and unspecified dorsopathies, not elsewhere classified
+M54	M50-M54	Dorsalgia
+M60	M60-M63	Myositis
+M61	M60-M63	Calcification and ossification of muscle
+M62	M60-M63	Other disorders of muscle
+M63	M60-M63	Disorders of muscle in diseases classified elsewhere
+M65	M65-M67	Synovitis and tenosynovitis
+M66	M65-M67	Spontaneous rupture of synovium and tendon
+M67	M65-M67	Other disorders of synovium and tendon
+M70	M70-M79	Soft tissue disorders related to use, overuse and pressure
+M71	M70-M79	Other bursopathies
+M72	M70-M79	Fibroblastic disorders
+M75	M70-M79	Shoulder lesions
+M76	M70-M79	Enthesopathies, lower limb, excluding foot
+M77	M70-M79	Other enthesopathies
+M79	M70-M79	Other and unspecified soft tissue disorders, not elsewhere classified
+M80	M80-M85	Osteoporosis with current pathological fracture
+M81	M80-M85	Osteoporosis without current pathological fracture
+M83	M80-M85	Adult osteomalacia
+M84	M80-M85	Disorder of continuity of bone
+M85	M80-M85	Other disorders of bone density and structure
+M86	M86-M90	Osteomyelitis
+M87	M86-M90	Osteonecrosis
+M88	M86-M90	Osteitis deformans [Paget's disease of bone]
+M89	M86-M90	Other disorders of bone
+M90	M86-M90	Osteopathies in diseases classified elsewhere
+M91	M91-M94	Juvenile osteochondrosis of hip and pelvis
+M92	M91-M94	Other juvenile osteochondrosis
+M93	M91-M94	Other osteochondropathies
+M94	M91-M94	Other disorders of cartilage
+M95	M95	Other acquired deformities of musculoskeletal system and connective tissue
+M96	M96	Intraoperative and postprocedural complications and disorders of musculoskeletal system, not elsewhere classified
+M97	M97	Periprosthetic fracture around internal prosthetic joint
+M99	M99	Biomechanical lesions, not elsewhere classified
+N00	N00-N08	Acute nephritic syndrome
+N01	N00-N08	Rapidly progressive nephritic syndrome
+N02	N00-N08	Recurrent and persistent hematuria
+N03	N00-N08	Chronic nephritic syndrome
+N04	N00-N08	Nephrotic syndrome
+N05	N00-N08	Unspecified nephritic syndrome
+N06	N00-N08	Isolated proteinuria with specified morphological lesion
+N07	N00-N08	Hereditary nephropathy, not elsewhere classified
+N08	N00-N08	Glomerular disorders in diseases classified elsewhere
+N10	N10-N16	Acute pyelonephritis
+N11	N10-N16	Chronic tubulo-interstitial nephritis
+N12	N10-N16	Tubulo-interstitial nephritis, not specified as acute or chronic
+N13	N10-N16	Obstructive and reflux uropathy
+N14	N10-N16	Drug- and heavy-metal-induced tubulo-interstitial and tubular conditions
+N15	N10-N16	Other renal tubulo-interstitial diseases
+N16	N10-N16	Renal tubulo-interstitial disorders in diseases classified elsewhere
+N17	N17-N19	Acute kidney failure
+N18	N17-N19	Chronic kidney disease (CKD)
+N19	N17-N19	Unspecified kidney failure
+N20	N20-N23	Calculus of kidney and ureter
+N21	N20-N23	Calculus of lower urinary tract
+N22	N20-N23	Calculus of urinary tract in diseases classified elsewhere
+N23	N20-N23	Unspecified renal colic
+N25	N25-N29	Disorders resulting from impaired renal tubular function
+N26	N25-N29	Unspecified contracted kidney
+N27	N25-N29	Small kidney of unknown cause
+N28	N25-N29	Other disorders of kidney and ureter, not elsewhere classified
+N29	N25-N29	Other disorders of kidney and ureter in diseases classified elsewhere
+N30	N30-N39	Cystitis
+N31	N30-N39	Neuromuscular dysfunction of bladder, not elsewhere classified
+N32	N30-N39	Other disorders of bladder
+N33	N30-N39	Bladder disorders in diseases classified elsewhere
+N34	N30-N39	Urethritis and urethral syndrome
+N35	N30-N39	Urethral stricture
+N36	N30-N39	Other disorders of urethra
+N37	N30-N39	Urethral disorders in diseases classified elsewhere
+N39	N30-N39	Other disorders of urinary system
+N40	N40-N53	Benign prostatic hyperplasia
+N41	N40-N53	Inflammatory diseases of prostate
+N42	N40-N53	Other and unspecified disorders of prostate
+N43	N40-N53	Hydrocele and spermatocele
+N44	N40-N53	Noninflammatory disorders of testis
+N45	N40-N53	Orchitis and epididymitis
+N46	N40-N53	Male infertility
+N47	N40-N53	Disorders of prepuce
+N48	N40-N53	Other disorders of penis
+N49	N40-N53	Inflammatory disorders of male genital organs, not elsewhere classified
+N50	N40-N53	Other and unspecified disorders of male genital organs
+N51	N40-N53	Disorders of male genital organs in diseases classified elsewhere
+N52	N40-N53	Male erectile dysfunction
+N53	N40-N53	Other male sexual dysfunction
+N60	N60-N65	Benign mammary dysplasia
+N61	N60-N65	Inflammatory disorders of breast
+N62	N60-N65	Hypertrophy of breast
+N63	N60-N65	Unspecified lump in breast
+N64	N60-N65	Other disorders of breast
+N65	N60-N65	Deformity and disproportion of reconstructed breast
+N70	N70-N77	Salpingitis and oophoritis
+N71	N70-N77	Inflammatory disease of uterus, except cervix
+N72	N70-N77	Inflammatory disease of cervix uteri
+N73	N70-N77	Other female pelvic inflammatory diseases
+N74	N70-N77	Female pelvic inflammatory disorders in diseases classified elsewhere
+N75	N70-N77	Diseases of Bartholin's gland
+N76	N70-N77	Other inflammation of vagina and vulva
+N77	N70-N77	Vulvovaginal ulceration and inflammation in diseases classified elsewhere
+N80	N80-N98	Endometriosis
+N81	N80-N98	Female genital prolapse
+N82	N80-N98	Fistulae involving female genital tract
+N83	N80-N98	Noninflammatory disorders of ovary, fallopian tube and broad ligament
+N84	N80-N98	Polyp of female genital tract
+N85	N80-N98	Other noninflammatory disorders of uterus, except cervix
+N86	N80-N98	Erosion and ectropion of cervix uteri
+N87	N80-N98	Dysplasia of cervix uteri
+N88	N80-N98	Other noninflammatory disorders of cervix uteri
+N89	N80-N98	Other noninflammatory disorders of vagina
+N90	N80-N98	Other noninflammatory disorders of vulva and perineum
+N91	N80-N98	Absent, scanty and rare menstruation
+N92	N80-N98	Excessive, frequent and irregular menstruation
+N93	N80-N98	Other abnormal uterine and vaginal bleeding
+N94	N80-N98	Pain and other conditions associated with female genital organs and menstrual cycle
+N95	N80-N98	Menopausal and other perimenopausal disorders
+N96	N80-N98	Recurrent pregnancy loss
+N97	N80-N98	Female infertility
+N98	N80-N98	Complications associated with artificial fertilization
+N99	N99	Intraoperative and postprocedural complications and disorders of genitourinary system, not elsewhere classified
+O00	O00-O08	Ectopic pregnancy
+O01	O00-O08	Hydatidiform mole
+O02	O00-O08	Other abnormal products of conception
+O03	O00-O08	Spontaneous abortion
+O04	O00-O08	Complications following (induced) termination of pregnancy
+O07	O00-O08	Failed attempted termination of pregnancy
+O08	O00-O08	Complications following ectopic and molar pregnancy
+O09	O09	Supervision of high risk pregnancy
+O10	O10-O16	Pre-existing hypertension complicating pregnancy, childbirth and the puerperium
+O11	O10-O16	Pre-existing hypertension with pre-eclampsia
+O12	O10-O16	Gestational [pregnancy-induced] edema and proteinuria without hypertension
+O13	O10-O16	Gestational [pregnancy-induced] hypertension without significant proteinuria
+O14	O10-O16	Pre-eclampsia
+O15	O10-O16	Eclampsia
+O16	O10-O16	Unspecified maternal hypertension
+O20	O20-O29	Hemorrhage in early pregnancy
+O21	O20-O29	Excessive vomiting in pregnancy
+O22	O20-O29	Venous complications and hemorrhoids in pregnancy
+O23	O20-O29	Infections of genitourinary tract in pregnancy
+O24	O20-O29	Diabetes mellitus in pregnancy, childbirth, and the puerperium
+O25	O20-O29	Malnutrition in pregnancy, childbirth and the puerperium
+O26	O20-O29	Maternal care for other conditions predominantly related to pregnancy
+O28	O20-O29	Abnormal findings on antenatal screening of mother
+O29	O20-O29	Complications of anesthesia during pregnancy
+O30	O30-O48	Multiple gestation
+O31	O30-O48	Complications specific to multiple gestation
+O32	O30-O48	Maternal care for malpresentation of fetus
+O33	O30-O48	Maternal care for disproportion
+O34	O30-O48	Maternal care for abnormality of pelvic organs
+O35	O30-O48	Maternal care for known or suspected fetal abnormality and damage
+O36	O30-O48	Maternal care for other fetal problems
+O40	O30-O48	Polyhydramnios
+O41	O30-O48	Other disorders of amniotic fluid and membranes
+O42	O30-O48	Premature rupture of membranes
+O43	O30-O48	Placental disorders
+O44	O30-O48	Placenta previa
+O45	O30-O48	Premature separation of placenta [abruptio placentae]
+O46	O30-O48	Antepartum hemorrhage, not elsewhere classified
+O47	O30-O48	False labor
+O48	O30-O48	Late pregnancy
+O60	O60-O77	Preterm labor
+O61	O60-O77	Failed induction of labor
+O62	O60-O77	Abnormalities of forces of labor
+O63	O60-O77	Long labor
+O64	O60-O77	Obstructed labor due to malposition and malpresentation of fetus
+O65	O60-O77	Obstructed labor due to maternal pelvic abnormality
+O66	O60-O77	Other obstructed labor
+O67	O60-O77	Labor and delivery complicated by intrapartum hemorrhage, not elsewhere classified
+Q06	Q00-Q07	Other congenital malformations of spinal cord
+O68	O60-O77	Labor and delivery complicated by abnormality of fetal acid-base balance
+O69	O60-O77	Labor and delivery complicated by umbilical cord complications
+O70	O60-O77	Perineal laceration during delivery
+O71	O60-O77	Other obstetric trauma
+O72	O60-O77	Postpartum hemorrhage
+O73	O60-O77	Retained placenta and membranes, without hemorrhage
+O74	O60-O77	Complications of anesthesia during labor and delivery
+O75	O60-O77	Other complications of labor and delivery, not elsewhere classified
+O76	O60-O77	Abnormality in fetal heart rate and rhythm complicating labor and delivery
+O77	O60-O77	Other fetal stress complicating labor and delivery
+O80	O80-O82	Encounter for full-term uncomplicated delivery
+O82	O80-O82	Encounter for cesarean delivery without indication
+O85	O85-O92	Puerperal sepsis
+O86	O85-O92	Other puerperal infections
+O87	O85-O92	Venous complications and hemorrhoids in the puerperium
+O88	O85-O92	Obstetric embolism
+O89	O85-O92	Complications of anesthesia during the puerperium
+O90	O85-O92	Complications of the puerperium, not elsewhere classified
+O91	O85-O92	Infections of breast associated with pregnancy, the puerperium and lactation
+O92	O85-O92	Other disorders of breast and disorders of lactation associated with pregnancy and the puerperium
+O94	O94-O9A	Sequelae of complication of pregnancy, childbirth, and the puerperium
+O98	O94-O9A	Maternal infectious and parasitic diseases classifiable elsewhere but complicating pregnancy, childbirth and the puerperium
+O99	O94-O9A	Other maternal diseases classifiable elsewhere but complicating pregnancy, childbirth and the puerperium
+O9A	O94-O9A	Maternal malignant neoplasms, traumatic injuries and abuse classifiable elsewhere but complicating pregnancy, childbirth and the puerperium
+P00	P00-P04	Newborn affected by maternal conditions that may be unrelated to present pregnancy
+P01	P00-P04	Newborn affected by maternal complications of pregnancy
+P02	P00-P04	Newborn affected by complications of placenta, cord and membranes
+P03	P00-P04	Newborn affected by other complications of labor and delivery
+P04	P00-P04	Newborn affected by noxious substances transmitted via placenta or breast milk
+P05	P05-P08	Disorders of newborn related to slow fetal growth and fetal malnutrition
+P07	P05-P08	Disorders of newborn related to short gestation and low birth weight, not elsewhere classified
+P08	P05-P08	Disorders of newborn related to long gestation and high birth weight
+P09	P09	Abnormal findings on neonatal screening
+P10	P10-P15	Intracranial laceration and hemorrhage due to birth injury
+P11	P10-P15	Other birth injuries to central nervous system
+P12	P10-P15	Birth injury to scalp
+P13	P10-P15	Birth injury to skeleton
+P14	P10-P15	Birth injury to peripheral nervous system
+P15	P10-P15	Other birth injuries
+P19	P19-P29	Metabolic acidemia in newborn
+P22	P19-P29	Respiratory distress of newborn
+P23	P19-P29	Congenital pneumonia
+P24	P19-P29	Neonatal aspiration
+P25	P19-P29	Interstitial emphysema and related conditions originating in the perinatal period
+P26	P19-P29	Pulmonary hemorrhage originating in the perinatal period
+P27	P19-P29	Chronic respiratory disease originating in the perinatal period
+P28	P19-P29	Other respiratory conditions originating in the perinatal period
+P29	P19-P29	Cardiovascular disorders originating in the perinatal period
+P35	P35-P39	Congenital viral diseases
+P36	P35-P39	Bacterial sepsis of newborn
+P37	P35-P39	Other congenital infectious and parasitic diseases
+P38	P35-P39	Omphalitis of newborn
+P39	P35-P39	Other infections specific to the perinatal period
+P50	P50-P61	Newborn affected by intrauterine (fetal) blood loss
+P51	P50-P61	Umbilical hemorrhage of newborn
+P52	P50-P61	Intracranial nontraumatic hemorrhage of newborn
+P53	P50-P61	Hemorrhagic disease of newborn
+P54	P50-P61	Other neonatal hemorrhages
+P55	P50-P61	Hemolytic disease of newborn
+P56	P50-P61	Hydrops fetalis due to hemolytic disease
+P57	P50-P61	Kernicterus
+P58	P50-P61	Neonatal jaundice due to other excessive hemolysis
+P59	P50-P61	Neonatal jaundice from other and unspecified causes
+P60	P50-P61	Disseminated intravascular coagulation of newborn
+P61	P50-P61	Other perinatal hematological disorders
+P70	P70-P74	Transitory disorders of carbohydrate metabolism specific to newborn
+P71	P70-P74	Transitory neonatal disorders of calcium and magnesium metabolism
+P72	P70-P74	Other transitory neonatal endocrine disorders
+P74	P70-P74	Other transitory neonatal electrolyte and metabolic disturbances
+P76	P76-P78	Other intestinal obstruction of newborn
+P77	P76-P78	Necrotizing enterocolitis of newborn
+P78	P76-P78	Other perinatal digestive system disorders
+P80	P80-P83	Hypothermia of newborn
+P81	P80-P83	Other disturbances of temperature regulation of newborn
+P83	P80-P83	Other conditions of integument specific to newborn
+P84	P84	Other problems with newborn
+P90	P90-P96	Convulsions of newborn
+P91	P90-P96	Other disturbances of cerebral status of newborn
+P92	P90-P96	Feeding problems of newborn
+P93	P90-P96	Reactions and intoxications due to drugs administered to newborn
+P94	P90-P96	Disorders of muscle tone of newborn
+P95	P90-P96	Stillbirth
+P96	P90-P96	Other conditions originating in the perinatal period
+Q00	Q00-Q07	Anencephaly and similar malformations
+Q01	Q00-Q07	Encephalocele
+Q02	Q00-Q07	Microcephaly
+Q03	Q00-Q07	Congenital hydrocephalus
+Q04	Q00-Q07	Other congenital malformations of brain
+Q05	Q00-Q07	Spina bifida
+Q07	Q00-Q07	Other congenital malformations of nervous system
+Q10	Q10-Q18	Congenital malformations of eyelid, lacrimal apparatus and orbit
+Q11	Q10-Q18	Anophthalmos, microphthalmos and macrophthalmos
+Q12	Q10-Q18	Congenital lens malformations
+Q13	Q10-Q18	Congenital malformations of anterior segment of eye
+Q14	Q10-Q18	Congenital malformations of posterior segment of eye
+Q15	Q10-Q18	Other congenital malformations of eye
+Q16	Q10-Q18	Congenital malformations of ear causing impairment of hearing
+Q17	Q10-Q18	Other congenital malformations of ear
+Q18	Q10-Q18	Other congenital malformations of face and neck
+Q20	Q20-Q28	Congenital malformations of cardiac chambers and connections
+Q21	Q20-Q28	Congenital malformations of cardiac septa
+Q22	Q20-Q28	Congenital malformations of pulmonary and tricuspid valves
+Q23	Q20-Q28	Congenital malformations of aortic and mitral valves
+Q24	Q20-Q28	Other congenital malformations of heart
+Q25	Q20-Q28	Congenital malformations of great arteries
+Q26	Q20-Q28	Congenital malformations of great veins
+Q27	Q20-Q28	Other congenital malformations of peripheral vascular system
+Q28	Q20-Q28	Other congenital malformations of circulatory system
+Q30	Q30-Q34	Congenital malformations of nose
+Q31	Q30-Q34	Congenital malformations of larynx
+Q32	Q30-Q34	Congenital malformations of trachea and bronchus
+Q33	Q30-Q34	Congenital malformations of lung
+Q34	Q30-Q34	Other congenital malformations of respiratory system
+Q35	Q35-Q37	Cleft palate
+Q36	Q35-Q37	Cleft lip
+Q37	Q35-Q37	Cleft palate with cleft lip
+Q38	Q38-Q45	Other congenital malformations of tongue, mouth and pharynx
+Q39	Q38-Q45	Congenital malformations of esophagus
+Q40	Q38-Q45	Other congenital malformations of upper alimentary tract
+Q41	Q38-Q45	Congenital absence, atresia and stenosis of small intestine
+Q42	Q38-Q45	Congenital absence, atresia and stenosis of large intestine
+Q43	Q38-Q45	Other congenital malformations of intestine
+Q44	Q38-Q45	Congenital malformations of gallbladder, bile ducts and liver
+Q45	Q38-Q45	Other congenital malformations of digestive system
+Q50	Q50-Q56	Congenital malformations of ovaries, fallopian tubes and broad ligaments
+Q51	Q50-Q56	Congenital malformations of uterus and cervix
+Q52	Q50-Q56	Other congenital malformations of female genitalia
+Q53	Q50-Q56	Undescended and ectopic testicle
+Q54	Q50-Q56	Hypospadias
+Q55	Q50-Q56	Other congenital malformations of male genital organs
+Q56	Q50-Q56	Indeterminate sex and pseudohermaphroditism
+Q60	Q60-Q64	Renal agenesis and other reduction defects of kidney
+Q61	Q60-Q64	Cystic kidney disease
+Q62	Q60-Q64	Congenital obstructive defects of renal pelvis and congenital malformations of ureter
+Q63	Q60-Q64	Other congenital malformations of kidney
+Q64	Q60-Q64	Other congenital malformations of urinary system
+Q65	Q65-Q79	Congenital deformities of hip
+Q66	Q65-Q79	Congenital deformities of feet
+Q67	Q65-Q79	Congenital musculoskeletal deformities of head, face, spine and chest
+Q68	Q65-Q79	Other congenital musculoskeletal deformities
+Q69	Q65-Q79	Polydactyly
+Q70	Q65-Q79	Syndactyly
+Q71	Q65-Q79	Reduction defects of upper limb
+Q72	Q65-Q79	Reduction defects of lower limb
+Q73	Q65-Q79	Reduction defects of unspecified limb
+Q74	Q65-Q79	Other congenital malformations of limb(s)
+Q75	Q65-Q79	Other congenital malformations of skull and face bones
+Q76	Q65-Q79	Congenital malformations of spine and bony thorax
+Q77	Q65-Q79	Osteochondrodysplasia with defects of growth of tubular bones and spine
+Q78	Q65-Q79	Other osteochondrodysplasias
+Q79	Q65-Q79	Congenital malformations of musculoskeletal system, not elsewhere classified
+Q80	Q80-Q89	Congenital ichthyosis
+Q81	Q80-Q89	Epidermolysis bullosa
+Q82	Q80-Q89	Other congenital malformations of skin
+Q83	Q80-Q89	Congenital malformations of breast
+Q84	Q80-Q89	Other congenital malformations of integument
+Q85	Q80-Q89	Phakomatoses, not elsewhere classified
+Q86	Q80-Q89	Congenital malformation syndromes due to known exogenous causes, not elsewhere classified
+Q87	Q80-Q89	Other specified congenital malformation syndromes affecting multiple systems
+Q89	Q80-Q89	Other congenital malformations, not elsewhere classified
+Q90	Q90-Q99	Down syndrome
+Q91	Q90-Q99	Trisomy 18 and Trisomy 13
+Q92	Q90-Q99	Other trisomies and partial trisomies of the autosomes, not elsewhere classified
+Q93	Q90-Q99	Monosomies and deletions from the autosomes, not elsewhere classified
+Q95	Q90-Q99	Balanced rearrangements and structural markers, not elsewhere classified
+Q96	Q90-Q99	Turner's syndrome
+Q97	Q90-Q99	Other sex chromosome abnormalities, female phenotype, not elsewhere classified
+Q98	Q90-Q99	Other sex chromosome abnormalities, male phenotype, not elsewhere classified
+Q99	Q90-Q99	Other chromosome abnormalities, not elsewhere classified
+R00	R00-R09	Abnormalities of heart beat
+R01	R00-R09	Cardiac murmurs and other cardiac sounds
+R03	R00-R09	Abnormal blood-pressure reading, without diagnosis
+R04	R00-R09	Hemorrhage from respiratory passages
+R05	R00-R09	Cough
+R06	R00-R09	Abnormalities of breathing
+R07	R00-R09	Pain in throat and chest
+R09	R00-R09	Other symptoms and signs involving the circulatory and respiratory system
+R10	R10-R19	Abdominal and pelvic pain
+R11	R10-R19	Nausea and vomiting
+R12	R10-R19	Heartburn
+R13	R10-R19	Aphagia and dysphagia
+R14	R10-R19	Flatulence and related conditions
+R15	R10-R19	Fecal incontinence
+R16	R10-R19	Hepatomegaly and splenomegaly, not elsewhere classified
+R17	R10-R19	Unspecified jaundice
+R18	R10-R19	Ascites
+R19	R10-R19	Other symptoms and signs involving the digestive system and abdomen
+R20	R20-R23	Disturbances of skin sensation
+R21	R20-R23	Rash and other nonspecific skin eruption
+R22	R20-R23	Localized swelling, mass and lump of skin and subcutaneous tissue
+R23	R20-R23	Other skin changes
+R25	R25-R29	Abnormal involuntary movements
+R26	R25-R29	Abnormalities of gait and mobility
+R27	R25-R29	Other lack of coordination
+R29	R25-R29	Other symptoms and signs involving the nervous and musculoskeletal systems
+R30	R30-R39	Pain associated with micturition
+R31	R30-R39	Hematuria
+R32	R30-R39	Unspecified urinary incontinence
+R33	R30-R39	Retention of urine
+R34	R30-R39	Anuria and oliguria
+R35	R30-R39	Polyuria
+R36	R30-R39	Urethral discharge
+R37	R30-R39	Sexual dysfunction, unspecified
+R39	R30-R39	Other and unspecified symptoms and signs involving the genitourinary system
+R40	R40-R46	Somnolence, stupor and coma
+R41	R40-R46	Other symptoms and signs involving cognitive functions and awareness
+R42	R40-R46	Dizziness and giddiness
+R43	R40-R46	Disturbances of smell and taste
+R44	R40-R46	Other symptoms and signs involving general sensations and perceptions
+R45	R40-R46	Symptoms and signs involving emotional state
+R46	R40-R46	Symptoms and signs involving appearance and behavior
+R47	R47-R49	Speech disturbances, not elsewhere classified
+R48	R47-R49	Dyslexia and other symbolic dysfunctions, not elsewhere classified
+R49	R47-R49	Voice and resonance disorders
+R50	R50-R69	Fever of other and unknown origin
+R51	R50-R69	Headache
+R52	R50-R69	Pain, unspecified
+R53	R50-R69	Malaise and fatigue
+R54	R50-R69	Age-related physical debility
+R55	R50-R69	Syncope and collapse
+R56	R50-R69	Convulsions, not elsewhere classified
+R57	R50-R69	Shock, not elsewhere classified
+R58	R50-R69	Hemorrhage, not elsewhere classified
+R59	R50-R69	Enlarged lymph nodes
+R60	R50-R69	Edema, not elsewhere classified
+R61	R50-R69	Generalized hyperhidrosis
+R62	R50-R69	Lack of expected normal physiological development in childhood and adults
+R63	R50-R69	Symptoms and signs concerning food and fluid intake
+R64	R50-R69	Cachexia
+R65	R50-R69	Symptoms and signs specifically associated with systemic inflammation and infection
+R68	R50-R69	Other general symptoms and signs
+R69	R50-R69	Illness, unspecified
+R70	R70-R79	Elevated erythrocyte sedimentation rate and abnormality of plasma viscosity
+R71	R70-R79	Abnormality of red blood cells
+R73	R70-R79	Elevated blood glucose level
+R74	R70-R79	Abnormal serum enzyme levels
+R75	R70-R79	Inconclusive laboratory evidence of human immunodeficiency virus [HIV]
+R76	R70-R79	Other abnormal immunological findings in serum
+R77	R70-R79	Other abnormalities of plasma proteins
+R78	R70-R79	Findings of drugs and other substances, not normally found in blood
+R79	R70-R79	Other abnormal findings of blood chemistry
+R80	R80-R82	Proteinuria
+R81	R80-R82	Glycosuria
+R82	R80-R82	Other and unspecified abnormal findings in urine
+R83	R83-R89	Abnormal findings in cerebrospinal fluid
+R84	R83-R89	Abnormal findings in specimens from respiratory organs and thorax
+R85	R83-R89	Abnormal findings in specimens from digestive organs and abdominal cavity
+R86	R83-R89	Abnormal findings in specimens from male genital organs
+R87	R83-R89	Abnormal findings in specimens from female genital organs
+R88	R83-R89	Abnormal findings in other body fluids and substances
+R89	R83-R89	Abnormal findings in specimens from other organs, systems and tissues
+R90	R90-R94	Abnormal findings on diagnostic imaging of central nervous system
+R91	R90-R94	Abnormal findings on diagnostic imaging of lung
+R92	R90-R94	Abnormal and inconclusive findings on diagnostic imaging of breast
+R93	R90-R94	Abnormal findings on diagnostic imaging of other body structures
+R94	R90-R94	Abnormal results of function studies
+R97	R97	Abnormal tumor markers
+R99	R99	Ill-defined and unknown cause of mortality
+S00	S00-S09	Superficial injury of head
+S01	S00-S09	Open wound of head
+S02	S00-S09	Fracture of skull and facial bones
+S03	S00-S09	Dislocation and sprain of joints and ligaments of head
+S04	S00-S09	Injury of cranial nerve
+S05	S00-S09	Injury of eye and orbit
+S06	S00-S09	Intracranial injury
+S07	S00-S09	Crushing injury of head
+S08	S00-S09	Avulsion and traumatic amputation of part of head
+S09	S00-S09	Other and unspecified injuries of head
+S10	S10-S19	Superficial injury of neck
+S11	S10-S19	Open wound of neck
+S12	S10-S19	Fracture of cervical vertebra and other parts of neck
+S13	S10-S19	Dislocation and sprain of joints and ligaments at neck level
+S14	S10-S19	Injury of nerves and spinal cord at neck level
+S15	S10-S19	Injury of blood vessels at neck level
+S16	S10-S19	Injury of muscle, fascia and tendon at neck level
+S17	S10-S19	Crushing injury of neck
+S19	S10-S19	Other specified and unspecified injuries of neck
+S20	S20-S29	Superficial injury of thorax
+S21	S20-S29	Open wound of thorax
+S22	S20-S29	Fracture of rib(s), sternum and thoracic spine
+S23	S20-S29	Dislocation and sprain of joints and ligaments of thorax
+S24	S20-S29	Injury of nerves and spinal cord at thorax level
+S25	S20-S29	Injury of blood vessels of thorax
+S26	S20-S29	Injury of heart
+S27	S20-S29	Injury of other and unspecified intrathoracic organs
+S28	S20-S29	Crushing injury of thorax, and traumatic amputation of part of thorax
+S29	S20-S29	Other and unspecified injuries of thorax
+S30	S30-S39	Superficial injury of abdomen, lower back, pelvis and external genitals
+S31	S30-S39	Open wound of abdomen, lower back, pelvis and external genitals
+S32	S30-S39	Fracture of lumbar spine and pelvis
+S33	S30-S39	Dislocation and sprain of joints and ligaments of lumbar spine and pelvis
+S34	S30-S39	Injury of lumbar and sacral spinal cord and nerves at abdomen, lower back and pelvis level
+S35	S30-S39	Injury of blood vessels at abdomen, lower back and pelvis level
+S36	S30-S39	Injury of intra-abdominal organs
+S37	S30-S39	Injury of urinary and pelvic organs
+S38	S30-S39	Crushing injury and traumatic amputation of abdomen, lower back, pelvis and external genitals
+S39	S30-S39	Other and unspecified injuries of abdomen, lower back, pelvis and external genitals
+S40	S40-S49	Superficial injury of shoulder and upper arm
+S41	S40-S49	Open wound of shoulder and upper arm
+S42	S40-S49	Fracture of shoulder and upper arm
+S43	S40-S49	Dislocation and sprain of joints and ligaments of shoulder girdle
+S44	S40-S49	Injury of nerves at shoulder and upper arm level
+S45	S40-S49	Injury of blood vessels at shoulder and upper arm level
+S46	S40-S49	Injury of muscle, fascia and tendon at shoulder and upper arm level
+S47	S40-S49	Crushing injury of shoulder and upper arm
+S48	S40-S49	Traumatic amputation of shoulder and upper arm
+S49	S40-S49	Other and unspecified injuries of shoulder and upper arm
+S50	S50-S59	Superficial injury of elbow and forearm
+S51	S50-S59	Open wound of elbow and forearm
+S52	S50-S59	Fracture of forearm
+S53	S50-S59	Dislocation and sprain of joints and ligaments of elbow
+S54	S50-S59	Injury of nerves at forearm level
+S55	S50-S59	Injury of blood vessels at forearm level
+S56	S50-S59	Injury of muscle, fascia and tendon at forearm level
+S57	S50-S59	Crushing injury of elbow and forearm
+S58	S50-S59	Traumatic amputation of elbow and forearm
+S59	S50-S59	Other and unspecified injuries of elbow and forearm
+S60	S60-S69	Superficial injury of wrist, hand and fingers
+S61	S60-S69	Open wound of wrist, hand and fingers
+S62	S60-S69	Fracture at wrist and hand level
+S63	S60-S69	Dislocation and sprain of joints and ligaments at wrist and hand level
+S64	S60-S69	Injury of nerves at wrist and hand level
+S65	S60-S69	Injury of blood vessels at wrist and hand level
+S66	S60-S69	Injury of muscle, fascia and tendon at wrist and hand level
+S67	S60-S69	Crushing injury of wrist, hand and fingers
+S68	S60-S69	Traumatic amputation of wrist, hand and fingers
+S69	S60-S69	Other and unspecified injuries of wrist, hand and finger(s)
+S70	S70-S79	Superficial injury of hip and thigh
+S71	S70-S79	Open wound of hip and thigh
+S72	S70-S79	Fracture of femur
+S73	S70-S79	Dislocation and sprain of joint and ligaments of hip
+S74	S70-S79	Injury of nerves at hip and thigh level
+S75	S70-S79	Injury of blood vessels at hip and thigh level
+S76	S70-S79	Injury of muscle, fascia and tendon at hip and thigh level
+S77	S70-S79	Crushing injury of hip and thigh
+S78	S70-S79	Traumatic amputation of hip and thigh
+S79	S70-S79	Other and unspecified injuries of hip and thigh
+S80	S80-S89	Superficial injury of knee and lower leg
+S81	S80-S89	Open wound of knee and lower leg
+S82	S80-S89	Fracture of lower leg, including ankle
+S83	S80-S89	Dislocation and sprain of joints and ligaments of knee
+S84	S80-S89	Injury of nerves at lower leg level
+S85	S80-S89	Injury of blood vessels at lower leg level
+S86	S80-S89	Injury of muscle, fascia and tendon at lower leg level
+S87	S80-S89	Crushing injury of lower leg
+S88	S80-S89	Traumatic amputation of lower leg
+S89	S80-S89	Other and unspecified injuries of lower leg
+S90	S90-S99	Superficial injury of ankle, foot and toes
+S91	S90-S99	Open wound of ankle, foot and toes
+S92	S90-S99	Fracture of foot and toe, except ankle
+S93	S90-S99	Dislocation and sprain of joints and ligaments at ankle, foot and toe level
+S94	S90-S99	Injury of nerves at ankle and foot level
+S95	S90-S99	Injury of blood vessels at ankle and foot level
+S96	S90-S99	Injury of muscle and tendon at ankle and foot level
+S97	S90-S99	Crushing injury of ankle and foot
+S98	S90-S99	Traumatic amputation of ankle and foot
+S99	S90-S99	Other and unspecified injuries of ankle and foot
+T07	T07	Unspecified multiple injuries
+T14	T14	Injury of unspecified body region
+T15	T15-T19	Foreign body on external eye
+T16	T15-T19	Foreign body in ear
+T17	T15-T19	Foreign body in respiratory tract
+T18	T15-T19	Foreign body in alimentary tract
+T19	T15-T19	Foreign body in genitourinary tract
+T20	T20-T25	Burn and corrosion of head, face, and neck
+T21	T20-T25	Burn and corrosion of trunk
+T22	T20-T25	Burn and corrosion of shoulder and upper limb, except wrist and hand
+T23	T20-T25	Burn and corrosion of wrist and hand
+T24	T20-T25	Burn and corrosion of lower limb, except ankle and foot
+T25	T20-T25	Burn and corrosion of ankle and foot
+T26	T26-T28	Burn and corrosion confined to eye and adnexa
+T27	T26-T28	Burn and corrosion of respiratory tract
+T28	T26-T28	Burn and corrosion of other internal organs
+T30	T30-T32	Burn and corrosion, body region unspecified
+T31	T30-T32	Burns classified according to extent of body surface involved
+T32	T30-T32	Corrosions classified according to extent of body surface involved
+T33	T33-T34	Superficial frostbite
+T34	T33-T34	Frostbite with tissue necrosis
+T36	T36-T50	Poisoning by, adverse effect of and underdosing of systemic antibiotics
+T37	T36-T50	Poisoning by, adverse effect of and underdosing of other systemic anti-infectives and antiparasitics
+T38	T36-T50	Poisoning by, adverse effect of and underdosing of hormones and their synthetic substitutes and antagonists, not elsewhere classified
+T39	T36-T50	Poisoning by, adverse effect of and underdosing of nonopioid analgesics, antipyretics and antirheumatics
+T40	T36-T50	Poisoning by, adverse effect of and underdosing of narcotics and psychodysleptics [hallucinogens]
+T41	T36-T50	Poisoning by, adverse effect of and underdosing of anesthetics and therapeutic gases
+T42	T36-T50	Poisoning by, adverse effect of and underdosing of antiepileptic, sedative- hypnotic and antiparkinsonism drugs
+T43	T36-T50	Poisoning by, adverse effect of and underdosing of psychotropic drugs, not elsewhere classified
+T44	T36-T50	Poisoning by, adverse effect of and underdosing of drugs primarily affecting the autonomic nervous system
+T45	T36-T50	Poisoning by, adverse effect of and underdosing of primarily systemic and hematological agents, not elsewhere classified
+T46	T36-T50	Poisoning by, adverse effect of and underdosing of agents primarily affecting the cardiovascular system
+T47	T36-T50	Poisoning by, adverse effect of and underdosing of agents primarily affecting the gastrointestinal system
+T48	T36-T50	Poisoning by, adverse effect of and underdosing of agents primarily acting on smooth and skeletal muscles and the respiratory system
+T49	T36-T50	Poisoning by, adverse effect of and underdosing of topical agents primarily affecting skin and mucous membrane and by ophthalmological, otorhinorlaryngological and dental drugs
+T50	T36-T50	Poisoning by, adverse effect of and underdosing of diuretics and other and unspecified drugs, medicaments and biological substances
+T51	T51-T65	Toxic effect of alcohol
+T52	T51-T65	Toxic effect of organic solvents
+T53	T51-T65	Toxic effect of halogen derivatives of aliphatic and aromatic hydrocarbons
+T54	T51-T65	Toxic effect of corrosive substances
+T55	T51-T65	Toxic effect of soaps and detergents
+T56	T51-T65	Toxic effect of metals
+T57	T51-T65	Toxic effect of other inorganic substances
+T58	T51-T65	Toxic effect of carbon monoxide
+T59	T51-T65	Toxic effect of other gases, fumes and vapors
+T60	T51-T65	Toxic effect of pesticides
+T61	T51-T65	Toxic effect of noxious substances eaten as seafood
+T62	T51-T65	Toxic effect of other noxious substances eaten as food
+T63	T51-T65	Toxic effect of contact with venomous animals and plants
+T64	T51-T65	Toxic effect of aflatoxin and other mycotoxin food contaminants
+T65	T51-T65	Toxic effect of other and unspecified substances
+T66	T66-T78	Radiation sickness, unspecified
+T67	T66-T78	Effects of heat and light
+T68	T66-T78	Hypothermia
+T69	T66-T78	Other effects of reduced temperature
+T70	T66-T78	Effects of air pressure and water pressure
+T71	T66-T78	Asphyxiation
+T73	T66-T78	Effects of other deprivation
+T74	T66-T78	Adult and child abuse, neglect and other maltreatment, confirmed
+T75	T66-T78	Other and unspecified effects of other external causes
+T76	T66-T78	Adult and child abuse, neglect and other maltreatment, suspected
+T78	T66-T78	Adverse effects, not elsewhere classified
+T79	T79	Certain early complications of trauma, not elsewhere classified
+T80	T80-T88	Complications following infusion, transfusion and therapeutic injection
+T81	T80-T88	Complications of procedures, not elsewhere classified
+T82	T80-T88	Complications of cardiac and vascular prosthetic devices, implants and grafts
+T83	T80-T88	Complications of genitourinary prosthetic devices, implants and grafts
+T84	T80-T88	Complications of internal orthopedic prosthetic devices, implants and grafts
+T85	T80-T88	Complications of other internal prosthetic devices, implants and grafts
+T86	T80-T88	Complications of transplanted organs and tissue
+T87	T80-T88	Complications peculiar to reattachment and amputation
+T88	T80-T88	Other complications of surgical and medical care, not elsewhere classified
+V00	V00-V09	Pedestrian conveyance accident
+V01	V00-V09	Pedestrian injured in collision with pedal cycle
+V02	V00-V09	Pedestrian injured in collision with two- or three-wheeled motor vehicle
+V03	V00-V09	Pedestrian injured in collision with car, pick-up truck or van
+V04	V00-V09	Pedestrian injured in collision with heavy transport vehicle or bus
+V05	V00-V09	Pedestrian injured in collision with railway train or railway vehicle
+V06	V00-V09	Pedestrian injured in collision with other nonmotor vehicle
+V09	V00-V09	Pedestrian injured in other and unspecified transport accidents
+V10	V10-V19	Pedal cycle rider injured in collision with pedestrian or animal
+V11	V10-V19	Pedal cycle rider injured in collision with other pedal cycle
+V12	V10-V19	Pedal cycle rider injured in collision with two- or three-wheeled motor vehicle
+V13	V10-V19	Pedal cycle rider injured in collision with car, pick-up truck or van
+V14	V10-V19	Pedal cycle rider injured in collision with heavy transport vehicle or bus
+V15	V10-V19	Pedal cycle rider injured in collision with railway train or railway vehicle
+V16	V10-V19	Pedal cycle rider injured in collision with other nonmotor vehicle
+V17	V10-V19	Pedal cycle rider injured in collision with fixed or stationary object
+V18	V10-V19	Pedal cycle rider injured in noncollision transport accident
+V19	V10-V19	Pedal cycle rider injured in other and unspecified transport accidents
+V20	V20-V29	Motorcycle rider injured in collision with pedestrian or animal
+V21	V20-V29	Motorcycle rider injured in collision with pedal cycle
+V22	V20-V29	Motorcycle rider injured in collision with two- or three-wheeled motor vehicle
+V23	V20-V29	Motorcycle rider injured in collision with car, pick-up truck or van
+V24	V20-V29	Motorcycle rider injured in collision with heavy transport vehicle or bus
+V25	V20-V29	Motorcycle rider injured in collision with railway train or railway vehicle
+V26	V20-V29	Motorcycle rider injured in collision with other nonmotor vehicle
+V27	V20-V29	Motorcycle rider injured in collision with fixed or stationary object
+V28	V20-V29	Motorcycle rider injured in noncollision transport accident
+V29	V20-V29	Motorcycle rider injured in other and unspecified transport accidents
+V30	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with pedestrian or animal
+V31	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with pedal cycle
+V32	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with two- or three-wheeled motor vehicle
+V33	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with car, pick-up truck or van
+V34	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with heavy transport vehicle or bus
+V35	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with railway train or railway vehicle
+V36	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with other nonmotor vehicle
+V37	V30-V39	Occupant of three-wheeled motor vehicle injured in collision with fixed or stationary object
+V38	V30-V39	Occupant of three-wheeled motor vehicle injured in noncollision transport accident
+V39	V30-V39	Occupant of three-wheeled motor vehicle injured in other and unspecified transport accidents
+V40	V40-V49	Car occupant injured in collision with pedestrian or animal
+V41	V40-V49	Car occupant injured in collision with pedal cycle
+V42	V40-V49	Car occupant injured in collision with two- or three-wheeled motor vehicle
+V43	V40-V49	Car occupant injured in collision with car, pick-up truck or van
+V44	V40-V49	Car occupant injured in collision with heavy transport vehicle or bus
+V45	V40-V49	Car occupant injured in collision with railway train or railway vehicle
+V46	V40-V49	Car occupant injured in collision with other nonmotor vehicle
+V47	V40-V49	Car occupant injured in collision with fixed or stationary object
+V48	V40-V49	Car occupant injured in noncollision transport accident
+V49	V40-V49	Car occupant injured in other and unspecified transport accidents
+V50	V50-V59	Occupant of pick-up truck or van injured in collision with pedestrian or animal
+V51	V50-V59	Occupant of pick-up truck or van injured in collision with pedal cycle
+V52	V50-V59	Occupant of pick-up truck or van injured in collision with two- or three-wheeled motor vehicle
+V53	V50-V59	Occupant of pick-up truck or van injured in collision with car, pick-up truck or van
+V54	V50-V59	Occupant of pick-up truck or van injured in collision with heavy transport vehicle or bus
+V55	V50-V59	Occupant of pick-up truck or van injured in collision with railway train or railway vehicle
+V56	V50-V59	Occupant of pick-up truck or van injured in collision with other nonmotor vehicle
+V57	V50-V59	Occupant of pick-up truck or van injured in collision with fixed or stationary object
+V58	V50-V59	Occupant of pick-up truck or van injured in noncollision transport accident
+V59	V50-V59	Occupant of pick-up truck or van injured in other and unspecified transport accidents
+V60	V60-V69	Occupant of heavy transport vehicle injured in collision with pedestrian or animal
+V61	V60-V69	Occupant of heavy transport vehicle injured in collision with pedal cycle
+V62	V60-V69	Occupant of heavy transport vehicle injured in collision with two- or three-wheeled motor vehicle
+V63	V60-V69	Occupant of heavy transport vehicle injured in collision with car, pick-up truck or van
+V64	V60-V69	Occupant of heavy transport vehicle injured in collision with heavy transport vehicle or bus
+V65	V60-V69	Occupant of heavy transport vehicle injured in collision with railway train or railway vehicle
+V66	V60-V69	Occupant of heavy transport vehicle injured in collision with other nonmotor vehicle
+V67	V60-V69	Occupant of heavy transport vehicle injured in collision with fixed or stationary object
+V68	V60-V69	Occupant of heavy transport vehicle injured in noncollision transport accident
+V69	V60-V69	Occupant of heavy transport vehicle injured in other and unspecified transport accidents
+V70	V70-V79	Bus occupant injured in collision with pedestrian or animal
+V71	V70-V79	Bus occupant injured in collision with pedal cycle
+V72	V70-V79	Bus occupant injured in collision with two- or three-wheeled motor vehicle
+V73	V70-V79	Bus occupant injured in collision with car, pick-up truck or van
+V74	V70-V79	Bus occupant injured in collision with heavy transport vehicle or bus
+V75	V70-V79	Bus occupant injured in collision with railway train or railway vehicle
+V76	V70-V79	Bus occupant injured in collision with other nonmotor vehicle
+V77	V70-V79	Bus occupant injured in collision with fixed or stationary object
+V78	V70-V79	Bus occupant injured in noncollision transport accident
+V79	V70-V79	Bus occupant injured in other and unspecified transport accidents
+V80	V80-V89	Animal-rider or occupant of animal-drawn vehicle injured in transport accident
+V81	V80-V89	Occupant of railway train or railway vehicle injured in transport accident
+V82	V80-V89	Occupant of powered streetcar injured in transport accident
+V83	V80-V89	Occupant of special vehicle mainly used on industrial premises injured in transport accident
+V84	V80-V89	Occupant of special vehicle mainly used in agriculture injured in transport accident
+V85	V80-V89	Occupant of special construction vehicle injured in transport accident
+V86	V80-V89	Occupant of special all-terrain or other off-road motor vehicle, injured in transport accident
+V87	V80-V89	Traffic accident of specified type but victim's mode of transport unknown
+V88	V80-V89	Nontraffic accident of specified type but victim's mode of transport unknown
+V89	V80-V89	Motor- or nonmotor-vehicle accident, type of vehicle unspecified
+V90	V90-V94	Drowning and submersion due to accident to watercraft
+V91	V90-V94	Other injury due to accident to watercraft
+V92	V90-V94	Drowning and submersion due to accident on board watercraft, without accident to watercraft
+V93	V90-V94	Other injury due to accident on board watercraft, without accident to watercraft
+V94	V90-V94	Other and unspecified water transport accidents
+V95	V95-V97	Accident to powered aircraft causing injury to occupant
+V96	V95-V97	Accident to nonpowered aircraft causing injury to occupant
+V97	V95-V97	Other specified air transport accidents
+V98	V98-V99	Other specified transport accidents
+V99	V98-V99	Unspecified transport accident
+W00	W00-W19	Fall due to ice and snow
+W01	W00-W19	Fall on same level from slipping, tripping and stumbling
+W03	W00-W19	Other fall on same level due to collision with another person
+W04	W00-W19	Fall while being carried or supported by other persons
+W05	W00-W19	Fall from non-moving wheelchair, nonmotorized scooter and motorized mobility scooter
+W06	W00-W19	Fall from bed
+W07	W00-W19	Fall from chair
+W08	W00-W19	Fall from other furniture
+W09	W00-W19	Fall on and from playground equipment
+W10	W00-W19	Fall on and from stairs and steps
+W11	W00-W19	Fall on and from ladder
+W12	W00-W19	Fall on and from scaffolding
+W13	W00-W19	Fall from, out of or through building or structure
+W14	W00-W19	Fall from tree
+W15	W00-W19	Fall from cliff
+W16	W00-W19	Fall, jump or diving into water
+W17	W00-W19	Other fall from one level to another
+W18	W00-W19	Other slipping, tripping and stumbling and falls
+W19	W00-W19	Unspecified fall
+W20	W20-W49	Struck by thrown, projected or falling object
+W21	W20-W49	Striking against or struck by sports equipment
+W22	W20-W49	Striking against or struck by other objects
+W23	W20-W49	Caught, crushed, jammed or pinched in or between objects
+W24	W20-W49	Contact with lifting and transmission devices, not elsewhere classified
+W25	W20-W49	Contact with sharp glass
+W26	W20-W49	Contact with other sharp objects
+W27	W20-W49	Contact with nonpowered hand tool
+W28	W20-W49	Contact with powered lawn mower
+W29	W20-W49	Contact with other powered hand tools and household machinery
+W30	W20-W49	Contact with agricultural machinery
+W31	W20-W49	Contact with other and unspecified machinery
+W32	W20-W49	Accidental handgun discharge and malfunction
+W33	W20-W49	Accidental rifle, shotgun and larger firearm discharge and malfunction
+W34	W20-W49	Accidental discharge and malfunction from other and unspecified firearms and guns
+W35	W20-W49	Explosion and rupture of boiler
+W36	W20-W49	Explosion and rupture of gas cylinder
+W37	W20-W49	Explosion and rupture of pressurized tire, pipe or hose
+W38	W20-W49	Explosion and rupture of other specified pressurized devices
+W39	W20-W49	Discharge of firework
+W40	W20-W49	Explosion of other materials
+W42	W20-W49	Exposure to noise
+W44	W20-W49	Foreign body entering into or through a natural orifice
+W45	W20-W49	Foreign body or object entering through skin
+W46	W20-W49	Contact with hypodermic needle
+W49	W20-W49	Exposure to other inanimate mechanical forces
+W50	W50-W64	Accidental hit, strike, kick, twist, bite or scratch by another person
+W51	W50-W64	Accidental striking against or bumped into by another person
+W52	W50-W64	Crushed, pushed or stepped on by crowd or human stampede
+W53	W50-W64	Contact with rodent
+W54	W50-W64	Contact with dog
+W55	W50-W64	Contact with other mammals
+W56	W50-W64	Contact with nonvenomous marine animal
+W57	W50-W64	Bitten or stung by nonvenomous insect and other nonvenomous arthropods
+W58	W50-W64	Contact with crocodile or alligator
+W59	W50-W64	Contact with other nonvenomous reptiles
+W60	W50-W64	Contact with nonvenomous plant thorns and spines and sharp leaves
+W61	W50-W64	Contact with birds (domestic) (wild)
+W62	W50-W64	Contact with nonvenomous amphibians
+W64	W50-W64	Exposure to other animate mechanical forces
+W65	W65-W74	Accidental drowning and submersion while in bath-tub
+W67	W65-W74	Accidental drowning and submersion while in swimming-pool
+W69	W65-W74	Accidental drowning and submersion while in natural water
+W73	W65-W74	Other specified cause of accidental non-transport drowning and submersion
+W74	W65-W74	Unspecified cause of accidental drowning and submersion
+W85	W85-W99	Exposure to electric transmission lines
+W86	W85-W99	Exposure to other specified electric current
+W88	W85-W99	Exposure to ionizing radiation
+W89	W85-W99	Exposure to man-made visible and ultraviolet light
+W90	W85-W99	Exposure to other nonionizing radiation
+W92	W85-W99	Exposure to excessive heat of man-made origin
+W93	W85-W99	Exposure to excessive cold of man-made origin
+W94	W85-W99	Exposure to high and low air pressure and changes in air pressure
+W99	W85-W99	Exposure to other man-made environmental factors
+X00	X00-X08	Exposure to uncontrolled fire in building or structure
+X01	X00-X08	Exposure to uncontrolled fire, not in building or structure
+X02	X00-X08	Exposure to controlled fire in building or structure
+X03	X00-X08	Exposure to controlled fire, not in building or structure
+X04	X00-X08	Exposure to ignition of highly flammable material
+X05	X00-X08	Exposure to ignition or melting of nightwear
+X06	X00-X08	Exposure to ignition or melting of other clothing and apparel
+X08	X00-X08	Exposure to other specified smoke, fire and flames
+X10	X10-X19	Contact with hot drinks, food, fats and cooking oils
+X11	X10-X19	Contact with hot tap-water
+X12	X10-X19	Contact with other hot fluids
+X13	X10-X19	Contact with steam and other hot vapors
+X14	X10-X19	Contact with hot air and other hot gases
+X15	X10-X19	Contact with hot household appliances
+X16	X10-X19	Contact with hot heating appliances, radiators and pipes
+X17	X10-X19	Contact with hot engines, machinery and tools
+X18	X10-X19	Contact with other hot metals
+X19	X10-X19	Contact with other heat and hot substances
+X30	X30-X39	Exposure to excessive natural heat
+X31	X30-X39	Exposure to excessive natural cold
+X32	X30-X39	Exposure to sunlight
+X34	X30-X39	Earthquake
+X35	X30-X39	Volcanic eruption
+X36	X30-X39	Avalanche, landslide and other earth movements
+X37	X30-X39	Cataclysmic storm
+X38	X30-X39	Flood
+X39	X30-X39	Exposure to other forces of nature
+X50	X50	Overexertion and strenuous or repetitive movements
+X52	X52-X58	Prolonged stay in weightless environment
+X58	X52-X58	Exposure to other specified factors
+X71	X71-X83	Intentional self-harm by drowning and submersion
+X72	X71-X83	Intentional self-harm by handgun discharge
+X73	X71-X83	Intentional self-harm by rifle, shotgun and larger firearm discharge
+X74	X71-X83	Intentional self-harm by other and unspecified firearm and gun discharge
+X75	X71-X83	Intentional self-harm by explosive material
+X76	X71-X83	Intentional self-harm by smoke, fire and flames
+X77	X71-X83	Intentional self-harm by steam, hot vapors and hot objects
+X78	X71-X83	Intentional self-harm by sharp object
+X79	X71-X83	Intentional self-harm by blunt object
+X80	X71-X83	Intentional self-harm by jumping from a high place
+X81	X71-X83	Intentional self-harm by jumping or lying in front of moving object
+X82	X71-X83	Intentional self-harm by crashing of motor vehicle
+X83	X71-X83	Intentional self-harm by other specified means
+X92	X92-Y09	Assault by drowning and submersion
+X93	X92-Y09	Assault by handgun discharge
+X94	X92-Y09	Assault by rifle, shotgun and larger firearm discharge
+X95	X92-Y09	Assault by other and unspecified firearm and gun discharge
+X96	X92-Y09	Assault by explosive material
+X97	X92-Y09	Assault by smoke, fire and flames
+X98	X92-Y09	Assault by steam, hot vapors and hot objects
+X99	X92-Y09	Assault by sharp object
+Y00	X92-Y09	Assault by blunt object
+Y01	X92-Y09	Assault by pushing from high place
+Y02	X92-Y09	Assault by pushing or placing victim in front of moving object
+Y03	X92-Y09	Assault by crashing of motor vehicle
+Y04	X92-Y09	Assault by bodily force
+Y07	X92-Y09	Perpetrator of assault, maltreatment and neglect
+Y08	X92-Y09	Assault by other specified means
+Y09	X92-Y09	Assault by unspecified means
+Y21	Y21-Y33	Drowning and submersion, undetermined intent
+Y22	Y21-Y33	Handgun discharge, undetermined intent
+Y23	Y21-Y33	Rifle, shotgun and larger firearm discharge, undetermined intent
+Y24	Y21-Y33	Other and unspecified firearm discharge, undetermined intent
+Y25	Y21-Y33	Contact with explosive material, undetermined intent
+Y26	Y21-Y33	Exposure to smoke, fire and flames, undetermined intent
+Y27	Y21-Y33	Contact with steam, hot vapors and hot objects, undetermined intent
+Y28	Y21-Y33	Contact with sharp object, undetermined intent
+Y29	Y21-Y33	Contact with blunt object, undetermined intent
+Y30	Y21-Y33	Falling, jumping or pushed from a high place, undetermined intent
+Y31	Y21-Y33	Falling, lying or running before or into moving object, undetermined intent
+Y32	Y21-Y33	Crashing of motor vehicle, undetermined intent
+Y33	Y21-Y33	Other specified events, undetermined intent
+Y35	Y35-Y38	Legal intervention
+Y36	Y35-Y38	Operations of war
+Y37	Y35-Y38	Military operations
+Y38	Y35-Y38	Terrorism
+Y62	Y62-Y69	Failure of sterile precautions during surgical and medical care
+Y63	Y62-Y69	Failure in dosage during surgical and medical care
+Y64	Y62-Y69	Contaminated medical or biological substances
+Y65	Y62-Y69	Other misadventures during surgical and medical care
+Y66	Y62-Y69	Nonadministration of surgical and medical care
+Y69	Y62-Y69	Unspecified misadventure during surgical and medical care
+Y70	Y70-Y82	Anesthesiology devices associated with adverse incidents
+Y71	Y70-Y82	Cardiovascular devices associated with adverse incidents
+Y72	Y70-Y82	Otorhinolaryngological devices associated with adverse incidents
+Y73	Y70-Y82	Gastroenterology and urology devices associated with adverse incidents
+Y74	Y70-Y82	General hospital and personal-use devices associated with adverse incidents
+Y75	Y70-Y82	Neurological devices associated with adverse incidents
+Y76	Y70-Y82	Obstetric and gynecological devices associated with adverse incidents
+Y77	Y70-Y82	Ophthalmic devices associated with adverse incidents
+Y78	Y70-Y82	Radiological devices associated with adverse incidents
+Y79	Y70-Y82	Orthopedic devices associated with adverse incidents
+Y80	Y70-Y82	Physical medicine devices associated with adverse incidents
+Y81	Y70-Y82	General- and plastic-surgery devices associated with adverse incidents
+Y82	Y70-Y82	Other and unspecified medical devices associated with adverse incidents
+Y83	Y83-Y84	Surgical operation and other surgical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure
+Y84	Y83-Y84	Other medical procedures as the cause of abnormal reaction of the patient, or of later complication, without mention of misadventure at the time of the procedure
+Y90	Y90-Y99	Evidence of alcohol involvement determined by blood alcohol level
+Y92	Y90-Y99	Place of occurrence of the external cause
+Y93	Y90-Y99	Activity codes
+Y95	Y90-Y99	Nosocomial condition
+Y99	Y90-Y99	External cause status
+Z00	Z00-Z13	Encounter for general examination without complaint, suspected or reported diagnosis
+Z01	Z00-Z13	Encounter for other special examination without complaint, suspected or reported diagnosis
+Z02	Z00-Z13	Encounter for administrative examination
+Z03	Z00-Z13	Encounter for medical observation for suspected diseases and conditions ruled out
+Z04	Z00-Z13	Encounter for examination and observation for other reasons
+Z05	Z00-Z13	Encounter for observation and evaluation of newborn for suspected diseases and conditions ruled out
+Z08	Z00-Z13	Encounter for follow-up examination after completed treatment for malignant neoplasm
+Z09	Z00-Z13	Encounter for follow-up examination after completed treatment for conditions other than malignant neoplasm
+Z11	Z00-Z13	Encounter for screening for infectious and parasitic diseases
+Z12	Z00-Z13	Encounter for screening for malignant neoplasms
+Z13	Z00-Z13	Encounter for screening for other diseases and disorders
+Z14	Z14-Z15	Genetic carrier
+Z15	Z14-Z15	Genetic susceptibility to disease
+Z16	Z16	Resistance to antimicrobial drugs
+Z17	Z17	Estrogen receptor status
+Z18	Z18	Retained foreign body fragments
+Z19	Z19	Hormone sensitivity malignancy status
+Z20	Z20-Z29	Contact with and (suspected) exposure to communicable diseases
+Z21	Z20-Z29	Asymptomatic human immunodeficiency virus [HIV] infection status
+Z22	Z20-Z29	Carrier of infectious disease
+Z23	Z20-Z29	Encounter for immunization
+Z28	Z20-Z29	Immunization not carried out and underimmunization status
+Z29	Z20-Z29	Encounter for other prophylactic measures
+Z30	Z30-Z39	Encounter for contraceptive management
+Z31	Z30-Z39	Encounter for procreative management
+Z32	Z30-Z39	Encounter for pregnancy test and childbirth and childcare instruction
+Z33	Z30-Z39	Pregnant state
+Z34	Z30-Z39	Encounter for supervision of normal pregnancy
+Z36	Z30-Z39	Encounter for antenatal screening of mother
+Z3A	Z30-Z39	Weeks of gestation
+Z37	Z30-Z39	Outcome of delivery
+Z38	Z30-Z39	Liveborn infants according to place of birth and type of delivery
+Z39	Z30-Z39	Encounter for maternal postpartum care and examination
+Z40	Z40-Z53	Encounter for prophylactic surgery
+Z41	Z40-Z53	Encounter for procedures for purposes other than remedying health state
+Z42	Z40-Z53	Encounter for plastic and reconstructive surgery following medical procedure or healed injury
+Z43	Z40-Z53	Encounter for attention to artificial openings
+Z44	Z40-Z53	Encounter for fitting and adjustment of external prosthetic device
+Z45	Z40-Z53	Encounter for adjustment and management of implanted device
+Z46	Z40-Z53	Encounter for fitting and adjustment of other devices
+Z47	Z40-Z53	Orthopedic aftercare
+Z48	Z40-Z53	Encounter for other postprocedural aftercare
+Z49	Z40-Z53	Encounter for care involving renal dialysis
+Z51	Z40-Z53	Encounter for other aftercare and medical care
+Z52	Z40-Z53	Donors of organs and tissues
+Z53	Z40-Z53	Persons encountering health services for specific procedures and treatment, not carried out
+Z55	Z55-Z65	Problems related to education and literacy
+Z56	Z55-Z65	Problems related to employment and unemployment
+Z57	Z55-Z65	Occupational exposure to risk factors
+Z58	Z55-Z65	Problems related to physical environment
+Z59	Z55-Z65	Problems related to housing and economic circumstances
+Z60	Z55-Z65	Problems related to social environment
+Z62	Z55-Z65	Problems related to upbringing
+Z63	Z55-Z65	Other problems related to primary support group, including family circumstances
+Z64	Z55-Z65	Problems related to certain psychosocial circumstances
+Z65	Z55-Z65	Problems related to other psychosocial circumstances
+Z66	Z66	Do not resuscitate
+Z67	Z67	Blood type
+Z68	Z68	Body mass index [BMI]
+Z69	Z69-Z76	Encounter for mental health services for victim and perpetrator of abuse
+Z70	Z69-Z76	Counseling related to sexual attitude, behavior and orientation
+Z71	Z69-Z76	Persons encountering health services for other counseling and medical advice, not elsewhere classified
+Z72	Z69-Z76	Problems related to lifestyle
+Z73	Z69-Z76	Problems related to life management difficulty
+Z74	Z69-Z76	Problems related to care provider dependency
+Z75	Z69-Z76	Problems related to medical facilities and other health care
+Z76	Z69-Z76	Persons encountering health services in other circumstances
+Z77	Z77-Z99	Other contact with and (suspected) exposures hazardous to health
+Z78	Z77-Z99	Other specified health status
+Z79	Z77-Z99	Long term (current) drug therapy
+Z80	Z77-Z99	Family history of primary malignant neoplasm
+Z81	Z77-Z99	Family history of mental and behavioral disorders
+Z82	Z77-Z99	Family history of certain disabilities and chronic diseases (leading to disablement)
+Z83	Z77-Z99	Family history of other specific disorders
+Z84	Z77-Z99	Family history of other conditions
+Z85	Z77-Z99	Personal history of malignant neoplasm
+Z86	Z77-Z99	Personal history of certain other diseases
+Z87	Z77-Z99	Personal history of other diseases and conditions
+Z88	Z77-Z99	Allergy status to drugs, medicaments and biological substances
+Z89	Z77-Z99	Acquired absence of limb
+Z90	Z77-Z99	Acquired absence of organs, not elsewhere classified
+Z91	Z77-Z99	Personal risk factors, not elsewhere classified
+Z92	Z77-Z99	Personal history of medical treatment
+Z93	Z77-Z99	Artificial opening status
+Z94	Z77-Z99	Transplanted organ and tissue status
+Z95	Z77-Z99	Presence of cardiac and vascular implants and grafts
+Z96	Z77-Z99	Presence of other functional implants
+Z97	Z77-Z99	Presence of other devices
+Z98	Z77-Z99	Other postprocedural states
+Z99	Z77-Z99	Dependence on enabling machines and devices, not elsewhere classified
+U07	U00-U49	Emergency use of U07
+U09	U00-U49	Post COVID-19 condition

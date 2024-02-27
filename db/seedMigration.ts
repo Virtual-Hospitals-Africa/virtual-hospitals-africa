@@ -41,14 +41,14 @@ export function createSeedMigration(
         },
       )
 
-      // await runCommand('./db/tsv_load_seeds.sh', {
-      //   args: load_tables,
-      // })
+      await runCommand('./db/tsv_load_seeds.sh', {
+        args: load_tables,
+      })
     },
     async dump() {
-      // await runCommand('./db/tsv_dump_seeds.sh', {
-      //   args: table_names,
-      // })
+      await runCommand('./db/tsv_dump_seeds.sh', {
+        args: table_names,
+      })
     },
   }
 }
