@@ -50,8 +50,8 @@ export async function getAvailableTestsInFacility(
 ): Promise<string[]> {
   const tests = await trx
     .selectFrom('facility_devices')
-    .leftJoin('devices', 'facility_devices.device_id', 'devices.id')
-    .leftJoin('facility_rooms', 'facility_devices.room_id', 'facility_rooms.id')
+    .innerJoin('devices', 'facility_devices.device_id', 'devices.id')
+    .innerJoin('facility_rooms', 'facility_devices.room_id', 'facility_rooms.id')
     .where('facility_rooms.facility_id', '=', opts.facility_id)
     .select([
       sql<

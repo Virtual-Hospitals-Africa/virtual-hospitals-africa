@@ -3,17 +3,18 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as devices from '../../db/models/devices.ts'
 import * as facility_rooms from '../../db/models/facility_rooms.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
+import { randomDigit } from '../mocks.ts'
 
 describe('db/models/facility_rooms.ts', { sanitizeResources: false }, () => {
-  describe('Add device and Checks if the specefic test is available in the facility', () => {
+  describe('getAvailableTestsInFacility', () => {
     itUsesTrxAnd(
-      'inserts addresses, returning an already existing address if it matches an existing ward, suburb, and street',
+      'Add device and Checks if the specefic test is available in the facility',
       async (trx) => {
         const device = (await devices.search(trx, null))[0]
         const availableTest = device.test_availability[0]
 
-        facility_rooms.addFacilityDevice(trx, 1, {
-          device_serial: '01',
+        await facility_rooms.addFacilityDevice(trx, 1, {
+          device_serial: randomDigit().toString(),
           device_id: device.id,
           room_id: 0,
         })
