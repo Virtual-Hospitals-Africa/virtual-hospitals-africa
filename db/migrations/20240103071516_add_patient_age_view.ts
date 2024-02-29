@@ -30,7 +30,9 @@ export async function up(db: Kysely<unknown>) {
     ),
 
     a2 AS (
-      SELECT id AS patient_id,
+      SELECT 
+        id AS patient_id,
+        EXTRACT(YEAR FROM age) as age_years,
         CASE WHEN age >= INTERVAL '2 years'
           THEN (EXTRACT(YEAR FROM age), 'year')::AGE
         WHEN age >= INTERVAL '3 months'
@@ -50,6 +52,7 @@ export async function up(db: Kysely<unknown>) {
     SELECT
       patient_id,
       age,
+      age_years,
       (age).number AS age_number,
       (age).unit AS age_unit,
       (age).number::TEXT || ' ' || (age).unit::TEXT || (CASE WHEN (age).number = 1 THEN '' ELSE 's' END) AS age_display

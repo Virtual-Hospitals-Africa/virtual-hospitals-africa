@@ -1,5 +1,6 @@
 import { EncounterContext, EncounterLayout } from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
+import { getYears } from '../../../../../../db/models/patient_age.ts'
 import {
   LoggedInHealthWorkerHandler,
   MeasurementsUpsert,

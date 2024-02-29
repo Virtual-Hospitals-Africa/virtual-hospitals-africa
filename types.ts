@@ -5,12 +5,12 @@ import { FreshContext, Handlers } from '$fresh/server.ts'
 import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
 import {
+  AgeUnit,
   DB,
   EncounterStep,
   FamilyType,
   IntakeStep,
   MaritalStatus,
-  PatientAge,
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
@@ -208,6 +208,14 @@ export type PastMedicalCondition = MedicalConditionBase & {
 
 export type MajorSurgery = MedicalConditionBase
 
+export type RenderedPatientAge = {
+  age: string
+  age_display: string
+  age_number: number
+  age_unit: AgeUnit
+  age_years: number
+}
+
 export type PatientIntake =
   & {
     id: number
@@ -215,7 +223,7 @@ export type PatientIntake =
     nearest_facility_name: Maybe<string>
     nearest_facility_address: Maybe<string>
     primary_doctor_name: Maybe<string>
-    age: PatientAge
+    age?: RenderedPatientAge
     address: {
       street: Maybe<string>
       suburb_id: Maybe<number>
@@ -288,14 +296,15 @@ export type FamilyRelationInsert = {
 export type FamilyUpsert = {
   guardians: FamilyRelationInsert[]
   dependents: FamilyRelationInsert[]
-  other_next_of_kin: Maybe<FamilyRelationInsert>
-  home_satisfaction: Maybe<number>
-  spiritual_satisfaction: Maybe<number>
-  social_satisfaction: Maybe<number>
-  religion: Maybe<Religion>
-  family_type: Maybe<FamilyType>
-  marital_status: Maybe<MaritalStatus>
-  patient_cohabitation: Maybe<PatientCohabitation>
+  other_next_of_kin?: Maybe<FamilyRelationInsert>
+  home_satisfaction?: Maybe<number>
+  spiritual_satisfaction?: Maybe<number>
+  social_satisfaction?: Maybe<number>
+  religion?: Maybe<Religion>
+  family_type?: Maybe<FamilyType>
+  marital_status?: Maybe<MaritalStatus>
+  patient_cohabitation?: Maybe<PatientCohabitation>
+  under_18?: boolean
 }
 
 export type PatientWithOpenEncounter = RenderedPatient & {
@@ -1427,7 +1436,7 @@ export type Ward = { name: string; district_id: number }
 
 export type Suburb = { name: string; ward_id: number }
 
-export type FullCountryInfo = {
+export type CountryAddressTree = {
   id: number
   name: string
   provinces: {
@@ -1796,6 +1805,8 @@ export type Measurements = {
   blood_glucose: [number, 'mg/dL']
   pulse: [number, 'bpm']
   respiratory_rate: [number, 'bpm']
+  midarm_circumference: [number, 'cm']
+  triceps_skinfold: [number, 'cm']
 }
 export type Measurement<Name extends keyof Measurements> = {
   name: Name

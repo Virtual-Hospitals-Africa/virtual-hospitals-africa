@@ -34,7 +34,8 @@ import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
-import { IntakeStep, PatientAge } from '../../db.d.ts'
+import { IntakeStep } from '../../db.d.ts'
+import { RenderedPatientAge } from '../../types.ts'
 
 export const view_href_sql = sql<string>`
   concat('/app/patients/', patients.id::text)
@@ -355,7 +356,7 @@ export function getIntake(
       'facilities.name as nearest_facility_name',
       'facilities.address as nearest_facility_address',
       'health_workers.name as primary_doctor_name',
-      sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
+      sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
     ])
     .where('patients.id', '=', opts.id)
     .executeTakeFirst()
@@ -403,7 +404,7 @@ export async function getIntakeReview(
         .as('avatar_url'),
       'patients.nearest_facility_id',
       'facilities.name as nearest_facility_name',
-      sql<PatientAge>`TO_JSON(patient_age)`.as('age'),
+      sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')

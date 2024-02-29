@@ -18,7 +18,6 @@ import partition from '../../util/partition.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
 import memoize from '../../util/memoize.ts'
-import * as patient_age from './patient_age.ts'
 
 export function addGuardian(
   trx: TrxOrDb,
@@ -258,25 +257,23 @@ export async function upsert(
     Number(!!family_to_upsert.other_next_of_kin)
   assertOr400(total_next_of_kin <= 1, 'Cannot have more than one next of kin')
 
-  const age = await patient_age.get(trx, { patient_id: patient_id })
-  const age_number = (age?.age_unit === 'year' ? age?.age_number : 0) ?? 0
-  if (age_number <= 18 && family_to_upsert.family_type) {
-    assertOr400(
-      (['2 married parents', 'Same-sex marriage'].includes(
-        family_to_upsert.family_type,
-      ) && family_to_upsert.guardians.length >= 2) ||
-        !(['2 married parents', 'Same-sex marriage'].includes(
-          family_to_upsert.family_type,
-        )),
-      'Please include the patient parents as guardians',
-    )
-
-    assertOr400(
-      (family_to_upsert.family_type === 'Single Parent' &&
-        family_to_upsert.guardians.length >= 1) ||
-        family_to_upsert.family_type !== 'Single Parent',
-      'Please include patient parent as a guardian',
-    )
+  // TODO more fully validate family_type and marital_status
+  if (family_to_upsert.under_18) {
+    switch (family_to_upsert.family_type) {
+      case 'Single Parent':
+        assertOr400(
+          family_to_upsert.guardians.length === 1,
+          'Single parent family must have one guardian',
+        )
+        break
+      case '2 married parents': {
+        assertOr400(
+          family_to_upsert.guardians.length === 2,
+          'Since the family type is "2 married parents", two guardians must be listed',
+        )
+        break
+      }
+    }
   }
 
   const [existing_guardians, new_guardians] = partition(
@@ -576,7 +573,7 @@ export async function upsert(
     trx.insertInto('patient_guardians').values(new_relations).execute()
 
   const familyValues = {
-    patient_id: patient_id,
+    patient_id,
     home_satisfaction: family_to_upsert.home_satisfaction ?? null,
     spiritual_satisfaction: family_to_upsert.spiritual_satisfaction ?? null,
     social_satisfaction: family_to_upsert.social_satisfaction ?? null,

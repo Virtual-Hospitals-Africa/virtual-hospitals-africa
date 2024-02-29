@@ -1,21 +1,16 @@
 import {
   FamilyRelationInsert,
   LoggedInHealthWorkerHandler,
-  LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
-import PatientFamilyForm from '../../../../../components/patients/intake/FamilyForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
+  assertAgeYearsKnown,
   IntakeContext,
   IntakeLayout,
-  nextLink,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -25,9 +20,11 @@ import {
   PatientCohabitation,
   Religion,
 } from '../../../../../db.d.ts'
+import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
 
 type FamilyFormValues = {
-  family?: {
+  family: {
+    under_18?: boolean
     guardians?: FamilyRelationInsert[]
     dependents?: FamilyRelationInsert[]
     other_next_of_kin?: FamilyRelationInsert
@@ -57,16 +54,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
     return upsertPatientAndRedirect(ctx, {
       ...patient,
       family: {
-        guardians: family?.guardians || [],
-        dependents: family?.dependents || [],
-        other_next_of_kin: family?.other_next_of_kin,
-        home_satisfaction: family?.home_satisfaction,
-        spiritual_satisfaction: family?.spiritual_satisfaction,
-        social_satisfaction: family?.social_satisfaction,
-        religion: family?.religion,
-        family_type: family?.family_type,
-        marital_status: family?.marital_status,
-        patient_cohabitation: family?.patient_cohabitation,
+        ...family,
+        guardians: family.guardians || [],
+        dependents: family.dependents || [],
       },
     })
   },
@@ -78,22 +68,16 @@ export default async function FamilyPage(
 ) {
   assert(!ctx.state.is_review)
   const { patient, trx } = ctx.state
-  const family = await patient_family.get(trx, { patient_id: patient.id })
-
-  const warning = encodeURIComponent(
-    "Please fill out the patient's personal information beforehand.",
-  )
-  assertOrRedirect(
-    patient.age,
-    `/app/patients/${patient.id}/intake/personal?warning=${warning}`,
-  )
+  const age_years = assertAgeYearsKnown(ctx)
 
   return (
     <IntakeLayout ctx={ctx}>
-      <PatientFamilyForm
-        patient={patient}
-        family={family}
-      />
+      <section>
+        <PatientFamilyForm
+          age_years={age_years}
+          family={await patient_family.get(trx, { patient_id: patient.id })}
+        />
+      </section>
       <hr className='my-2' />
       <Buttons submitText='Next Step' />
     </IntakeLayout>

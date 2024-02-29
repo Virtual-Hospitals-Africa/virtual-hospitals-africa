@@ -93,7 +93,7 @@ export default async function AddressPage(
 ) {
   assert(!ctx.state.is_review)
   const { healthWorker, patient, trx } = ctx.state
-  const country_address_tree = await address.getFullCountryInfo(trx)
+  const country_address_tree = await address.getCountryAddressTree(trx)
 
   let default_facility:
     | { id: number; name: string; address: string }

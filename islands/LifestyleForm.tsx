@@ -40,7 +40,7 @@ const alcohol_products = [
 const attraction_question = ['Male', 'Female', 'LGBTQIA']
 
 function SexualActivitySection(
-  { lifestyle, age }: { lifestyle: Lifestyle; age: number },
+  { lifestyle, age_years }: { lifestyle: Lifestyle; age_years: number },
 ) {
   const sexual_activity = useSignal<SexualActivity>(
     lifestyle.sexual_activity || {
@@ -68,7 +68,7 @@ function SexualActivitySection(
             value={sexual_activity.value.first_encounter}
             className='col-start-6'
             min={0}
-            max={age}
+            max={age_years}
           />
           <NumberInput
             name={'lifestyle.sexually_active'}
@@ -145,16 +145,16 @@ export function LifestyleForm({
     alcohol: null,
     smoking: null,
   },
-  age,
+  age_years,
 }: {
   lifestyle?: Lifestyle
-  age: number
+  age_years: number
 }) {
   return (
     <>
       <SexualActivitySection
         lifestyle={lifestyle}
-        age={age}
+        age_years={age_years}
       />
     </>
   )

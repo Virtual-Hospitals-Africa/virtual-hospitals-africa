@@ -65,7 +65,6 @@ export default async function PreExistingConditionsPage(
   return (
     <IntakeLayout ctx={ctx}>
       <PatientPreExistingConditions
-        patient={patient}
         allergies={await getting_allergies}
         patient_allergies={await getting_patient_allergies}
         pre_existing_conditions={await getting_pre_existing_conditions}

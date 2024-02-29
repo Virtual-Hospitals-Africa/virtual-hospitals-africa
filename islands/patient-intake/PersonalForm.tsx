@@ -1,16 +1,16 @@
+import { useSignal } from '@preact/signals'
 import {
   DateInput,
   EthnicitySelect,
   GenderSelect,
   PhoneNumberInput,
   TextInput,
-} from '../../library/form/Inputs.tsx'
-import FormRow from '../../library/form/Row.tsx'
-import { ImagePreviewInput } from '../../../islands/file-preview-input.tsx'
-import { PatientIntake } from '../../../types.ts'
-import NationalIdInput from '../../../islands/NationalIdInput.tsx'
-import { useSignal } from '@preact/signals'
-import NationalIdInputCheckbox from '../../../islands/NationalIdInputCheckbox.tsx'
+} from '../../components/library/form/Inputs.tsx'
+import FormRow from '../../components/library/form/Row.tsx'
+import { ImagePreviewInput } from '../file-preview-input.tsx'
+import { PatientIntake } from '../../types.ts'
+import NationalIdInput from '../NationalIdInput.tsx'
+import NationalIdInputCheckbox from '../NationalIdInputCheckbox.tsx'
 
 export default function PatientPersonalForm(
   { patient, previously_filled }: {

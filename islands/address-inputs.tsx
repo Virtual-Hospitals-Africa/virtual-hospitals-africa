@@ -1,13 +1,13 @@
 import FormRow from '../components/library/form/Row.tsx'
 import { Select, TextInput } from '../components/library/form/Inputs.tsx'
-import { FullCountryInfo, Maybe, PatientIntake } from '../types.ts'
+import { CountryAddressTree, Maybe, PatientIntake } from '../types.ts'
 import { computed, effect, useSignal } from '@preact/signals'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export default function AddressForm(
   { address, country_address_tree }: {
     address: Partial<PatientIntake['address']>
-    country_address_tree: FullCountryInfo
+    country_address_tree: CountryAddressTree
   },
 ) {
   // Zimbabwe has id: 1, that's the only country we support for now

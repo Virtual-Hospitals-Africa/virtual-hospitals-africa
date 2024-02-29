@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
+  CountryAddressTree,
   Facility,
-  FullCountryInfo,
   HasId,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
@@ -33,7 +33,7 @@ import SectionHeader from '../../../../../components/library/typography/SectionH
 
 type RegisterPageProps = {
   formState: FormState
-  country_address_tree: FullCountryInfo | undefined
+  country_address_tree: CountryAddressTree | undefined
 }
 
 export type FormState =
@@ -169,7 +169,7 @@ export default async function RegisterPage(
   formState.email = healthWorker.email
 
   const country_address_tree = step == 'personal'
-    ? await address.getFullCountryInfo(ctx.state.trx)
+    ? await address.getCountryAddressTree(ctx.state.trx)
     : undefined
 
   const stepState = useNurseRegistrationSteps(ctx)
