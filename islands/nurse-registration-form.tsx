@@ -7,10 +7,10 @@ import { FullCountryInfo } from '../types.ts'
 import Form from '../components/library/form/Form.tsx'
 
 export default function NurseRegistrationForm(
-  { currentStep, formData, adminDistricts }: {
+  { currentStep, formData, country_address_tree }: {
     currentStep: string
     formData: Partial<FormState>
-    adminDistricts: FullCountryInfo | undefined
+    country_address_tree: FullCountryInfo | undefined
   },
 ) {
   unsavedChangesWarning()
@@ -24,7 +24,7 @@ export default function NurseRegistrationForm(
       {currentStep === 'personal' && (
         <NursePersonalForm
           formData={formData}
-          adminDistricts={adminDistricts!}
+          country_address_tree={country_address_tree!}
         />
       )}
       {currentStep === 'professional' && (

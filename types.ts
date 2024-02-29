@@ -346,7 +346,7 @@ export type PatientState = {
   updated_at: Date
   nearest_facilities?: HasId<PatientNearestFacility>[]
   nearest_facility_name?: string
-  selectedFacility?: Facility
+  selectedFacility?: FacilityWithAddress
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -1075,7 +1075,7 @@ export type EmployeeInfo = {
   registration_needed: SqlBool
   registration_pending_approval: SqlBool
   address: Maybe<string>
-  facility_address: string
+  facility_address: string | null
   facility_id: number
   facility_name: string
   professions: Profession[]
@@ -1094,7 +1094,7 @@ export type EmployedHealthWorker = HealthWorker & {
     facility: {
       id: number
       name: string
-      address: string
+      address: string | null
     }
     roles: {
       nurse: null | {
@@ -1331,14 +1331,18 @@ export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
     ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
     : LoggedInHealthWorkerHandlerWithProps<unknown, Context>
 
-export type Facility = Location & {
+export type Facility = Partial<Location> & {
   name: string
-  address: string
   category: string
+  address: string | null
   phone: string | null
 }
 
-export type PatientNearestFacility = Facility & {
+export type FacilityWithAddress = Location & Facility & {
+  address: string
+}
+
+export type PatientNearestFacility = FacilityWithAddress & {
   walking_distance: null | number
   distance: number
   vha: boolean

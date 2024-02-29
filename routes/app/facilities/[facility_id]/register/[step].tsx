@@ -33,7 +33,7 @@ import SectionHeader from '../../../../../components/library/typography/SectionH
 
 type RegisterPageProps = {
   formState: FormState
-  adminDistricts: FullCountryInfo | undefined
+  country_address_tree: FullCountryInfo | undefined
 }
 
 export type FormState =
@@ -168,7 +168,7 @@ export default async function RegisterPage(
 
   formState.email = healthWorker.email
 
-  const adminDistricts = step == 'personal'
+  const country_address_tree = step == 'personal'
     ? await address.getFullCountryInfo(ctx.state.trx)
     : undefined
 
@@ -188,7 +188,7 @@ export default async function RegisterPage(
         <NurseRegistrationForm
           currentStep={stepState.currentStep}
           formData={formState}
-          adminDistricts={adminDistricts}
+          country_address_tree={country_address_tree}
         />
       </Container>
     </Layout>

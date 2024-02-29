@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
-import db from './db.ts'
+import db, { uri } from './db.ts'
 import { runCommand } from '../util/command.ts'
 import * as inParallel from '../util/inParallel.ts'
 
@@ -42,12 +42,12 @@ export function createSeedMigration(
       )
 
       await runCommand('./db/tsv_load_seeds.sh', {
-        args: load_tables,
+        args: [uri].concat(load_tables),
       })
     },
     async dump() {
       await runCommand('./db/tsv_dump_seeds.sh', {
-        args: table_names,
+        args: [uri].concat(table_names),
       })
     },
   }

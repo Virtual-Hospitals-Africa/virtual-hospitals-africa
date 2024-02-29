@@ -41,11 +41,9 @@ import * as $app_patients_patient_id_encounters_encounter_id_close_visit from '.
 import * as $app_patients_patient_id_encounters_encounter_id_diagnosis from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_general_assessments from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_risk_factors from './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_symptoms from './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_vitals from './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx'
 import * as $app_patients_patient_id_intake from './routes/app/patients/[patient_id]/intake.tsx'
@@ -132,6 +130,7 @@ import * as $schedule_form from './islands/schedule-form.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
+import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting-room/AddPatientForm.tsx'
 import { type Manifest } from '$fresh/server.ts'
 
@@ -196,16 +195,12 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
       $app_patients_patient_id_encounters_encounter_id_examinations,
-    './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx':
-      $app_patients_patient_id_encounters_encounter_id_general_assessments,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':
       $app_patients_patient_id_encounters_encounter_id_orders,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx':
       $app_patients_patient_id_encounters_encounter_id_prescriptions,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx':
       $app_patients_patient_id_encounters_encounter_id_referral,
-    './routes/app/patients/[patient_id]/encounters/[encounter_id]/risk_factors.tsx':
-      $app_patients_patient_id_encounters_encounter_id_risk_factors,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/symptoms.tsx':
       $app_patients_patient_id_encounters_encounter_id_symptoms,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/vitals.tsx':
@@ -311,6 +306,7 @@ const manifest = {
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,
+    './islands/vitals/Form.tsx': $vitals_Form,
     './islands/waiting-room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
   },
   baseUrl: import.meta.url,

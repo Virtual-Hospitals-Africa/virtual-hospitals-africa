@@ -1,3 +1,4 @@
+import { MEASUREMENTS } from '../../shared/measurements.ts'
 import {
   Measurements,
   MeasurementsUpsert,
@@ -5,20 +6,6 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-
-export const MEASUREMENTS: {
-  [Name in keyof Measurements]: Measurements[Name][1]
-} = {
-  height: 'cm',
-  weight: 'kg',
-  temperature: 'celsius',
-  blood_pressure_diastolic: 'mmHg',
-  blood_pressure_systolic: 'mmHg',
-  blood_oxygen_saturation: '%',
-  blood_glucose: 'mg/dL',
-  pulse: 'bpm',
-  respiratory_rate: 'bpm',
-}
 
 export async function upsertVitals(
   trx: TrxOrDb,
@@ -32,10 +19,6 @@ export async function upsertVitals(
   const measurement_names = Object.keys(measurements) as (keyof Measurements)[]
 
   const unseen_vitals = new Set(Object.keys(MEASUREMENTS))
-  assertOr400(
-    measurement_names.length > 0,
-    'Must provide at least one measurement',
-  )
 
   const patient_measurements: PatientMeasurement[] = measurement_names.map(
     (name) => {
@@ -66,7 +49,7 @@ export async function upsertVitals(
     .where('measurement_name', 'in', [...unseen_vitals])
     .execute()
 
-  const updating_vitals = trx
+  const updating_vitals = patient_measurements.length && trx
     .insertInto('patient_measurements')
     .values(patient_measurements)
     .onConflict((oc) =>

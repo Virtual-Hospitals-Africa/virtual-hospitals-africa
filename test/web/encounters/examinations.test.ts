@@ -7,7 +7,7 @@ import db from '../../../db/db.ts'
 import { assert } from 'std/assert/assert.ts'
 
 describe(
-  '/app/patients/[patient_id]/encounters/open/general_assessments',
+  '/app/patients/[patient_id]/encounters/open/examinations',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('can save asssessments on POST', async () => {
@@ -26,7 +26,7 @@ describe(
       body.append('alcohol', 'on')
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
         {
           method: 'POST',
           body,
@@ -73,7 +73,7 @@ describe(
       body.append('thin', 'on')
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
         {
           method: 'POST',
           body,
@@ -92,7 +92,7 @@ describe(
       }])
 
       const $ = await fetchCheerio(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
       )
 
       const checkboxes = $('input[type="checkbox"]')
@@ -131,7 +131,7 @@ describe(
       const body = new FormData()
 
       const response = await fetch(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
         {
           method: 'POST',
           body,
@@ -148,7 +148,7 @@ describe(
       assertEquals(assessments.length, 0)
 
       const $ = await fetchCheerio(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
       )
 
       const categories = await db.selectFrom('general_assessment_categories')
@@ -185,7 +185,7 @@ describe(
       })
 
       const $ = await fetchCheerio(
-        `${route}/app/patients/${encounter.patient_id}/encounters/open/general_assessments`,
+        `${route}/app/patients/${encounter.patient_id}/encounters/open/examinations`,
       )
 
       const categories = await db.selectFrom('general_assessment_categories')

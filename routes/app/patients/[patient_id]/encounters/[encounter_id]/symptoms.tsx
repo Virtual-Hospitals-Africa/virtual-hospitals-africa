@@ -1,4 +1,8 @@
-import { EncounterContext, EncounterLayout, nextLink } from './_middleware.tsx'
+import {
+  completeStep,
+  EncounterContext,
+  EncounterLayout,
+} from './_middleware.tsx'
 import {
   LoggedInHealthWorkerHandlerWithProps,
   PatientSymptomUpsert,
@@ -14,8 +18,6 @@ import {
   isISODateString,
   todayISOInHarare,
 } from '../../../../../../util/date.ts'
-import redirect from '../../../../../../util/redirect.ts'
-import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
 
 function assertIsSymptoms(body: unknown): asserts body is {
   symptoms: PatientSymptomUpsert[]
@@ -55,17 +57,14 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   EncounterContext['state']
 > = {
   async POST(req, ctx: EncounterContext) {
+    const completing_step = completeStep(ctx)
+
     const { symptoms } = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsSymptoms,
     )
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
-    const completing_step = completedStep(ctx.state.trx, {
-      encounter_id: ctx.state.encounter.encounter_id,
-      step: 'symptoms',
-    })
 
     await patient_symptoms.upsert(ctx.state.trx, {
       patient_id,
@@ -75,9 +74,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       symptoms,
     })
 
-    await completing_step
-
-    return redirect(nextLink(ctx))
+    return completing_step
   },
 }
 
