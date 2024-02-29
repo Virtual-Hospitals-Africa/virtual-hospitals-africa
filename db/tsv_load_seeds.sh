@@ -1,8 +1,9 @@
 #! /usr/bin/env bash
 set -xeuo pipefail
 
-# shellcheck disable=SC1091
-source .env
+# First argument is the database URL, the rest are table names
+DATABASE_URL="$1"
+shift
 
 # Directory to store exported TSV files
 SEED_DIR="./db/seeds"
@@ -15,6 +16,19 @@ for table in "$@"; do
   fi
   echo "Loading data from $file into table $table"
   psql "$DATABASE_URL" -c "\copy $table FROM '$file' WITH DELIMITER E'\t' CSV HEADER"
+  echo "Resetting sequence for table $table, if present"
+  psql "$DATABASE_URL" -c "
+    DO \$$
+    BEGIN
+      IF EXISTS (
+        SELECT 1
+        FROM pg_sequences
+        WHERE sequencename = '${table}_id_seq'
+      ) THEN
+        EXECUTE 'SELECT setval(''' || '${table}_id_seq' || ''', 1 + (SELECT MAX(id) FROM ' || '${table}' || '))';
+      END IF;
+    END \$$
+  "
 done
 
 echo "Data loaded into tables from $SEED_DIR"

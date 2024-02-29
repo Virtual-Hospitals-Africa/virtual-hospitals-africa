@@ -7,21 +7,26 @@ import { createSeedMigration } from '../seedMigration.ts'
 export default createSeedMigration(
   ['facilities'],
   async (db: Kysely<unknown>) => {
-    await addTestFacility(db)
+    await addTestFacilities(db)
     await importDataFromCSV(db)
   },
 )
 
 // Add a test facility with all VHA employees as admins
 // deno-lint-ignore no-explicit-any
-export function addTestFacility(db: Kysely<any>) {
-  return db.insertInto('facilities').values({
-    name: 'VHA Test Hospital',
-    location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,
-    address: 'Bristol, UK',
-    category: 'Hospital',
-    phone: null,
-  })
+export function addTestFacilities(db: Kysely<any>) {
+  return db.insertInto('facilities').values([
+    {
+      name: 'VHA Test Clinic',
+      location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,
+      address: 'Bristol, UK',
+      category: 'Clinic',
+    },
+    {
+      name: 'VHA Test Virtual Hospital',
+      category: 'Virtual Hospital',
+    },
+  ])
     .returningAll()
     .execute()
 }

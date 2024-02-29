@@ -17,7 +17,6 @@ export type EncounterStep =
   | 'diagnosis'
   | 'diagnostic_tests'
   | 'examinations'
-  | 'general_assessments'
   | 'orders'
   | 'prescriptions'
   | 'referral'
@@ -253,11 +252,11 @@ export interface Encounter {
 }
 
 export interface Facilities {
-  address: string
+  address: string | null
   category: string
   created_at: Generated<Timestamp>
   id: Generated<number>
-  location: string
+  location: string | null
   name: string
   phone: string | null
   updated_at: Generated<Timestamp>

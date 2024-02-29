@@ -5,21 +5,21 @@ import { computed, effect, useSignal } from '@preact/signals'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export default function AddressForm(
-  { address, adminDistricts }: {
+  { address, country_address_tree }: {
     address: Partial<PatientIntake['address']>
-    adminDistricts: FullCountryInfo
+    country_address_tree: FullCountryInfo
   },
 ) {
   // Zimbabwe has id: 1, that's the only country we support for now
-  assertEquals(adminDistricts.length, 1, 'Only Zimbabwe supported')
-  assertEquals(adminDistricts[0].id, 1, 'Only Zimbabwe supported')
+  assertEquals(country_address_tree.length, 1, 'Only Zimbabwe supported')
+  assertEquals(country_address_tree[0].id, 1, 'Only Zimbabwe supported')
 
   const province_id = useSignal(address.province_id)
   const district_id = useSignal(address.district_id)
   const ward_id = useSignal(address.ward_id)
   const suburb_id = useSignal(address.suburb_id)
 
-  const { provinces } = adminDistricts[0]
+  const { provinces } = country_address_tree[0]
 
   const districts = computed(() =>
     province_id.value

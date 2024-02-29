@@ -12,9 +12,9 @@ import { FullCountryInfo } from '../../../../types.ts'
 import AddressForm from '../../../../islands/address-inputs.tsx'
 
 export default function NursePersonalForm(
-  { formData, adminDistricts }: {
+  { formData, country_address_tree }: {
     formData: Partial<FormState>
-    adminDistricts: FullCountryInfo
+    country_address_tree: FullCountryInfo
   },
 ) {
   return (
@@ -69,7 +69,7 @@ export default function NursePersonalForm(
       <hr className='my-2' />
       <AddressForm
         address={formData.address || {}}
-        adminDistricts={adminDistricts}
+        country_address_tree={country_address_tree}
       />
       <hr className='my-2' />
       <Buttons submitText='Next' />

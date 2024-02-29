@@ -369,12 +369,14 @@ export function add(
     'id' | 'created_at' | 'updated_at'
   >,
 ) {
-  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode')
+  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
   return trx
     .insertInto('facilities')
     .values({
       ...facility,
-      location: sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`,
+      location: (latitude != null && longitude != null)
+        ? sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`
+        : null,
     })
     .returningAll()
     .executeTakeFirstOrThrow()
@@ -386,6 +388,6 @@ export function remove(
     id: number
   },
 ) {
-  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode')
+  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
   return trx.deleteFrom('facilities').where('id', '=', opts.id).execute()
 }

@@ -29,7 +29,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
               {
                 provider_id: healthWorker.employee_id!,
                 facility_id: 1,
-                facility_name: 'VHA Test Hospital',
+                facility_name: 'VHA Test Clinic',
                 professions: [
                   'nurse',
                 ],
@@ -38,7 +38,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
             name: healthWorker.name,
             health_worker_id: healthWorker.id,
             description: [
-              'nurse @ VHA Test Hospital',
+              'nurse @ VHA Test Clinic',
             ],
           },
         )
@@ -71,7 +71,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
             {
               provider_id: healthWorker.employee_id!,
               facility_id: 1,
-              facility_name: 'VHA Test Hospital',
+              facility_name: 'VHA Test Clinic',
               professions: [
                 'nurse',
               ],
@@ -80,7 +80,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
           health_worker_id: healthWorker.id,
           name: healthWorker.name,
           description: [
-            'nurse @ VHA Test Hospital',
+            'nurse @ VHA Test Clinic',
           ],
         },
       )
@@ -151,7 +151,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
             {
               provider_id: healthWorker.employee_id!,
               facility_id: 1,
-              facility_name: 'VHA Test Hospital',
+              facility_name: 'VHA Test Clinic',
               professions: [
                 'nurse',
               ],
@@ -160,7 +160,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
           name: healthWorker.name,
           health_worker_id: healthWorker.id,
           description: [
-            'nurse @ VHA Test Hospital',
+            'nurse @ VHA Test Clinic',
           ],
         },
       )

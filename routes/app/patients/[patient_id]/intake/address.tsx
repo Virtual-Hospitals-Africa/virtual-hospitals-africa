@@ -93,18 +93,29 @@ export default async function AddressPage(
 ) {
   assert(!ctx.state.is_review)
   const { healthWorker, patient, trx } = ctx.state
-  const adminDistricts = await address.getFullCountryInfo(trx)
+  const country_address_tree = await address.getFullCountryInfo(trx)
+
+  let default_facility:
+    | { id: number; name: string; address: string }
+    | undefined
+
+  for (const employment of healthWorker.employment) {
+    if (employment.facility.address) {
+      default_facility = {
+        id: employment.facility.id,
+        name: employment.facility.name,
+        address: employment.facility.address,
+      }
+      break
+    }
+  }
 
   return (
     <IntakeLayout ctx={ctx}>
       <PatientAddressForm
         patient={patient}
-        defaultFacility={{
-          id: healthWorker.employment[0].facility.id,
-          name: healthWorker.employment[0].facility.name,
-          address: healthWorker.employment[0].facility.address,
-        }}
-        adminDistricts={adminDistricts}
+        default_facility={default_facility}
+        country_address_tree={country_address_tree}
       />
       <hr className='my-2' />
       <Buttons submitText='Next Step' />

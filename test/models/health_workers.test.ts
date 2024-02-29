@@ -68,7 +68,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             {
               facility: {
                 id: 1,
-                name: 'VHA Test Hospital',
+                name: 'VHA Test Clinic',
                 address: 'Bristol, UK',
               },
               roles: {
@@ -183,7 +183,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_needed, true)
         assertEquals(result.registration_pending_approval, false)
         assertEquals(result.facility_id, 1)
-        assertEquals(result.facility_name, 'VHA Test Hospital')
+        assertEquals(result.facility_name, 'VHA Test Clinic')
         assertEquals(result.facility_address, 'Bristol, UK')
         assertEquals(result.professions, ['nurse'])
       },
@@ -252,7 +252,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_pending_approval, true)
         assertEquals(result.documents, [])
         assertEquals(result.facility_id, 1)
-        assertEquals(result.facility_name, 'VHA Test Hospital')
+        assertEquals(result.facility_name, 'VHA Test Clinic')
         assertEquals(result.facility_address, 'Bristol, UK')
         assertEquals(result.professions, ['nurse'])
       },
@@ -353,7 +353,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         },
       ])
       assertEquals(result.facility_id, 1)
-      assertEquals(result.facility_name, 'VHA Test Hospital')
+      assertEquals(result.facility_name, 'VHA Test Clinic')
       assertEquals(result.facility_address, 'Bristol, UK')
       assertEquals(result.professions, ['nurse'])
     })

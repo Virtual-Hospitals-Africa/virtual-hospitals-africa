@@ -1,4 +1,8 @@
-import { EncounterContext, EncounterLayout } from './_middleware.tsx'
+import {
+  completeStep,
+  EncounterContext,
+  EncounterLayout,
+} from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 
@@ -6,8 +10,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {
-  POST(_req, _ctx: EncounterContext) {
-    throw new Error('Not implemented')
+  // deno-lint-ignore require-await
+  async POST(_req, ctx: EncounterContext) {
+    const completing_step = completeStep(ctx)
+    return completing_step
   },
 }
 

@@ -4,9 +4,9 @@ import AddressForm from '../../../islands/address-inputs.tsx'
 import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
 
 function PatientAddress(
-  { patient, adminDistricts }: {
+  { patient, country_address_tree }: {
     patient: PatientIntake
-    adminDistricts: FullCountryInfo
+    country_address_tree: FullCountryInfo
   },
 ) {
   return (
@@ -14,17 +14,17 @@ function PatientAddress(
       <SectionHeader className='mb-3'>Patient Address</SectionHeader>
       <AddressForm
         address={patient.address}
-        adminDistricts={adminDistricts}
+        country_address_tree={country_address_tree}
       />
     </section>
   )
 }
 
 export default function PatientAddressForm(
-  { patient, defaultFacility, adminDistricts }: {
+  { patient, default_facility, country_address_tree }: {
     patient: PatientIntake
-    defaultFacility: { id: number; name: string; address: string }
-    adminDistricts: FullCountryInfo
+    default_facility?: { id: number; name: string; address: string }
+    country_address_tree: FullCountryInfo
   },
 ) {
   const nearest_facility =
@@ -35,7 +35,7 @@ export default function PatientAddressForm(
         name: patient.nearest_facility_name,
         address: patient.nearest_facility_address,
       }
-      : defaultFacility
+      : default_facility
 
   const primary_doctor =
     patient.primary_doctor_id && patient.primary_doctor_name
@@ -52,7 +52,10 @@ export default function PatientAddressForm(
 
   return (
     <>
-      <PatientAddress patient={patient} adminDistricts={adminDistricts} />
+      <PatientAddress
+        patient={patient}
+        country_address_tree={country_address_tree}
+      />
       <NearestHealthCare
         nearest_facility={nearest_facility}
         primary_doctor={primary_doctor}
