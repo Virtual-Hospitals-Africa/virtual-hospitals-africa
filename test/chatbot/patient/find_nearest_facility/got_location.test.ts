@@ -48,7 +48,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '657',
+      body: '658',
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })

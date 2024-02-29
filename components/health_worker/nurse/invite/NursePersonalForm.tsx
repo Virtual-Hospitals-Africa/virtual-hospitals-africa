@@ -8,13 +8,13 @@ import FormRow from '../../../library/form/Row.tsx'
 import Buttons from '../../../library/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
-import { FullCountryInfo } from '../../../../types.ts'
+import { CountryAddressTree } from '../../../../types.ts'
 import AddressForm from '../../../../islands/address-inputs.tsx'
 
 export default function NursePersonalForm(
   { formData, country_address_tree }: {
     formData: Partial<FormState>
-    country_address_tree: FullCountryInfo
+    country_address_tree: CountryAddressTree
   },
 ) {
   return (

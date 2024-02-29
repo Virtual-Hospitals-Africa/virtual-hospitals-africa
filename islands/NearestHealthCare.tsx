@@ -23,7 +23,7 @@ export function NearestHealthCare(
       <FormRow>
         <FacilitySearch
           name='nearest_facility'
-          href='/app/facilities'
+          kind='physical'
           label='Nearest Facility'
           value={nearest_facility_signal.value}
           onSelect={(facility) => nearest_facility_signal.value = facility}

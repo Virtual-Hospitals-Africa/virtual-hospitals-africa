@@ -1,5 +1,5 @@
 import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
-import PatientPersonalForm from '../../../../../components/patients/intake/PersonalForm.tsx'
+import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'

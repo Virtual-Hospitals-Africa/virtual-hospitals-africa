@@ -32,7 +32,6 @@ export type FamilyType =
   | 'Grandparent-led'
   | 'Orphan'
   | 'Polygamous/Compound'
-  | 'Same-sex marriage'
   | 'Single Parent'
 
 export type Gender = 'female' | 'male' | 'non-binary'
@@ -484,6 +483,7 @@ export interface PatientAge {
   age_display: string | null
   age_number: number | null
   age_unit: AgeUnit | null
+  age_years: Numeric | null
   patient_id: number | null
 }
 

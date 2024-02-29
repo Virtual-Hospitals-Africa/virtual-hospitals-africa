@@ -1,12 +1,12 @@
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
-import { FullCountryInfo, PatientIntake } from '../../../types.ts'
+import { CountryAddressTree, PatientIntake } from '../../../types.ts'
 import AddressForm from '../../../islands/address-inputs.tsx'
 import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
 
 function PatientAddress(
   { patient, country_address_tree }: {
     patient: PatientIntake
-    country_address_tree: FullCountryInfo
+    country_address_tree: CountryAddressTree
   },
 ) {
   return (
@@ -24,7 +24,7 @@ export default function PatientAddressForm(
   { patient, default_facility, country_address_tree }: {
     patient: PatientIntake
     default_facility?: { id: number; name: string; address: string }
-    country_address_tree: FullCountryInfo
+    country_address_tree: CountryAddressTree
   },
 ) {
   const nearest_facility =

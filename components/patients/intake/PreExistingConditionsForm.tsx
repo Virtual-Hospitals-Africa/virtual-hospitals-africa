@@ -1,15 +1,10 @@
 import AllergyInput from '../../../islands/allergy/Input.tsx'
-import {
-  Allergy,
-  PatientIntake,
-  PreExistingConditionWithDrugs,
-} from '../../../types.ts'
+import { Allergy, PreExistingConditionWithDrugs } from '../../../types.ts'
 import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import PreExistingConditionsForm from '../../../islands/pre-existing-conditions/Form.tsx'
 
 export default function PatientPreExistingConditions(
-  { patient = {}, pre_existing_conditions, allergies, patient_allergies }: {
-    patient?: Partial<PatientIntake>
+  { pre_existing_conditions, allergies, patient_allergies }: {
     pre_existing_conditions: PreExistingConditionWithDrugs[]
     allergies: Allergy[]
     patient_allergies: Allergy[]

@@ -12,4 +12,6 @@ export const MEASUREMENTS: {
   blood_glucose: 'mg/dL',
   pulse: 'bpm',
   respiratory_rate: 'bpm',
+  midarm_circumference: 'cm',
+  triceps_skinfold: 'cm',
 }

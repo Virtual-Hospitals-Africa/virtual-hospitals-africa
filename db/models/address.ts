@@ -1,11 +1,11 @@
 import { sql } from 'kysely'
 import { jsonArrayFrom } from '../helpers.ts'
-import { Address, FullCountryInfo, TrxOrDb } from '../../types.ts'
+import { Address, CountryAddressTree, TrxOrDb } from '../../types.ts'
 
-let fullCountryInfo: FullCountryInfo | undefined
-export async function getFullCountryInfo(
+let fullCountryInfo: CountryAddressTree | undefined
+export async function getCountryAddressTree(
   trx: TrxOrDb,
-): Promise<FullCountryInfo> {
+): Promise<CountryAddressTree> {
   if (fullCountryInfo) return fullCountryInfo
   return fullCountryInfo = await trx
     .selectFrom('countries')

@@ -78,7 +78,6 @@ export const FAMILY_TYPES: FamilyType[] = [
   'Child-headed',
   'Polygamous/Compound',
   'Single Parent',
-  'Same-sex marriage',
   'Blended',
   'Grandparent-led',
   'Orphan',
