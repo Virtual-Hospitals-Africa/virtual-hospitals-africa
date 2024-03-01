@@ -4,8 +4,7 @@ import * as appointments from '../../../../db/models/appointments.ts'
 import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
 import {
   AppointmentWithAllPatientInfo,
-  HasId,
-  HealthWorker,
+  EmployedHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
@@ -13,7 +12,7 @@ import AppointmentDetail from '../../../../components/patients/AppointmentDetail
 
 type AppointmentPageProps = {
   appointment: AppointmentWithAllPatientInfo
-  healthWorker: HasId<HealthWorker>
+  healthWorker: EmployedHealthWorker
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -47,7 +46,7 @@ export default function AppointmentPage(
       title={`Appointment with ${props.data.appointment.patient.name}`}
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      health_worker={props.data.healthWorker}
       variant='home page'
     >
       <PatientDetailedCard patient={props.data.appointment.patient} />

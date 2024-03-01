@@ -9,6 +9,7 @@ import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { CheckCircleIcon } from './icons/heroicons/outline.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 export type SidebarProps = {
   top: {
@@ -56,12 +57,19 @@ const home_page_nav_links: LinkDef[] = [
 ]
 
 export function replaceParams(route: string, params: Record<string, string>) {
+  let replaced = route
   for (const param in params) {
     const placeholder = `/:${param}`
     const paramValue = `/${params[param]}`
-    route = route.replace(placeholder, paramValue)
+    replaced = route.replace(placeholder, paramValue)
   }
-  return route
+  assert(
+    !replaced.includes(':'),
+    `replaceParams failed to replace all params\nreplaceParams("${route}", ${
+      JSON.stringify(params)
+    }) => "${replaced}"`,
+  )
+  return replaced
 }
 
 export function GenericSidebar(

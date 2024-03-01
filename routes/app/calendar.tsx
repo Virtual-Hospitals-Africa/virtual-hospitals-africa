@@ -92,11 +92,11 @@ export default function Calendar(
 ) {
   return (
     <Layout
+      variant='home page'
       title='My Calendar'
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
-      variant='home page'
+      health_worker={props.data.healthWorker}
     >
       <Container size='lg'>
         <AppointmentsCalendar url={props.url} {...props.data} />

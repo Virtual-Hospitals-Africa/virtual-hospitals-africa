@@ -23,11 +23,6 @@ export default async function AppPage(
   ctx: FreshContext<LoggedInHealthWorker>,
 ) {
   const { healthWorker, trx } = ctx.state
-  const { employment } = ctx.state.healthWorker
-  assert(
-    employment.length,
-    'must be employed at at least one facility',
-  )
   const { searchParams } = ctx.url
 
   // We may revisit this, but for now there's only one tab
@@ -35,17 +30,23 @@ export default async function AppPage(
   // while the rest link out to other pages
   // const tab = activeTab(tabs, req.url)
   let facility_id = getNumericParam(searchParams, 'facility_id')
-  if (facility_id && !employment.some((e) => e.facility.id === facility_id)) {
-    searchParams.set('facility_id', employment[0].facility.id.toString())
+  if (
+    facility_id &&
+    !healthWorker.employment.some((e) => e.facility.id === facility_id)
+  ) {
+    searchParams.set('facility_id', healthWorker.default_facility_id.toString())
     return redirect(`/app?${searchParams.toString()}`)
   }
   if (!facility_id) {
-    if (employment.length > 1) {
+    if (healthWorker.employment.length > 1) {
       console.warn('TODO: select facility?')
-      searchParams.set('facility_id', employment[0].facility.id.toString())
+      searchParams.set(
+        'facility_id',
+        healthWorker.default_facility_id.toString(),
+      )
       return redirect(`/app?${searchParams.toString()}`)
     }
-    facility_id = employment[0].facility.id
+    facility_id = healthWorker.default_facility_id
   }
   assert(facility_id)
 
@@ -61,15 +62,12 @@ export default async function AppPage(
 
   return (
     <Layout
+      variant='home page'
       title={`Good day, ${firstName(healthWorker.name)}!`}
       route={ctx.route}
       url={ctx.url}
-      params={{
-        ...ctx.params,
-        facility_id: facility_id.toString(),
-      }}
-      avatarUrl={healthWorker.avatar_url}
-      variant='home page'
+      params={ctx.params}
+      health_worker={healthWorker}
     >
       <Tabs
         route={ctx.route}

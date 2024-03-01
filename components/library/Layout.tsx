@@ -6,7 +6,7 @@ import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import { HomePageSidebar } from './Sidebar.tsx'
-import { Maybe } from '../../types.ts'
+import { EmployedHealthWorker, Maybe } from '../../types.ts'
 import WarningMessage from '../../islands/WarningMessage.tsx'
 
 export type LayoutProps =
@@ -17,8 +17,8 @@ export type LayoutProps =
   }
   & ({
     variant: 'home page'
-    avatarUrl?: Maybe<string>
     route: string
+    health_worker: EmployedHealthWorker
     params?: Record<string, string>
   } | {
     variant: 'form'
@@ -97,10 +97,17 @@ export default function Layout(props: LayoutProps) {
       {props.variant === 'home page' && (
         <AppLayoutContents
           {...props}
+          avatarUrl={props.health_worker.avatar_url}
           sidebar={
             <HomePageSidebar
               route={props.route}
-              params={props.params || {}}
+              params={props.params && ('facility_id' in props.params)
+                ? props.params
+                : {
+                  ...props.params,
+                  facility_id: props.health_worker.default_facility_id
+                    .toString(),
+                }}
               urlSearchParams={props.url.searchParams}
             />
           }

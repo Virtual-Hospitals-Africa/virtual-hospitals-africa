@@ -282,7 +282,6 @@ export async function get(
     expires_at,
     registration_needed,
     approved_by,
-    employment,
     ...health_worker
   } = result
   assertOr401(access_token)
@@ -290,52 +289,56 @@ export async function get(
   assertOr401(expires_at)
 
   const employment_by_facility = groupBy(
-    employment,
+    result.employment,
     (e) => e.facility.id,
   )
+  const employment = [...employment_by_facility.values()].map(
+    (roles) => {
+      const nurse_role = roles.find((r) => r.profession === 'nurse') || null
+      const doctor_role = roles.find((r) => r.profession === 'doctor') || null
+      const admin_role = roles.find((r) => r.profession === 'admin') || null
+      assert(nurse_role || doctor_role || admin_role)
+      if (nurse_role) assert(!doctor_role)
+      if (doctor_role) assert(!nurse_role)
+
+      return {
+        facility: roles[0].facility,
+        gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
+        gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
+        availability_set: roles[0].availability_set,
+        roles: {
+          nurse: nurse_role && {
+            registration_needed: !!registration_needed,
+            registration_completed: !!approved_by,
+            registration_pending_approval: !result.approved_by,
+            employment_id: nurse_role.employment_id,
+          },
+          doctor: doctor_role && {
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+            employment_id: doctor_role.employment_id,
+          },
+          admin: admin_role && {
+            registration_needed: false,
+            registration_completed: true,
+            registration_pending_approval: false,
+            employment_id: admin_role.employment_id,
+          },
+        },
+      }
+    },
+  )
+
+  assertOr401(employment.length)
 
   return {
     ...health_worker,
     access_token,
     refresh_token,
     expires_at,
-    employment: [...employment_by_facility.values()].map(
-      (roles) => {
-        const nurse_role = roles.find((r) => r.profession === 'nurse') || null
-        const doctor_role = roles.find((r) => r.profession === 'doctor') || null
-        const admin_role = roles.find((r) => r.profession === 'admin') || null
-        assert(nurse_role || doctor_role || admin_role)
-        if (nurse_role) assert(!doctor_role)
-        if (doctor_role) assert(!nurse_role)
-
-        return {
-          facility: roles[0].facility,
-          gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
-          gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
-          availability_set: roles[0].availability_set,
-          roles: {
-            nurse: nurse_role && {
-              registration_needed: !!registration_needed,
-              registration_completed: !!approved_by,
-              registration_pending_approval: !result.approved_by,
-              employment_id: nurse_role.employment_id,
-            },
-            doctor: doctor_role && {
-              registration_needed: false,
-              registration_completed: true,
-              registration_pending_approval: false,
-              employment_id: doctor_role.employment_id,
-            },
-            admin: admin_role && {
-              registration_needed: false,
-              registration_completed: true,
-              registration_pending_approval: false,
-              employment_id: admin_role.employment_id,
-            },
-          },
-        }
-      },
-    ),
+    employment,
+    default_facility_id: employment[0].facility.id,
   }
 }
 

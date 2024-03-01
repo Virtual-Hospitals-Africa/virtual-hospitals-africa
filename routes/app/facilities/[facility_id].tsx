@@ -14,7 +14,7 @@ export default async function FacilityPage(
       title={facility.name}
       route={ctx.route}
       url={ctx.url}
-      avatarUrl={ctx.state.healthWorker.avatar_url}
+      health_worker={ctx.state.healthWorker}
       variant='home page'
     >
       <Container size='lg'>

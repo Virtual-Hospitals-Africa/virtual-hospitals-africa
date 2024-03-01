@@ -101,7 +101,7 @@ export default async function WaitingRoomAdd(
       title={'Add patient to waiting room'}
       route={route}
       url={url}
-      avatarUrl={state.healthWorker.avatar_url}
+      health_worker={state.healthWorker}
       variant='home page'
     >
       <Container size='md'>
