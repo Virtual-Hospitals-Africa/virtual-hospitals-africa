@@ -3,15 +3,8 @@ import { assert } from 'std/assert/assert.ts'
 import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 
-export async function search(
-  trx: TrxOrDb,
-  opts: {
-    search?: Maybe<string>
-    ids?: Maybe<number[]>
-  },
-): Promise<DrugSearchResult[]> {
-  if (opts?.ids) assert(opts.ids.length, 'must provide at least one id')
-  let drugsQuery = trx
+function baseQuery(trx: TrxOrDb) {
+  return trx
     .selectFrom('drugs')
     .select((eb_drugs) => [
       'drugs.id',
@@ -88,24 +81,39 @@ export async function search(
           ),
       ).as('medications'),
     ])
+}
 
-  if (opts?.ids) drugsQuery = drugsQuery.where('drugs.id', 'in', opts.ids)
+export async function search(
+  trx: TrxOrDb,
+  opts: {
+    search?: Maybe<string>
+    ids?: Maybe<number[]>
+  },
+): Promise<DrugSearchResult[]> {
+  if (opts.ids) {
+    assert(opts.ids.length, 'must provide at least one id')
+    assert(!opts.search)
+  } else {
+    assert(opts.search)
+  }
 
-  const searchQuery = trx.selectFrom(drugsQuery.as('drug_search_results'))
-    .selectAll().where((
-      eb,
-    ) =>
-      eb.or([
-        eb('drug_search_results.name', 'ilike', `%${opts.search}%`),
-        sql<
-          boolean
-        >`EXISTS (select 1 from json_array_elements_text("drug_search_results"."distinct_trade_names") AS trade_name
-        WHERE trade_name ILIKE ${'%' + opts?.search + '%'})`,
-      ])
-    )
+  const query = opts.search
+    ? trx
+      .selectFrom(baseQuery(trx).as('drug_search_results'))
+      .selectAll()
+      .where((eb) =>
+        eb.or([
+          eb('drug_search_results.name', 'ilike', `%${opts.search}%`),
+          sql<
+            boolean
+          >`EXISTS (select 1 from json_array_elements_text("drug_search_results"."distinct_trade_names") AS trade_name
+            WHERE trade_name ILIKE ${'%' + opts.search + '%'})`,
+        ])
+      )
+      .orderBy(sql`similarity(name, ${opts.search})`, 'desc')
+    : baseQuery(trx).where('drugs.id', 'in', opts.ids!)
 
-  const query = (opts?.search ? searchQuery : drugsQuery).limit(20)
-  const results = await query.execute()
+  const results = await query.limit(20).execute()
 
   // TODO: do the float parsing in SQL?
   return results.map((r) => ({

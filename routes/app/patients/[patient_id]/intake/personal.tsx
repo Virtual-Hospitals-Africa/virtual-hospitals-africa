@@ -1,5 +1,5 @@
 import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
-import PatientPersonalForm from '../../../../../components/patients/intake/PersonalForm.tsx'
+import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
@@ -58,10 +58,17 @@ export default async function PersonalPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
-  assert(!ctx.state.is_review)
+  const { is_review, patient } = ctx.state
+  assert(!is_review)
+  const previously_filled = patient.intake_steps_completed.includes(
+    'personal',
+  )
   return (
     <IntakeLayout ctx={ctx}>
-      <PatientPersonalForm patient={ctx.state.patient} />
+      <PatientPersonalForm
+        patient={patient}
+        previously_filled={previously_filled}
+      />
       <hr className='my-2' />
       <Buttons submitText='Next Step' />
     </IntakeLayout>

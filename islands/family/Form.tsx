@@ -31,10 +31,10 @@ type DependentFamilyRelationState =
 
 export default function PatientFamilyForm({
   family,
-  age,
+  age_years,
 }: {
   family: PatientFamily
-  age: number
+  age_years: number
 }): JSX.Element {
   const guardians: Signal<GuardianFamilyRelationState[]> = useSignal(
     family.guardians,
@@ -53,16 +53,19 @@ export default function PatientFamilyForm({
     label: n.toString(),
   }))
 
-  const showGuardians = age <= 18
-  const showDependents = age >= 10
-  const showNextOfKin = age >= 19
-  const showPatientCohabitation = age <= 18
+  const showGuardians = age_years <= 18
+  const showDependents = age_years >= 10
+  const showNextOfKin = age_years >= 19
+  const showPatientCohabitation = age_years <= 18
 
   //Default values
-  family.marital_status ??= age <= 18 ? 'Never Married' : null
+  family.marital_status ??= age_years <= 18 ? 'Never Married' : null
 
   return (
     <div>
+      {showGuardians && (
+        <input type='hidden' name='family.under_18' value='on' />
+      )}
       {showNextOfKin &&
         (
           <div>

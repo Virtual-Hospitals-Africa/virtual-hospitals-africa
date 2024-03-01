@@ -7,7 +7,7 @@ import {
   PatientIntake,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
-import { assertOr404 } from '../../../../../util/assertOr.ts'
+import { assertOr404, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import {
   replaceParams,
@@ -92,6 +92,19 @@ export async function upsertPatientAndRedirect(
   })
 
   return redirect(nextLink(ctx))
+}
+
+export function assertAgeYearsKnown(ctx: IntakeContext): number {
+  const { patient } = ctx.state
+  const age_years = patient.age?.age_years
+  const warning = encodeURIComponent(
+    "Please fill out the patient's personal information beforehand.",
+  )
+  assertOrRedirect(
+    age_years != null,
+    `/app/patients/${patient.id}/intake/personal?warning=${warning}`,
+  )
+  return age_years
 }
 
 export function IntakeLayout({

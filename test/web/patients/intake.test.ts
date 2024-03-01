@@ -35,7 +35,7 @@ describe('/app/patients/[patient_id]/intake', {
       scenario: 'approved-nurse',
     })
     const response = await fetch(
-      `${route}/app/patients/${patient_id}/intake/personal`,
+      `${route}/app/patients/${patient_id}`,
     )
     assert(response.ok, 'should have returned ok')
     assert(
@@ -127,7 +127,7 @@ describe('/app/patients/[patient_id]/intake', {
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
-    const countryInfo = await address.getFullCountryInfo(db)
+    const countryInfo = await address.getCountryAddressTree(db)
     const zimbabwe = countryInfo[0]
     assertEquals(zimbabwe.name, 'Zimbabwe')
 
@@ -428,7 +428,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient_id,
+      patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 0)
@@ -494,7 +494,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
 
     const pre_existing_conditions = await getPreExistingConditions(db, {
-      patient_id: patient_id,
+      patient_id,
     })
 
     assertEquals(pre_existing_conditions.length, 1)
@@ -603,6 +603,7 @@ describe('/app/patients/[patient_id]/intake', {
         family_type: null,
         marital_status: 'Single',
         patient_cohabitation: null,
+        under_18: true,
       },
     })
   })

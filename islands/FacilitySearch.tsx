@@ -1,8 +1,28 @@
+import { assert } from 'std/assert/assert.ts'
 import { HasId } from '../types.ts'
 import cls from '../util/cls.ts'
 import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
 
-type FacilityData = HasId<{ name: string; address: string }>
+type FacilityData = HasId<{ name: string; address: string | null }>
+
+type FacilityKind = 'physical' | 'virtual' | 'both'
+
+type FacilitySearchPropsGeneral<
+  Kind extends FacilityKind,
+  FacilityType extends FacilityData,
+> =
+  & { kind: Kind }
+  & Omit<
+    AsyncSearchProps<FacilityType>,
+    'Option' | 'href'
+  >
+
+type FacilitySearchProps =
+  | FacilitySearchPropsGeneral<
+    'physical',
+    HasId<{ name: string; address: string }>
+  >
+  | FacilitySearchPropsGeneral<'virtual' | 'both', FacilityData>
 
 function FacilityOption({
   option,
@@ -16,15 +36,36 @@ function FacilityOption({
       <div className={cls('truncate text-base', selected && 'font-bold')}>
         {option.name}
       </div>
-      <div className={cls('truncate text-xs', selected && 'font-bold')}>
-        {option.address}
-      </div>
+      {option.address && (
+        <div className={cls('truncate text-xs', selected && 'font-bold')}>
+          {option.address}
+        </div>
+      )}
     </div>
   )
 }
 
 export default function FacilitySearch(
-  props: Omit<AsyncSearchProps<FacilityData>, 'Option'>,
+  props: FacilitySearchProps,
 ) {
-  return <AsyncSearch {...props} Option={FacilityOption} />
+  const params = new URLSearchParams()
+  if (props.kind && props.kind !== 'both') {
+    params.set('kind', props.kind)
+  }
+  const href = `/app/facilities?${params}`
+  return (
+    <AsyncSearch
+      {...props}
+      href={href}
+      Option={FacilityOption}
+      onSelect={(selected) => {
+        if (selected && props.kind === 'physical') {
+          assert(selected.address)
+        }
+        return props.onSelect?.(
+          selected as HasId<{ name: string; address: string }>,
+        )
+      }}
+    />
+  )
 }

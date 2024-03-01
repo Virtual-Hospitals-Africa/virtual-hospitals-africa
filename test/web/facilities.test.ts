@@ -20,15 +20,24 @@ describe(
       if (!response.ok) throw new Error(await response.text())
       const json = await response.json()
       assert(Array.isArray(json))
-      assertEquals(json.length, 1)
-      const [facility] = json
-      assertEquals(facility, {
+      assertEquals(json.length, 2)
+      const [test_clinic, test_virtual_hospital] = json
+      assertEquals(test_clinic, {
         id: 1,
         address: 'Bristol, UK',
-        category: 'Hospital',
-        name: 'VHA Test Hospital',
+        category: 'Clinic',
+        name: 'VHA Test Clinic',
         latitude: '51',
         longitude: '2.25',
+        phone: null,
+      })
+      assertEquals(test_virtual_hospital, {
+        id: 2,
+        address: null,
+        category: 'Virtual Hospital',
+        name: 'VHA Test Virtual Hospital',
+        latitude: null,
+        longitude: null,
         phone: null,
       })
     })

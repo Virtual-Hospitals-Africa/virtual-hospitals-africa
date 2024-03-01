@@ -1,12 +1,13 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
-import * as patient_age from '../../../../../db/models/patient_age.ts'
 import * as patient_occupation from '../../../../../db/models/patient_occupations.ts'
-import PatientOccupationForm from '../../../../../components/patients/intake/OccupationForm.tsx'
+import Occupation0_18 from '../../../../../islands/Occupation0-18.tsx'
+import Occupation19 from '../../../../../islands/Occupation19.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
+  assertAgeYearsKnown,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -41,26 +42,15 @@ export default async function OccupationPage(
 ) {
   assert(!ctx.state.is_review)
   const { patient, trx } = ctx.state
-  const patient_id = patient.id
-
-  const getting_occupation = patient_occupation.get(trx, { patient_id })
-  const age = await patient_age.get(trx, { patient_id })
-
-  const warning = encodeURIComponent(
-    "Please fill out the patient's personal information beforehand.",
-  )
-  assertOrRedirect(
-    age,
-    `/app/patients/${patient_id}/intake/personal?warning=${warning}`,
-  )
+  const age_years = assertAgeYearsKnown(ctx)
+  const OccupationForm = age_years <= 18 ? Occupation0_18 : Occupation19
+  const occupation = await patient_occupation.get(trx, {
+    patient_id: patient.id,
+  })
 
   return (
     <IntakeLayout ctx={ctx}>
-      <PatientOccupationForm
-        patient={patient}
-        patientAge={age}
-        occupation={await getting_occupation}
-      />
+      <OccupationForm occupation={occupation} />
       <hr className='my-2' />
       <Buttons submitText='Next Step' />
     </IntakeLayout>

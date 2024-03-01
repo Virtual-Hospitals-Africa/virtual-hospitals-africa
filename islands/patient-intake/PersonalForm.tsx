@@ -1,23 +1,27 @@
+import { useSignal } from '@preact/signals'
 import {
-  CheckboxInput,
   DateInput,
   EthnicitySelect,
   GenderSelect,
   PhoneNumberInput,
   TextInput,
-} from '../../library/form/Inputs.tsx'
-import FormRow from '../../library/form/Row.tsx'
-import { ImagePreviewInput } from '../../../islands/file-preview-input.tsx'
-import { PatientIntake } from '../../../types.ts'
-import NationalIdInput from '../../../islands/NationalIdInput.tsx'
-import { useSignal } from '@preact/signals'
-import NationalIdInputCheckbox from '../../../islands/NationalIdInputCheckbox.tsx'
+} from '../../components/library/form/Inputs.tsx'
+import FormRow from '../../components/library/form/Row.tsx'
+import { ImagePreviewInput } from '../file-preview-input.tsx'
+import { PatientIntake } from '../../types.ts'
+import NationalIdInput from '../NationalIdInput.tsx'
+import NationalIdInputCheckbox from '../NationalIdInputCheckbox.tsx'
 
 export default function PatientPersonalForm(
-  { patient = {} }: { patient?: Partial<PatientIntake> },
+  { patient, previously_filled }: {
+    patient: Partial<PatientIntake>
+    previously_filled: boolean
+  },
 ) {
   const names = patient.name ? patient.name.split(/\s+/) : []
-  const no_national_id = useSignal<boolean>(!patient.national_id_number)
+  const no_national_id = useSignal<boolean>(
+    previously_filled && !patient.national_id_number,
+  )
   return (
     <>
       <FormRow>

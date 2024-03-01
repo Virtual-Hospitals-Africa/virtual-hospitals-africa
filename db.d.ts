@@ -17,7 +17,6 @@ export type EncounterStep =
   | 'diagnosis'
   | 'diagnostic_tests'
   | 'examinations'
-  | 'general_assessments'
   | 'orders'
   | 'prescriptions'
   | 'referral'
@@ -33,7 +32,6 @@ export type FamilyType =
   | 'Grandparent-led'
   | 'Orphan'
   | 'Polygamous/Compound'
-  | 'Same-sex marriage'
   | 'Single Parent'
 
 export type Gender = 'female' | 'male' | 'non-binary'
@@ -260,11 +258,11 @@ export interface Encounter {
 }
 
 export interface Facilities {
-  address: string
+  address: string | null
   category: string
   created_at: Generated<Timestamp>
   id: Generated<number>
-  location: string
+  location: string | null
   name: string
   phone: string | null
   updated_at: Generated<Timestamp>
@@ -515,6 +513,7 @@ export interface PatientAge {
   age_display: string | null
   age_number: number | null
   age_unit: AgeUnit | null
+  age_years: Numeric | null
   patient_id: number | null
 }
 

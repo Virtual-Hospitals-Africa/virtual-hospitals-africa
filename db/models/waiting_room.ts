@@ -110,7 +110,7 @@ export async function get(
           ).then(
             sql<
               string
-            >`concat('/app/patients/', patients.id::text, '/intake/personal')`,
+            >`concat('/app/patients/', patients.id::text)`,
           )
           .else(null).end(),
       }).as('actions'),

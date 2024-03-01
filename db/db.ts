@@ -29,7 +29,7 @@ if (Deno.env.get('IS_TEST')) {
 }
 
 // deno-lint-ignore no-explicit-any
-const uri: any = DATABASE_URL.includes('localhost')
+export const uri: any = DATABASE_URL.includes('localhost')
   ? DATABASE_URL
   : `${DATABASE_URL}?sslmode=require`
 

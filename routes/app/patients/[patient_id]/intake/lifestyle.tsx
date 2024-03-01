@@ -4,12 +4,12 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import {
+  assertAgeYearsKnown,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.ts'
-import * as patient_age from '../../../../../db/models/patient_age.ts'
 import { assert } from 'std/assert/assert.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 
@@ -41,23 +41,14 @@ export default async function LifestylePage(
   const { patient, trx } = ctx.state
   const patient_id = patient.id
 
-  const getting_lifestyle = patient_lifestyle.get(trx, { patient_id })
-  const age = await patient_age.getYears(trx, { patient_id })
-
-  const warning = encodeURIComponent(
-    "Please fill out the patient's personal information beforehand.",
-  )
-  assertOrRedirect(
-    age != null,
-    `/app/patients/${patient_id}/intake/personal?warning=${warning}`,
-  )
+  const age_years = assertAgeYearsKnown(ctx)
 
   return (
     <IntakeLayout ctx={ctx}>
       {/* call to database for lifestyle patient information */}
       <LifestyleForm
-        age={age}
-        lifestyle={await getting_lifestyle}
+        age_years={age_years}
+        lifestyle={await patient_lifestyle.get(trx, { patient_id })}
       />
       <hr className='my-2' />
       <Buttons submitText='Next Step' />

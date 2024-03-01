@@ -4,7 +4,6 @@ import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
   ConversationStates,
-  Facility,
   Location,
   Maybe,
   PatientConversationState,
@@ -33,6 +32,7 @@ import {
 import uniq from '../../util/uniq.ts'
 import { pickPatient } from './util.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
+import { FacilityWithAddress } from '../../types.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -294,7 +294,8 @@ const conversationStates: ConversationStates<
         : 'not_onboarded:welcome'
     },
     onEnter(_trx, patientState) {
-      const selectedFacility: Maybe<Facility> = patientState.nearest_facilities
+      const selectedFacility: Maybe<FacilityWithAddress> = patientState
+        .nearest_facilities
         ?.find(
           (facility) => String(facility.id) === patientState.body,
         )

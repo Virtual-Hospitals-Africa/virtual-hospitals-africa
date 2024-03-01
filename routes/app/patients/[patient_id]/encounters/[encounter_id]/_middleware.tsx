@@ -26,6 +26,8 @@ import {
 import capitalize from '../../../../../../util/capitalize.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
 import uniq from '../../../../../../util/uniq.ts'
+import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
+import redirect from '../../../../../../util/redirect.ts'
 
 function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -41,6 +43,17 @@ export type EncounterContext = LoggedInHealthWorkerContext<
     patient: patients.PatientCard
   }
 >
+
+export async function completeStep(ctx: EncounterContext) {
+  const step = nav_links.find((link) => link.route === ctx.route)?.step
+  assert(step)
+  await completedStep(ctx.state.trx, {
+    encounter_id: ctx.state.encounter.encounter_id,
+    step,
+  })
+
+  return redirect(nextLink(ctx))
+}
 
 export async function removeFromWaitingRoomAndAddSelfAsProvider(
   ctx: LoggedInHealthWorkerContext,

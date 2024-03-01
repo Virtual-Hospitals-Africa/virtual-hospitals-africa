@@ -48,6 +48,7 @@ describe(
           pulse: null,
           respiratory_rate: null,
         },
+        no_vitals_required: false,
       })
     })
 
@@ -117,6 +118,7 @@ describe(
             pulse: null,
             respiratory_rate: null,
           },
+          no_vitals_required: false,
         })
       }
     })
@@ -184,6 +186,7 @@ describe(
             pulse: null,
             respiratory_rate: null,
           },
+          no_vitals_required: false,
         })
       }
     })

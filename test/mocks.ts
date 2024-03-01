@@ -66,7 +66,7 @@ export const testRegistrationDetails = async (
 })
 
 export async function createTestAddress(trx: TrxOrDb): Promise<Address> {
-  const fullCountryInfo = await address.getFullCountryInfo(trx)
+  const fullCountryInfo = await address.getCountryAddressTree(trx)
   const country = sample(fullCountryInfo)
   const province = sample(country.provinces)
   const district = sample(province.districts)

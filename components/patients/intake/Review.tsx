@@ -5,7 +5,7 @@ import {
 } from '../../../db/models/patient_conditions.ts'
 import { getIntakeReview } from '../../../db/models/patients.ts'
 import { dosageDisplay, IntakeFrequencies } from '../../../shared/medication.ts'
-import { Maybe, PreExistingConditionWithDrugs } from '../../../types.ts'
+import { Maybe } from '../../../types.ts'
 import {
   durationEndDate,
   prettyPatientDateOfBirth,

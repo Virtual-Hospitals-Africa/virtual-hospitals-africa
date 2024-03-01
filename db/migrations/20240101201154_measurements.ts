@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
-import { MEASUREMENTS } from '../models/patient_measurements.ts'
+import { MEASUREMENTS } from '../../shared/measurements.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
