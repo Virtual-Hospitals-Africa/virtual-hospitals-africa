@@ -46,7 +46,7 @@ const home_page_nav_links: LinkDef[] = [
   { route: '/app/patients', title: 'My Patients', Icon: PatientsIcon },
   { route: '/app/employees', title: 'Employees', Icon: PatientsIcon },
   { route: '/app/calendar', title: 'Calendar', Icon: CalendarIcon },
-  { route: '/app/dispensary', title: 'Dispensary', Icon: PatientsIcon },
+  { route: '/app/inventory', title: 'Inventory', Icon: PatientsIcon },
   { route: '/logout', title: 'Log Out', Icon: LogoutIcon },
 ]
 

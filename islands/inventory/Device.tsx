@@ -1,12 +1,12 @@
 import { JSX } from 'preact'
-import { Device } from '../../../types.ts'
-import SectionHeader from '../../../components/library/typography/SectionHeader.tsx'
-import Form from '../../../components/library/form/Form.tsx'
-import FormRow from '../../../components/library/form/Row.tsx'
+import { Device } from '../../types.ts'
+import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+import Form from '../../components/library/form/Form.tsx'
+import FormRow from '../../components/library/form/Row.tsx'
 import DeviceSearch from './DeviceSearch.tsx'
 import { useSignal } from '@preact/signals'
-import { Button } from '../../../components/library/Button.tsx'
-import { TextInput } from '../../../components/library/form/Inputs.tsx'
+import { Button } from '../../components/library/Button.tsx'
+import { TextInput } from '../../components/library/form/Inputs.tsx'
 
 export default function FacilityDeviceForm(): JSX.Element {
   const selectedDevice = useSignal<Device | undefined>(undefined)

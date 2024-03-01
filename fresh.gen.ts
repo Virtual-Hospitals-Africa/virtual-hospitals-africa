@@ -103,8 +103,6 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
-import * as $dispensary_inventory_Device from './islands/dispensary/inventory/Device.tsx'
-import * as $dispensary_inventory_DeviceSearch from './islands/dispensary/inventory/DeviceSearch.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
 import * as $family_Form from './islands/family/Form.tsx'
@@ -116,6 +114,8 @@ import * as $family_RelationshipSelect from './islands/family/RelationshipSelect
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $general_assessment_Form from './islands/general-assessment/Form.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
+import * as $inventory_Device from './islands/inventory/Device.tsx'
+import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
@@ -282,9 +282,6 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
-    './islands/dispensary/inventory/Device.tsx': $dispensary_inventory_Device,
-    './islands/dispensary/inventory/DeviceSearch.tsx':
-      $dispensary_inventory_DeviceSearch,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
     './islands/family/Form.tsx': $family_Form,
@@ -297,6 +294,8 @@ const manifest = {
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/general-assessment/Form.tsx': $general_assessment_Form,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
+    './islands/inventory/Device.tsx': $inventory_Device,
+    './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,

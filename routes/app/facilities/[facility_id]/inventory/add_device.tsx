@@ -8,7 +8,7 @@ import {
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
-import FacilityDeviceForm from '../../../../../islands/dispensary/inventory/Device.tsx'
+import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 
