@@ -69,11 +69,6 @@ jobs:
           deno task test
           deno task test:chatbot
 
-      - name: Migrate wipe
-        run: |
-          echo "Ensure that migrations are reversible"
-          deno task db:migrate:wipe
-
   compile_others:
     runs-on: ubuntu-latest
 

@@ -69,7 +69,6 @@ export function GenericSidebar(
 ) {
   const allParams = { ...params }
   urlSearchParams.forEach((value, key) => allParams[key] = value)
-  console.log('kwelkewlk', allParams)
   const activeLink = matchActiveLink(nav_links, route)
   return (
     <div className='hidden fixed inset-y-0 z-40 md:flex w-48 md:flex-col'>
