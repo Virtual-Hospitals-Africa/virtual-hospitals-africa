@@ -13,6 +13,7 @@ import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointme
 import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
 import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
 import * as $app_conditions from './routes/app/conditions.tsx'
+import * as $app_devices from './routes/app/devices.tsx'
 import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
@@ -24,6 +25,8 @@ import * as $app_facilities_facility_id_employees_health_worker_id_ from './rout
 import * as $app_facilities_facility_id_employees_health_worker_id_approve from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/approve.tsx'
 import * as $app_facilities_facility_id_employees_health_worker_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx'
 import * as $app_facilities_facility_id_employees_invite from './routes/app/facilities/[facility_id]/employees/invite.tsx'
+import * as $app_facilities_facility_id_inventory from './routes/app/facilities/[facility_id]/inventory.tsx'
+import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
@@ -100,6 +103,8 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $dispensary_inventory_Device from './islands/dispensary/inventory/Device.tsx'
+import * as $dispensary_inventory_DeviceSearch from './islands/dispensary/inventory/DeviceSearch.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
 import * as $family_Form from './islands/family/Form.tsx'
@@ -151,6 +156,7 @@ const manifest = {
       $app_calendar_appointments_schedule,
     './routes/app/calendar/availability.tsx': $app_calendar_availability,
     './routes/app/conditions.tsx': $app_conditions,
+    './routes/app/devices.tsx': $app_devices,
     './routes/app/drugs.json.tsx': $app_drugs_json,
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
@@ -168,6 +174,10 @@ const manifest = {
       $app_facilities_facility_id_employees_health_worker_id_media_mediaId_,
     './routes/app/facilities/[facility_id]/employees/invite.tsx':
       $app_facilities_facility_id_employees_invite,
+    './routes/app/facilities/[facility_id]/inventory.tsx':
+      $app_facilities_facility_id_inventory,
+    './routes/app/facilities/[facility_id]/inventory/add_device.tsx':
+      $app_facilities_facility_id_inventory_add_device,
     './routes/app/facilities/[facility_id]/register.tsx':
       $app_facilities_facility_id_register,
     './routes/app/facilities/[facility_id]/register/[step].tsx':
@@ -272,6 +282,9 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/dispensary/inventory/Device.tsx': $dispensary_inventory_Device,
+    './islands/dispensary/inventory/DeviceSearch.tsx':
+      $dispensary_inventory_DeviceSearch,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
     './islands/family/Form.tsx': $family_Form,

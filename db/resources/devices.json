@@ -1,0 +1,161 @@
+[
+  {
+    "name": "Contec BC401",
+    "manufacturer": "Contec",
+    "test_availability": [{ "name": "Urine Analysis", "consumables": [] }]
+  },
+  {
+    "name": "Oraquick Rapid Diagnostic Test Kit",
+    "manufacturer": "Orasure Technologies",
+    "test_availability": [
+      { "name": "HIV", "consumables": [] },
+      { "name": "Hepatitis C", "consumables": [] },
+      { "name": "Covid 19", "consumables": [] }
+    ]
+  },
+  {
+    "name": "Carestart Rapid Diagnostic Test Kit",
+    "manufacturer": "Accessbio",
+    "test_availability": [{ "name": "Malaria", "consumables": [] }]
+  },
+  {
+    "name": "LS-4000 Immunofluorescence Analyser",
+    "manufacturer": "LansionBio",
+    "test_availability": [
+      { "name": "Inflammation", "consumables": [] },
+      { "name": "Diabetes", "consumables": [] },
+      { "name": "Cardiac", "consumables": [] },
+      { "name": "Hormone", "consumables": [] },
+      { "name": "Thyroid", "consumables": [] },
+      { "name": "Bone Metabolism", "consumables": [] },
+      { "name": "Gastric Function", "consumables": [] },
+      { "name": "Anemia", "consumables": [] },
+      { "name": "Tumor", "consumables": [] },
+      { "name": "Brain Injury", "consumables": [] },
+      { "name": "Angiocapy", "consumables": [] },
+      { "name": "Immune System", "consumables": [] },
+      { "name": "Renal Function", "consumables": [] },
+      { "name": "Nervous System", "consumables": [] }
+    ]
+  },
+  {
+    "name": "ADF B19 Blood Pressure Monitor",
+    "manufacturer": "Andesfit",
+    "test_availability": [{ "name": "Blood Pressure", "consumables": [] }]
+  },
+  {
+    "name": "ADF-B06 Pulse Oximeter",
+    "manufacturer": "Andesfit",
+    "test_availability": [
+      { "name": "Blood Oxygen Saturation", "consumables": [] }
+    ]
+  },
+  {
+    "name": "ADF-B885T Body Fat & Hydration Scale",
+    "manufacturer": "Andesfit",
+    "test_availability": [
+      { "name": "Body Mass Index", "consumables": [] },
+      { "name": "Body Fat", "consumables": [] },
+      { "name": "Bone Mass", "consumables": [] },
+      { "name": "Water Weight", "consumables": [] },
+      { "name": "Muscle Mass", "consumables": [] },
+      { "name": "Body Weight", "consumables": [] },
+      { "name": "Basal Metabolic Rate", "consumables": [] }
+    ]
+  },
+  {
+    "name": "Accu-Answer 4-in-1 Machine",
+    "manufacturer": "Accu-Chek",
+    "test_availability": [
+      { "name": "Cholestrol", "consumables": [] },
+      { "name": "Hemoglobin", "consumables": [] },
+      { "name": "Blood Glucose", "consumables": [] },
+      { "name": "Uric Acid", "consumables": [] }
+    ]
+  },
+  {
+    "name": "Clearblue Pregnancy Test Kit",
+    "manufacturer": "Swiss Precision Diagnostics GmbH",
+    "test_availability": [{ "name": "Pregnancy", "consumables": [] }]
+  },
+  {
+    "name": "Mantoux tuberculin skin test (TST)",
+    "manufacturer": "Sanofi Pasteur Laboratories Limited",
+    "test_availability": [{ "name": "Tuberculosis", "consumables": [] }]
+  },
+  {
+    "name": "ADF-B38A Non-Contact Infrared Body/Surface Thermometer",
+    "manufacturer": "Andesfit",
+    "test_availability": [{ "name": "Temperature", "consumables": [] }]
+  },
+  {
+    "name": "Accu-Tell Rapid Diagnostic Test Kit",
+    "manufacturer": "Accubiotech",
+    "test_availability": [{ "name": "Typhoid", "consumables": [] }]
+  },
+  {
+    "name": "Syphilis Ab Rapid Diagnostic Test Kit",
+    "manufacturer": "Jncmed",
+    "test_availability": [{ "name": "Syphilis", "consumables": [] }]
+  },
+  {
+    "name": "Chlamydia Trachomatis Rapid Diagnostic Test",
+    "manufacturer": "Jncmed",
+    "test_availability": [{ "name": "Chlamydia", "consumables": [] }]
+  },
+  {
+    "name": "Gonorrhea Rapid Diagnostic Test Kit",
+    "manufacturer": "Jncmed",
+    "test_availability": [{ "name": "Gonorrhea", "consumables": [] }]
+  },
+  {
+    "name": "HCV Hepatitis Rapid Diagnostic Test Kit",
+    "manufacturer": "Jncmed",
+    "test_availability": [{ "name": "Hepatitis A/B/C", "consumables": [] }]
+  },
+  {
+    "name": "Herpes Simplex Diagnostic Test Kit",
+    "manufacturer": "Jncmed",
+    "test_availability": [
+      { "name": "Herpes Simplex Virus 1 & 2", "consumables": [] }
+    ]
+  },
+  {
+    "name": "Trichomonas Diagnostic Test Kit",
+    "manufacturer": "Jncmed",
+    "test_availability": [{ "name": "Trichomonas", "consumables": [] }]
+  },
+  {
+    "name": "Cholera Antigen Rapid Diagnostic Test Kit",
+    "manufacturer": "Jncmed",
+    "test_availability": [{ "name": "Cholera", "consumables": [] }]
+  },
+  {
+    "name": "M7 Mindray Portable Doppler Ultrasound Machine",
+    "manufacturer": "Mindray",
+    "test_availability": [
+      { "name": "Abdominal Ultrasound", "consumables": [] },
+      { "name": "Renal Ultrasound", "consumables": [] },
+      { "name": "Breast Ultrasound", "consumables": [] },
+      { "name": "Doppler Ultrasound", "consumables": [] },
+      { "name": "Pelvic Ultrasound", "consumables": [] },
+      { "name": "Transvaginal Ultrasound", "consumables": [] },
+      { "name": "Thyroid Ultrasound", "consumables": [] },
+      { "name": "Transrectal Ultrasound", "consumables": [] },
+      { "name": "Pregnancy Ultrasound", "consumables": [] }
+    ]
+  },
+  {
+    "name": "Leonardo DR nano Digital x-ray Machine",
+    "manufacturer": "Oehm und Rehbein Technologies",
+    "test_availability": [
+      { "name": "Chest X-ray", "consumables": [] },
+      { "name": "Abdominal X-ray", "consumables": [] },
+      { "name": "Kidney, Ureter and Bladder X-ray", "consumables": [] },
+      { "name": "Neck X-ray", "consumables": [] },
+      { "name": "Hand X-ray", "consumables": [] },
+      { "name": "Joint X-ray", "consumables": [] },
+      { "name": "Skull X-ray", "consumables": [] }
+    ]
+  }
+]
