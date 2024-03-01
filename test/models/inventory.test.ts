@@ -23,7 +23,9 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           })
 
         assertEquals(
-          facilityAvailableTests.filter(c=> c.name === availableTest.name) !== undefined,
+          facilityAvailableTests.filter((c) =>
+            c.name === availableTest.name
+          ) !== undefined,
           true,
         )
       },

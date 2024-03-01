@@ -18,7 +18,7 @@ export async function getFacilityDevices(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<FacilityDeviceTable[]> {
   const devices = await trx
     .selectFrom('facility_devices')
@@ -29,7 +29,7 @@ export async function getFacilityDevices(
       'devices.name',
       'devices.manufacturer',
       sql<DeviceTestsAvailablity[]>`TO_JSON(devices.test_availability)`.as(
-        'test_availability'
+        'test_availability',
       ),
     ])
     .execute()
@@ -58,7 +58,7 @@ export async function getAvailableTestsInFacility(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<DeviceTestsAvailablity[]> {
   const devices_tests = await trx
     .selectFrom('facility_devices')
@@ -66,7 +66,7 @@ export async function getAvailableTestsInFacility(
     .where('facility_devices.facility_id', '=', opts.facility_id)
     .select([
       sql<DeviceTestsAvailablity[]>`TO_JSON(devices.test_availability)`.as(
-        'test_availability'
+        'test_availability',
       ),
     ])
     .execute()
@@ -94,7 +94,7 @@ export async function getAvailableTestsInFacility(
 export async function addFacilityDevice(
   trx: TrxOrDb,
   facility_id: number,
-  model: FacilityDevice
+  model: FacilityDevice,
 ): Promise<void> {
   await trx
     .insertInto('facility_devices')

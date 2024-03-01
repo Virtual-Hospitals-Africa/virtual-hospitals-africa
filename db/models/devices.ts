@@ -9,7 +9,7 @@ export async function search(trx: TrxOrDb, search?: Maybe<string>) {
       'devices.name',
       'devices.manufacturer',
       sql<DeviceTestsAvailablity[]>`TO_JSON(devices.test_availability)`.as(
-        'test_availability'
+        'test_availability',
       ),
     ])
 

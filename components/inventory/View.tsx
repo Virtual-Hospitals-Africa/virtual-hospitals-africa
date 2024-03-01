@@ -5,7 +5,7 @@ import FormRow from '../library/form/Row.tsx'
 import FacilityDevicesTable from './Table.tsx'
 
 export default function inventoryView(
-  { devices,  facility_id }: {
+  { devices, facility_id }: {
     devices: FacilityDeviceTable[]
     facility_id: number
   },

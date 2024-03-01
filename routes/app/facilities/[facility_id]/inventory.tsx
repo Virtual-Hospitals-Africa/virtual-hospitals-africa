@@ -15,7 +15,7 @@ type inventoryPageProps = {
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
-inventoryPageProps,
+  inventoryPageProps,
   { facility: HasId<Facility>; isAdminAtFacility: boolean }
 > = {
   GET(_req, ctx) {
