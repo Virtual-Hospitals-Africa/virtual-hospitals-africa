@@ -1141,6 +1141,7 @@ export type EmployedHealthWorker = HealthWorker & {
     gcal_availability_calendar_id: string
     availability_set: boolean
   }[]
+  default_facility_id: number
   open_encounters: RenderedPatientEncounter[]
 }
 
@@ -1423,7 +1424,7 @@ export type CalendarPageProps = {
   appointments: ProviderAppointment[]
   day: string
   today: string
-  healthWorker: HealthWorker
+  healthWorker: EmployedHealthWorker
 }
 
 export type LocationDistance = {

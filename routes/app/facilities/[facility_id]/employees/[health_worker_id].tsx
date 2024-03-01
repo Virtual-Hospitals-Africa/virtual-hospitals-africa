@@ -32,7 +32,7 @@ export default async function EmployeePage(
       title={employee.name}
       route={ctx.route}
       url={ctx.url}
-      avatarUrl={healthWorker.avatar_url}
+      health_worker={ctx.state.healthWorker}
       variant='home page'
     >
       <Container size='lg'>

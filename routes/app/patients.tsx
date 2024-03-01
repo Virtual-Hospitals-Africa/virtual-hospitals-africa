@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
 import {
-  HealthWorkerWithGoogleTokens,
+  EmployedHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   RenderedPatient,
 } from '../../types.ts'
@@ -10,7 +10,7 @@ import { getAllWithNames } from '../../db/models/patients.ts'
 import { json } from '../../util/responses.ts'
 
 type PatientsProps = {
-  healthWorker: HealthWorkerWithGoogleTokens
+  healthWorker: EmployedHealthWorker
   patients: RenderedPatient[]
 }
 
@@ -36,11 +36,11 @@ export default function PatientsPage(
 ) {
   return (
     <Layout
+      variant='home page'
       title='Patients'
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
-      variant='home page'
+      health_worker={props.data.healthWorker}
     >
       <PatientsView patients={props.data.patients} />
     </Layout>

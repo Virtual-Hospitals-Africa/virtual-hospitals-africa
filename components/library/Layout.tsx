@@ -6,7 +6,7 @@ import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import { HomePageSidebar } from './Sidebar.tsx'
-import { Maybe } from '../../types.ts'
+import { EmployedHealthWorker, Maybe } from '../../types.ts'
 import WarningMessage from '../../islands/WarningMessage.tsx'
 
 export type LayoutProps =
@@ -17,28 +17,28 @@ export type LayoutProps =
   }
   & ({
     variant: 'home page'
-    avatarUrl?: Maybe<string>
     route: string
+    health_worker: EmployedHealthWorker
+    params?: Record<string, string>
   } | {
     variant: 'form'
-    sidebar?: ComponentChild
+    sidebar: ComponentChild
   } | {
     variant: 'just logo' | 'landing page'
   })
 
 function AppLayoutContents(
-  { title, avatarUrl, variant, sidebar, route, children }: {
+  { title, avatarUrl, variant, sidebar, children }: {
     title: string
-    route: string
     avatarUrl?: Maybe<string>
     variant: 'home page' | 'form'
-    sidebar?: ComponentChild
+    sidebar: ComponentChild
     children: ComponentChildren
   },
 ) {
   return (
     <>
-      {sidebar || <HomePageSidebar route={route} />}
+      {sidebar}
       <section className='md:pl-48'>
         <Header
           title={title}
@@ -97,12 +97,23 @@ export default function Layout(props: LayoutProps) {
       {props.variant === 'home page' && (
         <AppLayoutContents
           {...props}
-          sidebar={<HomePageSidebar route={props.route} />}
+          avatarUrl={props.health_worker.avatar_url}
+          sidebar={
+            <HomePageSidebar
+              route={props.route}
+              params={props.params && ('facility_id' in props.params)
+                ? props.params
+                : {
+                  ...props.params,
+                  facility_id: props.health_worker.default_facility_id
+                    .toString(),
+                }}
+              urlSearchParams={props.url.searchParams}
+            />
+          }
         />
       )}
-      {props.variant === 'form' && (
-        <AppLayoutContents route={props.url.pathname} {...props} />
-      )}
+      {props.variant === 'form' && <AppLayoutContents {...props} />}
       {props.variant === 'just logo' && <JustLogoLayoutContents {...props} />}
     </>
   )

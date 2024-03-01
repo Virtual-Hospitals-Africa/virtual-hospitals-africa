@@ -3,7 +3,6 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   Facility,
   HasId,
-  HealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   Profession,
 } from '../../../../../types.ts'
@@ -13,9 +12,10 @@ import * as facilities from '../../../../../db/models/facilities.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import { EmployedHealthWorker } from '../../../../../types.ts'
 
 type InvitePageProps = {
-  healthWorker: HasId<HealthWorker>
+  healthWorker: EmployedHealthWorker
 }
 
 type Invite = { email: string; profession: Profession }
@@ -80,7 +80,7 @@ export default function InviteEmployees(props: PageProps) {
       title='Invite Employees'
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      health_worker={props.data.healthWorker}
       variant='home page'
     >
       <InviteEmployeesForm />

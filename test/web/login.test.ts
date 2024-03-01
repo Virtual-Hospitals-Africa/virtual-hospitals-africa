@@ -125,8 +125,8 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         const calendar_link = $('a[href="/app/calendar"]')
         assert(calendar_link.first().text().includes('Calendar'))
 
-        const dispensary_link = $('a[href="/app/dispensary"]')
-        assert(dispensary_link.first().text().includes('Dispensary'))
+        const inventory_link = $('a[href="/app/inventory"]')
+        assert(inventory_link.first().text().includes('Inventory'))
 
         const logout_link = $('a[href="/logout"]')
         assert(logout_link.first().text().includes('Log Out'))

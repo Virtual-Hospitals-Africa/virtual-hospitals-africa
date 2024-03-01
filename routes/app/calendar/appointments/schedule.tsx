@@ -1,12 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
-import {
-  HasId,
-  HealthWorker,
-  HealthWorkerWithGoogleTokens,
-  LoggedInHealthWorkerHandlerWithProps,
-  Maybe,
-} from '../../../../types.ts'
+import { LoggedInHealthWorkerHandlerWithProps } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
@@ -27,6 +21,7 @@ import redirect from '../../../../util/redirect.ts'
 import { assertOr400 } from '../../../../util/assertOr.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 import { insertEvent } from '../../../../external-clients/google.ts'
+import { EmployedHealthWorker } from '../../../../types.ts'
 
 type SearchFormValues = {
   provider_id?: number
@@ -47,7 +42,7 @@ export type ScheduleFormValues = {
 }
 
 type SchedulePageProps = {
-  healthWorker: HasId<HealthWorker>
+  healthWorker: EmployedHealthWorker
   slots?: ProviderAppointmentSlot[]
 }
 
@@ -136,7 +131,7 @@ export default function SchedulePage(
       title='Schedule Appointment'
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      health_worker={props.data.healthWorker}
       variant='home page'
     >
       <Container size='lg'>

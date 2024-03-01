@@ -1,6 +1,6 @@
-import { Device } from '../../../types.ts'
-import cls from '../../../util/cls.ts'
-import AsyncSearch, { AsyncSearchProps } from '../../AsyncSearch.tsx'
+import { Device } from '../../types.ts'
+import cls from '../../util/cls.ts'
+import AsyncSearch, { AsyncSearchProps } from '../AsyncSearch.tsx'
 
 function DeviceOption({
   option,

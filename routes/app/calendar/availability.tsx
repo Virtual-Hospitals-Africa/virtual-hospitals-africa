@@ -27,6 +27,7 @@ import { assertIsPartialAvailability } from '../../../shared/scheduling/availabi
 import { getNumericParam } from '../../../util/getNumericParam.ts'
 import { assertOr403 } from '../../../util/assertOr.ts'
 import { markAvailabilitySet } from '../../../db/models/providers.ts'
+import { HomePageSidebar } from '../../../components/library/Sidebar.tsx'
 
 const days: Array<DayOfWeek> = [
   'Sunday',
@@ -237,6 +238,13 @@ export default function SetAvailability(
       title='Set Availability'
       url={props.url}
       variant='form'
+      sidebar={
+        <HomePageSidebar
+          route={props.route}
+          urlSearchParams={props.url.searchParams}
+          params={{}}
+        />
+      }
     >
       <Container size='lg'>
         <SetAvailabilityForm availability={props.data.availability} />

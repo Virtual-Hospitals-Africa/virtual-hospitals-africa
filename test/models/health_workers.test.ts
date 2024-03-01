@@ -31,6 +31,13 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             'expires_in',
           ]),
         )
+        await employment.add(trx, [
+          {
+            health_worker_id: 1,
+            profession: 'nurse',
+            facility_id: 1,
+          },
+        ])
 
         const result = await upsertWithGoogleCredentials(
           trx,
@@ -40,7 +47,12 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assert(result)
         assertEquals(
           await health_workers.get(trx, { health_worker_id: result.id }),
-          { ...result, employment: [], open_encounters: [] },
+          {
+            ...result,
+            employment: [],
+            open_encounters: [],
+            default_facility_id: 1,
+          },
         )
         assert(!!result.access_token)
         assert(!!result.refresh_token)
@@ -88,6 +100,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               availability_set: true,
             },
           ],
+          default_facility_id: 1,
           id: healthWorker.id,
           name: healthWorker.name,
           access_token: healthWorker.access_token,

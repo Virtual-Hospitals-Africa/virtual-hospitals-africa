@@ -1,9 +1,9 @@
 import { PageProps } from '$fresh/server.ts'
 import {
+  EmployedHealthWorker,
   Facility,
   FacilityEmployeeOrInvitee,
   HasId,
-  HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../types.ts'
 import * as facilities from '../../../../db/models/facilities.ts'
@@ -14,7 +14,7 @@ import { Container } from '../../../../components/library/Container.tsx'
 type EmployeePageProps = {
   isAdminAtFacility: boolean
   employees: FacilityEmployeeOrInvitee[]
-  healthWorker: HealthWorkerWithGoogleTokens
+  healthWorker: EmployedHealthWorker
   facility: HasId<Facility>
 }
 
@@ -51,7 +51,7 @@ export default function EmployeeTable(
       title={`${props.data.facility.name} Employees`}
       route={props.route}
       url={props.url}
-      avatarUrl={props.data.healthWorker.avatar_url}
+      health_worker={props.data.healthWorker}
       variant='home page'
     >
       <Container size='lg'>

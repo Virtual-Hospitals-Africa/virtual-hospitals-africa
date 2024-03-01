@@ -41,11 +41,11 @@ export default async function inventoryPage(
 
   return (
     <Layout
+      variant='home page'
       title='Inventory'
       route={ctx.route}
       url={ctx.url}
-      avatarUrl={ctx.state.healthWorker.avatar_url}
-      variant='home page'
+      health_worker={ctx.state.healthWorker}
     >
       <InventoryView
         facility_id={facility_id}

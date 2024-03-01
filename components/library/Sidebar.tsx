@@ -9,6 +9,7 @@ import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { CheckCircleIcon } from './icons/heroicons/outline.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 export type SidebarProps = {
   top: {
@@ -16,7 +17,8 @@ export type SidebarProps = {
     child: ComponentChild
   }
   route: string
-  params?: Record<string, string>
+  params: Record<string, string>
+  urlSearchParams: URLSearchParams
   nav_links: LinkDef[]
 }
 
@@ -46,22 +48,35 @@ const home_page_nav_links: LinkDef[] = [
   { route: '/app/patients', title: 'My Patients', Icon: PatientsIcon },
   { route: '/app/employees', title: 'Employees', Icon: PatientsIcon },
   { route: '/app/calendar', title: 'Calendar', Icon: CalendarIcon },
-  { route: '/app/dispensary', title: 'Dispensary', Icon: PatientsIcon },
+  {
+    route: '/app/facilities/:facility_id/inventory',
+    title: 'Inventory',
+    Icon: PatientsIcon,
+  },
   { route: '/logout', title: 'Log Out', Icon: LogoutIcon },
 ]
 
 export function replaceParams(route: string, params: Record<string, string>) {
+  let replaced = route
   for (const param in params) {
     const placeholder = `/:${param}`
     const paramValue = `/${params[param]}`
-    route = route.replace(placeholder, paramValue)
+    replaced = route.replace(placeholder, paramValue)
   }
-  return route
+  assert(
+    !replaced.includes(':'),
+    `replaceParams failed to replace all params\nreplaceParams("${route}", ${
+      JSON.stringify(params)
+    }) => "${replaced}"`,
+  )
+  return replaced
 }
 
 export function GenericSidebar(
-  { nav_links, route, params, top }: SidebarProps,
+  { nav_links, route, params, urlSearchParams, top }: SidebarProps,
 ) {
+  const allParams = { ...params }
+  urlSearchParams.forEach((value, key) => allParams[key] = value)
   const activeLink = matchActiveLink(nav_links, route)
   return (
     <div className='hidden fixed inset-y-0 z-40 md:flex w-48 md:flex-col'>
@@ -73,7 +88,7 @@ export function GenericSidebar(
           <ul role='list' className='-mx-2 space-y-1'>
             {nav_links.map((link) => (
               <NavItem
-                href={replaceParams(link.route, params || {})}
+                href={replaceParams(link.route, allParams)}
                 active={link === activeLink}
                 title={link.title ||
                   capitalize(link.route.split('/').pop()!)}
@@ -92,10 +107,18 @@ export const DefaultTop = {
   child: <LogoWithFullText variant='indigo' className='h-16' />,
 }
 
-export function HomePageSidebar({ route }: { route: string }) {
+export function HomePageSidebar(
+  { route, params, urlSearchParams }: {
+    route: string
+    params: Record<string, string>
+    urlSearchParams: URLSearchParams
+  },
+) {
   return (
     <GenericSidebar
       route={route}
+      params={params}
+      urlSearchParams={urlSearchParams}
       nav_links={home_page_nav_links}
       top={DefaultTop}
     />
@@ -162,6 +185,7 @@ export function StepsSidebar(
       top={top || DefaultTop}
       route={ctx.route}
       params={ctx.params}
+      urlSearchParams={ctx.url.searchParams}
       nav_links={nav_links.map((link) => ({
         ...link,
         Icon: steps_completed.includes(link.step) ? Check : Dot,
