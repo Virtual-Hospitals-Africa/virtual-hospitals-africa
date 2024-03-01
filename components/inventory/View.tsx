@@ -4,14 +4,13 @@ import { Container } from '../library/Container.tsx'
 import FormRow from '../library/form/Row.tsx'
 import FacilityDevicesTable from './Table.tsx'
 
-export default function DispensaryView(
-  { devices, available_tests, facility_id }: {
+export default function inventoryView(
+  { devices,  facility_id }: {
     devices: FacilityDeviceTable[]
     facility_id: number
-    available_tests: string[]
   },
 ) {
-  const add_href = `/app/facilities/${facility_id}/dispensary/add_device`
+  const add_href = `/app/facilities/${facility_id}/inventory/add_device`
   return (
     <Container size='lg'>
       <FormRow>

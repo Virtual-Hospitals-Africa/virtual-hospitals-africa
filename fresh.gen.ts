@@ -20,13 +20,13 @@ import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_facilities from './routes/app/facilities.tsx'
 import * as $app_facilities_facility_id_ from './routes/app/facilities/[facility_id].tsx'
 import * as $app_facilities_facility_id_middleware from './routes/app/facilities/[facility_id]/_middleware.ts'
-import * as $app_facilities_facility_id_dispensary from './routes/app/facilities/[facility_id]/dispensary.tsx'
-import * as $app_facilities_facility_id_dispensary_add_device from './routes/app/facilities/[facility_id]/dispensary/add_device.tsx'
 import * as $app_facilities_facility_id_employees from './routes/app/facilities/[facility_id]/employees.tsx'
 import * as $app_facilities_facility_id_employees_health_worker_id_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx'
 import * as $app_facilities_facility_id_employees_health_worker_id_approve from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/approve.tsx'
 import * as $app_facilities_facility_id_employees_health_worker_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx'
 import * as $app_facilities_facility_id_employees_invite from './routes/app/facilities/[facility_id]/employees/invite.tsx'
+import * as $app_facilities_facility_id_inventory from './routes/app/facilities/[facility_id]/inventory.tsx'
+import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
@@ -163,10 +163,6 @@ const manifest = {
     './routes/app/facilities/[facility_id].tsx': $app_facilities_facility_id_,
     './routes/app/facilities/[facility_id]/_middleware.ts':
       $app_facilities_facility_id_middleware,
-    './routes/app/facilities/[facility_id]/dispensary.tsx':
-      $app_facilities_facility_id_dispensary,
-    './routes/app/facilities/[facility_id]/dispensary/add_device.tsx':
-      $app_facilities_facility_id_dispensary_add_device,
     './routes/app/facilities/[facility_id]/employees.tsx':
       $app_facilities_facility_id_employees,
     './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx':
@@ -177,6 +173,10 @@ const manifest = {
       $app_facilities_facility_id_employees_health_worker_id_media_mediaId_,
     './routes/app/facilities/[facility_id]/employees/invite.tsx':
       $app_facilities_facility_id_employees_invite,
+    './routes/app/facilities/[facility_id]/inventory.tsx':
+      $app_facilities_facility_id_inventory,
+    './routes/app/facilities/[facility_id]/inventory/add_device.tsx':
+      $app_facilities_facility_id_inventory_add_device,
     './routes/app/facilities/[facility_id]/register.tsx':
       $app_facilities_facility_id_register,
     './routes/app/facilities/[facility_id]/register/[step].tsx':

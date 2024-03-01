@@ -10,7 +10,7 @@ import redirect from '../../../../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
 import FacilityDeviceForm from '../../../../../islands/dispensary/inventory/Device.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
-import * as facility_rooms from '../../../../../db/models/facility_rooms.ts'
+import * as inventory from '../../../../../db/models/inventory.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -25,13 +25,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const to_add = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      facility_rooms.assertIsUpsert,
+      inventory.assertIsUpsert,
     )
 
-    await facility_rooms.addFacilityDevice(ctx.state.trx, facility_id, to_add)
+    await inventory.addFacilityDevice(ctx.state.trx, facility_id, to_add)
 
     return redirect(
-      `/app/facilities/${facility_id}/dispensary`,
+      `/app/facilities/${facility_id}/inventory`,
     )
   },
 }

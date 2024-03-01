@@ -439,7 +439,7 @@ export async function loadTabularData(db: Kysely<any>) {
   // Excludes refer to other codes, so we need to insert the codes
   // first so that the foreign key constraints are satisfied
   const insert_excludes: Exclude[] = []
-  await forEach(iterSections(sections), async (to_insert) => {
+  await forEach(iterSections(sections.slice(0,1)), async (to_insert) => {
     console.log(to_insert.row)
     if (to_insert.table === 'icd10_diagnoses_excludes') {
       insert_excludes.push(to_insert.row as any)
@@ -816,7 +816,7 @@ async function readICD10Index(): Promise<ICD10Index> {
 
 function lowerWords(x: string) {
   x = x?.toLowerCase().replace(',', '').replace('(of)', '')
-  return Array.from(words(x))
+  return Array.from(words(x)).slice(0,1)
 }
 
 function tidyTerm(x: any): TidiedTerm {

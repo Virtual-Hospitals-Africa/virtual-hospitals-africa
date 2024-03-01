@@ -281,9 +281,11 @@ export interface FacilityRoom {
 export interface FacilityDevice {
   created_at: Generated<Timestamp>
   updated_at: Generated<Timestamp>
+  id: Generated<number>
   device_serial: string
   device_id: number
-  room_id: number
+  room_id?: number
+  facility_id: number
 }
 
 export interface GeneralAssessmentCategories {
@@ -453,6 +455,7 @@ export interface Measurements {
 }
 
 export interface MedicalTest {
+  id: Generated<number>
   name: string
 }
 

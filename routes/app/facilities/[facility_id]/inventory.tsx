@@ -5,17 +5,17 @@ import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../types.ts'
-import * as facility_rooms from '../../../../db/models/facility_rooms.ts'
+import * as inventory from '../../../../db/models/inventory.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
-import DispensaryView from '../../../../components/dispensary/View.tsx'
+import InventoryView from '../../../../components/inventory/View.tsx'
 
-type DispensaryPageProps = {
+type inventoryPageProps = {
   facility: HasId<Facility>
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
-  DispensaryPageProps,
+inventoryPageProps,
   { facility: HasId<Facility>; isAdminAtFacility: boolean }
 > = {
   GET(_req, ctx) {
@@ -27,34 +27,28 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function DispensaryPage(
+export default async function inventoryPage(
   _req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
 ) {
   const facility_id = parseInt(ctx.params.facility_id)
   assertOr404(facility_id)
 
-  const facility_devices = await facility_rooms.getFacilityDevices(
-    ctx.state.trx,
-    { facility_id: facility_id },
-  )
-
-  const available_tests = await facility_rooms.getAvailableTestsInFacility(
+  const facility_devices = await inventory.getFacilityDevices(
     ctx.state.trx,
     { facility_id: facility_id },
   )
 
   return (
     <Layout
-      title='Dispensary'
+      title='Inventory'
       route={ctx.route}
       url={ctx.url}
       avatarUrl={ctx.state.healthWorker.avatar_url}
       variant='home page'
     >
-      <DispensaryView
+      <InventoryView
         facility_id={facility_id}
-        available_tests={available_tests}
         devices={facility_devices}
       />
     </Layout>

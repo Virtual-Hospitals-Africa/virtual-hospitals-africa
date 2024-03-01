@@ -988,9 +988,11 @@ export type FacilityEmployeeInvitee = {
 }
 
 export type FacilityDevice = {
+  id?: number
   device_serial?: string
   device_id: number
-  room_id: number
+  room_id?: number
+  facility_id: number
 }
 
 export type FacilityDeviceTable = {
@@ -1206,6 +1208,7 @@ export type Device = {
 }
 
 export type DeviceTestsAvailablity = {
+  test_id: number
   name: string
 }
 
