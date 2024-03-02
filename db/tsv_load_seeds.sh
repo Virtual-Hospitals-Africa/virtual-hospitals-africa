@@ -1,6 +1,12 @@
 #! /usr/bin/env bash
 set -xeuo pipefail
 
+# if windows
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+    shopt -s expand_aliases
+    alias psql="'$WINDOWS_PSQL_SHELL'"
+fi
+
 # First argument is the database URL, the rest are table names
 DATABASE_URL="$1"
 shift
@@ -15,9 +21,9 @@ for table in "$@"; do
     exit 1
   fi
   echo "Loading data from $file into table $table"
-  psql "$DATABASE_URL" -c "\copy $table FROM '$file' WITH DELIMITER E'\t' CSV HEADER"
+  psql -d "$DATABASE_URL" -c "\copy $table FROM '$file' WITH DELIMITER E'\t' CSV HEADER"
   echo "Resetting sequence for table $table, if present"
-  psql "$DATABASE_URL" -c "
+  psql -d "$DATABASE_URL" -c "
     DO \$$
     BEGIN
       IF EXISTS (
