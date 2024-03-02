@@ -1,6 +1,12 @@
 #! /usr/bin/env bash
 set -euo pipefail
 
+# if windows
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+    shopt -s expand_aliases
+    alias psql="'$WINDOWS_PSQL_SHELL'"
+fi
+
 # First argument is the database URL, the rest are table names
 DATABASE_URL="$1"
 shift
@@ -37,7 +43,7 @@ mkdir -p "$SEED_DIR"
 # Export tables as TSVs
 for table in "$@"; do
   echo "Exporting table $table to $SEED_DIR/$table.tsv"
-  psql "$DATABASE_URL" -c "COPY $table TO STDOUT WITH DELIMITER E'\t' CSV HEADER" > "$SEED_DIR/$table.tsv"
+  psql -d "$DATABASE_URL" -c "COPY $table TO STDOUT WITH DELIMITER E'\t' CSV HEADER" > "$SEED_DIR/$table.tsv"
 done
 
 echo "Tables exported to $SEED_DIR"
