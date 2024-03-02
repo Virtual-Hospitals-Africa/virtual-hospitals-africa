@@ -61,7 +61,7 @@ export function replaceParams(route: string, params: Record<string, string>) {
   for (const param in params) {
     const placeholder = `/:${param}`
     const paramValue = `/${params[param]}`
-    replaced = route.replace(placeholder, paramValue)
+    replaced = replaced.replace(placeholder, paramValue)
   }
   assert(
     !replaced.includes(':'),

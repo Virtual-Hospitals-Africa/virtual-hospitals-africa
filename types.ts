@@ -1106,7 +1106,7 @@ export type EmployeeInfo = {
   }[]
 }
 
-export type EmployedHealthWorker = HealthWorker & {
+export type PossiblyEmployedHealthWorker = HealthWorker & {
   id: number
   access_token: string
   refresh_token: string
@@ -1141,8 +1141,12 @@ export type EmployedHealthWorker = HealthWorker & {
     gcal_availability_calendar_id: string
     availability_set: boolean
   }[]
-  default_facility_id: number
+  default_facility_id?: number
   open_encounters: RenderedPatientEncounter[]
+}
+
+export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
+  default_facility_id: number
 }
 
 export type HealthWorkerWithGoogleTokens = HealthWorker & GoogleTokens & {

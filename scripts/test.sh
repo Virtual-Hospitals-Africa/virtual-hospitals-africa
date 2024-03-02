@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -o pipefail
+set -xo pipefail
 
 watch_mode=false
 [[ "$1" == "--watch" ]] && watch_mode=true
@@ -66,3 +66,4 @@ while true; do
   wait_until_test_server_ready
   pkill -TERM -P "$tests_pid"
 done
+
