@@ -8,6 +8,7 @@ import {
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
+  PossiblyEmployedHealthWorker,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -156,7 +157,9 @@ export function isEmployed(
   return isHealthWorkerWithGoogleTokens(health_worker) &&
     'employment' in health_worker &&
     Array.isArray(health_worker.employment) &&
-    !!health_worker.employment.length
+    !!health_worker.employment.length &&
+    'default_facility_id' in health_worker &&
+    typeof health_worker.default_facility_id === 'number'
 }
 
 export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
@@ -195,7 +198,7 @@ export function removeExpiredAccessToken(
 export async function get(
   trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: number },
-): Promise<Maybe<EmployedHealthWorker>> {
+): Promise<Maybe<PossiblyEmployedHealthWorker>> {
   const result = await trx
     .selectFrom('health_workers')
     .leftJoin(
@@ -330,7 +333,7 @@ export async function get(
     },
   )
 
-  assertOr401(employment.length)
+  // assertOr401(employment.length)
 
   return {
     ...health_worker,
@@ -338,7 +341,7 @@ export async function get(
     refresh_token,
     expires_at,
     employment,
-    default_facility_id: employment[0].facility.id,
+    default_facility_id: employment[0]?.facility.id,
   }
 }
 
