@@ -197,8 +197,8 @@ export const baseQuery = (trx: TrxOrDb) =>
             'patient_encounter_steps.encounter_step',
           )
           .whereRef('patient_encounter_id', '=', 'patient_encounters.id')
-          .orderBy(['encounter.order desc'])
-          .select(['encounter_step']),
+          .orderBy('encounter.order desc')
+          .select('encounter_step'),
       ).as('steps_completed'),
       jsonArrayFrom(
         eb.selectFrom('patient_encounter_providers')
@@ -227,6 +227,9 @@ export const baseQuery = (trx: TrxOrDb) =>
             'patient_encounters.id',
           ),
       ).as('providers'),
+      // jsonArrayFrom(
+      //   eb.selectFrom
+      // ).as('examinations')
     ])
     .orderBy('patient_encounters.created_at', 'desc')
 

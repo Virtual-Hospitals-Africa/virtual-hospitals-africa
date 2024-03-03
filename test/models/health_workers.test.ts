@@ -31,13 +31,6 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             'expires_in',
           ]),
         )
-        await employment.add(trx, [
-          {
-            health_worker_id: 1,
-            profession: 'nurse',
-            facility_id: 1,
-          },
-        ])
 
         const result = await upsertWithGoogleCredentials(
           trx,
@@ -51,7 +44,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             ...result,
             employment: [],
             open_encounters: [],
-            default_facility_id: 1,
+            default_facility_id: null,
           },
         )
         assert(!!result.access_token)

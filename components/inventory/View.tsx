@@ -1,4 +1,4 @@
-import { FacilityDeviceTable } from '../../types.ts'
+import { RenderedFacilityDevice } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import { Container } from '../library/Container.tsx'
 import FormRow from '../library/form/Row.tsx'
@@ -6,7 +6,7 @@ import FacilityDevicesTable from './Table.tsx'
 
 export default function inventoryView(
   { devices, facility_id }: {
-    devices: FacilityDeviceTable[]
+    devices: RenderedFacilityDevice[]
     facility_id: number
   },
 ) {

@@ -1,16 +1,16 @@
+import { assert } from 'std/assert/assert.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
-  Maybe,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import { assert } from 'std/assert/assert.ts'
 import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
+import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -19,8 +19,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   }
 > = {
   async POST(req, ctx) {
-    const facility_id = parseInt(ctx.params.facility_id)
-    assert(facility_id)
+    const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
     const to_add = await parseRequestAsserts(
       ctx.state.trx,
@@ -28,10 +27,17 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       inventory.assertIsUpsert,
     )
 
-    await inventory.addFacilityDevice(ctx.state.trx, facility_id, to_add)
+    await inventory.addFacilityDevice(ctx.state.trx, {
+      ...to_add,
+      facility_id,
+    })
+
+    const success = encodeURIComponent(
+      `Device added to your facility's inventory 🏥`,
+    )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory`,
+      `/app/facilities/${facility_id}/inventory?success=${success}`,
     )
   },
 }
@@ -39,18 +45,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 // deno-lint-ignore require-await
 export default async function DeviceAdd(
   _req: Request,
-  { url, state, params, route }: FreshContext<LoggedInHealthWorker>,
+  { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
-  const facility_id = parseInt(params.facility_id)
-  assert(facility_id)
-
   return (
     <Layout
-      title={'Add Device'}
+      variant='home page'
+      title='Add Device'
       route={route}
       url={url}
       health_worker={state.healthWorker}
-      variant='home page'
     >
       <Container size='md'>
         <FacilityDeviceForm />

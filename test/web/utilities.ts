@@ -255,14 +255,14 @@ const withTrx = (callback: (trx: TrxOrDb) => Promise<void>) =>
 
 export function itUsesTrxAnd(
   description: string,
-  callback: (trx: TrxOrDb) => Promise<void>,
+  callback?: (trx: TrxOrDb) => Promise<void>,
   opts: { only?: boolean; skip?: boolean } = {},
 ) {
   const { only, skip } = opts
   const _it = only ? it.only : skip ? it.skip : it
   _it(
     description,
-    () => withTrx(callback),
+    () => callback && withTrx(callback),
   )
 }
 
@@ -273,7 +273,7 @@ itUsesTrxAnd.only = (
 
 itUsesTrxAnd.skip = (
   description: string,
-  callback: (trx: TrxOrDb) => Promise<void>,
+  callback?: (trx: TrxOrDb) => Promise<void>,
 ) => itUsesTrxAnd(description, callback, { skip: true })
 
 itUsesTrxAnd.rejects = (
@@ -297,5 +297,5 @@ export async function withTestFacility(
     longitude: 0,
   })
   await callback(facility.id)
-  await facilities.remove(trx, facility)
+  // await facilities.remove(trx, facility)
 }

@@ -1,38 +1,25 @@
-import { sql } from 'kysely/index.js'
-import { DeviceTestsAvailablity, Maybe, TrxOrDb } from '../../types.ts'
+import { Maybe, RenderedDevice, TrxOrDb } from '../../types.ts'
+import { jsonArrayFromColumn } from '../helpers.ts'
 
-export async function search(trx: TrxOrDb, search?: Maybe<string>) {
+export function search(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<RenderedDevice[]> {
   let query = trx
     .selectFrom('devices')
-    .select([
+    .select((eb) => [
       'devices.id',
       'devices.name',
       'devices.manufacturer',
-      sql<DeviceTestsAvailablity[]>`TO_JSON(devices.test_availability)`.as(
-        'test_availability',
-      ),
+      jsonArrayFromColumn(
+        'diagnostic_test',
+        eb.selectFrom('device_capabilities')
+          .whereRef('device_capabilities.device_id', '=', 'devices.id')
+          .select('diagnostic_test'),
+      ).as('diagnostic_test_capabilities'),
     ])
 
   if (search) query = query.where('name', 'ilike', `%${search}%`)
 
-  const devices = await query.execute()
-
-  if (devices?.length) {
-    const testIds = devices.flatMap((c) =>
-      c.test_availability.flatMap((t) => t.test_id)
-    )
-    const testNames = await trx
-      .selectFrom('medical_tests')
-      .where('medical_tests.id', 'in', testIds)
-      .selectAll()
-      .execute()
-    devices.map((device) => {
-      device.test_availability = device.test_availability.map((t) => ({
-        test_id: t.test_id,
-        name: testNames.filter((n) => n.id === t.test_id)[0]?.name,
-      }))
-    })
-  }
-
-  return devices
+  return query.execute()
 }

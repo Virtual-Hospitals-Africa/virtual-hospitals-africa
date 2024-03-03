@@ -222,11 +222,24 @@ export interface Countries {
   updated_at: Generated<Timestamp>
 }
 
+export interface DeviceCapabilities {
+  created_at: Generated<Timestamp>
+  device_id: number
+  diagnostic_test: string
+  id: Generated<number>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Devices {
+  created_at: Generated<Timestamp>
   id: Generated<number>
   manufacturer: string
   name: string
-  test_availability: Json
+  updated_at: Generated<Timestamp>
+}
+
+export interface DiagnosticTests {
+  name: string
 }
 
 export interface Districts {
@@ -276,18 +289,9 @@ export interface Facilities {
 export interface FacilityDevices {
   created_at: Generated<Timestamp>
   device_id: number
-  device_serial: string
   facility_id: number
   id: Generated<number>
-  room_id: number | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface FacilityRooms {
-  created_at: Generated<Timestamp>
-  facility_id: number
-  id: Generated<number>
-  name: string
+  serial_number: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -466,11 +470,6 @@ export interface Media {
   uuid: Generated<string>
 }
 
-export interface MedicalTests {
-  id: Generated<number>
-  name: string
-}
-
 export interface Medications {
   created_at: Generated<Timestamp>
   drug_id: number
@@ -617,6 +616,7 @@ export interface PatientExaminations {
   examination_name: string
   id: Generated<number>
   patient_id: number
+  skipped: Generated<boolean>
   updated_at: Generated<Timestamp>
 }
 
@@ -833,7 +833,9 @@ export interface DB {
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
   countries: Countries
+  device_capabilities: DeviceCapabilities
   devices: Devices
+  diagnostic_tests: DiagnosticTests
   districts: Districts
   drugs: Drugs
   employment: Employment
@@ -841,7 +843,6 @@ export interface DB {
   examinations: Examinations
   facilities: Facilities
   facility_devices: FacilityDevices
-  facility_rooms: FacilityRooms
   general_assessment_categories: GeneralAssessmentCategories
   general_assessments: GeneralAssessments
   geography_columns: GeographyColumns
@@ -864,7 +865,6 @@ export interface DB {
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
   media: Media
-  medical_tests: MedicalTests
   medications: Medications
   nurse_registration_details: NurseRegistrationDetails
   nurse_specialties: NurseSpecialties

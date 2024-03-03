@@ -6,10 +6,13 @@ import {
   ExpressionWrapper,
   ExtractTypeFromReferenceExpression,
   RawBuilder,
+  SelectQueryBuilder,
   Simplify,
   sql,
   StringReference,
+  UpdateQueryBuilder,
 } from 'kysely'
+import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
 
 /**
@@ -215,4 +218,37 @@ export function isoDate(
 
 export function isoDate(ref: unknown): unknown {
   return sql<string>`TO_CHAR(${ref}, 'YYYY-MM-DD')`
+}
+
+// TODO: see if kysely has built-in support for this.
+// I bet we're not handling arrays properly
+function debugReplace(parameter: unknown) {
+  if (parameter === null) return 'null'
+  switch (typeof parameter) {
+    case 'string':
+      return "'" + parameter.replaceAll("'", "''") + "'"
+    case 'number':
+      return `${parameter}`
+    case 'boolean':
+      return `${parameter}`
+    case 'object':
+      return "'" + JSON.stringify(parameter) + "'"
+    default:
+      throw new Error('Unsupported parameter type: ' + typeof parameter)
+  }
+}
+
+// Logs the pretty-printed SQL to the console with parameters interpolated.
+export function debugLog(
+  // deno-lint-ignore no-explicit-any
+  qb: SelectQueryBuilder<DB, any, any> | UpdateQueryBuilder<DB, any, any, any>,
+) {
+  let { sql, parameters } = qb.compile()
+  parameters.forEach((p: unknown, i: number) => {
+    const sql_index = `$${i + 1}`
+    sql = sql.replace(sql_index, debugReplace(p))
+  })
+  console.log(formatter.format(sql, {
+    language: 'postgresql',
+  }))
 }

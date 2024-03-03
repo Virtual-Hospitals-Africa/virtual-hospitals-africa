@@ -15,6 +15,7 @@ import {
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
+import { Examination } from './shared/examinations.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -998,16 +999,25 @@ export type FacilityEmployeeInvitee = {
 }
 
 export type FacilityDevice = {
-  id?: number
-  device_serial?: string
   device_id: number
-  room_id?: number
+  serial_number?: string
   facility_id: number
 }
 
-export type FacilityDeviceTable = {
-  serial: string
-} & Device
+export type RenderedDevice = {
+  id: number
+  name: string
+  manufacturer: string
+  diagnostic_test_capabilities: string[]
+}
+
+export type RenderedFacilityDevice = {
+  device_id: number
+  name: string
+  manufacturer: string
+  serial_number: string | null
+  diagnostic_test_capabilities: string[]
+}
 
 export type Profession =
   | 'admin'
@@ -1142,7 +1152,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
     gcal_availability_calendar_id: string
     availability_set: boolean
   }[]
-  default_facility_id?: number
+  default_facility_id: number | null
   open_encounters: RenderedPatientEncounter[]
 }
 
@@ -1814,6 +1824,12 @@ export type RenderedPatientEncounter = {
   waiting_room_facility_id: null | number
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
+  // examinations: {
+  //   name: string
+  //   completed: boolean
+  //   // TODO see if we want this
+  //   // skipped: boolean
+  // }[]
 }
 
 export type Measurements = {
@@ -1938,6 +1954,14 @@ export type GeneralAssessmentCategory = {
     assessment: string
     checked: SqlBool
   }[]
+}
+
+export type ExaminationFindings = {
+  patient_id: number
+  encounter_id: number
+  encounter_provider_id: number
+  examination_name: Examination
+  findings: unknown[]
 }
 
 export type DatabaseSchema = DB

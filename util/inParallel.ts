@@ -1,4 +1,4 @@
-export default async function forEach<T>(
+export async function forEach<T>(
   generator: Iterable<T> | AsyncIterable<T>,
   fn: (item: T) => Promise<unknown>,
   { concurrency } = { concurrency: 10 },
