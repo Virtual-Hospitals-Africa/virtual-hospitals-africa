@@ -7,6 +7,7 @@ import db from './db/db.ts'
 import {
   AgeUnit,
   DB,
+  EncounterReason,
   EncounterStep,
   FamilyType,
   IntakeStep,
@@ -1736,18 +1737,9 @@ export type PatientAllergies = {
   allergy_id: number
 }
 
-export type PatientEncounterReason =
-  | 'seeking treatment'
-  | 'appointment'
-  | 'follow up'
-  | 'referral'
-  | 'checkup'
-  | 'emergency'
-  | 'other'
-
 export type PatientEncounter = {
   patient_id: number
-  reason: PatientEncounterReason
+  reason: EncounterReason
   closed_at: null | Date
   appointment_id: null | number
   notes: null | string
@@ -1783,7 +1775,7 @@ export type RenderedWaitingRoom = {
     view: string | null
     intake: string | null
   }
-  reason: PatientEncounterReason
+  reason: EncounterReason
   is_emergency: SqlBool
   in_waiting_room: SqlBool
   status: string
@@ -1814,7 +1806,7 @@ export type RenderedPatientEncounter = {
   encounter_id: number
   created_at: Date
   closed_at: null | Date
-  reason: PatientEncounterReason
+  reason: EncounterReason
   notes: null | string
   patient_id: number
   appointment_id: null | number

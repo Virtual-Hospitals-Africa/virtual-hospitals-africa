@@ -1,5 +1,5 @@
 #! /usr/bin/env bash
-set -xo pipefail
+set -o pipefail
 
 watch_mode=false
 [[ "$1" == "--watch" ]] && watch_mode=true

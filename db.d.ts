@@ -7,6 +7,7 @@ export type EncounterReason =
   | 'checkup'
   | 'emergency'
   | 'follow up'
+  | 'maternity'
   | 'other'
   | 'referral'
   | 'seeking treatment'
@@ -221,11 +222,11 @@ export interface Countries {
   updated_at: Generated<Timestamp>
 }
 
-export interface Device {
+export interface Devices {
   id: Generated<number>
-  name: string
   manufacturer: string
-  test_availability: Json | null
+  name: string
+  test_availability: Json
 }
 
 export interface Districts {
@@ -257,6 +258,10 @@ export interface Encounter {
   step: EncounterStep
 }
 
+export interface Examinations {
+  name: string
+}
+
 export interface Facilities {
   address: string | null
   category: string
@@ -268,22 +273,22 @@ export interface Facilities {
   updated_at: Generated<Timestamp>
 }
 
-export interface FacilityRoom {
-  id: Generated<number>
-  facility_id: number
+export interface FacilityDevices {
   created_at: Generated<Timestamp>
+  device_id: number
+  device_serial: string
+  facility_id: number
+  id: Generated<number>
+  room_id: number | null
   updated_at: Generated<Timestamp>
-  name: string
 }
 
-export interface FacilityDevice {
+export interface FacilityRooms {
   created_at: Generated<Timestamp>
-  updated_at: Generated<Timestamp>
-  id: Generated<number>
-  device_serial: string
-  device_id: number
-  room_id?: number
   facility_id: number
+  id: Generated<number>
+  name: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface GeneralAssessmentCategories {
@@ -452,11 +457,6 @@ export interface Measurements {
   units: string
 }
 
-export interface MedicalTest {
-  id: Generated<number>
-  name: string
-}
-
 export interface Media {
   binary_data: Buffer
   created_at: Generated<Timestamp>
@@ -464,6 +464,11 @@ export interface Media {
   mime_type: string
   updated_at: Generated<Timestamp>
   uuid: Generated<string>
+}
+
+export interface MedicalTests {
+  id: Generated<number>
+  name: string
 }
 
 export interface Medications {
@@ -601,6 +606,17 @@ export interface PatientEncounterSteps {
   encounter_step: EncounterStep
   id: Generated<number>
   patient_encounter_id: number
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientExaminations {
+  completed: Generated<boolean>
+  created_at: Generated<Timestamp>
+  encounter_id: number
+  encounter_provider_id: number
+  examination_name: string
+  id: Generated<number>
+  patient_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -817,14 +833,15 @@ export interface DB {
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
   countries: Countries
-  devices: Device
+  devices: Devices
   districts: Districts
   drugs: Drugs
   employment: Employment
   encounter: Encounter
+  examinations: Examinations
   facilities: Facilities
-  facility_rooms: FacilityRoom
-  facility_devices: FacilityDevice
+  facility_devices: FacilityDevices
+  facility_rooms: FacilityRooms
   general_assessment_categories: GeneralAssessmentCategories
   general_assessments: GeneralAssessments
   geography_columns: GeographyColumns
@@ -846,8 +863,8 @@ export interface DB {
   mailing_list: MailingList
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
-  medical_tests: MedicalTest
   media: Media
+  medical_tests: MedicalTests
   medications: Medications
   nurse_registration_details: NurseRegistrationDetails
   nurse_specialties: NurseSpecialties
@@ -861,6 +878,7 @@ export interface DB {
   patient_encounter_providers: PatientEncounterProviders
   patient_encounter_steps: PatientEncounterSteps
   patient_encounters: PatientEncounters
+  patient_examinations: PatientExaminations
   patient_family: PatientFamily
   patient_general_assessments: PatientGeneralAssessments
   patient_guardians: PatientGuardians

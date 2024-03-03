@@ -1,19 +1,12 @@
 import { Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db
     .schema
     .createType('encounter_reason')
-    .asEnum([
-      'seeking treatment',
-      'appointment',
-      'follow up',
-      'referral',
-      'checkup',
-      'emergency',
-      'other',
-    ])
+    .asEnum(Array.from(ENCOUNTER_REASONS))
     .execute()
 
   await db.schema
