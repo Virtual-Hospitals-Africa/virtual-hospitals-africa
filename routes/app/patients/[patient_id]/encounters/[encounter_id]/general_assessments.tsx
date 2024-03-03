@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import {
   completeStep,
   EncounterContext,
@@ -6,7 +5,6 @@ import {
 } from './_middleware.tsx'
 import {
   LoggedInHealthWorkerHandlerWithProps,
-  RenderedPatientEncounter,
 } from '../../../../../../types.ts'
 import FormButtons from '../../../../../../components/library/form/buttons.tsx'
 import * as patient_general_assessments from '../../../../../../db/models/patient_general_assessments.ts'
@@ -14,10 +12,7 @@ import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
-import redirect from '../../../../../../util/redirect.ts'
-import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
-import * as ProgressIcons from '../../../../../../components/library/icons/progress.tsx'
-import { ForwardIcon } from '../../../../../../components/library/icons/heroicons/outline.tsx'
+import GeneralAssessmentForm from '../../../../../../islands/general-assessment/Form.tsx'
 
 function assertIsAssessments(
   values: unknown,
@@ -56,7 +51,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-// deno-lint-ignore require-await
 export default async function ExaminationsPage(
   _req: Request,
   ctx: EncounterContext,
@@ -65,45 +59,21 @@ export default async function ExaminationsPage(
   const previously_filled = encounter.steps_completed.includes(
     'examinations',
   )
-
-  const examination_name = ctx.url.searchParams.get('examination')
-  let examination: RenderedPatientEncounter['examinations'][number]
-  if (examination_name) {
-    const matching_examination = encounter.examinations.find(
-      (examination) => examination.examination_name === examination_name,
+  const categories = await patient_general_assessments
+    .getByCategory(
+      trx,
+      {
+        encounter_id: encounter.encounter_id,
+        patient_id: patient.id,
+      },
     )
-    if (!matching_examination) {
-      const next_url = new URL(ctx.url)
-      next_url.searchParams.delete('examination')
-      return redirect(next_url.toString())
-    }
-    examination = matching_examination
-  } else {
-    examination = encounter.examinations.find((examination) =>
-      !examination.completed && !examination.skipped
-    ) || encounter.examinations[0]
-  }
-  assert(examination)
-
-  const tabs: TabProps[] = encounter.examinations.map((exam) => {
-    const url = new URL(ctx.url)
-    url.searchParams.set('examination', exam.examination_name)
-    const active = exam === examination
-    return {
-      tab: exam.examination_name,
-      href: url.toString(),
-      active,
-      leftIcon: exam.completed
-        ? <ProgressIcons.Check active={active} />
-        : exam.skipped && !active
-        ? <ForwardIcon className='w-5 h-5' />
-        : <ProgressIcons.Dot active={active} />,
-    }
-  })
 
   return (
     <EncounterLayout ctx={ctx}>
-      <Tabs tabs={tabs} />
+      <GeneralAssessmentForm
+        previously_filled={previously_filled}
+        categories={categories}
+      />
       <FormButtons />
     </EncounterLayout>
   )

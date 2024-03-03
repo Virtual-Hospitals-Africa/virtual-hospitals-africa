@@ -3,20 +3,13 @@ import { FreshContext } from '$fresh/server.ts'
 import * as waiting_room from '../db/models/waiting_room.ts'
 import * as appointments from '../db/models/appointments.ts'
 import Layout from '../components/library/Layout.tsx'
-import { Tabs, TabsProps } from '../components/library/Tabs.tsx'
+import { TabProps, Tabs } from '../components/library/Tabs.tsx'
 import { LoggedInHealthWorker } from '../types.ts'
 import WaitingRoomView from '../components/waiting-room/View.tsx'
 import { firstName } from '../util/name.ts'
 import redirect from '../util/redirect.ts'
 import { getNumericParam } from '../util/getNumericParam.ts'
-
-type Tab = 'waiting_room' | 'appointments' | 'orders'
-
-const tabs: TabsProps<Tab>['tabs'] = [
-  'waiting_room' as const,
-  ['appointments' as const, '/app/calendar'],
-  ['orders' as const, '/app/orders'],
-]
+import Badge from '../components/library/Badge.tsx'
 
 export default async function AppPage(
   _req: Request,
@@ -60,6 +53,25 @@ export default async function AppPage(
     },
   )
 
+  const tabs: TabProps[] = [
+    {
+      tab: 'waiting_room',
+      href: `/app`,
+      active: true,
+    },
+    {
+      tab: 'appointments',
+      href: '/app/calendar',
+      active: false,
+      rightIcon: <Badge content={await getting_appointments_count} />,
+    },
+    {
+      tab: 'orders',
+      href: '/app/calendar',
+      active: false,
+    },
+  ]
+
   return (
     <Layout
       variant='home page'
@@ -69,14 +81,7 @@ export default async function AppPage(
       params={ctx.params}
       health_worker={healthWorker}
     >
-      <Tabs
-        route={ctx.route}
-        tabs={tabs}
-        activeTab='waiting_room'
-        counts={{
-          appointments: await getting_appointments_count,
-        }}
-      />
+      <Tabs tabs={tabs} />
       <WaitingRoomView
         facility_id={facility_id}
         waiting_room={await getting_waiting_room}
