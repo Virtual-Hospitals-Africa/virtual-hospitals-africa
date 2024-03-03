@@ -52,50 +52,6 @@ export function recommended(
   })
 }
 
-export function recommended2(
-  trx: TrxOrDb,
-) {
-  const patient_encounter = trx.selectFrom('patients')
-    .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .innerJoin(
-      'patient_encounters',
-      'patient_encounters.patient_id',
-      'patients.id',
-    )
-    .select([
-      'patients.id as patient_id',
-      'patient_encounters.id as encounter_id',
-    ])
-
-  const head_to_toe = patient_encounter.select(
-    examinationName('Head-to-toe Assessment'),
-  )
-
-  const womens_health = patient_encounter
-    .where('patients.gender', '=', 'female')
-    .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
-    .select(examinationName("Women's Health Assessment"))
-
-  const mens_health = patient_encounter
-    .where('patients.gender', '=', 'male')
-    .where(sql.ref('patient_age.age_years').$castTo<number>(), '>=', 18)
-    .select(examinationName("Men's Health Assessment"))
-
-  const child_health = patient_encounter
-    .where(sql.ref('patient_age.age_years').$castTo<number>(), '<', 18)
-    .select(examinationName('Child Health Assessment'))
-
-  const maternity = patient_encounter
-    .where('patient_encounters.reason', '=', 'maternity')
-    .select(examinationName('Maternity Assessment'))
-
-  return head_to_toe
-    .unionAll(womens_health)
-    .unionAll(mens_health)
-    .unionAll(child_health)
-    .unionAll(maternity)
-}
-
 export function skip(trx: TrxOrDb, values: {
   examination_name: Examination
   patient_id: number

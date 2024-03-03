@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { Maybe, RenderedPatientEncounter, TrxOrDb } from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
+import * as examinations from './examinations.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
@@ -171,7 +172,7 @@ export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: number) =>
     .distinct()
 
 export const baseQuery = (trx: TrxOrDb) =>
-  trx
+  examinations.forPatientEncounter(trx)
     .selectFrom('patient_encounters')
     .leftJoin(
       'waiting_room',
@@ -227,9 +228,15 @@ export const baseQuery = (trx: TrxOrDb) =>
             'patient_encounters.id',
           ),
       ).as('providers'),
-      // jsonArrayFrom(
-      //   eb.selectFrom
-      // ).as('examinations')
+      jsonArrayFrom(
+        eb.selectFrom('patient_examinations_with_recommendations')
+          .selectAll('patient_examinations_with_recommendations')
+          .whereRef(
+            'patient_examinations_with_recommendations.encounter_id',
+            '=',
+            'patient_encounters.id',
+          ),
+      ).as('examinations'),
     ])
     .orderBy('patient_encounters.created_at', 'desc')
 

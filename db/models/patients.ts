@@ -21,15 +21,22 @@ import {
 import { hasName, haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import compact from '../../util/compact.ts'
-import { upsert as upsertAddress } from './address.ts'
+import {
+  formatted as formattedAddress,
+  upsert as upsertAddress,
+} from './address.ts'
+import * as examinations from './examinations.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as patient_conditions from './patient_conditions.ts'
 import * as patient_allergies from './patient_allergies.ts'
 import * as patient_lifestyle from './patient_lifestyle.ts'
-import * as address from './address.ts'
 import * as patient_family from './family.ts'
-import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
+import {
+  jsonArrayFrom,
+  jsonArrayFromColumn,
+  jsonBuildObject,
+} from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
@@ -379,7 +386,7 @@ export async function getIntakeReview(
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .leftJoin(
-      address.formatted(trx),
+      formattedAddress(trx),
       'address_formatted.id',
       'patients.address_id',
     )
@@ -458,6 +465,9 @@ export async function getWithOpenEncounter(
     .where('patient_encounters.patient_id', 'in', opts.ids)
     .as('open_encounters')
 
+  const patient_examinations_with_recommendations = examinations
+    .forPatientEncounter(trx)
+
   const patients = await selectWithName(trx)
     .where('patients.id', 'in', opts.ids)
     .leftJoin(open_encounters, 'open_encounters.patient_id', 'patients.id')
@@ -477,6 +487,21 @@ export async function getWithOpenEncounter(
           ),
           providers: eb.ref('open_encounters.providers').$notNull(),
           steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
+          examinations: jsonArrayFrom(
+            patient_examinations_with_recommendations
+              .selectFrom('patient_examinations_with_recommendations')
+              .select([
+                'patient_examinations_with_recommendations.examination_name',
+                'patient_examinations_with_recommendations.completed',
+                'patient_examinations_with_recommendations.skipped',
+                'patient_examinations_with_recommendations.recommended',
+              ])
+              .where(
+                'patient_examinations_with_recommendations.encounter_id',
+                '=',
+                eb.ref('open_encounters.encounter_id').$notNull(),
+              ),
+          ),
         })).end().as('open_encounter'),
     ])
     .execute()

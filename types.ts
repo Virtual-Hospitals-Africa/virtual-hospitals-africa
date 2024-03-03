@@ -1824,12 +1824,12 @@ export type RenderedPatientEncounter = {
   waiting_room_facility_id: null | number
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
-  // examinations: {
-  //   name: string
-  //   completed: boolean
-  //   // TODO see if we want this
-  //   // skipped: boolean
-  // }[]
+  examinations: {
+    examination_name: string
+    completed: SqlBool
+    skipped: SqlBool
+    recommended: SqlBool
+  }[]
 }
 
 export type Measurements = {
