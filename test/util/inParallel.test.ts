@@ -1,7 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
-import inParallel from '../../util/inParallel.ts'
+import * as inParallel from '../../util/inParallel.ts'
 import range from '../../util/range.ts'
 
 async function* eventually100() {
@@ -12,10 +12,10 @@ async function* eventually10() {
   yield* range(0, 10)
 }
 
-describe('inParallel', () => {
+describe('inParallel.forEach', () => {
   it('processes items in parallel up to a concurrency limit', async () => {
     const proccessedItems: number[] = []
-    await inParallel(
+    await inParallel.forEach(
       eventually100(),
       async (item) => {
         if (item % 5 === 0) {
@@ -131,7 +131,7 @@ describe('inParallel', () => {
 
   it('can set concurrency to 1', async () => {
     const proccessedItems: number[] = []
-    await inParallel(
+    await inParallel.forEach(
       eventually10(),
       async (item) => {
         await new Promise((resolve) => setTimeout(resolve, 0))
@@ -146,7 +146,7 @@ describe('inParallel', () => {
     const proccessedItems: number[] = []
     await assertRejects(
       () =>
-        inParallel(
+        inParallel.forEach(
           eventually100(),
           // deno-lint-ignore require-await
           async (item) => {

@@ -341,7 +341,7 @@ export async function get(
     refresh_token,
     expires_at,
     employment,
-    default_facility_id: employment[0]?.facility.id,
+    default_facility_id: employment[0]?.facility.id ?? null,
   }
 }
 

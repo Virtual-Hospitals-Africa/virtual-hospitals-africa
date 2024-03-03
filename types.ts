@@ -999,16 +999,25 @@ export type FacilityEmployeeInvitee = {
 }
 
 export type FacilityDevice = {
-  id?: number
-  device_serial?: string
   device_id: number
-  room_id?: number
+  serial_number?: string
   facility_id: number
 }
 
-export type FacilityDeviceTable = {
-  serial: string
-} & Device
+export type RenderedDevice = {
+  id: number
+  name: string
+  manufacturer: string
+  diagnostic_test_capabilities: string[]
+}
+
+export type RenderedFacilityDevice = {
+  device_id: number
+  name: string
+  manufacturer: string
+  serial_number: string | null
+  diagnostic_test_capabilities: string[]
+}
 
 export type Profession =
   | 'admin'
@@ -1143,7 +1152,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
     gcal_availability_calendar_id: string
     availability_set: boolean
   }[]
-  default_facility_id?: number
+  default_facility_id: number | null
   open_encounters: RenderedPatientEncounter[]
 }
 

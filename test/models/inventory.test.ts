@@ -1,34 +1,57 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import * as devices from '../../db/models/devices.ts'
 import * as inventory from '../../db/models/inventory.ts'
-import { itUsesTrxAnd } from '../web/utilities.ts'
+import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
 
 describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
   describe('getAvailableTestsInFacility', () => {
     itUsesTrxAnd(
-      'Add device and Checks if the specefic test is available in the facility',
-      async (trx) => {
-        const device = (await devices.search(trx, null))[0]
-        const availableTest = device.test_availability[0]
+      'resolves with the available diagnostic tests in a facility',
+      (trx) =>
+        withTestFacility(trx, async (facility_id) => {
+          const contec_bc401 = await trx.selectFrom('devices')
+            .where('name', '=', 'Contec BC401')
+            .select('id')
+            .executeTakeFirstOrThrow()
 
-        await inventory.addFacilityDevice(trx, 1, {
-          device_id: device.id,
-          facility_id: 1,
-        })
+          const ls_4000 = await trx.selectFrom('devices')
+            .where('name', '=', 'LS-4000 Immunofluorescence Analyser')
+            .select('id')
+            .executeTakeFirstOrThrow()
 
-        const facilityAvailableTests = await inventory
-          .getAvailableTestsInFacility(trx, {
-            facility_id: 1,
+          await inventory.addFacilityDevice(trx, {
+            device_id: contec_bc401.id,
+            facility_id,
           })
 
-        assertEquals(
-          facilityAvailableTests.filter((c) =>
-            c.name === availableTest.name
-          ) !== undefined,
-          true,
-        )
-      },
+          await inventory.addFacilityDevice(trx, {
+            device_id: ls_4000.id,
+            facility_id,
+          })
+
+          const available_tests = await inventory
+            .getAvailableTestsInFacility(trx, {
+              facility_id,
+            })
+
+          assertEquals(available_tests, [
+            { diagnostic_test: 'Anemia' },
+            { diagnostic_test: 'Angiocapy' },
+            { diagnostic_test: 'Bone Metabolism' },
+            { diagnostic_test: 'Brain Injury' },
+            { diagnostic_test: 'Cardiac' },
+            { diagnostic_test: 'Diabetes' },
+            { diagnostic_test: 'Gastric Function' },
+            { diagnostic_test: 'Hormone' },
+            { diagnostic_test: 'Immune System' },
+            { diagnostic_test: 'Inflammation' },
+            { diagnostic_test: 'Nervous System' },
+            { diagnostic_test: 'Renal Function' },
+            { diagnostic_test: 'Thyroid' },
+            { diagnostic_test: 'Tumor' },
+            { diagnostic_test: 'Urine Analysis' },
+          ])
+        }),
     )
   })
 })

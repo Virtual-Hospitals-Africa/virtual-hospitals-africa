@@ -1,11 +1,7 @@
-import { FacilityDeviceTable } from '../../types.ts'
+import { RenderedFacilityDevice } from '../../types.ts'
 import Table, { TableColumn } from '../library/Table.tsx'
 
-const columns: TableColumn<FacilityDeviceTable>[] = [
-  {
-    label: 'Device Serial',
-    dataKey: 'serial',
-  },
+const columns: TableColumn<RenderedFacilityDevice>[] = [
   {
     label: 'Name',
     dataKey: 'name',
@@ -15,11 +11,15 @@ const columns: TableColumn<FacilityDeviceTable>[] = [
     dataKey: 'manufacturer',
   },
   {
+    label: 'Serial Number',
+    dataKey: 'serial_number',
+  },
+  {
     label: 'Tests',
     dataKey(row) {
       return (
         <div className='flex flex-col'>
-          {row.test_availability.map((p) => <span>{p.name}</span>)}
+          {row.diagnostic_test_capabilities.map((c) => <span>{c}</span>)}
         </div>
       )
     },
@@ -27,7 +27,7 @@ const columns: TableColumn<FacilityDeviceTable>[] = [
 ]
 
 export default function FacilityDevicesTable(
-  { devices }: { devices: FacilityDeviceTable[] },
+  { devices }: { devices: RenderedFacilityDevice[] },
 ) {
   return (
     <Table

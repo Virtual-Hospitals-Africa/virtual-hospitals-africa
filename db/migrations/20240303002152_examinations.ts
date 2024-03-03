@@ -1,6 +1,6 @@
 import { Kysely } from 'kysely'
 import { EXAMINATIONS } from '../../shared/examinations.ts'
-import { standardTable } from '../createStandardTable.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(
   db: Kysely<{
@@ -15,42 +15,48 @@ export async function up(
     EXAMINATIONS.map((name) => ({ name })),
   ).execute()
 
-  await standardTable(db, 'patient_examinations', (table) =>
-    table.addColumn(
-      'patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-      .addColumn(
-        'encounter_id',
+  await createStandardTable(
+    db,
+    'patient_examinations',
+    (table) =>
+      table.addColumn(
+        'patient_id',
         'integer',
-        (col) =>
-          col.notNull().references('patient_encounters.id').onDelete('cascade'),
+        (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
-      .addColumn(
-        'encounter_provider_id',
-        'integer',
-        (col) =>
-          col.notNull().references('patient_encounter_providers.id').onDelete(
-            'cascade',
-          ),
-      )
-      .addColumn(
-        'examination_name',
-        'varchar(40)',
-        (col) =>
-          col.notNull().references('examinations.name').onDelete('cascade'),
-      )
-      .addColumn(
-        'completed',
-        'boolean',
-        (col) => col.notNull().defaultTo(false),
-      )
-      .addColumn(
-        'skipped',
-        'boolean',
-        (col) => col.notNull().defaultTo(false),
-      ))
+        .addColumn(
+          'encounter_id',
+          'integer',
+          (col) =>
+            col.notNull().references('patient_encounters.id').onDelete(
+              'cascade',
+            ),
+        )
+        .addColumn(
+          'encounter_provider_id',
+          'integer',
+          (col) =>
+            col.notNull().references('patient_encounter_providers.id').onDelete(
+              'cascade',
+            ),
+        )
+        .addColumn(
+          'examination_name',
+          'varchar(40)',
+          (col) =>
+            col.notNull().references('examinations.name').onDelete('cascade'),
+        )
+        .addColumn(
+          'completed',
+          'boolean',
+          (col) => col.notNull().defaultTo(false),
+        )
+        .addColumn(
+          'skipped',
+          'boolean',
+          (col) => col.notNull().defaultTo(false),
+        ),
+  )
 }
 
 export async function down(db: Kysely<unknown>) {

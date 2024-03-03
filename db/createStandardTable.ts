@@ -2,7 +2,7 @@ import { CreateTableBuilder, Kysely } from 'kysely'
 import { addUpdatedAtTrigger } from './addUpdatedAtTrigger.ts'
 import { now } from './helpers.ts'
 
-export async function standardTable(
+export async function createStandardTable(
   // deno-lint-ignore no-explicit-any
   db: Kysely<any>,
   table: string,

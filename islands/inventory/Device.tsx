@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import { Device } from '../../types.ts'
+import { RenderedDevice } from '../../types.ts'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Form from '../../components/library/form/Form.tsx'
 import FormRow from '../../components/library/form/Row.tsx'
@@ -9,7 +9,7 @@ import { Button } from '../../components/library/Button.tsx'
 import { TextInput } from '../../components/library/form/Inputs.tsx'
 
 export default function FacilityDeviceForm(): JSX.Element {
-  const selectedDevice = useSignal<Device | undefined>(undefined)
+  const selectedDevice = useSignal<RenderedDevice | undefined>(undefined)
   return (
     <div>
       <SectionHeader className='my-5 text-[20px]'>
@@ -31,7 +31,7 @@ export default function FacilityDeviceForm(): JSX.Element {
               />
 
               <TextInput
-                name={`device_serial`}
+                name={`serial_number`}
                 label='Serial'
                 required
               />
@@ -47,9 +47,9 @@ export default function FacilityDeviceForm(): JSX.Element {
                 <div>
                   <label>Available Tests</label>
                   <ul>
-                    {selectedDevice.value?.test_availability.map((c) => (
-                      <li>{c.name}</li>
-                    ))}
+                    {selectedDevice.value?.diagnostic_test_capabilities.map((
+                      c,
+                    ) => <li>{c}</li>)}
                   </ul>
                 </div>
               </FormRow>

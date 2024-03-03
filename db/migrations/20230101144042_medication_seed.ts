@@ -8,7 +8,7 @@ import compact from '../../util/compact.ts'
 import arraysEqual from '../../util/arraysEqual.ts'
 import sortBy from '../../util/sortBy.ts'
 import { createSeedMigration } from '../seedMigration.ts'
-import inParallel from '../../util/inParallel.ts'
+import * as inParallel from '../../util/inParallel.ts'
 
 export default createSeedMigration([
   'drugs',
@@ -78,9 +78,7 @@ async function seedDataFromJSON(db: Kysely<any>) {
 
   // Log all unique forms
   // console.log(uniq(data.map(d => d.forms)).sort())
-  await inParallel([...drugs.entries()], addDrug.bind(null, db), {
-    concurrency: 8,
-  })
+  await inParallel.forEach([...drugs.entries()], addDrug.bind(null, db))
 
   if (skippedDrugs.length) {
     console.log(`Skipped drugs`)
