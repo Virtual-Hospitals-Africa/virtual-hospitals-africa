@@ -24,10 +24,11 @@ export function createSeedMigration(
         return generate(db)
       }
     },
-    async down(db: Kysely<any>) {
-      for (const table_name of table_names.toReversed()) {
-        await db.deleteFrom(table_name).execute()
-      }
+    async down(_db: Kysely<any>) {
+      // TODO: revisit this. The idea is that the tables get dropped on the earlier migrations
+      // for (const table_name of table_names.toReversed()) {
+      //   await db.deleteFrom(table_name).execute()
+      // }
     },
     async load() {
       const load_tables = await inParallel.filter(

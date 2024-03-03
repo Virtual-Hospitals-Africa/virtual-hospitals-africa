@@ -82,6 +82,32 @@ async function startMigrating(cmd: string, target?: string) {
       if (!target) return targetError()
       return migrator.migrateTo(findTarget(target))
     }
+    case 'redo:from': {
+      if (!target) return targetError()
+      console.log('Migrating down...')
+      const migration = findTarget(target)
+      const migration_index = migrationTargets.indexOf(migration)
+      const migration_just_before = migrationTargets[migration_index - 1]
+      const { error, results } = await migrator.migrateTo(migration_just_before)
+
+      results?.forEach((it) => {
+        if (it.status === 'Success') {
+          console.log(
+            `migration "${it.migrationName}" was executed successfully`,
+          )
+        } else if (it.status === 'Error') {
+          console.error(`failed to execute migration "${it.migrationName}"`)
+        }
+      })
+
+      if (error) {
+        console.error('failed to migrate')
+        throw error
+      }
+
+      console.log('\nMigrating up to latest...')
+      return migrator.migrateToLatest()
+    }
     case 'seeds:dump': {
       if (target) {
         const migration = migrations[findTarget(target)]

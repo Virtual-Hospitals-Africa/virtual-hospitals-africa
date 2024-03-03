@@ -1,23 +1,18 @@
 import { sql } from 'kysely'
-import {
-  Maybe,
-  PatientEncounterReason,
-  RenderedPatientEncounter,
-  TrxOrDb,
-} from '../../types.ts'
+import { Maybe, RenderedPatientEncounter, TrxOrDb } from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
-import { EncounterStep } from '../../db.d.ts'
-import { reasons } from '../../shared/encounter.ts'
+import { EncounterReason, EncounterStep } from '../../db.d.ts'
+import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 import { ensureProviderId } from './providers.ts'
 
 export type Upsert =
   & {
     encounter_id?: Maybe<number>
-    reason: PatientEncounterReason
+    reason: EncounterReason
     provider_ids?: number[]
     appointment_id?: Maybe<number>
     notes?: Maybe<string>
@@ -30,8 +25,8 @@ export type Upsert =
 
 export function assertIsEncounterReason(
   str: string,
-): asserts str is PatientEncounterReason {
-  assertOr400(reasons.has(str as PatientEncounterReason))
+): asserts str is EncounterReason {
+  assertOr400(ENCOUNTER_REASONS.has(str as EncounterReason))
 }
 
 export function assertIsUpsert(

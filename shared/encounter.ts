@@ -1,5 +1,4 @@
-import { EncounterStep } from '../db.d.ts'
-import { PatientEncounterReason } from '../types.ts'
+import { EncounterReason, EncounterStep } from '../db.d.ts'
 
 export const ENCOUNTER_STEPS: EncounterStep[] = [
   'vitals',
@@ -18,8 +17,9 @@ export function isEncounterStep(value: unknown): value is EncounterStep {
   return ENCOUNTER_STEPS.includes(value as EncounterStep)
 }
 
-export const reasons = new Set<PatientEncounterReason>([
+export const ENCOUNTER_REASONS = new Set<EncounterReason>([
   'seeking treatment',
+  'maternity',
   'appointment',
   'follow up',
   'referral',

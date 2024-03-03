@@ -8,7 +8,7 @@ import ProvidersSelect from '../../islands/ProvidersSelect.tsx'
 import Form from '../../components/library/form/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { PersonData } from '../../components/library/Person.tsx'
-import { reasons } from '../../shared/encounter.ts'
+import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 import { EncounterReason } from '../../db.d.ts'
 
 const selectedPatient = signal<PersonData | undefined>(undefined)
@@ -69,7 +69,7 @@ export default function AddPatientForm({
           <RadioGroup
             name='reason'
             label='Reason for visit'
-            options={Array.from(reasons).map((
+            options={Array.from(ENCOUNTER_REASONS).map((
               value,
             ) => ({
               value,
