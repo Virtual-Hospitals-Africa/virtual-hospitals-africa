@@ -45,6 +45,11 @@ export async function up(
         'completed',
         'boolean',
         (col) => col.notNull().defaultTo(false),
+      )
+      .addColumn(
+        'skipped',
+        'boolean',
+        (col) => col.notNull().defaultTo(false),
       ))
 }
 

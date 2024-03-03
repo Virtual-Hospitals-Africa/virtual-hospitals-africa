@@ -15,6 +15,7 @@ import {
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
+import { Examination } from './shared/examinations.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1814,6 +1815,12 @@ export type RenderedPatientEncounter = {
   waiting_room_facility_id: null | number
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
+  // examinations: {
+  //   name: string
+  //   completed: boolean
+  //   // TODO see if we want this
+  //   // skipped: boolean
+  // }[]
 }
 
 export type Measurements = {
@@ -1938,6 +1945,14 @@ export type GeneralAssessmentCategory = {
     assessment: string
     checked: SqlBool
   }[]
+}
+
+export type ExaminationFindings = {
+  patient_id: number
+  encounter_id: number
+  encounter_provider_id: number
+  examination_name: Examination
+  findings: unknown[]
 }
 
 export type DatabaseSchema = DB

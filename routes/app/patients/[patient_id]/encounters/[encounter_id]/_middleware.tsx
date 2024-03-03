@@ -58,7 +58,10 @@ export async function completeStep(ctx: EncounterContext) {
 export async function removeFromWaitingRoomAndAddSelfAsProvider(
   ctx: LoggedInHealthWorkerContext,
   encounter_id: number | 'open',
-) {
+): Promise<{
+  encounter: RenderedPatientEncounter
+  encounter_provider: RenderedPatientEncounterProvider
+}> {
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
   const { trx, healthWorker } = ctx.state
 
