@@ -6,7 +6,7 @@ import { json } from '../../util/responses.ts'
 export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   async GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
-    const search = new URL(req.url).searchParams.get('search')
+    const search = ctx.url.searchParams.get('search')
     const result = await facilities.search(ctx.state.trx, search)
     return json(result)
   },

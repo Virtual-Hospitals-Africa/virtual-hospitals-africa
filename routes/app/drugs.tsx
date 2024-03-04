@@ -24,7 +24,7 @@ export async function searchResponse(
 export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
-    const search = new URL(req.url).searchParams.get('search') || undefined
+    const search = ctx.url.searchParams.get('search') || undefined
     return searchResponse(ctx, search)
   },
 }

@@ -82,8 +82,8 @@ async function getContents(
   To be handled later
 */
 export const handler: Handlers = {
-  GET(req) {
-    const { searchParams } = new URL(req.url)
+  GET(_req, ctx) {
+    const { searchParams } = ctx.url
     const hubMode = searchParams.get('hub.mode')
     const hubVerifyToken = searchParams.get('hub.verify_token')
     const hubChallenge = searchParams.get('hub.challenge')

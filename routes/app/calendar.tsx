@@ -20,7 +20,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<CalendarPageProps> =
 
       const today = todayISOInHarare()
       // if there's no day in the query, use today in Harare
-      const day = new URL(req.url).searchParams.get('day') || today
+      const day = ctx.url.searchParams.get('day') || today
 
       const getting_appointments = getAppointments(ctx.state.trx, {
         health_worker_id: ctx.state.healthWorker.id,
