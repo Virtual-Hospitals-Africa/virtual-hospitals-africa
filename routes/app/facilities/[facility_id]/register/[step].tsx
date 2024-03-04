@@ -75,7 +75,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     if (stepIndex < NurseRegistrationStepNames.length - 1) {
       ctx.state.session.set('registrationFormState', JSON.stringify(formState))
       const nextStep = NurseRegistrationStepNames[stepIndex + 1]
-      const nextUrl = req.url.replace(`/${step}`, `/${nextStep}`)
+      const nextUrl = ctx.url.pathname.replace(`/${step}`, `/${nextStep}`)
       return redirect(nextUrl)
     }
 

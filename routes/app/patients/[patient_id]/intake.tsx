@@ -1,16 +1,13 @@
 import * as patients from '../../../../db/models/patients.ts'
-import PatientDetailedCard from '../../../../components/patients/DetailedCard.tsx'
-import Layout from '../../../../components/library/Layout.tsx'
-import { Container } from '../../../../components/library/Container.tsx'
-import SectionHeader from '../../../../components/library/typography/SectionHeader.tsx'
-import { Button } from '../../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import { getRequiredNumericParam } from '../../../../util/getNumericParam.ts'
 import redirect from '../../../../util/redirect.ts'
+import { INTAKE_STEPS } from '../../../../shared/intake.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export default async function PatientPage(
-  req: Request,
+  _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { healthWorker } = ctx.state
@@ -24,11 +21,11 @@ export default async function PatientPage(
   assertOr404(patient, 'Patient not found')
 
   if (!patient.completed_intake) {
-    const intakeStep = await patients.getFirstIncompletedIntakeStep(
-      ctx.state.trx,
-      patient.id,
+    const first_incomplete_step = INTAKE_STEPS.find((step) =>
+      !patient.intake_steps_completed.includes(step)
     )
-    return redirect(`${req.url}/${intakeStep}`)
+    assert(first_incomplete_step)
+    return redirect(`${ctx.url.pathname}/${first_incomplete_step}`)
   }
-  return redirect(`${req.url.replace('/intake', '')}`)
+  return redirect(`/app/patients/${patient_id}`)
 }
