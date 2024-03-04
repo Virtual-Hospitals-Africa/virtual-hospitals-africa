@@ -53,20 +53,3 @@ export function Tabs(
     </div>
   )
 }
-
-export function activeTab<Tab extends string>(
-  tabs: Array<[Tab, string]>,
-  url: string,
-): Tab {
-  const tabQuery = new URL(url).searchParams.get('tab')
-  for (const [tab] of tabs) {
-    if (tab === tabQuery) {
-      return tab
-    }
-  }
-  const first = tabs[0]
-  if (Array.isArray(first)) {
-    return first[0]
-  }
-  return first
-}

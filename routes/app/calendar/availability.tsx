@@ -26,6 +26,7 @@ import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertIsPartialAvailability } from '../../../shared/scheduling/availability.tsx'
 import { getNumericParam } from '../../../util/getNumericParam.ts'
 import { assertOr403 } from '../../../util/assertOr.ts'
+import hrefFromCtx from '../../../util/hrefFromCtx.ts'
 import { markAvailabilitySet } from '../../../db/models/providers.ts'
 import { HomePageSidebar } from '../../../components/library/Sidebar.tsx'
 
@@ -105,12 +106,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const facility_id_param = getNumericParam(ctx, 'facility_id')
 
     if (healthWorker.employment.length > 1 && !facility_id_param) {
-      const url = new URL(ctx.url)
-      url.searchParams.set(
-        'facility_id',
-        String(healthWorker.employment[0].facility.id),
-      )
-      return redirect(url.toString())
+      return redirect(hrefFromCtx(ctx, (url) => {
+        url.searchParams.set(
+          'facility_id',
+          String(healthWorker.employment[0].facility.id),
+        )
+      }))
     }
 
     const facility_id = facility_id_param ||

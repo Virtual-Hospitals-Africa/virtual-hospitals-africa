@@ -29,6 +29,7 @@ import {
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
 import { PatientExaminationForm } from '../../../../../../islands/examinations/Form.tsx'
 import omit from '../../../../../../util/omit.ts'
+import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 
 function assertIsExaminationFindings(
   values: unknown,
@@ -37,17 +38,17 @@ function assertIsExaminationFindings(
 }
 
 function examinationHref(ctx: EncounterContext, examination_name: string) {
-  const url = new URL(ctx.url)
-  url.searchParams.delete('add')
-  url.searchParams.set('examination', examination_name)
-  return url.toString()
+  return hrefFromCtx(ctx, (url) => {
+    url.searchParams.delete('add')
+    url.searchParams.set('examination', examination_name)
+  })
 }
 
 function addExaminationHref(ctx: EncounterContext) {
-  const url = new URL(ctx.url)
-  url.searchParams.delete('examination')
-  url.searchParams.set('add', 'examination')
-  return url.toString()
+  return hrefFromCtx(ctx, (url) => {
+    url.searchParams.delete('examination')
+    url.searchParams.set('add', 'examination')
+  })
 }
 
 function matchingExamination(
@@ -96,9 +97,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsExaminationFindings,
     )
 
-    console.log('values', values)
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-    console.log('patient_id', patient_id)
 
     await upsertFindings(
       ctx.state.trx,
@@ -111,8 +110,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         values: omit(values, ['examination']),
       },
     )
-
-    console.log('fffff')
 
     return once_done
   },
