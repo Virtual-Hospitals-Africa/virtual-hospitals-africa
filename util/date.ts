@@ -320,7 +320,6 @@ export function convertToTimeString(time: string): string {
   } ${formattedTime.amPm}`
 }
 
-// TODO Implement this
 export function isValidDate(messageBody: string): boolean {
   const [d, m, y] = messageBody.split('/')
   const year = `${y}`

@@ -6,7 +6,9 @@ watch_mode=false
 
 # Set up a temporary file for the test server output so we can check if it's ready
 test_server_output=$(mktemp)
-trap 'rm -f $test_server_output' EXIT
+echo "Check server output via:"
+echo "cat $test_server_output"
+# trap 'rm -f $test_server_output' EXIT
 
 kill_test_server() {
   test_server_pid=$(lsof -i tcp:8005 | awk 'NR==2 { print $2 }')

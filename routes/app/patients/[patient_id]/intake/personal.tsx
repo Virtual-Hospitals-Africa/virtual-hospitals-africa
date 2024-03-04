@@ -60,14 +60,14 @@ export default async function PersonalPage(
 ) {
   const { is_review, patient } = ctx.state
   assert(!is_review)
-  const previously_filled = patient.intake_steps_completed.includes(
+  const previously_completed = patient.intake_steps_completed.includes(
     'personal',
   )
   return (
     <IntakeLayout ctx={ctx}>
       <PatientPersonalForm
         patient={patient}
-        previously_filled={previously_filled}
+        previously_completed={previously_completed}
       />
       <hr className='my-2' />
       <Buttons submitText='Next Step' />

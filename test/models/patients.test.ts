@@ -172,10 +172,80 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             waiting_room_id: encounter.waiting_room_id,
             waiting_room_facility_id: 1,
             steps_completed: [],
+            examinations: [],
           },
         },
       ])
     })
+
+    itUsesTrxAnd(
+      'returns recommended examinations once date of birth is filled in',
+      async (trx) => {
+        const patient = await patients.upsert(trx, {
+          name: 'Test Patient',
+          date_of_birth: '1989-01-03',
+          gender: 'male',
+        })
+        const encounter = await patient_encounters.upsert(trx, 1, {
+          patient_id: patient.id,
+          reason: 'seeking treatment',
+        })
+        const { patient_id } = encounter
+
+        const results = await patients.getWithOpenEncounter(trx, {
+          ids: [patient_id],
+        })
+        assertEquals(results, [
+          {
+            id: patient_id,
+            avatar_url: null,
+            name: 'Test Patient',
+            dob_formatted: '3 January 1989',
+            description: 'male, 03/01/1989',
+            gender: 'male',
+            ethnicity: null,
+            location: { longitude: null, latitude: null },
+            national_id_number: null,
+            nearest_facility: null,
+            phone_number: null,
+            last_visited: null,
+            conversation_state: 'initial_message',
+            completed_intake: false,
+            intake_steps_completed: [],
+            actions: {
+              view: `/app/patients/${patient_id}`,
+            },
+            open_encounter: {
+              encounter_id: encounter.id,
+              patient_id,
+              reason: 'seeking treatment',
+              providers: [],
+              created_at: results[0].open_encounter!.created_at,
+              closed_at: null,
+              notes: null,
+              appointment_id: null,
+              waiting_room_id: encounter.waiting_room_id,
+              waiting_room_facility_id: 1,
+              steps_completed: [],
+              examinations: [
+                {
+                  completed: false,
+                  examination_name: 'Head-to-toe Assessment',
+                  recommended: true,
+                  skipped: false,
+                },
+                {
+                  completed: false,
+                  examination_name: "Men's Health Assessment",
+                  recommended: true,
+                  skipped: false,
+                },
+              ],
+            },
+          },
+        ])
+      },
+    )
   })
 
   describe('getAvatar', () => {

@@ -4,11 +4,11 @@ import { LinkDef, LinkProps } from '../../types.ts'
 import CalendarIcon from './icons/calendar.tsx'
 import PatientsIcon from './icons/patients.tsx'
 import LogoutIcon from './icons/logout.tsx'
+import * as ProgressIcons from './icons/progress.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
-import { CheckCircleIcon } from './icons/heroicons/outline.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 export type SidebarProps = {
@@ -125,45 +125,6 @@ export function HomePageSidebar(
   )
 }
 
-// TODO: use active?
-function Check({ className }: { active: boolean; className?: string }) {
-  return (
-    <span
-      className={cls(
-        'relative flex flex-shrink-0 items-center justify-center',
-        className as string,
-      )}
-    >
-      <CheckCircleIcon
-        className='text-indigo-600 group-hover:text-indigo-800'
-        aria-hidden='true'
-      />
-    </span>
-  )
-}
-
-function Dot({ active }: { active: boolean }) {
-  if (active) {
-    return (
-      <span
-        className='relative flex h-5 w-5 flex-shrink-0 items-center justify-center'
-        aria-hidden='true'
-      >
-        <span className='absolute h-4 w-4 rounded-full bg-indigo-200' />
-        <span className='relative block h-2 w-2 rounded-full bg-indigo-600' />
-      </span>
-    )
-  }
-  return (
-    <div
-      className='relative flex h-5 w-5 flex-shrink-0 items-center justify-center'
-      aria-hidden='true'
-    >
-      <div className='h-2 w-2 rounded-full bg-gray-300 group-hover:bg-gray-400' />
-    </div>
-  )
-}
-
 type StepsSidebarProps = {
   top?: {
     href: string
@@ -188,7 +149,9 @@ export function StepsSidebar(
       urlSearchParams={ctx.url.searchParams}
       nav_links={nav_links.map((link) => ({
         ...link,
-        Icon: steps_completed.includes(link.step) ? Check : Dot,
+        Icon: steps_completed.includes(link.step)
+          ? ProgressIcons.Check
+          : ProgressIcons.Dot,
       }))}
     />
   )

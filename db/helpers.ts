@@ -1,5 +1,6 @@
 // Taken from https://github.com/kysely-org/kysely/blob/master/src/helpers/postgres.ts
 import {
+  DeleteQueryBuilder,
   Expression,
   ExpressionBuilder,
   expressionBuilder,
@@ -240,8 +241,13 @@ function debugReplace(parameter: unknown) {
 
 // Logs the pretty-printed SQL to the console with parameters interpolated.
 export function debugLog(
-  // deno-lint-ignore no-explicit-any
-  qb: SelectQueryBuilder<DB, any, any> | UpdateQueryBuilder<DB, any, any, any>,
+  qb:
+    // deno-lint-ignore no-explicit-any
+    | SelectQueryBuilder<DB, any, any>
+    // deno-lint-ignore no-explicit-any
+    | UpdateQueryBuilder<DB, any, any, any>
+    // deno-lint-ignore no-explicit-any
+    | DeleteQueryBuilder<DB, any, any>,
 ) {
   let { sql, parameters } = qb.compile()
   parameters.forEach((p: unknown, i: number) => {
