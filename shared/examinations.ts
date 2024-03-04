@@ -33,3 +33,20 @@ export const EXAMINATIONS = [
 ]
 
 export type Examination = typeof EXAMINATIONS[number]
+
+/*  SQL to get all examination findings
+    select examination_name,
+           category,
+           examination_findings.name as finding_name,
+           examination_findings.type,
+           required,
+           options,
+           ask_dependent_on,
+           ask_dependent_values
+      from examination_findings
+      join examination_categories on examination_findings.examination_category_id = examination_categories.id
+      join examinations on examination_categories.examination_name = examinations.name
+  order by examinations.order asc,
+           examination_categories.order asc,
+           examination_findings.order asc
+*/
