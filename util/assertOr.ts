@@ -1,5 +1,4 @@
 import { assert } from 'std/assert/assert.ts'
-import selfUrl from './selfUrl.ts'
 
 export class StatusError extends Error {
   location?: string
@@ -48,13 +47,18 @@ export function assertOrRedirect(
   condition: unknown,
   location: string,
 ): asserts condition {
-  if (!condition) {
-    const error = new StatusError('redirect', 302)
-    error.location = location.startsWith('http')
-      ? location
-      : (assert(location.startsWith('/')), `${selfUrl}${location}`)
-    throw error
+  if (condition) return
+  if (location.startsWith('http')) {
+    assert(location.startsWith('https'), 'Redirect to plain http not allowed')
+  } else {
+    assert(
+      location.startsWith('/'),
+      'Redirect to non-absolute path not allowed',
+    )
   }
+  const error = new StatusError('redirect', 302)
+  error.location = location
+  throw error
 }
 
 export function assertOr500(
