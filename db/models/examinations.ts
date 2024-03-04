@@ -255,7 +255,7 @@ export async function upsertFindings(
         .where('encounter_id', '=', encounter_id)
         .where('examination_name', '=', examination_name),
     )
-    .where('created_at', '<=', now)
+    .where('patient_examination_findings.created_at', '<=', now)
     .execute()
 
   const examination_findings = await getting_examination_findings

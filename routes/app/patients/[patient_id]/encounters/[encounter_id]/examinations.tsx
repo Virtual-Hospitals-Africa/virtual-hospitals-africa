@@ -95,7 +95,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       assertIsExaminationFindings,
     )
+
+    console.log('values', values)
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+    console.log('patient_id', patient_id)
 
     await upsertFindings(
       ctx.state.trx,
@@ -108,6 +111,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         values: omit(values, ['examination']),
       },
     )
+
+    console.log('fffff')
 
     return once_done
   },
