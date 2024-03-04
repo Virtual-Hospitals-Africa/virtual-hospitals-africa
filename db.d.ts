@@ -24,6 +24,15 @@ export type EncounterStep =
   | 'symptoms'
   | 'vitals'
 
+export type ExaminationFindingType =
+  | 'boolean'
+  | 'date'
+  | 'float'
+  | 'integer'
+  | 'multiselect'
+  | 'select'
+  | 'string'
+
 export type FamilyType =
   | '2 married parents'
   | 'Blended'
@@ -271,8 +280,29 @@ export interface Encounter {
   step: EncounterStep
 }
 
+export interface ExaminationCategories {
+  category: string
+  examination_name: string
+  id: Generated<number>
+  order: number
+}
+
+export interface ExaminationFindings {
+  ask_dependent_on: number | null
+  ask_dependent_values: Json | null
+  examination_category_id: number
+  id: Generated<number>
+  label: string
+  name: string
+  options: string[] | null
+  order: number
+  required: Generated<boolean>
+  type: ExaminationFindingType
+}
+
 export interface Examinations {
   name: string
+  order: number
 }
 
 export interface Facilities {
@@ -293,16 +323,6 @@ export interface FacilityDevices {
   id: Generated<number>
   serial_number: string | null
   updated_at: Generated<Timestamp>
-}
-
-export interface GeneralAssessmentCategories {
-  category: string
-  order: number
-}
-
-export interface GeneralAssessments {
-  assessment: string
-  category: string
 }
 
 export interface GeographyColumns {
@@ -608,6 +628,15 @@ export interface PatientEncounterSteps {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientExaminationFindings {
+  created_at: Generated<Timestamp>
+  examination_finding_id: number
+  id: Generated<number>
+  patient_examination_id: number
+  updated_at: Generated<Timestamp>
+  value: Json
+}
+
 export interface PatientExaminations {
   completed: Generated<boolean>
   created_at: Generated<Timestamp>
@@ -631,16 +660,6 @@ export interface PatientFamily {
   religion: Religion | null
   social_satisfaction: number | null
   spiritual_satisfaction: number | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface PatientGeneralAssessments {
-  assessment: string
-  created_at: Generated<Timestamp>
-  encounter_id: number
-  encounter_provider_id: number
-  id: Generated<number>
-  patient_id: number
   updated_at: Generated<Timestamp>
 }
 
@@ -840,11 +859,11 @@ export interface DB {
   drugs: Drugs
   employment: Employment
   encounter: Encounter
+  examination_categories: ExaminationCategories
+  examination_findings: ExaminationFindings
   examinations: Examinations
   facilities: Facilities
   facility_devices: FacilityDevices
-  general_assessment_categories: GeneralAssessmentCategories
-  general_assessments: GeneralAssessments
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns
   guardian_relations: GuardianRelations
@@ -878,9 +897,9 @@ export interface DB {
   patient_encounter_providers: PatientEncounterProviders
   patient_encounter_steps: PatientEncounterSteps
   patient_encounters: PatientEncounters
+  patient_examination_findings: PatientExaminationFindings
   patient_examinations: PatientExaminations
   patient_family: PatientFamily
-  patient_general_assessments: PatientGeneralAssessments
   patient_guardians: PatientGuardians
   patient_intake: PatientIntake
   patient_kin: PatientKin

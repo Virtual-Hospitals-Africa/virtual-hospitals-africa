@@ -65,9 +65,7 @@ jobs:
         run: deno task db:migrate:seeds:load
 
       - name: Run tests
-        run: |
-          deno task test
-          deno task test:chatbot
+        run: deno task test && deno task test:chatbot
 
   compile_others:
     runs-on: ubuntu-latest

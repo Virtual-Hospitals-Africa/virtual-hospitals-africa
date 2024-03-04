@@ -13,14 +13,14 @@ import NationalIdInput from '../NationalIdInput.tsx'
 import NationalIdInputCheckbox from '../NationalIdInputCheckbox.tsx'
 
 export default function PatientPersonalForm(
-  { patient, previously_filled }: {
+  { patient, previously_completed }: {
     patient: Partial<PatientIntake>
-    previously_filled: boolean
+    previously_completed: boolean
   },
 ) {
   const names = patient.name ? patient.name.split(/\s+/) : []
   const no_national_id = useSignal<boolean>(
-    previously_filled && !patient.national_id_number,
+    previously_completed && !patient.national_id_number,
   )
   return (
     <>

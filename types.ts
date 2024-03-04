@@ -15,7 +15,7 @@ import {
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
-import { Examination } from './shared/examinations.ts'
+import { ExaminationFindingType } from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1812,6 +1812,13 @@ export type RenderedPatientEncounterProvider = {
   seen_at: null | Date
 }
 
+export type RenderedPatientEncounterExamination = {
+  examination_name: string
+  completed: SqlBool
+  skipped: SqlBool
+  recommended: SqlBool
+}
+
 export type RenderedPatientEncounter = {
   encounter_id: number
   created_at: Date
@@ -1824,12 +1831,7 @@ export type RenderedPatientEncounter = {
   waiting_room_facility_id: null | number
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
-  examinations: {
-    examination_name: string
-    completed: SqlBool
-    skipped: SqlBool
-    recommended: SqlBool
-  }[]
+  examinations: RenderedPatientEncounterExamination[]
 }
 
 export type Measurements = {
@@ -1928,11 +1930,6 @@ export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
   & Omit<RenderedICD10DiagnosisTreeWithIncludes, 'includes'>
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
-export interface GeneralAssessment {
-  assessment: string
-  category: string
-}
-
 export type Provider = {
   avatar_url: string
   email: string
@@ -1948,20 +1945,23 @@ export type Provider = {
   provider_id: number
 }
 
-export type GeneralAssessmentCategory = {
+export type RenderedPatientExaminationFinding = {
+  name: string
+  label: string
+  type: ExaminationFindingType
+  required: boolean
+  options: string[] | null
+  value: any
+}
+export type RenderedPatientExaminationCategory = {
   category: string
-  assessments: {
-    assessment: string
-    checked: SqlBool
-  }[]
+  findings: RenderedPatientExaminationFinding[]
 }
 
-export type ExaminationFindings = {
-  patient_id: number
-  encounter_id: number
-  encounter_provider_id: number
-  examination_name: Examination
-  findings: unknown[]
+export type RenderedPatientExamination = {
+  completed: boolean
+  skipped: boolean
+  categories: RenderedPatientExaminationCategory[]
 }
 
 export type DatabaseSchema = DB

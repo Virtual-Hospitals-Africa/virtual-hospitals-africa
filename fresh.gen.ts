@@ -44,7 +44,6 @@ import * as $app_patients_patient_id_encounters_encounter_id_close_visit from '.
 import * as $app_patients_patient_id_encounters_encounter_id_diagnosis from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnosis.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_diagnostic_tests from './routes/app/patients/[patient_id]/encounters/[encounter_id]/diagnostic_tests.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_examinations from './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx'
-import * as $app_patients_patient_id_encounters_encounter_id_general_assessments from './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_orders from './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_prescriptions from './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_referral from './routes/app/patients/[patient_id]/encounters/[encounter_id]/referral.tsx'
@@ -104,6 +103,7 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $examinations_Form from './islands/examinations/Form.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
 import * as $family_Form from './islands/family/Form.tsx'
@@ -113,7 +113,6 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
-import * as $general_assessment_Form from './islands/general-assessment/Form.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Device from './islands/inventory/Device.tsx'
 import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
@@ -207,8 +206,6 @@ const manifest = {
       $app_patients_patient_id_encounters_encounter_id_diagnostic_tests,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/examinations.tsx':
       $app_patients_patient_id_encounters_encounter_id_examinations,
-    './routes/app/patients/[patient_id]/encounters/[encounter_id]/general_assessments.tsx':
-      $app_patients_patient_id_encounters_encounter_id_general_assessments,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/orders.tsx':
       $app_patients_patient_id_encounters_encounter_id_orders,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx':
@@ -285,6 +282,7 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/examinations/Form.tsx': $examinations_Form,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
     './islands/family/Form.tsx': $family_Form,
@@ -295,7 +293,6 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
-    './islands/general-assessment/Form.tsx': $general_assessment_Form,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Device.tsx': $inventory_Device,
     './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
