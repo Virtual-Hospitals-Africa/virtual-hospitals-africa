@@ -2,7 +2,7 @@ import { LoggedInHealthWorkerHandler } from '../../../../types.ts'
 import redirect from '../../../../util/redirect.ts'
 
 export const handler: LoggedInHealthWorkerHandler = {
-  GET(req) {
-    return redirect(req.url + '/personal')
+  GET(_req, ctx) {
+    return redirect(ctx.url.pathname + '/personal')
   },
 }
