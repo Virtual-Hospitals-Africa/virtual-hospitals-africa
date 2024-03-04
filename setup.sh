@@ -37,8 +37,6 @@ if [ ! -f .env.local ] || [ ! -f .env.prod ]; then
 
   heroku config -a virtual-hospitals-africa >> "$heroku_vars"
 
-  echo "SELF_URL=https://localhost:8000" > .env.local
-
   awk '/:/ {
     if ($1 !~ /^HEROKU/ && $1 != "SELF_URL:" && $1 != "PGSSLMODE:" && $1 != "REDISCLOUD_URL:") {
       print substr($1, 1, length($1) - 1) "=" $2

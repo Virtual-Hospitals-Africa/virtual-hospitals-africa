@@ -1,3 +1,6 @@
+import { assert } from 'std/assert/assert.ts'
+import selfUrl from './selfUrl.ts'
+
 export class StatusError extends Error {
   location?: string
   constructor(message: string, public status: number) {
@@ -47,7 +50,9 @@ export function assertOrRedirect(
 ): asserts condition {
   if (!condition) {
     const error = new StatusError('redirect', 302)
-    error.location = location
+    error.location = location.startsWith('http')
+      ? location
+      : (assert(location.startsWith('/')), `${selfUrl}${location}`)
     throw error
   }
 }
