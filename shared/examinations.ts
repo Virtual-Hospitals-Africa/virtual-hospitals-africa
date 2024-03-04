@@ -35,9 +35,9 @@ export const EXAMINATIONS = [
 export type Examination = typeof EXAMINATIONS[number]
 
 /*  SQL to get all examination findings
-    select examination_name,
+    select examination_findings.name,
+           examination_name,
            category,
-           examination_findings.name as finding_name,
            examination_findings.type,
            required,
            options,

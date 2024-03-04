@@ -10,7 +10,7 @@ import { getRequiredNumericParam } from '../../../util/getNumericParam.ts'
 import redirect from '../../../util/redirect.ts'
 
 export default async function PatientPage(
-  req: Request,
+  _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { healthWorker } = ctx.state
@@ -24,7 +24,7 @@ export default async function PatientPage(
   assertOr404(patient, 'Patient not found')
 
   if (!patient.completed_intake) {
-    return redirect(`${req.url}/intake/`)
+    return redirect(`/app/patients/${patient_id}/intake`)
   }
 
   return (
@@ -38,7 +38,7 @@ export default async function PatientPage(
       <Container size='lg'>
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
           {patient.open_encounter && (
-            <Button href={`${req.url}/encounters/open/vitals`}>
+            <Button href={`${ctx.url.pathname}/encounters/open/vitals`}>
               Go to open encounter
             </Button>
           )}
