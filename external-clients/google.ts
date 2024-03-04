@@ -33,6 +33,7 @@ import {
   getFacilityAddress,
 } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
+import selfUrl from '../util/selfUrl.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 if (!Deno.env.get('BUILDING')) assert(GOOGLE_MAPS_API_KEY)
@@ -352,8 +353,6 @@ export class HealthWorkerGoogleClient extends GoogleClient {
   }
 }
 
-const selfUrl = Deno.env.get('SELF_URL') ||
-  'https://virtual-hospitals-africa.herokuapp.com'
 const redirect_uri = `${selfUrl}/logged-in`
 
 export const oauthParams = new URLSearchParams({

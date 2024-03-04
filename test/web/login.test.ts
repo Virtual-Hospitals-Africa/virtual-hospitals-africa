@@ -22,8 +22,9 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
     assert(redirectLocation)
     assert(
       redirectLocation.startsWith(
-        'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8000%2Flogged-in',
+        'https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?redirect_uri=https%3A%2F%2Flocalhost%3A8005%2Flogged-in',
       ),
+      redirectLocation,
     )
     await response.body?.cancel()
   })

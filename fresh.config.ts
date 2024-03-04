@@ -1,14 +1,19 @@
-import { assert } from 'std/assert/assert.ts'
 import { defineConfig } from '$fresh/server.ts'
 import tailwind from '$fresh/plugins/tailwind.ts'
 import { colors } from '$fresh/src/dev/deps.ts'
 
-const { BUILDING, SELF_URL, SERVE_HTTP, PORT } = Deno.env.toObject()
-
-if (!BUILDING) assert(SELF_URL, 'SELF_URL must be set')
+const { SELF_URL, PORT } = Deno.env.toObject()
 
 const httpsOpts: Partial<Deno.ServeTlsOptions> = {}
-const serveHttps = SELF_URL === 'https://localhost:8000' && !SERVE_HTTP
+
+if (SELF_URL === 'https://localhost:8000') {
+  console.error(
+    'Your .env is out of date.\nWe no longer rely on SELF_URL for local development.\nPlease remove it from .env.local and .env',
+  )
+  Deno.exit(1)
+}
+
+const serveHttps = !SELF_URL
 if (serveHttps) {
   const readingKey = Deno.readTextFile('./local-certs/localhost.key')
   const readingCert = Deno.readTextFile('./local-certs/localhost.crt')
