@@ -117,9 +117,9 @@ function authCheck(
 }
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
-  async GET(req, ctx) {
+  async GET(_req, ctx) {
     const { session } = ctx.state
-    const code = new URL(req.url).searchParams.get('code')
+    const code = ctx.url.searchParams.get('code')
 
     assert(code, 'No code found in query params')
 

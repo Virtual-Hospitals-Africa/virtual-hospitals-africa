@@ -16,7 +16,7 @@ type PatientsProps = {
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
   async GET(req, ctx) {
-    const search = new URL(req.url).searchParams.get('search')
+    const search = ctx.url.searchParams.get('search')
 
     const patients = await getAllWithNames(ctx.state.trx, search)
 

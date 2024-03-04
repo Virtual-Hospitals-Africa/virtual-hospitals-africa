@@ -21,7 +21,6 @@ export default async function AppPage(
   // We may revisit this, but for now there's only one tab
   // that actually displays on this page, the waiting room
   // while the rest link out to other pages
-  // const tab = activeTab(tabs, req.url)
   let facility_id = getNumericParam(searchParams, 'facility_id')
   if (
     facility_id &&

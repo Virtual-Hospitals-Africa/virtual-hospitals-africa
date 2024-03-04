@@ -31,16 +31,14 @@ export const handler = [
     maxAge: 10000000,
   }),
   (
-    req: Request,
+    _req: Request,
     ctx: FreshContext<
       WithSession & {
         trx: TrxOrDb
       }
     >,
   ) => {
-    const url = new URL(req.url)
-
-    const accessingApp = url.pathname.startsWith('/app')
+    const accessingApp = ctx.url.pathname.startsWith('/app')
 
     if (!accessingApp) {
       return ctx.next()
