@@ -276,24 +276,3 @@ export function completedStep(
     .onConflict((oc) => oc.doNothing())
     .execute()
 }
-
-export async function getFirstIncompletedStep(
-  trx: TrxOrDb,
-  encounter_id: number,
-): Promise<EncounterStep> {
-  const {step} = await trx
-  .selectFrom('patient_encounter_steps')
-  .innerJoin(
-    'encounter',
-    'encounter.step',
-    'patient_encounter_steps.encounter_step',
-  )
-  .where('patient_encounter_id', '=', encounter_id)
-  .orderBy('encounter.order')
-  .limit(1)
-  .executeTakeFirst()
-  || {step: 'vitals'}
-
-  return step
-
-}
