@@ -1,7 +1,11 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as inventory from '../../db/models/inventory.ts'
-import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
+import {
+  addTestHealthWorker,
+  itUsesTrxAnd,
+  withTestFacility,
+} from '../web/utilities.ts'
 
 describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
   describe('getAvailableTestsInFacility', () => {
@@ -9,6 +13,10 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
       'resolves with the available diagnostic tests in a facility',
       (trx) =>
         withTestFacility(trx, async (facility_id) => {
+          const admin = await addTestHealthWorker(trx, {
+            scenario: 'admin',
+          })
+
           const contec_bc401 = await trx.selectFrom('devices')
             .where('name', '=', 'Contec BC401')
             .select('id')
@@ -22,12 +30,12 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           await inventory.addFacilityDevice(trx, {
             device_id: contec_bc401.id,
             facility_id,
-          })
+          }, admin.id)
 
           await inventory.addFacilityDevice(trx, {
             device_id: ls_4000.id,
             facility_id,
-          })
+          }, admin.id)
 
           const available_tests = await inventory
             .getAvailableTestsInFacility(trx, {
