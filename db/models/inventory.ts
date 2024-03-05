@@ -62,7 +62,7 @@ export function addFacilityDevice(
 ): Promise<{ id: number }> {
   return trx
     .insertInto('facility_devices')
-    .values({...model, created_by: healthworkerid})
+    .values({ ...model, created_by: healthworkerid })
     .returning('id')
     .executeTakeFirstOrThrow()
 }

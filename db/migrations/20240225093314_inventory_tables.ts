@@ -39,15 +39,15 @@ export async function up(db: Kysely<unknown>) {
     'facility_devices',
     (qb) =>
       qb.addColumn('serial_number', 'varchar(255)')
-      .addColumn('created_by', 'integer', (column) =>
-                  column
-                    .notNull()
-                    .references('employment.id')
-                    .onDelete('cascade'))
-      .addColumn('updated_by', 'integer', (column) =>
-                  column
-                    .references('employment.id')
-                    .onDelete('cascade'))
+        .addColumn('created_by', 'integer', (column) =>
+          column
+            .notNull()
+            .references('employment.id')
+            .onDelete('cascade'))
+        .addColumn('updated_by', 'integer', (column) =>
+          column
+            .references('employment.id')
+            .onDelete('cascade'))
         .addColumn(
           'device_id',
           'integer',

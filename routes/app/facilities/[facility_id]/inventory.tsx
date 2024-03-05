@@ -1,6 +1,6 @@
 import { FreshContext, PageProps } from '$fresh/server.ts'
 import {
-EmployedHealthWorker,
+  EmployedHealthWorker,
   Facility,
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
@@ -19,7 +19,13 @@ type InventoryPageProps = {
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
-InventoryPageProps,  { facility: HasId<Facility>; isAdminAtFacility: boolean; healthWorker: EmployedHealthWorker }> = {
+  InventoryPageProps,
+  {
+    facility: HasId<Facility>
+    isAdminAtFacility: boolean
+    healthWorker: EmployedHealthWorker
+  }
+> = {
   async GET(_req, ctx) {
     const { healthWorker, facility, isAdminAtFacility } = ctx.state
     const facility_id = parseInt(ctx.params.facility_id)
@@ -41,7 +47,6 @@ InventoryPageProps,  { facility: HasId<Facility>; isAdminAtFacility: boolean; he
 
 export default function inventoryPage(
   props: PageProps<InventoryPageProps>,
-
 ) {
   return (
     <Layout
