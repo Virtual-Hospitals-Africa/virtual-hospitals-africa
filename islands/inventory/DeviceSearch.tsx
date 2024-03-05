@@ -11,9 +11,13 @@ function DeviceOption({
 }) {
   return (
     <div className='flex flex-col'>
-      <div className={cls('truncate text-base', selected && 'font-bold')}>
-        {option.name}
-      </div>
+      {option.diagnostic_test_capabilities && (
+        <div className={cls('truncate text-base', selected && 'font-bold')}>
+          {`${option.name}(${option.manufacturer ?? ''}) - ${
+            (option.diagnostic_test_capabilities ?? []).join(' ')
+          }`}
+        </div>
+      )}
     </div>
   )
 }

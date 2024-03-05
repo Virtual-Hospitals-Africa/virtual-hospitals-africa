@@ -26,10 +26,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       inventory.assertIsUpsert,
     )
-
+    
     await inventory.addFacilityDevice(ctx.state.trx, {
-      ...to_add,
-      facility_id,
+     device_id: to_add.device_id,
+     serial_number: to_add.serial_number,
+     facility_id: facility_id,
     })
 
     const success = encodeURIComponent(
