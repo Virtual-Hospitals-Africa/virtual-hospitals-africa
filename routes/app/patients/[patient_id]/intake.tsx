@@ -25,7 +25,9 @@ export default async function PatientPage(
       !patient.intake_steps_completed.includes(step)
     )
     assert(first_incomplete_step)
-    return redirect(`${ctx.url.pathname}/${first_incomplete_step}`)
+    return redirect(
+      `/app/patients/${patient_id}/intake/${first_incomplete_step}`,
+    )
   }
-  return redirect(`/app/patients/${patient_id}`)
+  return redirect(`/app/patients/${patient_id}/intake/personal`)
 }
