@@ -4,9 +4,10 @@ import { TabProps, Tabs } from '../library/Tabs.tsx'
 import FacilityDevicesTable from './DevicesTable.tsx'
 
 export default function inventoryView(
-  { devices, facility_id }: {
+  { devices, facility_id, isAdmin }: {
     devices: RenderedFacilityDevice[]
     facility_id: number
+    isAdmin: boolean
   },
 ) {
   const tabs: TabProps[] = [
@@ -34,6 +35,7 @@ export default function inventoryView(
         <FacilityDevicesTable
           devices={devices}
           facility_id={facility_id}
+          isAdmin={isAdmin}
         />
       </Container>
     </>
