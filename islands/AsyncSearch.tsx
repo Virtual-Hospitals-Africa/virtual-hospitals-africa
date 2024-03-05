@@ -4,7 +4,7 @@ import Search, { SearchProps } from './Search.tsx'
 
 export type AsyncSearchProps<
   T extends { id?: unknown; name: string } = { id?: unknown; name: string },
-> = Omit<SearchProps<T>, 'onQuery' | 'options'> & {
+> = Omit<SearchProps<T>, 'options'> & {
   href: string
 }
 
@@ -13,6 +13,7 @@ export default function AsyncSearch<
 >({
   href,
   value,
+  onQuery,
   ...rest
 }: AsyncSearchProps<T>) {
   const [search, setSearch] = useState({
@@ -80,7 +81,10 @@ export default function AsyncSearch<
       {...rest}
       value={value}
       options={search.results}
-      onQuery={(query) => setSearch({ ...search, query })}
+      onQuery={(query) => {
+        setSearch({ ...search, query })
+        onQuery(query)
+      }}
     />
   )
 }

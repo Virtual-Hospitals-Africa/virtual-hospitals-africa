@@ -1,31 +1,9 @@
-import { useSignal } from '@preact/signals'
+import { computed, useSignal } from '@preact/signals'
 import AsyncSearch from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 import { RenderedICD10DiagnosisTreeWithOptionalIncludes } from '../../types.ts'
 import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
-
-function SymptomOption({
-  option,
-  selected,
-}: {
-  option: RenderedICD10DiagnosisTreeWithOptionalIncludes
-  selected: boolean
-}) {
-  return (
-    <div className='flex flex-col'>
-      <div className={cls('truncate text-base', selected && 'font-bold')}>
-        {option.name}
-      </div>
-      {!!option.includes?.length &&
-        (
-          <div className={cls('truncate text-xs', selected && 'font-bold')}>
-            Includes:
-            {option.includes.map((i) => <div key={i.note}>{i.note}</div>)}
-          </div>
-        )}
-    </div>
-  )
-}
+import words from '../../util/words.ts'
 
 type SubDiag0 = NonNullable<
   RenderedICD10DiagnosisTreeWithOptionalIncludes['sub_diagnoses']
@@ -63,11 +41,77 @@ export function ICD10SearchSpecific({
   value?: RenderedICD10DiagnosisTreeWithOptionalIncludes
   className?: string
 }) {
+  const search = useSignal(value?.description || '')
   const selected_parent = useSignal(value)
   const selected_c0 = useSignal<SubDiag0 | undefined>(undefined)
   const selected_c1 = useSignal<SubDiag1 | undefined>(undefined)
   const selected_c2 = useSignal<SubDiag2 | undefined>(undefined)
   const selected_c3 = useSignal<SubDiag3 | undefined>(undefined)
+
+  const search_terms = computed(() => search.value.split(/\s+/))
+
+  function HighlightedWords(
+    { text, selected }: { text: string; selected: boolean },
+  ) {
+    return (
+      <>
+        {text.split(/\s+/).map((word, i) => {
+          const highlighted = Array.prototype.some.call(
+            search_terms.value,
+            (search_term) => search_term.toLowerCase() === word.toLowerCase(),
+          )
+          return (
+            <>
+              {i > 0 && ' '}
+              <span
+                key={i}
+                className={highlighted
+                  ? cls(
+                    'p-1 text-white',
+                    selected ? 'bg-white' : 'bg-indigo-700',
+                  )
+                  : 'py-1'}
+              >
+                {word}
+              </span>
+            </>
+          )
+        })}
+      </>
+    )
+  }
+
+  function SymptomOption({
+    option,
+    selected,
+  }: {
+    option: RenderedICD10DiagnosisTreeWithOptionalIncludes
+    selected: boolean
+  }) {
+    return (
+      <div className='flex flex-col'>
+        <div className={cls('truncate text-base', selected && 'font-bold')}>
+          <HighlightedWords text={option.name} selected={selected} />
+        </div>
+        {!!option.includes?.length &&
+          (
+            <div className={cls('truncate text-xs', selected && 'font-bold')}>
+              Includes:&nbsp;
+              {option.includes.map((include, i) => (
+                <>
+                  {i > 0 && ', '}
+                  <HighlightedWords
+                    key={include.note}
+                    selected={selected}
+                    text={include.note}
+                  />
+                </>
+              ))}
+            </div>
+          )}
+      </div>
+    )
+  }
 
   return (
     <>
@@ -79,6 +123,7 @@ export function ICD10SearchSpecific({
         value={value}
         className={className}
         Option={SymptomOption}
+        onQuery={(query) => search.value = query}
         onSelect={(symptom) => {
           const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
             sd.general
