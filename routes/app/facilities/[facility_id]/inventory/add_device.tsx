@@ -19,7 +19,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility }  = ctx.state
+    const { isAdminAtFacility, healthWorker }  = ctx.state
 
     assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
@@ -34,7 +34,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
      device_id: to_add.device_id,
      serial_number: to_add.serial_number,
      facility_id: facility_id,
-    })
+    },
+    healthWorker.id)
 
     const success = encodeURIComponent(
       `Device added to your facility's inventory 🏥`,
