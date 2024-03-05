@@ -29,31 +29,29 @@ export default function FacilityDeviceForm(): JSX.Element {
                   selectedDevice.value = device
                 }}
               />
+            </FormRow>
 
+            <FormRow>
               <TextInput
                 name={`serial_number`}
                 label='Serial'
                 required
               />
+              <div>
+                <label>Manufacurer</label>
+                <br />
+                {selectedDevice.value?.manufacturer}
+              </div>
+              <div />
+              <div>
+                <label>Available Tests</label>
+                <ul>
+                  {selectedDevice.value?.diagnostic_test_capabilities.map((
+                    c,
+                  ) => <li>{c}</li>)}
+                </ul>
+              </div>
             </FormRow>
-
-            {selectedDevice.value && (
-              <FormRow>
-                <div>
-                  <label>Manufacurer</label>
-                  <br />
-                  {selectedDevice.value?.manufacturer}
-                </div>
-                <div>
-                  <label>Available Tests</label>
-                  <ul>
-                    {selectedDevice.value?.diagnostic_test_capabilities.map((
-                      c,
-                    ) => <li>{c}</li>)}
-                  </ul>
-                </div>
-              </FormRow>
-            )}
             <FormRow>
               <Button type='submit'>
                 Submit

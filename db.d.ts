@@ -318,11 +318,13 @@ export interface Facilities {
 
 export interface FacilityDevices {
   created_at: Generated<Timestamp>
+  created_by: number
   device_id: number
   facility_id: number
   id: Generated<number>
   serial_number: string | null
   updated_at: Generated<Timestamp>
+  updated_by?: number
 }
 
 export interface GeographyColumns {

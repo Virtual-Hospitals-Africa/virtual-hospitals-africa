@@ -1,55 +1,65 @@
 import { FreshContext, PageProps } from '$fresh/server.ts'
 import {
+  EmployedHealthWorker,
   Facility,
   HasId,
-  LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  RenderedFacilityDevice,
 } from '../../../../types.ts'
 import * as inventory from '../../../../db/models/inventory.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import InventoryView from '../../../../components/inventory/View.tsx'
 
-type inventoryPageProps = {
+type InventoryPageProps = {
   facility: HasId<Facility>
+  isAdminAtFacility: boolean
+  healthWorker: EmployedHealthWorker
+  facility_devices: RenderedFacilityDevice[]
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
-  inventoryPageProps,
-  { facility: HasId<Facility>; isAdminAtFacility: boolean }
+  InventoryPageProps,
+  {
+    facility: HasId<Facility>
+    isAdminAtFacility: boolean
+    healthWorker: EmployedHealthWorker
+  }
 > = {
-  GET(_req, ctx) {
+  async GET(_req, ctx) {
     const { healthWorker, facility, isAdminAtFacility } = ctx.state
+    const facility_id = parseInt(ctx.params.facility_id)
+    assertOr404(facility_id)
+
+    const facility_devices = await inventory.getFacilityDevices(
+      ctx.state.trx,
+      { facility_id: facility_id },
+    )
 
     return ctx.render({
       facility,
+      isAdminAtFacility,
+      healthWorker,
+      facility_devices,
     })
   },
 }
 
-export default async function inventoryPage(
-  _req: Request,
-  ctx: FreshContext<LoggedInHealthWorker>,
+export default function inventoryPage(
+  props: PageProps<InventoryPageProps>,
 ) {
-  const facility_id = parseInt(ctx.params.facility_id)
-  assertOr404(facility_id)
-
-  const facility_devices = await inventory.getFacilityDevices(
-    ctx.state.trx,
-    { facility_id: facility_id },
-  )
-
   return (
     <Layout
       variant='home page'
       title='Inventory'
-      route={ctx.route}
-      url={ctx.url}
-      health_worker={ctx.state.healthWorker}
+      route={props.route}
+      url={props.url}
+      health_worker={props.data.healthWorker}
     >
       <InventoryView
-        facility_id={facility_id}
-        devices={facility_devices}
+        facility_id={props.data.facility.id}
+        devices={props.data.facility_devices}
+        isAdmin={props.data.isAdminAtFacility}
       />
     </Layout>
   )
