@@ -17,7 +17,6 @@ import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encoun
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
-import uniq from '../../../../../util/uniq.ts'
 import { INTAKE_STEPS, isIntakeStep } from '../../../../../shared/intake.ts'
 
 type AdditionalContext = {
@@ -87,7 +86,7 @@ export async function upsertPatientAndRedirect(
   await patients.upsertIntake(ctx.state.trx, {
     ...patient,
     id: ctx.state.patient.id,
-    completed_intake: step === 'review',
+    completed_intake: patient.completed_intake || (step === 'review'),
     intake_step_just_completed: step,
   })
 

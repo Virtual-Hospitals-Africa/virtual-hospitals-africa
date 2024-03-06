@@ -16,7 +16,6 @@ export type EncounterStep =
   | 'clinical_notes'
   | 'close_visit'
   | 'diagnosis'
-  | 'diagnostic_tests'
   | 'examinations'
   | 'orders'
   | 'prescriptions'
