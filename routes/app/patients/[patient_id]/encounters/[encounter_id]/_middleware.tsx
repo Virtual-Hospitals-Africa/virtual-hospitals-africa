@@ -29,7 +29,7 @@ import uniq from '../../../../../../util/uniq.ts'
 import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
 
-function getEncounterId(ctx: FreshContext): 'open' | number {
+export function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
     return 'open'
   }
@@ -159,6 +159,7 @@ export async function handler(
   )
   return ctx.next()
 }
+
 const nav_links = ENCOUNTER_STEPS.map((step) => ({
   step,
   route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,

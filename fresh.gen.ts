@@ -38,6 +38,8 @@ import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
+import * as $app_patients_patient_id_encounters from './routes/app/patients/[patient_id]/encounters.tsx'
+import * as $app_patients_patient_id_encounters_encounter_id_ from './routes/app/patients/[patient_id]/encounters/[encounter_id].tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_middleware from './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_clinical_notes from './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx'
 import * as $app_patients_patient_id_encounters_encounter_id_close_visit from './routes/app/patients/[patient_id]/encounters/[encounter_id]/close_visit.tsx'
@@ -194,6 +196,10 @@ const manifest = {
     './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
     './routes/app/patients/[patient_id]/avatar.tsx':
       $app_patients_patient_id_avatar,
+    './routes/app/patients/[patient_id]/encounters.tsx':
+      $app_patients_patient_id_encounters,
+    './routes/app/patients/[patient_id]/encounters/[encounter_id].tsx':
+      $app_patients_patient_id_encounters_encounter_id_,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/_middleware.tsx':
       $app_patients_patient_id_encounters_encounter_id_middleware,
     './routes/app/patients/[patient_id]/encounters/[encounter_id]/clinical_notes.tsx':
