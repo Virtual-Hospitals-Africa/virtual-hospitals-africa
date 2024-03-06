@@ -159,6 +159,7 @@ export async function handler(
   )
   return ctx.next()
 }
+
 const nav_links = ENCOUNTER_STEPS.map((step) => ({
   step,
   route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,

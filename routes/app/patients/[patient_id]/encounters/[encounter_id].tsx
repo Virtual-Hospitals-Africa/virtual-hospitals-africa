@@ -1,7 +1,3 @@
-import * as patients from '../../../../../db/models/patients.ts'
-import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
-import { assertOr404 } from '../../../../../util/assertOr.ts'
-import { LoggedInHealthWorkerContext } from '../../../../../types.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { ENCOUNTER_STEPS } from '../../../../../shared/encounter.ts'
@@ -15,21 +11,10 @@ export default async function EncounterPage(
   _req: Request,
   ctx: EncounterContext,
 ) {
-  const encounter_id = getEncounterId(ctx)
+  const encounter_id = await getEncounterId(ctx)
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-  const healthWorker = ctx.state.healthWorker
+  const { encounter } = ctx.state
 
-  const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {
-    ids: [patient_id],
-    health_worker_id: healthWorker.id,
-  })
-
-  assertOr404(patient, 'Patient not found')
-
-  const encounter = await patient_encounters.get(ctx.state.trx, {
-    patient_id: patient_id,
-    encounter_id: encounter_id,
-  })
   if (!encounter) {
     return redirect(
       `/app/patients/${patient_id}/?warning=No%20open%20encounter`,
