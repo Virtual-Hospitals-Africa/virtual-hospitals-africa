@@ -1,9 +1,6 @@
 import { ComponentChild } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
 import { LinkDef, LinkProps } from '../../types.ts'
-import CalendarIcon from './icons/calendar.tsx'
-import PatientsIcon from './icons/patients.tsx'
-import LogoutIcon from './icons/logout.tsx'
 import * as ProgressIcons from './icons/progress.tsx'
 import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
@@ -14,6 +11,7 @@ import {
   ArchiveBoxIcon,
   CalendarDaysIcon,
   ChatBubbleLeftRightIcon,
+  PresentationChartBarIcon,
 } from './icons/heroicons/outline.tsx'
 import { IdentificationIcon } from './icons/heroicons/outline.tsx'
 import { AcademicCapIcon } from './icons/heroicons/outline.tsx'
@@ -74,7 +72,12 @@ const home_page_nav_links: LinkDef[] = [
     Icon: ArchiveBoxIcon,
   },
   {
-    route: '/app/',
+    route: '/app/analysis',
+    title: 'Analysis',
+    Icon: PresentationChartBarIcon,
+  },
+  {
+    route: '/app/medical_literature',
     title: 'Medical Literature',
     Icon: AcademicCapIcon,
   },

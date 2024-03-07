@@ -1,8 +1,6 @@
 import { useState } from 'preact/hooks'
 import { padTime } from '../util/pad.ts'
 import { AvailabilityJSON, Time, TimeWindow } from '../types.ts'
-import PlusIcon from '../components/library/icons/plus.tsx'
-import TrashIcon from '../components/library/icons/trash.tsx'
 import WarningModal from '../components/library/modals/Warning.tsx'
 import FormButtons from '../components/library/form/buttons.tsx'
 import {
@@ -13,6 +11,10 @@ import {
   minutes,
 } from '../shared/scheduling/availability.tsx'
 import Form from '../components/library/form/Form.tsx'
+import {
+  PlusIcon,
+  TrashIcon,
+} from '../components/library/icons/heroicons/outline.tsx'
 
 function HourInput({ name, current }: { name: string; current: number }) {
   return (

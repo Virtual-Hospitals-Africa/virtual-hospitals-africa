@@ -1,8 +1,8 @@
 import { CheckIcon } from '../components/library/CheckIcon.tsx'
-import CrossIcon from '../components/library/icons/cross.tsx'
 import { useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
 import { JSX } from 'preact'
+import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 
 interface SuccessMessageProps {
   className?: string
@@ -35,11 +35,10 @@ export default function SuccessMessage(
             type='button'
             onClick={() => setIsVisible(false)}
           >
-            <CrossIcon
+            <XMarkIcon
               type='button'
               className='text-green-400 hover:text-green-600'
-            >
-            </CrossIcon>
+            />
           </button>
         </div>
       </div>

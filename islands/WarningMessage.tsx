@@ -1,8 +1,8 @@
-import CrossIcon from '../components/library/icons/cross.tsx'
 import { useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
 import { JSX } from 'preact'
 import { ExclamationTriangleIcon } from '../components/library/icons/heroicons/solid.tsx'
+import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 
 interface WarningMessageProps {
   className?: string
@@ -35,11 +35,10 @@ export default function WarningMessage(
             type='button'
             onClick={() => setIsVisible(false)}
           >
-            <CrossIcon
+            <XMarkIcon
               type='button'
               className='text-yellow-400 hover:text-yellow-600'
-            >
-            </CrossIcon>
+            />
           </button>
         </div>
       </div>
