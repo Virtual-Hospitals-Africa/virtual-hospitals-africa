@@ -29,8 +29,8 @@ import * as $app_facilities_facility_id_inventory from './routes/app/facilities/
 import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
-import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting-room.tsx'
-import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting-room/add.tsx'
+import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting_room.tsx'
+import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting_room/add.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
@@ -139,7 +139,7 @@ import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
-import * as $waiting_room_AddPatientForm from './islands/waiting-room/AddPatientForm.tsx'
+import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
@@ -184,9 +184,9 @@ const manifest = {
       $app_facilities_facility_id_register,
     './routes/app/facilities/[facility_id]/register/[step].tsx':
       $app_facilities_facility_id_register_step_,
-    './routes/app/facilities/[facility_id]/waiting-room.tsx':
+    './routes/app/facilities/[facility_id]/waiting_room.tsx':
       $app_facilities_facility_id_waiting_room,
-    './routes/app/facilities/[facility_id]/waiting-room/add.tsx':
+    './routes/app/facilities/[facility_id]/waiting_room/add.tsx':
       $app_facilities_facility_id_waiting_room_add,
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
@@ -327,7 +327,7 @@ const manifest = {
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/vitals/Form.tsx': $vitals_Form,
-    './islands/waiting-room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
+    './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest
