@@ -20,6 +20,7 @@ import sample from '../../../util/sample.ts'
 import { getPreExistingConditions } from '../../../db/models/patient_conditions.ts'
 import deepOmit from '../../../util/deepOmit.ts'
 import * as patient_occupations from '../../../db/models/patient_occupations.ts'
+import * as patient_lifestyle from '../../../db/models/patient_lifestyle.ts'
 import { randomNationalId, randomPhoneNumber } from '../../mocks.ts'
 
 describe('/app/patients/[patient_id]/intake', {
@@ -808,6 +809,178 @@ describe('/app/patients/[patient_id]/intake', {
         },
         omit: {
           patient_goes_to_school: true,
+        },
+      },
+      'The form should be 1:1 with the occupations in the DB',
+    )
+  })
+
+  it('supports POST on the Lifestyle step, moving you to the review step', async () => {
+    const { patient_id } = await patient_encounters.upsert(db, 1, {
+      patient_name: 'Test Patient',
+      reason: 'seeking treatment',
+    })
+
+    await patients.upsert(db, {
+      id: patient_id,
+      date_of_birth: '2000-01-01',
+    })
+
+    const { fetch } = await addTestHealthWorkerWithSession(db, {
+      scenario: 'approved-nurse',
+    })
+
+    const body = new FormData()
+    body.set('lifestyle.sexual_activity.ever_been_sexually_active', 'on')
+    body.set('lifestyle.sexual_activity.currently_sexually_active', 'on')
+    body.set('lifestyle.sexual_activity.had_sex_after_drugs', 'on')
+    body.set('lifestyle.sexual_activity.recently_treated_for_stis', 'on')
+    body.set('lifestyle.sexual_activity.know_partner_hiv_status', 'on')
+    body.set('lifestyle.sexual_activity.partner_hiv_status', 'on')
+    body.set('lifestyle.sexual_activity.first_encounter', '5')
+
+    body.set('lifestyle.alcohol.has_ever_drank', 'on')
+    body.set('lifestyle.alcohol.currently_drinks', 'on')
+    body.set('lifestyle.alcohol.binge_drinking', 'on')
+    body.set('lifestyle.alcohol.drawn_to_cut_down', 'on')
+    body.set('lifestyle.alcohol.annoyed_by_critics', 'on')
+    body.set('lifestyle.alcohol.eye_opener', 'on')
+    body.set('lifestyle.alcohol.quit_for_six_or_more_months', 'on')
+    body.set('lifestyle.alcohol.abstinence_length_months', '10')
+    body.set(
+      'lifestyle.alcohol.lifestyle.alcohol.alcohol_products_used',
+      'Traditional brew, Opaque beer, Bottled beer (ciders/lagers), Wine/ fermented fruit drinks',
+    )
+
+    body.set('lifestyle.smoking.has_ever_smoked', 'on')
+    body.set('lifestyle.smoking.currently_smokes', 'on')
+    body.set('lifestyle.smoking.felt_to_cutdown', 'on')
+    body.set('lifestyle.smoking.annoyed_by_criticism', 'on')
+    body.set('lifestyle.smoking.guilty', 'on')
+    body.set('lifestyle.smoking.forbidden_place', 'on')
+    body.set('lifestyle.smoking.attempt_to_quit', 'on')
+    body.set('lifestyle.smoking.quit_more_than_six_months', 'on')
+    body.set('lifestyle.smoking.quit_smoking_years', '5')
+    body.set('lifestyle.smoking.number_of_products', '5')
+    body.set(
+      'lifestyle.smoking.lifestyle.alcohol.tobacco_products_used',
+      'Flavored cigarettes, Cigarettes',
+    )
+
+    const postResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/lifestyle`,
+      {
+        method: 'POST',
+        body,
+      },
+    )
+
+    if (!postResponse.ok) {
+      throw new Error(await postResponse.text())
+    }
+    assertEquals(
+      postResponse.url,
+      `${route}/app/patients/${patient_id}/intake/review`,
+    )
+
+    const lifestyle = await patient_lifestyle.get(db, {
+      patient_id,
+    })
+    console.log('Lifestyle Test: ', lifestyle)
+    assert(lifestyle)
+    assertEquals(lifestyle, {
+      sexual_activity: {
+        ever_been_sexually_active: true,
+        currently_sexually_active: true,
+        had_sex_after_drugs: true,
+        recently_treated_for_stis: true,
+        know_partner_hiv_status: true,
+        partner_hiv_status: true,
+        first_encounter: 5,
+      },
+      alcohol: {
+        has_ever_drank: true,
+        currently_drinks: true,
+        binge_drinking: true,
+        drawn_to_cut_down: true,
+        annoyed_by_critics: true,
+        eye_opener: true,
+        quit_for_six_or_more_months: true,
+        abstinence_length_months: 10,
+        alcohol_products_used: [
+          'Traditional brew',
+          'Opaque beer',
+          'Bottled beer (ciders/lagers)',
+          'Wine/ fermented fruit drinks',
+          'Pure spirits/liquors (gin, brandy, vodka, whiskey)',
+          'Illegal/illicit drinks',
+        ],
+      },
+      smoking: {
+        has_ever_smoked: true,
+        currently_smokes: true,
+        felt_to_cutdown: true,
+        annoyed_by_criticism: true,
+        guilty: true,
+        forbidden_place: true,
+        attempt_to_quit: true,
+        quit_more_than_six_months: true,
+        quit_smoking_years: 5,
+        number_of_products: 5,
+        tobacco_products_used: ['Flavored cigarettes', 'Cigarettes'],
+      },
+    })
+
+    const getResponse = await fetch(
+      `${route}/app/patients/${patient_id}/intake/lifestyle`,
+      {},
+    )
+
+    const pageContents = await getResponse.text()
+    const $ = cheerio.load(pageContents)
+    const formValues = getFormValues($)
+    assertEquals(
+      formValues,
+      {
+        sexual_activity: {
+          ever_been_sexually_active: true,
+          currently_sexually_active: true,
+          had_sex_after_drugs: true,
+          recently_treated_for_stis: true,
+          know_partner_hiv_status: true,
+          partner_hiv_status: true,
+          first_encounter: 5,
+        },
+        alcohol: {
+          has_ever_drank: true,
+          currently_drinks: true,
+          binge_drinking: true,
+          drawn_to_cut_down: true,
+          annoyed_by_critics: true,
+          eye_opener: true,
+          quit_for_six_or_more_months: true,
+          abstinence_length_months: 10,
+          alcohol_products_used: [
+            'Traditional brew',
+            'Opaque beer',
+            'Bottled beer (ciders/lagers)',
+            'Wine/ fermented fruit drinks',
+            'Pure spirits/liquors (gin, brandy, vodka, whiskey)',
+            'Illegal/illicit drinks',
+          ],
+        },
+        smoking: {
+          has_ever_smoked: true,
+          currently_smokes: true,
+          felt_to_cutdown: true,
+          annoyed_by_criticism: true,
+          guilty: true,
+          forbidden_place: true,
+          attempt_to_quit: true,
+          quit_more_than_six_months: true,
+          quit_smoking_years: 5,
+          number_of_products: 5,
+          tobacco_products_used: ['Flavored cigarettes', 'Cigarettes'],
         },
       },
       'The form should be 1:1 with the occupations in the DB',

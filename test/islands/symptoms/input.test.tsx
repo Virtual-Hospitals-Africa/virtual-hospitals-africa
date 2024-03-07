@@ -10,6 +10,7 @@ import {
 } from '$fresh-testing-library/mod.ts'
 import SymptomsInput from '../../../islands/symptoms/Input.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { LifestyleForm } from '../../../islands/LifestyleForm.tsx'
 
 function inputWithLabel(container: Element, label: string): HTMLInputElement {
   const input = Array.prototype.find.call(

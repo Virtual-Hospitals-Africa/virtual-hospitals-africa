@@ -142,7 +142,7 @@ export type UpsertPatientIntake = {
   major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
   family?: FamilyUpsert
   occupation?: Omit<PatientOccupation, 'patient_id'>
-  lifestyle?: Omit<Lifestyle, 'patient_id'>
+  lifestyle?: Lifestyle
   intake_step_just_completed?: IntakeStep
 }
 
@@ -243,10 +243,12 @@ export async function upsertIntake(
       id,
       family,
     )
+  console.log('Lifestyle in patients.ts', lifestyle)
 
   const upserting_lifestyle = lifestyle && patient_lifestyle.upsert(
     trx,
-    { lifestyle, patient_id: id },
+    id,
+    lifestyle,
   )
 
   const upserting_intake_step = intake_step_just_completed &&
