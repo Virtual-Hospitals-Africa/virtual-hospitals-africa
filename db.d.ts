@@ -324,7 +324,7 @@ export interface FacilityDevices {
   id: Generated<number>
   serial_number: string | null
   updated_at: Generated<Timestamp>
-  updated_by?: number
+  updated_by: number | null
 }
 
 export interface GeographyColumns {
