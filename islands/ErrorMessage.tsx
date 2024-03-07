@@ -1,8 +1,8 @@
-import CrossIcon from '../components/library/icons/cross.tsx'
 import cls from '../util/cls.ts'
-import { ComponentChildren, JSX } from 'preact'
+import { JSX } from 'preact'
 import { ExclamationTriangleIcon } from '../components/library/icons/heroicons/solid.tsx'
 import { Signal } from '@preact/signals'
+import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 
 interface ErrorMessageProps {
   className?: string
@@ -34,11 +34,10 @@ export default function ErrorMessage(
             type='button'
             onClick={() => error.value = null}
           >
-            <CrossIcon
+            <XMarkIcon
               type='button'
               className='text-red-400 hover:text-red-600'
-            >
-            </CrossIcon>
+            />
           </button>
         </div>
       </div>
