@@ -10,6 +10,16 @@ import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
 import { assert } from 'std/assert/assert.ts'
+import {
+  ArchiveBoxIcon,
+  CalendarDaysIcon,
+  ChatBubbleLeftRightIcon,
+} from './icons/heroicons/outline.tsx'
+import { IdentificationIcon } from './icons/heroicons/outline.tsx'
+import { AcademicCapIcon } from './icons/heroicons/outline.tsx'
+import { ArrowRightOnRectangleIcon } from './icons/heroicons/outline.tsx'
+import { ClockIcon } from './icons/heroicons/outline.tsx'
+import { UserGroupIcon } from './icons/heroicons/outline.tsx'
 
 export type SidebarProps = {
   top: {
@@ -45,15 +55,30 @@ function NavItem({
 }
 
 const home_page_nav_links: LinkDef[] = [
-  { route: '/app/patients', title: 'My Patients', Icon: PatientsIcon },
-  { route: '/app/employees', title: 'Employees', Icon: PatientsIcon },
-  { route: '/app/calendar', title: 'Calendar', Icon: CalendarIcon },
+  {
+    route: '/app/facilities/:facility_id/waiting_room',
+    title: 'Waiting Room',
+    Icon: ClockIcon,
+  },
+  { route: '/app/patients', title: 'My Patients', Icon: UserGroupIcon },
+  { route: '/app/employees', title: 'Employees', Icon: IdentificationIcon },
+  { route: '/app/calendar', title: 'Calendar', Icon: CalendarDaysIcon },
+  {
+    route: '/app/messaging',
+    title: 'Messaging',
+    Icon: ChatBubbleLeftRightIcon,
+  },
   {
     route: '/app/facilities/:facility_id/inventory',
     title: 'Inventory',
-    Icon: PatientsIcon,
+    Icon: ArchiveBoxIcon,
   },
-  { route: '/logout', title: 'Log Out', Icon: LogoutIcon },
+  {
+    route: '/app/',
+    title: 'Medical Literature',
+    Icon: AcademicCapIcon,
+  },
+  { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
 ]
 
 export function replaceParams(route: string, params: Record<string, string>) {

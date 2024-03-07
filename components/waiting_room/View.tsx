@@ -38,7 +38,7 @@ export default function WaitingRoomView(
     facility_id: number
   },
 ) {
-  const add_href = `/app/facilities/${facility_id}/waiting-room/add`
+  const add_href = `/app/facilities/${facility_id}/waiting_room/add`
   return (
     <Container size='lg'>
       {waiting_room.length

@@ -15,7 +15,7 @@ import { assert } from 'std/assert/assert.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { hasName } from '../../../../../util/haveNames.ts'
 import { EncounterReason } from '../../../../../db.d.ts'
-import AddPatientForm from '../../../../../islands/waiting-room/AddPatientForm.tsx'
+import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -41,7 +41,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     const next_url = intake
       ? `/app/patients/${upserted.patient_id}/intake/personal`
-      : `/app/facilities/${facility_id}/waiting-room?just_encountered_id=${upserted.id}`
+      : `/app/facilities/${facility_id}/waiting_room?just_encountered_id=${upserted.id}`
 
     return redirect(next_url)
   },

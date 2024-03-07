@@ -54,7 +54,7 @@ export default async function ReviewPage(
         cancel={{
           href: `/app/facilities/${
             healthWorker.employment[0].facility.id
-          }/waiting-room/add?patient_id=${patient.id}&intake=completed`,
+          }/waiting_room/add?patient_id=${patient.id}&intake=completed`,
           text: 'Add patient to waiting room',
         }}
       />

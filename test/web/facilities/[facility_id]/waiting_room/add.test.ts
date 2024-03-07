@@ -12,7 +12,7 @@ import db from '../../../../../db/db.ts'
 import generateUUID from '../../../../../util/uuid.ts'
 
 describe(
-  '/app/facilities/[facility_id]/waiting-room/add',
+  '/app/facilities/[facility_id]/waiting_room/add',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a page on GET', async () => {
@@ -21,7 +21,7 @@ describe(
       })
 
       const response = await fetch(
-        `${route}/app/facilities/1/waiting-room/add`,
+        `${route}/app/facilities/1/waiting_room/add`,
         {},
       )
 
@@ -55,7 +55,7 @@ describe(
       body.set('reason', 'seeking treatment')
 
       const response = await fetch(
-        `${route}/app/facilities/1/waiting-room/add`,
+        `${route}/app/facilities/1/waiting_room/add`,
         {
           method: 'POST',
           body,
@@ -103,7 +103,7 @@ describe(
       body.set('reason', 'seeking treatment')
 
       const response = await fetch(
-        `${route}/app/facilities/1/waiting-room/add`,
+        `${route}/app/facilities/1/waiting_room/add`,
         {
           method: 'POST',
           body,
