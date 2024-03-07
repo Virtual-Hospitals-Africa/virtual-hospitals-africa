@@ -1,10 +1,10 @@
+import { assert } from 'std/assert/assert.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import { getRequiredNumericParam } from '../../../../util/getNumericParam.ts'
 import redirect from '../../../../util/redirect.ts'
 import { INTAKE_STEPS } from '../../../../shared/intake.ts'
-import { assert } from 'std/assert/assert.ts'
 
 export default async function PatientPage(
   _req: Request,
