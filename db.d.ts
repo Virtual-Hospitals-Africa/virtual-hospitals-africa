@@ -695,7 +695,6 @@ export interface PatientLifestyle {
   created_at: Generated<Timestamp>
   id: Generated<number>
   patient_id: number
-  pregnant: boolean | null
   sexual_activity: Json | null
   smoking: Json | null
   updated_at: Generated<Timestamp>

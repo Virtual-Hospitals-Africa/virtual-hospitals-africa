@@ -1,6 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
 export default function set(obj: any, path: string, value: any) {
-  const keys = path.split('.')
+  const keys = path.split('.').flatMap((key) => {
+    const match = key.match(/^(.+)\[(\d+)\]$/)
+    if (!match) {
+      return key
+    }
+    return [match[1], match[2]]
+  })
   let current = obj
 
   for (let i = 0; i < keys.length - 1; i++) {
@@ -23,4 +29,5 @@ export default function set(obj: any, path: string, value: any) {
   }
 
   current[keys[keys.length - 1]] = value
+  return obj
 }

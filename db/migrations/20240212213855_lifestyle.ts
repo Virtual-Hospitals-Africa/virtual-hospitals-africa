@@ -16,7 +16,6 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('sexual_activity', 'json')
     .addColumn('alcohol', 'json')
     .addColumn('smoking', 'json')
-    .addColumn('pregnant', 'boolean')
     .addColumn(
       'created_at',
       'timestamptz',

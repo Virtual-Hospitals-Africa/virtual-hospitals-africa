@@ -2,7 +2,7 @@ import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../components/library/form/buttons.tsx'
-import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
+import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
   IntakeContext,
@@ -22,14 +22,13 @@ function assertIsLifestyle(
 }
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  // deno-lint-ignore require-await
   async POST(req, ctx) {
-    // const patient = await parseRequestAsserts(
-    //   ctx.state.trx,
-    //   req,
-    //   assertIsLifestyle,
-    // )
-    return upsertPatientAndRedirect(ctx, {})
+    const patient = await parseRequestAsserts(
+      ctx.state.trx,
+      req,
+      assertIsLifestyle,
+    )
+    return upsertPatientAndRedirect(ctx, { ...patient })
   },
 }
 

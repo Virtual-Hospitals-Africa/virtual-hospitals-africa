@@ -654,7 +654,7 @@ export function SearchInput(
 
 export function YesNoQuestion(
   { name, label, value, onChange }: {
-    name: string
+    name?: string
     label: string
     value?: Maybe<boolean>
     onChange?(value: boolean | null): void
@@ -662,8 +662,6 @@ export function YesNoQuestion(
 ) {
   return (
     <>
-      <label>{label}</label>
-      <div />
       <div className='grid place-items-center'>
         <input
           name={name}
@@ -690,9 +688,12 @@ export function YesNoQuestion(
           type='radio'
           checked={value == null}
           className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+          value=''
           onChange={() => onChange?.(null)}
         />
       </div>
+      <label>{label}</label>
+      <div />
     </>
   )
 }
@@ -701,12 +702,18 @@ export function YesNoGrid(
   { children }: { children: ComponentChildren },
 ) {
   return (
-    <div className='w-full grid grid-cols-[max-content_1fr_30px_30px_30px] gap-2'>
+    <div className='w-full grid grid-cols-[60px_60px_60px_max-content_1fr] gap-2'>
+      <div className='grid place-items-center'>
+        <div className='w-min'>Yes</div>
+      </div>
+      <div className='grid place-items-center'>
+        <div className='w-min'>No</div>
+      </div>
+      <div className='grid place-items-center'>
+        <div className='w-min'>Declined</div>
+      </div>
       <div></div>
       <div></div>
-      <div className='grid place-items-center'>Yes</div>
-      <div className='grid place-items-center'>No</div>
-      <div className='grid place-items-center'>Prefer not to say</div>
       {children}
     </div>
   )

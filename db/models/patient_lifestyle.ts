@@ -1,19 +1,33 @@
 import { sql } from 'kysely'
 import { Lifestyle, TrxOrDb } from '../../types.ts'
 import { jsonBuildObject } from '../helpers.ts'
+import { PatientLifestyle } from '../../db.d.ts'
 
 export function upsert(
   trx: TrxOrDb,
-  // deno-lint-ignore no-explicit-any
-  opts: any,
+  patient_id: number,
+  lifestyle: {
+    [
+      k in keyof Omit<
+        PatientLifestyle,
+        'id' | 'created_at' | 'updated_at' | 'patient_id'
+      >
+      // deno-lint-ignore no-explicit-any
+    ]: any
+  },
 ) {
-  console.log('opts: ', opts)
-  return trx
+  const to_upsert = {
+    ...lifestyle,
+    patient_id,
+  }
+
+  const query = trx
     .insertInto('patient_lifestyle')
-    .values(opts.lifestyle)
-    .onConflict((oc) => oc.constraint('patient_id').doUpdateSet(opts.lifestyle))
+    .values(to_upsert)
+    .onConflict((oc) => oc.column('patient_id').doUpdateSet(to_upsert))
     .returningAll()
-    .executeTakeFirstOrThrow()
+
+  return query.executeTakeFirstOrThrow()
 }
 
 export async function get(
