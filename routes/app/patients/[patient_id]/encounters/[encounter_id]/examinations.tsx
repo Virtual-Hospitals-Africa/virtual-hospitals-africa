@@ -28,8 +28,10 @@ import {
   PlusCircleIcon,
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
 import { PatientExaminationForm } from '../../../../../../islands/examinations/Form.tsx'
+import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
 import omit from '../../../../../../util/omit.ts'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
+import { getAvailableTestsInFacility } from '../../../../../../db/models/inventory.ts'
 
 function assertIsExaminationFindings(
   values: unknown,
@@ -146,7 +148,7 @@ export default async function ExaminationsPage(
     {
       tab: 'Add Examination',
       href: add_examination_href,
-      active: ctx.url.searchParams.has('add'),
+      active: adding_examination,
       leftIcon: <PlusCircleIcon className='w-5 h-5' />,
     },
   ])
@@ -154,7 +156,13 @@ export default async function ExaminationsPage(
   return (
     <EncounterLayout ctx={ctx}>
       <Tabs tabs={tabs} />
-      {adding_examination && <div>TODO: enable adding new examinations</div>}
+      {adding_examination && (
+        <NewExaminationForm
+          available_diagnostic_tests={await getAvailableTestsInFacility(trx, {
+            facility_id: ctx.state.encounter.providers[0].facility_id,
+          })}
+        />
+      )}
       {examination && (
         <PatientExaminationForm
           patient_examination={await getPatientExamination(trx, {
