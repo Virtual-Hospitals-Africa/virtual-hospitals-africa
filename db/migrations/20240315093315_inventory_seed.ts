@@ -11,20 +11,13 @@ export default createSeedMigration(
 
 // deno-lint-ignore no-explicit-any
 async function seedDataFromJSON(db: Kysely<any>) {
-  const tests: { name: string }[] = await parseJSON(
-    './db/resources/diagnostic_tests.json',
-  )
+  const tests = await db.selectFrom('diagnostic_tests').select('name').execute()
+
   const devices: {
     name: string
     manufacturer: string
     capabilities: { name: string }[]
   }[] = await parseJSON('./db/resources/devices.json')
-
-  await db
-    .insertInto('diagnostic_tests')
-    .values(tests)
-    .returningAll()
-    .execute()
 
   await inParallel.forEach(devices, async (device) => {
     const { id } = await db.insertInto('devices')

@@ -1,4 +1,4 @@
-export const EXAMINATIONS = [
+export const ASSESSMENTS = [
   'Head-to-toe Assessment' as const,
   "Women's Health Assessment" as const,
   'Maternity Assessment' as const,
@@ -31,6 +31,80 @@ export const EXAMINATIONS = [
   'Maxillofacial' as const,
   'Nephrology' as const,
 ]
+
+export const DIAGNOSTIC_TESTS = [
+  'Urine Analysis' as const,
+  'Malaria' as const,
+  'HIV' as const,
+  'Pregnancy' as const,
+  'Cholesterol' as const,
+  'Blood Glucose' as const,
+  'Hemoglobin' as const,
+  'Uric Acid' as const,
+  'Covid 19' as const,
+  'Diabetes' as const,
+  'Inflammation' as const,
+  'Cardiac' as const,
+  'Hormone' as const,
+  'Thyroid' as const,
+  'Bone Metabolism' as const,
+  'Gastric Function' as const,
+  'Anemia' as const,
+  'Tumor' as const,
+  'Brain Injury' as const,
+  'Angiocapy' as const,
+  'Immune System' as const,
+  'Renal Function' as const,
+  'Nervous System' as const,
+  'Blood Pressure' as const,
+  'Blood Oxygen Saturation' as const,
+  'Body Mass Index' as const,
+  'Spirometry FVC' as const,
+  'Spirometry FEV' as const,
+  'Spirometry PEF' as const,
+  'Hepatitis C' as const,
+  'Tuberculosis' as const,
+  'Body Fat' as const,
+  'Bone Mass' as const,
+  'Water Weight' as const,
+  'Muscle Mass' as const,
+  'Body Weight' as const,
+  'Basal Metabolic Rate' as const,
+  'Typhoid' as const,
+  'Syphilis' as const,
+  'Chlamydia' as const,
+  'Gonorrhea' as const,
+  'Hepatitis A/B/C' as const,
+  'Herpes Simplex Virus 1 & 2' as const,
+  'Trichomonas' as const,
+  'Cholera' as const,
+  'Abdominal Ultrasound' as const,
+  'Renal Ultrasound' as const,
+  'Breast Ultrasound' as const,
+  'Doppler Ultrasound' as const,
+  'Pelvic Ultrasound' as const,
+  'Transvaginal Ultrasound' as const,
+  'Thyroid Ultrasound' as const,
+  'Transrectal Ultrasound' as const,
+  'Pregnancy Ultrasound' as const,
+  'Chest X-ray' as const,
+  'Abdominal X-ray' as const,
+  'Kidney, Ureter and Bladder X-ray' as const,
+  'Neck X-ray' as const,
+  'Hand X-ray' as const,
+  'Joint X-ray' as const,
+  'Skull X-ray' as const,
+  'Temperature' as const,
+]
+
+export const EXAMINATIONS = [
+  ...ASSESSMENTS,
+  ...DIAGNOSTIC_TESTS,
+]
+
+export type Assessment = typeof ASSESSMENTS[number]
+
+export type DiagnosticTest = typeof DIAGNOSTIC_TESTS[number]
 
 export type Examination = typeof EXAMINATIONS[number]
 
