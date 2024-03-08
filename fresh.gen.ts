@@ -106,6 +106,7 @@ import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
 import * as $examinations_Form from './islands/examinations/Form.tsx'
+import * as $examinations_New from './islands/examinations/New.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
 import * as $family_FamilyTypeSelect from './islands/family/FamilyTypeSelect.tsx'
 import * as $family_Form from './islands/family/Form.tsx'
@@ -289,6 +290,7 @@ const manifest = {
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
     './islands/examinations/Form.tsx': $examinations_Form,
+    './islands/examinations/New.tsx': $examinations_New,
     './islands/family/Dependent.tsx': $family_Dependent,
     './islands/family/FamilyTypeSelect.tsx': $family_FamilyTypeSelect,
     './islands/family/Form.tsx': $family_Form,
