@@ -2,11 +2,6 @@ import { Kysely } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await db.schema
-    .createTable('diagnostic_tests')
-    .addColumn('name', 'varchar(255)', (col) => col.primaryKey())
-    .execute()
-
   await createStandardTable(
     db,
     'devices',
@@ -26,7 +21,7 @@ export async function up(db: Kysely<unknown>) {
       )
         .addColumn(
           'diagnostic_test',
-          'varchar(255)',
+          'varchar(40)',
           (col) =>
             col.notNull().references('diagnostic_tests.name').onDelete(
               'cascade',
@@ -66,5 +61,4 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('facility_devices').execute()
   await db.schema.dropTable('device_capabilities').execute()
   await db.schema.dropTable('devices').execute()
-  await db.schema.dropTable('diagnostic_tests').execute()
 }

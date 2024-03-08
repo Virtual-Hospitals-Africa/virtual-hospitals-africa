@@ -1,10 +1,11 @@
 import { Kysely, sql } from 'kysely'
-import { EXAMINATIONS } from '../../shared/examinations.ts'
+import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../shared/examinations.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(
   db: Kysely<{
     examinations: unknown
+    diagnostic_tests: unknown
   }>,
 ) {
   await db.schema.createTable('examinations')
@@ -14,8 +15,21 @@ export async function up(
     .addCheckConstraint('examination_order_positive', sql`("order" > 0)`)
     .execute()
 
+  await db.schema.createTable('diagnostic_tests')
+    .addColumn(
+      'name',
+      'varchar(40)',
+      (col) =>
+        col.primaryKey().references('examinations.name').onDelete('cascade'),
+    )
+    .execute()
+
   await db.insertInto('examinations').values(
     EXAMINATIONS.map((name, index) => ({ name, order: index + 1 })),
+  ).execute()
+
+  await db.insertInto('diagnostic_tests').values(
+    DIAGNOSTIC_TESTS.map((name) => ({ name })),
   ).execute()
 
   await db.schema
@@ -181,6 +195,7 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patient_examinations').execute()
   await db.schema.dropTable('examination_findings').execute()
   await db.schema.dropTable('examination_categories').execute()
+  await db.schema.dropTable('diagnostic_tests').execute()
   await db.schema.dropTable('examinations').execute()
   await db.schema.dropType('examination_finding_type').execute()
 }
