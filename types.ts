@@ -309,6 +309,12 @@ export type FamilyUpsert = {
   under_18?: boolean
 }
 
+export type LifestyleUpsert = {
+  sexual_activity: any
+  alcohol: any
+  smoking: any
+}
+
 export type PatientWithOpenEncounter = RenderedPatient & {
   open_encounter: Maybe<RenderedPatientEncounter>
 }
@@ -1678,7 +1684,7 @@ export type Lifestyle = {
 } //fix type names
 
 export type SexualActivity = {
-  ever_been_sexually_active: false
+  ever_been_sexually_active: false | null
 } | {
   ever_been_sexually_active: true
   currently_sexually_active?: Maybe<boolean>
@@ -1690,46 +1696,49 @@ export type SexualActivity = {
   recently_treated_for_stis?: Maybe<boolean>
   recently_hiv_tested?: Maybe<boolean>
   know_partner_hiv_status?: Maybe<boolean>
+  partner_hiv_status?: Maybe<boolean>
 }
 
 export type Alcohol = {
-  has_ever_drank: false
+  has_ever_drank: false | null
 } | {
   has_ever_drank: true
-  currently_drinks: boolean | null
-  binge_drinking: boolean | null
-  drawn_to_cut_down: boolean | null
-  annoyed_by_critics: boolean | null
-  eye_opener: boolean | null
-  guilty: boolean | null
-  missed_work: boolean | null
-  criticized: boolean | null
-  arrested: boolean | null
-  attempted_to_stop: boolean | null
-  withdrawal: boolean | null
-  quit_for_six_or_more_months: boolean | null
-  abstinence_length: boolean | null
-  first_drink: number | null
-  years_drinking: number | null
-  number_drinks_per_sitting: number | null
-  quit_smoking_years: number | null
+  currently_drinks?: boolean | null
+  binge_drinking?: boolean | null
+  drawn_to_cut_down?: boolean | null
+  annoyed_by_critics?: boolean | null
+  eye_opener?: boolean | null
+  guilty?: boolean | null
+  missed_work?: boolean | null
+  criticized?: boolean | null
+  arrested?: boolean | null
+  attempted_to_stop?: boolean | null
+  withdrawal?: boolean | null
+  quit_for_six_or_more_months?: boolean | null
+  abstinence_length_months?: number | null
+  first_drink?: number | null
+  years_drinking?: number | null
+  number_drinks_per_sitting?: number | null
+  quit_smoking_years?: number | null
+  alcohol_products_used?: string[] | null
 }
 
 export type Smoking = {
-  has_ever_smoked: false
+  has_ever_smoked: false | null
 } | {
   has_ever_smoked: true
-  currently_smokes: boolean | null
-  first_smoke_age: number
-  weekly_smokes: number | null
-  number_of_products: number | null
-  felt_to_cutdown: boolean | null
-  annoyed_by_critisism: boolean | null
-  guilty: boolean | null
-  forbidden_place: boolean | null
-  attempt_to_quit: boolean | null
-  quit_more_than_six_months: boolean | null
-  quit_smoking_years: number | null
+  currently_smokes?: Maybe<boolean>
+  first_smoke_age?: number
+  weekly_smokes?: number | null
+  number_of_products?: number | null
+  felt_to_cutdown?: boolean | null
+  annoyed_by_criticism?: boolean | null
+  guilty?: boolean | null
+  forbidden_place?: boolean | null
+  attempt_to_quit?: boolean | null
+  quit_more_than_six_months?: boolean | null
+  quit_smoking_years?: number | null
+  tobacco_products_used?: string[] | null
 }
 
 export type PatientLifestyle = {

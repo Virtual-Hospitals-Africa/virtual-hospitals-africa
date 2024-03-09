@@ -52,7 +52,6 @@ export const handler = [
         return ctx.next()
       },
     ).catch((err) => {
-      console.log('WEL:ELKWKWLE', err)
       if (err.status === 302) {
         return redirect(err.location)
       }
