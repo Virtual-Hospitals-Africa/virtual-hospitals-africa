@@ -522,6 +522,11 @@ export type PatientAppointmentRequest = {
   reason: string | null
 }
 
+export type Procurer = {
+  id?: number
+  name: string
+}
+
 export type MatchingState<US extends UserState<any>> = {
   nextState: ConversationStateHandlerNextState<US>
   onExit?: (

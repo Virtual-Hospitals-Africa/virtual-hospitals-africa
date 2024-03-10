@@ -37,7 +37,7 @@ export async function up(db: Kysely<unknown>) {
   )
 
   await createStandardTable(db, 'procurers', (qb) =>
-    qb.addColumn('name', 'varchar(255)')
+    qb.addColumn('name', 'varchar(255)', (col)=> col.notNull().unique())
   )
 
   await createStandardTable(db, 'consumables', (qb) =>
@@ -70,6 +70,9 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade')
       )
+      .addColumn('procured_by ', 'integer', (col) =>
+      col.notNull().references('procurers.id').onDelete('cascade')
+       )
       .addCheckConstraint(
         'consumption_quantity',
         sql`

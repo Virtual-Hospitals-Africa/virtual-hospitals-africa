@@ -777,6 +777,13 @@ export interface ProviderCalendars {
   updated_at: Generated<Timestamp>
 }
 
+export interface Procurer {
+  id: Generated<number>
+  name: string
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Provinces {
   country_id: number
   created_at: Generated<Timestamp>
@@ -911,6 +918,7 @@ export interface DB {
   patient_symptoms: PatientSymptoms
   patients: Patients
   provider_calendars: ProviderCalendars
+  procurers: Procurer
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs

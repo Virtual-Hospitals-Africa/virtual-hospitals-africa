@@ -5,62 +5,59 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  Procurer,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
+import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility, healthWorker } = ctx.state
+    const { isAdminAtFacility} = ctx.state
 
     assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
-    const to_add = await parseRequestAsserts(
+    const to_upsert = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      inventory.assertIsUpsertDevice,
+      inventory.assertIsUpsertProcurer,
     )
 
-    await inventory.addFacilityDevice(ctx.state.trx, {
-      device_id: to_add.device_id,
-      serial_number: to_add.serial_number,
-      facility_id: facility_id,
-    }, healthWorker.id)
+    await inventory.upsertProcurer(ctx.state.trx, to_upsert as Procurer)
 
     const success = encodeURIComponent(
-      `Device added to your facility's inventory 🏥`,
+      `Procurer added successfully!`,
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory?success=${success}`,
+      `/app/facilities/${facility_id}/consumables?success=${success}`,
     )
   },
 }
 
 // deno-lint-ignore require-await
-export default async function DeviceAdd(
+export default async function Procurer(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
   return (
     <Layout
       variant='home page'
-      title='Add Device'
+      title='Add Procurer'
       route={route}
       url={url}
       health_worker={state.healthWorker}
     >
       <Container size='md'>
-        <FacilityDeviceForm />
+        <ProcurerForm />
       </Container>
     </Layout>
   )
