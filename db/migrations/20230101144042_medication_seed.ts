@@ -81,8 +81,10 @@ async function seedDataFromJSON(db: Kysely<any>) {
   await inParallel.forEach([...drugs.entries()], addDrug.bind(null, db))
 
   if (skippedDrugs.length) {
-    console.log(`Skipped drugs`)
-    console.log(JSON.stringify(skippedDrugs, null, 2))
+    Deno.writeTextFileSync(
+      './db/resources/skipped_drugs.json',
+      JSON.stringify(skippedDrugs, null, 2),
+    )
   }
 }
 
@@ -93,7 +95,6 @@ async function addDrug(
     ManufacturedMedicationCsvRow[],
   ],
 ) {
-  console.log('generic_name', generic_name)
   const forms = groupBy(manufactured_medications, (m) => m.forms)
 
   const medications = compact(
