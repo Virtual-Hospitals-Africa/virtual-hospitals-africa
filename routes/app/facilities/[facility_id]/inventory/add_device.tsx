@@ -3,7 +3,7 @@ import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-FacilityDevice,
+  FacilityDevice,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
@@ -15,10 +15,11 @@ import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import omit from '../../../../../util/omit.ts'
 
 export function assertIsUpsertDevice(
-  obj: unknown
-): asserts obj is Omit<FacilityDevice, 'facility_id'> {
+  obj: unknown,
+): asserts obj {
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.device_id === 'number')
 }
@@ -40,10 +41,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     await inventory.addFacilityDevice(ctx.state.trx, {
-      device_id: to_add.device_id,
-      serial_number: to_add.serial_number,
+      ...omit(to_add, ['device_name']),
+      created_by: healthWorker.id,
       facility_id: facility_id,
-    }, healthWorker.id)
+    } as FacilityDevice)
 
     const success = encodeURIComponent(
       `Device added to your facility's inventory 🏥`,

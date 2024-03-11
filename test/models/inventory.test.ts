@@ -30,12 +30,14 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           await inventory.addFacilityDevice(trx, {
             device_id: contec_bc401.id,
             facility_id,
-          }, admin.id)
+            created_by: admin.id
+          })
 
           await inventory.addFacilityDevice(trx, {
             device_id: ls_4000.id,
             facility_id,
-          }, admin.id)
+            created_by: admin.id
+          })
 
           const available_tests = await inventory
             .getAvailableTestsInFacility(trx, {

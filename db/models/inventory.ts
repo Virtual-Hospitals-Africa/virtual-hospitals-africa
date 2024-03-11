@@ -109,11 +109,10 @@ export function getAvailableTestsInFacility(
 export function addFacilityDevice(
   trx: TrxOrDb,
   model: FacilityDevice,
-  healthworkerid: number
 ): Promise<{ id: number }> {
   return trx
     .insertInto('facility_devices')
-    .values({ ...model, created_by: healthworkerid })
+    .values(model)
     .returning('id')
     .executeTakeFirstOrThrow()
 }

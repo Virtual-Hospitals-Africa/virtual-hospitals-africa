@@ -1013,6 +1013,7 @@ export type FacilityDevice = {
   device_id: number
   serial_number?: string
   facility_id: number
+  created_by: number
 }
 
 export type FacilityConsumable = {
