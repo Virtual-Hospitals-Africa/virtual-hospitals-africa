@@ -1,26 +1,16 @@
 import {
   FacilityDevice,
   Procurer,
+  RenderedFacilityConsumable,
   RenderedFacilityDevice,
   TrxOrDb,
+  RenderedConsumable,
+  RenderedProcurer,
+  FacilityConsumable,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { jsonArrayFromColumn } from '../helpers.ts'
-
-export function assertIsUpsertDevice(
-  obj: unknown
-): asserts obj is Omit<FacilityDevice, 'facility_id'> {
-  assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.device_id === 'number')
-}
-
-export function assertIsUpsertProcurer(
-  obj: unknown
-): asserts obj {
-  assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.name === 'string')
-}
 
 export function getFacilityDevices(
   trx: TrxOrDb,
@@ -46,6 +36,54 @@ export function getFacilityDevices(
       ).as('diagnostic_test_capabilities'),
     ])
     .execute()
+}
+
+export function getFacilityConsumables(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+  }
+): Promise<RenderedFacilityConsumable[]> {
+  return trx
+    .selectFrom('facility_consumables')
+    .innerJoin(
+      'consumables',
+      'facility_consumables.consumable_id',
+      'consumables.id'
+    )
+    .where('facility_consumables.facility_id', '=', opts.facility_id)
+    .select([
+      'consumables.name as name',
+      'consumables.id as consumable_id',
+      'quantity_on_hand',
+    ])
+    .execute()
+}
+
+export function searchConsumables(
+  trx: TrxOrDb,
+  search?: string
+): Promise<RenderedConsumable[]> {
+  let query = trx
+    .selectFrom('consumables')
+    .select(['consumables.id', 'consumables.name'])
+
+  if (search) query = query.where('name', 'ilike', `%${search}%`)
+
+  return query.execute()
+}
+
+export function searchProcurers(
+  trx: TrxOrDb,
+  search?: string
+): Promise<RenderedProcurer[]> {
+  let query = trx
+    .selectFrom('procurers')
+    .select(['procurers.id', 'procurers.name'])
+
+  if (search) query = query.where('procurers.name', 'ilike', `%${search}%`)
+
+  return query.execute()
 }
 
 export function getAvailableTestsInFacility(
@@ -78,6 +116,42 @@ export function addFacilityDevice(
     .values({ ...model, created_by: healthworkerid })
     .returning('id')
     .executeTakeFirstOrThrow()
+}
+
+export async function addFacilityConsumable(
+  trx: TrxOrDb,
+  model: FacilityConsumable
+) {
+  await trx.insertInto('procurement').values(model).execute()
+
+  const facilityConsumable = await trx
+    .selectFrom('facility_consumables')
+    .select(['id', 'quantity_on_hand'])
+    .where((eb) =>
+      eb.and([
+        eb('facility_consumables.facility_id', '=', model.facility_id),
+        eb('facility_consumables.consumable_id', '=', model.consumable_id),
+      ])
+    )
+    .executeTakeFirst()
+
+  if (facilityConsumable)
+    await trx
+      .updateTable('facility_consumables')
+      .set({
+        quantity_on_hand: facilityConsumable.quantity_on_hand + model.quantity,
+      })
+      .where('facility_consumables.facility_id', '=', model.facility_id)
+      .execute()
+  else
+    await trx
+      .insertInto('facility_consumables')
+      .values({
+        quantity_on_hand: model.quantity,
+        consumable_id: model.consumable_id,
+        facility_id: model.facility_id,
+      })
+      .execute()
 }
 
 export function upsertProcurer(trx: TrxOrDb, model: Procurer) {

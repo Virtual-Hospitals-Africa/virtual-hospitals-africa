@@ -230,6 +230,13 @@ export interface Countries {
   updated_at: Generated<Timestamp>
 }
 
+export interface Consumables {
+  id: Generated<number>
+  name: string
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+}
+
 export interface DeviceCapabilities {
   created_at: Generated<Timestamp>
   device_id: number
@@ -324,6 +331,13 @@ export interface FacilityDevices {
   serial_number: string | null
   updated_at: Generated<Timestamp>
   updated_by: number | null
+}
+
+export interface FacilityConsumables {
+  id: Generated<number>
+  consumable_id: number
+  facility_id: number
+  quantity_on_hand: number
 }
 
 export interface GeographyColumns {
@@ -784,6 +798,15 @@ export interface Procurer {
   updated_at: Generated<Timestamp>
 }
 
+export interface Procurement {
+  id: Generated<number>
+  quantity: number
+  procured_by: number
+  created_by: number
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Provinces {
   country_id: number
   created_at: Generated<Timestamp>
@@ -859,6 +882,7 @@ export interface DB {
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
   countries: Countries
+  consumables: Consumables
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnostic_tests: DiagnosticTests
@@ -870,6 +894,7 @@ export interface DB {
   examination_findings: ExaminationFindings
   examinations: Examinations
   facilities: Facilities
+  facility_consumables: FacilityConsumables
   facility_devices: FacilityDevices
   geography_columns: GeographyColumns
   geometry_columns: GeometryColumns
@@ -919,6 +944,7 @@ export interface DB {
   patients: Patients
   provider_calendars: ProviderCalendars
   procurers: Procurer
+  procurement: Procurement
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs

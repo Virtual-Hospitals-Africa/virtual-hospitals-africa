@@ -11,9 +11,15 @@ import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { assertOr403 } from '../../../../../util/assertOr.ts'
+import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
+import isObjectLike from '../../../../../util/isObjectLike.ts'
+
+export function assertIsUpsertProcurer(obj: unknown): asserts obj {
+  assertOr400(isObjectLike(obj))
+  assertOr400(typeof obj.name === 'string')
+}
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
@@ -28,7 +34,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const to_upsert = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      inventory.assertIsUpsertProcurer,
+      assertIsUpsertProcurer,
     )
 
     await inventory.upsertProcurer(ctx.state.trx, to_upsert as Procurer)
@@ -38,7 +44,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/consumables?success=${success}`,
+      `/app/facilities/${facility_id}/inventory?active_tab=consumables&success=${success}`,
     )
   },
 }

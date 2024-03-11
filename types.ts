@@ -1015,11 +1015,29 @@ export type FacilityDevice = {
   facility_id: number
 }
 
+export type FacilityConsumable = {
+  facility_id: number
+  created_by: number
+  consumable_id: number
+  procured_by: number
+  quantity: number
+}
+
 export type RenderedDevice = {
   id: number
   name: string
   manufacturer: string
   diagnostic_test_capabilities: string[]
+}
+
+export type RenderedConsumable = {
+  id: number
+  name: string
+}
+
+export type RenderedProcurer = {
+  id: number
+  name: string
 }
 
 export type RenderedFacilityDevice = {
@@ -1028,6 +1046,12 @@ export type RenderedFacilityDevice = {
   manufacturer: string
   serial_number: string | null
   diagnostic_test_capabilities: string[]
+}
+
+export type RenderedFacilityConsumable = {
+  name: string
+  consumable_id: number
+  quantity_on_hand: number
 }
 
 export type Profession =

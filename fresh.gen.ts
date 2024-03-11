@@ -13,6 +13,7 @@ import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointme
 import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
 import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
 import * as $app_conditions from './routes/app/conditions.tsx'
+import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
 import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
@@ -26,7 +27,9 @@ import * as $app_facilities_facility_id_employees_health_worker_id_approve from 
 import * as $app_facilities_facility_id_employees_health_worker_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx'
 import * as $app_facilities_facility_id_employees_invite from './routes/app/facilities/[facility_id]/employees/invite.tsx'
 import * as $app_facilities_facility_id_inventory from './routes/app/facilities/[facility_id]/inventory.tsx'
+import * as $app_facilities_facility_id_inventory_add_consumable from './routes/app/facilities/[facility_id]/inventory/add_consumable.tsx'
 import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
+import * as $app_facilities_facility_id_inventory_add_procurer from './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx'
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting_room.tsx'
@@ -62,6 +65,7 @@ import * as $app_patients_patient_id_intake_occupation from './routes/app/patien
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
 import * as $app_patients_patient_id_intake_review from './routes/app/patients/[patient_id]/intake/review.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
+import * as $app_procurers from './routes/app/procurers.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
 import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
@@ -117,8 +121,12 @@ import * as $family_PatientCohabitationSelect from './islands/family/PatientCoha
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
+import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
+import * as $inventory_ConsumableSearch from './islands/inventory/ConsumableSearch.tsx'
 import * as $inventory_Device from './islands/inventory/Device.tsx'
 import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
+import * as $inventory_ProcurerForm from './islands/inventory/ProcurerForm.tsx'
+import * as $inventory_ProcurerSearch from './islands/inventory/ProcurerSearch.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
@@ -159,6 +167,7 @@ const manifest = {
       $app_calendar_appointments_schedule,
     './routes/app/calendar/availability.tsx': $app_calendar_availability,
     './routes/app/conditions.tsx': $app_conditions,
+    './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
     './routes/app/drugs.json.tsx': $app_drugs_json,
     './routes/app/drugs.tsx': $app_drugs,
@@ -179,8 +188,12 @@ const manifest = {
       $app_facilities_facility_id_employees_invite,
     './routes/app/facilities/[facility_id]/inventory.tsx':
       $app_facilities_facility_id_inventory,
+    './routes/app/facilities/[facility_id]/inventory/add_consumable.tsx':
+      $app_facilities_facility_id_inventory_add_consumable,
     './routes/app/facilities/[facility_id]/inventory/add_device.tsx':
       $app_facilities_facility_id_inventory_add_device,
+    './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx':
+      $app_facilities_facility_id_inventory_add_procurer,
     './routes/app/facilities/[facility_id]/register.tsx':
       $app_facilities_facility_id_register,
     './routes/app/facilities/[facility_id]/register/[step].tsx':
@@ -244,6 +257,7 @@ const manifest = {
     './routes/app/patients/[patient_id]/intake/review.tsx':
       $app_patients_patient_id_intake_review,
     './routes/app/pending_approval.tsx': $app_pending_approval,
+    './routes/app/procurers.tsx': $app_procurers,
     './routes/app/providers.tsx': $app_providers,
     './routes/app/surgeries.tsx': $app_surgeries,
     './routes/app/symptoms.tsx': $app_symptoms,
@@ -302,8 +316,12 @@ const manifest = {
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
+    './islands/inventory/Consumable.tsx': $inventory_Consumable,
+    './islands/inventory/ConsumableSearch.tsx': $inventory_ConsumableSearch,
     './islands/inventory/Device.tsx': $inventory_Device,
     './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
+    './islands/inventory/ProcurerForm.tsx': $inventory_ProcurerForm,
+    './islands/inventory/ProcurerSearch.tsx': $inventory_ProcurerSearch,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,

@@ -70,11 +70,14 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade')
       )
-      .addColumn('procured_by ', 'integer', (col) =>
+      .addColumn('procured_by', 'integer', (col) =>
       col.notNull().references('procurers.id').onDelete('cascade')
        )
+       .addColumn('created_by', 'integer', (column) =>
+       column.notNull().references('employment.id').onDelete('cascade')
+     )
       .addCheckConstraint(
-        'consumption_quantity',
+        'procurement_quantity',
         sql`
         quantity >= 0
        `
@@ -119,7 +122,6 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('facility_consumables').execute()
   await db.schema.dropTable('consumption').execute()
   await db.schema.dropTable('procurement').execute()
-  await db.schema.dropTable('devices').execute()
   await db.schema.dropTable('consumables').execute()
   await db.schema.dropTable('procurers').execute()
 }
