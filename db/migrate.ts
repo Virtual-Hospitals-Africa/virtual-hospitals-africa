@@ -49,9 +49,12 @@ async function startMigrating(cmd: string, target?: string) {
   function findTarget(target: string) {
     const target_file = last(target.split('/'))
     assert(target_file)
-    const matching_targets = migrationTargets.filter((it) =>
+    let matching_targets = migrationTargets.filter((it) =>
       it.includes(target_file)
     )
+    if (matching_targets.length > 1 && cmd.startsWith('seeds:')) {
+      matching_targets = matching_targets.filter((it) => it.includes('_seed'))
+    }
     if (matching_targets.length === 1) {
       return matching_targets[0]
     }
