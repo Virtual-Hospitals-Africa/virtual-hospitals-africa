@@ -1055,6 +1055,15 @@ export type RenderedFacilityConsumable = {
   quantity_on_hand: number
 }
 
+export type RenderedFacilityMedicine = {
+  consumable_id: number
+  medication_id: number
+  trade_name: string
+  applicant_name: string
+  manufacturer_name: string
+  quantity_on_hand: number
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'

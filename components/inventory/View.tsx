@@ -6,6 +6,7 @@ import { Container } from '../library/Container.tsx'
 import { TabProps, Tabs } from '../library/Tabs.tsx'
 import FacilityConsumablesTable from './ConsumablesTable.tsx'
 import FacilityDevicesTable from './DevicesTable.tsx'
+import FacilityMedicinesTable from './MedicinesTable.tsx'
 
 export default function inventoryView(
   { devices, consumables, facility_id, isAdmin, active_tab }: {
@@ -49,6 +50,14 @@ export default function inventoryView(
         {active_tab === 'consumables' && (
           <FacilityConsumablesTable
             consumables={consumables}
+            facility_id={facility_id}
+            isAdmin={isAdmin}
+          />
+        )}
+
+          {active_tab === 'medicines' && (
+          <FacilityMedicinesTable
+            medicines={[]}
             facility_id={facility_id}
             isAdmin={isAdmin}
           />
