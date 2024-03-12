@@ -90,6 +90,9 @@ export async function up(db: Kysely<unknown>) {
         col.notNull().references('facilities.id').onDelete('cascade')
       )
       .addColumn('quantity', 'integer')
+      .addColumn('created_by', 'integer', (column) =>
+      column.notNull().references('employment.id').onDelete('cascade')
+    )
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade')
       )

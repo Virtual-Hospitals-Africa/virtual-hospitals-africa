@@ -7,10 +7,11 @@ import {
   RenderedConsumable,
   RenderedProcurer,
   FacilityConsumable,
+  RenderedInventoryHistory,
 } from '../../types.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
-import isObjectLike from '../../util/isObjectLike.ts'
+import omit from '../../util/omit.ts'
 import { jsonArrayFromColumn } from '../helpers.ts'
+import sortBy from '../../util/sortBy.ts'
 
 export function getFacilityDevices(
   trx: TrxOrDb,
@@ -58,6 +59,84 @@ export function getFacilityConsumables(
       'quantity_on_hand',
     ])
     .execute()
+}
+
+export async function getFacilityConsumablesHistory(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    consumable_id: number
+  }
+): Promise<RenderedInventoryHistory[]> {
+  const procurement = trx
+    .selectFrom('procurement')
+    .innerJoin('employment', 'procurement.created_by', 'employment.id')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id'
+    )
+    .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
+    .select([
+      'health_workers.name as created_by',
+      'procurers.name as procured_by',
+      'procurement.quantity',
+      'procurement.created_at',
+    ])
+    .where((eb) =>
+      eb.and([
+        eb('procurement.facility_id', '=', opts.facility_id),
+        eb('procurement.consumable_id', '=', opts.consumable_id),
+      ])
+    )
+    .execute()
+
+  const consumption = trx
+    .selectFrom('consumption')
+    .innerJoin('employment', 'consumption.created_by', 'employment.id')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id'
+    )
+    .select([
+      'health_workers.name as created_by',
+      'consumption.quantity',
+      'consumption.created_at',
+    ])
+    .where((eb) =>
+      eb.and([
+        eb('consumption.facility_id', '=', opts.facility_id),
+        eb('consumption.consumable_id', '=', opts.consumable_id),
+      ])
+    )
+    .execute()
+
+  const [procurementResult, consumptionResult] = await Promise.all([
+    procurement,
+    consumption,
+  ])
+
+  const mergedResults = (procurementResult ?? [])
+    .map(
+      (item) =>
+        ({
+          ...item,
+          type: 'procurement',
+        } as RenderedInventoryHistory)
+    )
+    .concat(
+      (consumptionResult ?? []).map(
+        (item) =>
+          ({
+            ...item,
+            procured_by: '-',
+            type: 'consumption',
+          } as RenderedInventoryHistory)
+      )
+    )
+
+  return sortBy(mergedResults, (c) => c.created_at)
 }
 
 export function searchConsumables(
@@ -108,7 +187,7 @@ export function getAvailableTestsInFacility(
 
 export function addFacilityDevice(
   trx: TrxOrDb,
-  model: FacilityDevice,
+  model: FacilityDevice
 ): Promise<{ id: number }> {
   return trx
     .insertInto('facility_devices')
@@ -140,7 +219,7 @@ export async function addFacilityConsumable(
       .set({
         quantity_on_hand: facilityConsumable.quantity_on_hand + model.quantity,
       })
-      .where('facility_consumables.facility_id', '=', model.facility_id)
+      .where('facility_consumables.id', '=', facilityConsumable.id)
       .execute()
   else
     await trx
@@ -151,6 +230,29 @@ export async function addFacilityConsumable(
         facility_id: model.facility_id,
       })
       .execute()
+}
+
+export async function consumeFacilityConsumable(
+  trx: TrxOrDb,
+  model: FacilityConsumable
+) {
+  await trx
+    .insertInto('consumption')
+    .values(omit(model, ['procured_by']))
+    .execute()
+
+  await trx
+    .updateTable('facility_consumables')
+    .set({
+      quantity_on_hand: -model.quantity,
+    })
+    .where((eb) =>
+      eb.and([
+        eb('facility_consumables.facility_id', '=', model.facility_id),
+        eb('facility_consumables.consumable_id', '=', model.consumable_id),
+      ])
+    )
+    .execute()
 }
 
 export function upsertProcurer(trx: TrxOrDb, model: Procurer) {

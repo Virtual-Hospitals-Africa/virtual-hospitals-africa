@@ -30,6 +30,7 @@ import * as $app_facilities_facility_id_inventory from './routes/app/facilities/
 import * as $app_facilities_facility_id_inventory_add_consumable from './routes/app/facilities/[facility_id]/inventory/add_consumable.tsx'
 import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
 import * as $app_facilities_facility_id_inventory_add_procurer from './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx'
+import * as $app_facilities_facility_id_inventory_history from './routes/app/facilities/[facility_id]/inventory/history.tsx'
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
 import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting_room.tsx'
@@ -194,6 +195,8 @@ const manifest = {
       $app_facilities_facility_id_inventory_add_device,
     './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx':
       $app_facilities_facility_id_inventory_add_procurer,
+    './routes/app/facilities/[facility_id]/inventory/history.tsx':
+      $app_facilities_facility_id_inventory_history,
     './routes/app/facilities/[facility_id]/register.tsx':
       $app_facilities_facility_id_register,
     './routes/app/facilities/[facility_id]/register/[step].tsx':

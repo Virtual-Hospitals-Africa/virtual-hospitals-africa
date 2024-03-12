@@ -1064,6 +1064,14 @@ export type RenderedFacilityMedicine = {
   quantity_on_hand: number
 }
 
+export type RenderedInventoryHistory = {
+  created_at: Date
+  created_by: string
+  procured_by?: string
+  quantity: number
+  type: 'procurement' | 'consumption'
+}
+
 export type Profession =
   | 'admin'
   | 'doctor'

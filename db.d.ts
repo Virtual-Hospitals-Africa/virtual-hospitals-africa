@@ -237,6 +237,16 @@ export interface Consumables {
   updated_at: Generated<Timestamp>
 }
 
+export interface Consumption {
+  id: Generated<number>
+  quantity: number
+  created_by: number
+  consumable_id: number
+  facility_id: number
+  created_at: Generated<Timestamp>
+  updated_at: Generated<Timestamp>
+}
+
 export interface DeviceCapabilities {
   created_at: Generated<Timestamp>
   device_id: number
@@ -802,6 +812,8 @@ export interface Procurement {
   id: Generated<number>
   quantity: number
   procured_by: number
+  consumable_id: number
+  facility_id: number
   created_by: number
   created_at: Generated<Timestamp>
   updated_at: Generated<Timestamp>
@@ -883,6 +895,7 @@ export interface DB {
   conditions: Conditions
   countries: Countries
   consumables: Consumables
+  consumption: Consumption
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnostic_tests: DiagnosticTests
