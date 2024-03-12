@@ -522,6 +522,11 @@ export type PatientAppointmentRequest = {
   reason: string | null
 }
 
+export type Procurer = {
+  id?: number
+  name: string
+}
+
 export type MatchingState<US extends UserState<any>> = {
   nextState: ConversationStateHandlerNextState<US>
   onExit?: (
@@ -1008,6 +1013,15 @@ export type FacilityDevice = {
   device_id: number
   serial_number?: string
   facility_id: number
+  created_by: number
+}
+
+export type FacilityConsumable = {
+  facility_id: number
+  created_by: number
+  consumable_id: number
+  procured_by: number
+  quantity: number
 }
 
 export type RenderedDevice = {
@@ -1017,12 +1031,45 @@ export type RenderedDevice = {
   diagnostic_test_capabilities: string[]
 }
 
+export type RenderedConsumable = {
+  id: number
+  name: string
+}
+
+export type RenderedProcurer = {
+  id: number
+  name: string
+}
+
 export type RenderedFacilityDevice = {
   device_id: number
   name: string
   manufacturer: string
   serial_number: string | null
   diagnostic_test_capabilities: string[]
+}
+
+export type RenderedFacilityConsumable = {
+  name: string
+  consumable_id: number
+  quantity_on_hand: number
+}
+
+export type RenderedFacilityMedicine = {
+  consumable_id: number
+  medication_id: number
+  trade_name: string
+  applicant_name: string
+  manufacturer_name: string
+  quantity_on_hand: number
+}
+
+export type RenderedInventoryHistory = {
+  created_at: Date
+  created_by: string
+  procured_by?: string
+  quantity: number
+  type: 'procurement' | 'consumption'
 }
 
 export type Profession =

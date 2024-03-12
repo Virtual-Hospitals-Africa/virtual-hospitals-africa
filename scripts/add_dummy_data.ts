@@ -1,14 +1,12 @@
 import db from '../db/db.ts'
-import * as patients from '../db/models/patients.ts'
 import * as patient_encounters from '../db/models/patient_encounters.ts'
-import * as waiting_room from '../db/models/waiting_room.ts'
 import { addTestHealthWorker } from '../test/web/utilities.ts'
 import { randomZimbabweanDemographics } from '../util/zimbabweanDemographics.ts'
 import { EncounterReason } from '../db.d.ts'
 import range from '../util/range.ts'
 import shuffle from '../util/shuffle.ts'
-import { h } from 'preact'
 
+// deno-lint-ignore no-unused-vars
 function randomDateOfBirth() {
   const start = new Date(1950, 0, 1)
   const end = new Date(2005, 0, 1)

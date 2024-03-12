@@ -3,12 +3,12 @@ import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  FacilityDevice,
+  FacilityConsumable,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
+import FacilityConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
@@ -17,11 +17,11 @@ import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import omit from '../../../../../util/omit.ts'
 
-export function assertIsUpsertDevice(
-  obj: unknown,
-): asserts obj {
+export function assertIsUpsertConsumer(obj: unknown): asserts obj {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.device_id === 'number')
+  assertOr400(typeof obj.quantity === 'number')
+  assertOr400(typeof obj.procured_by_id === 'number')
+  assertOr400(typeof obj.consumable_id === 'number')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -37,40 +37,48 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const to_add = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      assertIsUpsertDevice,
+      assertIsUpsertConsumer,
     )
 
-    await inventory.addFacilityDevice(ctx.state.trx, {
-      ...omit(to_add, ['device_name']),
-      created_by: healthWorker.id,
-      facility_id: facility_id,
-    } as FacilityDevice)
+    await inventory.addFacilityConsumable(
+      ctx.state.trx,
+      {
+        ...omit(to_add, [
+          'procured_by_id',
+          'procured_by_name',
+          'consumable_name',
+        ]),
+        created_by: healthWorker.id,
+        facility_id: facility_id,
+        procured_by: to_add.procured_by_id,
+      } as FacilityConsumable,
+    )
 
     const success = encodeURIComponent(
-      `Device added to your facility's inventory 🏥`,
+      `Consumable added to your facility's inventory`,
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory?success=${success}`,
+      `/app/facilities/${facility_id}/inventory?active_tab=consumables&success=${success}`,
     )
   },
 }
 
 // deno-lint-ignore require-await
-export default async function DeviceAdd(
+export default async function ConsumableAdd(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
   return (
     <Layout
       variant='home page'
-      title='Add Device'
+      title='Add Consumable'
       route={route}
       url={url}
       health_worker={state.healthWorker}
     >
       <Container size='md'>
-        <FacilityDeviceForm />
+        <FacilityConsumableForm />
       </Container>
     </Layout>
   )

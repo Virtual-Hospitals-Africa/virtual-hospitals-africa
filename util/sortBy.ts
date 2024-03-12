@@ -1,6 +1,6 @@
 export default function sortBy<T>(
   arr: T[],
-  ...iteratees: (keyof T | ((obj: T) => string | number))[]
+  ...iteratees: (keyof T | ((obj: T) => string | number | Date))[]
 ): T[] {
   const getters = !iteratees.length
     ? [(x: T) => x]

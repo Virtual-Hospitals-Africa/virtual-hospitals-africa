@@ -3,25 +3,22 @@ import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  FacilityDevice,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  Procurer,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
+import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import omit from '../../../../../util/omit.ts'
 
-export function assertIsUpsertDevice(
-  obj: unknown,
-): asserts obj {
+export function assertIsUpsertProcurer(obj: unknown): asserts obj {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.device_id === 'number')
+  assertOr400(typeof obj.name === 'string')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -29,48 +26,44 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility, healthWorker } = ctx.state
+    const { isAdminAtFacility } = ctx.state
 
     assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
-    const to_add = await parseRequestAsserts(
+    const to_upsert = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      assertIsUpsertDevice,
+      assertIsUpsertProcurer,
     )
 
-    await inventory.addFacilityDevice(ctx.state.trx, {
-      ...omit(to_add, ['device_name']),
-      created_by: healthWorker.id,
-      facility_id: facility_id,
-    } as FacilityDevice)
+    await inventory.upsertProcurer(ctx.state.trx, to_upsert as Procurer)
 
     const success = encodeURIComponent(
-      `Device added to your facility's inventory 🏥`,
+      `Procurer added successfully!`,
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory?success=${success}`,
+      `/app/facilities/${facility_id}/inventory?active_tab=consumables&success=${success}`,
     )
   },
 }
 
 // deno-lint-ignore require-await
-export default async function DeviceAdd(
+export default async function Procurer(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
   return (
     <Layout
       variant='home page'
-      title='Add Device'
+      title='Add Procurer'
       route={route}
       url={url}
       health_worker={state.healthWorker}
     >
       <Container size='md'>
-        <FacilityDeviceForm />
+        <ProcurerForm />
       </Container>
     </Layout>
   )
