@@ -21,7 +21,7 @@ export default function AddPatientForm({
 }: {
   open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
   providers: FacilityDoctorOrNurse[]
-  patient: { id?: number; name: string } | undefined
+  patient: { id?: number | 'add'; name: string } | undefined
 }) {
   return (
     <Form method='post'>

@@ -59,7 +59,6 @@ export default async function WaitingRoomAdd(
 
   const patient_name = searchParams.get('patient_name')
   const just_completed_intake = url.searchParams.get('intake') === 'completed'
-
   let completing_intake: Promise<unknown> = Promise.resolve()
   if (just_completed_intake) {
     assertOr400(patient_id, 'patient_id is required')
@@ -77,7 +76,7 @@ export default async function WaitingRoomAdd(
   })
 
   let open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
-  let patient: { id?: number; name: string } | undefined
+  let patient: { id?: number | 'add'; name: string } | undefined
   if (patient_id) {
     const getting_open_encounter = patient_encounters.get(trx, {
       patient_id,
@@ -92,7 +91,7 @@ export default async function WaitingRoomAdd(
     patient = fetched_patient
     open_encounter = await getting_open_encounter
   } else if (patient_name) {
-    patient = { name: patient_name }
+    patient = { name: patient_name, id: 'add' }
   }
 
   return (
