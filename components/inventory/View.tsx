@@ -55,7 +55,7 @@ export default function inventoryView(
           />
         )}
 
-          {active_tab === 'medicines' && (
+        {active_tab === 'medicines' && (
           <FacilityMedicinesTable
             medicines={[]}
             facility_id={facility_id}

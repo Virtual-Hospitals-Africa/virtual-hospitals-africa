@@ -1,13 +1,13 @@
 import {
+  FacilityConsumable,
   FacilityDevice,
   Procurer,
+  RenderedConsumable,
   RenderedFacilityConsumable,
   RenderedFacilityDevice,
-  TrxOrDb,
-  RenderedConsumable,
-  RenderedProcurer,
-  FacilityConsumable,
   RenderedInventoryHistory,
+  RenderedProcurer,
+  TrxOrDb,
 } from '../../types.ts'
 import omit from '../../util/omit.ts'
 import { jsonArrayFromColumn } from '../helpers.ts'
@@ -17,7 +17,7 @@ export function getFacilityDevices(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<RenderedFacilityDevice[]> {
   return trx
     .selectFrom('facility_devices')
@@ -33,7 +33,7 @@ export function getFacilityDevices(
         eb
           .selectFrom('device_capabilities')
           .whereRef('device_capabilities.device_id', '=', 'devices.id')
-          .select('diagnostic_test')
+          .select('diagnostic_test'),
       ).as('diagnostic_test_capabilities'),
     ])
     .execute()
@@ -43,14 +43,14 @@ export function getFacilityConsumables(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<RenderedFacilityConsumable[]> {
   return trx
     .selectFrom('facility_consumables')
     .innerJoin(
       'consumables',
       'facility_consumables.consumable_id',
-      'consumables.id'
+      'consumables.id',
     )
     .where('facility_consumables.facility_id', '=', opts.facility_id)
     .select([
@@ -66,7 +66,7 @@ export async function getFacilityConsumablesHistory(
   opts: {
     facility_id: number
     consumable_id: number
-  }
+  },
 ): Promise<RenderedInventoryHistory[]> {
   const procurement = trx
     .selectFrom('procurement')
@@ -74,7 +74,7 @@ export async function getFacilityConsumablesHistory(
     .innerJoin(
       'health_workers',
       'health_workers.id',
-      'employment.health_worker_id'
+      'employment.health_worker_id',
     )
     .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
     .select([
@@ -97,7 +97,7 @@ export async function getFacilityConsumablesHistory(
     .innerJoin(
       'health_workers',
       'health_workers.id',
-      'employment.health_worker_id'
+      'employment.health_worker_id',
     )
     .select([
       'health_workers.name as created_by',
@@ -119,21 +119,19 @@ export async function getFacilityConsumablesHistory(
 
   const mergedResults = (procurementResult ?? [])
     .map(
-      (item) =>
-        ({
-          ...item,
-          type: 'procurement',
-        } as RenderedInventoryHistory)
+      (item) => ({
+        ...item,
+        type: 'procurement',
+      } as RenderedInventoryHistory),
     )
     .concat(
       (consumptionResult ?? []).map(
-        (item) =>
-          ({
-            ...item,
-            procured_by: '-',
-            type: 'consumption',
-          } as RenderedInventoryHistory)
-      )
+        (item) => ({
+          ...item,
+          procured_by: '-',
+          type: 'consumption',
+        } as RenderedInventoryHistory),
+      ),
     )
 
   return sortBy(mergedResults, (c) => c.created_at)
@@ -141,7 +139,7 @@ export async function getFacilityConsumablesHistory(
 
 export function searchConsumables(
   trx: TrxOrDb,
-  search?: string
+  search?: string,
 ): Promise<RenderedConsumable[]> {
   let query = trx
     .selectFrom('consumables')
@@ -154,7 +152,7 @@ export function searchConsumables(
 
 export function searchProcurers(
   trx: TrxOrDb,
-  search?: string
+  search?: string,
 ): Promise<RenderedProcurer[]> {
   let query = trx
     .selectFrom('procurers')
@@ -169,7 +167,7 @@ export function getAvailableTestsInFacility(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-  }
+  },
 ): Promise<{ diagnostic_test: string }[]> {
   return trx
     .selectFrom('facility_devices')
@@ -177,7 +175,7 @@ export function getAvailableTestsInFacility(
     .innerJoin(
       'device_capabilities',
       'devices.id',
-      'device_capabilities.device_id'
+      'device_capabilities.device_id',
     )
     .where('facility_devices.facility_id', '=', opts.facility_id)
     .select('device_capabilities.diagnostic_test')
@@ -187,7 +185,7 @@ export function getAvailableTestsInFacility(
 
 export function addFacilityDevice(
   trx: TrxOrDb,
-  model: FacilityDevice
+  model: FacilityDevice,
 ): Promise<{ id: number }> {
   return trx
     .insertInto('facility_devices')
@@ -198,7 +196,7 @@ export function addFacilityDevice(
 
 export async function addFacilityConsumable(
   trx: TrxOrDb,
-  model: FacilityConsumable
+  model: FacilityConsumable,
 ) {
   await trx.insertInto('procurement').values(model).execute()
 
@@ -213,7 +211,7 @@ export async function addFacilityConsumable(
     )
     .executeTakeFirst()
 
-  if (facilityConsumable)
+  if (facilityConsumable) {
     await trx
       .updateTable('facility_consumables')
       .set({
@@ -221,7 +219,7 @@ export async function addFacilityConsumable(
       })
       .where('facility_consumables.id', '=', facilityConsumable.id)
       .execute()
-  else
+  } else {
     await trx
       .insertInto('facility_consumables')
       .values({
@@ -230,18 +228,19 @@ export async function addFacilityConsumable(
         facility_id: model.facility_id,
       })
       .execute()
+  }
 }
 
 export async function consumeFacilityConsumable(
   trx: TrxOrDb,
-  model: FacilityConsumable
+  model: FacilityConsumable,
 ) {
   await trx
     .insertInto('consumption')
     .values(omit(model, ['procured_by']))
     .execute()
 
-    const facilityConsumable = await trx
+  const facilityConsumable = await trx
     .selectFrom('facility_consumables')
     .select(['id', 'quantity_on_hand'])
     .where((eb) =>

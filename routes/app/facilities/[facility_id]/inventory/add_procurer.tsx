@@ -26,7 +26,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility} = ctx.state
+    const { isAdminAtFacility } = ctx.state
 
     assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')

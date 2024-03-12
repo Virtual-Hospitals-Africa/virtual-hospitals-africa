@@ -45,7 +45,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             trx,
             {
               facility_id,
-            }
+            },
           )
 
           assertEquals(available_tests, [
@@ -65,7 +65,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             { diagnostic_test: 'Tumor' },
             { diagnostic_test: 'Urine Analysis' },
           ])
-        })
+        }),
     )
   }),
     describe('TestConsumption', () => {
@@ -113,7 +113,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
 
           const facilityConsumables = await inventory.getFacilityConsumables(
             trx,
-            { facility_id: facility_id }
+            { facility_id: facility_id },
           )
 
           assertEquals(facilityConsumables, [
@@ -123,7 +123,6 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
               quantity_on_hand: 5,
             },
           ])
-        })
-      )
+        }))
     })
 })

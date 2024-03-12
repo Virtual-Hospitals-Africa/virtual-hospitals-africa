@@ -4,8 +4,8 @@ import {
   Facility,
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
-  RenderedFacilityDevice,
   RenderedFacilityConsumable,
+  RenderedFacilityDevice,
 } from '../../../../types.ts'
 import * as inventory from '../../../../db/models/inventory.ts'
 import Layout from '../../../../components/library/Layout.tsx'
@@ -55,7 +55,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       healthWorker,
       facility_devices,
       facility_consumbales,
-      active_tab
+      active_tab,
     })
   },
 }

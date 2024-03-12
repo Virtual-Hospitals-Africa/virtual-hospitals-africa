@@ -11,9 +11,9 @@ function ProcurerOption({
 }) {
   return (
     <div className='flex flex-col'>
-        <div className={cls('truncate text-base', selected && 'font-bold')}>
-          {option.name}
-        </div>
+      <div className={cls('truncate text-base', selected && 'font-bold')}>
+        {option.name}
+      </div>
     </div>
   )
 }
