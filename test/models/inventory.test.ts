@@ -17,12 +17,14 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             scenario: 'admin',
           })
 
-          const contec_bc401 = await trx.selectFrom('devices')
+          const contec_bc401 = await trx
+            .selectFrom('devices')
             .where('name', '=', 'Contec BC401')
             .select('id')
             .executeTakeFirstOrThrow()
 
-          const ls_4000 = await trx.selectFrom('devices')
+          const ls_4000 = await trx
+            .selectFrom('devices')
             .where('name', '=', 'LS-4000 Immunofluorescence Analyser')
             .select('id')
             .executeTakeFirstOrThrow()
@@ -30,19 +32,21 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
           await inventory.addFacilityDevice(trx, {
             device_id: contec_bc401.id,
             facility_id,
-            created_by: admin.id
+            created_by: admin.id,
           })
 
           await inventory.addFacilityDevice(trx, {
             device_id: ls_4000.id,
             facility_id,
-            created_by: admin.id
+            created_by: admin.id,
           })
 
-          const available_tests = await inventory
-            .getAvailableTestsInFacility(trx, {
+          const available_tests = await inventory.getAvailableTestsInFacility(
+            trx,
+            {
               facility_id,
-            })
+            }
+          )
 
           assertEquals(available_tests, [
             { diagnostic_test: 'Anemia' },
@@ -61,7 +65,65 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             { diagnostic_test: 'Tumor' },
             { diagnostic_test: 'Urine Analysis' },
           ])
-        }),
+        })
     )
-  })
+  }),
+    describe('TestConsumption', () => {
+      itUsesTrxAnd('Add consumable and check quantity', (trx) =>
+        withTestFacility(trx, async (facility_id) => {
+          const admin = await addTestHealthWorker(trx, {
+            scenario: 'admin',
+          })
+
+          const consumable = await trx
+            .insertInto('consumables')
+            .returning('id')
+            .values({ name: 'bandage' })
+            .executeTakeFirstOrThrow()
+
+          const procurer = await trx
+            .insertInto('procurers')
+            .returning('id')
+            .values({ name: 'company 1' })
+            .executeTakeFirstOrThrow()
+
+          await inventory.addFacilityConsumable(trx, {
+            consumable_id: consumable.id,
+            facility_id,
+            created_by: admin.id,
+            quantity: 10,
+            procured_by: procurer.id,
+          })
+
+          await inventory.addFacilityConsumable(trx, {
+            consumable_id: consumable.id,
+            facility_id,
+            created_by: admin.id,
+            quantity: 5,
+            procured_by: procurer.id,
+          })
+
+          await inventory.consumeFacilityConsumable(trx, {
+            consumable_id: consumable.id,
+            facility_id,
+            created_by: admin.id,
+            quantity: 10,
+            procured_by: procurer.id,
+          })
+
+          const facilityConsumables = await inventory.getFacilityConsumables(
+            trx,
+            { facility_id: facility_id }
+          )
+
+          assertEquals(facilityConsumables, [
+            {
+              consumable_id: consumable.id,
+              name: 'bandage',
+              quantity_on_hand: 5,
+            },
+          ])
+        })
+      )
+    })
 })

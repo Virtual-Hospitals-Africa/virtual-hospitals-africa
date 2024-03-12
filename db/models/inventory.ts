@@ -241,17 +241,23 @@ export async function consumeFacilityConsumable(
     .values(omit(model, ['procured_by']))
     .execute()
 
-  await trx
-    .updateTable('facility_consumables')
-    .set({
-      quantity_on_hand: -model.quantity,
-    })
+    const facilityConsumable = await trx
+    .selectFrom('facility_consumables')
+    .select(['id', 'quantity_on_hand'])
     .where((eb) =>
       eb.and([
         eb('facility_consumables.facility_id', '=', model.facility_id),
         eb('facility_consumables.consumable_id', '=', model.consumable_id),
       ])
     )
+    .executeTakeFirstOrThrow()
+
+  await trx
+    .updateTable('facility_consumables')
+    .set({
+      quantity_on_hand: facilityConsumable.quantity_on_hand - model.quantity,
+    })
+    .where('facility_consumables.id', '=', facilityConsumable.id)
     .execute()
 }
 
