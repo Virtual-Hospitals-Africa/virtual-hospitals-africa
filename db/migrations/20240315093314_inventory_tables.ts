@@ -97,7 +97,6 @@ export async function up(db: Kysely<unknown>) {
   //     col.references('consumables.id')
   //   )
   //   .execute()
-
 }
 
 export async function down(db: Kysely<unknown>) {
@@ -120,20 +119,20 @@ export async function down(db: Kysely<unknown>) {
 //     .selectFrom('manufactured_medications')
 //     .select('applicant_name')
 //     .execute()
-  // await db
-  //   .insertInto('consumables')
-  //   .values(medications.map((c) => ({ name: c.applicant_name, is_medication: true })))
-  //   .execute()
-  // const consumables = await db
-  //   .selectFrom('manufactured_medications')
-  //   .select(['id', 'name'])
-  //   .execute()
+// await db
+//   .insertInto('consumables')
+//   .values(medications.map((c) => ({ name: c.applicant_name, is_medication: true })))
+//   .execute()
+// const consumables = await db
+//   .selectFrom('manufactured_medications')
+//   .select(['id', 'name'])
+//   .execute()
 
-  // await inParallel.forEach(consumables, async (consumable) => {
-  //   await db
-  //     .updateTable('manufactured_medications')
-  //     .set('consumable_id', consumable.id)
-  //     .where('applicant_name', '=', consumable.name)
-  //     .execute()
-  // })
+// await inParallel.forEach(consumables, async (consumable) => {
+//   await db
+//     .updateTable('manufactured_medications')
+//     .set('consumable_id', consumable.id)
+//     .where('applicant_name', '=', consumable.name)
+//     .execute()
+// })
 // }
