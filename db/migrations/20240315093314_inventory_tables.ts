@@ -1,6 +1,5 @@
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
-import * as inParallel from '../../util/inParallel.ts'
 
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'devices', (qb) =>
@@ -99,7 +98,6 @@ export async function up(db: Kysely<unknown>) {
   //   )
   //   .execute()
 
-  await seedConsumablesFromMedications(db)
 }
 
 export async function down(db: Kysely<unknown>) {
@@ -117,12 +115,11 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('procurers').execute()
 }
 
-// deno-lint-ignore no-explicit-any
-async function seedConsumablesFromMedications(db: Kysely<any>) {
-  const medications = await db
-    .selectFrom('manufactured_medications')
-    .select('applicant_name')
-    .execute()
+// async function seedConsumablesFromMedications(db: Kysely<any>) {
+//   const medications = await db
+//     .selectFrom('manufactured_medications')
+//     .select('applicant_name')
+//     .execute()
   // await db
   //   .insertInto('consumables')
   //   .values(medications.map((c) => ({ name: c.applicant_name, is_medication: true })))
@@ -139,4 +136,4 @@ async function seedConsumablesFromMedications(db: Kysely<any>) {
   //     .where('applicant_name', '=', consumable.name)
   //     .execute()
   // })
-}
+// }
