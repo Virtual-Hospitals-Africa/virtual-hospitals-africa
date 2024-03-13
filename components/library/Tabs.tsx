@@ -1,6 +1,6 @@
+import { ComponentChild } from 'preact'
 import cls from '../../util/cls.ts'
 import words from '../../util/words.ts'
-import { ComponentChild } from 'https://esm.sh/v128/preact@10.19.2/src/index.js'
 
 const display = (tab: string) => words(tab).join(' ')
 
