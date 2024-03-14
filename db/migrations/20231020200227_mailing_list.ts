@@ -1,27 +1,19 @@
-import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { Kysely } from 'kysely'
+import { createStandardTable } from '../createStandardTable.ts'
 
-export async function up(db: Kysely<unknown>) {
-  await db.schema
-    .createTable('mailing_list')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn('name', 'varchar(255)', (col) => col.notNull())
-    .addColumn('email', 'varchar(255)', (col) => col.notNull())
-    .addColumn('entrypoint', 'varchar(255)', (col) => col.notNull())
-    .addUniqueConstraint('mailing_list_email', ['email'])
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'mailing_list')
+export function up(db: Kysely<unknown>) {
+  return createStandardTable(
+    db,
+    'mailing_list',
+    (qb) =>
+      qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
+        .addColumn('email', 'varchar(255)', (col) => col.notNull())
+        .addColumn('entrypoint', 'varchar(255)', (col) => col.notNull())
+        .addColumn('message', 'text')
+        .addColumn('support', 'varchar(255)')
+        .addColumn('interest', 'varchar(255)')
+        .addUniqueConstraint('mailing_list_email', ['email']),
+  )
 }
 
 export function down(db: Kysely<unknown>) {

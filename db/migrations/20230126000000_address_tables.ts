@@ -1,20 +1,9 @@
 import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('countries')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addUniqueConstraint('country_name', ['name'])
     .execute()
@@ -22,16 +11,6 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('provinces')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('country_id', 'integer', (col) =>
       col.notNull()
@@ -43,16 +22,6 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('districts')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('province_id', 'integer', (col) =>
       col.notNull()
@@ -64,16 +33,6 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('wards')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('district_id', 'integer', (col) =>
       col.notNull()
@@ -85,16 +44,6 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('suburbs')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('ward_id', 'integer', (col) =>
       col.notNull()
@@ -106,16 +55,6 @@ export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('address')
     .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .addColumn('street', 'varchar(255)')
     .addColumn('suburb_id', 'integer', (col) => col.references('suburbs.id'))
     .addColumn('ward_id', 'integer', (col) =>
@@ -137,22 +76,9 @@ export async function up(db: Kysely<unknown>) {
     ADD CONSTRAINT address_street_suburb_ward
     UNIQUE NULLS NOT DISTINCT (street, suburb_id, ward_id)
   `.execute(db)
-
-  await db.schema
-    .alterTable('patients')
-    .addColumn('address_id', 'integer', (col) => col.references('address.id'))
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'address')
-  await addUpdatedAtTrigger(db, 'countries')
-  await addUpdatedAtTrigger(db, 'provinces')
-  await addUpdatedAtTrigger(db, 'districts')
-  await addUpdatedAtTrigger(db, 'wards')
-  await addUpdatedAtTrigger(db, 'suburbs')
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.alterTable('patients').dropColumn('address_id').execute()
   await db.schema.dropTable('address').execute()
   await db.schema.dropTable('suburbs').execute()
   await db.schema.dropTable('wards').execute()

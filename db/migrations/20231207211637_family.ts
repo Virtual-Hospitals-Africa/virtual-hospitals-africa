@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
@@ -17,32 +17,12 @@ export async function up(db: Kysely<any>) {
     .addColumn('male_guardian', 'varchar(255)')
     .addColumn('female_dependent', 'varchar(255)')
     .addColumn('male_dependent', 'varchar(255)')
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .execute()
 
-  await db.schema
-    .createTable('patient_guardians')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await db.insertInto('guardian_relations').values(GUARDIAN_RELATIONS).execute()
+
+  await createStandardTable(db, 'patient_guardians', (qb) =>
+    qb.addColumn(
       'guardian_relation',
       sql`guardian_relation`,
       (col) =>
@@ -50,32 +30,26 @@ export async function up(db: Kysely<any>) {
           'cascade',
         ),
     )
-    .addColumn(
-      'guardian_patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'dependent_patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-    .addUniqueConstraint(
-      'one_relationship_per_pair',
-      ['guardian_patient_id', 'dependent_patient_id'],
-    )
-    .addCheckConstraint(
-      'no_relationship_to_self',
-      sql`
+      .addColumn(
+        'guardian_patient_id',
+        'integer',
+        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+      )
+      .addColumn(
+        'dependent_patient_id',
+        'integer',
+        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+      )
+      .addUniqueConstraint(
+        'one_relationship_per_pair',
+        ['guardian_patient_id', 'dependent_patient_id'],
+      )
+      .addCheckConstraint(
+        'no_relationship_to_self',
+        sql`
       guardian_patient_id != dependent_patient_id
     `,
-    )
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'guardian_relations')
-  await addUpdatedAtTrigger(db, 'patient_guardians')
-
-  await db.insertInto('guardian_relations').values(GUARDIAN_RELATIONS).execute()
+      ))
 }
 
 export async function down(db: Kysely<unknown>) {

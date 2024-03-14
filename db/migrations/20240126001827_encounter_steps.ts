@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { ENCOUNTER_STEPS } from '../../shared/encounter.ts'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
@@ -17,19 +17,8 @@ export async function up(db: Kysely<any>) {
     .values(ENCOUNTER_STEPS.map((step, i) => ({ step, order: i + 1 })))
     .execute()
 
-  await db.schema.createTable('patient_encounter_steps')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await createStandardTable(db, 'patient_encounter_steps', (qb) =>
+    qb.addColumn(
       'patient_encounter_id',
       'integer',
       (col) =>
@@ -37,18 +26,15 @@ export async function up(db: Kysely<any>) {
           'cascade',
         ),
     )
-    .addColumn(
-      'encounter_step',
-      sql`encounter_step`,
-      (col) => col.notNull().references('encounter.step'),
-    )
-    .addUniqueConstraint('patient_encounter_step', [
-      'patient_encounter_id',
-      'encounter_step',
-    ])
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'patient_encounter_steps')
+      .addColumn(
+        'encounter_step',
+        sql`encounter_step`,
+        (col) => col.notNull().references('encounter.step'),
+      )
+      .addUniqueConstraint('patient_encounter_step', [
+        'patient_encounter_id',
+        'encounter_step',
+      ]))
 }
 
 // deno-lint-ignore no-explicit-any

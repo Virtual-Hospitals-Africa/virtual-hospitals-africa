@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db
@@ -9,110 +9,78 @@ export async function up(db: Kysely<unknown>) {
     .asEnum(Array.from(ENCOUNTER_REASONS))
     .execute()
 
-  await db.schema
-    .createTable('patient_encounters')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-    .addColumn('reason', sql`encounter_reason`, (col) => col.notNull())
-    .addColumn(
-      'appointment_id',
-      'integer',
-      (col) => col.references('appointments.id').onDelete('cascade'),
-    )
-    .addColumn('notes', 'text')
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'closed_at',
-      'timestamptz',
-    )
-    .addCheckConstraint(
-      'appointment_has_appointment',
-      sql`
+  await createStandardTable(db, 'patient_encounters', (qb) =>
+    qb
+      .addColumn(
+        'patient_id',
+        'integer',
+        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+      )
+      .addColumn('reason', sql`encounter_reason`, (col) => col.notNull())
+      .addColumn(
+        'appointment_id',
+        'integer',
+        (col) => col.references('appointments.id').onDelete('cascade'),
+      )
+      .addColumn('notes', 'text')
+      .addColumn(
+        'closed_at',
+        'timestamptz',
+      )
+      .addCheckConstraint(
+        'appointment_has_appointment',
+        sql`
       (appointment_id IS NULL AND reason != 'appointment') OR
       (appointment_id IS NOT NULL AND reason = 'appointment')
     `,
-    )
-    .addCheckConstraint(
-      'other_reason_has_notes',
-      sql`
+      )
+      .addCheckConstraint(
+        'other_reason_has_notes',
+        sql`
       (reason != 'other') OR (reason = 'other' AND notes IS NOT NULL)
     `,
-    )
-    .execute()
+      )
+      .addUniqueConstraint('only_one_open_encounter_per_patient', [
+        'patient_id',
+        'closed_at',
+      ], (constraint) => constraint.nullsNotDistinct()))
 
-  await db.schema
-    .createTable('patient_encounter_providers')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'patient_encounter_id',
-      'integer',
-      (col) =>
-        col.notNull().references('patient_encounters.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'provider_id',
-      'integer',
-      (col) => col.notNull().references('employment.id').onDelete('cascade'),
-    )
-    .addColumn('seen_at', 'timestamptz')
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .execute()
+  await createStandardTable(
+    db,
+    'patient_encounter_providers',
+    (qb) =>
+      qb.addColumn(
+        'patient_encounter_id',
+        'integer',
+        (col) =>
+          col.notNull().references('patient_encounters.id').onDelete('cascade'),
+      )
+        .addColumn(
+          'provider_id',
+          'integer',
+          (col) =>
+            col.notNull().references('employment.id').onDelete('cascade'),
+        )
+        .addColumn('seen_at', 'timestamptz'),
+  )
 
-  await db.schema
-    .createTable('waiting_room')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'facility_id',
-      'integer',
-      (col) => col.notNull().references('facilities.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'patient_encounter_id',
-      'integer',
-      (col) =>
-        col.notNull().references('patient_encounters.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addUniqueConstraint('facility_patient_encounter', [
-      'facility_id',
-      'patient_encounter_id',
-    ])
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'patient_encounters')
-  await addUpdatedAtTrigger(db, 'patient_encounter_providers')
-  await addUpdatedAtTrigger(db, 'waiting_room')
+  await createStandardTable(db, 'waiting_room', (qb) =>
+    qb
+      .addColumn(
+        'facility_id',
+        'integer',
+        (col) => col.notNull().references('facilities.id').onDelete('cascade'),
+      )
+      .addColumn(
+        'patient_encounter_id',
+        'integer',
+        (col) =>
+          col.notNull().references('patient_encounters.id').onDelete('cascade'),
+      )
+      .addUniqueConstraint('facility_patient_encounter', [
+        'facility_id',
+        'patient_encounter_id',
+      ]))
 }
 
 export async function down(db: Kysely<unknown>) {
