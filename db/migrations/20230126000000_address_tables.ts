@@ -1,4 +1,5 @@
-import { Kysely, sql } from 'kysely'
+import { Kysely } from 'kysely'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -52,30 +53,27 @@ export async function up(db: Kysely<unknown>) {
     .addUniqueConstraint('suburb_name', ['name', 'ward_id'])
     .execute()
 
-  await db.schema
-    .createTable('address')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn('street', 'varchar(255)')
-    .addColumn('suburb_id', 'integer', (col) => col.references('suburbs.id'))
-    .addColumn('ward_id', 'integer', (col) =>
-      col.notNull()
-        .references('wards.id'))
-    .addColumn('district_id', 'integer', (col) =>
-      col.notNull()
-        .references('districts.id'))
-    .addColumn('province_id', 'integer', (col) =>
-      col.notNull()
-        .references('provinces.id'))
-    .addColumn('country_id', 'integer', (col) =>
-      col.notNull()
-        .references('countries.id'))
-    .execute()
-
-  await sql`
-    ALTER TABLE address
-    ADD CONSTRAINT address_street_suburb_ward
-    UNIQUE NULLS NOT DISTINCT (street, suburb_id, ward_id)
-  `.execute(db)
+  await createStandardTable(db, 'address', (qb) =>
+    qb
+      .addColumn('street', 'varchar(255)')
+      .addColumn('suburb_id', 'integer', (col) => col.references('suburbs.id'))
+      .addColumn('ward_id', 'integer', (col) =>
+        col.notNull()
+          .references('wards.id'))
+      .addColumn('district_id', 'integer', (col) =>
+        col.notNull()
+          .references('districts.id'))
+      .addColumn('province_id', 'integer', (col) =>
+        col.notNull()
+          .references('provinces.id'))
+      .addColumn('country_id', 'integer', (col) =>
+        col.notNull()
+          .references('countries.id'))
+      .addUniqueConstraint('address_street_suburb_ward', [
+        'street',
+        'suburb_id',
+        'ward_id',
+      ], (constraint) => constraint.nullsNotDistinct()))
 }
 
 export async function down(db: Kysely<unknown>) {
