@@ -1,6 +1,5 @@
 //deno-lint-ignore-file no-explicit-any
 import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 
 export async function up(db: Kysely<any>) {
   await db.schema
@@ -51,21 +50,7 @@ export async function up(db: Kysely<any>) {
       col.notNull()
         .references('icd10_codes.code')
         .onDelete('cascade'))
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
     .execute()
-
-  await addUpdatedAtTrigger(db, 'conditions')
-  await addUpdatedAtTrigger(db, 'icd10_codes')
-  await addUpdatedAtTrigger(db, 'condition_icd10_codes')
 }
 
 export async function down(db: Kysely<any>) {

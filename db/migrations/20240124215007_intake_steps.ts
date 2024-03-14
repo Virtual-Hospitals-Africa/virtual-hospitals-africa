@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
@@ -21,19 +21,8 @@ export async function up(db: Kysely<any>) {
     .values(INTAKE_STEPS.map((step, i) => ({ step, order: i + 1 })))
     .execute()
 
-  await db.schema.createTable('patient_intake')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await createStandardTable(db, 'patient_intake', (qb) =>
+    qb.addColumn(
       'patient_id',
       'integer',
       (col) =>
@@ -41,15 +30,15 @@ export async function up(db: Kysely<any>) {
           'cascade',
         ),
     )
-    .addColumn(
-      'intake_step',
-      sql`intake_step`,
-      (col) => col.notNull().references('intake.step'),
-    )
-    .addUniqueConstraint('patient_intake_step', ['patient_id', 'intake_step'])
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'patient_intake')
+      .addColumn(
+        'intake_step',
+        sql`intake_step`,
+        (col) => col.notNull().references('intake.step'),
+      )
+      .addUniqueConstraint('patient_intake_step', [
+        'patient_id',
+        'intake_step',
+      ]))
 }
 
 // deno-lint-ignore no-explicit-any

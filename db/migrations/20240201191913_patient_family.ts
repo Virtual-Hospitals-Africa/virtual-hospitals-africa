@@ -5,7 +5,7 @@ import {
   PATIENT_COHABITATIONS,
   RELIGIONS,
 } from '../../shared/family.ts'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema.createType('marital_status').asEnum(MARITAL_STATUS).execute()
@@ -19,48 +19,35 @@ export async function up(db: Kysely<unknown>) {
     .asEnum(PATIENT_COHABITATIONS)
     .execute()
 
-  await db.schema
-    .createTable('patient_family')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await createStandardTable(db, 'patient_family', (qb) =>
+    qb.addColumn(
       'patient_id',
       'integer',
       (col) =>
         col.unique().notNull().references('patients.id').onDelete('cascade'),
     )
-    .addColumn(
-      'home_satisfaction',
-      'int2',
-      (col) =>
-        col.check(sql`home_satisfaction >= 1 AND home_satisfaction <= 10`),
-    )
-    .addColumn('spiritual_satisfaction', 'int2', (col) =>
-      col.check(
-        sql`spiritual_satisfaction >= 1 AND spiritual_satisfaction <= 10`,
-      ))
-    .addColumn(
-      'social_satisfaction',
-      'int2',
-      (col) =>
-        col.check(sql`social_satisfaction >= 1 AND social_satisfaction <= 10`),
-    )
-    .addColumn('religion', sql`religion`)
-    .addColumn('family_type', sql`family_type`)
-    .addColumn('marital_status', sql`marital_status`)
-    .addColumn('patient_cohabitation', sql`patient_cohabitation`)
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'patient_family')
+      .addColumn(
+        'home_satisfaction',
+        'int2',
+        (col) =>
+          col.check(sql`home_satisfaction >= 1 AND home_satisfaction <= 10`),
+      )
+      .addColumn('spiritual_satisfaction', 'int2', (col) =>
+        col.check(
+          sql`spiritual_satisfaction >= 1 AND spiritual_satisfaction <= 10`,
+        ))
+      .addColumn(
+        'social_satisfaction',
+        'int2',
+        (col) =>
+          col.check(
+            sql`social_satisfaction >= 1 AND social_satisfaction <= 10`,
+          ),
+      )
+      .addColumn('religion', sql`religion`)
+      .addColumn('family_type', sql`family_type`)
+      .addColumn('marital_status', sql`marital_status`)
+      .addColumn('patient_cohabitation', sql`patient_cohabitation`))
 }
 
 export async function down(db: Kysely<unknown>) {

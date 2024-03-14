@@ -1,6 +1,6 @@
-import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { Kysely } from 'kysely'
 import { MEASUREMENTS } from '../../shared/measurements.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 // deno-lint-ignore no-explicit-any
 export async function up(db: Kysely<any>) {
@@ -19,53 +19,38 @@ export async function up(db: Kysely<any>) {
     )
     .execute()
 
-  await db.schema
-    .createTable('patient_measurements')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await createStandardTable(db, 'patient_measurements', (qb) =>
+    qb.addColumn(
       'patient_id',
       'integer',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
-    .addColumn(
-      'encounter_id',
-      'integer',
-      (col) =>
-        col.notNull().references('patient_encounters.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'encounter_provider_id',
-      'integer',
-      (col) =>
-        col.notNull().references('patient_encounter_providers.id').onDelete(
-          'cascade',
-        ),
-    )
-    .addColumn(
-      'measurement_name',
-      'varchar(40)',
-      (col) =>
-        col.notNull().references('measurements.name').onDelete('cascade'),
-    )
-    .addColumn('value', 'numeric', (col) => col.notNull())
-    .addUniqueConstraint('one_measurement_per_encounter', [
-      'patient_id',
-      'encounter_id',
-      'measurement_name',
-    ])
-    .execute()
-
-  return addUpdatedAtTrigger(db, 'patient_measurements')
+      .addColumn(
+        'encounter_id',
+        'integer',
+        (col) =>
+          col.notNull().references('patient_encounters.id').onDelete('cascade'),
+      )
+      .addColumn(
+        'encounter_provider_id',
+        'integer',
+        (col) =>
+          col.notNull().references('patient_encounter_providers.id').onDelete(
+            'cascade',
+          ),
+      )
+      .addColumn(
+        'measurement_name',
+        'varchar(40)',
+        (col) =>
+          col.notNull().references('measurements.name').onDelete('cascade'),
+      )
+      .addColumn('value', 'numeric', (col) => col.notNull())
+      .addUniqueConstraint('one_measurement_per_encounter', [
+        'patient_id',
+        'encounter_id',
+        'measurement_name',
+      ]))
 }
 
 export async function down(db: Kysely<unknown>) {

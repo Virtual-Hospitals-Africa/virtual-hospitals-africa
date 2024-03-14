@@ -1,6 +1,6 @@
 import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
@@ -28,58 +28,47 @@ export async function up(db: Kysely<unknown>) {
     )
   `.execute(db)
 
-  await db.schema
-    .createTable('patient_condition_medications')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'patient_condition_id',
-      'integer',
-      (col) =>
-        col.notNull().references('patient_conditions.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'medication_id',
-      'integer',
-      (col) => col.references('medications.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'manufactured_medication_id',
-      'integer',
-      (col) =>
-        col.references('manufactured_medications.id').onDelete('cascade'),
-    )
-    .addColumn('strength', 'numeric', (col) => col.notNull())
-    .addColumn('route', 'varchar(255)', (col) => col.notNull())
-    .addColumn('special_instructions', 'text')
-    .addColumn('start_date', 'date', (col) => col.notNull())
-    .addColumn('schedules', sql`medication_schedule[]`)
-    .addCheckConstraint(
-      'patient_condition_medications_med_id_check',
-      sql`
+  await createStandardTable(
+    db,
+    'patient_condition_medications',
+    (qb) =>
+      qb.addColumn(
+        'patient_condition_id',
+        'integer',
+        (col) =>
+          col.notNull().references('patient_conditions.id').onDelete('cascade'),
+      )
+        .addColumn(
+          'medication_id',
+          'integer',
+          (col) => col.references('medications.id').onDelete('cascade'),
+        )
+        .addColumn(
+          'manufactured_medication_id',
+          'integer',
+          (col) =>
+            col.references('manufactured_medications.id').onDelete('cascade'),
+        )
+        .addColumn('strength', 'numeric', (col) => col.notNull())
+        .addColumn('route', 'varchar(255)', (col) => col.notNull())
+        .addColumn('special_instructions', 'text')
+        .addColumn('start_date', 'date', (col) => col.notNull())
+        .addColumn('schedules', sql`medication_schedule[]`)
+        .addCheckConstraint(
+          'patient_condition_medications_med_id_check',
+          sql`
         (manufactured_medication_id IS NOT NULL AND medication_id IS NULL) OR
         (medication_id IS NOT NULL AND manufactured_medication_id IS NULL)
       `,
-    )
-    .addCheckConstraint('schedules_check', sql`cardinality(schedules) > 0`)
-    .addUniqueConstraint('patient_condition_medication_unique', [
-      'patient_condition_id',
-      'medication_id',
-      'manufactured_medication_id',
-      'start_date',
-    ], (constraint) => constraint.nullsNotDistinct())
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'patient_condition_medications')
+        )
+        .addCheckConstraint('schedules_check', sql`cardinality(schedules) > 0`)
+        .addUniqueConstraint('patient_condition_medication_unique', [
+          'patient_condition_id',
+          'medication_id',
+          'manufactured_medication_id',
+          'start_date',
+        ], (constraint) => constraint.nullsNotDistinct()),
+  )
 }
 
 export async function down(db: Kysely<unknown>) {

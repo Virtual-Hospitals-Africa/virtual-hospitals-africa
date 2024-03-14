@@ -1,41 +1,30 @@
 import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { createStandardTable } from '../createStandardTable.ts'
 
-export async function up(db: Kysely<unknown>) {
-  await db.schema
-    .createTable('patient_kin')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn('relationship', 'varchar(255)', (col) => col.notNull())
-    .addColumn(
-      'patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'next_of_kin_patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-    .addUniqueConstraint('unique_patient_next_of_kin', ['patient_id'])
-    .addCheckConstraint(
-      'next_of_kin_no_relationship_to_self',
-      sql`
+export function up(db: Kysely<unknown>) {
+  return createStandardTable(
+    db,
+    'patient_kin',
+    (qb) =>
+      qb.addColumn('relationship', 'varchar(255)', (col) => col.notNull())
+        .addColumn(
+          'patient_id',
+          'integer',
+          (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        )
+        .addColumn(
+          'next_of_kin_patient_id',
+          'integer',
+          (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        )
+        .addUniqueConstraint('unique_patient_next_of_kin', ['patient_id'])
+        .addCheckConstraint(
+          'next_of_kin_no_relationship_to_self',
+          sql`
       patient_id != next_of_kin_patient_id
     `,
-    )
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'patient_kin')
+        ),
+  )
 }
 
 export async function down(db: Kysely<unknown>) {

@@ -1,115 +1,71 @@
-import { Kysely, sql } from 'kysely'
-import { addUpdatedAtTrigger } from '../addUpdatedAtTrigger.ts'
+import { Kysely } from 'kysely'
+import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  await db.schema
-    .createTable('appointments')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await createStandardTable(db, 'appointments', (qb) =>
+    qb.addColumn(
       'patient_id',
       'integer',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
-    .addColumn('reason', 'varchar(255)', (col) => col.notNull())
-    .addColumn('start', 'timestamptz', (col) => col.notNull())
-    .addColumn('gcal_event_id', 'varchar(255)', (col) => col.notNull())
-    .execute()
+      .addColumn('reason', 'varchar(255)', (col) => col.notNull())
+      .addColumn('start', 'timestamptz', (col) => col.notNull())
+      .addColumn('gcal_event_id', 'varchar(255)', (col) => col.notNull()))
 
-  await db.schema
-    .createTable('appointment_providers')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
+  await createStandardTable(db, 'appointment_providers', (qb) =>
+    qb.addColumn(
       'appointment_id',
       'integer',
       (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
-    .addColumn(
-      'provider_id',
-      'integer',
-      (col) => col.notNull().references('employment.id').onDelete('cascade'),
-    )
-    .addColumn(
-      'confirmed',
-      'boolean',
-      (col) => col.defaultTo(false).notNull(),
-    )
-    .execute()
+      .addColumn(
+        'provider_id',
+        'integer',
+        (col) => col.notNull().references('employment.id').onDelete('cascade'),
+      )
+      .addColumn(
+        'confirmed',
+        'boolean',
+        (col) => col.defaultTo(false).notNull(),
+      ))
 
-  await db.schema
-    .createTable('patient_appointment_requests')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'patient_id',
-      'integer',
-      (col) => col.notNull().references('patients.id').onDelete('cascade'),
-    )
-    .addColumn('reason', 'varchar(255)')
-    .execute()
+  await createStandardTable(
+    db,
+    'patient_appointment_requests',
+    (qb) =>
+      qb.addColumn(
+        'patient_id',
+        'integer',
+        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+      )
+        .addColumn('reason', 'varchar(255)'),
+  )
 
-  await db.schema
-    .createTable('patient_appointment_offered_times')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
-    .addColumn(
-      'created_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'updated_at',
-      'timestamptz',
-      (col) => col.defaultTo(sql`now()`).notNull(),
-    )
-    .addColumn(
-      'patient_appointment_request_id',
-      'integer',
-      (col) =>
-        col.notNull().references('patient_appointment_requests.id').onDelete(
-          'cascade',
+  await createStandardTable(
+    db,
+    'patient_appointment_offered_times',
+    (qb) =>
+      qb.addColumn(
+        'patient_appointment_request_id',
+        'integer',
+        (col) =>
+          col.notNull().references('patient_appointment_requests.id').onDelete(
+            'cascade',
+          ),
+      )
+        .addColumn(
+          'provider_id',
+          'integer',
+          (col) =>
+            col.notNull().references('employment.id').onDelete('cascade'),
+        )
+        .addColumn('start', 'timestamptz', (col) => col.notNull())
+        .addColumn(
+          'declined',
+          'boolean',
+          (col) => col.notNull().defaultTo(false),
         ),
-    )
-    .addColumn(
-      'provider_id',
-      'integer',
-      (col) => col.notNull().references('employment.id').onDelete('cascade'),
-    )
-    .addColumn('start', 'timestamptz', (col) => col.notNull())
-    .addColumn('declined', 'boolean', (col) => col.notNull().defaultTo(false))
-    .execute()
-
-  await addUpdatedAtTrigger(db, 'appointments')
-  await addUpdatedAtTrigger(db, 'appointment_providers')
-  await addUpdatedAtTrigger(db, 'patient_appointment_requests')
-  await addUpdatedAtTrigger(db, 'patient_appointment_offered_times')
+  )
 }
 
 export async function down(db: Kysely<unknown>) {
