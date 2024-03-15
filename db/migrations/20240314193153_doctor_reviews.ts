@@ -118,5 +118,6 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('doctor_review_steps').execute()
   await db.schema.dropTable('doctor_reviews').execute()
   await db.schema.dropTable('doctor_review_requests').execute()
+  await db.schema.dropTable('doctor_review').execute()
   await db.schema.dropType('doctor_review_step').execute()
 }
