@@ -9,6 +9,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
 import { addTestHealthWorker } from '../web/utilities.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../db/models/patient_encounters.ts'
+import { completedStep } from '../../db/models/patient_encounters.ts'
 
 describe(
   'db/models/waiting_room.ts',
@@ -86,6 +87,126 @@ describe(
               reason: 'seeking treatment',
               is_emergency: false,
             })
+          }),
+      )
+
+      itUsesTrxAnd(
+        'shows what step of the intake process the patient is awaiting',
+        (trx) =>
+          withTestFacility(trx, async (facility_id) => {
+            const patient = await patients.upsert(trx, {
+              name: 'Test Patient 1',
+            })
+
+            await patient_encounters.upsert(trx, facility_id, {
+              patient_id: patient.id,
+              reason: 'seeking treatment',
+            })
+
+            await patients.upsertIntake(trx, {
+              id: patient.id,
+              intake_step_just_completed: 'personal',
+            })
+            await patients.upsertIntake(trx, {
+              id: patient.id,
+              intake_step_just_completed: 'address',
+            })
+
+            const waiting_room_results = await waiting_room.get(trx, {
+              facility_id,
+            })
+
+            assertEquals(waiting_room_results, [{
+              appointment: null,
+              patient: {
+                avatar_url: null,
+                id: patient.id,
+                name: 'Test Patient 1',
+                description: null,
+              },
+              in_waiting_room: true,
+              arrived_ago_display: 'Just now',
+              status: 'Awaiting Intake (conditions)',
+              actions: {
+                view: null,
+                intake: `/app/patients/${patient.id}/intake/conditions`,
+                review: null,
+              },
+              providers: [],
+              reason: 'seeking treatment',
+              is_emergency: false,
+            }])
+          }),
+      )
+
+      itUsesTrxAnd(
+        'shows what step of the intake process the patient is in',
+        (trx) =>
+          withTestFacility(trx, async (facility_id) => {
+            const patient = await patients.upsert(trx, {
+              name: 'Test Patient 1',
+            })
+
+            await patient_encounters.upsert(trx, facility_id, {
+              patient_id: patient.id,
+              reason: 'seeking treatment',
+            })
+
+            const nurse = await addTestHealthWorker(trx, {
+              facility_id,
+              scenario: 'approved-nurse',
+            })
+
+            const nurse_health_worker = await health_workers.getEmployed(trx, {
+              health_worker_id: nurse.id,
+            })
+
+            await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
+              patient_id: patient.id,
+              health_worker: nurse_health_worker,
+              encounter_id: 'open',
+            })
+
+            await patients.upsertIntake(trx, {
+              id: patient.id,
+              intake_step_just_completed: 'personal',
+            })
+            await patients.upsertIntake(trx, {
+              id: patient.id,
+              intake_step_just_completed: 'address',
+            })
+
+            const waiting_room_results = await waiting_room.get(trx, {
+              facility_id,
+            })
+
+            assertEquals(waiting_room_results, [{
+              appointment: null,
+              patient: {
+                avatar_url: null,
+                id: patient.id,
+                name: 'Test Patient 1',
+                description: null,
+              },
+              in_waiting_room: false,
+              arrived_ago_display: 'Just now',
+              status: 'In Intake (conditions)',
+              actions: {
+                view: null,
+                intake: `/app/patients/${patient.id}/intake/conditions`,
+                review: null,
+              },
+              providers: [{
+                name: nurse.name,
+                profession: 'nurse',
+                href: `/app/facilities/${facility_id}/employees/${nurse.id}`,
+                seen: true,
+                health_worker_id: nurse.id,
+                employee_id: nurse.employee_id!,
+              }],
+              reason: 'seeking treatment',
+              is_emergency: false,
+            }])
           }),
       )
 
