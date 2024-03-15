@@ -5,19 +5,19 @@ import { Maybe, RenderedPatient } from '../types.ts'
 
 const DISPLAYED_COLUMNS: {
   label: string
-  dataKey: keyof RenderedPatient
+  data: keyof RenderedPatient
 }[] = [
   {
     label: 'Patient ID',
-    dataKey: 'id',
+    data: 'id',
   },
   {
     label: 'Last Visit',
-    dataKey: 'last_visited',
+    data: 'last_visited',
   },
   {
     label: 'Nearest Facility',
-    dataKey: 'nearest_facility',
+    data: 'nearest_facility',
   },
 ]
 
@@ -53,7 +53,7 @@ function CardBody(
               {column.label}:
             </p>
             <p className='truncate text-gray-500'>
-              {patient[column['dataKey']]}
+              {patient[column['data']]}
             </p>
           </div>
         ))}

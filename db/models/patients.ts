@@ -66,7 +66,7 @@ const baseSelect = (trx: TrxOrDb) =>
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
     .select((eb) => [
       'patients.id',
-      'patients.name',
+      eb.ref('patients.name').$notNull().as('name'),
       'patients.phone_number',
       'patients.gender',
       'patients.ethnicity',

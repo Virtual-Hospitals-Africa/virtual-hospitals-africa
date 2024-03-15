@@ -1,24 +1,22 @@
 import { RenderedPatient } from '../../types.ts'
+import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 
 const columns: TableColumn<RenderedPatient>[] = [
   {
-    label: null,
-    dataKey: 'avatar_url',
-    type: 'avatar',
-  },
-  {
     label: 'Patient',
-    dataKey: 'name',
+    data(row) {
+      return <Person person={row} />
+    },
     cellClassName: 'mb-1 font-medium',
   },
   {
     label: 'Last Visit',
-    dataKey: 'last_visited',
+    data: 'last_visited',
   },
   {
     label: 'Nearest Facility',
-    dataKey: 'nearest_facility',
+    data: 'nearest_facility',
   },
   {
     label: 'Actions',

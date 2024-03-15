@@ -39,7 +39,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         {
           id: test_patient1.id,
           avatar_url: null,
-          name: test_patient1.name,
+          name: test_patient1.name!,
           dob_formatted: null,
           description: null,
           gender: null,
@@ -59,7 +59,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         {
           id: test_patient2.id,
           avatar_url: `/app/patients/${test_patient2.id}/avatar`,
-          name: test_patient2.name,
+          name: test_patient2.name!,
           dob_formatted: null,
           description: null,
           gender: null,
