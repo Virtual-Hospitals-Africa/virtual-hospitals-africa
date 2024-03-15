@@ -158,6 +158,7 @@ import * as $pre_existing_conditions_Comorbidity from './islands/pre-existing-co
 import * as $pre_existing_conditions_Condition from './islands/pre-existing-conditions/Condition.tsx'
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
 import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
+import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $schedule_form from './islands/schedule-form.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
@@ -381,6 +382,7 @@ const manifest = {
     './islands/pre-existing-conditions/Form.tsx': $pre_existing_conditions_Form,
     './islands/pre-existing-conditions/Medication.tsx':
       $pre_existing_conditions_Medication,
+    './islands/referral/Form.tsx': $referral_Form,
     './islands/schedule-form.tsx': $schedule_form,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,

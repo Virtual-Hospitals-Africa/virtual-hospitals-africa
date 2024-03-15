@@ -10,6 +10,7 @@ import {
   Maybe,
   RenderedDoctorReview,
   RenderedDoctorReviewRequest,
+  RenderedRequestFormValues,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -207,9 +208,10 @@ export function completedStep(
     .execute()
 }
 
-export function makeRequest(
+export function upsertRequest(
   trx: TrxOrDb,
-  { requesting_doctor_id, ...values }: {
+  { id, requesting_doctor_id, ...values }: {
+    id?: Maybe<number>
     patient_id: number
     encounter_id: number
     requested_by: number
@@ -218,19 +220,30 @@ export function makeRequest(
     requester_notes?: Maybe<string>
   },
 ) {
-  return trx.insertInto('doctor_review_requests')
-    .values({
-      ...values,
-      // ensures that requesting_doctor_id is a doctor
-      requesting_doctor_id: requesting_doctor_id && (
-        trx.selectFrom('employment')
-          .where('id', '=', requesting_doctor_id)
-          .where('profession', '=', 'doctor')
-          .select('id')
-      ),
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
+  const to_upsert = {
+    ...values,
+    requesting_doctor_id: requesting_doctor_id && (
+      trx.selectFrom('employment')
+        .where('id', '=', requesting_doctor_id)
+        .where('profession', '=', 'doctor')
+        .select('id')
+    ),
+  }
+  const upsertting = id
+    ? trx.updateTable('doctor_review_requests')
+      .set(to_upsert)
+      .where('id', '=', id)
+    : trx.insertInto('doctor_review_requests')
+      .values(to_upsert)
+      .returning('id')
+
+  return upsertting.executeTakeFirstOrThrow()
+}
+
+export function deleteRequest(trx: TrxOrDb, id: number) {
+  return trx.deleteFrom('doctor_review_requests')
+    .where('id', '=', id)
+    .execute()
 }
 
 export function finalizeRequest(
@@ -250,23 +263,11 @@ export function getRequest(
   opts: {
     requested_by: number
   },
-): Promise<
-  {
-    facility: null | {
-      id: number
-      name: string
-      address: string | null
-    }
-    doctor: null | {
-      id: number
-      name: string
-    }
-    requester_notes: null | string
-  } | undefined
-> {
+) {
   return trx.selectFrom('doctor_review_requests')
     .where('requested_by', '=', opts.requested_by)
     .select((eb) => [
+      'id',
       'requester_notes',
       jsonObjectFrom(
         eb.selectFrom('facilities')

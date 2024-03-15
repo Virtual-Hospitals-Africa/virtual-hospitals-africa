@@ -2058,6 +2058,20 @@ export type RenderedPatientExamination = {
   categories: RenderedPatientExaminationCategory[]
 }
 
+export type RenderedRequestFormValues = {
+  id: null | number
+  facility: null | {
+    id: number
+    name: string
+    address: string | null
+  }
+  doctor: null | {
+    id: number
+    name: string
+  }
+  requester_notes: null | string
+}
+
 export type NotificationType = 'doctor_review_request'
 
 export type RenderedNotification = {

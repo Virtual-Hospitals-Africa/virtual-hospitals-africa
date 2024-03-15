@@ -45,7 +45,7 @@ export async function upsert(
     encounter_provider_id,
   }))
 
-  const results = await trx
+  const results = !to_insert.length ? [] : await trx
     .insertInto('patient_symptoms')
     .values(to_insert)
     .returning('id')
