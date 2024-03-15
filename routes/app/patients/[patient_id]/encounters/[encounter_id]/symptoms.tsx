@@ -20,9 +20,10 @@ import {
 } from '../../../../../../util/date.ts'
 
 function assertIsSymptoms(body: unknown): asserts body is {
-  symptoms: PatientSymptomUpsert[]
+  symptoms?: PatientSymptomUpsert[]
 } {
   assertOr400(isObjectLike(body))
+  if (!body.symptoms) return
   assertOr400(Array.isArray(body.symptoms), 'Invalid symptoms')
   for (const symptom of body.symptoms) {
     assertOr400(isObjectLike(symptom), 'Invalid symptom')
@@ -58,7 +59,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async POST(req, ctx: EncounterContext) {
     const completing_step = completeStep(ctx)
 
-    const { symptoms } = await parseRequestAsserts(
+    const { symptoms = [] } = await parseRequestAsserts(
       ctx.state.trx,
       req,
       assertIsSymptoms,
