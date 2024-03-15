@@ -1,7 +1,4 @@
-import {
-  NumberInput,
-  SelectWithOptions,
-} from '../../components/library/form/Inputs.tsx'
+import { NumberInput, SelectWithOptions } from '../form/Inputs.tsx'
 import { Duration } from '../../types.ts'
 import { assert } from 'std/assert/assert.ts'
 

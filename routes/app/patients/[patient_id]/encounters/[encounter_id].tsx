@@ -1,7 +1,6 @@
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { ENCOUNTER_STEPS } from '../../../../../shared/encounter.ts'
-import { assert } from 'std/assert/assert.ts'
 import {
   EncounterContext,
   getEncounterId,

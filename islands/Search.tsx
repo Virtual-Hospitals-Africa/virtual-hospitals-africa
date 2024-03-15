@@ -23,6 +23,7 @@ export type SearchProps<
   label?: Maybe<string>
   addable?: boolean
   disabled?: boolean
+  readonly?: boolean
   value?: Maybe<T>
   multi?: boolean
   className?: string
@@ -48,6 +49,7 @@ export default function Search<
   multi,
   addable,
   disabled,
+  readonly,
   options,
   className,
   onQuery,
@@ -115,6 +117,7 @@ export default function Search<
             value={selected?.name}
             required={required}
             aria-disabled={disabled}
+            readonly={readonly}
           />
           <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
             <ChevronUpDownIcon

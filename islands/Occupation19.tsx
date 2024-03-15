@@ -1,10 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
-import { CheckboxInput } from '../components/library/form/Inputs.tsx'
-import FormRow from '../components/library/form/Row.tsx'
+import { CheckboxInput } from './form/Inputs.tsx'
+import FormRow from './form/Row.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { Job, Occupation, Question, School } from '../types.ts'
 import { useState } from 'preact/hooks'
-import { YesNoGrid, YesNoQuestion } from '../components/library/form/Inputs.tsx'
+import { YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
 
 export default function Occupation19({
   occupation = {

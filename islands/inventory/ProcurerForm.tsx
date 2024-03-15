@@ -1,9 +1,9 @@
 import { JSX } from 'preact'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import Form from '../../components/library/form/Form.tsx'
-import FormRow from '../../components/library/form/Row.tsx'
+import Form from '../form/Form.tsx'
+import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { TextInput } from '../../components/library/form/Inputs.tsx'
+import { TextInput } from '../form/Inputs.tsx'
 
 export default function ProcurerForm(): JSX.Element {
   return (

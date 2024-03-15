@@ -2,9 +2,9 @@ import {
   DateInput,
   NurseSpecialtySelect,
   TextInput,
-} from '../../../library/form/Inputs.tsx'
-import FormRow from '../../../library/form/Row.tsx'
-import Buttons from '../../../library/form/buttons.tsx'
+} from '../../../../islands/form/Inputs.tsx'
+import FormRow from '../../../../islands/form/Row.tsx'
+import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
 
 export default function NurseProfessionalForm(

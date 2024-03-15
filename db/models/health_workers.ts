@@ -20,6 +20,7 @@ import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
 import groupBy from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
+import * as doctor_reviews from './doctor_reviews.ts'
 import * as address from './address.ts'
 import { assertOr401 } from '../../util/assertOr.ts'
 
@@ -272,6 +273,18 @@ export async function get(
             patient_encounters.ofHealthWorker(trx, health_worker_id),
           ),
       ).as('open_encounters'),
+      jsonBuildObject({
+        requested: jsonArrayFrom(
+          doctor_reviews.requests(trx).where(
+            'employment.health_worker_id',
+            '=',
+            health_worker_id,
+          ),
+        ),
+        in_progress: jsonArrayFrom(
+          doctor_reviews.ofHealthWorker(trx, health_worker_id),
+        ),
+      }).as('reviews'),
     ]).where(
       'health_workers.id',
       '=',
@@ -279,6 +292,7 @@ export async function get(
     ).executeTakeFirst()
 
   if (!result) return null
+
   const {
     access_token,
     refresh_token,

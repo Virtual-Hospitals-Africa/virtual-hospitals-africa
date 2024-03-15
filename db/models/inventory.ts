@@ -216,7 +216,8 @@ export async function addFacilityConsumable(
     await trx
       .updateTable('facility_consumables')
       .set({
-        quantity_on_hand: facilityConsumable.quantity_on_hand + model.quantity,
+        quantity_on_hand: (facilityConsumable?.quantity_on_hand || 0) +
+          model.quantity,
       })
       .where('facility_consumables.id', '=', facilityConsumable.id)
       .execute()

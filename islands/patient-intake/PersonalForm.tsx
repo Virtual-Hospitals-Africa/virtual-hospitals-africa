@@ -5,8 +5,8 @@ import {
   GenderSelect,
   PhoneNumberInput,
   TextInput,
-} from '../../components/library/form/Inputs.tsx'
-import FormRow from '../../components/library/form/Row.tsx'
+} from '../form/Inputs.tsx'
+import FormRow from '../form/Row.tsx'
 import { ImagePreviewInput } from '../file-preview-input.tsx'
 import { PatientIntake } from '../../types.ts'
 import NationalIdInput from '../NationalIdInput.tsx'

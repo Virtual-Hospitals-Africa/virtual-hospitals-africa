@@ -1,4 +1,4 @@
-import { SelectWithOptions } from '../components/library/form/Inputs.tsx'
+import { SelectWithOptions } from './form/Inputs.tsx'
 import { RELIGIONS } from '../shared/family.ts'
 
 export default function ReligionSelect(

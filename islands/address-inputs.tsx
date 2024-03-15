@@ -1,5 +1,5 @@
-import FormRow from '../components/library/form/Row.tsx'
-import { Select, TextInput } from '../components/library/form/Inputs.tsx'
+import FormRow from './form/Row.tsx'
+import { Select, TextInput } from './form/Inputs.tsx'
 import { CountryAddressTree, Maybe, PatientIntake } from '../types.ts'
 import { computed, effect, useSignal } from '@preact/signals'
 import { assertEquals } from 'std/assert/assert_equals.ts'

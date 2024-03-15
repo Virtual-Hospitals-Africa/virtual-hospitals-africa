@@ -7,15 +7,16 @@ import db from './db/db.ts'
 import {
   AgeUnit,
   DB,
+  DoctorReviewStep,
   EncounterReason,
   EncounterStep,
+  ExaminationFindingType,
   FamilyType,
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
-import { ExaminationFindingType } from './db.d.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1170,6 +1171,37 @@ export type EmployeeInfo = {
   }[]
 }
 
+export type RenderedDoctorReviewBase = {
+  employment_id: number
+  encounter: {
+    id: number
+    reason: EncounterReason
+  }
+  patient: {
+    id: number
+    name: string
+    avatar_url: string | null
+    description: string | null
+  }
+  requested_by: {
+    profession: 'nurse' | 'doctor'
+    name: string
+    facility: {
+      id: number
+      name: string
+    }
+    patient_encounter_provider_id: number
+  }
+}
+
+export type RenderedDoctorReview = RenderedDoctorReviewBase & {
+  review_id: number
+  steps_completed: DoctorReviewStep[]
+}
+export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
+  review_request_id: number
+}
+
 export type PossiblyEmployedHealthWorker = HealthWorker & {
   id: number
   access_token: string
@@ -1207,6 +1239,10 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
   }[]
   default_facility_id: number | null
   open_encounters: RenderedPatientEncounter[]
+  reviews: {
+    requested: RenderedDoctorReviewRequest[]
+    in_progress: RenderedDoctorReview[]
+  }
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
@@ -1295,7 +1331,7 @@ export type WhatsAppMessageOption = {
   title: string
 }
 
-export type TrxOrDb = Transaction<DatabaseSchema> | typeof db
+export type TrxOrDb = Transaction<DB> | typeof db
 
 export type WhatsAppSingleSendable =
   | WhatsAppSendableString
@@ -2019,5 +2055,3 @@ export type RenderedPatientExamination = {
   skipped: boolean
   categories: RenderedPatientExaminationCategory[]
 }
-
-export type DatabaseSchema = DB

@@ -37,15 +37,16 @@ export async function up(db: Kysely<unknown>) {
     db,
     'consumables',
     (qb) =>
-      qb.addColumn('name', 'varchar(255)').addColumn(
-        'is_medication',
-        'boolean',
-      ),
+      qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
+        .addColumn(
+          'is_medication',
+          'boolean',
+        ),
   )
 
   await createStandardTable(db, 'facility_consumables', (qb) =>
     qb
-      .addColumn('quantity_on_hand', 'integer')
+      .addColumn('quantity_on_hand', 'integer', (col) => col.notNull())
       .addColumn('facility_id', 'integer', (col) =>
         col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('consumable_id', 'integer', (col) =>

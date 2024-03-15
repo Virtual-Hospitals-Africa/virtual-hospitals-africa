@@ -5,7 +5,7 @@ import {
   PostgresIntrospector,
   PostgresQueryCompiler,
 } from 'kysely'
-import { DatabaseSchema } from '../types.ts'
+import { DB } from '../db.d.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
 const BUILDING = Deno.env.get('BUILDING')
@@ -33,7 +33,7 @@ export const uri: any = DATABASE_URL.includes('localhost')
   ? DATABASE_URL
   : `${DATABASE_URL}?sslmode=require`
 
-const db = new Kysely<DatabaseSchema>({
+const db = new Kysely<DB>({
   dialect: {
     createAdapter() {
       return new PostgresAdapter()

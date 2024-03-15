@@ -1,14 +1,10 @@
 import { useEffect, useState } from 'preact/hooks'
-import {
-  DateInput,
-  Select,
-  TextArea,
-} from '../../components/library/form/Inputs.tsx'
+import { DateInput, Select, TextArea } from '../form/Inputs.tsx'
 import {
   DrugSearchResult as DrugSearchResultData,
   PreExistingConditionWithDrugs,
 } from '../../types.ts'
-import FormRow from '../../components/library/form/Row.tsx'
+import FormRow from '../form/Row.tsx'
 import MedicationSearch from './Search.tsx'
 import {
   dosageDisplay,

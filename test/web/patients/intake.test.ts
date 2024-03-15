@@ -146,7 +146,7 @@ describe('/app/patients/[patient_id]/intake', {
     if (suburb) body.set('address.suburb_id', String(suburb.id))
     body.set('address.street', '120 Main Street')
     body.set('nearest_facility_id', '5')
-    body.set('primary_doctor_id', String(testDoctor.id))
+    body.set('primary_doctor_id', String(testDoctor.employee_id!))
 
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/address`,
@@ -1091,7 +1091,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/address?warning=Please%20fill%20out%20the%20patient%27s%20address%20completing%20the%20review%20process`,
+      `${route}/app/patients/${patient_id}/intake/address?warning=Please%20fill%20out%20the%20address%20form%20before%20completing%20the%20intake%20process`,
     )
   })
 })

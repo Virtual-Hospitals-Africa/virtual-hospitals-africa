@@ -2,6 +2,14 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
+export type DoctorReviewStep =
+  | 'clinical_notes'
+  | 'diagnosis'
+  | 'orders'
+  | 'prescriptions'
+  | 'referral'
+  | 'revert'
+
 export type EncounterReason =
   | 'appointment'
   | 'checkup'
@@ -57,8 +65,6 @@ export type GuardianRelation =
   | 'other guardian'
   | 'sibling'
   | 'sibling of parent'
-
-export type HealthWorkerProfessions = 'admin' | 'doctor' | 'nurse'
 
 export type Int8 = ColumnType<
   string,
@@ -149,6 +155,8 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:subsequent_ask_for_media'
   | 'other_end_of_demo'
 
+export type Profession = 'admin' | 'doctor' | 'nurse'
+
 export type Religion =
   | 'African Traditional Religion'
   | 'Apostolic Sect'
@@ -173,15 +181,16 @@ export interface Address {
 }
 
 export interface Allergies {
-  created_at: Generated<Timestamp>
   id: Generated<number>
   name: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface AppointmentMedia {
   appointment_id: number
+  created_at: Generated<Timestamp>
+  id: Generated<number>
   media_id: number
+  updated_at: Generated<Timestamp>
 }
 
 export interface AppointmentProviders {
@@ -205,9 +214,7 @@ export interface Appointments {
 
 export interface ConditionIcd10Codes {
   condition_id: string
-  created_at: Generated<Timestamp>
   icd10_code: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface Conditions {
@@ -223,28 +230,27 @@ export interface Conditions {
   updated_at: Generated<Timestamp>
 }
 
-export interface Countries {
-  created_at: Generated<Timestamp>
-  id: Generated<number>
-  name: string
-  updated_at: Generated<Timestamp>
-}
-
 export interface Consumables {
-  id: Generated<number>
-  name: string
   created_at: Generated<Timestamp>
+  id: Generated<number>
+  is_medication: boolean | null
+  name: string
   updated_at: Generated<Timestamp>
 }
 
 export interface Consumption {
-  id: Generated<number>
-  quantity: number
-  created_by: number
   consumable_id: number
-  facility_id: number
   created_at: Generated<Timestamp>
+  created_by: number
+  facility_id: number
+  id: Generated<number>
+  quantity: number | null
   updated_at: Generated<Timestamp>
+}
+
+export interface Countries {
+  id: Generated<number>
+  name: string
 }
 
 export interface DeviceCapabilities {
@@ -268,10 +274,47 @@ export interface DiagnosticTests {
 }
 
 export interface Districts {
-  created_at: Generated<Timestamp>
   id: Generated<number>
   name: string
   province_id: number
+}
+
+export interface DoctorReview {
+  order: Int8
+  step: DoctorReviewStep
+}
+
+export interface DoctorReviewRequests {
+  created_at: Generated<Timestamp>
+  encounter_id: number
+  facility_id: number | null
+  id: Generated<number>
+  patient_id: number
+  pending: Generated<boolean>
+  requested_by: number
+  requester_notes: string | null
+  requesting_doctor_id: number | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface DoctorReviews {
+  completed_at: Timestamp | null
+  created_at: Generated<Timestamp>
+  encounter_id: number
+  id: Generated<number>
+  patient_id: number
+  requested_by: number
+  requester_notes: string | null
+  reviewer_id: number
+  reviewer_notes: string | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface DoctorReviewSteps {
+  created_at: Generated<Timestamp>
+  doctor_review_id: number
+  id: Generated<number>
+  step: DoctorReviewStep
   updated_at: Generated<Timestamp>
 }
 
@@ -287,7 +330,7 @@ export interface Employment {
   facility_id: number
   health_worker_id: number
   id: Generated<number>
-  profession: HealthWorkerProfessions
+  profession: Profession
   updated_at: Generated<Timestamp>
 }
 
@@ -332,6 +375,15 @@ export interface Facilities {
   updated_at: Generated<Timestamp>
 }
 
+export interface FacilityConsumables {
+  consumable_id: number
+  created_at: Generated<Timestamp>
+  facility_id: number
+  id: Generated<number>
+  quantity_on_hand: number
+  updated_at: Generated<Timestamp>
+}
+
 export interface FacilityDevices {
   created_at: Generated<Timestamp>
   created_by: number
@@ -341,13 +393,6 @@ export interface FacilityDevices {
   serial_number: string | null
   updated_at: Generated<Timestamp>
   updated_by: number | null
-}
-
-export interface FacilityConsumables {
-  id: Generated<number>
-  consumable_id: number
-  facility_id: number
-  quantity_on_hand: number
 }
 
 export interface GeographyColumns {
@@ -371,14 +416,12 @@ export interface GeometryColumns {
 }
 
 export interface GuardianRelations {
-  created_at: Generated<Timestamp>
   dependent: string
   female_dependent: string | null
   female_guardian: string | null
   guardian: GuardianRelation
   male_dependent: string | null
   male_guardian: string | null
-  updated_at: Generated<Timestamp>
 }
 
 export interface HealthWorkerGoogleTokens {
@@ -396,7 +439,7 @@ export interface HealthWorkerInvitees {
   email: string
   facility_id: number
   id: Generated<number>
-  profession: HealthWorkerProfessions
+  profession: Profession
   updated_at: Generated<Timestamp>
 }
 
@@ -790,6 +833,24 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
+export interface Procurement {
+  consumable_id: number
+  created_at: Generated<Timestamp>
+  created_by: number
+  facility_id: number
+  id: Generated<number>
+  procured_by: number
+  quantity: number | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface Procurers {
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  name: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface ProviderCalendars {
   availability_set: Generated<boolean>
   created_at: Generated<Timestamp>
@@ -801,30 +862,10 @@ export interface ProviderCalendars {
   updated_at: Generated<Timestamp>
 }
 
-export interface Procurer {
-  id: Generated<number>
-  name: string
-  created_at: Generated<Timestamp>
-  updated_at: Generated<Timestamp>
-}
-
-export interface Procurement {
-  id: Generated<number>
-  quantity: number
-  procured_by: number
-  consumable_id: number
-  facility_id: number
-  created_by: number
-  created_at: Generated<Timestamp>
-  updated_at: Generated<Timestamp>
-}
-
 export interface Provinces {
   country_id: number
-  created_at: Generated<Timestamp>
   id: Generated<number>
   name: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface SpatialRefSys {
@@ -836,10 +877,8 @@ export interface SpatialRefSys {
 }
 
 export interface Suburbs {
-  created_at: Generated<Timestamp>
   id: Generated<number>
   name: string
-  updated_at: Generated<Timestamp>
   ward_id: number
 }
 
@@ -852,11 +891,9 @@ export interface WaitingRoom {
 }
 
 export interface Wards {
-  created_at: Generated<Timestamp>
   district_id: number
   id: Generated<number>
   name: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface WhatsappMessagesReceived {
@@ -893,13 +930,17 @@ export interface DB {
   appointments: Appointments
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
-  countries: Countries
   consumables: Consumables
   consumption: Consumption
+  countries: Countries
   device_capabilities: DeviceCapabilities
   devices: Devices
   diagnostic_tests: DiagnosticTests
   districts: Districts
+  doctor_review: DoctorReview
+  doctor_review_requests: DoctorReviewRequests
+  doctor_review_steps: DoctorReviewSteps
+  doctor_reviews: DoctorReviews
   drugs: Drugs
   employment: Employment
   encounter: Encounter
@@ -955,9 +996,9 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
-  provider_calendars: ProviderCalendars
-  procurers: Procurer
   procurement: Procurement
+  procurers: Procurers
+  provider_calendars: ProviderCalendars
   provinces: Provinces
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs

@@ -14,8 +14,8 @@ import MaritalStatusSelect from './MaritalStatusSelect.tsx'
 import PatientCohabitationSelect from './PatientCohabitationSelect.tsx'
 import FamilyTypeSelect from './FamilyTypeSelect.tsx'
 import ReligionSelect from '../ReligionSelect.tsx'
-import FormRow from '../../components/library/form/Row.tsx'
-import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
+import FormRow from '../form/Row.tsx'
+import { SelectWithOptions } from '../form/Inputs.tsx'
 import range from '../../util/range.ts'
 
 type GuardianFamilyRelationState =

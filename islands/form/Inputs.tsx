@@ -1,14 +1,14 @@
 import { assert } from 'std/assert/assert.ts'
 import { ComponentChildren, JSX, Ref } from 'preact'
 import { forwardRef } from 'preact/compat'
-import { MagnifyingGlassIcon } from '../icons/heroicons/outline.tsx'
-import capitalize from '../../../util/capitalize.ts'
-import cls from '../../../util/cls.ts'
-import { Gender, Maybe, NURSE_SPECIALTIES, Question } from '../../../types.ts'
-import last from '../../../util/last.ts'
-import isObjectLike from '../../../util/isObjectLike.ts'
+import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/outline.tsx'
+import capitalize from '../../util/capitalize.ts'
+import cls from '../../util/cls.ts'
+import { Gender, Maybe, NURSE_SPECIALTIES, Question } from '../../types.ts'
+import last from '../../util/last.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
 import { ComponentChild } from 'preact'
-import SectionHeader from '../typography/SectionHeader.tsx'
+import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -757,12 +757,14 @@ export function RadioGroup(
     description,
     value,
     options,
+    onChange,
   }: {
     name: string
     label?: Maybe<string>
     description?: Maybe<string>
     value?: Maybe<string>
     options: { value: string; label?: string; description?: string }[]
+    onChange?(value: string): void
   },
 ) {
   return (
@@ -786,6 +788,10 @@ export function RadioGroup(
                 checked={value === option.value}
                 value={option.value}
                 className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
+                onChange={(event) => {
+                  assert(event.target instanceof HTMLInputElement)
+                  onChange?.(event.target.value)
+                }}
               />
               <label
                 htmlFor={`radio-${name}-${option.value}`}

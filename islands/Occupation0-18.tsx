@@ -1,13 +1,9 @@
 import { useState } from 'preact/hooks'
-import FormRow from '../components/library/form/Row.tsx'
-import { RadioGroup, Select } from '../components/library/form/Inputs.tsx'
+import FormRow from './form/Row.tsx'
+import { RadioGroup, Select } from './form/Inputs.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import { assert } from 'std/assert/assert.ts'
-import {
-  CheckboxInput,
-  YesNoGrid,
-  YesNoQuestion,
-} from '../components/library/form/Inputs.tsx'
+import { CheckboxInput, YesNoGrid, YesNoQuestion } from './form/Inputs.tsx'
 import {
   Maybe,
   Occupation,

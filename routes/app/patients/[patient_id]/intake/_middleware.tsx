@@ -1,7 +1,7 @@
 import { ComponentChildren, JSX } from 'preact'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
-import Form from '../../../../../components/library/form/Form.tsx'
+import Form from '../../../../../islands/form/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   PatientIntake,
@@ -9,15 +9,13 @@ import {
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import {
-  replaceParams,
-  StepsSidebar,
-} from '../../../../../components/library/Sidebar.tsx'
+import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encounter_id]/_middleware.tsx'
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { INTAKE_STEPS, isIntakeStep } from '../../../../../shared/intake.ts'
+import { replaceParams } from '../../../../../util/replaceParams.ts'
 
 type AdditionalContext = {
   is_review: false
@@ -67,7 +65,7 @@ export const nextLink = ({ route, params }: FreshContext) => {
   const next_link = intake_nav_links[current_index + 1]
   if (!next_link) {
     return replaceParams(
-      `/app/patients/:patient_id/encounters/open/vitals`,
+      `/app/patients/:patient_id/intake/personal`,
       params,
     )
   }

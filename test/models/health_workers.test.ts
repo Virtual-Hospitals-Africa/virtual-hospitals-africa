@@ -45,6 +45,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             employment: [],
             open_encounters: [],
             default_facility_id: null,
+            reviews: {
+              in_progress: [],
+              requested: [],
+            },
           },
         )
         assert(!!result.access_token)
@@ -99,6 +103,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           access_token: healthWorker.access_token,
           refresh_token: healthWorker.refresh_token,
           open_encounters: [],
+          reviews: {
+            in_progress: [],
+            requested: [],
+          },
         })
       },
     )

@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import { TextInput } from '../components/library/form/Inputs.tsx'
+import { TextInput } from './form/Inputs.tsx'
 import { Maybe } from '../types.ts'
 import { Signal } from '@preact/signals'
 

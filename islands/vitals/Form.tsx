@@ -1,8 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
-import {
-  CheckboxInput,
-  NumberInput,
-} from '../../components/library/form/Inputs.tsx'
+import { CheckboxInput, NumberInput } from '../form/Inputs.tsx'
 import { Measurements } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import * as VitalsIcons from '../../components/library/icons/vitals.tsx'

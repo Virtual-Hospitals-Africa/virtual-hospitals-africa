@@ -9,8 +9,8 @@ import { FacilityAdmin } from '../db/models/employment.ts'
 import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import { json } from '../util/responses.ts'
-import { TextInput } from '../components/library/form/Inputs.tsx'
-import FormRow from '../components/library/form/Row.tsx'
+import { TextInput } from '../islands/form/Inputs.tsx'
+import FormRow from '../islands/form/Row.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker

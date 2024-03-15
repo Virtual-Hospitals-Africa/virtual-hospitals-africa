@@ -43,7 +43,10 @@ export async function nearest(
 
 export function search(
   trx: TrxOrDb,
-  search?: Maybe<string>,
+  opts: {
+    search?: Maybe<string>
+    kind?: Maybe<'physical' | 'virtual'>
+  },
 ) {
   let query = trx
     .selectFrom('facilities')
@@ -57,7 +60,14 @@ export function search(
       'phone',
     ])
 
-  if (search) query = query.where('name', 'ilike', `%${search}%`)
+  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
+  if (opts.kind) {
+    query = query.where(
+      'address',
+      opts.kind === 'physical' ? 'is not' : 'is',
+      null,
+    )
+  }
 
   return query.execute()
 }

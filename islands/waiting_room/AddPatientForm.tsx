@@ -1,18 +1,20 @@
-import { signal } from '@preact/signals'
-import FormRow from '../../components/library/form/Row.tsx'
+import { computed, useSignal } from '@preact/signals'
+import FormRow from '../form/Row.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { FacilityDoctorOrNurse, Maybe } from '../../types.ts'
-import FormButtons from '../../components/library/form/buttons.tsx'
-import { RadioGroup, TextArea } from '../../components/library/form/Inputs.tsx'
+import { RadioGroup, TextArea } from '../form/Inputs.tsx'
 import ProvidersSelect from '../ProvidersSelect.tsx'
-import Form from '../../components/library/form/Form.tsx'
+import Form from '../form/Form.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { PersonData } from '../../components/library/Person.tsx'
 import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 import { EncounterReason } from '../../db.d.ts'
 
-const selectedPatient = signal<PersonData | undefined>(undefined)
-const isReturningPatient = signal<boolean>(false)
+const radio_group_options = Array.from(ENCOUNTER_REASONS).map((
+  value,
+) => ({
+  value,
+}))
 
 export default function AddPatientForm({
   open_encounter,
@@ -23,8 +25,13 @@ export default function AddPatientForm({
   providers: FacilityDoctorOrNurse[]
   patient: { id?: number | 'add'; name: string } | undefined
 }) {
+  const selected_patient = useSignal<PersonData | undefined>(patient)
+  const is_returning_patient = computed(() =>
+    !!selected_patient.value && selected_patient.value.id !== 'add'
+  )
+
   return (
-    <Form method='post'>
+    <Form method='POST'>
       <div className='flex flex-col w-full gap-2'>
         <FormRow>
           {open_encounter && (
@@ -47,19 +54,14 @@ export default function AddPatientForm({
             label=''
             required
             addable
-            value={patient}
-            disabled={!!patient}
-            onSelect={(patient) => {
-              selectedPatient.value = patient
-              selectedPatient.value?.id === 'add'
-                ? isReturningPatient.value = false
-                : isReturningPatient.value = true
-            }}
+            value={selected_patient.value}
+            readonly={!!patient}
+            onSelect={(patient) => selected_patient.value = patient}
           />
         </FormRow>
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            Health Workers at Facilities
+            Employees
           </label>
         </FormRow>
         <FormRow>
@@ -69,11 +71,7 @@ export default function AddPatientForm({
           <RadioGroup
             name='reason'
             label='Reason for visit'
-            options={Array.from(ENCOUNTER_REASONS).map((
-              value,
-            ) => ({
-              value,
-            }))}
+            options={radio_group_options}
             value={open_encounter?.reason || 'seeking treatment'}
           />
         </FormRow>
@@ -89,14 +87,14 @@ export default function AddPatientForm({
           <Button type='submit' name='waiting_room' value='waiting_room'>
             Add to waiting room
           </Button>
-          {selectedPatient.value && !isReturningPatient.value && (
+          {selected_patient.value && !is_returning_patient.value && (
             <Button type='submit' name='intake' value='intake'>
               Start Intake
             </Button>
           )}
-          {selectedPatient.value && isReturningPatient.value && (
+          {selected_patient.value && is_returning_patient.value && (
             <Button
-              href={`/app/patients/${selectedPatient.value.id}`}
+              href={`/app/patients/${selected_patient.value.id}`}
             >
               Review and begin visit
             </Button>

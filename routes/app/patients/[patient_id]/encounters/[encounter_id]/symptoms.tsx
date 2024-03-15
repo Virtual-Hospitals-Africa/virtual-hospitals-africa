@@ -7,7 +7,7 @@ import {
   LoggedInHealthWorkerHandlerWithProps,
   PatientSymptomUpsert,
 } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../components/library/form/buttons.tsx'
+import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import * as patient_symptoms from '../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../islands/symptoms/Section.tsx'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
@@ -22,7 +22,6 @@ import {
 function assertIsSymptoms(body: unknown): asserts body is {
   symptoms: PatientSymptomUpsert[]
 } {
-  console.log(body)
   assertOr400(isObjectLike(body))
   assertOr400(Array.isArray(body.symptoms), 'Invalid symptoms')
   for (const symptom of body.symptoms) {

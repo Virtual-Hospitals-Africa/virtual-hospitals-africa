@@ -1,5 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
-import { sql } from 'kysely'
+import { SelectQueryBuilder, sql } from 'kysely'
 import {
   Address,
   FamilyUpsert,
@@ -41,7 +41,7 @@ import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import isNumber from '../../util/isNumber.ts'
 import { assertOr404 } from '../../util/assertOr.ts'
-import { IntakeStep } from '../../db.d.ts'
+import { DB, IntakeStep } from '../../db.d.ts'
 import { RenderedPatientAge } from '../../types.ts'
 
 export const view_href_sql = sql<string>`
@@ -167,10 +167,18 @@ export function insertMany(
 
 export function upsert(
   trx: TrxOrDb,
-  { location, ...patient }: Partial<Patient> & { id?: number },
+  { location, primary_doctor_id, ...patient }: Partial<Patient> & {
+    id?: number
+  },
 ) {
   const to_upsert = {
     ...patient,
+    primary_doctor_id: primary_doctor_id && (
+      trx.selectFrom('employment')
+        .where('id', '=', primary_doctor_id)
+        .where('profession', '=', 'doctor')
+        .select('id')
+    ),
     location: location &&
       sql<
         string
@@ -275,7 +283,10 @@ export async function upsertIntake(
   }
 
   const upserting_patient = !isEmpty(patient_updates) &&
-    upsert(trx, { ...patient_updates, id })
+    upsert(trx, {
+      ...patient_updates,
+      id,
+    })
 
   await Promise.all([
     upserting_patient,
@@ -317,9 +328,14 @@ export function getIntake(
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
     .leftJoin(
+      'employment',
+      'employment.id',
+      'patients.primary_doctor_id',
+    )
+    .leftJoin(
       'health_workers',
       'health_workers.id',
-      'patients.primary_doctor_id',
+      'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .select((eb) => [
@@ -381,9 +397,14 @@ export async function getIntakeReview(
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
     .leftJoin(
+      'employment',
+      'employment.id',
+      'patients.primary_doctor_id',
+    )
+    .leftJoin(
       'health_workers',
       'health_workers.id',
-      'patients.primary_doctor_id',
+      'employment.health_worker_id',
     )
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
     .leftJoin(
@@ -519,26 +540,30 @@ export type PatientCard = {
   avatar_url: string | null
 }
 
-export async function getCard(
+export function getCardQuery(
   trx: TrxOrDb,
-  opts: { id: number },
-): Promise<PatientCard> {
-  const patient = await trx.selectFrom('patients')
+): SelectQueryBuilder<DB, 'patients', PatientCard> {
+  return trx.selectFrom('patients')
     .leftJoin('patient_age', 'patient_age.patient_id', 'patients.id')
-    .select([
+    .select((eb) => [
       'patients.id',
-      'patients.name',
+      eb.ref('patients.name').$notNull().as('name'),
       sql<string | null>`patients.gender || ', ' || patient_age.age_display`.as(
         'description',
       ),
       avatar_url_sql.as('avatar_url'),
     ])
+}
+
+export async function getCard(
+  trx: TrxOrDb,
+  opts: { id: number },
+): Promise<PatientCard> {
+  const patient = await getCardQuery(trx)
     .where('patients.id', '=', opts.id)
     .executeTakeFirst()
-
   assertOr404(patient)
   assert(hasName(patient))
-
   return patient
 }
 

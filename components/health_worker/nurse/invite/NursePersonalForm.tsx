@@ -3,9 +3,9 @@ import {
   GenderSelect,
   PhoneNumberInput,
   TextInput,
-} from '../../../library/form/Inputs.tsx'
-import FormRow from '../../../library/form/Row.tsx'
-import Buttons from '../../../library/form/buttons.tsx'
+} from '../../../../islands/form/Inputs.tsx'
+import FormRow from '../../../../islands/form/Row.tsx'
+import Buttons from '../../../../islands/form/buttons.tsx'
 import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
 import NationalIdInput from '../../../../islands/NationalIdInput.tsx'
 import { CountryAddressTree } from '../../../../types.ts'

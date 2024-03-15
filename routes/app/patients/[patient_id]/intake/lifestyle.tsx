@@ -1,7 +1,7 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons from '../../../../../components/library/form/buttons.tsx'
+import Buttons from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,

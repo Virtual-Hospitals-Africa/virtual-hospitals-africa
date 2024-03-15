@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks'
 import { padTime } from '../util/pad.ts'
 import { AvailabilityJSON, Time, TimeWindow } from '../types.ts'
 import WarningModal from '../components/library/modals/Warning.tsx'
-import FormButtons from '../components/library/form/buttons.tsx'
+import FormButtons from './form/buttons.tsx'
 import {
   days,
   defaultTimeWindow,
@@ -10,7 +10,7 @@ import {
   hours,
   minutes,
 } from '../shared/scheduling/availability.tsx'
-import Form from '../components/library/form/Form.tsx'
+import Form from './form/Form.tsx'
 import {
   PlusIcon,
   TrashIcon,

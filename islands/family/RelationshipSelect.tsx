@@ -1,5 +1,5 @@
 import { Gender, GuardianRelationName, Maybe } from '../../types.ts'
-import { Select } from '../../components/library/form/Inputs.tsx'
+import { Select } from '../form/Inputs.tsx'
 import { Signal, useSignal } from '@preact/signals'
 import { JSX } from 'preact'
 import { GUARDIAN_RELATIONS } from '../../shared/family.ts'

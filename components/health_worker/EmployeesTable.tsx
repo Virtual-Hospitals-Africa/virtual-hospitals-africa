@@ -2,8 +2,8 @@ import { JSX } from 'preact'
 import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
-import FormRow from '../library/form/Row.tsx'
-import { SearchInput } from '../library/form/Inputs.tsx'
+import FormRow from '../../islands/form/Row.tsx'
+import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { FacilityEmployeeOrInvitee } from '../../types.ts'
 
 type EmployeesTableProps = {

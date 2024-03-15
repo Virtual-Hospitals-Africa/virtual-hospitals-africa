@@ -1,8 +1,8 @@
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertThrows } from 'std/assert/assert_throws.ts'
 import { describe, it } from 'std/testing/bdd.ts'
-import { replaceParams } from '../../components/library/Sidebar.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { replaceParams } from '../../util/replaceParams.ts'
 
 describe('replaceParams', () => {
   it('replaces params in the route', () => {

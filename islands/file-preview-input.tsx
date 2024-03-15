@@ -1,8 +1,5 @@
 import { useState } from 'preact/hooks'
-import {
-  ImageOrVideoInput,
-  TextInputProps,
-} from '../components/library/form/Inputs.tsx'
+import { ImageOrVideoInput, TextInputProps } from './form/Inputs.tsx'
 import cls from '../util/cls.ts'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { Maybe } from '../types.ts'

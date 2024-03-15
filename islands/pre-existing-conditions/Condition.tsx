@@ -1,11 +1,11 @@
 import ConditionSearch from '../ConditionSearch.tsx'
-import { DateInput } from '../../components/library/form/Inputs.tsx'
+import { DateInput } from '../form/Inputs.tsx'
 import { PreExistingConditionWithDrugs } from '../../types.ts'
 import { JSX } from 'preact'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import Comorbidity from './Comorbidity.tsx'
 import Medication from './Medication.tsx'
-import FormRow from '../../components/library/form/Row.tsx'
+import FormRow from '../form/Row.tsx'
 
 export type ConditionState = {
   id?: string

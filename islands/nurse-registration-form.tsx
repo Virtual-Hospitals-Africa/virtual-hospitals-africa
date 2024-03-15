@@ -2,9 +2,9 @@ import { FormState } from '../routes/app/facilities/[facility_id]/register/[step
 import NursePersonalForm from '../components/health_worker/nurse/invite/NursePersonalForm.tsx'
 import NurseProfessionalForm from '../components/health_worker/nurse/invite/NurseProfessionalForm.tsx'
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
-import unsavedChangesWarning from '../components/library/form/unsaved_changes_warning.tsx'
+import unsavedChangesWarning from './form/unsaved_changes_warning.tsx'
 import { CountryAddressTree } from '../types.ts'
-import Form from '../components/library/form/Form.tsx'
+import Form from './form/Form.tsx'
 
 export default function NurseRegistrationForm(
   { currentStep, formData, country_address_tree }: {

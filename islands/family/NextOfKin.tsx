@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks'
 import { NextOfKin } from '../../types.ts'
-import FormRow from '../../components/library/form/Row.tsx'
-import { TextInput } from '../../components/library/form/Inputs.tsx'
+import FormRow from '../form/Row.tsx'
+import { TextInput } from '../form/Inputs.tsx'
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 

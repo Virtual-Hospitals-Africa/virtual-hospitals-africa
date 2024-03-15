@@ -1,6 +1,7 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import * as providers from '../../db/models/providers.ts'
 import * as employment from '../../db/models/employment.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
@@ -25,21 +26,13 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
           {
             avatar_url: healthWorker.avatar_url,
             email: healthWorker.email,
-            facilities: [
-              {
-                provider_id: healthWorker.employee_id!,
-                facility_id: 1,
-                facility_name: 'VHA Test Clinic',
-                professions: [
-                  'nurse',
-                ],
-              },
-            ],
+            facility_id: 1,
+            facility_name: 'VHA Test Clinic',
+            profession: 'nurse',
             name: healthWorker.name,
             health_worker_id: healthWorker.id,
-            description: [
-              'nurse @ VHA Test Clinic',
-            ],
+            description: 'nurse @ VHA Test Clinic',
+            id: healthWorker.employee_id!,
           },
         )
       },
@@ -67,21 +60,13 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
         {
           avatar_url: healthWorker.avatar_url,
           email: healthWorker.email,
-          facilities: [
-            {
-              provider_id: healthWorker.employee_id!,
-              facility_id: 1,
-              facility_name: 'VHA Test Clinic',
-              professions: [
-                'nurse',
-              ],
-            },
-          ],
+          facility_id: 1,
+          facility_name: 'VHA Test Clinic',
+          profession: 'nurse',
           health_worker_id: healthWorker.id,
           name: healthWorker.name,
-          description: [
-            'nurse @ VHA Test Clinic',
-          ],
+          description: 'nurse @ VHA Test Clinic',
+          id: healthWorker.employee_id!,
         },
       )
     })
@@ -119,11 +104,13 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
         const firstResult = results[0]
         const lastResult = last(results)!
 
-        assert(
-          firstResult.facilities.some((facility) => facility.facility_id === 2),
+        assertEquals(
+          firstResult.facility_id,
+          2,
         )
-        assert(
-          lastResult.facilities.every((facility) => facility.facility_id !== 2),
+        assertNotEquals(
+          lastResult.facility_id,
+          2,
         )
       },
     )
@@ -145,23 +132,15 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
       assertEquals(
         same_facility_result[0],
         {
+          id: healthWorker.employee_id!,
           avatar_url: healthWorker.avatar_url,
           email: healthWorker.email,
-          facilities: [
-            {
-              provider_id: healthWorker.employee_id!,
-              facility_id: 1,
-              facility_name: 'VHA Test Clinic',
-              professions: [
-                'nurse',
-              ],
-            },
-          ],
+          facility_id: 1,
+          facility_name: 'VHA Test Clinic',
           name: healthWorker.name,
           health_worker_id: healthWorker.id,
-          description: [
-            'nurse @ VHA Test Clinic',
-          ],
+          description: 'nurse @ VHA Test Clinic',
+          profession: 'nurse',
         },
       )
 

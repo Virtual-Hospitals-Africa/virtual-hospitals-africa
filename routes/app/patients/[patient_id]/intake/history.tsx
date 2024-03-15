@@ -3,7 +3,7 @@ import * as patient_conditions from '../../../../../db/models/patient_conditions
 import PatientHistoryForm from '../../../../../components/patients/intake/HistoryForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons from '../../../../../components/library/form/buttons.tsx'
+import Buttons from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,

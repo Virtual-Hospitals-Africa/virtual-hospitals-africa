@@ -65,6 +65,13 @@ import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patient
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
 import * as $app_patients_patient_id_intake_review from './routes/app/patients/[patient_id]/intake/review.tsx'
+import * as $app_patients_patient_id_review_middleware from './routes/app/patients/[patient_id]/review/_middleware.tsx'
+import * as $app_patients_patient_id_review_clinical_notes from './routes/app/patients/[patient_id]/review/clinical_notes.tsx'
+import * as $app_patients_patient_id_review_diagnosis from './routes/app/patients/[patient_id]/review/diagnosis.tsx'
+import * as $app_patients_patient_id_review_orders from './routes/app/patients/[patient_id]/review/orders.tsx'
+import * as $app_patients_patient_id_review_prescriptions from './routes/app/patients/[patient_id]/review/prescriptions.tsx'
+import * as $app_patients_patient_id_review_referral from './routes/app/patients/[patient_id]/review/referral.tsx'
+import * as $app_patients_patient_id_review_revert from './routes/app/patients/[patient_id]/review/revert.tsx'
 import * as $app_pending_approval from './routes/app/pending_approval.tsx'
 import * as $app_procurers from './routes/app/procurers.tsx'
 import * as $app_providers from './routes/app/providers.tsx'
@@ -121,6 +128,12 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
+import * as $form_Form from './islands/form/Form.tsx'
+import * as $form_Inputs from './islands/form/Inputs.tsx'
+import * as $form_Listbox from './islands/form/Listbox.tsx'
+import * as $form_Row from './islands/form/Row.tsx'
+import * as $form_buttons from './islands/form/buttons.tsx'
+import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
 import * as $inventory_ConsumableSearch from './islands/inventory/ConsumableSearch.tsx'
@@ -260,6 +273,20 @@ const manifest = {
       $app_patients_patient_id_intake_personal,
     './routes/app/patients/[patient_id]/intake/review.tsx':
       $app_patients_patient_id_intake_review,
+    './routes/app/patients/[patient_id]/review/_middleware.tsx':
+      $app_patients_patient_id_review_middleware,
+    './routes/app/patients/[patient_id]/review/clinical_notes.tsx':
+      $app_patients_patient_id_review_clinical_notes,
+    './routes/app/patients/[patient_id]/review/diagnosis.tsx':
+      $app_patients_patient_id_review_diagnosis,
+    './routes/app/patients/[patient_id]/review/orders.tsx':
+      $app_patients_patient_id_review_orders,
+    './routes/app/patients/[patient_id]/review/prescriptions.tsx':
+      $app_patients_patient_id_review_prescriptions,
+    './routes/app/patients/[patient_id]/review/referral.tsx':
+      $app_patients_patient_id_review_referral,
+    './routes/app/patients/[patient_id]/review/revert.tsx':
+      $app_patients_patient_id_review_revert,
     './routes/app/pending_approval.tsx': $app_pending_approval,
     './routes/app/procurers.tsx': $app_procurers,
     './routes/app/providers.tsx': $app_providers,
@@ -319,6 +346,12 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
+    './islands/form/Form.tsx': $form_Form,
+    './islands/form/Inputs.tsx': $form_Inputs,
+    './islands/form/Listbox.tsx': $form_Listbox,
+    './islands/form/Row.tsx': $form_Row,
+    './islands/form/buttons.tsx': $form_buttons,
+    './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Consumable.tsx': $inventory_Consumable,
     './islands/inventory/ConsumableSearch.tsx': $inventory_ConsumableSearch,

@@ -1,7 +1,7 @@
 import { Listbox } from '@headlessui/react'
 import { useState } from 'react'
-import { CheckIcon } from '../CheckIcon.tsx'
-import cls from '../../../util/cls.ts'
+import { CheckIcon } from '../../components/library/CheckIcon.tsx'
+import cls from '../../util/cls.ts'
 
 interface ListboxItemProps<T> {
   question: string

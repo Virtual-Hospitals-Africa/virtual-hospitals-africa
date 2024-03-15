@@ -12,8 +12,6 @@ const vhaStaff = [
   'sherviniv@gmail.com',
   'ngwenyasku79@gmail.com',
   'mesbah.ar@gmail.com',
-  'sujasridesigns@gmail.com',
-  'sujasri.projects@gmail.com',
 ]
 
 export default createSeedMigration(['health_worker_invitees'], inviteVhaStaff)
@@ -26,14 +24,18 @@ async function inviteVhaStaff(db: Kysely<any>) {
       {
         email,
         profession: 'admin',
-        facility_id: 1, // Test Facility
+        facility_id: 1,
       },
       {
         email,
         profession: 'doctor',
-        facility_id: 1, // Test Facility
+        facility_id: 1,
       },
-    ]),
+    ]).concat([{
+      email: 'will@morehumaninternet.org',
+      profession: 'doctor',
+      facility_id: 2,
+    }]),
   )
     .execute()
 }

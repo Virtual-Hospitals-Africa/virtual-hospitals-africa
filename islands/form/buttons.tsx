@@ -1,6 +1,6 @@
 import { ComponentChildren } from 'preact'
-import cls from '../../../util/cls.ts'
-import { Button } from '../Button.tsx'
+import cls from '../../util/cls.ts'
+import { Button } from '../../components/library/Button.tsx'
 
 type FormButtonsProps = {
   className?: string

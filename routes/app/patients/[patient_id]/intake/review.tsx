@@ -1,6 +1,6 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import PatientReview from '../../../../../components/patients/intake/Review.tsx'
-import Buttons from '../../../../../components/library/form/buttons.tsx'
+import Buttons from '../../../../../islands/form/buttons.tsx'
 import {
   IntakeContext,
   IntakeLayout,
@@ -8,9 +8,7 @@ import {
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
-import redirect from '../../../../../util/redirect.ts'
-import words from '../../../../../util/words.ts'
-import capitalize from '../../../../../util/capitalize.ts'
+import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   // deno-lint-ignore require-await
@@ -19,29 +17,22 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
+const assertAllIntakeStepsCompleted = assertAllPriorStepsCompleted(
+  INTAKE_STEPS,
+  '/app/patients/:patient_id/intake/:step',
+  'completing the intake process',
+)
+
 // deno-lint-ignore require-await
 export default async function ReviewPage(
   _req: Request,
   ctx: IntakeContext,
 ) {
   assert(ctx.state.is_review)
-
-  const steps_completed = new Set(ctx.state.patient.intake_steps_completed)
-  const incomplete = INTAKE_STEPS.find((step) =>
-    step !== 'review' && !steps_completed.has(step)
+  assertAllIntakeStepsCompleted(
+    ctx.state.patient.intake_steps_completed,
+    ctx.params,
   )
-  if (incomplete) {
-    const is_plural = incomplete.endsWith('s')
-    const pretty_name = is_plural ? incomplete : incomplete + ' information'
-    const warning = encodeURIComponent(
-      `Please fill out the patient's ${
-        pretty_name.replace('_', ' ')
-      } completing the review process`,
-    )
-    return redirect(
-      `/app/patients/${ctx.params.patient_id}/intake/${incomplete}?warning=${warning}`,
-    )
-  }
 
   const { healthWorker, patient } = ctx.state
 

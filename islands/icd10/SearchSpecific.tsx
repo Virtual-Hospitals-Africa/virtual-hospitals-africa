@@ -2,7 +2,7 @@ import { computed, useSignal } from '@preact/signals'
 import AsyncSearch from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 import { RenderedICD10DiagnosisTreeWithOptionalIncludes } from '../../types.ts'
-import { SelectWithOptions } from '../../components/library/form/Inputs.tsx'
+import { SelectWithOptions } from '../form/Inputs.tsx'
 import words from '../../util/words.ts'
 
 type SubDiag0 = NonNullable<
