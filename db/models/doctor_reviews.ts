@@ -10,7 +10,6 @@ import {
   Maybe,
   RenderedDoctorReview,
   RenderedDoctorReviewRequest,
-  RenderedRequestFormValues,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -55,6 +54,7 @@ export function ofHealthWorker(
     .select((eb) => [
       'doctor_reviews.id as review_id',
       'employment.id as employment_id',
+      eb('completed_at', 'is not', null).as('completed'),
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
         reason: eb.ref('patient_encounters.reason'),
@@ -215,8 +215,8 @@ export function upsertRequest(
     patient_id: number
     encounter_id: number
     requested_by: number
-    facility_id: number | null
-    requesting_doctor_id: number | null
+    facility_id?: number | null
+    requesting_doctor_id?: number | null
     requester_notes?: Maybe<string>
   },
 ) {

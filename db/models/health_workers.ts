@@ -366,8 +366,6 @@ export async function get(
       },
     }))
 
-  console.log('notifications', notifications)
-
   return {
     ...health_worker,
     access_token,
@@ -377,6 +375,16 @@ export async function get(
     notifications,
     default_facility_id: employment[0]?.facility.id ?? null,
   }
+}
+
+export async function getEmployed(
+  trx: TrxOrDb,
+  { health_worker_id }: { health_worker_id: number },
+): Promise<EmployedHealthWorker> {
+  const health_worker = await get(trx, { health_worker_id })
+  assert(health_worker)
+  assert(isEmployed(health_worker))
+  return health_worker
 }
 
 export async function getInviteesAtFacility(

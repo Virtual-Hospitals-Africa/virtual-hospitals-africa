@@ -10,20 +10,15 @@ import {
   RenderedPatientEncounterProvider,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
-import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
-import * as waiting_room from '../../../../../../db/models/waiting_room.ts'
-import {
-  assertOr403,
-  assertOr404,
-  StatusError,
-} from '../../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { Person } from '../../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
-import uniq from '../../../../../../util/uniq.ts'
-import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
+import {
+  completedStep,
+  removeFromWaitingRoomAndAddSelfAsProvider,
+} from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
 
@@ -52,96 +47,6 @@ export async function completeStep(ctx: EncounterContext) {
   return redirect(nextLink(ctx))
 }
 
-export async function removeFromWaitingRoomAndAddSelfAsProvider(
-  ctx: LoggedInHealthWorkerContext,
-  encounter_id: number | 'open',
-): Promise<{
-  encounter: RenderedPatientEncounter
-  encounter_provider: RenderedPatientEncounterProvider
-}> {
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-  const { trx, healthWorker } = ctx.state
-
-  const encounter = healthWorker.open_encounters.find(
-    (e) => encounter_id === 'open' && (e.patient_id === patient_id),
-  ) || await patient_encounters.get(trx, {
-    encounter_id,
-    patient_id,
-  })
-
-  // TODO: start an encounter if it doesn't exist?
-  assertOr404(encounter, 'No open visit with this patient')
-
-  const removing_from_waiting_room = encounter.waiting_room_id && (
-    waiting_room.remove(trx, {
-      id: encounter.waiting_room_id,
-    })
-  )
-
-  let matching_provider = encounter.providers.find(
-    (provider) => provider.health_worker_id === healthWorker.id,
-  )
-  if (!matching_provider) {
-    const being_seen_at_facilities = encounter.waiting_room_facility_id
-      ? [encounter.waiting_room_facility_id]
-      : uniq(
-        encounter.providers.map((p) => p.facility_id),
-      )
-
-    const employment = healthWorker.employment.find(
-      (e) => being_seen_at_facilities.includes(e.facility.id),
-    )
-    assertOr403(
-      employment,
-      'You do not have access to this patient at this time. The patient is being seen at a facility you do not work at. Please contact the facility to get access to the patient.',
-    )
-
-    const provider = employment.roles.doctor || employment.roles.nurse
-
-    if (!provider) {
-      assert(employment.roles.admin)
-      // TODO: revisit whether this is true
-      throw new StatusError(
-        'You must be a nurse or doctor to edit patient information as part of an encounter',
-        403,
-      )
-    }
-
-    const added_provider = await patient_encounters.addProvider(trx, {
-      encounter_id: encounter.encounter_id,
-      provider_id: provider.employment_id,
-      seen_now: true,
-    })
-
-    assert(added_provider.seen_at)
-
-    matching_provider = {
-      patient_encounter_provider_id: added_provider.id,
-      employment_id: provider.employment_id,
-      facility_id: employment.facility.id,
-      profession: employment.roles.doctor ? 'doctor' : 'nurse',
-      health_worker_id: healthWorker.id,
-      health_worker_name: healthWorker.name,
-      seen_at: added_provider.seen_at,
-    }
-    encounter.providers.push(matching_provider)
-  } else if (!matching_provider.seen_at) {
-    const { seen_at } = await patient_encounters.markProviderSeen(trx, {
-      patient_encounter_provider_id:
-        matching_provider.patient_encounter_provider_id,
-    })
-    assert(seen_at)
-    matching_provider.seen_at = seen_at
-  }
-
-  await removing_from_waiting_room
-
-  return {
-    encounter,
-    encounter_provider: matching_provider,
-  }
-}
-
 export async function handler(
   _req: Request,
   ctx: EncounterContext,
@@ -149,14 +54,21 @@ export async function handler(
   const encounter_id = getEncounterId(ctx)
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-  ctx.state.patient = await patients.getCard(ctx.state.trx, { id: patient_id })
+  const getting_patient_card = patients.getCard(ctx.state.trx, {
+    id: patient_id,
+  })
   Object.assign(
     ctx.state,
     await removeFromWaitingRoomAndAddSelfAsProvider(
-      ctx,
-      encounter_id,
+      ctx.state.trx,
+      {
+        encounter_id,
+        patient_id,
+        health_worker: ctx.state.healthWorker,
+      },
     ),
   )
+  ctx.state.patient = await getting_patient_card
   return ctx.next()
 }
 
