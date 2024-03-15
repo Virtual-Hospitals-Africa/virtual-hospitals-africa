@@ -1186,6 +1186,7 @@ export type RenderedDoctorReviewBase = {
   requested_by: {
     profession: 'nurse' | 'doctor'
     name: string
+    avatar_url: string | null
     facility: {
       id: number
       name: string
@@ -1243,6 +1244,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
     requested: RenderedDoctorReviewRequest[]
     in_progress: RenderedDoctorReview[]
   }
+  notifications: RenderedNotification[]
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
@@ -2054,4 +2056,19 @@ export type RenderedPatientExamination = {
   completed: boolean
   skipped: boolean
   categories: RenderedPatientExaminationCategory[]
+}
+
+export type NotificationType = 'doctor_review_request'
+
+export type RenderedNotification = {
+  type: NotificationType
+  entity_id: number
+  avatar_url: string | null
+  title: string
+  description: string
+  time_display: string
+  action: {
+    title: string
+    href: string
+  }
 }

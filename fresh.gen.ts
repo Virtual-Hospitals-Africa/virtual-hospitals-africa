@@ -103,6 +103,7 @@ import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NationalIdInputCheckbox from './islands/NationalIdInputCheckbox.tsx'
 import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
+import * as $Notifications from './islands/Notifications.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
 import * as $Occupation19 from './islands/Occupation19.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
@@ -320,6 +321,7 @@ const manifest = {
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NationalIdInputCheckbox.tsx': $NationalIdInputCheckbox,
     './islands/NearestHealthCare.tsx': $NearestHealthCare,
+    './islands/Notifications.tsx': $Notifications,
     './islands/Occupation0-18.tsx': $Occupation0_18,
     './islands/Occupation19.tsx': $Occupation19,
     './islands/PersonSearch.tsx': $PersonSearch,

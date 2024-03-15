@@ -26,3 +26,7 @@ export function ErrorListener({
     />
   )
 }
+
+export function showErrorMessage(detail: string) {
+  self.dispatchEvent(new CustomEvent('show-error', { detail }))
+}
