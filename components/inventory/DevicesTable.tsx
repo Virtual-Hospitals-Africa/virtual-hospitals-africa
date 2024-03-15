@@ -6,19 +6,19 @@ import FormRow from '../../islands/form/Row.tsx'
 const columns: TableColumn<RenderedFacilityDevice>[] = [
   {
     label: 'Name',
-    dataKey: 'name',
+    data: 'name',
   },
   {
     label: 'Manufacturer',
-    dataKey: 'manufacturer',
+    data: 'manufacturer',
   },
   {
     label: 'Serial Number',
-    dataKey: 'serial_number',
+    data: 'serial_number',
   },
   {
     label: 'Tests',
-    dataKey(row) {
+    data(row) {
       return (
         <div className='flex flex-col'>
           {row.diagnostic_test_capabilities.map((c) => <span>{c}</span>)}

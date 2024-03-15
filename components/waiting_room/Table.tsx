@@ -6,24 +6,25 @@ import Table, { TableColumn } from '../library/Table.tsx'
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
     label: 'Patient',
-    dataKey(row) {
+    headerClassName: 'pl-12',
+    data(row) {
       return <Person person={row.patient} />
     },
     cellClassName: 'mb-1 font-medium',
   },
   {
     label: 'Reason for visit',
-    dataKey(row) {
+    data(row) {
       return capitalize(row.reason)
     },
   },
   {
     label: 'Status',
-    dataKey: 'status',
+    data: 'status',
   },
   {
-    label: 'Provider',
-    dataKey(row) {
+    label: 'Providers',
+    data(row) {
       if (!row.providers.length) return 'Next Available'
       return (
         <div className='flex flex-col'>
@@ -35,8 +36,21 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
     },
   },
   {
+    label: 'Reviewers',
+    data(row) {
+      if (!row.reviewers.length) return null
+      return (
+        <div className='flex flex-col'>
+          {row.reviewers.map((p) => (
+            <a key={p.health_worker_id} href={p.href}>{p.name}</a>
+          ))}
+        </div>
+      )
+    },
+  },
+  {
     label: 'Arrived',
-    dataKey: 'arrived_ago_display',
+    data: 'arrived_ago_display',
   },
   {
     label: 'Actions',

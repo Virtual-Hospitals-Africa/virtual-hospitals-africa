@@ -5,6 +5,8 @@ import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
+import re from 'https://esm.sh/v135/preact-render-to-string@6.3.1/X-ZS8q/denonext/preact-render-to-string.mjs'
+import isEmpty from '../../util/isEmpty.ts'
 
 type Showable =
   | string
@@ -21,17 +23,22 @@ export type TableColumn<T extends Row> =
   & {
     label?: Maybe<string>
     cellClassName?: string
-    dataKey?: unknown
+    headerClassName?: string
+    data?: unknown
   }
   & (
-    | { type?: 'content'; dataKey: keyof T | ((row: T) => Showable) }
-    | { type: 'avatar'; dataKey: keyof T | ((row: T) => Showable) }
+    | { type?: 'content'; data: keyof T | ((row: T) => Showable) }
     | (T extends { actions: Record<string, string | null> } ? {
         label: 'Actions'
         type: 'actions'
       }
       : never)
   )
+
+type MappedColumn<T extends Row> = {
+  column: TableColumn<T>
+  cell_contents: JSX.Element[]
+}
 
 type TableProps<T extends Row> = {
   columns: TableColumn<T>[]
@@ -53,55 +60,29 @@ function ActionButton(
 }
 
 function TableCellInnerContents<T extends Row>(
-  { row, column }: { row: T; column: TableColumn<T> },
+  { row, row_index, mapped_column }: {
+    row: T
+    row_index: number
+    mapped_column: MappedColumn<T>
+  },
 ) {
-  if (column.type === 'content' || column.type === undefined) {
-    const value = typeof column.dataKey === 'function'
-      ? column.dataKey(row)
-      : row[column.dataKey]
-
-    const display = Array.isArray(value) && value.every(isString)
-      ? value.join(', ')
-      // deno-lint-ignore no-explicit-any
-      : (value as any)
-
+  if (
+    mapped_column.column.type === 'content' ||
+    mapped_column.column.type === undefined
+  ) {
     return (
       <div
         className={cls(
           'text-gray-900 text-sm whitespace-nowrap',
-          column.cellClassName,
+          mapped_column.column.cellClassName,
         )}
       >
-        {display}
+        {mapped_column.cell_contents[row_index]}
       </div>
     )
   }
 
-  if (column.type === 'avatar') {
-    const src = typeof column.dataKey === 'function'
-      ? column.dataKey(row)
-      : row[column.dataKey]
-    if (!src) return <></>
-    if (typeof src === 'string') {
-      return (
-        <div className='flex items-center'>
-          <div className='h-11 w-11 flex-shrink-0'>
-            <Avatar
-              className='h-11 w-11 flex-shrink-0 object-cover'
-              src={src}
-            />
-          </div>
-        </div>
-      )
-    }
-    throw new Error(
-      `Expected ${
-        column.label || column.dataKey as string
-      } to be of type string`,
-    )
-  }
-
-  if (column.type === 'actions') {
+  if (mapped_column.column.type === 'actions') {
     assert('actions' in row)
     assert(isObjectLike(row.actions))
     return (
@@ -116,50 +97,65 @@ function TableCellInnerContents<T extends Row>(
     )
   }
 
-  throw new Error(`Unexpected column.type ${JSON.stringify(column)}`)
+  throw new Error('Unreachable ' + mapped_column.column.type)
 }
 
 function TableCell<T extends Row>(
-  { row, column }: {
+  { row, row_index, mapped_column }: {
     row: T
-    column: TableColumn<T>
-    colIndex: number
+    mapped_column: MappedColumn<T>
+    col_index: number
+    row_index: number
   },
 ) {
   return (
     <td
-      className={cls(column.label ? 'p-3' : 'p-2')}
-      key={column.label}
+      className={cls(mapped_column.column.label ? 'p-3' : 'p-2')}
+      key={mapped_column.column.label}
     >
-      <TableCellInnerContents row={row} column={column} />
+      <TableCellInnerContents
+        row={row}
+        row_index={row_index}
+        mapped_column={mapped_column}
+      />
     </td>
   )
 }
 
 function TableRow<T extends Row>(
-  { row, columns }: { row: T; columns: TableColumn<T>[] },
+  { row, row_index, mapped_columns }: {
+    row: T
+    row_index: number
+    mapped_columns: MappedColumn<T>[]
+  },
 ) {
   return (
     <tr>
-      {columns.map((column, index) => (
-        <TableCell column={column} row={row} colIndex={index} />
+      {mapped_columns.map((mapped_column, col_index) => (
+        <TableCell
+          mapped_column={mapped_column}
+          row={row}
+          row_index={row_index}
+          col_index={col_index}
+        />
       ))}
     </tr>
   )
 }
 
 function TableHeader<T extends Row>(
-  { columns }: { columns: TableColumn<T>[] },
+  { mapped_columns }: { mapped_columns: MappedColumn<T>[] },
 ) {
   return (
     <thead className='bg-gray-50'>
       <tr>
-        {columns.map((column, _index) => (
+        {mapped_columns.map(({ column }) => (
           <th
             scope='col'
             className={cls(
               'text-left text-sm font-semibold text-gray-500',
               column.label && 'p-3',
+              column.headerClassName,
             )}
           >
             {column.label}
@@ -170,9 +166,47 @@ function TableHeader<T extends Row>(
   )
 }
 
+//
+function* columnsWithSomeNonNullValue<T extends Row>(
+  { columns, rows }: TableProps<T>,
+) {
+  for (const column of columns) {
+    // Kinda ugly, but we determine the actions to show within TableCellInnerContents
+    // and thus don't need to compute the cell_contents here
+    if (column.type === 'actions') {
+      yield { column, cell_contents: [] }
+      continue
+    }
+
+    let use_column = false
+    const cell_contents = rows.map((row) => {
+      const value = typeof column.data === 'function'
+        ? column.data(row)
+        : row[column.data]
+
+      if (!isEmpty(value)) {
+        use_column = true
+      }
+
+      const display = Array.isArray(value) && value.every(isString)
+        ? value.join(', ')
+        // deno-lint-ignore no-explicit-any
+        : (value as any)
+
+      return display
+    })
+
+    if (use_column) {
+      yield { column, cell_contents }
+    }
+  }
+}
+
 export default function Table<T extends Row>(
   { columns, rows, className }: TableProps<T>,
 ): JSX.Element {
+  const mapped_columns = [...columnsWithSomeNonNullValue({ columns, rows })]
+
   return (
     <div
       className={cls(
@@ -183,13 +217,14 @@ export default function Table<T extends Row>(
       <div className='inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8'>
         <div className='overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg'>
           <table className='min-w-full divide-y divide-gray-300'>
-            <TableHeader columns={columns} />
+            <TableHeader mapped_columns={mapped_columns} />
             <tbody className='divide-y divide-gray-200 bg-white'>
-              {rows.map((row) => (
+              {rows.map((row, row_index) => (
                 <TableRow
                   key={row.id}
                   row={row}
-                  columns={columns}
+                  row_index={row_index}
+                  mapped_columns={mapped_columns}
                 />
               ))}
             </tbody>

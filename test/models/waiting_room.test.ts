@@ -9,7 +9,6 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
 import { addTestHealthWorker } from '../web/utilities.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../db/models/patient_encounters.ts'
-import { completedStep } from '../../db/models/patient_encounters.ts'
 
 describe(
   'db/models/waiting_room.ts',
@@ -64,6 +63,7 @@ describe(
                 review: null,
               },
               providers: [],
+              reviewers: [],
               reason: 'seeking treatment',
               is_emergency: false,
             })
@@ -84,6 +84,7 @@ describe(
                 review: null,
               },
               providers: [],
+              reviewers: [],
               reason: 'seeking treatment',
               is_emergency: false,
             })
@@ -133,6 +134,7 @@ describe(
                 review: null,
               },
               providers: [],
+              reviewers: [],
               reason: 'seeking treatment',
               is_emergency: false,
             }])
@@ -204,6 +206,7 @@ describe(
                 health_worker_id: nurse.id,
                 employee_id: nurse.employee_id!,
               }],
+              reviewers: [],
               reason: 'seeking treatment',
               is_emergency: false,
             }])
@@ -256,6 +259,7 @@ describe(
                   review: null,
                 },
                 providers: [],
+                reviewers: [],
                 reason: 'emergency',
                 is_emergency: true,
               },
@@ -276,6 +280,7 @@ describe(
                   review: null,
                 },
                 providers: [],
+                reviewers: [],
                 reason: 'seeking treatment',
                 is_emergency: false,
               },
@@ -346,6 +351,7 @@ describe(
                   health_worker_id: nurse.id,
                   employee_id: nurse.employee_id!,
                 }],
+                reviewers: [],
                 reason: 'maternity',
                 is_emergency: false,
               },

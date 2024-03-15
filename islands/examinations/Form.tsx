@@ -9,8 +9,9 @@ import {
 } from '../../types.ts'
 
 function ExaminationCategory(
-  { previously_completed, category }: {
+  { previously_completed, skipped, category }: {
     previously_completed: boolean
+    skipped: boolean
     category: RenderedPatientExaminationCategory
   },
 ) {
@@ -34,6 +35,7 @@ function ExaminationCategory(
         label='all normal'
         checked={all_normal.value}
         required={!something_checked.value}
+        disabled={skipped}
         onChange={(checked) => {
           all_normal.value = checked
           if (checked) {
@@ -49,6 +51,7 @@ function ExaminationCategory(
           name={`${category.category}.${finding.name}`}
           label={finding.label}
           checked={!!finding.value}
+          disabled={skipped}
           onChange={(checked) => {
             const next_finding = {
               ...finding,
@@ -74,15 +77,25 @@ export function PatientExaminationForm({
 }): JSX.Element {
   unsavedChangesWarning()
 
+  const skipped = useSignal(patient_examination.skipped)
+
   return (
-    <div className='grid grid-cols-1 sm:grid-cols-4 grid-flow-row-dense gap-5'>
-      {patient_examination.categories.map((category) => (
-        <ExaminationCategory
-          key={category.category}
-          previously_completed={patient_examination.completed}
-          category={category}
-        />
-      ))}
-    </div>
+    <>
+      <CheckboxGridItem
+        label='skip'
+        checked={skipped.value}
+        onChange={(checked) => skipped.value = checked}
+      />
+      <div className='grid grid-cols-1 sm:grid-cols-4 grid-flow-row-dense gap-5'>
+        {patient_examination.categories.map((category) => (
+          <ExaminationCategory
+            key={category.category}
+            previously_completed={patient_examination.completed}
+            category={category}
+            skipped={skipped.value}
+          />
+        ))}
+      </div>
+    </>
   )
 }

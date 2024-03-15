@@ -7,7 +7,7 @@ import FormRow from '../../islands/form/Row.tsx'
 const columns: TableColumn<RenderedInventoryHistory>[] = [
   {
     label: 'Date',
-    dataKey(row) {
+    data(row) {
       return (
         <div>
           {row.created_at.toLocaleString()}
@@ -17,15 +17,15 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
   },
   {
     label: 'Procurer',
-    dataKey: 'procured_by',
+    data: 'procured_by',
   },
   {
     label: 'Employee',
-    dataKey: 'created_by',
+    data: 'created_by',
   },
   {
     label: 'Added',
-    dataKey(row) {
+    data(row) {
       return (
         <div>
           {row.type !== 'consumption' && (
@@ -39,7 +39,7 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
   },
   {
     label: 'Consumed',
-    dataKey(row) {
+    data(row) {
       return (
         <div>
           {row.type === 'consumption' && (

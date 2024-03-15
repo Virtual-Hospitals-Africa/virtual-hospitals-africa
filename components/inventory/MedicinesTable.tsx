@@ -6,19 +6,19 @@ import FormRow from '../../islands/form/Row.tsx'
 const columns: TableColumn<RenderedFacilityMedicine>[] = [
   {
     label: 'Trade Name',
-    dataKey: 'trade_name',
+    data: 'trade_name',
   },
   {
     label: 'Manufacturer',
-    dataKey: 'manufacturer_name',
+    data: 'manufacturer_name',
   },
   {
     label: 'Quantity',
-    dataKey: 'quantity_on_hand',
+    data: 'quantity_on_hand',
   },
   {
     label: 'History',
-    dataKey(row) {
+    data(row) {
       return (
         <div>
           <Button>View</Button>

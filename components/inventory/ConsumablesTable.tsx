@@ -13,15 +13,15 @@ export default function FacilityConsumablesTable(
   const columns: TableColumn<RenderedFacilityConsumable>[] = [
     {
       label: 'Name',
-      dataKey: 'name',
+      data: 'name',
     },
     {
       label: 'Quantity',
-      dataKey: 'quantity_on_hand',
+      data: 'quantity_on_hand',
     },
     {
       label: 'Actions',
-      dataKey(row) {
+      data(row) {
         return (
           <div>
             <a

@@ -1,5 +1,6 @@
 import { JSX } from 'preact'
 import Table from '../library/Table.tsx'
+import { Person } from '../library/Person.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
@@ -21,17 +22,22 @@ export default function EmployeesTable({
 }: EmployeesTableProps): JSX.Element {
   const columns: TableColumn<FacilityEmployeeOrInvitee>[] = [
     {
-      label: null,
-      dataKey: 'avatar_url',
-      type: 'avatar',
-    },
-    {
-      label: 'Health Worker',
-      dataKey: 'display_name',
+      label: 'Employee',
+      headerClassName: 'pl-12',
+      data(row) {
+        return (
+          <Person
+            person={{
+              ...row,
+              name: row.display_name,
+            }}
+          />
+        )
+      },
     },
     {
       label: 'Profession',
-      dataKey(row) {
+      data(row) {
         return row.professions.map(({ profession }) => profession).join(', ')
       },
     },

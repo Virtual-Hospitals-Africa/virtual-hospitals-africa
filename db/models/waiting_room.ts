@@ -294,6 +294,65 @@ export async function get(
               .as('href'),
           ]),
       ).as('providers'),
+
+      jsonArrayFrom(
+        eb.selectFrom('doctor_reviews')
+          .innerJoin(
+            'employment',
+            'doctor_reviews.reviewer_id',
+            'employment.id',
+          )
+          .innerJoin(
+            'health_workers',
+            'health_workers.id',
+            'employment.health_worker_id',
+          )
+          .whereRef(
+            'doctor_reviews.encounter_id',
+            '=',
+            'patient_encounters.id',
+          )
+          .select([
+            'employment.health_worker_id',
+            'employment.id as employee_id',
+            'health_workers.name',
+            'employment.profession',
+            sql<boolean>`TRUE`.as('seen'),
+            sql<
+              string
+            >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
+              .as('href'),
+          ])
+          .unionAll(
+            eb.selectFrom('doctor_review_requests')
+              .innerJoin(
+                'employment',
+                'doctor_reviews.reviewer_id',
+                'employment.id',
+              )
+              .innerJoin(
+                'health_workers',
+                'health_workers.id',
+                'employment.health_worker_id',
+              )
+              .whereRef(
+                'doctor_reviews.encounter_id',
+                '=',
+                'patient_encounters.id',
+              )
+              .select([
+                'employment.health_worker_id',
+                'employment.id as employee_id',
+                'health_workers.name',
+                'employment.profession',
+                sql<boolean>`FALSE`.as('seen'),
+                sql<
+                  string
+                >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
+                  .as('href'),
+              ]),
+          ),
+      ).as('reviewers'),
     ])
     .where('patient_encounters.id', 'in', encounters_to_show)
     .where((eb) =>
