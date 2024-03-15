@@ -19,6 +19,11 @@ export async function up(db: Kysely<any>) {
 
   await createStandardTable(db, 'doctor_review_requests', (qb) =>
     qb
+      .addColumn('patient_id', 'integer', (col) =>
+        col
+          .notNull()
+          .references('patients.id')
+          .onDelete('cascade'))
       .addColumn('encounter_id', 'integer', (col) =>
         col
           .notNull()
@@ -33,30 +38,61 @@ export async function up(db: Kysely<any>) {
         col
           .references('facilities.id')
           .onDelete('cascade'))
-      .addColumn('requesting_employee_id', 'integer', (col) =>
+      .addColumn('requesting_doctor_id', 'integer', (col) =>
         col
           .references('employment.id')
           .onDelete('cascade'))
+      .addColumn('requester_notes', 'text')
+      .addColumn('pending', 'boolean', (col) => col.notNull().defaultTo(true))
+      .addUniqueConstraint('once_per_patient_facility', [
+        'patient_id',
+        'facility_id',
+      ])
+      .addUniqueConstraint('once_per_patient_employee', [
+        'patient_id',
+        'requesting_doctor_id',
+      ])
       .addCheckConstraint(
         'facility_or_requesting_employee',
         sql`
-        (facility_id is not null and requesting_employee_id is null) or
-        (facility_id is null and requesting_employee_id is not null)
+        (facility_id is not null and requesting_doctor_id is null) or
+        (facility_id is null and requesting_doctor_id is not null)
       `,
       ))
 
   await createStandardTable(db, 'doctor_reviews', (qb) =>
     qb
-      .addColumn('review_request_id', 'integer', (col) =>
-        col
-          .notNull()
-          .references('doctor_review_requests.id')
-          .onDelete('cascade'))
       .addColumn('reviewer_id', 'integer', (col) =>
         col
           .notNull()
           .references('employment.id')
-          .onDelete('cascade')))
+          .onDelete('cascade'))
+      .addColumn('patient_id', 'integer', (col) =>
+        col
+          .notNull()
+          .references('patients.id')
+          .onDelete('cascade'))
+      .addColumn('encounter_id', 'integer', (col) =>
+        col
+          .notNull()
+          .references('patient_encounters.id')
+          .onDelete('cascade'))
+      .addColumn('requested_by', 'integer', (col) =>
+        col
+          .notNull()
+          .references('patient_encounter_providers.id')
+          .onDelete('cascade'))
+      .addColumn('requester_notes', 'text')
+      .addColumn('reviewer_notes', 'text')
+      .addColumn('completed_at', 'timestamptz')
+      .addUniqueConstraint('reviewed_once', [
+        'encounter_id',
+        'reviewer_id',
+      ])
+      .addUniqueConstraint('once_per_patient', [
+        'patient_id',
+        'completed_at',
+      ], (constraint) => constraint.nullsNotDistinct()))
 
   await createStandardTable(db, 'doctor_review_steps', (qb) =>
     qb.addColumn(
@@ -68,13 +104,13 @@ export async function up(db: Kysely<any>) {
         ),
     )
       .addColumn(
-        'doctor_review_step',
+        'step',
         sql`doctor_review_step`,
         (col) => col.notNull().references('doctor_review.step'),
       )
       .addUniqueConstraint('doctor_review_step_once', [
         'doctor_review_id',
-        'doctor_review_step',
+        'step',
       ]))
 }
 
@@ -82,4 +118,5 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('doctor_review_steps').execute()
   await db.schema.dropTable('doctor_reviews').execute()
   await db.schema.dropTable('doctor_review_requests').execute()
+  await db.schema.dropType('doctor_review_step').execute()
 }

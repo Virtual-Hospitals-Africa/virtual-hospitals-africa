@@ -1,8 +1,8 @@
 import { JSX } from 'preact'
 import { computed, useSignal } from '@preact/signals'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import unsavedChangesWarning from '../../components/library/form/unsaved_changes_warning.tsx'
-import { CheckboxGridItem } from '../../components/library/form/Inputs.tsx'
+import unsavedChangesWarning from '../form/unsaved_changes_warning.tsx'
+import { CheckboxGridItem } from '../form/Inputs.tsx'
 import {
   RenderedPatientExamination,
   RenderedPatientExaminationCategory,

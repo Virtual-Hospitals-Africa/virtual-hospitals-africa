@@ -4,7 +4,7 @@ import {
   EncounterLayout,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../components/library/form/buttons.tsx'
+import FormButtons from '../../../../../../islands/form/buttons.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,

@@ -1,10 +1,7 @@
-import { sql } from 'kysely'
-import { HealthWorkerProfessions } from '../../db.d.ts'
 import { Maybe, Profession, Provider, TrxOrDb } from '../../types.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
 import { getWithTokensQuery } from './health_workers.ts'
 import { assertAll } from '../../util/assertAll.ts'
-import { jsonArrayFrom } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
@@ -50,7 +47,7 @@ const getQuery = (trx: TrxOrDb) =>
 
 function assertProvider(
   provider: Omit<Provider, 'profession'> & {
-    profession: HealthWorkerProfessions
+    profession: Profession
   },
 ): asserts provider is Provider {
   assertOr400(
@@ -115,6 +112,7 @@ export async function search(
     facility_id?: Maybe<number>
     professions?: Maybe<Profession[]>
     prioritize_facility_id?: Maybe<number>
+    facility_kind?: Maybe<'virtual' | 'physical'>
   },
 ) {
   if (opts.professions) {
@@ -140,50 +138,18 @@ export async function search(
       'employment.facility_id',
       'facilities.id',
     )
-    .select((eb) => [
+    .select([
+      'employment.id',
       'health_workers.id as health_worker_id',
       'health_workers.avatar_url',
       'health_workers.email',
       'health_workers.name',
-      jsonArrayFrom(
-        eb.selectFrom('employment')
-          .innerJoin(
-            'facilities',
-            'employment.facility_id',
-            'facilities.id',
-          )
-          .select([
-            'employment.id as provider_id',
-            'employment.facility_id',
-            'facilities.name as facility_name',
-            sql<Profession[]>`JSON_AGG(employment.profession)`.as(
-              'professions',
-            ),
-          ])
-          .whereRef(
-            'employment.health_worker_id',
-            '=',
-            'health_workers.id',
-          )
-          .where(
-            opts.facility_id
-              ? sql<boolean>`employment.facility_id = ${opts.facility_id}`
-              : sql<boolean>`TRUE`,
-          )
-          .where('employment.profession', 'in', [
-            'doctor' as const,
-            'nurse' as const,
-          ])
-          .groupBy([
-            'employment.id',
-            'employment.facility_id',
-            'facilities.name',
-          ]),
-      ).as('facilities'),
+      'employment.facility_id',
+      'employment.profession',
+      'facilities.name as facility_name',
     ])
     .where('health_workers.name', 'is not', null)
     .where('profession', 'in', opts.professions || ['doctor', 'nurse'])
-    .groupBy('health_workers.id')
     .limit(20)
 
   if (opts.search) {
@@ -194,15 +160,21 @@ export async function search(
     query = query.where('employment.facility_id', '=', opts.facility_id)
   }
 
+  if (opts.facility_kind) {
+    query = query.where(
+      'facilities.address',
+      opts.facility_kind === 'physical' ? 'is not' : 'is',
+      null,
+    )
+  }
+
   const providers = await query.execute()
 
   const results_with_description = providers.map((hw) => {
     assert(hasName(hw))
     return {
       ...hw,
-      description: hw.facilities.map(({ professions, facility_name }) =>
-        `${professions.join(', ')} @ ${facility_name}`
-      ),
+      description: `${hw.profession} @ ${hw.facility_name}`,
     }
   })
 
@@ -210,12 +182,7 @@ export async function search(
 
   return sortBy(
     results_with_description,
-    (hw) =>
-      hw.facilities.some((facility) =>
-          facility.facility_id === opts.prioritize_facility_id
-        )
-        ? 0
-        : 1,
+    (hw) => hw.facility_id === opts.prioritize_facility_id ? 0 : 1,
   )
 }
 

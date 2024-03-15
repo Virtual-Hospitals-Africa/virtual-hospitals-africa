@@ -6,6 +6,7 @@ import {
   itUsesTrxAnd,
   withTestFacility,
 } from '../web/utilities.ts'
+import generateUUID from '../../util/uuid.ts'
 
 describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
   describe('getAvailableTestsInFacility', () => {
@@ -73,18 +74,21 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
         withTestFacility(trx, async (facility_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
+            facility_id,
           })
+
+          const consumable_name = generateUUID()
 
           const consumable = await trx
             .insertInto('consumables')
             .returning('id')
-            .values({ name: 'bandage' })
+            .values({ name: consumable_name })
             .executeTakeFirstOrThrow()
 
           const procurer = await trx
             .insertInto('procurers')
             .returning('id')
-            .values({ name: 'company 1' })
+            .values({ name: generateUUID() })
             .executeTakeFirstOrThrow()
 
           await inventory.addFacilityConsumable(trx, {
@@ -113,13 +117,13 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
 
           const facilityConsumables = await inventory.getFacilityConsumables(
             trx,
-            { facility_id: facility_id },
+            { facility_id },
           )
 
           assertEquals(facilityConsumables, [
             {
               consumable_id: consumable.id,
-              name: 'bandage',
+              name: consumable_name,
               quantity_on_hand: 5,
             },
           ])

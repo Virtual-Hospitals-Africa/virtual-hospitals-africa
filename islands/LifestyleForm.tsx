@@ -4,10 +4,10 @@ import {
   Select,
   YesNoGrid,
   YesNoQuestion,
-} from '../components/library/form/Inputs.tsx'
-import { ListboxItem } from '../components/library/form/Listbox.tsx'
+} from './form/Inputs.tsx'
+import { ListboxItem } from './form/Listbox.tsx'
 import { Alcohol, Lifestyle, SexualActivity, Smoking } from '../types.ts'
-import FormRow from '../components/library/form/Row.tsx'
+import FormRow from './form/Row.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
 import PatientAddressForm from '../components/patients/intake/AddressForm.tsx'
 

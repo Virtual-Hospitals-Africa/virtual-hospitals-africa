@@ -18,6 +18,7 @@ import { AcademicCapIcon } from './icons/heroicons/outline.tsx'
 import { ArrowRightOnRectangleIcon } from './icons/heroicons/outline.tsx'
 import { ClockIcon } from './icons/heroicons/outline.tsx'
 import { UserGroupIcon } from './icons/heroicons/outline.tsx'
+import { replaceParams } from '../../util/replaceParams.ts'
 
 export type SidebarProps = {
   top: {
@@ -83,22 +84,6 @@ const home_page_nav_links: LinkDef[] = [
   },
   { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
 ]
-
-export function replaceParams(route: string, params: Record<string, string>) {
-  let replaced = route
-  for (const param in params) {
-    const placeholder = `/:${param}`
-    const paramValue = `/${params[param]}`
-    replaced = replaced.replace(placeholder, paramValue)
-  }
-  assert(
-    !replaced.includes(':'),
-    `replaceParams failed to replace all params\nreplaceParams("${route}", ${
-      JSON.stringify(params)
-    }) => "${replaced}"`,
-  )
-  return replaced
-}
 
 export function GenericSidebar(
   { nav_links, route, params, urlSearchParams, top }: SidebarProps,

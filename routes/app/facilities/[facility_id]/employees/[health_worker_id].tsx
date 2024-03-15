@@ -3,7 +3,7 @@ import { Container } from '../../../../../components/library/Container.tsx'
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
-import FormButtons from '../../../../../components/library/form/buttons.tsx'
+import FormButtons from '../../../../../islands/form/buttons.tsx'
 import { FacilityContext } from '../_middleware.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 

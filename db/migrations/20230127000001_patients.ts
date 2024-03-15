@@ -58,7 +58,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn(
           'primary_doctor_id',
           'integer',
-          (col) => col.references('health_workers.id'),
+          (col) => col.references('employment.id'),
         )
         .addColumn('unregistered_primary_doctor_name', 'varchar(255)')
         .addUniqueConstraint('patient_national_id_number', [

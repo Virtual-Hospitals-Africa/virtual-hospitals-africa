@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import cls from '../../../util/cls.ts'
+import cls from '../../util/cls.ts'
 
 export default function Form(
   { className, ...props }: JSX.HTMLAttributes<HTMLFormElement> & {

@@ -1,7 +1,7 @@
 import { RenderedFacilityMedicine } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
-import FormRow from '../library/form/Row.tsx'
+import FormRow from '../../islands/form/Row.tsx'
 
 const columns: TableColumn<RenderedFacilityMedicine>[] = [
   {

@@ -66,8 +66,6 @@ export type GuardianRelation =
   | 'sibling'
   | 'sibling of parent'
 
-export type HealthWorkerProfessions = 'admin' | 'doctor' | 'nurse'
-
 export type Int8 = ColumnType<
   string,
   bigint | number | string,
@@ -156,6 +154,8 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:other_scheduling_options'
   | 'onboarded:make_appointment:subsequent_ask_for_media'
   | 'other_end_of_demo'
+
+export type Profession = 'admin' | 'doctor' | 'nurse'
 
 export type Religion =
   | 'African Traditional Religion'
@@ -289,24 +289,32 @@ export interface DoctorReviewRequests {
   encounter_id: number
   facility_id: number | null
   id: Generated<number>
+  patient_id: number
+  pending: Generated<boolean>
   requested_by: number
-  requesting_employee_id: number | null
+  requester_notes: string | null
+  requesting_doctor_id: number | null
   updated_at: Generated<Timestamp>
 }
 
 export interface DoctorReviews {
+  completed_at: Timestamp | null
   created_at: Generated<Timestamp>
+  encounter_id: number
   id: Generated<number>
-  review_request_id: number
+  patient_id: number
+  requested_by: number
+  requester_notes: string | null
   reviewer_id: number
+  reviewer_notes: string | null
   updated_at: Generated<Timestamp>
 }
 
 export interface DoctorReviewSteps {
   created_at: Generated<Timestamp>
   doctor_review_id: number
-  doctor_review_step: DoctorReviewStep
   id: Generated<number>
+  step: DoctorReviewStep
   updated_at: Generated<Timestamp>
 }
 
@@ -322,7 +330,7 @@ export interface Employment {
   facility_id: number
   health_worker_id: number
   id: Generated<number>
-  profession: HealthWorkerProfessions
+  profession: Profession
   updated_at: Generated<Timestamp>
 }
 
@@ -431,7 +439,7 @@ export interface HealthWorkerInvitees {
   email: string
   facility_id: number
   id: Generated<number>
-  profession: HealthWorkerProfessions
+  profession: Profession
   updated_at: Generated<Timestamp>
 }
 

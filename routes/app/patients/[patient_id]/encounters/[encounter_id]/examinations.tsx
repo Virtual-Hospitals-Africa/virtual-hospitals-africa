@@ -8,7 +8,7 @@ import {
   LoggedInHealthWorkerHandlerWithProps,
   RenderedPatientEncounterExamination,
 } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../components/library/form/buttons.tsx'
+import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import {
   getPatientExamination,
   upsertFindings,

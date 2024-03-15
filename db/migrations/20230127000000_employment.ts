@@ -3,7 +3,7 @@ import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
-    .createType('health_worker_professions')
+    .createType('profession')
     .asEnum([
       'admin',
       'doctor',
@@ -25,7 +25,7 @@ export async function up(db: Kysely<unknown>) {
             .onDelete('cascade'))
         .addColumn(
           'profession',
-          sql`health_worker_professions`,
+          sql`profession`,
           (column) => column.notNull(),
         )
         .addUniqueConstraint('only_employed_once_per_profession', [
@@ -69,5 +69,5 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('provider_calendars').execute()
   await db.schema.dropTable('employment').execute()
-  await db.schema.dropType('health_worker_professions').execute()
+  await db.schema.dropType('profession').execute()
 }

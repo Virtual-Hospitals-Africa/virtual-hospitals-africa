@@ -3,7 +3,7 @@ import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import { Container } from '../../../../../../components/library/Container.tsx'
 import Layout from '../../../../../../components/library/Layout.tsx'
-import Form from '../../../../../../components/library/form/Form.tsx'
+import Form from '../../../../../../islands/form/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   RenderedPatientEncounter,
@@ -19,15 +19,13 @@ import {
 } from '../../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
 import { Person } from '../../../../../../components/library/Person.tsx'
-import {
-  replaceParams,
-  StepsSidebar,
-} from '../../../../../../components/library/Sidebar.tsx'
+import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
 import uniq from '../../../../../../util/uniq.ts'
 import { completedStep } from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
+import { replaceParams } from '../../../../../../util/replaceParams.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -51,7 +49,6 @@ export async function completeStep(ctx: EncounterContext) {
     encounter_id: ctx.state.encounter.encounter_id,
     step,
   })
-
   return redirect(nextLink(ctx))
 }
 
@@ -155,7 +152,10 @@ export async function handler(
   ctx.state.patient = await patients.getCard(ctx.state.trx, { id: patient_id })
   Object.assign(
     ctx.state,
-    await removeFromWaitingRoomAndAddSelfAsProvider(ctx, encounter_id),
+    await removeFromWaitingRoomAndAddSelfAsProvider(
+      ctx,
+      encounter_id,
+    ),
   )
   return ctx.next()
 }
@@ -173,7 +173,7 @@ export const nextLink = ({ route, params }: FreshContext) => {
   const next_link = nav_links[current_index + 1]
   if (!next_link) {
     return replaceParams(
-      `/app/patients/:patient_id/encounters/open/vitals`,
+      `/app/patients/:patient_id/encounters/:encounter_id/vitals`,
       params,
     )
   }

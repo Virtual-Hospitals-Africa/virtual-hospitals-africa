@@ -1,5 +1,5 @@
 import { JSX } from 'preact'
-import { CheckboxInput, TextInput } from '../components/library/form/Inputs.tsx'
+import { CheckboxInput, TextInput } from './form/Inputs.tsx'
 import { Signal } from '@preact/signals'
 import { assert } from 'std/assert/assert.ts'
 

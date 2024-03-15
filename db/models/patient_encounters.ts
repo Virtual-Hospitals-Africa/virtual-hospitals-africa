@@ -5,7 +5,7 @@ import * as examinations from './examinations.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
+import { jsonArrayFrom, jsonArrayFromColumn, now } from '../helpers.ts'
 import { EncounterReason, EncounterStep } from '../../db.d.ts'
 import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 import { ensureProviderId } from './providers.ts'
@@ -275,4 +275,18 @@ export function completedStep(
     .values({ patient_encounter_id: encounter_id, encounter_step: step })
     .onConflict((oc) => oc.doNothing())
     .execute()
+}
+
+export function close(
+  trx: TrxOrDb,
+  { encounter_id }: {
+    encounter_id: number
+  },
+) {
+  return trx.updateTable('patient_encounters')
+    .set({
+      closed_at: now,
+    })
+    .where('id', '=', encounter_id)
+    .executeTakeFirstOrThrow()
 }

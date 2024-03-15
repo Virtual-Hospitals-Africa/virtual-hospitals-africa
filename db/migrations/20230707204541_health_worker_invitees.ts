@@ -13,7 +13,7 @@ export function up(db: Kysely<unknown>) {
             .onDelete('cascade'))
         .addColumn(
           'profession',
-          sql`health_worker_professions`,
+          sql`profession`,
           (col) => col.notNull(),
         )
         .addUniqueConstraint('only_invited_once_per_profession', [

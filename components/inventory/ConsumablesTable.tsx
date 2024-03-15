@@ -1,7 +1,7 @@
 import { RenderedFacilityConsumable } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
-import FormRow from '../library/form/Row.tsx'
+import FormRow from '../../islands/form/Row.tsx'
 
 export default function FacilityConsumablesTable(
   { consumables, facility_id, isAdmin }: {

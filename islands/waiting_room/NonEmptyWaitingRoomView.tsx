@@ -1,5 +1,5 @@
 import { RenderedWaitingRoom } from '../../types.ts'
-import FormRow from '../../components/library/form/Row.tsx'
+import FormRow from '../form/Row.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import WaitingRoomTable from '../../components/waiting_room/Table.tsx'

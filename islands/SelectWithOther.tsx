@@ -1,9 +1,5 @@
 import { useState } from 'preact/hooks'
-import {
-  Select,
-  SelectProps,
-  TextInput,
-} from '../components/library/form/Inputs.tsx'
+import { Select, SelectProps, TextInput } from './form/Inputs.tsx'
 
 export default function SelectWithOther(
   { name, children, ...props }: SelectProps,

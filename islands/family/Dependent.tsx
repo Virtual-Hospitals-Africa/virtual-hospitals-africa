@@ -1,8 +1,8 @@
 import { useState } from 'preact/hooks'
 import { FamilyRelation, PatientDemographicInfo } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
-import FormRow from '../../components/library/form/Row.tsx'
-import { TextInput } from '../../components/library/form/Inputs.tsx'
+import FormRow from '../form/Row.tsx'
+import { TextInput } from '../form/Inputs.tsx'
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 

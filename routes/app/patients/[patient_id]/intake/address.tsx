@@ -9,7 +9,7 @@ import redirect from '../../../../../util/redirect.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons from '../../../../../components/library/form/buttons.tsx'
+import Buttons from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import {
