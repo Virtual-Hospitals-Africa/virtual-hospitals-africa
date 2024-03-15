@@ -1,31 +1,17 @@
-import { BellIcon } from './icons/heroicons/outline.tsx'
 import Avatar from './Avatar.tsx'
 import { LogoWithFullText } from './Logo.tsx'
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
 import BackLink from '../../islands/BackLink.tsx'
+import { NotificationsButton } from '../../islands/Notifications.tsx'
+import { RenderedNotification } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export type HeaderProps = {
   title: string
   variant: 'home page' | 'form' | 'just logo'
   avatarUrl?: Maybe<string>
-}
-
-function Notification() {
-  return (
-    <button
-      type='button'
-      className='rounded-full bg-white p-1 text-indigo-700 hover:text-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-900 focus:ring-offset-2 focus:ring-offset-gray-800'
-    >
-      <span className='sr-only'>View notifications</span>
-      <BellIcon
-        className='h-6 w-6'
-        stroke-width='1.5'
-        stroke='currentColor'
-        aria-hidden='true'
-      />
-    </button>
-  )
+  notifications?: RenderedNotification[]
 }
 
 function HeaderLeft(
@@ -47,11 +33,14 @@ function HeaderRight({ children }: { children: ComponentChildren }) {
 }
 
 function HeaderRightWithAvatar(
-  { avatarUrl }: { avatarUrl?: Maybe<string> },
+  { avatarUrl, notifications }: {
+    avatarUrl?: Maybe<string>
+    notifications: RenderedNotification[]
+  },
 ) {
   return (
     <HeaderRight>
-      <Notification />
+      <NotificationsButton notifications={notifications} />
       <button
         type='button'
         className='flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800'
@@ -98,10 +87,17 @@ function HeaderWithoutNav() {
   )
 }
 
-export function Header({ title, avatarUrl, variant }: HeaderProps) {
+export function Header(
+  { title, avatarUrl, variant, notifications }: HeaderProps,
+) {
   if (variant === 'just logo') return <HeaderWithoutNav />
   const right = variant === 'home page'
-    ? <HeaderRightWithAvatar avatarUrl={avatarUrl} />
+    ? (
+      <HeaderRightWithAvatar
+        avatarUrl={avatarUrl}
+        notifications={(assert(notifications), notifications)}
+      />
+    )
     : <HeaderRightClose />
 
   return (

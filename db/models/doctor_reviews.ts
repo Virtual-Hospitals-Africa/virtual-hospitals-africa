@@ -67,6 +67,7 @@ export function ofHealthWorker(
       ).$notNull().as('patient'),
       jsonBuildObject({
         name: eb.ref('requested_by_health_worker.name'),
+        avatar_url: eb.ref('requested_by_health_worker.avatar_url'),
         profession: eb.ref('requested_by_employee.profession').$castTo<
           'doctor' | 'nurse'
         >(),
@@ -155,6 +156,7 @@ export function requests(
       ).$notNull().as('patient'),
       jsonBuildObject({
         name: eb.ref('requested_by_health_worker.name'),
+        avatar_url: eb.ref('requested_by_health_worker.avatar_url'),
         profession: eb.ref('requested_by_employee.profession').$castTo<
           'doctor' | 'nurse'
         >(),

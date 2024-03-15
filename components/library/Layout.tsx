@@ -1,13 +1,13 @@
 import { ComponentChild, ComponentChildren } from 'preact'
-// import BottomNav from './BottomNav.tsx'
 import { Header } from './Header.tsx'
-import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
 import { HomePageSidebar } from './Sidebar.tsx'
 import { EmployedHealthWorker, Maybe } from '../../types.ts'
+import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import WarningMessage from '../../islands/WarningMessage.tsx'
+import { RenderedNotification } from '../../types.ts'
 
 export type LayoutProps =
   & {
@@ -28,9 +28,10 @@ export type LayoutProps =
   })
 
 function AppLayoutContents(
-  { title, avatarUrl, variant, sidebar, children }: {
+  { title, avatarUrl, notifications, variant, sidebar, children }: {
     title: string
     avatarUrl?: Maybe<string>
+    notifications?: RenderedNotification[]
     variant: 'home page' | 'form'
     sidebar: ComponentChild
     children: ComponentChildren
@@ -42,12 +43,12 @@ function AppLayoutContents(
       <section className='md:pl-48'>
         <Header
           title={title}
-          avatarUrl={avatarUrl}
           variant={variant}
+          avatarUrl={avatarUrl}
+          notifications={notifications}
         />
         {children}
       </section>
-      {/* <BottomNav route={route} /> */}
     </>
   )
 }
@@ -98,6 +99,7 @@ export default function Layout(props: LayoutProps) {
         <AppLayoutContents
           {...props}
           avatarUrl={props.health_worker.avatar_url}
+          notifications={props.health_worker.notifications}
           sidebar={
             <HomePageSidebar
               route={props.route}
