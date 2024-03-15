@@ -294,8 +294,15 @@ export async function get(
               .as('href'),
           ]),
       ).as('providers'),
-    ]).where('patient_encounters.id', 'in', encounters_to_show)
-    .where('patient_encounters.closed_at', 'is', null)
+    ])
+    .where('patient_encounters.id', 'in', encounters_to_show)
+    .where((eb) =>
+      eb.or([
+        eb('patient_encounters.closed_at', 'is', null),
+        eb('doctor_reviews.id', 'is not', null),
+        eb('doctor_review_requests.id', 'is not', null),
+      ])
+    )
     .orderBy(['is_emergency desc', 'waiting_room.created_at asc'])
 
   const patients_in_waiting_room = await query.execute()
