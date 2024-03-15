@@ -10,12 +10,12 @@ import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
-import { removeFromWaitingRoomAndAddSelfAsProvider } from '../encounters/[encounter_id]/_middleware.tsx'
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { INTAKE_STEPS, isIntakeStep } from '../../../../../shared/intake.ts'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
+import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../../../../db/models/patient_encounters.ts'
 
 type AdditionalContext = {
   is_review: false
@@ -42,7 +42,11 @@ export async function handler(
   })
 
   // TODO: use the encounter as part of intake?
-  await removeFromWaitingRoomAndAddSelfAsProvider(ctx, 'open')
+  await removeFromWaitingRoomAndAddSelfAsProvider(ctx.state.trx, {
+    patient_id,
+    encounter_id: 'open',
+    health_worker: ctx.state.healthWorker,
+  })
 
   const patient = await getting_patient
   assertOr404(patient, 'Patient not found')
@@ -65,7 +69,7 @@ export const nextLink = ({ route, params }: FreshContext) => {
   const next_link = intake_nav_links[current_index + 1]
   if (!next_link) {
     return replaceParams(
-      `/app/patients/:patient_id/intake/personal`,
+      `/app/patients/:patient_id/encounters/open/vitals`,
       params,
     )
   }

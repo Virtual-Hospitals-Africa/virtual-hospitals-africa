@@ -72,6 +72,7 @@ export async function addSelfAsReviewer(
     review_id,
     ...requested,
     steps_completed: [],
+    completed: false,
   }
   healthWorker.reviews.in_progress.push(started_review)
   healthWorker.reviews.requested = healthWorker.reviews.requested.filter(

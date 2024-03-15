@@ -3,6 +3,8 @@ import { assert } from 'std/assert/assert.ts'
 import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
 import * as patients from './patients.ts'
 import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import { INTAKE_STEPS } from '../../shared/intake.ts'
+import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
 
 export function add(
@@ -71,22 +73,52 @@ export async function get(
     .where('employment.facility_id', '=', facility_id)
     .select('patient_encounter_providers.patient_encounter_id')
 
-  const encounters_to_show = facility_waiting_room.union(
-    seeing_facility_providers,
-  ).distinct()
+  const review_requested_of_facility = trx
+    .selectFrom('doctor_review_requests')
+    .where('doctor_review_requests.facility_id', '=', facility_id)
+    .select('encounter_id as patient_encounter_id')
+
+  const actively_being_reviewed_by_facility_doctor = trx
+    .selectFrom('doctor_reviews')
+    .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
+    .where('employment.facility_id', '=', facility_id)
+    .where('doctor_reviews.completed_at', 'is', null)
+    .select('doctor_reviews.encounter_id as patient_encounter_id')
+
+  const encounters_to_show = facility_waiting_room
+    .union(seeing_facility_providers)
+    .union(review_requested_of_facility)
+    .union(actively_being_reviewed_by_facility_doctor)
+    .distinct()
 
   const query = trx
     .selectFrom('patient_encounters')
     .leftJoin(
       'waiting_room',
-      'patient_encounters.id',
-      'waiting_room.patient_encounter_id',
+      (join) =>
+        join
+          .onRef(
+            'waiting_room.patient_encounter_id',
+            '=',
+            'patient_encounters.id',
+          )
+          .on('waiting_room.facility_id', '=', facility_id),
     )
     .innerJoin('patients', 'patients.id', 'patient_encounters.patient_id')
     .leftJoin(
       'appointments',
       'appointments.id',
       'patient_encounters.appointment_id',
+    )
+    .leftJoin(
+      'doctor_reviews',
+      'doctor_reviews.encounter_id',
+      'patient_encounters.id',
+    )
+    .leftJoin(
+      'doctor_review_requests',
+      'doctor_review_requests.encounter_id',
+      'patient_encounters.id',
     )
     .select((eb) => [
       jsonBuildObject({
@@ -98,22 +130,6 @@ export async function get(
         >`patients.gender || ', ' || to_char(date_of_birth, 'DD/MM/YYYY')`,
       }).as('patient'),
       'patient_encounters.reason',
-      jsonBuildObject({
-        view: eb.case()
-          .when(
-            eb('patients.completed_intake', '=', true),
-          ).then(sql<string>`concat('/app/patients/', patients.id::text)`)
-          .else(null).end(),
-        intake: eb.case()
-          .when(
-            eb('patients.completed_intake', '=', false),
-          ).then(
-            sql<
-              string
-            >`concat('/app/patients/', patients.id::text)`,
-          )
-          .else(null).end(),
-      }).as('actions'),
       eb('patient_encounters.reason', '=', 'emergency').as('is_emergency'),
       'appointments.id as appointment_id',
       'appointments.start as appointment_start',
@@ -121,6 +137,7 @@ export async function get(
       sql<string>`(current_timestamp - patient_encounters.created_at)::interval`
         .as('wait_time'),
       eb('waiting_room.id', 'is not', null).as('in_waiting_room'),
+
       eb.selectFrom('intake')
         .leftJoin(
           'patient_intake',
@@ -134,6 +151,7 @@ export async function get(
         .select('step')
         .limit(1)
         .as('awaiting_intake_step'),
+
       eb.selectFrom('intake')
         .innerJoin(
           'patient_intake',
@@ -189,6 +207,40 @@ export async function get(
         .select('step')
         .limit(1)
         .as('last_completed_encounter_step'),
+
+      jsonArrayFrom(
+        eb.selectFrom('doctor_review')
+          .leftJoin(
+            'doctor_review_steps',
+            (join) =>
+              join
+                .onRef(
+                  'doctor_review_steps.step',
+                  '=',
+                  'doctor_review.step',
+                )
+                .onRef(
+                  'doctor_review_steps.doctor_review_id',
+                  '=',
+                  'doctor_reviews.id',
+                ),
+          )
+          .orderBy('doctor_review.order', 'asc')
+          .where((eb) =>
+            eb.or([
+              eb('doctor_reviews.id', 'is not', null),
+              eb('doctor_review_requests.id', 'is not', null),
+            ])
+          )
+          .select((eb) => [
+            'doctor_review.step',
+            eb('doctor_review_steps.step', 'is not', null).as('completed'),
+          ]),
+      ).as('review_steps'),
+
+      eb('doctor_review_requests.id', 'is not', null).as('awaiting_review'),
+      eb('doctor_reviews.id', 'is not', null).as('in_review'),
+
       jsonArrayFrom(
         eb.selectFrom('appointment_providers')
           .innerJoin(
@@ -229,12 +281,13 @@ export async function get(
             '=',
             'patient_encounters.id',
           )
-          .select([
+          .select((eb_providers) => [
             'employment.health_worker_id',
             'employment.id as employee_id',
             'health_workers.name',
             'employment.profession',
-            'patient_encounter_providers.seen_at',
+            eb_providers('patient_encounter_providers.seen_at', 'is not', null)
+              .as('seen'),
             sql<
               string
             >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
@@ -261,6 +314,9 @@ export async function get(
         last_completed_intake_step,
         awaiting_encounter_step,
         last_completed_encounter_step,
+        awaiting_review,
+        in_review,
+        review_steps,
         ...rest
       },
     ) => {
@@ -279,10 +335,20 @@ export async function get(
           providers: appointment_providers,
         }
       }
+      const awaiting_review_step = review_steps.find(
+        (step) => !step.completed,
+      )?.step
 
       // TODO: clean this up?
       let status: string
-      if (completed_intake) {
+      if (awaiting_review) {
+        status = 'Awaiting Review'
+      } else if (in_review) {
+        status = 'In Review'
+        if (awaiting_review_step) {
+          status += ` (${awaiting_review_step})`
+        }
+      } else if (completed_intake) {
         if (in_waiting_room) {
           if (last_completed_encounter_step) {
             status = `Awaiting Consultation (${awaiting_encounter_step})`
@@ -305,6 +371,12 @@ export async function get(
       }
       assert(status)
 
+      const action = in_review || awaiting_review
+        ? 'review'
+        : completed_intake
+        ? 'view'
+        : 'intake'
+
       return {
         ...rest,
         patient,
@@ -312,6 +384,19 @@ export async function get(
         in_waiting_room,
         appointment,
         arrived_ago_display: arrivedAgoDisplay(wait_time),
+        actions: {
+          view: action === 'view' ? `/app/patients/${patient.id}` : null,
+          intake: action === 'intake'
+            ? `/app/patients/${patient.id}/intake/${
+              awaiting_intake_step || INTAKE_STEPS[0]
+            }`
+            : null,
+          review: action === 'review'
+            ? `/app/patients/${patient.id}/review/${
+              awaiting_review_step || DOCTOR_REVIEW_STEPS[0]
+            }`
+            : null,
+        },
       }
     },
   )

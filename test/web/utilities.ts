@@ -284,18 +284,36 @@ itUsesTrxAnd.rejects = (
     await assertRejects(() => withTrx(callback), Error)
   })
 
+export function withTestFacility(
+  trx: TrxOrDb,
+  opts: (facility_id: number) => Promise<void>,
+  callback?: undefined,
+): Promise<void>
+
+export function withTestFacility(
+  trx: TrxOrDb,
+  opts: { kind: 'virtual' },
+  callback: (facility_id: number) => Promise<void>,
+): Promise<void>
+
 export async function withTestFacility(
   trx: TrxOrDb,
-  callback: (facility_id: number) => Promise<void>,
+  opts: { kind: 'virtual' } | ((facility_id: number) => Promise<void>),
+  callback?: (facility_id: number) => Promise<void>,
 ) {
+  let kind: 'virtual' | 'physical' = 'physical'
+  if (typeof opts === 'function') {
+    callback = opts
+  } else {
+    kind = opts.kind
+  }
   const facility = await facilities.add(trx, {
-    name: 'Test Clinic',
-    category: 'Clinic',
+    name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
+    category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
+    address: kind === 'physical' ? '123 Test St' : null,
+    latitude: kind === 'physical' ? 0 : undefined,
+    longitude: kind === 'physical' ? 0 : undefined,
     phone: null,
-    address: '123 Test St',
-    latitude: 0,
-    longitude: 0,
   })
-  await callback(facility.id)
-  // await facilities.remove(trx, facility)
+  await callback!(facility.id)
 }

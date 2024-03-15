@@ -1198,6 +1198,7 @@ export type RenderedDoctorReviewBase = {
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
   review_id: number
   steps_completed: DoctorReviewStep[]
+  completed: SqlBool
 }
 export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
   review_request_id: number
@@ -1866,7 +1867,7 @@ export type RenderedProvider = {
   name: string
   profession: string
   href: string
-  seen_at: Date | null
+  seen: SqlBool
 }
 export type RenderedWaitingRoom = {
   patient: {
@@ -1878,6 +1879,7 @@ export type RenderedWaitingRoom = {
   actions: {
     view: string | null
     intake: string | null
+    review: string | null
   }
   reason: EncounterReason
   is_emergency: SqlBool
@@ -1903,7 +1905,7 @@ export type RenderedPatientEncounterProvider = {
   profession: Profession
   health_worker_id: number
   health_worker_name: string
-  seen_at: null | Date
+  seen: SqlBool
 }
 
 export type RenderedPatientEncounterExamination = {

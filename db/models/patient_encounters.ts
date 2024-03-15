@@ -1,14 +1,22 @@
 import { sql } from 'kysely'
-import { Maybe, RenderedPatientEncounter, TrxOrDb } from '../../types.ts'
+import {
+  Maybe,
+  RenderedPatientEncounter,
+  RenderedPatientEncounterProvider,
+  TrxOrDb,
+} from '../../types.ts'
 import * as waiting_room from './waiting_room.ts'
 import * as examinations from './examinations.ts'
 import * as patients from './patients.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { assertOr400 } from '../../util/assertOr.ts'
+import { assertOr400, assertOr403, assertOr404 } from '../../util/assertOr.ts'
 import { jsonArrayFrom, jsonArrayFromColumn, now } from '../helpers.ts'
 import { EncounterReason, EncounterStep } from '../../db.d.ts'
 import { ENCOUNTER_REASONS } from '../../shared/encounter.ts'
 import { ensureProviderId } from './providers.ts'
+import { EmployedHealthWorker } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import uniq from '../../util/uniq.ts'
 
 export type Upsert =
   & {
@@ -213,14 +221,15 @@ export const baseQuery = (trx: TrxOrDb) =>
             'health_workers.id',
             'employment.health_worker_id',
           )
-          .select([
+          .select((eb_providers) => [
             'patient_encounter_providers.id as patient_encounter_provider_id',
             'employment.id as employment_id',
             'employment.facility_id',
             'employment.profession',
             'health_workers.id as health_worker_id',
             'health_workers.name as health_worker_name',
-            'patient_encounter_providers.seen_at',
+            eb_providers('patient_encounter_providers.seen_at', 'is not', null)
+              .as('seen'),
           ])
           .whereRef(
             'patient_encounter_providers.patient_encounter_id',
@@ -289,4 +298,97 @@ export function close(
     })
     .where('id', '=', encounter_id)
     .executeTakeFirstOrThrow()
+}
+
+/*
+  Note: this modifies health_worker.open_encounters in place
+*/
+export async function removeFromWaitingRoomAndAddSelfAsProvider(
+  trx: TrxOrDb,
+  { health_worker, patient_id, encounter_id }: {
+    health_worker: EmployedHealthWorker
+    patient_id: number
+    encounter_id: number | 'open'
+  },
+): Promise<{
+  encounter: RenderedPatientEncounter
+  encounter_provider: RenderedPatientEncounterProvider
+}> {
+  const encounter = health_worker.open_encounters.find(
+    (e) => encounter_id === 'open' && (e.patient_id === patient_id),
+  ) || await get(trx, {
+    encounter_id,
+    patient_id,
+  })
+
+  // TODO: start an encounter if it doesn't exist?
+  assertOr404(encounter, 'No open visit with this patient')
+
+  const removing_from_waiting_room = encounter.waiting_room_id && (
+    waiting_room.remove(trx, {
+      id: encounter.waiting_room_id,
+    })
+  )
+
+  let matching_provider = encounter.providers.find(
+    (provider) => provider.health_worker_id === health_worker.id,
+  )
+  if (!matching_provider) {
+    const being_seen_at_facilities = encounter.waiting_room_facility_id
+      ? [encounter.waiting_room_facility_id]
+      : uniq(
+        encounter.providers.map((p) => p.facility_id),
+      )
+
+    const employment = health_worker.employment.find(
+      (e) => being_seen_at_facilities.includes(e.facility.id),
+    )
+    assertOr403(
+      employment,
+      'You do not have access to this patient at this time. The patient is being seen at a facility you do not work at. Please contact the facility to get access to the patient.',
+    )
+
+    const provider = employment.roles.doctor || employment.roles.nurse
+
+    if (!provider) {
+      assert(employment.roles.admin)
+      assertOr403(
+        false,
+        'You must be a nurse or doctor to edit patient information as part of an encounter',
+      )
+    }
+
+    const added_provider = await addProvider(trx, {
+      encounter_id: encounter.encounter_id,
+      provider_id: provider.employment_id,
+      seen_now: true,
+    })
+
+    assert(added_provider.seen_at)
+
+    matching_provider = {
+      patient_encounter_provider_id: added_provider.id,
+      employment_id: provider.employment_id,
+      facility_id: employment.facility.id,
+      profession: employment.roles.doctor ? 'doctor' : 'nurse',
+      health_worker_id: health_worker.id,
+      health_worker_name: health_worker.name,
+      seen: true,
+    }
+    encounter.providers.push(matching_provider)
+  } else if (!matching_provider.seen) {
+    const { seen_at } = await markProviderSeen(trx, {
+      patient_encounter_provider_id:
+        matching_provider.patient_encounter_provider_id,
+    })
+    assert(seen_at)
+    matching_provider.seen = true
+  }
+
+  await removing_from_waiting_room
+
+  return {
+    encounter,
+    encounter_provider: matching_provider,
+  }
 }

@@ -38,7 +38,8 @@ describe(
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
-                  intake: `/app/patients/${patient.id}`,
+                  review: null,
+                  intake: `/app/patients/${patient.id}/intake/personal`,
                 },
                 providers: [],
                 reason: 'seeking treatment',
@@ -76,7 +77,8 @@ describe(
                 status: 'Awaiting Intake',
                 actions: {
                   view: null,
-                  intake: `/app/patients/${patient.id}`,
+                  review: null,
+                  intake: `/app/patients/${patient.id}/intake/personal`,
                 },
                 providers: [
                   {
@@ -84,7 +86,7 @@ describe(
                     employee_id: nurse.employee_id!,
                     name: nurse.name,
                     profession: 'nurse',
-                    seen_at: null,
+                    seen: false,
                     href: `/app/facilities/1/employees/${nurse.id}`,
                   },
                 ],

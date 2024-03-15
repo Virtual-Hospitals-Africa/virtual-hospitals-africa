@@ -374,10 +374,7 @@ export async function invite(
 
 export function add(
   trx: TrxOrDb,
-  { latitude, longitude, ...facility }: Omit<
-    Facility,
-    'id' | 'created_at' | 'updated_at'
-  >,
+  { latitude, longitude, ...facility }: Facility,
 ) {
   assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
   return trx

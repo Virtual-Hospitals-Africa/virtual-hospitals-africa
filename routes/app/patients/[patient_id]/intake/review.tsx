@@ -43,9 +43,8 @@ export default async function ReviewPage(
       <Buttons
         submitText='Continue to vitals'
         cancel={{
-          href: `/app/facilities/${
-            healthWorker.employment[0].facility.id
-          }/waiting_room/add?patient_id=${patient.id}&intake=completed`,
+          href:
+            `/app/facilities/${healthWorker.default_facility_id}/waiting_room/add?patient_id=${patient.id}&intake=completed`,
           text: 'Add patient to waiting room',
         }}
       />
