@@ -7,6 +7,7 @@ import { HomePageSidebar } from './Sidebar.tsx'
 import { EmployedHealthWorker, Maybe } from '../../types.ts'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import WarningMessage from '../../islands/WarningMessage.tsx'
+import * as notifications from '../../shared/notifications.ts'
 import { RenderedNotification } from '../../types.ts'
 
 export type LayoutProps =
@@ -99,7 +100,9 @@ export default function Layout(props: LayoutProps) {
         <AppLayoutContents
           {...props}
           avatarUrl={props.health_worker.avatar_url}
-          notifications={props.health_worker.notifications}
+          notifications={notifications.ofEmployedHealthWorker(
+            props.health_worker,
+          )}
           sidebar={
             <HomePageSidebar
               route={props.route}
