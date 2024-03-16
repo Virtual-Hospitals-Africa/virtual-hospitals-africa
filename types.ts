@@ -1172,7 +1172,6 @@ export type EmployeeInfo = {
 }
 
 export type RenderedDoctorReviewBase = {
-  employment_id: number
   encounter: {
     id: number
     reason: EncounterReason
@@ -1197,6 +1196,7 @@ export type RenderedDoctorReviewBase = {
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
   review_id: number
+  employment_id: number
   steps_completed: DoctorReviewStep[]
   completed: SqlBool
 }
@@ -1204,45 +1204,53 @@ export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
   review_request_id: number
 }
 
+export type RenderedDoctorReviewRequestOfSpecificDoctor =
+  & RenderedDoctorReviewRequest
+  & {
+    employment_id: number
+  }
+
+export type HealthWorkerEmployment = {
+  facility: {
+    id: number
+    name: string
+    address: string | null
+  }
+  roles: {
+    nurse: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: number
+    }
+    doctor: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: number
+    }
+    admin: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: number
+    }
+  }
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  availability_set: boolean
+}
+
 export type PossiblyEmployedHealthWorker = HealthWorker & {
   id: number
   access_token: string
   refresh_token: string
   expires_at: Date | string
-  employment: {
-    facility: {
-      id: number
-      name: string
-      address: string | null
-    }
-    roles: {
-      nurse: null | {
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-        employment_id: number
-      }
-      doctor: null | {
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-        employment_id: number
-      }
-      admin: null | {
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-        employment_id: number
-      }
-    }
-    gcal_appointments_calendar_id: string
-    gcal_availability_calendar_id: string
-    availability_set: boolean
-  }[]
+  employment: HealthWorkerEmployment[]
   default_facility_id: number | null
   open_encounters: RenderedPatientEncounter[]
   reviews: {
-    requested: RenderedDoctorReviewRequest[]
+    requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
     in_progress: RenderedDoctorReview[]
   }
   notifications: RenderedNotification[]

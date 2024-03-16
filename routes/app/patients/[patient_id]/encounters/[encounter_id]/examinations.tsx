@@ -9,10 +9,7 @@ import {
   RenderedPatientEncounterExamination,
 } from '../../../../../../types.ts'
 import FormButtons from '../../../../../../islands/form/buttons.tsx'
-import {
-  getPatientExamination,
-  upsertFindings,
-} from '../../../../../../db/models/examinations.ts'
+import * as examinations from '../../../../../../db/models/examinations.ts'
 import {
   assertOr400,
   assertOrRedirect,
@@ -85,7 +82,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const examination = matchingExamination(ctx)
     assert(examination, 'No matching examination')
 
-    const next_incomplete_exam = ctx.state.encounter.examinations.find(
+    const { trx, encounter, encounter_provider } = ctx.state
+    const next_incomplete_exam = encounter.examinations.find(
       (exam) => exam !== examination && !exam.completed && !exam.skipped,
     )
 
@@ -93,23 +91,26 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
       : completeStep(ctx)
 
-    const values = await parseRequestAsserts(
-      ctx.state.trx,
+    const { skipped, ...values } = await parseRequestAsserts(
+      trx,
       req,
       assertIsExaminationFindings,
     )
 
+    console.log('skipped', skipped)
+    console.log('values', values)
+
     const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
-    await upsertFindings(
-      ctx.state.trx,
+    await examinations.upsertFindings(
+      trx,
       {
         patient_id,
-        encounter_id: ctx.state.encounter.encounter_id,
-        encounter_provider_id:
-          ctx.state.encounter_provider.patient_encounter_provider_id,
+        encounter_id: encounter.encounter_id,
+        encounter_provider_id: encounter_provider.patient_encounter_provider_id,
         examination_name: examination.examination_name,
-        values: omit(values, ['examination']),
+        skipped: !!skipped,
+        values: skipped ? {} : omit(values, ['examination']),
       },
     )
 
@@ -165,7 +166,7 @@ export default async function ExaminationsPage(
       )}
       {examination && (
         <PatientExaminationForm
-          patient_examination={await getPatientExamination(trx, {
+          patient_examination={await examinations.getPatientExamination(trx, {
             patient_id: encounter.patient_id,
             encounter_id: encounter.encounter_id,
             examination_name: examination.examination_name,

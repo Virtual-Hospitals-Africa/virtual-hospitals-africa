@@ -213,12 +213,14 @@ export async function upsertFindings(
     encounter_id,
     encounter_provider_id,
     examination_name,
+    skipped,
     values,
   }: {
     patient_id: number
     encounter_id: number
     encounter_provider_id: number
     examination_name: string
+    skipped?: boolean
     values: Record<string, Record<string, unknown>>
   },
 ): Promise<void> {
@@ -230,7 +232,8 @@ export async function upsertFindings(
       examination_name,
       encounter_id,
       encounter_provider_id,
-      completed: true,
+      completed: !skipped,
+      skipped,
       patient_id: trx.selectFrom('patient_encounters')
         .where('id', '=', encounter_id)
         .where('patient_id', '=', patient_id)

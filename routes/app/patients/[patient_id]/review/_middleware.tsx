@@ -5,7 +5,6 @@ import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../islands/form/Form.tsx'
 import * as doctor_reviews from '../../../../../db/models/doctor_reviews.ts'
-import { assertOr403 } from '../../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { Person } from '../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
@@ -23,72 +22,16 @@ export type ReviewContext = LoggedInHealthWorkerContext<
   }
 >
 
-export async function addSelfAsReviewer(
-  ctx: LoggedInHealthWorkerContext,
-): Promise<{
-  doctor_review: RenderedDoctorReview
-}> {
-  const facilities_where_doctor = ctx.state.healthWorker.employment.filter(
-    (employment) => !!employment.roles.doctor,
-  )
-  assertOr403(
-    facilities_where_doctor.length,
-    'Only doctors can review patient encounters',
-  )
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-  const { trx, healthWorker } = ctx.state
-
-  const in_progress = healthWorker.reviews.in_progress.find((review) =>
-    review.patient.id === patient_id
-  )
-  if (in_progress) {
-    return { doctor_review: in_progress }
-  }
-
-  const requested =
-    healthWorker.reviews.requested.find((review) =>
-      review.patient.id === patient_id
-    ) || await doctor_reviews.requests(trx)
-      .where('doctor_review_requests.patient_id', '=', patient_id)
-      .where(
-        'doctor_review_requests.facility_id',
-        'in',
-        facilities_where_doctor.map(
-          (employment) => employment.facility.id,
-        ),
-      )
-      .executeTakeFirst()
-
-  assertOr403(
-    requested,
-    'No review requested from you or your facility for this patient',
-  )
-
-  const { id: review_id } = await doctor_reviews.start(trx, {
-    review_request_id: requested.review_request_id,
-    employment_id: requested.employment_id,
-  })
-  const started_review = {
-    review_id,
-    ...requested,
-    steps_completed: [],
-    completed: false,
-  }
-  healthWorker.reviews.in_progress.push(started_review)
-  healthWorker.reviews.requested = healthWorker.reviews.requested.filter(
-    (review) => review !== requested,
-  )
-
-  return { doctor_review: started_review }
-}
-
 export async function handler(
   _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   Object.assign(
     ctx.state,
-    await addSelfAsReviewer(ctx),
+    await doctor_reviews.addSelfAsReviewer(ctx.state.trx, {
+      patient_id: getRequiredNumericParam(ctx, 'patient_id'),
+      health_worker: ctx.state.healthWorker,
+    }),
   )
   return ctx.next()
 }

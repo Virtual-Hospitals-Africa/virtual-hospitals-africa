@@ -276,11 +276,7 @@ export async function get(
       ).as('open_encounters'),
       jsonBuildObject({
         requested: jsonArrayFrom(
-          doctor_reviews.requests(trx).where(
-            'employment.health_worker_id',
-            '=',
-            health_worker_id,
-          ),
+          doctor_reviews.requestsOfHealthWorker(trx, health_worker_id),
         ),
         in_progress: jsonArrayFrom(
           doctor_reviews.ofHealthWorker(trx, health_worker_id),

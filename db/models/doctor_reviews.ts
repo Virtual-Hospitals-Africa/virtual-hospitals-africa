@@ -7,9 +7,11 @@ import {
   HealthWorkers,
 } from '../../db.d.ts'
 import {
+  HealthWorkerEmployment,
   Maybe,
   RenderedDoctorReview,
   RenderedDoctorReviewRequest,
+  RenderedDoctorReviewRequestOfSpecificDoctor,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -18,6 +20,9 @@ import {
   jsonObjectFrom,
 } from '../helpers.ts'
 import { getCardQuery } from './patients.ts'
+import { assert } from 'std/assert/assert.ts'
+import { EmployedHealthWorker } from '../../types.ts'
+import { assertOr403 } from '../../util/assertOr.ts'
 
 export function ofHealthWorker(
   trx: TrxOrDb,
@@ -102,7 +107,6 @@ export function requests(
     requested_by_health_worker: HealthWorkers
   },
   | 'doctor_review_requests'
-  | 'employment'
   | 'patient_encounter_providers'
   | 'patient_encounters'
   | 'requested_by_employee'
@@ -111,11 +115,6 @@ export function requests(
   RenderedDoctorReviewRequest
 > {
   return trx.selectFrom('doctor_review_requests')
-    .innerJoin(
-      'employment',
-      'doctor_review_requests.requesting_doctor_id',
-      'employment.id',
-    )
     .innerJoin(
       'patient_encounter_providers',
       'doctor_review_requests.requested_by',
@@ -143,7 +142,6 @@ export function requests(
     )
     .select((eb) => [
       'doctor_review_requests.id as review_request_id',
-      'employment.id as employment_id',
       jsonBuildObject({
         id: eb.ref('patient_encounters.id'),
         reason: eb.ref('patient_encounters.reason'),
@@ -171,14 +169,62 @@ export function requests(
     .where('doctor_review_requests.pending', '=', false)
 }
 
-export function start(
+export function requestsOfHealthWorker(
+  trx: TrxOrDb,
+  health_worker_id: number,
+) {
+  return requests(trx)
+    .innerJoin(
+      'employment',
+      'doctor_review_requests.requesting_doctor_id',
+      'employment.id',
+    )
+    .where(
+      'employment.health_worker_id',
+      '=',
+      health_worker_id,
+    )
+    .select('employment.id as employment_id')
+}
+
+export async function requestMatchingEmployment(
+  trx: TrxOrDb,
+  patient_id: number,
+  facilities_where_doctor: HealthWorkerEmployment[],
+): Promise<RenderedDoctorReviewRequestOfSpecificDoctor | null> {
+  const request = await requests(trx)
+    .select('doctor_review_requests.facility_id')
+    .where('doctor_review_requests.patient_id', '=', patient_id)
+    .where(
+      'doctor_review_requests.facility_id',
+      'in',
+      facilities_where_doctor.map(
+        (employment) => employment.facility.id,
+      ),
+    )
+    .executeTakeFirst()
+
+  if (!request) return null
+
+  const matching_employment = facilities_where_doctor.find(
+    (employment) => employment.facility.id === request.facility_id,
+  )
+  assert(matching_employment)
+  assert(matching_employment.roles.doctor)
+  return {
+    ...request,
+    employment_id: matching_employment.roles.doctor.employment_id,
+  }
+}
+
+export async function start(
   trx: TrxOrDb,
   { review_request_id, employment_id }: {
     review_request_id: number
     employment_id: number
   },
 ) {
-  return trx.insertInto('doctor_reviews')
+  const starting_review = trx.insertInto('doctor_reviews')
     .columns(['patient_id', 'encounter_id', 'requested_by', 'reviewer_id'])
     .expression((eb) =>
       eb.selectFrom('doctor_review_requests')
@@ -192,6 +238,70 @@ export function start(
     )
     .returning('id')
     .executeTakeFirstOrThrow()
+
+  await trx.deleteFrom('doctor_review_requests')
+    .where('id', '=', review_request_id)
+    .execute()
+
+  return starting_review
+}
+
+export async function addSelfAsReviewer(
+  trx: TrxOrDb,
+  { patient_id, health_worker }: {
+    patient_id: number
+    health_worker: EmployedHealthWorker
+  },
+): Promise<{
+  doctor_review: RenderedDoctorReview
+}> {
+  const in_progress = health_worker.reviews.in_progress.find((review) =>
+    review.patient.id === patient_id
+  )
+  if (in_progress) {
+    return { doctor_review: in_progress }
+  }
+
+  const facilities_where_doctor = health_worker.employment.filter(
+    (employment) => !!employment.roles.doctor,
+  )
+  assertOr403(
+    facilities_where_doctor.length,
+    'Only doctors can review patient encounters',
+  )
+
+  const requested =
+    health_worker.reviews.requested.find((review) =>
+      review.patient.id === patient_id
+    ) ||
+    await requestMatchingEmployment(
+      trx,
+      patient_id,
+      facilities_where_doctor,
+    )
+
+  assertOr403(
+    requested,
+    'No review requested from you or your facility for this patient',
+  )
+
+  const review = await start(trx, {
+    review_request_id: requested.review_request_id,
+    employment_id: requested.employment_id,
+  })
+
+  const started_review = {
+    ...requested,
+    review_id: review.id,
+    steps_completed: [],
+    completed: false,
+  }
+  health_worker.reviews.in_progress.push(started_review)
+  health_worker.reviews.requested = health_worker.reviews.requested.filter(
+    (review) => review !== requested,
+  )
+
+  return { doctor_review: started_review }
 }
 
 // TODO: check that if you redo a step the updated_at is updated

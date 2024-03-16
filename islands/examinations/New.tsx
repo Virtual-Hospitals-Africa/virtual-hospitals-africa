@@ -1,5 +1,6 @@
 import { JSX } from 'preact'
-import { ASSESSMENTS } from '../../shared/examinations.ts'
+import { ASSESSMENTS, DIAGNOSTIC_TESTS } from '../../shared/examinations.ts'
+// import { LabelledListbox } from '../form/Listbox.tsx'
 
 export function NewExaminationForm({
   available_diagnostic_tests,
@@ -9,9 +10,11 @@ export function NewExaminationForm({
   }[]
 }): JSX.Element {
   return (
-    <div>
-      {ASSESSMENTS}
-      {available_diagnostic_tests}
-    </div>
+    <>
+      // {ASSESSMENTS}
+      // {available_diagnostic_tests}
+    </>
   )
+
+  // return <LabelledListbox />
 }
