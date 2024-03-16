@@ -49,7 +49,6 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               in_progress: [],
               requested: [],
             },
-            notifications: [],
           },
         )
         assert(!!result.access_token)
@@ -108,7 +107,6 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             in_progress: [],
             requested: [],
           },
-          notifications: [],
         })
       },
     )

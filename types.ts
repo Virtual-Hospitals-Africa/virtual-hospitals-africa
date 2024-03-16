@@ -1254,7 +1254,6 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
     requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
     in_progress: RenderedDoctorReview[]
   }
-  notifications: RenderedNotification[]
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {

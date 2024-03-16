@@ -9,7 +9,6 @@ import {
   HealthWorkerWithGoogleTokens,
   Maybe,
   PossiblyEmployedHealthWorker,
-  RenderedNotification,
   TrxOrDb,
 } from '../../types.ts'
 import {
@@ -344,31 +343,12 @@ export async function get(
     },
   )
 
-  // TODO: organize this elsewhere once we start supporting more notification types
-  const notifications: RenderedNotification[] = health_worker.reviews.requested
-    .map((requested_review) => ({
-      type: 'doctor_review_request',
-      entity_id: requested_review.review_request_id,
-      avatar_url: requested_review.requested_by.avatar_url,
-      title: 'Review Requested',
-      description:
-        `${requested_review.requested_by.name} at ${requested_review.requested_by.facility.name} has requested that you review a recent encounter with ${requested_review.patient.name}`,
-      // TODO: format time
-      time_display: 'Just now',
-      action: {
-        title: 'Review',
-        href:
-          `/app/patients/${requested_review.patient.id}/review/clinical_notes`,
-      },
-    }))
-
   return {
     ...health_worker,
     access_token,
     refresh_token,
     expires_at,
     employment,
-    notifications,
     default_facility_id: employment[0]?.facility.id ?? null,
   }
 }
