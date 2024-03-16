@@ -159,6 +159,9 @@ export default async function ExaminationsPage(
       <Tabs tabs={tabs} />
       {adding_examination && (
         <NewExaminationForm
+          recommended_examinations={encounter.examinations.filter((ex) =>
+            ex.recommended
+          ).map((ex) => ex.examination_name)}
           selected_examinations={encounter.examinations.map((ex) =>
             ex.examination_name
           )}

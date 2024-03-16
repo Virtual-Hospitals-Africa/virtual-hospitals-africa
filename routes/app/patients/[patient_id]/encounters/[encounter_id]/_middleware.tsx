@@ -21,6 +21,7 @@ import {
 } from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
+import { assertOr404 } from '../../../../../../util/assertOr.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
@@ -68,7 +69,9 @@ export async function handler(
       },
     ),
   )
-  ctx.state.patient = await getting_patient_card
+  const patient = await getting_patient_card
+  assertOr404(patient, 'Patient not found')
+  ctx.state.patient = patient
   return ctx.next()
 }
 

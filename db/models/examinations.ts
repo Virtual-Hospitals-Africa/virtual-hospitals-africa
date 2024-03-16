@@ -8,7 +8,7 @@ import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { Examination } from '../../shared/examinations.ts'
 
 function examinationName(name: Examination) {
-  return sql<string>`${name}::varchar(40)`.as('examination_name')
+  return sql<Examination>`${name}::varchar(40)`.as('examination_name')
 }
 
 export function recommended(
@@ -119,7 +119,8 @@ export function forPatientEncounter(trx: TrxOrDb) {
         .select((eb) => [
           'patient_examinations.patient_id',
           'patient_examinations.encounter_id',
-          'patient_examinations.examination_name',
+          eb.ref('patient_examinations.examination_name').$castTo<Examination>()
+            .as('examination_name'),
           'patient_examinations.completed',
           'patient_examinations.skipped',
           eb('recommended_examinations.encounter_id', 'is not', null).as(

@@ -1,9 +1,10 @@
+import { ComponentChild } from 'preact'
 import cls from '../../util/cls.ts'
 
 type BadgeColor = 'gray' | 'red' | 'yellow' | 'green'
 
 export type BadgeProps = {
-  content: number | string
+  content: number | string | ComponentChild
   color?: BadgeColor
 }
 

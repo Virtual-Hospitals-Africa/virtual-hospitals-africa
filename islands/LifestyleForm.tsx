@@ -5,7 +5,7 @@ import {
   YesNoGrid,
   YesNoQuestion,
 } from './form/Inputs.tsx'
-import { LabelledListbox } from './form/Listbox.tsx'
+import { LabelledListboxMulti } from './form/Listbox.tsx'
 import { Alcohol, Lifestyle, SexualActivity, Smoking } from '../types.ts'
 import FormRow from './form/Row.tsx'
 import SelectWithOther from './SelectWithOther.tsx'
@@ -397,7 +397,7 @@ function AlcoholSection(
 
       {alcohol.value.has_ever_drank === true &&
         alcohol.value.currently_drinks === true && (
-        <LabelledListbox
+        <LabelledListboxMulti
           label='Which alcoholic drinks, does the patient take?'
           name='lifestyle.alcohol.alcohol_products_used'
           options={alcohol_products}
@@ -555,7 +555,7 @@ function SmokingSection(
 
       {smoking.value.has_ever_smoked === true &&
         smoking.value.currently_smokes === true && (
-        <LabelledListbox
+        <LabelledListboxMulti
           label='Which tobacco products does the patient use?'
           name='lifestyle.smoking.tobacco_products_used'
           options={tobacco_products}
