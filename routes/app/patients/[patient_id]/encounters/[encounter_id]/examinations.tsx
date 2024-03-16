@@ -136,7 +136,7 @@ export default async function ExaminationsPage(
   const tabs: TabProps[] = encounter.examinations.map((exam) => {
     const active = exam === examination
     return {
-      tab: exam.examination_name,
+      tab: exam.examination_name as string,
       href: examinationHref(ctx, exam.examination_name),
       active,
       leftIcon: exam.completed
@@ -159,6 +159,12 @@ export default async function ExaminationsPage(
       <Tabs tabs={tabs} />
       {adding_examination && (
         <NewExaminationForm
+          recommended_examinations={encounter.examinations.filter((ex) =>
+            ex.recommended
+          ).map((ex) => ex.examination_name)}
+          selected_examinations={encounter.examinations.map((ex) =>
+            ex.examination_name
+          )}
           available_diagnostic_tests={await getAvailableTestsInFacility(trx, {
             facility_id: ctx.state.encounter.providers[0].facility_id,
           })}

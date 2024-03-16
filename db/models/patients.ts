@@ -18,7 +18,7 @@ import {
   RenderedPatient,
   TrxOrDb,
 } from '../../types.ts'
-import { hasName, haveNames } from '../../util/haveNames.ts'
+import { haveNames } from '../../util/haveNames.ts'
 import { getWalkingDistance } from '../../external-clients/google.ts'
 import compact from '../../util/compact.ts'
 import {
@@ -555,16 +555,13 @@ export function getCardQuery(
     ])
 }
 
-export async function getCard(
+export function getCard(
   trx: TrxOrDb,
-  opts: { id: number },
-): Promise<PatientCard> {
-  const patient = await getCardQuery(trx)
-    .where('patients.id', '=', opts.id)
+  { id }: { id: number },
+): Promise<PatientCard | undefined> {
+  return getCardQuery(trx)
+    .where('patients.id', '=', id)
     .executeTakeFirst()
-  assertOr404(patient)
-  assert(hasName(patient))
-  return patient
 }
 
 export async function getAllWithNames(

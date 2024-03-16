@@ -2,85 +2,127 @@ import { Listbox } from '@headlessui/react'
 import { useState } from 'react'
 import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import cls from '../../util/cls.ts'
+import { ComponentChild } from 'preact'
+import isString from '../../util/isString.ts'
 
-interface ListboxItemProps<T> {
-  label: string
-  name?: string
-  options: T[]
-  initial_selected_ids: Array<number | string>
-  onChange?(selectedValues: T[]): void
+type OptionRecord = {
+  id: number | string
+  name: string
+  disabled?: boolean
+  display?: ComponentChild
 }
 
-export function LabelledListbox<
-  T extends { id: number | string; name: string },
->({
+type Option = string | OptionRecord
+
+type OptionId<O extends Option> = O extends { id: number | string } ? O['id']
+  : string
+
+interface ListboxMultiProps<O extends Option> {
+  name?: string
+  options: O[]
+  selected: OptionId<O>[]
+  variant?: 'always_open' | 'default'
+  onChange?(selected: OptionId<O>[]): void
+}
+
+export function ListboxMulti<O extends Option>({
   name,
-  label,
   options,
-  initial_selected_ids,
+  selected,
+  variant = 'default',
   onChange,
-}: ListboxItemProps<T>) {
-  const [selectedIds, setselectedIds] = useState<Array<number | string>>(
-    initial_selected_ids,
+}: ListboxMultiProps<O>) {
+  const [selected_ids, setSelectedIds] = useState(
+    selected,
+  )
+  const using_options: OptionRecord[] = options.map((option) =>
+    isString(option) ? { id: option, name: option } : option as OptionRecord
   )
 
   return (
-    <div>
-      <p className='text-black-600 mb-2'>{label}</p>
-      <Listbox
-        value={selectedIds}
-        onChange={setselectedIds}
-        multiple
-        name={name}
-      >
-        <Listbox.Button className='block h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700'>
-          <span className='block'>
-            {selectedIds.map((id) =>
-              options.find((option) => option.id === id)?.name
+    <Listbox
+      value={selected_ids}
+      onChange={(ids) => {
+        setSelectedIds(ids)
+        onChange?.(ids)
+      }}
+      multiple
+      name={name}
+    >
+      {variant === 'default' && (
+        <Listbox.Button className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
+          <span className='block py-3 px-1.5'>
+            {selected_ids.map((id) =>
+              using_options.find((option) => option.id === id)?.name
             ).join(', ') || 'Select...'}
           </span>
-          {/* <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none"></span> */}
         </Listbox.Button>
+      )}
 
-        <Listbox.Options className='relative w-full z-10 mt-2 w- bg-white border-2 border-gray-300 rounded-md shadow-lg'>
-          {options.map((item) => (
-            <Listbox.Option
-              key={item}
-              value={item.id}
-              className={({ active }) =>
-                cls(
-                  'cursor-pointer select-none relative p-2',
-                  active ? 'bg-gray-100' : '',
-                )}
-            >
-              {({ selected, active }) => (
-                <>
-                  <span
-                    className={cls(
-                      'block truncate',
-                      selected ? 'font-semibold' : '',
-                    )}
-                  >
-                    {item.name}
-                  </span>
-                  {selected
-                    ? (
-                      <span
-                        className={cls(
-                          'absolute inset-y-0 right-0 flex items-center pr-4',
-                          active ? 'text-gray-600' : 'text-gray-400',
-                        )}
-                      >
-                        <CheckIcon className='w-5 h-5' aria-hidden='true' />
-                      </span>
-                    )
-                    : null}
-                </>
+      <Listbox.Options
+        static={variant === 'always_open'}
+        className={cls(
+          'relative w-full mt-2 bg-white flex flex-col gap-2 p-1',
+          variant === 'default' &&
+            'border-2 rounded-md border-gray-300 shadow-lg',
+        )}
+      >
+        {using_options.map((option) => (
+          <Listbox.Option
+            key={option.id}
+            value={option.id}
+            disabled={option.disabled}
+            className={({ selected }) =>
+              cls(
+                'cursor-pointer select-none relative p-2 rounded-md hover:bg-indigo-100',
+                selected && '!bg-indigo-500',
               )}
-            </Listbox.Option>
-          ))}
-        </Listbox.Options>
-      </Listbox>
+          >
+            {({ selected }) => (
+              <div
+                className={cls(
+                  'flex gap-2',
+                  selected ? 'font-semibold text-white' : 'text-gray-900',
+                  variant === 'always_open' && 'flex-row-reverse',
+                )}
+              >
+                <span
+                  className={cls(
+                    'block truncate flex-grow',
+                  )}
+                >
+                  {option.display || option.name}
+                </span>
+                <span
+                  className={cls(
+                    'flex items-center',
+                    selected ? 'opacity-100' : 'opacity-0',
+                    variant === 'default' && 'pr-4',
+                  )}
+                >
+                  <CheckIcon
+                    className='h-5 w-5'
+                    fill='white'
+                    aria-hidden='true'
+                  />
+                </span>
+              </div>
+            )}
+          </Listbox.Option>
+        ))}
+      </Listbox.Options>
+    </Listbox>
+  )
+}
+
+export function LabelledListboxMulti<O extends Option>({
+  label,
+  ...props
+}: ListboxMultiProps<O> & { label: string }) {
+  return (
+    <div>
+      <p className='text-black-600 mb-2'>{label}</p>
+      <ListboxMulti {...props} />
     </div>
   )
 }
