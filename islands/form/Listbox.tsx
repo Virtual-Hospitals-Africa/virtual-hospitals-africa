@@ -2,40 +2,44 @@ import { Listbox } from '@headlessui/react'
 import { useState } from 'react'
 import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import cls from '../../util/cls.ts'
+import { ComponentChild } from 'preact'
 
-interface ListboxItemProps<T> {
+type Option = { id: number | string; name: string; display?: ComponentChild }
+
+interface LabelledListboxProps<O extends Option> {
   label: string
   name?: string
-  options: T[]
-  initial_selected_ids: Array<number | string>
-  onChange?(selectedValues: T[]): void
+  options: O[]
+  selected: O['id'][]
+  onChange?(selected: O['id'][]): void
 }
 
-export function LabelledListbox<
-  T extends { id: number | string; name: string },
->({
+export function LabelledListbox<O extends Option>({
   name,
   label,
   options,
-  initial_selected_ids,
+  selected,
   onChange,
-}: ListboxItemProps<T>) {
-  const [selectedIds, setselectedIds] = useState<Array<number | string>>(
-    initial_selected_ids,
+}: LabelledListboxProps<O>) {
+  const [selected_ids, setSelectedIds] = useState(
+    selected,
   )
 
   return (
     <div>
       <p className='text-black-600 mb-2'>{label}</p>
       <Listbox
-        value={selectedIds}
-        onChange={setselectedIds}
+        value={selected_ids}
+        onChange={(ids) => {
+          setSelectedIds(ids)
+          onChange?.(ids)
+        }}
         multiple
         name={name}
       >
         <Listbox.Button className='block h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700'>
           <span className='block'>
-            {selectedIds.map((id) =>
+            {selected_ids.map((id) =>
               options.find((option) => option.id === id)?.name
             ).join(', ') || 'Select...'}
           </span>
@@ -43,10 +47,10 @@ export function LabelledListbox<
         </Listbox.Button>
 
         <Listbox.Options className='relative w-full z-10 mt-2 w- bg-white border-2 border-gray-300 rounded-md shadow-lg'>
-          {options.map((item) => (
+          {options.map((option) => (
             <Listbox.Option
-              key={item}
-              value={item.id}
+              key={option}
+              value={option.id}
               className={({ active }) =>
                 cls(
                   'cursor-pointer select-none relative p-2',
@@ -61,7 +65,7 @@ export function LabelledListbox<
                       selected ? 'font-semibold' : '',
                     )}
                   >
-                    {item.name}
+                    {option.display || option.name}
                   </span>
                   {selected
                     ? (

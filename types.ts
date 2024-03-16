@@ -17,6 +17,7 @@ import {
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
+import { Examination } from './shared/examinations.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -1918,7 +1919,7 @@ export type RenderedPatientEncounterProvider = {
 }
 
 export type RenderedPatientEncounterExamination = {
-  examination_name: string
+  examination_name: Examination
   completed: SqlBool
   skipped: SqlBool
   recommended: SqlBool

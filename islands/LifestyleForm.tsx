@@ -401,7 +401,7 @@ function AlcoholSection(
           label='Which alcoholic drinks, does the patient take?'
           name='lifestyle.alcohol.alcohol_products_used'
           options={alcohol_products}
-          initial_selected_ids={alcohol.value.alcohol_products_used || []}
+          selected={alcohol.value.alcohol_products_used || []}
         />
       )}
     </section>
@@ -559,7 +559,7 @@ function SmokingSection(
           label='Which tobacco products does the patient use?'
           name='lifestyle.smoking.tobacco_products_used'
           options={tobacco_products}
-          initial_selected_ids={smoking.value.tobacco_products_used || []}
+          selected={smoking.value.tobacco_products_used || []}
         />
       )}
     </section>
