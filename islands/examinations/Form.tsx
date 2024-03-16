@@ -83,6 +83,7 @@ export function PatientExaminationForm({
     <>
       <CheckboxGridItem
         label='skip'
+        name='skipped'
         checked={skipped.value}
         onChange={(checked) => skipped.value = checked}
       />

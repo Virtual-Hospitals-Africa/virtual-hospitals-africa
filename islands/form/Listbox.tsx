@@ -4,16 +4,18 @@ import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import cls from '../../util/cls.ts'
 
 interface ListboxItemProps<T> {
-  question: string
+  label: string
   name?: string
   options: T[]
   initial_selected_ids: Array<number | string>
-  onChange(selectedValues: T[]): void
+  onChange?(selectedValues: T[]): void
 }
 
-export function ListboxItem<T extends { id: number | string; name: string }>({
+export function LabelledListbox<
+  T extends { id: number | string; name: string },
+>({
   name,
-  question,
+  label,
   options,
   initial_selected_ids,
   onChange,
@@ -24,7 +26,7 @@ export function ListboxItem<T extends { id: number | string; name: string }>({
 
   return (
     <div>
-      {question && <p className='text-black-600 mb-2'>{question}</p>}
+      <p className='text-black-600 mb-2'>{label}</p>
       <Listbox
         value={selectedIds}
         onChange={setselectedIds}
