@@ -56,6 +56,56 @@ export function recommended(
   })
 }
 
+export async function add(
+  trx: TrxOrDb,
+  { examinations, encounter_id, patient_id, encounter_provider_id }: {
+    patient_id: number
+    encounter_id: number
+    encounter_provider_id: number
+    examinations: Examination[]
+  },
+) {
+  const deleting_examination_not_specified = trx
+    .deleteFrom('patient_examinations')
+    .where('encounter_id', '=', encounter_id)
+    .where('patient_id', '=', patient_id)
+    .where('examination_name', 'not in', examinations)
+    .execute()
+
+  await trx
+    .insertInto('patient_examinations')
+    .columns([
+      'patient_id',
+      'encounter_id',
+      'encounter_provider_id',
+      'examination_name',
+    ])
+    .expression((eb) =>
+      // examinations requiring insert are those not already present
+      eb.selectFrom('examinations')
+        .leftJoin('patient_examinations', (join) =>
+          join.onRef(
+            'patient_examinations.examination_name',
+            '=',
+            'examinations.name',
+          )
+            .on('patient_examinations.encounter_id', '=', encounter_id)
+            .on('patient_examinations.patient_id', '=', patient_id))
+        .where('examinations.name', 'in', examinations)
+        .where('patient_examinations.id', 'is', null)
+        .select((eb) => [
+          eb.lit(patient_id).as('patient_id'),
+          eb.lit(encounter_id).as('encounter_id'),
+          eb.lit(encounter_provider_id).as('encounter_provider_id'),
+          'examinations.name as examination_name',
+        ])
+    )
+    .returning('id')
+    .execute()
+
+  await deleting_examination_not_specified
+}
+
 export function skip(trx: TrxOrDb, values: {
   examination_name: Examination
   patient_id: number

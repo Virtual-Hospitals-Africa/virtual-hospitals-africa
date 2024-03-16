@@ -29,11 +29,54 @@ import { NewExaminationForm } from '../../../../../../islands/examinations/New.t
 import omit from '../../../../../../util/omit.ts'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
 import { getAvailableTestsInFacility } from '../../../../../../db/models/inventory.ts'
+import {
+  Examination,
+  EXAMINATIONS,
+} from '../../../../../../shared/examinations.ts'
 
 function assertIsExaminationFindings(
   values: unknown,
 ): asserts values is Record<string, Record<string, unknown>> {
   assertOr400(isObjectLike(values), 'Invalid form values')
+}
+
+function assertIsAddExaminations(
+  values: unknown,
+): asserts values is {
+  assessments?: Examination[]
+  diagnostic_tests_at_facility?: Examination[]
+  diagnostic_test_orders?: Examination[]
+} {
+  assertOr400(isObjectLike(values), 'Invalid form values')
+  for (const key in values) {
+    assertOr400(
+      key === 'assessments' || key === 'diagnostic_tests_at_facility' ||
+        key === 'diagnostic_test_orders',
+      `Unrecognized examination type: ${key}`,
+    )
+    const examinations = values[key]
+    assertOr400(
+      Array.isArray(examinations),
+      `Invalid ${key} value, must be an array`,
+    )
+    for (const exam of examinations) {
+      assertOr400(
+        typeof exam === 'string',
+        `Invalid examination value, must be a string`,
+      )
+      assertOr400(
+        EXAMINATIONS.includes(exam as Examination),
+        `Invalid examination value, ${exam} is not a valid examination`,
+      )
+    }
+  }
+}
+
+function noExaminationSpecifiedHref(ctx: EncounterContext) {
+  return hrefFromCtx(ctx, (url) => {
+    url.searchParams.delete('add')
+    url.searchParams.delete('examination')
+  })
 }
 
 function examinationHref(ctx: EncounterContext, examination_name: string) {
@@ -43,10 +86,10 @@ function examinationHref(ctx: EncounterContext, examination_name: string) {
   })
 }
 
-function addExaminationHref(ctx: EncounterContext) {
+function addExaminationsHref(ctx: EncounterContext) {
   return hrefFromCtx(ctx, (url) => {
     url.searchParams.delete('examination')
-    url.searchParams.set('add', 'examination')
+    url.searchParams.set('add', 'examinations')
   })
 }
 
@@ -54,7 +97,7 @@ function matchingExamination(
   ctx: EncounterContext,
 ): RenderedPatientEncounterExamination | null {
   const { encounter } = ctx.state
-  const adding_examination = ctx.url.searchParams.get('add') === 'examination'
+  const adding_examination = ctx.url.searchParams.get('add') === 'examinations'
   if (adding_examination) return null
   const examination_name = ctx.url.searchParams.get('examination')
 
@@ -74,47 +117,84 @@ function matchingExamination(
   return matching_examination
 }
 
+async function handleAddExamination(req: Request, ctx: EncounterContext) {
+  const { trx, encounter, encounter_provider } = ctx.state
+
+  const {
+    assessments = [],
+    diagnostic_tests_at_facility = [],
+    diagnostic_test_orders = [],
+  } = await parseRequestAsserts(
+    trx,
+    req,
+    assertIsAddExaminations,
+  )
+
+  console.log(`TODO: handle diagnostic_test_orders: ${diagnostic_test_orders}`)
+
+  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+
+  const examinations_to_add = [
+    ...assessments,
+    ...diagnostic_tests_at_facility,
+  ]
+
+  await examinations.add(trx, {
+    patient_id,
+    encounter_id: encounter.encounter_id,
+    encounter_provider_id: encounter_provider.patient_encounter_provider_id,
+    examinations: examinations_to_add,
+  })
+
+  return redirect(noExaminationSpecifiedHref(ctx))
+}
+
+async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
+  const examination = matchingExamination(ctx)
+  assert(examination, 'No matching examination')
+
+  const { trx, encounter, encounter_provider } = ctx.state
+  const next_incomplete_exam = encounter.examinations.find(
+    (exam) => exam !== examination && !exam.completed && !exam.skipped,
+  )
+
+  const once_done = next_incomplete_exam
+    ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    : completeStep(ctx)
+
+  const { skipped, ...values } = await parseRequestAsserts(
+    trx,
+    req,
+    assertIsExaminationFindings,
+  )
+
+  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+
+  await examinations.upsertFindings(
+    trx,
+    {
+      patient_id,
+      encounter_id: encounter.encounter_id,
+      encounter_provider_id: encounter_provider.patient_encounter_provider_id,
+      examination_name: examination.examination_name,
+      skipped: !!skipped,
+      values: skipped ? {} : omit(values, ['examination']),
+    },
+  )
+
+  return once_done
+}
+
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {
-  async POST(req, ctx: EncounterContext) {
-    const examination = matchingExamination(ctx)
-    assert(examination, 'No matching examination')
+  POST(req, ctx: EncounterContext) {
+    const handle = ctx.url.searchParams.get('add') === 'examinations'
+      ? handleAddExamination
+      : handleExaminationFindings
 
-    const { trx, encounter, encounter_provider } = ctx.state
-    const next_incomplete_exam = encounter.examinations.find(
-      (exam) => exam !== examination && !exam.completed && !exam.skipped,
-    )
-
-    const once_done = next_incomplete_exam
-      ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
-      : completeStep(ctx)
-
-    const { skipped, ...values } = await parseRequestAsserts(
-      trx,
-      req,
-      assertIsExaminationFindings,
-    )
-
-    console.log('skipped', skipped)
-    console.log('values', values)
-
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
-    await examinations.upsertFindings(
-      trx,
-      {
-        patient_id,
-        encounter_id: encounter.encounter_id,
-        encounter_provider_id: encounter_provider.patient_encounter_provider_id,
-        examination_name: examination.examination_name,
-        skipped: !!skipped,
-        values: skipped ? {} : omit(values, ['examination']),
-      },
-    )
-
-    return once_done
+    return handle(req, ctx)
   },
 }
 
@@ -123,7 +203,7 @@ export default async function ExaminationsPage(
   ctx: EncounterContext,
 ) {
   const { trx, encounter } = ctx.state
-  const adding_examination = ctx.url.searchParams.get('add') === 'examination'
+  const adding_examination = ctx.url.searchParams.get('add') === 'examinations'
 
   const examination = adding_examination ? null : matchingExamination(ctx)
 
@@ -131,7 +211,7 @@ export default async function ExaminationsPage(
     assert(examination, 'No matching examination')
   }
 
-  const add_examination_href = addExaminationHref(ctx)
+  const add_examinations_href = addExaminationsHref(ctx)
 
   const tabs: TabProps[] = encounter.examinations.map((exam) => {
     const active = exam === examination
@@ -147,8 +227,8 @@ export default async function ExaminationsPage(
     }
   }).concat([
     {
-      tab: 'Add Examination',
-      href: add_examination_href,
+      tab: 'Add Examinations',
+      href: add_examinations_href,
       active: adding_examination,
       leftIcon: <PlusCircleIcon className='w-5 h-5' />,
     },
