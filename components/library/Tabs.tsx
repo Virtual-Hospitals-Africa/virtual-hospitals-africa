@@ -19,7 +19,7 @@ export function Tab(
     <a
       href={href}
       className={cls(
-        'flex items-center gap-2 whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium uppercase',
+        'flex items-center gap-2 whitespace-nowrap border-b-2 px-1 pb-2 text-sm font-medium uppercase',
         active
           ? 'border-indigo-500 text-indigo-600'
           : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
@@ -41,7 +41,7 @@ export function Tabs(
   return (
     <div className='border-b border-gray-200 pb-5 sm:pb-0'>
       <div className='mt-3 sm:mt-4'>
-        <nav className='-mb-px flex space-x-8 px-5'>
+        <nav className='-mb-px flex px-5 flex-wrap gap-x-8 gap-y-2'>
           {tabs.map((props) => (
             <Tab
               key={props.tab}
