@@ -19,7 +19,7 @@ import omit from '../../../../../util/omit.ts'
 
 export function assertIsUpsertDevice(
   obj: unknown,
-): asserts obj {
+): asserts obj is { device_id: number; serial_number?: string } {
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.device_id === 'number')
 }
@@ -40,11 +40,18 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsUpsertDevice,
     )
 
+    const matching_employment = healthWorker.employment.find((employment) =>
+      employment.facility.id === facility_id
+    )
+    assertOr403(matching_employment)
+    assertOr403(matching_employment.roles.admin)
+
     await inventory.addFacilityDevice(ctx.state.trx, {
-      ...omit(to_add, ['device_name']),
-      created_by: healthWorker.id,
+      device_id: to_add.device_id,
+      serial_number: to_add.serial_number,
+      created_by: matching_employment.roles.admin.employment_id,
       facility_id: facility_id,
-    } as FacilityDevice)
+    })
 
     const success = encodeURIComponent(
       `Device added to your facility's inventory 🏥`,
