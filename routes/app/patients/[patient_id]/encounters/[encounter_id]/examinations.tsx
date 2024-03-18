@@ -22,6 +22,7 @@ import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
 import * as ProgressIcons from '../../../../../../components/library/icons/progress.tsx'
 import {
   ForwardIcon,
+  PaperAirplaneIcon,
   PlusCircleIcon,
 } from '../../../../../../components/library/icons/heroicons/outline.tsx'
 import { PatientExaminationForm } from '../../../../../../islands/examinations/Form.tsx'
@@ -33,6 +34,7 @@ import {
   Examination,
   EXAMINATIONS,
 } from '../../../../../../shared/examinations.ts'
+import partition from '../../../../../../util/partition.ts'
 
 function assertIsExaminationFindings(
   values: unknown,
@@ -76,6 +78,15 @@ function noExaminationSpecifiedHref(ctx: EncounterContext) {
   return hrefFromCtx(ctx, (url) => {
     url.searchParams.delete('add')
     url.searchParams.delete('examination')
+    url.searchParams.delete('place')
+  })
+}
+
+function placeOrdersHref(ctx: EncounterContext) {
+  return hrefFromCtx(ctx, (url) => {
+    url.searchParams.delete('add')
+    url.searchParams.delete('examination')
+    url.searchParams.set('place', 'orders')
   })
 }
 
@@ -83,13 +94,15 @@ function examinationHref(ctx: EncounterContext, examination_name: string) {
   return hrefFromCtx(ctx, (url) => {
     url.searchParams.delete('add')
     url.searchParams.set('examination', examination_name)
+    url.searchParams.delete('place')
   })
 }
 
 function addExaminationsHref(ctx: EncounterContext) {
   return hrefFromCtx(ctx, (url) => {
-    url.searchParams.delete('examination')
     url.searchParams.set('add', 'examinations')
+    url.searchParams.delete('examination')
+    url.searchParams.delete('place')
   })
 }
 
@@ -97,8 +110,8 @@ function matchingExamination(
   ctx: EncounterContext,
 ): RenderedPatientEncounterExamination | null {
   const { encounter } = ctx.state
-  const adding_examination = ctx.url.searchParams.get('add') === 'examinations'
-  if (adding_examination) return null
+  const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
+  if (adding_examinations) return null
   const examination_name = ctx.url.searchParams.get('examination')
 
   const next_incomplete_exam = ctx.state.encounter.examinations.find(
@@ -117,7 +130,7 @@ function matchingExamination(
   return matching_examination
 }
 
-async function handleAddExamination(req: Request, ctx: EncounterContext) {
+async function handleAddExaminations(req: Request, ctx: EncounterContext) {
   const { trx, encounter, encounter_provider } = ctx.state
 
   const {
@@ -130,23 +143,43 @@ async function handleAddExamination(req: Request, ctx: EncounterContext) {
     assertIsAddExaminations,
   )
 
-  console.log(`TODO: handle diagnostic_test_orders: ${diagnostic_test_orders}`)
-
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
-
-  const examinations_to_add = [
-    ...assessments,
-    ...diagnostic_tests_at_facility,
-  ]
 
   await examinations.add(trx, {
     patient_id,
     encounter_id: encounter.encounter_id,
     encounter_provider_id: encounter_provider.patient_encounter_provider_id,
-    examinations: examinations_to_add,
+    examinations: {
+      during_this_encounter: [
+        ...assessments,
+        ...diagnostic_tests_at_facility,
+      ],
+      orders: diagnostic_test_orders,
+    },
   })
 
   return redirect(noExaminationSpecifiedHref(ctx))
+}
+
+// deno-lint-ignore require-await
+async function handlePlaceOrders(
+  req: Request,
+  ctx: EncounterContext,
+): Promise<Response> {
+  // TODO: Place orders
+  const { encounter } = ctx.state
+
+  const [_orders, during_this_encounter] = partition(
+    encounter.examinations,
+    (ex) => !!ex.ordered,
+  )
+  const next_incomplete_exam = during_this_encounter.find(
+    (exam) => !exam.completed && !exam.skipped,
+  )
+
+  return next_incomplete_exam
+    ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    : completeStep(ctx)
 }
 
 async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
@@ -154,12 +187,19 @@ async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
   assert(examination, 'No matching examination')
 
   const { trx, encounter, encounter_provider } = ctx.state
-  const next_incomplete_exam = encounter.examinations.find(
+
+  const [orders, during_this_encounter] = partition(
+    encounter.examinations,
+    (ex) => !!ex.ordered,
+  )
+  const next_incomplete_exam = during_this_encounter.find(
     (exam) => exam !== examination && !exam.completed && !exam.skipped,
   )
 
   const once_done = next_incomplete_exam
     ? redirect(examinationHref(ctx, next_incomplete_exam.examination_name))
+    : orders.length
+    ? redirect(placeOrdersHref(ctx))
     : completeStep(ctx)
 
   const { skipped, ...values } = await parseRequestAsserts(
@@ -190,8 +230,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   EncounterContext['state']
 > = {
   POST(req, ctx: EncounterContext) {
-    const handle = ctx.url.searchParams.get('add') === 'examinations'
-      ? handleAddExamination
+    const adding_examinations =
+      ctx.url.searchParams.get('add') === 'examinations'
+    const placing_orders = ctx.url.searchParams.get('place') === 'orders'
+    const handle = adding_examinations
+      ? handleAddExaminations
+      : placing_orders
+      ? handlePlaceOrders
       : handleExaminationFindings
 
     return handle(req, ctx)
@@ -203,17 +248,25 @@ export default async function ExaminationsPage(
   ctx: EncounterContext,
 ) {
   const { trx, encounter } = ctx.state
-  const adding_examination = ctx.url.searchParams.get('add') === 'examinations'
+  const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
+  const placing_orders = ctx.url.searchParams.get('place') === 'orders'
 
-  const examination = adding_examination ? null : matchingExamination(ctx)
+  const doing_examination = !adding_examinations && !placing_orders
+  const examination = doing_examination && matchingExamination(ctx)
 
-  if (!adding_examination) {
+  if (doing_examination) {
     assert(examination, 'No matching examination')
   }
 
   const add_examinations_href = addExaminationsHref(ctx)
+  const place_orders_href = placeOrdersHref(ctx)
 
-  const tabs: TabProps[] = encounter.examinations.map((exam) => {
+  const [orders, during_this_encounter] = partition(
+    encounter.examinations,
+    (ex) => !!ex.ordered,
+  )
+
+  const tabs: TabProps[] = during_this_encounter.map((exam) => {
     const active = exam === examination
     return {
       tab: exam.examination_name as string,
@@ -225,19 +278,28 @@ export default async function ExaminationsPage(
         ? <ForwardIcon className='w-5 h-5' />
         : <ProgressIcons.Dot active={active} />,
     }
-  }).concat([
-    {
-      tab: 'Add Examinations',
-      href: add_examinations_href,
-      active: adding_examination,
-      leftIcon: <PlusCircleIcon className='w-5 h-5' />,
-    },
-  ])
+  })
+
+  if (orders.length) {
+    tabs.push({
+      tab: 'Place Orders',
+      href: place_orders_href,
+      active: placing_orders,
+      leftIcon: <PaperAirplaneIcon className='w-5 h-5' />,
+    })
+  }
+
+  tabs.push({
+    tab: 'Add Examinations',
+    href: add_examinations_href,
+    active: adding_examinations,
+    leftIcon: <PlusCircleIcon className='w-5 h-5' />,
+  })
 
   return (
     <EncounterLayout ctx={ctx}>
       <Tabs tabs={tabs} />
-      {adding_examination && (
+      {adding_examinations && (
         <NewExaminationForm
           recommended_examinations={encounter.examinations.filter((ex) =>
             ex.recommended
@@ -249,6 +311,16 @@ export default async function ExaminationsPage(
             facility_id: ctx.state.encounter.providers[0].facility_id,
           })}
         />
+      )}
+      {placing_orders && (
+        <div>
+          TODO
+          {orders.map((order) => (
+            <p>
+              {order.examination_name}
+            </p>
+          ))}
+        </div>
       )}
       {examination && (
         <PatientExaminationForm

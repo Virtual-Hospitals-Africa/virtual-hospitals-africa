@@ -712,6 +712,7 @@ export interface PatientExaminations {
   encounter_provider_id: number
   examination_name: string
   id: Generated<number>
+  ordered: Generated<boolean>
   patient_id: number
   skipped: Generated<boolean>
   updated_at: Generated<Timestamp>

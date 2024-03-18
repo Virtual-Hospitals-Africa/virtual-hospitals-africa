@@ -1921,6 +1921,7 @@ export type RenderedPatientEncounterExamination = {
   examination_name: Examination
   completed: SqlBool
   skipped: SqlBool
+  ordered: SqlBool
   recommended: SqlBool
 }
 

@@ -1,11 +1,12 @@
-import { sql, SqlBool } from 'kysely'
+import { QueryCreator, SelectQueryBuilder, sql, SqlBool } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import { jsonArrayFrom, now } from '../helpers.ts'
-import { ExaminationFindingType } from '../../db.d.ts'
+import { DB, ExaminationFindingType } from '../../db.d.ts'
 import { isISODateString } from '../../util/date.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { Examination } from '../../shared/examinations.ts'
+import { QueryCreatorWithCommonTableExpression } from 'kysely/parser/with-parser.js'
 
 function examinationName(name: Examination) {
   return sql<Examination>`${name}::varchar(40)`.as('examination_name')
@@ -13,7 +14,21 @@ function examinationName(name: Examination) {
 
 export function recommended(
   trx: TrxOrDb,
-) {
+): QueryCreatorWithCommonTableExpression<
+  DB,
+  'recommended_examinations',
+  (
+    qb: QueryCreator<DB>,
+  ) => SelectQueryBuilder<
+    DB,
+    'patients' | 'patient_age' | 'patient_encounters',
+    {
+      patient_id: number
+      encounter_id: number
+      examination_name: Examination
+    }
+  >
+> {
   return trx.with('recommended_examinations', (qb) => {
     const patient_encounter = qb.selectFrom('patients')
       .innerJoin('patient_age', 'patient_age.patient_id', 'patients.id')
@@ -56,72 +71,9 @@ export function recommended(
   })
 }
 
-export async function add(
+export function forPatientEncounter(
   trx: TrxOrDb,
-  { examinations, encounter_id, patient_id, encounter_provider_id }: {
-    patient_id: number
-    encounter_id: number
-    encounter_provider_id: number
-    examinations: Examination[]
-  },
 ) {
-  const deleting_examination_not_specified = trx
-    .deleteFrom('patient_examinations')
-    .where('encounter_id', '=', encounter_id)
-    .where('patient_id', '=', patient_id)
-    .where('examination_name', 'not in', examinations)
-    .execute()
-
-  await trx
-    .insertInto('patient_examinations')
-    .columns([
-      'patient_id',
-      'encounter_id',
-      'encounter_provider_id',
-      'examination_name',
-    ])
-    .expression((eb) =>
-      // examinations requiring insert are those not already present
-      eb.selectFrom('examinations')
-        .leftJoin('patient_examinations', (join) =>
-          join.onRef(
-            'patient_examinations.examination_name',
-            '=',
-            'examinations.name',
-          )
-            .on('patient_examinations.encounter_id', '=', encounter_id)
-            .on('patient_examinations.patient_id', '=', patient_id))
-        .where('examinations.name', 'in', examinations)
-        .where('patient_examinations.id', 'is', null)
-        .select((eb) => [
-          eb.lit(patient_id).as('patient_id'),
-          eb.lit(encounter_id).as('encounter_id'),
-          eb.lit(encounter_provider_id).as('encounter_provider_id'),
-          'examinations.name as examination_name',
-        ])
-    )
-    .returning('id')
-    .execute()
-
-  await deleting_examination_not_specified
-}
-
-export function skip(trx: TrxOrDb, values: {
-  examination_name: Examination
-  patient_id: number
-  encounter_id: number
-  encounter_provider_id: number
-}) {
-  return trx
-    .insertInto('patient_examinations')
-    .values({
-      ...values,
-      skipped: true,
-    })
-    .executeTakeFirstOrThrow()
-}
-
-export function forPatientEncounter(trx: TrxOrDb) {
   return recommended(trx)
     .with('patient_examinations_with_recommendations_unordered', (qb) => {
       const recommendations_not_yet_addressed = qb.selectFrom(
@@ -147,6 +99,7 @@ export function forPatientEncounter(trx: TrxOrDb) {
         .select([
           sql<SqlBool>`FALSE`.as('completed'),
           sql<SqlBool>`FALSE`.as('skipped'),
+          sql<SqlBool>`FALSE`.as('ordered'),
           sql<SqlBool>`TRUE`.as('recommended'),
         ])
 
@@ -173,6 +126,7 @@ export function forPatientEncounter(trx: TrxOrDb) {
             .as('examination_name'),
           'patient_examinations.completed',
           'patient_examinations.skipped',
+          'patient_examinations.ordered',
           eb('recommended_examinations.encounter_id', 'is not', null).as(
             'recommended',
           ),
@@ -188,6 +142,92 @@ export function forPatientEncounter(trx: TrxOrDb) {
           .innerJoin('examinations', 'examinations.name', 'examination_name')
           .orderBy('examinations.order', 'asc'),
     )
+}
+
+export async function add(
+  trx: TrxOrDb,
+  { examinations, encounter_id, patient_id, encounter_provider_id }: {
+    patient_id: number
+    encounter_id: number
+    encounter_provider_id: number
+    examinations: {
+      during_this_encounter: Examination[]
+      orders: Examination[]
+    }
+  },
+) {
+  const all_examinations = [
+    ...examinations.during_this_encounter,
+    ...examinations.orders,
+  ]
+  const deleting_examination_not_specified = trx
+    .deleteFrom('patient_examinations')
+    .where('encounter_id', '=', encounter_id)
+    .where('patient_id', '=', patient_id)
+    .where('examination_name', 'not in', all_examinations)
+    .execute()
+
+  await trx
+    .insertInto('patient_examinations')
+    .columns([
+      'examination_name',
+      'patient_id',
+      'encounter_id',
+      'encounter_provider_id',
+      'ordered',
+    ])
+    .expression((eb) => {
+      // examinations requiring insert are those not already present
+      const base_insert = eb.selectFrom('examinations')
+        .leftJoin('patient_examinations', (join) =>
+          join.onRef(
+            'patient_examinations.examination_name',
+            '=',
+            'examinations.name',
+          )
+            .on('patient_examinations.encounter_id', '=', encounter_id)
+            .on('patient_examinations.patient_id', '=', patient_id))
+        .where('patient_examinations.id', 'is', null)
+        .select((eb) => [
+          'examinations.name as examination_name',
+          eb.lit(patient_id).as('patient_id'),
+          eb.lit(encounter_id).as('encounter_id'),
+          eb.lit(encounter_provider_id).as('encounter_provider_id'),
+        ])
+
+      const during_this_encounter = base_insert
+        .where('examinations.name', 'in', examinations.during_this_encounter)
+        .select((eb) => [
+          eb.lit<boolean>(false).as('ordered'),
+        ])
+
+      const orders = base_insert
+        .where('examinations.name', 'in', examinations.orders)
+        .select((eb) => [
+          eb.lit(true).as('ordered'),
+        ])
+
+      return during_this_encounter.unionAll(orders)
+    })
+    .returning('id')
+    .execute()
+
+  await deleting_examination_not_specified
+}
+
+export function skip(trx: TrxOrDb, values: {
+  examination_name: Examination
+  patient_id: number
+  encounter_id: number
+  encounter_provider_id: number
+}) {
+  return trx
+    .insertInto('patient_examinations')
+    .values({
+      ...values,
+      skipped: true,
+    })
+    .executeTakeFirstOrThrow()
 }
 
 function getFindings(trx: TrxOrDb, examination_name: string) {

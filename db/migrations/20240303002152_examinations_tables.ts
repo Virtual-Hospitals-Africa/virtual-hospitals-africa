@@ -154,6 +154,11 @@ export async function up(
           'boolean',
           (col) => col.notNull().defaultTo(false),
         )
+        .addColumn(
+          'ordered',
+          'boolean',
+          (col) => col.notNull().defaultTo(false),
+        )
         .addUniqueConstraint('patient_examination_unique', [
           'encounter_id',
           'examination_name',

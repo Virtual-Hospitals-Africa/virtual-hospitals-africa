@@ -102,6 +102,7 @@ const baseSelect = (trx: TrxOrDb) =>
         view: view_href_sql,
       }).as('actions'),
     ])
+    .orderBy('id asc')
 
 const selectWithName = (trx: TrxOrDb) =>
   baseSelect(trx).where('patients.name', 'is not', null)
@@ -516,6 +517,7 @@ export async function getWithOpenEncounter(
                 'patient_examinations_with_recommendations.examination_name',
                 'patient_examinations_with_recommendations.completed',
                 'patient_examinations_with_recommendations.skipped',
+                'patient_examinations_with_recommendations.ordered',
                 'patient_examinations_with_recommendations.recommended',
               ])
               .where(
