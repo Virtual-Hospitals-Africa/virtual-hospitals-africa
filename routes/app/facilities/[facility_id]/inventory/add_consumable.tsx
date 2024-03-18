@@ -29,9 +29,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility, healthWorker } = ctx.state
+    const { admin } = ctx.state.facility_employment.roles
+    assertOr403(admin)
 
-    assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
     const to_add = await parseRequestAsserts(
@@ -48,7 +48,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
           'procured_by_name',
           'consumable_name',
         ]),
-        created_by: healthWorker.id,
+        created_by: admin.employment_id,
         facility_id: facility_id,
         procured_by: to_add.procured_by_id,
       } as FacilityConsumable,

@@ -1,9 +1,7 @@
-import { assert } from 'std/assert/assert.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  FacilityDevice,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
@@ -15,7 +13,6 @@ import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import omit from '../../../../../util/omit.ts'
 
 export function assertIsUpsertDevice(
   obj: unknown,
@@ -29,9 +26,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility, healthWorker } = ctx.state
+    const { admin } = ctx.state.facility_employment.roles
+    assertOr403(admin)
 
-    assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
     const to_add = await parseRequestAsserts(
@@ -40,17 +37,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsUpsertDevice,
     )
 
-    const matching_employment = healthWorker.employment.find((employment) =>
-      employment.facility.id === facility_id
-    )
-    assertOr403(matching_employment)
-    assertOr403(matching_employment.roles.admin)
-
     await inventory.addFacilityDevice(ctx.state.trx, {
+      facility_id,
       device_id: to_add.device_id,
       serial_number: to_add.serial_number,
-      created_by: matching_employment.roles.admin.employment_id,
-      facility_id: facility_id,
+      created_by: admin.employment_id,
     })
 
     const success = encodeURIComponent(

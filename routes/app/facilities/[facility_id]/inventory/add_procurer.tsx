@@ -26,9 +26,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   FacilityContext['state']
 > = {
   async POST(req, ctx) {
-    const { isAdminAtFacility } = ctx.state
+    const { admin } = ctx.state.facility_employment.roles
+    assertOr403(admin)
 
-    assertOr403(isAdminAtFacility)
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
     const to_upsert = await parseRequestAsserts(
