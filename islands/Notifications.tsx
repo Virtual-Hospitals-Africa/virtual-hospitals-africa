@@ -17,7 +17,7 @@ export function Notifications(
       {/* Global notification live region, render this permanently at the end of the document */}
       <div
         aria-live='assertive'
-        className='pointer-events-none fixed inset-0 flex items-end px-4 pt-20 sm:items-start'
+        className='pointer-events-none fixed inset-0 flex items-end px-4 pt-20 sm:items-start z-10'
       >
         <div className='flex w-full flex-col items-center space-y-4 sm:items-end'>
           {/* Notification panel, dynamically insert this into the live region when it needs to be displayed */}
@@ -54,7 +54,7 @@ export function Notification(
   },
 ) {
   return (
-    <div className='pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 float-right'>
+    <div className='pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 float-right z-9'>
       <div className='w-0 flex-1 p-4'>
         <div className='flex items-start'>
           <Avatar
