@@ -31,7 +31,7 @@ export function Notifications(
             leaveFrom='opacity-100'
             leaveTo='opacity-0'
           >
-            <div className='w-full divide-y-2'>
+            <div className='w-full flex flex-col gap-2'>
               {notifications.map((notification) => (
                 <Notification
                   notification={notification}
