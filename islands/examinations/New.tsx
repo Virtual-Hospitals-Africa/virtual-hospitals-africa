@@ -5,10 +5,12 @@ import { Examination } from '../../shared/examinations.ts'
 import partition from '../../util/partition.ts'
 
 export function NewExaminationForm({
+  allowed_to_place_orders,
   recommended_examinations,
   selected_examinations,
   available_diagnostic_tests,
 }: {
+  allowed_to_place_orders: boolean
   recommended_examinations: Examination[]
   selected_examinations: Examination[]
   available_diagnostic_tests: {
@@ -29,6 +31,7 @@ export function NewExaminationForm({
   const selected_diagnostics = DIAGNOSTIC_TESTS.filter((test) =>
     selected_examinations.includes(test) && diagnostics_available.includes(test)
   )
+
   const selected_orders = DIAGNOSTIC_TESTS.filter((test) =>
     selected_examinations.includes(test) &&
     diagnostics_requiring_order.includes(test)
@@ -58,7 +61,7 @@ export function NewExaminationForm({
           }))}
         />
       )}
-      {!!diagnostics_requiring_order.length && (
+      {!!diagnostics_requiring_order.length && allowed_to_place_orders && (
         <LabelledListboxMulti
           label='Diagnostic Tests to Order'
           name='diagnostic_test_orders'
