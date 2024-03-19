@@ -57,7 +57,7 @@ export function getFacilityConsumables(
     .select([
       'consumables.name as name',
       'consumables.id as consumable_id',
-      'quantity_on_hand',
+      'quantity_on_hand as quantity_on_hand',
     ])
     .execute()
 }
@@ -79,11 +79,13 @@ export async function getFacilityConsumablesHistory(
     )
     .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
     .select([
+      'procurement.id as procurement_id',
       'health_workers.name as created_by',
       'procurers.name as procured_by',
       'procurement.quantity',
       'procurement.created_at',
-      'expiry_date',
+      'procurement.expiry_date',
+      'procurement.consumed_amount'
     ])
     .where((eb) =>
       eb.and([
@@ -96,12 +98,15 @@ export async function getFacilityConsumablesHistory(
   const consumption = trx
     .selectFrom('consumption')
     .innerJoin('employment', 'consumption.created_by', 'employment.id')
+    .innerJoin('procurement', 'procurement.id', 'consumption.procurement_id')
     .innerJoin(
       'health_workers',
       'health_workers.id',
       'employment.health_worker_id',
     )
     .select([
+      'procurement.id as procurement_id',
+      'consumption.id as consumption_id',
       'health_workers.name as created_by',
       'consumption.quantity',
       'consumption.created_at',
@@ -109,6 +114,7 @@ export async function getFacilityConsumablesHistory(
     .where((eb) =>
       eb.and([
         eb('consumption.facility_id', '=', opts.facility_id),
+        eb('procurement.consumable_id', '=', opts.consumable_id),
       ])
     )
     .execute()
@@ -122,7 +128,6 @@ export async function getFacilityConsumablesHistory(
     .map(
       (item) => ({
         ...item,
-        type: 'procurement',
       } as RenderedInventoryHistory),
     )
     .concat(
@@ -130,12 +135,11 @@ export async function getFacilityConsumablesHistory(
         (item) => ({
           ...item,
           procured_by: '-',
-          type: 'consumption',
         } as RenderedInventoryHistory),
       ),
     )
 
-  return sortBy(mergedResults, (c) => c.created_at)
+  return sortBy(mergedResults, (c) => c.procurement_id!)
 }
 
 export function searchConsumables(
@@ -240,8 +244,16 @@ export async function consumeFacilityConsumable(
 ) {
   await trx
     .insertInto('consumption')
-    .values(omit(model, ['procured_by']))
+    .values(omit(model, ['procured_by', 'consumable_id']))
     .execute()
+
+    await trx
+    .updateTable('procurement')
+    .set({
+      consumed_amount: sql`consumed_amount + ${model.quantity}`,
+    })
+    .where('procurement.id', '=', model.procurement_id)
+    .executeTakeFirstOrThrow()
 
   await trx
     .updateTable('facility_consumables')

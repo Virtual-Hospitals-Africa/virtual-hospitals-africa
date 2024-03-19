@@ -239,7 +239,7 @@ export interface Consumables {
 }
 
 export interface Consumption {
-  consumable_id: number
+  procurement_id: number
   created_at: Generated<Timestamp>
   created_by: number
   facility_id: number
@@ -845,6 +845,7 @@ export interface Procurement {
   quantity: number | null
   updated_at: Generated<Timestamp>
   expiry_date: Timestamp
+  consumed_amount: number
 }
 
 export interface Procurers {

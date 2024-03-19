@@ -17,7 +17,13 @@ export default function FacilityConsumablesTable(
     },
     {
       label: 'Quantity',
-      data: 'quantity_on_hand',
+      data(row) {
+        return (
+          <div>
+              {row.quantity_on_hand}
+          </div>
+        )
+      },
     },
     {
       label: 'Actions',

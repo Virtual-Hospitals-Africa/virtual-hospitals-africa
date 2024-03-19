@@ -15,6 +15,7 @@ type HistoryPageProps = {
   facility: HasId<Facility>
   inventory_history: RenderedInventoryHistory[]
   healthWorker: EmployedHealthWorker
+  consumable_id: number
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -23,19 +24,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async GET(_req, ctx) {
     const { healthWorker, facility } = ctx.state
     const facility_id = parseInt(ctx.params.facility_id)
-    const consumable_Id = parseInt(ctx.url.searchParams.get('consumable_id')!)
+    const consumable_id = parseInt(ctx.url.searchParams.get('consumable_id')!)
     assertOr404(facility_id)
-    assertOr404(consumable_Id)
+    assertOr404(consumable_id)
 
     const inventory_history = await inventory.getFacilityConsumablesHistory(
       ctx.state.trx,
-      { facility_id: facility_id, consumable_id: consumable_Id },
+      { facility_id: facility_id, consumable_id: consumable_id },
     )
 
     return ctx.render({
       facility,
       healthWorker,
       inventory_history,
+      consumable_id,
     })
   },
 }
@@ -54,6 +56,7 @@ export default function HistoryPage(
       <InventoryHistoryTable
         facility_id={props.data.facility.id}
         details={props.data.inventory_history}
+        consumable_id={props.data.consumable_id}
       />
     </Layout>
   )

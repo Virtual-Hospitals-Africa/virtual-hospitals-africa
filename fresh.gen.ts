@@ -31,6 +31,7 @@ import * as $app_facilities_facility_id_inventory_add_consumable from './routes/
 import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
 import * as $app_facilities_facility_id_inventory_add_medicine from './routes/app/facilities/[facility_id]/inventory/add_medicine.tsx'
 import * as $app_facilities_facility_id_inventory_add_procurer from './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx'
+import * as $app_facilities_facility_id_inventory_consume from './routes/app/facilities/[facility_id]/inventory/consume.tsx'
 import * as $app_facilities_facility_id_inventory_history from './routes/app/facilities/[facility_id]/inventory/history.tsx'
 import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
 import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
@@ -140,6 +141,7 @@ import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_w
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
 import * as $inventory_ConsumableSearch from './islands/inventory/ConsumableSearch.tsx'
+import * as $inventory_ConsumeForm from './islands/inventory/ConsumeForm.tsx'
 import * as $inventory_Device from './islands/inventory/Device.tsx'
 import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
 import * as $inventory_MedicineForm from './islands/inventory/MedicineForm.tsx'
@@ -216,6 +218,8 @@ const manifest = {
       $app_facilities_facility_id_inventory_add_medicine,
     './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx':
       $app_facilities_facility_id_inventory_add_procurer,
+    './routes/app/facilities/[facility_id]/inventory/consume.tsx':
+      $app_facilities_facility_id_inventory_consume,
     './routes/app/facilities/[facility_id]/inventory/history.tsx':
       $app_facilities_facility_id_inventory_history,
     './routes/app/facilities/[facility_id]/register.tsx':
@@ -365,6 +369,7 @@ const manifest = {
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Consumable.tsx': $inventory_Consumable,
     './islands/inventory/ConsumableSearch.tsx': $inventory_ConsumableSearch,
+    './islands/inventory/ConsumeForm.tsx': $inventory_ConsumeForm,
     './islands/inventory/Device.tsx': $inventory_Device,
     './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
     './islands/inventory/MedicineForm.tsx': $inventory_MedicineForm,

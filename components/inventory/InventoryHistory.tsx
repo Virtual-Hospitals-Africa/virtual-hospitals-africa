@@ -4,71 +4,89 @@ import { Container } from '../library/Container.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 
-const columns: TableColumn<RenderedInventoryHistory>[] = [
-  {
-    label: 'Date',
-    data(row) {
-      return (
-        <div>
-          {row.created_at.toLocaleString()}
-        </div>
-      )
-    },
-  },
-  {
-    label: 'Procurer',
-    data: 'procured_by',
-  },
-  {
-    label: 'Employee',
-    data: 'created_by',
-  },
-  {
-    label: 'Added',
-    data(row) {
-      return (
-        <div>
-          {row.type !== 'consumption' && (
-            <span>
-              + {row.quantity}
-            </span>
-          )}
-        </div>
-      )
-    },
-  },
-  {
-    label: 'Consumed',
-    data(row) {
-      return (
-        <div>
-          {row.type === 'consumption' && (
-            <span>
-              - {row.quantity}
-            </span>
-          )}
-        </div>
-      )
-    },
-  },
-  {
-    label: 'Expire in',
-    data(row) {
-      return (
-        <div>
-          {row.expiry_date?.toLocaleDateString() ?? 'No Expiration'}
-        </div>
-      )
-    },
-  },
-]
-
 export default function InventoryHistoryTable(
-  { details, facility_id }: {
+  { details, facility_id, consumable_id }: {
     details: RenderedInventoryHistory[]
     facility_id: number
+    consumable_id: number
   },
 ) {
+  const columns: TableColumn<RenderedInventoryHistory>[] = [
+    {
+      label: 'Date',
+      data(row) {
+        return (
+          <div>
+            {row.created_at.toLocaleString()}
+          </div>
+        )
+      },
+    },
+    {
+      label: 'Procurer',
+      data: 'procured_by',
+    },
+    {
+      label: 'Employee/Consumer',
+      data: 'created_by',
+    },
+    {
+      label: 'Added',
+      data(row) {
+        return (
+          <div>
+            {!row.consumption_id
+              ? (
+                <span class='text-green-400'>
+                  + {row.quantity}
+                </span>
+              )
+              : '-'}
+          </div>
+        )
+      },
+    },
+    {
+      label: 'Consumed',
+      data(row) {
+        return (
+          <div>
+            {row.consumption_id
+              ? (
+                <span class='text-red-400'>
+                  - {row.quantity ?? 0}
+                </span>
+              )
+              : (
+                row.quantity === row.consumed_amount
+                  ? <span class='text-yellow-400'>Out of stock</span>
+                  : (
+                    <a
+                      href={`/app/facilities/${facility_id}/inventory/consume?procurement_id=${row.procurement_id}&consumable_id=${consumable_id}`}
+                      class='text-indigo-600 hover:text-indigo-900 capitalize'
+                    >
+                      {row.consumed_amount ?? 0}
+                    </a>
+                  )
+              )}
+          </div>
+        )
+      },
+    },
+    {
+      label: 'Expire in',
+      data(row) {
+        return (
+          <div>
+            {!row.consumption_id
+              ? (row.expiry_date?.toLocaleDateString() ?? 'No Expiration')
+              : '-'}
+          </div>
+        )
+      },
+    },
+  ]
+
   return (
     <Container size='lg'>
       <FormRow>
