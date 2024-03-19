@@ -15,9 +15,11 @@ import {
 export default function MedicationInput({
   name,
   value,
+  showIntake = true,
 }: {
   name: string
   value?: PreExistingConditionWithDrugs['medications'][0]
+  showIntake?: boolean
 }) {
   const [drug, setDrug] = useState<DrugSearchResultData | null>(
     value?.drug || null,
@@ -131,7 +133,7 @@ export default function MedicationInput({
               </option>
             ))}
         </Select>
-        {medication && (medication.routes.length > 1) && (
+        {showIntake && medication && (medication.routes.length > 1) && (
           <Select
             name={`${name}.route`}
             required
@@ -220,7 +222,8 @@ export default function MedicationInput({
           ))}
         </Select>
       </FormRow>
-      <FormRow className='w-full justify-normal'>
+      {showIntake && (<>
+        <FormRow className='w-full justify-normal'>
         <Select
           name={`${name}.dosage`}
           label='Dosage'
@@ -281,6 +284,9 @@ export default function MedicationInput({
           onInput={(event) => setSpecialInstructions(event.currentTarget.value)}
         />
       </FormRow>
+      
+      </>)}
+ 
     </div>
   )
 }

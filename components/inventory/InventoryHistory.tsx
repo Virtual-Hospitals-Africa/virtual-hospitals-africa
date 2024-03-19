@@ -51,6 +51,16 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
       )
     },
   },
+  {
+    label: 'Expire in',
+    data(row) {
+      return (
+        <div>
+          {row.expiry_date?.toLocaleDateString() ?? 'No Expiration'}
+        </div>
+      )
+    },
+  },
 ]
 
 export default function InventoryHistoryTable(

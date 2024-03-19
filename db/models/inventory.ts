@@ -83,6 +83,7 @@ export async function getFacilityConsumablesHistory(
       'procurers.name as procured_by',
       'procurement.quantity',
       'procurement.created_at',
+      'expiry_date',
     ])
     .where((eb) =>
       eb.and([
@@ -108,7 +109,6 @@ export async function getFacilityConsumablesHistory(
     .where((eb) =>
       eb.and([
         eb('consumption.facility_id', '=', opts.facility_id),
-        eb('consumption.consumable_id', '=', opts.consumable_id),
       ])
     )
     .execute()
@@ -228,6 +228,7 @@ export async function addFacilityConsumable(
         quantity_on_hand: model.quantity,
         consumable_id: model.consumable_id,
         facility_id: model.facility_id,
+        expiry_date: model.expiry_date,
       })
       .execute()
   }

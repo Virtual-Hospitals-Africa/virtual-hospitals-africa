@@ -2,29 +2,25 @@ import { JSX } from 'preact'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
-import ConsumableSearch from './ConsumableSearch.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { DateInput, NumberInput } from '../form/Inputs.tsx'
+import { NumberInput } from '../form/Inputs.tsx'
 import ProcurerSearch from './ProcurerSearch.tsx'
+import MedicationInput from '../medication/Input.tsx'
 
-export default function FacilityConsumableForm(): JSX.Element {
+export default function InventoryMedicineForm(): JSX.Element {
   return (
     <div>
       <SectionHeader className='my-5 text-[20px]'>
-        Add Consumable
+        Add Medicine
       </SectionHeader>
       <div>
         <Form method='post'>
           <div className='flex flex-col w-full gap-2'>
+            <MedicationInput
+              name={``}
+              showIntake={false}
+            />
             <FormRow>
-              <ConsumableSearch
-                name='consumable'
-                label='Consumable'
-                required
-                addable
-                value={null}
-              />
-
               <div>
                 <ProcurerSearch
                   name='procured_by'
@@ -40,8 +36,6 @@ export default function FacilityConsumableForm(): JSX.Element {
                 label='Quantity'
                 required
               />
-
-              <DateInput name={'expiry_date'} />
             </FormRow>
             <FormRow>
               <Button type='submit'>

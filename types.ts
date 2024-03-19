@@ -1024,6 +1024,7 @@ export type FacilityConsumable = {
   consumable_id: number
   procured_by: number
   quantity: number
+  expiry_date: Date
 }
 
 export type RenderedDevice = {
@@ -1071,6 +1072,7 @@ export type RenderedInventoryHistory = {
   created_by: string
   procured_by?: string
   quantity: number
+  expiry_date?: Date
   type: 'procurement' | 'consumption'
 }
 

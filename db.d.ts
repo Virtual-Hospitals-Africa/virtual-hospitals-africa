@@ -382,6 +382,7 @@ export interface FacilityConsumables {
   id: Generated<number>
   quantity_on_hand: number
   updated_at: Generated<Timestamp>
+  expiry_date: Timestamp
 }
 
 export interface FacilityDevices {
@@ -843,6 +844,7 @@ export interface Procurement {
   procured_by: number
   quantity: number | null
   updated_at: Generated<Timestamp>
+  expiry_date: Timestamp
 }
 
 export interface Procurers {
