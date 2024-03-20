@@ -26,7 +26,8 @@ export default function NonEmptyWaitingRoomView(
                   `/app/facilities/1/waiting_room/add?patient_name=${patient?.name}`
               }
               if (patient?.id) {
-                window.location.href = `/app/patients/${patient?.id}/intake/`
+                return window.location.href =
+                  `/app/patients/${patient?.id}`
               }
             }}
           />
