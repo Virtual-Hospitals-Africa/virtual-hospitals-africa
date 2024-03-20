@@ -22,7 +22,7 @@ export default function NonEmptyWaitingRoomView(
             addable
             onSelect={(patient) => {
               if (patient?.id === 'add') {
-                window.location.href =
+                return window.location.href =
                   `/app/facilities/1/waiting_room/add?patient_name=${patient?.name}`
               }
               if (patient?.id) {
