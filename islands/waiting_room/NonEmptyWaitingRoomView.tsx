@@ -3,6 +3,7 @@ import FormRow from '../form/Row.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import WaitingRoomTable from '../../components/waiting_room/Table.tsx'
+import redirect from '../../util/redirect.ts'
 
 export default function NonEmptyWaitingRoomView(
   { waiting_room, add_href }: {
@@ -24,9 +25,20 @@ export default function NonEmptyWaitingRoomView(
                 return window.location.href =
                   `/app/facilities/1/waiting_room/add?patient_name=${patient?.name}`
               }
+
               if (patient?.id) {
-                return window.location.href =
-                  `/app/patients/${patient?.id}/intake/`
+                const patient_in_waiting_room = waiting_room.find(
+                  (waiting_room_entry) => {
+                    return waiting_room_entry.patient.id === patient?.id
+                  },
+                )
+
+                if (patient_in_waiting_room) {
+                  return window.location.href = `/app/patients/${patient?.id}`
+                } else {
+                  return window.location.href =
+                    `/app/facilities/1/waiting_room/add?patient_id=${patient?.id}`
+                }
               }
             }}
           />
