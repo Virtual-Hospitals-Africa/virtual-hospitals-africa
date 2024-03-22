@@ -37,6 +37,13 @@ export default function MedicationInput({
     number | null
   >(value?.manufactured_medication_id ?? null)
 
+  const [
+    consumableId,
+    setConsumableId,
+  ] = useState<
+    number | null
+  >(value?.manufactured_medication_id ?? null)
+
   const [strength, setStrength] = useState<
     number | null
   >(value?.strength ?? null)
@@ -165,37 +172,57 @@ export default function MedicationInput({
           /* TODO: revisit using manufactured medications.
             Could be valuable for prescriptions based on facility availability, but for now just gumming things up. */
         }
-        <input
-          type='hidden'
-          className='hidden'
-          name={`${name}.manufactured_medication_id`}
-          value={manufactured_medication_id || ''}
-        />
-        {
-          /* <Select
-          name={`${name}.manufactured_medication_id`}
-          label='Trade Name'
-          disabled={!medication}
-          onChange={(event) =>
-            event.currentTarget.value &&
-            setManufacturedMedicationId(
-              Number(event.currentTarget.value),
-            )}
-        >
-          <option value=''>Select Trade Name</option>
-          {medication &&
-            medication.manufacturers.map((manufactured_medication) => (
-              <option
-                value={manufactured_medication.manufactured_medication_id}
-                selected={manufactured_medication_id ===
-                  manufactured_medication.manufactured_medication_id}
+
+        {!showIntake &&
+          (
+            <>
+              <input
+                type='hidden'
+                className='hidden'
+                name={`${name}.manufactured_medication_id`}
+                value={manufactured_medication_id || ''}
+              />
+
+              <input
+                type='hidden'
+                className='hidden'
+                name={`${name}.consumable_id`}
+                value={consumableId || ''}
+              />
+
+              <Select
+                name={`${name}.manufactured_medication_id`}
+                label='Trade Name'
+                disabled={!medication}
+                onChange={(event) => {
+                  if (event.currentTarget.value) {
+                    setManufacturedMedicationId(
+                      Number(event.currentTarget.value),
+                    )
+
+                    const consumable_id = medication!.manufacturers
+                    .filter(c=> c.manufactured_medication_id === Number(event.currentTarget.value))[0].consumable_id
+                    setConsumableId(
+                      Number(consumable_id),
+                    )
+                  }
+                }}
               >
-                {manufactured_medication.trade_name}{' '}
-                ({manufactured_medication.manufacturer_name})
-              </option>
-            ))}
-        </Select> */
-        }
+                <option value=''>Select Trade Name</option>
+                {medication &&
+                  medication.manufacturers.map((manufactured_medication) => (
+                    <option
+                      value={manufactured_medication.manufactured_medication_id}
+                      selected={manufactured_medication_id ===
+                        manufactured_medication.manufactured_medication_id}
+                    >
+                      {manufactured_medication.trade_name}{' '}
+                      ({manufactured_medication.manufacturer_name})
+                    </option>
+                  ))}
+              </Select>
+            </>
+          )}
         <Select
           name={`${name}.strength`}
           required
@@ -222,71 +249,72 @@ export default function MedicationInput({
           ))}
         </Select>
       </FormRow>
-      {showIntake && (<>
-        <FormRow className='w-full justify-normal'>
-        <Select
-          name={`${name}.dosage`}
-          label='Dosage'
-          disabled={!(medication && strength)}
-        >
-          <option value=''>Select Dosage</option>
-          {medication && strength &&
-            Dosages.map(([dosage_text, dosage_value]) => (
-              <option
-                value={dosage_value * medication.strength_denominator}
-                selected={dosage ===
-                  (dosage_value * medication.strength_denominator)}
-              >
-                {dosageDisplay({
-                  dosage_text,
-                  dosage: dosage_value,
-                  strength,
-                  ...medication,
-                })}
-              </option>
-            ))}
-        </Select>
-        <Select
-          name={`${name}.intake_frequency`}
-          required
-          label='Frequency'
-          disabled={!drug}
-        >
-          <option value=''>Select Intake</option>
-          {drug &&
-            Object.entries(IntakeFrequencies).map(([code, label]) => (
-              <option
-                value={code}
-                selected={intake_frequency === code}
-              >
-                {label}
-              </option>
-            ))}
-        </Select>
-        <DateInput
-          name={`${name}.start_date`}
-          label='Start Date'
-          required
-          value={value?.start_date}
-        />
-        <DateInput
-          name={`${name}.end_date`}
-          label='End Date'
-          value={value?.end_date}
-        />
-      </FormRow>
-      <FormRow>
-        <TextArea
-          name={`${name}.special_instructions`}
-          className='w-full'
-          label='Special Instructions'
-          value={specialInstructions}
-          onInput={(event) => setSpecialInstructions(event.currentTarget.value)}
-        />
-      </FormRow>
-      
-      </>)}
- 
+      {showIntake && (
+        <>
+          <FormRow className='w-full justify-normal'>
+            <Select
+              name={`${name}.dosage`}
+              label='Dosage'
+              disabled={!(medication && strength)}
+            >
+              <option value=''>Select Dosage</option>
+              {medication && strength &&
+                Dosages.map(([dosage_text, dosage_value]) => (
+                  <option
+                    value={dosage_value * medication.strength_denominator}
+                    selected={dosage ===
+                      (dosage_value * medication.strength_denominator)}
+                  >
+                    {dosageDisplay({
+                      dosage_text,
+                      dosage: dosage_value,
+                      strength,
+                      ...medication,
+                    })}
+                  </option>
+                ))}
+            </Select>
+            <Select
+              name={`${name}.intake_frequency`}
+              required
+              label='Frequency'
+              disabled={!drug}
+            >
+              <option value=''>Select Intake</option>
+              {drug &&
+                Object.entries(IntakeFrequencies).map(([code, label]) => (
+                  <option
+                    value={code}
+                    selected={intake_frequency === code}
+                  >
+                    {label}
+                  </option>
+                ))}
+            </Select>
+            <DateInput
+              name={`${name}.start_date`}
+              label='Start Date'
+              required
+              value={value?.start_date}
+            />
+            <DateInput
+              name={`${name}.end_date`}
+              label='End Date'
+              value={value?.end_date}
+            />
+          </FormRow>
+          <FormRow>
+            <TextArea
+              name={`${name}.special_instructions`}
+              className='w-full'
+              label='Special Instructions'
+              value={specialInstructions}
+              onInput={(event) =>
+                setSpecialInstructions(event.currentTarget.value)}
+            />
+          </FormRow>
+        </>
+      )}
     </div>
   )
 }

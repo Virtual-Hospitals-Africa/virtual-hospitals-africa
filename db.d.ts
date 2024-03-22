@@ -382,7 +382,6 @@ export interface FacilityConsumables {
   id: Generated<number>
   quantity_on_hand: number
   updated_at: Generated<Timestamp>
-  expiry_date: Timestamp
 }
 
 export interface FacilityDevices {
@@ -543,6 +542,7 @@ export interface ManufacturedMedications {
   strength_numerators: number[]
   trade_name: string
   updated_at: Generated<Timestamp>
+  consumable_id?: number
 }
 
 export interface Measurements {
@@ -846,6 +846,7 @@ export interface Procurement {
   updated_at: Generated<Timestamp>
   expiry_date: Timestamp
   consumed_amount: number
+  specifics: Json | null
 }
 
 export interface Procurers {

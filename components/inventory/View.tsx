@@ -1,6 +1,7 @@
 import {
   RenderedFacilityConsumable,
   RenderedFacilityDevice,
+  RenderedFacilityMedicine,
 } from '../../types.ts'
 import { Container } from '../library/Container.tsx'
 import { TabProps, Tabs } from '../library/Tabs.tsx'
@@ -9,9 +10,10 @@ import FacilityDevicesTable from './DevicesTable.tsx'
 import FacilityMedicinesTable from './MedicinesTable.tsx'
 
 export default function inventoryView(
-  { devices, consumables, facility_id, isAdmin, active_tab }: {
+  { devices, consumables, medicines, facility_id, isAdmin, active_tab }: {
     devices: RenderedFacilityDevice[]
     consumables: RenderedFacilityConsumable[]
+    medicines: RenderedFacilityMedicine[]
     facility_id: number
     isAdmin: boolean
     active_tab: string
@@ -57,7 +59,7 @@ export default function inventoryView(
 
         {active_tab === 'medicines' && (
           <FacilityMedicinesTable
-            medicines={[]}
+            medicines={medicines}
             facility_id={facility_id}
             isAdmin={isAdmin}
           />

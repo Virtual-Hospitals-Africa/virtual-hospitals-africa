@@ -1,5 +1,6 @@
 import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
+import * as inParallel from '../../util/inParallel.ts'
 
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'devices', (qb) =>
@@ -120,6 +121,8 @@ export async function up(db: Kysely<unknown>) {
     .alterTable('manufactured_medications')
     .addColumn('consumable_id', 'integer')
     .execute()
+
+  await seedConsumablesFromMedications(db)
 }
 
 export async function down(db: Kysely<unknown>) {
@@ -135,4 +138,34 @@ export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('procurement').execute()
   await db.schema.dropTable('consumables').execute()
   await db.schema.dropTable('procurers').execute()
+}
+
+// deno-lint-ignore no-explicit-any
+async function seedConsumablesFromMedications(db: Kysely<any>) {
+  const medications = await db
+    .selectFrom('manufactured_medications')
+    .select(['id', 'trade_name', 'applicant_name'])
+    .execute()
+
+  await inParallel.forEach(medications, async (medication) => {
+    const consumable = await db
+      .insertInto('consumables')
+      .values({
+        name: medication.trade_name + '-' + medication.applicant_name,
+        is_medication: true,
+      })
+      .returning('id')
+      .executeTakeFirst()
+
+    await db
+      .updateTable('manufactured_medications')
+      .set('consumable_id', consumable!.id)
+      .where('id', '=', medication.id)
+      .execute()
+  })
+
+  await db
+    .insertInto('consumables')
+    .values({ name: 'bandage', is_medication: false })
+    .executeTakeFirst()
 }

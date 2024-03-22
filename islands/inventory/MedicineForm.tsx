@@ -3,7 +3,7 @@ import SectionHeader from '../../components/library/typography/SectionHeader.tsx
 import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { NumberInput } from '../form/Inputs.tsx'
+import { DateInput, NumberInput } from '../form/Inputs.tsx'
 import ProcurerSearch from './ProcurerSearch.tsx'
 import MedicationInput from '../medication/Input.tsx'
 
@@ -17,7 +17,7 @@ export default function InventoryMedicineForm(): JSX.Element {
         <Form method='post'>
           <div className='flex flex-col w-full gap-2'>
             <MedicationInput
-              name={``}
+              name={`medication`}
               showIntake={false}
             />
             <FormRow>
@@ -36,6 +36,7 @@ export default function InventoryMedicineForm(): JSX.Element {
                 label='Quantity'
                 required
               />
+              <DateInput name={'expiry_date'} />
             </FormRow>
             <FormRow>
               <Button type='submit'>

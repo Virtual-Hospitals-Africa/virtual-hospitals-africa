@@ -5,6 +5,7 @@ import {
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
   RenderedFacilityConsumable,
+  RenderedFacilityMedicine,
   RenderedFacilityDevice,
 } from '../../../../types.ts'
 import * as inventory from '../../../../db/models/inventory.ts'
@@ -18,6 +19,7 @@ type InventoryPageProps = {
   healthWorker: EmployedHealthWorker
   facility_devices: RenderedFacilityDevice[]
   facility_consumbales: RenderedFacilityConsumable[]
+  facility_medicines: RenderedFacilityMedicine[]
   active_tab: string
 }
 
@@ -49,12 +51,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       )
       : []
 
+      const facility_medicines = active_tab === 'medicines'
+      ? await inventory.getFacilityMedicines(
+        ctx.state.trx,
+        { facility_id: facility_id },
+      )
+      : []
+
     return ctx.render({
       facility,
       isAdminAtFacility,
       healthWorker,
       facility_devices,
       facility_consumbales,
+      facility_medicines,
       active_tab,
     })
   },
@@ -75,6 +85,7 @@ export default function inventoryPage(
         facility_id={props.data.facility.id}
         devices={props.data.facility_devices}
         consumables={props.data.facility_consumbales}
+        medicines={props.data.facility_medicines}
         isAdmin={props.data.isAdminAtFacility}
         active_tab={props.data.active_tab}
       />

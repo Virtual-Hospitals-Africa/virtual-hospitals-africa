@@ -3,31 +3,6 @@ import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 
-const columns: TableColumn<RenderedFacilityMedicine>[] = [
-  {
-    label: 'Trade Name',
-    data: 'trade_name',
-  },
-  {
-    label: 'Manufacturer',
-    data: 'manufacturer_name',
-  },
-  {
-    label: 'Quantity',
-    data: 'quantity_on_hand',
-  },
-  {
-    label: 'History',
-    data(row) {
-      return (
-        <div>
-          <Button>View</Button>
-        </div>
-      )
-    },
-  },
-]
-
 export default function FacilityMedicinesTable(
   { medicines, facility_id, isAdmin }: {
     medicines: RenderedFacilityMedicine[]
@@ -35,6 +10,46 @@ export default function FacilityMedicinesTable(
     isAdmin: boolean
   },
 ) {
+  const columns: TableColumn<RenderedFacilityMedicine>[] = [
+    {
+      label: 'Drug Generic Name',
+      data: 'generic_name',
+    },
+    {
+      label: 'Trade Name',
+      data: 'trade_name',
+    },
+    {
+      label: 'Manufacturer',
+      data: 'manufacturer_name',
+    },
+    {
+      label: 'Quantity',
+      data(row) {
+        return (
+          <div>
+              {row.quantity_on_hand}
+          </div>
+        )
+      },
+    },
+    {
+      label: 'Actions',
+      data(row) {
+        return (
+          <div>
+            <a
+              href={`/app/facilities/${facility_id}/inventory/history?consumable_id=${row.consumable_id}`}
+              class='text-indigo-600 hover:text-indigo-900 capitalize'
+            >
+              Details
+            </a>
+          </div>
+        )
+      },
+    },
+  ]
+  
   return (
     <>
       {isAdmin && (

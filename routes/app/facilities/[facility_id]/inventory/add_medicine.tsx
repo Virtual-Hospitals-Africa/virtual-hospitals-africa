@@ -1,7 +1,9 @@
+// deno-lint-ignore-file no-explicit-any
 import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
+  FacilityConsumable,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
@@ -9,16 +11,17 @@ import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../islands/inventory/MedicineForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
+import * as drugs from '../../../../../db/models/drugs.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import omit from '../../../../../util/omit.ts'
 
 export function assertIsUpsertMedicine(
   obj: unknown,
-): asserts obj is { medicine_id: number; serial_number?: string } {
+) {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.Medicine_id === 'number')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -35,7 +38,30 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       ctx.state.trx,
       req,
       assertIsUpsertMedicine,
+    ) as any
+
+    await inventory.addFacilityConsumable(
+      ctx.state.trx,
+      {
+        ...omit(to_add, [
+          'procured_by_id',
+          'procured_by_name',
+          'consumable_name',
+          'medication',
+          'medication_name',
+          'medication_id',
+        ]),
+        created_by: admin.employment_id,
+        facility_id: facility_id,
+        procured_by: to_add.procured_by_id,
+        consumable_id: to_add.medication!.consumable_id,
+        specifics: JSON.stringify({
+          strength: to_add.medication!.strength!,
+          form: to_add.medication!.form!
+        }),
+      } as any,
     )
+
     const success = encodeURIComponent(
       `Medicine added to your facility's inventory 🏥`,
     )

@@ -1027,6 +1027,12 @@ export type FacilityConsumable = {
   quantity: number
   expiry_date: Date
   consumed_amount: number
+  is_medication: boolean
+}
+
+export type FacilityConsumableMedicineSpecefics = {
+   medications_id?: number
+   strength: number
 }
 
 export type RenderedDevice = {
@@ -1061,10 +1067,9 @@ export type RenderedFacilityConsumable = {
 }
 
 export type RenderedFacilityMedicine = {
+  generic_name: string
   consumable_id: number
-  medication_id: number
   trade_name: string
-  applicant_name: string
   manufacturer_name: string
   quantity_on_hand: number
 }
@@ -1688,6 +1693,7 @@ export type DrugSearchResultMedication = {
     strength_numerators: number[]
     manufacturer_name: string
     trade_name: string
+    consumable_id?: number
   }[]
 }
 

@@ -8,6 +8,7 @@ import {
   RenderedFacilityDevice,
   RenderedInventoryHistory,
   RenderedProcurer,
+  RenderedFacilityMedicine,
   TrxOrDb,
 } from '../../types.ts'
 import omit from '../../util/omit.ts'
@@ -54,8 +55,49 @@ export function getFacilityConsumables(
       'consumables.id',
     )
     .where('facility_consumables.facility_id', '=', opts.facility_id)
+    .where('consumables.is_medication', '=', false)
     .select([
       'consumables.name as name',
+      'consumables.id as consumable_id',
+      'quantity_on_hand as quantity_on_hand',
+    ])
+    .execute()
+}
+
+export function getFacilityMedicines(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+  },
+): Promise<RenderedFacilityMedicine[]> {
+  return trx
+    .selectFrom('facility_consumables')
+    .innerJoin(
+      'consumables',
+      'facility_consumables.consumable_id',
+      'consumables.id',
+    )
+    .innerJoin(
+      'manufactured_medications',
+      'consumables.id',
+      'manufactured_medications.consumable_id',
+    )
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin(
+      'drugs',
+      'medications.drug_id',
+      'drugs.id',
+    )
+    .where('facility_consumables.facility_id', '=', opts.facility_id)
+    .where('consumables.is_medication', '=', true)
+    .select([
+      'drugs.generic_name',
+      'manufactured_medications.manufacturer_name',
+      'manufactured_medications.trade_name',
       'consumables.id as consumable_id',
       'quantity_on_hand as quantity_on_hand',
     ])
@@ -148,6 +190,7 @@ export function searchConsumables(
 ): Promise<RenderedConsumable[]> {
   let query = trx
     .selectFrom('consumables')
+    .where('consumables.is_medication', '=', false)
     .select(['consumables.id', 'consumables.name'])
 
   if (search) query = query.where('name', 'ilike', `%${search}%`)
@@ -232,7 +275,6 @@ export async function addFacilityConsumable(
         quantity_on_hand: model.quantity,
         consumable_id: model.consumable_id,
         facility_id: model.facility_id,
-        expiry_date: model.expiry_date,
       })
       .execute()
   }

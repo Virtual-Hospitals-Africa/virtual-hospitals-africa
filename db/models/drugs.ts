@@ -66,6 +66,7 @@ function baseQuery(trx: TrxOrDb) {
                   'manufactured_medications.strength_numerators',
                   'manufactured_medications.trade_name',
                   'manufactured_medications.manufacturer_name',
+                  'manufactured_medications.consumable_id',
                 ])
                 .whereRef(
                   'manufactured_medications.medication_id',
