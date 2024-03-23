@@ -7,7 +7,9 @@ import { Button } from '../../components/library/Button.tsx'
 import { DateInput, NumberInput } from '../form/Inputs.tsx'
 import ProcurerSearch from './ProcurerSearch.tsx'
 
-export default function FacilityConsumableForm(): JSX.Element {
+export default function FacilityConsumableForm(
+  { today }: { today: string },
+): JSX.Element {
   return (
     <div>
       <SectionHeader className='my-5 text-[20px]'>
@@ -41,7 +43,7 @@ export default function FacilityConsumableForm(): JSX.Element {
                 required
               />
 
-              <DateInput name={'expiry_date'} />
+              <DateInput name='expiry_date' min={today} />
             </FormRow>
             <FormRow>
               <Button type='submit'>

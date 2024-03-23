@@ -1,12 +1,9 @@
 import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
-import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import re from 'https://esm.sh/v135/preact-render-to-string@6.3.1/X-ZS8q/denonext/preact-render-to-string.mjs'
-import isEmpty from '../../util/isEmpty.ts'
 
 type Showable =
   | string
@@ -86,14 +83,14 @@ function TableCellInnerContents<T extends Row>(
     assert('actions' in row)
     assert(isObjectLike(row.actions))
     return (
-      <>
+      <div className='flex flex-col gap-1'>
         {Object.entries(row.actions).map((
           [name, action],
         ) => (
           assert(action == null || typeof action === 'string'),
             <ActionButton name={name} action={action} />
         ))}
-      </>
+      </div>
     )
   }
 
@@ -184,7 +181,7 @@ function* columnsWithSomeNonNullValue<T extends Row>(
         ? column.data(row)
         : row[column.data]
 
-      if (!isEmpty(value)) {
+      if (value != null && (!Array.isArray(value) || value.length)) {
         use_column = true
       }
 
@@ -206,6 +203,8 @@ export default function Table<T extends Row>(
   { columns, rows, className }: TableProps<T>,
 ): JSX.Element {
   const mapped_columns = [...columnsWithSomeNonNullValue({ columns, rows })]
+
+  console.log('mapped_columns', mapped_columns)
 
   return (
     <div

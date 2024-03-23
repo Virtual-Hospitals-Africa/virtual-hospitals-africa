@@ -37,6 +37,7 @@ export type SearchProps<
       active: boolean
     },
   ): JSX.Element
+  optionHref?: (option: T) => string
 }
 
 export default function Search<
@@ -55,7 +56,9 @@ export default function Search<
   onQuery,
   onSelect,
   Option,
+  optionHref,
 }: SearchProps<T>) {
+  console.log('optionHref', optionHref)
   if (multi) {
     assert(
       typeof onSelect === 'function',
@@ -138,25 +141,33 @@ export default function Search<
                       active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                     )}
                 >
-                  {({ active, selected }) => (
-                    <>
-                      <Option
-                        option={option}
-                        active={active}
-                        selected={selected}
-                      />
-                      {selected && (
-                        <span
-                          className={cls(
-                            'absolute inset-y-0 right-0 flex items-center pr-4',
-                            active ? 'text-white' : 'text-indigo-600',
-                          )}
-                        >
-                          <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                        </span>
-                      )}
-                    </>
-                  )}
+                  {({ active, selected }) => {
+                    const fragment = (
+                      <>
+                        <Option
+                          option={option}
+                          active={active}
+                          selected={selected}
+                        />
+                        {selected && (
+                          <span
+                            className={cls(
+                              'absolute inset-y-0 right-0 flex items-center pr-4',
+                              active ? 'text-white' : 'text-indigo-600',
+                            )}
+                          >
+                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                          </span>
+                        )}
+                      </>
+                    )
+                    if (!optionHref) return fragment
+                    return (
+                      <a href={optionHref(option)}>
+                        {fragment}
+                      </a>
+                    )
+                  }}
                 </Combobox.Option>
               ))}
             </Combobox.Options>

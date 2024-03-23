@@ -205,27 +205,43 @@ async function addDrug(
       const { manufactured_medication, strengths } of medication
         .manufactured_medications_with_strengths
     ) {
-      const manufacturer_name = manufactured_medication.manufacturers.replace(/;$/, '')
+      const manufacturer_name = manufactured_medication.manufacturers.replace(
+        /;$/,
+        '',
+      )
       const { applicant_name, trade_name } = manufactured_medication
-      const consumable = await db
-        .insertInto('consumables')
-        .values({
-          name: `${trade_name} ${form} by ${applicant_name}`
-        })
-        .returning('id')
-        .executeTakeFirstOrThrow()
 
-      await db
+      const mm = await db
         .insertInto('manufactured_medications')
         .values({
           medication_id,
           manufacturer_name,
           trade_name,
           applicant_name,
-          consumable_id: consumable.id,
           strength_numerators: strengths.strength_numerators,
         })
+        .returning('id')
         .executeTakeFirstOrThrow()
+
+      for (const strength_numerator of strengths.strength_numerators) {
+        const consumable = await db
+          .insertInto('consumables')
+          .values({
+            name:
+              `${trade_name} ${strength_numerator}${medication.strengths.strength_numerator_unit} ${form} by ${applicant_name}`,
+          })
+          .returning('id')
+          .executeTakeFirstOrThrow()
+
+        await db
+          .insertInto('manufactured_medication_strengths')
+          .values({
+            manufactured_medication_id: mm.id,
+            consumable_id: consumable.id,
+            strength_numerator,
+          })
+          .executeTakeFirstOrThrow()
+      }
     }
   }
 }

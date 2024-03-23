@@ -4,22 +4,20 @@ import { ManufacturedMedicationSearchResult } from '../../types.ts'
 import FormRow from '../form/Row.tsx'
 import ManufacturedMedicationSearch from './Search.tsx'
 
-export default function MedicationInput({
-  name,
-}: {
+export default function MedicationInput(props: {
   name: string
+  manufactured_medication: null | ManufacturedMedicationSearchResult
+  strength: null | number
 }) {
-  const manufactured_medication = useSignal<
-    null | ManufacturedMedicationSearchResult
-  >(null)
-  const strength = useSignal<null | number>(null)
+  const manufactured_medication = useSignal(props.manufactured_medication)
+  const strength = useSignal(props.strength)
 
   effect(() => {
     if (
       manufactured_medication.value && !strength.value &&
-      manufactured_medication.value.strength_numerators
+      manufactured_medication.value.strength_numerators.length === 1
     ) {
-      strength.value = null
+      strength.value = manufactured_medication.value.strength_numerators[0]
     }
   })
 
@@ -28,7 +26,7 @@ export default function MedicationInput({
       <FormRow className='w-full justify-normal'>
         <ManufacturedMedicationSearch
           label='Medication'
-          name={name}
+          name={props.name}
           value={manufactured_medication.value}
           required
           onSelect={(value) => {

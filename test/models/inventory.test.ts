@@ -98,8 +98,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             quantity: 10,
             procured_by: procurer.id,
             consumed_amount: 0,
-            expiry_date: new Date(),
-            is_medication: false,
+            expiry_date: null,
             procurement_id: 0,
           })
 
@@ -110,8 +109,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             quantity: 5,
             procured_by: procurer.id,
             consumed_amount: 0,
-            expiry_date: new Date(),
-            is_medication: false,
+            expiry_date: null,
             procurement_id: 0,
           })
 
@@ -122,8 +120,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             quantity: 10,
             procured_by: procurer.id,
             consumed_amount: 0,
-            expiry_date: new Date(),
-            is_medication: false,
+            expiry_date: null,
             procurement_id: 0,
           })
 

@@ -40,11 +40,16 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'facility_consumables', (qb) =>
     qb
-      .addColumn('quantity_on_hand', 'integer', (col) => col.notNull())
       .addColumn('facility_id', 'integer', (col) =>
         col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade'))
+      .addColumn('quantity_on_hand', 'integer', (col) =>
+        col.notNull())
+      .addUniqueConstraint('facility_consumable', [
+        'facility_id',
+        'consumable_id',
+      ])
       .addCheckConstraint(
         'facility_consumables_quantity_on_hand',
         sql`
@@ -66,16 +71,21 @@ export async function up(db: Kysely<unknown>) {
         col.notNull().references('procurers.id').onDelete('cascade'))
       .addColumn('created_by', 'integer', (column) =>
         column.notNull().references('employment.id').onDelete('cascade'))
-      .addColumn('expiry_date', 'timestamptz')
-      .addColumn('specifics', 'json')
+      .addColumn('expiry_date', 'date')
       .addCheckConstraint(
-        'procurement_quantity',
+        'positive_procurement_quantity',
         sql`
-        quantity >= 0
+        quantity > 0
        `,
       )
       .addCheckConstraint(
-        'procurement_consumed_amount',
+        'nonnegative_procurement_consumed_amount',
+        sql`
+        consumed_amount >= 0
+       `,
+      )
+      .addCheckConstraint(
+        'procurement_consumed_amount_less_than_quantity',
         sql`
         consumed_amount <= quantity
        `,
@@ -85,7 +95,8 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn('facility_id', 'integer', (col) =>
         col.notNull().references('facilities.id').onDelete('cascade'))
-      .addColumn('quantity', 'integer')
+      .addColumn('quantity', 'integer', (col) =>
+        col.notNull())
       .addColumn('created_by', 'integer', (column) =>
         column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('procurement_id', 'integer', (col) =>
@@ -93,7 +104,7 @@ export async function up(db: Kysely<unknown>) {
       .addCheckConstraint(
         'consumption_quantity',
         sql`
-        quantity >= 0
+        quantity > 0
       `,
       ))
 }

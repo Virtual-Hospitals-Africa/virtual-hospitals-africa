@@ -6,6 +6,7 @@ import {
   expressionBuilder,
   ExpressionWrapper,
   ExtractTypeFromReferenceExpression,
+  InsertQueryBuilder,
   RawBuilder,
   SelectQueryBuilder,
   Simplify,
@@ -15,6 +16,7 @@ import {
 } from 'kysely'
 import * as formatter from 'npm:sql-formatter'
 import { DB } from '../db.d.ts'
+import { assert } from 'std/assert/assert.ts'
 
 /**
  * A postgres helper for aggregating a subquery (or other expression) into a JSONB array.
@@ -105,6 +107,7 @@ export function jsonArrayFromColumn<
  *
  * ```ts
  * import { jsonObjectFrom } from 'kysely/helpers/postgres'
+import { assert } from 'std/assert/assert.ts';
  *
  * const result = await db
  *   .selectFrom('person')
@@ -247,7 +250,9 @@ export function debugLog(
     // deno-lint-ignore no-explicit-any
     | UpdateQueryBuilder<DB, any, any, any>
     // deno-lint-ignore no-explicit-any
-    | DeleteQueryBuilder<DB, any, any>,
+    | DeleteQueryBuilder<DB, any, any>
+    // deno-lint-ignore no-explicit-any
+    | InsertQueryBuilder<DB, any, any>,
 ) {
   let { sql, parameters } = qb.compile()
   parameters.forEach((p: unknown, i: number) => {
@@ -257,4 +262,28 @@ export function debugLog(
   console.log(formatter.format(sql, {
     language: 'postgresql',
   }))
+}
+
+export function literalNumber(value: number) {
+  assert(Number.isFinite(value), 'Value must be a finite number')
+  return sql.lit<number>(value)
+}
+
+// deno-lint-ignore no-explicit-any
+export function literalOptionalDate(value?: string | null): RawBuilder<any> {
+  if (value == null) return sql.raw('null')
+  assert(
+    /^\d{4}-\d{2}-\d{2}$/.test(value),
+    'Value must be a date string or null',
+  )
+  return sql.raw(`'${value}'::date`)
+}
+
+export function literalBoolean(value: boolean): RawBuilder<boolean> {
+  assert(typeof value === 'boolean', 'Value must be a boolean')
+  return sql.lit(value)
+}
+
+export function longFormattedDate(ref: string) {
+  return sql<string | null>`TO_CHAR(${sql.ref(ref)}, 'FMDD FMMonth YYYY')`
 }

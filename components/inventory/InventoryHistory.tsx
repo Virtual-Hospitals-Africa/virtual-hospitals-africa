@@ -32,78 +32,21 @@ export default function InventoryHistoryTable(
       data: 'created_by',
     },
     {
-      label: 'Added',
+      label: 'Change',
       data(row) {
+        const is_positive = row.change > 0
         return (
-          <div>
-            {!row.consumption_id
-              ? (
-                <span class='text-green-400'>
-                  + {row.quantity}
-                </span>
-              )
-              : '-'}
-          </div>
+          <span class={is_positive ? 'text-green-400' : 'text-yellow-400'}>
+            {is_positive ? '+' : '-'} {row.change}
+          </span>
         )
       },
     },
     {
-      label: 'Consumed',
-      data(row) {
-        return (
-          <div>
-            {row.consumption_id
-              ? (
-                <span class='text-red-400'>
-                  - {row.quantity ?? 0}
-                </span>
-              )
-              : (
-                row.quantity === row.consumed_amount
-                  ? <span class='text-yellow-400'>Out of stock</span>
-                  : (
-                    <a
-                      href={`/app/facilities/${facility_id}/inventory/consume?procurement_id=${row.procurement_id}&consumable_id=${consumable_id}&active_tab=${active_tab}`}
-                      class='text-indigo-600 hover:text-indigo-900 capitalize'
-                    >
-                      {row.consumed_amount ?? 0}
-                    </a>
-                  )
-              )}
-          </div>
-        )
-      },
-    },
-    {
-      label: 'Expire in',
-      data(row) {
-        return (
-          <div>
-            {!row.consumption_id
-              ? (row.expiry_date?.toLocaleDateString() ?? 'No Expiration')
-              : '-'}
-          </div>
-        )
-      },
+      label: 'Expires',
+      data: 'expiry_date',
     },
   ]
-
-  //Todo: handle Specifics based on their type
-  if (details.filter((c) => c.specifics).length > 0) {
-    columns.push(
-      {
-        label: 'Specifics',
-        headerClassName: '',
-        data(row) {
-          return (
-            <div>
-              {JSON.stringify(row.specifics)}
-            </div>
-          )
-        },
-      },
-    )
-  }
 
   return (
     <Container size='lg'>

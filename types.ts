@@ -1025,7 +1025,7 @@ export type FacilityConsumable = {
   procurement_id: number
   procured_by: number
   quantity: number
-  expiry_date: Date
+  expiry_date: Date | string | null
   consumed_amount: number
 }
 
@@ -1070,19 +1070,21 @@ export type RenderedFacilityMedicine = {
   consumable_id: number
   trade_name: string
   applicant_name: string
+  form: string
+  strength_display: string
   quantity_on_hand: number
+  actions: {
+    add: string
+    history: string
+  }
 }
 
 export type RenderedInventoryHistory = {
-  procurement_id?: number
   created_at: Date
   created_by: string
-  procured_by?: string
-  quantity: number
-  consumed_amount: number
-  expiry_date?: Date
-  consumption_id?: Maybe<number>
-  specifics: any
+  procured_by: string | null
+  change: number
+  expiry_date: string | null
 }
 
 export type Profession =

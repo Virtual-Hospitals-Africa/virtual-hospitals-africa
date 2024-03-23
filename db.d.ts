@@ -244,7 +244,7 @@ export interface Consumption {
   facility_id: number
   id: Generated<number>
   procurement_id: number
-  quantity: number | null
+  quantity: number
   updated_at: Generated<Timestamp>
 }
 
@@ -535,13 +535,21 @@ export interface MailingList {
 
 export interface ManufacturedMedications {
   applicant_name: string
-  consumable_id: number
   created_at: Generated<Timestamp>
   id: Generated<number>
   manufacturer_name: string
   medication_id: number
   strength_numerators: number[]
   trade_name: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface ManufacturedMedicationStrengths {
+  consumable_id: number
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  manufactured_medication_id: number
+  strength_numerator: number
   updated_at: Generated<Timestamp>
 }
 
@@ -845,7 +853,6 @@ export interface Procurement {
   id: Generated<number>
   procured_by: number
   quantity: number
-  specifics: Json | null
   updated_at: Generated<Timestamp>
 }
 
@@ -972,6 +979,7 @@ export interface DB {
   icd10_sections: Icd10Sections
   intake: Intake
   mailing_list: MailingList
+  manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
   media: Media

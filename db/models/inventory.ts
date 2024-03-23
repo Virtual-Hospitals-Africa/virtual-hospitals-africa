@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 import { sql } from 'kysely'
 import {
   FacilityConsumable,
@@ -13,8 +12,14 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import omit from '../../util/omit.ts'
-import { jsonArrayFromColumn } from '../helpers.ts'
-import sortBy from '../../util/sortBy.ts'
+import {
+  jsonArrayFromColumn,
+  literalNumber,
+  literalOptionalDate,
+} from '../helpers.ts'
+import { strengthDisplay } from './drugs.ts'
+import { longFormattedDate } from '../helpers.ts'
+import { jsonBuildObject } from '../helpers.ts'
 
 export function getFacilityDevices(
   trx: TrxOrDb,
@@ -56,12 +61,12 @@ export function getFacilityConsumables(
       'consumables.id',
     )
     .leftJoin(
-      'manufactured_medications',
+      'manufactured_medication_strengths',
       'consumables.id',
-      'manufactured_medications.consumable_id',
+      'manufactured_medication_strengths.consumable_id',
     )
     .where('facility_consumables.facility_id', '=', opts.facility_id)
-    .where('manufactured_medications.id', 'is', null)
+    .where('manufactured_medication_strengths.id', 'is', null)
     .select([
       'consumables.name as name',
       'consumables.id as consumable_id',
@@ -84,9 +89,14 @@ export function getFacilityMedicines(
       'consumables.id',
     )
     .innerJoin(
-      'manufactured_medications',
+      'manufactured_medication_strengths',
       'consumables.id',
-      'manufactured_medications.consumable_id',
+      'manufactured_medication_strengths.consumable_id',
+    )
+    .innerJoin(
+      'manufactured_medications',
+      'manufactured_medications.id',
+      'manufactured_medication_strengths.manufactured_medication_id',
     )
     .innerJoin(
       'medications',
@@ -102,47 +112,32 @@ export function getFacilityMedicines(
     .select([
       'drugs.generic_name',
       'manufactured_medications.applicant_name',
+      'medications.form',
       'manufactured_medications.trade_name',
       'consumables.id as consumable_id',
-      'quantity_on_hand as quantity_on_hand',
+      'quantity_on_hand',
+      strengthDisplay(
+        sql`manufactured_medication_strengths.strength_numerator::text`,
+      ).as('strength_display'),
+      jsonBuildObject({
+        add: sql<string>`
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, '&strength=', manufactured_medication_strengths.strength_numerator::text)
+        `,
+        history: sql<string>`
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?active_tab=medicines&consumable_id=', consumables.id::text)
+        `,
+      }).as('actions'),
     ])
     .execute()
 }
 
-export async function getFacilityConsumablesHistory(
+export function getFacilityConsumablesHistory(
   trx: TrxOrDb,
   opts: {
     facility_id: number
     consumable_id: number
   },
 ): Promise<RenderedInventoryHistory[]> {
-  const procurement = trx
-    .selectFrom('procurement')
-    .innerJoin('employment', 'procurement.created_by', 'employment.id')
-    .innerJoin(
-      'health_workers',
-      'health_workers.id',
-      'employment.health_worker_id',
-    )
-    .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
-    .select([
-      'procurement.id as procurement_id',
-      'health_workers.name as created_by',
-      'procurers.name as procured_by',
-      'procurement.quantity',
-      'procurement.created_at',
-      'procurement.expiry_date',
-      'procurement.consumed_amount',
-      sql<any>`TO_JSON(procurement.specifics)`.as('specifics'),
-    ])
-    .where((eb) =>
-      eb.and([
-        eb('procurement.facility_id', '=', opts.facility_id),
-        eb('procurement.consumable_id', '=', opts.consumable_id),
-      ])
-    )
-    .execute()
-
   const consumption = trx
     .selectFrom('consumption')
     .innerJoin('employment', 'consumption.created_by', 'employment.id')
@@ -154,40 +149,37 @@ export async function getFacilityConsumablesHistory(
     )
     .select([
       'procurement.id as procurement_id',
-      'consumption.id as consumption_id',
       'health_workers.name as created_by',
-      'consumption.quantity',
+      sql<null | string>`NULL`.as('procured_by'),
+      sql<number>`0 - consumption.quantity`.as('change'),
       'consumption.created_at',
+      sql<null | string>`NULL`.as('expiry_date'),
     ])
-    .where((eb) =>
-      eb.and([
-        eb('consumption.facility_id', '=', opts.facility_id),
-        eb('procurement.consumable_id', '=', opts.consumable_id),
-      ])
+    .where('consumption.facility_id', '=', opts.facility_id)
+    .where('procurement.consumable_id', '=', opts.consumable_id)
+
+  const procurement = trx
+    .selectFrom('procurement')
+    .innerJoin('employment', 'procurement.created_by', 'employment.id')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
     )
+    .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
+    .select((eb) => [
+      'procurement.id as procurement_id',
+      'health_workers.name as created_by',
+      'procurers.name as procured_by',
+      eb.ref('procurement.quantity').as('change'),
+      'procurement.created_at',
+      longFormattedDate('procurement.expiry_date').as('expiry_date'),
+    ])
+    .where('procurement.facility_id', '=', opts.facility_id)
+    .where('procurement.consumable_id', '=', opts.consumable_id)
+
+  return consumption.unionAll(procurement).orderBy('created_at', 'desc')
     .execute()
-
-  const [procurementResult, consumptionResult] = await Promise.all([
-    procurement,
-    consumption,
-  ])
-
-  const mergedResults = (procurementResult ?? [])
-    .map(
-      (item) => ({
-        ...item,
-      } as RenderedInventoryHistory),
-    )
-    .concat(
-      (consumptionResult ?? []).map(
-        (item) => ({
-          ...item,
-          procured_by: '-',
-        } as RenderedInventoryHistory),
-      ),
-    )
-
-  return sortBy(mergedResults, (c) => c.procurement_id!)
 }
 
 export function searchConsumables(
@@ -197,11 +189,11 @@ export function searchConsumables(
   let query = trx
     .selectFrom('consumables')
     .leftJoin(
-      'manufactured_medications',
+      'manufactured_medication_strengths',
       'consumables.id',
-      'manufactured_medications.consumable_id',
+      'manufactured_medication_strengths.consumable_id',
     )
-    .where('manufactured_medications.id', 'is', null)
+    .where('manufactured_medication_strengths.id', 'is', null)
     .select(['consumables.id', 'consumables.name'])
 
   if (search) query = query.where('name', 'ilike', `%${search}%`)
@@ -255,46 +247,73 @@ export function addFacilityDevice(
 
 export async function addFacilityMedicine(
   trx: TrxOrDb,
+  facility_id: number,
   medicine: {
     created_by: number
-    facility_id: number
     manufactured_medication_id: number
     procured_by_id?: number
     procured_by_name: string
+    quantity: number
+    strength: number
+    expiry_date?: string
   },
 ) {
-  await trx.insertInto('procurement').values(model).execute()
+  const procured_by = medicine.procured_by_id
+    ? { id: medicine.procured_by_id }
+    : await trx
+      .insertInto('procurers')
+      .values({ name: medicine.procured_by_name })
+      .returning('id')
+      .executeTakeFirstOrThrow()
 
-  const facilityConsumable = await trx
-    .selectFrom('facility_consumables')
-    .select(['id', 'quantity_on_hand'])
-    .where((eb) =>
-      eb.and([
-        eb('facility_consumables.facility_id', '=', model.facility_id),
-        eb('facility_consumables.consumable_id', '=', model.consumable_id),
-      ])
+  const { consumable_id } = await trx.insertInto('procurement')
+    .columns([
+      'consumable_id',
+      'created_by',
+      'facility_id',
+      'quantity',
+      'procured_by',
+      'expiry_date',
+    ])
+    .expression((eb) =>
+      // Find the matching consumable for this medicine
+      eb.selectFrom('manufactured_medication_strengths')
+        .where(
+          'manufactured_medication_strengths.manufactured_medication_id',
+          '=',
+          medicine.manufactured_medication_id,
+        )
+        .where(
+          'manufactured_medication_strengths.strength_numerator',
+          '=',
+          medicine.strength,
+        )
+        .select([
+          'consumable_id',
+          literalNumber(medicine.created_by).as('created_by'),
+          literalNumber(facility_id).as('facility_id'),
+          literalNumber(medicine.quantity).as('quantity'),
+          literalNumber(procured_by.id).as('procured_by'),
+          literalOptionalDate(medicine.expiry_date).as('expiry_date'),
+        ])
     )
-    .executeTakeFirst()
+    .returning('consumable_id')
+    .executeTakeFirstOrThrow()
 
-  if (facilityConsumable) {
-    await trx
-      .updateTable('facility_consumables')
-      .set({
-        quantity_on_hand: (facilityConsumable?.quantity_on_hand || 0) +
-          model.quantity,
+  await trx
+    .insertInto('facility_consumables')
+    .values({
+      consumable_id,
+      facility_id,
+      quantity_on_hand: medicine.quantity,
+    })
+    .onConflict((oc) =>
+      oc.constraint('facility_consumable').doUpdateSet({
+        quantity_on_hand:
+          sql`facility_consumables.quantity_on_hand + ${medicine.quantity}`,
       })
-      .where('facility_consumables.id', '=', facilityConsumable.id)
-      .execute()
-  } else {
-    await trx
-      .insertInto('facility_consumables')
-      .values({
-        quantity_on_hand: model.quantity,
-        consumable_id: model.consumable_id,
-        facility_id: model.facility_id,
-      })
-      .execute()
-  }
+    )
+    .executeTakeFirstOrThrow()
 }
 
 export async function addFacilityConsumable(

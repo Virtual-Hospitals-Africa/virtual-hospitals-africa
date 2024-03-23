@@ -1,12 +1,13 @@
 import { QueryCreator, SelectQueryBuilder, sql, SqlBool } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
-import { jsonArrayFrom, now } from '../helpers.ts'
+import { jsonArrayFrom, literalBoolean, now } from '../helpers.ts'
 import { DB, ExaminationFindingType } from '../../db.d.ts'
 import { isISODateString } from '../../util/date.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { Examination } from '../../shared/examinations.ts'
 import { QueryCreatorWithCommonTableExpression } from 'kysely/parser/with-parser.js'
+import { literalNumber } from '../helpers.ts'
 
 function examinationName(name: Examination) {
   return sql<Examination>`${name}::varchar(40)`.as('examination_name')
@@ -176,6 +177,10 @@ export async function add(
 
   const deleting_examination_not_specified = delete_query.execute()
 
+  patient_id
+  encounter_id
+  encounter_provider_id
+
   all_examinations.length && await trx
     .insertInto('patient_examinations')
     .columns([
@@ -197,24 +202,20 @@ export async function add(
             .on('patient_examinations.encounter_id', '=', encounter_id)
             .on('patient_examinations.patient_id', '=', patient_id))
         .where('patient_examinations.id', 'is', null)
-        .select((eb) => [
+        .select([
           'examinations.name as examination_name',
-          eb.lit(patient_id).as('patient_id'),
-          eb.lit(encounter_id).as('encounter_id'),
-          eb.lit(encounter_provider_id).as('encounter_provider_id'),
+          literalNumber(patient_id).as('patient_id'),
+          literalNumber(encounter_id).as('encounter_id'),
+          literalNumber(encounter_provider_id).as('encounter_provider_id'),
         ])
 
       const during_this_encounter = base_insert
         .where('examinations.name', 'in', examinations.during_this_encounter)
-        .select((eb) => [
-          eb.lit<boolean>(false).as('ordered'),
-        ])
+        .select(literalBoolean(false).as('ordered'))
 
       const orders = base_insert
         .where('examinations.name', 'in', examinations.orders)
-        .select((eb) => [
-          eb.lit(true).as('ordered'),
-        ])
+        .select(literalBoolean(true).as('ordered'))
 
       if (!examinations.during_this_encounter.length) return orders
       if (!examinations.orders.length) return during_this_encounter

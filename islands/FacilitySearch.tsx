@@ -14,7 +14,7 @@ type FacilitySearchPropsGeneral<
   & { kind: Kind }
   & Omit<
     AsyncSearchProps<FacilityType>,
-    'Option' | 'href'
+    'Option' | 'href' | 'optionHref'
   >
 
 type FacilitySearchProps =

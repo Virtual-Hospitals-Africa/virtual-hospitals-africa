@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
@@ -16,6 +15,7 @@ import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import omit from '../../../../../util/omit.ts'
+import { todayISOInHarare } from '../../../../../util/date.ts'
 
 export function assertIsUpsertConsumer(obj: unknown): asserts obj {
   assertOr400(isObjectLike(obj))
@@ -78,7 +78,7 @@ export default async function ConsumableAdd(
       health_worker={state.healthWorker}
     >
       <Container size='md'>
-        <FacilityConsumableForm />
+        <FacilityConsumableForm today={todayISOInHarare()} />
       </Container>
     </Layout>
   )
