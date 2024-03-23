@@ -1,24 +1,27 @@
-import { assert } from 'std/assert/assert.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  FacilityConsumable,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
 
-export function assertIsUpsert(obj: unknown): asserts obj {
+export function assertIsUpsert(obj: unknown): asserts obj is {
+  quantity: number
+  procurement_id: number
+  consumable_id: number
+} {
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.quantity === 'number')
+  assertOr400(typeof obj.procurement_id === 'number')
+  assertOr400(typeof obj.consumable_id === 'number')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -28,11 +31,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async POST(req, ctx) {
     const { admin } = ctx.state.facility_employment.roles
     assertOr403(admin)
-    const procurement_id = parseInt(ctx.url.searchParams.get('procurement_id')!)
-    const consumable_id = parseInt(ctx.url.searchParams.get('consumable_id')!)
+
     const active_tab = ctx.url.searchParams.get('active_tab')!
 
-    const facility_id = getRequiredNumericParam(ctx, 'facility_id')
+    const facility_id = ctx.state.facility.id
 
     const to_add = await parseRequestAsserts(
       ctx.state.trx,
@@ -42,13 +44,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     await inventory.consumeConsumable(
       ctx.state.trx,
+      facility_id,
       {
         created_by: admin.employment_id,
-        facility_id: facility_id,
-        procurement_id: procurement_id,
-        consumable_id: consumable_id,
+        procurement_id: to_add.procurement_id,
+        consumable_id: to_add.consumable_id,
         quantity: to_add.quantity,
-      } as FacilityConsumable,
+      },
     )
 
     const success = encodeURIComponent(
@@ -56,7 +58,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory/history?consumable_id=${consumable_id}&active_tab=${active_tab}&success=${success}`,
+      `/app/facilities/${facility_id}/inventory/history?consumable_id=${to_add.consumable_id}&active_tab=${active_tab}&success=${success}`,
     )
   },
 }

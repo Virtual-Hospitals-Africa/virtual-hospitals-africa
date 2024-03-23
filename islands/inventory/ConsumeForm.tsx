@@ -2,10 +2,8 @@ import { JSX } from 'preact'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
-import ConsumableSearch from './ConsumableSearch.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { DateInput, NumberInput } from '../form/Inputs.tsx'
-import ProcurerSearch from './ProcurerSearch.tsx'
+import { NumberInput } from '../form/Inputs.tsx'
 
 export default function FacilityConsumableForm(): JSX.Element {
   return (
