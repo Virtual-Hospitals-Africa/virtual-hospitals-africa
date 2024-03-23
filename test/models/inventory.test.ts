@@ -97,6 +97,10 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             created_by: admin.id,
             quantity: 10,
             procured_by: procurer.id,
+            consumed_amount: 0,
+            expiry_date: new Date(),
+            is_medication: false,
+            procurement_id: 0,
           })
 
           await inventory.addFacilityConsumable(trx, {
@@ -105,6 +109,10 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             created_by: admin.id,
             quantity: 5,
             procured_by: procurer.id,
+            consumed_amount: 0,
+            expiry_date: new Date(),
+            is_medication: false,
+            procurement_id: 0,
           })
 
           await inventory.consumeFacilityConsumable(trx, {
@@ -113,6 +121,10 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             created_by: admin.id,
             quantity: 10,
             procured_by: procurer.id,
+            consumed_amount: 0,
+            expiry_date: new Date(),
+            is_medication: false,
+            procurement_id: 0,
           })
 
           const facilityConsumables = await inventory.getFacilityConsumables(
