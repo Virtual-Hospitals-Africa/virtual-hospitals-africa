@@ -21,7 +21,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
       search,
       kind,
     })
-    console.log('result', result)
     return json(result)
   },
 }

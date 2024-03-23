@@ -2,10 +2,9 @@ import { JSX } from 'preact'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
-import ConsumableSearch from './ConsumableSearch.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { DateInput, NumberInput } from '../form/Inputs.tsx'
-import ProcurerSearch from './ProcurerSearch.tsx'
+import AsyncSearch from '../AsyncSearch.tsx'
 
 export default function FacilityConsumableForm(
   { today }: { today: string },
@@ -19,30 +18,25 @@ export default function FacilityConsumableForm(
         <Form method='post'>
           <div className='flex flex-col w-full gap-2'>
             <FormRow>
-              <ConsumableSearch
+              <AsyncSearch
+                href='/app/consumables'
                 name='consumable'
                 label='Consumable'
                 required
                 addable
-                value={null}
               />
-
-              <div>
-                <ProcurerSearch
-                  name='procured_by'
-                  label='Procured by'
-                  required
-                  addable
-                  value={null}
-                />
-              </div>
-
+              <AsyncSearch
+                href='/app/procurers'
+                name='procured_by'
+                label='Procured by'
+                required
+                addable
+              />
               <NumberInput
                 name='quantity'
                 label='Quantity'
                 required
               />
-
               <DateInput name='expiry_date' min={today} />
             </FormRow>
             <FormRow>

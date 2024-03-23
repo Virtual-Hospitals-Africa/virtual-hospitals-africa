@@ -15,6 +15,29 @@ function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
 
+export function BaseOption<
+  T extends { id?: unknown; name: string; description?: string },
+>({
+  option,
+  selected,
+}: {
+  option: T
+  selected: boolean
+}) {
+  return (
+    <div className='flex flex-col'>
+      <div className={cls('truncate text-base', selected && 'font-bold')}>
+        {option.name}
+      </div>
+      {option.description && (
+        <div className={cls('truncate text-xs', selected && 'font-bold')}>
+          {option.description}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export type SearchProps<
   T extends { id?: unknown; name: string },
 > = {
@@ -30,7 +53,7 @@ export type SearchProps<
   options: T[]
   onQuery: (query: string) => void
   onSelect?: (value: T | undefined) => void
-  Option(
+  Option?(
     props: {
       option: T
       selected: boolean
@@ -55,8 +78,8 @@ export default function Search<
   className,
   onQuery,
   onSelect,
-  Option,
   optionHref,
+  Option = BaseOption,
 }: SearchProps<T>) {
   console.log('optionHref', optionHref)
   if (multi) {

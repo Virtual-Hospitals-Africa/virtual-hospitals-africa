@@ -143,13 +143,11 @@ import * as $form_buttons from './islands/form/buttons.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
-import * as $inventory_ConsumableSearch from './islands/inventory/ConsumableSearch.tsx'
 import * as $inventory_ConsumeForm from './islands/inventory/ConsumeForm.tsx'
 import * as $inventory_Device from './islands/inventory/Device.tsx'
 import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
 import * as $inventory_MedicineForm from './islands/inventory/MedicineForm.tsx'
 import * as $inventory_ProcurerForm from './islands/inventory/ProcurerForm.tsx'
-import * as $inventory_ProcurerSearch from './islands/inventory/ProcurerSearch.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
@@ -374,13 +372,11 @@ const manifest = {
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Consumable.tsx': $inventory_Consumable,
-    './islands/inventory/ConsumableSearch.tsx': $inventory_ConsumableSearch,
     './islands/inventory/ConsumeForm.tsx': $inventory_ConsumeForm,
     './islands/inventory/Device.tsx': $inventory_Device,
     './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
     './islands/inventory/MedicineForm.tsx': $inventory_MedicineForm,
     './islands/inventory/ProcurerForm.tsx': $inventory_ProcurerForm,
-    './islands/inventory/ProcurerSearch.tsx': $inventory_ProcurerSearch,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,

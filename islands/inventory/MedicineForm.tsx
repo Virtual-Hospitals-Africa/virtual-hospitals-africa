@@ -4,9 +4,9 @@ import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { DateInput, NumberInput } from '../form/Inputs.tsx'
-import ProcurerSearch from './ProcurerSearch.tsx'
 import ManufacturedMedicationInput from '../manufactured_medication/Input.tsx'
 import { ManufacturedMedicationSearchResult } from '../../types.ts'
+import AsyncSearch from '../AsyncSearch.tsx'
 
 export default function InventoryMedicineForm(
   { today, manufactured_medication, strength }: {
@@ -29,16 +29,13 @@ export default function InventoryMedicineForm(
               strength={strength}
             />
             <FormRow>
-              <div>
-                <ProcurerSearch
-                  name='procured_by'
-                  label='Procured by'
-                  required
-                  addable
-                  value={null}
-                />
-              </div>
-
+              <AsyncSearch
+                href='/app/procurers'
+                name='procured_by'
+                label='Procured by'
+                required
+                addable
+              />
               <NumberInput
                 name='quantity'
                 label='Quantity'
