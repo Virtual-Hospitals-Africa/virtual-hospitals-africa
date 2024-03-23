@@ -38,14 +38,14 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     assertOr404(facility_id)
 
     const facility_devices = active_tab === 'devices'
-      ? await inventory.getFacilityDevices(
+      ? await inventory.getDevices(
         ctx.state.trx,
         { facility_id: facility_id },
       )
       : []
 
     const facility_consumbales = active_tab === 'consumables'
-      ? await inventory.getFacilityConsumables(
+      ? await inventory.getConsumables(
         ctx.state.trx,
         { facility_id: facility_id },
       )

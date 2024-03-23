@@ -279,9 +279,29 @@ itUsesTrxAnd.skip = (
 itUsesTrxAnd.rejects = (
   description: string,
   callback: (trx: TrxOrDb) => Promise<void>,
+  validateError?: (
+    error: Error & {
+      cause?: {
+        fields?: {
+          severity: string
+          code: string
+          message: string
+          detail: string
+          schema: string
+          table: string
+          constraint: string
+          file: string
+          line: string
+          routine: string
+        }
+      }
+    },
+  ) => void,
 ) =>
-  it(description, async () => {
-    await assertRejects(() => withTrx(callback), Error)
+  it('rejects when ' + description, async () => {
+    const error = await assertRejects(() => withTrx(callback))
+    // deno-lint-ignore no-explicit-any
+    validateError?.(error as any)
   })
 
 export function withTestFacility(

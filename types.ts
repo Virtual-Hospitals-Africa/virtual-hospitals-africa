@@ -1018,17 +1018,6 @@ export type FacilityDevice = {
   created_by: number
 }
 
-export type FacilityConsumable = {
-  facility_id: number
-  created_by: number
-  consumable_id: number
-  procurement_id: number
-  procured_by: number
-  quantity: number
-  expiry_date: Date | string | null
-  consumed_amount: number
-}
-
 export type FacilityConsumableMedicineSpecefics = {
   medications_id?: number
   strength: number

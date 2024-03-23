@@ -1,6 +1,5 @@
 import { sql } from 'kysely'
 import {
-  FacilityConsumable,
   FacilityDevice,
   Procurer,
   RenderedConsumable,
@@ -11,7 +10,6 @@ import {
   RenderedProcurer,
   TrxOrDb,
 } from '../../types.ts'
-import omit from '../../util/omit.ts'
 import {
   jsonArrayFromColumn,
   literalNumber,
@@ -20,8 +18,9 @@ import {
 import { strengthDisplay } from './drugs.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
+import { assert } from 'std/assert/assert.ts'
 
-export function getFacilityDevices(
+export function getDevices(
   trx: TrxOrDb,
   opts: {
     facility_id: number
@@ -47,7 +46,7 @@ export function getFacilityDevices(
     .execute()
 }
 
-export function getFacilityConsumables(
+export function getConsumables(
   trx: TrxOrDb,
   opts: {
     facility_id: number
@@ -131,7 +130,7 @@ export function getFacilityMedicines(
     .execute()
 }
 
-export function getFacilityConsumablesHistory(
+export function getConsumablesHistory(
   trx: TrxOrDb,
   opts: {
     facility_id: number
@@ -214,7 +213,7 @@ export function searchProcurers(
   return query.execute()
 }
 
-export function getAvailableTestsInFacility(
+export function getAvailableTests(
   trx: TrxOrDb,
   opts: {
     facility_id: number
@@ -316,68 +315,106 @@ export async function addFacilityMedicine(
     .executeTakeFirstOrThrow()
 }
 
-export async function addFacilityConsumable(
+export async function procureConsumable(
   trx: TrxOrDb,
-  model: FacilityConsumable,
+  facility_id: number,
+  consumable: {
+    created_by: number
+    consumable_id: number
+    procured_by_id?: number
+    procured_by_name?: string
+    quantity: number
+    expiry_date?: string | null
+  },
 ) {
-  await trx.insertInto('procurement').values(model).execute()
-
-  const facilityConsumable = await trx
-    .selectFrom('facility_consumables')
-    .select(['id', 'quantity_on_hand'])
-    .where((eb) =>
-      eb.and([
-        eb('facility_consumables.facility_id', '=', model.facility_id),
-        eb('facility_consumables.consumable_id', '=', model.consumable_id),
-      ])
-    )
-    .executeTakeFirst()
-
-  if (facilityConsumable) {
-    await trx
-      .updateTable('facility_consumables')
-      .set({
-        quantity_on_hand: (facilityConsumable?.quantity_on_hand || 0) +
-          model.quantity,
-      })
-      .where('facility_consumables.id', '=', facilityConsumable.id)
-      .execute()
-  } else {
-    await trx
-      .insertInto('facility_consumables')
-      .values({
-        quantity_on_hand: model.quantity,
-        consumable_id: model.consumable_id,
-        facility_id: model.facility_id,
-      })
-      .execute()
-  }
-}
-
-export async function consumeFacilityConsumable(
-  trx: TrxOrDb,
-  model: FacilityConsumable,
-) {
-  await trx
-    .insertInto('consumption')
-    .values(omit(model, ['procured_by', 'consumable_id']))
-    .execute()
-
-  await trx
-    .updateTable('procurement')
-    .set({
-      consumed_amount: sql`consumed_amount + ${model.quantity}`,
+  const updating_quantity_on_hand = await trx
+    .insertInto('facility_consumables')
+    .values({
+      facility_id,
+      consumable_id: consumable.consumable_id,
+      quantity_on_hand: consumable.quantity,
     })
-    .where('procurement.id', '=', model.procurement_id)
+    .onConflict((oc) =>
+      oc.constraint('facility_consumable').doUpdateSet({
+        quantity_on_hand:
+          sql`facility_consumables.quantity_on_hand + ${consumable.quantity}`,
+      })
+    )
     .executeTakeFirstOrThrow()
 
-  await trx
-    .updateTable('facility_consumables')
-    .set({
-      quantity_on_hand: sql`quantity_on_hand - ${model.quantity}`,
+  const procured_by = consumable.procured_by_id
+    ? { id: consumable.procured_by_id }
+    : (
+      assert(consumable.procured_by_name, 'procured_by_name is required'),
+        await trx
+          .insertInto('procurers')
+          .values(
+            { name: consumable.procured_by_name },
+          )
+          .returning('id')
+          .executeTakeFirstOrThrow()
+    )
+
+  const procured = await trx
+    .insertInto('procurement')
+    .values({
+      facility_id,
+      consumable_id: consumable.consumable_id,
+      created_by: consumable.created_by,
+      quantity: consumable.quantity,
+      procured_by: procured_by.id,
+      expiry_date: consumable.expiry_date,
     })
-    .where('facility_consumables.facility_id', '=', model.facility_id)
-    .where('facility_consumables.consumable_id', '=', model.consumable_id)
+    .returning('id')
+    .executeTakeFirstOrThrow()
+
+  await updating_quantity_on_hand
+
+  return procured
+}
+
+export function consumeConsumable(
+  trx: TrxOrDb,
+  facility_id: number,
+  consumable: {
+    consumable_id: number
+    created_by: number
+    quantity: number
+    procurement_id: number
+  },
+) {
+  // Send the whole update in one query. This avoids constraint errors firing in the background when we won't catch them.
+  return trx.with('adding_consumption', (qb) =>
+    qb.insertInto('consumption')
+      .values({
+        facility_id,
+        created_by: consumable.created_by,
+        quantity: consumable.quantity,
+        procurement_id: consumable.procurement_id,
+      })
+      .returning('id'))
+    .with('incrementing_consumed_amount', (qb) =>
+      qb.updateTable('procurement')
+        .set({
+          consumed_amount: sql`consumed_amount + ${consumable.quantity}`,
+        })
+        .where('procurement.id', '=', consumable.procurement_id))
+    .with(
+      'decrementing_quantity_on_hand',
+      (qb) =>
+        qb.updateTable('facility_consumables')
+          .set({
+            quantity_on_hand: sql`quantity_on_hand - ${consumable.quantity}`,
+          })
+          .where('facility_consumables.facility_id', '=', facility_id)
+          .where(
+            'facility_consumables.consumable_id',
+            '=',
+            consumable.consumable_id,
+          ),
+    )
+    .selectFrom('adding_consumption')
+    .selectAll()
     .executeTakeFirstOrThrow()
 }
 

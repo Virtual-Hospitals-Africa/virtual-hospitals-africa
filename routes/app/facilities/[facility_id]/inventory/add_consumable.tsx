@@ -2,7 +2,6 @@ import { FreshContext } from '$fresh/server.ts'
 import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  FacilityConsumable,
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../../../../../types.ts'
@@ -14,10 +13,14 @@ import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import omit from '../../../../../util/omit.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
 
-export function assertIsUpsertConsumer(obj: unknown): asserts obj {
+export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
+  quantity: number
+  consumable_id: number
+  procured_by_name: string
+  procured_by_id?: number
+} {
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.quantity === 'number')
   assertOr400(typeof obj.procured_by_id === 'number')
@@ -40,22 +43,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsUpsertConsumer,
     )
 
-    await inventory.addFacilityConsumable(
+    await inventory.procureConsumable(
       ctx.state.trx,
+      facility_id,
       {
-        ...omit(to_add, [
-          'procured_by_id',
-          'procured_by_name',
-          'consumable_name',
-        ]),
         created_by: admin.employment_id,
-        facility_id: facility_id,
-        procured_by: to_add.procured_by_id,
-      } as FacilityConsumable,
+        procured_by_id: to_add.procured_by_id,
+        procured_by_name: to_add.procured_by_name,
+        consumable_id: to_add.consumable_id,
+        quantity: to_add.quantity,
+      },
     )
 
     const success = encodeURIComponent(
-      `Consumable added to your facility's inventory`,
+      `Consumable added to your facility's inventory 🏥`,
     )
 
     return redirect(

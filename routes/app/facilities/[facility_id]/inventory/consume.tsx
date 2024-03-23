@@ -40,7 +40,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsUpsert,
     )
 
-    await inventory.consumeFacilityConsumable(
+    await inventory.consumeConsumable(
       ctx.state.trx,
       {
         created_by: admin.employment_id,

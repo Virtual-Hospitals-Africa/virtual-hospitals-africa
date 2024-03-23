@@ -204,8 +204,6 @@ export default function Table<T extends Row>(
 ): JSX.Element {
   const mapped_columns = [...columnsWithSomeNonNullValue({ columns, rows })]
 
-  console.log('mapped_columns', mapped_columns)
-
   return (
     <div
       className={cls(

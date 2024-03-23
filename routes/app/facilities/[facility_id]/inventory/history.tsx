@@ -30,7 +30,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     assertOr404(facility_id)
     assertOr404(consumable_id)
 
-    const inventory_history = await inventory.getFacilityConsumablesHistory(
+    const inventory_history = await inventory.getConsumablesHistory(
       ctx.state.trx,
       { facility_id: facility_id, consumable_id: consumable_id },
     )

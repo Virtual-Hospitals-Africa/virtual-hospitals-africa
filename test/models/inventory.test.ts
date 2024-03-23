@@ -9,7 +9,7 @@ import {
 import generateUUID from '../../util/uuid.ts'
 
 describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
-  describe('getAvailableTestsInFacility', () => {
+  describe('getAvailableTests', () => {
     itUsesTrxAnd(
       'resolves with the available diagnostic tests in a facility',
       (trx) =>
@@ -42,7 +42,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             created_by: admin.employee_id!,
           })
 
-          const available_tests = await inventory.getAvailableTestsInFacility(
+          const available_tests = await inventory.getAvailableTests(
             trx,
             {
               facility_id,
@@ -91,40 +91,34 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             .values({ name: generateUUID() })
             .executeTakeFirstOrThrow()
 
-          await inventory.addFacilityConsumable(trx, {
-            consumable_id: consumable.id,
+          const first_added = await inventory.procureConsumable(
+            trx,
             facility_id,
-            created_by: admin.id,
-            quantity: 10,
-            procured_by: procurer.id,
-            consumed_amount: 0,
-            expiry_date: null,
-            procurement_id: 0,
-          })
+            {
+              consumable_id: consumable.id,
+              created_by: admin.id,
+              quantity: 10,
+              procured_by_id: procurer.id,
+              expiry_date: null,
+            },
+          )
 
-          await inventory.addFacilityConsumable(trx, {
+          await inventory.procureConsumable(trx, facility_id, {
             consumable_id: consumable.id,
-            facility_id,
             created_by: admin.id,
             quantity: 5,
-            procured_by: procurer.id,
-            consumed_amount: 0,
+            procured_by_id: procurer.id,
             expiry_date: null,
-            procurement_id: 0,
           })
 
-          await inventory.consumeFacilityConsumable(trx, {
+          await inventory.consumeConsumable(trx, facility_id, {
             consumable_id: consumable.id,
-            facility_id,
             created_by: admin.id,
             quantity: 10,
-            procured_by: procurer.id,
-            consumed_amount: 0,
-            expiry_date: null,
-            procurement_id: 0,
+            procurement_id: first_added.id,
           })
 
-          const facilityConsumables = await inventory.getFacilityConsumables(
+          const facilityConsumables = await inventory.getConsumables(
             trx,
             { facility_id },
           )
@@ -137,5 +131,63 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             },
           ])
         }))
+
+      itUsesTrxAnd.rejects(
+        'consuming more than the amount previously procured',
+        (trx) =>
+          withTestFacility(trx, async (facility_id) => {
+            const admin = await addTestHealthWorker(trx, {
+              scenario: 'admin',
+              facility_id,
+            })
+
+            const consumable_name = generateUUID()
+
+            const consumable = await trx
+              .insertInto('consumables')
+              .returning('id')
+              .values({ name: consumable_name })
+              .executeTakeFirstOrThrow()
+
+            const procurer = await trx
+              .insertInto('procurers')
+              .returning('id')
+              .values({ name: generateUUID() })
+              .executeTakeFirstOrThrow()
+
+            const first_added = await inventory.procureConsumable(
+              trx,
+              facility_id,
+              {
+                consumable_id: consumable.id,
+                created_by: admin.id,
+                quantity: 10,
+                procured_by_id: procurer.id,
+                expiry_date: null,
+              },
+            )
+
+            await inventory.procureConsumable(trx, facility_id, {
+              consumable_id: consumable.id,
+              created_by: admin.id,
+              quantity: 5,
+              procured_by_id: procurer.id,
+              expiry_date: null,
+            })
+
+            await inventory.consumeConsumable(trx, facility_id, {
+              consumable_id: consumable.id,
+              created_by: admin.id,
+              quantity: 12,
+              procurement_id: first_added.id,
+            })
+          }),
+        (error) => {
+          assertEquals(
+            error.cause!.fields!.message,
+            'new row for relation "procurement" violates check constraint "procurement_consumed_amount_less_than_quantity"',
+          )
+        },
+      )
     })
 })

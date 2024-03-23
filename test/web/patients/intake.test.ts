@@ -316,6 +316,7 @@ describe('/app/patients/[patient_id]/intake', {
       deepOmit({ pre_existing_conditions }, [
         'patient_condition_id',
         'patient_condition_medication_id',
+        'manufactured_medication_id',
       ]),
       'The form should be 1:1 with the conditions in the DB',
     )
