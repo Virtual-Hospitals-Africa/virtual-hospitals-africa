@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 import { sql } from 'kysely'
 import {
   FacilityConsumable,
@@ -127,7 +128,8 @@ export async function getFacilityConsumablesHistory(
       'procurement.quantity',
       'procurement.created_at',
       'procurement.expiry_date',
-      'procurement.consumed_amount'
+      'procurement.consumed_amount',
+      sql<any>`TO_JSON(procurement.specifics)`.as('specifics')
     ])
     .where((eb) =>
       eb.and([

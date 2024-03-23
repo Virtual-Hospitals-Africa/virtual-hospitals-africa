@@ -39,7 +39,7 @@ export default function FacilityMedicinesTable(
         return (
           <div>
             <a
-              href={`/app/facilities/${facility_id}/inventory/history?consumable_id=${row.consumable_id}`}
+              href={`/app/facilities/${facility_id}/inventory/history?consumable_id=${row.consumable_id}&active_tab=medicines`}
               class='text-indigo-600 hover:text-indigo-900 capitalize'
             >
               Details

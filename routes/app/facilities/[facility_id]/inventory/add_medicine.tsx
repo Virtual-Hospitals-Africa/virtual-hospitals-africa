@@ -67,7 +67,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory?success=${success}`,
+      `/app/facilities/${facility_id}/inventory?active_tab=medicines&success=${success}`,
     )
   },
 }

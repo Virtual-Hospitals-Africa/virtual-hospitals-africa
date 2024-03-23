@@ -5,10 +5,11 @@ import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 
 export default function InventoryHistoryTable(
-  { details, facility_id, consumable_id }: {
+  { details, facility_id, consumable_id, active_tab }: {
     details: RenderedInventoryHistory[]
     facility_id: number
     consumable_id: number
+    active_tab: string
   },
 ) {
   const columns: TableColumn<RenderedInventoryHistory>[] = [
@@ -62,7 +63,7 @@ export default function InventoryHistoryTable(
                   ? <span class='text-yellow-400'>Out of stock</span>
                   : (
                     <a
-                      href={`/app/facilities/${facility_id}/inventory/consume?procurement_id=${row.procurement_id}&consumable_id=${consumable_id}`}
+                      href={`/app/facilities/${facility_id}/inventory/consume?procurement_id=${row.procurement_id}&consumable_id=${consumable_id}&active_tab=${active_tab}`}
                       class='text-indigo-600 hover:text-indigo-900 capitalize'
                     >
                       {row.consumed_amount ?? 0}
@@ -87,13 +88,30 @@ export default function InventoryHistoryTable(
     },
   ]
 
+  //Todo: handle Specifics based on their type
+  if (details.filter((c) => c.specifics).length > 0) {
+    columns.push(
+      {
+        label: 'Specifics',
+        headerClassName: '',
+        data(row) {
+          return (
+            <div>
+              {JSON.stringify(row.specifics)}
+            </div>
+          )
+        },
+      },
+    )
+  }
+
   return (
     <Container size='lg'>
       <FormRow>
         <div class='mb-2'>
           <Button
             type='button'
-            href={`/app/facilities/${facility_id}/inventory?active_tab=consumables`}
+            href={`/app/facilities/${facility_id}/inventory?active_tab=${active_tab}`}
             className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
           >
             Back

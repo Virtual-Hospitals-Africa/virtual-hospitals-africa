@@ -30,6 +30,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     assertOr403(admin)
     const procurement_id = parseInt(ctx.url.searchParams.get('procurement_id')!) 
     const consumable_id = parseInt(ctx.url.searchParams.get('consumable_id')!)
+    const active_tab = ctx.url.searchParams.get('active_tab')!
 
     const facility_id = getRequiredNumericParam(ctx, 'facility_id')
 
@@ -55,7 +56,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory?active_tab=consumables&success=${success}`,
+      `/app/facilities/${facility_id}/inventory/history?consumable_id=${consumable_id}&active_tab=${active_tab}&success=${success}`,
     )
   },
 }

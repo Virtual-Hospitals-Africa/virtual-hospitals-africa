@@ -1083,6 +1083,7 @@ export type RenderedInventoryHistory = {
   consumed_amount: number
   expiry_date?: Date
   consumption_id?: Maybe<number>
+  specifics: any
 }
 
 export type Profession =
