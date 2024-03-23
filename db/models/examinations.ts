@@ -160,14 +160,23 @@ export async function add(
     ...examinations.during_this_encounter,
     ...examinations.orders,
   ]
-  const deleting_examination_not_specified = trx
+
+  let delete_query = trx
     .deleteFrom('patient_examinations')
     .where('encounter_id', '=', encounter_id)
     .where('patient_id', '=', patient_id)
-    .where('examination_name', 'not in', all_examinations)
-    .execute()
 
-  await trx
+  if (all_examinations.length > 0) {
+    delete_query = delete_query.where(
+      'examination_name',
+      'not in',
+      all_examinations,
+    )
+  }
+
+  const deleting_examination_not_specified = delete_query.execute()
+
+  all_examinations.length && await trx
     .insertInto('patient_examinations')
     .columns([
       'examination_name',
@@ -207,6 +216,8 @@ export async function add(
           eb.lit(true).as('ordered'),
         ])
 
+      if (!examinations.during_this_encounter.length) return orders
+      if (!examinations.orders.length) return during_this_encounter
       return during_this_encounter.unionAll(orders)
     })
     .returning('id')

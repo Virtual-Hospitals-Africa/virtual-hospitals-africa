@@ -35,6 +35,8 @@ import {
   EXAMINATIONS,
 } from '../../../../../../shared/examinations.ts'
 import partition from '../../../../../../util/partition.ts'
+import { RenderedPatientEncounterProvider } from '../../../../../../types.ts'
+import { assertOr403 } from '../../../../../../util/assertOr.ts'
 
 function assertIsExaminationFindings(
   values: unknown,
@@ -106,6 +108,12 @@ function addExaminationsHref(ctx: EncounterContext) {
   })
 }
 
+function allowedToPlaceOrders(
+  encounter_provider: RenderedPatientEncounterProvider,
+): boolean {
+  return encounter_provider.profession === 'doctor'
+}
+
 function matchingExamination(
   ctx: EncounterContext,
 ): RenderedPatientEncounterExamination | null {
@@ -143,6 +151,13 @@ async function handleAddExaminations(req: Request, ctx: EncounterContext) {
     assertIsAddExaminations,
   )
 
+  if (diagnostic_test_orders.length) {
+    assertOr403(
+      allowedToPlaceOrders(encounter_provider),
+      'Only doctors can place orders',
+    )
+  }
+
   const patient_id = getRequiredNumericParam(ctx, 'patient_id')
 
   await examinations.add(trx, {
@@ -167,7 +182,11 @@ async function handlePlaceOrders(
   ctx: EncounterContext,
 ): Promise<Response> {
   // TODO: Place orders
-  const { encounter } = ctx.state
+  const { encounter, encounter_provider } = ctx.state
+  assertOr403(
+    allowedToPlaceOrders(encounter_provider),
+    'Only doctors can place orders',
+  )
 
   const [_orders, during_this_encounter] = partition(
     encounter.examinations,
@@ -247,7 +266,7 @@ export default async function ExaminationsPage(
   _req: Request,
   ctx: EncounterContext,
 ) {
-  const { trx, encounter } = ctx.state
+  const { trx, encounter, encounter_provider } = ctx.state
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
   const placing_orders = ctx.url.searchParams.get('place') === 'orders'
 
@@ -310,6 +329,7 @@ export default async function ExaminationsPage(
           available_diagnostic_tests={await getAvailableTestsInFacility(trx, {
             facility_id: ctx.state.encounter.providers[0].facility_id,
           })}
+          allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
         />
       )}
       {placing_orders && (
