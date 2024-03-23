@@ -5,7 +5,7 @@ import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { DateInput, NumberInput } from '../form/Inputs.tsx'
 import ProcurerSearch from './ProcurerSearch.tsx'
-import MedicationInput from '../medication/Input.tsx'
+import ManufacturedMedicationInput from '../manufactured_medication/Input.tsx'
 
 export default function InventoryMedicineForm(): JSX.Element {
   return (
@@ -16,10 +16,7 @@ export default function InventoryMedicineForm(): JSX.Element {
       <div>
         <Form method='post'>
           <div className='flex flex-col w-full gap-2'>
-            <MedicationInput
-              name={`medication`}
-              showIntake={false}
-            />
+            <ManufacturedMedicationInput name='manufactured_medication' />
             <FormRow>
               <div>
                 <ProcurerSearch
@@ -36,7 +33,7 @@ export default function InventoryMedicineForm(): JSX.Element {
                 label='Quantity'
                 required
               />
-              <DateInput name={'expiry_date'} />
+              <DateInput name='expiry_date' />
             </FormRow>
             <FormRow>
               <Button type='submit'>

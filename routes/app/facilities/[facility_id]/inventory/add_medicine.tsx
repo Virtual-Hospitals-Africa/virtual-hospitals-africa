@@ -38,19 +38,23 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       ctx.state.trx,
       req,
       assertIsUpsertMedicine,
-    ) as any
+    )
+
+    console.log('to_add', to_add)
+
+    /*
+      to_add {
+        medication_name: "COARTEM TABLET by NOVARTIS PHARMA SERVICES AG",
+        medication_id: 435,
+        medication: { strength: 80 },
+        procured_by_name: "Whatever",
+        quantity: 60
+      }
+    */
 
     await inventory.addFacilityConsumable(
       ctx.state.trx,
       {
-        ...omit(to_add, [
-          'procured_by_id',
-          'procured_by_name',
-          'consumable_name',
-          'medication',
-          'medication_name',
-          'medication_id',
-        ]),
         created_by: admin.employment_id,
         facility_id: facility_id,
         procured_by: to_add.procured_by_id,

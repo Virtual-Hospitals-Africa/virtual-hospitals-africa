@@ -13,6 +13,7 @@ import * as inParallel from '../../util/inParallel.ts'
 export default createSeedMigration([
   'drugs',
   'medications',
+  'consumables',
   'manufactured_medications',
 ], seedDataFromJSON)
 
@@ -64,6 +65,11 @@ const form_rewrite = {
 }
 
 async function seedDataFromJSON(db: Kysely<any>) {
+  await db
+    .insertInto('consumables')
+    .values({ name: 'bandage' })
+    .executeTakeFirst()
+
   const data: ManufacturedMedicationCsvRow[] = await parseJSON(
     './db/resources/list_of_medications.json',
   )
@@ -199,14 +205,25 @@ async function addDrug(
       const { manufactured_medication, strengths } of medication
         .manufactured_medications_with_strengths
     ) {
+      const manufacturer_name = manufactured_medication.manufacturers.replace(/;$/, '')
+      const { applicant_name, trade_name } = manufactured_medication
+      const consumable = await db
+        .insertInto('consumables')
+        .values({
+          name: `${trade_name} ${form} by ${applicant_name}`
+        })
+        .returning('id')
+        .executeTakeFirstOrThrow()
+
       await db
         .insertInto('manufactured_medications')
         .values({
+          medication_id,
+          manufacturer_name,
+          trade_name,
+          applicant_name,
+          consumable_id: consumable.id,
           strength_numerators: strengths.strength_numerators,
-          trade_name: manufactured_medication.trade_name,
-          applicant_name: manufactured_medication.applicant_name,
-          manufacturer_name: manufactured_medication.manufacturers,
-          medication_id: medication_id,
         })
         .executeTakeFirstOrThrow()
     }

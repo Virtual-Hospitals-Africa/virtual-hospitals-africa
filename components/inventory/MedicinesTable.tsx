@@ -21,7 +21,7 @@ export default function FacilityMedicinesTable(
     },
     {
       label: 'Manufacturer',
-      data: 'manufacturer_name',
+      data: 'applicant_name',
     },
     {
       label: 'Quantity',

@@ -40,6 +40,7 @@ import * as $app_facilities_facility_id_waiting_room_add from './routes/app/faci
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
+import * as $app_manufactured_medications from './routes/app/manufactured_medications.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
@@ -121,6 +122,8 @@ import * as $address_inputs from './islands/address-inputs.tsx'
 import * as $allergy_Input from './islands/allergy/Input.tsx'
 import * as $allergy_Search from './islands/allergy/Search.tsx'
 import * as $availability_form from './islands/availability-form.tsx'
+import * as $drug_Input from './islands/drug/Input.tsx'
+import * as $drug_Search from './islands/drug/Search.tsx'
 import * as $examinations_Form from './islands/examinations/Form.tsx'
 import * as $examinations_New from './islands/examinations/New.tsx'
 import * as $family_Dependent from './islands/family/Dependent.tsx'
@@ -152,8 +155,8 @@ import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.t
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
 import * as $major_surgeries_Form from './islands/major-surgeries/Form.tsx'
 import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx'
-import * as $medication_Input from './islands/medication/Input.tsx'
-import * as $medication_Search from './islands/medication/Search.tsx'
+import * as $manufactured_medication_Input from './islands/manufactured_medication/Input.tsx'
+import * as $manufactured_medication_Search from './islands/manufactured_medication/Search.tsx'
 import * as $nurse_registration_form from './islands/nurse-registration-form.tsx'
 import * as $past_medical_conditions_Condition from './islands/past-medical-conditions/Condition.tsx'
 import * as $past_medical_conditions_Form from './islands/past-medical-conditions/Form.tsx'
@@ -233,6 +236,7 @@ const manifest = {
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
+    './routes/app/manufactured_medications.tsx': $app_manufactured_medications,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
     './routes/app/patients.tsx': $app_patients,
     './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
@@ -348,6 +352,8 @@ const manifest = {
     './islands/allergy/Input.tsx': $allergy_Input,
     './islands/allergy/Search.tsx': $allergy_Search,
     './islands/availability-form.tsx': $availability_form,
+    './islands/drug/Input.tsx': $drug_Input,
+    './islands/drug/Search.tsx': $drug_Search,
     './islands/examinations/Form.tsx': $examinations_Form,
     './islands/examinations/New.tsx': $examinations_New,
     './islands/family/Dependent.tsx': $family_Dependent,
@@ -380,8 +386,10 @@ const manifest = {
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,
     './islands/major-surgeries/Form.tsx': $major_surgeries_Form,
     './islands/major-surgeries/Surgery.tsx': $major_surgeries_Surgery,
-    './islands/medication/Input.tsx': $medication_Input,
-    './islands/medication/Search.tsx': $medication_Search,
+    './islands/manufactured_medication/Input.tsx':
+      $manufactured_medication_Input,
+    './islands/manufactured_medication/Search.tsx':
+      $manufactured_medication_Search,
     './islands/nurse-registration-form.tsx': $nurse_registration_form,
     './islands/past-medical-conditions/Condition.tsx':
       $past_medical_conditions_Condition,

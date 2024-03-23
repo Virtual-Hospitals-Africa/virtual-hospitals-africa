@@ -239,11 +239,11 @@ export interface Consumables {
 }
 
 export interface Consumption {
-  procurement_id: number
   created_at: Generated<Timestamp>
   created_by: number
   facility_id: number
   id: Generated<number>
+  procurement_id: number
   quantity: number | null
   updated_at: Generated<Timestamp>
 }
@@ -535,6 +535,7 @@ export interface MailingList {
 
 export interface ManufacturedMedications {
   applicant_name: string
+  consumable_id: number
   created_at: Generated<Timestamp>
   id: Generated<number>
   manufacturer_name: string
@@ -542,7 +543,6 @@ export interface ManufacturedMedications {
   strength_numerators: number[]
   trade_name: string
   updated_at: Generated<Timestamp>
-  consumable_id?: number
 }
 
 export interface Measurements {
@@ -837,16 +837,16 @@ export interface PatientSymptoms {
 
 export interface Procurement {
   consumable_id: number
+  consumed_amount: Generated<number>
   created_at: Generated<Timestamp>
   created_by: number
+  expiry_date: Timestamp | null
   facility_id: number
   id: Generated<number>
   procured_by: number
-  quantity: number | null
-  updated_at: Generated<Timestamp>
-  expiry_date: Timestamp
-  consumed_amount: number
+  quantity: number
   specifics: Json | null
+  updated_at: Generated<Timestamp>
 }
 
 export interface Procurers {

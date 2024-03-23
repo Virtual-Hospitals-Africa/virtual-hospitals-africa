@@ -55,8 +55,13 @@ export function getFacilityConsumables(
       'facility_consumables.consumable_id',
       'consumables.id',
     )
+    .leftJoin(
+      'manufactured_medications',
+      'consumables.id',
+      'manufactured_medications.consumable_id',
+    )
     .where('facility_consumables.facility_id', '=', opts.facility_id)
-    .where('consumables.is_medication', '=', false)
+    .where('manufactured_medications.id', 'is', null)
     .select([
       'consumables.name as name',
       'consumables.id as consumable_id',
@@ -94,10 +99,9 @@ export function getFacilityMedicines(
       'drugs.id',
     )
     .where('facility_consumables.facility_id', '=', opts.facility_id)
-    .where('consumables.is_medication', '=', true)
     .select([
       'drugs.generic_name',
-      'manufactured_medications.manufacturer_name',
+      'manufactured_medications.applicant_name',
       'manufactured_medications.trade_name',
       'consumables.id as consumable_id',
       'quantity_on_hand as quantity_on_hand',
@@ -192,7 +196,12 @@ export function searchConsumables(
 ): Promise<RenderedConsumable[]> {
   let query = trx
     .selectFrom('consumables')
-    .where('consumables.is_medication', '=', false)
+    .leftJoin(
+      'manufactured_medications',
+      'consumables.id',
+      'manufactured_medications.consumable_id',
+    )
+    .where('manufactured_medications.id', 'is', null)
     .select(['consumables.id', 'consumables.name'])
 
   if (search) query = query.where('name', 'ilike', `%${search}%`)
@@ -242,6 +251,50 @@ export function addFacilityDevice(
     .values(model)
     .returning('id')
     .executeTakeFirstOrThrow()
+}
+
+export async function addFacilityMedicine(
+  trx: TrxOrDb,
+  medicine: {
+    created_by: number
+    facility_id: number
+    manufactured_medication_id: number
+    procured_by_id?: number
+    procured_by_name: string
+  },
+) {
+  await trx.insertInto('procurement').values(model).execute()
+
+  const facilityConsumable = await trx
+    .selectFrom('facility_consumables')
+    .select(['id', 'quantity_on_hand'])
+    .where((eb) =>
+      eb.and([
+        eb('facility_consumables.facility_id', '=', model.facility_id),
+        eb('facility_consumables.consumable_id', '=', model.consumable_id),
+      ])
+    )
+    .executeTakeFirst()
+
+  if (facilityConsumable) {
+    await trx
+      .updateTable('facility_consumables')
+      .set({
+        quantity_on_hand: (facilityConsumable?.quantity_on_hand || 0) +
+          model.quantity,
+      })
+      .where('facility_consumables.id', '=', facilityConsumable.id)
+      .execute()
+  } else {
+    await trx
+      .insertInto('facility_consumables')
+      .values({
+        quantity_on_hand: model.quantity,
+        consumable_id: model.consumable_id,
+        facility_id: model.facility_id,
+      })
+      .execute()
+  }
 }
 
 export async function addFacilityConsumable(
