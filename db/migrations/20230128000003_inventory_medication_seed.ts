@@ -15,6 +15,7 @@ export default createSeedMigration([
   'medications',
   'consumables',
   'manufactured_medications',
+  'manufactured_medication_strengths',
 ], seedDataFromJSON)
 
 const unaffiliated_form_to_route = {

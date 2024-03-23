@@ -128,6 +128,12 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
               consumable_id: consumable.id,
               name: consumable_name,
               quantity_on_hand: 5,
+              actions: {
+                add:
+                  `/app/facilities/${facility_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
+                history:
+                  `/app/facilities/${facility_id}/inventory/history?consumable_id=${consumable.id}`,
+              },
             },
           ])
         }))

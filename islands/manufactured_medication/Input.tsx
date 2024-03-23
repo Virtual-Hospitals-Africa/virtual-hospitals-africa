@@ -37,7 +37,7 @@ export default function MedicationInput(props: {
       </FormRow>
       <FormRow className='w-full justify-normal'>
         <Select
-          name={`${name}.strength`}
+          name={`${props.name}.strength`}
           required
           label='Strength'
           disabled={!manufactured_medication.value}

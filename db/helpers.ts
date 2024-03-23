@@ -287,3 +287,9 @@ export function literalBoolean(value: boolean): RawBuilder<boolean> {
 export function longFormattedDate(ref: string) {
   return sql<string | null>`TO_CHAR(${sql.ref(ref)}, 'FMDD FMMonth YYYY')`
 }
+
+export function longFormattedDateTime(ref: string) {
+  return sql<string>`TO_CHAR(${
+    sql.ref(ref)
+  }, 'FMDD FMMonth YYYY FMHH:MI:SS AM')`
+}

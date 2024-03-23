@@ -4,7 +4,8 @@ import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { Person } from './Person.tsx'
+import { assertPersonLike, Person } from './Person.tsx'
+import { is } from 'https://esm.sh/v135/css-select@5.1.0/lib/index.js'
 
 type Showable =
   | string
@@ -36,7 +37,8 @@ export type TableColumn<T extends Row> =
 
 type MappedColumn<T extends Row> = {
   column: TableColumn<T>
-  cell_contents: JSX.Element[]
+  // deno-lint-ignore no-explicit-any
+  cell_contents: any[]
 }
 
 type TableProps<T extends Row> = {
@@ -82,11 +84,9 @@ function TableCellInnerContents<T extends Row>(
   }
 
   if (mapped_column.column.type === 'person') {
-    return (
-      <Person
-        person={mapped_column.cell_contents[row_index] as any}
-      />
-    )
+    const person = mapped_column.cell_contents[row_index]
+    assertPersonLike(person)
+    return <Person person={person} />
   }
 
   if (mapped_column.column.type === 'actions') {

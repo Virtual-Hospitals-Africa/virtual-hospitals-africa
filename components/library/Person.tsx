@@ -2,6 +2,9 @@ import { ComponentChildren, JSX } from 'preact'
 import Avatar from './Avatar.tsx'
 import cls from '../../util/cls.ts'
 import { Maybe } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import isString from '../../util/isString.ts'
 
 export type PersonData = {
   id?: number | 'add'
@@ -10,6 +13,13 @@ export type PersonData = {
   href?: Maybe<string>
   avatar_url?: Maybe<string>
   description?: ComponentChildren
+}
+
+export function assertPersonLike(
+  person: unknown,
+): asserts person is PersonData {
+  assert(isObjectLike(person))
+  assert(isString(person.name))
 }
 
 export function Person(

@@ -14,6 +14,7 @@ import {
   jsonArrayFromColumn,
   literalNumber,
   literalOptionalDate,
+  longFormattedDateTime,
 } from '../helpers.ts'
 import { strengthDisplay } from './drugs.ts'
 import { longFormattedDate } from '../helpers.ts'
@@ -173,6 +174,9 @@ export function getConsumablesHistory(
       sql<null | string>`NULL`.as('procured_by'),
       sql<number>`0 - consumption.quantity`.as('change'),
       'consumption.created_at',
+      longFormattedDateTime('consumption.created_at').as(
+        'created_at_formatted',
+      ),
       sql<null | string>`NULL`.as('expiry_date'),
     ])
     .where('consumption.facility_id', '=', opts.facility_id)
@@ -201,6 +205,9 @@ export function getConsumablesHistory(
       'procurers.name as procured_by',
       eb.ref('procurement.quantity').as('change'),
       'procurement.created_at',
+      longFormattedDateTime('procurement.created_at').as(
+        'created_at_formatted',
+      ),
       longFormattedDate('procurement.expiry_date').as('expiry_date'),
     ])
     .where('procurement.facility_id', '=', opts.facility_id)

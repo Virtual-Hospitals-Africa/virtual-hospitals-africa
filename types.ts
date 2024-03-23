@@ -1074,6 +1074,7 @@ export type RenderedFacilityMedicine = {
 
 export type RenderedInventoryHistory = {
   created_at: Date
+  created_at_formatted: string
   created_by: {
     name: string
     avatar_url: string | null

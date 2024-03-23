@@ -9,8 +9,16 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
     },
   },
   {
-    label: 'Procurer',
-    data: 'procured_by',
+    label: 'Change',
+    data(row) {
+      const is_positive = row.change > 0
+      return (
+        <span class={is_positive ? 'text-green-400' : 'text-yellow-400'}>
+          {!!is_positive && '+'}
+          {row.change}
+        </span>
+      )
+    },
   },
   {
     label: 'Employee',
@@ -18,15 +26,8 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
     data: 'created_by',
   },
   {
-    label: 'Change',
-    data(row) {
-      const is_positive = row.change > 0
-      return (
-        <span class={is_positive ? 'text-green-400' : 'text-yellow-400'}>
-          {is_positive ? '+' : '-'} {row.change}
-        </span>
-      )
-    },
+    label: 'Procurer',
+    data: 'procured_by',
   },
   {
     label: 'Expires',
@@ -34,13 +35,7 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
   },
   {
     label: 'Date',
-    data(row) {
-      return (
-        <div>
-          {row.created_at.toLocaleString()}
-        </div>
-      )
-    },
+    data: 'created_at_formatted',
   },
 ]
 
