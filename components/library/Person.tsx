@@ -17,7 +17,13 @@ export function Person(
 ): JSX.Element {
   const Component = person.href ? 'a' : 'div'
   return (
-    <Component className='flex items-center' href={person.href ?? undefined}>
+    <Component
+      className={cls(
+        'flex items-center',
+        person.href && 'text-indigo-600 hover:text-indigo-900',
+      )}
+      href={person.href ?? undefined}
+    >
       <Avatar
         src={person.avatar_url}
         className='h-6 w-6 flex-shrink-0 rounded-full'

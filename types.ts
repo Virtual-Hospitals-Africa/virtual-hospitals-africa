@@ -1052,6 +1052,10 @@ export type RenderedFacilityConsumable = {
   name: string
   consumable_id: number
   quantity_on_hand: number
+  actions: {
+    add: string
+    history: string
+  }
 }
 
 export type RenderedFacilityMedicine = {
@@ -1070,7 +1074,11 @@ export type RenderedFacilityMedicine = {
 
 export type RenderedInventoryHistory = {
   created_at: Date
-  created_by: string
+  created_by: {
+    name: string
+    avatar_url: string | null
+    href: string
+  }
   procured_by: string | null
   change: number
   expiry_date: string | null

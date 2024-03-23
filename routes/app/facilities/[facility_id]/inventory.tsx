@@ -52,7 +52,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       : []
 
     const facility_medicines = active_tab === 'medicines'
-      ? await inventory.getFacilityMedicines(
+      ? await inventory.getMedicines(
         ctx.state.trx,
         { facility_id: facility_id },
       )

@@ -2,8 +2,26 @@ import { RenderedFacilityConsumable } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
-import AsyncSearch from '../../islands/AsyncSearch.tsx'
 import { AddConsumableSearch } from '../../islands/AddConsumableSearch.tsx'
+
+const columns: TableColumn<RenderedFacilityConsumable>[] = [
+  {
+    label: 'Name',
+    data: 'name',
+  },
+  {
+    label: 'Quantity',
+    data(row) {
+      return row.quantity_on_hand || (
+        <span className='text-red-600'>Not in stock</span>
+      )
+    },
+  },
+  {
+    type: 'actions',
+    label: 'Actions',
+  },
+]
 
 export default function FacilityConsumablesTable(
   { consumables, facility_id, isAdmin }: {
@@ -12,38 +30,6 @@ export default function FacilityConsumablesTable(
     isAdmin: boolean
   },
 ) {
-  const columns: TableColumn<RenderedFacilityConsumable>[] = [
-    {
-      label: 'Name',
-      data: 'name',
-    },
-    {
-      label: 'Quantity',
-      data(row) {
-        return (
-          <div>
-            {row.quantity_on_hand}
-          </div>
-        )
-      },
-    },
-    {
-      label: 'Actions',
-      data(row) {
-        return (
-          <div>
-            <a
-              href={`/app/facilities/${facility_id}/inventory/history?consumable_id=${row.consumable_id}&active_tab=consumables`}
-              class='text-indigo-600 hover:text-indigo-900 capitalize'
-            >
-              Details
-            </a>
-          </div>
-        )
-      },
-    },
-  ]
-
   return (
     <>
       {isAdmin && (

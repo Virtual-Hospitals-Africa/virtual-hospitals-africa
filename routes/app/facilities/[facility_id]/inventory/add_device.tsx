@@ -3,13 +3,19 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  RenderedDevice,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
+import * as devices from '../../../../../db/models/devices.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import {
+  assertOr400,
+  assertOr403,
+  assertOr404,
+} from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 
@@ -53,11 +59,25 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-// deno-lint-ignore require-await
 export default async function DeviceAdd(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
+  let device: RenderedDevice | null = null
+  const device_id = url.searchParams.get(
+    'device_id',
+  )
+  if (device_id) {
+    const result = await devices.search(
+      state.trx,
+      {
+        ids: [parseInt(device_id)],
+      },
+    )
+    assertOr404(result.length)
+    device = result[0]
+  }
+
   return (
     <Layout
       variant='home page'
@@ -66,7 +86,7 @@ export default async function DeviceAdd(
       url={url}
       health_worker={state.healthWorker}
     >
-      <FacilityDeviceForm />
+      <FacilityDeviceForm device={device} />
     </Layout>
   )
 }

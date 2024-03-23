@@ -19,6 +19,7 @@ import { strengthDisplay } from './drugs.ts'
 import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 
 export function getDevices(
   trx: TrxOrDb,
@@ -46,6 +47,7 @@ export function getDevices(
     .execute()
 }
 
+// Refers to non-medicine consumables
 export function getConsumables(
   trx: TrxOrDb,
   opts: {
@@ -70,11 +72,19 @@ export function getConsumables(
       'consumables.name as name',
       'consumables.id as consumable_id',
       'quantity_on_hand as quantity_on_hand',
+      jsonBuildObject({
+        add: sql<string>`
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_consumable?consumable_id=', consumables.id::text)
+        `,
+        history: sql<string>`
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
+        `,
+      }).as('actions'),
     ])
     .execute()
 }
 
-export function getFacilityMedicines(
+export function getMedicines(
   trx: TrxOrDb,
   opts: {
     facility_id: number
@@ -123,7 +133,7 @@ export function getFacilityMedicines(
           concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, '&strength=', manufactured_medication_strengths.strength_numerator::text)
         `,
         history: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?active_tab=medicines&consumable_id=', consumables.id::text)
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
         `,
       }).as('actions'),
     ])
@@ -136,7 +146,10 @@ export function getConsumablesHistory(
     facility_id: number
     consumable_id: number
   },
-): Promise<RenderedInventoryHistory[]> {
+): Promise<{
+  name: string
+  history: RenderedInventoryHistory[]
+}> {
   const consumption = trx
     .selectFrom('consumption')
     .innerJoin('employment', 'consumption.created_by', 'employment.id')
@@ -146,9 +159,17 @@ export function getConsumablesHistory(
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .select([
+    .select((eb) => [
       'procurement.id as procurement_id',
-      'health_workers.name as created_by',
+      jsonBuildObject({
+        name: eb.ref('health_workers.name'),
+        href: sql<
+          string
+        >`'/app/facilities/' || ${opts.facility_id} || '/employees/' || ${
+          eb.ref('health_workers.id')
+        }`,
+        avatar_url: eb.ref('health_workers.avatar_url'),
+      }).as('created_by'),
       sql<null | string>`NULL`.as('procured_by'),
       sql<number>`0 - consumption.quantity`.as('change'),
       'consumption.created_at',
@@ -168,7 +189,15 @@ export function getConsumablesHistory(
     .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
     .select((eb) => [
       'procurement.id as procurement_id',
-      'health_workers.name as created_by',
+      jsonBuildObject({
+        name: eb.ref('health_workers.name'),
+        href: sql<
+          string
+        >`'/app/facilities/' || ${opts.facility_id} || '/employees/' || ${
+          eb.ref('health_workers.id')
+        }`,
+        avatar_url: eb.ref('health_workers.avatar_url'),
+      }).as('created_by'),
       'procurers.name as procured_by',
       eb.ref('procurement.quantity').as('change'),
       'procurement.created_at',
@@ -177,8 +206,16 @@ export function getConsumablesHistory(
     .where('procurement.facility_id', '=', opts.facility_id)
     .where('procurement.consumable_id', '=', opts.consumable_id)
 
-  return consumption.unionAll(procurement).orderBy('created_at', 'desc')
-    .execute()
+  const history = consumption.unionAll(procurement)
+    .orderBy('created_at', 'desc')
+
+  return trx.selectFrom('consumables')
+    .select([
+      'consumables.name',
+      jsonArrayFrom(history).as('history'),
+    ])
+    .where('consumables.id', '=', opts.consumable_id)
+    .executeTakeFirstOrThrow()
 }
 
 export function searchConsumables(

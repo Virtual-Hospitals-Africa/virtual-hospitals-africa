@@ -3,13 +3,9 @@ import Table, { TableColumn } from '../library/Table.tsx'
 
 const columns: TableColumn<RenderedInventoryHistory>[] = [
   {
-    label: 'Date',
+    label: 'Log',
     data(row) {
-      return (
-        <div>
-          {row.created_at.toLocaleString()}
-        </div>
-      )
+      return row.change ? 'Procurement' : 'Consumption'
     },
   },
   {
@@ -17,7 +13,8 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
     data: 'procured_by',
   },
   {
-    label: 'Employee/Consumer',
+    label: 'Employee',
+    type: 'person',
     data: 'created_by',
   },
   {
@@ -34,6 +31,16 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
   {
     label: 'Expires',
     data: 'expiry_date',
+  },
+  {
+    label: 'Date',
+    data(row) {
+      return (
+        <div>
+          {row.created_at.toLocaleString()}
+        </div>
+      )
+    },
   },
 ]
 

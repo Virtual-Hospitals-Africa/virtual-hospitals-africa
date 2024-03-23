@@ -4,6 +4,7 @@ import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
+import { Person } from './Person.tsx'
 
 type Showable =
   | string
@@ -25,6 +26,7 @@ export type TableColumn<T extends Row> =
   }
   & (
     | { type?: 'content'; data: keyof T | ((row: T) => Showable) }
+    | { type: 'person'; data: keyof T }
     | (T extends { actions: Record<string, string | null> } ? {
         label: 'Actions'
         type: 'actions'
@@ -76,6 +78,14 @@ function TableCellInnerContents<T extends Row>(
       >
         {mapped_column.cell_contents[row_index]}
       </div>
+    )
+  }
+
+  if (mapped_column.column.type === 'person') {
+    return (
+      <Person
+        person={mapped_column.cell_contents[row_index] as any}
+      />
     )
   }
 
