@@ -2,7 +2,6 @@ import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../types.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import { Container } from '../../../../components/library/Container.tsx'
 import ScheduleForm from '../../../../islands/schedule-form.tsx'
 import * as patients from '../../../../db/models/patients.ts'
 import { parseRequestAsserts } from '../../../../util/parseForm.ts'
@@ -134,16 +133,14 @@ export default function SchedulePage(
       health_worker={props.data.healthWorker}
       variant='home page'
     >
-      <Container size='lg'>
-        <ScheduleForm />
-        {props.data.slots && (
-          <Appointments
-            headerText='Slots available'
-            appointments={props.data.slots}
-            url={props.url}
-          />
-        )}
-      </Container>
+      <ScheduleForm />
+      {props.data.slots && (
+        <Appointments
+          headerText='Slots available'
+          appointments={props.data.slots}
+          url={props.url}
+        />
+      )}
     </Layout>
   )
 }

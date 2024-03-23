@@ -5,9 +5,13 @@ import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { DateInput, NumberInput } from '../form/Inputs.tsx'
 import AsyncSearch from '../AsyncSearch.tsx'
+import { RenderedConsumable } from '../../types.ts'
 
 export default function FacilityConsumableForm(
-  { today }: { today: string },
+  { today, consumable }: {
+    today: string
+    consumable: RenderedConsumable | null
+  },
 ): JSX.Element {
   return (
     <div>
@@ -24,6 +28,7 @@ export default function FacilityConsumableForm(
                 label='Consumable'
                 required
                 addable
+                value={consumable}
               />
               <AsyncSearch
                 href='/app/procurers'
@@ -32,9 +37,12 @@ export default function FacilityConsumableForm(
                 required
                 addable
               />
+            </FormRow>
+            <FormRow>
               <NumberInput
                 name='quantity'
                 label='Quantity'
+                min={1}
                 required
               />
               <DateInput name='expiry_date' min={today} />

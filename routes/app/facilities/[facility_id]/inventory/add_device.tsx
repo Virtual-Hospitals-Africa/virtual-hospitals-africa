@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
@@ -67,9 +66,7 @@ export default async function DeviceAdd(
       url={url}
       health_worker={state.healthWorker}
     >
-      <Container size='md'>
-        <FacilityDeviceForm />
-      </Container>
+      <FacilityDeviceForm />
     </Layout>
   )
 }

@@ -1,5 +1,4 @@
 import Layout from '../../../../../components/library/Layout.tsx'
-import { Container } from '../../../../../components/library/Container.tsx'
 import HealthWorkerDetailedCard from '../../../../../components/health_worker/DetailedCard.tsx'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
@@ -35,40 +34,38 @@ export default async function EmployeePage(
       health_worker={ctx.state.healthWorker}
       variant='home page'
     >
-      <Container size='lg'>
-        <div className='mt-4 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-          <div className='my-6 overflow-hidden bg-slate-50'>
-            <img
-              className='h-20 w-20 object-cover display:inline rounded-full'
-              src={`${employee.avatar_url}`}
-              alt=''
-              width={48}
-              height={48}
-            />
-            <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
-              {employee.name}
-            </dt>
-            <dt className='text-sm font-sm leading-6 text-gray-400'>
-              {employee.professions.join(', ')}
-            </dt>
-          </div>
-          <HealthWorkerDetailedCard
-            employee={employee}
+      <div className='mt-4 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
+        <div className='my-6 overflow-hidden bg-slate-50'>
+          <img
+            className='h-20 w-20 object-cover display:inline rounded-full'
+            src={`${employee.avatar_url}`}
+            alt=''
+            width={48}
+            height={48}
           />
+          <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
+            {employee.name}
+          </dt>
+          <dt className='text-sm font-sm leading-6 text-gray-400'>
+            {employee.professions.join(', ')}
+          </dt>
         </div>
-        <hr style={{ margin: '20px 0' }} />
-        {isAdminAtFacility &&
-          employee.registration_pending_approval && (
-          <form
-            style={{ maxWidth: '200px' }}
-            className='mb-5 float-right'
-            method='POST'
-            action={`${ctx.url.pathname}/approve`}
-          >
-            <FormButtons submitText='Approve' />
-          </form>
-        )}
-      </Container>
+        <HealthWorkerDetailedCard
+          employee={employee}
+        />
+      </div>
+      <hr style={{ margin: '20px 0' }} />
+      {isAdminAtFacility &&
+        employee.registration_pending_approval && (
+        <form
+          style={{ maxWidth: '200px' }}
+          className='mb-5 float-right'
+          method='POST'
+          action={`${ctx.url.pathname}/approve`}
+        >
+          <FormButtons submitText='Approve' />
+        </form>
+      )}
     </Layout>
   )
 }

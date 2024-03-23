@@ -40,31 +40,29 @@ export default function inventoryView(
   return (
     <>
       <Tabs tabs={tabs} />
-      <Container size='lg'>
-        {active_tab === 'devices' && (
-          <FacilityDevicesTable
-            devices={devices}
-            facility_id={facility_id}
-            isAdmin={isAdmin}
-          />
-        )}
+      {active_tab === 'devices' && (
+        <FacilityDevicesTable
+          devices={devices}
+          facility_id={facility_id}
+          isAdmin={isAdmin}
+        />
+      )}
 
-        {active_tab === 'consumables' && (
-          <FacilityConsumablesTable
-            consumables={consumables}
-            facility_id={facility_id}
-            isAdmin={isAdmin}
-          />
-        )}
+      {active_tab === 'consumables' && (
+        <FacilityConsumablesTable
+          consumables={consumables}
+          facility_id={facility_id}
+          isAdmin={isAdmin}
+        />
+      )}
 
-        {active_tab === 'medicines' && (
-          <FacilityMedicinesTable
-            medicines={medicines}
-            facility_id={facility_id}
-            isAdmin={isAdmin}
-          />
-        )}
-      </Container>
+      {active_tab === 'medicines' && (
+        <FacilityMedicinesTable
+          medicines={medicines}
+          facility_id={facility_id}
+          isAdmin={isAdmin}
+        />
+      )}
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { FreshContext, PageProps } from '$fresh/server.ts'
+import { PageProps } from '$fresh/server.ts'
 import {
   EmployedHealthWorker,
   Facility,
@@ -56,12 +56,7 @@ export default function HistoryPage(
       url={props.url}
       health_worker={props.data.healthWorker}
     >
-      <InventoryHistoryTable
-        facility_id={props.data.facility.id}
-        details={props.data.inventory_history}
-        consumable_id={props.data.consumable_id}
-        active_tab={props.data.active_tab}
-      />
+      <InventoryHistoryTable history={props.data.inventory_history} />
     </Layout>
   )
 }

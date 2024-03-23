@@ -1,19 +1,26 @@
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  RenderedConsumable,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import FacilityConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
-import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
+import {
+  assertOr400,
+  assertOr403,
+  assertOr404,
+} from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
+import { searchConsumables } from '../../../../../db/models/inventory.ts'
+import isNumber from '../../../../../util/isNumber.ts'
+import isString from '../../../../../util/isString.ts'
 
 export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
   quantity: number
@@ -22,9 +29,9 @@ export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
   procured_by_id?: number
 } {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.quantity === 'number')
-  assertOr400(typeof obj.procured_by_id === 'number')
-  assertOr400(typeof obj.consumable_id === 'number')
+  assertOr400(isNumber(obj.quantity))
+  assertOr400(isNumber(obj.procured_by_id) || isString(obj.procured_by_name))
+  assertOr400(isNumber(obj.consumable_id))
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -65,11 +72,25 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-// deno-lint-ignore require-await
 export default async function ConsumableAdd(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
+  let consumable: RenderedConsumable | null = null
+  const consumable_id = url.searchParams.get(
+    'consumable_id',
+  )
+  if (consumable_id) {
+    const consumables = await searchConsumables(
+      state.trx,
+      {
+        ids: [parseInt(consumable_id)],
+      },
+    )
+    assertOr404(consumables.length)
+    consumable = consumables[0]
+  }
+
   return (
     <Layout
       variant='home page'
@@ -78,9 +99,10 @@ export default async function ConsumableAdd(
       url={url}
       health_worker={state.healthWorker}
     >
-      <Container size='md'>
-        <FacilityConsumableForm today={todayISOInHarare()} />
-      </Container>
+      <FacilityConsumableForm
+        today={todayISOInHarare()}
+        consumable={consumable}
+      />
     </Layout>
   )
 }

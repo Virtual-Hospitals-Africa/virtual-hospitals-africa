@@ -183,8 +183,18 @@ export function getConsumablesHistory(
 
 export function searchConsumables(
   trx: TrxOrDb,
-  search?: string,
+  opts: {
+    search?: string
+    ids?: number[]
+  },
 ): Promise<RenderedConsumable[]> {
+  if (opts.ids) {
+    assert(opts.ids.length, 'must provide at least one id')
+    assert(!opts.search)
+  } else {
+    assert(opts.search)
+  }
+
   let query = trx
     .selectFrom('consumables')
     .leftJoin(
@@ -195,7 +205,8 @@ export function searchConsumables(
     .where('manufactured_medication_strengths.id', 'is', null)
     .select(['consumables.id', 'consumables.name'])
 
-  if (search) query = query.where('name', 'ilike', `%${search}%`)
+  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
+  if (opts.ids) query = query.where('consumables.id', 'in', opts.ids)
 
   return query.execute()
 }

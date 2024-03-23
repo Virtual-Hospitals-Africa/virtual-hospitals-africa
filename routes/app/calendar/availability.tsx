@@ -21,7 +21,6 @@ import {
 import { padTime } from '../../../util/pad.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseDateTime } from '../../../util/date.ts'
-import { Container } from '../../../components/library/Container.tsx'
 import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertIsPartialAvailability } from '../../../shared/scheduling/availability.tsx'
 import { getNumericParam } from '../../../util/getNumericParam.ts'
@@ -247,9 +246,7 @@ export default function SetAvailability(
         />
       }
     >
-      <Container size='lg'>
-        <SetAvailabilityForm availability={props.data.availability} />
-      </Container>
+      <SetAvailabilityForm availability={props.data.availability} />
     </Layout>
   )
 }

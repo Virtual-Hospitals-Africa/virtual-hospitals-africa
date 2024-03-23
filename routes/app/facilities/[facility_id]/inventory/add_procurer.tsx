@@ -1,6 +1,4 @@
-import { assert } from 'std/assert/assert.ts'
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
@@ -62,9 +60,7 @@ export default async function Procurer(
       url={url}
       health_worker={state.healthWorker}
     >
-      <Container size='md'>
-        <ProcurerForm />
-      </Container>
+      <ProcurerForm />
     </Layout>
   )
 }

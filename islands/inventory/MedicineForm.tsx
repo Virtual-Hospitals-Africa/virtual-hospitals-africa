@@ -39,8 +39,8 @@ export default function InventoryMedicineForm(
               <NumberInput
                 name='quantity'
                 label='Quantity'
-                required
                 min={1}
+                required
               />
               <DateInput name='expiry_date' min={today} />
             </FormRow>

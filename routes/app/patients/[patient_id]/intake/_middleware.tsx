@@ -1,5 +1,4 @@
 import { ComponentChildren, JSX } from 'preact'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../islands/form/Form.tsx'
 import {
@@ -125,11 +124,9 @@ export function IntakeLayout({
       url={ctx.url}
       variant='form'
     >
-      <Container size='lg'>
-        <Form method='POST'>
-          {children}
-        </Form>
-      </Container>
+      <Form method='POST'>
+        {children}
+      </Form>
     </Layout>
   )
 }

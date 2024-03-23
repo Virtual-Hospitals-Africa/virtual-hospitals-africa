@@ -1,6 +1,5 @@
 import { RenderedPatient } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
-import { Container } from '../library/Container.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import PatientsEmptyState from './EmptyState.tsx'
@@ -37,10 +36,8 @@ export default function PatientsView(
   { patients }: { patients: RenderedPatient[] },
 ) {
   return (
-    <Container size='lg'>
-      {patients.length
-        ? <NonEmptyPatientsView patients={patients} />
-        : <PatientsEmptyState />}
-    </Container>
+    patients.length
+      ? <NonEmptyPatientsView patients={patients} />
+      : <PatientsEmptyState />
   )
 }

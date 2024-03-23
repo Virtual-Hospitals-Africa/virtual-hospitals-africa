@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
@@ -104,13 +103,11 @@ export default async function MedicineAdd(
       url={url}
       health_worker={state.healthWorker}
     >
-      <Container size='md'>
-        <InventoryMedicineForm
-          today={todayISOInHarare()}
-          manufactured_medication={manufactured_medication}
-          strength={strength}
-        />
-      </Container>
+      <InventoryMedicineForm
+        today={todayISOInHarare()}
+        manufactured_medication={manufactured_medication}
+        strength={strength}
+      />
     </Layout>
   )
 }

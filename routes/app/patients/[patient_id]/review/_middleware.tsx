@@ -1,7 +1,6 @@
 import { ComponentChildren, JSX } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../islands/form/Form.tsx'
 import * as doctor_reviews from '../../../../../db/models/doctor_reviews.ts'
@@ -89,11 +88,9 @@ export function ReviewLayout({
       url={ctx.url}
       variant='form'
     >
-      <Container size='md'>
-        <Form method='POST'>
-          {children}
-        </Form>
-      </Container>
+      <Form method='POST'>
+        {children}
+      </Form>
     </Layout>
   )
 }

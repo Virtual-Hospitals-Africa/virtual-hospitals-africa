@@ -18,6 +18,7 @@ export default function FacilityConsumableForm(): JSX.Element {
               <NumberInput
                 name='quantity'
                 label='Quantity'
+                min={1}
                 required
               />
             </FormRow>

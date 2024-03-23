@@ -94,6 +94,7 @@ import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
+import * as $AddConsumableSearch from './islands/AddConsumableSearch.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
 import * as $BackLink from './islands/BackLink.tsx'
@@ -322,6 +323,7 @@ const manifest = {
     './routes/waitlist.tsx': $waitlist,
   },
   islands: {
+    './islands/AddConsumableSearch.tsx': $AddConsumableSearch,
     './islands/AddRemove.tsx': $AddRemove,
     './islands/AsyncSearch.tsx': $AsyncSearch,
     './islands/BackLink.tsx': $BackLink,

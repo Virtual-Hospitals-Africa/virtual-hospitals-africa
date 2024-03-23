@@ -16,7 +16,12 @@ function hasId(value: unknown): value is { id: unknown } {
 }
 
 export function BaseOption<
-  T extends { id?: unknown; name: string; description?: string },
+  T extends {
+    id?: unknown
+    name: string
+    display_name?: string
+    description?: string
+  },
 >({
   option,
   selected,
@@ -27,7 +32,7 @@ export function BaseOption<
   return (
     <div className='flex flex-col'>
       <div className={cls('truncate text-base', selected && 'font-bold')}>
-        {option.name}
+        {option.display_name || option.name}
       </div>
       {option.description && (
         <div className={cls('truncate text-xs', selected && 'font-bold')}>
@@ -78,10 +83,9 @@ export default function Search<
   className,
   onQuery,
   onSelect,
-  optionHref,
+  optionHref, // The existence of this prop turns the options into <a> tags
   Option = BaseOption,
 }: SearchProps<T>) {
-  console.log('optionHref', optionHref)
   if (multi) {
     assert(
       typeof onSelect === 'function',

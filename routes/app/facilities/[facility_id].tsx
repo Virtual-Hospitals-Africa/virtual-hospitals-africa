@@ -1,5 +1,4 @@
 import Layout from '../../../components/library/Layout.tsx'
-import { Container } from '../../../components/library/Container.tsx'
 import { FacilityContext } from './[facility_id]/_middleware.ts'
 
 // deno-lint-ignore require-await
@@ -17,9 +16,7 @@ export default async function FacilityPage(
       health_worker={ctx.state.healthWorker}
       variant='home page'
     >
-      <Container size='lg'>
-        TODO: facility page
-      </Container>
+      TODO: facility page
     </Layout>
   )
 }
