@@ -7,9 +7,9 @@ import {
   RenderedConsumable,
   RenderedFacilityConsumable,
   RenderedFacilityDevice,
+  RenderedFacilityMedicine,
   RenderedInventoryHistory,
   RenderedProcurer,
-  RenderedFacilityMedicine,
   TrxOrDb,
 } from '../../types.ts'
 import omit from '../../util/omit.ts'
@@ -129,7 +129,7 @@ export async function getFacilityConsumablesHistory(
       'procurement.created_at',
       'procurement.expiry_date',
       'procurement.consumed_amount',
-      sql<any>`TO_JSON(procurement.specifics)`.as('specifics')
+      sql<any>`TO_JSON(procurement.specifics)`.as('specifics'),
     ])
     .where((eb) =>
       eb.and([
@@ -291,7 +291,7 @@ export async function consumeFacilityConsumable(
     .values(omit(model, ['procured_by', 'consumable_id']))
     .execute()
 
-    await trx
+  await trx
     .updateTable('procurement')
     .set({
       consumed_amount: sql`consumed_amount + ${model.quantity}`,

@@ -6,116 +6,97 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'devices', (qb) =>
     qb
       .addColumn('name', 'varchar(255)', (col) => col.notNull())
-      .addColumn('manufacturer', 'varchar(255)', (col) => col.notNull())
-  )
+      .addColumn('manufacturer', 'varchar(255)', (col) => col.notNull()))
 
   await createStandardTable(db, 'device_capabilities', (qb) =>
     qb
       .addColumn('device_id', 'integer', (col) =>
-        col.notNull().references('devices.id').onDelete('cascade')
-      )
+        col.notNull().references('devices.id').onDelete('cascade'))
       .addColumn('diagnostic_test', 'varchar(40)', (col) =>
-        col.notNull().references('diagnostic_tests.name').onDelete('cascade')
-      )
-  )
+        col.notNull().references('diagnostic_tests.name').onDelete('cascade')))
 
   await createStandardTable(db, 'facility_devices', (qb) =>
     qb
       .addColumn('serial_number', 'varchar(255)')
       .addColumn('created_by', 'integer', (column) =>
-        column.notNull().references('employment.id').onDelete('cascade')
-      )
+        column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('updated_by', 'integer', (column) =>
-        column.references('employment.id').onDelete('cascade')
-      )
+        column.references('employment.id').onDelete('cascade'))
       .addColumn('device_id', 'integer', (col) =>
-        col.notNull().references('devices.id').onDelete('cascade')
-      )
+        col.notNull().references('devices.id').onDelete('cascade'))
       .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade')
-      )
-  )
+        col.notNull().references('facilities.id').onDelete('cascade')))
 
-  await createStandardTable(db, 'procurers', (qb) =>
-    qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique())
+  await createStandardTable(
+    db,
+    'procurers',
+    (qb) =>
+      qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique()),
   )
 
   await createStandardTable(db, 'consumables', (qb) =>
     qb
       .addColumn('name', 'varchar(255)', (col) => col.notNull())
-      .addColumn('is_medication', 'boolean')
-  )
+      .addColumn('is_medication', 'boolean'))
 
   await createStandardTable(db, 'facility_consumables', (qb) =>
     qb
       .addColumn('quantity_on_hand', 'integer', (col) => col.notNull())
       .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade')
-      )
+        col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('consumable_id', 'integer', (col) =>
-        col.notNull().references('consumables.id').onDelete('cascade')
-      )
+        col.notNull().references('consumables.id').onDelete('cascade'))
       .addCheckConstraint(
         'facility_consumables_quantity_on_hand',
         sql`
           quantity_on_hand >= 0
-        `
-      )
-  )
+        `,
+      ))
 
   await createStandardTable(db, 'procurement', (qb) =>
     qb
       .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade')
-      )
-      .addColumn('quantity', 'integer', (col) => col.notNull())
+        col.notNull().references('facilities.id').onDelete('cascade'))
+      .addColumn('quantity', 'integer', (col) =>
+        col.notNull())
       .addColumn('consumed_amount', 'integer', (col) =>
-        col.notNull().defaultTo(0)
-      )
+        col.notNull().defaultTo(0))
       .addColumn('consumable_id', 'integer', (col) =>
-        col.notNull().references('consumables.id').onDelete('cascade')
-      )
+        col.notNull().references('consumables.id').onDelete('cascade'))
       .addColumn('procured_by', 'integer', (col) =>
-        col.notNull().references('procurers.id').onDelete('cascade')
-      )
+        col.notNull().references('procurers.id').onDelete('cascade'))
       .addColumn('created_by', 'integer', (column) =>
-        column.notNull().references('employment.id').onDelete('cascade')
-      )
+        column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('expiry_date', 'timestamptz')
       .addColumn('specifics', 'json')
       .addCheckConstraint(
         'procurement_quantity',
         sql`
         quantity >= 0
-       `
+       `,
       )
       .addCheckConstraint(
         'procurement_consumed_amount',
         sql`
         consumed_amount <= quantity
-       `
-      )
-  )
+       `,
+      ))
 
   await createStandardTable(db, 'consumption', (qb) =>
     qb
       .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade')
-      )
+        col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('quantity', 'integer')
       .addColumn('created_by', 'integer', (column) =>
-        column.notNull().references('employment.id').onDelete('cascade')
-      )
+        column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('procurement_id', 'integer', (col) =>
-        col.notNull().references('procurement.id').onDelete('cascade')
-      )
+        col.notNull().references('procurement.id').onDelete('cascade'))
       .addCheckConstraint(
         'consumption_quantity',
         sql`
         quantity >= 0
-      `
-      )
-  )
+      `,
+      ))
 
   await db.schema
     .alterTable('manufactured_medications')

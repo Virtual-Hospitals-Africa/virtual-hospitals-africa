@@ -57,7 +57,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         consumable_id: to_add.medication!.consumable_id,
         specifics: JSON.stringify({
           strength: to_add.medication!.strength!,
-          form: to_add.medication!.form!
+          form: to_add.medication!.form!,
         }),
       } as any,
     )

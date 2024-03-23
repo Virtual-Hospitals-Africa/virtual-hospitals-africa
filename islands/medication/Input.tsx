@@ -201,7 +201,10 @@ export default function MedicationInput({
                     )
 
                     const consumable_id = medication!.manufacturers
-                    .filter(c=> c.manufactured_medication_id === Number(event.currentTarget.value))[0].consumable_id
+                      .filter((c) =>
+                        c.manufactured_medication_id ===
+                          Number(event.currentTarget.value)
+                      )[0].consumable_id
                     setConsumableId(
                       Number(consumable_id),
                     )

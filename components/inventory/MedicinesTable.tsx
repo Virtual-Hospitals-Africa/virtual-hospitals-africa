@@ -28,7 +28,7 @@ export default function FacilityMedicinesTable(
       data(row) {
         return (
           <div>
-              {row.quantity_on_hand}
+            {row.quantity_on_hand}
           </div>
         )
       },
@@ -49,7 +49,7 @@ export default function FacilityMedicinesTable(
       },
     },
   ]
-  
+
   return (
     <>
       {isAdmin && (

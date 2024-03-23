@@ -1031,8 +1031,8 @@ export type FacilityConsumable = {
 }
 
 export type FacilityConsumableMedicineSpecefics = {
-   medications_id?: number
-   strength: number
+  medications_id?: number
+  strength: number
 }
 
 export type RenderedDevice = {

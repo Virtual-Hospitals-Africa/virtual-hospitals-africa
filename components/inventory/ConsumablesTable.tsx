@@ -20,7 +20,7 @@ export default function FacilityConsumablesTable(
       data(row) {
         return (
           <div>
-              {row.quantity_on_hand}
+            {row.quantity_on_hand}
           </div>
         )
       },

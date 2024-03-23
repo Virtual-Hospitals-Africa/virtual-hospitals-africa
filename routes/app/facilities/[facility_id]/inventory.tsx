@@ -5,8 +5,8 @@ import {
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
   RenderedFacilityConsumable,
-  RenderedFacilityMedicine,
   RenderedFacilityDevice,
+  RenderedFacilityMedicine,
 } from '../../../../types.ts'
 import * as inventory from '../../../../db/models/inventory.ts'
 import Layout from '../../../../components/library/Layout.tsx'
@@ -51,7 +51,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       )
       : []
 
-      const facility_medicines = active_tab === 'medicines'
+    const facility_medicines = active_tab === 'medicines'
       ? await inventory.getFacilityMedicines(
         ctx.state.trx,
         { facility_id: facility_id },

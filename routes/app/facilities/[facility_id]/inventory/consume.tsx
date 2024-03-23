@@ -28,7 +28,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async POST(req, ctx) {
     const { admin } = ctx.state.facility_employment.roles
     assertOr403(admin)
-    const procurement_id = parseInt(ctx.url.searchParams.get('procurement_id')!) 
+    const procurement_id = parseInt(ctx.url.searchParams.get('procurement_id')!)
     const consumable_id = parseInt(ctx.url.searchParams.get('consumable_id')!)
     const active_tab = ctx.url.searchParams.get('active_tab')!
 
