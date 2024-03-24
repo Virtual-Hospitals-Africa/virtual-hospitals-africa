@@ -3,20 +3,24 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
-  Procurer,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { FacilityContext } from '../_middleware.ts'
-import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
+import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
 
-export function assertIsUpsertProcurer(obj: unknown): asserts obj {
+export function assertIsUpsert(obj: unknown): asserts obj is {
+  quantity: number
+  procurement_id: number
+  consumable_id: number
+} {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.name === 'string')
+  assertOr400(typeof obj.quantity === 'number')
+  assertOr400(typeof obj.procurement_id === 'number')
+  assertOr400(typeof obj.consumable_id === 'number')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -27,40 +31,51 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const { admin } = ctx.state.facility_employment.roles
     assertOr403(admin)
 
-    const facility_id = getRequiredNumericParam(ctx, 'facility_id')
+    const active_tab = ctx.url.searchParams.get('active_tab')!
 
-    const to_upsert = await parseRequestAsserts(
+    const facility_id = ctx.state.facility.id
+
+    const to_add = await parseRequestAsserts(
       ctx.state.trx,
       req,
-      assertIsUpsertProcurer,
+      assertIsUpsert,
     )
 
-    await inventory.upsertProcurer(ctx.state.trx, to_upsert as Procurer)
+    await inventory.consumeConsumable(
+      ctx.state.trx,
+      facility_id,
+      {
+        created_by: admin.employment_id,
+        procurement_id: to_add.procurement_id,
+        consumable_id: to_add.consumable_id,
+        quantity: to_add.quantity,
+      },
+    )
 
     const success = encodeURIComponent(
-      `Procurer added successfully!`,
+      `Item consumed!`,
     )
 
     return redirect(
-      `/app/facilities/${facility_id}/inventory?active_tab=consumables&success=${success}`,
+      `/app/facilities/${facility_id}/inventory/history?consumable_id=${to_add.consumable_id}&active_tab=${active_tab}&success=${success}`,
     )
   },
 }
 
 // deno-lint-ignore require-await
-export default async function Procurer(
+export default async function Consume(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
   return (
     <Layout
       variant='home page'
-      title='Add Procurer'
+      title='Consumption Test'
       route={route}
       url={url}
       health_worker={state.healthWorker}
     >
-      <ProcurerForm />
+      <ConsumeForm />
     </Layout>
   )
 }

@@ -1,7 +1,41 @@
-import { sql } from 'kysely'
+import { RawBuilder, sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
-import { DrugSearchResult, Maybe, TrxOrDb } from '../../types.ts'
+import {
+  DrugSearchResult,
+  ManufacturedMedicationSearchResult,
+  Maybe,
+  TrxOrDb,
+} from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
+
+export function strengthDisplay(
+  builder: RawBuilder<string>,
+): RawBuilder<string> {
+  return sql<string>`
+  ${builder} ||
+  strength_numerator_unit || (
+    CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
+      THEN ''
+      ELSE (
+        '/' || (
+          CASE WHEN strength_denominator = 1 
+            THEN ''
+            ELSE strength_denominator::text
+          END
+        ) || strength_denominator_unit
+      )
+    END
+  )
+`
+}
+
+export function strengthSummary(base_table: string) {
+  return strengthDisplay(
+    sql<string>`array_to_string(${
+      sql.ref(base_table)
+    }.strength_numerators, ', ')`,
+  ).as('strength_summary')
+}
 
 function baseQuery(trx: TrxOrDb) {
   return trx
@@ -43,29 +77,14 @@ function baseQuery(trx: TrxOrDb) {
             'medications.strength_denominator',
             'medications.strength_denominator_unit',
             'medications.strength_denominator_is_units',
-            sql<string>`
-              array_to_string(strength_numerators, ', ') ||
-              strength_numerator_unit || (
-                CASE WHEN strength_denominator_unit NOT IN ('MG', 'G', 'ML', 'L', 'MCG', 'UG', 'IU')
-                  THEN ''
-                  ELSE (
-                    '/' || (
-                      CASE WHEN strength_denominator = 1 
-                        THEN ''
-                        ELSE strength_denominator::text
-                      END
-                    ) || strength_denominator_unit
-                  )
-                END
-              )
-            `.as('strength_summary'),
+            strengthSummary('medications'),
             jsonArrayFrom(
               eb_medications.selectFrom('manufactured_medications')
                 .select([
                   'manufactured_medications.id as manufactured_medication_id',
                   'manufactured_medications.strength_numerators',
                   'manufactured_medications.trade_name',
-                  'manufactured_medications.manufacturer_name',
+                  'manufactured_medications.applicant_name',
                 ])
                 .whereRef(
                   'manufactured_medications.medication_id',
@@ -122,5 +141,69 @@ export async function search(
       ...m,
       strength_denominator: parseFloat(m.strength_denominator),
     })),
+  }))
+}
+
+export async function searchManufacturedMedications(
+  trx: TrxOrDb,
+  opts: {
+    search?: Maybe<string>
+    ids?: Maybe<number[]>
+  },
+): Promise<ManufacturedMedicationSearchResult[]> {
+  if (opts.ids) {
+    assert(opts.ids.length, 'must provide at least one id')
+    assert(!opts.search)
+  } else {
+    assert(opts.search)
+  }
+
+  let query = trx
+    .selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .select([
+      'manufactured_medications.id',
+      sql<
+        string
+      >`manufactured_medications.trade_name || ' ' || medications.form || ' by ' || manufactured_medications.applicant_name`
+        .as('name'),
+      'drugs.generic_name',
+      'manufactured_medications.trade_name',
+      'manufactured_medications.applicant_name',
+      'medications.form',
+      'medications.strength_numerator_unit',
+      'medications.strength_denominator',
+      'medications.strength_denominator_unit',
+      'medications.strength_denominator_is_units',
+      'manufactured_medications.strength_numerators',
+      strengthSummary('manufactured_medications'),
+    ])
+    .limit(20)
+
+  if (opts.search) {
+    query = query
+      .where((eb) =>
+        eb.or([
+          eb(
+            'manufactured_medications.trade_name',
+            'ilike',
+            `%${opts.search}%`,
+          ),
+          eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
+        ])
+      )
+  } else {
+    query = query.where('manufactured_medications.id', 'in', opts.ids!)
+  }
+
+  const results = await query.execute()
+  return results.map((r) => ({
+    ...r,
+    strength_denominator: parseFloat(r.strength_denominator),
   }))
 }

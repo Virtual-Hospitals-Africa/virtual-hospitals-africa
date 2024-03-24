@@ -36,6 +36,7 @@ import {
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
+  longFormattedDate,
 } from '../helpers.ts'
 import isEmpty from '../../util/isEmpty.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
@@ -55,10 +56,9 @@ export const avatar_url_sql = sql<string | null>`
   END
 `
 
-const dob_formatted = sql<
-  string | null
->`TO_CHAR(patients.date_of_birth, 'FMDD FMMonth YYYY')`
-  .as('dob_formatted')
+const dob_formatted = longFormattedDate('patients.date_of_birth').as(
+  'dob_formatted',
+)
 
 const baseSelect = (trx: TrxOrDb) =>
   trx

@@ -53,6 +53,7 @@ export function search(
     .select([
       'id',
       'address',
+      'address as description',
       sql`ST_X(location::geometry)`.as('longitude'),
       sql`ST_Y(location::geometry)`.as('latitude'),
       'category',

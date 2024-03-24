@@ -33,24 +33,23 @@ export async function up(db: Kysely<unknown>) {
       qb.addColumn('name', 'varchar(255)', (col) => col.notNull().unique()),
   )
 
-  await createStandardTable(
-    db,
-    'consumables',
-    (qb) =>
-      qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
-        .addColumn(
-          'is_medication',
-          'boolean',
-        ),
-  )
+  await createStandardTable(db, 'consumables', (qb) =>
+    qb
+      .addColumn('name', 'text', (col) => col.notNull())
+      .addColumn('is_medication', 'boolean'))
 
   await createStandardTable(db, 'facility_consumables', (qb) =>
     qb
-      .addColumn('quantity_on_hand', 'integer', (col) => col.notNull())
       .addColumn('facility_id', 'integer', (col) =>
         col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade'))
+      .addColumn('quantity_on_hand', 'integer', (col) =>
+        col.notNull())
+      .addUniqueConstraint('facility_consumable', [
+        'facility_id',
+        'consumable_id',
+      ])
       .addCheckConstraint(
         'facility_consumables_quantity_on_hand',
         sql`
@@ -62,17 +61,33 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn('facility_id', 'integer', (col) =>
         col.notNull().references('facilities.id').onDelete('cascade'))
-      .addColumn('quantity', 'integer')
+      .addColumn('quantity', 'integer', (col) =>
+        col.notNull())
+      .addColumn('consumed_amount', 'integer', (col) =>
+        col.notNull().defaultTo(0))
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade'))
       .addColumn('procured_by', 'integer', (col) =>
         col.notNull().references('procurers.id').onDelete('cascade'))
       .addColumn('created_by', 'integer', (column) =>
         column.notNull().references('employment.id').onDelete('cascade'))
+      .addColumn('expiry_date', 'date')
       .addCheckConstraint(
-        'procurement_quantity',
+        'positive_procurement_quantity',
         sql`
-        quantity >= 0
+        quantity > 0
+       `,
+      )
+      .addCheckConstraint(
+        'nonnegative_procurement_consumed_amount',
+        sql`
+        consumed_amount >= 0
+       `,
+      )
+      .addCheckConstraint(
+        'procurement_consumed_amount_less_than_quantity',
+        sql`
+        consumed_amount <= quantity
        `,
       ))
 
@@ -80,60 +95,27 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn('facility_id', 'integer', (col) =>
         col.notNull().references('facilities.id').onDelete('cascade'))
-      .addColumn('quantity', 'integer')
+      .addColumn('quantity', 'integer', (col) =>
+        col.notNull())
       .addColumn('created_by', 'integer', (column) =>
         column.notNull().references('employment.id').onDelete('cascade'))
-      .addColumn('consumable_id', 'integer', (col) =>
-        col.notNull().references('consumables.id').onDelete('cascade'))
+      .addColumn('procurement_id', 'integer', (col) =>
+        col.notNull().references('procurement.id').onDelete('cascade'))
       .addCheckConstraint(
         'consumption_quantity',
         sql`
-        quantity >= 0
+        quantity > 0
       `,
       ))
-
-  // await db.schema
-  //   .alterTable('manufactured_medications')
-  //   .addColumn('consumable_id', 'integer', (col) =>
-  //     col.references('consumables.id')
-  //   )
-  //   .execute()
 }
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('facility_devices').execute()
   await db.schema.dropTable('device_capabilities').execute()
   await db.schema.dropTable('devices').execute()
-  // await db.schema
-  //   .alterTable('manufactured_medications')
-  //   .dropColumn('consumable_id')
-  //   .execute()
   await db.schema.dropTable('facility_consumables').execute()
   await db.schema.dropTable('consumption').execute()
   await db.schema.dropTable('procurement').execute()
   await db.schema.dropTable('consumables').execute()
   await db.schema.dropTable('procurers').execute()
 }
-
-// async function seedConsumablesFromMedications(db: Kysely<any>) {
-//   const medications = await db
-//     .selectFrom('manufactured_medications')
-//     .select('applicant_name')
-//     .execute()
-// await db
-//   .insertInto('consumables')
-//   .values(medications.map((c) => ({ name: c.applicant_name, is_medication: true })))
-//   .execute()
-// const consumables = await db
-//   .selectFrom('manufactured_medications')
-//   .select(['id', 'name'])
-//   .execute()
-
-// await inParallel.forEach(consumables, async (consumable) => {
-//   await db
-//     .updateTable('manufactured_medications')
-//     .set('consumable_id', consumable.id)
-//     .where('applicant_name', '=', consumable.name)
-//     .execute()
-// })
-// }

@@ -12,12 +12,12 @@ import {
   IntakeFrequencies,
 } from '../../shared/medication.ts'
 
-export default function MedicationInput({
+export default function DrugInput({
   name,
   value,
 }: {
   name: string
-  value?: PreExistingConditionWithDrugs['medications'][0]
+  value?: PreExistingConditionWithDrugs['medications'][number]
 }) {
   const [drug, setDrug] = useState<DrugSearchResultData | null>(
     value?.drug || null,
@@ -62,16 +62,6 @@ export default function MedicationInput({
   const strength_options = manufactured_medication?.strength_numerators ||
     medication?.strength_numerators
 
-  const denominatorUnit = medication?.strength_denominator_unit
-  const denominatorIsMeasurement = medication
-    ?.strength_denominator_is_units
-  const denominatorPlural = denominatorUnit &&
-    (denominatorIsMeasurement
-      ? denominatorUnit
-      : denominatorUnit === 'SUPPOSITORY'
-      ? 'SUPPOSITORIES'
-      : denominatorUnit + 'S')
-
   useEffect(() => {
     if (!drug) return
     if (medication_id) return
@@ -111,6 +101,8 @@ export default function MedicationInput({
             setIntakeFrequency(null)
           }}
         />
+      </FormRow>
+      <FormRow className='w-full justify-normal'>
         <Select
           name={`${name}.medication_id`}
           required
@@ -142,12 +134,12 @@ export default function MedicationInput({
               setRoute(event.currentTarget.value)}
           >
             <option value=''>Select Form</option>
-            {medication.routes.map((route) => (
+            {medication.routes.map((route_option) => (
               <option
-                value={route}
-                selected={route === route}
+                value={route_option}
+                selected={route_option === route}
               >
-                {route}
+                {route_option}
               </option>
             ))}
           </Select>
@@ -159,41 +151,6 @@ export default function MedicationInput({
             value={medication.routes[0]}
           />
         )}
-        {
-          /* TODO: revisit using manufactured medications.
-            Could be valuable for prescriptions based on facility availability, but for now just gumming things up. */
-        }
-        <input
-          type='hidden'
-          className='hidden'
-          name={`${name}.manufactured_medication_id`}
-          value={manufactured_medication_id || ''}
-        />
-        {
-          /* <Select
-          name={`${name}.manufactured_medication_id`}
-          label='Trade Name'
-          disabled={!medication}
-          onChange={(event) =>
-            event.currentTarget.value &&
-            setManufacturedMedicationId(
-              Number(event.currentTarget.value),
-            )}
-        >
-          <option value=''>Select Trade Name</option>
-          {medication &&
-            medication.manufacturers.map((manufactured_medication) => (
-              <option
-                value={manufactured_medication.manufactured_medication_id}
-                selected={manufactured_medication_id ===
-                  manufactured_medication.manufactured_medication_id}
-              >
-                {manufactured_medication.trade_name}{' '}
-                ({manufactured_medication.manufacturer_name})
-              </option>
-            ))}
-        </Select> */
-        }
         <Select
           name={`${name}.strength`}
           required

@@ -29,7 +29,7 @@ import { PatientExaminationForm } from '../../../../../../islands/examinations/F
 import { NewExaminationForm } from '../../../../../../islands/examinations/New.tsx'
 import omit from '../../../../../../util/omit.ts'
 import hrefFromCtx from '../../../../../../util/hrefFromCtx.ts'
-import { getAvailableTestsInFacility } from '../../../../../../db/models/inventory.ts'
+import { getAvailableTests } from '../../../../../../db/models/inventory.ts'
 import {
   Examination,
   EXAMINATIONS,
@@ -326,7 +326,7 @@ export default async function ExaminationsPage(
           selected_examinations={encounter.examinations.map((ex) =>
             ex.examination_name
           )}
-          available_diagnostic_tests={await getAvailableTestsInFacility(trx, {
+          available_diagnostic_tests={await getAvailableTests(trx, {
             facility_id: ctx.state.encounter.providers[0].facility_id,
           })}
           allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}

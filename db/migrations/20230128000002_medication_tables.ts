@@ -76,20 +76,39 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('applicant_name', 'varchar(1024)', (col) => col.notNull())
         .addColumn('manufacturer_name', 'varchar(2048)', (col) => col.notNull())
         .addColumn(
-          'strength_numerators',
-          sql`real[]`,
-          (col) => col.notNull(),
-        )
-        .addColumn(
           'medication_id',
           'integer',
           (col) =>
             col.notNull().references('medications.id').onDelete('cascade'),
-        ),
+        )
+        .addColumn('strength_numerators', sql`real[]`, (col) => col.notNull()),
+  )
+
+  await createStandardTable(
+    db,
+    'manufactured_medication_strengths',
+    (qb) =>
+      qb
+        .addColumn(
+          'strength_numerator',
+          sql`real`,
+          (col) => col.notNull(),
+        )
+        .addColumn(
+          'manufactured_medication_id',
+          'integer',
+          (col) =>
+            col.notNull().references('manufactured_medications.id').onDelete(
+              'cascade',
+            ),
+        )
+        .addColumn('consumable_id', 'integer', (col) =>
+          col.notNull().references('consumables.id').onDelete('cascade')),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('manufactured_medication_strengths').execute()
   await db.schema.dropTable('manufactured_medications').execute()
   await db.schema.dropTable('medications').execute()
   await db.schema.dropTable('drugs').execute()

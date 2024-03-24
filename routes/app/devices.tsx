@@ -8,7 +8,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     assertEquals(req.headers.get('accept'), 'application/json')
     const search = ctx.url.searchParams.get('search')
     if (!search) return json([])
-
-    return json(await devices.search(ctx.state.trx, search))
+    return json(await devices.search(ctx.state.trx, { search }))
   },
 }

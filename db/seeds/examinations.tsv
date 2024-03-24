@@ -1,0 +1,94 @@
+name	order
+Head-to-toe Assessment	1
+Women's Health Assessment	2
+Maternity Assessment	3
+Men's Health Assessment	4
+Mental Health Assessment	5
+Child Health Assessment	6
+Gastroenterology	7
+Endocrine	8
+Osteopathy	9
+Trauma	10
+Oncology	11
+Dental	12
+Otolaryngology	13
+Immunology	14
+Urology	15
+Gynecological	16
+Neurology	17
+Anesthetic	18
+Obstetric	19
+Ophthalmology	20
+Geriatric	21
+Pulmonology	22
+Haematology	23
+Dermatology	24
+Paediatric	25
+Rheumatology	26
+Vascular	27
+Cardiology	28
+Psychiatry	29
+Maxillofacial	30
+Nephrology	31
+Urine Analysis	32
+Malaria	33
+HIV	34
+Pregnancy	35
+Cholesterol	36
+Blood Glucose	37
+Hemoglobin	38
+Uric Acid	39
+Covid 19	40
+Diabetes	41
+Inflammation	42
+Cardiac	43
+Hormone	44
+Thyroid	45
+Bone Metabolism	46
+Gastric Function	47
+Anemia	48
+Tumor	49
+Brain Injury	50
+Angiocapy	51
+Immune System	52
+Renal Function	53
+Nervous System	54
+Blood Pressure	55
+Blood Oxygen Saturation	56
+Body Mass Index	57
+Spirometry FVC	58
+Spirometry FEV	59
+Spirometry PEF	60
+Hepatitis C	61
+Tuberculosis	62
+Body Fat	63
+Bone Mass	64
+Water Weight	65
+Muscle Mass	66
+Body Weight	67
+Basal Metabolic Rate	68
+Typhoid	69
+Syphilis	70
+Chlamydia	71
+Gonorrhea	72
+Hepatitis A/B/C	73
+Herpes Simplex Virus 1 & 2	74
+Trichomonas	75
+Cholera	76
+Abdominal Ultrasound	77
+Renal Ultrasound	78
+Breast Ultrasound	79
+Doppler Ultrasound	80
+Pelvic Ultrasound	81
+Transvaginal Ultrasound	82
+Thyroid Ultrasound	83
+Transrectal Ultrasound	84
+Pregnancy Ultrasound	85
+Chest X-ray	86
+Abdominal X-ray	87
+Kidney, Ureter and Bladder X-ray	88
+Neck X-ray	89
+Hand X-ray	90
+Joint X-ray	91
+Skull X-ray	92
+Temperature	93

@@ -1,5 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import Layout from '../../../../../components/library/Layout.tsx'
 import * as patients from '../../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
@@ -102,13 +101,11 @@ export default async function WaitingRoomAdd(
       health_worker={state.healthWorker}
       variant='home page'
     >
-      <Container size='md'>
-        <AddPatientForm
-          providers={await gettingProviders}
-          open_encounter={open_encounter}
-          patient={patient}
-        />
-      </Container>
+      <AddPatientForm
+        providers={await gettingProviders}
+        open_encounter={open_encounter}
+        patient={patient}
+      />
     </Layout>
   )
 }

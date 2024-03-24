@@ -3,22 +3,6 @@ import Search from '../Search.tsx'
 import cls from '../../util/cls.ts'
 import { computed, useSignal } from '@preact/signals'
 
-function AllergyResult({
-  option,
-  selected,
-}: {
-  option: Allergy
-  selected: boolean
-}) {
-  return (
-    <div className='flex flex-col'>
-      <div className={cls('truncate text-base', selected && 'font-bold')}>
-        {option.name}
-      </div>
-    </div>
-  )
-}
-
 export default function AllergySearch({
   options,
   add,
@@ -47,7 +31,6 @@ export default function AllergySearch({
           query.value = ''
         }
       }}
-      Option={AllergyResult}
     />
     // create drinksSearch
   )

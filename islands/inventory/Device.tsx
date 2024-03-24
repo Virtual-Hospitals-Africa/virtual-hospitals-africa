@@ -1,65 +1,57 @@
 import { JSX } from 'preact'
+import { useSignal } from '@preact/signals'
 import { RenderedDevice } from '../../types.ts'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
 import DeviceSearch from './DeviceSearch.tsx'
-import { useSignal } from '@preact/signals'
 import { Button } from '../../components/library/Button.tsx'
 import { TextInput } from '../form/Inputs.tsx'
 
-export default function FacilityDeviceForm(): JSX.Element {
-  const selectedDevice = useSignal<RenderedDevice | undefined>(undefined)
+export default function FacilityDeviceForm({ device }: {
+  device: RenderedDevice | null
+}): JSX.Element {
+  const selectedDevice = useSignal(device)
   return (
-    <div>
-      <SectionHeader className='my-5 text-[20px]'>
-        Add Device
-      </SectionHeader>
-      <div>
-        <Form method='post'>
-          <div className='flex flex-col w-full gap-2'>
-            <FormRow>
-              <DeviceSearch
-                name='device'
-                label='Device'
-                required
-                addable
-                value={null}
-                onSelect={(device) => {
-                  selectedDevice.value = device
-                }}
-              />
-            </FormRow>
+    <Form method='post'>
+      <div className='flex flex-col w-full gap-2'>
+        <FormRow>
+          <DeviceSearch
+            name='device'
+            label='Device'
+            required
+            addable
+            value={selectedDevice.value}
+            onSelect={(device) => selectedDevice.value = device ?? null}
+          />
+        </FormRow>
 
-            <FormRow>
-              <TextInput
-                name={`serial_number`}
-                label='Serial'
-                required
-              />
-              <div>
-                <label>Manufacurer</label>
-                <br />
-                {selectedDevice.value?.manufacturer}
-              </div>
-              <div />
-              <div>
-                <label>Available Tests</label>
-                <ul>
-                  {selectedDevice.value?.diagnostic_test_capabilities.map((
-                    c,
-                  ) => <li>{c}</li>)}
-                </ul>
-              </div>
-            </FormRow>
-            <FormRow>
-              <Button type='submit'>
-                Submit
-              </Button>
-            </FormRow>
+        <FormRow>
+          <TextInput
+            name={`serial_number`}
+            label='Serial'
+            required
+          />
+          <div>
+            <label>Manufacurer</label>
+            <br />
+            {selectedDevice.value?.manufacturer}
           </div>
-        </Form>
+          <div />
+          <div>
+            <label>Available Tests</label>
+            <ul>
+              {selectedDevice.value?.diagnostic_test_capabilities.map((
+                c,
+              ) => <li>{c}</li>)}
+            </ul>
+          </div>
+        </FormRow>
+        <FormRow>
+          <Button type='submit'>
+            Submit
+          </Button>
+        </FormRow>
       </div>
-    </div>
+    </Form>
   )
 }

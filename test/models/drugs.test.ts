@@ -36,7 +36,7 @@ const expected_results = [
         form_route: 'TABLET, COATED; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'AUROBINDO PHARMA LTD JEDCHERLA INDIA;',
+            applicant_name: 'AUROBINDO PHARMA LIMITED',
             strength_numerators: [
               300,
             ],
@@ -69,30 +69,28 @@ const expected_results = [
         form_route: 'TABLET, COATED; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'STRIDES ARCOLAB LTD BANGALOR INDIA;',
+            applicant_name: 'STRIDES ARCOLAB LTD',
             strength_numerators: [
               300,
             ],
             trade_name: 'ABACAVIR SULPHATE',
           },
           {
-            manufacturer_name: 'CIPLA LTD MAHAD INDIA;',
+            applicant_name: 'CIPLA LTD',
             strength_numerators: [
               300,
             ],
             trade_name: 'ABACAVIR SULPHATE',
           },
           {
-            manufacturer_name:
-              'MYLAN LABORATORIES LTD SINNAR INDIA;  MYLAN LABORATORIES LIMITED BAVLA INDIA;',
+            applicant_name: 'MYLAN LABORATORIES LIMITED',
             strength_numerators: [
               300,
             ],
             trade_name: 'ABAMAT TABLETS',
           },
           {
-            manufacturer_name:
-              'GLAXO WELLCOME OPERATIONS HERTFORDSHIRE UK;  GLAXOSMITHKLINE PHARMACEUTICALS POZNAN POLAND;',
+            applicant_name: 'GLAXOSMITHKLINE S.A (PTY) LTD',
             strength_numerators: [
               300,
             ],
@@ -116,14 +114,14 @@ const expected_results = [
         form_route: 'SOLUTION',
         manufacturers: [
           {
-            manufacturer_name: 'HETERO DRUGS LTD JADCHERLA INDIA;',
+            applicant_name: 'HETERO LABS LTD',
             strength_numerators: [
               20,
             ],
             trade_name: 'ABACAVIR SULPHATE',
           },
           {
-            manufacturer_name: 'GLAXO WELLCOME OPERATIONS HERTFORDSHIRE UK;',
+            applicant_name: 'GLAXO-WELLCOME ZIMBABWE PVT LTD',
             strength_numerators: [
               20,
             ],
@@ -150,7 +148,7 @@ const expected_results = [
         form_route: 'TABLET; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'HETERO DRUGS LTD JADCHERLA INDIA;',
+            applicant_name: 'HETERO LABS LTD',
             strength_numerators: [
               300,
             ],
@@ -183,7 +181,7 @@ const expected_results = [
         form_route: 'CAPSULE; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'CIPLA LTD MAHAD INDIA;',
+            applicant_name: 'CIPLA LTD',
             strength_numerators: [
               30,
               60,
@@ -209,8 +207,7 @@ const expected_results = [
         form_route: 'TABLET; ORAL',
         manufacturers: [
           {
-            manufacturer_name:
-              'GLAXOSMITHKLINE S.A (PTY) LTD BRYANSTON SOUTH AFRICA;',
+            applicant_name: 'GLAXOSMITHKLINE S.A (PTY) LTD',
             strength_numerators: [
               300,
               600,
@@ -244,7 +241,7 @@ const expected_results = [
         form_route: 'TABLET; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'MYLAN LABORATORIES LTD SINNAR INDIA;',
+            applicant_name: 'MYLAN LABORATORIES LIMITED',
             strength_numerators: [
               30,
               60,
@@ -252,7 +249,7 @@ const expected_results = [
             trade_name: 'ABACAVIR SULFATE; LAMIVUDINE',
           },
           {
-            manufacturer_name: 'MYLAN LAB LTD MAHARASHTRA INDIA;',
+            applicant_name: 'MYLAN LABORATORIES LIMITED',
             strength_numerators: [
               60,
               120,
@@ -279,7 +276,7 @@ const expected_results = [
         form_route: 'TABLET, COATED; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'AUROBINDO PHARMA LIMITED HYDERABAD ;',
+            applicant_name: 'AUROBINDO PHARMA LIMITED',
             strength_numerators: [
               300,
               600,
@@ -287,7 +284,7 @@ const expected_results = [
             trade_name: 'ABACAVIR SULFATE; LAMIVUDINE',
           },
           {
-            manufacturer_name: 'AURO BINDO PHARMA LTD  INDIA;',
+            applicant_name: 'AUROBINDO PHARMA LIMITED',
             strength_numerators: [
               30,
               60,
@@ -295,8 +292,7 @@ const expected_results = [
             trade_name: 'ABACAVIR SULFATE; LAMIVUDINE',
           },
           {
-            manufacturer_name:
-              'CIPLA LTD MAHAD INDIA;  CIPLA LIMITED (GOA UNIT VII) GOA INDIA;',
+            applicant_name: 'CIPLA LTD',
             strength_numerators: [
               300,
               600,
@@ -324,8 +320,7 @@ const expected_results = [
         form_route: 'TABLET',
         manufacturers: [
           {
-            manufacturer_name:
-              'SUN PHARMACEUTICAL INDUSTRIES LIMITED PAONTA SAHIB INDIA;',
+            applicant_name: 'SUN PHARMACEUTICAL INDUSTRIES LIMITED',
             strength_numerators: [
               300,
               600,
@@ -361,7 +356,7 @@ const expected_results = [
         form_route: 'TABLET; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'MYLAN LABORATORIES LTD SINNAR INDIA;',
+            applicant_name: 'MYLAN LABORATORIES LIMITED',
             strength_numerators: [
               30,
               60,
@@ -369,8 +364,7 @@ const expected_results = [
             trade_name: 'ABACAVIR SULPHATE; LAMIVUDINE',
           },
           {
-            manufacturer_name:
-              'MYLAN LABORATORIES LTD SINNAR INDIA;  MYLAN LABORATORIES LIMITED BAVLA INDIA;',
+            applicant_name: 'MYLAN LABORATORIES LIMITED',
             strength_numerators: [
               300,
               600,
@@ -398,7 +392,7 @@ const expected_results = [
         form_route: 'TABLET, COATED; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'HETERO LABS LTD, ANDHRA PRADESH INDIA;',
+            applicant_name: 'HETERO LABS LTD',
             strength_numerators: [
               300,
               600,
@@ -430,7 +424,7 @@ const expected_results = [
         form_route: 'TABLET, COATED; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'CIPLA LTD  INDIA;',
+            applicant_name: 'CIPLA LTD',
             strength_numerators: [
               50,
               300,
@@ -464,7 +458,7 @@ const expected_results = [
         form_route: 'TABLET; ORAL',
         manufacturers: [
           {
-            manufacturer_name: 'MYLAN LABORATORIES LTD SINNAR INDIA;',
+            applicant_name: 'MYLAN LABORATORIES LIMITED',
             strength_numerators: [
               150,
               300,

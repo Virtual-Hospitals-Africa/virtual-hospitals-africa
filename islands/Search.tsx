@@ -15,6 +15,34 @@ function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
 
+export function BaseOption<
+  T extends {
+    id?: unknown
+    name: string
+    display_name?: string
+    description?: string
+  },
+>({
+  option,
+  selected,
+}: {
+  option: T
+  selected: boolean
+}) {
+  return (
+    <div className='flex flex-col'>
+      <div className={cls('truncate text-base', selected && 'font-bold')}>
+        {option.display_name || option.name}
+      </div>
+      {option.description && (
+        <div className={cls('truncate text-xs', selected && 'font-bold')}>
+          {option.description}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export type SearchProps<
   T extends { id?: unknown; name: string },
 > = {
@@ -30,13 +58,14 @@ export type SearchProps<
   options: T[]
   onQuery: (query: string) => void
   onSelect?: (value: T | undefined) => void
-  Option(
+  Option?(
     props: {
       option: T
       selected: boolean
       active: boolean
     },
   ): JSX.Element
+  optionHref?: (option: T) => string
 }
 
 export default function Search<
@@ -54,7 +83,8 @@ export default function Search<
   className,
   onQuery,
   onSelect,
-  Option,
+  optionHref, // The existence of this prop turns the options into <a> tags
+  Option = BaseOption,
 }: SearchProps<T>) {
   if (multi) {
     assert(
@@ -138,25 +168,33 @@ export default function Search<
                       active ? 'bg-indigo-600 text-white' : 'text-gray-900',
                     )}
                 >
-                  {({ active, selected }) => (
-                    <>
-                      <Option
-                        option={option}
-                        active={active}
-                        selected={selected}
-                      />
-                      {selected && (
-                        <span
-                          className={cls(
-                            'absolute inset-y-0 right-0 flex items-center pr-4',
-                            active ? 'text-white' : 'text-indigo-600',
-                          )}
-                        >
-                          <CheckIcon className='h-5 w-5' aria-hidden='true' />
-                        </span>
-                      )}
-                    </>
-                  )}
+                  {({ active, selected }) => {
+                    const fragment = (
+                      <>
+                        <Option
+                          option={option}
+                          active={active}
+                          selected={selected}
+                        />
+                        {selected && (
+                          <span
+                            className={cls(
+                              'absolute inset-y-0 right-0 flex items-center pr-4',
+                              active ? 'text-white' : 'text-indigo-600',
+                            )}
+                          >
+                            <CheckIcon className='h-5 w-5' aria-hidden='true' />
+                          </span>
+                        )}
+                      </>
+                    )
+                    if (!optionHref) return fragment
+                    return (
+                      <a href={optionHref(option)}>
+                        {fragment}
+                      </a>
+                    )
+                  }}
                 </Combobox.Option>
               ))}
             </Combobox.Options>

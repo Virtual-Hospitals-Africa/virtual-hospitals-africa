@@ -2,9 +2,15 @@ import { Kysely } from 'kysely'
 import { createSeedMigration } from '../seedMigration.ts'
 import uniq from '../../util/uniq.ts'
 import groupBy from '../../util/groupBy.ts'
+import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../shared/examinations.ts'
 
 export default createSeedMigration(
-  ['examination_categories', 'examination_findings'],
+  [
+    'examinations',
+    'diagnostic_tests',
+    'examination_categories',
+    'examination_findings',
+  ],
   addSeedData,
 )
 
@@ -124,6 +130,14 @@ const head_to_toe_assessment = [
 
 // deno-lint-ignore no-explicit-any
 async function addSeedData(db: Kysely<any>) {
+  await db.insertInto('examinations').values(
+    EXAMINATIONS.map((name, index) => ({ name, order: index + 1 })),
+  ).execute()
+
+  await db.insertInto('diagnostic_tests').values(
+    DIAGNOSTIC_TESTS.map((name) => ({ name })),
+  ).execute()
+
   const categories = uniq(head_to_toe_assessment.map((d) => d.category)).map((
     category,
     index,

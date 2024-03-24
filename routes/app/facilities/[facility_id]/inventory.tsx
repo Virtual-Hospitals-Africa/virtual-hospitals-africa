@@ -6,6 +6,7 @@ import {
   LoggedInHealthWorkerHandlerWithProps,
   RenderedFacilityConsumable,
   RenderedFacilityDevice,
+  RenderedFacilityMedicine,
 } from '../../../../types.ts'
 import * as inventory from '../../../../db/models/inventory.ts'
 import Layout from '../../../../components/library/Layout.tsx'
@@ -18,6 +19,7 @@ type InventoryPageProps = {
   healthWorker: EmployedHealthWorker
   facility_devices: RenderedFacilityDevice[]
   facility_consumbales: RenderedFacilityConsumable[]
+  facility_medicines: RenderedFacilityMedicine[]
   active_tab: string
 }
 
@@ -36,14 +38,21 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     assertOr404(facility_id)
 
     const facility_devices = active_tab === 'devices'
-      ? await inventory.getFacilityDevices(
+      ? await inventory.getDevices(
         ctx.state.trx,
         { facility_id: facility_id },
       )
       : []
 
     const facility_consumbales = active_tab === 'consumables'
-      ? await inventory.getFacilityConsumables(
+      ? await inventory.getConsumables(
+        ctx.state.trx,
+        { facility_id: facility_id },
+      )
+      : []
+
+    const facility_medicines = active_tab === 'medicines'
+      ? await inventory.getMedicines(
         ctx.state.trx,
         { facility_id: facility_id },
       )
@@ -55,6 +64,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       healthWorker,
       facility_devices,
       facility_consumbales,
+      facility_medicines,
       active_tab,
     })
   },
@@ -75,6 +85,7 @@ export default function inventoryPage(
         facility_id={props.data.facility.id}
         devices={props.data.facility_devices}
         consumables={props.data.facility_consumbales}
+        medicines={props.data.facility_medicines}
         isAdmin={props.data.isAdminAtFacility}
         active_tab={props.data.active_tab}
       />

@@ -9,7 +9,6 @@ import {
 import * as facilities from '../../../../db/models/facilities.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
-import { Container } from '../../../../components/library/Container.tsx'
 
 type EmployeePageProps = {
   isAdminAtFacility: boolean
@@ -54,15 +53,13 @@ export default function EmployeeTable(
       health_worker={props.data.healthWorker}
       variant='home page'
     >
-      <Container size='lg'>
-        <EmployeesTable
-          isAdmin={props.data.isAdminAtFacility}
-          employees={props.data.employees}
-          pathname={props.url.pathname}
-          facility_id={props.data.facility.id}
-          health_worker_id={props.data.healthWorker.id}
-        />
-      </Container>
+      <EmployeesTable
+        isAdmin={props.data.isAdminAtFacility}
+        employees={props.data.employees}
+        pathname={props.url.pathname}
+        facility_id={props.data.facility.id}
+        health_worker_id={props.data.healthWorker.id}
+      />
     </Layout>
   )
 }

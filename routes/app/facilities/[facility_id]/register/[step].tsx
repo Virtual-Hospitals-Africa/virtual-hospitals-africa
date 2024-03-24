@@ -13,7 +13,6 @@ import {
   useNurseRegistrationSteps,
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import redirect from '../../../../../util/redirect.ts'
-import { Container } from '../../../../../components/library/Container.tsx'
 import * as employment from '../../../../../db/models/employment.ts'
 import * as nurse_specialties from '../../../../../db/models/nurse_specialties.ts'
 import * as health_workers from '../../../../../db/models/health_workers.ts'
@@ -180,17 +179,15 @@ export default async function RegisterPage(
       title='Register as a nurse'
       url={ctx.url}
     >
-      <Container size='xl'>
-        <SectionHeader>
-          Registration
-        </SectionHeader>
-        {stepState.stepsTopBar}
-        <NurseRegistrationForm
-          currentStep={stepState.currentStep}
-          formData={formState}
-          country_address_tree={country_address_tree}
-        />
-      </Container>
+      <SectionHeader>
+        Registration
+      </SectionHeader>
+      {stepState.stepsTopBar}
+      <NurseRegistrationForm
+        currentStep={stepState.currentStep}
+        formData={formState}
+        country_address_tree={country_address_tree}
+      />
     </Layout>
   )
 }

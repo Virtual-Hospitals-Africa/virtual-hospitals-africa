@@ -9,6 +9,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     const search = ctx.url.searchParams.get('search')
     if (!search) return json([])
 
-    return json(await inventory.searchConsumables(ctx.state.trx, search))
+    return json(await inventory.searchConsumables(ctx.state.trx, { search }))
   },
 }

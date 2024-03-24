@@ -1,4 +1,4 @@
-import MedicationInput from '../medication/Input.tsx'
+import DrugInput from '../drug/Input.tsx'
 import { PatientConditionMedication } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
 
@@ -15,7 +15,7 @@ export default function Medication({
 }) {
   return (
     <RemoveRow onClick={remove} key={index} labelled>
-      <MedicationInput
+      <DrugInput
         name={`${prefix}.medications.${index}`}
         value={value}
       />

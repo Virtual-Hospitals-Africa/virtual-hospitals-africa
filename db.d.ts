@@ -239,12 +239,12 @@ export interface Consumables {
 }
 
 export interface Consumption {
-  consumable_id: number
   created_at: Generated<Timestamp>
   created_by: number
   facility_id: number
   id: Generated<number>
-  quantity: number | null
+  procurement_id: number
+  quantity: number
   updated_at: Generated<Timestamp>
 }
 
@@ -544,6 +544,15 @@ export interface ManufacturedMedications {
   updated_at: Generated<Timestamp>
 }
 
+export interface ManufacturedMedicationStrengths {
+  consumable_id: number
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  manufactured_medication_id: number
+  strength_numerator: number
+  updated_at: Generated<Timestamp>
+}
+
 export interface Measurements {
   name: string
   units: string
@@ -836,12 +845,14 @@ export interface PatientSymptoms {
 
 export interface Procurement {
   consumable_id: number
+  consumed_amount: Generated<number>
   created_at: Generated<Timestamp>
   created_by: number
+  expiry_date: Timestamp | null
   facility_id: number
   id: Generated<number>
   procured_by: number
-  quantity: number | null
+  quantity: number
   updated_at: Generated<Timestamp>
 }
 
@@ -968,6 +979,7 @@ export interface DB {
   icd10_sections: Icd10Sections
   intake: Intake
   mailing_list: MailingList
+  manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
   measurements: Measurements
   media: Media

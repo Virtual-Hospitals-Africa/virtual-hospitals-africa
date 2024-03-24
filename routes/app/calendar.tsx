@@ -9,7 +9,6 @@ import {
 import { getWithPatientInfo as getAppointments } from '../../db/models/appointments.ts'
 import { parseDateTime, todayISOInHarare } from '../../util/date.ts'
 import AppointmentsCalendar from '../../components/calendar/AppointmentsCalendar.tsx'
-import { Container } from '../../components/library/Container.tsx'
 import Layout from '../../components/library/Layout.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<CalendarPageProps> =
@@ -98,9 +97,7 @@ export default function Calendar(
       url={props.url}
       health_worker={props.data.healthWorker}
     >
-      <Container size='lg'>
-        <AppointmentsCalendar url={props.url} {...props.data} />
-      </Container>
+      <AppointmentsCalendar url={props.url} {...props.data} />
     </Layout>
   )
 }

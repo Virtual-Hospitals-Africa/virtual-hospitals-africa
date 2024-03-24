@@ -1,7 +1,6 @@
 import * as patients from '../../../db/models/patients.ts'
 import PatientDetailedCard from '../../../components/patients/DetailedCard.tsx'
 import Layout from '../../../components/library/Layout.tsx'
-import { Container } from '../../../components/library/Container.tsx'
 import SectionHeader from '../../../components/library/typography/SectionHeader.tsx'
 import { Button } from '../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../util/assertOr.ts'
@@ -35,20 +34,18 @@ export default async function PatientPage(
       health_worker={ctx.state.healthWorker}
       variant='home page'
     >
-      <Container size='lg'>
-        <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-          {patient.open_encounter && (
-            <Button href={`${ctx.url.pathname}/encounters/open/vitals`}>
-              Go to open encounter
-            </Button>
-          )}
+      <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
+        {patient.open_encounter && (
+          <Button href={`${ctx.url.pathname}/encounters/open/vitals`}>
+            Go to open encounter
+          </Button>
+        )}
 
-          <SectionHeader>
-            Demographic Data
-          </SectionHeader>
-          <PatientDetailedCard patient={patient} />
-        </div>
-      </Container>
+        <SectionHeader>
+          Demographic Data
+        </SectionHeader>
+        <PatientDetailedCard patient={patient} />
+      </div>
     </Layout>
   )
 }

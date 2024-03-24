@@ -1,12 +1,11 @@
 import { ComponentChildren, JSX } from 'preact'
 import cls from '../../util/cls.ts'
-import Avatar from './Avatar.tsx'
 import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import re from 'https://esm.sh/v135/preact-render-to-string@6.3.1/X-ZS8q/denonext/preact-render-to-string.mjs'
-import isEmpty from '../../util/isEmpty.ts'
+import { assertPersonLike, Person } from './Person.tsx'
+import { is } from 'https://esm.sh/v135/css-select@5.1.0/lib/index.js'
 
 type Showable =
   | string
@@ -28,6 +27,7 @@ export type TableColumn<T extends Row> =
   }
   & (
     | { type?: 'content'; data: keyof T | ((row: T) => Showable) }
+    | { type: 'person'; data: keyof T }
     | (T extends { actions: Record<string, string | null> } ? {
         label: 'Actions'
         type: 'actions'
@@ -37,7 +37,8 @@ export type TableColumn<T extends Row> =
 
 type MappedColumn<T extends Row> = {
   column: TableColumn<T>
-  cell_contents: JSX.Element[]
+  // deno-lint-ignore no-explicit-any
+  cell_contents: any[]
 }
 
 type TableProps<T extends Row> = {
@@ -82,18 +83,24 @@ function TableCellInnerContents<T extends Row>(
     )
   }
 
+  if (mapped_column.column.type === 'person') {
+    const person = mapped_column.cell_contents[row_index]
+    assertPersonLike(person)
+    return <Person person={person} />
+  }
+
   if (mapped_column.column.type === 'actions') {
     assert('actions' in row)
     assert(isObjectLike(row.actions))
     return (
-      <>
+      <div className='flex flex-col gap-1'>
         {Object.entries(row.actions).map((
           [name, action],
         ) => (
           assert(action == null || typeof action === 'string'),
             <ActionButton name={name} action={action} />
         ))}
-      </>
+      </div>
     )
   }
 
@@ -184,7 +191,7 @@ function* columnsWithSomeNonNullValue<T extends Row>(
         ? column.data(row)
         : row[column.data]
 
-      if (!isEmpty(value)) {
+      if (value != null && (!Array.isArray(value) || value.length)) {
         use_column = true
       }
 

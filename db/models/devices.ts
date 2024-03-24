@@ -1,12 +1,22 @@
-import { sql } from 'kysely/index.js'
 import { Maybe, RenderedDevice, TrxOrDb } from '../../types.ts'
 import { jsonArrayFromColumn } from '../helpers.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export function search(
   trx: TrxOrDb,
-  search?: Maybe<string>,
+  opts: {
+    search?: Maybe<string>
+    ids?: number[]
+  },
 ): Promise<RenderedDevice[]> {
-  const devicesQuery = trx
+  if (opts.ids) {
+    assert(opts.ids.length, 'must provide at least one id')
+    assert(!opts.search)
+  } else {
+    assert(opts.search)
+  }
+
+  let query = trx
     .selectFrom('devices')
     .select((eb) => [
       'devices.id',
@@ -21,21 +31,25 @@ export function search(
       ).as('diagnostic_test_capabilities'),
     ])
 
-  const query = search
-    ? trx
-      .selectFrom(devicesQuery.as('devices'))
-      .selectAll()
-      .where((eb) =>
-        eb.or([
-          eb('devices.name', 'ilike', `%${search}%`),
-          eb('devices.manufacturer', 'ilike', `%${search}%`),
-          sql<
-            boolean
-          >`EXISTS (select 1 from json_array_elements_text("devices"."diagnostic_test_capabilities") AS test
-      WHERE test ILIKE ${'%' + search + '%'})`,
-        ])
-      )
-    : devicesQuery
+  if (opts.search) {
+    const devices_with_capability = trx
+      .selectFrom('device_capabilities')
+      .where('device_capabilities.diagnostic_test', 'ilike', `%${opts.search}%`)
+      .select('device_capabilities.device_id')
+      .distinct()
+
+    query = query.where((eb) =>
+      eb.or([
+        eb('devices.name', 'ilike', `%${opts.search}%`),
+        eb('devices.manufacturer', 'ilike', `%${opts.search}%`),
+        eb('devices.id', 'in', devices_with_capability),
+      ])
+    )
+  }
+
+  if (opts.ids) {
+    query = query.where('devices.id', 'in', opts.ids)
+  }
 
   return query.limit(20).execute()
 }

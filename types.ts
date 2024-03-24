@@ -1018,12 +1018,9 @@ export type FacilityDevice = {
   created_by: number
 }
 
-export type FacilityConsumable = {
-  facility_id: number
-  created_by: number
-  consumable_id: number
-  procured_by: number
-  quantity: number
+export type FacilityConsumableMedicineSpecefics = {
+  medications_id?: number
+  strength: number
 }
 
 export type RenderedDevice = {
@@ -1055,23 +1052,37 @@ export type RenderedFacilityConsumable = {
   name: string
   consumable_id: number
   quantity_on_hand: number
+  actions: {
+    add: string
+    history: string
+  }
 }
 
 export type RenderedFacilityMedicine = {
+  generic_name: string
   consumable_id: number
-  medication_id: number
   trade_name: string
   applicant_name: string
-  manufacturer_name: string
+  form: string
+  strength_display: string
   quantity_on_hand: number
+  actions: {
+    add: string
+    history: string
+  }
 }
 
 export type RenderedInventoryHistory = {
   created_at: Date
-  created_by: string
-  procured_by?: string
-  quantity: number
-  type: 'procurement' | 'consumption'
+  created_at_formatted: string
+  created_by: {
+    name: string
+    avatar_url: string | null
+    href: string
+  }
+  procured_by: string | null
+  change: number
+  expiry_date: string | null
 }
 
 export type Profession =
@@ -1680,7 +1691,7 @@ export type DrugSearchResultMedication = {
   manufacturers: {
     manufactured_medication_id: number
     strength_numerators: number[]
-    manufacturer_name: string
+    applicant_name: string
     trade_name: string
   }[]
 }
@@ -1690,6 +1701,21 @@ export type DrugSearchResult = {
   name: string
   distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
+}
+
+export type ManufacturedMedicationSearchResult = {
+  id: number
+  name: string
+  generic_name: string
+  trade_name: string
+  applicant_name: string
+  form: string
+  strength_summary: string
+  strength_numerators: number[]
+  strength_numerator_unit: string
+  strength_denominator: number
+  strength_denominator_unit: string
+  strength_denominator_is_units: boolean
 }
 
 export type GuardianRelationName =
