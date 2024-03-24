@@ -1,5 +1,4 @@
 import { Kysely, sql } from 'kysely'
-import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../shared/examinations.ts'
 
 export async function up(
   db: Kysely<{
@@ -22,14 +21,6 @@ export async function up(
         col.primaryKey().references('examinations.name').onDelete('cascade'),
     )
     .execute()
-
-  await db.insertInto('examinations').values(
-    EXAMINATIONS.map((name, index) => ({ name, order: index + 1 })),
-  ).execute()
-
-  await db.insertInto('diagnostic_tests').values(
-    DIAGNOSTIC_TESTS.map((name) => ({ name })),
-  ).execute()
 
   await db.schema
     .createTable('examination_categories')

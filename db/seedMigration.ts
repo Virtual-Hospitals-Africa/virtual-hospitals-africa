@@ -2,7 +2,6 @@
 import { Kysely } from 'kysely'
 import db, { uri } from './db.ts'
 import { runCommand } from '../util/command.ts'
-import * as inParallel from '../util/inParallel.ts'
 
 const SEED_DIRECTORY = './db/seeds'
 
@@ -31,19 +30,21 @@ export function createSeedMigration(
       // }
     },
     async load() {
-      const load_tables = await inParallel.filter(
-        table_names,
-        async (table_name) => {
+      const have_rows = await Promise.all(
+        table_names.map(async (table_name) => {
           const row = await db
             .selectFrom(table_name as any)
             .selectAll()
             .executeTakeFirst()
           return !row
-        },
+        }),
       )
 
+      const needs_loading = table_names.filter((_table_name, index) =>
+        have_rows[index]
+      )
       await runCommand('./db/tsv_load_seeds.sh', {
-        args: [uri].concat(load_tables),
+        args: [uri].concat(needs_loading),
       })
     },
     async dump() {
