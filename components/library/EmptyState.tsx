@@ -15,7 +15,7 @@ type EmptyStateProps = {
   }
 }
 
-export default function EmptyState(
+export function EmptyState(
   { className, header, explanation, icon, button }: EmptyStateProps,
 ) {
   return (

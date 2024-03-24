@@ -2,6 +2,7 @@ import { RenderedWaitingRoom } from '../../types.ts'
 import capitalize from '../../util/capitalize.ts'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
+import WaitingRoomEmptyState from './EmptyState.tsx'
 
 const columns: TableColumn<RenderedWaitingRoom>[] = [
   {
@@ -59,12 +60,16 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
 ]
 
 export default function WaitingRoomTable(
-  { waiting_room }: { waiting_room: RenderedWaitingRoom[] },
+  { waiting_room, add_href }: {
+    waiting_room: RenderedWaitingRoom[]
+    add_href: string
+  },
 ) {
   return (
     <Table
       columns={columns}
       rows={waiting_room}
+      EmptyState={() => <WaitingRoomEmptyState add_href={add_href} />}
     />
   )
 }

@@ -173,7 +173,7 @@ import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
-import * as $waiting_room_NonEmptyWaitingRoomView from './islands/waiting_room/NonEmptyWaitingRoomView.tsx'
+import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
 import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
@@ -410,8 +410,8 @@ const manifest = {
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/vitals/Form.tsx': $vitals_Form,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
-    './islands/waiting_room/NonEmptyWaitingRoomView.tsx':
-      $waiting_room_NonEmptyWaitingRoomView,
+    './islands/waiting_room/AddPatientSearch.tsx':
+      $waiting_room_AddPatientSearch,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest

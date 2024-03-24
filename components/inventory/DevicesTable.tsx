@@ -3,6 +3,8 @@ import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { AddDeviceSearch } from '../../islands/AddDeviceSearch.tsx'
+import { EmptyState } from '../library/EmptyState.tsx'
+import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
 const columns: TableColumn<RenderedFacilityDevice>[] = [
   {
@@ -36,6 +38,7 @@ export default function FacilityDevicesTable(
     isAdmin: boolean
   },
 ) {
+  const add_href = `/app/facilities/${facility_id}/inventory/add_device`
   return (
     <>
       {isAdmin && (
@@ -43,7 +46,7 @@ export default function FacilityDevicesTable(
           <AddDeviceSearch facility_id={facility_id} />
           <Button
             type='button'
-            href={`/app/facilities/${facility_id}/inventory/add_device`}
+            href={add_href}
             className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
           >
             Add Device
@@ -54,6 +57,16 @@ export default function FacilityDevicesTable(
       <Table
         columns={columns}
         rows={devices}
+        EmptyState={() => (
+          <EmptyState
+            header='No medicines in stock'
+            explanation='Add a medicine to get started'
+            icon={<ArchiveBoxIcon />}
+            button={isAdmin
+              ? { text: 'Add Medicine', href: add_href }
+              : undefined}
+          />
+        )}
       />
     </>
   )

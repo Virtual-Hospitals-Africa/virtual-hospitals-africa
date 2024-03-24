@@ -115,7 +115,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         const waiting_room_add_link = $(
           `a[href="/app/facilities/${facility_id}/waiting_room/add"]`,
         )
-        assertEquals(waiting_room_add_link.first().text(), 'Add patient')
+        assertEquals(waiting_room_add_link.first().text(), 'Add Patient')
 
         const patients_link = $('a[href="/app/patients"]')
         assert(patients_link.first().text().includes('My Patients'))

@@ -3,6 +3,8 @@ import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { AddMedicineSearch } from '../../islands/manufactured_medication/Search.tsx'
+import { EmptyState } from '../library/EmptyState.tsx'
+import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
 const columns: TableColumn<RenderedFacilityMedicine>[] = [
   {
@@ -46,6 +48,7 @@ export default function FacilityMedicinesTable(
     isAdmin: boolean
   },
 ) {
+  const add_href = `/app/facilities/${facility_id}/inventory/add_medicine`
   return (
     <>
       {isAdmin && (
@@ -60,10 +63,19 @@ export default function FacilityMedicinesTable(
           </Button>
         </FormRow>
       )}
-
       <Table
         columns={columns}
         rows={medicines}
+        EmptyState={() => (
+          <EmptyState
+            header='No medicines in stock'
+            explanation='Add a medicine to get started'
+            icon={<ArchiveBoxIcon />}
+            button={isAdmin
+              ? { text: 'Add Medicine', href: add_href }
+              : undefined}
+          />
+        )}
       />
     </>
   )
