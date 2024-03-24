@@ -6,6 +6,8 @@ import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { FacilityEmployeeOrInvitee } from '../../types.ts'
+import { EmptyState } from '../library/EmptyState.tsx'
+import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 
 type EmployeesTableProps = {
   isAdmin: boolean
@@ -47,6 +49,8 @@ export default function EmployeesTable({
     },
   ]
 
+  const add_href = `${pathname}/invite`
+
   return (
     <>
       <FormRow className='mb-4'>
@@ -55,7 +59,7 @@ export default function EmployeesTable({
           (
             <Button
               type='button'
-              href={`${pathname}/invite`}
+              href={add_href}
               className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
             >
               Invite
@@ -65,6 +69,14 @@ export default function EmployeesTable({
       <Table
         columns={columns}
         rows={employees}
+        EmptyState={() => (
+          <EmptyState
+            header='No employees'
+            explanation='Invite a health worker to get started'
+            icon={<UserCircleIcon />}
+            button={isAdmin ? { text: 'Invite', href: add_href } : undefined}
+          />
+        )}
       />
     </>
   )

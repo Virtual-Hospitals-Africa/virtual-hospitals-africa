@@ -1,8 +1,8 @@
 import { useSignal } from '@preact/signals'
 import { RenderedPatientSymptom } from '../../types.ts'
 import SymptomInput from './Input.tsx'
-import EmptyState from '../../components/library/EmptyState.tsx'
-import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
+// import { EmptyState } from '../../components/library/EmptyState.tsx'
+// import { Symptoms } from '../../components/library/icons/SeekingTreatment.tsx'
 import { AddRow } from '../AddRemove.tsx'
 
 export type EditingSymptom =

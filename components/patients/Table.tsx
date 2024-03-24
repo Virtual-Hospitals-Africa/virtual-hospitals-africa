@@ -1,6 +1,7 @@
 import { RenderedPatient } from '../../types.ts'
 import { Person } from '../library/Person.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
+import PatientsEmptyState from './EmptyState.tsx'
 
 const columns: TableColumn<RenderedPatient>[] = [
   {
@@ -32,6 +33,7 @@ export default function PatientsTable(
       columns={columns}
       rows={patients}
       className='hidden sm:block'
+      EmptyState={PatientsEmptyState}
     />
   )
 }

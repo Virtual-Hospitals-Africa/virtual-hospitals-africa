@@ -5,7 +5,6 @@ import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { assertPersonLike, Person } from './Person.tsx'
-import { is } from 'https://esm.sh/v135/css-select@5.1.0/lib/index.js'
 
 type Showable =
   | string
@@ -45,6 +44,7 @@ type TableProps<T extends Row> = {
   columns: TableColumn<T>[]
   rows: T[]
   className?: string
+  EmptyState(): JSX.Element
 }
 
 function ActionButton(
@@ -175,7 +175,7 @@ function TableHeader<T extends Row>(
 
 //
 function* columnsWithSomeNonNullValue<T extends Row>(
-  { columns, rows }: TableProps<T>,
+  { columns, rows }: Pick<TableProps<T>, 'columns' | 'rows'>,
 ) {
   for (const column of columns) {
     // Kinda ugly, but we determine the actions to show within TableCellInnerContents
@@ -210,8 +210,12 @@ function* columnsWithSomeNonNullValue<T extends Row>(
 }
 
 export default function Table<T extends Row>(
-  { columns, rows, className }: TableProps<T>,
+  { columns, rows, className, EmptyState }: TableProps<T>,
 ): JSX.Element {
+  if (rows.length === 0) {
+    return <EmptyState />
+  }
+
   const mapped_columns = [...columnsWithSomeNonNullValue({ columns, rows })]
 
   return (

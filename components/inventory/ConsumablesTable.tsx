@@ -3,6 +3,8 @@ import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { AddConsumableSearch } from '../../islands/AddConsumableSearch.tsx'
+import { EmptyState } from '../library/EmptyState.tsx'
+import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
 const columns: TableColumn<RenderedFacilityConsumable>[] = [
   {
@@ -30,6 +32,7 @@ export default function FacilityConsumablesTable(
     isAdmin: boolean
   },
 ) {
+  const add_href = `/app/facilities/${facility_id}/inventory/add_consumable`
   return (
     <>
       {isAdmin && (
@@ -37,7 +40,7 @@ export default function FacilityConsumablesTable(
           <AddConsumableSearch facility_id={facility_id} />
           <Button
             type='button'
-            href={`/app/facilities/${facility_id}/inventory/add_consumable`}
+            href={add_href}
             className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
           >
             Add Consumable
@@ -48,6 +51,16 @@ export default function FacilityConsumablesTable(
       <Table
         columns={columns}
         rows={consumables}
+        EmptyState={() => (
+          <EmptyState
+            header='No consumables in stock'
+            explanation='Add a consumable to get started'
+            icon={<ArchiveBoxIcon />}
+            button={isAdmin
+              ? { text: 'Add Consumable', href: add_href }
+              : undefined}
+          />
+        )}
       />
     </>
   )

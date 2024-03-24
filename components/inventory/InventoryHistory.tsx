@@ -1,4 +1,5 @@
 import { RenderedInventoryHistory } from '../../types.ts'
+import { EmptyState } from '../library/EmptyState.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 
 const columns: TableColumn<RenderedInventoryHistory>[] = [
@@ -48,6 +49,11 @@ export default function InventoryHistoryTable(
     <Table
       columns={columns}
       rows={history}
+      EmptyState={() => {
+        throw new Error(
+          'Should not have access to a history page for which there are no entries',
+        )
+      }}
     />
   )
 }
