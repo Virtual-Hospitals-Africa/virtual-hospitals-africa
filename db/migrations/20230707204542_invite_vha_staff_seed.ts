@@ -1,7 +1,7 @@
 import { Kysely } from 'kysely'
 import { createSeedMigration } from '../seedMigration.ts'
 
-const vhaStaff = [
+const vhaClinicStaff = [
   'jtagarisa@gmail.com',
   'peterpang1103@gmail.com',
   'scheduler.vha@gmail.com',
@@ -14,13 +14,18 @@ const vhaStaff = [
   'mesbah.ar@gmail.com',
 ]
 
+const vhaVirtualHospitalStaff = [
+  'will@morehumaninternet.org',
+  'virtualhospitalsafrica@gmail.com',
+]
+
 export default createSeedMigration(['health_worker_invitees'], inviteVhaStaff)
 
 // Add a test facility with all VHA employees as admins
 // deno-lint-ignore no-explicit-any
 async function inviteVhaStaff(db: Kysely<any>) {
   await db.insertInto('health_worker_invitees').values(
-    vhaStaff.flatMap((email) => [
+    vhaClinicStaff.flatMap((email) => [
       {
         email,
         profession: 'admin',
@@ -31,11 +36,18 @@ async function inviteVhaStaff(db: Kysely<any>) {
         profession: 'doctor',
         facility_id: 1,
       },
-    ]).concat([{
-      email: 'will@morehumaninternet.org',
-      profession: 'doctor',
-      facility_id: 2,
-    }]),
+    ]).concat(vhaVirtualHospitalStaff.flatMap((email) => [
+      {
+        email,
+        profession: 'admin',
+        facility_id: 2,
+      },
+      {
+        email,
+        profession: 'doctor',
+        facility_id: 2,
+      },
+    ])),
   )
     .execute()
 }
