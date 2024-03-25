@@ -100,13 +100,13 @@ export default function Search<
 
   const [query, setQuery] = useState(value?.name ?? '')
 
-  const all_options = addable
-    ? [...options, {
-      id: 'add' as const,
-      name: query,
-      display_name: `Add "${query}"`,
-    } as unknown as T]
-    : options
+  const add_option = {
+    id: 'add' as const,
+    name: query,
+    display_name: `Add "${query}"`,
+  } as unknown as T
+
+  const all_options = addable ? [...options, add_option] : options
 
   // If the provided name is something like medications.0, we form the id field to be medications.0.id
   // while if the provided name is something like patient, we form the id field to be patient_id
@@ -148,6 +148,11 @@ export default function Search<
             required={required}
             aria-disabled={disabled}
             readonly={readonly}
+            onBlur={!addable ? undefined : () => {
+              if (selected) return
+              onSelect?.(add_option)
+              setSelected(add_option)
+            }}
           />
           <Combobox.Button className='absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none'>
             <ChevronUpDownIcon
