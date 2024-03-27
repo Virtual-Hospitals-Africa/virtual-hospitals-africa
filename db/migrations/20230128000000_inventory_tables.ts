@@ -72,6 +72,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('created_by', 'integer', (column) =>
         column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('expiry_date', 'date')
+      .addColumn('batch_number', 'varchar(255)')
       .addCheckConstraint(
         'positive_procurement_quantity',
         sql`

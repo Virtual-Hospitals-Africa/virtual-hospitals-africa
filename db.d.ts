@@ -849,6 +849,7 @@ export interface Procurement {
   created_at: Generated<Timestamp>
   created_by: number
   expiry_date: Timestamp | null
+  batch_number: string | null
   facility_id: number
   id: Generated<number>
   procured_by: number

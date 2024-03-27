@@ -1083,6 +1083,7 @@ export type RenderedInventoryHistory = {
   procured_by: string | null
   change: number
   expiry_date: string | null
+  batch_number: string | null
 }
 
 export type Profession =

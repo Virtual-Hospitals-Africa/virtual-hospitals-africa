@@ -178,6 +178,7 @@ export function getConsumablesHistory(
         'created_at_formatted',
       ),
       sql<null | string>`NULL`.as('expiry_date'),
+      sql<null | string>`NULL`.as('batch_number'),
     ])
     .where('consumption.facility_id', '=', opts.facility_id)
     .where('procurement.consumable_id', '=', opts.consumable_id)
@@ -209,6 +210,7 @@ export function getConsumablesHistory(
         'created_at_formatted',
       ),
       longFormattedDate('procurement.expiry_date').as('expiry_date'),
+      'procurement.batch_number',
     ])
     .where('procurement.facility_id', '=', opts.facility_id)
     .where('procurement.consumable_id', '=', opts.consumable_id)
@@ -310,6 +312,7 @@ export async function addFacilityMedicine(
     quantity: number
     strength: number
     expiry_date?: string
+    batch_number?: string
   },
 ) {
   const procured_by = medicine.procured_by_id
@@ -328,6 +331,7 @@ export async function addFacilityMedicine(
       'quantity',
       'procured_by',
       'expiry_date',
+      'batch_number',
     ])
     .expression((eb) =>
       // Find the matching consumable for this medicine
@@ -349,6 +353,7 @@ export async function addFacilityMedicine(
           literalNumber(medicine.quantity).as('quantity'),
           literalNumber(procured_by.id).as('procured_by'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),
+          literalOptionalDate(medicine.batch_number).as('batch_number'),
         ])
     )
     .returning('consumable_id')
@@ -380,6 +385,7 @@ export async function procureConsumable(
     procured_by_name?: string
     quantity: number
     expiry_date?: string | null
+    batch_number?: string
   },
 ) {
   const updating_quantity_on_hand = await trx
@@ -419,6 +425,7 @@ export async function procureConsumable(
       quantity: consumable.quantity,
       procured_by: procured_by.id,
       expiry_date: consumable.expiry_date,
+      batch_number: consumable.batch_number,
     })
     .returning('id')
     .executeTakeFirstOrThrow()

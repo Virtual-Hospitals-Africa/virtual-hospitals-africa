@@ -29,6 +29,7 @@ export function assertIsUpsertMedicine(
   procured_by_id?: number
   quantity: number
   expiry_date?: string
+  batch_number?: string
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(isString(obj.manufactured_medication_name))
@@ -61,6 +62,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         quantity: to_add.quantity,
         strength: to_add.manufactured_medication.strength,
         expiry_date: to_add.expiry_date,
+        batch_number: to_add.batch_number,
       },
     )
 

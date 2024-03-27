@@ -3,7 +3,7 @@ import SectionHeader from '../../components/library/typography/SectionHeader.tsx
 import Form from '../form/Form.tsx'
 import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
-import { DateInput, NumberInput } from '../form/Inputs.tsx'
+import { DateInput, NumberInput, TextInput } from '../form/Inputs.tsx'
 import ManufacturedMedicationInput from '../manufactured_medication/Input.tsx'
 import { ManufacturedMedicationSearchResult } from '../../types.ts'
 import AsyncSearch from '../AsyncSearch.tsx'
@@ -43,6 +43,7 @@ export default function InventoryMedicineForm(
                 required
               />
               <DateInput name='expiry_date' min={today} />
+              <TextInput name='batch_number'/>
             </FormRow>
             <FormRow>
               <Button type='submit'>
