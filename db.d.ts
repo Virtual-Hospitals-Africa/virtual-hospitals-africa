@@ -852,7 +852,7 @@ export interface Procurement {
   batch_number: string | null
   facility_id: number
   id: Generated<number>
-  procured_by: number
+  procured_from: number
   quantity: number
   updated_at: Generated<Timestamp>
 }

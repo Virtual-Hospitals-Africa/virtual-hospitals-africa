@@ -1080,7 +1080,7 @@ export type RenderedInventoryHistory = {
     avatar_url: string | null
     href: string
   }
-  procured_by: string | null
+  procured_from: string | null
   change: number
   expiry_date: string | null
   batch_number: string | null

@@ -31,7 +31,7 @@ export default function InventoryMedicineForm(
             <FormRow>
               <AsyncSearch
                 href='/app/procurers'
-                name='procured_by'
+                name='procured_from'
                 label='Procured by'
                 required
                 addable

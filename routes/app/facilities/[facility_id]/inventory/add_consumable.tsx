@@ -25,12 +25,12 @@ import isString from '../../../../../util/isString.ts'
 export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
   quantity: number
   consumable_id: number
-  procured_by_name: string
-  procured_by_id?: number
+  procured_from_name: string
+  procured_from_id?: number
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(isNumber(obj.quantity))
-  assertOr400(isNumber(obj.procured_by_id) || isString(obj.procured_by_name))
+  assertOr400(isNumber(obj.procured_from_id) || isString(obj.procured_from_name))
   assertOr400(isNumber(obj.consumable_id))
 }
 
@@ -55,8 +55,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       facility_id,
       {
         created_by: admin.employment_id,
-        procured_by_id: to_add.procured_by_id,
-        procured_by_name: to_add.procured_by_name,
+        procured_from_id: to_add.procured_from_id,
+        procured_from_name: to_add.procured_from_name,
         consumable_id: to_add.consumable_id,
         quantity: to_add.quantity,
       },

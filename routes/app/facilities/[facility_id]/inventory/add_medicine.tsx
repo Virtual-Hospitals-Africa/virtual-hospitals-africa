@@ -25,8 +25,8 @@ export function assertIsUpsertMedicine(
   manufactured_medication: {
     strength: number
   }
-  procured_by_name: string
-  procured_by_id?: number
+  procured_from_name: string
+  procured_from_id?: number
   quantity: number
   expiry_date?: string
   batch_number?: string
@@ -56,8 +56,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       facility_id,
       {
         created_by: admin.employment_id,
-        procured_by_id: to_add.procured_by_id,
-        procured_by_name: to_add.procured_by_name,
+        procured_from_id: to_add.procured_from_id,
+        procured_from_name: to_add.procured_from_name,
         manufactured_medication_id: to_add.manufactured_medication_id,
         quantity: to_add.quantity,
         strength: to_add.manufactured_medication.strength,

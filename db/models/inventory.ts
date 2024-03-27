@@ -171,7 +171,7 @@ export function getConsumablesHistory(
         }`,
         avatar_url: eb.ref('health_workers.avatar_url'),
       }).as('created_by'),
-      sql<null | string>`NULL`.as('procured_by'),
+      sql<null | string>`NULL`.as('procured_from'),
       sql<number>`0 - consumption.quantity`.as('change'),
       'consumption.created_at',
       longFormattedDateTime('consumption.created_at').as(
@@ -191,7 +191,7 @@ export function getConsumablesHistory(
       'health_workers.id',
       'employment.health_worker_id',
     )
-    .innerJoin('procurers', 'procurement.procured_by', 'procurers.id')
+    .innerJoin('procurers', 'procurement.procured_from', 'procurers.id')
     .select((eb) => [
       'procurement.id as procurement_id',
       jsonBuildObject({
@@ -203,7 +203,7 @@ export function getConsumablesHistory(
         }`,
         avatar_url: eb.ref('health_workers.avatar_url'),
       }).as('created_by'),
-      'procurers.name as procured_by',
+      'procurers.name as procured_from',
       eb.ref('procurement.quantity').as('change'),
       'procurement.created_at',
       longFormattedDateTime('procurement.created_at').as(
@@ -307,19 +307,19 @@ export async function addFacilityMedicine(
   medicine: {
     created_by: number
     manufactured_medication_id: number
-    procured_by_id?: number
-    procured_by_name: string
+    procured_from_id?: number
+    procured_from_name: string
     quantity: number
     strength: number
     expiry_date?: string
     batch_number?: string
   },
 ) {
-  const procured_by = medicine.procured_by_id
-    ? { id: medicine.procured_by_id }
+  const procured_from = medicine.procured_from_id
+    ? { id: medicine.procured_from_id }
     : await trx
       .insertInto('procurers')
-      .values({ name: medicine.procured_by_name })
+      .values({ name: medicine.procured_from_name })
       .returning('id')
       .executeTakeFirstOrThrow()
 
@@ -329,7 +329,7 @@ export async function addFacilityMedicine(
       'created_by',
       'facility_id',
       'quantity',
-      'procured_by',
+      'procured_from',
       'expiry_date',
       'batch_number',
     ])
@@ -351,7 +351,7 @@ export async function addFacilityMedicine(
           literalNumber(medicine.created_by).as('created_by'),
           literalNumber(facility_id).as('facility_id'),
           literalNumber(medicine.quantity).as('quantity'),
-          literalNumber(procured_by.id).as('procured_by'),
+          literalNumber(procured_from.id).as('procured_from'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),
           literalOptionalDate(medicine.batch_number).as('batch_number'),
         ])
@@ -381,8 +381,8 @@ export async function procureConsumable(
   consumable: {
     created_by: number
     consumable_id: number
-    procured_by_id?: number
-    procured_by_name?: string
+    procured_from_id?: number
+    procured_from_name?: string
     quantity: number
     expiry_date?: string | null
     batch_number?: string
@@ -403,14 +403,14 @@ export async function procureConsumable(
     )
     .executeTakeFirstOrThrow()
 
-  const procured_by = consumable.procured_by_id
-    ? { id: consumable.procured_by_id }
+  const procured_from = consumable.procured_from_id
+    ? { id: consumable.procured_from_id }
     : (
-      assert(consumable.procured_by_name, 'procured_by_name is required'),
+      assert(consumable.procured_from_name, 'procured_from_name is required'),
         await trx
           .insertInto('procurers')
           .values(
-            { name: consumable.procured_by_name },
+            { name: consumable.procured_from_name },
           )
           .returning('id')
           .executeTakeFirstOrThrow()
@@ -423,7 +423,7 @@ export async function procureConsumable(
       consumable_id: consumable.consumable_id,
       created_by: consumable.created_by,
       quantity: consumable.quantity,
-      procured_by: procured_by.id,
+      procured_from: procured_from.id,
       expiry_date: consumable.expiry_date,
       batch_number: consumable.batch_number,
     })

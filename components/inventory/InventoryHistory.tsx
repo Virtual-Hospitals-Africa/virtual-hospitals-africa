@@ -28,7 +28,7 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
   },
   {
     label: 'Procurer',
-    data: 'procured_by',
+    data: 'procured_from',
   },
   {
     label: 'Expires',
