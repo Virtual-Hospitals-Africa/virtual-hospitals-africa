@@ -1081,6 +1081,7 @@ export type RenderedInventoryHistory = {
     href: string
   }
   procured_from: string | null
+  procured_from_id: number | null
   change: number
   expiry_date: string | null
   batch_number: string | null

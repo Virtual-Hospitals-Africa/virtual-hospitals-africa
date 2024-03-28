@@ -9,10 +9,16 @@ import { ManufacturedMedicationSearchResult } from '../../types.ts'
 import AsyncSearch from '../AsyncSearch.tsx'
 
 export default function InventoryMedicineForm(
-  { today, manufactured_medication, strength }: {
+  { today, value }: {
     today: string
-    manufactured_medication: null | ManufacturedMedicationSearchResult
-    strength: null | number
+    value: {
+      strength: null | number
+      quantity: null | number
+      procurer_id: null | number
+      procurer_name: null | string
+      batch_number: null | string
+      manufactured_medication: null | ManufacturedMedicationSearchResult
+    }
   },
 ): JSX.Element {
   return (
@@ -25,25 +31,30 @@ export default function InventoryMedicineForm(
           <div className='flex flex-col w-full gap-2'>
             <ManufacturedMedicationInput
               name='manufactured_medication'
-              manufactured_medication={manufactured_medication}
-              strength={strength}
+              manufactured_medication={value.manufactured_medication}
+              strength={value.strength}
             />
             <FormRow>
               <AsyncSearch
                 href='/app/procurers'
                 name='procured_from'
-                label='Procured by'
+                label='Procured From'
+                value={{
+                  id: value.procurer_id,
+                  name: value.procurer_name ?? '',
+                }}
                 required
                 addable
               />
               <NumberInput
                 name='quantity'
                 label='Quantity'
+                value={value.quantity}
                 min={1}
                 required
               />
               <DateInput name='expiry_date' min={today} />
-              <TextInput name='batch_number'/>
+              <TextInput name='batch_number' value={value.batch_number ?? ''} />
             </FormRow>
             <FormRow>
               <Button type='submit'>

@@ -3,6 +3,7 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  RenderedInventoryHistory,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../islands/inventory/MedicineForm.tsx'
@@ -81,8 +82,10 @@ export default async function MedicineAdd(
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
   const strength = parseInt(url.searchParams.get('strength')!) || null
+  const consumable_id = parseInt(url.searchParams.get('consumable_id')!) || null
 
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
+  let latest_procuremnet: RenderedInventoryHistory | null = null
   const manufactured_medication_id = url.searchParams.get(
     'manufactured_medication_id',
   )
@@ -95,6 +98,15 @@ export default async function MedicineAdd(
     )
     assertOr404(manufactured_medications.length)
     manufactured_medication = manufactured_medications[0]
+
+    latest_procuremnet = (await inventory.getConsumablesHistory(
+      state.trx,
+      {
+        facility_id: 1,
+        consumable_id: consumable_id!,
+        latest_procurment_only: true,
+      },
+    )).history[0]
   }
 
   return (
@@ -107,8 +119,14 @@ export default async function MedicineAdd(
     >
       <InventoryMedicineForm
         today={todayISOInHarare()}
-        manufactured_medication={manufactured_medication}
-        strength={strength}
+        value={{
+          strength: strength,
+          procurer_name: latest_procuremnet?.procured_from ?? null,
+          procurer_id: latest_procuremnet?.procured_from_id ?? null,
+          quantity: latest_procuremnet?.change ?? null,
+          manufactured_medication: manufactured_medication,
+          batch_number: latest_procuremnet?.batch_number ?? '',
+        }}
       />
     </Layout>
   )

@@ -131,7 +131,9 @@ export function getMedicines(
       ).as('strength_display'),
       jsonBuildObject({
         add: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, '&strength=', manufactured_medication_strengths.strength_numerator::text)
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, 
+          '&strength=', manufactured_medication_strengths.strength_numerator::text,
+          '&consumable_id=', consumables.id::text)
         `,
         history: sql<string>`
           concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
@@ -146,6 +148,7 @@ export function getConsumablesHistory(
   opts: {
     facility_id: number
     consumable_id: number
+    latest_procurment_only?: boolean
   },
 ): Promise<{
   name: string
@@ -172,6 +175,7 @@ export function getConsumablesHistory(
         avatar_url: eb.ref('health_workers.avatar_url'),
       }).as('created_by'),
       sql<null | string>`NULL`.as('procured_from'),
+      sql<null | number>`NULL`.as('procured_from_id'),
       sql<number>`0 - consumption.quantity`.as('change'),
       'consumption.created_at',
       longFormattedDateTime('consumption.created_at').as(
@@ -204,6 +208,7 @@ export function getConsumablesHistory(
         avatar_url: eb.ref('health_workers.avatar_url'),
       }).as('created_by'),
       'procurers.name as procured_from',
+      'procurers.id as procured_from_id',
       eb.ref('procurement.quantity').as('change'),
       'procurement.created_at',
       longFormattedDateTime('procurement.created_at').as(
@@ -215,8 +220,13 @@ export function getConsumablesHistory(
     .where('procurement.facility_id', '=', opts.facility_id)
     .where('procurement.consumable_id', '=', opts.consumable_id)
 
-  const history = consumption.unionAll(procurement)
+  let history = consumption.unionAll(procurement)
     .orderBy('created_at', 'desc')
+
+    if(opts.latest_procurment_only){
+      //returns only the latest procurment id
+      history = history.where('procured_from','=', null).limit(1)
+    }
 
   return trx.selectFrom('consumables')
     .select([
@@ -353,7 +363,7 @@ export async function addFacilityMedicine(
           literalNumber(medicine.quantity).as('quantity'),
           literalNumber(procured_from.id).as('procured_from'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),
-          literalOptionalDate(medicine.batch_number).as('batch_number'),
+          sql.lit<string | undefined>(medicine.batch_number).as('batch_number'),
         ])
     )
     .returning('consumable_id')
