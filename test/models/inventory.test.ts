@@ -103,6 +103,8 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
               procured_from_id: procurer.id,
               expiry_date: null,
               batch_number: '',
+              container_size: 0,
+              number_of_containers: 0,
             },
           )
 
@@ -113,6 +115,8 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             procured_from_id: procurer.id,
             expiry_date: null,
             batch_number: '',
+            container_size: 0,
+            number_of_containers: 0,
           })
 
           await inventory.consumeConsumable(trx, facility_id, {
@@ -173,6 +177,8 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
               consumable_id: consumable.id,
               created_by: admin.employee_id!,
               quantity: 10,
+              container_size: 0,
+              number_of_containers: 0,
               procured_from_id: procurer.id,
               expiry_date: null,
               batch_number: '',
@@ -186,6 +192,8 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             procured_from_id: procurer.id,
             expiry_date: null,
             batch_number: '',
+            container_size: 0,
+            number_of_containers: 0,
           })
 
           await inventory.consumeConsumable(trx, facility_id, {

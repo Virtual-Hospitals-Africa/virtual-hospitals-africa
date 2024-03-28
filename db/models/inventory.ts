@@ -227,10 +227,10 @@ export function getConsumablesHistory(
   let history = consumption.unionAll(procurement)
     .orderBy('created_at', 'desc')
 
-    if(opts.latest_procurment_only){
-      //returns only the latest procurment id
-      history = history.where('procured_from','=', null).limit(1)
-    }
+  if (opts.latest_procurment_only) {
+    //returns only the latest procurment id
+    history = history.where('procured_from', '=', null).limit(1)
+  }
 
   return trx.selectFrom('consumables')
     .select([
@@ -369,7 +369,9 @@ export async function addFacilityMedicine(
           literalNumber(medicine.created_by).as('created_by'),
           literalNumber(facility_id).as('facility_id'),
           literalNumber(medicine.quantity).as('quantity'),
-          literalNumber(medicine.number_of_containers).as('number_of_containers'),
+          literalNumber(medicine.number_of_containers).as(
+            'number_of_containers',
+          ),
           literalNumber(medicine.container_size).as('container_size'),
           literalNumber(procured_from.id).as('procured_from'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),

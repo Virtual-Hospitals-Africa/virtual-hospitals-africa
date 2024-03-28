@@ -47,7 +47,8 @@ export default function MedicationInput(props: {
           disabled={!manufactured_medication.value}
           onChange={(event) => {
             if (event.currentTarget.value) {
-              props.onStrengthSelect && props.onStrengthSelect(Number(event.currentTarget.value))
+              props.onStrengthSelect &&
+                props.onStrengthSelect(Number(event.currentTarget.value))
               strength.value = Number(event.currentTarget.value)
             }
           }}

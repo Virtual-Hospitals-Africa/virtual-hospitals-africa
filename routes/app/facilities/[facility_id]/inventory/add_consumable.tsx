@@ -30,7 +30,9 @@ export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(isNumber(obj.quantity))
-  assertOr400(isNumber(obj.procured_from_id) || isString(obj.procured_from_name))
+  assertOr400(
+    isNumber(obj.procured_from_id) || isString(obj.procured_from_name),
+  )
   assertOr400(isNumber(obj.consumable_id))
 }
 
