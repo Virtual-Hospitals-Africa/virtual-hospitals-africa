@@ -1,0 +1,50 @@
+import { JSX } from 'preact'
+import SectionHeader from '../library/typography/SectionHeader.tsx'
+import Form from '../../islands/form/Form.tsx'
+import FormRow from '../../islands/form/Row.tsx'
+import { Button } from '../library/Button.tsx'
+import ManufacturedMedicationInput from '../../islands/manufactured_medication/Input.tsx'
+import { ManufacturedMedicationSearchResult } from '../../types.ts'
+import { Maybe } from '../../types.ts'
+
+export default function InventoryMedicineForm(
+  { today, manufactured_medication, last_procurement }: {
+    today: string
+    manufactured_medication: null | ManufacturedMedicationSearchResult
+    last_procurement?: Maybe<{
+      strength: number
+      quantity: number
+      container_size: number
+      number_of_containers: number
+      procurer_id: number
+      procurer_name: string
+      batch_number: null | string
+    }>
+  },
+): JSX.Element {
+  return (
+    <div>
+      <SectionHeader className='my-5 text-[20px]'>
+        Add Medicine
+      </SectionHeader>
+      <div>
+        <Form method='post'>
+          <div className='flex flex-col w-full gap-2'>
+            <ManufacturedMedicationInput
+              name='manufactured_medication'
+              manufactured_medication={manufactured_medication}
+              last_procurement={last_procurement}
+              today={today}
+            />
+
+            <FormRow>
+              <Button type='submit'>
+                Submit
+              </Button>
+            </FormRow>
+          </div>
+        </Form>
+      </div>
+    </div>
+  )
+}

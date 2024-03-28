@@ -148,7 +148,6 @@ import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
 import * as $inventory_ConsumeForm from './islands/inventory/ConsumeForm.tsx'
 import * as $inventory_Device from './islands/inventory/Device.tsx'
 import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
-import * as $inventory_MedicineForm from './islands/inventory/MedicineForm.tsx'
 import * as $inventory_ProcurerForm from './islands/inventory/ProcurerForm.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
@@ -379,7 +378,6 @@ const manifest = {
     './islands/inventory/ConsumeForm.tsx': $inventory_ConsumeForm,
     './islands/inventory/Device.tsx': $inventory_Device,
     './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
-    './islands/inventory/MedicineForm.tsx': $inventory_MedicineForm,
     './islands/inventory/ProcurerForm.tsx': $inventory_ProcurerForm,
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,

@@ -71,10 +71,12 @@ type DosageDisplayParams = {
   strength_numerator_unit: string
 }
 
-const denominatorPlural = memoize(
+export const denominatorPlural = memoize(
   (
-    { strength_denominator_unit, strength_denominator_is_units }:
-      DosageDisplayParams,
+    { strength_denominator_unit, strength_denominator_is_units }: {
+      strength_denominator_unit: string
+      strength_denominator_is_units: boolean
+    },
   ) => {
     assert(strength_denominator_unit)
     if (strength_denominator_is_units) return strength_denominator_unit
@@ -111,4 +113,19 @@ export function dosageDisplay(params: DosageDisplayParams) {
   display += ` (${numeric_strength * dosage}${strength_numerator_unit})`
 
   return display
+}
+
+export function containerLabels(form: string) {
+  switch (form) {
+    case 'TABLET':
+    case 'TABLET, COATED':
+      return { size: 'Tablets per box', number_of: 'Number of boxes' }
+    case 'CAPSULE':
+      return { size: 'Capsules per box', number_of: 'Number of boxes' }
+    case 'SOLUTION':
+    case 'INJECTABLE':
+      return { size: 'Bottle size', number_of: 'Number of bottles' }
+    default:
+      return { size: 'Container size', number_of: 'Number of containers' }
+  }
 }
