@@ -1,7 +1,6 @@
 import { CommonCSVReaderOptions, readCSV } from 'csv'
+import { assertAllNotNull } from './assertAll.ts';
 
-// TODO: Can't get last column properly, maybe because new line character
-// So need a extra column in csv file
 export default async function* parseCsv(
   filePath: string,
   opts: Partial<CommonCSVReaderOptions> = {},
@@ -13,23 +12,26 @@ export default async function* parseCsv(
 
   for await (const row of readCSV(file, opts)) {
     // Collecting data from the async iterable row into an array
-    const rowDataArray: string[] = []
+    const rowDataArray: Array<string | null> = []
     for await (const cell of row) {
       rowDataArray.push(cell)
     }
 
     if (isFirstRow) {
       // Assuming the first row of the CSV contains the header
+      assertAllNotNull(rowDataArray)
       header = rowDataArray
       isFirstRow = false
       continue
     }
 
-    const rowData: Record<string, string> = {}
-
+    
+    const rowData: Record<string, string | null> = {}
     header.forEach((column, i) => {
-      rowData[column] = rowDataArray[i]
+      const value = rowDataArray[i]
+      rowData[column] = value !== '' ? value : null
     })
+    console.log('rowData', rowData)
 
     yield rowData
   }

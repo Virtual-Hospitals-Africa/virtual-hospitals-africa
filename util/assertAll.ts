@@ -1,4 +1,6 @@
-export function assertAllNotNull<
+import { Maybe } from '../types.ts'
+
+export function assertAllHaveNonNullKey<
   K extends string,
   T extends {
     [key in K]: unknown
@@ -10,6 +12,18 @@ export function assertAllNotNull<
   for (const item of array) {
     if (item[key] == null) {
       throw new Error(`Expected all items to have property ${key}`)
+    }
+  }
+}
+
+export function assertAllNotNull<
+  T
+>(
+  array: Array<Maybe<T>>,
+): asserts array is T[] {
+  for (const item of array) {
+    if (item == null) {
+      throw new Error(`Expected all items be not null`)
     }
   }
 }
