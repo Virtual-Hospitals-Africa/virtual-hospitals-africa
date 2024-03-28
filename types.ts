@@ -1083,6 +1083,8 @@ export type RenderedInventoryHistory = {
   procured_from: string | null
   procured_from_id: number | null
   change: number
+  container_size: number | null
+  number_of_containers: number | null
   expiry_date: string | null
   batch_number: string | null
 }

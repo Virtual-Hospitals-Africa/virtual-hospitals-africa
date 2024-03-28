@@ -63,6 +63,10 @@ export async function up(db: Kysely<unknown>) {
         col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('quantity', 'integer', (col) =>
         col.notNull())
+      .addColumn('container_size', 'integer', (col) =>
+        col.notNull().defaultTo(0))
+      .addColumn('number_of_containers', 'integer', (col) =>
+        col.notNull().defaultTo(0))
       .addColumn('consumed_amount', 'integer', (col) =>
         col.notNull().defaultTo(0))
       .addColumn('consumable_id', 'integer', (col) =>

@@ -177,6 +177,8 @@ export function getConsumablesHistory(
       sql<null | string>`NULL`.as('procured_from'),
       sql<null | number>`NULL`.as('procured_from_id'),
       sql<number>`0 - consumption.quantity`.as('change'),
+      sql<null | number>`NULL`.as('container_size'),
+      sql<null | number>`NULL`.as('number_of_containers'),
       'consumption.created_at',
       longFormattedDateTime('consumption.created_at').as(
         'created_at_formatted',
@@ -210,6 +212,8 @@ export function getConsumablesHistory(
       'procurers.name as procured_from',
       'procurers.id as procured_from_id',
       eb.ref('procurement.quantity').as('change'),
+      'procurement.container_size',
+      'procurement.number_of_containers',
       'procurement.created_at',
       longFormattedDateTime('procurement.created_at').as(
         'created_at_formatted',
@@ -320,6 +324,8 @@ export async function addFacilityMedicine(
     procured_from_id?: number
     procured_from_name: string
     quantity: number
+    number_of_containers: number
+    container_size: number
     strength: number
     expiry_date?: string
     batch_number?: string
@@ -339,6 +345,8 @@ export async function addFacilityMedicine(
       'created_by',
       'facility_id',
       'quantity',
+      'number_of_containers',
+      'container_size',
       'procured_from',
       'expiry_date',
       'batch_number',
@@ -361,6 +369,8 @@ export async function addFacilityMedicine(
           literalNumber(medicine.created_by).as('created_by'),
           literalNumber(facility_id).as('facility_id'),
           literalNumber(medicine.quantity).as('quantity'),
+          literalNumber(medicine.number_of_containers).as('number_of_containers'),
+          literalNumber(medicine.container_size).as('container_size'),
           literalNumber(procured_from.id).as('procured_from'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),
           sql.lit<string | undefined>(medicine.batch_number).as('batch_number'),
@@ -394,6 +404,8 @@ export async function procureConsumable(
     procured_from_id?: number
     procured_from_name?: string
     quantity: number
+    container_size: number
+    number_of_containers: number
     expiry_date?: string | null
     batch_number?: string
   },
@@ -436,6 +448,8 @@ export async function procureConsumable(
       procured_from: procured_from.id,
       expiry_date: consumable.expiry_date,
       batch_number: consumable.batch_number,
+      container_size: consumable.container_size,
+      number_of_containers: consumable.number_of_containers,
     })
     .returning('id')
     .executeTakeFirstOrThrow()

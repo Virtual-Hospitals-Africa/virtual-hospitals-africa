@@ -29,6 +29,8 @@ export function assertIsUpsertMedicine(
   procured_from_name: string
   procured_from_id?: number
   quantity: number
+  number_of_containers: number
+  container_size: number
   expiry_date?: string
   batch_number?: string
 } {
@@ -64,6 +66,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         strength: to_add.manufactured_medication.strength,
         expiry_date: to_add.expiry_date,
         batch_number: to_add.batch_number,
+        container_size: to_add.container_size,
+        number_of_containers: to_add.number_of_containers,
       },
     )
 
@@ -126,6 +130,8 @@ export default async function MedicineAdd(
           quantity: latest_procuremnet?.change ?? null,
           manufactured_medication: manufactured_medication,
           batch_number: latest_procuremnet?.batch_number ?? '',
+          number_of_containers: latest_procuremnet?.number_of_containers ?? 0,
+          container_size: latest_procuremnet?.container_size ?? 0,
         }}
       />
     </Layout>

@@ -854,6 +854,8 @@ export interface Procurement {
   id: Generated<number>
   procured_from: number
   quantity: number
+  number_of_containers: number
+  container_size: number
   updated_at: Generated<Timestamp>
 }
 

@@ -8,6 +8,8 @@ export default function MedicationInput(props: {
   name: string
   manufactured_medication: null | ManufacturedMedicationSearchResult
   strength: null | number
+  onSelect?: (value: null | ManufacturedMedicationSearchResult) => void
+  onStrengthSelect?: (value: null | number) => void
 }) {
   const manufactured_medication = useSignal(props.manufactured_medication)
   const strength = useSignal(props.strength)
@@ -18,6 +20,7 @@ export default function MedicationInput(props: {
       manufactured_medication.value.strength_numerators.length === 1
     ) {
       strength.value = manufactured_medication.value.strength_numerators[0]
+      props.onSelect && props.onSelect(manufactured_medication.value)
     }
   })
 
@@ -32,6 +35,7 @@ export default function MedicationInput(props: {
           onSelect={(value) => {
             manufactured_medication.value = value ?? null
             strength.value = null
+            props.onSelect && props.onSelect(manufactured_medication.value)
           }}
         />
       </FormRow>
@@ -43,6 +47,7 @@ export default function MedicationInput(props: {
           disabled={!manufactured_medication.value}
           onChange={(event) => {
             if (event.currentTarget.value) {
+              props.onStrengthSelect && props.onStrengthSelect(Number(event.currentTarget.value))
               strength.value = Number(event.currentTarget.value)
             }
           }}
