@@ -19,7 +19,7 @@ export function DurationInput(
         value={value.duration}
         onInput={(e) => {
           onChange({
-            duration: Number(e.target.value),
+            duration: Number(e.currentTarget.value),
             duration_unit: value.duration_unit,
           })
         }}
@@ -49,12 +49,14 @@ export function DurationInput(
         ]}
         onChange={(e) => {
           assert(
-            e.target.value === 'days' || e.target.value === 'weeks' ||
-              e.target.value === 'months' || e.target.value === 'years',
+            e.currentTarget.value === 'days' ||
+              e.currentTarget.value === 'weeks' ||
+              e.currentTarget.value === 'months' ||
+              e.currentTarget.value === 'years',
           )
           onChange({
             duration: value.duration,
-            duration_unit: e.target.value,
+            duration_unit: e.currentTarget.value,
           })
         }}
       />

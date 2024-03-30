@@ -138,11 +138,11 @@ export default function Search<
             onChange={(
               event,
             ) => {
-              assert(event.target instanceof HTMLInputElement)
+              const query = event.currentTarget.value
               setSelected(null)
               onSelect?.(undefined)
-              setQuery(event.target.value)
-              onQuery(event.target.value)
+              setQuery(query)
+              onQuery(query)
             }}
             value={selected?.name}
             required={required}

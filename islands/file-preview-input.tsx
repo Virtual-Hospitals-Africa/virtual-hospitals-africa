@@ -86,7 +86,7 @@ export default function FilePreviewInput(
         value={initialImageRemoved ? null : value}
         {...props}
         onInput={(e) => {
-          const file = (e.target as HTMLInputElement).files?.[0] ?? null
+          const file = e.currentTarget.files?.[0]
           if (file == null) return setImage(null)
           if (file.size > twentyFourMb) {
             alert('File size must be less than 24MB')

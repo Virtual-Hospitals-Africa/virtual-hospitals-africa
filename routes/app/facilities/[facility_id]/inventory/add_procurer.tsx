@@ -48,7 +48,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 }
 
 // deno-lint-ignore require-await
-export default async function Procurer(
+export default async function ProcurerPage(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {

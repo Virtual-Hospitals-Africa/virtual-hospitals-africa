@@ -5,7 +5,7 @@ import { TextInput } from '../form/Inputs.tsx'
 import RelationshipSelect from './RelationshipSelect.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 
-export default function NextOfKin({
+export default function NextOfKinInput({
   name,
   value,
 }: {

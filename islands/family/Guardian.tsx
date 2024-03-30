@@ -59,7 +59,7 @@ export default function Guardian({
             checked={!!(value?.next_of_kin)}
             onInput={(event) => {
               //Only one kin allowed
-              const target = event.target as HTMLInputElement
+              const target = event.currentTarget
               if (target.checked) {
                 const checkboxes = document.querySelectorAll(
                   'input[type="checkbox"]',

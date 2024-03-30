@@ -17,9 +17,7 @@ export default function FamilyTypeSelect(
       required={required}
       blank_option
       value={value}
-      onChange={(e) => {
-        onSelect && onSelect(e.target.value)
-      }}
+      onChange={(e) => onSelect?.(e.currentTarget.value)}
       options={FAMILY_TYPES.map((type) => (
         { value: type }
       ))}

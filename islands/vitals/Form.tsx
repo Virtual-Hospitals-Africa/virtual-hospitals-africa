@@ -117,10 +117,8 @@ export function VitalsForm({ vitals }: {
         name='no_vitals_required'
         label='No vitals required at this time'
         checked={no_vitals_required.value}
-        onInput={(event) => {
-          const target = event.target as HTMLInputElement
-          no_vitals_required.value = target.checked
-        }}
+        onInput={(event) =>
+          no_vitals_required.value = event.currentTarget.checked}
       />
     </div>
   )
