@@ -251,23 +251,28 @@ export async function getLatestProcurement(
     facility_id: number
     manufactured_medication_id: number
   },
-): Promise<RenderedInventoryHistory & {strength : number}> {
-  const manufactured_medications = await trx.selectFrom('manufactured_medication_strengths')
-  .select(['consumable_id','strength_numerator'])
-  .where('manufactured_medication_id','=', opts.manufactured_medication_id)
-  .executeTakeFirstOrThrow()
+): Promise<RenderedInventoryHistory & { strength: number }> {
+  const manufactured_medications = await trx.selectFrom(
+    'manufactured_medication_strengths',
+  )
+    .select(['consumable_id', 'strength_numerator'])
+    .where('manufactured_medication_id', '=', opts.manufactured_medication_id)
+    .executeTakeFirstOrThrow()
 
   const history = getConsumablesHistoryQuery(trx, {
-     facility_id: opts.facility_id, 
-     consumable_id: manufactured_medications.consumable_id
+    facility_id: opts.facility_id,
+    consumable_id: manufactured_medications.consumable_id,
   })
 
   const procurementRecord = await trx.selectFrom(history.as('history'))
-  .where('interaction','=','procurement')
-  .selectAll()
-  .executeTakeFirstOrThrow()
+    .where('interaction', '=', 'procurement')
+    .selectAll()
+    .executeTakeFirstOrThrow()
 
-   return {...procurementRecord, strength: manufactured_medications.strength_numerator}
+  return {
+    ...procurementRecord,
+    strength: manufactured_medications.strength_numerator,
+  }
 }
 
 export function searchConsumables(
