@@ -85,11 +85,8 @@ export default async function MedicineAdd(
   _req: Request,
   { route, url, state }: FreshContext<LoggedInHealthWorker>,
 ) {
-  // const strength = parseInt(url.searchParams.get('strength')!) || null
-  // const consumable_id = parseInt(url.searchParams.get('consumable_id')!) || null
-
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
-  // let last_procurement: RenderedInventoryHistory | null = null
+  let last_procurement: RenderedInventoryHistory & { strength: number} | null = null
   const manufactured_medication_id = url.searchParams.get(
     'manufactured_medication_id',
   )
@@ -103,14 +100,13 @@ export default async function MedicineAdd(
     assertOr404(manufactured_medications.length)
     manufactured_medication = manufactured_medications[0]
 
-    // last_procurement = (await inventory.getConsumablesHistory(
-    //   state.trx,
-    //   {
-    //     facility_id: 1,
-    //     consumable_id: consumable_id!,
-    //     latest_procurment_only: true,
-    //   },
-    // )).history[0]
+    last_procurement = await inventory.getLatestProcurement(
+      state.trx,
+      {
+        facility_id: 1,
+        manufactured_medication_id: parseInt(manufactured_medication_id)
+      },
+    )
   }
 
   return (
@@ -124,7 +120,15 @@ export default async function MedicineAdd(
       <InventoryMedicineForm
         today={todayISOInHarare()}
         manufactured_medication={manufactured_medication}
-        last_procurement={null}
+        last_procurement={last_procurement ? {
+          strength: last_procurement.strength!,
+          quantity: last_procurement.change,
+          container_size: last_procurement.container_size!,
+          number_of_containers: last_procurement.number_of_containers!,
+          procurer_id: last_procurement.procured_from_id!,
+          procurer_name: last_procurement.procured_from!,
+          batch_number: last_procurement.batch_number,
+        } : null}
       />
     </Layout>
   )

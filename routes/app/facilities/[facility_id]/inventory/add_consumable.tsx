@@ -61,8 +61,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         procured_from_name: to_add.procured_from_name,
         consumable_id: to_add.consumable_id,
         quantity: to_add.quantity,
-        container_size: 0,
-        number_of_containers: 0,
+
+        //Todo: check the logic for non medicines consumables
+        container_size: 1,
+        number_of_containers: to_add.quantity,
       },
     )
 

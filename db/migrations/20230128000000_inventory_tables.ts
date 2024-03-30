@@ -64,9 +64,8 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('quantity', 'integer', (col) =>
         col.notNull())
       .addColumn('container_size', 'integer', (col) =>
-        col.notNull().defaultTo(0))
-      .addColumn('number_of_containers', 'integer', (col) =>
-        col.notNull().defaultTo(0))
+        col.notNull())
+      .addColumn('number_of_containers', 'integer', (col) => col.notNull())
       .addColumn('consumed_amount', 'integer', (col) =>
         col.notNull().defaultTo(0))
       .addColumn('consumable_id', 'integer', (col) =>
@@ -93,6 +92,12 @@ export async function up(db: Kysely<unknown>) {
         'procurement_consumed_amount_less_than_quantity',
         sql`
         consumed_amount <= quantity
+       `,
+      )
+      .addCheckConstraint(
+        'procurement_container_valid',
+        sql`
+         container_size * number_of_containers = quantity
        `,
       ))
 

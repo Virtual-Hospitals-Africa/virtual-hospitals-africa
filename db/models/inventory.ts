@@ -131,9 +131,7 @@ export function getMedicines(
       ).as('strength_display'),
       jsonBuildObject({
         add: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, 
-          '&strength=', manufactured_medication_strengths.strength_numerator::text,
-          '&consumable_id=', consumables.id::text)
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text)
         `,
         history: sql<string>`
           concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
@@ -143,17 +141,13 @@ export function getMedicines(
     .execute()
 }
 
-export function getConsumablesHistory(
+export function getConsumablesHistoryQuery(
   trx: TrxOrDb,
   opts: {
     facility_id: number
     consumable_id: number
-    latest_procurment_only?: boolean
   },
-): Promise<{
-  name: string
-  history: RenderedInventoryHistory[]
-}> {
+) {
   const consumption = trx
     .selectFrom('consumption')
     .innerJoin('employment', 'consumption.created_by', 'employment.id')
@@ -165,6 +159,7 @@ export function getConsumablesHistory(
     )
     .select((eb) => [
       'procurement.id as procurement_id',
+      sql<'consumption' | 'procurement'>`'consumption'`.as('interaction'),
       jsonBuildObject({
         name: eb.ref('health_workers.name'),
         href: sql<
@@ -200,6 +195,7 @@ export function getConsumablesHistory(
     .innerJoin('procurers', 'procurement.procured_from', 'procurers.id')
     .select((eb) => [
       'procurement.id as procurement_id',
+      sql<'consumption' | 'procurement'>`'procurement'`.as('interaction'),
       jsonBuildObject({
         name: eb.ref('health_workers.name'),
         href: sql<
@@ -224,13 +220,21 @@ export function getConsumablesHistory(
     .where('procurement.facility_id', '=', opts.facility_id)
     .where('procurement.consumable_id', '=', opts.consumable_id)
 
-  let history = consumption.unionAll(procurement)
+  return consumption.unionAll(procurement)
     .orderBy('created_at', 'desc')
+}
 
-  if (opts.latest_procurment_only) {
-    //returns only the latest procurment id
-    history = history.where('procured_from', '=', null).limit(1)
-  }
+export function getConsumablesHistory(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    consumable_id: number
+  },
+): Promise<{
+  name: string
+  history: RenderedInventoryHistory[]
+}> {
+  const history = getConsumablesHistoryQuery(trx, opts)
 
   return trx.selectFrom('consumables')
     .select([
@@ -239,6 +243,31 @@ export function getConsumablesHistory(
     ])
     .where('consumables.id', '=', opts.consumable_id)
     .executeTakeFirstOrThrow()
+}
+
+export async function getLatestProcurement(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+    manufactured_medication_id: number
+  },
+): Promise<RenderedInventoryHistory & {strength : number}> {
+  const manufactured_medications = await trx.selectFrom('manufactured_medication_strengths')
+  .select(['consumable_id','strength_numerator'])
+  .where('manufactured_medication_id','=', opts.manufactured_medication_id)
+  .executeTakeFirstOrThrow()
+
+  const history = getConsumablesHistoryQuery(trx, {
+     facility_id: opts.facility_id, 
+     consumable_id: manufactured_medications.consumable_id
+  })
+
+  const procurementRecord = await trx.selectFrom(history.as('history'))
+  .where('interaction','=','procurement')
+  .selectAll()
+  .executeTakeFirstOrThrow()
+
+   return {...procurementRecord, strength: manufactured_medications.strength_numerator}
 }
 
 export function searchConsumables(
