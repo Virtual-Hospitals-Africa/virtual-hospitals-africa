@@ -34,7 +34,7 @@ export default function unsavedChangesWarning() {
     }
 
     // clear modified inputs on form submission
-    function onSubmit(event: Event) {
+    function onSubmit() {
       modified_inputs.clear()
     }
 

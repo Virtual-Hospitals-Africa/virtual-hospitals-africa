@@ -143,7 +143,7 @@ export function ICD10SearchSpecific({
           value={selected_c0.value?.code}
           onChange={(e) => {
             const symptom = selected_parent.value!.sub_diagnoses!.find(
-              (s) => s.code === e.target.value,
+              (s) => s.code === e.currentTarget.value,
             )
             const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
               sd.general
@@ -163,7 +163,7 @@ export function ICD10SearchSpecific({
           value={selected_c1.value?.code}
           onChange={(e) => {
             const symptom = selected_c0.value!.sub_diagnoses!.find(
-              (s) => s.code === e.target.value,
+              (s) => s.code === e.currentTarget.value,
             )
             const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
               sd.general
@@ -182,7 +182,7 @@ export function ICD10SearchSpecific({
           value={selected_c2.value?.code}
           onChange={(e) => {
             const symptom = selected_c1.value!.sub_diagnoses!.find(
-              (s) => s.code === e.target.value,
+              (s) => s.code === e.currentTarget.value,
             )
             const general_subdiagnosis = symptom?.sub_diagnoses?.find((sd) =>
               sd.general
@@ -200,7 +200,7 @@ export function ICD10SearchSpecific({
           value={selected_c3.value?.code}
           onChange={(e) => {
             const symptom = selected_c2.value!.sub_diagnoses!.find(
-              (s) => s.code === e.target.value,
+              (s) => s.code === e.currentTarget.value,
             )
             selected_c3.value = symptom
           }}

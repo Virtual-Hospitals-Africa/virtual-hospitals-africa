@@ -9,7 +9,7 @@ import { AddRow } from '../AddRemove.tsx'
 import Guardian from './Guardian.tsx'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import Dependent from './Dependent.tsx'
-import NextOfKin from './NextOfKin.tsx'
+import NextOfKinInput from './NextOfKin.tsx'
 import MaritalStatusSelect from './MaritalStatusSelect.tsx'
 import PatientCohabitationSelect from './PatientCohabitationSelect.tsx'
 import FamilyTypeSelect from './FamilyTypeSelect.tsx'
@@ -72,7 +72,7 @@ export default function PatientFamilyForm({
             <SectionHeader className='my-5 text-[20px]'>
               Next Of Kin
             </SectionHeader>
-            <NextOfKin
+            <NextOfKinInput
               name='family.other_next_of_kin'
               value={family.other_next_of_kin ?? undefined}
             />

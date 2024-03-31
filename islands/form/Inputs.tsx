@@ -1,6 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import { ComponentChildren, JSX, Ref } from 'preact'
-import { forwardRef } from 'preact/compat'
+import { forwardRef, HTMLAttributes } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
@@ -8,7 +8,6 @@ import { Gender, Maybe, NURSE_SPECIALTIES, Question } from '../../types.ts'
 import last from '../../util/last.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { ComponentChild } from 'preact'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -18,9 +17,9 @@ type LabeledInputProps<El extends HTMLElement> = {
   readonly?: boolean
   ref?: Ref<El>
   className?: string
-  onInput?(e: JSX.TargetedEvent<El, Event> & { target: El }): void
-  onFocus?(e: JSX.TargetedEvent<El, Event>): void
-  onBlur?(e: JSX.TargetedEvent<El, Event>): void
+  onInput?: HTMLAttributes<El>['onInput']
+  onFocus?: HTMLAttributes<El>['onFocus']
+  onBlur?: HTMLAttributes<El>['onBlur']
 }
 
 type WrapperInputProps<El extends HTMLElement> = LabeledInputProps<El> & {
@@ -327,11 +326,7 @@ export function TextArea(
 export type SelectProps =
   & Omit<LabeledInputProps<HTMLSelectElement>, 'onInput'>
   & {
-    onChange?: (
-      e: JSX.TargetedEvent<HTMLSelectElement, Event> & {
-        target: HTMLSelectElement
-      },
-    ) => void
+    onChange?: HTMLAttributes<HTMLSelectElement>['onChange']
     selectClassName?: string
     children: ComponentChildren
   }
@@ -739,10 +734,7 @@ export function CheckboxGridItem(
           required={required}
           disabled={disabled}
           className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
-          onInput={(e) => {
-            assert(e.target instanceof HTMLInputElement)
-            onChange?.(e.target.checked)
-          }}
+          onInput={(e) => onChange?.(e.currentTarget.checked)}
         />
       </div>
       <Label label={label} />
@@ -788,10 +780,8 @@ export function RadioGroup(
                 checked={value === option.value}
                 value={option.value}
                 className='h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600'
-                onChange={(event) => {
-                  assert(event.target instanceof HTMLInputElement)
-                  onChange?.(event.target.value)
-                }}
+                onChange={(event) =>
+                  onChange?.(event.currentTarget.value)}
               />
               <label
                 htmlFor={`radio-${name}-${option.value}`}
