@@ -1,62 +1,55 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-:root {
-  --heart-fade-increment: 0.15s;
+
+@keyframes grow {
+  0% { scale: 0 }
+  100% { scale: 1 }
 }
 
+@keyframes fadeIn {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
 
 /* Animates the wifi heart */
 .fade-in-heart > path {
+  scale: 0;
   opacity: 0;
-  transform: translateY(15px);
-  scale: 0.8;
   transform-origin: center bottom;
-  animation: fadeInHeart ease-out forwards;
-  animation-duration: 0.55s;
 }
 
-/* I'm sure there's a better way to do this, but we manually animate the curves of the wifi heart, starting with the bottom */
-@keyframes fadeInHeart {
-  0% { opacity: 0; transform: translateY(15px); scale: 0.8 }
-  100% { opacity: 1; transform: translateY(0); scale: 1 }
+.fade-in-heart > path:nth-child(1) { 
+  animation: 
+    grow 0.4s cubic-bezier( 0.25, 0.94, 0.8, 1 ) 0s forwards,
+    fadeIn 0.3s linear 0s forwards;
+}
+.fade-in-heart > path:nth-child(2) { 
+  animation: 
+    grow 0.7s cubic-bezier( 0.45, 0, 0.08, 1 ) 0s forwards,
+    fadeIn 0.2s linear 0.2s forwards;
+}
+.fade-in-heart > path:nth-child(3) { 
+  animation: 
+    grow 1.0s cubic-bezier( 0.4, 0, 0.28, 1 ) 0s forwards,
+    fadeIn 0.2s linear 0.4s forwards;
+}
+.fade-in-heart > path:nth-child(4) {
+  animation: 
+    grow 1.3s cubic-bezier( 0.83, 0.56, 0.2, 0.98 ) 0s forwards,
+    fadeIn 0.14s linear 0.64s forwards;
+}
+.fade-in-heart > path:nth-child(5) { 
+  animation: 
+    grow 1.45s cubic-bezier( 0.79, 0.4, 0.13, 1 ) 0s forwards,
+    fadeIn 0.14s linear 0.78s forwards;
+}
+.fade-in-heart > path:nth-child(6), .fade-in-heart > path:nth-child(7) {
+  animation: 
+    grow 1.5s cubic-bezier( 0.89, 0.34, 0.21, 1) 0s forwards,
+    fadeIn 0.13s linear 0.92s forwards;
 }
 
-.fade-in-heart > path:nth-child(1) { animation-delay: 0s }
-.fade-in-heart > path:nth-child(2) { animation-delay: 0.15s }
-.fade-in-heart > path:nth-child(3) { animation-delay: 0.30s }
-.fade-in-heart > path:nth-child(4) { animation-delay: 0.45s }
-.fade-in-heart > path:nth-child(5) { animation-delay: 0.60s }
-
-.fade-in-heart > path:nth-child(6), .fade-in-heart > path:nth-child(7) { animation-delay: 0.75s }
-.fade-in-heart > path:nth-child(8), .fade-in-heart > path:nth-child(9) { animation-delay: 0.90s }
-
-
-
-
-
-@keyframes ping {
-  0% {
-    transform: scale(0.6);
-    opacity: 0;
-  }
-  25% {
-    transform: scale(1);
-    opacity: 0.35;
-  }
-  50% {
-    transform: scale(1.5);
-    opacity: 0.75;
-  }
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
-
-.wifi-heart-final-circle {
-  opacity: 0;
-  animation: ping 1s cubic-bezier(0, 0, 0.2, 1) forwards;
-  animation-delay: 1.15s;
+.fade-in-heart > path:nth-child(8), .fade-in-heart > path:nth-child(9) {
+  animation: 
+    grow 1.52s cubic-bezier( 1, 0.82, 0.54, 1 ) 0s forwards,
+    fadeIn 0.12s linear 1.05s forwards;
 }

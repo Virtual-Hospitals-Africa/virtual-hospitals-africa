@@ -87,6 +87,7 @@ import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
+import * as $loading_test2 from './routes/loading-test2.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
 import * as $logout from './routes/logout.tsx'
@@ -317,6 +318,7 @@ const manifest = {
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/loading-test.tsx': $loading_test,
+    './routes/loading-test2.tsx': $loading_test2,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
     './routes/logout.tsx': $logout,
