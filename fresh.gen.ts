@@ -86,6 +86,7 @@ import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
+import * as $loading_test from './routes/loading-test.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
 import * as $logout from './routes/logout.tsx'
@@ -171,6 +172,7 @@ import * as $schedule_form from './islands/schedule-form.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
+import * as $timer from './islands/timer.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
@@ -314,6 +316,7 @@ const manifest = {
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
+    './routes/loading-test.tsx': $loading_test,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
     './routes/logout.tsx': $logout,
@@ -408,6 +411,7 @@ const manifest = {
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,
+    './islands/timer.tsx': $timer,
     './islands/vitals/Form.tsx': $vitals_Form,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
     './islands/waiting_room/AddPatientSearch.tsx':
