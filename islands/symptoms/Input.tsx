@@ -70,9 +70,8 @@ export default function SymptomInput({
               checked={!end_date.value}
               className='w-min'
               onInput={(e) => {
-                assert(e.target instanceof HTMLInputElement)
                 entered_duration.value = null
-                end_date.value = e.target.checked ? null : yesterday
+                end_date.value = e.currentTarget.checked ? null : yesterday
               }}
             />
             <DurationInput
@@ -98,8 +97,7 @@ export default function SymptomInput({
               max={today}
               required
               onInput={(e) => {
-                assert(e.target instanceof HTMLInputElement)
-                start_date.value = e.target.value
+                start_date.value = e.currentTarget.value
                 if (ongoing.value) {
                   return entered_duration.value = null
                 }
@@ -119,7 +117,7 @@ export default function SymptomInput({
                 min={start_date.value}
                 max={today}
                 onInput={(e) => {
-                  end_date.value = e.target.value
+                  end_date.value = e.currentTarget.value
                   entered_duration.value = null
                 }}
               />
