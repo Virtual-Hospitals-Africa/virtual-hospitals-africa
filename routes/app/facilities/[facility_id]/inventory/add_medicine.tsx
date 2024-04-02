@@ -101,13 +101,20 @@ export default async function MedicineAdd(
     assertOr404(manufactured_medications.length)
     manufactured_medication = manufactured_medications[0]
 
-    last_procurement = await inventory.getLatestProcurement(
-      state.trx,
-      {
-        facility_id: state.facility.id,
-        manufactured_medication_id: parseInt(manufactured_medication_id),
-      },
+    const strength = url.searchParams.get(
+      'strength',
     )
+
+    if (strength) {
+      last_procurement = await inventory.getLatestProcurement(
+        state.trx,
+        {
+          facility_id: state.facility.id,
+          manufactured_medication_id: parseInt(manufactured_medication_id),
+          strength: parseFloat(strength),
+        },
+      )
+    }
   }
 
   return (

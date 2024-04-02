@@ -131,7 +131,8 @@ export function getMedicines(
       ).as('strength_display'),
       jsonBuildObject({
         add: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text)
+          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, 
+          '&strength=', manufactured_medication_strengths.strength_numerator::text)
         `,
         history: sql<string>`
           concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
@@ -250,6 +251,7 @@ export async function getLatestProcurement(
   opts: {
     facility_id: number
     manufactured_medication_id: number
+    strength: number
   },
 ): Promise<RenderedInventoryHistory & { strength: number }> {
   const manufactured_medications = await trx.selectFrom(
@@ -257,6 +259,11 @@ export async function getLatestProcurement(
   )
     .select(['consumable_id', 'strength_numerator'])
     .where('manufactured_medication_id', '=', opts.manufactured_medication_id)
+    .where(
+      'manufactured_medication_strengths.strength_numerator',
+      '=',
+      opts.strength,
+    )
     .executeTakeFirstOrThrow()
 
   const history = getConsumablesHistoryQuery(trx, {
