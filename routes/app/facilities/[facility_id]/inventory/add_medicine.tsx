@@ -83,7 +83,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default async function MedicineAdd(
   _req: Request,
-  { route, url, state }: FreshContext<LoggedInHealthWorker>,
+  { route, url, state }: FacilityContext,
 ) {
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
   let last_procurement: RenderedInventoryHistory & { strength: number } | null =
@@ -104,7 +104,7 @@ export default async function MedicineAdd(
     last_procurement = await inventory.getLatestProcurement(
       state.trx,
       {
-        facility_id: 1,
+        facility_id: state.facility.id,
         manufactured_medication_id: parseInt(manufactured_medication_id),
       },
     )
