@@ -10,7 +10,7 @@ import {
   hours,
   minutes,
 } from '../shared/scheduling/availability.tsx'
-import Form from './form/Form.tsx'
+import Form from '../components/library/Form.tsx'
 import {
   PlusIcon,
   TrashIcon,

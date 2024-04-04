@@ -3,7 +3,7 @@ import Layout from '../components/library/Layout.tsx'
 import { Button } from '../components/library/Button.tsx'
 import { TextArea, TextInput } from '../islands/form/Inputs.tsx'
 import FormRow from '../islands/form/Row.tsx'
-import Form from '../islands/form/Form.tsx'
+import Form from '../components/library/Form.tsx'
 import SideBySide from '../components/library/SideBySide.tsx'
 import SelectWithOther from '../islands/SelectWithOther.tsx'
 

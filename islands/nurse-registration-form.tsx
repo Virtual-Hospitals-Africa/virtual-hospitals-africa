@@ -4,7 +4,7 @@ import NurseProfessionalForm from '../components/health_worker/nurse/invite/Nurs
 import NurseDocumentsForm from '../components/health_worker/nurse/invite/NurseDocumentsForm.tsx'
 import unsavedChangesWarning from './form/unsaved_changes_warning.tsx'
 import { CountryAddressTree } from '../types.ts'
-import Form from './form/Form.tsx'
+import Form from '../components/library/Form.tsx'
 
 export default function NurseRegistrationForm(
   { currentStep, formData, country_address_tree }: {

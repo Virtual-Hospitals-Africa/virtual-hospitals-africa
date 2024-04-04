@@ -1,4 +1,4 @@
-import Form from './form/Form.tsx'
+import Form from '../components/library/Form.tsx'
 import { DateInput, TextInput } from './form/Inputs.tsx'
 import FormRow from './form/Row.tsx'
 import FormButtons from './form/buttons.tsx'

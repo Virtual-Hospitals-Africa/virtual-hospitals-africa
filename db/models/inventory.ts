@@ -290,12 +290,13 @@ export function getConsumablesHistory(
 
 export function getLatestProcurement(
   trx: TrxOrDb,
-  { facility_id, manufactured_medication_id }: {
+  { facility_id, manufactured_medication_id, strength }: {
     facility_id: number
     manufactured_medication_id: number
+    strength?: number
   },
 ): Promise<MedicationProcurement | undefined> {
-  return procurementQuery(trx, { facility_id })
+  let query = procurementQuery(trx, { facility_id })
     .innerJoin(
       'manufactured_medication_strengths',
       'procurement.consumable_id',
@@ -313,7 +314,15 @@ export function getLatestProcurement(
       'procurement.number_of_containers',
     ])
     .orderBy('procurement.created_at', 'desc')
-    .executeTakeFirst()
+
+  if (strength) {
+    query = query.where(
+      'manufactured_medication_strengths.strength_numerator',
+      '=',
+      strength,
+    )
+  }
+  return query.executeTakeFirst()
 }
 
 export function searchConsumables(

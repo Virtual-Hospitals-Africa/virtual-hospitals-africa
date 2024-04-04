@@ -6,7 +6,7 @@ import {
   RenderedDevice,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import FacilityDeviceForm from '../../../../../islands/inventory/Device.tsx'
+import FacilityDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import * as devices from '../../../../../db/models/devices.ts'

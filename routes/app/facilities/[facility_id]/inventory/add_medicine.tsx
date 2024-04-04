@@ -96,12 +96,14 @@ export default async function MedicineAdd(
     const manufactured_medication_id = parseInt(
       manufactured_medication_id_param,
     )
+    const strength = parseInt(url.searchParams.get('strength')!) || undefined
     assertOr400(manufactured_medication_id)
     const getting_latest_procurement = inventory.getLatestProcurement(
       state.trx,
       {
-        facility_id: state.facility.id,
         manufactured_medication_id,
+        strength,
+        facility_id: state.facility.id,
       },
     )
     const manufactured_medications = await searchManufacturedMedications(
@@ -124,7 +126,7 @@ export default async function MedicineAdd(
       <InventoryMedicineForm
         today={todayISOInHarare()}
         manufactured_medication={manufactured_medication}
-        last_procurement={last_procurement ?? null}
+        last_procurement={last_procurement}
       />
     </Layout>
   )

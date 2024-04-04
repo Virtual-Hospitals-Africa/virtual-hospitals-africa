@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
-import Form from '../form/Form.tsx'
+import Form from '../../components/library/Form.tsx'
 import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { NumberInput } from '../form/Inputs.tsx'

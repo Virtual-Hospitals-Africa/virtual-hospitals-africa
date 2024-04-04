@@ -1,6 +1,6 @@
 import { ComponentChildren, JSX } from 'preact'
 import Layout from '../../../../../components/library/Layout.tsx'
-import Form from '../../../../../islands/form/Form.tsx'
+import Form from '../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   PatientIntake,

@@ -2,7 +2,7 @@ import { ComponentChildren, JSX } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../../../../components/library/Layout.tsx'
-import Form from '../../../../../../islands/form/Form.tsx'
+import Form from '../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   RenderedPatientEncounter,

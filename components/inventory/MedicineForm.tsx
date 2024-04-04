@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
-import Form from '../../islands/form/Form.tsx'
+import Form from '../library/Form.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { Button } from '../library/Button.tsx'
 import ManufacturedMedicationInput from '../../islands/manufactured_medication/Input.tsx'

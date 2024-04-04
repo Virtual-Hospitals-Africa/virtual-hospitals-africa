@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks'
 import range from '../util/range.ts'
-import Form from './form/Form.tsx'
+import Form from '../components/library/Form.tsx'
 
 export default function InviteEmployeesForm() {
   const [totalInvites, setTotalInvites] = useState(1)
