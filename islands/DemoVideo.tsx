@@ -55,7 +55,7 @@ export default function DemoVideo() {
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
-              <Dialog.Panel className='relative transform rounded-lg shadow-xl transition-all p-8'>
+              <Dialog.Panel className='relative transform rounded-lg shadow-xl transition-all pt-6 px-24 max-h-screen'>
                 <video controls className='rounded-lg w-xl' autoplay={autoplay}>
                   <source src='/demo.mp4' type='video/mp4' />
                 </video>
