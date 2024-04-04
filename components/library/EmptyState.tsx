@@ -2,12 +2,15 @@ import { JSX } from 'preact'
 import cls from '../../util/cls.ts'
 import { PlusIcon } from './icons/heroicons/outline.tsx'
 import { Button } from './Button.tsx'
+import { Plussable } from './icons/Plussable.tsx'
+import { assert } from 'std/assert/assert.ts'
 
 type EmptyStateProps = {
   className?: string
   header: string
   explanation: string
-  icon: JSX.Element
+  icon?: JSX.Element
+  Icon?: typeof PlusIcon
   button?: {
     text: string
     href?: string
@@ -16,11 +19,13 @@ type EmptyStateProps = {
 }
 
 export function EmptyState(
-  { className, header, explanation, icon, button }: EmptyStateProps,
+  { className, header, explanation, icon, Icon, button }: EmptyStateProps,
 ) {
   return (
-    <div className={cls('text-center p-2', className)}>
-      {icon}
+    <div
+      className={cls('text-center p-2 flex flex-col items-center', className)}
+    >
+      {icon || (assert(Icon), <Plussable Icon={Icon} />)}
       <h3 className='mt-2 text-sm font-semibold text-gray-900'>
         {header}
       </h3>

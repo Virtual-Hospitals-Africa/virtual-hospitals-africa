@@ -70,7 +70,7 @@ export default function FacilityMedicinesTable(
           <EmptyState
             header='No medicines in stock'
             explanation='Add a medicine to get started'
-            icon={<ArchiveBoxIcon />}
+            Icon={ArchiveBoxIcon}
             button={isAdmin
               ? { text: 'Add Medicine', href: add_href }
               : undefined}

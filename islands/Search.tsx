@@ -148,6 +148,7 @@ export default function Search<
             required={required}
             aria-disabled={disabled}
             readonly={readonly}
+            autoComplete='off'
             onBlur={!addable ? undefined : () => {
               if (selected) return
               onSelect?.(add_option)

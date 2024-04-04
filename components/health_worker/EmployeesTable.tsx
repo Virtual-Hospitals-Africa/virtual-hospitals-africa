@@ -73,7 +73,7 @@ export default function EmployeesTable({
           <EmptyState
             header='No employees'
             explanation='Invite a health worker to get started'
-            icon={<UserCircleIcon />}
+            Icon={UserCircleIcon}
             button={isAdmin ? { text: 'Invite', href: add_href } : undefined}
           />
         )}

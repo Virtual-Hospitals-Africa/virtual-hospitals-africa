@@ -1,8 +1,9 @@
 import { JSX } from 'preact'
-import cls from '../../../../util/cls.ts'
 
 function HeroIconOutline(
-  { className, children, ...props }: JSX.SVGAttributes<SVGSVGElement>,
+  { className = 'w-5 h-5', children, ...props }: JSX.SVGAttributes<
+    SVGSVGElement
+  >,
 ): JSX.Element {
   return (
     <svg
@@ -10,7 +11,7 @@ function HeroIconOutline(
       viewBox='0 0 24 24'
       strokeWidth={1.5}
       stroke='currentColor'
-      className={cls('w-5 h-5', className as string)}
+      className={className}
       {...props}
     >
       {children}

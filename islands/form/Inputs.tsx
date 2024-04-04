@@ -143,6 +143,7 @@ export function TextInput(
         onFocus={onFocus}
         onBlur={onBlur}
         pattern={pattern}
+        autoComplete='off'
       />
     </LabeledInput>
   )

@@ -55,7 +55,7 @@ export default function FacilityConsumablesTable(
           <EmptyState
             header='No consumables in stock'
             explanation='Add a consumable to get started'
-            icon={<ArchiveBoxIcon />}
+            Icon={ArchiveBoxIcon}
             button={isAdmin
               ? { text: 'Add Consumable', href: add_href }
               : undefined}

@@ -59,11 +59,11 @@ export default function FacilityDevicesTable(
         rows={devices}
         EmptyState={() => (
           <EmptyState
-            header='No medicines in stock'
-            explanation='Add a medicine to get started'
-            icon={<ArchiveBoxIcon />}
+            header='No devices in the inventory'
+            explanation='Add a device to get started'
+            Icon={ArchiveBoxIcon}
             button={isAdmin
-              ? { text: 'Add Medicine', href: add_href }
+              ? { text: 'Add Device', href: add_href }
               : undefined}
           />
         )}
