@@ -51,6 +51,10 @@ export default function SymptomInput({
     approximateDuration(start_date.value, end_date.value || today)
   )
 
+  const notes = useSignal(value?.notes || '')
+
+  console.log('notes.value', notes.value)
+
   return (
     <RemoveRow onClick={remove} labelled>
       <div className='flex flex-col space-y-1 w-full'>
@@ -134,7 +138,8 @@ export default function SymptomInput({
               name={`${name}.notes`}
               className='w-full'
               label='Notes'
-              value={value?.notes}
+              value={notes.value}
+              onInput={(e) => notes.value = e.currentTarget.value}
               rows={2}
               placeholder='Describe the symptom’s intermittency, frequency, character, radiation, timing, exacerbating/relieving factors where applicable'
             />

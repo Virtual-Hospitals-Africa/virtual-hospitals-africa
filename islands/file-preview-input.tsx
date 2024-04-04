@@ -1,9 +1,10 @@
 import { useState } from 'preact/hooks'
-import { ImageOrVideoInput, Label, TextInputProps } from './form/Inputs.tsx'
+import { ImageOrVideoInput, TextInputProps } from './form/Inputs.tsx'
 import cls from '../util/cls.ts'
 import { Maybe } from '../types.ts'
 import { assert } from 'std/assert/assert.ts'
 import { RemoveRow } from './AddRemove.tsx'
+import { Label } from '../components/library/Label.tsx'
 
 type FilePreviewInputProps = Omit<TextInputProps, 'value'> & {
   className?: string

@@ -1,13 +1,13 @@
-import { assert } from 'std/assert/assert.ts'
 import { ComponentChildren, JSX, Ref } from 'preact'
 import { forwardRef, HTMLAttributes } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
-import { Gender, Maybe, NURSE_SPECIALTIES, Question } from '../../types.ts'
+import { Gender, Maybe, NURSE_SPECIALTIES } from '../../types.ts'
 import last from '../../util/last.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { ComponentChild } from 'preact'
+import { Signal } from '@preact/signals'
+import { Label } from '../../components/library/Label.tsx'
 
 type LabeledInputProps<El extends HTMLElement> = {
   name: string | null
@@ -22,55 +22,36 @@ type LabeledInputProps<El extends HTMLElement> = {
   onBlur?: HTMLAttributes<El>['onBlur']
 }
 
-type WrapperInputProps<El extends HTMLElement> = LabeledInputProps<El> & {
-  inputClassName?: string
-}
+type WrapperInputProps<El extends HTMLElement, Value> =
+  & LabeledInputProps<El>
+  & {
+    inputClassName?: string
+    value?: Maybe<Value>
+    signal?: Signal<Value>
+  }
 
-type SearchInputProps = Partial<WrapperInputProps<HTMLInputElement>> & {
-  value?: string
-  placeholder?: string
-  children?: ComponentChildren
-}
+type SearchInputProps =
+  & Partial<Omit<WrapperInputProps<HTMLInputElement, string>, 'signal'>>
+  & {
+    placeholder?: string
+    children?: ComponentChildren
+  }
 
-type DateInputProps = Partial<WrapperInputProps<HTMLInputElement>> & {
+type DateInputProps = Partial<WrapperInputProps<HTMLInputElement, string>> & {
   value?: Maybe<string>
   min?: Maybe<string>
   max?: Maybe<string>
 }
 
-export type TextInputProps = WrapperInputProps<HTMLInputElement> & {
+export type TextInputProps = WrapperInputProps<HTMLInputElement, string> & {
   type?: 'text' | 'email' | 'tel'
-  value?: Maybe<string>
   placeholder?: string
   pattern?: string
 }
 
-export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement> & {
-  value?: Maybe<string>
+export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement, string> & {
   placeholder?: string
   rows?: number
-}
-
-export function Label({
-  label,
-  className,
-  children,
-}: {
-  label: null | ComponentChild
-  className?: string
-  children?: ComponentChildren
-}) {
-  return (
-    <label
-      className={cls(
-        'block text-sm font-medium leading-6 text-gray-500 relative min-w-max',
-        className,
-      )}
-    >
-      {label}
-      {children}
-    </label>
-  )
 }
 
 function LabeledInput(
@@ -108,6 +89,7 @@ export function TextInput(
     label,
     placeholder,
     required,
+    signal,
     value,
     onInput,
     onFocus,
@@ -138,8 +120,11 @@ export function TextInput(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value || undefined}
-        onInput={onInput}
+        value={signal?.value || value || undefined}
+        onInput={(event) => {
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         pattern={pattern}
@@ -154,6 +139,7 @@ export function NumberInput(
     name,
     label,
     required,
+    signal,
     value,
     onInput,
     onFocus,
@@ -164,8 +150,7 @@ export function NumberInput(
     inputClassName,
     min,
     max,
-  }: WrapperInputProps<HTMLInputElement> & {
-    value?: Maybe<number>
+  }: WrapperInputProps<HTMLInputElement, number> & {
     min?: number
     max?: number
   },
@@ -188,8 +173,11 @@ export function NumberInput(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value ?? undefined}
-        onInput={onInput}
+        value={signal?.value ?? value ?? undefined}
+        onInput={(event) => {
+          if (signal) signal.value = parseInt(event.currentTarget.value)
+          onInput?.(event)
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         min={min}
@@ -213,7 +201,7 @@ export function CheckboxInput(
     className,
     inputClassName,
     value,
-  }: WrapperInputProps<HTMLInputElement> & {
+  }: Omit<WrapperInputProps<HTMLInputElement, boolean>, 'signal' | 'value'> & {
     checked?: boolean
     onInput?: JSX.GenericEventHandler<HTMLInputElement>
     value?: string
@@ -249,42 +237,13 @@ export function CheckboxInput(
   )
 }
 
-export function CheckboxList(
-  {
-    name,
-    values,
-    className,
-    inputClassName,
-    startIndex,
-    onInput,
-  }: WrapperInputProps<HTMLInputElement> & {
-    values: Record<string, { value: string; checked: boolean }>
-    startIndex?: number
-  },
-) {
-  return (
-    <div>
-      {Object.entries(values).map(([key, { value, checked }], index) => (
-        <CheckboxInput
-          name={`${name}.${(startIndex ?? 0) + index}`}
-          className={className}
-          label={key}
-          checked={checked}
-          value={value}
-          inputClassName={inputClassName}
-          onInput={onInput}
-        />
-      ))}
-    </div>
-  )
-}
-
 export function TextArea(
   {
     name,
     label,
     placeholder,
     required,
+    signal,
     value,
     onInput,
     onFocus,
@@ -314,8 +273,11 @@ export function TextArea(
         required={required}
         disabled={disabled}
         readonly={readonly}
-        value={value ?? undefined}
-        onInput={onInput}
+        value={signal?.value ?? value ?? undefined}
+        onInput={(event) => {
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         rows={rows}
@@ -421,6 +383,7 @@ export const SelectWithOptions = forwardRef(
 export function DateInput(
   {
     name = 'date',
+    signal,
     value,
     label,
     required,
@@ -451,10 +414,13 @@ export function DateInput(
         )}
         required={required}
         disabled={disabled}
-        onInput={onInput}
+        onInput={(event) => {
+          if (signal) signal.value = event.currentTarget.value
+          onInput?.(event)
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
-        value={value ?? undefined}
+        value={signal?.value ?? value ?? undefined}
         min={min ?? undefined}
         max={max ?? undefined}
       />
@@ -474,6 +440,7 @@ export function PhoneNumberInput(
     onInput,
     onFocus,
     onBlur,
+    signal,
     value,
   }: TextInputProps,
 ) {
@@ -492,7 +459,7 @@ export function PhoneNumberInput(
           inputClassName,
           disabled && 'bg-gray-300',
         )}
-        value={value ?? undefined}
+        value={signal?.value ?? value ?? undefined}
         placeholder='+263 777 777 777'
         required={required}
         disabled={disabled}
@@ -516,7 +483,7 @@ export function ImageInput(
     onInput,
     onFocus,
     onBlur,
-  }: TextInputProps,
+  }: Omit<TextInputProps, 'signal'>,
 ) {
   return (
     <LabeledInput
@@ -560,7 +527,7 @@ export function ImageOrVideoInput(
     onInput,
     onFocus,
     onBlur,
-  }: Omit<TextInputProps, 'value'> & {
+  }: Omit<TextInputProps, 'value' | 'signal'> & {
     value?: Maybe<{
       mime_type: string
       url: string
@@ -637,7 +604,7 @@ export function SearchInput(
           placeholder={placeholder}
           required={required}
           disabled={disabled}
-          value={value}
+          value={value ?? ''}
           onInput={onInput}
           onFocus={onFocus}
           onBlur={onBlur}
