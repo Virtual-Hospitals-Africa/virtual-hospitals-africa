@@ -48,8 +48,9 @@ export default function DemoVideo() {
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
             >
               <Dialog.Panel className='relative transform rounded-lg shadow-xl transition-all px-24 max-h-screen'>
-                <video controls className='rounded-lg w-xl' autoplay>
+                <video className='rounded-lg w-xl' autoplay playsinline>
                   <source src='/demo.mp4' type='video/mp4' />
+                  <source src='/demo.webm' type='video/webm' />
                 </video>
               </Dialog.Panel>
             </Transition.Child>
