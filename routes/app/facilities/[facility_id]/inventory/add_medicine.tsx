@@ -3,9 +3,10 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  RenderedInventoryHistory,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import InventoryMedicineForm from '../../../../../islands/inventory/MedicineForm.tsx'
+import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { searchManufacturedMedications } from '../../../../../db/models/drugs.ts'
@@ -25,10 +26,13 @@ export function assertIsUpsertMedicine(
   manufactured_medication: {
     strength: number
   }
-  procured_by_name: string
-  procured_by_id?: number
+  procured_from_name: string
+  procured_from_id?: number
   quantity: number
+  number_of_containers: number
+  container_size: number
   expiry_date?: string
+  batch_number?: string
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(isString(obj.manufactured_medication_name))
@@ -55,12 +59,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       facility_id,
       {
         created_by: admin.employment_id,
-        procured_by_id: to_add.procured_by_id,
-        procured_by_name: to_add.procured_by_name,
+        procured_from_id: to_add.procured_from_id,
+        procured_from_name: to_add.procured_from_name,
         manufactured_medication_id: to_add.manufactured_medication_id,
         quantity: to_add.quantity,
         strength: to_add.manufactured_medication.strength,
         expiry_date: to_add.expiry_date,
+        batch_number: to_add.batch_number,
+        container_size: to_add.container_size,
+        number_of_containers: to_add.number_of_containers,
       },
     )
 
@@ -76,11 +83,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default async function MedicineAdd(
   _req: Request,
-  { route, url, state }: FreshContext<LoggedInHealthWorker>,
+  { route, url, state }: FacilityContext,
 ) {
-  const strength = parseInt(url.searchParams.get('strength')!) || null
-
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
+  let last_procurement: RenderedInventoryHistory & { strength: number } | null =
+    null
   const manufactured_medication_id = url.searchParams.get(
     'manufactured_medication_id',
   )
@@ -93,6 +100,21 @@ export default async function MedicineAdd(
     )
     assertOr404(manufactured_medications.length)
     manufactured_medication = manufactured_medications[0]
+
+    const strength = url.searchParams.get(
+      'strength',
+    )
+
+    if (strength) {
+      last_procurement = await inventory.getLatestProcurement(
+        state.trx,
+        {
+          facility_id: state.facility.id,
+          manufactured_medication_id: parseInt(manufactured_medication_id),
+          strength: parseFloat(strength),
+        },
+      )
+    }
   }
 
   return (
@@ -106,7 +128,17 @@ export default async function MedicineAdd(
       <InventoryMedicineForm
         today={todayISOInHarare()}
         manufactured_medication={manufactured_medication}
-        strength={strength}
+        last_procurement={last_procurement
+          ? {
+            strength: last_procurement.strength!,
+            quantity: last_procurement.change,
+            container_size: last_procurement.container_size!,
+            number_of_containers: last_procurement.number_of_containers!,
+            procurer_id: last_procurement.procured_from_id!,
+            procurer_name: last_procurement.procured_from!,
+            batch_number: last_procurement.batch_number,
+          }
+          : null}
       />
     </Layout>
   )

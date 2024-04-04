@@ -186,17 +186,19 @@ export async function searchManufacturedMedications(
     .limit(20)
 
   if (opts.search) {
-    query = query
-      .where((eb) =>
-        eb.or([
-          eb(
-            'manufactured_medications.trade_name',
-            'ilike',
-            `%${opts.search}%`,
-          ),
-          eb('drugs.generic_name', 'ilike', `%${opts.search}%`),
-        ])
+    //if multiple words are given, like lamivudine solution, it will check for both form and name
+    const searchWords = opts.search.split(' ').filter(Boolean)
+    query = query.where((eb) =>
+      eb.and(
+        searchWords.map((word) =>
+          eb.or([
+            eb('manufactured_medications.trade_name', 'ilike', `%${word}%`),
+            eb('drugs.generic_name', 'ilike', `%${word}%`),
+            eb('medications.form', 'ilike', `%${word}%`),
+          ])
+        ),
       )
+    )
   } else {
     query = query.where('manufactured_medications.id', 'in', opts.ids!)
   }

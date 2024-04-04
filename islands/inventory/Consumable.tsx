@@ -32,8 +32,8 @@ export default function FacilityConsumableForm(
               />
               <AsyncSearch
                 href='/app/procurers'
-                name='procured_by'
-                label='Procured by'
+                name='procured_from'
+                label='Procured From'
                 required
                 addable
               />

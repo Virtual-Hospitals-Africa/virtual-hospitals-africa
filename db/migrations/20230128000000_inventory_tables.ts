@@ -63,15 +63,19 @@ export async function up(db: Kysely<unknown>) {
         col.notNull().references('facilities.id').onDelete('cascade'))
       .addColumn('quantity', 'integer', (col) =>
         col.notNull())
+      .addColumn('container_size', 'integer', (col) =>
+        col.notNull())
+      .addColumn('number_of_containers', 'integer', (col) => col.notNull())
       .addColumn('consumed_amount', 'integer', (col) =>
         col.notNull().defaultTo(0))
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade'))
-      .addColumn('procured_by', 'integer', (col) =>
+      .addColumn('procured_from', 'integer', (col) =>
         col.notNull().references('procurers.id').onDelete('cascade'))
       .addColumn('created_by', 'integer', (column) =>
         column.notNull().references('employment.id').onDelete('cascade'))
       .addColumn('expiry_date', 'date')
+      .addColumn('batch_number', 'varchar(255)')
       .addCheckConstraint(
         'positive_procurement_quantity',
         sql`
@@ -88,6 +92,12 @@ export async function up(db: Kysely<unknown>) {
         'procurement_consumed_amount_less_than_quantity',
         sql`
         consumed_amount <= quantity
+       `,
+      )
+      .addCheckConstraint(
+        'procurement_container_valid',
+        sql`
+         container_size * number_of_containers = quantity
        `,
       ))
 

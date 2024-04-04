@@ -10,6 +10,10 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
     },
   },
   {
+    label: 'Batch Number',
+    data: 'batch_number',
+  },
+  {
     label: 'Change',
     data(row) {
       const is_positive = row.change > 0
@@ -28,7 +32,7 @@ const columns: TableColumn<RenderedInventoryHistory>[] = [
   },
   {
     label: 'Procurer',
-    data: 'procured_by',
+    data: 'procured_from',
   },
   {
     label: 'Expires',
