@@ -37,7 +37,7 @@ export default function SuccessMessage(
           >
             <XMarkIcon
               type='button'
-              className='text-green-400 hover:text-green-600'
+              className='text-green-400 hover:text-green-600 h-5 w-5'
             />
           </button>
         </div>

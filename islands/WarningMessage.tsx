@@ -37,7 +37,7 @@ export default function WarningMessage(
           >
             <XMarkIcon
               type='button'
-              className='text-yellow-400 hover:text-yellow-600'
+              className='text-yellow-400 hover:text-yellow-600 h-5 w-5'
             />
           </button>
         </div>
