@@ -3,6 +3,7 @@ import * as health_workers from '../db/models/health_workers.ts'
 import * as media from '../db/models/media.ts'
 import * as patients from '../db/models/patients.ts'
 import * as patient_encounters from '../db/models/patient_encounters.ts'
+import * as inventory from '../db/models/inventory.ts'
 import { addTestHealthWorker } from '../test/web/utilities.ts'
 import { randomZimbabweanDemographics } from '../util/zimbabweanDemographics.ts'
 import { EncounterReason } from '../db.d.ts'
@@ -11,6 +12,8 @@ import { INTAKE_STEPS } from '../shared/intake.ts'
 import range from '../util/range.ts'
 import shuffle from '../util/shuffle.ts'
 import { sql } from 'kysely/index.js'
+import { searchManufacturedMedications } from '../db/models/drugs.ts'
+import sample from '../util/sample.ts'
 
 function randomDateOfBirth() {
   const start = new Date(1950, 0, 1)
@@ -21,6 +24,7 @@ function randomDateOfBirth() {
   return date.toISOString().slice(0, 10)
 }
 
+// deno-lint-ignore no-unused-vars
 function randomReason(gender: 'female' | 'male'): EncounterReason {
   const reason_seed = Math.random()
   if (reason_seed < 0.85) {
@@ -53,11 +57,10 @@ const scenarios: ['male' | 'female', EncounterReason][] = [
   ['male', 'seeking treatment'],
 ]
 
-/*
-  Add 3 nurses and 10 patients
-  at various stages of intake & consultation
-*/
-async function addDummyData() {
+type HW = Awaited<ReturnType<typeof addTestHealthWorker>>
+
+async function addPatientsToWaitingRoom() {
+  await db.deleteFrom('health_workers').execute()
   await db.deleteFrom('patients').execute()
   const avatars_used = new Set<string>()
   function randomAvatarNotYetUsed(gender: 'male' | 'female') {
@@ -80,20 +83,26 @@ async function addDummyData() {
 
   const num_patients = scenarios.length
   const num_nurses = 5
-  const nurses: Awaited<ReturnType<typeof addTestHealthWorker>>[] = []
-  async function addNurse() {
-    const demo = randomZimbabweanDemographics()
-    nurses.push(
-      await addTestHealthWorker(db, {
+  const admin_demo = randomZimbabweanDemographics()
+  const admin = await addTestHealthWorker(db, {
+    scenario: 'admin',
+    health_worker_attrs: {
+      name: admin_demo.name,
+      avatar_url: randomAvatarNotYetUsed(admin_demo.gender),
+    },
+  })
+  const nurses: HW[] = await Promise.all(
+    range(num_nurses).map(() => {
+      const demo = randomZimbabweanDemographics()
+      return addTestHealthWorker(db, {
         scenario: 'approved-nurse',
         health_worker_attrs: {
           name: demo.name,
           avatar_url: randomAvatarNotYetUsed(demo.gender),
         },
-      }),
-    )
-  }
-  await Promise.all(range(num_nurses).map(addNurse))
+      })
+    }),
+  )
 
   for (let i = 0; i < num_patients; i++) {
     const [gender, reason] = scenarios[i]
@@ -179,6 +188,58 @@ async function addDummyData() {
       }
     }
   }
+  return { admin, nurses }
+}
+
+// Load the inventory with 100 random drugs random
+async function addInventoryTransactions(admin: HW, _nurses: HW[]) {
+  const procurer = (await db.selectFrom('procurers')
+    .where('name', '=', 'Regional Supplier')
+    .selectAll()
+    .executeTakeFirst()) || (
+      await db.insertInto('procurers')
+        .values({ name: 'Regional Supplier' })
+        .returning('id')
+        .executeTakeFirstOrThrow()
+    )
+
+  const max_manufactured_medication_id = await db.selectFrom(
+    'manufactured_medications',
+  )
+    .select('id')
+    .orderBy('id', 'desc')
+    .executeTakeFirstOrThrow()
+
+  const num_medications = 200
+  const manufactured_medication_ids = shuffle(
+    range(1, max_manufactured_medication_id.id + 1),
+  ).slice(0, num_medications)
+
+  const manufactured_medications = await searchManufacturedMedications(db, {
+    ids: manufactured_medication_ids,
+  })
+
+  for (const manufactured_medication of manufactured_medications) {
+    const container_size = sample([10, 20, 40, 100])
+    const number_of_containers = sample([40, 100, 200])
+
+    await inventory.addFacilityMedicine(db, 1, {
+      created_by: admin.employee_id!,
+      manufactured_medication_id: manufactured_medication.id,
+      procured_from_id: procurer.id,
+      quantity: number_of_containers * container_size,
+      number_of_containers,
+      container_size,
+      strength: sample(manufactured_medication.strength_numerators),
+      expiry_date: '2025-03-01',
+      batch_number: '622',
+    })
+  }
+}
+
+async function addDummyData() {
+  const { admin, nurses } = await addPatientsToWaitingRoom()
+  await addInventoryTransactions(admin, nurses)
 }
 
 if (import.meta.main) {

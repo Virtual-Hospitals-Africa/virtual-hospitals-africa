@@ -127,7 +127,7 @@ describe(
               },
               in_waiting_room: true,
               arrived_ago_display: 'Just now',
-              status: 'Awaiting Intake (conditions)',
+              status: 'Awaiting Intake (Conditions)',
               actions: {
                 view: null,
                 intake: `/app/patients/${patient.id}/intake/conditions`,
@@ -192,7 +192,7 @@ describe(
               },
               in_waiting_room: false,
               arrived_ago_display: 'Just now',
-              status: 'In Intake (conditions)',
+              status: 'In Intake (Conditions)',
               actions: {
                 view: null,
                 intake: `/app/patients/${patient.id}/intake/conditions`,
@@ -202,6 +202,7 @@ describe(
                 name: nurse.name,
                 profession: 'nurse',
                 href: `/app/facilities/${facility_id}/employees/${nurse.id}`,
+                avatar_url: nurse.avatar_url,
                 seen: true,
                 health_worker_id: nurse.id,
                 employee_id: nurse.employee_id!,
@@ -347,6 +348,7 @@ describe(
                   name: nurse.name,
                   profession: 'nurse',
                   href: `/app/facilities/1/employees/${nurse.id}`,
+                  avatar_url: nurse.avatar_url,
                   seen: true,
                   health_worker_id: nurse.id,
                   employee_id: nurse.employee_id!,

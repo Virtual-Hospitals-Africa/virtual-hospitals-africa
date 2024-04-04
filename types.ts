@@ -1072,7 +1072,8 @@ export type RenderedFacilityMedicine = {
   }
 }
 
-export type RenderedInventoryHistory = {
+export type RenderedInventoryHistoryProcurement = {
+  interaction: 'procurement'
   created_at: Date
   created_at_formatted: string
   created_by: {
@@ -1080,13 +1081,88 @@ export type RenderedInventoryHistory = {
     avatar_url: string | null
     href: string
   }
-  procured_from: string | null
-  procured_from_id: number | null
+  procured_from: {
+    id: number
+    name: string
+  }
   change: number
-  container_size: number | null
-  number_of_containers: number | null
   expiry_date: string | null
   batch_number: string | null
+  patient: null
+  actions: {
+    reorder: string
+  }
+}
+
+export type RenderedInventoryHistoryConsumption = {
+  interaction: 'consumption'
+  created_at: Date
+  created_at_formatted: string
+  created_by: {
+    name: string
+    avatar_url: string | null
+    href: string
+  }
+  procured_from: null
+  change: number
+  expiry_date: string | null
+  batch_number: string | null
+  patient?: null
+  actions: null
+}
+
+export type RenderedInventoryHistoryPrescriptionFilled = {
+  interaction: 'prescription filled'
+  created_at: Date
+  created_at_formatted: string
+  created_by: {
+    name: string
+    avatar_url: string | null
+    href: string
+  }
+  procured_from: null
+  change: number
+  expiry_date: string | null
+  batch_number: string | null
+  patient: {
+    name: string
+    description: string
+    avatar_url: string | null
+    href: string
+  }
+  actions: {
+    view: string
+  }
+}
+
+export type RenderedInventoryHistoryExpiry = {
+  interaction: 'expiry'
+  created_at: Date
+  created_at_formatted: string
+  created_by: {
+    name: string
+    avatar_url: string | null
+    href: string
+  }
+  procured_from: null
+  change: number
+  expiry_date: string
+  batch_number: string
+  patient: null
+  actions: null
+}
+
+export type RenderedInventoryHistory =
+  | RenderedInventoryHistoryProcurement
+  | RenderedInventoryHistoryConsumption
+  | RenderedInventoryHistoryPrescriptionFilled
+  | RenderedInventoryHistoryExpiry
+
+export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
+  strength: number
+  quantity: number
+  container_size: number
+  number_of_containers: number
 }
 
 export type Profession =

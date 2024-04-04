@@ -1,12 +1,15 @@
-import { sql } from 'kysely'
+import { SelectQueryBuilder, sql } from 'kysely'
 import {
   FacilityDevice,
+  MedicationProcurement,
   Procurer,
   RenderedConsumable,
   RenderedFacilityConsumable,
   RenderedFacilityDevice,
   RenderedFacilityMedicine,
   RenderedInventoryHistory,
+  RenderedInventoryHistoryConsumption,
+  RenderedInventoryHistoryProcurement,
   RenderedProcurer,
   TrxOrDb,
 } from '../../types.ts'
@@ -21,6 +24,7 @@ import { longFormattedDate } from '../helpers.ts'
 import { jsonBuildObject } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+import { DB } from '../../db.d.ts'
 
 export function getDevices(
   trx: TrxOrDb,
@@ -142,14 +146,17 @@ export function getMedicines(
     .execute()
 }
 
-export function getConsumablesHistoryQuery(
+function consumptionQuery(
   trx: TrxOrDb,
   opts: {
     facility_id: number
-    consumable_id: number
   },
-) {
-  const consumption = trx
+): SelectQueryBuilder<
+  DB,
+  'consumption' | 'employment' | 'health_workers' | 'procurement',
+  RenderedInventoryHistoryConsumption
+> {
+  return trx
     .selectFrom('consumption')
     .innerJoin('employment', 'consumption.created_by', 'employment.id')
     .innerJoin('procurement', 'procurement.id', 'consumption.procurement_id')
@@ -160,7 +167,7 @@ export function getConsumablesHistoryQuery(
     )
     .select((eb) => [
       'procurement.id as procurement_id',
-      sql<'consumption' | 'procurement'>`'consumption'`.as('interaction'),
+      sql<'consumption'>`'consumption'`.as('interaction'),
       jsonBuildObject({
         name: eb.ref('health_workers.name'),
         href: sql<
@@ -170,22 +177,31 @@ export function getConsumablesHistoryQuery(
         }`,
         avatar_url: eb.ref('health_workers.avatar_url'),
       }).as('created_by'),
-      sql<null | string>`NULL`.as('procured_from'),
-      sql<null | number>`NULL`.as('procured_from_id'),
+      sql<null>`NULL`.as('procured_from'),
       sql<number>`0 - consumption.quantity`.as('change'),
-      sql<null | number>`NULL`.as('container_size'),
-      sql<null | number>`NULL`.as('number_of_containers'),
       'consumption.created_at',
       longFormattedDateTime('consumption.created_at').as(
         'created_at_formatted',
       ),
       sql<null | string>`NULL`.as('expiry_date'),
-      sql<null | string>`NULL`.as('batch_number'),
+      'procurement.batch_number',
+      sql<null>`NULL`.as('patient'),
+      sql<null>`NULL`.as('actions'),
     ])
     .where('consumption.facility_id', '=', opts.facility_id)
-    .where('procurement.consumable_id', '=', opts.consumable_id)
+}
 
-  const procurement = trx
+function procurementQuery(
+  trx: TrxOrDb,
+  opts: {
+    facility_id: number
+  },
+): SelectQueryBuilder<
+  DB,
+  'employment' | 'health_workers' | 'procurement',
+  RenderedInventoryHistoryProcurement
+> {
+  return trx
     .selectFrom('procurement')
     .innerJoin('employment', 'procurement.created_by', 'employment.id')
     .innerJoin(
@@ -196,7 +212,7 @@ export function getConsumablesHistoryQuery(
     .innerJoin('procurers', 'procurement.procured_from', 'procurers.id')
     .select((eb) => [
       'procurement.id as procurement_id',
-      sql<'consumption' | 'procurement'>`'procurement'`.as('interaction'),
+      sql<'procurement'>`'procurement'`.as('interaction'),
       jsonBuildObject({
         name: eb.ref('health_workers.name'),
         href: sql<
@@ -206,22 +222,48 @@ export function getConsumablesHistoryQuery(
         }`,
         avatar_url: eb.ref('health_workers.avatar_url'),
       }).as('created_by'),
-      'procurers.name as procured_from',
-      'procurers.id as procured_from_id',
+      jsonBuildObject({
+        id: eb.ref('procurers.id'),
+        name: eb.ref('procurers.name'),
+      }).as('procured_from'),
       eb.ref('procurement.quantity').as('change'),
-      'procurement.container_size',
-      'procurement.number_of_containers',
       'procurement.created_at',
       longFormattedDateTime('procurement.created_at').as(
         'created_at_formatted',
       ),
       longFormattedDate('procurement.expiry_date').as('expiry_date'),
       'procurement.batch_number',
+      sql<null>`NULL`.as('patient'),
+      jsonBuildObject({
+        reorder: sql.raw<string>(`'TODO'`),
+      }).as('actions'),
     ])
     .where('procurement.facility_id', '=', opts.facility_id)
-    .where('procurement.consumable_id', '=', opts.consumable_id)
+}
 
-  return consumption.unionAll(procurement)
+export function getConsumablesHistoryQuery(
+  trx: TrxOrDb,
+  { facility_id, consumable_id }: {
+    facility_id: number
+    consumable_id: number
+  },
+): SelectQueryBuilder<
+  DB,
+  'consumption' | 'employment' | 'health_workers' | 'procurement',
+  RenderedInventoryHistory
+> {
+  const consumption = consumptionQuery(trx, { facility_id })
+    .where('procurement.consumable_id', '=', consumable_id)
+
+  const procurement = procurementQuery(trx, { facility_id })
+    .where('procurement.consumable_id', '=', consumable_id)
+
+  return (consumption as SelectQueryBuilder<
+    DB,
+    'consumption' | 'employment' | 'health_workers' | 'procurement',
+    RenderedInventoryHistory
+  >)
+    .unionAll(procurement)
     .orderBy('created_at', 'desc')
 }
 
@@ -246,40 +288,32 @@ export function getConsumablesHistory(
     .executeTakeFirstOrThrow()
 }
 
-export async function getLatestProcurement(
+export function getLatestProcurement(
   trx: TrxOrDb,
-  opts: {
+  { facility_id, manufactured_medication_id }: {
     facility_id: number
     manufactured_medication_id: number
-    strength: number
   },
-): Promise<RenderedInventoryHistory & { strength: number }> {
-  const manufactured_medications = await trx.selectFrom(
-    'manufactured_medication_strengths',
-  )
-    .select(['consumable_id', 'strength_numerator'])
-    .where('manufactured_medication_id', '=', opts.manufactured_medication_id)
-    .where(
-      'manufactured_medication_strengths.strength_numerator',
-      '=',
-      opts.strength,
+): Promise<MedicationProcurement | undefined> {
+  return procurementQuery(trx, { facility_id })
+    .innerJoin(
+      'manufactured_medication_strengths',
+      'procurement.consumable_id',
+      'manufactured_medication_strengths.consumable_id',
     )
-    .executeTakeFirstOrThrow()
-
-  const history = getConsumablesHistoryQuery(trx, {
-    facility_id: opts.facility_id,
-    consumable_id: manufactured_medications.consumable_id,
-  })
-
-  const procurementRecord = await trx.selectFrom(history.as('history'))
-    .where('interaction', '=', 'procurement')
-    .selectAll()
-    .executeTakeFirstOrThrow()
-
-  return {
-    ...procurementRecord,
-    strength: manufactured_medications.strength_numerator,
-  }
+    .where(
+      'manufactured_medication_strengths.manufactured_medication_id',
+      '=',
+      manufactured_medication_id,
+    )
+    .select([
+      'manufactured_medication_strengths.strength_numerator as strength',
+      'procurement.quantity',
+      'procurement.container_size',
+      'procurement.number_of_containers',
+    ])
+    .orderBy('procurement.created_at', 'desc')
+    .executeTakeFirst()
 }
 
 export function searchConsumables(
@@ -363,7 +397,7 @@ export async function addFacilityMedicine(
     created_by: number
     manufactured_medication_id: number
     procured_from_id?: number
-    procured_from_name: string
+    procured_from_name?: string
     quantity: number
     number_of_containers: number
     container_size: number
@@ -374,11 +408,12 @@ export async function addFacilityMedicine(
 ) {
   const procured_from = medicine.procured_from_id
     ? { id: medicine.procured_from_id }
-    : await trx
-      .insertInto('procurers')
-      .values({ name: medicine.procured_from_name })
-      .returning('id')
-      .executeTakeFirstOrThrow()
+    : (assert(medicine.procured_from_name),
+      await trx
+        .insertInto('procurers')
+        .values({ name: medicine.procured_from_name })
+        .returning('id')
+        .executeTakeFirstOrThrow())
 
   const { consumable_id } = await trx.insertInto('procurement')
     .columns([

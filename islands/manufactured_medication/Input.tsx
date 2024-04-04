@@ -14,8 +14,10 @@ export default function ManufacturedMedicationInput(props: {
     quantity: number
     container_size: number
     number_of_containers: number
-    procurer_id: number
-    procurer_name: string
+    procured_from: {
+      id: number
+      name: string
+    }
     batch_number: null | string
   }>
   today: string
@@ -99,12 +101,7 @@ export default function ManufacturedMedicationInput(props: {
           href='/app/procurers'
           name='procured_from'
           label='Procured From'
-          value={props.last_procurement
-            ? {
-              id: props.last_procurement.procurer_id,
-              name: props.last_procurement.procurer_name,
-            }
-            : null}
+          value={props.last_procurement?.procured_from}
           required
           addable
         />

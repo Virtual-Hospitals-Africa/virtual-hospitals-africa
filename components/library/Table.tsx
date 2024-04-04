@@ -4,7 +4,7 @@ import { Maybe } from '../../types.ts'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { assertPersonLike, Person } from './Person.tsx'
+import { assertPersonLike, Person, PersonData } from './Person.tsx'
 
 type Showable =
   | string
@@ -26,7 +26,10 @@ export type TableColumn<T extends Row> =
   }
   & (
     | { type?: 'content'; data: keyof T | ((row: T) => Showable) }
-    | { type: 'person'; data: keyof T }
+    | {
+      type: 'person'
+      data: keyof T | ((row: T) => Maybe<PersonData> | PersonData[])
+    }
     | (T extends { actions: Record<string, string | null> } ? {
         label: 'Actions'
         type: 'actions'
@@ -85,12 +88,25 @@ function TableCellInnerContents<T extends Row>(
 
   if (mapped_column.column.type === 'person') {
     const person = mapped_column.cell_contents[row_index]
-    assertPersonLike(person)
-    return <Person person={person} />
+    if (person == null || (Array.isArray(person) && person.length === 0)) {
+      return null
+    }
+    const persons = Array.isArray(person) ? person : [person]
+    persons.forEach(assertPersonLike)
+    return (
+      <div className='flex flex-col gap-1'>
+        {persons.map((person) => (
+          <Person key={person.id || person.name} person={person} />
+        ))}
+      </div>
+    )
   }
 
   if (mapped_column.column.type === 'actions') {
     assert('actions' in row)
+    if (row.actions == null) {
+      return null
+    }
     assert(isObjectLike(row.actions))
     return (
       <div className='flex flex-col gap-1'>
@@ -162,6 +178,8 @@ function TableHeader<T extends Row>(
             className={cls(
               'text-left text-sm font-semibold text-gray-500',
               column.label && 'p-3',
+              // Shift the header to the right to make space for the avatar
+              column.type === 'person' && 'pl-12',
               column.headerClassName,
             )}
           >
@@ -173,7 +191,6 @@ function TableHeader<T extends Row>(
   )
 }
 
-//
 function* columnsWithSomeNonNullValue<T extends Row>(
   { columns, rows }: Pick<TableProps<T>, 'columns' | 'rows'>,
 ) {
@@ -181,7 +198,9 @@ function* columnsWithSomeNonNullValue<T extends Row>(
     // Kinda ugly, but we determine the actions to show within TableCellInnerContents
     // and thus don't need to compute the cell_contents here
     if (column.type === 'actions') {
-      yield { column, cell_contents: [] }
+      if (rows.some((row) => row.actions)) {
+        yield { column, cell_contents: [] }
+      }
       continue
     }
 

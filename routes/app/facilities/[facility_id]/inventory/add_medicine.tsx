@@ -3,6 +3,7 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import {
   LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
+  MedicationProcurement,
   RenderedInventoryHistory,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
@@ -17,6 +18,7 @@ import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { ManufacturedMedicationSearchResult } from '../../../../../types.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export function assertIsUpsertMedicine(
   obj: unknown,
@@ -86,35 +88,29 @@ export default async function MedicineAdd(
   { route, url, state }: FacilityContext,
 ) {
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
-  let last_procurement: RenderedInventoryHistory & { strength: number } | null =
-    null
-  const manufactured_medication_id = url.searchParams.get(
+  let last_procurement: MedicationProcurement | undefined
+  const manufactured_medication_id_param = url.searchParams.get(
     'manufactured_medication_id',
   )
-  if (manufactured_medication_id) {
-    const manufactured_medications = await searchManufacturedMedications(
+  if (manufactured_medication_id_param) {
+    const manufactured_medication_id = parseInt(
+      manufactured_medication_id_param,
+    )
+    assertOr400(manufactured_medication_id)
+    const getting_latest_procurement = inventory.getLatestProcurement(
       state.trx,
       {
-        ids: [parseInt(manufactured_medication_id)],
+        facility_id: state.facility.id,
+        manufactured_medication_id,
       },
+    )
+    const manufactured_medications = await searchManufacturedMedications(
+      state.trx,
+      { ids: [manufactured_medication_id] },
     )
     assertOr404(manufactured_medications.length)
     manufactured_medication = manufactured_medications[0]
-
-    const strength = url.searchParams.get(
-      'strength',
-    )
-
-    if (strength) {
-      last_procurement = await inventory.getLatestProcurement(
-        state.trx,
-        {
-          facility_id: state.facility.id,
-          manufactured_medication_id: parseInt(manufactured_medication_id),
-          strength: parseFloat(strength),
-        },
-      )
-    }
+    last_procurement = await getting_latest_procurement
   }
 
   return (
@@ -128,17 +124,7 @@ export default async function MedicineAdd(
       <InventoryMedicineForm
         today={todayISOInHarare()}
         manufactured_medication={manufactured_medication}
-        last_procurement={last_procurement
-          ? {
-            strength: last_procurement.strength!,
-            quantity: last_procurement.change,
-            container_size: last_procurement.container_size!,
-            number_of_containers: last_procurement.number_of_containers!,
-            procurer_id: last_procurement.procured_from_id!,
-            procurer_name: last_procurement.procured_from!,
-            batch_number: last_procurement.batch_number,
-          }
-          : null}
+        last_procurement={last_procurement ?? null}
       />
     </Layout>
   )

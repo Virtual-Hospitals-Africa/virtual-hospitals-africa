@@ -16,8 +16,10 @@ export default function InventoryMedicineForm(
       quantity: number
       container_size: number
       number_of_containers: number
-      procurer_id: number
-      procurer_name: string
+      procured_from: {
+        id: number
+        name: string
+      }
       batch_number: null | string
     }>
   },

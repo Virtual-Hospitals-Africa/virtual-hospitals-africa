@@ -6,14 +6,31 @@ import { AddMedicineSearch } from '../../islands/manufactured_medication/Search.
 import { EmptyState } from '../library/EmptyState.tsx'
 import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
+function breakSemicolons(str: string) {
+  return (
+    <div className='flex flex-col'>
+      {str.split('; ').map((name, index) => (
+        <span key={name}>
+          {name}
+          {index === 0 ? '' : ';'}
+        </span>
+      ))}
+    </div>
+  )
+}
+
 const columns: TableColumn<RenderedFacilityMedicine>[] = [
   {
     label: 'Generic Name',
-    data: 'generic_name',
+    data(row) {
+      return breakSemicolons(row.generic_name)
+    },
   },
   {
     label: 'Trade Name',
-    data: 'trade_name',
+    data(row) {
+      return breakSemicolons(row.trade_name)
+    },
   },
   {
     label: 'Manufacturer',

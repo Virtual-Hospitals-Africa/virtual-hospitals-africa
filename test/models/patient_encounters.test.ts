@@ -89,6 +89,7 @@ describe(
                     profession: 'nurse',
                     seen: false,
                     href: `/app/facilities/1/employees/${nurse.id}`,
+                    avatar_url: nurse.avatar_url,
                   },
                 ],
                 reviewers: [],
