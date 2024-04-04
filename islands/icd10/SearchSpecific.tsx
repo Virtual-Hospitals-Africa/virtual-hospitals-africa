@@ -117,6 +117,7 @@ export function ICD10SearchSpecific({
     <>
       <AsyncSearch
         name={selected_c0.value ? undefined : name}
+        no_name_form_data
         required
         href={href}
         label={label}

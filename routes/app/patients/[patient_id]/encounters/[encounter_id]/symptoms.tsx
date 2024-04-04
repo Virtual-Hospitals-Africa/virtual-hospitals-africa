@@ -32,7 +32,7 @@ function assertIsSymptoms(body: unknown): asserts body is {
       typeof symptom.severity === 'number' &&
         symptom.severity >= 1 &&
         symptom.severity <= 10,
-      'Invalid symptom',
+      'Invalid symptom severity',
     )
     assertOr400(
       typeof symptom.start_date === 'string' &&

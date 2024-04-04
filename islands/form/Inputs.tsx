@@ -675,8 +675,8 @@ export function YesNoGrid(
       <div className='grid place-items-center'>
         <div className='w-min'>Declined</div>
       </div>
-      <div></div>
-      <div></div>
+      <div />
+      <div />
       {children}
     </div>
   )

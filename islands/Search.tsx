@@ -49,6 +49,7 @@ export type SearchProps<
   name?: string
   required?: boolean
   label?: Maybe<string>
+  no_name_form_data?: boolean
   addable?: boolean
   disabled?: boolean
   readonly?: boolean
@@ -76,6 +77,7 @@ export default function Search<
   label = name && capitalize(name),
   value,
   multi,
+  no_name_form_data,
   addable,
   disabled,
   readonly,
@@ -111,8 +113,10 @@ export default function Search<
   // If the provided name is something like medications.0, we form the id field to be medications.0.id
   // while if the provided name is something like patient, we form the id field to be patient_id
   const is_array_item = !!name && /\d$/.test(name)
-  const name_field = name && (is_array_item ? `${name}.name` : `${name}_name`)
-  const id_field = name && (is_array_item ? `${name}.id` : `${name}_id`)
+  const name_field = no_name_form_data ? undefined : (name &&
+    (is_array_item ? `${name}.name` : `${name}_name`))
+  const id_field = name &&
+    (no_name_form_data ? name : (is_array_item ? `${name}.id` : `${name}_id`))
 
   return (
     <Combobox
