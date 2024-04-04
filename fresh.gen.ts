@@ -138,7 +138,6 @@ import * as $family_NextOfKin from './islands/family/NextOfKin.tsx'
 import * as $family_PatientCohabitationSelect from './islands/family/PatientCohabitationSelect.tsx'
 import * as $family_RelationshipSelect from './islands/family/RelationshipSelect.tsx'
 import * as $file_preview_input from './islands/file-preview-input.tsx'
-import * as $form_Form from './components/library/Form.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_Row from './islands/form/Row.tsx'
@@ -147,7 +146,6 @@ import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_w
 import * as $icd10_SearchSpecific from './islands/icd10/SearchSpecific.tsx'
 import * as $inventory_Consumable from './islands/inventory/Consumable.tsx'
 import * as $inventory_ConsumeForm from './islands/inventory/ConsumeForm.tsx'
-import * as $inventory_Device from './components/inventory/DeviceForm.tsx'
 import * as $inventory_DeviceSearch from './islands/inventory/DeviceSearch.tsx'
 import * as $inventory_ProcurerForm from './islands/inventory/ProcurerForm.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
@@ -370,7 +368,6 @@ const manifest = {
       $family_PatientCohabitationSelect,
     './islands/family/RelationshipSelect.tsx': $family_RelationshipSelect,
     './islands/file-preview-input.tsx': $file_preview_input,
-    './islands/form/Form.tsx': $form_Form,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/Row.tsx': $form_Row,
@@ -379,7 +376,6 @@ const manifest = {
     './islands/icd10/SearchSpecific.tsx': $icd10_SearchSpecific,
     './islands/inventory/Consumable.tsx': $inventory_Consumable,
     './islands/inventory/ConsumeForm.tsx': $inventory_ConsumeForm,
-    './islands/inventory/Device.tsx': $inventory_Device,
     './islands/inventory/DeviceSearch.tsx': $inventory_DeviceSearch,
     './islands/inventory/ProcurerForm.tsx': $inventory_ProcurerForm,
     './islands/invites-form.tsx': $invites_form,
