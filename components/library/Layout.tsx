@@ -48,7 +48,7 @@ function AppLayoutContents(
           avatarUrl={avatarUrl}
           notifications={notifications}
         />
-        <div className='p-4'>
+        <div className='p-4 max-w-7xl'>
           {children}
         </div>
       </section>

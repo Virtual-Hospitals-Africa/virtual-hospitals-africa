@@ -5,7 +5,9 @@ type Demographics = {
   gender: 'female' | 'male'
 }
 
-export function randomZimbabweanDemographics(): Demographics {
+export function randomZimbabweanDemographics(
+  gender?: 'male' | 'female',
+): Demographics {
   const last_name_seed = Math.random() * total_last_name_incidence
   const first_name_seed = Math.random() * total_first_name_incidence
   const gender_seed = 100 * Math.random()
@@ -16,13 +18,17 @@ export function randomZimbabweanDemographics(): Demographics {
     return first_name_seed < entry.incidence
   })!
   const first_name = first_name_entry.name
-  const gender = first_name_entry.female_percentage > gender_seed
+  const of_gender = first_name_entry.female_percentage > gender_seed
     ? 'female'
     : 'male'
+  if (gender && gender !== of_gender) {
+    // Just re-roll the dice until we get one that matches
+    return randomZimbabweanDemographics(gender)
+  }
   return {
     first_name,
     last_name,
-    gender,
+    gender: of_gender,
     name: `${first_name} ${last_name}`,
   }
 }

@@ -41,6 +41,18 @@ function randomAvatar(gender: 'male' | 'female') {
   }.png`
 }
 
+const scenarios: ['male' | 'female', EncounterReason][] = [
+  ['female', 'maternity'],
+  ['female', 'seeking treatment'],
+  ['female', 'seeking treatment'],
+  ['female', 'seeking treatment'],
+  ['female', 'seeking treatment'],
+  ['male', 'seeking treatment'],
+  ['male', 'seeking treatment'],
+  ['male', 'seeking treatment'],
+  ['male', 'seeking treatment'],
+]
+
 /*
   Add 3 nurses and 10 patients
   at various stages of intake & consultation
@@ -66,7 +78,7 @@ async function addDummyData() {
     })
     .execute()
 
-  const num_patients = 8
+  const num_patients = scenarios.length
   const num_nurses = 5
   const nurses: Awaited<ReturnType<typeof addTestHealthWorker>>[] = []
   async function addNurse() {
@@ -84,15 +96,14 @@ async function addDummyData() {
   await Promise.all(range(num_nurses).map(addNurse))
 
   for (let i = 0; i < num_patients; i++) {
-    const demo = randomZimbabweanDemographics()
-    const random_avatar = randomAvatarNotYetUsed(demo.gender)
+    const [gender, reason] = scenarios[i]
+    const demo = randomZimbabweanDemographics(gender)
+    const random_avatar = randomAvatarNotYetUsed(gender)
     const file = Deno.readFileSync(`./static/${random_avatar}`)
     const inserted_media = await media.insert(db, {
       mime_type: 'image/png',
       binary_data: file,
     })
-
-    const reason = randomReason(demo.gender)
 
     const health_worker = nurses[num_patients - i - 1]
 
