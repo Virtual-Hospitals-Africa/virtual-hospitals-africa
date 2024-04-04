@@ -6,7 +6,7 @@ import RadialPattern from './RadialPattern.tsx'
 export default function HeroContents() {
   return (
     <div className='relative flex items-end lg:col-span-5 lg:row-span-2'>
-      <div className='lg:absolute w-full lg:w-auto md:bottom-12 md:-top-20 md:left-0 md:right-0 z-9 lg:p-0 md:p-14 py-8 lg:rounded-br-6xl bg-[#312E81] text-white md:bottom-8 lg:-inset-y-32 lg:left-[-100vw] lg:right-full lg:-mr-40'>
+      <div className='lg:absolute w-full lg:w-auto md:-top-20 md:left-0 md:right-0 z-9 lg:p-0 md:p-14 py-8 lg:rounded-br-6xl bg-[#312E81] text-white md:bottom-8 lg:-inset-y-32 lg:left-[-100vw] lg:right-full lg:-mr-40'>
         <RadialPattern />
         <div className='lg:absolute w-full h-full lg:pl-80 lg:grid lg:place-items-center'>
           <div className='flex flex-col-reverse md:flex-row w-full h-full md:items-center items-start justify-start lg:justify-end'>
@@ -18,11 +18,10 @@ export default function HeroContents() {
                 Bringing accessible health care to Africans
               </p>
               <div className='mt-4 flex gap-4'>
-                {
-                  /* <Button href='/learn-more' color='blue'>
-              Learn more
-            </Button> */
-                }
+                <Button href='#demo' color='blue'>
+                  Learn more
+                </Button>
+
                 <Button
                   href='/waitlist?entrypoint=hero'
                   color='white'
