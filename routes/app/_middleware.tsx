@@ -47,9 +47,17 @@ export async function handler(
     !e.availability_set
   )
 
-  function redirectIfNotAlreadyOnPage(page: string) {
-    const on_page = (ctx.url.pathname + ctx.url.search).startsWith(page)
-    return on_page ? ctx.next() : redirect(page)
+  function redirectIfNotAlreadyOnPage(
+    page: string,
+    params?: Record<string, string>,
+  ) {
+    const current_url = ctx.url.pathname + ctx.url.search
+    console.log('current_url', current_url)
+    const on_page = current_url.startsWith(page)
+    console.log('on_page', on_page, page)
+    return on_page
+      ? ctx.next()
+      : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)
   }
 
   if (role_needing_registration) {
@@ -64,11 +72,14 @@ export async function handler(
   }
 
   if (availability_not_set) {
-    const warning = encodeURIComponent(
-      'Please set your availability to be able to receive appointments',
-    )
     return redirectIfNotAlreadyOnPage(
-      `/app/calendar/availability?facility_id=${availability_not_set.facility.id}&initial=true&warning=${warning}`,
+      '/app/calendar/availability',
+      {
+        facility_id: String(availability_not_set.facility.id),
+        initial: 'true',
+        warning:
+          'Please set your availability to be able to receive appointments',
+      },
     )
   }
 

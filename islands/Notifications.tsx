@@ -54,7 +54,7 @@ export function Notification(
   },
 ) {
   return (
-    <div className='pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 float-right z-9'>
+    <div className='pointer-events-auto flex w-full max-w-md rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 float-right z-9 self-end'>
       <div className='w-0 flex-1 p-4'>
         <div className='flex items-start'>
           <Avatar

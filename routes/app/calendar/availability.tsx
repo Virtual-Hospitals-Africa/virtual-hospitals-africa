@@ -102,19 +102,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async GET(_req, ctx) {
     const { healthWorker } = ctx.state
 
-    const facility_id_param = getNumericParam(ctx, 'facility_id')
+    const facility_id_param =
+      parseInt(ctx.url.searchParams.get('facility_id')!) || null
 
     if (healthWorker.employment.length > 1 && !facility_id_param) {
       return redirect(hrefFromCtx(ctx, (url) => {
         url.searchParams.set(
           'facility_id',
-          String(healthWorker.employment[0].facility.id),
+          String(healthWorker.default_facility_id),
         )
       }))
     }
 
     const facility_id = facility_id_param ||
-      healthWorker.employment[0].facility.id
+      healthWorker.default_facility_id
     const matching_employment = healthWorker.employment.find(
       (employment) => employment.facility.id === facility_id,
     )
