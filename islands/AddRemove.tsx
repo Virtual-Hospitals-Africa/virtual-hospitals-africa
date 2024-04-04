@@ -25,20 +25,28 @@ export function AddRow(
 }
 
 export function RemoveRow(
-  { children, onClick, labelled }: {
+  { children, onClick, labelled, centered }: {
     children: ComponentChildren
     onClick(): void
     labelled?: boolean
+    centered?: boolean
   },
 ): JSX.Element {
   return (
     <div className='flex gap-2'>
       <a
-        className='text-indigo-600 flex cursor-pointer'
+        role='button'
+        className={cls(
+          'text-indigo-600 flex cursor-pointer',
+          centered && 'items-center',
+        )}
         onClick={onClick}
       >
         <MinusCircleIcon
-          className={cls('h-6 w-6', labelled ? 'mt-[30px]' : 'mt-[6px]')}
+          className={cls(
+            'h-6 w-6',
+            !centered && (labelled ? 'mt-[30px]' : 'mt-[6px]'),
+          )}
         />
       </a>
       {children}

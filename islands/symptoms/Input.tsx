@@ -140,16 +140,12 @@ export default function SymptomInput({
             />
           </FormRow>
         </div>
-        <div className='md:col-span-4'>
-          <FormRow className='flex-wrap'>
-            <FilePreviewInput
-              name={`${name}.media.0`}
-              label='Photo/Video'
-              className='w-36 h-36'
-              value={value?.media?.[0]}
-            />
-          </FormRow>
-        </div>
+        <FilePreviewInput
+          name={`${name}.media.0`}
+          label='Photo/Video'
+          value={value?.media?.[0]}
+          className='w-36'
+        />
       </div>
     </RemoveRow>
   )
