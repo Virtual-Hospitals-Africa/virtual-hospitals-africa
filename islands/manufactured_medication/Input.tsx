@@ -121,7 +121,8 @@ export default function ManufacturedMedicationInput(props: {
           value={container_size.value}
           min={1}
           required
-          onInput={(e) => container_size.value = Number(e.target.value) || 0}
+          onInput={(e) =>
+            container_size.value = Number(e.currentTarget.value) || 0}
         />
         <NumberInput
           name='number_of_containers'
@@ -130,7 +131,7 @@ export default function ManufacturedMedicationInput(props: {
           min={1}
           required
           onInput={(e) =>
-            number_of_containers.value = Number(e.target.value) || 0}
+            number_of_containers.value = Number(e.currentTarget.value) || 0}
         />
         <NumberInput
           name='quantity'
