@@ -15,7 +15,7 @@ export default function InviteEmployeesForm() {
           >
             Email<span style={{ color: 'gray' }}>*</span>
           </label>
-          {range(0, totalInvites).map((index) => (
+          {range(totalInvites).map((index) => (
             <div className='mt-2 mb-2'>
               <input
                 type='email'
@@ -35,7 +35,7 @@ export default function InviteEmployeesForm() {
           >
             Profession<span style={{ color: 'gray' }}>*</span>
           </label>
-          {range(0, totalInvites).map((index) => (
+          {range(totalInvites).map((index) => (
             <div className='mt-2 mb-2'>
               <select
                 id={`profession-${index}`}

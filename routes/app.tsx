@@ -45,7 +45,7 @@ export default async function AppPage(
   const getting_waiting_room = waiting_room.get(trx, {
     facility_id,
   })
-  const getting_appointments_count = appointments.countUpcoming(
+  const appointments_count = await appointments.countUpcoming(
     trx,
     {
       health_worker_id: healthWorker.id,
@@ -62,7 +62,9 @@ export default async function AppPage(
       tab: 'appointments',
       href: '/app/calendar',
       active: false,
-      rightIcon: <Badge content={await getting_appointments_count} />,
+      rightIcon: appointments_count
+        ? <Badge content={appointments_count} />
+        : null,
     },
     {
       tab: 'orders',

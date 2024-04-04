@@ -5,11 +5,11 @@ import * as inParallel from '../../util/inParallel.ts'
 import range from '../../util/range.ts'
 
 async function* eventually100() {
-  yield* range(0, 100)
+  yield* range(100)
 }
 
 async function* eventually10() {
-  yield* range(0, 10)
+  yield* range(10)
 }
 
 describe('inParallel.forEach', () => {
@@ -139,7 +139,7 @@ describe('inParallel.forEach', () => {
       },
       { concurrency: 1 },
     )
-    assertEquals(proccessedItems, range(0, 10))
+    assertEquals(proccessedItems, range(10))
   })
 
   it('rejects with the first error and stops processing further', async () => {

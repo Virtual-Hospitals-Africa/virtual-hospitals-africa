@@ -1904,6 +1904,7 @@ export type RenderedProvider = {
   employee_id: number
   name: string
   profession: string
+  avatar_url: string | null
   href: string
   seen: SqlBool
 }

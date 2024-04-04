@@ -39,7 +39,7 @@ export function Tabs(
   },
 ) {
   return (
-    <div className='border-b border-gray-200 pb-5 sm:pb-0'>
+    <div className='border-b border-gray-200 pb-5 sm:pb-0 mb-4'>
       <div className='mt-3 sm:mt-4'>
         <nav className='-mb-px flex px-5 flex-wrap gap-x-8 gap-y-2'>
           {tabs.map((props) => (

@@ -1,4 +1,8 @@
-export default function range(start: number, end: number, step = 1): number[] {
+export default function range(start: number, end?: number, step = 1): number[] {
+  if (end === undefined) {
+    end = start
+    start = 0
+  }
   const length = Math.max(Math.ceil((end - start) / (step || 1)), 0)
   const range = Array(length)
 

@@ -2,10 +2,12 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import { RenderedWaitingRoom, TrxOrDb, WaitingRoom } from '../../types.ts'
 import * as patients from './patients.ts'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject, literalBoolean } from '../helpers.ts'
 import { INTAKE_STEPS } from '../../shared/intake.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../shared/review.ts'
 import { hasName } from '../../util/haveNames.ts'
+import capitalize from '../../util/capitalize.ts'
+import sortBy from '../../util/sortBy.ts'
 
 export function add(
   trx: TrxOrDb,
@@ -262,6 +264,7 @@ export async function get(
             'health_workers.id as health_worker_id',
             'employment.id as provider_id',
             'health_workers.name',
+            'health_workers.avatar_url',
           ]),
       ).as('appointment_providers'),
       jsonArrayFrom(
@@ -285,6 +288,7 @@ export async function get(
             'employment.health_worker_id',
             'employment.id as employee_id',
             'health_workers.name',
+            'health_workers.avatar_url',
             'employment.profession',
             eb_providers('patient_encounter_providers.seen_at', 'is not', null)
               .as('seen'),
@@ -317,7 +321,8 @@ export async function get(
             'employment.id as employee_id',
             'health_workers.name',
             'employment.profession',
-            sql<boolean>`TRUE`.as('seen'),
+            'health_workers.avatar_url',
+            literalBoolean(true).as('seen'),
             sql<
               string
             >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
@@ -345,7 +350,8 @@ export async function get(
                 'employment.id as employee_id',
                 'health_workers.name',
                 'employment.profession',
-                sql<boolean>`FALSE`.as('seen'),
+                'health_workers.avatar_url',
+                literalBoolean(false).as('seen'),
                 sql<
                   string
                 >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
@@ -362,11 +368,11 @@ export async function get(
         eb('doctor_review_requests.id', 'is not', null),
       ])
     )
-    .orderBy(['is_emergency desc', 'waiting_room.created_at asc'])
+    .orderBy(['is_emergency desc', 'patient_encounters.created_at asc'])
 
   const patients_in_waiting_room = await query.execute()
 
-  return patients_in_waiting_room.map(
+  const waiting_room_unsorted = patients_in_waiting_room.map(
     (
       {
         patient,
@@ -412,27 +418,33 @@ export async function get(
       } else if (in_review) {
         status = 'In Review'
         if (awaiting_review_step) {
-          status += ` (${awaiting_review_step})`
+          status += ` (${capitalize(awaiting_review_step)})`
         }
       } else if (completed_intake) {
         if (in_waiting_room) {
           if (last_completed_encounter_step) {
-            status = `Awaiting Consultation (${awaiting_encounter_step})`
+            assert(awaiting_encounter_step)
+            status = `Awaiting Consultation (${
+              capitalize(awaiting_encounter_step)
+            })`
           } else {
             status = 'Awaiting Consultation'
           }
         } else {
-          status = `In Consultation (${awaiting_encounter_step})`
+          assert(awaiting_encounter_step)
+          status = `In Consultation (${capitalize(awaiting_encounter_step)})`
         }
       } else {
         if (in_waiting_room) {
           if (last_completed_intake_step) {
-            status = `Awaiting Intake (${awaiting_intake_step})`
+            assert(awaiting_intake_step)
+            status = `Awaiting Intake (${capitalize(awaiting_intake_step)})`
           } else {
             status = 'Awaiting Intake'
           }
         } else {
-          status = `In Intake (${awaiting_intake_step})`
+          assert(awaiting_intake_step)
+          status = `In Intake (${capitalize(awaiting_intake_step)})`
         }
       }
       assert(status)
@@ -465,5 +477,10 @@ export async function get(
         },
       }
     },
+  )
+
+  return sortBy(
+    waiting_room_unsorted,
+    (row) => row.status.startsWith('Awaiting') ? 0 : 1,
   )
 }

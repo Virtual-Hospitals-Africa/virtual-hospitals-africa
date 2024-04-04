@@ -30,7 +30,10 @@ const columns: TableColumn<RenderedWaitingRoom>[] = [
       return (
         <div className='flex flex-col'>
           {row.providers.map((p) => (
-            <a key={p.health_worker_id} href={p.href}>{p.name}</a>
+            <Person
+              key={p.health_worker_id}
+              person={p}
+            />
           ))}
         </div>
       )
