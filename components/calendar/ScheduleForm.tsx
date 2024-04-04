@@ -1,12 +1,12 @@
-import Form from '../components/library/Form.tsx'
-import { DateInput, TextInput } from './form/Inputs.tsx'
-import FormRow from './form/Row.tsx'
-import FormButtons from './form/buttons.tsx'
-import PersonSearch from './PersonSearch.tsx'
+import Form from '../library/Form.tsx'
+import { DateInput, TextInput } from '../../islands/form/Inputs.tsx'
+import FormRow from '../../islands/form/Row.tsx'
+import FormButtons from '../../islands/form/buttons.tsx'
+import PersonSearch from '../../islands/PersonSearch.tsx'
 
-export default function ScheduleForm() {
+export default function ScheduleForm({ className }: { className?: string }) {
   return (
-    <Form>
+    <Form className={className}>
       <FormRow>
         <PersonSearch
           name='patient'
@@ -21,7 +21,7 @@ export default function ScheduleForm() {
         />
       </FormRow>
       <FormRow>
-        <DateInput />
+        <DateInput className='w-full' />
       </FormRow>
       <FormRow>
         <TextInput name='reason' required />

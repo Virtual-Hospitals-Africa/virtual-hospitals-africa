@@ -347,9 +347,10 @@ export class HealthWorkerGoogleClient extends GoogleClient {
         }
         this.health_worker.access_token = refreshed.access_token
         return await super.makeRequest(path, opts)
+      } else {
+        throw err
       }
     }
-    throw new Error('Unreachable')
   }
 }
 

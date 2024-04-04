@@ -2,22 +2,25 @@ import { ProviderAppointment, ProviderAppointmentSlot } from '../../types.ts'
 import AppointmentsEmptyState from './EmptyState.tsx'
 import SectionHeader from '../library/typography/SectionHeader.tsx'
 import Appointment from './Appointment.tsx'
-
-const className =
-  'mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'
+import cls from '../../util/cls.ts'
 
 export default function Appointments(
-  { headerText, appointments, url }: {
+  { headerText, appointments, url, className }: {
     headerText: string
     appointments: (ProviderAppointment | ProviderAppointmentSlot)[]
     url: URL
+    className?: string
   },
 ) {
+  const useClassName = cls(
+    'divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full',
+    className,
+  )
   const header = <SectionHeader>{headerText}</SectionHeader>
 
   if (!appointments.length) {
     return (
-      <div className={className}>
+      <div className={useClassName}>
         {header}
         <AppointmentsEmptyState />
       </div>
@@ -25,7 +28,7 @@ export default function Appointments(
   }
 
   return (
-    <ol className={className}>
+    <ol className={useClassName}>
       {header}
       {appointments.map((appointment) => (
         <Appointment

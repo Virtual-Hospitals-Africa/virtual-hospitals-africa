@@ -17,7 +17,9 @@ export function ButtonsContainer(
   { className, children }: { className?: string; children: ComponentChildren },
 ) {
   return (
-    <div className={cls('container grid gap-x-2 grid-cols-2', className)}>
+    <div
+      className={cls('flex gap-x-2 w-full', className)}
+    >
       {children}
     </div>
   )
@@ -40,11 +42,14 @@ export default function FormButtons(
           variant='outline'
           color='blue'
           href={cancel.href}
+          className='flex-1'
         >
           {cancel.text || 'Cancel'}
         </Button>
       )}
-      <Button type='submit' name={name} value={value}>{submitText}</Button>
+      <Button type='submit' name={name} value={value} className='flex-1'>
+        {submitText}
+      </Button>
     </ButtonsContainer>
   )
 }

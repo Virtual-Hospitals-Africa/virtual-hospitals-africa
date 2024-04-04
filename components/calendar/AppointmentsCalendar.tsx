@@ -34,6 +34,7 @@ export default function AppointmentsCalendar(
         headerText={formHeaderText({ day, today })}
         appointments={appointments}
         url={url}
+        className='mt-4'
       />
     </div>
   )
