@@ -27,8 +27,8 @@ function ExaminationCategory(
     all_normal.value || findings.value.some((finding) => !!finding.value)
   )
   return (
-    <div className='flex flex-col'>
-      <SectionHeader className='mt-5 mb-1 text-[20px]'>
+    <div className='flex flex-col mb-5'>
+      <SectionHeader className='mb-1 text-[20px]'>
         {category.category}
       </SectionHeader>
       <CheckboxGridItem
@@ -81,13 +81,15 @@ export function PatientExaminationForm({
 
   return (
     <>
-      <CheckboxGridItem
+      {
+        /* <CheckboxGridItem
         label='skip'
         name='skipped'
         checked={skipped.value}
         onChange={(checked) => skipped.value = checked}
-      />
-      <div className='grid grid-cols-1 sm:grid-cols-4 grid-flow-row-dense gap-5'>
+      /> */
+      }
+      <div className='sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6'>
         {patient_examination.categories.map((category) => (
           <ExaminationCategory
             key={category.category}

@@ -693,7 +693,7 @@ export function CheckboxGridItem(
   },
 ) {
   return (
-    <div className='w-full flex justify-start gap-2'>
+    <div className='w-full flex justify-start gap-2 break-before-avoid'>
       <div className='grid items-center'>
         <input
           name={name}
