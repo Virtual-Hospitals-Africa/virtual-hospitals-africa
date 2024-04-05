@@ -98,3 +98,10 @@
 .vha-text-slide-right > path:nth-child(20) { animation: slideRight calc(var(--vha-text-slide-right-letter-slide-speed)) ease-in calc(var(--fade-in-heart-animation-delay) + (20 - 1) * var(--vha-text-slide-right-letter-slide-delay)) forwards }
 .vha-text-slide-right > path:nth-child(21) { animation: slideRight calc(var(--vha-text-slide-right-letter-slide-speed)) ease-in calc(var(--fade-in-heart-animation-delay) + (21 - 1) * var(--vha-text-slide-right-letter-slide-delay)) forwards }
 .vha-text-slide-right > path:nth-child(22) { animation: slideRight calc(var(--vha-text-slide-right-letter-slide-speed)) ease-in calc(var(--fade-in-heart-animation-delay) + (22 - 1) * var(--vha-text-slide-right-letter-slide-delay)) forwards }
+
+
+iframe#youtube_demo_iframe {
+  max-width: 100%;
+  height: calc((390 / 640) * (100vw - 12px));
+  max-height: 390px;
+}
