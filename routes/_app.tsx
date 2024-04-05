@@ -71,10 +71,14 @@ export default function App({ Component, ...props }: PageProps) {
               sizes='180x180'
               href='https://virtualhospitalsafrica.org/images/ogimage.png'
             />
+            <script
+              src='https://youtube.com/iframe_api'
+              async
+            />
           </>
         )}
         {props.route.startsWith('/app') && (
-          <script src='/hijack-form-submission.js' defer />
+          <script src='/hijack-form-submission.js' async />
         )}
       </head>
       <body className='min-h-screen flex flex-col relative justify-between'>

@@ -14,6 +14,7 @@ export default function Home() {
   return (
     <>
       <Hero />
+      {/* <div id='zoop' style={{ width: 600, height: 400 }} /> */}
       <Introduction />
       <NavBar />
       <HealthWorkers />
