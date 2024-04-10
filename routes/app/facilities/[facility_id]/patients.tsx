@@ -21,29 +21,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
     )
     const search = ctx.url.searchParams.get('search')
     const facility_id = parseInt(ctx.params.facility_id)
-    const room = await waiting_room.get(ctx.state.trx, { facility_id })
-
+    const getting_room = waiting_room.get(ctx.state.trx, { facility_id })
     const patients = await getAllWithNames(ctx.state.trx, search)
+    const room = await getting_room
 
     const patients_with_href = patients.map((patient) => {
       const patient_in_waiting_room = room.some((entry) =>
         entry.patient.id === patient.id
       )
 
-      if (patient_in_waiting_room) {
-        return {
-          id: patient.id,
-          name: patient.name,
-          href: `/app/patients/${patient.id}`,
-        }
-      } else {
-        return {
-          id: patient.id,
-          name: patient.name,
-          href:
-            `/app/facilities/${facility_id}/waiting_room/add?patient_id=${patient?.id}`,
-        }
-      }
+      const href = patient_in_waiting_room
+        ? `/app/patients/${patient.id}`
+        : `/app/facilities/${facility_id}/waiting_room/add?patient_id=${patient?.id}`
+
+      return { ...patient, href }
     })
 
     return json(patients_with_href)
