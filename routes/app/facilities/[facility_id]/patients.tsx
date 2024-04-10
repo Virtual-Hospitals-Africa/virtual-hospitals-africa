@@ -34,7 +34,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
         ? `/app/patients/${patient.id}`
         : `/app/facilities/${facility_id}/waiting_room/add?patient_id=${patient?.id}`
 
-      return { ...patient, href }
+      return { id: patient.id, name: patient.name, href }
     })
 
     return json(patients_with_href)
