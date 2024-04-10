@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import { RenderedWaitingRoom } from '../../types.ts'
 import PersonSearch from '../PersonSearch.tsx'
 
@@ -8,19 +9,15 @@ export function AddPatientSearch({ facility_id, waiting_room }: {
   return (
     <PersonSearch
       name='patient'
-      href='/app/patients'
+      href={`/app/facilities/${facility_id}/patients`}
       label=''
       addable
       optionHref={(patient) => {
         if (patient.id === 'add') {
           return `/app/facilities/${facility_id}/waiting_room/add?patient_name=${patient.name}`
         }
-        const patient_in_waiting_room = waiting_room.some(
-          (waiting_room_entry) => waiting_room_entry.patient.id === patient?.id,
-        )
-        return patient_in_waiting_room
-          ? `/app/patients/${patient.id}`
-          : `/app/facilities/${facility_id}/waiting_room/add?patient_id=${patient.id}`
+        assert(patient.href, 'Rendered patient should have an href')
+        return patient.href
       }}
     />
   )

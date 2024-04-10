@@ -1,0 +1,60 @@
+import { describe, it } from 'std/testing/bdd.ts'
+import { assert } from 'std/assert/assert.ts'
+import { addTestHealthWorkerWithSession, route } from '../../utilities.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import * as patients from '../../../../db/models/patients.ts'
+import * as patient_encounters from '../../../../db/models/patient_encounters.ts'
+import db from '../../../../db/db.ts'
+import generateUUID from '../../../../util/uuid.ts'
+import { withTestFacility } from '../../utilities.ts'
+
+describe(
+  '/app/facilities/[facility_id]/patients',
+  { sanitizeResources: false, sanitizeOps: false },
+  () => {
+    it("can search for patients, sending back an appropriate href depending on whether the patient is in the facility's waiting room", () =>
+      withTestFacility(db, async (facility_id) => {
+        const { fetch } = await addTestHealthWorkerWithSession(db, {
+          scenario: 'approved-nurse',
+          facility_id,
+        })
+
+        const patient_not_in_waiting_room = await patients.upsert(db, {
+          name: generateUUID() + ' not in waiting room',
+        })
+
+        const patient_in_waiting_room_name = generateUUID() + ' in waiting room'
+        const encounter = await patient_encounters.upsert(db, facility_id, {
+          patient_name: patient_in_waiting_room_name,
+          reason: 'seeking treatment',
+        })
+
+        const response = await fetch(
+          `${route}/app/facilities/${facility_id}/patients?search=waiting+room`,
+          {
+            headers: {
+              accept: 'application/json',
+            },
+          },
+        )
+
+        assert(response.ok, 'should have returned ok')
+        const text = await response.text()
+        const json = JSON.parse(text)
+
+        assertEquals(json, [
+          {
+            id: patient_not_in_waiting_room.id,
+            name: patient_not_in_waiting_room.name,
+            href:
+              `/app/facilities/${facility_id}/waiting_room/add?patient_id=${patient_not_in_waiting_room.id}`,
+          },
+          {
+            id: encounter.patient_id,
+            name: patient_in_waiting_room_name,
+            href: `/app/patients/${encounter.patient_id}`,
+          },
+        ])
+      }))
+  },
+)
