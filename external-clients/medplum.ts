@@ -16,7 +16,12 @@ export async function startServerAgainstLocalDB() {
   const vha_medplum_config = {
     ...medplum_config,
     database: database_opts,
-    redis: redis_opts,
+    redis: {
+      host: redis_opts.hostname,
+      port: redis_opts.port,
+      password: redis_opts.password,
+      username: redis_opts.username,
+    },
   }
 
   await Deno.writeTextFile(
@@ -26,6 +31,9 @@ export async function startServerAgainstLocalDB() {
 
   const server = Command('npm', {
     args: ['run', 'dev', `file:${vha_medplum_config_file}`],
+    env: {
+      NODE_TLS_REJECT_UNAUTHORIZED: '0',
+    },
     cwd: medplum_server_dir,
     stdout: 'piped',
     stderr: 'piped',
