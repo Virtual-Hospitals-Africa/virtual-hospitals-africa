@@ -19,12 +19,8 @@ echo "Check server output via:"
 echo "cat $test_server_output"
 # trap 'rm -f $test_server_output' EXIT
 
-test_server_pid=''
 kill_test_server() {
-  set +e
-  test_server_pid=$(lsof -i tcp:8005 | awk 'NR==2 { print $2 }')
-  [[ -n "$test_server_pid" ]] && kill "$test_server_pid"
-  set -e
+  ./scripts/kill_process_on_port.sh 8005
 }
 
 start_test_server() {
@@ -56,7 +52,7 @@ run_tests() {
     --unstable-temporal \
     --env \
     --unsafely-ignore-certificate-errors \
-    --ignore=test/chatbot \
+    --ignore=test/chatbot,medplum \
     --parallel \
     "$@"
 }

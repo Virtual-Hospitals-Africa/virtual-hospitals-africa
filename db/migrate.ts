@@ -1,5 +1,6 @@
 import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
+import * as medplum from '../external-clients/medplum.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 
@@ -62,6 +63,14 @@ async function startMigrating(cmd: string, target?: string) {
   }
 
   switch (cmd) {
+    case 'medplum': {
+      await medplum.runMigrationsAgainstLocalDB()
+      console.log('DONE')
+      return {
+        error: null,
+        results: [],
+      }
+    }
     case 'check': {
       const migrations = await migrator.getMigrations()
       const migrations_not_yet_run = migrations.filter((it) => !it.executedAt)
