@@ -39,12 +39,19 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.42.0
       
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'v18.20.2'
+
       - name: Run check
         run: deno task check
 
@@ -54,14 +61,20 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
-      - name: Run build
-        run: deno task build
+      - name: Install medplum
+        run: cd medplum && npm install && npx turbo run build
 
-      - name: Migrate database
+      - name: Migrate database (FHIR medplum)
+        run: deno task db:migrate:medplum
+
+      - name: Migrate database (VHA)
         run: deno task db:migrate:latest
 
       - name: Load seeds
         run: deno task db:migrate:seeds:load
+
+      - name: Run build
+        run: deno task build
 
       - name: Run tests
         run: deno task test --skip-migrate-check && deno task test:chatbot

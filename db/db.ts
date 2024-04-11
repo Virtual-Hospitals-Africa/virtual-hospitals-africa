@@ -8,16 +8,11 @@ import {
 import { DB } from '../db.d.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
-const BUILDING = Deno.env.get('BUILDING')
-
 let DATABASE_URL = Deno.env.get('DATABASE_URL') ||
-  Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL')
+  Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL') || ''
 
-if (!BUILDING) {
-  assert(DATABASE_URL)
-} else {
-  DATABASE_URL = 'NEVER_USED'
-}
+const BUILDING = Deno.env.get('BUILDING')
+if (!BUILDING) assert(DATABASE_URL)
 
 // Connect with vha_test database instead of vha_dev when running tests
 if (Deno.env.get('IS_TEST')) {
@@ -28,10 +23,30 @@ if (Deno.env.get('IS_TEST')) {
   DATABASE_URL = DATABASE_URL.replace('vha_dev', 'vha_test')
 }
 
-// deno-lint-ignore no-explicit-any
-export const uri: any = DATABASE_URL.includes('localhost')
-  ? DATABASE_URL
-  : `${DATABASE_URL}?sslmode=require`
+if (DATABASE_URL && !DATABASE_URL.includes('localhost')) {
+  DATABASE_URL += '?sslmode=require'
+}
+
+export function parseConnectionString(
+  connectionString: string,
+) {
+  const regex = /^postgres:\/\/(?:(.*?)(?::(.*?))?@)?(.*):(\d+)\/(.*)?$/
+  const match = connectionString.match(regex)
+
+  assert(match, 'Invalid postgres connection string format.')
+
+  return {
+    username: match[1],
+    password: match[2],
+    hostname: match[3],
+    port: parseInt(match[4], 10),
+    dbname: match[5],
+  }
+}
+
+export const uri = DATABASE_URL
+
+export const opts = uri ? parseConnectionString(uri) : null
 
 const db = new Kysely<DB>({
   dialect: {
@@ -40,7 +55,7 @@ const db = new Kysely<DB>({
     },
     createDriver() {
       // deno-lint-ignore no-explicit-any
-      return new PostgreSQLDriver(uri) as any
+      return new PostgreSQLDriver(uri as any) as any
     },
     createIntrospector(db: Kysely<unknown>) {
       return new PostgresIntrospector(db)
