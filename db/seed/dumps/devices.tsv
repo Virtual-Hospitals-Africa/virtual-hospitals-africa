@@ -1,22 +1,22 @@
 id	created_at	updated_at	name	manufacturer
-1	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Contec BC401	Contec
-2	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Oraquick Rapid Diagnostic Test Kit	Orasure Technologies
-3	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Carestart Rapid Diagnostic Test Kit	Accessbio
-4	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	LS-4000 Immunofluorescence Analyser	LansionBio
-5	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	ADF B19 Blood Pressure Monitor	Andesfit
-6	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	ADF-B06 Pulse Oximeter	Andesfit
-7	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	ADF-B885T Body Fat & Hydration Scale	Andesfit
-8	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Accu-Answer 4-in-1 Machine	Accu-Chek
-9	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Clearblue Pregnancy Test Kit	Swiss Precision Diagnostics GmbH
-10	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Mantoux tuberculin skin test (TST)	Sanofi Pasteur Laboratories Limited
-11	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	ADF-B38A Non-Contact Infrared Body/Surface Thermometer	Andesfit
-12	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Accu-Tell Rapid Diagnostic Test Kit	Accubiotech
-13	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Syphilis Ab Rapid Diagnostic Test Kit	Jncmed
-14	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Chlamydia Trachomatis Rapid Diagnostic Test	Jncmed
-15	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Gonorrhea Rapid Diagnostic Test Kit	Jncmed
-16	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	HCV Hepatitis Rapid Diagnostic Test Kit	Jncmed
-17	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Herpes Simplex Diagnostic Test Kit	Jncmed
-18	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Trichomonas Diagnostic Test Kit	Jncmed
-19	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Cholera Antigen Rapid Diagnostic Test Kit	Jncmed
-20	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	M7 Mindray Portable Doppler Ultrasound Machine	Mindray
-21	2024-03-14 12:47:03.616257-04	2024-03-14 12:47:03.616257-04	Leonardo DR nano Digital x-ray Machine	Oehm und Rehbein Technologies
+25	2024-04-16 16:37:10.483252-04	2024-04-16 16:37:10.483252-04	Contec BC401	Contec
+26	2024-04-16 16:37:10.485321-04	2024-04-16 16:37:10.485321-04	Oraquick Rapid Diagnostic Test Kit	Orasure Technologies
+27	2024-04-16 16:37:10.486598-04	2024-04-16 16:37:10.486598-04	Carestart Rapid Diagnostic Test Kit	Accessbio
+28	2024-04-16 16:37:10.487952-04	2024-04-16 16:37:10.487952-04	LS-4000 Immunofluorescence Analyser	LansionBio
+29	2024-04-16 16:37:10.488987-04	2024-04-16 16:37:10.488987-04	ADF B19 Blood Pressure Monitor	Andesfit
+30	2024-04-16 16:37:10.490264-04	2024-04-16 16:37:10.490264-04	ADF-B06 Pulse Oximeter	Andesfit
+31	2024-04-16 16:37:10.491445-04	2024-04-16 16:37:10.491445-04	ADF-B885T Body Fat & Hydration Scale	Andesfit
+32	2024-04-16 16:37:10.492626-04	2024-04-16 16:37:10.492626-04	Accu-Answer 4-in-1 Machine	Accu-Chek
+33	2024-04-16 16:37:10.493833-04	2024-04-16 16:37:10.493833-04	Clearblue Pregnancy Test Kit	Swiss Precision Diagnostics GmbH
+34	2024-04-16 16:37:10.495018-04	2024-04-16 16:37:10.495018-04	Mantoux tuberculin skin test (TST)	Sanofi Pasteur Laboratories Limited
+35	2024-04-16 16:37:10.509307-04	2024-04-16 16:37:10.509307-04	ADF-B38A Non-Contact Infrared Body/Surface Thermometer	Andesfit
+36	2024-04-16 16:37:10.51059-04	2024-04-16 16:37:10.51059-04	Accu-Tell Rapid Diagnostic Test Kit	Accubiotech
+37	2024-04-16 16:37:10.511764-04	2024-04-16 16:37:10.511764-04	Syphilis Ab Rapid Diagnostic Test Kit	Jncmed
+38	2024-04-16 16:37:10.512955-04	2024-04-16 16:37:10.512955-04	Chlamydia Trachomatis Rapid Diagnostic Test	Jncmed
+39	2024-04-16 16:37:10.514059-04	2024-04-16 16:37:10.514059-04	Gonorrhea Rapid Diagnostic Test Kit	Jncmed
+40	2024-04-16 16:37:10.515641-04	2024-04-16 16:37:10.515641-04	HCV Hepatitis Rapid Diagnostic Test Kit	Jncmed
+41	2024-04-16 16:37:10.516869-04	2024-04-16 16:37:10.516869-04	Herpes Simplex Diagnostic Test Kit	Jncmed
+42	2024-04-16 16:37:10.51826-04	2024-04-16 16:37:10.51826-04	Trichomonas Diagnostic Test Kit	Jncmed
+43	2024-04-16 16:37:10.519472-04	2024-04-16 16:37:10.519472-04	Cholera Antigen Rapid Diagnostic Test Kit	Jncmed
+44	2024-04-16 16:37:10.52066-04	2024-04-16 16:37:10.52066-04	M7 Mindray Portable Doppler Ultrasound Machine	Mindray
+45	2024-04-16 16:37:10.533713-04	2024-04-16 16:37:10.533713-04	Leonardo DR nano Digital x-ray Machine	Oehm und Rehbein Technologies

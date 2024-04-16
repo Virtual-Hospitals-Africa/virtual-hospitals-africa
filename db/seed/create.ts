@@ -20,6 +20,9 @@ export function create(
         return seeds.some((seed) => seed.name === seed_name)
       })
       if (!all_seeds_present) {
+        for (const table_name of table_names.toReversed()) {
+          await db.deleteFrom(table_name as any).execute()
+        }
         return generate(db)
       }
 

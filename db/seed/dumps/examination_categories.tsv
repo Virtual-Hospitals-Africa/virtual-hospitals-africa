@@ -1,1 +1,19 @@
 id	examination_name	category	order
+37	Head-to-toe Assessment	Patient state	1
+38	Head-to-toe Assessment	Hands	2
+39	Head-to-toe Assessment	Nails	3
+40	Head-to-toe Assessment	Palms	4
+41	Head-to-toe Assessment	Colour	5
+42	Head-to-toe Assessment	Texture	6
+43	Head-to-toe Assessment	Distribution	7
+44	Head-to-toe Assessment	Pattern	8
+45	Head-to-toe Assessment	Surface	9
+46	Head-to-toe Assessment	Character	10
+47	Head-to-toe Assessment	Tongue	11
+48	Head-to-toe Assessment	Teeth	12
+49	Head-to-toe Assessment	Gums	13
+50	Head-to-toe Assessment	Tonsils	14
+51	Head-to-toe Assessment	Pharynx	15
+52	Head-to-toe Assessment	Breath	16
+53	Head-to-toe Assessment	Sclera	17
+54	Head-to-toe Assessment	Conjunctiva	18

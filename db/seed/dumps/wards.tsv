@@ -1,1085 +1,1085 @@
 id	name	district_id
-1	Bulawayo	1
-2	Harare	2
-3	Betera	3
-4	Chapwanya	3
-5	Chikuwa	3
-6	Chimombe 'b (Chimombe-chiweshe)	3
-7	Chimombe A	3
-8	Chimombe B	3
-9	Chimombe East	3
-10	Chimombe West	3
-11	Chimombe West (Chimutsa W)	3
-12	Chimutsa East	3
-13	Chirozva A	3
-14	Chirozva B	3
-15	Chitsunge	3
-16	Chiweshe	3
-17	Garamwera	3
-18	Mabvuregudo	3
-19	Makumbe	3
-20	Makuvise	3
-21	Marume	3
-22	Mawire	3
-23	Mombeyarara A	3
-24	Mombeyarara B	3
-25	Mudinzwa A	3
-26	Mudinzwa B	3
-27	Mudzamiri	3
-28	Munyira	3
-29	Murambinda	3
-30	Murwira	3
-31	Mushumba East	3
-32	Mushumba West	3
-33	Mutiusinazita	3
-34	Nechavava	3
-35	Nerutanga	3
-36	Neshava	3
-37	Biriri	4
-38	Bumha (shinja Rs)	4
-39	Chabika	4
-40	Chakowa	4
-41	Changazi	4
-42	Chayamiti	4
-43	Chikukwa	4
-44	Ngorima A	4
-45	Ngorima B	4
-46	Nyahonde (nagodi Rs)	4
-47	Nyanyadzi	4
-48	Rupise	4
-49	Shinja	4
-50	Chikwakwa	4
-51	Chiramba	4
-52	Guune	4
-53	Kudzanga	4
-54	Manyuseni	4
-55	Mhakwe	4
-56	Mhandarume	4
-57	Ada Chisumbanje	5
-58	Ada Middle Sabi	5
-59	Bangwe/maunganidze	5
-60	Checheche	5
-61	Chibunji	5
-62	Chibuwe	5
-63	Chikore	5
-64	Chinyaduma	5
-65	Chipinge Urban	5
-66	Chisumbanje	5
-67	Chisungo	5
-68	Chitenderano	5
-69	Chitepo	5
-70	Doroi	5
-71	Dumisani	5
-72	Gumira	5
-73	Hondoyapera	5
-74	Jersey	5
-75	Machona	5
-76	Madhuku	5
-77	Mahenye	5
-78	Manzvire	5
-79	Maongere	5
-80	Mapungwana	5
-81	Masonga	5
-82	Mbuyanehanda	5
-83	Musani	5
-84	Mushandirapamwe	5
-85	Musirizwi A	5
-86	Musirizwi B	5
-87	Mutandahwe	5
-88	Muzite	5
-89	Ngaone	5
-90	Nyagadza I	5
-91	Nyagadza Ii	5
-92	Nyamukunga	5
-93	Nyaringire	5
-94	Rudo	5
-95	Small Dell Estate	5
-96	Tamandayi	5
-97	Tongogara Refugee Camp	5
-98	Turaizvombo	5
-99	Tuzuka	5
-100	Batanai	6
-101	Bembero	6
-102	Chiduku	6
-103	Chinyamahumba	6
-104	Chitangazuva	6
-105	Denzva	6
-106	Dowa	6
-107	Dumbamwe	6
-108	Gweza	6
-109	Gwidza	6
-110	Mashayamvura	6
-111	Matotwe	6
-112	Mhezi	6
-113	Mutombwa	6
-114	Mutungagore	6
-115	Nehanda	6
-116	Ngowe	6
-117	Nyakujara	6
-118	Nyahangare	6
-119	Nyahonwe	6
-120	Nyamagura	6
-121	Nyamatanda	6
-122	Nyamidzi	6
-123	Pasipanodya	6
-124	Rongwe	6
-125	Ruombwe	6
-126	Sangano	6
-127	Tikwiri	6
-128	Tsagura	6
-129	Zurura	6
-130	Buwerimwe	7
-131	Bvumba L.s.c.f.a	7
-132	Chiadzwa	7
-133	Chimoio	7
-134	Chindunduma	7
-135	Chishakwe I	7
-136	Chishakwe Ii	7
-137	Chitora	7
-138	Dora North	7
-139	Dora South	7
-140	Dzobo	7
-141	Gandayi	7
-142	Gombakomba	7
-143	Kugarisana	7
-144	Kushingirira	7
-145	Mafararikwa A	7
-146	Mafararikwa B	7
-147	Mudzimundiringe	7
-148	Mukuni S.s.c.f.a	7
-149	Mukwada	7
-150	Munyoro	7
-151	Mupudzi I	7
-152	Mupudzi Ii	7
-153	Muradzikwa	7
-154	Zimunya	7
-155	Murare	7
-156	Mutanda I	7
-157	Mutanda Ii	7
-158	Mutsago	7
-159	Mutupo	7
-160	Ngomasha	7
-161	Nhamburiko	7
-162	Nyachityu	7
-163	Nyahundi	7
-164	Nyamazura Rs	7
-165	Rowa	7
-166	Chandisinai	8
-167	Chikomba A	8
-168	Chikomba B	8
-169	Doweguru	8
-170	Gondecharodzo	8
-171	Mandeya A	8
-172	Mandeya B	8
-173	Mudwaramaredza	8
-174	Mudzindiko	8
-175	Muparutsa	8
-176	Nyakujara	8
-177	Nyamaende	8
-178	Nyamhuka	8
-179	Rutungagore	8
-180	Sadziwa	8
-181	Sahumani	8
-182	Samanga A	8
-183	Samanga B	8
-184	Samaringa	8
-185	Sanyahwe East	8
-186	Sanyahwe West	8
-187	Zindi	8
-188	Bende	9
-189	Chitsanza	9
-190	Gairezi Rs	9
-191	Gonde	9
-192	Guramatunhu	9
-193	Marawo	9
-194	Mutombwa	9
-195	Nyabunje	9
-196	Nyadowa	9
-197	Nyagota	9
-198	Nyakomba	9
-199	Nyamahumba	9
-200	Nyamaropa	9
-201	Nyamasara	9
-202	Nyamubarawanda	9
-203	Nyamutowera	9
-204	Nyanga South	9
-205	Nyanga South Rs	9
-206	Nyanga Town	9
-207	Nyautare	9
-208	Ruwangwe	9
-209	Rwenya Game Park	9
-210	Sanhani/shungu/kuedza	9
-211	Sanyatwe	9
-212	Tabudirira	9
-213	Tombo I	9
-214	Tombo Ii	9
-215	Tongogara	9
-216	Chiveso	10
-217	Dindinyongwe	10
-218	Gudza	10
-219	Guwa	10
-220	Mhumhurwi	10
-221	Muchapondwa	10
-222	Muonwe	10
-223	Mupandira	10
-224	Mutowa	10
-225	Nyava	10
-226	Bepura I	11
-227	Bepura Ii	11
-228	Bepura Iii	11
-229	Chapoto	11
-230	Chipuriro A	11
-231	Chipuriro B	11
-232	Chipuriro C	11
-233	Chiriwo	11
-234	Chisunga	11
-235	Chitsungo	11
-236	Knyurira	11
-237	Mamini	11
-238	Matsiwo A	11
-239	Matsiwo B	11
-240	Mukwenya	11
-241	Mutota	11
-242	Neshangwe	11
-243	Nyamhondoro	11
-244	Shayavhudzi	11
-245	Suoguru	11
-246	Chaminuka	12
-247	Chipiri	12
-248	Chiwororo	12
-249	Endaikwenyu	12
-250	Gato	12
-251	Makombwe	12
-252	Masiyazvengo	12
-253	Nehanda	12
-254	Nyadzonya	12
-255	Nyota	12
-256	Sawi	12
-257	Tafirenyika	12
-258	Takawira	12
-259	Bveke	13
-260	Chahwanda	13
-261	Chesa Danzva	13
-262	Chesa Mtondwe	13
-263	Chesa North	13
-264	Chesa Nyajenje	13
-265	Chesa South	13
-266	Chiswiti	13
-267	Chitse	13
-268	Dotito	13
-269	Gomo Chigango	13
-270	Kaitano	13
-271	Kandeya	13
-272	Karanda	13
-273	Karuyana North	13
-274	Karuyana South	13
-275	Matope	13
-276	Mudzengerere	13
-277	Mukumbura	13
-278	Nembire	13
-279	Nohwedza	13
-280	Pachanza	13
-281	Sohwe	13
-282	Chadereka	14
-283	Chawarura	14
-284	Chiweshe	14
-285	Gutsa	14
-286	Hoya	14
-287	Hwatsa	14
-288	Kapembere	14
-289	Machaya	14
-290	Muzarabani	14
-291	Bveke	15
-292	Chahwanda	15
-293	Chesa Danzva	15
-294	Chesa Mtondwe	15
-295	Chesa North	15
-296	Chesa Nyajenje	15
-297	Chesa South	15
-298	Chiswiti	15
-299	Chitse	15
-300	Dotito	15
-301	Gomo Chigango	15
-302	Kaitano	15
-303	Kandeya	15
-304	Karanda	15
-305	Karuyana North	15
-306	Karuyana South	15
-307	Matope	15
-308	Mudzengerere	15
-309	Mukumbura	15
-310	Nembire	15
-311	Nohwedza	15
-312	Pachanza	15
-313	Sohwe	15
-314	Bopoma	16
-315	Chipara	16
-316	Katohwe	16
-317	Mahomba	16
-318	Makuni	16
-319	Maname	16
-320	Mapani	16
-321	Marambanzara	16
-322	Masoso	16
-323	Masvingo	16
-324	Mukosa	16
-325	Nyamanyanya	16
-326	Nyamuzeya	16
-327	Rukuta	16
-328	Rusambo	16
-329	Zvingowe	16
-330	Chidembo	17
-331	Chihuri	17
-332	Chizinga (nyamaropa)	17
-333	Gono	17
-334	Goora	17
-335	Kajakata	17
-336	Mupfure	17
-337	Mutumba	17
-338	Nyamaruro	17
-339	Nyarukunda	17
-340	Rukoroori (mufurudzi)	17
-341	Sanye	17
-342	Shamva Lscfa (umfurudzi N)	17
-343	Chinyika	18
-344	Dzvete	18
-345	Gutu	18
-346	Mawanga	18
-347	Munyawiri	18
-348	Murape	18
-349	Mwanza	18
-350	Pote	18
-351	R' Nine – Shangure	18
-352	Rusike	18
-353	Shumba	18
-354	Bangauya	19
-355	Chikwizo A	19
-356	Chikwizo B	19
-357	Chimukoko	19
-358	Goronga A	19
-359	Goronga B	19
-360	Makaha A	19
-361	Makaha B	19
-362	Masarakufa	19
-363	Mukota A	19
-364	Mukota B	19
-365	Mukota C	19
-366	Nyakuchena	19
-367	Nyamukoho	19
-368	Nyatana Game Park	19
-369	Shinga (Shanga)	19
-370	Suswe	19
-371	Chigonda	20
-372	Chigwarada	20
-373	Chikwira	20
-374	Chipiri	20
-375	Chitowa North	20
-376	Chitowa South	20
-377	Chiunze I	20
-378	Chiunze Ii	20
-379	Domborembudzi	20
-380	Karamba	20
-381	Mabika	20
-382	Manyika	20
-383	Maramba	20
-384	Marowe	20
-385	Masiyandima	20
-386	Mawanza Chitsungo	20
-387	Muchinjike	20
-388	Mukuruanopamaenza	20
-389	Musami	20
-390	Nhakiwa I	20
-391	Nhakiwa Ii	20
-392	Nyamhara	20
-393	Rota	20
-394	Rukudzi	20
-395	Zhombwe	20
-396	Charehwa A	21
-397	Charehwa B	21
-398	Chimoyo A	21
-399	Chimoyo B	21
-400	Chimoyo C	21
-401	Chindenga	21
-402	Chiwore	21
-403	Gumbure	21
-404	Kabasa A	21
-405	Kabasa B	21
-406	Kawere	21
-407	Marira	21
-408	Matedza	21
-409	Mawanga	21
-410	Mbudzi A	21
-411	Mbudzi B	21
-412	Mutoko Centre	21
-413	Nyahondo	21
-414	Nyahunure	21
-415	Nyamhanza A	21
-416	Nyamhanza B	21
-417	Nyamuganhu	21
-418	Nyamukapa	21
-419	Nyamutsahuni	21
-420	Nyamuzizi	21
-421	Chirimanhunga	22
-422	Eleven	22
-423	Mandedza	22
-424	Mapfuti	22
-425	Marirangwe North	22
-426	Twelve	22
-427	Zhakata	22
-428	Marirangwe South	22
-429	Matiti	22
-430	Mutiusinazita	22
-431	Nemasanga	22
-432	Ngome	22
-433	Chigodora	23
-434	Ruzane	23
-435	Ushe	23
-436	Makwarimba	23
-437	Goto	23
-438	Dendenyore	23
-439	Chivero C (n)	24
-440	Chivero M	24
-441	Chivero M (l)	24
-442	Chivero O	24
-443	Gora	24
-444	Mashayamombe (i)	24
-445	Nherera B	24
-446	Nyamweda (q)	24
-447	Nyamweda P	24
-448	Rwizi F	24
-449	Ward 22 (murombedzi H)	24
-450	Mashayamombe K	24
-451	Mashayamombe P (j)	24
-452	Murombedzi (h)	24
-453	Ngezi C	24
-454	Ngezi D	24
-455	Nherera A	24
-456	Chemusimbe	25
-457	Chiroti/fuleche	25
-458	Chundu	25
-459	Dandahwa	25
-460	Kanyati	25
-461	Kapfunde	25
-462	Kapiri	25
-463	Karereshi	25
-464	Karoi	25
-465	Karuru	25
-466	Kazangarare	25
-467	Makuti & Charara	25
-468	Masanga	25
-469	Matau	25
-470	Mudzimu	25
-471	Muzilawembe, (Mukakatenwa)	25
-472	Nyama	25
-473	Nyamhunga	25
-474	Piriviri	25
-475	Pote I	25
-476	Pote II	25
-477	Pote III	25
-478	Ward 5 (chisape)	25
-479	Ward 6 (maumbe)	25
-480	Ward 7 (chanetsa)	25
-481	Bumi Hills	26
-482	Chalala	26
-483	Charara Safaris	26
-484	Gatshegatshe	26
-485	Hurungwe Safaris B	26
-486	Kanyati A	26
-487	Kanyati B	26
-488	Matusadonha Safaris	26
-489	Mola A	26
-490	Mola B	26
-491	Musambakaruma A	26
-492	Musambakaruma B	26
-493	Negande B	26
-494	Negande A	26
-495	Chitomborwizi	27
-496	Doma	27
-497	Magonde	27
-498	Matashu	27
-499	Ward 17 (tategura Rs)	27
-500	Chikambi	28
-501	Chimbamauro	28
-502	Chivanje	28
-503	Dununu	28
-504	Mucheka	28
-505	Mudapakati	28
-506	Nyamangara	28
-507	Chegutu 6 Rs	29
-508	Chenjiri S Scale	29
-509	Hartley Safari	29
-510	Jondale/bumbe	29
-511	Jopani Rs	29
-512	Manyoni Estate	29
-513	Muzvezve I Rs	29
-514	Muzvezve Ii Rs	29
-515	Ngezi National Parks	29
-516	Sachuru Rs	29
-517	Baradzanwa	30
-518	Bikita	30
-519	Boora	30
-520	Chigumisirwa	30
-521	Chikuku	30
-522	Chikukutu	30
-523	Chiremwaremwa	30
-524	Chirorwe	30
-525	Devure	30
-526	Mungezi	30
-527	Mupamande	30
-528	Murwira	30
-529	Museti	30
-530	Mutikizizi	30
-531	Negovano	30
-532	Nyahunda	30
-533	Nyarushiri	30
-534	Devure Ranch	30
-535	Gangare	30
-536	Magocha	30
-537	Marozva (a)	30
-538	Marozva (b)	30
-539	Mashoko	30
-540	Matsvange	30
-541	Mazungunye	30
-542	Mukore	30
-543	Batanai	31
-544	Chechingwe	31
-545	Chibavahlengwe	31
-546	Chibwedziva	31
-547	Chikombedzi	31
-548	Chitsa	31
-549	Chizvirizvi	31
-550	Dikitiki	31
-551	Dzidzela	31
-552	Gonakudzingwa	31
-553	Gonarezhou	31
-554	Makambe	31
-555	Maose	31
-556	Mkwasine	31
-557	Mukuwini	31
-558	Mupinga	31
-559	Nyangambe	31
-560	Sabi Valley Ica	31
-561	Sengwe	31
-562	Tshovani	31
-563	Twananani	31
-564	Xini	31
-565	Bachi	32
-566	"Badza	iritose"	32
-567	Batanai	32
-568	Batanai B	32
-569	Bhefurai	32
-570	Chasiyatende	32
-571	Chemuzangari	32
-572	Chigwikwi	32
-573	Chitenderano	32
-574	Kuvhirimara	32
-575	Madamombe	32
-576	Madzivadondo	32
-577	Manyanga	32
-578	Marihuru	32
-579	Matsveru	32
-580	Mazihuru	32
-581	Mukamba	32
-582	Munaka	32
-583	Neruvanga	32
-584	Ngundu	32
-585	Nhamoyapera	32
-586	Nyahombe	32
-587	Rusununguko	32
-588	Takawira	32
-589	Utsinda	32
-590	Zifunzi	32
-591	Zvamapere	32
-592	Basera	33
-593	Chigombe	33
-594	Chihambakwe	33
-595	Chikwanda\mazare	33
-596	Chimedza	33
-597	Chinyika	33
-598	Chitsa	33
-599	Chiwara	33
-600	Chugunhuwe/denhere	33
-601	Devure	33
-602	Gutu South	33
-603	Jinjika	33
-604	Kubiku	33
-605	Magombedze	33
-606	Majada	33
-607	Makore	33
-608	Makudo	33
-609	Makuvaza	33
-610	Mataruse	33
-611	Matizha	33
-612	Mawere\manungwa	33
-613	Mazuru West	33
-614	Mukaro	33
-615	Munjanga\mupata	33
-616	Munyaradzi\dzivarimwe	33
-617	Munyikwa	33
-618	Mupandawana	33
-619	Mushayavanhu	33
-620	Mutema	33
-621	Mutero\nyamande	33
-622	Ndawi	33
-623	Nerupiri	33
-624	Nyamande	33
-625	Nyazvidzi Sscfa	33
-626	Serima\mavotsa	33
-627	Soti Source	33
-628	Vhunjere	33
-629	Zoma	33
-630	Zvavahera/dandavare	33
-631	Charumbira (a)	34
-632	Charumbira (b)	34
-633	Charumbira (c)	34
-634	Chatikobo	34
-635	Chikwanda	34
-636	Dowa	34
-637	Gozho	34
-638	Guwa	34
-639	Inyoni Rs	34
-640	Machitenda	34
-641	Mapanzure	34
-642	Maregere	34
-643	Marirangwe	34
-644	Mhara	34
-645	Mshagashe East	34
-646	Mshagashe West	34
-647	Mugabe	34
-648	Mukosi Rs	34
-649	Munyambe	34
-650	Murinye (a)	34
-651	Murinye (b)	34
-652	Mushandike	34
-653	Mushavhi	34
-654	Mushawasha East Sscfa	34
-655	Mushawasha West Sscfa	34
-656	Musingarambwi	34
-657	Tokwane\ngundu Rs	34
-658	Zimuto	34
-659	Zvinyaningwe East Sscfa	34
-660	Zvinyaningwe West Sscfa	34
-661	Bangwe	35
-662	Basikiti	35
-663	Chingami	35
-664	Chirarange	35
-665	Chirindi	35
-666	Chitanga	35
-667	Chizumba	35
-668	Dinhe	35
-669	Firidzi	35
-670	Mabhare	35
-671	Machena	35
-672	Makawire	35
-673	Makwi	35
-674	Mangwerume	35
-675	Manhumamwe	35
-676	Marimuka	35
-677	Marinda	35
-678	Musaverema	35
-679	Mushava	35
-680	Negari	35
-681	Nhande	35
-682	Pambe	35
-683	Rata	35
-684	Shazhaume	35
-685	Wedza Block B	35
-686	Chete National Park	36
-687	Chinonge	36
-688	Chunga	36
-689	Dobola	36
-690	Kabuba	36
-691	Kariangwe	36
-692	Kalungwizi	36
-693	Lubimbi	36
-694	Lubu	36
-695	Lunga	36
-696	Siachilaba	36
-697	Sianzyundu	36
-698	Sikalenge	36
-699	Simatelele	36
-700	Sinamagonde	36
-701	Sinampande-Nagangala	36
-702	Sinansengwe	36
-703	Tinde	36
-704	Manjolo	36
-705	Muchesu	36
-706	Nabusenga	36
-707	National Park	36
-708	Nsenga	36
-709	Pashu	36
-710	Saba-lubanda	36
-711	Inyathi	37
-712	Nkosikazi East	37
-713	Nkosikazi North	37
-714	Nkosikazi South	37
-715	Chidobe	38
-716	Chikandakubi	38
-717	Dete	38
-718	Jambezi	38
-719	Kachecheti	38
-720	Lupote	38
-721	Mabale	38
-722	Makwandara	38
-723	Mbizha	38
-724	Nekabandama	38
-725	Nekatambe	38
-726	Nemananga	38
-727	Sidinda	38
-728	Silewu	38
-729	Simangani	38
-730	Daluka	39
-731	Dandanda	39
-732	Dongamuzi	39
-733	Gomoza	39
-734	Gwamba	39
-735	Jibajiba	39
-736	Jotsholo	39
-737	Lake Alice	39
-738	Lupaka	39
-739	Lupanda	39
-740	Lusulu	39
-741	Malunku	39
-742	Matshiya	39
-743	Matshokotsha	39
-744	Menyezwa	39
-745	Mzola	39
-746	Ndimimbili	39
-747	Pupu	39
-748	Sibombo	39
-749	Sobendle	39
-750	St Pauls	39
-751	Tshongokwe	39
-752	Twenty Four	39
-753	Fanisoni	40
-754	Faroni	40
-755	Gwampa Forestry	40
-756	Jojo East	40
-757	Jojo South	40
-758	Jojo West	40
-759	Kenilworth	40
-760	Malandu East	40
-761	Malandu West	40
-762	Malindi	40
-763	Manguni I	40
-764	Manguni Ii	40
-765	Manomano	40
-766	Mlume I	40
-767	Mlume Ii	40
-768	Mpande	40
-769	Ngomambi Central	40
-770	Ngomambi North	40
-771	Ngomambi South	40
-772	Nhlanganiso	40
-773	Nkalakatha	40
-774	Phillip	40
-775	Sibangalwana Ii	40
-776	Sibangelana I	40
-777	Sikhobokhobo	40
-778	Siphunyuka	40
-779	Sivalo	40
-780	Ward 1	41
-781	Ward 2	41
-782	Ward 3	41
-783	Ward 4	41
-784	Ward 5	41
-785	Ward 6	41
-786	Ward 7	41
-787	Ward 8	41
-788	Ward 9	41
-789	Ward 10	41
-790	Ward 11	41
-791	Ward 12	41
-792	Ward 13	41
-793	Ward 14	41
-794	Ward 15	41
-795	Ward 16	41
-796	Ward 17	41
-797	Ward 18	41
-798	Ward 19	41
-799	Ward 20	41
-800	Fingo	42
-801	Ntabazinduna North	42
-802	Ntabazinduna South	42
-803	Beitbridge	43
-804	Chipise	43
-805	Dendele	43
-806	Dite Ii	43
-807	Machuchuta	43
-808	Maramani	43
-809	Masera	43
-810	Mtetengwe I	43
-811	Mtetengwe Ii	43
-812	Mtetengwe Iii	43
-813	Siyoka I	43
-814	Siyoka Ii	43
-815	Bambadzi	44
-816	Bango	44
-817	Dombodema	44
-818	Empandeni	44
-819	Figtree	44
-820	Gala	44
-821	Gwambe	44
-822	Hingwe	44
-823	Huwana	44
-824	Izimnyama	44
-825	Mabhuna	44
-826	Madlambuzi	44
-827	Magcobafuthi	44
-828	Makhulela	44
-829	Malanswazi	44
-830	Mambale	44
-831	Maninji	44
-832	Marula	44
-833	Masendu	44
-834	Matjingwe	44
-835	Hikwa	44
-836	Mphoengs	44
-837	Natane	44
-838	Ndolwane	44
-839	Nyele	44
-840	Raditladi	44
-841	Sangulube	44
-842	Sansukwe	44
-843	Somnene	44
-844	Tjankwa	44
-845	Alisupi	45
-846	Buvuma	45
-847	Sengezane	45
-848	Mtshabezi Mission	45
-849	Gwaranyemba	45
-850	Gungwe	45
-851	Hwali	45
-852	Kafusi	45
-853	Lushongwe	45
-854	Manama, Zimbabwe	45
-855	Matshetshe	45
-856	Mtshazo	45
-857	Mzimuni, Zimbabwe	45
-858	Nkwidze	45
-859	Ntalale	45
-860	Shake, Zimbabwe	45
-861	Silonga	45
-862	Simbumbumbu	45
-863	Sizeze	45
-864	Avoca	46
-865	Bekezela	46
-866	Gwatemba	46
-867	Mahole	46
-868	Mashoko	46
-869	Masiyephambili	46
-870	Mbondweni	46
-871	Ntunteni	46
-872	Sanele	46
-873	Sidzibe	46
-874	Silalabuhwa	46
-875	Vokola	46
-876	Ward 1	47
-877	Ward 2	47
-878	Ward 3	47
-879	Ward 4	47
-880	Ward 5	47
-881	Ward 6	47
-882	Ward 7	47
-883	Ward 8	47
-884	Ward 9	47
-885	Ward 10	47
-886	Ward 11	47
-887	Ward 12	47
-888	Ward 13	47
-889	Ward 14	47
-890	Ward 15	47
-891	Ward 16	47
-892	Ward 17	47
-893	Bambanani	48
-894	Beula	48
-895	Bidi	48
-896	Dema	48
-897	Donkwedonkwe	48
-898	Dzembe	48
-899	Gwezha	48
-900	Lingwe	48
-901	Madwaleni	48
-902	Makhasa	48
-903	Malaba	48
-904	Manyane	48
-905	Marinoha	48
-906	Makwe	48
-907	Mbembeswana	48
-908	Mbuso	48
-909	Mkokha	48
-910	Nqindi	48
-911	Sigangatsha	48
-912	Silebuhwa	48
-913	Sontala	48
-914	St Anna	48
-915	Vulindlela	48
-916	Dobhe	49
-917	Dula	49
-918	Esibomvu	49
-919	Kumbudzi	49
-920	Mathendele	49
-921	Mawabeni	49
-922	Mtshede	49
-923	Ntshamathe	49
-924	Sihlengeni	49
-925	Silobi	49
-926	Zhalo	49
-927	Vulindlela	49
-928	Charandura	50
-929	Chengwena	50
-930	Chinyuni	50
-931	Chizhou	50
-932	Mapiravana	50
-933	Maware	50
-934	Mhende	50
-935	Musoropamwe	50
-936	Takawira	50
-937	Takawira Resett	50
-938	Tatonga	50
-939	Tokwe (tokwe Iv) Rs	50
-940	Chireya I	51
-941	Chireya Ii	51
-942	Chireya Iii	51
-943	Goredema	51
-944	Gumunyu I	51
-945	Gumunyu Ii	51
-946	Makore I	51
-947	Makore Ii	51
-948	Musadzi Rs	51
-949	Nembudziya I	51
-950	Nembudziya Ii	51
-951	Nembudziya Iii	51
-952	Nora Rs	51
-953	Nyaurungwe Rs	51
-954	Simchembo	51
-955	Tsungai Rs	51
-956	Wadze Rs	51
-957	Madzivazvido	51
-958	Nenyunka	51
-959	Chemagora Lscfa	52
-960	Chirima	52
-961	Chirisa Park	52
-962	Chisina I	52
-963	Chisina Ii	52
-964	Chisina Iii	52
-965	Huchu	52
-966	Jahana	52
-967	Jiri	52
-968	Masuka	52
-969	Mukoka Msala	52
-970	Muyambi	52
-971	Ndhlalambi I	52
-972	Ndhlalambi Ii	52
-973	Nemangwe I	52
-974	Nemangwe Ii	52
-975	Nemangwe Iii	52
-976	Nemangwe Iv	52
-977	Nemangwe V	52
-978	Ngomeni	52
-979	Njelele I	52
-980	Njelele Ii	52
-981	Njelele Iii	52
-982	Sai Mangidi	52
-983	Sai Mangisi	52
-984	Sai Sengwa	52
-985	Bafana	53
-986	Gambiza	53
-987	Ilithelezwe	53
-988	Madikani	53
-989	Masvori Rs	53
-990	Mdubiwa	53
-991	Mlezu	53
-992	Mutengwa	53
-993	Nkawana	53
-994	Nyabango	53
-995	Nyama	53
-996	Sikombingo	53
-997	Somabula	53
-998	Batanai	54
-999	Chaminuka Ii	54
-1000	Chitepo	54
-1001	Empress Mine	54
-1002	Gwesela West	54
-1003	Inhlangano	54
-1004	Kubatana	54
-1005	Kushinga	54
-1006	Kwayedza	54
-1007	Mabura	54
-1008	Makaba	54
-1009	Msokeli	54
-1010	Mtshikitsha	54
-1011	Nhlanganisa	54
-1012	Ntabeni North	54
-1013	Ntabeni South	54
-1014	Sebenzani	54
-1015	Sesombi I	54
-1016	Sesombi I Rs	54
-1017	Sesombi Ii Rs	54
-1018	Sesombi Iii	54
-1019	Sesombi Iii Rs	54
-1020	Sidakeni	54
-1021	Silobela	54
-1022	Tongogara	54
-1023	Zhombe Central	54
-1024	(New Castle) Rs	55
-1025	Baradzamwa	55
-1026	Bhangwe	55
-1027	Bhinya Road	55
-1028	Chebvute	55
-1029	Chegato	55
-1030	Cheshanga	55
-1031	Chingechuru	55
-1032	Chingoma A	55
-1033	Chingoma B	55
-1034	Chizungu	55
-1035	Danga	55
-1036	Dunda	55
-1037	Lscfa (mberengwa Ica)	55
-1038	Magamba	55
-1039	Mahlebadza	55
-1040	Makuwerere	55
-1041	Masvingo	55
-1042	Mataga	55
-1043	Mataruse B I	55
-1044	Mataruse B Ii	55
-1045	Maziofa	55
-1046	Mketi	55
-1047	Muchembere	55
-1048	Murerezi	55
-1049	Mushandirapamwe	55
-1050	Musume	55
-1051	Ngungumbane	55
-1052	Nyamondo Ii	55
-1053	Nyamondo Iii	55
-1054	Ruremekedzo	55
-1055	Vukomba	55
-1056	Zvomukonde	55
-1057	Gundura	56
-1058	Ndanga	56
-1059	Donga	56
-1060	Hanke	56
-1061	Nhema	56
-1062	Tinhira	56
-1063	Tongogara	56
-1064	Mazivisa	56
-1065	Shamba	56
-1066	Pisira	56
-1067	Chenhunguru	57
-1068	Chiwonekano	57
-1069	Dayadaya	57
-1070	Guruguru	57
-1071	Hombe	57
-1072	Indava	57
-1073	Lscfa	57
-1074	Mapirimira	57
-1075	Mototi	57
-1076	Murowa	57
-1077	Mutambe	57
-1078	Ngomayebani	57
-1079	Runde	57
-1080	Shauke	57
-1081	Shavahuru	57
-1082	Ture	57
-1083	Mhondongori	57
-1084	Vukusvo	57
+2169	Bulawayo	115
+2170	Harare	116
+2171	Betera	117
+2172	Chapwanya	117
+2173	Chikuwa	117
+2174	Chimombe 'b (Chimombe-chiweshe)	117
+2175	Chimombe A	117
+2176	Chimombe B	117
+2177	Chimombe East	117
+2178	Chimombe West	117
+2179	Chimombe West (Chimutsa W)	117
+2180	Chimutsa East	117
+2181	Chirozva A	117
+2182	Chirozva B	117
+2183	Chitsunge	117
+2184	Chiweshe	117
+2185	Garamwera	117
+2186	Mabvuregudo	117
+2187	Makumbe	117
+2188	Makuvise	117
+2189	Marume	117
+2190	Mawire	117
+2191	Mombeyarara A	117
+2192	Mombeyarara B	117
+2193	Mudinzwa A	117
+2194	Mudinzwa B	117
+2195	Mudzamiri	117
+2196	Munyira	117
+2197	Murambinda	117
+2198	Murwira	117
+2199	Mushumba East	117
+2200	Mushumba West	117
+2201	Mutiusinazita	117
+2202	Nechavava	117
+2203	Nerutanga	117
+2204	Neshava	117
+2205	Biriri	118
+2206	Bumha (shinja Rs)	118
+2207	Chabika	118
+2208	Chakowa	118
+2209	Changazi	118
+2210	Chayamiti	118
+2211	Chikukwa	118
+2212	Ngorima A	118
+2213	Ngorima B	118
+2214	Nyahonde (nagodi Rs)	118
+2215	Nyanyadzi	118
+2216	Rupise	118
+2217	Shinja	118
+2218	Chikwakwa	118
+2219	Chiramba	118
+2220	Guune	118
+2221	Kudzanga	118
+2222	Manyuseni	118
+2223	Mhakwe	118
+2224	Mhandarume	118
+2225	Ada Chisumbanje	119
+2226	Ada Middle Sabi	119
+2227	Bangwe/maunganidze	119
+2228	Checheche	119
+2229	Chibunji	119
+2230	Chibuwe	119
+2231	Chikore	119
+2232	Chinyaduma	119
+2233	Chipinge Urban	119
+2234	Chisumbanje	119
+2235	Chisungo	119
+2236	Chitenderano	119
+2237	Chitepo	119
+2238	Doroi	119
+2239	Dumisani	119
+2240	Gumira	119
+2241	Hondoyapera	119
+2242	Jersey	119
+2243	Machona	119
+2244	Madhuku	119
+2245	Mahenye	119
+2246	Manzvire	119
+2247	Maongere	119
+2248	Mapungwana	119
+2249	Masonga	119
+2250	Mbuyanehanda	119
+2251	Musani	119
+2252	Mushandirapamwe	119
+2253	Musirizwi A	119
+2254	Musirizwi B	119
+2255	Mutandahwe	119
+2256	Muzite	119
+2257	Ngaone	119
+2258	Nyagadza I	119
+2259	Nyagadza Ii	119
+2260	Nyamukunga	119
+2261	Nyaringire	119
+2262	Rudo	119
+2263	Small Dell Estate	119
+2264	Tamandayi	119
+2265	Tongogara Refugee Camp	119
+2266	Turaizvombo	119
+2267	Tuzuka	119
+2268	Batanai	120
+2269	Bembero	120
+2270	Chiduku	120
+2271	Chinyamahumba	120
+2272	Chitangazuva	120
+2273	Denzva	120
+2274	Dowa	120
+2275	Dumbamwe	120
+2276	Gweza	120
+2277	Gwidza	120
+2278	Mashayamvura	120
+2279	Matotwe	120
+2280	Mhezi	120
+2281	Mutombwa	120
+2282	Mutungagore	120
+2283	Nehanda	120
+2284	Ngowe	120
+2285	Nyakujara	120
+2286	Nyahangare	120
+2287	Nyahonwe	120
+2288	Nyamagura	120
+2289	Nyamatanda	120
+2290	Nyamidzi	120
+2291	Pasipanodya	120
+2292	Rongwe	120
+2293	Ruombwe	120
+2294	Sangano	120
+2295	Tikwiri	120
+2296	Tsagura	120
+2297	Zurura	120
+2298	Buwerimwe	121
+2299	Bvumba L.s.c.f.a	121
+2300	Chiadzwa	121
+2301	Chimoio	121
+2302	Chindunduma	121
+2303	Chishakwe I	121
+2304	Chishakwe Ii	121
+2305	Chitora	121
+2306	Dora North	121
+2307	Dora South	121
+2308	Dzobo	121
+2309	Gandayi	121
+2310	Gombakomba	121
+2311	Kugarisana	121
+2312	Kushingirira	121
+2313	Mafararikwa A	121
+2314	Mafararikwa B	121
+2315	Mudzimundiringe	121
+2316	Mukuni S.s.c.f.a	121
+2317	Mukwada	121
+2318	Munyoro	121
+2319	Mupudzi I	121
+2320	Mupudzi Ii	121
+2321	Muradzikwa	121
+2322	Zimunya	121
+2323	Murare	121
+2324	Mutanda I	121
+2325	Mutanda Ii	121
+2326	Mutsago	121
+2327	Mutupo	121
+2328	Ngomasha	121
+2329	Nhamburiko	121
+2330	Nyachityu	121
+2331	Nyahundi	121
+2332	Nyamazura Rs	121
+2333	Rowa	121
+2334	Chandisinai	122
+2335	Chikomba A	122
+2336	Chikomba B	122
+2337	Doweguru	122
+2338	Gondecharodzo	122
+2339	Mandeya A	122
+2340	Mandeya B	122
+2341	Mudwaramaredza	122
+2342	Mudzindiko	122
+2343	Muparutsa	122
+2344	Nyakujara	122
+2345	Nyamaende	122
+2346	Nyamhuka	122
+2347	Rutungagore	122
+2348	Sadziwa	122
+2349	Sahumani	122
+2350	Samanga A	122
+2351	Samanga B	122
+2352	Samaringa	122
+2353	Sanyahwe East	122
+2354	Sanyahwe West	122
+2355	Zindi	122
+2356	Bende	123
+2357	Chitsanza	123
+2358	Gairezi Rs	123
+2359	Gonde	123
+2360	Guramatunhu	123
+2361	Marawo	123
+2362	Mutombwa	123
+2363	Nyabunje	123
+2364	Nyadowa	123
+2365	Nyagota	123
+2366	Nyakomba	123
+2367	Nyamahumba	123
+2368	Nyamaropa	123
+2369	Nyamasara	123
+2370	Nyamubarawanda	123
+2371	Nyamutowera	123
+2372	Nyanga South	123
+2373	Nyanga South Rs	123
+2374	Nyanga Town	123
+2375	Nyautare	123
+2376	Ruwangwe	123
+2377	Rwenya Game Park	123
+2378	Sanhani/shungu/kuedza	123
+2379	Sanyatwe	123
+2380	Tabudirira	123
+2381	Tombo I	123
+2382	Tombo Ii	123
+2383	Tongogara	123
+2384	Chiveso	124
+2385	Dindinyongwe	124
+2386	Gudza	124
+2387	Guwa	124
+2388	Mhumhurwi	124
+2389	Muchapondwa	124
+2390	Muonwe	124
+2391	Mupandira	124
+2392	Mutowa	124
+2393	Nyava	124
+2394	Bepura I	125
+2395	Bepura Ii	125
+2396	Bepura Iii	125
+2397	Chapoto	125
+2398	Chipuriro A	125
+2399	Chipuriro B	125
+2400	Chipuriro C	125
+2401	Chiriwo	125
+2402	Chisunga	125
+2403	Chitsungo	125
+2404	Knyurira	125
+2405	Mamini	125
+2406	Matsiwo A	125
+2407	Matsiwo B	125
+2408	Mukwenya	125
+2409	Mutota	125
+2410	Neshangwe	125
+2411	Nyamhondoro	125
+2412	Shayavhudzi	125
+2413	Suoguru	125
+2414	Chaminuka	126
+2415	Chipiri	126
+2416	Chiwororo	126
+2417	Endaikwenyu	126
+2418	Gato	126
+2419	Makombwe	126
+2420	Masiyazvengo	126
+2421	Nehanda	126
+2422	Nyadzonya	126
+2423	Nyota	126
+2424	Sawi	126
+2425	Tafirenyika	126
+2426	Takawira	126
+2427	Bveke	127
+2428	Chahwanda	127
+2429	Chesa Danzva	127
+2430	Chesa Mtondwe	127
+2431	Chesa North	127
+2432	Chesa Nyajenje	127
+2433	Chesa South	127
+2434	Chiswiti	127
+2435	Chitse	127
+2436	Dotito	127
+2437	Gomo Chigango	127
+2438	Kaitano	127
+2439	Kandeya	127
+2440	Karanda	127
+2441	Karuyana North	127
+2442	Karuyana South	127
+2443	Matope	127
+2444	Mudzengerere	127
+2445	Mukumbura	127
+2446	Nembire	127
+2447	Nohwedza	127
+2448	Pachanza	127
+2449	Sohwe	127
+2450	Chadereka	128
+2451	Chawarura	128
+2452	Chiweshe	128
+2453	Gutsa	128
+2454	Hoya	128
+2455	Hwatsa	128
+2456	Kapembere	128
+2457	Machaya	128
+2458	Muzarabani	128
+2459	Bveke	129
+2460	Chahwanda	129
+2461	Chesa Danzva	129
+2462	Chesa Mtondwe	129
+2463	Chesa North	129
+2464	Chesa Nyajenje	129
+2465	Chesa South	129
+2466	Chiswiti	129
+2467	Chitse	129
+2468	Dotito	129
+2469	Gomo Chigango	129
+2470	Kaitano	129
+2471	Kandeya	129
+2472	Karanda	129
+2473	Karuyana North	129
+2474	Karuyana South	129
+2475	Matope	129
+2476	Mudzengerere	129
+2477	Mukumbura	129
+2478	Nembire	129
+2479	Nohwedza	129
+2480	Pachanza	129
+2481	Sohwe	129
+2482	Bopoma	130
+2483	Chipara	130
+2484	Katohwe	130
+2485	Mahomba	130
+2486	Makuni	130
+2487	Maname	130
+2488	Mapani	130
+2489	Marambanzara	130
+2490	Masoso	130
+2491	Masvingo	130
+2492	Mukosa	130
+2493	Nyamanyanya	130
+2494	Nyamuzeya	130
+2495	Rukuta	130
+2496	Rusambo	130
+2497	Zvingowe	130
+2498	Chidembo	131
+2499	Chihuri	131
+2500	Chizinga (nyamaropa)	131
+2501	Gono	131
+2502	Goora	131
+2503	Kajakata	131
+2504	Mupfure	131
+2505	Mutumba	131
+2506	Nyamaruro	131
+2507	Nyarukunda	131
+2508	Rukoroori (mufurudzi)	131
+2509	Sanye	131
+2510	Shamva Lscfa (umfurudzi N)	131
+2511	Chinyika	132
+2512	Dzvete	132
+2513	Gutu	132
+2514	Mawanga	132
+2515	Munyawiri	132
+2516	Murape	132
+2517	Mwanza	132
+2518	Pote	132
+2519	R' Nine – Shangure	132
+2520	Rusike	132
+2521	Shumba	132
+2522	Bangauya	133
+2523	Chikwizo A	133
+2524	Chikwizo B	133
+2525	Chimukoko	133
+2526	Goronga A	133
+2527	Goronga B	133
+2528	Makaha A	133
+2529	Makaha B	133
+2530	Masarakufa	133
+2531	Mukota A	133
+2532	Mukota B	133
+2533	Mukota C	133
+2534	Nyakuchena	133
+2535	Nyamukoho	133
+2536	Nyatana Game Park	133
+2537	Shinga (Shanga)	133
+2538	Suswe	133
+2539	Chigonda	134
+2540	Chigwarada	134
+2541	Chikwira	134
+2542	Chipiri	134
+2543	Chitowa North	134
+2544	Chitowa South	134
+2545	Chiunze I	134
+2546	Chiunze Ii	134
+2547	Domborembudzi	134
+2548	Karamba	134
+2549	Mabika	134
+2550	Manyika	134
+2551	Maramba	134
+2552	Marowe	134
+2553	Masiyandima	134
+2554	Mawanza Chitsungo	134
+2555	Muchinjike	134
+2556	Mukuruanopamaenza	134
+2557	Musami	134
+2558	Nhakiwa I	134
+2559	Nhakiwa Ii	134
+2560	Nyamhara	134
+2561	Rota	134
+2562	Rukudzi	134
+2563	Zhombwe	134
+2564	Charehwa A	135
+2565	Charehwa B	135
+2566	Chimoyo A	135
+2567	Chimoyo B	135
+2568	Chimoyo C	135
+2569	Chindenga	135
+2570	Chiwore	135
+2571	Gumbure	135
+2572	Kabasa A	135
+2573	Kabasa B	135
+2574	Kawere	135
+2575	Marira	135
+2576	Matedza	135
+2577	Mawanga	135
+2578	Mbudzi A	135
+2579	Mbudzi B	135
+2580	Mutoko Centre	135
+2581	Nyahondo	135
+2582	Nyahunure	135
+2583	Nyamhanza A	135
+2584	Nyamhanza B	135
+2585	Nyamuganhu	135
+2586	Nyamukapa	135
+2587	Nyamutsahuni	135
+2588	Nyamuzizi	135
+2589	Chirimanhunga	136
+2590	Eleven	136
+2591	Mandedza	136
+2592	Mapfuti	136
+2593	Marirangwe North	136
+2594	Twelve	136
+2595	Zhakata	136
+2596	Marirangwe South	136
+2597	Matiti	136
+2598	Mutiusinazita	136
+2599	Nemasanga	136
+2600	Ngome	136
+2601	Chigodora	137
+2602	Ruzane	137
+2603	Ushe	137
+2604	Makwarimba	137
+2605	Goto	137
+2606	Dendenyore	137
+2607	Chivero C (n)	138
+2608	Chivero M	138
+2609	Chivero M (l)	138
+2610	Chivero O	138
+2611	Gora	138
+2612	Mashayamombe (i)	138
+2613	Nherera B	138
+2614	Nyamweda (q)	138
+2615	Nyamweda P	138
+2616	Rwizi F	138
+2617	Ward 22 (murombedzi H)	138
+2618	Mashayamombe K	138
+2619	Mashayamombe P (j)	138
+2620	Murombedzi (h)	138
+2621	Ngezi C	138
+2622	Ngezi D	138
+2623	Nherera A	138
+2624	Chemusimbe	139
+2625	Chiroti/fuleche	139
+2626	Chundu	139
+2627	Dandahwa	139
+2628	Kanyati	139
+2629	Kapfunde	139
+2630	Kapiri	139
+2631	Karereshi	139
+2632	Karoi	139
+2633	Karuru	139
+2634	Kazangarare	139
+2635	Makuti & Charara	139
+2636	Masanga	139
+2637	Matau	139
+2638	Mudzimu	139
+2639	Muzilawembe, (Mukakatenwa)	139
+2640	Nyama	139
+2641	Nyamhunga	139
+2642	Piriviri	139
+2643	Pote I	139
+2644	Pote II	139
+2645	Pote III	139
+2646	Ward 5 (chisape)	139
+2647	Ward 6 (maumbe)	139
+2648	Ward 7 (chanetsa)	139
+2649	Bumi Hills	140
+2650	Chalala	140
+2651	Charara Safaris	140
+2652	Gatshegatshe	140
+2653	Hurungwe Safaris B	140
+2654	Kanyati A	140
+2655	Kanyati B	140
+2656	Matusadonha Safaris	140
+2657	Mola A	140
+2658	Mola B	140
+2659	Musambakaruma A	140
+2660	Musambakaruma B	140
+2661	Negande B	140
+2662	Negande A	140
+2663	Chitomborwizi	141
+2664	Doma	141
+2665	Magonde	141
+2666	Matashu	141
+2667	Ward 17 (tategura Rs)	141
+2668	Chikambi	142
+2669	Chimbamauro	142
+2670	Chivanje	142
+2671	Dununu	142
+2672	Mucheka	142
+2673	Mudapakati	142
+2674	Nyamangara	142
+2675	Chegutu 6 Rs	143
+2676	Chenjiri S Scale	143
+2677	Hartley Safari	143
+2678	Jondale/bumbe	143
+2679	Jopani Rs	143
+2680	Manyoni Estate	143
+2681	Muzvezve I Rs	143
+2682	Muzvezve Ii Rs	143
+2683	Ngezi National Parks	143
+2684	Sachuru Rs	143
+2685	Baradzanwa	144
+2686	Bikita	144
+2687	Boora	144
+2688	Chigumisirwa	144
+2689	Chikuku	144
+2690	Chikukutu	144
+2691	Chiremwaremwa	144
+2692	Chirorwe	144
+2693	Devure	144
+2694	Mungezi	144
+2695	Mupamande	144
+2696	Murwira	144
+2697	Museti	144
+2698	Mutikizizi	144
+2699	Negovano	144
+2700	Nyahunda	144
+2701	Nyarushiri	144
+2702	Devure Ranch	144
+2703	Gangare	144
+2704	Magocha	144
+2705	Marozva (a)	144
+2706	Marozva (b)	144
+2707	Mashoko	144
+2708	Matsvange	144
+2709	Mazungunye	144
+2710	Mukore	144
+2711	Batanai	145
+2712	Chechingwe	145
+2713	Chibavahlengwe	145
+2714	Chibwedziva	145
+2715	Chikombedzi	145
+2716	Chitsa	145
+2717	Chizvirizvi	145
+2718	Dikitiki	145
+2719	Dzidzela	145
+2720	Gonakudzingwa	145
+2721	Gonarezhou	145
+2722	Makambe	145
+2723	Maose	145
+2724	Mkwasine	145
+2725	Mukuwini	145
+2726	Mupinga	145
+2727	Nyangambe	145
+2728	Sabi Valley Ica	145
+2729	Sengwe	145
+2730	Tshovani	145
+2731	Twananani	145
+2732	Xini	145
+2733	Bachi	146
+2734	"Badza	iritose"	146
+2735	Batanai	146
+2736	Batanai B	146
+2737	Bhefurai	146
+2738	Chasiyatende	146
+2739	Chemuzangari	146
+2740	Chigwikwi	146
+2741	Chitenderano	146
+2742	Kuvhirimara	146
+2743	Madamombe	146
+2744	Madzivadondo	146
+2745	Manyanga	146
+2746	Marihuru	146
+2747	Matsveru	146
+2748	Mazihuru	146
+2749	Mukamba	146
+2750	Munaka	146
+2751	Neruvanga	146
+2752	Ngundu	146
+2753	Nhamoyapera	146
+2754	Nyahombe	146
+2755	Rusununguko	146
+2756	Takawira	146
+2757	Utsinda	146
+2758	Zifunzi	146
+2759	Zvamapere	146
+2760	Basera	147
+2761	Chigombe	147
+2762	Chihambakwe	147
+2763	Chikwanda\mazare	147
+2764	Chimedza	147
+2765	Chinyika	147
+2766	Chitsa	147
+2767	Chiwara	147
+2768	Chugunhuwe/denhere	147
+2769	Devure	147
+2770	Gutu South	147
+2771	Jinjika	147
+2772	Kubiku	147
+2773	Magombedze	147
+2774	Majada	147
+2775	Makore	147
+2776	Makudo	147
+2777	Makuvaza	147
+2778	Mataruse	147
+2779	Matizha	147
+2780	Mawere\manungwa	147
+2781	Mazuru West	147
+2782	Mukaro	147
+2783	Munjanga\mupata	147
+2784	Munyaradzi\dzivarimwe	147
+2785	Munyikwa	147
+2786	Mupandawana	147
+2787	Mushayavanhu	147
+2788	Mutema	147
+2789	Mutero\nyamande	147
+2790	Ndawi	147
+2791	Nerupiri	147
+2792	Nyamande	147
+2793	Nyazvidzi Sscfa	147
+2794	Serima\mavotsa	147
+2795	Soti Source	147
+2796	Vhunjere	147
+2797	Zoma	147
+2798	Zvavahera/dandavare	147
+2799	Charumbira (a)	148
+2800	Charumbira (b)	148
+2801	Charumbira (c)	148
+2802	Chatikobo	148
+2803	Chikwanda	148
+2804	Dowa	148
+2805	Gozho	148
+2806	Guwa	148
+2807	Inyoni Rs	148
+2808	Machitenda	148
+2809	Mapanzure	148
+2810	Maregere	148
+2811	Marirangwe	148
+2812	Mhara	148
+2813	Mshagashe East	148
+2814	Mshagashe West	148
+2815	Mugabe	148
+2816	Mukosi Rs	148
+2817	Munyambe	148
+2818	Murinye (a)	148
+2819	Murinye (b)	148
+2820	Mushandike	148
+2821	Mushavhi	148
+2822	Mushawasha East Sscfa	148
+2823	Mushawasha West Sscfa	148
+2824	Musingarambwi	148
+2825	Tokwane\ngundu Rs	148
+2826	Zimuto	148
+2827	Zvinyaningwe East Sscfa	148
+2828	Zvinyaningwe West Sscfa	148
+2829	Bangwe	149
+2830	Basikiti	149
+2831	Chingami	149
+2832	Chirarange	149
+2833	Chirindi	149
+2834	Chitanga	149
+2835	Chizumba	149
+2836	Dinhe	149
+2837	Firidzi	149
+2838	Mabhare	149
+2839	Machena	149
+2840	Makawire	149
+2841	Makwi	149
+2842	Mangwerume	149
+2843	Manhumamwe	149
+2844	Marimuka	149
+2845	Marinda	149
+2846	Musaverema	149
+2847	Mushava	149
+2848	Negari	149
+2849	Nhande	149
+2850	Pambe	149
+2851	Rata	149
+2852	Shazhaume	149
+2853	Wedza Block B	149
+2854	Chete National Park	150
+2855	Chinonge	150
+2856	Chunga	150
+2857	Dobola	150
+2858	Kabuba	150
+2859	Kariangwe	150
+2860	Kalungwizi	150
+2861	Lubimbi	150
+2862	Lubu	150
+2863	Lunga	150
+2864	Siachilaba	150
+2865	Sianzyundu	150
+2866	Sikalenge	150
+2867	Simatelele	150
+2868	Sinamagonde	150
+2869	Sinampande-Nagangala	150
+2870	Sinansengwe	150
+2871	Tinde	150
+2872	Manjolo	150
+2873	Muchesu	150
+2874	Nabusenga	150
+2875	National Park	150
+2876	Nsenga	150
+2877	Pashu	150
+2878	Saba-lubanda	150
+2879	Inyathi	151
+2880	Nkosikazi East	151
+2881	Nkosikazi North	151
+2882	Nkosikazi South	151
+2883	Chidobe	152
+2884	Chikandakubi	152
+2885	Dete	152
+2886	Jambezi	152
+2887	Kachecheti	152
+2888	Lupote	152
+2889	Mabale	152
+2890	Makwandara	152
+2891	Mbizha	152
+2892	Nekabandama	152
+2893	Nekatambe	152
+2894	Nemananga	152
+2895	Sidinda	152
+2896	Silewu	152
+2897	Simangani	152
+2898	Daluka	153
+2899	Dandanda	153
+2900	Dongamuzi	153
+2901	Gomoza	153
+2902	Gwamba	153
+2903	Jibajiba	153
+2904	Jotsholo	153
+2905	Lake Alice	153
+2906	Lupaka	153
+2907	Lupanda	153
+2908	Lusulu	153
+2909	Malunku	153
+2910	Matshiya	153
+2911	Matshokotsha	153
+2912	Menyezwa	153
+2913	Mzola	153
+2914	Ndimimbili	153
+2915	Pupu	153
+2916	Sibombo	153
+2917	Sobendle	153
+2918	St Pauls	153
+2919	Tshongokwe	153
+2920	Twenty Four	153
+2921	Fanisoni	154
+2922	Faroni	154
+2923	Gwampa Forestry	154
+2924	Jojo East	154
+2925	Jojo South	154
+2926	Jojo West	154
+2927	Kenilworth	154
+2928	Malandu East	154
+2929	Malandu West	154
+2930	Malindi	154
+2931	Manguni I	154
+2932	Manguni Ii	154
+2933	Manomano	154
+2934	Mlume I	154
+2935	Mlume Ii	154
+2936	Mpande	154
+2937	Ngomambi Central	154
+2938	Ngomambi North	154
+2939	Ngomambi South	154
+2940	Nhlanganiso	154
+2941	Nkalakatha	154
+2942	Phillip	154
+2943	Sibangalwana Ii	154
+2944	Sibangelana I	154
+2945	Sikhobokhobo	154
+2946	Siphunyuka	154
+2947	Sivalo	154
+2948	Ward 1	155
+2949	Ward 2	155
+2950	Ward 3	155
+2951	Ward 4	155
+2952	Ward 5	155
+2953	Ward 6	155
+2954	Ward 7	155
+2955	Ward 8	155
+2956	Ward 9	155
+2957	Ward 10	155
+2958	Ward 11	155
+2959	Ward 12	155
+2960	Ward 13	155
+2961	Ward 14	155
+2962	Ward 15	155
+2963	Ward 16	155
+2964	Ward 17	155
+2965	Ward 18	155
+2966	Ward 19	155
+2967	Ward 20	155
+2968	Fingo	156
+2969	Ntabazinduna North	156
+2970	Ntabazinduna South	156
+2971	Beitbridge	157
+2972	Chipise	157
+2973	Dendele	157
+2974	Dite Ii	157
+2975	Machuchuta	157
+2976	Maramani	157
+2977	Masera	157
+2978	Mtetengwe I	157
+2979	Mtetengwe Ii	157
+2980	Mtetengwe Iii	157
+2981	Siyoka I	157
+2982	Siyoka Ii	157
+2983	Bambadzi	158
+2984	Bango	158
+2985	Dombodema	158
+2986	Empandeni	158
+2987	Figtree	158
+2988	Gala	158
+2989	Gwambe	158
+2990	Hingwe	158
+2991	Huwana	158
+2992	Izimnyama	158
+2993	Mabhuna	158
+2994	Madlambuzi	158
+2995	Magcobafuthi	158
+2996	Makhulela	158
+2997	Malanswazi	158
+2998	Mambale	158
+2999	Maninji	158
+3000	Marula	158
+3001	Masendu	158
+3002	Matjingwe	158
+3003	Hikwa	158
+3004	Mphoengs	158
+3005	Natane	158
+3006	Ndolwane	158
+3007	Nyele	158
+3008	Raditladi	158
+3009	Sangulube	158
+3010	Sansukwe	158
+3011	Somnene	158
+3012	Tjankwa	158
+3013	Alisupi	159
+3014	Buvuma	159
+3015	Sengezane	159
+3016	Mtshabezi Mission	159
+3017	Gwaranyemba	159
+3018	Gungwe	159
+3019	Hwali	159
+3020	Kafusi	159
+3021	Lushongwe	159
+3022	Manama, Zimbabwe	159
+3023	Matshetshe	159
+3024	Mtshazo	159
+3025	Mzimuni, Zimbabwe	159
+3026	Nkwidze	159
+3027	Ntalale	159
+3028	Shake, Zimbabwe	159
+3029	Silonga	159
+3030	Simbumbumbu	159
+3031	Sizeze	159
+3032	Avoca	160
+3033	Bekezela	160
+3034	Gwatemba	160
+3035	Mahole	160
+3036	Mashoko	160
+3037	Masiyephambili	160
+3038	Mbondweni	160
+3039	Ntunteni	160
+3040	Sanele	160
+3041	Sidzibe	160
+3042	Silalabuhwa	160
+3043	Vokola	160
+3044	Ward 1	161
+3045	Ward 2	161
+3046	Ward 3	161
+3047	Ward 4	161
+3048	Ward 5	161
+3049	Ward 6	161
+3050	Ward 7	161
+3051	Ward 8	161
+3052	Ward 9	161
+3053	Ward 10	161
+3054	Ward 11	161
+3055	Ward 12	161
+3056	Ward 13	161
+3057	Ward 14	161
+3058	Ward 15	161
+3059	Ward 16	161
+3060	Ward 17	161
+3061	Bambanani	162
+3062	Beula	162
+3063	Bidi	162
+3064	Dema	162
+3065	Donkwedonkwe	162
+3066	Dzembe	162
+3067	Gwezha	162
+3068	Lingwe	162
+3069	Madwaleni	162
+3070	Makhasa	162
+3071	Malaba	162
+3072	Manyane	162
+3073	Marinoha	162
+3074	Makwe	162
+3075	Mbembeswana	162
+3076	Mbuso	162
+3077	Mkokha	162
+3078	Nqindi	162
+3079	Sigangatsha	162
+3080	Silebuhwa	162
+3081	Sontala	162
+3082	St Anna	162
+3083	Vulindlela	162
+3084	Dobhe	163
+3085	Dula	163
+3086	Esibomvu	163
+3087	Kumbudzi	163
+3088	Mathendele	163
+3089	Mawabeni	163
+3090	Mtshede	163
+3091	Ntshamathe	163
+3092	Sihlengeni	163
+3093	Silobi	163
+3094	Zhalo	163
+3095	Vulindlela	163
+3096	Charandura	164
+3097	Chengwena	164
+3098	Chinyuni	164
+3099	Chizhou	164
+3100	Mapiravana	164
+3101	Maware	164
+3102	Mhende	164
+3103	Musoropamwe	164
+3104	Takawira	164
+3105	Takawira Resett	164
+3106	Tatonga	164
+3107	Tokwe (tokwe Iv) Rs	164
+3108	Chireya I	165
+3109	Chireya Ii	165
+3110	Chireya Iii	165
+3111	Goredema	165
+3112	Gumunyu I	165
+3113	Gumunyu Ii	165
+3114	Makore I	165
+3115	Makore Ii	165
+3116	Musadzi Rs	165
+3117	Nembudziya I	165
+3118	Nembudziya Ii	165
+3119	Nembudziya Iii	165
+3120	Nora Rs	165
+3121	Nyaurungwe Rs	165
+3122	Simchembo	165
+3123	Tsungai Rs	165
+3124	Wadze Rs	165
+3125	Madzivazvido	165
+3126	Nenyunka	165
+3127	Chemagora Lscfa	166
+3128	Chirima	166
+3129	Chirisa Park	166
+3130	Chisina I	166
+3131	Chisina Ii	166
+3132	Chisina Iii	166
+3133	Huchu	166
+3134	Jahana	166
+3135	Jiri	166
+3136	Masuka	166
+3137	Mukoka Msala	166
+3138	Muyambi	166
+3139	Ndhlalambi I	166
+3140	Ndhlalambi Ii	166
+3141	Nemangwe I	166
+3142	Nemangwe Ii	166
+3143	Nemangwe Iii	166
+3144	Nemangwe Iv	166
+3145	Nemangwe V	166
+3146	Ngomeni	166
+3147	Njelele I	166
+3148	Njelele Ii	166
+3149	Njelele Iii	166
+3150	Sai Mangidi	166
+3151	Sai Mangisi	166
+3152	Sai Sengwa	166
+3153	Bafana	167
+3154	Gambiza	167
+3155	Ilithelezwe	167
+3156	Madikani	167
+3157	Masvori Rs	167
+3158	Mdubiwa	167
+3159	Mlezu	167
+3160	Mutengwa	167
+3161	Nkawana	167
+3162	Nyabango	167
+3163	Nyama	167
+3164	Sikombingo	167
+3165	Somabula	167
+3166	Batanai	168
+3167	Chaminuka Ii	168
+3168	Chitepo	168
+3169	Empress Mine	168
+3170	Gwesela West	168
+3171	Inhlangano	168
+3172	Kubatana	168
+3173	Kushinga	168
+3174	Kwayedza	168
+3175	Mabura	168
+3176	Makaba	168
+3177	Msokeli	168
+3178	Mtshikitsha	168
+3179	Nhlanganisa	168
+3180	Ntabeni North	168
+3181	Ntabeni South	168
+3182	Sebenzani	168
+3183	Sesombi I	168
+3184	Sesombi I Rs	168
+3185	Sesombi Ii Rs	168
+3186	Sesombi Iii	168
+3187	Sesombi Iii Rs	168
+3188	Sidakeni	168
+3189	Silobela	168
+3190	Tongogara	168
+3191	Zhombe Central	168
+3192	(New Castle) Rs	169
+3193	Baradzamwa	169
+3194	Bhangwe	169
+3195	Bhinya Road	169
+3196	Chebvute	169
+3197	Chegato	169
+3198	Cheshanga	169
+3199	Chingechuru	169
+3200	Chingoma A	169
+3201	Chingoma B	169
+3202	Chizungu	169
+3203	Danga	169
+3204	Dunda	169
+3205	Lscfa (mberengwa Ica)	169
+3206	Magamba	169
+3207	Mahlebadza	169
+3208	Makuwerere	169
+3209	Masvingo	169
+3210	Mataga	169
+3211	Mataruse B I	169
+3212	Mataruse B Ii	169
+3213	Maziofa	169
+3214	Mketi	169
+3215	Muchembere	169
+3216	Murerezi	169
+3217	Mushandirapamwe	169
+3218	Musume	169
+3219	Ngungumbane	169
+3220	Nyamondo Ii	169
+3221	Nyamondo Iii	169
+3222	Ruremekedzo	169
+3223	Vukomba	169
+3224	Zvomukonde	169
+3225	Gundura	170
+3226	Ndanga	170
+3227	Donga	170
+3228	Hanke	170
+3229	Nhema	170
+3230	Tinhira	170
+3231	Tongogara	170
+3232	Mazivisa	170
+3233	Shamba	170
+3234	Pisira	170
+3235	Chenhunguru	171
+3236	Chiwonekano	171
+3237	Dayadaya	171
+3238	Guruguru	171
+3239	Hombe	171
+3240	Indava	171
+3241	Lscfa	171
+3242	Mapirimira	171
+3243	Mototi	171
+3244	Murowa	171
+3245	Mutambe	171
+3246	Ngomayebani	171
+3247	Runde	171
+3248	Shauke	171
+3249	Shavahuru	171
+3250	Ture	171
+3251	Mhondongori	171
+3252	Vukusvo	171

@@ -5,7 +5,7 @@ import { create } from '../create.ts'
 import * as inParallel from '../../../util/inParallel.ts'
 
 export default create(
-  ['diagnostic_tests', 'devices', 'device_capabilities'],
+  ['devices', 'device_capabilities'],
   seedDataFromJSON,
 )
 

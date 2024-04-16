@@ -1,1 +1,91 @@
 id	examination_category_id	name	label	type	required	order	options	ask_dependent_on	ask_dependent_values
+181	37	ill	ill	boolean	f	1			
+182	37	unalert	unalert	boolean	f	2			
+183	37	confused	confused	boolean	f	3			
+184	37	drowsy	drowsy	boolean	f	4			
+185	37	febrile	febrile	boolean	f	5			
+186	37	dehydrated	dehydrated	boolean	f	6			
+187	37	uncooperative	uncooperative	boolean	f	7			
+188	37	sad	sad	boolean	f	8			
+189	37	resentful	resentful	boolean	f	9			
+190	37	fat	fat	boolean	f	10			
+191	37	wasted	wasted	boolean	f	11			
+192	37	in pain	in pain	boolean	f	12			
+193	37	in distress	in distress	boolean	f	13			
+194	38	cold hands	cold hands	boolean	f	1			
+195	38	sweaty	sweaty	boolean	f	2			
+196	38	clammy	clammy	boolean	f	3			
+197	38	peripheral cyanosis	peripheral cyanosis	boolean	f	4			
+198	38	nicotine stains	nicotine stains	boolean	f	5			
+199	39	leukonychia	leukonychia	boolean	f	1			
+200	39	koilonychia	koilonychia	boolean	f	2			
+201	39	clubbing	clubbing	boolean	f	3			
+202	39	splinter hemorrhages	splinter hemorrhages	boolean	f	4			
+203	39	pitting	pitting	boolean	f	5			
+204	39	onycholysis	onycholysis	boolean	f	6			
+205	40	erythema	erythema	boolean	f	1			
+206	40	Dupuytren’s contracture	Dupuytren’s contracture	boolean	f	2			
+207	40	Joints	Joints	boolean	f	3			
+208	40	skin swelling	skin swelling	boolean	f	4			
+209	41	jaundice	jaundice	boolean	f	1			
+210	41	pale	pale	boolean	f	2			
+211	42	thin	thin	boolean	f	1			
+212	42	thick	thick	boolean	f	2			
+213	42	dry	dry	boolean	f	3			
+214	42	rash	rash	boolean	f	4			
+215	43	hands and feet	hands and feet	boolean	f	1			
+216	43	extensor surfaces	extensor surfaces	boolean	f	2			
+217	43	flexural surfaces	flexural surfaces	boolean	f	3			
+218	43	truncal	truncal	boolean	f	4			
+219	43	exposed sites	exposed sites	boolean	f	5			
+220	43	asymmetrical	asymmetrical	boolean	f	6			
+221	43	discrete	discrete	boolean	f	7			
+222	43	confluent	confluent	boolean	f	8			
+223	44	linear	linear	boolean	f	1			
+224	44	annular/ring-like	annular/ring-like	boolean	f	2			
+225	44	serpiginous/snake-like	serpiginous/snake-like	boolean	f	3			
+226	44	reticular/net-like	reticular/net-like	boolean	f	4			
+227	44	star shaped	star shaped	boolean	f	5			
+228	44	flat macular	flat macular	boolean	f	6			
+229	44	raised papular	raised papular	boolean	f	7			
+230	44	localized plaque	localized plaque	boolean	f	8			
+231	44	wheal	wheal	boolean	f	9			
+232	44	blisters	blisters	boolean	f	10			
+233	44	bullae	bullae	boolean	f	11			
+234	44	large vesicles	large vesicles	boolean	f	12			
+235	44	nodules	nodules	boolean	f	13			
+236	44	purpura	purpura	boolean	f	14			
+237	45	scaly	scaly	boolean	f	1			
+238	45	shiny	shiny	boolean	f	2			
+239	45	well demarcated edges	well demarcated edges	boolean	f	3			
+240	45	red pigment	red pigment	boolean	f	4			
+241	45	white pigment	white pigment	boolean	f	5			
+242	45	blue pigment	blue pigment	boolean	f	6			
+243	45	brown pigment	brown pigment	boolean	f	7			
+244	45	black pigment	black pigment	boolean	f	8			
+245	46	cold	cold	boolean	f	1			
+246	46	tender	tender	boolean	f	2			
+247	46	blanching	blanching	boolean	f	3			
+248	46	purpura character	purpura character	boolean	f	4			
+249	47	central cyanosis	central cyanosis	boolean	f	1			
+250	47	moist	moist	boolean	f	2			
+251	47	dry tongue	dry tongue	boolean	f	3			
+252	48	caries	caries	boolean	f	1			
+253	48	poor hygiene	poor hygiene	boolean	f	2			
+254	48	false teeth	false teeth	boolean	f	3			
+255	49	bleeding	bleeding	boolean	f	1			
+256	49	swollen	swollen	boolean	f	2			
+257	50	swelling	swelling	boolean	f	1			
+258	50	redness tonsils	redness tonsils	boolean	f	2			
+259	50	ulceration	ulceration	boolean	f	3			
+260	51	swelling pharynx	swelling pharynx	boolean	f	1			
+261	51	redness pharynx	redness pharynx	boolean	f	2			
+262	51	ulceration pharynx	ulceration pharynx	boolean	f	3			
+263	52	ketosis	ketosis	boolean	f	1			
+264	52	alcohol	alcohol	boolean	f	2			
+265	52	fetor	fetor	boolean	f	3			
+266	52	musty	musty	boolean	f	4			
+267	53	icterus	icterus	boolean	f	1			
+268	54	pale conjunctiva	pale conjunctiva	boolean	f	1			
+269	54	redness conjunctiva	redness conjunctiva	boolean	f	2			
+270	54	swelling conjunctiva	swelling conjunctiva	boolean	f	3			

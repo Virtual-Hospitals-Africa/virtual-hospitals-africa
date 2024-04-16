@@ -5,8 +5,8 @@ import { isISODateTimeString } from '../../util/date.ts'
 
 
 // Make a ClientApplication in Medplum and use its client ID and secret here
-const CLIENT_ID = "527a1a71-a2e3-47a1-a3a8-ed3e07275e9e"
-const CLIENT_SECRET = "05b1809158621ec697809fbccccf378a2e53b4a383b9a5704d6e1d85562a1fa8"
+const CLIENT_ID = "afd3756e-ff33-4411-a821-638d8ae29940"
+const CLIENT_SECRET = "8f569f08cbacb3f0751aaf465472fa351aea554846c5e44fac76ebeaa6a09f82"
 
 const auth = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
 

@@ -21,8 +21,8 @@ for table in "$@"; do
     exit 1
   fi
   echo "Loading data from $file into table $table"
-  psql -d "$DATABASE_URL" -c "\copy $table FROM '$file' WITH DELIMITER E'\t' CSV HEADER"
-  echo "Resetting sequence for table $table, if present"
+  psql -d "$DATABASE_URL" -c "\copy \"$table\" FROM '$file' WITH DELIMITER E'\t' CSV HEADER"
+  echo "Resetting sequence for table \"$table\", if present"
   psql -d "$DATABASE_URL" -c "
     DO \$$
     BEGIN
