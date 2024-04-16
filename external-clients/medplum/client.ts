@@ -12,13 +12,10 @@ const auth = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
 
 export function request(method: string, path: string, data?: unknown) {
   const body = data ? JSON.stringify(data) : undefined;
-  const headers: any = {
-    'Authorization': `Basic ${auth}`,
-  }
+  const headers = new Headers({ 'Authorization': `Basic ${auth}` })
   if (body) {
-    headers['Content-Type'] = 'application/fhir+json'
+    headers.set('Content-Type', 'application/fhir+json')
   }
-
   return fetch(`http://localhost:8103/fhir/R4/${path}`, {
     method,
     headers,

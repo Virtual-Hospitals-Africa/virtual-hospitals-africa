@@ -8,5 +8,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.alterTable('Organization').dropConstraint('check_single_name').execute()
+  await db.schema.alterTable('Organization').dropConstraint('check_single_name')
+    .execute()
 }
