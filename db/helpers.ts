@@ -252,7 +252,8 @@ export function debugLog(
     // deno-lint-ignore no-explicit-any
     | DeleteQueryBuilder<DB, any, any>
     // deno-lint-ignore no-explicit-any
-    | InsertQueryBuilder<DB, any, any>,
+    | InsertQueryBuilder<DB, any, any> | any,
+    
 ) {
   let { sql, parameters } = qb.compile()
   parameters.forEach((p: unknown, i: number) => {

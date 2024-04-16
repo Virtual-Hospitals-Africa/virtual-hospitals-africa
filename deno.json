@@ -15,13 +15,16 @@
     "db:migrate:latest": "deno task run:trusted db/migrate.ts latest",
     "db:migrate:down": "deno task run:trusted db/migrate.ts down",
     "db:migrate:to": "deno task run:trusted db/migrate.ts to",
-    "db:migrate:seeds:dump": "deno task run:trusted db/migrate.ts seeds:dump",
-    "db:migrate:seeds:load": "deno task run:trusted db/migrate.ts seeds:load",
     "db:migrate:wipe": "deno task run:trusted db/migrate.ts wipe",
     "db:migrate:redo": "deno task run:trusted db/migrate.ts down && deno task run:trusted db/migrate.ts up",
     "db:migrate:redo:from": "deno task run:trusted db/migrate.ts redo:from",
     "db:migrate:redo:all": "deno task run:trusted db/redo_all.ts",
-    "db:migrate:local": "./db/migrate_local.sh",
+
+    "db:local": "./db/local.sh",
+
+    "db:seeds:dump": "deno task run:trusted db/seed/dump.ts",
+    "db:seeds:load": "deno task run:trusted db/seed/load.ts",
+
     "db:drop": "deno task run:trusted db/drop.ts",
     "heroku:chatbot:up": "heroku ps:scale chatbot=1",
     "heroku:chatbot:down": "heroku ps:scale chatbot=0",
@@ -89,7 +92,8 @@
     "ffmpeg": "https://deno.land/x/deno_ffmpeg@v3.1.0/mod.ts",
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
-    "natural": "npm:natural@6.10.4"
+    "natural": "npm:natural@6.10.4",
+    "@medplum/core": "npm:@medplum/core"
   },
   "exclude": ["**/_fresh/*"],
   "nodeModulesDir": true

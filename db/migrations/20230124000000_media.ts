@@ -2,6 +2,7 @@ import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export function up(db: Kysely<unknown>) {
+  throw new Error("Don't go too far!")
   return createStandardTable(
     db,
     'media',

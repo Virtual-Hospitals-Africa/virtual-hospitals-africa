@@ -1,5 +1,5 @@
 import { Kysely } from 'kysely'
-import { createSeedMigration } from '../seedMigration.ts'
+import { create } from '../create.ts'
 
 const vhaClinicStaff = [
   'jtagarisa@gmail.com',
@@ -20,7 +20,7 @@ const vhaVirtualHospitalStaff = [
   'virtualhospitalsafrica@gmail.com',
 ]
 
-export default createSeedMigration(['health_worker_invitees'], inviteVhaStaff)
+export default create(['health_worker_invitees'], inviteVhaStaff)
 
 // Add a test facility with all VHA employees as admins
 // deno-lint-ignore no-explicit-any

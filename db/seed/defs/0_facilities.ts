@@ -1,10 +1,10 @@
 import { Kysely, sql } from 'kysely'
-import * as google from '../../external-clients/google.ts'
-import parseCsv from '../../util/parseCsv.ts'
-import capitalize from '../../util/capitalize.ts'
-import { createSeedMigration } from '../seedMigration.ts'
+import * as google from '../../../external-clients/google.ts'
+import parseCsv from '../../../util/parseCsv.ts'
+import capitalize from '../../../util/capitalize.ts'
+import { create } from '../create.ts'
 
-export default createSeedMigration(
+export default create(
   ['facilities'],
   async (db: Kysely<unknown>) => {
     await addTestFacilities(db)

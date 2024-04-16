@@ -1,12 +1,12 @@
-import { opts as database_opts } from '../db/db.ts'
-import { opts as redis_opts } from './redis.ts'
-import parseJSON from '../util/parseJSON.ts'
-import { Command } from '../util/command.ts'
+import { opts as database_opts } from '../../db/db.ts'
+import { opts as redis_opts } from '../redis.ts'
+import parseJSON from '../../util/parseJSON.ts'
+import { Command } from '../../util/command.ts'
 import { mergeReadableStreams } from 'std/streams/merge_readable_streams.ts'
 import { readerFromStreamReader } from 'https://deno.land/std@0.164.0/streams/conversion.ts'
 import { readLines } from 'https://deno.land/std@0.164.0/io/buffer.ts'
 
-export async function startServerAgainstLocalDB() {
+export async function start() {
   const medplum_server_dir = `${Deno.cwd()}/medplum/packages/server`
   const medplum_config_path = `${medplum_server_dir}/medplum.config.json`
   const medplum_config = await parseJSON(medplum_config_path)
@@ -16,12 +16,8 @@ export async function startServerAgainstLocalDB() {
   const vha_medplum_config = {
     ...medplum_config,
     database: database_opts,
-    redis: {
-      host: redis_opts.hostname,
-      port: redis_opts.port,
-      password: redis_opts.password,
-      username: redis_opts.username,
-    },
+    redis: redis_opts,
+    logRequests: true,
   }
 
   await Deno.writeTextFile(
@@ -31,9 +27,6 @@ export async function startServerAgainstLocalDB() {
 
   const server = Command('npm', {
     args: ['run', 'dev', `file:${vha_medplum_config_file}`],
-    env: {
-      NODE_TLS_REJECT_UNAUTHORIZED: '0',
-    },
     cwd: medplum_server_dir,
     stdout: 'piped',
     stderr: 'piped',
@@ -53,8 +46,8 @@ export async function startServerAgainstLocalDB() {
 
 // Run the medplum server against the local database, resolving when the server is up
 // Note: running the server runs the migrations
-export async function runServerAgainstLocalDB(): Promise<Deno.ChildProcess> {
-  const { server, lines } = await startServerAgainstLocalDB()
+export async function run(): Promise<Deno.ChildProcess> {
+  const { server, lines } = await start()
 
   for await (const line of lines) {
     if (line.includes('Server started')) {
@@ -67,8 +60,8 @@ export async function runServerAgainstLocalDB(): Promise<Deno.ChildProcess> {
 
 // Running the server runs the migrations, so we just need to run the server
 // and then kill it to run the migrations
-export async function runMigrationsAgainstLocalDB() {
-  const { server, lines } = await startServerAgainstLocalDB()
+export async function runMigrations() {
+  const { server, lines } = await start()
 
   for await (const line of lines) {
     if (
@@ -84,4 +77,8 @@ export async function runMigrationsAgainstLocalDB() {
 
   // This leaves a zombie process, which we kill in the parent task in deno.json
   server.unref()
+}
+
+if (import.meta.main) {
+  await run()
 }

@@ -1,10 +1,13 @@
-FROM node:20-slim
-ENV NODE_ENV production
-WORKDIR /usr/src/medplum
-EXPOSE 8103
+FROM denoland/deno:alpine-1.40.3 as build
+WORKDIR /app
+COPY ./ /app
+RUN touch .env
+RUN deno task build
+EXPOSE 8000
 
-ADD ./medplum ./
-RUN npm install
-RUN npx turbo run build
+RUN echo 'deno task db:migrate:latest && deno task web' >> deno_start.sh
+RUN chmod +x deno_start.sh
+CMD ["/app/deno_start.sh"]
 
-ENTRYPOINT [ "node", "--require", "./packages/server/dist/otel/instrumentation.js", "packages/server/dist/index.js" ]
+# ENTRYPOINT ["deno"]
+# CMD ["run", "--allow-all", "main.ts", ]

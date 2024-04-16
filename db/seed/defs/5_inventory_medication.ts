@@ -1,16 +1,16 @@
 //deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
-import parseJSON from '../../util/parseJSON.ts'
-import groupBy from '../../util/groupBy.ts'
-import uniq from '../../util/uniq.ts'
+import parseJSON from '../../../util/parseJSON.ts'
+import groupBy from '../../../util/groupBy.ts'
+import uniq from '../../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
-import compact from '../../util/compact.ts'
-import arraysEqual from '../../util/arraysEqual.ts'
-import sortBy from '../../util/sortBy.ts'
-import { createSeedMigration } from '../seedMigration.ts'
-import * as inParallel from '../../util/inParallel.ts'
+import compact from '../../../util/compact.ts'
+import arraysEqual from '../../../util/arraysEqual.ts'
+import sortBy from '../../../util/sortBy.ts'
+import { create } from '../create.ts'
+import * as inParallel from '../../../util/inParallel.ts'
 
-export default createSeedMigration([
+export default create([
   'drugs',
   'medications',
   'consumables',

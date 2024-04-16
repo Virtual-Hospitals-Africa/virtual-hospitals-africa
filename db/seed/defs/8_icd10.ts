@@ -1,20 +1,20 @@
 // deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
 import { XMLParser } from 'fast-xml-parser'
-import isObjectLike from '../../util/isObjectLike.ts'
-import compact from '../../util/compact.ts'
-import range from '../../util/range.ts'
+import isObjectLike from '../../../util/isObjectLike.ts'
+import compact from '../../../util/compact.ts'
+import range from '../../../util/range.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import words from '../../util/words.ts'
+import words from '../../../util/words.ts'
 import natural from 'natural'
 import { assert } from 'std/assert/assert.ts'
-// import partition from '../../util/partition.ts'
-import { forEach } from '../../util/inParallel.ts'
-import { byCodeWithSimilarity } from '../models/icd10.ts'
-import { searchFlat } from '../models/icd10.ts'
-import { createSeedMigration } from '../seedMigration.ts'
+// import partition from '../../../util/partition.ts'
+import { forEach } from '../../../util/inParallel.ts'
+import { byCodeWithSimilarity } from '../../models/icd10.ts'
+import { searchFlat } from '../../models/icd10.ts'
+import { create } from '../create.ts'
 
-export default createSeedMigration([
+export default create([
   'icd10_sections',
   'icd10_categories',
   'icd10_diagnoses',

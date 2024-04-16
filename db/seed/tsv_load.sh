@@ -3,8 +3,8 @@ set -xeuo pipefail
 
 # if windows
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
-    shopt -s expand_aliases
-    alias psql="'$WINDOWS_PSQL_SHELL'"
+  shopt -s expand_aliases
+  alias psql="'$WINDOWS_PSQL_SHELL'"
 fi
 
 # First argument is the database URL, the rest are table names
@@ -12,10 +12,10 @@ DATABASE_URL="$1"
 shift
 
 # Directory to store exported TSV files
-SEED_DIR="./db/seeds"
+SEED_DUMPS_DIR="./db/seed/dumps"
 
 for table in "$@"; do
-  file="$SEED_DIR/$table.tsv"
+  file="$SEED_DUMPS_DIR/$table.tsv"
   if [[ ! -f "$file" ]]; then
     echo "No seed data found for table $table"
     exit 1
@@ -37,4 +37,4 @@ for table in "$@"; do
   "
 done
 
-echo "Data loaded into tables from $SEED_DIR"
+echo "Data loaded into tables from $SEED_DUMPS_DIR"

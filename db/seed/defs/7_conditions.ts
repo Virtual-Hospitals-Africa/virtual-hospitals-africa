@@ -1,9 +1,9 @@
 //deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
-import parseJSON from '../../util/parseJSON.ts'
-import { createSeedMigration } from '../seedMigration.ts'
+import parseJSON from '../../../util/parseJSON.ts'
+import { create } from '../create.ts'
 
-export default createSeedMigration([
+export default create([
   'conditions',
   'icd10_codes',
   'condition_icd10_codes',
