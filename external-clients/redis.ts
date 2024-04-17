@@ -30,11 +30,12 @@ const connectionOpts = () => {
   return redisUrl ? parseRedisConnectionString(redisUrl) : {
     hostname: 'localhost',
     port: parseInt(Deno.env.get('REDIS_PORT')!) || 6379,
+    password: (Deno.env.get('REDIS_PASSWORD')),
   }
 }
 
 export const opts = connectionOpts()
-
+console.log(opts)
 export const redis =
   (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
 

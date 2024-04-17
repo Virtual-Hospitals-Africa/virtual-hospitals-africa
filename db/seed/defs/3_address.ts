@@ -1,7 +1,7 @@
 import { Kysely } from 'kysely'
-import parseJSON from '../../util/parseJSON.ts'
-import { DB } from '../../db.d.ts'
-import { createSeedMigration } from '../seedMigration.ts'
+import parseJSON from '../../../util/parseJSON.ts'
+import { DB } from '../../../db.d.ts'
+import { create } from '../create.ts'
 
 type AdminDistrict = {
   countries: Country[]
@@ -31,7 +31,7 @@ type Suburb = {
   name: string
 }
 
-export default createSeedMigration([
+export default create([
   'countries',
   'provinces',
   'districts',

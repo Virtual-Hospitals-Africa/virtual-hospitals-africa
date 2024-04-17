@@ -1,18 +1,16 @@
 import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
-import * as medplum from '../external-clients/medplum.ts'
+import * as medplum from '../external-clients/medplum/server.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 
 const migrations: Record<
   string,
-  Migration & {
-    load?: () => Promise<Deno.CommandOutput>
-    dump?: () => Promise<Deno.CommandOutput>
-  }
+  Migration
 > = {}
 for (const migrationFile of Deno.readDirSync('./db/migrations')) {
   const migrationName = migrationFile.name
+  assert(!migrationName.includes('seed'), 'Seed migrations are not supported')
   const migration = await import(`./migrations/${migrationName}`)
   migrations[migrationName] = migration.default || migration
 }
@@ -50,12 +48,9 @@ async function startMigrating(cmd: string, target?: string) {
   function findTarget(target: string) {
     const target_file = last(target.split('/'))
     assert(target_file)
-    let matching_targets = migrationTargets.filter((it) =>
+    const matching_targets = migrationTargets.filter((it) =>
       it.includes(target_file)
     )
-    if (matching_targets.length > 1 && cmd.startsWith('seeds:')) {
-      matching_targets = matching_targets.filter((it) => it.includes('_seed'))
-    }
     if (matching_targets.length === 1) {
       return matching_targets[0]
     }
@@ -64,8 +59,7 @@ async function startMigrating(cmd: string, target?: string) {
 
   switch (cmd) {
     case 'medplum': {
-      await medplum.runMigrationsAgainstLocalDB()
-      console.log('DONE')
+      await medplum.runMigrations()
       return {
         error: null,
         results: [],
@@ -119,43 +113,6 @@ async function startMigrating(cmd: string, target?: string) {
 
       console.log('\nMigrating up to latest...')
       return migrator.migrateToLatest()
-    }
-    case 'seeds:dump': {
-      if (target) {
-        const migration = migrations[findTarget(target)]
-        if (!migration.dump) {
-          console.error(`Migration ${target} does not support seeds:dump`)
-          return Deno.exit(1)
-        }
-        await migration.dump()
-        return {}
-      }
-      for (const migrationName of migrationTargets) {
-        const migration = migrations[migrationName]
-        if (migration.dump) {
-          await migration.dump()
-        }
-      }
-      return {}
-    }
-    case 'seeds:load': {
-      if (target) {
-        const migration = migrations[findTarget(target)]
-        if (!migration.load) {
-          console.error(`Migration ${target} does not support seeds:load`)
-          return Deno.exit(1)
-        }
-        await migration.load()
-        return {}
-      }
-      for (const migrationName of migrationTargets) {
-        const migration = migrations[migrationName]
-        if (migration.load) {
-          await migration.load()
-          console.log(`seeds loaded for ${migrationName}`)
-        }
-      }
-      return {}
     }
     default:
       throw new Error(`Invalid command ${cmd}`)

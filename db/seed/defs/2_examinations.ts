@@ -1,10 +1,10 @@
 import { Kysely } from 'kysely'
-import { createSeedMigration } from '../seedMigration.ts'
-import uniq from '../../util/uniq.ts'
-import groupBy from '../../util/groupBy.ts'
-import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../shared/examinations.ts'
+import { create } from '../create.ts'
+import uniq from '../../../util/uniq.ts'
+import groupBy from '../../../util/groupBy.ts'
+import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../../shared/examinations.ts'
 
-export default createSeedMigration(
+export default create(
   [
     'examinations',
     'diagnostic_tests',

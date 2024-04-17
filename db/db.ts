@@ -23,7 +23,9 @@ if (Deno.env.get('IS_TEST')) {
   DATABASE_URL = DATABASE_URL.replace('vha_dev', 'vha_test')
 }
 
-const ssl = !!DATABASE_URL && !DATABASE_URL.includes('localhost')
+if (DATABASE_URL && !DATABASE_URL.includes('localhost')) {
+  DATABASE_URL += '?sslmode=require'
+}
 
 export function parseConnectionString(
   connectionString: string,
@@ -36,17 +38,15 @@ export function parseConnectionString(
   return {
     username: match[1],
     password: match[2],
-    host: match[3],
+    hostname: match[3],
     port: parseInt(match[4], 10),
     dbname: match[5],
-    ssl,
   }
 }
 
-export const opts = DATABASE_URL ? parseConnectionString(DATABASE_URL) : null
+export const uri = DATABASE_URL
 
-export const uri = DATABASE_URL &&
-  `${DATABASE_URL}${ssl ? '?sslmode=require' : ''}`
+export const opts = uri ? parseConnectionString(uri) : null
 
 const db = new Kysely<DB>({
   dialect: {

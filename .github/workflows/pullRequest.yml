@@ -71,7 +71,7 @@ jobs:
         run: deno task db:migrate:latest
 
       - name: Load seeds
-        run: deno task db:migrate:seeds:load
+        run: deno task db:seeds:load
 
       - name: Run build
         run: deno task build

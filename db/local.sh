@@ -14,5 +14,5 @@ diff .env .env.local >/dev/null || {
   exit 1
 }
 
-deno task db:migrate:$script "$@"
-IS_TEST=true deno task db:migrate:$script "$@"
+deno task db:$script "$@"
+IS_TEST=true deno task db:$script "$@"

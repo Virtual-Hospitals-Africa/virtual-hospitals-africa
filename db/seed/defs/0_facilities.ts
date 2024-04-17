@@ -1,10 +1,10 @@
 import { Kysely, sql } from 'kysely'
-import * as google from '../../external-clients/google.ts'
-import parseCsv from '../../util/parseCsv.ts'
-import capitalize from '../../util/capitalize.ts'
-import { createSeedMigration } from '../seedMigration.ts'
+import * as google from '../../../external-clients/google.ts'
+import parseCsv from '../../../util/parseCsv.ts'
+import capitalize from '../../../util/capitalize.ts'
+import { create } from '../create.ts'
 
-export default createSeedMigration(
+export default create(
   ['facilities'],
   async (db: Kysely<unknown>) => {
     await addTestFacilities(db)
@@ -35,7 +35,7 @@ export function addTestFacilities(db: Kysely<any>) {
 // So need a extra column in csv file
 async function importDataFromCSV(db: Kysely<unknown>) {
   for await (
-    const row of parseCsv('./db/resources/zimbabwe-health-facilities.csv')
+    const row of parseCsv('./db/resources/zimbabwe-health-organizations.csv')
   ) {
     let address = row.address
     if (address === 'UNKNOWN' && !Deno.env.get('SKIP_GOOGLE_MAPS')) {

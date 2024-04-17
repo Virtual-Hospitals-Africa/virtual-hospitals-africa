@@ -426,3 +426,9 @@ export function isISODateString(date: unknown): date is string {
   return isString(date) && /^\d{4}-\d{2}-\d{2}$/.test(date) &&
     (new Date(date).toDateString() !== 'Invalid Date')
 }
+
+export function isISODateTimeString(datetime: unknown): datetime is string {
+  return isString(datetime) &&
+    /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(datetime) &&
+    (new Date(datetime).toDateString() !== 'Invalid Date')
+}

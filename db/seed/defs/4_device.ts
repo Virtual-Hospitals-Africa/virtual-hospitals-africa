@@ -1,11 +1,11 @@
 import { Kysely } from 'kysely'
-import parseJSON from '../../util/parseJSON.ts'
+import parseJSON from '../../../util/parseJSON.ts'
 import { assert } from 'std/assert/assert.ts'
-import { createSeedMigration } from '../seedMigration.ts'
-import * as inParallel from '../../util/inParallel.ts'
+import { create } from '../create.ts'
+import * as inParallel from '../../../util/inParallel.ts'
 
-export default createSeedMigration(
-  ['diagnostic_tests', 'devices', 'device_capabilities'],
+export default create(
+  ['devices', 'device_capabilities'],
   seedDataFromJSON,
 )
 
