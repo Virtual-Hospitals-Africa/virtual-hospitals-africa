@@ -1,0 +1,18 @@
+FROM denoland/deno:alpine-1.40.3 as build
+
+# Install Npm/node
+# Copy over medplum
+# Copy over just the deno.json, db, and external-clients files
+# Run npm install within medplum directory
+# Run npx turbo run build
+# CMD would be deno task run:trusted external-clients/medplum/server.ts
+
+WORKDIR /app
+COPY ./ /app
+RUN touch .env
+RUN deno task build
+EXPOSE 8103
+
+RUN echo 'deno task db:migrate:latest && deno task web' >> deno_start.sh
+RUN chmod +x deno_start.sh
+CMD ["/app/deno_start.sh"]
