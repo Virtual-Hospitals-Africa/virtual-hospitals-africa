@@ -981,7 +981,8 @@ describe('/app/patients/[patient_id]/intake', {
         number_of_products: 5,
         tobacco_products_used: ['Flavored cigarettes', 'Cigarettes'],
       },
-    })
+    // deno-lint-ignore no-explicit-any
+    } as any)
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/lifestyle`,

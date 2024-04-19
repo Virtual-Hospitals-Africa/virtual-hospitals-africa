@@ -532,19 +532,19 @@ export async function getWithOpenEncounter(
 
   assert(haveNames(patients))
 
-  // return patients
+  return patients
   // ask about this error! aislin added code below to fix, original is above
 
-  return patients.map((patient) => ({
-    ...patient,
-    open_encounter: patient.open_encounter && {
-      ...patient.open_encounter,
-      providers: patient.open_encounter.providers.map((provider) => ({
-        ...provider,
-        seen_at: null,
-      })),
-    },
-  }))
+  // return patients.map((patient) => ({
+  //   ...patient,
+  //   open_encounter: patient.open_encounter && {
+  //     ...patient.open_encounter,
+  //     providers: patient.open_encounter.providers.map((provider) => ({
+  //       ...provider,
+  //       seen_at: null,
+  //     })),
+  //   },
+  // }))
 }
 
 export type PatientCard = {

@@ -1275,43 +1275,88 @@ export type EmployeeInfo = {
   }[]
 }
 
+export type RenderedDoctorReviewBase = {
+  encounter: {
+    id: number
+    reason: EncounterReason
+  }
+  patient: {
+    id: number
+    name: string
+    avatar_url: string | null
+    description: string | null
+  }
+  requested_by: {
+    profession: 'nurse' | 'doctor'
+    name: string
+    avatar_url: string | null
+    facility: {
+      id: number
+      name: string
+    }
+    patient_encounter_provider_id: number
+  }
+}
+
+export type RenderedDoctorReview = RenderedDoctorReviewBase & {
+  review_id: number
+  employment_id: number
+  steps_completed: DoctorReviewStep[]
+  completed: SqlBool
+}
+export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
+  review_request_id: number
+}
+
+export type RenderedDoctorReviewRequestOfSpecificDoctor =
+  & RenderedDoctorReviewRequest
+  & {
+    employment_id: number
+  }
+
+export type HealthWorkerEmployment = {
+  facility: {
+    id: number
+    name: string
+    address: string | null
+  }
+  roles: {
+    nurse: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: number
+    }
+    doctor: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: number
+    }
+    admin: null | {
+      registration_needed: boolean
+      registration_completed: boolean
+      registration_pending_approval: boolean
+      employment_id: number
+    }
+  }
+  gcal_appointments_calendar_id: string
+  gcal_availability_calendar_id: string
+  availability_set: boolean
+}
+
 export type PossiblyEmployedHealthWorker = HealthWorker & {
   id: number
   access_token: string
   refresh_token: string
   expires_at: Date | string
-  employment: {
-    facility: {
-      id: number
-      name: string
-      address: string | null
-    }
-    roles: {
-      nurse: null | {
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-        employment_id: number
-      }
-      doctor: null | {
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-        employment_id: number
-      }
-      admin: null | {
-        registration_needed: boolean
-        registration_completed: boolean
-        registration_pending_approval: boolean
-        employment_id: number
-      }
-    }
-    gcal_appointments_calendar_id: string
-    gcal_availability_calendar_id: string
-    availability_set: boolean
-  }[]
+  employment: HealthWorkerEmployment[]
   default_facility_id: number | null
   open_encounters: RenderedPatientEncounter[]
+  reviews: {
+    requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
+    in_progress: RenderedDoctorReview[]
+  }
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
@@ -2069,6 +2114,7 @@ export type RenderedWaitingRoom = {
   actions: {
     view: string | null
     intake: string | null
+    review: string | null
   }
   reason: EncounterReason
   is_emergency: SqlBool
@@ -2085,6 +2131,7 @@ export type RenderedWaitingRoom = {
     }[]
   }
   providers: RenderedProvider[]
+  reviewers: RenderedProvider[]
 }
 
 export type RenderedPatientEncounterProvider = {
@@ -2094,7 +2141,7 @@ export type RenderedPatientEncounterProvider = {
   profession: Profession
   health_worker_id: number
   health_worker_name: string
-  seen_at: null | Date
+  seen: SqlBool
 }
 
 export type RenderedPatientEncounterExamination = {
