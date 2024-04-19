@@ -5682,6 +5682,7 @@ export interface PatientLifestyle {
   patient_id: number
   sexual_activity: Json | null
   smoking: Json | null
+  substance_use: Json | null
   updated_at: Generated<Timestamp>
 }
 

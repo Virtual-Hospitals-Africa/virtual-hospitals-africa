@@ -4,6 +4,7 @@ import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import cls from '../../util/cls.ts'
 import { ComponentChild } from 'preact'
 import isString from '../../util/isString.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type OptionRecord = {
   id: number | string
@@ -39,6 +40,10 @@ export function ListboxMulti<O extends Option>({
     isString(option) ? { id: option, name: option } : option as OptionRecord
   )
 
+  for (const option of using_options) {
+    assert(option.id, `Option must have id for ${name}`)
+  }
+
   return (
     <Listbox
       value={selected_ids}
@@ -52,9 +57,16 @@ export function ListboxMulti<O extends Option>({
       {variant === 'default' && (
         <Listbox.Button className='block min-h-9 relative w-full rounded-md border-2 border-gray-300 bg-white text-gray-700 text-left text-ellipsis'>
           <span className='block py-3 px-1.5'>
-            {selected_ids.map((id) =>
-              using_options.find((option) => option.id === id)?.name
-            ).join(', ') || 'Select...'}
+            {selected_ids.map((id) => {
+              const matching_option = using_options.find((option) =>
+                option.id === id
+              )
+              assert(
+                matching_option,
+                `No matching option could be found for field: ${name}, id: ${id}`,
+              )
+              return matching_option?.name
+            }).join(', ') || 'Select...'}
           </span>
         </Listbox.Button>
       )}

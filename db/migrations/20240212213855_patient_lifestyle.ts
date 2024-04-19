@@ -12,7 +12,10 @@ export function up(db: Kysely<unknown>) {
           .onDelete('cascade'))
       .addColumn('sexual_activity', 'json')
       .addColumn('alcohol', 'json')
-      .addColumn('smoking', 'json'))
+      .addColumn('smoking', 'json')
+      .addColumn('substance_use', 'json')
+      .addColumn('exercise', 'json')
+      .addColumn('diet', 'json'))
 }
 
 export async function down(db: Kysely<unknown>) {

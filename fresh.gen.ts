@@ -153,6 +153,12 @@ import * as $inventory_ProcurerForm from './islands/inventory/ProcurerForm.tsx'
 import * as $invites_form from './islands/invites-form.tsx'
 import * as $landing_page_MHIDotsLogo from './islands/landing-page/MHIDotsLogo.tsx'
 import * as $landing_page_NavBar from './islands/landing-page/NavBar.tsx'
+import * as $lifestyle_AlcoholForm from './islands/lifestyle/AlcoholForm.tsx'
+import * as $lifestyle_DietForm from './islands/lifestyle/DietForm.tsx'
+import * as $lifestyle_ExerciseForm from './islands/lifestyle/ExerciseForm.tsx'
+import * as $lifestyle_SexualActivityForm from './islands/lifestyle/SexualActivityForm.tsx'
+import * as $lifestyle_SmokingForm from './islands/lifestyle/SmokingForm.tsx'
+import * as $lifestyle_SubstanceUseForm from './islands/lifestyle/SubstanceUseForm.tsx'
 import * as $major_surgeries_Form from './islands/major-surgeries/Form.tsx'
 import * as $major_surgeries_Surgery from './islands/major-surgeries/Surgery.tsx'
 import * as $manufactured_medication_Input from './islands/manufactured_medication/Input.tsx'
@@ -385,6 +391,12 @@ const manifest = {
     './islands/invites-form.tsx': $invites_form,
     './islands/landing-page/MHIDotsLogo.tsx': $landing_page_MHIDotsLogo,
     './islands/landing-page/NavBar.tsx': $landing_page_NavBar,
+    './islands/lifestyle/AlcoholForm.tsx': $lifestyle_AlcoholForm,
+    './islands/lifestyle/DietForm.tsx': $lifestyle_DietForm,
+    './islands/lifestyle/ExerciseForm.tsx': $lifestyle_ExerciseForm,
+    './islands/lifestyle/SexualActivityForm.tsx': $lifestyle_SexualActivityForm,
+    './islands/lifestyle/SmokingForm.tsx': $lifestyle_SmokingForm,
+    './islands/lifestyle/SubstanceUseForm.tsx': $lifestyle_SubstanceUseForm,
     './islands/major-surgeries/Form.tsx': $major_surgeries_Form,
     './islands/major-surgeries/Surgery.tsx': $major_surgeries_Surgery,
     './islands/manufactured_medication/Input.tsx':
