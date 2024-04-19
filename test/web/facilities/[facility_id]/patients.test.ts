@@ -19,18 +19,19 @@ describe(
           facility_id,
         })
 
+        const unique_name = generateUUID()
         const patient_not_in_waiting_room = await patients.upsert(db, {
-          name: generateUUID() + ' not in waiting room',
+          name: unique_name + ' not in waiting room',
         })
 
-        const patient_in_waiting_room_name = generateUUID() + ' in waiting room'
+        const patient_in_waiting_room_name = unique_name + ' in waiting room'
         const encounter = await patient_encounters.upsert(db, facility_id, {
           patient_name: patient_in_waiting_room_name,
           reason: 'seeking treatment',
         })
 
         const response = await fetch(
-          `${route}/app/facilities/${facility_id}/patients?search=waiting+room`,
+          `${route}/app/facilities/${facility_id}/patients?search=${unique_name}`,
           {
             headers: {
               accept: 'application/json',
@@ -39,8 +40,7 @@ describe(
         )
 
         assert(response.ok, 'should have returned ok')
-        const text = await response.text()
-        const json = JSON.parse(text)
+        const json = await response.json()
 
         assertEquals(json, [
           {

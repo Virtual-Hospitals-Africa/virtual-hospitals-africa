@@ -14,7 +14,8 @@ import { assert } from 'std/assert/assert.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 import zip from '../../../../../util/zip.ts'
 
-type LifestyleFormValues = Record<string, any>
+// deno-lint-ignore no-explicit-any
+type LifestyleFormValues = Record<string, any> // TODO @debruler type this
 
 function assertIsLifestyle(
   patient: unknown,

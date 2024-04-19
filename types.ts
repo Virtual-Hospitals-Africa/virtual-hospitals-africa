@@ -106,7 +106,6 @@ export type RenderedPatient =
     | 'ethnicity'
     | 'national_id_number'
     | 'phone_number'
-    | 'name'
     | 'conversation_state'
     | 'completed_intake'
     | 'intake_steps_completed'
@@ -114,6 +113,7 @@ export type RenderedPatient =
   & {
     id: number
     dob_formatted: string | null
+    name: string
     description: string | null
     // age_formatted: Maybe<string> // TODO: implement
     avatar_url: string | null

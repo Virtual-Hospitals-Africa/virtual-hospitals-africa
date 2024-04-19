@@ -2,7 +2,7 @@ import { assertOr400 } from './assertOr.ts'
 import isObjectLike from './isObjectLike.ts'
 import last from './last.ts'
 
-// deno-lint-ignore-file no-explicit-any
+// deno-lint-ignore no-explicit-any
 export default function set(obj: any, path: string, value: any) {
   const keys = path.split('.').flatMap((key) => {
     const match = key.match(/^(.+)\[(\d+)\]$/)
