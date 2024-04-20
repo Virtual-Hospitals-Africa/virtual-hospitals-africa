@@ -44,6 +44,9 @@ export async function get(
         >`TO_JSON(sexual_activity)`,
         alcohol: sql<Lifestyle['alcohol']>`TO_JSON(alcohol)`,
         smoking: sql<Lifestyle['smoking']>`TO_JSON(smoking)`,
+        substance_use: sql<Lifestyle['substance_use']>`TO_JSON(substance_use)`,
+        exercise: sql<Lifestyle['exercise']>`TO_JSON(exercise)`,
+        diet: sql<Lifestyle['diet']>`TO_JSON(diet)`,
       }).as('lifestyle'),
     )
     .executeTakeFirst()

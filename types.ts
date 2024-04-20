@@ -18,6 +18,7 @@ import {
   Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
+import { DietFrequency } from './shared/diet.ts'
 
 export type Maybe<T> = T | null | undefined
 
@@ -315,6 +316,9 @@ export type LifestyleUpsert = {
   sexual_activity: any
   alcohol: any
   smoking: any
+  substance_use: any
+  exercise: any
+  diet: any
 }
 
 export type PatientWithOpenEncounter = RenderedPatient & {
@@ -370,30 +374,19 @@ export type PatientState = {
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
   prompt: string | ((userState: US) => string)
-  onEnter?: (
-    trx: TrxOrDb,
-    userState: US,
-  ) => Promise<US>
-  onExit?: (
-    trx: TrxOrDb,
-    userState: US,
-  ) => Promise<US>
+  onEnter?: (trx: TrxOrDb, userState: US) => Promise<US>
+  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
 }
 
 export type ConversationStateHandlerNextState<US extends UserState<any>> =
   | US['conversation_state']
-  | ((
-    userState: US,
-  ) => US['conversation_state'])
+  | ((userState: US) => US['conversation_state'])
 
 export type ConversationStateHandlerSelectOption<US extends UserState<any>> = {
   id: string
   title: string
   nextState: ConversationStateHandlerNextState<US>
-  onExit?: (
-    trx: TrxOrDb,
-    userState: US,
-  ) => Promise<US>
+  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
 }
 
 export type ConversationStateHandlerListActionRow<US extends UserState<any>> = {
@@ -401,10 +394,7 @@ export type ConversationStateHandlerListActionRow<US extends UserState<any>> = {
   title: string
   description: string
   nextState: ConversationStateHandlerNextState<US>
-  onExit?: (
-    trx: TrxOrDb,
-    userState: US,
-  ) => Promise<US>
+  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
 }
 export type ConversationStateHandlerListActionSection<
   US extends UserState<any>,
@@ -420,68 +410,93 @@ export type ConversationStateHandlerListAction<US extends UserState<any>> = {
 }
 
 export type ConversationStateHandlerList<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'action'
-    headerText: string
-    action: (
-      userState: US,
-    ) =>
-      | ConversationStateHandlerSelect<US>
-      | ConversationStateHandlerListAction<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'action'
+      headerText: string
+      action: (
+        userState: US,
+      ) =>
+        | ConversationStateHandlerSelect<US>
+        | ConversationStateHandlerListAction<US>
+    }
+  >
 
 export type ConversationStateHandlerSelect<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'select'
-    options: ConversationStateHandlerSelectOption<US>[]
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'select'
+      options: ConversationStateHandlerSelectOption<US>[]
+    }
+  >
 
 export type ConversationStateHandlerString<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'string'
-    validation?: (value: string) => boolean
-    nextState: ConversationStateHandlerNextState<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'string'
+      validation?: (value: string) => boolean
+      nextState: ConversationStateHandlerNextState<US>
+    }
+  >
 
 export type ConversationStateHandlerGetLocation<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'get_location'
-    nextState: ConversationStateHandlerNextState<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'get_location'
+      nextState: ConversationStateHandlerNextState<US>
+    }
+  >
 
 export type ConversationStateHandlerEndOfDemo<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'end_of_demo'
-    nextState: ConversationStateHandlerNextState<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'end_of_demo'
+      nextState: ConversationStateHandlerNextState<US>
+    }
+  >
 
 export type ConversationStateHandlerDate<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'date'
-    nextState: ConversationStateHandlerNextState<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'date'
+      nextState: ConversationStateHandlerNextState<US>
+    }
+  >
 
 export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'initial_message'
-    nextState: ConversationStateHandlerNextState<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'initial_message'
+      nextState: ConversationStateHandlerNextState<US>
+    }
+  >
 
 export type ConversationStateHandlerSendLocation<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'send_location'
-    getMessages: (
-      userState: US,
-    ) => WhatsAppSendable
-    nextState: ConversationStateHandlerNextState<US>
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'send_location'
+      getMessages: (userState: US) => WhatsAppSendable
+      nextState: ConversationStateHandlerNextState<US>
+    }
+  >
 
 export type ConversationStateHandlerExpectMedia<US extends UserState<any>> =
-  ConversationStateHandlerType<US, {
-    type: 'expect_media'
-    nextState: ConversationStateHandlerNextState<US>
-    options: [ConversationStateHandlerSelectOption<US>]
-  }>
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'expect_media'
+      nextState: ConversationStateHandlerNextState<US>
+      options: [ConversationStateHandlerSelectOption<US>]
+    }
+  >
 
 export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerInitialMessage<US>
@@ -531,10 +546,7 @@ export type Procurer = {
 
 export type MatchingState<US extends UserState<any>> = {
   nextState: ConversationStateHandlerNextState<US>
-  onExit?: (
-    trx: TrxOrDb,
-    userState: US,
-  ) => Promise<US>
+  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
 }
 
 export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }
@@ -986,7 +998,10 @@ export type FacilityEmployee = {
 }
 
 export type FacilityDoctorOrNurse =
-  & Omit<FacilityEmployee, 'is_invitee' | 'professions'>
+  & Omit<
+    FacilityEmployee,
+    'is_invitee' | 'professions'
+  >
   & {
     profession: 'doctor' | 'nurse'
     employee_id: number
@@ -1165,10 +1180,7 @@ export type MedicationProcurement = RenderedInventoryHistoryProcurement & {
   number_of_containers: number
 }
 
-export type Profession =
-  | 'admin'
-  | 'doctor'
-  | 'nurse'
+export type Profession = 'admin' | 'doctor' | 'nurse'
 
 export type NurseSpecialty =
   | 'primary care'
@@ -1351,9 +1363,12 @@ export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
   default_facility_id: number
 }
 
-export type HealthWorkerWithGoogleTokens = HealthWorker & GoogleTokens & {
-  id: number
-}
+export type HealthWorkerWithGoogleTokens =
+  & HealthWorker
+  & GoogleTokens
+  & {
+    id: number
+  }
 
 export type Availability = {
   start: string
@@ -1433,7 +1448,7 @@ export type WhatsAppMessageOption = {
   title: string
 }
 
-export type TrxOrDb = Transaction<DB> | typeof db
+export type TrxOrDb = Transaction<DatabaseSchema> | typeof db
 
 export type WhatsAppSingleSendable =
   | WhatsAppSendableString
@@ -1561,10 +1576,7 @@ export type LoggedInHealthWorkerContext<T = Record<never, never>> =
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
   Extra = Record<string, never>,
-> = Handlers<
-  Props,
-  LoggedInHealthWorker & Extra
->
+> = Handlers<Props, LoggedInHealthWorker & Extra>
 
 export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
   Context extends { state: infer State }
@@ -1578,9 +1590,12 @@ export type Facility = Partial<Location> & {
   phone: string | null
 }
 
-export type FacilityWithAddress = Location & Facility & {
-  address: string
-}
+export type FacilityWithAddress =
+  & Location
+  & Facility
+  & {
+    address: string
+  }
 
 export type PatientNearestFacility = FacilityWithAddress & {
   walking_distance: null | number
@@ -1822,23 +1837,28 @@ export type PatientGuardian = {
   dependent_patient_id: number
 }
 
-export type School = {
-  status: 'never attended'
-} | {
-  status: 'in school'
-  current: CurrentSchool
-} | {
-  status: 'stopped school'
-  past: PastSchool
-} | {
-  status: 'adult in school'
-  education_level: string
-} | {
-  status: 'adult stopped school'
-  education_level: string
-  reason: string
-  desire_to_return: boolean
-}
+export type School =
+  | {
+    status: 'never attended'
+  }
+  | {
+    status: 'in school'
+    current: CurrentSchool
+  }
+  | {
+    status: 'stopped school'
+    past: PastSchool
+  }
+  | {
+    status: 'adult in school'
+    education_level: string
+  }
+  | {
+    status: 'adult stopped school'
+    education_level: string
+    reason: string
+    desire_to_return: boolean
+  }
 
 export type CurrentSchool = {
   grade: string
@@ -1881,64 +1901,164 @@ export type Lifestyle = {
   sexual_activity: SexualActivity | null
   alcohol: Alcohol | null
   smoking: Smoking | null
+  exercise: Exercise | null
+  diet: Diet | null
+  substance_use: SubstanceUse | null
 } //fix type names
 
-export type SexualActivity = {
-  ever_been_sexually_active: false | null
-} | {
-  ever_been_sexually_active: true
-  currently_sexually_active?: Maybe<boolean>
-  first_encounter?: Maybe<number>
-  current_sexual_partners?: Maybe<number>
-  attracted_to?: Maybe<string>
-  has_traded_sex_for_favors?: Maybe<boolean>
-  had_sex_after_drugs?: Maybe<boolean>
-  recently_treated_for_stis?: Maybe<boolean>
-  recently_hiv_tested?: Maybe<boolean>
-  know_partner_hiv_status?: Maybe<boolean>
-  partner_hiv_status?: Maybe<boolean>
+export type SexualActivity =
+  | {
+    ever_been_sexually_active: false | null
+  }
+  | {
+    ever_been_sexually_active: true
+    currently_sexually_active?: Maybe<boolean>
+    first_encounter?: Maybe<number>
+    current_sexual_partners?: Maybe<number>
+    attracted_to?: Maybe<string>
+    has_traded_sex_for_favors?: Maybe<boolean>
+    had_sex_after_drugs?: Maybe<boolean>
+    recently_treated_for_stis?: Maybe<boolean>
+    recently_hiv_tested?: Maybe<boolean>
+    know_partner_hiv_status?: Maybe<boolean>
+    partner_hiv_status?: Maybe<boolean>
+  }
+
+export type Alcohol =
+  | {
+    has_ever_drank: false | null
+  }
+  | {
+    has_ever_drank: true
+    currently_drinks?: boolean | null
+    binge_drinking?: boolean | null
+    drawn_to_cut_down?: boolean | null
+    annoyed_by_critics?: boolean | null
+    eye_opener?: boolean | null
+    guilty?: boolean | null
+    missed_work?: boolean | null
+    criticized?: boolean | null
+    arrested?: boolean | null
+    attempted_to_stop?: boolean | null
+    withdrawal?: boolean | null
+    quit_for_six_or_more_months?: boolean | null
+    abstinence_length_months?: number | null
+    first_drink?: number | null
+    years_drinking?: number | null
+    number_drinks_per_sitting?: number | null
+    alcohol_products_used?: string[] | null
+  }
+
+export type Smoking =
+  | {
+    has_ever_smoked: false | null
+  }
+  | {
+    has_ever_smoked: true
+    currently_smokes?: Maybe<boolean>
+    first_smoke_age?: number
+    weekly_smokes?: number | null
+    number_of_products?: number | null
+    felt_to_cutdown?: boolean | null
+    annoyed_by_criticism?: boolean | null
+    guilty?: boolean | null
+    forbidden_place?: boolean | null
+    attempt_to_quit?: boolean | null
+    quit_more_than_six_months?: boolean | null
+    quit_smoking_years?: number | null
+    tobacco_products_used?: string[] | null
+  }
+
+export type SubstanceUse =
+  | {
+    has_ever_used_substance: false | null
+  }
+  | {
+    has_ever_used_substance: true
+    substances_used: {
+      name: string
+      injected_substance: boolean | null
+      annoyed_by_criticism: boolean | null
+      attempt_to_stop: boolean | null
+      withdrawal_symptoms: boolean | null
+      quit_more_than_six_months: boolean | null
+      quit_substance_use_years: number | null
+      first_use_age: number | null
+      used_regularly_years: number | null
+      times_used_in_a_week: number | null
+    }[]
+  }
+
+export type Exercise =
+  | {
+    currently_exercises: false | null
+  }
+  | {
+    currently_exercises: true
+    physical_activities: {
+      name: string
+      frequency: string
+    }[]
+    sports: {
+      name: string
+      frequency: string
+    }[]
+    types_of_exercises?: string[]
+    physical_injuries_or_disability: {
+      disabilities: string[]
+      musculoskeletal_injuries: string[]
+    }
+    limitations: {
+      limits: string[]
+      structural_conditions: string[]
+      medical_conditions: string[]
+    }
+  }
+
+export type Diet = {
+  meals_per_day: number
+  typical_foods_eaten: Meal[]
+  eating_takeout_fast_food_frequency: string
+  eating_home_cooked_frequency: string
+  patient_skips_meals: boolean
+  patient_travels_often: boolean
+  reasons_for_eating_other_than_hunger: string[]
+  fats_used_in_cooking: string[]
+  staple_foods: string[]
+  non_meats: FoodFrequency[]
+  drinks: FoodFrequency[]
+  meats: FoodFrequency[]
+  junk_foods: FoodFrequency[]
+  past_special_diets: string[]
+  supplements_taken: string[]
+  eats_five_portions_of_fruits_vegetables_daily: boolean
+  eats_four_varieties_of_fruit_weekly: boolean
+  eats_four_varieties_of_vegetables_weekly: boolean
+  chooses_low_fat_products: boolean
+  chooses_baked_steamed_grilled_rather_than_fried: boolean
+  chooses_lean_cuts_or_removes_visible_fat: boolean
+  eats_oily_fish: boolean
+  bases_meals_around_starchy_foods: boolean
+  regularly_chooses_wholemeal_bread: boolean
+  regularly_eats_wholegrain_cereals_without_added_sugar: boolean
+  regularly_eats_pulses: boolean
+  regularly_eats_snacks_throughout_day: boolean
+  regularly_adds_sugar_to_drinks: boolean
+  regularly_adds_salt_during_or_after_cooking: boolean
+  regularly_drinks_sweet_fizzy_drinks: boolean
+  drinks_plenty_of_fluids_regularly_throughout_day: boolean
+  skips_meals_more_than_once_a_week: boolean
 }
 
-export type Alcohol = {
-  has_ever_drank: false | null
-} | {
-  has_ever_drank: true
-  currently_drinks?: boolean | null
-  binge_drinking?: boolean | null
-  drawn_to_cut_down?: boolean | null
-  annoyed_by_critics?: boolean | null
-  eye_opener?: boolean | null
-  guilty?: boolean | null
-  missed_work?: boolean | null
-  criticized?: boolean | null
-  arrested?: boolean | null
-  attempted_to_stop?: boolean | null
-  withdrawal?: boolean | null
-  quit_for_six_or_more_months?: boolean | null
-  abstinence_length_months?: number | null
-  first_drink?: number | null
-  years_drinking?: number | null
-  number_drinks_per_sitting?: number | null
-  quit_smoking_years?: number | null
-  alcohol_products_used?: string[] | null
+export type FoodFrequency = {
+  name: string
+  frequency: DietFrequency
 }
 
-export type Smoking = {
-  has_ever_smoked: false | null
-} | {
-  has_ever_smoked: true
-  currently_smokes?: Maybe<boolean>
-  first_smoke_age?: number
-  weekly_smokes?: number | null
-  number_of_products?: number | null
-  felt_to_cutdown?: boolean | null
-  annoyed_by_criticism?: boolean | null
-  guilty?: boolean | null
-  forbidden_place?: boolean | null
-  attempt_to_quit?: boolean | null
-  quit_more_than_six_months?: boolean | null
-  quit_smoking_years?: number | null
-  tobacco_products_used?: string[] | null
+export type Meal = {
+  meal: string
+  time: string
+  foods_eaten: string
 }
 
 export type PatientLifestyle = {
@@ -2140,7 +2260,10 @@ export type RenderedICD10DiagnosisTreeWithIncludes =
   }
 
 export type RenderedICD10DiagnosisTreeWithOptionalIncludes =
-  & Omit<RenderedICD10DiagnosisTreeWithIncludes, 'includes'>
+  & Omit<
+    RenderedICD10DiagnosisTreeWithIncludes,
+    'includes'
+  >
   & Partial<RenderedICD10DiagnosisTreeWithIncludes>
 
 export type Provider = {
@@ -2177,6 +2300,7 @@ export type RenderedPatientExamination = {
   categories: RenderedPatientExaminationCategory[]
 }
 
+export type DatabaseSchema = DB
 export type RenderedRequestFormValues = {
   id: null | number
   facility: null | {

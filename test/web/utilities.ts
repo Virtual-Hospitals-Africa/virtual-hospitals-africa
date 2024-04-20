@@ -336,4 +336,7 @@ export async function withTestFacility(
     phone: null,
   })
   await callback!(facility.id)
+  await trx.deleteFrom('facilities')
+    .where('id', '=', facility.id)
+    .execute()
 }
