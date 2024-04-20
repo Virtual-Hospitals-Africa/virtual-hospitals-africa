@@ -7,14 +7,14 @@ import * as medplum from '../../../external-clients/medplum/client.ts'
 import { forEach } from '../../../util/inParallel.ts'
 
 export default create(
-  ['Organization'],
+  ['organizations'],
   async () => {
-    await addTestOrganizations()
+    await addTestorganizationss()
     await importDataFromCSV()
   },
 )
 
-type OrganizationData = {
+type organizationsData = {
   name: string
   // location: string
   address?: string
@@ -31,7 +31,7 @@ function interpretAddress(address: string) {
   }
 }
 
-function createOrganization({ name, category, address }: OrganizationData) {
+function createorganizations({ name, category, address }: organizationsData) {
   const type = [{
     coding: [{
       system: 'http://terminology.hl7.org/CodeSystem/organization-type',
@@ -49,7 +49,7 @@ function createOrganization({ name, category, address }: OrganizationData) {
       }],
     })
   }
-  return medplum.createResource('Organization', {
+  return medplum.createResource('organizations', {
     name,
     type,
     active: true,
@@ -63,14 +63,14 @@ function createOrganization({ name, category, address }: OrganizationData) {
   })
 }
 
-export async function addTestOrganizations() {
-  await createOrganization({
+export async function addTestorganizationss() {
+  await createorganizations({
     name: 'VHA Test Clinic',
     // location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,
     address: '120 Main St, Bristol, UK, 23456',
     category: 'Clinic',
   })
-  await createOrganization({
+  await createorganizations({
     name: 'VHA Test Virtual Hospital',
     category: 'Virtual Hospital',
   })
@@ -101,7 +101,7 @@ async function importDataFromCSV() {
         ? (row.name + ' ' + category_capitalized)
         : row.name
 
-      await createOrganization({
+      await createorganizations({
         name,
         address,
         category: category_capitalized,

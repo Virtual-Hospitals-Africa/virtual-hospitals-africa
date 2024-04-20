@@ -48,13 +48,13 @@ function assertIsAddExaminations(
   values: unknown,
 ): asserts values is {
   assessments?: Examination[]
-  diagnostic_tests_at_facility?: Examination[]
+  diagnostic_tests_at_organization?: Examination[]
   diagnostic_test_orders?: Examination[]
 } {
   assertOr400(isObjectLike(values), 'Invalid form values')
   for (const key in values) {
     assertOr400(
-      key === 'assessments' || key === 'diagnostic_tests_at_facility' ||
+      key === 'assessments' || key === 'diagnostic_tests_at_organization' ||
         key === 'diagnostic_test_orders',
       `Unrecognized examination type: ${key}`,
     )
@@ -143,7 +143,7 @@ async function handleAddExaminations(req: Request, ctx: EncounterContext) {
 
   const {
     assessments = [],
-    diagnostic_tests_at_facility = [],
+    diagnostic_tests_at_organization = [],
     diagnostic_test_orders = [],
   } = await parseRequestAsserts(
     trx,
@@ -167,7 +167,7 @@ async function handleAddExaminations(req: Request, ctx: EncounterContext) {
     examinations: {
       during_this_encounter: [
         ...assessments,
-        ...diagnostic_tests_at_facility,
+        ...diagnostic_tests_at_organization,
       ],
       orders: diagnostic_test_orders,
     },
@@ -327,7 +327,7 @@ export default async function ExaminationsPage(
             ex.examination_name
           )}
           available_diagnostic_tests={await getAvailableTests(trx, {
-            facility_id: ctx.state.encounter.providers[0].facility_id,
+            organization_id: ctx.state.encounter.providers[0].organization_id,
           })}
           allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
         />

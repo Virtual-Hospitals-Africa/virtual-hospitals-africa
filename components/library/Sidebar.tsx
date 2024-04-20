@@ -55,7 +55,7 @@ function NavItem({
 
 const home_page_nav_links: LinkDef[] = [
   {
-    route: '/app/facilities/:facility_id/waiting_room',
+    route: '/app/organizations/:organization_id/waiting_room',
     title: 'Waiting Room',
     Icon: ClockIcon,
   },
@@ -68,7 +68,7 @@ const home_page_nav_links: LinkDef[] = [
     Icon: ChatBubbleLeftRightIcon,
   },
   {
-    route: '/app/facilities/:facility_id/inventory',
+    route: '/app/organizations/:organization_id/inventory',
     title: 'Inventory',
     Icon: ArchiveBoxIcon,
   },

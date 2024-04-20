@@ -60,7 +60,7 @@ export function assertIsUpsert(
 
 export async function upsert(
   trx: TrxOrDb,
-  facility_id: number,
+  organization_id: number,
   {
     encounter_id,
     patient_id,
@@ -124,7 +124,7 @@ export async function upsert(
 
   const waiting_room_added = await waiting_room.add(trx, {
     patient_encounter_id: upserted.id,
-    facility_id,
+    organization_id,
   })
 
   return {
@@ -196,7 +196,7 @@ export const baseQuery = (trx: TrxOrDb) =>
       'patient_encounters.appointment_id',
       'patient_encounters.patient_id',
       'waiting_room.id as waiting_room_id',
-      'waiting_room.facility_id as waiting_room_facility_id',
+      'waiting_room.organization_id as waiting_room_organization_id',
       jsonArrayFromColumn(
         'encounter_step',
         eb.selectFrom('patient_encounter_steps')
@@ -224,7 +224,7 @@ export const baseQuery = (trx: TrxOrDb) =>
           .select((eb_providers) => [
             'patient_encounter_providers.id as patient_encounter_provider_id',
             'employment.id as employment_id',
-            'employment.facility_id',
+            'employment.organization_id',
             'employment.profession',
             'health_workers.id as health_worker_id',
             'health_workers.name as health_worker_name',
@@ -334,18 +334,18 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
     (provider) => provider.health_worker_id === health_worker.id,
   )
   if (!matching_provider) {
-    const being_seen_at_facilities = encounter.waiting_room_facility_id
-      ? [encounter.waiting_room_facility_id]
+    const being_seen_at_organizations = encounter.waiting_room_organization_id
+      ? [encounter.waiting_room_organization_id]
       : uniq(
-        encounter.providers.map((p) => p.facility_id),
+        encounter.providers.map((p) => p.organization_id),
       )
 
     const employment = health_worker.employment.find(
-      (e) => being_seen_at_facilities.includes(e.facility.id),
+      (e) => being_seen_at_organizations.includes(e.organization.id),
     )
     assertOr403(
       employment,
-      'You do not have access to this patient at this time. The patient is being seen at a facility you do not work at. Please contact the facility to get access to the patient.',
+      'You do not have access to this patient at this time. The patient is being seen at a organization you do not work at. Please contact the organization to get access to the patient.',
     )
 
     const provider = employment.roles.doctor || employment.roles.nurse
@@ -369,7 +369,7 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
     matching_provider = {
       patient_encounter_provider_id: added_provider.id,
       employment_id: provider.employment_id,
-      facility_id: employment.facility.id,
+      organization_id: employment.organization.id,
       profession: employment.roles.doctor ? 'doctor' : 'nurse',
       health_worker_id: health_worker.id,
       health_worker_name: health_worker.name,

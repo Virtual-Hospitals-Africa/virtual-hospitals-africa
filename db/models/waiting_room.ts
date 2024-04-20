@@ -53,44 +53,44 @@ export function arrivedAgoDisplay(wait_time: string) {
 }
 
 // A slight misnomer, this function returns the patients in the waiting room
-// and the patients who are actively being seen by a provider at the facility.
+// and the patients who are actively being seen by a provider at the organization.
 export async function get(
   trx: TrxOrDb,
-  { facility_id }: {
-    facility_id: number
+  { organization_id }: {
+    organization_id: number
   },
 ): Promise<RenderedWaitingRoom[]> {
-  const facility_waiting_room = trx
+  const organization_waiting_room = trx
     .selectFrom('waiting_room')
-    .where('waiting_room.facility_id', '=', facility_id)
+    .where('waiting_room.organization_id', '=', organization_id)
     .select('patient_encounter_id')
 
-  const seeing_facility_providers = trx
+  const seeing_organization_providers = trx
     .selectFrom('patient_encounter_providers')
     .innerJoin(
       'employment',
       'patient_encounter_providers.provider_id',
       'employment.id',
     )
-    .where('employment.facility_id', '=', facility_id)
+    .where('employment.organization_id', '=', organization_id)
     .select('patient_encounter_providers.patient_encounter_id')
 
-  const review_requested_of_facility = trx
+  const review_requested_of_organization = trx
     .selectFrom('doctor_review_requests')
-    .where('doctor_review_requests.facility_id', '=', facility_id)
+    .where('doctor_review_requests.organization_id', '=', organization_id)
     .select('encounter_id as patient_encounter_id')
 
-  const actively_being_reviewed_by_facility_doctor = trx
+  const actively_being_reviewed_by_organization_doctor = trx
     .selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
-    .where('employment.facility_id', '=', facility_id)
+    .where('employment.organization_id', '=', organization_id)
     .where('doctor_reviews.completed_at', 'is', null)
     .select('doctor_reviews.encounter_id as patient_encounter_id')
 
-  const encounters_to_show = facility_waiting_room
-    .union(seeing_facility_providers)
-    .union(review_requested_of_facility)
-    .union(actively_being_reviewed_by_facility_doctor)
+  const encounters_to_show = organization_waiting_room
+    .union(seeing_organization_providers)
+    .union(review_requested_of_organization)
+    .union(actively_being_reviewed_by_organization_doctor)
     .distinct()
 
   const query = trx
@@ -104,7 +104,7 @@ export async function get(
             '=',
             'patient_encounters.id',
           )
-          .on('waiting_room.facility_id', '=', facility_id),
+          .on('waiting_room.organization_id', '=', organization_id),
     )
     .innerJoin('patients', 'patients.id', 'patient_encounters.patient_id')
     .leftJoin(
@@ -294,7 +294,7 @@ export async function get(
               .as('seen'),
             sql<
               string
-            >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
+            >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
               .as('href'),
           ]),
       ).as('providers'),
@@ -325,7 +325,7 @@ export async function get(
             literalBoolean(true).as('seen'),
             sql<
               string
-            >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
+            >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
               .as('href'),
           ])
           .unionAll(
@@ -354,7 +354,7 @@ export async function get(
                 literalBoolean(false).as('seen'),
                 sql<
                   string
-                >`concat('/app/facilities/', employment.facility_id::text, '/employees/', health_workers.id::text)`
+                >`concat('/app/organizations/', employment.organization_id::text, '/employees/', health_workers.id::text)`
                   .as('href'),
               ]),
           ),

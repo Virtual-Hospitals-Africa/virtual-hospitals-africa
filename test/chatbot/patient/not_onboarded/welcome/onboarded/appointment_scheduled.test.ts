@@ -82,7 +82,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
           buttonText: 'Menu',
           options: [
             { id: 'make_appointment', title: 'Make Appointment' },
-            { id: 'find_nearest_facility', title: 'Nearest Facility' },
+            { id: 'find_nearest_organization', title: 'Nearest Facility' },
           ],
         },
         phone_number,

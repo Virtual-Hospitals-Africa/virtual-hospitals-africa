@@ -16,7 +16,7 @@ export function Introduction() {
         <p className='mt-4'>
           Health workers in Africa are overwhelmed. Those living in far away
           villages forego care until their diseases are too far along. But what
-          if patients and the facilities serving them could leverage a network
+          if patients and the organizations serving them could leverage a network
           of virtual hospitals with medical professionals all over the globe?
         </p>
         <p className='mt-4'>

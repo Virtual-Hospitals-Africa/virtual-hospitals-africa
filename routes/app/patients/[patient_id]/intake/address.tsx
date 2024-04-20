@@ -29,8 +29,8 @@ type AddressFormValues = {
     suburb_id?: Maybe<number>
     street: string
   }
-  nearest_facility_id: number
-  nearest_facility_name: string
+  nearest_organization_id: number
+  nearest_organization_name: string
   primary_doctor_id: number
   primary_doctor_name: string
 }
@@ -60,8 +60,8 @@ function assertIsAddress(
       !patient.address.street,
   )
   assertOr400(
-    !!patient.nearest_facility_id &&
-      typeof patient.nearest_facility_id === 'number',
+    !!patient.nearest_organization_id &&
+      typeof patient.nearest_organization_id === 'number',
   )
   assertOr400(
     !!(patient.primary_doctor_id &&
@@ -72,7 +72,7 @@ function assertIsAddress(
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   async POST(req, ctx) {
-    const { primary_doctor_name, nearest_facility_name, ...patient } =
+    const { primary_doctor_name, nearest_organization_name, ...patient } =
       await parseRequestAsserts(
         ctx.state.trx,
         req,
@@ -95,16 +95,16 @@ export default async function AddressPage(
   const { healthWorker, patient, trx } = ctx.state
   const country_address_tree = await address.getCountryAddressTree(trx)
 
-  let default_facility:
+  let default_organization:
     | { id: number; name: string; address: string }
     | undefined
 
   for (const employment of healthWorker.employment) {
-    if (employment.facility.address) {
-      default_facility = {
-        id: employment.facility.id,
-        name: employment.facility.name,
-        address: employment.facility.address,
+    if (employment.organization.address) {
+      default_organization = {
+        id: employment.organization.id,
+        name: employment.organization.name,
+        address: employment.organization.address,
       }
       break
     }
@@ -114,7 +114,7 @@ export default async function AddressPage(
     <IntakeLayout ctx={ctx}>
       <PatientAddressForm
         patient={patient}
-        default_facility={default_facility}
+        default_organization={default_organization}
         country_address_tree={country_address_tree}
       />
       <hr className='my-2' />

@@ -23,7 +23,7 @@ type TestHealthWorkerOpts = {
     | 'nurse'
     | 'approved-nurse'
     | 'awaiting-approval-nurse'
-  facility_id?: number
+  organization_id?: number
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
 }
 
@@ -31,7 +31,7 @@ export const route = `https://localhost:8005`
 
 export async function addTestHealthWorker(
   trx: TrxOrDb,
-  { scenario, facility_id = 1, health_worker_attrs }: TestHealthWorkerOpts = {
+  { scenario, organization_id = 1, health_worker_attrs }: TestHealthWorkerOpts = {
     scenario: 'base',
   },
 ) {
@@ -49,14 +49,14 @@ export async function addTestHealthWorker(
   switch (scenario) {
     case 'awaiting-approval-nurse': {
       const [created_employee] = await employment.add(trx, [{
-        facility_id,
+        organization_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }])
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
-        facility_id,
+        organization_id,
         ...healthWorker.calendars,
         availability_set: true,
       }])
@@ -71,18 +71,18 @@ export async function addTestHealthWorker(
     case 'approved-nurse': {
       const admin = await upsertWithGoogleCredentials(trx, testHealthWorker())
       const [created_employee] = await employment.add(trx, [{
-        facility_id,
+        organization_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }, {
-        facility_id,
+        organization_id,
         health_worker_id: admin.id,
         profession: 'admin',
       }])
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
-        facility_id,
+        organization_id,
         ...healthWorker.calendars,
         availability_set: true,
       }])
@@ -100,14 +100,14 @@ export async function addTestHealthWorker(
     }
     case 'admin': {
       const [created_employee] = await employment.add(trx, [{
-        facility_id,
+        organization_id,
         health_worker_id: healthWorker.id,
         profession: 'admin',
       }])
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
-        facility_id,
+        organization_id,
         ...healthWorker.calendars,
         availability_set: true,
       }])
@@ -115,14 +115,14 @@ export async function addTestHealthWorker(
     }
     case 'doctor': {
       const [created_employee] = await employment.add(trx, [{
-        facility_id,
+        organization_id,
         health_worker_id: healthWorker.id,
         profession: 'doctor',
       }])
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
-        facility_id,
+        organization_id,
         ...healthWorker.calendars,
         availability_set: true,
       }])
@@ -130,14 +130,14 @@ export async function addTestHealthWorker(
     }
     case 'nurse': {
       const [created_employee] = await employment.add(trx, [{
-        facility_id,
+        organization_id,
         health_worker_id: healthWorker.id,
         profession: 'nurse',
       }])
       healthWorker.employee_id = created_employee.id
       healthWorker.calendars = testCalendars()
       await addCalendars(trx, healthWorker.id, [{
-        facility_id,
+        organization_id,
         ...healthWorker.calendars,
         availability_set: true,
       }])
@@ -306,20 +306,20 @@ itUsesTrxAnd.rejects = (
 
 export function withTestFacility(
   trx: TrxOrDb,
-  opts: (facility_id: number) => Promise<void>,
+  opts: (organization_id: number) => Promise<void>,
   callback?: undefined,
 ): Promise<void>
 
 export function withTestFacility(
   trx: TrxOrDb,
   opts: { kind: 'virtual' },
-  callback: (facility_id: number) => Promise<void>,
+  callback: (organization_id: number) => Promise<void>,
 ): Promise<void>
 
 export async function withTestFacility(
   trx: TrxOrDb,
-  opts: { kind: 'virtual' } | ((facility_id: number) => Promise<void>),
-  callback?: (facility_id: number) => Promise<void>,
+  opts: { kind: 'virtual' } | ((organization_id: number) => Promise<void>),
+  callback?: (organization_id: number) => Promise<void>,
 ) {
   let kind: 'virtual' | 'physical' = 'physical'
   if (typeof opts === 'function') {
@@ -327,7 +327,7 @@ export async function withTestFacility(
   } else {
     kind = opts.kind
   }
-  const facility = await facilities.add(trx, {
+  const organization = await facilities.add(trx, {
     name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
     category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
     address: kind === 'physical' ? '123 Test St' : null,
@@ -335,8 +335,8 @@ export async function withTestFacility(
     longitude: kind === 'physical' ? 0 : undefined,
     phone: null,
   })
-  await callback!(facility.id)
-  await trx.deleteFrom('facilities')
-    .where('id', '=', facility.id)
+  await callback!(organization.id)
+  await trx.deleteFrom('organizations')
+    .where('id', '=', organization.id)
     .execute()
 }

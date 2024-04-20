@@ -17,7 +17,7 @@ const columns: TableColumn<RenderedPatient>[] = [
   },
   {
     label: 'Nearest Facility',
-    data: 'nearest_facility',
+    data: 'nearest_organization',
   },
   {
     label: 'Actions',

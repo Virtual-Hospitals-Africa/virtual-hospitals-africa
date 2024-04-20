@@ -29,16 +29,16 @@ import { DB } from '../../db.d.ts'
 export function getDevices(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
   },
 ): Promise<RenderedFacilityDevice[]> {
   return trx
-    .selectFrom('facility_devices')
-    .innerJoin('devices', 'facility_devices.device_id', 'devices.id')
-    .where('facility_devices.facility_id', '=', opts.facility_id)
+    .selectFrom('organization_devices')
+    .innerJoin('devices', 'organization_devices.device_id', 'devices.id')
+    .where('organization_devices.organization_id', '=', opts.organization_id)
     .select((eb) => [
       'devices.id as device_id',
-      'facility_devices.serial_number',
+      'organization_devices.serial_number',
       'devices.name',
       'devices.manufacturer',
       jsonArrayFromColumn(
@@ -56,14 +56,14 @@ export function getDevices(
 export function getConsumables(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
   },
 ): Promise<RenderedFacilityConsumable[]> {
   return trx
-    .selectFrom('facility_consumables')
+    .selectFrom('organization_consumables')
     .innerJoin(
       'consumables',
-      'facility_consumables.consumable_id',
+      'organization_consumables.consumable_id',
       'consumables.id',
     )
     .leftJoin(
@@ -71,7 +71,7 @@ export function getConsumables(
       'consumables.id',
       'manufactured_medication_strengths.consumable_id',
     )
-    .where('facility_consumables.facility_id', '=', opts.facility_id)
+    .where('organization_consumables.organization_id', '=', opts.organization_id)
     .where('manufactured_medication_strengths.id', 'is', null)
     .select([
       'consumables.name as name',
@@ -79,10 +79,10 @@ export function getConsumables(
       'quantity_on_hand as quantity_on_hand',
       jsonBuildObject({
         add: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_consumable?consumable_id=', consumables.id::text)
+          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/add_consumable?consumable_id=', consumables.id::text)
         `,
         history: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
+          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
         `,
       }).as('actions'),
     ])
@@ -92,14 +92,14 @@ export function getConsumables(
 export function getMedicines(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
   },
 ): Promise<RenderedFacilityMedicine[]> {
   return trx
-    .selectFrom('facility_consumables')
+    .selectFrom('organization_consumables')
     .innerJoin(
       'consumables',
-      'facility_consumables.consumable_id',
+      'organization_consumables.consumable_id',
       'consumables.id',
     )
     .innerJoin(
@@ -122,7 +122,7 @@ export function getMedicines(
       'medications.drug_id',
       'drugs.id',
     )
-    .where('facility_consumables.facility_id', '=', opts.facility_id)
+    .where('organization_consumables.organization_id', '=', opts.organization_id)
     .select([
       'drugs.generic_name',
       'manufactured_medications.applicant_name',
@@ -135,11 +135,11 @@ export function getMedicines(
       ).as('strength_display'),
       jsonBuildObject({
         add: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, 
+          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/add_medicine?manufactured_medication_id=', manufactured_medications.id::text, 
           '&strength=', manufactured_medication_strengths.strength_numerator::text)
         `,
         history: sql<string>`
-          concat('/app/facilities/', ${opts.facility_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
+          concat('/app/organizations/', ${opts.organization_id}::text, '/inventory/history?consumable_id=', consumables.id::text)
         `,
       }).as('actions'),
     ])
@@ -149,7 +149,7 @@ export function getMedicines(
 function consumptionQuery(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
   },
 ): SelectQueryBuilder<
   DB,
@@ -172,7 +172,7 @@ function consumptionQuery(
         name: eb.ref('health_workers.name'),
         href: sql<
           string
-        >`'/app/facilities/' || ${opts.facility_id} || '/employees/' || ${
+        >`'/app/organizations/' || ${opts.organization_id} || '/employees/' || ${
           eb.ref('health_workers.id')
         }`,
         avatar_url: eb.ref('health_workers.avatar_url'),
@@ -188,13 +188,13 @@ function consumptionQuery(
       sql<null>`NULL`.as('patient'),
       sql<null>`NULL`.as('actions'),
     ])
-    .where('consumption.facility_id', '=', opts.facility_id)
+    .where('consumption.organization_id', '=', opts.organization_id)
 }
 
 function procurementQuery(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
   },
 ): SelectQueryBuilder<
   DB,
@@ -217,7 +217,7 @@ function procurementQuery(
         name: eb.ref('health_workers.name'),
         href: sql<
           string
-        >`'/app/facilities/' || ${opts.facility_id} || '/employees/' || ${
+        >`'/app/organizations/' || ${opts.organization_id} || '/employees/' || ${
           eb.ref('health_workers.id')
         }`,
         avatar_url: eb.ref('health_workers.avatar_url'),
@@ -238,13 +238,13 @@ function procurementQuery(
         reorder: sql.raw<string>(`'TODO'`),
       }).as('actions'),
     ])
-    .where('procurement.facility_id', '=', opts.facility_id)
+    .where('procurement.organization_id', '=', opts.organization_id)
 }
 
 export function getConsumablesHistoryQuery(
   trx: TrxOrDb,
-  { facility_id, consumable_id }: {
-    facility_id: number
+  { organization_id, consumable_id }: {
+    organization_id: number
     consumable_id: number
   },
 ): SelectQueryBuilder<
@@ -252,10 +252,10 @@ export function getConsumablesHistoryQuery(
   'consumption' | 'employment' | 'health_workers' | 'procurement',
   RenderedInventoryHistory
 > {
-  const consumption = consumptionQuery(trx, { facility_id })
+  const consumption = consumptionQuery(trx, { organization_id })
     .where('procurement.consumable_id', '=', consumable_id)
 
-  const procurement = procurementQuery(trx, { facility_id })
+  const procurement = procurementQuery(trx, { organization_id })
     .where('procurement.consumable_id', '=', consumable_id)
 
   return (consumption as SelectQueryBuilder<
@@ -270,7 +270,7 @@ export function getConsumablesHistoryQuery(
 export function getConsumablesHistory(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
     consumable_id: number
   },
 ): Promise<{
@@ -290,13 +290,13 @@ export function getConsumablesHistory(
 
 export function getLatestProcurement(
   trx: TrxOrDb,
-  { facility_id, manufactured_medication_id, strength }: {
-    facility_id: number
+  { organization_id, manufactured_medication_id, strength }: {
+    organization_id: number
     manufactured_medication_id: number
     strength?: number
   },
 ): Promise<MedicationProcurement | undefined> {
-  let query = procurementQuery(trx, { facility_id })
+  let query = procurementQuery(trx, { organization_id })
     .innerJoin(
       'manufactured_medication_strengths',
       'procurement.consumable_id',
@@ -371,18 +371,18 @@ export function searchProcurers(
 export function getAvailableTests(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: number
   },
 ): Promise<{ diagnostic_test: string }[]> {
   return trx
-    .selectFrom('facility_devices')
-    .innerJoin('devices', 'facility_devices.device_id', 'devices.id')
+    .selectFrom('organization_devices')
+    .innerJoin('devices', 'organization_devices.device_id', 'devices.id')
     .innerJoin(
       'device_capabilities',
       'devices.id',
       'device_capabilities.device_id',
     )
-    .where('facility_devices.facility_id', '=', opts.facility_id)
+    .where('organization_devices.organization_id', '=', opts.organization_id)
     .select('device_capabilities.diagnostic_test')
     .distinct()
     .execute()
@@ -393,7 +393,7 @@ export function addFacilityDevice(
   model: FacilityDevice,
 ): Promise<{ id: number }> {
   return trx
-    .insertInto('facility_devices')
+    .insertInto('organization_devices')
     .values(model)
     .returning('id')
     .executeTakeFirstOrThrow()
@@ -401,7 +401,7 @@ export function addFacilityDevice(
 
 export async function addFacilityMedicine(
   trx: TrxOrDb,
-  facility_id: number,
+  organization_id: number,
   medicine: {
     created_by: number
     manufactured_medication_id: number
@@ -428,7 +428,7 @@ export async function addFacilityMedicine(
     .columns([
       'consumable_id',
       'created_by',
-      'facility_id',
+      'organization_id',
       'quantity',
       'number_of_containers',
       'container_size',
@@ -452,7 +452,7 @@ export async function addFacilityMedicine(
         .select([
           'consumable_id',
           literalNumber(medicine.created_by).as('created_by'),
-          literalNumber(facility_id).as('facility_id'),
+          literalNumber(organization_id).as('organization_id'),
           literalNumber(medicine.quantity).as('quantity'),
           literalNumber(medicine.number_of_containers).as(
             'number_of_containers',
@@ -467,16 +467,16 @@ export async function addFacilityMedicine(
     .executeTakeFirstOrThrow()
 
   await trx
-    .insertInto('facility_consumables')
+    .insertInto('organization_consumables')
     .values({
       consumable_id,
-      facility_id,
+      organization_id,
       quantity_on_hand: medicine.quantity,
     })
     .onConflict((oc) =>
-      oc.constraint('facility_consumable').doUpdateSet({
+      oc.constraint('organization_consumable').doUpdateSet({
         quantity_on_hand:
-          sql`facility_consumables.quantity_on_hand + ${medicine.quantity}`,
+          sql`organization_consumables.quantity_on_hand + ${medicine.quantity}`,
       })
     )
     .executeTakeFirstOrThrow()
@@ -484,7 +484,7 @@ export async function addFacilityMedicine(
 
 export async function procureConsumable(
   trx: TrxOrDb,
-  facility_id: number,
+  organization_id: number,
   consumable: {
     created_by: number
     consumable_id: number
@@ -498,16 +498,16 @@ export async function procureConsumable(
   },
 ) {
   const updating_quantity_on_hand = await trx
-    .insertInto('facility_consumables')
+    .insertInto('organization_consumables')
     .values({
-      facility_id,
+      organization_id,
       consumable_id: consumable.consumable_id,
       quantity_on_hand: consumable.quantity,
     })
     .onConflict((oc) =>
-      oc.constraint('facility_consumable').doUpdateSet({
+      oc.constraint('organization_consumable').doUpdateSet({
         quantity_on_hand:
-          sql`facility_consumables.quantity_on_hand + ${consumable.quantity}`,
+          sql`organization_consumables.quantity_on_hand + ${consumable.quantity}`,
       })
     )
     .executeTakeFirstOrThrow()
@@ -528,7 +528,7 @@ export async function procureConsumable(
   const procured = await trx
     .insertInto('procurement')
     .values({
-      facility_id,
+      organization_id,
       consumable_id: consumable.consumable_id,
       created_by: consumable.created_by,
       quantity: consumable.quantity,
@@ -548,7 +548,7 @@ export async function procureConsumable(
 
 export function consumeConsumable(
   trx: TrxOrDb,
-  facility_id: number,
+  organization_id: number,
   consumable: {
     consumable_id: number
     created_by: number
@@ -560,7 +560,7 @@ export function consumeConsumable(
   return trx.with('adding_consumption', (qb) =>
     qb.insertInto('consumption')
       .values({
-        facility_id,
+        organization_id,
         created_by: consumable.created_by,
         quantity: consumable.quantity,
         procurement_id: consumable.procurement_id,
@@ -575,13 +575,13 @@ export function consumeConsumable(
     .with(
       'decrementing_quantity_on_hand',
       (qb) =>
-        qb.updateTable('facility_consumables')
+        qb.updateTable('organization_consumables')
           .set({
             quantity_on_hand: sql`quantity_on_hand - ${consumable.quantity}`,
           })
-          .where('facility_consumables.facility_id', '=', facility_id)
+          .where('organization_consumables.organization_id', '=', organization_id)
           .where(
-            'facility_consumables.consumable_id',
+            'organization_consumables.consumable_id',
             '=',
             consumable.consumable_id,
           ),

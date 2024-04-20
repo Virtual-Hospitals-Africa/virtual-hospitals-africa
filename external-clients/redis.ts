@@ -44,7 +44,7 @@ export async function cacheFacilityAddress(
   latitude: number,
   address: string,
 ) {
-  const key = `facility:${longitude},${latitude}`
+  const key = `organization:${longitude},${latitude}`
 
   await redis!.set(key, address)
   console.log('cache address into redis: ' + key + ': ' + address)
@@ -54,7 +54,7 @@ export async function getFacilityAddress(
   longitude: number,
   latitude: number,
 ): Promise<string | null> {
-  const key = `facility:${longitude},${latitude}`
+  const key = `organization:${longitude},${latitude}`
   const address = await redis!.get(key)
   return address
 }

@@ -6,7 +6,7 @@
 
 // async function sendInviteMail(
 //   email: string,
-//   facility_id: number,
+//   organization_id: number,
 // ) {
 //   const client = new SmtpClient()
 //   const { SEND_EMAIL, PWD } = Deno.env.toObject()

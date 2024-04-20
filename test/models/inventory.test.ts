@@ -11,9 +11,9 @@ import generateUUID from '../../util/uuid.ts'
 describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
   describe('getAvailableTests', () => {
     itUsesTrxAnd(
-      'resolves with the available diagnostic tests in a facility',
+      'resolves with the available diagnostic tests in a organization',
       (trx) =>
-        withTestFacility(trx, async (facility_id) => {
+        withTestFacility(trx, async (organization_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
           })
@@ -32,20 +32,20 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
 
           await inventory.addFacilityDevice(trx, {
             device_id: contec_bc401.id,
-            facility_id,
+            organization_id,
             created_by: admin.employee_id!,
           })
 
           await inventory.addFacilityDevice(trx, {
             device_id: ls_4000.id,
-            facility_id,
+            organization_id,
             created_by: admin.employee_id!,
           })
 
           const available_tests = await inventory.getAvailableTests(
             trx,
             {
-              facility_id,
+              organization_id,
             },
           )
 
@@ -73,10 +73,10 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'Add consumable and check quantity',
       (trx) =>
-        withTestFacility(trx, async (facility_id) => {
+        withTestFacility(trx, async (organization_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
-            facility_id,
+            organization_id,
           })
 
           const consumable_name = generateUUID()
@@ -95,7 +95,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
 
           const first_added = await inventory.procureConsumable(
             trx,
-            facility_id,
+            organization_id,
             {
               consumable_id: consumable.id,
               created_by: admin.employee_id!,
@@ -108,7 +108,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             },
           )
 
-          await inventory.procureConsumable(trx, facility_id, {
+          await inventory.procureConsumable(trx, organization_id, {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
             quantity: 5,
@@ -119,28 +119,28 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             number_of_containers: 1,
           })
 
-          await inventory.consumeConsumable(trx, facility_id, {
+          await inventory.consumeConsumable(trx, organization_id, {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
             quantity: 10,
             procurement_id: first_added.id,
           })
 
-          const facilityConsumables = await inventory.getConsumables(
+          const organizationConsumables = await inventory.getConsumables(
             trx,
-            { facility_id },
+            { organization_id },
           )
 
-          assertEquals(facilityConsumables, [
+          assertEquals(organizationConsumables, [
             {
               consumable_id: consumable.id,
               name: consumable_name,
               quantity_on_hand: 5,
               actions: {
                 add:
-                  `/app/facilities/${facility_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
+                  `/app/facilities/${organization_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
                 history:
-                  `/app/facilities/${facility_id}/inventory/history?consumable_id=${consumable.id}`,
+                  `/app/facilities/${organization_id}/inventory/history?consumable_id=${consumable.id}`,
               },
             },
           ])
@@ -150,10 +150,10 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd.rejects(
       'consuming more than the amount previously procured',
       (trx) =>
-        withTestFacility(trx, async (facility_id) => {
+        withTestFacility(trx, async (organization_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
-            facility_id,
+            organization_id,
           })
 
           const consumable_name = generateUUID()
@@ -172,7 +172,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
 
           const first_added = await inventory.procureConsumable(
             trx,
-            facility_id,
+            organization_id,
             {
               consumable_id: consumable.id,
               created_by: admin.employee_id!,
@@ -185,7 +185,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             },
           )
 
-          await inventory.procureConsumable(trx, facility_id, {
+          await inventory.procureConsumable(trx, organization_id, {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
             quantity: 5,
@@ -196,7 +196,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             number_of_containers: 1,
           })
 
-          await inventory.consumeConsumable(trx, facility_id, {
+          await inventory.consumeConsumable(trx, organization_id, {
             consumable_id: consumable.id,
             created_by: admin.employee_id!,
             quantity: 12,

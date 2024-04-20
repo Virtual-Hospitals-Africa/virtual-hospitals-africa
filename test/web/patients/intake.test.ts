@@ -145,7 +145,7 @@ describe('/app/patients/[patient_id]/intake', {
     body.set('address.ward_id', String(ward.id))
     if (suburb) body.set('address.suburb_id', String(suburb.id))
     body.set('address.street', '120 Main Street')
-    body.set('nearest_facility_id', '5')
+    body.set('nearest_organization_id', '5')
     body.set('primary_doctor_id', String(testDoctor.employee_id!))
 
     const postResponse = await fetch(

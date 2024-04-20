@@ -18,7 +18,7 @@ describe(
       itUsesTrxAnd(
         'orders the waiting room by when people first arrived',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestFacility(trx, async (organization_id) => {
             const patient1 = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -26,18 +26,18 @@ describe(
               name: 'Test Patient 2',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient1.id,
               reason: 'seeking treatment',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient2.id,
               reason: 'seeking treatment',
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
-              facility_id,
+              organization_id,
             })
             assertEquals(waiting_room_results.length, 2)
             const waiting_room_1 = waiting_room_results.find((r) =>
@@ -94,12 +94,12 @@ describe(
       itUsesTrxAnd(
         'shows what step of the intake process the patient is awaiting',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestFacility(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
             })
@@ -114,7 +114,7 @@ describe(
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
-              facility_id,
+              organization_id,
             })
 
             assertEquals(waiting_room_results, [{
@@ -144,18 +144,18 @@ describe(
       itUsesTrxAnd(
         'shows what step of the intake process the patient is in',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestFacility(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
             })
 
             const nurse = await addTestHealthWorker(trx, {
-              facility_id,
+              organization_id,
               scenario: 'approved-nurse',
             })
 
@@ -179,7 +179,7 @@ describe(
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
-              facility_id,
+              organization_id,
             })
 
             assertEquals(waiting_room_results, [{
@@ -201,7 +201,7 @@ describe(
               providers: [{
                 name: nurse.name,
                 profession: 'nurse',
-                href: `/app/facilities/${facility_id}/employees/${nurse.id}`,
+                href: `/app/facilities/${organization_id}/employees/${nurse.id}`,
                 avatar_url: nurse.avatar_url,
                 seen: true,
                 health_worker_id: nurse.id,
@@ -217,7 +217,7 @@ describe(
       itUsesTrxAnd(
         'orders emergencies at the top, even if they arrived later',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestFacility(trx, async (organization_id) => {
             const patient1 = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -225,7 +225,7 @@ describe(
               name: 'Test Patient 2',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient1.id,
               reason: 'emergency',
             })
@@ -238,11 +238,11 @@ describe(
               }).returning('id').executeTakeFirstOrThrow()
 
             await trx.insertInto('waiting_room').values({
-              facility_id,
+              organization_id,
               patient_encounter_id: seeking_treatment.id,
             }).execute()
 
-            assertEquals(await waiting_room.get(trx, { facility_id }), [
+            assertEquals(await waiting_room.get(trx, { organization_id }), [
               {
                 appointment: null,
                 patient: {
@@ -292,7 +292,7 @@ describe(
       itUsesTrxAnd(
         'shows review requests for patients in the waiting room',
         (trx) =>
-          withTestFacility(trx, { kind: 'virtual' }, async (facility_id) => {
+          withTestFacility(trx, { kind: 'virtual' }, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -301,7 +301,7 @@ describe(
               reason: 'maternity',
             })
             const nurse = await addTestHealthWorker(trx, {
-              facility_id: 1,
+              organization_id: 1,
               scenario: 'approved-nurse',
             })
 
@@ -320,14 +320,14 @@ describe(
               patient_id: patient.id,
               encounter_id: encounter.encounter_id,
               requested_by: encounter_provider.patient_encounter_provider_id,
-              facility_id,
+              organization_id,
             })
 
             await doctor_reviews.finalizeRequest(trx, {
               requested_by: encounter_provider.patient_encounter_provider_id,
             })
 
-            assertEquals(await waiting_room.get(trx, { facility_id }), [
+            assertEquals(await waiting_room.get(trx, { organization_id }), [
               {
                 appointment: null,
                 patient: {

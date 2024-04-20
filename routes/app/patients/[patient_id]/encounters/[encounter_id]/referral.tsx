@@ -15,8 +15,8 @@ import isObjectLike from '../../../../../../util/isObjectLike.ts'
 function assertIsReferral(body: unknown): asserts body is {
   review_request?: {
     id?: number
-    facility_id?: number
-    facility_name?: string
+    organization_id?: number
+    organization_name?: string
     doctor_id?: number
     doctor_name?: string
     requester_notes?: string
@@ -26,8 +26,8 @@ function assertIsReferral(body: unknown): asserts body is {
   if (!body.review_request) return
   assertOr400(isObjectLike(body.review_request))
   assertOr400(
-    body.review_request.facility_id || body.review_request.doctor_id,
-    'Must provide either facility_id or doctor_id',
+    body.review_request.organization_id || body.review_request.doctor_id,
+    'Must provide either organization_id or doctor_id',
   )
   return
 }
@@ -51,7 +51,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     if (body.review_request) {
       await doctor_reviews.upsertRequest(trx, {
         id: body.review_request.id || undefined,
-        facility_id: body.review_request.facility_id || null,
+        organization_id: body.review_request.organization_id || null,
         requesting_doctor_id: body.review_request.doctor_id || null,
         requester_notes: body.review_request.requester_notes,
         requested_by: encounter_provider.patient_encounter_provider_id,

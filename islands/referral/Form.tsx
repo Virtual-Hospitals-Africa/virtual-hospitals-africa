@@ -18,7 +18,7 @@ export function ReferralForm(props: {
         onClick={() =>
           review_request.value = {
             id: null,
-            facility: null,
+            organization: null,
             doctor: null,
             requester_notes: null,
           }}
@@ -38,17 +38,17 @@ export function ReferralForm(props: {
         )}
         <FormRow>
           <FacilitySearch
-            name='review_request.facility'
+            name='review_request.organization'
             kind='virtual'
             label='Virtual Facility'
-            value={review_request.value?.facility}
+            value={review_request.value?.organization}
           />
         </FormRow>
         <FormRow>
           <PersonSearch
             name='review_request.doctor'
             label='Doctor'
-            href='/app/providers?profession=doctor&facility_kind=virtual'
+            href='/app/providers?profession=doctor&organization_kind=virtual'
             value={review_request.value?.doctor}
           />
         </FormRow>

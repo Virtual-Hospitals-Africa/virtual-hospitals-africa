@@ -26,18 +26,18 @@ const columns: TableColumn<RenderedFacilityConsumable>[] = [
 ]
 
 export default function FacilityConsumablesTable(
-  { consumables, facility_id, isAdmin }: {
+  { consumables, organization_id, isAdmin }: {
     consumables: RenderedFacilityConsumable[]
-    facility_id: number
+    organization_id: number
     isAdmin: boolean
   },
 ) {
-  const add_href = `/app/facilities/${facility_id}/inventory/add_consumable`
+  const add_href = `/app/organizations/${organization_id}/inventory/add_consumable`
   return (
     <>
       {isAdmin && (
         <FormRow className='mb-2'>
-          <AddConsumableSearch facility_id={facility_id} />
+          <AddConsumableSearch organization_id={organization_id} />
           <Button
             type='button'
             href={add_href}

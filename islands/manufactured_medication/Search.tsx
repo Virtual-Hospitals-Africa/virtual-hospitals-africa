@@ -45,11 +45,11 @@ export default function ManufacturedMedicationSearch(
   )
 }
 
-export function AddMedicineSearch({ facility_id }: { facility_id: number }) {
+export function AddMedicineSearch({ organization_id }: { organization_id: number }) {
   return (
     <ManufacturedMedicationSearch
       optionHref={(option) =>
-        `/app/facilities/${facility_id}/inventory/add_medicine?manufactured_medication_id=${option.id}`}
+        `/app/organizations/${organization_id}/inventory/add_medicine?manufactured_medication_id=${option.id}`}
     />
   )
 }

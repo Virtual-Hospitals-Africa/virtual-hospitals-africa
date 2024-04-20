@@ -153,10 +153,10 @@ export default function HealthWorkerDetailedCard(
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 <div>
-                  {employee.facility_name}
+                  {employee.organization_name}
                 </div>
                 <div className='pl-4 text-xs'>
-                  {employee.facility_address || 'N/A'}
+                  {employee.organization_address || 'N/A'}
                 </div>
               </dd>
             </div>

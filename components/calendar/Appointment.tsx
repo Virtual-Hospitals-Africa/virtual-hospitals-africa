@@ -57,7 +57,7 @@ function AppointmentContents(
                   className='h-5 w-5 text-gray-400'
                   aria-hidden='true'
                 />
-                {appointment.physicalLocation.facility.name}
+                {appointment.physicalLocation.organization.name}
               </dt>
             </div>
           )}

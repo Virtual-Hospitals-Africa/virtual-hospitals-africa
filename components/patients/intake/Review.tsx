@@ -121,7 +121,7 @@ export default function PatientReview(
         { label: 'Address', children: patient.address },
         {
           label: 'Nearest Facility',
-          children: patient.nearest_facility_name,
+          children: patient.nearest_organization_name,
         },
         { label: 'Primary Doctor', children: patient.primary_doctor_name },
         {

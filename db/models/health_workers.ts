@@ -159,8 +159,8 @@ export function isEmployed(
     'employment' in health_worker &&
     Array.isArray(health_worker.employment) &&
     !!health_worker.employment.length &&
-    'default_facility_id' in health_worker &&
-    typeof health_worker.default_facility_id === 'number'
+    'default_organization_id' in health_worker &&
+    typeof health_worker.default_organization_id === 'number'
 }
 
 export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
@@ -227,18 +227,18 @@ export async function get(
       jsonArrayFrom(
         eb.selectFrom('employment')
           .innerJoin(
-            'facilities',
-            'employment.facility_id',
-            'facilities.id',
+            'organizations',
+            'employment.organization_id',
+            'organizations.id',
           )
           .innerJoin(
             'provider_calendars',
             (join) =>
               join
                 .onRef(
-                  'employment.facility_id',
+                  'employment.organization_id',
                   '=',
-                  'provider_calendars.facility_id',
+                  'provider_calendars.organization_id',
                 )
                 .onRef(
                   'employment.health_worker_id',
@@ -253,10 +253,10 @@ export async function get(
             'provider_calendars.gcal_availability_calendar_id',
             'provider_calendars.availability_set',
             jsonBuildObject({
-              id: eb_employment.ref('employment.facility_id'),
-              name: eb_employment.ref('facilities.name'),
-              address: eb_employment.ref('facilities.address'),
-            }).as('facility'),
+              id: eb_employment.ref('employment.organization_id'),
+              name: eb_employment.ref('organizations.name'),
+              address: eb_employment.ref('organizations.address'),
+            }).as('organization'),
           ])
           .whereRef(
             'employment.health_worker_id',
@@ -301,11 +301,11 @@ export async function get(
   assertOr401(refresh_token)
   assertOr401(expires_at)
 
-  const employment_by_facility = groupBy(
+  const employment_by_organization = groupBy(
     result.employment,
-    (e) => e.facility.id,
+    (e) => e.organization.id,
   )
-  const employment = [...employment_by_facility.values()].map(
+  const employment = [...employment_by_organization.values()].map(
     (roles) => {
       const nurse_role = roles.find((r) => r.profession === 'nurse') || null
       const doctor_role = roles.find((r) => r.profession === 'doctor') || null
@@ -315,7 +315,7 @@ export async function get(
       if (doctor_role) assert(!nurse_role)
 
       return {
-        facility: roles[0].facility,
+        organization: roles[0].organization,
         gcal_appointments_calendar_id: roles[0].gcal_appointments_calendar_id,
         gcal_availability_calendar_id: roles[0].gcal_availability_calendar_id,
         availability_set: roles[0].availability_set,
@@ -349,7 +349,7 @@ export async function get(
     refresh_token,
     expires_at,
     employment,
-    default_facility_id: employment[0]?.facility.id ?? null,
+    default_organization_id: employment[0]?.organization.id ?? null,
   }
 }
 
@@ -365,11 +365,11 @@ export async function getEmployed(
 
 export async function getInviteesAtFacility(
   trx: TrxOrDb,
-  facilityId: number,
+  organizationId: number,
 ) {
   return await trx
     .selectFrom('health_worker_invitees')
-    .where('facility_id', '=', facilityId)
+    .where('organization_id', '=', organizationId)
     .select([
       'id',
       'email',
@@ -382,26 +382,26 @@ export function getEmployeeInfo(
   trx: TrxOrDb,
   opts: {
     health_worker_id: number
-    facility_id: number
+    organization_id: number
   },
 ): Promise<Maybe<EmployeeInfo>> {
-  return trx.with('health_worker_at_facility', (qb) =>
+  return trx.with('health_worker_at_organization', (qb) =>
     qb
       .selectFrom('employment')
       .where('employment.health_worker_id', '=', opts.health_worker_id)
-      .where('employment.facility_id', '=', opts.facility_id)
+      .where('employment.organization_id', '=', opts.organization_id)
       .select('health_worker_id')
       .distinct()).with('employee_info', (qb) =>
       qb
-        .selectFrom('health_worker_at_facility')
+        .selectFrom('health_worker_at_organization')
         .innerJoin(
           'health_workers',
           'health_workers.id',
-          'health_worker_at_facility.health_worker_id',
+          'health_worker_at_organization.health_worker_id',
         )
         .innerJoin(
-          'facilities',
-          (join) => join.on('facilities.id', '=', opts.facility_id),
+          'organizations',
+          (join) => join.on('organizations.id', '=', opts.organization_id),
         )
         .leftJoin(
           'employment as nurse_employment',
@@ -413,7 +413,7 @@ export function getEmployeeInfo(
                 'health_workers.id',
               )
               .on('nurse_employment.profession', '=', 'nurse')
-              .on('nurse_employment.facility_id', '=', opts.facility_id),
+              .on('nurse_employment.organization_id', '=', opts.organization_id),
         )
         .leftJoin(
           'nurse_specialties',
@@ -449,9 +449,9 @@ export function getEmployeeInfo(
           'health_workers.name',
           'health_workers.avatar_url',
           'address_formatted.address',
-          'facilities.id as facility_id',
-          'facilities.name as facility_name',
-          'facilities.address as facility_address',
+          'organizations.id as organization_id',
+          'organizations.name as organization_name',
+          'organizations.address as organization_address',
           jsonArrayFromColumn(
             'profession',
             eb
@@ -461,7 +461,7 @@ export function getEmployeeInfo(
                 '=',
                 opts.health_worker_id,
               )
-              .where('facility_id', '=', opts.facility_id)
+              .where('organization_id', '=', opts.organization_id)
               .select(['employment.profession']),
           ).as('professions'),
           ({ eb, and }) =>
@@ -494,7 +494,7 @@ export function getEmployeeInfo(
                 sql<string>`'National ID'`.as('name'),
                 sql<
                   string
-                >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
+                >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
                   .as('href'),
               ])
               .union(
@@ -511,7 +511,7 @@ export function getEmployeeInfo(
                     sql<string>`'Face Picture'`.as('name'),
                     sql<
                       string
-                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                    >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
                       .as('href'),
                   ]),
               )
@@ -529,7 +529,7 @@ export function getEmployeeInfo(
                     sql<string>`'Registration Card'`.as('name'),
                     sql<
                       string
-                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
+                    >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
                       .as('href'),
                   ]),
               )
@@ -547,7 +547,7 @@ export function getEmployeeInfo(
                     sql<string>`'Nurse Practicing Certificate'`.as('name'),
                     sql<
                       string
-                    >`concat('/app/facilities/', facilities.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
+                    >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
                       .as('href'),
                   ]),
               )

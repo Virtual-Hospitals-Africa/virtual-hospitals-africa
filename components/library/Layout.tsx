@@ -108,11 +108,11 @@ export default function Layout(props: LayoutProps) {
           sidebar={
             <HomePageSidebar
               route={props.route}
-              params={props.params && ('facility_id' in props.params)
+              params={props.params && ('organization_id' in props.params)
                 ? props.params
                 : {
                   ...props.params,
-                  facility_id: props.health_worker.default_facility_id
+                  organization_id: props.health_worker.default_organization_id
                     .toString(),
                 }}
               urlSearchParams={props.url.searchParams}

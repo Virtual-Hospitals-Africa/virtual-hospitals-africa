@@ -22,13 +22,13 @@ function assertIsProfessions(
 }
 
 function assertIsMaybeFacilityKind(
-  facility_kind: unknown,
-): asserts facility_kind is Maybe<'virtual' | 'physical'> {
-  if (facility_kind == null) return
-  assertOr400(isString(facility_kind), 'Invalid facility_kind')
+  organization_kind: unknown,
+): asserts organization_kind is Maybe<'virtual' | 'physical'> {
+  if (organization_kind == null) return
+  assertOr400(isString(organization_kind), 'Invalid organization_kind')
   assertOr400(
-    facility_kind === 'physical' || facility_kind === 'virtual',
-    'Invalid facility_kind',
+    organization_kind === 'physical' || organization_kind === 'virtual',
+    'Invalid organization_kind',
   )
 }
 
@@ -36,12 +36,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   async GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
     const { searchParams } = ctx.url
-    const facility_id = parseInt(searchParams.get('facility_id')!) || undefined
-    const prioritize_facility_id =
-      parseInt(searchParams.get('prioritize_facility_id')!) || undefined
+    const organization_id = parseInt(searchParams.get('organization_id')!) || undefined
+    const prioritize_organization_id =
+      parseInt(searchParams.get('prioritize_organization_id')!) || undefined
 
-    const facility_kind = searchParams.get('facility_kind')
-    assertIsMaybeFacilityKind(facility_kind)
+    const organization_kind = searchParams.get('organization_kind')
+    assertIsMaybeFacilityKind(organization_kind)
 
     const professions = searchParams.has('profession')
       ? searchParams.get('profession')!.split(',')
@@ -49,10 +49,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     if (professions) assertIsProfessions(professions)
 
     const providers = await search(ctx.state.trx, {
-      facility_id,
+      organization_id,
       professions,
-      prioritize_facility_id,
-      facility_kind,
+      prioritize_organization_id,
+      organization_kind,
       search: searchParams.get('search'),
     })
 

@@ -150,11 +150,11 @@ const conversationStates: ConversationStates<
       return { ...patientState, national_id_number: patientState.body }
     },
   },
-  'find_nearest_facility:share_location': {
+  'find_nearest_organization:share_location': {
     type: 'get_location',
-    nextState: 'find_nearest_facility:got_location',
+    nextState: 'find_nearest_organization:got_location',
     prompt:
-      'Sure, we can find your nearest facility. Can you share your location?',
+      'Sure, we can find your nearest organization. Can you share your location?',
     async onExit(trx, patientState) {
       assert(patientState.body)
       const locationMessage: Location = JSON.parse(patientState.body)
@@ -167,7 +167,7 @@ const conversationStates: ConversationStates<
         location: currentLocation,
       })
 
-      const nearest_facilities = await patients.nearestFacilities(
+      const nearest_organizations = await patients.nearestFacilities(
         trx,
         patientState.patient_id,
         currentLocation,
@@ -176,26 +176,26 @@ const conversationStates: ConversationStates<
       return {
         ...patientState,
         location: currentLocation,
-        nearest_facilities: nearest_facilities,
+        nearest_organizations: nearest_organizations,
       }
     },
   },
-  // change the name of got_location to nearest_facilities?
-  'find_nearest_facility:got_location': {
+  // change the name of got_location to nearest_organizations?
+  'find_nearest_organization:got_location': {
     type: 'action',
     headerText: 'Nearest Facilities',
     prompt(): string {
-      return `Thank you for sharing your location.\n\nClick the button below to see your nearest health facilities.`
+      return `Thank you for sharing your location.\n\nClick the button below to see your nearest health organizations.`
     },
     action(
       patientState: PatientState,
     ) {
-      const { nearest_facilities } = patientState
-      if (!nearest_facilities?.length) {
+      const { nearest_organizations } = patientState
+      if (!nearest_organizations?.length) {
         return {
           type: 'select',
           prompt:
-            "We're sorry that no facilities were found in your area. Our team has been notified and will follow up with you soon.",
+            "We're sorry that no organizations were found in your area. Our team has been notified and will follow up with you soon.",
           options: [
             {
               id: 'main_menu',
@@ -210,23 +210,23 @@ const conversationStates: ConversationStates<
         }
       }
 
-      const facilities = nearest_facilities.map((facility) => {
-        const distanceInKM = facility.walking_distance ||
-          (facility.distance / 1000).toFixed(1) + ' km'
+      const organizations = nearest_organizations.map((organization) => {
+        const distanceInKM = organization.walking_distance ||
+          (organization.distance / 1000).toFixed(1) + ' km'
         const description = distanceInKM
-          ? `${facility.address} (${distanceInKM})`
-          : facility.address
+          ? `${organization.address} (${distanceInKM})`
+          : organization.address
 
-        const facilityName = facility.vha
-          ? `${facility.name} (VHA)`
-          : facility.name
+        const organizationName = organization.vha
+          ? `${organization.name} (VHA)`
+          : organization.name
         return {
           section: 'Town Name Here',
           row: {
-            id: `${facility.id}`,
-            title: capLengthAtWhatsAppTitle(facilityName),
+            id: `${organization.id}`,
+            title: capLengthAtWhatsAppTitle(organizationName),
             description: capLengthAtWhatsAppDescription(description),
-            nextState: 'find_nearest_facility:send_facility_location' as const,
+            nextState: 'find_nearest_organization:send_organization_location' as const,
             onExit(_trx: TrxOrDb, patientState: PatientState) {
               return Promise.resolve(patientState)
             },
@@ -234,16 +234,16 @@ const conversationStates: ConversationStates<
         }
       })
 
-      const sectionTitles = uniq(facilities.map((facility) => facility.section))
+      const sectionTitles = uniq(organizations.map((organization) => organization.section))
 
       const sections: ConversationStateHandlerListActionSection<
         PatientState
       >[] = [...sectionTitles].map((title) => ({
         title,
         rows: (
-          facilities
-            .filter((facility) => facility.section === title)
-            .map((facility) => facility.row)
+          organizations
+            .filter((organization) => organization.section === title)
+            .map((organization) => organization.row)
         ),
       }))
 
@@ -254,9 +254,9 @@ const conversationStates: ConversationStates<
       }
     },
   },
-  'find_nearest_facility:send_facility_location': {
+  'find_nearest_organization:send_organization_location': {
     prompt(): string {
-      return 'I will send you facility location'
+      return 'I will send you organization location'
     },
     getMessages(patientState: PatientState): WhatsAppSendable {
       const { selectedFacility } = patientState
@@ -295,9 +295,9 @@ const conversationStates: ConversationStates<
     },
     onEnter(_trx, patientState) {
       const selectedFacility: Maybe<FacilityWithAddress> = patientState
-        .nearest_facilities
+        .nearest_organizations
         ?.find(
-          (facility) => String(facility.id) === patientState.body,
+          (organization) => String(organization.id) === patientState.body,
         )
       return Promise.resolve({ ...patientState, selectedFacility })
     },

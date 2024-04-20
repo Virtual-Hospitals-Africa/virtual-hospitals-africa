@@ -21,21 +21,21 @@ function PatientAddress(
 }
 
 export default function PatientAddressForm(
-  { patient, default_facility, country_address_tree }: {
+  { patient, default_organization, country_address_tree }: {
     patient: PatientIntake
-    default_facility?: { id: number; name: string; address: string }
+    default_organization?: { id: number; name: string; address: string }
     country_address_tree: CountryAddressTree
   },
 ) {
-  const nearest_facility =
-    patient.nearest_facility_id && patient.nearest_facility_name &&
-      patient.nearest_facility_address
+  const nearest_organization =
+    patient.nearest_organization_id && patient.nearest_organization_name &&
+      patient.nearest_organization_address
       ? {
-        id: patient.nearest_facility_id,
-        name: patient.nearest_facility_name,
-        address: patient.nearest_facility_address,
+        id: patient.nearest_organization_id,
+        name: patient.nearest_organization_name,
+        address: patient.nearest_organization_address,
       }
-      : default_facility
+      : default_organization
 
   const primary_doctor =
     patient.primary_doctor_id && patient.primary_doctor_name
@@ -57,7 +57,7 @@ export default function PatientAddressForm(
         country_address_tree={country_address_tree}
       />
       <NearestHealthCare
-        nearest_facility={nearest_facility}
+        nearest_organization={nearest_organization}
         primary_doctor={primary_doctor}
       />
     </>

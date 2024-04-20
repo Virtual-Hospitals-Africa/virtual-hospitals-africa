@@ -52,7 +52,7 @@ export function NewExaminationForm({
       {!!diagnostics_available.length && (
         <LabelledListboxMulti
           label='Diagnostic Tests Available at this Facility'
-          name='diagnostic_tests_at_facility'
+          name='diagnostic_tests_at_organization'
           selected={selected_diagnostics}
           options={diagnostics_available.map((name) => ({
             id: name,

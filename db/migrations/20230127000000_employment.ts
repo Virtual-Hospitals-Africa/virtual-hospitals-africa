@@ -19,9 +19,9 @@ export async function up(db: Kysely<unknown>) {
         col.notNull()
           .references('health_workers.id')
           .onDelete('cascade'))
-        .addColumn('facility_id', 'integer', (col) =>
+        .addColumn('organization_id', 'integer', (col) =>
           col.notNull()
-            .references('facilities.id')
+            .references('organizations.id')
             .onDelete('cascade'))
         .addColumn(
           'profession',
@@ -30,7 +30,7 @@ export async function up(db: Kysely<unknown>) {
         )
         .addUniqueConstraint('only_employed_once_per_profession', [
           'health_worker_id',
-          'facility_id',
+          'organization_id',
           'profession',
         ]),
   )
@@ -40,7 +40,7 @@ export async function up(db: Kysely<unknown>) {
     'provider_calendars',
     (qb) =>
       qb.addColumn('health_worker_id', 'integer', (col) => col.notNull())
-        .addColumn('facility_id', 'integer', (col) => col.notNull())
+        .addColumn('organization_id', 'integer', (col) => col.notNull())
         .addColumn(
           'gcal_appointments_calendar_id',
           'varchar(255)',
@@ -57,10 +57,10 @@ export async function up(db: Kysely<unknown>) {
           (col) => col.notNull().defaultTo(false),
         )
         .addUniqueConstraint(
-          'only_one_calendar_set_per_health_worker_facility',
+          'only_one_calendar_set_per_health_worker_organization',
           [
             'health_worker_id',
-            'facility_id',
+            'organization_id',
           ],
         ),
   )

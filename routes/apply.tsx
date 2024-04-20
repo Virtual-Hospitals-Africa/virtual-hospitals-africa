@@ -14,7 +14,7 @@ import FormRow from '../islands/form/Row.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  facilityAdmin: FacilityAdmin
+  organizationAdmin: FacilityAdmin
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -50,9 +50,9 @@ export default function ApplyPage(
                 </FormRow>
               </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from facilityName is currently under review by
+                Your application from organizationName is currently under review by
                 {' '}
-                facilityAdminName. You will receive an email once your
+                organizationAdminName. You will receive an email once your
                 application has been approved.
               </p>
               <div class='mt-10 flex'>

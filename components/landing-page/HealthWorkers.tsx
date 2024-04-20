@@ -24,7 +24,7 @@ export function HealthWorkers() {
         <p className='mt-4'>
           <ArrowLink
             href='/schedule-demo?entrypoint=health-workers'
-            text='Meet with us to see how seamless digital systems can help your facility'
+            text='Meet with us to see how seamless digital systems can help your organization'
           />
         </p>
       </Container>
@@ -45,13 +45,13 @@ export function HealthWorkers() {
           {
             title: 'Painless Follow Up',
             description:
-              'When needed, create follow up appointments with other doctors or specialists even those at other facilities.',
+              'When needed, create follow up appointments with other doctors or specialists even those at other organizations.',
             image: '/images/demos/video_appointments.png',
           },
           {
             title: 'Built-in Metrics',
             description:
-              'Clinic and hospital leaders can view aggregates at a facility and country wide level to monitor and evaluate how they can improve patient outcomes.',
+              'Clinic and hospital leaders can view aggregates at a organization and country wide level to monitor and evaluate how they can improve patient outcomes.',
             image: '/images/demos/metrics.png',
           },
         ]}

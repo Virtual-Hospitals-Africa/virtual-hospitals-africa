@@ -78,7 +78,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
             location: { longitude: null, latitude: null },
             name: 'Test',
             national_id_number: null,
-            nearest_facility: null,
+            nearest_organization: null,
             phone_number: null,
             conversation_state: 'initial_message',
             completed_intake: false,

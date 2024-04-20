@@ -10,11 +10,11 @@ import FacilityDevicesTable from './DevicesTable.tsx'
 import FacilityMedicinesTable from './MedicinesTable.tsx'
 
 export default function inventoryView(
-  { devices, consumables, medicines, facility_id, isAdmin, active_tab }: {
+  { devices, consumables, medicines, organization_id, isAdmin, active_tab }: {
     devices: RenderedFacilityDevice[]
     consumables: RenderedFacilityConsumable[]
     medicines: RenderedFacilityMedicine[]
-    facility_id: number
+    organization_id: number
     isAdmin: boolean
     active_tab: string
   },
@@ -22,17 +22,17 @@ export default function inventoryView(
   const tabs: TabProps[] = [
     {
       tab: 'Devices',
-      href: `/app/facilities/${facility_id}/inventory?active_tab=devices`,
+      href: `/app/organizations/${organization_id}/inventory?active_tab=devices`,
       active: active_tab === 'devices',
     },
     {
       tab: 'Consumables',
-      href: `/app/facilities/${facility_id}/inventory?active_tab=consumables`,
+      href: `/app/organizations/${organization_id}/inventory?active_tab=consumables`,
       active: active_tab === 'consumables',
     },
     {
       tab: 'Medicines',
-      href: `/app/facilities/${facility_id}/inventory?active_tab=medicines`,
+      href: `/app/organizations/${organization_id}/inventory?active_tab=medicines`,
       active: active_tab === 'medicines',
     },
   ]
@@ -44,7 +44,7 @@ export default function inventoryView(
         {active_tab === 'devices' && (
           <FacilityDevicesTable
             devices={devices}
-            facility_id={facility_id}
+            organization_id={organization_id}
             isAdmin={isAdmin}
           />
         )}
@@ -52,7 +52,7 @@ export default function inventoryView(
         {active_tab === 'consumables' && (
           <FacilityConsumablesTable
             consumables={consumables}
-            facility_id={facility_id}
+            organization_id={organization_id}
             isAdmin={isAdmin}
           />
         )}
@@ -60,7 +60,7 @@ export default function inventoryView(
         {active_tab === 'medicines' && (
           <FacilityMedicinesTable
             medicines={medicines}
-            facility_id={facility_id}
+            organization_id={organization_id}
             isAdmin={isAdmin}
           />
         )}

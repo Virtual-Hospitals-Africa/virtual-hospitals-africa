@@ -1,6 +1,7 @@
 import { walk } from 'std/fs/mod.ts'
 import { forEach } from '../util/inParallel.ts'
 import { combineAsyncIterables } from '../util/combineAsyncIterables.ts'
+import * as path from 'std/path/mod.ts'
 import { pooledMap } from "std/async/pool.ts";
 
 const ignore_paths = [
@@ -39,24 +40,26 @@ async function rename(
   newText: string,
 ) {
   const regex = new RegExp(oldText, 'g')
-  await forEach(walkDirectories(directories), async (path) => {
-    const newFilePath = path.replace(oldText, newText)
-    if (path !== newFilePath) {
-      await Deno.rename(path, newFilePath)
-      path = newFilePath
+  await forEach(walkDirectories(directories), async (file_path) => {
+    const new_file_path = file_path.replace(oldText, newText)
+    if (file_path !== new_file_path) {
+      
+      const dirname = path.dirname(new_file_path)
+      await Deno.mkdir(dirname, { recursive: true })
+      await Deno.rename(file_path, new_file_path)
+      file_path = new_file_path
     }
 
-    const originalContent = await Deno.readTextFile(path)
-    const newContent = originalContent.replace(regex, newText)
-    if (originalContent !== newContent) {
-      await Deno.writeTextFile(path, newContent)
+    const original_content = await Deno.readTextFile(file_path)
+    const new_content = original_content.replace(regex, newText)
+    if (original_content !== new_content) {
+      await Deno.writeTextFile(file_path, new_content)
     }
   })
 }
 
 if (import.meta.main) {
-  await rename(dirs, "'facilities'", "'Organization'")
-  await rename(dirs, 'facilities', 'organizations')
-  await rename(dirs, 'facility', 'organization')
+  await rename(dirs, "'organizations'", "'organizations'")
+  await rename(dirs, 'organizations', 'organizations')
+  await rename(dirs, 'organization', 'organization')
 }
-

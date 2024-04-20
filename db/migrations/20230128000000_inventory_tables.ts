@@ -14,7 +14,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('diagnostic_test', 'varchar(40)', (col) =>
         col.notNull().references('diagnostic_tests.name').onDelete('cascade')))
 
-  await createStandardTable(db, 'facility_devices', (qb) =>
+  await createStandardTable(db, 'organization_devices', (qb) =>
     qb
       .addColumn('serial_number', 'varchar(255)')
       .addColumn('created_by', 'integer', (column) =>
@@ -23,8 +23,8 @@ export async function up(db: Kysely<unknown>) {
         column.references('employment.id').onDelete('cascade'))
       .addColumn('device_id', 'integer', (col) =>
         col.notNull().references('devices.id').onDelete('cascade'))
-      .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade')))
+      .addColumn('organization_id', 'integer', (col) =>
+        col.notNull().references('organizations.id').onDelete('cascade')))
 
   await createStandardTable(
     db,
@@ -38,20 +38,20 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('name', 'text', (col) => col.notNull())
       .addColumn('is_medication', 'boolean'))
 
-  await createStandardTable(db, 'facility_consumables', (qb) =>
+  await createStandardTable(db, 'organization_consumables', (qb) =>
     qb
-      .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade'))
+      .addColumn('organization_id', 'integer', (col) =>
+        col.notNull().references('organizations.id').onDelete('cascade'))
       .addColumn('consumable_id', 'integer', (col) =>
         col.notNull().references('consumables.id').onDelete('cascade'))
       .addColumn('quantity_on_hand', 'integer', (col) =>
         col.notNull())
-      .addUniqueConstraint('facility_consumable', [
-        'facility_id',
+      .addUniqueConstraint('organization_consumable', [
+        'organization_id',
         'consumable_id',
       ])
       .addCheckConstraint(
-        'facility_consumables_quantity_on_hand',
+        'organization_consumables_quantity_on_hand',
         sql`
           quantity_on_hand >= 0
         `,
@@ -59,8 +59,8 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'procurement', (qb) =>
     qb
-      .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade'))
+      .addColumn('organization_id', 'integer', (col) =>
+        col.notNull().references('organizations.id').onDelete('cascade'))
       .addColumn('quantity', 'integer', (col) =>
         col.notNull())
       .addColumn('container_size', 'integer', (col) =>
@@ -103,8 +103,8 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'consumption', (qb) =>
     qb
-      .addColumn('facility_id', 'integer', (col) =>
-        col.notNull().references('facilities.id').onDelete('cascade'))
+      .addColumn('organization_id', 'integer', (col) =>
+        col.notNull().references('organizations.id').onDelete('cascade'))
       .addColumn('quantity', 'integer', (col) =>
         col.notNull())
       .addColumn('created_by', 'integer', (column) =>
@@ -120,10 +120,10 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('facility_devices').execute()
+  await db.schema.dropTable('organization_devices').execute()
   await db.schema.dropTable('device_capabilities').execute()
   await db.schema.dropTable('devices').execute()
-  await db.schema.dropTable('facility_consumables').execute()
+  await db.schema.dropTable('organization_consumables').execute()
   await db.schema.dropTable('consumption').execute()
   await db.schema.dropTable('procurement').execute()
   await db.schema.dropTable('consumables').execute()

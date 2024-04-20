@@ -1,7 +1,7 @@
 import { ImagePreviewInput } from '../../../../islands/file-preview-input.tsx'
 import FormRow from '../../../../islands/form/Row.tsx'
 import Buttons from '../../../../islands/form/buttons.tsx'
-import { FormState } from '../../../../routes/app/facilities/[facility_id]/register/[step].tsx'
+import { FormState } from '../../../../routes/app/organizations/[organization_id]/register/[step].tsx'
 
 export default function NurseDocumentsForm(
   { formData }: { formData: Partial<FormState> },

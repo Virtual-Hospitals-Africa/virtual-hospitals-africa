@@ -30,7 +30,7 @@ export default function FacilitySearch(
   if (props.kind && props.kind !== 'both') {
     params.set('kind', props.kind)
   }
-  const href = `/app/facilities?${params}`
+  const href = `/app/organizations?${params}`
   return (
     <AsyncSearch
       {...props}

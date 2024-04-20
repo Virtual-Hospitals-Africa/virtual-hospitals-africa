@@ -17,7 +17,7 @@ export async function initializeHealthWorker(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   profile: GoogleProfile,
-  invitees: { id: number; facility_id: number; profession: Profession }[],
+  invitees: { id: number; organization_id: number; profession: Profession }[],
 ): Promise<{ id: number }> {
   assert(invitees.length, 'No invitees found')
 
@@ -27,16 +27,16 @@ export async function initializeHealthWorker(
     invitees.map((invitee) => invitee.id),
   )
 
-  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
-  const getting_calendars = facilities.get(trx, { ids: facility_ids })
+  const organization_ids = uniq(invitees.map((invitee) => invitee.organization_id))
+  const getting_calendars = facilities.get(trx, { ids: organization_ids })
     .then(
       async (facilities) => {
         const calendars = await googleClient
           .ensureHasAppointmentsAndAvailabilityCalendars(facilities)
         return Array.from(zip(facilities, calendars)).map((
-          [facility, calendars],
+          [organization, calendars],
         ) => ({
-          facility_id: facility.id,
+          organization_id: organization.id,
           ...calendars,
         }))
       },
@@ -56,7 +56,7 @@ export async function initializeHealthWorker(
     trx,
     invitees.map((invitee) => ({
       health_worker_id: health_worker.id,
-      facility_id: invitee.facility_id,
+      organization_id: invitee.organization_id,
       profession: invitee.profession,
     })),
   )

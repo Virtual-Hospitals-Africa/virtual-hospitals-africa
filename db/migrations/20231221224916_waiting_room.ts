@@ -67,9 +67,9 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'waiting_room', (qb) =>
     qb
       .addColumn(
-        'facility_id',
+        'organization_id',
         'integer',
-        (col) => col.notNull().references('facilities.id').onDelete('cascade'),
+        (col) => col.notNull().references('organizations.id').onDelete('cascade'),
       )
       .addColumn(
         'patient_encounter_id',
@@ -77,8 +77,8 @@ export async function up(db: Kysely<unknown>) {
         (col) =>
           col.notNull().references('patient_encounters.id').onDelete('cascade'),
       )
-      .addUniqueConstraint('facility_patient_encounter', [
-        'facility_id',
+      .addUniqueConstraint('organization_patient_encounter', [
+        'organization_id',
         'patient_encounter_id',
       ]))
 }

@@ -248,7 +248,7 @@ export class GoogleClient {
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(
-    facilities: { id: number; name: string }[],
+    organizations: { id: number; name: string }[],
   ): Promise<{
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
@@ -259,9 +259,9 @@ export class GoogleClient {
       gcal_appointments_calendar_id: string
       gcal_availability_calendar_id: string
     }[] = []
-    for (const facility of facilities) {
-      const appointments_calendar_name = `${facility.name} Appointments`
-      const availability_calendar_name = `${facility.name} Availability`
+    for (const organization of organizations) {
+      const appointments_calendar_name = `${organization.name} Appointments`
+      const availability_calendar_name = `${organization.name} Availability`
       const appointments_calendar = await this.ensureCalendarExists(
         items,
         appointments_calendar_name,

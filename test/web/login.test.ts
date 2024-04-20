@@ -36,7 +36,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assert(response.ok)
       assert(
         response.url ===
-          `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20facility%27s%20administrator.`,
+          `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,
       )
     })
 
@@ -105,15 +105,15 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
     })
 
     it('starts in an empty waiting room with sidebar links', () =>
-      withTestFacility(db, async (facility_id) => {
+      withTestFacility(db, async (organization_id) => {
         const mock = await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
-          facility_id,
+          organization_id,
         })
 
         const $ = await mock.fetchCheerio(`${route}/app`)
         const waiting_room_add_link = $(
-          `a[href="/app/facilities/${facility_id}/waiting_room/add"]`,
+          `a[href="/app/facilities/${organization_id}/waiting_room/add"]`,
         )
         assertEquals(waiting_room_add_link.first().text(), 'Add Patient')
 
@@ -127,7 +127,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         assert(calendar_link.first().text().includes('Calendar'))
 
         const inventory_link = $(
-          `a[href="/app/facilities/${facility_id}/inventory"]`,
+          `a[href="/app/facilities/${organization_id}/inventory"]`,
         )
         assert(inventory_link.first().text().includes('Inventory'))
 
@@ -135,7 +135,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         assert(logout_link.first().text().includes('Log Out'))
       }))
 
-    it('allows a health worker employed at a facility to view/approve its employees', async () => {
+    it('allows a health worker employed at a organization to view/approve its employees', async () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'admin',
       })
@@ -143,11 +143,11 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
 
       await employment.add(db, [{
-        facility_id: 1,
+        organization_id: 1,
         health_worker_id: nurse.id,
         profession: 'nurse',
       }, {
-        facility_id: 1,
+        organization_id: 1,
         health_worker_id: admin.id,
         profession: 'admin',
       }])
@@ -198,7 +198,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assert(pageContents.includes('Invite'))
     })
 
-    it("doesn't allow access to employees if you are employed at a different facility", async () => {
+    it("doesn't allow access to employees if you are employed at a different organization", async () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'doctor',
       })

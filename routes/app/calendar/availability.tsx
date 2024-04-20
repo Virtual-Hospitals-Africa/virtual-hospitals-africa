@@ -102,26 +102,26 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async GET(_req, ctx) {
     const { healthWorker } = ctx.state
 
-    const facility_id_param =
-      parseInt(ctx.url.searchParams.get('facility_id')!) || null
+    const organization_id_param =
+      parseInt(ctx.url.searchParams.get('organization_id')!) || null
 
-    if (healthWorker.employment.length > 1 && !facility_id_param) {
+    if (healthWorker.employment.length > 1 && !organization_id_param) {
       return redirect(hrefFromCtx(ctx, (url) => {
         url.searchParams.set(
-          'facility_id',
-          String(healthWorker.default_facility_id),
+          'organization_id',
+          String(healthWorker.default_organization_id),
         )
       }))
     }
 
-    const facility_id = facility_id_param ||
-      healthWorker.default_facility_id
+    const organization_id = organization_id_param ||
+      healthWorker.default_organization_id
     const matching_employment = healthWorker.employment.find(
-      (employment) => employment.facility.id === facility_id,
+      (employment) => employment.organization.id === organization_id,
     )
     assertOr403(
       matching_employment,
-      'Health worker not employed at this facility',
+      'Health worker not employed at this organization',
     )
     const gcal_availability_calendar_id =
       matching_employment!.gcal_availability_calendar_id
@@ -147,7 +147,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
         ctx.state.trx,
         {
           health_worker_id: healthWorker.id,
-          facility_id,
+          organization_id,
         },
       )
       return redirect('/app')
@@ -180,23 +180,23 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     const initial = !!ctx.url.searchParams.get('initial')
-    const facility_id_param = getNumericParam(ctx, 'facility_id')
+    const organization_id_param = getNumericParam(ctx, 'organization_id')
 
-    const facility_id = facility_id_param ||
-      healthWorker.employment[0].facility.id
+    const organization_id = organization_id_param ||
+      healthWorker.employment[0].organization.id
     const matching_employment = healthWorker.employment.find(
-      (employment) => employment.facility.id === facility_id,
+      (employment) => employment.organization.id === organization_id,
     )
     assertOr403(
       matching_employment,
-      'Health worker not employed at this facility',
+      'Health worker not employed at this organization',
     )
 
     const marking_availability_set = markAvailabilitySet(
       ctx.state.trx,
       {
         health_worker_id: healthWorker.id,
-        facility_id,
+        organization_id,
       },
     )
 
