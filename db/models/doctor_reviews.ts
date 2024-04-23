@@ -3,8 +3,8 @@ import {
   DB,
   DoctorReviewStep,
   Employment,
-  Organization,
   HealthWorkers,
+  Organization,
 } from '../../db.d.ts'
 import {
   HealthWorkerEmployment,

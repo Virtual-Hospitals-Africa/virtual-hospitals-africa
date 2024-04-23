@@ -162,7 +162,10 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
 
       if (!response.ok) throw new Error(await response.text())
       assert(response.redirected)
-      assertEquals(response.url, `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       const pageContents = await response.text()
       assert(
         pageContents.includes(
@@ -180,14 +183,21 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'admin',
       })
-      let response = await mock.fetch(`${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
+      let response = await mock.fetch(
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       if (!response.ok) {
         throw new Error(await response.text())
       }
-      assertEquals(response.url, `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       let pageContents = await response.text()
       assert(
-        pageContents.includes('href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"'),
+        pageContents.includes(
+          'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
+        ),
       )
 
       response = await mock.fetch(
@@ -227,10 +237,15 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assert(
         employeesResponse.ok,
       )
-      assert(employeesResponse.url === `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
+      assert(
+        employeesResponse.url ===
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       const pageContents = await employeesResponse.text()
       assert(
-        !pageContents.includes('href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"'),
+        !pageContents.includes(
+          'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
+        ),
       )
 
       const invitesResponse = await mock.fetch(

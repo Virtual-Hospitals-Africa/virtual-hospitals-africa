@@ -7,8 +7,12 @@ export async function up(db: Kysely<unknown>) {
   `.execute(db)
 
   await db.schema.alterTable('Location')
-    .addColumn('organizationId', 'uuid', col => col.notNull().references('Organization.id'))
-    .addColumn('location', sql`GEOGRAPHY(POINT,4326)`, col => col.notNull())
+    .addColumn(
+      'organizationId',
+      'uuid',
+      (col) => col.notNull().references('Organization.id'),
+    )
+    .addColumn('location', sql`GEOGRAPHY(POINT,4326)`, (col) => col.notNull())
     .execute()
 
   await sql`

@@ -88,7 +88,8 @@ describe(
                     name: nurse.name,
                     profession: 'nurse',
                     seen: false,
-                    href: `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+                    href:
+                      `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
                     avatar_url: nurse.avatar_url,
                   },
                 ],

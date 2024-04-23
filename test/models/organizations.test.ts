@@ -322,7 +322,8 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           name: 'At Facility 1',
           registration_status: 'pending_approval',
           actions: {
-            view: `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${hw_at_organization1.id}`,
+            view:
+              `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${hw_at_organization1.id}`,
           },
         })
         assertEquals(withInvitees[0].professions.length, 1)
@@ -394,7 +395,8 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           name: 'Nurse',
           registration_status: 'approved',
           actions: {
-            view: `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+            view:
+              `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
           },
         })
         assertEquals(withInvitees[0].professions.length, 1)
@@ -408,7 +410,8 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           name: 'Admin',
           registration_status: 'incomplete',
           actions: {
-            view: `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,
+            view:
+              `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,
           },
         })
         assertEquals(withInvitees[1].professions.length, 1)
@@ -422,9 +425,13 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
       'adds rows to health_worker_invitees if the user is not already a health worker at the organization',
       async (trx) => {
         const email = `${generateUUID()}@example.com`
-        await organizations.invite(trx, '00000000-0000-0000-0000-000000000001', [
-          { email, profession: 'nurse' },
-        ])
+        await organizations.invite(
+          trx,
+          '00000000-0000-0000-0000-000000000001',
+          [
+            { email, profession: 'nurse' },
+          ],
+        )
         const invitees = await trx.selectFrom('health_worker_invitees').where(
           'email',
           '=',
@@ -457,9 +464,13 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           },
         ])
 
-        await organizations.invite(trx, '00000000-0000-0000-0000-000000000001', [
-          { email: hw_at_organization1.email, profession: 'doctor' },
-        ])
+        await organizations.invite(
+          trx,
+          '00000000-0000-0000-0000-000000000001',
+          [
+            { email: hw_at_organization1.email, profession: 'doctor' },
+          ],
+        )
         const invitees = await trx.selectFrom('health_worker_invitees').where(
           'email',
           '=',

@@ -300,10 +300,14 @@ describe(
               const patient = await patients.upsert(trx, {
                 name: 'Test Patient 1',
               })
-              await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
-                patient_id: patient.id,
-                reason: 'maternity',
-              })
+              await patient_encounters.upsert(
+                trx,
+                '00000000-0000-0000-0000-000000000001',
+                {
+                  patient_id: patient.id,
+                  reason: 'maternity',
+                },
+              )
               const nurse = await addTestHealthWorker(trx, {
                 organization_id: '00000000-0000-0000-0000-000000000001',
                 scenario: 'approved-nurse',
@@ -354,7 +358,8 @@ describe(
                   providers: [{
                     name: nurse.name,
                     profession: 'nurse',
-                    href: `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+                    href:
+                      `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
                     avatar_url: nurse.avatar_url,
                     seen: true,
                     health_worker_id: nurse.id,

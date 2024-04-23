@@ -262,20 +262,20 @@ const conversationStates: ConversationStates<
       return 'I will send you organization location'
     },
     getMessages(patientState: PatientState): WhatsAppSendable {
-      const { selectedFacility } = patientState
+      const { selected_organization } = patientState
       assert(
-        selectedFacility,
-        'selectedFacility should be available in the patientState',
+        selected_organization,
+        'selected_organization should be available in the patientState',
       )
 
       const locationMessage: WhatsAppSingleSendable = {
         type: 'location',
-        messageBody: selectedFacility.name,
+        messageBody: selected_organization.name,
         location: {
-          longitude: selectedFacility.longitude,
-          latitude: selectedFacility.latitude,
-          name: selectedFacility.name,
-          address: selectedFacility.address,
+          longitude: selected_organization.longitude,
+          latitude: selected_organization.latitude,
+          name: selected_organization.name,
+          address: selected_organization.address,
         },
       }
 
@@ -297,12 +297,12 @@ const conversationStates: ConversationStates<
         : 'not_onboarded:welcome'
     },
     onEnter(_trx, patientState) {
-      const selectedFacility: Maybe<FacilityWithAddress> = patientState
+      const selected_organization: Maybe<FacilityWithAddress> = patientState
         .nearest_organizations
         ?.find(
           (organization) => String(organization.id) === patientState.body,
         )
-      return Promise.resolve({ ...patientState, selectedFacility })
+      return Promise.resolve({ ...patientState, selected_organization })
     },
   },
   'onboarded:make_appointment:enter_appointment_reason': {

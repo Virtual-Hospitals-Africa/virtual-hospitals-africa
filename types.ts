@@ -367,9 +367,9 @@ export type PatientState = {
   }
   created_at: Date
   updated_at: Date
-  nearest_organizations?: HasId<PatientNearestFacility>[]
+  nearest_organizations?: HasId<PatientNearestOrganization>[]
   nearest_organization_name?: string
-  selectedFacility?: FacilityWithAddress
+  selected_organization?: OrganizationWithAddress
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -975,11 +975,11 @@ export type HealthWorkerInvitee = {
   profession: Profession
 }
 
-export type FacilityEmployeeOrInvitee =
-  | FacilityEmployee
-  | FacilityEmployeeInvitee
+export type OrganizationEmployeeOrInvitee =
+  | OrganizationEmployee
+  | OrganizationEmployeeInvitee
 
-export type FacilityEmployee = {
+export type OrganizationEmployee = {
   name: string
   is_invitee: false
   health_worker_id: number
@@ -997,9 +997,9 @@ export type FacilityEmployee = {
   }
 }
 
-export type FacilityDoctorOrNurse =
+export type OrganizationDoctorOrNurse =
   & Omit<
-    FacilityEmployee,
+    OrganizationEmployee,
     'is_invitee' | 'professions'
   >
   & {
@@ -1008,7 +1008,7 @@ export type FacilityDoctorOrNurse =
     specialty: NurseSpecialty | null
   }
 
-export type FacilityEmployeeInvitee = {
+export type OrganizationEmployeeInvitee = {
   name: null
   is_invitee: true
   health_worker_id: null | number
@@ -1026,14 +1026,14 @@ export type FacilityEmployeeInvitee = {
   }
 }
 
-export type FacilityDevice = {
+export type OrganizationDevice = {
   device_id: number
   serial_number?: string
   organization_id: string
   created_by: number
 }
 
-export type FacilityConsumableMedicineSpecefics = {
+export type OrganizationConsumableMedicineSpecefics = {
   medications_id?: number
   strength: number
 }
@@ -1055,7 +1055,7 @@ export type RenderedProcurer = {
   name: string
 }
 
-export type RenderedFacilityDevice = {
+export type RenderedOrganizationDevice = {
   device_id: number
   name: string
   manufacturer: string
@@ -1063,7 +1063,7 @@ export type RenderedFacilityDevice = {
   diagnostic_test_capabilities: string[]
 }
 
-export type RenderedFacilityConsumable = {
+export type RenderedOrganizationConsumable = {
   name: string
   consumable_id: number
   quantity_on_hand: number
@@ -1073,7 +1073,7 @@ export type RenderedFacilityConsumable = {
   }
 }
 
-export type RenderedFacilityMedicine = {
+export type RenderedOrganizationMedicine = {
   generic_name: string
   consumable_id: number
   trade_name: string
@@ -1489,7 +1489,7 @@ export type ProviderAppointment = {
   end: ParsedDateTime
   providers?: Provider[]
   physicalLocation?: {
-    organization: HasId<Facility>
+    organization: HasId<Organization>
   }
   virtualLocation?: {
     href: string
@@ -1583,21 +1583,21 @@ export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
     ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
     : LoggedInHealthWorkerHandlerWithProps<unknown, Context>
 
-export type Facility = Partial<Location> & {
+export type Organization = Partial<Location> & {
   name: string
   category: string
   address: string | null
   phone: string | null
 }
 
-export type FacilityWithAddress =
+export type OrganizationWithAddress =
   & Location
-  & Facility
+  & Organization
   & {
     address: string
   }
 
-export type PatientNearestFacility = FacilityWithAddress & {
+export type PatientNearestOrganization = OrganizationWithAddress & {
   walking_distance: null | number
   distance: number
   vha: boolean

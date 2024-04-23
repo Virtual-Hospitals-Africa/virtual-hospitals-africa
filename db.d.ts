@@ -3963,10 +3963,12 @@ export interface Location {
   endpoint: string[] | null
   id: string
   lastUpdated: Timestamp
+  location: string
   name: string[] | null
   near: string | null
   operationalStatus: string | null
   organization: string | null
+  organizationId: string
   partof: string | null
   projectId: string | null
   status: string | null
@@ -5686,6 +5688,11 @@ export interface PatientMeasurements {
   patient_id: number
   updated_at: Generated<Timestamp>
   value: Numeric
+}
+
+export interface PatientNearestOrganizations {
+  nearest_organizations: Json | null
+  patient_id: number | null
 }
 
 export interface PatientOccupations {
@@ -8481,6 +8488,7 @@ export interface DB {
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
+  patient_nearest_organizations: PatientNearestOrganizations
   patient_occupations: PatientOccupations
   Patient_References: PatientReferences
   patient_symptom_media: PatientSymptomMedia

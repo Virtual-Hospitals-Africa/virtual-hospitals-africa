@@ -23,11 +23,15 @@ describe(
             scenario: 'approved-nurse',
           },
         )
-        const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
-        })
+        const encounter = await patient_encounters.upsert(
+          db,
+          '00000000-0000-0000-0000-000000000001',
+          {
+            patient_name: 'Test Patient',
+            reason: 'seeking treatment',
+            provider_ids: [healthWorker.employee_id!],
+          },
+        )
         await patients.upsert(db, {
           id: encounter.patient_id,
           gender: 'female',
@@ -83,11 +87,15 @@ describe(
           await addTestHealthWorkerWithSession(db, {
             scenario: 'approved-nurse',
           })
-        const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
-        })
+        const encounter = await patient_encounters.upsert(
+          db,
+          '00000000-0000-0000-0000-000000000001',
+          {
+            patient_name: 'Test Patient',
+            reason: 'seeking treatment',
+            provider_ids: [healthWorker.employee_id!],
+          },
+        )
         await patients.upsert(db, {
           id: encounter.patient_id,
           gender: 'female',
@@ -170,11 +178,15 @@ describe(
           await addTestHealthWorkerWithSession(db, {
             scenario: 'approved-nurse',
           })
-        const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
-        })
+        const encounter = await patient_encounters.upsert(
+          db,
+          '00000000-0000-0000-0000-000000000001',
+          {
+            patient_name: 'Test Patient',
+            reason: 'seeking treatment',
+            provider_ids: [healthWorker.employee_id!],
+          },
+        )
         await patients.upsert(db, {
           id: encounter.patient_id,
           gender: 'female',
@@ -281,11 +293,15 @@ describe(
           await addTestHealthWorkerWithSession(db, {
             scenario: 'approved-nurse',
           })
-        const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-          patient_name: 'Test Patient',
-          reason: 'seeking treatment',
-          provider_ids: [healthWorker.employee_id!],
-        })
+        const encounter = await patient_encounters.upsert(
+          db,
+          '00000000-0000-0000-0000-000000000001',
+          {
+            patient_name: 'Test Patient',
+            reason: 'seeking treatment',
+            provider_ids: [healthWorker.employee_id!],
+          },
+        )
         await patients.upsert(db, {
           id: encounter.patient_id,
           gender: 'female',
@@ -325,11 +341,15 @@ describe(
             await addTestHealthWorkerWithSession(db, {
               scenario: 'doctor',
             })
-          const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-            patient_name: 'Test Patient',
-            reason: 'seeking treatment',
-            provider_ids: [healthWorker.employee_id!],
-          })
+          const encounter = await patient_encounters.upsert(
+            db,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              patient_name: 'Test Patient',
+              reason: 'seeking treatment',
+              provider_ids: [healthWorker.employee_id!],
+            },
+          )
           await patients.upsert(db, {
             id: encounter.patient_id,
             gender: 'female',
@@ -346,11 +366,15 @@ describe(
             await addTestHealthWorkerWithSession(db, {
               scenario: 'approved-nurse',
             })
-          const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-            patient_name: 'Test Patient',
-            reason: 'seeking treatment',
-            provider_ids: [healthWorker.employee_id!],
-          })
+          const encounter = await patient_encounters.upsert(
+            db,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              patient_name: 'Test Patient',
+              reason: 'seeking treatment',
+              provider_ids: [healthWorker.employee_id!],
+            },
+          )
           await patients.upsert(db, {
             id: encounter.patient_id,
             gender: 'female',
@@ -371,11 +395,15 @@ describe(
               scenario: 'doctor',
             },
           )
-          const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-            patient_name: 'Test Patient',
-            reason: 'seeking treatment',
-            provider_ids: [healthWorker.employee_id!],
-          })
+          const encounter = await patient_encounters.upsert(
+            db,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              patient_name: 'Test Patient',
+              reason: 'seeking treatment',
+              provider_ids: [healthWorker.employee_id!],
+            },
+          )
           await patients.upsert(db, {
             id: encounter.patient_id,
             gender: 'female',
@@ -440,11 +468,15 @@ describe(
               scenario: 'approved-nurse',
             },
           )
-          const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-            patient_name: 'Test Patient',
-            reason: 'seeking treatment',
-            provider_ids: [healthWorker.employee_id!],
-          })
+          const encounter = await patient_encounters.upsert(
+            db,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              patient_name: 'Test Patient',
+              reason: 'seeking treatment',
+              provider_ids: [healthWorker.employee_id!],
+            },
+          )
           await patients.upsert(db, {
             id: encounter.patient_id,
             gender: 'female',

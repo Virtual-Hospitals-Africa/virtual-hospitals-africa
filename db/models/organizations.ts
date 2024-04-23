@@ -1,12 +1,12 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
-  Facility,
-  FacilityDoctorOrNurse,
-  FacilityEmployee,
-  FacilityEmployeeOrInvitee,
   Location,
   Maybe,
+  Organization,
+  OrganizationDoctorOrNurse,
+  OrganizationEmployee,
+  OrganizationEmployeeOrInvitee,
   Profession,
   TrxOrDb,
 } from '../../types.ts'
@@ -24,8 +24,8 @@ import { HasId } from '../../types.ts'
 export async function nearest(
   trx: TrxOrDb,
   location: Location,
-): Promise<HasId<Facility>[]> {
-  const result = await sql<HasId<Facility>>`
+): Promise<HasId<Organization>[]> {
+  const result = await sql<HasId<Organization>>`
       SELECT *,
              ST_Distance(
                   location,
@@ -33,7 +33,7 @@ export async function nearest(
               ) AS distance,
               ST_X(location::geometry) as longitude,
               ST_Y(location::geometry) as latitude
-        FROM Organization
+        FROM Location
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10
   `.execute(trx)
@@ -50,18 +50,16 @@ export function search(
 ) {
   let query = trx
     .selectFrom('Organization')
-    .select([
-      'id',
-      'address',
-      'address as description',
-      sql`ST_X(location::geometry)`.as('longitude'),
-      sql`ST_Y(location::geometry)`.as('latitude'),
-      'category',
-      'name',
-      'phone',
+    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
+    .leftJoin('Location', 'Organization.id', 'Location.organizationId')
+    .select((eb) => [
+      'Organization.id',
+      'Address.address',
+      eb.ref('Address.address').as('description'),
+      sql<string>`name[1]`.as('name'),
     ])
 
-  if (opts.search) query = query.where('name', 'ilike', `%${opts.search}%`)
+  if (opts.search) query = query.where(sql<string>`name[1]`, 'ilike', `%${opts.search}%`)
   if (opts.kind) {
     query = query.where(
       'address',
@@ -78,19 +76,16 @@ export function get(
   opts: {
     ids: number[]
   },
-): Promise<HasId<Facility>[]> {
+): Promise<HasId<Organization>[]> {
   assert(opts.ids.length, 'Must select nonzero organizations')
   return trx
     .selectFrom('Organization')
+    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
     .where('id', 'in', opts.ids)
     .select([
-      'id',
-      'created_at',
-      'updated_at',
-      'name',
-      'address',
-      'category',
-      'phone',
+      'Organization.id',
+      sql<string>`name[1]`.as('name'),
+      'Address.address',
       sql<number>`ST_X(location::geometry)`.as('longitude'),
       sql<number>`ST_Y(location::geometry)`.as('latitude'),
     ])
@@ -197,7 +192,7 @@ export function getEmployees(
     emails?: string[]
     registration_status?: 'pending_approval' | 'approved' | 'incomplete'
   },
-): Promise<FacilityEmployee[]> {
+): Promise<OrganizationEmployee[]> {
   return getEmployeesQuery(trx, opts).execute()
 }
 
@@ -207,7 +202,7 @@ export async function getApprovedDoctorsAndNurses(
     organization_id: string
     emails?: string[]
   },
-): Promise<FacilityDoctorOrNurse[]> {
+): Promise<OrganizationDoctorOrNurse[]> {
   const employees = await getEmployees(trx, {
     ...opts,
     professions: ['doctor', 'nurse'],
@@ -236,7 +231,7 @@ export function getEmployeesAndInvitees(
     professions?: Profession[]
     emails?: string[]
   },
-): Promise<FacilityEmployeeOrInvitee[]> {
+): Promise<OrganizationEmployeeOrInvitee[]> {
   const hwQuery = getEmployeesQuery(trx, opts)
   let inviteeQuery = trx.selectFrom('health_worker_invitees')
     .select((eb) => [
@@ -373,22 +368,146 @@ export async function invite(
   }
 }
 
-export function add(
-  trx: TrxOrDb,
-  { latitude, longitude, ...organization }: Facility,
-) {
-  assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
-  return trx
-    .insertInto('Organization')
-    .values({
-      ...organization,
-      location: (latitude != null && longitude != null)
-        ? sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`
-        : null,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
+
+type OrganizationsData = {
+  id?: string
+  name: string
+  latitude?: number
+  longitude?: number
+  address?: string
+  category?: string
 }
+
+function interpretAddress(address: string) {
+  const parts = address.split(', ')
+  return {
+    line: parts.slice(0, parts.length - 3),
+    city: parts[parts.length - 3],
+    state: parts[parts.length - 2],
+    postalCode: parts[parts.length - 1],
+  }
+}
+
+const categoryMap = {
+  'Rural Health Centre': 'PC',
+  'Clinic': 'PC',
+  'Hospital': 'HOSP',
+  'District Hospital': 'HOSP',
+  'Military Hospital': 'MHSP',
+}
+
+const codeMap = {
+  'PC': 'Primary care clinic',
+  'HOSP': 'Hospital',
+  'MHSP': 'Military Hospital',
+}
+
+export async function add(
+  trx: Kysely<any>,
+  { id, name, category, address, latitude, longitude }: OrganizationsData,
+) {
+  if (!category) {
+    console.warn(`Skipping, no category found for organization: ${name}`)
+    return
+  }
+
+  let status = 'active'
+  const category_match = category.match(/(.*)(\(.*\))/)
+  if (category_match) {
+    category = category_match[1].trim()
+    status = 'inactive'
+  }
+
+  const type = [{
+    coding: [{
+      system: 'http://terminology.hl7.org/CodeSystem/organization-type',
+      code: 'prov',
+      display: 'Healthcare Provider',
+    }],
+  }, {
+    coding: [{
+      system: 'virtualhospitalsafrica.org/codes/organization-category',
+      code: category,
+      display: category,
+    }],
+  }]
+
+  const interpretedAddress = address && interpretAddress(address)
+  const createdOrganization = await medplum.createResource('Organization', {
+    name,
+    type,
+    active: true,
+    address: interpretedAddress && [interpretedAddress],
+  })
+
+  // Hacky, but we want to explicitly set the ids of the test organizations and you can't do it
+  // via the createResource call
+  if (id) {
+    const updated = await trx.updateTable('Organization')
+      .set({ id })
+      .where('id', '=', createdOrganization.id)
+      .execute()
+
+    console.log('updated', updated)
+    createdOrganization.id = id
+  }
+
+  if (address && !Number.isNaN(latitude) && !Number.isNaN(longitude)) {
+    const code = category && categoryMap[category as keyof typeof categoryMap]
+    if (!code && category) {
+      console.error(`No code found for category: ${category}`)
+    }
+    const display = code && codeMap[code as keyof typeof codeMap]
+    const coding = [{
+      code,
+      display,
+      system: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
+    }]
+
+    await medplum.createResource('Location', {
+      status,
+      name,
+      type: [{ coding }],
+      address: {
+        use: 'work',
+        type: 'both',
+        ...interpretedAddress,
+      },
+      physicalType: {
+        coding: [
+          {
+            system:
+              'http://terminology.hl7.org/CodeSystem/location-physical-type',
+            code: 'bu',
+            display: 'Building',
+          },
+        ],
+      },
+      position: { longitude, latitude },
+      managingOrganization: {
+        reference: `Organization/${createdOrganization.id}`,
+        display: name,
+      },
+    })
+  }
+}
+
+// export function add(
+//   trx: TrxOrDb,
+//   { latitude, longitude, ...organization }: Organization,
+// ) {
+//   assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
+//   return trx
+//     .insertInto('Organization')
+//     .values({
+//       ...organization,
+//       location: (latitude != null && longitude != null)
+//         ? sql`ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326)`
+//         : null,
+//     })
+//     .returningAll()
+//     .executeTakeFirstOrThrow()
+// }
 
 export function remove(
   trx: TrxOrDb,

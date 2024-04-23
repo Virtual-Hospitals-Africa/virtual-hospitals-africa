@@ -119,17 +119,25 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         scenario: 'approved-nurse',
       })
 
-      const just_nurse1 = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
-        patient_name: 'Test Patient 1',
-        reason: 'seeking treatment',
-        provider_ids: [nurse1.employee_id!],
-      })
+      const just_nurse1 = await patient_encounters.upsert(
+        trx,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient 1',
+          reason: 'seeking treatment',
+          provider_ids: [nurse1.employee_id!],
+        },
+      )
 
-      const both = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
-        patient_name: 'Test Patient 2',
-        reason: 'referral',
-        provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
-      })
+      const both = await patient_encounters.upsert(
+        trx,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient 2',
+          reason: 'referral',
+          provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
+        },
+      )
 
       const result1 = await health_workers.get(trx, {
         health_worker_id: nurse1.id,

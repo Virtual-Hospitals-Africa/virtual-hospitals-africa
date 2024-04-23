@@ -20,11 +20,15 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-        patient_id: patient.id,
-        reason: 'seeking treatment',
-        provider_ids: [healthWorker.employee_id!],
-      })
+      await patient_encounters.upsert(
+        db,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_id: patient.id,
+          reason: 'seeking treatment',
+          provider_ids: [healthWorker.employee_id!],
+        },
+      )
 
       const response = await fetch(
         `${route}/app/patients/${patient.id}/encounters/open/vitals`,
@@ -70,11 +74,15 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-        patient_name: 'Test Patient',
-        reason: 'seeking treatment',
-        provider_ids: [healthWorker.employee_id!],
-      })
+      const encounter = await patient_encounters.upsert(
+        db,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient',
+          reason: 'seeking treatment',
+          provider_ids: [healthWorker.employee_id!],
+        },
+      )
 
       const body = new FormData()
       body.append('measurements.height', '123')
@@ -127,11 +135,15 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-        patient_name: 'Test Patient',
-        reason: 'seeking treatment',
-        provider_ids: [healthWorker.employee_id!],
-      })
+      const encounter = await patient_encounters.upsert(
+        db,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient',
+          reason: 'seeking treatment',
+          provider_ids: [healthWorker.employee_id!],
+        },
+      )
       await patient_measurements.upsertVitals(db, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,
@@ -195,11 +207,15 @@ describe(
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
-      const encounter = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
-        patient_name: 'Test Patient',
-        reason: 'seeking treatment',
-        provider_ids: [healthWorker.employee_id!],
-      })
+      const encounter = await patient_encounters.upsert(
+        db,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient',
+          reason: 'seeking treatment',
+          provider_ids: [healthWorker.employee_id!],
+        },
+      )
       await patient_measurements.upsertVitals(db, {
         encounter_id: encounter.id,
         patient_id: encounter.patient_id,

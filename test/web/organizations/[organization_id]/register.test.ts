@@ -27,7 +27,8 @@ describe(
 
       assert(response.ok, 'should have returned ok')
       assert(
-        response.url === `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
+        response.url ===
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
       const pageContents = await response.text()
 

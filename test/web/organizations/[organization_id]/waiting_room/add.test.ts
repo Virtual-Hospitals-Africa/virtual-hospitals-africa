@@ -85,7 +85,10 @@ describe(
       assertEquals(patientEncounter.patient_id, testPatient.id)
       assertEquals(patientEncounter.reason, 'seeking treatment')
 
-      assertEquals(waiting_room.organization_id, '00000000-0000-0000-0000-000000000001')
+      assertEquals(
+        waiting_room.organization_id,
+        '00000000-0000-0000-0000-000000000001',
+      )
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
     })
 
@@ -140,7 +143,10 @@ describe(
       assertEquals(patientEncounter.notes, 'Test notes')
       assertEquals(patientEncounter.reason, 'seeking treatment')
 
-      assertEquals(waiting_room.organization_id, '00000000-0000-0000-0000-000000000001')
+      assertEquals(
+        waiting_room.organization_id,
+        '00000000-0000-0000-0000-000000000001',
+      )
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
 
       const { name } = await db.selectFrom('patients').select(['name']).where(
