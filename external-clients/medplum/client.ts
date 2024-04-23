@@ -5,10 +5,12 @@ import { isISODateTimeString } from '../../util/date.ts'
 
 
 // Make a ClientApplication in Medplum and use its client ID and secret here
-const CLIENT_ID = "07c9a644-c88c-414f-9b05-2115751d24be"
-const CLIENT_SECRET = "40b33363406931428e91fe0dd6e442ae4b0ccee77d84bb150517a9a4d384365c"
+const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
+const MEDPLUM_CLIENT_SECRET = Deno.env.get('MEDPLUM_CLIENT_SECRET')
+assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
+assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
 
-const auth = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
+const auth = btoa(`${MEDPLUM_CLIENT_ID}:${MEDPLUM_CLIENT_SECRET}`)
 
 export function request(method: string, path: string, data?: unknown) {
   const body = data ? JSON.stringify(data) : undefined;

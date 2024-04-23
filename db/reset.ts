@@ -3,7 +3,7 @@ import { runCommand } from '../util/command.ts'
 import { assert } from 'std/assert/assert.ts'
 import { redis } from '../external-clients/redis.ts'
 import { logMigrationResults, migrate } from './migrate.ts'
-import { load } from './seed/load.ts'
+import { run } from './seed/run.ts'
 
 export async function reset() {
   assert(opts)
@@ -28,9 +28,10 @@ export async function reset() {
   console.log('Running VHA migrations...')
   logMigrationResults(await migrate.latest())
 
-  // console.log('Loading seeds...')
-  await load()
-  console.log('whatever')
+  console.log('Loading seeds...')
+  await run({ fn: 'load' })
+
+  console.log('Done!')
 }
 
 if (import.meta.main) {

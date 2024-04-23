@@ -4,8 +4,11 @@ import { assert } from 'std/assert/assert.ts'
 const seeds: Record<
   string,
   {
+    table_names: string[]
     load: () => Promise<Deno.CommandOutput>
+    reload: () => Promise<Deno.CommandOutput>
     dump: () => Promise<Deno.CommandOutput>
+    drop: () => Promise<Deno.CommandOutput>
   }
 > = {}
 for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
@@ -16,10 +19,13 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
 
 const seedTargets = Object.keys(seeds).sort()
 
-async function dump(target?: string) {
+export async function run({ fn, target }: {
+  fn: 'load' | 'dump' | 'drop' | 'reload'
+  target?: string
+}) {
   function targetError() {
     console.error(
-      `Please specify a valid target as in\n\n  deno task db:seeds:dump ${
+      `Please specify a valid target as in\n\n  deno task db:seeds:${fn} ${
         seedTargets[0]
       }\n\nValid targets:\n${seedTargets.join('\n')}`,
     )
@@ -38,17 +44,17 @@ async function dump(target?: string) {
     return targetError()
   }
 
-  if (target) {
-    const seed = seeds[findTarget(target)]
-    return seed.dump()
-  }
-  for (const seedName of seedTargets) {
+  const targets = target ? [findTarget(target)] : seedTargets
+
+  for (const seedName of targets) {
     const seed = seeds[seedName]
-    await seed.dump()
-    console.log(`seeds dumped for ${seedName}`)
+    await seed[fn]()
   }
 }
 
 if (import.meta.main) {
-  dump(Deno.args[0])
+  run({
+    fn: Deno.args[0] as 'load' | 'dump' | 'drop' | 'reload',
+    target: Deno.args[1],
+  })
 }
