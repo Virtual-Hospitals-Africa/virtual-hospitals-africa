@@ -32,7 +32,7 @@ import {
 import uniq from '../../util/uniq.ts'
 import { pickPatient } from './util.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
-import { FacilityWithAddress } from '../../types.ts'
+import { OrganizationWithAddress } from '../../types.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -297,7 +297,7 @@ const conversationStates: ConversationStates<
         : 'not_onboarded:welcome'
     },
     onEnter(_trx, patientState) {
-      const selected_organization: Maybe<FacilityWithAddress> = patientState
+      const selected_organization: Maybe<OrganizationWithAddress> = patientState
         .nearest_organizations
         ?.find(
           (organization) => String(organization.id) === patientState.body,

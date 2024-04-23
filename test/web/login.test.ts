@@ -8,7 +8,7 @@ import * as nurse_registration_details from '../../db/models/nurse_registration_
 import {
   addTestHealthWorkerWithSession,
   route,
-  withTestFacility,
+  withTestOrganization,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
@@ -105,7 +105,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
     })
 
     it('starts in an empty waiting room with sidebar links', () =>
-      withTestFacility(db, async (organization_id) => {
+      withTestOrganization(db, async (organization_id) => {
         const mock = await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
           organization_id,

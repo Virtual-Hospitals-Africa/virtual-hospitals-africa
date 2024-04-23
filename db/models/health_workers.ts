@@ -363,7 +363,7 @@ export async function getEmployed(
   return health_worker
 }
 
-export async function getInviteesAtFacility(
+export async function getInviteesAtOrganization(
   trx: TrxOrDb,
   organizationId: number,
 ) {

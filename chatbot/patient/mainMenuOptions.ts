@@ -16,7 +16,7 @@ export default [
   },
   {
     id: 'find_nearest_organization',
-    title: 'Nearest Facility',
+    title: 'Nearest Organization',
     nextState: 'find_nearest_organization:share_location' as const,
   },
 ] as ConversationStateHandlerSelectOption<PatientState>[]

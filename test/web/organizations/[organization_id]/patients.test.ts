@@ -6,14 +6,14 @@ import * as patients from '../../../../db/models/patients.ts'
 import * as patient_encounters from '../../../../db/models/patient_encounters.ts'
 import db from '../../../../db/db.ts'
 import generateUUID from '../../../../util/uuid.ts'
-import { withTestFacility } from '../../utilities.ts'
+import { withTestOrganization } from '../../utilities.ts'
 
 describe(
   '/app/organizations/[organization_id]/patients',
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it("can search for patients, sending back an appropriate href depending on whether the patient is in the organization's waiting room", () =>
-      withTestFacility(db, async (organization_id) => {
+      withTestOrganization(db, async (organization_id) => {
         const { fetch } = await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
           organization_id,

@@ -28,9 +28,9 @@ import {
 import uniq from '../util/uniq.ts'
 import {
   cacheDistanceInRedis,
-  cacheFacilityAddress,
+  cacheOrganizationAddress,
   getDistanceFromRedis,
-  getFacilityAddress,
+  getOrganizationAddress,
 } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
@@ -444,14 +444,14 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string> {
-  const cachedAddress = await getFacilityAddress(longitude, latitude)
+  const cachedAddress = await getOrganizationAddress(longitude, latitude)
   if (cachedAddress) return cachedAddress
 
   const data = await getGeocodeData(latitude, longitude)
   const address = getAddressFromData(data)
 
   assert(address)
-  await cacheFacilityAddress(longitude, latitude, address)
+  await cacheOrganizationAddress(longitude, latitude, address)
   return address
 }
 

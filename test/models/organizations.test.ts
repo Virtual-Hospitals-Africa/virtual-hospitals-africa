@@ -9,7 +9,7 @@ import { insertTestAddress, randomNationalId } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
-import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
+import { itUsesTrxAnd, withTestOrganization } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 
 describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
@@ -17,23 +17,23 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'gets the employees of a organization, with or without invitees',
       async (trx) => {
-        withTestFacility
+        withTestOrganization
         const hw_at_organization1 = await health_workers.upsert(trx, {
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
         assert(hw_at_organization1)
 
         const hw_at_organization2 = await health_workers.upsert(trx, {
-          name: 'At Facility 2',
+          name: 'At Organization 2',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
         assert(hw_at_organization2)
 
         const hw_other_organization = await health_workers.upsert(trx, {
-          name: 'At Facility 3',
+          name: 'At Organization 3',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
@@ -85,10 +85,10 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         assertEquals(omit(hw_1, ['professions']), {
           avatar_url: 'avatar_url',
           email: hw_at_organization1.email,
-          display_name: 'At Facility 1',
+          display_name: 'At Organization 1',
           health_worker_id: hw_at_organization1.id,
           is_invitee: false,
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           registration_status: 'incomplete',
           actions: {
             view: `/app/organizations/3/employees/${hw_at_organization1.id}`,
@@ -105,10 +105,10 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         assertEquals(omit(hw_2, ['professions']), {
           avatar_url: 'avatar_url',
           email: hw_at_organization2.email,
-          display_name: 'At Facility 2',
+          display_name: 'At Organization 2',
           health_worker_id: hw_at_organization2.id,
           is_invitee: false,
-          name: 'At Facility 2',
+          name: 'At Organization 2',
           registration_status: 'incomplete',
           actions: {
             view: `/app/organizations/3/employees/${hw_at_organization2.id}`,
@@ -147,10 +147,10 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           assertEquals(omit(hw_1, ['professions']), {
             avatar_url: 'avatar_url',
             email: hw_at_organization1.email,
-            display_name: 'At Facility 1',
+            display_name: 'At Organization 1',
             health_worker_id: hw_at_organization1.id,
             is_invitee: false,
-            name: 'At Facility 1',
+            name: 'At Organization 1',
             registration_status: 'incomplete',
             actions: {
               view: `/app/organizations/3/employees/${hw_at_organization1.id}`,
@@ -167,10 +167,10 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           assertEquals(omit(hw_2, ['professions']), {
             avatar_url: 'avatar_url',
             email: hw_at_organization2.email,
-            display_name: 'At Facility 2',
+            display_name: 'At Organization 2',
             health_worker_id: hw_at_organization2.id,
             is_invitee: false,
-            name: 'At Facility 2',
+            name: 'At Organization 2',
             registration_status: 'incomplete',
             actions: {
               view: `/app/organizations/3/employees/${hw_at_organization2.id}`,
@@ -187,21 +187,21 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
 
     itUsesTrxAnd('can get employees matching emails', async (trx) => {
       const hw_at_organization1 = await health_workers.upsert(trx, {
-        name: 'At Facility 1',
+        name: 'At Organization 1',
         email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
       })
       assert(hw_at_organization1)
 
       const hw_at_organization2 = await health_workers.upsert(trx, {
-        name: 'At Facility 2',
+        name: 'At Organization 2',
         email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
       })
       assert(hw_at_organization2)
 
       const hw_other_organization = await health_workers.upsert(trx, {
-        name: 'At Facility 3',
+        name: 'At Organization 3',
         email: `${generateUUID()}@worker.com`,
         avatar_url: 'avatar_url',
       })
@@ -256,10 +256,10 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
       assertEquals(omit(withInvitees[0], ['professions']), {
         avatar_url: 'avatar_url',
         email: hw_at_organization2.email,
-        display_name: 'At Facility 2',
+        display_name: 'At Organization 2',
         health_worker_id: hw_at_organization2.id,
         is_invitee: false,
-        name: 'At Facility 2',
+        name: 'At Organization 2',
         registration_status: 'incomplete',
         actions: {
           view: `/app/organizations/3/employees/${hw_at_organization2.id}`,
@@ -274,7 +274,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
       "assures that registration_status is pending_approval for when registration is complete, but hasn't been approved",
       async (trx) => {
         const hw_at_organization1 = await health_workers.upsert(trx, {
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
@@ -316,10 +316,10 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         assertEquals(omit(withInvitees[0], ['professions']), {
           avatar_url: 'avatar_url',
           email: hw_at_organization1.email,
-          display_name: 'At Facility 1',
+          display_name: 'At Organization 1',
           health_worker_id: hw_at_organization1.id,
           is_invitee: false,
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           registration_status: 'pending_approval',
           actions: {
             view:
@@ -450,7 +450,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
       'adds the profession if the health worker is already employed at this organization',
       async (trx) => {
         const hw_at_organization1 = await health_workers.upsert(trx, {
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           email: `${generateUUID()}@worker.com`,
           avatar_url: 'avatar_url',
         })
@@ -501,7 +501,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
       async (trx) => {
         const same_email = `${generateUUID()}@worker.com`
         const hw_at_organization1 = await health_workers.upsert(trx, {
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           email: same_email,
           avatar_url: 'avatar_url',
         })
@@ -531,7 +531,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
       async (trx) => {
         const same_email = `${generateUUID()}@worker.com`
         const hw_at_organization1 = await health_workers.upsert(trx, {
-          name: 'At Facility 1',
+          name: 'At Organization 1',
           email: same_email,
           avatar_url: 'avatar_url',
         })

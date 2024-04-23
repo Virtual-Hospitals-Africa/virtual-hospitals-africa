@@ -38,7 +38,7 @@ export const opts = connectionOpts()
 export const redis =
   (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
 
-export async function cacheFacilityAddress(
+export async function cacheOrganizationAddress(
   longitude: number,
   latitude: number,
   address: string,
@@ -49,7 +49,7 @@ export async function cacheFacilityAddress(
   console.log('cache address into redis: ' + key + ': ' + address)
 }
 
-export async function getFacilityAddress(
+export async function getOrganizationAddress(
   longitude: number,
   latitude: number,
 ): Promise<string | null> {

@@ -308,19 +308,19 @@ itUsesTrxAnd.rejects = (
     validateError?.(error as any)
   })
 
-export function withTestFacility(
+export function withTestOrganization(
   trx: TrxOrDb,
   opts: (organization_id: string) => Promise<void>,
   callback?: undefined,
 ): Promise<void>
 
-export function withTestFacility(
+export function withTestOrganization(
   trx: TrxOrDb,
   opts: { kind: 'virtual' },
   callback: (organization_id: string) => Promise<void>,
 ): Promise<void>
 
-export async function withTestFacility(
+export async function withTestOrganization(
   trx: TrxOrDb,
   opts: { kind: 'virtual' } | ((organization_id: string) => Promise<void>),
   callback?: (organization_id: string) => Promise<void>,
@@ -342,5 +342,48 @@ export async function withTestFacility(
   await callback!(organization.id)
   await trx.deleteFrom('Organization')
     .where('id', '=', organization.id)
+    .execute()
+  await trx.deleteFrom('Location')
+    .where('organizationId', '=', organization.id)
+    .execute()
+}
+
+export function withTestFacilities(
+  trx: TrxOrDb,
+  opts: (organization_id: string) => Promise<void>,
+  callback?: undefined,
+): Promise<void>
+
+export function withTestFacilities(
+  trx: TrxOrDb,
+  opts: { kind: 'virtual' },
+  callback: (organization_id: string) => Promise<void>,
+): Promise<void>
+
+export async function withTestFacilities(
+  trx: TrxOrDb,
+  opts: { kind: 'virtual' } | ((organization_id: string) => Promise<void>),
+  callback?: (organization_id: string) => Promise<void>,
+) {
+  let kind: 'virtual' | 'physical' = 'physical'
+  if (typeof opts === 'function') {
+    callback = opts
+  } else {
+    kind = opts.kind
+  }
+  const organization = await organizations.add(trx, {
+    name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
+    category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
+    address: kind === 'physical' ? '123 Test St' : null,
+    latitude: kind === 'physical' ? 0 : undefined,
+    longitude: kind === 'physical' ? 0 : undefined,
+    phone: null,
+  })
+  await callback!(organization.id)
+  await trx.deleteFrom('Organization')
+    .where('id', '=', organization.id)
+    .execute()
+  await trx.deleteFrom('Location')
+    .where('organizationId', '=', organization.id)
     .execute()
 }

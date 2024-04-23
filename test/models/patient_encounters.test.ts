@@ -6,7 +6,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   addTestHealthWorker,
   itUsesTrxAnd,
-  withTestFacility,
+  withTestOrganization,
 } from '../web/utilities.ts'
 
 describe(
@@ -17,7 +17,7 @@ describe(
       itUsesTrxAnd(
         'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',
         (trx) =>
-          withTestFacility(trx, async (organization_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, { name: 'Test Patient' })
             await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
@@ -53,7 +53,7 @@ describe(
       itUsesTrxAnd(
         'creates a new patient encounter for a patient seeking treatment with a specific provider, adding the patient to the waiting room',
         (trx) =>
-          withTestFacility(trx, async (organization_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const nurse = await addTestHealthWorker(trx, {
               scenario: 'approved-nurse',
             })

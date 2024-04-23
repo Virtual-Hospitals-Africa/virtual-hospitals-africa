@@ -227,7 +227,7 @@ async function addInventoryTransactions(admin: HW, _nurses: HW[]) {
     const container_size = sample([10, 20, 40, 100])
     const number_of_containers = sample([40, 100, 200])
 
-    await inventory.addFacilityMedicine(db, 1, {
+    await inventory.addOrganizationMedicine(db, 1, {
       created_by: admin.employee_id!,
       manufactured_medication_id: manufactured_medication.id,
       procured_from_id: procurer.id,

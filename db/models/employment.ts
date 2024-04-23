@@ -18,7 +18,7 @@ export type HealthWorkerWithRegistrationState = {
   registration_completed: SqlBool
 }
 
-export type FacilityAdmin = {
+export type OrganizationAdmin = {
   id: number
   email: string | null
   name: string
@@ -59,20 +59,20 @@ export async function isAdmin(
   return matches.length === 1
 }
 
-export async function getFirstFacility(
+export async function getFirstOrganization(
   trx: TrxOrDb,
   opts: {
     employeeId: number
   },
 ): Promise<number | undefined> {
-  const firstFacility = await trx
+  const firstOrganization = await trx
     .selectFrom('employment')
     .select('organization_id')
     .where('health_worker_id', '=', opts.employeeId)
     .orderBy('id')
     .executeTakeFirstOrThrow()
 
-  return firstFacility.organization_id
+  return firstOrganization.organization_id
 }
 
 export function getEmployee(
@@ -140,12 +140,12 @@ export function removeInvitees(
     .execute()
 }
 
-export function getFacilityAdmin(
+export function getOrganizationAdmin(
   trx: TrxOrDb,
   opts: {
     organization_id: string
   },
-): Promise<Maybe<FacilityAdmin>> {
+): Promise<Maybe<OrganizationAdmin>> {
   return trx
     .selectFrom('employment')
     .where('organization_id', '=', opts.organization_id)

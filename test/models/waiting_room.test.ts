@@ -6,7 +6,7 @@ import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
+import { itUsesTrxAnd, withTestOrganization } from '../web/utilities.ts'
 import { addTestHealthWorker } from '../web/utilities.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../db/models/patient_encounters.ts'
 
@@ -18,7 +18,7 @@ describe(
       itUsesTrxAnd(
         'orders the waiting room by when people first arrived',
         (trx) =>
-          withTestFacility(trx, async (organization_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient1 = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -94,7 +94,7 @@ describe(
       itUsesTrxAnd(
         'shows what step of the intake process the patient is awaiting',
         (trx) =>
-          withTestFacility(trx, async (organization_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -144,7 +144,7 @@ describe(
       itUsesTrxAnd(
         'shows what step of the intake process the patient is in',
         (trx) =>
-          withTestFacility(trx, async (organization_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -218,7 +218,7 @@ describe(
       itUsesTrxAnd(
         'orders emergencies at the top, even if they arrived later',
         (trx) =>
-          withTestFacility(trx, async (organization_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient1 = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -293,7 +293,7 @@ describe(
       itUsesTrxAnd(
         'shows review requests for patients in the waiting room',
         (trx) =>
-          withTestFacility(
+          withTestOrganization(
             trx,
             { kind: 'virtual' },
             async (organization_id) => {

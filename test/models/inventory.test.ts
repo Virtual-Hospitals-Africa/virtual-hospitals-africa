@@ -4,7 +4,7 @@ import * as inventory from '../../db/models/inventory.ts'
 import {
   addTestHealthWorker,
   itUsesTrxAnd,
-  withTestFacility,
+  withTestOrganization,
 } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 
@@ -13,7 +13,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'resolves with the available diagnostic tests in a organization',
       (trx) =>
-        withTestFacility(trx, async (organization_id) => {
+        withTestOrganization(trx, async (organization_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
           })
@@ -30,13 +30,13 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
             .select('id')
             .executeTakeFirstOrThrow()
 
-          await inventory.addFacilityDevice(trx, {
+          await inventory.addOrganizationDevice(trx, {
             device_id: contec_bc401.id,
             organization_id,
             created_by: admin.employee_id!,
           })
 
-          await inventory.addFacilityDevice(trx, {
+          await inventory.addOrganizationDevice(trx, {
             device_id: ls_4000.id,
             organization_id,
             created_by: admin.employee_id!,
@@ -73,7 +73,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'Add consumable and check quantity',
       (trx) =>
-        withTestFacility(trx, async (organization_id) => {
+        withTestOrganization(trx, async (organization_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
             organization_id,
@@ -150,7 +150,7 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd.rejects(
       'consuming more than the amount previously procured',
       (trx) =>
-        withTestFacility(trx, async (organization_id) => {
+        withTestOrganization(trx, async (organization_id) => {
           const admin = await addTestHealthWorker(trx, {
             scenario: 'admin',
             organization_id,

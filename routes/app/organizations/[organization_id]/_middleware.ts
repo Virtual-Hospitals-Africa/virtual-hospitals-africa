@@ -1,5 +1,5 @@
 import {
-  Facility,
+  Organization,
   HasId,
   LoggedInHealthWorkerContext,
 } from '../../../../types.ts'
@@ -8,15 +8,15 @@ import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
 import { getRequiredNumericParam } from '../../../../util/getNumericParam.ts'
 import { HealthWorkerEmployment } from '../../../../types.ts'
 
-export type FacilityContext = LoggedInHealthWorkerContext<{
-  organization: HasId<Facility>
+export type OrganizationContext = LoggedInHealthWorkerContext<{
+  organization: HasId<Organization>
   organization_employment: HealthWorkerEmployment
-  isAdminAtFacility: boolean
+  isAdminAtOrganization: boolean
 }>
 
 export async function handler(
   _req: Request,
-  ctx: FacilityContext,
+  ctx: OrganizationContext,
 ) {
   const { healthWorker } = ctx.state
   const organization_id = getRequiredNumericParam(ctx, 'organization_id')
@@ -37,6 +37,6 @@ export async function handler(
 
   ctx.state.organization = organization
   ctx.state.organization_employment = organization_employment
-  ctx.state.isAdminAtFacility = !!organization_employment.roles.admin
+  ctx.state.isAdminAtOrganization = !!organization_employment.roles.admin
   return ctx.next()
 }

@@ -11,7 +11,7 @@ import {
   Patient,
   PatientConversationState,
   PatientIntake,
-  PatientNearestFacility,
+  PatientNearestOrganization,
   PatientOccupation,
   PatientState,
   PatientWithOpenEncounter,
@@ -656,7 +656,7 @@ export async function nearestFacilities(
               latitude: organization.latitude,
             },
           }),
-        } as HasId<PatientNearestFacility>
+        } as HasId<PatientNearestOrganization>
     )),
   )
 }

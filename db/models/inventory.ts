@@ -1,12 +1,12 @@
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
-  FacilityDevice,
+  OrganizationDevice,
   MedicationProcurement,
   Procurer,
   RenderedConsumable,
-  RenderedFacilityConsumable,
-  RenderedFacilityDevice,
-  RenderedFacilityMedicine,
+  RenderedOrganizationConsumable,
+  RenderedOrganizationDevice,
+  RenderedOrganizationMedicine,
   RenderedInventoryHistory,
   RenderedInventoryHistoryConsumption,
   RenderedInventoryHistoryProcurement,
@@ -31,7 +31,7 @@ export function getDevices(
   opts: {
     organization_id: string
   },
-): Promise<RenderedFacilityDevice[]> {
+): Promise<RenderedOrganizationDevice[]> {
   return trx
     .selectFrom('organization_devices')
     .innerJoin('devices', 'organization_devices.device_id', 'devices.id')
@@ -58,7 +58,7 @@ export function getConsumables(
   opts: {
     organization_id: string
   },
-): Promise<RenderedFacilityConsumable[]> {
+): Promise<RenderedOrganizationConsumable[]> {
   return trx
     .selectFrom('organization_consumables')
     .innerJoin(
@@ -98,7 +98,7 @@ export function getMedicines(
   opts: {
     organization_id: string
   },
-): Promise<RenderedFacilityMedicine[]> {
+): Promise<RenderedOrganizationMedicine[]> {
   return trx
     .selectFrom('organization_consumables')
     .innerJoin(
@@ -396,9 +396,9 @@ export function getAvailableTests(
     .execute()
 }
 
-export function addFacilityDevice(
+export function addOrganizationDevice(
   trx: TrxOrDb,
-  model: FacilityDevice,
+  model: OrganizationDevice,
 ): Promise<{ id: number }> {
   return trx
     .insertInto('organization_devices')
@@ -407,7 +407,7 @@ export function addFacilityDevice(
     .executeTakeFirstOrThrow()
 }
 
-export async function addFacilityMedicine(
+export async function addOrganizationMedicine(
   trx: TrxOrDb,
   organization_id: string,
   medicine: {
