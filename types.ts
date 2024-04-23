@@ -966,12 +966,12 @@ export type GoogleProfile = {
 export type Employee = {
   health_worker_id: integer
   profession: Profession
-  organization_id: integer
+  organization_id: string
 }
 
 export type HealthWorkerInvitee = {
   email: string
-  organization_id: integer
+  organization_id: string
   profession: Profession
 }
 
@@ -1029,7 +1029,7 @@ export type FacilityEmployeeInvitee = {
 export type FacilityDevice = {
   device_id: number
   serial_number?: string
-  organization_id: number
+  organization_id: string
   created_by: number
 }
 
@@ -1266,7 +1266,7 @@ export type EmployeeInfo = {
   registration_pending_approval: SqlBool
   address: Maybe<string>
   organization_address: string | null
-  organization_id: number
+  organization_id: string
   organization_name: string
   professions: Profession[]
   documents: {
@@ -1316,7 +1316,7 @@ export type RenderedDoctorReviewRequestOfSpecificDoctor =
 
 export type HealthWorkerEmployment = {
   organization: {
-    id: number
+    id: string
     name: string
     address: string | null
   }
@@ -1351,7 +1351,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
   refresh_token: string
   expires_at: Date | string
   employment: HealthWorkerEmployment[]
-  default_organization_id: number | null
+  default_organization_id: string | null
   open_encounters: RenderedPatientEncounter[]
   reviews: {
     requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
@@ -1360,7 +1360,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
-  default_organization_id: number
+  default_organization_id: string
 }
 
 export type HealthWorkerWithGoogleTokens =
@@ -2091,7 +2091,7 @@ export type PatientEncounterProvider = {
 }
 
 export type WaitingRoom = {
-  organization_id: number
+  organization_id: string
   patient_encounter_id: number
 }
 
@@ -2137,7 +2137,7 @@ export type RenderedWaitingRoom = {
 export type RenderedPatientEncounterProvider = {
   patient_encounter_provider_id: number
   employment_id: number
-  organization_id: number
+  organization_id: string
   profession: Profession
   health_worker_id: number
   health_worker_name: string
@@ -2161,7 +2161,7 @@ export type RenderedPatientEncounter = {
   patient_id: number
   appointment_id: null | number
   waiting_room_id: null | number
-  waiting_room_organization_id: null | number
+  waiting_room_organization_id: null | string
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
   examinations: RenderedPatientEncounterExamination[]

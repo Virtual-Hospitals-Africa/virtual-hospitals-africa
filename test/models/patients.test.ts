@@ -131,7 +131,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     })
 
     itUsesTrxAnd('finds patients with an open encounter', async (trx) => {
-      const encounter = await patient_encounters.upsert(trx, 1, {
+      const encounter = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
         patient_name: 'Test Patient',
         reason: 'seeking treatment',
       })
@@ -170,7 +170,8 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             notes: null,
             appointment_id: null,
             waiting_room_id: encounter.waiting_room_id,
-            waiting_room_organization_id: '00000000-0000-0000-0000-000000000001',
+            waiting_room_organization_id:
+              '00000000-0000-0000-0000-000000000001',
             steps_completed: [],
             examinations: [],
           },
@@ -186,7 +187,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           date_of_birth: '1989-01-03',
           gender: 'male',
         })
-        const encounter = await patient_encounters.upsert(trx, 1, {
+        const encounter = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
           patient_id: patient.id,
           reason: 'seeking treatment',
         })
@@ -225,7 +226,8 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
               notes: null,
               appointment_id: null,
               waiting_room_id: encounter.waiting_room_id,
-              waiting_room_organization_id: '00000000-0000-0000-0000-000000000001',
+              waiting_room_organization_id:
+                '00000000-0000-0000-0000-000000000001',
               steps_completed: [],
               examinations: [
                 {

@@ -22,12 +22,12 @@ describe(
       })
 
       const response = await fetch(
-        `${route}/app/organizations/1/register/personal`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
 
       assert(response.ok, 'should have returned ok')
       assert(
-        response.url === `${route}/app/organizations/1/register/personal`,
+        response.url === `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
       const pageContents = await response.text()
 
@@ -81,7 +81,7 @@ describe(
         if (address.street) body.set('address.street', address.street)
 
         const postResponse = await fetch(
-          `${route}/app/organizations/1/register/personal`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
           {
             method: 'POST',
             body,
@@ -119,11 +119,11 @@ describe(
 
         assertEquals(
           postResponse.url,
-          `${route}/app/organizations/1/register/professional`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
         )
 
         const getPersonalResponse = await fetch(
-          `${route}/app/organizations/1/register/personal`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
         )
 
         const pageContents = await getPersonalResponse.text()
@@ -174,7 +174,7 @@ describe(
         body.set('specialty', 'oncology and palliative care')
 
         const postResponse = await fetch(
-          `${route}/app/organizations/1/register/professional`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
           {
             method: 'POST',
             body,
@@ -215,11 +215,11 @@ describe(
 
         assertEquals(
           postResponse.url,
-          `${route}/app/organizations/1/register/documents`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
         )
 
         const getProfessionalResponse = await fetch(
-          `${route}/app/organizations/1/register/professional`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/professional`,
         )
 
         const pageContents = await getProfessionalResponse.text()
@@ -243,7 +243,7 @@ describe(
         const body = new FormData()
 
         const postResponse = await fetch(
-          `${route}/app/organizations/1/register/documents`,
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/documents`,
           {
             method: 'POST',
             body,

@@ -15,7 +15,7 @@ describe(
           scenario: 'approved-nurse',
         })
         const patient = await patients.upsert(trx, { name: 'Test Patient' })
-        const encounter = await patient_encounters.upsert(trx, 1, {
+        const encounter = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
           patient_id: patient.id,
           reason: 'seeking treatment',
           provider_ids: [nurse.employee_id!],

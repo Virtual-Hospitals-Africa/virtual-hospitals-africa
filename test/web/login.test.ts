@@ -81,7 +81,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const response = await mock.fetch(`${route}/app`)
       assertEquals(
         response.url,
-        `${route}/app/organizations/1/register/personal`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
       const pageContents = await response.text()
       assert(pageContents.includes('First Name'))
@@ -162,16 +162,16 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
 
       if (!response.ok) throw new Error(await response.text())
       assert(response.redirected)
-      assertEquals(response.url, `${route}/app/organizations/1/employees`)
+      assertEquals(response.url, `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
       const pageContents = await response.text()
       assert(
         pageContents.includes(
-          `href="/app/organizations/1/employees/${mock.healthWorker.id}"`,
+          `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.healthWorker.id}"`,
         ),
       )
       assert(
         pageContents.includes(
-          `href="/app/organizations/1/employees/${nurse.id}"`,
+          `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}"`,
         ),
       )
     })
@@ -180,24 +180,24 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'admin',
       })
-      let response = await mock.fetch(`${route}/app/organizations/1/employees`)
+      let response = await mock.fetch(`${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
       if (!response.ok) {
         throw new Error(await response.text())
       }
-      assertEquals(response.url, `${route}/app/organizations/1/employees`)
+      assertEquals(response.url, `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
       let pageContents = await response.text()
       assert(
-        pageContents.includes('href="/app/organizations/1/employees/invite"'),
+        pageContents.includes('href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"'),
       )
 
       response = await mock.fetch(
-        `${route}/app/organizations/1/employees/invite`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
       )
 
       if (!response.ok) throw new Error(await response.text())
       assertEquals(
         response.url,
-        `${route}/app/organizations/1/employees/invite`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
       )
       pageContents = await response.text()
       assert(pageContents.includes('Email'))
@@ -210,7 +210,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         scenario: 'doctor',
       })
       const response = await mock.fetch(
-        `${route}/app/organizations/2/employees`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees`,
       )
       assertEquals(response.status, 403)
     })
@@ -221,20 +221,20 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       })
 
       const employeesResponse = await mock.fetch(
-        `${route}/app/organizations/1/employees`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
 
       assert(
         employeesResponse.ok,
       )
-      assert(employeesResponse.url === `${route}/app/organizations/1/employees`)
+      assert(employeesResponse.url === `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`)
       const pageContents = await employeesResponse.text()
       assert(
-        !pageContents.includes('href="/app/organizations/1/employees/invite"'),
+        !pageContents.includes('href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"'),
       )
 
       const invitesResponse = await mock.fetch(
-        `${route}/app/organizations/1/employees/invite`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
       )
 
       assertEquals(invitesResponse.status, 403)

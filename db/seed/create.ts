@@ -7,7 +7,9 @@ const SEED_DUMPS_DIRECTORY = './db/seed/dumps'
 
 await Deno.mkdir(SEED_DUMPS_DIRECTORY, { recursive: true })
 
-const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map(file => file.name)
+const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map((file) =>
+  file.name
+)
 
 export function create(
   table_names: string[],

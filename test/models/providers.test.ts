@@ -91,11 +91,6 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
             },
           }),
         ])
-        await employment.add(trx, [{
-          health_worker_id: doctor2.id,
-          profession: 'doctor',
-          organization_id: 3,
-        }])
 
         const results = await providers.search(trx, {
           search: name_base,
@@ -106,11 +101,11 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
 
         assertEquals(
           firstResult.organization_id,
-          2,
+          '00000000-0000-0000-0000-000000000002',
         )
         assertNotEquals(
           lastResult.organization_id,
-          2,
+          '00000000-0000-0000-0000-000000000002',
         )
       },
     )
@@ -146,7 +141,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
 
       const other_organization_result = await providers.search(trx, {
         search: healthWorker.name,
-        organization_id: '00000000-0000-0000-0000-000000000001'0,
+        organization_id: '00000000-0000-0000-0000-000000000010',
       })
       assertEquals(other_organization_result.length, 0)
     })

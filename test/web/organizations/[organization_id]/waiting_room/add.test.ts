@@ -21,7 +21,7 @@ describe(
       })
 
       const response = await fetch(
-        `${route}/app/organizations/1/waiting_room/add`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add`,
         {},
       )
 
@@ -55,7 +55,7 @@ describe(
       body.set('reason', 'seeking treatment')
 
       const response = await fetch(
-        `${route}/app/organizations/1/waiting_room/add`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add`,
         {
           method: 'POST',
           body,
@@ -85,7 +85,7 @@ describe(
       assertEquals(patientEncounter.patient_id, testPatient.id)
       assertEquals(patientEncounter.reason, 'seeking treatment')
 
-      assertEquals(waiting_room.organization_id, 1)
+      assertEquals(waiting_room.organization_id, '00000000-0000-0000-0000-000000000001')
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
     })
 
@@ -103,7 +103,7 @@ describe(
       body.set('reason', 'seeking treatment')
 
       const response = await fetch(
-        `${route}/app/organizations/1/waiting_room/add`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/waiting_room/add`,
         {
           method: 'POST',
           body,
@@ -140,7 +140,7 @@ describe(
       assertEquals(patientEncounter.notes, 'Test notes')
       assertEquals(patientEncounter.reason, 'seeking treatment')
 
-      assertEquals(waiting_room.organization_id, 1)
+      assertEquals(waiting_room.organization_id, '00000000-0000-0000-0000-000000000001')
       assertEquals(waiting_room.patient_encounter_id, patientEncounter.id)
 
       const { name } = await db.selectFrom('patients').select(['name']).where(

@@ -23,7 +23,7 @@ type TestHealthWorkerOpts = {
     | 'nurse'
     | 'approved-nurse'
     | 'awaiting-approval-nurse'
-  organization_id?: number
+  organization_id?: string
   health_worker_attrs?: Partial<HealthWorkerWithGoogleTokens>
 }
 
@@ -31,10 +31,13 @@ export const route = `https://localhost:8005`
 
 export async function addTestHealthWorker(
   trx: TrxOrDb,
-  { scenario, organization_id = 1, health_worker_attrs }: TestHealthWorkerOpts =
-    {
-      scenario: 'base',
-    },
+  {
+    scenario,
+    organization_id = '00000000-0000-0000-0000-000000000001',
+    health_worker_attrs,
+  }: TestHealthWorkerOpts = {
+    scenario: 'base',
+  },
 ) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
@@ -337,7 +340,7 @@ export async function withTestFacility(
     phone: null,
   })
   await callback!(organization.id)
-  await trx.deleteFrom('organizations')
+  await trx.deleteFrom('Organization')
     .where('id', '=', organization.id)
     .execute()
 }

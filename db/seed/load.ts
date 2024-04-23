@@ -57,7 +57,7 @@ export async function load({ target, reload, dump }: {
 }
 
 if (import.meta.main) {
-  const first_non_double_dash = Deno.args.find(arg => !arg.startsWith('--'))
+  const first_non_double_dash = Deno.args.find((arg) => !arg.startsWith('--'))
   load({
     target: first_non_double_dash,
     reload: Deno.args.includes('--reload'),

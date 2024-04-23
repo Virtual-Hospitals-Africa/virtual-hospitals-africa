@@ -76,7 +76,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           employment: [
             {
               organization: {
-                id: 1,
+                id: '00000000-0000-0000-0000-000000000001',
                 name: 'VHA Test Clinic',
                 address: 'Bristol, UK',
               },
@@ -119,13 +119,13 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         scenario: 'approved-nurse',
       })
 
-      const just_nurse1 = await patient_encounters.upsert(trx, 1, {
+      const just_nurse1 = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
         patient_name: 'Test Patient 1',
         reason: 'seeking treatment',
         provider_ids: [nurse1.employee_id!],
       })
 
-      const both = await patient_encounters.upsert(trx, 1, {
+      const both = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
         patient_name: 'Test Patient 2',
         reason: 'referral',
         provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
@@ -348,22 +348,22 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         {
           name: 'Face Picture',
           href:
-            `/app/organizations/1/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
         },
         {
           name: 'National ID',
           href:
-            `/app/organizations/1/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
         },
         {
           name: 'Nurse Practicing Certificate',
           href:
-            `/app/organizations/1/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
         },
         {
           name: 'Registration Card',
           href:
-            `/app/organizations/1/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
         },
       ])
       assertEquals(result.organization_id, 1)

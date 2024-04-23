@@ -29,7 +29,7 @@ describe('/app/patients/[patient_id]/intake', {
   sanitizeOps: false,
 }, () => {
   it('loads the personal page', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -53,7 +53,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the personal step, moving you to the address step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -121,7 +121,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the address step, moving you to the conditions step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -211,7 +211,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST of pre_existing_conditions on the conditions step, moving you to the history step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -349,7 +349,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST of allergies on the conditions step, moving you to the history step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -399,7 +399,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('can remove all pre_existing_conditions on POST', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -438,7 +438,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('handles holes in an array of pre_existing_conditions on POST', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -530,7 +530,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the family step, moving you to the lifestyle step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -612,7 +612,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -633,7 +633,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the occupation step(0-18), moving you to the family step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -725,7 +725,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the occupation step(19+), moving you to the family step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient 19',
       reason: 'seeking treatment',
     })
@@ -818,7 +818,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it.skip('supports POST on the lifestyle step, moving you to the review step if you already completed all other sections', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })
@@ -1058,7 +1058,7 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it.skip('supports POST on the lifestyle step, returning you to the first incomplete step before review if any are not yet done', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
+    const { patient_id } = await patient_encounters.upsert(db, '00000000-0000-0000-0000-000000000001', {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
     })

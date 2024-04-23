@@ -3,7 +3,7 @@ import {
   DB,
   DoctorReviewStep,
   Employment,
-  Facilities,
+  Organization,
   HealthWorkers,
 } from '../../db.d.ts'
 import {
@@ -103,7 +103,7 @@ export function requests(
   DB & {
     requested_by_employee: Employment
   } & {
-    requested_by_organization: Facilities
+    requested_by_organization: Organization
   } & {
     requested_by_health_worker: HealthWorkers
   },
@@ -326,7 +326,7 @@ export function upsertRequest(
     patient_id: number
     encounter_id: number
     requested_by: number
-    organization_id?: number | null
+    organization_id?: string | null
     requesting_doctor_id?: number | null
     requester_notes?: Maybe<string>
   },

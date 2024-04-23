@@ -1,3 +1,4 @@
+import { sql } from 'kysely'
 import { Maybe, Profession, Provider, TrxOrDb } from '../../types.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
 import { getWithTokensQuery } from './health_workers.ts'
@@ -146,7 +147,7 @@ export async function search(
       'health_workers.name',
       'employment.organization_id',
       'employment.profession',
-      'Organization.name as organization_name',
+      sql<string>`Organization.name[1]`.as('organization_name'),
     ])
     .where('health_workers.name', 'is not', null)
     .where('profession', 'in', opts.professions || ['doctor', 'nurse'])

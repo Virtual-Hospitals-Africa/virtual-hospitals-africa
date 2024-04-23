@@ -332,7 +332,7 @@ export function getIntake(
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin(
-      'organizations',
+      'Organization',
       'Organization.id',
       'patients.nearest_organization_id',
     )
