@@ -374,6 +374,21 @@ export type PatientState = {
   selected_organization?: PatientNearestOrganization
 }
 
+export type PharmacistState = {
+  pharmacist_id: number
+  name: Maybe<string>
+  conversation_state: PharmacistConversationState
+  has_media: boolean
+}
+
+export type PharmacistConversationState =
+  | 'initial_message'
+  | 'not_onboarded:enter_registration'
+  | 'not_onboarded:enter_id'
+  | 'not_onboarded:create_pin'
+  | 'other_end_of_demo'  
+  
+
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
   prompt: string | ((userState: US) => string)
   onEnter?: (trx: TrxOrDb, userState: US) => Promise<US>
