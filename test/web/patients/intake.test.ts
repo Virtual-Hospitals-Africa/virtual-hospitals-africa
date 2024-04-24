@@ -817,7 +817,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it.skip('supports POST on the lifestyle step, moving you to the review step if you already completed all other sections', async () => {
+  it.only('supports POST on the lifestyle step, moving you to the review step if you already completed all other sections', async () => {
     const { patient_id } = await patient_encounters.upsert(db, 1, {
       patient_name: 'Test Patient',
       reason: 'seeking treatment',
@@ -919,6 +919,101 @@ describe('/app/patients/[patient_id]/intake', {
       'Cigarettes',
     )
 
+    body.set('lifestyle.exercise.currently_exercises', 'on')
+    body.set('lifestyle.exercise.physical_activities.0', '')
+    body.set('lifestyle.exercise.sports.0', '')
+    body.set('lifestyle.exercise.types_of_exercises.0', 'Endurance')
+    body.set(
+      'lifestyle.exercise.physical_injuries_or_disability.disabilities.0',
+      'Cerebral palsy',
+    )
+    body.set(
+      'lifestyle.exercise.physical_injuries_or_disability.musculoskeletal_injuries.0',
+      'Fractures',
+    )
+    body.set('lifestyle.exercise.limitations.limits.0', 'Structural conditions')
+    body.set('lifestyle.exercise.limitations.limits.1', 'Medical conditions')
+    body.set(
+      'lifestyle.exercise.limitations.structural_conditions.0',
+      'Improper body alignment',
+    )
+    body.set(
+      'lifestyle.exercise.limitations.medical_conditions.0',
+      'Unstable angina',
+    )
+
+    body.set('lifestyle.substance.has_ever_used_substance', 'on')
+    // body.set('lifestyle.substance_use.substances_used_names', 'on')
+
+    body.set('lifestyle.substance.injected_substance.0', 'on')
+    body.set('lifestyle.substance.annoyed_by_criticism.0', 'on')
+    body.set('lifestyle.substance.attempt_to_stop.0', 'on')
+    body.set('lifestyle.substance.withdrawal_symptoms.0', 'on')
+    body.set('lifestyle.substance.quit_more_than_six_months.0', 'on')
+    body.set('lifestyle.substance.first_use_age.0', '1')
+    body.set('lifestyle.substance.used_regularly_years.0', '2')
+    body.set('lifestyle.substance.times_used_in_a_week.0', '3')
+    body.set('lifestyle.substance.quit_substance_use_years.0', '2')
+
+    body.set('lifestyle.substance.injected_substance.1', 'on')
+    body.set('lifestyle.substance.annoyed_by_criticism.1', 'on')
+    body.set('lifestyle.substance.attempt_to_stop.1', 'on')
+    body.set('lifestyle.substance.withdrawal_symptoms.1', 'on')
+    body.set('lifestyle.substance.quit_more_than_six_months.1', 'on')
+    body.set('lifestyle.substance.first_use_age.1', '1')
+    body.set('lifestyle.substance.used_regularly_years.1', '2')
+    body.set('lifestyle.substance.times_used_in_a_week.1', '3')
+    body.set('lifestyle.substance.quit_substance_use_years.1', '2')
+    body.set(
+      'lifestyle.substance_use.substances_used_names.0',
+      'Heroin',
+    )
+    body.set(
+      'lifestyle.alcohol.alcohol_products_used.1',
+      'Caffeine',
+    )
+
+    body.set('lifestyle.diet.meals_per_day', '3')
+    body.set('lifestyle.diet.typical_foods_eaten', '')
+    body.set('lifestyle.diet.eating_takeout_fast_food_frequency', 'Never')
+    body.set('lifestyle.diet.eating_home_cooked_frequency', 'Never')
+    body.set('lifestyle.diet.fats_used_in_cooking', '')
+    body.set('lifestyle.diet.staple_foods', '')
+    body.set('lifestyle.diet.non_meats', '')
+    body.set('lifestyle.diet.drinks', '')
+    body.set('lifestyle.diet.meats', '')
+    body.set('lifestyle.diet.junk_foods', '')
+    body.set('lifestyle.diet.supplements_taken', '')
+    body.set(
+      'lifestyle.diet.eats_five_portions_of_fruits_vegetables_daily',
+      'on',
+    )
+    body.set('lifestyle.diet.eats_four_varieties_of_fruit_weekly', 'on')
+    body.set('lifestyle.diet.eats_four_varieties_of_vegetables_weekly', 'on')
+    body.set('lifestyle.diet.chooses_low_fat_products', 'on')
+    body.set(
+      'lifestyle.diet.chooses_baked_steamed_grilled_rather_than_fried',
+      'on',
+    )
+    body.set('lifestyle.diet.chooses_lean_cuts_or_removes_visible_fat', 'on')
+    body.set('lifestyle.diet.eats_oily_fish', 'on')
+    body.set('lifestyle.diet.bases_meals_around_starchy_foods', 'on')
+    body.set('lifestyle.diet.regularly_chooses_wholemeal_bread', 'on')
+    body.set(
+      'lifestyle.diet.regularly_eats_wholegrain_cereals_without_added_sugar',
+      'on',
+    )
+    body.set('lifestyle.diet.regularly_eats_pulses', 'on')
+    body.set('lifestyle.diet.regularly_eats_snacks_throughout_day', 'on')
+    body.set('lifestyle.diet.regularly_adds_sugar_to_drinks', 'on')
+    body.set('lifestyle.diet.regularly_adds_salt_during_or_after_cooking', 'on')
+    body.set('lifestyle.diet.regularly_drinks_sweet_fizzy_drinks', 'on')
+    body.set(
+      'lifestyle.diet.drinks_plenty_of_fluids_regularly_throughout_day',
+      'on',
+    )
+    body.set('lifestyle.diet.skips_meals_more_than_once_a_week', 'on')
+
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/lifestyle`,
       {
@@ -980,6 +1075,81 @@ describe('/app/patients/[patient_id]/intake', {
         quit_smoking_years: 5,
         number_of_products: 5,
         tobacco_products_used: ['Flavored cigarettes', 'Cigarettes'],
+      },
+      exercise: {
+        currently_exercises: true,
+        physical_activities: [],
+        sports: [],
+        types_of_exercises: ['Endurance'],
+        physical_injuries_or_disability: {
+          disabilities: ['Cerebral palsy'],
+          musculoskeletal_injuries: ['Fractures'],
+        },
+        limitations: {
+          limits: ['Structural conditions, Medical conditions'],
+          structural_conditions: ['Improper body alignment'],
+          medical_conditions: ['Unstable angina'],
+        },
+      },
+      diet: {
+        meals_per_day: 3,
+        typical_foods_eaten: [],
+        eating_takeout_fast_food_frequency: 'Never',
+        eating_home_cooked_frequency: 'Never',
+        fats_used_in_cooking: [],
+        staple_foods: [],
+        non_meats: [],
+        drinks: [],
+        meats: [],
+        junk_foods: [],
+        past_special_diets: [],
+        supplements_taken: [],
+        eats_five_portions_of_fruits_vegetables_daily: true,
+        eats_four_varieties_of_fruit_weekly: true,
+        eats_four_varieties_of_vegetables_weekly: true,
+        chooses_low_fat_products: true,
+        chooses_baked_steamed_grilled_rather_than_fried: true,
+        chooses_lean_cuts_or_removes_visible_fat: true,
+        eats_oily_fish: true,
+        bases_meals_around_starchy_foods: true,
+        regularly_chooses_wholemeal_bread: true,
+        regularly_eats_wholegrain_cereals_without_added_sugar: true,
+        regularly_eats_pulses: true,
+        regularly_eats_snacks_throughout_day: true,
+        regularly_adds_sugar_to_drinks: true,
+        regularly_adds_salt_during_or_after_cooking: true,
+        regularly_drinks_sweet_fizzy_drinks: true,
+        drinks_plenty_of_fluids_regularly_throughout_day: true,
+        skips_meals_more_than_once_a_week: true,
+      },
+      substance_use: {
+        has_ever_used_substance: true,
+        substances_used: [
+          {
+            name: 'Heroin',
+            injected_substance: true,
+            annoyed_by_criticism: true,
+            attempt_to_stop: true,
+            withdrawal_symptoms: true,
+            quit_more_than_six_months: true,
+            first_use_age: 1,
+            used_regularly_years: 2,
+            times_used_in_a_week: 3,
+            quit_substance_use_years: 2,
+          },
+          {
+            name: 'Caffeine',
+            injected_substance: true,
+            annoyed_by_criticism: true,
+            attempt_to_stop: true,
+            withdrawal_symptoms: true,
+            quit_more_than_six_months: true,
+            first_use_age: 1,
+            used_regularly_years: 2,
+            times_used_in_a_week: 3,
+            quit_substance_use_years: 2,
+          },
+        ],
       },
       // deno-lint-ignore no-explicit-any
     } as any)
@@ -1050,6 +1220,81 @@ describe('/app/patients/[patient_id]/intake', {
             first_smoke_age: null,
             weekly_smokes: null,
             tobacco_products_used: ['Flavored cigarettes', 'Cigarettes'],
+          },
+          exercise: {
+            currently_exercises: true,
+            physical_activities: [],
+            sports: [],
+            types_of_exercises: ['Endurance'],
+            physical_injuries_or_disability: {
+              disabilities: ['Cerebral palsy'],
+              musculoskeletal_injuries: ['Fractures'],
+            },
+            limitations: {
+              limits: ['Structural conditions, Medical conditions'],
+              structural_conditions: ['Improper body alignment'],
+              medical_conditions: ['Unstable angina'],
+            },
+          },
+          substance_use: {
+            has_ever_used_substance: true,
+            substances_used: [
+              {
+                name: 'Heroin',
+                injected_substance: true,
+                annoyed_by_criticism: true,
+                attempt_to_stop: true,
+                withdrawal_symptoms: true,
+                quit_more_than_six_months: true,
+                first_use_age: 1,
+                used_regularly_years: 2,
+                times_used_in_a_week: 3,
+                quit_substance_use_years: 2,
+              },
+              {
+                name: 'Caffeine',
+                injected_substance: true,
+                annoyed_by_criticism: true,
+                attempt_to_stop: true,
+                withdrawal_symptoms: true,
+                quit_more_than_six_months: true,
+                first_use_age: 1,
+                used_regularly_years: 2,
+                times_used_in_a_week: 3,
+                quit_substance_use_years: 2,
+              },
+            ],
+          },
+          diet: {
+            meals_per_day: 3,
+            typical_foods_eaten: [],
+            eating_takeout_fast_food_frequency: 'Never',
+            eating_home_cooked_frequency: 'Never',
+            fats_used_in_cooking: [],
+            staple_foods: [],
+            non_meats: [],
+            drinks: [],
+            meats: [],
+            junk_foods: [],
+            past_special_diets: [],
+            supplements_taken: [],
+            eats_five_portions_of_fruits_vegetables_daily: true,
+            eats_four_varieties_of_fruit_weekly: true,
+            eats_four_varieties_of_vegetables_weekly: true,
+            chooses_low_fat_products: true,
+            chooses_baked_steamed_grilled_rather_than_fried: true,
+            chooses_lean_cuts_or_removes_visible_fat: true,
+            eats_oily_fish: true,
+            bases_meals_around_starchy_foods: true,
+            regularly_chooses_wholemeal_bread: true,
+            regularly_eats_wholegrain_cereals_without_added_sugar: true,
+            regularly_eats_pulses: true,
+            regularly_eats_snacks_throughout_day: true,
+            regularly_adds_sugar_to_drinks: true,
+            regularly_adds_salt_during_or_after_cooking: true,
+            regularly_drinks_sweet_fizzy_drinks: true,
+            drinks_plenty_of_fluids_regularly_throughout_day: true,
+            skips_meals_more_than_once_a_week: true,
           },
         },
       },
