@@ -1,3 +1,4 @@
+// deno-lint-ignore-file no-explicit-any
 // import * as google from '../../../external-clients/google.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
@@ -13,7 +14,6 @@ export default create(
     await importDataFromCSV(db)
   },
 )
-
 
 export async function addTestOrganizations(db: Kysely<any>) {
   await organizations.add(db, {

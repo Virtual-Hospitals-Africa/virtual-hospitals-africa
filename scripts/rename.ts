@@ -2,7 +2,6 @@ import { walk } from 'std/fs/mod.ts'
 import { forEach } from '../util/inParallel.ts'
 import { combineAsyncIterables } from '../util/combineAsyncIterables.ts'
 import * as path from 'std/path/mod.ts'
-import { pooledMap } from 'std/async/pool.ts'
 
 const ignore_paths = [
   'db/codegen',

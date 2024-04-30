@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import {
   EmployedHealthWorker,
-  HasId,
+  HasStringId,
   LoggedInHealthWorkerHandlerWithProps,
   Organization,
   OrganizationEmployeeOrInvitee,
@@ -14,12 +14,12 @@ type EmployeePageProps = {
   isAdminAtOrganization: boolean
   employees: OrganizationEmployeeOrInvitee[]
   healthWorker: EmployedHealthWorker
-  organization: HasId<Organization>
+  organization: HasStringId<Organization>
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   EmployeePageProps,
-  { organization: HasId<Organization>; isAdminAtOrganization: boolean }
+  { organization: HasStringId<Organization>; isAdminAtOrganization: boolean }
 > = {
   async GET(_req, ctx) {
     const { healthWorker, organization, isAdminAtOrganization } = ctx.state

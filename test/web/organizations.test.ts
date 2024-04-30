@@ -26,24 +26,16 @@ describe(
       assertEquals(json.length, 2)
       const [test_clinic, test_virtual_hospital] = json
       assertEquals(test_clinic, {
-        id: 1,
-        address: 'Bristol, UK',
-        category: 'Clinic',
-        description: 'Bristol, UK',
+        id: '00000000-0000-0000-0000-000000000001',
+        address: '120 Main St, Bristol, UK, 23456',
+        description: '120 Main St, Bristol, UK, 23456',
         name: 'VHA Test Clinic',
-        latitude: '51',
-        longitude: '2.25',
-        phone: null,
       })
       assertEquals(test_virtual_hospital, {
-        id: 2,
+        id: '00000000-0000-0000-0000-000000000002',
         address: null,
-        category: 'Virtual Hospital',
         description: null,
         name: 'VHA Test Virtual Hospital',
-        latitude: null,
-        longitude: null,
-        phone: null,
       })
     })
   },

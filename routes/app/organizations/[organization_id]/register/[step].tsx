@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
   CountryAddressTree,
-  HasId,
+  HasStringId,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
   Organization,
@@ -41,7 +41,7 @@ export type FormState =
   & DocumentFormFields
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
-  organization: HasId<Organization>
+  organization: HasStringId<Organization>
 }> = {
   async POST(req, ctx) {
     const employee = await employment.getEmployee(ctx.state.trx, {

@@ -336,6 +336,7 @@ describe(
 
               await doctor_reviews.finalizeRequest(trx, {
                 requested_by: encounter_provider.patient_encounter_provider_id,
+                patient_encounter_id: encounter.encounter_id,
               })
 
               assertEquals(await waiting_room.get(trx, { organization_id }), [

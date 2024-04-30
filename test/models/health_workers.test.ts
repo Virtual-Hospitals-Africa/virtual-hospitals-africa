@@ -78,7 +78,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               organization: {
                 id: '00000000-0000-0000-0000-000000000001',
                 name: 'VHA Test Clinic',
-                address: 'Bristol, UK',
+                address: '120 Main St, Bristol, UK, 23456',
               },
               roles: {
                 admin: null,
@@ -204,9 +204,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_completed, false)
         assertEquals(result.registration_needed, true)
         assertEquals(result.registration_pending_approval, false)
-        assertEquals(result.organization_id, '00000000-0000-0000-0000-000000000001')
+        assertEquals(
+          result.organization_id,
+          '00000000-0000-0000-0000-000000000001',
+        )
         assertEquals(result.organization_name, 'VHA Test Clinic')
-        assertEquals(result.organization_address, 'Bristol, UK')
+        assertEquals(
+          result.organization_address,
+          '120 Main St, Bristol, UK, 23456',
+        )
         assertEquals(result.professions, ['nurse'])
       },
     )
@@ -273,9 +279,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_needed, false)
         assertEquals(result.registration_pending_approval, true)
         assertEquals(result.documents, [])
-        assertEquals(result.organization_id, '00000000-0000-0000-0000-000000000001')
+        assertEquals(
+          result.organization_id,
+          '00000000-0000-0000-0000-000000000001',
+        )
         assertEquals(result.organization_name, 'VHA Test Clinic')
-        assertEquals(result.organization_address, 'Bristol, UK')
+        assertEquals(
+          result.organization_address,
+          '120 Main St, Bristol, UK, 23456',
+        )
         assertEquals(result.professions, ['nurse'])
       },
     )
@@ -374,9 +386,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
         },
       ])
-      assertEquals(result.organization_id, '00000000-0000-0000-0000-000000000001')
+      assertEquals(
+        result.organization_id,
+        '00000000-0000-0000-0000-000000000001',
+      )
       assertEquals(result.organization_name, 'VHA Test Clinic')
-      assertEquals(result.organization_address, 'Bristol, UK')
+      assertEquals(
+        result.organization_address,
+        '120 Main St, Bristol, UK, 23456',
+      )
       assertEquals(result.professions, ['nurse'])
     })
   })

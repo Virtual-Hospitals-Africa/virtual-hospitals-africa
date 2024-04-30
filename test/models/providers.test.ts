@@ -75,7 +75,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
       'can prioritize a given organization, while still returning results from another organization',
       async (trx) => {
         const name_base = generateUUID()
-        const [_doctor1, doctor2] = await Promise.all([
+        await Promise.all([
           addTestHealthWorker(trx, {
             scenario: 'doctor',
             organization_id: '00000000-0000-0000-0000-000000000001',

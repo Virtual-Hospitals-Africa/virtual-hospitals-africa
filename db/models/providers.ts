@@ -1,4 +1,3 @@
-import { sql } from 'kysely'
 import { Maybe, Profession, Provider, TrxOrDb } from '../../types.ts'
 import { assertOr400, assertOr404 } from '../../util/assertOr.ts'
 import { getWithTokensQuery } from './health_workers.ts'

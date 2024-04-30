@@ -1,8 +1,8 @@
 import { assert } from 'std/assert/assert.ts'
-import { HasId } from '../types.ts'
+import { HasStringId } from '../types.ts'
 import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
 
-type OrganizationData = HasId<{ name: string; address: string | null }>
+type OrganizationData = HasStringId<{ name: string; address: string | null }>
 
 type OrganizationKind = 'physical' | 'virtual' | 'both'
 
@@ -19,7 +19,7 @@ type OrganizationSearchPropsGeneral<
 type OrganizationSearchProps =
   | OrganizationSearchPropsGeneral<
     'physical',
-    HasId<{ name: string; address: string }>
+    HasStringId<{ name: string; address: string }>
   >
   | OrganizationSearchPropsGeneral<'virtual' | 'both', OrganizationData>
 
@@ -40,7 +40,7 @@ export default function OrganizationSearch(
           assert(selected.address)
         }
         return props.onSelect?.(
-          selected as HasId<{ name: string; address: string }>,
+          selected as HasStringId<{ name: string; address: string }>,
         )
       }}
     />

@@ -1,7 +1,7 @@
 import { FreshContext, PageProps } from '$fresh/server.ts'
 import {
   EmployedHealthWorker,
-  HasId,
+  HasStringId,
   LoggedInHealthWorkerHandlerWithProps,
   Organization,
   RenderedOrganizationConsumable,
@@ -14,7 +14,7 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import InventoryView from '../../../../components/inventory/View.tsx'
 
 type InventoryPageProps = {
-  organization: HasId<Organization>
+  organization: HasStringId<Organization>
   isAdminAtOrganization: boolean
   healthWorker: EmployedHealthWorker
   organization_devices: RenderedOrganizationDevice[]
@@ -26,7 +26,7 @@ type InventoryPageProps = {
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   InventoryPageProps,
   {
-    organization: HasId<Organization>
+    organization: HasStringId<Organization>
     isAdminAtOrganization: boolean
     healthWorker: EmployedHealthWorker
   }

@@ -61,6 +61,13 @@ jobs:
           echo "GOOGLE_MAPS_API_KEY=TEST_GOOGLE_MAPS_API_KEY" >> .env
           echo "SKIP_GOOGLE_MAPS=true" >> .env
 
+      - name: Cache medplum
+        id: cache-medplum
+        uses: actions/cache@v4
+        with:
+          path: medplum
+          key: ${{ runner.os }}-medplum
+
       - name: Install medplum
         run: cd medplum && npm install && npx turbo run build
 

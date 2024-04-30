@@ -1,23 +1,23 @@
 import { SelectQueryBuilder, sql } from 'kysely'
 import {
-  OrganizationDevice,
   MedicationProcurement,
+  OrganizationDevice,
   Procurer,
   RenderedConsumable,
-  RenderedOrganizationConsumable,
-  RenderedOrganizationDevice,
-  RenderedOrganizationMedicine,
   RenderedInventoryHistory,
   RenderedInventoryHistoryConsumption,
   RenderedInventoryHistoryProcurement,
+  RenderedOrganizationConsumable,
+  RenderedOrganizationDevice,
+  RenderedOrganizationMedicine,
   RenderedProcurer,
   TrxOrDb,
 } from '../../types.ts'
 import {
   jsonArrayFromColumn,
-  literalString,
   literalNumber,
   literalOptionalDate,
+  literalString,
   longFormattedDateTime,
 } from '../helpers.ts'
 import { strengthDisplay } from './drugs.ts'

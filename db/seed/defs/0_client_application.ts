@@ -4,8 +4,6 @@ import { assert } from 'std/assert/assert.ts'
 
 const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
 const MEDPLUM_CLIENT_SECRET = Deno.env.get('MEDPLUM_CLIENT_SECRET')
-assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
-assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
 
 export default create(
   ['ProjectMembership', 'ClientApplication'],
@@ -15,6 +13,9 @@ export default create(
 
 // deno-lint-ignore no-explicit-any
 async function addClientApplication(db: Kysely<any>) {
+  assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
+  assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
+
   const project = await db.selectFrom('Project').selectAll()
     .executeTakeFirstOrThrow()
   const practitioner = await db.selectFrom('Practitioner')
@@ -108,4 +109,4 @@ async function addClientApplication(db: Kysely<any>) {
       userName: null,
     },
   ).execute()
-} 
+}

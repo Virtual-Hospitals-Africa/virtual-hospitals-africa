@@ -61,7 +61,7 @@ function assertIsAddress(
   )
   assertOr400(
     !!patient.nearest_organization_id &&
-      typeof patient.nearest_organization_id === 'number',
+      typeof patient.nearest_organization_id === 'string',
   )
   assertOr400(
     !!(patient.primary_doctor_id &&
@@ -96,7 +96,7 @@ export default async function AddressPage(
   const country_address_tree = await address.getCountryAddressTree(trx)
 
   let default_organization:
-    | { id: number; name: string; address: string }
+    | { id: string; name: string; address: string }
     | undefined
 
   for (const employment of healthWorker.employment) {

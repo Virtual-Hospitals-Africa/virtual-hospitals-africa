@@ -60,24 +60,24 @@ export async function run(): Promise<Deno.ChildProcess> {
 
 // Running the server runs the migrations, so we just need to run the server
 // and then kill it to run the migrations
-export async function runMigrations() {
-  const { server, lines } = await start()
+// export async function runMigrations() {
+//   const { lines } = await start()
 
-  for await (const line of lines) {
-    if (
-      line.includes('Server started') ||
-      line.includes('"msg":"Database schema migration","version":"v67"')
-    ) {
-      break
-    }
-  }
+//   for await (const line of lines) {
+//     if (
+//       line.includes('Server started') ||
+//       line.includes('"msg":"Database schema migration","version":"v67"')
+//     ) {
+//       break
+//     }
+//   }
 
-  console.log('killing medplum server')
-  // server.kill('SIGTERM')
+//   console.log('killing medplum server')
+//   // server.kill('SIGTERM')
 
-  // This leaves a zombie process, which we kill in the parent task in deno.json
-  // server.unref()
-}
+//   // This leaves a zombie process, which we kill in the parent task in deno.json
+//   // server.unref()
+// }
 
 if (import.meta.main) {
   await run()

@@ -3,6 +3,7 @@ import {
   DB,
   DoctorReviewStep,
   Employment,
+  // EncounterReason,
   HealthWorkers,
   Organization,
 } from '../../db.d.ts'
@@ -28,7 +29,7 @@ import { assertOr403 } from '../../util/assertOr.ts'
 export function ofHealthWorker(
   trx: TrxOrDb,
   health_worker_id: number,
-): SelectQueryBuilder<DB, 'doctor_reviews', RenderedDoctorReview> {
+) {
   return trx.selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
     .innerJoin(
@@ -75,7 +76,9 @@ export function ofHealthWorker(
       jsonBuildObject({
         name: eb.ref('requested_by_health_worker.name'),
         avatar_url: eb.ref('requested_by_health_worker.avatar_url'),
-        profession: eb.ref('requested_by_employee.profession').$castTo<'doctor' | 'nurse'>(),
+        profession: eb.ref('requested_by_employee.profession').$castTo<
+          'doctor' | 'nurse'
+        >(),
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
         organization: jsonBuildObject({
           id: eb.ref('Organization.id'),
@@ -92,7 +95,7 @@ export function ofHealthWorker(
           )
           .select('step'),
       ).as('steps_completed'),
-    ]) as any
+    ])
 }
 
 export function requests(
@@ -358,11 +361,13 @@ export function deleteRequest(trx: TrxOrDb, id: number) {
 export function finalizeRequest(
   trx: TrxOrDb,
   opts: {
+    patient_encounter_id: number
     requested_by: number
   },
 ) {
   return trx.updateTable('doctor_review_requests')
     .set('pending', false)
+    .where('encounter_id', '=', opts.patient_encounter_id)
     .where('requested_by', '=', opts.requested_by)
     .executeTakeFirst()
 }
@@ -391,8 +396,8 @@ export function getRequest(
             'doctor_review_requests.organization_id',
           )
           .select([
-            'id',
-            'name',
+            'Organization.id',
+            'Organization.canonicalName as name',
             'OrganizationAddress.address',
           ]),
       ).as('organization'),

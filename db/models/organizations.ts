@@ -14,7 +14,6 @@ import {
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
 import {
-debugLog,
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
@@ -61,7 +60,13 @@ export function search(
       eb.ref('Address.address').as('description'),
     ])
 
-  if (opts.search) query = query.where('Organization.canonicalName', 'ilike', `%${opts.search}%`)
+  if (opts.search) {
+    query = query.where(
+      'Organization.canonicalName',
+      'ilike',
+      `%${opts.search}%`,
+    )
+  }
   if (opts.kind) {
     query = query.where(
       'address',
@@ -80,20 +85,6 @@ export function get(
   },
 ): Promise<HasStringId<Organization>[]> {
   assert(opts.ids.length, 'Must select nonzero organizations')
-  debugLog(
-    trx
-    .selectFrom('Organization')
-    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
-    .leftJoin('Location', 'Organization.id', 'Location.organizationId')
-    .where('Organization.id', 'in', opts.ids)
-    .select([
-      'Organization.id',
-      'Organization.canonicalName as name',
-      'Address.address',
-      sql<number>`ST_X(location::geometry)`.as('longitude'),
-      sql<number>`ST_Y(location::geometry)`.as('latitude'),
-    ])
-  )
   return trx
     .selectFrom('Organization')
     .leftJoin('Address', 'Organization.id', 'Address.resourceId')
@@ -385,7 +376,6 @@ export async function invite(
   }
 }
 
-
 type OrganizationsData = {
   id?: string
   name: string
@@ -460,12 +450,17 @@ export async function add(
   // Hacky, but we want to explicitly set the ids of the test organizations and you can't do it
   // via the createResource call
   if (id) {
-    const updated = await trx.updateTable('Organization')
-      .set({ id })
-      .where('id', '=', createdOrganization.id)
-      .execute()
+    await Promise.all([
+      trx.updateTable('Organization')
+        .set({ id })
+        .where('id', '=', createdOrganization.id)
+        .execute(),
+      trx.updateTable('Address')
+        .set({ resourceId: id })
+        .where('resourceId', '=', createdOrganization.id)
+        .execute(),
+    ])
 
-    console.log('updated', updated)
     createdOrganization.id = id
   }
 

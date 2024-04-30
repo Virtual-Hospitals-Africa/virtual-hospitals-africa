@@ -2,19 +2,22 @@ import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts';
 import { isUUID } from '../../util/uuid.ts';
 import { isISODateTimeString } from '../../util/date.ts'
+import memoize from '../../util/memoize.ts'
 
 
 // Make a ClientApplication in Medplum and use its client ID and secret here
 const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
 const MEDPLUM_CLIENT_SECRET = Deno.env.get('MEDPLUM_CLIENT_SECRET')
-assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
-assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
 
-const auth = btoa(`${MEDPLUM_CLIENT_ID}:${MEDPLUM_CLIENT_SECRET}`)
+const auth = memoize(() => {
+  assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
+  assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
+  return btoa(`${MEDPLUM_CLIENT_ID}:${MEDPLUM_CLIENT_SECRET}`)
+})
 
 export function request(method: string, path: string, data?: unknown) {
   const body = data ? JSON.stringify(data) : undefined;
-  const headers = new Headers({ 'Authorization': `Basic ${auth}` })
+  const headers = new Headers({ 'Authorization': `Basic ${auth()}` })
   if (body) {
     headers.set('Content-Type', 'application/fhir+json')
   }

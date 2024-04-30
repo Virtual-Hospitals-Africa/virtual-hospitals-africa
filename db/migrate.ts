@@ -1,7 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
-import * as medplum from '../external-clients/medplum/server.ts'
 import last from '../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
 
@@ -47,13 +46,6 @@ function findTarget(target: string, cmd: string) {
 }
 
 export const migrate = {
-  // async medplum() {
-  //   await medplum.run()
-  //   return {
-  //     error: null,
-  //     results: [],
-  //   }
-  // },
   async check() {
     const migrations = await migrator.getMigrations()
     const migrations_not_yet_run = migrations.filter((it) => !it.executedAt)

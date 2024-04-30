@@ -15,7 +15,7 @@ import isObjectLike from '../../../../../../util/isObjectLike.ts'
 function assertIsReferral(body: unknown): asserts body is {
   review_request?: {
     id?: number
-    organization_id?: number
+    organization_id?: string
     organization_name?: string
     doctor_id?: number
     doctor_name?: string
@@ -36,7 +36,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {
-  async POST(req, ctx: EncounterContext) {
+  async POST(req: Request, ctx: EncounterContext) {
     const completing_step = completeStep(ctx)
     const { trx, encounter, encounter_provider } = ctx.state
     const getting_original_request = doctor_reviews.getRequest(ctx.state.trx, {

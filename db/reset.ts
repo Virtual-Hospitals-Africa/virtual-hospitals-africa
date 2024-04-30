@@ -33,7 +33,7 @@ export async function reset() {
   await run({ fn: 'load' })
 
   console.log('Done!')
-  medplum_server.unref()
+  medplum_server.kill()
 }
 
 if (import.meta.main) {

@@ -23,7 +23,7 @@ function PatientAddress(
 export default function PatientAddressForm(
   { patient, default_organization, country_address_tree }: {
     patient: PatientIntake
-    default_organization?: { id: number; name: string; address: string }
+    default_organization?: { id: string; name: string; address: string }
     country_address_tree: CountryAddressTree
   },
 ) {

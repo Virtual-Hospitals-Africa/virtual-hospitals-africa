@@ -227,17 +227,21 @@ async function addInventoryTransactions(admin: HW, _nurses: HW[]) {
     const container_size = sample([10, 20, 40, 100])
     const number_of_containers = sample([40, 100, 200])
 
-    await inventory.addOrganizationMedicine(db, 1, {
-      created_by: admin.employee_id!,
-      manufactured_medication_id: manufactured_medication.id,
-      procured_from_id: procurer.id,
-      quantity: number_of_containers * container_size,
-      number_of_containers,
-      container_size,
-      strength: sample(manufactured_medication.strength_numerators),
-      expiry_date: '2025-03-01',
-      batch_number: '622',
-    })
+    await inventory.addOrganizationMedicine(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        created_by: admin.employee_id!,
+        manufactured_medication_id: manufactured_medication.id,
+        procured_from_id: procurer.id,
+        quantity: number_of_containers * container_size,
+        number_of_containers,
+        container_size,
+        strength: sample(manufactured_medication.strength_numerators),
+        expiry_date: '2025-03-01',
+        batch_number: '622',
+      },
+    )
   }
 }
 

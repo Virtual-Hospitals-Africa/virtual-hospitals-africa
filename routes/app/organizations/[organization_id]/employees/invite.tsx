@@ -1,7 +1,7 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  HasId,
+  HasStringId,
   LoggedInHealthWorkerHandlerWithProps,
   Organization,
   Profession,
@@ -41,7 +41,7 @@ function assertIsInvites(
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
-  organization: HasId<Organization>
+  organization: HasStringId<Organization>
   isAdminAtOrganization: boolean
 }> = {
   GET(_req, ctx) {

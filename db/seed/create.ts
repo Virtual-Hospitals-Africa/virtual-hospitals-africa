@@ -58,7 +58,7 @@ export function create(
       args: [uri].concat(table_names),
     })
   }
-  async function reload() {
+  function reload() {
     return load({ reload: true })
   }
   return { drop, load, dump, reload, generate, table_names }

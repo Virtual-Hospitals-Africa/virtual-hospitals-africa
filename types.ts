@@ -43,7 +43,9 @@ export type HasId<T extends Record<string, unknown> = Record<string, unknown>> =
     id: number
   }
 
-export type HasStringId<T extends Record<string, unknown> = Record<string, unknown>> =
+export type HasStringId<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> =
   & T
   & {
     id: string
@@ -1495,7 +1497,7 @@ export type ProviderAppointment = {
   end: ParsedDateTime
   providers?: Provider[]
   physicalLocation?: {
-    organization: HasId<Organization>
+    organization: HasStringId<Organization>
   }
   virtualLocation?: {
     href: string
@@ -2309,7 +2311,7 @@ export type DatabaseSchema = DB
 export type RenderedRequestFormValues = {
   id: null | number
   organization: null | {
-    id: number
+    id: string
     name: string
     address: string | null
   }

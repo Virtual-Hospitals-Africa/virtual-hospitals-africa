@@ -1,15 +1,14 @@
 import {
-  Organization,
-  HasId,
+  HasStringId,
   LoggedInHealthWorkerContext,
+  Organization,
 } from '../../../../types.ts'
 import * as organizations from '../../../../db/models/organizations.ts'
 import { assertOr403, assertOr404 } from '../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../util/getNumericParam.ts'
 import { HealthWorkerEmployment } from '../../../../types.ts'
 
 export type OrganizationContext = LoggedInHealthWorkerContext<{
-  organization: HasId<Organization>
+  organization: HasStringId<Organization>
   organization_employment: HealthWorkerEmployment
   isAdminAtOrganization: boolean
 }>
