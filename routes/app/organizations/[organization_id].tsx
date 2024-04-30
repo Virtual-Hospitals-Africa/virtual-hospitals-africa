@@ -1,10 +1,10 @@
 import Layout from '../../../components/library/Layout.tsx'
-import { FacilityContext } from './[organization_id]/_middleware.ts'
+import { OrganizationContext } from './[organization_id]/_middleware.ts'
 
 // deno-lint-ignore require-await
-export default async function FacilityPage(
+export default async function OrganizationPage(
   req: Request,
-  ctx: FacilityContext,
+  ctx: OrganizationContext,
 ) {
   const { organization } = ctx.state
 

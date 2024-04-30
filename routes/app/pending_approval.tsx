@@ -5,13 +5,16 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
-import { FacilityAdmin, getFacilityAdmin } from '../../db/models/employment.ts'
+import {
+  getOrganizationAdmin,
+  OrganizationAdmin,
+} from '../../db/models/employment.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  organizationAdmin: FacilityAdmin
+  organizationAdmin: OrganizationAdmin
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -20,8 +23,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async GET(_req, ctx) {
     const { healthWorker } = ctx.state
 
-    const organizationAdmin = await getFacilityAdmin(ctx.state.trx, {
-      organization_id: healthWorker.employment[0].organization.id,
+    const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {
+      organization_id: healthWorker.default_organization_id,
     })
 
     assert(organizationAdmin)

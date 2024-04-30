@@ -9,15 +9,15 @@ import { insertTestAddress, randomNationalId } from '../mocks.ts'
 import omit from '../../util/omit.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { StatusError } from '../../util/assertOr.ts'
-import { itUsesTrxAnd, withTestOrganization } from '../web/utilities.ts'
+import { itUsesTrxAnd, withTestOrganizations } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 
 describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
   describe('getEmployees', () => {
     itUsesTrxAnd(
       'gets the employees of a organization, with or without invitees',
-      async (trx) => {
-        withTestOrganization
+      (trx) => withTestOrganizations(trx, { count: 2 }, async (organization_ids) => {
+        
         const hw_at_organization1 = await health_workers.upsert(trx, {
           name: 'At Organization 1',
           email: `${generateUUID()}@worker.com`,
@@ -42,32 +42,32 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [
           {
             health_worker_id: hw_at_organization1.id,
-            organization_id: 3,
+            organization_id: organization_ids[0],
             profession: 'nurse',
           },
           {
             health_worker_id: hw_at_organization1.id,
-            organization_id: 3,
+            organization_id: organization_ids[0],
             profession: 'admin',
           },
           {
             health_worker_id: hw_at_organization2.id,
-            organization_id: 3,
+            organization_id: organization_ids[0],
             profession: 'doctor',
           },
           {
             health_worker_id: hw_at_organization2.id,
-            organization_id: 3,
+            organization_id: organization_ids[0],
             profession: 'admin',
           },
           {
             health_worker_id: hw_other_organization.id,
-            organization_id: 4,
+            organization_id: organization_ids[1],
             profession: 'doctor',
           },
         ])
 
-        const [invited] = await employment.addInvitees(trx, 3, [
+        const [invited] = await employment.addInvitees(trx, organization_ids[0], [
           {
             email: `${generateUUID()}@test.com`,
             profession: 'doctor',
@@ -75,7 +75,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         ])
 
         const withInvitees = await organizations.getEmployeesAndInvitees(trx, {
-          organization_id: 3,
+          organization_id: organization_ids[0],
         })
 
         const hw_1 = withInvitees.find((hw) =>
@@ -137,7 +137,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
 
         {
           const withoutInvitees = await organizations.getEmployees(trx, {
-            organization_id: 3,
+            organization_id: organization_ids[0],
           })
 
           const hw_1 = withoutInvitees.find((hw) =>
@@ -182,93 +182,95 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
 
           assert(withoutInvitees.every((hw) => !hw.is_invitee))
         }
-      },
+      })
     )
 
-    itUsesTrxAnd('can get employees matching emails', async (trx) => {
-      const hw_at_organization1 = await health_workers.upsert(trx, {
-        name: 'At Organization 1',
-        email: `${generateUUID()}@worker.com`,
-        avatar_url: 'avatar_url',
-      })
-      assert(hw_at_organization1)
+    itUsesTrxAnd('can get employees matching emails', (trx) => 
+      withTestOrganizations(trx, { count: 2 }, async (organization_ids) => {
+        const hw_at_organization1 = await health_workers.upsert(trx, {
+          name: 'At Organization 1',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+        })
+        assert(hw_at_organization1)
 
-      const hw_at_organization2 = await health_workers.upsert(trx, {
-        name: 'At Organization 2',
-        email: `${generateUUID()}@worker.com`,
-        avatar_url: 'avatar_url',
-      })
-      assert(hw_at_organization2)
+        const hw_at_organization2 = await health_workers.upsert(trx, {
+          name: 'At Organization 2',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+        })
+        assert(hw_at_organization2)
 
-      const hw_other_organization = await health_workers.upsert(trx, {
-        name: 'At Organization 3',
-        email: `${generateUUID()}@worker.com`,
-        avatar_url: 'avatar_url',
-      })
-      assert(hw_other_organization)
+        const hw_other_organization = await health_workers.upsert(trx, {
+          name: 'At Organization 3',
+          email: `${generateUUID()}@worker.com`,
+          avatar_url: 'avatar_url',
+        })
+        assert(hw_other_organization)
 
-      await employment.add(trx, [
-        {
-          health_worker_id: hw_at_organization1.id,
-          organization_id: 3,
-          profession: 'nurse',
-        },
-        {
-          health_worker_id: hw_at_organization1.id,
-          organization_id: 3,
-          profession: 'admin',
-        },
-        {
+        await employment.add(trx, [
+          {
+            health_worker_id: hw_at_organization1.id,
+            organization_id: organization_ids[0],
+            profession: 'nurse',
+          },
+          {
+            health_worker_id: hw_at_organization1.id,
+            organization_id: organization_ids[0],
+            profession: 'admin',
+          },
+          {
+            health_worker_id: hw_at_organization2.id,
+            organization_id: organization_ids[0],
+            profession: 'doctor',
+          },
+          {
+            health_worker_id: hw_at_organization2.id,
+            organization_id: organization_ids[0],
+            profession: 'admin',
+          },
+          {
+            health_worker_id: hw_at_organization2.id,
+            organization_id: organization_ids[1],
+            profession: 'doctor',
+          },
+          {
+            health_worker_id: hw_other_organization.id,
+            organization_id: organization_ids[1],
+            profession: 'doctor',
+          },
+        ])
+
+        await employment.addInvitees(trx, organization_ids[0], [
+          {
+            email: `${generateUUID()}@test.com`,
+            profession: 'doctor',
+          },
+        ])
+
+        const withInvitees = await organizations.getEmployeesAndInvitees(trx, {
+          organization_id: organization_ids[0],
+          emails: [hw_at_organization2.email],
+        })
+
+        assertEquals(withInvitees.length, 1)
+        assertEquals(omit(withInvitees[0], ['professions']), {
+          avatar_url: 'avatar_url',
+          email: hw_at_organization2.email,
+          display_name: 'At Organization 2',
           health_worker_id: hw_at_organization2.id,
-          organization_id: 3,
-          profession: 'doctor',
-        },
-        {
-          health_worker_id: hw_at_organization2.id,
-          organization_id: 3,
-          profession: 'admin',
-        },
-        {
-          health_worker_id: hw_at_organization2.id,
-          organization_id: 4,
-          profession: 'doctor',
-        },
-        {
-          health_worker_id: hw_other_organization.id,
-          organization_id: 4,
-          profession: 'doctor',
-        },
-      ])
-
-      await employment.addInvitees(trx, 3, [
-        {
-          email: `${generateUUID()}@test.com`,
-          profession: 'doctor',
-        },
-      ])
-
-      const withInvitees = await organizations.getEmployeesAndInvitees(trx, {
-        organization_id: 3,
-        emails: [hw_at_organization2.email],
+          is_invitee: false,
+          name: 'At Organization 2',
+          registration_status: 'incomplete',
+          actions: {
+            view: `/app/organizations/3/employees/${hw_at_organization2.id}`,
+          },
+        })
+        assertEquals(withInvitees[0].professions.length, 2)
+        assertEquals(withInvitees[0].professions[0].profession, 'admin')
+        assertEquals(withInvitees[0].professions[1].profession, 'doctor')
       })
-
-      assertEquals(withInvitees.length, 1)
-      assertEquals(omit(withInvitees[0], ['professions']), {
-        avatar_url: 'avatar_url',
-        email: hw_at_organization2.email,
-        display_name: 'At Organization 2',
-        health_worker_id: hw_at_organization2.id,
-        is_invitee: false,
-        name: 'At Organization 2',
-        registration_status: 'incomplete',
-        actions: {
-          view: `/app/organizations/3/employees/${hw_at_organization2.id}`,
-        },
-      })
-      assertEquals(withInvitees[0].professions.length, 2)
-      assertEquals(withInvitees[0].professions[0].profession, 'admin')
-      assertEquals(withInvitees[0].professions[1].profession, 'doctor')
-    })
+    )
 
     itUsesTrxAnd(
       "assures that registration_status is pending_approval for when registration is complete, but hasn't been approved",

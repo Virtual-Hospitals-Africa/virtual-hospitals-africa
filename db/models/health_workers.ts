@@ -12,6 +12,7 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import {
+debugLog,
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
@@ -33,6 +34,13 @@ export function upsert(
   trx: TrxOrDb,
   details: HealthWorker,
 ): Promise<HasId<HealthWorker>> {
+  debugLog(
+    trx
+    .insertInto('health_workers')
+    .values(details)
+    .onConflict((oc) => oc.column('email').doUpdateSet(details))
+    .returning(['id', 'name', 'email', 'avatar_url'])
+  )
   return trx
     .insertInto('health_workers')
     .values(details)
@@ -105,7 +113,9 @@ export async function upsertWithGoogleCredentials(
   trx: TrxOrDb,
   details: HealthWorker & GoogleTokens,
 ): Promise<HealthWorkerWithGoogleTokens> {
+  console.log('mmm')
   const health_worker = await upsert(trx, pickHealthWorkerDetails(details))
+  console.log('welkewlkwekl')
   const tokens = pickTokens(details)
   assert(tokens.access_token)
   assert(tokens.refresh_token)
@@ -200,6 +210,99 @@ export async function get(
   trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: number },
 ): Promise<Maybe<PossiblyEmployedHealthWorker>> {
+  debugLog(
+    trx
+    .selectFrom('health_workers')
+    .leftJoin(
+      'nurse_registration_details',
+      'health_workers.id',
+      'nurse_registration_details.health_worker_id',
+    )
+    .leftJoin(
+      'health_worker_google_tokens',
+      'health_workers.id',
+      'health_worker_google_tokens.health_worker_id',
+    )
+    .select((eb) => [
+      'health_workers.id',
+      'health_workers.name',
+      'health_workers.email',
+      'health_workers.avatar_url',
+      'health_worker_google_tokens.access_token',
+      'health_worker_google_tokens.refresh_token',
+      'health_worker_google_tokens.expires_at',
+      eb('nurse_registration_details.health_worker_id', 'is', null).as(
+        'registration_needed',
+      ),
+      'nurse_registration_details.approved_by',
+      jsonArrayFrom(
+        eb.selectFrom('employment')
+          .innerJoin(
+            'Organization',
+            'employment.organization_id',
+            'Organization.id',
+          )
+          .leftJoin(
+            'Address as OrganizationAddress',
+            'Organization.id',
+            'OrganizationAddress.resourceId',
+          )
+          .innerJoin(
+            'provider_calendars',
+            (join) =>
+              join
+                .onRef(
+                  'employment.organization_id',
+                  '=',
+                  'provider_calendars.organization_id',
+                )
+                .onRef(
+                  'employment.health_worker_id',
+                  '=',
+                  'provider_calendars.health_worker_id',
+                ),
+          )
+          .select((eb_employment) => [
+            'employment.id as employment_id',
+            'employment.profession',
+            'provider_calendars.gcal_appointments_calendar_id',
+            'provider_calendars.gcal_availability_calendar_id',
+            'provider_calendars.availability_set',
+            jsonBuildObject({
+              id: eb_employment.ref('employment.organization_id'),
+              name: eb_employment.ref('Organization.canonicalName'),
+              address: eb_employment.ref('OrganizationAddress.address'),
+            }).as('organization'),
+          ])
+          .whereRef(
+            'employment.health_worker_id',
+            '=',
+            'health_workers.id',
+          ),
+      ).as('employment'),
+      jsonArrayFrom(
+        patient_encounters.baseQuery(trx)
+          .where('patient_encounters.closed_at', 'is', null)
+          .where(
+            'patient_encounters.id',
+            'in',
+            patient_encounters.ofHealthWorker(trx, health_worker_id),
+          ),
+      ).as('open_encounters'),
+      jsonBuildObject({
+        requested: jsonArrayFrom(
+          doctor_reviews.requestsOfHealthWorker(trx, health_worker_id),
+        ),
+        in_progress: jsonArrayFrom(
+          doctor_reviews.ofHealthWorker(trx, health_worker_id),
+        ),
+      }).as('reviews'),
+    ]).where(
+      'health_workers.id',
+      '=',
+      health_worker_id,
+    )
+  )
   const result = await trx
     .selectFrom('health_workers')
     .leftJoin(
@@ -231,6 +334,11 @@ export async function get(
             'employment.organization_id',
             'Organization.id',
           )
+          .leftJoin(
+            'Address as OrganizationAddress',
+            'Organization.id',
+            'OrganizationAddress.resourceId',
+          )
           .innerJoin(
             'provider_calendars',
             (join) =>
@@ -254,8 +362,8 @@ export async function get(
             'provider_calendars.availability_set',
             jsonBuildObject({
               id: eb_employment.ref('employment.organization_id'),
-              name: eb_employment.ref('organizations.name'),
-              address: eb_employment.ref('organizations.address'),
+              name: eb_employment.ref('Organization.canonicalName'),
+              address: eb_employment.ref('OrganizationAddress.address'),
             }).as('organization'),
           ])
           .whereRef(
@@ -365,11 +473,11 @@ export async function getEmployed(
 
 export async function getInviteesAtOrganization(
   trx: TrxOrDb,
-  organizationId: number,
+  organization_id: string,
 ) {
   return await trx
     .selectFrom('health_worker_invitees')
-    .where('organization_id', '=', organizationId)
+    .where('organization_id', '=', organization_id)
     .select([
       'id',
       'email',
@@ -402,6 +510,11 @@ export function getEmployeeInfo(
         .innerJoin(
           'Organization',
           (join) => join.on('Organization.id', '=', opts.organization_id),
+        )
+        .leftJoin(
+          'Address as OrganizationAddress',
+          'Organization.id',
+          'OrganizationAddress.resourceId',
         )
         .leftJoin(
           'employment as nurse_employment',
@@ -454,8 +567,8 @@ export function getEmployeeInfo(
           'health_workers.avatar_url',
           'address_formatted.address',
           'Organization.id as organization_id',
-          'Organization.name as organization_name',
-          'Organization.address as organization_address',
+          'Organization.canonicalName as organization_name',
+          'OrganizationAddress.address as organization_address',
           jsonArrayFromColumn(
             'profession',
             eb

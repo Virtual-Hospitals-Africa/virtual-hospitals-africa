@@ -10,7 +10,7 @@ import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 
@@ -21,13 +21,13 @@ export function assertIsUpsertProcurer(obj: unknown): asserts obj {
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
-  FacilityContext['state']
+  OrganizationContext['state']
 > = {
   async POST(req, ctx) {
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 
-    const organization_id = getRequiredNumericParam(ctx, 'organization_id')
+    const { organization_id } = ctx.params
 
     const to_upsert = await parseRequestAsserts(
       ctx.state.trx,

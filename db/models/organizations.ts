@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
+  HasStringId,
   Location,
   Maybe,
   Organization,
@@ -13,19 +14,20 @@ import {
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
 import {
+debugLog,
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
 } from '../helpers.ts'
+import * as medplum from '../../external-clients/medplum/client.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
-import { HasId } from '../../types.ts'
 
 export async function nearest(
   trx: TrxOrDb,
   location: Location,
-): Promise<HasId<Organization>[]> {
-  const result = await sql<HasId<Organization>>`
+): Promise<HasStringId<Organization>[]> {
+  const result = await sql<HasStringId<Organization>>`
       SELECT *,
              ST_Distance(
                   location,
@@ -54,12 +56,12 @@ export function search(
     .leftJoin('Location', 'Organization.id', 'Location.organizationId')
     .select((eb) => [
       'Organization.id',
+      'Organization.canonicalName as name',
       'Address.address',
       eb.ref('Address.address').as('description'),
-      sql<string>`name[1]`.as('name'),
     ])
 
-  if (opts.search) query = query.where(sql<string>`name[1]`, 'ilike', `%${opts.search}%`)
+  if (opts.search) query = query.where('Organization.canonicalName', 'ilike', `%${opts.search}%`)
   if (opts.kind) {
     query = query.where(
       'address',
@@ -74,17 +76,32 @@ export function search(
 export function get(
   trx: TrxOrDb,
   opts: {
-    ids: number[]
+    ids: string[]
   },
-): Promise<HasId<Organization>[]> {
+): Promise<HasStringId<Organization>[]> {
   assert(opts.ids.length, 'Must select nonzero organizations')
+  debugLog(
+    trx
+    .selectFrom('Organization')
+    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
+    .leftJoin('Location', 'Organization.id', 'Location.organizationId')
+    .where('Organization.id', 'in', opts.ids)
+    .select([
+      'Organization.id',
+      'Organization.canonicalName as name',
+      'Address.address',
+      sql<number>`ST_X(location::geometry)`.as('longitude'),
+      sql<number>`ST_Y(location::geometry)`.as('latitude'),
+    ])
+  )
   return trx
     .selectFrom('Organization')
     .leftJoin('Address', 'Organization.id', 'Address.resourceId')
-    .where('id', 'in', opts.ids)
+    .leftJoin('Location', 'Organization.id', 'Location.organizationId')
+    .where('Organization.id', 'in', opts.ids)
     .select([
       'Organization.id',
-      sql<string>`name[1]`.as('name'),
+      'Organization.canonicalName as name',
       'Address.address',
       sql<number>`ST_X(location::geometry)`.as('longitude'),
       sql<number>`ST_Y(location::geometry)`.as('latitude'),
@@ -403,7 +420,7 @@ const codeMap = {
 }
 
 export async function add(
-  trx: Kysely<any>,
+  trx: TrxOrDb,
   { id, name, category, address, latitude, longitude }: OrganizationsData,
 ) {
   if (!category) {
@@ -490,6 +507,8 @@ export async function add(
       },
     })
   }
+
+  return createdOrganization
 }
 
 // export function add(
@@ -512,9 +531,9 @@ export async function add(
 export function remove(
   trx: TrxOrDb,
   opts: {
-    id: number
+    id: string
   },
 ) {
   assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
-  return trx.deleteFrom('organizations').where('id', '=', opts.id).execute()
+  return trx.deleteFrom('Organization').where('id', '=', opts.id).execute()
 }

@@ -96,7 +96,7 @@ const baseSelect = (trx: TrxOrDb) =>
       ).as('intake_steps_completed'),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
-      'organizations.name as nearest_organization',
+      'Organization.canonicalName as nearest_organization',
       sql<null>`NULL`.as('last_visited'),
       jsonBuildObject({
         longitude: sql<number | null>`ST_X(patients.location::geometry)`,
@@ -129,7 +129,7 @@ export type UpsertPatientIntake = {
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
-  nearest_organization_id?: Maybe<number>
+  nearest_organization_id?: Maybe<string>
   primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
@@ -337,6 +337,11 @@ export function getIntake(
       'patients.nearest_organization_id',
     )
     .leftJoin(
+      'Address as OrganizationAddress',
+      'Organization.id',
+      'OrganizationAddress.resourceId',
+    )
+    .leftJoin(
       'employment',
       'employment.id',
       'patients.primary_doctor_id',
@@ -386,8 +391,8 @@ export function getIntake(
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_organization_id',
-      'organizations.name as nearest_organization_name',
-      'organizations.address as nearest_organization_address',
+      'Organization.canonicalName as nearest_organization_name',
+      'OrganizationAddress.address as nearest_organization_address',
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
     ])
@@ -405,7 +410,7 @@ export async function getIntakeReview(
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
     .leftJoin(
-      'organizations',
+      'Organization',
       'Organization.id',
       'patients.nearest_organization_id',
     )
@@ -445,7 +450,7 @@ export async function getIntakeReview(
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
       'patients.nearest_organization_id',
-      'organizations.name as nearest_organization_name',
+      'Organization.canonicalName as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonArrayFromColumn(
         'intake_step',
@@ -545,18 +550,6 @@ export async function getWithOpenEncounter(
   assert(haveNames(patients))
 
   return patients
-  // ask about this error! aislin added code below to fix, original is above
-
-  // return patients.map((patient) => ({
-  //   ...patient,
-  //   open_encounter: patient.open_encounter && {
-  //     ...patient.open_encounter,
-  //     providers: patient.open_encounter.providers.map((provider) => ({
-  //       ...provider,
-  //       seen_at: null,
-  //     })),
-  //   },
-  // }))
 }
 
 export type PatientCard = {

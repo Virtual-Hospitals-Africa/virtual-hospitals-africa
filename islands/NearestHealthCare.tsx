@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 import FormRow from './form/Row.tsx'
 import SectionHeader from '../components/library/typography/SectionHeader.tsx'
-import FacilitySearch from './FacilitySearch.tsx'
+import OrganizationSearch from './OrganizationSearch.tsx'
 import PersonSearch from './PersonSearch.tsx'
 
 export function NearestHealthCare(
@@ -21,10 +21,10 @@ export function NearestHealthCare(
     <section>
       <SectionHeader className='mb-3'>Nearest Health Care</SectionHeader>
       <FormRow>
-        <FacilitySearch
+        <OrganizationSearch
           name='nearest_organization'
           kind='physical'
-          label='Nearest Facility'
+          label='Nearest Organization'
           value={nearest_organization_signal.value}
           onSelect={(organization) =>
             nearest_organization_signal.value = organization}

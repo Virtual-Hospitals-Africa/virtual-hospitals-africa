@@ -20,7 +20,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<PatientsProps> = {
       'We only accept JSON',
     )
     const search = ctx.url.searchParams.get('search')
-    const organization_id = parseInt(ctx.params.organization_id)
+    const { organization_id } = ctx.params
     const getting_room = waiting_room.get(ctx.state.trx, { organization_id })
     const patients = await getAllWithNames(ctx.state.trx, search)
     const room = await getting_room

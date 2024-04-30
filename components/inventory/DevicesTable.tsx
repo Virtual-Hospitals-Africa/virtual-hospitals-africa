@@ -1,4 +1,4 @@
-import { RenderedFacilityDevice } from '../../types.ts'
+import { RenderedOrganizationDevice } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
@@ -6,7 +6,7 @@ import { AddDeviceSearch } from '../../islands/AddDeviceSearch.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
-const columns: TableColumn<RenderedFacilityDevice>[] = [
+const columns: TableColumn<RenderedOrganizationDevice>[] = [
   {
     label: 'Name',
     data: 'name',
@@ -31,9 +31,9 @@ const columns: TableColumn<RenderedFacilityDevice>[] = [
   },
 ]
 
-export default function FacilityDevicesTable(
+export default function OrganizationDevicesTable(
   { devices, organization_id, isAdmin }: {
-    devices: RenderedFacilityDevice[]
+    devices: RenderedOrganizationDevice[]
     organization_id: string
     isAdmin: boolean
   },

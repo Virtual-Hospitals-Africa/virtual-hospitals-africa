@@ -1,4 +1,4 @@
-import { RenderedFacilityConsumable } from '../../types.ts'
+import { RenderedOrganizationConsumable } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
@@ -6,7 +6,7 @@ import { AddConsumableSearch } from '../../islands/AddConsumableSearch.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
-const columns: TableColumn<RenderedFacilityConsumable>[] = [
+const columns: TableColumn<RenderedOrganizationConsumable>[] = [
   {
     label: 'Name',
     data: 'name',
@@ -25,9 +25,9 @@ const columns: TableColumn<RenderedFacilityConsumable>[] = [
   },
 ]
 
-export default function FacilityConsumablesTable(
+export default function OrganizationConsumablesTable(
   { consumables, organization_id, isAdmin }: {
-    consumables: RenderedFacilityConsumable[]
+    consumables: RenderedOrganizationConsumable[]
     organization_id: string
     isAdmin: boolean
   },

@@ -1,4 +1,4 @@
-import { RenderedFacilityMedicine } from '../../types.ts'
+import { RenderedOrganizationMedicine } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
@@ -19,7 +19,7 @@ function breakSemicolons(str: string) {
   )
 }
 
-const columns: TableColumn<RenderedFacilityMedicine>[] = [
+const columns: TableColumn<RenderedOrganizationMedicine>[] = [
   {
     label: 'Generic Name',
     data(row) {
@@ -58,9 +58,9 @@ const columns: TableColumn<RenderedFacilityMedicine>[] = [
   },
 ]
 
-export default function FacilityMedicinesTable(
+export default function OrganizationMedicinesTable(
   { medicines, organization_id, isAdmin }: {
-    medicines: RenderedFacilityMedicine[]
+    medicines: RenderedOrganizationMedicine[]
     organization_id: string
     isAdmin: boolean
   },

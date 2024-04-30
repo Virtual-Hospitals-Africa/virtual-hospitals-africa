@@ -120,7 +120,7 @@ export default function PatientReview(
         { label: 'National ID', children: patient.national_id_number },
         { label: 'Address', children: patient.address },
         {
-          label: 'Nearest Facility',
+          label: 'Nearest Organization',
           children: patient.nearest_organization_name,
         },
         { label: 'Primary Doctor', children: patient.primary_doctor_name },

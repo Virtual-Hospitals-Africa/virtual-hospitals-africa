@@ -1,30 +1,30 @@
 import { PageProps } from '$fresh/server.ts'
 import {
   EmployedHealthWorker,
-  Facility,
-  FacilityEmployeeOrInvitee,
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
+  Organization,
+  OrganizationEmployeeOrInvitee,
 } from '../../../../types.ts'
 import * as organizations from '../../../../db/models/organizations.ts'
 import Layout from '../../../../components/library/Layout.tsx'
 import EmployeesTable from '../../../../components/health_worker/EmployeesTable.tsx'
 
 type EmployeePageProps = {
-  isAdminAtFacility: boolean
-  employees: FacilityEmployeeOrInvitee[]
+  isAdminAtOrganization: boolean
+  employees: OrganizationEmployeeOrInvitee[]
   healthWorker: EmployedHealthWorker
-  organization: HasId<Facility>
+  organization: HasId<Organization>
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   EmployeePageProps,
-  { organization: HasId<Facility>; isAdminAtFacility: boolean }
+  { organization: HasId<Organization>; isAdminAtOrganization: boolean }
 > = {
   async GET(_req, ctx) {
-    const { healthWorker, organization, isAdminAtFacility } = ctx.state
+    const { healthWorker, organization, isAdminAtOrganization } = ctx.state
 
-    const getEmployees = isAdminAtFacility
+    const getEmployees = isAdminAtOrganization
       ? organizations.getEmployeesAndInvitees
       : organizations.getEmployees
 
@@ -34,7 +34,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     )
 
     return ctx.render({
-      isAdminAtFacility,
+      isAdminAtOrganization,
       employees,
       healthWorker,
       organization,
@@ -54,7 +54,7 @@ export default function EmployeeTable(
       variant='home page'
     >
       <EmployeesTable
-        isAdmin={props.data.isAdminAtFacility}
+        isAdmin={props.data.isAdminAtOrganization}
         employees={props.data.employees}
         pathname={props.url.pathname}
         organization_id={props.data.organization.id}

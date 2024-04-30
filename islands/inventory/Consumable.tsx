@@ -7,7 +7,7 @@ import { DateInput, NumberInput } from '../form/Inputs.tsx'
 import AsyncSearch from '../AsyncSearch.tsx'
 import { RenderedConsumable } from '../../types.ts'
 
-export default function FacilityConsumableForm(
+export default function OrganizationConsumableForm(
   { today, consumable }: {
     today: string
     consumable: RenderedConsumable | null

@@ -43,6 +43,12 @@ export type HasId<T extends Record<string, unknown> = Record<string, unknown>> =
     id: number
   }
 
+export type HasStringId<T extends Record<string, unknown> = Record<string, unknown>> =
+  & T
+  & {
+    id: string
+  }
+
 export type Location = {
   longitude: number
   latitude: number
@@ -78,7 +84,7 @@ export type PatientConversationState =
 
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<number>
-  nearest_organization_id: Maybe<number>
+  nearest_organization_id: Maybe<string>
   completed_intake: boolean
   address_id: Maybe<number>
   unregistered_primary_doctor_name: Maybe<string>
@@ -1291,7 +1297,7 @@ export type RenderedDoctorReviewBase = {
     name: string
     avatar_url: string | null
     organization: {
-      id: number
+      id: string
       name: string
     }
     patient_encounter_provider_id: number
@@ -1585,9 +1591,8 @@ export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
 
 export type Organization = Partial<Location> & {
   name: string
-  category: string
+  // category: string
   address: string | null
-  phone: string | null
 }
 
 export type OrganizationWithAddress =

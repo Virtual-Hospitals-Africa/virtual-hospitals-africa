@@ -139,6 +139,7 @@ export async function search(
       'employment.organization_id',
       'Organization.id',
     )
+    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
     .select([
       'employment.id',
       'health_workers.id as health_worker_id',
@@ -147,7 +148,7 @@ export async function search(
       'health_workers.name',
       'employment.organization_id',
       'employment.profession',
-      sql<string>`Organization.name[1]`.as('organization_name'),
+      'Organization.canonicalName as organization_name',
     ])
     .where('health_workers.name', 'is not', null)
     .where('profession', 'in', opts.professions || ['doctor', 'nurse'])
@@ -163,7 +164,7 @@ export async function search(
 
   if (opts.organization_kind) {
     query = query.where(
-      'Organization.address',
+      'Address.resourceId',
       opts.organization_kind === 'physical' ? 'is not' : 'is',
       null,
     )

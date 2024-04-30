@@ -76,7 +76,7 @@ export async function runMigrations() {
   // server.kill('SIGTERM')
 
   // This leaves a zombie process, which we kill in the parent task in deno.json
-  server.unref()
+  // server.unref()
 }
 
 if (import.meta.main) {

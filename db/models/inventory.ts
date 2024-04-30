@@ -15,6 +15,7 @@ import {
 } from '../../types.ts'
 import {
   jsonArrayFromColumn,
+  literalString,
   literalNumber,
   literalOptionalDate,
   longFormattedDateTime,
@@ -460,7 +461,7 @@ export async function addOrganizationMedicine(
         .select([
           'consumable_id',
           literalNumber(medicine.created_by).as('created_by'),
-          literalNumber(organization_id).as('organization_id'),
+          literalString(organization_id).as('organization_id'),
           literalNumber(medicine.quantity).as('quantity'),
           literalNumber(medicine.number_of_containers).as(
             'number_of_containers',

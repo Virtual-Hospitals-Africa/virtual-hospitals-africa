@@ -47,9 +47,9 @@ export function ofHealthWorker(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'Organization as requested_by_organization',
+      'Organization',
       'requested_by_employee.organization_id',
-      'requested_by_organization.id',
+      'Organization.id',
     )
     .innerJoin(
       'health_workers as requested_by_health_worker',
@@ -75,13 +75,11 @@ export function ofHealthWorker(
       jsonBuildObject({
         name: eb.ref('requested_by_health_worker.name'),
         avatar_url: eb.ref('requested_by_health_worker.avatar_url'),
-        profession: eb.ref('requested_by_employee.profession').$castTo<
-          'doctor' | 'nurse'
-        >(),
+        profession: eb.ref('requested_by_employee.profession').$castTo<'doctor' | 'nurse'>(),
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
         organization: jsonBuildObject({
-          id: eb.ref('requested_by_organization.id'),
-          name: eb.ref('requested_by_organization.name'),
+          id: eb.ref('Organization.id'),
+          name: eb.ref('Organization.canonicalName'),
         }),
       }).as('requested_by'),
       jsonArrayFromColumn(
@@ -94,7 +92,7 @@ export function ofHealthWorker(
           )
           .select('step'),
       ).as('steps_completed'),
-    ])
+    ]) as any
 }
 
 export function requests(
@@ -163,7 +161,7 @@ export function requests(
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
         organization: jsonBuildObject({
           id: eb.ref('requested_by_organization.id'),
-          name: eb.ref('requested_by_organization.name'),
+          name: eb.ref('requested_by_organization.canonicalName'),
         }),
       }).as('requested_by'),
     ])
@@ -382,6 +380,11 @@ export function getRequest(
       'requester_notes',
       jsonObjectFrom(
         eb.selectFrom('Organization')
+          .leftJoin(
+            'Address as OrganizationAddress',
+            'Organization.id',
+            'OrganizationAddress.resourceId',
+          )
           .whereRef(
             'Organization.id',
             '=',
@@ -390,7 +393,7 @@ export function getRequest(
           .select([
             'id',
             'name',
-            'address',
+            'OrganizationAddress.address',
           ]),
       ).as('organization'),
       jsonObjectFrom(

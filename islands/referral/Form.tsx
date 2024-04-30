@@ -1,7 +1,7 @@
 import { useSignal } from '@preact/signals'
 import FormRow from '../form/Row.tsx'
 import { TextArea } from '../form/Inputs.tsx'
-import FacilitySearch from '../FacilitySearch.tsx'
+import OrganizationSearch from '../OrganizationSearch.tsx'
 import PersonSearch from '../PersonSearch.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import { RenderedRequestFormValues } from '../../types.ts'
@@ -37,10 +37,10 @@ export function ReferralForm(props: {
           />
         )}
         <FormRow>
-          <FacilitySearch
+          <OrganizationSearch
             name='review_request.organization'
             kind='virtual'
-            label='Virtual Facility'
+            label='Virtual Organization'
             value={review_request.value?.organization}
           />
         </FormRow>

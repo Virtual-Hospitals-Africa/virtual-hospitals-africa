@@ -52,7 +52,7 @@ export default function PartnerPage(
               >
                 <option>Funding Opportunity</option>
                 <option>Technical/Research Partnership</option>
-                <option>Local Health Facility Partnership</option>
+                <option>Local Health Organization Partnership</option>
                 <option>Medical Support</option>
                 <option>Medical Equipment</option>
                 <option>Software Development</option>

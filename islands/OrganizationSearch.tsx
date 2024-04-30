@@ -2,29 +2,29 @@ import { assert } from 'std/assert/assert.ts'
 import { HasId } from '../types.ts'
 import AsyncSearch, { AsyncSearchProps } from './AsyncSearch.tsx'
 
-type FacilityData = HasId<{ name: string; address: string | null }>
+type OrganizationData = HasId<{ name: string; address: string | null }>
 
-type FacilityKind = 'physical' | 'virtual' | 'both'
+type OrganizationKind = 'physical' | 'virtual' | 'both'
 
-type FacilitySearchPropsGeneral<
-  Kind extends FacilityKind,
-  FacilityType extends FacilityData,
+type OrganizationSearchPropsGeneral<
+  Kind extends OrganizationKind,
+  OrganizationType extends OrganizationData,
 > =
   & { kind: Kind }
   & Omit<
-    AsyncSearchProps<FacilityType>,
+    AsyncSearchProps<OrganizationType>,
     'Option' | 'href' | 'optionHref'
   >
 
-type FacilitySearchProps =
-  | FacilitySearchPropsGeneral<
+type OrganizationSearchProps =
+  | OrganizationSearchPropsGeneral<
     'physical',
     HasId<{ name: string; address: string }>
   >
-  | FacilitySearchPropsGeneral<'virtual' | 'both', FacilityData>
+  | OrganizationSearchPropsGeneral<'virtual' | 'both', OrganizationData>
 
-export default function FacilitySearch(
-  props: FacilitySearchProps,
+export default function OrganizationSearch(
+  props: OrganizationSearchProps,
 ) {
   const params = new URLSearchParams()
   if (props.kind && props.kind !== 'both') {

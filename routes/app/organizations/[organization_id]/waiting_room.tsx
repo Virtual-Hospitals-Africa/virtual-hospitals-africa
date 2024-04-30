@@ -9,7 +9,7 @@ export default async function WaitingRoomPage(
   _req: Request,
   ctx: FreshContext<LoggedInHealthWorker>,
 ) {
-  const organization_id = parseInt(ctx.params.organization_id)
+  const { organization_id } = ctx.params
   assertOr404(organization_id)
 
   return (

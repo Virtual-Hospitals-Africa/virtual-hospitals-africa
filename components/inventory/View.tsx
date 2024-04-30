@@ -1,19 +1,19 @@
 import {
-  RenderedFacilityConsumable,
-  RenderedFacilityDevice,
-  RenderedFacilityMedicine,
+  RenderedOrganizationConsumable,
+  RenderedOrganizationDevice,
+  RenderedOrganizationMedicine,
 } from '../../types.ts'
 import { Container } from '../library/Container.tsx'
 import { TabProps, Tabs } from '../library/Tabs.tsx'
-import FacilityConsumablesTable from './ConsumablesTable.tsx'
-import FacilityDevicesTable from './DevicesTable.tsx'
-import FacilityMedicinesTable from './MedicinesTable.tsx'
+import OrganizationConsumablesTable from './ConsumablesTable.tsx'
+import OrganizationDevicesTable from './DevicesTable.tsx'
+import OrganizationMedicinesTable from './MedicinesTable.tsx'
 
 export default function inventoryView(
   { devices, consumables, medicines, organization_id, isAdmin, active_tab }: {
-    devices: RenderedFacilityDevice[]
-    consumables: RenderedFacilityConsumable[]
-    medicines: RenderedFacilityMedicine[]
+    devices: RenderedOrganizationDevice[]
+    consumables: RenderedOrganizationConsumable[]
+    medicines: RenderedOrganizationMedicine[]
     organization_id: string
     isAdmin: boolean
     active_tab: string
@@ -45,7 +45,7 @@ export default function inventoryView(
       <Tabs tabs={tabs} />
       <div className='mt-2'>
         {active_tab === 'devices' && (
-          <FacilityDevicesTable
+          <OrganizationDevicesTable
             devices={devices}
             organization_id={organization_id}
             isAdmin={isAdmin}
@@ -53,7 +53,7 @@ export default function inventoryView(
         )}
 
         {active_tab === 'consumables' && (
-          <FacilityConsumablesTable
+          <OrganizationConsumablesTable
             consumables={consumables}
             organization_id={organization_id}
             isAdmin={isAdmin}
@@ -61,7 +61,7 @@ export default function inventoryView(
         )}
 
         {active_tab === 'medicines' && (
-          <FacilityMedicinesTable
+          <OrganizationMedicinesTable
             medicines={medicines}
             organization_id={organization_id}
             isAdmin={isAdmin}

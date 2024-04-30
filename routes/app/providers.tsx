@@ -21,7 +21,7 @@ function assertIsProfessions(
   }
 }
 
-function assertIsMaybeFacilityKind(
+function assertIsMaybeOrganizationKind(
   organization_kind: unknown,
 ): asserts organization_kind is Maybe<'virtual' | 'physical'> {
   if (organization_kind == null) return
@@ -37,11 +37,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
     assertEquals(req.headers.get('accept'), 'application/json')
     const { searchParams } = ctx.url
     const organization_id = searchParams.get('organization_id')
-    const prioritize_organization_id =
-      parseInt(searchParams.get('prioritize_organization_id')!) || undefined
+    const prioritize_organization_id = searchParams.get(
+      'prioritize_organization_id',
+    )
 
     const organization_kind = searchParams.get('organization_kind')
-    assertIsMaybeFacilityKind(organization_kind)
+    assertIsMaybeOrganizationKind(organization_kind)
 
     const professions = searchParams.has('profession')
       ? searchParams.get('profession')!.split(',')

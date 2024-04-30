@@ -4,16 +4,16 @@ import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
-import { FacilityContext } from '../../_middleware.ts'
+import { OrganizationContext } from '../../_middleware.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<string, never>,
-  FacilityContext['state']
+  OrganizationContext['state']
 > = {
   async POST(_, ctx) {
-    const { trx, organization, isAdminAtFacility, healthWorker } = ctx.state
+    const { trx, organization, isAdminAtOrganization, healthWorker } = ctx.state
 
-    assertOr403(isAdminAtFacility)
+    assertOr403(isAdminAtOrganization)
 
     const health_worker_id = getRequiredNumericParam(ctx, 'health_worker_id')
 

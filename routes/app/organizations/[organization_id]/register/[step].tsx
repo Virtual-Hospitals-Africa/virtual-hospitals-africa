@@ -1,10 +1,10 @@
 import { assert } from 'std/assert/assert.ts'
 import {
   CountryAddressTree,
-  Facility,
   HasId,
   HealthWorkerWithGoogleTokens,
   LoggedInHealthWorkerHandlerWithProps,
+  Organization,
 } from '../../../../../types.ts'
 import {
   getStepFormData,
@@ -25,7 +25,7 @@ import {
 } from '../../../../../components/health_worker/nurse/invite/Steps.tsx'
 import NurseRegistrationForm from '../../../../../islands/nurse-registration-form.tsx'
 import compact from '../../../../../util/compact.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import omit from '../../../../../util/omit.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import SectionHeader from '../../../../../components/library/typography/SectionHeader.tsx'
@@ -41,7 +41,7 @@ export type FormState =
   & DocumentFormFields
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
-  organization: HasId<Facility>
+  organization: HasId<Organization>
 }> = {
   async POST(req, ctx) {
     const employee = await employment.getEmployee(ctx.state.trx, {
@@ -145,7 +145,7 @@ function getRegistrationDetails(
 
 export default async function RegisterPage(
   _req: Request,
-  ctx: FacilityContext,
+  ctx: OrganizationContext,
 ) {
   const { healthWorker, organization } = ctx.state
   const { step } = ctx.params

@@ -248,7 +248,7 @@ export class GoogleClient {
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(
-    organizations: { id: number; name: string }[],
+    organizations: { id: string; name: string }[],
   ): Promise<{
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string

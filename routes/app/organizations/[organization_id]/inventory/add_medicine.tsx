@@ -11,7 +11,7 @@ import InventoryMedicineForm from '../../../../../components/inventory/MedicineF
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { searchManufacturedMedications } from '../../../../../db/models/drugs.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import isString from '../../../../../util/isString.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
@@ -42,7 +42,7 @@ export function assertIsUpsertMedicine(
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
-  FacilityContext['state']
+  OrganizationContext['state']
 > = {
   async POST(req, ctx) {
     const { admin } = ctx.state.organization_employment.roles
@@ -56,7 +56,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsUpsertMedicine,
     )
 
-    await inventory.addFacilityMedicine(
+    await inventory.addOrganizationMedicine(
       ctx.state.trx,
       organization_id,
       {
@@ -85,7 +85,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 export default async function MedicineAdd(
   _req: Request,
-  { route, url, state }: FacilityContext,
+  { route, url, state }: OrganizationContext,
 ) {
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
   let last_procurement: MedicationProcurement | undefined

@@ -14,6 +14,8 @@ import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
 import { testCalendars } from '../mocks.ts'
 import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
+import { assert } from 'std/assert/assert.ts'
+import range from '../../util/range.ts'
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -334,56 +336,43 @@ export async function withTestOrganization(
   const organization = await organizations.add(trx, {
     name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
     category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-    address: kind === 'physical' ? '123 Test St' : null,
+    address: kind === 'physical' ? '123 Test St' : undefined,
     latitude: kind === 'physical' ? 0 : undefined,
     longitude: kind === 'physical' ? 0 : undefined,
-    phone: null,
+    // phone: null,
   })
-  await callback!(organization.id)
-  await trx.deleteFrom('Organization')
-    .where('id', '=', organization.id)
-    .execute()
+  await callback!(organization!.id)
   await trx.deleteFrom('Location')
-    .where('organizationId', '=', organization.id)
+    .where('organizationId', '=', organization!.id)
+    .execute()
+  await trx.deleteFrom('Organization')
+    .where('id', '=', organization!.id)
     .execute()
 }
 
-export function withTestFacilities(
+export async function withTestOrganizations(
   trx: TrxOrDb,
-  opts: (organization_id: string) => Promise<void>,
-  callback?: undefined,
-): Promise<void>
-
-export function withTestFacilities(
-  trx: TrxOrDb,
-  opts: { kind: 'virtual' },
-  callback: (organization_id: string) => Promise<void>,
-): Promise<void>
-
-export async function withTestFacilities(
-  trx: TrxOrDb,
-  opts: { kind: 'virtual' } | ((organization_id: string) => Promise<void>),
-  callback?: (organization_id: string) => Promise<void>,
+  opts: { kind?: 'virtual' | 'physical', count: number },
+  callback: (organization_ids: string[]) => Promise<void>,
 ) {
-  let kind: 'virtual' | 'physical' = 'physical'
-  if (typeof opts === 'function') {
-    callback = opts
-  } else {
-    kind = opts.kind
-  }
-  const organization = await organizations.add(trx, {
-    name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
-    category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
-    address: kind === 'physical' ? '123 Test St' : null,
-    latitude: kind === 'physical' ? 0 : undefined,
-    longitude: kind === 'physical' ? 0 : undefined,
-    phone: null,
-  })
-  await callback!(organization.id)
-  await trx.deleteFrom('Organization')
-    .where('id', '=', organization.id)
-    .execute()
+  assert(opts.count > 0)
+  const kind = opts.kind
+  const organizations_added = await Promise.all(range(opts.count).map(() => 
+    organizations.add(trx, {
+      name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
+      category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
+      address: kind === 'physical' ? '123 Test St' : undefined,
+      latitude: kind === 'physical' ? 0 : undefined,
+      longitude: kind === 'physical' ? 0 : undefined,
+      // phone: null,
+    })
+  ))
+  const organization_ids = organizations_added.map((organization) => organization!.id)
+  await callback(organization_ids)
   await trx.deleteFrom('Location')
-    .where('organizationId', '=', organization.id)
+    .where('organizationId', 'in', organization_ids)
+    .execute()
+  await trx.deleteFrom('Organization')
+    .where('id', 'in', organization_ids)
     .execute()
 }

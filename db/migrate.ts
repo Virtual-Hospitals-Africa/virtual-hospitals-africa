@@ -47,13 +47,13 @@ function findTarget(target: string, cmd: string) {
 }
 
 export const migrate = {
-  async medplum() {
-    await medplum.runMigrations()
-    return {
-      error: null,
-      results: [],
-    }
-  },
+  // async medplum() {
+  //   await medplum.run()
+  //   return {
+  //     error: null,
+  //     results: [],
+  //   }
+  // },
   async check() {
     const migrations = await migrator.getMigrations()
     const migrations_not_yet_run = migrations.filter((it) => !it.executedAt)
@@ -65,7 +65,7 @@ export const migrate = {
     console.error('Please run "deno task db:migrate:latest" and try again.')
     return Deno.exit(1)
   },
-  async latest() {
+  latest() {
     return migrator.migrateToLatest()
   },
   up() {

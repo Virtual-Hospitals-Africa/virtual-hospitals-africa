@@ -14,6 +14,7 @@ const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map((file) =>
 export function create(
   table_names: string[],
   generate: (db: Kysely<any>) => Promise<void>,
+  opts?: { never_dump?: boolean },
 ) {
   async function drop() {
     for (const table_name of table_names.toReversed()) {
@@ -52,6 +53,7 @@ export function create(
     })
   }
   async function dump() {
+    if (opts?.never_dump) return
     await runCommand('./db/seed/tsv_dump.sh', {
       args: [uri].concat(table_names),
     })

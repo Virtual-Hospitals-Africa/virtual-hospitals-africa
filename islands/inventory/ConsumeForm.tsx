@@ -5,7 +5,7 @@ import FormRow from '../form/Row.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import { NumberInput } from '../form/Inputs.tsx'
 
-export default function FacilityConsumableForm(): JSX.Element {
+export default function OrganizationConsumableForm(): JSX.Element {
   return (
     <div>
       <SectionHeader className='my-5 text-[20px]'>

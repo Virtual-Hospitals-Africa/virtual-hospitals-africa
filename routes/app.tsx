@@ -21,7 +21,7 @@ export default async function AppPage(
   // We may revisit this, but for now there's only one tab
   // that actually displays on this page, the waiting room
   // while the rest link out to other pages
-  let organization_id = getNumericParam(searchParams, 'organization_id')
+  let organization_id = searchParams.get('organization_id')
   if (
     organization_id &&
     !healthWorker.employment.some((e) => e.organization.id === organization_id)

@@ -6,7 +6,7 @@ import {
   RenderedConsumable,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import FacilityConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
+import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
@@ -15,7 +15,7 @@ import {
   assertOr403,
   assertOr404,
 } from '../../../../../util/assertOr.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
 import { searchConsumables } from '../../../../../db/models/inventory.ts'
@@ -38,13 +38,13 @@ export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
-  FacilityContext['state']
+  OrganizationContext['state']
 > = {
   async POST(req, ctx) {
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 
-    const organization_id = getRequiredNumericParam(ctx, 'organization_id')
+    const { organization_id } = ctx.params
 
     const to_add = await parseRequestAsserts(
       ctx.state.trx,
@@ -105,7 +105,7 @@ export default async function ConsumableAdd(
       url={url}
       health_worker={state.healthWorker}
     >
-      <FacilityConsumableForm
+      <OrganizationConsumableForm
         today={todayISOInHarare()}
         consumable={consumable}
       />

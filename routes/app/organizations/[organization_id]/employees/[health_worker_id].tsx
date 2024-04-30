@@ -3,14 +3,14 @@ import HealthWorkerDetailedCard from '../../../../../components/health_worker/De
 import * as health_workers from '../../../../../db/models/health_workers.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import FormButtons from '../../../../../islands/form/buttons.tsx'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 
 export default async function EmployeePage(
   _req: Request,
-  ctx: FacilityContext,
+  ctx: OrganizationContext,
 ) {
-  const { trx, organization, healthWorker, isAdminAtFacility } = ctx.state
+  const { trx, organization, healthWorker, isAdminAtOrganization } = ctx.state
   const health_worker_id = getRequiredNumericParam(ctx, 'health_worker_id')
 
   const employee = await health_workers.getEmployeeInfo(
@@ -55,7 +55,7 @@ export default async function EmployeePage(
         />
       </div>
       <hr style={{ margin: '20px 0' }} />
-      {isAdminAtFacility &&
+      {isAdminAtOrganization &&
         employee.registration_pending_approval && (
         <form
           style={{ maxWidth: '200px' }}

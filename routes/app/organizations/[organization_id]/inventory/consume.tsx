@@ -8,7 +8,7 @@ import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
 
@@ -25,7 +25,7 @@ export function assertIsUpsert(obj: unknown): asserts obj is {
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
-  FacilityContext['state']
+  OrganizationContext['state']
 > = {
   async POST(req, ctx) {
     const { admin } = ctx.state.organization_employment.roles

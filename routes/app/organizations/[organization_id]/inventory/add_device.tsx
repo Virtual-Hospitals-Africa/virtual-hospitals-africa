@@ -6,7 +6,7 @@ import {
   RenderedDevice,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
-import FacilityDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
+import OrganizationDeviceForm from '../../../../../components/inventory/DeviceForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import * as devices from '../../../../../db/models/devices.ts'
@@ -16,7 +16,7 @@ import {
   assertOr403,
   assertOr404,
 } from '../../../../../util/assertOr.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 
 export function assertIsUpsertDevice(
@@ -28,13 +28,13 @@ export function assertIsUpsertDevice(
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
-  FacilityContext['state']
+  OrganizationContext['state']
 > = {
   async POST(req, ctx) {
     const { admin } = ctx.state.organization_employment.roles
     assertOr403(admin)
 
-    const organization_id = getRequiredNumericParam(ctx, 'organization_id')
+    const { organization_id } = ctx.params
 
     const to_add = await parseRequestAsserts(
       ctx.state.trx,
@@ -42,7 +42,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       assertIsUpsertDevice,
     )
 
-    await inventory.addFacilityDevice(ctx.state.trx, {
+    await inventory.addOrganizationDevice(ctx.state.trx, {
       organization_id,
       device_id: to_add.device_id,
       serial_number: to_add.serial_number,
@@ -86,7 +86,7 @@ export default async function DeviceAdd(
       url={url}
       health_worker={state.healthWorker}
     >
-      <FacilityDeviceForm device={device} />
+      <OrganizationDeviceForm device={device} />
     </Layout>
   )
 }

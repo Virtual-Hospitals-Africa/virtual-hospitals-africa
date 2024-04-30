@@ -5,7 +5,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../components/library/Layout.tsx'
-import { FacilityAdmin } from '../db/models/employment.ts'
+import { OrganizationAdmin } from '../db/models/employment.ts'
 import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import { json } from '../util/responses.ts'
@@ -14,7 +14,7 @@ import FormRow from '../islands/form/Row.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  organizationAdmin: FacilityAdmin
+  organizationAdmin: OrganizationAdmin
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<

@@ -3,13 +3,11 @@ import parseCsv from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
 import { create } from '../create.ts'
 import * as organizations from '../../../db/models/organizations.ts'
-import * as medplum from '../../../external-clients/medplum/client.ts'
-// import uuid from '../../../util/uuid.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { Kysely } from 'kysely'
 
 export default create(
-  ['Organization', 'Location'],
+  ['Organization', 'Address', 'Location'],
   async (db) => {
     await addTestOrganizations(db)
     await importDataFromCSV(db)

@@ -23,7 +23,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   }
 > = {
   async POST(req, ctx) {
-    const organization_id = parseInt(ctx.params.organization_id)
+    const { organization_id } = ctx.params
     assert(organization_id)
     const to_upsert = await parseRequestAsserts(
       ctx.state.trx,
@@ -67,7 +67,7 @@ export default async function WaitingRoomAdd(
     })
   }
 
-  const organization_id = parseInt(params.organization_id)
+  const { organization_id } = params
   assert(organization_id)
 
   const gettingProviders = organizations.getApprovedDoctorsAndNurses(trx, {

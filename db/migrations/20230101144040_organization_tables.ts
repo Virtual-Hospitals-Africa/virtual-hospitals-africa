@@ -6,6 +6,14 @@ export async function up(db: Kysely<unknown>) {
     ADD CONSTRAINT "check_single_name" CHECK (array_length("name", 1) = 1)
   `.execute(db)
 
+  await db.schema.alterTable('Organization')
+    .addColumn(
+      'canonicalName',
+      'text',
+      (col) => col.notNull(),
+    )
+    .execute()
+
   await db.schema.alterTable('Location')
     .addColumn(
       'organizationId',
@@ -16,10 +24,24 @@ export async function up(db: Kysely<unknown>) {
     .execute()
 
   await sql`
+    CREATE OR REPLACE FUNCTION set_canonical_name()
+    RETURNS TRIGGER AS $$
+    BEGIN
+        NEW."canonicalName" := New."name"[1];
+        RETURN NEW;
+    END;
+    $$ LANGUAGE plpgsql;
+
+    CREATE OR REPLACE TRIGGER set_canonical_name_trigger
+    BEFORE INSERT OR UPDATE ON "Organization"
+    FOR EACH ROW
+    EXECUTE FUNCTION set_canonical_name();
+  `.execute(db)
+
+  await sql`
     CREATE OR REPLACE FUNCTION set_location_organization_id()
     RETURNS TRIGGER AS $$
     BEGIN
-        -- Extract the organization id from the organization column
         NEW."organizationId" := substring(NEW.organization from 'Organization/(.*)');
         RETURN NEW;
     END;

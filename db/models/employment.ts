@@ -59,22 +59,6 @@ export async function isAdmin(
   return matches.length === 1
 }
 
-export async function getFirstOrganization(
-  trx: TrxOrDb,
-  opts: {
-    employeeId: number
-  },
-): Promise<number | undefined> {
-  const firstOrganization = await trx
-    .selectFrom('employment')
-    .select('organization_id')
-    .where('health_worker_id', '=', opts.employeeId)
-    .orderBy('id')
-    .executeTakeFirstOrThrow()
-
-  return firstOrganization.organization_id
-}
-
 export function getEmployee(
   trx: TrxOrDb,
   opts: {
@@ -156,7 +140,7 @@ export function getOrganizationAdmin(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'organizations',
+      'Organization',
       'Organization.id',
       'employment.organization_id',
     )
@@ -167,7 +151,7 @@ export function getOrganizationAdmin(
       'email',
       'profession',
       'organization_id',
-      'organizations.name as organization_name',
+      'Organization.canonicalName as organization_name',
     ])
     .executeTakeFirst()
 }

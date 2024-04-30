@@ -105,7 +105,6 @@ import * as $ConditionSearch from './islands/ConditionSearch.tsx'
 import * as $DemoVideo from './islands/DemoVideo.tsx'
 import * as $ErrorListener from './islands/ErrorListener.tsx'
 import * as $ErrorMessage from './islands/ErrorMessage.tsx'
-import * as $OrganizationSearch from './islands/OrganizationSearch.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
 import * as $Menu from './islands/Menu.tsx'
@@ -115,6 +114,7 @@ import * as $NearestHealthCare from './islands/NearestHealthCare.tsx'
 import * as $Notifications from './islands/Notifications.tsx'
 import * as $Occupation0_18 from './islands/Occupation0-18.tsx'
 import * as $Occupation19 from './islands/Occupation19.tsx'
+import * as $OrganizationSearch from './islands/OrganizationSearch.tsx'
 import * as $PersonSearch from './islands/PersonSearch.tsx'
 import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
@@ -343,7 +343,6 @@ const manifest = {
     './islands/DemoVideo.tsx': $DemoVideo,
     './islands/ErrorListener.tsx': $ErrorListener,
     './islands/ErrorMessage.tsx': $ErrorMessage,
-    './islands/OrganizationSearch.tsx': $OrganizationSearch,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
     './islands/Menu.tsx': $Menu,
@@ -353,6 +352,7 @@ const manifest = {
     './islands/Notifications.tsx': $Notifications,
     './islands/Occupation0-18.tsx': $Occupation0_18,
     './islands/Occupation19.tsx': $Occupation19,
+    './islands/OrganizationSearch.tsx': $OrganizationSearch,
     './islands/PersonSearch.tsx': $PersonSearch,
     './islands/ProvidersSelect.tsx': $ProvidersSelect,
     './islands/ReligionSelect.tsx': $ReligionSelect,

@@ -2,11 +2,11 @@ import Layout from '../../../../../components/library/Layout.tsx'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import InventoryHistoryTable from '../../../../../components/inventory/InventoryHistory.tsx'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { FacilityContext } from '../_middleware.ts'
+import { OrganizationContext } from '../_middleware.ts'
 
 export default async function InventoryHistoryPage(
   _req: Request,
-  { route, url, state }: FacilityContext,
+  { route, url, state }: OrganizationContext,
 ) {
   const consumable_id = parseInt(url.searchParams.get('consumable_id')!)
   assertOr404(consumable_id)

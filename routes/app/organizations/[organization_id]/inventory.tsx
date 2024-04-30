@@ -1,12 +1,12 @@
 import { FreshContext, PageProps } from '$fresh/server.ts'
 import {
   EmployedHealthWorker,
-  Facility,
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
-  RenderedFacilityConsumable,
-  RenderedFacilityDevice,
-  RenderedFacilityMedicine,
+  Organization,
+  RenderedOrganizationConsumable,
+  RenderedOrganizationDevice,
+  RenderedOrganizationMedicine,
 } from '../../../../types.ts'
 import * as inventory from '../../../../db/models/inventory.ts'
 import Layout from '../../../../components/library/Layout.tsx'
@@ -14,26 +14,26 @@ import { assertOr404 } from '../../../../util/assertOr.ts'
 import InventoryView from '../../../../components/inventory/View.tsx'
 
 type InventoryPageProps = {
-  organization: HasId<Facility>
-  isAdminAtFacility: boolean
+  organization: HasId<Organization>
+  isAdminAtOrganization: boolean
   healthWorker: EmployedHealthWorker
-  organization_devices: RenderedFacilityDevice[]
-  organization_consumbales: RenderedFacilityConsumable[]
-  organization_medicines: RenderedFacilityMedicine[]
+  organization_devices: RenderedOrganizationDevice[]
+  organization_consumbales: RenderedOrganizationConsumable[]
+  organization_medicines: RenderedOrganizationMedicine[]
   active_tab: string
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   InventoryPageProps,
   {
-    organization: HasId<Facility>
-    isAdminAtFacility: boolean
+    organization: HasId<Organization>
+    isAdminAtOrganization: boolean
     healthWorker: EmployedHealthWorker
   }
 > = {
   async GET(_req, ctx) {
-    const { healthWorker, organization, isAdminAtFacility } = ctx.state
-    const organization_id = parseInt(ctx.params.organization_id)
+    const { healthWorker, organization, isAdminAtOrganization } = ctx.state
+    const { organization_id } = ctx.params
     const active_tab = ctx.url.searchParams.get('active_tab') ?? 'devices'
     assertOr404(organization_id)
 
@@ -60,7 +60,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     return ctx.render({
       organization,
-      isAdminAtFacility,
+      isAdminAtOrganization,
       healthWorker,
       organization_devices,
       organization_consumbales,
@@ -86,7 +86,7 @@ export default function inventoryPage(
         devices={props.data.organization_devices}
         consumables={props.data.organization_consumbales}
         medicines={props.data.organization_medicines}
-        isAdmin={props.data.isAdminAtFacility}
+        isAdmin={props.data.isAdminAtOrganization}
         active_tab={props.data.active_tab}
       />
     </Layout>

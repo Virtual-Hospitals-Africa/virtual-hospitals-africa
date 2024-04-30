@@ -1,6 +1,7 @@
 {
   "deno.enable": true,
   "deno.lint": true,
+  "git.detectSubmodules": false,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -10,6 +11,9 @@
   },
   "search.exclude": {
     "**/node_modules": true,
-    "medplum/**": true
+    "medplum/**": true,
+    "**/*.xml": true
+    // "**/*.json": true,
+    // "**/*.tsv": true
   }
 }

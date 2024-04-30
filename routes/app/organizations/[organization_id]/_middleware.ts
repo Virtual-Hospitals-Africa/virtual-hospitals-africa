@@ -19,7 +19,7 @@ export async function handler(
   ctx: OrganizationContext,
 ) {
   const { healthWorker } = ctx.state
-  const organization_id = getRequiredNumericParam(ctx, 'organization_id')
+  const { organization_id } = ctx.params
 
   const organization_employment = healthWorker.employment.find((e) =>
     e.organization.id === organization_id

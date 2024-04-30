@@ -1,9 +1,9 @@
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  Facility,
   HasId,
   LoggedInHealthWorkerHandlerWithProps,
+  Organization,
   Profession,
 } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
@@ -41,15 +41,15 @@ function assertIsInvites(
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<InvitePageProps, {
-  organization: HasId<Facility>
-  isAdminAtFacility: boolean
+  organization: HasId<Organization>
+  isAdminAtOrganization: boolean
 }> = {
   GET(_req, ctx) {
-    assertOr403(ctx.state.isAdminAtFacility)
+    assertOr403(ctx.state.isAdminAtOrganization)
     return ctx.render({ healthWorker: ctx.state.healthWorker })
   },
   async POST(req, ctx) {
-    assertOr403(ctx.state.isAdminAtFacility)
+    assertOr403(ctx.state.isAdminAtOrganization)
 
     const { invites } = await parseRequestAsserts(
       ctx.state.trx,

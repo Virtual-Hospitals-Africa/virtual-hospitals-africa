@@ -16,9 +16,11 @@ export async function handler(
 ) {
   const health_worker_id = ctx.state.session.get('health_worker_id')
   assert(health_worker_id)
+  console.log('GETTING HEALTH WORKER', health_worker_id)
   const healthWorker = await health_workers.get(ctx.state.trx, {
     health_worker_id,
   })
+  console.log('GOT HEALTH WORKER', health_worker_id)
 
   if (!health_workers.isEmployed(healthWorker)) {
     ctx.state.session.clear()
