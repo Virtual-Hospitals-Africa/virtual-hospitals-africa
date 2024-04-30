@@ -41,8 +41,8 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
         .addColumn(
           'nearest_organization_id',
-          'integer',
-          (col) => col.references('organizations.id'),
+          'uuid',
+          (col) => col.references('Organization.id'),
         )
         .addColumn(
           'conversation_state',

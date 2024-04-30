@@ -60,7 +60,7 @@ export function assertIsUpsert(
 
 export async function upsert(
   trx: TrxOrDb,
-  organization_id: number,
+  organization_id: string,
   {
     encounter_id,
     patient_id,

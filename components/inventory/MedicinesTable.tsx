@@ -61,11 +61,12 @@ const columns: TableColumn<RenderedFacilityMedicine>[] = [
 export default function FacilityMedicinesTable(
   { medicines, organization_id, isAdmin }: {
     medicines: RenderedFacilityMedicine[]
-    organization_id: number
+    organization_id: string
     isAdmin: boolean
   },
 ) {
-  const add_href = `/app/organizations/${organization_id}/inventory/add_medicine`
+  const add_href =
+    `/app/organizations/${organization_id}/inventory/add_medicine`
   return (
     <>
       {isAdmin && (

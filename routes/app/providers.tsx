@@ -36,7 +36,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {
   async GET(req, ctx) {
     assertEquals(req.headers.get('accept'), 'application/json')
     const { searchParams } = ctx.url
-    const organization_id = parseInt(searchParams.get('organization_id')!) || undefined
+    const organization_id = searchParams.get('organization_id')
     const prioritize_organization_id =
       parseInt(searchParams.get('prioritize_organization_id')!) || undefined
 

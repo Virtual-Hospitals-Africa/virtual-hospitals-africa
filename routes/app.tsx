@@ -26,7 +26,10 @@ export default async function AppPage(
     organization_id &&
     !healthWorker.employment.some((e) => e.organization.id === organization_id)
   ) {
-    searchParams.set('organization_id', healthWorker.default_organization_id.toString())
+    searchParams.set(
+      'organization_id',
+      healthWorker.default_organization_id.toString(),
+    )
     return redirect(`/app?${searchParams.toString()}`)
   }
   if (!organization_id) {

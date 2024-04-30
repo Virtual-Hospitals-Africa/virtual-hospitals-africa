@@ -29,7 +29,7 @@ type AddressFormValues = {
     suburb_id?: Maybe<number>
     street: string
   }
-  nearest_organization_id: number
+  nearest_organization_id: string
   nearest_organization_name: string
   primary_doctor_id: number
   primary_doctor_name: string

@@ -28,11 +28,12 @@ const columns: TableColumn<RenderedFacilityConsumable>[] = [
 export default function FacilityConsumablesTable(
   { consumables, organization_id, isAdmin }: {
     consumables: RenderedFacilityConsumable[]
-    organization_id: number
+    organization_id: string
     isAdmin: boolean
   },
 ) {
-  const add_href = `/app/organizations/${organization_id}/inventory/add_consumable`
+  const add_href =
+    `/app/organizations/${organization_id}/inventory/add_consumable`
   return (
     <>
       {isAdmin && (

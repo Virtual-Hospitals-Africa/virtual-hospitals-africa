@@ -138,9 +138,9 @@ describe('db/models/inventory.ts', { sanitizeResources: false }, () => {
               quantity_on_hand: 5,
               actions: {
                 add:
-                  `/app/facilities/${organization_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
+                  `/app/organizations/${organization_id}/inventory/add_consumable?consumable_id=${consumable.id}`,
                 history:
-                  `/app/facilities/${organization_id}/inventory/history?consumable_id=${consumable.id}`,
+                  `/app/organizations/${organization_id}/inventory/history?consumable_id=${consumable.id}`,
               },
             },
           ])

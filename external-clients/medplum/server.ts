@@ -73,7 +73,7 @@ export async function runMigrations() {
   }
 
   console.log('killing medplum server')
-  server.kill('SIGTERM')
+  // server.kill('SIGTERM')
 
   // This leaves a zombie process, which we kill in the parent task in deno.json
   server.unref()

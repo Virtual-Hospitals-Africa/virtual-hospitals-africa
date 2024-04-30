@@ -39,7 +39,8 @@ export default function PendingApprovalPage(
   const { organizationAdmin } = props.data
   const organizationDisplayName = organizationAdmin.organization_name ||
     'your organization'
-  const organizationAdminName = organizationAdmin.name || 'your organization admin'
+  const organizationAdminName = organizationAdmin.name ||
+    'your organization admin'
 
   return (
     <Layout

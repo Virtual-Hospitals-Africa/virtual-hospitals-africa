@@ -26,7 +26,8 @@ export function NearestHealthCare(
           kind='physical'
           label='Nearest Facility'
           value={nearest_organization_signal.value}
-          onSelect={(organization) => nearest_organization_signal.value = organization}
+          onSelect={(organization) =>
+            nearest_organization_signal.value = organization}
           required
         />
       </FormRow>

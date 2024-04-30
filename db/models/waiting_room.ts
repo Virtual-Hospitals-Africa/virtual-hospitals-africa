@@ -57,7 +57,7 @@ export function arrivedAgoDisplay(wait_time: string) {
 export async function get(
   trx: TrxOrDb,
   { organization_id }: {
-    organization_id: number
+    organization_id: string
   },
 ): Promise<RenderedWaitingRoom[]> {
   const organization_waiting_room = trx

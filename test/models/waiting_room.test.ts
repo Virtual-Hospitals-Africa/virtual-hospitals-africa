@@ -201,7 +201,8 @@ describe(
               providers: [{
                 name: nurse.name,
                 profession: 'nurse',
-                href: `/app/facilities/${organization_id}/employees/${nurse.id}`,
+                href:
+                  `/app/organizations/${organization_id}/employees/${nurse.id}`,
                 avatar_url: nurse.avatar_url,
                 seen: true,
                 health_worker_id: nurse.id,
@@ -292,73 +293,80 @@ describe(
       itUsesTrxAnd(
         'shows review requests for patients in the waiting room',
         (trx) =>
-          withTestFacility(trx, { kind: 'virtual' }, async (organization_id) => {
-            const patient = await patients.upsert(trx, {
-              name: 'Test Patient 1',
-            })
-            await patient_encounters.upsert(trx, 1, {
-              patient_id: patient.id,
-              reason: 'maternity',
-            })
-            const nurse = await addTestHealthWorker(trx, {
-              organization_id: 1,
-              scenario: 'approved-nurse',
-            })
-
-            const nurse_health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id: nurse.id,
-            })
-
-            const { encounter, encounter_provider } =
-              await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
+          withTestFacility(
+            trx,
+            { kind: 'virtual' },
+            async (organization_id) => {
+              const patient = await patients.upsert(trx, {
+                name: 'Test Patient 1',
+              })
+              await patient_encounters.upsert(trx, 1, {
                 patient_id: patient.id,
-                health_worker: nurse_health_worker,
-                encounter_id: 'open',
+                reason: 'maternity',
+              })
+              const nurse = await addTestHealthWorker(trx, {
+                organization_id: 1,
+                scenario: 'approved-nurse',
               })
 
-            await doctor_reviews.upsertRequest(trx, {
-              patient_id: patient.id,
-              encounter_id: encounter.encounter_id,
-              requested_by: encounter_provider.patient_encounter_provider_id,
-              organization_id,
-            })
-
-            await doctor_reviews.finalizeRequest(trx, {
-              requested_by: encounter_provider.patient_encounter_provider_id,
-            })
-
-            assertEquals(await waiting_room.get(trx, { organization_id }), [
-              {
-                appointment: null,
-                patient: {
-                  avatar_url: null,
-                  id: patient.id,
-                  name: 'Test Patient 1',
-                  description: null,
-                },
-                in_waiting_room: false,
-                arrived_ago_display: 'Just now',
-                status: 'Awaiting Review',
-                actions: {
-                  view: null,
-                  intake: null,
-                  review: `/app/patients/${patient.id}/review/clinical_notes`,
-                },
-                providers: [{
-                  name: nurse.name,
-                  profession: 'nurse',
-                  href: `/app/facilities/1/employees/${nurse.id}`,
-                  avatar_url: nurse.avatar_url,
-                  seen: true,
+              const nurse_health_worker = await health_workers.getEmployed(
+                trx,
+                {
                   health_worker_id: nurse.id,
-                  employee_id: nurse.employee_id!,
-                }],
-                reviewers: [],
-                reason: 'maternity',
-                is_emergency: false,
-              },
-            ])
-          }),
+                },
+              )
+
+              const { encounter, encounter_provider } =
+                await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
+                  patient_id: patient.id,
+                  health_worker: nurse_health_worker,
+                  encounter_id: 'open',
+                })
+
+              await doctor_reviews.upsertRequest(trx, {
+                patient_id: patient.id,
+                encounter_id: encounter.encounter_id,
+                requested_by: encounter_provider.patient_encounter_provider_id,
+                organization_id,
+              })
+
+              await doctor_reviews.finalizeRequest(trx, {
+                requested_by: encounter_provider.patient_encounter_provider_id,
+              })
+
+              assertEquals(await waiting_room.get(trx, { organization_id }), [
+                {
+                  appointment: null,
+                  patient: {
+                    avatar_url: null,
+                    id: patient.id,
+                    name: 'Test Patient 1',
+                    description: null,
+                  },
+                  in_waiting_room: false,
+                  arrived_ago_display: 'Just now',
+                  status: 'Awaiting Review',
+                  actions: {
+                    view: null,
+                    intake: null,
+                    review: `/app/patients/${patient.id}/review/clinical_notes`,
+                  },
+                  providers: [{
+                    name: nurse.name,
+                    profession: 'nurse',
+                    href: `/app/organizations/1/employees/${nurse.id}`,
+                    avatar_url: nurse.avatar_url,
+                    seen: true,
+                    health_worker_id: nurse.id,
+                    employee_id: nurse.employee_id!,
+                  }],
+                  reviewers: [],
+                  reason: 'maternity',
+                  is_emergency: false,
+                },
+              ])
+            },
+          ),
       )
     })
     describe('arrivedAgoDisplay', () => {

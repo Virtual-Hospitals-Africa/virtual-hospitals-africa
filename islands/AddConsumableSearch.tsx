@@ -1,6 +1,8 @@
 import AsyncSearch from './AsyncSearch.tsx'
 
-export function AddConsumableSearch({ organization_id }: { organization_id: number }) {
+export function AddConsumableSearch(
+  { organization_id }: { organization_id: string },
+) {
   return (
     <AsyncSearch
       href='/app/consumables'

@@ -1,6 +1,8 @@
 import AsyncSearch from './AsyncSearch.tsx'
 
-export function AddDeviceSearch({ organization_id }: { organization_id: number }) {
+export function AddDeviceSearch(
+  { organization_id }: { organization_id: string },
+) {
   return (
     <AsyncSearch
       href='/app/devices'

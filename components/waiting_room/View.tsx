@@ -7,7 +7,7 @@ import { AddPatientSearch } from '../../islands/waiting_room/AddPatientSearch.ts
 export default function WaitingRoomView(
   { waiting_room, organization_id }: {
     waiting_room: RenderedWaitingRoom[]
-    organization_id: number
+    organization_id: string
   },
 ) {
   const add_href = `/app/organizations/${organization_id}/waiting_room/add`

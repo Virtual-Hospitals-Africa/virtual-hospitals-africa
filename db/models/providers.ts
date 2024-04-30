@@ -77,7 +77,7 @@ export function addCalendars(
   trx: TrxOrDb,
   health_worker_id: number,
   cals: {
-    organization_id: number
+    organization_id: string
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
     availability_set?: boolean
@@ -136,7 +136,7 @@ export async function search(
     .innerJoin(
       'organizations',
       'employment.organization_id',
-      'organizations.id',
+      'Organization.id',
     )
     .select([
       'employment.id',
@@ -189,7 +189,7 @@ export async function search(
 export function markAvailabilitySet(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     health_worker_id: number
   },
 ) {

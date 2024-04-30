@@ -226,7 +226,8 @@ const conversationStates: ConversationStates<
             id: `${organization.id}`,
             title: capLengthAtWhatsAppTitle(organizationName),
             description: capLengthAtWhatsAppDescription(description),
-            nextState: 'find_nearest_organization:send_organization_location' as const,
+            nextState:
+              'find_nearest_organization:send_organization_location' as const,
             onExit(_trx: TrxOrDb, patientState: PatientState) {
               return Promise.resolve(patientState)
             },
@@ -234,7 +235,9 @@ const conversationStates: ConversationStates<
         }
       })
 
-      const sectionTitles = uniq(organizations.map((organization) => organization.section))
+      const sectionTitles = uniq(
+        organizations.map((organization) => organization.section),
+      )
 
       const sections: ConversationStateHandlerListActionSection<
         PatientState

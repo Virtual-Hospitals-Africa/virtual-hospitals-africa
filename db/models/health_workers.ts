@@ -160,7 +160,7 @@ export function isEmployed(
     Array.isArray(health_worker.employment) &&
     !!health_worker.employment.length &&
     'default_organization_id' in health_worker &&
-    typeof health_worker.default_organization_id === 'number'
+    typeof health_worker.default_organization_id === 'string'
 }
 
 export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
@@ -227,9 +227,9 @@ export async function get(
       jsonArrayFrom(
         eb.selectFrom('employment')
           .innerJoin(
-            'organizations',
+            'Organization',
             'employment.organization_id',
-            'organizations.id',
+            'Organization.id',
           )
           .innerJoin(
             'provider_calendars',
@@ -382,7 +382,7 @@ export function getEmployeeInfo(
   trx: TrxOrDb,
   opts: {
     health_worker_id: number
-    organization_id: number
+    organization_id: string
   },
 ): Promise<Maybe<EmployeeInfo>> {
   return trx.with('health_worker_at_organization', (qb) =>
@@ -400,8 +400,8 @@ export function getEmployeeInfo(
           'health_worker_at_organization.health_worker_id',
         )
         .innerJoin(
-          'organizations',
-          (join) => join.on('organizations.id', '=', opts.organization_id),
+          'Organization',
+          (join) => join.on('Organization.id', '=', opts.organization_id),
         )
         .leftJoin(
           'employment as nurse_employment',
@@ -413,7 +413,11 @@ export function getEmployeeInfo(
                 'health_workers.id',
               )
               .on('nurse_employment.profession', '=', 'nurse')
-              .on('nurse_employment.organization_id', '=', opts.organization_id),
+              .on(
+                'nurse_employment.organization_id',
+                '=',
+                opts.organization_id,
+              ),
         )
         .leftJoin(
           'nurse_specialties',
@@ -449,9 +453,9 @@ export function getEmployeeInfo(
           'health_workers.name',
           'health_workers.avatar_url',
           'address_formatted.address',
-          'organizations.id as organization_id',
-          'organizations.name as organization_name',
-          'organizations.address as organization_address',
+          'Organization.id as organization_id',
+          'Organization.name as organization_name',
+          'Organization.address as organization_address',
           jsonArrayFromColumn(
             'profession',
             eb
@@ -494,7 +498,7 @@ export function getEmployeeInfo(
                 sql<string>`'National ID'`.as('name'),
                 sql<
                   string
-                >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
+                >`concat('/app/organizations/', Organization.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.national_id_media_id::text)`
                   .as('href'),
               ])
               .union(
@@ -511,7 +515,7 @@ export function getEmployeeInfo(
                     sql<string>`'Face Picture'`.as('name'),
                     sql<
                       string
-                    >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
+                    >`concat('/app/organizations/', Organization.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.face_picture_media_id::text)`
                       .as('href'),
                   ]),
               )
@@ -529,7 +533,7 @@ export function getEmployeeInfo(
                     sql<string>`'Registration Card'`.as('name'),
                     sql<
                       string
-                    >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
+                    >`concat('/app/organizations/', Organization.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.ncz_registration_card_media_id::text)`
                       .as('href'),
                   ]),
               )
@@ -547,7 +551,7 @@ export function getEmployeeInfo(
                     sql<string>`'Nurse Practicing Certificate'`.as('name'),
                     sql<
                       string
-                    >`concat('/app/organizations/', organizations.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
+                    >`concat('/app/organizations/', Organization.id::text, '/employees/', health_workers.id, '/media/', nurse_registration_details.nurse_practicing_cert_media_id::text)`
                       .as('href'),
                   ]),
               )

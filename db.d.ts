@@ -135,9 +135,9 @@ export type PatientCohabitation =
   | 'Uncle or Aunt'
 
 export type PatientConversationState =
-  | 'find_nearest_facility:got_location'
-  | 'find_nearest_facility:send_facility_location'
-  | 'find_nearest_facility:share_location'
+  | 'find_nearest_organization:got_location'
+  | 'find_nearest_organization:send_organization_location'
+  | 'find_nearest_organization:share_location'
   | 'initial_message'
   | 'not_onboarded:make_appointment:enter_date_of_birth'
   | 'not_onboarded:make_appointment:enter_gender'
@@ -1802,8 +1802,8 @@ export interface Consumables {
 export interface Consumption {
   created_at: Generated<Timestamp>
   created_by: number
-  facility_id: number
   id: Generated<number>
+  organization_id: string
   procurement_id: number
   quantity: number
   updated_at: Generated<Timestamp>
@@ -2317,8 +2317,8 @@ export interface DoctorReview {
 export interface DoctorReviewRequests {
   created_at: Generated<Timestamp>
   encounter_id: number
-  facility_id: number | null
   id: Generated<number>
+  organization_id: string | null
   patient_id: number
   pending: Generated<boolean>
   requested_by: number
@@ -2541,9 +2541,9 @@ export interface EffectEvidenceSynthesisToken {
 
 export interface Employment {
   created_at: Generated<Timestamp>
-  facility_id: number
   health_worker_id: number
   id: Generated<number>
+  organization_id: string
   profession: Profession
   updated_at: Generated<Timestamp>
 }
@@ -3039,37 +3039,6 @@ export interface ExplanationOfBenefitToken {
   value: string | null
 }
 
-export interface Facilities {
-  address: string | null
-  category: string
-  created_at: Generated<Timestamp>
-  id: Generated<number>
-  location: string | null
-  name: string
-  phone: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface FacilityConsumables {
-  consumable_id: number
-  created_at: Generated<Timestamp>
-  facility_id: number
-  id: Generated<number>
-  quantity_on_hand: number
-  updated_at: Generated<Timestamp>
-}
-
-export interface FacilityDevices {
-  created_at: Generated<Timestamp>
-  created_by: number
-  device_id: number
-  facility_id: number
-  id: Generated<number>
-  serial_number: string | null
-  updated_at: Generated<Timestamp>
-  updated_by: number | null
-}
-
 export interface FamilyMemberHistory {
   _profile: string[] | null
   _security: string[] | null
@@ -3401,8 +3370,8 @@ export interface HealthWorkerGoogleTokens {
 export interface HealthWorkerInvitees {
   created_at: Generated<Timestamp>
   email: string
-  facility_id: number
   id: Generated<number>
+  organization_id: string
   profession: Profession
   updated_at: Generated<Timestamp>
 }
@@ -5397,6 +5366,26 @@ export interface OrganizationAffiliationToken {
   value: string | null
 }
 
+export interface OrganizationConsumables {
+  consumable_id: number
+  created_at: Generated<Timestamp>
+  id: Generated<number>
+  organization_id: string
+  quantity_on_hand: number
+  updated_at: Generated<Timestamp>
+}
+
+export interface OrganizationDevices {
+  created_at: Generated<Timestamp>
+  created_by: number
+  device_id: number
+  id: Generated<number>
+  organization_id: string
+  serial_number: string | null
+  updated_at: Generated<Timestamp>
+  updated_by: number | null
+}
+
 export interface OrganizationHistory {
   content: string
   id: string
@@ -5678,6 +5667,8 @@ export interface PatientKin {
 export interface PatientLifestyle {
   alcohol: Json | null
   created_at: Generated<Timestamp>
+  diet: Json | null
+  exercise: Json | null
   id: Generated<number>
   patient_id: number
   sexual_activity: Json | null
@@ -5695,11 +5686,6 @@ export interface PatientMeasurements {
   patient_id: number
   updated_at: Generated<Timestamp>
   value: Numeric
-}
-
-export interface PatientNearestFacilities {
-  nearest_facilities: Json | null
-  patient_id: number | null
 }
 
 export interface PatientOccupations {
@@ -5729,7 +5715,7 @@ export interface Patients {
   location: string | null
   name: string | null
   national_id_number: string | null
-  nearest_facility_id: number | null
+  nearest_organization_id: string | null
   phone_number: string | null
   primary_doctor_id: number | null
   unregistered_primary_doctor_name: string | null
@@ -6076,9 +6062,9 @@ export interface Procurement {
   created_at: Generated<Timestamp>
   created_by: number
   expiry_date: Timestamp | null
-  facility_id: number
   id: Generated<number>
   number_of_containers: number
+  organization_id: string
   procured_from: number
   quantity: number
   updated_at: Generated<Timestamp>
@@ -6214,11 +6200,11 @@ export interface ProvenanceToken {
 export interface ProviderCalendars {
   availability_set: Generated<boolean>
   created_at: Generated<Timestamp>
-  facility_id: number
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
   health_worker_id: number
   id: Generated<number>
+  organization_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -7922,8 +7908,8 @@ export interface VisionPrescriptionToken {
 
 export interface WaitingRoom {
   created_at: Generated<Timestamp>
-  facility_id: number
   id: Generated<number>
+  organization_id: string
   patient_encounter_id: number
   updated_at: Generated<Timestamp>
 }
@@ -8231,9 +8217,6 @@ export interface DB {
   ExplanationOfBenefit_History: ExplanationOfBenefitHistory
   ExplanationOfBenefit_References: ExplanationOfBenefitReferences
   ExplanationOfBenefit_Token: ExplanationOfBenefitToken
-  facilities: Facilities
-  facility_consumables: FacilityConsumables
-  facility_devices: FacilityDevices
   FamilyMemberHistory: FamilyMemberHistory
   FamilyMemberHistory_History: FamilyMemberHistoryHistory
   FamilyMemberHistory_References: FamilyMemberHistoryReferences
@@ -8461,6 +8444,8 @@ export interface DB {
   OperationOutcome_References: OperationOutcomeReferences
   OperationOutcome_Token: OperationOutcomeToken
   Organization: Organization
+  organization_consumables: OrganizationConsumables
+  organization_devices: OrganizationDevices
   Organization_History: OrganizationHistory
   Organization_References: OrganizationReferences
   Organization_Token: OrganizationToken
@@ -8496,7 +8481,6 @@ export interface DB {
   patient_kin: PatientKin
   patient_lifestyle: PatientLifestyle
   patient_measurements: PatientMeasurements
-  patient_nearest_facilities: PatientNearestFacilities
   patient_occupations: PatientOccupations
   Patient_References: PatientReferences
   patient_symptom_media: PatientSymptomMedia

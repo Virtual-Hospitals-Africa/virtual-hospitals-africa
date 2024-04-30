@@ -50,8 +50,8 @@ export default function ApplyPage(
                 </FormRow>
               </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from organizationName is currently under review by
-                {' '}
+                Your application from organizationName is currently under review
+                by{' '}
                 organizationAdminName. You will receive an email once your
                 application has been approved.
               </p>

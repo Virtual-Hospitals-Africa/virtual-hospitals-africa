@@ -29,7 +29,7 @@ import { DB } from '../../db.d.ts'
 export function getDevices(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): Promise<RenderedFacilityDevice[]> {
   return trx
@@ -56,7 +56,7 @@ export function getDevices(
 export function getConsumables(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): Promise<RenderedFacilityConsumable[]> {
   return trx
@@ -71,7 +71,11 @@ export function getConsumables(
       'consumables.id',
       'manufactured_medication_strengths.consumable_id',
     )
-    .where('organization_consumables.organization_id', '=', opts.organization_id)
+    .where(
+      'organization_consumables.organization_id',
+      '=',
+      opts.organization_id,
+    )
     .where('manufactured_medication_strengths.id', 'is', null)
     .select([
       'consumables.name as name',
@@ -92,7 +96,7 @@ export function getConsumables(
 export function getMedicines(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): Promise<RenderedFacilityMedicine[]> {
   return trx
@@ -122,7 +126,11 @@ export function getMedicines(
       'medications.drug_id',
       'drugs.id',
     )
-    .where('organization_consumables.organization_id', '=', opts.organization_id)
+    .where(
+      'organization_consumables.organization_id',
+      '=',
+      opts.organization_id,
+    )
     .select([
       'drugs.generic_name',
       'manufactured_medications.applicant_name',
@@ -149,7 +157,7 @@ export function getMedicines(
 function consumptionQuery(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): SelectQueryBuilder<
   DB,
@@ -194,7 +202,7 @@ function consumptionQuery(
 function procurementQuery(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): SelectQueryBuilder<
   DB,
@@ -244,7 +252,7 @@ function procurementQuery(
 export function getConsumablesHistoryQuery(
   trx: TrxOrDb,
   { organization_id, consumable_id }: {
-    organization_id: number
+    organization_id: string
     consumable_id: number
   },
 ): SelectQueryBuilder<
@@ -270,7 +278,7 @@ export function getConsumablesHistoryQuery(
 export function getConsumablesHistory(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     consumable_id: number
   },
 ): Promise<{
@@ -291,7 +299,7 @@ export function getConsumablesHistory(
 export function getLatestProcurement(
   trx: TrxOrDb,
   { organization_id, manufactured_medication_id, strength }: {
-    organization_id: number
+    organization_id: string
     manufactured_medication_id: number
     strength?: number
   },
@@ -371,7 +379,7 @@ export function searchProcurers(
 export function getAvailableTests(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): Promise<{ diagnostic_test: string }[]> {
   return trx
@@ -401,7 +409,7 @@ export function addFacilityDevice(
 
 export async function addFacilityMedicine(
   trx: TrxOrDb,
-  organization_id: number,
+  organization_id: string,
   medicine: {
     created_by: number
     manufactured_medication_id: number
@@ -484,7 +492,7 @@ export async function addFacilityMedicine(
 
 export async function procureConsumable(
   trx: TrxOrDb,
-  organization_id: number,
+  organization_id: string,
   consumable: {
     created_by: number
     consumable_id: number
@@ -548,7 +556,7 @@ export async function procureConsumable(
 
 export function consumeConsumable(
   trx: TrxOrDb,
-  organization_id: number,
+  organization_id: string,
   consumable: {
     consumable_id: number
     created_by: number
@@ -579,7 +587,11 @@ export function consumeConsumable(
           .set({
             quantity_on_hand: sql`quantity_on_hand - ${consumable.quantity}`,
           })
-          .where('organization_consumables.organization_id', '=', organization_id)
+          .where(
+            'organization_consumables.organization_id',
+            '=',
+            organization_id,
+          )
           .where(
             'organization_consumables.consumable_id',
             '=',

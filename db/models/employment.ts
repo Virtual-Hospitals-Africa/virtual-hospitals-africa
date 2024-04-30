@@ -11,7 +11,7 @@ import { SqlBool } from 'kysely'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
-  organization_id: number
+  organization_id: string
   id: number
   registration_pending_approval: SqlBool
   registration_needed: SqlBool
@@ -41,7 +41,7 @@ export async function isAdmin(
   trx: TrxOrDb,
   opts: {
     health_worker_id: number
-    organization_id: number
+    organization_id: string
   },
 ): Promise<boolean> {
   const matches = await trx
@@ -78,7 +78,7 @@ export async function getFirstFacility(
 export function getEmployee(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     health_worker_id: number
   },
 ) {
@@ -92,7 +92,7 @@ export function getEmployee(
 
 export function addInvitees(
   trx: TrxOrDb,
-  organization_id: number,
+  organization_id: string,
   invites: {
     email: string
     profession: Profession
@@ -143,7 +143,7 @@ export function removeInvitees(
 export function getFacilityAdmin(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
   },
 ): Promise<Maybe<FacilityAdmin>> {
   return trx
@@ -157,7 +157,7 @@ export function getFacilityAdmin(
     )
     .innerJoin(
       'organizations',
-      'organizations.id',
+      'Organization.id',
       'employment.organization_id',
     )
     .select([

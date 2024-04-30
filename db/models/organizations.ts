@@ -33,7 +33,7 @@ export async function nearest(
               ) AS distance,
               ST_X(location::geometry) as longitude,
               ST_Y(location::geometry) as latitude
-        FROM organizations
+        FROM Organization
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10
   `.execute(trx)
@@ -49,7 +49,7 @@ export function search(
   },
 ) {
   let query = trx
-    .selectFrom('organizations')
+    .selectFrom('Organization')
     .select([
       'id',
       'address',
@@ -81,7 +81,7 @@ export function get(
 ): Promise<HasId<Facility>[]> {
   assert(opts.ids.length, 'Must select nonzero organizations')
   return trx
-    .selectFrom('organizations')
+    .selectFrom('Organization')
     .where('id', 'in', opts.ids)
     .select([
       'id',
@@ -100,7 +100,7 @@ export function get(
 export function getEmployeesQuery(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     professions?: Profession[]
     emails?: string[]
     is_approved?: boolean
@@ -192,7 +192,7 @@ export function getEmployeesQuery(
 export function getEmployees(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     professions?: Profession[]
     emails?: string[]
     registration_status?: 'pending_approval' | 'approved' | 'incomplete'
@@ -204,7 +204,7 @@ export function getEmployees(
 export async function getApprovedDoctorsAndNurses(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     emails?: string[]
   },
 ): Promise<FacilityDoctorOrNurse[]> {
@@ -232,7 +232,7 @@ export async function getApprovedDoctorsAndNurses(
 export function getEmployeesAndInvitees(
   trx: TrxOrDb,
   opts: {
-    organization_id: number
+    organization_id: string
     professions?: Profession[]
     emails?: string[]
   },
@@ -277,7 +277,7 @@ export function getEmployeesAndInvitees(
 
 export async function invite(
   trx: TrxOrDb,
-  organization_id: number,
+  organization_id: string,
   invites: {
     email: string
     profession: Profession
@@ -379,7 +379,7 @@ export function add(
 ) {
   assert(Deno.env.get('IS_TEST'), 'Only allowed in test mode for now')
   return trx
-    .insertInto('organizations')
+    .insertInto('Organization')
     .values({
       ...organization,
       location: (latitude != null && longitude != null)

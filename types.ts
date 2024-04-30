@@ -71,14 +71,14 @@ export type PatientConversationState =
   | 'onboarded:appointment_scheduled'
   | 'onboarded:cancel_appointment'
   | 'onboarded:main_menu'
-  | 'find_nearest_facility:share_location'
-  | 'find_nearest_facility:got_location'
-  | 'find_nearest_facility:send_facility_location'
+  | 'find_nearest_organization:share_location'
+  | 'find_nearest_organization:got_location'
+  | 'find_nearest_organization:send_organization_location'
   | 'other_end_of_demo'
 
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<number>
-  nearest_facility_id: Maybe<number>
+  nearest_organization_id: Maybe<number>
   completed_intake: boolean
   address_id: Maybe<number>
   unregistered_primary_doctor_name: Maybe<string>
@@ -117,7 +117,7 @@ export type RenderedPatient =
     description: string | null
     // age_formatted: Maybe<string> // TODO: implement
     avatar_url: string | null
-    nearest_facility: string | null
+    nearest_organization: string | null
     last_visited: null // TODO: implement
     location: {
       longitude: number | null
@@ -225,8 +225,8 @@ export type PatientIntake =
   & {
     id: number
     avatar_url: Maybe<string>
-    nearest_facility_name: Maybe<string>
-    nearest_facility_address: Maybe<string>
+    nearest_organization_name: Maybe<string>
+    nearest_organization_address: Maybe<string>
     primary_doctor_name: Maybe<string>
     age?: RenderedPatientAge
     address: {
@@ -246,7 +246,7 @@ export type PatientIntake =
     | 'ethnicity'
     | 'date_of_birth'
     | 'national_id_number'
-    | 'nearest_facility_id'
+    | 'nearest_organization_id'
     | 'completed_intake'
     | 'intake_steps_completed'
     | 'primary_doctor_id'
@@ -367,8 +367,8 @@ export type PatientState = {
   }
   created_at: Date
   updated_at: Date
-  nearest_facilities?: HasId<PatientNearestFacility>[]
-  nearest_facility_name?: string
+  nearest_organizations?: HasId<PatientNearestFacility>[]
+  nearest_organization_name?: string
   selectedFacility?: FacilityWithAddress
 }
 
@@ -966,12 +966,12 @@ export type GoogleProfile = {
 export type Employee = {
   health_worker_id: integer
   profession: Profession
-  facility_id: integer
+  organization_id: integer
 }
 
 export type HealthWorkerInvitee = {
   email: string
-  facility_id: integer
+  organization_id: integer
   profession: Profession
 }
 
@@ -1029,7 +1029,7 @@ export type FacilityEmployeeInvitee = {
 export type FacilityDevice = {
   device_id: number
   serial_number?: string
-  facility_id: number
+  organization_id: number
   created_by: number
 }
 
@@ -1265,9 +1265,9 @@ export type EmployeeInfo = {
   registration_needed: SqlBool
   registration_pending_approval: SqlBool
   address: Maybe<string>
-  facility_address: string | null
-  facility_id: number
-  facility_name: string
+  organization_address: string | null
+  organization_id: number
+  organization_name: string
   professions: Profession[]
   documents: {
     name: string
@@ -1290,7 +1290,7 @@ export type RenderedDoctorReviewBase = {
     profession: 'nurse' | 'doctor'
     name: string
     avatar_url: string | null
-    facility: {
+    organization: {
       id: number
       name: string
     }
@@ -1315,7 +1315,7 @@ export type RenderedDoctorReviewRequestOfSpecificDoctor =
   }
 
 export type HealthWorkerEmployment = {
-  facility: {
+  organization: {
     id: number
     name: string
     address: string | null
@@ -1351,7 +1351,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
   refresh_token: string
   expires_at: Date | string
   employment: HealthWorkerEmployment[]
-  default_facility_id: number | null
+  default_organization_id: number | null
   open_encounters: RenderedPatientEncounter[]
   reviews: {
     requested: RenderedDoctorReviewRequestOfSpecificDoctor[]
@@ -1360,7 +1360,7 @@ export type PossiblyEmployedHealthWorker = HealthWorker & {
 }
 
 export type EmployedHealthWorker = PossiblyEmployedHealthWorker & {
-  default_facility_id: number
+  default_organization_id: number
 }
 
 export type HealthWorkerWithGoogleTokens =
@@ -1489,7 +1489,7 @@ export type ProviderAppointment = {
   end: ParsedDateTime
   providers?: Provider[]
   physicalLocation?: {
-    facility: HasId<Facility>
+    organization: HasId<Facility>
   }
   virtualLocation?: {
     href: string
@@ -2091,7 +2091,7 @@ export type PatientEncounterProvider = {
 }
 
 export type WaitingRoom = {
-  facility_id: number
+  organization_id: number
   patient_encounter_id: number
 }
 
@@ -2137,7 +2137,7 @@ export type RenderedWaitingRoom = {
 export type RenderedPatientEncounterProvider = {
   patient_encounter_provider_id: number
   employment_id: number
-  facility_id: number
+  organization_id: number
   profession: Profession
   health_worker_id: number
   health_worker_name: string
@@ -2161,7 +2161,7 @@ export type RenderedPatientEncounter = {
   patient_id: number
   appointment_id: null | number
   waiting_room_id: null | number
-  waiting_room_facility_id: null | number
+  waiting_room_organization_id: null | number
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
   examinations: RenderedPatientEncounterExamination[]
@@ -2303,7 +2303,7 @@ export type RenderedPatientExamination = {
 export type DatabaseSchema = DB
 export type RenderedRequestFormValues = {
   id: null | number
-  facility: null | {
+  organization: null | {
     id: number
     name: string
     address: string | null

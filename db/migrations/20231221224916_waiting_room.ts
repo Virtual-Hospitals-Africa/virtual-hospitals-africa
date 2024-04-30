@@ -68,8 +68,9 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn(
         'organization_id',
-        'integer',
-        (col) => col.notNull().references('organizations.id').onDelete('cascade'),
+        'uuid',
+        (col) =>
+          col.notNull().references('Organization.id').onDelete('cascade'),
       )
       .addColumn(
         'patient_encounter_id',

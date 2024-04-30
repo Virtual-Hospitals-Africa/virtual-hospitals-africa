@@ -18,31 +18,31 @@ import * as $app_devices from './routes/app/devices.tsx'
 import * as $app_drugs_json from './routes/app/drugs.json.tsx'
 import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
-import * as $app_facilities from './routes/app/facilities.tsx'
-import * as $app_facilities_facility_id_ from './routes/app/facilities/[facility_id].tsx'
-import * as $app_facilities_facility_id_middleware from './routes/app/facilities/[facility_id]/_middleware.ts'
-import * as $app_facilities_facility_id_employees from './routes/app/facilities/[facility_id]/employees.tsx'
-import * as $app_facilities_facility_id_employees_health_worker_id_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx'
-import * as $app_facilities_facility_id_employees_health_worker_id_approve from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/approve.tsx'
-import * as $app_facilities_facility_id_employees_health_worker_id_media_mediaId_ from './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx'
-import * as $app_facilities_facility_id_employees_invite from './routes/app/facilities/[facility_id]/employees/invite.tsx'
-import * as $app_facilities_facility_id_inventory from './routes/app/facilities/[facility_id]/inventory.tsx'
-import * as $app_facilities_facility_id_inventory_add_consumable from './routes/app/facilities/[facility_id]/inventory/add_consumable.tsx'
-import * as $app_facilities_facility_id_inventory_add_device from './routes/app/facilities/[facility_id]/inventory/add_device.tsx'
-import * as $app_facilities_facility_id_inventory_add_medicine from './routes/app/facilities/[facility_id]/inventory/add_medicine.tsx'
-import * as $app_facilities_facility_id_inventory_add_procurer from './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx'
-import * as $app_facilities_facility_id_inventory_consume from './routes/app/facilities/[facility_id]/inventory/consume.tsx'
-import * as $app_facilities_facility_id_inventory_history from './routes/app/facilities/[facility_id]/inventory/history.tsx'
-import * as $app_facilities_facility_id_patients from './routes/app/facilities/[facility_id]/patients.tsx'
-import * as $app_facilities_facility_id_register from './routes/app/facilities/[facility_id]/register.tsx'
-import * as $app_facilities_facility_id_register_step_ from './routes/app/facilities/[facility_id]/register/[step].tsx'
-import * as $app_facilities_facility_id_waiting_room from './routes/app/facilities/[facility_id]/waiting_room.tsx'
-import * as $app_facilities_facility_id_waiting_room_add from './routes/app/facilities/[facility_id]/waiting_room/add.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
 import * as $app_manufactured_medications from './routes/app/manufactured_medications.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
+import * as $app_organizations from './routes/app/organizations.tsx'
+import * as $app_organizations_organization_id_ from './routes/app/organizations/[organization_id].tsx'
+import * as $app_organizations_organization_id_middleware from './routes/app/organizations/[organization_id]/_middleware.ts'
+import * as $app_organizations_organization_id_employees from './routes/app/organizations/[organization_id]/employees.tsx'
+import * as $app_organizations_organization_id_employees_health_worker_id_ from './routes/app/organizations/[organization_id]/employees/[health_worker_id].tsx'
+import * as $app_organizations_organization_id_employees_health_worker_id_approve from './routes/app/organizations/[organization_id]/employees/[health_worker_id]/approve.tsx'
+import * as $app_organizations_organization_id_employees_health_worker_id_media_mediaId_ from './routes/app/organizations/[organization_id]/employees/[health_worker_id]/media/[mediaId].tsx'
+import * as $app_organizations_organization_id_employees_invite from './routes/app/organizations/[organization_id]/employees/invite.tsx'
+import * as $app_organizations_organization_id_inventory from './routes/app/organizations/[organization_id]/inventory.tsx'
+import * as $app_organizations_organization_id_inventory_add_consumable from './routes/app/organizations/[organization_id]/inventory/add_consumable.tsx'
+import * as $app_organizations_organization_id_inventory_add_device from './routes/app/organizations/[organization_id]/inventory/add_device.tsx'
+import * as $app_organizations_organization_id_inventory_add_medicine from './routes/app/organizations/[organization_id]/inventory/add_medicine.tsx'
+import * as $app_organizations_organization_id_inventory_add_procurer from './routes/app/organizations/[organization_id]/inventory/add_procurer.tsx'
+import * as $app_organizations_organization_id_inventory_consume from './routes/app/organizations/[organization_id]/inventory/consume.tsx'
+import * as $app_organizations_organization_id_inventory_history from './routes/app/organizations/[organization_id]/inventory/history.tsx'
+import * as $app_organizations_organization_id_patients from './routes/app/organizations/[organization_id]/patients.tsx'
+import * as $app_organizations_organization_id_register from './routes/app/organizations/[organization_id]/register.tsx'
+import * as $app_organizations_organization_id_register_step_ from './routes/app/organizations/[organization_id]/register/[step].tsx'
+import * as $app_organizations_organization_id_waiting_room from './routes/app/organizations/[organization_id]/waiting_room.tsx'
+import * as $app_organizations_organization_id_waiting_room_add from './routes/app/organizations/[organization_id]/waiting_room/add.tsx'
 import * as $app_patients from './routes/app/patients.tsx'
 import * as $app_patients_patient_id_ from './routes/app/patients/[patient_id].tsx'
 import * as $app_patients_patient_id_avatar from './routes/app/patients/[patient_id]/avatar.tsx'
@@ -203,49 +203,50 @@ const manifest = {
     './routes/app/drugs.json.tsx': $app_drugs_json,
     './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
-    './routes/app/facilities.tsx': $app_facilities,
-    './routes/app/facilities/[facility_id].tsx': $app_facilities_facility_id_,
-    './routes/app/facilities/[facility_id]/_middleware.ts':
-      $app_facilities_facility_id_middleware,
-    './routes/app/facilities/[facility_id]/employees.tsx':
-      $app_facilities_facility_id_employees,
-    './routes/app/facilities/[facility_id]/employees/[health_worker_id].tsx':
-      $app_facilities_facility_id_employees_health_worker_id_,
-    './routes/app/facilities/[facility_id]/employees/[health_worker_id]/approve.tsx':
-      $app_facilities_facility_id_employees_health_worker_id_approve,
-    './routes/app/facilities/[facility_id]/employees/[health_worker_id]/media/[mediaId].tsx':
-      $app_facilities_facility_id_employees_health_worker_id_media_mediaId_,
-    './routes/app/facilities/[facility_id]/employees/invite.tsx':
-      $app_facilities_facility_id_employees_invite,
-    './routes/app/facilities/[facility_id]/inventory.tsx':
-      $app_facilities_facility_id_inventory,
-    './routes/app/facilities/[facility_id]/inventory/add_consumable.tsx':
-      $app_facilities_facility_id_inventory_add_consumable,
-    './routes/app/facilities/[facility_id]/inventory/add_device.tsx':
-      $app_facilities_facility_id_inventory_add_device,
-    './routes/app/facilities/[facility_id]/inventory/add_medicine.tsx':
-      $app_facilities_facility_id_inventory_add_medicine,
-    './routes/app/facilities/[facility_id]/inventory/add_procurer.tsx':
-      $app_facilities_facility_id_inventory_add_procurer,
-    './routes/app/facilities/[facility_id]/inventory/consume.tsx':
-      $app_facilities_facility_id_inventory_consume,
-    './routes/app/facilities/[facility_id]/inventory/history.tsx':
-      $app_facilities_facility_id_inventory_history,
-    './routes/app/facilities/[facility_id]/patients.tsx':
-      $app_facilities_facility_id_patients,
-    './routes/app/facilities/[facility_id]/register.tsx':
-      $app_facilities_facility_id_register,
-    './routes/app/facilities/[facility_id]/register/[step].tsx':
-      $app_facilities_facility_id_register_step_,
-    './routes/app/facilities/[facility_id]/waiting_room.tsx':
-      $app_facilities_facility_id_waiting_room,
-    './routes/app/facilities/[facility_id]/waiting_room/add.tsx':
-      $app_facilities_facility_id_waiting_room_add,
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
     './routes/app/manufactured_medications.tsx': $app_manufactured_medications,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
+    './routes/app/organizations.tsx': $app_organizations,
+    './routes/app/organizations/[organization_id].tsx':
+      $app_organizations_organization_id_,
+    './routes/app/organizations/[organization_id]/_middleware.ts':
+      $app_organizations_organization_id_middleware,
+    './routes/app/organizations/[organization_id]/employees.tsx':
+      $app_organizations_organization_id_employees,
+    './routes/app/organizations/[organization_id]/employees/[health_worker_id].tsx':
+      $app_organizations_organization_id_employees_health_worker_id_,
+    './routes/app/organizations/[organization_id]/employees/[health_worker_id]/approve.tsx':
+      $app_organizations_organization_id_employees_health_worker_id_approve,
+    './routes/app/organizations/[organization_id]/employees/[health_worker_id]/media/[mediaId].tsx':
+      $app_organizations_organization_id_employees_health_worker_id_media_mediaId_,
+    './routes/app/organizations/[organization_id]/employees/invite.tsx':
+      $app_organizations_organization_id_employees_invite,
+    './routes/app/organizations/[organization_id]/inventory.tsx':
+      $app_organizations_organization_id_inventory,
+    './routes/app/organizations/[organization_id]/inventory/add_consumable.tsx':
+      $app_organizations_organization_id_inventory_add_consumable,
+    './routes/app/organizations/[organization_id]/inventory/add_device.tsx':
+      $app_organizations_organization_id_inventory_add_device,
+    './routes/app/organizations/[organization_id]/inventory/add_medicine.tsx':
+      $app_organizations_organization_id_inventory_add_medicine,
+    './routes/app/organizations/[organization_id]/inventory/add_procurer.tsx':
+      $app_organizations_organization_id_inventory_add_procurer,
+    './routes/app/organizations/[organization_id]/inventory/consume.tsx':
+      $app_organizations_organization_id_inventory_consume,
+    './routes/app/organizations/[organization_id]/inventory/history.tsx':
+      $app_organizations_organization_id_inventory_history,
+    './routes/app/organizations/[organization_id]/patients.tsx':
+      $app_organizations_organization_id_patients,
+    './routes/app/organizations/[organization_id]/register.tsx':
+      $app_organizations_organization_id_register,
+    './routes/app/organizations/[organization_id]/register/[step].tsx':
+      $app_organizations_organization_id_register_step_,
+    './routes/app/organizations/[organization_id]/waiting_room.tsx':
+      $app_organizations_organization_id_waiting_room,
+    './routes/app/organizations/[organization_id]/waiting_room/add.tsx':
+      $app_organizations_organization_id_waiting_room_add,
     './routes/app/patients.tsx': $app_patients,
     './routes/app/patients/[patient_id].tsx': $app_patients_patient_id_,
     './routes/app/patients/[patient_id]/avatar.tsx':

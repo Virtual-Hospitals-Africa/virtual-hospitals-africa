@@ -47,7 +47,7 @@ export function ofHealthWorker(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'organizations as requested_by_organization',
+      'Organization as requested_by_organization',
       'requested_by_employee.organization_id',
       'requested_by_organization.id',
     )
@@ -132,7 +132,7 @@ export function requests(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'organizations as requested_by_organization',
+      'Organization as requested_by_organization',
       'requested_by_employee.organization_id',
       'requested_by_organization.id',
     )
@@ -381,8 +381,12 @@ export function getRequest(
       'id',
       'requester_notes',
       jsonObjectFrom(
-        eb.selectFrom('organizations')
-          .whereRef('organizations.id', '=', 'doctor_review_requests.organization_id')
+        eb.selectFrom('Organization')
+          .whereRef(
+            'Organization.id',
+            '=',
+            'doctor_review_requests.organization_id',
+          )
           .select([
             'id',
             'name',

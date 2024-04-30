@@ -21,6 +21,7 @@
     "db:migrate:redo:all": "deno task run:trusted db/redo_all.ts",
 
     "db:local": "./db/local.sh",
+    "db:reset": "deno task run:trusted ./db/reset.ts",
 
     "db:seeds:dump": "deno task run:trusted db/seed/dump.ts",
     "db:seeds:load": "deno task run:trusted db/seed/load.ts",

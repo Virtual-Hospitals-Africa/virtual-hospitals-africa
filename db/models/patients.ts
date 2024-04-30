@@ -63,7 +63,11 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
 const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('patients')
-    .leftJoin('organizations', 'organizations.id', 'patients.nearest_organization_id')
+    .leftJoin(
+      'Organization',
+      'Organization.id',
+      'patients.nearest_organization_id',
+    )
     .select((eb) => [
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),
@@ -327,7 +331,11 @@ export function getIntake(
   return trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
-    .leftJoin('organizations', 'organizations.id', 'patients.nearest_organization_id')
+    .leftJoin(
+      'organizations',
+      'Organization.id',
+      'patients.nearest_organization_id',
+    )
     .leftJoin(
       'employment',
       'employment.id',
@@ -396,7 +404,11 @@ export async function getIntakeReview(
   const getting_review = trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
-    .leftJoin('organizations', 'organizations.id', 'patients.nearest_organization_id')
+    .leftJoin(
+      'organizations',
+      'Organization.id',
+      'patients.nearest_organization_id',
+    )
     .leftJoin(
       'employment',
       'employment.id',

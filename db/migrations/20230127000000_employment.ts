@@ -19,9 +19,9 @@ export async function up(db: Kysely<unknown>) {
         col.notNull()
           .references('health_workers.id')
           .onDelete('cascade'))
-        .addColumn('organization_id', 'integer', (col) =>
+        .addColumn('organization_id', 'uuid', (col) =>
           col.notNull()
-            .references('organizations.id')
+            .references('Organization.id')
             .onDelete('cascade'))
         .addColumn(
           'profession',
@@ -40,7 +40,7 @@ export async function up(db: Kysely<unknown>) {
     'provider_calendars',
     (qb) =>
       qb.addColumn('health_worker_id', 'integer', (col) => col.notNull())
-        .addColumn('organization_id', 'integer', (col) => col.notNull())
+        .addColumn('organization_id', 'uuid', (col) => col.notNull())
         .addColumn(
           'gcal_appointments_calendar_id',
           'varchar(255)',

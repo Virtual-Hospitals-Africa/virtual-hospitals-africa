@@ -16,7 +16,7 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
 
 const seedTargets = Object.keys(seeds).sort()
 
-async function load(target?: string) {
+export async function load(target?: string) {
   function targetError() {
     console.error(
       `Please specify a valid target as in\n\n  deno task db:seeds:load ${

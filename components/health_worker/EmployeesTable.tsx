@@ -13,7 +13,7 @@ type EmployeesTableProps = {
   isAdmin: boolean
   employees: FacilityEmployeeOrInvitee[]
   pathname: string
-  organization_id: number
+  organization_id: string
   health_worker_id: number
 }
 

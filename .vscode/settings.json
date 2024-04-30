@@ -7,5 +7,9 @@
   },
   "[dockercompose]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "medplum/**": true
   }
 }

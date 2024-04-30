@@ -7,9 +7,9 @@ export function up(db: Kysely<unknown>) {
     'health_worker_invitees',
     (qb) =>
       qb.addColumn('email', 'varchar(255)', (col) => col.notNull())
-        .addColumn('organization_id', 'integer', (col) =>
+        .addColumn('organization_id', 'uuid', (col) =>
           col.notNull()
-            .references('organizations.id')
+            .references('Organization.id')
             .onDelete('cascade'))
         .addColumn(
           'profession',

@@ -5,7 +5,7 @@ import { redis } from '../../external-clients/redis.ts'
 import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
-import * as facilities from '../../db/models/facilities.ts'
+import * as organizations from '../../db/models/organizations.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
@@ -31,9 +31,10 @@ export const route = `https://localhost:8005`
 
 export async function addTestHealthWorker(
   trx: TrxOrDb,
-  { scenario, organization_id = 1, health_worker_attrs }: TestHealthWorkerOpts = {
-    scenario: 'base',
-  },
+  { scenario, organization_id = 1, health_worker_attrs }: TestHealthWorkerOpts =
+    {
+      scenario: 'base',
+    },
 ) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
     employee_id?: number
@@ -306,20 +307,20 @@ itUsesTrxAnd.rejects = (
 
 export function withTestFacility(
   trx: TrxOrDb,
-  opts: (organization_id: number) => Promise<void>,
+  opts: (organization_id: string) => Promise<void>,
   callback?: undefined,
 ): Promise<void>
 
 export function withTestFacility(
   trx: TrxOrDb,
   opts: { kind: 'virtual' },
-  callback: (organization_id: number) => Promise<void>,
+  callback: (organization_id: string) => Promise<void>,
 ): Promise<void>
 
 export async function withTestFacility(
   trx: TrxOrDb,
-  opts: { kind: 'virtual' } | ((organization_id: number) => Promise<void>),
-  callback?: (organization_id: number) => Promise<void>,
+  opts: { kind: 'virtual' } | ((organization_id: string) => Promise<void>),
+  callback?: (organization_id: string) => Promise<void>,
 ) {
   let kind: 'virtual' | 'physical' = 'physical'
   if (typeof opts === 'function') {
@@ -327,7 +328,7 @@ export async function withTestFacility(
   } else {
     kind = opts.kind
   }
-  const organization = await facilities.add(trx, {
+  const organization = await organizations.add(trx, {
     name: kind === 'physical' ? 'Test Clinic' : 'Test Virtual Hospital',
     category: kind === 'physical' ? 'Clinic' : 'Virtual Hospital',
     address: kind === 'physical' ? '123 Test St' : null,

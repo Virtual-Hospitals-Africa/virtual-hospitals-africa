@@ -45,7 +45,9 @@ export default function ManufacturedMedicationSearch(
   )
 }
 
-export function AddMedicineSearch({ organization_id }: { organization_id: number }) {
+export function AddMedicineSearch(
+  { organization_id }: { organization_id: string },
+) {
   return (
     <ManufacturedMedicationSearch
       optionHref={(option) =>

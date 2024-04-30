@@ -34,7 +34,7 @@ const columns: TableColumn<RenderedFacilityDevice>[] = [
 export default function FacilityDevicesTable(
   { devices, organization_id, isAdmin }: {
     devices: RenderedFacilityDevice[]
-    organization_id: number
+    organization_id: string
     isAdmin: boolean
   },
 ) {
