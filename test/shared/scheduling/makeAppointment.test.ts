@@ -1,6 +1,6 @@
 import { describe } from 'std/testing/bdd.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'npm:sinon'
+import sinon from 'sinon'
 import * as makeAppointment from '../../../shared/scheduling/makeAppointment.ts'
 import * as appointments from '../../../db/models/appointments.ts'
 import * as patients from '../../../db/models/patients.ts'

@@ -375,9 +375,9 @@ export type PatientState = {
   }
   created_at: Date
   updated_at: Date
-  nearest_organizations?: HasId<PatientNearestOrganization>[]
+  nearest_organizations?: PatientNearestOrganization[]
   nearest_organization_name?: string
-  selected_organization?: OrganizationWithAddress
+  selected_organization?: PatientNearestOrganization
 }
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
@@ -1604,7 +1604,10 @@ export type OrganizationWithAddress =
     address: string
   }
 
-export type PatientNearestOrganization = OrganizationWithAddress & {
+export type PatientNearestOrganization = Location & {
+  organization_id: string
+  organization_name: string
+  address: string
   walking_distance: null | number
   distance: number
   vha: boolean

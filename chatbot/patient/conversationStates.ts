@@ -5,7 +5,6 @@ import {
   ConversationStateHandlerListActionSection,
   ConversationStates,
   Location,
-  Maybe,
   PatientConversationState,
   PatientState,
   SchedulingAppointmentOfferedTime,
@@ -32,7 +31,6 @@ import {
 import uniq from '../../util/uniq.ts'
 import { pickPatient } from './util.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
-import { OrganizationWithAddress } from '../../types.ts'
 
 const conversationStates: ConversationStates<
   PatientConversationState,
@@ -218,12 +216,12 @@ const conversationStates: ConversationStates<
           : organization.address
 
         const organizationName = organization.vha
-          ? `${organization.name} (VHA)`
-          : organization.name
+          ? `${organization.organization_name} (VHA)`
+          : organization.organization_name
         return {
           section: 'Town Name Here',
           row: {
-            id: `${organization.id}`,
+            id: `${organization.organization_id}`,
             title: capLengthAtWhatsAppTitle(organizationName),
             description: capLengthAtWhatsAppDescription(description),
             nextState:
@@ -270,11 +268,11 @@ const conversationStates: ConversationStates<
 
       const locationMessage: WhatsAppSingleSendable = {
         type: 'location',
-        messageBody: selected_organization.name,
+        messageBody: selected_organization.organization_name,
         location: {
           longitude: selected_organization.longitude,
           latitude: selected_organization.latitude,
-          name: selected_organization.name,
+          name: selected_organization.organization_name,
           address: selected_organization.address,
         },
       }
@@ -297,10 +295,10 @@ const conversationStates: ConversationStates<
         : 'not_onboarded:welcome'
     },
     onEnter(_trx, patientState) {
-      const selected_organization: Maybe<OrganizationWithAddress> = patientState
+      const selected_organization = patientState
         .nearest_organizations
         ?.find(
-          (organization) => String(organization.id) === patientState.body,
+          (organization) => organization.organization_id === patientState.body,
         )
       return Promise.resolve({ ...patientState, selected_organization })
     },

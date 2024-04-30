@@ -53,7 +53,6 @@ export default function findMatchingState<
       assert(messageBody)
       return findMatchingOption(currentState, messageBody)
     }
-
     case 'action': {
       assert(messageBody)
       const action = currentState.action(userState)

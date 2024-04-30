@@ -1,6 +1,10 @@
 #! /usr/bin/env bash
 set -eo pipefail
 
+VHA_SERVER_PORT=8005
+MEDPLUM_SERVER_PORT=8006
+MEDPLUM_SERVER_URL="http://localhost:$MEDPLUM_SERVER_PORT"
+
 watch_mode=false
 [[ "$1" == "--watch" ]] && {
   watch_mode=true
@@ -14,16 +18,15 @@ migrate_check=true
 }
 
 # Set up a temporary file for the test server output so we can check if it's ready
-test_server_output=$(mktemp)
-echo "Check server output via:"
-echo "cat $test_server_output"
-# trap 'rm -f $test_server_output' EXIT
+test_vha_server_output=$(mktemp)
+test_medplum_server_output=$(mktemp)
 
-kill_test_server() {
-  ./scripts/kill_process_on_port.sh 8005
+kill_test_servers() {
+  ./scripts/kill_process_on_port.sh $VHA_SERVER_PORT
+  ./scripts/kill_process_on_port.sh $MEDPLUM_SERVER_PORT
 }
 
-start_test_server() {
+start_vha_test_server() {
   if $watch_mode; then
     deno task start
   else
@@ -32,21 +35,39 @@ start_test_server() {
 }
 
 # In watch mode, this may happen several times
-wait_until_test_server_ready() {
-  while ! grep -q "Virtual Hospitals Africa ready" "$test_server_output"; do
+wait_until_vha_test_server_ready() {
+  while ! grep -q "Virtual Hospitals Africa ready" "$test_vha_server_output"; do
     # Deno prints "error" with color codes, so we remove them before checking
     # shellcheck disable=SC2002
-    if cat "$test_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
-      cat "$test_server_output"
+    if cat "$test_vha_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
+      cat "$test_vha_server_output"
       exit 1
     fi
     sleep 0.1
   done
-  truncate -s 0 "$test_server_output"
+  truncate -s 0 "$test_vha_server_output"
+}
+
+wait_until_medplum_test_server_ready() {
+  while ! grep -q "Server started" "$test_medplum_server_output"; do
+    # Deno prints "error" with color codes, so we remove them before checking
+    # shellcheck disable=SC2002
+    if cat "$test_medplum_server_output" | sed -r 's/\x1b\[[^@-~]*[@-~]//g' | grep -q "^error:"; then
+      cat "$test_medplum_server_output"
+      exit 1
+    fi
+    sleep 0.1
+  done
+  truncate -s 0 "$test_medplum_server_output"
+}
+
+wait_until_test_servers_ready() {
+  wait_until_vha_test_server_ready
+  wait_until_medplum_test_server_ready
 }
 
 run_tests() {
-  DENO_TLS_CA_STORE=system IS_TEST=true \
+  DENO_TLS_CA_STORE=system IS_TEST=true MEDPLUM_SERVER_URL=$MEDPLUM_SERVER_URL \
   deno test \
     -A \
     --unstable-temporal \
@@ -57,21 +78,27 @@ run_tests() {
     "$@"
 }
 
-# Ensure there is no prior test server, that the database is up to date, and that the log file is empty
-kill_test_server
+# Ensure there is no prior test servers, that the database is up to date, and that the log file is empty
+kill_test_servers
 if $migrate_check; then
-  deno task db:migrate:check
+  deno task db:migrate check
 fi
 rm -f test_server.log
 
-# Start the test server
-LOG_FILE=test_server.log PORT=8005 IS_TEST=true start_test_server >> "$test_server_output" 2>&1 &
-trap "kill_test_server" EXIT
+# Start the test servers
+IS_TEST=true LOG_FILE=test_server.log PORT=8005 MEDPLUM_SERVER_URL=$MEDPLUM_SERVER_URL start_vha_test_server >> "$test_vha_server_output" 2>&1 &
+IS_TEST=true MEDPLUM_SERVER_PORT=$MEDPLUM_SERVER_PORT deno task medplum:server >> "$test_medplum_server_output" 2>&1 &
+trap "kill_test_servers" EXIT
 
-wait_until_test_server_ready
+wait_until_test_servers_ready
 
 if ! $watch_mode; then
-  run_tests "$@"
+  run_tests "$@" || {
+    echo "Tests failed. Dumping server log:"
+    cat "$test_vha_server_output"
+    cat "$test_medplum_server_output"
+    exit 1
+  }
   exit 0
 fi
 
@@ -81,6 +108,6 @@ fi
 while true; do
   run_tests "$@" &
   tests_pid=$!
-  wait_until_test_server_ready
+  wait_until_test_servers_ready
   pkill -TERM -P "$tests_pid" || true
 done

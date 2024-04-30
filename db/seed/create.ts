@@ -25,13 +25,15 @@ export function create(
       }
     }
   }
-  async function load(opts?: { reload?: boolean }) {
+  async function load({ reload }: { reload?: boolean } = {}) {
     const all_seeds_present = table_names.every((table_name) => {
       const seed_name = `${table_name}.tsv`
       return seeds.includes(seed_name)
     })
-    if (!all_seeds_present || opts?.reload) {
-      await drop()
+    if (!all_seeds_present || reload) {
+      if (!opts?.never_dump) {
+        await drop()
+      }
       return generate(db)
     }
 

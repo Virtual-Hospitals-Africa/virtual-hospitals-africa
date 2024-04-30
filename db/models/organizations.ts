@@ -413,6 +413,7 @@ export async function add(
   trx: TrxOrDb,
   { id, name, category, address, latitude, longitude }: OrganizationsData,
 ) {
+  console.log(latitude, longitude)
   if (!category) {
     console.warn(`Skipping, no category found for organization: ${name}`)
     return
@@ -476,7 +477,7 @@ export async function add(
       system: 'http://terminology.hl7.org/CodeSystem/v3-RoleCode',
     }]
 
-    await medplum.createResource('Location', {
+    const locationResponse = await medplum.createResource('Location', {
       status,
       name,
       type: [{ coding }],
@@ -501,6 +502,16 @@ export async function add(
         display: name,
       },
     })
+    assertEquals(locationResponse.position.longitude, longitude)
+    assertEquals(locationResponse.position.latitude, latitude)
+    const location = await trx.selectFrom('Location')
+      .where('id', '=', locationResponse.id)
+      .select('near')
+      .executeTakeFirstOrThrow()
+
+    const near = JSON.parse(location.near!)
+    assertEquals(near.longitude, longitude)
+    assertEquals(near.latitude, latitude)
   }
 
   return createdOrganization

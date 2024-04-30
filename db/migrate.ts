@@ -2,7 +2,11 @@
 import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
+import { run as runMedplumServer } from '../external-clients/medplum/server.ts'
+import * as seed from './seed/run.ts'
 import { assert } from 'std/assert/assert.ts'
+import createMigration from './create-migration.ts'
+import { delay } from 'std/async/delay.ts'
 
 const migrations: Record<
   string,
@@ -90,9 +94,29 @@ export const migrate = {
     console.log('\nMigrating up to latest...')
     return migrator.migrateToLatest()
   },
+  async all() {
+    console.log('Running medplum migrations...')
+    const medplum_server = await runMedplumServer()
+
+    console.log('Running VHA migrations...')
+    logMigrationResults(await migrate.latest())
+
+    console.log('Loading seeds...')
+    await seed.run({ fn: 'load' })
+
+    console.log('Done!')
+    medplum_server.kill()
+
+    // See if we can avoid hanging. Locally this works, but not in CI.
+    await delay(500)
+    medplum_server.unref()
+  },
+  create(migration_name: string) {
+    return createMigration(migration_name)
+  },
 }
 
-export function logMigrationResults({ error, results }: any) {
+export function logMigrationResults({ error, results }: any = {}) {
   results?.forEach((it: any) => {
     if (it.status === 'Success') {
       console.log(`migration "${it.migrationName}" was executed successfully`)

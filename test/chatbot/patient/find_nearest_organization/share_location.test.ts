@@ -1,7 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'npm:sinon'
+import sinon from 'sinon'
 import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
@@ -61,13 +61,19 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(callArgs.messages.action.sections[0].title, 'Town Name Here')
 
-    assertEquals(callArgs.messages.action.sections[0].rows[0].id, '658')
+    assertEquals(
+      callArgs.messages.action.sections[0].rows[0].id,
+      '5c5d42e7-b0e6-48f9-a434-89032cf2ff5d',
+    )
     assertEquals(
       callArgs.messages.action.sections[0].rows[0].title,
       'Arcadia Clinic',
     )
 
-    assertEquals(callArgs.messages.action.sections[0].rows[1].id, '659')
+    assertEquals(
+      callArgs.messages.action.sections[0].rows[1].id,
+      '10fadd5d-c1af-48dc-9a80-3490fee19a3d',
+    )
     assertEquals(
       callArgs.messages.action.sections[0].rows[1].title,
       'Braeside Clinic',

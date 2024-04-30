@@ -1,7 +1,7 @@
 import { describe, it } from 'std/testing/bdd.ts'
 import { assert } from 'std/assert/assert.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import sinon from 'npm:sinon'
+import sinon from 'sinon'
 import db from '../../../../db/db.ts'
 import respond from '../../../../chatbot/respond.ts'
 import * as conversations from '../../../../db/models/conversations.ts'
@@ -13,7 +13,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
     // Step 1: share location
-    await patients.upsert(db, {
+    const p = await patients.upsert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',
@@ -21,6 +21,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       date_of_birth: '2023-01-01',
       national_id_number: randomNationalId(),
     })
+    console.log('patient', p)
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
@@ -43,12 +44,25 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     }
 
     await respond(fakeWhatsAppOne)
+    assertEquals(
+      fakeWhatsAppOne.sendMessages.firstCall.args[0].messages.action.sections[0]
+        .rows[0].id,
+      '5c5d42e7-b0e6-48f9-a434-89032cf2ff5d',
+    )
+
+    const nearest = await db.selectFrom('patient_nearest_organizations').where(
+      'patient_id',
+      '=',
+      p.id,
+    ).selectAll().executeTakeFirstOrThrow()
+
+    console.log(nearest.nearest_organizations)
 
     // Step 2: select organization id
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '658',
+      body: '5c5d42e7-b0e6-48f9-a434-89032cf2ff5d',
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })

@@ -61,8 +61,8 @@ async function importDataFromCSV(db: Kysely<any>) {
         name,
         address,
         category: category_capitalized,
-        latitude: parseInt(row.latitude),
-        longitude: parseInt(row.longitude),
+        latitude: Number(row.latitude),
+        longitude: Number(row.longitude),
       })
     },
   )

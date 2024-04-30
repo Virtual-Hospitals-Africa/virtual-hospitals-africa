@@ -19,6 +19,7 @@
       "npm:natural@6.10.4": "npm:natural@6.10.4",
       "npm:postcss@8.4.35": "npm:postcss@8.4.35",
       "npm:sinon": "npm:sinon@17.0.1",
+      "npm:sinon@17.0.1": "npm:sinon@17.0.1",
       "npm:sql-formatter": "npm:sql-formatter@15.3.1",
       "npm:tailwindcss@3.3.5": "npm:tailwindcss@3.3.5_postcss@8.4.35"
     },
@@ -2873,6 +2874,7 @@
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
       "npm:natural@6.10.4",
+      "npm:sinon@17.0.1",
       "npm:tailwindcss@3.3.5"
     ]
   }
