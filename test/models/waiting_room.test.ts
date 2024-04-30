@@ -305,7 +305,7 @@ describe(
                 reason: 'maternity',
               })
               const nurse = await addTestHealthWorker(trx, {
-                organization_id: 1,
+                organization_id: '00000000-0000-0000-0000-000000000001',
                 scenario: 'approved-nurse',
               })
 

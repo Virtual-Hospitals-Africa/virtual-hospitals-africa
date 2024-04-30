@@ -30,23 +30,23 @@ async function inviteVhaStaff(db: Kysely<any>) {
       {
         email,
         profession: 'admin',
-        organization_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
       },
       {
         email,
         profession: 'doctor',
-        organization_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
       },
     ]).concat(vhaVirtualHospitalStaff.flatMap((email) => [
       {
         email,
         profession: 'admin',
-        organization_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       },
       {
         email,
         profession: 'doctor',
-        organization_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       },
     ])),
   )

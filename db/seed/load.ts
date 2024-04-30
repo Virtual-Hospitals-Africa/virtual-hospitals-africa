@@ -4,7 +4,8 @@ import { assert } from 'std/assert/assert.ts'
 const seeds: Record<
   string,
   {
-    load: () => Promise<Deno.CommandOutput>
+    table_names: string[]
+    load: (opts?: { reload?: boolean }) => Promise<Deno.CommandOutput>
     dump: () => Promise<Deno.CommandOutput>
   }
 > = {}
@@ -16,7 +17,11 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
 
 const seedTargets = Object.keys(seeds).sort()
 
-export async function load(target?: string) {
+export async function load({ target, reload, dump }: {
+  target?: string
+  reload?: boolean
+  dump?: boolean
+} = {}) {
   function targetError() {
     console.error(
       `Please specify a valid target as in\n\n  deno task db:seeds:load ${
@@ -38,17 +43,24 @@ export async function load(target?: string) {
     return targetError()
   }
 
-  if (target) {
-    const seed = seeds[findTarget(target)]
-    return seed.load()
-  }
-  for (const seedName of seedTargets) {
+  const targets = target ? [findTarget(target)] : seedTargets
+
+  for (const seedName of targets) {
     const seed = seeds[seedName]
-    await seed.load()
+    await seed.load({ reload })
     console.log(`seeds loaded for ${seedName}`)
+    if (dump) {
+      await seed.dump()
+      console.log(`seeds dumped for ${seedName}`)
+    }
   }
 }
 
 if (import.meta.main) {
-  load(Deno.args[0])
+  const first_non_double_dash = Deno.args.find(arg => !arg.startsWith('--'))
+  load({
+    target: first_non_double_dash,
+    reload: Deno.args.includes('--reload'),
+    dump: Deno.args.includes('--dump'),
+  })
 }

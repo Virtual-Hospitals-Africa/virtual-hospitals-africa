@@ -143,11 +143,11 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
 
       await employment.add(db, [{
-        organization_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
         health_worker_id: nurse.id,
         profession: 'nurse',
       }, {
-        organization_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
         health_worker_id: admin.id,
         profession: 'admin',
       }])

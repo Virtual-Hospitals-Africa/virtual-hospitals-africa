@@ -25,6 +25,7 @@
 
     "db:seeds:dump": "deno task run:trusted db/seed/dump.ts",
     "db:seeds:load": "deno task run:trusted db/seed/load.ts",
+    "db:seeds:reload": "deno task run:trusted db/seed/reload.ts",
 
     "db:drop": "deno task run:trusted db/drop.ts",
     "heroku:chatbot:up": "heroku ps:scale chatbot=1",

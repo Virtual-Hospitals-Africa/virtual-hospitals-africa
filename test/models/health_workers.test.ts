@@ -97,7 +97,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               availability_set: true,
             },
           ],
-          default_organization_id: 1,
+          default_organization_id: '00000000-0000-0000-0000-000000000001',
           id: healthWorker.id,
           name: healthWorker.name,
           access_token: healthWorker.access_token,
@@ -170,14 +170,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [{
           health_worker_id: healthWorker.id,
           profession: 'doctor',
-          organization_id: 2,
+          organization_id: '00000000-0000-0000-0000-000000000002',
         }])
 
         const result = await health_workers.getEmployeeInfo(
           trx,
           {
             health_worker_id: healthWorker.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
           },
         )
 
@@ -213,7 +213,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         const [secondEmployment] = await employment.add(trx, [{
           health_worker_id: healthWorker.id,
           profession: 'nurse',
-          organization_id: 2,
+          organization_id: '00000000-0000-0000-0000-000000000002',
         }])
 
         await nurse_specialties.add(trx, {
@@ -238,7 +238,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           trx,
           {
             health_worker_id: healthWorker.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
           },
         )
 
@@ -278,7 +278,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
         profession: 'nurse',
-        organization_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
       await nurse_specialties.add(trx, {
@@ -320,7 +320,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         trx,
         {
           health_worker_id: healthWorker.id,
-          organization_id: 1,
+          organization_id: '00000000-0000-0000-0000-000000000001',
         },
       )
 

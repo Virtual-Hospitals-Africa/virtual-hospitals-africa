@@ -109,9 +109,9 @@ export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    organization_id?: Maybe<number>
+    organization_id?: Maybe<string>
     professions?: Maybe<Profession[]>
-    prioritize_organization_id?: Maybe<number>
+    prioritize_organization_id?: Maybe<string>
     organization_kind?: Maybe<'virtual' | 'physical'>
   },
 ) {
@@ -134,7 +134,7 @@ export async function search(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'organizations',
+      'Organization',
       'employment.organization_id',
       'Organization.id',
     )
@@ -146,7 +146,7 @@ export async function search(
       'health_workers.name',
       'employment.organization_id',
       'employment.profession',
-      'organizations.name as organization_name',
+      'Organization.name as organization_name',
     ])
     .where('health_workers.name', 'is not', null)
     .where('profession', 'in', opts.professions || ['doctor', 'nurse'])
@@ -162,7 +162,7 @@ export async function search(
 
   if (opts.organization_kind) {
     query = query.where(
-      'organizations.address',
+      'Organization.address',
       opts.organization_kind === 'physical' ? 'is not' : 'is',
       null,
     )

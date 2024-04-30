@@ -170,7 +170,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             notes: null,
             appointment_id: null,
             waiting_room_id: encounter.waiting_room_id,
-            waiting_room_organization_id: 1,
+            waiting_room_organization_id: '00000000-0000-0000-0000-000000000001',
             steps_completed: [],
             examinations: [],
           },
@@ -225,7 +225,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
               notes: null,
               appointment_id: null,
               waiting_room_id: encounter.waiting_room_id,
-              waiting_room_organization_id: 1,
+              waiting_room_organization_id: '00000000-0000-0000-0000-000000000001',
               steps_completed: [],
               examinations: [
                 {

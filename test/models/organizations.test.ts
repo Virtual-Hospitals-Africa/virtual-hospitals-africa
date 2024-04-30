@@ -282,7 +282,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [
           {
             health_worker_id: hw_at_organization1.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             profession: 'nurse',
           },
         ])
@@ -307,7 +307,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         })
 
         const withInvitees = await organizations.getEmployeesAndInvitees(trx, {
-          organization_id: 1,
+          organization_id: '00000000-0000-0000-0000-000000000001',
           emails: [hw_at_organization1.email],
         })
 
@@ -349,12 +349,12 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [
           {
             health_worker_id: nurse.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             profession: 'nurse',
           },
           {
             health_worker_id: admin.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             profession: 'admin',
           },
         ])
@@ -379,7 +379,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         })
 
         const withInvitees = await organizations.getEmployeesAndInvitees(trx, {
-          organization_id: 1,
+          organization_id: '00000000-0000-0000-0000-000000000001',
           emails: [nurse.email, admin.email],
         })
 
@@ -451,7 +451,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [
           {
             health_worker_id: hw_at_organization1.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             profession: 'admin',
           },
         ])
@@ -498,7 +498,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [
           {
             health_worker_id: hw_at_organization1.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             profession: 'admin',
           },
         ])
@@ -528,7 +528,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [
           {
             health_worker_id: hw_at_organization1.id,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             profession: 'nurse',
           },
         ])

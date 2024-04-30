@@ -26,7 +26,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
           {
             avatar_url: healthWorker.avatar_url,
             email: healthWorker.email,
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             organization_name: 'VHA Test Clinic',
             profession: 'nurse',
             name: healthWorker.name,
@@ -60,7 +60,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
         {
           avatar_url: healthWorker.avatar_url,
           email: healthWorker.email,
-          organization_id: 1,
+          organization_id: '00000000-0000-0000-0000-000000000001',
           organization_name: 'VHA Test Clinic',
           profession: 'nurse',
           health_worker_id: healthWorker.id,
@@ -78,14 +78,14 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
         const [_doctor1, doctor2] = await Promise.all([
           addTestHealthWorker(trx, {
             scenario: 'doctor',
-            organization_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
             health_worker_attrs: {
               name: name_base + generateUUID(),
             },
           }),
           addTestHealthWorker(trx, {
             scenario: 'doctor',
-            organization_id: 2,
+            organization_id: '00000000-0000-0000-0000-000000000002',
             health_worker_attrs: {
               name: name_base + generateUUID(),
             },
@@ -99,7 +99,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
 
         const results = await providers.search(trx, {
           search: name_base,
-          prioritize_organization_id: 2,
+          prioritize_organization_id: '00000000-0000-0000-0000-000000000002',
         })
         const firstResult = results[0]
         const lastResult = last(results)!
@@ -121,12 +121,12 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
         profession: 'nurse',
-        organization_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
       const same_organization_result = await providers.search(trx, {
         search: healthWorker.name,
-        organization_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
       })
       assertEquals(same_organization_result.length, 1)
       assertEquals(
@@ -135,7 +135,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
           id: healthWorker.employee_id!,
           avatar_url: healthWorker.avatar_url,
           email: healthWorker.email,
-          organization_id: 1,
+          organization_id: '00000000-0000-0000-0000-000000000001',
           organization_name: 'VHA Test Clinic',
           name: healthWorker.name,
           health_worker_id: healthWorker.id,
@@ -146,7 +146,7 @@ describe('db/models/providers.ts', { sanitizeResources: false }, () => {
 
       const other_organization_result = await providers.search(trx, {
         search: healthWorker.name,
-        organization_id: 10,
+        organization_id: '00000000-0000-0000-0000-000000000001'0,
       })
       assertEquals(other_organization_result.length, 0)
     })

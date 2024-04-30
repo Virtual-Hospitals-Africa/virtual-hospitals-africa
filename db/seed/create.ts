@@ -7,21 +7,27 @@ const SEED_DUMPS_DIRECTORY = './db/seed/dumps'
 
 await Deno.mkdir(SEED_DUMPS_DIRECTORY, { recursive: true })
 
-const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY))
+const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map(file => file.name)
 
 export function create(
   table_names: string[],
   generate: (db: Kysely<any>) => Promise<void>,
 ) {
   return {
-    async load() {
+    table_names,
+    async load(opts?: { reload?: boolean }) {
+      console.log(table_names, opts)
       const all_seeds_present = table_names.every((table_name) => {
         const seed_name = `${table_name}.tsv`
-        return seeds.some((seed) => seed.name === seed_name)
+        return seeds.includes(seed_name)
       })
-      if (!all_seeds_present) {
+      if (!all_seeds_present || opts?.reload) {
         for (const table_name of table_names.toReversed()) {
+          console.log(`deleting ${table_name}`)
           await db.deleteFrom(table_name as any).execute()
+          if (seeds.includes(`${table_name}.tsv`)) {
+            await Deno.remove(`${SEED_DUMPS_DIRECTORY}/${table_name}.tsv`)
+          }
         }
         return generate(db)
       }
