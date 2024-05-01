@@ -13,12 +13,12 @@ export async function up(
     (table) =>
       table.addColumn(
         'patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
         .addColumn(
           'encounter_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('patient_encounters.id').onDelete(
               'cascade',
@@ -26,7 +26,7 @@ export async function up(
         )
         .addColumn(
           'encounter_provider_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('patient_encounter_providers.id').onDelete(
               'cascade',
@@ -65,7 +65,7 @@ export async function up(
     (qb) =>
       qb.addColumn(
         'patient_examination_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_examinations.id').onDelete(
             'cascade',
@@ -73,7 +73,7 @@ export async function up(
       )
         .addColumn(
           'examination_finding_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('examination_findings.id').onDelete(
               'cascade',

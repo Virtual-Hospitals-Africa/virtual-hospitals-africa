@@ -22,18 +22,18 @@ export async function up(db: Kysely<any>) {
   await createStandardTable(db, 'patient_measurements', (qb) =>
     qb.addColumn(
       'patient_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
       .addColumn(
         'encounter_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_encounters.id').onDelete('cascade'),
       )
       .addColumn(
         'encounter_provider_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_encounter_providers.id').onDelete(
             'cascade',

@@ -15,7 +15,7 @@ export async function up(db: Kysely<unknown>) {
     db,
     'employment',
     (qb) =>
-      qb.addColumn('health_worker_id', 'integer', (col) =>
+      qb.addColumn('health_worker_id', 'uuid', (col) =>
         col.notNull()
           .references('health_workers.id')
           .onDelete('cascade'))

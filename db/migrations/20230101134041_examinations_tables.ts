@@ -24,7 +24,7 @@ export async function up(
 
   await db.schema
     .createTable('examination_categories')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'examination_name',
       'varchar(40)',
@@ -62,7 +62,7 @@ export async function up(
 
   await db.schema
     .createTable('examination_findings')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'examination_category_id',
       'integer',
@@ -79,7 +79,7 @@ export async function up(
     .addColumn('options', sql`varchar(255)[]`)
     .addColumn(
       'ask_dependent_on',
-      'integer',
+      'uuid',
       (col) => col.references('examination_findings.id').onDelete('cascade'),
     )
     .addColumn('ask_dependent_values', 'json')

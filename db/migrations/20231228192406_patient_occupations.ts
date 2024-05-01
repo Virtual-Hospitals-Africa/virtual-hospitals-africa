@@ -6,7 +6,7 @@ export function up(db: Kysely<unknown>) {
     db,
     'patient_occupations',
     (qb) =>
-      qb.addColumn('patient_id', 'integer', (col) =>
+      qb.addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patients.id')

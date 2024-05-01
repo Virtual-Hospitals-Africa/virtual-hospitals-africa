@@ -13,7 +13,7 @@ export async function up(db: Kysely<unknown>) {
     db,
     'nurse_specialties',
     (qb) =>
-      qb.addColumn('employee_id', 'integer', (column) =>
+      qb.addColumn('employee_id', 'uuid', (column) =>
         column
           .notNull()
           .unique()
@@ -34,7 +34,7 @@ export async function up(db: Kysely<unknown>) {
     db,
     'nurse_registration_details',
     (qb) =>
-      qb.addColumn('health_worker_id', 'integer', (column) =>
+      qb.addColumn('health_worker_id', 'uuid', (column) =>
         column
           .references('health_workers.id')
           .onDelete('cascade')
@@ -55,31 +55,31 @@ export async function up(db: Kysely<unknown>) {
             .notNull()
             .check(sql`ncz_registration_number ~ '^[a-zA-Z]{2}[0-9]{6}$'`))
         .addColumn('mobile_number', 'varchar(50)', (column) => column.notNull())
-        .addColumn('national_id_media_id', 'integer', (column) =>
+        .addColumn('national_id_media_id', 'uuid', (column) =>
           column
             .references('media.id')
             .onDelete('set null'))
-        .addColumn('address_id', 'integer', (col) =>
+        .addColumn('address_id', 'uuid', (col) =>
           col
             .references('address.id')
             .onDelete('set null'))
         .addColumn(
           'ncz_registration_card_media_id',
-          'integer',
+          'uuid',
           (column) =>
             column
               .references('media.id')
               .onDelete('set null'),
         )
-        .addColumn('face_picture_media_id', 'integer', (column) =>
+        .addColumn('face_picture_media_id', 'uuid', (column) =>
           column
             .references('media.id')
             .onDelete('set null'))
-        .addColumn('nurse_practicing_cert_media_id', 'integer', (column) =>
+        .addColumn('nurse_practicing_cert_media_id', 'uuid', (column) =>
           column
             .references('media.id')
             .onDelete('set null'))
-        .addColumn('approved_by', 'integer', (column) =>
+        .addColumn('approved_by', 'uuid', (column) =>
           column
             .references('health_workers.id')
             .onDelete('cascade'))

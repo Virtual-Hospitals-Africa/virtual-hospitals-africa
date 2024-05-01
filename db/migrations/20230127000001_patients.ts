@@ -30,12 +30,12 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('national_id_number', 'varchar(50)')
         .addColumn(
           'avatar_media_id',
-          'integer',
+          'uuid',
           (col) => col.references('media.id'),
         )
         .addColumn(
           'address_id',
-          'integer',
+          'uuid',
           (col) => col.references('address.id'),
         )
         .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
@@ -57,7 +57,7 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn(
           'primary_doctor_id',
-          'integer',
+          'uuid',
           (col) => col.references('employment.id'),
         )
         .addColumn('unregistered_primary_doctor_name', 'varchar(255)')

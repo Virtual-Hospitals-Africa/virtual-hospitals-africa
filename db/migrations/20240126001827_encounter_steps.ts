@@ -20,7 +20,7 @@ export async function up(db: Kysely<any>) {
   await createStandardTable(db, 'patient_encounter_steps', (qb) =>
     qb.addColumn(
       'patient_encounter_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('patient_encounters.id').onDelete(
           'cascade',

@@ -1,4 +1,4 @@
-import { CreateTableBuilder, Kysely } from 'kysely'
+import { CreateTableBuilder, Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from './addUpdatedAtTrigger.ts'
 import { now } from './helpers.ts'
 
@@ -11,7 +11,7 @@ export async function createStandardTable(
   ) => CreateTableBuilder<string, never>,
 ) {
   const creating_table = db.schema.createTable(table)
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'created_at',
       'timestamptz',

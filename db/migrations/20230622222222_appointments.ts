@@ -5,7 +5,7 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'appointments', (qb) =>
     qb.addColumn(
       'patient_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
       .addColumn('reason', 'varchar(255)', (col) => col.notNull())
@@ -15,12 +15,12 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'appointment_providers', (qb) =>
     qb.addColumn(
       'appointment_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
       .addColumn(
         'provider_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('employment.id').onDelete('cascade'),
       )
       .addColumn(
@@ -35,7 +35,7 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn(
         'patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
         .addColumn('reason', 'varchar(255)'),
@@ -47,7 +47,7 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn(
         'patient_appointment_request_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_appointment_requests.id').onDelete(
             'cascade',
@@ -55,7 +55,7 @@ export async function up(db: Kysely<unknown>) {
       )
         .addColumn(
           'provider_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('employment.id').onDelete('cascade'),
         )

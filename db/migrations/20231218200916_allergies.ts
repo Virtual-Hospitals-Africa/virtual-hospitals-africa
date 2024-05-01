@@ -1,24 +1,24 @@
 //deno-lint-ignore-file no-explicit-any
-import { Kysely } from 'kysely'
+import { Kysely, sql } from 'kysely'
 import parseJSON from '../../util/parseJSON.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('allergies')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .execute()
 
   await createStandardTable(db, 'patient_allergies', (qb) =>
     qb.addColumn(
       'allergy_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('allergies.id').onDelete('cascade'),
     )
       .addColumn(
         'patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
       .addUniqueConstraint('patient_allergy', ['allergy_id', 'patient_id']))

@@ -16,7 +16,7 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'medications', (qb) =>
     qb.addColumn(
       'drug_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('drugs.id').onDelete('cascade'),
     )
       .addColumn('form', 'varchar(255)', (col) => col.notNull())
@@ -77,7 +77,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('manufacturer_name', 'varchar(2048)', (col) => col.notNull())
         .addColumn(
           'medication_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('medications.id').onDelete('cascade'),
         )
@@ -96,13 +96,13 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn(
           'manufactured_medication_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('manufactured_medications.id').onDelete(
               'cascade',
             ),
         )
-        .addColumn('consumable_id', 'integer', (col) =>
+        .addColumn('consumable_id', 'uuid', (col) =>
           col.notNull().references('consumables.id').onDelete('cascade')),
   )
 }
