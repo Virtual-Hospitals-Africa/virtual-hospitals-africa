@@ -249,10 +249,20 @@ export function getEmployeesAndInvitees(
       'health_worker_invitees.email as display_name',
       sql<null | string>`NULL`.as('avatar_url'),
       sql<boolean>`TRUE`.as('is_invitee'),
-      jsonArrayFrom(
-        jsonBuildObject({
-          profession: eb.ref('health_worker_invitees.profession'),
-        }),
+      // TODO: figure out how to aggregate into a json array after a group by
+      jsonArrayFromColumn(
+        'profession_details',
+        eb.selectFrom('health_worker_invitees as hwi_professions')
+          .select((inner) => [
+            jsonBuildObject({
+              profession: inner.ref('hwi_professions.profession'),
+            }).as('profession_details'),
+          ])
+          .whereRef(
+            'hwi_professions.email',
+            '=',
+            'health_worker_invitees.email',
+          ),
       ).as('professions'),
       jsonBuildObject({
         view: sql<null>`NULL`,
@@ -262,7 +272,7 @@ export function getEmployeesAndInvitees(
       ),
     ])
     .where('health_worker_invitees.organization_id', '=', opts.organization_id)
-    .groupBy('health_worker_invitees.id')
+    .groupBy('health_worker_invitees.email')
 
   if (opts.emails) {
     assert(Array.isArray(opts.emails))
