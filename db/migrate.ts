@@ -58,7 +58,7 @@ export const migrate = {
     migrations_not_yet_run.forEach((it) => {
       console.error(`  ${it.name}`)
     })
-    console.error('Please run "deno task db:migrate:latest" and try again.')
+    console.error('Please run "deno task db:migrate latest" and try again.')
     return Deno.exit(1)
   },
   latest() {

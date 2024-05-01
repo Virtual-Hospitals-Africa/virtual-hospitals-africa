@@ -14,7 +14,7 @@ fi
 
 if [ "$ARTIFACT_NAME" = "web" ]; then
   # TODO: see if we actually have migrations to run by comparing files, otherwise don't run this
-  deno task db:migrate:latest
+  deno task db:migrate latest
 fi
 
 deno task $ARTIFACT_NAME

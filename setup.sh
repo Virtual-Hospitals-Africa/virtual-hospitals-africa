@@ -67,7 +67,7 @@ deno task switch:local
 
 echo "Now let's migrate your local database..."
 
-deno task db:migrate:latest
-IS_TEST=true deno task db:migrate:latest
+deno task db:migrate latest
+IS_TEST=true deno task db:migrate latest
 
 echo "Migrations complete! You can now run the server with 'deno task start'"
