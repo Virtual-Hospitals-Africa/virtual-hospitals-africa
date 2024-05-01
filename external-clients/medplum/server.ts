@@ -22,7 +22,10 @@ export async function start() {
   const vha_medplum_config = {
     ...medplum_config,
     database: database_opts,
-    redis: redis_opts,
+    redis: {
+      ...redis_opts,
+      host: redis_opts.hostname,
+    },
     logRequests: true,
   }
 

@@ -35,6 +35,7 @@ const connectionOpts = () => {
 }
 
 export const opts = connectionOpts()
+
 export const redis =
   (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
 

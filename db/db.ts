@@ -8,8 +8,7 @@ import {
 import { DB } from '../db.d.ts'
 import { PostgreSQLDriver } from 'kysely-deno-postgres'
 
-let DATABASE_URL = Deno.env.get('DATABASE_URL') ||
-  Deno.env.get('HEROKU_POSTGRESQL_MAUVE_URL') || ''
+let DATABASE_URL = Deno.env.get('DATABASE_URL') || ''
 
 const BUILDING = Deno.env.get('BUILDING')
 if (!BUILDING) assert(DATABASE_URL)
@@ -23,14 +22,18 @@ if (Deno.env.get('IS_TEST')) {
   DATABASE_URL = DATABASE_URL.replace('vha_dev', 'vha_test')
 }
 
-if (DATABASE_URL && !DATABASE_URL.includes('localhost')) {
+if (
+  DATABASE_URL && !DATABASE_URL.includes('localhost') &&
+  !DATABASE_URL.includes('sslmode')
+) {
   DATABASE_URL += '?sslmode=require'
 }
 
 export function parseConnectionString(
   connectionString: string,
 ) {
-  const regex = /^postgres:\/\/(?:(.*?)(?::(.*?))?@)?(.*):(\d+)\/(.*)?$/
+  const regex =
+    /^postgres:\/\/(?:(.*?)(?::(.*?))?@)?(.*):(\d+)\/(\w*)?(\?sslmode=require)?$/
   const match = connectionString.match(regex)
 
   assert(match, 'Invalid postgres connection string format.')
@@ -38,9 +41,10 @@ export function parseConnectionString(
   return {
     username: match[1],
     password: match[2],
-    hostname: match[3],
+    host: match[3],
     port: parseInt(match[4], 10),
     dbname: match[5],
+    ssl: match[6] ? { require: true, rejectUnauthorized: false } : undefined,
   }
 }
 
