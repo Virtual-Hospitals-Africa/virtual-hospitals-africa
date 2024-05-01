@@ -19,6 +19,20 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
 
 const seedTargets = Object.keys(seeds).sort()
 
+const gerund = {
+  load: 'loading',
+  dump: 'dumping',
+  drop: 'dropping',
+  reload: 'reloading',
+}
+
+const past_tense = {
+  load: 'loaded',
+  dump: 'dumped',
+  drop: 'dropped',
+  reload: 'reloaded',
+}
+
 export async function run({ fn, target }: {
   fn: 'load' | 'dump' | 'drop' | 'reload'
   target?: string
@@ -47,11 +61,11 @@ export async function run({ fn, target }: {
   const targets = target ? [findTarget(target)] : seedTargets
 
   for (const seedName of targets) {
-    console.log('Loading seed ', seedName)
+    console.log(`${gerund[fn]} seed ${seedName}`, )
     const seed = seeds[seedName]
     await seed[fn]()
   }
-  console.log('Seeds loaded')
+  console.log(`Seeds ${past_tense[fn]}`)
 }
 
 if (import.meta.main) {

@@ -1,1085 +1,1085 @@
 id	name	district_id
-1	Bulawayo	1
-2	Harare	2
-3	Betera	3
-4	Chapwanya	3
-5	Chikuwa	3
-6	Chimombe 'b (Chimombe-chiweshe)	3
-7	Chimombe A	3
-8	Chimombe B	3
-9	Chimombe East	3
-10	Chimombe West	3
-11	Chimombe West (Chimutsa W)	3
-12	Chimutsa East	3
-13	Chirozva A	3
-14	Chirozva B	3
-15	Chitsunge	3
-16	Chiweshe	3
-17	Garamwera	3
-18	Mabvuregudo	3
-19	Makumbe	3
-20	Makuvise	3
-21	Marume	3
-22	Mawire	3
-23	Mombeyarara A	3
-24	Mombeyarara B	3
-25	Mudinzwa A	3
-26	Mudinzwa B	3
-27	Mudzamiri	3
-28	Munyira	3
-29	Murambinda	3
-30	Murwira	3
-31	Mushumba East	3
-32	Mushumba West	3
-33	Mutiusinazita	3
-34	Nechavava	3
-35	Nerutanga	3
-36	Neshava	3
-37	Biriri	4
-38	Bumha (shinja Rs)	4
-39	Chabika	4
-40	Chakowa	4
-41	Changazi	4
-42	Chayamiti	4
-43	Chikukwa	4
-44	Ngorima A	4
-45	Ngorima B	4
-46	Nyahonde (nagodi Rs)	4
-47	Nyanyadzi	4
-48	Rupise	4
-49	Shinja	4
-50	Chikwakwa	4
-51	Chiramba	4
-52	Guune	4
-53	Kudzanga	4
-54	Manyuseni	4
-55	Mhakwe	4
-56	Mhandarume	4
-57	Ada Chisumbanje	5
-58	Ada Middle Sabi	5
-59	Bangwe/maunganidze	5
-60	Checheche	5
-61	Chibunji	5
-62	Chibuwe	5
-63	Chikore	5
-64	Chinyaduma	5
-65	Chipinge Urban	5
-66	Chisumbanje	5
-67	Chisungo	5
-68	Chitenderano	5
-69	Chitepo	5
-70	Doroi	5
-71	Dumisani	5
-72	Gumira	5
-73	Hondoyapera	5
-74	Jersey	5
-75	Machona	5
-76	Madhuku	5
-77	Mahenye	5
-78	Manzvire	5
-79	Maongere	5
-80	Mapungwana	5
-81	Masonga	5
-82	Mbuyanehanda	5
-83	Musani	5
-84	Mushandirapamwe	5
-85	Musirizwi A	5
-86	Musirizwi B	5
-87	Mutandahwe	5
-88	Muzite	5
-89	Ngaone	5
-90	Nyagadza I	5
-91	Nyagadza Ii	5
-92	Nyamukunga	5
-93	Nyaringire	5
-94	Rudo	5
-95	Small Dell Estate	5
-96	Tamandayi	5
-97	Tongogara Refugee Camp	5
-98	Turaizvombo	5
-99	Tuzuka	5
-100	Batanai	6
-101	Bembero	6
-102	Chiduku	6
-103	Chinyamahumba	6
-104	Chitangazuva	6
-105	Denzva	6
-106	Dowa	6
-107	Dumbamwe	6
-108	Gweza	6
-109	Gwidza	6
-110	Mashayamvura	6
-111	Matotwe	6
-112	Mhezi	6
-113	Mutombwa	6
-114	Mutungagore	6
-115	Nehanda	6
-116	Ngowe	6
-117	Nyakujara	6
-118	Nyahangare	6
-119	Nyahonwe	6
-120	Nyamagura	6
-121	Nyamatanda	6
-122	Nyamidzi	6
-123	Pasipanodya	6
-124	Rongwe	6
-125	Ruombwe	6
-126	Sangano	6
-127	Tikwiri	6
-128	Tsagura	6
-129	Zurura	6
-130	Buwerimwe	7
-131	Bvumba L.s.c.f.a	7
-132	Chiadzwa	7
-133	Chimoio	7
-134	Chindunduma	7
-135	Chishakwe I	7
-136	Chishakwe Ii	7
-137	Chitora	7
-138	Dora North	7
-139	Dora South	7
-140	Dzobo	7
-141	Gandayi	7
-142	Gombakomba	7
-143	Kugarisana	7
-144	Kushingirira	7
-145	Mafararikwa A	7
-146	Mafararikwa B	7
-147	Mudzimundiringe	7
-148	Mukuni S.s.c.f.a	7
-149	Mukwada	7
-150	Munyoro	7
-151	Mupudzi I	7
-152	Mupudzi Ii	7
-153	Muradzikwa	7
-154	Zimunya	7
-155	Murare	7
-156	Mutanda I	7
-157	Mutanda Ii	7
-158	Mutsago	7
-159	Mutupo	7
-160	Ngomasha	7
-161	Nhamburiko	7
-162	Nyachityu	7
-163	Nyahundi	7
-164	Nyamazura Rs	7
-165	Rowa	7
-166	Chandisinai	8
-167	Chikomba A	8
-168	Chikomba B	8
-169	Doweguru	8
-170	Gondecharodzo	8
-171	Mandeya A	8
-172	Mandeya B	8
-173	Mudwaramaredza	8
-174	Mudzindiko	8
-175	Muparutsa	8
-176	Nyakujara	8
-177	Nyamaende	8
-178	Nyamhuka	8
-179	Rutungagore	8
-180	Sadziwa	8
-181	Sahumani	8
-182	Samanga A	8
-183	Samanga B	8
-184	Samaringa	8
-185	Sanyahwe East	8
-186	Sanyahwe West	8
-187	Zindi	8
-188	Bende	9
-189	Chitsanza	9
-190	Gairezi Rs	9
-191	Gonde	9
-192	Guramatunhu	9
-193	Marawo	9
-194	Mutombwa	9
-195	Nyabunje	9
-196	Nyadowa	9
-197	Nyagota	9
-198	Nyakomba	9
-199	Nyamahumba	9
-200	Nyamaropa	9
-201	Nyamasara	9
-202	Nyamubarawanda	9
-203	Nyamutowera	9
-204	Nyanga South	9
-205	Nyanga South Rs	9
-206	Nyanga Town	9
-207	Nyautare	9
-208	Ruwangwe	9
-209	Rwenya Game Park	9
-210	Sanhani/shungu/kuedza	9
-211	Sanyatwe	9
-212	Tabudirira	9
-213	Tombo I	9
-214	Tombo Ii	9
-215	Tongogara	9
-216	Chiveso	10
-217	Dindinyongwe	10
-218	Gudza	10
-219	Guwa	10
-220	Mhumhurwi	10
-221	Muchapondwa	10
-222	Muonwe	10
-223	Mupandira	10
-224	Mutowa	10
-225	Nyava	10
-226	Bepura I	11
-227	Bepura Ii	11
-228	Bepura Iii	11
-229	Chapoto	11
-230	Chipuriro A	11
-231	Chipuriro B	11
-232	Chipuriro C	11
-233	Chiriwo	11
-234	Chisunga	11
-235	Chitsungo	11
-236	Knyurira	11
-237	Mamini	11
-238	Matsiwo A	11
-239	Matsiwo B	11
-240	Mukwenya	11
-241	Mutota	11
-242	Neshangwe	11
-243	Nyamhondoro	11
-244	Shayavhudzi	11
-245	Suoguru	11
-246	Chaminuka	12
-247	Chipiri	12
-248	Chiwororo	12
-249	Endaikwenyu	12
-250	Gato	12
-251	Makombwe	12
-252	Masiyazvengo	12
-253	Nehanda	12
-254	Nyadzonya	12
-255	Nyota	12
-256	Sawi	12
-257	Tafirenyika	12
-258	Takawira	12
-259	Bveke	13
-260	Chahwanda	13
-261	Chesa Danzva	13
-262	Chesa Mtondwe	13
-263	Chesa North	13
-264	Chesa Nyajenje	13
-265	Chesa South	13
-266	Chiswiti	13
-267	Chitse	13
-268	Dotito	13
-269	Gomo Chigango	13
-270	Kaitano	13
-271	Kandeya	13
-272	Karanda	13
-273	Karuyana North	13
-274	Karuyana South	13
-275	Matope	13
-276	Mudzengerere	13
-277	Mukumbura	13
-278	Nembire	13
-279	Nohwedza	13
-280	Pachanza	13
-281	Sohwe	13
-282	Chadereka	14
-283	Chawarura	14
-284	Chiweshe	14
-285	Gutsa	14
-286	Hoya	14
-287	Hwatsa	14
-288	Kapembere	14
-289	Machaya	14
-290	Muzarabani	14
-291	Bveke	15
-292	Chahwanda	15
-293	Chesa Danzva	15
-294	Chesa Mtondwe	15
-295	Chesa North	15
-296	Chesa Nyajenje	15
-297	Chesa South	15
-298	Chiswiti	15
-299	Chitse	15
-300	Dotito	15
-301	Gomo Chigango	15
-302	Kaitano	15
-303	Kandeya	15
-304	Karanda	15
-305	Karuyana North	15
-306	Karuyana South	15
-307	Matope	15
-308	Mudzengerere	15
-309	Mukumbura	15
-310	Nembire	15
-311	Nohwedza	15
-312	Pachanza	15
-313	Sohwe	15
-314	Bopoma	16
-315	Chipara	16
-316	Katohwe	16
-317	Mahomba	16
-318	Makuni	16
-319	Maname	16
-320	Mapani	16
-321	Marambanzara	16
-322	Masoso	16
-323	Masvingo	16
-324	Mukosa	16
-325	Nyamanyanya	16
-326	Nyamuzeya	16
-327	Rukuta	16
-328	Rusambo	16
-329	Zvingowe	16
-330	Chidembo	17
-331	Chihuri	17
-332	Chizinga (nyamaropa)	17
-333	Gono	17
-334	Goora	17
-335	Kajakata	17
-336	Mupfure	17
-337	Mutumba	17
-338	Nyamaruro	17
-339	Nyarukunda	17
-340	Rukoroori (mufurudzi)	17
-341	Sanye	17
-342	Shamva Lscfa (umfurudzi N)	17
-343	Chinyika	18
-344	Dzvete	18
-345	Gutu	18
-346	Mawanga	18
-347	Munyawiri	18
-348	Murape	18
-349	Mwanza	18
-350	Pote	18
-351	R' Nine – Shangure	18
-352	Rusike	18
-353	Shumba	18
-354	Bangauya	19
-355	Chikwizo A	19
-356	Chikwizo B	19
-357	Chimukoko	19
-358	Goronga A	19
-359	Goronga B	19
-360	Makaha A	19
-361	Makaha B	19
-362	Masarakufa	19
-363	Mukota A	19
-364	Mukota B	19
-365	Mukota C	19
-366	Nyakuchena	19
-367	Nyamukoho	19
-368	Nyatana Game Park	19
-369	Shinga (Shanga)	19
-370	Suswe	19
-371	Chigonda	20
-372	Chigwarada	20
-373	Chikwira	20
-374	Chipiri	20
-375	Chitowa North	20
-376	Chitowa South	20
-377	Chiunze I	20
-378	Chiunze Ii	20
-379	Domborembudzi	20
-380	Karamba	20
-381	Mabika	20
-382	Manyika	20
-383	Maramba	20
-384	Marowe	20
-385	Masiyandima	20
-386	Mawanza Chitsungo	20
-387	Muchinjike	20
-388	Mukuruanopamaenza	20
-389	Musami	20
-390	Nhakiwa I	20
-391	Nhakiwa Ii	20
-392	Nyamhara	20
-393	Rota	20
-394	Rukudzi	20
-395	Zhombwe	20
-396	Charehwa A	21
-397	Charehwa B	21
-398	Chimoyo A	21
-399	Chimoyo B	21
-400	Chimoyo C	21
-401	Chindenga	21
-402	Chiwore	21
-403	Gumbure	21
-404	Kabasa A	21
-405	Kabasa B	21
-406	Kawere	21
-407	Marira	21
-408	Matedza	21
-409	Mawanga	21
-410	Mbudzi A	21
-411	Mbudzi B	21
-412	Mutoko Centre	21
-413	Nyahondo	21
-414	Nyahunure	21
-415	Nyamhanza A	21
-416	Nyamhanza B	21
-417	Nyamuganhu	21
-418	Nyamukapa	21
-419	Nyamutsahuni	21
-420	Nyamuzizi	21
-421	Chirimanhunga	22
-422	Eleven	22
-423	Mandedza	22
-424	Mapfuti	22
-425	Marirangwe North	22
-426	Twelve	22
-427	Zhakata	22
-428	Marirangwe South	22
-429	Matiti	22
-430	Mutiusinazita	22
-431	Nemasanga	22
-432	Ngome	22
-433	Chigodora	23
-434	Ruzane	23
-435	Ushe	23
-436	Makwarimba	23
-437	Goto	23
-438	Dendenyore	23
-439	Chivero C (n)	24
-440	Chivero M	24
-441	Chivero M (l)	24
-442	Chivero O	24
-443	Gora	24
-444	Mashayamombe (i)	24
-445	Nherera B	24
-446	Nyamweda (q)	24
-447	Nyamweda P	24
-448	Rwizi F	24
-449	Ward 22 (murombedzi H)	24
-450	Mashayamombe K	24
-451	Mashayamombe P (j)	24
-452	Murombedzi (h)	24
-453	Ngezi C	24
-454	Ngezi D	24
-455	Nherera A	24
-456	Chemusimbe	25
-457	Chiroti/fuleche	25
-458	Chundu	25
-459	Dandahwa	25
-460	Kanyati	25
-461	Kapfunde	25
-462	Kapiri	25
-463	Karereshi	25
-464	Karoi	25
-465	Karuru	25
-466	Kazangarare	25
-467	Makuti & Charara	25
-468	Masanga	25
-469	Matau	25
-470	Mudzimu	25
-471	Muzilawembe, (Mukakatenwa)	25
-472	Nyama	25
-473	Nyamhunga	25
-474	Piriviri	25
-475	Pote I	25
-476	Pote II	25
-477	Pote III	25
-478	Ward 5 (chisape)	25
-479	Ward 6 (maumbe)	25
-480	Ward 7 (chanetsa)	25
-481	Bumi Hills	26
-482	Chalala	26
-483	Charara Safaris	26
-484	Gatshegatshe	26
-485	Hurungwe Safaris B	26
-486	Kanyati A	26
-487	Kanyati B	26
-488	Matusadonha Safaris	26
-489	Mola A	26
-490	Mola B	26
-491	Musambakaruma A	26
-492	Musambakaruma B	26
-493	Negande B	26
-494	Negande A	26
-495	Chitomborwizi	27
-496	Doma	27
-497	Magonde	27
-498	Matashu	27
-499	Ward 17 (tategura Rs)	27
-500	Chikambi	28
-501	Chimbamauro	28
-502	Chivanje	28
-503	Dununu	28
-504	Mucheka	28
-505	Mudapakati	28
-506	Nyamangara	28
-507	Chegutu 6 Rs	29
-508	Chenjiri S Scale	29
-509	Hartley Safari	29
-510	Jondale/bumbe	29
-511	Jopani Rs	29
-512	Manyoni Estate	29
-513	Muzvezve I Rs	29
-514	Muzvezve Ii Rs	29
-515	Ngezi National Parks	29
-516	Sachuru Rs	29
-517	Baradzanwa	30
-518	Bikita	30
-519	Boora	30
-520	Chigumisirwa	30
-521	Chikuku	30
-522	Chikukutu	30
-523	Chiremwaremwa	30
-524	Chirorwe	30
-525	Devure	30
-526	Mungezi	30
-527	Mupamande	30
-528	Murwira	30
-529	Museti	30
-530	Mutikizizi	30
-531	Negovano	30
-532	Nyahunda	30
-533	Nyarushiri	30
-534	Devure Ranch	30
-535	Gangare	30
-536	Magocha	30
-537	Marozva (a)	30
-538	Marozva (b)	30
-539	Mashoko	30
-540	Matsvange	30
-541	Mazungunye	30
-542	Mukore	30
-543	Batanai	31
-544	Chechingwe	31
-545	Chibavahlengwe	31
-546	Chibwedziva	31
-547	Chikombedzi	31
-548	Chitsa	31
-549	Chizvirizvi	31
-550	Dikitiki	31
-551	Dzidzela	31
-552	Gonakudzingwa	31
-553	Gonarezhou	31
-554	Makambe	31
-555	Maose	31
-556	Mkwasine	31
-557	Mukuwini	31
-558	Mupinga	31
-559	Nyangambe	31
-560	Sabi Valley Ica	31
-561	Sengwe	31
-562	Tshovani	31
-563	Twananani	31
-564	Xini	31
-565	Bachi	32
-566	"Badza	iritose"	32
-567	Batanai	32
-568	Batanai B	32
-569	Bhefurai	32
-570	Chasiyatende	32
-571	Chemuzangari	32
-572	Chigwikwi	32
-573	Chitenderano	32
-574	Kuvhirimara	32
-575	Madamombe	32
-576	Madzivadondo	32
-577	Manyanga	32
-578	Marihuru	32
-579	Matsveru	32
-580	Mazihuru	32
-581	Mukamba	32
-582	Munaka	32
-583	Neruvanga	32
-584	Ngundu	32
-585	Nhamoyapera	32
-586	Nyahombe	32
-587	Rusununguko	32
-588	Takawira	32
-589	Utsinda	32
-590	Zifunzi	32
-591	Zvamapere	32
-592	Basera	33
-593	Chigombe	33
-594	Chihambakwe	33
-595	Chikwanda\mazare	33
-596	Chimedza	33
-597	Chinyika	33
-598	Chitsa	33
-599	Chiwara	33
-600	Chugunhuwe/denhere	33
-601	Devure	33
-602	Gutu South	33
-603	Jinjika	33
-604	Kubiku	33
-605	Magombedze	33
-606	Majada	33
-607	Makore	33
-608	Makudo	33
-609	Makuvaza	33
-610	Mataruse	33
-611	Matizha	33
-612	Mawere\manungwa	33
-613	Mazuru West	33
-614	Mukaro	33
-615	Munjanga\mupata	33
-616	Munyaradzi\dzivarimwe	33
-617	Munyikwa	33
-618	Mupandawana	33
-619	Mushayavanhu	33
-620	Mutema	33
-621	Mutero\nyamande	33
-622	Ndawi	33
-623	Nerupiri	33
-624	Nyamande	33
-625	Nyazvidzi Sscfa	33
-626	Serima\mavotsa	33
-627	Soti Source	33
-628	Vhunjere	33
-629	Zoma	33
-630	Zvavahera/dandavare	33
-631	Charumbira (a)	34
-632	Charumbira (b)	34
-633	Charumbira (c)	34
-634	Chatikobo	34
-635	Chikwanda	34
-636	Dowa	34
-637	Gozho	34
-638	Guwa	34
-639	Inyoni Rs	34
-640	Machitenda	34
-641	Mapanzure	34
-642	Maregere	34
-643	Marirangwe	34
-644	Mhara	34
-645	Mshagashe East	34
-646	Mshagashe West	34
-647	Mugabe	34
-648	Mukosi Rs	34
-649	Munyambe	34
-650	Murinye (a)	34
-651	Murinye (b)	34
-652	Mushandike	34
-653	Mushavhi	34
-654	Mushawasha East Sscfa	34
-655	Mushawasha West Sscfa	34
-656	Musingarambwi	34
-657	Tokwane\ngundu Rs	34
-658	Zimuto	34
-659	Zvinyaningwe East Sscfa	34
-660	Zvinyaningwe West Sscfa	34
-661	Bangwe	35
-662	Basikiti	35
-663	Chingami	35
-664	Chirarange	35
-665	Chirindi	35
-666	Chitanga	35
-667	Chizumba	35
-668	Dinhe	35
-669	Firidzi	35
-670	Mabhare	35
-671	Machena	35
-672	Makawire	35
-673	Makwi	35
-674	Mangwerume	35
-675	Manhumamwe	35
-676	Marimuka	35
-677	Marinda	35
-678	Musaverema	35
-679	Mushava	35
-680	Negari	35
-681	Nhande	35
-682	Pambe	35
-683	Rata	35
-684	Shazhaume	35
-685	Wedza Block B	35
-686	Chete National Park	36
-687	Chinonge	36
-688	Chunga	36
-689	Dobola	36
-690	Kabuba	36
-691	Kariangwe	36
-692	Kalungwizi	36
-693	Lubimbi	36
-694	Lubu	36
-695	Lunga	36
-696	Siachilaba	36
-697	Sianzyundu	36
-698	Sikalenge	36
-699	Simatelele	36
-700	Sinamagonde	36
-701	Sinampande-Nagangala	36
-702	Sinansengwe	36
-703	Tinde	36
-704	Manjolo	36
-705	Muchesu	36
-706	Nabusenga	36
-707	National Park	36
-708	Nsenga	36
-709	Pashu	36
-710	Saba-lubanda	36
-711	Inyathi	37
-712	Nkosikazi East	37
-713	Nkosikazi North	37
-714	Nkosikazi South	37
-715	Chidobe	38
-716	Chikandakubi	38
-717	Dete	38
-718	Jambezi	38
-719	Kachecheti	38
-720	Lupote	38
-721	Mabale	38
-722	Makwandara	38
-723	Mbizha	38
-724	Nekabandama	38
-725	Nekatambe	38
-726	Nemananga	38
-727	Sidinda	38
-728	Silewu	38
-729	Simangani	38
-730	Daluka	39
-731	Dandanda	39
-732	Dongamuzi	39
-733	Gomoza	39
-734	Gwamba	39
-735	Jibajiba	39
-736	Jotsholo	39
-737	Lake Alice	39
-738	Lupaka	39
-739	Lupanda	39
-740	Lusulu	39
-741	Malunku	39
-742	Matshiya	39
-743	Matshokotsha	39
-744	Menyezwa	39
-745	Mzola	39
-746	Ndimimbili	39
-747	Pupu	39
-748	Sibombo	39
-749	Sobendle	39
-750	St Pauls	39
-751	Tshongokwe	39
-752	Twenty Four	39
-753	Fanisoni	40
-754	Faroni	40
-755	Gwampa Forestry	40
-756	Jojo East	40
-757	Jojo South	40
-758	Jojo West	40
-759	Kenilworth	40
-760	Malandu East	40
-761	Malandu West	40
-762	Malindi	40
-763	Manguni I	40
-764	Manguni Ii	40
-765	Manomano	40
-766	Mlume I	40
-767	Mlume Ii	40
-768	Mpande	40
-769	Ngomambi Central	40
-770	Ngomambi North	40
-771	Ngomambi South	40
-772	Nhlanganiso	40
-773	Nkalakatha	40
-774	Phillip	40
-775	Sibangalwana Ii	40
-776	Sibangelana I	40
-777	Sikhobokhobo	40
-778	Siphunyuka	40
-779	Sivalo	40
-780	Ward 1	41
-781	Ward 2	41
-782	Ward 3	41
-783	Ward 4	41
-784	Ward 5	41
-785	Ward 6	41
-786	Ward 7	41
-787	Ward 8	41
-788	Ward 9	41
-789	Ward 10	41
-790	Ward 11	41
-791	Ward 12	41
-792	Ward 13	41
-793	Ward 14	41
-794	Ward 15	41
-795	Ward 16	41
-796	Ward 17	41
-797	Ward 18	41
-798	Ward 19	41
-799	Ward 20	41
-800	Fingo	42
-801	Ntabazinduna North	42
-802	Ntabazinduna South	42
-803	Beitbridge	43
-804	Chipise	43
-805	Dendele	43
-806	Dite Ii	43
-807	Machuchuta	43
-808	Maramani	43
-809	Masera	43
-810	Mtetengwe I	43
-811	Mtetengwe Ii	43
-812	Mtetengwe Iii	43
-813	Siyoka I	43
-814	Siyoka Ii	43
-815	Bambadzi	44
-816	Bango	44
-817	Dombodema	44
-818	Empandeni	44
-819	Figtree	44
-820	Gala	44
-821	Gwambe	44
-822	Hingwe	44
-823	Huwana	44
-824	Izimnyama	44
-825	Mabhuna	44
-826	Madlambuzi	44
-827	Magcobafuthi	44
-828	Makhulela	44
-829	Malanswazi	44
-830	Mambale	44
-831	Maninji	44
-832	Marula	44
-833	Masendu	44
-834	Matjingwe	44
-835	Hikwa	44
-836	Mphoengs	44
-837	Natane	44
-838	Ndolwane	44
-839	Nyele	44
-840	Raditladi	44
-841	Sangulube	44
-842	Sansukwe	44
-843	Somnene	44
-844	Tjankwa	44
-845	Alisupi	45
-846	Buvuma	45
-847	Sengezane	45
-848	Mtshabezi Mission	45
-849	Gwaranyemba	45
-850	Gungwe	45
-851	Hwali	45
-852	Kafusi	45
-853	Lushongwe	45
-854	Manama, Zimbabwe	45
-855	Matshetshe	45
-856	Mtshazo	45
-857	Mzimuni, Zimbabwe	45
-858	Nkwidze	45
-859	Ntalale	45
-860	Shake, Zimbabwe	45
-861	Silonga	45
-862	Simbumbumbu	45
-863	Sizeze	45
-864	Avoca	46
-865	Bekezela	46
-866	Gwatemba	46
-867	Mahole	46
-868	Mashoko	46
-869	Masiyephambili	46
-870	Mbondweni	46
-871	Ntunteni	46
-872	Sanele	46
-873	Sidzibe	46
-874	Silalabuhwa	46
-875	Vokola	46
-876	Ward 1	47
-877	Ward 2	47
-878	Ward 3	47
-879	Ward 4	47
-880	Ward 5	47
-881	Ward 6	47
-882	Ward 7	47
-883	Ward 8	47
-884	Ward 9	47
-885	Ward 10	47
-886	Ward 11	47
-887	Ward 12	47
-888	Ward 13	47
-889	Ward 14	47
-890	Ward 15	47
-891	Ward 16	47
-892	Ward 17	47
-893	Bambanani	48
-894	Beula	48
-895	Bidi	48
-896	Dema	48
-897	Donkwedonkwe	48
-898	Dzembe	48
-899	Gwezha	48
-900	Lingwe	48
-901	Madwaleni	48
-902	Makhasa	48
-903	Malaba	48
-904	Manyane	48
-905	Marinoha	48
-906	Makwe	48
-907	Mbembeswana	48
-908	Mbuso	48
-909	Mkokha	48
-910	Nqindi	48
-911	Sigangatsha	48
-912	Silebuhwa	48
-913	Sontala	48
-914	St Anna	48
-915	Vulindlela	48
-916	Dobhe	49
-917	Dula	49
-918	Esibomvu	49
-919	Kumbudzi	49
-920	Mathendele	49
-921	Mawabeni	49
-922	Mtshede	49
-923	Ntshamathe	49
-924	Sihlengeni	49
-925	Silobi	49
-926	Zhalo	49
-927	Vulindlela	49
-928	Charandura	50
-929	Chengwena	50
-930	Chinyuni	50
-931	Chizhou	50
-932	Mapiravana	50
-933	Maware	50
-934	Mhende	50
-935	Musoropamwe	50
-936	Takawira	50
-937	Takawira Resett	50
-938	Tatonga	50
-939	Tokwe (tokwe Iv) Rs	50
-940	Chireya I	51
-941	Chireya Ii	51
-942	Chireya Iii	51
-943	Goredema	51
-944	Gumunyu I	51
-945	Gumunyu Ii	51
-946	Makore I	51
-947	Makore Ii	51
-948	Musadzi Rs	51
-949	Nembudziya I	51
-950	Nembudziya Ii	51
-951	Nembudziya Iii	51
-952	Nora Rs	51
-953	Nyaurungwe Rs	51
-954	Simchembo	51
-955	Tsungai Rs	51
-956	Wadze Rs	51
-957	Madzivazvido	51
-958	Nenyunka	51
-959	Chemagora Lscfa	52
-960	Chirima	52
-961	Chirisa Park	52
-962	Chisina I	52
-963	Chisina Ii	52
-964	Chisina Iii	52
-965	Huchu	52
-966	Jahana	52
-967	Jiri	52
-968	Masuka	52
-969	Mukoka Msala	52
-970	Muyambi	52
-971	Ndhlalambi I	52
-972	Ndhlalambi Ii	52
-973	Nemangwe I	52
-974	Nemangwe Ii	52
-975	Nemangwe Iii	52
-976	Nemangwe Iv	52
-977	Nemangwe V	52
-978	Ngomeni	52
-979	Njelele I	52
-980	Njelele Ii	52
-981	Njelele Iii	52
-982	Sai Mangidi	52
-983	Sai Mangisi	52
-984	Sai Sengwa	52
-985	Bafana	53
-986	Gambiza	53
-987	Ilithelezwe	53
-988	Madikani	53
-989	Masvori Rs	53
-990	Mdubiwa	53
-991	Mlezu	53
-992	Mutengwa	53
-993	Nkawana	53
-994	Nyabango	53
-995	Nyama	53
-996	Sikombingo	53
-997	Somabula	53
-998	Batanai	54
-999	Chaminuka Ii	54
-1000	Chitepo	54
-1001	Empress Mine	54
-1002	Gwesela West	54
-1003	Inhlangano	54
-1004	Kubatana	54
-1005	Kushinga	54
-1006	Kwayedza	54
-1007	Mabura	54
-1008	Makaba	54
-1009	Msokeli	54
-1010	Mtshikitsha	54
-1011	Nhlanganisa	54
-1012	Ntabeni North	54
-1013	Ntabeni South	54
-1014	Sebenzani	54
-1015	Sesombi I	54
-1016	Sesombi I Rs	54
-1017	Sesombi Ii Rs	54
-1018	Sesombi Iii	54
-1019	Sesombi Iii Rs	54
-1020	Sidakeni	54
-1021	Silobela	54
-1022	Tongogara	54
-1023	Zhombe Central	54
-1024	(New Castle) Rs	55
-1025	Baradzamwa	55
-1026	Bhangwe	55
-1027	Bhinya Road	55
-1028	Chebvute	55
-1029	Chegato	55
-1030	Cheshanga	55
-1031	Chingechuru	55
-1032	Chingoma A	55
-1033	Chingoma B	55
-1034	Chizungu	55
-1035	Danga	55
-1036	Dunda	55
-1037	Lscfa (mberengwa Ica)	55
-1038	Magamba	55
-1039	Mahlebadza	55
-1040	Makuwerere	55
-1041	Masvingo	55
-1042	Mataga	55
-1043	Mataruse B I	55
-1044	Mataruse B Ii	55
-1045	Maziofa	55
-1046	Mketi	55
-1047	Muchembere	55
-1048	Murerezi	55
-1049	Mushandirapamwe	55
-1050	Musume	55
-1051	Ngungumbane	55
-1052	Nyamondo Ii	55
-1053	Nyamondo Iii	55
-1054	Ruremekedzo	55
-1055	Vukomba	55
-1056	Zvomukonde	55
-1057	Gundura	56
-1058	Ndanga	56
-1059	Donga	56
-1060	Hanke	56
-1061	Nhema	56
-1062	Tinhira	56
-1063	Tongogara	56
-1064	Mazivisa	56
-1065	Shamba	56
-1066	Pisira	56
-1067	Chenhunguru	57
-1068	Chiwonekano	57
-1069	Dayadaya	57
-1070	Guruguru	57
-1071	Hombe	57
-1072	Indava	57
-1073	Lscfa	57
-1074	Mapirimira	57
-1075	Mototi	57
-1076	Murowa	57
-1077	Mutambe	57
-1078	Ngomayebani	57
-1079	Runde	57
-1080	Shauke	57
-1081	Shavahuru	57
-1082	Ture	57
-1083	Mhondongori	57
-1084	Vukusvo	57
+608d8d1e-b082-4379-a1be-11ae8e0baca2	Bulawayo	2385a94d-632a-4247-8f90-d48e4feda2e9
+fce02ebd-6a1f-44f4-9b90-159411d16d28	Harare	c1df8d29-b261-4ddd-8a7b-010ba1a38c13
+409fb108-95ec-4ce6-af61-cddd1ede582d	Betera	0f68df67-32b8-4b8c-b812-34d93c4098d2
+038d3a24-f248-4b72-b37e-583626ad5c75	Chapwanya	0f68df67-32b8-4b8c-b812-34d93c4098d2
+f970a57b-9f29-4df1-9621-7212d940d5b0	Chikuwa	0f68df67-32b8-4b8c-b812-34d93c4098d2
+979ba321-a19b-4a9c-a80f-849c437b243b	Chimombe 'b (Chimombe-chiweshe)	0f68df67-32b8-4b8c-b812-34d93c4098d2
+0cf394f7-ce99-4c5c-bef5-539251287d29	Chimombe A	0f68df67-32b8-4b8c-b812-34d93c4098d2
+385ec499-127a-4b4f-94d1-72e72f624765	Chimombe B	0f68df67-32b8-4b8c-b812-34d93c4098d2
+046ab5da-304a-40f1-8207-0f7caf8bf2c4	Chimombe East	0f68df67-32b8-4b8c-b812-34d93c4098d2
+8244ac15-23ba-4cc9-a371-1064274e19a8	Chimombe West	0f68df67-32b8-4b8c-b812-34d93c4098d2
+96a4cb4d-c4c7-45c4-a46e-3cae22c3c731	Chimombe West (Chimutsa W)	0f68df67-32b8-4b8c-b812-34d93c4098d2
+d71d4a79-d599-46b5-a313-cd63226fee40	Chimutsa East	0f68df67-32b8-4b8c-b812-34d93c4098d2
+7a0efdc9-0f2b-47a1-adc2-b2d10517b4cd	Chirozva A	0f68df67-32b8-4b8c-b812-34d93c4098d2
+410aafa8-4ce1-4253-9968-d3b95013cfe0	Chirozva B	0f68df67-32b8-4b8c-b812-34d93c4098d2
+f4e446d4-cb27-4e45-ad5b-cd3a2aa4d701	Chitsunge	0f68df67-32b8-4b8c-b812-34d93c4098d2
+f38b6c1f-2043-4386-ae85-def2955a7728	Chiweshe	0f68df67-32b8-4b8c-b812-34d93c4098d2
+0b502dd4-f19e-4c0c-b739-35e1137a1b6a	Garamwera	0f68df67-32b8-4b8c-b812-34d93c4098d2
+22999063-a8d6-4ac3-a304-b7bed84a91c3	Mabvuregudo	0f68df67-32b8-4b8c-b812-34d93c4098d2
+25a9750f-fabb-41b1-b4a8-d6e0bf5cbbc1	Makumbe	0f68df67-32b8-4b8c-b812-34d93c4098d2
+5eb0b5b4-11a0-43f9-822c-1c9c914d9f70	Makuvise	0f68df67-32b8-4b8c-b812-34d93c4098d2
+b59dbafc-48a7-4dfe-b5c7-61c8afd42c9d	Marume	0f68df67-32b8-4b8c-b812-34d93c4098d2
+e3533c34-86e2-4ae1-89d7-7c6a49b09d74	Mawire	0f68df67-32b8-4b8c-b812-34d93c4098d2
+40386e17-2a01-4e91-8700-bc0d1d262afa	Mombeyarara A	0f68df67-32b8-4b8c-b812-34d93c4098d2
+5adf2ea6-ea91-432a-a7cf-f9c3f437347c	Mombeyarara B	0f68df67-32b8-4b8c-b812-34d93c4098d2
+e1ac4f22-b14e-4b38-9721-d6a5e5415060	Mudinzwa A	0f68df67-32b8-4b8c-b812-34d93c4098d2
+f55f439b-666d-48bf-ac26-fdf2f49da4e4	Mudinzwa B	0f68df67-32b8-4b8c-b812-34d93c4098d2
+9f68f3bb-87ff-4aff-8173-ba50f8ad74fe	Mudzamiri	0f68df67-32b8-4b8c-b812-34d93c4098d2
+9ee4b504-bace-4669-81b3-5b0674cdb92c	Munyira	0f68df67-32b8-4b8c-b812-34d93c4098d2
+33fce67e-6ef6-42c4-add0-fd1142bca17e	Murambinda	0f68df67-32b8-4b8c-b812-34d93c4098d2
+da491b92-b817-45cd-ace2-8e572f580e9d	Murwira	0f68df67-32b8-4b8c-b812-34d93c4098d2
+c877fc28-42fc-4d95-9c2a-49a44219f58c	Mushumba East	0f68df67-32b8-4b8c-b812-34d93c4098d2
+93e2f390-91a3-4889-b3d5-75c2d478106f	Mushumba West	0f68df67-32b8-4b8c-b812-34d93c4098d2
+6a523d42-aa01-4d35-a8c7-b046773128c0	Mutiusinazita	0f68df67-32b8-4b8c-b812-34d93c4098d2
+084d746f-3d20-4917-b802-9615539647d0	Nechavava	0f68df67-32b8-4b8c-b812-34d93c4098d2
+9b8b0648-4049-4fda-abd0-45170639e29a	Nerutanga	0f68df67-32b8-4b8c-b812-34d93c4098d2
+1293f735-9a68-4f7e-a16b-2164408ca110	Neshava	0f68df67-32b8-4b8c-b812-34d93c4098d2
+e1c16be8-0ca0-445e-8e1c-c49f1c5c99b7	Biriri	841a27a4-fad6-4b73-81f1-9be9f994e4de
+532e6427-2bac-4af8-89b1-48f288340db0	Bumha (shinja Rs)	841a27a4-fad6-4b73-81f1-9be9f994e4de
+9da42a01-b17d-4e57-95cd-d4c0c4c35e98	Chabika	841a27a4-fad6-4b73-81f1-9be9f994e4de
+d5e37523-5e80-45ee-ae04-c4b5beb88c25	Chakowa	841a27a4-fad6-4b73-81f1-9be9f994e4de
+bdf6dc5b-e5d8-48fb-bc77-9bbf3d5fda31	Changazi	841a27a4-fad6-4b73-81f1-9be9f994e4de
+10a53aef-c821-4eeb-8a75-b6c81304aa5c	Chayamiti	841a27a4-fad6-4b73-81f1-9be9f994e4de
+4f10efbc-2138-494b-a3dc-2ff26b0f3661	Chikukwa	841a27a4-fad6-4b73-81f1-9be9f994e4de
+f0a25e14-7083-485f-b17b-392ef100b38c	Ngorima A	841a27a4-fad6-4b73-81f1-9be9f994e4de
+414487ca-0a65-4f21-8c17-f6b6198f3536	Ngorima B	841a27a4-fad6-4b73-81f1-9be9f994e4de
+59dc395d-1ff2-47f1-ad8c-d06b9fd044b6	Nyahonde (nagodi Rs)	841a27a4-fad6-4b73-81f1-9be9f994e4de
+70396050-7519-4b78-a813-a874cf3ffdf7	Nyanyadzi	841a27a4-fad6-4b73-81f1-9be9f994e4de
+6db58078-f1dc-4551-8b09-1cb0d3bd69ab	Rupise	841a27a4-fad6-4b73-81f1-9be9f994e4de
+9e4cf213-e72a-4b23-b343-7927be6db281	Shinja	841a27a4-fad6-4b73-81f1-9be9f994e4de
+2c4f713f-9bca-4bce-b3c1-778f4cbbbb6f	Chikwakwa	841a27a4-fad6-4b73-81f1-9be9f994e4de
+32a01e19-76eb-4b84-ace1-f5f52d7fd768	Chiramba	841a27a4-fad6-4b73-81f1-9be9f994e4de
+f5469018-2c79-477c-abf3-94ba3439dedd	Guune	841a27a4-fad6-4b73-81f1-9be9f994e4de
+e8b03464-830a-4010-87db-6c74d12907fd	Kudzanga	841a27a4-fad6-4b73-81f1-9be9f994e4de
+b257be95-b0df-4f6c-9694-21ca4081e66a	Manyuseni	841a27a4-fad6-4b73-81f1-9be9f994e4de
+025708f5-3d05-4d79-b7bf-446e1fc2f511	Mhakwe	841a27a4-fad6-4b73-81f1-9be9f994e4de
+3869d0c8-3882-4b59-91cf-8bbe18e179d7	Mhandarume	841a27a4-fad6-4b73-81f1-9be9f994e4de
+c0510c02-0c21-462c-94d2-96daf96eae9c	Ada Chisumbanje	9ee8f62c-b4dc-4c61-8b94-747873746f93
+4cb887db-92ef-40be-a358-1f995b1cfd8f	Ada Middle Sabi	9ee8f62c-b4dc-4c61-8b94-747873746f93
+3f444552-e6a2-4fe3-9ba6-6a79fd65a6aa	Bangwe/maunganidze	9ee8f62c-b4dc-4c61-8b94-747873746f93
+9e2f89e0-50dd-47d1-b75a-2102d98394c4	Checheche	9ee8f62c-b4dc-4c61-8b94-747873746f93
+ad85b500-30ea-4e74-8c8e-70f8b9fdd8c2	Chibunji	9ee8f62c-b4dc-4c61-8b94-747873746f93
+93843e04-67b4-45a5-ac49-493f618a49ca	Chibuwe	9ee8f62c-b4dc-4c61-8b94-747873746f93
+82b591c0-f643-4f63-a85b-f96919e387ac	Chikore	9ee8f62c-b4dc-4c61-8b94-747873746f93
+aaf1ce4f-cd49-4562-8f41-6aab79c96245	Chinyaduma	9ee8f62c-b4dc-4c61-8b94-747873746f93
+ca925b5d-6b2e-47d7-9d54-39e74f423319	Chipinge Urban	9ee8f62c-b4dc-4c61-8b94-747873746f93
+47386d38-842f-4736-9771-80e5b8159717	Chisumbanje	9ee8f62c-b4dc-4c61-8b94-747873746f93
+45a6ad6b-7dd1-4d70-b502-f2fc0ea0b33e	Chisungo	9ee8f62c-b4dc-4c61-8b94-747873746f93
+757811b1-2d11-461b-b383-641d0a43b472	Chitenderano	9ee8f62c-b4dc-4c61-8b94-747873746f93
+2c779994-1b1d-47c5-9091-f1621d4b2bc2	Chitepo	9ee8f62c-b4dc-4c61-8b94-747873746f93
+c842120e-b5b2-4a35-ab24-afe52c338f22	Doroi	9ee8f62c-b4dc-4c61-8b94-747873746f93
+2e3d96eb-775d-4741-b13f-20ed6bb3c7d8	Dumisani	9ee8f62c-b4dc-4c61-8b94-747873746f93
+56e6d381-649b-47cc-866c-e7344c46e548	Gumira	9ee8f62c-b4dc-4c61-8b94-747873746f93
+292ccb96-7cbd-4611-8ef7-e99be878934a	Hondoyapera	9ee8f62c-b4dc-4c61-8b94-747873746f93
+34a84ddb-552c-4fab-95c7-45298a1de298	Jersey	9ee8f62c-b4dc-4c61-8b94-747873746f93
+0743b64b-7733-4a41-9fed-2ec51a7a446d	Machona	9ee8f62c-b4dc-4c61-8b94-747873746f93
+55b360f9-303c-4282-8d35-b4c449d6b3b2	Madhuku	9ee8f62c-b4dc-4c61-8b94-747873746f93
+88244059-7a2b-43a7-a309-5d5af0a89364	Mahenye	9ee8f62c-b4dc-4c61-8b94-747873746f93
+fe0303c2-4555-48e7-a4fd-0735e4fb8e5a	Manzvire	9ee8f62c-b4dc-4c61-8b94-747873746f93
+32342fb1-19a5-4765-85a1-4c564fc71e90	Maongere	9ee8f62c-b4dc-4c61-8b94-747873746f93
+58c31089-1104-4556-b0df-a176fdd9af6a	Mapungwana	9ee8f62c-b4dc-4c61-8b94-747873746f93
+0b9e77b5-a475-4522-8bcb-c9b73366ab89	Masonga	9ee8f62c-b4dc-4c61-8b94-747873746f93
+225d2d89-f067-43bf-80c9-3f601e7c2e5c	Mbuyanehanda	9ee8f62c-b4dc-4c61-8b94-747873746f93
+0964aa00-c094-4d61-84c2-509e12914bee	Musani	9ee8f62c-b4dc-4c61-8b94-747873746f93
+eff0bfd5-102b-4052-bdb5-970334aef433	Mushandirapamwe	9ee8f62c-b4dc-4c61-8b94-747873746f93
+72e1d1ba-f7bf-44ee-a1b4-42d691e5c5f8	Musirizwi A	9ee8f62c-b4dc-4c61-8b94-747873746f93
+4b6f8422-ab22-42d8-b80a-a7b350da8364	Musirizwi B	9ee8f62c-b4dc-4c61-8b94-747873746f93
+876465de-f68f-471f-9b63-42bbafedaf91	Mutandahwe	9ee8f62c-b4dc-4c61-8b94-747873746f93
+94773ec3-5321-47e5-b652-00ddf9a60b62	Muzite	9ee8f62c-b4dc-4c61-8b94-747873746f93
+087e18ec-71fa-423b-bafc-3a71b9bd449d	Ngaone	9ee8f62c-b4dc-4c61-8b94-747873746f93
+d1dc9430-108e-427f-b3f4-1a3f5328dfe9	Nyagadza I	9ee8f62c-b4dc-4c61-8b94-747873746f93
+26985a2e-4cbc-40e2-bdc3-c01ec2e43862	Nyagadza Ii	9ee8f62c-b4dc-4c61-8b94-747873746f93
+a78e878d-ee5b-4835-a3fe-b6b69f259443	Nyamukunga	9ee8f62c-b4dc-4c61-8b94-747873746f93
+abd39a16-8c1c-4276-870b-6605a5ef439a	Nyaringire	9ee8f62c-b4dc-4c61-8b94-747873746f93
+f5a1a2c8-ed45-4236-b675-c70a09b34359	Rudo	9ee8f62c-b4dc-4c61-8b94-747873746f93
+149081ce-7c35-43f5-8df6-307d2cf30e96	Small Dell Estate	9ee8f62c-b4dc-4c61-8b94-747873746f93
+2b7b1ba3-c007-4443-a6d1-b4f2c2f57cab	Tamandayi	9ee8f62c-b4dc-4c61-8b94-747873746f93
+046dd2e8-b6a4-4573-9d9f-b49a1c7c3fcb	Tongogara Refugee Camp	9ee8f62c-b4dc-4c61-8b94-747873746f93
+86e597db-8119-4044-8ba8-fd17747d7957	Turaizvombo	9ee8f62c-b4dc-4c61-8b94-747873746f93
+f77d6cde-30b4-49bb-ab32-ddb2cdd5c44a	Tuzuka	9ee8f62c-b4dc-4c61-8b94-747873746f93
+3dbdbe11-6b34-425e-9be1-611d3dd3eaea	Batanai	b50bb722-b3ed-4faf-8559-e86aee812c84
+e0c02599-4126-4526-b274-868632bd9143	Bembero	b50bb722-b3ed-4faf-8559-e86aee812c84
+503cf366-f26a-49d3-b2ba-6873af096654	Chiduku	b50bb722-b3ed-4faf-8559-e86aee812c84
+3480d193-34d5-4757-af22-1953e5e13fa3	Chinyamahumba	b50bb722-b3ed-4faf-8559-e86aee812c84
+f74ca921-1567-4265-822e-79fbaf8f4b4d	Chitangazuva	b50bb722-b3ed-4faf-8559-e86aee812c84
+eefd97c9-ee9a-4ad3-b803-0b1e34bd8947	Denzva	b50bb722-b3ed-4faf-8559-e86aee812c84
+ce79f241-1e39-43d4-a072-854d941859bc	Dowa	b50bb722-b3ed-4faf-8559-e86aee812c84
+4cf821e7-3893-473c-aebf-7fc8e8487b34	Dumbamwe	b50bb722-b3ed-4faf-8559-e86aee812c84
+145c7e33-b479-491d-8432-5ffea636e3fc	Gweza	b50bb722-b3ed-4faf-8559-e86aee812c84
+1e84f33d-39b0-4df3-bdba-0d2d19812c88	Gwidza	b50bb722-b3ed-4faf-8559-e86aee812c84
+cc63fd1d-1bf5-400c-992f-00900e1d3eb8	Mashayamvura	b50bb722-b3ed-4faf-8559-e86aee812c84
+60b646c4-cc7b-4328-a25b-fec6b85570c8	Matotwe	b50bb722-b3ed-4faf-8559-e86aee812c84
+383470ac-ea4f-4e5a-97a3-1009ad3fa60e	Mhezi	b50bb722-b3ed-4faf-8559-e86aee812c84
+55603a40-a9d5-4966-937f-b5a4fbafa2c7	Mutombwa	b50bb722-b3ed-4faf-8559-e86aee812c84
+ec272c16-f232-4150-8cdf-c073f2cbbc01	Mutungagore	b50bb722-b3ed-4faf-8559-e86aee812c84
+3d6d9539-d3b9-4656-8316-00ea66a67b99	Nehanda	b50bb722-b3ed-4faf-8559-e86aee812c84
+958f8404-2480-47e4-8a90-83225c9797e7	Ngowe	b50bb722-b3ed-4faf-8559-e86aee812c84
+818801da-f7a5-49d1-a405-2ce36ef01ccc	Nyakujara	b50bb722-b3ed-4faf-8559-e86aee812c84
+05f68479-e502-42a8-9855-a3892e2aea80	Nyahangare	b50bb722-b3ed-4faf-8559-e86aee812c84
+32bb6c32-78d3-40e8-b8d3-b84791e036a4	Nyahonwe	b50bb722-b3ed-4faf-8559-e86aee812c84
+856a0122-e79f-418c-a203-69124d02f7e3	Nyamagura	b50bb722-b3ed-4faf-8559-e86aee812c84
+d2c46b59-d597-4740-a645-b39d4b2ead76	Nyamatanda	b50bb722-b3ed-4faf-8559-e86aee812c84
+71e26a17-c6f7-46a1-ab43-81b742695f50	Nyamidzi	b50bb722-b3ed-4faf-8559-e86aee812c84
+96eabf13-1c61-4ae9-acfb-3f95fd8672b5	Pasipanodya	b50bb722-b3ed-4faf-8559-e86aee812c84
+75564b7c-f652-4d6d-ad8d-4e334c2e07ce	Rongwe	b50bb722-b3ed-4faf-8559-e86aee812c84
+ba6f8ba0-5cca-4efe-bac0-59a73352cdcb	Ruombwe	b50bb722-b3ed-4faf-8559-e86aee812c84
+e328006f-2bf6-4806-8fa1-149b833073b4	Sangano	b50bb722-b3ed-4faf-8559-e86aee812c84
+cb93d5a9-13c3-49b9-b878-7542a8aff7eb	Tikwiri	b50bb722-b3ed-4faf-8559-e86aee812c84
+f34e7e85-434f-4464-a61c-e8b91374335f	Tsagura	b50bb722-b3ed-4faf-8559-e86aee812c84
+91225b28-ffa7-4201-a6ad-548861c50735	Zurura	b50bb722-b3ed-4faf-8559-e86aee812c84
+f4fd914b-4bd5-41aa-8662-ff4e8775ec7a	Buwerimwe	6648586a-638c-4e7b-9a91-b7ad84b91f86
+c97d6d0b-3a6b-491b-9c7f-605da6747c85	Bvumba L.s.c.f.a	6648586a-638c-4e7b-9a91-b7ad84b91f86
+fb4b5071-4401-4c5e-a895-7da5db87cf76	Chiadzwa	6648586a-638c-4e7b-9a91-b7ad84b91f86
+9187f84c-4b12-438b-88b5-7e2b221095de	Chimoio	6648586a-638c-4e7b-9a91-b7ad84b91f86
+074a249e-c276-4a99-ab49-5dbb7dfe55c1	Chindunduma	6648586a-638c-4e7b-9a91-b7ad84b91f86
+dfabd2e3-eb13-488c-adb3-ad3ded3160f7	Chishakwe I	6648586a-638c-4e7b-9a91-b7ad84b91f86
+cc2ff048-91a4-47b4-90ef-b4431d64a727	Chishakwe Ii	6648586a-638c-4e7b-9a91-b7ad84b91f86
+0a6a8427-bc63-46b5-9bd4-30d4ca2c01be	Chitora	6648586a-638c-4e7b-9a91-b7ad84b91f86
+6335666c-a83d-4568-86e4-153ddbeeed10	Dora North	6648586a-638c-4e7b-9a91-b7ad84b91f86
+cf7fd927-f741-452f-abd1-cf6e207b64ed	Dora South	6648586a-638c-4e7b-9a91-b7ad84b91f86
+c95d3cbb-3f39-4d63-aed6-8febc18789c4	Dzobo	6648586a-638c-4e7b-9a91-b7ad84b91f86
+109d004e-37cc-4097-b06f-c04e35fdd7b8	Gandayi	6648586a-638c-4e7b-9a91-b7ad84b91f86
+5db643dc-7cdd-40d1-8f8b-c11f1c3037be	Gombakomba	6648586a-638c-4e7b-9a91-b7ad84b91f86
+593045ed-a00d-4fbf-a8f5-0b753e53589b	Kugarisana	6648586a-638c-4e7b-9a91-b7ad84b91f86
+563a9492-4f34-4091-8c3b-10eab203e6d5	Kushingirira	6648586a-638c-4e7b-9a91-b7ad84b91f86
+2e02408b-4ada-4ad8-96a7-81deb6e53f49	Mafararikwa A	6648586a-638c-4e7b-9a91-b7ad84b91f86
+0443cfec-fa5f-4a65-a2c0-b3ba100e635b	Mafararikwa B	6648586a-638c-4e7b-9a91-b7ad84b91f86
+e3806856-a384-4208-88c0-d29a2e3bb81f	Mudzimundiringe	6648586a-638c-4e7b-9a91-b7ad84b91f86
+52fa4acf-3c7e-457b-af2d-72588071f0e4	Mukuni S.s.c.f.a	6648586a-638c-4e7b-9a91-b7ad84b91f86
+35812f82-5198-49a9-a65e-cb3bfafb2cf8	Mukwada	6648586a-638c-4e7b-9a91-b7ad84b91f86
+d21994f4-048c-4734-bba7-e0a120a73bf0	Munyoro	6648586a-638c-4e7b-9a91-b7ad84b91f86
+281da433-1d64-4e34-9109-b66c592ac628	Mupudzi I	6648586a-638c-4e7b-9a91-b7ad84b91f86
+7615eda1-3bf9-4301-93b5-43bf8adc56b8	Mupudzi Ii	6648586a-638c-4e7b-9a91-b7ad84b91f86
+63e4ef32-a0c3-443f-ad56-4b62b65eba74	Muradzikwa	6648586a-638c-4e7b-9a91-b7ad84b91f86
+8cfa4787-d783-4f7d-9de1-9d34282cccea	Zimunya	6648586a-638c-4e7b-9a91-b7ad84b91f86
+c3163ed1-5504-4b51-ae56-2278ef670ca7	Murare	6648586a-638c-4e7b-9a91-b7ad84b91f86
+5658b9c6-1a90-4b8e-a26f-ddcce4da5b70	Mutanda I	6648586a-638c-4e7b-9a91-b7ad84b91f86
+e3fc5b7d-167a-4cd9-ba7e-acf08a0da84b	Mutanda Ii	6648586a-638c-4e7b-9a91-b7ad84b91f86
+59318bb4-4d4b-415e-94ad-88a9ec3823bc	Mutsago	6648586a-638c-4e7b-9a91-b7ad84b91f86
+d72d9d00-4025-4925-abf6-8da4187062f0	Mutupo	6648586a-638c-4e7b-9a91-b7ad84b91f86
+0dabf3e6-02f0-4352-83c1-fd7473a5d546	Ngomasha	6648586a-638c-4e7b-9a91-b7ad84b91f86
+6c17d0d2-840f-429a-8d06-528e4207e63e	Nhamburiko	6648586a-638c-4e7b-9a91-b7ad84b91f86
+51f8a1a9-9510-4c6c-800f-99b9d975aa36	Nyachityu	6648586a-638c-4e7b-9a91-b7ad84b91f86
+cd34a6d5-0386-4e8f-824b-237e1e86230c	Nyahundi	6648586a-638c-4e7b-9a91-b7ad84b91f86
+0725f75c-e2f6-4dc9-a19d-ecac2f85186b	Nyamazura Rs	6648586a-638c-4e7b-9a91-b7ad84b91f86
+cd143963-9046-4a29-8d8f-175abf4cfde6	Rowa	6648586a-638c-4e7b-9a91-b7ad84b91f86
+9d2fa350-0431-4001-a7be-f80b6944b657	Chandisinai	b4409427-c508-46e8-ac0b-3ff367b0037b
+2707f67c-0dae-46a2-893d-d26f1b245d96	Chikomba A	b4409427-c508-46e8-ac0b-3ff367b0037b
+40d8abd7-b855-408c-9d57-531b2fac6870	Chikomba B	b4409427-c508-46e8-ac0b-3ff367b0037b
+a25d673c-791a-4599-92f2-b1a3589ac64f	Doweguru	b4409427-c508-46e8-ac0b-3ff367b0037b
+85e62f97-642d-4cab-bc54-16a09372cc67	Gondecharodzo	b4409427-c508-46e8-ac0b-3ff367b0037b
+dc3eaba9-17f4-48df-9ffa-b7d1d41a669c	Mandeya A	b4409427-c508-46e8-ac0b-3ff367b0037b
+0ef176ca-8843-41fd-800f-d49d6f3217b5	Mandeya B	b4409427-c508-46e8-ac0b-3ff367b0037b
+d63f99b6-e858-40d9-a06a-188f31a533e3	Mudwaramaredza	b4409427-c508-46e8-ac0b-3ff367b0037b
+523cb4f9-141d-4826-bd39-1374a29cdc07	Mudzindiko	b4409427-c508-46e8-ac0b-3ff367b0037b
+de3eccf2-dc1b-4d64-a7d4-3948402791ce	Muparutsa	b4409427-c508-46e8-ac0b-3ff367b0037b
+2e609626-eadd-4734-bfdc-50b88aed1b1e	Nyakujara	b4409427-c508-46e8-ac0b-3ff367b0037b
+ff579d98-176b-4b7f-9bb5-d38b60e62067	Nyamaende	b4409427-c508-46e8-ac0b-3ff367b0037b
+d8757a80-5f9f-4711-8184-aa05d5780b44	Nyamhuka	b4409427-c508-46e8-ac0b-3ff367b0037b
+727903ca-9dfc-42a2-96ff-1687afea9f09	Rutungagore	b4409427-c508-46e8-ac0b-3ff367b0037b
+02df066e-8e65-452d-8c74-14886e83b774	Sadziwa	b4409427-c508-46e8-ac0b-3ff367b0037b
+2809f070-b1d8-4446-a12e-33cf0c5b9efc	Sahumani	b4409427-c508-46e8-ac0b-3ff367b0037b
+6ab6d5c9-0549-4af6-8ea9-20c527e1b4a3	Samanga A	b4409427-c508-46e8-ac0b-3ff367b0037b
+8da067ff-37d7-482f-8981-fe4b525761f6	Samanga B	b4409427-c508-46e8-ac0b-3ff367b0037b
+64935bb5-b400-4a88-91d9-f8ad81b0f944	Samaringa	b4409427-c508-46e8-ac0b-3ff367b0037b
+35492453-aa45-4478-b0f6-f63d84fd77f9	Sanyahwe East	b4409427-c508-46e8-ac0b-3ff367b0037b
+84b4c692-6c1e-489a-aeee-32c218196151	Sanyahwe West	b4409427-c508-46e8-ac0b-3ff367b0037b
+1c6ac88f-4fb2-44a5-bf3a-968e28e3ae84	Zindi	b4409427-c508-46e8-ac0b-3ff367b0037b
+13e689b2-82a4-4340-91f4-d2269a3217ce	Bende	50c82422-2cce-4b79-912e-c1a9df548ee8
+5f4860ea-f759-4c4d-8191-43bb62739a7b	Chitsanza	50c82422-2cce-4b79-912e-c1a9df548ee8
+918770d1-add5-4336-9785-f5a08576b632	Gairezi Rs	50c82422-2cce-4b79-912e-c1a9df548ee8
+8eebf57a-6c75-419b-949e-50aae02299e9	Gonde	50c82422-2cce-4b79-912e-c1a9df548ee8
+df6f5eca-6107-46e9-9b91-e334b8374bac	Guramatunhu	50c82422-2cce-4b79-912e-c1a9df548ee8
+42cce219-a2d4-4d31-8a8d-e841b6d9087d	Marawo	50c82422-2cce-4b79-912e-c1a9df548ee8
+2ff3e99c-a9c2-4b36-9496-bf5031fd73fd	Mutombwa	50c82422-2cce-4b79-912e-c1a9df548ee8
+e48c80ed-05c7-4e22-b0ef-2cc8e8e4b33c	Nyabunje	50c82422-2cce-4b79-912e-c1a9df548ee8
+6a1ff977-ba13-4a5f-ad18-7cd4bcb560d9	Nyadowa	50c82422-2cce-4b79-912e-c1a9df548ee8
+cb347a1c-f3f2-4e42-87b5-9ca3c1f873dd	Nyagota	50c82422-2cce-4b79-912e-c1a9df548ee8
+d1ba79f9-bde3-4337-a7dc-055ad3e817cf	Nyakomba	50c82422-2cce-4b79-912e-c1a9df548ee8
+3f19003a-a3c9-4446-bad7-1d8093d09057	Nyamahumba	50c82422-2cce-4b79-912e-c1a9df548ee8
+2bf0448d-d1a5-437f-b89a-a6d45376a553	Nyamaropa	50c82422-2cce-4b79-912e-c1a9df548ee8
+1dd3cad7-c967-4a8d-8681-5e74fbe605e7	Nyamasara	50c82422-2cce-4b79-912e-c1a9df548ee8
+1a479f21-4ccf-4ea2-9773-efa0f2fd34aa	Nyamubarawanda	50c82422-2cce-4b79-912e-c1a9df548ee8
+b2068529-5146-4ca3-94fb-f8a55ae79691	Nyamutowera	50c82422-2cce-4b79-912e-c1a9df548ee8
+0c857155-5c8f-4c97-b755-86541e25f958	Nyanga South	50c82422-2cce-4b79-912e-c1a9df548ee8
+196f858b-b30e-438e-9ac0-2d37a9a66258	Nyanga South Rs	50c82422-2cce-4b79-912e-c1a9df548ee8
+14fb61bb-62e8-413e-a3f7-92c8fa4708c0	Nyanga Town	50c82422-2cce-4b79-912e-c1a9df548ee8
+3a8f6798-affa-4dd6-b542-fc9baf5b8fdf	Nyautare	50c82422-2cce-4b79-912e-c1a9df548ee8
+7117355c-3298-49e2-bd7f-9d99d2a8b945	Ruwangwe	50c82422-2cce-4b79-912e-c1a9df548ee8
+465ac1a2-2dc3-4285-9e4e-fec9455e084f	Rwenya Game Park	50c82422-2cce-4b79-912e-c1a9df548ee8
+33e08a53-70d7-49c8-974a-3842a193b9df	Sanhani/shungu/kuedza	50c82422-2cce-4b79-912e-c1a9df548ee8
+7511f9fc-f4d8-49b7-b912-7e487ed71a00	Sanyatwe	50c82422-2cce-4b79-912e-c1a9df548ee8
+6ef50bce-a7d6-450b-9c72-7b8a723f09e7	Tabudirira	50c82422-2cce-4b79-912e-c1a9df548ee8
+7aabc3c7-1c3f-45fb-a024-a76bdab22aab	Tombo I	50c82422-2cce-4b79-912e-c1a9df548ee8
+3ca6d316-1da8-4fa2-8d42-d76ddb856470	Tombo Ii	50c82422-2cce-4b79-912e-c1a9df548ee8
+74554b7d-cfef-4250-9e46-4cd3c210a550	Tongogara	50c82422-2cce-4b79-912e-c1a9df548ee8
+b2681b74-d861-4997-93e9-1ca27ce6f010	Chiveso	8a3847d1-dfc5-4b00-a93c-6737e166074c
+b18563d1-c0af-49eb-8bb0-1055a8ae482b	Dindinyongwe	8a3847d1-dfc5-4b00-a93c-6737e166074c
+9b093003-3853-41a8-964e-5407295ccc39	Gudza	8a3847d1-dfc5-4b00-a93c-6737e166074c
+b89f2d25-e715-4bbf-9e42-642ded8ef15d	Guwa	8a3847d1-dfc5-4b00-a93c-6737e166074c
+3e78bae6-fffb-4f75-ae11-aad6bff23776	Mhumhurwi	8a3847d1-dfc5-4b00-a93c-6737e166074c
+304d235a-6dcf-4855-8566-5a359e741640	Muchapondwa	8a3847d1-dfc5-4b00-a93c-6737e166074c
+ec55d822-a145-4ded-9174-bd78091fe2da	Muonwe	8a3847d1-dfc5-4b00-a93c-6737e166074c
+4ec15b1e-08ac-4299-9edd-40700682aef5	Mupandira	8a3847d1-dfc5-4b00-a93c-6737e166074c
+60a4ff5d-53b6-4253-bf14-b28f8c4dd782	Mutowa	8a3847d1-dfc5-4b00-a93c-6737e166074c
+4e9eac4a-84bd-4ad8-b9e1-605ceb5e2f0c	Nyava	8a3847d1-dfc5-4b00-a93c-6737e166074c
+fb8beb93-555f-4999-a93d-469272156858	Bepura I	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+6ae6ffde-c39d-4a72-9206-a217b659645d	Bepura Ii	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+ea660563-b03b-41b8-bf2c-ae9a8df8432e	Bepura Iii	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+8771da81-ec5f-49da-a019-f695af377dad	Chapoto	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+d00e574e-02e7-4de1-b0ec-32d121214aac	Chipuriro A	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+08df7c79-074d-4ceb-9a1a-d1ef2f91e591	Chipuriro B	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+8f0b7663-c8c1-4746-ab38-94c11a5b46ae	Chipuriro C	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+808dee4b-d1e0-4312-b590-bfe54e12df3d	Chiriwo	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+ab76cb4c-d8f3-4d0e-a295-522d43a16a35	Chisunga	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+13cb5604-05e1-4040-9be7-d283cb632120	Chitsungo	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+81e5c97f-18e8-442c-9c90-0ebcc08d1f88	Knyurira	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+f7c86106-0385-46b3-84d4-647159ae6e80	Mamini	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+d6793189-6409-4217-ae03-a5af254d4423	Matsiwo A	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+24cba803-55da-410e-9344-b50b3bc071d8	Matsiwo B	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+58ac042e-ec89-4e56-98fc-f73c58c8efb3	Mukwenya	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+5badbfea-072b-4c1d-82a3-d5e19b5eaf2f	Mutota	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+afe7f40b-2b00-45b1-ad63-fce6ec32c86e	Neshangwe	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+b07e6be5-a145-4b7e-9acb-391b42487c29	Nyamhondoro	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+4704d4ff-ad35-4575-baad-21b189571bde	Shayavhudzi	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+add22ec8-ea39-4f0d-b81d-faa446135ff9	Suoguru	bb1b3377-a6e7-4dab-88bc-7e74e7a14f91
+bc772a7b-7e6e-4de2-8f9b-028375933e80	Chaminuka	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+f1a31fd2-556e-447e-8d43-e6b23296d5bc	Chipiri	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+736cfc12-8bb4-4c02-a788-6b24cce68867	Chiwororo	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+2aac384f-70ce-426e-9159-f769e2a5fb88	Endaikwenyu	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+8c25c773-932f-4514-ad17-b140918d39cf	Gato	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+592c59b2-bea6-4519-b1e9-f6827fff7ba5	Makombwe	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+735b061c-d5c1-4f41-9ffe-0bd38c71f9be	Masiyazvengo	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+094cd217-3cf9-452b-9763-c1289bcf980e	Nehanda	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+298d748d-a623-4ae1-9ceb-841765b04bee	Nyadzonya	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+820a5e39-9bfc-44b7-ae42-419bb7e23a4e	Nyota	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+130f250a-344e-4a40-bf7e-2914456da560	Sawi	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+c34d1cf6-7402-4284-b50a-2c273d3eea3a	Tafirenyika	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+9db5204a-885e-424d-a213-a036830428c2	Takawira	1054bad1-f2d8-4a02-a6bd-d59188cb0f56
+cdd3e990-44c5-49e1-b7db-223921d0b831	Bveke	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+ba786957-4651-4940-aecc-acabbde6d30d	Chahwanda	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+fd7c0f09-5fdd-4b8a-b10c-ec281ce9fbf4	Chesa Danzva	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+0091f599-fa3e-4fcd-80c0-110a14a3bd8a	Chesa Mtondwe	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+420d0cec-6667-4a52-a5cf-d27e737ff675	Chesa North	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+db937a0f-1e62-431c-88a7-9089e23bc8b7	Chesa Nyajenje	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+7b3c5bcf-c89a-4ee5-93f2-c04a399b3e56	Chesa South	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+cda370da-d631-440a-9b0a-1cd5b43949c4	Chiswiti	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+0906f95b-005e-466f-aa27-5a3190f43771	Chitse	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+d423b27b-3254-40bb-b75c-8feaec2a2297	Dotito	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+2b091c99-2dbb-4241-8284-8a887bec1b5d	Gomo Chigango	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+0728b44c-4f5a-42cb-bf7b-b82caa6300dd	Kaitano	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+450e9a02-3f48-4e72-bbe5-9fe6a7c47a30	Kandeya	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+3b895179-5910-41c7-975c-6c505def4753	Karanda	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+4ba25973-c1e8-4bdc-a8be-a501175f079d	Karuyana North	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+65a20b1d-4847-4fea-ab57-2b73221b3811	Karuyana South	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+3ea8783a-88e8-4697-92ee-46fe2007ae4b	Matope	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+3038f66c-b0d7-4100-b70e-65c009550f43	Mudzengerere	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+02e13520-f243-41d2-bfaa-066c142a7e1d	Mukumbura	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+41e33b4c-65b9-46be-b5d9-0205d37fbc3f	Nembire	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+eca149b7-08ed-4b41-aaf2-b78824464e56	Nohwedza	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+d8d86a4c-d2b2-4f99-bc2a-d459743759b9	Pachanza	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+605258d8-336d-4c69-97b3-9d0714fbe627	Sohwe	3d21bc3a-7a04-4c78-8860-7c0040bf5d7b
+10e751d5-becf-4376-964d-ef302472d9b3	Chadereka	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+4cc15192-a0c2-4e9f-981c-dd4f6040305a	Chawarura	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+3b6ac9d5-27bf-44e0-910c-247d26faa7b6	Chiweshe	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+347661ce-aa11-4783-98d3-6d7f22ebcdac	Gutsa	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+dfca1393-b972-4802-9612-6000c57ba811	Hoya	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+d6d3e580-ea4a-4007-abd3-86f7414de403	Hwatsa	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+0cbef1db-9ea9-4d52-80cf-7b7361bfb574	Kapembere	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+a5cbb7fa-0250-4254-81c7-6bc9afd41931	Machaya	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+5a6c1779-3a41-4fa6-8e72-82ea6581eb94	Muzarabani	0ddaf38d-a438-4c98-8fb9-9ab7017c117f
+f8667c5b-854f-4fe8-8116-0b1c7fb269eb	Bveke	07d3fb54-7ad7-4277-af4e-68c002d45e42
+0bb40da2-3f1d-4b80-aef4-025e56e4a8ee	Chahwanda	07d3fb54-7ad7-4277-af4e-68c002d45e42
+cd4f649e-408d-421b-b4e2-0745c5c75c6f	Chesa Danzva	07d3fb54-7ad7-4277-af4e-68c002d45e42
+b11d1221-1261-4b6a-bb49-43779b300593	Chesa Mtondwe	07d3fb54-7ad7-4277-af4e-68c002d45e42
+b6715980-fb73-4d70-bea7-19a34fe89953	Chesa North	07d3fb54-7ad7-4277-af4e-68c002d45e42
+f3b1be10-c8aa-4eb8-afcd-6b69276a491d	Chesa Nyajenje	07d3fb54-7ad7-4277-af4e-68c002d45e42
+d510a9f9-0027-459d-977d-bf7370beb03f	Chesa South	07d3fb54-7ad7-4277-af4e-68c002d45e42
+1c164e72-c35c-469f-99be-cb2539890621	Chiswiti	07d3fb54-7ad7-4277-af4e-68c002d45e42
+bab07652-9bb9-4d56-8e0a-3ed3c81934ea	Chitse	07d3fb54-7ad7-4277-af4e-68c002d45e42
+0c547290-2cb9-4b3d-a62a-ed0878fe820e	Dotito	07d3fb54-7ad7-4277-af4e-68c002d45e42
+dee72860-fce6-45f3-9dfc-3af166865757	Gomo Chigango	07d3fb54-7ad7-4277-af4e-68c002d45e42
+ca8b8009-d199-4b4f-b238-f5decc480a48	Kaitano	07d3fb54-7ad7-4277-af4e-68c002d45e42
+c542a80c-b081-40c5-9ee8-68d882e8a25b	Kandeya	07d3fb54-7ad7-4277-af4e-68c002d45e42
+fbe68d94-ee46-4c0f-b1a0-8a689ec07568	Karanda	07d3fb54-7ad7-4277-af4e-68c002d45e42
+5a6e91bc-93e7-457d-b10a-47adece3ae68	Karuyana North	07d3fb54-7ad7-4277-af4e-68c002d45e42
+3dbf5be2-7f25-480e-8c9d-a019d77b9865	Karuyana South	07d3fb54-7ad7-4277-af4e-68c002d45e42
+8c439c46-a358-477e-b743-0358632ede85	Matope	07d3fb54-7ad7-4277-af4e-68c002d45e42
+ab73421b-c770-4923-ad69-0f376ce23e06	Mudzengerere	07d3fb54-7ad7-4277-af4e-68c002d45e42
+6c37c96e-d287-4110-8efb-8ee82dfd1890	Mukumbura	07d3fb54-7ad7-4277-af4e-68c002d45e42
+4ad51c6f-3d78-4014-b8dd-310b0ef76bd2	Nembire	07d3fb54-7ad7-4277-af4e-68c002d45e42
+95017856-35ac-422f-ad48-a5047086671b	Nohwedza	07d3fb54-7ad7-4277-af4e-68c002d45e42
+fa4ba977-ae89-43ff-adfa-8d68a17a3536	Pachanza	07d3fb54-7ad7-4277-af4e-68c002d45e42
+6a3793d8-d593-4435-968e-a1379aa7775c	Sohwe	07d3fb54-7ad7-4277-af4e-68c002d45e42
+84d1be58-7ac6-4b95-acf3-0a5c1e3fd8ab	Bopoma	7308111e-4297-4a45-bb50-de7d3ced76e6
+b1049c24-c7c9-4909-bd81-4f69ed22cdde	Chipara	7308111e-4297-4a45-bb50-de7d3ced76e6
+d02a3822-0645-49ba-add6-197d9d7aed17	Katohwe	7308111e-4297-4a45-bb50-de7d3ced76e6
+af35f883-32c6-405d-8add-78a948fff1ec	Mahomba	7308111e-4297-4a45-bb50-de7d3ced76e6
+3867c9a7-8b7f-45df-bce7-8b4fcc700d33	Makuni	7308111e-4297-4a45-bb50-de7d3ced76e6
+a6c8969e-33b1-43ce-a9ef-2c1f42b301a4	Maname	7308111e-4297-4a45-bb50-de7d3ced76e6
+1c0e431f-2b8b-4689-8221-9a93cf698c25	Mapani	7308111e-4297-4a45-bb50-de7d3ced76e6
+b4f0066d-2d5d-4bb0-a3e8-578be7589db0	Marambanzara	7308111e-4297-4a45-bb50-de7d3ced76e6
+90f761ac-2fa2-42b8-afec-ced3510938b6	Masoso	7308111e-4297-4a45-bb50-de7d3ced76e6
+96def410-04ba-41db-9a6a-50286909a82e	Masvingo	7308111e-4297-4a45-bb50-de7d3ced76e6
+ac06a693-9955-4380-8b5a-49a5d6da5f5a	Mukosa	7308111e-4297-4a45-bb50-de7d3ced76e6
+1051c140-ecd4-493b-9f99-4b4c04368505	Nyamanyanya	7308111e-4297-4a45-bb50-de7d3ced76e6
+d5bfd4a8-d94b-4183-ab25-71ca2b2aca12	Nyamuzeya	7308111e-4297-4a45-bb50-de7d3ced76e6
+5c9f8966-8cd5-4962-a3e3-830785c5c215	Rukuta	7308111e-4297-4a45-bb50-de7d3ced76e6
+1dc065b8-3128-4177-aa09-3fc38911ba5d	Rusambo	7308111e-4297-4a45-bb50-de7d3ced76e6
+1ff3a236-11d9-4776-b9dd-ad98244917fa	Zvingowe	7308111e-4297-4a45-bb50-de7d3ced76e6
+0101bd6a-679c-4bc3-8874-23d21c420a76	Chidembo	404534bc-2906-403e-895f-968163af3483
+9235e0a0-6a8f-4861-9f0a-d963d1b3fbbb	Chihuri	404534bc-2906-403e-895f-968163af3483
+3ac59a84-dbfe-4f2b-8b80-02a4a468554b	Chizinga (nyamaropa)	404534bc-2906-403e-895f-968163af3483
+c2bba7ce-62bf-4ae7-b990-6e7f3d68d913	Gono	404534bc-2906-403e-895f-968163af3483
+8bb7f3a1-b6dc-4e7d-86b9-50d1a64198cc	Goora	404534bc-2906-403e-895f-968163af3483
+5f4efe00-e7a3-4f60-8340-07dd8afe1196	Kajakata	404534bc-2906-403e-895f-968163af3483
+86745cf4-4775-4d17-9751-9f9d1b0311cf	Mupfure	404534bc-2906-403e-895f-968163af3483
+03e48324-a767-4d40-8643-53963541e5e5	Mutumba	404534bc-2906-403e-895f-968163af3483
+d38d3efb-0c31-4c23-8e5e-42467e32908a	Nyamaruro	404534bc-2906-403e-895f-968163af3483
+a65d4d07-dd44-473b-be85-c6ffdca2a9b0	Nyarukunda	404534bc-2906-403e-895f-968163af3483
+363c954c-7660-4f85-afa2-4711d03c5543	Rukoroori (mufurudzi)	404534bc-2906-403e-895f-968163af3483
+c1619cea-8a5d-4a8b-a5b1-69344caf140c	Sanye	404534bc-2906-403e-895f-968163af3483
+7452f8d2-5e53-4ef8-b6bd-f532e821fd5e	Shamva Lscfa (umfurudzi N)	404534bc-2906-403e-895f-968163af3483
+b37eea94-213d-469e-8da9-e70b26ef84b2	Chinyika	6f37e031-f106-4c33-93c5-6919a229ef2a
+5a6c80c4-a969-4682-a8b4-b28ccb3474f8	Dzvete	6f37e031-f106-4c33-93c5-6919a229ef2a
+0b5b46b3-ba49-43f4-8a24-1c5a36c2ca86	Gutu	6f37e031-f106-4c33-93c5-6919a229ef2a
+3cae4ffb-18f6-4ca2-a3c8-4fe83aeeefdf	Mawanga	6f37e031-f106-4c33-93c5-6919a229ef2a
+a1443d19-0f3f-417e-8ec9-193ee636fc09	Munyawiri	6f37e031-f106-4c33-93c5-6919a229ef2a
+a39db036-9251-4f1f-9b5f-98496f56d3fb	Murape	6f37e031-f106-4c33-93c5-6919a229ef2a
+50385ee5-73b4-4b63-afde-bc40c61404b9	Mwanza	6f37e031-f106-4c33-93c5-6919a229ef2a
+8721123e-a1a7-478b-9ef6-b3187bf2d687	Pote	6f37e031-f106-4c33-93c5-6919a229ef2a
+78c3d190-da77-44da-bc7b-e33981176786	R' Nine – Shangure	6f37e031-f106-4c33-93c5-6919a229ef2a
+a47e6fc2-b884-4c71-880d-d127cb0451e8	Rusike	6f37e031-f106-4c33-93c5-6919a229ef2a
+53b52dd8-9dad-4f18-b110-335532865e3a	Shumba	6f37e031-f106-4c33-93c5-6919a229ef2a
+b1b5c56b-0591-4bae-b5b7-fa55005d1178	Bangauya	581dfb60-1532-442f-b1bc-b8ca2b1807da
+0c1aea2c-c720-4cd0-a8a8-0c49bfa32108	Chikwizo A	581dfb60-1532-442f-b1bc-b8ca2b1807da
+63069829-6c33-487c-8484-a735db76b631	Chikwizo B	581dfb60-1532-442f-b1bc-b8ca2b1807da
+4a5bd3d5-7d24-42e9-85bd-ec4374789a1b	Chimukoko	581dfb60-1532-442f-b1bc-b8ca2b1807da
+93387f1a-4bd5-4312-b446-c951a3f670fe	Goronga A	581dfb60-1532-442f-b1bc-b8ca2b1807da
+0b08ff2a-ba71-4151-a2f7-4f1d12aeac18	Goronga B	581dfb60-1532-442f-b1bc-b8ca2b1807da
+66dd20ba-2881-4115-afb9-5be262061d78	Makaha A	581dfb60-1532-442f-b1bc-b8ca2b1807da
+d026b852-d167-45a9-9ceb-54f91e204468	Makaha B	581dfb60-1532-442f-b1bc-b8ca2b1807da
+571de473-c68a-4948-be94-ce4033729e8e	Masarakufa	581dfb60-1532-442f-b1bc-b8ca2b1807da
+29ee7a6e-5e18-4018-a44d-5063348ad8c3	Mukota A	581dfb60-1532-442f-b1bc-b8ca2b1807da
+5cd3b3df-543d-4523-b5df-0154003ba4a0	Mukota B	581dfb60-1532-442f-b1bc-b8ca2b1807da
+ec6bb7a7-48db-4397-87b4-58ce9b3798dc	Mukota C	581dfb60-1532-442f-b1bc-b8ca2b1807da
+e596c07c-cd32-490c-bd9e-e1b0fcbc4da1	Nyakuchena	581dfb60-1532-442f-b1bc-b8ca2b1807da
+aed6501f-46d4-49ac-b3f4-1ba624cb6c10	Nyamukoho	581dfb60-1532-442f-b1bc-b8ca2b1807da
+3b26aee6-7e69-4ac0-bf58-9904ae5c2654	Nyatana Game Park	581dfb60-1532-442f-b1bc-b8ca2b1807da
+d633a7e8-1250-4e2b-9f0e-5e3fd1a25018	Shinga (Shanga)	581dfb60-1532-442f-b1bc-b8ca2b1807da
+42043679-3416-4274-92c4-018ca2267d73	Suswe	581dfb60-1532-442f-b1bc-b8ca2b1807da
+84092eee-a506-43b6-839a-ff9c331b535c	Chigonda	77dea131-ab94-4dc3-b6a4-f05449ee383c
+1e0b5a2c-e7af-4fb2-8447-61b13f5d3049	Chigwarada	77dea131-ab94-4dc3-b6a4-f05449ee383c
+7ad68759-ee9e-4b70-b242-547e576dcd3c	Chikwira	77dea131-ab94-4dc3-b6a4-f05449ee383c
+972c29b1-8c91-489c-a8bd-1b60d935d847	Chipiri	77dea131-ab94-4dc3-b6a4-f05449ee383c
+2f7bd6ed-7e18-4f02-9e30-7119f8497df8	Chitowa North	77dea131-ab94-4dc3-b6a4-f05449ee383c
+dbe881d3-ec74-4bcf-9b20-660336945042	Chitowa South	77dea131-ab94-4dc3-b6a4-f05449ee383c
+6d887d52-e708-40eb-8423-477416653539	Chiunze I	77dea131-ab94-4dc3-b6a4-f05449ee383c
+e7b55a31-7743-4fe2-96c0-a0bdd70d83d2	Chiunze Ii	77dea131-ab94-4dc3-b6a4-f05449ee383c
+31b70b6c-c884-47c8-a5dc-445569b5ac05	Domborembudzi	77dea131-ab94-4dc3-b6a4-f05449ee383c
+6a2c7b38-1af2-43df-a95d-393b9c93f9a1	Karamba	77dea131-ab94-4dc3-b6a4-f05449ee383c
+72c2c180-68f7-476d-953f-fc924e8a3d09	Mabika	77dea131-ab94-4dc3-b6a4-f05449ee383c
+59952a9f-b16a-454a-b29b-41b50429927f	Manyika	77dea131-ab94-4dc3-b6a4-f05449ee383c
+edca7ecb-28ef-4a3f-8919-1b283b3f9714	Maramba	77dea131-ab94-4dc3-b6a4-f05449ee383c
+d3fae0c4-8e37-46c0-822e-baf780933697	Marowe	77dea131-ab94-4dc3-b6a4-f05449ee383c
+75190990-89c6-4485-b3b7-d6b514e938c9	Masiyandima	77dea131-ab94-4dc3-b6a4-f05449ee383c
+76d1762b-3ede-4bc6-b95a-68d02109dca4	Mawanza Chitsungo	77dea131-ab94-4dc3-b6a4-f05449ee383c
+da0a7807-6dc2-4e0d-9d83-9c09225a3a30	Muchinjike	77dea131-ab94-4dc3-b6a4-f05449ee383c
+349c0d89-3949-4974-b0dd-d67b9c960831	Mukuruanopamaenza	77dea131-ab94-4dc3-b6a4-f05449ee383c
+44a6bfd9-1c98-44ae-aa9f-11a82def0220	Musami	77dea131-ab94-4dc3-b6a4-f05449ee383c
+5a8f00f9-b65d-475f-9dcc-5d9ec79ca976	Nhakiwa I	77dea131-ab94-4dc3-b6a4-f05449ee383c
+57ed6439-455b-4451-b870-c0414dbc1f6a	Nhakiwa Ii	77dea131-ab94-4dc3-b6a4-f05449ee383c
+ffc0d316-6156-4319-afd1-9e7b2c3056f8	Nyamhara	77dea131-ab94-4dc3-b6a4-f05449ee383c
+ed510023-b5dd-45e8-a66f-a8326fe5089c	Rota	77dea131-ab94-4dc3-b6a4-f05449ee383c
+4b4c3475-4b51-4ddd-974f-508dd3f8f8d2	Rukudzi	77dea131-ab94-4dc3-b6a4-f05449ee383c
+b687be2f-fec0-40df-87a4-2ef910efe738	Zhombwe	77dea131-ab94-4dc3-b6a4-f05449ee383c
+b3fd7011-0245-47d8-b5aa-80352d0c8f71	Charehwa A	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+346cc943-8e3c-4a19-b284-004b43cc1c1e	Charehwa B	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+4cd2acea-9f21-4fa8-8242-f4e6cb518ac9	Chimoyo A	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+73336580-8b7e-49a4-b756-07c92ba2f4cf	Chimoyo B	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+6d2d4dc1-e7fe-4fe2-87d1-4a2ed40a0d13	Chimoyo C	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+ae5d4562-f181-46aa-a2e5-c169dbda1e32	Chindenga	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+70993ca4-16a6-46ff-b861-bc2074a460fc	Chiwore	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+da6bad3b-6a08-42ba-848e-bdc63ea16036	Gumbure	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+3f4fad90-4c8f-4551-a8a1-99aabd88f228	Kabasa A	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+95aecffa-c2f2-4295-8c23-1821e157d6e0	Kabasa B	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+e6dd8b6a-de0c-434a-a86a-6de43898c379	Kawere	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+847b09b9-a5b4-4888-b319-e7453515a161	Marira	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+9359beed-fdb2-4ea8-b840-6a03c3b2de4e	Matedza	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+f551b1d2-5e00-4438-b5ee-e3cbfb89a351	Mawanga	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+ee717cb0-df64-4527-863d-49a3b24aaeee	Mbudzi A	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+603ddf40-d290-4216-9de8-b560f0163549	Mbudzi B	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+c3598379-bc9b-4c61-a7d1-6934c9cb43e3	Mutoko Centre	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+4643f6f6-7a68-444f-9385-ac42ece5cd6f	Nyahondo	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+3ffcea28-a623-49a0-a3df-da5e440c05d9	Nyahunure	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+1940943c-f800-4863-afc4-72caca3e089e	Nyamhanza A	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+e9dd9c9d-d6fa-49c7-baea-5bd0bfd4a6ea	Nyamhanza B	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+16df09d8-30d2-46a1-888f-9305437008a7	Nyamuganhu	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+e1e64d3e-0e1e-4d00-a842-d1e159507347	Nyamukapa	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+e8ff1d49-3dae-4d80-91a1-5f347cecdb88	Nyamutsahuni	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+efff5ee0-27f8-40df-96e5-7a0737e34729	Nyamuzizi	b92a23fd-8866-4d83-92cb-33e9c2b9a1ec
+5be39385-a3a6-4617-a524-f22b7016c7a2	Chirimanhunga	f006e450-d886-4b71-9a5f-d027640c1c3f
+1ddccae1-3bef-41fa-a09a-1145106aabbe	Eleven	f006e450-d886-4b71-9a5f-d027640c1c3f
+f39a479c-347c-4ba2-88e6-b0ccbd1d9d46	Mandedza	f006e450-d886-4b71-9a5f-d027640c1c3f
+2b0cd4c0-bac8-4184-a1ae-1d0cf3f5e86b	Mapfuti	f006e450-d886-4b71-9a5f-d027640c1c3f
+1a178f51-e85e-4de8-8784-ef9f8b44a96b	Marirangwe North	f006e450-d886-4b71-9a5f-d027640c1c3f
+7f459449-523c-40b5-9430-4ec20224ad9e	Twelve	f006e450-d886-4b71-9a5f-d027640c1c3f
+0e991788-b5e0-4a0b-9fd7-18fc261b0487	Zhakata	f006e450-d886-4b71-9a5f-d027640c1c3f
+4351c464-f990-489c-a9ea-daa3ffa6efe9	Marirangwe South	f006e450-d886-4b71-9a5f-d027640c1c3f
+e72b720e-597f-4cdc-b764-a8a463b77e90	Matiti	f006e450-d886-4b71-9a5f-d027640c1c3f
+3c98213c-0e15-400b-b70f-69f404dfc978	Mutiusinazita	f006e450-d886-4b71-9a5f-d027640c1c3f
+ced05f8d-4cbc-469d-b6bf-683b7d6cfa06	Nemasanga	f006e450-d886-4b71-9a5f-d027640c1c3f
+ad31a115-f12e-423b-a163-f2b22192e370	Ngome	f006e450-d886-4b71-9a5f-d027640c1c3f
+b0d60cb9-d254-4f78-8b68-d7fcc9073006	Chigodora	16ed51b9-b9e5-48ca-a5ac-d39bdaa1712d
+d95cd4da-5fe0-4002-a960-1194d0ca86ae	Ruzane	16ed51b9-b9e5-48ca-a5ac-d39bdaa1712d
+d88bc714-bd45-4d5a-82fb-e9fa62b6c431	Ushe	16ed51b9-b9e5-48ca-a5ac-d39bdaa1712d
+71338d28-53ea-4342-916e-331b49bfb0ac	Makwarimba	16ed51b9-b9e5-48ca-a5ac-d39bdaa1712d
+78e17f61-e05e-47b6-91ed-36488ee39bbc	Goto	16ed51b9-b9e5-48ca-a5ac-d39bdaa1712d
+0c75ba2f-edeb-47e0-8cc1-f34a3a7b4a50	Dendenyore	16ed51b9-b9e5-48ca-a5ac-d39bdaa1712d
+7b469ebf-87dc-4ba4-b70d-95f0c9dbb8e2	Chivero C (n)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+cfad2ff3-7639-435a-8f03-716351428e94	Chivero M	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+bf64acf7-e49a-4d28-8352-43b9a9665c4b	Chivero M (l)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+d3ae1aa7-91e3-4920-b5ec-244749649a6a	Chivero O	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+b7663bd2-ccfe-4361-b884-ac061378c5e4	Gora	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+0295b7cd-0032-480a-9150-f02dde1521ff	Mashayamombe (i)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+5821be98-0738-4ef5-b2ba-c888e393e1b8	Nherera B	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+b2e6c9e2-51ee-437a-91ca-41627992af64	Nyamweda (q)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+398366c9-0154-4855-8b9a-223018cf605d	Nyamweda P	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+e0935ec4-34c8-4833-8d80-cfba1114a924	Rwizi F	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+d5a072f5-610b-4f96-8405-b64a4edc2b07	Ward 22 (murombedzi H)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+e79c1f8b-b817-49bf-993c-deae2e4b14e3	Mashayamombe K	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+8fcf7303-9584-484f-b436-781c4e4103c8	Mashayamombe P (j)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+4f294369-ab3e-4f52-ac9f-b04f21114faa	Murombedzi (h)	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+2e886506-6a07-4aca-92b3-6f344ca43a17	Ngezi C	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+d0a14894-78ab-4142-b93e-595fc460a378	Ngezi D	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+66489941-7997-4998-9fd9-063f9e7efcfe	Nherera A	744bdd5f-85c2-4b5e-bfbc-db670b1b2c4d
+562f6e1b-9353-46e8-b40f-85ea970c0794	Chemusimbe	cb1ba660-0751-4d25-95b2-d201994f6e72
+e1fbae47-13fc-4efa-9c47-7ebc11a95da0	Chiroti/fuleche	cb1ba660-0751-4d25-95b2-d201994f6e72
+6be95ee0-6a7d-451a-b248-ea4a890d0292	Chundu	cb1ba660-0751-4d25-95b2-d201994f6e72
+aae19efb-e67d-424d-b484-686f5957b71d	Dandahwa	cb1ba660-0751-4d25-95b2-d201994f6e72
+9c0a03cf-63bb-4cc4-ad5e-9a729189d350	Kanyati	cb1ba660-0751-4d25-95b2-d201994f6e72
+5367b649-805b-4086-9494-4a667844cc2e	Kapfunde	cb1ba660-0751-4d25-95b2-d201994f6e72
+0ac31140-a3ae-4544-820e-6756dc7b425e	Kapiri	cb1ba660-0751-4d25-95b2-d201994f6e72
+1903ee54-c5e4-44d3-bdd6-f2a406967d21	Karereshi	cb1ba660-0751-4d25-95b2-d201994f6e72
+8e306130-0125-4da1-a197-1cfa2dd0f492	Karoi	cb1ba660-0751-4d25-95b2-d201994f6e72
+85c1e157-8a7b-43b9-98bc-f4e6f2c51e4e	Karuru	cb1ba660-0751-4d25-95b2-d201994f6e72
+b556b95a-e47b-4076-890d-51eacbecba43	Kazangarare	cb1ba660-0751-4d25-95b2-d201994f6e72
+9af87463-5b23-442e-9745-ec80113fd47f	Makuti & Charara	cb1ba660-0751-4d25-95b2-d201994f6e72
+dc142264-4a4b-4d78-94b0-aa9e62b27321	Masanga	cb1ba660-0751-4d25-95b2-d201994f6e72
+1c41e9ac-3628-4a82-8a8a-dd2a4cc6e50c	Matau	cb1ba660-0751-4d25-95b2-d201994f6e72
+cb8c76cd-4a79-4604-89a9-39a7c011525e	Mudzimu	cb1ba660-0751-4d25-95b2-d201994f6e72
+1cbfb1f8-d0ca-448f-a4d4-e5cd4a4f749c	Muzilawembe, (Mukakatenwa)	cb1ba660-0751-4d25-95b2-d201994f6e72
+3c39a023-9543-4e30-a30a-f802761126fe	Nyama	cb1ba660-0751-4d25-95b2-d201994f6e72
+a0f88192-6bdd-474a-b848-985aba410757	Nyamhunga	cb1ba660-0751-4d25-95b2-d201994f6e72
+095b8bda-34fe-4b96-9955-b81e4d68902f	Piriviri	cb1ba660-0751-4d25-95b2-d201994f6e72
+616c5afa-0310-4772-897a-afd8d3790324	Pote I	cb1ba660-0751-4d25-95b2-d201994f6e72
+f69d2d4c-2bc4-4a8c-81cb-7386fdfbf207	Pote II	cb1ba660-0751-4d25-95b2-d201994f6e72
+9830db0c-6415-4541-9c78-e453aeac0f41	Pote III	cb1ba660-0751-4d25-95b2-d201994f6e72
+1d7fba14-fe9a-40d2-b6c7-483c4016213c	Ward 5 (chisape)	cb1ba660-0751-4d25-95b2-d201994f6e72
+b5a3fb7c-90e8-426f-8d49-cfcfda951de7	Ward 6 (maumbe)	cb1ba660-0751-4d25-95b2-d201994f6e72
+ca4e4fdf-6b7f-4c68-aa18-1b871ecb2b8f	Ward 7 (chanetsa)	cb1ba660-0751-4d25-95b2-d201994f6e72
+347c1f09-55e8-4ec7-983b-0cf0f219c36d	Bumi Hills	718b989e-024f-4f58-9053-729d101faae4
+ff283acf-1dda-4037-a61a-217f02372094	Chalala	718b989e-024f-4f58-9053-729d101faae4
+199b9f3d-d86b-4e06-8a70-95756dd3ce04	Charara Safaris	718b989e-024f-4f58-9053-729d101faae4
+e83b26a1-1396-448d-9b39-5378ae6ec9fd	Gatshegatshe	718b989e-024f-4f58-9053-729d101faae4
+c695f6ba-24f6-4538-bd1a-3c6e2933382b	Hurungwe Safaris B	718b989e-024f-4f58-9053-729d101faae4
+845549c2-fc62-4403-817d-9d38858aeb10	Kanyati A	718b989e-024f-4f58-9053-729d101faae4
+e18a67b1-80f3-4130-9015-2199d9275c1d	Kanyati B	718b989e-024f-4f58-9053-729d101faae4
+de518bba-d478-42a8-891b-d13698e0613c	Matusadonha Safaris	718b989e-024f-4f58-9053-729d101faae4
+de5d9ef6-d12e-4d2b-9026-b0ae814a59a0	Mola A	718b989e-024f-4f58-9053-729d101faae4
+70c36f51-e219-4bfc-a602-891b8374477a	Mola B	718b989e-024f-4f58-9053-729d101faae4
+b73b719d-3dda-45e5-966e-6ac5624916de	Musambakaruma A	718b989e-024f-4f58-9053-729d101faae4
+13b0d4be-c43d-464f-859b-fc0f4617602b	Musambakaruma B	718b989e-024f-4f58-9053-729d101faae4
+19331d62-aafc-4bf2-a1da-4071bffeafe7	Negande B	718b989e-024f-4f58-9053-729d101faae4
+ecfdb51f-5578-4593-9a7d-e1795e66ea06	Negande A	718b989e-024f-4f58-9053-729d101faae4
+810fa5d8-4911-41ab-a8d5-00d561ea0f98	Chitomborwizi	ba95137e-6e66-4f3d-8837-95f7c80541f4
+082c8a22-cfe7-43a9-807f-003a42d29d7a	Doma	ba95137e-6e66-4f3d-8837-95f7c80541f4
+3170f9ec-fe12-45a4-95a5-5086b6df8e01	Magonde	ba95137e-6e66-4f3d-8837-95f7c80541f4
+64bddc79-fdc1-4f29-96ce-6bcf36c358ee	Matashu	ba95137e-6e66-4f3d-8837-95f7c80541f4
+64e4ae5f-a1bc-48e6-a1cb-655f85ad152a	Ward 17 (tategura Rs)	ba95137e-6e66-4f3d-8837-95f7c80541f4
+6c56677c-2914-4812-8701-a6d05f8ac054	Chikambi	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+e185081d-a5f2-49b1-b866-b7010abfe073	Chimbamauro	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+44eeb162-694b-4f29-b9bd-b5e59a9e5e62	Chivanje	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+c8f09277-5bba-41c4-896c-72ff1491850c	Dununu	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+cc7eae8f-e807-40ee-9f2a-e734cb433e3e	Mucheka	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+49d66b9a-4895-46b8-9a60-21f9bbf2ac0f	Mudapakati	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+c25e4ffa-ea7f-47e0-8d8c-2e310cd0b561	Nyamangara	a06506ef-bc9d-4421-bbc1-7b5c865391e1
+78d7160f-9700-4bcd-96ac-ba276b046a4f	Chegutu 6 Rs	4514aaaf-bd74-49f1-a5a8-a409c472a239
+aa254eb1-6bce-4a00-b0ee-fe9ce4d859e8	Chenjiri S Scale	4514aaaf-bd74-49f1-a5a8-a409c472a239
+e1fc658f-6dfd-43b4-8987-167980de9987	Hartley Safari	4514aaaf-bd74-49f1-a5a8-a409c472a239
+057547cf-0be4-46f7-a25d-8ded129c9294	Jondale/bumbe	4514aaaf-bd74-49f1-a5a8-a409c472a239
+f013d1a0-c4c2-48e1-a88f-438f8fe7743e	Jopani Rs	4514aaaf-bd74-49f1-a5a8-a409c472a239
+063676e1-f995-4525-84e6-62dd1d2294df	Manyoni Estate	4514aaaf-bd74-49f1-a5a8-a409c472a239
+79160980-c019-4884-b263-e52cab6bb7fc	Muzvezve I Rs	4514aaaf-bd74-49f1-a5a8-a409c472a239
+291b15a2-a824-4831-9656-da331f579391	Muzvezve Ii Rs	4514aaaf-bd74-49f1-a5a8-a409c472a239
+49d34cec-a69e-41d1-afcc-7831f2f865d8	Ngezi National Parks	4514aaaf-bd74-49f1-a5a8-a409c472a239
+48ff17a9-b4d5-441c-ad49-44d239da39a3	Sachuru Rs	4514aaaf-bd74-49f1-a5a8-a409c472a239
+fe405a0f-5411-4ba9-b3c1-b39c748b698d	Baradzanwa	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+5339289e-60ba-4096-8c48-76e8aece4b39	Bikita	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+016e7bc3-dc58-4e79-a5af-0eddb7eb2253	Boora	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+414ef494-4435-4e3f-aba3-f1d1e2def73e	Chigumisirwa	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+73c1fd2b-4a7b-4ad4-a3b9-df194d397e23	Chikuku	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+b3cef4b4-ae49-42e9-90dd-8a1def07fb07	Chikukutu	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+65101a49-858f-45ff-a45b-528d26271a7a	Chiremwaremwa	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+01edbf8a-3bdb-4496-882e-c09f811a22b4	Chirorwe	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+9d315294-9228-4f56-910d-ff25f2e0e192	Devure	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+593375ed-23f3-4a49-9481-313abd9545e0	Mungezi	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+703a32cb-e0ad-494d-8349-41bc9bdd1393	Mupamande	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+d3dd0664-b5c1-4ce1-bc47-b0401fa99c12	Murwira	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+106d07f1-c0dc-4149-bfbc-0670cf9e6aa9	Museti	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+5f0c1125-243d-4aa8-9a84-8d4e12540f59	Mutikizizi	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+f476fbeb-7b1c-439f-84a3-715d0678a537	Negovano	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+dc253b58-ca7f-4c4a-8bbb-92fb2f75ce8b	Nyahunda	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+571ceaac-9f08-4a06-a9bd-a8fec0c43e2a	Nyarushiri	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+d809f3ea-44d4-45c9-8725-e7d9eb4d9b96	Devure Ranch	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+76f359fe-6730-4a32-95ae-5a4184e1a477	Gangare	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+00a4901f-a421-401c-9f25-6c8a3165467f	Magocha	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+04ad2775-6c54-496c-aee1-750a37e3b091	Marozva (a)	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+8a139f25-2c75-48c6-bd9a-d3476f31cb10	Marozva (b)	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+2fce7e95-0a0a-46fd-8d83-a4e41edb69c8	Mashoko	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+88e35481-c669-4910-b04a-3e13deebec46	Matsvange	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+c2857a56-58fe-4aef-aabd-6c1c8deb7cf6	Mazungunye	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+610b2586-260c-4bba-ba7e-dad4c1bcc467	Mukore	7f3b0440-7219-4a02-ab1e-6d6b2255985b
+87aa8864-2e1e-439c-84f1-4565d4ed1b2d	Batanai	da5af513-5237-4c6b-a197-28b166059d56
+7480cdf0-a8dd-4a96-b349-c4813e6f9762	Chechingwe	da5af513-5237-4c6b-a197-28b166059d56
+d2b92d3a-15bd-4763-8c5b-9648c405317e	Chibavahlengwe	da5af513-5237-4c6b-a197-28b166059d56
+ed24f76e-fabc-43ef-ab2b-1664d3172d5f	Chibwedziva	da5af513-5237-4c6b-a197-28b166059d56
+28be925e-7c98-458f-9b9c-8cc5f64be930	Chikombedzi	da5af513-5237-4c6b-a197-28b166059d56
+b5c95ee6-c9f6-4070-9227-4bd4f00433c9	Chitsa	da5af513-5237-4c6b-a197-28b166059d56
+63238887-bb4a-4b59-a82a-6c84290bdb7b	Chizvirizvi	da5af513-5237-4c6b-a197-28b166059d56
+486278aa-cd44-4714-b868-78c390d2ae46	Dikitiki	da5af513-5237-4c6b-a197-28b166059d56
+41d578ca-33ba-4d10-8b97-305d32c96556	Dzidzela	da5af513-5237-4c6b-a197-28b166059d56
+fb002f4f-a6fc-4b1a-806a-1889c586337e	Ward 12	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+1cc76f70-1efe-4208-a687-3be631f039d7	Gonakudzingwa	da5af513-5237-4c6b-a197-28b166059d56
+0f020ee1-d279-4502-b3bb-1ac90f050c5a	Gonarezhou	da5af513-5237-4c6b-a197-28b166059d56
+880bb1ff-4982-4911-a243-edf171e61d52	Makambe	da5af513-5237-4c6b-a197-28b166059d56
+a57eadfc-852d-415b-aa36-c00c5d982649	Maose	da5af513-5237-4c6b-a197-28b166059d56
+a2ed9809-3509-48d9-b927-d8b33a9de77f	Mkwasine	da5af513-5237-4c6b-a197-28b166059d56
+bebf2282-533e-4e49-ba2d-13696204060e	Mukuwini	da5af513-5237-4c6b-a197-28b166059d56
+848e1165-336f-4c09-bd5a-2555e72b8793	Mupinga	da5af513-5237-4c6b-a197-28b166059d56
+f93f3da3-3889-4763-8c1f-d9b290fae1d8	Nyangambe	da5af513-5237-4c6b-a197-28b166059d56
+609b7743-a6ca-47b2-8830-7cc70b1eb63d	Sabi Valley Ica	da5af513-5237-4c6b-a197-28b166059d56
+9f265235-fe3e-4432-83ee-54cfe89d4f69	Sengwe	da5af513-5237-4c6b-a197-28b166059d56
+7fbd1962-47f1-4cd0-8a5d-f0bc8a33b4bf	Tshovani	da5af513-5237-4c6b-a197-28b166059d56
+3eecbad7-cf6e-4e4e-8bd7-f374b157a8c1	Twananani	da5af513-5237-4c6b-a197-28b166059d56
+e4c999f3-2cfe-48a0-af91-fae009aa4d97	Xini	da5af513-5237-4c6b-a197-28b166059d56
+2ffbe881-b40e-41dc-bc5b-cf57e3ecb209	Bachi	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+64bf28d6-f3db-4fa2-8ecc-3a888d939451	"Badza	iritose"	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+a0f182e6-a420-4047-84e3-f789b5713a7c	Batanai	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+29d97a35-8402-4630-a2d4-8565c457deb6	Batanai B	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+eb86ca51-a637-4931-b6ce-1e2ff49185ee	Bhefurai	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+7fa17486-66b8-4a33-b1ca-9323e6306d45	Chasiyatende	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+f11f56d3-2061-4026-96f4-bf6a854759df	Chemuzangari	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+38058e35-0d34-47e7-bf42-ee1dead44967	Chigwikwi	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+67b292f8-92e7-42bd-ac7f-9ed2c5ba9dd0	Chitenderano	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+165cac17-de40-4126-9d12-e6a01cd81f90	Kuvhirimara	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+768a25e8-0381-4a2e-b117-f34dffc5e3da	Madamombe	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+6a98b680-b545-488a-a6b8-73f492161ff1	Madzivadondo	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+ccf5b4b4-561c-4e23-a8a1-a62ccfd26a6d	Manyanga	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+c3cdce6d-bd01-4468-8d0a-400d71d1172e	Marihuru	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+763b4f75-f669-428a-b678-0cb149903287	Matsveru	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+1b5f83d2-3736-4a87-a826-92b8e8804968	Mazihuru	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+c714c04b-3e43-46bb-b231-d46c98736ee3	Mukamba	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+d705139a-c251-40d7-9f0d-e1a78724a13e	Munaka	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+d0a96738-2fe0-42ac-a19f-19393c233f91	Neruvanga	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+da45aabf-20f4-4aa1-889f-f3049d8781ae	Ngundu	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+8c7111ef-492d-47fd-a670-27846826ab32	Nhamoyapera	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+ad67d729-8c49-4384-8c4a-13e996c01967	Nyahombe	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+a3f48fab-2ef1-4b65-a766-10deb276347a	Rusununguko	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+859cfe92-a3f8-4704-868c-908ee1b27761	Takawira	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+cbe73ffb-1eb5-4cad-b828-cce47de11145	Utsinda	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+f96b1ca6-af9f-4348-b415-35e9f0248f07	Zifunzi	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+ca4e5fd4-136a-48f7-928f-ef4dc76261b4	Zvamapere	4f08d8f8-4c81-44c2-a945-c1bd657a241a
+69289a84-84e9-49b8-9675-12ce468da2b5	Basera	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+f85ab541-674e-4d42-b2ce-0bf87f3156c6	Chigombe	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+5156046a-9d3a-4618-ad95-ca6a684660f1	Chihambakwe	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+407627b6-bba1-4b63-98bd-6f786752d721	Chikwanda\mazare	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+34712062-685c-4ddd-b110-8b37ea336a55	Chimedza	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+049016c0-2d71-4157-88bd-fd7f19df2d6e	Chinyika	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+7481271a-b3be-4d73-bd84-60688a5b0c19	Chitsa	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+7a89a31c-03eb-4c3f-b00e-46dc44f3a41b	Chiwara	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+940abda6-0008-4f2b-95ae-5d729b8ee149	Chugunhuwe/denhere	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+53475e5c-2caa-4283-88c7-b3e15f3ba7fb	Devure	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+9d9714ab-f9e0-45eb-a71b-173574020bbc	Gutu South	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+478d6979-79e8-4c4e-8a31-ee5df4c6d94f	Jinjika	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+f22139a7-0622-4b33-8583-f6f11c3e01a8	Kubiku	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+61c1ca36-f6af-4a5b-b188-4430debce6ad	Magombedze	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+849a1f3f-f674-4736-b8a5-9e31963aee2e	Majada	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+2df0a769-eedf-4781-a19d-d77ac57a538d	Makore	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+6c6569f5-6022-48b5-928a-bd2df12956bb	Makudo	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+86ca61ed-4a09-44fd-a2ec-b699b1e1eeb7	Makuvaza	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+7fde1fe9-f7dc-47de-92a2-7bafc9042a7f	Mataruse	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+978585ab-f2bb-45af-9df1-faaef0296da9	Matizha	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+ef1dc433-1218-4f83-80b8-65f760fb7292	Mawere\manungwa	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+7ba98c24-32cd-40b9-96c5-e5da12332717	Mazuru West	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+ce857675-c7e5-43ef-8614-a236f83006b6	Mukaro	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+7f24b273-901f-4553-b2d4-e92394404c69	Munjanga\mupata	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+5b946685-e3f0-4cc3-8200-4d8ff04a9d0a	Munyaradzi\dzivarimwe	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+99f947ec-eefd-4ba6-bfad-a0214ed0fa4b	Munyikwa	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+daa8cf00-cd61-4516-8674-2fae439d72c6	Mupandawana	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+75df953e-f391-4abe-9b06-19fb78789f13	Mushayavanhu	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+fb98b914-1cff-4366-9c15-27af540beafe	Mutema	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+c998b5e3-5d48-456d-95a0-6237a0791e53	Mutero\nyamande	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+487dee8b-7738-49f6-a6b7-29e526516de5	Ndawi	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+4216fe91-ee28-46ba-ad21-c4ff3f815cc3	Nerupiri	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+f1d07797-4469-41ab-8d78-858bec1975d8	Nyamande	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+dbb7b4c4-2456-4db3-a052-b921ae987b1e	Nyazvidzi Sscfa	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+8562592a-8239-4817-845e-13ec5efb5267	Serima\mavotsa	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+89534af7-d529-4d94-80bd-6d257e1294b7	Soti Source	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+9ecaa381-970c-42e0-a7d9-64052b249558	Vhunjere	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+07307091-c855-45be-b2be-9b3239143b8b	Zoma	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+771a4974-ee9b-499b-b0f4-97dc642043b8	Zvavahera/dandavare	e41b5cc7-3bb3-457f-ba9a-01d42af18353
+75130a10-58f0-4e98-a5dd-69119a09fc5d	Charumbira (a)	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+9fb415d4-db75-4962-8366-4c28893eced7	Charumbira (b)	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+c978d0bb-822d-4f23-9b1f-651e6e5cf961	Charumbira (c)	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+8dd057dc-830f-41b3-842e-bbf8fa55acdf	Chatikobo	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+54d4a5bb-a1d6-4f6c-9976-871d516add1e	Chikwanda	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+2574ee83-3e77-410d-b7ff-ee843a3c0aa2	Dowa	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+20ec7e4f-7aa4-4a31-bde4-c09352410be6	Gozho	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+cf376b35-c474-45ef-b815-710d3e1889f6	Guwa	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+a3060a49-c43e-4858-af34-0432c6158685	Inyoni Rs	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+d7e3ffaf-ba7c-413c-b169-317d3085aaec	Machitenda	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+118ffff7-7176-45be-b37a-44042220b973	Mapanzure	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+39a0f9fa-1f70-430a-ab55-1ddcb081c3f0	Maregere	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+490d03ac-b457-4304-9340-b6c07b990c0a	Marirangwe	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+428bbd4a-c859-4ce1-89f9-9b87261d4664	Mhara	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+30facfce-04dd-434c-946a-3bddf5161d26	Mshagashe East	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+36b80723-38f4-4774-b307-e9de6feae105	Mshagashe West	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+58529b59-0d90-41e5-80ed-3098aaf4e398	Mugabe	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+bc391438-ea21-4db4-929b-ac5daa251321	Mukosi Rs	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+15506ce7-2f8f-4fb3-9d1b-6bc76d336729	Munyambe	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+6c053196-cb0b-43f5-b3e3-556f6275d8d5	Murinye (a)	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+ce92d84c-0907-4f94-beb7-4365c50a89b3	Murinye (b)	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+c3e3ea9c-ded3-41d0-9b31-53327ef57f31	Mushandike	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+986450a0-b408-42a4-9f6b-13a69c406ea7	Mushavhi	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+5646bfd7-1d51-42a9-9077-426fa1876d56	Mushawasha East Sscfa	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+fb023dca-9d6e-489b-8db0-729a720a78f9	Mushawasha West Sscfa	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+68b76372-67fb-4688-b715-f8766c626692	Musingarambwi	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+ecc896fc-743c-4b15-89f2-096412590129	Tokwane\ngundu Rs	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+c4dc2a1d-b993-4bc0-965e-b7a21a2bb959	Zimuto	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+5fcdc234-b92e-4589-90ad-68844aee97a9	Zvinyaningwe East Sscfa	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+f1cf48a7-9f3f-4edd-aa5a-09eeb9a2d2f1	Zvinyaningwe West Sscfa	1ad784c3-9ae0-498b-b1c8-4faa0dc31514
+c8c41ee9-0162-4cf8-a463-4d9ac11ba2db	Bangwe	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+168d12f1-1a4e-4764-8dbb-b16588d87e92	Basikiti	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+623dc7eb-6c1d-4f18-be06-7c8feee7c992	Chingami	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+f2712e5b-8bc3-4164-bbe7-cf6e607c3bf3	Chirarange	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+ed700f12-5b79-4a85-9caf-f06d1747b80f	Chirindi	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+bb5d2e49-9fe0-4dd5-8493-12d1e08bece5	Chitanga	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+c9f0d54e-e690-420b-92eb-a3aa156e0615	Chizumba	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+933f8c4f-d7c5-4d4e-bbcb-432cd1e19a82	Dinhe	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+f3caa717-8922-429d-888f-4978010fa992	Firidzi	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+7df18207-d172-44b5-89d5-d97f657476ba	Mabhare	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+bd43be72-4cb1-4d20-a8d0-f40b2ef3b5e3	Machena	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+b0f061ce-67d2-4d40-a44c-2b2c9aaf2067	Makawire	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+66aacde5-2d63-4a89-b9ee-f67e64f2234c	Makwi	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+b9438c38-9ef2-42a7-83f0-7c5e41270c70	Mangwerume	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+36312ed8-f98f-4eb2-9e8d-275f39db7b41	Manhumamwe	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+78a7b1a5-6868-4646-9e68-9ebffc6c8f66	Marimuka	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+25540f7e-0ac3-455c-8c9f-af0418fd4fff	Marinda	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+e19001e2-e8c3-41ea-95eb-f827b07ef50d	Musaverema	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+d1bdde45-3769-42d0-9cf5-665033e5535e	Mushava	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+570a4203-618b-4189-98e9-a231e9c6faf8	Negari	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+bdef8c05-9c2e-4e56-aeca-c35f9a9ce5c5	Nhande	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+5556bf5e-0d54-4dd2-9165-a45ec8644686	Pambe	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+47fb90fd-98ed-46fa-8e4a-e4e529120a2c	Rata	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+f47c8aa9-78b7-41aa-ad07-86bd38115b02	Shazhaume	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+46e59517-107c-41b0-9841-ed8b8d625fe6	Wedza Block B	ee927c93-ba1b-42d4-9905-6695b7cc07c7
+63f1351e-25bd-4bcf-b476-0cb3976b0322	Chete National Park	4d03bafb-5023-4bad-980b-af1b442204f9
+20406e62-56b1-49dd-95fd-d36570f8132d	Chinonge	4d03bafb-5023-4bad-980b-af1b442204f9
+df2b9672-e15e-4a0b-b265-e1c01f94a658	Chunga	4d03bafb-5023-4bad-980b-af1b442204f9
+b3f89c88-de3f-4ba1-b0c2-d6b9c0064dde	Dobola	4d03bafb-5023-4bad-980b-af1b442204f9
+e62f937e-3334-4a40-b46e-3da8efc2dd98	Kabuba	4d03bafb-5023-4bad-980b-af1b442204f9
+9ab5891a-da87-4655-a820-04464602da48	Kariangwe	4d03bafb-5023-4bad-980b-af1b442204f9
+b10ba11a-de8a-4bdb-ad6d-1d07f6dd526f	Kalungwizi	4d03bafb-5023-4bad-980b-af1b442204f9
+13a5decb-ef64-412e-9852-e5afb1275fb5	Lubimbi	4d03bafb-5023-4bad-980b-af1b442204f9
+c2da8be8-8995-42d2-bc4c-47c730b789e4	Lubu	4d03bafb-5023-4bad-980b-af1b442204f9
+87c21ed9-257f-4262-91a5-ac36c8da0c11	Lunga	4d03bafb-5023-4bad-980b-af1b442204f9
+07ab2b05-e157-4a06-a503-10395c3e12c8	Siachilaba	4d03bafb-5023-4bad-980b-af1b442204f9
+736d6823-19e9-4053-9d5c-e8bd4b843a81	Sianzyundu	4d03bafb-5023-4bad-980b-af1b442204f9
+4df3a29c-4617-48f2-85b4-3cec36febbfc	Sikalenge	4d03bafb-5023-4bad-980b-af1b442204f9
+6ddb3da3-c4b3-4859-ba04-5a70214fb235	Simatelele	4d03bafb-5023-4bad-980b-af1b442204f9
+ca933207-90f3-45d4-89f5-1082c6edb85b	Sinamagonde	4d03bafb-5023-4bad-980b-af1b442204f9
+318c413d-f439-4775-8e87-29a063799745	Sinampande-Nagangala	4d03bafb-5023-4bad-980b-af1b442204f9
+b7d9f1f8-ccfd-4e0f-b97a-709dd42377ca	Sinansengwe	4d03bafb-5023-4bad-980b-af1b442204f9
+54f45ef3-deeb-4ba7-84e8-be449f801a3d	Tinde	4d03bafb-5023-4bad-980b-af1b442204f9
+70fc1be0-1abf-4b9b-a340-b4e85201cdb9	Manjolo	4d03bafb-5023-4bad-980b-af1b442204f9
+8ba9f6e9-5c4b-4c76-8048-ce97aa17f6bb	Muchesu	4d03bafb-5023-4bad-980b-af1b442204f9
+66c05638-1a6b-4676-9e1c-dd08b4717bfa	Nabusenga	4d03bafb-5023-4bad-980b-af1b442204f9
+99cf254d-d691-4c16-988e-8dd7aa2f42d4	National Park	4d03bafb-5023-4bad-980b-af1b442204f9
+b19a03b1-6dae-47ea-ae39-a56f04d765ee	Nsenga	4d03bafb-5023-4bad-980b-af1b442204f9
+0bab9ae1-b5c3-4830-8f46-3ef39c8f2652	Pashu	4d03bafb-5023-4bad-980b-af1b442204f9
+bd19e8fd-0f45-41df-9626-f594d982ce4b	Saba-lubanda	4d03bafb-5023-4bad-980b-af1b442204f9
+f1655c46-2e01-4560-9cb5-3db2244df5f0	Inyathi	10337cf4-3fa1-40ea-a37d-5c01e6e8a8a1
+ce26d7e4-5b4a-47f5-b427-5613544b46a5	Nkosikazi East	10337cf4-3fa1-40ea-a37d-5c01e6e8a8a1
+e6df405b-fbb1-4d2f-b1a6-d74f9db76540	Nkosikazi North	10337cf4-3fa1-40ea-a37d-5c01e6e8a8a1
+2ffc2d10-eb6f-4ffc-9593-defa8ff0db86	Nkosikazi South	10337cf4-3fa1-40ea-a37d-5c01e6e8a8a1
+3d265b93-8812-46a2-a9c1-e5727f9a5d19	Chidobe	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+a58ec9b2-41b9-48c2-8f2e-a4c3069f4196	Chikandakubi	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+b66cd8ca-ab3e-4817-a7c6-f61412d2e702	Dete	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+5a779c5f-d30c-4390-b64d-5030f33d16e0	Jambezi	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+9c0b3f0f-6dc3-4923-8c8c-5df6859c260f	Kachecheti	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+140e3759-28d0-4424-8603-d44506d6a8ca	Lupote	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+687392f3-4178-4516-aca2-6939fcab5ec5	Mabale	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+39b35c0a-6753-4e07-b9a7-f616bdf64eed	Makwandara	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+9d3c3f87-f592-41bb-b3b1-d3eb49f85603	Mbizha	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+af784fd9-489a-4283-bf55-afe3697a5307	Nekabandama	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+9719dcff-1352-458d-bcd3-84b044c4a98b	Nekatambe	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+280937d3-5b42-46ab-9671-4d4674f26c6a	Nemananga	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+9f6c50e3-1d38-4a43-882d-2de123fab03e	Sidinda	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+9013ea02-0fb0-4a3d-b17d-87bf790aebf9	Silewu	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+6f2ab2a4-3e2b-44b8-a779-7e2c4a9dc316	Simangani	1f55eb2f-5fe6-477e-a9d9-a4c06ee8aa57
+dcf3fb60-323b-4123-8390-a0eb03648eae	Daluka	8354f82a-1e43-4d73-bb74-ef645ba11895
+f1fd5d05-4ec1-451b-99dd-f15470581941	Dandanda	8354f82a-1e43-4d73-bb74-ef645ba11895
+bf9d3013-d897-4b1a-a4b9-9963a6d74c8c	Dongamuzi	8354f82a-1e43-4d73-bb74-ef645ba11895
+e37bf46a-ec61-47f5-885c-fa2152ed020e	Gomoza	8354f82a-1e43-4d73-bb74-ef645ba11895
+a92dd289-9c70-4fe5-a7fd-6e2c23992aeb	Gwamba	8354f82a-1e43-4d73-bb74-ef645ba11895
+4b2e6636-c6a2-4a62-b547-c328a5ce7136	Jibajiba	8354f82a-1e43-4d73-bb74-ef645ba11895
+4495dc5b-bb51-43d1-bd15-78f0bbeead2b	Jotsholo	8354f82a-1e43-4d73-bb74-ef645ba11895
+076a0783-432c-4a8d-92e4-15b583e90810	Lake Alice	8354f82a-1e43-4d73-bb74-ef645ba11895
+746d1d91-a038-404e-98f5-6389971f8d7f	Lupaka	8354f82a-1e43-4d73-bb74-ef645ba11895
+c0e8c0ab-da9a-456d-83bd-45338a1723f6	Lupanda	8354f82a-1e43-4d73-bb74-ef645ba11895
+8d067192-5e43-4df9-9b3c-24351ce37b3d	Lusulu	8354f82a-1e43-4d73-bb74-ef645ba11895
+e23193d5-8853-4e87-8317-a01e1d364dea	Malunku	8354f82a-1e43-4d73-bb74-ef645ba11895
+fae2e091-2e46-49c7-a4ce-527114780613	Matshiya	8354f82a-1e43-4d73-bb74-ef645ba11895
+c439e380-71a8-4730-a6c4-464bc4279518	Matshokotsha	8354f82a-1e43-4d73-bb74-ef645ba11895
+2ac48c19-03c1-477b-9dd5-728749d64430	Menyezwa	8354f82a-1e43-4d73-bb74-ef645ba11895
+c215e35e-9b12-4dce-9095-3e248f093d88	Mzola	8354f82a-1e43-4d73-bb74-ef645ba11895
+a3e10e0b-ec8a-4bef-b814-6076d7d32f9d	Ndimimbili	8354f82a-1e43-4d73-bb74-ef645ba11895
+a0607c3f-9293-4f99-a743-eebdff34f9e2	Pupu	8354f82a-1e43-4d73-bb74-ef645ba11895
+ac3259c5-630f-4885-8f30-dc7c351c0974	Sibombo	8354f82a-1e43-4d73-bb74-ef645ba11895
+56836fb4-7589-4f36-9fa0-79ecff7154a0	Sobendle	8354f82a-1e43-4d73-bb74-ef645ba11895
+53e1af95-4486-43c1-813c-7d76239fd361	St Pauls	8354f82a-1e43-4d73-bb74-ef645ba11895
+a32fba80-56f7-4ba9-aa36-abdde3b06395	Tshongokwe	8354f82a-1e43-4d73-bb74-ef645ba11895
+cba72d4c-b513-4aea-83de-59e54065ba58	Twenty Four	8354f82a-1e43-4d73-bb74-ef645ba11895
+3dfa54b1-2695-4920-a00e-e476bdc37ab2	Fanisoni	f9a55083-10ec-4511-bba1-0c17359d5fa3
+bf9530b6-c205-4d5d-97d7-e33cd9c8f109	Faroni	f9a55083-10ec-4511-bba1-0c17359d5fa3
+37d43006-0803-4978-9cee-b276b57cd90f	Gwampa Forestry	f9a55083-10ec-4511-bba1-0c17359d5fa3
+17007a5f-8855-461f-8b03-4126ccb9a0cc	Jojo East	f9a55083-10ec-4511-bba1-0c17359d5fa3
+7715a704-0177-47ae-bfb2-60e605a3ca22	Jojo South	f9a55083-10ec-4511-bba1-0c17359d5fa3
+7a8fa2e4-40d3-4fdf-a8dc-484530026dbd	Jojo West	f9a55083-10ec-4511-bba1-0c17359d5fa3
+c1ebb80a-a58e-444b-9172-dea5dc00408e	Kenilworth	f9a55083-10ec-4511-bba1-0c17359d5fa3
+ad0b92a5-8b78-469f-8acd-40a5d07850c1	Malandu East	f9a55083-10ec-4511-bba1-0c17359d5fa3
+3dbff287-06c2-411a-95f7-42bc1fa10f82	Malandu West	f9a55083-10ec-4511-bba1-0c17359d5fa3
+faf8b089-2fa1-4aae-b0d6-711fbbdba56f	Malindi	f9a55083-10ec-4511-bba1-0c17359d5fa3
+757e8807-96f6-4deb-9922-efe29e9eb54b	Manguni I	f9a55083-10ec-4511-bba1-0c17359d5fa3
+eb5b955f-e796-49c9-a20c-1486a84068f7	Manguni Ii	f9a55083-10ec-4511-bba1-0c17359d5fa3
+6b606a8e-c011-4a82-8225-4249f9ac224d	Manomano	f9a55083-10ec-4511-bba1-0c17359d5fa3
+84df3908-244c-4767-8f10-39491a192740	Mlume I	f9a55083-10ec-4511-bba1-0c17359d5fa3
+8bd8f12e-3bb9-4a34-9a08-c3b5bd08a088	Mlume Ii	f9a55083-10ec-4511-bba1-0c17359d5fa3
+16b88210-0028-4730-b1e5-54fd126aa1c4	Mpande	f9a55083-10ec-4511-bba1-0c17359d5fa3
+782ba097-6efd-4fbe-9afa-d452b135685f	Ngomambi Central	f9a55083-10ec-4511-bba1-0c17359d5fa3
+a4c091dd-cf98-433d-b59a-704b13924279	Ngomambi North	f9a55083-10ec-4511-bba1-0c17359d5fa3
+5d20d860-839f-439c-a56a-7af73cae5b30	Ngomambi South	f9a55083-10ec-4511-bba1-0c17359d5fa3
+c73fcce5-75aa-43ac-bf97-481c085ce291	Nhlanganiso	f9a55083-10ec-4511-bba1-0c17359d5fa3
+70d772d9-6551-42d2-a10a-7485b5425897	Ward 13	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+a4429bc4-fe95-45be-ae83-bb9bf60c6be5	Nkalakatha	f9a55083-10ec-4511-bba1-0c17359d5fa3
+428f3e63-9d73-45aa-bb72-bd0f74b0e9fe	Phillip	f9a55083-10ec-4511-bba1-0c17359d5fa3
+003b63d3-491e-46b5-84fe-ed7f81f6a6ac	Sibangalwana Ii	f9a55083-10ec-4511-bba1-0c17359d5fa3
+fc496104-f0f9-4466-8c78-8c5ff9b18c77	Sibangelana I	f9a55083-10ec-4511-bba1-0c17359d5fa3
+789332ff-69d2-4e45-95d2-e059d7f78eb4	Sikhobokhobo	f9a55083-10ec-4511-bba1-0c17359d5fa3
+22a0fe31-05f2-4b67-86d1-748d64e1fafb	Siphunyuka	f9a55083-10ec-4511-bba1-0c17359d5fa3
+8b287852-b179-462e-b848-b93c62da4d85	Sivalo	f9a55083-10ec-4511-bba1-0c17359d5fa3
+76d56f95-c53b-4551-9773-a02a14f83d2e	Ward 1	9a2331e6-449f-459c-a9b5-c830493ed588
+a70a71e0-b517-4409-9c61-3189ba350612	Ward 2	9a2331e6-449f-459c-a9b5-c830493ed588
+427e6234-5128-4480-93fd-4e56037a1f25	Ward 3	9a2331e6-449f-459c-a9b5-c830493ed588
+4576b466-78b8-4644-9ae1-715eb7029dea	Ward 4	9a2331e6-449f-459c-a9b5-c830493ed588
+b7f9fc42-3fb8-4e3e-b3b2-b9ade0f3f6ae	Ward 5	9a2331e6-449f-459c-a9b5-c830493ed588
+4bf13585-e2fb-4b6c-9587-d4c450a7eed8	Ward 6	9a2331e6-449f-459c-a9b5-c830493ed588
+3b9721a0-fb4f-4595-a325-b7dd23085a00	Ward 7	9a2331e6-449f-459c-a9b5-c830493ed588
+ca0b2f10-a339-4987-bf3a-1c47e995aa7d	Ward 8	9a2331e6-449f-459c-a9b5-c830493ed588
+b2ea0302-38c9-40f3-b0b0-ba1c30def89c	Ward 9	9a2331e6-449f-459c-a9b5-c830493ed588
+7288d45c-3e01-4953-b9ce-6212a70aa37f	Ward 10	9a2331e6-449f-459c-a9b5-c830493ed588
+8d7cb13b-839d-40ba-84bc-f25741530b9f	Ward 11	9a2331e6-449f-459c-a9b5-c830493ed588
+a000f3cc-cbf8-4aca-a5f2-a2b48268b8e6	Ward 12	9a2331e6-449f-459c-a9b5-c830493ed588
+6b4eadcb-df4d-48c8-8f45-a4f18d2d07a6	Ward 13	9a2331e6-449f-459c-a9b5-c830493ed588
+de1a751a-e055-4cab-96e0-435969101906	Ward 14	9a2331e6-449f-459c-a9b5-c830493ed588
+24744bde-3bbc-46c9-84ea-47a8ba3deb8e	Ward 15	9a2331e6-449f-459c-a9b5-c830493ed588
+338fe09a-6197-4147-aaf0-75d7b37a7c32	Ward 16	9a2331e6-449f-459c-a9b5-c830493ed588
+2f2bf23a-c1c8-4c08-b7cf-6c0309564bf7	Ward 17	9a2331e6-449f-459c-a9b5-c830493ed588
+618ab6b7-dd11-414e-af91-d750c70e8cef	Ward 18	9a2331e6-449f-459c-a9b5-c830493ed588
+4b1f127e-be18-45d8-b0ee-0754477fd02a	Ward 19	9a2331e6-449f-459c-a9b5-c830493ed588
+48e72cc4-a9ce-4473-9c79-4dc88711fa55	Ward 20	9a2331e6-449f-459c-a9b5-c830493ed588
+445cab18-f485-43f6-af33-ccbcccef9f30	Fingo	d2f073cb-4a4d-4860-93ed-4875637c407d
+4d8a50fc-8c1f-4389-ad81-0624848ec693	Ntabazinduna North	d2f073cb-4a4d-4860-93ed-4875637c407d
+9af380cf-f96c-46f0-a8f0-5d1474dd8652	Ntabazinduna South	d2f073cb-4a4d-4860-93ed-4875637c407d
+71b1789d-5687-41d9-a44c-02b8f9a0f838	Beitbridge	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+9ce7098b-fe15-4d9a-8039-0063ef13de32	Chipise	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+1eab5ead-cc46-4e08-9777-08542aabe9b2	Dendele	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+01d0f637-2d21-4231-b49d-2b8b5359f31f	Dite Ii	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+8e050f83-aa28-420c-9d3c-b4a2da19801e	Machuchuta	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+2d26faa1-c037-4539-916b-379c5c45322d	Maramani	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+19ea572d-6ac7-4f6a-b5fe-ede4982db492	Masera	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+0cca180f-8050-4a65-8268-3146fc2d6c38	Mtetengwe I	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+b5b1bd4b-4c56-4c39-9a0e-d659a1a023af	Mtetengwe Ii	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+c16e2311-e853-49dd-8c66-020034be4677	Mtetengwe Iii	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+ca1c1bfd-5729-4e97-bbbd-7651ad0e50e1	Siyoka I	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+b3942f28-f4a6-4ea8-acae-ad9b4112513e	Siyoka Ii	0aa565c7-bfb4-4f81-8fd4-3238da46ed5f
+ae7c9e32-21a1-41f1-8733-2eb6d22712fe	Bambadzi	80625079-367a-4d5c-932b-c9f86ffb5260
+9fc963cf-9fd4-4e73-abaa-ff0499dba20d	Bango	80625079-367a-4d5c-932b-c9f86ffb5260
+d10f6c58-83be-4e17-ab3b-f4948033d6ff	Dombodema	80625079-367a-4d5c-932b-c9f86ffb5260
+3527d56a-67fa-4e27-a968-cbe2cee68b47	Empandeni	80625079-367a-4d5c-932b-c9f86ffb5260
+0536141e-0715-49e6-a40d-a18b11d61c40	Figtree	80625079-367a-4d5c-932b-c9f86ffb5260
+1b41ef5b-459b-4ac2-88a7-797bde01407d	Gala	80625079-367a-4d5c-932b-c9f86ffb5260
+b51168df-3996-4760-8813-94215ee35fa6	Gwambe	80625079-367a-4d5c-932b-c9f86ffb5260
+e4add8ab-27b2-498b-871f-164a1f48e73f	Hingwe	80625079-367a-4d5c-932b-c9f86ffb5260
+f3a1faa2-ce02-448c-babb-b46fe4acf470	Huwana	80625079-367a-4d5c-932b-c9f86ffb5260
+508206a2-ad9e-4061-aebe-3c4bdae407f7	Izimnyama	80625079-367a-4d5c-932b-c9f86ffb5260
+f83583cc-3dbc-46b4-86f2-0b41a68a53b8	Mabhuna	80625079-367a-4d5c-932b-c9f86ffb5260
+43c2542d-ba30-419a-81d7-3fa04a1cc67f	Madlambuzi	80625079-367a-4d5c-932b-c9f86ffb5260
+ab63bd5f-6378-472c-bc08-a56920d41bd0	Magcobafuthi	80625079-367a-4d5c-932b-c9f86ffb5260
+a0d982d9-efad-4149-ac5f-2e619d347f5c	Makhulela	80625079-367a-4d5c-932b-c9f86ffb5260
+14da5d7f-3468-4ef4-80e3-61bce0841750	Malanswazi	80625079-367a-4d5c-932b-c9f86ffb5260
+da7b7af7-3460-40cb-9133-4b2353b3222e	Mambale	80625079-367a-4d5c-932b-c9f86ffb5260
+00ed1fb9-677f-4f08-ba51-015514e470e4	Maninji	80625079-367a-4d5c-932b-c9f86ffb5260
+6dbb5972-6cff-4428-a09b-f1c680b9857b	Marula	80625079-367a-4d5c-932b-c9f86ffb5260
+1727598b-043e-4745-bc56-ad28cc491705	Masendu	80625079-367a-4d5c-932b-c9f86ffb5260
+40bf467b-955b-4da6-96fe-7de3af756631	Matjingwe	80625079-367a-4d5c-932b-c9f86ffb5260
+2e6315f1-566c-4604-87a2-ab045ba96b01	Hikwa	80625079-367a-4d5c-932b-c9f86ffb5260
+9c6ed210-5483-405a-b5ba-cb8cc4212125	Mphoengs	80625079-367a-4d5c-932b-c9f86ffb5260
+35d902d7-a35a-4641-a012-9cb6e3b7892e	Natane	80625079-367a-4d5c-932b-c9f86ffb5260
+ea02e717-bcca-420f-a778-62c167d716b7	Ndolwane	80625079-367a-4d5c-932b-c9f86ffb5260
+a1eda1a4-3f7c-44d2-b1b8-159b37491409	Nyele	80625079-367a-4d5c-932b-c9f86ffb5260
+2f38dcd5-f82e-45fa-aaea-8aa24b6cc731	Raditladi	80625079-367a-4d5c-932b-c9f86ffb5260
+da667ac3-98c9-4a49-82f8-616054c47da8	Sangulube	80625079-367a-4d5c-932b-c9f86ffb5260
+fd78b12d-4039-4ac1-9880-ef2716bba844	Sansukwe	80625079-367a-4d5c-932b-c9f86ffb5260
+a4e2719f-d0d0-49c1-9349-b3a9d3fb49a2	Somnene	80625079-367a-4d5c-932b-c9f86ffb5260
+9df82c48-79f5-4f17-bc1d-47aba8e14d1c	Tjankwa	80625079-367a-4d5c-932b-c9f86ffb5260
+61104b2c-3216-4c25-8234-0e4d3bc0c137	Alisupi	fd8a88e7-4b09-44a5-928e-133d32c766c2
+3a747072-0c14-40c7-88ca-fbc40d0b968c	Buvuma	fd8a88e7-4b09-44a5-928e-133d32c766c2
+d18fbbe1-1471-44bf-90f0-cb858319151b	Sengezane	fd8a88e7-4b09-44a5-928e-133d32c766c2
+40b206c5-f815-47ca-b21b-dd8dfd2e514b	Mtshabezi Mission	fd8a88e7-4b09-44a5-928e-133d32c766c2
+fba90393-0b9b-491f-817f-883b678b5970	Gwaranyemba	fd8a88e7-4b09-44a5-928e-133d32c766c2
+1d8d19a1-6740-4616-b190-5745fcddddad	Gungwe	fd8a88e7-4b09-44a5-928e-133d32c766c2
+9f1b1e77-607b-4c1d-98f5-434fe44b6777	Hwali	fd8a88e7-4b09-44a5-928e-133d32c766c2
+efc4a484-7fa1-4ea6-97fc-04f3fdf35602	Kafusi	fd8a88e7-4b09-44a5-928e-133d32c766c2
+127802a1-c5cb-41c9-a2b5-3de47005fe5f	Lushongwe	fd8a88e7-4b09-44a5-928e-133d32c766c2
+f3dcea4d-4afe-4973-ad3b-760185776faa	Manama, Zimbabwe	fd8a88e7-4b09-44a5-928e-133d32c766c2
+bf98697d-2a7d-4e71-9530-0412c2643acd	Matshetshe	fd8a88e7-4b09-44a5-928e-133d32c766c2
+bf503c8d-a9bf-48a4-afe6-baf2bb2ef6ce	Mtshazo	fd8a88e7-4b09-44a5-928e-133d32c766c2
+5f10603e-f927-4aeb-b85c-242fb0a204cb	Mzimuni, Zimbabwe	fd8a88e7-4b09-44a5-928e-133d32c766c2
+f0885575-38b0-43dd-9417-8b80252cf9ee	Nkwidze	fd8a88e7-4b09-44a5-928e-133d32c766c2
+bc9e5d0f-64b6-4558-9eee-a44e538a45df	Ntalale	fd8a88e7-4b09-44a5-928e-133d32c766c2
+02e92ac5-2b60-4932-9403-b3c8f3e03ec7	Shake, Zimbabwe	fd8a88e7-4b09-44a5-928e-133d32c766c2
+1cc2d371-5ef7-492a-b20a-7593e3a982d6	Silonga	fd8a88e7-4b09-44a5-928e-133d32c766c2
+49e392e3-2226-4185-9d7f-2c23d052158c	Simbumbumbu	fd8a88e7-4b09-44a5-928e-133d32c766c2
+a7b60eda-1919-440a-a50a-829c35ad27be	Sizeze	fd8a88e7-4b09-44a5-928e-133d32c766c2
+33b34089-4290-4d5f-bcc4-66fb49dec2e0	Avoca	b70711e0-6806-41c0-aab2-eeedecc1437e
+076f1993-70b7-4499-bd4d-0779346cfa59	Bekezela	b70711e0-6806-41c0-aab2-eeedecc1437e
+5a9f76a5-feca-49b2-917c-8104e12684ee	Gwatemba	b70711e0-6806-41c0-aab2-eeedecc1437e
+1f4d278a-6683-4007-a372-b517727a22a1	Mahole	b70711e0-6806-41c0-aab2-eeedecc1437e
+f85b7c6c-e30f-49f6-aa9e-f52de30229a1	Mashoko	b70711e0-6806-41c0-aab2-eeedecc1437e
+739a4ff4-2ab2-4938-b331-93a1cea3b065	Masiyephambili	b70711e0-6806-41c0-aab2-eeedecc1437e
+b6c8a9e5-65c1-44c5-9e5f-a3be7e3f038e	Mbondweni	b70711e0-6806-41c0-aab2-eeedecc1437e
+3349ff72-4c99-4b2f-a532-9ffbbd877802	Ntunteni	b70711e0-6806-41c0-aab2-eeedecc1437e
+a35f83f7-a6ea-4787-ad54-a42208ce505f	Sanele	b70711e0-6806-41c0-aab2-eeedecc1437e
+1853ccfe-df4b-4334-a73a-aa7d04764098	Sidzibe	b70711e0-6806-41c0-aab2-eeedecc1437e
+470139cd-9a57-443b-bf28-704067656e3f	Silalabuhwa	b70711e0-6806-41c0-aab2-eeedecc1437e
+dc9c8771-24cb-4608-9bfa-d804f0126d01	Vokola	b70711e0-6806-41c0-aab2-eeedecc1437e
+e3aac500-8895-4c5c-aeb4-07734afc70b7	Ward 1	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+5dc36510-66ad-40c0-8471-8daff5cd5a1d	Ward 2	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+1daf04dd-11b6-4e18-8d63-dd5da2b5db78	Ward 3	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+63e7b840-512d-4a68-a57b-7d2801d6a6d2	Ward 4	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+29a9e22c-d327-4ab1-b822-2b9c9763ded5	Ward 5	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+e9dfc1c1-fe31-45ca-a1d9-e89cff3cb32a	Ward 6	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+247d148f-5f96-473f-958a-f404f7489334	Ward 7	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+90b288cd-8663-446b-97e6-057245ab04c0	Ward 8	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+c1006c66-58e0-41e5-946d-7369a0e948c8	Ward 9	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+9853de9b-e139-458f-84d5-5a2a47e2a41d	Ward 10	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+25af7bd0-0d9d-4829-9762-a4573940adb5	Ward 11	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+1f5c27fd-9972-4eae-9454-56d302adaa01	Ward 14	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+823bc0c2-ae91-4a58-8122-42c2587473b4	Ward 15	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+751b8c17-13a6-4782-9fb5-18052c9f6730	Ward 16	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+a233b1f8-a14f-417a-b17c-1debe03681de	Ward 17	d2ab92f2-b6c0-4e91-b3ac-81ae18fd75bd
+12a96c7f-3071-4b26-8b93-94ec81740abc	Bambanani	bce5e818-0148-48a2-8117-1967e7c664f1
+c24d8ba4-1593-41f7-a579-30d41c0b3c88	Beula	bce5e818-0148-48a2-8117-1967e7c664f1
+5f31f689-6d15-40bd-8942-894c127aed8a	Bidi	bce5e818-0148-48a2-8117-1967e7c664f1
+a82a4ebf-b532-4491-b297-6b3ca7d48db2	Dema	bce5e818-0148-48a2-8117-1967e7c664f1
+5e4a6b50-3fd6-4aa3-861f-a82ce448e97f	Donkwedonkwe	bce5e818-0148-48a2-8117-1967e7c664f1
+822d00b0-e4f3-4a25-8532-b40c7665ba7a	Dzembe	bce5e818-0148-48a2-8117-1967e7c664f1
+dd97cada-6fe1-4ae8-9e34-51265284f25c	Gwezha	bce5e818-0148-48a2-8117-1967e7c664f1
+7c9ea194-9d6d-4e3e-a327-ea3774c67cc2	Lingwe	bce5e818-0148-48a2-8117-1967e7c664f1
+a46412c4-7b0e-4b92-9cc0-e9a61946f67f	Madwaleni	bce5e818-0148-48a2-8117-1967e7c664f1
+47074b3f-bcef-4a18-9dc1-ebeb77fe8849	Makhasa	bce5e818-0148-48a2-8117-1967e7c664f1
+3c370c96-bab9-44ba-834b-5941ce195ed4	Malaba	bce5e818-0148-48a2-8117-1967e7c664f1
+24c81c4c-928f-4bad-b9a9-f6bd7808dfad	Manyane	bce5e818-0148-48a2-8117-1967e7c664f1
+56e6d0fc-538a-4046-ace6-030eba99d3b5	Marinoha	bce5e818-0148-48a2-8117-1967e7c664f1
+530a8fdd-52a2-4991-aea5-9e013d574e34	Makwe	bce5e818-0148-48a2-8117-1967e7c664f1
+81f661c0-b547-4ac0-a2a9-fd94cc33e2b9	Mbembeswana	bce5e818-0148-48a2-8117-1967e7c664f1
+2003f8d8-1de5-436a-b9f1-ea227cab2ab2	Mbuso	bce5e818-0148-48a2-8117-1967e7c664f1
+3e8a9692-6b6e-437d-bd61-d8d48db22b05	Mkokha	bce5e818-0148-48a2-8117-1967e7c664f1
+e8442b7b-1d5c-4ee0-8133-9ab0983f6500	Nqindi	bce5e818-0148-48a2-8117-1967e7c664f1
+c6503eff-cd25-47c2-a1c0-4fe82b39f441	Sigangatsha	bce5e818-0148-48a2-8117-1967e7c664f1
+8ed835ae-a2ef-4828-afb2-adb125d15552	Silebuhwa	bce5e818-0148-48a2-8117-1967e7c664f1
+5ec93490-3bd2-466c-b5e5-8010fe1e5801	Sontala	bce5e818-0148-48a2-8117-1967e7c664f1
+51373cf8-3d6c-4a81-be72-f5f19ed2fb65	St Anna	bce5e818-0148-48a2-8117-1967e7c664f1
+a30a0c7e-690c-4958-a839-010631cc2af7	Vulindlela	bce5e818-0148-48a2-8117-1967e7c664f1
+7caeebfe-7a35-4a8f-9af8-9ab2a92dd240	Dobhe	c0530d4a-221c-4880-bbef-5536f9097f6d
+22ff3b88-1240-4375-9d43-6f96362c2f21	Dula	c0530d4a-221c-4880-bbef-5536f9097f6d
+5f638bdd-92ef-4166-88ce-32130f06d3ee	Esibomvu	c0530d4a-221c-4880-bbef-5536f9097f6d
+44e7c4a1-0f11-492a-87c9-9e67174fb5b0	Kumbudzi	c0530d4a-221c-4880-bbef-5536f9097f6d
+ea6a82c5-b185-48e8-9eca-32cc51758c94	Mathendele	c0530d4a-221c-4880-bbef-5536f9097f6d
+ac390389-cc3d-4a6f-a506-4abc10f5503b	Mawabeni	c0530d4a-221c-4880-bbef-5536f9097f6d
+97eb8c6d-9adc-4be5-bd63-1fa8b85c6f2a	Mtshede	c0530d4a-221c-4880-bbef-5536f9097f6d
+3066f5ff-d35e-4ec5-8675-87ff56197707	Ntshamathe	c0530d4a-221c-4880-bbef-5536f9097f6d
+b6d2f14a-ef52-49d2-bb52-6ee738df8ee0	Sihlengeni	c0530d4a-221c-4880-bbef-5536f9097f6d
+80843a6e-0405-42ef-9880-02cef148e6f2	Silobi	c0530d4a-221c-4880-bbef-5536f9097f6d
+ee038cb6-d36f-4b85-a45a-3d1d55969e75	Zhalo	c0530d4a-221c-4880-bbef-5536f9097f6d
+160bfcb1-c031-44f2-a842-93546cddb43d	Vulindlela	c0530d4a-221c-4880-bbef-5536f9097f6d
+b39e0ea2-54d7-4d14-81d6-110546218a18	Charandura	13649c33-b37f-4c25-84d7-106602b3fb00
+83b733e4-e241-4240-999e-51a53ae5cc61	Chengwena	13649c33-b37f-4c25-84d7-106602b3fb00
+30d0d3ef-6bbc-470d-8983-3379dec61f89	Chinyuni	13649c33-b37f-4c25-84d7-106602b3fb00
+e31e8ca9-24ea-4930-89ca-695395cd688b	Chizhou	13649c33-b37f-4c25-84d7-106602b3fb00
+34a14914-2772-4850-b4c1-2c3e0d27b699	Mapiravana	13649c33-b37f-4c25-84d7-106602b3fb00
+7a464386-84a8-4d8c-8027-f7486d849915	Maware	13649c33-b37f-4c25-84d7-106602b3fb00
+e1f18cc9-1fc9-48da-bdf9-bece06a21c9f	Mhende	13649c33-b37f-4c25-84d7-106602b3fb00
+782db959-d179-4649-99ed-34a39280dd23	Musoropamwe	13649c33-b37f-4c25-84d7-106602b3fb00
+9c380475-1dfe-49d4-ae61-3a97099ff87f	Takawira	13649c33-b37f-4c25-84d7-106602b3fb00
+c4080681-a753-4524-b64c-7a15db8e4b32	Takawira Resett	13649c33-b37f-4c25-84d7-106602b3fb00
+372f9b8b-13ce-4d74-9399-a204679fa2a2	Tatonga	13649c33-b37f-4c25-84d7-106602b3fb00
+5e49b7cc-a6d8-495e-9cce-4600ce6d04b5	Tokwe (tokwe Iv) Rs	13649c33-b37f-4c25-84d7-106602b3fb00
+c79d6187-3dd7-486d-ac28-5cba1342574a	Chireya I	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+a4fb4bf6-2832-4011-955e-25f4e11d8af1	Chireya Ii	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+aa427fd4-08d5-465d-a3cb-44e8dcb35365	Chireya Iii	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+4684baf5-7f9b-4de4-ba16-02a204b29f90	Goredema	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+286a0b05-2642-49a4-8d83-f05274529a7d	Gumunyu I	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+73c6f0f6-0aff-49ba-bc91-7f06bc28f1db	Gumunyu Ii	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+f8c5136b-73ab-451f-9732-628db9ae32a5	Makore I	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+4f506517-bf48-4268-97f4-770e0bfb2375	Makore Ii	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+9f2938e8-6482-4c9e-8aa5-5cbf4576e59e	Musadzi Rs	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+64d70ba0-16f5-4fe0-bf9c-06a8721f24db	Nembudziya I	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+7e659a91-ba7d-4d6c-899d-e5f6f806b2ad	Nembudziya Ii	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+570d8845-abe2-4f0b-ad02-9b13112f953e	Nembudziya Iii	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+a91cf534-6771-4a1f-b1fe-56c86584a860	Nora Rs	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+bc8fccb8-e368-4866-a19c-00b45c4646a5	Nyaurungwe Rs	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+6bb95cec-3b13-4ca2-a876-9a81c595057c	Simchembo	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+2951a129-5d79-41a2-878f-dbef4eafa57a	Tsungai Rs	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+2d288030-c06b-4691-a432-a5dde0fda2c6	Wadze Rs	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+d3040637-458f-4605-ae97-145feeaaa21b	Madzivazvido	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+e18b852b-dbe5-47f8-a878-7621c3bb0ea5	Nenyunka	dde8ac54-792f-49f1-827a-6bf6d1aee2f6
+a8383da5-8f7d-4167-80ba-7d50f6a282dd	Chemagora Lscfa	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+c8f55af7-ca11-4310-8eed-d22f99be79a5	Chirima	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+d710cb7a-b136-4715-a824-9c826462f4ef	Chirisa Park	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+0ef48ed3-d550-4480-ac38-b7bc80633143	Chisina I	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+9ad16c04-3d0c-4d65-ba1c-0b830cf95946	Chisina Ii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+2a628b78-7775-45a9-8f94-f67848203ae7	Chisina Iii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+acf9d9ea-da15-4a9f-a7a2-eb8031e3c5eb	Huchu	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+ba6f4b6f-6a0c-4d2c-b8ca-409843d965fc	Jahana	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+93d91b7e-70c1-49d0-8b3c-85f2592eb561	Jiri	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+605ba3ac-7882-49a3-9eed-8373008474ec	Masuka	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+0cf81a7d-2234-47f0-802c-1dc5648a8c78	Mukoka Msala	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+e5553195-6f55-4be3-b4d3-bb8d3154b377	Muyambi	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+ae547580-4545-4c99-ab82-9cf252b85492	Ndhlalambi I	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+21d12174-df04-4a20-bc75-b433f7f81add	Ndhlalambi Ii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+f2153814-dd8e-46f4-b35f-bd5b6018af03	Nemangwe I	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+4c8f4804-e727-4492-8668-a0250f62a3c4	Nemangwe Ii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+afbe3324-f642-4a60-ac73-c3649546282d	Nemangwe Iii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+f6245dfa-7693-41c5-a00c-cd8cb4b59f65	Nemangwe Iv	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+a3af923e-97d7-4c88-abdf-5f21370f688c	Nemangwe V	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+53737e3a-3b2a-4a1b-b731-4321911d0542	Ngomeni	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+05ba66a3-5860-424b-9ce7-64bf78218998	Njelele I	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+e62897c3-182f-44cb-a902-6d0a8b7d6f1c	Njelele Ii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+41408ea6-e56c-46ee-8bd2-0c21cc09b9bd	Njelele Iii	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+7b14f384-0a7b-483c-b46c-6d139963f9de	Sai Mangidi	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+ddaae41d-643c-48f5-ab12-c78bd79c1628	Sai Mangisi	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+86645494-c1c9-43d7-8a61-c206737e08c2	Sai Sengwa	78a9d5b0-9bfe-4be2-b133-6f5a8a5bf2ae
+641c1799-de91-4869-9b22-3ed59c1df5da	Bafana	4542c6ab-4fde-4782-ac35-cad7418f0c06
+766f0fb8-50c3-474e-8073-54e486ccee20	Gambiza	4542c6ab-4fde-4782-ac35-cad7418f0c06
+2e600316-a40a-4ac2-b27a-4b97be86e06a	Ilithelezwe	4542c6ab-4fde-4782-ac35-cad7418f0c06
+968017f1-7ac1-43dd-b05b-60088c214b93	Madikani	4542c6ab-4fde-4782-ac35-cad7418f0c06
+5af5aec0-b12c-44ff-9d95-9fc98101ab12	Masvori Rs	4542c6ab-4fde-4782-ac35-cad7418f0c06
+3f6d4f15-e07e-4e4c-a9ca-6f7ebede1138	Mdubiwa	4542c6ab-4fde-4782-ac35-cad7418f0c06
+94296623-b89a-4ae5-86fc-da94bea8ddfe	Mlezu	4542c6ab-4fde-4782-ac35-cad7418f0c06
+325818cd-6c98-4cb6-9288-1ae006608419	Mutengwa	4542c6ab-4fde-4782-ac35-cad7418f0c06
+c0c19dff-0bba-46f8-8f44-7289d908925d	Nkawana	4542c6ab-4fde-4782-ac35-cad7418f0c06
+d4e36b5b-7c17-4829-b585-1596ae37cb84	Nyabango	4542c6ab-4fde-4782-ac35-cad7418f0c06
+e98267e4-6d33-4900-a273-b4932c8ac67c	Nyama	4542c6ab-4fde-4782-ac35-cad7418f0c06
+2f8677eb-5ded-4f71-9227-c590dc066a13	Sikombingo	4542c6ab-4fde-4782-ac35-cad7418f0c06
+49e50a12-b723-446a-a507-10e04c451ecb	Somabula	4542c6ab-4fde-4782-ac35-cad7418f0c06
+26a1da79-840a-437a-8e8e-14c5bfc255cc	Batanai	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+fa6aa410-103c-43ce-a6ae-a95bc4df4630	Chaminuka Ii	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+cf13cb7a-4ab4-4ab2-9d27-81d7b3ae21f7	Chitepo	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+d279b517-02cd-4248-9d33-99f8a94dba96	Empress Mine	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+eaf847f9-55d7-4d78-a7ee-97a95232d2ff	Gwesela West	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+8ce64f18-0127-4e71-a5ab-40cca3b2d4db	Inhlangano	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+2cde8a71-e97e-4c79-82d5-82b1e36955a6	Kubatana	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+34bbd32b-926f-4315-83ec-5344eaa5e78d	Kushinga	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+0cef3bfe-d34b-4351-8665-c44edd093bf2	Kwayedza	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+adfac53d-fbd6-4b0b-b85e-7c891661d3bc	Mabura	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+0869b2d7-f654-4d49-bdd3-918e102aa106	Makaba	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+64e2b2fb-9b45-459b-967a-6cc2a3a36a49	Msokeli	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+79f70193-2988-422a-bf12-733299054cdd	Mtshikitsha	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+3ebc6dcf-2b5f-41b9-9cb1-69cd2da621be	Nhlanganisa	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+9bf293ae-118c-4512-aaf7-54a239cdc87a	Ntabeni North	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+c7791594-3c68-49ea-a346-3505d34c5f95	Ntabeni South	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+bd91a26a-00e6-4ab0-b25c-9e9a377338fc	Sebenzani	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+ad3db749-3071-4520-9b20-0e29882b39d0	Sesombi I	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+54f82bb4-7464-410f-8cd3-6a2a25981948	Sesombi I Rs	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+dfc85513-020b-4088-8bc0-5df1d0f626b0	Sesombi Ii Rs	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+d61aeb7d-ca83-4559-bc1e-f5fcd26632d6	Sesombi Iii	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+761c2200-9af6-45de-8fb9-784affe83490	Sesombi Iii Rs	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+ff8a53c6-1b89-45a4-85dd-e52c77d66758	Sidakeni	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+44ec9969-b994-4e94-b0fa-811b709f9386	Silobela	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+beb0b722-73c6-4286-82a2-d07f8c642c52	Tongogara	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+fd755b66-9bbc-4973-82c3-88fa12dc3975	Zhombe Central	082bf84c-cf7d-4b11-ab8c-01f84d15c310
+df9b225f-ae4f-4efa-8c46-6e930634264b	(New Castle) Rs	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+f6684d46-deab-4542-a913-ecae86f72f6b	Baradzamwa	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+2f3c16fa-7f5a-455e-a58f-b71013f3fe52	Bhangwe	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+37d8b589-197d-4466-ab1f-3d95b97ab833	Bhinya Road	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+94526584-c4ed-4a1e-bc36-8d092b3874d0	Chebvute	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+0acd58f2-2109-4815-ad95-4124551f50b9	Chegato	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+fcd18337-2948-4697-b4b2-3f865cc2ff91	Cheshanga	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+f9b2b303-594b-4c76-a73c-9c1d3fbfef30	Chingechuru	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+48e20b11-099b-40d0-bda4-140c389756b8	Chingoma A	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+6b938a65-60fd-45e4-9ec2-1a1f86bd0b3f	Chingoma B	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+817f14fa-8b9b-4ad6-98ff-b0e71cafe7f6	Chizungu	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+4a312c9a-9ce8-48f0-8e75-5a4b58ac1b33	Danga	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+f585367c-ac0d-4dee-b303-9651f9b8f520	Dunda	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+dd7da031-322a-47d5-befb-fd6bea9c49e4	Lscfa (mberengwa Ica)	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+42cc3b28-a0e6-4f2c-aa84-c047a8daf382	Magamba	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+e48d6b65-bd62-4957-afa0-6328b15c2ddf	Mahlebadza	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+67e87500-fc18-4944-b46c-bfe0b443dc4c	Makuwerere	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+a11fb17b-db9f-4f5c-92c7-30ad07b09f40	Masvingo	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+e9ed857b-3e7e-43b1-9686-370613843f81	Mataga	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+6114e981-0665-44cf-8708-897a9e533b0c	Mataruse B I	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+e036ddc4-5119-4baf-bda9-1aba68d547d1	Mataruse B Ii	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+2625c699-b130-436f-8624-ffb712f05893	Maziofa	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+efb965f6-c14c-417c-8e69-668ff28f6525	Mketi	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+89517621-4005-4b54-a0bd-7819d3d314b5	Muchembere	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+ca137615-12fd-48a1-b9e8-bd8dd81a24e5	Murerezi	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+6674dcae-bf9b-48cc-b69a-39c3f0c9f4a3	Mushandirapamwe	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+3b3b7feb-29d4-45c3-bf9d-1e6fad2d0c84	Musume	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+f6e9dcd4-dc06-4a29-9121-4465985a5a3b	Ngungumbane	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+25795b72-29dc-449e-9adc-73e648cb95bf	Nyamondo Ii	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+1e111014-506d-4ee8-8320-6eefd46929a8	Nyamondo Iii	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+ff536cea-c492-42ad-98a6-24ae39b9f5f1	Ruremekedzo	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+b7ce207c-9aba-494f-b195-6ed00087e3ab	Vukomba	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+1edcc4ad-4914-4cea-a9e2-9b2cc5312dc4	Zvomukonde	8fc49ac1-5c56-41af-a910-4d0e8a159ed1
+7c144540-c312-415b-a509-c88730a61cff	Gundura	39305802-c743-41c2-8da8-eeaa9dc58609
+e4ab18bc-51c6-4fb8-b926-3d41f86dd927	Ndanga	39305802-c743-41c2-8da8-eeaa9dc58609
+731f3a95-0e0b-4add-9e65-637dbb66571b	Donga	39305802-c743-41c2-8da8-eeaa9dc58609
+fe041e60-1c32-409b-a084-85d84ee4e44e	Hanke	39305802-c743-41c2-8da8-eeaa9dc58609
+58f2a6fc-1cb6-4502-9238-526bd2c8e603	Nhema	39305802-c743-41c2-8da8-eeaa9dc58609
+084a0247-948a-4ff9-be0c-ddfec09075db	Tinhira	39305802-c743-41c2-8da8-eeaa9dc58609
+d06876bf-38f1-4c24-901d-8eb22781e661	Tongogara	39305802-c743-41c2-8da8-eeaa9dc58609
+2f188c6e-1b42-44f5-b5c5-038119f77c2b	Mazivisa	39305802-c743-41c2-8da8-eeaa9dc58609
+4a9c93d2-9b92-40d9-93e9-8521a8bd2acf	Shamba	39305802-c743-41c2-8da8-eeaa9dc58609
+76aa9423-2d6e-44c5-8cf5-c7b45febd77a	Pisira	39305802-c743-41c2-8da8-eeaa9dc58609
+1c5fdba3-0c90-4249-bb12-ea786583c998	Chenhunguru	7438996c-e111-4ac5-b22b-4727bd70ff0c
+401acb94-e8a8-4b2d-9b2a-bed16b85875a	Chiwonekano	7438996c-e111-4ac5-b22b-4727bd70ff0c
+1e7f79e7-8168-4f07-9cd3-0ad9a37c691c	Dayadaya	7438996c-e111-4ac5-b22b-4727bd70ff0c
+d92bab3a-f40f-457c-974f-a2e2c2f085a4	Guruguru	7438996c-e111-4ac5-b22b-4727bd70ff0c
+a0fd71d8-da64-4f48-8aea-588e52bf1910	Hombe	7438996c-e111-4ac5-b22b-4727bd70ff0c
+91ad2f4d-e617-4352-8a50-480c4de86b3e	Indava	7438996c-e111-4ac5-b22b-4727bd70ff0c
+99b2d912-c654-4954-9a79-eb66c80c4621	Lscfa	7438996c-e111-4ac5-b22b-4727bd70ff0c
+f2e33c13-f25f-4e30-b557-58e366471234	Mapirimira	7438996c-e111-4ac5-b22b-4727bd70ff0c
+a9db8df2-155a-46ee-abdb-f09bab8ac0d5	Mototi	7438996c-e111-4ac5-b22b-4727bd70ff0c
+5b3f0403-314c-4807-8b9e-c5257e8af721	Murowa	7438996c-e111-4ac5-b22b-4727bd70ff0c
+a5bc450d-762e-4885-ba9f-9ecc607c39da	Mutambe	7438996c-e111-4ac5-b22b-4727bd70ff0c
+56db6bbf-8d57-4838-9865-4d7bfd988a88	Ngomayebani	7438996c-e111-4ac5-b22b-4727bd70ff0c
+c64b367a-7b7e-4a57-8574-9851a7c5701f	Runde	7438996c-e111-4ac5-b22b-4727bd70ff0c
+55dd7873-f61f-4a1a-94a6-649c7dbb9097	Shauke	7438996c-e111-4ac5-b22b-4727bd70ff0c
+ddf97abb-32df-4c39-8662-e480476d75c6	Shavahuru	7438996c-e111-4ac5-b22b-4727bd70ff0c
+5787b658-c3f0-4c3b-91c4-8c917dea7aeb	Ture	7438996c-e111-4ac5-b22b-4727bd70ff0c
+29489163-da66-4e40-99b4-93a371f81299	Mhondongori	7438996c-e111-4ac5-b22b-4727bd70ff0c
+e04de2fc-b928-4c77-b58e-cecde95a10d2	Vukusvo	7438996c-e111-4ac5-b22b-4727bd70ff0c

@@ -9,7 +9,7 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(db, 'device_capabilities', (qb) =>
     qb
-      .addColumn('device_id', 'integer', (col) =>
+      .addColumn('device_id', 'uuid', (col) =>
         col.notNull().references('devices.id').onDelete('cascade'))
       .addColumn('diagnostic_test', 'varchar(40)', (col) =>
         col.notNull().references('diagnostic_tests.name').onDelete('cascade')))

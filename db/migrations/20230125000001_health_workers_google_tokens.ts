@@ -6,7 +6,7 @@ export function up(db: Kysely<unknown>) {
     qb
       .addColumn(
         'health_worker_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('health_workers.id').onDelete('cascade'),
       )

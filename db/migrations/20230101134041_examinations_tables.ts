@@ -65,7 +65,7 @@ export async function up(
     .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'examination_category_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('examination_categories.id').onDelete(
           'cascade',

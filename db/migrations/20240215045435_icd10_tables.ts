@@ -67,7 +67,7 @@ export async function up(db: Kysely<any>) {
     .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'exclude_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
           'cascade',
@@ -87,7 +87,7 @@ export async function up(db: Kysely<any>) {
     .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'exclude_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
           'cascade',
@@ -106,7 +106,7 @@ export async function up(db: Kysely<any>) {
     .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
     .addColumn(
       'exclude_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
           'cascade',
