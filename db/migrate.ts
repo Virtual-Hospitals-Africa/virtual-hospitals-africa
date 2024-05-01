@@ -141,12 +141,15 @@ export async function migrateCommand(
 }
 
 if (import.meta.main) {
-  if (!Deno.args.length) {
+  const [cmd] = Deno.args
+  const recognized_command = !!cmd && cmd in migrate
+  if (!recognized_command) {
     console.error(
-      'Please provide a migration name as in\ndeno task migrate:create name',
+      'Please provide a valid command name as in\ndeno task db:migrate $cmd\nAvailable commands:',
     )
+    Object.keys(migrate).forEach((it) => console.error(`  ${it}`))
     Deno.exit(1)
   }
 
-  migrateCommand(Deno.args[0] as any, Deno.args[1])
+  migrateCommand(recognized_command as any, Deno.args[1])
 }
