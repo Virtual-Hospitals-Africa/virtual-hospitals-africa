@@ -380,9 +380,8 @@ export type PharmacistState = {
   conversation_state: PharmacistConversationState
   has_media: boolean
   pin: Maybe<string>
-  establishment_id: Maybe<number>
-  
-  
+  organization_id: Maybe<string>
+  organization: Maybe<Organization>
 }
 
 export type PharmacistConversationState =
@@ -393,8 +392,8 @@ export type PharmacistConversationState =
   | 'not_onboarded:confirm_pin'
   | 'not_onboarded:enter_establishment'
   | 'onboarded:enter_order_number'
-  | 'other_end_of_demo'  
-  
+  | 'onboarded:get_order_details'
+  | 'other_end_of_demo'
 
 export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
   prompt: string | ((userState: US) => string)
