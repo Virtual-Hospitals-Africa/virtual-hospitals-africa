@@ -32,7 +32,7 @@ function targetError(cmd: string) {
   console.error(
     `Please specify a valid target as in\n\n  deno task db:migrate:${cmd} ${
       migrationTargets[0]
-    }\n\nValid targets:\n${migrationTargets.join('\n')}`,
+    }\n\nValid targets:\n  ${migrationTargets.join('\n  ')}`,
   )
   return Deno.exit(1)
 }
@@ -83,6 +83,10 @@ export const migrate = {
   to(target: string) {
     if (!target) return targetError('to')
     return migrator.migrateTo(findTarget(target, 'to'))
+  },
+  async redo() {
+    await migrate.down()
+    return migrate.up()
   },
   async 'redo:from'(target: string) {
     if (!target) return targetError('redo:from')
@@ -151,5 +155,5 @@ if (import.meta.main) {
     Deno.exit(1)
   }
 
-  migrateCommand(recognized_command as any, Deno.args[1])
+  migrateCommand(cmd as any, Deno.args[1])
 }
