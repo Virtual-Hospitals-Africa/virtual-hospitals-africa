@@ -37,7 +37,27 @@ const conversationStates: ConversationStates<PharmacistConversationState, Pharma
 'not_onboarded:create_pin': {
   type: 'string',
   prompt: 'Great! To secure your account, please create a 4-digit pin',
-  nextState: 'other_end_of_demo',
+  nextState: 'not_onboarded:confirm_pin',
+},
+'not_onboarded:confirm_pin': {
+  type: 'string',
+  prompt(pharmacist: PharmacistState): string {
+    return `Please confirm your pin ${pharmacist.pin}`
+  },
+  nextState: 'not_onboarded:enter_establishment',
+},
+'not_onboarded:enter_establishment': {
+  type: 'string',
+  prompt: 'Please provide your establishment license number',
+  nextState: 'onboarded:enter_order_number',
+},
+'onboarded:enter_order_number': {
+  type: 'string',
+  prompt(pharmacist: PharmacistState): string {
+    const establishment = get
+    return `You are now serving as a pharmacist at ${pharmacist.establishment}. Please provide the order number`
+  }
+  nextState: 'onboarded:enter_order_date',
 },
 'other_end_of_demo': {
   type: 'end_of_demo',

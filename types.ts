@@ -379,6 +379,10 @@ export type PharmacistState = {
   name: Maybe<string>
   conversation_state: PharmacistConversationState
   has_media: boolean
+  pin: Maybe<string>
+  establishment_id: Maybe<number>
+  
+  
 }
 
 export type PharmacistConversationState =
@@ -386,6 +390,9 @@ export type PharmacistConversationState =
   | 'not_onboarded:enter_registration'
   | 'not_onboarded:enter_id'
   | 'not_onboarded:create_pin'
+  | 'not_onboarded:confirm_pin'
+  | 'not_onboarded:enter_establishment'
+  | 'onboarded:enter_order_number'
   | 'other_end_of_demo'  
   
 
