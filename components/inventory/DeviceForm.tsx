@@ -6,7 +6,7 @@ import DeviceSearch from '../../islands/inventory/DeviceSearch.tsx'
 import { Button } from '../library/Button.tsx'
 import { TextInput } from '../../islands/form/Inputs.tsx'
 
-export default function FacilityDeviceForm({ device }: {
+export default function OrganizationDeviceForm({ device }: {
   device: RenderedDevice | null
 }): JSX.Element {
   return (

@@ -1,4 +1,4 @@
-import { RenderedFacilityMedicine } from '../../types.ts'
+import { RenderedOrganizationMedicine } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
@@ -19,7 +19,7 @@ function breakSemicolons(str: string) {
   )
 }
 
-const columns: TableColumn<RenderedFacilityMedicine>[] = [
+const columns: TableColumn<RenderedOrganizationMedicine>[] = [
   {
     label: 'Generic Name',
     data(row) {
@@ -58,22 +58,23 @@ const columns: TableColumn<RenderedFacilityMedicine>[] = [
   },
 ]
 
-export default function FacilityMedicinesTable(
-  { medicines, facility_id, isAdmin }: {
-    medicines: RenderedFacilityMedicine[]
-    facility_id: number
+export default function OrganizationMedicinesTable(
+  { medicines, organization_id, isAdmin }: {
+    medicines: RenderedOrganizationMedicine[]
+    organization_id: string
     isAdmin: boolean
   },
 ) {
-  const add_href = `/app/facilities/${facility_id}/inventory/add_medicine`
+  const add_href =
+    `/app/organizations/${organization_id}/inventory/add_medicine`
   return (
     <>
       {isAdmin && (
         <FormRow className='mb-2'>
-          <AddMedicineSearch facility_id={facility_id} />
+          <AddMedicineSearch organization_id={organization_id} />
           <Button
             type='button'
-            href={`/app/facilities/${facility_id}/inventory/add_medicine`}
+            href={`/app/organizations/${organization_id}/inventory/add_medicine`}
             className='w-max rounded-md border-0 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
           >
             Add Medicine

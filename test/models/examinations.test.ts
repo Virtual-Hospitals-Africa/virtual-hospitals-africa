@@ -6,7 +6,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   addTestHealthWorker,
   itUsesTrxAnd,
-  withTestFacility,
+  withTestOrganization,
 } from '../web/utilities.ts'
 
 describe(
@@ -17,7 +17,7 @@ describe(
       itUsesTrxAnd(
         'returns the recommended examinations for an adult woman',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Woman',
               gender: 'female',
@@ -25,7 +25,7 @@ describe(
             })
             const patient_encounter = await patient_encounters.upsert(
               trx,
-              facility_id,
+              organization_id,
               {
                 patient_id: patient.id,
                 reason: 'seeking treatment',
@@ -49,7 +49,7 @@ describe(
       itUsesTrxAnd(
         'returns the recommended examinations for a maternity visit',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Woman',
               gender: 'female',
@@ -57,7 +57,7 @@ describe(
             })
             const patient_encounter = await patient_encounters.upsert(
               trx,
-              facility_id,
+              organization_id,
               {
                 patient_id: patient.id,
                 reason: 'maternity',
@@ -84,7 +84,7 @@ describe(
       itUsesTrxAnd(
         'returns the completed, skipped, and recommended examinations for a patient encounter',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const health_worker = await addTestHealthWorker(trx, {
               scenario: 'approved-nurse',
             })
@@ -95,7 +95,7 @@ describe(
             })
             const patient_encounter = await patient_encounters.upsert(
               trx,
-              facility_id,
+              organization_id,
               {
                 patient_id: patient.id,
                 reason: 'seeking treatment',
@@ -159,11 +159,15 @@ describe(
             scenario: 'approved-nurse',
           })
           const patient = await patients.upsert(trx, { name: 'Test Patient' })
-          const encounter = await patient_encounters.upsert(trx, 1, {
-            patient_id: patient.id,
-            reason: 'seeking treatment',
-            provider_ids: [nurse.employee_id!],
-          })
+          const encounter = await patient_encounters.upsert(
+            trx,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              patient_id: patient.id,
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
 
           await examinations.upsertFindings(trx, {
             patient_id: patient.id,
@@ -1012,11 +1016,15 @@ describe(
             scenario: 'approved-nurse',
           })
           const patient = await patients.upsert(trx, { name: 'Test Patient' })
-          const encounter = await patient_encounters.upsert(trx, 1, {
-            patient_id: patient.id,
-            reason: 'seeking treatment',
-            provider_ids: [nurse.employee_id!],
-          })
+          const encounter = await patient_encounters.upsert(
+            trx,
+            '00000000-0000-0000-0000-000000000001',
+            {
+              patient_id: patient.id,
+              reason: 'seeking treatment',
+              provider_ids: [nurse.employee_id!],
+            },
+          )
 
           await examinations.upsertFindings(trx, {
             patient_id: patient.id,

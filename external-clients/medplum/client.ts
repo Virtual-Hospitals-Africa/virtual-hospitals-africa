@@ -2,21 +2,27 @@ import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../../util/isObjectLike.ts';
 import { isUUID } from '../../util/uuid.ts';
 import { isISODateTimeString } from '../../util/date.ts'
+import memoize from '../../util/memoize.ts'
 
 
 // Make a ClientApplication in Medplum and use its client ID and secret here
-const CLIENT_ID = "afd3756e-ff33-4411-a821-638d8ae29940"
-const CLIENT_SECRET = "8f569f08cbacb3f0751aaf465472fa351aea554846c5e44fac76ebeaa6a09f82"
+const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
+const MEDPLUM_CLIENT_SECRET = Deno.env.get('MEDPLUM_CLIENT_SECRET')
+const MEDPLUM_SERVER_URL = Deno.env.get('MEDPLUM_SERVER_URL') || 'http://localhost:8103'
 
-const auth = btoa(`${CLIENT_ID}:${CLIENT_SECRET}`)
+const auth = memoize(() => {
+  assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
+  assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
+  return btoa(`${MEDPLUM_CLIENT_ID}:${MEDPLUM_CLIENT_SECRET}`)
+})
 
 export function request(method: string, path: string, data?: unknown) {
   const body = data ? JSON.stringify(data) : undefined;
-  const headers = new Headers({ 'Authorization': `Basic ${auth}` })
+  const headers = new Headers({ 'Authorization': `Basic ${auth()}` })
   if (body) {
     headers.set('Content-Type', 'application/fhir+json')
   }
-  return fetch(`http://localhost:8103/fhir/R4/${path}`, {
+  return fetch(`${MEDPLUM_SERVER_URL}/fhir/R4/${path}`, {
     method,
     headers,
     body,
@@ -24,7 +30,7 @@ export function request(method: string, path: string, data?: unknown) {
 
 }
 
-type CreatedResource<T> = {
+type CreatedResource<T, Data extends Record<string, unknown>> = Data & {
   resourceType: T,
   id: string
   meta: {
@@ -33,7 +39,7 @@ type CreatedResource<T> = {
   }
 }
 
-function assertIsCreatedResource<T>(data: unknown): asserts data is CreatedResource<T> {
+function assertIsCreatedResource<T, Data extends Record<string, unknown>>(data: unknown): asserts data is CreatedResource<T, Data> {
   assert(isObjectLike(data), 'Expected data to be an object');
   assert(isUUID(data.id), 'Expected .id to be a UUID');
   assert(isObjectLike(data.meta), 'Expected .meta to be an object');
@@ -41,7 +47,7 @@ function assertIsCreatedResource<T>(data: unknown): asserts data is CreatedResou
   assert(isISODateTimeString(data.meta.lastUpdated), 'Expected .meta.lastUpdated to be a datetime string');
 }
 
-export async function createResource<T extends string>(resourceType: T, data?: Record<string, unknown>) {
+export async function createResource<T extends string, Data extends Record<string, unknown>>(resourceType: T, data?: Data) {
   const response = await request('POST', resourceType, {
     resourceType,
     ...data
@@ -50,6 +56,6 @@ export async function createResource<T extends string>(resourceType: T, data?: R
   if (json.issue) {
     throw new Error(JSON.stringify(json.issue[0].details.text));
   }
-  assertIsCreatedResource<T>(json);
+  assertIsCreatedResource<T, Data>(json);
   return json
 }

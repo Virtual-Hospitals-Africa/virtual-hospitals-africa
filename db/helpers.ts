@@ -269,6 +269,11 @@ export function literalNumber(value: number) {
   return sql.lit<number>(value)
 }
 
+export function literalString(value: string) {
+  assert(typeof value === 'string', 'Value must be a string')
+  return sql.lit<string>(value)
+}
+
 // deno-lint-ignore no-explicit-any
 export function literalOptionalDate(value?: string | null): RawBuilder<any> {
   if (value == null) return sql.raw('null')

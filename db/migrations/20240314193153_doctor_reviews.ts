@@ -34,9 +34,9 @@ export async function up(db: Kysely<any>) {
           .notNull()
           .references('patient_encounter_providers.id')
           .onDelete('cascade'))
-      .addColumn('facility_id', 'integer', (col) =>
+      .addColumn('organization_id', 'uuid', (col) =>
         col
-          .references('facilities.id')
+          .references('Organization.id')
           .onDelete('cascade'))
       .addColumn('requesting_doctor_id', 'integer', (col) =>
         col
@@ -44,19 +44,19 @@ export async function up(db: Kysely<any>) {
           .onDelete('cascade'))
       .addColumn('requester_notes', 'text')
       .addColumn('pending', 'boolean', (col) => col.notNull().defaultTo(true))
-      .addUniqueConstraint('once_per_patient_facility', [
+      .addUniqueConstraint('once_per_patient_organization', [
         'patient_id',
-        'facility_id',
+        'organization_id',
       ])
       .addUniqueConstraint('once_per_patient_employee', [
         'patient_id',
         'requesting_doctor_id',
       ])
       .addCheckConstraint(
-        'facility_or_requesting_employee',
+        'organization_or_requesting_employee',
         sql`
-        (facility_id is not null and requesting_doctor_id is null) or
-        (facility_id is null and requesting_doctor_id is not null)
+        (organization_id is not null and requesting_doctor_id is null) or
+        (organization_id is null and requesting_doctor_id is not null)
       `,
       ))
 

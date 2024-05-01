@@ -5,15 +5,15 @@ import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
-import { FacilityEmployeeOrInvitee } from '../../types.ts'
+import { OrganizationEmployeeOrInvitee } from '../../types.ts'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 
 type EmployeesTableProps = {
   isAdmin: boolean
-  employees: FacilityEmployeeOrInvitee[]
+  employees: OrganizationEmployeeOrInvitee[]
   pathname: string
-  facility_id: number
+  organization_id: string
   health_worker_id: number
 }
 
@@ -22,7 +22,7 @@ export default function EmployeesTable({
   employees,
   pathname,
 }: EmployeesTableProps): JSX.Element {
-  const columns: TableColumn<FacilityEmployeeOrInvitee>[] = [
+  const columns: TableColumn<OrganizationEmployeeOrInvitee>[] = [
     {
       label: 'Employee',
       headerClassName: 'pl-12',

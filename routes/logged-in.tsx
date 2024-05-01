@@ -6,7 +6,7 @@ import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
-import * as facilities from '../db/models/facilities.ts'
+import * as organizations from '../db/models/organizations.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
@@ -17,26 +17,29 @@ export async function initializeHealthWorker(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   profile: GoogleProfile,
-  invitees: { id: number; facility_id: number; profession: Profession }[],
+  invitees: { id: number; organization_id: string; profession: Profession }[],
 ): Promise<{ id: number }> {
   assert(invitees.length, 'No invitees found')
 
   // Fire off async operations in parallel
-  const removing_invites = employment.removeInvitees(
+  console.log('invitees', invitees)
+  const removing_invites = await employment.removeInvitees(
     trx,
     invitees.map((invitee) => invitee.id),
   )
 
-  const facility_ids = uniq(invitees.map((invitee) => invitee.facility_id))
-  const getting_calendars = facilities.get(trx, { ids: facility_ids })
+  const organization_ids = uniq(
+    invitees.map((invitee) => invitee.organization_id),
+  )
+  const getting_calendars = organizations.get(trx, { ids: organization_ids })
     .then(
-      async (facilities) => {
+      async (organizations) => {
         const calendars = await googleClient
-          .ensureHasAppointmentsAndAvailabilityCalendars(facilities)
-        return Array.from(zip(facilities, calendars)).map((
-          [facility, calendars],
+          .ensureHasAppointmentsAndAvailabilityCalendars(organizations)
+        return Array.from(zip(organizations, calendars)).map((
+          [organization, calendars],
         ) => ({
-          facility_id: facility.id,
+          organization_id: organization.id,
           ...calendars,
         }))
       },
@@ -56,7 +59,7 @@ export async function initializeHealthWorker(
     trx,
     invitees.map((invitee) => ({
       health_worker_id: health_worker.id,
-      facility_id: invitee.facility_id,
+      organization_id: invitee.organization_id,
       profession: invitee.profession,
     })),
   )

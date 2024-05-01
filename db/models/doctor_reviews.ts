@@ -3,8 +3,9 @@ import {
   DB,
   DoctorReviewStep,
   Employment,
-  Facilities,
+  // EncounterReason,
   HealthWorkers,
+  Organization,
 } from '../../db.d.ts'
 import {
   HealthWorkerEmployment,
@@ -28,7 +29,7 @@ import { assertOr403 } from '../../util/assertOr.ts'
 export function ofHealthWorker(
   trx: TrxOrDb,
   health_worker_id: number,
-): SelectQueryBuilder<DB, 'doctor_reviews', RenderedDoctorReview> {
+) {
   return trx.selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
     .innerJoin(
@@ -47,9 +48,9 @@ export function ofHealthWorker(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'facilities as requested_by_facility',
-      'requested_by_employee.facility_id',
-      'requested_by_facility.id',
+      'Organization',
+      'requested_by_employee.organization_id',
+      'Organization.id',
     )
     .innerJoin(
       'health_workers as requested_by_health_worker',
@@ -79,9 +80,9 @@ export function ofHealthWorker(
           'doctor' | 'nurse'
         >(),
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
-        facility: jsonBuildObject({
-          id: eb.ref('requested_by_facility.id'),
-          name: eb.ref('requested_by_facility.name'),
+        organization: jsonBuildObject({
+          id: eb.ref('Organization.id'),
+          name: eb.ref('Organization.canonicalName'),
         }),
       }).as('requested_by'),
       jsonArrayFromColumn(
@@ -103,7 +104,7 @@ export function requests(
   DB & {
     requested_by_employee: Employment
   } & {
-    requested_by_facility: Facilities
+    requested_by_organization: Organization
   } & {
     requested_by_health_worker: HealthWorkers
   },
@@ -111,7 +112,7 @@ export function requests(
   | 'patient_encounter_providers'
   | 'patient_encounters'
   | 'requested_by_employee'
-  | 'requested_by_facility'
+  | 'requested_by_organization'
   | 'requested_by_health_worker',
   RenderedDoctorReviewRequest
 > {
@@ -132,9 +133,9 @@ export function requests(
       'requested_by_employee.id',
     )
     .innerJoin(
-      'facilities as requested_by_facility',
-      'requested_by_employee.facility_id',
-      'requested_by_facility.id',
+      'Organization as requested_by_organization',
+      'requested_by_employee.organization_id',
+      'requested_by_organization.id',
     )
     .innerJoin(
       'health_workers as requested_by_health_worker',
@@ -161,9 +162,9 @@ export function requests(
           'doctor' | 'nurse'
         >(),
         patient_encounter_provider_id: eb.ref('patient_encounter_providers.id'),
-        facility: jsonBuildObject({
-          id: eb.ref('requested_by_facility.id'),
-          name: eb.ref('requested_by_facility.name'),
+        organization: jsonBuildObject({
+          id: eb.ref('requested_by_organization.id'),
+          name: eb.ref('requested_by_organization.canonicalName'),
         }),
       }).as('requested_by'),
     ])
@@ -191,24 +192,24 @@ export function requestsOfHealthWorker(
 export async function requestMatchingEmployment(
   trx: TrxOrDb,
   patient_id: number,
-  facilities_where_doctor: HealthWorkerEmployment[],
+  organizations_where_doctor: HealthWorkerEmployment[],
 ): Promise<RenderedDoctorReviewRequestOfSpecificDoctor | null> {
   const request = await requests(trx)
-    .select('doctor_review_requests.facility_id')
+    .select('doctor_review_requests.organization_id')
     .where('doctor_review_requests.patient_id', '=', patient_id)
     .where(
-      'doctor_review_requests.facility_id',
+      'doctor_review_requests.organization_id',
       'in',
-      facilities_where_doctor.map(
-        (employment) => employment.facility.id,
+      organizations_where_doctor.map(
+        (employment) => employment.organization.id,
       ),
     )
     .executeTakeFirst()
 
   if (!request) return null
 
-  const matching_employment = facilities_where_doctor.find(
-    (employment) => employment.facility.id === request.facility_id,
+  const matching_employment = organizations_where_doctor.find(
+    (employment) => employment.organization.id === request.organization_id,
   )
   assert(matching_employment)
   assert(matching_employment.roles.doctor)
@@ -263,11 +264,11 @@ export async function addSelfAsReviewer(
     return { doctor_review: in_progress }
   }
 
-  const facilities_where_doctor = health_worker.employment.filter(
+  const organizations_where_doctor = health_worker.employment.filter(
     (employment) => !!employment.roles.doctor,
   )
   assertOr403(
-    facilities_where_doctor.length,
+    organizations_where_doctor.length,
     'Only doctors can review patient encounters',
   )
 
@@ -278,12 +279,12 @@ export async function addSelfAsReviewer(
     await requestMatchingEmployment(
       trx,
       patient_id,
-      facilities_where_doctor,
+      organizations_where_doctor,
     )
 
   assertOr403(
     requested,
-    'No review requested from you or your facility for this patient',
+    'No review requested from you or your organization for this patient',
   )
 
   const review = await start(trx, {
@@ -326,7 +327,7 @@ export function upsertRequest(
     patient_id: number
     encounter_id: number
     requested_by: number
-    facility_id?: number | null
+    organization_id?: string | null
     requesting_doctor_id?: number | null
     requester_notes?: Maybe<string>
   },
@@ -360,11 +361,13 @@ export function deleteRequest(trx: TrxOrDb, id: number) {
 export function finalizeRequest(
   trx: TrxOrDb,
   opts: {
+    patient_encounter_id: number
     requested_by: number
   },
 ) {
   return trx.updateTable('doctor_review_requests')
     .set('pending', false)
+    .where('encounter_id', '=', opts.patient_encounter_id)
     .where('requested_by', '=', opts.requested_by)
     .executeTakeFirst()
 }
@@ -381,14 +384,23 @@ export function getRequest(
       'id',
       'requester_notes',
       jsonObjectFrom(
-        eb.selectFrom('facilities')
-          .whereRef('facilities.id', '=', 'doctor_review_requests.facility_id')
+        eb.selectFrom('Organization')
+          .leftJoin(
+            'Address as OrganizationAddress',
+            'Organization.id',
+            'OrganizationAddress.resourceId',
+          )
+          .whereRef(
+            'Organization.id',
+            '=',
+            'doctor_review_requests.organization_id',
+          )
           .select([
-            'id',
-            'name',
-            'address',
+            'Organization.id',
+            'Organization.canonicalName as name',
+            'OrganizationAddress.address',
           ]),
-      ).as('facility'),
+      ).as('organization'),
       jsonObjectFrom(
         eb.selectFrom('employment')
           .innerJoin(

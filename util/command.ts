@@ -21,4 +21,5 @@ export async function runCommand(
     console.error(new TextDecoder().decode(result.stderr))
     return Deno.exit(result.code)
   }
+  return new TextDecoder().decode(result.stdout)
 }

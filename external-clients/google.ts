@@ -28,9 +28,9 @@ import {
 import uniq from '../util/uniq.ts'
 import {
   cacheDistanceInRedis,
-  cacheFacilityAddress,
+  cacheOrganizationAddress,
   getDistanceFromRedis,
-  getFacilityAddress,
+  getOrganizationAddress,
 } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
@@ -248,7 +248,7 @@ export class GoogleClient {
   }
 
   async ensureHasAppointmentsAndAvailabilityCalendars(
-    facilities: { id: number; name: string }[],
+    organizations: { id: string; name: string }[],
   ): Promise<{
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
@@ -259,9 +259,9 @@ export class GoogleClient {
       gcal_appointments_calendar_id: string
       gcal_availability_calendar_id: string
     }[] = []
-    for (const facility of facilities) {
-      const appointments_calendar_name = `${facility.name} Appointments`
-      const availability_calendar_name = `${facility.name} Availability`
+    for (const organization of organizations) {
+      const appointments_calendar_name = `${organization.name} Appointments`
+      const availability_calendar_name = `${organization.name} Availability`
       const appointments_calendar = await this.ensureCalendarExists(
         items,
         appointments_calendar_name,
@@ -444,14 +444,14 @@ export async function refreshTokens(
 export async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string> {
-  const cachedAddress = await getFacilityAddress(longitude, latitude)
+  const cachedAddress = await getOrganizationAddress(longitude, latitude)
   if (cachedAddress) return cachedAddress
 
   const data = await getGeocodeData(latitude, longitude)
   const address = getAddressFromData(data)
 
   assert(address)
-  await cacheFacilityAddress(longitude, latitude, address)
+  await cacheOrganizationAddress(longitude, latitude, address)
   return address
 }
 

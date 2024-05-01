@@ -9,7 +9,7 @@ export function ofEmployedHealthWorker(
     avatar_url: requested_review.requested_by.avatar_url,
     title: 'Review Requested',
     description:
-      `${requested_review.requested_by.name} at ${requested_review.requested_by.facility.name} has requested that you review a recent encounter with ${requested_review.patient.name}`,
+      `${requested_review.requested_by.name} at ${requested_review.requested_by.organization.name} has requested that you review a recent encounter with ${requested_review.patient.name}`,
     // TODO: format time
     time_display: 'Just now',
     action: {

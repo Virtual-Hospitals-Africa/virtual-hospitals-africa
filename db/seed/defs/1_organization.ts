@@ -1,76 +1,32 @@
+// deno-lint-ignore-file no-explicit-any
 // import * as google from '../../../external-clients/google.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
 import { create } from '../create.ts'
-import * as medplum from '../../../external-clients/medplum/client.ts'
-// import uuid from '../../../util/uuid.ts'
+import * as organizations from '../../../db/models/organizations.ts'
 import { forEach } from '../../../util/inParallel.ts'
+import { Kysely } from 'kysely'
 
 export default create(
-  ['Organization'],
-  async () => {
-    await addTestOrganizations()
-    await importDataFromCSV()
+  ['Organization', 'Address', 'Location'],
+  async (db) => {
+    await addTestOrganizations(db)
+    await importDataFromCSV(db)
   },
 )
 
-type OrganizationData = {
-  name: string
-  // location: string
-  address?: string
-  category?: string
-}
-
-function interpretAddress(address: string) {
-  const parts = address.split(', ')
-  return {
-    line: parts.slice(0, parts.length - 3),
-    city: parts[parts.length - 3],
-    state: parts[parts.length - 2],
-    postalCode: parts[parts.length - 1],
-  }
-}
-
-function createOrganization({ name, category, address }: OrganizationData) {
-  const type = [{
-    coding: [{
-      system: 'http://terminology.hl7.org/CodeSystem/organization-type',
-      code: 'prov',
-      display: 'Healthcare Provider',
-    }],
-  }]
-  // TODO: Make an VHA organization category code system
-  if (category) {
-    type.push({
-      coding: [{
-        system: 'virtualhospitalsafrica.org/codes/organization-category',
-        code: category,
-        display: category,
-      }],
-    })
-  }
-  return medplum.createResource('Organization', {
-    name,
-    type,
-    active: true,
-    address: address && [
-      {
-        use: 'work',
-        type: 'both',
-        ...interpretAddress(address),
-      },
-    ],
-  })
-}
-
-export async function addTestOrganizations() {
-  await createOrganization({
+export async function addTestOrganizations(db: Kysely<any>) {
+  await organizations.add(db, {
+    id: '00000000-0000-0000-0000-000000000001',
     name: 'VHA Test Clinic',
-    // location: sql`ST_SetSRID(ST_MakePoint(2.25, 51), 4326)`,
     address: '120 Main St, Bristol, UK, 23456',
     category: 'Clinic',
+    latitude: 51.4545,
+    longitude: -2.5879,
   })
-  await createOrganization({
+
+  await organizations.add(db, {
+    id: '00000000-0000-0000-0000-000000000002',
     name: 'VHA Test Virtual Hospital',
     category: 'Virtual Hospital',
   })
@@ -78,7 +34,7 @@ export async function addTestOrganizations() {
 
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
-async function importDataFromCSV() {
+async function importDataFromCSV(db: Kysely<any>) {
   await forEach(
     parseCsv('./db/resources/zimbabwe-health-organizations.csv'),
     async (row) => {
@@ -101,10 +57,12 @@ async function importDataFromCSV() {
         ? (row.name + ' ' + category_capitalized)
         : row.name
 
-      await createOrganization({
+      await organizations.add(db, {
         name,
         address,
         category: category_capitalized,
+        latitude: Number(row.latitude),
+        longitude: Number(row.longitude),
       })
     },
   )

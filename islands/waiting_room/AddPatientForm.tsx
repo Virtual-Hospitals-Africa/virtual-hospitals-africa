@@ -1,7 +1,7 @@
 import { computed, useSignal } from '@preact/signals'
 import FormRow from '../form/Row.tsx'
 import PersonSearch from '../PersonSearch.tsx'
-import { FacilityDoctorOrNurse, Maybe } from '../../types.ts'
+import { Maybe, OrganizationDoctorOrNurse } from '../../types.ts'
 import { RadioGroup, TextArea } from '../form/Inputs.tsx'
 import ProvidersSelect from '../ProvidersSelect.tsx'
 import Form from '../../components/library/Form.tsx'
@@ -22,7 +22,7 @@ export default function AddPatientForm({
   patient,
 }: {
   open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
-  providers: FacilityDoctorOrNurse[]
+  providers: OrganizationDoctorOrNurse[]
   patient: { id?: number | 'add'; name: string } | undefined
 }) {
   const selected_patient = useSignal<PersonData | undefined>(patient)

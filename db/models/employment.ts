@@ -11,18 +11,18 @@ import { SqlBool } from 'kysely'
 
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
-  facility_id: number
+  organization_id: string
   id: number
   registration_pending_approval: SqlBool
   registration_needed: SqlBool
   registration_completed: SqlBool
 }
 
-export type FacilityAdmin = {
+export type OrganizationAdmin = {
   id: number
   email: string | null
   name: string
-  facility_name: string
+  organization_name: string
 } & Employee
 
 export function add(
@@ -41,13 +41,13 @@ export async function isAdmin(
   trx: TrxOrDb,
   opts: {
     health_worker_id: number
-    facility_id: number
+    organization_id: string
   },
 ): Promise<boolean> {
   const matches = await trx
     .selectFrom('employment')
     .where('health_worker_id', '=', opts.health_worker_id)
-    .where('facility_id', '=', opts.facility_id)
+    .where('organization_id', '=', opts.organization_id)
     .where('profession', '=', 'admin')
     .execute()
   if (matches.length > 1) {
@@ -59,40 +59,24 @@ export async function isAdmin(
   return matches.length === 1
 }
 
-export async function getFirstFacility(
-  trx: TrxOrDb,
-  opts: {
-    employeeId: number
-  },
-): Promise<number | undefined> {
-  const firstFacility = await trx
-    .selectFrom('employment')
-    .select('facility_id')
-    .where('health_worker_id', '=', opts.employeeId)
-    .orderBy('id')
-    .executeTakeFirstOrThrow()
-
-  return firstFacility.facility_id
-}
-
 export function getEmployee(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: string
     health_worker_id: number
   },
 ) {
   return trx
     .selectFrom('employment')
     .selectAll()
-    .where('facility_id', '=', opts.facility_id)
+    .where('organization_id', '=', opts.organization_id)
     .where('health_worker_id', '=', opts.health_worker_id)
     .executeTakeFirst()
 }
 
 export function addInvitees(
   trx: TrxOrDb,
-  facility_id: number,
+  organization_id: string,
   invites: {
     email: string
     profession: Profession
@@ -102,7 +86,7 @@ export function addInvitees(
   return trx
     .insertInto('health_worker_invitees')
     .values(invites.map((invite) => ({
-      facility_id,
+      organization_id,
       ...invite,
     })))
     .returningAll()
@@ -140,15 +124,15 @@ export function removeInvitees(
     .execute()
 }
 
-export function getFacilityAdmin(
+export function getOrganizationAdmin(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: string
   },
-): Promise<Maybe<FacilityAdmin>> {
+): Promise<Maybe<OrganizationAdmin>> {
   return trx
     .selectFrom('employment')
-    .where('facility_id', '=', opts.facility_id)
+    .where('organization_id', '=', opts.organization_id)
     .where('profession', '=', 'admin')
     .innerJoin(
       'health_workers',
@@ -156,9 +140,9 @@ export function getFacilityAdmin(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'facilities',
-      'facilities.id',
-      'employment.facility_id',
+      'Organization',
+      'Organization.id',
+      'employment.organization_id',
     )
     .select([
       'employment.id',
@@ -166,8 +150,8 @@ export function getFacilityAdmin(
       'health_workers.name',
       'email',
       'profession',
-      'facility_id',
-      'facilities.name as facility_name',
+      'organization_id',
+      'Organization.canonicalName as organization_name',
     ])
     .executeTakeFirst()
 }

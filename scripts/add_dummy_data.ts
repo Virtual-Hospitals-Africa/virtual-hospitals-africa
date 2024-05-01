@@ -123,11 +123,15 @@ async function addPatientsToWaitingRoom() {
       avatar_media_id: inserted_media.id,
     })
 
-    const patient_encounter = await patient_encounters.upsert(db, 1, {
-      patient_id: patient.id,
-      reason,
-      provider_ids: health_worker ? [health_worker.employee_id!] : [],
-    })
+    const patient_encounter = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_id: patient.id,
+        reason,
+        provider_ids: health_worker ? [health_worker.employee_id!] : [],
+      },
+    )
 
     const arrived_ago = i === 0
       ? 0
@@ -223,17 +227,21 @@ async function addInventoryTransactions(admin: HW, _nurses: HW[]) {
     const container_size = sample([10, 20, 40, 100])
     const number_of_containers = sample([40, 100, 200])
 
-    await inventory.addFacilityMedicine(db, 1, {
-      created_by: admin.employee_id!,
-      manufactured_medication_id: manufactured_medication.id,
-      procured_from_id: procurer.id,
-      quantity: number_of_containers * container_size,
-      number_of_containers,
-      container_size,
-      strength: sample(manufactured_medication.strength_numerators),
-      expiry_date: '2025-03-01',
-      batch_number: '622',
-    })
+    await inventory.addOrganizationMedicine(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        created_by: admin.employee_id!,
+        manufactured_medication_id: manufactured_medication.id,
+        procured_from_id: procurer.id,
+        quantity: number_of_containers * container_size,
+        number_of_containers,
+        container_size,
+        strength: sample(manufactured_medication.strength_numerators),
+        expiry_date: '2025-03-01',
+        batch_number: '622',
+      },
+    )
   }
 }
 

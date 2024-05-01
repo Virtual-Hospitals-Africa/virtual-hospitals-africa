@@ -16,14 +16,16 @@ export async function handler(
 ) {
   const health_worker_id = ctx.state.session.get('health_worker_id')
   assert(health_worker_id)
+  console.log('GETTING HEALTH WORKER', health_worker_id)
   const healthWorker = await health_workers.get(ctx.state.trx, {
     health_worker_id,
   })
+  console.log('GOT HEALTH WORKER', health_worker_id)
 
   if (!health_workers.isEmployed(healthWorker)) {
     ctx.state.session.clear()
     const warning = encodeURIComponent(
-      "Could not locate your account. Please try logging in once more. If this issue persists, please contact your facility's administrator.",
+      "Could not locate your account. Please try logging in once more. If this issue persists, please contact your organization's administrator.",
     )
     return redirect(`/?warning=${warning}`)
   }
@@ -34,7 +36,7 @@ export async function handler(
     e.roles.admin?.registration_needed
   )
 
-  // This is not quite right as this will mean that you can't log in if you're pending approval at one facility, even if you're not
+  // This is not quite right as this will mean that you can't log in if you're pending approval at one organization, even if you're not
   // pending approval at another but not at another.
   // TODO deal with this as part of doctor registration
   const role_pending_approval = healthWorker.employment.find((e) =>
@@ -62,7 +64,7 @@ export async function handler(
 
   if (role_needing_registration) {
     return redirectIfNotAlreadyOnPage(
-      `/app/facilities/${role_needing_registration.facility.id}/register`,
+      `/app/organizations/${role_needing_registration.organization.id}/register`,
     )
   }
 
@@ -75,7 +77,7 @@ export async function handler(
     return redirectIfNotAlreadyOnPage(
       '/app/calendar/availability',
       {
-        facility_id: String(availability_not_set.facility.id),
+        organization_id: String(availability_not_set.organization.id),
         initial: 'true',
         warning:
           'Please set your availability to be able to receive appointments',

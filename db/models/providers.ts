@@ -25,9 +25,9 @@ const getQuery = (trx: TrxOrDb) =>
       (join) =>
         join
           .onRef(
-            'employment.facility_id',
+            'employment.organization_id',
             '=',
-            'provider_calendars.facility_id',
+            'provider_calendars.organization_id',
           )
           .onRef(
             'employment.health_worker_id',
@@ -77,7 +77,7 @@ export function addCalendars(
   trx: TrxOrDb,
   health_worker_id: number,
   cals: {
-    facility_id: number
+    organization_id: string
     gcal_appointments_calendar_id: string
     gcal_availability_calendar_id: string
     availability_set?: boolean
@@ -109,10 +109,10 @@ export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    facility_id?: Maybe<number>
+    organization_id?: Maybe<string>
     professions?: Maybe<Profession[]>
-    prioritize_facility_id?: Maybe<number>
-    facility_kind?: Maybe<'virtual' | 'physical'>
+    prioritize_organization_id?: Maybe<string>
+    organization_kind?: Maybe<'virtual' | 'physical'>
   },
 ) {
   if (opts.professions) {
@@ -134,19 +134,20 @@ export async function search(
       'employment.health_worker_id',
     )
     .innerJoin(
-      'facilities',
-      'employment.facility_id',
-      'facilities.id',
+      'Organization',
+      'employment.organization_id',
+      'Organization.id',
     )
+    .leftJoin('Address', 'Organization.id', 'Address.resourceId')
     .select([
       'employment.id',
       'health_workers.id as health_worker_id',
       'health_workers.avatar_url',
       'health_workers.email',
       'health_workers.name',
-      'employment.facility_id',
+      'employment.organization_id',
       'employment.profession',
-      'facilities.name as facility_name',
+      'Organization.canonicalName as organization_name',
     ])
     .where('health_workers.name', 'is not', null)
     .where('profession', 'in', opts.professions || ['doctor', 'nurse'])
@@ -156,14 +157,14 @@ export async function search(
     query = query.where('health_workers.name', 'ilike', `%${opts.search}%`)
   }
 
-  if (opts.facility_id) {
-    query = query.where('employment.facility_id', '=', opts.facility_id)
+  if (opts.organization_id) {
+    query = query.where('employment.organization_id', '=', opts.organization_id)
   }
 
-  if (opts.facility_kind) {
+  if (opts.organization_kind) {
     query = query.where(
-      'facilities.address',
-      opts.facility_kind === 'physical' ? 'is not' : 'is',
+      'Address.resourceId',
+      opts.organization_kind === 'physical' ? 'is not' : 'is',
       null,
     )
   }
@@ -174,28 +175,28 @@ export async function search(
     assert(hasName(hw))
     return {
       ...hw,
-      description: `${hw.profession} @ ${hw.facility_name}`,
+      description: `${hw.profession} @ ${hw.organization_name}`,
     }
   })
 
-  if (!opts.prioritize_facility_id) return results_with_description
+  if (!opts.prioritize_organization_id) return results_with_description
 
   return sortBy(
     results_with_description,
-    (hw) => hw.facility_id === opts.prioritize_facility_id ? 0 : 1,
+    (hw) => hw.organization_id === opts.prioritize_organization_id ? 0 : 1,
   )
 }
 
 export function markAvailabilitySet(
   trx: TrxOrDb,
   opts: {
-    facility_id: number
+    organization_id: string
     health_worker_id: number
   },
 ) {
   return trx.updateTable('provider_calendars')
     .set({ availability_set: true })
     .where('health_worker_id', '=', opts.health_worker_id)
-    .where('facility_id', '=', opts.facility_id)
+    .where('organization_id', '=', opts.organization_id)
     .execute()
 }

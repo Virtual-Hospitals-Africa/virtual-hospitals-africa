@@ -164,7 +164,7 @@ export async function getUnhandledPatientMessages(
             , patients.national_id_number
             , patients.conversation_state
             , concat('/app/patients/', patients.id::text) as href
-            , patient_nearest_facilities.nearest_facilities AS nearest_facilities
+            , patient_nearest_organizations.nearest_organizations AS nearest_organizations
             , aot.patient_appointment_request_id as scheduling_appointment_request_id
             , aot.reason as scheduling_appointment_reason
             , aot.offered_times as scheduling_appointment_offered_times
@@ -178,7 +178,7 @@ export async function getUnhandledPatientMessages(
          FROM whatsapp_messages_received
          JOIN patients ON patients.id = whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
-    LEFT JOIN patient_nearest_facilities ON patient_nearest_facilities.patient_id = patients.id AND patients.conversation_state = 'find_nearest_facility:got_location'
+    LEFT JOIN patient_nearest_organizations ON patient_nearest_organizations.patient_id = patients.id AND patients.conversation_state = 'find_nearest_organization:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
     LEFT JOIN appointment_providers ON appointment_providers.appointment_id = appointments.id
     LEFT JOIN employment ON employment.id = appointment_providers.provider_id

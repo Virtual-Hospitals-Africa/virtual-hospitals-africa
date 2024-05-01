@@ -15,11 +15,12 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   EncounterContext['state']
 > = {
-  async POST(_req, ctx: EncounterContext) {
+  async POST(_req: Request, ctx: EncounterContext) {
     const { trx, encounter, encounter_provider } = ctx.state
     const completing_step = completeStep(ctx)
     const finalizing_request = doctor_reviews.finalizeRequest(trx, {
       requested_by: encounter_provider.patient_encounter_provider_id,
+      patient_encounter_id: encounter.encounter_id,
     })
     const completing_encounter = patient_encounters.close(trx, {
       encounter_id: encounter.encounter_id,

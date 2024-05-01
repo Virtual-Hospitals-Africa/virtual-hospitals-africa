@@ -21,29 +21,32 @@ export default async function AppPage(
   // We may revisit this, but for now there's only one tab
   // that actually displays on this page, the waiting room
   // while the rest link out to other pages
-  let facility_id = getNumericParam(searchParams, 'facility_id')
+  let organization_id = searchParams.get('organization_id')
   if (
-    facility_id &&
-    !healthWorker.employment.some((e) => e.facility.id === facility_id)
+    organization_id &&
+    !healthWorker.employment.some((e) => e.organization.id === organization_id)
   ) {
-    searchParams.set('facility_id', healthWorker.default_facility_id.toString())
+    searchParams.set(
+      'organization_id',
+      healthWorker.default_organization_id.toString(),
+    )
     return redirect(`/app?${searchParams.toString()}`)
   }
-  if (!facility_id) {
+  if (!organization_id) {
     if (healthWorker.employment.length > 1) {
-      console.warn('TODO: select facility?')
+      console.warn('TODO: select organization?')
       searchParams.set(
-        'facility_id',
-        healthWorker.default_facility_id.toString(),
+        'organization_id',
+        healthWorker.default_organization_id.toString(),
       )
       return redirect(`/app?${searchParams.toString()}`)
     }
-    facility_id = healthWorker.default_facility_id
+    organization_id = healthWorker.default_organization_id
   }
-  assert(facility_id)
+  assert(organization_id)
 
   const getting_waiting_room = waiting_room.get(trx, {
-    facility_id,
+    organization_id,
   })
   const appointments_count = await appointments.countUpcoming(
     trx,
@@ -84,7 +87,7 @@ export default async function AppPage(
     >
       <Tabs tabs={tabs} />
       <WaitingRoomView
-        facility_id={facility_id}
+        organization_id={organization_id}
         waiting_room={await getting_waiting_room}
       />
     </Layout>

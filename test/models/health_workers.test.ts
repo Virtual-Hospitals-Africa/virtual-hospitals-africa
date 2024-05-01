@@ -44,7 +44,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
             ...result,
             employment: [],
             open_encounters: [],
-            default_facility_id: null,
+            default_organization_id: null,
             reviews: {
               in_progress: [],
               requested: [],
@@ -75,10 +75,10 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           email: healthWorker.email,
           employment: [
             {
-              facility: {
-                id: 1,
+              organization: {
+                id: '00000000-0000-0000-0000-000000000001',
                 name: 'VHA Test Clinic',
-                address: 'Bristol, UK',
+                address: '120 Main St, Bristol, UK, 23456',
               },
               roles: {
                 admin: null,
@@ -97,7 +97,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
               availability_set: true,
             },
           ],
-          default_facility_id: 1,
+          default_organization_id: '00000000-0000-0000-0000-000000000001',
           id: healthWorker.id,
           name: healthWorker.name,
           access_token: healthWorker.access_token,
@@ -119,17 +119,25 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         scenario: 'approved-nurse',
       })
 
-      const just_nurse1 = await patient_encounters.upsert(trx, 1, {
-        patient_name: 'Test Patient 1',
-        reason: 'seeking treatment',
-        provider_ids: [nurse1.employee_id!],
-      })
+      const just_nurse1 = await patient_encounters.upsert(
+        trx,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient 1',
+          reason: 'seeking treatment',
+          provider_ids: [nurse1.employee_id!],
+        },
+      )
 
-      const both = await patient_encounters.upsert(trx, 1, {
-        patient_name: 'Test Patient 2',
-        reason: 'referral',
-        provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
-      })
+      const both = await patient_encounters.upsert(
+        trx,
+        '00000000-0000-0000-0000-000000000001',
+        {
+          patient_name: 'Test Patient 2',
+          reason: 'referral',
+          provider_ids: [nurse1.employee_id!, nurse2.employee_id!],
+        },
+      )
 
       const result1 = await health_workers.get(trx, {
         health_worker_id: nurse1.id,
@@ -161,7 +169,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
 
   describe('getEmployeeInfo', () => {
     itUsesTrxAnd(
-      'returns the health worker and their employment information if that matches a given facility id',
+      'returns the health worker and their employment information if that matches a given organization id',
       async (trx) => {
         const healthWorker = await addTestHealthWorker(trx, {
           scenario: 'nurse',
@@ -170,14 +178,14 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         await employment.add(trx, [{
           health_worker_id: healthWorker.id,
           profession: 'doctor',
-          facility_id: 2,
+          organization_id: '00000000-0000-0000-0000-000000000002',
         }])
 
         const result = await health_workers.getEmployeeInfo(
           trx,
           {
             health_worker_id: healthWorker.id,
-            facility_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
           },
         )
 
@@ -196,9 +204,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_completed, false)
         assertEquals(result.registration_needed, true)
         assertEquals(result.registration_pending_approval, false)
-        assertEquals(result.facility_id, 1)
-        assertEquals(result.facility_name, 'VHA Test Clinic')
-        assertEquals(result.facility_address, 'Bristol, UK')
+        assertEquals(
+          result.organization_id,
+          '00000000-0000-0000-0000-000000000001',
+        )
+        assertEquals(result.organization_name, 'VHA Test Clinic')
+        assertEquals(
+          result.organization_address,
+          '120 Main St, Bristol, UK, 23456',
+        )
         assertEquals(result.professions, ['nurse'])
       },
     )
@@ -213,7 +227,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         const [secondEmployment] = await employment.add(trx, [{
           health_worker_id: healthWorker.id,
           profession: 'nurse',
-          facility_id: 2,
+          organization_id: '00000000-0000-0000-0000-000000000002',
         }])
 
         await nurse_specialties.add(trx, {
@@ -238,7 +252,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
           trx,
           {
             health_worker_id: healthWorker.id,
-            facility_id: 1,
+            organization_id: '00000000-0000-0000-0000-000000000001',
           },
         )
 
@@ -265,9 +279,15 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         assertEquals(result.registration_needed, false)
         assertEquals(result.registration_pending_approval, true)
         assertEquals(result.documents, [])
-        assertEquals(result.facility_id, 1)
-        assertEquals(result.facility_name, 'VHA Test Clinic')
-        assertEquals(result.facility_address, 'Bristol, UK')
+        assertEquals(
+          result.organization_id,
+          '00000000-0000-0000-0000-000000000001',
+        )
+        assertEquals(result.organization_name, 'VHA Test Clinic')
+        assertEquals(
+          result.organization_address,
+          '120 Main St, Bristol, UK, 23456',
+        )
         assertEquals(result.professions, ['nurse'])
       },
     )
@@ -278,7 +298,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
       await employment.add(trx, [{
         health_worker_id: healthWorker.id,
         profession: 'nurse',
-        facility_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       }])
 
       await nurse_specialties.add(trx, {
@@ -320,7 +340,7 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         trx,
         {
           health_worker_id: healthWorker.id,
-          facility_id: 1,
+          organization_id: '00000000-0000-0000-0000-000000000001',
         },
       )
 
@@ -348,27 +368,33 @@ describe('db/models/health_workers.ts', { sanitizeResources: false }, () => {
         {
           name: 'Face Picture',
           href:
-            `/app/facilities/1/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${facePictureMedia.id}`,
         },
         {
           name: 'National ID',
           href:
-            `/app/facilities/1/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${nationalIdMedia.id}`,
         },
         {
           name: 'Nurse Practicing Certificate',
           href:
-            `/app/facilities/1/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${nursePracticingCertMedia.id}`,
         },
         {
           name: 'Registration Card',
           href:
-            `/app/facilities/1/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
+            `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${healthWorker.id}/media/${registrationCardMedia.id}`,
         },
       ])
-      assertEquals(result.facility_id, 1)
-      assertEquals(result.facility_name, 'VHA Test Clinic')
-      assertEquals(result.facility_address, 'Bristol, UK')
+      assertEquals(
+        result.organization_id,
+        '00000000-0000-0000-0000-000000000001',
+      )
+      assertEquals(result.organization_name, 'VHA Test Clinic')
+      assertEquals(
+        result.organization_address,
+        '120 Main St, Bristol, UK, 23456',
+      )
       assertEquals(result.professions, ['nurse'])
     })
   })

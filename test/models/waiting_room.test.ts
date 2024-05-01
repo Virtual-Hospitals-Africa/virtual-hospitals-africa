@@ -6,7 +6,7 @@ import * as doctor_reviews from '../../db/models/doctor_reviews.ts'
 import * as waiting_room from '../../db/models/waiting_room.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
-import { itUsesTrxAnd, withTestFacility } from '../web/utilities.ts'
+import { itUsesTrxAnd, withTestOrganization } from '../web/utilities.ts'
 import { addTestHealthWorker } from '../web/utilities.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../db/models/patient_encounters.ts'
 
@@ -18,7 +18,7 @@ describe(
       itUsesTrxAnd(
         'orders the waiting room by when people first arrived',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient1 = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -26,18 +26,18 @@ describe(
               name: 'Test Patient 2',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient1.id,
               reason: 'seeking treatment',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient2.id,
               reason: 'seeking treatment',
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
-              facility_id,
+              organization_id,
             })
             assertEquals(waiting_room_results.length, 2)
             const waiting_room_1 = waiting_room_results.find((r) =>
@@ -94,12 +94,12 @@ describe(
       itUsesTrxAnd(
         'shows what step of the intake process the patient is awaiting',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
             })
@@ -114,7 +114,7 @@ describe(
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
-              facility_id,
+              organization_id,
             })
 
             assertEquals(waiting_room_results, [{
@@ -144,18 +144,18 @@ describe(
       itUsesTrxAnd(
         'shows what step of the intake process the patient is in',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
             })
 
             const nurse = await addTestHealthWorker(trx, {
-              facility_id,
+              organization_id,
               scenario: 'approved-nurse',
             })
 
@@ -179,7 +179,7 @@ describe(
             })
 
             const waiting_room_results = await waiting_room.get(trx, {
-              facility_id,
+              organization_id,
             })
 
             assertEquals(waiting_room_results, [{
@@ -201,7 +201,8 @@ describe(
               providers: [{
                 name: nurse.name,
                 profession: 'nurse',
-                href: `/app/facilities/${facility_id}/employees/${nurse.id}`,
+                href:
+                  `/app/organizations/${organization_id}/employees/${nurse.id}`,
                 avatar_url: nurse.avatar_url,
                 seen: true,
                 health_worker_id: nurse.id,
@@ -217,7 +218,7 @@ describe(
       itUsesTrxAnd(
         'orders emergencies at the top, even if they arrived later',
         (trx) =>
-          withTestFacility(trx, async (facility_id) => {
+          withTestOrganization(trx, async (organization_id) => {
             const patient1 = await patients.upsert(trx, {
               name: 'Test Patient 1',
             })
@@ -225,7 +226,7 @@ describe(
               name: 'Test Patient 2',
             })
 
-            await patient_encounters.upsert(trx, facility_id, {
+            await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient1.id,
               reason: 'emergency',
             })
@@ -238,11 +239,11 @@ describe(
               }).returning('id').executeTakeFirstOrThrow()
 
             await trx.insertInto('waiting_room').values({
-              facility_id,
+              organization_id,
               patient_encounter_id: seeking_treatment.id,
             }).execute()
 
-            assertEquals(await waiting_room.get(trx, { facility_id }), [
+            assertEquals(await waiting_room.get(trx, { organization_id }), [
               {
                 appointment: null,
                 patient: {
@@ -292,73 +293,86 @@ describe(
       itUsesTrxAnd(
         'shows review requests for patients in the waiting room',
         (trx) =>
-          withTestFacility(trx, { kind: 'virtual' }, async (facility_id) => {
-            const patient = await patients.upsert(trx, {
-              name: 'Test Patient 1',
-            })
-            await patient_encounters.upsert(trx, 1, {
-              patient_id: patient.id,
-              reason: 'maternity',
-            })
-            const nurse = await addTestHealthWorker(trx, {
-              facility_id: 1,
-              scenario: 'approved-nurse',
-            })
-
-            const nurse_health_worker = await health_workers.getEmployed(trx, {
-              health_worker_id: nurse.id,
-            })
-
-            const { encounter, encounter_provider } =
-              await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
-                patient_id: patient.id,
-                health_worker: nurse_health_worker,
-                encounter_id: 'open',
+          withTestOrganization(
+            trx,
+            { kind: 'virtual' },
+            async (organization_id) => {
+              const patient = await patients.upsert(trx, {
+                name: 'Test Patient 1',
+              })
+              await patient_encounters.upsert(
+                trx,
+                '00000000-0000-0000-0000-000000000001',
+                {
+                  patient_id: patient.id,
+                  reason: 'maternity',
+                },
+              )
+              const nurse = await addTestHealthWorker(trx, {
+                organization_id: '00000000-0000-0000-0000-000000000001',
+                scenario: 'approved-nurse',
               })
 
-            await doctor_reviews.upsertRequest(trx, {
-              patient_id: patient.id,
-              encounter_id: encounter.encounter_id,
-              requested_by: encounter_provider.patient_encounter_provider_id,
-              facility_id,
-            })
-
-            await doctor_reviews.finalizeRequest(trx, {
-              requested_by: encounter_provider.patient_encounter_provider_id,
-            })
-
-            assertEquals(await waiting_room.get(trx, { facility_id }), [
-              {
-                appointment: null,
-                patient: {
-                  avatar_url: null,
-                  id: patient.id,
-                  name: 'Test Patient 1',
-                  description: null,
-                },
-                in_waiting_room: false,
-                arrived_ago_display: 'Just now',
-                status: 'Awaiting Review',
-                actions: {
-                  view: null,
-                  intake: null,
-                  review: `/app/patients/${patient.id}/review/clinical_notes`,
-                },
-                providers: [{
-                  name: nurse.name,
-                  profession: 'nurse',
-                  href: `/app/facilities/1/employees/${nurse.id}`,
-                  avatar_url: nurse.avatar_url,
-                  seen: true,
+              const nurse_health_worker = await health_workers.getEmployed(
+                trx,
+                {
                   health_worker_id: nurse.id,
-                  employee_id: nurse.employee_id!,
-                }],
-                reviewers: [],
-                reason: 'maternity',
-                is_emergency: false,
-              },
-            ])
-          }),
+                },
+              )
+
+              const { encounter, encounter_provider } =
+                await removeFromWaitingRoomAndAddSelfAsProvider(trx, {
+                  patient_id: patient.id,
+                  health_worker: nurse_health_worker,
+                  encounter_id: 'open',
+                })
+
+              await doctor_reviews.upsertRequest(trx, {
+                patient_id: patient.id,
+                encounter_id: encounter.encounter_id,
+                requested_by: encounter_provider.patient_encounter_provider_id,
+                organization_id,
+              })
+
+              await doctor_reviews.finalizeRequest(trx, {
+                requested_by: encounter_provider.patient_encounter_provider_id,
+                patient_encounter_id: encounter.encounter_id,
+              })
+
+              assertEquals(await waiting_room.get(trx, { organization_id }), [
+                {
+                  appointment: null,
+                  patient: {
+                    avatar_url: null,
+                    id: patient.id,
+                    name: 'Test Patient 1',
+                    description: null,
+                  },
+                  in_waiting_room: false,
+                  arrived_ago_display: 'Just now',
+                  status: 'Awaiting Review',
+                  actions: {
+                    view: null,
+                    intake: null,
+                    review: `/app/patients/${patient.id}/review/clinical_notes`,
+                  },
+                  providers: [{
+                    name: nurse.name,
+                    profession: 'nurse',
+                    href:
+                      `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
+                    avatar_url: nurse.avatar_url,
+                    seen: true,
+                    health_worker_id: nurse.id,
+                    employee_id: nurse.employee_id!,
+                  }],
+                  reviewers: [],
+                  reason: 'maternity',
+                  is_emergency: false,
+                },
+              ])
+            },
+          ),
       )
     })
     describe('arrivedAgoDisplay', () => {

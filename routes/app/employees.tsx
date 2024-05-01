@@ -4,8 +4,8 @@ import redirect from '../../util/redirect.ts'
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
   GET(_req, ctx) {
     return redirect(
-      `/app/facilities/${
-        ctx.state.healthWorker.employment[0].facility.id
+      `/app/organizations/${
+        ctx.state.healthWorker.employment[0].organization.id
       }/employees`,
     )
   },

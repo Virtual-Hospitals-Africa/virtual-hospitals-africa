@@ -29,10 +29,14 @@ describe('/app/patients/[patient_id]/intake', {
   sanitizeOps: false,
 }, () => {
   it('loads the personal page', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
@@ -53,10 +57,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the personal step, moving you to the address step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
@@ -121,10 +129,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the address step, moving you to the conditions step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const testDoctor = await addTestHealthWorker(db, { scenario: 'doctor' })
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
@@ -145,7 +157,7 @@ describe('/app/patients/[patient_id]/intake', {
     body.set('address.ward_id', String(ward.id))
     if (suburb) body.set('address.suburb_id', String(suburb.id))
     body.set('address.street', '120 Main Street')
-    body.set('nearest_facility_id', '5')
+    body.set('nearest_organization_id', '00000000-0000-0000-0000-000000000001')
     body.set('primary_doctor_id', String(testDoctor.employee_id!))
 
     const postResponse = await fetch(
@@ -211,10 +223,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST of pre_existing_conditions on the conditions step, moving you to the history step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
@@ -349,10 +365,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST of allergies on the conditions step, moving you to the history step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
@@ -399,10 +419,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('can remove all pre_existing_conditions on POST', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
@@ -438,10 +462,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('handles holes in an array of pre_existing_conditions on POST', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
     })
@@ -530,10 +558,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the family step, moving you to the lifestyle step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
     await patients.upsert(db, {
       id: patient_id,
       date_of_birth: '2020-01-01',
@@ -612,10 +644,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('redirects you to the personal step if no DOB was yet filled out and you try to access occupation', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
 
     const { fetch } = await addTestHealthWorkerWithSession(db, {
       scenario: 'approved-nurse',
@@ -633,10 +669,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the occupation step(0-18), moving you to the family step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
 
     await patients.upsert(db, {
       id: patient_id,
@@ -725,10 +765,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it('supports POST on the occupation step(19+), moving you to the family step', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient 19',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient 19',
+        reason: 'seeking treatment',
+      },
+    )
 
     await patients.upsert(db, {
       id: patient_id,
@@ -818,10 +862,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it.skip('supports POST on the lifestyle step, moving you to the review step if you already completed all other sections', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
 
     const prior_intake_steps = INTAKE_STEPS.filter((step) =>
       step !== 'lifestyle' && step !== 'review'
@@ -1058,10 +1106,14 @@ describe('/app/patients/[patient_id]/intake', {
   })
 
   it.skip('supports POST on the lifestyle step, returning you to the first incomplete step before review if any are not yet done', async () => {
-    const { patient_id } = await patient_encounters.upsert(db, 1, {
-      patient_name: 'Test Patient',
-      reason: 'seeking treatment',
-    })
+    const { patient_id } = await patient_encounters.upsert(
+      db,
+      '00000000-0000-0000-0000-000000000001',
+      {
+        patient_name: 'Test Patient',
+        reason: 'seeking treatment',
+      },
+    )
 
     await db.insertInto('patient_intake').values({
       patient_id,

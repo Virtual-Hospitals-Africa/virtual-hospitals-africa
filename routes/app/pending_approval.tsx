@@ -5,13 +5,16 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
-import { FacilityAdmin, getFacilityAdmin } from '../../db/models/employment.ts'
+import {
+  getOrganizationAdmin,
+  OrganizationAdmin,
+} from '../../db/models/employment.ts'
 import { Button } from '../../components/library/Button.tsx'
 import PageHeader from '../../components/library/typography/PageHeader.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  facilityAdmin: FacilityAdmin
+  organizationAdmin: OrganizationAdmin
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -20,15 +23,15 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async GET(_req, ctx) {
     const { healthWorker } = ctx.state
 
-    const facilityAdmin = await getFacilityAdmin(ctx.state.trx, {
-      facility_id: healthWorker.employment[0].facility.id,
+    const organizationAdmin = await getOrganizationAdmin(ctx.state.trx, {
+      organization_id: healthWorker.default_organization_id,
     })
 
-    assert(facilityAdmin)
+    assert(organizationAdmin)
 
     return ctx.render({
       healthWorker,
-      facilityAdmin,
+      organizationAdmin,
     })
   },
 }
@@ -36,10 +39,11 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 export default function PendingApprovalPage(
   props: PageProps<PendingApprovalPageProps>,
 ) {
-  const { facilityAdmin } = props.data
-  const facilityDisplayName = facilityAdmin.facility_name ||
-    'your facility'
-  const facilityAdminName = facilityAdmin.name || 'your facility admin'
+  const { organizationAdmin } = props.data
+  const organizationDisplayName = organizationAdmin.organization_name ||
+    'your organization'
+  const organizationAdminName = organizationAdmin.name ||
+    'your organization admin'
 
   return (
     <Layout
@@ -53,9 +57,9 @@ export default function PendingApprovalPage(
             <div class='lg:col-end-1 lg:w-full lg:max-w-lg lg:pb-8'>
               <PageHeader className='h1'>Application under review</PageHeader>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from {facilityDisplayName}{' '}
+                Your application from {organizationDisplayName}{' '}
                 is currently under review by{' '}
-                {facilityAdminName}. You will receive an email once your
+                {organizationAdminName}. You will receive an email once your
                 application has been approved.
               </p>
               <div class='mt-10 flex'>

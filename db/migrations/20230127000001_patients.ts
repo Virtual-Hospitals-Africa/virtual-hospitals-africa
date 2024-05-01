@@ -40,9 +40,9 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn('location', sql`GEOGRAPHY(POINT,4326)`)
         .addColumn(
-          'nearest_facility_id',
-          'integer',
-          (col) => col.references('facilities.id'),
+          'nearest_organization_id',
+          'uuid',
+          (col) => col.references('Organization.id'),
         )
         .addColumn(
           'conversation_state',

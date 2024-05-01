@@ -7,9 +7,9 @@ export function up(db: Kysely<unknown>) {
     'health_worker_invitees',
     (qb) =>
       qb.addColumn('email', 'varchar(255)', (col) => col.notNull())
-        .addColumn('facility_id', 'integer', (col) =>
+        .addColumn('organization_id', 'uuid', (col) =>
           col.notNull()
-            .references('facilities.id')
+            .references('Organization.id')
             .onDelete('cascade'))
         .addColumn(
           'profession',
@@ -18,7 +18,7 @@ export function up(db: Kysely<unknown>) {
         )
         .addUniqueConstraint('only_invited_once_per_profession', [
           'email',
-          'facility_id',
+          'organization_id',
           'profession',
         ]),
   )

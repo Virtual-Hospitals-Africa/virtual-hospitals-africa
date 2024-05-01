@@ -5,17 +5,17 @@ import FormRow from '../../islands/form/Row.tsx'
 import { AddPatientSearch } from '../../islands/waiting_room/AddPatientSearch.tsx'
 
 export default function WaitingRoomView(
-  { waiting_room, facility_id }: {
+  { waiting_room, organization_id }: {
     waiting_room: RenderedWaitingRoom[]
-    facility_id: number
+    organization_id: string
   },
 ) {
-  const add_href = `/app/facilities/${facility_id}/waiting_room/add`
+  const add_href = `/app/organizations/${organization_id}/waiting_room/add`
   return (
     <>
       <FormRow className='mb-4'>
         <AddPatientSearch
-          facility_id={facility_id}
+          organization_id={organization_id}
           waiting_room={waiting_room}
         />
         <Button

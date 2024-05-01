@@ -16,8 +16,8 @@ const DISPLAYED_COLUMNS: {
     data: 'last_visited',
   },
   {
-    label: 'Nearest Facility',
-    data: 'nearest_facility',
+    label: 'Nearest Organization',
+    data: 'nearest_organization',
   },
 ]
 

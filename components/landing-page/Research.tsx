@@ -14,7 +14,7 @@ const features = [
   {
     title: 'Large Population',
     description:
-      'Our cloud-native system can scale to thousands of facilities serving millions of patients',
+      'Our cloud-native system can scale to thousands of organizations serving millions of patients',
     image: '/images/demos/large_population.png',
   },
   {

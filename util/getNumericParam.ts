@@ -17,6 +17,6 @@ export function getRequiredNumericParam(
   param_name: string,
 ): number {
   const param = getNumericParam(ctx, param_name)
-  assertOr404(param)
+  assertOr404(param, `Missing required parameter: ${param_name}`)
   return param
 }

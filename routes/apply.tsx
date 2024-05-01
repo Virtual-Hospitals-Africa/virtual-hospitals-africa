@@ -5,7 +5,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../components/library/Layout.tsx'
-import { FacilityAdmin } from '../db/models/employment.ts'
+import { OrganizationAdmin } from '../db/models/employment.ts'
 import { Button } from '../components/library/Button.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import { json } from '../util/responses.ts'
@@ -14,7 +14,7 @@ import FormRow from '../islands/form/Row.tsx'
 
 type PendingApprovalPageProps = {
   healthWorker: EmployedHealthWorker
-  facilityAdmin: FacilityAdmin
+  organizationAdmin: OrganizationAdmin
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -50,9 +50,9 @@ export default function ApplyPage(
                 </FormRow>
               </form>
               <p class='mt-6 text-xl leading-8 text-gray-600'>
-                Your application from facilityName is currently under review by
-                {' '}
-                facilityAdminName. You will receive an email once your
+                Your application from organizationName is currently under review
+                by{' '}
+                organizationAdminName. You will receive an email once your
                 application has been approved.
               </p>
               <div class='mt-10 flex'>

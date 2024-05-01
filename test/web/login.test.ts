@@ -8,7 +8,7 @@ import * as nurse_registration_details from '../../db/models/nurse_registration_
 import {
   addTestHealthWorkerWithSession,
   route,
-  withTestFacility,
+  withTestOrganization,
 } from './utilities.ts'
 import sample from '../../util/sample.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
@@ -36,7 +36,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assert(response.ok)
       assert(
         response.url ===
-          `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20facility%27s%20administrator.`,
+          `${route}/?warning=Could%20not%20locate%20your%20account.%20Please%20try%20logging%20in%20once%20more.%20If%20this%20issue%20persists%2C%20please%20contact%20your%20organization%27s%20administrator.`,
       )
     })
 
@@ -81,7 +81,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const response = await mock.fetch(`${route}/app`)
       assertEquals(
         response.url,
-        `${route}/app/facilities/1/register/personal`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/register/personal`,
       )
       const pageContents = await response.text()
       assert(pageContents.includes('First Name'))
@@ -105,15 +105,15 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
     })
 
     it('starts in an empty waiting room with sidebar links', () =>
-      withTestFacility(db, async (facility_id) => {
+      withTestOrganization(db, async (organization_id) => {
         const mock = await addTestHealthWorkerWithSession(db, {
           scenario: 'approved-nurse',
-          facility_id,
+          organization_id,
         })
 
         const $ = await mock.fetchCheerio(`${route}/app`)
         const waiting_room_add_link = $(
-          `a[href="/app/facilities/${facility_id}/waiting_room/add"]`,
+          `a[href="/app/organizations/${organization_id}/waiting_room/add"]`,
         )
         assertEquals(waiting_room_add_link.first().text(), 'Add Patient')
 
@@ -127,7 +127,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         assert(calendar_link.first().text().includes('Calendar'))
 
         const inventory_link = $(
-          `a[href="/app/facilities/${facility_id}/inventory"]`,
+          `a[href="/app/organizations/${organization_id}/inventory"]`,
         )
         assert(inventory_link.first().text().includes('Inventory'))
 
@@ -135,7 +135,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         assert(logout_link.first().text().includes('Log Out'))
       }))
 
-    it('allows a health worker employed at a facility to view/approve its employees', async () => {
+    it('allows a health worker employed at a organization to view/approve its employees', async () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'admin',
       })
@@ -143,11 +143,11 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const admin = await upsertWithGoogleCredentials(db, testHealthWorker())
 
       await employment.add(db, [{
-        facility_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
         health_worker_id: nurse.id,
         profession: 'nurse',
       }, {
-        facility_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
         health_worker_id: admin.id,
         profession: 'admin',
       }])
@@ -162,16 +162,19 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
 
       if (!response.ok) throw new Error(await response.text())
       assert(response.redirected)
-      assertEquals(response.url, `${route}/app/facilities/1/employees`)
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       const pageContents = await response.text()
       assert(
         pageContents.includes(
-          `href="/app/facilities/1/employees/${mock.healthWorker.id}"`,
+          `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${mock.healthWorker.id}"`,
         ),
       )
       assert(
         pageContents.includes(
-          `href="/app/facilities/1/employees/${nurse.id}"`,
+          `href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}"`,
         ),
       )
     })
@@ -180,29 +183,45 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'admin',
       })
-      let response = await mock.fetch(`${route}/app/facilities/1/employees`)
+      let response = await mock.fetch(
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       if (!response.ok) {
         throw new Error(await response.text())
       }
-      assertEquals(response.url, `${route}/app/facilities/1/employees`)
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       let pageContents = await response.text()
-      assert(pageContents.includes('href="/app/facilities/1/employees/invite"'))
+      assert(
+        pageContents.includes(
+          'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
+        ),
+      )
 
-      response = await mock.fetch(`${route}/app/facilities/1/employees/invite`)
+      response = await mock.fetch(
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
+      )
 
       if (!response.ok) throw new Error(await response.text())
-      assertEquals(response.url, `${route}/app/facilities/1/employees/invite`)
+      assertEquals(
+        response.url,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
+      )
       pageContents = await response.text()
       assert(pageContents.includes('Email'))
       assert(pageContents.includes('Profession'))
       assert(pageContents.includes('Invite'))
     })
 
-    it("doesn't allow access to employees if you are employed at a different facility", async () => {
+    it("doesn't allow access to employees if you are employed at a different organization", async () => {
       const mock = await addTestHealthWorkerWithSession(db, {
         scenario: 'doctor',
       })
-      const response = await mock.fetch(`${route}/app/facilities/2/employees`)
+      const response = await mock.fetch(
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000002/employees`,
+      )
       assertEquals(response.status, 403)
     })
 
@@ -212,20 +231,25 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       })
 
       const employeesResponse = await mock.fetch(
-        `${route}/app/facilities/1/employees`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
       )
 
       assert(
         employeesResponse.ok,
       )
-      assert(employeesResponse.url === `${route}/app/facilities/1/employees`)
+      assert(
+        employeesResponse.url ===
+          `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees`,
+      )
       const pageContents = await employeesResponse.text()
       assert(
-        !pageContents.includes('href="/app/facilities/1/employees/invite"'),
+        !pageContents.includes(
+          'href="/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite"',
+        ),
       )
 
       const invitesResponse = await mock.fetch(
-        `${route}/app/facilities/1/employees/invite`,
+        `${route}/app/organizations/00000000-0000-0000-0000-000000000001/employees/invite`,
       )
 
       assertEquals(invitesResponse.status, 403)

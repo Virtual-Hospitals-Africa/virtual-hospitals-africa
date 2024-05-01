@@ -38,7 +38,7 @@ describe.skip('<SymptomsInput />', () => {
   beforeAll(setup)
   afterEach(cleanup)
 
-  it.only('renders a new symptom as an ongoing symptom that started yesterday', () => {
+  it('renders a new symptom as an ongoing symptom that started yesterday', () => {
     const { container } = render(
       <SymptomsInput
         today='2021-03-01'

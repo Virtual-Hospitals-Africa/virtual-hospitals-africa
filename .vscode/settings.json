@@ -1,11 +1,19 @@
 {
   "deno.enable": true,
   "deno.lint": true,
+  "git.detectSubmodules": false,
   "editor.defaultFormatter": "denoland.vscode-deno",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[dockercompose]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "medplum/**": true,
+    "**/*.xml": true
+    // "**/*.json": true,
+    // "**/*.tsv": true
   }
 }

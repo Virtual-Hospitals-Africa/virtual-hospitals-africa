@@ -1,4 +1,4 @@
-import { RenderedFacilityDevice } from '../../types.ts'
+import { RenderedOrganizationDevice } from '../../types.ts'
 import { Button } from '../library/Button.tsx'
 import Table, { TableColumn } from '../library/Table.tsx'
 import FormRow from '../../islands/form/Row.tsx'
@@ -6,7 +6,7 @@ import { AddDeviceSearch } from '../../islands/AddDeviceSearch.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { ArchiveBoxIcon } from '../library/icons/heroicons/outline.tsx'
 
-const columns: TableColumn<RenderedFacilityDevice>[] = [
+const columns: TableColumn<RenderedOrganizationDevice>[] = [
   {
     label: 'Name',
     data: 'name',
@@ -31,19 +31,19 @@ const columns: TableColumn<RenderedFacilityDevice>[] = [
   },
 ]
 
-export default function FacilityDevicesTable(
-  { devices, facility_id, isAdmin }: {
-    devices: RenderedFacilityDevice[]
-    facility_id: number
+export default function OrganizationDevicesTable(
+  { devices, organization_id, isAdmin }: {
+    devices: RenderedOrganizationDevice[]
+    organization_id: string
     isAdmin: boolean
   },
 ) {
-  const add_href = `/app/facilities/${facility_id}/inventory/add_device`
+  const add_href = `/app/organizations/${organization_id}/inventory/add_device`
   return (
     <>
       {isAdmin && (
         <FormRow className='mb-2'>
-          <AddDeviceSearch facility_id={facility_id} />
+          <AddDeviceSearch organization_id={organization_id} />
           <Button
             type='button'
             href={add_href}

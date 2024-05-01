@@ -92,7 +92,7 @@ const LIMITATIONS_LIST = [
   'Lack of transport',
   'Lack of safe exercise areas',
   'Lack of exercise equipment and resources',
-  'Lack of exercise facilities',
+  'Lack of exercise organizations',
   'Shortness of breath',
   'Joint pain',
   'Lack of exercise partner',

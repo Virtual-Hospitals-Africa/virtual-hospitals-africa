@@ -11,7 +11,7 @@ import {
   Patient,
   PatientConversationState,
   PatientIntake,
-  PatientNearestFacility,
+  PatientNearestOrganization,
   PatientOccupation,
   PatientState,
   PatientWithOpenEncounter,
@@ -63,7 +63,11 @@ const dob_formatted = longFormattedDate('patients.date_of_birth').as(
 const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('patients')
-    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'Organization',
+      'Organization.id',
+      'patients.nearest_organization_id',
+    )
     .select((eb) => [
       'patients.id',
       eb.ref('patients.name').$notNull().as('name'),
@@ -92,7 +96,7 @@ const baseSelect = (trx: TrxOrDb) =>
       ).as('intake_steps_completed'),
       'patients.completed_intake',
       avatar_url_sql.as('avatar_url'),
-      'facilities.name as nearest_facility',
+      'Organization.canonicalName as nearest_organization',
       sql<null>`NULL`.as('last_visited'),
       jsonBuildObject({
         longitude: sql<number | null>`ST_X(patients.location::geometry)`,
@@ -125,7 +129,7 @@ export type UpsertPatientIntake = {
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
-  nearest_facility_id?: Maybe<number>
+  nearest_organization_id?: Maybe<string>
   primary_doctor_id?: Maybe<number>
   location?: Maybe<Location>
   avatar_media_id?: number
@@ -327,7 +331,16 @@ export function getIntake(
   return trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
-    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'Organization',
+      'Organization.id',
+      'patients.nearest_organization_id',
+    )
+    .leftJoin(
+      'Address as OrganizationAddress',
+      'Organization.id',
+      'OrganizationAddress.resourceId',
+    )
     .leftJoin(
       'employment',
       'employment.id',
@@ -377,9 +390,9 @@ export function getIntake(
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
-      'patients.nearest_facility_id',
-      'facilities.name as nearest_facility_name',
-      'facilities.address as nearest_facility_address',
+      'patients.nearest_organization_id',
+      'Organization.canonicalName as nearest_organization_name',
+      'OrganizationAddress.address as nearest_organization_address',
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
     ])
@@ -396,7 +409,11 @@ export async function getIntakeReview(
   const getting_review = trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
-    .leftJoin('facilities', 'facilities.id', 'patients.nearest_facility_id')
+    .leftJoin(
+      'Organization',
+      'Organization.id',
+      'patients.nearest_organization_id',
+    )
     .leftJoin(
       'employment',
       'employment.id',
@@ -432,8 +449,8 @@ export async function getIntakeReview(
         string | null
       >`CASE WHEN patients.avatar_media_id IS NOT NULL THEN concat('/app/patients/', patients.id::text, '/avatar') ELSE NULL END`
         .as('avatar_url'),
-      'patients.nearest_facility_id',
-      'facilities.name as nearest_facility_name',
+      'patients.nearest_organization_id',
+      'Organization.canonicalName as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
       jsonArrayFromColumn(
         'intake_step',
@@ -505,8 +522,8 @@ export async function getWithOpenEncounter(
           patient_id: eb.ref('open_encounters.patient_id').$notNull(),
           appointment_id: eb.ref('open_encounters.appointment_id'),
           waiting_room_id: eb.ref('open_encounters.waiting_room_id'),
-          waiting_room_facility_id: eb.ref(
-            'open_encounters.waiting_room_facility_id',
+          waiting_room_organization_id: eb.ref(
+            'open_encounters.waiting_room_organization_id',
           ),
           providers: eb.ref('open_encounters.providers').$notNull(),
           steps_completed: eb.ref('open_encounters.steps_completed').$notNull(),
@@ -533,18 +550,6 @@ export async function getWithOpenEncounter(
   assert(haveNames(patients))
 
   return patients
-  // ask about this error! aislin added code below to fix, original is above
-
-  // return patients.map((patient) => ({
-  //   ...patient,
-  //   open_encounter: patient.open_encounter && {
-  //     ...patient.open_encounter,
-  //     providers: patient.open_encounter.providers.map((provider) => ({
-  //       ...provider,
-  //       seen_at: null,
-  //     })),
-  //   },
-  // }))
 }
 
 export type PatientCard = {
@@ -619,32 +624,32 @@ export async function nearestFacilities(
   currentLocation: Location,
 ) {
   const patient = await trx
-    .selectFrom('patient_nearest_facilities')
+    .selectFrom('patient_nearest_organizations')
     .selectAll()
     .where('patient_id', '=', patient_id)
     .executeTakeFirstOrThrow()
 
-  assert(Array.isArray(patient.nearest_facilities))
-  assert(patient.nearest_facilities.length > 0)
+  assert(Array.isArray(patient.nearest_organizations))
+  assert(patient.nearest_organizations.length > 0)
 
   return Promise.all(
-    patient.nearest_facilities.map(async (facility) => (
-      assert(isObjectLike(facility)),
-        assert(isNumber(facility.longitude)),
-        assert(isNumber(facility.latitude)),
+    patient.nearest_organizations.map(async (organization) => (
+      assert(isObjectLike(organization)),
+        assert(isNumber(organization.longitude)),
+        assert(isNumber(organization.latitude)),
         {
-          ...facility,
+          ...organization,
           walking_distance: await getWalkingDistance({
             origin: {
               longitude: currentLocation.longitude,
               latitude: currentLocation.latitude,
             },
             destination: {
-              longitude: facility.longitude,
-              latitude: facility.latitude,
+              longitude: organization.longitude,
+              latitude: organization.latitude,
             },
           }),
-        } as HasId<PatientNearestFacility>
+        } as HasId<PatientNearestOrganization>
     )),
   )
 }

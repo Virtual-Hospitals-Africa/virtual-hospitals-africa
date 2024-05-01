@@ -22,7 +22,7 @@ const vhaVirtualHospitalStaff = [
 
 export default create(['health_worker_invitees'], inviteVhaStaff)
 
-// Add a test facility with all VHA employees as admins
+// Add a test organization with all VHA employees as admins
 // deno-lint-ignore no-explicit-any
 async function inviteVhaStaff(db: Kysely<any>) {
   await db.insertInto('health_worker_invitees').values(
@@ -30,23 +30,23 @@ async function inviteVhaStaff(db: Kysely<any>) {
       {
         email,
         profession: 'admin',
-        facility_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
       },
       {
         email,
         profession: 'doctor',
-        facility_id: 1,
+        organization_id: '00000000-0000-0000-0000-000000000001',
       },
     ]).concat(vhaVirtualHospitalStaff.flatMap((email) => [
       {
         email,
         profession: 'admin',
-        facility_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       },
       {
         email,
         profession: 'doctor',
-        facility_id: 2,
+        organization_id: '00000000-0000-0000-0000-000000000002',
       },
     ])),
   )

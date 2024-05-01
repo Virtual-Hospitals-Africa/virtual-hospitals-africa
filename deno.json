@@ -7,25 +7,17 @@
     "start:beep": "./scripts/watch_and_beep.sh '(Error|error)' deno start",
     "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
     "web": "deno task run:trusted main.ts",
+
     "db:codegen": "cd ./db/codegen && npm install && cd ../.. && ./db/codegen/node_modules/.bin/kysely-codegen --out-file db.d.ts && echo 'type Buffer = Uint8Array' >> db.d.ts",
-    "db:migrate:medplum": "deno task run:trusted db/migrate.ts medplum ./scripts/kill_process_on_port.sh 8103",
-    "db:migrate:create": "deno task run:trusted db/create-migration.ts",
-    "db:migrate:check": "deno task run:trusted db/migrate.ts check",
-    "db:migrate:up": "deno task run:trusted db/migrate.ts up",
-    "db:migrate:latest": "deno task run:trusted db/migrate.ts latest",
-    "db:migrate:down": "deno task run:trusted db/migrate.ts down",
-    "db:migrate:to": "deno task run:trusted db/migrate.ts to",
-    "db:migrate:wipe": "deno task run:trusted db/migrate.ts wipe",
-    "db:migrate:redo": "deno task run:trusted db/migrate.ts down && deno task run:trusted db/migrate.ts up",
-    "db:migrate:redo:from": "deno task run:trusted db/migrate.ts redo:from",
-    "db:migrate:redo:all": "deno task run:trusted db/redo_all.ts",
-
     "db:local": "./db/local.sh",
-
-    "db:seeds:dump": "deno task run:trusted db/seed/dump.ts",
-    "db:seeds:load": "deno task run:trusted db/seed/load.ts",
-
+    "db:reset": "deno task run:trusted ./db/reset.ts",
+    "db:migrate": "deno task run:trusted db/migrate.ts",
+    "db:seed": "deno task run:trusted db/seed/run.ts",
     "db:drop": "deno task run:trusted db/drop.ts",
+
+    "medplum:server": "deno task run:trusted external-clients/medplum/server.ts",
+    "medplum:superadmin": "deno task run:trusted external-clients/medplum/superadmin.ts",
+
     "heroku:chatbot:up": "heroku ps:scale chatbot=1",
     "heroku:chatbot:down": "heroku ps:scale chatbot=0",
     "heroku:token_refresher:up": "heroku ps:scale token_refresher=1",
@@ -42,7 +34,7 @@
     "switch:prod": "cp .env.prod .env",
     "switch:local": "cp .env.local .env",
     "test": "./scripts/test.sh",
-    "test:chatbot": "DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unstable-temporal --env --unsafely-ignore-certificate-errors test/chatbot",
+    "test:chatbot": "./scripts/test_chatbot.sh",
     "test:one": "rm -f test_server.log && deno task db:migrate:check && DENO_TLS_CA_STORE=system IS_TEST=true deno test -A --unstable-temporal --env --unsafely-ignore-certificate-errors",
     "test:watch": "./scripts/watch_and_beep.sh FAILED deno task test --watch",
     "tmux": "./scripts/tmux.sh",
@@ -93,6 +85,7 @@
     "fast-xml-parser": "npm:fast-xml-parser@4.3.4",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "natural": "npm:natural@6.10.4",
+    "sinon": "npm:sinon@17.0.1",
     "@medplum/core": "npm:@medplum/core"
   },
   "exclude": ["**/_fresh/*"],
