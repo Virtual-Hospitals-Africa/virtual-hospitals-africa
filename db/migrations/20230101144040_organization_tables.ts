@@ -74,7 +74,8 @@ export async function up(db: Kysely<unknown>) {
   `.execute(db)
 }
 
-export async function down(db: Kysely<unknown>) {
+// deno-lint-ignore no-explicit-any
+export async function down(db: Kysely<any>) {
   await db.schema.alterTable('Organization').dropConstraint('check_single_name')
     .execute()
 
@@ -87,4 +88,9 @@ export async function down(db: Kysely<unknown>) {
   await sql`
     DROP TRIGGER IF EXISTS set_location_location_trigger on "Location"
   `.execute(db)
+
+  // TODO: should this be handled by seeds?
+  await db.deleteFrom('Address').execute()
+  await db.deleteFrom('Location').execute()
+  await db.deleteFrom('Organization').execute()
 }
