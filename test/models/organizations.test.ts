@@ -412,8 +412,12 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         })
 
         assertEquals(withInvitees.length, 2)
-        const nurse_result = withInvitees.find(e => e.professions[0].profession === 'nurse')!
-        const admin_result = withInvitees.find(e => e.professions[0].profession === 'admin')!
+        const nurse_result = withInvitees.find((e) =>
+          e.professions[0].profession === 'nurse'
+        )!
+        const admin_result = withInvitees.find((e) =>
+          e.professions[0].profession === 'admin'
+        )!
         assertEquals(omit(nurse_result, ['professions']), {
           avatar_url: 'avatar_url',
           email: nurse.email,

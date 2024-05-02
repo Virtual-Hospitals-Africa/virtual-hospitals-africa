@@ -1,21 +1,13 @@
-import {
-  LoggedInHealthWorkerHandler,
-  LoggedInHealthWorkerHandlerWithProps,
-  Maybe,
-} from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredParam } from '../../../../../util/getParam.ts'
 import {
   IntakeContext,
   IntakeLayout,
-  nextLink,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -80,9 +72,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
       )
     return upsertPatientAndRedirect(ctx, {
       ...patient,
-      unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
-        ? primary_doctor_name
-        : null,
+      unregistered_primary_doctor_name: patient.primary_doctor_id
+        ? null
+        : primary_doctor_name,
     })
   },
 }

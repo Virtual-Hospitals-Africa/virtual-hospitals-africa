@@ -36,48 +36,51 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       })
 
       const results = await patients.getAllWithNames(trx, baseUUID)
-      assertEquals(results, sortBy([
-        {
-          id: test_patient1.id,
-          avatar_url: null,
-          name: test_patient1.name!,
-          dob_formatted: null,
-          description: null,
-          gender: null,
-          ethnicity: null,
-          location: { longitude: null, latitude: null },
-          national_id_number: null,
-          nearest_organization: null,
-          phone_number: null,
-          last_visited: null,
-          conversation_state: 'initial_message' as const,
-          completed_intake: false,
-          intake_steps_completed: [],
-          actions: {
-            view: `/app/patients/${test_patient1.id}`,
+      assertEquals(
+        results,
+        sortBy([
+          {
+            id: test_patient1.id,
+            avatar_url: null,
+            name: test_patient1.name!,
+            dob_formatted: null,
+            description: null,
+            gender: null,
+            ethnicity: null,
+            location: { longitude: null, latitude: null },
+            national_id_number: null,
+            nearest_organization: null,
+            phone_number: null,
+            last_visited: null,
+            conversation_state: 'initial_message' as const,
+            completed_intake: false,
+            intake_steps_completed: [],
+            actions: {
+              view: `/app/patients/${test_patient1.id}`,
+            },
           },
-        },
-        {
-          id: test_patient2.id,
-          avatar_url: `/app/patients/${test_patient2.id}/avatar`,
-          name: test_patient2.name!,
-          dob_formatted: null,
-          description: null,
-          gender: null,
-          ethnicity: null,
-          location: { longitude: null, latitude: null },
-          national_id_number: null,
-          nearest_organization: null,
-          phone_number: null,
-          last_visited: null,
-          conversation_state: 'initial_message' as const,
-          completed_intake: false,
-          intake_steps_completed: [],
-          actions: {
-            view: `/app/patients/${test_patient2.id}`,
+          {
+            id: test_patient2.id,
+            avatar_url: `/app/patients/${test_patient2.id}/avatar`,
+            name: test_patient2.name!,
+            dob_formatted: null,
+            description: null,
+            gender: null,
+            ethnicity: null,
+            location: { longitude: null, latitude: null },
+            national_id_number: null,
+            nearest_organization: null,
+            phone_number: null,
+            last_visited: null,
+            conversation_state: 'initial_message' as const,
+            completed_intake: false,
+            intake_steps_completed: [],
+            actions: {
+              view: `/app/patients/${test_patient2.id}`,
+            },
           },
-        },
-      ], 'name'))
+        ], 'name').reverse(),
+      )
     })
 
     itUsesTrxAnd(

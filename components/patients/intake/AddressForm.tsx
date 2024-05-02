@@ -46,7 +46,7 @@ export default function PatientAddressForm(
       : patient.unregistered_primary_doctor_name
       ? {
         name: patient.unregistered_primary_doctor_name,
-        id: string.NaN,
+        id: '',
       }
       : undefined
 

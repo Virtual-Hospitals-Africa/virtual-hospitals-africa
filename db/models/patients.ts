@@ -587,7 +587,9 @@ export async function getAllWithNames(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ): Promise<RenderedPatient[]> {
-  let query = baseSelect(trx).where('patients.name', 'is not', null).orderBy('name asc')
+  let query = baseSelect(trx).where('patients.name', 'is not', null).orderBy(
+    'name asc',
+  )
 
   if (search) query = query.where('patients.name', 'ilike', `%${search}%`)
 

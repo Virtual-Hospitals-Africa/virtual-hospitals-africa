@@ -52,7 +52,11 @@ export default function AddressForm(
   return (
     <section className='mb-7'>
       <FormRow>
-        <input type='hidden' name='address.country_id' value='1' />
+        <input
+          type='hidden'
+          name='address.country_id'
+          value='10000000-0000-0000-0000-000000000000'
+        />
         <Select
           name='address.province_id'
           required
@@ -63,7 +67,7 @@ export default function AddressForm(
             suburb_id.value = undefined
             ward_id.value = undefined
             district_id.value = undefined
-            province_id.value = Number(selectedProvince)
+            province_id.value = selectedProvince
           }}
         >
           <option value=''>Select</option>
@@ -87,7 +91,7 @@ export default function AddressForm(
             if (!selectedDistrict) return
             suburb_id.value = undefined
             ward_id.value = undefined
-            district_id.value = Number(selectedDistrict)
+            district_id.value = selectedDistrict
           }}
         >
           <option value=''>Select</option>
@@ -108,7 +112,7 @@ export default function AddressForm(
             const selectedWard = e?.currentTarget?.value
             if (!selectedWard) return
             suburb_id.value = undefined
-            ward_id.value = Number(selectedWard)
+            ward_id.value = selectedWard
           }}
         >
           <option value=''>Select</option>
@@ -128,7 +132,7 @@ export default function AddressForm(
             onChange={(e) => {
               const selectedSuburb = e?.currentTarget?.value
               if (!selectedSuburb) return
-              suburb_id.value = Number(selectedSuburb)
+              suburb_id.value = selectedSuburb
             }}
           >
             <option value=''>Select</option>
