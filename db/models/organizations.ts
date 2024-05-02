@@ -13,7 +13,7 @@ import {
 } from '../../types.ts'
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
-import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
+import { jsonAgg, jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
 import * as medplum from '../../external-clients/medplum/client.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
@@ -245,20 +245,10 @@ export function getEmployeesAndInvitees(
       'health_worker_invitees.email as display_name',
       sql<null | string>`NULL`.as('avatar_url'),
       sql<boolean>`TRUE`.as('is_invitee'),
-      // TODO: figure out how to aggregate into a json array after a group by
-      jsonArrayFromColumn(
-        'profession_details',
-        eb.selectFrom('health_worker_invitees as hwi_professions')
-          .select((inner) => [
-            jsonBuildObject({
-              profession: inner.ref('hwi_professions.profession'),
-            }).as('profession_details'),
-          ])
-          .whereRef(
-            'hwi_professions.email',
-            '=',
-            'health_worker_invitees.email',
-          ),
+      jsonAgg(
+        jsonBuildObject({
+          profession: eb.ref('health_worker_invitees.profession'),
+        }),
       ).as('professions'),
       jsonBuildObject({
         view: sql<null>`NULL`,

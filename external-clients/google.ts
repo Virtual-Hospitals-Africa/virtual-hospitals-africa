@@ -26,12 +26,7 @@ import {
   updateAccessToken,
 } from '../db/models/health_workers.ts'
 import uniq from '../util/uniq.ts'
-import {
-  cacheDistanceInRedis,
-  cacheOrganizationAddress,
-  getDistanceFromRedis,
-  getOrganizationAddress,
-} from './redis.ts'
+import { cacheable } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
 
@@ -441,19 +436,15 @@ export async function refreshTokens(
   }
 }
 
-export async function getLocationAddress(
+export const getLocationAddress = cacheable(async function getLocationAddress(
   { longitude, latitude }: Location,
 ): Promise<string> {
-  const cachedAddress = await getOrganizationAddress(longitude, latitude)
-  if (cachedAddress) return cachedAddress
-
   const data = await getGeocodeData(latitude, longitude)
   const address = getAddressFromData(data)
 
   assert(address)
-  await cacheOrganizationAddress(longitude, latitude, address)
   return address
-}
+})
 
 async function getGeocodeData(
   latitude: number,
@@ -518,18 +509,9 @@ function getAreaNameByType(
   return locationInfo?.short_name || locationInfo?.long_name || null
 }
 
-export async function getWalkingDistance(
+export const getWalkingDistance = cacheable(async function getWalkingDistance(
   locations: LocationDistance,
 ): Promise<string | null> {
-  // Get walking distance from redis
-  const cachedDistance = await getDistanceFromRedis(
-    locations.origin,
-    locations.destination,
-  )
-  if (cachedDistance) {
-    return cachedDistance
-  }
-
   const originCoords =
     `${locations.origin.latitude},${locations.origin.longitude}`
   const destCoords =
@@ -561,15 +543,8 @@ export async function getWalkingDistance(
 
   const distance = json.rows[0].elements[0].distance.text
 
-  // Cache walking distance into redis
-  await cacheDistanceInRedis(
-    locations.origin,
-    locations.destination,
-    distance,
-  )
-
   return distance
-}
+})
 
 export function insertEvent(
   tokens: GoogleTokens,

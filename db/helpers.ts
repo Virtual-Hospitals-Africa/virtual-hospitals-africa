@@ -85,6 +85,12 @@ export function jsonArrayFromColumn<
   return sql`(select coalesce(json_agg(${col_ref}), '[]') from ${expr} as agg)`
 }
 
+export function jsonAgg<O>(
+  expr: Expression<O>,
+): RawBuilder<Simplify<O>[]> {
+  return sql`json_agg(${expr})`
+}
+
 /**
  * A postgres helper for turning a subquery (or other expression) into a JSON object.
  *
