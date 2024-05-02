@@ -1,6 +1,5 @@
 import { connect } from 'redis'
 import { assert } from 'std/assert/assert.ts'
-import { Location } from '../types.ts'
 
 interface RedisConnectionOptions {
   username?: string
@@ -39,50 +38,19 @@ export const opts = connectionOpts()
 export const redis =
   (Deno.env.get('BUILDING') ? undefined : await connect(opts))!
 
-export async function cacheOrganizationAddress(
-  longitude: number,
-  latitude: number,
-  address: string,
-) {
-  const key = `organization:${longitude},${latitude}`
-
-  await redis!.set(key, address)
-  console.log('cache address into redis: ' + key + ': ' + address)
-}
-
-export async function getOrganizationAddress(
-  longitude: number,
-  latitude: number,
-): Promise<string | null> {
-  const key = `organization:${longitude},${latitude}`
-  const address = await redis!.get(key)
-  return address
-}
-
-export async function getDistanceFromRedis(
-  origin: Location,
-  destination: Location,
-): Promise<string | null> {
-  const key = constructKey(origin, destination)
-  return await redis!.get(key)
-}
-
-export async function cacheDistanceInRedis(
-  origin: Location,
-  destination: Location,
-  distance: string,
-) {
-  const key = constructKey(origin, destination)
-  await redis!.set(key, distance)
-  console.log('cache distance successfully ' + key + ': ' + distance)
-}
-
-export function constructKey(origin: Location, destination: Location): string {
-  const coord1 = `${origin.latitude},${origin.longitude}`
-  const coord2 = `${destination.latitude},${destination.longitude}`
-  if (coord1 < coord2) {
-    return coord1 + ':' + coord2
-  } else {
-    return coord2 + ':' + coord1
-  }
+// deno-lint-ignore no-explicit-any
+export function cacheable<F extends (...args: any[]) => Promise<any>>(
+  fn: F,
+): F {
+  const function_name = fn.name
+  assert(function_name, 'Function must have a name')
+  return ((async (...args: Parameters<F>) => {
+    const key = `${function_name}:${JSON.stringify(args)}`
+    const result = await redis.get(key)
+    if (result) return JSON.parse(result)
+    return fn(...args).then((result) => {
+      redis.set(key, JSON.stringify(result))
+      return result
+    })
+  }) as unknown as F)
 }

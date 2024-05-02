@@ -368,21 +368,6 @@ export async function getEmployed(
   return health_worker
 }
 
-export async function getInviteesAtOrganization(
-  trx: TrxOrDb,
-  organization_id: string,
-) {
-  return await trx
-    .selectFrom('health_worker_invitees')
-    .where('organization_id', '=', organization_id)
-    .select([
-      'id',
-      'email',
-      'profession',
-    ])
-    .execute()
-}
-
 export function getEmployeeInfo(
   trx: TrxOrDb,
   opts: {
