@@ -464,7 +464,7 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals(pre_existing_conditions.length, 0)
   })
 
-  it('handles holes in an array of pre_existing_conditions on POST', async () => {
+  it.only('handles holes in an array of pre_existing_conditions on POST', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',

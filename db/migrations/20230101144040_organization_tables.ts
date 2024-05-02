@@ -79,6 +79,7 @@ export async function down(db: Kysely<unknown>) {
     .execute()
 
   await db.schema.alterTable('Location').dropColumn('organizationId').execute()
+  await db.schema.alterTable('Location').dropColumn('canonicalName').execute()
   await db.schema.alterTable('Location').dropColumn('location').execute()
   await sql`
     DROP TRIGGER IF EXISTS set_location_organization_id_trigger on "Location"

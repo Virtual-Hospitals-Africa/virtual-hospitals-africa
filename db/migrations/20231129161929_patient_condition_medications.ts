@@ -23,7 +23,7 @@ export async function up(db: Kysely<unknown>) {
     CREATE TYPE medication_schedule AS (
       dosage numeric,
       frequency intake_frequency,
-      duration uuid,
+      duration integer,
       duration_unit duration_units
     )
   `.execute(db)
