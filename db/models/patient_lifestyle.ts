@@ -5,7 +5,7 @@ import { PatientLifestyle } from '../../db.d.ts'
 
 export function upsert(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   lifestyle: {
     [
       k in keyof Omit<
@@ -32,7 +32,7 @@ export function upsert(
 
 export async function get(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: number },
+  { patient_id }: { patient_id: string },
 ): Promise<Lifestyle | undefined> {
   const patient_lifestyle = await trx
     .selectFrom('patient_lifestyle')

@@ -1,4 +1,4 @@
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../util/getParam.ts'
 import redirect from '../../../../../util/redirect.ts'
 import { ENCOUNTER_STEPS } from '../../../../../shared/encounter.ts'
 import {
@@ -11,7 +11,7 @@ export default async function EncounterPage(
   ctx: EncounterContext,
 ) {
   const encounter_id = await getEncounterId(ctx)
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredParam(ctx, 'patient_id')
   const { encounter } = ctx.state
 
   if (!encounter) {

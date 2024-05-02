@@ -24,8 +24,8 @@ export function recommended(
     DB,
     'patients' | 'patient_age' | 'patient_encounters',
     {
-      patient_id: number
-      encounter_id: number
+      patient_id: string
+      encounter_id: string
       examination_name: Examination
     }
   >
@@ -148,9 +148,9 @@ export function forPatientEncounter(
 export async function add(
   trx: TrxOrDb,
   { examinations, encounter_id, patient_id, encounter_provider_id }: {
-    patient_id: number
-    encounter_id: number
-    encounter_provider_id: number
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
     examinations: {
       during_this_encounter: Examination[]
       orders: Examination[]
@@ -229,9 +229,9 @@ export async function add(
 
 export function skip(trx: TrxOrDb, values: {
   examination_name: Examination
-  patient_id: number
-  encounter_id: number
-  encounter_provider_id: number
+  patient_id: string
+  encounter_id: string
+  encounter_provider_id: string
 }) {
   return trx
     .insertInto('patient_examinations')
@@ -319,9 +319,9 @@ export async function upsertFindings(
     skipped,
     values,
   }: {
-    patient_id: number
-    encounter_id: number
-    encounter_provider_id: number
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
     examination_name: string
     skipped?: boolean
     values: Record<string, Record<string, unknown>>
@@ -372,8 +372,8 @@ export async function upsertFindings(
   )
 
   const patient_findings_to_insert: {
-    patient_examination_id: number
-    examination_finding_id: number
+    patient_examination_id: string
+    examination_finding_id: string
     // deno-lint-ignore no-explicit-any
     value: any
   }[] = []
@@ -419,8 +419,8 @@ export async function upsertFindings(
 export function getPatientExamination(
   trx: TrxOrDb,
   { patient_id, encounter_id, examination_name }: {
-    patient_id: number
-    encounter_id: number
+    patient_id: string
+    encounter_id: string
     examination_name: string
   },
 ): Promise<RenderedPatientExamination> {

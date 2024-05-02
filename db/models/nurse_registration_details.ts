@@ -1,6 +1,6 @@
 import {
   Address,
-  HasId,
+  HasStringId,
   ISODateString,
   Maybe,
   NurseRegistrationDetails,
@@ -48,9 +48,9 @@ export async function add(
 export function get(
   trx: TrxOrDb,
   opts: {
-    healthWorkerId: number
+    health_worker_id: string
   },
-): Promise<HasId<NurseRegistrationDetails> | undefined> {
+): Promise<HasStringId<NurseRegistrationDetails> | undefined> {
   return trx
     .selectFrom('nurse_registration_details')
     .select((eb) => [
@@ -71,24 +71,24 @@ export function get(
       'approved_by',
       'address_id',
     ])
-    .where('health_worker_id', '=', opts.healthWorkerId)
+    .where('health_worker_id', '=', opts.health_worker_id)
     .executeTakeFirst()
 }
 
 export function approve(
   trx: TrxOrDb,
   opts: {
-    approverId: number
-    healthWorkerId: number
+    approved_by: string
+    health_worker_id: string
   },
 ) {
   return trx
     .updateTable('nurse_registration_details')
     .set({
-      approved_by: opts.approverId,
+      approved_by: opts.approved_by,
     })
     .where('approved_by', 'is', null)
-    .where('health_worker_id', '=', opts.healthWorkerId)
+    .where('health_worker_id', '=', opts.health_worker_id)
     .returningAll()
     .executeTakeFirst()
 }

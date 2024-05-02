@@ -48,7 +48,7 @@ export function randomNationalId() {
 
 export const testRegistrationDetails = async (
   trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: number },
+  { health_worker_id }: { health_worker_id: string },
 ): Promise<NurseRegistrationDetails> => ({
   health_worker_id,
   gender: 'male',

@@ -7,7 +7,7 @@ import {
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404, assertOrRedirect } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
 import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -30,7 +30,7 @@ export async function handler(
   _req: Request,
   ctx: IntakeContext,
 ) {
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredParam(ctx, 'patient_id')
 
   const is_review = ctx.route.endsWith('/review')
 

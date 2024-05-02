@@ -24,15 +24,15 @@ import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
 
 type PatientMedicationUpsert = {
-  id?: Maybe<number>
+  id?: Maybe<string>
   dosage: number
   strength: number
   intake_frequency: string
   route: string
   start_date?: Maybe<string>
   end_date?: Maybe<string>
-  medication_id: null | number
-  manufactured_medication_id: null | number
+  medication_id: string | null
+  manufactured_medication_id: string | null
   special_instructions?: Maybe<string>
 }
 
@@ -115,7 +115,7 @@ function assertPreExistingConditions(
 
 async function upsertPreExistingCondition(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   condition: PreExistingConditionUpsert,
 ) {
   const parent_condition = await trx
@@ -177,7 +177,7 @@ async function upsertPreExistingCondition(
 
 export async function upsertPreExisting(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   patient_conditions: PreExistingConditionUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
@@ -224,11 +224,11 @@ export async function upsertPreExisting(
 }
 
 export type MedicationReview = {
-  id: number
+  id: string
   name: string
-  medication_id: number
-  manufactured_medication_id: Maybe<number>
-  patient_condition_medication_id: number
+  medication_id: string
+  manufactured_medication_id: Maybe<string>
+  patient_condition_medication_id: string
 
   strength: string
   route: string
@@ -246,12 +246,12 @@ export type MedicationReview = {
 
 export type PreExistingConditionReview = {
   id: string
-  patient_condition_id: number
+  patient_condition_id: string
   start_date: string
   name: string
   comorbidities: {
     id: string
-    comorbidity_id: number
+    comorbidity_id: string
     start_date: string
     name: string
   }[]
@@ -261,7 +261,7 @@ export type PreExistingConditionReview = {
 export function getPreExistingConditionsReview(
   trx: TrxOrDb,
   opts: {
-    patient_id: number
+    patient_id: string
   },
 ): Promise<PreExistingConditionReview[]> {
   return trx
@@ -352,7 +352,7 @@ export function getPreExistingConditionsReview(
 export async function getPreExistingConditions(
   trx: TrxOrDb,
   opts: {
-    patient_id: number
+    patient_id: string
   },
 ): Promise<PreExistingCondition[]> {
   const getting_patient_conditions = await trx
@@ -457,7 +457,7 @@ export async function getPreExistingConditions(
 
 export async function getPreExistingConditionsWithDrugs(
   trx: TrxOrDb,
-  opts: { patient_id: number },
+  opts: { patient_id: string },
 ): Promise<PreExistingConditionWithDrugs[]> {
   const preExistingConditions = await getPreExistingConditions(trx, opts)
   const drug_ids = uniq(
@@ -482,7 +482,7 @@ export async function getPreExistingConditionsWithDrugs(
 export async function getPastMedicalConditions(
   trx: TrxOrDb,
   opts: {
-    patient_id: number
+    patient_id: string
   },
 ): Promise<PastMedicalCondition[]> {
   const results = await trx
@@ -510,7 +510,7 @@ export async function getPastMedicalConditions(
 
 export async function upsertPastMedical(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   patient_conditions: PastMedicalConditionUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(patient_conditions)
@@ -553,7 +553,7 @@ export async function upsertPastMedical(
 export function getMajorSurgeries(
   trx: TrxOrDb,
   opts: {
-    patient_id: number
+    patient_id: string
   },
 ): Promise<MajorSurgery[]> {
   return trx
@@ -576,7 +576,7 @@ export function getMajorSurgeries(
 
 export async function upsertMajorSurgeries(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   major_surgeries: MajorSurgeryUpsert[],
 ): Promise<void> {
   assertPreExistingConditions(major_surgeries)

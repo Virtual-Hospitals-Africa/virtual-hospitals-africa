@@ -6,7 +6,11 @@ import { createStandardTable } from '../createStandardTable.ts'
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('allergies')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .execute()
 

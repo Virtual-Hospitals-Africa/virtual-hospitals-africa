@@ -85,7 +85,7 @@ async function insertCountry(db: Kysely<DB>, country: Country) {
 async function insertProvince(
   db: Kysely<DB>,
   province: Province,
-  countryId: number,
+  countryid: string,
 ) {
   const result = await db.insertInto('provinces').values({
     name: province.name,
@@ -97,7 +97,7 @@ async function insertProvince(
 async function insertDistrict(
   db: Kysely<DB>,
   district: District,
-  provinceId: number,
+  provinceid: string,
 ) {
   const result = await db.insertInto('districts').values({
     name: district.name,
@@ -109,7 +109,7 @@ async function insertDistrict(
 async function insertWard(
   db: Kysely<DB>,
   ward: Ward,
-  districtId: number,
+  districtid: string,
 ) {
   const result = await db.insertInto('wards').values({
     name: ward.name,
@@ -121,7 +121,7 @@ async function insertWard(
 async function insertSuburb(
   db: Kysely<DB>,
   suburb: Suburb,
-  wardId: number,
+  wardid: string,
 ) {
   await db.insertInto('suburbs').values({
     name: suburb.name,

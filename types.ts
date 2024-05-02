@@ -37,12 +37,6 @@ export type SqlRow<T> = {
   updated_at: ColumnType<Date, undefined, never>
 } & T
 
-export type HasId<T extends Record<string, unknown> = Record<string, unknown>> =
-  & T
-  & {
-    id: number
-  }
-
 export type HasStringId<
   T extends Record<string, unknown> = Record<string, unknown>,
 > =
@@ -85,10 +79,10 @@ export type PatientConversationState =
   | 'other_end_of_demo'
 
 export type Patient = PatientPersonal & {
-  primary_doctor_id: Maybe<number>
+  primary_doctor_id: Maybe<string>
   nearest_organization_id: Maybe<string>
   completed_intake: boolean
-  address_id: Maybe<number>
+  address_id: Maybe<string>
   unregistered_primary_doctor_name: Maybe<string>
   intake_steps_completed: IntakeStep[]
 }
@@ -103,7 +97,7 @@ export type PatientDemographicInfo = {
 }
 export type PatientPersonal = {
   conversation_state: PatientConversationState
-  avatar_media_id: Maybe<number>
+  avatar_media_id: Maybe<string>
   location: Maybe<Location>
 } & PatientDemographicInfo
 
@@ -119,7 +113,7 @@ export type RenderedPatient =
     | 'intake_steps_completed'
   >
   & {
-    id: number
+    id: string
     dob_formatted: string | null
     name: string
     description: string | null
@@ -147,33 +141,33 @@ export type Condition = {
 }
 
 export type PatientCondition = {
-  id: number
-  patient_id: number
+  id: string
+  patient_id: string
   condition_id: string
   start_date: string
   end_date: Maybe<string>
-  comorbidity_of_condition_id: Maybe<number>
+  comorbidity_of_condition_id: Maybe<string>
 }
 
 export type MedicalConditionBase = {
   id: string
   name: string
   start_date: string
-  patient_condition_id: number
+  patient_condition_id: string
 }
 
 export type PreExistingCondition = MedicalConditionBase & {
   comorbidities: {
     id: string
-    patient_condition_id: number
+    patient_condition_id: string
     name: string
     start_date?: Maybe<string>
   }[]
   medications: {
-    id: number
-    medication_id: number
-    manufactured_medication_id: number | null
-    patient_condition_medication_id: number
+    id: string
+    medication_id: string
+    manufactured_medication_id: string | null
+    patient_condition_medication_id: string
     strength: number
     dosage: number
     route: string
@@ -186,10 +180,10 @@ export type PreExistingCondition = MedicalConditionBase & {
 }
 
 export type PatientConditionMedication = {
-  id: number
+  id: string
   drug: DrugSearchResult
-  manufactured_medication_id: number | null
-  medication_id: number | null
+  manufactured_medication_id: string | null
+  medication_id: string | null
   strength: number
   route: string
   dosage: number
@@ -210,8 +204,8 @@ export type PreExistingConditionWithDrugs = MedicalConditionBase & {
 }
 
 export type PreExistingAllergy = {
-  id?: Maybe<number>
-  allergy_id: number
+  id?: Maybe<string>
+  allergy_id: string
   name?: Maybe<string>
 }
 
@@ -231,7 +225,7 @@ export type RenderedPatientAge = {
 
 export type PatientIntake =
   & {
-    id: number
+    id: string
     avatar_url: Maybe<string>
     nearest_organization_name: Maybe<string>
     nearest_organization_address: Maybe<string>
@@ -239,11 +233,11 @@ export type PatientIntake =
     age?: RenderedPatientAge
     address: {
       street: Maybe<string>
-      suburb_id: Maybe<number>
-      ward_id: Maybe<number>
-      district_id: Maybe<number>
-      province_id: Maybe<number>
-      country_id: Maybe<number>
+      suburb_id: Maybe<string>
+      ward_id: Maybe<string>
+      district_id: Maybe<string>
+      province_id: Maybe<string>
+      country_id: Maybe<string>
     }
   }
   & Pick<
@@ -275,8 +269,8 @@ export type PatientFamily = {
 }
 
 export type NextOfKin = {
-  id: Maybe<number>
-  patient_id: number
+  id: Maybe<string>
+  patient_id: string
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
@@ -284,10 +278,10 @@ export type NextOfKin = {
 }
 
 export type FamilyRelation = {
-  relation_id: number
+  relation_id: string
   family_relation: string
   guardian_relation: GuardianRelationName
-  patient_id: number
+  patient_id: string
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
   patient_gender: Maybe<Gender>
@@ -299,7 +293,7 @@ export type GuardianFamilyRelation = FamilyRelation & {
 }
 
 export type FamilyRelationInsert = {
-  patient_id?: Maybe<number>
+  patient_id?: Maybe<string>
   patient_name: Maybe<string>
   patient_phone_number: Maybe<string>
   family_relation_gendered: string
@@ -334,25 +328,25 @@ export type PatientWithOpenEncounter = RenderedPatient & {
 }
 
 export type PatientAppointmentOfferedTime = {
-  patient_appointment_request_id: number
-  provider_id: number
+  patient_appointment_request_id: string
+  provider_id: string
   start: Date
   declined: boolean
 }
 
 export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
-  id: number
+  id: string
   health_worker_name: string
   profession: Profession
 }
 
 export type PatientState = {
-  message_id: number
-  patient_id: number
+  message_id: string
+  patient_id: string
   whatsapp_id: string
   body?: string
   has_media: boolean
-  media_id?: number
+  media_id?: string
   phone_number: string
   name: Maybe<string>
   gender: Maybe<Gender>
@@ -361,14 +355,14 @@ export type PatientState = {
   conversation_state: PatientConversationState
   location: Maybe<Location>
   scheduling_appointment_request?: {
-    id: number
+    id: string
     reason: Maybe<string>
     offered_times: SchedulingAppointmentOfferedTime[]
   }
   scheduled_appointment?: {
-    id: number
+    id: string
     reason: string
-    provider_id: number
+    provider_id: string
     health_worker_name: string
     gcal_event_id: string
     start: Date
@@ -522,33 +516,33 @@ export type ConversationStates<CS extends string, US extends UserState<CS>> = {
 }
 
 export type Appointment = {
-  patient_id: number
+  patient_id: string
   reason: string
   start: Date
   gcal_event_id: string
 }
 
-export type AppointmentWithAllPatientInfo = HasId<Appointment> & {
+export type AppointmentWithAllPatientInfo = HasStringId<Appointment> & {
   patient: PatientWithOpenEncounter
   media: {
-    media_id: number
+    media_id: string
     mime_type: string
   }[]
 }
 
 export type AppointmentHealthWorkerAttendee = {
-  appointment_id: number
-  health_worker_id: number
+  appointment_id: string
+  health_worker_id: string
   confirmed: boolean
 }
 
 export type PatientAppointmentRequest = {
-  patient_id: number
+  patient_id: string
   reason: string | null
 }
 
 export type Procurer = {
-  id?: number
+  id?: string
   name: string
 }
 
@@ -972,7 +966,7 @@ export type GoogleProfile = {
 }
 
 export type Employee = {
-  health_worker_id: integer
+  health_worker_id: string
   profession: Profession
   organization_id: string
 }
@@ -990,9 +984,9 @@ export type OrganizationEmployeeOrInvitee =
 export type OrganizationEmployee = {
   name: string
   is_invitee: false
-  health_worker_id: number
+  health_worker_id: string
   professions: {
-    employee_id: number
+    employee_id: string
     profession: Profession
     specialty: NurseSpecialty | null
   }[]
@@ -1012,14 +1006,14 @@ export type OrganizationDoctorOrNurse =
   >
   & {
     profession: 'doctor' | 'nurse'
-    employee_id: number
+    employee_id: string
     specialty: NurseSpecialty | null
   }
 
 export type OrganizationEmployeeInvitee = {
   name: null
   is_invitee: true
-  health_worker_id: null | number
+  health_worker_id: string | null
   professions: {
     employee_id?: undefined
     profession: Profession
@@ -1035,36 +1029,36 @@ export type OrganizationEmployeeInvitee = {
 }
 
 export type OrganizationDevice = {
-  device_id: number
+  device_id: string
   serial_number?: string
   organization_id: string
-  created_by: number
+  created_by: string
 }
 
 export type OrganizationConsumableMedicineSpecefics = {
-  medications_id?: number
+  medications_id?: string
   strength: number
 }
 
 export type RenderedDevice = {
-  id: number
+  id: string
   name: string
   manufacturer: string
   diagnostic_test_capabilities: string[]
 }
 
 export type RenderedConsumable = {
-  id: number
+  id: string
   name: string
 }
 
 export type RenderedProcurer = {
-  id: number
+  id: string
   name: string
 }
 
 export type RenderedOrganizationDevice = {
-  device_id: number
+  device_id: string
   name: string
   manufacturer: string
   serial_number: string | null
@@ -1073,7 +1067,7 @@ export type RenderedOrganizationDevice = {
 
 export type RenderedOrganizationConsumable = {
   name: string
-  consumable_id: number
+  consumable_id: string
   quantity_on_hand: number
   actions: {
     add: string
@@ -1083,7 +1077,7 @@ export type RenderedOrganizationConsumable = {
 
 export type RenderedOrganizationMedicine = {
   generic_name: string
-  consumable_id: number
+  consumable_id: string
   trade_name: string
   applicant_name: string
   form: string
@@ -1105,7 +1099,7 @@ export type RenderedInventoryHistoryProcurement = {
     href: string
   }
   procured_from: {
-    id: number
+    id: string
     name: string
   }
   change: number
@@ -1230,23 +1224,23 @@ export const NURSE_SPECIALTIES: NurseSpecialty[] = [
 ]
 
 export type NurseRegistrationDetails = {
-  health_worker_id: number
+  health_worker_id: string
   gender: Gender
   date_of_birth: string
   national_id_number: string
   date_of_first_practice: string
   ncz_registration_number: string
   mobile_number: string
-  national_id_media_id: Maybe<number>
-  ncz_registration_card_media_id: Maybe<number>
-  face_picture_media_id: Maybe<number>
-  nurse_practicing_cert_media_id: Maybe<number>
-  approved_by: Maybe<number>
-  address_id: Maybe<number>
+  national_id_media_id: Maybe<string>
+  ncz_registration_card_media_id: Maybe<string>
+  face_picture_media_id: Maybe<string>
+  nurse_practicing_cert_media_id: Maybe<string>
+  approved_by: Maybe<string>
+  address_id: Maybe<string>
 }
 
 export type Specialties = {
-  employee_id: number
+  employee_id: string
   specialty: NurseSpecialty
 }
 
@@ -1265,7 +1259,7 @@ export type EmployeeInfo = {
   national_id_number: Maybe<string>
   ncz_registration_number: Maybe<string>
   mobile_number: Maybe<string>
-  health_worker_id: Maybe<number>
+  health_worker_id: Maybe<string>
   date_of_first_practice: Maybe<string>
   specialty: Maybe<NurseSpecialty>
   avatar_url: Maybe<string>
@@ -1285,11 +1279,11 @@ export type EmployeeInfo = {
 
 export type RenderedDoctorReviewBase = {
   encounter: {
-    id: number
+    id: string
     reason: EncounterReason
   }
   patient: {
-    id: number
+    id: string
     name: string
     avatar_url: string | null
     description: string | null
@@ -1302,24 +1296,24 @@ export type RenderedDoctorReviewBase = {
       id: string
       name: string
     }
-    patient_encounter_provider_id: number
+    patient_encounter_provider_id: string
   }
 }
 
 export type RenderedDoctorReview = RenderedDoctorReviewBase & {
-  review_id: number
-  employment_id: number
+  review_id: string
+  employment_id: string
   steps_completed: DoctorReviewStep[]
   completed: SqlBool
 }
 export type RenderedDoctorReviewRequest = RenderedDoctorReviewBase & {
-  review_request_id: number
+  review_request_id: string
 }
 
 export type RenderedDoctorReviewRequestOfSpecificDoctor =
   & RenderedDoctorReviewRequest
   & {
-    employment_id: number
+    employment_id: string
   }
 
 export type HealthWorkerEmployment = {
@@ -1333,19 +1327,19 @@ export type HealthWorkerEmployment = {
       registration_needed: boolean
       registration_completed: boolean
       registration_pending_approval: boolean
-      employment_id: number
+      employment_id: string
     }
     doctor: null | {
       registration_needed: boolean
       registration_completed: boolean
       registration_pending_approval: boolean
-      employment_id: number
+      employment_id: string
     }
     admin: null | {
       registration_needed: boolean
       registration_completed: boolean
       registration_pending_approval: boolean
-      employment_id: number
+      employment_id: string
     }
   }
   gcal_appointments_calendar_id: string
@@ -1354,7 +1348,7 @@ export type HealthWorkerEmployment = {
 }
 
 export type PossiblyEmployedHealthWorker = HealthWorker & {
-  id: number
+  id: string
   access_token: string
   refresh_token: string
   expires_at: Date | string
@@ -1375,7 +1369,7 @@ export type HealthWorkerWithGoogleTokens =
   & HealthWorker
   & GoogleTokens
   & {
-    id: number
+    id: string
   }
 
 export type Availability = {
@@ -1395,10 +1389,10 @@ export type HealthWorkerAvailability = {
 
 export type WhatsAppMessageContents =
   | { has_media: false; body: string; media_id: null }
-  | { has_media: true; body: null; media_id: number }
+  | { has_media: true; body: null; media_id: string }
 
 export type WhatsAppMessageReceived = WhatsAppMessageContents & {
-  patient_id: number
+  patient_id: string
   whatsapp_id: string
   conversation_state: PatientConversationState
   started_responding_at: Maybe<ColumnType<Date>>
@@ -1407,10 +1401,10 @@ export type WhatsAppMessageReceived = WhatsAppMessageContents & {
 }
 
 export type WhatsAppMessageSent = {
-  patient_id: number
+  patient_id: string
   whatsapp_id: string
   body: string
-  responding_to_id: number
+  responding_to_id: string
   read_status: string
 }
 
@@ -1440,14 +1434,14 @@ export type AvailabilityJSON = {
 export type DayOfWeek = keyof AvailabilityJSON
 
 export type Device = {
-  id?: number
+  id?: string
   name: string
   manufacturer: string
   test_availability: DeviceTestsAvailablity[]
 }
 
 export type DeviceTestsAvailablity = {
-  test_id: number
+  test_id: string
   name: string
 }
 
@@ -1470,7 +1464,7 @@ export type ProviderAppointmentSlot = {
   type: 'slot'
   id: string
   patient?: {
-    id: number
+    id: string
     avatar_url: Maybe<string>
     name: Maybe<string>
     phone_number: Maybe<string>
@@ -1485,9 +1479,9 @@ export type ProviderAppointmentSlot = {
 
 export type ProviderAppointment = {
   type: 'appointment'
-  id: number
+  id: string
   patient: {
-    id: number
+    id: string
     avatar_url: Maybe<string>
     name: Maybe<string>
     phone_number: Maybe<string>
@@ -1669,43 +1663,43 @@ export type Media = {
 }
 
 export type PatientMedia = Media & {
-  id: number
+  id: string
 }
 
 export type AppointmentMedia = {
-  appointment_id: number
-  media_id: number
+  appointment_id: string
+  media_id: string
 }
 
 export type PatientAppointmentRequestMedia = {
-  patient_appointment_request_id: number
-  media_id: number
+  patient_appointment_request_id: string
+  media_id: string
 }
 
 export type Country = { name: string }
 
-export type Province = { name: string; country_id: number }
+export type Province = { name: string; country_id: string }
 
-export type District = { name: string; province_id: number }
+export type District = { name: string; province_id: string }
 
-export type Ward = { name: string; district_id: number }
+export type Ward = { name: string; district_id: string }
 
-export type Suburb = { name: string; ward_id: number }
+export type Suburb = { name: string; ward_id: string }
 
 export type CountryAddressTree = {
-  id: number
+  id: string
   name: string
   provinces: {
-    id: number
+    id: string
     name: string
     districts: {
-      id: number
+      id: string
       name: string
       wards: {
-        id: number
+        id: string
         name: string
         suburbs: {
-          id: number | null
+          id: string | null
           name: string | null
         }[]
       }[]
@@ -1721,18 +1715,18 @@ export type MailingListRecipient = {
 
 export type Address = {
   street: Maybe<string>
-  suburb_id?: Maybe<number>
-  ward_id: number
-  district_id: number
-  province_id: number
-  country_id: number
+  suburb_id?: Maybe<string>
+  ward_id: string
+  district_id: string
+  province_id: string
+  country_id: string
 }
 
 export type Drug = {
   generic_name: string
 }
 export type Medication = {
-  drug_id: number
+  drug_id: string
   form: string
   routes: string[]
   form_route: string
@@ -1744,7 +1738,7 @@ export type Medication = {
 }
 
 export type ManufacturedMedication = {
-  medication_id: number
+  medication_id: string
   trade_name: string
   applicant_name: string
   manufacturer_name: string
@@ -1753,7 +1747,7 @@ export type ManufacturedMedication = {
 
 export type PatientMedication =
   & {
-    patient_condition_id: number
+    patient_condition_id: string
     strength: number
     start_date: string
     schedules: MedicationSchedule[]
@@ -1761,8 +1755,8 @@ export type PatientMedication =
     special_instructions: string | null
   }
   & (
-    | { medication_id: null; manufactured_medication_id: number }
-    | { medication_id: number; manufactured_medication_id: null }
+    | { medication_id: null; manufactured_medication_id: string }
+    | { medication_id: string; manufactured_medication_id: null }
   )
 
 export type DurationUnit =
@@ -1783,7 +1777,7 @@ export type MedicationSchedule = Duration & {
 }
 
 export type DrugSearchResultMedication = {
-  medication_id: number
+  medication_id: string
   form: string
   form_route: string
   strength_summary: string
@@ -1794,7 +1788,7 @@ export type DrugSearchResultMedication = {
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
   manufacturers: {
-    manufactured_medication_id: number
+    manufactured_medication_id: string
     strength_numerators: number[]
     applicant_name: string
     trade_name: string
@@ -1802,14 +1796,14 @@ export type DrugSearchResultMedication = {
 }
 
 export type DrugSearchResult = {
-  id: number
+  id: string
   name: string
   distinct_trade_names: string[]
   medications: DrugSearchResultMedication[]
 }
 
 export type ManufacturedMedicationSearchResult = {
-  id: number
+  id: string
   name: string
   generic_name: string
   trade_name: string
@@ -1843,8 +1837,8 @@ export type GuardianRelation = {
 
 export type PatientGuardian = {
   guardian_relation: GuardianRelationName
-  guardian_patient_id: number
-  dependent_patient_id: number
+  guardian_patient_id: string
+  dependent_patient_id: string
 }
 
 export type School =
@@ -1897,7 +1891,7 @@ export type Occupation = {
 }
 
 export type PatientOccupation = {
-  patient_id: number
+  patient_id: string
   occupation: Occupation
 }
 
@@ -2072,42 +2066,42 @@ export type Meal = {
 }
 
 export type PatientLifestyle = {
-  patient_id: number
+  patient_id: string
   lifestyle: Lifestyle
 }
 
 export type Allergy = {
-  id: number
+  id: string
   name: string
 }
 
 export type PatientAllergies = {
-  patient_id: number
-  allergy_id: number
+  patient_id: string
+  allergy_id: string
 }
 
 export type PatientEncounter = {
-  patient_id: number
+  patient_id: string
   reason: EncounterReason
   closed_at: null | Date
-  appointment_id: null | number
+  appointment_id: string | null
   notes: null | string
 }
 
 export type PatientEncounterProvider = {
-  patient_encounter_id: number
-  provider_id: number
+  patient_encounter_id: string
+  provider_id: string
   seen_at: null | Date
 }
 
 export type WaitingRoom = {
   organization_id: string
-  patient_encounter_id: number
+  patient_encounter_id: string
 }
 
 export type RenderedProvider = {
-  health_worker_id: number
-  employee_id: number
+  health_worker_id: string
+  employee_id: string
   name: string
   profession: string
   avatar_url: string | null
@@ -2116,7 +2110,7 @@ export type RenderedProvider = {
 }
 export type RenderedWaitingRoom = {
   patient: {
-    id: number
+    id: string
     name: string
     avatar_url: string | null
     description: string | null
@@ -2132,11 +2126,11 @@ export type RenderedWaitingRoom = {
   status: string
   arrived_ago_display: string
   appointment: null | {
-    id: number
+    id: string
     start: Date
     providers: {
-      health_worker_id: number
-      provider_id: number
+      health_worker_id: string
+      provider_id: string
       name: string
     }[]
   }
@@ -2145,11 +2139,11 @@ export type RenderedWaitingRoom = {
 }
 
 export type RenderedPatientEncounterProvider = {
-  patient_encounter_provider_id: number
-  employment_id: number
+  patient_encounter_provider_id: string
+  employment_id: string
   organization_id: string
   profession: Profession
-  health_worker_id: number
+  health_worker_id: string
   health_worker_name: string
   seen: SqlBool
 }
@@ -2163,14 +2157,14 @@ export type RenderedPatientEncounterExamination = {
 }
 
 export type RenderedPatientEncounter = {
-  encounter_id: number
+  encounter_id: string
   created_at: Date
   closed_at: null | Date
   reason: EncounterReason
   notes: null | string
-  patient_id: number
-  appointment_id: null | number
-  waiting_room_id: null | number
+  patient_id: string
+  appointment_id: string | null
+  waiting_room_id: string | null
   waiting_room_organization_id: null | string
   providers: RenderedPatientEncounterProvider[]
   steps_completed: EncounterStep[]
@@ -2200,9 +2194,9 @@ export type MeasurementsUpsert = {
 }
 
 export type PatientMeasurement = {
-  patient_id: number
-  encounter_id: number
-  encounter_provider_id: number
+  patient_id: string
+  encounter_id: string
+  encounter_provider_id: string
   measurement_name: keyof Measurements
   value: number
 }
@@ -2216,7 +2210,7 @@ export type PatientSymptomInsertShared = {
 }
 
 export type PatientSymptomUpsert = PatientSymptomInsertShared & {
-  media: { id: number }[]
+  media: { id: string }[]
 }
 
 export type RenderedPatientSymptom =
@@ -2287,8 +2281,8 @@ export type Provider = {
   availability_set: boolean
   gcal_appointments_calendar_id: string
   gcal_availability_calendar_id: string
-  health_worker_id: number
-  provider_id: number
+  health_worker_id: string
+  provider_id: string
 }
 
 export type RenderedPatientExaminationFinding = {
@@ -2312,14 +2306,14 @@ export type RenderedPatientExamination = {
 
 export type DatabaseSchema = DB
 export type RenderedRequestFormValues = {
-  id: null | number
+  id: string | null
   organization: null | {
     id: string
     name: string
     address: string | null
   }
   doctor: null | {
-    id: number
+    id: string
     name: string
   }
   requester_notes: null | string
@@ -2329,7 +2323,7 @@ export type NotificationType = 'doctor_review_request'
 
 export type RenderedNotification = {
   type: NotificationType
-  entity_id: number
+  entity_id: string
   avatar_url: string | null
   title: string
   description: string

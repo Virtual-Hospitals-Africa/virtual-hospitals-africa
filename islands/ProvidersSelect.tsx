@@ -7,7 +7,7 @@ import words from '../util/words.ts'
 function ProviderSelectOption(
   { provider, selected, toggleSelection }: {
     provider: {
-      employee_id: number | 'next_available'
+      employee_id: string | 'next_available'
       name: string
       avatar_url?: Maybe<string>
       profession?: Maybe<string>

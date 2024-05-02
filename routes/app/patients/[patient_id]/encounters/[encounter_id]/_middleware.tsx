@@ -9,7 +9,7 @@ import {
   RenderedPatientEncounterProvider,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
-import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../../util/getParam.ts'
 import { Person } from '../../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../../util/capitalize.ts'
@@ -26,7 +26,7 @@ export function getEncounterId(ctx: FreshContext): 'open' | number {
   if (ctx.params.encounter_id === 'open') {
     return 'open'
   }
-  return getRequiredNumericParam(ctx, 'encounter_id')
+  return getRequiredParam(ctx, 'encounter_id')
 }
 
 export type EncounterContext = LoggedInHealthWorkerContext<
@@ -52,7 +52,7 @@ export async function handler(
   ctx: EncounterContext,
 ) {
   const encounter_id = getEncounterId(ctx)
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredParam(ctx, 'patient_id')
 
   const getting_patient_card = patients.getCard(ctx.state.trx, {
     id: patient_id,

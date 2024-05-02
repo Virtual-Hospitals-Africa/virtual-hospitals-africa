@@ -28,7 +28,7 @@ import { assertOr403 } from '../../util/assertOr.ts'
 
 export function ofHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: number,
+  health_worker_id: string,
 ) {
   return trx.selectFrom('doctor_reviews')
     .innerJoin('employment', 'doctor_reviews.reviewer_id', 'employment.id')
@@ -173,7 +173,7 @@ export function requests(
 
 export function requestsOfHealthWorker(
   trx: TrxOrDb,
-  health_worker_id: number,
+  health_worker_id: string,
 ) {
   return requests(trx)
     .innerJoin(
@@ -191,7 +191,7 @@ export function requestsOfHealthWorker(
 
 export async function requestMatchingEmployment(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   organizations_where_doctor: HealthWorkerEmployment[],
 ): Promise<RenderedDoctorReviewRequestOfSpecificDoctor | null> {
   const request = await requests(trx)
@@ -222,8 +222,8 @@ export async function requestMatchingEmployment(
 export async function start(
   trx: TrxOrDb,
   { review_request_id, employment_id }: {
-    review_request_id: number
-    employment_id: number
+    review_request_id: string
+    employment_id: string
   },
 ) {
   const starting_review = trx.insertInto('doctor_reviews')
@@ -251,7 +251,7 @@ export async function start(
 export async function addSelfAsReviewer(
   trx: TrxOrDb,
   { patient_id, health_worker }: {
-    patient_id: number
+    patient_id: string
     health_worker: EmployedHealthWorker
   },
 ): Promise<{
@@ -310,7 +310,7 @@ export async function addSelfAsReviewer(
 export function completedStep(
   trx: TrxOrDb,
   values: {
-    doctor_review_id: number
+    doctor_review_id: string
     step: DoctorReviewStep
   },
 ) {
@@ -323,12 +323,12 @@ export function completedStep(
 export function upsertRequest(
   trx: TrxOrDb,
   { id, requesting_doctor_id, ...values }: {
-    id?: Maybe<number>
-    patient_id: number
-    encounter_id: number
-    requested_by: number
+    id?: Maybe<string>
+    patient_id: string
+    encounter_id: string
+    requested_by: string
     organization_id?: string | null
-    requesting_doctor_id?: number | null
+    requesting_doctor_id?: string | null
     requester_notes?: Maybe<string>
   },
 ) {
@@ -352,7 +352,7 @@ export function upsertRequest(
   return upsertting.executeTakeFirstOrThrow()
 }
 
-export function deleteRequest(trx: TrxOrDb, id: number) {
+export function deleteRequest(trx: TrxOrDb, id: string) {
   return trx.deleteFrom('doctor_review_requests')
     .where('id', '=', id)
     .execute()
@@ -361,8 +361,8 @@ export function deleteRequest(trx: TrxOrDb, id: number) {
 export function finalizeRequest(
   trx: TrxOrDb,
   opts: {
-    patient_encounter_id: number
-    requested_by: number
+    patient_encounter_id: string
+    requested_by: string
   },
 ) {
   return trx.updateTable('doctor_review_requests')
@@ -375,7 +375,7 @@ export function finalizeRequest(
 export function getRequest(
   trx: TrxOrDb,
   opts: {
-    requested_by: number
+    requested_by: string
   },
 ) {
   return trx.selectFrom('doctor_review_requests')

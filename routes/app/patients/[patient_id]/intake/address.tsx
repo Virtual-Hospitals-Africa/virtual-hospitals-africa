@@ -11,7 +11,7 @@ import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../util/getParam.ts'
 import {
   IntakeContext,
   IntakeLayout,
@@ -22,16 +22,16 @@ import { assert } from 'std/assert/assert.ts'
 
 type AddressFormValues = {
   address: {
-    country_id: number
-    province_id: number
-    district_id: number
-    ward_id: number
-    suburb_id?: Maybe<number>
+    country_id: string
+    province_id: string
+    district_id: string
+    ward_id: string
+    suburb_id?: Maybe<string>
     street: string
   }
   nearest_organization_id: string
   nearest_organization_name: string
-  primary_doctor_id: number
+  primary_doctor_id: string
   primary_doctor_name: string
 }
 

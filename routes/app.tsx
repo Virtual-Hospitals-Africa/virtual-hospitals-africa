@@ -8,7 +8,6 @@ import { LoggedInHealthWorker } from '../types.ts'
 import WaitingRoomView from '../components/waiting_room/View.tsx'
 import { firstName } from '../util/name.ts'
 import redirect from '../util/redirect.ts'
-import { getNumericParam } from '../util/getNumericParam.ts'
 import Badge from '../components/library/Badge.tsx'
 
 export default async function AppPage(

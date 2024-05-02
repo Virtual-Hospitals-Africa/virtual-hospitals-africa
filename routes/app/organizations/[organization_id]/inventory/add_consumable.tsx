@@ -9,7 +9,7 @@ import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../util/getParam.ts'
 import {
   assertOr400,
   assertOr403,
@@ -24,9 +24,9 @@ import isString from '../../../../../util/isString.ts'
 
 export function assertIsUpsertConsumer(obj: unknown): asserts obj is {
   quantity: number
-  consumable_id: number
+  consumable_id: string
   procured_from_name: string
-  procured_from_id?: number
+  procured_from_id?: string
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(isNumber(obj.quantity))

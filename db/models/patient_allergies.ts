@@ -4,8 +4,8 @@ import { now } from '../helpers.ts'
 
 export async function upsert(
   trx: TrxOrDb,
-  patient_id: number,
-  allergies: { id: number }[],
+  patient_id: string,
+  allergies: { id: string }[],
 ): Promise<void> {
   assertOr400(
     allergies.length === new Set(allergies.map((item) => item.id)).size,
@@ -31,8 +31,8 @@ export async function upsert(
 
 export function get(
   trx: TrxOrDb,
-  patient_id: number,
-): Promise<{ id: number }[]> {
+  patient_id: string,
+): Promise<{ id: string }[]> {
   return trx
     .selectFrom('patient_allergies')
     .where('patient_allergies.patient_id', '=', patient_id)
@@ -42,9 +42,9 @@ export function get(
 
 export function getWithName(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
 ): Promise<{
-  id: number
+  id: string
   name: string
 }[]> {
   return trx

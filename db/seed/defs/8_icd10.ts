@@ -393,7 +393,7 @@ async function readICD10TabularSections() {
 
 async function insertExcludeRow(
   db: Kysely<any>,
-  exclude_id: number,
+  exclude_id: string,
   { check_referrant_code_before_insertion, ...row }: ExcludeRow,
 ) {
   if (row.category) {

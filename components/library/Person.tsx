@@ -7,7 +7,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import isString from '../../util/isString.ts'
 
 export type PersonData = {
-  id?: number | 'add'
+  id?: string | 'add'
   name: string
   display_name?: Maybe<string>
   href?: Maybe<string>

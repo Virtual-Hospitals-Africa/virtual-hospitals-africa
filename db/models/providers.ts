@@ -7,7 +7,7 @@ import { hasName } from '../../util/haveNames.ts'
 import sortBy from '../../util/sortBy.ts'
 
 // Ensures that the provider_id represents a row in the employment table for a doctor or nurse
-export const ensureProviderId = (trx: TrxOrDb, provider_id: number) =>
+export const ensureProviderId = (trx: TrxOrDb, provider_id: string) =>
   trx.selectFrom('employment')
     .select('id')
     .where('id', '=', provider_id)
@@ -58,7 +58,7 @@ function assertProvider(
 
 export async function get(
   trx: TrxOrDb,
-  provider_id: number,
+  provider_id: string,
 ): Promise<Provider> {
   const provider = await getQuery(trx)
     .where(
@@ -75,7 +75,7 @@ export async function get(
 
 export function addCalendars(
   trx: TrxOrDb,
-  health_worker_id: number,
+  health_worker_id: string,
   cals: {
     organization_id: string
     gcal_appointments_calendar_id: string
@@ -92,7 +92,7 @@ export function addCalendars(
 export async function getMany(
   trx: TrxOrDb,
   opts: {
-    provider_ids?: number[]
+    provider_ids?: string[]
   },
 ) {
   let query = getQuery(trx)
@@ -191,7 +191,7 @@ export function markAvailabilitySet(
   trx: TrxOrDb,
   opts: {
     organization_id: string
-    health_worker_id: number
+    health_worker_id: string
   },
 ) {
   return trx.updateTable('provider_calendars')

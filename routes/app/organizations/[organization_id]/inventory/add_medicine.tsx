@@ -24,12 +24,12 @@ export function assertIsUpsertMedicine(
   obj: unknown,
 ): asserts obj is {
   manufactured_medication_name: string
-  manufactured_medication_id: number
+  manufactured_medication_id: string
   manufactured_medication: {
     strength: number
   }
   procured_from_name: string
-  procured_from_id?: number
+  procured_from_id?: string
   quantity: number
   number_of_containers: number
   container_size: number

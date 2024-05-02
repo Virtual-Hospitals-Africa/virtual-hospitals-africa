@@ -39,7 +39,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_includes')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'code',
       'varchar(8)',
@@ -52,7 +56,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'code',
       'varchar(8)',
@@ -64,7 +72,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_categories')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'exclude_id',
       'uuid',
@@ -84,7 +96,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_codes')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'exclude_id',
       'uuid',
@@ -103,7 +119,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_code_ranges')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'exclude_id',
       'uuid',

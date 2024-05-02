@@ -50,14 +50,13 @@ export async function forEach<T>(
 }
 
 // Does not respect the order of the input iterable, hence the name collect instead of map
-export async function collect<T, U>(
+export async function collect<T>(
   generator: Iterable<T> | AsyncIterable<T>,
-  fn: (item: T) => Promise<U>,
   { concurrency } = { concurrency: 10 },
 ): Promise<U[]> {
-  const results: U[] = []
+  const results: T[] = []
   await forEach(generator, async (item) => {
-    results.push(await fn(item))
+    results.push(item)
   }, { concurrency })
   return results
 }

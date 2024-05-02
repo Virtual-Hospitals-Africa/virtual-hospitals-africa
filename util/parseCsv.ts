@@ -36,3 +36,10 @@ export default async function* parseCsv(
 
   file.close()
 }
+
+export async function* parseTsv(
+  filePath: string,
+  opts: Partial<CommonCSVReaderOptions> = {},
+) {
+  yield* parseCsv(filePath, { ...opts, columnSeparator: '\t' })
+}

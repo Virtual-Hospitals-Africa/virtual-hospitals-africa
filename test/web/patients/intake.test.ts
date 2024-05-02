@@ -5,6 +5,7 @@ import {
   addTestHealthWorkerWithSession,
   getFormDisplay,
   getFormValues,
+  readFirstFiveRowsOfSeedDump,
   route,
 } from '../utilities.ts'
 import * as cheerio from 'cheerio'
@@ -28,6 +29,8 @@ describe('/app/patients/[patient_id]/intake', {
   sanitizeResources: false,
   sanitizeOps: false,
 }, () => {
+  const allergies = readFirstFiveRowsOfSeedDump('allergies')
+
   it('loads the personal page', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
@@ -378,8 +381,8 @@ describe('/app/patients/[patient_id]/intake', {
     })
 
     const body = new FormData()
-    body.set('allergies.0.id', '7')
-    body.set('allergies.1.id', '13')
+    body.set('allergies.0.id', allergies.value[0].id)
+    body.set('allergies.1.id', allergies.value[1].id)
 
     const postResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/conditions`,
@@ -397,11 +400,11 @@ describe('/app/patients/[patient_id]/intake', {
       `${route}/app/patients/${patient_id}/intake/history`,
     )
 
-    const allergies = await patient_allergies.get(db, patient_id)
+    const allergies_of_patient = await patient_allergies.get(db, patient_id)
 
-    assertEquals(allergies.length, 2)
-    assertEquals(allergies[0].id, 7)
-    assertEquals(allergies[1].id, 13)
+    assertEquals(allergies_of_patient.length, 2)
+    assertEquals(allergies_of_patient[0].id, allergies.value[0].id)
+    assertEquals(allergies_of_patient[1].id, allergies.value[1].id)
 
     const getResponse = await fetch(
       `${route}/app/patients/${patient_id}/intake/conditions`,
@@ -413,7 +416,7 @@ describe('/app/patients/[patient_id]/intake', {
     const formValues = getFormValues($)
     assertEquals(
       formValues,
-      { allergies },
+      { allergies: allergies_of_patient },
       'The form should be 1:1 with the conditions in the DB',
     )
   })
@@ -550,7 +553,7 @@ describe('/app/patients/[patient_id]/intake', {
       preExistingCondition.medications[0].intake_frequency,
       'qod',
     )
-    assertEquals(preExistingCondition.medications[0].medication_id, 1)
+    assertEquals(preExistingCondition.medications[0].medication_id, tablet.id)
     assertEquals(
       preExistingCondition.medications[0].strength,
       150,

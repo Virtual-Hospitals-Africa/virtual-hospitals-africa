@@ -14,8 +14,8 @@ import ConsumeForm from '../../../../../islands/inventory/ConsumeForm.tsx'
 
 export function assertIsUpsert(obj: unknown): asserts obj is {
   quantity: number
-  procurement_id: number
-  consumable_id: number
+  procurement_id: string
+  consumable_id: string
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.quantity === 'number')

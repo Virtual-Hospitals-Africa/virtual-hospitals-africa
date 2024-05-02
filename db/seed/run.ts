@@ -61,7 +61,7 @@ export async function run({ fn, target }: {
   const targets = target ? [findTarget(target)] : seedTargets
 
   for (const seedName of targets) {
-    console.log(`${gerund[fn]} seed ${seedName}`, )
+    console.log(`${gerund[fn]} seed ${seedName}`)
     const seed = seeds[seedName]
     await seed[fn]()
   }

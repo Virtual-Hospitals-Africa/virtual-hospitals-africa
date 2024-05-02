@@ -11,9 +11,9 @@ import { tree } from './icd10.ts'
 export async function upsert(
   trx: TrxOrDb,
   { symptoms, patient_id, encounter_id, encounter_provider_id }: {
-    patient_id: number
-    encounter_id: number
-    encounter_provider_id: number
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
     symptoms: PatientSymptomUpsert[]
   },
 ) {
@@ -76,8 +76,8 @@ export async function upsert(
 export function getEncounter(
   trx: TrxOrDb,
   { patient_id, encounter_id }: {
-    patient_id: number
-    encounter_id: number | 'open'
+    patient_id: string
+    encounter_id: string | 'open'
   },
 ): Promise<RenderedPatientSymptom[]> {
   let query = tree(trx)

@@ -21,9 +21,9 @@ export default function AddPatientForm({
   providers,
   patient,
 }: {
-  open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
+  open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
   providers: OrganizationDoctorOrNurse[]
-  patient: { id?: number | 'add'; name: string } | undefined
+  patient: { id?: string | 'add'; name: string } | undefined
 }) {
   const selected_patient = useSignal<PersonData | undefined>(patient)
   const is_returning_patient = computed(() =>

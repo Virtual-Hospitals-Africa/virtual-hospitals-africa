@@ -24,7 +24,11 @@ export async function up(
 
   await db.schema
     .createTable('examination_categories')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'examination_name',
       'varchar(40)',
@@ -62,7 +66,11 @@ export async function up(
 
   await db.schema
     .createTable('examination_findings')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'examination_category_id',
       'uuid',

@@ -22,7 +22,7 @@ import memoize from '../../util/memoize.ts'
 export function addGuardian(
   trx: TrxOrDb,
   guardian: PatientGuardian,
-): Promise<{ id: number }> {
+): Promise<{ id: string }> {
   return trx
     .insertInto('patient_guardians')
     .values(guardian)
@@ -32,7 +32,7 @@ export function addGuardian(
 
 export async function get(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: number },
+  { patient_id }: { patient_id: string },
 ): Promise<PatientFamily> {
   const gettingGuardians = trx
     .selectFrom('patient_guardians')
@@ -235,7 +235,7 @@ const inverseDependentRelation = memoize((family_relation_gendered: string) => {
 
 function hasPatientId(
   relation: FamilyRelationInsert,
-): relation is FamilyRelationInsert & { patient_id: number } {
+): relation is FamilyRelationInsert & { patient_id: string } {
   return !!relation.patient_id
 }
 
@@ -249,7 +249,7 @@ function hasPatientId(
 //   b. The patient is new
 export async function upsert(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   family_to_upsert: FamilyUpsert,
 ): Promise<void> {
   const total_next_of_kin =
@@ -462,7 +462,7 @@ export async function upsert(
         !updated_guardian_patient_ids.has(guardian.patient_id),
     )
     .map((guardian) => {
-      let guardian_patient_id: number
+      let guardian_patient_id: string
       let guardian_relation: GuardianRelationName
       // a. The patient already exists
       if (guardian.patient_id) {
@@ -503,7 +503,7 @@ export async function upsert(
         .execute()
     } else {
       assert(new_kin)
-      let next_of_kin_patient_id: number
+      let next_of_kin_patient_id: string
       if (new_kin?.patient_id) {
         next_of_kin_patient_id = new_kin.patient_id
       } else {
@@ -544,7 +544,7 @@ export async function upsert(
         !updated_dependent_patient_ids.has(dependent.patient_id),
     )
     .map((dependent) => {
-      let dependent_patient_id: number
+      let dependent_patient_id: string
       let guardian_relation: GuardianRelationName
       // a. The patient already exists
       if (dependent.patient_id) {

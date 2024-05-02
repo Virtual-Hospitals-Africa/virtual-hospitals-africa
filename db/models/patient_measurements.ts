@@ -10,9 +10,9 @@ import { assertOr400 } from '../../util/assertOr.ts'
 export async function upsertVitals(
   trx: TrxOrDb,
   { measurements, patient_id, encounter_id, encounter_provider_id }: {
-    patient_id: number
-    encounter_id: number
-    encounter_provider_id: number
+    patient_id: string
+    encounter_id: string
+    encounter_provider_id: string
     measurements: MeasurementsUpsert
   },
 ) {
@@ -65,8 +65,8 @@ export async function upsertVitals(
 export async function getEncounterVitals(
   trx: TrxOrDb,
   { patient_id, encounter_id }: {
-    patient_id: number
-    encounter_id: number | 'open'
+    patient_id: string
+    encounter_id: string | 'open'
   },
 ): Promise<Partial<Measurements>> {
   let query = trx

@@ -23,9 +23,9 @@ import { insertEvent } from '../../../../external-clients/google.ts'
 import { EmployedHealthWorker } from '../../../../types.ts'
 
 type SearchFormValues = {
-  provider_id?: number
+  provider_id?: string
   provider_name?: string
-  patient_id?: number
+  patient_id?: string
   patient_name?: string
   date?: string
   reason?: string
@@ -36,8 +36,8 @@ export type ScheduleFormValues = {
   end: string
   durationMinutes: number
   reason: string
-  patient_id: number
-  provider_ids: number[]
+  patient_id: string
+  provider_ids: string[]
 }
 
 type SchedulePageProps = {

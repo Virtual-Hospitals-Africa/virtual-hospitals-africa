@@ -1,22 +1,21 @@
 import { FreshContext } from '$fresh/server.ts'
 import { assertOr404 } from './assertOr.ts'
 
-export function getNumericParam(
+export function getParam(
   ctx: FreshContext | URLSearchParams,
   param_name: string,
-): number | null {
-  const param_raw = ctx instanceof URLSearchParams
+): string | null {
+  const param = ctx instanceof URLSearchParams
     ? ctx.get(param_name)
     : ctx.params[param_name]
-  const param = parseInt(param_raw!)
   return param || null
 }
 
-export function getRequiredNumericParam(
+export function getRequiredParam(
   ctx: FreshContext | URLSearchParams,
   param_name: string,
-): number {
-  const param = getNumericParam(ctx, param_name)
+): string {
+  const param = getParam(ctx, param_name)
   assertOr404(param, `Missing required parameter: ${param_name}`)
   return param
 }

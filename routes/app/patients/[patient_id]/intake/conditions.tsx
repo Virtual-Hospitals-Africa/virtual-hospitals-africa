@@ -15,7 +15,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 
 type ConditionsFormValues = {
-  allergies?: { id: number; name: string }[]
+  allergies?: { id: string; name: string }[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
 }
 

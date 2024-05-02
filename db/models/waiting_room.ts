@@ -22,7 +22,7 @@ export function add(
 
 export function remove(
   trx: TrxOrDb,
-  { id }: { id: number },
+  { id }: { id: string },
 ) {
   return trx
     .deleteFrom('waiting_room')

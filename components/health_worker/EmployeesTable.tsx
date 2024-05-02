@@ -14,7 +14,7 @@ type EmployeesTableProps = {
   employees: OrganizationEmployeeOrInvitee[]
   pathname: string
   organization_id: string
-  health_worker_id: number
+  health_worker_id: string
 }
 
 export default function EmployeesTable({

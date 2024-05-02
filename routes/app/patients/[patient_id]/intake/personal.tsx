@@ -16,7 +16,7 @@ type PersonalFormValues = {
   first_name: string
   last_name: string
   middle_names?: string
-  avatar_media?: Maybe<{ id: number }>
+  avatar_media?: Maybe<{ id: string }>
   national_id_number?: string
   no_national_id: boolean
   phone_number?: string

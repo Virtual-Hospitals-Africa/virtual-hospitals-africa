@@ -11,7 +11,11 @@ export async function createStandardTable(
   ) => CreateTableBuilder<string, never>,
 ) {
   const creating_table = db.schema.createTable(table)
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'created_at',
       'timestamptz',

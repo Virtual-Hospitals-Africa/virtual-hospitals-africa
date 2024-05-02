@@ -3,7 +3,7 @@ import { NurseSpecialty, TrxOrDb } from '../../types.ts'
 export function add(
   trx: TrxOrDb,
   opts: {
-    employee_id: number
+    employee_id: string
     specialty: NurseSpecialty
   },
 ) {

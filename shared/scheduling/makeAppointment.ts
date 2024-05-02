@@ -122,8 +122,8 @@ export type ScheduleFormValues = {
   end: string
   reason: string
   durationMinutes: number
-  patient_id: number
-  provider_ids: number[]
+  patient_id: string
+  provider_ids: string[]
 }
 
 export function assertIsScheduleFormValues(

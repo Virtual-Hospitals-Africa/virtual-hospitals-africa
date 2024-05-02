@@ -2,7 +2,7 @@ import { sql } from 'kysely'
 import {
   Appointment,
   AppointmentWithAllPatientInfo,
-  HasId,
+  HasStringId,
   Maybe,
   NonNull,
   PatientAppointmentOfferedTime,
@@ -56,7 +56,7 @@ export function addOfferedTime(
     .executeTakeFirstOrThrow()
 }
 
-export function declineOfferedTimes(trx: TrxOrDb, ids: number[]) {
+export function declineOfferedTimes(trx: TrxOrDb, ids: string[]) {
   assert(ids.length, 'Must provide ids to decline')
   return trx
     .updateTable('patient_appointment_offered_times')
@@ -67,7 +67,7 @@ export function declineOfferedTimes(trx: TrxOrDb, ids: number[]) {
 
 export async function getPatientDeclinedTimes(
   trx: TrxOrDb,
-  opts: { patient_appointment_request_id: number },
+  opts: { patient_appointment_request_id: string },
 ): Promise<Date[]> {
   const readResult = await trx
     .selectFrom('patient_appointment_offered_times')
@@ -92,8 +92,8 @@ export async function getPatientDeclinedTimes(
 
 export function createNewRequest(
   trx: TrxOrDb,
-  opts: { patient_id: number },
-): Promise<HasId<PatientAppointmentRequest>> {
+  opts: { patient_id: string },
+): Promise<HasStringId<PatientAppointmentRequest>> {
   return trx
     .insertInto('patient_appointment_requests')
     .values({ patient_id: opts.patient_id })
@@ -103,8 +103,8 @@ export function createNewRequest(
 
 export function upsert(
   trx: TrxOrDb,
-  info: Appointment & { id?: number },
-): Promise<HasId<Appointment>> {
+  info: Appointment & { id?: string },
+): Promise<HasStringId<Appointment>> {
   return trx
     .insertInto('appointments')
     .values(info)
@@ -115,8 +115,8 @@ export function upsert(
 
 export function upsertRequest(
   trx: TrxOrDb,
-  info: { id?: number; patient_id: number; reason?: string | null },
-): Promise<HasId<PatientAppointmentRequest>> {
+  info: { id?: string; patient_id: string; reason?: string | null },
+): Promise<HasStringId<PatientAppointmentRequest>> {
   return trx
     .insertInto('patient_appointment_requests')
     .values(info)
@@ -128,8 +128,8 @@ export function upsertRequest(
 export function addAttendees(
   trx: TrxOrDb,
   { appointment_id, provider_ids }: {
-    appointment_id: number
-    provider_ids: number[]
+    appointment_id: string
+    provider_ids: string[]
   },
 ) {
   return trx
@@ -147,7 +147,7 @@ export function addAttendees(
 export async function schedule(
   trx: TrxOrDb,
   { appointment_offered_time_id, gcal_event_id }: {
-    appointment_offered_time_id: number
+    appointment_offered_time_id: string
     gcal_event_id: string
   },
 ): Promise<NonNull<PatientState['scheduled_appointment']>> {
@@ -233,7 +233,7 @@ export async function schedule(
 
 export async function countUpcoming(
   trx: TrxOrDb,
-  opts: { health_worker_id: number },
+  opts: { health_worker_id: string },
 ): Promise<number> {
   const { count } = await trx
     .selectFrom('appointments')
@@ -264,8 +264,8 @@ export async function countUpcoming(
 export async function getWithPatientInfo(
   trx: TrxOrDb,
   opts: {
-    id?: number
-    health_worker_id?: number
+    id?: string
+    health_worker_id?: string
   },
 ) {
   let query = trx
@@ -329,23 +329,23 @@ export async function getWithPatientInfo(
 
 export async function getWithPatientInfoById(
   trx: TrxOrDb,
-  id: number,
+  id: string,
 ): Promise<Maybe<AppointmentWithAllPatientInfo>> {
   const result = await getWithPatientInfo(trx, { id })
   return result[0]
 }
 
-export function remove(trx: TrxOrDb, id: number) {
+export function remove(trx: TrxOrDb, id: string) {
   return trx.deleteFrom('appointments').where('id', '=', id).execute()
 }
 
 export function insertRequestMedia(
   trx: TrxOrDb,
   toInsert: {
-    patient_appointment_request_id: number
-    media_id: number
+    patient_appointment_request_id: string
+    media_id: string
   },
-): Promise<HasId<PatientAppointmentRequestMedia>> {
+): Promise<HasStringId<PatientAppointmentRequestMedia>> {
   assert(toInsert.patient_appointment_request_id)
   assert(toInsert.media_id)
   return trx
@@ -358,7 +358,7 @@ export function insertRequestMedia(
 export async function getMediaIdByRequestId(
   trx: TrxOrDb,
   opts: {
-    request_id: number
+    request_id: string
   },
 ): Promise<number[]> {
   const queryResult = await trx.selectFrom('patient_appointment_request_media')
@@ -371,8 +371,8 @@ export async function getMediaIdByRequestId(
 export function insertMedia(
   trx: TrxOrDb,
   opts: {
-    appointment_id: number
-    media_ids: number[]
+    appointment_id: string
+    media_ids: string[]
   },
 ) {
   assert(opts.appointment_id)

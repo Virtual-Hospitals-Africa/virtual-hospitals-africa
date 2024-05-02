@@ -4,14 +4,22 @@ import { createStandardTable } from '../createStandardTable.ts'
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createTable('countries')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addUniqueConstraint('country_name', ['name'])
     .execute()
 
   await db.schema
     .createTable('provinces')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('country_id', 'uuid', (col) =>
       col.notNull()
@@ -22,7 +30,11 @@ export async function up(db: Kysely<unknown>) {
 
   await db.schema
     .createTable('districts')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('province_id', 'uuid', (col) =>
       col.notNull()
@@ -33,7 +45,11 @@ export async function up(db: Kysely<unknown>) {
 
   await db.schema
     .createTable('wards')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('district_id', 'uuid', (col) =>
       col.notNull()
@@ -44,7 +60,11 @@ export async function up(db: Kysely<unknown>) {
 
   await db.schema
     .createTable('suburbs')
-    .addColumn('id', 'uuid', (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`))
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn('name', 'varchar(255)', (col) => col.notNull())
     .addColumn('ward_id', 'uuid', (col) =>
       col.notNull()

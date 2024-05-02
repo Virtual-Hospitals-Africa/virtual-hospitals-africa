@@ -4,7 +4,7 @@ import {
   EmployedHealthWorker,
   EmployeeInfo,
   GoogleTokens,
-  HasId,
+  HasStringId,
   HealthWorker,
   HealthWorkerWithGoogleTokens,
   Maybe,
@@ -32,7 +32,7 @@ const expiresInAnHourSql = sql<
 export function upsert(
   trx: TrxOrDb,
   details: HealthWorker,
-): Promise<HasId<HealthWorker>> {
+): Promise<HasStringId<HealthWorker>> {
   return trx
     .insertInto('health_workers')
     .values(details)
@@ -43,7 +43,7 @@ export function upsert(
 
 export function updateName(
   trx: TrxOrDb,
-  health_worker_id: number,
+  health_worker_id: string,
   name: string,
 ): Promise<UpdateResult[]> {
   return trx
@@ -57,9 +57,9 @@ export const pickTokens = pick(['access_token', 'refresh_token', 'expires_at'])
 
 export function upsertGoogleTokens(
   trx: TrxOrDb,
-  health_worker_id: number,
+  health_worker_id: string,
   tokens: GoogleTokens,
-): Promise<HasId<GoogleTokens> | undefined> {
+): Promise<HasStringId<GoogleTokens> | undefined> {
   assert(health_worker_id)
   return trx
     .insertInto('health_worker_google_tokens')
@@ -84,7 +84,7 @@ export async function updateTokens(
   trx: TrxOrDb,
   email: string,
   tokens: GoogleTokens,
-): Promise<null | { id: number }> {
+): Promise<null | { id: string }> {
   const healthWorker = await trx.selectFrom('health_workers').where(
     'email',
     '=',
@@ -175,7 +175,7 @@ export function allWithGoogleTokensAboutToExpire(trx: TrxOrDb): Promise<
 
 export function updateAccessToken(
   trx: TrxOrDb,
-  health_worker_id: number,
+  health_worker_id: string,
   access_token: string,
 ): Promise<UpdateResult> {
   return trx
@@ -187,7 +187,7 @@ export function updateAccessToken(
 
 export function removeExpiredAccessToken(
   trx: TrxOrDb,
-  opts: { health_worker_id: number },
+  opts: { health_worker_id: string },
 ): Promise<DeleteResult> {
   return trx.deleteFrom('health_worker_google_tokens').where(
     'health_worker_id',
@@ -198,7 +198,7 @@ export function removeExpiredAccessToken(
 
 export async function get(
   trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: number },
+  { health_worker_id }: { health_worker_id: string },
 ): Promise<Maybe<PossiblyEmployedHealthWorker>> {
   const result = await trx
     .selectFrom('health_workers')
@@ -360,7 +360,7 @@ export async function get(
 
 export async function getEmployed(
   trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: number },
+  { health_worker_id }: { health_worker_id: string },
 ): Promise<EmployedHealthWorker> {
   const health_worker = await get(trx, { health_worker_id })
   assert(health_worker)
@@ -386,7 +386,7 @@ export async function getInviteesAtOrganization(
 export function getEmployeeInfo(
   trx: TrxOrDb,
   opts: {
-    health_worker_id: number
+    health_worker_id: string
     organization_id: string
   },
 ): Promise<Maybe<EmployeeInfo>> {

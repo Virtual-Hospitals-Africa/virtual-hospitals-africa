@@ -8,7 +8,7 @@ import {
 import redirect from '../../../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../util/getParam.ts'
 import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { OrganizationContext } from '../_middleware.ts'
 import ProcurerForm from '../../../../../islands/inventory/ProcurerForm.tsx'

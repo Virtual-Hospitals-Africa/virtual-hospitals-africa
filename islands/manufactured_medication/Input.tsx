@@ -15,7 +15,7 @@ export default function ManufacturedMedicationInput(props: {
     container_size: number
     number_of_containers: number
     procured_from: {
-      id: number
+      id: string
       name: string
     }
     batch_number: null | string

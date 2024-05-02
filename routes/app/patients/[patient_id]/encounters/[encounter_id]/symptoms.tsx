@@ -11,7 +11,7 @@ import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import * as patient_symptoms from '../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../islands/symptoms/Section.tsx'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
-import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
+import { getRequiredParam } from '../../../../../../util/getParam.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import {
@@ -64,7 +64,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
       req,
       assertIsSymptoms,
     )
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+    const patient_id = getRequiredParam(ctx, 'patient_id')
 
     await patient_symptoms.upsert(ctx.state.trx, {
       patient_id,

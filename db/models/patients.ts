@@ -4,7 +4,7 @@ import {
   Address,
   FamilyUpsert,
   Gender,
-  HasId,
+  HasStringId,
   Lifestyle,
   Location,
   Maybe,
@@ -115,7 +115,7 @@ export function getByPhoneNumber(
   trx: TrxOrDb,
   query: { phone_number: string },
 ): Promise<
-  Maybe<HasId<RenderedPatient>>
+  Maybe<HasStringId<RenderedPatient>>
 > {
   return baseSelect(trx)
     .where('phone_number', '=', query.phone_number)
@@ -123,17 +123,17 @@ export function getByPhoneNumber(
 }
 
 export type UpsertPatientIntake = {
-  id: number
+  id: string
   conversation_state?: PatientConversationState
   phone_number?: string
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
   national_id_number?: Maybe<string>
   nearest_organization_id?: Maybe<string>
-  primary_doctor_id?: Maybe<number>
+  primary_doctor_id?: Maybe<string>
   location?: Maybe<Location>
-  avatar_media_id?: number
-  address_id?: number
+  avatar_media_id?: string
+  address_id?: string
   completed_intake?: boolean
   name?: Maybe<string>
   first_name?: Maybe<string>
@@ -141,7 +141,7 @@ export type UpsertPatientIntake = {
   last_name?: Maybe<string>
   address?: Address
   unregistered_primary_doctor_name?: Maybe<string>
-  allergies?: { id: number }[]
+  allergies?: { id: string }[]
   pre_existing_conditions?: patient_conditions.PreExistingConditionUpsert[]
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
   major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
@@ -173,7 +173,7 @@ export function insertMany(
 export function upsert(
   trx: TrxOrDb,
   { location, primary_doctor_id, ...patient }: Partial<Patient> & {
-    id?: number
+    id?: string
   },
 ) {
   const to_upsert = {
@@ -315,8 +315,8 @@ export function remove(trx: TrxOrDb, opts: { phone_number: string }) {
 
 export function getByID(
   trx: TrxOrDb,
-  opts: { id: number },
-): Promise<HasId<RenderedPatient>> {
+  opts: { id: string },
+): Promise<HasStringId<RenderedPatient>> {
   return baseSelect(trx)
     .where('patients.id', '=', opts.id)
     .executeTakeFirstOrThrow()
@@ -325,7 +325,7 @@ export function getByID(
 export function getIntake(
   trx: TrxOrDb,
   opts: {
-    id: number
+    id: string
   },
 ): Promise<Maybe<PatientIntake>> {
   return trx
@@ -403,7 +403,7 @@ export function getIntake(
 export async function getIntakeReview(
   trx: TrxOrDb,
   opts: {
-    id: number
+    id: string
   },
 ) {
   const getting_review = trx
@@ -495,10 +495,10 @@ export async function getIntakeReview(
 export async function getWithOpenEncounter(
   trx: TrxOrDb,
   opts: {
-    ids: number[]
-    health_worker_id?: number
+    ids: string[]
+    health_worker_id?: string
   },
-): Promise<HasId<PatientWithOpenEncounter>[]> {
+): Promise<HasStringId<PatientWithOpenEncounter>[]> {
   assert(opts.ids.length, 'Must select nonzero patients')
 
   const open_encounters = patient_encounters.openQuery(trx)
@@ -553,7 +553,7 @@ export async function getWithOpenEncounter(
 }
 
 export type PatientCard = {
-  id: number
+  id: string
   name: string
   description: string | null
   avatar_url: string | null
@@ -576,7 +576,7 @@ export function getCardQuery(
 
 export function getCard(
   trx: TrxOrDb,
-  { id }: { id: number },
+  { id }: { id: string },
 ): Promise<PatientCard | undefined> {
   return getCardQuery(trx)
     .where('patients.id', '=', id)
@@ -598,7 +598,7 @@ export async function getAllWithNames(
   return patients
 }
 
-export function getAvatar(trx: TrxOrDb, opts: { patient_id: number }) {
+export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
   return trx
     .selectFrom('media')
     .innerJoin('patients', 'patients.avatar_media_id', 'media.id')
@@ -620,7 +620,7 @@ export function hasDemographicInfo(
 
 export async function nearestFacilities(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   currentLocation: Location,
 ) {
   const patient = await trx
@@ -649,7 +649,7 @@ export async function nearestFacilities(
               latitude: organization.latitude,
             },
           }),
-        } as HasId<PatientNearestOrganization>
+        } as HasStringId<PatientNearestOrganization>
     )),
   )
 }
