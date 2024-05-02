@@ -16,42 +16,45 @@ export function create(
   generate: (db: Kysely<any>) => Promise<void>,
   opts?: { never_dump?: boolean },
 ) {
-  async function drop() {
-    for (const table_name of table_names.toReversed()) {
-      console.log(`deleting ${table_name}`)
+  async function drop(tables: string[] = table_names) {
+    for (const table_name of tables.toReversed()) {
       await db.deleteFrom(table_name as any).execute()
-      if (seeds.includes(`${table_name}.tsv`)) {
-        await Deno.remove(`${SEED_DUMPS_DIRECTORY}/${table_name}.tsv`)
-      }
     }
   }
-  async function load({ reload }: { reload?: boolean } = {}) {
-    const all_seeds_present = table_names.every((table_name) => {
-      const seed_name = `${table_name}.tsv`
-      return seeds.includes(seed_name)
-    })
-    if (!all_seeds_present || reload) {
-      if (!opts?.never_dump) {
-        await drop()
-      }
-      return generate(db)
-    }
-
+  async function load() {
     const have_rows = await Promise.all(
       table_names.map(async (table_name) => {
         const row = await db
           .selectFrom(table_name as any)
           .selectAll()
           .executeTakeFirst()
-        return !row
+        return !!row
       }),
     )
+    const needs_loading = table_names.some((_table_name, index) =>
+      !have_rows[index]
+    )
+    if (!needs_loading) {
+      console.log('Seed already loaded')
+      return
+    }
 
-    const needs_loading = table_names.filter((_table_name, index) =>
+    const tables_with_data = table_names.filter((_table_name, index) =>
       have_rows[index]
     )
+    await drop(tables_with_data)
+
+    const all_seeds_present = table_names.every((table_name) => {
+      const seed_name = `${table_name}.tsv`
+      return seeds.includes(seed_name)
+    })
+
+    if (!all_seeds_present) {
+      return generate(db)
+    }
+
     await runCommand('./db/seed/tsv_load.sh', {
-      args: [uri].concat(needs_loading),
+      args: [uri].concat(table_names),
     })
   }
   async function dump() {
@@ -60,8 +63,10 @@ export function create(
       args: [uri].concat(table_names),
     })
   }
-  function reload() {
-    return load({ reload: true })
+  async function recreate() {
+    await drop()
+    await generate(db)
+    await dump()
   }
-  return { drop, load, dump, reload, generate, table_names }
+  return { drop, load, dump, recreate, generate, table_names }
 }

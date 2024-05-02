@@ -106,7 +106,7 @@ export const migrate = {
     logMigrationResults(await migrate.latest())
 
     console.log('Loading seeds...')
-    await seed.run({ fn: 'load' })
+    await seed.run({ cmd: 'load' })
 
     console.log('Done!')
     medplum_server.kill()
