@@ -14,10 +14,10 @@ import isObjectLike from '../../../../../../util/isObjectLike.ts'
 
 function assertIsReferral(body: unknown): asserts body is {
   review_request?: {
-    id?: number
+    id?: string
     organization_id?: string
     organization_name?: string
-    doctor_id?: number
+    doctor_id?: string
     doctor_name?: string
     requester_notes?: string
   }

@@ -8,7 +8,7 @@ import * as $_middleware from './routes/_middleware.ts'
 import * as $app from './routes/app.tsx'
 import * as $app_middleware from './routes/app/_middleware.tsx'
 import * as $app_calendar from './routes/app/calendar.tsx'
-import * as $app_calendar_appointments_appointmentId_media_mediaId_ from './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx'
+import * as $app_calendar_appointments_appointment_id_media_media_id_ from './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx'
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
 import * as $app_calendar_appointments_schedule from './routes/app/calendar/appointments/schedule.tsx'
 import * as $app_calendar_availability from './routes/app/calendar/availability.tsx'
@@ -29,7 +29,7 @@ import * as $app_organizations_organization_id_middleware from './routes/app/org
 import * as $app_organizations_organization_id_employees from './routes/app/organizations/[organization_id]/employees.tsx'
 import * as $app_organizations_organization_id_employees_health_worker_id_ from './routes/app/organizations/[organization_id]/employees/[health_worker_id].tsx'
 import * as $app_organizations_organization_id_employees_health_worker_id_approve from './routes/app/organizations/[organization_id]/employees/[health_worker_id]/approve.tsx'
-import * as $app_organizations_organization_id_employees_health_worker_id_media_mediaId_ from './routes/app/organizations/[organization_id]/employees/[health_worker_id]/media/[mediaId].tsx'
+import * as $app_organizations_organization_id_employees_health_worker_id_media_media_id_ from './routes/app/organizations/[organization_id]/employees/[health_worker_id]/media/[media_id].tsx'
 import * as $app_organizations_organization_id_employees_invite from './routes/app/organizations/[organization_id]/employees/invite.tsx'
 import * as $app_organizations_organization_id_inventory from './routes/app/organizations/[organization_id]/inventory.tsx'
 import * as $app_organizations_organization_id_inventory_add_consumable from './routes/app/organizations/[organization_id]/inventory/add_consumable.tsx'
@@ -190,8 +190,8 @@ const manifest = {
     './routes/app.tsx': $app,
     './routes/app/_middleware.tsx': $app_middleware,
     './routes/app/calendar.tsx': $app_calendar,
-    './routes/app/calendar/appointments/[appointmentId]/media/[mediaId].tsx':
-      $app_calendar_appointments_appointmentId_media_mediaId_,
+    './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx':
+      $app_calendar_appointments_appointment_id_media_media_id_,
     './routes/app/calendar/appointments/[id].tsx':
       $app_calendar_appointments_id_,
     './routes/app/calendar/appointments/schedule.tsx':
@@ -219,8 +219,8 @@ const manifest = {
       $app_organizations_organization_id_employees_health_worker_id_,
     './routes/app/organizations/[organization_id]/employees/[health_worker_id]/approve.tsx':
       $app_organizations_organization_id_employees_health_worker_id_approve,
-    './routes/app/organizations/[organization_id]/employees/[health_worker_id]/media/[mediaId].tsx':
-      $app_organizations_organization_id_employees_health_worker_id_media_mediaId_,
+    './routes/app/organizations/[organization_id]/employees/[health_worker_id]/media/[media_id].tsx':
+      $app_organizations_organization_id_employees_health_worker_id_media_media_id_,
     './routes/app/organizations/[organization_id]/employees/invite.tsx':
       $app_organizations_organization_id_employees_invite,
     './routes/app/organizations/[organization_id]/inventory.tsx':

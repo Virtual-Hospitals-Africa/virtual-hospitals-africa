@@ -7,7 +7,7 @@ import PersonSearch from './PersonSearch.tsx'
 export function NearestHealthCare(
   { nearest_organization, primary_doctor }: {
     nearest_organization?: { id: string; name: string; address: string }
-    primary_doctor?: { id: number; name: string }
+    primary_doctor?: { id: string; name: string }
   },
 ) {
   const nearest_organization_signal = useSignal(nearest_organization)

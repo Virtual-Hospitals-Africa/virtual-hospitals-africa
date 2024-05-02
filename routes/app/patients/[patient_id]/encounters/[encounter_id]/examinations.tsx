@@ -16,7 +16,7 @@ import {
 } from '../../../../../../util/assertOr.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
-import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
+import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { TabProps, Tabs } from '../../../../../../components/library/Tabs.tsx'
 import * as ProgressIcons from '../../../../../../components/library/icons/progress.tsx'
@@ -158,7 +158,7 @@ async function handleAddExaminations(req: Request, ctx: EncounterContext) {
     )
   }
 
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
   await examinations.add(trx, {
     patient_id,
@@ -227,7 +227,7 @@ async function handleExaminationFindings(req: Request, ctx: EncounterContext) {
     assertIsExaminationFindings,
   )
 
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
   await examinations.upsertFindings(
     trx,

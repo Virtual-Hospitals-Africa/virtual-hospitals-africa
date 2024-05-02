@@ -254,7 +254,7 @@ export function getConsumablesHistoryQuery(
   trx: TrxOrDb,
   { organization_id, consumable_id }: {
     organization_id: string
-    consumable_id: number
+    consumable_id: string
   },
 ): SelectQueryBuilder<
   DB,
@@ -280,7 +280,7 @@ export function getConsumablesHistory(
   trx: TrxOrDb,
   opts: {
     organization_id: string
-    consumable_id: number
+    consumable_id: string
   },
 ): Promise<{
   name: string
@@ -301,7 +301,7 @@ export function getLatestProcurement(
   trx: TrxOrDb,
   { organization_id, manufactured_medication_id, strength }: {
     organization_id: string
-    manufactured_medication_id: number
+    manufactured_medication_id: string
     strength?: number
   },
 ): Promise<MedicationProcurement | undefined> {
@@ -338,7 +338,7 @@ export function searchConsumables(
   trx: TrxOrDb,
   opts: {
     search?: string
-    ids?: number[]
+    ids?: string[]
   },
 ): Promise<RenderedConsumable[]> {
   if (opts.ids) {
@@ -400,7 +400,7 @@ export function getAvailableTests(
 export function addOrganizationDevice(
   trx: TrxOrDb,
   model: OrganizationDevice,
-): Promise<{ id: number }> {
+): Promise<{ id: string }> {
   return trx
     .insertInto('organization_devices')
     .values(model)
@@ -412,9 +412,9 @@ export async function addOrganizationMedicine(
   trx: TrxOrDb,
   organization_id: string,
   medicine: {
-    created_by: number
-    manufactured_medication_id: number
-    procured_from_id?: number
+    created_by: string
+    manufactured_medication_id: string
+    procured_from_id?: string
     procured_from_name?: string
     quantity: number
     number_of_containers: number
@@ -460,14 +460,14 @@ export async function addOrganizationMedicine(
         )
         .select([
           'consumable_id',
-          literalNumber(medicine.created_by).as('created_by'),
+          literalString(medicine.created_by).as('created_by'),
           literalString(organization_id).as('organization_id'),
           literalNumber(medicine.quantity).as('quantity'),
           literalNumber(medicine.number_of_containers).as(
             'number_of_containers',
           ),
           literalNumber(medicine.container_size).as('container_size'),
-          literalNumber(procured_from.id).as('procured_from'),
+          literalString(procured_from.id).as('procured_from'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),
           sql.lit<string | undefined>(medicine.batch_number).as('batch_number'),
         ])
@@ -495,9 +495,9 @@ export async function procureConsumable(
   trx: TrxOrDb,
   organization_id: string,
   consumable: {
-    created_by: number
-    consumable_id: number
-    procured_from_id?: number
+    created_by: string
+    consumable_id: string
+    procured_from_id?: string
     procured_from_name?: string
     quantity: number
     container_size: number
@@ -559,10 +559,10 @@ export function consumeConsumable(
   trx: TrxOrDb,
   organization_id: string,
   consumable: {
-    consumable_id: number
-    created_by: number
+    consumable_id: string
+    created_by: string
     quantity: number
-    procurement_id: number
+    procurement_id: string
   },
 ) {
   // Send the whole update in one query. This avoids constraint errors firing in the background when we won't catch them.

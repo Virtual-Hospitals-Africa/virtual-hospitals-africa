@@ -6,7 +6,7 @@ export function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    ids?: number[]
+    ids?: string[]
   },
 ): Promise<RenderedDevice[]> {
   if (opts.ids) {

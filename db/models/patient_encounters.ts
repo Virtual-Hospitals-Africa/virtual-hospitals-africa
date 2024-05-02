@@ -20,16 +20,16 @@ import uniq from '../../util/uniq.ts'
 
 export type Upsert =
   & {
-    encounter_id?: Maybe<number>
+    encounter_id?: Maybe<string>
     reason: EncounterReason
-    provider_ids?: number[]
-    appointment_id?: Maybe<number>
+    provider_ids?: string[]
+    appointment_id?: Maybe<string>
     notes?: Maybe<string>
     intake?: Maybe<string>
   }
   & (
-    | { patient_id: number; patient_name?: Maybe<string> }
-    | { patient_id?: Maybe<number>; patient_name: string }
+    | { patient_id: string; patient_name?: Maybe<string> }
+    | { patient_id?: Maybe<string>; patient_name: string }
   )
 
 export function assertIsEncounterReason(
@@ -42,17 +42,17 @@ export function assertIsUpsert(
   obj: unknown,
 ): asserts obj is Upsert {
   assertOr400(isObjectLike(obj))
-  assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'number')
-  assertOr400(obj.patient_id == null || typeof obj.patient_id === 'number')
+  assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'string')
+  assertOr400(obj.patient_id == null || typeof obj.patient_id === 'string')
   assertOr400(typeof obj.reason === 'string')
   assertIsEncounterReason(obj.reason)
   assertOr400(
     !obj.provider_ids ||
       (Array.isArray(obj.provider_ids) &&
-        obj.provider_ids.every((id: unknown) => typeof id === 'number')),
+        obj.provider_ids.every((id: unknown) => typeof id === 'string')),
   )
   assertOr400(
-    obj.appointment_id == null || typeof obj.appointment_id === 'number',
+    obj.appointment_id == null || typeof obj.appointment_id === 'string',
   )
   assertOr400(obj.notes == null || typeof obj.notes === 'string')
   assertOr400(obj.intake == null || typeof obj.intake === 'string')
@@ -71,13 +71,13 @@ export async function upsert(
     provider_ids,
   }: Upsert,
 ): Promise<{
-  id: number
-  patient_id: number
-  waiting_room_id: number
+  id: string
+  patient_id: string
+  waiting_room_id: string
   created_at: Date
   providers: {
-    encounter_provider_id: number
-    provider_id: number
+    encounter_provider_id: string
+    provider_id: string
   }[]
 }> {
   if (!patient_id) {
@@ -137,8 +137,8 @@ export async function upsert(
 export function addProvider(
   trx: TrxOrDb,
   { encounter_id, provider_id, seen_now }: {
-    encounter_id: number
-    provider_id: number
+    encounter_id: string
+    provider_id: string
     seen_now?: boolean
   },
 ) {
@@ -156,7 +156,7 @@ export function addProvider(
 export function markProviderSeen(
   trx: TrxOrDb,
   { patient_encounter_provider_id }: {
-    patient_encounter_provider_id: number
+    patient_encounter_provider_id: string
   },
 ) {
   return trx
@@ -167,7 +167,7 @@ export function markProviderSeen(
     .executeTakeFirstOrThrow()
 }
 
-export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: number) =>
+export const ofHealthWorker = (trx: TrxOrDb, health_worker_id: string) =>
   trx
     .selectFrom('patient_encounter_providers')
     .innerJoin(
@@ -255,8 +255,8 @@ export const openQuery = (trx: TrxOrDb) =>
 export function get(
   trx: TrxOrDb,
   { patient_id, encounter_id }: {
-    patient_id: number
-    encounter_id: number | 'open'
+    patient_id: string
+    encounter_id: string | 'open'
   },
 ): Promise<RenderedPatientEncounter | undefined> {
   let query = baseQuery(trx)
@@ -269,14 +269,14 @@ export function get(
   return query.executeTakeFirst()
 }
 
-export function getOpen(trx: TrxOrDb, patient_id: number) {
+export function getOpen(trx: TrxOrDb, patient_id: string) {
   return get(trx, { patient_id, encounter_id: 'open' })
 }
 
 export function completedStep(
   trx: TrxOrDb,
   { encounter_id, step }: {
-    encounter_id: number
+    encounter_id: string
     step: EncounterStep
   },
 ) {
@@ -289,7 +289,7 @@ export function completedStep(
 export function close(
   trx: TrxOrDb,
   { encounter_id }: {
-    encounter_id: number
+    encounter_id: string
   },
 ) {
   return trx.updateTable('patient_encounters')
@@ -307,8 +307,8 @@ export async function removeFromWaitingRoomAndAddSelfAsProvider(
   trx: TrxOrDb,
   { health_worker, patient_id, encounter_id }: {
     health_worker: EmployedHealthWorker
-    patient_id: number
-    encounter_id: number | 'open'
+    patient_id: string
+    encounter_id: string | 'open'
   },
 ): Promise<{
   encounter: RenderedPatientEncounter

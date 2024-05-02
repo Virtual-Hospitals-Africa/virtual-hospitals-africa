@@ -51,19 +51,19 @@ async function importData(db: Kysely<DB>) {
   for await (
     const country of data.countries
   ) {
-    const countryId = await insertCountry(db, country)
+    const country_id = await insertCountry(db, country)
     for await (
       const province of country.provinces
     ) {
-      const provinceId = await insertProvince(db, province, countryId)
+      const province_id = await insertProvince(db, province, country_id)
       for await (
         const district of province.districts
       ) {
-        const districtId = await insertDistrict(db, district, provinceId)
+        const district_id = await insertDistrict(db, district, province_id)
         for await (
           const ward of district.wards
         ) {
-          const wardId = await insertWard(db, ward, districtId)
+          const wardId = await insertWard(db, ward, district_id)
           for await (
             const suburb of ward.suburbs ?? []
           ) {
@@ -77,6 +77,7 @@ async function importData(db: Kysely<DB>) {
 
 async function insertCountry(db: Kysely<DB>, country: Country) {
   const result = await db.insertInto('countries').values({
+    id: '10000000-0000-0000-0000-000000000000',
     name: country.name,
   }).returningAll().executeTakeFirstOrThrow()
   return result.id
@@ -85,11 +86,11 @@ async function insertCountry(db: Kysely<DB>, country: Country) {
 async function insertProvince(
   db: Kysely<DB>,
   province: Province,
-  countryId: number,
+  country_id: string,
 ) {
   const result = await db.insertInto('provinces').values({
     name: province.name,
-    country_id: countryId,
+    country_id,
   }).returningAll().executeTakeFirstOrThrow()
   return result.id
 }
@@ -97,11 +98,11 @@ async function insertProvince(
 async function insertDistrict(
   db: Kysely<DB>,
   district: District,
-  provinceId: number,
+  province_id: string,
 ) {
   const result = await db.insertInto('districts').values({
     name: district.name,
-    province_id: provinceId,
+    province_id,
   }).returningAll().executeTakeFirstOrThrow()
   return result.id
 }
@@ -109,11 +110,11 @@ async function insertDistrict(
 async function insertWard(
   db: Kysely<DB>,
   ward: Ward,
-  districtId: number,
+  district_id: string,
 ) {
   const result = await db.insertInto('wards').values({
     name: ward.name,
-    district_id: districtId,
+    district_id,
   }).returningAll().executeTakeFirstOrThrow()
   return result.id
 }
@@ -121,10 +122,10 @@ async function insertWard(
 async function insertSuburb(
   db: Kysely<DB>,
   suburb: Suburb,
-  wardId: number,
+  ward_id: string,
 ) {
   await db.insertInto('suburbs').values({
     name: suburb.name,
-    ward_id: wardId,
+    ward_id,
   }).execute()
 }

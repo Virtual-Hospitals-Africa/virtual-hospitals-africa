@@ -88,7 +88,6 @@ describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
             const reviews = await doctor_reviews.ofHealthWorker(trx, doctor.id)
               .execute()
 
-            console.log(reviews)
             assertEquals(reviews.length, 1)
           },
         ),

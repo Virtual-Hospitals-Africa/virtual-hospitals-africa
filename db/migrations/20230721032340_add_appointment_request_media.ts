@@ -8,7 +8,7 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn(
         'patient_appointment_request_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_appointment_requests.id').onDelete(
             'cascade',
@@ -16,7 +16,7 @@ export async function up(db: Kysely<unknown>) {
       )
         .addColumn(
           'media_id',
-          'integer',
+          'uuid',
           (col) => col.notNull().references('media.id').onDelete('cascade'),
         ),
   )
@@ -24,12 +24,12 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'appointment_media', (qb) =>
     qb.addColumn(
       'appointment_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('appointments.id').onDelete('cascade'),
     )
       .addColumn(
         'media_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('media.id').onDelete('cascade'),
       ))
 }

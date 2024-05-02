@@ -17,12 +17,11 @@ export async function initializeHealthWorker(
   trx: TrxOrDb,
   googleClient: google.GoogleClient,
   profile: GoogleProfile,
-  invitees: { id: number; organization_id: string; profession: Profession }[],
-): Promise<{ id: number }> {
+  invitees: { id: string; organization_id: string; profession: Profession }[],
+): Promise<{ id: string }> {
   assert(invitees.length, 'No invitees found')
 
   // Fire off async operations in parallel
-  console.log('invitees', invitees)
   const removing_invites = await employment.removeInvitees(
     trx,
     invitees.map((invitee) => invitee.id),
@@ -79,7 +78,7 @@ async function checkPermissions(
 }
 
 type AuthCheckResult =
-  | { status: 'authorized'; healthWorker: { id: number } }
+  | { status: 'authorized'; healthWorker: { id: string } }
   | { status: 'unauthorized' }
   | { status: 'insufficient_permissions' }
 

@@ -261,7 +261,7 @@ describe(
         assert(!sessionData.data.registrationFormState)
 
         const registrationDetails = await nurse_registration_details.get(db, {
-          healthWorkerId: nurse.id,
+          health_worker_id: nurse.id,
         })
 
         const newNurse = await db.selectFrom('health_workers').where(

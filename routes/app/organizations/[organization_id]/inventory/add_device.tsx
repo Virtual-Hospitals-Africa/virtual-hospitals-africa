@@ -10,7 +10,7 @@ import OrganizationDeviceForm from '../../../../../components/inventory/DeviceFo
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import * as devices from '../../../../../db/models/devices.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
+import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import {
   assertOr400,
   assertOr403,
@@ -21,9 +21,9 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 
 export function assertIsUpsertDevice(
   obj: unknown,
-): asserts obj is { device_id: number; serial_number?: string } {
+): asserts obj is { device_id: string; serial_number?: string } {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.device_id === 'number')
+  assertOr400(typeof obj.device_id === 'string')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -71,7 +71,7 @@ export default async function DeviceAdd(
     const result = await devices.search(
       state.trx,
       {
-        ids: [parseInt(device_id)],
+        ids: [device_id],
       },
     )
     assertOr404(result.length)

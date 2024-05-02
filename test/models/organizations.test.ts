@@ -412,7 +412,13 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
         })
 
         assertEquals(withInvitees.length, 2)
-        assertEquals(omit(withInvitees[0], ['professions']), {
+        const nurse_result = withInvitees.find((e) =>
+          e.professions[0].profession === 'nurse'
+        )!
+        const admin_result = withInvitees.find((e) =>
+          e.professions[0].profession === 'admin'
+        )!
+        assertEquals(omit(nurse_result, ['professions']), {
           avatar_url: 'avatar_url',
           email: nurse.email,
           display_name: 'Nurse',
@@ -425,9 +431,9 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
           },
         })
-        assertEquals(withInvitees[0].professions.length, 1)
-        assertEquals(withInvitees[0].professions[0].profession, 'nurse')
-        assertEquals(omit(withInvitees[1], ['professions']), {
+        assertEquals(nurse_result.professions.length, 1)
+        assertEquals(nurse_result.professions[0].profession, 'nurse')
+        assertEquals(omit(admin_result, ['professions']), {
           avatar_url: 'avatar_url',
           email: admin.email,
           display_name: 'Admin',
@@ -440,8 +446,8 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,
           },
         })
-        assertEquals(withInvitees[1].professions.length, 1)
-        assertEquals(withInvitees[1].professions[0].profession, 'admin')
+        assertEquals(admin_result.professions.length, 1)
+        assertEquals(admin_result.professions[0].profession, 'admin')
       },
     )
   })

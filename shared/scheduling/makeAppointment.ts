@@ -122,8 +122,8 @@ export type ScheduleFormValues = {
   end: string
   reason: string
   durationMinutes: number
-  patient_id: number
-  provider_ids: number[]
+  patient_id: string
+  provider_ids: string[]
 }
 
 export function assertIsScheduleFormValues(
@@ -136,9 +136,9 @@ export function assertIsScheduleFormValues(
   assertOr400(isIsoHarare(values.end))
   assertOr400(typeof values.durationMinutes === 'number')
   assertOr400(typeof values.reason === 'string')
-  assertOr400(typeof values.patient_id === 'number')
+  assertOr400(typeof values.patient_id === 'string')
   assertOr400(Array.isArray(values.provider_ids))
-  assertOr400(values.provider_ids.every((id) => typeof id === 'number'))
+  assertOr400(values.provider_ids.every((id) => typeof id === 'string'))
 }
 
 export async function makeAppointmentWeb(

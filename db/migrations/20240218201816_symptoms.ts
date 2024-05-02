@@ -5,18 +5,18 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'patient_symptoms', (qb) =>
     qb.addColumn(
       'patient_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
       .addColumn(
         'encounter_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_encounters.id').onDelete('cascade'),
       )
       .addColumn(
         'encounter_provider_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_encounter_providers.id').onDelete(
             'cascade',
@@ -55,13 +55,13 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'patient_symptom_media', (qb) =>
     qb.addColumn(
       'patient_symptom_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('patient_symptoms.id').onDelete('cascade'),
     )
       .addColumn(
         'media_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('media.id').onDelete('cascade'),
       ))
 }

@@ -9,12 +9,12 @@ export function up(db: Kysely<unknown>) {
       qb.addColumn('relationship', 'varchar(255)', (col) => col.notNull())
         .addColumn(
           'patient_id',
-          'integer',
+          'uuid',
           (col) => col.notNull().references('patients.id').onDelete('cascade'),
         )
         .addColumn(
           'next_of_kin_patient_id',
-          'integer',
+          'uuid',
           (col) => col.notNull().references('patients.id').onDelete('cascade'),
         )
         .addUniqueConstraint('unique_patient_next_of_kin', ['patient_id'])

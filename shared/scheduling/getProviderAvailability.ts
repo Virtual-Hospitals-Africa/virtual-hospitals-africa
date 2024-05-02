@@ -120,7 +120,7 @@ export async function availableSlots(
     count: number
     declinedTimes?: string[]
     dates?: string[]
-    provider_ids?: number[]
+    provider_ids?: string[]
     durationMinutes?: number
   },
 ): Promise<{

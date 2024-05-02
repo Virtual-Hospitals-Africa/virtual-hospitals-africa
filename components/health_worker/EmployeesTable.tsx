@@ -14,7 +14,7 @@ type EmployeesTableProps = {
   employees: OrganizationEmployeeOrInvitee[]
   pathname: string
   organization_id: string
-  health_worker_id: number
+  health_worker_id: string
 }
 
 export default function EmployeesTable({
@@ -22,7 +22,6 @@ export default function EmployeesTable({
   employees,
   pathname,
 }: EmployeesTableProps): JSX.Element {
-  console.log('employees', employees)
   const columns: TableColumn<OrganizationEmployeeOrInvitee>[] = [
     {
       label: 'Employee',

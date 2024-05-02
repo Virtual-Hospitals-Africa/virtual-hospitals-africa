@@ -39,7 +39,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_includes')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'code',
       'varchar(8)',
@@ -52,7 +56,11 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'code',
       'varchar(8)',
@@ -64,10 +72,14 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_categories')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'exclude_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
           'cascade',
@@ -84,10 +96,14 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_codes')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'exclude_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
           'cascade',
@@ -103,10 +119,14 @@ export async function up(db: Kysely<any>) {
     .execute()
 
   await db.schema.createTable('icd10_diagnoses_excludes_code_ranges')
-    .addColumn('id', 'serial', (col) => col.primaryKey())
+    .addColumn(
+      'id',
+      'uuid',
+      (col) => col.primaryKey().defaultTo(sql`gen_random_uuid()`),
+    )
     .addColumn(
       'exclude_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('icd10_diagnoses_excludes.id').onDelete(
           'cascade',

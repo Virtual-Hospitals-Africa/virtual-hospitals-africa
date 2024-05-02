@@ -8,7 +8,7 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn(
         'patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
         .addColumn(
@@ -44,7 +44,7 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn(
           'media_id',
-          'integer',
+          'uuid',
           (col) => col.references('media.id').onDelete('set default'),
         )
         .addCheckConstraint(
@@ -59,12 +59,12 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'whatsapp_messages_sent', (qb) =>
     qb.addColumn(
       'patient_id',
-      'integer',
+      'uuid',
       (col) => col.notNull().references('patients.id').onDelete('cascade'),
     )
       .addColumn(
         'responding_to_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('whatsapp_messages_received.id').onDelete(
             'cascade',

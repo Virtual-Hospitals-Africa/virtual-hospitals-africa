@@ -1,7 +1,6 @@
-import { assert } from 'std/assert/assert.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-  HasId,
+  HasStringId,
   PatientState,
   TrxOrDb,
   WhatsAppMessageContents,
@@ -51,7 +50,7 @@ export async function insertMessageReceived(
       'whatsapp_id' | 'has_media' | 'body' | 'media_id'
     >,
 ): Promise<
-  HasId<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
+  HasStringId<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
   const { patient_phone_number, ...message_data } = data
 
@@ -88,8 +87,8 @@ export async function insertMessageReceived(
 export function insertMessageSent(
   trx: TrxOrDb,
   opts: {
-    patient_id: number
-    responding_to_id: number
+    patient_id: string
+    responding_to_id: string
     whatsapp_id: string
     body: string
   },
@@ -225,7 +224,7 @@ export async function getUnhandledPatientMessages(
 export function markChatbotError(
   trx: TrxOrDb,
   opts: {
-    whatsapp_message_received_id: number
+    whatsapp_message_received_id: string
     commitHash: string
     errorMessage: string
   },
@@ -243,22 +242,16 @@ export function markChatbotError(
 export async function getMediaIdByPatientId(
   trx: TrxOrDb,
   opts: {
-    patient_id: number
-    existing_media?: number[]
+    patient_id: string
   },
-): Promise<number[]> {
-  const queryResult = await trx.selectFrom('whatsapp_messages_received').where(
-    'patient_id',
-    '=',
-    opts.patient_id,
-  ).where('has_media', '=', true).select('media_id').execute()
-  const mediaIds: number[] = []
-  for (const { media_id } of queryResult) {
-    assert(media_id, `No media found for patient${opts.patient_id}`)
-    if (!opts.existing_media || !opts.existing_media.includes(media_id)) {
-      mediaIds.push(media_id)
-    }
-  }
-
-  return mediaIds
+): Promise<string[]> {
+  const result = await trx
+    .selectFrom('whatsapp_messages_received')
+    .where('patient_id', '=', opts.patient_id)
+    .where('has_media', '=', true)
+    .select((eb) => [
+      eb.ref('media_id').$notNull().as('media_id'),
+    ])
+    .execute()
+  return result.map((r) => r.media_id)
 }

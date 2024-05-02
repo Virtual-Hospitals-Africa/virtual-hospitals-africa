@@ -3,7 +3,7 @@ import { Maybe, RenderedPatientAge, TrxOrDb } from '../../types.ts'
 
 export async function get(
   trx: TrxOrDb,
-  opts: { patient_id: number },
+  opts: { patient_id: string },
 ): Promise<Maybe<RenderedPatientAge>> {
   const result = await trx
     .selectFrom('patient_age')
@@ -30,7 +30,7 @@ export async function get(
 
 export async function getYears(
   trx: TrxOrDb,
-  opts: { patient_id: number },
+  opts: { patient_id: string },
 ): Promise<Maybe<number>> {
   const patient_age = await get(trx, opts)
   return patient_age?.age_years

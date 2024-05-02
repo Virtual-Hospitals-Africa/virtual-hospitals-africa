@@ -1,11 +1,11 @@
 import { sql } from 'kysely'
-import { HasId, Maybe, Media, TrxOrDb } from './../../types.ts'
+import { HasStringId, Maybe, Media, TrxOrDb } from './../../types.ts'
 
 export function insert(
   trx: TrxOrDb,
   opts: { binary_data: Uint8Array; mime_type: string },
 ): Promise<{
-  id: number
+  id: string
   mime_type: string
   url: string
 }> {
@@ -23,10 +23,10 @@ export function insert(
 export function get(
   trx: TrxOrDb,
   opts: {
-    media_id: number
-    appointment_id?: number
+    media_id: string
+    appointment_id?: string
   },
-): Promise<HasId<Media>> {
+): Promise<HasStringId<Media>> {
   let query = trx
     .selectFrom('media')
     .where(
@@ -63,7 +63,7 @@ export function get(
 export function getByUUID(
   trx: TrxOrDb,
   uuid: string,
-): Promise<Maybe<HasId<Media>>> {
+): Promise<Maybe<HasStringId<Media>>> {
   return trx
     .selectFrom('media')
     .where(

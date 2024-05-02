@@ -8,7 +8,7 @@ import {
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../../util/getNumericParam.ts'
+import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import { completeStep } from './_middleware.tsx'
 import { VitalsForm } from '../../../../../../islands/vitals/Form.tsx'
@@ -47,7 +47,7 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
       req,
       assertIsVitals,
     )
-    const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+    const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     await patient_measurements.upsertVitals(ctx.state.trx, {
       patient_id,

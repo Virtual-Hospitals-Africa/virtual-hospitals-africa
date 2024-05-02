@@ -7,7 +7,7 @@ import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
 
 type OptionRecord = {
-  id: number | string
+  id: string | string
   name: string
   disabled?: boolean
   display?: ComponentChild
@@ -15,7 +15,7 @@ type OptionRecord = {
 
 type Option = string | OptionRecord
 
-type OptionId<O extends Option> = O extends { id: number | string } ? O['id']
+type OptionId<O extends Option> = O extends { id: string | string } ? O['id']
   : string
 
 interface ListboxMultiProps<O extends Option> {

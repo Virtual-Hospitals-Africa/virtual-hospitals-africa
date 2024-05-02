@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import {
   Employee,
-  HasId,
+  HasStringId,
   HealthWorkerInvitee,
   Maybe,
   Profession,
@@ -12,14 +12,14 @@ import { SqlBool } from 'kysely'
 export type HealthWorkerWithRegistrationState = {
   profession: Profession
   organization_id: string
-  id: number
+  id: string
   registration_pending_approval: SqlBool
   registration_needed: SqlBool
   registration_completed: SqlBool
 }
 
 export type OrganizationAdmin = {
-  id: number
+  id: string
   email: string | null
   name: string
   organization_name: string
@@ -28,7 +28,7 @@ export type OrganizationAdmin = {
 export function add(
   trx: TrxOrDb,
   employees: Employee[],
-): Promise<HasId<Employee>[]> {
+): Promise<HasStringId<Employee>[]> {
   assert(employees.length > 0)
   return trx
     .insertInto('employment')
@@ -40,7 +40,7 @@ export function add(
 export async function isAdmin(
   trx: TrxOrDb,
   opts: {
-    health_worker_id: number
+    health_worker_id: string
     organization_id: string
   },
 ): Promise<boolean> {
@@ -63,7 +63,7 @@ export function getEmployee(
   trx: TrxOrDb,
   opts: {
     organization_id: string
-    health_worker_id: number
+    health_worker_id: string
   },
 ) {
   return trx
@@ -95,7 +95,7 @@ export function addInvitees(
 
 export function approveInvitee(
   trx: TrxOrDb,
-  { admin_id, approving_id }: { admin_id: number; approving_id: number },
+  { admin_id, approving_id }: { admin_id: string; approving_id: string },
 ) {
   return trx.updateTable('nurse_registration_details')
     .set({ approved_by: admin_id })
@@ -108,7 +108,7 @@ export function getInvitees(
   opts: {
     email: string
   },
-): Promise<HasId<HealthWorkerInvitee>[]> {
+): Promise<HasStringId<HealthWorkerInvitee>[]> {
   return trx
     .selectFrom('health_worker_invitees')
     .where('email', '=', opts.email)
@@ -118,7 +118,7 @@ export function getInvitees(
 
 export function removeInvitees(
   trx: TrxOrDb,
-  ids: number[],
+  ids: string[],
 ) {
   return trx.deleteFrom('health_worker_invitees').where('id', 'in', ids)
     .execute()

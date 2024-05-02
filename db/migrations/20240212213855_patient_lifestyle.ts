@@ -4,7 +4,7 @@ import { createStandardTable } from '../createStandardTable.ts'
 export function up(db: Kysely<unknown>) {
   return createStandardTable(db, 'patient_lifestyle', (qb) =>
     qb
-      .addColumn('patient_id', 'integer', (col) =>
+      .addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patients.id')

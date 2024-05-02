@@ -8,12 +8,15 @@ import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
 import generateUUID from '../../../../util/uuid.ts'
+import { readSeedDump } from '../../../web/utilities.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
+  const organizations = readSeedDump('Organization')
+
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
     // Step 1: share location
-    const p = await patients.upsert(db, {
+    await patients.upsert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',
@@ -21,7 +24,6 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       date_of_birth: '2023-01-01',
       national_id_number: randomNationalId(),
     })
-    console.log('patient', p)
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
@@ -44,25 +46,24 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     }
 
     await respond(fakeWhatsAppOne)
+    const arcadia = organizations.value.find((o) =>
+      o.canonicalName === 'Arcadia Clinic'
+    )!
+    const braeside = organizations.value.find((o) =>
+      o.canonicalName === 'Braeside Clinic'
+    )!
+
     assertEquals(
       fakeWhatsAppOne.sendMessages.firstCall.args[0].messages.action.sections[0]
         .rows[0].id,
-      '5c5d42e7-b0e6-48f9-a434-89032cf2ff5d',
+      arcadia.id,
     )
-
-    const nearest = await db.selectFrom('patient_nearest_organizations').where(
-      'patient_id',
-      '=',
-      p.id,
-    ).selectAll().executeTakeFirstOrThrow()
-
-    console.log(nearest.nearest_organizations)
 
     // Step 2: select organization id
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
       has_media: false,
-      body: '5c5d42e7-b0e6-48f9-a434-89032cf2ff5d',
+      body: braeside.id,
       media_id: null,
       whatsapp_id: `wamid.${generateUUID()}`,
     })
@@ -82,12 +83,12 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         messages: [
           {
             type: 'location',
-            messageBody: 'Arcadia Clinic',
+            messageBody: 'Braeside Clinic',
             location: {
-              longitude: 31.0546,
-              latitude: -17.8468,
-              name: 'Arcadia Clinic',
-              address: 'Harare, Harare Province, ZW',
+              longitude: 31.0657,
+              latitude: -17.8399,
+              name: 'Braeside Clinic',
+              address: '4 General Booth Rd, Harare, ZW',
             },
           },
           {

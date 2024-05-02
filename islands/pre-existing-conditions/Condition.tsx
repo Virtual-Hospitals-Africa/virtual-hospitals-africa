@@ -14,7 +14,7 @@ export type ConditionState = {
     { id?: string; removed?: false } | { removed: true }
   >
   medications: Array<
-    { id?: number; removed?: false } | { removed: true }
+    { id?: string; removed?: false } | { removed: true }
   >
 }
 

@@ -21,8 +21,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   async GET(_, ctx) {
     const { healthWorker } = ctx.state
 
-    const id = parseInt(ctx.params.id)
-    assert(!isNaN(id), 'Invalid appointment ID')
+    const { id } = ctx.params
 
     const [appointment] = await appointments.getWithPatientInfo(ctx.state.trx, {
       id,

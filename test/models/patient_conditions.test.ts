@@ -665,7 +665,7 @@ describe(
       itUsesTrxAnd(
         'can add conditions and surgeries in any order, with all being preserved',
         async (trx) => {
-          let patient: { id: number }
+          let patient: { id: string }
 
           const insertions = [
             () =>

@@ -22,7 +22,7 @@ import memoize from '../../util/memoize.ts'
 export function addGuardian(
   trx: TrxOrDb,
   guardian: PatientGuardian,
-): Promise<{ id: number }> {
+): Promise<{ id: string }> {
   return trx
     .insertInto('patient_guardians')
     .values(guardian)
@@ -32,7 +32,7 @@ export function addGuardian(
 
 export async function get(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: number },
+  { patient_id }: { patient_id: string },
 ): Promise<PatientFamily> {
   const gettingGuardians = trx
     .selectFrom('patient_guardians')
@@ -235,7 +235,7 @@ const inverseDependentRelation = memoize((family_relation_gendered: string) => {
 
 function hasPatientId(
   relation: FamilyRelationInsert,
-): relation is FamilyRelationInsert & { patient_id: number } {
+): relation is FamilyRelationInsert & { patient_id: string } {
   return !!relation.patient_id
 }
 
@@ -249,7 +249,7 @@ function hasPatientId(
 //   b. The patient is new
 export async function upsert(
   trx: TrxOrDb,
-  patient_id: number,
+  patient_id: string,
   family_to_upsert: FamilyUpsert,
 ): Promise<void> {
   const total_next_of_kin =
@@ -292,11 +292,11 @@ export async function upsert(
   // For those relations we're upserting with existing patients, update the existing patient records.
   // Keep track of the guardian relations by patient ids so we can update the relations later
   const guardian_upserts_with_patient_ids = new Map<
-    number,
+    string,
     GuardianRelationName
   >()
   const dependent_upserts_with_patient_ids = new Map<
-    number,
+    string,
     GuardianRelationName
   >()
   for (const guardian of existing_guardians) {
@@ -412,7 +412,7 @@ export async function upsert(
     trx.deleteFrom('patient_guardians').where('id', 'in', to_remove).execute()
 
   // 2. Update: The relation exists in the db as given by its patient_id and the upsert
-  const updated_guardian_patient_ids = new Set<number>()
+  const updated_guardian_patient_ids = new Set<string>()
   const updating_relations: Promise<unknown>[] = []
   for (const guardian_relation_in_db of guardians_to_update) {
     const guardian_relation = guardian_upserts_with_patient_ids.get(
@@ -432,7 +432,7 @@ export async function upsert(
     )
     updated_guardian_patient_ids.add(guardian_relation_in_db.patient_id)
   }
-  const updated_dependent_patient_ids = new Set<number>()
+  const updated_dependent_patient_ids = new Set<string>()
   for (const dependent_relation_in_db of dependents_to_update) {
     const guardian_relation = dependent_upserts_with_patient_ids.get(
       dependent_relation_in_db.patient_id,
@@ -462,7 +462,7 @@ export async function upsert(
         !updated_guardian_patient_ids.has(guardian.patient_id),
     )
     .map((guardian) => {
-      let guardian_patient_id: number
+      let guardian_patient_id: string
       let guardian_relation: GuardianRelationName
       // a. The patient already exists
       if (guardian.patient_id) {
@@ -503,7 +503,7 @@ export async function upsert(
         .execute()
     } else {
       assert(new_kin)
-      let next_of_kin_patient_id: number
+      let next_of_kin_patient_id: string
       if (new_kin?.patient_id) {
         next_of_kin_patient_id = new_kin.patient_id
       } else {
@@ -544,7 +544,7 @@ export async function upsert(
         !updated_dependent_patient_ids.has(dependent.patient_id),
     )
     .map((dependent) => {
-      let dependent_patient_id: number
+      let dependent_patient_id: string
       let guardian_relation: GuardianRelationName
       // a. The patient already exists
       if (dependent.patient_id) {

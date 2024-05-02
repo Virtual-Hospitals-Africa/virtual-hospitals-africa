@@ -1,3 +1,4 @@
+import { beforeAll } from 'std/testing/bdd.ts'
 import * as cheerio from 'cheerio'
 import generateUUID from '../../util/uuid.ts'
 import { it } from 'std/testing/bdd.ts'
@@ -16,6 +17,9 @@ import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { assert } from 'std/assert/assert.ts'
 import range from '../../util/range.ts'
+import { collect } from '../../util/inParallel.ts'
+import { parseTsv } from '../../util/parseCsv.ts'
+import { take } from '../../util/take.ts'
 
 type TestHealthWorkerOpts = {
   scenario:
@@ -42,7 +46,7 @@ export async function addTestHealthWorker(
   },
 ) {
   const healthWorker: HealthWorkerWithGoogleTokens & {
-    employee_id?: number
+    employee_id?: string
     calendars?: {
       gcal_appointments_calendar_id: string
       gcal_availability_calendar_id: string
@@ -99,8 +103,8 @@ export async function addTestHealthWorker(
         }),
       )
       await details.approve(trx, {
-        approverId: admin.id,
-        healthWorkerId: healthWorker.id,
+        approved_by: admin.id,
+        health_worker_id: healthWorker.id,
       })
       break
     }
@@ -342,6 +346,9 @@ export async function withTestOrganization(
     // phone: null,
   })
   await callback!(organization!.id)
+  await trx.deleteFrom('Address')
+    .where('resourceId', '=', organization!.id)
+    .execute()
   await trx.deleteFrom('Location')
     .where('organizationId', '=', organization!.id)
     .execute()
@@ -373,10 +380,61 @@ export async function withTestOrganizations(
     organization!.id
   )
   await callback(organization_ids)
-  // await trx.deleteFrom('Location')
-  //   .where('organizationId', 'in', organization_ids)
-  //   .execute()
-  // await trx.deleteFrom('Organization')
-  //   .where('id', 'in', organization_ids)
-  //   .execute()
+  await trx.deleteFrom('Address')
+    .where('resourceId', 'in', organization_ids)
+    .execute()
+  await trx.deleteFrom('Location')
+    .where('organizationId', 'in', organization_ids)
+    .execute()
+  await trx.deleteFrom('Organization')
+    .where('id', 'in', organization_ids)
+    .execute()
+}
+
+export function readFirstFiveRowsOfSeedDump(
+  file_name: string,
+) {
+  assert(
+    !file_name.endsWith('.tsv') && !file_name.includes('/'),
+    'file_name should just be the file name without the extension nor the path',
+  )
+  // deno-lint-ignore no-explicit-any
+  let rows: any[]
+  beforeAll(async () => {
+    rows = await collect(take(parseTsv(`./db/seed/dumps/${file_name}.tsv`), 5))
+  })
+  return {
+    get value() {
+      if (!rows) {
+        throw new Error(
+          'rows not initialized, must be called in a describe block',
+        )
+      }
+      return rows
+    },
+  }
+}
+
+export function readSeedDump(
+  file_name: string,
+) {
+  assert(
+    !file_name.endsWith('.tsv') && !file_name.includes('/'),
+    'file_name should just be the file name without the extension nor the path',
+  )
+  // deno-lint-ignore no-explicit-any
+  let rows: any[]
+  beforeAll(async () => {
+    rows = await collect(parseTsv(`./db/seed/dumps/${file_name}.tsv`))
+  })
+  return {
+    get value() {
+      if (!rows) {
+        throw new Error(
+          'rows not initialized, must be called in a describe block',
+        )
+      }
+      return rows
+    },
+  }
 }

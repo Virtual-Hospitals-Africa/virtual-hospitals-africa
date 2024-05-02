@@ -15,7 +15,7 @@ export async function up(db: Kysely<unknown>) {
     db,
     'employment',
     (qb) =>
-      qb.addColumn('health_worker_id', 'integer', (col) =>
+      qb.addColumn('health_worker_id', 'uuid', (col) =>
         col.notNull()
           .references('health_workers.id')
           .onDelete('cascade'))
@@ -39,8 +39,18 @@ export async function up(db: Kysely<unknown>) {
     db,
     'provider_calendars',
     (qb) =>
-      qb.addColumn('health_worker_id', 'integer', (col) => col.notNull())
-        .addColumn('organization_id', 'uuid', (col) => col.notNull())
+      qb.addColumn(
+        'health_worker_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('health_workers.id').onDelete('cascade'),
+      )
+        .addColumn(
+          'organization_id',
+          'uuid',
+          (col) =>
+            col.notNull().references('Organization.id').onDelete('cascade'),
+        )
         .addColumn(
           'gcal_appointments_calendar_id',
           'varchar(255)',

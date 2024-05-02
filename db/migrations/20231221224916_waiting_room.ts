@@ -13,13 +13,13 @@ export async function up(db: Kysely<unknown>) {
     qb
       .addColumn(
         'patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
       .addColumn('reason', sql`encounter_reason`, (col) => col.notNull())
       .addColumn(
         'appointment_id',
-        'integer',
+        'uuid',
         (col) => col.references('appointments.id').onDelete('cascade'),
       )
       .addColumn('notes', 'text')
@@ -51,13 +51,13 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn(
         'patient_encounter_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_encounters.id').onDelete('cascade'),
       )
         .addColumn(
           'provider_id',
-          'integer',
+          'uuid',
           (col) =>
             col.notNull().references('employment.id').onDelete('cascade'),
         )
@@ -74,7 +74,7 @@ export async function up(db: Kysely<unknown>) {
       )
       .addColumn(
         'patient_encounter_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_encounters.id').onDelete('cascade'),
       )

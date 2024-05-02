@@ -15,7 +15,7 @@ type Showable =
   | ComponentChildren
 
 type Row = Record<string, unknown> & {
-  id?: number
+  id?: string
 }
 export type TableColumn<T extends Row> =
   & {

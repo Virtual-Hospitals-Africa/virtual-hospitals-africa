@@ -41,10 +41,10 @@ export function getStepFormData(
 }
 
 export type DocumentFormFields = {
-  national_id_picture: Maybe<{ id: number; url: string }>
-  ncz_registration_card: Maybe<{ id: number; url: string }>
-  face_picture: Maybe<{ id: number; url: string }>
-  nurse_practicing_cert: Maybe<{ id: number; url: string }>
+  national_id_picture: Maybe<{ id: string; url: string }>
+  ncz_registration_card: Maybe<{ id: string; url: string }>
+  face_picture: Maybe<{ id: string; url: string }>
+  nurse_practicing_cert: Maybe<{ id: string; url: string }>
 }
 
 export type PersonalFormFields = {
@@ -58,11 +58,11 @@ export type PersonalFormFields = {
   mobile_number: string
   address: {
     street: string
-    suburb_id: number
-    ward_id: number
-    district_id: number
-    province_id: number
-    country_id: number
+    suburb_id: string
+    ward_id: string
+    district_id: string
+    province_id: string
+    country_id: string
   }
 }
 

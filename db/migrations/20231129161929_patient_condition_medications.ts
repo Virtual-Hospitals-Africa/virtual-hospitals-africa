@@ -34,18 +34,18 @@ export async function up(db: Kysely<unknown>) {
     (qb) =>
       qb.addColumn(
         'patient_condition_id',
-        'integer',
+        'uuid',
         (col) =>
           col.notNull().references('patient_conditions.id').onDelete('cascade'),
       )
         .addColumn(
           'medication_id',
-          'integer',
+          'uuid',
           (col) => col.references('medications.id').onDelete('cascade'),
         )
         .addColumn(
           'manufactured_medication_id',
-          'integer',
+          'uuid',
           (col) =>
             col.references('manufactured_medications.id').onDelete('cascade'),
         )

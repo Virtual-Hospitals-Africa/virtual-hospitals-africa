@@ -16,7 +16,7 @@ export function upsert(
 
 export async function get(
   trx: TrxOrDb,
-  { patient_id }: { patient_id: number },
+  { patient_id }: { patient_id: string },
 ): Promise<Occupation | undefined> {
   const patient_occupation = await trx
     .selectFrom('patient_occupations')

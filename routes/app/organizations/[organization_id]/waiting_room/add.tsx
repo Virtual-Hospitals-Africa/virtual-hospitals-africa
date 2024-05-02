@@ -19,7 +19,7 @@ import AddPatientForm from '../../../../../islands/waiting_room/AddPatientForm.t
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   Record<never, unknown>,
   {
-    organization: { id: number; name: string }
+    organization: { id: string; name: string }
   }
 > = {
   async POST(req, ctx) {
@@ -52,8 +52,8 @@ export default async function WaitingRoomAdd(
 ) {
   const { trx } = state
   const { searchParams } = url
-  const patient_id = parseInt(searchParams.get('patient_id')!) || null
-  const encounter_id = parseInt(searchParams.get('encounter_id')!) || null
+  const patient_id = searchParams.get('patient_id')
+  const encounter_id = searchParams.get('encounter_id')
   assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
 
   const patient_name = searchParams.get('patient_name')
@@ -74,8 +74,8 @@ export default async function WaitingRoomAdd(
     organization_id,
   })
 
-  let open_encounter: Maybe<{ encounter_id: number; reason: EncounterReason }>
-  let patient: { id?: number | 'add'; name: string } | undefined
+  let open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
+  let patient: { id?: string | 'add'; name: string } | undefined
   if (patient_id) {
     const getting_open_encounter = patient_encounters.get(trx, {
       patient_id,

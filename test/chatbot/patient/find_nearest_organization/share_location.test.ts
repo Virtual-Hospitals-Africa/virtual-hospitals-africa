@@ -8,8 +8,11 @@ import * as conversations from '../../../../db/models/conversations.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { randomNationalId, randomPhoneNumber } from '../../../mocks.ts'
 import generateUUID from '../../../../util/uuid.ts'
+import { readSeedDump } from '../../../web/utilities.ts'
 
 describe('patient chatbot', { sanitizeResources: false }, () => {
+  const organizations = readSeedDump('Organization')
+
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
     await patients.upsert(db, {
@@ -61,9 +64,16 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(callArgs.messages.action.sections[0].title, 'Town Name Here')
 
+    const arcadia = organizations.value.find((o) =>
+      o.canonicalName === 'Arcadia Clinic'
+    )!
+    const braeside = organizations.value.find((o) =>
+      o.canonicalName === 'Braeside Clinic'
+    )!
+
     assertEquals(
       callArgs.messages.action.sections[0].rows[0].id,
-      '5c5d42e7-b0e6-48f9-a434-89032cf2ff5d',
+      arcadia.id,
     )
     assertEquals(
       callArgs.messages.action.sections[0].rows[0].title,
@@ -72,7 +82,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(
       callArgs.messages.action.sections[0].rows[1].id,
-      '10fadd5d-c1af-48dc-9a80-3490fee19a3d',
+      braeside.id,
     )
     assertEquals(
       callArgs.messages.action.sections[0].rows[1].title,

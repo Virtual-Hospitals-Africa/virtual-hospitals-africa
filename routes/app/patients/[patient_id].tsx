@@ -5,7 +5,7 @@ import SectionHeader from '../../../components/library/typography/SectionHeader.
 import { Button } from '../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../util/assertOr.ts'
 import { LoggedInHealthWorkerContext } from '../../../types.ts'
-import { getRequiredNumericParam } from '../../../util/getNumericParam.ts'
+import { getRequiredUUIDParam } from '../../../util/getParam.ts'
 import redirect from '../../../util/redirect.ts'
 
 export default async function PatientPage(
@@ -13,7 +13,7 @@ export default async function PatientPage(
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { healthWorker } = ctx.state
-  const patient_id = getRequiredNumericParam(ctx, 'patient_id')
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
   const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {
     ids: [patient_id],

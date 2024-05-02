@@ -1,37 +1,29 @@
-import {
-  LoggedInHealthWorkerHandler,
-  LoggedInHealthWorkerHandlerWithProps,
-  Maybe,
-} from '../../../../../types.ts'
+import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
-import * as patients from '../../../../../db/models/patients.ts'
-import redirect from '../../../../../util/redirect.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import Buttons from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import { getRequiredNumericParam } from '../../../../../util/getNumericParam.ts'
 import {
   IntakeContext,
   IntakeLayout,
-  nextLink,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 
 type AddressFormValues = {
   address: {
-    country_id: number
-    province_id: number
-    district_id: number
-    ward_id: number
-    suburb_id?: Maybe<number>
+    country_id: string
+    province_id: string
+    district_id: string
+    ward_id: string
+    suburb_id?: Maybe<string>
     street: string
   }
   nearest_organization_id: string
   nearest_organization_name: string
-  primary_doctor_id: number
+  primary_doctor_id: string
   primary_doctor_name: string
 }
 
@@ -42,18 +34,18 @@ function assertIsAddress(
   assertOr400(isObjectLike(patient.address))
   assertOr400(
     !!patient.address.country_id &&
-      typeof patient.address.country_id === 'number',
+      typeof patient.address.country_id === 'string',
   )
   assertOr400(
     !!patient.address.province_id &&
-      typeof patient.address.province_id === 'number',
+      typeof patient.address.province_id === 'string',
   )
   assertOr400(
     !!patient.address.district_id &&
-      typeof patient.address.district_id === 'number',
+      typeof patient.address.district_id === 'string',
   )
   assertOr400(
-    !!patient.address.ward_id && typeof patient.address.ward_id === 'number',
+    !!patient.address.ward_id && typeof patient.address.ward_id === 'string',
   )
   assertOr400(
     (!!patient.address.street && typeof patient.address.street === 'string') ||
@@ -65,7 +57,7 @@ function assertIsAddress(
   )
   assertOr400(
     !!(patient.primary_doctor_id &&
-      typeof patient.primary_doctor_id === 'number') ||
+      typeof patient.primary_doctor_id === 'string') ||
       patient.primary_doctor_name,
   )
 }
@@ -80,9 +72,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
       )
     return upsertPatientAndRedirect(ctx, {
       ...patient,
-      unregistered_primary_doctor_name: isNaN(patient.primary_doctor_id)
-        ? primary_doctor_name
-        : null,
+      unregistered_primary_doctor_name: patient.primary_doctor_id
+        ? null
+        : primary_doctor_name,
     })
   },
 }

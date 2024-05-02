@@ -106,7 +106,7 @@ export async function search(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    ids?: Maybe<number[]>
+    ids?: Maybe<string[]>
   },
 ): Promise<DrugSearchResult[]> {
   if (opts.ids) {
@@ -148,7 +148,7 @@ export async function searchManufacturedMedications(
   trx: TrxOrDb,
   opts: {
     search?: Maybe<string>
-    ids?: Maybe<number[]>
+    ids?: Maybe<string[]>
   },
 ): Promise<ManufacturedMedicationSearchResult[]> {
   if (opts.ids) {

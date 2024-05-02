@@ -32,12 +32,12 @@ export async function up(db: Kysely<any>) {
     )
       .addColumn(
         'guardian_patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
       .addColumn(
         'dependent_patient_id',
-        'integer',
+        'uuid',
         (col) => col.notNull().references('patients.id').onDelete('cascade'),
       )
       .addUniqueConstraint(

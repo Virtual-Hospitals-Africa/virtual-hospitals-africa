@@ -19,17 +19,17 @@ export async function up(db: Kysely<any>) {
 
   await createStandardTable(db, 'doctor_review_requests', (qb) =>
     qb
-      .addColumn('patient_id', 'integer', (col) =>
+      .addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patients.id')
           .onDelete('cascade'))
-      .addColumn('encounter_id', 'integer', (col) =>
+      .addColumn('encounter_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patient_encounters.id')
           .onDelete('cascade'))
-      .addColumn('requested_by', 'integer', (col) =>
+      .addColumn('requested_by', 'uuid', (col) =>
         col
           .notNull()
           .references('patient_encounter_providers.id')
@@ -38,7 +38,7 @@ export async function up(db: Kysely<any>) {
         col
           .references('Organization.id')
           .onDelete('cascade'))
-      .addColumn('requesting_doctor_id', 'integer', (col) =>
+      .addColumn('requesting_doctor_id', 'uuid', (col) =>
         col
           .references('employment.id')
           .onDelete('cascade'))
@@ -62,22 +62,22 @@ export async function up(db: Kysely<any>) {
 
   await createStandardTable(db, 'doctor_reviews', (qb) =>
     qb
-      .addColumn('reviewer_id', 'integer', (col) =>
+      .addColumn('reviewer_id', 'uuid', (col) =>
         col
           .notNull()
           .references('employment.id')
           .onDelete('cascade'))
-      .addColumn('patient_id', 'integer', (col) =>
+      .addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patients.id')
           .onDelete('cascade'))
-      .addColumn('encounter_id', 'integer', (col) =>
+      .addColumn('encounter_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patient_encounters.id')
           .onDelete('cascade'))
-      .addColumn('requested_by', 'integer', (col) =>
+      .addColumn('requested_by', 'uuid', (col) =>
         col
           .notNull()
           .references('patient_encounter_providers.id')
@@ -97,7 +97,7 @@ export async function up(db: Kysely<any>) {
   await createStandardTable(db, 'doctor_review_steps', (qb) =>
     qb.addColumn(
       'doctor_review_id',
-      'integer',
+      'uuid',
       (col) =>
         col.notNull().references('doctor_reviews.id').onDelete(
           'cascade',

@@ -23,7 +23,7 @@ export default function DrugInput({
     value?.drug || null,
   )
   const [medication_id, setMedicationId] = useState<
-    number | null
+    string | null
   >(
     value?.medication_id || null,
   )
@@ -32,7 +32,7 @@ export default function DrugInput({
     manufactured_medication_id,
     setManufacturedMedicationId,
   ] = useState<
-    number | null
+    string | null
   >(value?.manufactured_medication_id ?? null)
 
   const [strength, setStrength] = useState<
@@ -110,7 +110,7 @@ export default function DrugInput({
           disabled={!drug}
           onChange={(event) =>
             event.currentTarget.value &&
-            setMedicationId(Number(event.currentTarget.value))}
+            setMedicationId(event.currentTarget.value)}
         >
           <option value=''>Select Form</option>
           {drug &&

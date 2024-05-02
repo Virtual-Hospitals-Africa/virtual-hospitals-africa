@@ -7,7 +7,7 @@ export function up(db: Kysely<any>) {
     db,
     'patient_conditions',
     (qb) =>
-      qb.addColumn('patient_id', 'integer', (col) =>
+      qb.addColumn('patient_id', 'uuid', (col) =>
         col
           .notNull()
           .references('patients.id')
@@ -21,7 +21,7 @@ export function up(db: Kysely<any>) {
           col
             .notNull())
         .addColumn('end_date', 'date')
-        .addColumn('comorbidity_of_condition_id', 'integer', (col) =>
+        .addColumn('comorbidity_of_condition_id', 'uuid', (col) =>
           col
             .references('patient_conditions.id')
             .onDelete('cascade'))

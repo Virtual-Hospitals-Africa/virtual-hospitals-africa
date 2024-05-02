@@ -2,11 +2,11 @@ import * as patients from '../../../../db/models/patients.ts'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../types.ts'
 import { file } from '../../../../util/responses.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
+import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
   async GET(_, ctx) {
-    const patient_id = parseInt(ctx.params.patient_id)
-    assertOr404(patient_id, 'Invalid patient ID')
+    const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
     // TODO: check if the health worker has access as part of the media query below
     const avatar = await patients.getAvatar(ctx.state.trx, { patient_id })
