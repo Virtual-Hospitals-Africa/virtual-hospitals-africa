@@ -3,14 +3,14 @@ import { LoggedInHealthWorkerContext } from '../../../../types.ts'
 import redirect from '../../../../util/redirect.ts'
 import { DOCTOR_REVIEW_STEPS } from '../../../../shared/review.ts'
 import { addSelfAsReviewer } from '../../../../db/models/doctor_reviews.ts'
-import { getRequiredParam } from '../../../../util/getParam.ts'
+import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 
 export default async function PatientPage(
   _req: Request,
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { doctor_review } = await addSelfAsReviewer(ctx.state.trx, {
-    patient_id: getRequiredParam(ctx, 'patient_id'),
+    patient_id: getRequiredUUIDParam(ctx, 'patient_id'),
     health_worker: ctx.state.healthWorker,
   })
 

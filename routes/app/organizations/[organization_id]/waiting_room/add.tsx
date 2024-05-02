@@ -52,8 +52,8 @@ export default async function WaitingRoomAdd(
 ) {
   const { trx } = state
   const { searchParams } = url
-  const patient_id = parseInt(searchParams.get('patient_id')!) || null
-  const encounter_id = parseInt(searchParams.get('encounter_id')!) || null
+  const patient_id = searchParams.get('patient_id')
+  const encounter_id = searchParams.get('encounter_id')
   assertOr400(!patient_id || !encounter_id, 'patient_id or encounter_id only')
 
   const patient_name = searchParams.get('patient_name')

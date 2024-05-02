@@ -346,6 +346,9 @@ export async function withTestOrganization(
     // phone: null,
   })
   await callback!(organization!.id)
+  await trx.deleteFrom('Address')
+    .where('resourceId', '=', organization!.id)
+    .execute()
   await trx.deleteFrom('Location')
     .where('organizationId', '=', organization!.id)
     .execute()
@@ -377,6 +380,9 @@ export async function withTestOrganizations(
     organization!.id
   )
   await callback(organization_ids)
+  await trx.deleteFrom('Address')
+    .where('resourceId', 'in', organization_ids)
+    .execute()
   await trx.deleteFrom('Location')
     .where('organizationId', 'in', organization_ids)
     .execute()
@@ -392,9 +398,34 @@ export function readFirstFiveRowsOfSeedDump(
     !file_name.endsWith('.tsv') && !file_name.includes('/'),
     'file_name should just be the file name without the extension nor the path',
   )
+  // deno-lint-ignore no-explicit-any
   let rows: any[]
   beforeAll(async () => {
     rows = await collect(take(parseTsv(`./db/seed/dumps/${file_name}.tsv`), 5))
+  })
+  return {
+    get value() {
+      if (!rows) {
+        throw new Error(
+          'rows not initialized, must be called in a describe block',
+        )
+      }
+      return rows
+    },
+  }
+}
+
+export function readSeedDump(
+  file_name: string,
+) {
+  assert(
+    !file_name.endsWith('.tsv') && !file_name.includes('/'),
+    'file_name should just be the file name without the extension nor the path',
+  )
+  // deno-lint-ignore no-explicit-any
+  let rows: any[]
+  beforeAll(async () => {
+    rows = await collect(parseTsv(`./db/seed/dumps/${file_name}.tsv`))
   })
   return {
     get value() {

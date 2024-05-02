@@ -207,20 +207,16 @@ async function addInventoryTransactions(admin: HW, _nurses: HW[]) {
         .executeTakeFirstOrThrow()
     )
 
-  const max_manufactured_medication_id = await db.selectFrom(
+  const manufactured_medication_ids = await db.selectFrom(
     'manufactured_medications',
   )
     .select('id')
     .orderBy('id', 'desc')
-    .executeTakeFirstOrThrow()
-
-  const num_medications = 200
-  const manufactured_medication_ids = shuffle(
-    range(1, max_manufactured_medication_id.id + 1),
-  ).slice(0, num_medications)
+    .limit(200)
+    .execute()
 
   const manufactured_medications = await searchManufacturedMedications(db, {
-    ids: manufactured_medication_ids,
+    ids: manufactured_medication_ids.map(({ id }) => id),
   })
 
   for (const manufactured_medication of manufactured_medications) {

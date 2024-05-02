@@ -131,7 +131,7 @@ describe('/app/patients/[patient_id]/intake', {
     assertEquals($('input[name="phone_number"]').val(), phone_number)
   })
 
-  it.only('supports POST on the address step, moving you to the conditions step', async () => {
+  it('supports POST on the address step, moving you to the conditions step', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',

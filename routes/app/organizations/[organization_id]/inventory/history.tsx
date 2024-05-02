@@ -8,7 +8,7 @@ export default async function InventoryHistoryPage(
   _req: Request,
   { route, url, state }: OrganizationContext,
 ) {
-  const consumable_id = parseInt(url.searchParams.get('consumable_id')!)
+  const consumable_id = url.searchParams.get('consumable_id')
   assertOr404(consumable_id)
 
   const consumable = await inventory.getConsumablesHistory(

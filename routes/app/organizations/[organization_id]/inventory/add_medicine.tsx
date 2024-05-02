@@ -89,13 +89,10 @@ export default async function MedicineAdd(
 ) {
   let manufactured_medication: ManufacturedMedicationSearchResult | null = null
   let last_procurement: MedicationProcurement | undefined
-  const manufactured_medication_id_param = url.searchParams.get(
+  const manufactured_medication_id = url.searchParams.get(
     'manufactured_medication_id',
   )
-  if (manufactured_medication_id_param) {
-    const manufactured_medication_id = parseInt(
-      manufactured_medication_id_param,
-    )
+  if (manufactured_medication_id) {
     const strength = parseInt(url.searchParams.get('strength')!) || undefined
     assertOr400(manufactured_medication_id)
     const getting_latest_procurement = inventory.getLatestProcurement(

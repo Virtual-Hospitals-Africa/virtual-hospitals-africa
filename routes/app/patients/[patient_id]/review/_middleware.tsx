@@ -4,7 +4,7 @@ import { assert } from 'std/assert/assert.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import Form from '../../../../../components/library/Form.tsx'
 import * as doctor_reviews from '../../../../../db/models/doctor_reviews.ts'
-import { getRequiredParam } from '../../../../../util/getParam.ts'
+import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { Person } from '../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
 import capitalize from '../../../../../util/capitalize.ts'
@@ -28,7 +28,7 @@ export async function handler(
   Object.assign(
     ctx.state,
     await doctor_reviews.addSelfAsReviewer(ctx.state.trx, {
-      patient_id: getRequiredParam(ctx, 'patient_id'),
+      patient_id: getRequiredUUIDParam(ctx, 'patient_id'),
       health_worker: ctx.state.healthWorker,
     }),
   )

@@ -9,7 +9,7 @@ import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { getRequiredParam } from '../../../../../util/getParam.ts'
+import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import {
   assertOr400,
   assertOr403,
@@ -90,7 +90,7 @@ export default async function ConsumableAdd(
     const consumables = await searchConsumables(
       state.trx,
       {
-        ids: [parseInt(consumable_id)],
+        ids: [consumable_id],
       },
     )
     assertOr404(consumables.length)

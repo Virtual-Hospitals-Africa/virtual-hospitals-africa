@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import * as patients from '../../../../db/models/patients.ts'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import { LoggedInHealthWorkerContext } from '../../../../types.ts'
-import { getRequiredParam } from '../../../../util/getParam.ts'
+import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import redirect from '../../../../util/redirect.ts'
 import { INTAKE_STEPS } from '../../../../shared/intake.ts'
 
@@ -11,7 +11,7 @@ export default async function PatientPage(
   ctx: LoggedInHealthWorkerContext,
 ) {
   const { healthWorker } = ctx.state
-  const patient_id = getRequiredParam(ctx, 'patient_id')
+  const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
   const [patient] = await patients.getWithOpenEncounter(ctx.state.trx, {
     ids: [patient_id],

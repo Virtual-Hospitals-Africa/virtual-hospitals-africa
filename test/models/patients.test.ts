@@ -79,7 +79,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
               view: `/app/patients/${test_patient2.id}`,
             },
           },
-        ], 'name').reverse(),
+        ], 'name'),
       )
     })
 

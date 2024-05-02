@@ -11,7 +11,7 @@ import {
 } from '../components/library/icons/heroicons/outline.tsx'
 import capitalize from '../util/capitalize.ts'
 
-function HasStringId(value: unknown): value is { id: unknown } {
+function hasId(value: unknown): value is { id: unknown } {
   return isObjectLike(value) && !!value.id
 }
 
@@ -97,7 +97,7 @@ export default function Search<
   const [selected, setSelected] = useState<
     T | null
   >(
-    HasStringId(value) ? value : null,
+    hasId(value) ? value : null,
   )
 
   const [query, setQuery] = useState(value?.name ?? '')

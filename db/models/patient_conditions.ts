@@ -208,12 +208,11 @@ export async function upsertPreExisting(
 
   await Promise.all(
     patient_conditions.map((condition) => (
-      console.log(patient_id, condition),
-        upsertPreExistingCondition(
-          trx,
-          patient_id,
-          condition,
-        )
+      upsertPreExistingCondition(
+        trx,
+        patient_id,
+        condition,
+      )
     )),
   )
   await removing

@@ -3,7 +3,7 @@ import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts
 import { assertOr403 } from '../../../../../../util/assertOr.ts'
 import * as health_workers from '../../../../../../db/models/health_workers.ts'
 import redirect from '../../../../../../util/redirect.ts'
-import { getRequiredParam } from '../../../../../../util/getParam.ts'
+import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { OrganizationContext } from '../../_middleware.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -15,7 +15,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     assertOr403(isAdminAtOrganization)
 
-    const health_worker_id = getRequiredParam(ctx, 'health_worker_id')
+    const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
     const getting_employee = health_workers.getEmployeeInfo(
       trx,

@@ -10,7 +10,7 @@ import OrganizationDeviceForm from '../../../../../components/inventory/DeviceFo
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
 import * as devices from '../../../../../db/models/devices.ts'
-import { getRequiredParam } from '../../../../../util/getParam.ts'
+import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import {
   assertOr400,
   assertOr403,
@@ -71,7 +71,7 @@ export default async function DeviceAdd(
     const result = await devices.search(
       state.trx,
       {
-        ids: [parseInt(device_id)],
+        ids: [device_id],
       },
     )
     assertOr404(result.length)

@@ -8,7 +8,7 @@
     "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
     "web": "deno task run:trusted main.ts",
 
-    "db:codegen": "cd ./db/codegen && npm install && cd ../.. && ./db/codegen/node_modules/.bin/kysely-codegen --out-file db.d.ts && echo 'type Buffer = Uint8Array' >> db.d.ts",
+    "db:codegen": "./db/codegen.sh",
     "db:local": "./db/local.sh",
     "db:reset": "deno task run:trusted ./db/reset.ts",
     "db:migrate": "deno task run:trusted db/migrate.ts",

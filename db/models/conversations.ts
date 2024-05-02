@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   HasStringId,
@@ -244,21 +243,15 @@ export async function getMediaIdByPatientId(
   trx: TrxOrDb,
   opts: {
     patient_id: string
-    existing_media?: number[]
   },
-): Promise<number[]> {
-  const queryResult = await trx.selectFrom('whatsapp_messages_received').where(
-    'patient_id',
-    '=',
-    opts.patient_id,
-  ).where('has_media', '=', true).select('media_id').execute()
-  const mediaids: string[] = []
-  for (const { media_id } of queryResult) {
-    assert(media_id, `No media found for patient${opts.patient_id}`)
-    if (!opts.existing_media || !opts.existing_media.includes(media_id)) {
-      mediaIds.push(media_id)
-    }
-  }
-
-  return mediaIds
+): Promise<string[]> {
+  const result = await trx
+    .selectFrom('whatsapp_messages_received')
+    .where('patient_id', '=', opts.patient_id)
+    .where('has_media', '=', true)
+    .select((eb) => [
+      eb.ref('media_id').$notNull().as('media_id'),
+    ])
+    .execute()
+  return result.map((r) => r.media_id)
 }

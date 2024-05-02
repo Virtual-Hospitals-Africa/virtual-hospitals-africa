@@ -5,12 +5,7 @@ import * as media from '../../../../../../db/models/media.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps = {
   async GET(_, ctx) {
-    console.log('get appointment media called')
-    const appointment_id = parseInt(ctx.params.appointmentId)
-    assert(appointment_id)
-
-    const media_id = parseInt(ctx.params.mediaId)
-    assert(media_id)
+    const { appointment_id, media_id } = ctx.params
 
     const appointment_media = await media.get(ctx.state.trx, {
       media_id,

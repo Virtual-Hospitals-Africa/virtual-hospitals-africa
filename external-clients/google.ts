@@ -527,7 +527,6 @@ export async function getWalkingDistance(
     locations.destination,
   )
   if (cachedDistance) {
-    console.log('Get walking distance from redis: ' + cachedDistance)
     return cachedDistance
   }
 

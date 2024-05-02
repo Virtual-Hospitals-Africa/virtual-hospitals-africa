@@ -106,7 +106,6 @@ const baseSelect = (trx: TrxOrDb) =>
         view: view_href_sql,
       }).as('actions'),
     ])
-    .orderBy('id asc')
 
 const selectWithName = (trx: TrxOrDb) =>
   baseSelect(trx).where('patients.name', 'is not', null)
