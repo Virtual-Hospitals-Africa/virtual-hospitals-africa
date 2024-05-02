@@ -23,7 +23,7 @@ export function assertIsUpsertDevice(
   obj: unknown,
 ): asserts obj is { device_id: string; serial_number?: string } {
   assertOr400(isObjectLike(obj))
-  assertOr400(typeof obj.device_id === 'number')
+  assertOr400(typeof obj.device_id === 'string')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<

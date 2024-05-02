@@ -42,18 +42,18 @@ function assertIsAddress(
   assertOr400(isObjectLike(patient.address))
   assertOr400(
     !!patient.address.country_id &&
-      typeof patient.address.country_id === 'number',
+      typeof patient.address.country_id === 'string',
   )
   assertOr400(
     !!patient.address.province_id &&
-      typeof patient.address.province_id === 'number',
+      typeof patient.address.province_id === 'string',
   )
   assertOr400(
     !!patient.address.district_id &&
-      typeof patient.address.district_id === 'number',
+      typeof patient.address.district_id === 'string',
   )
   assertOr400(
-    !!patient.address.ward_id && typeof patient.address.ward_id === 'number',
+    !!patient.address.ward_id && typeof patient.address.ward_id === 'string',
   )
   assertOr400(
     (!!patient.address.street && typeof patient.address.street === 'string') ||
@@ -65,7 +65,7 @@ function assertIsAddress(
   )
   assertOr400(
     !!(patient.primary_doctor_id &&
-      typeof patient.primary_doctor_id === 'number') ||
+      typeof patient.primary_doctor_id === 'string') ||
       patient.primary_doctor_name,
   )
 }

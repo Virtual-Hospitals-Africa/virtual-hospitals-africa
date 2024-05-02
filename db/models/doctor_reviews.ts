@@ -19,7 +19,7 @@ import {
   jsonArrayFromColumn,
   jsonBuildObject,
   jsonObjectFrom,
-  literalNumber,
+  literalString,
 } from '../helpers.ts'
 import { getCardQuery } from './patients.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -235,7 +235,7 @@ export async function start(
           'patient_id',
           'encounter_id',
           'requested_by',
-          literalNumber(employment_id).as('reviewer_id'),
+          literalString(employment_id).as('reviewer_id'),
         ])
     )
     .returning('id')

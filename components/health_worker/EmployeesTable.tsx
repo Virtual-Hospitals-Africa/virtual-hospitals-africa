@@ -22,7 +22,6 @@ export default function EmployeesTable({
   employees,
   pathname,
 }: EmployeesTableProps): JSX.Element {
-  console.log('employees', employees)
   const columns: TableColumn<OrganizationEmployeeOrInvitee>[] = [
     {
       label: 'Employee',

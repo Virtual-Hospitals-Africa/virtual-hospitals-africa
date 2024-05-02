@@ -338,7 +338,7 @@ export function searchConsumables(
   trx: TrxOrDb,
   opts: {
     search?: string
-    ids?: number[]
+    ids?: string[]
   },
 ): Promise<RenderedConsumable[]> {
   if (opts.ids) {
@@ -460,14 +460,14 @@ export async function addOrganizationMedicine(
         )
         .select([
           'consumable_id',
-          literalNumber(medicine.created_by).as('created_by'),
+          literalString(medicine.created_by).as('created_by'),
           literalString(organization_id).as('organization_id'),
           literalNumber(medicine.quantity).as('quantity'),
           literalNumber(medicine.number_of_containers).as(
             'number_of_containers',
           ),
           literalNumber(medicine.container_size).as('container_size'),
-          literalNumber(procured_from.id).as('procured_from'),
+          literalString(procured_from.id).as('procured_from'),
           literalOptionalDate(medicine.expiry_date).as('expiry_date'),
           sql.lit<string | undefined>(medicine.batch_number).as('batch_number'),
         ])

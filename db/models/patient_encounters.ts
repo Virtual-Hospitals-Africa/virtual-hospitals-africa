@@ -42,17 +42,17 @@ export function assertIsUpsert(
   obj: unknown,
 ): asserts obj is Upsert {
   assertOr400(isObjectLike(obj))
-  assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'number')
-  assertOr400(obj.patient_id == null || typeof obj.patient_id === 'number')
+  assertOr400(obj.encounter_id == null || typeof obj.encounter_id === 'string')
+  assertOr400(obj.patient_id == null || typeof obj.patient_id === 'string')
   assertOr400(typeof obj.reason === 'string')
   assertIsEncounterReason(obj.reason)
   assertOr400(
     !obj.provider_ids ||
       (Array.isArray(obj.provider_ids) &&
-        obj.provider_ids.every((id: unknown) => typeof id === 'number')),
+        obj.provider_ids.every((id: unknown) => typeof id === 'string')),
   )
   assertOr400(
-    obj.appointment_id == null || typeof obj.appointment_id === 'number',
+    obj.appointment_id == null || typeof obj.appointment_id === 'string',
   )
   assertOr400(obj.notes == null || typeof obj.notes === 'string')
   assertOr400(obj.intake == null || typeof obj.intake === 'string')

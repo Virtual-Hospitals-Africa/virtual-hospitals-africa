@@ -22,7 +22,6 @@ export async function initializeHealthWorker(
   assert(invitees.length, 'No invitees found')
 
   // Fire off async operations in parallel
-  console.log('invitees', invitees)
   const removing_invites = await employment.removeInvitees(
     trx,
     invitees.map((invitee) => invitee.id),

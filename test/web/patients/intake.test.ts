@@ -315,7 +315,7 @@ describe('/app/patients/[patient_id]/intake', {
       preExistingCondition.medications[0].intake_frequency,
       'qod',
     )
-    assertEquals(preExistingCondition.medications[0].medication_id, 1)
+    assertEquals(preExistingCondition.medications[0].medication_id, tablet.id)
     assertEquals(
       preExistingCondition.medications[0].strength,
       150,

@@ -16,11 +16,9 @@ export async function handler(
 ) {
   const health_worker_id = ctx.state.session.get('health_worker_id')
   assert(health_worker_id)
-  console.log('GETTING HEALTH WORKER', health_worker_id)
   const healthWorker = await health_workers.get(ctx.state.trx, {
     health_worker_id,
   })
-  console.log('GOT HEALTH WORKER', health_worker_id)
 
   if (!health_workers.isEmployed(healthWorker)) {
     ctx.state.session.clear()
@@ -54,9 +52,7 @@ export async function handler(
     params?: Record<string, string>,
   ) {
     const current_url = ctx.url.pathname + ctx.url.search
-    console.log('current_url', current_url)
     const on_page = current_url.startsWith(page)
-    console.log('on_page', on_page, page)
     return on_page
       ? ctx.next()
       : redirect(params ? `${page}?${new URLSearchParams(params)}` : page)

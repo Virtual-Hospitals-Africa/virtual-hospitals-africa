@@ -13,7 +13,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
     // Step 1: share location
-    const p = await patients.upsert(db, {
+    await patients.upsert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',
@@ -21,7 +21,6 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       date_of_birth: '2023-01-01',
       national_id_number: randomNationalId(),
     })
-    console.log('patient', p)
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
@@ -55,8 +54,6 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       '=',
       p.id,
     ).selectAll().executeTakeFirstOrThrow()
-
-    console.log(nearest.nearest_organizations)
 
     // Step 2: select organization id
     await conversations.insertMessageReceived(db, {

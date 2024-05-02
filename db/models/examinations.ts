@@ -7,7 +7,7 @@ import { isISODateString } from '../../util/date.ts'
 import { RenderedPatientExamination, TrxOrDb } from '../../types.ts'
 import { Examination } from '../../shared/examinations.ts'
 import { QueryCreatorWithCommonTableExpression } from 'kysely/parser/with-parser.js'
-import { literalNumber } from '../helpers.ts'
+import { literalString } from '../helpers.ts'
 
 function examinationName(name: Examination) {
   return sql<Examination>`${name}::varchar(40)`.as('examination_name')
@@ -204,9 +204,9 @@ export async function add(
         .where('patient_examinations.id', 'is', null)
         .select([
           'examinations.name as examination_name',
-          literalNumber(patient_id).as('patient_id'),
-          literalNumber(encounter_id).as('encounter_id'),
-          literalNumber(encounter_provider_id).as('encounter_provider_id'),
+          literalString(patient_id).as('patient_id'),
+          literalString(encounter_id).as('encounter_id'),
+          literalString(encounter_provider_id).as('encounter_provider_id'),
         ])
 
       const during_this_encounter = base_insert

@@ -292,11 +292,11 @@ export async function upsert(
   // For those relations we're upserting with existing patients, update the existing patient records.
   // Keep track of the guardian relations by patient ids so we can update the relations later
   const guardian_upserts_with_patient_ids = new Map<
-    number,
+    string,
     GuardianRelationName
   >()
   const dependent_upserts_with_patient_ids = new Map<
-    number,
+    string,
     GuardianRelationName
   >()
   for (const guardian of existing_guardians) {
@@ -412,7 +412,7 @@ export async function upsert(
     trx.deleteFrom('patient_guardians').where('id', 'in', to_remove).execute()
 
   // 2. Update: The relation exists in the db as given by its patient_id and the upsert
-  const updated_guardian_patient_ids = new Set<number>()
+  const updated_guardian_patient_ids = new Set<string>()
   const updating_relations: Promise<unknown>[] = []
   for (const guardian_relation_in_db of guardians_to_update) {
     const guardian_relation = guardian_upserts_with_patient_ids.get(
@@ -432,7 +432,7 @@ export async function upsert(
     )
     updated_guardian_patient_ids.add(guardian_relation_in_db.patient_id)
   }
-  const updated_dependent_patient_ids = new Set<number>()
+  const updated_dependent_patient_ids = new Set<string>()
   for (const dependent_relation_in_db of dependents_to_update) {
     const guardian_relation = dependent_upserts_with_patient_ids.get(
       dependent_relation_in_db.patient_id,

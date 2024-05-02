@@ -10,9 +10,7 @@ export default function AddressForm(
     country_address_tree: CountryAddressTree
   },
 ) {
-  // Zimbabwe has id: 1, that's the only country we support for now
   assertEquals(country_address_tree.length, 1, 'Only Zimbabwe supported')
-  assertEquals(country_address_tree[0].id, 1, 'Only Zimbabwe supported')
 
   const province_id = useSignal(address.province_id)
   const district_id = useSignal(address.district_id)

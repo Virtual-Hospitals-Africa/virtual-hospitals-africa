@@ -61,7 +61,7 @@ function assertPreExistingConditions(
   patient_conditions: PreExistingConditionUpsert[],
 ) {
   const condition_unique_indexes = new Set<string>()
-  const seen_medication_ids = new Set<number>()
+  const seen_medication_ids = new Set<string>()
   for (const condition of patient_conditions) {
     assertOr400(condition.id, 'Condition id must be present')
     assertOr400(

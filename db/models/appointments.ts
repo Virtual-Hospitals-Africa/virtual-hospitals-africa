@@ -360,7 +360,7 @@ export async function getMediaIdByRequestId(
   opts: {
     request_id: string
   },
-): Promise<number[]> {
+): Promise<string[]> {
   const queryResult = await trx.selectFrom('patient_appointment_request_media')
     .where('patient_appointment_request_id', '=', opts.request_id).select(
       'media_id',

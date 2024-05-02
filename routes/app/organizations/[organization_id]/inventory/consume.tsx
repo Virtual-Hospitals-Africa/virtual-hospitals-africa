@@ -19,8 +19,8 @@ export function assertIsUpsert(obj: unknown): asserts obj is {
 } {
   assertOr400(isObjectLike(obj))
   assertOr400(typeof obj.quantity === 'number')
-  assertOr400(typeof obj.procurement_id === 'number')
-  assertOr400(typeof obj.consumable_id === 'number')
+  assertOr400(typeof obj.procurement_id === 'string')
+  assertOr400(typeof obj.consumable_id === 'string')
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<

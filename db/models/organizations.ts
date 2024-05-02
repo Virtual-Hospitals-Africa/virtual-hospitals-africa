@@ -13,11 +13,7 @@ import {
 } from '../../types.ts'
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
-import {
-  jsonArrayFrom,
-  jsonArrayFromColumn,
-  jsonBuildObject,
-} from '../helpers.ts'
+import { jsonArrayFromColumn, jsonBuildObject } from '../helpers.ts'
 import * as medplum from '../../external-clients/medplum/client.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
@@ -372,7 +368,7 @@ export async function invite(
         profession: invite.profession,
         health_worker_id: existingEmployees.find((employee) =>
           employee.email === invite.email
-        )!.health_worker_id as number,
+        )!.health_worker_id!,
       })),
     )
   }
@@ -423,7 +419,6 @@ export async function add(
   trx: TrxOrDb,
   { id, name, category, address, latitude, longitude }: OrganizationsData,
 ) {
-  console.log(latitude, longitude)
   if (!category) {
     console.warn(`Skipping, no category found for organization: ${name}`)
     return

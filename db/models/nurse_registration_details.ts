@@ -97,7 +97,7 @@ function assertIsRegistrationDetails(
   registration_details: unknown,
 ): asserts registration_details is NurseRegistrationDetails {
   assertOr400(isObjectLike(registration_details))
-  assertOr400(typeof registration_details.health_worker_id === 'number')
+  assertOr400(typeof registration_details.health_worker_id === 'string')
   assertOr400(typeof registration_details.gender === 'string')
   assertOr400(
     (registration_details.gender === 'male') ||

@@ -147,7 +147,7 @@ export function isHealthWorkerWithGoogleTokens(
     'expires_at' in health_worker &&
     (typeof health_worker.expires_at === 'string' ||
       isDate(health_worker.expires_at)) &&
-    'id' in health_worker && typeof health_worker.id === 'number' &&
+    'id' in health_worker && typeof health_worker.id === 'string' &&
     'name' in health_worker && typeof health_worker.name === 'string' &&
     'email' in health_worker && typeof health_worker.email === 'string'
 }

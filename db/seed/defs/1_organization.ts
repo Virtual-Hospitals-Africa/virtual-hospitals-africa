@@ -38,7 +38,6 @@ async function importDataFromCSV(db: Kysely<any>) {
   await forEach(
     parseCsv('./db/resources/zimbabwe-health-organizations.csv'),
     async (row) => {
-      console.log('row', row)
       const address = (!row.address || row.address) === 'UNKNOWN'
         ? undefined
         : row.address
