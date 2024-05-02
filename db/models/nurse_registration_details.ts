@@ -116,15 +116,15 @@ function assertIsRegistrationDetails(
   )
   assertOr400(typeof registration_details.mobile_number === 'string')
   assertOr400(/^[0-9]+$/.test(registration_details.mobile_number))
-  assertOr400(isMaybeNumber(registration_details.national_id_media_id))
+  assertOr400(isMaybeString(registration_details.national_id_media_id))
   assertOr400(
-    isMaybeNumber(registration_details.ncz_registration_card_media_id),
+    isMaybeString(registration_details.ncz_registration_card_media_id),
   )
-  assertOr400(isMaybeNumber(registration_details.face_picture_media_id))
+  assertOr400(isMaybeString(registration_details.face_picture_media_id))
   assertOr400(
-    isMaybeNumber(registration_details.nurse_practicing_cert_media_id),
+    isMaybeString(registration_details.nurse_practicing_cert_media_id),
   )
-  assertOr400(isMaybeNumber(registration_details.approved_by))
+  assertOr400(isMaybeString(registration_details.approved_by))
 }
 
 function isDate(date: unknown): date is ISODateString {
@@ -132,6 +132,6 @@ function isDate(date: unknown): date is ISODateString {
     /^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$/.test(date)
 }
 
-function isMaybeNumber(num: unknown): num is Maybe<number> {
-  return num == null || typeof num === 'number'
+function isMaybeString(num: unknown): num is Maybe<string> {
+  return num == null || typeof num === 'string'
 }

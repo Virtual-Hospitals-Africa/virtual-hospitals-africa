@@ -86,6 +86,7 @@
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",
     "natural": "npm:natural@6.10.4",
     "sinon": "npm:sinon@17.0.1",
+    "lodash": "npm:lodash",
     "@medplum/core": "npm:@medplum/core"
   },
   "exclude": ["**/_fresh/*"],

@@ -44,15 +44,17 @@ describe(
 
         assertEquals(json, [
           {
+            id: encounter.patient_id,
+            name: patient_in_waiting_room_name,
+            href: `/app/patients/${encounter.patient_id}`,
+            in_waiting_room: true,
+          },
+          {
             id: patient_not_in_waiting_room.id,
             name: patient_not_in_waiting_room.name,
             href:
               `/app/organizations/${organization_id}/waiting_room/add?patient_id=${patient_not_in_waiting_room.id}`,
-          },
-          {
-            id: encounter.patient_id,
-            name: patient_in_waiting_room_name,
-            href: `/app/patients/${encounter.patient_id}`,
+            in_waiting_room: false,
           },
         ])
       }))

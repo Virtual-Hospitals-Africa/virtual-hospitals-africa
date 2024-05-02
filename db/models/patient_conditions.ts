@@ -19,7 +19,7 @@ import {
 } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
-import { debugLog, isoDate, jsonArrayFrom, now } from '../helpers.ts'
+import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
 
@@ -168,11 +168,6 @@ async function upsertPreExistingCondition(
     }
   })
 
-  debugLog(
-    trx
-      .insertInto('patient_condition_medications')
-      .values(medications),
-  )
   const inserting_medications = medications.length && trx
     .insertInto('patient_condition_medications')
     .values(medications)

@@ -9,6 +9,7 @@ import pick from '../../util/pick.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
 import { randomPhoneNumber } from '../mocks.ts'
+import sortBy from '../../util/sortBy.ts'
 
 describe('db/models/patients.ts', { sanitizeResources: false }, () => {
   describe('getAllWithNames', () => {
@@ -35,7 +36,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       })
 
       const results = await patients.getAllWithNames(trx, baseUUID)
-      assertEquals(results, [
+      assertEquals(results, sortBy([
         {
           id: test_patient1.id,
           avatar_url: null,
@@ -49,7 +50,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           nearest_organization: null,
           phone_number: null,
           last_visited: null,
-          conversation_state: 'initial_message',
+          conversation_state: 'initial_message' as const,
           completed_intake: false,
           intake_steps_completed: [],
           actions: {
@@ -69,14 +70,14 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           nearest_organization: null,
           phone_number: null,
           last_visited: null,
-          conversation_state: 'initial_message',
+          conversation_state: 'initial_message' as const,
           completed_intake: false,
           intake_steps_completed: [],
           actions: {
             view: `/app/patients/${test_patient2.id}`,
           },
         },
-      ])
+      ], 'name'))
     })
 
     itUsesTrxAnd(
