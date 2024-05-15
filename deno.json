@@ -19,10 +19,11 @@
     "medplum:server": "deno task run:trusted external-clients/medplum/server.ts",
     "medplum:superadmin": "deno task run:trusted external-clients/medplum/superadmin.ts",
 
-    "heroku:chatbot:up": "heroku ps:scale chatbot=1",
-    "heroku:chatbot:down": "heroku ps:scale chatbot=0",
-    "heroku:token_refresher:up": "heroku ps:scale token_refresher=1",
-    "heroku:token_refresher:down": "heroku ps:scale token_refresher=0",
+    "heroku:chatbot:patient:up": "heroku ps:scale web=1 --app vha-patient-chatbot",
+    "heroku:chatbot:patient:down": "heroku ps:scale web=0 --app vha-patient-chatbot",
+    "heroku:chatbot:pharmacist:up": "heroku ps:scale web=1 --app vha-pharmacist-chatbot",
+    "heroku:chatbot:pharmacist:down": "heroku ps:scale web=0 --app vha-pharmacist-chatbot",
+
     "heroku:web:up": "heroku ps:scale web=1",
     "heroku:web:down": "heroku ps:scale web=0",
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unsafely-ignore-certificate-errors --unstable --target x86_64-unknown-linux-gnu",
