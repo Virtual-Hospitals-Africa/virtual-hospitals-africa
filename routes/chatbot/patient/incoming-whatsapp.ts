@@ -1,13 +1,13 @@
 import { Handlers } from '$fresh/server.ts'
-import db from '../../db/db.ts'
-import * as conversations from '../../db/models/conversations.ts'
-import * as media from '../../db/models/media.ts'
-import * as whatsapp from '../../external-clients/whatsapp.ts'
+import db from '../../../db/db.ts'
+import * as conversations from '../../../db/models/conversations.ts'
+import * as media from '../../../db/models/media.ts'
+import * as whatsapp from '../../../external-clients/whatsapp.ts'
 import {
   WhatsAppIncomingMessage,
   WhatsAppMessage,
   WhatsAppMessageContents,
-} from '../../types.ts'
+} from '../../../types.ts'
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
