@@ -4,4 +4,4 @@ COPY ./ /app
 RUN touch .env
 EXPOSE 8000
 
-CMD ["deno", "task", "chatbot:patient"]
+CMD ["deno", "task", "chatbot:pharmacist"]

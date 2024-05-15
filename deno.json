@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "chatbot": "deno task run:trusted chatbot/chatbot.ts",
+    "chatbot:patient": "deno task run:trusted chatbot/chatbot.ts patient",
+    "chatbot:pharmacist": "deno task run:trusted chatbot/chatbot.ts pharmacist",
     "token_refresher": "deno task run:trusted token_refresher/token_refresher.ts",
     "build": "BUILDING=true deno task run:trusted dev.ts build",
     "start": "deno task run:trusted --watch=chatbot/,db/,islands/,util/,components/,external-clients/,routes/,static/,shared/ dev.ts",

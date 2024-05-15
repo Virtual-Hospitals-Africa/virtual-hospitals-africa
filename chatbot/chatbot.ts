@@ -1,9 +1,12 @@
+import { assert } from 'std/assert/assert.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 import respond from './respond.ts'
 
+type Chatbot = 'patient' | 'pharmacist'
+
 export type Responder = { start(): void; exit(): void }
 
-export function createChatbot(): Responder {
+export function createChatbot(_chatbot_name: Chatbot): Responder {
   let timer: number
 
   // TODO: handle receiving more than one message in a row from same patient
@@ -26,4 +29,15 @@ export function createChatbot(): Responder {
   }
 }
 
-createChatbot().start()
+function assertChatbotName(chatbot_name: string): asserts chatbot_name is Chatbot {
+  assert(
+    chatbot_name === 'patient' || chatbot_name === 'pharmacist',
+    'invalid chatbot argument',
+  )
+}
+
+if (import.meta.main) {
+  const [chatbot_name] = Deno.args
+  assertChatbotName(chatbot_name)
+  createChatbot(chatbot_name).start()
+}
