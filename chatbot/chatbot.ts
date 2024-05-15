@@ -29,7 +29,9 @@ export function createChatbot(_chatbot_name: Chatbot): Responder {
   }
 }
 
-function assertChatbotName(chatbot_name: string): asserts chatbot_name is Chatbot {
+function assertChatbotName(
+  chatbot_name: string,
+): asserts chatbot_name is Chatbot {
   assert(
     chatbot_name === 'patient' || chatbot_name === 'pharmacist',
     'invalid chatbot argument',
