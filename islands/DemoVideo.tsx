@@ -4,7 +4,7 @@ import { useEffect } from 'preact/hooks'
 import { effect, useSignal } from '@preact/signals'
 import { assert } from 'std/assert/assert.ts'
 
-const videoId = '8aB1BibAl18'
+const videoId = 'nrEloCfycjk'
 const videoQuality = 'hd1440'
 
 // deno-lint-ignore no-explicit-any
