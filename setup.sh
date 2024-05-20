@@ -11,24 +11,14 @@ ensure_you_have() {
   fi
 }
 
-db_exists() {
-  psql -lqt | cut -d \| -f 1 | grep -qw "$1"
-}
-
 echo "Checking you have the right tools installed..."
 
 ensure_you_have "git"
 ensure_you_have "deno"
+ensure_you_have "npm" "node"
 ensure_you_have "heroku"
 ensure_you_have "redis-server" "redis"
 ensure_you_have "createdb" "postgresql"
-
-echo "Great! You have the right tools installed. Creating a local database..."
-
-db_exists vha_dev || createdb -h localhost -U "$me" -w vha_dev
-db_exists vha_test || createdb -h localhost -U "$me" -w vha_test
-
-echo "Done! Now we'll set up your local environment variables..."
 
 if [ ! -f .env.local ] || [ ! -f .env.prod ]; then
   heroku whoami &> /dev/null || heroku login
@@ -63,11 +53,13 @@ fi
 
 redis-server --daemonize yes
 
+echo "Now we'll install the project dependencies..."
+echo "Installing medplum..."
+
 deno task switch:local
+deno task medplum:setup
 
 echo "Now let's migrate your local database..."
-
-deno task db:migrate latest
-IS_TEST=true deno task db:migrate latest
+deno task db:local reset
 
 echo "Migrations complete! You can now run the server with 'deno task start'"

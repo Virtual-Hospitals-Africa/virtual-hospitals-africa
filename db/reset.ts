@@ -11,9 +11,13 @@ async function recreateDatabase() {
   await redis.flushdb()
 
   console.log('Dropping database...')
-  await runCommand('dropdb', {
-    args: [opts.dbname],
-  })
+  try {
+    await runCommand('dropdb', {
+      args: [opts.dbname],
+    })
+  } catch (e) {
+    console.log('Database does not exist, skipping drop.')
+  }
 
   console.log('Recreating database...')
   const whoami = await runCommand('whoami')
