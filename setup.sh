@@ -46,7 +46,7 @@ if [ ! -f .env.local ] || [ ! -f .env.prod ]; then
 
   echo "DATABASE_URL=postgres://${me}@localhost:5432/vha_dev" >> .env.local
 
-  echo "Great! You're environment variables are all set up."
+  echo "Great! Your environment variables are all set up."
 else
   echo "It looks like you already have a .env.local and .env.prod files."
 fi
