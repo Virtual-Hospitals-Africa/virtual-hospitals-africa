@@ -84,8 +84,7 @@ import * as $app_surgeries from './routes/app/surgeries.tsx'
 import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
-import * as $chatbot_patient_incoming_whatsapp from './routes/chatbot/patient/incoming-whatsapp.ts'
-import * as $chatbot_pharmacist_incoming_whatsapp from './routes/chatbot/pharmacist/incoming-whatsapp.ts'
+import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
@@ -321,10 +320,7 @@ const manifest = {
     './routes/app/symptoms.tsx': $app_symptoms,
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
-    './routes/chatbot/patient/incoming-whatsapp.ts':
-      $chatbot_patient_incoming_whatsapp,
-    './routes/chatbot/pharmacist/incoming-whatsapp.ts':
-      $chatbot_pharmacist_incoming_whatsapp,
+    './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/loading-test.tsx': $loading_test,
