@@ -69,8 +69,8 @@ export async function run({ cmd, target }: {
 }
 
 if (import.meta.main) {
-  const [cmd, target] = Deno.args[0]
-  const recognized_command = !!cmd && cmd in gerund
+  const [cmd, target] = Deno.args
+  const recognized_command = !!cmd && (cmd in gerund)
   if (!recognized_command) {
     console.error(
       'Please provide a valid command name as in\ndeno task db:seed $cmd\nAvailable commands:',
