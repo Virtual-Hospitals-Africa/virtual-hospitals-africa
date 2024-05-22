@@ -45,7 +45,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       }]),
     }
 
-    await respond(fakeWhatsApp, phone_number)
+    await respond(fakeWhatsApp, 'patient', phone_number)
 
     const callArgs = fakeWhatsApp.sendMessages.firstCall.args[0]
 

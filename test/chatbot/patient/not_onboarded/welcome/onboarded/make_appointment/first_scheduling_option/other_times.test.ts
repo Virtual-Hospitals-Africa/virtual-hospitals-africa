@@ -144,7 +144,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       { id: 'insertEvent_id' },
     )
 
-    await respond(fakeWhatsApp, phone_number)
+    await respond(fakeWhatsApp, 'patient', phone_number)
 
     const message = fakeWhatsApp.sendMessages.firstCall.args[0].messages
 

@@ -39,7 +39,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       }]),
     }
 
-    await respond(fakeWhatsAppOne, phone_number)
+    await respond(fakeWhatsAppOne, 'patient', phone_number)
 
     await conversations.insertMessageReceived(db, {
       patient_phone_number: phone_number,
@@ -58,7 +58,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       }]),
     }
 
-    await respond(fakeWhatsAppTwo)
+    await respond(fakeWhatsAppTwo, 'patient')
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
         messages: {

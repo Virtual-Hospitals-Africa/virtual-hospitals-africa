@@ -89,17 +89,53 @@ async function respondToPatientMessage(
   }
 }
 
+// async function respondToPharmacistMessage(
+//   whatsapp: WhatsApp,
+//   pharmacistConversationStates: ConversationStates<
+//     PharmacistConversationState,
+//     PharmacistState
+//   >,
+//   pharmacistState: PharmacistState,
+// ) {
+//   await whatsapp.sendMessage({
+//     message: {
+//       type: 'string',
+//       messageBody: 'Hello pharmacist',
+//     },
+//     phone_number: '+12369961017',
+//   })
+// }
+
 export default async function respond(
   whatsapp: WhatsApp,
+  chatbot_name: string,
   phone_number?: string,
 ) {
-  const unhandledMessages = await getUnhandledPatientMessages(db, {
-    commitHash,
-    phone_number,
-  })
-  return Promise.all(
-    unhandledMessages.map((msg) =>
-      respondToPatientMessage(whatsapp, patientConversationStates, msg)
-    ),
-  )
+  if (chatbot_name === 'patient') {
+    const unhandledMessages = await getUnhandledPatientMessages(db, {
+      commitHash,
+      phone_number,
+    })
+
+    if (unhandledMessages.length !== 0) {
+      console.log('unhandledMessages', unhandledMessages)
+    }
+
+    return Promise.all(
+      unhandledMessages.map((msg) =>
+        respondToPatientMessage(whatsapp, patientConversationStates, msg)
+      ),
+    )
+  }
+
+  if (chatbot_name === 'pharmacist') {
+    whatsapp.sendMessage({
+      message: {
+        type: 'string',
+        messageBody: 'Hello pharmacist',
+      },
+      phone_number: '+12369961017',
+    })
+    console.log('pharmacist')
+  }
 }

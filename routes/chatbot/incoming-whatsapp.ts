@@ -1,4 +1,5 @@
 import { Handlers } from '$fresh/server.ts'
+import { assert } from 'std/assert/assert.ts'
 import db from '../../db/db.ts'
 import * as conversations from '../../db/models/conversations.ts'
 import * as media from '../../db/models/media.ts'
@@ -110,6 +111,21 @@ export const handler: Handlers = {
     const [change, ...otherChanges] = entry.changes
     if (otherChanges.length) {
       console.error("More than one change in the entry, that's weird")
+    }
+
+    const pharmacistPhone = '263712093355'
+    const patientPhone = '263784010987'
+    const { display_phone_number } = change.value.metadata
+
+    assert(
+      display_phone_number === pharmacistPhone ||
+        display_phone_number === patientPhone,
+      'Phone number is not the pharmacist or patient phone number',
+    )
+
+    if (display_phone_number === pharmacistPhone) {
+      console.log('Pharmacist Message')
+      return new Response('OK')
     }
 
     if (change.value.statuses) {

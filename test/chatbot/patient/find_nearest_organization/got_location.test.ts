@@ -45,7 +45,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       }]),
     }
 
-    await respond(fakeWhatsAppOne)
+    await respond(fakeWhatsAppOne, 'patient')
     const arcadia = organizations.value.find((o) =>
       o.canonicalName === 'Arcadia Clinic'
     )!
@@ -77,7 +77,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       }]),
     }
 
-    await respond(fakeWhatsAppTwo)
+    await respond(fakeWhatsAppTwo, 'patient')
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
         messages: [
