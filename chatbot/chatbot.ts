@@ -6,12 +6,17 @@ type Chatbot = 'patient' | 'pharmacist'
 
 export type Responder = { start(): void; exit(): void }
 
-export function createChatbot(_chatbot_name: Chatbot): Responder {
+export function createChatbot(chatbot_name: Chatbot): Responder {
   let timer: number
 
   // TODO: handle receiving more than one message in a row from same patient
   async function respondAndSetTimer(): Promise<void> {
-    await respond(whatsapp)
+
+
+    //this respond is trying to send a message from the patient chatbot, need to find a way to send a message from the pharmacist chatbot
+
+
+    await respond(whatsapp, chatbot_name )
     // TODO: it seems like this recursion might be causing a memory leak?
     // A setInterval isn't quite right because we want to wait for the
     // previous batch of messages to be done processing before starting again.
