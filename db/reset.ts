@@ -15,7 +15,7 @@ async function recreateDatabase() {
     await runCommand('dropdb', {
       args: [opts.dbname],
     })
-  } catch (e) {
+  } catch (_e) {
     console.log('Database does not exist, skipping drop.')
   }
 
