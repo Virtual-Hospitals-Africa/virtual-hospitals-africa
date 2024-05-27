@@ -151,7 +151,6 @@ export default async function respond(
   }
 
   if (chatbot_name === 'pharmacist') {
-    
     console.log('pharmacist')
   }
 }
