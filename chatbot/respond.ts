@@ -151,13 +151,7 @@ export default async function respond(
   }
 
   if (chatbot_name === 'pharmacist') {
-    whatsapp.sendMessage({
-      message: {
-        type: 'string',
-        messageBody: 'Hello pharmacist',
-      },
-      phone_number: '+12369961017',
-    })
+    
     console.log('pharmacist')
   }
 }
