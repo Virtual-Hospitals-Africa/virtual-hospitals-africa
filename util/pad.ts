@@ -9,6 +9,6 @@ export function padLeft(
   return str
 }
 
-export function padTime(num: number): string {
-  return padLeft(String(num), 2, '0')
+export function padTime(num?: number): string {
+  return num ? padLeft(String(num), 2, '0') : '00'
 }
