@@ -13,16 +13,15 @@ async function recreateDatabase() {
   console.log('Dropping database...')
   try {
     await runCommand('dropdb', {
-      args: [opts.dbname],
+      args: [opts.dbname, '-U', opts!.username],
     })
   } catch (_e) {
     console.log('Database does not exist, skipping drop.')
   }
 
   console.log('Recreating database...')
-  const whoami = await runCommand('whoami')
   await runCommand('createdb', {
-    args: ['-h', 'localhost', '-U', whoami.trim(), '-w', opts.dbname],
+    args: ['-h', 'localhost', '-U', opts!.username, '-w', opts.dbname],
   })
 }
 
