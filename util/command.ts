@@ -18,8 +18,8 @@ export async function runCommand(
 ) {
   const result = await Command(command, options).output()
   if (result.code) {
-    console.error(new TextDecoder().decode(result.stderr))
-    return Deno.exit(result.code)
+    const error = new TextDecoder().decode(result.stderr)
+    throw new Error(error)
   }
   return new TextDecoder().decode(result.stdout)
 }
