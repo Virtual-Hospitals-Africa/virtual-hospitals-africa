@@ -137,8 +137,10 @@ function assertIsLifestyle(
     }
   }
 
+  if (!patient.lifestyle.substance_use) return
+
   assertOr400(isObjectLike(patient.lifestyle.substance_use))
-  if (patient.lifestyle.substance_use.has_ever_used_substance) {
+  if (patient.lifestyle.substance_use?.has_ever_used_substance) {
     assertOr400(
       Array.isArray(patient.lifestyle.substance_use.substances_used_names),
     )
