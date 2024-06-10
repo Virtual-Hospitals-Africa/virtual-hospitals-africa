@@ -82,7 +82,7 @@ export async function insertMessageReceived(
     .returningAll()
     .executeTakeFirstOrThrow()
 
-    console.log('inserted', inserted)
+  console.log('inserted', inserted)
 
   return inserted
 }

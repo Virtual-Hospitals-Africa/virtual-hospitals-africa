@@ -123,7 +123,9 @@ export const handler: Handlers = {
       'Phone number is not the pharmacist or patient phone number',
     )
 
-    const chatbot_name = display_phone_number === pharmacistPhone ? 'pharmacist' : 'patient'
+    const chatbot_name = display_phone_number === pharmacistPhone
+      ? 'pharmacist'
+      : 'patient'
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses
