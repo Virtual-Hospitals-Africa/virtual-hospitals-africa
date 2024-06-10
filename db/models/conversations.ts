@@ -46,9 +46,12 @@ export async function insertMessageReceived(
     & {
       patient_phone_number: string
     }
+    & {
+      chatbot_name: string
+    }
     & Pick<
       WhatsAppMessageReceived,
-      'whatsapp_id' | 'has_media' | 'body' | 'media_id' | 'chatbot_name'
+      'whatsapp_id' | 'has_media' | 'body' | 'media_id'
     >,
 ): Promise<
   HasStringId<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
@@ -157,6 +160,7 @@ export async function getUnhandledPatientMessages(
             , whatsapp_messages_received.body
             , whatsapp_messages_received.has_media
             , whatsapp_messages_received.media_id
+            , whatsapp_messages_received.chatbot_name
             , patients.id
             , patients.name
             , patients.phone_number
