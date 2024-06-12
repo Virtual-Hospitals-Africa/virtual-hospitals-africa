@@ -7,7 +7,6 @@ const vhaClinicStaff = [
   'jtagarisa@gmail.com',
   'kkggbo@gmail.com',
   'mesbah.ar@gmail.com',
-  'mike.huang.mikank@gmail.com',
   'ngwenyasku79@gmail.com',
   'peterpang1103@gmail.com',
   'qiyuan867@gmail.com',
@@ -18,6 +17,7 @@ const vhaClinicStaff = [
   'will.weiss1230@gmail.com',
   'yi23835@bristol.ac.uk',
   'zhuosidian@gmail.com',
+  'mike.huang.africa@gmail.com',
 ]
 
 const vhaVirtualHospitalStaff = [
