@@ -315,9 +315,10 @@ export function convertToTime(date: string): Time {
 
 export function convertToTimeString(time: string): string {
   const formattedTime = convertToTime(time)
-  return `${formattedTime.hour}:${
-    formattedTime.minute.toString().padStart(2, '0')
-  } ${formattedTime.amPm}`
+  const minute = formattedTime.minute
+    ? formattedTime.minute.toString().padStart(2, '0')
+    : '00'
+  return `${formattedTime.hour}:${minute} ${formattedTime.amPm}`
 }
 
 export function isValidDate(messageBody: string): boolean {

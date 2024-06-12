@@ -1,5 +1,5 @@
 import { Handlers } from '$fresh/server.ts'
-import { WithSession } from 'fresh_session'
+import { Session, WithSession } from 'fresh_session'
 import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
@@ -7,6 +7,7 @@ import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
 import * as employment from '../db/models/employment.ts'
 import * as organizations from '../db/models/organizations.ts'
+import * as regulators from '../db/models/regulators.ts'
 import * as google from '../external-clients/google.ts'
 import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
@@ -78,7 +79,12 @@ async function checkPermissions(
 }
 
 type AuthCheckResult =
-  | { status: 'authorized'; healthWorker: { id: string } }
+  | {
+    status: 'authorized'
+    type: 'practitioner'
+    practitioner: { id: string }
+  }
+  | { status: 'authorized'; type: 'regulator'; regulator: { id: string } }
   | { status: 'unauthorized' }
   | { status: 'insufficient_permissions' }
 
@@ -90,17 +96,30 @@ function authCheck(
     const googleClient = new google.GoogleClient(tokens)
     const profile = await googleClient.getProfile()
 
-    const invitees = await employment.getInvitees(trx, {
+    const is_invited_as_regulator = await regulators.isInvited(profile.email)
+
+    if (is_invited_as_regulator) {
+      const hasPermissions = await checkPermissions(googleClient)
+      if (!hasPermissions) return { status: 'insufficient_permissions' }
+      return {
+        status: 'authorized',
+        type: 'regulator',
+        regulator: { id: '1' },
+        email: profile.email,
+      }
+    }
+
+    const health_worker_invitees = await employment.getInvitees(trx, {
       email: profile.email,
     })
 
     const healthWorker = await (
-      invitees.length
+      health_worker_invitees.length
         ? initializeHealthWorker(
           trx,
           googleClient,
           profile,
-          invitees,
+          health_worker_invitees,
         )
         : health_workers.updateTokens(
           trx,
@@ -114,8 +133,27 @@ function authCheck(
     const hasPermissions = await checkPermissions(googleClient)
     if (!hasPermissions) return { status: 'insufficient_permissions' }
 
-    return { status: 'authorized', healthWorker }
+    return {
+      status: 'authorized',
+      type: 'practitioner',
+      practitioner: healthWorker,
+      email: profile.email,
+    }
   })
+}
+
+function handleAuthorized(
+  result: AuthCheckResult & { status: 'authorized' },
+  session: Session,
+) {
+  switch (result.type) {
+    case 'practitioner':
+      session.set('health_worker_id', result.practitioner.id)
+      return redirect('/app')
+    case 'regulator':
+      session.set('regulator_id', result.regulator.id)
+      return redirect('/regulator')
+  }
 }
 
 export const handler: Handlers<Record<string, never>, WithSession> = {
@@ -129,8 +167,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     const result = await authCheck(gettingTokens)
 
     if (result.status === 'authorized') {
-      session.set('health_worker_id', result.healthWorker.id)
-      return redirect('/app')
+      return handleAuthorized(result, session)
     }
     return redirect(`/app/${result.status}`)
   },

@@ -6,7 +6,6 @@ import matchActiveLink from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
-import { assert } from 'std/assert/assert.ts'
 import {
   ArchiveBoxIcon,
   CalendarDaysIcon,
@@ -53,7 +52,7 @@ function NavItem({
   )
 }
 
-const home_page_nav_links: LinkDef[] = [
+const practitioner_home_page_nav_links: LinkDef[] = [
   {
     route: '/app/organizations/:organization_id/waiting_room',
     title: 'Waiting Room',
@@ -81,6 +80,21 @@ const home_page_nav_links: LinkDef[] = [
     route: '/app/medical_literature',
     title: 'Medical Literature',
     Icon: AcademicCapIcon,
+  },
+  { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
+]
+
+const regulator_home_page_nav_links: LinkDef[] = [
+  {
+    route: '/regulator/pharmacists',
+    title: 'Pharmacists',
+    Icon: ClockIcon,
+  },
+  { route: '/regulator/pharmacies', title: 'Pharmacies', Icon: UserGroupIcon },
+  {
+    route: '/regulator/medicines',
+    title: 'Medicines',
+    Icon: IdentificationIcon,
   },
   { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
 ]
@@ -120,7 +134,7 @@ export const DefaultTop = {
   child: <LogoWithFullText variant='indigo' className='h-16' />,
 }
 
-export function HomePageSidebar(
+export function PractitionerHomePageSidebar(
   { route, params, urlSearchParams }: {
     route: string
     params: Record<string, string>
@@ -132,7 +146,25 @@ export function HomePageSidebar(
       route={route}
       params={params}
       urlSearchParams={urlSearchParams}
-      nav_links={home_page_nav_links}
+      nav_links={practitioner_home_page_nav_links}
+      top={DefaultTop}
+    />
+  )
+}
+
+export function RegulatorHomePageSidebar(
+  { route, params, urlSearchParams }: {
+    route: string
+    params: Record<string, string>
+    urlSearchParams: URLSearchParams
+  },
+) {
+  return (
+    <GenericSidebar
+      route={route}
+      params={params}
+      urlSearchParams={urlSearchParams}
+      nav_links={regulator_home_page_nav_links}
       top={DefaultTop}
     />
   )

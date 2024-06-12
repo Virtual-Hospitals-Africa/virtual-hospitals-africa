@@ -114,7 +114,7 @@ export default async function MedicineAdd(
 
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Add Medicine'
       route={route}
       url={url}

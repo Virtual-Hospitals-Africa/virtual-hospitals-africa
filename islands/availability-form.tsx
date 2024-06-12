@@ -75,7 +75,7 @@ function TimeInput(
         :
         <MinuteInput
           name={`${prefix}.start.minute`}
-          current={timeWindow.start.minute}
+          current={timeWindow.start.minute || 0}
         />
         <AmPmInput
           name={`${prefix}.start.amPm`}
@@ -86,7 +86,7 @@ function TimeInput(
         :
         <MinuteInput
           name={`${prefix}.end.minute`}
-          current={timeWindow.end.minute}
+          current={timeWindow.end.minute || 0}
         />
         <AmPmInput
           name={`${prefix}.end.amPm`}

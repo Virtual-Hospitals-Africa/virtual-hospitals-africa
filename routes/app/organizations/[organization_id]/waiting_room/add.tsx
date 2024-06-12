@@ -99,7 +99,7 @@ export default async function WaitingRoomAdd(
       route={route}
       url={url}
       health_worker={state.healthWorker}
-      variant='home page'
+      variant='practitioner home page'
     >
       <AddPatientForm
         providers={await gettingProviders}

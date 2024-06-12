@@ -77,7 +77,7 @@ export default async function AppPage(
 
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title={`Good day, ${firstName(healthWorker.name)}!`}
       route={ctx.route}
       url={ctx.url}

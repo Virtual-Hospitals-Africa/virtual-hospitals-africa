@@ -99,7 +99,7 @@ export default async function ConsumableAdd(
 
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Add Consumable'
       route={route}
       url={url}

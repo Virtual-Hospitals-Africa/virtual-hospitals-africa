@@ -1588,6 +1588,14 @@ export type LoggedInHealthWorker = {
   healthWorker: EmployedHealthWorker
 }
 
+export type LoggedInRegulator = {
+  trx: TrxOrDb
+  session: Session
+  regulator: {
+    id: string
+  }
+}
+
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
   FreshContext<
     WithSession & {

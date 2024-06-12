@@ -14,7 +14,7 @@ export default async function OrganizationPage(
       route={ctx.route}
       url={ctx.url}
       health_worker={ctx.state.healthWorker}
-      variant='home page'
+      variant='practitioner home page'
     >
       TODO: organization page
     </Layout>

@@ -32,7 +32,7 @@ export default async function PatientPage(
       route={ctx.route}
       url={ctx.url}
       health_worker={ctx.state.healthWorker}
-      variant='home page'
+      variant='practitioner home page'
     >
       <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
         {patient.open_encounter && (
