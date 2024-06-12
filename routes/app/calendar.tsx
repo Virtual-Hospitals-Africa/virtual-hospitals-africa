@@ -91,7 +91,7 @@ export default function Calendar(
 ) {
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='My Calendar'
       route={props.route}
       url={props.url}

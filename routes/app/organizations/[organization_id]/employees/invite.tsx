@@ -81,7 +81,7 @@ export default function InviteEmployees(props: PageProps) {
       route={props.route}
       url={props.url}
       health_worker={props.data.healthWorker}
-      variant='home page'
+      variant='practitioner home page'
     >
       <InviteEmployeesForm />
     </Layout>

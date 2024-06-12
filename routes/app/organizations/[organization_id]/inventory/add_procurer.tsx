@@ -54,7 +54,7 @@ export default async function ProcurerPage(
 ) {
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Add Procurer'
       route={route}
       url={url}

@@ -36,7 +36,7 @@ export default function PatientsPage(
 ) {
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Patients'
       route={props.route}
       url={props.url}

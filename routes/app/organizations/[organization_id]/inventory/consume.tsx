@@ -69,7 +69,7 @@ export default async function Consume(
 ) {
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Consumption Test'
       route={route}
       url={url}

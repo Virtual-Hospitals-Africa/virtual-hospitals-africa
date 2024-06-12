@@ -3,7 +3,10 @@ import { Header } from './Header.tsx'
 import { Footer } from '../../components/landing-page/Footer.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { ErrorListener } from '../../islands/ErrorListener.tsx'
-import { HomePageSidebar } from './Sidebar.tsx'
+import {
+  PractitionerHomePageSidebar,
+  RegulatorHomePageSidebar,
+} from './Sidebar.tsx'
 import { EmployedHealthWorker, Maybe } from '../../types.ts'
 import SuccessMessage from '../../islands/SuccessMessage.tsx'
 import WarningMessage from '../../islands/WarningMessage.tsx'
@@ -17,9 +20,14 @@ export type LayoutProps =
     children: ComponentChildren
   }
   & ({
-    variant: 'home page'
+    variant: 'practitioner home page'
     route: string
     health_worker: EmployedHealthWorker
+    params?: Record<string, string>
+  } | {
+    variant: 'regulator home page'
+    route: string
+    regulator: { id: string }
     params?: Record<string, string>
   } | {
     variant: 'form'
@@ -98,26 +106,40 @@ export default function Layout(props: LayoutProps) {
         initialError={error}
       />
       {props.variant === 'landing page' && props.children}
-      {props.variant === 'home page' && (
+      {((props.variant === 'practitioner home page') ||
+        (props.variant === 'regulator home page')) && (
         <AppLayoutContents
           {...props}
-          avatarUrl={props.health_worker.avatar_url}
-          notifications={notifications.ofEmployedHealthWorker(
-            props.health_worker,
-          )}
-          sidebar={
-            <HomePageSidebar
-              route={props.route}
-              params={props.params && ('organization_id' in props.params)
-                ? props.params
-                : {
-                  ...props.params,
-                  organization_id: props.health_worker.default_organization_id
-                    .toString(),
-                }}
-              urlSearchParams={props.url.searchParams}
-            />
-          }
+          variant='home page'
+          avatarUrl={props.variant === 'practitioner home page'
+            ? props.health_worker.avatar_url
+            : ''}
+          notifications={props.variant === 'practitioner home page'
+            ? notifications.ofEmployedHealthWorker(
+              props.health_worker,
+            )
+            : []}
+          sidebar={props.variant === 'practitioner home page'
+            ? (
+              <PractitionerHomePageSidebar
+                route={props.route}
+                params={props.params && ('organization_id' in props.params)
+                  ? props.params
+                  : {
+                    ...props.params,
+                    organization_id: props.health_worker.default_organization_id
+                      .toString(),
+                  }}
+                urlSearchParams={props.url.searchParams}
+              />
+            )
+            : (
+              <RegulatorHomePageSidebar
+                route={props.route}
+                params={props.params || {}}
+                urlSearchParams={props.url.searchParams}
+              />
+            )}
         />
       )}
       {props.variant === 'form' && <AppLayoutContents {...props} />}

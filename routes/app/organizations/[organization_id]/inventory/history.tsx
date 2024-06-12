@@ -18,7 +18,7 @@ export default async function InventoryHistoryPage(
 
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title={`Inventory History: ${consumable.name}`}
       route={route}
       url={url}

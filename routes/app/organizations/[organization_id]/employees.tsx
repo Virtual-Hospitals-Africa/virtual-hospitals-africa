@@ -51,7 +51,7 @@ export default function EmployeeTable(
       route={props.route}
       url={props.url}
       health_worker={props.data.healthWorker}
-      variant='home page'
+      variant='practitioner home page'
     >
       <EmployeesTable
         isAdmin={props.data.isAdminAtOrganization}

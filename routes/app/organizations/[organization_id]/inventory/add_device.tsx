@@ -80,7 +80,7 @@ export default async function DeviceAdd(
 
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Add Device'
       route={route}
       url={url}

@@ -75,7 +75,7 @@ export default function inventoryPage(
 ) {
   return (
     <Layout
-      variant='home page'
+      variant='practitioner home page'
       title='Inventory'
       route={props.route}
       url={props.url}
