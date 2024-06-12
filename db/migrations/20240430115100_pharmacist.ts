@@ -25,5 +25,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_lifestyle').execute()
+  await db.schema.dropTable('pharmacists').execute()
+  await db.schema.dropType('pharmacist_conversation_state').execute()
 }
