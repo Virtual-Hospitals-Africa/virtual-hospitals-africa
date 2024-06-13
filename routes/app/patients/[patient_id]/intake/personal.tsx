@@ -2,7 +2,9 @@ import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
 import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons from '../../../../../islands/form/buttons.tsx'
+import Buttons, {
+  ButtonsContainer,
+} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
@@ -11,6 +13,8 @@ import {
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 import omit from '../../../../../util/omit.ts'
+import { Button } from '../../../../../components/library/Button.tsx'
+import FlyoutMenu from '../../../../../islands/FlyoutMenu.tsx'
 
 type PersonalFormValues = {
   first_name: string
@@ -63,6 +67,7 @@ export default async function PersonalPage(
   const previously_completed = patient.intake_steps_completed.includes(
     'personal',
   )
+
   return (
     <IntakeLayout ctx={ctx}>
       <PatientPersonalForm
@@ -70,7 +75,23 @@ export default async function PersonalPage(
         previously_completed={previously_completed}
       />
       <hr className='my-2' />
-      <Buttons submitText='Next Step' />
+      <ButtonsContainer>
+        <Button
+          type='button'
+          variant='outline'
+          color='blue'
+          className='flex-1 max-w-xl'
+        >
+          Send To
+        </Button>
+        <FlyoutMenu />
+        <Button
+          type='submit'
+          className='flex-1 max-w-xl'
+        >
+          Next Step
+        </Button>
+      </ButtonsContainer>
     </IntakeLayout>
   )
 }
