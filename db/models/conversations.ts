@@ -7,6 +7,7 @@ import {
   WhatsAppMessageReceived,
 } from '../../types.ts'
 import compact from '../../util/compact.ts'
+import { sendToEngineeringChannel } from '../../external-clients/slack.ts';
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -237,6 +238,12 @@ export function markChatbotError(
     })
     .where('id', '=', opts.whatsapp_message_received_id)
     .executeTakeFirstOrThrow()
+    .then(() => {
+      // Build error message
+      const errorMessage = `Error occurred in chatbot:\nCommit Hash: ${opts.commitHash}\nError Message: ${opts.errorMessage}`;
+      // Send the error message to Slack
+      return sendToEngineeringChannel(errorMessage);
+    })
 }
 
 export async function getMediaIdByPatientId(
