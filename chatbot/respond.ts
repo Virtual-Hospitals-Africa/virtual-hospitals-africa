@@ -29,6 +29,7 @@ type WhatsApp = {
 }
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
+const on_production = commitHash !== 'local'
 
 async function respondToPatientMessage(
   whatsapp: WhatsApp,
@@ -82,23 +83,22 @@ async function respondToPatientMessage(
       phone_number: patientState.phone_number,
     })
 
-    // Send error message to slack 
     await markChatbotError(db, {
       commitHash,
       whatsapp_message_received_id: patientState.message_id,
       errorMessage: err.message,
     })
 
-    // Check if the error occurred in the local environment
-    if(commitHash !== 'local'){
-          // Build error message
-          const messageToSlack = `Error occurred in chatbot:\nCommit Hash: ${commitHash}\nError Message: ${err.message}
-          \nLogs: https://dashboard.heroku.com/apps/vha-patient-chatbot/logs`;
-          // Send the error message to Slack
-          await sendToEngineeringChannel(messageToSlack);
-        }
+    if (on_production) {
+      // Build error message
+      const messageToSlack =
+        `Error occurred in chatbot:\nCommit Hash: ${commitHash}\nError Message: ${err.message}
+      \nLogs: https://dashboard.heroku.com/apps/vha-patient-chatbot/logs`
+      // Send the error message to Slack
+      await sendToEngineeringChannel(messageToSlack)
     }
   }
+}
 
 // async function respondToPharmacistMessage(
 //   whatsapp: WhatsApp,
