@@ -1154,7 +1154,7 @@ export interface DB {
   suburbs: Suburbs
   waiting_room: WaitingRoom
   wards: Wards
-  whatsapp_messages_received: WhatsappMessagesReceived
-  whatsapp_messages_sent: WhatsappMessagesSent
+  patient_whatsapp_messages_received: WhatsappMessagesReceived
+  patient_whatsapp_messages_sent: WhatsappMessagesSent
 }
 type Buffer = Uint8Array

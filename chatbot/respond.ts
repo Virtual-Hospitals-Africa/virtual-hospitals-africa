@@ -92,11 +92,13 @@ async function respondToPatientMessage(
     })
 
     console.log('on_production', on_production)
-    // if (on_production) {
-      const github_code_href = `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
+    if (on_production) {
+      const github_code_href =
+        `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
       const github_code_link = `<${github_code_href}|Github Commit>`
 
-      const logs_href = 'https://dashboard.heroku.com/apps/vha-patient-chatbot/logs'
+      const logs_href =
+        'https://dashboard.heroku.com/apps/vha-patient-chatbot/logs'
       const logs_link = `<${logs_href}|Heroku Logs>`
 
       const message = [
@@ -107,7 +109,7 @@ async function respondToPatientMessage(
       ].join('\n')
 
       await sendToEngineeringChannel(message)
-    // }
+    }
   }
 }
 

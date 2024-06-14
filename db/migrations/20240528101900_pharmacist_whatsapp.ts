@@ -4,12 +4,12 @@ import { createStandardTable } from '../createStandardTable.ts'
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(
     db,
-    'patient_whatsapp_messages_received',
+    'pharmacist_whatsapp_messages_received',
     (qb) =>
       qb.addColumn(
-        'patient_id',
+        'pharmacist_id',
         'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        (col) => col.notNull().references('pharmacists.id').onDelete('cascade'),
       )
         .addColumn(
           'started_responding_at',
@@ -34,7 +34,7 @@ export async function up(db: Kysely<unknown>) {
         )
         .addColumn(
           'conversation_state',
-          sql`patient_conversation_state`,
+          sql`pharmacist_conversation_state`,
           (col) => col.notNull().defaultTo('initial_message'),
         )
         .addColumn(
@@ -58,18 +58,18 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
-    'patient_whatsapp_messages_sent',
+    'pharmacist_whatsapp_messages_sent',
     (qb) =>
       qb.addColumn(
-        'patient_id',
+        'pharmacist_id',
         'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        (col) => col.notNull().references('pharmacists.id').onDelete('cascade'),
       )
         .addColumn(
           'responding_to_id',
           'uuid',
           (col) =>
-            col.notNull().references('patient_whatsapp_messages_received.id')
+            col.notNull().references('pharmacist_whatsapp_messages_received.id')
               .onDelete(
                 'cascade',
               ),
@@ -93,6 +93,6 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_whatsapp_messages_sent').execute()
-  await db.schema.dropTable('patient_whatsapp_messages_received').execute()
+  await db.schema.dropTable('pharmacist_whatsapp_messages_sent').execute()
+  await db.schema.dropTable('pharmacist_whatsapp_messages_received').execute()
 }

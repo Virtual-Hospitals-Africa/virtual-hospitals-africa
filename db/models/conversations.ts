@@ -7,14 +7,13 @@ import {
   WhatsAppMessageReceived,
 } from '../../types.ts'
 import compact from '../../util/compact.ts'
-import { sendToEngineeringChannel } from '../../external-clients/slack.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
   opts: { whatsapp_id: string; read_status: string },
 ): Promise<UpdateResult[]> {
   return trx
-    .updateTable('whatsapp_messages_sent')
+    .updateTable('patient_whatsapp_messages_sent')
     .set({ read_status: opts.read_status })
     .where('whatsapp_id', '=', opts.whatsapp_id)
     .execute()
@@ -76,7 +75,7 @@ export async function insertMessageReceived(
     )
 
   const inserted = await trx
-    .insertInto('whatsapp_messages_received')
+    .insertInto('patient_whatsapp_messages_received')
     .values({
       patient_id: patient.id,
       conversation_state: patient.conversation_state,
@@ -99,7 +98,7 @@ export function insertMessageSent(
     body: string
   },
 ): Promise<InsertResult> {
-  return trx.insertInto('whatsapp_messages_sent').values({
+  return trx.insertInto('patient_whatsapp_messages_sent').values({
     ...opts,
     read_status: 'sent',
   }).executeTakeFirstOrThrow()
@@ -114,9 +113,9 @@ export async function getUnhandledPatientMessages(
   // deno-lint-ignore no-explicit-any
   const result = await sql<any>`
     WITH eligible_messages as (
-      SELECT whatsapp_messages_received.id
-        FROM whatsapp_messages_received
-        JOIN patients ON patients.id = whatsapp_messages_received.patient_id
+      SELECT patient_whatsapp_messages_received.id
+        FROM patient_whatsapp_messages_received
+        JOIN patients ON patients.id = patient_whatsapp_messages_received.patient_id
        WHERE (started_responding_at is null
               OR (error_commit_hash IS NOT NULL AND error_commit_hash != ${commitHash})
              )
@@ -126,7 +125,7 @@ export async function getUnhandledPatientMessages(
     ),
 
     responding_to_messages as (
-         UPDATE whatsapp_messages_received
+         UPDATE patient_whatsapp_messages_received
             SET started_responding_at = now()
               , error_commit_hash = NULL
               , error_message = NULL
@@ -154,13 +153,13 @@ export async function getUnhandledPatientMessages(
        GROUP BY patient_appointment_requests.id, patient_appointment_requests.patient_id, patient_appointment_requests.reason
     )
 
-       SELECT whatsapp_messages_received.id as message_id
-            , whatsapp_messages_received.patient_id
-            , whatsapp_messages_received.whatsapp_id
-            , whatsapp_messages_received.body
-            , whatsapp_messages_received.has_media
-            , whatsapp_messages_received.media_id
-            , whatsapp_messages_received.chatbot_name
+       SELECT patient_whatsapp_messages_received.id as message_id
+            , patient_whatsapp_messages_received.patient_id
+            , patient_whatsapp_messages_received.whatsapp_id
+            , patient_whatsapp_messages_received.body
+            , patient_whatsapp_messages_received.has_media
+            , patient_whatsapp_messages_received.media_id
+            , patient_whatsapp_messages_received.chatbot_name
             , patients.id
             , patients.name
             , patients.phone_number
@@ -181,15 +180,15 @@ export async function getUnhandledPatientMessages(
             , appointments.gcal_event_id as scheduled_appointment_gcal_event_id
             , appointments.start as scheduled_appointment_start
 
-         FROM whatsapp_messages_received
-         JOIN patients ON patients.id = whatsapp_messages_received.patient_id
+         FROM patient_whatsapp_messages_received
+         JOIN patients ON patients.id = patient_whatsapp_messages_received.patient_id
     LEFT JOIN aot ON aot.patient_id = patients.id
     LEFT JOIN patient_nearest_organizations ON patient_nearest_organizations.patient_id = patients.id AND patients.conversation_state = 'find_nearest_organization:got_location'
     LEFT JOIN appointments ON appointments.patient_id = patients.id
     LEFT JOIN appointment_providers ON appointment_providers.appointment_id = appointments.id
     LEFT JOIN employment ON employment.id = appointment_providers.provider_id
     LEFT JOIN health_workers ON health_workers.id = employment.health_worker_id
-        WHERE whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
+        WHERE patient_whatsapp_messages_received.id in (SELECT id FROM responding_to_messages)
   `.execute(trx)
 
   return result.rows.map((row) => {
@@ -237,7 +236,7 @@ export function markChatbotError(
   },
 ) {
   return trx
-    .updateTable('whatsapp_messages_received')
+    .updateTable('patient_whatsapp_messages_received')
     .set({
       error_commit_hash: opts.commitHash,
       error_message: opts.errorMessage,
@@ -253,7 +252,7 @@ export async function getMediaIdByPatientId(
   },
 ): Promise<string[]> {
   const result = await trx
-    .selectFrom('whatsapp_messages_received')
+    .selectFrom('patient_whatsapp_messages_received')
     .where('patient_id', '=', opts.patient_id)
     .where('has_media', '=', true)
     .select((eb) => [
