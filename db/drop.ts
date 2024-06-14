@@ -1,10 +1,10 @@
-import { redis } from '../external-clients/redis.ts'
-import { dropEverything } from './dropEverything.ts'
+import { opts } from './db.ts'
 
-console.log('Flushing redis...')
-await redis.flushdb()
+export async function drop() {
+  
+}
 
-console.log('Redoing all migrations...')
+if (import.meta.main) {
+  await drop()
+}
 
-console.log('Dropping everything...')
-await dropEverything()
