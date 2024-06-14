@@ -7,7 +7,7 @@ import {
   WhatsAppMessageReceived,
 } from '../../types.ts'
 import compact from '../../util/compact.ts'
-import { sendToEngineeringChannel } from '../../external-clients/slack.ts';
+import { sendToEngineeringChannel } from '../../external-clients/slack.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
