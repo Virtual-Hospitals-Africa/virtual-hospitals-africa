@@ -31,6 +31,8 @@ type WhatsApp = {
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
 const on_production = commitHash !== 'local'
 
+console.log('on_production', on_production)
+
 async function respondToPatientMessage(
   whatsapp: WhatsApp,
   patientConversationStates: ConversationStates<
@@ -89,13 +91,22 @@ async function respondToPatientMessage(
       errorMessage: err.message,
     })
 
+    console.log('on_production', on_production)
     if (on_production) {
-      // Build error message
-      const messageToSlack =
-        `Error occurred in chatbot:\nCommit Hash: ${commitHash}\nError Message: ${err.message}
-      \nLogs: https://dashboard.heroku.com/apps/vha-patient-chatbot/logs`
-      // Send the error message to Slack
-      await sendToEngineeringChannel(messageToSlack)
+      const github_code_href = `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
+      const github_code_link = `<${github_code_href}|Github Commit>`
+
+      const logs_href = 'https://dashboard.heroku.com/apps/vha-patient-chatbot/logs'
+      const logs_link = `<${logs_href}|Heroku Logs>`
+
+      const message = [
+        '*Patient Chatbot Error*',
+        err.message,
+        github_code_link,
+        logs_link,
+      ].join('\n')
+
+      await sendToEngineeringChannel(message)
     }
   }
 }
