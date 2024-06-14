@@ -48,7 +48,7 @@ export async function insertMessageReceived(
     }
     & Pick<
       WhatsAppMessageReceived,
-      'whatsapp_id' | 'has_media' | 'body' | 'media_id'
+      'whatsapp_id' | 'has_media' | 'body' | 'media_id' | 'chatbot_name'
     >,
 ): Promise<
   HasStringId<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
@@ -81,6 +81,8 @@ export async function insertMessageReceived(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+
+    console.log('inserted', inserted)
 
   return inserted
 }

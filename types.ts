@@ -1417,6 +1417,7 @@ export type WhatsAppMessageReceived = WhatsAppMessageContents & {
   whatsapp_id: string
   conversation_state: PatientConversationState
   started_responding_at: Maybe<ColumnType<Date>>
+  chatbot_name: string
   error_commit_hash: Maybe<string>
   error_message: Maybe<string>
 }
