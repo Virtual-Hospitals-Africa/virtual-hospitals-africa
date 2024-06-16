@@ -1,0 +1,588 @@
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--
+--
+-- PostGIS Raster - Raster Type for PostGIS
+-- http://trac.osgeo.org/postgis/wiki/WKTRaster
+--
+-- Copyright (c) 2011 Regina Obe <lr@pcorp.us>
+-- Copyright (C) 2011 Regents of the University of California
+--   <bkpark@ucdavis.edu>
+-- Copyright (c) 2013-2023 Sandro Santilli <strk@kbt.io>
+--
+-- This program is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU General Public License
+-- as published by the Free Software Foundation; either version 2
+-- of the License, or (at your option) any later version.
+--
+-- This program is distributed in the hope that it will be useful,
+-- but WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-- GNU General Public License for more details.
+--
+-- You should have received a copy of the GNU General Public License
+-- along with this program; if not, write to the Free Software Foundation,
+-- Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+--
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--
+-- WARNING: Any change in this file must be evaluated for compatibility.
+--
+-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+--
+-- This section is take add / drop things like CASTS, TYPES etc. that have changed
+-- Since these are normally excluded from sed upgrade generator
+-- they must be explicitly added
+-- So that they can immediately be recreated.
+-- It is not run thru the sed processor to prevent it from being stripped
+-- Note: We put these in separate file from drop since the extension module has
+-- to add additional logic to drop them from the extension as well
+--
+-- TODO: tag each item with the version in which it was changed
+--
+
+#include "sqldefines.h"
+
+/** -- GIST operator functions -- these don't seem necessary
+DROP OPERATOR IF EXISTS << (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_left(raster, raster)');
+DROP OPERATOR IF EXISTS &< (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_overleft(raster, raster)');
+DROP OPERATOR IF EXISTS <<| (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_below(raster, raster)');
+DROP OPERATOR IF EXISTS &<| (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_overbelow(raster, raster)');
+DROP OPERATOR IF EXISTS && (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_overlap(raster, raster)');
+DROP OPERATOR IF EXISTS &> (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_overright(raster, raster)');
+DROP OPERATOR IF EXISTS >> (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_right(raster, raster)');
+DROP OPERATOR IF EXISTS |&> (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_overabove(raster, raster)');
+DROP OPERATOR IF EXISTS |>> (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_above(raster, raster)');
+DROP OPERATOR IF EXISTS ~= (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_same(raster, raster)');
+DROP OPERATOR IF EXISTS @ (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_contained(raster, raster)');
+DROP OPERATOR IF EXISTS ~ (raster, raster);
+SELECT _postgis_drop_function_by_signature('st_contain(raster, raster)'); **/
+
+-- drop st_bytea
+DROP CAST IF EXISTS (raster AS bytea);
+SELECT _postgis_drop_function_by_signature('st_bytea(raster)');
+
+CREATE OR REPLACE FUNCTION bytea(raster)
+    RETURNS bytea
+    AS 'MODULE_PATHNAME', 'RASTER_to_bytea'
+    LANGUAGE 'c' IMMUTABLE STRICT;
+CREATE CAST (raster AS bytea)
+    WITH FUNCTION bytea(raster) AS ASSIGNMENT;
+
+-- drop box2d
+DROP CAST IF EXISTS (raster AS box2d);
+SELECT _postgis_drop_function_by_signature('box2d(raster)');
+
+-- make geometry cast ASSIGNMENT
+DROP CAST IF EXISTS (raster AS geometry);
+CREATE CAST (raster AS geometry)
+	WITH FUNCTION st_convexhull(raster) AS ASSIGNMENT;
+
+-- add missing OPERATORs
+-- TODO: drop, relying on proc_upgrade.pl output ?
+DO LANGUAGE 'plpgsql' $$
+BEGIN
+	IF NOT EXISTS (
+			SELECT
+				proname
+			FROM pg_catalog.pg_proc f
+			JOIN pg_catalog.pg_type r
+				ON r.typname = 'raster'
+					AND (f.proargtypes::oid[])[0] = r.oid
+			JOIN pg_catalog.pg_type g
+				ON g.typname = 'geometry'
+					AND (f.proargtypes::oid[])[1] = g.oid
+			WHERE proname = 'raster_contained_by_geometry'
+		) THEN
+		CREATE OR REPLACE FUNCTION raster_contained_by_geometry(raster, geometry)
+			RETURNS bool
+	    AS 'select $1::geometry @ $2'
+	    LANGUAGE 'sql' IMMUTABLE STRICT;
+		CREATE OPERATOR @ (
+			LEFTARG = raster, RIGHTARG = geometry, PROCEDURE = raster_contained_by_geometry,
+	    COMMUTATOR = '~',
+		  RESTRICT = contsel, JOIN = contjoinsel
+		);
+	END IF;
+
+	IF NOT EXISTS (
+			SELECT
+				proname
+			FROM pg_catalog.pg_proc f
+			JOIN pg_catalog.pg_type r
+				ON r.typname = 'raster'
+					AND (f.proargtypes::oid[])[1] = r.oid
+			JOIN pg_catalog.pg_type g
+				ON g.typname = 'geometry'
+					AND (f.proargtypes::oid[])[0] = g.oid
+			WHERE proname = 'geometry_contained_by_raster'
+		) THEN
+		CREATE OR REPLACE FUNCTION geometry_contained_by_raster(geometry, raster)
+	    RETURNS bool
+		  AS 'select $1 @ $2::geometry'
+	    LANGUAGE 'sql' IMMUTABLE STRICT;
+		CREATE OPERATOR @ (
+	    LEFTARG = geometry, RIGHTARG = raster, PROCEDURE = geometry_contained_by_raster,
+		  COMMUTATOR = '~',
+			RESTRICT = contsel, JOIN = contjoinsel
+    );
+	END IF;
+END;
+$$;
+
+--these were renamed to ST_MapAlgebraExpr or argument names changed --
+SELECT _postgis_drop_function_by_signature('ST_MapAlgebra(raster, integer, text, text, text)');
+
+--signatures or arg names changed
+SELECT _postgis_drop_function_by_signature('ST_MapAlgebraExpr(raster, integer, text, text, text)');
+SELECT _postgis_drop_function_by_signature('ST_MapAlgebraExpr(raster, text, text, text)');
+SELECT _postgis_drop_function_by_signature('ST_MapAlgebraFctNgb(raster, integer, text, integer, integer, regprocedure, text, text[])');
+
+--added extra parameter so these are obsolete --
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , integer , integer , double precision , double precision , text , double precision , double precision , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , integer , integer , text[] , double precision[] , double precision[] , double precision , double precision , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , integer , integer , text , double precision , double precision , double precision , double precision , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , integer , integer , double precision , double precision , text[] , double precision[] , double precision[] , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , integer , integer , double precision , double precision , text[] , double precision[] , double precision[] , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , double precision , double precision , text , double precision , double precision , double precision , double precision , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('ST_AsRaster(geometry , raster , text , double precision , double precision )');
+SELECT _postgis_drop_function_by_signature('_ST_AsRaster(geometry,double precision , double precision, integer , integer,text[] , double precision[] ,double precision[] ,  double precision,  double precision, double precision,double precision, double precision, double precision, boolean)');
+-- arg names changed
+SELECT _postgis_drop_function_by_signature('_ST_Resample(raster, text, double precision, integer, double precision, double precision, double precision, double precision, double precision, double precision)');
+
+-- signature changed
+SELECT _postgis_drop_function_by_signature('ST_Resample(raster, raster, text, double precision)');
+
+-- default parameters added
+SELECT _postgis_drop_function_by_signature('ST_HasNoBand(raster)');
+
+--function out parameters changed so can not just create or replace
+SELECT _postgis_drop_function_by_signature('ST_BandMetaData(raster, integer)');
+
+--function out parameter changed
+SELECT _postgis_drop_function_by_signature('ST_BandNoDataValue(raster, integer)');
+--function no longer exists
+SELECT _postgis_drop_function_by_signature('ST_BandNoDataValue(raster)');
+
+--function no longer exists
+SELECT _postgis_drop_function_by_signature('ST_SetGeoReference(raster, text)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('ST_SetGeoReference(raster, text, text)');
+
+--function no longer exists
+SELECT _postgis_drop_function_by_signature('st_setbandisnodata(raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_setbandisnodata(raster, integer)');
+
+--function no longer exists
+SELECT _postgis_drop_function_by_signature('st_setbandnodatavalue(raster, integer, double precision)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_setbandnodatavalue(raster, integer, double precision, boolean)');
+
+--function no longer exists
+SELECT _postgis_drop_function_by_signature('st_dumpaspolygons(raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_dumpaspolygons(raster, integer)');
+
+--function no longer exists
+SELECT _postgis_drop_function_by_signature('st_polygon(raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_polygon(raster, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_makeemptyraster(int, int, float8, float8, float8, float8, float8, float8)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_makeemptyraster(int, int, float8, float8, float8, float8, float8, float8, int4)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_addband(raster, text)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, text, float8)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, int, text)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, int, text, float8)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, raster, int)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_addband(raster, text, float8, float8)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, int, text, float8, float8)');
+SELECT _postgis_drop_function_by_signature('st_addband(raster, raster, int, int)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_bandisnodata(raster)');
+SELECT _postgis_drop_function_by_signature('st_bandisnodata(raster, integer)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_bandisnodata(raster, integer, boolean)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_bandpath(raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_bandpath(raster, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_bandpixeltype(raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_bandpixeltype(raster, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, integer, integer)');
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, integer)');
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, geometry)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, integer, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, geometry, boolean)');
+SELECT _postgis_drop_function_by_signature('st_value(raster, integer, geometry, double precision)');
+SELECT _postgis_drop_function_by_signature('st_value(raster, geometry, double precision)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_georeference(raster)');
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_georeference(raster, text)');
+
+-- function name change
+SELECT _postgis_drop_function_by_signature('dumpaswktpolygons(raster, integer)');
+
+-- signature changed
+SELECT _postgis_drop_function_by_signature('st_bandmetadata(raster, int[])');
+
+--change to use default parameters
+SELECT _postgis_drop_function_by_signature('ST_PixelAsPolygons(raster)');
+SELECT _postgis_drop_function_by_signature('ST_PixelAsPolygons(raster,integer)');
+
+-- TYPE summarystats removed in version 2.1.0
+-- TODO: only DROP if source version is 2.1.0
+-- See http://trac.osgeo.org/postgis/ticket/2908
+SELECT _postgis_drop_function_by_signature('st_summarystats(raster,int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_summarystats(raster, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(raster,int, boolean, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(raster,int, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(raster, boolean, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(raster, double precision)');
+SELECT _postgis_drop_function_by_signature('st_summarystats(text, text,integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_summarystats(text, text, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(text, text,integer, boolean, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(text, text,integer, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(text, text, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxsummarystats(text, text, double precision)');
+SELECT _postgis_drop_function_by_signature('_st_summarystats(raster,int, boolean, double precision)');
+SELECT _postgis_drop_function_by_signature('_st_summarystats(text, text,integer, boolean, double precision)');
+
+-- remove TYPE quantile
+SELECT _postgis_drop_function_by_signature('st_approxquantile(raster, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(raster, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(raster, int, boolean, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(raster, int, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, boolean, double precision)', '3.1.0'); -- See https://trac.osgeo.org/postgis/ticket/5578
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, double precision)', '3.1.0'); -- See https://trac.osgeo.org/postgis/ticket/5578
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, double precision, double precision)', '3.1.0'); -- See https://trac.osgeo.org/postgis/ticket/5578
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, int, boolean, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, int, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, integer, boolean, double precision, double precision)', '3.1.0'); -- See https://trac.osgeo.org/postgis/ticket/5578
+SELECT _postgis_drop_function_by_signature('st_approxquantile(text, text, integer, double precision, double precision)', '3.1.0'); -- See https://trac.osgeo.org/postgis/ticket/5578
+SELECT _postgis_drop_function_by_signature('st_quantile(raster, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_quantile(raster, int, boolean, double precision[])');
+SELECT _postgis_drop_function_by_signature('_st_quantile(raster, int, boolean, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_quantile(raster, int, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, boolean, double precision)'); -- see https://trac.osgeo.org/postgis/ticket/5579
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, double precision)'); -- see https://trac.osgeo.org/postgis/ticket/5579
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, int, boolean, double precision[])');
+SELECT _postgis_drop_function_by_signature('_st_quantile(text, text, int, boolean, double precision, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, int, boolean, double precision)'); -- see https://trac.osgeo.org/postgis/ticket/5579
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, int, double precision[])');
+SELECT _postgis_drop_function_by_signature('st_quantile(text, text, int, double precision)'); -- see https://trac.osgeo.org/postgis/ticket/5579
+-- this cannot be drop until the quantile deprecated functions are gone
+DROP TYPE IF EXISTS quantile;
+
+-- remove TYPE valuecount
+SELECT _postgis_drop_function_by_signature('st_valuecount(text, text, integer, double precision, double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(text, text, integer, boolean, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(text, text, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(text, text, integer, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(text, text, integer, boolean, double precision, double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(text, text, double precision, double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(raster, integer, boolean, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(raster, integer, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('st_valuecount(raster, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('_st_valuecount(text, text, integer, boolean, double precision[], double precision)');
+SELECT _postgis_drop_function_by_signature('_st_valuecount(raster, integer, boolean, double precision[], double precision)');
+DROP TYPE IF EXISTS valuecount;
+
+-- remove TYPE histogram
+SELECT _postgis_drop_function_by_signature('st_histogram(raster, int, boolean, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(raster, int, boolean, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(raster, int, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(raster, int, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram( raster, int, boolean, double precision, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(raster, int, boolean, double precision, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(raster, int, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(raster, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(raster, int, double precision, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(raster, int, double precision, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(text, text, int, boolean, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(text, text, int, boolean, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(text, text, int, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_histogram(text, text, int, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram( text, text, int, boolean, double precision, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(text, text, int, boolean, double precision, int, boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(text, text, int, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(text, text, double precision)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(text, text, int, double precision, int, double precision[], boolean)');
+SELECT _postgis_drop_function_by_signature('st_approxhistogram(text, text, int, double precision, int, boolean)');
+SELECT _postgis_drop_function_by_signature('_st_histogram( raster, int, boolean, double precision, int, double precision[], boolean, double precision, double precision)');
+SELECT _postgis_drop_function_by_signature('_st_histogram( text, text, int, boolean, double precision, int, double precision[], boolean)');
+DROP TYPE IF EXISTS histogram;
+
+-- no longer needed functions changed to use out parameters
+DROP TYPE IF EXISTS bandmetadata;
+DROP TYPE IF EXISTS geomvalxy;
+
+-- raster_columns and raster_overviews tables are deprecated
+SELECT _postgis_drop_function_by_signature('_rename_raster_tables()');
+CREATE OR REPLACE FUNCTION _rename_raster_tables()
+	RETURNS void AS $$
+	DECLARE
+		cnt int;
+	BEGIN
+		SELECT count(*) INTO cnt
+		FROM pg_class c
+		JOIN pg_namespace n
+			ON c.relnamespace = n.oid
+		WHERE c.relname = 'raster_columns'
+			AND c.relkind = 'r'::char
+			AND NOT pg_is_other_temp_schema(c.relnamespace);
+
+		IF cnt > 0 THEN
+			EXECUTE 'ALTER TABLE raster_columns RENAME TO deprecated_raster_columns';
+		END IF;
+
+		SELECT count(*) INTO cnt
+		FROM pg_class c
+		JOIN pg_namespace n
+			ON c.relnamespace = n.oid
+		WHERE c.relname = 'raster_overviews'
+			AND c.relkind = 'r'::char
+			AND NOT pg_is_other_temp_schema(c.relnamespace);
+
+		IF cnt > 0 THEN
+			EXECUTE 'ALTER TABLE raster_overviews RENAME TO deprecated_raster_overviews';
+		END IF;
+
+	END;
+	$$ LANGUAGE 'plpgsql' VOLATILE;
+SELECT _rename_raster_tables();
+DROP FUNCTION _rename_raster_tables();
+
+-- inserted new column into view
+DROP VIEW IF EXISTS raster_columns;
+
+-- functions no longer supported
+SELECT _postgis_drop_function_by_signature('AddRasterColumn(varchar, varchar, varchar, varchar, integer, varchar[], boolean, boolean, double precision[], double precision, double precision, integer, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('AddRasterColumn(varchar, varchar, varchar, integer, varchar[], boolean, boolean, double precision[], double precision, double precision, integer, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('AddRasterColumn(varchar, varchar, integer, varchar[], boolean, boolean, double precision[], double precision, double precision, integer, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('DropRasterColumn(varchar, varchar, varchar, varchar)');
+SELECT _postgis_drop_function_by_signature('DropRasterColumn(varchar, varchar, varchar)');
+SELECT _postgis_drop_function_by_signature('DropRasterColumn(varchar, varchar)');
+SELECT _postgis_drop_function_by_signature('DropRasterTable(varchar, varchar, varchar)');
+SELECT _postgis_drop_function_by_signature('DropRasterTable(varchar, varchar)');
+SELECT _postgis_drop_function_by_signature('DropRasterTable(varchar)');
+
+-- function parameters added
+SELECT _postgis_drop_function_by_signature('AddRasterConstraints(name, name, name, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean)');
+SELECT _postgis_drop_function_by_signature('AddRasterConstraints(name, name, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean)');
+SELECT _postgis_drop_function_by_signature('DropRasterConstraints(name, name, name, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean)');
+SELECT _postgis_drop_function_by_signature('DropRasterConstraints(name, name, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean, boolean)');
+
+-- function parameters renamed
+CREATE OR REPLACE FUNCTION _drop_st_samealignment()
+	RETURNS void AS $$
+	DECLARE
+		cnt int;
+	BEGIN
+		SELECT count(*) INTO cnt
+		FROM pg_proc
+		WHERE lower(proname) = 'st_samealignment'
+			AND pronargs = 2
+			AND (
+				proargnames = '{rasta,rastb}'::text[] OR
+				proargnames = '{rastA,rastB}'::text[]
+			);
+
+		IF cnt > 0 THEN
+			RAISE NOTICE 'Dropping ST_SameAlignment(raster, raster) due to parameter name changes.  Unfortunately, this is a DROP ... CASCADE as the alignment raster constraint uses ST_SameAlignment(raster, raster).  You will need to reapply AddRasterConstraint(''SCHEMA'', ''TABLE'', ''COLUMN'', ''alignment'') to any raster column that requires this constraint.';
+			SELECT _postgis_drop_function_by_signature('st_samealignment(raster, raster) CASCADE');
+		END IF;
+	END;
+	$$ LANGUAGE 'plpgsql' VOLATILE;
+SELECT _drop_st_samealignment();
+DROP FUNCTION _drop_st_samealignment();
+
+--SELECT _postgis_drop_function_by_signature('_st_intersects(geometry, raster, integer)'); --------- sig1, not changed since 2.0.0, see ticket #5489
+--SELECT _postgis_drop_function_by_signature('_st_intersects(raster, integer, raster, integer)'); -- sig2, not changed since 2.0.0, see ticket #5489
+
+--SELECT _postgis_drop_function_by_signature('st_intersects(raster, integer, raster, integer)'); -- sig1, not changed since 2.0.0, see ticket #5489
+--SELECT _postgis_drop_function_by_signature('st_intersects(raster, raster)'); -------------------- sig2, not changed since 2.0.0, see ticket #5489
+--SELECT _postgis_drop_function_by_signature('st_intersects(geometry, raster, integer)'); --------- sig3, not changed since 2.0.0, see ticket #5489
+--SELECT _postgis_drop_function_by_signature('st_intersects(raster, geometry, integer)'); --------- sig4, not changed since 2.0.0, see ticket #5489
+--SELECT _postgis_drop_function_by_signature('st_intersects(raster, integer, geometry)'); --------- sig5, not changed since 2.0.0, see ticket #5489
+
+
+-- functions have changed dramatically
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, geometry)');
+
+-- function was renamed
+SELECT _postgis_drop_function_by_signature('st_minpossibleval(text)');
+
+-- function deprecated previously
+SELECT _postgis_drop_function_by_signature('st_pixelaspolygon(raster, integer, integer, integer)');
+
+-- function signatures changed
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, int, geometry, text, regprocedure)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, int, geometry, regprocedure)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, geometry, text, regprocedure)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, geometry, regprocedure)');
+--SELECT _postgis_drop_function_by_signature('st_clip(raster, geometry, float8, boolean)'); --------- sig5, not changed since 2.0.0, see ticket #5488
+--SELECT _postgis_drop_function_by_signature('st_clip(raster, geometry, boolean)'); ----------------- sig6, not changed since 2.0.0, see ticket #5488
+--SELECT _postgis_drop_function_by_signature('st_clip(raster, geometry, float8[], boolean)'); ------- sig4, not changed since 2.0.0, see ticket #5488
+
+-- refactoring of functions
+SELECT _postgis_drop_function_by_signature('_st_dumpaswktpolygons(raster, integer)');
+DROP TYPE IF EXISTS wktgeomval;
+
+-- function parameter names changed
+SELECT _postgis_drop_function_by_signature('st_nearestvalue(raster, integer, integer, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_nearestvalue(raster, integer, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_neighborhood(raster, integer, integer, integer, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_neighborhood(raster, integer, integer, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_neighborhood(raster, integer, geometry, integer, boolean)');
+SELECT _postgis_drop_function_by_signature('st_neighborhood(raster, geometry, integer, boolean)');
+
+-- variants of st_intersection with regprocedure no longer exist
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, integer, raster, integer, text, regprocedure)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, integer, raster, integer, regprocedure)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, raster, text, regprocedure)');
+SELECT _postgis_drop_function_by_signature('st_intersection(raster, raster, regprocedure)');
+
+-- function deprecated
+SELECT _postgis_drop_function_by_signature('st_pixelaspolygons(raster, integer)');
+
+-- function deprecated
+SELECT _postgis_drop_function_by_signature('st_bandsurface(raster, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_overlaps(geometry, raster, integer)');
+SELECT _postgis_drop_function_by_signature('st_overlaps(raster, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('st_overlaps(raster, geometry, integer)');
+SELECT _postgis_drop_function_by_signature('_st_overlaps(raster, geometry, integer)');
+SELECT _postgis_drop_function_by_signature('_st_overlaps(geometry, raster, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_touches(geometry, raster, integer)');
+SELECT _postgis_drop_function_by_signature('st_touches(raster, geometry, integer)');
+SELECT _postgis_drop_function_by_signature('st_touches(raster, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('_st_touches(geometry, raster, integer)');
+SELECT _postgis_drop_function_by_signature('_st_touches(raster, geometry, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_contains(raster, geometry, integer)');
+SELECT _postgis_drop_function_by_signature('st_contains(raster, integer, geometry)');
+SELECT _postgis_drop_function_by_signature('st_contains(geometry, raster, integer)');
+SELECT _postgis_drop_function_by_signature('_st_contains(raster, geometry, integer)');
+SELECT _postgis_drop_function_by_signature('_st_contains(geometry, raster, integer)');
+
+-- function signature changed
+SELECT _postgis_drop_function_by_signature('st_addband(raster, raster[], integer)');
+
+-- function signatures changed
+--SELECT _postgis_drop_function_by_signature('st_aspect(raster, integer, text, text, boolean)'); --- sig2, not changed since 2.1.0, see ticket #5491
+SELECT _postgis_drop_function_by_signature('st_hillshade(raster, integer, text, double precision, double precision, double precision, double precision, boolean)');
+SELECT _postgis_drop_function_by_signature('st_hillshade(raster, integer, text, float, float, float, float, boolean)');
+SELECT _postgis_drop_function_by_signature('st_hillshade(raster, integer, text, float, float, float, float)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('st_tile(raster, integer, integer, integer[])');
+SELECT _postgis_drop_function_by_signature('st_tile(raster, integer, integer, integer)');
+
+-- function signatures changed
+SELECT _postgis_drop_function_by_signature('st_setvalue(raster, integer, geometry, double precision)');
+SELECT _postgis_drop_function_by_signature('st_setvalue(raster, geometry, double precision)');
+
+-- function name change
+SELECT _postgis_drop_function_by_signature('st_world2rastercoord(raster, double precision, double precision)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoord(raster, geometry)');
+SELECT _postgis_drop_function_by_signature('_st_world2rastercoord(raster, double precision, double precision)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoordx(raster, float8, float8)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoordx(raster, float8)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoordx(raster, geometry)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoordy(raster, float8, float8)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoordy(raster, float8)');
+SELECT _postgis_drop_function_by_signature('st_world2rastercoordy(raster, geometry)');
+SELECT _postgis_drop_function_by_signature('st_raster2worldcoord( raster, integer, integer)');
+SELECT _postgis_drop_function_by_signature('_st_raster2worldcoord(raster, integer, integer)');
+SELECT _postgis_drop_function_by_signature('st_raster2worldcoordx(raster, int, int)');
+SELECT _postgis_drop_function_by_signature('st_raster2worldcoordx(raster, int)');
+SELECT _postgis_drop_function_by_signature('st_raster2worldcoordy(raster, int, int)');
+SELECT _postgis_drop_function_by_signature('st_raster2worldcoordy(raster, int)');
+
+-- function name change
+SELECT _postgis_drop_function_by_signature('_st_resample(raster, text, double precision, integer, double precision, double precision, double precision, double precision, double precision, double precision, integer, integer)');
+
+-- function signatures changed
+SELECT _postgis_drop_function_by_signature('st_resample(raster, integer, double precision, double precision, double precision, double precision, double precision, double precision, text, double precision)');
+SELECT _postgis_drop_function_by_signature('st_resample(raster, integer, integer, integer, double precision, double precision, double precision, double precision, text, double precision)');
+
+-- function signatures changed
+SELECT _postgis_drop_function_by_signature('_st_tile(raster, integer, integer, int[])');
+SELECT _postgis_drop_function_by_signature('st_tile(raster, integer[], integer, integer)');
+SELECT _postgis_drop_function_by_signature('st_tile(raster, integer, integer, integer)');
+SELECT _postgis_drop_function_by_signature('st_tile(raster, integer, integer)');
+
+-- function no longer exists
+SELECT _postgis_drop_function_by_signature('_add_raster_constraint_regular_blocking(name, name, name)');
+
+-- function signature changed
+SELECT _postgis_drop_function_by_signature('st_asbinary(raster)');
+
+SELECT _postgis_drop_function_by_signature('_st_hillshade4ma(float8[], text, text[])');
+
+-- function signature changed
+SELECT _postgis_drop_function_by_signature('st_gdaldrivers()');
+
+-- function signature change
+-- return value changed
+DO LANGUAGE 'plpgsql' $$
+DECLARE
+	cnt bigint;
+BEGIN
+	SELECT
+		count(*)
+	INTO cnt
+	FROM pg_proc f
+	JOIN pg_type t
+		ON f.prorettype = t.oid
+	WHERE pg_catalog.lower(f.proname) = '_raster_constraint_nodata_values'
+		AND f.pronargs = 1
+		AND t.typname = '_float8'; -- array form
+
+	IF cnt > 0 THEN
+		RAISE WARNING 'Dropping _raster_constraint_nodata_values(raster) due to return value changes.  Unfortunately, this is a DROP ... CASCADE as the NODATA raster constraint uses _raster_constraint_nodata_values(raster).  You will need to reapply AddRasterConstraint(''SCHEMA'', ''TABLE'', ''COLUMN'', ''nodata'') to any raster column that requires this constraint.';
+		DROP FUNCTION IF EXISTS _raster_constraint_nodata_values(raster) CASCADE;
+	END IF;
+END;
+$$;
+
+-- 2.5.0 signature changed
+SELECT _postgis_drop_function_by_signature('st_bandmetadata(raster, int[])', '2.5.0');
+SELECT _postgis_drop_function_by_signature('st_bandmetadata(raster, int)', '2.5.0');

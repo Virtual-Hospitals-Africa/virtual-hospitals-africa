@@ -1,0 +1,62 @@
+# **********************************************************************
+# *
+# * PostGIS - Spatial Types for PostgreSQL
+# * http://postgis.net
+# *
+# * Copyright (C) 2020-2022 Sandro Santilli <strk@kbt.io>
+# *
+# * This is free software; you can redistribute and/or modify it under
+# * the terms of the GNU General Public Licence. See the COPYING file.
+# *
+# **********************************************************************
+
+top_srcdir = @top_srcdir@
+srcdir = @srcdir@
+top_builddir = @top_builddir@
+builddir = @builddir@
+
+DATABASE=postgis_topo_regress
+
+PSQL=psql
+PERL=@PERL@
+
+VPATH = $(srcdir)
+
+# MingW hack: rather than use PGSQL_BINDIR directly, we change to the directory and
+# then use "pwd" to return the path. This ensures that the returned path is in MSYS
+# format, otherwise colons in drive letters will break PATH.
+PGSQL_BINDIR=$(shell cd "@PGSQL_BINDIR@" && pwd)
+
+#
+# Put path from pg_config into front of search path
+#
+PATH := $(PGSQL_BINDIR):$(PATH)
+export PATH
+
+all:
+	@echo "Use 'make check' to run all tests"
+
+# TODO: make edit_topology.sql into a proper test
+edit:
+	$(PSQL) -X -f edit_topology.sql $(DATABASE)
+
+
+topo_predicates.sql: predicates.sql.in Makefile
+	cpp -P -traditional-cpp $< | sed -e 's:@COLUMN@:feature:g;s:@SCHEMA@:topology.:g' > $@
+
+load_topology.sql: load_topology.sql.in Makefile
+	cpp -P -traditional-cpp $< | sed -e 's:@SRID@:-1:g' > $@
+
+load_topology-4326.sql: load_topology.sql.in Makefile
+	cpp -P -traditional-cpp $< | sed -e 's:@SRID@:4326:g' > $@
+
+clean distclean:
+	rm -f topo_predicates.sql load_topology.sql load_topology-4326.sql
+
+check: check-regress
+check-regress: check-regress-deps
+
+check-regress-deps: topo_predicates.sql load_topology.sql load_topology-4326.sql
+
+include $(srcdir)/tests.mk
+include $(top_srcdir)/regress/runtest.mk

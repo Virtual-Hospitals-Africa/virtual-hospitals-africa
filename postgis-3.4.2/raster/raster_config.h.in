@@ -1,0 +1,10 @@
+/* raster_config.h.in.  Generated from configure.ac by autoheader.  */
+
+/* GDAL library version */
+#undef POSTGIS_GDAL_VERSION
+
+/* Enable development variable */
+#undef ENABLE_DEVELOPMENT
+
+/* Define to 1 if a warning is outputted every time a double is truncated */
+#undef POSTGIS_RASTER_WARN_ON_TRUNCATION

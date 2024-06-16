@@ -1,0 +1,13 @@
+GeometryType(traffic_signs)|MULTIPOINT
+ST_GeometryType(traffic_signs)|ST_MultiPoint
+GeometryType(city_streets)|MULTILINESTRING
+ST_GeometryType(city_streets)|ST_MultiLinestring
+GeometryType(land_parcels)|MULTIPOLYGON
+ST_GeometryType(land_parcels)|ST_MultiPolygon
+GeometryType(big_signs)|MULTIPOINT
+ST_GeometryType(big_signs)|ST_MultiPoint
+GeometryType(big_streets)|MULTILINESTRING
+ST_GeometryType(big_streets)|ST_MultiLinestring
+GeometryType(big_parcels)|MULTIPOLYGON
+ST_GeometryType(big_parcels)|ST_MultiPolygon
+Topology 'city_data' dropped

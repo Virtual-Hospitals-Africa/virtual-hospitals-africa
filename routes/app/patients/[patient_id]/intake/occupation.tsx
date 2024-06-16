@@ -4,7 +4,9 @@ import Occupation0_18 from '../../../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../../../islands/Occupation19.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons from '../../../../../islands/form/buttons.tsx'
+import Buttons, {
+  ButtonsContainer,
+} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
@@ -13,6 +15,8 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
+import { Button } from '../../../../../components/library/Button.tsx'
+import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
 type OccupationFormValues = {
   // deno-lint-ignore no-explicit-any
@@ -52,7 +56,17 @@ export default async function OccupationPage(
     <IntakeLayout ctx={ctx}>
       <OccupationForm occupation={occupation} />
       <hr className='my-2' />
-      <Buttons submitText='Next Step' />
+      <ButtonsContainer>
+        
+        
+        <SlideoutMenu/>
+        <Button
+          type='submit'
+          className='flex-1 max-w-xl '
+        >
+          Next Step
+        </Button>
+      </ButtonsContainer>
     </IntakeLayout>
   )
 }
