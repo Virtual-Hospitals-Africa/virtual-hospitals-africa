@@ -1,0 +1,23 @@
+# **********************************************************************
+# *
+# * PostGIS - Spatial Types for PostgreSQL
+# * http://postgis.net
+# *
+# * Copyright (C) 2020 Sandro Santilli <strk@kbt.io>
+# *
+# * This is free software; you can redistribute and/or modify it under
+# * the terms of the GNU General Public Licence. See the COPYING file.
+# *
+# **********************************************************************
+POSTGIS_PGSQL_VERSION=@POSTGIS_PGSQL_VERSION@
+POSTGIS_GEOS_VERSION=@POSTGIS_GEOS_VERSION@
+POSTGIS_SFCGAL_VERSION=@POSTGIS_SFCGAL_VERSION@
+
+TESTS += \
+		$(top_srcdir)/sfcgal/regress/regress_sfcgal \
+		$(top_srcdir)/sfcgal/regress/approximatemedialaxis.sql
+
+ifeq ($(shell expr "$(POSTGIS_SFCGAL_VERSION)" ">=" 10401),1)
+	TESTS += \
+		$(top_srcdir)/sfcgal/regress/alphashape.sql
+endif

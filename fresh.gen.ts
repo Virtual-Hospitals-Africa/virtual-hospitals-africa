@@ -93,6 +93,7 @@ import * as $login from './routes/login.tsx'
 import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $regulator from './routes/regulator.tsx'
+import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -122,6 +123,7 @@ import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
+import * as $SlideoutMenu from './islands/SlideoutMenu.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
@@ -331,6 +333,7 @@ const manifest = {
     './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
     './routes/regulator.tsx': $regulator,
+    './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
@@ -362,6 +365,7 @@ const manifest = {
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
+    './islands/SlideoutMenu.tsx': $SlideoutMenu,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,

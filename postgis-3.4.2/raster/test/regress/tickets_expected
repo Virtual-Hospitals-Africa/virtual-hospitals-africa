@@ -1,0 +1,79 @@
+#1485|0
+#2532.1|
+#2532.2|
+NOTICE:  Raster has default geotransform. Adjusting metadata for use of GDAL Warp API
+#2911|0|0|5|5|2|-2|0|0|0|1
+t
+test_raster_scale_regular|rast||1
+ERROR:  new row for relation "test_raster_scale_regular" violates check constraint "enforce_scaley_rast"
+t
+test_raster_scale_big|rast|-1.23456789012346e+18|1
+ERROR:  new row for relation "test_raster_scale_big" violates check constraint "enforce_scalex_rast"
+t
+test_raster_scale_small|rast||1
+ERROR:  new row for relation "test_raster_scale_small" violates check constraint "enforce_scaley_rast"
+NOTICE:  Input raster is empty or has no bands. Returning empty raster
+NOTICE:  Invalid band index (must use 1-based). Returning NULL
+#4102.1|-10
+#4102.2|-10
+#3457|4950
+#4412|t
+NOTICE:  Adding SRID constraint
+NOTICE:  Adding scale-X constraint
+NOTICE:  Adding scale-Y constraint
+NOTICE:  Adding blocksize-X constraint
+NOTICE:  Adding blocksize-Y constraint
+NOTICE:  Adding alignment constraint
+NOTICE:  Adding number of bands constraint
+NOTICE:  Adding pixel type constraint
+NOTICE:  Adding nodata value constraint
+NOTICE:  Adding out-of-database constraint
+NOTICE:  Adding maximum extent constraint
+t
+NOTICE:  Adding SRID constraint
+NOTICE:  Adding scale-X constraint
+NOTICE:  Adding scale-Y constraint
+NOTICE:  Adding blocksize-X constraint
+NOTICE:  Unable to add constraint: enforce_width_r
+NOTICE:  SQL used for failed constraint: ALTER TABLE public.ticket_4547 ADD CONSTRAINT enforce_width_r CHECK (st_width(r) IN ())
+NOTICE:  Returned error message: syntax error at or near ")" (42601)
+WARNING:  Unable to add constraint: 'blocksize_x'.  Skipping
+NOTICE:  Adding blocksize-Y constraint
+NOTICE:  Unable to add constraint: enforce_height_r
+NOTICE:  SQL used for failed constraint: ALTER TABLE public.ticket_4547 ADD CONSTRAINT enforce_height_r CHECK (st_height(r) IN ())
+NOTICE:  Returned error message: syntax error at or near ")" (42601)
+WARNING:  Unable to add constraint: 'blocksize_y'.  Skipping
+NOTICE:  Adding alignment constraint
+NOTICE:  Adding number of bands constraint
+NOTICE:  Adding pixel type constraint
+NOTICE:  Unable to get the pixel types of a sample raster (max < 1 or null)
+WARNING:  Unable to add constraint: 'pixel_types'.  Skipping
+NOTICE:  Adding nodata value constraint
+NOTICE:  Unable to get the nodata values of a sample raster (max < 1 or null)
+WARNING:  Unable to add constraint: 'nodata_values'.  Skipping
+NOTICE:  Adding out-of-database constraint
+NOTICE:  Unable to get the out-of-database bands of a sample raster (max < 1 or null)
+WARNING:  Unable to add constraint: 'out_db'.  Skipping
+NOTICE:  Adding maximum extent constraint
+WARNING:  Unable to add constraint: 'extent'.  Skipping
+#4547.1|t
+NOTICE:  Adding SRID constraint
+NOTICE:  Adding scale-X constraint
+NOTICE:  Adding scale-Y constraint
+NOTICE:  Adding blocksize-X constraint
+NOTICE:  Adding blocksize-Y constraint
+NOTICE:  Adding alignment constraint
+NOTICE:  Adding number of bands constraint
+NOTICE:  Adding pixel type constraint
+NOTICE:  Adding nodata value constraint
+NOTICE:  Adding out-of-database constraint
+NOTICE:  Adding maximum extent constraint
+#4547.2|t
+#4769|
+#4770.a|
+#4770.a|
+#4770.b|
+#4770.b|
+#4724.a|(0,,,,,)
+#4724.a|(0,,,,,)
+#4724.b|(0,,,,,)

@@ -1,0 +1,5 @@
+relation before|5
+feature before|P1|f
+feature during|P1|t
+feature after|P1|t
+relation after|4

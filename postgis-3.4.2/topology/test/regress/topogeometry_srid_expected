@@ -1,0 +1,7 @@
+ST_Srid(traffic_signs)|0
+ST_Srid(city_streets)|0
+ST_Srid(land_parcels)|0
+ST_Srid(big_signs)|0
+ST_Srid(big_streets)|0
+ST_Srid(big_parcels)|0
+Topology 'city_data' dropped

@@ -1,0 +1,106 @@
+2024-02-08  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* NEWS, README.postgis, Version.config, doc/release_notes.xml: 
+	Prepare for 3.4.2 release
+
+2024-02-07  Sandro Santilli <strk@kbt.io>
+
+	* configure.ac: Improve error message for bogus argument to
+	--with-gdalconfig
+
+2024-01-31  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* NEWS, postgis/lwgeom_in_gml.c, postgis/lwgeom_in_kml.c,
+	postgis/lwgeom_in_marc21.c, regress/core/in_gml.sql: Change XML
+	parsing to use default (SAX2) parser, references #5662
+
+2024-01-23  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* NEWS, liblwgeom/measures.c: Do full ring check always in line/poly
+	maxdist mode, references #5639
+
+2024-01-11  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* NEWS, liblwgeom/measures3d.c: Handle empty collection components
+	in 3d distance, references #5580
+
+2024-01-11  Sandro Santilli <strk@kbt.io>
+
+	* .woodpecker/regress.yml: woodie: run all tests with
+	standard_conforming_strings=off We'll leave standard_conforming_strings=on (default) testing to
+	other bots References #5633 in 3.4 branch (3.4.2dev)
+
+2024-01-11  Sandro Santilli <strk@kbt.io>
+
+	* NEWS, postgis/postgis_letters.sql, raster/rt_pg/rtpostgis.sql.in,
+	regress/core/in_flatgeobuf.sql, regress/core/mvt.sql,
+	regress/core/tickets.sql, regress/core/wkb.sql,
+	sfcgal/regress/regress_sfcgal.sql: Use escaped string or set
+	standard_conforming_strings=on References #5633 in 3.4 branch (3.4.2dev)
+
+2024-01-10  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* NEWS, postgis/lwgeom_functions_analytic.c: Crash on collections
+	with empty members, references #5646
+
+2024-01-10  Regina Obe <lr@pcorp.us>
+
+	* libpgcommon/lwgeom_pg.c: Revert #5648 fix Causing regression
+	failures on PG16 and PG17 References #5648 and #5650
+
+2024-01-09  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* NEWS: Update news to reflect #5647
+
+2024-01-09  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* postgis/lwgeom_geos.c, regress/core/tickets.sql,
+	regress/core/tickets_expected: Handle empty components of MULTIPOINT
+	in native point-in-polygon routines, references #5647
+
+2024-01-08  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* doc/reference_guc.xml: Clarify documentation page typos regarding
+	gdal_vsi_options, references #5653
+
+2024-01-08  Paul Ramsey <pramsey@cleverelephant.ca>
+
+	* configure.ac, liblwgeom/cunit/Makefile.in,
+	liblwgeom/lwgeodetic.c, loader/Makefile.in,
+	raster/loader/Makefile.in: Fix MacOS linking issues in 3.4 branch
+
+2023-10-30  Sandro Santilli <strk@kbt.io>
+
+	* regress/core/regress.sql: Give more detail about unexpected
+	functions ownership
+
+2023-12-27  Sandro Santilli <strk@kbt.io>
+
+	* regress/core/regress.sql: More escaped string usage (regress
+	tests) References #5633
+
+2023-12-28  Sandro Santilli <strk@kbt.io>
+
+	* .woodpecker/regress.yml: [woodie] Do not test with unprivileged
+	user References #5651 in 3.4 branch
+
+2023-12-28  Sandro Santilli <strk@kbt.io>
+
+	* .woodpecker/regress.yml: [woodie] Disable pgextwlist, broken for
+	unknown reason at this point
+
+2023-12-28  Sandro Santilli <strk@kbt.io>
+
+	* .woodpecker/regress.yml: [woodie] drop double-upgrade and
+	locked-upgrade tests (unsupported)
+
+2023-12-27  Sandro Santilli <strk@kbt.io>
+
+	* regress/hooks/configure-pgextwlist.sql: Add
+	configure-pgextwlist.sql regression test hook This was needed since previous commit
+	f73b0aec3ffdf39115228695706e62d1db9dc57d
+
+2023-12-27  Sandro Santilli <strk@kbt.io>
+
+	* Have woodie test with standard_conforming_strings off too Copies the regress woodie workflow from master branch References #5633 in 3.4 branch (3.4.2dev)
+

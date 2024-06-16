@@ -1,0 +1,16 @@
+This test suite was originally downloaded from 
+http://cite.opengeospatial.org/teamengine/about/sfs/1.2.1/site/
+and legal adaptations necessary for PostGIS were added to allow it
+to run.
+
+  dropdb --if-exists ogc_test_suite
+  createdb ogc_test_suite
+  psql ogc_test_suite < ../../postgis/postgis.sql
+  psql -c 'create extension postgis' ogc_test_suite
+  psql -a -f 1_schema.sql  ogc_test_suite >& 1_output.txt
+  psql -a -f 2_queries.sql ogc_test_suite >& 2_output.txt
+  psql -a -f 3_cleanup.sql ogc_test_suite >& 3_output.txt
+
+- Load the test files in order. File 2 has the actual tests, with the
+  correct answers for each test in the comments.
+

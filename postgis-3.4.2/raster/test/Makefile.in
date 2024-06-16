@@ -1,0 +1,34 @@
+#############################################################################
+#
+# Copyright (c) 2009 Mateusz Loskot <mateusz@loskot.net>
+#
+# This is free software; you can redistribute and/or modify it under
+# the terms of the GNU General Public Licence. See the COPYING file.
+#
+#############################################################################
+
+RT_CORE=../rt_core
+
+all: check
+
+check: check-unit check-regress
+
+core-check: check-unit
+
+check-unit:
+	$(MAKE) -C cunit check
+
+ifneq (@PG_CONFIG@,no)
+check-regress:
+	$(MAKE) -C regress check
+else
+check-regress:
+endif
+
+clean:
+	$(MAKE) -C cunit $@
+
+distclean: clean
+	$(MAKE) -C cunit $@
+	$(MAKE) -C regress $@
+	rm -f Makefile
