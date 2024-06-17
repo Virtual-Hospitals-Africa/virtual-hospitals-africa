@@ -1,13 +1,13 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
-import { EllipsisVerticalIcon } from '../components/library/icons/heroicons/solid.tsx'
-import { Button } from '../components/library/Button.tsx'
-import Buttons, { ButtonsContainer } from '../islands/form/buttons.tsx'
+import { Fragment, useState } from 'react';
+import { Dialog, Menu, Transition } from '@headlessui/react';
+import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx';
+import { EllipsisVerticalIcon } from '../components/library/icons/heroicons/solid.tsx';
+import { Button } from '../components/library/Button.tsx';
+import Buttons, { ButtonsContainer } from '../islands/form/buttons.tsx';
 
 const tabs = [
   { name: 'All', href: '#', current: true },
-]
+];
 
 const team = [
   {
@@ -67,24 +67,34 @@ const team = [
     status: 'offline',
   },
   // more people...
-]
+];
 
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+function classNames(...classes: (string | undefined)[]): string {
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [open, setOpen] = useState(false) // The initial state is false, indicating that the sidebar is hidden
+  const [open, setOpen] = useState(false); // The initial state is false, indicating that the sidebar is hidden
+
+  const handleTabClick = (name: string) => {
+    tabs.forEach((tab) => {
+      tab.current = tab.name === name;
+    });
+  };
+
+  const filteredTeam = tabs.find(tab => tab.current)?.name === 'All'
+    ? team
+    : team.filter(person => person.status === tabs.find(tab => tab.current)?.name.toLowerCase());
 
   return (
-    <div className='flex-1 max-w-xl '>
+    <div className='flex-1 max-w-xl'>
       {/* Add a button to toggle the open state */}
       <ButtonsContainer className='flex space-x-4'>
         <Button
           type='button'
-          variant='outline' //outline
-          color='blueTwo'
-          className='flex-1 max-w-xl '
+          variant='outline'
+          color='blue'
+          className='flex-1 max-w-xl'
           onClick={() => setOpen(true)}
         >
           Send to
@@ -93,11 +103,11 @@ export default function Example() {
       <Transition show={open} as={Fragment}>
         <Dialog className='relative z-10' onClose={() => setOpen(false)}>
           <div className='fixed inset-0 bg-black bg-opacity-25' />
-
           <div className='fixed inset-0 overflow-hidden'>
             <div className='absolute inset-0 overflow-hidden'>
               <div className='pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16'>
                 <Transition.Child
+                  as={Fragment}
                   enter='transform transition ease-in-out duration-500 sm:duration-700'
                   enterFrom='translate-x-full'
                   enterTo='translate-x-0'
@@ -135,6 +145,7 @@ export default function Example() {
                               <a
                                 key={tab.name}
                                 href={tab.href}
+                                onClick={() => handleTabClick(tab.name)}
                                 className={classNames(
                                   tab.current
                                     ? 'border-indigo-500 text-indigo-600'
@@ -152,7 +163,7 @@ export default function Example() {
                         role='list'
                         className='flex-1 divide-y divide-gray-200 overflow-y-auto'
                       >
-                        {team.map((person) => (
+                        {filteredTeam.map((person) => (
                           <li key={person.handle}>
                             <div className='group relative flex items-center px-5 py-6'>
                               <a
@@ -192,7 +203,12 @@ export default function Example() {
                               </a>
                               <Menu
                                 as='div'
-                                className='relative ml-2 inline-block flex-shrink-0 text-left'
+                                className={({ open }) =>
+                                  classNames(
+                                    'relative ml-2 inline-block flex-shrink-0 text-left',
+                                    open ? 'open' : ''
+                                  )
+                                }
                               >
                                 <Menu.Button className='group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2'>
                                   <span className='absolute -inset-1.5' />
@@ -206,7 +222,9 @@ export default function Example() {
                                     />
                                   </span>
                                 </Menu.Button>
-                                <Transition
+                                <Transition 
+                                  as={Fragment}
+                                  show={open}
                                   enter='transition ease-out duration-100'
                                   enterFrom='transform opacity-0 scale-95'
                                   enterTo='transform opacity-100 scale-100'
@@ -248,5 +266,6 @@ export default function Example() {
         </Dialog>
       </Transition>
     </div>
-  )
+ );
 }
+
