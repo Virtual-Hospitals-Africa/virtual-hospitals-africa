@@ -84,8 +84,8 @@ export default function Example() {
       <ButtonsContainer className="flex space-x-4">
         <Button
           type="button"
-          variant='outline'
-          color='blue'
+          variant='outline' //outline
+          color='blueTwo'
           className='flex-1 max-w-xl '
           onClick={() => setOpen(true)}
         >
