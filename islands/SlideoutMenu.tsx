@@ -107,7 +107,7 @@ export default function Example() {
                   leaveFrom="translate-x-0"
                   leaveTo="translate-x-full"
                 >
-                  <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                  <Dialog.Panel className="pointer-events-auto fixed right-0 top-0 h-full w-[calc(100vw-12rem)] bg-white shadow-xl">
                     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                       <div className="p-6">
                         <div className="flex items-start justify-between">
