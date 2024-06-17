@@ -26,7 +26,6 @@ import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
 import { Button } from '../../../../../components/library/Button.tsx'
 import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
-
 type FamilyFormValues = {
   family: {
     under_18?: boolean
@@ -85,7 +84,7 @@ export default async function FamilyPage(
       </section>
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu/>
+        <SlideoutMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

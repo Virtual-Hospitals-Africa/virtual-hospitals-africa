@@ -43,9 +43,9 @@ export default async function ReviewPage(
     <IntakeLayout ctx={ctx}>
       <PatientReview patient={patient} />
       <hr className='my-2' />
-      
+
       <ButtonsContainer>
-        <SlideoutMenu/>
+        <SlideoutMenu />
         <Buttons
           submitText='Continue to vitals'
           className='flex-1 max-w-xl '

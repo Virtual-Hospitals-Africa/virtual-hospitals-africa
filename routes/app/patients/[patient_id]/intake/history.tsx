@@ -16,7 +16,6 @@ import { assert } from 'std/assert/assert.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
-
 type HistoryFormValues = {
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
   major_surgeries?: patient_conditions.MajorSurgeryUpsert[]
@@ -64,7 +63,7 @@ export default async function HistoryPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu/>
+        <SlideoutMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

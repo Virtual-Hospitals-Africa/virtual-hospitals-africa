@@ -115,7 +115,7 @@ export default async function AddressPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu/>
+        <SlideoutMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

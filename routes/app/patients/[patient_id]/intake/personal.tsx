@@ -16,7 +16,6 @@ import omit from '../../../../../util/omit.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
-
 type PersonalFormValues = {
   first_name: string
   last_name: string
@@ -77,7 +76,7 @@ export default async function PersonalPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu/>
+        <SlideoutMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

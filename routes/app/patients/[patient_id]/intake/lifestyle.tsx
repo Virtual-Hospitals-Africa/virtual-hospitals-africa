@@ -18,7 +18,6 @@ import zip from '../../../../../util/zip.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
-
 // deno-lint-ignore no-explicit-any
 type LifestyleFormValues = Record<string, any> // TODO @debruler type this
 
@@ -191,7 +190,7 @@ export default async function LifestylePage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu/>
+        <SlideoutMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '
