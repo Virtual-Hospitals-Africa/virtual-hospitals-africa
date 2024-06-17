@@ -140,3 +140,12 @@ jobs:
 
       - name: Compile web
         run:  deno task compile:web
+  
+  notify_slack:
+    name: Notify Slack
+    needs: [compile_others, compile_web]
+    # needs: [lint_and_test, compile_others, compile_web]
+    uses: slackapi/slack-github-action@v1.26.0
+    if: ${{ always() }}
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
