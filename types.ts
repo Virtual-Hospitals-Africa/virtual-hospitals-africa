@@ -1443,7 +1443,7 @@ export type WhatsAppMessageSent = {
   patient_id: string
   whatsapp_id: string
   body: string
-  responding_to_id: string
+  responding_to_received_id: string
   read_status: string
 }
 

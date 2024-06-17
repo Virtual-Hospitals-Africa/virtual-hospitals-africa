@@ -69,7 +69,7 @@ async function respondToMessage<CS extends string, US extends UserState<CS>>(
       await insertMessageSent(db, {
         chatbot_name,
         id: user_state.id,
-        responding_to_id: user_state.message_id,
+        responding_to_received_id: user_state.message_id,
         whatsapp_id: whatsappResponse.messages[0].id,
         body: JSON.stringify(responseToSend),
       })

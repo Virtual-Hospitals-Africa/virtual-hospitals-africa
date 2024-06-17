@@ -1031,7 +1031,7 @@ export interface PatientWhatsappMessagesSent {
   id: Generated<string>
   patient_id: string
   read_status: string
-  responding_to_id: string
+  responding_to_received_id: string
   updated_at: Generated<Timestamp>
   whatsapp_id: string
 }
@@ -1069,7 +1069,7 @@ export interface PharmacistWhatsappMessagesSent {
   id: Generated<string>
   pharmacist_id: string
   read_status: string
-  responding_to_id: string
+  responding_to_received_id: string
   updated_at: Generated<Timestamp>
   whatsapp_id: string
 }
@@ -1222,8 +1222,8 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
-  patient_whatsapp_messages_received: PatientWhatsappMessagesReceived
-  patient_whatsapp_messages_sent: PatientWhatsappMessagesSent
+  whatsapp_messages_received: PatientWhatsappMessagesReceived
+  whatsapp_messages_sent: PatientWhatsappMessagesSent
   patients: Patients
   pharmacist_whatsapp_messages_received: PharmacistWhatsappMessagesReceived
   pharmacist_whatsapp_messages_sent: PharmacistWhatsappMessagesSent
