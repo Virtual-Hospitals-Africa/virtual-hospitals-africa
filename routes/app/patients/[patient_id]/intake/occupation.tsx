@@ -57,9 +57,13 @@ export default async function OccupationPage(
       <OccupationForm occupation={occupation} />
       <hr className='my-2' />
       <ButtonsContainer>
+<<<<<<< HEAD
         
         
         <SlideoutMenu/>
+=======
+        <SlideoutMenu />
+>>>>>>> 73862943e809511e30887b014c3c913298df5186
         <Button
           type='submit'
           className='flex-1 max-w-xl '

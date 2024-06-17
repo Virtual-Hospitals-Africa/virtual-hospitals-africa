@@ -1,5 +1,6 @@
 const regulator_emails = [
-  'will@morehumaninternet.org',
+  'william.t.weiss@gmail.com',
+  'zorachen84613@gmail.com',
   'mike.huang.mikank@gmail.com',
 ]
 

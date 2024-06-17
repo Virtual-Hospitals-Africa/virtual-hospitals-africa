@@ -123,10 +123,9 @@ export const handler: Handlers = {
       'Phone number is not the pharmacist or patient phone number',
     )
 
-    if (display_phone_number === pharmacistPhone) {
-      console.log('Pharmacist Message')
-      return new Response('OK')
-    }
+    const chatbot_name = display_phone_number === pharmacistPhone
+      ? 'pharmacist'
+      : 'patient'
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses
@@ -160,6 +159,7 @@ export const handler: Handlers = {
       await conversations.insertMessageReceived(db, {
         patient_phone_number: message.from,
         whatsapp_id: message.id,
+        chatbot_name,
         ...contents,
       })
     }

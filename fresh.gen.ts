@@ -93,6 +93,7 @@ import * as $login from './routes/login.tsx'
 import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $regulator from './routes/regulator.tsx'
+import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -332,6 +333,7 @@ const manifest = {
     './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
     './routes/regulator.tsx': $regulator,
+    './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,

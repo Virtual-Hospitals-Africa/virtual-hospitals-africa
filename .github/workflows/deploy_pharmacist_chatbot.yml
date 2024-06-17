@@ -20,4 +20,5 @@ jobs:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: "vha-pharmacist-chatbot"
           heroku_email: "will@morehumaninternet.org"
+          docker_heroku_process_type: worker
           usedocker: true

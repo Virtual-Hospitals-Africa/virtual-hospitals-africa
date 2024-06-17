@@ -15,6 +15,7 @@ import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
 import patientConversationStates from './patient/conversationStates.ts'
 import { updatePatientState } from './patient/util.ts'
+import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 
 type WhatsApp = {
   sendMessage(opts: {
@@ -28,6 +29,9 @@ type WhatsApp = {
 }
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
+const on_production = commitHash !== 'local'
+
+console.log('on_production', on_production)
 
 async function respondToPatientMessage(
   whatsapp: WhatsApp,
@@ -86,6 +90,26 @@ async function respondToPatientMessage(
       whatsapp_message_received_id: patientState.message_id,
       errorMessage: err.message,
     })
+
+    console.log('on_production', on_production)
+    if (on_production) {
+      const github_code_href =
+        `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
+      const github_code_link = `<${github_code_href}|Github Commit>`
+
+      const logs_href =
+        'https://dashboard.heroku.com/apps/vha-patient-chatbot/logs'
+      const logs_link = `<${logs_href}|Heroku Logs>`
+
+      const message = [
+        '*Patient Chatbot Error*',
+        err.message,
+        github_code_link,
+        logs_link,
+      ].join('\n')
+
+      await sendToEngineeringChannel(message)
+    }
   }
 }
 
@@ -129,13 +153,6 @@ export default async function respond(
   }
 
   if (chatbot_name === 'pharmacist') {
-    whatsapp.sendMessage({
-      message: {
-        type: 'string',
-        messageBody: 'Hello pharmacist',
-      },
-      phone_number: '+12369961017',
-    })
     console.log('pharmacist')
   }
 }

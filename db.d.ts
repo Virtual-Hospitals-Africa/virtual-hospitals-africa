@@ -155,6 +155,17 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:subsequent_ask_for_media'
   | 'other_end_of_demo'
 
+export type PharmacistConversationState =
+  | 'initial_message'
+  | 'not_onboarded:confirm_pin'
+  | 'not_onboarded:create_pin'
+  | 'not_onboarded:enter_establishment'
+  | 'not_onboarded:enter_id'
+  | 'not_onboarded:enter_registration'
+  | 'onboarded:enter_order_number'
+  | 'onboarded:get_order_details'
+  | 'other_end_of_demo'
+
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
 export type Religion =
@@ -948,6 +959,18 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
+export interface Pharmacists {
+  conversation_state: Generated<PharmacistConversationState>
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  id_number: string | null
+  name: string | null
+  phone_number: string | null
+  pin: string | null
+  registration_number: string | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface Procurement {
   batch_number: string | null
   consumable_id: string
@@ -1018,6 +1041,7 @@ export interface Wards {
 
 export interface WhatsappMessagesReceived {
   body: string | null
+  chatbot_name: Generated<string>
   conversation_state: Generated<PatientConversationState>
   created_at: Generated<Timestamp>
   error_commit_hash: string | null
@@ -1121,6 +1145,7 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
+  pharmacists: Pharmacists
   procurement: Procurement
   procurers: Procurers
   provider_calendars: ProviderCalendars
@@ -1129,7 +1154,7 @@ export interface DB {
   suburbs: Suburbs
   waiting_room: WaitingRoom
   wards: Wards
-  whatsapp_messages_received: WhatsappMessagesReceived
-  whatsapp_messages_sent: WhatsappMessagesSent
+  patient_whatsapp_messages_received: WhatsappMessagesReceived
+  patient_whatsapp_messages_sent: WhatsappMessagesSent
 }
 type Buffer = Uint8Array
