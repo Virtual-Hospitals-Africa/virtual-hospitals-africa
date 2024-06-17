@@ -2,15 +2,14 @@ import { Fragment, useState } from 'react';
 import { Dialog, Menu, Transition } from '@headlessui/react';
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx';
 import { EllipsisVerticalIcon } from '../components/library/icons/heroicons/solid.tsx';
-import { Button } from '../components/library/Button.tsx';
-import Buttons, { ButtonsContainer } from '../islands/form/buttons.tsx';
+import { Button } from '../components/library/Button.tsx'
+import Buttons, {
+  ButtonsContainer,
+} from '../islands/form/buttons.tsx'
 
-const initialTabs = [
+const tabs = [
   { name: 'All', href: '#', current: true },
-  { name: 'Online', href: '#', current: false },
-  { name: 'Offline', href: '#', current: false },
 ];
-
 const team = [
   {
     name: 'Waiting Room',
@@ -21,7 +20,7 @@ const team = [
   },
   {
     name: 'Nurse A',
-    handle: 'NurseA',
+    handle: 'NurseA ',
     href: '#',
     imageUrl: 'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'offline',
@@ -70,25 +69,16 @@ function classNames(...classes) {
 
 export default function Example() {
   const [open, setOpen] = useState(false); // The initial state is false, indicating that the sidebar is hidden
-  const [tabs, setTabs] = useState(initialTabs);
-
-  const handleTabClick = (name) => {
-    setTabs(tabs.map(tab => ({ ...tab, current: tab.name === name })));
-  };
-
-  const filteredTeam = tabs.find(tab => tab.current).name === 'All'
-    ? team
-    : team.filter(person => person.status === tabs.find(tab => tab.current).name.toLowerCase());
 
   return (
-    <div className='flex-1 max-w-xl'>
+    <div className='flex-1 max-w-xl '>
       {/* Add a button to toggle the open state */}
       <ButtonsContainer className="flex space-x-4">
         <Button
           type="button"
           variant='outline'
           color='blue'
-          className='flex-1 max-w-xl'
+          className='flex-1 max-w-xl '
           onClick={() => setOpen(true)}
         >
           Send to
@@ -133,8 +123,7 @@ export default function Example() {
                             {tabs.map((tab) => (
                               <a
                                 key={tab.name}
-                                href="#"
-                                onClick={() => handleTabClick(tab.name)}
+                                href={tab.href}
                                 className={classNames(
                                   tab.current
                                     ? 'border-indigo-500 text-indigo-600'
@@ -149,7 +138,7 @@ export default function Example() {
                         </div>
                       </div>
                       <ul role="list" className="flex-1 divide-y divide-gray-200 overflow-y-auto">
-                        {filteredTeam.map((person) => (
+                        {team.map((person) => (
                           <li key={person.handle}>
                             <div className="group relative flex items-center px-5 py-6">
                               <a href={person.href} className="-m-1 block flex-1 p-1">

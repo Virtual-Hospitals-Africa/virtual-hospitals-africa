@@ -5,7 +5,9 @@ import {
 import * as patient_family from '../../../../../db/models/family.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons from '../../../../../islands/form/buttons.tsx'
+import Buttons, {
+  ButtonsContainer,
+} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
@@ -21,6 +23,9 @@ import {
   Religion,
 } from '../../../../../db.d.ts'
 import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
+import { Button } from '../../../../../components/library/Button.tsx'
+import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
+
 
 type FamilyFormValues = {
   family: {
@@ -79,7 +84,15 @@ export default async function FamilyPage(
         />
       </section>
       <hr className='my-2' />
-      <Buttons submitText='Next Step' />
+      <ButtonsContainer>
+        <SlideoutMenu/>
+        <Button
+          type='submit'
+          className='flex-1 max-w-xl '
+        >
+          Next Step
+        </Button>
+      </ButtonsContainer>
     </IntakeLayout>
   )
 }
