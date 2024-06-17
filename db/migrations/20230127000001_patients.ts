@@ -1,15 +1,7 @@
 import { Kysely, sql } from 'kysely'
-import patientConversationStates from '../../chatbot/patient/conversationStates.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
-  const conversationStates = Object.keys(patientConversationStates)
-
-  await db.schema
-    .createType('patient_conversation_state')
-    .asEnum(conversationStates)
-    .execute()
-
   await db.schema
     .createType('gender')
     .asEnum([
@@ -44,11 +36,6 @@ export async function up(db: Kysely<unknown>) {
           'uuid',
           (col) => col.references('Organization.id'),
         )
-        .addColumn(
-          'conversation_state',
-          sql`patient_conversation_state`,
-          (column) => column.notNull().defaultTo('initial_message'),
-        )
         .addColumn('ethnicity', 'varchar(50)')
         .addColumn(
           'completed_intake',
@@ -82,6 +69,5 @@ export async function up(db: Kysely<unknown>) {
 
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('patients').execute()
-  await db.schema.dropType('patient_conversation_state').execute()
   await db.schema.dropType('gender').execute()
 }
