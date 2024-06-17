@@ -10,6 +10,17 @@ import {
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`
 
+export type DetermineResponse<
+  CS extends string,
+  US extends UserState<CS>,
+> = (
+  trx: TrxOrDb,
+  conversationStates: ConversationStates<US['conversation_state'], US>,
+  userState: US,
+  // deno-lint-ignore no-explicit-any
+  updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
+) => Promise<WhatsAppSingleSendable | WhatsAppSendable>
+
 export async function determineResponse<
   CS extends string,
   US extends UserState<CS>,

@@ -53,6 +53,10 @@ export type Location = {
 export type Gender = 'male' | 'female' | 'non-binary'
 
 export type UserState<CS> = {
+  id: string
+  entity_type: 'patient' | 'pharmacist' | 'practitioner'
+  phone_number: string
+  message_id: string
   body?: string
   has_media: boolean
   conversation_state: CS
@@ -341,9 +345,10 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
 }
 
 export type PatientState = {
-  message_id: string
-  patient_id: string
+  entity_type: 'patient'
+  id: string
   whatsapp_id: string
+  message_id: string
   body?: string
   has_media: boolean
   media_id?: string
@@ -375,13 +380,16 @@ export type PatientState = {
 }
 
 export type PharmacistState = {
-  pharmacist_id: number
+  entity_type: 'pharmacist'
+  id: string
+  whatsapp_id: string
+  message_id: string
+  body?: string
+  has_media: boolean
+  media_id?: string
+  phone_number: string
   name: Maybe<string>
   conversation_state: PharmacistConversationState
-  has_media: boolean
-  pin: Maybe<string>
-  organization_id: Maybe<string>
-  organization: Maybe<Organization>
 }
 
 export type PharmacistConversationState =
@@ -1412,15 +1420,24 @@ export type WhatsAppMessageContents =
   | { has_media: false; body: string; media_id: null }
   | { has_media: true; body: null; media_id: string }
 
-export type WhatsAppMessageReceived = WhatsAppMessageContents & {
-  patient_id: string
-  whatsapp_id: string
-  conversation_state: PatientConversationState
-  started_responding_at: Maybe<ColumnType<Date>>
-  chatbot_name: string
-  error_commit_hash: Maybe<string>
-  error_message: Maybe<string>
-}
+export type WhatsAppMessageReceived =
+  & WhatsAppMessageContents
+  & {
+    whatsapp_id: string
+    started_responding_at: Maybe<ColumnType<Date>>
+    chatbot_name: string
+    error_commit_hash: Maybe<string>
+    error_message: Maybe<string>
+  }
+  & ({
+    chatbot_name: 'patient'
+    conversation_state: PatientConversationState
+    patient_id: string
+  } | {
+    chatbot_name: 'pharmacist'
+    conversation_state: PharmacistConversationState
+    pharmacist_id: string
+  })
 
 export type WhatsAppMessageSent = {
   patient_id: string
@@ -2363,3 +2380,5 @@ export type RenderedNotification = {
     href: string
   }
 }
+
+export type ChatbotName = 'patient' | 'pharmacist'
