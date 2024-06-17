@@ -1,6 +1,6 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
-ChatbotName,
+  ChatbotName,
   HasStringId,
   PatientState,
   PharmacistState,
@@ -44,10 +44,11 @@ export function isWhatsAppContents(
 
 export async function insertMessageReceived(
   trx: TrxOrDb,
-  { phone_number, chatbot_name, ...message_data }:
+  data:
     & {
-      phone_number: string
-      chatbot_name: string
+      received_by_phone_number: string
+      sent_by_phone_number: string
+      chatbot_name: ChatbotName
     }
     & Pick<
       WhatsAppMessageReceived,
@@ -56,74 +57,11 @@ export async function insertMessageReceived(
 ): Promise<
   HasStringId<Omit<WhatsAppMessageReceived, 'started_responding_at'>>
 > {
-
-  if (chatbot_name === 'patient') {
-    // TODO, make this not a patient yet, but instead either a person or telcom in Medplum
-    const patient = (await trx
-      .insertInto('patients')
-      .values({
-        phone_number,
-        conversation_state: 'initial_message',
-        completed_intake: false,
-      })
-      .onConflict((oc) => oc.column('phone_number').doNothing())
-      .returningAll()
-      .executeTakeFirst()) || (
-        await trx.selectFrom('patients').where(
-          'phone_number',
-          '=',
-          phone_number,
-        ).selectAll().executeTakeFirstOrThrow()
-      )
-  
-    const inserted = await trx
-      .insertInto('whatsapp_messages_received')
-      .values({
-        patient_id: patient.id,
-        conversation_state: patient.conversation_state,
-        ...message_data,
-      })
-      .returningAll()
-      .executeTakeFirstOrThrow()
-  
-    console.log('inserted', inserted)
-  
-    return { ...inserted, chatbot_name: 'patient' }
-  }
-
-  assertEquals(chatbot_name, 'pharmacist')
-
-  const pharmacist = (await trx
-    .insertInto('pharmacists')
-    .values({
-      phone_number,
-      conversation_state: 'initial_message',
-    })
-    .onConflict((oc) => oc.column('phone_number').doNothing())
-    .returningAll()
-    .executeTakeFirst()) || (
-      await trx.selectFrom('pharmacists').where(
-        'phone_number',
-        '=',
-        phone_number,
-      ).selectAll().executeTakeFirstOrThrow()
-    )
-
-  const inserted = await trx
-    .insertInto('pharmacist_whatsapp_messages_received')
-    .values({
-      pharmacist_id: pharmacist.id,
-      conversation_state: pharmacist.conversation_state,
-      ...message_data,
-    })
+  return trx
+    .insertInto('whatsapp_messages_received')
+    .values(data)
     .returningAll()
     .executeTakeFirstOrThrow()
-
-  console.log('inserted', inserted)
-
-  return { ...inserted, chatbot_name: 'pharmacist' }
-
-  
 }
 
 export function insertMessageSent(
@@ -137,9 +75,8 @@ export function insertMessageSent(
   },
 ): Promise<InsertResult> {
   return trx
-    .insertInto(`${opts.chatbot_name}_whatsapp_messages_sent`)
+    .insertInto('whatsapp_messages_sent')
     .values({
-      [`${opts.chatbot_name}_id`]: opts.id,
       responding_to_received_id: opts.responding_to_received_id,
       whatsapp_id: opts.whatsapp_id,
       body: opts.body,

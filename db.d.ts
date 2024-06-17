@@ -798,7 +798,6 @@ export interface Patients {
   address_id: string | null;
   avatar_media_id: string | null;
   completed_intake: Generated<boolean>;
-  conversation_state: Generated<PatientConversationState>;
   created_at: Generated<Timestamp>;
   date_of_birth: Timestamp | null;
   ethnicity: string | null;
@@ -836,8 +835,16 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>;
 }
 
+export interface PatientWhatsappMessagesReceived {
+  conversation_state: PatientConversationState | null;
+  created_at: Generated<Timestamp>;
+  id: Generated<string>;
+  patient_id: string | null;
+  updated_at: Generated<Timestamp>;
+  whatsapp_message_received_id: string | null;
+}
+
 export interface Pharmacists {
-  conversation_state: Generated<PharmacistConversationState>;
   created_at: Generated<Timestamp>;
   id: Generated<string>;
   id_number: string | null;
@@ -846,6 +853,15 @@ export interface Pharmacists {
   pin: string | null;
   registration_number: string | null;
   updated_at: Generated<Timestamp>;
+}
+
+export interface PharmacistWhatsappMessagesReceived {
+  conversation_state: PharmacistConversationState | null;
+  created_at: Generated<Timestamp>;
+  id: Generated<string>;
+  pharmacist_id: string | null;
+  updated_at: Generated<Timestamp>;
+  whatsapp_message_received_id: string | null;
 }
 
 export interface Procurement {
@@ -1023,7 +1039,9 @@ export interface DB {
   patient_occupations: PatientOccupations;
   patient_symptom_media: PatientSymptomMedia;
   patient_symptoms: PatientSymptoms;
+  patient_whatsapp_messages_received: PatientWhatsappMessagesReceived;
   patients: Patients;
+  pharmacist_whatsapp_messages_received: PharmacistWhatsappMessagesReceived;
   pharmacists: Pharmacists;
   procurement: Procurement;
   procurers: Procurers;

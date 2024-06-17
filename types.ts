@@ -1431,7 +1431,6 @@ export type WhatsAppMessageReceived =
   }
   & ({
     chatbot_name: 'patient'
-    conversation_state: PatientConversationState
     patient_id: string
   } | {
     chatbot_name: 'pharmacist'
