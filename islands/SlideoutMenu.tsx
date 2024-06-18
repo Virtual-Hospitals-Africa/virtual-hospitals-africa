@@ -1,9 +1,8 @@
+import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
-import { EllipsisVerticalIcon } from '../components/library/icons/heroicons/solid.tsx'
 import { Button } from '../components/library/Button.tsx'
-import Buttons, { ButtonsContainer } from '../islands/form/buttons.tsx'
+import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
+import { ButtonsContainer } from '../islands/form/buttons.tsx'
 
 const tabs = [
   { name: 'All', href: '#', current: true },
@@ -12,7 +11,7 @@ const tabs = [
 const team = [
   {
     name: 'Waiting Room',
-    handle: 'WaitingRoom',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -20,7 +19,7 @@ const team = [
   },
   {
     name: 'Nurse A',
-    handle: 'NurseA',
+    handle: 'Dr. Buhlebenkosi Ndlovu',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -28,7 +27,7 @@ const team = [
   },
   {
     name: 'Nurse B',
-    handle: 'NurseB',
+    handle: 'Dr. Sikhululiwe Ngwenya',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -36,7 +35,7 @@ const team = [
   },
   {
     name: 'Nurse C',
-    handle: 'NurseC',
+    handle: 'Dr.NurseC',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -44,7 +43,7 @@ const team = [
   },
   {
     name: 'Another Practitioner',
-    handle: 'AnotherPractitioner',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -52,7 +51,7 @@ const team = [
   },
   {
     name: 'Another Facility',
-    handle: 'AnotherFacility',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -60,7 +59,7 @@ const team = [
   },
   {
     name: 'Another Device',
-    handle: 'AnotherDevice',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
@@ -198,7 +197,7 @@ export default function Example() {
                                       {person.name}
                                     </p>
                                     <p className='truncate text-sm text-gray-500'>
-                                      {'@' + person.handle}
+                                      {person.handle}
                                     </p>
                                   </div>
                                 </div>
