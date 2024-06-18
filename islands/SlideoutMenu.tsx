@@ -203,7 +203,6 @@ export default function Example() {
                                   </div>
                                 </div>
                               </a>
-                    
                             </div>
                           </li>
                         ))}
