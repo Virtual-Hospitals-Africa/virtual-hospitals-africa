@@ -1,85 +1,164 @@
 import { Dialog, Transition } from '@headlessui/react'
+import { JSX } from 'preact'
 import { Fragment, useState } from 'react'
 import { Button } from '../components/library/Button.tsx'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from './form/buttons.tsx'
-import TeamMember from '../components/library/TeamMember.tsx'
+import cls from '../util/cls.ts'
+import { ComponentChild } from 'preact'
 
-type Sendable = {
-  name: string
-  handle: string
-  href: string
-  imageUrl: string
-  status: 'online' | 'offline'
-  description: string
-}
+type Sendable =
+  & {
+    image: {
+      type: 'avatar'
+      url: string
+    } | {
+      type: 'icon'
+      component: ComponentChild
+    }
+    name: string
+    description?: {
+      text: string
+      href?: string
+      parenthetical?: string
+    }
+    status: string
+    online: true | false
+    menu_options?: {
+      name: string
+      href: string
+    }[]
+  }
+  & (
+    {
+      type: 'entity'
+      entity_type: 'person' | 'facility'
+      entity_id: string
+    } | {
+      type: 'action'
+      action: 'search' | 'waiting_room' | 'device'
+      href: string
+    }
+  )
 
 const sendable: Sendable[] = [
   {
+    type: 'action',
+    action: 'waiting_room',
+    href: '/waiting-room',
     name: 'Waiting Room',
-    handle: '',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'online',
-    description: 'Seeing Jonathan Jones until 3:30pm',
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+
+    online: true,
+    status: 'To be seen by the next available practitioner',
   },
-  {
-    name: 'Nurse A',
-    handle: 'Dr. Buhlebenkosi Ndlovu',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'offline',
-    description: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    name: 'Nurse B',
-    handle: 'Dr. Sikhululiwe Ngwenya',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'online',
-    description: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    name: 'Nurse C',
-    handle: 'Dr.NurseC',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'offline',
-    description: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    name: 'Another Practitioner',
-    handle: '',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'offline',
-    description: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    name: 'Another Facility',
-    handle: '',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'online',
-    description: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    name: 'Another Device',
-    handle: '',
-    href: '#',
-    imageUrl:
-      'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    status: 'offline',
-    description: 'Unavailable until tomorrow at 9:00am',
-  },
+  // {
+  //   name: 'Nurse A',
+  //   handle: 'Dr. Buhlebenkosi Ndlovu',
+  //   href: '#',
+  //   imageUrl:
+  //     'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  //   online: false,
+  //   status: 'Unavailable until tomorrow at 9:00am',
+  // },
+  // {
+  //   name: 'Nurse B',
+  //   handle: 'Dr. Sikhululiwe Ngwenya',
+  //   href: '#',
+  //   imageUrl:
+  //     'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  //   online: true,
+  //   status: 'Unavailable until tomorrow at 9:00am',
+  // },
+  // {
+  //   name: 'Nurse C',
+  //   handle: 'Dr.NurseC',
+  //   href: '#',
+  //   imageUrl:
+  //     'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  //   online: false,
+  //   status: 'Unavailable until tomorrow at 9:00am',
+  // },
+  // {
+  //   name: 'Another Practitioner',
+  //   handle: '',
+  //   href: '#',
+  //   imageUrl:
+  //     'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  //   online: false,
+  //   status: 'Unavailable until tomorrow at 9:00am',
+  // },
+  // {
+  //   name: 'Another Facility',
+  //   handle: '',
+  //   href: '#',
+  //   imageUrl:
+  //     'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  //   online: true,
+  //   status: 'Unavailable until tomorrow at 9:00am',
+  // },
+  // {
+  //   name: 'Another Device',
+  //   handle: '',
+  //   href: '#',
+  //   imageUrl:
+  //     'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+  //   online: false,
+  //   status: 'Unavailable until tomorrow at 9:00am',
+  // },
   // more people...
 ]
+
+type TeamMemberProps = {
+  name: string
+  handle: string
+  imageUrl: string
+  online: boolean
+  status: string
+  href: string
+}
+
+export function SendableComponent(
+  { name, handle, imageUrl, online, status, href }: TeamMemberProps,
+): JSX.Element {
+  return (
+    <li>
+      <div className='group relative flex items-center px-5 py-6'>
+        <a href={href} className='-m-1 block flex-1 p-1'>
+          <div
+            className='absolute inset-0 group-hover:bg-gray-50'
+            aria-hidden='true'
+          />
+          <div className='relative flex min-w-0 flex-1 items-center'>
+            <span className='relative inline-block flex-shrink-0'>
+              <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
+              <span
+                className={cls(
+                  online ? 'bg-green-400' : 'bg-gray-300',
+                  'absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white',
+                )}
+                aria-hidden='true'
+              />
+            </span>
+            <div className='ml-4 truncate'>
+              <p className='truncate text-sm font-semibold text-gray-900'>
+                {name}
+              </p>
+              <p className='truncate text-sm text-gray-500'>{handle}</p>
+              <p className='truncate text-xs font-ubuntu text-gray-500'>
+                {status}
+              </p>
+            </div>
+          </div>
+        </a>
+      </div>
+    </li>
+  )
+}
 
 export default function SendToMenu() {
   const [open, setOpen] = useState(false) // The initial state is false, indicating that the sidebar is hidden
@@ -141,13 +220,13 @@ export default function SendToMenu() {
                         className='flex-1 divide-y divide-gray-200 overflow-y-auto'
                       >
                         {sendable.map((person) => (
-                          <TeamMember
+                          <SendableComponent
                             key={person.name}
                             name={person.name}
                             handle={person.handle}
                             imageUrl={person.imageUrl}
+                            online={person.online}
                             status={person.status}
-                            description={person.description}
                             href={person.href}
                           />
                         ))}
