@@ -3,6 +3,7 @@ import { Fragment, useState } from 'react'
 import { Button } from '../../components/library/Button.tsx'
 import { XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from '../../islands/form/buttons.tsx'
+import TeamMember from '../../components/library/TeamMember.tsx'
 
 const tabs = [
   { name: 'All', href: '#', current: true },
@@ -11,81 +12,88 @@ const tabs = [
 const team = [
   {
     name: 'Waiting Room',
-    handle: 'WaitingRoom',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'online',
+    description: 'Seeing Jonathan Jones until 3:30pm',
   },
   {
     name: 'Nurse A',
-    handle: 'NurseA',
+    handle: 'Dr. Buhlebenkosi Ndlovu',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'offline',
+    description: 'Unavailable until tomorrow at 9:00am',
   },
   {
     name: 'Nurse B',
-    handle: 'NurseB',
+    handle: 'Dr. Sikhululiwe Ngwenya',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'online',
+    description: 'Unavailable until tomorrow at 9:00am',
   },
   {
     name: 'Nurse C',
-    handle: 'NurseC',
+    handle: 'Dr.NurseC',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'offline',
+    description: 'Unavailable until tomorrow at 9:00am',
   },
   {
     name: 'Another Practitioner',
-    handle: 'AnotherPractitioner',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'offline',
+    description: 'Unavailable until tomorrow at 9:00am',
   },
   {
     name: 'Another Facility',
-    handle: 'AnotherFacility',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'online',
+    description: 'Unavailable until tomorrow at 9:00am',
   },
   {
     name: 'Another Device',
-    handle: 'AnotherDevice',
+    handle: '',
     href: '#',
     imageUrl:
       'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     status: 'offline',
+    description: 'Unavailable until tomorrow at 9:00am',
   },
   // more people...
 ]
 
 function classNames(...classes: (string | undefined)[]): string {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(' ');
 }
 
 export default function Example() {
-  const [open, setOpen] = useState(false) // The initial state is false, indicating that the sidebar is hidden
+  const [open, setOpen] = useState(false); // The initial state is false, indicating that the sidebar is hidden
 
   const handleTabClick = (name: string) => {
     tabs.forEach((tab) => {
-      tab.current = tab.name === name
-    })
-  }
+      tab.current = tab.name === name;
+    });
+  };
 
   const filteredTeam = tabs.find((tab) => tab.current)?.name === 'All'
     ? team
     : team.filter((person) =>
       person.status === tabs.find((tab) => tab.current)?.name.toLowerCase()
-    )
+    );
 
   return (
     <div className='flex-1 max-w-xl'>
@@ -165,45 +173,15 @@ export default function Example() {
                         className='flex-1 divide-y divide-gray-200 overflow-y-auto'
                       >
                         {filteredTeam.map((person) => (
-                          <li key={person.handle}>
-                            <div className='group relative flex items-center px-5 py-6'>
-                              <a
-                                href={person.href}
-                                className='-m-1 block flex-1 p-1'
-                              >
-                                <div
-                                  className='absolute inset-0 group-hover:bg-gray-50'
-                                  aria-hidden='true'
-                                />
-                                <div className='relative flex min-w-0 flex-1 items-center'>
-                                  <span className='relative inline-block flex-shrink-0'>
-                                    <img
-                                      className='h-10 w-10 rounded-full'
-                                      src={person.imageUrl}
-                                      alt=''
-                                    />
-                                    <span
-                                      className={classNames(
-                                        person.status === 'online'
-                                          ? 'bg-green-400'
-                                          : 'bg-gray-300',
-                                        'absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white',
-                                      )}
-                                      aria-hidden='true'
-                                    />
-                                  </span>
-                                  <div className='ml-4 truncate'>
-                                    <p className='truncate text-sm font-medium text-gray-900'>
-                                      {person.name}
-                                    </p>
-                                    <p className='truncate text-sm text-gray-500'>
-                                      {'@' + person.handle}
-                                    </p>
-                                  </div>
-                                </div>
-                              </a>
-                            </div>
-                          </li>
+                          <TeamMember
+                            key={person.name}
+                            name={person.name}
+                            handle={person.handle}
+                            imageUrl={person.imageUrl}
+                            status={person.status}
+                            description={person.description}
+                            href={person.href}
+                          />
                         ))}
                       </ul>
                     </div>
@@ -215,5 +193,5 @@ export default function Example() {
         </Dialog>
       </Transition>
     </div>
-  )
+  );
 }
