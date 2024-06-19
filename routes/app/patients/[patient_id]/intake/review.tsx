@@ -11,7 +11,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
-import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
+import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   // deno-lint-ignore require-await
@@ -45,7 +45,7 @@ export default async function ReviewPage(
       <hr className='my-2' />
 
       <ButtonsContainer>
-        <SlideoutMenu />
+        <SendToMenu />
         <Buttons
           submitText='Continue to vitals'
           className='flex-1 max-w-xl '

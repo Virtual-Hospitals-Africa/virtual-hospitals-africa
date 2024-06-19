@@ -24,7 +24,7 @@ import {
 } from '../../../../../db.d.ts'
 import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
 import { Button } from '../../../../../components/library/Button.tsx'
-import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
+import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type FamilyFormValues = {
   family: {
@@ -84,7 +84,7 @@ export default async function FamilyPage(
       </section>
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu />
+        <SendToMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

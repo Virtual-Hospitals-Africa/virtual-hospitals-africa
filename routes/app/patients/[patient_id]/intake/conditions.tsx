@@ -16,7 +16,7 @@ import {
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
-import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
+import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type ConditionsFormValues = {
   allergies?: { id: string; name: string }[]
@@ -75,7 +75,7 @@ export default async function PreExistingConditionsPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu />
+        <SendToMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

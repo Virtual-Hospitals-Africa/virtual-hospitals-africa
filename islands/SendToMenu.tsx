@@ -2,21 +2,19 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { Button } from '../components/library/Button.tsx'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
-import { ButtonsContainer } from '../islands/form/buttons.tsx'
+import { ButtonsContainer } from './form/buttons.tsx'
 import TeamMember from '../components/library/TeamMember.tsx'
 
-const tabs = [
-  { name: 'All', href: '#', current: true },
-]
-
-const team: {
+type Sendable = {
   name: string
   handle: string
   href: string
   imageUrl: string
   status: 'online' | 'offline'
   description: string
-}[] = [
+}
+
+const sendable: Sendable[] = [
   {
     name: 'Waiting Room',
     handle: '',
@@ -83,24 +81,8 @@ const team: {
   // more people...
 ]
 
-function classNames(...classes: (string | undefined)[]): string {
-  return classes.filter(Boolean).join(' ')
-}
-
-export default function Example() {
+export default function SendToMenu() {
   const [open, setOpen] = useState(false) // The initial state is false, indicating that the sidebar is hidden
-
-  const handleTabClick = (name: string) => {
-    tabs.forEach((tab) => {
-      tab.current = tab.name === name
-    })
-  }
-
-  const filteredTeam = tabs.find((tab) => tab.current)?.name === 'All'
-    ? team
-    : team.filter((person) =>
-      person.status === tabs.find((tab) => tab.current)?.name.toLowerCase()
-    )
 
   return (
     <div className='flex-1 max-w-xl'>
@@ -154,32 +136,11 @@ export default function Example() {
                           </div>
                         </div>
                       </div>
-                      <div className='border-b border-gray-200'>
-                        <div className='px-6'>
-                          <nav className='-mb-px flex space-x-6'>
-                            {tabs.map((tab) => (
-                              <a
-                                key={tab.name}
-                                href={tab.href}
-                                onClick={() => handleTabClick(tab.name)}
-                                className={classNames(
-                                  tab.current
-                                    ? 'border-indigo-500 text-indigo-600'
-                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
-                                  'whitespace-nowrap border-b-2 px-1 pb-4 text-sm font-medium',
-                                )}
-                              >
-                                {tab.name}
-                              </a>
-                            ))}
-                          </nav>
-                        </div>
-                      </div>
                       <ul
                         role='list'
                         className='flex-1 divide-y divide-gray-200 overflow-y-auto'
                       >
-                        {filteredTeam.map((person) => (
+                        {sendable.map((person) => (
                           <TeamMember
                             key={person.name}
                             name={person.name}

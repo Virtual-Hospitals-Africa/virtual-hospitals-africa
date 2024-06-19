@@ -14,7 +14,7 @@ import {
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
-import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
+import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type AddressFormValues = {
   address: {
@@ -115,7 +115,7 @@ export default async function AddressPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SlideoutMenu />
+        <SendToMenu />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

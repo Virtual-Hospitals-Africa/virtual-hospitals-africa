@@ -123,7 +123,7 @@ import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
-import * as $SlideoutMenu from './islands/SlideoutMenu.tsx'
+import * as $SendToMenu from './islands/SendToMenu.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
@@ -365,7 +365,7 @@ const manifest = {
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
-    './islands/SlideoutMenu.tsx': $SlideoutMenu,
+    './islands/SendToMenu.tsx': $SendToMenu,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
