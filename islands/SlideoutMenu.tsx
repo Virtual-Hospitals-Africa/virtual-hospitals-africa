@@ -9,7 +9,14 @@ const tabs = [
   { name: 'All', href: '#', current: true },
 ]
 
-const team = [
+const team: {
+  name: string;
+  handle: string;
+  href: string;
+  imageUrl: string;
+  status: 'online' | 'offline';
+  description: string;
+}[]  = [
   {
     name: 'Waiting Room',
     handle: '',
