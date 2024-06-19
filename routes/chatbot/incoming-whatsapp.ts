@@ -10,6 +10,14 @@ import {
   WhatsAppMessageContents,
 } from '../../types.ts'
 
+const WHATSAPP_PATIENT_CHATBOT_NUMBER = '263784010987'
+const WHATSAPP_PHARMACIST_CHATBOT_NUMBER = '263712093355'
+
+const phoneToChatbotName = {
+  [WHATSAPP_PATIENT_CHATBOT_NUMBER]: 'patient' as const,
+  [WHATSAPP_PHARMACIST_CHATBOT_NUMBER]: 'pharmacist' as const,
+}
+
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
 async function downloadAndInsertMedia(media_id: string) {
@@ -22,6 +30,47 @@ async function downloadAndInsertMedia(media_id: string) {
   })
   return insertedMedia.id
 }
+
+const x = {
+  "object": "whatsapp_business_account",
+  "entry": [
+    {
+      "id": "103992419238259",
+      "changes": [
+        {
+          "value": {
+            "messaging_product": "whatsapp",
+            "metadata": {
+              "display_phone_number": "263784010987",
+              "phone_number_id": "100667472910572"
+            },
+            "contacts": [
+              {
+                "profile": {
+                  "name": "Will Weiss"
+                },
+                "wa_id": "12032535603"
+              }
+            ],
+            "messages": [
+              {
+                "from": "12032535603",
+                "id": "wamid.HBgLMTIwMzI1MzU2MDMVAgASGBQzQTg3MDI2RjZDRjJGODdGQzdCRQA=",
+                "timestamp": "1718812373",
+                "text": {
+                  "body": "x"
+                },
+                "type": "text"
+              }
+            ]
+          },
+          "field": "messages"
+        }
+      ]
+    }
+  ]
+}
+
 
 async function getContents(
   message: WhatsAppMessage,
@@ -113,19 +162,15 @@ export const handler: Handlers = {
       console.error("More than one change in the entry, that's weird")
     }
 
-    const pharmacistPhone = '263712093355'
-    const patientPhone = '263784010987'
     const { display_phone_number } = change.value.metadata
 
     assert(
-      display_phone_number === pharmacistPhone ||
-        display_phone_number === patientPhone,
+      display_phone_number === WHATSAPP_PHARMACIST_CHATBOT_NUMBER ||
+        display_phone_number === WHATSAPP_PATIENT_CHATBOT_NUMBER,
       'Phone number is not the pharmacist or patient phone number',
     )
 
-    const chatbot_name = display_phone_number === pharmacistPhone
-      ? 'pharmacist'
-      : 'patient'
+    const chatbot_name = phoneToChatbotName[display_phone_number]
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses
@@ -157,7 +202,8 @@ export const handler: Handlers = {
       const contents = await getContents(message)
 
       await conversations.insertMessageReceived(db, {
-        patient_phone_number: message.from,
+        sent_by_phone_number: message.from,
+        received_by_phone_number: display_phone_number,
         whatsapp_id: message.id,
         chatbot_name,
         ...contents,

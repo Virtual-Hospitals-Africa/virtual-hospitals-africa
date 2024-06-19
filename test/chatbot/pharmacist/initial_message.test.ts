@@ -5,15 +5,15 @@ import sinon from 'sinon'
 import db from '../../../db/db.ts'
 import respond from '../../../chatbot/respond.ts'
 import * as conversations from '../../../db/models/conversations.ts'
-import * as patients from '../../../db/models/patients.ts'
+import * as pharmacists from '../../../db/models/pharmacists.ts'
 import { randomPhoneNumber } from '../../mocks.ts'
 import generateUUID from '../../../util/uuid.ts'
 
-describe('patient chatbot', { sanitizeResources: false }, () => {
+describe('pharmacist chatbot', { sanitizeResources: false }, () => {
   it('sends the main menu after the initial message', async () => {
     const phone_number = randomPhoneNumber()
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      pharmacist_phone_number: phone_number,
       has_media: false,
       body: 'body',
       media_id: null,
@@ -29,7 +29,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       }]),
     }
 
-    await respond(fakeWhatsApp, 'patient', phone_number)
+    await respond(fakeWhatsApp, 'pharmacist', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
         messages: {
@@ -45,11 +45,11 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const pharmacist = await pharmacists.getByPhoneNumber(db, {
       phone_number,
     })
 
-    assert(patient)
-    assertEquals(patient.conversation_state, 'not_onboarded:welcome')
+    assert(pharmacist)
+    assertEquals(pharmacist.conversation_state, 'not_onboarded:welcome')
   })
 })

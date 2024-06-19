@@ -1,21 +1,22 @@
 import db from '../db/db.ts'
 import {
-  getUnhandledPatientMessages,
+  getUnhandledMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
 import {
+  ChatbotName,
   ConversationStates,
-  PatientConversationState,
-  PatientState,
+  TrxOrDb,
+  UserState,
   WhatsAppJSONResponse,
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
-import patientConversationStates from './patient/conversationStates.ts'
-import { updatePatientState } from './patient/util.ts'
+import conversationStates from './patient/conversationStates.ts'
 import { sendToEngineeringChannel } from '../external-clients/slack.ts'
+import { updatePatientState } from './patient/util.ts'
 
 type WhatsApp = {
   sendMessage(opts: {
@@ -33,13 +34,12 @@ const on_production = Deno.env.get('ON_PRODUCTION')
 
 console.log('on_production', on_production)
 
-async function respondToPatientMessage(
+async function respondToMessage<CS extends string, US extends UserState<CS>>(
+  chatbot_name: ChatbotName,
   whatsapp: WhatsApp,
-  patientConversationStates: ConversationStates<
-    PatientConversationState,
-    PatientState
-  >,
-  patientState: PatientState,
+  conversationStates: ConversationStates<CS, US>,
+  user_state: US,
+  updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
 ) {
   try {
     const responseToSend = await db
@@ -48,15 +48,15 @@ async function respondToPatientMessage(
       .execute((trx) =>
         determineResponse(
           trx,
-          patientConversationStates,
-          patientState,
-          updatePatientState,
+          conversationStates,
+          user_state,
+          updateState,
         )
       )
 
     const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
-      phone_number: patientState.phone_number,
+      phone_number: user_state.phone_number,
     })
 
     for (const whatsappResponse of whatsappResponses) {
@@ -67,8 +67,9 @@ async function respondToPatientMessage(
       }
 
       await insertMessageSent(db, {
-        patient_id: patientState.patient_id,
-        responding_to_id: patientState.message_id,
+        chatbot_name,
+        id: user_state.id,
+        responding_to_received_id: user_state.message_id,
         whatsapp_id: whatsappResponse.messages[0].id,
         body: JSON.stringify(responseToSend),
       })
@@ -82,12 +83,13 @@ async function respondToPatientMessage(
         type: 'string',
         messageBody: `An unknown error occured: ${err.message}`,
       },
-      phone_number: patientState.phone_number,
+      phone_number: user_state.phone_number,
     })
 
     await markChatbotError(db, {
+      chatbot_name,
       commitHash,
-      whatsapp_message_received_id: patientState.message_id,
+      whatsapp_message_received_id: user_state.message_id,
       errorMessage: err.message,
     })
 
@@ -113,46 +115,24 @@ async function respondToPatientMessage(
   }
 }
 
-// async function respondToPharmacistMessage(
-//   whatsapp: WhatsApp,
-//   pharmacistConversationStates: ConversationStates<
-//     PharmacistConversationState,
-//     PharmacistState
-//   >,
-//   pharmacistState: PharmacistState,
-// ) {
-//   await whatsapp.sendMessage({
-//     message: {
-//       type: 'string',
-//       messageBody: 'Hello pharmacist',
-//     },
-//     phone_number: '+12369961017',
-//   })
-// }
-
 export default async function respond(
   whatsapp: WhatsApp,
-  chatbot_name: string,
+  chatbot_name: ChatbotName,
   phone_number?: string,
 ) {
-  if (chatbot_name === 'patient') {
-    const unhandledMessages = await getUnhandledPatientMessages(db, {
-      commitHash,
-      phone_number,
-    })
+  const unhandledMessages = await getUnhandledMessages(db, {
+    chatbot_name,
+    commitHash,
+    phone_number,
+  })
 
-    if (unhandledMessages.length !== 0) {
-      console.log('unhandledMessages', unhandledMessages)
-    }
-
-    return Promise.all(
-      unhandledMessages.map((msg) =>
-        respondToPatientMessage(whatsapp, patientConversationStates, msg)
-      ),
-    )
+  if (unhandledMessages.length !== 0) {
+    console.log('unhandledMessages', unhandledMessages)
   }
 
-  if (chatbot_name === 'pharmacist') {
-    console.log('pharmacist')
-  }
+  return Promise.all(
+    unhandledMessages.map((msg) =>
+      respondToMessage(chatbot_name, whatsapp, conversationStates, msg as any, chatbot_name === 'patient' ? updatePatientState : () => { throw new Error('Not implemented')})
+    ),
+  )
 }
