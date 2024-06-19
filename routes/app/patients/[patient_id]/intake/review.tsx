@@ -1,6 +1,8 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import PatientReview from '../../../../../components/patients/intake/Review.tsx'
-import Buttons from '../../../../../islands/form/buttons.tsx'
+import Buttons, {
+  ButtonsContainer,
+} from '../../../../../islands/form/buttons.tsx'
 import {
   IntakeContext,
   IntakeLayout,
@@ -9,6 +11,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
+import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   // deno-lint-ignore require-await
@@ -40,14 +43,14 @@ export default async function ReviewPage(
     <IntakeLayout ctx={ctx}>
       <PatientReview patient={patient} />
       <hr className='my-2' />
-      <Buttons
-        submitText='Continue to vitals'
-        cancel={{
-          href:
-            `/app/organizations/${healthWorker.default_organization_id}/waiting_room/add?patient_id=${patient.id}&intake=completed`,
-          text: 'Add patient to waiting room',
-        }}
-      />
+
+      <ButtonsContainer>
+        <SlideoutMenu />
+        <Buttons
+          submitText='Continue to vitals'
+          className='flex-1 max-w-xl '
+        />
+      </ButtonsContainer>
     </IntakeLayout>
   )
 }

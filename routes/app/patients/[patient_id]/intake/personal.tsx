@@ -14,7 +14,7 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import omit from '../../../../../util/omit.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
-import FlyoutMenu from '../../../../../islands/FlyoutMenu.tsx'
+import SlideoutMenu from '../../../../../islands/SlideoutMenu.tsx'
 
 type PersonalFormValues = {
   first_name: string
@@ -76,18 +76,10 @@ export default async function PersonalPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <Button
-          type='button'
-          variant='outline'
-          color='blue'
-          className='flex-1 max-w-xl'
-        >
-          Send To
-        </Button>
-        <FlyoutMenu />
+        <SlideoutMenu />
         <Button
           type='submit'
-          className='flex-1 max-w-xl'
+          className='flex-1 max-w-xl '
         >
           Next Step
         </Button>
