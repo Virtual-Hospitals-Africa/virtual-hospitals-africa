@@ -1,6 +1,6 @@
 import db from '../db/db.ts'
 import {
-  getUnhandledMessages,
+  getUnhandledPatientMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
 import {
@@ -19,6 +19,7 @@ import { sendToEngineeringChannel } from '../external-clients/slack.ts'
 import { updatePatientState } from './patient/util.ts'
 
 type WhatsApp = {
+  phone_number: string
   sendMessage(opts: {
     phone_number: string
     message: WhatsAppSingleSendable
@@ -39,7 +40,7 @@ async function respondToMessage<CS extends string, US extends UserState<CS>>(
   whatsapp: WhatsApp,
   conversationStates: ConversationStates<CS, US>,
   user_state: US,
-  updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
+  updateState: (trx: TrxOrDb, userState: US) => Promise<unknown>,
 ) {
   try {
     const responseToSend = await db
@@ -68,7 +69,8 @@ async function respondToMessage<CS extends string, US extends UserState<CS>>(
 
       await insertMessageSent(db, {
         chatbot_name,
-        id: user_state.id,
+        sent_by_phone_number: whatsapp.phone_number,
+        sent_to_phone_number: user_state.phone_number,
         responding_to_received_id: user_state.message_id,
         whatsapp_id: whatsappResponse.messages[0].id,
         body: JSON.stringify(responseToSend),
@@ -120,8 +122,7 @@ export default async function respond(
   chatbot_name: ChatbotName,
   phone_number?: string,
 ) {
-  const unhandledMessages = await getUnhandledMessages(db, {
-    chatbot_name,
+  const unhandledMessages = await getUnhandledPatientMessages(db, {
     commitHash,
     phone_number,
   })
@@ -131,8 +132,17 @@ export default async function respond(
   }
 
   return Promise.all(
-    unhandledMessages.map((msg) =>
-      respondToMessage(chatbot_name, whatsapp, conversationStates, msg as any, chatbot_name === 'patient' ? updatePatientState : () => { throw new Error('Not implemented')})
+    unhandledMessages.map((msg: unknown) =>
+      respondToMessage(
+        chatbot_name,
+        whatsapp,
+        conversationStates,
+        // deno-lint-ignore no-explicit-any
+        msg as any,
+        chatbot_name === 'patient' ? updatePatientState : () => {
+          throw new Error('Not implemented')
+        },
+      )
     ),
   )
 }

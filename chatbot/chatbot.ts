@@ -1,6 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import * as whatsapp from '../external-clients/whatsapp.ts'
 import respond from './respond.ts'
+import { chatbotToPhone } from './phone_numbers.ts'
 
 type Chatbot = 'patient' | 'pharmacist'
 
@@ -13,7 +14,10 @@ export function createChatbot(chatbot_name: Chatbot): Responder {
   async function respondAndSetTimer(): Promise<void> {
     //this respond is trying to send a message from the patient chatbot, need to find a way to send a message from the pharmacist chatbot
 
-    await respond(whatsapp, chatbot_name)
+    await respond({
+      ...whatsapp,
+      phone_number: chatbotToPhone[chatbot_name],
+    }, chatbot_name)
     // TODO: it seems like this recursion might be causing a memory leak?
     // A setInterval isn't quite right because we want to wait for the
     // previous batch of messages to be done processing before starting again.

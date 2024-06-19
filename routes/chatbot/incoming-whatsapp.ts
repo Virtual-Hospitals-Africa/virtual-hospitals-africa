@@ -9,14 +9,11 @@ import {
   WhatsAppMessage,
   WhatsAppMessageContents,
 } from '../../types.ts'
-
-const WHATSAPP_PATIENT_CHATBOT_NUMBER = '263784010987'
-const WHATSAPP_PHARMACIST_CHATBOT_NUMBER = '263712093355'
-
-const phoneToChatbotName = {
-  [WHATSAPP_PATIENT_CHATBOT_NUMBER]: 'patient' as const,
-  [WHATSAPP_PHARMACIST_CHATBOT_NUMBER]: 'pharmacist' as const,
-}
+import {
+  phoneToChatbotName,
+  WHATSAPP_PATIENT_CHATBOT_NUMBER,
+  WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
+} from '../../chatbot/phone_numbers.ts'
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
@@ -30,47 +27,6 @@ async function downloadAndInsertMedia(media_id: string) {
   })
   return insertedMedia.id
 }
-
-const x = {
-  "object": "whatsapp_business_account",
-  "entry": [
-    {
-      "id": "103992419238259",
-      "changes": [
-        {
-          "value": {
-            "messaging_product": "whatsapp",
-            "metadata": {
-              "display_phone_number": "263784010987",
-              "phone_number_id": "100667472910572"
-            },
-            "contacts": [
-              {
-                "profile": {
-                  "name": "Will Weiss"
-                },
-                "wa_id": "12032535603"
-              }
-            ],
-            "messages": [
-              {
-                "from": "12032535603",
-                "id": "wamid.HBgLMTIwMzI1MzU2MDMVAgASGBQzQTg3MDI2RjZDRjJGODdGQzdCRQA=",
-                "timestamp": "1718812373",
-                "text": {
-                  "body": "x"
-                },
-                "type": "text"
-              }
-            ]
-          },
-          "field": "messages"
-        }
-      ]
-    }
-  ]
-}
-
 
 async function getContents(
   message: WhatsAppMessage,
