@@ -9,7 +9,6 @@ import {
   WhatsAppMessageReceived,
 } from '../../types.ts'
 import compact from '../../util/compact.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -42,7 +41,7 @@ export function isWhatsAppContents(
     typeof contents.body === 'string'
 }
 
-export async function insertMessageReceived(
+export function insertMessageReceived(
   trx: TrxOrDb,
   data:
     & {
@@ -67,7 +66,8 @@ export async function insertMessageReceived(
 export function insertMessageSent(
   trx: TrxOrDb,
   opts: {
-    id: string
+    sent_by_phone_number: string
+    sent_to_phone_number: string
     chatbot_name: ChatbotName
     responding_to_received_id: string
     whatsapp_id: string
@@ -76,29 +76,13 @@ export function insertMessageSent(
 ): Promise<InsertResult> {
   return trx
     .insertInto('whatsapp_messages_sent')
-    .values({
-      responding_to_received_id: opts.responding_to_received_id,
-      whatsapp_id: opts.whatsapp_id,
-      body: opts.body,
-      read_status: 'sent',
-    })
+    .values({ ...opts, read_status: 'sent' })
     .executeTakeFirstOrThrow()
 }
 
 type UserStates = {
   patient: PatientState
   pharmacist: PharmacistState
-}
-
-export async function getUnhandledMessages<CN extends ChatbotName>(
-  trx: TrxOrDb,
-  : { chatbot_name, commitHash, phone_number }: { chatbot_name: CN, commitHash: string; phone_number?: string },
-): Promise<Array<UserStates[CN]>> 
-{
-  if (chatbot_name === 'patient') {
-    return await getUnhandledPatientMessages(trx, { commitHash, phone_number })
-  }
-  // function implementation
 }
 
 export async function getUnhandledPatientMessages(
@@ -233,7 +217,7 @@ export function markChatbotError(
   },
 ) {
   return trx
-    .updateTable(`${opts.chatbot_name}_whatsapp_messages_received`)
+    .updateTable('whatsapp_messages_received')
     .set({
       error_commit_hash: opts.commitHash,
       error_message: opts.errorMessage,

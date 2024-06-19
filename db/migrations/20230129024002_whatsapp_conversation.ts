@@ -82,11 +82,11 @@ export async function up(db: Kysely<unknown>) {
         'varchar(255)',
         (col) => col.notNull(),
       )
-      .addColumn(
-        'sent_by_phone_number',
-        'varchar(255)',
-        (col) => col.notNull(),
-      )
+        .addColumn(
+          'sent_by_phone_number',
+          'varchar(255)',
+          (col) => col.notNull(),
+        )
         .addColumn('chatbot_name', sql`chatbot_name`, (col) => col.notNull())
         .addColumn(
           'responding_to_received_id',
