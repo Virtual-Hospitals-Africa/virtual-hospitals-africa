@@ -29,7 +29,7 @@ type WhatsApp = {
 }
 
 const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
-const on_production = commitHash !== 'local'
+const on_production = Deno.env.get('ON_PRODUCTION')
 
 console.log('on_production', on_production)
 

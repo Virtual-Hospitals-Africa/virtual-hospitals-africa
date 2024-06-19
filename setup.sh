@@ -28,7 +28,7 @@ if [ ! -f .env.local ] || [ ! -f .env.prod ]; then
   heroku config -a virtual-hospitals-africa >> "$heroku_vars"
 
   awk '/:/ {
-    if ($1 !~ /^HEROKU/ && $1 != "SELF_URL:" && $1 != "PGSSLMODE:" && $1 != "REDISCLOUD_URL:" && $1 != "DATABASE_URL:") {
+    if ($1 !~ /^HEROKU/ && $1 != "SELF_URL:" && $1 != "PGSSLMODE:" && $1 != "REDISCLOUD_URL:" && $1 != "DATABASE_URL:" && $1 != "ON_PRODUCTION:") {
       print substr($1, 1, length($1) - 1) "=" $2
     }
   }' < "$heroku_vars" >> .env.local
