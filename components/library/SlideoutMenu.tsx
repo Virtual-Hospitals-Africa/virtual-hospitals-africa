@@ -10,13 +10,13 @@ const tabs = [
 ]
 
 const team: {
-  name: string;
-  handle: string;
-  href: string;
-  imageUrl: string;
-  status: 'online' | 'offline';
-  description: string;
-}[]  = [
+  name: string
+  handle: string
+  href: string
+  imageUrl: string
+  status: 'online' | 'offline'
+  description: string
+}[] = [
   {
     name: 'Waiting Room',
     handle: '',
@@ -84,23 +84,23 @@ const team: {
 ]
 
 function classNames(...classes: (string | undefined)[]): string {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(' ')
 }
 
 export default function Example() {
-  const [open, setOpen] = useState(false); // The initial state is false, indicating that the sidebar is hidden
+  const [open, setOpen] = useState(false) // The initial state is false, indicating that the sidebar is hidden
 
   const handleTabClick = (name: string) => {
     tabs.forEach((tab) => {
-      tab.current = tab.name === name;
-    });
-  };
+      tab.current = tab.name === name
+    })
+  }
 
   const filteredTeam = tabs.find((tab) => tab.current)?.name === 'All'
     ? team
     : team.filter((person) =>
       person.status === tabs.find((tab) => tab.current)?.name.toLowerCase()
-    );
+    )
 
   return (
     <div className='flex-1 max-w-xl'>
@@ -200,5 +200,5 @@ export default function Example() {
         </Dialog>
       </Transition>
     </div>
-  );
+  )
 }
