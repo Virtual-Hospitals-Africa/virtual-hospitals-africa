@@ -7,6 +7,8 @@ import { ButtonsContainer } from './form/buttons.tsx'
 import cls from '../util/cls.ts'
 import { ComponentChild } from 'preact'
 
+
+
 type Sendable =
   & {
     image: {
@@ -108,6 +110,10 @@ const sendable: Sendable[] = [
     entity_type: 'facility',
     entity_id: 'another_facility',
     name: 'Another Facility',
+    description: {
+      text: '1600 Amphitheatre Parkway, Mountain View, CA',
+      parenthetical: 'address'
+    },
     image: {
       type: 'avatar',
       url:
@@ -119,7 +125,7 @@ const sendable: Sendable[] = [
   {
     type: 'action',
     action: 'waiting_room',
-    href: '/waiting-room',
+    href: '/app',
     name: 'Waiting Room',
     image: {
       type: 'avatar',
@@ -197,8 +203,20 @@ export function SendableComponent(
               </p>
               {description && (
                 <p className='truncate text-xs text-gray-900'>
-                  {description.text} {description.parenthetical &&
-                    `(${description.parenthetical})`}
+                  {description.parenthetical === 'address' ? (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        description.text
+                      )}`}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {description.text}
+                    </a>
+                  ) : (
+                    description.text
+                  )}
+                  {description.parenthetical && ` (${description.parenthetical})`}
                 </p>
               )}
               <p className='truncate text-sm text-gray-500'>{handle}</p>
