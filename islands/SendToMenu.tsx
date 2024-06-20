@@ -52,69 +52,106 @@ const sendable: Sendable[] = [
       url:
         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
-
     online: true,
     status: 'To be seen by the next available practitioner',
   },
-  // {
-  //   name: 'Nurse A',
-  //   handle: 'Dr. Buhlebenkosi Ndlovu',
-  //   href: '#',
-  //   imageUrl:
-  //     'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  //   online: false,
-  //   status: 'Unavailable until tomorrow at 9:00am',
-  // },
-  // {
-  //   name: 'Nurse B',
-  //   handle: 'Dr. Sikhululiwe Ngwenya',
-  //   href: '#',
-  //   imageUrl:
-  //     'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  //   online: true,
-  //   status: 'Unavailable until tomorrow at 9:00am',
-  // },
-  // {
-  //   name: 'Nurse C',
-  //   handle: 'Dr.NurseC',
-  //   href: '#',
-  //   imageUrl:
-  //     'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  //   online: false,
-  //   status: 'Unavailable until tomorrow at 9:00am',
-  // },
-  // {
-  //   name: 'Another Practitioner',
-  //   handle: '',
-  //   href: '#',
-  //   imageUrl:
-  //     'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  //   online: false,
-  //   status: 'Unavailable until tomorrow at 9:00am',
-  // },
-  // {
-  //   name: 'Another Facility',
-  //   handle: '',
-  //   href: '#',
-  //   imageUrl:
-  //     'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  //   online: true,
-  //   status: 'Unavailable until tomorrow at 9:00am',
-  // },
-  // {
-  //   name: 'Another Device',
-  //   handle: '',
-  //   href: '#',
-  //   imageUrl:
-  //     'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  //   online: false,
-  //   status: 'Unavailable until tomorrow at 9:00am',
-  // },
+  {
+    type: 'entity',
+    entity_type: 'person',
+    entity_id: 'nurse_a',
+    name: 'Nurse A',
+    description: {
+      text: 'Primary Care Nurse',
+    },
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    online: false,
+    status: 'Unavailable until tomorrow at 9:00am',
+  },
+  {
+    type: 'entity',
+    entity_type: 'person',
+    entity_id: 'nurse_b',
+    name: 'Nurse B',
+    description: {
+      text: 'Primary Care Nurse',
+    },
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    online: true,
+    status: 'Unavailable until tomorrow at 9:00am',
+  },
+  {
+    type: 'entity',
+    entity_type: 'person',
+    entity_id: 'nurse_c',
+    name: 'Nurse C',
+    description: {
+      text: 'Primary Care Nurse',
+    },
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    online: false,
+    status: 'Unavailable until tomorrow at 9:00am',
+  },
+  {
+    type: 'entity',
+    entity_type: 'facility',
+    entity_id: 'another_practitioner',
+    name: 'Another Practitioner',
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    online: false,
+    status: 'Unavailable until tomorrow at 9:00am',
+  },
+  {
+    type: 'entity',
+    entity_type: 'facility',
+    entity_id: 'another_facility',
+    name: 'Another Facility',
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    online: true,
+    status: 'Unavailable until tomorrow at 9:00am',
+  },
+  {
+    type: 'action',
+    action: 'device',
+    href: '#',
+    name: 'Another Device',
+    image: {
+      type: 'avatar',
+      url:
+        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    },
+    online: false,
+    status: 'Unavailable until tomorrow at 9:00am',
+  },
   // more people...
 ]
 
 type TeamMemberProps = {
   name: string
+  description?: {
+    text: string
+    href?: string
+    parenthetical?: string
+  }
   handle: string
   imageUrl: string
   online: boolean
@@ -123,7 +160,8 @@ type TeamMemberProps = {
 }
 
 export function SendableComponent(
-  { name, handle, imageUrl, online, status, href }: TeamMemberProps,
+  { name, description, handle, imageUrl, online, status, href }:
+    TeamMemberProps,
 ): JSX.Element {
   return (
     <li>
@@ -148,6 +186,12 @@ export function SendableComponent(
               <p className='truncate text-sm font-semibold text-gray-900'>
                 {name}
               </p>
+              {description && (
+                <p className='truncate text-xs text-gray-900'>
+                  {description.text} {description.parenthetical &&
+                    `(${description.parenthetical})`}
+                </p>
+              )}
               <p className='truncate text-sm text-gray-500'>{handle}</p>
               <p className='truncate text-xs font-ubuntu text-gray-500'>
                 {status}
@@ -223,6 +267,7 @@ export default function SendToMenu() {
                           <SendableComponent
                             key={person.name}
                             name={person.name}
+                            description={person.description}
                             handle={person.handle}
                             imageUrl={person.imageUrl}
                             online={person.online}
