@@ -25,6 +25,7 @@ type Sendable =
     }
     status: string
     online?: true | false
+    reopenTime?: string
     menu_options?: {
       name: string
       href: string
@@ -73,7 +74,7 @@ const sendable: Sendable[] = [
         'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
     online: true,
-    status: 'Unavailable until tomorrow at 9:00am',
+    status: 'Seeing a patient until 3:30pm',
   },
   {
     type: 'entity',
@@ -94,15 +95,20 @@ const sendable: Sendable[] = [
   {
     type: 'entity',
     entity_type: 'facility',
-    entity_id: 'another_practitioner',
-    name: 'Another Practitioner',
+    entity_id: 'another_facility',
+    name: 'Another Facility',
+    description: {
+      text: '1600 Amphitheatre Parkway, Mountain View, CA',
+      parenthetical: 'address'
+    },
     image: {
       type: 'avatar',
       url:
-        'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
-    online: false,
-    status: 'Unavailable until tomorrow at 9:00am',
+    online: true,
+    status: 'Accepting patients',
+    reopenTime: 'Reopens 9:00am',
   },
   {
     type: 'entity',
@@ -118,8 +124,9 @@ const sendable: Sendable[] = [
       url:
         'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
-    online: true,
-    status: 'Unavailable until tomorrow at 9:00am',
+    online: false,
+    status: 'Accepting patients',
+    reopenTime: 'Reopens 9:00am',
   },
   {
     type: 'action',
@@ -171,11 +178,12 @@ type TeamMemberProps = {
   imageUrl: string
   online: boolean
   status: string
+  reopenTime?: string
   href: string
 }
 
 export function SendableComponent(
-  { name, description, handle, imageUrl, online, status, href }:
+  { name, description, handle, imageUrl, online, status, reopenTime, href }:
     TeamMemberProps,
 ): JSX.Element {
   return (
@@ -189,7 +197,7 @@ export function SendableComponent(
           <div className='relative flex min-w-0 flex-1 items-center'>
             <span className='relative inline-block flex-shrink-0'>
               <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
-              {online && (
+              {online != null && (
                 <span
                   className={`${online ? 'bg-green-400' : 'bg-gray-300'} absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
                   aria-hidden='true'
@@ -223,6 +231,11 @@ export function SendableComponent(
               {status && (
                 <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                   {status}
+                </p>
+              )}
+              {!online && reopenTime && (
+                <p className='truncate text-xs font-ubuntu text-gray-500'>
+                  {reopenTime}
                 </p>
               )}
             </div>
@@ -301,6 +314,7 @@ export default function SendToMenu() {
                             imageUrl={person.imageUrl}
                             online={person.online}
                             status={person.status}
+                            reopenTime={person.reopenTime}
                             href={person.href}
                           />
                         ))}
