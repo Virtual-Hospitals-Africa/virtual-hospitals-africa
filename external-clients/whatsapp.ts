@@ -13,11 +13,6 @@ const phoneNumbers = {
   patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
   pharmacist: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST')!,
 }
-assert(phoneNumbers.patient, 'WHATSAPP_FROM_PHONE_NUMBER_PATIENT is required')
-assert(
-  phoneNumbers.pharmacist,
-  'WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST is required',
-)
 
 const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
 
