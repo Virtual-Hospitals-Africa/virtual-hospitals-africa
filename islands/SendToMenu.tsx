@@ -261,33 +261,32 @@ export function SendableComponent(
     </li>
   )
 }
-
 export function PersonDetailView(
   { person, onBack }: { person: Sendable; onBack: () => void },
 ) {
   return (
     <div className='p-6'>
-      <button onClick={onBack} className='mb-4 text-blue-500'>Back</button>
-      <div className='flex items-center'>
+      <div className='flex items-center' onClick={onBack}>
         <img
-          className='h-20 w-20 rounded-full'
+          className='h-10 w-10 rounded-full'
           src={person.image.url}
           alt={person.name}
         />
         <div className='ml-4'>
-          <h1 className='text-xl font-bold'>{person.name}</h1>
+          <h1 className='truncate text-sm font-semibold text-gray-900'>{person.name}</h1>
           {person.description && (
-            <p className='text-sm text-gray-500'>{person.description.text}</p>
+            <p className='truncate text-xs text-gray-500'>{person.description.text}</p>
           )}
-          <p className='text-sm text-gray-500'>{person.status}</p>
+          <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>{person.status}</p>
           {person.reopenTime && (
-            <p className='text-sm text-gray-500'>{person.reopenTime}</p>
+            <p className='truncate text-xs font-ubuntu text-gray-500'>{person.reopenTime}</p>
           )}
         </div>
       </div>
+      <hr className="my-4 border-gray-200 w-full" /> {/* add line */}
       <div className='mt-6'>
-        <h2 className='text-lg font-semibold'>Susan Mlalazi</h2>
-        <p className='text-sm text-gray-500'>female, 16/3/2024</p>
+        <h2 className='truncate text-sm font-semibold text-gray-900'>Susan Mlalazi</h2>
+        <p className='truncate text-xs text-gray-500'>female, 16/3/2024</p>
         <a href='#' className='text-sm text-blue-500'>Clinical Notes</a>
       </div>
       <div className='mt-6'>
