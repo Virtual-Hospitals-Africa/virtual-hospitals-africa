@@ -2,7 +2,6 @@ import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
 import {
   ChatbotUserState,
-  ConversationStates,
   TrxOrDb,
   UnhandledMessage,
   WhatsAppSendable,
@@ -55,36 +54,34 @@ export async function determineResponse(
     unhandled_message,
     chatbot_name: unhandled_message.chatbot_name,
     conversation_state:
+      // deno-lint-ignore no-explicit-any
       conversation_state_prior_to_handling_incoming_message as any,
   }
 
   const currentState = findMatchingState(userState)
 
   if (!currentState) {
-    throw new Error(
-      `No matching state found for ${userState.conversation_state}`,
-    )
-    // const originalMessageSent = formatMessageToSend(
-    //   conversationStates,
-    //   userState,
-    // )
-    // if (Array.isArray(originalMessageSent)) {
-    //   return [
-    //     {
-    //       ...originalMessageSent[0],
-    //       messageBody: sorry(originalMessageSent[0].messageBody),
-    //     },
-    //     {
-    //       ...originalMessageSent[1],
-    //       messageBody: sorry(originalMessageSent[1].messageBody),
-    //     },
-    //   ]
-    // } else {
-    //   return {
-    //     ...originalMessageSent,
-    //     messageBody: sorry(originalMessageSent.messageBody),
-    //   }
-    // }
+    const originalMessageSent = {
+      type: 'string' as const,
+      messageBody: 'TODO get last message',
+    }
+    if (Array.isArray(originalMessageSent)) {
+      return [
+        {
+          ...originalMessageSent[0],
+          messageBody: sorry(originalMessageSent[0].messageBody),
+        },
+        {
+          ...originalMessageSent[1],
+          messageBody: sorry(originalMessageSent[1].messageBody),
+        },
+      ]
+    } else {
+      return {
+        ...originalMessageSent,
+        messageBody: sorry(originalMessageSent.messageBody),
+      }
+    }
   }
 
   const nextConversationState = typeof currentState.nextState === 'string'
@@ -95,32 +92,16 @@ export async function determineResponse(
     await currentState.onExit(trx, userState)
   }
 
-  // if (nextConversationState.onEnter) {
-  //   userState = await nextConversationState.onEnter(trx, userState)
-  // }
-
-  console.log('xx', {
-    whatsapp_message_received_id: unhandled_message.message_received_id,
-    [`${unhandled_message.chatbot_name}_id`]: entity.id,
-    conversation_state: nextConversationState,
-  })
-
-  console.log(
-    'yy',
-    await trx.selectFrom('pharmacists')
-      .selectAll()
-      .where('id', '=', entity.id)
-      .execute(),
-  )
   await trx
     .insertInto(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
     .values({
       whatsapp_message_received_id: unhandled_message.message_received_id,
-      [`${unhandled_message.chatbot_name}_id`]: entity.id,
       conversation_state: nextConversationState,
+      [`${unhandled_message.chatbot_name}_id`]: entity.id,
     })
     .returningAll()
     .executeTakeFirstOrThrow()
 
+  // deno-lint-ignore no-explicit-any
   return await formatMessageToSend(userState, currentState as any)
 }

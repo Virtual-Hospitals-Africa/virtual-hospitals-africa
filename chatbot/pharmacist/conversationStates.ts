@@ -3,7 +3,7 @@ import {
   PharmacistChatbotUserState,
   TrxOrDb,
 } from '../../types.ts'
-import * as pharmacists from '../../db/models/pharmacist.ts'
+import * as pharmacists from '../../db/models/pharmacists.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 const introMessage =

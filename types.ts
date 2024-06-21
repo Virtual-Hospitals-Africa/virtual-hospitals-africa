@@ -126,7 +126,6 @@ export type RenderedPatient =
     | 'ethnicity'
     | 'national_id_number'
     | 'phone_number'
-    | 'conversation_state'
     | 'completed_intake'
     | 'intake_steps_completed'
   >

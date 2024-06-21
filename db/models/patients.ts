@@ -81,7 +81,6 @@ const baseSelect = (trx: TrxOrDb) =>
         'description',
       ),
       'patients.national_id_number',
-      'patients.conversation_state',
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')

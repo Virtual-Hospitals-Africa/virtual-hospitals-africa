@@ -4,7 +4,7 @@ import { TrxOrDb } from '../../types.ts'
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
-  data: Partial<Pharmacists>,
+  data: Omit<Partial<Pharmacists>, 'id' | 'created_at' | 'updated_at'>,
 ) {
   return trx.updateTable('pharmacists').set(data).where(
     'id',

@@ -23,7 +23,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
       const test_patient1 = await patients.upsert(trx, {
         name: baseUUID + generateUUID(),
-        conversation_state: 'initial_message',
       })
 
       const test_patient2 = await patients.upsert(trx, {
@@ -123,7 +122,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           nearest_organization: null,
           phone_number: null,
           last_visited: null,
-          conversation_state: 'initial_message',
           completed_intake: false,
           intake_steps_completed: [],
           actions: {
@@ -162,7 +160,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           nearest_organization: null,
           phone_number: null,
           last_visited: null,
-          conversation_state: 'initial_message',
           completed_intake: false,
           intake_steps_completed: [],
           actions: {
@@ -222,7 +219,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             last_visited: null,
-            conversation_state: 'initial_message',
             completed_intake: false,
             intake_steps_completed: [],
             actions: {
@@ -275,7 +271,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
         const test_patient = await patients.upsert(trx, {
           name: 'Test Patient 1',
-          conversation_state: 'initial_message',
           avatar_media_id: insertedMedia.id,
         })
 
