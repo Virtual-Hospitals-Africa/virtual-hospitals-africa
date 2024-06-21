@@ -3,7 +3,7 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import {
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionSection,
-  ConversationStates,
+  // ConversationStates,
   Location,
   PatientConversationState,
   PatientState,
@@ -32,10 +32,10 @@ import uniq from '../../util/uniq.ts'
 import { pickPatient } from './util.ts'
 import { GoogleClient } from '../../external-clients/google.ts'
 
-const conversationStates: ConversationStates<
+const conversationStates /*: ConversationStates<
   PatientConversationState,
   PatientState
-> = {
+>*/ = {
   'initial_message': {
     type: 'initial_message',
     nextState: 'not_onboarded:welcome',

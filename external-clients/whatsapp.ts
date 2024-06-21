@@ -1,3 +1,5 @@
+import { assert } from 'std/assert/assert.ts'
+import { ChatbotName } from '../db.d.ts'
 import {
   WhatsAppJSONResponse,
   WhatsAppLocation,
@@ -7,11 +9,16 @@ import {
   WhatsAppSingleSendable,
 } from '../types.ts'
 
-const postMessageRoute = `https://graph.facebook.com/v17.0/${
-  Deno.env.get(
-    'WHATSAPP_FROM_PHONE_NUMBER',
-  )
-}/messages`
+const phoneNumbers = {
+  patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
+  pharmacist: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST')!,
+}
+assert(phoneNumbers.patient, 'WHATSAPP_FROM_PHONE_NUMBER_PATIENT is required')
+assert(
+  phoneNumbers.pharmacist,
+  'WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST is required',
+)
+
 const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
 
 export async function get(path: string) {
@@ -36,21 +43,25 @@ export async function getBinaryData(path: string): Promise<Uint8Array> {
 
 export function sendMessage({
   message,
+  chatbot_name,
   phone_number,
 }: {
   phone_number: string
+  chatbot_name: ChatbotName
   message: WhatsAppSingleSendable
 }): Promise<WhatsAppJSONResponse> {
   switch (message.type) {
     case 'string': {
       return sendMessagePlainText({
         phone_number,
+        chatbot_name,
         message: message.messageBody,
       })
     }
     case 'buttons': {
       return sendMessageWithInteractiveButtons({
         phone_number,
+        chatbot_name,
         options: message.options,
         messageBody: message.messageBody,
       })
@@ -58,6 +69,7 @@ export function sendMessage({
     case 'list': {
       return sendMessageWithInteractiveList({
         phone_number,
+        chatbot_name,
         headerText: message.headerText,
         messageBody: message.messageBody,
         action: message.action,
@@ -66,6 +78,7 @@ export function sendMessage({
     case 'location': {
       return sendMessageLocation({
         phone_number,
+        chatbot_name,
         location: message.location,
       })
     }
@@ -73,10 +86,12 @@ export function sendMessage({
 }
 
 export function sendMessages({
-  messages,
   phone_number,
+  chatbot_name,
+  messages,
 }: {
   phone_number: string
+  chatbot_name: ChatbotName
   messages: WhatsAppSingleSendable | WhatsAppSendable
 }): Promise<WhatsAppJSONResponse[]> {
   // Convert the single message to an array for consistent handling
@@ -88,6 +103,7 @@ export function sendMessages({
   // Send the first message
   messagePromises.push(sendMessage({
     phone_number,
+    chatbot_name,
     message: messagesArray[0],
   }))
 
@@ -97,7 +113,9 @@ export function sendMessages({
       /* setTimeout() function in chatbot.ts has a delay of 100 milliseconds,
          so time gap between two message must be less than 100 */
       .then(() => new Promise((resolve) => setTimeout(resolve, 10)))
-      .then(() => sendMessage({ phone_number, message: messagesArray[1] }))
+      .then(() =>
+        sendMessage({ phone_number, chatbot_name, message: messagesArray[1] })
+      )
     messagePromises.push(secondMessagePromise)
   }
 
@@ -105,13 +123,16 @@ export function sendMessages({
   return Promise.all(messagePromises)
 }
 
-export async function postMessage(body: unknown) {
+export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
   const toPost = {
     method: 'post',
     headers: { Authorization, 'content-type': 'application/json' },
     body: JSON.stringify(body),
   }
 
+  const postMessageRoute = `https://graph.facebook.com/v17.0/${
+    phoneNumbers[chatbot_name]
+  }/messages`
   const response = await fetch(postMessageRoute, toPost)
 
   return response.json()
@@ -119,9 +140,10 @@ export async function postMessage(body: unknown) {
 
 export function sendMessageLocation(opts: {
   phone_number: string
+  chatbot_name: ChatbotName
   location: WhatsAppLocation
 }): Promise<WhatsAppJSONResponse> {
-  return postMessage({
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     to: opts.phone_number,
     type: 'location',
@@ -131,9 +153,10 @@ export function sendMessageLocation(opts: {
 
 export function sendMessageLocationRequest(opts: {
   phone_number: string
+  chatbot_name: ChatbotName
   messageBody: string
 }): Promise<WhatsAppJSONResponse> {
-  return postMessage({
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     recipient_type: 'individual',
     to: opts.phone_number,
@@ -153,9 +176,10 @@ export function sendMessageLocationRequest(opts: {
 
 export function sendMessagePlainText(opts: {
   phone_number: string
+  chatbot_name: ChatbotName
   message: string
 }): Promise<WhatsAppJSONResponse> {
-  return postMessage({
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     to: opts.phone_number,
     text: { body: opts.message },
@@ -164,10 +188,11 @@ export function sendMessagePlainText(opts: {
 
 export function sendMessageWithInteractiveButtons(opts: {
   phone_number: string
+  chatbot_name: ChatbotName
   messageBody: string
   options: WhatsAppMessageOption[]
 }): Promise<WhatsAppJSONResponse> {
-  return postMessage({
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     to: opts.phone_number,
     type: 'interactive',
@@ -188,6 +213,7 @@ export function sendMessageWithInteractiveButtons(opts: {
 
 export function sendMessageWithInteractiveList(opts: {
   phone_number: string
+  chatbot_name: ChatbotName
   headerText: string
   messageBody: string
   action: WhatsAppMessageAction
@@ -196,7 +222,7 @@ export function sendMessageWithInteractiveList(opts: {
   contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-  return postMessage({
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     to: opts.phone_number,
     type: 'interactive',

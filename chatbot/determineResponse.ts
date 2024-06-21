@@ -1,43 +1,70 @@
 import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
 import {
-  ConversationStates,
+  ChatbotUserState,
   TrxOrDb,
-  UserState,
+  UnhandledMessage,
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
 
 const sorry = (msg: string) => `Sorry, I didn't understand that.\n\n${msg}`
 
-export type DetermineResponse<
-  CS extends string,
-  US extends UserState<CS>,
-> = (
+async function findOrInsertEntity(
   trx: TrxOrDb,
-  conversationStates: ConversationStates<US['conversation_state'], US>,
-  userState: US,
-  // deno-lint-ignore no-explicit-any
-  updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
-) => Promise<WhatsAppSingleSendable | WhatsAppSendable>
+  unhandled_message: UnhandledMessage,
+) {
+  return (await trx
+    .selectFrom(`${unhandled_message.chatbot_name}s`)
+    .selectAll()
+    .where('phone_number', '=', unhandled_message.sent_by_phone_number)
+    .executeTakeFirst()) || (
+      await trx
+        .insertInto(`${unhandled_message.chatbot_name}s`)
+        .values({
+          phone_number: unhandled_message.sent_by_phone_number,
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow()
+    )
+}
 
-export async function determineResponse<
-  CS extends string,
-  US extends UserState<CS>,
->(
+export async function determineResponse(
   trx: TrxOrDb,
-  conversationStates: ConversationStates<US['conversation_state'], US>,
-  userState: US,
-  // deno-lint-ignore no-explicit-any
-  updateState: (trx: TrxOrDb, userState: US) => Promise<any>,
+  unhandled_message: UnhandledMessage,
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
-  const currentState = findMatchingState(conversationStates, userState)
+  const entity = await findOrInsertEntity(trx, unhandled_message)
+
+  const conversation_state_prior_to_handling_incoming_message = (await trx
+    .selectFrom(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
+    .innerJoin(
+      'whatsapp_messages_received',
+      'whatsapp_messages_received.id',
+      `${unhandled_message.chatbot_name}_whatsapp_messages_received.whatsapp_message_received_id`,
+    )
+    .select([
+      `${unhandled_message.chatbot_name}_whatsapp_messages_received.conversation_state`,
+    ])
+    .where(`${unhandled_message.chatbot_name}_id`, '=', entity.id)
+    .orderBy('whatsapp_messages_received.created_at', 'desc')
+    .executeTakeFirst())?.conversation_state || 'initial_message'
+
+  const userState: ChatbotUserState = {
+    entity_id: entity.id,
+    unhandled_message,
+    chatbot_name: unhandled_message.chatbot_name,
+    conversation_state:
+      // deno-lint-ignore no-explicit-any
+      conversation_state_prior_to_handling_incoming_message as any,
+  }
+
+  const currentState = findMatchingState(userState)
 
   if (!currentState) {
-    const originalMessageSent = formatMessageToSend(
-      conversationStates,
-      userState,
-    )
+    const originalMessageSent = {
+      type: 'string' as const,
+      messageBody: 'TODO get last message',
+    }
     if (Array.isArray(originalMessageSent)) {
       return [
         {
@@ -57,26 +84,24 @@ export async function determineResponse<
     }
   }
 
-  const nextState = typeof currentState.nextState === 'string'
+  const nextConversationState = typeof currentState.nextState === 'string'
     ? currentState.nextState
     : currentState.nextState(userState)
 
-  userState = {
-    ...userState,
-    conversation_state: nextState,
-  }
-
-  await updateState(trx, userState)
-
   if (currentState.onExit) {
-    userState = await currentState.onExit(trx, userState)
+    await currentState.onExit(trx, userState)
   }
 
-  const nextConversationState = conversationStates[userState.conversation_state]
+  await trx
+    .insertInto(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
+    .values({
+      whatsapp_message_received_id: unhandled_message.message_received_id,
+      conversation_state: nextConversationState,
+      [`${unhandled_message.chatbot_name}_id`]: entity.id,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
 
-  if (nextConversationState.onEnter) {
-    userState = await nextConversationState.onEnter(trx, userState)
-  }
-
-  return formatMessageToSend(conversationStates, userState)
+  // deno-lint-ignore no-explicit-any
+  return await formatMessageToSend(userState, currentState as any)
 }

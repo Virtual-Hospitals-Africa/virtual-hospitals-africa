@@ -1,20 +1,19 @@
 import { assert } from 'std/assert/assert.ts'
 import {
+  ChatbotUserState,
   ConversationStateHandlerExpectMedia,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionRow,
   ConversationStateHandlerSelect,
   ConversationStateHandlerSelectOption,
-  ConversationStates,
   MatchingState,
   Maybe,
-  UserState,
 } from '../types.ts'
+import * as defs from './defs.ts'
 import { isValidDate } from '../util/date.ts'
 import isValidLocationString from '../util/isValidLocationString.ts'
 
-// deno-lint-ignore no-explicit-any
-function findMatchingOption<US extends UserState<any>>(
+function findMatchingOption<US extends ChatbotUserState>(
   state:
     | ConversationStateHandlerSelect<US>
     | ConversationStateHandlerExpectMedia<US>,
@@ -25,8 +24,7 @@ function findMatchingOption<US extends UserState<any>>(
   ) => option.id === messageBody)
 }
 
-// deno-lint-ignore no-explicit-any
-function findMatchingRow<US extends UserState<any>>(
+function findMatchingRow<US extends ChatbotUserState>(
   action: ConversationStateHandlerListAction<US>,
   messageBody: string,
 ): Maybe<ConversationStateHandlerListActionRow<US>> {
@@ -37,16 +35,16 @@ function findMatchingRow<US extends UserState<any>>(
   }
 }
 
-export default function findMatchingState<
-  CS extends string,
-  US extends UserState<CS>,
->(
-  conversationStates: ConversationStates<US['conversation_state'], US>,
-  userState: US,
+export default function findMatchingState<US extends ChatbotUserState>(
+  userState: ChatbotUserState,
 ): Maybe<MatchingState<US>> {
-  const currentState = conversationStates[userState.conversation_state]
+  const { conversation_states } = defs[userState.chatbot_name]
+  const currentState = conversation_states[userState.conversation_state]
+  console.log('findMatchingState', userState, conversation_states, currentState)
 
-  const messageBody = userState.body?.trim()
+  if (!currentState) return null
+
+  const messageBody = userState.unhandled_message.body?.trim()
 
   switch (currentState.type) {
     case 'select': {
@@ -71,7 +69,7 @@ export default function findMatchingState<
       return hasBodyPassingValidation ? currentState : null
     }
     case 'expect_media': {
-      if (userState.has_media) return currentState
+      if (userState.unhandled_message.has_media) return currentState
       assert(messageBody)
       return findMatchingOption(currentState, messageBody)
     }
