@@ -7,7 +7,6 @@ import { ButtonsContainer } from './form/buttons.tsx'
 import cls from '../util/cls.ts'
 import { ComponentChild } from 'preact'
 
-
 type Sendable =
   & {
     image: {
@@ -43,129 +42,130 @@ type Sendable =
     }
   )
 
-const sendable: Sendable[] = [
-  {
-    type: 'entity',
-    entity_type: 'person',
-    entity_id: 'nurse_a',
-    name: 'Nurse A',
-    description: {
-      text: 'Primary Care Nurse',
+  const sendable: Sendable[] = [
+    {
+      type: 'entity',
+      entity_type: 'person',
+      entity_id: 'nurse_a',
+      name: 'Nurse A',
+      description: {
+        text: 'Primary Care Nurse',
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      online: false,
+      status: 'Unavailable until tomorrow at 9:00am',
     },
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    {
+      type: 'entity',
+      entity_type: 'person',
+      entity_id: 'nurse_b',
+      name: 'Nurse B',
+      description: {
+        text: 'Primary Care Nurse',
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      online: true,
+      status: 'Seeing a patient until 3:30pm',
     },
-    online: false,
-    status: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    type: 'entity',
-    entity_type: 'person',
-    entity_id: 'nurse_b',
-    name: 'Nurse B',
-    description: {
-      text: 'Primary Care Nurse',
+    {
+      type: 'entity',
+      entity_type: 'person',
+      entity_id: 'nurse_c',
+      name: 'Nurse C',
+      description: {
+        text: 'Primary Care Nurse',
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      online: false,
+      status: 'Unavailable until tomorrow at 9:00am',
     },
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    {
+      type: 'entity',
+      entity_type: 'facility',
+      entity_id: 'another_facility',
+      name: 'Another Facility',
+      description: {
+        text: '1600 Amphitheatre Parkway, Mountain View, CA',
+        parenthetical: 'address'
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      online: true,
+      status: 'Accepting patients',
+      reopenTime: 'Reopens 9:00am',
     },
-    online: true,
-    status: 'Seeing a patient until 3:30pm',
-  },
-  {
-    type: 'entity',
-    entity_type: 'person',
-    entity_id: 'nurse_c',
-    name: 'Nurse C',
-    description: {
-      text: 'Primary Care Nurse',
+    {
+      type: 'entity',
+      entity_type: 'facility',
+      entity_id: 'another_facility',
+      name: 'Another Facility',
+      description: {
+        text: '1600 Amphitheatre Parkway, Mountain View, CA',
+        parenthetical: 'address'
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      online: false,
+      status: 'Accepting patients',
+      reopenTime: 'Reopens 9:00am',
     },
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    {
+      type: 'action',
+      action: 'waiting_room',
+      href: '/app',
+      name: 'Waiting Room',
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      status: 'To be seen by the next available practitioner',
     },
-    online: false,
-    status: 'Unavailable until tomorrow at 9:00am',
-  },
-  {
-    type: 'entity',
-    entity_type: 'facility',
-    entity_id: 'another_facility',
-    name: 'Another Facility',
-    description: {
-      text: '1600 Amphitheatre Parkway, Mountain View, CA',
-      parenthetical: 'address'
+    {
+      type: 'action',
+      action: 'device',
+      href: '/another-device',
+      name: 'Device via Bluetooth',
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      status: 'Connect with trusted devices of known colleagues',
     },
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+    {
+      type: 'action',
+      action: 'search',
+      href: '/search',
+      name: 'Search',
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      status: 'Nurses,Doctors,Hospitals,Clinics,Virtual Organizations,\nSpecialists,Laboratories,Pharmacies',
     },
-    online: true,
-    status: 'Accepting patients',
-    reopenTime: 'Reopens 9:00am',
-  },
-  {
-    type: 'entity',
-    entity_type: 'facility',
-    entity_id: 'another_facility',
-    name: 'Another Facility',
-    description: {
-      text: '1600 Amphitheatre Parkway, Mountain View, CA',
-      parenthetical: 'address'
-    },
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    online: false,
-    status: 'Accepting patients',
-    reopenTime: 'Reopens 9:00am',
-  },
-  {
-    type: 'action',
-    action: 'waiting_room',
-    href: '/app',
-    name: 'Waiting Room',
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    status: 'To be seen by the next available practitioner',
-  },
-  {
-    type: 'action',
-    action: 'device',
-    href: '/another-device',
-    name: 'Device via Bluetooth',
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    status: 'Connect with trusted devices of known colleagues',
-  },
-  {
-    type: 'action',
-    action: 'search',
-    href: '/search',
-    name: 'Search',
-    image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    },
-    status: 'Nurses,Doctors,Hospitals,Clinics,Virtual Organizations,\nSpecialists,Laboratories,Pharmacies',
-  },
-  // more people...
-]
+    // more people...
+  ]
+  
 
 type TeamMemberProps = {
   name: string
@@ -183,13 +183,13 @@ type TeamMemberProps = {
 }
 
 export function SendableComponent(
-  { name, description, handle, imageUrl, online, status, reopenTime, href }:
-    TeamMemberProps,
+  { name, description, handle, imageUrl, online, status, reopenTime, href, onClick }:
+    TeamMemberProps & { onClick: () => void },
 ): JSX.Element {
   return (
-    <li>
+    <li onClick={onClick}>
       <div className='group relative flex items-center px-5 py-6'>
-        <a href={href} className='-m-1 block flex-1 p-1'>
+        <a className='-m-1 block flex-1 p-1'>
           <div
             className='absolute inset-0 group-hover:bg-gray-50'
             aria-hidden='true'
@@ -246,12 +246,44 @@ export function SendableComponent(
   )
 }
 
+export function PersonDetailView({ person, onBack }: { person: Sendable, onBack: () => void }) {
+  return (
+    <div className='p-6'>
+      <button onClick={onBack} className='mb-4 text-blue-500'>Back</button>
+      <div className='flex items-center'>
+        <img className='h-20 w-20 rounded-full' src={person.image.url} alt={person.name} />
+        <div className='ml-4'>
+          <h1 className='text-xl font-bold'>{person.name}</h1>
+          {person.description && (
+            <p className='text-sm text-gray-500'>{person.description.text}</p>
+          )}
+          <p className='text-sm text-gray-500'>{person.status}</p>
+          {person.reopenTime && (
+            <p className='text-sm text-gray-500'>{person.reopenTime}</p>
+          )}
+        </div>
+      </div>
+      {/* Add more details here */}
+    </div>
+  )
+}
+
 export default function SendToMenu() {
-  const [open, setOpen] = useState(false) // The initial state is false, indicating that the sidebar is hidden
+  const [open, setOpen] = useState(false)
+  const [selectedPerson, setSelectedPerson] = useState<Sendable | null>(null)
+
+  const handlePersonClick = (person: Sendable) => {
+    if (person.type === 'entity' && person.entity_type === 'person') {
+      setSelectedPerson(person)
+    }
+  }
+
+  const handleBackClick = () => {
+    setSelectedPerson(null)
+  }
 
   return (
     <div className='flex-1 max-w-xl'>
-      {/* Add a button to toggle the open state */}
       <ButtonsContainer className='flex space-x-4'>
         <Button
           type='button'
@@ -301,24 +333,29 @@ export default function SendToMenu() {
                           </div>
                         </div>
                       </div>
-                      <ul
-                        role='list'
-                        className='flex-1 divide-y divide-gray-200 overflow-y-auto'
-                      >
-                        {sendable.map((person) => (
-                          <SendableComponent
-                            key={person.name}
-                            name={person.name}
-                            description={person.description}
-                            handle={person.handle}
-                            imageUrl={person.imageUrl}
-                            online={person.online}
-                            status={person.status}
-                            reopenTime={person.reopenTime}
-                            href={person.href}
-                          />
-                        ))}
-                      </ul>
+                      {selectedPerson ? (
+                        <PersonDetailView person={selectedPerson} onBack={handleBackClick} />
+                      ) : (
+                        <ul
+                          role='list'
+                          className='flex-1 divide-y divide-gray-200 overflow-y-auto'
+                        >
+                          {sendable.map((person) => (
+                            <SendableComponent
+                              key={person.name}
+                              name={person.name}
+                              description={person.description}
+                              handle={person.handle}
+                              imageUrl={person.imageUrl}
+                              online={person.online}
+                              status={person.status}
+                              reopenTime={person.reopenTime}
+                              href={person.href}
+                              onClick={() => handlePersonClick(person)}
+                            />
+                          ))}
+                        </ul>
+                      )}
                     </div>
                   </Dialog.Panel>
                 </Transition.Child>
