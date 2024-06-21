@@ -6,6 +6,7 @@ import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from './form/buttons.tsx'
 import cls from '../util/cls.ts'
 import { ComponentChild } from 'preact'
+import { MagnifyingGlassIcon, BuildingOffice2Icon, ClockIcon, DevicePhoneMobileIcon } from '../components/library/icons/heroicons/outline.tsx'
 
 type Sendable =
   & {
@@ -86,7 +87,7 @@ const sendable: Sendable[] = [
     image: {
       type: 'avatar',
       url:
-        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
     },
     online: false,
     status: 'Unavailable until tomorrow at 9:00am',
@@ -94,36 +95,32 @@ const sendable: Sendable[] = [
   {
     type: 'entity',
     entity_type: 'facility',
-    entity_id: 'another_facility',
-    name: 'Another Facility',
+    entity_id: 'another_facility_a',
+    name: 'Another Facility A',
     description: {
-      text: '1600 Amphitheatre Parkway, Mountain View, CA',
+      text: 'Beacon House, Queens Rd, Bristol BS8 1QU',
       parenthetical: 'address',
     },
     image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      type: 'icon',
+      component: <BuildingOffice2Icon />,
     },
-    online: true,
     status: 'Accepting patients',
     reopenTime: 'Reopens 9:00am',
   },
   {
     type: 'entity',
     entity_type: 'facility',
-    entity_id: 'another_facility',
-    name: 'Another Facility',
+    entity_id: 'another_facility_b',
+    name: 'Another Facility B',
     description: {
       text: '1600 Amphitheatre Parkway, Mountain View, CA',
       parenthetical: 'address',
     },
     image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      type: 'icon',
+      component: <BuildingOffice2Icon />,
     },
-    online: false,
     status: 'Accepting patients',
     reopenTime: 'Reopens 9:00am',
   },
@@ -133,9 +130,8 @@ const sendable: Sendable[] = [
     href: '/app',
     name: 'Waiting Room',
     image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      type: 'icon',
+      component: <ClockIcon />,
     },
     status: 'To be seen by the next available practitioner',
   },
@@ -145,9 +141,8 @@ const sendable: Sendable[] = [
     href: '/another-device',
     name: 'Device via Bluetooth',
     image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      type: 'icon',
+      component: <DevicePhoneMobileIcon />,
     },
     status: 'Connect with trusted devices of known colleagues',
   },
@@ -157,9 +152,8 @@ const sendable: Sendable[] = [
     href: '/search',
     name: 'Search',
     image: {
-      type: 'avatar',
-      url:
-        'https://images.unsplash.com/photo-1603415526960-f8fcd80a2d52?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      type: 'icon',
+      component: <MagnifyingGlassIcon />,
     },
     status:
       'Nurses,Doctors,Hospitals,Clinics,Virtual Organizations,\nSpecialists,Laboratories,Pharmacies',
@@ -175,11 +169,13 @@ type TeamMemberProps = {
     parenthetical?: string
   }
   handle: string
-  imageUrl: string
+  imageUrl?: string
+  imageComponent?: ComponentChild
   online: boolean
   status: string
   reopenTime?: string
   href: string
+
 }
 
 export function SendableComponent(
@@ -188,6 +184,7 @@ export function SendableComponent(
     description,
     handle,
     imageUrl,
+    imageComponent,
     online,
     status,
     reopenTime,
@@ -205,7 +202,11 @@ export function SendableComponent(
           />
           <div className='relative flex min-w-0 flex-1 items-center'>
             <span className='relative inline-block flex-shrink-0'>
-              <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
+              {imageUrl ? (
+                <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
+              ) : (
+                imageComponent
+              )}
               {online != null && (
                 <span
                   className={`${
@@ -417,7 +418,8 @@ export default function SendToMenu() {
                                 name={person.name}
                                 description={person.description}
                                 handle={person.handle}
-                                imageUrl={person.imageUrl}
+                                imageUrl={person.image.type === 'avatar' ? person.image.url : undefined}
+                                imageComponent={person.image.type === 'icon' ? person.image.component : null} 
                                 online={person.online}
                                 status={person.status}
                                 reopenTime={person.reopenTime}
