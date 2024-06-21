@@ -6,7 +6,8 @@ import {
 import * as pharmacists from '../../db/models/pharmacist.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
-const introMessage = `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`
+const introMessage =
+  `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`
 
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
@@ -17,22 +18,22 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       return introMessage
     },
     nextState: 'not_onboarded:enter_id',
-    onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState)  {
+    onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       return pharmacists.update(trx, pharmacistState.entity_id, {
         registration_number: pharmacistState.unhandled_message.trimmed_body,
       })
-    }
+    },
   },
 
   'not_onboarded:enter_id': {
     type: 'string',
     prompt: 'To confirm your identity, please provide your ID number',
     nextState: 'not_onboarded:create_pin',
-    onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState)  {
+    onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       return pharmacists.update(trx, pharmacistState.entity_id, {
         id_number: pharmacistState.unhandled_message.trimmed_body,
       })
-    }
+    },
   },
   'not_onboarded:create_pin': {
     type: 'string',
@@ -42,7 +43,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       return pharmacists.update(trx, pharmacistState.entity_id, {
         pin: pharmacistState.unhandled_message.trimmed_body,
       })
-    }
+    },
   },
   'not_onboarded:confirm_pin': {
     type: 'string',
@@ -56,8 +57,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         .where('id', '=', pharmacistState.entity_id)
         .executeTakeFirstOrThrow()
 
-      assertEquals(pharmacistState.unhandled_message.trimmed_body, currentPin.pin, 'Pins do not match')
-    }
+      assertEquals(
+        pharmacistState.unhandled_message.trimmed_body,
+        currentPin.pin,
+        'Pins do not match',
+      )
+    },
   },
   // 'not_onboarded:enter_establishment': {
   //   type: 'string',

@@ -1,4 +1,4 @@
-import { InsertResult, UpdateResult, sql } from 'kysely'
+import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   ChatbotName,
   HasStringId,
@@ -80,12 +80,16 @@ export function insertMessageSent(
 
 export async function getUnhandledMessages(
   trx: TrxOrDb,
-  { chatbot_name, commitHash, sent_by_phone_number }: { chatbot_name: ChatbotName, commitHash: string; sent_by_phone_number?: string },
+  { chatbot_name, commitHash, sent_by_phone_number }: {
+    chatbot_name: ChatbotName
+    commitHash: string
+    sent_by_phone_number?: string
+  },
 ): Promise<UnhandledMessage[]> {
   let query = trx
     .updateTable('whatsapp_messages_received')
     .where('chatbot_name', '=', chatbot_name)
-    .where(eb => 
+    .where((eb) =>
       eb.or([
         eb('whatsapp_messages_received.started_responding_at', 'is', null),
         eb.and([
@@ -102,7 +106,7 @@ export async function getUnhandledMessages(
       'whatsapp_messages_received.body',
       'whatsapp_messages_received.has_media',
       'whatsapp_messages_received.media_id',
-      'whatsapp_messages_received.sent_by_phone_number'
+      'whatsapp_messages_received.sent_by_phone_number',
     ])
 
   if (sent_by_phone_number) {

@@ -20,7 +20,6 @@ export default async function formatMessageToSend<
   userState: US,
   state: ConversationStateHandler<US>,
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
-
   console.log('state', state)
 
   const messageBody = typeof state.prompt === 'string'

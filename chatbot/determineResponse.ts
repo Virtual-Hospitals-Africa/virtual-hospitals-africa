@@ -1,10 +1,10 @@
 import findMatchingState from './findMatchingState.ts'
 import formatMessageToSend from './formatMessageToSend.ts'
 import {
+  ChatbotUserState,
   ConversationStates,
   TrxOrDb,
   UnhandledMessage,
-  ChatbotUserState,
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
@@ -21,12 +21,12 @@ async function findOrInsertEntity(
     .where('phone_number', '=', unhandled_message.sent_by_phone_number)
     .executeTakeFirst()) || (
       await trx
-      .insertInto(`${unhandled_message.chatbot_name}s`)
-      .values({
-        phone_number: unhandled_message.sent_by_phone_number,
-      })
-      .returningAll()
-      .executeTakeFirstOrThrow()
+        .insertInto(`${unhandled_message.chatbot_name}s`)
+        .values({
+          phone_number: unhandled_message.sent_by_phone_number,
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow()
     )
 }
 
@@ -38,7 +38,11 @@ export async function determineResponse(
 
   const conversation_state_prior_to_handling_incoming_message = (await trx
     .selectFrom(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
-    .innerJoin('whatsapp_messages_received', 'whatsapp_messages_received.id', `${unhandled_message.chatbot_name}_whatsapp_messages_received.whatsapp_message_received_id`)
+    .innerJoin(
+      'whatsapp_messages_received',
+      'whatsapp_messages_received.id',
+      `${unhandled_message.chatbot_name}_whatsapp_messages_received.whatsapp_message_received_id`,
+    )
     .select([
       `${unhandled_message.chatbot_name}_whatsapp_messages_received.conversation_state`,
     ])
@@ -50,13 +54,16 @@ export async function determineResponse(
     entity_id: entity.id,
     unhandled_message,
     chatbot_name: unhandled_message.chatbot_name,
-    conversation_state: conversation_state_prior_to_handling_incoming_message as any,
+    conversation_state:
+      conversation_state_prior_to_handling_incoming_message as any,
   }
 
   const currentState = findMatchingState(userState)
 
   if (!currentState) {
-    throw new Error(`No matching state found for ${userState.conversation_state}`)
+    throw new Error(
+      `No matching state found for ${userState.conversation_state}`,
+    )
     // const originalMessageSent = formatMessageToSend(
     //   conversationStates,
     //   userState,
@@ -98,10 +105,12 @@ export async function determineResponse(
     conversation_state: nextConversationState,
   })
 
-  console.log('yy', await trx.selectFrom('pharmacists')
-    .selectAll()
-    .where('id', '=', entity.id)
-    .execute()
+  console.log(
+    'yy',
+    await trx.selectFrom('pharmacists')
+      .selectAll()
+      .where('id', '=', entity.id)
+      .execute(),
   )
   await trx
     .insertInto(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
@@ -112,8 +121,6 @@ export async function determineResponse(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
-
-  
 
   return await formatMessageToSend(userState, currentState as any)
 }

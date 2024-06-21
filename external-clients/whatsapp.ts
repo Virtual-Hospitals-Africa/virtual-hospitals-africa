@@ -14,7 +14,10 @@ const phoneNumbers = {
   pharmacist: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST')!,
 }
 assert(phoneNumbers.patient, 'WHATSAPP_FROM_PHONE_NUMBER_PATIENT is required')
-assert(phoneNumbers.pharmacist, 'WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST is required')
+assert(
+  phoneNumbers.pharmacist,
+  'WHATSAPP_FROM_PHONE_NUMBER_PHARMACIST is required',
+)
 
 const Authorization = `Bearer ${Deno.env.get('WHATSAPP_BEARER_TOKEN')}`
 
@@ -44,7 +47,7 @@ export function sendMessage({
   phone_number,
 }: {
   phone_number: string
-  chatbot_name: ChatbotName,
+  chatbot_name: ChatbotName
   message: WhatsAppSingleSendable
 }): Promise<WhatsAppJSONResponse> {
   switch (message.type) {
@@ -110,7 +113,9 @@ export function sendMessages({
       /* setTimeout() function in chatbot.ts has a delay of 100 milliseconds,
          so time gap between two message must be less than 100 */
       .then(() => new Promise((resolve) => setTimeout(resolve, 10)))
-      .then(() => sendMessage({ phone_number, chatbot_name, message: messagesArray[1] }))
+      .then(() =>
+        sendMessage({ phone_number, chatbot_name, message: messagesArray[1] })
+      )
     messagePromises.push(secondMessagePromise)
   }
 
@@ -125,7 +130,9 @@ export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
     body: JSON.stringify(body),
   }
 
-  const postMessageRoute = `https://graph.facebook.com/v17.0/${phoneNumbers[chatbot_name]}/messages`
+  const postMessageRoute = `https://graph.facebook.com/v17.0/${
+    phoneNumbers[chatbot_name]
+  }/messages`
   const response = await fetch(postMessageRoute, toPost)
 
   return response.json()
@@ -136,7 +143,7 @@ export function sendMessageLocation(opts: {
   chatbot_name: ChatbotName
   location: WhatsAppLocation
 }): Promise<WhatsAppJSONResponse> {
-  return postMessage(opts.chatbot_name,{
+  return postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
     to: opts.phone_number,
     type: 'location',

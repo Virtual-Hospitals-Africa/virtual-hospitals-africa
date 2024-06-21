@@ -1,5 +1,6 @@
 import { assert } from 'std/assert/assert.ts'
 import {
+  ChatbotUserState,
   ConversationStateHandlerExpectMedia,
   ConversationStateHandlerListAction,
   ConversationStateHandlerListActionRow,
@@ -7,7 +8,6 @@ import {
   ConversationStateHandlerSelectOption,
   MatchingState,
   Maybe,
-  ChatbotUserState,
 } from '../types.ts'
 import * as defs from './defs.ts'
 import { isValidDate } from '../util/date.ts'

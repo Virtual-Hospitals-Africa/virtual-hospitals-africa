@@ -52,18 +52,20 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'non-binary'
 
-export type ChatbotUserState = {
-  entity_id: string
-  unhandled_message: UnhandledMessage
-} & (
-  {
-    chatbot_name: 'patient'
-    conversation_state: PatientConversationState
-  } | {
-    chatbot_name: 'pharmacist'
-    conversation_state: PharmacistConversationState
+export type ChatbotUserState =
+  & {
+    entity_id: string
+    unhandled_message: UnhandledMessage
   }
-)
+  & (
+    {
+      chatbot_name: 'patient'
+      conversation_state: PatientConversationState
+    } | {
+      chatbot_name: 'pharmacist'
+      conversation_state: PharmacistConversationState
+    }
+  )
 
 export type PharmacistChatbotUserState = ChatbotUserState & {
   chatbot_name: 'pharmacist'
@@ -411,20 +413,22 @@ export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
   | US['conversation_state']
   | ((userState: US) => US['conversation_state'])
 
-export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> = {
-  id: string
-  title: string
-  nextState: ConversationStateHandlerNextState<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
-}
+export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
+  {
+    id: string
+    title: string
+    nextState: ConversationStateHandlerNextState<US>
+    onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+  }
 
-export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> = {
-  id: string
-  title: string
-  description: string
-  nextState: ConversationStateHandlerNextState<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
-}
+export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
+  {
+    id: string
+    title: string
+    description: string
+    nextState: ConversationStateHandlerNextState<US>
+    onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+  }
 export type ConversationStateHandlerListActionSection<
   US extends ChatbotUserState,
 > = {
@@ -498,14 +502,15 @@ export type ConversationStateHandlerDate<US extends ChatbotUserState> =
     }
   >
 
-export type ConversationStateHandlerInitialMessage<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'initial_message'
-      nextState: ConversationStateHandlerNextState<US>
-    }
-  >
+export type ConversationStateHandlerInitialMessage<
+  US extends ChatbotUserState,
+> = ConversationStateHandlerType<
+  US,
+  {
+    type: 'initial_message'
+    nextState: ConversationStateHandlerNextState<US>
+  }
+>
 
 export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
   ConversationStateHandlerType<

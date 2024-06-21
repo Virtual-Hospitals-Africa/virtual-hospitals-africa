@@ -33,21 +33,19 @@ type WhatsApp = {
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
 console.log('error_family', error_family)
-console.log('HEROKU_SLUG_COMMIT',  Deno.env.get('HEROKU_SLUG_COMMIT'))
+console.log('HEROKU_SLUG_COMMIT', Deno.env.get('HEROKU_SLUG_COMMIT'))
 const on_production = Deno.env.get('ON_PRODUCTION')
 
 async function respondToMessage(
   whatsapp: WhatsApp,
-  unhandled_message: UnhandledMessage
+  unhandled_message: UnhandledMessage,
 ) {
   const { chatbot_name } = unhandled_message
   try {
     const responseToSend = await db
       .transaction()
       .setIsolationLevel('read committed')
-      .execute((trx: TrxOrDb) =>
-        determineResponse(trx, unhandled_message)
-      )
+      .execute((trx: TrxOrDb) => determineResponse(trx, unhandled_message))
 
     console.log('responseToSend', responseToSend)
 
@@ -121,10 +119,10 @@ export default async function respond(
     chatbot_name,
     sent_by_phone_number,
   }: {
-    whatsapp: WhatsApp,
-    chatbot_name: ChatbotName,
-    sent_by_phone_number?: string,
-  }
+    whatsapp: WhatsApp
+    chatbot_name: ChatbotName
+    sent_by_phone_number?: string
+  },
 ) {
   const unhandledMessages = await getUnhandledMessages(db, {
     chatbot_name,
