@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { ChatbotName } from '../db.d.ts'
 import {
   WhatsAppJSONResponse,
