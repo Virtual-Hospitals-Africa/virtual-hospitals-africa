@@ -1,6 +1,5 @@
 import { Kysely, sql } from 'kysely'
 import patientConversationStates from '../../chatbot/patient/conversationStates.ts'
-import pharmacistConversationStates from '../../chatbot/pharmacist/conversationStates.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {

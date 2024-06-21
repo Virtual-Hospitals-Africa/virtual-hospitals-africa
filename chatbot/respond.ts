@@ -1,22 +1,20 @@
 import db from '../db/db.ts'
 import {
-  getUnhandledPatientMessages,
+  getUnhandledMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
 import {
   ChatbotName,
-  ConversationStates,
-  TrxOrDb,
-  UserState,
+  UnhandledMessage,
   WhatsAppJSONResponse,
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
-import conversationStates from './patient/conversationStates.ts'
 import { sendToEngineeringChannel } from '../external-clients/slack.ts'
-import { updatePatientState } from './patient/util.ts'
+import capitalize from '../util/capitalize.ts'
+import generateUUID from '../util/uuid.ts'
 
 type WhatsApp = {
   phone_number: string
@@ -30,34 +28,25 @@ type WhatsApp = {
   }): Promise<WhatsAppJSONResponse[]>
 }
 
-const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
+const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
 const on_production = Deno.env.get('ON_PRODUCTION')
 
-console.log('on_production', on_production)
-
-async function respondToMessage<CS extends string, US extends UserState<CS>>(
-  chatbot_name: ChatbotName,
+async function respondToMessage(
   whatsapp: WhatsApp,
-  conversationStates: ConversationStates<CS, US>,
-  user_state: US,
-  updateState: (trx: TrxOrDb, userState: US) => Promise<unknown>,
+  unhandled_message: UnhandledMessage
 ) {
+  const { chatbot_name } = unhandled_message
   try {
     const responseToSend = await db
       .transaction()
       .setIsolationLevel('read committed')
       .execute((trx) =>
-        determineResponse(
-          trx,
-          conversationStates,
-          user_state,
-          updateState,
-        )
+        determineResponse(trx, unhandled_message)
       )
 
     const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
-      phone_number: user_state.phone_number,
+      phone_number: unhandled_message.sent_by_phone_number,
     })
 
     for (const whatsappResponse of whatsappResponses) {
@@ -68,10 +57,10 @@ async function respondToMessage<CS extends string, US extends UserState<CS>>(
       }
 
       await insertMessageSent(db, {
-        chatbot_name,
+        chatbot_name: unhandled_message.chatbot_name,
         sent_by_phone_number: whatsapp.phone_number,
-        sent_to_phone_number: user_state.phone_number,
-        responding_to_received_id: user_state.message_id,
+        sent_to_phone_number: unhandled_message.sent_by_phone_number,
+        responding_to_received_id: unhandled_message.message_received_id,
         whatsapp_id: whatsappResponse.messages[0].id,
         body: JSON.stringify(responseToSend),
       })
@@ -85,46 +74,52 @@ async function respondToMessage<CS extends string, US extends UserState<CS>>(
         type: 'string',
         messageBody: `An unknown error occured: ${err.message}`,
       },
-      phone_number: user_state.phone_number,
+      phone_number: unhandled_message.sent_by_phone_number,
     })
 
     await markChatbotError(db, {
       chatbot_name,
-      commitHash,
-      whatsapp_message_received_id: user_state.message_id,
+      commitHash: error_family,
+      whatsapp_message_received_id: unhandled_message.message_received_id,
       errorMessage: err.message,
     })
 
-    console.log('on_production', on_production)
     if (on_production) {
+      const message = `*${capitalize(chatbot_name)} Chatbot Error*`
+
       const github_code_href =
         `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
       const github_code_link = `<${github_code_href}|Github Commit>`
 
       const logs_href =
-        'https://dashboard.heroku.com/apps/vha-patient-chatbot/logs'
+        `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
       const logs_link = `<${logs_href}|Heroku Logs>`
 
-      const message = [
-        '*Patient Chatbot Error*',
+      await sendToEngineeringChannel([
+        message,
         err.message,
         github_code_link,
         logs_link,
-      ].join('\n')
-
-      await sendToEngineeringChannel(message)
+      ].join('\n'))
     }
   }
 }
 
 export default async function respond(
-  whatsapp: WhatsApp,
-  chatbot_name: ChatbotName,
-  phone_number?: string,
+  {
+    whatsapp,
+    chatbot_name,
+    sent_by_phone_number,
+  }: {
+    whatsapp: WhatsApp,
+    chatbot_name: ChatbotName,
+    sent_by_phone_number?: string,
+  }
 ) {
-  const unhandledMessages = await getUnhandledPatientMessages(db, {
-    commitHash,
-    phone_number,
+  const unhandledMessages = await getUnhandledMessages(db, {
+    chatbot_name,
+    commitHash: error_family,
+    sent_by_phone_number,
   })
 
   if (unhandledMessages.length !== 0) {
@@ -132,16 +127,10 @@ export default async function respond(
   }
 
   return Promise.all(
-    unhandledMessages.map((msg: unknown) =>
+    unhandledMessages.map((msg) =>
       respondToMessage(
-        chatbot_name,
         whatsapp,
-        conversationStates,
-        // deno-lint-ignore no-explicit-any
-        msg as any,
-        chatbot_name === 'patient' ? updatePatientState : () => {
-          throw new Error('Not implemented')
-        },
+        msg,
       )
     ),
   )

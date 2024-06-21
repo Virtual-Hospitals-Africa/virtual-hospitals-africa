@@ -15,9 +15,12 @@ export function createChatbot(chatbot_name: Chatbot): Responder {
     //this respond is trying to send a message from the patient chatbot, need to find a way to send a message from the pharmacist chatbot
 
     await respond({
-      ...whatsapp,
-      phone_number: chatbotToPhone[chatbot_name],
-    }, chatbot_name)
+      whatsapp: {
+        ...whatsapp,
+        phone_number: chatbotToPhone[chatbot_name],
+      },
+      chatbot_name,
+    })
     // TODO: it seems like this recursion might be causing a memory leak?
     // A setInterval isn't quite right because we want to wait for the
     // previous batch of messages to be done processing before starting again.

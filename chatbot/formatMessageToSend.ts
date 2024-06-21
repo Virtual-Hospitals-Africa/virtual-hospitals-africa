@@ -1,6 +1,6 @@
 import {
-  ConversationStates,
-  UserState,
+  ChatbotUserState,
+  ConversationStateHandler,
   WhatsAppSendable,
   WhatsAppSendableString,
   WhatsAppSingleSendable,
@@ -14,20 +14,16 @@ function stringSendable(messageBody: string): WhatsAppSendableString {
   }
 }
 
-export default function formatMessageToSend<
-  CS extends string,
-  US extends UserState<CS>,
+export default async function formatMessageToSend<
+  US extends ChatbotUserState,
 >(
-  conversationStates: ConversationStates<US['conversation_state'], US>,
   userState: US,
-): WhatsAppSingleSendable | WhatsAppSendable {
-  const state = conversationStates[
-    userState.conversation_state
-  ]
+  state: ConversationStateHandler<US>,
+): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
 
   const messageBody = typeof state.prompt === 'string'
     ? state.prompt
-    : state.prompt(userState)
+    : await state.prompt(userState)
 
   switch (state.type) {
     case 'select':

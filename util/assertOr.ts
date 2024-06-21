@@ -69,3 +69,13 @@ export function assertOr500(
     throw new StatusError(message, 500)
   }
 }
+
+// export function assertOrChatbotError(
+//   condition: unknown,
+//   userState: ChatbotUserState,
+//   error: string,
+// ): asserts condition {
+//   if (!condition) {
+//     throw error
+//   }
+// }
