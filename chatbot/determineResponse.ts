@@ -29,13 +29,16 @@ async function findOrInsertEntity(
     )
 }
 
+// User sends first message
+//
+
 export async function determineResponse(
   trx: TrxOrDb,
   unhandled_message: UnhandledMessage,
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
   const entity = await findOrInsertEntity(trx, unhandled_message)
 
-  const conversation_state_prior_to_handling_incoming_message = (await trx
+  const past_conversation_state = (await trx
     .selectFrom(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
     .innerJoin(
       'whatsapp_messages_received',
@@ -47,7 +50,27 @@ export async function determineResponse(
     ])
     .where(`${unhandled_message.chatbot_name}_id`, '=', entity.id)
     .orderBy('whatsapp_messages_received.created_at', 'desc')
-    .executeTakeFirst())?.conversation_state || 'initial_message'
+    .executeTakeFirst())?.conversation_state
+
+  if (!past_conversation_state) {
+    await trx
+      .insertInto(
+        `${unhandled_message.chatbot_name}_whatsapp_messages_received`,
+      )
+      .values({
+        whatsapp_message_received_id: unhandled_message.message_received_id,
+        conversation_state: 'initial_message',
+        [`${unhandled_message.chatbot_name}_id`]: entity.id,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow()
+
+    return {
+      type: 'string',
+      messageBody:
+        `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`,
+    }
+  }
 
   const userState: ChatbotUserState = {
     entity_id: entity.id,
@@ -55,7 +78,7 @@ export async function determineResponse(
     chatbot_name: unhandled_message.chatbot_name,
     conversation_state:
       // deno-lint-ignore no-explicit-any
-      conversation_state_prior_to_handling_incoming_message as any,
+      past_conversation_state as any,
   }
 
   const currentState = findMatchingState(userState)
@@ -84,24 +107,23 @@ export async function determineResponse(
     }
   }
 
-  const nextConversationState = typeof currentState.nextState === 'string'
-    ? currentState.nextState
-    : currentState.nextState(userState)
-
-  if (currentState.onExit) {
-    await currentState.onExit(trx, userState)
-  }
+  const next_conversation_state = await currentState.onExit(trx, userState)
 
   await trx
     .insertInto(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
     .values({
       whatsapp_message_received_id: unhandled_message.message_received_id,
-      conversation_state: nextConversationState,
+      conversation_state: next_conversation_state as any,
       [`${unhandled_message.chatbot_name}_id`]: entity.id,
     })
     .returningAll()
     .executeTakeFirstOrThrow()
 
+  const nextState = findMatchingState({
+    ...userState,
+    conversation_state: next_conversation_state as any,
+  })
+
   // deno-lint-ignore no-explicit-any
-  return await formatMessageToSend(userState, currentState as any)
+  return await formatMessageToSend(trx, userState, nextState as any)
 }

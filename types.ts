@@ -397,15 +397,16 @@ export type PharmacistConversationState =
   | 'not_onboarded:enter_id'
   | 'not_onboarded:create_pin'
   | 'not_onboarded:confirm_pin'
+  | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
   | 'other_end_of_demo'
 
 export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
-  prompt: string | ((userState: US) => string | Promise<string>)
-  onEnter?: (trx: TrxOrDb, userState: US) => Promise<any>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<any>
+  prompt: string | ((trx: TrxOrDb, userState: US) => string | Promise<string>)
+  // onEnter?: (trx: TrxOrDb, userState: US) => Promise<any>
+  onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
 }
 
 export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
@@ -416,8 +417,7 @@ export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
   {
     id: string
     title: string
-    nextState: ConversationStateHandlerNextState<US>
-    onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+    onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
   }
 
 export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
@@ -425,8 +425,7 @@ export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
     id: string
     title: string
     description: string
-    nextState: ConversationStateHandlerNextState<US>
-    onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+    onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
   }
 export type ConversationStateHandlerListActionSection<
   US extends ChatbotUserState,
@@ -470,7 +469,6 @@ export type ConversationStateHandlerString<US extends ChatbotUserState> =
     {
       type: 'string'
       validation?: (value: string) => boolean
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
@@ -479,7 +477,6 @@ export type ConversationStateHandlerGetLocation<US extends ChatbotUserState> =
     US,
     {
       type: 'get_location'
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
@@ -488,7 +485,6 @@ export type ConversationStateHandlerEndOfDemo<US extends ChatbotUserState> =
     US,
     {
       type: 'end_of_demo'
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
@@ -497,19 +493,8 @@ export type ConversationStateHandlerDate<US extends ChatbotUserState> =
     US,
     {
       type: 'date'
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
-
-export type ConversationStateHandlerInitialMessage<
-  US extends ChatbotUserState,
-> = ConversationStateHandlerType<
-  US,
-  {
-    type: 'initial_message'
-    nextState: ConversationStateHandlerNextState<US>
-  }
->
 
 export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
   ConversationStateHandlerType<
@@ -517,7 +502,6 @@ export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
     {
       type: 'send_location'
       getMessages: (userState: US) => WhatsAppSendable
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
@@ -526,13 +510,11 @@ export type ConversationStateHandlerExpectMedia<US extends ChatbotUserState> =
     US,
     {
       type: 'expect_media'
-      nextState: ConversationStateHandlerNextState<US>
       options: [ConversationStateHandlerSelectOption<US>]
     }
   >
 
 export type ConversationStateHandler<US extends ChatbotUserState> =
-  | ConversationStateHandlerInitialMessage<US>
   | ConversationStateHandlerSelect<US>
   | ConversationStateHandlerString<US>
   | ConversationStateHandlerDate<US>
@@ -578,8 +560,7 @@ export type Procurer = {
 }
 
 export type MatchingState<US extends ChatbotUserState> = {
-  nextState: ConversationStateHandlerNextState<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+  onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
 }
 
 export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }
