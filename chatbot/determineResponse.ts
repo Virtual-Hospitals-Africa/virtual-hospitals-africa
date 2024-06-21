@@ -80,7 +80,7 @@ export async function determineResponse(
     // }
   }
 
-  const nextState = typeof currentState.nextState === 'string'
+  const nextConversationState = typeof currentState.nextState === 'string'
     ? currentState.nextState
     : currentState.nextState(userState)
 
@@ -88,12 +88,32 @@ export async function determineResponse(
     await currentState.onExit(trx, userState)
   }
 
-  await trx
-
   // if (nextConversationState.onEnter) {
   //   userState = await nextConversationState.onEnter(trx, userState)
   // }
 
-  return formatMessageToSend(userState, currentState)
+  console.log('xx', {
+    whatsapp_message_received_id: unhandled_message.message_received_id,
+    [`${unhandled_message.chatbot_name}_id`]: entity.id,
+    conversation_state: nextConversationState,
+  })
+
+  console.log('yy', await trx.selectFrom('pharmacists')
+    .selectAll()
+    .where('id', '=', entity.id)
+    .execute()
+  )
+  await trx
+    .insertInto(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
+    .values({
+      whatsapp_message_received_id: unhandled_message.message_received_id,
+      [`${unhandled_message.chatbot_name}_id`]: entity.id,
+      conversation_state: nextConversationState,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
   
+
+  return await formatMessageToSend(userState, currentState as any)
 }

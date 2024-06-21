@@ -21,9 +21,13 @@ export default async function formatMessageToSend<
   state: ConversationStateHandler<US>,
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
 
+  console.log('state', state)
+
   const messageBody = typeof state.prompt === 'string'
     ? state.prompt
     : await state.prompt(userState)
+
+  console.log('messageBody', messageBody)
 
   switch (state.type) {
     case 'select':

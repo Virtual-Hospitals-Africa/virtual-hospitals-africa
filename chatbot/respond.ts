@@ -5,6 +5,7 @@ import {
 } from '../db/models/conversations.ts'
 import {
   ChatbotName,
+  TrxOrDb,
   UnhandledMessage,
   WhatsAppJSONResponse,
   WhatsAppSendable,
@@ -29,6 +30,8 @@ type WhatsApp = {
 }
 
 const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
+console.log('error_family', error_family)
+console.log('HEROKU_SLUG_COMMIT',  Deno.env.get('HEROKU_SLUG_COMMIT'))
 const on_production = Deno.env.get('ON_PRODUCTION')
 
 async function respondToMessage(
@@ -40,14 +43,17 @@ async function respondToMessage(
     const responseToSend = await db
       .transaction()
       .setIsolationLevel('read committed')
-      .execute((trx) =>
+      .execute((trx: TrxOrDb) =>
         determineResponse(trx, unhandled_message)
       )
+
+    console.log('responseToSend', responseToSend)
 
     const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
       phone_number: unhandled_message.sent_by_phone_number,
     })
+    console.log('whatsappResponses', whatsappResponses)
 
     for (const whatsappResponse of whatsappResponses) {
       if ('error' in whatsappResponse) {
@@ -87,9 +93,9 @@ async function respondToMessage(
     if (on_production) {
       const message = `*${capitalize(chatbot_name)} Chatbot Error*`
 
-      const github_code_href =
-        `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
-      const github_code_link = `<${github_code_href}|Github Commit>`
+      // const github_code_href =
+      //   `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
+      // const github_code_link = `<${github_code_href}|Github Commit>`
 
       const logs_href =
         `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
@@ -98,7 +104,7 @@ async function respondToMessage(
       await sendToEngineeringChannel([
         message,
         err.message,
-        github_code_link,
+        // github_code_link,
         logs_link,
       ].join('\n'))
     }

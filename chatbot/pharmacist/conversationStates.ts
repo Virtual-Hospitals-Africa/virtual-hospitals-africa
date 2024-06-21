@@ -3,6 +3,7 @@ import {
   PharmacistChatbotUserState,
   TrxOrDb,
 } from '../../types.ts'
+import * as pharmacists from '../../db/models/pharmacist.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 const introMessage = `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`
@@ -11,17 +12,15 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
 > = {
   'initial_message': {
-    type: 'initial_message',
+    type: 'string',
     prompt() {
       return introMessage
     },
     nextState: 'not_onboarded:enter_id',
     onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState)  {
-      return trx.updateTable('pharmacists').set({
+      return pharmacists.update(trx, pharmacistState.entity_id, {
         registration_number: pharmacistState.unhandled_message.trimmed_body,
       })
-      .where('id', '=', pharmacistState.entity_id)
-      .execute()
     }
   },
 
@@ -30,23 +29,19 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     prompt: 'To confirm your identity, please provide your ID number',
     nextState: 'not_onboarded:create_pin',
     onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState)  {
-      return trx.updateTable('pharmacists').set({
+      return pharmacists.update(trx, pharmacistState.entity_id, {
         id_number: pharmacistState.unhandled_message.trimmed_body,
       })
-      .where('id', '=', pharmacistState.entity_id)
-      .execute()
     }
   },
   'not_onboarded:create_pin': {
     type: 'string',
     prompt: 'To secure your account, please create a 4-digit pin',
     nextState: 'not_onboarded:confirm_pin',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      await trx.updateTable('pharmacists').set({
+    onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      return pharmacists.update(trx, pharmacistState.entity_id, {
         pin: pharmacistState.unhandled_message.trimmed_body,
       })
-      .where('id', '=', pharmacistState.entity_id)
-      .execute()
     }
   },
   'not_onboarded:confirm_pin': {

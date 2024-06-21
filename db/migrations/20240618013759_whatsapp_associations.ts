@@ -1,11 +1,11 @@
 import { Kysely, sql } from 'kysely'
-import patientConversationStates from '../../chatbot/patient/conversationStates.ts'
+import * as defs from '../../chatbot/defs.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
   await db.schema
     .createType('patient_conversation_state')
-    .asEnum(Object.keys(patientConversationStates))
+    .asEnum(Object.keys(defs.patient.conversation_states))
     .execute()
 
   await createStandardTable(
@@ -28,7 +28,7 @@ export async function up(db: Kysely<unknown>) {
 
   await db.schema
     .createType('pharmacist_conversation_state')
-    .asEnum(Object.keys(pharmacistConversationStates))
+    .asEnum(Object.keys(defs.pharmacist.conversation_states))
     .execute()
 
   await createStandardTable(
@@ -44,16 +44,16 @@ export async function up(db: Kysely<unknown>) {
         .addColumn(
           'pharmacist_id',
           'uuid',
-          (col) => col.references('patients.id').onDelete('cascade'),
+          (col) => col.references('pharmacists.id').onDelete('cascade'),
         )
         .addColumn('conversation_state', sql`pharmacist_conversation_state`),
   )
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('pharmacist_whatsapp_messages_received')
-  await db.schema.dropType('pharmacist_conversation_state')
+  await db.schema.dropTable('pharmacist_whatsapp_messages_received').execute()
+  await db.schema.dropType('pharmacist_conversation_state').execute()
 
-  await db.schema.dropTable('patient_whatsapp_messages_received')
-  await db.schema.dropType('patient_conversation_state')
+  await db.schema.dropTable('patient_whatsapp_messages_received').execute()
+  await db.schema.dropType('patient_conversation_state').execute()
 }
