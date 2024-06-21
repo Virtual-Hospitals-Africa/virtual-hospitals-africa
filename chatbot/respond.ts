@@ -21,10 +21,12 @@ type WhatsApp = {
   phone_number: string
   sendMessage(opts: {
     phone_number: string
+    chatbot_name: ChatbotName
     message: WhatsAppSingleSendable
   }): Promise<WhatsAppJSONResponse>
   sendMessages(opts: {
     phone_number: string
+    chatbot_name: ChatbotName
     messages: WhatsAppSingleSendable | WhatsAppSendable
   }): Promise<WhatsAppJSONResponse[]>
 }
@@ -51,6 +53,7 @@ async function respondToMessage(
 
     const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
+      chatbot_name,
       phone_number: unhandled_message.sent_by_phone_number,
     })
     console.log('whatsappResponses', whatsappResponses)
@@ -76,6 +79,7 @@ async function respondToMessage(
     console.error(err)
 
     await whatsapp.sendMessage({
+      chatbot_name,
       message: {
         type: 'string',
         messageBody: `An unknown error occured: ${err.message}`,
