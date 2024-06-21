@@ -1,6 +1,7 @@
 import {
   ChatbotUserState,
   ConversationStateHandler,
+  TrxOrDb,
   WhatsAppSendable,
   WhatsAppSendableString,
   WhatsAppSingleSendable,
@@ -17,6 +18,7 @@ function stringSendable(messageBody: string): WhatsAppSendableString {
 export default async function formatMessageToSend<
   US extends ChatbotUserState,
 >(
+  trx: TrxOrDb,
   userState: US,
   state: ConversationStateHandler<US>,
 ): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
@@ -24,7 +26,7 @@ export default async function formatMessageToSend<
 
   const messageBody = typeof state.prompt === 'string'
     ? state.prompt
-    : await state.prompt(userState)
+    : await state.prompt(trx, userState)
 
   console.log('messageBody', messageBody)
 

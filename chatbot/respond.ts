@@ -54,7 +54,6 @@ async function respondToMessage(
       chatbot_name,
       phone_number: unhandled_message.sent_by_phone_number,
     })
-    console.log('whatsappResponses', whatsappResponses)
 
     for (const whatsappResponse of whatsappResponses) {
       if ('error' in whatsappResponse) {
