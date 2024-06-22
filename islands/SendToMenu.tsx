@@ -6,7 +6,12 @@ import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from './form/buttons.tsx'
 import cls from '../util/cls.ts'
 import { ComponentChild } from 'preact'
-import { MagnifyingGlassIcon, BuildingOffice2Icon, ClockIcon, DevicePhoneMobileIcon } from '../components/library/icons/heroicons/outline.tsx'
+import {
+  BuildingOffice2Icon,
+  ClockIcon,
+  DevicePhoneMobileIcon,
+  MagnifyingGlassIcon,
+} from '../components/library/icons/heroicons/outline.tsx'
 
 type Sendable =
   & {
@@ -177,7 +182,6 @@ type TeamMemberProps = {
   status: string
   reopenTime?: string
   href: string
-
 }
 
 export function SendableComponent(
@@ -205,11 +209,19 @@ export function SendableComponent(
           <div className='relative flex min-w-0 flex-1 items-center'>
             <span className='relative inline-block flex-shrink-0'>
               <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
-                {imageUrl ? (
-                  <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
-                ) : (
-                  <div className='h-6 w-6 flex items-center justify-center'>{imageComponent}</div>
-                )}
+                {imageUrl
+                  ? (
+                    <img
+                      className='h-10 w-10 rounded-full'
+                      src={imageUrl}
+                      alt=''
+                    />
+                  )
+                  : (
+                    <div className='h-6 w-6 flex items-center justify-center'>
+                      {imageComponent}
+                    </div>
+                  )}
               </div>
               {online != null && (
                 <span
@@ -267,33 +279,51 @@ export function SendableComponent(
   )
 }
 
-
-
 export function PersonDetailView(
   { person, onBack }: { person: Sendable; onBack: () => void },
 ) {
   return (
     <div className='p-6'>
-      <div className='flex items-center' onClick={onBack}>
-        <img
-          className='h-10 w-10 rounded-full'
-          src={person.image.url}
-          alt={person.name}
-        />
-        <div className='ml-4'>
-          <h1 className='truncate text-sm font-semibold text-gray-900'>{person.name}</h1>
-          {person.description && (
-            <p className='truncate text-xs text-gray-500'>{person.description.text}</p>
+      <div className='flex items-center cursor-pointer' onClick={onBack}>
+        <span className='relative inline-block flex-shrink-0'>
+          <img
+            className='h-10 w-10 rounded-full'
+            src={person.image.url}
+            alt={person.name}
+          />
+          {person.online != null && (
+            <span
+              className={`${
+                person.online ? 'bg-green-400' : 'bg-gray-300'
+              } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
+              aria-hidden='true'
+            />
           )}
-          <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>{person.status}</p>
+        </span>
+        <div className='ml-4'>
+          <h1 className='truncate text-sm font-semibold text-gray-900'>
+            {person.name}
+          </h1>
+          {person.description && (
+            <p className='truncate text-xs text-gray-500'>
+              {person.description.text}
+            </p>
+          )}
+          <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+            {person.status}
+          </p>
           {person.reopenTime && (
-            <p className='truncate text-xs font-ubuntu text-gray-500'>{person.reopenTime}</p>
+            <p className='truncate text-xs font-ubuntu text-gray-500'>
+              {person.reopenTime}
+            </p>
           )}
         </div>
       </div>
-      <hr className="my-4 border-gray-200 w-full" /> {/* add line */}
+      <hr className='my-4 border-gray-200 w-full' /> {/* add line */}
       <div className='mt-6'>
-        <h2 className='truncate text-sm font-semibold text-gray-900'>Susan Mlalazi</h2>
+        <h2 className='truncate text-sm font-semibold text-gray-900'>
+          Susan Mlalazi
+        </h2>
         <p className='truncate text-xs text-gray-500'>female, 16/3/2024</p>
         <a href='#' className='text-sm text-blue-500'>Clinical Notes</a>
       </div>
@@ -425,8 +455,12 @@ export default function SendToMenu() {
                                 name={person.name}
                                 description={person.description}
                                 handle={person.handle}
-                                imageUrl={person.image.type === 'avatar' ? person.image.url : undefined}
-                                imageComponent={person.image.type === 'icon' ? person.image.component : null} 
+                                imageUrl={person.image.type === 'avatar'
+                                  ? person.image.url
+                                  : undefined}
+                                imageComponent={person.image.type === 'icon'
+                                  ? person.image.component
+                                  : null}
                                 online={person.online}
                                 status={person.status}
                                 reopenTime={person.reopenTime}
