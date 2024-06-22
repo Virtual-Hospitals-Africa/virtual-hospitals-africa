@@ -105,6 +105,7 @@ const sendable: Sendable[] = [
       type: 'icon',
       component: <BuildingOffice2Icon />,
     },
+    online: true,
     status: 'Accepting patients',
     reopenTime: 'Reopens 9:00am',
   },
@@ -121,6 +122,7 @@ const sendable: Sendable[] = [
       type: 'icon',
       component: <BuildingOffice2Icon />,
     },
+    online: false,
     status: 'Accepting patients',
     reopenTime: 'Reopens 9:00am',
   },
@@ -202,11 +204,13 @@ export function SendableComponent(
           />
           <div className='relative flex min-w-0 flex-1 items-center'>
             <span className='relative inline-block flex-shrink-0'>
-              {imageUrl ? (
-                <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
-              ) : (
-                imageComponent
-              )}
+              <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
+                {imageUrl ? (
+                  <img className='h-10 w-10 rounded-full' src={imageUrl} alt='' />
+                ) : (
+                  <div className='h-6 w-6 flex items-center justify-center'>{imageComponent}</div>
+                )}
+              </div>
               {online != null && (
                 <span
                   className={`${
@@ -262,6 +266,9 @@ export function SendableComponent(
     </li>
   )
 }
+
+
+
 export function PersonDetailView(
   { person, onBack }: { person: Sendable; onBack: () => void },
 ) {
