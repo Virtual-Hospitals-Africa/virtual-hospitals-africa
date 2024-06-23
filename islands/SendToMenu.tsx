@@ -283,24 +283,26 @@ export function PersonDetailView(
   { person, onBack }: { person: Sendable; onBack: () => void },
 ) {
   return (
-    <div className='p-6'>
-      <div className='flex items-center cursor-pointer' onClick={onBack}>
+    <div className='group relative flex flex-col items-center px-5 py-6'>
+      <div className='flex items-center cursor-pointer w-full' onClick={onBack}>
         <span className='relative inline-block flex-shrink-0'>
-          <img
-            className='h-10 w-10 rounded-full'
-            src={person.image.url}
-            alt={person.name}
-          />
-          {person.online != null && (
-            <span
-              className={`${
-                person.online ? 'bg-green-400' : 'bg-gray-300'
-              } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
-              aria-hidden='true'
+          <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
+            <img
+              className='h-10 w-10 rounded-full'
+              src={person.image.url}
+              alt={person.name}
             />
-          )}
+            {person.online != null && (
+              <span
+                className={`${
+                  person.online ? 'bg-green-400' : 'bg-gray-300'
+                } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
+                aria-hidden='true'
+              />
+            )}
+          </div>
         </span>
-        <div className='ml-4'>
+        <div className='ml-4 flex flex-col'>
           <h1 className='truncate text-sm font-semibold text-gray-900'>
             {person.name}
           </h1>
@@ -320,14 +322,14 @@ export function PersonDetailView(
         </div>
       </div>
       <hr className='my-4 border-gray-200 w-full' /> {/* add line */}
-      <div className='mt-6'>
+      <div className='mt-6 w-full'>
         <h2 className='truncate text-sm font-semibold text-gray-900'>
           Susan Mlalazi
         </h2>
         <p className='truncate text-xs text-gray-500'>female, 16/3/2024</p>
         <a href='#' className='text-sm text-blue-500'>Clinical Notes</a>
       </div>
-      <div className='mt-6'>
+      <div className='mt-6 w-full'>
         <ul className='space-y-4'>
           <li className='flex items-center'>
             <span className='text-indigo-500 mr-2'>
@@ -358,12 +360,12 @@ export function PersonDetailView(
           </li>
         </ul>
       </div>
-      <div className='mt-6'>
+      <div className='mt-6 w-full'>
         <h2 className='text-lg font-semibold'>Additional Details</h2>
         <textarea className='w-full border border-gray-300 rounded-md p-2 mt-2'>
         </textarea>
       </div>
-      <div className='mt-6 flex justify-end'>
+      <div className='mt-6 flex justify-end w-full'>
         <Button type='button' variant='solid' color='blue'>
           Send
         </Button>
