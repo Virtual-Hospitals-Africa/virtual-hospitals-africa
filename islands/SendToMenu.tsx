@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { JSX } from 'preact'
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useEffect } from 'react'
 import { Button } from '../components/library/Button.tsx'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from './form/buttons.tsx'
@@ -12,6 +12,7 @@ import {
   DevicePhoneMobileIcon,
   MagnifyingGlassIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
+
 
 type Sendable =
   & {
@@ -35,6 +36,7 @@ type Sendable =
       name: string
       href: string
     }[]
+    additionalDetails?: string //
   }
   & (
     {
@@ -280,7 +282,8 @@ export function SendableComponent(
 }
 
 export function PersonDetailView(
-  { person, onBack }: { person: Sendable; onBack: () => void },
+  { person, onBack, additionalDetails, setAdditionalDetails }: 
+  { person: Sendable; onBack: () => void; additionalDetails: string; setAdditionalDetails: (details: string) => void }
 ) {
   return (
     <div className='group relative flex flex-col items-center px-5 py-6'>
@@ -362,7 +365,10 @@ export function PersonDetailView(
       </div>
       <div className='mt-6 w-full'>
         <h2 className='text-lg font-semibold'>Additional Details</h2>
-        <textarea className='w-full border border-gray-300 rounded-md p-2 mt-2'>
+        <textarea className='w-full border border-gray-300 rounded-md p-2 mt-2'
+          value={additionalDetails}
+          onChange={(e) => setAdditionalDetails(e.target.value)}
+        >
         </textarea>
       </div>
       <div className='mt-6 flex justify-end w-full'>
@@ -387,7 +393,7 @@ export default function SendToMenu() {
   const handleBackClick = () => {
     setSelectedPerson(null)
   }
-
+  const [additionalDetails, setAdditionalDetails] = useState<string>('')
   return (
     <div className='flex-1 max-w-xl'>
       <ButtonsContainer className='flex space-x-4'>
@@ -444,6 +450,8 @@ export default function SendToMenu() {
                           <PersonDetailView
                             person={selectedPerson}
                             onBack={handleBackClick}
+                            additionalDetails={additionalDetails}
+                            setAdditionalDetails={setAdditionalDetails}
                           />
                         )
                         : (
