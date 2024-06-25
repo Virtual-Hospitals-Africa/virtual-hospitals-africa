@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { JSX } from 'preact'
-import { Fragment, useState, useEffect } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Button } from '../components/library/Button.tsx'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from './form/buttons.tsx'
@@ -12,7 +12,6 @@ import {
   DevicePhoneMobileIcon,
   MagnifyingGlassIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
-
 
 type Sendable =
   & {
@@ -177,26 +176,22 @@ type TeamMemberProps = {
     href?: string
     parenthetical?: string
   }
-  handle: string
   imageUrl?: string
   imageComponent?: ComponentChild
-  online: boolean
+  online?: boolean
   status: string
   reopenTime?: string
-  href: string
 }
 
 export function SendableComponent(
   {
     name,
     description,
-    handle,
     imageUrl,
     imageComponent,
     online,
     status,
     reopenTime,
-    href,
     onClick,
   }: TeamMemberProps & { onClick: () => void },
 ): JSX.Element {
@@ -262,7 +257,6 @@ export function SendableComponent(
                     ` (${description.parenthetical})`}
                 </p>
               )}
-              <p className='truncate text-sm text-gray-500'>{handle}</p>
               {status && (
                 <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                   {status}
@@ -282,19 +276,31 @@ export function SendableComponent(
 }
 
 export function PersonDetailView(
-  { person, onBack, additionalDetails, setAdditionalDetails }: 
-  { person: Sendable; onBack: () => void; additionalDetails: string; setAdditionalDetails: (details: string) => void }
+  { person, onBack, additionalDetails, setAdditionalDetails }: {
+    person: Sendable
+    onBack: () => void
+    additionalDetails: string
+    setAdditionalDetails: (details: string) => void
+  },
 ) {
   return (
     <div className='group relative flex flex-col items-center px-5 py-6'>
       <div className='flex items-center cursor-pointer w-full' onClick={onBack}>
         <span className='relative inline-block flex-shrink-0'>
           <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
-            <img
-              className='h-10 w-10 rounded-full'
-              src={person.image.url}
-              alt={person.name}
-            />
+            {person.image.type === 'avatar'
+              ? (
+                <img
+                  className='h-10 w-10 rounded-full'
+                  src={person.image.url}
+                  alt={person.name}
+                />
+              )
+              : (
+                <div className='h-6 w-6 flex items-center justify-center'>
+                  {person.image.component}
+                </div>
+              )}
             {person.online != null && (
               <span
                 className={`${
@@ -365,9 +371,11 @@ export function PersonDetailView(
       </div>
       <div className='mt-6 w-full'>
         <h2 className='text-lg font-semibold'>Additional Details</h2>
-        <textarea className='w-full border border-gray-300 rounded-md p-2 mt-2'
+        <textarea
+          className='w-full border border-gray-300 rounded-md p-2 mt-2'
           value={additionalDetails}
-          onChange={(e) => setAdditionalDetails(e.target.value)}
+          onChange={(e) =>
+            setAdditionalDetails((e.target as HTMLTextAreaElement).value)}
         >
         </textarea>
       </div>
@@ -464,7 +472,6 @@ export default function SendToMenu() {
                                 key={person.name}
                                 name={person.name}
                                 description={person.description}
-                                handle={person.handle}
                                 imageUrl={person.image.type === 'avatar'
                                   ? person.image.url
                                   : undefined}
@@ -474,7 +481,6 @@ export default function SendToMenu() {
                                 online={person.online}
                                 status={person.status}
                                 reopenTime={person.reopenTime}
-                                href={person.href}
                                 onClick={() => handlePersonClick(person)}
                               />
                             ))}
