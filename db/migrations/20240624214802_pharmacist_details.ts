@@ -54,6 +54,7 @@ import { Kysely, sql } from "kysely";
       .execute()
     
 
+    await db.schema.dropType('person_type').execute()
     await db.schema.dropType('name_prefix').execute()
   }
   
