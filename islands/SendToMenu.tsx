@@ -393,62 +393,79 @@ export function PersonDetailView(
   },
 ) {
   return (
-    <div className='group relative flex flex-col items-center px-5 py-6'>
-      <div className='flex items-center cursor-pointer w-full' onClick={onBack}>
-        <span className='relative inline-block flex-shrink-0'>
-          <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
-            {person.image.type === 'avatar'
-              ? (
-                <img
-                  className='h-10 w-10 rounded-full'
-                  src={person.image.url}
-                  alt={person.name}
-                />
-              )
-              : (
-                <div className='h-6 w-6 flex items-center justify-center'>
-                  {person.image.component}
-                </div>
+    <div className='group relative flex flex-col'>
+      <div className='divide-y divide-gray-200'>
+        <div className='px-5 py-6'>
+          <div className='flex items-center cursor-pointer' onClick={onBack}>
+            <span className='relative inline-block flex-shrink-0'>
+              <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
+                {person.image.type === 'avatar'
+                  ? (
+                    <img
+                      className='h-10 w-10 rounded-full'
+                      src={person.image.url}
+                      alt={person.name}
+                    />
+                  )
+                  : (
+                    <div className='h-6 w-6 flex items-center justify-center'>
+                      {person.image.component}
+                    </div>
+                  )}
+                {person.online != null && (
+                  <span
+                    className={`${
+                      person.online ? 'bg-green-400' : 'bg-gray-300'
+                    } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
+                    aria-hidden='true'
+                  />
+                )}
+              </div>
+            </span>
+            <div className='ml-4'>
+              <h1 className='truncate text-sm font-semibold text-gray-900'>
+                {person.name}
+              </h1>
+              {person.description && (
+                <p className='truncate text-xs text-gray-500'>
+                  {person.description.text}
+                </p>
               )}
-            {person.online != null && (
-              <span
-                className={`${
-                  person.online ? 'bg-green-400' : 'bg-gray-300'
-                } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
-                aria-hidden='true'
-              />
-            )}
+              <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+                {person.status}
+              </p>
+              {person.reopenTime && (
+                <p className='truncate text-xs font-ubuntu text-gray-500'>
+                  {person.reopenTime}
+                </p>
+              )}
+            </div>
           </div>
-        </span>
-        <div className='ml-4 flex flex-col'>
-          <h1 className='truncate text-sm font-semibold text-gray-900'>
-            {person.name}
-          </h1>
-          {person.description && (
-            <p className='truncate text-xs text-gray-500'>
-              {person.description.text}
-            </p>
-          )}
-          <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
-            {person.status}
-          </p>
-          {person.reopenTime && (
-            <p className='truncate text-xs font-ubuntu text-gray-500'>
-              {person.reopenTime}
-            </p>
-          )}
+        </div>
+        <div className='px-5 py-6'>
+          <div className='flex items-center'>
+            <img
+              className='h-10 w-10 rounded-full mr-4'
+              src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+              alt='Susan Mlalazi'
+            />
+            <div>
+              <h2 className='truncate text-sm font-semibold text-gray-900'>
+                Susan Mlalazi
+              </h2>
+              <p className='truncate text-xs text-gray-500'>
+                female, 16/3/2024
+              </p>
+              <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+                <a href='/Notes' className='text-blue-500'>Clinical Notes</a>
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-      <hr className='my-4 border-gray-200 w-full' /> {/* add line */}
-      <div className='mt-6 w-full'>
-        <h2 className='truncate text-sm font-semibold text-gray-900'>
-          Susan Mlalazi
-        </h2>
-        <p className='truncate text-xs text-gray-500'>female, 16/3/2024</p>
-        <a href='#' className='text-sm text-blue-500'>Clinical Notes</a>
-      </div>
-      <div className='mt-6 w-full'>
-        <ul className='space-y-4'>
+      <div className='border-t border-gray-200'></div>
+      <div className='mt-6 px-4'>
+        <ul className='space-y-4 py-6'>
           <li className='flex items-center'>
             <span className='text-indigo-500 mr-2'>
               <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
@@ -478,7 +495,7 @@ export function PersonDetailView(
           </li>
         </ul>
       </div>
-      <div className='mt-6 w-full'>
+      <div className='mt-6 px-4'>
         <h2 className='text-lg font-semibold'>Additional Details</h2>
         <textarea
           className='w-full border border-gray-300 rounded-md p-2 mt-2'
@@ -488,7 +505,7 @@ export function PersonDetailView(
         >
         </textarea>
       </div>
-      <div className='mt-6 flex justify-end w-full'>
+      <div className='mt-6 px-4 flex justify-end'>
         <Button type='button' variant='solid' color='blue'>
           Send
         </Button>
