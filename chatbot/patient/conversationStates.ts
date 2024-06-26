@@ -34,11 +34,10 @@ const conversationStates: ConversationStates<
   PatientChatbotUserState
 > = {
   'initial_message': {
-    type: 'string',
-    onExit: 'not_onboarded:welcome',
-    prompt() {
-      throw new Error('Should not prompt for initial message')
-    },
+    type: 'select',
+    prompt:
+      'Welcome to Virtual Hospitals Africa. What can I help you with today?',
+    options: mainMenuOptions,
   },
   'not_onboarded:welcome': {
     type: 'select',

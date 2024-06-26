@@ -6,16 +6,13 @@ import {
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
-const introMessage =
-  `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`
-
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
 > = {
   'initial_message': {
     type: 'string',
     prompt() {
-      return introMessage
+      throw new Error('This should not be called')
     },
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       await pharmacists.update(trx, pharmacistState.entity_id, {

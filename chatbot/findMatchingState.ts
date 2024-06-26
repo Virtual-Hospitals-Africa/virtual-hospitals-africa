@@ -8,6 +8,7 @@ import {
   ConversationStateHandlerSelectOption,
   MatchingState,
   Maybe,
+  TrxOrDb,
 } from '../types.ts'
 import * as defs from './defs.ts'
 import { isValidDate } from '../util/date.ts'
@@ -35,9 +36,10 @@ function findMatchingRow<US extends ChatbotUserState>(
   }
 }
 
-export default function findMatchingState<US extends ChatbotUserState>(
+export default async function findMatchingState<US extends ChatbotUserState>(
+  trx: TrxOrDb,
   userState: ChatbotUserState,
-): Maybe<MatchingState<US>> {
+): Promise<Maybe<MatchingState<US>>> {
   const { conversation_states } = defs[userState.chatbot_name]
   const currentState = conversation_states[userState.conversation_state]
   console.log('findMatchingState', userState, conversation_states, currentState)
@@ -53,7 +55,7 @@ export default function findMatchingState<US extends ChatbotUserState>(
     }
     case 'action': {
       assert(messageBody)
-      const action = currentState.action(userState)
+      const action = await currentState.action(trx, userState)
       return action.type === 'list'
         ? findMatchingRow(action, messageBody)
         : findMatchingOption(action, messageBody)
