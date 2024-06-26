@@ -12,7 +12,7 @@ export async function up(db: Kysely<unknown>) {
     ])
     .execute()
 
-  await db.schema.createType('person_type')
+  await db.schema.createType('pharmacist_type')
     .asEnum([
       'Dispensing Medical Practitioner',
       'Ind Clinic Nurse',
@@ -34,7 +34,7 @@ export async function up(db: Kysely<unknown>) {
     .addColumn('address', 'varchar(255)')
     .addColumn('town', 'varchar(255)')
     .addColumn('expiry_date', 'date', (col) => col.notNull())
-    .addColumn('person_type', sql`person_type`, (col) => col.notNull())
+    .addColumn('pharmacist_type', sql`pharmacist_type`, (col) => col.notNull())
     .execute()
 }
 
@@ -50,9 +50,9 @@ export async function down(db: Kysely<unknown>) {
     .dropColumn('address')
     .dropColumn('town')
     .dropColumn('expiry_date')
-    .dropColumn('person_type')
+    .dropColumn('pharmacist_type')
     .execute()
 
-  await db.schema.dropType('person_type').execute()
+  await db.schema.dropType('pharmacist_type').execute()
   await db.schema.dropType('name_prefix').execute()
 }
