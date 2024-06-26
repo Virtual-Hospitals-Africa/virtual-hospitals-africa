@@ -17,9 +17,7 @@ export async function up(db: Kysely<unknown>) {
       'Dispensing Medical Practitioner',
       'Ind Clinic Nurse',
       'Pharmacist',
-      'Sales Representative',
       'Pharmacy Technician',
-      'Veterinary Surgeon',
     ])
     .execute()
 
