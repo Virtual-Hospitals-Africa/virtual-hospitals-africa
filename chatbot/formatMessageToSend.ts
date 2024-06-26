@@ -41,7 +41,7 @@ export default async function formatMessageToSend<
       }
     }
     case 'action': {
-      const action = state.action(userState)
+      const action = await state.action(trx, userState)
       return action.type === 'list'
         ? {
           messageBody,
@@ -64,7 +64,7 @@ export default async function formatMessageToSend<
         }
     }
     case 'send_location': {
-      return state.getMessages(userState)
+      return state.getMessages(trx, userState)
     }
     case 'date': {
       return stringSendable(

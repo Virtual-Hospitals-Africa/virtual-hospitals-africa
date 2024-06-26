@@ -32,7 +32,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       await pharmacists.update(trx, pharmacistState.entity_id, {
         id_number: pharmacistState.unhandled_message.trimmed_body,
       })
-      return 'not_onboarded:create_pin'
+      return 'not_onboarded:create_pin' as const
     },
   },
   'not_onboarded:create_pin': {
@@ -42,7 +42,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       await pharmacists.update(trx, pharmacistState.entity_id, {
         pin: pharmacistState.unhandled_message.trimmed_body,
       })
-      return 'not_onboarded:confirm_pin'
+      return 'not_onboarded:confirm_pin' as const
     },
   },
   'not_onboarded:confirm_pin': {
@@ -61,7 +61,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         currentPin.pin,
         'Pins do not match',
       )
-      return 'not_onboarded:confirm_details'
+      return 'not_onboarded:confirm_details' as const
     },
   },
   'not_onboarded:confirm_details': {
@@ -86,7 +86,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         currentPin.pin,
         'Pins do not match',
       )
-      return 'other_end_of_demo'
+      return 'other_end_of_demo' as const
     },
   },
 
@@ -125,7 +125,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'end_of_demo',
     prompt: 'This is the end of the demo. Thank you for participating!',
     async onExit() {
-      return 'other_end_of_demo'
+      return 'other_end_of_demo' as const
     },
   },
 }

@@ -89,7 +89,7 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:first_scheduling_option'
   | 'onboarded:make_appointment:other_scheduling_options'
   | 'onboarded:appointment_scheduled'
-  | 'onboarded:cancel_appointment'
+  | 'onboarded:appointment_cancelled'
   | 'onboarded:main_menu'
   | 'find_nearest_organization:share_location'
   | 'find_nearest_organization:got_location'
@@ -357,40 +357,40 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   profession: Profession
 }
 
-export type PatientState = {
-  entity_type: 'patient'
-  id: string
-  whatsapp_id: string
-  message_id: string
-  body?: string
-  has_media: boolean
-  media_id?: string
-  phone_number: string
-  name: Maybe<string>
-  gender: Maybe<Gender>
-  dob_formatted: Maybe<string>
-  national_id_number: Maybe<string>
-  conversation_state: PatientConversationState
-  location: Maybe<Location>
-  scheduling_appointment_request?: {
-    id: string
-    reason: Maybe<string>
-    offered_times: SchedulingAppointmentOfferedTime[]
-  }
-  scheduled_appointment?: {
-    id: string
-    reason: string
-    provider_id: string
-    health_worker_name: string
-    gcal_event_id: string
-    start: Date
-  }
-  created_at: Date
-  updated_at: Date
-  nearest_organizations?: PatientNearestOrganization[]
-  nearest_organization_name?: string
-  selected_organization?: PatientNearestOrganization
-}
+// export type PatientState = {
+//   entity_type: 'patient'
+//   id: string
+//   whatsapp_id: string
+//   message_id: string
+//   body?: string
+//   has_media: boolean
+//   media_id?: string
+//   phone_number: string
+//   name: Maybe<string>
+//   gender: Maybe<Gender>
+//   dob_formatted: Maybe<string>
+//   national_id_number: Maybe<string>
+//   conversation_state: PatientConversationState
+//   location: Maybe<Location>
+//   scheduling_appointment_request?: {
+//     id: string
+//     reason: Maybe<string>
+//     offered_times: SchedulingAppointmentOfferedTime[]
+//   }
+//   scheduled_appointment?: {
+//     id: string
+//     reason: string
+//     provider_id: string
+//     health_worker_name: string
+//     gcal_event_id: string
+//     start: Date
+//   }
+//   created_at: Date
+//   updated_at: Date
+//   nearest_organizations?: PatientNearestOrganization[]
+//   nearest_organization_name?: string
+//   selected_organization?: PatientNearestOrganization
+// }
 
 export type PharmacistConversationState =
   | 'initial_message'
@@ -405,19 +405,21 @@ export type PharmacistConversationState =
 
 export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
   prompt: string | ((trx: TrxOrDb, userState: US) => string | Promise<string>)
-  // onEnter?: (trx: TrxOrDb, userState: US) => Promise<any>
-  onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
+  onExit?: ConversationStateHandlerNextState<US>
 }
 
 export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
   | US['conversation_state']
-  | ((userState: US) => US['conversation_state'])
+  | ((
+    trx: TrxOrDb,
+    userState: US,
+  ) => US['conversation_state'] | Promise<US['conversation_state']>)
 
 export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
   {
     id: string
     title: string
-    onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
+    onExit: ConversationStateHandlerNextState<US>
   }
 
 export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
@@ -425,7 +427,7 @@ export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
     id: string
     title: string
     description: string
-    onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
+    onExit: ConversationStateHandlerNextState<US>
   }
 export type ConversationStateHandlerListActionSection<
   US extends ChatbotUserState,
@@ -447,10 +449,12 @@ export type ConversationStateHandlerList<US extends ChatbotUserState> =
       type: 'action'
       headerText: string
       action: (
+        trx: TrxOrDb,
         userState: US,
-      ) =>
+      ) => Promise<
         | ConversationStateHandlerSelect<US>
         | ConversationStateHandlerListAction<US>
+      >
     }
   >
 
@@ -501,7 +505,7 @@ export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
     US,
     {
       type: 'send_location'
-      getMessages: (userState: US) => WhatsAppSendable
+      getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
     }
   >
 
@@ -560,7 +564,7 @@ export type Procurer = {
 }
 
 export type MatchingState<US extends ChatbotUserState> = {
-  onExit: (trx: TrxOrDb, userState: US) => Promise<US['conversation_state']>
+  onExit: ConversationStateHandlerNextState<US>
 }
 
 export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }

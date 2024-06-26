@@ -13,7 +13,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends invitation to share location after canceling appointent', async () => {
     const phone_number = randomPhoneNumber()
     await patients.upsert(db, {
-      conversation_state: 'onboarded:cancel_appointment',
+      conversation_state: 'onboarded:appointment_cancelled',
       phone_number,
       name: 'test',
       gender: 'female',

@@ -13,97 +13,103 @@ import {
   MagnifyingGlassIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
 
-const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'; 
+const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'
 
 async function getPlaceId(address: string): Promise<string> {
+  const targetUrl =
+    `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${
+      encodeURIComponent(address)
+    }&inputtype=textquery&fields=place_id&key=${apiKey}`
+  const proxyUrl = `https://api.allorigins.win/get?url=${
+    encodeURIComponent(targetUrl)
+  }`
 
-  
-  const targetUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${encodeURIComponent(address)}&inputtype=textquery&fields=place_id&key=${apiKey}`;
-  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-
-  const response = await fetch(proxyUrl); 
-  const data = await response.json();
+  const response = await fetch(proxyUrl)
+  const data = await response.json()
 
   if (data.contents) {
-    const jsonData = JSON.parse(data.contents);
-    console.log(`jsonData: ${JSON.stringify(jsonData)}`); 
+    const jsonData = JSON.parse(data.contents)
+    console.log(`jsonData: ${JSON.stringify(jsonData)}`)
     if (jsonData.candidates && jsonData.candidates.length > 0) {
-      return jsonData.candidates[0].place_id;
+      return jsonData.candidates[0].place_id
     } else {
-      throw new Error('Place ID not found');
+      throw new Error('Place ID not found')
     }
   } else {
-    throw new Error('Failed to fetch data from proxy');
+    throw new Error('Failed to fetch data from proxy')
   }
 }
 
 async function getOpeningHours(placeId: string): Promise<any> {
-  const targetUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=opening_hours&key=${apiKey}`;
-  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`;
-  console.log(`proxyUrl: ${proxyUrl}`); 
+  const targetUrl =
+    `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=opening_hours&key=${apiKey}`
+  const proxyUrl = `https://api.allorigins.win/get?url=${
+    encodeURIComponent(targetUrl)
+  }`
+  console.log(`proxyUrl: ${proxyUrl}`)
 
-  const response = await fetch(proxyUrl);
-  const data = await response.json();
+  const response = await fetch(proxyUrl)
+  const data = await response.json()
 
   if (data.contents) {
-    const jsonData = JSON.parse(data.contents);
+    const jsonData = JSON.parse(data.contents)
     if (jsonData.result && jsonData.result.opening_hours) {
-      return jsonData.result.opening_hours;
+      return jsonData.result.opening_hours
     } else {
-      throw new Error('Opening hours not found');
+      throw new Error('Opening hours not found')
     }
   } else {
-    throw new Error('Failed to fetch data from proxy');
+    throw new Error('Failed to fetch data from proxy')
   }
 }
 
 function checkIfOpen(openingHours: any): boolean {
-  if (!openingHours || !openingHours.periods) return false;
+  if (!openingHours || !openingHours.periods) return false
 
-  const now = new Date();
-  const day = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-  const time = now.getHours() * 100 + now.getMinutes(); // HHMM format
+  const now = new Date()
+  const day = now.getDay() // 0 (Sunday) to 6 (Saturday)
+  const time = now.getHours() * 100 + now.getMinutes() // HHMM format
 
   for (const period of openingHours.periods) {
     if (period.open.day === day) {
-      const openTime = parseInt(period.open.time);
-      const closeTime = parseInt(period.close.time);
+      const openTime = parseInt(period.open.time)
+      const closeTime = parseInt(period.close.time)
 
       if (openTime <= time && time <= closeTime) {
-        return true;
+        return true
       }
     }
   }
 
-  return false;
+  return false
 }
 
 async function updateOnlineStatus(sendable: Sendable[]) {
-  const updatedSendable = [...sendable]; 
+  const updatedSendable = [...sendable]
   for (let i = 0; i < updatedSendable.length; i++) {
-    const item = updatedSendable[i];
+    const item = updatedSendable[i]
     if (item.type === 'entity' && item.entity_type === 'facility') {
-      const address = item.description?.text;
+      const address = item.description?.text
       if (address) {
         try {
-          const placeId = 'ChIJN1t_tDeuEmsRUsoyG83frY4';//await getPlaceId(address);
-          const openingHours = await getOpeningHours(placeId);
-          const isOpen = checkIfOpen(openingHours);
-          item.online = isOpen;
-          console.log(`Place ID for ${address}: ${placeId}`);
-          console.log(`Is open: ${isOpen}`);
+          const placeId = 'ChIJN1t_tDeuEmsRUsoyG83frY4' //await getPlaceId(address);
+          const openingHours = await getOpeningHours(placeId)
+          const isOpen = checkIfOpen(openingHours)
+          item.online = isOpen
+          console.log(`Place ID for ${address}: ${placeId}`)
+          console.log(`Is open: ${isOpen}`)
         } catch (error) {
-          console.error(`Error updating status for ${address}:`, error);
+          console.error(`Error updating status for ${address}:`, error)
         }
       }
     }
   }
-  return updatedSendable;
+  return updatedSendable
 }
 
-/* to make sure we got place ID 
+/* to make sure we got place ID
 async function updateOnlineStatus(sendable: Sendable[]) {
-  const updatedSendable = [...sendable]; 
+  const updatedSendable = [...sendable];
   for (let i = 0; i < updatedSendable.length; i++) {
     const item = updatedSendable[i];
     if (item.type === 'entity' && item.entity_type === 'facility') {
@@ -111,7 +117,7 @@ async function updateOnlineStatus(sendable: Sendable[]) {
       if (address) {
         try {
           const placeId = await getPlaceId(address);
-          item.status = placeId; // update status 
+          item.status = placeId; // update status
           console.log(`Place ID for ${address}: ${placeId}`);
         } catch (error) {
           console.error(`Error updating status for ${address}:`, error);
@@ -527,17 +533,17 @@ export default function SendToMenu() {
   }
   const [additionalDetails, setAdditionalDetails] = useState<string>('')
 
-  const [updatedSendable, setUpdatedSendable] = useState<Sendable[]>(sendable);
+  const [updatedSendable, setUpdatedSendable] = useState<Sendable[]>(sendable)
   useEffect(() => {
     async function fetchUpdatedStatus() {
       if (sendable && sendable.length > 0) {
-        const updatedData = await updateOnlineStatus(sendable);
-        setUpdatedSendable(updatedData);
+        const updatedData = await updateOnlineStatus(sendable)
+        setUpdatedSendable(updatedData)
       }
     }
 
-    fetchUpdatedStatus();
-  }, []);
+    fetchUpdatedStatus()
+  }, [])
 
   return (
     <div className='flex-1 max-w-xl'>

@@ -13,7 +13,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for the reason the patient wants to schedule an appointment', async () => {
     const phone_number = randomPhoneNumber()
     await patients.upsert(db, {
-      conversation_state: 'onboarded:cancel_appointment',
+      conversation_state: 'onboarded:appointment_cancelled',
       phone_number,
       name: 'test',
       gender: 'female',

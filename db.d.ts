@@ -147,7 +147,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'not_onboarded:welcome'
   | 'onboarded:appointment_scheduled'
-  | 'onboarded:cancel_appointment'
+  | 'onboarded:appointment_cancelled'
   | 'onboarded:main_menu'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:enter_appointment_reason'
