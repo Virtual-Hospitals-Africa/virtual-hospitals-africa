@@ -1,0 +1,13 @@
+FROM denoland/deno:ubuntu
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y nodejs npm
+
+COPY ./ /app
+
+RUN touch .env
+RUN cd /app/medplum && npm install
+RUN npx turbo run build
+EXPOSE 8103
+
+CMD ["deno", "task", "medplum:server"]
