@@ -9,6 +9,11 @@ import {
   WhatsAppMessage,
   WhatsAppMessageContents,
 } from '../../types.ts'
+import {
+  phoneToChatbotName,
+  WHATSAPP_PATIENT_CHATBOT_NUMBER,
+  WHATSAPP_PHARMACIST_CHATBOT_NUMBER,
+} from '../../chatbot/phone_numbers.ts'
 
 const verifyToken = Deno.env.get('WHATSAPP_WEBHOOK_VERIFY_TOKEN')
 
@@ -113,19 +118,15 @@ export const handler: Handlers = {
       console.error("More than one change in the entry, that's weird")
     }
 
-    const pharmacistPhone = '263712093355'
-    const patientPhone = '263784010987'
     const { display_phone_number } = change.value.metadata
 
     assert(
-      display_phone_number === pharmacistPhone ||
-        display_phone_number === patientPhone,
+      display_phone_number === WHATSAPP_PHARMACIST_CHATBOT_NUMBER ||
+        display_phone_number === WHATSAPP_PATIENT_CHATBOT_NUMBER,
       'Phone number is not the pharmacist or patient phone number',
     )
 
-    const chatbot_name = display_phone_number === pharmacistPhone
-      ? 'pharmacist'
-      : 'patient'
+    const chatbot_name = phoneToChatbotName[display_phone_number]
 
     if (change.value.statuses) {
       const [status, ...otherStatuses] = change.value.statuses
@@ -157,7 +158,8 @@ export const handler: Handlers = {
       const contents = await getContents(message)
 
       await conversations.insertMessageReceived(db, {
-        patient_phone_number: message.from,
+        sent_by_phone_number: message.from,
+        received_by_phone_number: display_phone_number,
         whatsapp_id: message.id,
         chatbot_name,
         ...contents,

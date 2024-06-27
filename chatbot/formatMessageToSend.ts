@@ -1,6 +1,7 @@
 import {
-  ConversationStates,
-  UserState,
+  ChatbotUserState,
+  ConversationStateHandler,
+  TrxOrDb,
   WhatsAppSendable,
   WhatsAppSendableString,
   WhatsAppSingleSendable,
@@ -14,20 +15,20 @@ function stringSendable(messageBody: string): WhatsAppSendableString {
   }
 }
 
-export default function formatMessageToSend<
-  CS extends string,
-  US extends UserState<CS>,
+export default async function formatMessageToSend<
+  US extends ChatbotUserState,
 >(
-  conversationStates: ConversationStates<US['conversation_state'], US>,
+  trx: TrxOrDb,
   userState: US,
-): WhatsAppSingleSendable | WhatsAppSendable {
-  const state = conversationStates[
-    userState.conversation_state
-  ]
+  state: ConversationStateHandler<US>,
+): Promise<WhatsAppSingleSendable | WhatsAppSendable> {
+  console.log('state', state)
 
   const messageBody = typeof state.prompt === 'string'
     ? state.prompt
-    : state.prompt(userState)
+    : await state.prompt(trx, userState)
+
+  console.log('messageBody', messageBody)
 
   switch (state.type) {
     case 'select':
@@ -40,7 +41,7 @@ export default function formatMessageToSend<
       }
     }
     case 'action': {
-      const action = state.action(userState)
+      const action = await state.action(trx, userState)
       return action.type === 'list'
         ? {
           messageBody,
@@ -63,7 +64,7 @@ export default function formatMessageToSend<
         }
     }
     case 'send_location': {
-      return state.getMessages(userState)
+      return state.getMessages(trx, userState)
     }
     case 'date': {
       return stringSendable(

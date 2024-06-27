@@ -95,7 +95,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     assert(patient)
     assertEquals(
       patient.conversation_state,
-      'onboarded:cancel_appointment',
+      'onboarded:appointment_cancelled',
     )
 
     const cancelledAppointmet = await appointments.getWithPatientInfo(db, {

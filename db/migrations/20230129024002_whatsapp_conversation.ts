@@ -2,15 +2,32 @@ import { Kysely, sql } from 'kysely'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {
+  await db.schema.createType('chatbot_name')
+    .asEnum([
+      'patient',
+      'pharmacist',
+    ])
+    .execute()
+
   await createStandardTable(
     db,
-    'patient_whatsapp_messages_received',
+    'whatsapp_messages_received',
     (qb) =>
       qb.addColumn(
-        'patient_id',
-        'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        'sent_by_phone_number',
+        'varchar(255)',
+        (col) => col.notNull(),
       )
+        .addColumn(
+          'chatbot_name',
+          sql`chatbot_name`,
+          (col) => col.notNull(),
+        )
+        .addColumn(
+          'received_by_phone_number',
+          'varchar(255)',
+          (col) => col.notNull(),
+        )
         .addColumn(
           'started_responding_at',
           'timestamptz',
@@ -33,11 +50,6 @@ export async function up(db: Kysely<unknown>) {
           'text',
         )
         .addColumn(
-          'conversation_state',
-          sql`patient_conversation_state`,
-          (col) => col.notNull().defaultTo('initial_message'),
-        )
-        .addColumn(
           'has_media',
           'boolean',
           (col) => col.notNull().defaultTo(false),
@@ -56,20 +68,31 @@ export async function up(db: Kysely<unknown>) {
         ),
   )
 
+  await sql`
+    CREATE INDEX whatsapp_messages_received_by_sent_by_phone_number_index ON whatsapp_messages_received (chatbot_name, sent_by_phone_number);
+    CREATE INDEX whatsapp_messages_received_by_sent_by_phone_number_created_at_index ON whatsapp_messages_received (chatbot_name, sent_by_phone_number, created_at);
+  `.execute(db)
+
   await createStandardTable(
     db,
-    'patient_whatsapp_messages_sent',
+    'whatsapp_messages_sent',
     (qb) =>
       qb.addColumn(
-        'patient_id',
-        'uuid',
-        (col) => col.notNull().references('patients.id').onDelete('cascade'),
+        'sent_to_phone_number',
+        'varchar(255)',
+        (col) => col.notNull(),
       )
         .addColumn(
-          'responding_to_id',
+          'sent_by_phone_number',
+          'varchar(255)',
+          (col) => col.notNull(),
+        )
+        .addColumn('chatbot_name', sql`chatbot_name`, (col) => col.notNull())
+        .addColumn(
+          'responding_to_received_id',
           'uuid',
           (col) =>
-            col.notNull().references('patient_whatsapp_messages_received.id')
+            col.notNull().references('whatsapp_messages_received.id')
               .onDelete(
                 'cascade',
               ),
@@ -90,9 +113,14 @@ export async function up(db: Kysely<unknown>) {
           (col) => col.notNull(),
         ),
   )
+
+  await sql`
+    CREATE INDEX whatsapp_messages_sent_phone_number_index ON whatsapp_messages_sent (chatbot_name, sent_to_phone_number);
+    CREATE INDEX whatsapp_messages_sent_phone_number_created_at_index ON whatsapp_messages_sent (chatbot_name, sent_to_phone_number, created_at);
+  `.execute(db)
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('patient_whatsapp_messages_sent').execute()
-  await db.schema.dropTable('patient_whatsapp_messages_received').execute()
+  await db.schema.dropTable('whatsapp_messages_sent').execute()
+  await db.schema.dropTable('whatsapp_messages_received').execute()
 }

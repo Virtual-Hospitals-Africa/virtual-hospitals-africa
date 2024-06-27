@@ -13,6 +13,7 @@ import {
   MagnifyingGlassIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
 
+
 const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'; 
 
 async function getPlaceId(address: string): Promise<string> {
@@ -54,6 +55,7 @@ async function getOpeningHours(placeId: string): Promise<any> {
     }
   } else {
     throw new Error('Failed to fetch data from proxy');
+
   }
 }
 
@@ -74,6 +76,7 @@ function checkIfOpen(openingHours: any): boolean {
       }
     }
   }
+
 
   return false;
 }
@@ -98,12 +101,14 @@ async function updateOnlineStatus(sendable: Sendable[]) {
       }
     }
   }
+
   return updatedSendable;
 }
 
 /* to make sure we got place ID 
 async function updateOnlineStatus(sendable: Sendable[]) {
   const updatedSendable = [...sendable]; 
+
   for (let i = 0; i < updatedSendable.length; i++) {
     const item = updatedSendable[i];
     if (item.type === 'entity' && item.entity_type === 'facility') {
@@ -112,6 +117,7 @@ async function updateOnlineStatus(sendable: Sendable[]) {
         try {
           const placeId = await getPlaceId(address);
           item.status = placeId; // update status 
+
           console.log(`Place ID for ${address}: ${placeId}`);
         } catch (error) {
           console.error(`Error updating status for ${address}:`, error);
@@ -526,6 +532,7 @@ export default function SendToMenu() {
     setSelectedPerson(null)
   }
   const [additionalDetails, setAdditionalDetails] = useState<string>('')
+
 
   const [updatedSendable, setUpdatedSendable] = useState<Sendable[]>(sendable);
   useEffect(() => {

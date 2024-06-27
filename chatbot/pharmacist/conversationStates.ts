@@ -1,87 +1,128 @@
-// TODO: Implement!
 import {
   ConversationStates,
-  PharmacistConversationState,
-  PharmacistState,
+  PharmacistChatbotUserState,
   TrxOrDb,
 } from '../../types.ts'
-import { assert } from 'std/assert/assert.ts'
-import * as organizations from '../../db/models/organizations.ts'
+import * as pharmacists from '../../db/models/pharmacists.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
-const conversationStates: ConversationStates<
-  PharmacistConversationState,
-  PharmacistState
+export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
+  PharmacistChatbotUserState
 > = {
   'initial_message': {
-    type: 'initial_message',
-    nextState: 'not_onboarded:enter_registration',
+    type: 'string',
     prompt() {
-      throw new Error('Should not prompt for initial message')
+      throw new Error('This should not be called')
+    },
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      await pharmacists.update(trx, pharmacistState.entity_id, {
+        registration_number: pharmacistState.unhandled_message.trimmed_body,
+      })
+      return 'not_onboarded:enter_id' as const
     },
   },
-  'not_onboarded:enter_registration': {
-    type: 'string',
-    prompt:
-      'Hello! I am your virtual assistant and thank you for assisting our mutual client. To get started, please help us by providing your professional registration number',
-    nextState: 'not_onboarded:enter_id',
-  },
+
   'not_onboarded:enter_id': {
     type: 'string',
-    prompt(pharmacistState: PharmacistState): string {
-      return `Thank you ${
-        pharmacistState.name!.split(' ')[0]
-      }! To confirm your identity, please provide your ID number`
+    prompt: 'To confirm your identity, please provide your ID number',
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      await pharmacists.update(trx, pharmacistState.entity_id, {
+        id_number: pharmacistState.unhandled_message.trimmed_body,
+      })
+      return 'not_onboarded:create_pin' as const
     },
-    nextState: 'not_onboarded:create_pin',
   },
   'not_onboarded:create_pin': {
     type: 'string',
-    prompt: 'Great! To secure your account, please create a 4-digit pin',
-    nextState: 'not_onboarded:confirm_pin',
+    prompt: 'To secure your account, please create a 4-digit pin',
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      await pharmacists.update(trx, pharmacistState.entity_id, {
+        pin: pharmacistState.unhandled_message.trimmed_body,
+      })
+      return 'not_onboarded:confirm_pin' as const
+    },
   },
   'not_onboarded:confirm_pin': {
     type: 'string',
-    prompt(pharmacistState: PharmacistState): string {
-      return `Please confirm your pin ${pharmacistState.pin}`
+    prompt: 'Please confirm your pin.',
+    // nextState: 'not_onboarded:enter_establishment',
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const currentPin = await trx
+        .selectFrom('pharmacists')
+        .select('pin')
+        .where('id', '=', pharmacistState.entity_id)
+        .executeTakeFirstOrThrow()
+
+      assertEquals(
+        pharmacistState.unhandled_message.trimmed_body,
+        currentPin.pin,
+        'Pins do not match',
+      )
+      return 'not_onboarded:confirm_details' as const
     },
-    nextState: 'not_onboarded:enter_establishment',
   },
-  'not_onboarded:enter_establishment': {
+  'not_onboarded:confirm_details': {
     type: 'string',
-    prompt: 'Please provide your establishment license number',
-    nextState: 'onboarded:enter_order_number',
-  },
-  'onboarded:enter_order_number': {
-    type: 'string',
-    async onEnter(
-      trx: TrxOrDb,
-      pharmacistState: PharmacistState,
-    ): Promise<PharmacistState> {
-      assert(pharmacistState.organization_id, 'Organization ID should be set')
-      const organization = await organizations.get(trx, {
-        ids: [pharmacistState.organization_id],
-      })
-      return {
-        ...pharmacistState,
-        organization: organization[0],
-      }
+    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
+        'id',
+        '=',
+        pharmacistState.entity_id,
+      ).executeTakeFirstOrThrow()
+      return `Please confirm the following details:\n\nName: ${pharmacist.name}\nID Number: ${pharmacist.id_number}\nRegistration Number: ${pharmacist.registration_number}`
     },
-    prompt(pharmacistState: PharmacistState): string {
-      assert(pharmacistState.organization, 'Organization should not be null')
-      return `You are serving patients from ${pharmacistState.organization.name} Please enter the patient's order number`
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const currentPin = await trx
+        .selectFrom('pharmacists')
+        .select('pin')
+        .where('id', '=', pharmacistState.entity_id)
+        .executeTakeFirstOrThrow()
+
+      assertEquals(
+        pharmacistState.unhandled_message.trimmed_body,
+        currentPin.pin,
+        'Pins do not match',
+      )
+      return 'other_end_of_demo' as const
     },
-    nextState: 'onboarded:get_order_details',
   },
-  'onboarded:get_order_details': {
-    type: 'string',
-    prompt: 'To implement',
-    nextState: 'other_end_of_demo',
-  },
+
+  // 'not_onboarded:enter_establishment': {
+  //   type: 'string',
+  //   prompt: 'Please provide your establishment license number',
+  //   nextState: 'onboarded:enter_order_number',
+  // },
+  // 'onboarded:enter_order_number': {
+  //   type: 'string',
+  //   async onEnter(
+  //     trx: TrxOrDb,
+  //     pharmacistState: PharmacistChatbotUserState,
+  //   ): Promise<PharmacistChatbotUserState> {
+  //     assert(pharmacistState.organization_id, 'Organization ID should be set')
+  //     const organization = await organizations.get(trx, {
+  //       ids: [pharmacistState.organization_id],
+  //     })
+  //     return {
+  //       ...pharmacistState,
+  //       organization: organization[0],
+  //     }
+  //   },
+  //   prompt(pharmacistState: PharmacistChatbotUserState): string {
+  //     assert(pharmacistState.organization, 'Organization should not be null')
+  //     return `You are serving patients from ${pharmacistState.organization.name} Please enter the patient's order number`
+  //   },
+  //   nextState: 'onboarded:get_order_details',
+  // },
+  // 'onboarded:get_order_details': {
+  //   type: 'string',
+  //   prompt: 'To implement',
+  //   nextState: 'other_end_of_demo',
+  // },
   'other_end_of_demo': {
     type: 'end_of_demo',
     prompt: 'This is the end of the demo. Thank you for participating!',
-    nextState: 'other_end_of_demo',
+    async onExit() {
+      return 'other_end_of_demo' as const
+    },
   },
 }
-
-export default conversationStates

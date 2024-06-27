@@ -2,6 +2,8 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
+export type ChatbotName = 'patient' | 'pharmacist'
+
 export type DoctorReviewStep =
   | 'clinical_notes'
   | 'diagnosis'
@@ -145,7 +147,7 @@ export type PatientConversationState =
   | 'not_onboarded:make_appointment:enter_national_id_number'
   | 'not_onboarded:welcome'
   | 'onboarded:appointment_scheduled'
-  | 'onboarded:cancel_appointment'
+  | 'onboarded:appointment_cancelled'
   | 'onboarded:main_menu'
   | 'onboarded:make_appointment:confirm_details'
   | 'onboarded:make_appointment:enter_appointment_reason'
@@ -475,6 +477,57 @@ export interface HealthWorkers {
   id: Generated<string>
   name: string
   updated_at: Generated<Timestamp>
+}
+
+export interface HerokuExtPgStatStatements {
+  blk_read_time: number | null
+  blk_write_time: number | null
+  calls: Int8 | null
+  dbid: number | null
+  jit_emission_count: Int8 | null
+  jit_emission_time: number | null
+  jit_functions: Int8 | null
+  jit_generation_time: number | null
+  jit_inlining_count: Int8 | null
+  jit_inlining_time: number | null
+  jit_optimization_count: Int8 | null
+  jit_optimization_time: number | null
+  local_blks_dirtied: Int8 | null
+  local_blks_hit: Int8 | null
+  local_blks_read: Int8 | null
+  local_blks_written: Int8 | null
+  max_exec_time: number | null
+  max_plan_time: number | null
+  mean_exec_time: number | null
+  mean_plan_time: number | null
+  min_exec_time: number | null
+  min_plan_time: number | null
+  plans: Int8 | null
+  query: string | null
+  queryid: Int8 | null
+  rows: Int8 | null
+  shared_blks_dirtied: Int8 | null
+  shared_blks_hit: Int8 | null
+  shared_blks_read: Int8 | null
+  shared_blks_written: Int8 | null
+  stddev_exec_time: number | null
+  stddev_plan_time: number | null
+  temp_blk_read_time: number | null
+  temp_blk_write_time: number | null
+  temp_blks_read: Int8 | null
+  temp_blks_written: Int8 | null
+  toplevel: boolean | null
+  total_exec_time: number | null
+  total_plan_time: number | null
+  userid: number | null
+  wal_bytes: Numeric | null
+  wal_fpi: Int8 | null
+  wal_records: Int8 | null
+}
+
+export interface HerokuExtPgStatStatementsInfo {
+  dealloc: Int8 | null
+  stats_reset: Timestamp | null
 }
 
 export interface Icd10Categories {
@@ -921,7 +974,6 @@ export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
   completed_intake: Generated<boolean>
-  conversation_state: Generated<PatientConversationState>
   created_at: Generated<Timestamp>
   date_of_birth: Timestamp | null
   ethnicity: string | null
@@ -959,8 +1011,16 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientWhatsappMessagesReceived {
+  conversation_state: PatientConversationState | null
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_id: string | null
+  updated_at: Generated<Timestamp>
+  whatsapp_message_received_id: string | null
+}
+
 export interface Pharmacists {
-  conversation_state: Generated<PharmacistConversationState>
   created_at: Generated<Timestamp>
   id: Generated<string>
   id_number: string | null
@@ -969,6 +1029,15 @@ export interface Pharmacists {
   pin: string | null
   registration_number: string | null
   updated_at: Generated<Timestamp>
+}
+
+export interface PharmacistWhatsappMessagesReceived {
+  conversation_state: PharmacistConversationState | null
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  pharmacist_id: string | null
+  updated_at: Generated<Timestamp>
+  whatsapp_message_received_id: string | null
 }
 
 export interface Procurement {
@@ -1041,15 +1110,15 @@ export interface Wards {
 
 export interface WhatsappMessagesReceived {
   body: string | null
-  chatbot_name: Generated<string>
-  conversation_state: Generated<PatientConversationState>
+  chatbot_name: ChatbotName
   created_at: Generated<Timestamp>
   error_commit_hash: string | null
   error_message: string | null
   has_media: Generated<boolean>
   id: Generated<string>
   media_id: string | null
-  patient_id: string
+  received_by_phone_number: string
+  sent_by_phone_number: string
   started_responding_at: Timestamp | null
   updated_at: Generated<Timestamp>
   whatsapp_id: string
@@ -1057,11 +1126,13 @@ export interface WhatsappMessagesReceived {
 
 export interface WhatsappMessagesSent {
   body: string
+  chatbot_name: ChatbotName
   created_at: Generated<Timestamp>
   id: Generated<string>
-  patient_id: string
   read_status: string
-  responding_to_id: string
+  responding_to_received_id: string
+  sent_by_phone_number: string
+  sent_to_phone_number: string
   updated_at: Generated<Timestamp>
   whatsapp_id: string
 }
@@ -1099,6 +1170,8 @@ export interface DB {
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
   health_workers: HealthWorkers
+  'heroku_ext.pg_stat_statements': HerokuExtPgStatStatements
+  'heroku_ext.pg_stat_statements_info': HerokuExtPgStatStatementsInfo
   icd10_categories: Icd10Categories
   icd10_codes: Icd10Codes
   icd10_diagnoses: Icd10Diagnoses
@@ -1144,7 +1217,9 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
+  patient_whatsapp_messages_received: PatientWhatsappMessagesReceived
   patients: Patients
+  pharmacist_whatsapp_messages_received: PharmacistWhatsappMessagesReceived
   pharmacists: Pharmacists
   procurement: Procurement
   procurers: Procurers
@@ -1154,7 +1229,7 @@ export interface DB {
   suburbs: Suburbs
   waiting_room: WaitingRoom
   wards: Wards
-  patient_whatsapp_messages_received: WhatsappMessagesReceived
-  patient_whatsapp_messages_sent: WhatsappMessagesSent
+  whatsapp_messages_received: WhatsappMessagesReceived
+  whatsapp_messages_sent: WhatsappMessagesSent
 }
 type Buffer = Uint8Array

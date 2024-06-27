@@ -1,62 +1,58 @@
 import db from '../db/db.ts'
 import {
-  getUnhandledPatientMessages,
+  getUnhandledMessages,
   markChatbotError,
 } from '../db/models/conversations.ts'
 import {
-  ConversationStates,
-  PatientConversationState,
-  PatientState,
+  ChatbotName,
+  TrxOrDb,
+  UnhandledMessage,
   WhatsAppJSONResponse,
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { determineResponse } from './determineResponse.ts'
 import { insertMessageSent } from '../db/models/conversations.ts'
-import patientConversationStates from './patient/conversationStates.ts'
-import { updatePatientState } from './patient/util.ts'
 import { sendToEngineeringChannel } from '../external-clients/slack.ts'
+import capitalize from '../util/capitalize.ts'
+import generateUUID from '../util/uuid.ts'
 
 type WhatsApp = {
+  phone_number: string
   sendMessage(opts: {
     phone_number: string
+    chatbot_name: ChatbotName
     message: WhatsAppSingleSendable
   }): Promise<WhatsAppJSONResponse>
   sendMessages(opts: {
     phone_number: string
+    chatbot_name: ChatbotName
     messages: WhatsAppSingleSendable | WhatsAppSendable
   }): Promise<WhatsAppJSONResponse[]>
 }
 
-const commitHash = Deno.env.get('HEROKU_SLUG_COMMIT') || 'local'
+const error_family = Deno.env.get('ERROR_FAMILY') || generateUUID()
+console.log('error_family', error_family)
+console.log('HEROKU_SLUG_COMMIT', Deno.env.get('HEROKU_SLUG_COMMIT'))
 const on_production = Deno.env.get('ON_PRODUCTION')
 
-console.log('on_production', on_production)
-
-async function respondToPatientMessage(
+async function respondToMessage(
   whatsapp: WhatsApp,
-  patientConversationStates: ConversationStates<
-    PatientConversationState,
-    PatientState
-  >,
-  patientState: PatientState,
+  unhandled_message: UnhandledMessage,
 ) {
+  const { chatbot_name } = unhandled_message
   try {
     const responseToSend = await db
       .transaction()
       .setIsolationLevel('read committed')
-      .execute((trx) =>
-        determineResponse(
-          trx,
-          patientConversationStates,
-          patientState,
-          updatePatientState,
-        )
-      )
+      .execute((trx: TrxOrDb) => determineResponse(trx, unhandled_message))
+
+    console.log('responseToSend', responseToSend)
 
     const whatsappResponses = await whatsapp.sendMessages({
       messages: responseToSend,
-      phone_number: patientState.phone_number,
+      chatbot_name,
+      phone_number: unhandled_message.sent_by_phone_number,
     })
 
     for (const whatsappResponse of whatsappResponses) {
@@ -67,8 +63,10 @@ async function respondToPatientMessage(
       }
 
       await insertMessageSent(db, {
-        patient_id: patientState.patient_id,
-        responding_to_id: patientState.message_id,
+        chatbot_name: unhandled_message.chatbot_name,
+        sent_by_phone_number: whatsapp.phone_number,
+        sent_to_phone_number: unhandled_message.sent_by_phone_number,
+        responding_to_received_id: unhandled_message.message_received_id,
         whatsapp_id: whatsappResponse.messages[0].id,
         body: JSON.stringify(responseToSend),
       })
@@ -78,81 +76,69 @@ async function respondToPatientMessage(
     console.error(err)
 
     await whatsapp.sendMessage({
+      chatbot_name,
       message: {
         type: 'string',
         messageBody: `An unknown error occured: ${err.message}`,
       },
-      phone_number: patientState.phone_number,
+      phone_number: unhandled_message.sent_by_phone_number,
     })
 
     await markChatbotError(db, {
-      commitHash,
-      whatsapp_message_received_id: patientState.message_id,
+      chatbot_name,
+      commitHash: error_family,
+      whatsapp_message_received_id: unhandled_message.message_received_id,
       errorMessage: err.message,
     })
 
-    console.log('on_production', on_production)
     if (on_production) {
-      const github_code_href =
-        `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
-      const github_code_link = `<${github_code_href}|Github Commit>`
+      const message = `*${capitalize(chatbot_name)} Chatbot Error*`
+
+      // const github_code_href =
+      //   `https://github.com/morehumaninternet/virtual-hospitals-africa/commit/${commitHash}`
+      // const github_code_link = `<${github_code_href}|Github Commit>`
 
       const logs_href =
-        'https://dashboard.heroku.com/apps/vha-patient-chatbot/logs'
+        `https://dashboard.heroku.com/apps/vha-${unhandled_message.chatbot_name}-chatbot/logs`
       const logs_link = `<${logs_href}|Heroku Logs>`
 
-      const message = [
-        '*Patient Chatbot Error*',
+      await sendToEngineeringChannel([
+        message,
         err.message,
-        github_code_link,
+        // github_code_link,
         logs_link,
-      ].join('\n')
-
-      await sendToEngineeringChannel(message)
+      ].join('\n'))
     }
   }
 }
 
-// async function respondToPharmacistMessage(
-//   whatsapp: WhatsApp,
-//   pharmacistConversationStates: ConversationStates<
-//     PharmacistConversationState,
-//     PharmacistState
-//   >,
-//   pharmacistState: PharmacistState,
-// ) {
-//   await whatsapp.sendMessage({
-//     message: {
-//       type: 'string',
-//       messageBody: 'Hello pharmacist',
-//     },
-//     phone_number: '+12369961017',
-//   })
-// }
-
 export default async function respond(
-  whatsapp: WhatsApp,
-  chatbot_name: string,
-  phone_number?: string,
+  {
+    whatsapp,
+    chatbot_name,
+    sent_by_phone_number,
+  }: {
+    whatsapp: WhatsApp
+    chatbot_name: ChatbotName
+    sent_by_phone_number?: string
+  },
 ) {
-  if (chatbot_name === 'patient') {
-    const unhandledMessages = await getUnhandledPatientMessages(db, {
-      commitHash,
-      phone_number,
-    })
+  const unhandledMessages = await getUnhandledMessages(db, {
+    chatbot_name,
+    commitHash: error_family,
+    sent_by_phone_number,
+  })
 
-    if (unhandledMessages.length !== 0) {
-      console.log('unhandledMessages', unhandledMessages)
-    }
-
-    return Promise.all(
-      unhandledMessages.map((msg) =>
-        respondToPatientMessage(whatsapp, patientConversationStates, msg)
-      ),
-    )
+  if (unhandledMessages.length !== 0) {
+    console.log('unhandledMessages', unhandledMessages)
   }
 
-  if (chatbot_name === 'pharmacist') {
-    console.log('pharmacist')
-  }
+  return Promise.all(
+    unhandledMessages.map((msg) =>
+      respondToMessage(
+        whatsapp,
+        msg,
+      )
+    ),
+  )
 }

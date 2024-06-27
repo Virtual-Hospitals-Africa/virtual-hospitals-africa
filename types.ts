@@ -52,11 +52,29 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'non-binary'
 
-export type UserState<CS> = {
-  body?: string
-  has_media: boolean
-  conversation_state: CS
+export type ChatbotUserState =
+  & {
+    entity_id: string
+    unhandled_message: UnhandledMessage
+  }
+  & (
+    {
+      chatbot_name: 'patient'
+      conversation_state: PatientConversationState
+    } | {
+      chatbot_name: 'pharmacist'
+      conversation_state: PharmacistConversationState
+    }
+  )
+
+export type PharmacistChatbotUserState = ChatbotUserState & {
+  chatbot_name: 'pharmacist'
 }
+
+export type PatientChatbotUserState = ChatbotUserState & {
+  chatbot_name: 'patient'
+}
+
 export type PatientConversationState =
   | 'initial_message'
   | 'not_onboarded:welcome'
@@ -71,7 +89,7 @@ export type PatientConversationState =
   | 'onboarded:make_appointment:first_scheduling_option'
   | 'onboarded:make_appointment:other_scheduling_options'
   | 'onboarded:appointment_scheduled'
-  | 'onboarded:cancel_appointment'
+  | 'onboarded:appointment_cancelled'
   | 'onboarded:main_menu'
   | 'find_nearest_organization:share_location'
   | 'find_nearest_organization:got_location'
@@ -108,7 +126,6 @@ export type RenderedPatient =
     | 'ethnicity'
     | 'national_id_number'
     | 'phone_number'
-    | 'conversation_state'
     | 'completed_intake'
     | 'intake_steps_completed'
   >
@@ -340,113 +357,108 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
   profession: Profession
 }
 
-export type PatientState = {
-  message_id: string
-  patient_id: string
-  whatsapp_id: string
-  body?: string
-  has_media: boolean
-  media_id?: string
-  phone_number: string
-  name: Maybe<string>
-  gender: Maybe<Gender>
-  dob_formatted: Maybe<string>
-  national_id_number: Maybe<string>
-  conversation_state: PatientConversationState
-  location: Maybe<Location>
-  scheduling_appointment_request?: {
-    id: string
-    reason: Maybe<string>
-    offered_times: SchedulingAppointmentOfferedTime[]
-  }
-  scheduled_appointment?: {
-    id: string
-    reason: string
-    provider_id: string
-    health_worker_name: string
-    gcal_event_id: string
-    start: Date
-  }
-  created_at: Date
-  updated_at: Date
-  nearest_organizations?: PatientNearestOrganization[]
-  nearest_organization_name?: string
-  selected_organization?: PatientNearestOrganization
-}
-
-export type PharmacistState = {
-  pharmacist_id: number
-  name: Maybe<string>
-  conversation_state: PharmacistConversationState
-  has_media: boolean
-  pin: Maybe<string>
-  organization_id: Maybe<string>
-  organization: Maybe<Organization>
-}
+// export type PatientState = {
+//   entity_type: 'patient'
+//   id: string
+//   whatsapp_id: string
+//   message_id: string
+//   body?: string
+//   has_media: boolean
+//   media_id?: string
+//   phone_number: string
+//   name: Maybe<string>
+//   gender: Maybe<Gender>
+//   dob_formatted: Maybe<string>
+//   national_id_number: Maybe<string>
+//   conversation_state: PatientConversationState
+//   location: Maybe<Location>
+//   scheduling_appointment_request?: {
+//     id: string
+//     reason: Maybe<string>
+//     offered_times: SchedulingAppointmentOfferedTime[]
+//   }
+//   scheduled_appointment?: {
+//     id: string
+//     reason: string
+//     provider_id: string
+//     health_worker_name: string
+//     gcal_event_id: string
+//     start: Date
+//   }
+//   created_at: Date
+//   updated_at: Date
+//   nearest_organizations?: PatientNearestOrganization[]
+//   nearest_organization_name?: string
+//   selected_organization?: PatientNearestOrganization
+// }
 
 export type PharmacistConversationState =
   | 'initial_message'
-  | 'not_onboarded:enter_registration'
   | 'not_onboarded:enter_id'
   | 'not_onboarded:create_pin'
   | 'not_onboarded:confirm_pin'
-  | 'not_onboarded:enter_establishment'
-  | 'onboarded:enter_order_number'
-  | 'onboarded:get_order_details'
+  | 'not_onboarded:confirm_details'
+  // | 'not_onboarded:enter_establishment'
+  // | 'onboarded:enter_order_number'
+  // | 'onboarded:get_order_details'
   | 'other_end_of_demo'
 
-export type ConversationStateHandlerType<US extends UserState<any>, T> = T & {
-  prompt: string | ((userState: US) => string)
-  onEnter?: (trx: TrxOrDb, userState: US) => Promise<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
+  prompt: string | ((trx: TrxOrDb, userState: US) => string | Promise<string>)
+  onExit?: ConversationStateHandlerNextState<US>
 }
 
-export type ConversationStateHandlerNextState<US extends UserState<any>> =
+export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
   | US['conversation_state']
-  | ((userState: US) => US['conversation_state'])
+  | ((
+    trx: TrxOrDb,
+    userState: US,
+  ) => US['conversation_state'] | Promise<US['conversation_state']>)
 
-export type ConversationStateHandlerSelectOption<US extends UserState<any>> = {
-  id: string
-  title: string
-  nextState: ConversationStateHandlerNextState<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
-}
+export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
+  {
+    id: string
+    title: string
+    onExit: ConversationStateHandlerNextState<US>
+  }
 
-export type ConversationStateHandlerListActionRow<US extends UserState<any>> = {
-  id: string
-  title: string
-  description: string
-  nextState: ConversationStateHandlerNextState<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
-}
+export type ConversationStateHandlerListActionRow<US extends ChatbotUserState> =
+  {
+    id: string
+    title: string
+    description: string
+    onExit: ConversationStateHandlerNextState<US>
+  }
 export type ConversationStateHandlerListActionSection<
-  US extends UserState<any>,
+  US extends ChatbotUserState,
 > = {
   title: string
   rows: ConversationStateHandlerListActionRow<US>[]
 }
 
-export type ConversationStateHandlerListAction<US extends UserState<any>> = {
+export type ConversationStateHandlerListAction<US extends ChatbotUserState> = {
   type: 'list'
   button: string
   sections: ConversationStateHandlerListActionSection<US>[]
 }
 
-export type ConversationStateHandlerList<US extends UserState<any>> =
+export type ConversationStateHandlerList<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'action'
       headerText: string
       action: (
+        trx: TrxOrDb,
         userState: US,
-      ) =>
+      ) => Promise<
         | ConversationStateHandlerSelect<US>
         | ConversationStateHandlerListAction<US>
+      >
     }
   >
 
-export type ConversationStateHandlerSelect<US extends UserState<any>> =
+export type ConversationStateHandlerSelect<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
@@ -455,74 +467,58 @@ export type ConversationStateHandlerSelect<US extends UserState<any>> =
     }
   >
 
-export type ConversationStateHandlerString<US extends UserState<any>> =
+export type ConversationStateHandlerString<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'string'
       validation?: (value: string) => boolean
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
-export type ConversationStateHandlerGetLocation<US extends UserState<any>> =
+export type ConversationStateHandlerGetLocation<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'get_location'
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
-export type ConversationStateHandlerEndOfDemo<US extends UserState<any>> =
+export type ConversationStateHandlerEndOfDemo<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'end_of_demo'
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
-export type ConversationStateHandlerDate<US extends UserState<any>> =
+export type ConversationStateHandlerDate<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'date'
-      nextState: ConversationStateHandlerNextState<US>
     }
   >
 
-export type ConversationStateHandlerInitialMessage<US extends UserState<any>> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'initial_message'
-      nextState: ConversationStateHandlerNextState<US>
-    }
-  >
-
-export type ConversationStateHandlerSendLocation<US extends UserState<any>> =
+export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'send_location'
-      getMessages: (userState: US) => WhatsAppSendable
-      nextState: ConversationStateHandlerNextState<US>
+      getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
     }
   >
 
-export type ConversationStateHandlerExpectMedia<US extends UserState<any>> =
+export type ConversationStateHandlerExpectMedia<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
     {
       type: 'expect_media'
-      nextState: ConversationStateHandlerNextState<US>
       options: [ConversationStateHandlerSelectOption<US>]
     }
   >
 
-export type ConversationStateHandler<US extends UserState<any>> =
-  | ConversationStateHandlerInitialMessage<US>
+export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerSelect<US>
   | ConversationStateHandlerString<US>
   | ConversationStateHandlerDate<US>
@@ -532,8 +528,8 @@ export type ConversationStateHandler<US extends UserState<any>> =
   | ConversationStateHandlerSendLocation<US>
   | ConversationStateHandlerExpectMedia<US>
 
-export type ConversationStates<CS extends string, US extends UserState<CS>> = {
-  [state in CS]: ConversationStateHandler<US>
+export type ConversationStates<US extends ChatbotUserState> = {
+  [state in US['conversation_state']]: ConversationStateHandler<US>
 }
 
 export type Appointment = {
@@ -567,9 +563,8 @@ export type Procurer = {
   name: string
 }
 
-export type MatchingState<US extends UserState<any>> = {
-  nextState: ConversationStateHandlerNextState<US>
-  onExit?: (trx: TrxOrDb, userState: US) => Promise<US>
+export type MatchingState<US extends ChatbotUserState> = {
+  onExit: ConversationStateHandlerNextState<US>
 }
 
 export type WhatsAppTextMessage = { type: 'text'; text: { body: string } }
@@ -1412,21 +1407,29 @@ export type WhatsAppMessageContents =
   | { has_media: false; body: string; media_id: null }
   | { has_media: true; body: null; media_id: string }
 
-export type WhatsAppMessageReceived = WhatsAppMessageContents & {
-  patient_id: string
-  whatsapp_id: string
-  conversation_state: PatientConversationState
-  started_responding_at: Maybe<ColumnType<Date>>
-  chatbot_name: string
-  error_commit_hash: Maybe<string>
-  error_message: Maybe<string>
-}
+export type WhatsAppMessageReceived =
+  & WhatsAppMessageContents
+  & {
+    whatsapp_id: string
+    started_responding_at: Maybe<ColumnType<Date>>
+    chatbot_name: string
+    error_commit_hash: Maybe<string>
+    error_message: Maybe<string>
+  }
+  & ({
+    chatbot_name: 'patient'
+    patient_id: string
+  } | {
+    chatbot_name: 'pharmacist'
+    conversation_state: PharmacistConversationState
+    pharmacist_id: string
+  })
 
 export type WhatsAppMessageSent = {
   patient_id: string
   whatsapp_id: string
   body: string
-  responding_to_id: string
+  responding_to_received_id: string
   read_status: string
 }
 
@@ -2362,4 +2365,17 @@ export type RenderedNotification = {
     title: string
     href: string
   }
+}
+
+export type ChatbotName = 'patient' | 'pharmacist'
+
+export type UnhandledMessage = {
+  chatbot_name: ChatbotName
+  message_received_id: string
+  whatsapp_id: string
+  body: string | null
+  trimmed_body: string | null
+  has_media: boolean
+  media_id: string | null
+  sent_by_phone_number: string
 }
