@@ -74,9 +74,6 @@ export default async function formatMessageToSend<
     case 'string': {
       return stringSendable(messageBody)
     }
-    case 'end_of_demo': {
-      return stringSendable(messageBody)
-    }
     case 'get_location': {
       return stringSendable(messageBody)
     }

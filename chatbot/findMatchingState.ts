@@ -40,9 +40,10 @@ export default async function findMatchingState<US extends ChatbotUserState>(
   trx: TrxOrDb,
   userState: ChatbotUserState,
 ): Promise<Maybe<MatchingState<US>>> {
-  const { conversation_states } = defs[userState.chatbot_name]
+  // deno-lint-ignore no-explicit-any
+  const conversation_states: any =
+    defs[userState.chatbot_name].conversation_states
   const currentState = conversation_states[userState.conversation_state]
-  console.log('findMatchingState', userState, conversation_states, currentState)
 
   if (!currentState) return null
 

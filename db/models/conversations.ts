@@ -138,3 +138,33 @@ export function markChatbotError(
     .where('id', '=', opts.whatsapp_message_received_id)
     .executeTakeFirstOrThrow()
 }
+
+export function getLastConversationState(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  opts: {
+    entity_id: string
+    sent_by_phone_number?: undefined
+  } | {
+    sent_by_phone_number: string
+    entity_id?: undefined
+  },
+) {
+  let query = trx.selectFrom(`${chatbot_name}_whatsapp_messages_received`)
+    .innerJoin(
+      'whatsapp_messages_received',
+      'whatsapp_messages_received.id',
+      `${chatbot_name}_whatsapp_messages_received.whatsapp_message_received_id`,
+    )
+    .select('conversation_state')
+    .orderBy('whatsapp_messages_received.created_at', 'desc')
+
+  if (opts.entity_id) {
+    query = query.where(`${chatbot_name}_id`, '=', opts.entity_id)
+  }
+  if (opts.sent_by_phone_number) {
+    query = query.where('sent_by_phone_number', '=', opts.sent_by_phone_number)
+  }
+
+  return query.executeTakeFirst()
+}

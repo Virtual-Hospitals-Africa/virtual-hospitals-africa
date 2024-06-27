@@ -6,12 +6,14 @@ import {
   isIsoHarare,
 } from '../../util/date.ts'
 import { get as getProvider } from '../../db/models/providers.ts'
+import * as patients from '../../db/models/patients.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import {
   DeepPartial,
   GCalEvent,
   GoogleTokens,
-  PatientState,
+  PatientChatbotUserState,
+  PatientSchedulingAppointmentRequest,
   SchedulingAppointmentOfferedTime,
   TrxOrDb,
 } from '../../types.ts'
@@ -30,18 +32,12 @@ function gcal({ start, end }: {
 }
 
 export function gcalAppointmentDetails(
-  patientState: PatientState,
+  scheduling_appointment_request: PatientSchedulingAppointmentRequest,
 ): {
   acceptedTime: SchedulingAppointmentOfferedTime
   gcal: DeepPartial<GCalEvent>
 } {
-  assert(patientState.scheduling_appointment_request)
-  assert(
-    patientState.scheduling_appointment_request.offered_times.length,
-    'No appointment_offered_times found in patientState',
-  )
-
-  const acceptedTimes = patientState.scheduling_appointment_request
+  const acceptedTimes = scheduling_appointment_request
     .offered_times.filter(
       (offeredTime) => !offeredTime.declined,
     )
@@ -72,18 +68,13 @@ type InsertEvent = (
 
 export async function makeAppointmentChatbot(
   trx: TrxOrDb,
-  patientState: PatientState,
+  patientState: PatientChatbotUserState,
   insertEvent: InsertEvent,
-): Promise<PatientState> {
-  assertEquals(
-    patientState.conversation_state,
-    'onboarded:appointment_scheduled',
-    'Only onboarded:appointment_scheduled patients supported for now',
-  )
-  assert(patientState.scheduling_appointment_request)
-  assert(patientState.scheduling_appointment_request.reason)
-
-  const details = gcalAppointmentDetails(patientState)
+) {
+  const scheduling_appointment_request = await patients
+    .schedulingAppointmentRequest(trx, patientState.entity_id)
+  assert(scheduling_appointment_request)
+  const details = gcalAppointmentDetails(scheduling_appointment_request)
 
   const { acceptedTime, gcal } = details
   assert(
@@ -105,16 +96,10 @@ export async function makeAppointmentChatbot(
     gcal,
   )
 
-  const scheduled_appointment = await appointments.schedule(trx, {
+  await appointments.schedule(trx, {
     appointment_offered_time_id: acceptedTime.id,
     gcal_event_id: insertedEvent.id,
   })
-
-  return {
-    ...patientState,
-    scheduled_appointment,
-    scheduling_appointment_request: undefined,
-  }
 }
 
 export type ScheduleFormValues = {

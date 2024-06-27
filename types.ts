@@ -94,7 +94,8 @@ export type PatientConversationState =
   | 'find_nearest_organization:share_location'
   | 'find_nearest_organization:got_location'
   | 'find_nearest_organization:send_organization_location'
-  | 'other_end_of_demo'
+  | 'end_of_demo'
+  | 'error'
 
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<string>
@@ -401,7 +402,8 @@ export type PharmacistConversationState =
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
-  | 'other_end_of_demo'
+  | 'end_of_demo'
+  | 'error'
 
 export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
   prompt: string | ((trx: TrxOrDb, userState: US) => string | Promise<string>)
@@ -484,14 +486,6 @@ export type ConversationStateHandlerGetLocation<US extends ChatbotUserState> =
     }
   >
 
-export type ConversationStateHandlerEndOfDemo<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'end_of_demo'
-    }
-  >
-
 export type ConversationStateHandlerDate<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
@@ -522,7 +516,6 @@ export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerSelect<US>
   | ConversationStateHandlerString<US>
   | ConversationStateHandlerDate<US>
-  | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
   | ConversationStateHandlerGetLocation<US>
   | ConversationStateHandlerSendLocation<US>
@@ -2378,4 +2371,10 @@ export type UnhandledMessage = {
   has_media: boolean
   media_id: string | null
   sent_by_phone_number: string
+}
+
+export type PatientSchedulingAppointmentRequest = {
+  patient_appointment_request_id: string
+  reason: string
+  offered_times: SchedulingAppointmentOfferedTime[]
 }

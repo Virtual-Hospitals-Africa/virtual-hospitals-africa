@@ -377,7 +377,7 @@ const conversationStates: ConversationStates<
       {
         id: 'go_back',
         title: 'Go back',
-        onExit: 'other_end_of_demo',
+        onExit: 'end_of_demo',
       },
     ],
   },
@@ -465,7 +465,7 @@ const conversationStates: ConversationStates<
       {
         id: 'go_back',
         title: 'Go back',
-        onExit: 'other_end_of_demo',
+        onExit: 'end_of_demo',
       },
     ],
   },
@@ -585,10 +585,27 @@ const conversationStates: ConversationStates<
       'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
-  other_end_of_demo: {
-    type: 'end_of_demo',
+  end_of_demo: {
+    type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',
-    onExit: 'other_end_of_demo',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
+  },
+  error: {
+    type: 'select',
+    prompt: 'An error occurred. Please try again.',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
   },
 }
 
