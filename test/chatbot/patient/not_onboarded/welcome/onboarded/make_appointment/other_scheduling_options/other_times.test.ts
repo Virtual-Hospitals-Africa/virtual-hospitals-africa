@@ -127,7 +127,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     await conversations.insertMessageReceived(trx, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: 'other_time',
       media_id: null,
@@ -135,6 +137,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -180,7 +183,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       ],
     })
 
-    const patient = await patients.getByPhoneNumber(trx, {
+    const patient = await patients.getLastConversationState(trx, {
       phone_number,
     })
 

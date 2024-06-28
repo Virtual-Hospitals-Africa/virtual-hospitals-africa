@@ -113,15 +113,9 @@ async function respondToMessage(
 }
 
 export default async function respond(
-  {
-    whatsapp,
-    chatbot_name,
-    sent_by_phone_number,
-  }: {
-    whatsapp: WhatsApp
-    chatbot_name: ChatbotName
-    sent_by_phone_number?: string
-  },
+  whatsapp: WhatsApp,
+  chatbot_name: ChatbotName,
+  sent_by_phone_number?: string,
 ) {
   const unhandledMessages = await getUnhandledMessages(db, {
     chatbot_name,

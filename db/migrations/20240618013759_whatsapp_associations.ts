@@ -1,5 +1,5 @@
-import { Kysely, sql } from 'kysely'
-import * as defs from '../../chatbot/defs.ts'
+import { Kysely } from 'kysely'
+// import * as defs from '../../chatbot/defs.ts'
 import { createStandardTable } from '../createStandardTable.ts'
 
 export async function up(db: Kysely<unknown>) {

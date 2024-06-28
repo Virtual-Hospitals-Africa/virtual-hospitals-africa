@@ -4,11 +4,9 @@ import { assertEquals } from 'std/assert/assert_equals.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as media from '../../db/models/media.ts'
-import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
 import { itUsesTrxAnd } from '../web/utilities.ts'
 import generateUUID from '../../util/uuid.ts'
-import { randomPhoneNumber } from '../mocks.ts'
 import sortBy from '../../util/sortBy.ts'
 
 describe('db/models/patients.ts', { sanitizeResources: false }, () => {
@@ -51,7 +49,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             last_visited: null,
-            conversation_state: 'initial_message' as const,
             completed_intake: false,
             intake_steps_completed: [],
             actions: {
@@ -71,7 +68,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
             nearest_organization: null,
             phone_number: null,
             last_visited: null,
-            conversation_state: 'initial_message' as const,
             completed_intake: false,
             intake_steps_completed: [],
             actions: {
@@ -284,22 +280,6 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
         })
       },
     )
-  })
-
-  describe('getByPhoneNumber', () => {
-    itUsesTrxAnd('reads out a formatted date of birth', async (trx) => {
-      const phone_number = randomPhoneNumber()
-      await patients.upsert(trx, {
-        date_of_birth: '2021-01-01',
-        phone_number,
-      })
-      const result = await patients.getByPhoneNumber(trx, {
-        phone_number,
-      })
-
-      assert(result)
-      assertEquals(result.dob_formatted, '1 January 2021')
-    })
   })
 
   // Skipping because of discrepancies at certain times of day.

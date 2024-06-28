@@ -11,9 +11,8 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 > = {
   'initial_message': {
     type: 'string',
-    prompt() {
-      throw new Error('This should not be called')
-    },
+    prompt:
+      `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`,
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       await pharmacists.update(trx, pharmacistState.entity_id, {
         registration_number: pharmacistState.unhandled_message.trimmed_body,
@@ -83,7 +82,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         currentPin.pin,
         'Pins do not match',
       )
-      return 'other_end_of_demo' as const
+      return 'end_of_demo' as const
     },
   },
 
@@ -116,13 +115,28 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   // 'onboarded:get_order_details': {
   //   type: 'string',
   //   prompt: 'To implement',
-  //   nextState: 'other_end_of_demo',
+  //   nextState: 'end_of_demo',
   // },
-  'other_end_of_demo': {
-    type: 'end_of_demo',
+  'end_of_demo': {
+    type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',
-    async onExit() {
-      return 'other_end_of_demo' as const
-    },
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
+  },
+  'error': {
+    type: 'select',
+    prompt: 'An error occurred. Please try again.',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
   },
 }
