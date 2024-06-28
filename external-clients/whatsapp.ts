@@ -35,15 +35,28 @@ export async function getBinaryData(path: string): Promise<Uint8Array> {
   return new Uint8Array(ab)
 }
 
-export function sendMessage({
-  message,
-  chatbot_name,
-  phone_number,
-}: {
+const RECENTLY_SENT_MESSAGES = new Set()
+
+export function sendMessage(opts: {
   phone_number: string
   chatbot_name: ChatbotName
   message: WhatsAppSingleSendable
 }): Promise<WhatsAppJSONResponse> {
+  
+  const message_unique_hash = JSON.stringify(opts)
+  if (RECENTLY_SENT_MESSAGES.has(message_unique_hash)) {
+    console.error("Sending duplicate message to the same number. Is it possible the chatbot is running elsewhere?")
+    Deno.exit(1)
+  }
+  RECENTLY_SENT_MESSAGES.add(message_unique_hash)
+  setTimeout(() => RECENTLY_SENT_MESSAGES.delete(message_unique_hash), 10000)
+
+  const {
+    message,
+    chatbot_name,
+    phone_number,
+  } = opts
+  
   switch (message.type) {
     case 'string': {
       return sendMessagePlainText({
