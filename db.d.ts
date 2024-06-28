@@ -105,6 +105,8 @@ export type MaritalStatus =
   | 'Single'
   | 'Widowed'
 
+export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
+
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type NurseSpecialty =
@@ -136,37 +138,11 @@ export type PatientCohabitation =
   | 'Sibling'
   | 'Uncle or Aunt'
 
-export type PatientConversationState =
-  | 'find_nearest_organization:got_location'
-  | 'find_nearest_organization:send_organization_location'
-  | 'find_nearest_organization:share_location'
-  | 'initial_message'
-  | 'not_onboarded:make_appointment:enter_date_of_birth'
-  | 'not_onboarded:make_appointment:enter_gender'
-  | 'not_onboarded:make_appointment:enter_name'
-  | 'not_onboarded:make_appointment:enter_national_id_number'
-  | 'not_onboarded:welcome'
-  | 'onboarded:appointment_scheduled'
-  | 'onboarded:cancel_appointment'
-  | 'onboarded:main_menu'
-  | 'onboarded:make_appointment:confirm_details'
-  | 'onboarded:make_appointment:enter_appointment_reason'
-  | 'onboarded:make_appointment:first_scheduling_option'
-  | 'onboarded:make_appointment:initial_ask_for_media'
-  | 'onboarded:make_appointment:other_scheduling_options'
-  | 'onboarded:make_appointment:subsequent_ask_for_media'
-  | 'other_end_of_demo'
-
-export type PharmacistConversationState =
-  | 'initial_message'
-  | 'not_onboarded:confirm_pin'
-  | 'not_onboarded:create_pin'
-  | 'not_onboarded:enter_establishment'
-  | 'not_onboarded:enter_id'
-  | 'not_onboarded:enter_registration'
-  | 'onboarded:enter_order_number'
-  | 'onboarded:get_order_details'
-  | 'other_end_of_demo'
+export type PharmacistType =
+  | 'Dispensing Medical Practitioner'
+  | 'Ind Clinic Nurse'
+  | 'Pharmacist'
+  | 'Pharmacy Technician'
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
@@ -961,7 +937,7 @@ export interface PatientSymptoms {
 }
 
 export interface PatientWhatsappMessagesReceived {
-  conversation_state: PatientConversationState | null
+  conversation_state: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string | null
@@ -970,18 +946,23 @@ export interface PatientWhatsappMessagesReceived {
 }
 
 export interface Pharmacists {
+  address: string | null
   created_at: Generated<Timestamp>
+  expiry_date: Timestamp
+  family_name: string
+  given_name: string
   id: Generated<string>
-  id_number: string | null
-  name: string | null
+  licence_number: string
+  pharmacist_type: PharmacistType
   phone_number: string | null
   pin: string | null
-  registration_number: string | null
+  prefix: NamePrefix | null
+  town: string | null
   updated_at: Generated<Timestamp>
 }
 
 export interface PharmacistWhatsappMessagesReceived {
-  conversation_state: PharmacistConversationState | null
+  conversation_state: string | null
   created_at: Generated<Timestamp>
   id: Generated<string>
   pharmacist_id: string | null
