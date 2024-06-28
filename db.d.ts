@@ -138,13 +138,11 @@ export type PatientCohabitation =
   | 'Sibling'
   | 'Uncle or Aunt'
 
-export type PersonType =
+export type PharmacistType =
   | 'Dispensing Medical Practitioner'
   | 'Ind Clinic Nurse'
   | 'Pharmacist'
   | 'Pharmacy Technician'
-  | 'Sales Representative'
-  | 'Veterinary Surgeon'
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
@@ -955,7 +953,7 @@ export interface Pharmacists {
   given_name: string
   id: Generated<string>
   licence_number: string
-  person_type: PersonType
+  pharmacist_type: PharmacistType
   phone_number: string | null
   pin: string | null
   prefix: NamePrefix | null
