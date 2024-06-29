@@ -263,7 +263,7 @@ export async function sendMessagePDF(opts: {
   messages: [{ id: string }]
 }> {
   const filename = basename(opts.pdfPath);
-  const mediaId = await uploadMedia(opts.pdfPath, 'application/pdf');
+  const mediaId = await uploadMedia(opts.pdfPath, 'document/pdf');
 
   return await postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
