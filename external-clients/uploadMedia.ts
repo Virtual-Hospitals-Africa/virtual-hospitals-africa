@@ -1,4 +1,4 @@
-import { readFile } from 'node:fs'
+import { basename } from 'node:path'
 
 // TODO: How to make this better?(Kane)
 const phone_number_id = '113792741736396';
@@ -7,10 +7,15 @@ export async function uploadMedia(
     filePath: string, 
     fileType: string, 
 ): Promise<string> {
+  const fileContent = await Deno.readFile(filePath);
+  const fileBlob = new Blob([fileContent], { type: fileType });
   const formData = new FormData();
-  formData.append('file', new Blob([await readFile(filePath)], { type: fileType }), filePath.split('/').pop());
+
+  formData.append('file', fileBlob, basename(filePath));
   formData.append('type', fileType);
   formData.append('messaging_product', 'whatsapp');
+
+  console.log(formData);
 
   const response = await fetch(`https://graph.facebook.com/v20.0/${phone_number_id}/media`, {
     method: 'POST',
@@ -19,6 +24,8 @@ export async function uploadMedia(
     },
     body: formData
   });
+
+  console.log(response);
 
   if (!response.ok) {
     throw new Error(`Error uploading media: ${response.statusText}`);
