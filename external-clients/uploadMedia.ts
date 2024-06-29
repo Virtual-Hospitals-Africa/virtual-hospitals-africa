@@ -15,8 +15,6 @@ export async function uploadMedia(
   formData.append('type', fileType);
   formData.append('messaging_product', 'whatsapp');
 
-  console.log(formData);
-
   const response = await fetch(`https://graph.facebook.com/v20.0/${phone_number_id}/media`, {
     method: 'POST',
     headers: {
@@ -24,8 +22,6 @@ export async function uploadMedia(
     },
     body: formData
   });
-
-  console.log(response);
 
   if (!response.ok) {
     throw new Error(`Error uploading media: ${response.statusText}`);
