@@ -7,6 +7,8 @@ import {
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
+import { uploadMedia } from './uploadMedia.ts'
+import { basename } from 'node:path'
 
 const phoneNumbers = {
   patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
@@ -87,6 +89,14 @@ export function sendMessage(opts: {
         phone_number,
         chatbot_name,
         location: message.location,
+      })
+    }
+    case 'document': {
+      return sendMessagePDF({
+        phone_number,
+        chatbot_name,
+        message: message.messageBody,
+        pdfPath: message.pdfPath,
       })
     }
   }
@@ -239,5 +249,30 @@ export function sendMessageWithInteractiveList(opts: {
       body: { text: opts.messageBody },
       action: opts.action,
     },
+  })
+}
+
+export async function sendMessagePDF(opts: {
+  phone_number: string
+  chatbot_name: ChatbotName
+  message: string
+  pdfPath: string
+}): Promise<{
+  messaging_product: 'whatsapp',
+  contacts: [{ input: string; wa_id: string }],
+  messages: [{ id: string }]
+}> {
+  const filename = basename(opts.pdfPath);
+  const mediaId = await uploadMedia(opts.pdfPath, 'application/pdf');
+
+  return await postMessage(opts.chatbot_name, {
+    messaging_product: 'whatsapp',
+    to: opts.phone_number,
+    type: 'document',
+    document: {
+      id: mediaId,
+      caption: opts.message,
+      filename: filename
+    }
   })
 }
