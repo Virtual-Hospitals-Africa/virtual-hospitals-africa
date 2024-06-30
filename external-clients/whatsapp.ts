@@ -7,7 +7,6 @@ import {
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
-import { uploadMedia } from './uploadMedia.ts'
 import { basename } from 'node:path'
 
 const phoneNumbers = {
@@ -155,6 +154,37 @@ export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
   return response.json()
 }
 
+// Upload a file and get the id
+export async function postMedia(
+  filePath: string, 
+  fileType: string, 
+  chatbot_name: ChatbotName,
+): Promise<string> {
+  const fileContent = await Deno.readFile(filePath);
+  const fileBlob = new Blob([fileContent], { type: fileType });
+  const formData = new FormData();
+
+  formData.append('file', fileBlob, basename(filePath));
+  formData.append('type', fileType);
+  formData.append('messaging_product', 'whatsapp');
+
+  const toPost = {
+    method: 'post',
+    headers: { 'Authorization': `${Authorization}` },
+    body: formData,
+  }
+  const postMessageRoute = `https://graph.facebook.com/v20.0/${
+    phoneNumbers[chatbot_name]
+  }/media`
+
+  const response = await fetch(postMessageRoute, toPost);
+  if (!response.ok) {
+    throw new Error(`Error uploading media: ${response.statusText}`);
+  }
+  const result = await response.json();
+  return result.id;
+}
+
 export function sendMessageLocation(opts: {
   phone_number: string
   chatbot_name: ChatbotName
@@ -263,7 +293,7 @@ export async function sendMessagePDF(opts: {
   messages: [{ id: string }]
 }> {
   const filename = basename(opts.pdfPath);
-  const mediaId = await uploadMedia(opts.pdfPath, 'application/pdf');
+  const mediaId = await postMedia(opts.pdfPath, 'application/pdf', opts.chatbot_name);
 
   return await postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
