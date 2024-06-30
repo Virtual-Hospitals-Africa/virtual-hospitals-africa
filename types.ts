@@ -1475,6 +1475,7 @@ export type WhatsAppSingleSendable =
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
+  | WhatsAppSendableDocument
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
@@ -1552,6 +1553,12 @@ export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
   location: WhatsAppLocation
+}
+
+export type WhatsAppSendableDocument = {
+  type: 'document'
+  messageBody: string
+  pdfPath: string
 }
 
 export type WhatsAppLocation = Location & {
