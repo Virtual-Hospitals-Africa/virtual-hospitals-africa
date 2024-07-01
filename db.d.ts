@@ -152,6 +152,7 @@ export type PremisesTypes =
   | 'Dispensing medical practice'
   | 'Hospital pharmacies'
   | 'Pharmacies: Restricted'
+  | 'Pharmacies: Research'
   | 'Pharmacy in any other location'
   | 'Pharmacy in rural area'
   | 'Pharmacy located in the CBD'

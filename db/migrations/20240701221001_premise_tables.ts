@@ -14,6 +14,7 @@ export async function up(db: Kysely<unknown>) {
       'Pharmacy in any other location',
       'Pharmacy in rural area',
       'Pharmacies: Restricted',
+      'Pharmacies: Research',
       'Pharmacy located in the CBD',
       'Wholesalers',
     ])
