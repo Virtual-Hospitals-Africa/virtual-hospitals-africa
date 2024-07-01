@@ -395,13 +395,16 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
 
 export type PharmacistConversationState =
   | 'initial_message'
-  | 'not_onboarded:enter_id'
+  // | 'not_onboarded:enter_id'
   | 'not_onboarded:create_pin'
   | 'not_onboarded:confirm_pin'
   | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
+  | 'onboarded:pharmacist_main_menu'
+  | 'onboarded:fill_prescription:enter_prescription_number'
+  | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
 
