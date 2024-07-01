@@ -181,7 +181,6 @@ export async function postMedia(
   const response = await fetch(postMessageRoute, toPost);
   if (!response.ok) {
     console.log(response)
-    console.log(phoneNumbers[chatbot_name])
     throw new Error(`Error uploading media: ${response.statusText}`);
   }
   const result = await response.json();

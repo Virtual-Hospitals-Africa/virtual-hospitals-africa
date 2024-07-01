@@ -9,9 +9,8 @@ const execPromise = util.promisify(exec);
 export async function generatePDF(url: string): Promise<string> {
   const filename = crypto.createHash('md5').update(url).digest('hex');
   const outputPath = `../${filename}.pdf`; // Should I create a temporary space to store the file? If so, what should I name it?
-//   const fullUrl = url.startsWith(prefix) ? url : `${prefix}${url}`;
-//   const command = `wkhtmltopdf ${fullUrl} ${outputPath}`;
-  const command = `wkhtmltopdf https://localhost:8000/login ${outputPath}`;
+  const fullUrl = url.startsWith(prefix) ? url : `${prefix}${url}`;
+  const command = `wkhtmltopdf ${fullUrl} ${outputPath}`;
 
   try {
     await execPromise(command);
