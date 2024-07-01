@@ -18,7 +18,8 @@ export async function generatePDF(url: string): Promise<string> {
     return outputPath;
   } catch (error) {
     console.error(`Error generating PDF: ${error}`);
-    throw error;
+    return outputPath;
+    // throw error;
   }
 }
 
