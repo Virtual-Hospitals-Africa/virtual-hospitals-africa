@@ -1,6 +1,6 @@
 import fs from 'node:fs'
 import crypto from 'node:crypto'
-import { runCommand } from '../util/command.ts'
+import { runCommand } from './command.ts'
 
 const prefix = 'https://localhost:8000';
 
