@@ -18,7 +18,7 @@ async function importFromCsv(db: Kysely<any>) {
       pharmacist_type: pharmacistData.pharmacist_type,
       prefix: pharmacistData.prefix || null,
       given_name: pharmacistData.given_name || null,
-      family_name: pharmacistData.family_name || null, 
+      family_name: pharmacistData.family_name || null,
       address: pharmacistData.address,
       town: pharmacistData.town,
       expiry_date: pharmacistData.expiry_date,
