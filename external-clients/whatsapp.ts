@@ -8,6 +8,7 @@ import {
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { basename } from 'node:path'
+import { generatePDF, deletePDF } from '../util/pdfUtils.ts'
 
 const phoneNumbers = {
   patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
@@ -179,6 +180,8 @@ export async function postMedia(
 
   const response = await fetch(postMessageRoute, toPost);
   if (!response.ok) {
+    console.log(response)
+    console.log(phoneNumbers[chatbot_name])
     throw new Error(`Error uploading media: ${response.statusText}`);
   }
   const result = await response.json();
@@ -294,6 +297,33 @@ export async function sendMessagePDF(opts: {
 }> {
   const filename = basename(opts.pdfPath);
   const mediaId = await postMedia(opts.pdfPath, 'application/pdf', opts.chatbot_name);
+
+  return await postMessage(opts.chatbot_name, {
+    messaging_product: 'whatsapp',
+    to: opts.phone_number,
+    type: 'document',
+    document: {
+      id: mediaId,
+      caption: opts.message,
+      filename: filename
+    }
+  })
+}
+
+export async function sendMessagePDFFromWebPage(opts: {
+  phone_number: string
+  chatbot_name: ChatbotName
+  message: string
+  url: string
+}): Promise<{
+  messaging_product: 'whatsapp',
+  contacts: [{ input: string; wa_id: string }],
+  messages: [{ id: string }]
+}> {
+  const pdfPath = await generatePDF(opts.url);
+  const filename = basename(pdfPath);
+  const mediaId = await postMedia(pdfPath, 'application/pdf', opts.chatbot_name);
+  deletePDF(pdfPath)
 
   return await postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
