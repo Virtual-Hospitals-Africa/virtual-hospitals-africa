@@ -3,7 +3,7 @@ import util from 'node:util';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 
-const prefix = 'https://localhost:8000/';
+const prefix = 'https://localhost:8000';
 const execPromise = util.promisify(exec);
 
 export async function generatePDF(url: string): Promise<string> {
@@ -23,7 +23,7 @@ export async function generatePDF(url: string): Promise<string> {
 }
 
 export function deletePDF(filePath: string): void {
-    fs.unlink(filePath, (err: { message: any }) => {
+    fs.unlink(filePath, (err: { message: Error }) => {
       if (err) {
         console.error(`Error deleting file: ${err.message}`);
       } else {
