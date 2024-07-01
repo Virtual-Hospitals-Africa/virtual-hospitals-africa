@@ -44,10 +44,11 @@ export function sendMessage(opts: {
   chatbot_name: ChatbotName
   message: WhatsAppSingleSendable
 }): Promise<WhatsAppJSONResponse> {
-  
   const message_unique_hash = JSON.stringify(opts)
   if (RECENTLY_SENT_MESSAGES.has(message_unique_hash)) {
-    console.error("Sending duplicate message to the same number. Is it possible the chatbot is running elsewhere?")
+    console.error(
+      'Sending duplicate message to the same number. Is it possible the chatbot is running elsewhere?',
+    )
     Deno.exit(1)
   }
   RECENTLY_SENT_MESSAGES.add(message_unique_hash)
@@ -58,7 +59,7 @@ export function sendMessage(opts: {
     chatbot_name,
     phone_number,
   } = opts
-  
+
   switch (message.type) {
     case 'string': {
       return sendMessagePlainText({
@@ -157,17 +158,17 @@ export async function postMessage(chatbot_name: ChatbotName, body: unknown) {
 
 // Upload a file and get the id
 export async function postMedia(
-  filePath: string, 
-  fileType: string, 
+  filePath: string,
+  fileType: string,
   chatbot_name: ChatbotName,
 ): Promise<string> {
-  const fileContent = await Deno.readFile(filePath);
-  const fileBlob = new Blob([fileContent], { type: fileType });
-  const formData = new FormData();
+  const fileContent = await Deno.readFile(filePath)
+  const fileBlob = new Blob([fileContent], { type: fileType })
+  const formData = new FormData()
 
-  formData.append('file', fileBlob, basename(filePath));
-  formData.append('type', fileType);
-  formData.append('messaging_product', 'whatsapp');
+  formData.append('file', fileBlob, basename(filePath))
+  formData.append('type', fileType)
+  formData.append('messaging_product', 'whatsapp')
 
   const toPost = {
     method: 'post',
@@ -178,13 +179,13 @@ export async function postMedia(
     phoneNumbers[chatbot_name]
   }/media`
 
-  const response = await fetch(postMessageRoute, toPost);
+  const response = await fetch(postMessageRoute, toPost)
   if (!response.ok) {
     console.log(response)
-    throw new Error(`Error uploading media: ${response.statusText}`);
+    throw new Error(`Error uploading media: ${response.statusText}`)
   }
-  const result = await response.json();
-  return result.id;
+  const result = await response.json()
+  return result.id
 }
 
 export function sendMessageLocation(opts: {
@@ -290,12 +291,16 @@ export async function sendMessagePDF(opts: {
   message: string
   pdfPath: string
 }): Promise<{
-  messaging_product: 'whatsapp',
-  contacts: [{ input: string; wa_id: string }],
+  messaging_product: 'whatsapp'
+  contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-  const filename = basename(opts.pdfPath);
-  const mediaId = await postMedia(opts.pdfPath, 'application/pdf', opts.chatbot_name);
+  const filename = basename(opts.pdfPath)
+  const mediaId = await postMedia(
+    opts.pdfPath,
+    'application/pdf',
+    opts.chatbot_name,
+  )
 
   return await postMessage(opts.chatbot_name, {
     messaging_product: 'whatsapp',
@@ -304,8 +309,8 @@ export async function sendMessagePDF(opts: {
     document: {
       id: mediaId,
       caption: opts.message,
-      filename: filename
-    }
+      filename: filename,
+    },
   })
 }
 

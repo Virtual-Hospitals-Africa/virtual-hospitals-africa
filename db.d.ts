@@ -144,6 +144,20 @@ export type PharmacistType =
   | 'Pharmacist'
   | 'Pharmacy Technician'
 
+export type PremisesTypes =
+  | 'Clinics: Class A'
+  | 'Clinics: Class B'
+  | 'Clinics: Class C'
+  | 'Clinics: Class D'
+  | 'Dispensing medical practice'
+  | 'Hospital pharmacies'
+  | 'Pharmacies: Restricted'
+  | 'Pharmacies: Research'
+  | 'Pharmacy in any other location'
+  | 'Pharmacy in rural area'
+  | 'Pharmacy located in the CBD'
+  | 'Wholesalers'
+
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
 export type Religion =
@@ -970,6 +984,29 @@ export interface PharmacistWhatsappMessagesReceived {
   whatsapp_message_received_id: string | null
 }
 
+export interface Premises {
+  address: string | null
+  created_at: Generated<Timestamp>
+  expiry_date: Timestamp
+  id: Generated<string>
+  licence_number: string
+  licensee: string
+  name: string
+  premises_types: PremisesTypes
+  town: string | null
+  updated_at: Generated<Timestamp>
+}
+
+export interface PremiseSupervisors {
+  created_at: Generated<Timestamp>
+  family_name: string
+  given_name: string
+  id: Generated<string>
+  prefix: NamePrefix | null
+  premise_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface Procurement {
   batch_number: string | null
   consumable_id: string
@@ -1149,6 +1186,8 @@ export interface DB {
   patients: Patients
   pharmacist_whatsapp_messages_received: PharmacistWhatsappMessagesReceived
   pharmacists: Pharmacists
+  premise_supervisors: PremiseSupervisors
+  premises: Premises
   procurement: Procurement
   procurers: Procurers
   provider_calendars: ProviderCalendars
