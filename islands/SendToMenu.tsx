@@ -312,12 +312,12 @@ export function SendableComponent(
                 />
               )}
             </span>
-            <div className='ml-4 truncate'>
-              <p className='truncate text-sm font-semibold text-gray-900'>
+            <div className='ml-4'>
+              <p className='text-sm font-sans font-medium text-gray-900 leading-normal'>
                 {name}
               </p>
               {description && (
-                <p className='truncate text-xs text-gray-500'>
+                <p className='text-sm font-sans text-gray-500 leading-normal'>
                   {description.parenthetical === 'address'
                     ? (
                       <a
@@ -328,7 +328,7 @@ export function SendableComponent(
                         }`}
                         target='_blank'
                         rel='noopener noreferrer'
-                        className='text-blue-500'
+                        className='text-blue-500 break-words'
                       >
                         {description.text}
                       </a>
@@ -336,17 +336,15 @@ export function SendableComponent(
                     : (
                       description.text
                     )}
-                  {description.parenthetical &&
-                    ` (${description.parenthetical})`}
                 </p>
               )}
               {status && (
-                <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+                <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                   {status}
                 </p>
               )}
               {!online && reopenTime && (
-                <p className='truncate text-xs font-ubuntu text-gray-500'>
+                <p className='text-xs font-ubuntu text-gray-500'>
                   {reopenTime}
                 </p>
               )}
@@ -397,19 +395,19 @@ export function PersonDetailView(
               </div>
             </span>
             <div className='ml-4'>
-              <h1 className='truncate text-sm font-semibold text-gray-900'>
+              <h1 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
                 {person.name}
               </h1>
               {person.description && (
-                <p className='truncate text-xs text-gray-500'>
+                <p className='text-sm font-sans text-gray-500 leading-normal'>
                   {person.description.text}
                 </p>
               )}
-              <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+              <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                 {person.status}
               </p>
               {person.reopenTime && (
-                <p className='truncate text-xs font-ubuntu text-gray-500'>
+                <p className='text-xs font-ubuntu text-gray-500'>
                   {person.reopenTime}
                 </p>
               )}
@@ -424,10 +422,10 @@ export function PersonDetailView(
               alt='Susan Mlalazi'
             />
             <div>
-              <h2 className='truncate text-sm font-semibold text-gray-900'>
+              <h2 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
                 Susan Mlalazi
               </h2>
-              <p className='truncate text-xs text-gray-500'>
+              <p className='text-sm font-sans text-gray-500 leading-normal'>
                 female, 16/3/2024
               </p>
               <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>

@@ -1,3 +1,5 @@
+import { ComponentChild } from 'preact'
+
 export type Sendable =
   & {
     image: {
