@@ -28,8 +28,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('address', 'varchar(255)')
       .addColumn('town', 'varchar(255)')
       .addColumn('expiry_date', 'date', (col) => col.notNull())
-      .addColumn('premises_types', sql`premises_types`, (col) => col.notNull())
-  )
+      .addColumn('premises_types', sql`premises_types`, (col) => col.notNull()))
 
   await createStandardTable(db, 'premise_supervisors', (qb) =>
     qb
@@ -37,9 +36,7 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('given_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('family_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('premise_id', 'uuid', (col) =>
-        col.notNull().references('premises.id').onDelete('cascade')
-      )
-  )
+        col.notNull().references('premises.id').onDelete('cascade')))
 }
 
 export async function down(db: Kysely<unknown>) {
