@@ -5,6 +5,7 @@ import {
 } from '../../types.ts'
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
@@ -12,25 +13,26 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'initial_message': {
     type: 'string',
     prompt:
-      `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your registration number.`,
+      `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your licence number.`,
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const licence_number = pharmacistState.unhandled_message.trimmed_body
       await pharmacists.update(trx, pharmacistState.entity_id, {
-        registration_number: pharmacistState.unhandled_message.trimmed_body,
-      })
-      return 'not_onboarded:enter_id' as const
-    },
-  },
-
-  'not_onboarded:enter_id': {
-    type: 'string',
-    prompt: 'To confirm your identity, please provide your ID number',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      await pharmacists.update(trx, pharmacistState.entity_id, {
-        id_number: pharmacistState.unhandled_message.trimmed_body,
+        licence_number: licence_number as string,
       })
       return 'not_onboarded:create_pin' as const
     },
   },
+
+  // 'not_onboarded:enter_id': {
+  //   type: 'string',
+  //   prompt: 'To confirm your identity, please provide your License number',
+  //   async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+  //     await pharmacists.update(trx, pharmacistState.entity_id, {
+  //       id_number: pharmacistState.unhandled_message.trimmed_body,
+  //     })
+  //     return 'not_onboarded:create_pin' as const
+  //   },
+  // },
   'not_onboarded:create_pin': {
     type: 'string',
     prompt: 'To secure your account, please create a 4-digit pin',
@@ -68,7 +70,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         '=',
         pharmacistState.entity_id,
       ).executeTakeFirstOrThrow()
-      return `Please confirm the following details:\n\nName: ${pharmacist.name}\nID Number: ${pharmacist.id_number}\nRegistration Number: ${pharmacist.registration_number}`
+      return `Please confirm the following details:\n\nName: ${pharmacist.given_name} ${pharmacist.family_name}\nLicense Number: ${pharmacist.licence_number}`
     },
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       const currentPin = await trx
@@ -82,10 +84,54 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         currentPin.pin,
         'Pins do not match',
       )
+      return 'onboarded:pharmacist_main_menu' as const
+    },
+  },
+  'onboarded:pharmacist_main_menu': {
+    type: 'select',
+    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
+        'id',
+        '=',
+        pharmacistState.entity_id,
+      ).executeTakeFirstOrThrow()
+      return `Hi ${pharmacist.given_name}`
+    },
+    options: [
+      {
+        id: 'fill_prescription',
+        title: 'Fill Prescription',
+        onExit: 'onboarded:fill_prescription:enter_prescription_number',
+      },
+      {
+        id: 'view_inventory',
+        title: 'View Inventory',
+        onExit: 'onboarded:view_inventory',
+      },
+    ],
+  },
+  'onboarded:fill_prescription:enter_prescription_number': {
+    type: 'string',
+    prompt: 'Please enter the prescription number',
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      //get the prescription number and cross check with our database
+      const prescriptionNumber = pharmacistState.unhandled_message.trimmed_body
+      console.log(prescriptionNumber)
       return 'end_of_demo' as const
     },
   },
-
+  'onboarded:view_inventory': {
+    type: 'select',
+    prompt: 'Coming Soon',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Back to main menu',
+        onExit: 'onboarded:pharmacist_main_menu',
+      },
+      { id: 'end_of_demo', title: 'End of Demo', onExit: 'end_of_demo' },
+    ],
+  },
   // 'not_onboarded:enter_establishment': {
   //   type: 'string',
   //   prompt: 'Please provide your establishment license number',
