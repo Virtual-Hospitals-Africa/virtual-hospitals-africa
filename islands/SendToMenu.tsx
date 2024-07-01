@@ -13,6 +13,12 @@ import {
   MagnifyingGlassIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
 import { Sendable } from './types.ts'
+import {
+  ClipboardDocumentCheckIcon,
+  CalendarDaysIcon,
+  ShieldExclamationIcon
+} from '../components/library/icons/SendToDetailView.tsx'
+
 
 const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'
 
@@ -364,6 +370,20 @@ export function PersonDetailView(
     setAdditionalDetails: (details: string) => void
   },
 ) {
+  const [showCircleReview, setShowCircleReview] = useState(false);
+  const [showCircleAppointment, setShowCircleAppointment] = useState(false);
+  const [showCircleEmergency, setShowCircleEmergency] = useState(false);
+
+  const handleActionClick = (action: string) => {
+    if (action === 'review') {
+      setShowCircleReview(!showCircleReview);
+    } else if (action === 'appointment') {
+      setShowCircleAppointment(!showCircleAppointment);
+    } else if (action === 'emergency') {
+      setShowCircleEmergency(!showCircleEmergency);
+    }
+  };
+
   return (
     <div className='group relative flex flex-col'>
       <div className='divide-y divide-gray-200'>
@@ -436,34 +456,40 @@ export function PersonDetailView(
         </div>
       </div>
       <div className='border-t border-gray-200'></div>
-      <div className='mt-6 px-4'>
-        <ul className='space-y-4 py-6'>
+      <div className='mt-4 px-5'>
+        <ul className='space-y-6 py-6'>
           <li className='flex items-center'>
-            <span className='text-indigo-500 mr-2'>
-              <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
-                <path d='M9 19l-7-7 7-7v14zm2-14h8a1 1 0 011 1v12a1 1 0 01-1 1h-8v-2h7v-10h-7v-2zm0 10v-2h4v2h-4z'>
-                </path>
-              </svg>
+            <span className='mr-2 text-indigo-900'>
+              <ClipboardDocumentCheckIcon withCircle={showCircleReview}/>
             </span>
-            <span>Request Review</span>
+            <span 
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline' 
+              onClick={() => handleActionClick('review')}
+            >
+              Request Review
+            </span>
           </li>
           <li className='flex items-center'>
-            <span className='text-blue-500 mr-2'>
-              <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
-                <path d='M12 1c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5zm0 12c-3.03 0-5.5-2.47-5.5-5.5s2.47-5.5 5.5-5.5 5.5 2.47 5.5 5.5-2.47 5.5-5.5 5.5zm-1 3h-7v1.5h7v-1.5zm0 3h-7v1.5h7v-1.5zm3.5-1.5h-1.5v1.5h1.5v-1.5zm0-3h-1.5v1.5h1.5v-1.5zm-4.5 0h-1.5v1.5h1.5v-1.5zm0-3h-1.5v1.5h1.5v-1.5zm4.5 0h-1.5v1.5h1.5v-1.5z'>
-                </path>
-              </svg>
+            <span className='mr-2 text-blue-500'>
+              <CalendarDaysIcon withCircle={showCircleAppointment}/>
             </span>
-            <span>Make Appointment</span>
+            <span 
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline' 
+              onClick={() => handleActionClick('appointment')}
+            >
+              Make Appointment
+            </span>
           </li>
           <li className='flex items-center'>
-            <span className='text-red-500 mr-2'>
-              <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
-                <path d='M11 15h2v2h-2v-2zm0-8h2v6h-2v-6zm1-8c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'>
-                </path>
-              </svg>
+            <span className='mr-2 text-red-500'>
+              <ShieldExclamationIcon withCircle={showCircleEmergency}/>
             </span>
-            <span>Declare Emergency</span>
+            <span 
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline' 
+              onClick={() => handleActionClick('emergency')}
+            >
+              Declare Emergency
+            </span>
           </li>
         </ul>
       </div>
