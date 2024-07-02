@@ -16,8 +16,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your licence number.`,
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       const licence_number = pharmacistState.unhandled_message.trimmed_body
+      assert(licence_number, 'Licence number should not be empty')
       await pharmacists.update(trx, pharmacistState.entity_id, {
-        licence_number: licence_number as string,
+        licence_number,
       })
       return 'not_onboarded:create_pin' as const
     },
@@ -113,7 +114,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'onboarded:fill_prescription:enter_prescription_number': {
     type: 'string',
     prompt: 'Please enter the prescription number',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+    onExit(_trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       //get the prescription number and cross check with our database
       const prescriptionNumber = pharmacistState.unhandled_message.trimmed_body
       console.log(prescriptionNumber)
