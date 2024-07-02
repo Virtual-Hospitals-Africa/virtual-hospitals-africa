@@ -1,4 +1,3 @@
-import { FreshContext, PageProps } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
 import PharmacistsTable from '../../components/health_worker/PharmacistsTable.tsx'
 import { LoggedInRegulator } from '../../types.ts'
@@ -26,37 +25,24 @@ const pharmacists = [
   }
 ]
 
-type PharmacistsPageProps = {
-    pharmacists: typeof pharmacists
-    regulator: LoggedInRegulator['regulator']
-}
-
-export const handler: PageProps<PharmacistsPageProps> = {
-    async GET(_req: Request, ctx: FreshContext<LoggedInRegulator>) {
-        return ctx.render({
-            pharmacists,
-            regulator: ctx.state.regulator
-        })
-    },
-}
-
-export default function PharmacistTable(
-    props: PageProps<PharmacistsPageProps>,
+export default async function PharmacistsPage(
+  req: Request,
+  ctx: { route: string, url: URL, state: { regulator: LoggedInRegulator['regulator'] } }
 ) {
-    return (
-        <Layout
-          title="Pharmacists"
-          route={props.route}
-          url={props.url}
-          regulator={props.data.regulator}
-          params={props.params}
-          variant='regulator home page'
-        >
-          <PharmacistsTable
-            isAdmin={true} 
-            pharmacists={props.data.pharmacists}
-            pathname={props.url.pathname}
-          />    
-        </Layout>  
-    )
+  const regulator = ctx.state.regulator;
+
+  return (
+    <Layout
+      title='Pharmacists'
+      route={ctx.route}
+      url={ctx.url}
+      regulator={regulator}
+      params={{}}
+      variant='regulator home page'
+    >
+      <PharmacistsTable
+        pharmacists={pharmacists}
+      />
+    </Layout>
+  )
 }
