@@ -1,9 +1,11 @@
 import { JSX } from 'preact'
 
 function HeroIconOutline(
-  { className = 'w-6 h-6', withCircle = false, children, ...props }: JSX.SVGAttributes<
-    SVGSVGElement
-  > & { withCircle?: boolean },
+  { className = 'w-6 h-6', withCircle = false, children, ...props }:
+    & JSX.SVGAttributes<
+      SVGSVGElement
+    >
+    & { withCircle?: boolean },
 ): JSX.Element {
   return (
     <svg
@@ -14,17 +16,18 @@ function HeroIconOutline(
       className={className}
       {...props}
     >
-      {withCircle && <circle cx="15" cy="15" r="14" stroke="currentColor" />}
-      <g transform="translate(3, 3)">
+      {withCircle && <circle cx='15' cy='15' r='14' stroke='currentColor' />}
+      <g transform='translate(3, 3)'>
         {children}
       </g>
     </svg>
   )
 }
 
-
 export function ClipboardDocumentCheckIcon(
-  { withCircle = false, ...props }: JSX.SVGAttributes<SVGSVGElement> & { withCircle?: boolean },
+  { withCircle = false, ...props }: JSX.SVGAttributes<SVGSVGElement> & {
+    withCircle?: boolean
+  },
 ) {
   return (
     <HeroIconOutline withCircle={withCircle} {...props}>
@@ -39,7 +42,9 @@ export function ClipboardDocumentCheckIcon(
 }
 
 export function CalendarDaysIcon(
-  { withCircle = false, ...props }: JSX.SVGAttributes<SVGSVGElement> & { withCircle?: boolean },
+  { withCircle = false, ...props }: JSX.SVGAttributes<SVGSVGElement> & {
+    withCircle?: boolean
+  },
 ) {
   return (
     <HeroIconOutline withCircle={withCircle} {...props}>
@@ -54,7 +59,9 @@ export function CalendarDaysIcon(
 }
 
 export function ShieldExclamationIcon(
-  { withCircle = false, ...props }: JSX.SVGAttributes<SVGSVGElement> & { withCircle?: boolean },
+  { withCircle = false, ...props }: JSX.SVGAttributes<SVGSVGElement> & {
+    withCircle?: boolean
+  },
 ) {
   return (
     <HeroIconOutline withCircle={withCircle} {...props}>

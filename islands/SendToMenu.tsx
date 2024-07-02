@@ -14,11 +14,10 @@ import {
 } from '../components/library/icons/heroicons/outline.tsx'
 import { Sendable } from './types.ts'
 import {
-  ClipboardDocumentCheckIcon,
   CalendarDaysIcon,
-  ShieldExclamationIcon
+  ClipboardDocumentCheckIcon,
+  ShieldExclamationIcon,
 } from '../components/library/icons/SendToDetailView.tsx'
-
 
 const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'
 
@@ -363,26 +362,26 @@ export function SendableComponent(
 }
 
 export function PersonDetailView(
-  { person, onBack, additionalDetails, setAdditionalDetails }: {
-    person: Sendable
+  { entity, onBack, additionalDetails, setAdditionalDetails }: {
+    entity: Sendable
     onBack: () => void
     additionalDetails: string
     setAdditionalDetails: (details: string) => void
   },
 ) {
-  const [showCircleReview, setShowCircleReview] = useState(false);
-  const [showCircleAppointment, setShowCircleAppointment] = useState(false);
-  const [showCircleEmergency, setShowCircleEmergency] = useState(false);
+  const [showCircleReview, setShowCircleReview] = useState(false)
+  const [showCircleAppointment, setShowCircleAppointment] = useState(false)
+  const [showCircleEmergency, setShowCircleEmergency] = useState(false)
 
   const handleActionClick = (action: string) => {
     if (action === 'review') {
-      setShowCircleReview(!showCircleReview);
+      setShowCircleReview(!showCircleReview)
     } else if (action === 'appointment') {
-      setShowCircleAppointment(!showCircleAppointment);
+      setShowCircleAppointment(!showCircleAppointment)
     } else if (action === 'emergency') {
-      setShowCircleEmergency(!showCircleEmergency);
+      setShowCircleEmergency(!showCircleEmergency)
     }
-  };
+  }
 
   return (
     <div className='group relative flex flex-col'>
@@ -391,23 +390,23 @@ export function PersonDetailView(
           <div className='flex items-center cursor-pointer' onClick={onBack}>
             <span className='relative inline-block flex-shrink-0'>
               <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
-                {person.image.type === 'avatar'
+                {entity.image.type === 'avatar'
                   ? (
                     <img
                       className='h-10 w-10 rounded-full'
-                      src={person.image.url}
-                      alt={person.name}
+                      src={entity.image.url}
+                      alt={entity.name}
                     />
                   )
                   : (
                     <div className='h-6 w-6 flex items-center justify-center'>
-                      {person.image.component}
+                      {entity.image.component}
                     </div>
                   )}
-                {person.online != null && (
+                {entity.online != null && (
                   <span
                     className={`${
-                      person.online ? 'bg-green-400' : 'bg-gray-300'
+                      entity.online ? 'bg-green-400' : 'bg-gray-300'
                     } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
                     aria-hidden='true'
                   />
@@ -416,19 +415,19 @@ export function PersonDetailView(
             </span>
             <div className='ml-4'>
               <h1 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
-                {person.name}
+                {entity.name}
               </h1>
-              {person.description && (
+              {entity.description && (
                 <p className='text-sm font-sans text-gray-500 leading-normal'>
-                  {person.description.text}
+                  {entity.description.text}
                 </p>
               )}
               <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
-                {person.status}
+                {entity.status}
               </p>
-              {person.reopenTime && (
+              {entity.reopenTime && (
                 <p className='text-xs font-ubuntu text-gray-500'>
-                  {person.reopenTime}
+                  {entity.reopenTime}
                 </p>
               )}
             </div>
@@ -460,10 +459,14 @@ export function PersonDetailView(
         <ul className='space-y-6 py-6'>
           <li className='flex items-center'>
             <span className='mr-2 text-indigo-900'>
-              <ClipboardDocumentCheckIcon withCircle={showCircleReview}/>
+              <ClipboardDocumentCheckIcon
+                className={`w-6 h-6 ${
+                  showCircleReview ? 'bg-indigo-200 rounded-full p-1' : ''
+                }`}
+              />
             </span>
-            <span 
-              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline' 
+            <span
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
               onClick={() => handleActionClick('review')}
             >
               Request Review
@@ -471,10 +474,14 @@ export function PersonDetailView(
           </li>
           <li className='flex items-center'>
             <span className='mr-2 text-blue-500'>
-              <CalendarDaysIcon withCircle={showCircleAppointment}/>
+              <CalendarDaysIcon
+                className={`w-6 h-6 ${
+                  showCircleAppointment ? 'bg-blue-200 rounded-full p-1' : ''
+                }`}
+              />
             </span>
-            <span 
-              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline' 
+            <span
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
               onClick={() => handleActionClick('appointment')}
             >
               Make Appointment
@@ -482,10 +489,14 @@ export function PersonDetailView(
           </li>
           <li className='flex items-center'>
             <span className='mr-2 text-red-500'>
-              <ShieldExclamationIcon withCircle={showCircleEmergency}/>
+              <ShieldExclamationIcon
+                className={`w-6 h-6 ${
+                  showCircleEmergency ? 'bg-red-200 rounded-full p-1' : ''
+                }`}
+              />
             </span>
-            <span 
-              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline' 
+            <span
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
               onClick={() => handleActionClick('emergency')}
             >
               Declare Emergency
@@ -514,14 +525,17 @@ export function PersonDetailView(
 
 export default function SendToMenu() {
   const [open, setOpen] = useState(false)
-  const [selectedPerson, setSelectedPerson] = useState<Sendable | null>(null)
-  const handlePersonClick = (person: Sendable) => {
-    if (person.type === 'entity' && person.entity_type === 'person') {
-      setSelectedPerson(person)
+  const [selectedEntity, setSelectedEntity] = useState<Sendable | null>(null)
+  const handleEntityClick = (entity: Sendable) => {
+    if (
+      entity.type === 'entity' &&
+      (entity.entity_type === 'person' || entity.entity_type === 'facility')
+    ) {
+      setSelectedEntity(entity)
     }
   }
   const handleBackClick = () => {
-    setSelectedPerson(null)
+    setSelectedEntity(null)
   }
   const [additionalDetails, setAdditionalDetails] = useState<string>('')
 
@@ -588,10 +602,10 @@ export default function SendToMenu() {
                           </div>
                         </div>
                       </div>
-                      {selectedPerson
+                      {selectedEntity
                         ? (
                           <PersonDetailView
-                            person={selectedPerson}
+                            entity={selectedEntity}
                             onBack={handleBackClick}
                             additionalDetails={additionalDetails}
                             setAdditionalDetails={setAdditionalDetails}
@@ -602,21 +616,21 @@ export default function SendToMenu() {
                             role='list'
                             className='flex-1 divide-y divide-gray-200 overflow-y-auto'
                           >
-                            {sendable.map((person) => (
+                            {updatedSendable.map((entity) => (
                               <SendableComponent
-                                key={person.name}
-                                name={person.name}
-                                description={person.description}
-                                imageUrl={person.image.type === 'avatar'
-                                  ? person.image.url
+                                key={entity.name}
+                                name={entity.name}
+                                description={entity.description}
+                                imageUrl={entity.image.type === 'avatar'
+                                  ? entity.image.url
                                   : undefined}
-                                imageComponent={person.image.type === 'icon'
-                                  ? person.image.component
+                                imageComponent={entity.image.type === 'icon'
+                                  ? entity.image.component
                                   : null}
-                                online={person.online}
-                                status={person.status}
-                                reopenTime={person.reopenTime}
-                                onClick={() => handlePersonClick(person)}
+                                online={entity.online}
+                                status={entity.status}
+                                reopenTime={entity.reopenTime}
+                                onClick={() => handleEntityClick(entity)}
                               />
                             ))}
                           </ul>
