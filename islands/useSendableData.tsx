@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { updateOnlineStatus } from './SendToMenu.tsx'; 
+import { Sendable } from './types.ts';
 
-export function useSendableData(initialData) {
+
+export function useSendableData(initialData : Sendable[]) {
   const [sendableData, setSendableData] = useState(initialData);
 
   useEffect(() => {
