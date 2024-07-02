@@ -8,7 +8,7 @@ import {
   WhatsAppSingleSendable,
 } from '../types.ts'
 import { basename } from 'node:path'
-import { generatePDF, deletePDF } from '../util/pdfUtils.ts'
+import { deletePDF, generatePDF } from '../util/pdfUtils.ts'
 
 const phoneNumbers = {
   patient: Deno.env.get('WHATSAPP_FROM_PHONE_NUMBER_PATIENT')!,
@@ -320,13 +320,13 @@ export async function sendMessagePDFFromWebPage(opts: {
   message: string
   url: string
 }): Promise<{
-  messaging_product: 'whatsapp',
-  contacts: [{ input: string; wa_id: string }],
+  messaging_product: 'whatsapp'
+  contacts: [{ input: string; wa_id: string }]
   messages: [{ id: string }]
 }> {
-  const pdfPath = await generatePDF(opts.url);
-  const filename = basename(pdfPath);
-  const mediaId = await postMedia(pdfPath, 'application/pdf', opts.chatbot_name);
+  const pdfPath = await generatePDF(opts.url)
+  const filename = basename(pdfPath)
+  const mediaId = await postMedia(pdfPath, 'application/pdf', opts.chatbot_name)
   deletePDF(pdfPath)
 
   return await postMessage(opts.chatbot_name, {
@@ -336,7 +336,7 @@ export async function sendMessagePDFFromWebPage(opts: {
     document: {
       id: mediaId,
       caption: opts.message,
-      filename: filename
-    }
+      filename: filename,
+    },
   })
 }
