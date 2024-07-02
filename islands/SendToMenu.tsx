@@ -19,6 +19,7 @@ import {
   ShieldExclamationIcon,
 } from '../components/library/icons/SendToDetailView.tsx'
 import { useSendableData } from './useSendableData.tsx'
+import SelectedPatient from './SelectedPatient.tsx'
 
 const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'
 
@@ -440,26 +441,11 @@ export function PersonDetailView(
             </div>
           </div>
         </div>
-        <div className='px-5 py-6'>
-          <div className='flex items-center'>
-            <img
-              className='h-10 w-10 rounded-full mr-4'
-              src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-              alt='Susan Mlalazi'
-            />
-            <div>
-              <h2 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
-                Susan Mlalazi
-              </h2>
-              <p className='text-sm font-sans text-gray-500 leading-normal'>
-                female, 16/3/2024
-              </p>
-              <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
-                <a href='/Notes' className='text-blue-500'>Clinical Notes</a>
-              </p>
-            </div>
-          </div>
-        </div>
+        <SelectedPatient
+          name='Susan Mlalazi'
+          description='female, 16/3/2024'
+          imageUrl='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+        />
       </div>
       <div className='border-t border-gray-200'></div>
       <div className='mt-4 px-5'>
@@ -546,7 +532,7 @@ export default function SendToMenu() {
   }
   const [additionalDetails, setAdditionalDetails] = useState<string>('')
 
-  const updatedSendable = useSendableData(sendable);
+  const updatedSendable = useSendableData(sendable)
 
   return (
     <div className='flex-1 max-w-xl'>
