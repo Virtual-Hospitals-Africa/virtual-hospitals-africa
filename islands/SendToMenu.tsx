@@ -377,10 +377,16 @@ export function PersonDetailView(
   const handleActionClick = (action: string) => {
     if (action === 'review') {
       setShowCircleReview(!showCircleReview)
+      setShowCircleAppointment(false)
+      setShowCircleEmergency(false)
     } else if (action === 'appointment') {
       setShowCircleAppointment(!showCircleAppointment)
+      setShowCircleReview(false)
+      setShowCircleEmergency(false)
     } else if (action === 'emergency') {
       setShowCircleEmergency(!showCircleEmergency)
+      setShowCircleReview(false)
+      setShowCircleAppointment(false)
     }
   }
 
