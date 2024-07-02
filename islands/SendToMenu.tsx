@@ -498,7 +498,9 @@ export function PersonDetailView(
         </ul>
       </div>
       <div className='mt-6 px-4'>
-        <h2 className='text-sm font-sans font-medium text-gray-900'>Additional Details</h2>
+        <h2 className='text-sm font-sans font-medium text-gray-900'>
+          Additional Details
+        </h2>
         <textarea
           className='w-full border border-gray-300 rounded-md p-2 mt-2'
           value={additionalDetails}
