@@ -21,7 +21,11 @@ async function recreateDatabase() {
     await runCommand('dropdb', {
       args: [opts.dbname, '-U', opts!.username],
     })
-  } catch (_e) {
+  } catch (e) {
+    if (e.message.includes('other session')) {
+      console.error('Database is in use, cannot drop.')
+      Deno.exit(1)
+    }
     console.log('Database does not exist, skipping drop.')
   }
 
