@@ -182,6 +182,7 @@ import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $timer from './islands/timer.tsx'
 import * as $types from './islands/types.ts'
+import * as $useSendableData from './islands/useSendableData.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
@@ -432,6 +433,7 @@ const manifest = {
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/timer.tsx': $timer,
     './islands/types.ts': $types,
+    './islands/useSendableData.tsx': $useSendableData,
     './islands/vitals/Form.tsx': $vitals_Form,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
     './islands/waiting_room/AddPatientSearch.tsx':

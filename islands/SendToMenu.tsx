@@ -18,6 +18,7 @@ import {
   ClipboardDocumentCheckIcon,
   ShieldExclamationIcon,
 } from '../components/library/icons/SendToDetailView.tsx'
+import { useSendableData } from './useSendableData.tsx'
 
 const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'
 
@@ -90,7 +91,7 @@ function checkIfOpen(openingHours: any): boolean {
   return false
 }
 
-async function updateOnlineStatus(sendable: Sendable[]) {
+export async function updateOnlineStatus(sendable: Sendable[]) {
   const updatedSendable = [...sendable]
   for (let i = 0; i < updatedSendable.length; i++) {
     const item = updatedSendable[i]
@@ -539,17 +540,7 @@ export default function SendToMenu() {
   }
   const [additionalDetails, setAdditionalDetails] = useState<string>('')
 
-  const [updatedSendable, setUpdatedSendable] = useState<Sendable[]>(sendable)
-  useEffect(() => {
-    async function fetchUpdatedStatus() {
-      if (sendable && sendable.length > 0) {
-        const updatedData = await updateOnlineStatus(sendable)
-        setUpdatedSendable(updatedData)
-      }
-    }
-
-    fetchUpdatedStatus()
-  }, [])
+  const updatedSendable = useSendableData(sendable);
 
   return (
     <div className='flex-1 max-w-xl'>
