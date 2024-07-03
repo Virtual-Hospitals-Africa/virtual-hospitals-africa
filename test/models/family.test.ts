@@ -13,11 +13,11 @@ describe(
       itUsesTrxAnd(
         'stores the gender-neutral guardian relationship',
         async (trx) => {
-          const guardian = await patients.upsert(trx, {
+          const guardian = await patients.insert(trx, {
             name: 'Billy Bob',
             gender: 'male',
           })
-          const dependent = await patients.upsert(trx, {
+          const dependent = await patients.insert(trx, {
             name: 'Janey Jane',
             gender: 'female',
           })
@@ -88,8 +88,8 @@ describe(
       itUsesTrxAnd(
         "updates an existing patient's gender if the provided family relation is gendered",
         async (trx) => {
-          const dependent = await patients.upsert(trx, { name: 'Billy Bob' })
-          const guardian = await patients.upsert(trx, { name: 'Janey Jane' })
+          const dependent = await patients.insert(trx, { name: 'Billy Bob' })
+          const guardian = await patients.insert(trx, { name: 'Janey Jane' })
           const patient_phone_number = randomPhoneNumber()
           await family.upsert(trx, dependent.id, {
             guardians: [{
@@ -138,8 +138,8 @@ describe(
       itUsesTrxAnd(
         "does not update an existing patient's gender if the provided family relation is not gendered",
         async (trx) => {
-          const dependent = await patients.upsert(trx, { name: 'Billy Bob' })
-          const guardian = await patients.upsert(trx, {
+          const dependent = await patients.insert(trx, { name: 'Billy Bob' })
+          const guardian = await patients.insert(trx, {
             name: 'Janey Jane',
             gender: 'female',
           })
@@ -191,7 +191,7 @@ describe(
       itUsesTrxAnd(
         'inserts a new patient if a specified guardian does not already exist',
         async (trx) => {
-          const dependent = await patients.upsert(trx, { name: 'Billy Bob' })
+          const dependent = await patients.insert(trx, { name: 'Billy Bob' })
 
           const patient_phone_number = randomPhoneNumber()
           await family.upsert(trx, dependent.id, {
@@ -240,8 +240,8 @@ describe(
       itUsesTrxAnd(
         'removes an existing relation, but not the patient if not present',
         async (trx) => {
-          const dependent = await patients.upsert(trx, { name: 'Billy Bob' })
-          const guardian = await patients.upsert(trx, {
+          const dependent = await patients.insert(trx, { name: 'Billy Bob' })
+          const guardian = await patients.insert(trx, {
             name: 'Janey Jane',
             gender: 'female',
           })
@@ -285,7 +285,7 @@ describe(
       )
 
       itUsesTrxAnd('supports changing your next of kin', async (trx) => {
-        const dependent = await patients.upsert(trx, { name: 'Billy Bob' })
+        const dependent = await patients.insert(trx, { name: 'Billy Bob' })
 
         const mother_phone_number = randomPhoneNumber()
         const father_phone_number = randomPhoneNumber()
@@ -408,7 +408,7 @@ describe(
       })
 
       itUsesTrxAnd('inserts a new patient other next of kin', async (trx) => {
-        const dependent = await patients.upsert(trx, { name: 'Billy Bob' })
+        const dependent = await patients.insert(trx, { name: 'Billy Bob' })
 
         const patient_phone_number = randomPhoneNumber()
         await family.upsert(trx, dependent.id, {

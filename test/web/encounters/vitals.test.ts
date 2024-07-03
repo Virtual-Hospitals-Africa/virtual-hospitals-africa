@@ -16,7 +16,7 @@ describe(
   { sanitizeResources: false, sanitizeOps: false },
   () => {
     it('renders a page on GET for an open encounter', async () => {
-      const patient = await patients.upsert(db, { name: 'Test Patient' })
+      const patient = await patients.insert(db, { name: 'Test Patient' })
       const { healthWorker, fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })
@@ -57,7 +57,7 @@ describe(
     })
 
     it('404s on a GET for a patient with no open encounter', async () => {
-      const patient = await patients.upsert(db, { name: 'Test Patient' })
+      const patient = await patients.insert(db, { name: 'Test Patient' })
       const { fetch } = await addTestHealthWorkerWithSession(db, {
         scenario: 'approved-nurse',
       })

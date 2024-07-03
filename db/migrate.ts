@@ -7,6 +7,7 @@ import * as seed from './seed/run.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './create-migration.ts'
 import { delay } from 'std/async/delay.ts'
+import { restore } from './restore.ts'
 
 const migrations: Record<
   string,
@@ -99,6 +100,8 @@ export const migrate = {
     return migrator.migrateToLatest()
   },
   async all() {
+    await restore('medplum')
+
     console.log('Running medplum migrations...')
     const medplum_server = await runMedplumServer()
 

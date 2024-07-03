@@ -15,7 +15,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',
@@ -58,9 +58,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(
       callArgs.messages.messageBody,
-      'Thank you for sharing your location.\n' +
-        '\n' +
-        'Click the button below to see your nearest health organizations.',
+      'Click the button below to see your nearest health organizations',
     )
 
     assertEquals(callArgs.messages.action.button, 'Nearest Facilities')

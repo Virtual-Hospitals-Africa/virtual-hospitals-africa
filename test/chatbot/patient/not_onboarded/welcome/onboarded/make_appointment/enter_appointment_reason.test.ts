@@ -12,7 +12,7 @@ import generateUUID from '../../../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for media after inquiring appointment reason', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state:
         'not_onboarded:make_appointment:enter_national_id_number',
       phone_number,
@@ -67,6 +67,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsAppTwo, 'patient')
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
             'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',

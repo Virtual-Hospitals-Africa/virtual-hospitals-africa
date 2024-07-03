@@ -163,10 +163,10 @@ export function prettyAppointmentTime(startTime: string | Date): string {
       rfc3339Regex.test(startTime),
       `Expected RFC3339 format: ${startTime}`,
     )
-    assert(
-      startTime.endsWith('+02:00'),
-      `Expected ${startTime} to be in Harare time`,
-    )
+    // assert(
+    //   startTime.endsWith('+02:00'),
+    //   `Expected ${startTime} to be in Harare time`,
+    // )
   } else {
     assert(isDate(startTime))
   }

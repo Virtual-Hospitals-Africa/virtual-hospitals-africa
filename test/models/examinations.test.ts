@@ -18,7 +18,7 @@ describe(
         'returns the recommended examinations for an adult woman',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.upsert(trx, {
+            const patient = await patients.insert(trx, {
               name: 'Test Woman',
               gender: 'female',
               date_of_birth: '1990-01-01',
@@ -50,7 +50,7 @@ describe(
         'returns the recommended examinations for a maternity visit',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.upsert(trx, {
+            const patient = await patients.insert(trx, {
               name: 'Test Woman',
               gender: 'female',
               date_of_birth: '1990-01-01',
@@ -88,7 +88,7 @@ describe(
             const health_worker = await addTestHealthWorker(trx, {
               scenario: 'approved-nurse',
             })
-            const patient = await patients.upsert(trx, {
+            const patient = await patients.insert(trx, {
               name: 'Test Woman',
               gender: 'female',
               date_of_birth: '1990-01-01',
@@ -158,7 +158,7 @@ describe(
           const nurse = await addTestHealthWorker(trx, {
             scenario: 'approved-nurse',
           })
-          const patient = await patients.upsert(trx, { name: 'Test Patient' })
+          const patient = await patients.insert(trx, { name: 'Test Patient' })
           const encounter = await patient_encounters.upsert(
             trx,
             '00000000-0000-0000-0000-000000000001',
@@ -1015,7 +1015,7 @@ describe(
           const nurse = await addTestHealthWorker(trx, {
             scenario: 'approved-nurse',
           })
-          const patient = await patients.upsert(trx, { name: 'Test Patient' })
+          const patient = await patients.insert(trx, { name: 'Test Patient' })
           const encounter = await patient_encounters.upsert(
             trx,
             '00000000-0000-0000-0000-000000000001',

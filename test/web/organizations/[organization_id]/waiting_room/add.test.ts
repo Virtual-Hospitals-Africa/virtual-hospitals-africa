@@ -39,7 +39,7 @@ describe(
     })
 
     it('creates a patient encounter on POST', async () => {
-      const testPatient = await patients.upsert(db, {
+      const testPatient = await patients.insert(db, {
         name: 'Test Patient',
       })
       const { fetch } = await addTestHealthWorkerWithSession(db, {

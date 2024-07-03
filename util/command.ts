@@ -21,5 +21,8 @@ export async function runCommand(
     const error = new TextDecoder().decode(result.stderr)
     throw new Error(error)
   }
+  if (options?.stdout === 'inherit') {
+    return ''
+  }
   return new TextDecoder().decode(result.stdout)
 }

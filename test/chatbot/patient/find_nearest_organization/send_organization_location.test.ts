@@ -12,7 +12,7 @@ import generateUUID from '../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('comes back to main menu after clicking button', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state:
         'find_nearest_organization:send_organization_location',
       phone_number,
@@ -45,6 +45,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
             'Welcome to Virtual Hospitals Africa. What can I help you with today?',

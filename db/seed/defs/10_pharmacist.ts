@@ -6,18 +6,14 @@ export default create(['pharmacists'], importFromCsv)
 
 // deno-lint-ignore no-explicit-any
 async function importFromCsv(db: Kysely<any>) {
-  const pharmacists = await parseCsv('./db/resources/pharmacists.tsv', {
-    columnSeparator: '\t',
-  })
-
-  const pharmacistsData = []
-
-  for await (const pharmacist of pharmacists) {
-    pharmacistsData.push(pharmacist)
+  for await (
+    const pharmacist of parseCsv('./db/resources/pharmacists.tsv', {
+      columnSeparator: '\t',
+    })
+  ) {
+    await db
+      .insertInto('pharmacists')
+      .values(pharmacist)
+      .execute()
   }
-
-  await db
-    .insertInto('pharmacists')
-    .values(pharmacistsData)
-    .execute()
 }

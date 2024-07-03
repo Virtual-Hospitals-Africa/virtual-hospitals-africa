@@ -16,7 +16,7 @@ describe(
       itUsesTrxAnd(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is known',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           const tablet = await trx
             .selectFrom('manufactured_medications')
@@ -118,7 +118,7 @@ describe(
       itUsesTrxAnd(
         'upserts pre-existing conditions (those without an end_date) where the manufacturer is unknown',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           const tablet = await trx
             .selectFrom('medications')
@@ -212,7 +212,7 @@ describe(
       itUsesTrxAnd(
         'converts a medication with an end_date into schedule with a duration in days',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           const tablet = await trx
             .selectFrom('medications')
@@ -312,7 +312,7 @@ describe(
       )
 
       itUsesTrxAnd('handles comorbidities', async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+        const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
         await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
@@ -343,7 +343,7 @@ describe(
       itUsesTrxAnd(
         'removes comorbidities if not present by their id, while editing others',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           await patient_conditions.upsertPreExisting(trx, patient.id, [
             {
@@ -390,7 +390,7 @@ describe(
       itUsesTrxAnd(
         'removes medications if not present by their id, while editing others',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           const injection = await trx
             .selectFrom('medications')
@@ -498,7 +498,7 @@ describe(
       itUsesTrxAnd(
         'removes pre-existing conditions no longer present',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           await patient_conditions.upsertPreExisting(trx, patient.id, [
             {
@@ -526,7 +526,7 @@ describe(
       itUsesTrxAnd(
         '400s if the condition is a procedure or surgery',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
           await assertRejects(
             () =>
               patient_conditions.upsertPreExisting(trx, patient.id, [
@@ -546,7 +546,7 @@ describe(
       itUsesTrxAnd(
         'upserts past conditions, those with an end_date',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           await patient_conditions.upsertPastMedical(trx, patient.id, [
             {
@@ -568,7 +568,7 @@ describe(
         },
       )
       itUsesTrxAnd('400s if no end date is provided', async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+        const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
         await assertRejects(
           () =>
@@ -589,7 +589,7 @@ describe(
       itUsesTrxAnd(
         'upserts major surgery, those condition with is_procedure = true',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           await patient_conditions.upsertMajorSurgeries(trx, patient.id, [
             { id: 'c_4145', start_date: '2020-02-01' },
@@ -610,7 +610,7 @@ describe(
       )
 
       itUsesTrxAnd('400s if the condition is not a procedure', async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+        const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
         await assertRejects(
           () =>
@@ -628,7 +628,7 @@ describe(
       itUsesTrxAnd(
         'allows 2 surgeries if the dates are distinct',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+          const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
           await patient_conditions.upsertMajorSurgeries(trx, patient.id, [
             { id: 'c_4145', start_date: '2020-02-01' },
@@ -646,7 +646,7 @@ describe(
       )
 
       itUsesTrxAnd('400s if 2 surgeries have the same date', async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+        const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
         const error = await assertRejects(
           () =>
@@ -691,7 +691,7 @@ describe(
 
           const insertionOrders = permutations(insertions)
           for (const insertionOrder of insertionOrders) {
-            patient = await patients.upsert(trx, { name: 'Billy Bob' })
+            patient = await patients.insert(trx, { name: 'Billy Bob' })
             for (const insertion of insertionOrder) {
               await insertion()
             }

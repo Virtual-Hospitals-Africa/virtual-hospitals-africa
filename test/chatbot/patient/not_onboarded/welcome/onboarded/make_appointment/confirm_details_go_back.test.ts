@@ -12,7 +12,7 @@ import generateUUID from '../../../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('ends after not confirming details', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
       name: 'test',
@@ -44,8 +44,16 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
-          type: 'string',
+          type: 'buttons',
+          buttonText: 'Menu',
+          options: [
+            {
+              id: 'main_menu',
+              title: 'Main Menu',
+            },
+          ],
           messageBody:
             'This is the end of the demo. Thank you for participating!',
         },

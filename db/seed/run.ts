@@ -18,7 +18,7 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
   seeds[seedName] = seed.default || seed
 }
 
-const seedTargets = sortBy(Object.keys(seeds), key => {
+const seedTargets = sortBy(Object.keys(seeds), (key) => {
   const numeric = parseInt(key.split('_')[0])
   if (isNaN(numeric)) {
     throw new Error('Seed file names must start with a number. Got: ' + key)
