@@ -275,6 +275,44 @@ type TeamMemberProps = {
   reopenTime?: string
 }
 
+const notificationMethods = [
+  { id: '0', title: 'Request Review', icon: ClipboardDocumentCheckIcon, color: 'text-indigo-900', ringColor: 'ring-indigo-900' },
+  { id: '1', title: 'Make Appointment', icon: CalendarDaysIcon, color: 'text-blue-500', ringColor: 'ring-blue-500' },
+  { id: '2', title: 'Declare Emergency', icon: ShieldExclamationIcon, color: 'text-red-500', ringColor: 'ring-red-500' },
+]
+
+type CustomRadioProps = {
+  icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element
+  value: string
+  name: string
+  checked: boolean;
+  onChange: (value: string) => void
+  label: string
+  color: string
+  ringColor: string
+}
+
+const CustomRadio: React.FC<CustomRadioProps> = ({ icon: Icon, value, name, checked, onChange, label, color, ringColor }) => (
+  <label className='flex items-center space-x-3 cursor-pointer'>
+    <input
+      type='radio'
+      name={name}
+      value={value}
+      checked={checked}
+      onChange={() => onChange(value)}
+      className='hidden'
+    />
+    <div
+      className={`w-8 h-8 flex items-center justify-center rounded-full border-2 ${color} ${checked ? `${ringColor} ring-2` : ''}`}
+    >
+      <Icon className={`w-7 h-7 ${color}`} strokeWidth={1.5}/>
+    </div>
+    <span className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'>
+      {label}
+    </span>
+  </label>
+)
+
 export function SendableComponent(
   {
     name,
@@ -373,25 +411,7 @@ export function PersonDetailView(
     setAdditionalDetails: (details: string) => void
   },
 ) {
-  const [showCircleReview, setShowCircleReview] = useState(false)
-  const [showCircleAppointment, setShowCircleAppointment] = useState(false)
-  const [showCircleEmergency, setShowCircleEmergency] = useState(false)
-
-  const handleActionClick = (action: string) => {
-    if (action === 'review') {
-      setShowCircleReview(!showCircleReview)
-      setShowCircleAppointment(false)
-      setShowCircleEmergency(false)
-    } else if (action === 'appointment') {
-      setShowCircleAppointment(!showCircleAppointment)
-      setShowCircleReview(false)
-      setShowCircleEmergency(false)
-    } else if (action === 'emergency') {
-      setShowCircleEmergency(!showCircleEmergency)
-      setShowCircleReview(false)
-      setShowCircleAppointment(false)
-    }
-  }
+  const [selectedRequestType, setSelectedRequestType] = useState(notificationMethods[0].id)
 
   return (
     <div className='group relative flex flex-col'>
@@ -451,53 +471,23 @@ export function PersonDetailView(
       </div>
       <div className='border-t border-gray-200'></div>
       <div className='mt-4 px-5'>
-        <ul className='space-y-6 py-6'>
-          <li className='flex items-center'>
-            <span className='mr-2 text-indigo-900'>
-              <ClipboardDocumentCheckIcon
-                className={`w-6 h-6 ${
-                  showCircleReview ? 'bg-indigo-200 rounded-full p-1' : ''
-                }`}
-              />
-            </span>
-            <span
-              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
-              onClick={() => handleActionClick('review')}
-            >
-              Request Review
-            </span>
-          </li>
-          <li className='flex items-center'>
-            <span className='mr-2 text-blue-500'>
-              <CalendarDaysIcon
-                className={`w-6 h-6 ${
-                  showCircleAppointment ? 'bg-blue-200 rounded-full p-1' : ''
-                }`}
-              />
-            </span>
-            <span
-              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
-              onClick={() => handleActionClick('appointment')}
-            >
-              Make Appointment
-            </span>
-          </li>
-          <li className='flex items-center'>
-            <span className='mr-2 text-red-500'>
-              <ShieldExclamationIcon
-                className={`w-6 h-6 ${
-                  showCircleEmergency ? 'bg-red-200 rounded-full p-1' : ''
-                }`}
-              />
-            </span>
-            <span
-              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
-              onClick={() => handleActionClick('emergency')}
-            >
-              Declare Emergency
-            </span>
-          </li>
-        </ul>
+
+      <div className="space-y-4">
+          {notificationMethods.map((method) => (
+            <CustomRadio
+              key={method.id}
+              icon={method.icon}
+              value={method.id}
+              name="send_to.request_type"
+              checked={selectedRequestType === method.id}
+              onChange={setSelectedRequestType}
+              label={method.title}
+              color={method.color}
+              ringColor={method.ringColor}
+            />
+          ))}
+        </div>
+        
       </div>
       <div className='mt-6 px-4'>
         <h2 className='text-sm font-sans font-medium text-gray-900'>
