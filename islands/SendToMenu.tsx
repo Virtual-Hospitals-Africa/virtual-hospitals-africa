@@ -12,6 +12,14 @@ import {
   DevicePhoneMobileIcon,
   MagnifyingGlassIcon,
 } from '../components/library/icons/heroicons/outline.tsx'
+import { Sendable } from './types.ts'
+import {
+  CalendarDaysIcon,
+  ClipboardDocumentCheckIcon,
+  ShieldExclamationIcon,
+} from '../components/library/icons/SendToDetailView.tsx'
+import { useSendableData } from './useSendableData.tsx'
+import SelectedPatient from './SelectedPatient.tsx'
 
 const apiKey = 'AIzaSyAsdOgA2ZCD3jdxuoR0jN0lYYV3nZnBpd8'
 
@@ -86,7 +94,7 @@ function checkIfOpen(openingHours: any): boolean {
   return false
 }
 
-async function updateOnlineStatus(sendable: Sendable[]) {
+export async function updateOnlineStatus(sendable: Sendable[]) {
   const updatedSendable = [...sendable]
   for (let i = 0; i < updatedSendable.length; i++) {
     const item = updatedSendable[i]
@@ -106,12 +114,14 @@ async function updateOnlineStatus(sendable: Sendable[]) {
       }
     }
   }
+
   return updatedSendable
 }
 
 /* to make sure we got place ID
 async function updateOnlineStatus(sendable: Sendable[]) {
   const updatedSendable = [...sendable];
+
   for (let i = 0; i < updatedSendable.length; i++) {
     const item = updatedSendable[i];
     if (item.type === 'entity' && item.entity_type === 'facility') {
@@ -120,6 +130,7 @@ async function updateOnlineStatus(sendable: Sendable[]) {
         try {
           const placeId = await getPlaceId(address);
           item.status = placeId; // update status
+
           console.log(`Place ID for ${address}: ${placeId}`);
         } catch (error) {
           console.error(`Error updating status for ${address}:`, error);
@@ -129,42 +140,6 @@ async function updateOnlineStatus(sendable: Sendable[]) {
   }
   return updatedSendable;
 }*/
-
-type Sendable =
-  & {
-    image: {
-      type: 'avatar'
-      url: string
-    } | {
-      type: 'icon'
-      component: ComponentChild
-    }
-    name: string
-    description?: {
-      text: string
-      href?: string
-      parenthetical?: string
-    }
-    status: string
-    online?: true | false
-    reopenTime?: string
-    menu_options?: {
-      name: string
-      href: string
-    }[]
-    additionalDetails?: string
-  }
-  & (
-    {
-      type: 'entity'
-      entity_type: 'person' | 'facility'
-      entity_id: string
-    } | {
-      type: 'action'
-      action: 'search' | 'waiting_room' | 'device'
-      href: string
-    }
-  )
 
 const sendable: Sendable[] = [
   {
@@ -346,12 +321,12 @@ export function SendableComponent(
                 />
               )}
             </span>
-            <div className='ml-4 truncate'>
-              <p className='truncate text-sm font-semibold text-gray-900'>
+            <div className='ml-4'>
+              <p className='text-sm font-sans font-medium text-gray-900 leading-normal'>
                 {name}
               </p>
               {description && (
-                <p className='truncate text-xs text-gray-500'>
+                <p className='text-sm font-sans text-gray-500 leading-normal'>
                   {description.parenthetical === 'address'
                     ? (
                       <a
@@ -362,7 +337,7 @@ export function SendableComponent(
                         }`}
                         target='_blank'
                         rel='noopener noreferrer'
-                        className='text-blue-500'
+                        className='text-blue-500 break-words'
                       >
                         {description.text}
                       </a>
@@ -370,17 +345,15 @@ export function SendableComponent(
                     : (
                       description.text
                     )}
-                  {description.parenthetical &&
-                    ` (${description.parenthetical})`}
                 </p>
               )}
               {status && (
-                <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+                <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                   {status}
                 </p>
               )}
               {!online && reopenTime && (
-                <p className='truncate text-xs font-ubuntu text-gray-500'>
+                <p className='text-xs font-ubuntu text-gray-500'>
                   {reopenTime}
                 </p>
               )}
@@ -393,13 +366,33 @@ export function SendableComponent(
 }
 
 export function PersonDetailView(
-  { person, onBack, additionalDetails, setAdditionalDetails }: {
-    person: Sendable
+  { entity, onBack, additionalDetails, setAdditionalDetails }: {
+    entity: Sendable
     onBack: () => void
     additionalDetails: string
     setAdditionalDetails: (details: string) => void
   },
 ) {
+  const [showCircleReview, setShowCircleReview] = useState(false)
+  const [showCircleAppointment, setShowCircleAppointment] = useState(false)
+  const [showCircleEmergency, setShowCircleEmergency] = useState(false)
+
+  const handleActionClick = (action: string) => {
+    if (action === 'review') {
+      setShowCircleReview(!showCircleReview)
+      setShowCircleAppointment(false)
+      setShowCircleEmergency(false)
+    } else if (action === 'appointment') {
+      setShowCircleAppointment(!showCircleAppointment)
+      setShowCircleReview(false)
+      setShowCircleEmergency(false)
+    } else if (action === 'emergency') {
+      setShowCircleEmergency(!showCircleEmergency)
+      setShowCircleReview(false)
+      setShowCircleAppointment(false)
+    }
+  }
+
   return (
     <div className='group relative flex flex-col'>
       <div className='divide-y divide-gray-200'>
@@ -407,23 +400,23 @@ export function PersonDetailView(
           <div className='flex items-center cursor-pointer' onClick={onBack}>
             <span className='relative inline-block flex-shrink-0'>
               <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
-                {person.image.type === 'avatar'
+                {entity.image.type === 'avatar'
                   ? (
                     <img
                       className='h-10 w-10 rounded-full'
-                      src={person.image.url}
-                      alt={person.name}
+                      src={entity.image.url}
+                      alt={entity.name}
                     />
                   )
                   : (
                     <div className='h-6 w-6 flex items-center justify-center'>
-                      {person.image.component}
+                      {entity.image.component}
                     </div>
                   )}
-                {person.online != null && (
+                {entity.online != null && (
                   <span
                     className={`${
-                      person.online ? 'bg-green-400' : 'bg-gray-300'
+                      entity.online ? 'bg-green-400' : 'bg-gray-300'
                     } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
                     aria-hidden='true'
                   />
@@ -431,80 +424,85 @@ export function PersonDetailView(
               </div>
             </span>
             <div className='ml-4'>
-              <h1 className='truncate text-sm font-semibold text-gray-900'>
-                {person.name}
+              <h1 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
+                {entity.name}
               </h1>
-              {person.description && (
-                <p className='truncate text-xs text-gray-500'>
-                  {person.description.text}
+              {entity.description && (
+                <p className='text-sm font-sans text-gray-500 leading-normal'>
+                  {entity.description.text}
                 </p>
               )}
-              <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
-                {person.status}
+              <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+                {entity.status}
               </p>
-              {person.reopenTime && (
-                <p className='truncate text-xs font-ubuntu text-gray-500'>
-                  {person.reopenTime}
+              {entity.reopenTime && (
+                <p className='text-xs font-ubuntu text-gray-500'>
+                  {entity.reopenTime}
                 </p>
               )}
             </div>
           </div>
         </div>
-        <div className='px-5 py-6'>
-          <div className='flex items-center'>
-            <img
-              className='h-10 w-10 rounded-full mr-4'
-              src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-              alt='Susan Mlalazi'
-            />
-            <div>
-              <h2 className='truncate text-sm font-semibold text-gray-900'>
-                Susan Mlalazi
-              </h2>
-              <p className='truncate text-xs text-gray-500'>
-                female, 16/3/2024
-              </p>
-              <p className='truncate text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
-                <a href='/Notes' className='text-blue-500'>Clinical Notes</a>
-              </p>
-            </div>
-          </div>
-        </div>
+        <SelectedPatient
+          name='Susan Mlalazi'
+          description='female, 16/3/2024'
+          imageUrl='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+        />
       </div>
       <div className='border-t border-gray-200'></div>
-      <div className='mt-6 px-4'>
-        <ul className='space-y-4 py-6'>
+      <div className='mt-4 px-5'>
+        <ul className='space-y-6 py-6'>
           <li className='flex items-center'>
-            <span className='text-indigo-500 mr-2'>
-              <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
-                <path d='M9 19l-7-7 7-7v14zm2-14h8a1 1 0 011 1v12a1 1 0 01-1 1h-8v-2h7v-10h-7v-2zm0 10v-2h4v2h-4z'>
-                </path>
-              </svg>
+            <span className='mr-2 text-indigo-900'>
+              <ClipboardDocumentCheckIcon
+                className={`w-6 h-6 ${
+                  showCircleReview ? 'bg-indigo-200 rounded-full p-1' : ''
+                }`}
+              />
             </span>
-            <span>Request Review</span>
+            <span
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
+              onClick={() => handleActionClick('review')}
+            >
+              Request Review
+            </span>
           </li>
           <li className='flex items-center'>
-            <span className='text-blue-500 mr-2'>
-              <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
-                <path d='M12 1c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5-2.91-6.5-6.5-6.5zm0 12c-3.03 0-5.5-2.47-5.5-5.5s2.47-5.5 5.5-5.5 5.5 2.47 5.5 5.5-2.47 5.5-5.5 5.5zm-1 3h-7v1.5h7v-1.5zm0 3h-7v1.5h7v-1.5zm3.5-1.5h-1.5v1.5h1.5v-1.5zm0-3h-1.5v1.5h1.5v-1.5zm-4.5 0h-1.5v1.5h1.5v-1.5zm0-3h-1.5v1.5h1.5v-1.5zm4.5 0h-1.5v1.5h1.5v-1.5z'>
-                </path>
-              </svg>
+            <span className='mr-2 text-blue-500'>
+              <CalendarDaysIcon
+                className={`w-6 h-6 ${
+                  showCircleAppointment ? 'bg-blue-200 rounded-full p-1' : ''
+                }`}
+              />
             </span>
-            <span>Make Appointment</span>
+            <span
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
+              onClick={() => handleActionClick('appointment')}
+            >
+              Make Appointment
+            </span>
           </li>
           <li className='flex items-center'>
-            <span className='text-red-500 mr-2'>
-              <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
-                <path d='M11 15h2v2h-2v-2zm0-8h2v6h-2v-6zm1-8c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z'>
-                </path>
-              </svg>
+            <span className='mr-2 text-red-500'>
+              <ShieldExclamationIcon
+                className={`w-6 h-6 ${
+                  showCircleEmergency ? 'bg-red-200 rounded-full p-1' : ''
+                }`}
+              />
             </span>
-            <span>Declare Emergency</span>
+            <span
+              className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'
+              onClick={() => handleActionClick('emergency')}
+            >
+              Declare Emergency
+            </span>
           </li>
         </ul>
       </div>
       <div className='mt-6 px-4'>
-        <h2 className='text-lg font-semibold'>Additional Details</h2>
+        <h2 className='text-sm font-sans font-medium text-gray-900'>
+          Additional Details
+        </h2>
         <textarea
           className='w-full border border-gray-300 rounded-md p-2 mt-2'
           value={additionalDetails}
@@ -514,7 +512,7 @@ export function PersonDetailView(
         </textarea>
       </div>
       <div className='mt-6 px-4 flex justify-end'>
-        <Button type='button' variant='solid' color='blue'>
+        <Button type='button' variant='solid' color='primary'>
           Send
         </Button>
       </div>
@@ -524,28 +522,21 @@ export function PersonDetailView(
 
 export default function SendToMenu() {
   const [open, setOpen] = useState(false)
-  const [selectedPerson, setSelectedPerson] = useState<Sendable | null>(null)
-  const handlePersonClick = (person: Sendable) => {
-    if (person.type === 'entity' && person.entity_type === 'person') {
-      setSelectedPerson(person)
+  const [selectedEntity, setSelectedEntity] = useState<Sendable | null>(null)
+  const handleEntityClick = (entity: Sendable) => {
+    if (
+      entity.type === 'entity' &&
+      (entity.entity_type === 'person' || entity.entity_type === 'facility')
+    ) {
+      setSelectedEntity(entity)
     }
   }
   const handleBackClick = () => {
-    setSelectedPerson(null)
+    setSelectedEntity(null)
   }
   const [additionalDetails, setAdditionalDetails] = useState<string>('')
 
-  const [updatedSendable, setUpdatedSendable] = useState<Sendable[]>(sendable)
-  useEffect(() => {
-    async function fetchUpdatedStatus() {
-      if (sendable && sendable.length > 0) {
-        const updatedData = await updateOnlineStatus(sendable)
-        setUpdatedSendable(updatedData)
-      }
-    }
-
-    fetchUpdatedStatus()
-  }, [])
+  const updatedSendable = useSendableData(sendable)
 
   return (
     <div className='flex-1 max-w-xl'>
@@ -598,10 +589,10 @@ export default function SendToMenu() {
                           </div>
                         </div>
                       </div>
-                      {selectedPerson
+                      {selectedEntity
                         ? (
                           <PersonDetailView
-                            person={selectedPerson}
+                            entity={selectedEntity}
                             onBack={handleBackClick}
                             additionalDetails={additionalDetails}
                             setAdditionalDetails={setAdditionalDetails}
@@ -612,21 +603,21 @@ export default function SendToMenu() {
                             role='list'
                             className='flex-1 divide-y divide-gray-200 overflow-y-auto'
                           >
-                            {sendable.map((person) => (
+                            {updatedSendable.map((entity) => (
                               <SendableComponent
-                                key={person.name}
-                                name={person.name}
-                                description={person.description}
-                                imageUrl={person.image.type === 'avatar'
-                                  ? person.image.url
+                                key={entity.name}
+                                name={entity.name}
+                                description={entity.description}
+                                imageUrl={entity.image.type === 'avatar'
+                                  ? entity.image.url
                                   : undefined}
-                                imageComponent={person.image.type === 'icon'
-                                  ? person.image.component
+                                imageComponent={entity.image.type === 'icon'
+                                  ? entity.image.component
                                   : null}
-                                online={person.online}
-                                status={person.status}
-                                reopenTime={person.reopenTime}
-                                onClick={() => handlePersonClick(person)}
+                                online={entity.online}
+                                status={entity.status}
+                                reopenTime={entity.reopenTime}
+                                onClick={() => handleEntityClick(entity)}
                               />
                             ))}
                           </ul>
