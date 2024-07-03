@@ -1,3 +1,4 @@
+import { assert } from 'std/assert/assert.ts'
 import db from '../db/db.ts'
 import * as icd10 from '../db/models/icd10.ts'
 import parseCsv from '../util/parseCsv.ts'
@@ -13,6 +14,7 @@ const symptoms_candidates = parseCsv(
 const results: any[] = []
 
 for await (const { code_range } of symptoms_candidates) {
+  assert(code_range)
   if (code_range.includes('-')) {
     const section = await db.selectFrom('icd10_sections')
       .where('section', '=', code_range)

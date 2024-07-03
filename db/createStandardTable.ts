@@ -2,6 +2,29 @@ import { CreateTableBuilder, Kysely, sql } from 'kysely'
 import { addUpdatedAtTrigger } from './addUpdatedAtTrigger.ts'
 import { now } from './helpers.ts'
 
+export async function createTableWithTimestamps(
+  // deno-lint-ignore no-explicit-any
+  db: Kysely<any>,
+  table: string,
+  callback: (
+    builder: CreateTableBuilder<string, never>,
+  ) => CreateTableBuilder<string, never>,
+) {
+  await callback(db.schema.createTable(table))
+    .addColumn(
+      'created_at',
+      'timestamptz',
+      (col) => col.defaultTo(now).notNull(),
+    )
+    .addColumn(
+      'updated_at',
+      'timestamptz',
+      (col) => col.defaultTo(now).notNull(),
+    ).execute()
+
+  await addUpdatedAtTrigger(db, table)
+}
+
 export async function createStandardTable(
   // deno-lint-ignore no-explicit-any
   db: Kysely<any>,

@@ -11,7 +11,7 @@ const pharmacists = [
     address: '123 Main St xxxxxx',
     town: 'Aaa',
     expiry_date: '2025-12-31',
-    pharmacist_type: 'Pharmacist',
+    pharmacist_type: 'Pharmacist' as const,
   },
   {
     license_number: '234567',
@@ -21,7 +21,7 @@ const pharmacists = [
     address: '456 Dean St yyyyyyyyy',
     town: 'Bbb',
     expiry_date: '2025-12-31',
-    pharmacist_type: 'Pharmacist',
+    pharmacist_type: 'Pharmacist' as const,
   },
 ]
 

@@ -29,7 +29,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   })
   it('provides with first_scheduling_option details after confirming details', async () => {
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(db, {
+    const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
       name: 'test',
@@ -111,7 +111,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     const fakeWhatsApp = {
       phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
+      sendMessage: sinon.stub(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
           id: `wamid.${generateUUID()}`,
@@ -122,8 +122,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
-          messageBody: 'Great, the next available appoinment is ' +
+          messageBody: 'Great, the next available appointment is ' +
             prettyAppointmentTime(secondDayBusyTime) +
             '. Would you like to schedule this appointment?',
           type: 'buttons',

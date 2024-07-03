@@ -61,7 +61,7 @@ export default async function WaitingRoomAdd(
   let completing_intake: Promise<unknown> = Promise.resolve()
   if (just_completed_intake) {
     assertOr400(patient_id, 'patient_id is required')
-    completing_intake = patients.upsert(trx, {
+    completing_intake = patients.update(trx, {
       id: patient_id,
       completed_intake: true,
     })

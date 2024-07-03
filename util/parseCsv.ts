@@ -25,10 +25,10 @@ export default async function* parseCsv(
       continue
     }
 
-    const rowData: Record<string, string> = {}
+    const rowData: Record<string, string | null> = {}
 
     header.forEach((column, i) => {
-      rowData[column] = rowDataArray[i]
+      rowData[column] = rowDataArray[i] || null
     })
 
     yield rowData

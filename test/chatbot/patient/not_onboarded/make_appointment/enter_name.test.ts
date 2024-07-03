@@ -12,13 +12,14 @@ import generateUUID from '../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for gender after inquiring name', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
-      conversation_state: 'not_onboarded:make_appointment:enter_name',
+
+    const chatbot_user = await conversations.insertChatbotUser(
+      db,
+      'patient',
       phone_number,
-      name: null,
-      gender: null,
-      date_of_birth: null,
-      national_id_number: null,
+    )
+    await conversations.updateChatbotUser(db, 'patient', chatbot_user.id, {
+      conversation_state: 'not_onboarded:make_appointment:enter_name',
     })
 
     await conversations.insertMessageReceived(db, {
@@ -44,6 +45,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody: 'What is your gender?',
           type: 'buttons',

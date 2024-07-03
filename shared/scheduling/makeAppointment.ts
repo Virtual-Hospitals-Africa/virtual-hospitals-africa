@@ -71,6 +71,7 @@ export async function makeAppointmentChatbot(
   patientState: PatientChatbotUserState,
   insertEvent: InsertEvent,
 ) {
+  assert(patientState.entity_id)
   const scheduling_appointment_request = await patients
     .schedulingAppointmentRequest(trx, patientState.entity_id)
   assert(scheduling_appointment_request)

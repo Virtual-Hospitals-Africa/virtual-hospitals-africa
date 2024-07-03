@@ -35,6 +35,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
             'Welcome to Virtual Hospitals Africa. What can I help you with today?',
@@ -53,6 +54,6 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     assert(patient)
-    assertEquals(patient.conversation_state, 'not_onboarded:welcome')
+    assertEquals(patient.conversation_state, 'initial_message')
   })
 })

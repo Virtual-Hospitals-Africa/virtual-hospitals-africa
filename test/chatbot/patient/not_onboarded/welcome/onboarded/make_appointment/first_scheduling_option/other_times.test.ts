@@ -38,7 +38,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
   it('provides with other_appointment_time after rejecting first_option', async () => {
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(db, {
+    const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
       name: 'test',
