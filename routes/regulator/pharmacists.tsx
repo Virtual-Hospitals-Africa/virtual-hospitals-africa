@@ -1,9 +1,9 @@
 import Layout from '../../components/library/Layout.tsx'
-import PharmacistsTable from '../../components/health_worker/PharmacistsTable.tsx'
+import PharmacistsTable from '../../components/regulator/PharmacistsTable.tsx'
 import { LoggedInRegulator } from '../../types.ts'
 
 const pharmacists = [
-  { 
+  {
     license_number: '123456',
     prefix: 'Ms',
     given_name: 'Aaa',
@@ -11,9 +11,9 @@ const pharmacists = [
     address: '123 Main St xxxxxx',
     town: 'Aaa',
     expiry_date: '2025-12-31',
-    pharmacist_type: 'Pharmacist'
+    pharmacist_type: 'Pharmacist',
   },
-  { 
+  {
     license_number: '234567',
     prefix: 'Miss',
     given_name: 'Bbb',
@@ -21,15 +21,20 @@ const pharmacists = [
     address: '456 Dean St yyyyyyyyy',
     town: 'Bbb',
     expiry_date: '2025-12-31',
-    pharmacist_type: 'Pharmacist'
-  }
+    pharmacist_type: 'Pharmacist',
+  },
 ]
 
+// deno-lint-ignore require-await
 export default async function PharmacistsPage(
-  req: Request,
-  ctx: { route: string, url: URL, state: { regulator: LoggedInRegulator['regulator'] } }
+  _req: Request,
+  ctx: {
+    route: string
+    url: URL
+    state: { regulator: LoggedInRegulator['regulator'] }
+  },
 ) {
-  const regulator = ctx.state.regulator;
+  const regulator = ctx.state.regulator
 
   return (
     <Layout
@@ -42,6 +47,7 @@ export default async function PharmacistsPage(
     >
       <PharmacistsTable
         pharmacists={pharmacists}
+        pathname={ctx.url.pathname}
       />
     </Layout>
   )
