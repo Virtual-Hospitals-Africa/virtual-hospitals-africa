@@ -144,9 +144,9 @@ export function getUser(
   chatbot_name: ChatbotName,
   opts: {
     chatbot_user_id: string
-    sent_by_phone_number?: undefined
+    phone_number?: undefined
   } | {
-    sent_by_phone_number: string
+    phone_number: string
     chatbot_user_id?: undefined
   },
 ) {
@@ -155,8 +155,8 @@ export function getUser(
   if (opts.chatbot_user_id) {
     query = query.where('id', '=', opts.chatbot_user_id)
   }
-  if (opts.sent_by_phone_number) {
-    query = query.where('phone_number', '=', opts.sent_by_phone_number)
+  if (opts.phone_number) {
+    query = query.where('phone_number', '=', opts.phone_number)
   }
 
   return query.executeTakeFirst()
@@ -173,11 +173,39 @@ export function updateChatbotUser(
   },
 ) {
   if (data) {
-    Object.assign(updates, { data: JSON.stringify(data) })
+    Object.assign(updates, { data })
   }
 
   return trx.updateTable(`${chatbot_name}_chatbot_users`)
     .set(updates)
     .where('id', '=', chatbot_user_id)
     .executeTakeFirstOrThrow()
+}
+
+export function insertChatbotUser(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  phone_number: string,
+) {
+  return trx
+    .insertInto(`${chatbot_name}_chatbot_users`)
+    .values({
+      phone_number,
+      conversation_state: 'initial_message',
+      data: '{}',
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+export function findChatbotUser(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  phone_number: string,
+) {
+  return trx
+    .selectFrom(`${chatbot_name}_chatbot_users`)
+    .selectAll()
+    .where('phone_number', '=', phone_number)
+    .executeTakeFirst()
 }

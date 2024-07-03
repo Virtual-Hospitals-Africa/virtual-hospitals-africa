@@ -87,9 +87,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
-            `Thanks test, we notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+            `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
             prettyAppointmentTime(time),
           type: 'buttons',
           buttonText: 'Menu',

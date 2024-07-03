@@ -13,12 +13,14 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for gender after inquiring name', async () => {
     const phone_number = randomPhoneNumber()
 
-    await db.insertInto('patient_chatbot_users')
-      .values({
-        conversation_state: 'not_onboarded:make_appointment:enter_name',
-        phone_number,
-        data: '{}',
-      }).execute()
+    const chatbot_user = await conversations.insertChatbotUser(
+      db,
+      'patient',
+      phone_number,
+    )
+    await conversations.updateChatbotUser(db, 'patient', chatbot_user.id, {
+      conversation_state: 'not_onboarded:make_appointment:enter_name',
+    })
 
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',
@@ -43,6 +45,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody: 'What is your gender?',
           type: 'buttons',

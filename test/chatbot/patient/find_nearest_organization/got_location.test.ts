@@ -86,6 +86,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsAppTwo, 'patient')
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: [
           {
             type: 'location',

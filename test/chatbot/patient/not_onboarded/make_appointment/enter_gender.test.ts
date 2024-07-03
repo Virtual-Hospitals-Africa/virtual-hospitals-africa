@@ -44,9 +44,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
-            'Thanks for that information. What is your date of birth? Please enter the date in the format DD/MM/YYYY',
+            'What is your date of birth? Please enter the date in the format DD/MM/YYYY',
           type: 'string',
         },
         phone_number,

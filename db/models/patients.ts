@@ -121,7 +121,7 @@ export async function getLastConversationState(
     trx,
     'patient',
     {
-      sent_by_phone_number: query.phone_number,
+      phone_number: query.phone_number,
     },
   )
 
@@ -670,23 +670,6 @@ export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
     .select(['media.mime_type', 'media.binary_data'])
     .where('patients.id', '=', opts.patient_id)
     .executeTakeFirst()
-}
-
-export function hasDemographicInfo(
-  patient: unknown,
-): patient is {
-  name: string
-  gender: Gender
-  dob_formatted: string
-  national_id_number: string
-} {
-  return (
-    isObjectLike(patient) &&
-    !!patient.name &&
-    !!patient.gender &&
-    !!patient.dob_formatted &&
-    !!patient.national_id_number
-  )
 }
 
 export async function nearestFacilities(

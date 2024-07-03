@@ -14,6 +14,7 @@ export default function generateUUID(): string {
   }-${hexBytes.slice(6, 8).join('')}-${hexBytes.slice(8, 10).join('')}-${
     hexBytes.slice(10).join('')
   }`
+  console.log('uuid', uuid)
   return uuid
 }
 

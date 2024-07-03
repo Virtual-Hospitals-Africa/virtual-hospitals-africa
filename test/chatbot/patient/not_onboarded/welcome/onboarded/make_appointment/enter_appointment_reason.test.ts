@@ -67,6 +67,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsAppTwo, 'patient')
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
             'To assist the doctor with triaging your case, click the + button to send an image, video, or voice note describing your symptoms.',

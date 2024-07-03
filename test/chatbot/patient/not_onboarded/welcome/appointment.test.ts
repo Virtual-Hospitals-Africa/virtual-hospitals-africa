@@ -13,6 +13,8 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for name after welcome message', async () => {
     const phone_number = randomPhoneNumber()
 
+    await conversations.insertChatbotUser(db, 'patient', phone_number)
+
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',
       received_by_phone_number: '263XXXXXX',
@@ -25,7 +27,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     const fakeWhatsApp = {
       phone_number: '263XXXXXX',
-      sendMessage: sinon.stub().throws(),
+      sendMessage: sinon.stub(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
           id: `wamid.${generateUUID()}`,
@@ -36,6 +38,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           type: 'string',
           messageBody:

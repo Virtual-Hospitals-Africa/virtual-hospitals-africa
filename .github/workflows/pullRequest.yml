@@ -75,7 +75,8 @@ jobs:
         name: Restore medplum
         with:
           path: medplum
-          key: ${{ runner.os }}-medplum-${{ hashFiles('medplum/package.json') }}
+          # key: ${{ runner.os }}-medplum-${{ hashFiles('medplum/package.json') }}
+          key: ${{ runner.os }}-medplum }}
 
       - name: Install medplum
         if: steps.cache-medplum-restore.outputs.cache-hit != 'true'

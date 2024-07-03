@@ -44,8 +44,16 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
-          type: 'string',
+          type: 'buttons',
+          buttonText: 'Menu',
+          options: [
+            {
+              id: 'main_menu',
+              title: 'Main Menu',
+            },
+          ],
           messageBody:
             'This is the end of the demo. Thank you for participating!',
         },

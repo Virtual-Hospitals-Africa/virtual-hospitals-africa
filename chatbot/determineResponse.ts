@@ -8,29 +8,9 @@ import {
   WhatsAppSingleSendable,
 } from '../types.ts'
 import * as defs from './defs.ts'
+import * as conversations from '../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import isObjectLike from '../util/isObjectLike.ts'
-
-async function findOrInsertChatbotUser(
-  trx: TrxOrDb,
-  unhandled_message: UnhandledMessage,
-) {
-  return (await trx
-    .selectFrom(`${unhandled_message.chatbot_name}_chatbot_users`)
-    .selectAll()
-    .where('phone_number', '=', unhandled_message.sent_by_phone_number)
-    .executeTakeFirst()) || (
-      await trx
-        .insertInto(`${unhandled_message.chatbot_name}_chatbot_users`)
-        .values({
-          phone_number: unhandled_message.sent_by_phone_number,
-          data: '',
-          conversation_state: 'initial_message',
-        })
-        .returningAll()
-        .executeTakeFirstOrThrow()
-    )
-}
 
 export async function determineResponse(
   trx: TrxOrDb,
@@ -40,25 +20,48 @@ export async function determineResponse(
   const conversation_states: any =
     defs[unhandled_message.chatbot_name].conversation_states
 
-  const chatbot_user = await findOrInsertChatbotUser(trx, unhandled_message)
-
-  const userState: ChatbotUserState = {
-    chatbot_user_id: chatbot_user.id,
-    chatbot_user_data: isObjectLike(chatbot_user.data) ? chatbot_user.data : {},
-    entity_id: chatbot_user.entity_id,
-    unhandled_message,
-    chatbot_name: unhandled_message.chatbot_name,
-    // deno-lint-ignore no-explicit-any
-    conversation_state: chatbot_user.conversation_state as any,
-  }
-
+  let chatbot_user = await conversations.findChatbotUser(
+    trx,
+    unhandled_message.chatbot_name,
+    unhandled_message.sent_by_phone_number,
+  )
   let nextConversationState: string
   let nextState
+  let userState: ChatbotUserState
 
   if (!chatbot_user) {
     nextConversationState = 'initial_message'
     nextState = conversation_states.initial_message
+    chatbot_user = await conversations.insertChatbotUser(
+      trx,
+      unhandled_message.chatbot_name,
+      unhandled_message.sent_by_phone_number,
+    )
+
+    userState = {
+      chatbot_user_id: chatbot_user.id,
+      chatbot_user_data: isObjectLike(chatbot_user.data)
+        ? chatbot_user.data
+        : {},
+      entity_id: chatbot_user.entity_id,
+      unhandled_message,
+      chatbot_name: unhandled_message.chatbot_name,
+      // deno-lint-ignore no-explicit-any
+      conversation_state: chatbot_user.conversation_state as any,
+    }
   } else {
+    userState = {
+      chatbot_user_id: chatbot_user.id,
+      chatbot_user_data: isObjectLike(chatbot_user.data)
+        ? chatbot_user.data
+        : {},
+      entity_id: chatbot_user.entity_id,
+      unhandled_message,
+      chatbot_name: unhandled_message.chatbot_name,
+      // deno-lint-ignore no-explicit-any
+      conversation_state: chatbot_user.conversation_state as any,
+    }
+
     const currentState = await findMatchingState(trx, userState)
 
     if (!currentState) {

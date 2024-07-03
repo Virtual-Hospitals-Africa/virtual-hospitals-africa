@@ -44,9 +44,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
-          messageBody:
-            'Got it, 1 January 2023. Please enter your national ID number',
+          messageBody: 'Please enter your national ID number',
           type: 'string',
         },
         phone_number,

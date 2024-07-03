@@ -58,9 +58,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(
       callArgs.messages.messageBody,
-      'Thank you for sharing your location.\n' +
-        '\n' +
-        'Click the button below to see your nearest health organizations.',
+      'Click the button below to see your nearest health organizations',
     )
 
     assertEquals(callArgs.messages.action.button, 'Nearest Facilities')

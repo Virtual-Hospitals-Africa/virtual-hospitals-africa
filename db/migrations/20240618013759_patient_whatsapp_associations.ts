@@ -11,12 +11,15 @@ export async function up(db: Kysely<unknown>) {
         'uuid',
         (col) => col.references('patients.id').onDelete('cascade'),
       )
-        .addColumn('phone_number', 'varchar(255)', (col) => col.notNull())
-        .addColumn('data', 'json', (col) => col.notNull())
+        .addColumn('phone_number', 'varchar(255)', (col) =>
+          col.notNull().unique())
+        .addColumn('data', 'json', (col) =>
+          col.notNull())
         .addColumn(
           'conversation_state',
           'varchar(255)',
-          (col) => col.notNull(),
+          (col) =>
+            col.notNull(),
         ),
   )
 
