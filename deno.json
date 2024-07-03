@@ -22,10 +22,10 @@
     "medplum:server": "deno task run:trusted external-clients/medplum/server.ts",
     "medplum:superadmin": "deno task run:trusted external-clients/medplum/superadmin.ts",
 
-    "heroku:chatbot:patient:up": "heroku ps:scale web=1 --app vha-patient-chatbot",
-    "heroku:chatbot:patient:down": "heroku ps:scale web=0 --app vha-patient-chatbot",
-    "heroku:chatbot:pharmacist:up": "heroku ps:scale web=1 --app vha-pharmacist-chatbot",
-    "heroku:chatbot:pharmacist:down": "heroku ps:scale web=0 --app vha-pharmacist-chatbot",
+    "heroku:chatbot:patient:up": "heroku ps:scale worker=1 --app vha-patient-chatbot",
+    "heroku:chatbot:patient:down": "heroku ps:scale worker=0 --app vha-patient-chatbot",
+    "heroku:chatbot:pharmacist:up": "heroku ps:scale worker=1 --app vha-pharmacist-chatbot",
+    "heroku:chatbot:pharmacist:down": "heroku ps:scale worker=0 --app vha-pharmacist-chatbot",
 
     "heroku:web:up": "heroku ps:scale web=1",
     "heroku:web:down": "heroku ps:scale web=0",
