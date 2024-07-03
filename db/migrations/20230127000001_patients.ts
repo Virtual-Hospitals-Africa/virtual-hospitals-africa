@@ -16,7 +16,7 @@ export async function up(db: Kysely<unknown>) {
     'patients',
     (qb) =>
       qb.addColumn('phone_number', 'varchar(255)')
-        .addColumn('name', 'varchar(255)')
+        .addColumn('name', 'varchar(255)', (col) => col.notNull())
         .addColumn('gender', sql`gender`)
         .addColumn('date_of_birth', 'date')
         .addColumn('national_id_number', 'varchar(50)')

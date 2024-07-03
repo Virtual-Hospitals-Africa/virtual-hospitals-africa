@@ -357,7 +357,7 @@ export async function upsert(
     FamilyRelationInsert,
     [number, GuardianRelationName]
   >()
-  const to_insert: Partial<Patient>[] = []
+  const to_insert: Array<Partial<Patient> & { name: string }> = []
   for (const guardian of new_guardians) {
     const relation = inverseGuardianRelation(guardian.family_relation_gendered)
     const index = to_insert.push({

@@ -20,7 +20,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           scenario: 'doctor',
         })
 
-        const patient = await patients.upsert(trx, {
+        const patient = await patients.insert(trx, {
           name: 'Test',
         })
 
@@ -80,7 +80,6 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
             national_id_number: null,
             nearest_organization: null,
             phone_number: null,
-            conversation_state: 'initial_message',
             completed_intake: false,
             intake_steps_completed: [],
             actions: {

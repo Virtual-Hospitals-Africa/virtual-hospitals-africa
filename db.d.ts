@@ -105,6 +105,8 @@ export type MaritalStatus =
   | 'Single'
   | 'Widowed'
 
+export type NamePrefix = 'Dr' | 'Miss' | 'Mr' | 'Mrs' | 'Ms' | 'Sr'
+
 export type Numeric = ColumnType<string, number | string, number | string>
 
 export type NurseSpecialty =
@@ -136,37 +138,25 @@ export type PatientCohabitation =
   | 'Sibling'
   | 'Uncle or Aunt'
 
-export type PatientConversationState =
-  | 'find_nearest_organization:got_location'
-  | 'find_nearest_organization:send_organization_location'
-  | 'find_nearest_organization:share_location'
-  | 'initial_message'
-  | 'not_onboarded:make_appointment:enter_date_of_birth'
-  | 'not_onboarded:make_appointment:enter_gender'
-  | 'not_onboarded:make_appointment:enter_name'
-  | 'not_onboarded:make_appointment:enter_national_id_number'
-  | 'not_onboarded:welcome'
-  | 'onboarded:appointment_scheduled'
-  | 'onboarded:appointment_cancelled'
-  | 'onboarded:main_menu'
-  | 'onboarded:make_appointment:confirm_details'
-  | 'onboarded:make_appointment:enter_appointment_reason'
-  | 'onboarded:make_appointment:first_scheduling_option'
-  | 'onboarded:make_appointment:initial_ask_for_media'
-  | 'onboarded:make_appointment:other_scheduling_options'
-  | 'onboarded:make_appointment:subsequent_ask_for_media'
-  | 'other_end_of_demo'
+export type PharmacistType =
+  | 'Dispensing Medical Practitioner'
+  | 'Ind Clinic Nurse'
+  | 'Pharmacist'
+  | 'Pharmacy Technician'
 
-export type PharmacistConversationState =
-  | 'initial_message'
-  | 'not_onboarded:confirm_pin'
-  | 'not_onboarded:create_pin'
-  | 'not_onboarded:enter_establishment'
-  | 'not_onboarded:enter_id'
-  | 'not_onboarded:enter_registration'
-  | 'onboarded:enter_order_number'
-  | 'onboarded:get_order_details'
-  | 'other_end_of_demo'
+export type PremisesTypes =
+  | 'Clinics: Class A'
+  | 'Clinics: Class B'
+  | 'Clinics: Class C'
+  | 'Clinics: Class D'
+  | 'Dispensing medical practice'
+  | 'Hospital pharmacies'
+  | 'Pharmacies: Research'
+  | 'Pharmacies: Restricted'
+  | 'Pharmacy in any other location'
+  | 'Pharmacy in rural area'
+  | 'Pharmacy located in the CBD'
+  | 'Wholesalers'
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
@@ -479,57 +469,6 @@ export interface HealthWorkers {
   updated_at: Generated<Timestamp>
 }
 
-export interface HerokuExtPgStatStatements {
-  blk_read_time: number | null
-  blk_write_time: number | null
-  calls: Int8 | null
-  dbid: number | null
-  jit_emission_count: Int8 | null
-  jit_emission_time: number | null
-  jit_functions: Int8 | null
-  jit_generation_time: number | null
-  jit_inlining_count: Int8 | null
-  jit_inlining_time: number | null
-  jit_optimization_count: Int8 | null
-  jit_optimization_time: number | null
-  local_blks_dirtied: Int8 | null
-  local_blks_hit: Int8 | null
-  local_blks_read: Int8 | null
-  local_blks_written: Int8 | null
-  max_exec_time: number | null
-  max_plan_time: number | null
-  mean_exec_time: number | null
-  mean_plan_time: number | null
-  min_exec_time: number | null
-  min_plan_time: number | null
-  plans: Int8 | null
-  query: string | null
-  queryid: Int8 | null
-  rows: Int8 | null
-  shared_blks_dirtied: Int8 | null
-  shared_blks_hit: Int8 | null
-  shared_blks_read: Int8 | null
-  shared_blks_written: Int8 | null
-  stddev_exec_time: number | null
-  stddev_plan_time: number | null
-  temp_blk_read_time: number | null
-  temp_blk_write_time: number | null
-  temp_blks_read: Int8 | null
-  temp_blks_written: Int8 | null
-  toplevel: boolean | null
-  total_exec_time: number | null
-  total_plan_time: number | null
-  userid: number | null
-  wal_bytes: Numeric | null
-  wal_fpi: Int8 | null
-  wal_records: Int8 | null
-}
-
-export interface HerokuExtPgStatStatementsInfo {
-  dealloc: Int8 | null
-  stats_reset: Timestamp | null
-}
-
 export interface Icd10Categories {
   category: string
   description: string
@@ -818,6 +757,25 @@ export interface PatientAppointmentRequests {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientChatbotUsers {
+  conversation_state: string
+  created_at: Generated<Timestamp>
+  data: Json
+  entity_id: string | null
+  id: Generated<string>
+  phone_number: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientChatbotUserWhatsappMessagesReceived {
+  chatbot_user_id: string
+  conversation_state: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+  whatsapp_message_received_id: string
+}
+
 export interface PatientConditionMedications {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -980,7 +938,7 @@ export interface Patients {
   gender: Gender | null
   id: Generated<string>
   location: string | null
-  name: string | null
+  name: string
   national_id_number: string | null
   nearest_organization_id: string | null
   phone_number: string | null
@@ -1011,33 +969,60 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientWhatsappMessagesReceived {
-  conversation_state: PatientConversationState | null
+export interface PharmacistChatbotUsers {
+  conversation_state: string
+  created_at: Generated<Timestamp>
+  data: Json
+  entity_id: string | null
+  id: Generated<string>
+  phone_number: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PharmacistChatbotUserWhatsappMessagesReceived {
+  chatbot_user_id: string
+  conversation_state: string
   created_at: Generated<Timestamp>
   id: Generated<string>
-  patient_id: string | null
   updated_at: Generated<Timestamp>
-  whatsapp_message_received_id: string | null
+  whatsapp_message_received_id: string
 }
 
 export interface Pharmacists {
+  address: string | null
   created_at: Generated<Timestamp>
+  expiry_date: Timestamp
+  family_name: string
+  given_name: string
   id: Generated<string>
-  id_number: string | null
-  name: string | null
-  phone_number: string | null
-  pin: string | null
-  registration_number: string | null
+  licence_number: string
+  pharmacist_type: PharmacistType
+  prefix: NamePrefix | null
+  town: string | null
   updated_at: Generated<Timestamp>
 }
 
-export interface PharmacistWhatsappMessagesReceived {
-  conversation_state: PharmacistConversationState | null
+export interface Premises {
+  address: string | null
   created_at: Generated<Timestamp>
+  expiry_date: Timestamp
   id: Generated<string>
-  pharmacist_id: string | null
+  licence_number: string
+  licensee: string
+  name: string
+  premises_types: PremisesTypes
+  town: string | null
   updated_at: Generated<Timestamp>
-  whatsapp_message_received_id: string | null
+}
+
+export interface PremiseSupervisors {
+  created_at: Generated<Timestamp>
+  family_name: string
+  given_name: string
+  id: Generated<string>
+  prefix: NamePrefix | null
+  premise_id: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface Procurement {
@@ -1170,8 +1155,6 @@ export interface DB {
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
   health_workers: HealthWorkers
-  'heroku_ext.pg_stat_statements': HerokuExtPgStatStatements
-  'heroku_ext.pg_stat_statements_info': HerokuExtPgStatStatementsInfo
   icd10_categories: Icd10Categories
   icd10_codes: Icd10Codes
   icd10_diagnoses: Icd10Diagnoses
@@ -1200,6 +1183,9 @@ export interface DB {
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
   patient_appointment_request_media: PatientAppointmentRequestMedia
   patient_appointment_requests: PatientAppointmentRequests
+  patient_chatbot_user_whatsapp_messages_received:
+    PatientChatbotUserWhatsappMessagesReceived
+  patient_chatbot_users: PatientChatbotUsers
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
   patient_encounter_providers: PatientEncounterProviders
@@ -1217,10 +1203,13 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
-  patient_whatsapp_messages_received: PatientWhatsappMessagesReceived
   patients: Patients
-  pharmacist_whatsapp_messages_received: PharmacistWhatsappMessagesReceived
+  pharmacist_chatbot_user_whatsapp_messages_received:
+    PharmacistChatbotUserWhatsappMessagesReceived
+  pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
+  premise_supervisors: PremiseSupervisors
+  premises: Premises
   procurement: Procurement
   procurers: Procurers
   provider_calendars: ProviderCalendars

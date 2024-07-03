@@ -12,7 +12,7 @@ import generateUUID from '../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for birthday after inquiring gender', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_gender',
       phone_number,
       name: 'test',
@@ -22,7 +22,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: 'non-binary',
       media_id: null,
@@ -30,6 +32,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -41,15 +44,16 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
-            'Thanks for that information. What is your date of birth? Please enter the date in the format DD/MM/YYYY',
+            'What is your date of birth? Please enter the date in the format DD/MM/YYYY',
           type: 'string',
         },
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

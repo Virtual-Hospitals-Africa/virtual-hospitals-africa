@@ -18,7 +18,7 @@ const symptoms_candidates2: AsyncGenerator<any, void, unknown> = parseCsv(
 
 const already_spotted = new Set<string>()
 for await (const row of original_symptoms_candidates) {
-  already_spotted.add(row.code_range)
+  already_spotted.add(row.code_range!)
 }
 
 const results: any[] = []

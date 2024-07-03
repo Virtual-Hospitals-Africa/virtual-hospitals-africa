@@ -38,13 +38,12 @@ async function importDataFromCSV(db: Kysely<any>) {
   await forEach(
     parseCsv('./db/resources/zimbabwe-health-organizations.csv'),
     async (row) => {
-      const address = (!row.address || row.address) === 'UNKNOWN'
-        ? undefined
-        : row.address
-      const category = (!row.category || row.category === 'UNKNOWN')
-        ? undefined
-        : capitalize(row.category.trim())
-      // if (address === 'UNKNOWN' && !Deno.env.get('SKIP_GOOGLE_MAPS')) {
+      const address = row.address ?? undefined
+      const category = row.category
+        ? capitalize(row.category.trim())
+        : undefined
+
+      // if (!address && !Deno.env.get('SKIP_GOOGLE_MAPS')) {
       //   address = await google.getLocationAddress({
       //     longitude: Number(row.longitude),
       //     latitude: Number(row.latitude),
@@ -57,7 +56,7 @@ async function importDataFromCSV(db: Kysely<any>) {
         : row.name
 
       await organizations.add(db, {
-        name,
+        name: name!,
         address,
         category: category_capitalized,
         latitude: Number(row.latitude),

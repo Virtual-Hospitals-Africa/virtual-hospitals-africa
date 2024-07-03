@@ -25,7 +25,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
   it('provides with cancel_appointment_option after confirmirmation of a appointment', async () => {
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(db, {
+    const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:first_scheduling_option',
       phone_number,
       name: 'test',
@@ -61,7 +61,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: 'confirm',
       media_id: null,
@@ -69,6 +71,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -84,9 +87,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
-            `Thanks test, we notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
+            `We notified ${health_worker.name} and will message you shortly upon confirmirmation of your appointment at ` +
             prettyAppointmentTime(time),
           type: 'buttons',
           buttonText: 'Menu',
@@ -95,7 +99,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

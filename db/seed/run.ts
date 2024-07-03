@@ -1,5 +1,6 @@
 import last from '../../util/last.ts'
 import { assert } from 'std/assert/assert.ts'
+import sortBy from '../../util/sortBy.ts'
 
 const seeds: Record<
   string,
@@ -17,7 +18,13 @@ for (const seedFile of Deno.readDirSync('./db/seed/defs')) {
   seeds[seedName] = seed.default || seed
 }
 
-const seedTargets = Object.keys(seeds).sort()
+const seedTargets = sortBy(Object.keys(seeds), (key) => {
+  const numeric = parseInt(key.split('_')[0])
+  if (isNaN(numeric)) {
+    throw new Error('Seed file names must start with a number. Got: ' + key)
+  }
+  return numeric
+})
 
 const gerund = {
   load: 'loading',

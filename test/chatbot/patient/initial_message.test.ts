@@ -13,7 +13,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends the main menu after the initial message', async () => {
     const phone_number = randomPhoneNumber()
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: 'body',
       media_id: null,
@@ -21,6 +23,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -32,6 +35,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
             'Welcome to Virtual Hospitals Africa. What can I help you with today?',
@@ -45,11 +49,11 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 
     assert(patient)
-    assertEquals(patient.conversation_state, 'not_onboarded:welcome')
+    assertEquals(patient.conversation_state, 'initial_message')
   })
 })

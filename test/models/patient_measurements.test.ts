@@ -14,7 +14,7 @@ describe(
         const nurse = await addTestHealthWorker(trx, {
           scenario: 'approved-nurse',
         })
-        const patient = await patients.upsert(trx, { name: 'Test Patient' })
+        const patient = await patients.insert(trx, { name: 'Test Patient' })
         const encounter = await patient_encounters.upsert(
           trx,
           '00000000-0000-0000-0000-000000000001',

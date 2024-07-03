@@ -12,7 +12,7 @@ import generateUUID from '../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for reason after inquiring national ID number', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state:
         'not_onboarded:make_appointment:enter_national_id_number',
       phone_number,
@@ -25,7 +25,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     const national_id_number = randomNationalId()
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: national_id_number,
       media_id: null,
@@ -33,6 +35,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -44,6 +47,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
             'What is the reason you want to schedule an appointment?',
@@ -52,7 +56,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

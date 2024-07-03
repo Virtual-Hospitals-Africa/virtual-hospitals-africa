@@ -3,60 +3,51 @@ import {
   PharmacistChatbotUserState,
   TrxOrDb,
 } from '../../types.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
+// import * as pharmacists from '../../db/models/pharmacists.ts'
+import * as conversations from '../../db/models/conversations.ts'
+// import { assertEquals } from 'std/assert/assert_equals.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
 > = {
   'initial_message': {
     type: 'string',
-    prompt() {
-      throw new Error('This should not be called')
-    },
+    prompt:
+      `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your licence number.`,
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      await pharmacists.update(trx, pharmacistState.entity_id, {
-        registration_number: pharmacistState.unhandled_message.trimmed_body,
-      })
-      return 'not_onboarded:enter_id' as const
-    },
-  },
-
-  'not_onboarded:enter_id': {
-    type: 'string',
-    prompt: 'To confirm your identity, please provide your ID number',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      await pharmacists.update(trx, pharmacistState.entity_id, {
-        id_number: pharmacistState.unhandled_message.trimmed_body,
-      })
-      return 'not_onboarded:create_pin' as const
+      const licence_number = pharmacistState.unhandled_message.trimmed_body
+      assert(licence_number, 'Licence number should not be empty')
+      await conversations.updateChatbotUser(
+        trx,
+        pharmacistState.chatbot_name,
+        pharmacistState.chatbot_user_id,
+        {
+          data: {
+            ...pharmacistState.chatbot_user_data,
+            licence_number,
+          },
+        },
+      )
+      return 'not_onboarded:enter_name' as const
     },
   },
-  'not_onboarded:create_pin': {
+  'not_onboarded:enter_name': {
     type: 'string',
-    prompt: 'To secure your account, please create a 4-digit pin',
+    prompt: 'What is your name?',
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      await pharmacists.update(trx, pharmacistState.entity_id, {
-        pin: pharmacistState.unhandled_message.trimmed_body,
-      })
-      return 'not_onboarded:confirm_pin' as const
-    },
-  },
-  'not_onboarded:confirm_pin': {
-    type: 'string',
-    prompt: 'Please confirm your pin.',
-    // nextState: 'not_onboarded:enter_establishment',
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      const currentPin = await trx
-        .selectFrom('pharmacists')
-        .select('pin')
-        .where('id', '=', pharmacistState.entity_id)
-        .executeTakeFirstOrThrow()
-
-      assertEquals(
-        pharmacistState.unhandled_message.trimmed_body,
-        currentPin.pin,
-        'Pins do not match',
+      const name = pharmacistState.unhandled_message.trimmed_body
+      assert(name, 'Name should not be empty')
+      await conversations.updateChatbotUser(
+        trx,
+        pharmacistState.chatbot_name,
+        pharmacistState.chatbot_user_id,
+        {
+          data: {
+            ...pharmacistState.chatbot_user_data,
+            name,
+          },
+        },
       )
       return 'not_onboarded:confirm_details' as const
     },
@@ -69,24 +60,59 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         '=',
         pharmacistState.entity_id,
       ).executeTakeFirstOrThrow()
-      return `Please confirm the following details:\n\nName: ${pharmacist.name}\nID Number: ${pharmacist.id_number}\nRegistration Number: ${pharmacist.registration_number}`
+      return `Please confirm the following details:\n\nName: ${pharmacist.given_name} ${pharmacist.family_name}\nLicense Number: ${pharmacist.licence_number}`
     },
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      const currentPin = await trx
-        .selectFrom('pharmacists')
-        .select('pin')
-        .where('id', '=', pharmacistState.entity_id)
-        .executeTakeFirstOrThrow()
-
-      assertEquals(
-        pharmacistState.unhandled_message.trimmed_body,
-        currentPin.pin,
-        'Pins do not match',
-      )
-      return 'other_end_of_demo' as const
+    // deno-lint-ignore require-await
+    async onExit(_trx: TrxOrDb, _pharmacistState: PharmacistChatbotUserState) {
+      throw new Error('Not implemented')
+      // return 'onboarded:pharmacist_main_menu' as const
     },
   },
-
+  'onboarded:pharmacist_main_menu': {
+    type: 'select',
+    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
+        'id',
+        '=',
+        pharmacistState.entity_id,
+      ).executeTakeFirstOrThrow()
+      return `Hi ${pharmacist.given_name}`
+    },
+    options: [
+      {
+        id: 'fill_prescription',
+        title: 'Fill Prescription',
+        onExit: 'onboarded:fill_prescription:enter_prescription_number',
+      },
+      {
+        id: 'view_inventory',
+        title: 'View Inventory',
+        onExit: 'onboarded:view_inventory',
+      },
+    ],
+  },
+  'onboarded:fill_prescription:enter_prescription_number': {
+    type: 'string',
+    prompt: 'Please enter the prescription number',
+    onExit(_trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      //get the prescription number and cross check with our database
+      const prescriptionNumber = pharmacistState.unhandled_message.trimmed_body
+      console.log(prescriptionNumber)
+      return 'end_of_demo' as const
+    },
+  },
+  'onboarded:view_inventory': {
+    type: 'select',
+    prompt: 'Coming Soon',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Back to main menu',
+        onExit: 'onboarded:pharmacist_main_menu',
+      },
+      { id: 'end_of_demo', title: 'End of Demo', onExit: 'end_of_demo' },
+    ],
+  },
   // 'not_onboarded:enter_establishment': {
   //   type: 'string',
   //   prompt: 'Please provide your establishment license number',
@@ -116,13 +142,28 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   // 'onboarded:get_order_details': {
   //   type: 'string',
   //   prompt: 'To implement',
-  //   nextState: 'other_end_of_demo',
+  //   nextState: 'end_of_demo',
   // },
-  'other_end_of_demo': {
-    type: 'end_of_demo',
+  'end_of_demo': {
+    type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',
-    async onExit() {
-      return 'other_end_of_demo' as const
-    },
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
+  },
+  'error': {
+    type: 'select',
+    prompt: 'An error occurred. Please try again.',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
   },
 }

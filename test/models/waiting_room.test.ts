@@ -19,10 +19,10 @@ describe(
         'orders the waiting room by when people first arrived',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient1 = await patients.upsert(trx, {
+            const patient1 = await patients.insert(trx, {
               name: 'Test Patient 1',
             })
-            const patient2 = await patients.upsert(trx, {
+            const patient2 = await patients.insert(trx, {
               name: 'Test Patient 2',
             })
 
@@ -95,7 +95,7 @@ describe(
         'shows what step of the intake process the patient is awaiting',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.upsert(trx, {
+            const patient = await patients.insert(trx, {
               name: 'Test Patient 1',
             })
 
@@ -145,7 +145,7 @@ describe(
         'shows what step of the intake process the patient is in',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.upsert(trx, {
+            const patient = await patients.insert(trx, {
               name: 'Test Patient 1',
             })
 
@@ -219,10 +219,10 @@ describe(
         'orders emergencies at the top, even if they arrived later',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient1 = await patients.upsert(trx, {
+            const patient1 = await patients.insert(trx, {
               name: 'Test Patient 1',
             })
-            const patient2 = await patients.upsert(trx, {
+            const patient2 = await patients.insert(trx, {
               name: 'Test Patient 2',
             })
 
@@ -297,7 +297,7 @@ describe(
             trx,
             { kind: 'virtual' },
             async (organization_id) => {
-              const patient = await patients.upsert(trx, {
+              const patient = await patients.insert(trx, {
                 name: 'Test Patient 1',
               })
               await patient_encounters.upsert(

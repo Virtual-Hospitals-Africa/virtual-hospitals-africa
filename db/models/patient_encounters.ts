@@ -83,7 +83,7 @@ export async function upsert(
   if (!patient_id) {
     assertOr400(!encounter_id)
     assertOr400(patient_name)
-    patient_id = (await patients.upsert(trx, { name: patient_name })).id
+    patient_id = (await patients.insert(trx, { name: patient_name })).id
   }
 
   const values = {

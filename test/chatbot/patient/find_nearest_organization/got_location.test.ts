@@ -16,7 +16,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
     // Step 1: share location
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',
@@ -26,7 +26,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: JSON.stringify({
         latitude: -17.832132339478,
@@ -37,6 +39,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsAppOne = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -61,7 +64,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     // Step 2: select organization id
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: braeside.id,
       media_id: null,
@@ -69,6 +74,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsAppTwo = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -80,6 +86,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsAppTwo, 'patient')
     assertEquals(fakeWhatsAppTwo.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: [
           {
             type: 'location',
@@ -104,7 +111,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

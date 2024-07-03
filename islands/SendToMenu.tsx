@@ -48,6 +48,7 @@ async function getPlaceId(address: string): Promise<string> {
   }
 }
 
+// deno-lint-ignore no-explicit-any
 async function getOpeningHours(placeId: string): Promise<any> {
   const targetUrl =
     `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=opening_hours&key=${apiKey}`
@@ -71,6 +72,7 @@ async function getOpeningHours(placeId: string): Promise<any> {
   }
 }
 
+// deno-lint-ignore no-explicit-any
 function checkIfOpen(openingHours: any): boolean {
   if (!openingHours || !openingHours.periods) return false
 

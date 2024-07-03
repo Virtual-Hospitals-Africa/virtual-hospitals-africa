@@ -116,7 +116,7 @@ async function addPatientsToWaitingRoom() {
 
     const health_worker = nurses[num_patients - i - 1]
 
-    const patient = await patients.upsert(db, {
+    const patient = await patients.insert(db, {
       name: `${demo.first_name} ${demo.last_name}`,
       date_of_birth: randomDateOfBirth(),
       gender: demo.gender,

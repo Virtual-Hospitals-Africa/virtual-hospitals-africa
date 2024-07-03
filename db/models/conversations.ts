@@ -138,3 +138,74 @@ export function markChatbotError(
     .where('id', '=', opts.whatsapp_message_received_id)
     .executeTakeFirstOrThrow()
 }
+
+export function getUser(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  opts: {
+    chatbot_user_id: string
+    phone_number?: undefined
+  } | {
+    phone_number: string
+    chatbot_user_id?: undefined
+  },
+) {
+  let query = trx.selectFrom(`${chatbot_name}_chatbot_users`).selectAll()
+
+  if (opts.chatbot_user_id) {
+    query = query.where('id', '=', opts.chatbot_user_id)
+  }
+  if (opts.phone_number) {
+    query = query.where('phone_number', '=', opts.phone_number)
+  }
+
+  return query.executeTakeFirst()
+}
+
+export function updateChatbotUser(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  chatbot_user_id: string,
+  { data, ...updates }: {
+    entity_id?: string | null
+    conversation_state?: string
+    data?: Record<string, unknown>
+  },
+) {
+  if (data) {
+    Object.assign(updates, { data })
+  }
+
+  return trx.updateTable(`${chatbot_name}_chatbot_users`)
+    .set(updates)
+    .where('id', '=', chatbot_user_id)
+    .executeTakeFirstOrThrow()
+}
+
+export function insertChatbotUser(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  phone_number: string,
+) {
+  return trx
+    .insertInto(`${chatbot_name}_chatbot_users`)
+    .values({
+      phone_number,
+      conversation_state: 'initial_message',
+      data: '{}',
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+export function findChatbotUser(
+  trx: TrxOrDb,
+  chatbot_name: ChatbotName,
+  phone_number: string,
+) {
+  return trx
+    .selectFrom(`${chatbot_name}_chatbot_users`)
+    .selectAll()
+    .where('phone_number', '=', phone_number)
+    .executeTakeFirst()
+}

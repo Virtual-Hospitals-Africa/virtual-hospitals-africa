@@ -9,7 +9,7 @@ describe('db/models/appointments.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd.rejects(
       'does not add an offered time if provider_id is an admin',
       async (trx) => {
-        const patient = await patients.upsert(trx, { name: generateUUID() })
+        const patient = await patients.insert(trx, { name: generateUUID() })
         const health_worker = await addTestHealthWorker(trx, {
           scenario: 'admin',
         })
@@ -29,7 +29,7 @@ describe('db/models/appointments.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'adds an offered time if provider_id is a doctor',
       async (trx) => {
-        const patient = await patients.upsert(trx, { name: generateUUID() })
+        const patient = await patients.insert(trx, { name: generateUUID() })
         const health_worker = await addTestHealthWorker(trx, {
           scenario: 'doctor',
         })

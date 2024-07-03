@@ -14,7 +14,7 @@ import { addTestHealthWorker } from '../../../../../web/utilities.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('comes back to main menu after cancelling appointment', async () => {
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(db, {
+    const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
       phone_number,
       name: 'test',
@@ -56,7 +56,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: 'cancel',
       media_id: null,
@@ -64,6 +66,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -75,9 +78,10 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
           messageBody:
-            'Your appoinment has been cancelled. What can I help you with today?',
+            'Your appointment has been cancelled. What can I help you with today?',
           type: 'buttons',
           buttonText: 'Menu',
           options: [
@@ -88,7 +92,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

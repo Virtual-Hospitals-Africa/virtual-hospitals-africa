@@ -9,10 +9,10 @@ import {
   Location,
   Maybe,
   Patient,
-  PatientConversationState,
   PatientIntake,
   PatientNearestOrganization,
   PatientOccupation,
+  PatientSchedulingAppointmentRequest,
   PatientWithOpenEncounter,
   RenderedPatient,
   TrxOrDb,
@@ -24,6 +24,7 @@ import {
   formatted as formattedAddress,
   upsert as upsertAddress,
 } from './address.ts'
+import * as conversations from './conversations.ts'
 import * as examinations from './examinations.ts'
 import * as patient_occupations from './patient_occupations.ts'
 import * as patient_encounters from './patient_encounters.ts'
@@ -108,20 +109,29 @@ const baseSelect = (trx: TrxOrDb) =>
 const selectWithName = (trx: TrxOrDb) =>
   baseSelect(trx).where('patients.name', 'is not', null)
 
-export function getByPhoneNumber(
+export async function getLastConversationState(
   trx: TrxOrDb,
   query: { phone_number: string },
-): Promise<
-  Maybe<HasStringId<RenderedPatient>>
-> {
-  return baseSelect(trx)
-    .where('phone_number', '=', query.phone_number)
+) {
+  const getting_patient = baseSelect(trx)
+    .where('patients.phone_number', '=', query.phone_number)
     .executeTakeFirst()
+
+  const getting_last_message = conversations.getUser(
+    trx,
+    'patient',
+    {
+      phone_number: query.phone_number,
+    },
+  )
+
+  const patient = await getting_patient
+  const last_message = await getting_last_message
+  return { ...patient, ...last_message }
 }
 
 export type UpsertPatientIntake = {
   id: string
-  conversation_state?: PatientConversationState
   phone_number?: string
   gender?: Maybe<Gender>
   date_of_birth?: Maybe<string>
@@ -150,7 +160,7 @@ export type UpsertPatientIntake = {
 
 export function insertMany(
   trx: TrxOrDb,
-  patients: Array<Partial<Patient>>,
+  patients: Array<Partial<Patient> & { name: string }>,
 ) {
   assert(patients.length > 0, 'Must insert at least one patient')
   return trx
@@ -167,10 +177,66 @@ export function insertMany(
     .execute()
 }
 
+export async function insert(
+  trx: TrxOrDb,
+  { conversation_state, ...to_insert }: Partial<Patient> & {
+    name: string
+    conversation_state?: string
+  },
+) {
+  const inserted = await insertMany(trx, [to_insert])
+  assert(inserted.length === 1)
+  const patient = inserted[0]
+  if (conversation_state) {
+    await trx.insertInto('patient_chatbot_users')
+      .values({
+        entity_id: patient.id,
+        phone_number: patient.phone_number!,
+        conversation_state,
+        data: '{}',
+      })
+      .execute()
+  }
+  return patient
+}
+
+export function update(
+  trx: TrxOrDb,
+  { id, name, location, primary_doctor_id, ...patient }: Partial<Patient> & {
+    id: string
+  },
+) {
+  const to_update = {
+    ...patient,
+    primary_doctor_id: primary_doctor_id && (
+      trx.selectFrom('employment')
+        .where('id', '=', primary_doctor_id)
+        .where('profession', '=', 'doctor')
+        .select('id')
+    ),
+    location: location &&
+      sql<
+        string
+      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
+  }
+  const to_update_with_name: (typeof to_update) & {
+    name?: string
+  } = to_update
+  if (name) {
+    to_update_with_name.name = name
+  }
+  return trx.updateTable('patients')
+    .where('id', '=', id)
+    .set(to_update_with_name)
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
 export function upsert(
   trx: TrxOrDb,
   { location, primary_doctor_id, ...patient }: Partial<Patient> & {
     id?: string
+    name: string
   },
 ) {
   const to_upsert = {
@@ -285,7 +351,7 @@ export async function upsertIntake(
   }
 
   const upserting_patient = !isEmpty(patient_updates) &&
-    upsert(trx, {
+    update(trx, {
       ...patient_updates,
       id,
     })
@@ -606,17 +672,6 @@ export function getAvatar(trx: TrxOrDb, opts: { patient_id: string }) {
     .executeTakeFirst()
 }
 
-export function hasDemographicInfo(
-  patientState: PatientState,
-): boolean {
-  return (
-    !!patientState.name &&
-    !!patientState.gender &&
-    !!patientState.dob_formatted &&
-    !!patientState.national_id_number
-  )
-}
-
 export async function nearestFacilities(
   trx: TrxOrDb,
   patient_id: string,
@@ -656,20 +711,7 @@ export async function nearestFacilities(
 export async function schedulingAppointmentRequest(
   trx: TrxOrDb,
   patient_id: string,
-): Promise<
-  null | {
-    patient_appointment_request_id: string
-    reason: string
-    offered_times: {
-      id: string
-      start: string
-      end: string
-      health_worker_name: string
-      profession: string
-      declined: boolean
-    }[]
-  }
-> {
+): Promise<null | PatientSchedulingAppointmentRequest> {
   // deno-lint-ignore no-explicit-any
   const result = await sql<any>`
       WITH aot_pre as (

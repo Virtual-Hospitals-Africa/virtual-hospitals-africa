@@ -4,11 +4,9 @@ import {
   AppointmentWithAllPatientInfo,
   HasStringId,
   Maybe,
-  NonNull,
   PatientAppointmentOfferedTime,
   PatientAppointmentRequest,
   PatientAppointmentRequestMedia,
-  PatientState,
   SchedulingAppointmentOfferedTime,
   TrxOrDb,
 } from '../../types.ts'
@@ -150,7 +148,7 @@ export async function schedule(
     appointment_offered_time_id: string
     gcal_event_id: string
   },
-): Promise<NonNull<PatientState['scheduled_appointment']>> {
+) {
   const offered = await trx
     .selectFrom('patient_appointment_offered_times')
     .where(

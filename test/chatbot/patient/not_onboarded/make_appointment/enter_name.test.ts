@@ -12,17 +12,20 @@ import generateUUID from '../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for gender after inquiring name', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
-      conversation_state: 'not_onboarded:make_appointment:enter_name',
+
+    const chatbot_user = await conversations.insertChatbotUser(
+      db,
+      'patient',
       phone_number,
-      name: null,
-      gender: null,
-      date_of_birth: null,
-      national_id_number: null,
+    )
+    await conversations.updateChatbotUser(db, 'patient', chatbot_user.id, {
+      conversation_state: 'not_onboarded:make_appointment:enter_name',
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       body: 'test',
       media_id: null,
@@ -30,6 +33,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -41,9 +45,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     await respond(fakeWhatsApp, 'patient', phone_number)
     assertEquals(fakeWhatsApp.sendMessages.firstCall.args, [
       {
+        chatbot_name: 'patient',
         messages: {
-          messageBody:
-            'Thanks test, I will remember that.\n\nWhat is your gender?',
+          messageBody: 'What is your gender?',
           type: 'buttons',
           buttonText: 'Menu',
           options: [
@@ -55,7 +59,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
         phone_number,
       },
     ])
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

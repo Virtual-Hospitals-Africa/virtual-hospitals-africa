@@ -15,7 +15,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
   it('sends nearest organizations list after invitation', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',
@@ -25,7 +25,9 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     await conversations.insertMessageReceived(db, {
-      patient_phone_number: phone_number,
+      chatbot_name: 'patient',
+      received_by_phone_number: '263XXXXXX',
+      sent_by_phone_number: phone_number,
       has_media: false,
       // Somewhere in Harare
       body: JSON.stringify({
@@ -37,6 +39,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     })
 
     const fakeWhatsApp = {
+      phone_number: '263XXXXXX',
       sendMessage: sinon.stub().throws(),
       sendMessages: sinon.stub().resolves([{
         messages: [{
@@ -55,9 +58,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(
       callArgs.messages.messageBody,
-      'Thank you for sharing your location.\n' +
-        '\n' +
-        'Click the button below to see your nearest health organizations.',
+      'Click the button below to see your nearest health organizations',
     )
 
     assertEquals(callArgs.messages.action.button, 'Nearest Facilities')
@@ -91,7 +92,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
 
     assertEquals(callArgs.phone_number, phone_number)
 
-    const patient = await patients.getByPhoneNumber(db, {
+    const patient = await patients.getLastConversationState(db, {
       phone_number,
     })
 

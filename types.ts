@@ -54,7 +54,9 @@ export type Gender = 'male' | 'female' | 'non-binary'
 
 export type ChatbotUserState =
   & {
-    entity_id: string
+    chatbot_user_id: string
+    chatbot_user_data: Record<string, unknown>
+    entity_id: string | null
     unhandled_message: UnhandledMessage
   }
   & (
@@ -94,7 +96,8 @@ export type PatientConversationState =
   | 'find_nearest_organization:share_location'
   | 'find_nearest_organization:got_location'
   | 'find_nearest_organization:send_organization_location'
-  | 'other_end_of_demo'
+  | 'end_of_demo'
+  | 'error'
 
 export type Patient = PatientPersonal & {
   primary_doctor_id: Maybe<string>
@@ -311,7 +314,7 @@ export type GuardianFamilyRelation = FamilyRelation & {
 
 export type FamilyRelationInsert = {
   patient_id?: Maybe<string>
-  patient_name: Maybe<string>
+  patient_name: string
   patient_phone_number: Maybe<string>
   family_relation_gendered: string
   next_of_kin: boolean
@@ -394,14 +397,16 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
 
 export type PharmacistConversationState =
   | 'initial_message'
-  | 'not_onboarded:enter_id'
-  | 'not_onboarded:create_pin'
-  | 'not_onboarded:confirm_pin'
+  | 'not_onboarded:enter_name'
   | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
-  | 'other_end_of_demo'
+  | 'onboarded:pharmacist_main_menu'
+  | 'onboarded:fill_prescription:enter_prescription_number'
+  | 'onboarded:view_inventory'
+  | 'end_of_demo'
+  | 'error'
 
 export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
   prompt: string | ((trx: TrxOrDb, userState: US) => string | Promise<string>)
@@ -484,14 +489,6 @@ export type ConversationStateHandlerGetLocation<US extends ChatbotUserState> =
     }
   >
 
-export type ConversationStateHandlerEndOfDemo<US extends ChatbotUserState> =
-  ConversationStateHandlerType<
-    US,
-    {
-      type: 'end_of_demo'
-    }
-  >
-
 export type ConversationStateHandlerDate<US extends ChatbotUserState> =
   ConversationStateHandlerType<
     US,
@@ -522,7 +519,6 @@ export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerSelect<US>
   | ConversationStateHandlerString<US>
   | ConversationStateHandlerDate<US>
-  | ConversationStateHandlerEndOfDemo<US>
   | ConversationStateHandlerList<US>
   | ConversationStateHandlerGetLocation<US>
   | ConversationStateHandlerSendLocation<US>
@@ -1482,6 +1478,7 @@ export type WhatsAppSingleSendable =
   | WhatsAppSendableButtons
   | WhatsAppSendableList
   | WhatsAppSendableLocation
+  | WhatsAppSendableDocument
 
 export type WhatsAppSendable = [WhatsAppSingleSendable, WhatsAppSingleSendable]
 
@@ -1559,6 +1556,12 @@ export type WhatsAppSendableLocation = {
   type: 'location'
   messageBody: string
   location: WhatsAppLocation
+}
+
+export type WhatsAppSendableDocument = {
+  type: 'document'
+  messageBody: string
+  pdfPath: string
 }
 
 export type WhatsAppLocation = Location & {
@@ -2378,4 +2381,10 @@ export type UnhandledMessage = {
   has_media: boolean
   media_id: string | null
   sent_by_phone_number: string
+}
+
+export type PatientSchedulingAppointmentRequest = {
+  patient_appointment_request_id: string
+  reason: string
+  offered_times: SchedulingAppointmentOfferedTime[]
 }

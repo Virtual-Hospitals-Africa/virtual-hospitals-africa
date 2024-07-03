@@ -10,7 +10,7 @@ describe(
   () => {
     describe('upsert', () => {
       itUsesTrxAnd('inserts patient_occupations', async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Test Patient' })
+        const patient = await patients.insert(trx, { name: 'Test Patient' })
 
         const patient_occupation = await patient_occupations.upsert(trx, {
           patient_id: patient.id,
@@ -28,7 +28,7 @@ describe(
       itUsesTrxAnd(
         'can replace an existing patient occupation',
         async (trx) => {
-          const patient = await patients.upsert(trx, { name: 'Test Patient' })
+          const patient = await patients.insert(trx, { name: 'Test Patient' })
 
           await patient_occupations.upsert(trx, {
             patient_id: patient.id,
