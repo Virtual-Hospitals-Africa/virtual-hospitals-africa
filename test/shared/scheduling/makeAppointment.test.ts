@@ -20,7 +20,7 @@ describe('scheduling/makeAppointment.ts', { sanitizeResources: false }, () => {
           scenario: 'doctor',
         })
 
-        const patient = await patients.upsert(trx, {
+        const patient = await patients.insert(trx, {
           name: 'Test',
         })
 

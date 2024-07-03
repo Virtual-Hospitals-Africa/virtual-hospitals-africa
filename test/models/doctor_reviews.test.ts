@@ -19,7 +19,7 @@ describe('db/models/doctor_reviews.ts', { sanitizeResources: false }, () => {
           trx,
           { count: 2 },
           async ([clinic_id, virtual_hospital_id]) => {
-            const patient = await patients.upsert(trx, { name: 'Test Patient' })
+            const patient = await patients.insert(trx, { name: 'Test Patient' })
             const nurse = await addTestHealthWorker(trx, {
               scenario: 'approved-nurse',
               organization_id: clinic_id,

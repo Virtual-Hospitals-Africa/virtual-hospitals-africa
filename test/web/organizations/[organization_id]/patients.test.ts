@@ -20,7 +20,7 @@ describe(
         })
 
         const unique_name = generateUUID()
-        const patient_not_in_waiting_room = await patients.upsert(db, {
+        const patient_not_in_waiting_room = await patients.insert(db, {
           name: unique_name + ' not in waiting room',
         })
 

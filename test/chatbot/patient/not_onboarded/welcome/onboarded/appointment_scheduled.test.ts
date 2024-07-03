@@ -14,7 +14,7 @@ import { addTestHealthWorker } from '../../../../../web/utilities.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('comes back to main menu after cancelling appointment', async () => {
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(db, {
+    const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:appointment_scheduled',
       phone_number,
       name: 'test',

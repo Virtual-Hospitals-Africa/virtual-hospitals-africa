@@ -151,8 +151,8 @@ export type PremisesTypes =
   | 'Clinics: Class D'
   | 'Dispensing medical practice'
   | 'Hospital pharmacies'
-  | 'Pharmacies: Restricted'
   | 'Pharmacies: Research'
+  | 'Pharmacies: Restricted'
   | 'Pharmacy in any other location'
   | 'Pharmacy in rural area'
   | 'Pharmacy located in the CBD'
@@ -757,6 +757,25 @@ export interface PatientAppointmentRequests {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientChatbotUsers {
+  conversation_state: string
+  created_at: Generated<Timestamp>
+  data: Json
+  entity_id: string | null
+  id: Generated<string>
+  phone_number: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientChatbotUserWhatsappMessagesReceived {
+  chatbot_user_id: string
+  conversation_state: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+  whatsapp_message_received_id: string
+}
+
 export interface PatientConditionMedications {
   created_at: Generated<Timestamp>
   id: Generated<string>
@@ -919,7 +938,7 @@ export interface Patients {
   gender: Gender | null
   id: Generated<string>
   location: string | null
-  name: string | null
+  name: string
   national_id_number: string | null
   nearest_organization_id: string | null
   phone_number: string | null
@@ -950,13 +969,23 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
-export interface PatientWhatsappMessagesReceived {
-  conversation_state: string | null
+export interface PharmacistChatbotUsers {
+  conversation_state: string
+  created_at: Generated<Timestamp>
+  data: Json
+  entity_id: string | null
+  id: Generated<string>
+  phone_number: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PharmacistChatbotUserWhatsappMessagesReceived {
+  chatbot_user_id: string
+  conversation_state: string
   created_at: Generated<Timestamp>
   id: Generated<string>
-  patient_id: string | null
   updated_at: Generated<Timestamp>
-  whatsapp_message_received_id: string | null
+  whatsapp_message_received_id: string
 }
 
 export interface Pharmacists {
@@ -968,20 +997,9 @@ export interface Pharmacists {
   id: Generated<string>
   licence_number: string
   pharmacist_type: PharmacistType
-  phone_number: string | null
-  pin: string | null
   prefix: NamePrefix | null
   town: string | null
   updated_at: Generated<Timestamp>
-}
-
-export interface PharmacistWhatsappMessagesReceived {
-  conversation_state: string | null
-  created_at: Generated<Timestamp>
-  id: Generated<string>
-  pharmacist_id: string | null
-  updated_at: Generated<Timestamp>
-  whatsapp_message_received_id: string | null
 }
 
 export interface Premises {
@@ -1165,6 +1183,9 @@ export interface DB {
   patient_appointment_offered_times: PatientAppointmentOfferedTimes
   patient_appointment_request_media: PatientAppointmentRequestMedia
   patient_appointment_requests: PatientAppointmentRequests
+  patient_chatbot_user_whatsapp_messages_received:
+    PatientChatbotUserWhatsappMessagesReceived
+  patient_chatbot_users: PatientChatbotUsers
   patient_condition_medications: PatientConditionMedications
   patient_conditions: PatientConditions
   patient_encounter_providers: PatientEncounterProviders
@@ -1182,9 +1203,10 @@ export interface DB {
   patient_occupations: PatientOccupations
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
-  patient_whatsapp_messages_received: PatientWhatsappMessagesReceived
   patients: Patients
-  pharmacist_whatsapp_messages_received: PharmacistWhatsappMessagesReceived
+  pharmacist_chatbot_user_whatsapp_messages_received:
+    PharmacistChatbotUserWhatsappMessagesReceived
+  pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
   premise_supervisors: PremiseSupervisors
   premises: Premises

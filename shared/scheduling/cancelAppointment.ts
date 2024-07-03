@@ -10,6 +10,7 @@ export async function cancelAppointment(
   trx: TrxOrDb,
   patientState: PatientChatbotUserState,
 ) {
+  assert(patientState.entity_id, 'No entity_id found in patientState')
   const scheduled_appointments = await patients.scheduledAppointments(
     trx,
     patientState.entity_id,

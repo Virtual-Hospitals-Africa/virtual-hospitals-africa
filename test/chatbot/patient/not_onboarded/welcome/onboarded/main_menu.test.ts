@@ -13,7 +13,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for reason after welcome message', async () => {
     const phone_number = randomPhoneNumber()
     const national_id_number = randomNationalId()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'onboarded:main_menu',
       phone_number,
       name: 'test',

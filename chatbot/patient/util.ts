@@ -1,5 +1,3 @@
-import { PatientState, TrxOrDb } from '../../types.ts'
-import * as patients from '../../db/models/patients.ts'
 import pick from '../../util/pick.ts'
 
 export const pickPatient = pick([
@@ -11,6 +9,3 @@ export const pickPatient = pick([
   'conversation_state',
   'location',
 ])
-
-export const updatePatientState = (trx: TrxOrDb, patientState: PatientState) =>
-  patients.upsertIntake(trx, pickPatient(patientState))

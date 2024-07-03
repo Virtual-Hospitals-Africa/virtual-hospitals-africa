@@ -12,7 +12,7 @@ import generateUUID from '../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('comes back to main menu after clicking button', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state:
         'find_nearest_organization:send_organization_location',
       phone_number,

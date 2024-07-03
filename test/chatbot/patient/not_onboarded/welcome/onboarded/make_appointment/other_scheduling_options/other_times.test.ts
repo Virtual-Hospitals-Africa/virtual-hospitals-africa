@@ -41,7 +41,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
     const trx = db
 
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(trx, {
+    const patientBefore = await patients.insert(trx, {
       conversation_state: 'onboarded:make_appointment:other_scheduling_options',
       phone_number,
       name: 'test',

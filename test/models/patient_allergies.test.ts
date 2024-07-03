@@ -9,7 +9,7 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
     const allergies = readFirstFiveRowsOfSeedDump('allergies')
 
     itUsesTrxAnd('upserts allergies when no allergies exist', async (trx) => {
-      const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+      const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
       await patient_allergies.upsert(trx, patient.id, [
         { id: allergies.value[0].id },
@@ -27,7 +27,7 @@ describe('db/models/patient_allergies.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'handles updates and removing patient allergies',
       async (trx) => {
-        const patient = await patients.upsert(trx, { name: 'Billy Bob' })
+        const patient = await patients.insert(trx, { name: 'Billy Bob' })
 
         await patient_allergies.upsert(trx, patient.id, [
           { id: allergies.value[0].id },

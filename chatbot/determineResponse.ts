@@ -7,23 +7,25 @@ import {
   WhatsAppSendable,
   WhatsAppSingleSendable,
 } from '../types.ts'
-import * as conversations from '../db/models/conversations.ts'
 import * as defs from './defs.ts'
 import { assert } from 'std/assert/assert.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 
-async function findOrInsertEntity(
+async function findOrInsertChatbotUser(
   trx: TrxOrDb,
   unhandled_message: UnhandledMessage,
 ) {
   return (await trx
-    .selectFrom(`${unhandled_message.chatbot_name}s`)
+    .selectFrom(`${unhandled_message.chatbot_name}_chatbot_users`)
     .selectAll()
     .where('phone_number', '=', unhandled_message.sent_by_phone_number)
     .executeTakeFirst()) || (
       await trx
-        .insertInto(`${unhandled_message.chatbot_name}s`)
+        .insertInto(`${unhandled_message.chatbot_name}_chatbot_users`)
         .values({
           phone_number: unhandled_message.sent_by_phone_number,
+          data: '',
+          conversation_state: 'initial_message',
         })
         .returningAll()
         .executeTakeFirstOrThrow()
@@ -38,29 +40,22 @@ export async function determineResponse(
   const conversation_states: any =
     defs[unhandled_message.chatbot_name].conversation_states
 
-  const entity = await findOrInsertEntity(trx, unhandled_message)
-
-  const past_conversation_state = (await conversations.getLastConversationState(
-    trx,
-    unhandled_message.chatbot_name,
-    {
-      entity_id: entity.id,
-    },
-  ))?.conversation_state
+  const chatbot_user = await findOrInsertChatbotUser(trx, unhandled_message)
 
   const userState: ChatbotUserState = {
-    entity_id: entity.id,
+    chatbot_user_id: chatbot_user.id,
+    chatbot_user_data: isObjectLike(chatbot_user.data) ? chatbot_user.data : {},
+    entity_id: chatbot_user.entity_id,
     unhandled_message,
     chatbot_name: unhandled_message.chatbot_name,
-    conversation_state:
-      // deno-lint-ignore no-explicit-any
-      past_conversation_state as any,
+    // deno-lint-ignore no-explicit-any
+    conversation_state: chatbot_user.conversation_state as any,
   }
 
   let nextConversationState: string
   let nextState
 
-  if (!past_conversation_state) {
+  if (!chatbot_user) {
     nextConversationState = 'initial_message'
     nextState = conversation_states.initial_message
   } else {
@@ -78,13 +73,20 @@ export async function determineResponse(
     }
   }
 
+  await trx.updateTable(`${unhandled_message.chatbot_name}_chatbot_users`)
+    .set('conversation_state', nextConversationState)
+    .where('id', '=', chatbot_user.id)
+    .execute()
+
   await trx
-    .insertInto(`${unhandled_message.chatbot_name}_whatsapp_messages_received`)
+    .insertInto(
+      `${unhandled_message.chatbot_name}_chatbot_user_whatsapp_messages_received`,
+    )
     .values({
       whatsapp_message_received_id: unhandled_message.message_received_id,
       // deno-lint-ignore no-explicit-any
       conversation_state: nextConversationState as any,
-      [`${unhandled_message.chatbot_name}_id`]: entity.id,
+      chatbot_user_id: chatbot_user.id,
     })
     .returningAll()
     .executeTakeFirstOrThrow()

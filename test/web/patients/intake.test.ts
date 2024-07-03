@@ -565,7 +565,7 @@ describe('/app/patients/[patient_id]/intake', {
         reason: 'seeking treatment',
       },
     )
-    await patients.upsert(db, {
+    await patients.update(db, {
       id: patient_id,
       date_of_birth: '2020-01-01',
     })
@@ -677,7 +677,7 @@ describe('/app/patients/[patient_id]/intake', {
       },
     )
 
-    await patients.upsert(db, {
+    await patients.update(db, {
       id: patient_id,
       date_of_birth: '2020-01-01',
     })
@@ -773,7 +773,7 @@ describe('/app/patients/[patient_id]/intake', {
       },
     )
 
-    await patients.upsert(db, {
+    await patients.update(db, {
       id: patient_id,
       date_of_birth: '2000-01-01',
     })
@@ -881,7 +881,7 @@ describe('/app/patients/[patient_id]/intake', {
     await db.insertInto('patient_intake').values(patient_intake_insert)
       .execute()
 
-    await patients.upsert(db, {
+    await patients.update(db, {
       id: patient_id,
       date_of_birth: '2000-01-01',
     })
@@ -1119,7 +1119,7 @@ describe('/app/patients/[patient_id]/intake', {
       intake_step: 'personal',
     }).execute()
 
-    await patients.upsert(db, {
+    await patients.update(db, {
       id: patient_id,
       date_of_birth: '2000-01-01',
     })

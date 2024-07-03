@@ -54,7 +54,9 @@ export type Gender = 'male' | 'female' | 'non-binary'
 
 export type ChatbotUserState =
   & {
-    entity_id: string
+    chatbot_user_id: string
+    chatbot_user_data: Record<string, unknown>
+    entity_id: string | null
     unhandled_message: UnhandledMessage
   }
   & (
@@ -312,7 +314,7 @@ export type GuardianFamilyRelation = FamilyRelation & {
 
 export type FamilyRelationInsert = {
   patient_id?: Maybe<string>
-  patient_name: Maybe<string>
+  patient_name: string
   patient_phone_number: Maybe<string>
   family_relation_gendered: string
   next_of_kin: boolean
@@ -395,9 +397,7 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
 
 export type PharmacistConversationState =
   | 'initial_message'
-  // | 'not_onboarded:enter_id'
-  | 'not_onboarded:create_pin'
-  | 'not_onboarded:confirm_pin'
+  | 'not_onboarded:enter_name'
   | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'

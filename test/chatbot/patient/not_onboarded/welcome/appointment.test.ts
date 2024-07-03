@@ -12,14 +12,6 @@ import generateUUID from '../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for name after welcome message', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
-      conversation_state: 'not_onboarded:welcome',
-      phone_number,
-      name: null,
-      gender: null,
-      date_of_birth: null,
-      national_id_number: null,
-    })
 
     await conversations.insertMessageReceived(db, {
       chatbot_name: 'patient',

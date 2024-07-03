@@ -32,7 +32,7 @@ describe(
             provider_ids: [healthWorker.employee_id!],
           },
         )
-        await patients.upsert(db, {
+        await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
           date_of_birth: '1980-01-01',
@@ -96,7 +96,7 @@ describe(
             provider_ids: [healthWorker.employee_id!],
           },
         )
-        await patients.upsert(db, {
+        await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
           date_of_birth: '1980-01-01',
@@ -187,7 +187,7 @@ describe(
             provider_ids: [healthWorker.employee_id!],
           },
         )
-        await patients.upsert(db, {
+        await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
           date_of_birth: '1980-01-01',
@@ -302,7 +302,7 @@ describe(
             provider_ids: [healthWorker.employee_id!],
           },
         )
-        await patients.upsert(db, {
+        await patients.update(db, {
           id: encounter.patient_id,
           gender: 'female',
           date_of_birth: '1980-01-01',
@@ -350,7 +350,7 @@ describe(
               provider_ids: [healthWorker.employee_id!],
             },
           )
-          await patients.upsert(db, {
+          await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
             date_of_birth: '1980-01-01',
@@ -375,7 +375,7 @@ describe(
               provider_ids: [healthWorker.employee_id!],
             },
           )
-          await patients.upsert(db, {
+          await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
             date_of_birth: '1980-01-01',
@@ -404,7 +404,7 @@ describe(
               provider_ids: [healthWorker.employee_id!],
             },
           )
-          await patients.upsert(db, {
+          await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
             date_of_birth: '1980-01-01',
@@ -477,7 +477,7 @@ describe(
               provider_ids: [healthWorker.employee_id!],
             },
           )
-          await patients.upsert(db, {
+          await patients.update(db, {
             id: encounter.patient_id,
             gender: 'female',
             date_of_birth: '1980-01-01',

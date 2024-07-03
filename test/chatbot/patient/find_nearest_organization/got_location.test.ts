@@ -16,7 +16,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   it('sends a organization link and back_to_main_menu button after selecting a organization', async () => {
     const phone_number = randomPhoneNumber()
     // Step 1: share location
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'find_nearest_organization:share_location',
       phone_number,
       name: 'test',

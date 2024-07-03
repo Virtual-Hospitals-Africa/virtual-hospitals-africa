@@ -12,7 +12,7 @@ import generateUUID from '../../../../../util/uuid.ts'
 describe('patient chatbot', { sanitizeResources: false }, () => {
   it('asks for birthday after inquiring gender', async () => {
     const phone_number = randomPhoneNumber()
-    await patients.upsert(db, {
+    await patients.insert(db, {
       conversation_state: 'not_onboarded:make_appointment:enter_gender',
       phone_number,
       name: 'test',

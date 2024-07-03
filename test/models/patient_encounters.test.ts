@@ -18,7 +18,7 @@ describe(
         'creates a new patient encounter for a patient seeking treatment, adding the patient to the waiting room',
         (trx) =>
           withTestOrganization(trx, async (organization_id) => {
-            const patient = await patients.upsert(trx, { name: 'Test Patient' })
+            const patient = await patients.insert(trx, { name: 'Test Patient' })
             await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',
@@ -57,7 +57,7 @@ describe(
             const nurse = await addTestHealthWorker(trx, {
               scenario: 'approved-nurse',
             })
-            const patient = await patients.upsert(trx, { name: 'Test Patient' })
+            const patient = await patients.insert(trx, { name: 'Test Patient' })
             await patient_encounters.upsert(trx, organization_id, {
               patient_id: patient.id,
               reason: 'seeking treatment',

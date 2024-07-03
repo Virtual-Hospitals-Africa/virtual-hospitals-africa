@@ -19,16 +19,16 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
       const baseUUID = generateUUID()
 
-      const test_patient1 = await patients.upsert(trx, {
+      const test_patient1 = await patients.insert(trx, {
         name: baseUUID + generateUUID(),
       })
 
-      const test_patient2 = await patients.upsert(trx, {
+      const test_patient2 = await patients.insert(trx, {
         name: baseUUID + generateUUID(),
         avatar_media_id: insertedMedia.id,
       })
 
-      await patients.upsert(trx, {
+      await patients.insert(trx, {
         name: 'Other Foo',
       })
 
@@ -82,7 +82,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       "gives a description formed by the patient's gender and date of birth",
       async (trx) => {
         const name = generateUUID()
-        await patients.upsert(trx, {
+        await patients.insert(trx, {
           name,
           date_of_birth: '2021-03-01',
           gender: 'female',
@@ -97,7 +97,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
 
   describe('getWithOpenEncounter', () => {
     itUsesTrxAnd('finds patients without an open encounter', async (trx) => {
-      const test_patient = await patients.upsert(trx, {
+      const test_patient = await patients.insert(trx, {
         name: 'Test Patient',
       })
 
@@ -183,7 +183,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     itUsesTrxAnd(
       'returns recommended examinations once date of birth is filled in',
       async (trx) => {
-        const patient = await patients.upsert(trx, {
+        const patient = await patients.insert(trx, {
           name: 'Test Patient',
           date_of_birth: '1989-01-03',
           gender: 'male',
@@ -265,7 +265,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
           mime_type: 'image/jpeg',
         })
 
-        const test_patient = await patients.upsert(trx, {
+        const test_patient = await patients.insert(trx, {
           name: 'Test Patient 1',
           avatar_media_id: insertedMedia.id,
         })
@@ -289,32 +289,32 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
     const today = new Date()
 
     itUsesTrxAnd('finds patient ages', async (trx) => {
-      const testPatient1 = await patients.upsert(trx, {
+      const testPatient1 = await patients.insert(trx, {
         name: 'Test Patient 1',
         date_of_birth: today.toISOString().split('T')[0],
       })
 
       const yesterday = new Date(today.getTime() - 86400000)
-      const testPatient2 = await patients.upsert(trx, {
+      const testPatient2 = await patients.insert(trx, {
         name: 'Test Patient 2',
         date_of_birth: yesterday.toISOString().split('T')[0],
       })
 
       const twentyDays = new Date(today.getTime() - (86400000 * 20))
-      const testPatient3 = await patients.upsert(trx, {
+      const testPatient3 = await patients.insert(trx, {
         name: 'Test Patient 3',
         date_of_birth: twentyDays.toISOString().split('T')[0],
       })
 
       const threeWeeks = new Date(today.getTime() - (86400000 * 21))
-      const testPatient4 = await patients.upsert(trx, {
+      const testPatient4 = await patients.insert(trx, {
         name: 'Test Patient 4',
         date_of_birth: threeWeeks.toISOString().split('T')[0],
       })
 
       const threeMonths = new Date(today)
       threeMonths.setMonth(today.getMonth() - 3)
-      const testPatient5 = await patients.upsert(trx, {
+      const testPatient5 = await patients.insert(trx, {
         name: 'Test Patient 5',
         date_of_birth: threeMonths.toISOString().split('T')[0],
       })
@@ -322,12 +322,12 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       const twoYears = new Date(today)
       twoYears.setFullYear(today.getFullYear() - 2)
       const oneDayBelowTwoYears = new Date(twoYears.getTime() + 86400000)
-      const testPatient6 = await patients.upsert(trx, {
+      const testPatient6 = await patients.insert(trx, {
         name: 'Test Patient 6',
         date_of_birth: oneDayBelowTwoYears.toISOString().split('T')[0],
       })
 
-      const testPatient7 = await patients.upsert(trx, {
+      const testPatient7 = await patients.insert(trx, {
         name: 'Test Patient 7',
         date_of_birth: twoYears.toISOString().split('T')[0],
       })
@@ -369,7 +369,7 @@ describe('db/models/patients.ts', { sanitizeResources: false }, () => {
       ])
 
       const oneDayBelowThreeMonths = new Date(threeMonths.getTime() + 86400000)
-      const testPatient8 = await patients.upsert(trx, {
+      const testPatient8 = await patients.insert(trx, {
         name: 'Test Patient 8',
         date_of_birth: oneDayBelowThreeMonths.toISOString().split('T')[0],
       })

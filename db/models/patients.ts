@@ -117,7 +117,7 @@ export async function getLastConversationState(
     .where('patients.phone_number', '=', query.phone_number)
     .executeTakeFirst()
 
-  const getting_last_message = conversations.getLastConversationState(
+  const getting_last_message = conversations.getUser(
     trx,
     'patient',
     {
@@ -160,7 +160,7 @@ export type UpsertPatientIntake = {
 
 export function insertMany(
   trx: TrxOrDb,
-  patients: Array<Partial<Patient>>,
+  patients: Array<Partial<Patient> & { name: string }>,
 ) {
   assert(patients.length > 0, 'Must insert at least one patient')
   return trx
@@ -177,10 +177,66 @@ export function insertMany(
     .execute()
 }
 
+export async function insert(
+  trx: TrxOrDb,
+  { conversation_state, ...to_insert }: Partial<Patient> & {
+    name: string
+    conversation_state?: string
+  },
+) {
+  const inserted = await insertMany(trx, [to_insert])
+  assert(inserted.length === 1)
+  const patient = inserted[0]
+  if (conversation_state) {
+    await trx.insertInto('patient_chatbot_users')
+      .values({
+        entity_id: patient.id,
+        phone_number: patient.phone_number!,
+        conversation_state,
+        data: '{}',
+      })
+      .execute()
+  }
+  return patient
+}
+
+export function update(
+  trx: TrxOrDb,
+  { id, name, location, primary_doctor_id, ...patient }: Partial<Patient> & {
+    id: string
+  },
+) {
+  const to_update = {
+    ...patient,
+    primary_doctor_id: primary_doctor_id && (
+      trx.selectFrom('employment')
+        .where('id', '=', primary_doctor_id)
+        .where('profession', '=', 'doctor')
+        .select('id')
+    ),
+    location: location &&
+      sql<
+        string
+      >`ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude})::geography, 4326)`,
+  }
+  const to_update_with_name: (typeof to_update) & {
+    name?: string
+  } = to_update
+  if (name) {
+    to_update_with_name.name = name
+  }
+  return trx.updateTable('patients')
+    .where('id', '=', id)
+    .set(to_update_with_name)
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
 export function upsert(
   trx: TrxOrDb,
   { location, primary_doctor_id, ...patient }: Partial<Patient> & {
     id?: string
+    name: string
   },
 ) {
   const to_upsert = {
@@ -295,7 +351,7 @@ export async function upsertIntake(
   }
 
   const upserting_patient = !isEmpty(patient_updates) &&
-    upsert(trx, {
+    update(trx, {
       ...patient_updates,
       id,
     })

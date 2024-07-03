@@ -29,7 +29,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
   })
   it('provides with first_scheduling_option details after confirming details', async () => {
     const phone_number = randomPhoneNumber()
-    const patientBefore = await patients.upsert(db, {
+    const patientBefore = await patients.insert(db, {
       conversation_state: 'onboarded:make_appointment:confirm_details',
       phone_number,
       name: 'test',
