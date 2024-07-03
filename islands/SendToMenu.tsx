@@ -504,6 +504,8 @@ export function PersonDetailView(
           Additional Details
         </h2>
         <textarea
+          form='intake'
+          name='send_to.additional_details'
           className='w-full border border-gray-300 rounded-md p-2 mt-2'
           value={additionalDetails}
           onChange={(e) =>
@@ -512,7 +514,7 @@ export function PersonDetailView(
         </textarea>
       </div>
       <div className='mt-6 px-4 flex justify-end'>
-        <Button type='button' variant='solid' color='primary'>
+        <Button form='intake' type='submit' variant='solid' color='primary'>
           Send
         </Button>
       </div>
