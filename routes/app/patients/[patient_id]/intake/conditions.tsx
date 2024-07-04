@@ -5,9 +5,6 @@ import * as patient_allergies from '../../../../../db/models/patient_allergies.t
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
@@ -15,8 +12,6 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type ConditionsFormValues = {
   allergies?: { id: string; name: string }[]
@@ -73,16 +68,6 @@ export default async function PreExistingConditionsPage(
         patient_allergies={await getting_patient_allergies}
         pre_existing_conditions={await getting_pre_existing_conditions}
       />
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
     </IntakeLayout>
   )
 }

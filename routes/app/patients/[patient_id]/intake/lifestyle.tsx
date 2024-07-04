@@ -1,9 +1,6 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
@@ -15,8 +12,6 @@ import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.t
 import { assert } from 'std/assert/assert.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 import zip from '../../../../../util/zip.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 // deno-lint-ignore no-explicit-any
 type LifestyleFormValues = Record<string, any> // TODO @debruler type this
@@ -188,16 +183,6 @@ export default async function LifestylePage(
         age_years={age_years}
         lifestyle={await patient_lifestyle.get(trx, { patient_id })}
       />
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
     </IntakeLayout>
   )
 }

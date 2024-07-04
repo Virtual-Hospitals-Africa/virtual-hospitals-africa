@@ -15,6 +15,12 @@ import redirect from '../../../../../util/redirect.ts'
 import { INTAKE_STEPS, isIntakeStep } from '../../../../../shared/intake.ts'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../../../../db/models/patient_encounters.ts'
+import Buttons, {
+  ButtonsContainer,
+} from '../../../../../islands/form/buttons.tsx'
+import SendToMenu from '../../../../../islands/SendToMenu.tsx'
+import { assertEquals } from 'std/assert/assert_equals.ts'
+import { groupByMapped } from '../../../../../util/groupBy.ts'
 
 type AdditionalContext = {
   is_review: false
@@ -32,7 +38,7 @@ export async function handler(
 ) {
   const patient_id = getRequiredUUIDParam(ctx, 'patient_id')
 
-  const is_review = ctx.route.endsWith('/review')
+  const is_review = ctx.route.endsWith(`/review`)
 
   const getPatient = is_review ? patients.getIntakeReview : patients.getIntake
 
@@ -60,21 +66,31 @@ const intake_nav_links = INTAKE_STEPS.map((step) => ({
   route: `/app/patients/:patient_id/intake/${step}`,
 }))
 
-export const nextLink = ({ route, params }: FreshContext) => {
-  const current_index = intake_nav_links.findIndex(
-    (link) => link.route === route,
-  )
-  assert(current_index >= 0)
-  const next_link = intake_nav_links[current_index + 1]
-  if (!next_link) {
-    return replaceParams(
-      `/app/patients/:patient_id/encounters/open/vitals`,
-      params,
-    )
-  }
-  assert(next_link)
-  return replaceParams(next_link.route, params)
+const next_links_by_route = groupByMapped(
+  intake_nav_links,
+  (link) => link.route,
+  (link, i) => {
+    const next_link = intake_nav_links[i + 1]
+    if (!next_link) {
+      assertEquals(i, intake_nav_links.length - 1)
+      assertEquals(link.step, 'review')
+    }
+    return {
+      route: next_link?.route ||
+        `/app/patients/:patient_id/encounters/open/vitals`,
+      button_text: next_link ? `Continue to ${next_link.step}` : 'Start visit',
+    }
+  },
+)
+
+const nextStep = ({ route }: FreshContext) => {
+  const next_link = next_links_by_route.get(route)
+  assert(next_link, `No next link for route ${route}`)
+  return next_link
 }
+
+const nextLink = (ctx: FreshContext) =>
+  replaceParams(nextStep(ctx).route, ctx.params)
 
 export async function upsertPatientAndRedirect(
   ctx: IntakeContext,
@@ -126,6 +142,15 @@ export function IntakeLayout({
     >
       <Form id='intake' method='POST'>
         {children}
+        <hr className='my-2' />
+
+        <ButtonsContainer>
+          <SendToMenu />
+          <Buttons
+            submitText={nextStep(ctx).button_text}
+            className='flex-1 max-w-xl '
+          />
+        </ButtonsContainer>
       </Form>
     </Layout>
   )

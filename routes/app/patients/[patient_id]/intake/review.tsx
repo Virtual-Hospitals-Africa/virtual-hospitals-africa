@@ -1,8 +1,5 @@
 import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import PatientReview from '../../../../../components/patients/intake/Review.tsx'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import {
   IntakeContext,
   IntakeLayout,
@@ -11,7 +8,6 @@ import {
 import { assert } from 'std/assert/assert.ts'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   // deno-lint-ignore require-await
@@ -37,20 +33,9 @@ export default async function ReviewPage(
     ctx.params,
   )
 
-  const { healthWorker, patient } = ctx.state
-
   return (
     <IntakeLayout ctx={ctx}>
-      <PatientReview patient={patient} />
-      <hr className='my-2' />
-
-      <ButtonsContainer>
-        <SendToMenu />
-        <Buttons
-          submitText='Continue to vitals'
-          className='flex-1 max-w-xl '
-        />
-      </ButtonsContainer>
+      <PatientReview patient={ctx.state.patient} />
     </IntakeLayout>
   )
 }

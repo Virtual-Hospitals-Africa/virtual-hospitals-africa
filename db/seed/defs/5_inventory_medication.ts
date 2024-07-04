@@ -1,7 +1,7 @@
 //deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
 import parseJSON from '../../../util/parseJSON.ts'
-import groupBy from '../../../util/groupBy.ts'
+import { groupBy } from '../../../util/groupBy.ts'
 import uniq from '../../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
 import compact from '../../../util/compact.ts'

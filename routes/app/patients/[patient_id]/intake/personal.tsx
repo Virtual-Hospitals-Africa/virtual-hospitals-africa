@@ -2,9 +2,6 @@ import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
 import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
@@ -13,8 +10,6 @@ import {
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
 import omit from '../../../../../util/omit.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type PersonalFormValues = {
   first_name: string
@@ -74,16 +69,6 @@ export default async function PersonalPage(
         patient={patient}
         previously_completed={previously_completed}
       />
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
     </IntakeLayout>
   )
 }

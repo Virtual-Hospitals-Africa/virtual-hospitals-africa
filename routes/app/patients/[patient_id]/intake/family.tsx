@@ -23,8 +23,6 @@ import {
   Religion,
 } from '../../../../../db.d.ts'
 import PatientFamilyForm from '../../../../../islands/family/Form.tsx'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type FamilyFormValues = {
   family: {
@@ -46,6 +44,14 @@ function assertIsFamily(
   patient: unknown,
 ): asserts patient is FamilyFormValues {
   assertOr400(isObjectLike(patient))
+  assertOr400(isObjectLike(patient.family))
+  if (
+    isObjectLike(patient.family.other_next_of_kin) &&
+    !patient.family.other_next_of_kin.patient_name &&
+    !patient.family.other_next_of_kin.patient_id
+  ) {
+    delete patient.family.other_next_of_kin
+  }
 }
 
 export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
@@ -55,6 +61,7 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
       req,
       assertIsFamily,
     )
+
     return upsertPatientAndRedirect(ctx, {
       ...patient,
       family: {
@@ -76,22 +83,10 @@ export default async function FamilyPage(
 
   return (
     <IntakeLayout ctx={ctx}>
-      <section>
-        <PatientFamilyForm
-          age_years={age_years}
-          family={await patient_family.get(trx, { patient_id: patient.id })}
-        />
-      </section>
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
+      <PatientFamilyForm
+        age_years={age_years}
+        family={await patient_family.get(trx, { patient_id: patient.id })}
+      />
     </IntakeLayout>
   )
 }

@@ -55,16 +55,6 @@ export default async function OccupationPage(
   return (
     <IntakeLayout ctx={ctx}>
       <OccupationForm occupation={occupation} />
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
     </IntakeLayout>
   )
 }

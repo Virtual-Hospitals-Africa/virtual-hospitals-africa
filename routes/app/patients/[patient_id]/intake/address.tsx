@@ -3,9 +3,6 @@ import * as address from '../../../../../db/models/address.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
@@ -13,8 +10,6 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type AddressFormValues = {
   address: {
@@ -113,16 +108,6 @@ export default async function AddressPage(
         default_organization={default_organization}
         country_address_tree={country_address_tree}
       />
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
     </IntakeLayout>
   )
 }

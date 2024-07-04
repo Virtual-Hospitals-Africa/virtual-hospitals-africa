@@ -18,7 +18,7 @@ import {
 } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
-import groupBy from '../../util/groupBy.ts'
+import { groupBy } from '../../util/groupBy.ts'
 import * as patient_encounters from './patient_encounters.ts'
 import * as doctor_reviews from './doctor_reviews.ts'
 import * as address from './address.ts'

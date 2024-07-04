@@ -3,9 +3,6 @@ import * as patient_conditions from '../../../../../db/models/patient_conditions
 import PatientHistoryForm from '../../../../../components/patients/intake/HistoryForm.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
@@ -13,8 +10,6 @@ import {
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type HistoryFormValues = {
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
@@ -61,16 +56,6 @@ export default async function HistoryPage(
         past_medical_conditions={await getting_past_medical_conditions}
         major_surgeries={await getting_major_surgeries}
       />
-      <hr className='my-2' />
-      <ButtonsContainer>
-        <SendToMenu />
-        <Button
-          type='submit'
-          className='flex-1 max-w-xl '
-        >
-          Next Step
-        </Button>
-      </ButtonsContainer>
     </IntakeLayout>
   )
 }
