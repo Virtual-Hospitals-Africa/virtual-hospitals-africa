@@ -276,23 +276,43 @@ type TeamMemberProps = {
 }
 
 const notificationMethods = [
-  { id: '0', title: 'Request Review', icon: ClipboardDocumentCheckIcon, color: 'text-indigo-900', ringColor: 'ring-indigo-900' },
-  { id: '1', title: 'Make Appointment', icon: CalendarDaysIcon, color: 'text-blue-500', ringColor: 'ring-blue-500' },
-  { id: '2', title: 'Declare Emergency', icon: ShieldExclamationIcon, color: 'text-red-500', ringColor: 'ring-red-500' },
+  {
+    id: '0',
+    title: 'Request Review',
+    icon: ClipboardDocumentCheckIcon,
+    color: 'text-indigo-900',
+    ringColor: 'ring-indigo-900',
+  },
+  {
+    id: '1',
+    title: 'Make Appointment',
+    icon: CalendarDaysIcon,
+    color: 'text-blue-500',
+    ringColor: 'ring-blue-500',
+  },
+  {
+    id: '2',
+    title: 'Declare Emergency',
+    icon: ShieldExclamationIcon,
+    color: 'text-red-500',
+    ringColor: 'ring-red-500',
+  },
 ]
 
 type CustomRadioProps = {
   icon: (props: React.SVGProps<SVGSVGElement>) => JSX.Element
   value: string
   name: string
-  checked: boolean;
+  checked: boolean
   onChange: (value: string) => void
   label: string
   color: string
   ringColor: string
 }
 
-const CustomRadio: React.FC<CustomRadioProps> = ({ icon: Icon, value, name, checked, onChange, label, color, ringColor }) => (
+const CustomRadio: React.FC<CustomRadioProps> = (
+  { icon: Icon, value, name, checked, onChange, label, color, ringColor },
+) => (
   <label className='flex items-center space-x-3 cursor-pointer'>
     <input
       type='radio'
@@ -303,9 +323,11 @@ const CustomRadio: React.FC<CustomRadioProps> = ({ icon: Icon, value, name, chec
       className='hidden'
     />
     <div
-      className={`w-8 h-8 flex items-center justify-center rounded-full border-2 ${color} ${checked ? `${ringColor} ring-2` : ''}`}
+      className={`w-8 h-8 flex items-center justify-center rounded-full border-2 ${color} ${
+        checked ? `${ringColor} ring-2` : ''
+      }`}
     >
-      <Icon className={`w-7 h-7 ${color}`} strokeWidth={1.5}/>
+      <Icon className={`w-7 h-7 ${color}`} strokeWidth={1.5} />
     </div>
     <span className='text-sm font-sans font-medium text-gray-900 leading-normal cursor-pointer hover:underline'>
       {label}
@@ -411,7 +433,9 @@ export function PersonDetailView(
     setAdditionalDetails: (details: string) => void
   },
 ) {
-  const [selectedRequestType, setSelectedRequestType] = useState(notificationMethods[0].id)
+  const [selectedRequestType, setSelectedRequestType] = useState(
+    notificationMethods[0].id,
+  )
 
   return (
     <div className='group relative flex flex-col'>
@@ -471,14 +495,13 @@ export function PersonDetailView(
       </div>
       <div className='border-t border-gray-200'></div>
       <div className='mt-4 px-5'>
-
-      <div className="space-y-4">
+        <div className='space-y-4'>
           {notificationMethods.map((method) => (
             <CustomRadio
               key={method.id}
               icon={method.icon}
               value={method.id}
-              name="send_to.request_type"
+              name='send_to.request_type'
               checked={selectedRequestType === method.id}
               onChange={setSelectedRequestType}
               label={method.title}
@@ -487,7 +510,6 @@ export function PersonDetailView(
             />
           ))}
         </div>
-        
       </div>
       <div className='mt-6 px-4'>
         <h2 className='text-sm font-sans font-medium text-gray-900'>
