@@ -30,15 +30,27 @@ async function importFromCsv(db: Kysely<any>) {
 
   for await (const representative of representatives) {
     delete representative['\r']
-    const { licence_number, ...resProps } = representative
+    const { licence_number, given_name, family_name, ...resProps } =
+      representative
     const premise = await db
       .selectFrom('premises')
       .select(['id', 'licence_number'])
       .where('licence_number', '=', licence_number)
       .executeTakeFirst()
     if (!premise) continue
+
+    const pharmacist = await db
+      .selectFrom('pharmacists')
+      .select(['id', 'given_name', 'family_name'])
+      .where('given_name', '=', given_name)
+      .where('family_name', '=', family_name)
+      .executeTakeFirst()
+
     representativesData.push({
       premise_id: premise.id,
+      pharmacist_id: pharmacist?.id || null,
+      given_name,
+      family_name,
       ...resProps,
     })
   }
