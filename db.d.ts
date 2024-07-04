@@ -1020,6 +1020,7 @@ export interface PremiseSupervisors {
   family_name: string
   given_name: string
   id: Generated<string>
+  pharmacist_id: string | null
   prefix: NamePrefix | null
   premise_id: string
   updated_at: Generated<Timestamp>

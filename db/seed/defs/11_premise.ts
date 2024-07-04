@@ -14,7 +14,7 @@ async function importFromCsv(db: Kysely<any>) {
     './db/resources/premise_representatives.tsv',
     {
       columnSeparator: '\t',
-    },
+    }
   )
 
   const premisesData = []
