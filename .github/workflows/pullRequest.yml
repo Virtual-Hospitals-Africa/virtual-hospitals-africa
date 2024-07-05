@@ -57,7 +57,7 @@ jobs:
         id: cache-deno-modules-restore
         with:
           path: $XDG_CACHE_HOME/deno
-          key: ${{ runner.os }}-deno-modules
+          key: deno-modules
 
       - name: Run check
         run: deno task check
@@ -75,8 +75,8 @@ jobs:
         name: Restore medplum
         with:
           path: medplum
-          # key: ${{ runner.os }}-medplum-${{ hashFiles('medplum/package.json') }}
-          key: ${{ runner.os }}-medplum }}
+          # key: medplum-${{ hashFiles('medplum/package.json') }}
+          key: medplum
 
       - name: Install medplum
         if: steps.cache-medplum-restore.outputs.cache-hit != 'true'
@@ -88,7 +88,7 @@ jobs:
         if: steps.cache-medplum-restore.outputs.cache-hit != 'true'
         with:
           path: medplum
-          key: ${{ steps.cache-medplum-restore.outputs.cache-primary-key }}
+          key: medplum
 
       - name: Migrate database
         run: deno task db:migrate all
@@ -104,7 +104,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: $XDG_CACHE_HOME/deno
-          key: ${{ steps.cache-deno-modules-restore.outputs.cache-primary-key }}
+          key: deno-modules
 
   compile_others:
     runs-on: ubuntu-latest
