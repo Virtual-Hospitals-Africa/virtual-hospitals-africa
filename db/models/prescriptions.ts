@@ -14,13 +14,24 @@ export function insert(
     .executeTakeFirstOrThrow()
 }
 
-export function get(
+export function getById(
   trx: TrxOrDb,
-  { id }: { id: string },
+  id: string,
 ) {
   return trx
     .selectFrom('prescriptions')
     .where('id', '=', id)
+    .selectAll()
+    .executeTakeFirst()
+}
+
+export function getByCode(
+  trx: TrxOrDb,
+  code: string,
+) {
+  return trx
+    .selectFrom('prescriptions')
+    .where('alphanumeric_code', '=', code)
     .selectAll()
     .executeTakeFirst()
 }
