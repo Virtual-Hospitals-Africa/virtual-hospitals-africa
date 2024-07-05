@@ -3,7 +3,7 @@ import { Migration, MigrationResult, Migrator } from 'kysely'
 import db from './db.ts'
 import last from '../util/last.ts'
 import { run as runMedplumServer } from '../external-clients/medplum/server.ts'
-import * as seed from './seed/run.ts'
+import * as seeds from './seed/run.ts'
 import { assert } from 'std/assert/assert.ts'
 import createMigration from './create-migration.ts'
 import { delay } from 'std/async/delay.ts'
@@ -99,7 +99,7 @@ export const migrate = {
     console.log('\nMigrating up to latest...')
     return migrator.migrateToLatest()
   },
-  async all() {
+  async all(opts: { recreate?: boolean | string[] } = {}) {
     await restore('medplum')
 
     console.log('Running medplum migrations...')
@@ -109,7 +109,13 @@ export const migrate = {
     logMigrationResults(await migrate.latest())
 
     console.log('Loading seeds...')
-    await seed.run({ cmd: 'load' })
+    if (opts.recreate === true) {
+      await seeds.recreate()
+    } else if (opts.recreate) {
+      await seeds.loadRecreating(opts.recreate)
+    } else {
+      await seeds.load()
+    }
 
     console.log('Done!')
     medplum_server.kill()
