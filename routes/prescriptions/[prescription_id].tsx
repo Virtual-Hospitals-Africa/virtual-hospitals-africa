@@ -2,7 +2,7 @@ import { FreshContext } from '$fresh/server.ts'
 import Layout from '../../components/library/Layout.tsx'
 import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
-import { StatusError } from '../../util/assertOr.ts'
+import { assertOr400, StatusError } from '../../util/assertOr.ts'
 
 export default async function WaitingRoomPage(
   req: Request,
@@ -10,10 +10,11 @@ export default async function WaitingRoomPage(
 ) {
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')
-  const { prescription_id } = ctx.params
-  const prescription = await prescriptions.get(db, {
-    id: prescription_id,
-  })
+  assertOr400(code, 'code is required')
+  const prescription = await prescriptions.getById(
+    db,
+    ctx.params.prescription_id,
+  )
 
   if (!prescription) {
     throw new StatusError('Could not find that prescription', 404)
