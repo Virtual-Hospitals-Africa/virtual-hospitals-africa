@@ -73,6 +73,7 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
     "@std/cli": "jsr:@std/cli@^0.224.7",
     "@tailwindcss/forms": "npm:@tailwindcss/forms@0.5.7",
+    "bcrypt": "npm:bcryptjs@2.4.3",
     "cheerio": "https://esm.sh/v136/cheerio@1.0.0-rc.12",
     "csv": "https://deno.land/x/csv@v0.8.0/mod.ts",
     "fast-levenshtein": "npm:fast-levenshtein@3.0.0",

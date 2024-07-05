@@ -12,6 +12,7 @@
       "npm:@tailwindcss/forms@0.5.7": "npm:@tailwindcss/forms@0.5.7_tailwindcss@3.3.5__postcss@8.4.35",
       "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:autoprefixer@10.4.17": "npm:autoprefixer@10.4.17_postcss@8.4.35",
+      "npm:bcryptjs@2.4.3": "npm:bcryptjs@2.4.3",
       "npm:cssnano@6.0.3": "npm:cssnano@6.0.3_postcss@8.4.35",
       "npm:expect@29.7.0": "npm:expect@29.7.0",
       "npm:fast-levenshtein@3.0.0": "npm:fast-levenshtein@3.0.0",
@@ -338,6 +339,10 @@
       },
       "balanced-match@1.0.2": {
         "integrity": "sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==",
+        "dependencies": {}
+      },
+      "bcryptjs@2.4.3": {
+        "integrity": "sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ==",
         "dependencies": {}
       },
       "binary-extensions@2.3.0": {
@@ -2886,6 +2891,7 @@
       "jsr:@std/cli@^0.224.7",
       "npm:@medplum/core",
       "npm:@tailwindcss/forms@0.5.7",
+      "npm:bcryptjs@2.4.3",
       "npm:fast-levenshtein@3.0.0",
       "npm:fast-xml-parser@4.3.4",
       "npm:lodash",
