@@ -2,7 +2,8 @@ import { opts } from './db.ts'
 import { runCommand } from '../util/command.ts'
 import { assert } from 'std/assert/assert.ts'
 import { redis } from '../external-clients/redis.ts'
-import { migrateCommand } from './migrate.ts'
+import { migrate } from './migrate.ts'
+import { parseArgs } from '@std/cli/parse-args'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 async function recreateDatabase() {
@@ -40,14 +41,19 @@ async function recreateDatabase() {
   })
 }
 
-export async function reset() {
+export async function reset(opts: { recreate?: boolean | string[] } = {}) {
   await recreateDatabase()
-  await migrateCommand('all')
+  await migrate.all(opts)
   await runCommand('deno', {
     args: ['task', 'db:codegen'],
   })
 }
 
 if (import.meta.main) {
-  await reset()
+  const flags = parseArgs(Deno.args)
+  let recreate = flags.r || flags.recreate
+  if (typeof recreate === 'string') {
+    recreate = recreate.split(',')
+  }
+  await reset({ recreate })
 }

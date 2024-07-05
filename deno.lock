@@ -4,6 +4,7 @@
     "specifiers": {
       "jsr:@luca/esbuild-deno-loader@0.10.3": "jsr:@luca/esbuild-deno-loader@0.10.3",
       "jsr:@std/assert@^0.213.1": "jsr:@std/assert@0.213.1",
+      "jsr:@std/cli@^0.224.7": "jsr:@std/cli@0.224.7",
       "jsr:@std/encoding@0.213": "jsr:@std/encoding@0.213.1",
       "jsr:@std/json@^0.213.1": "jsr:@std/json@0.213.1",
       "jsr:@std/jsonc@0.213": "jsr:@std/jsonc@0.213.1",
@@ -33,6 +34,9 @@
       },
       "@std/assert@0.213.1": {
         "integrity": "24c28178b30c8e0782c18e8e94ea72b16282207569cdd10ffb9d1d26f2edebfe"
+      },
+      "@std/cli@0.224.7": {
+        "integrity": "654ca6477518e5e3a0d3fabafb2789e92b8c0febf1a1d24ba4b567aba94b5977"
       },
       "@std/encoding@0.213.1": {
         "integrity": "fcbb6928713dde941a18ca5db88ca1544d0755ec8fb20fe61e2dc8144b390c62"
@@ -1794,6 +1798,7 @@
     }
   },
   "redirects": {
+    "https://deno.land/std/flags/mod.ts": "https://deno.land/std@0.224.0/flags/mod.ts",
     "https://esm.sh/@testing-library/jest-dom@6.1.4/types/matchers.d.ts?pin=v133": "https://esm.sh/v135/@testing-library/jest-dom@6.1.4/types/matchers.d.ts",
     "https://esm.sh/v135/@types/babel__helper-validator-identifier@~7/index.d.ts": "https://esm.sh/v135/@types/babel__helper-validator-identifier@7.15.2/index.d.ts"
   },
@@ -2587,6 +2592,9 @@
     "https://deno.land/std@0.216.0/semver/try_parse_range.ts": "239e0d711c5745da8c4dcda3c0797b4b5a83bfe494a51d3a0f005472cdc7b016",
     "https://deno.land/std@0.216.0/semver/types.ts": "8ed52c8cfc59e249a0dbab597d8c31bcf10405dcbe9714585055ea02252ae0d0",
     "https://deno.land/std@0.216.0/testing/snapshot.ts": "35ca1c8e8bfb98d7b7e794f1b7be8d992483fcff572540e41396f22a5bddb944",
+    "https://deno.land/std@0.224.0/assert/assert_exists.ts": "43420cf7f956748ae6ed1230646567b3593cb7a36c5a5327269279c870c5ddfd",
+    "https://deno.land/std@0.224.0/assert/assertion_error.ts": "ba8752bd27ebc51f723702fac2f54d3e94447598f54264a6653d6413738a8917",
+    "https://deno.land/std@0.224.0/flags/mod.ts": "88553267f34519c8982212185339efdb2d2e62c159ec558f47eb50c8952a6be3",
     "https://deno.land/x/code_block_writer@12.0.0/mod.ts": "2c3448060e47c9d08604c8f40dee34343f553f33edcdfebbf648442be33205e5",
     "https://deno.land/x/code_block_writer@12.0.0/utils/string_utils.ts": "60cb4ec8bd335bf241ef785ccec51e809d576ff8e8d29da43d2273b69ce2a6ff",
     "https://deno.land/x/csv@v0.8.0/deps.ts": "597e3d0c81eca1c519ce20f0a7ed573d31cfbb5625c5013763550d717ba69dfa",
@@ -2875,6 +2883,7 @@
   },
   "workspace": {
     "dependencies": [
+      "jsr:@std/cli@^0.224.7",
       "npm:@medplum/core",
       "npm:@tailwindcss/forms@0.5.7",
       "npm:fast-levenshtein@3.0.0",
