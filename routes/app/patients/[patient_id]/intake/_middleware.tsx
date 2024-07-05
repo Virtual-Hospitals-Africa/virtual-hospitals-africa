@@ -4,6 +4,7 @@ import Form from '../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
   PatientIntake,
+  Sendable,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr404, assertOrRedirect } from '../../../../../util/assertOr.ts'
@@ -15,22 +16,26 @@ import redirect from '../../../../../util/redirect.ts'
 import { INTAKE_STEPS, isIntakeStep } from '../../../../../shared/intake.ts'
 import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../../../../db/models/patient_encounters.ts'
+import * as send_to from '../../../../../db/models/send_to.ts'
 import Buttons, {
   ButtonsContainer,
 } from '../../../../../islands/form/buttons.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
+import { SendToButton } from '../../../../../islands/SendTo/Button.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { groupByMapped } from '../../../../../util/groupBy.ts'
+import { IntakeStep } from '../../../../../db.d.ts'
 
-type AdditionalContext = {
+export type IntakePagePatient = {
   is_review: false
-  patient: PatientIntake
+  data: PatientIntake
 } | {
   is_review: true
-  patient: Awaited<ReturnType<typeof patients.getIntakeReview>>
+  data: Awaited<ReturnType<typeof patients.getIntakeReviewById>>
 }
 
-export type IntakeContext = LoggedInHealthWorkerContext<AdditionalContext>
+export type IntakeContext = LoggedInHealthWorkerContext<
+  { patient: IntakePagePatient }
+>
 
 export async function handler(
   _req: Request,
@@ -40,12 +45,6 @@ export async function handler(
 
   const is_review = ctx.route.endsWith(`/review`)
 
-  const getPatient = is_review ? patients.getIntakeReview : patients.getIntake
-
-  const getting_patient = getPatient(ctx.state.trx, {
-    id: patient_id,
-  })
-
   // TODO: use the encounter as part of intake?
   await removeFromWaitingRoomAndAddSelfAsProvider(ctx.state.trx, {
     patient_id,
@@ -53,10 +52,16 @@ export async function handler(
     health_worker: ctx.state.healthWorker,
   })
 
-  const patient = await getting_patient
-  assertOr404(patient, 'Patient not found')
+  const patient: IntakePagePatient = is_review
+    ? {
+      is_review: true as const,
+      data: await patients.getIntakeReviewById(ctx.state.trx, patient_id),
+    }
+    : {
+      is_review: false as const,
+      data: await patients.getIntakeById(ctx.state.trx, patient_id),
+    }
 
-  ctx.state.is_review = is_review
   ctx.state.patient = patient
   return ctx.next()
 }
@@ -102,7 +107,7 @@ export async function upsertPatientAndRedirect(
 
   await patients.upsertIntake(ctx.state.trx, {
     ...patient,
-    id: ctx.state.patient.id,
+    id: ctx.state.patient.data.id,
     completed_intake: patient.completed_intake || (step === 'review'),
     intake_step_just_completed: step,
   })
@@ -112,21 +117,26 @@ export async function upsertPatientAndRedirect(
 
 export function assertAgeYearsKnown(ctx: IntakeContext): number {
   const { patient } = ctx.state
-  const age_years = patient.age?.age_years
+  const age_years = patient.data.age?.age_years
   const warning = encodeURIComponent(
     "Please fill out the patient's personal information beforehand.",
   )
   assertOrRedirect(
     age_years != null,
-    `/app/patients/${patient.id}/intake/personal?warning=${warning}`,
+    `/app/patients/${patient.data.id}/intake/personal?warning=${warning}`,
   )
   return age_years
 }
 
 export function IntakeLayout({
   ctx,
+  sendables,
   children,
-}: { ctx: IntakeContext; children: ComponentChildren }): JSX.Element {
+}: {
+  ctx: IntakeContext
+  sendables: Sendable[]
+  children: ComponentChildren
+}): JSX.Element {
   return (
     <Layout
       title='Patient Intake'
@@ -134,7 +144,7 @@ export function IntakeLayout({
         <StepsSidebar
           ctx={ctx}
           nav_links={intake_nav_links}
-          steps_completed={ctx.state.patient.intake_steps_completed}
+          steps_completed={ctx.state.patient.data.intake_steps_completed}
         />
       }
       url={ctx.url}
@@ -145,7 +155,7 @@ export function IntakeLayout({
         <hr className='my-2' />
 
         <ButtonsContainer>
-          <SendToMenu />
+          <SendToButton sendables={sendables} />
           <Buttons
             submitText={nextStep(ctx).button_text}
             className='flex-1 max-w-xl '
@@ -154,4 +164,34 @@ export function IntakeLayout({
       </Form>
     </Layout>
   )
+}
+
+type IntakePageChildProps = {
+  ctx: IntakeContext
+  patient: IntakePagePatient
+  previously_completed: boolean
+}
+
+export function IntakePage(
+  render: (props: IntakePageChildProps) => JSX.Element | Promise<JSX.Element>,
+) {
+  return async function (
+    _req: Request,
+    ctx: IntakeContext,
+  ) {
+    const { patient } = ctx.state
+    const step = ctx.route.split('/').pop()!
+    const previously_completed = patient.data.intake_steps_completed.includes(
+      step as unknown as IntakeStep,
+    )
+    const getting_sendables = send_to.forPatient(ctx.state.trx, patient.data.id)
+
+    const children = await render({ ctx, patient, previously_completed })
+
+    return (
+      <IntakeLayout ctx={ctx} sendables={await getting_sendables}>
+        {children}
+      </IntakeLayout>
+    )
+  }
 }

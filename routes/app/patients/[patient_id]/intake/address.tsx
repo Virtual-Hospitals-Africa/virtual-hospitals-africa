@@ -7,6 +7,7 @@ import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
   IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -78,12 +79,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-export default async function AddressPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { healthWorker, patient, trx } = ctx.state
+export default IntakePage(async function AddressPage({ ctx, patient }) {
+  assert(!patient.is_review)
+  const { healthWorker, trx } = ctx.state
   const country_address_tree = await address.getCountryAddressTree(trx)
 
   let default_organization:
@@ -102,12 +100,10 @@ export default async function AddressPage(
   }
 
   return (
-    <IntakeLayout ctx={ctx}>
-      <PatientAddressForm
-        patient={patient}
-        default_organization={default_organization}
-        country_address_tree={country_address_tree}
-      />
-    </IntakeLayout>
+    <PatientAddressForm
+      patient={patient.data}
+      default_organization={default_organization}
+      country_address_tree={country_address_tree}
+    />
   )
-}
+})

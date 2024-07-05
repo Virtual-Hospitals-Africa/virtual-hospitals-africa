@@ -6,7 +6,7 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
-  IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -37,13 +37,11 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-export default async function HistoryPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
-  const patient_id = patient.id
+export default IntakePage(async function HistoryPage({ ctx, patient }) {
+  assert(!patient.is_review)
+
+  const { trx } = ctx.state
+  const patient_id = patient.data.id
   const getting_past_medical_conditions = patient_conditions
     .getPastMedicalConditions(trx, { patient_id })
   const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, {
@@ -51,11 +49,9 @@ export default async function HistoryPage(
   })
 
   return (
-    <IntakeLayout ctx={ctx}>
-      <PatientHistoryForm
-        past_medical_conditions={await getting_past_medical_conditions}
-        major_surgeries={await getting_major_surgeries}
-      />
-    </IntakeLayout>
+    <PatientHistoryForm
+      past_medical_conditions={await getting_past_medical_conditions}
+      major_surgeries={await getting_major_surgeries}
+    />
   )
-}
+})

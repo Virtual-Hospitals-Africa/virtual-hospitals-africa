@@ -1,5 +1,5 @@
 import { EmptyState } from '../library/EmptyState.tsx'
-import AddPatientIcon from '../library/icons/AddPatient.tsx'
+import { AddPatientIcon } from '../library/icons/AddPatient.tsx'
 
 export default function WaitingRoomEmptyState(
   { add_href }: { add_href: string },

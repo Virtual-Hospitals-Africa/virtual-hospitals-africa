@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-export default function GoogleMeetIcon(props: any) {
+export function GoogleMeetIcon(props: any) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

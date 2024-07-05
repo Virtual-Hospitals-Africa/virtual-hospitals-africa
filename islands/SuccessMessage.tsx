@@ -1,8 +1,8 @@
-import { CheckIcon } from '../components/library/CheckIcon.tsx'
 import { useState } from 'preact/hooks'
 import cls from '../util/cls.ts'
 import { JSX } from 'preact'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
+import { CheckIcon } from '../components/library/icons/heroicons/solid.tsx'
 
 interface SuccessMessageProps {
   className?: string

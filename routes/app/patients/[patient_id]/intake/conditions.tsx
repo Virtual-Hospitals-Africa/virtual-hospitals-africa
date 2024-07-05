@@ -8,7 +8,7 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
-  IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -40,14 +40,10 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-export default async function PreExistingConditionsPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
-  const patient_id = patient.id
-
+export default IntakePage(async function ConditionsPage({ ctx, patient }) {
+  assert(!patient.is_review)
+  const { trx } = ctx.state
+  const patient_id = patient.data.id
   const getting_pre_existing_conditions = patient_conditions
     .getPreExistingConditionsWithDrugs(
       trx,
@@ -62,12 +58,10 @@ export default async function PreExistingConditionsPage(
     )
 
   return (
-    <IntakeLayout ctx={ctx}>
-      <PatientPreExistingConditions
-        allergies={await getting_allergies}
-        patient_allergies={await getting_patient_allergies}
-        pre_existing_conditions={await getting_pre_existing_conditions}
-      />
-    </IntakeLayout>
+    <PatientPreExistingConditions
+      allergies={await getting_allergies}
+      patient_allergies={await getting_patient_allergies}
+      pre_existing_conditions={await getting_pre_existing_conditions}
+    />
   )
-}
+})

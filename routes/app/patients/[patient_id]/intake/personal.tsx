@@ -5,11 +5,11 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
-  IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
 import omit from '../../../../../util/omit.ts'
+import { assert } from 'std/assert/assert.ts'
 
 type PersonalFormValues = {
   first_name: string
@@ -52,23 +52,14 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-// deno-lint-ignore require-await
-export default async function PersonalPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  const { is_review, patient } = ctx.state
-  assert(!is_review)
-  const previously_completed = patient.intake_steps_completed.includes(
-    'personal',
-  )
-
-  return (
-    <IntakeLayout ctx={ctx}>
+export default IntakePage(
+  function PersonalPage({ patient, previously_completed }) {
+    assert(!patient.is_review)
+    return (
       <PatientPersonalForm
-        patient={patient}
+        patient={patient.data}
         previously_completed={previously_completed}
       />
-    </IntakeLayout>
-  )
-}
+    )
+  },
+)

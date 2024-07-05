@@ -13,6 +13,7 @@ import {
   assertAgeYearsKnown,
   IntakeContext,
   IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
@@ -73,20 +74,16 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-export default async function FamilyPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
+export default IntakePage(async function FamilyPage({ ctx, patient }) {
+  assert(!patient.is_review)
   const age_years = assertAgeYearsKnown(ctx)
+  const patient_id = patient.data.id
+  const family = await patient_family.get(ctx.state.trx, { patient_id })
 
   return (
-    <IntakeLayout ctx={ctx}>
-      <PatientFamilyForm
-        age_years={age_years}
-        family={await patient_family.get(trx, { patient_id: patient.id })}
-      />
-    </IntakeLayout>
+    <PatientFamilyForm
+      age_years={age_years}
+      family={family}
+    />
   )
-}
+})

@@ -5,7 +5,7 @@ import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
   IntakeContext,
-  IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.ts'
@@ -166,23 +166,16 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-export default async function LifestylePage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
-  const patient_id = patient.id
-
+export default IntakePage(async function LifestylePage({ ctx, patient }) {
+  assert(!patient.is_review)
   const age_years = assertAgeYearsKnown(ctx)
-
+  const lifestyle = await patient_lifestyle.get(ctx.state.trx, {
+    patient_id: patient.data.id,
+  })
   return (
-    <IntakeLayout ctx={ctx}>
-      {/* call to database for lifestyle patient information */}
-      <LifestyleForm
-        age_years={age_years}
-        lifestyle={await patient_lifestyle.get(trx, { patient_id })}
-      />
-    </IntakeLayout>
+    <LifestyleForm
+      age_years={age_years}
+      lifestyle={lifestyle}
+    />
   )
-}
+})

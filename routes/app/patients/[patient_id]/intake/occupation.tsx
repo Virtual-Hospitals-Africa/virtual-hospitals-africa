@@ -12,11 +12,10 @@ import {
   assertAgeYearsKnown,
   IntakeContext,
   IntakeLayout,
+  IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
 import { assert } from 'std/assert/assert.ts'
-import { Button } from '../../../../../components/library/Button.tsx'
-import SendToMenu from '../../../../../islands/SendToMenu.tsx'
 
 type OccupationFormValues = {
   // deno-lint-ignore no-explicit-any
@@ -40,21 +39,13 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
   },
 }
 
-export default async function OccupationPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
+export default IntakePage(async function OccupationPage({ ctx, patient }) {
+  assert(!patient.is_review)
   const age_years = assertAgeYearsKnown(ctx)
   const OccupationForm = age_years <= 18 ? Occupation0_18 : Occupation19
-  const occupation = await patient_occupation.get(trx, {
-    patient_id: patient.id,
+  const occupation = await patient_occupation.get(ctx.state.trx, {
+    patient_id: patient.data.id,
   })
 
-  return (
-    <IntakeLayout ctx={ctx}>
-      <OccupationForm occupation={occupation} />
-    </IntakeLayout>
-  )
-}
+  return <OccupationForm occupation={occupation} />
+})

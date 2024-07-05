@@ -385,12 +385,10 @@ export function getByID(
     .executeTakeFirstOrThrow()
 }
 
-export function getIntake(
+export function getIntakeById(
   trx: TrxOrDb,
-  opts: {
-    id: string
-  },
-): Promise<Maybe<PatientIntake>> {
+  patient_id: string,
+): Promise<PatientIntake> {
   return trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
@@ -459,15 +457,13 @@ export function getIntake(
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
     ])
-    .where('patients.id', '=', opts.id)
-    .executeTakeFirst()
+    .where('patients.id', '=', patient_id)
+    .executeTakeFirstOrThrow()
 }
 
-export async function getIntakeReview(
+export async function getIntakeReviewById(
   trx: TrxOrDb,
-  opts: {
-    id: string
-  },
+  patient_id: string,
 ) {
   const getting_review = trx
     .selectFrom('patients')
@@ -529,10 +525,10 @@ export async function getIntakeReview(
       ).as('intake_steps_completed'),
       'completed_intake',
     ])
-    .where('patients.id', '=', opts.id)
+    .where('patients.id', '=', patient_id)
     .executeTakeFirst()
 
-  const q = { patient_id: opts.id }
+  const q = { patient_id }
   const getting_family = patient_family.get(trx, q)
   const getting_occupation = patient_occupations.get(trx, q)
   const getting_pre_existing_conditions = patient_conditions

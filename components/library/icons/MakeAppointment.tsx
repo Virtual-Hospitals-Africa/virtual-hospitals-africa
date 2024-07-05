@@ -1,4 +1,4 @@
-export default function MakeAppointmentIcon(
+export function MakeAppointmentIcon(
   { className }: { className?: string },
 ) {
   return (
