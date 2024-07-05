@@ -39,12 +39,19 @@ export const handler = [
     >,
   ) => {
     const accessingApp = ctx.url.pathname.startsWith('/app')
+    const accessingRegulator = ctx.url.pathname.startsWith('/regulator')
 
-    if (!accessingApp) {
+    if (!accessingApp && !accessingRegulator) {
       return ctx.next()
     }
 
-    if (!ctx.state.session.get('health_worker_id')) return redirect('/')
+    if (accessingApp && !ctx.state.session.get('health_worker_id')) {
+      return redirect('/')
+    }
+
+    if (accessingRegulator && !ctx.state.session.get('regulator_id')) {
+      return redirect('/')
+    }
 
     return db.transaction().setIsolationLevel('read committed').execute(
       (trx) => {

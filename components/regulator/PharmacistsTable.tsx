@@ -8,12 +8,12 @@ import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 
 type Pharmacist = {
-  license_number: string
-  prefix: string | 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
+  licence_number: string
+  prefix: string | 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr' | null
   given_name: string
   family_name: string
-  address: string
-  town: string
+  address: string | null
+  town: string | null
   expiry_date: string
   pharmacist_type:
     | 'Dispensing Medical Practitioner'
@@ -56,7 +56,7 @@ export default function PharmacistsTable({
     },
     {
       label: 'License Number',
-      data: 'license_number',
+      data: 'licence_number',
     },
     {
       label: 'Expiry Date',
