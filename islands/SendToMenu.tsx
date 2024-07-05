@@ -349,7 +349,7 @@ export function SendableComponent(
 ): JSX.Element {
   return (
     <li onClick={onClick}>
-      <div className='group relative flex items-center px-5 py-6'>
+      <div className='group relative flex items-center px-5 py-4'>
         <a className='-m-1 block flex-1 p-1'>
           <div
             className='absolute inset-0 group-hover:bg-gray-50'
@@ -439,61 +439,58 @@ export function PersonDetailView(
 
   return (
     <div className='group relative flex flex-col'>
-      <div className='divide-y divide-gray-200'>
-        <div className='px-5 py-6'>
-          <div className='flex items-center cursor-pointer' onClick={onBack}>
-            <span className='relative inline-block flex-shrink-0'>
-              <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
-                {entity.image.type === 'avatar'
-                  ? (
-                    <img
-                      className='h-10 w-10 rounded-full'
-                      src={entity.image.url}
-                      alt={entity.name}
-                    />
-                  )
-                  : (
-                    <div className='h-6 w-6 flex items-center justify-center'>
-                      {entity.image.component}
-                    </div>
-                  )}
-                {entity.online != null && (
-                  <span
-                    className={`${
-                      entity.online ? 'bg-green-400' : 'bg-gray-300'
-                    } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
-                    aria-hidden='true'
+      <div className='px-5 py-4'>
+        <div className='flex items-center cursor-pointer' onClick={onBack}>
+          <span className='relative inline-block flex-shrink-0'>
+            <div className='h-10 w-10 rounded-full flex items-center justify-center bg-gray-200'>
+              {entity.image.type === 'avatar'
+                ? (
+                  <img
+                    className='h-10 w-10 rounded-full'
+                    src={entity.image.url}
+                    alt={entity.name}
                   />
+                )
+                : (
+                  <div className='h-6 w-6 flex items-center justify-center'>
+                    {entity.image.component}
+                  </div>
                 )}
-              </div>
-            </span>
-            <div className='ml-4'>
-              <h1 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
-                {entity.name}
-              </h1>
-              {entity.description && (
-                <p className='text-sm font-sans text-gray-500 leading-normal'>
-                  {entity.description.text}
-                </p>
-              )}
-              <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
-                {entity.status}
-              </p>
-              {entity.reopenTime && (
-                <p className='text-xs font-ubuntu text-gray-500'>
-                  {entity.reopenTime}
-                </p>
+              {entity.online != null && (
+                <span
+                  className={`${
+                    entity.online ? 'bg-green-400' : 'bg-gray-300'
+                  } absolute right-0 top-0 block h-2.5 w-2.5 rounded-full ring-2 ring-white`}
+                  aria-hidden='true'
+                />
               )}
             </div>
+          </span>
+          <div className='ml-4'>
+            <h1 className='text-sm font-sans font-medium text-gray-900 leading-normal'>
+              {entity.name}
+            </h1>
+            {entity.description && (
+              <p className='text-sm font-sans text-gray-500 leading-normal'>
+                {entity.description.text}
+              </p>
+            )}
+            <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
+              {entity.status}
+            </p>
+            {entity.reopenTime && (
+              <p className='text-xs font-ubuntu text-gray-500'>
+                {entity.reopenTime}
+              </p>
+            )}
           </div>
         </div>
-        <SelectedPatient
-          name='Susan Mlalazi'
-          description='female, 16/3/2024'
-          imageUrl='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
-        />
       </div>
-      <div className='border-t border-gray-200'></div>
+      <SelectedPatient
+        name='Susan Mlalazi'
+        description='female, 16/3/2024'
+        imageUrl='https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80'
+      />
       <div className='mt-4 px-5'>
         <div className='space-y-4'>
           {notificationMethods.map((method) => (
@@ -615,7 +612,7 @@ export default function SendToMenu() {
                         : (
                           <ul
                             role='list'
-                            className='flex-1 divide-y divide-gray-200 overflow-y-auto'
+                            className='flex-1 overflow-y-auto'
                           >
                             {updatedSendable.map((entity) => (
                               <SendableComponent
