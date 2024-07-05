@@ -35,6 +35,14 @@ export async function up(db: Kysely<unknown>) {
         'pharmacist_type',
         sql`pharmacist_type`,
         (col) => col.notNull(),
+      ).addColumn('revoked_at', 'timestamp')
+      .addColumn(
+        'revoked_by',
+        'integer', /*, col => col.references('regulators.id')*/
+      )
+      .addCheckConstraint(
+        'revoked_at',
+        sql`(revoked_at is null) = (revoked_by is null)`,
       ))
 }
 

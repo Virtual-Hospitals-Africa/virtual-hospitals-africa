@@ -95,6 +95,7 @@ import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
+import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -340,6 +341,8 @@ const manifest = {
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
+    './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
+      $regulator_pharmacists_pharmacist_id_revoke,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,

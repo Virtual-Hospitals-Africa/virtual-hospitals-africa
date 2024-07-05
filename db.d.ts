@@ -998,6 +998,8 @@ export interface Pharmacists {
   licence_number: string
   pharmacist_type: PharmacistType
   prefix: NamePrefix | null
+  revoked_at: Timestamp | null
+  revoked_by: number | null
   town: string | null
   updated_at: Generated<Timestamp>
 }
@@ -1020,7 +1022,7 @@ export interface PremiseSupervisors {
   family_name: string
   given_name: string
   id: Generated<string>
-  pharmacist_id: string | null
+  pharmacist_id: string
   prefix: NamePrefix | null
   premise_id: string
   updated_at: Generated<Timestamp>

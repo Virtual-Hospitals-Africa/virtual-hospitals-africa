@@ -43,6 +43,9 @@ async function recreateDatabase() {
 export async function reset() {
   await recreateDatabase()
   await migrateCommand('all')
+  await runCommand('deno', {
+    args: ['task', 'db:codegen'],
+  })
 }
 
 if (import.meta.main) {
