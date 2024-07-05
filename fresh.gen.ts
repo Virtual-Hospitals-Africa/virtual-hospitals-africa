@@ -92,6 +92,7 @@ import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
 import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
+import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
@@ -335,6 +336,8 @@ const manifest = {
     './routes/login.tsx': $login,
     './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
+    './routes/prescriptions/[prescription_id].tsx':
+      $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,

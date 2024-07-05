@@ -1025,6 +1025,14 @@ export interface PremiseSupervisors {
   updated_at: Generated<Timestamp>
 }
 
+export interface Prescriptions {
+  alphanumeric_code: string
+  contents: string
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Procurement {
   batch_number: string | null
   consumable_id: string
@@ -1210,6 +1218,7 @@ export interface DB {
   pharmacists: Pharmacists
   premise_supervisors: PremiseSupervisors
   premises: Premises
+  prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
   provider_calendars: ProviderCalendars
