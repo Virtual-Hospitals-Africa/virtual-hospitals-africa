@@ -28,17 +28,15 @@ export const seedTargets = sortBy(Object.keys(seeds), (key) => {
   return numeric
 })
 
-type TargetFindResult = 
-  | { type: 'found'; name: string, seed: typeof seeds[string] }
+type TargetFindResult =
+  | { type: 'found'; name: string; seed: typeof seeds[string] }
   | { type: 'not_found' }
-  | { type: 'ambiguous', matching: string[] }
+  | { type: 'ambiguous'; matching: string[] }
 
 function findTarget(target: string): TargetFindResult {
   const target_file = last(target.split('/'))
   assert(target_file)
-  const matching = seedTargets.filter((it) =>
-    it.includes(target_file)
-  )
+  const matching = seedTargets.filter((it) => it.includes(target_file))
   switch (matching.length) {
     case 1:
       return {
@@ -52,7 +50,6 @@ function findTarget(target: string): TargetFindResult {
       return { type: 'ambiguous', matching }
   }
 }
-
 
 const gerund = {
   load: 'loading',
@@ -83,7 +80,6 @@ export async function drop(target?: string) {
 export async function recreate(target?: string) {
   await run('recreate', target)
 }
-
 
 export async function loadRecreating(targets: string[]) {
   const to_recreate = targets.map((target) => {
@@ -146,8 +142,12 @@ export async function run(cmd: Cmd, target?: string) {
     console.log(`${gerund[cmd]} seed ${seedName}...`)
     const seed = seeds[seedName]
     await seed[cmd]()
+    console.log(
+      `${seedName} ${past_tense[cmd]}. Tables affected: ${
+        seed.table_names.join(', ')
+      }.`,
+    )
   }
-  console.log(`${target} ${past_tense[cmd]}.`)
 }
 
 function isRecognizedCommand(cmd: string): cmd is keyof typeof gerund {
