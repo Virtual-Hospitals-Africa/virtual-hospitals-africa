@@ -45,7 +45,8 @@ export function cacheable<F extends (...args: any[]) => Promise<any>>(
   const function_name = fn.name
   assert(function_name, 'Function must have a name')
   return ((async (...args: Parameters<F>) => {
-    const key = `${function_name}:${JSON.stringify(args)}`
+    const arg_key = args.map((arg) => JSON.stringify(arg)).join(',')
+    const key = `${function_name}:${arg_key}`
     const result = await redis.get(key)
     if (result) return JSON.parse(result)
     return fn(...args).then((result) => {

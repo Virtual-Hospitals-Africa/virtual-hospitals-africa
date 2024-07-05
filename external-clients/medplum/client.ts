@@ -39,7 +39,7 @@ type CreatedResource<T, Data extends Record<string, unknown>> = Data & {
   }
 }
 
-function assertIsCreatedResource<T, Data extends Record<string, unknown>>(data: unknown): asserts data is CreatedResource<T, Data> {
+function assertIsResource<T, Data extends Record<string, unknown>>(data: unknown): asserts data is CreatedResource<T, Data> {
   assert(isObjectLike(data), 'Expected data to be an object');
   assert(isUUID(data.id), 'Expected .id to be a UUID');
   assert(isObjectLike(data.meta), 'Expected .meta to be an object');
@@ -56,6 +56,40 @@ export async function createResource<T extends string, Data extends Record<strin
   if (json.issue) {
     throw new Error(JSON.stringify(json.issue[0].details.text));
   }
-  assertIsCreatedResource<T, Data>(json);
+  assertIsResource<T, Data>(json);
   return json
+}
+
+export async function updateResource<T extends string, Data extends Record<string, unknown>>(resourceType: T, id: string, data?: Data) {
+  assert(isUUID(id), 'Expected id to be a UUID')
+  const response = await request('PUT', `${resourceType}/${id}`, {
+    resourceType,
+    ...data
+  });
+  const json = await response.json();
+  if (json.issue) {
+    throw new Error(JSON.stringify(json.issue[0].details.text));
+  }
+  assertIsResource<T, Data>(json);
+  return json
+}
+
+export async function getResource<T extends string, Data extends Record<string, unknown>>(resourceType: T, id: string) {
+  assert(isUUID(id), 'Expected id to be a UUID')
+  const response = await request('GET', `${resourceType}/${id}`);
+  const json = await response.json();
+  if (json.issue) {
+    throw new Error(JSON.stringify(json.issue[0].details.text));
+  }
+  assertIsResource<T, Data>(json);
+  return json
+}
+
+export async function modifyResource<T extends string, Data extends Record<string, unknown>>(resourceType: T, id: string, modify: (data: Data) => Data) {
+  // deno-lint-ignore no-explicit-any
+  const resource: any = await getResource<T, Data>(resourceType, id);
+  delete resource.meta.lastUpdated;
+  delete resource.meta.versionId;
+  const updated = modify(resource);
+  return updateResource(resourceType, id, updated);
 }

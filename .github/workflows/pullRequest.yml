@@ -36,6 +36,9 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    env:
+      DENO_DIR: /deno-cache
+    
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -50,13 +53,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 'v18.20.2'
+          node-version: 'v20.12.2'
+
+      - name: Make sure DENO_DIR exists
+        run: mkdir -p $DENO_DIR
 
       - uses: actions/cache/restore@v4
         name: Restore deno modules
         id: cache-deno-modules-restore
         with:
+<<<<<<< HEAD
           path: $XDG_CACHE_HOME/deno
+=======
+          path: $DENO_DIR
+>>>>>>> f558ccf3 (check cache folder)
           key: deno-modules
 
       - name: Run check
@@ -75,6 +85,11 @@ jobs:
         name: Restore medplum
         with:
           path: medplum
+<<<<<<< HEAD
+=======
+          # Using this key will cause the cache to be restored only if the package.json file has changed
+          # For now, just use a static key which will mean we won't get the latest updates from medplum
+>>>>>>> f558ccf3 (check cache folder)
           # key: medplum-${{ hashFiles('medplum/package.json') }}
           key: medplum
 
@@ -103,7 +118,7 @@ jobs:
         id: cache-deno-modules-save
         uses: actions/cache/save@v4
         with:
-          path: $XDG_CACHE_HOME/deno
+          path: $DENO_DIR
           key: deno-modules
 
   compile_others:
