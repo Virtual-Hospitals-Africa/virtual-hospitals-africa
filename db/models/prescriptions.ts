@@ -1,0 +1,26 @@
+import { TrxOrDb } from '../../types.ts'
+
+export function insert(
+  trx: TrxOrDb,
+  opts: {
+    alphanumeric_code: string
+    contents: string
+  },
+) {
+  return trx
+    .insertInto('prescriptions')
+    .values(opts)
+    .returningAll()
+    .executeTakeFirstOrThrow()
+}
+
+export function get(
+  trx: TrxOrDb,
+  { id }: { id: string },
+) {
+  return trx
+    .selectFrom('prescriptions')
+    .where('id', '=', id)
+    .selectAll()
+    .executeTakeFirst()
+}
