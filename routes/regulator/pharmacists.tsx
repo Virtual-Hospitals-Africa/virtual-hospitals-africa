@@ -1,40 +1,19 @@
 import Layout from '../../components/library/Layout.tsx'
 import PharmacistsTable from '../../components/regulator/PharmacistsTable.tsx'
-import { LoggedInRegulator } from '../../types.ts'
+import { LoggedInRegulator, TrxOrDb } from '../../types.ts'
+import * as pharmacistsService from '../../db/models/pharmacists.ts'
 
-const pharmacists = [
-  {
-    license_number: '123456',
-    prefix: 'Ms',
-    given_name: 'Aaa',
-    family_name: 'Sss',
-    address: '123 Main St xxxxxx',
-    town: 'Aaa',
-    expiry_date: '2025-12-31',
-    pharmacist_type: 'Pharmacist' as const,
-  },
-  {
-    license_number: '234567',
-    prefix: 'Miss',
-    given_name: 'Bbb',
-    family_name: 'Ttt',
-    address: '456 Dean St yyyyyyyyy',
-    town: 'Bbb',
-    expiry_date: '2025-12-31',
-    pharmacist_type: 'Pharmacist' as const,
-  },
-]
-
-// deno-lint-ignore require-await
 export default async function PharmacistsPage(
   _req: Request,
   ctx: {
     route: string
     url: URL
-    state: { regulator: LoggedInRegulator['regulator'] }
+    state: { regulator: LoggedInRegulator['regulator']; trx: TrxOrDb }
   },
 ) {
-  const regulator = ctx.state.regulator
+  const { regulator } = ctx.state
+
+  const pharmacists = await pharmacistsService.getAllPharmacists(ctx.state.trx)
 
   return (
     <Layout
