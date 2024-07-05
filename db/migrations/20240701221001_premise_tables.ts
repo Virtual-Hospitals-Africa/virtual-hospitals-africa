@@ -36,7 +36,13 @@ export async function up(db: Kysely<unknown>) {
       .addColumn('given_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('family_name', 'varchar(255)', (col) => col.notNull())
       .addColumn('premise_id', 'uuid', (col) =>
-        col.notNull().references('premises.id').onDelete('cascade')))
+        col.notNull().references('premises.id').onDelete('cascade'))
+      .addColumn(
+        'pharmacist_id',
+        'uuid',
+        (col) =>
+          col.notNull().references('pharmacists.id').onDelete('cascade'),
+      ))
 }
 
 export async function down(db: Kysely<unknown>) {

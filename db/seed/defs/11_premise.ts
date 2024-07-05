@@ -46,9 +46,14 @@ async function importFromCsv(db: Kysely<any>) {
       .where('family_name', '=', family_name)
       .executeTakeFirst()
 
+    if (!pharmacist) {
+      console.warn(`Pharmacist not found: ${given_name} ${family_name}`)
+      continue
+    }
+
     representativesData.push({
       premise_id: premise.id,
-      pharmacist_id: pharmacist?.id || null,
+      pharmacist_id: pharmacist.id,
       given_name,
       family_name,
       ...resProps,

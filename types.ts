@@ -2388,3 +2388,5 @@ export type PatientSchedulingAppointmentRequest = {
   reason: string
   offered_times: SchedulingAppointmentOfferedTime[]
 }
+
+export type Actions = Record<string, string | null>
