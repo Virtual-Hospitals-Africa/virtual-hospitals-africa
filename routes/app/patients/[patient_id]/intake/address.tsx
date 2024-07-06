@@ -6,11 +6,9 @@ import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   IntakeContext,
-  IntakeLayout,
   IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
 
 type AddressFormValues = {
   address: {
@@ -80,7 +78,6 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 }
 
 export default IntakePage(async function AddressPage({ ctx, patient }) {
-  assert(!patient.is_review)
   const { healthWorker, trx } = ctx.state
   const country_address_tree = await address.getCountryAddressTree(trx)
 
@@ -101,7 +98,7 @@ export default IntakePage(async function AddressPage({ ctx, patient }) {
 
   return (
     <PatientAddressForm
-      patient={patient.data}
+      patient={patient}
       default_organization={default_organization}
       country_address_tree={country_address_tree}
     />

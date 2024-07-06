@@ -56,6 +56,10 @@ export const avatar_url_sql = sql<string | null>`
   END
 `
 
+export const intake_clinical_notes_href_sql = sql<string>`
+  concat('/app/patients/', patients.id::text, '/intake/review')
+`
+
 const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
@@ -424,6 +428,12 @@ export function getIntakeById(
         'date_of_birth',
       ),
       'patients.national_id_number',
+      sql<
+        string | null
+      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
+        .as(
+          'description',
+        ),
       jsonBuildObject({
         country_id: eb.ref('address.country_id'),
         province_id: eb.ref('address.province_id'),
@@ -456,6 +466,9 @@ export function getIntakeById(
       'OrganizationAddress.address as nearest_organization_address',
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
+      jsonBuildObject({
+        clinical_notes: intake_clinical_notes_href_sql,
+      }).as('actions'),
     ])
     .where('patients.id', '=', patient_id)
     .executeTakeFirstOrThrow()
@@ -500,6 +513,12 @@ export async function getIntakeReviewById(
       ),
       'patients.national_id_number',
       sql<
+        string | null
+      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
+        .as(
+          'description',
+        ),
+      sql<
         string
       >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
         .as('primary_doctor_name'),
@@ -511,6 +530,9 @@ export async function getIntakeReviewById(
       'patients.nearest_organization_id',
       'Organization.canonicalName as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
+      jsonBuildObject({
+        clinical_notes: intake_clinical_notes_href_sql,
+      }).as('actions'),
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')

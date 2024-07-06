@@ -1,26 +1,25 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import { XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
-import { Signal } from '@preact/signals'
-import { Sendable, SendableToEntity } from '../../types.ts'
-import { SendableListItem } from './ListItem.tsx'
+import { Fragment } from 'react'
+import { PatientIntake, Sendable } from '../../types.ts'
+import { SendToHeader } from './Header.tsx'
+import { SendableList } from './List.tsx'
+import { useSignal } from '@preact/signals'
+import { SendToSelectedPatient } from './SelectedPatient.tsx'
+import { SendToForm } from './Form.tsx'
 
 export function SendToSidebar(
-  { open, sendables }: { open: Signal<boolean>; sendables: Sendable[] },
+  { open, close, sendables, patient }: {
+    open: boolean
+    close: () => void
+    sendables: Sendable[]
+    patient: PatientIntake
+  },
 ) {
-  const [selectedEntity, setSelectedEntity] = useState<SendableToEntity | null>(
-    null,
-  )
-  const handleEntityClick = ({ to }: Sendable) =>
-    (to.type === 'entity') && setSelectedEntity(to)
-
-  const handleBackClick = () => setSelectedEntity(null)
-
-  const [additionalDetails, setAdditionalDetails] = useState<string>('')
+  const selected = useSignal<Sendable | null>(null)
 
   return (
-    <Transition show={open.value} as={Fragment}>
-      <Dialog className='relative z-10' onClose={() => open.value = false}>
+    <Transition show={open} as={Fragment}>
+      <Dialog className='relative z-10' onClose={close}>
         <div className='fixed inset-0 bg-black bg-opacity-25' />
         <div className='fixed inset-0 overflow-hidden'>
           <div className='absolute inset-0 overflow-hidden'>
@@ -36,39 +35,15 @@ export function SendToSidebar(
               >
                 <Dialog.Panel className='pointer-events-auto fixed right-0 top-0 h-full w-[448px] bg-white shadow-xl'>
                   <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
-                    <div className='p-6 bg-indigo-700'>
-                      <div className='flex items-start justify-between'>
-                        <Dialog.Title className='text-base font-semibold leading-6 text-white'>
-                          Send to
-                        </Dialog.Title>
-                        <div className='ml-3 flex h-7 items-center'>
-                          <button
-                            type='button'
-                            className='relative rounded-md bg-indigo-700 text-gray-200 hover:text-gray-500 focus:ring-2 focus:ring-indigo-700'
-                            onClick={() => open.value = false}
-                          >
-                            <span className='absolute -inset-2.5' />
-                            <span className='sr-only'>Close panel</span>
-                            <XMarkIcon
-                              className='h-6 w-6'
-                              aria-hidden='true'
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <ul
-                      role='list'
-                      className='flex-1 divide-y divide-gray-200 overflow-y-auto'
-                    >
-                      {sendables.map((sendable) => (
-                        <SendableListItem
-                          key={sendable.key}
-                          sendable={sendable}
-                          selected={selectedEntity === sendable.to}
-                        />
-                      ))}
-                    </ul>
+                    <SendToHeader close={close} />
+                    <SendableList
+                      sendables={sendables}
+                      selected={selected}
+                    />
+                    {selected.value && (
+                      <SendToSelectedPatient patient={patient} />
+                    )}
+                    {selected.value && <SendToForm />}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

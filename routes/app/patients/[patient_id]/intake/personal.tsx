@@ -54,10 +54,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 
 export default IntakePage(
   function PersonalPage({ patient, previously_completed }) {
-    assert(!patient.is_review)
     return (
       <PatientPersonalForm
-        patient={patient.data}
+        patient={patient}
         previously_completed={previously_completed}
       />
     )

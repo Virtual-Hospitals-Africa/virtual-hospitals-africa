@@ -1,68 +1,27 @@
 import { JSX } from 'preact'
-import * as HeroIconsOutline from '../../components/library/icons/heroicons/outline.tsx'
-import { Image, Sendable, SendableToEntity } from '../../types.ts'
-import Avatar from '../../components/library/Avatar.tsx'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import cls from '../../util/cls.ts'
+import { Sendable } from '../../types.ts'
 import OnlineIndicator from '../../components/OnlineIndicator.tsx'
-
-function CircularImage({ image }: { image: Image }) {
-  if (image.type === 'avatar') {
-    return <Avatar src={image.url} className={image.className} />
-  }
-  assertEquals(image.type, 'icon')
-
-  if (image.icon === 'BluetoothIcon') {
-    throw new Error('BluetoothIcon is not supported yet')
-  }
-
-  const Icon = HeroIconsOutline[image.icon]
-  return (
-    <Icon
-      className={cls('h-6 w-6 text-gray-500', image.className)}
-      aria-hidden='true'
-    />
-  )
-}
-
-function Description(
-  { description }: { description: Sendable['description'] },
-) {
-  if (!description) {
-    return null
-  }
-  return (
-    <p className='text-sm font-sans text-gray-500 leading-normal break-words'>
-      {description.href
-        ? (
-          <a
-            href={description.href}
-            target='_blank'
-            rel='noopener noreferrer'
-            className='text-blue-500'
-          >
-            {description.text}
-          </a>
-        )
-        : (
-          description.text
-        )}
-      {description.parenthetical && (
-        <span>
-          ({description.parenthetical})
-        </span>
-      )}
-    </p>
-  )
-}
+import { Description } from './Description.tsx'
+import { CircularImage } from './CircularImage.tsx'
 
 export function SendableListItem(
-  { sendable, selected }: { sendable: Sendable; selected: boolean },
+  { sendable, selected, onSelect }: {
+    sendable: Sendable
+    selected: boolean
+    onSelect?: () => void
+  },
 ): JSX.Element {
   const { image, name, description, status, menu_options, to } = sendable
+  const href = to.type === 'action' ? to.href : undefined
+  const onClick = to.type === 'entity' ? onSelect : undefined
+
   return (
-    <li>
-      <a>
+    <li
+      className={selected
+        ? 'bg-indigo-200 hover:bg-indigo-200'
+        : 'hover:bg-indigo-200'}
+    >
+      <a href={href} onClick={onClick}>
         <div className='group relative flex items-center px-5 py-6'>
           <a className='-m-1 block flex-1 p-1'>
             <div

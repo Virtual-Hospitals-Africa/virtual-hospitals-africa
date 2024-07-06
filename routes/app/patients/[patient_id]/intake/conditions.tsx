@@ -41,9 +41,8 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 }
 
 export default IntakePage(async function ConditionsPage({ ctx, patient }) {
-  assert(!patient.is_review)
   const { trx } = ctx.state
-  const patient_id = patient.data.id
+  const patient_id = patient.id
   const getting_pre_existing_conditions = patient_conditions
     .getPreExistingConditionsWithDrugs(
       trx,

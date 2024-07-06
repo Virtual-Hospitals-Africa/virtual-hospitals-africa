@@ -247,6 +247,7 @@ export type PatientIntake =
   & {
     id: string
     avatar_url: Maybe<string>
+    description: Maybe<string>
     nearest_organization_name: Maybe<string>
     nearest_organization_address: Maybe<string>
     primary_doctor_name: Maybe<string>
@@ -258,6 +259,9 @@ export type PatientIntake =
       district_id: Maybe<string>
       province_id: Maybe<string>
       country_id: Maybe<string>
+    }
+    actions: {
+      clinical_notes: string
     }
   }
   & Pick<

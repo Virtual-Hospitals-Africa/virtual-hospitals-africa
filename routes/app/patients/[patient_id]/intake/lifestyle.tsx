@@ -167,10 +167,9 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 }
 
 export default IntakePage(async function LifestylePage({ ctx, patient }) {
-  assert(!patient.is_review)
   const age_years = assertAgeYearsKnown(ctx)
   const lifestyle = await patient_lifestyle.get(ctx.state.trx, {
-    patient_id: patient.data.id,
+    patient_id: patient.id,
   })
   return (
     <LifestyleForm

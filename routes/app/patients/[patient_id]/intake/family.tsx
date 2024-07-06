@@ -75,9 +75,8 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 }
 
 export default IntakePage(async function FamilyPage({ ctx, patient }) {
-  assert(!patient.is_review)
   const age_years = assertAgeYearsKnown(ctx)
-  const patient_id = patient.data.id
+  const patient_id = patient.id
   const family = await patient_family.get(ctx.state.trx, { patient_id })
 
   return (

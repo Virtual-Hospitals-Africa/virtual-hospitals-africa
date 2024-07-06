@@ -38,10 +38,8 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 }
 
 export default IntakePage(async function HistoryPage({ ctx, patient }) {
-  assert(!patient.is_review)
-
   const { trx } = ctx.state
-  const patient_id = patient.data.id
+  const patient_id = patient.id
   const getting_past_medical_conditions = patient_conditions
     .getPastMedicalConditions(trx, { patient_id })
   const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, {

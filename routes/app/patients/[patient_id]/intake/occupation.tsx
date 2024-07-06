@@ -4,14 +4,10 @@ import Occupation0_18 from '../../../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../../../islands/Occupation19.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
   IntakeContext,
-  IntakeLayout,
   IntakePage,
   upsertPatientAndRedirect,
 } from './_middleware.tsx'
@@ -40,11 +36,10 @@ export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
 }
 
 export default IntakePage(async function OccupationPage({ ctx, patient }) {
-  assert(!patient.is_review)
   const age_years = assertAgeYearsKnown(ctx)
   const OccupationForm = age_years <= 18 ? Occupation0_18 : Occupation19
   const occupation = await patient_occupation.get(ctx.state.trx, {
-    patient_id: patient.data.id,
+    patient_id: patient.id,
   })
 
   return <OccupationForm occupation={occupation} />
