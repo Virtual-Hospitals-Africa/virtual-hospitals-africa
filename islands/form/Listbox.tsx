@@ -1,10 +1,10 @@
 import { Listbox } from '@headlessui/react'
 import { useState } from 'react'
-import { CheckIcon } from '../../components/library/CheckIcon.tsx'
 import cls from '../../util/cls.ts'
 import { ComponentChild } from 'preact'
 import isString from '../../util/isString.ts'
 import { assert } from 'std/assert/assert.ts'
+import { CheckIcon } from '../../components/library/icons/heroicons/solid.tsx'
 
 type OptionRecord = {
   id: string | string

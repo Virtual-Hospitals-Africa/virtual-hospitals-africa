@@ -663,7 +663,7 @@ describe('/app/patients/[patient_id]/intake', {
 
     assertEquals(
       getResponse.url,
-      `${route}/app/patients/${patient_id}/intake/personal?warning=Please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
+      `${route}/app/patients/${patient_id}/intake/personal?warning=Some%20questions%20are%20age-dependent%2C%20so%20please%20fill%20out%20the%20patient%27s%20personal%20information%20beforehand.`,
     )
   })
 

@@ -1,4 +1,4 @@
-export default function AddPatientIcon(
+export function AddPatientIcon(
   { className }: { className?: string },
 ) {
   return (

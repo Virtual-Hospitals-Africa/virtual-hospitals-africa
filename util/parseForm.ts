@@ -106,6 +106,7 @@ export async function parseRequestAsserts<T extends Record<string, unknown>>(
     }),
   )
 
+  delete parsed.omit
   typeCheck(parsed)
   return parsed
 }

@@ -1,15 +1,7 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  assertAgeYearsKnown,
-  IntakeContext,
-  IntakeLayout,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
+import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
 import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.ts'
-import { assert } from 'std/assert/assert.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 import zip from '../../../../../util/zip.ts'
 
@@ -154,35 +146,17 @@ function assertIsLifestyle(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const patient = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsLifestyle,
-    )
+export const handler = postHandler(assertIsLifestyle)
 
-    return upsertPatientAndRedirect(ctx, { ...patient })
-  },
-}
-
-export default async function LifestylePage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
-  const patient_id = patient.id
-
+export default IntakePage(async function LifestylePage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)
-
+  const lifestyle = await patient_lifestyle.get(ctx.state.trx, {
+    patient_id: patient.id,
+  })
   return (
-    <IntakeLayout ctx={ctx}>
-      {/* call to database for lifestyle patient information */}
-      <LifestyleForm
-        age_years={age_years}
-        lifestyle={await patient_lifestyle.get(trx, { patient_id })}
-      />
-    </IntakeLayout>
+    <LifestyleForm
+      age_years={age_years}
+      lifestyle={lifestyle}
+    />
   )
-}
+})

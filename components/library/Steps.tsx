@@ -2,7 +2,7 @@ import { FreshContext } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
-import { CheckIcon } from './CheckIcon.tsx'
+import { CheckIcon } from './icons/heroicons/outline.tsx'
 
 type Step<S> = {
   name: S

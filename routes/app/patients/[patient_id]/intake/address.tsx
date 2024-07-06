@@ -1,15 +1,9 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import { Maybe } from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  IntakeContext,
-  IntakeLayout,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { IntakePage, postHandler } from './_middleware.tsx'
 
 type AddressFormValues = {
   address: {
@@ -59,31 +53,19 @@ function assertIsAddress(
       typeof patient.primary_doctor_id === 'string') ||
       patient.primary_doctor_name,
   )
+  const primary_doctor_id = patient.primary_doctor_id
+  const primary_doctor_name = patient.primary_doctor_name
+  delete patient.primary_doctor_name
+  delete patient.nearest_organization_name
+  if (!primary_doctor_id && primary_doctor_name) {
+    patient.unregistered_primary_doctor_name = primary_doctor_name
+  }
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const { primary_doctor_name, nearest_organization_name, ...patient } =
-      await parseRequestAsserts(
-        ctx.state.trx,
-        req,
-        assertIsAddress,
-      )
-    return upsertPatientAndRedirect(ctx, {
-      ...patient,
-      unregistered_primary_doctor_name: patient.primary_doctor_id
-        ? null
-        : primary_doctor_name,
-    })
-  },
-}
+export const handler = postHandler(assertIsAddress)
 
-export default async function AddressPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(!ctx.state.is_review)
-  const { healthWorker, patient, trx } = ctx.state
+export default IntakePage(async function AddressPage({ ctx, patient }) {
+  const { healthWorker, trx } = ctx.state
   const country_address_tree = await address.getCountryAddressTree(trx)
 
   let default_organization:
@@ -102,12 +84,10 @@ export default async function AddressPage(
   }
 
   return (
-    <IntakeLayout ctx={ctx}>
-      <PatientAddressForm
-        patient={patient}
-        default_organization={default_organization}
-        country_address_tree={country_address_tree}
-      />
-    </IntakeLayout>
+    <PatientAddressForm
+      patient={patient}
+      default_organization={default_organization}
+      country_address_tree={country_address_tree}
+    />
   )
-}
+})

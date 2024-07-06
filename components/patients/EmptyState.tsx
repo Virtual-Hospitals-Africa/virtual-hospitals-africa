@@ -1,5 +1,5 @@
 import { EmptyState } from '../library/EmptyState.tsx'
-import AddPatientIcon from '../library/icons/AddPatient.tsx'
+import { AddPatientIcon } from '../library/icons/AddPatient.tsx'
 
 export default function PatientsEmptyState() {
   return (

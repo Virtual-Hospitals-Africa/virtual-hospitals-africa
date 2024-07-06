@@ -1,15 +1,8 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import { Maybe } from '../../../../../types.ts'
 import PatientPersonalForm from '../../../../../islands/patient-intake/PersonalForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  IntakeContext,
-  IntakeLayout,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
-import omit from '../../../../../util/omit.ts'
+import { IntakePage, postHandler } from './_middleware.tsx'
 
 type PersonalFormValues = {
   first_name: string
@@ -32,43 +25,27 @@ function assertIsPersonal(
       typeof patient.national_id_number === 'string') ||
       patient.no_national_id,
   )
+  delete patient.no_national_id
+  if (typeof patient.national_id_number === 'string') {
+    patient.national_id_number = patient.national_id_number.toUpperCase()
+  }
+  const avatar_media = patient.avatar_media
+  delete patient.avatar_media
+  if (avatar_media) {
+    assertOr400(isObjectLike(avatar_media))
+    patient.avatar_media_id = avatar_media.id
+  }
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const { avatar_media, national_id_number, ...patient } =
-      await parseRequestAsserts(
-        ctx.state.trx,
-        req,
-        assertIsPersonal,
-      )
-    return upsertPatientAndRedirect(ctx, {
-      ...omit(patient, ['no_national_id']),
-      national_id_number: national_id_number
-        ? national_id_number.toUpperCase()
-        : null,
-      avatar_media_id: avatar_media?.id,
-    })
-  },
-}
+export const handler = postHandler(assertIsPersonal)
 
-// deno-lint-ignore require-await
-export default async function PersonalPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  const { is_review, patient } = ctx.state
-  assert(!is_review)
-  const previously_completed = patient.intake_steps_completed.includes(
-    'personal',
-  )
-
-  return (
-    <IntakeLayout ctx={ctx}>
+export default IntakePage(
+  function PersonalPage({ patient, previously_completed }) {
+    return (
       <PatientPersonalForm
         patient={patient}
         previously_completed={previously_completed}
       />
-    </IntakeLayout>
-  )
-}
+    )
+  },
+)

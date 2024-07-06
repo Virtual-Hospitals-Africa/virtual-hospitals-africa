@@ -1,20 +1,13 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
+import * as patients from '../../../../../db/models/patients.ts'
 import PatientReview from '../../../../../components/patients/intake/Review.tsx'
-import {
-  IntakeContext,
-  IntakeLayout,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { IntakePage, postHandler } from './_middleware.tsx'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  // deno-lint-ignore require-await
-  async POST(_req, ctx) {
-    return upsertPatientAndRedirect(ctx, {})
-  },
+function assertIsReview(_patient: unknown): asserts _patient is unknown {
 }
+
+export const handler = postHandler(assertIsReview)
 
 const assertAllIntakeStepsCompleted = assertAllPriorStepsCompleted(
   INTAKE_STEPS,
@@ -22,20 +15,16 @@ const assertAllIntakeStepsCompleted = assertAllPriorStepsCompleted(
   'completing the intake process',
 )
 
-// deno-lint-ignore require-await
-export default async function ReviewPage(
-  _req: Request,
-  ctx: IntakeContext,
-) {
-  assert(ctx.state.is_review)
-  assertAllIntakeStepsCompleted(
-    ctx.state.patient.intake_steps_completed,
-    ctx.params,
-  )
-
-  return (
-    <IntakeLayout ctx={ctx}>
-      <PatientReview patient={ctx.state.patient} />
-    </IntakeLayout>
-  )
-}
+export default IntakePage(
+  async function ReviewPage({ ctx, patient }) {
+    const patient_review = await patients.getIntakeReviewById(
+      ctx.state.trx,
+      patient.id,
+    )
+    assertAllIntakeStepsCompleted(
+      patient.intake_steps_completed,
+      ctx.params,
+    )
+    return <PatientReview patient={patient_review} />
+  },
+)

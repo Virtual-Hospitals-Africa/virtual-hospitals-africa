@@ -3,7 +3,7 @@ import {
   MedicationReview,
   PreExistingConditionReview,
 } from '../../../db/models/patient_conditions.ts'
-import { getIntakeReview } from '../../../db/models/patients.ts'
+import { getIntakeReviewById } from '../../../db/models/patients.ts'
 import { dosageDisplay, IntakeFrequencies } from '../../../shared/medication.ts'
 import { Maybe } from '../../../types.ts'
 import {
@@ -105,7 +105,7 @@ function PreExistingConditionsReview(
 
 export default function PatientReview(
   { patient }: {
-    patient: Awaited<ReturnType<typeof getIntakeReview>>
+    patient: Awaited<ReturnType<typeof getIntakeReviewById>>
   },
 ) {
   return (

@@ -4,12 +4,13 @@ import cls from '../../util/cls.ts'
 const baseStyles = {
   solid: 'shadow-sm',
   outline: 'border',
+  ghost: 'hover:text-blue-600 focus-visible:text-blue-600',
 }
 
 const variantStyles = {
   solid: {
     primary:
-      'rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
+      'rounded-md bg-indigo-600 px-3 py-2 font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600',
     slate:
       'bg-slate-900 text-white hover:bg-slate-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-700 active:text-white/80 disabled:opacity-30 disabled:hover:bg-slate-900',
     blue:
@@ -27,6 +28,7 @@ const variantStyles = {
     blueTwo:
       'border-slate-500 text-slate-900 px-1 py-1 text-xl font-extrabold hover:border-blue-400 hover:bg-blue-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 active:text-blue-600/70 disabled:opacity-40 disabled:hover:border-blue-300 disabled:hover:bg-transparent',
   },
+  ghost: {},
 }
 
 type ButtonProps =
@@ -40,6 +42,9 @@ type ButtonProps =
   } | {
     variant: 'outline'
     color?: keyof typeof variantStyles.outline
+  } | {
+    variant: 'ghost'
+    color?: undefined
   } | {
     variant?: undefined
     color?: keyof typeof variantStyles.solid

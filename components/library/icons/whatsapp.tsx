@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-export default function WhatsAppIcon(props: any) {
+export function WhatsAppIcon(props: any) {
   return (
     <svg viewBox='-2.73 0 1225.016 1225.016' {...props}>
       <path

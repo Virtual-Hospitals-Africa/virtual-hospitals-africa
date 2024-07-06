@@ -56,6 +56,10 @@ export const avatar_url_sql = sql<string | null>`
   END
 `
 
+export const intake_clinical_notes_href_sql = sql<string>`
+  concat('/app/patients/', patients.id::text, '/intake/review')
+`
+
 const dob_formatted = longFormattedDate('patients.date_of_birth').as(
   'dob_formatted',
 )
@@ -385,12 +389,10 @@ export function getByID(
     .executeTakeFirstOrThrow()
 }
 
-export function getIntake(
+export function getIntakeById(
   trx: TrxOrDb,
-  opts: {
-    id: string
-  },
-): Promise<Maybe<PatientIntake>> {
+  patient_id: string,
+): Promise<PatientIntake> {
   return trx
     .selectFrom('patients')
     .leftJoin('address', 'address.id', 'patients.address_id')
@@ -426,6 +428,12 @@ export function getIntake(
         'date_of_birth',
       ),
       'patients.national_id_number',
+      sql<
+        string | null
+      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
+        .as(
+          'description',
+        ),
       jsonBuildObject({
         country_id: eb.ref('address.country_id'),
         province_id: eb.ref('address.province_id'),
@@ -458,16 +466,17 @@ export function getIntake(
       'OrganizationAddress.address as nearest_organization_address',
       'health_workers.name as primary_doctor_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
+      jsonBuildObject({
+        clinical_notes: intake_clinical_notes_href_sql,
+      }).as('actions'),
     ])
-    .where('patients.id', '=', opts.id)
-    .executeTakeFirst()
+    .where('patients.id', '=', patient_id)
+    .executeTakeFirstOrThrow()
 }
 
-export async function getIntakeReview(
+export async function getIntakeReviewById(
   trx: TrxOrDb,
-  opts: {
-    id: string
-  },
+  patient_id: string,
 ) {
   const getting_review = trx
     .selectFrom('patients')
@@ -504,6 +513,12 @@ export async function getIntakeReview(
       ),
       'patients.national_id_number',
       sql<
+        string | null
+      >`patients.gender || ', ' || TO_CHAR(patients.date_of_birth, 'DD/MM/YYYY')`
+        .as(
+          'description',
+        ),
+      sql<
         string
       >`'Dr. ' || coalesce(health_workers.name, patients.unregistered_primary_doctor_name)`
         .as('primary_doctor_name'),
@@ -515,6 +530,9 @@ export async function getIntakeReview(
       'patients.nearest_organization_id',
       'Organization.canonicalName as nearest_organization_name',
       sql<RenderedPatientAge>`TO_JSON(patient_age)`.as('age'),
+      jsonBuildObject({
+        clinical_notes: intake_clinical_notes_href_sql,
+      }).as('actions'),
       jsonArrayFromColumn(
         'intake_step',
         eb.selectFrom('patient_intake')
@@ -529,10 +547,10 @@ export async function getIntakeReview(
       ).as('intake_steps_completed'),
       'completed_intake',
     ])
-    .where('patients.id', '=', opts.id)
+    .where('patients.id', '=', patient_id)
     .executeTakeFirst()
 
-  const q = { patient_id: opts.id }
+  const q = { patient_id }
   const getting_family = patient_family.get(trx, q)
   const getting_occupation = patient_occupations.get(trx, q)
   const getting_pre_existing_conditions = patient_conditions

@@ -125,8 +125,17 @@ import * as $ProvidersSelect from './islands/ProvidersSelect.tsx'
 import * as $ReligionSelect from './islands/ReligionSelect.tsx'
 import * as $Search from './islands/Search.tsx'
 import * as $SelectWithOther from './islands/SelectWithOther.tsx'
-import * as $SelectedPatient from './islands/SelectedPatient.tsx'
-import * as $SendToMenu from './islands/SendToMenu.tsx'
+import * as $SendTo_Button from './islands/SendTo/Button.tsx'
+import * as $SendTo_CircularImage from './islands/SendTo/CircularImage.tsx'
+import * as $SendTo_Description from './islands/SendTo/Description.tsx'
+import * as $SendTo_Form from './islands/SendTo/Form.tsx'
+import * as $SendTo_Header from './islands/SendTo/Header.tsx'
+import * as $SendTo_Icons from './islands/SendTo/Icons.tsx'
+import * as $SendTo_List from './islands/SendTo/List.tsx'
+import * as $SendTo_ListItem from './islands/SendTo/ListItem.tsx'
+import * as $SendTo_RequestRadioButtons from './islands/SendTo/RequestRadioButtons.tsx'
+import * as $SendTo_SelectedPatient from './islands/SendTo/SelectedPatient.tsx'
+import * as $SendTo_Sidebar from './islands/SendTo/Sidebar.tsx'
 import * as $SuccessMessage from './islands/SuccessMessage.tsx'
 import * as $SurgerySearch from './islands/SurgerySearch.tsx'
 import * as $WarningMessage from './islands/WarningMessage.tsx'
@@ -184,8 +193,6 @@ import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
 import * as $timer from './islands/timer.tsx'
-import * as $types from './islands/types.ts'
-import * as $useSendableData from './islands/useSendableData.tsx'
 import * as $vitals_Form from './islands/vitals/Form.tsx'
 import * as $waiting_room_AddPatientForm from './islands/waiting_room/AddPatientForm.tsx'
 import * as $waiting_room_AddPatientSearch from './islands/waiting_room/AddPatientSearch.tsx'
@@ -374,8 +381,17 @@ const manifest = {
     './islands/ReligionSelect.tsx': $ReligionSelect,
     './islands/Search.tsx': $Search,
     './islands/SelectWithOther.tsx': $SelectWithOther,
-    './islands/SelectedPatient.tsx': $SelectedPatient,
-    './islands/SendToMenu.tsx': $SendToMenu,
+    './islands/SendTo/Button.tsx': $SendTo_Button,
+    './islands/SendTo/CircularImage.tsx': $SendTo_CircularImage,
+    './islands/SendTo/Description.tsx': $SendTo_Description,
+    './islands/SendTo/Form.tsx': $SendTo_Form,
+    './islands/SendTo/Header.tsx': $SendTo_Header,
+    './islands/SendTo/Icons.tsx': $SendTo_Icons,
+    './islands/SendTo/List.tsx': $SendTo_List,
+    './islands/SendTo/ListItem.tsx': $SendTo_ListItem,
+    './islands/SendTo/RequestRadioButtons.tsx': $SendTo_RequestRadioButtons,
+    './islands/SendTo/SelectedPatient.tsx': $SendTo_SelectedPatient,
+    './islands/SendTo/Sidebar.tsx': $SendTo_Sidebar,
     './islands/SuccessMessage.tsx': $SuccessMessage,
     './islands/SurgerySearch.tsx': $SurgerySearch,
     './islands/WarningMessage.tsx': $WarningMessage,
@@ -440,8 +456,6 @@ const manifest = {
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,
     './islands/timer.tsx': $timer,
-    './islands/types.ts': $types,
-    './islands/useSendableData.tsx': $useSendableData,
     './islands/vitals/Form.tsx': $vitals_Form,
     './islands/waiting_room/AddPatientForm.tsx': $waiting_room_AddPatientForm,
     './islands/waiting_room/AddPatientSearch.tsx':

@@ -1,29 +1,10 @@
 import { Maybe } from '../../types.ts'
 import cls from '../../util/cls.ts'
 
-export default function Avatar(
-  { src, className, hide_when_empty }: {
-    src?: Maybe<string>
-    className?: string
-    hide_when_empty?: boolean
-  },
-) {
-  const fullClassName = cls(className, 'flex-none rounded-full')
-  if (src) {
-    return (
-      <img
-        src={src}
-        alt=''
-        className={fullClassName}
-      />
-    )
-  }
-  if (hide_when_empty) {
-    return null
-  }
+function EmptyAvatar({ className }: { className?: string }) {
   return (
     <svg
-      className={fullClassName}
+      className={className}
       viewBox='0 0 24 24'
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
@@ -37,4 +18,28 @@ export default function Avatar(
       />
     </svg>
   )
+}
+
+export default function Avatar(
+  { src, className, hide_when_empty }: {
+    src?: Maybe<string>
+    icon?: string
+    className?: string
+    hide_when_empty?: boolean
+  },
+) {
+  const fullClassName = cls('flex-none rounded-full w-10 h-10', className)
+  if (src) {
+    return (
+      <img
+        src={src}
+        alt=''
+        className={fullClassName}
+      />
+    )
+  }
+  if (hide_when_empty) {
+    return null
+  }
+  return <EmptyAvatar className={fullClassName} />
 }
