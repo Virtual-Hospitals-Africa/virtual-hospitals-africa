@@ -1,15 +1,8 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
 import PatientHistoryForm from '../../../../../components/patients/intake/HistoryForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  IntakeContext,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { IntakePage, postHandler } from './_middleware.tsx'
 
 type HistoryFormValues = {
   past_medical_conditions?: patient_conditions.PastMedicalConditionUpsert[]
@@ -20,22 +13,11 @@ function assertIsHistory(
   patient: unknown,
 ): asserts patient is HistoryFormValues {
   assertOr400(isObjectLike(patient))
+  patient.past_medical_conditions = patient.past_medical_conditions || []
+  patient.major_surgeries = patient.major_surgeries || []
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const patient = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsHistory,
-    )
-    return upsertPatientAndRedirect(ctx, {
-      ...patient,
-      past_medical_conditions: patient.past_medical_conditions || [],
-      major_surgeries: patient.major_surgeries || [],
-    })
-  },
-}
+export const handler = postHandler(assertIsHistory)
 
 export default IntakePage(async function HistoryPage({ ctx, patient }) {
   const { trx } = ctx.state

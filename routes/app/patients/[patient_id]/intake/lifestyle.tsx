@@ -1,15 +1,7 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  assertAgeYearsKnown,
-  IntakeContext,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
+import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
 import * as patient_lifestyle from '../../../../../db/models/patient_lifestyle.ts'
-import { assert } from 'std/assert/assert.ts'
 import { LifestyleForm } from '../../../../../islands/LifestyleForm.tsx'
 import zip from '../../../../../util/zip.ts'
 
@@ -154,17 +146,7 @@ function assertIsLifestyle(
   }
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const patient = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsLifestyle,
-    )
-
-    return upsertPatientAndRedirect(ctx, { ...patient })
-  },
-}
+export const handler = postHandler(assertIsLifestyle)
 
 export default IntakePage(async function LifestylePage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)

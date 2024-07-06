@@ -1,17 +1,9 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import * as patient_occupation from '../../../../../db/models/patient_occupations.ts'
 import Occupation0_18 from '../../../../../islands/Occupation0-18.tsx'
 import Occupation19 from '../../../../../islands/Occupation19.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  assertAgeYearsKnown,
-  IntakeContext,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
 
 type OccupationFormValues = {
   // deno-lint-ignore no-explicit-any
@@ -22,18 +14,10 @@ function assertIsOccupation(
   patient: unknown,
 ): asserts patient is OccupationFormValues {
   assertOr400(isObjectLike(patient))
+  patient.occupation = patient.occupation || {}
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const patient = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsOccupation,
-    )
-    return upsertPatientAndRedirect(ctx, { occupation: patient.occupation })
-  },
-}
+export const handler = postHandler(assertIsOccupation)
 
 export default IntakePage(async function OccupationPage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)

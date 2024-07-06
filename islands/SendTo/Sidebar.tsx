@@ -3,9 +3,17 @@ import { Fragment } from 'react'
 import { PatientIntake, Sendable } from '../../types.ts'
 import { SendToHeader } from './Header.tsx'
 import { SendableList } from './List.tsx'
-import { useSignal } from '@preact/signals'
+import { effect, useSignal } from '@preact/signals'
 import { SendToSelectedPatient } from './SelectedPatient.tsx'
 import { SendToForm } from './Form.tsx'
+
+// A bit hacky, submits the intake form by id after appending hidden inputs corresponding to the action
+function submitAction() {
+  const intake_form = document.querySelector(
+    'form#intake',
+  )! as HTMLFormElement
+  intake_form.submit()
+}
 
 export function SendToSidebar(
   { open, close, sendables, patient }: {
@@ -16,6 +24,12 @@ export function SendToSidebar(
   },
 ) {
   const selected = useSignal<Sendable | null>(null)
+
+  effect(() => {
+    if (selected.value && selected.value.to.type === 'action') {
+      setTimeout(submitAction, 0)
+    }
+  })
 
   return (
     <Transition show={open} as={Fragment}>

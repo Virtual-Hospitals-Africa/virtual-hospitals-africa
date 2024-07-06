@@ -1,7 +1,7 @@
 import { Sendable, TrxOrDb } from '../../types.ts'
 
 // deno-lint-ignore require-await
-export async function forPatient(
+export async function forPatientIntake(
   _trx: TrxOrDb,
   _patient_id: string,
 ): Promise<Sendable[]> {
@@ -88,7 +88,6 @@ export async function forPatient(
       to: {
         type: 'action',
         action: 'device',
-        href: '/another-device',
       },
     },
     {
@@ -103,7 +102,6 @@ export async function forPatient(
       to: {
         type: 'action',
         action: 'search',
-        href: '/search',
       },
     },
   ]

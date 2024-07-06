@@ -2703,17 +2703,30 @@ export type SendableToEntity = {
   type: 'entity'
   entity_type: 'health_worker' | 'facility'
   entity_id: string
-  online: boolean
+  online?: Maybe<boolean>
   reopens?: string
 }
 
 export type SendableToAction = {
   type: 'action'
   action: 'search' | 'waiting_room' | 'device'
-  href?: string
 }
 
 export type SendableTo = SendableToEntity | SendableToAction
+
+export type SendToFormSubmission = {
+  action?: SendableToAction['action']
+  entity?: {
+    type: SendableToEntity['entity_type']
+    id: SendableToEntity['entity_id']
+  }
+  request_type?:
+    | 'request_visit'
+    | 'request_review'
+    | 'make_appointment'
+    | 'declare_emergency'
+  additional_notes?: string
+}
 export type Sendable = {
   key: string
   image: Image

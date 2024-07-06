@@ -1,17 +1,10 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import * as patient_conditions from '../../../../../db/models/patient_conditions.ts'
 import * as allergies from '../../../../../db/models/allergies.ts'
 import * as patient_allergies from '../../../../../db/models/patient_allergies.ts'
 import PatientPreExistingConditions from '../../../../../components/patients/intake/PreExistingConditionsForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  IntakeContext,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { IntakePage, postHandler } from './_middleware.tsx'
 
 type ConditionsFormValues = {
   allergies?: { id: string; name: string }[]
@@ -22,23 +15,11 @@ function assertIsConditions(
   patient: unknown,
 ): asserts patient is ConditionsFormValues {
   assertOr400(isObjectLike(patient))
+  patient.pre_existing_conditions = patient.pre_existing_conditions || []
+  patient.allergies = patient.allergies || []
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const { pre_existing_conditions, allergies, ...patient } =
-      await parseRequestAsserts(
-        ctx.state.trx,
-        req,
-        assertIsConditions,
-      )
-    return upsertPatientAndRedirect(ctx, {
-      ...patient,
-      pre_existing_conditions: pre_existing_conditions || [],
-      allergies: allergies || [],
-    })
-  },
-}
+export const handler = postHandler(assertIsConditions)
 
 export default IntakePage(async function ConditionsPage({ ctx, patient }) {
   const { trx } = ctx.state

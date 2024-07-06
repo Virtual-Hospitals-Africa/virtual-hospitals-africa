@@ -19,7 +19,7 @@ export function SendToRequestRadioButtons({
           <label key={option} className='flex items-center gap-2'>
             <input
               type='radio'
-              name='request'
+              name='send_to.request_type'
               value={option}
             />
             <span>{REQUEST_TYPES[option]}</span>

@@ -1,14 +1,9 @@
-import { LoggedInHealthWorkerHandler, Maybe } from '../../../../../types.ts'
+import { Maybe } from '../../../../../types.ts'
 import * as address from '../../../../../db/models/address.ts'
 import PatientAddressForm from '../../../../../components/patients/intake/AddressForm.tsx'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  IntakeContext,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
+import { IntakePage, postHandler } from './_middleware.tsx'
 
 type AddressFormValues = {
   address: {
@@ -58,24 +53,16 @@ function assertIsAddress(
       typeof patient.primary_doctor_id === 'string') ||
       patient.primary_doctor_name,
   )
+  const primary_doctor_id = patient.primary_doctor_id
+  const primary_doctor_name = patient.primary_doctor_name
+  delete patient.primary_doctor_name
+  delete patient.nearest_organization_name
+  if (!primary_doctor_id && primary_doctor_name) {
+    patient.unregistered_primary_doctor_name = primary_doctor_name
+  }
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const { primary_doctor_name, nearest_organization_name, ...patient } =
-      await parseRequestAsserts(
-        ctx.state.trx,
-        req,
-        assertIsAddress,
-      )
-    return upsertPatientAndRedirect(ctx, {
-      ...patient,
-      unregistered_primary_doctor_name: patient.primary_doctor_id
-        ? null
-        : primary_doctor_name,
-    })
-  },
-}
+export const handler = postHandler(assertIsAddress)
 
 export default IntakePage(async function AddressPage({ ctx, patient }) {
   const { healthWorker, trx } = ctx.state

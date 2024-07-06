@@ -1,22 +1,8 @@
-import {
-  FamilyRelationInsert,
-  LoggedInHealthWorkerHandler,
-} from '../../../../../types.ts'
+import { FamilyRelationInsert } from '../../../../../types.ts'
 import * as patient_family from '../../../../../db/models/family.ts'
-import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
-import Buttons, {
-  ButtonsContainer,
-} from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
-import {
-  assertAgeYearsKnown,
-  IntakeContext,
-  IntakeLayout,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
-import { assert } from 'std/assert/assert.ts'
+import { assertAgeYearsKnown, IntakePage, postHandler } from './_middleware.tsx'
 import {
   FamilyType,
   MaritalStatus,
@@ -53,26 +39,11 @@ function assertIsFamily(
   ) {
     delete patient.family.other_next_of_kin
   }
+  patient.family.guardians = patient.family.guardians || []
+  patient.family.dependents = patient.family.dependents || []
 }
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  async POST(req, ctx) {
-    const { family, ...patient } = await parseRequestAsserts(
-      ctx.state.trx,
-      req,
-      assertIsFamily,
-    )
-
-    return upsertPatientAndRedirect(ctx, {
-      ...patient,
-      family: {
-        ...family,
-        guardians: family.guardians || [],
-        dependents: family.dependents || [],
-      },
-    })
-  },
-}
+export const handler = postHandler(assertIsFamily)
 
 export default IntakePage(async function FamilyPage({ ctx, patient }) {
   const age_years = assertAgeYearsKnown(ctx)

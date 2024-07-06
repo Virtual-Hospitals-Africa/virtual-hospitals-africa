@@ -1,20 +1,13 @@
-import { LoggedInHealthWorkerHandler } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import PatientReview from '../../../../../components/patients/intake/Review.tsx'
-import {
-  IntakeContext,
-  IntakePage,
-  upsertPatientAndRedirect,
-} from './_middleware.tsx'
+import { IntakePage, postHandler } from './_middleware.tsx'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
 
-export const handler: LoggedInHealthWorkerHandler<IntakeContext> = {
-  // deno-lint-ignore require-await
-  async POST(_req, ctx) {
-    return upsertPatientAndRedirect(ctx, {})
-  },
+function assertIsReview(_patient: unknown): asserts _patient is unknown {
 }
+
+export const handler = postHandler(assertIsReview)
 
 const assertAllIntakeStepsCompleted = assertAllPriorStepsCompleted(
   INTAKE_STEPS,
