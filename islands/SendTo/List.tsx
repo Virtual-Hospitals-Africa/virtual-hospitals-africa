@@ -17,14 +17,18 @@ export function SendableList(
       role='list'
       className='divide-y divide-gray-200 overflow-y-auto'
     >
-      {show_sendables.map((sendable) => (
-        <SendableListItem
-          key={sendable.key}
-          sendable={sendable}
-          selected={selected.value === sendable}
-          onSelect={() => selected.value = sendable}
-        />
-      ))}
+      {show_sendables.map((sendable) => {
+        const is_selected = selected.value === sendable
+        return (
+          <SendableListItem
+            key={sendable.key}
+            sendable={sendable}
+            is_selected={is_selected}
+            toggleSelected={() =>
+              selected.value = is_selected ? null : sendable}
+          />
+        )
+      })}
     </ul>
   )
 }
