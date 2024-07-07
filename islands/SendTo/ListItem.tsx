@@ -47,10 +47,10 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
 }
 
 export function SendableListItem(
-  { sendable, selected, onSelect }: {
+  { sendable, is_selected, toggleSelected }: {
     sendable: Sendable
-    selected: boolean
-    onSelect: () => void
+    is_selected: boolean
+    toggleSelected: () => void
   },
 ): JSX.Element {
   // When clicked, actions submit immediately while entities are selected and add hidden inputs to the form
@@ -62,15 +62,15 @@ export function SendableListItem(
         value: sendable.to.action,
         form: 'intake',
       }
-      : { type: 'button', onClick: onSelect }
+      : { type: 'button', onClick: toggleSelected }
 
   return (
     <li
-      className={selected
+      className={is_selected
         ? 'bg-indigo-200 hover:bg-indigo-200'
         : 'hover:bg-indigo-200'}
     >
-      {selected && sendable.to.type === 'entity' && (
+      {is_selected && sendable.to.type === 'entity' && (
         <HiddenInputs
           form='intake'
           inputs={{
