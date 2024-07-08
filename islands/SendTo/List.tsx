@@ -15,7 +15,7 @@ export function SendableList(
   return (
     <ul
       role='list'
-      className='divide-y divide-gray-200 overflow-y-auto'
+      className='overflow-y-auto'
     >
       {show_sendables.map((sendable) => {
         const is_selected = selected.value === sendable
