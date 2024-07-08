@@ -167,5 +167,3 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     ],
   },
 }
-
-// Hi
