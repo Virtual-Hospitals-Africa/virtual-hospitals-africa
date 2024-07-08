@@ -9,6 +9,8 @@ MEDPLUM_TABLES_IN_USE=(
   Location
   Media
   Encounter
+  Condition
+  ConditionEvidence
 )
 
 MEDPLUM_TABLES=(
