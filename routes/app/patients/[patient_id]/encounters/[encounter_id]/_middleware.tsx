@@ -118,10 +118,12 @@ const nextLink = (ctx: FreshContext) =>
 export function EncounterLayout({
   ctx,
   sendables,
+  next_step_text,
   children,
 }: {
   ctx: EncounterContext
   sendables: Sendable[]
+  next_step_text?: string
   children: ComponentChildren
 }): JSX.Element {
   return (
@@ -164,7 +166,7 @@ export function EncounterLayout({
             type='submit'
             className='flex-1 max-w-xl'
           >
-            {nextStep(ctx).button_text}
+            {next_step_text || nextStep(ctx).button_text}
           </Button>
         </ButtonsContainer>
       </Form>
@@ -180,7 +182,10 @@ export type EncounterPageChildProps = EncounterPageProps & {
 export function EncounterPage(
   render: (
     props: EncounterPageChildProps,
-  ) => JSX.Element | Promise<JSX.Element>,
+  ) =>
+    | JSX.Element
+    | Promise<JSX.Element>
+    | Promise<{ next_step_text: string; children: JSX.Element }>,
 ) {
   return async function (
     _req: Request,
@@ -196,10 +201,20 @@ export function EncounterPage(
       patient.id,
     )
 
-    const children = await render({ ctx, ...ctx.state, previously_completed })
+    let next_step_text: string | undefined
+    const rendered = await render({ ctx, ...ctx.state, previously_completed })
+    const children = 'next_step_text' in rendered ? rendered.children : rendered
+
+    if ('next_step_text' in rendered) {
+      next_step_text = rendered.next_step_text
+    }
 
     return (
-      <EncounterLayout ctx={ctx} sendables={await getting_sendables}>
+      <EncounterLayout
+        ctx={ctx}
+        next_step_text={next_step_text}
+        sendables={await getting_sendables}
+      >
         {children}
       </EncounterLayout>
     )
