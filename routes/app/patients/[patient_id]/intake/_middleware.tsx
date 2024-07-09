@@ -179,7 +179,13 @@ export function IntakeLayout({
 
         <ButtonsContainer>
           <SendToButton
-            patient={ctx.state.patient}
+            form='intake'
+            patient={{
+              name: ctx.state.patient.name!,
+              description: ctx.state.patient.description,
+              avatar_url: ctx.state.patient.avatar_url,
+              actions: ctx.state.patient.actions,
+            }}
             sendables={sendables}
           />
           <Button

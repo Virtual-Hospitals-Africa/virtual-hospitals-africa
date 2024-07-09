@@ -2743,3 +2743,12 @@ export type Sendable = {
   }[]
   to: SendableTo
 }
+
+export type SelectedPatient = {
+  name: string
+  avatar_url?: Maybe<string>
+  description?: Maybe<string>
+  actions: {
+    clinical_notes: string
+  }
+}

@@ -47,7 +47,8 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
 }
 
 export function SendableListItem(
-  { sendable, is_selected, toggleSelected }: {
+  { form, sendable, is_selected, toggleSelected }: {
+    form: 'intake' | 'encounter'
     sendable: Sendable
     is_selected: boolean
     toggleSelected: () => void
@@ -60,7 +61,7 @@ export function SendableListItem(
         type: 'submit',
         name: 'send_to.action',
         value: sendable.to.action,
-        form: 'intake',
+        form,
       }
       : { type: 'button', onClick: toggleSelected }
 
@@ -72,7 +73,7 @@ export function SendableListItem(
     >
       {is_selected && sendable.to.type === 'entity' && (
         <HiddenInputs
-          form='intake'
+          form={form}
           inputs={{
             'send_to.entity.type': sendable.to.entity_type,
             'send_to.entity.id': sendable.to.entity_id,
