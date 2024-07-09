@@ -7,6 +7,7 @@ import Buttons, {
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
   assertAgeYearsKnown,
+  getOrganizationEmployees,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -176,10 +177,18 @@ export default async function LifestylePage(
   ctx: IntakeContext,
 ) {
   assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
+  const { healthWorker, patient, trx } = ctx.state
   const patient_id = patient.id
 
   const age_years = assertAgeYearsKnown(ctx)
+
+  const employees = await getOrganizationEmployees(
+    {
+      ctx,
+      organization_id: healthWorker.employment[0].organization.id,
+      exclude_health_worker_id: ctx.state.healthWorker.id,
+    },
+  )
 
   return (
     <IntakeLayout ctx={ctx}>
@@ -190,7 +199,7 @@ export default async function LifestylePage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SendToMenu />
+        <SendToMenu employees={employees} />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

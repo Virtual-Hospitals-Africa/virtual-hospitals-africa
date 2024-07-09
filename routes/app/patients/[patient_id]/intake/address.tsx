@@ -8,6 +8,7 @@ import Buttons, {
 } from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
+  getOrganizationEmployees,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -106,6 +107,14 @@ export default async function AddressPage(
     }
   }
 
+  const employees = await getOrganizationEmployees(
+    {
+      ctx,
+      organization_id: healthWorker.employment[0].organization.id,
+      exclude_health_worker_id: ctx.state.healthWorker.id,
+    },
+  )
+
   return (
     <IntakeLayout ctx={ctx}>
       <PatientAddressForm
@@ -115,7 +124,7 @@ export default async function AddressPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SendToMenu />
+        <SendToMenu employees={employees} />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

@@ -10,6 +10,7 @@ import Buttons, {
 } from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
+  getOrganizationEmployees,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -50,7 +51,7 @@ export default async function PreExistingConditionsPage(
   ctx: IntakeContext,
 ) {
   assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
+  const { healthWorker, patient, trx } = ctx.state
   const patient_id = patient.id
 
   const getting_pre_existing_conditions = patient_conditions
@@ -66,6 +67,14 @@ export default async function PreExistingConditionsPage(
       patient_id,
     )
 
+  const employees = await getOrganizationEmployees(
+    {
+      ctx,
+      organization_id: healthWorker.employment[0].organization.id,
+      exclude_health_worker_id: ctx.state.healthWorker.id,
+    },
+  )
+
   return (
     <IntakeLayout ctx={ctx}>
       <PatientPreExistingConditions
@@ -75,7 +84,7 @@ export default async function PreExistingConditionsPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SendToMenu />
+        <SendToMenu employees={employees} />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

@@ -6,6 +6,7 @@ import {
   PatientIntake,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
+import * as employment from '../../../../../db/models/employment.ts'
 import { assertOr404, assertOrRedirect } from '../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
 import { StepsSidebar } from '../../../../../components/library/Sidebar.tsx'
@@ -129,4 +130,19 @@ export function IntakeLayout({
       </Form>
     </Layout>
   )
+}
+
+export async function getOrganizationEmployees({
+  ctx,
+  organization_id,
+  exclude_health_worker_id,
+}: {
+  ctx: IntakeContext
+  organization_id: string
+  exclude_health_worker_id: string
+}) {
+  return await employment.getOrganizationNurses(ctx.state.trx, {
+    organization_id,
+    exclude_health_worker_id,
+  })
 }

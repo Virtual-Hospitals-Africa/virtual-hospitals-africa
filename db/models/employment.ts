@@ -155,3 +155,37 @@ export function getOrganizationAdmin(
     ])
     .executeTakeFirst()
 }
+
+export function getOrganizationNurses(
+  trx: TrxOrDb,
+  opts: {
+    organization_id: string
+    exclude_health_worker_id?: string
+  },
+): Promise<HasStringId<Employee>[]> {
+  const query = trx
+    .selectFrom('employment')
+    .where('organization_id', '=', opts.organization_id)
+    .where('profession', '=', 'nurse')
+
+  if (opts.exclude_health_worker_id) {
+    query.where('health_worker_id', '!=', opts.exclude_health_worker_id)
+  }
+
+  // Join with Healthworkers to get the name, avatar and email
+  query.innerJoin(
+    'health_workers',
+    'health_workers.id',
+    'employment.health_worker_id',
+  )
+    .select([
+      'employment.id',
+      'health_worker_id',
+      'health_workers.name',
+      'email',
+      'profession',
+      'organization_id',
+    ])
+
+  return query.selectAll().execute()
+}

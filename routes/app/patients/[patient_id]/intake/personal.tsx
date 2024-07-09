@@ -7,6 +7,7 @@ import Buttons, {
 } from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
+  getOrganizationEmployees,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -15,6 +16,7 @@ import { assert } from 'std/assert/assert.ts'
 import omit from '../../../../../util/omit.ts'
 import { Button } from '../../../../../components/library/Button.tsx'
 import SendToMenu from '../../../../../islands/SendToMenu.tsx'
+import capitalize from '../../../../../util/capitalize.ts'
 
 type PersonalFormValues = {
   first_name: string
@@ -68,6 +70,19 @@ export default async function PersonalPage(
     'personal',
   )
 
+  console.log(ctx.state.healthWorker.id)
+
+  const { healthWorker } = ctx.state
+  const employees = await getOrganizationEmployees(
+    {
+      ctx,
+      organization_id: healthWorker.employment[0].organization.id,
+      exclude_health_worker_id: ctx.state.healthWorker.id,
+    },
+  )
+
+  console.log(employees)
+
   return (
     <IntakeLayout ctx={ctx}>
       <PatientPersonalForm
@@ -76,7 +91,7 @@ export default async function PersonalPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SendToMenu />
+        <SendToMenu employees={employees} />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

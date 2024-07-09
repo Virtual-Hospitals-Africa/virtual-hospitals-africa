@@ -8,6 +8,7 @@ import Buttons, {
 } from '../../../../../islands/form/buttons.tsx'
 import { assertOr400 } from '../../../../../util/assertOr.ts'
 import {
+  getOrganizationEmployees,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -47,13 +48,21 @@ export default async function HistoryPage(
   ctx: IntakeContext,
 ) {
   assert(!ctx.state.is_review)
-  const { patient, trx } = ctx.state
+  const { healthWorker, patient, trx } = ctx.state
   const patient_id = patient.id
   const getting_past_medical_conditions = patient_conditions
     .getPastMedicalConditions(trx, { patient_id })
   const getting_major_surgeries = patient_conditions.getMajorSurgeries(trx, {
     patient_id,
   })
+
+  const employees = await getOrganizationEmployees(
+    {
+      ctx,
+      organization_id: healthWorker.employment[0].organization.id,
+      exclude_health_worker_id: ctx.state.healthWorker.id,
+    },
+  )
 
   return (
     <IntakeLayout ctx={ctx}>
@@ -63,7 +72,7 @@ export default async function HistoryPage(
       />
       <hr className='my-2' />
       <ButtonsContainer>
-        <SendToMenu />
+        <SendToMenu employees={employees} />
         <Button
           type='submit'
           className='flex-1 max-w-xl '

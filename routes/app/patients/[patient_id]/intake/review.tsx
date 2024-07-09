@@ -4,6 +4,7 @@ import Buttons, {
   ButtonsContainer,
 } from '../../../../../islands/form/buttons.tsx'
 import {
+  getOrganizationEmployees,
   IntakeContext,
   IntakeLayout,
   upsertPatientAndRedirect,
@@ -39,13 +40,20 @@ export default async function ReviewPage(
 
   const { healthWorker, patient } = ctx.state
 
+  const employees = await getOrganizationEmployees(
+    {
+      ctx,
+      organization_id: healthWorker.employment[0].organization.id,
+      exclude_health_worker_id: ctx.state.healthWorker.id,
+    },
+  )
+
   return (
     <IntakeLayout ctx={ctx}>
       <PatientReview patient={patient} />
       <hr className='my-2' />
-
       <ButtonsContainer>
-        <SendToMenu />
+        <SendToMenu employees={employees} />
         <Buttons
           submitText='Continue to vitals'
           className='flex-1 max-w-xl '

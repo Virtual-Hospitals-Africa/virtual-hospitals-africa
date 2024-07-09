@@ -1,11 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { JSX } from 'preact'
+import { ComponentChild, JSX } from 'preact'
 import { Fragment, useEffect, useState } from 'react'
 import { Button } from '../components/library/Button.tsx'
 import { XMarkIcon } from '../components/library/icons/heroicons/outline.tsx'
 import { ButtonsContainer } from './form/buttons.tsx'
 import cls from '../util/cls.ts'
-import { ComponentChild } from 'preact'
+// import { ComponentChild } from 'preact'
+import { Employee, HasStringId, Sendable } from '../types.ts'
+
 import {
   BuildingOffice2Icon,
   ClockIcon,
@@ -98,8 +100,8 @@ async function updateOnlineStatus(sendable: Sendable[]) {
           const openingHours = await getOpeningHours(placeId)
           const isOpen = checkIfOpen(openingHours)
           item.online = isOpen
-          console.log(`Place ID for ${address}: ${placeId}`)
-          console.log(`Is open: ${isOpen}`)
+          // console.log(`Place ID for ${address}: ${placeId}`)
+          // console.log(`Is open: ${isOpen}`)
         } catch (error) {
           console.error(`Error updating status for ${address}:`, error)
         }
@@ -107,6 +109,10 @@ async function updateOnlineStatus(sendable: Sendable[]) {
     }
   }
   return updatedSendable
+}
+
+async function getOrganizationEmployees(organization_id: string) {
+  return organization_id
 }
 
 /* to make sure we got place ID
@@ -129,42 +135,6 @@ async function updateOnlineStatus(sendable: Sendable[]) {
   }
   return updatedSendable;
 }*/
-
-type Sendable =
-  & {
-    image: {
-      type: 'avatar'
-      url: string
-    } | {
-      type: 'icon'
-      component: ComponentChild
-    }
-    name: string
-    description?: {
-      text: string
-      href?: string
-      parenthetical?: string
-    }
-    status: string
-    online?: true | false
-    reopenTime?: string
-    menu_options?: {
-      name: string
-      href: string
-    }[]
-    additionalDetails?: string
-  }
-  & (
-    {
-      type: 'entity'
-      entity_type: 'person' | 'facility'
-      entity_id: string
-    } | {
-      type: 'action'
-      action: 'search' | 'waiting_room' | 'device'
-      href: string
-    }
-  )
 
 const sendable: Sendable[] = [
   {
@@ -522,7 +492,9 @@ export function PersonDetailView(
   )
 }
 
-export default function SendToMenu() {
+export default function SendToMenu(
+  { employees }: { employees: HasStringId<Employee>[] },
+) {
   const [open, setOpen] = useState(false)
   const [selectedPerson, setSelectedPerson] = useState<Sendable | null>(null)
   const handlePersonClick = (person: Sendable) => {
@@ -546,6 +518,17 @@ export default function SendToMenu() {
 
     fetchUpdatedStatus()
   }, [])
+
+  console.log(employees)
+
+  useEffect(() => {
+    function fetchHospitalsWorkers(organization_id: HasStringId<Employee>[]) {
+      console.log(organization_id)
+      return organization_id
+    }
+
+    fetchHospitalsWorkers(employees)
+  }, [open])
 
   return (
     <div className='flex-1 max-w-xl'>

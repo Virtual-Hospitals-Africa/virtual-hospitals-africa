@@ -19,6 +19,7 @@ import {
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
 import { DietFrequency } from './shared/diet.ts'
+import { ComponentChild } from 'preact'
 
 export type Maybe<T> = T | null | undefined
 
@@ -2388,3 +2389,39 @@ export type PatientSchedulingAppointmentRequest = {
   reason: string
   offered_times: SchedulingAppointmentOfferedTime[]
 }
+
+export type Sendable =
+  & {
+    image: {
+      type: 'avatar'
+      url: string
+    } | {
+      type: 'icon'
+      component: ComponentChild
+    }
+    name: string
+    description?: {
+      text: string
+      href?: string
+      parenthetical?: string
+    }
+    status: string
+    online?: true | false
+    reopenTime?: string
+    menu_options?: {
+      name: string
+      href: string
+    }[]
+    additionalDetails?: string
+  }
+  & (
+    {
+      type: 'entity'
+      entity_type: 'person' | 'facility'
+      entity_id: string
+    } | {
+      type: 'action'
+      action: 'search' | 'waiting_room' | 'device'
+      href: string
+    }
+  )
