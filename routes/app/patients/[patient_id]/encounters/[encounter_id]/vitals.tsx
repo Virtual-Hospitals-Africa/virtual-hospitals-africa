@@ -1,6 +1,9 @@
-import { EncounterContext, EncounterLayout } from './_middleware.tsx'
+import {
+  EncounterContext,
+  EncounterPage,
+  EncounterPageChildProps,
+} from './_middleware.tsx'
 import * as patient_measurements from '../../../../../../db/models/patient_measurements.ts'
-import { getYears } from '../../../../../../db/models/patient_age.ts'
 import {
   LoggedInHealthWorkerHandler,
   MeasurementsUpsert,
@@ -9,11 +12,9 @@ import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../../util/isObjectLike.ts'
 import { assertOr400 } from '../../../../../../util/assertOr.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
-import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import { completeStep } from './_middleware.tsx'
 import { VitalsForm } from '../../../../../../islands/vitals/Form.tsx'
 import { MEASUREMENTS } from '../../../../../../shared/measurements.ts'
-import { assert } from 'std/assert/assert.ts'
 
 function assertIsVitals(
   values: unknown,
@@ -61,16 +62,13 @@ export const handler: LoggedInHealthWorkerHandler<EncounterContext> = {
   },
 }
 
-export default async function VitalsPage(_req: Request, ctx: EncounterContext) {
+export async function VitalsPage({ ctx }: EncounterPageChildProps) {
   const vitals = await patient_measurements.getEncounterVitals(ctx.state.trx, {
     encounter_id: ctx.state.encounter.encounter_id,
     patient_id: ctx.state.patient.id,
   })
 
-  return (
-    <EncounterLayout ctx={ctx}>
-      <VitalsForm vitals={vitals} />
-      <FormButtons />
-    </EncounterLayout>
-  )
+  return <VitalsForm vitals={vitals} />
 }
+
+export default EncounterPage(VitalsPage)

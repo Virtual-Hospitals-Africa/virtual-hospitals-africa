@@ -2,13 +2,13 @@ import { assert } from 'std/assert/assert.ts'
 import {
   completeStep,
   EncounterContext,
-  EncounterLayout,
+  EncounterPage,
+  EncounterPageChildProps,
 } from './_middleware.tsx'
 import {
   LoggedInHealthWorkerHandlerWithProps,
   RenderedPatientEncounterExamination,
 } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import * as examinations from '../../../../../../db/models/examinations.ts'
 import {
   assertOr400,
@@ -262,9 +262,8 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function ExaminationsPage(
-  _req: Request,
-  ctx: EncounterContext,
+export async function ExaminationsPage(
+  { ctx }: EncounterPageChildProps,
 ) {
   const { trx, encounter, encounter_provider } = ctx.state
   const adding_examinations = ctx.url.searchParams.get('add') === 'examinations'
@@ -316,7 +315,7 @@ export default async function ExaminationsPage(
   })
 
   return (
-    <EncounterLayout ctx={ctx}>
+    <>
       <Tabs tabs={tabs} />
       {adding_examinations && (
         <NewExaminationForm
@@ -351,7 +350,8 @@ export default async function ExaminationsPage(
           })}
         />
       )}
-      <FormButtons />
-    </EncounterLayout>
+    </>
   )
 }
+
+export default EncounterPage(ExaminationsPage)

@@ -1,35 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
-import { PatientIntake, Sendable } from '../../types.ts'
+import { SelectedPatient, Sendable } from '../../types.ts'
 import { SendToHeader } from './Header.tsx'
 import { SendableList } from './List.tsx'
-import { effect, useSignal } from '@preact/signals'
+import { useSignal } from '@preact/signals'
 import { SendToSelectedPatient } from './SelectedPatient.tsx'
 import { SendToForm } from './Form.tsx'
 
-// A bit hacky, submits the intake form by id after appending hidden inputs corresponding to the action
-function submitAction() {
-  const intake_form = document.querySelector(
-    'form#intake',
-  )! as HTMLFormElement
-  intake_form.submit()
-}
-
 export function SendToSidebar(
-  { open, close, sendables, patient }: {
+  { form, open, close, sendables, patient }: {
+    form: 'intake' | 'encounter'
     open: boolean
     close: () => void
     sendables: Sendable[]
-    patient: PatientIntake
+    patient: SelectedPatient
   },
 ) {
   const selected = useSignal<Sendable | null>(null)
-
-  effect(() => {
-    if (selected.value && selected.value.to.type === 'action') {
-      setTimeout(submitAction, 0)
-    }
-  })
 
   return (
     <Transition show={open} as={Fragment}>
@@ -51,13 +38,14 @@ export function SendToSidebar(
                   <div className='flex h-full flex-col overflow-y-scroll bg-white shadow-xl'>
                     <SendToHeader close={close} />
                     <SendableList
+                      form={form}
                       sendables={sendables}
                       selected={selected}
                     />
                     {selected.value && (
                       <SendToSelectedPatient patient={patient} />
                     )}
-                    {selected.value && <SendToForm />}
+                    {selected.value && <SendToForm form={form} />}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

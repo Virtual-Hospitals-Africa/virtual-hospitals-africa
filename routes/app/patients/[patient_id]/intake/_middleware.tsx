@@ -62,18 +62,18 @@ export async function handler(
   return ctx.next()
 }
 
-const intake_nav_links = INTAKE_STEPS.map((step) => ({
+const nav_links = INTAKE_STEPS.map((step) => ({
   step,
   route: `/app/patients/:patient_id/intake/${step}`,
 }))
 
 const next_links_by_route = groupByMapped(
-  intake_nav_links,
+  nav_links,
   (link) => link.route,
   (link, i) => {
-    const next_link = intake_nav_links[i + 1]
+    const next_link = nav_links[i + 1]
     if (!next_link) {
-      assertEquals(i, intake_nav_links.length - 1)
+      assertEquals(i, nav_links.length - 1)
       assertEquals(link.step, 'review')
     }
     return {
@@ -166,7 +166,7 @@ export function IntakeLayout({
       sidebar={
         <StepsSidebar
           ctx={ctx}
-          nav_links={intake_nav_links}
+          nav_links={nav_links}
           steps_completed={ctx.state.patient.intake_steps_completed}
         />
       }
@@ -179,7 +179,13 @@ export function IntakeLayout({
 
         <ButtonsContainer>
           <SendToButton
-            patient={ctx.state.patient}
+            form='intake'
+            patient={{
+              name: ctx.state.patient.name!,
+              description: ctx.state.patient.description,
+              avatar_url: ctx.state.patient.avatar_url,
+              actions: ctx.state.patient.actions,
+            }}
             sendables={sendables}
           />
           <Button

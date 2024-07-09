@@ -31,7 +31,7 @@ export function up(db: Kysely<any>) {
           'start_date',
         ], (constraint) => constraint.nullsNotDistinct())
         .addCheckConstraint(
-          'symptom_starts_before_today',
+          'condition_starts_before_today',
           sql`
       start_date <= TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'Africa/Johannesburg', 'YYYY-MM-DD')::date
     `,
