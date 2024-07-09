@@ -2,6 +2,13 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
+export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
+  : ArrayTypeImpl<T>
+
+export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S[], I[], U[]>
+  : T[]
+
 export type ChatbotName = 'patient' | 'pharmacist'
 
 export type DoctorReviewStep =
@@ -84,7 +91,7 @@ export type IntakeStep =
   | 'personal'
   | 'review'
 
-export type Json = ColumnType<JsonValue, string, string>
+export type Json = JsonValue
 
 export type JsonArray = JsonValue[]
 
@@ -400,7 +407,7 @@ export interface Encounter {
   lastUpdated: Timestamp
   length: number | null
   location: string[] | null
-  locationPeriod: Timestamp[] | null
+  locationPeriod: ArrayType<Timestamp> | null
   participant: string[] | null
   participantType: string[] | null
   partOf: string | null
