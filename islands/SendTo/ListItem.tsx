@@ -58,10 +58,10 @@ export function SendableListItem(
   const button_props: JSX.HTMLAttributes<HTMLButtonElement> =
     sendable.to.type === 'action'
       ? {
+        form,
         type: 'submit',
         name: 'send_to.action',
         value: sendable.to.action,
-        form,
       }
       : { type: 'button', onClick: toggleSelected }
 

@@ -1,10 +1,10 @@
 import {
   completeStep,
   EncounterContext,
-  EncounterLayout,
+  EncounterPage,
+  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../islands/form/buttons.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
@@ -17,14 +17,10 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-// deno-lint-ignore require-await
-export default async function DiagnosisPage(
-  _req: Request,
-  ctx: EncounterContext,
-) {
-  return (
-    <EncounterLayout ctx={ctx}>
-      <FormButtons />
-    </EncounterLayout>
-  )
-}
+export default EncounterPage(
+  function DiagnosisPage(
+    _props: EncounterPageChildProps,
+  ) {
+    return <p>TODO</p>
+  },
+)

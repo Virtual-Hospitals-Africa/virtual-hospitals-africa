@@ -1,13 +1,13 @@
 import {
   completeStep,
   EncounterContext,
-  EncounterLayout,
+  EncounterPage,
+  EncounterPageChildProps,
 } from './_middleware.tsx'
 import {
   LoggedInHealthWorkerHandlerWithProps,
   PatientSymptomUpsert,
 } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import * as patient_symptoms from '../../../../../../db/models/patient_symptoms.ts'
 import SymptomSection from '../../../../../../islands/symptoms/Section.tsx'
 import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
@@ -78,21 +78,17 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function SymptomsPage(
-  _req: Request,
-  ctx: EncounterContext,
+export async function SymptomsPage(
+  { ctx, patient, encounter }: EncounterPageChildProps,
 ) {
   const symptoms = await patient_symptoms.getEncounter(ctx.state.trx, {
-    encounter_id: ctx.state.encounter.encounter_id,
-    patient_id: ctx.state.patient.id,
+    encounter_id: encounter.encounter_id,
+    patient_id: patient.id,
   })
 
   const today = todayISOInHarare()
 
-  return (
-    <EncounterLayout ctx={ctx}>
-      <SymptomSection patient_symptoms={symptoms} today={today} />
-      <FormButtons />
-    </EncounterLayout>
-  )
+  return <SymptomSection patient_symptoms={symptoms} today={today} />
 }
+
+export default EncounterPage(SymptomsPage)

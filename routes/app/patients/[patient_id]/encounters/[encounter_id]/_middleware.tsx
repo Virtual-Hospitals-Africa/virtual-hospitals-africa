@@ -27,6 +27,8 @@ import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
 import { SendToButton } from '../../../../../../islands/SendTo/Button.tsx'
 import { Button } from '../../../../../../components/library/Button.tsx'
 import { EncounterStep } from '../../../../../../db.d.ts'
+import { groupByMapped } from '../../../../../../util/groupBy.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -87,21 +89,31 @@ const nav_links = ENCOUNTER_STEPS.map((step) => ({
   route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,
 }))
 
-export const nextLink = ({ route, params }: FreshContext) => {
-  const current_index = nav_links.findIndex(
-    (link) => link.route === route,
-  )
-  assert(current_index >= 0)
-  const next_link = nav_links[current_index + 1]
-  if (!next_link) {
-    return replaceParams(
-      `/app/patients/:patient_id/encounters/:encounter_id/vitals`,
-      params,
-    )
-  }
-  assert(next_link)
-  return replaceParams(next_link.route, params)
+const next_links_by_route = groupByMapped(
+  nav_links,
+  (link) => link.route,
+  (link, i) => {
+    const next_link = nav_links[i + 1]
+    if (!next_link) {
+      assertEquals(i, nav_links.length - 1)
+      assertEquals(link.step, 'close_visit')
+    }
+    return {
+      route: next_link?.route ||
+        `/app/patients/:patient_id/encounters/open/vitals`,
+      button_text: next_link ? `Continue to ${next_link.step}` : 'Start visit',
+    }
+  },
+)
+
+const nextStep = ({ route }: FreshContext) => {
+  const next_link = next_links_by_route.get(route)
+  assert(next_link, `No next link for route ${route}`)
+  return next_link
 }
+
+const nextLink = (ctx: FreshContext) =>
+  replaceParams(nextStep(ctx).route, ctx.params)
 
 export function EncounterLayout({
   ctx,
@@ -129,7 +141,7 @@ export function EncounterLayout({
       url={ctx.url}
       variant='form'
     >
-      <Form method='POST'>
+      <Form method='POST' id='encounter'>
         {children}
         <hr />
         <ButtonsContainer>
@@ -160,7 +172,7 @@ export function EncounterLayout({
   )
 }
 
-type EncounterPageChildProps = EncounterPageProps & {
+export type EncounterPageChildProps = EncounterPageProps & {
   ctx: EncounterContext
   previously_completed: boolean
 }
