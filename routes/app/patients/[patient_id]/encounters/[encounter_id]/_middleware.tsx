@@ -7,8 +7,10 @@ import {
   LoggedInHealthWorkerContext,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
+  Sendable,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
+import * as send_to from '../../../../../../db/models/send_to.ts'
 import { getRequiredUUIDParam } from '../../../../../../util/getParam.ts'
 import { Person } from '../../../../../../components/library/Person.tsx'
 import { StepsSidebar } from '../../../../../../components/library/Sidebar.tsx'
@@ -21,6 +23,12 @@ import {
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
 import { assertOr404 } from '../../../../../../util/assertOr.ts'
+import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
+import { SendToButton } from '../../../../../../islands/SendTo/Button.tsx'
+import { Button } from '../../../../../../components/library/Button.tsx'
+import { EncounterStep } from '../../../../../../db.d.ts'
+import { groupByMapped } from '../../../../../../util/groupBy.ts'
+import { assertEquals } from 'std/assert/assert_equals.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -29,12 +37,14 @@ export function getEncounterId(ctx: FreshContext): 'open' | string {
   return getRequiredUUIDParam(ctx, 'encounter_id')
 }
 
+type EncounterPageProps = {
+  patient: patients.PatientCard
+  encounter: RenderedPatientEncounter
+  encounter_provider: RenderedPatientEncounterProvider
+}
+
 export type EncounterContext = LoggedInHealthWorkerContext<
-  {
-    encounter: RenderedPatientEncounter
-    encounter_provider: RenderedPatientEncounterProvider
-    patient: patients.PatientCard
-  }
+  EncounterPageProps
 >
 
 export async function completeStep(ctx: EncounterContext) {
@@ -79,26 +89,41 @@ const nav_links = ENCOUNTER_STEPS.map((step) => ({
   route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,
 }))
 
-export const nextLink = ({ route, params }: FreshContext) => {
-  const current_index = nav_links.findIndex(
-    (link) => link.route === route,
-  )
-  assert(current_index >= 0)
-  const next_link = nav_links[current_index + 1]
-  if (!next_link) {
-    return replaceParams(
-      `/app/patients/:patient_id/encounters/:encounter_id/vitals`,
-      params,
-    )
-  }
-  assert(next_link)
-  return replaceParams(next_link.route, params)
+const next_links_by_route = groupByMapped(
+  nav_links,
+  (link) => link.route,
+  (link, i) => {
+    const next_link = nav_links[i + 1]
+    if (!next_link) {
+      assertEquals(i, nav_links.length - 1)
+      assertEquals(link.step, 'close_visit')
+    }
+    return {
+      route: next_link?.route ||
+        `/app/patients/:patient_id/encounters/open/vitals`,
+      button_text: next_link ? `Continue to ${next_link.step}` : 'Start visit',
+    }
+  },
+)
+
+const nextStep = ({ route }: FreshContext) => {
+  const next_link = next_links_by_route.get(route)
+  assert(next_link, `No next link for route ${route}`)
+  return next_link
 }
+
+const nextLink = (ctx: FreshContext) =>
+  replaceParams(nextStep(ctx).route, ctx.params)
 
 export function EncounterLayout({
   ctx,
+  sendables,
   children,
-}: { ctx: EncounterContext; children: ComponentChildren }): JSX.Element {
+}: {
+  ctx: EncounterContext
+  sendables: Sendable[]
+  children: ComponentChildren
+}): JSX.Element {
   return (
     <Layout
       title={capitalize(ctx.state.encounter.reason)}
@@ -116,9 +141,67 @@ export function EncounterLayout({
       url={ctx.url}
       variant='form'
     >
-      <Form method='POST'>
+      <Form method='POST' id='encounter'>
         {children}
+        <hr />
+        <ButtonsContainer>
+          <SendToButton
+            form='encounter'
+            patient={{
+              name: ctx.state.patient.name,
+              description: ctx.state.patient.description,
+              avatar_url: ctx.state.patient.avatar_url,
+              actions: {
+                clinical_notes: replaceParams(
+                  '/app/patients/:patient_id/encounter/open/clinical_notes',
+                  ctx.params,
+                ),
+              },
+            }}
+            sendables={sendables}
+          />
+          <Button
+            type='submit'
+            className='flex-1 max-w-xl'
+          >
+            {nextStep(ctx).button_text}
+          </Button>
+        </ButtonsContainer>
       </Form>
     </Layout>
   )
+}
+
+export type EncounterPageChildProps = EncounterPageProps & {
+  ctx: EncounterContext
+  previously_completed: boolean
+}
+
+export function EncounterPage(
+  render: (
+    props: EncounterPageChildProps,
+  ) => JSX.Element | Promise<JSX.Element>,
+) {
+  return async function (
+    _req: Request,
+    ctx: EncounterContext,
+  ) {
+    const { patient } = ctx.state
+    const step = ctx.route.split('/').pop()!
+    const previously_completed = ctx.state.encounter.steps_completed.includes(
+      step as unknown as EncounterStep,
+    )
+    const getting_sendables = send_to.forPatientEncounter(
+      ctx.state.trx,
+      patient.id,
+    )
+
+    const children = await render({ ctx, ...ctx.state, previously_completed })
+
+    return (
+      <EncounterLayout ctx={ctx} sendables={await getting_sendables}>
+        {children}
+      </EncounterLayout>
+    )
+  }
 }

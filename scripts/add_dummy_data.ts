@@ -60,8 +60,8 @@ const scenarios: ['male' | 'female', EncounterReason][] = [
 type HW = Awaited<ReturnType<typeof addTestHealthWorker>>
 
 async function addPatientsToWaitingRoom() {
-  await db.deleteFrom('health_workers').execute()
   await db.deleteFrom('patients').execute()
+  await db.deleteFrom('health_workers').execute()
   const avatars_used = new Set<string>()
   function randomAvatarNotYetUsed(gender: 'male' | 'female') {
     let random_avatar = randomAvatar(gender)

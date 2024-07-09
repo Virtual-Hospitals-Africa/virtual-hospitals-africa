@@ -3,7 +3,8 @@ import { Sendable } from '../../types.ts'
 import { SendableListItem } from './ListItem.tsx'
 
 export function SendableList(
-  { sendables, selected }: {
+  { form, sendables, selected }: {
+    form: 'intake' | 'encounter'
     sendables: Sendable[]
     selected: Signal<Sendable | null>
   },
@@ -22,6 +23,7 @@ export function SendableList(
         return (
           <SendableListItem
             key={sendable.key}
+            form={form}
             sendable={sendable}
             is_selected={is_selected}
             toggleSelected={() =>

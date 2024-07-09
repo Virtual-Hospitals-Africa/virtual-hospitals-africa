@@ -1,10 +1,10 @@
 import {
   completeStep,
   EncounterContext,
-  EncounterLayout,
+  EncounterPage,
+  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
-import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import * as doctor_reviews from '../../../../../../db/models/doctor_reviews.ts'
 import SectionHeader from '../../../../../../components/library/typography/SectionHeader.tsx'
 import { ReferralForm } from '../../../../../../islands/referral/Form.tsx'
@@ -69,21 +69,21 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
   },
 }
 
-export default async function ReferralPage(
-  _req: Request,
-  ctx: EncounterContext,
+export async function ReferralPage(
+  { ctx, encounter_provider }: EncounterPageChildProps,
 ) {
   const review_request = await doctor_reviews.getRequest(ctx.state.trx, {
-    requested_by: ctx.state.encounter_provider.patient_encounter_provider_id,
+    requested_by: encounter_provider.patient_encounter_provider_id,
   })
 
   return (
-    <EncounterLayout ctx={ctx}>
+    <>
       <SectionHeader>Asynchronous Reviews</SectionHeader>
       <ReferralForm
         review_request={review_request}
       />
-      <FormButtons />
-    </EncounterLayout>
+    </>
   )
 }
+
+export default EncounterPage(ReferralPage)
