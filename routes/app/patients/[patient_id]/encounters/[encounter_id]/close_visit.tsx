@@ -1,12 +1,12 @@
 import {
   completeStep,
   EncounterContext,
-  EncounterLayout,
+  EncounterPage,
+  EncounterPageChildProps,
 } from './_middleware.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../../../../../types.ts'
 import * as doctor_reviews from '../../../../../../db/models/doctor_reviews.ts'
 import * as patient_encounters from '../../../../../../db/models/patient_encounters.ts'
-import FormButtons from '../../../../../../islands/form/buttons.tsx'
 import { ENCOUNTER_STEPS } from '../../../../../../shared/encounter.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../../util/assertAllPriorStepsCompleted.ts'
 import redirect from '../../../../../../util/redirect.ts'
@@ -43,19 +43,14 @@ const assertAllEncounterStepsCompleted = assertAllPriorStepsCompleted(
   'closing the visit',
 )
 
-// deno-lint-ignore require-await
-export default async function CloseVisitPage(
-  _req: Request,
-  ctx: EncounterContext,
-) {
-  assertAllEncounterStepsCompleted(
-    ctx.state.encounter.steps_completed,
-    ctx.params,
-  )
-
-  return (
-    <EncounterLayout ctx={ctx}>
-      <FormButtons />
-    </EncounterLayout>
-  )
-}
+export default EncounterPage(
+  function CloseVisitPage(
+    { ctx, encounter }: EncounterPageChildProps,
+  ) {
+    assertAllEncounterStepsCompleted(
+      encounter.steps_completed,
+      ctx.params,
+    )
+    return <p>TODO</p>
+  },
+)

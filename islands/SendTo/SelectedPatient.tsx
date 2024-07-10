@@ -1,12 +1,8 @@
 import Avatar from '../../components/library/Avatar.tsx'
-import { PatientIntake } from '../../types.ts'
-
-type SelectedPatientProps = {
-  patient: PatientIntake
-}
+import { SelectedPatient } from '../../types.ts'
 
 export function SendToSelectedPatient(
-  { patient }: SelectedPatientProps,
+  { patient }: { patient: SelectedPatient },
 ) {
   return (
     <div className='px-5 py-4'>
