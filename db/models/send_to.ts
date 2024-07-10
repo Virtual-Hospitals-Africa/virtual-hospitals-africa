@@ -139,7 +139,7 @@ export async function forPatientIntake(
       name: 'Device via Bluetooth',
       image: {
         type: 'icon',
-        icon: 'DevicePhoneMobileIcon',
+        icon: 'BluetoothIcon',
       },
       status: 'Connect with trusted devices of known colleagues',
       to: {
