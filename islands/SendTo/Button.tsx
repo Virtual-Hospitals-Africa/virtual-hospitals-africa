@@ -1,10 +1,14 @@
 import { useSignal } from '@preact/signals'
-import { PatientIntake, Sendable } from '../../types.ts'
+import { SelectedPatient, Sendable } from '../../types.ts'
 import { Button } from '../../components/library/Button.tsx'
 import { SendToSidebar } from './Sidebar.tsx'
 
 export function SendToButton(
-  { patient, sendables }: { patient: PatientIntake; sendables: Sendable[] },
+  { form, patient, sendables }: {
+    form: 'intake' | 'encounter'
+    patient: SelectedPatient
+    sendables: Sendable[]
+  },
 ) {
   const open = useSignal(false)
 
@@ -20,6 +24,7 @@ export function SendToButton(
         Send to
       </Button>
       <SendToSidebar
+        form={form}
         patient={patient}
         sendables={sendables}
         open={open.value}

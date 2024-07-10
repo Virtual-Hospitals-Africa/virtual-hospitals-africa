@@ -18,6 +18,7 @@ const vhaClinicStaff = [
   'yi23835@bristol.ac.uk',
   'zhuosidian@gmail.com',
   'mike.huang.africa@gmail.com',
+  '812046661lm@gmail.com',
 ]
 
 const vhaVirtualHospitalStaff = [

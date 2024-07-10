@@ -401,12 +401,12 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
 
 export type PharmacistConversationState =
   | 'initial_message'
+  | 'not_onboarded:enter_licence_number'
   | 'not_onboarded:enter_name'
   | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
-  | 'onboarded:pharmacist_main_menu'
   | 'onboarded:fill_prescription:enter_prescription_number'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
@@ -2742,4 +2742,35 @@ export type Sendable = {
     href: string
   }[]
   to: SendableTo
+}
+
+export type SelectedPatient = {
+  name: string
+  avatar_url?: Maybe<string>
+  description?: Maybe<string>
+  actions: {
+    clinical_notes: string
+  }
+}
+
+export type RenderedPharmacy = {
+  address: string | null
+  expiry_date: string
+  licence_number: string
+  licensee: string
+  name: string
+  premises_types:
+    | 'Clinics: Class A'
+    | 'Clinics: Class B'
+    | 'Clinics: Class C'
+    | 'Clinics: Class D'
+    | 'Dispensing medical practice'
+    | 'Hospital pharmacies'
+    | 'Pharmacies: Research'
+    | 'Pharmacies: Restricted'
+    | 'Pharmacy in any other location'
+    | 'Pharmacy in rural area'
+    | 'Pharmacy located in the CBD'
+    | 'Wholesalers'
+  town: string | null
 }

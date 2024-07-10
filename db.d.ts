@@ -2,6 +2,13 @@ import type { ColumnType } from 'kysely'
 
 export type AgeUnit = 'day' | 'month' | 'week' | 'year'
 
+export type ArrayType<T> = ArrayTypeImpl<T> extends (infer U)[] ? U[]
+  : ArrayTypeImpl<T>
+
+export type ArrayTypeImpl<T> = T extends ColumnType<infer S, infer I, infer U>
+  ? ColumnType<S[], I[], U[]>
+  : T[]
+
 export type ChatbotName = 'patient' | 'pharmacist'
 
 export type DoctorReviewStep =
@@ -84,7 +91,7 @@ export type IntakeStep =
   | 'personal'
   | 'review'
 
-export type Json = ColumnType<JsonValue, string, string>
+export type Json = JsonValue
 
 export type JsonArray = JsonValue[]
 
@@ -223,6 +230,40 @@ export interface Appointments {
   reason: string
   start: Timestamp
   updated_at: Generated<Timestamp>
+}
+
+export interface Condition {
+  _profile: string[] | null
+  _security: string[] | null
+  _source: string | null
+  _tag: string[] | null
+  abatementAge: number | null
+  abatementDate: Timestamp | null
+  abatementString: string | null
+  assertedDate: Timestamp | null
+  asserter: string | null
+  bodySite: string[] | null
+  category: string[] | null
+  clinicalStatus: string | null
+  code: string | null
+  compartments: string[]
+  content: string
+  deleted: Generated<boolean>
+  encounter: string | null
+  evidence: string[] | null
+  evidenceDetail: string[] | null
+  id: string
+  lastUpdated: Timestamp
+  onsetAge: number | null
+  onsetDate: Timestamp | null
+  onsetInfo: string | null
+  patient: string | null
+  projectId: string | null
+  recordedDate: Timestamp | null
+  severity: string | null
+  stage: string[] | null
+  subject: string | null
+  verificationStatus: string | null
 }
 
 export interface ConditionIcd10Codes {
@@ -366,7 +407,7 @@ export interface Encounter {
   lastUpdated: Timestamp
   length: number | null
   location: string[] | null
-  locationPeriod: Timestamp[] | null
+  locationPeriod: ArrayType<Timestamp> | null
   participant: string[] | null
   participantType: string[] | null
   partOf: string | null
@@ -1140,6 +1181,7 @@ export interface DB {
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments
+  Condition: Condition
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
   consumables: Consumables

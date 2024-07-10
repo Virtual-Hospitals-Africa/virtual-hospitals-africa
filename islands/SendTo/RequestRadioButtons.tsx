@@ -8,8 +8,10 @@ const REQUEST_TYPES = {
 type RequestType = keyof typeof REQUEST_TYPES
 
 export function SendToRequestRadioButtons({
+  form,
   options,
 }: {
+  form: string
   options: RequestType[]
 }) {
   return (
@@ -18,6 +20,7 @@ export function SendToRequestRadioButtons({
         {options.map((option) => (
           <label key={option} className='flex items-center gap-2'>
             <input
+              form={form}
               type='radio'
               name='send_to.request_type'
               value={option}
