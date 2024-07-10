@@ -34,23 +34,23 @@ export function SendableList(
         })}
       </ul>
       {selected.value == null && (
-          <div className='sticky bottom-0 left-0 w-full bg-white'>
-            <ul role='list'>
-              {fixedSendables.map((sendable) => {
-                const is_selected = selected.value === sendable
-                return (
-                  <SendableListItem
-                    key={sendable.key}
-                    sendable={sendable}
-                    is_selected={is_selected}
-                    toggleSelected={() =>
-                      selected.value = is_selected ? null : sendable}
-                  />
-                )
-              })}
-            </ul>
-          </div>
-        )}
+        <div className='sticky bottom-0 left-0 w-full bg-white'>
+          <ul role='list'>
+            {fixedSendables.map((sendable) => {
+              const is_selected = selected.value === sendable
+              return (
+                <SendableListItem
+                  key={sendable.key}
+                  sendable={sendable}
+                  is_selected={is_selected}
+                  toggleSelected={() =>
+                    selected.value = is_selected ? null : sendable}
+                />
+              )
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   )
 }

@@ -22,7 +22,10 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
             />
           </span>
           <div className='ml-4'>
-            <p className='text-sm font-sans font-medium text-gray-900 leading-normal' style={{ marginBottom: '-0.25rem' }}>
+            <p
+              className='text-sm font-sans font-medium text-gray-900 leading-normal'
+              style={{ marginBottom: '-0.25rem' }}
+            >
               {name}
             </p>
             <Description description={description} />

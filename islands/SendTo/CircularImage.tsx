@@ -15,8 +15,8 @@ export function CircularImage({ image }: { image: Image }) {
 
   if (image.icon === 'BluetoothIcon') {
     return (
-      <BluetoothIcon 
-        className={cls('h-10 w-10 text-gray-500', image.className)} 
+      <BluetoothIcon
+        className={cls('h-10 w-10 text-gray-500', image.className)}
         aria-hidden='true'
       />
     )
