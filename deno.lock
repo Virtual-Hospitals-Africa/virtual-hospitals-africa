@@ -208,7 +208,7 @@
         "integrity": "sha512-qkqSyistMYdxAcw+CzbZwlBy8AGmS/eEWs+sEV5TnLRGDOL+C5M2EnH6tlZyg0YoAxGJAFKh61En9BR941GnHA==",
         "dependencies": {
           "caniuse-lite": "caniuse-lite@1.0.30001640",
-          "electron-to-chromium": "electron-to-chromium@1.4.822",
+          "electron-to-chromium": "electron-to-chromium@1.4.821",
           "node-releases": "node-releases@2.0.14",
           "update-browserslist-db": "update-browserslist-db@1.1.0_browserslist@4.23.2"
         }
@@ -413,8 +413,8 @@
         "integrity": "sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==",
         "dependencies": {}
       },
-      "electron-to-chromium@1.4.822": {
-        "integrity": "sha512-qJzHIt4dRRFKjHHvaExCrG95F65kUP3xysaEZ4I2+/R/uIyr5Ar5g/rkAnrRz0parRUYwzpqN8Pz1HgoiYQPpg==",
+      "electron-to-chromium@1.4.821": {
+        "integrity": "sha512-BgKQiKiU0VwOH5U2sTKiKkvYzl3Tyodr7fgVGr8/vtPXO+nAG3FE4QMlagZiIZWmvjKsYsv2YpeE3M1lhuYO5A==",
         "dependencies": {}
       },
       "emoji-regex@8.0.0": {
