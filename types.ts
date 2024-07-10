@@ -2752,3 +2752,25 @@ export type SelectedPatient = {
     clinical_notes: string
   }
 }
+
+export type RenderedPharmacy = {
+  address: string | null
+  expiry_date: string
+  licence_number: string
+  licensee: string
+  name: string
+  premises_types:
+    | 'Clinics: Class A'
+    | 'Clinics: Class B'
+    | 'Clinics: Class C'
+    | 'Clinics: Class D'
+    | 'Dispensing medical practice'
+    | 'Hospital pharmacies'
+    | 'Pharmacies: Research'
+    | 'Pharmacies: Restricted'
+    | 'Pharmacy in any other location'
+    | 'Pharmacy in rural area'
+    | 'Pharmacy located in the CBD'
+    | 'Wholesalers'
+  town: string | null
+}
