@@ -11,7 +11,7 @@ export function Description(
       {description.href
         ? (
           <a
-            href={description.href}
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(description.href)}`}
             target='_blank'
             rel='noopener noreferrer'
             className='text-blue-500'

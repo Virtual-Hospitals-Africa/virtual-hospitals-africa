@@ -106,6 +106,7 @@ export async function forPatientIntake(
       name: 'Another Facility A',
       description: {
         text: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
+        href: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
         parenthetical: 'address',
       },
       image: {
