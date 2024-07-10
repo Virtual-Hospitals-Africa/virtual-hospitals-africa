@@ -26,6 +26,7 @@ export function SendableList(
           return (
             <SendableListItem
               key={sendable.key}
+              form='intake'
               sendable={sendable}
               is_selected={is_selected}
               toggleSelected={() =>
