@@ -1,6 +1,7 @@
 import {
   ConversationStates,
   PharmacistChatbotUserState,
+  PharmacistConversationState,
   TrxOrDb,
 } from '../../types.ts'
 // import * as pharmacists from '../../db/models/pharmacists.ts'
@@ -8,13 +9,73 @@ import * as conversations from '../../db/models/conversations.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 
+const getPharmacistStatus = async (
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+  onboardedAction: PharmacistConversationState,
+) => {
+  const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
+    'id',
+    '=',
+    pharmacistState.entity_id,
+  ).executeTakeFirst()
+
+  return !pharmacist
+    ? 'not_onboarded:enter_licence_number' as const
+    : `${onboardedAction}` as const
+}
+
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
 > = {
   'initial_message': {
+    type: 'select',
+    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
+        'id',
+        '=',
+        pharmacistState.entity_id,
+      ).executeTakeFirst()
+
+      return !pharmacist
+        ? `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, select the items from the following menu`
+        : `Hello ${pharmacist.given_name}, what can I help you with today?`
+    },
+    options: [
+      {
+        id: 'fill_prescription',
+        title: 'Fill Prescription',
+        async onExit(
+          trx: TrxOrDb,
+          pharmacistState: PharmacistChatbotUserState,
+        ) {
+          return await getPharmacistStatus(
+            trx,
+            pharmacistState,
+            'onboarded:fill_prescription:enter_prescription_number',
+          )
+        },
+      },
+      {
+        id: 'view_inventory',
+        title: 'View Inventory',
+        async onExit(
+          trx: TrxOrDb,
+          pharmacistState: PharmacistChatbotUserState,
+        ) {
+          return await getPharmacistStatus(
+            trx,
+            pharmacistState,
+            'onboarded:view_inventory',
+          )
+        },
+      },
+    ],
+  },
+  'not_onboarded:enter_licence_number': {
     type: 'string',
     prompt:
-      `Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, enter your licence number.`,
+      `Looks like you are not onboarded, to start, enter your licence number.`,
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
       const licence_number = pharmacistState.unhandled_message.trimmed_body
       assert(licence_number, 'Licence number should not be empty')
@@ -64,32 +125,8 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     },
     // deno-lint-ignore require-await
     async onExit(_trx: TrxOrDb, _pharmacistState: PharmacistChatbotUserState) {
-      throw new Error('Not implemented')
-      // return 'onboarded:pharmacist_main_menu' as const
+      return 'initial_message' as const
     },
-  },
-  'onboarded:pharmacist_main_menu': {
-    type: 'select',
-    async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
-        'id',
-        '=',
-        pharmacistState.entity_id,
-      ).executeTakeFirstOrThrow()
-      return `Hi ${pharmacist.given_name}`
-    },
-    options: [
-      {
-        id: 'fill_prescription',
-        title: 'Fill Prescription',
-        onExit: 'onboarded:fill_prescription:enter_prescription_number',
-      },
-      {
-        id: 'view_inventory',
-        title: 'View Inventory',
-        onExit: 'onboarded:view_inventory',
-      },
-    ],
   },
   'onboarded:fill_prescription:enter_prescription_number': {
     type: 'string',
@@ -108,7 +145,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'main_menu',
         title: 'Back to main menu',
-        onExit: 'onboarded:pharmacist_main_menu',
+        onExit: 'initial_message',
       },
       { id: 'end_of_demo', title: 'End of Demo', onExit: 'end_of_demo' },
     ],
