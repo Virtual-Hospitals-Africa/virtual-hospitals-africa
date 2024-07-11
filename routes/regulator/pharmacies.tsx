@@ -16,7 +16,7 @@ type PharmaciesProps = {
 }
 
 export const handler = {
-  GET: async function RevokePharmacist(
+  GET: async function(
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
