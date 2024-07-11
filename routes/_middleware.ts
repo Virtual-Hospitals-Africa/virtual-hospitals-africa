@@ -35,8 +35,11 @@ export const handler = [
     ctx: FreshContext<
       WithSession & {
         trx: TrxOrDb
+        regulator: {
+          id: number
+        }
       }
-    >,
+    >
   ) => {
     const accessingApp = ctx.url.pathname.startsWith('/app')
     const accessingRegulator = ctx.url.pathname.startsWith('/regulator')
@@ -53,21 +56,29 @@ export const handler = [
       return redirect('/')
     }
 
-    return db.transaction().setIsolationLevel('read committed').execute(
-      (trx) => {
+    if (accessingRegulator) {
+      ctx.state.regulator = {
+        id: ctx.state.session.get('regulator_id'),
+      }
+    }
+
+    return db
+      .transaction()
+      .setIsolationLevel('read committed')
+      .execute((trx) => {
         ctx.state.trx = trx
         return ctx.next()
-      },
-    ).catch((err) => {
-      if (err.status === 302) {
-        return redirect(err.location)
-      }
-      console.error(err)
-      logError(err)
-      const status = err.status || 500
-      const message: string = grokPostgresError(err) || err.message ||
-        'Internal Server Error'
-      return new Response(message, { status })
-    })
+      })
+      .catch((err) => {
+        if (err.status === 302) {
+          return redirect(err.location)
+        }
+        console.error(err)
+        logError(err)
+        const status = err.status || 500
+        const message: string =
+          grokPostgresError(err) || err.message || 'Internal Server Error'
+        return new Response(message, { status })
+      })
   },
 ]
