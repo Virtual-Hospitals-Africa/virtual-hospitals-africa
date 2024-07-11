@@ -19,6 +19,7 @@ import {
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as conversations from '../../db/models/conversations.ts'
+import * as tempPrescriptionData from '../../db/models/temp_prescriptions_data.ts'
 import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
 import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
@@ -610,6 +611,43 @@ const conversationStates: ConversationStates<
       'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
+
+  'get_prescription:enter_id': {
+    type: 'string',
+    prompt: 'Please enter your prescription ID',
+    async onExit(trx, patientState) {
+      await tempPrescriptionData.insertID(trx, {
+        id: patientState.entity_id,
+        prescription_id: patientState.unhandled_message.trimmed_body!,
+      })
+        return 'get_prescription:enter_code' as const
+    },
+  },
+  'get_prescription:enter_code': {
+    type: 'string',
+    prompt: 'Please enter your prescription code',
+    async onExit(trx, patientState) {
+      await tempPrescriptionData.updateCode(trx, {
+        id: patientState.entity_id,
+        code: patientState.unhandled_message.trimmed_body!,
+      })
+        return 'get_prescription:check_and_send_pdf' as const
+    },
+  },
+  'get_prescription:check_and_send_pdf': {
+    type: 'select',
+    prompt: 'This is your prescription',
+      //Todo: Check data and send pdf to patient
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Main Menu',
+        onExit: 'initial_message',
+      },
+    ],
+  },
+
+
   end_of_demo: {
     type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',
@@ -636,4 +674,3 @@ const conversationStates: ConversationStates<
 
 export default conversationStates
 
-//Hi

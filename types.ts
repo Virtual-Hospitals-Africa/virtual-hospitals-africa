@@ -96,6 +96,9 @@ export type PatientConversationState =
   | 'find_nearest_organization:share_location'
   | 'find_nearest_organization:got_location'
   | 'find_nearest_organization:send_organization_location'
+  | 'get_prescription:enter_id'
+  | 'get_prescription:enter_code'
+  | 'get_prescription:check_and_send_pdf'
   | 'end_of_demo'
   | 'error'
 
