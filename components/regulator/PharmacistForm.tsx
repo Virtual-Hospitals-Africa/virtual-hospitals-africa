@@ -1,8 +1,8 @@
 import {
   DateInput,
-  TextInput,
+  PharmacistTypeSelect,
   PrefixSelect,
-  PharmacistTypeSelect
+  TextInput,
 } from '../../islands/form/Inputs.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import Buttons from '../../islands/form/buttons.tsx'

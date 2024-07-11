@@ -39,7 +39,7 @@ export const handler = [
           id: number
         }
       }
-    >
+    >,
   ) => {
     const accessingApp = ctx.url.pathname.startsWith('/app')
     const accessingRegulator = ctx.url.pathname.startsWith('/regulator')
@@ -76,8 +76,8 @@ export const handler = [
         console.error(err)
         logError(err)
         const status = err.status || 500
-        const message: string =
-          grokPostgresError(err) || err.message || 'Internal Server Error'
+        const message: string = grokPostgresError(err) || err.message ||
+          'Internal Server Error'
         return new Response(message, { status })
       })
   },
