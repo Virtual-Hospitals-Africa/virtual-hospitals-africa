@@ -63,7 +63,8 @@ export default async function formatMessageToSend<
           options: action.options.map(pick(['id', 'title'])), // Select only the fields whatsapp needs,
         }
     }
-    case 'send_location': {
+    case 'send_location':
+    case 'send_document': {
       return state.getMessages(trx, userState)
     }
     case 'date': {

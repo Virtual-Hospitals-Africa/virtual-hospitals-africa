@@ -18,7 +18,6 @@ import {
 } from '../../util/date.ts'
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
-import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as conversations from '../../db/models/conversations.ts'
 // import * as tempPrescriptionData from '../../db/models/temp_prescriptions_data.ts'
 import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
@@ -612,59 +611,7 @@ const conversationStates: ConversationStates<
       'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
-
-  'get_prescription:enter_id': {
-    type: 'string',
-    prompt: 'Please enter your prescription ID',
-    async onExit(trx, patientState) {
-      await prescriptions.insert(trx, {
-        phone_number: patientState.unhandled_message.sent_by_phone_number,
-        prescription_id: patientState.unhandled_message.trimmed_body!,
-        contents: ' Wow! Medicines!',
-      })
-        return 'get_prescription:enter_code' as const
-    },
-  },
-  'get_prescription:enter_code': {
-    type: 'string',
-    prompt: 'Please enter your prescription code',
-    async onExit(trx, patientState) {
-      await prescriptions.updateCode(trx, {
-        phone_number: patientState.unhandled_message.sent_by_phone_number,
-        alphanumeric_code: patientState.unhandled_message.trimmed_body!,
-      })
-        return 'get_prescription:check_and_send_pdf' as const
-    },
-  },
-  'get_prescription:check_and_send_pdf': {
-    type: 'select',
-    async prompt(trx, patientState) {
-      //Todo: Check data and send pdf to patient
-      // const scheduled_appointments = await prescriptions.scheduledAppointments(
-      //   trx,
-      //   patientState.entity_id,
-      // )
-      // assertEquals(scheduled_appointments.length, 1)
-      // const [scheduled_appointment] = scheduled_appointments
-      // assert(scheduled_appointment.gcal_event_id)
-      return `This is your prescription`
-    },
-    options: [
-      {
-        id: 'main_menu',
-        title: 'Main Menu',
-        async onExit(trx, patientState) {
-          await patients.upsertIntake(trx, {
-            id: patientState.entity_id!,
-            gender: 'male',
-          })
-          return 'initial_message' as const
-        },
-      },
-    ],
-  },
-
-
+  
   end_of_demo: {
     type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',

@@ -96,9 +96,6 @@ export type PatientConversationState =
   | 'find_nearest_organization:share_location'
   | 'find_nearest_organization:got_location'
   | 'find_nearest_organization:send_organization_location'
-  | 'get_prescription:enter_id'
-  | 'get_prescription:enter_code'
-  | 'get_prescription:check_and_send_pdf'
   | 'end_of_demo'
   | 'error'
 
@@ -406,11 +403,12 @@ export type PharmacistConversationState =
   | 'initial_message'
   | 'not_onboarded:enter_licence_number'
   | 'not_onboarded:enter_name'
-  | 'not_onboarded:confirm_details'
+  // | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
-  | 'onboarded:fill_prescription:enter_prescription_number'
+  | 'onboarded:fill_prescription:enter_code'
+  | 'onboarded:fill_prescription:send_pdf'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
@@ -512,6 +510,14 @@ export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
       getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
     }
   >
+export type ConversationStateHandlerSendDocument<US extends ChatbotUserState> =
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'send_document'
+      getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
+    }
+  >
 
 export type ConversationStateHandlerExpectMedia<US extends ChatbotUserState> =
   ConversationStateHandlerType<
@@ -529,6 +535,7 @@ export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerList<US>
   | ConversationStateHandlerGetLocation<US>
   | ConversationStateHandlerSendLocation<US>
+  | ConversationStateHandlerSendDocument<US>
   | ConversationStateHandlerExpectMedia<US>
 
 export type ConversationStates<US extends ChatbotUserState> = {
@@ -1568,7 +1575,7 @@ export type WhatsAppSendableLocation = {
 export type WhatsAppSendableDocument = {
   type: 'document'
   messageBody: string
-  pdfPath: string
+  file_path: string
 }
 
 export type WhatsAppLocation = Location & {
