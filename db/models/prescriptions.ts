@@ -54,3 +54,10 @@ export function getByCode(
     .selectAll()
     .executeTakeFirst()
 }
+
+export function getUrl(
+  trx: TrxOrDb,
+  phone_number: string,
+) {
+  // '/prescriptions/7274de02-0cf0-459d-afd3-358d87bb13d3?code=12345'
+}

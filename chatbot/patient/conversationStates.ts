@@ -638,8 +638,17 @@ const conversationStates: ConversationStates<
   },
   'get_prescription:check_and_send_pdf': {
     type: 'select',
-    prompt: 'This is your prescription',
+    async prompt(trx, patientState) {
       //Todo: Check data and send pdf to patient
+      // const scheduled_appointments = await prescriptions.scheduledAppointments(
+      //   trx,
+      //   patientState.entity_id,
+      // )
+      // assertEquals(scheduled_appointments.length, 1)
+      // const [scheduled_appointment] = scheduled_appointments
+      // assert(scheduled_appointment.gcal_event_id)
+      return `This is your prescription`
+    },
     options: [
       {
         id: 'main_menu',
