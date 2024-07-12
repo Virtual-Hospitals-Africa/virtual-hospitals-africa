@@ -3,7 +3,7 @@ import { TrxOrDb } from '../../types.ts'
 export function insert(
   trx: TrxOrDb,
   opts: {
-    patient_id: string | null
+    phone_number: string
     prescription_id: string
     alphanumeric_code?: string
     contents: string
@@ -12,21 +12,23 @@ export function insert(
   return trx
     .insertInto('prescriptions')
     .values(opts)
+    .onConflict((oc) => oc.column('phone_number').doUpdateSet(opts))
     .returningAll()
     .executeTakeFirstOrThrow()
 }
 
+
 export function updateCode(
   trx: TrxOrDb,
   opts: {
-    patient_id: string | null
-    alphanumeric_code?: string
+    phone_number: string
+    alphanumeric_code: string
   },
 ){
   return trx
   .updateTable('prescriptions')
   .set({ alphanumeric_code: opts.alphanumeric_code })  
-  .where('patient_id', '=', opts.patient_id)  
+  .where('phone_number', '=', opts.phone_number)  
   .returningAll()
   .executeTakeFirstOrThrow();
 }
