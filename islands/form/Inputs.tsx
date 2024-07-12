@@ -3,7 +3,15 @@ import { forwardRef, HTMLAttributes } from 'preact/compat'
 import { MagnifyingGlassIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import capitalize from '../../util/capitalize.ts'
 import cls from '../../util/cls.ts'
-import { Gender, Maybe, NURSE_SPECIALTIES } from '../../types.ts'
+import {
+  Gender,
+  Maybe,
+  NURSE_SPECIALTIES,
+  PHARMACIST_TYPES,
+  PharmacistType,
+  Prefix,
+  PREFIXES,
+} from '../../types.ts'
 import last from '../../util/last.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { Signal } from '@preact/signals'
@@ -860,6 +868,46 @@ export function NurseSpecialtySelect({ value }: { value?: Maybe<string> }) {
           value={specialty}
           label={prettierSpecialtyName(specialty)}
           selected={value === specialty}
+        />
+      ))}
+    </Select>
+  )
+}
+
+export function PrefixSelect(
+  { value }: { value?: Maybe<Prefix> },
+) {
+  return (
+    <Select
+      name='prefix'
+      label='Prefix'
+      required
+    >
+      {PREFIXES.map((prefix) => (
+        <option
+          value={prefix}
+          label={prefix}
+          selected={value === prefix}
+        />
+      ))}
+    </Select>
+  )
+}
+
+export function PharmacistTypeSelect(
+  { value }: { value?: Maybe<PharmacistType> },
+) {
+  return (
+    <Select
+      name='pharmacist_type'
+      label='Specialty'
+      required
+    >
+      {PHARMACIST_TYPES.map((type) => (
+        <option
+          value={type}
+          label={type}
+          selected={value === type}
         />
       ))}
     </Select>
