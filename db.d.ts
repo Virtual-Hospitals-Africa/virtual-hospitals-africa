@@ -1074,6 +1074,8 @@ export interface Prescriptions {
   contents: string
   created_at: Generated<Timestamp>
   id: Generated<string>
+  patient_id: string
+  prescription_id: string | null
   updated_at: Generated<Timestamp>
 }
 

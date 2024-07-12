@@ -3,7 +3,9 @@ import { TrxOrDb } from '../../types.ts'
 export function insert(
   trx: TrxOrDb,
   opts: {
-    alphanumeric_code: string
+    patient_id: string | null
+    prescription_id: string
+    alphanumeric_code?: string
     contents: string
   },
 ) {
@@ -12,6 +14,21 @@ export function insert(
     .values(opts)
     .returningAll()
     .executeTakeFirstOrThrow()
+}
+
+export function updateCode(
+  trx: TrxOrDb,
+  opts: {
+    patient_id: string | null
+    alphanumeric_code?: string
+  },
+){
+  return trx
+  .updateTable('prescriptions')
+  .set({ alphanumeric_code: opts.alphanumeric_code })  
+  .where('patient_id', '=', opts.patient_id)  
+  .returningAll()
+  .executeTakeFirstOrThrow();
 }
 
 export function getById(
