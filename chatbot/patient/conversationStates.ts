@@ -616,8 +616,8 @@ const conversationStates: ConversationStates<
     type: 'string',
     prompt: 'Please enter your prescription ID',
     async onExit(trx, patientState) {
-      await tempPrescriptionData.insertID(trx, {
-        id: patientState.entity_id,
+      await tempPrescriptionData.upinsert(trx, {
+        phone_number: patientState.unhandled_message.sent_by_phone_number,
         prescription_id: patientState.unhandled_message.trimmed_body!,
       })
         return 'get_prescription:enter_code' as const
@@ -627,8 +627,8 @@ const conversationStates: ConversationStates<
     type: 'string',
     prompt: 'Please enter your prescription code',
     async onExit(trx, patientState) {
-      await tempPrescriptionData.updateCode(trx, {
-        id: patientState.entity_id,
+      await tempPrescriptionData.upinsert(trx, {
+        phone_number: patientState.unhandled_message.sent_by_phone_number,
         code: patientState.unhandled_message.trimmed_body!,
       })
         return 'get_prescription:check_and_send_pdf' as const
