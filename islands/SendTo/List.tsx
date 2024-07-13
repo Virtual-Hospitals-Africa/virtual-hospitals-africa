@@ -9,8 +9,12 @@ export function SendableList(
     selected: Signal<Sendable | null>
   },
 ) {
-  const entitySendables = sendables.filter((sendable) => sendable.to.type === 'entity')
-  const actionSendables = sendables.filter((sendable) => sendable.to.type === 'action')
+  const entitySendables = sendables.filter((sendable) =>
+    sendable.to.type === 'entity'
+  )
+  const actionSendables = sendables.filter((sendable) =>
+    sendable.to.type === 'action'
+  )
 
   const show_sendables = selected.value == null
     ? entitySendables
