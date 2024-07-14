@@ -1,13 +1,13 @@
 import * as patients from '../../../../../db/models/patients.ts'
-import PatientReview from '../../../../../components/patients/intake/Review.tsx'
+import PatientSummary from '../../../../../components/patients/intake/Summary.tsx'
 import { IntakePage, postHandler } from './_middleware.tsx'
 import { INTAKE_STEPS } from '../../../../../shared/intake.ts'
 import { assertAllPriorStepsCompleted } from '../../../../../util/assertAllPriorStepsCompleted.ts'
 
-function assertIsReview(_patient: unknown): asserts _patient is unknown {
+function assertIsSummary(_patient: unknown): asserts _patient is unknown {
 }
 
-export const handler = postHandler(assertIsReview)
+export const handler = postHandler(assertIsSummary)
 
 const assertAllIntakeStepsCompleted = assertAllPriorStepsCompleted(
   INTAKE_STEPS,
@@ -16,8 +16,8 @@ const assertAllIntakeStepsCompleted = assertAllPriorStepsCompleted(
 )
 
 export default IntakePage(
-  async function ReviewPage({ ctx, patient }) {
-    const patient_review = await patients.getIntakeReviewById(
+  async function SummaryPage({ ctx, patient }) {
+    const patient_summary = await patients.getIntakeSummaryById(
       ctx.state.trx,
       patient.id,
     )
@@ -25,6 +25,6 @@ export default IntakePage(
       patient.intake_steps_completed,
       ctx.params,
     )
-    return <PatientReview patient={patient_review} />
+    return <PatientSummary patient={patient_summary} />
   },
 )

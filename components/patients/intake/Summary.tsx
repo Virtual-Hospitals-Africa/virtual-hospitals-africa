@@ -1,9 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  MedicationReview,
-  PreExistingConditionReview,
+  MedicationSummary,
+  PreExistingConditionSummary,
 } from '../../../db/models/patient_conditions.ts'
-import { getIntakeReviewById } from '../../../db/models/patients.ts'
+import { getIntakeSummaryById } from '../../../db/models/patients.ts'
 import { dosageDisplay, IntakeFrequencies } from '../../../shared/medication.ts'
 import { Maybe } from '../../../types.ts'
 import {
@@ -26,7 +26,7 @@ function DateRange(
 }
 
 // TODO: Move this to a shared component or make model logic?
-function Medication({ medication }: { medication: MedicationReview }) {
+function Medication({ medication }: { medication: MedicationSummary }) {
   let current_date = medication.start_date
 
   const display_schedules = medication.schedules.map((schedule) => {
@@ -77,9 +77,9 @@ function Medication({ medication }: { medication: MedicationReview }) {
   )
 }
 
-function PreExistingConditionsReview(
+function PreExistingConditionsSummary(
   { pre_existing_conditions }: {
-    pre_existing_conditions: PreExistingConditionReview[]
+    pre_existing_conditions: PreExistingConditionSummary[]
   },
 ) {
   if (!pre_existing_conditions.length) return null
@@ -103,14 +103,14 @@ function PreExistingConditionsReview(
   )
 }
 
-export default function PatientReview(
+export default function PatientSummary(
   { patient }: {
-    patient: Awaited<ReturnType<typeof getIntakeReviewById>>
+    patient: Awaited<ReturnType<typeof getIntakeSummaryById>>
   },
 ) {
   return (
     <DescriptionList
-      title='Review Patient Details'
+      title='Summary Patient Details'
       items={[
         { label: 'Name', children: <Person person={patient} /> },
         { label: 'Gender', children: patient.gender },
@@ -126,7 +126,7 @@ export default function PatientReview(
         { label: 'Primary Doctor', children: patient.primary_doctor_name },
         {
           label: 'Pre-existing Conditions',
-          children: <PreExistingConditionsReview {...patient} />,
+          children: <PreExistingConditionsSummary {...patient} />,
         },
       ]}
     />
