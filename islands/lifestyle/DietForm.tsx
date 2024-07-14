@@ -21,9 +21,9 @@ import {
   SUPPLEMENTS,
 } from '../../shared/diet.ts'
 import { CheckboxGridItem } from '../form/Inputs.tsx'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
 import { AddRow, RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../form/Row.tsx'
+import FormSection from '../../components/library/FormSection.tsx'
 
 export default function DietSection(
   { lifestyle }: { lifestyle?: Lifestyle },
@@ -66,8 +66,7 @@ export default function DietSection(
   }
 
   return (
-    <>
-      <SectionHeader className='mb-3'>Diet Questions</SectionHeader>
+    <FormSection header='Diet Questions'>
       <NumberInput
         name={'lifestyle.diet.meals_per_day'}
         label='How many meals does the patient eat per day?'
@@ -380,6 +379,6 @@ export default function DietSection(
         label='Skip meals more than once a week?'
         checked={lifestyle?.diet?.skips_meals_more_than_once_a_week}
       />
-    </>
+    </FormSection>
   )
 }

@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 import { SelectWithOptions, YesNoGrid, YesNoQuestion } from '../form/Inputs.tsx'
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
 import { Lifestyle } from '../../types.ts'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+import FormSection from '../../components/library/FormSection.tsx'
 
 const FREQUENCIES = [
   'Once per month or less' as const,
@@ -208,8 +208,7 @@ export default function exerciseSection(
       : [],
   )
   return (
-    <section className='mb-7'>
-      <SectionHeader className='mb-3'>Exercise Questions</SectionHeader>
+    <FormSection header='Exercise Questions'>
       <YesNoGrid>
         <YesNoQuestion
           name='lifestyle.exercise.currently_exercises'
@@ -333,6 +332,6 @@ export default function exerciseSection(
           )}
         </>
       )}
-    </section>
+    </FormSection>
   )
 }
