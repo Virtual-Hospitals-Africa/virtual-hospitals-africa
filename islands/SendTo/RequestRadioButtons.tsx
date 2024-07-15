@@ -55,7 +55,7 @@ export function SendToRequestRadioButtons({
               className='hidden'
             />
             <div
-              className={`flex items-center gap-2 p-2 cursor-pointer rounded-md ${
+              className={`flex items-center gap-5 p-2 cursor-pointer rounded-md ${
                 selectedOption === option ? 'bg-white' : ''
               }`}
               onClick={() =>
