@@ -97,7 +97,7 @@ export function sendMessage(opts: {
         phone_number,
         chatbot_name,
         message: message.messageBody,
-        pdfPath: message.pdfPath,
+        pdfPath: message.file_path,
       })
     }
   }

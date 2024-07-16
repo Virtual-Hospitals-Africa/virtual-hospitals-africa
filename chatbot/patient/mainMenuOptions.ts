@@ -7,8 +7,8 @@ export default [
   {
     id: 'make_appointment',
     title: 'Make Appointment',
-    onExit(_trx, userState) {
-      return userState.entity_id
+    onExit(_trx, patientState) {
+      return patientState.chatbot_user.entity_id
         ? 'onboarded:make_appointment:enter_appointment_reason' as const
         : 'not_onboarded:make_appointment:enter_name' as const
     },

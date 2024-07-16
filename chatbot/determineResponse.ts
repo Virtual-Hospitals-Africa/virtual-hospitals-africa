@@ -39,34 +39,36 @@ export async function determineResponse(
     )
 
     userState = {
-      chatbot_user_id: chatbot_user.id,
-      chatbot_user_data: isObjectLike(chatbot_user.data)
-        ? chatbot_user.data
-        : {},
-      entity_id: chatbot_user.entity_id,
       unhandled_message,
-      chatbot_name: unhandled_message.chatbot_name,
-      // deno-lint-ignore no-explicit-any
-      conversation_state: chatbot_user.conversation_state as any,
+      chatbot_user: {
+        id: chatbot_user.id,
+        entity_id: chatbot_user.entity_id,
+        // deno-lint-ignore no-explicit-any
+        conversation_state: chatbot_user.conversation_state as any,
+        chatbot_name: unhandled_message.chatbot_name,
+        data: isObjectLike(chatbot_user.data) ? chatbot_user.data : {},
+      },
     }
   } else {
     userState = {
-      chatbot_user_id: chatbot_user.id,
-      chatbot_user_data: isObjectLike(chatbot_user.data)
-        ? chatbot_user.data
-        : {},
-      entity_id: chatbot_user.entity_id,
       unhandled_message,
-      chatbot_name: unhandled_message.chatbot_name,
-      // deno-lint-ignore no-explicit-any
-      conversation_state: chatbot_user.conversation_state as any,
+      chatbot_user: {
+        id: chatbot_user.id,
+        data: isObjectLike(chatbot_user.data) ? chatbot_user.data : {},
+        entity_id: chatbot_user.entity_id,
+
+        chatbot_name: unhandled_message.chatbot_name,
+        // deno-lint-ignore no-explicit-any
+        conversation_state: chatbot_user.conversation_state as any,
+      },
     }
 
     const currentState = await findMatchingState(trx, userState)
 
     if (!currentState) {
       nextConversationState = 'error'
-      nextState = defs[userState.chatbot_name].conversation_states.error
+      nextState =
+        defs[userState.chatbot_user.chatbot_name].conversation_states.error
     } else {
       nextConversationState = typeof currentState.onExit === 'string'
         ? currentState.onExit

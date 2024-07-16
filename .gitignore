@@ -69,3 +69,6 @@ _fresh/
 
 # medplum
 /medplum/
+
+# Temporary files directory
+/temp_files/
