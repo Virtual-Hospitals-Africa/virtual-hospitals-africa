@@ -4,10 +4,7 @@ import { now } from '../helpers.ts'
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
-  data: {
-    licence_number?: string
-    pin?: string | null
-  },
+  data: RenderedPharmacist,
 ) {
   return trx.updateTable('pharmacists').set(data).where(
     'id',
@@ -46,6 +43,7 @@ export async function get(trx: TrxOrDb, query: {
     expiry_date: new Date(pharmacist.expiry_date).toISOString().split('T')[0],
     actions: {
       revoke: `/regulator/pharmacists/${pharmacist.id}/revoke`,
+      edit: `/regulator/pharmacists/${pharmacist.id}/edit`,
     },
   }))
 }

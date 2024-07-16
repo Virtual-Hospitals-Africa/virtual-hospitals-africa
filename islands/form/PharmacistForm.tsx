@@ -3,11 +3,11 @@ import {
   PharmacistTypeSelect,
   PrefixSelect,
   TextInput,
-} from '../../islands/form/Inputs.tsx'
-import FormRow from '../../islands/form/Row.tsx'
-import Buttons from '../../islands/form/buttons.tsx'
+} from './Inputs.tsx'
+import FormRow from './Row.tsx'
+import Buttons from './buttons.tsx'
 import { RenderedPharmacist } from '../../types.ts'
-import Form from '../library/Form.tsx'
+import Form from '../../components/library/Form.tsx'
 
 type PharmacistForm = {
   formData: Partial<RenderedPharmacist>
