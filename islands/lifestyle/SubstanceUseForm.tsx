@@ -2,7 +2,7 @@ import { useSignal } from '@preact/signals'
 import { NumberInput, YesNoGrid, YesNoQuestion } from '../form/Inputs.tsx'
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
 import { Lifestyle, SubstanceUse } from '../../types.ts'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+import FormSection from '../../components/library/FormSection.tsx'
 
 const substances = [
   'Caffeine',
@@ -40,8 +40,7 @@ export default function SubstanceUseSection(
     : []
 
   return (
-    <section className='mb-7'>
-      <SectionHeader className='mb-3'>Substance Use Questions</SectionHeader>
+    <FormSection header='Substance Use Questions'>
       <YesNoGrid>
         <YesNoQuestion
           name='lifestyle.substance_use.has_ever_used_substance'
@@ -234,6 +233,6 @@ export default function SubstanceUseSection(
             </>
           ))
         )}
-    </section>
+    </FormSection>
   )
 }

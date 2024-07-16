@@ -9,7 +9,6 @@ import {
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
   Sendable,
-  SendableTo,
   SendToFormSubmission,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
@@ -74,12 +73,14 @@ const next_links_by_route = groupByMapped(
     const next_link = nav_links[i + 1]
     if (!next_link) {
       assertEquals(i, nav_links.length - 1)
-      assertEquals(link.step, 'review')
+      assertEquals(link.step, 'summary')
     }
     return {
       route: next_link?.route ||
         `/app/patients/:patient_id/encounters/open/vitals`,
-      button_text: next_link ? `Continue to ${next_link.step}` : 'Start visit',
+      button_text: next_link
+        ? `Continue to ${capitalize(next_link.step)}`
+        : 'Start visit',
     }
   },
 )
@@ -111,7 +112,7 @@ export async function upsertPatientAndRedirect(
   await patients.upsertIntake(ctx.state.trx, {
     ...patient,
     id: ctx.state.patient.id,
-    completed_intake: patient.completed_intake || (step === 'review'),
+    completed_intake: patient.completed_intake || (step === 'summary'),
     intake_step_just_completed: step,
   })
 
