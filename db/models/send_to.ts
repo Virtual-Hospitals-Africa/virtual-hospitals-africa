@@ -9,6 +9,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import { nearest } from './organizations.ts'
 import { getOrganizationNurses } from './employment.ts'
 
+// deno-lint-ignore require-await
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
@@ -46,24 +47,26 @@ export async function forPatientIntake(
   )
 
   for (const nurse of nurse_employee_information) {
-    nurse_information.push({
-      key: 'health_worker/' + nurse.id,
-      name: nurse.name,
-      description: {
-        text: 'Primary Care Nurse',
+    nurse_information.push(
+      {
+        key: 'health_worker/' + nurse.id,
+        name: nurse.name,
+        description: {
+          text: 'Primary Care Nurse',
+        },
+        image: {
+          type: 'avatar',
+          url: nurse.avatar_url,
+        },
+        status: 'Unavailable until tomorrow at 9:00am',
+        to: {
+          type: 'entity',
+          entity_type: 'health_worker',
+          entity_id: nurse.id,
+          online: false,
+        },
       },
-      image: {
-        type: 'avatar',
-        url: nurse.avatar_url,
-      },
-      status: 'Unavailable until tomorrow at 9:00am',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: nurse.id,
-        online: false,
-      },
-    })
+    )
   }
 
   return [
