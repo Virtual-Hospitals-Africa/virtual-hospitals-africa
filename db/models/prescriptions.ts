@@ -4,7 +4,6 @@ export function insert(
   trx: TrxOrDb,
   opts: {
     phone_number: string
-    prescription_id: string
     alphanumeric_code?: string
     contents: string
   },
