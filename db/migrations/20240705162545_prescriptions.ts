@@ -9,7 +9,6 @@ export function up(db: Kysely<unknown>) {
         'varchar(255)',
         (col) => col.notNull().unique(),
       )
-      .addColumn('prescription_id', 'varchar(255)', (col) => col.notNull(),)
       .addColumn('alphanumeric_code', 'varchar(255)',)
       .addColumn('contents', 'text', (col) => col.notNull()),
   )
