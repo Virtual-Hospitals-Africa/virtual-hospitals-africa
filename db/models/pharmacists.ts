@@ -4,7 +4,7 @@ import { now } from '../helpers.ts'
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
-  data: RenderedPharmacist
+  data: RenderedPharmacist,
 ) {
   return trx
     .updateTable('pharmacists')
@@ -21,7 +21,7 @@ export async function get(
     family_name?: string
     pharmacist_type?: string
     include_revoked?: boolean
-  } = {}
+  } = {},
 ) {
   const pharmacists = await trx
     .selectFrom('pharmacists')
@@ -75,7 +75,7 @@ export function revoke(
   data: {
     pharmacist_id: string
     regulator_id: number
-  }
+  },
 ) {
   return trx
     .updateTable('pharmacists')
@@ -89,7 +89,7 @@ export function revoke(
 
 export function insert(
   trx: TrxOrDb,
-  data: RenderedPharmacist
+  data: RenderedPharmacist,
 ): Promise<{ id: string }> {
   return trx
     .insertInto('pharmacists')
