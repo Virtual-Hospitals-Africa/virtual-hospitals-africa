@@ -1,12 +1,16 @@
 import { InsertResult, sql, UpdateResult } from 'kysely'
 import {
   ChatbotName,
+  ChatbotUser,
   HasStringId,
   TrxOrDb,
   UnhandledMessage,
   WhatsAppMessageContents,
   WhatsAppMessageReceived,
 } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import { literalString } from '../helpers.ts'
 
 export function updateReadStatus(
   trx: TrxOrDb,
@@ -162,32 +166,30 @@ export function getUser(
   return query.executeTakeFirst()
 }
 
-export function updateChatbotUser(
+export async function updateChatbotUser(
   trx: TrxOrDb,
-  chatbot_name: ChatbotName,
-  chatbot_user_id: string,
-  { data, ...updates }: {
-    entity_id?: string | null
+  chatbot_user: ChatbotUser,
+  updates: {
     conversation_state?: string
+    entity_id?: string | null
     data?: Record<string, unknown>
   },
 ) {
-  if (data) {
-    Object.assign(updates, { data })
-  }
-
-  return trx.updateTable(`${chatbot_name}_chatbot_users`)
-    .set(updates)
-    .where('id', '=', chatbot_user_id)
+  await trx.updateTable(`${chatbot_user.chatbot_name}_chatbot_users`)
+    // deno-lint-ignore no-explicit-any
+    .set(updates as any)
+    .where('id', '=', chatbot_user.id)
     .executeTakeFirstOrThrow()
+
+  return Object.assign(chatbot_user, updates)
 }
 
-export function insertChatbotUser(
+export async function insertChatbotUser(
   trx: TrxOrDb,
   chatbot_name: ChatbotName,
   phone_number: string,
-) {
-  return trx
+): Promise<ChatbotUser> {
+  const { data, ...user } = await trx
     .insertInto(`${chatbot_name}_chatbot_users`)
     .values({
       phone_number,
@@ -196,16 +198,28 @@ export function insertChatbotUser(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+
+  assert(isObjectLike(data))
+  return {
+    ...user,
+    data,
+    chatbot_name,
+  } as ChatbotUser
 }
 
-export function findChatbotUser(
+export async function findChatbotUser(
   trx: TrxOrDb,
   chatbot_name: ChatbotName,
   phone_number: string,
-) {
-  return trx
+): Promise<ChatbotUser | undefined> {
+  const user = await trx
     .selectFrom(`${chatbot_name}_chatbot_users`)
     .selectAll()
+    .select(literalString(chatbot_name).as('chatbot_name'))
     .where('phone_number', '=', phone_number)
     .executeTakeFirst()
+
+  if (!user) return
+  assert(isObjectLike(user.data))
+  return user as ChatbotUser
 }

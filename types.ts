@@ -69,12 +69,11 @@ export const PHARMACIST_TYPES: PharmacistType[] = [
   'Pharmacy Technician',
 ]
 
-export type ChatbotUserState =
+export type ChatbotUser =
   & {
-    chatbot_user_id: string
-    chatbot_user_data: Record<string, unknown>
+    id: string
     entity_id: string | null
-    unhandled_message: UnhandledMessage
+    data: Record<string, unknown>
   }
   & (
     {
@@ -86,12 +85,27 @@ export type ChatbotUserState =
     }
   )
 
+export type ChatbotUserState = {
+  chatbot_user: ChatbotUser
+  unhandled_message: UnhandledMessage
+}
+
 export type PharmacistChatbotUserState = ChatbotUserState & {
-  chatbot_name: 'pharmacist'
+  chatbot_user: {
+    chatbot_name: 'pharmacist'
+  }
+  unhandled_message: {
+    chatbot_name: 'pharmacist'
+  }
 }
 
 export type PatientChatbotUserState = ChatbotUserState & {
-  chatbot_name: 'patient'
+  chatbot_user: {
+    chatbot_name: 'patient'
+  }
+  unhandled_message: {
+    chatbot_name: 'patient'
+  }
 }
 
 export type PatientConversationState =
@@ -437,11 +451,13 @@ export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
 }
 
 export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
-  | US['conversation_state']
+  | US['chatbot_user']['conversation_state']
   | ((
     trx: TrxOrDb,
     userState: US,
-  ) => US['conversation_state'] | Promise<US['conversation_state']>)
+  ) =>
+    | US['chatbot_user']['conversation_state']
+    | Promise<US['chatbot_user']['conversation_state']>)
 
 export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
   {
@@ -557,7 +573,9 @@ export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerExpectMedia<US>
 
 export type ConversationStates<US extends ChatbotUserState> = {
-  [state in US['conversation_state']]: ConversationStateHandler<US>
+  [state in US['chatbot_user']['conversation_state']]: ConversationStateHandler<
+    US
+  >
 }
 
 export type Appointment = {

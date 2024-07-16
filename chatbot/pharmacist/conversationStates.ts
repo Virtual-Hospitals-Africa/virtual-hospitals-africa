@@ -17,7 +17,7 @@ const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
   onboardedAction: PharmacistConversationState,
 ) => {
-  return pharmacistState.entity_id
+  return pharmacistState.chatbot_user.entity_id
     ? onboardedAction
     : 'not_onboarded:enter_licence_number' as const
 }
@@ -28,13 +28,13 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'initial_message': {
     type: 'select',
     async prompt(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      if (!pharmacistState.entity_id) {
+      if (!pharmacistState.chatbot_user.entity_id) {
         return 'Welcome to the Pharmacist Chatbot! This is a demo to showcase the capabilities of the chatbot. Please follow the prompts to complete the demo.\n\nTo start, select the items from the following menu'
       }
       const pharmacist = await trx.selectFrom('pharmacists').selectAll().where(
         'id',
         '=',
-        pharmacistState.entity_id,
+        pharmacistState.chatbot_user.entity_id,
       ).executeTakeFirst()
 
       if (!pharmacist) {
@@ -82,11 +82,10 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       assert(licence_number, 'Licence number should not be empty')
       await conversations.updateChatbotUser(
         trx,
-        pharmacistState.chatbot_name,
-        pharmacistState.chatbot_user_id,
+        pharmacistState.chatbot_user,
         {
           data: {
-            ...pharmacistState.chatbot_user_data,
+            ...pharmacistState.chatbot_user.data,
             licence_number,
           },
         },
@@ -101,7 +100,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       const name = pharmacistState.unhandled_message.trimmed_body
       assert(name, 'Name should not be empty')
 
-      const { licence_number } = pharmacistState.chatbot_user_data
+      const { licence_number } = pharmacistState.chatbot_user.data
       assert(typeof licence_number === 'string')
 
       const pharmacist = await trx
@@ -124,8 +123,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       await conversations.updateChatbotUser(
         trx,
-        pharmacistState.chatbot_name,
-        pharmacistState.chatbot_user_id,
+        pharmacistState.chatbot_user,
         {
           entity_id: pharmacist.id,
         },
@@ -158,8 +156,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       await conversations.updateChatbotUser(
         trx,
-        pharmacistState.chatbot_name,
-        pharmacistState.chatbot_user_id,
+        pharmacistState.chatbot_user,
         {
           data: {
             prescription_code: code,
@@ -192,7 +189,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     prompt: 'Here is your prescription',
     async getMessages(_trx, pharmacistState) {
       const { prescription_id, prescription_code } =
-        pharmacistState.chatbot_user_data
+        pharmacistState.chatbot_user.data
       assert(typeof prescription_id === 'string')
       assert(typeof prescription_code === 'string')
 
@@ -219,7 +216,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       return [documentMessage, buttonMessage]
     },
     onExit(_trx, pharmacistState): PharmacistConversationState {
-      return pharmacistState.entity_id ? 'initial_message' : 'initial_message'
+      return pharmacistState.chatbot_user.entity_id
+        ? 'initial_message'
+        : 'initial_message'
     },
   },
   // 'not_onboarded:enter_establishment': {
