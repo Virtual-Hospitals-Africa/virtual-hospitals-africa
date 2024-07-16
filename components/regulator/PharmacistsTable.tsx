@@ -6,23 +6,9 @@ import FormRow from '../../islands/form/Row.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { Actions } from '../../types.ts'
+import { Actions, RenderedPharmacist } from '../../types.ts'
 
-type Pharmacist = {
-  licence_number: string
-  prefix: string | 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr' | null
-  given_name: string
-  family_name: string
-  address: string | null
-  town: string | null
-  expiry_date: string
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Sales Representative'
-    | 'Pharmacy Technician'
-    | 'Veterinary Surgeon'
+export type Pharmacist = RenderedPharmacist & {
   actions: Actions
 }
 

@@ -224,7 +224,7 @@ export async function upsertPreExisting(
   )
 }
 
-export type MedicationReview = {
+export type MedicationSummary = {
   id: string
   name: string
   medication_id: string
@@ -245,7 +245,7 @@ export type MedicationReview = {
   special_instructions: string | null
 }
 
-export type PreExistingConditionReview = {
+export type PreExistingConditionSummary = {
   id: string
   patient_condition_id: string
   start_date: string
@@ -256,7 +256,7 @@ export type PreExistingConditionReview = {
     start_date: string
     name: string
   }[]
-  medications: MedicationReview[]
+  medications: MedicationSummary[]
 }
 
 export function getPreExistingConditionsReview(
@@ -264,7 +264,7 @@ export function getPreExistingConditionsReview(
   opts: {
     patient_id: string
   },
-): Promise<PreExistingConditionReview[]> {
+): Promise<PreExistingConditionSummary[]> {
   return trx
     .selectFrom('patient_conditions')
     .innerJoin(

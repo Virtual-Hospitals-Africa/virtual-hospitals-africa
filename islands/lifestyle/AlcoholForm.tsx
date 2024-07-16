@@ -1,21 +1,8 @@
 import { useSignal } from '@preact/signals'
-import {
-  NumberInput,
-  Select,
-  YesNoGrid,
-  YesNoQuestion,
-} from '../form/Inputs.tsx'
+import { NumberInput, YesNoGrid, YesNoQuestion } from '../form/Inputs.tsx'
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
-import {
-  Alcohol,
-  Exercise,
-  Lifestyle,
-  SexualActivity,
-  Smoking,
-  SubstanceUse,
-} from '../../types.ts'
-import SelectWithOther from '../SelectWithOther.tsx'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+import { Alcohol, Lifestyle } from '../../types.ts'
+import FormSection from '../../components/library/FormSection.tsx'
 
 const alcohol_products = [
   'Traditional brew',
@@ -39,8 +26,7 @@ export default function AlcoholSection(
   )
 
   return (
-    <section className='mb-7'>
-      <SectionHeader className='mb-3'>Alcohol Questions</SectionHeader>
+    <FormSection header='Alcohol Questions'>
       <YesNoGrid>
         <YesNoQuestion
           name='lifestyle.alcohol.has_ever_drank'
@@ -234,6 +220,6 @@ export default function AlcoholSection(
           selected={alcohol.value.alcohol_products_used || []}
         />
       )}
-    </section>
+    </FormSection>
   )
 }

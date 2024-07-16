@@ -1,9 +1,9 @@
 import { assert } from 'std/assert/assert.ts'
 import {
-  MedicationReview,
-  PreExistingConditionReview,
+  MedicationSummary,
+  PreExistingConditionSummary,
 } from '../../../db/models/patient_conditions.ts'
-import { getIntakeReviewById } from '../../../db/models/patients.ts'
+import { getIntakeSummaryById } from '../../../db/models/patients.ts'
 import { dosageDisplay, IntakeFrequencies } from '../../../shared/medication.ts'
 import { Maybe } from '../../../types.ts'
 import {
@@ -13,6 +13,8 @@ import {
 import { DescriptionList } from '../../library/DescriptionList.tsx'
 import { Person } from '../../library/Person.tsx'
 import { Prescriptions } from '../../library/icons/SeekingTreatment.tsx'
+
+type IntakePatientSummary = Awaited<ReturnType<typeof getIntakeSummaryById>>
 
 function DateRange(
   { start_date, end_date }: { start_date: string; end_date?: Maybe<string> },
@@ -26,7 +28,7 @@ function DateRange(
 }
 
 // TODO: Move this to a shared component or make model logic?
-function Medication({ medication }: { medication: MedicationReview }) {
+function Medication({ medication }: { medication: MedicationSummary }) {
   let current_date = medication.start_date
 
   const display_schedules = medication.schedules.map((schedule) => {
@@ -77,9 +79,9 @@ function Medication({ medication }: { medication: MedicationReview }) {
   )
 }
 
-function PreExistingConditionsReview(
+function PreExistingConditionsSummary(
   { pre_existing_conditions }: {
-    pre_existing_conditions: PreExistingConditionReview[]
+    pre_existing_conditions: PreExistingConditionSummary[]
   },
 ) {
   if (!pre_existing_conditions.length) return null
@@ -103,31 +105,59 @@ function PreExistingConditionsReview(
   )
 }
 
-export default function PatientReview(
+// Do something for displaying international phone numbers
+function PhoneDisplay({ phone_number }: { phone_number: string }) {
+  return <span>{phone_number}</span>
+}
+
+function PersonalSummary({ patient }: { patient: IntakePatientSummary }) {
+  return (
+    <div className='flex flex-col'>
+      <Person person={patient} />
+      {
+        /* {patient.phone_number && (
+        <PhoneDisplay phone_number={patient.phone_number} />
+      )} */
+      }
+      <PhoneDisplay phone_number={patient.phone_number || '+263 XXX'} />
+    </div>
+  )
+}
+
+export default function PatientSummary(
   { patient }: {
-    patient: Awaited<ReturnType<typeof getIntakeReviewById>>
+    patient: IntakePatientSummary
   },
 ) {
+  const intake_href = `/app/patients/${patient.id}/intake`
+
   return (
     <DescriptionList
-      title='Review Patient Details'
+      title='Summary Patient Details'
       items={[
-        { label: 'Name', children: <Person person={patient} /> },
-        { label: 'Gender', children: patient.gender },
-        { label: 'Date of Birth', children: patient.date_of_birth },
-        { label: 'Ethnicity', children: patient.ethnicity },
-        { label: 'Phone', children: patient.phone_number },
-        { label: 'National ID', children: patient.national_id_number },
-        { label: 'Address', children: patient.address },
         {
-          label: 'Nearest Organization',
-          children: patient.nearest_organization_name,
+          label: 'Personal',
+          children: <PersonalSummary patient={patient} />,
+          edit_href: `${intake_href}/personal`,
         },
-        { label: 'Primary Doctor', children: patient.primary_doctor_name },
         {
-          label: 'Pre-existing Conditions',
-          children: <PreExistingConditionsReview {...patient} />,
+          label: 'Address',
+          children: patient.address,
+          edit_href: `${intake_href}/address`,
         },
+        // { label: 'Ethnicity', children: patient.ethnicity },
+        // { label: 'Phone', children: patient.phone_number },
+        // { label: 'National ID', children: patient.national_id_number },
+        // { label: 'Address', children: patient.address },
+        // {
+        //   label: 'Nearest Organization',
+        //   children: patient.nearest_organization_name,
+        // },
+        // { label: 'Primary Doctor', children: patient.primary_doctor_name },
+        // {
+        //   label: 'Pre-existing Conditions',
+        //   children: <PreExistingConditionsSummary {...patient} />,
+        // },
       ]}
     />
   )

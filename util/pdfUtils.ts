@@ -6,7 +6,7 @@ const prefix = 'https://localhost:8000'
 
 export async function generatePDF(url: string): Promise<string> {
   const filename = crypto.createHash('md5').update(url).digest('hex')
-  const outputPath = `../${filename}.pdf`
+  const outputPath = `temp_files/${filename}.pdf`
   const fullUrl = url.startsWith(prefix) ? url : `${prefix}${url}`
 
   try {
