@@ -214,7 +214,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           title: 'Back to Menu',
         }],
       }
-      deletePDF(file_path)
+      // deletePDF(file_path)
       return [documentMessage, buttonMessage]
     },
     onExit(_trx, pharmacistState): PharmacistConversationState {
