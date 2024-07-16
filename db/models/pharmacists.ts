@@ -4,23 +4,27 @@ import { now } from '../helpers.ts'
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
-  data: RenderedPharmacist,
+  data: RenderedPharmacist
 ) {
-  return trx.updateTable('pharmacists').set(data).where(
-    'id',
-    '=',
-    pharmacist_id,
-  ).execute()
+  return trx
+    .updateTable('pharmacists')
+    .set(data)
+    .where('id', '=', pharmacist_id)
+    .execute()
 }
 
-export async function get(trx: TrxOrDb, query: {
-  licence_number?: string
-  given_name?: string
-  family_name?: string
-  pharmacist_type?: string
-  include_revoked?: boolean
-} = {}) {
-  const pharmacists = await trx.selectFrom('pharmacists')
+export async function get(
+  trx: TrxOrDb,
+  query: {
+    licence_number?: string
+    given_name?: string
+    family_name?: string
+    pharmacist_type?: string
+    include_revoked?: boolean
+  } = {}
+) {
+  const pharmacists = await trx
+    .selectFrom('pharmacists')
     .select([
       'id',
       'licence_number',
@@ -49,7 +53,8 @@ export async function get(trx: TrxOrDb, query: {
 }
 
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
-  return trx.selectFrom('pharmacists')
+  return trx
+    .selectFrom('pharmacists')
     .select([
       'id',
       'licence_number',
@@ -70,17 +75,21 @@ export function revoke(
   data: {
     pharmacist_id: string
     regulator_id: number
-  },
+  }
 ) {
-  return trx.updateTable('pharmacists').set({
-    revoked_at: now,
-    revoked_by: data.regulator_id,
-  }).where('id', '=', data.pharmacist_id).execute()
+  return trx
+    .updateTable('pharmacists')
+    .set({
+      revoked_at: now,
+      revoked_by: data.regulator_id,
+    })
+    .where('id', '=', data.pharmacist_id)
+    .execute()
 }
 
 export function insert(
   trx: TrxOrDb,
-  data: RenderedPharmacist,
+  data: RenderedPharmacist
 ): Promise<{ id: string }> {
   return trx
     .insertInto('pharmacists')

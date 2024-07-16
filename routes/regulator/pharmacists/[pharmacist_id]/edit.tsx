@@ -14,8 +14,8 @@ import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { stringifyJustDate } from '../../../../util/date.ts'
 
 type EditPharmacistProps = {
-  regulator: LoggedInRegulator['regulator'],
-  pharmacistData: RenderedPharmacist,
+  regulator: LoggedInRegulator['regulator']
+  pharmacistData: RenderedPharmacist
 }
 
 export function assertIsUpdatePharmacist(
@@ -56,7 +56,10 @@ export const handler = {
       req,
       assertIsUpdatePharmacist,
     )
-    const existingPharmacist = await pharmacists.getById(ctx.state.trx, pharmacist_id)
+    const existingPharmacist = await pharmacists.getById(
+      ctx.state.trx,
+      pharmacist_id,
+    )
     assert(existingPharmacist)
 
     await pharmacists.update(ctx.state.trx, pharmacist_id, {
@@ -84,7 +87,10 @@ export const handler = {
   ) {
     const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
 
-    const pharmacistData = await pharmacists.getById(ctx.state.trx, pharmacist_id)
+    const pharmacistData = await pharmacists.getById(
+      ctx.state.trx,
+      pharmacist_id,
+    )
     if (!pharmacistData) return redirect('/regulator/pharmacists')
 
     return ctx.render({
