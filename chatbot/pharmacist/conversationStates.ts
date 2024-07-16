@@ -139,7 +139,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       { id: 'end_of_demo', title: 'End of Demo', onExit: 'end_of_demo' },
     ],
   },
-
   'onboarded:fill_prescription:enter_code': {
       type: 'string',
       prompt: 'Please enter your prescription code',
@@ -150,12 +149,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           throw new Error('No prescription with that code')
         }
 
-        // The problem is here
-        // Because updateChatbotUser has not yet finished executing, 
-        // the program directly starts to check 
-        // whether the data column has been successfully modified. 
-        // So after the check fails, I guess this small process was killed, 
-        // which shows the phenomenon of update failure.
         await conversations.updateChatbotUser(
           trx,
           pharmacistState.chatbot_name,
@@ -167,24 +160,31 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
             }
           }
         )
-        
-        // console.log(`debug`)
-        // console.log(result)
-        return 'onboarded:fill_prescription:send_pdf' as const
+
+        return 'onboarded:fill_prescription:pdf_button' as const
       },
+    },
+    'onboarded:fill_prescription:pdf_button': {
+      type: 'select',
+      prompt: 'Click the button to get the prescription',
+      options: [
+        { id: 'get_prescription', title: 'Get prescription', onExit: 'onboarded:fill_prescription:send_pdf' },
+        {
+          id: 'main_menu',
+          title: 'Back to main menu',
+          onExit: 'initial_message',
+        },
+      ],
     },
     'onboarded:fill_prescription:send_pdf': {
       type: 'send_document',
       prompt: 'Here is your prescription',
       async getMessages(trx, pharmacistState) {
-        // console.log('pharmacistState.chatbot_user_data', pharmacistState.chatbot_user_data)
-        // const { prescription_id, prescription_code} = pharmacistState.chatbot_user_data
-        // assert(typeof prescription_id === 'string')
-        // assert(typeof prescription_code === 'string')
+        const { prescription_id, prescription_code} = pharmacistState.chatbot_user_data
+        assert(typeof prescription_id === 'string')
+        assert(typeof prescription_code === 'string')
 
-        const SELF_URL = Deno.env.get('SELF_URL')
-        // const file_path = await generatePDF(`${SELF_URL}/prescriptions/${prescription_id}?code=${prescription_code}`)
-        const file_path = await generatePDF(`${SELF_URL}/login`)
+        const file_path = await generatePDF(`/prescriptions/${prescription_id}?code=${prescription_code}`)
 
         const documentMessage: WhatsAppSingleSendable = {
           type: 'document',
