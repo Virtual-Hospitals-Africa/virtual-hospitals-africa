@@ -11,7 +11,7 @@ import * as conversations from '../../db/models/conversations.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import { deletePDF, generatePDF } from '../../util/pdfUtils.ts'
+import { generatePDF } from '../../util/pdfUtils.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -48,7 +48,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'fill_prescription',
         title: 'Fill Prescription',
-        async onExit(
+        onExit(
           _trx: TrxOrDb,
           pharmacistState: PharmacistChatbotUserState,
         ) {
@@ -61,7 +61,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'view_inventory',
         title: 'View Inventory',
-        async onExit(
+        onExit(
           _trx: TrxOrDb,
           pharmacistState: PharmacistChatbotUserState,
         ) {
@@ -109,6 +109,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         .selectAll()
         .where(
           sql<
+            // deno-lint-ignore no-explicit-any
             any
           >`concat(given_name, ' ', family_name) ilike ${name.toLowerCase()}`,
         )
@@ -189,7 +190,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',
     prompt: 'Here is your prescription',
-    async getMessages(trx, pharmacistState) {
+    async getMessages(_trx, pharmacistState) {
       const { prescription_id, prescription_code } =
         pharmacistState.chatbot_user_data
       assert(typeof prescription_id === 'string')
