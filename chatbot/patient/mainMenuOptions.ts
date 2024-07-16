@@ -18,9 +18,4 @@ export default [
     title: 'Nearest Organization',
     onExit: 'find_nearest_organization:share_location' as const,
   },
-  {
-    id: 'get_prescription',
-    title: 'Get Prescription',
-    onExit: 'get_prescription:enter_id' as const,
-  },
 ] as ConversationStateHandlerSelectOption<PatientChatbotUserState>[]

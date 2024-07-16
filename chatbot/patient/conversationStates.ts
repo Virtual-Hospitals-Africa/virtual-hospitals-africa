@@ -19,7 +19,6 @@ import {
 import * as appointments from '../../db/models/appointments.ts'
 import * as patients from '../../db/models/patients.ts'
 import * as conversations from '../../db/models/conversations.ts'
-// import * as tempPrescriptionData from '../../db/models/temp_prescriptions_data.ts'
 import { availableSlots } from '../../shared/scheduling/getProviderAvailability.ts'
 import { cancelAppointment } from '../../shared/scheduling/cancelAppointment.ts'
 import { makeAppointmentChatbot } from '../../shared/scheduling/makeAppointment.ts'
@@ -611,7 +610,6 @@ const conversationStates: ConversationStates<
       'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
-
   end_of_demo: {
     type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',

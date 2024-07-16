@@ -173,10 +173,8 @@ export function updateChatbotUser(
   },
 ) {
   if (data) {
-    Object.assign(updates, { data: JSON.stringify(data) })
+    Object.assign(updates, { data })
   }
-
-  console.log('updates', updates)
 
   return trx.updateTable(`${chatbot_name}_chatbot_users`)
     .set(updates)
