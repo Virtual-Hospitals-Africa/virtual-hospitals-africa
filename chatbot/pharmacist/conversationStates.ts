@@ -11,7 +11,7 @@ import * as conversations from '../../db/models/conversations.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
-import { generatePDF } from '../../util/pdfUtils.ts'
+import { deletePDF, generatePDF } from '../../util/pdfUtils.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -214,6 +214,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           title: 'Back to Menu',
         }],
       }
+      deletePDF(file_path)
       return [documentMessage, buttonMessage]
     },
     onExit(_trx, pharmacistState): PharmacistConversationState {
