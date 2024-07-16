@@ -70,5 +70,5 @@ _fresh/
 # medplum
 /medplum/
 
-# Ignore temporary files directory
+# Temporary files directory
 /temp_files/
