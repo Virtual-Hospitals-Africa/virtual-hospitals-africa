@@ -69,7 +69,6 @@ _fresh/
 
 # medplum
 /medplum/
-db/dumps/medplum
 
 # Ignore temporary files directory
 /temp_files/
