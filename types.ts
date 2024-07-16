@@ -2752,7 +2752,7 @@ export type HeroIconName =
 
 export type Image = {
   type: 'avatar'
-  url: string
+  url: string | null
   className?: string
 } | {
   type: 'icon'

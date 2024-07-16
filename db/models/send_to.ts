@@ -6,10 +6,8 @@ import {
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { nearest } from './organizations.ts'
-import { getOrganizationNurses } from './employment.ts'
+import { getEmployees, nearest } from './organizations.ts'
 
-// deno-lint-ignore require-await
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
@@ -39,35 +37,38 @@ export async function forPatientIntake(
     }),
   )
 
-  const nurse_information : Sendable[] = []
-  const nurse_employee_information = await getOrganizationNurses(
+
+  const nurse_employee_information = await getEmployees(
     trx,
-    organization_id,
-    opts,
+    {
+      organization_id: organization_id,
+      professions: ['nurse'],
+      exclude_health_worker_id: opts.exclude_health_worker_id,
+      registration_status: 'approved',
+    },
   )
 
-  for (const nurse of nurse_employee_information) {
-    nurse_information.push(
-      {
-        key: 'health_worker/' + nurse.id,
-        name: nurse.name,
-        description: {
-          text: 'Primary Care Nurse',
-        },
-        image: {
-          type: 'avatar',
-          url: nurse.avatar_url,
-        },
-        status: 'Unavailable until tomorrow at 9:00am',
-        to: {
-          type: 'entity',
-          entity_type: 'health_worker',
-          entity_id: nurse.id,
-          online: false,
-        },
+  const nurse_information: Sendable[] = nurse_employee_information.map(
+    (nurse) => ({
+      key: 'health_worker/' + nurse.name,
+      name: nurse.name,
+      description: {
+        text: nurse.professions.map((_) => _.specialty + ' ' + _.profession)
+          .join(', '),
       },
-    )
-  }
+      image: {
+        type: 'avatar',
+        url: nurse.avatar_url,
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: nurse.health_worker_id,
+        online: false,
+      },
+    }),
+  )
 
   return [
     ...nurse_information,
