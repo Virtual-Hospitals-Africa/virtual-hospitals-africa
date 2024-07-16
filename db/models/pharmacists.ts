@@ -1,5 +1,8 @@
-import { TrxOrDb } from '../../types.ts'
+import { assert } from 'std/assert/assert.ts'
+import { Maybe, RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
+import { haveNames } from '../../util/haveNames.ts'
+import { sql } from 'kysely/index.js'
 
 export function update(
   trx: TrxOrDb,
@@ -78,4 +81,29 @@ export function revoke(
     revoked_at: now,
     revoked_by: data.regulator_id,
   }).where('id', '=', data.pharmacist_id).execute()
+}
+
+const baseSelect = (trx: TrxOrDb) =>
+  trx
+    .selectFrom('pharmacists')
+    .select((eb) => [
+      eb.ref('pharmacists.given_name').$notNull().as('given_name')
+    ])
+
+
+export async function getAllWithGivenNames(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<RenderedPharmacist[]> {
+  let query = baseSelect(trx).where('pharmacists.given_name', 'is not', null).orderBy(
+    'given_name asc',
+  )
+
+  if (search) query = query.where('pharmacists.given_name', 'ilike', `%${search}%`)
+
+  const pharmacists = await query.execute()
+
+  assert(haveNames(pharmacists))
+
+  return pharmacists
 }

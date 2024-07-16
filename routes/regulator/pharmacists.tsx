@@ -1,7 +1,7 @@
 import Layout from '../../components/library/Layout.tsx'
 import PharmacistsTable from '../../components/regulator/PharmacistsTable.tsx'
 import { LoggedInRegulator, TrxOrDb } from '../../types.ts'
-import * as pharmacists from '../../db/models/pharmacists.ts'
+import * as pharmacistsService from '../../db/models/pharmacists.ts'
 
 export default async function PharmacistsPage(
   _req: Request,
@@ -13,6 +13,8 @@ export default async function PharmacistsPage(
 ) {
   const { regulator } = ctx.state
 
+  const pharmacists = await pharmacistsService.get(ctx.state.trx)
+
   return (
     <Layout
       title='Pharmacists'
@@ -23,7 +25,7 @@ export default async function PharmacistsPage(
       variant='regulator home page'
     >
       <PharmacistsTable
-        pharmacists={await pharmacists.get(ctx.state.trx)}
+        pharmacists={pharmacists}
         pathname={ctx.url.pathname}
       />
     </Layout>
