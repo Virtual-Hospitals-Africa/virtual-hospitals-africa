@@ -52,6 +52,23 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'non-binary'
 
+export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
+
+export const PREFIXES: Prefix[] = ['Mr', 'Mrs', 'Ms', 'Dr', 'Miss', 'Sr']
+
+export type PharmacistType =
+  | 'Dispensing Medical Practitioner'
+  | 'Ind Clinic Nurse'
+  | 'Pharmacist'
+  | 'Pharmacy Technician'
+
+export const PHARMACIST_TYPES: PharmacistType[] = [
+  'Dispensing Medical Practitioner',
+  'Ind Clinic Nurse',
+  'Pharmacist',
+  'Pharmacy Technician',
+]
+
 export type ChatbotUserState =
   & {
     chatbot_user_id: string
@@ -2784,4 +2801,19 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
+}
+
+export type RenderedPharmacist = {
+  licence_number: string
+  prefix: Prefix | null
+  given_name: string
+  family_name: string
+  address: string | null
+  town: string | null
+  expiry_date: string
+  pharmacist_type:
+    | 'Dispensing Medical Practitioner'
+    | 'Ind Clinic Nurse'
+    | 'Pharmacist'
+    | 'Pharmacy Technician'
 }

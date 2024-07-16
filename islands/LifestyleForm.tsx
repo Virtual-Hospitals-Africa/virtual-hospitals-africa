@@ -1,5 +1,4 @@
 import { Lifestyle } from '../types.ts'
-
 import SexualActivitySection from './lifestyle/SexualActivityForm.tsx'
 import AlcoholSection from './lifestyle/AlcoholForm.tsx'
 import SmokingSection from './lifestyle/SmokingForm.tsx'
