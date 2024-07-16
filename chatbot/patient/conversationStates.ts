@@ -611,7 +611,7 @@ const conversationStates: ConversationStates<
       'Your appointment has been cancelled. What can I help you with today?',
     options: mainMenuOptions,
   },
-  
+
   end_of_demo: {
     type: 'select',
     prompt: 'This is the end of the demo. Thank you for participating!',
@@ -637,4 +637,3 @@ const conversationStates: ConversationStates<
 }
 
 export default conversationStates
-

@@ -23,13 +23,13 @@ export function updateCode(
     phone_number: string
     alphanumeric_code: string
   },
-){
+) {
   return trx
-  .updateTable('prescriptions')
-  .set({ alphanumeric_code: opts.alphanumeric_code })  
-  .where('phone_number', '=', opts.phone_number)  
-  .returningAll()
-  .executeTakeFirstOrThrow();
+    .updateTable('prescriptions')
+    .set({ alphanumeric_code: opts.alphanumeric_code })
+    .where('phone_number', '=', opts.phone_number)
+    .returningAll()
+    .executeTakeFirstOrThrow()
 }
 
 export function getById(
@@ -58,11 +58,11 @@ export function getUrl(
   trx: TrxOrDb,
   phone_number: string,
 ) {
-    const prescription = trx
-      .selectFrom('prescriptions')
-      .where('phone_number', '=', phone_number)
-      .selectAll()
-      .executeTakeFirst()
-    return prescription.prescription_id
+  const prescription = trx
+    .selectFrom('prescriptions')
+    .where('phone_number', '=', phone_number)
+    .selectAll()
+    .executeTakeFirst()
+  return prescription.prescription_id
   // '/prescriptions/7274de02-0cf0-459d-afd3-358d87bb13d3?code=12345'
 }

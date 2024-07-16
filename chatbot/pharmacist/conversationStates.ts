@@ -38,7 +38,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       ).executeTakeFirst()
 
       if (!pharmacist) {
-        throw new Error('pharmacist_chatbot_users has an entity_id to a nonexistent pharmacist')
+        throw new Error(
+          'pharmacist_chatbot_users has an entity_id to a nonexistent pharmacist',
+        )
       }
       return `Hello ${pharmacist.given_name}, what can I help you with today?`
     },
@@ -106,13 +108,17 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         .selectFrom('pharmacists')
         .selectAll()
         .where(
-          sql<any>`concat(given_name, ' ', family_name) ilike ${name.toLowerCase()}`
+          sql<
+            any
+          >`concat(given_name, ' ', family_name) ilike ${name.toLowerCase()}`,
         )
         .where('licence_number', '=', licence_number)
         .executeTakeFirst()
 
       if (!pharmacist) {
-        throw new Error('Cannot find a pharmacist with that licence and name combination')
+        throw new Error(
+          'Cannot find a pharmacist with that licence and name combination',
+        )
       }
 
       await conversations.updateChatbotUser(
@@ -120,7 +126,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         pharmacistState.chatbot_name,
         pharmacistState.chatbot_user_id,
         {
-          entity_id: pharmacist.id
+          entity_id: pharmacist.id,
         },
       )
       // TODO Handle case where the user previously selected they want to view inventory
@@ -140,75 +146,80 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     ],
   },
   'onboarded:fill_prescription:enter_code': {
-      type: 'string',
-      prompt: 'Please enter your prescription code',
-      async onExit(trx, pharmacistState) {
-        const code = pharmacistState.unhandled_message.trimmed_body!
-        const prescription = await prescriptions.getByCode(trx, code)
-        if (!prescription) {
-          throw new Error('No prescription with that code')
-        }
+    type: 'string',
+    prompt: 'Please enter your prescription code',
+    async onExit(trx, pharmacistState) {
+      const code = pharmacistState.unhandled_message.trimmed_body!
+      const prescription = await prescriptions.getByCode(trx, code)
+      if (!prescription) {
+        throw new Error('No prescription with that code')
+      }
 
-        await conversations.updateChatbotUser(
-          trx,
-          pharmacistState.chatbot_name,
-          pharmacistState.chatbot_user_id,
-          {
-            data: {
-              prescription_code: code,
-              prescription_id: prescription.id,
-            }
-          }
-        )
-
-        return 'onboarded:fill_prescription:pdf_button' as const
-      },
-    },
-    'onboarded:fill_prescription:pdf_button': {
-      type: 'select',
-      prompt: 'Click the button to get the prescription',
-      options: [
-        { id: 'get_prescription', title: 'Get prescription', onExit: 'onboarded:fill_prescription:send_pdf' },
+      await conversations.updateChatbotUser(
+        trx,
+        pharmacistState.chatbot_name,
+        pharmacistState.chatbot_user_id,
         {
-          id: 'main_menu',
-          title: 'Back to main menu',
-          onExit: 'initial_message',
+          data: {
+            prescription_code: code,
+            prescription_id: prescription.id,
+          },
         },
-      ],
+      )
+
+      return 'onboarded:fill_prescription:pdf_button' as const
     },
-    'onboarded:fill_prescription:send_pdf': {
-      type: 'send_document',
-      prompt: 'Here is your prescription',
-      async getMessages(trx, pharmacistState) {
-        const { prescription_id, prescription_code} = pharmacistState.chatbot_user_data
-        assert(typeof prescription_id === 'string')
-        assert(typeof prescription_code === 'string')
-
-        const file_path = await generatePDF(`/prescriptions/${prescription_id}?code=${prescription_code}`)
-
-        const documentMessage: WhatsAppSingleSendable = {
-          type: 'document',
-          messageBody: 'Prescription',
-          file_path,
-        }
-
-        const buttonMessage: WhatsAppSingleSendable = {
-          type: 'buttons',
-          messageBody: 'Click below to go back to main menu.',
-          buttonText: 'Back to main menu',
-          options: [{
-            id: 'main_menu',
-            title: 'Back to Menu',
-          }],
-        }
-        return [documentMessage, buttonMessage]
+  },
+  'onboarded:fill_prescription:pdf_button': {
+    type: 'select',
+    prompt: 'Click the button to get the prescription',
+    options: [
+      {
+        id: 'get_prescription',
+        title: 'Get prescription',
+        onExit: 'onboarded:fill_prescription:send_pdf',
       },
-      onExit(_trx, pharmacistState): PharmacistConversationState {
-        return pharmacistState.entity_id
-          ? 'initial_message'
-          : 'initial_message'
+      {
+        id: 'main_menu',
+        title: 'Back to main menu',
+        onExit: 'initial_message',
       },
+    ],
+  },
+  'onboarded:fill_prescription:send_pdf': {
+    type: 'send_document',
+    prompt: 'Here is your prescription',
+    async getMessages(trx, pharmacistState) {
+      const { prescription_id, prescription_code } =
+        pharmacistState.chatbot_user_data
+      assert(typeof prescription_id === 'string')
+      assert(typeof prescription_code === 'string')
+
+      const file_path = await generatePDF(
+        `/prescriptions/${prescription_id}?code=${prescription_code}`,
+      )
+
+      const documentMessage: WhatsAppSingleSendable = {
+        type: 'document',
+        messageBody: 'Prescription',
+        file_path,
+      }
+
+      const buttonMessage: WhatsAppSingleSendable = {
+        type: 'buttons',
+        messageBody: 'Click below to go back to main menu.',
+        buttonText: 'Back to main menu',
+        options: [{
+          id: 'main_menu',
+          title: 'Back to Menu',
+        }],
+      }
+      return [documentMessage, buttonMessage]
     },
+    onExit(_trx, pharmacistState): PharmacistConversationState {
+      return pharmacistState.entity_id ? 'initial_message' : 'initial_message'
+    },
+  },
   // 'not_onboarded:enter_establishment': {
   //   type: 'string',
   //   prompt: 'Please provide your establishment license number',
