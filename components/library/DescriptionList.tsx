@@ -1,8 +1,11 @@
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
+import { Button } from './Button.tsx'
+import { PencilSquareIcon } from './icons/heroicons/outline.tsx'
 
 export type DescriptionListItemProps = {
   label: string
+  edit_href: string
   children: Maybe<ComponentChildren>
 }
 
@@ -15,9 +18,11 @@ export function DescriptionList(
         {title}
       </h3>
       <div
-        className='grid gap-2'
+        className='grid gap-4'
         style={{
-          gridTemplateColumns: 'max-content 1fr',
+          width: 'min-content',
+          alignItems: 'center',
+          gridTemplateColumns: 'max-content 1fr min-content',
         }}
       >
         {items.flatMap((item) =>
@@ -28,6 +33,9 @@ export function DescriptionList(
             <dd className='text-sm leading-6 text-gray-700'>
               {item.children}
             </dd>,
+            <a href={item.edit_href} aria-label='edit'>
+              <PencilSquareIcon className='w-4 h-4 text-gray-500' />
+            </a>,
           ]
         )}
       </div>
