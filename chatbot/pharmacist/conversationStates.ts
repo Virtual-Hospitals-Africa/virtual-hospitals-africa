@@ -165,24 +165,8 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         },
       )
 
-      return 'onboarded:fill_prescription:pdf_button' as const
+      return 'onboarded:fill_prescription:send_pdf' as const
     },
-  },
-  'onboarded:fill_prescription:pdf_button': {
-    type: 'select',
-    prompt: 'Click the button to get the prescription',
-    options: [
-      {
-        id: 'get_prescription',
-        title: 'Get prescription',
-        onExit: 'onboarded:fill_prescription:send_pdf',
-      },
-      {
-        id: 'main_menu',
-        title: 'Back to main menu',
-        onExit: 'initial_message',
-      },
-    ],
   },
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',

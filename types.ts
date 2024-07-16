@@ -439,7 +439,6 @@ export type PharmacistConversationState =
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
   | 'onboarded:fill_prescription:enter_code'
-  | 'onboarded:fill_prescription:pdf_button'
   | 'onboarded:fill_prescription:send_pdf'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
