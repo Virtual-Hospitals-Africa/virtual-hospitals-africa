@@ -10,7 +10,6 @@ export default async function PharmacistsInvite(
     state: { regulator: LoggedInRegulator['regulator']; trx: TrxOrDb }
   },
 ) {
-  console.log(1222)
 const { regulator } = ctx.state
   return (
     <Layout

@@ -1615,6 +1615,13 @@ export type LoggedInHealthWorkerContext<T = Record<never, never>> =
       healthWorker: EmployedHealthWorker
     } & T
   >
+export type LoggedInRegulatorContext<T = Record<never, never>> =
+  FreshContext<
+    WithSession & {
+      trx: TrxOrDb
+      regulator: LoggedInRegulator['regulator']
+    } & T
+  >
 
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
@@ -2785,5 +2792,14 @@ export type RenderedPharmacist =
   & Pick<
     Pharmacists,
       |'given_name'
-  >
+      |'licence_number'
+      |'prefix'
+      |'given_name'
+      |'family_name'
+      |'address'
+      |'town'
+      |'pharmacist_type'
+  >&{id:string}
+
+
   
