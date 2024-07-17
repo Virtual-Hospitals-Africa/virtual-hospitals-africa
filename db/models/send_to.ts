@@ -27,7 +27,7 @@ export async function nearest(
   return result.rows
 }
 
-// deno-lint-ignore require-await
+
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
