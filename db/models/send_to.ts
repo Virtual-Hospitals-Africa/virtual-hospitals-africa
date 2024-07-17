@@ -27,7 +27,6 @@ export async function nearest(
   return result.rows
 }
 
-
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
