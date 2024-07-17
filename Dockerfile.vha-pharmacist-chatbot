@@ -22,6 +22,8 @@ RUN apk add --no-cache \
 COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
 
 COPY ./ /app
+RUN mkdir /app/temp_files
+RUN chmod 755 /app/temp_files
 RUN touch .env
 EXPOSE 8000
 

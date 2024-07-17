@@ -6,13 +6,9 @@ export async function generatePDF(url: string): Promise<string> {
   const filename = crypto.createHash('md5').update(url).digest('hex')
   const outputPath = `temp_files/${filename}.pdf`
 
-  try {
-    await runCommand('wkhtmltopdf', {
-      args: [url, outputPath],
-    })
-  } catch (error) {
-    console.error(`Error generating PDF: ${error}`)
-  }
+  await runCommand('wkhtmltopdf', {
+    args: [url, outputPath],
+  })
 
   return outputPath
 }
