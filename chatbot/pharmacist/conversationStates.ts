@@ -23,6 +23,9 @@ const checkOnboardingStatus = (
     : 'not_onboarded:enter_licence_number' as const
 }
 
+const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL')
+assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
+
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
 > = {
@@ -208,9 +211,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       assert(typeof prescription_code === 'string')
 
       const file_path = await generatePDF(
-        `${
-          Deno.env.get('SELF_URL')
-        }/prescriptions/${prescription_id}?code=${prescription_code}`,
+        `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
       const documentMessage: WhatsAppSingleSendable = {
