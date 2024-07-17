@@ -10,7 +10,7 @@ export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
         <SendToRequestRadioButtons
           form={form}
           options={[
-            'request_visit',
+            'request_review',
             'make_appointment',
             'declare_emergency',
           ]}

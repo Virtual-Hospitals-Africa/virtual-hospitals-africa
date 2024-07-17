@@ -1,11 +1,59 @@
-import { Sendable, TrxOrDb } from '../../types.ts'
+import {
+  HasStringId,
+  Location,
+  Organization,
+  Sendable,
+  TrxOrDb,
+} from '../../types.ts'
+import { sql } from 'kysely'
 
-// deno-lint-ignore require-await
+export async function nearest(
+  trx: TrxOrDb,
+  location: Location,
+): Promise<HasStringId<Organization>[]> {
+  const result = await sql<HasStringId<Organization>>`
+      SELECT *,
+             ST_Distance(
+                  location,
+                  ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
+              ) AS distance,
+              ST_X(location::geometry) as longitude,
+              ST_Y(location::geometry) as latitude
+        FROM "Location"
+    ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
+       LIMIT 3
+  `.execute(trx)
+
+  return result.rows
+}
+
 export async function forPatientIntake(
-  _trx: TrxOrDb,
+  trx: TrxOrDb,
   _patient_id: string,
+  location: Location,
 ): Promise<Sendable[]> {
-  return [
+  const nearestFacilities = await nearest(trx, location)
+  const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
+    (facility) => ({
+      key: `facility/${facility.id}`,
+      name: facility.name,
+      description: {
+        text: facility.address || '',
+      },
+      image: {
+        type: 'icon',
+        icon: 'BuildingOffice2Icon',
+      },
+      status: 'Accepting patients',
+      to: {
+        type: 'entity',
+        entity_type: 'facility',
+        entity_id: facility.id,
+        online: true,
+      },
+    }),
+  )
+  const otherSendables: Sendable[] = [
     {
       key: 'health_worker/nurse_a',
       name: 'Nurse A',
@@ -45,10 +93,68 @@ export async function forPatientIntake(
       },
     },
     {
+      key: 'health_worker/nurse_c',
+      name: 'Nurse C',
+      description: {
+        text: 'Primary Care Nurse',
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: 'nurse_c',
+        online: false,
+      },
+    },
+    {
+      key: 'health_worker/nurse_d',
+      name: 'Nurse D',
+      description: {
+        text: 'Primary Care Nurse',
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: 'nurse_d',
+        online: false,
+      },
+    },
+    {
+      key: 'health_worker/nurse_e',
+      name: 'Nurse E',
+      description: {
+        text: 'Primary Care Nurse',
+      },
+      image: {
+        type: 'avatar',
+        url:
+          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: 'nurse_e',
+        online: false,
+      },
+    },
+    {
       key: 'facility/another_facility_a',
       name: 'Another Facility A',
       description: {
         text: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
+        href: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
         parenthetical: 'address',
       },
       image: {
@@ -82,7 +188,7 @@ export async function forPatientIntake(
       name: 'Device via Bluetooth',
       image: {
         type: 'icon',
-        icon: 'DevicePhoneMobileIcon',
+        icon: 'BluetoothIcon',
       },
       status: 'Connect with trusted devices of known colleagues',
       to: {
@@ -104,6 +210,10 @@ export async function forPatientIntake(
         action: 'search',
       },
     },
+  ]
+  return [
+    ...otherSendables,
+    ...nearestFacilitySendables,
   ]
 }
 
