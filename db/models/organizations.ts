@@ -30,7 +30,7 @@ export async function nearest(
               ) AS distance,
               ST_X(location::geometry) as longitude,
               ST_Y(location::geometry) as latitude
-        FROM Location
+        FROM "Location"
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10
   `.execute(trx)
