@@ -1,11 +1,59 @@
-import { Sendable, TrxOrDb } from '../../types.ts'
+import { 
+  Sendable, 
+  TrxOrDb,
+  HasStringId,
+  Location, 
+  Organization,
+} from '../../types.ts'
+import { sql } from 'kysely'
+
+export async function nearest(
+  trx: TrxOrDb,
+  location: Location,
+): Promise<HasStringId<Organization>[]> {
+  const result = await sql<HasStringId<Organization>>`
+      SELECT *,
+             ST_Distance(
+                  location,
+                  ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
+              ) AS distance,
+              ST_X(location::geometry) as longitude,
+              ST_Y(location::geometry) as latitude
+        FROM "Location"
+    ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
+       LIMIT 3
+  `.execute(trx)
+
+  return result.rows
+}
 
 // deno-lint-ignore require-await
 export async function forPatientIntake(
-  _trx: TrxOrDb,
+  trx: TrxOrDb,
   _patient_id: string,
+  location: Location,
 ): Promise<Sendable[]> {
-  return [
+
+  const nearestFacilities = await nearest(trx, location)
+  const nearestFacilitySendables: Sendable[] = nearestFacilities.map(facility => ({
+    key: `facility/${facility.id}`,
+    name: facility.name,
+    description: {
+      text: facility.address || '',
+    },
+    image: {
+      type: 'icon',
+      icon: 'BuildingOffice2Icon',
+    },
+    status: 'Accepting patients',
+    to: {
+      type: 'entity',
+      entity_type: 'facility',
+      entity_id: facility.id,
+      online: true,
+    },
+  }))
+  const otherSendables: Sendable[] = [
     {
       key: 'health_worker/nurse_a',
       name: 'Nurse A',
@@ -163,6 +211,10 @@ export async function forPatientIntake(
       },
     },
   ]
+  return [
+    ...otherSendables,
+    ...nearestFacilitySendables,
+  ] 
 }
 
 // deno-lint-ignore require-await

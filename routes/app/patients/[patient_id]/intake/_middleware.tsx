@@ -33,6 +33,9 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
+import { 
+  Location, 
+} from '../../../../../types.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {
@@ -218,9 +221,17 @@ export function IntakePage(
     const previously_completed = patient.intake_steps_completed.includes(
       step as unknown as IntakeStep,
     )
+    
+    const location: Location = {
+      //put longitude and latitude of the VHA Test Clinic temporarily
+      longitude: -2.5879,
+      latitude: 51.4545,
+    }
+
     const getting_sendables = send_to.forPatientIntake(
       ctx.state.trx,
       patient.id,
+      location
     )
 
     const children = await render({ ctx, patient, previously_completed })
