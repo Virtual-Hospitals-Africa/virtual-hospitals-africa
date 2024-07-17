@@ -2,16 +2,13 @@ import fs from 'node:fs'
 import crypto from 'node:crypto'
 import { runCommand } from './command.ts'
 
-const prefix = 'https://localhost:8000'
-
 export async function generatePDF(url: string): Promise<string> {
   const filename = crypto.createHash('md5').update(url).digest('hex')
   const outputPath = `temp_files/${filename}.pdf`
-  const fullUrl = url.startsWith(prefix) ? url : `${prefix}${url}`
 
   try {
     await runCommand('wkhtmltopdf', {
-      args: [fullUrl, outputPath],
+      args: [url, outputPath],
     })
   } catch (error) {
     console.error(`Error generating PDF: ${error}`)

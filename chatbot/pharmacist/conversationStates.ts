@@ -208,7 +208,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       assert(typeof prescription_code === 'string')
 
       const file_path = await generatePDF(
-        `/prescriptions/${prescription_id}?code=${prescription_code}`,
+        `${
+          Deno.env.get('SELF_URL')
+        }/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
       const documentMessage: WhatsAppSingleSendable = {
