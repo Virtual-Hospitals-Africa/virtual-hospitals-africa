@@ -2821,6 +2821,7 @@ export type RenderedPharmacy = {
 }
 
 export type RenderedPharmacist = {
+  id?: string
   licence_number: string
   prefix: Prefix | null
   given_name: string

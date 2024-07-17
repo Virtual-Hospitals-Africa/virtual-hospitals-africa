@@ -96,6 +96,7 @@ import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescr
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
+import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
@@ -160,6 +161,7 @@ import * as $family_RelationshipSelect from './islands/family/RelationshipSelect
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
+import * as $form_PharmacistForm from './islands/form/PharmacistForm.tsx'
 import * as $form_Row from './islands/form/Row.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
@@ -351,6 +353,8 @@ const manifest = {
     './routes/regulator.tsx': $regulator,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
+    './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':
+      $regulator_pharmacists_pharmacist_id_edit,
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
@@ -419,6 +423,7 @@ const manifest = {
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
+    './islands/form/PharmacistForm.tsx': $form_PharmacistForm,
     './islands/form/Row.tsx': $form_Row,
     './islands/form/buttons.tsx': $form_buttons,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
