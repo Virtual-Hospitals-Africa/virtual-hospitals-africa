@@ -89,7 +89,7 @@ export type IntakeStep =
   | 'lifestyle'
   | 'occupation'
   | 'personal'
-  | 'review'
+  | 'summary'
 
 export type Json = JsonValue
 

@@ -17,6 +17,7 @@ import ReligionSelect from '../ReligionSelect.tsx'
 import FormRow from '../form/Row.tsx'
 import { SelectWithOptions } from '../form/Inputs.tsx'
 import range from '../../util/range.ts'
+import FormSection from '../../components/library/FormSection.tsx'
 
 type GuardianFamilyRelationState =
   & Partial<Omit<GuardianFamilyRelation, 'relation_id'>>
@@ -62,29 +63,23 @@ export default function PatientFamilyForm({
   family.marital_status ??= age_years <= 18 ? 'Never Married' : null
 
   return (
-    <div>
+    <>
       {showGuardians && (
         <input type='hidden' name='family.under_18' value='on' />
       )}
       {showNextOfKin &&
         (
-          <div>
-            <SectionHeader className='my-5 text-[20px]'>
-              Next Of Kin
-            </SectionHeader>
+          <FormSection header='Next Of Kin'>
             <NextOfKinInput
               name='family.other_next_of_kin'
               value={family.other_next_of_kin ?? undefined}
             />
-          </div>
+          </FormSection>
         )}
 
       {showGuardians &&
         (
-          <div>
-            <SectionHeader className='my-5 text-[20px]'>
-              Guardians
-            </SectionHeader>
+          <FormSection header='Guardians'>
             {guardians.value.map((guardian, i) => (
               !guardian.removed &&
               (
@@ -103,13 +98,13 @@ export default function PatientFamilyForm({
               text='Add Guardian'
               onClick={addGuardian}
             />
-          </div>
+          </FormSection>
         )}
 
       {showDependents &&
         (
           <div>
-            <SectionHeader className='my-5 text-[20px]'>
+            <SectionHeader>
               Dependents
             </SectionHeader>
             {dependents.value.map((dependent, i) => (
@@ -133,7 +128,7 @@ export default function PatientFamilyForm({
           </div>
         )}
 
-      <div>
+      <FormSection header='Family Status'>
         <FormRow>
           <MaritalStatusSelect
             label='Marital Status'
@@ -185,7 +180,7 @@ export default function PatientFamilyForm({
             />
           )}
         </FormRow>
-      </div>
-    </div>
+      </FormSection>
+    </>
   )
 }

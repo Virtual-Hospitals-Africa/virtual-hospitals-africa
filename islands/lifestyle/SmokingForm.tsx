@@ -1,21 +1,8 @@
 import { useSignal } from '@preact/signals'
-import {
-  NumberInput,
-  Select,
-  YesNoGrid,
-  YesNoQuestion,
-} from '../form/Inputs.tsx'
+import { NumberInput, YesNoGrid, YesNoQuestion } from '../form/Inputs.tsx'
 import { LabelledListboxMulti } from '../form/Listbox.tsx'
-import {
-  Alcohol,
-  Exercise,
-  Lifestyle,
-  SexualActivity,
-  Smoking,
-  SubstanceUse,
-} from '../../types.ts'
-import SelectWithOther from '../SelectWithOther.tsx'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+import { Lifestyle, Smoking } from '../../types.ts'
+import FormSection from '../../components/library/FormSection.tsx'
 
 const tobacco_products = [
   'Flavored cigarettes',
@@ -44,8 +31,7 @@ export default function SmokingSection(
   )
 
   return (
-    <section className='mb-7'>
-      <SectionHeader className='mb-3'>Smoking Questions</SectionHeader>
+    <FormSection header='Smoking Questions'>
       <YesNoGrid>
         <YesNoQuestion
           name='lifestyle.smoking.has_ever_smoked'
@@ -188,6 +174,6 @@ export default function SmokingSection(
           selected={smoking.value.tobacco_products_used || []}
         />
       )}
-    </section>
+    </FormSection>
   )
 }

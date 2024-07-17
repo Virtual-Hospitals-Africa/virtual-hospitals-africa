@@ -68,7 +68,7 @@ import * as $app_patients_patient_id_intake_history from './routes/app/patients/
 import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patients/[patient_id]/intake/lifestyle.tsx'
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
-import * as $app_patients_patient_id_intake_review from './routes/app/patients/[patient_id]/intake/review.tsx'
+import * as $app_patients_patient_id_intake_summary from './routes/app/patients/[patient_id]/intake/summary.tsx'
 import * as $app_patients_patient_id_review from './routes/app/patients/[patient_id]/review.tsx'
 import * as $app_patients_patient_id_review_middleware from './routes/app/patients/[patient_id]/review/_middleware.tsx'
 import * as $app_patients_patient_id_review_clinical_notes from './routes/app/patients/[patient_id]/review/clinical_notes.tsx'
@@ -97,6 +97,7 @@ import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
+import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -312,8 +313,8 @@ const manifest = {
       $app_patients_patient_id_intake_occupation,
     './routes/app/patients/[patient_id]/intake/personal.tsx':
       $app_patients_patient_id_intake_personal,
-    './routes/app/patients/[patient_id]/intake/review.tsx':
-      $app_patients_patient_id_intake_review,
+    './routes/app/patients/[patient_id]/intake/summary.tsx':
+      $app_patients_patient_id_intake_summary,
     './routes/app/patients/[patient_id]/review.tsx':
       $app_patients_patient_id_review,
     './routes/app/patients/[patient_id]/review/_middleware.tsx':
@@ -352,6 +353,7 @@ const manifest = {
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
+    './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,

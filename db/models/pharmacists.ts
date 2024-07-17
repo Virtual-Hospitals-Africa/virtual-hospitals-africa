@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { RenderedPharmacist, TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
 
 export function update(
@@ -78,4 +78,15 @@ export function revoke(
     revoked_at: now,
     revoked_by: data.regulator_id,
   }).where('id', '=', data.pharmacist_id).execute()
+}
+
+export function insert(
+  trx: TrxOrDb,
+  data: RenderedPharmacist,
+): Promise<{ id: string }> {
+  return trx
+    .insertInto('pharmacists')
+    .values(data)
+    .returning('id')
+    .executeTakeFirstOrThrow()
 }

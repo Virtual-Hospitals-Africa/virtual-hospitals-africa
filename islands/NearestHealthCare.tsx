@@ -1,8 +1,8 @@
 import { useSignal } from '@preact/signals'
 import FormRow from './form/Row.tsx'
-import SectionHeader from '../components/library/typography/SectionHeader.tsx'
 import OrganizationSearch from './OrganizationSearch.tsx'
 import PersonSearch from './PersonSearch.tsx'
+import FormSection from '../components/library/FormSection.tsx'
 
 export function NearestHealthCare(
   { nearest_organization, primary_doctor }: {
@@ -18,8 +18,7 @@ export function NearestHealthCare(
   }
 
   return (
-    <section>
-      <SectionHeader className='mb-3'>Nearest Health Care</SectionHeader>
+    <FormSection header='Nearest Health Care'>
       <FormRow>
         <OrganizationSearch
           name='nearest_organization'
@@ -41,6 +40,6 @@ export function NearestHealthCare(
           addable
         />
       </FormRow>
-    </section>
+    </FormSection>
   )
 }

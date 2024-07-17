@@ -1,7 +1,7 @@
 import AllergyInput from '../../../islands/allergy/Input.tsx'
 import { Allergy, PreExistingConditionWithDrugs } from '../../../types.ts'
-import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import PreExistingConditionsForm from '../../../islands/pre-existing-conditions/Form.tsx'
+import FormSection from '../../library/FormSection.tsx'
 
 export default function PatientPreExistingConditions(
   { pre_existing_conditions, allergies, patient_allergies }: {
@@ -12,21 +12,17 @@ export default function PatientPreExistingConditions(
 ) {
   return (
     <>
-      <section>
-        <SectionHeader className='my-5 text-[20px]'>Allergies</SectionHeader>
+      <FormSection header='Allergies'>
         <AllergyInput
           allergies={allergies}
           patient_allergies={patient_allergies}
         />
-      </section>
-      <section>
-        <SectionHeader className='my-5 text-[20px]'>
-          Chronic Conditions & Disabilities
-        </SectionHeader>
+      </FormSection>
+      <FormSection header='Chronic Conditions & Disabilities'>
         <PreExistingConditionsForm
           pre_existing_conditions={pre_existing_conditions}
         />
-      </section>
+      </FormSection>
     </>
   )
 }

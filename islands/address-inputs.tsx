@@ -50,7 +50,7 @@ export default function AddressForm(
   })
 
   return (
-    <section className='mb-7'>
+    <section>
       <FormRow>
         <input
           type='hidden'
