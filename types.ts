@@ -2800,6 +2800,7 @@ export type SelectedPatient = {
 }
 
 export type RenderedPharmacy = {
+  id: string
   address: string | null
   expiry_date: string
   licence_number: string
@@ -2819,6 +2820,7 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
+  href: string
 }
 
 export type RenderedPharmacist = {
@@ -2835,4 +2837,5 @@ export type RenderedPharmacist = {
     | 'Ind Clinic Nurse'
     | 'Pharmacist'
     | 'Pharmacy Technician'
+  pharmacy?: RenderedPharmacy
 }

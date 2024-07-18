@@ -46,6 +46,21 @@ const columns: TableColumn<Pharmacist>[] = [
     data: 'pharmacist_type',
   },
   {
+    label: 'Pharmacy',
+    data(row) {
+      if (!row.pharmacy) return null
+      return (
+        <a
+          key={`${row.id}-${row.pharmacy.id}`}
+          href={row.pharmacy.href}
+          className='text-indigo-600 hover:text-indigo-900'
+        >
+          {row.pharmacy.name}
+        </a>
+      )
+    },
+  },
+  {
     label: 'Actions',
     type: 'actions',
   },
