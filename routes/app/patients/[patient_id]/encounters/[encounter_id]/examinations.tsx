@@ -284,6 +284,16 @@ export async function ExaminationsPage(
     (ex) => !!ex.ordered,
   )
 
+  const next_incomplete_exam = during_this_encounter.find(
+    (exam) => exam !== examination && !exam.completed && !exam.skipped,
+  )
+
+  const once_done = next_incomplete_exam
+    ? next_incomplete_exam.examination_name
+    : orders.length
+    ? 'Orders'
+    : 'Diagnosis'
+
   const tabs: TabProps[] = during_this_encounter.map((exam) => {
     const active = exam === examination
     return {
@@ -314,44 +324,47 @@ export async function ExaminationsPage(
     leftIcon: <PlusCircleIcon className='w-5 h-5' />,
   })
 
-  return (
-    <>
-      <Tabs tabs={tabs} />
-      {adding_examinations && (
-        <NewExaminationForm
-          recommended_examinations={encounter.examinations.filter((ex) =>
-            ex.recommended
-          ).map((ex) => ex.examination_name)}
-          selected_examinations={encounter.examinations.map((ex) =>
-            ex.examination_name
-          )}
-          available_diagnostic_tests={await getAvailableTests(trx, {
-            organization_id: ctx.state.encounter.providers[0].organization_id,
-          })}
-          allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
-        />
-      )}
-      {placing_orders && (
-        <div>
-          TODO
-          {orders.map((order) => (
-            <p>
-              {order.examination_name}
-            </p>
-          ))}
-        </div>
-      )}
-      {examination && (
-        <PatientExaminationForm
-          patient_examination={await examinations.getPatientExamination(trx, {
-            patient_id: encounter.patient_id,
-            encounter_id: encounter.encounter_id,
-            examination_name: examination.examination_name,
-          })}
-        />
-      )}
-    </>
-  )
+  return {
+    next_step_text: `Continue to ${once_done}`,
+    children: (
+      <>
+        <Tabs tabs={tabs} />
+        {adding_examinations && (
+          <NewExaminationForm
+            recommended_examinations={encounter.examinations.filter((ex) =>
+              ex.recommended
+            ).map((ex) => ex.examination_name)}
+            selected_examinations={encounter.examinations.map((ex) =>
+              ex.examination_name
+            )}
+            available_diagnostic_tests={await getAvailableTests(trx, {
+              organization_id: ctx.state.encounter.providers[0].organization_id,
+            })}
+            allowed_to_place_orders={allowedToPlaceOrders(encounter_provider)}
+          />
+        )}
+        {placing_orders && (
+          <div>
+            TODO
+            {orders.map((order) => (
+              <p>
+                {order.examination_name}
+              </p>
+            ))}
+          </div>
+        )}
+        {examination && (
+          <PatientExaminationForm
+            patient_examination={await examinations.getPatientExamination(trx, {
+              patient_id: encounter.patient_id,
+              encounter_id: encounter.encounter_id,
+              examination_name: examination.examination_name,
+            })}
+          />
+        )}
+      </>
+    ),
+  }
 }
 
 export default EncounterPage(ExaminationsPage)

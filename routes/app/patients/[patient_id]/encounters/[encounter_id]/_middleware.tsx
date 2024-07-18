@@ -5,9 +5,12 @@ import Layout from '../../../../../../components/library/Layout.tsx'
 import Form from '../../../../../../components/library/Form.tsx'
 import {
   LoggedInHealthWorkerContext,
+  LoggedInHealthWorkerHandler,
+  Maybe,
   RenderedPatientEncounter,
   RenderedPatientEncounterProvider,
   Sendable,
+  SendToFormSubmission,
 } from '../../../../../../types.ts'
 import * as patients from '../../../../../../db/models/patients.ts'
 import * as send_to from '../../../../../../db/models/send_to.ts'
@@ -22,13 +25,16 @@ import {
 } from '../../../../../../db/models/patient_encounters.ts'
 import redirect from '../../../../../../util/redirect.ts'
 import { replaceParams } from '../../../../../../util/replaceParams.ts'
-import { assertOr404 } from '../../../../../../util/assertOr.ts'
+import { assertOr400, assertOr404 } from '../../../../../../util/assertOr.ts'
 import { ButtonsContainer } from '../../../../../../islands/form/buttons.tsx'
 import { SendToButton } from '../../../../../../islands/SendTo/Button.tsx'
 import { Button } from '../../../../../../components/library/Button.tsx'
 import { EncounterStep } from '../../../../../../db.d.ts'
 import { groupByMapped } from '../../../../../../util/groupBy.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
+import words from '../../../../../../util/words.ts'
+import isObjectLike from '../../../../../../util/isObjectLike.ts'
+import { parseRequestAsserts } from '../../../../../../util/parseForm.ts'
 
 export function getEncounterId(ctx: FreshContext): 'open' | string {
   if (ctx.params.encounter_id === 'open') {
@@ -55,6 +61,42 @@ export async function completeStep(ctx: EncounterContext) {
     step,
   })
   return redirect(nextLink(ctx))
+}
+
+export function postHandler<T>(
+  assertion: (
+    form_values: unknown,
+  ) => asserts form_values is T,
+  handleForm: (
+    ctx: EncounterContext,
+    form_values: T,
+  ) => Promise<void>,
+): LoggedInHealthWorkerHandler<EncounterContext> {
+  function assertSendToAnd(
+    form_values: unknown,
+  ): asserts form_values is T & {
+    send_to?: Maybe<SendToFormSubmission>
+  } {
+    assertOr400(isObjectLike(form_values))
+    if (form_values.send_to) send_to.assertIs(form_values.send_to)
+    assertion(form_values)
+  }
+
+  return {
+    async POST(req, ctx) {
+      const form_values = await parseRequestAsserts(
+        ctx.state.trx,
+        req,
+        assertSendToAnd,
+      )
+      await handleForm(ctx, form_values)
+      const response = await completeStep(ctx)
+      if (form_values.send_to) {
+        throw new Error('TODO: implement send to')
+      }
+      return response
+    },
+  }
 }
 
 export async function handler(
@@ -89,6 +131,8 @@ const nav_links = ENCOUNTER_STEPS.map((step) => ({
   route: `/app/patients/:patient_id/encounters/:encounter_id/${step}`,
 }))
 
+const buttonText = (step: string) => words(step).map(capitalize).join(' ')
+
 const next_links_by_route = groupByMapped(
   nav_links,
   (link) => link.route,
@@ -101,7 +145,9 @@ const next_links_by_route = groupByMapped(
     return {
       route: next_link?.route ||
         `/app/patients/:patient_id/encounters/open/vitals`,
-      button_text: next_link ? `Continue to ${next_link.step}` : 'Start visit',
+      button_text: next_link
+        ? `Continue to ${buttonText(next_link.step)}`
+        : 'Start visit',
     }
   },
 )
@@ -118,10 +164,12 @@ const nextLink = (ctx: FreshContext) =>
 export function EncounterLayout({
   ctx,
   sendables,
+  next_step_text,
   children,
 }: {
   ctx: EncounterContext
   sendables: Sendable[]
+  next_step_text?: string
   children: ComponentChildren
 }): JSX.Element {
   return (
@@ -164,7 +212,7 @@ export function EncounterLayout({
             type='submit'
             className='flex-1 max-w-xl'
           >
-            {nextStep(ctx).button_text}
+            {next_step_text || nextStep(ctx).button_text}
           </Button>
         </ButtonsContainer>
       </Form>
@@ -180,7 +228,10 @@ export type EncounterPageChildProps = EncounterPageProps & {
 export function EncounterPage(
   render: (
     props: EncounterPageChildProps,
-  ) => JSX.Element | Promise<JSX.Element>,
+  ) =>
+    | JSX.Element
+    | Promise<JSX.Element>
+    | Promise<{ next_step_text: string; children: JSX.Element }>,
 ) {
   return async function (
     _req: Request,
@@ -196,10 +247,20 @@ export function EncounterPage(
       patient.id,
     )
 
-    const children = await render({ ctx, ...ctx.state, previously_completed })
+    let next_step_text: string | undefined
+    const rendered = await render({ ctx, ...ctx.state, previously_completed })
+    const children = 'next_step_text' in rendered ? rendered.children : rendered
+
+    if ('next_step_text' in rendered) {
+      next_step_text = rendered.next_step_text
+    }
 
     return (
-      <EncounterLayout ctx={ctx} sendables={await getting_sendables}>
+      <EncounterLayout
+        ctx={ctx}
+        next_step_text={next_step_text}
+        sendables={await getting_sendables}
+      >
         {children}
       </EncounterLayout>
     )

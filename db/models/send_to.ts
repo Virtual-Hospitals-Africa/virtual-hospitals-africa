@@ -1,31 +1,12 @@
 import {
-  HasStringId,
   Location,
-  Organization,
   Sendable,
+  SendToFormSubmission,
   TrxOrDb,
 } from '../../types.ts'
-import { sql } from 'kysely'
-
-export async function nearest(
-  trx: TrxOrDb,
-  location: Location,
-): Promise<HasStringId<Organization>[]> {
-  const result = await sql<HasStringId<Organization>>`
-      SELECT *,
-             ST_Distance(
-                  location,
-                  ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-              ) AS distance,
-              ST_X(location::geometry) as longitude,
-              ST_Y(location::geometry) as latitude
-        FROM "Location"
-    ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-       LIMIT 3
-  `.execute(trx)
-
-  return result.rows
-}
+import { assertOr400 } from '../../util/assertOr.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import { nearest } from './organizations.ts'
 
 export async function forPatientIntake(
   trx: TrxOrDb,
@@ -53,7 +34,8 @@ export async function forPatientIntake(
       },
     }),
   )
-  const otherSendables: Sendable[] = [
+
+  return [
     {
       key: 'health_worker/nurse_a',
       name: 'Nurse A',
@@ -149,27 +131,7 @@ export async function forPatientIntake(
         online: false,
       },
     },
-    {
-      key: 'facility/another_facility_a',
-      name: 'Another Facility A',
-      description: {
-        text: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
-        href: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
-        parenthetical: 'address',
-      },
-      image: {
-        type: 'icon',
-        icon: 'BuildingOffice2Icon',
-      },
-      status: 'Accepting patients',
-      to: {
-        type: 'entity',
-        entity_type: 'facility',
-        entity_id: 'another_facility_a',
-        online: true,
-        reopens: 'Reopens 9:00am',
-      },
-    },
+    ...nearestFacilitySendables,
     {
       key: 'waiting_room',
       name: 'Waiting Room',
@@ -210,10 +172,6 @@ export async function forPatientIntake(
         action: 'search',
       },
     },
-  ]
-  return [
-    ...otherSendables,
-    ...nearestFacilitySendables,
   ]
 }
 
@@ -322,4 +280,35 @@ export async function forPatientEncounter(
       },
     },
   ]
+}
+
+export function assertIs(
+  send_to: unknown,
+): asserts send_to is SendToFormSubmission {
+  assertOr400(isObjectLike(send_to))
+  if (send_to.action) {
+    assertOr400(
+      typeof send_to.action === 'string',
+      'send_to.action must be a string',
+    )
+    assertOr400(
+      !send_to.entity,
+      'send_to.entity must not be present when send_to.action is present',
+    )
+  }
+  if (send_to.entity) {
+    assertOr400(isObjectLike(send_to.entity))
+    assertOr400(
+      typeof send_to.entity.id === 'string',
+      'send_to.entity.id must be a string',
+    )
+    assertOr400(
+      typeof send_to.entity.type === 'string',
+      'send_to.entity.type must be a string',
+    )
+    assertOr400(
+      !send_to.action,
+      'send_to.action must not be present when send_to.entity is present',
+    )
+  }
 }

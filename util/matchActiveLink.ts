@@ -1,6 +1,6 @@
 import sortBy from './sortBy.ts'
 
-export default function matchActiveLink<LinkDef extends { route: string }>(
+export function matchActiveLink<LinkDef extends { route: string }>(
   links: LinkDef[],
   route: string,
 ) {

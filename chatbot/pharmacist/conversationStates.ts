@@ -23,7 +23,8 @@ const checkOnboardingStatus = (
     : 'not_onboarded:enter_licence_number' as const
 }
 
-const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL')
+const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
+  'https://localhost:8000'
 assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
 
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
