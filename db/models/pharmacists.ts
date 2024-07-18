@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
-import { RenderedPharmacist, TrxOrDb, RenderedPharmacy } from '../../types.ts'
-import { now, jsonBuildObject } from '../helpers.ts'
+import { RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../types.ts'
+import { jsonBuildObject, now } from '../helpers.ts'
 
 export function update(
   trx: TrxOrDb,
@@ -29,7 +29,7 @@ export async function get(
     .leftJoin(
       'premise_supervisors',
       'pharmacists.id',
-      'premise_supervisors.pharmacist_id'
+      'premise_supervisors.pharmacist_id',
     )
     .leftJoin('premises', 'premise_supervisors.premise_id', 'premises.id')
     .select((eb) => [
@@ -43,7 +43,8 @@ export async function get(
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
       sql`CASE
-        WHEN premises.id IS NOT NULL THEN ${jsonBuildObject({
+        WHEN premises.id IS NOT NULL THEN ${
+        jsonBuildObject({
           id: eb.ref('premises.id'),
           address: eb.ref('premises.address'),
           expiry_date: sql<string>`TO_CHAR(premises.expiry_date, 'YYYY-MM-DD')`,
@@ -53,14 +54,15 @@ export async function get(
           premises_types: eb.ref('premises.premises_types'),
           town: eb.ref('premises.town'),
           href: sql<string>`'/regulator/pharmacies/' || premises.id`,
-        })}
+        })
+      }
         ELSE NULL
       END`.as('pharmacy'),
     ])
     .where(
       'pharmacists.revoked_at',
       query.include_revoked ? 'is not' : 'is',
-      null
+      null,
     )
     .orderBy('pharmacists.given_name', 'asc')
     .orderBy('pharmacists.family_name', 'asc')
