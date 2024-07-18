@@ -7,6 +7,7 @@ import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { Actions, RenderedPharmacist } from '../../types.ts'
+import Pagination from '../library/Pagination.tsx'
 
 export type Pharmacist = RenderedPharmacist & {
   actions: Actions
@@ -68,11 +69,19 @@ const columns: TableColumn<Pharmacist>[] = [
 type PharmacistsTableProps = {
   pharmacists: Pharmacist[]
   pathname: string
+  totalRows: number
+  rowsPerPage: number
+  currentPage: number
+  totalPage: number
 }
 
 export default function PharmacistsTable({
   pharmacists,
   pathname,
+  totalRows,
+  rowsPerPage,
+  currentPage,
+  totalPage,
 }: PharmacistsTableProps): JSX.Element {
   return (
     <>
@@ -96,6 +105,13 @@ export default function PharmacistsTable({
             Icon={UserCircleIcon}
           />
         )}
+      />
+      <Pagination
+        totalPages={totalPage}
+        currentPages={currentPage}
+        path={pathname}
+        rowsPerPage={rowsPerPage}
+        totalRows={totalRows}
       />
     </>
   )

@@ -1,30 +1,65 @@
 import Layout from '../../components/library/Layout.tsx'
-import PharmacistsTable from '../../components/regulator/PharmacistsTable.tsx'
-import { LoggedInRegulator, TrxOrDb } from '../../types.ts'
+import PharmacistsTable, {
+  Pharmacist,
+} from '../../components/regulator/PharmacistsTable.tsx'
+import { LoggedInRegulator } from '../../types.ts'
 import * as pharmacists from '../../db/models/pharmacists.ts'
+import { FreshContext } from '$fresh/server.ts'
+import { PageProps } from '$fresh/server.ts'
 
-export default async function PharmacistsPage(
-  _req: Request,
-  ctx: {
-    route: string
-    url: URL
-    state: { regulator: LoggedInRegulator['regulator']; trx: TrxOrDb }
+type PharmacistsProps = {
+  pharmacists: Pharmacist[]
+  regulator: LoggedInRegulator['regulator']
+  page: number
+  totalRows: number
+  rowsPerPage: number
+  totalPage: number
+  currentPage: number
+}
+
+export const handler = {
+  GET: async function (
+    _req: Request,
+    ctx: FreshContext<LoggedInRegulator>,
+  ) {
+    const ROWS_PER_PAGE = 70
+    const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
+    const { pharmacistsList, totalRows } = await pharmacists.get(
+      ctx.state.trx,
+      {},
+      currentPage,
+      ROWS_PER_PAGE,
+    )
+    return ctx.render({
+      pharmacists: pharmacistsList,
+      regulator: ctx.state.regulator,
+      currentPage,
+      totalRows,
+      rowsPerPage: ROWS_PER_PAGE,
+      totalPage: Math.ceil(totalRows / ROWS_PER_PAGE),
+    })
   },
-) {
-  const { regulator } = ctx.state
+}
 
+export default function PharmacistsPage(
+  props: PageProps<PharmacistsProps>,
+) {
   return (
     <Layout
       title='Pharmacists'
-      route={ctx.route}
-      url={ctx.url}
-      regulator={regulator}
+      route={props.route}
+      url={props.url}
+      regulator={props.data.regulator}
       params={{}}
       variant='regulator home page'
     >
       <PharmacistsTable
-        pharmacists={await pharmacists.get(ctx.state.trx)}
-        pathname={ctx.url.pathname}
+        pharmacists={props.data.pharmacists}
+        pathname={props.url.pathname}
+        rowsPerPage={props.data.rowsPerPage}
+        totalRows={props.data.totalRows}
+        currentPage={props.data.currentPage}
+        totalPage={props.data.totalPage}
       />
     </Layout>
   )

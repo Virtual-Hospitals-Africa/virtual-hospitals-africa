@@ -23,7 +23,10 @@ export async function get(
     pharmacist_type?: string
     include_revoked?: boolean
   } = {},
+  page: number = 1,
+  rowsPerPage: number = 10,
 ) {
+  const offset = (page - 1) * rowsPerPage
   const pharmacists = await trx
     .selectFrom('pharmacists')
     .leftJoin(
@@ -66,10 +69,18 @@ export async function get(
     )
     .orderBy('pharmacists.given_name', 'asc')
     .orderBy('pharmacists.family_name', 'asc')
-    .limit(50)
+    .limit(rowsPerPage)
+    .offset(offset)
     .execute()
 
-  return pharmacists.map((pharmacist) => ({
+  const totalRowsResult = await trx
+    .selectFrom('pharmacists')
+    .select((eb) => eb.fn.count('id').as('totalRows'))
+    .execute()
+
+  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+
+  const pharmacistsList = pharmacists.map((pharmacist) => ({
     ...pharmacist,
     expiry_date: new Date(pharmacist.expiry_date).toISOString().split('T')[0],
     actions: {
@@ -78,6 +89,10 @@ export async function get(
     },
     pharmacy: (pharmacist.pharmacy as RenderedPharmacy) ?? undefined,
   }))
+  return {
+    pharmacistsList,
+    totalRows,
+  }
 }
 
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
