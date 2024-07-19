@@ -54,6 +54,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('special_instructions', 'text')
         .addColumn('start_date', 'date', (col) => col.notNull())
         .addColumn('schedules', sql`medication_schedule[]`)
+        .addColumn('prescription_id', 'varchar(255)', (col) => col.notNull())
         .addCheckConstraint(
           'patient_condition_medications_med_id_check',
           sql`
