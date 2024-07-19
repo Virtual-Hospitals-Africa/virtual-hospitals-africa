@@ -1,5 +1,6 @@
-import { RenderedPharmacist, TrxOrDb } from '../../types.ts'
-import { now } from '../helpers.ts'
+import { sql } from 'kysely'
+import { RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../types.ts'
+import { jsonBuildObject, now } from '../helpers.ts'
 
 export function update(
   trx: TrxOrDb,
@@ -22,34 +23,76 @@ export async function get(
     pharmacist_type?: string
     include_revoked?: boolean
   } = {},
+  page: number = 1,
+  rowsPerPage: number = 10,
 ) {
+  const offset = (page - 1) * rowsPerPage
   const pharmacists = await trx
     .selectFrom('pharmacists')
-    .select([
-      'id',
-      'licence_number',
-      'prefix',
-      'given_name',
-      'family_name',
-      'address',
-      'town',
-      'expiry_date',
-      'pharmacist_type',
+    .leftJoin(
+      'premise_supervisors',
+      'pharmacists.id',
+      'premise_supervisors.pharmacist_id',
+    )
+    .leftJoin('premises', 'premise_supervisors.premise_id', 'premises.id')
+    .select((eb) => [
+      'pharmacists.id',
+      'pharmacists.licence_number',
+      'pharmacists.prefix',
+      'pharmacists.given_name',
+      'pharmacists.family_name',
+      'pharmacists.address',
+      'pharmacists.town',
+      'pharmacists.expiry_date',
+      'pharmacists.pharmacist_type',
+      sql`CASE
+        WHEN premises.id IS NOT NULL THEN ${
+        jsonBuildObject({
+          id: eb.ref('premises.id'),
+          address: eb.ref('premises.address'),
+          expiry_date: sql<string>`TO_CHAR(premises.expiry_date, 'YYYY-MM-DD')`,
+          licence_number: eb.ref('premises.licence_number'),
+          licensee: eb.ref('premises.licensee'),
+          name: eb.ref('premises.name'),
+          premises_types: eb.ref('premises.premises_types'),
+          town: eb.ref('premises.town'),
+          href: sql<string>`'/regulator/pharmacies/' || premises.id`,
+        })
+      }
+        ELSE NULL
+      END`.as('pharmacy'),
     ])
-    .where('revoked_at', query.include_revoked ? 'is not' : 'is', null)
-    .orderBy('given_name', 'asc')
-    .orderBy('family_name', 'asc')
-    .limit(50)
+    .where(
+      'pharmacists.revoked_at',
+      query.include_revoked ? 'is not' : 'is',
+      null,
+    )
+    .orderBy('pharmacists.given_name', 'asc')
+    .orderBy('pharmacists.family_name', 'asc')
+    .limit(rowsPerPage)
+    .offset(offset)
     .execute()
 
-  return pharmacists.map((pharmacist) => ({
+  const totalRowsResult = await trx
+    .selectFrom('pharmacists')
+    .select((eb) => eb.fn.count('id').as('totalRows'))
+    .execute()
+
+  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+
+  const pharmacistsList = pharmacists.map((pharmacist) => ({
     ...pharmacist,
     expiry_date: new Date(pharmacist.expiry_date).toISOString().split('T')[0],
     actions: {
       revoke: `/regulator/pharmacists/${pharmacist.id}/revoke`,
       edit: `/regulator/pharmacists/${pharmacist.id}/edit`,
     },
+    pharmacy: (pharmacist.pharmacy as RenderedPharmacy) ?? undefined,
   }))
+  return {
+    pharmacistsList,
+    totalRows,
+  }
 }
 
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
