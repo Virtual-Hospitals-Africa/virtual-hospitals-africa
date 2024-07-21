@@ -12,6 +12,17 @@ export function SendToButton(
 ) {
   const open = useSignal(false)
 
+  const handleClick = () => {
+    const formElement = document.getElementById(form) as HTMLFormElement;
+    if (formElement) {
+      if (formElement.checkValidity()) {
+        open.value = true;
+      } else {
+        formElement.reportValidity();
+      }
+    }
+  }
+
   return (
     <>
       <Button
@@ -19,7 +30,7 @@ export function SendToButton(
         variant='outline'
         color='blue'
         className='flex-1 max-w-xl'
-        onClick={() => open.value = true}
+        onClick={handleClick}
       >
         Send to
       </Button>
