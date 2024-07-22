@@ -37,7 +37,6 @@ export async function forPatientIntake(
     }),
   )
 
-
   const nurse_employee_information = await getEmployees(
     trx,
     {

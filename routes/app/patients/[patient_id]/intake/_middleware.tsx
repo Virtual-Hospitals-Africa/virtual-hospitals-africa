@@ -32,9 +32,7 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
-import {
-  Location,
-} from '../../../../../types.ts'
+import { Location } from '../../../../../types.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {
