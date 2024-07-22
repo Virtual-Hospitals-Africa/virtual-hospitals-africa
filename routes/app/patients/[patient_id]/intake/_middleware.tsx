@@ -231,6 +231,10 @@ export function IntakePage(
       ctx.state.trx,
       patient.id,
       location,
+      ctx.state.encounter_provider.organization_id,
+      {
+        exclude_health_worker_id: ctx.state.healthWorker.id,
+      },
     )
 
     const children = await render({ ctx, patient, previously_completed })
@@ -239,6 +243,38 @@ export function IntakePage(
       <IntakeLayout ctx={ctx} sendables={await getting_sendables}>
         {children}
       </IntakeLayout>
+    )
+  }
+}
+
+function assertIsSendTo(
+  send_to: unknown,
+): asserts send_to is Maybe<SendToFormSubmission> {
+  if (!send_to) return
+  assertOr400(isObjectLike(send_to))
+  if (send_to.action) {
+    assertOr400(
+      typeof send_to.action === 'string',
+      'send_to.action must be a string',
+    )
+    assertOr400(
+      !send_to.entity,
+      'send_to.entity must not be present when send_to.action is present',
+    )
+  }
+  if (send_to.entity) {
+    assertOr400(isObjectLike(send_to.entity))
+    assertOr400(
+      typeof send_to.entity.id === 'string',
+      'send_to.entity.id must be a string',
+    )
+    assertOr400(
+      typeof send_to.entity.type === 'string',
+      'send_to.entity.type must be a string',
+    )
+    assertOr400(
+      !send_to.action,
+      'send_to.action must not be present when send_to.entity is present',
     )
   }
 }
@@ -254,7 +290,7 @@ export function postHandler(
     send_to?: Maybe<SendToFormSubmission>
   } {
     assertOr400(isObjectLike(form_values))
-    if (form_values.send_to) send_to.assertIs(form_values.send_to)
+    assertIsSendTo(form_values.send_to)
     assertion(form_values)
   }
 

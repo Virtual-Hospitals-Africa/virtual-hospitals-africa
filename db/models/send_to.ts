@@ -6,12 +6,14 @@ import {
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { nearest } from './organizations.ts'
+import { getEmployees, nearest } from './organizations.ts'
 
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
   location: Location,
+  organization_id: string,
+  opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const nearestFacilities = await nearest(trx, location)
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
@@ -35,45 +37,40 @@ export async function forPatientIntake(
     }),
   )
 
-  return [
+  const nurse_employee_information = await getEmployees(
+    trx,
     {
-      key: 'health_worker/nurse_a',
-      name: 'Nurse A',
+      organization_id: organization_id,
+      professions: ['nurse'],
+      exclude_health_worker_id: opts.exclude_health_worker_id,
+      registration_status: 'approved',
+    },
+  )
+
+  const nurse_information: Sendable[] = nurse_employee_information.map(
+    (nurse) => ({
+      key: 'health_worker/' + nurse.name,
+      name: nurse.name,
       description: {
-        text: 'Primary Care Nurse',
+        text: nurse.professions.map((_) => _.specialty + ' ' + _.profession)
+          .join(', '),
       },
       image: {
         type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        url: nurse.avatar_url,
       },
       status: 'Unavailable until tomorrow at 9:00am',
       to: {
         type: 'entity',
         entity_type: 'health_worker',
-        entity_id: 'nurse_a',
+        entity_id: nurse.health_worker_id,
         online: false,
       },
-    },
-    {
-      key: 'health_worker/nurse_b',
-      name: 'Nurse B',
-      description: {
-        text: 'Primary Care Nurse',
-      },
-      image: {
-        type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      status: 'Seeing a patient until 3:30pm',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: 'nurse_b',
-        online: true,
-      },
-    },
+    }),
+  )
+
+  return [
+    ...nurse_information,
     {
       key: 'health_worker/nurse_c',
       name: 'Nurse C',

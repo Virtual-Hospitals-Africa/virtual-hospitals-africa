@@ -4,6 +4,7 @@ import {
   HasStringId,
   HealthWorkerInvitee,
   Maybe,
+  OrganizationRegisteredNurse,
   Profession,
   TrxOrDb,
 } from '../../types.ts'
@@ -154,4 +155,37 @@ export function getOrganizationAdmin(
       'Organization.canonicalName as organization_name',
     ])
     .executeTakeFirst()
+}
+
+export function getOrganizationNurses(
+  trx: TrxOrDb,
+  organization_id: string,
+  opts: {
+    exclude_health_worker_id?: string
+  },
+): Promise<HasStringId<OrganizationRegisteredNurse>[]> {
+  const query = trx
+    .selectFrom('employment')
+    .where('organization_id', '=', organization_id)
+    .where('profession', '=', 'nurse')
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .select([
+      'employment.id',
+      'health_worker_id',
+      'health_workers.name',
+      'health_workers.name as display_name',
+      'health_workers.avatar_url',
+      'email',
+      'organization_id',
+    ])
+
+  if (opts.exclude_health_worker_id) {
+    query.where('health_worker_id', '!=', opts.exclude_health_worker_id)
+  }
+
+  return query.execute()
 }
