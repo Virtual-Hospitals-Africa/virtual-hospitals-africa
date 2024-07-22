@@ -231,6 +231,10 @@ export function IntakePage(
       ctx.state.trx,
       patient.id,
       location,
+      ctx.state.encounter_provider.organization_id,
+      {
+        exclude_health_worker_id: ctx.state.healthWorker.id,
+      },
     )
 
     const children = await render({ ctx, patient, previously_completed })

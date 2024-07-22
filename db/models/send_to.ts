@@ -7,11 +7,14 @@ import {
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { nearest } from './organizations.ts'
+import { getOrganizationNurses } from './employment.ts'
 
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
   location: Location,
+  organization_id: string,
+  opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const nearestFacilities = await nearest(trx, location)
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
@@ -35,45 +38,36 @@ export async function forPatientIntake(
     }),
   )
 
-  return [
-    {
-      key: 'health_worker/nurse_a',
-      name: 'Nurse A',
+  const nurse_information : Sendable[] = []
+  const nurse_employee_information = await getOrganizationNurses(
+    trx,
+    organization_id,
+    opts,
+  )
+
+  for (const nurse of nurse_employee_information) {
+    nurse_information.push({
+      key: 'health_worker/' + nurse.id,
+      name: nurse.name,
       description: {
         text: 'Primary Care Nurse',
       },
       image: {
         type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        url: nurse.avatar_url,
       },
       status: 'Unavailable until tomorrow at 9:00am',
       to: {
         type: 'entity',
         entity_type: 'health_worker',
-        entity_id: 'nurse_a',
+        entity_id: nurse.id,
         online: false,
       },
-    },
-    {
-      key: 'health_worker/nurse_b',
-      name: 'Nurse B',
-      description: {
-        text: 'Primary Care Nurse',
-      },
-      image: {
-        type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      status: 'Seeing a patient until 3:30pm',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: 'nurse_b',
-        online: true,
-      },
-    },
+    })
+  }
+
+  return [
+    ...nurse_information,
     {
       key: 'health_worker/nurse_c',
       name: 'Nurse C',
