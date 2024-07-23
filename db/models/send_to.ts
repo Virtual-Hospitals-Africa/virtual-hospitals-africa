@@ -8,6 +8,28 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { getEmployees, nearest } from './organizations.ts'
 
+export async function getLocationByOrganizationId(
+  trx: TrxOrDb, 
+  organizationId: string
+) {
+  const result = await trx
+    .selectFrom('Location')
+    .select([
+      sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
+      sql<number>`("near"::json->>'latitude')::float`.as('latitude')
+    ])
+    .where('organizationId', '=', organizationId)
+    .executeTakeFirst()
+
+  if (!result) {
+    throw new Error(`No location data found for organizationId: ${organizationId}`)
+  }
+  return {
+    longitude: result.longitude,
+    latitude: result.latitude
+  }
+}
+
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
