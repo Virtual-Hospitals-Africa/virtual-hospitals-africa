@@ -7,6 +7,7 @@ import {
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { getEmployees, nearest } from './organizations.ts'
+import { sql } from 'kysely'
 
 export async function getLocationByOrganizationId(
   trx: TrxOrDb,
