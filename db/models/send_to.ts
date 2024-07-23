@@ -28,24 +28,26 @@ export async function nearest(
 }
 
 export async function getLocationByOrganizationId(
-  trx: TrxOrDb, 
-  organizationId: string
+  trx: TrxOrDb,
+  organizationId: string,
 ) {
   const result = await trx
     .selectFrom('Location')
     .select([
       sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
-      sql<number>`("near"::json->>'latitude')::float`.as('latitude')
+      sql<number>`("near"::json->>'latitude')::float`.as('latitude'),
     ])
     .where('organizationId', '=', organizationId)
     .executeTakeFirst()
 
   if (!result) {
-    throw new Error(`No location data found for organizationId: ${organizationId}`)
+    throw new Error(
+      `No location data found for organizationId: ${organizationId}`,
+    )
   }
   return {
     longitude: result.longitude,
-    latitude: result.latitude
+    latitude: result.latitude,
   }
 }
 
