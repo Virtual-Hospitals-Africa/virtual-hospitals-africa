@@ -1,6 +1,29 @@
+FROM surnet/alpine-wkhtmltopdf:3.16.2-0.12.6-full as wkhtmltopdf
 FROM denoland/deno:alpine-1.40.3 as build
+
 WORKDIR /app
+
+# wkhtmltopdf install dependencies
+RUN apk add --no-cache \
+        libstdc++ \
+        libx11 \
+        libxrender \
+        libxext \
+        libssl1.1 \
+        ca-certificates \
+        fontconfig \
+        freetype \
+        ttf-droid \
+        ttf-freefont \
+        ttf-liberation \
+        # more fonts
+        ;
+# wkhtmltopdf copy bins from ext image
+COPY --from=wkhtmltopdf /bin/wkhtmltopdf /bin/libwkhtmltox.so /bin/
+
 COPY ./ /app
+RUN mkdir /app/temp_files
+RUN chmod 755 /app/temp_files
 RUN touch .env
 EXPOSE 8000
 

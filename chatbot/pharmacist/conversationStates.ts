@@ -1,5 +1,6 @@
 import {
   ConversationStates,
+  Location,
   PharmacistChatbotUserState,
   PharmacistConversationState,
   TrxOrDb,
@@ -21,6 +22,10 @@ const checkOnboardingStatus = (
     ? onboardedAction
     : 'not_onboarded:enter_licence_number' as const
 }
+
+const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
+  'https://localhost:8000'
+assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
 
 export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   PharmacistChatbotUserState
@@ -129,6 +134,35 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         },
       )
       // TODO Handle case where the user previously selected they want to view inventory
+      return 'not_onboarded:share_location' as const
+    },
+  },
+  'not_onboarded:share_location': {
+    type: 'get_location',
+    prompt:
+      'For regulatory purpose, we will need to have your current location, can you share that to us?',
+    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      assert(pharmacistState.chatbot_user.entity_id)
+      assert(pharmacistState.unhandled_message.trimmed_body)
+      const locationMessage: Location = JSON.parse(
+        pharmacistState.unhandled_message.trimmed_body,
+      )
+      const currentLocation: Location = {
+        longitude: locationMessage.longitude,
+        latitude: locationMessage.latitude,
+      }
+
+      //try to save it as data first and see if it works
+      await conversations.updateChatbotUser(
+        trx,
+        pharmacistState.chatbot_user,
+        {
+          data: {
+            ...pharmacistState.chatbot_user.data,
+            currentLocation,
+          },
+        },
+      )
       return 'onboarded:fill_prescription:enter_code' as const
     },
   },
@@ -178,7 +212,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       assert(typeof prescription_code === 'string')
 
       const file_path = await generatePDF(
-        `/prescriptions/${prescription_id}?code=${prescription_code}`,
+        `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
       const documentMessage: WhatsAppSingleSendable = {

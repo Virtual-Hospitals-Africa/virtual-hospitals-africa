@@ -47,6 +47,25 @@ const columns: TableColumn<RenderedPharmacy>[] = [
     label: 'Pharmacy Type',
     data: 'premises_types',
   },
+  {
+    label: 'Supervisor',
+    data(row) {
+      if (!row.supervisors || row.supervisors.length === 0) return null
+      return (
+        <div className='flex flex-wrap gap-2'>
+          {row.supervisors.map((s) => (
+            <a
+              key={`${row.id}-${s.id}-${s.family_name}-${s.given_name}`}
+              href={s.href}
+              className='text-indigo-600 hover:text-indigo-900'
+            >
+              {s.family_name} {s.given_name}
+            </a>
+          ))}
+        </div>
+      )
+    },
+  },
 ]
 
 type PharmaciesTableProps = {

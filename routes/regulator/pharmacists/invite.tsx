@@ -1,7 +1,7 @@
 import { FreshContext } from '$fresh/server.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulator, RenderedPharmacist } from '../../../types.ts'
-import PharmacistForm from '../../../components/regulator/PharmacistForm.tsx'
+import PharmacistForm from '../../../islands/form/PharmacistForm.tsx'
 import { PageProps } from '$fresh/server.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../util/parseForm.ts'

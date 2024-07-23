@@ -1,31 +1,12 @@
 import {
-  HasStringId,
   Location,
-  Organization,
   Sendable,
+  SendToFormSubmission,
   TrxOrDb,
 } from '../../types.ts'
-import { sql } from 'kysely'
-
-export async function nearest(
-  trx: TrxOrDb,
-  location: Location,
-): Promise<HasStringId<Organization>[]> {
-  const result = await sql<HasStringId<Organization>>`
-      SELECT *,
-             ST_Distance(
-                  location,
-                  ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-              ) AS distance,
-              ST_X(location::geometry) as longitude,
-              ST_Y(location::geometry) as latitude
-        FROM "Location"
-    ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-       LIMIT 3
-  `.execute(trx)
-
-  return result.rows
-}
+import { assertOr400 } from '../../util/assertOr.ts'
+import isObjectLike from '../../util/isObjectLike.ts'
+import { getEmployees, nearest } from './organizations.ts'
 
 export async function getLocationByOrganizationId(
   trx: TrxOrDb,
@@ -55,6 +36,8 @@ export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
   location: Location,
+  organization_id: string,
+  opts: { exclude_health_worker_id?: string } = {},
 ): Promise<Sendable[]> {
   const nearestFacilities = await nearest(trx, location)
   const nearestFacilitySendables: Sendable[] = nearestFacilities.map(
@@ -77,45 +60,41 @@ export async function forPatientIntake(
       },
     }),
   )
-  const otherSendables: Sendable[] = [
+
+  const nurse_employee_information = await getEmployees(
+    trx,
     {
-      key: 'health_worker/nurse_a',
-      name: 'Nurse A',
+      organization_id: organization_id,
+      professions: ['nurse'],
+      exclude_health_worker_id: opts.exclude_health_worker_id,
+      registration_status: 'approved',
+    },
+  )
+
+  const nurse_information: Sendable[] = nurse_employee_information.map(
+    (nurse) => ({
+      key: 'health_worker/' + nurse.name,
+      name: nurse.name,
       description: {
-        text: 'Primary Care Nurse',
+        text: nurse.professions.map((_) => _.specialty + ' ' + _.profession)
+          .join(', '),
       },
       image: {
         type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        url: nurse.avatar_url,
       },
       status: 'Unavailable until tomorrow at 9:00am',
       to: {
         type: 'entity',
         entity_type: 'health_worker',
-        entity_id: 'nurse_a',
+        entity_id: nurse.health_worker_id,
         online: false,
       },
-    },
-    {
-      key: 'health_worker/nurse_b',
-      name: 'Nurse B',
-      description: {
-        text: 'Primary Care Nurse',
-      },
-      image: {
-        type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      status: 'Seeing a patient until 3:30pm',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: 'nurse_b',
-        online: true,
-      },
-    },
+    }),
+  )
+
+  return [
+    ...nurse_information,
     {
       key: 'health_worker/nurse_c',
       name: 'Nurse C',
@@ -173,27 +152,7 @@ export async function forPatientIntake(
         online: false,
       },
     },
-    {
-      key: 'facility/another_facility_a',
-      name: 'Another Facility A',
-      description: {
-        text: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
-        href: '5 More London Place, Tooley St, London SE1 2BY, United Kingdom',
-        parenthetical: 'address',
-      },
-      image: {
-        type: 'icon',
-        icon: 'BuildingOffice2Icon',
-      },
-      status: 'Accepting patients',
-      to: {
-        type: 'entity',
-        entity_type: 'facility',
-        entity_id: 'another_facility_a',
-        online: true,
-        reopens: 'Reopens 9:00am',
-      },
-    },
+    ...nearestFacilitySendables,
     {
       key: 'waiting_room',
       name: 'Waiting Room',
@@ -234,10 +193,6 @@ export async function forPatientIntake(
         action: 'search',
       },
     },
-  ]
-  return [
-    ...otherSendables,
-    ...nearestFacilitySendables,
   ]
 }
 
@@ -346,4 +301,35 @@ export async function forPatientEncounter(
       },
     },
   ]
+}
+
+export function assertIs(
+  send_to: unknown,
+): asserts send_to is SendToFormSubmission {
+  assertOr400(isObjectLike(send_to))
+  if (send_to.action) {
+    assertOr400(
+      typeof send_to.action === 'string',
+      'send_to.action must be a string',
+    )
+    assertOr400(
+      !send_to.entity,
+      'send_to.entity must not be present when send_to.action is present',
+    )
+  }
+  if (send_to.entity) {
+    assertOr400(isObjectLike(send_to.entity))
+    assertOr400(
+      typeof send_to.entity.id === 'string',
+      'send_to.entity.id must be a string',
+    )
+    assertOr400(
+      typeof send_to.entity.type === 'string',
+      'send_to.entity.type must be a string',
+    )
+    assertOr400(
+      !send_to.action,
+      'send_to.action must not be present when send_to.entity is present',
+    )
+  }
 }

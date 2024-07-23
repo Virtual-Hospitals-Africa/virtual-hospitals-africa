@@ -30,7 +30,7 @@ export async function nearest(
               ) AS distance,
               ST_X(location::geometry) as longitude,
               ST_Y(location::geometry) as latitude
-        FROM Location
+        FROM "Location"
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10
   `.execute(trx)
@@ -103,6 +103,7 @@ export function getEmployeesQuery(
     professions?: Profession[]
     emails?: string[]
     is_approved?: boolean
+    exclude_health_worker_id?: string
   },
 ) {
   let hwQuery = trx.selectFrom('health_workers')
@@ -184,6 +185,13 @@ export function getEmployeesQuery(
   if (opts.is_approved) {
     console.log('TODO implement is_approved for doctors')
   }
+  if (opts.exclude_health_worker_id) {
+    hwQuery = hwQuery.where(
+      'health_workers.id',
+      '!=',
+      opts.exclude_health_worker_id,
+    )
+  }
 
   return hwQuery
 }
@@ -195,6 +203,7 @@ export function getEmployees(
     professions?: Profession[]
     emails?: string[]
     registration_status?: 'pending_approval' | 'approved' | 'incomplete'
+    exclude_health_worker_id?: string
   },
 ): Promise<OrganizationEmployee[]> {
   return getEmployeesQuery(trx, opts).execute()

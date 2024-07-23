@@ -434,6 +434,7 @@ export type PharmacistConversationState =
   | 'initial_message'
   | 'not_onboarded:enter_licence_number'
   | 'not_onboarded:enter_name'
+  | 'not_onboarded:share_location'
   // | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
@@ -1059,6 +1060,21 @@ export type OrganizationEmployee = {
     view: string
   }
 }
+
+// QUESTION: How to make this specific to nurses?
+export type OrganizationRegisteredNurse =
+  & Omit<
+    OrganizationEmployee,
+    | 'is_invitee'
+    | 'professions'
+    | 'registration_status'
+    | 'actions'
+    | 'display_name'
+  >
+  & {
+    avatar_url: string
+    organization_id: string
+  }
 
 export type OrganizationDoctorOrNurse =
   & Omit<
@@ -2736,7 +2752,7 @@ export type HeroIconName =
 
 export type Image = {
   type: 'avatar'
-  url: string
+  url: string | null
   className?: string
 } | {
   type: 'icon'
@@ -2799,6 +2815,7 @@ export type SelectedPatient = {
 }
 
 export type RenderedPharmacy = {
+  id: string
   address: string | null
   expiry_date: string
   licence_number: string
@@ -2818,9 +2835,12 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
+  href: string
+  supervisors?: Supervisor[]
 }
 
 export type RenderedPharmacist = {
+  id?: string
   licence_number: string
   prefix: Prefix | null
   given_name: string
@@ -2833,4 +2853,13 @@ export type RenderedPharmacist = {
     | 'Ind Clinic Nurse'
     | 'Pharmacist'
     | 'Pharmacy Technician'
+  pharmacy?: RenderedPharmacy
+}
+
+export type Supervisor = {
+  id?: string
+  href: string
+  family_name: string
+  given_name: string
+  prefix: Prefix | null
 }
