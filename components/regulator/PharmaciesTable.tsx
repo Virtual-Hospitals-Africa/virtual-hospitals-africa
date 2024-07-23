@@ -59,7 +59,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
               href={s.href}
               className='text-indigo-600 hover:text-indigo-900'
             >
-              {s.family_name} {s.given_name}
+              {s.given_name} {s.family_name}
             </a>
           ))}
         </div>

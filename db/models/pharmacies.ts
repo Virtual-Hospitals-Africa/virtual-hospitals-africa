@@ -1,6 +1,6 @@
 import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
-import { jsonBuildObject } from '../helpers.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 
 export async function get(
   trx: TrxOrDb,
@@ -29,18 +29,27 @@ export async function get(
       'premises.town',
       'premises.expiry_date',
       'premises.premises_types',
-      sql`json_agg(${
-        jsonBuildObject({
-          id: eb.ref('premise_supervisors.id'),
-          prefix: eb.ref('premise_supervisors.prefix'),
-          given_name: eb.ref('premise_supervisors.given_name'),
-          family_name: eb.ref('premise_supervisors.family_name'),
-          href: sql<
-            string
-          >`'/regulator/pharmacists/' || premise_supervisors.id`,
-        })
-      }
-        ) FILTER (WHERE premise_supervisors.id IS NOT NULL)`.as('supervisors'),
+      jsonArrayFrom(
+        eb
+          .selectFrom('premise_supervisors')
+          .select([
+            'id',
+            'prefix',
+            'given_name',
+            'family_name',
+            sql<
+              string
+            >`'/regulator/pharmacists/' || premise_supervisors.pharmacist_id`
+              .as(
+                'href',
+              ),
+          ])
+          .whereRef(
+            'premises.id',
+            '=',
+            'premise_supervisors.premise_id',
+          ),
+      ).as('supervisors'),
     ])
     .groupBy([
       'premises.id',
