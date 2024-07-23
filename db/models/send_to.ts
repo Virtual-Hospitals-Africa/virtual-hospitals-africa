@@ -71,63 +71,6 @@ export async function forPatientIntake(
 
   return [
     ...nurse_information,
-    {
-      key: 'health_worker/nurse_c',
-      name: 'Nurse C',
-      description: {
-        text: 'Primary Care Nurse',
-      },
-      image: {
-        type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      status: 'Unavailable until tomorrow at 9:00am',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: 'nurse_c',
-        online: false,
-      },
-    },
-    {
-      key: 'health_worker/nurse_d',
-      name: 'Nurse D',
-      description: {
-        text: 'Primary Care Nurse',
-      },
-      image: {
-        type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      status: 'Unavailable until tomorrow at 9:00am',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: 'nurse_d',
-        online: false,
-      },
-    },
-    {
-      key: 'health_worker/nurse_e',
-      name: 'Nurse E',
-      description: {
-        text: 'Primary Care Nurse',
-      },
-      image: {
-        type: 'avatar',
-        url:
-          'https://images.unsplash.com/photo-1564564295391-7f24f26f568b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-      },
-      status: 'Unavailable until tomorrow at 9:00am',
-      to: {
-        type: 'entity',
-        entity_type: 'health_worker',
-        entity_id: 'nurse_e',
-        online: false,
-      },
-    },
     ...nearestFacilitySendables,
     {
       key: 'waiting_room',
