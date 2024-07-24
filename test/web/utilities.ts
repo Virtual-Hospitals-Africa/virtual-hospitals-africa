@@ -1,8 +1,7 @@
 import { beforeAll } from 'std/testing/bdd.ts'
 import * as cheerio from 'cheerio'
-import generateUUID from '../../util/uuid.ts'
 import { it } from 'std/testing/bdd.ts'
-import { redis } from '../../external-clients/redis.ts'
+import * as health_workers from '../../db/models/health_workers.ts'
 import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -162,15 +161,10 @@ export async function addTestHealthWorkerWithSession(
   trx: TrxOrDb,
   opts: TestHealthWorkerOpts = { scenario: 'base' },
 ) {
-  const sessionId = generateUUID()
   const healthWorker = await addTestHealthWorker(trx, opts)
-  await redis.set(
-    `S_${sessionId}`,
-    JSON.stringify({
-      data: { health_worker_id: healthWorker.id },
-      _flash: {},
-    }),
-  )
+  const session = await health_workers.createSession(trx, {
+    health_worker_id: healthWorker.id,
+  })
   const fetchWithSession: typeof fetch = (
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},
@@ -178,7 +172,7 @@ export async function addTestHealthWorkerWithSession(
     fetch(input, {
       headers: {
         ...headers,
-        Cookie: `sessionId=${sessionId}`,
+        Cookie: `health_worker_session_id=${session.id}`,
       },
       ...rest,
     })
@@ -193,7 +187,7 @@ export async function addTestHealthWorkerWithSession(
   }
 
   return {
-    sessionId,
+    health_worker_session_id: session.id,
     healthWorker,
     fetch: fetchWithSession,
     fetchCheerio,

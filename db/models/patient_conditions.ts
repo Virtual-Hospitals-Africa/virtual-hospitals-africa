@@ -318,9 +318,10 @@ export function getPreExistingConditionsReview(
             sql<
               MedicationSchedule[]
             >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-            isoDate(eb_med.ref('patient_condition_medications.start_date')).as(
-              'start_date',
-            ),
+            isoDate(eb_med.ref('patient_condition_medications.start_date'))
+              .$notNull().as(
+                'start_date',
+              ),
           ]),
       ).as('medications'),
       jsonArrayFrom(
@@ -442,9 +443,11 @@ export async function getPreExistingConditions(
         )
         .map(({ schedules, ...medication }) => {
           assertEquals(schedules.length, 1)
+          assert(medication.start_date)
           const [schedule] = schedules
           return {
             ...omit(medication, ['patient_condition_id']),
+            start_date: medication.start_date,
             intake_frequency: schedule.frequency,
             end_date: durationEndDate(medication.start_date, schedule),
             // TODO remove the Number casts

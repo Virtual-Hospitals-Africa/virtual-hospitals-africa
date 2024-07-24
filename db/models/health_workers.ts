@@ -15,6 +15,7 @@ import {
   jsonArrayFrom,
   jsonArrayFromColumn,
   jsonBuildObject,
+  now,
 } from '../helpers.ts'
 import { assert } from 'std/assert/assert.ts'
 import pick from '../../util/pick.ts'
@@ -196,6 +197,43 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
+export function createSession(
+  trx: TrxOrDb,
+  { health_worker_id }: { health_worker_id: string },
+) {
+  return trx
+    .insertInto('health_worker_sessions')
+    .values({ health_worker_id })
+    .returning('id')
+    .executeTakeFirstOrThrow()
+}
+
+export function removeSession(
+  trx: TrxOrDb,
+  { health_worker_session_id }: { health_worker_session_id: string },
+) {
+  return trx
+    .deleteFrom('health_worker_sessions')
+    .where('id', '=', health_worker_session_id)
+    .execute()
+}
+
+// TODO: See if we can do the update and get in a single query
+export async function getBySession(trx: TrxOrDb, { health_worker_session_id }: {
+  health_worker_session_id: string
+}): Promise<Maybe<PossiblyEmployedHealthWorker>> {
+  const session = await trx.updateTable('health_worker_sessions').where(
+    'id',
+    '=',
+    health_worker_session_id,
+  )
+    .set({ updated_at: now })
+    .returning('health_worker_id')
+    .executeTakeFirst()
+
+  return session && get(trx, session)
+}
+
 export async function get(
   trx: TrxOrDb,
   { health_worker_id }: { health_worker_id: string },
@@ -206,6 +244,11 @@ export async function get(
       'nurse_registration_details',
       'health_workers.id',
       'nurse_registration_details.health_worker_id',
+    )
+    .leftJoin(
+      'health_worker_sessions',
+      'health_workers.id',
+      'health_worker_sessions.health_worker_id',
     )
     .leftJoin(
       'health_worker_google_tokens',

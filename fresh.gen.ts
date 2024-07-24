@@ -6,7 +6,7 @@ import * as $_404 from './routes/_404.tsx'
 import * as $_app from './routes/_app.tsx'
 import * as $_middleware from './routes/_middleware.ts'
 import * as $app from './routes/app.tsx'
-import * as $app_middleware from './routes/app/_middleware.tsx'
+import * as $app_middleware from './routes/app/_middleware.ts'
 import * as $app_calendar from './routes/app/calendar.tsx'
 import * as $app_calendar_appointments_appointment_id_media_media_id_ from './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx'
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
@@ -21,6 +21,7 @@ import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
+import * as $app_logout from './routes/app/logout.ts'
 import * as $app_manufactured_medications from './routes/app/manufactured_medications.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_organizations from './routes/app/organizations.tsx'
@@ -90,10 +91,11 @@ import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
-import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
+import * as $regulator_middleware from './routes/regulator/_middleware.ts'
+import * as $regulator_logout from './routes/regulator/logout.ts'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
@@ -208,7 +210,7 @@ const manifest = {
     './routes/_app.tsx': $_app,
     './routes/_middleware.ts': $_middleware,
     './routes/app.tsx': $app,
-    './routes/app/_middleware.tsx': $app_middleware,
+    './routes/app/_middleware.ts': $app_middleware,
     './routes/app/calendar.tsx': $app_calendar,
     './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx':
       $app_calendar_appointments_appointment_id_media_media_id_,
@@ -226,6 +228,7 @@ const manifest = {
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
+    './routes/app/logout.ts': $app_logout,
     './routes/app/manufactured_medications.tsx': $app_manufactured_medications,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
     './routes/app/organizations.tsx': $app_organizations,
@@ -346,11 +349,12 @@ const manifest = {
     './routes/loading-test.tsx': $loading_test,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
-    './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
+    './routes/regulator/_middleware.ts': $regulator_middleware,
+    './routes/regulator/logout.ts': $regulator_logout,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':

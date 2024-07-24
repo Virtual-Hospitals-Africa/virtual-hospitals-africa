@@ -4,20 +4,20 @@ import { createStandardTable } from '../createStandardTable.ts'
 export async function up(db: Kysely<unknown>) {
   await createStandardTable(
     db,
-    'health_workers',
+    'regulators',
     (qb) =>
       qb.addColumn('name', 'varchar(255)', (col) => col.notNull())
         .addColumn('email', 'varchar(255)', (col) => col.notNull().unique())
-        .addColumn('avatar_url', 'text', (col) => col.notNull()),
+        .addColumn('avatar_url', 'text'),
   )
 
-  await createStandardTable(db, 'health_worker_google_tokens', (qb) =>
+  await createStandardTable(db, 'regulator_google_tokens', (qb) =>
     qb
       .addColumn(
-        'health_worker_id',
+        'regulator_id',
         'uuid',
         (col) =>
-          col.notNull().unique().references('health_workers.id').onDelete(
+          col.notNull().unique().references('regulators.id').onDelete(
             'cascade',
           ),
       )
@@ -29,18 +29,17 @@ export async function up(db: Kysely<unknown>) {
       )
       .addColumn('expires_at', 'timestamptz', (col) => col.notNull()))
 
-  await createStandardTable(db, 'health_worker_sessions', (qb) =>
+  await createStandardTable(db, 'regulator_sessions', (qb) =>
     qb
       .addColumn(
-        'health_worker_id',
+        'regulator_id',
         'uuid',
-        (col) =>
-          col.notNull().references('health_workers.id').onDelete('cascade'),
+        (col) => col.notNull().references('regulators.id').onDelete('cascade'),
       ))
 }
 
 export async function down(db: Kysely<unknown>) {
-  await db.schema.dropTable('health_worker_sessions').execute()
-  await db.schema.dropTable('health_worker_google_tokens').execute()
-  await db.schema.dropTable('health_workers').execute()
+  await db.schema.dropTable('regulator_sessions').execute()
+  await db.schema.dropTable('regulator_google_tokens').execute()
+  await db.schema.dropTable('regulators').execute()
 }

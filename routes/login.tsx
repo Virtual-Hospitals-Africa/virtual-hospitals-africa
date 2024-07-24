@@ -1,17 +1,16 @@
 import { Handlers } from '$fresh/server.ts'
 import { oauthParams } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
-import { WithSession } from 'fresh_session'
+import { getHealthWorkerCookie } from './app/_middleware.ts'
 
-export const handler: Handlers<unknown, WithSession> = {
-  GET(_req, ctx) {
-    if (ctx.state.session.get('health_worker_id')) {
-      return redirect('/app')
-    }
+export const login_href =
+  `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
 
-    const loginUrl =
-      `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?${oauthParams}`
-
-    return redirect(loginUrl)
+// TODO check if cookie legit first?
+export const handler: Handlers = {
+  GET(req) {
+    return redirect(
+      getHealthWorkerCookie(req) ? '/app?from_login=true' : login_href,
+    )
   },
 }

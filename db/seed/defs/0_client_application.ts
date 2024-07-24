@@ -1,6 +1,7 @@
 import { Kysely, sql } from 'kysely'
 import { create } from '../create.ts'
 import { assert } from 'std/assert/assert.ts'
+import { DB } from '../../../db.d.ts'
 
 const MEDPLUM_CLIENT_ID = Deno.env.get('MEDPLUM_CLIENT_ID')
 const MEDPLUM_CLIENT_SECRET = Deno.env.get('MEDPLUM_CLIENT_SECRET')
@@ -11,8 +12,7 @@ export default create(
   { never_dump: true },
 )
 
-// deno-lint-ignore no-explicit-any
-async function addClientApplication(db: Kysely<any>) {
+async function addClientApplication(db: Kysely<DB>) {
   assert(MEDPLUM_CLIENT_ID, 'Must set MEDPLUM_CLIENT_ID env var')
   assert(MEDPLUM_CLIENT_SECRET, 'Must set MEDPLUM_CLIENT_SECRET env var')
 
@@ -49,7 +49,7 @@ async function addClientApplication(db: Kysely<any>) {
       'id': MEDPLUM_CLIENT_ID,
     }),
     lastUpdated: '2024-04-22 21:56:22.761-04',
-    compartments: `{${project.id}}`,
+    compartments: [project.id],
     name: 'Virtual Hospitals Africa',
     deleted: false,
     _profile: null,
@@ -93,7 +93,7 @@ async function addClientApplication(db: Kysely<any>) {
         'id': project_membership_id,
       }),
       lastUpdated: '2024-04-23 15:11:26.089-04',
-      compartments: `{${project.id}}`,
+      compartments: [project.id],
       project: `Project/${project.id}`,
       user: `ClientApplication/${client_application.id}`,
       deleted: false,

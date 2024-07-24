@@ -11,6 +11,10 @@ MEDPLUM_TABLES_IN_USE=(
   Encounter
   Condition
   ConditionEvidence
+  ProjectMembership
+  ClientApplication
+  Project
+  Practitioner
 )
 
 MEDPLUM_TABLES=(
