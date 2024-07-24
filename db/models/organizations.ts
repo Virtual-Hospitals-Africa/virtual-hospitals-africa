@@ -183,7 +183,12 @@ export function getEmployeesQuery(
     hwQuery = hwQuery.where('employment.profession', 'in', opts.professions)
   }
   if (opts.is_approved) {
-    console.log('TODO implement is_approved for doctors')
+    hwQuery = hwQuery.where((eb) =>
+      eb.or([
+        eb('employment.profession', 'in', ['doctor', 'admin']),
+        eb('nurse_registration_details.approved_by', 'is not', null),
+      ])
+    )
   }
   if (opts.exclude_health_worker_id) {
     hwQuery = hwQuery.where(
@@ -202,7 +207,7 @@ export function getEmployees(
     organization_id: string
     professions?: Profession[]
     emails?: string[]
-    registration_status?: 'pending_approval' | 'approved' | 'incomplete'
+    is_approved?: boolean
     exclude_health_worker_id?: string
   },
 ): Promise<OrganizationEmployee[]> {
@@ -219,7 +224,7 @@ export async function getApprovedDoctorsAndNurses(
   const employees = await getEmployees(trx, {
     ...opts,
     professions: ['doctor', 'nurse'],
-    registration_status: 'approved',
+    is_approved: true,
   })
 
   return employees.map(({ is_invitee, professions, ...rest }) => {
