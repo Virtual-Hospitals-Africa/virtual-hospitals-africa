@@ -10,8 +10,9 @@ export function up(db: Kysely<unknown>) {
         (col) => col.notNull().unique(),
       )
       .addColumn('contents', 'text', (col) => col.notNull())
-      .addColumn('prescriber', 'text', (col) => col.notNull().references('patient_encounter_providers.id').onDelete('cascade'),)
-      .addColumn('patient_id', 'text', (col) => col.notNull().references('patients.id').onDelete('cascade'),))
+      .addColumn('prescriber', 'uuid', (col) => col.notNull().references('patient_encounter_providers.id').onDelete('cascade'),)
+      .addColumn('patient_id', 'uuid', (col) => col.references('patients.id').onDelete('cascade'),)
+    )
 }
 
 export function down(db: Kysely<unknown>) {
