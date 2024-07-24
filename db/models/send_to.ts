@@ -43,7 +43,7 @@ export async function forPatientIntake(
       organization_id: organization_id,
       professions: ['nurse'],
       exclude_health_worker_id: opts.exclude_health_worker_id,
-      registration_status: 'approved',
+      is_approved: true,
     },
   )
 

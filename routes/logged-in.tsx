@@ -13,6 +13,7 @@ import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
+import { handleError } from './_middleware.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
@@ -164,7 +165,7 @@ export const handler: Handlers<Record<string, never>, WithSession> = {
     assert(code, 'No code found in query params')
 
     const gettingTokens = getInitialTokensFromAuthCode(code)
-    const result = await authCheck(gettingTokens)
+    const result = await authCheck(gettingTokens).catch(handleError)
 
     if (result.status === 'authorized') {
       return handleAuthorized(result, session)

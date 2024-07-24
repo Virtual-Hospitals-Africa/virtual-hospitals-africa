@@ -25,6 +25,19 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
+// deno-lint-ignore no-explicit-any
+export const handleError = (err: any) => {
+  if (err.status === 302) {
+    return redirect(err.location)
+  }
+  console.error(err)
+  logError(err)
+  const status = err.status || 500
+  const message: string = grokPostgresError(err) || err.message ||
+    'Internal Server Error'
+  return new Response(message, { status })
+}
+
 export const handler = [
   redisSession(redis, {
     keyPrefix: 'S_',
@@ -69,16 +82,6 @@ export const handler = [
         ctx.state.trx = trx
         return ctx.next()
       })
-      .catch((err) => {
-        if (err.status === 302) {
-          return redirect(err.location)
-        }
-        console.error(err)
-        logError(err)
-        const status = err.status || 500
-        const message: string = grokPostgresError(err) || err.message ||
-          'Internal Server Error'
-        return new Response(message, { status })
-      })
+      .catch(handleError)
   },
 ]
