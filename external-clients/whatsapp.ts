@@ -46,6 +46,9 @@ export function sendMessage(opts: {
   message: WhatsAppSingleSendable
 }): Promise<WhatsAppJSONResponse> {
   const message_unique_hash = JSON.stringify(opts)
+  //unique hash
+  //{"chatbot_name":"pharmacist","message":{"type":"string","messageBody":"An unknown error occured: Cannot find a pharmacist with that licence and name combination"},"phone_number":"12369961017"}
+
   if (RECENTLY_SENT_MESSAGES.has(message_unique_hash)) {
     console.error(
       'Sending duplicate message to the same number. Is it possible the chatbot is running elsewhere?',

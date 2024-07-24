@@ -23,6 +23,24 @@ const checkOnboardingStatus = (
     : 'not_onboarded:enter_licence_number' as const
 }
 
+const logErrorAndReturn = async (
+  trx: TrxOrDb,
+  pharmacistState: PharmacistChatbotUserState,
+  error_message: string,
+) => {
+  await conversations.updateChatbotUser(
+    trx,
+    pharmacistState.chatbot_user,
+    {
+      data: {
+        ...pharmacistState.chatbot_user.data,
+        error_message,
+      },
+    },
+  )
+  return 'error' as const
+}
+
 const PRESCRIPTIONS_BASE_URL = Deno.env.get('PRESCRIPTIONS_BASE_URL') ||
   'https://localhost:8000'
 assert(PRESCRIPTIONS_BASE_URL, 'PRESCRIPTIONS_BASE_URL should be set')
@@ -43,7 +61,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       ).executeTakeFirst()
 
       if (!pharmacist) {
-        throw new Error(
+        return await logErrorAndReturn(
+          trx,
+          pharmacistState,
           'pharmacist_chatbot_users has an entity_id to a nonexistent pharmacist',
         )
       }
@@ -121,7 +141,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         .executeTakeFirst()
 
       if (!pharmacist) {
-        throw new Error(
+        return await logErrorAndReturn(
+          trx,
+          pharmacistState,
           'Cannot find a pharmacist with that licence and name combination',
         )
       }
@@ -185,9 +207,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       const code = pharmacistState.unhandled_message.trimmed_body!
       const prescription = await prescriptions.getByCode(trx, code)
       if (!prescription) {
-        throw new Error('No prescription with that code')
+        return await logErrorAndReturn(
+          trx,
+          pharmacistState,
+          'No prescription with that code',
+        )
       }
-
       await conversations.updateChatbotUser(
         trx,
         pharmacistState.chatbot_user,
@@ -283,7 +308,10 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'error': {
     type: 'select',
-    prompt: 'An error occurred. Please try again.',
+    prompt(_trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
+      const { error_message } = pharmacistState.chatbot_user.data
+      return `An error occurred. Please try again. \nError: ${error_message}`
+    },
     options: [
       {
         id: 'main_menu',
