@@ -823,6 +823,7 @@ export interface PatientConditionMedications {
   manufactured_medication_id: string | null
   medication_id: string | null
   patient_condition_id: string
+  prescription_id: string
   route: string
   schedules: string[] | null
   special_instructions: string | null
@@ -969,6 +970,23 @@ export interface PatientOccupations {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientPrescriptionMedications {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_condition_medication_id: string
+  prescription_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientPrescriptionMedicationsFilled {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_prescription_medication_id: string
+  pharmacist_id: string
+  pharmacy_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
@@ -1071,9 +1089,10 @@ export interface PremiseSupervisors {
 
 export interface Prescriptions {
   alphanumeric_code: string
-  contents: string
   created_at: Generated<Timestamp>
   id: Generated<string>
+  patient_id: string | null
+  prescriber_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1254,6 +1273,8 @@ export interface DB {
   patient_measurements: PatientMeasurements
   patient_nearest_organizations: PatientNearestOrganizations
   patient_occupations: PatientOccupations
+  patient_prescription_medications: PatientPrescriptionMedications
+  patient_prescription_medications_filled: PatientPrescriptionMedicationsFilled
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients

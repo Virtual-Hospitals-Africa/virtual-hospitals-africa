@@ -52,7 +52,7 @@ export async function up(db: Kysely<unknown>) {
         .addColumn('strength', 'numeric', (col) => col.notNull())
         .addColumn('route', 'varchar(255)', (col) => col.notNull())
         .addColumn('special_instructions', 'text')
-        .addColumn('start_date', 'date', (col) => col.notNull())
+        .addColumn('start_date', 'date')
         .addColumn('schedules', sql`medication_schedule[]`)
         .addCheckConstraint(
           'patient_condition_medications_med_id_check',
