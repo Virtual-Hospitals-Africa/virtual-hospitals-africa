@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   HasStringId,
+  integer,
   Location,
   Maybe,
   Organization,
@@ -104,6 +105,7 @@ export function getEmployeesQuery(
     emails?: string[]
     is_approved?: boolean
     exclude_health_worker_id?: string
+    active_hours?: integer
   },
 ) {
   let hwQuery = trx.selectFrom('health_workers')
@@ -198,6 +200,21 @@ export function getEmployeesQuery(
     )
   }
 
+  if (opts.active_hours) {
+    const now = new Date().getTime();
+    const newTimestamp = new Date(now - (opts.active_hours * 60 * 60 * 1000));
+
+    hwQuery = hwQuery.innerJoin(
+      'health_worker_sessions',
+      'health_worker_sessions.health_worker_id',
+      'health_workers.id'
+    ).where(
+      'health_worker_sessions.updated_at',
+      '>=',
+      newTimestamp
+    )
+  }
+
   return hwQuery
 }
 
@@ -209,6 +226,7 @@ export function getEmployees(
     emails?: string[]
     is_approved?: boolean
     exclude_health_worker_id?: string
+    active_hours?: integer
   },
 ): Promise<OrganizationEmployee[]> {
   return getEmployeesQuery(trx, opts).execute()
