@@ -222,8 +222,11 @@ export function IntakePage(
     )
 
     const organizationId = ctx.state.encounter_provider.organization_id
-    const location = await send_to.getLocationByOrganizationId(ctx.state.trx, organizationId)
-    
+    const location = await send_to.getLocationByOrganizationId(
+      ctx.state.trx,
+      organizationId,
+    )
+
     const getting_sendables = send_to.forPatientIntake(
       ctx.state.trx,
       patient.id,
