@@ -2860,7 +2860,7 @@ export type RenderedPharmacist = {
 export type Supervisor = {
   id: string
   href: string
-  name?: string
+  name: string
   family_name: string
   given_name: string
   prefix: Prefix | null
