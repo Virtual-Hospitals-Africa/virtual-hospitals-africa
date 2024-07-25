@@ -2836,13 +2836,14 @@ export type RenderedPharmacy = {
     | 'Wholesalers'
   town: string | null
   href: string
-  supervisors?: Supervisor[]
+  supervisors: Supervisor[]
 }
 
 export type RenderedPharmacist = {
   id?: string
   licence_number: string
   prefix: Prefix | null
+  name?: string
   given_name: string
   family_name: string
   address: string | null
@@ -2857,8 +2858,9 @@ export type RenderedPharmacist = {
 }
 
 export type Supervisor = {
-  id?: string
+  id: string
   href: string
+  name?: string
   family_name: string
   given_name: string
   prefix: Prefix | null

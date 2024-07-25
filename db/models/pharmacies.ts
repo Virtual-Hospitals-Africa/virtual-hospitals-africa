@@ -1,6 +1,7 @@
 import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
+import { address_town_sql, name_sql } from './pharmacists.ts'
 
 export async function get(
   trx: TrxOrDb,
@@ -25,8 +26,7 @@ export async function get(
       'premises.name',
       'premises.licence_number',
       'premises.licensee',
-      'premises.address',
-      'premises.town',
+      address_town_sql('premises').as('address'),
       'premises.expiry_date',
       'premises.premises_types',
       jsonArrayFrom(
@@ -35,14 +35,11 @@ export async function get(
           .select([
             'id',
             'prefix',
-            'given_name',
-            'family_name',
+            name_sql('premise_supervisors').as('name'),
             sql<
               string
             >`'/regulator/pharmacists/' || premise_supervisors.pharmacist_id`
-              .as(
-                'href',
-              ),
+              .as('href'),
           ])
           .whereRef(
             'premises.id',
