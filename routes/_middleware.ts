@@ -1,10 +1,5 @@
-import { redisSession } from 'fresh_session'
 import { FreshContext } from '$fresh/server.ts'
-import { WithSession } from 'fresh_session'
 import redirect from '../util/redirect.ts'
-import { TrxOrDb } from '../types.ts'
-import db from '../db/db.ts'
-import { redis } from '../external-clients/redis.ts'
 
 // TODO: only do this on dev & test?
 const log_file = Deno.env.get('LOG_FILE') || 'server.log'
@@ -38,50 +33,5 @@ export const handleError = (err: any) => {
   return new Response(message, { status })
 }
 
-export const handler = [
-  redisSession(redis, {
-    keyPrefix: 'S_',
-    maxAge: 10000000,
-  }),
-  (
-    _req: Request,
-    ctx: FreshContext<
-      WithSession & {
-        trx: TrxOrDb
-        regulator: {
-          id: number
-        }
-      }
-    >,
-  ) => {
-    const accessingApp = ctx.url.pathname.startsWith('/app')
-    const accessingRegulator = ctx.url.pathname.startsWith('/regulator')
-
-    if (!accessingApp && !accessingRegulator) {
-      return ctx.next()
-    }
-
-    if (accessingApp && !ctx.state.session.get('health_worker_id')) {
-      return redirect('/')
-    }
-
-    if (accessingRegulator && !ctx.state.session.get('regulator_id')) {
-      return redirect('/')
-    }
-
-    if (accessingRegulator) {
-      ctx.state.regulator = {
-        id: ctx.state.session.get('regulator_id'),
-      }
-    }
-
-    return db
-      .transaction()
-      .setIsolationLevel('read committed')
-      .execute((trx) => {
-        ctx.state.trx = trx
-        return ctx.next()
-      })
-      .catch(handleError)
-  },
-]
+export const handler = (_req: Request, ctx: FreshContext) =>
+  ctx.next().catch(handleError)

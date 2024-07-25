@@ -3,6 +3,7 @@ import { create } from '../create.ts'
 import uniq from '../../../util/uniq.ts'
 import { groupBy } from '../../../util/groupBy.ts'
 import { DIAGNOSTIC_TESTS, EXAMINATIONS } from '../../../shared/examinations.ts'
+import { DB } from '../../../db.d.ts'
 
 export default create(
   [
@@ -128,8 +129,7 @@ const head_to_toe_assessment = [
   { 'finding_name': 'swelling conjunctiva', 'category': 'Conjunctiva' },
 ]
 
-// deno-lint-ignore no-explicit-any
-async function addSeedData(db: Kysely<any>) {
+async function addSeedData(db: Kysely<DB>) {
   await db.insertInto('examinations').values(
     EXAMINATIONS.map((name, index) => ({ name, order: index + 1 })),
   ).execute()
@@ -163,10 +163,10 @@ async function addSeedData(db: Kysely<any>) {
   for (const [category, findings] of by_category.entries()) {
     for (const [index, finding] of findings.entries()) {
       to_insert.push({
-        examination_category_id: category_map.get(category),
+        examination_category_id: category_map.get(category)!,
         name: finding.finding_name,
         label: finding.finding_name,
-        type: 'boolean',
+        type: 'boolean' as const,
         required: false,
         order: index + 1,
       })

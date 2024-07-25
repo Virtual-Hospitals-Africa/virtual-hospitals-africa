@@ -1,4 +1,5 @@
 import { Kysely } from 'kysely'
+import { DB } from '../../../db.d.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { assert } from 'std/assert/assert.ts'
 import { create } from '../create.ts'
@@ -9,8 +10,7 @@ export default create(
   seedDataFromJSON,
 )
 
-// deno-lint-ignore no-explicit-any
-async function seedDataFromJSON(db: Kysely<any>) {
+async function seedDataFromJSON(db: Kysely<DB>) {
   const tests = await db.selectFrom('diagnostic_tests').select('name').execute()
 
   const devices: {

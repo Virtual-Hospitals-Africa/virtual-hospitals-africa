@@ -70,7 +70,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         redirect: 'manual',
       })
       const redirectLocation = response.headers.get('location')
-      assert(redirectLocation === '/app')
+      assertEquals(redirectLocation, '/app?from_login=true')
       response.body?.cancel()
     })
 
@@ -131,7 +131,7 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
         )
         assert(inventory_link.first().text().includes('Inventory'))
 
-        const logout_link = $('a[href="/logout"]')
+        const logout_link = $('a[href="/app/logout"]')
         assert(logout_link.first().text().includes('Log Out'))
       }))
 

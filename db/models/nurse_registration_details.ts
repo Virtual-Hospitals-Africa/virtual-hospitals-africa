@@ -45,6 +45,54 @@ export async function add(
     .execute()
 }
 
+export async function getInProgress(
+  trx: TrxOrDb,
+  opts: {
+    health_worker_id: string
+  },
+  // deno-lint-ignore no-explicit-any
+): Promise<Record<string, any>> {
+  const in_progress = await trx
+    .selectFrom('nurse_registration_details_in_progress')
+    .select('data')
+    .where('health_worker_id', '=', opts.health_worker_id)
+    .executeTakeFirst()
+
+  // deno-lint-ignore no-explicit-any
+  return (in_progress?.data as any) || {}
+}
+
+export function setInProgress(
+  trx: TrxOrDb,
+  values: {
+    health_worker_id: string
+    // deno-lint-ignore no-explicit-any
+    data: Record<string, any>
+  },
+) {
+  return trx
+    .insertInto('nurse_registration_details_in_progress')
+    .values(values)
+    .onConflict((oc) =>
+      oc.column('health_worker_id').doUpdateSet((eb) => ({
+        data: eb.ref('excluded.data'),
+      }))
+    )
+    .executeTakeFirstOrThrow()
+}
+
+export function removeInProgress(
+  trx: TrxOrDb,
+  opts: {
+    health_worker_id: string
+  },
+) {
+  return trx
+    .deleteFrom('nurse_registration_details_in_progress')
+    .where('health_worker_id', '=', opts.health_worker_id)
+    .execute()
+}
+
 export function get(
   trx: TrxOrDb,
   opts: {

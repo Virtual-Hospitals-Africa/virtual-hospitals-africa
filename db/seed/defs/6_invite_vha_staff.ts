@@ -1,4 +1,5 @@
 import { Kysely } from 'kysely'
+import { DB } from '../../../db.d.ts'
 import { create } from '../create.ts'
 
 const vhaClinicStaff = [
@@ -29,28 +30,27 @@ const vhaVirtualHospitalStaff = [
 export default create(['health_worker_invitees'], inviteVhaStaff)
 
 // Add a test organization with all VHA employees as admins
-// deno-lint-ignore no-explicit-any
-async function inviteVhaStaff(db: Kysely<any>) {
+async function inviteVhaStaff(db: Kysely<DB>) {
   const invitees = vhaClinicStaff.flatMap((email) => [
     {
       email,
-      profession: 'admin',
+      profession: 'admin' as const,
       organization_id: '00000000-0000-0000-0000-000000000001',
     },
     {
       email,
-      profession: 'doctor',
+      profession: 'doctor' as const,
       organization_id: '00000000-0000-0000-0000-000000000001',
     },
   ]).concat(vhaVirtualHospitalStaff.flatMap((email) => [
     {
       email,
-      profession: 'admin',
+      profession: 'admin' as const,
       organization_id: '00000000-0000-0000-0000-000000000002',
     },
     {
       email,
-      profession: 'doctor',
+      profession: 'doctor' as const,
       organization_id: '00000000-0000-0000-0000-000000000002',
     },
   ]))
