@@ -44,6 +44,7 @@ export async function forPatientIntake(
       professions: ['nurse'],
       exclude_health_worker_id: opts.exclude_health_worker_id,
       is_approved: true,
+      active_hours: 3
     },
   )
 
