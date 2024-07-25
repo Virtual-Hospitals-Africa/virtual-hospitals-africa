@@ -7,16 +7,7 @@ import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
-
-type Pharmacy = {
-  address: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  premises_types: RenderedPharmacy
-  town: string | null
-}
+import { Person } from '../library/Person.tsx'
 
 const columns: TableColumn<RenderedPharmacy>[] = [
   {
@@ -49,15 +40,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
       if (!row.supervisors || row.supervisors.length === 0) return null
       return (
         <div className='flex flex-wrap gap-2'>
-          {row.supervisors.map((s) => (
-            <a
-              key={`${row.id}-${s.id}-${s.name}`}
-              href={s.href}
-              className='text-indigo-600 hover:text-indigo-900'
-            >
-              {s.name}
-            </a>
-          ))}
+          {row.supervisors.map((s) => <Person person={s} />)}
         </div>
       )
     },
