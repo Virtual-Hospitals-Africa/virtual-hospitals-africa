@@ -13,6 +13,7 @@ import { forEach } from '../../../util/inParallel.ts'
 import { byCodeWithSimilarity } from '../../models/icd10.ts'
 import { searchFlat } from '../../models/icd10.ts'
 import { create } from '../create.ts'
+import { DB } from '../../../db.d.ts'
 
 export default create([
   'icd10_sections',
@@ -23,7 +24,7 @@ export default create([
   'icd10_diagnoses_excludes_categories',
   'icd10_diagnoses_excludes_code_ranges',
   'icd10_diagnoses_excludes_codes',
-], async (db: Kysely<any>) => {
+], async (db: Kysely<DB>) => {
   await loadTabularData(db)
   await loadIndexData(db)
 })
@@ -251,7 +252,7 @@ function collapseNotes(term: unknown): string[] | string | null {
 }
 
 type ToInsert =
-  | { table: 'icd10_section'; row: { section: string; description: string } }
+  | { table: 'icd10_sections'; row: { section: string; description: string } }
   | {
     table: 'icd10_categories'
     row: { category: string; section: string; description: string }
@@ -392,18 +393,18 @@ async function readICD10TabularSections() {
 }
 
 async function insertExcludeRow(
-  db: Kysely<any>,
+  db: Kysely<DB>,
   exclude_id: string,
   { check_referrant_code_before_insertion, ...row }: ExcludeRow,
 ) {
   if (row.category) {
     return db.insertInto('icd10_diagnoses_excludes_categories')
-      .values({ exclude_id, ...row })
+      .values({ exclude_id, ...row } as any)
       .execute()
   }
   if (row.code_range_start && row.code_range_end) {
     return db.insertInto('icd10_diagnoses_excludes_code_ranges')
-      .values({ exclude_id, ...row })
+      .values({ exclude_id, ...row } as any)
       .execute()
   }
   if (row.code) {
@@ -413,14 +414,14 @@ async function insertExcludeRow(
       if (!exists) return
     }
     return db.insertInto('icd10_diagnoses_excludes_codes')
-      .values({ exclude_id, ...row })
+      .values({ exclude_id, ...row } as any)
       .execute()
   }
   throw new Error('unexpected row')
 }
 
 async function insertExclude(
-  db: Kysely<any>,
+  db: Kysely<DB>,
   { excludes, ...exclude }: Exclude,
 ) {
   const { id: exclude_id } = await db.insertInto('icd10_diagnoses_excludes')
@@ -433,7 +434,7 @@ async function insertExclude(
   }
 }
 
-export async function loadTabularData(db: Kysely<any>) {
+export async function loadTabularData(db: Kysely<DB>) {
   const sections = await readICD10TabularSections()
 
   // Excludes refer to other codes, so we need to insert the codes
@@ -626,7 +627,7 @@ type TidiedTerm = {
     - determine if the index term is already in the "includes"
     - for the index terms that don't point to codes, look for the closest match
 */
-async function loadIndexData(db: Kysely<any>) {
+async function loadIndexData(db: Kysely<DB>) {
   const icd10_index = await readICD10Index()
   await forEach(parse(icd10_index), async (parsed) => {
     if (parsed.type === 'code') {
@@ -638,7 +639,7 @@ async function loadIndexData(db: Kysely<any>) {
           code: parsed.code,
           note: human_readable(parsed.note),
           sourced_from_index: true,
-        })
+        } as any)
         .execute()
     }
     if (parsed.type === 'see') {
@@ -657,7 +658,7 @@ async function loadIndexData(db: Kysely<any>) {
           code: candidate.code,
           note: human_readable(parsed.note),
           sourced_from_index: true,
-        })
+        } as any)
         .execute()
     }
   }, { concurrency: 32 })

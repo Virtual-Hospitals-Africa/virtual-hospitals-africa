@@ -1,0 +1,20 @@
+import { Kysely } from 'kysely'
+import { create } from '../create.ts'
+import { DB } from '../../../db.d.ts'
+
+const regulators = [
+  { name: 'Will Weiss', email: 'william.t.weiss@gmail.com' },
+  { name: 'Zora Chen', email: 'zorachen84613@gmail.com' },
+  { name: 'Mike Huang', email: 'mike.huang.mikank@gmail.com' },
+  { name: 'Ming Liu', email: '812046661lm@gmail.com' },
+]
+
+export default create(['regulators'], addRegulators)
+
+// Add a test organization with all VHA employees as admins
+async function addRegulators(db: Kysely<DB>) {
+  await db
+    .insertInto('regulators')
+    .values(regulators)
+    .execute()
+}

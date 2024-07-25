@@ -9,7 +9,8 @@ export function insert(
 ) {
   return trx
     .insertInto('prescriptions')
-    .values(opts)
+    // deno-lint-ignore no-explicit-any
+    .values(opts as any)
     .returningAll()
     .executeTakeFirstOrThrow()
 }

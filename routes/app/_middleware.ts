@@ -1,34 +1,62 @@
 import { FreshContext } from '$fresh/server.ts'
-import { WithSession } from 'fresh_session'
-import { EmployedHealthWorker, TrxOrDb } from '../../types.ts'
+import { LoggedInHealthWorkerContext } from '../../types.ts'
 import * as health_workers from '../../db/models/health_workers.ts'
 import redirect from '../../util/redirect.ts'
 import { assert } from 'std/assert/assert.ts'
+import { deleteCookie, getCookies } from 'std/http/cookie.ts'
+import { startTrx } from '../../shared/startTrx.ts'
+import { warning } from '../../util/alerts.ts'
+import { login_href } from '../login.tsx'
 
-export async function handler(
+export const handler = [
+  ensureCookiePresent,
+  startTrx,
+  getLoggedInHealthWorker,
+  redirectIfRegistrationNeeded,
+]
+
+export const could_not_locate_account_href = warning(
+  "Could not locate your account. Please try logging in once more. If this issue persists, please contact your organization's administrator.",
+)
+function noSession() {
+  return redirect(could_not_locate_account_href)
+}
+
+export function getHealthWorkerCookie(req: Request): string | undefined {
+  return getCookies(req.headers).health_worker_session_id
+}
+
+function ensureCookiePresent(req: Request, ctx: FreshContext) {
+  return getHealthWorkerCookie(req) ? ctx.next() : noSession()
+}
+
+async function getLoggedInHealthWorker(
   req: Request,
-  ctx: FreshContext<
-    WithSession & {
-      trx: TrxOrDb
-      healthWorker: EmployedHealthWorker
-    }
-  >,
+  ctx: LoggedInHealthWorkerContext,
 ) {
-  const health_worker_id = ctx.state.session.get('health_worker_id')
-  assert(health_worker_id)
-  const healthWorker = await health_workers.get(ctx.state.trx, {
-    health_worker_id,
+  const health_worker_session_id = getHealthWorkerCookie(req)
+  assert(health_worker_session_id)
+
+  const healthWorker = await health_workers.getBySession(ctx.state.trx, {
+    health_worker_session_id,
   })
 
-  if (!health_workers.isEmployed(healthWorker)) {
-    ctx.state.session.clear()
-    const warning = encodeURIComponent(
-      "Could not locate your account. Please try logging in once more. If this issue persists, please contact your organization's administrator.",
-    )
-    return redirect(`/?warning=${warning}`)
+  if (!healthWorker || !health_workers.isEmployed(healthWorker)) {
+    const from_login = ctx.url.searchParams.has('from_login')
+    const response = from_login ? redirect(login_href) : noSession()
+    deleteCookie(response.headers, 'health_worker_session_id')
+    return response
   }
-  ctx.state.healthWorker = healthWorker
 
+  ctx.state.healthWorker = healthWorker
+  return ctx.next()
+}
+
+function redirectIfRegistrationNeeded(
+  _req: Request,
+  ctx: LoggedInHealthWorkerContext,
+) {
+  const { healthWorker } = ctx.state
   const role_needing_registration = healthWorker.employment.find((e) =>
     e.roles.nurse?.registration_needed || e.roles.doctor?.registration_needed ||
     e.roles.admin?.registration_needed

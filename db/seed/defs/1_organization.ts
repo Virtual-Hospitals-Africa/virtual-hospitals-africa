@@ -1,4 +1,3 @@
-// deno-lint-ignore-file no-explicit-any
 // import * as google from '../../../external-clients/google.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 import capitalize from '../../../util/capitalize.ts'
@@ -6,6 +5,7 @@ import { create } from '../create.ts'
 import * as organizations from '../../../db/models/organizations.ts'
 import { forEach } from '../../../util/inParallel.ts'
 import { Kysely } from 'kysely'
+import { DB } from '../../../db.d.ts'
 
 export default create(
   ['Organization', 'Address', 'Location'],
@@ -15,7 +15,7 @@ export default create(
   },
 )
 
-export async function addTestOrganizations(db: Kysely<any>) {
+export async function addTestOrganizations(db: Kysely<DB>) {
   await organizations.add(db, {
     id: '00000000-0000-0000-0000-000000000001',
     name: 'VHA Test Clinic',
@@ -34,7 +34,7 @@ export async function addTestOrganizations(db: Kysely<any>) {
 
 // TODO: Can't get last column properly, maybe because new line character
 // So need a extra column in csv file
-async function importDataFromCSV(db: Kysely<any>) {
+async function importDataFromCSV(db: Kysely<DB>) {
   await forEach(
     parseCsv('./db/resources/zimbabwe-health-organizations.csv'),
     async (row) => {

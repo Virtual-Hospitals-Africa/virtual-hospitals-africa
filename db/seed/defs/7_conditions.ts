@@ -1,5 +1,5 @@
-//deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
+import { DB } from '../../../db.d.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { create } from '../create.ts'
 
@@ -9,7 +9,7 @@ export default create([
   'condition_icd10_codes',
 ], importFromJSON)
 
-async function importFromJSON(db: Kysely<any>) {
+async function importFromJSON(db: Kysely<DB>) {
   const data = await parseJSON(
     './db/resources/cond_proc_download.json',
   )
@@ -40,6 +40,7 @@ async function importFromJSON(db: Kysely<any>) {
 
     await db.insertInto('icd10_codes')
       .values(
+        // deno-lint-ignore no-explicit-any
         row.icd10cm.map((icd10: any) => ({
           code: icd10.code,
           name: icd10.name,
@@ -51,6 +52,7 @@ async function importFromJSON(db: Kysely<any>) {
 
     await db.insertInto('condition_icd10_codes')
       .values(
+        // deno-lint-ignore no-explicit-any
         row.icd10cm.map((icd10: any) => ({
           condition_id: row.key_id,
           icd10_code: icd10.code,

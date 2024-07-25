@@ -81,7 +81,7 @@ const practitioner_home_page_nav_links: LinkDef[] = [
     title: 'Medical Literature',
     Icon: AcademicCapIcon,
   },
-  { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
+  { route: '/app/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
 ]
 
 const regulator_home_page_nav_links: LinkDef[] = [
@@ -96,7 +96,11 @@ const regulator_home_page_nav_links: LinkDef[] = [
     title: 'Medicines',
     Icon: IdentificationIcon,
   },
-  { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
+  {
+    route: '/regulator/logout',
+    title: 'Log Out',
+    Icon: ArrowRightOnRectangleIcon,
+  },
 ]
 
 export function GenericSidebar(

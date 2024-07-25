@@ -8,7 +8,6 @@ import {
 import * as cheerio from 'cheerio'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { createTestAddress } from '../../../mocks.ts'
-import { redis } from '../../../../external-clients/redis.ts'
 import * as nurse_registration_details from '../../../../db/models/nurse_registration_details.ts'
 import db from '../../../../db/db.ts'
 
@@ -56,7 +55,7 @@ describe(
 
     it('supports POSTs on the personal, professional, and documents step, moving you into /pending_approval', async () => {
       await addTestHealthWorker(db, { scenario: 'admin' })
-      const { fetch, sessionId, healthWorker: nurse } =
+      const { fetch, healthWorker: nurse } =
         await addTestHealthWorkerWithSession(db, {
           scenario: 'nurse',
         })
@@ -93,13 +92,10 @@ describe(
           throw new Error(await postResponse.text())
         }
 
-        const session = await redis.get(`S_${sessionId}`)
-        assert(session)
-        const sessionData = JSON.parse(session)
-        assert(sessionData.data.registrationFormState)
-        const registrationFormState = JSON.parse(
-          sessionData.data.registrationFormState,
-        )
+        const registrationFormState = await nurse_registration_details
+          .getInProgress(db, {
+            health_worker_id: nurse.id,
+          })
 
         assertEquals({
           ...registrationFormState,
@@ -186,13 +182,10 @@ describe(
           throw new Error(await postResponse.text())
         }
 
-        const session = await redis.get(`S_${sessionId}`)
-        assert(session)
-        const sessionData = JSON.parse(session)
-        assert(sessionData.data.registrationFormState)
-        const registrationFormState = JSON.parse(
-          sessionData.data.registrationFormState,
-        )
+        const registrationFormState = await nurse_registration_details
+          .getInProgress(db, {
+            health_worker_id: nurse.id,
+          })
 
         assertEquals({
           ...registrationFormState,
@@ -254,11 +247,6 @@ describe(
         if (!postResponse.ok) {
           throw new Error(await postResponse.text())
         }
-
-        const session = await redis.get(`S_${sessionId}`)
-        assert(session)
-        const sessionData = JSON.parse(session)
-        assert(!sessionData.data.registrationFormState)
 
         const registrationDetails = await nurse_registration_details.get(db, {
           health_worker_id: nurse.id,

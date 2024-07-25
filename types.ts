@@ -2,7 +2,6 @@
 import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
-import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
 import {
   AgeUnit,
@@ -1656,25 +1655,18 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   trx: TrxOrDb
-  session: Session
   healthWorker: EmployedHealthWorker
 }
 
 export type LoggedInRegulator = {
   trx: TrxOrDb
-  session: Session
   regulator: {
     id: string
   }
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
-  FreshContext<
-    WithSession & {
-      trx: TrxOrDb
-      healthWorker: EmployedHealthWorker
-    } & T
-  >
+  FreshContext<LoggedInHealthWorker & T>
 
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
@@ -1685,6 +1677,20 @@ export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
   Context extends { state: infer State }
     ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
     : LoggedInHealthWorkerHandlerWithProps<unknown, Context>
+
+export type LoggedInRegulatorContext<T = Record<never, never>> = FreshContext<
+  LoggedInRegulator & T
+>
+
+export type LoggedInRegulatorHandlerWithProps<
+  Props = Record<string, never>,
+  Extra = Record<string, never>,
+> = Handlers<Props, LoggedInRegulator & Extra>
+
+export type LoggedInRegulatorHandler<Context = Record<string, never>> =
+  Context extends { state: infer State }
+    ? LoggedInRegulatorHandlerWithProps<unknown, State>
+    : LoggedInRegulatorHandlerWithProps<unknown, Context>
 
 export type Organization = Partial<Location> & {
   name: string

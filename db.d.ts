@@ -232,6 +232,20 @@ export interface Appointments {
   updated_at: Generated<Timestamp>
 }
 
+export interface ClientApplication {
+  _profile: string[] | null
+  _security: string[] | null
+  _source: string | null
+  _tag: string[] | null
+  compartments: string[]
+  content: string
+  deleted: Generated<boolean>
+  id: string
+  lastUpdated: Timestamp
+  name: string | null
+  projectId: string | null
+}
+
 export interface Condition {
   _profile: string[] | null
   _security: string[] | null
@@ -510,6 +524,13 @@ export interface HealthWorkers {
   updated_at: Generated<Timestamp>
 }
 
+export interface HealthWorkerSessions {
+  created_at: Generated<Timestamp>
+  health_worker_id: string
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface Icd10Categories {
   category: string
   description: string
@@ -707,6 +728,14 @@ export interface NurseRegistrationDetails {
   updated_at: Generated<Timestamp>
 }
 
+export interface NurseRegistrationDetailsInProgress {
+  created_at: Generated<Timestamp>
+  data: Generated<Json>
+  health_worker_id: string
+  id: Generated<string>
+  updated_at: Generated<Timestamp>
+}
+
 export interface NurseSpecialties {
   created_at: Generated<Timestamp>
   employee_id: string
@@ -826,7 +855,7 @@ export interface PatientConditionMedications {
   route: string
   schedules: string[] | null
   special_instructions: string | null
-  start_date: Timestamp
+  start_date: Timestamp | null
   strength: Numeric
   updated_at: Generated<Timestamp>
 }
@@ -969,6 +998,23 @@ export interface PatientOccupations {
   updated_at: Generated<Timestamp>
 }
 
+export interface PatientPrescriptionMedications {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_condition_medication_id: string
+  prescription_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface PatientPrescriptionMedicationsFilled {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  patient_prescription_medication_id: string
+  pharmacist_id: string
+  pharmacy_id: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface Patients {
   address_id: string | null
   avatar_media_id: string | null
@@ -1045,6 +1091,23 @@ export interface Pharmacists {
   updated_at: Generated<Timestamp>
 }
 
+export interface Practitioner {
+  _profile: string[] | null
+  _security: string[] | null
+  _source: string | null
+  _tag: string[] | null
+  active: boolean | null
+  communication: string[] | null
+  compartments: string[]
+  content: string
+  deleted: Generated<boolean>
+  gender: string | null
+  id: string
+  lastUpdated: Timestamp
+  phonetic: string[] | null
+  projectId: string | null
+}
+
 export interface Premises {
   address: string | null
   created_at: Generated<Timestamp>
@@ -1071,9 +1134,10 @@ export interface PremiseSupervisors {
 
 export interface Prescriptions {
   alphanumeric_code: string
-  contents: string
   created_at: Generated<Timestamp>
   id: Generated<string>
+  patient_id: string | null
+  prescriber_id: string
   updated_at: Generated<Timestamp>
 }
 
@@ -1100,6 +1164,43 @@ export interface Procurers {
   updated_at: Generated<Timestamp>
 }
 
+export interface Project {
+  _profile: string[] | null
+  _security: string[] | null
+  _source: string | null
+  _tag: string[] | null
+  compartments: string[]
+  content: string
+  deleted: Generated<boolean>
+  googleClientId: string[] | null
+  id: string
+  lastUpdated: Timestamp
+  name: string | null
+  owner: string | null
+  projectId: string | null
+  recaptchaSiteKey: string[] | null
+}
+
+export interface ProjectMembership {
+  _profile: string[] | null
+  _security: string[] | null
+  _source: string | null
+  _tag: string[] | null
+  accessPolicy: string[] | null
+  compartments: string[]
+  content: string
+  deleted: Generated<boolean>
+  externalId: string | null
+  id: string
+  lastUpdated: Timestamp
+  profile: Generated<string | null>
+  profileType: string | null
+  project: string | null
+  projectId: string | null
+  user: string | null
+  userName: string | null
+}
+
 export interface ProviderCalendars {
   availability_set: Generated<boolean>
   created_at: Generated<Timestamp>
@@ -1115,6 +1216,32 @@ export interface Provinces {
   country_id: string
   id: Generated<string>
   name: string
+}
+
+export interface RegulatorGoogleTokens {
+  access_token: string
+  created_at: Generated<Timestamp>
+  expires_at: Timestamp
+  id: Generated<string>
+  refresh_token: string
+  regulator_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface Regulators {
+  avatar_url: string | null
+  created_at: Generated<Timestamp>
+  email: string
+  id: Generated<string>
+  name: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface RegulatorSessions {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  regulator_id: string
+  updated_at: Generated<Timestamp>
 }
 
 export interface SpatialRefSys {
@@ -1181,6 +1308,7 @@ export interface DB {
   appointment_media: AppointmentMedia
   appointment_providers: AppointmentProviders
   appointments: Appointments
+  ClientApplication: ClientApplication
   Condition: Condition
   condition_icd10_codes: ConditionIcd10Codes
   conditions: Conditions
@@ -1207,6 +1335,7 @@ export interface DB {
   guardian_relations: GuardianRelations
   health_worker_google_tokens: HealthWorkerGoogleTokens
   health_worker_invitees: HealthWorkerInvitees
+  health_worker_sessions: HealthWorkerSessions
   health_workers: HealthWorkers
   icd10_categories: Icd10Categories
   icd10_codes: Icd10Codes
@@ -1227,6 +1356,7 @@ export interface DB {
   Media: Media
   medications: Medications
   nurse_registration_details: NurseRegistrationDetails
+  nurse_registration_details_in_progress: NurseRegistrationDetailsInProgress
   nurse_specialties: NurseSpecialties
   Organization: Organization
   organization_consumables: OrganizationConsumables
@@ -1254,6 +1384,8 @@ export interface DB {
   patient_measurements: PatientMeasurements
   patient_nearest_organizations: PatientNearestOrganizations
   patient_occupations: PatientOccupations
+  patient_prescription_medications: PatientPrescriptionMedications
+  patient_prescription_medications_filled: PatientPrescriptionMedicationsFilled
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
@@ -1261,13 +1393,19 @@ export interface DB {
     PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
+  Practitioner: Practitioner
   premise_supervisors: PremiseSupervisors
   premises: Premises
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
+  Project: Project
+  ProjectMembership: ProjectMembership
   provider_calendars: ProviderCalendars
   provinces: Provinces
+  regulator_google_tokens: RegulatorGoogleTokens
+  regulator_sessions: RegulatorSessions
+  regulators: Regulators
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs
   waiting_room: WaitingRoom
