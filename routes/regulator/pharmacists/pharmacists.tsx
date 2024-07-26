@@ -23,8 +23,8 @@ import {
       const pharmacists = await getAllWithSearchConditions(ctx.state.trx, search)
   
       const pharmacists_with_href = pharmacists.map((pharmacist) => {
-        const href = `/regulator/pharmacists/${pharmacist.id}`
-        return { id: pharmacist.id, name: pharmacist.given_name, href }
+        const href = `/regulator/pharmacists/${pharmacist?.id}`
+        return { id: pharmacist?.id, name: pharmacist?.given_name, href }
       })
       return json(pharmacists_with_href)
     }

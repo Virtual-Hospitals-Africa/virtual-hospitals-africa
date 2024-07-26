@@ -1,23 +1,14 @@
-import { NamePrefix, PharmacistType } from '../../db.d.ts'
+import { RenderedPharmacist } from '../../types.ts'
 
-type Pharmacist={
-  address: string | null;
-  id: string;
-  expiry_date: Date;
-  family_name: string;
-  given_name: string;
-  licence_number: string;
-  pharmacist_type: PharmacistType;
-  prefix: NamePrefix | null;
-  town: string | null;
-} | undefined
 
 type PharmacistProps={
-  pharmacist: Pharmacist;
+  pharmacist: RenderedPharmacist;
 }
   export default function PharmacistDetailedCard({
     pharmacist}:PharmacistProps
-  ) {
+  ) 
+  {
+    console.log(pharmacist)
     return (
       <div className='py-6 px-4 rounded-md border-2 border-gray-300 bg-gray-300'>
         <div className='px-4 sm:px-0'>
@@ -68,14 +59,6 @@ type PharmacistProps={
               </dt>
               <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
               {pharmacist?.licence_number}
-              </dd>
-            </div>
-            <div className='border-t border-gray-100 px-4 py-6 sm:col-span-2 sm:px-0'>
-              <dt className='text-sm font-medium leading-6 text-gray-900'>
-                Expire Date
-              </dt>
-              <dd className='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-              {pharmacist?.expiry_date}
               </dd>
             </div>
           </dl>

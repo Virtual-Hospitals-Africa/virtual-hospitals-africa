@@ -2799,7 +2799,7 @@ export type RenderedPharmacist =
       |'address'
       |'town'
       |'pharmacist_type'
-  >&{id:string}
+  >&{id:string} | undefined
 
 
   

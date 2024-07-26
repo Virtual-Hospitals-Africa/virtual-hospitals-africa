@@ -3,10 +3,10 @@ import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
-import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
+import { InvitePharmacySearch } from '../../islands/regulator/InvitePharmacySearch.tsx'
 
 type Pharmacy = {
   address: string | null
@@ -71,7 +71,7 @@ export default function PharmaciesTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <SearchInput />
+        <InvitePharmacySearch />
         <Button
           type='button'
           href={search_href}

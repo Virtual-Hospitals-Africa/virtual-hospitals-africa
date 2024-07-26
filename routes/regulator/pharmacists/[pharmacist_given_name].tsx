@@ -23,7 +23,7 @@ export default async function PharmacistPage(
         variant='regulator home page'
       >
         <div className='mt-4 divide-y divide-gray-100 text-sm leading-6 lg:col-span-7 xl:col-span-8 row-span-full'>
-          <PharmacistDetailedCard />
+        
         </div>
       </Layout>
     )
