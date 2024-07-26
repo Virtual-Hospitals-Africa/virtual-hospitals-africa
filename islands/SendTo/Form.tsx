@@ -1,24 +1,26 @@
 import { Button } from '../../components/library/Button.tsx'
-import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
+// import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
 
 export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
   return (
     <div className='flex flex-col'>
-      <div className='mt-6 px-4'>
-        {/* Hardcoding to intake options. These are the options when the providers are at your facility */}
-        {/* When at another facility, this will include request_review */}
-        <SendToRequestRadioButtons
+      {/*<div className='mt-6 px-4'>*/}
+      {/* Hardcoding to intake options. These are the options when the providers are at your facility */}
+      {/* When at another facility, this will include request_review */}
+      {
+        /* <SendToRequestRadioButtons
           form={form}
           options={[
             'request_review',
             'make_appointment',
             'declare_emergency',
           ]}
-        />
-      </div>
+        /> */
+      }
+      {/*</div>*/}
       <div className='mt-6 px-4'>
         <h2 className='text-sm font-sans font-medium text-gray-900'>
-          Additional Details
+          Reason for escalation
         </h2>
         <textarea
           form={form}
