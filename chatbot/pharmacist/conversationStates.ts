@@ -13,6 +13,7 @@ import * as conversations from '../../db/models/conversations.ts'
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { generatePDF } from '../../util/pdfUtils.ts'
+import { handleLicenceInput } from './handleLicenceInput.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -82,21 +83,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     type: 'string',
     prompt:
       `Looks like you are not onboarded, to start, enter your licence number.`,
-    async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      const licence_number = pharmacistState.unhandled_message.trimmed_body
-      assert(licence_number, 'Licence number should not be empty')
-      await conversations.updateChatbotUser(
-        trx,
-        pharmacistState.chatbot_user,
-        {
-          data: {
-            ...pharmacistState.chatbot_user.data,
-            licence_number,
-          },
-        },
-      )
-      return 'not_onboarded:enter_name' as const
-    },
+    onExit: handleLicenceInput,
+  },
+  'not_onboarded:reenter_licence_number': {
+    type: 'string',
+    prompt: `To continue, you'll need to enter your licence number.`,
+    onExit: handleLicenceInput,
   },
   'not_onboarded:enter_name': {
     type: 'string',
