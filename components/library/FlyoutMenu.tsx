@@ -13,6 +13,7 @@ import {
   SquaresPlusIcon,
 } from '../../components/library/icons/heroicons/outline.tsx'
 
+// Newline
 const solutions = [
   {
     name: 'Analytics',
