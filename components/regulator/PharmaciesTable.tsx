@@ -28,10 +28,6 @@ const columns: TableColumn<RenderedPharmacy>[] = [
     data: 'address',
   },
   {
-    label: 'Town',
-    data: 'town',
-  },
-  {
     label: 'License Number',
     data: 'licence_number',
   },
@@ -55,11 +51,11 @@ const columns: TableColumn<RenderedPharmacy>[] = [
         <div className='flex flex-wrap gap-2'>
           {row.supervisors.map((s) => (
             <a
-              key={`${row.id}-${s.id}-${s.family_name}-${s.given_name}`}
+              key={`${row.id}-${s.id}-${s.name}`}
               href={s.href}
               className='text-indigo-600 hover:text-indigo-900'
             >
-              {s.given_name} {s.family_name}
+              {s.name}
             </a>
           ))}
         </div>
