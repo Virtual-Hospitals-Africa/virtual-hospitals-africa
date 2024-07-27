@@ -2786,7 +2786,7 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
-}
+} & {id:string}
 
 export type RenderedPharmacist =
   & Pick<
