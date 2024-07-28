@@ -32,7 +32,7 @@ export async function up(db: Kysely<unknown>) {
   await createStandardTable(db, 'health_worker_sessions', (qb) =>
     qb
       .addColumn(
-        'health_worker_id',
+        'entity_id',
         'uuid',
         (col) =>
           col.notNull().references('health_workers.id').onDelete('cascade'),

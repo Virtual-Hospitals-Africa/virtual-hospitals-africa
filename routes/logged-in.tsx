@@ -1,21 +1,23 @@
+import { setCookie } from 'std/http/cookie.ts'
 import { Handlers } from '$fresh/server.ts'
 import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
+import * as sessions from '../db/models/sessions.ts'
 import * as employment from '../db/models/employment.ts'
 import * as organizations from '../db/models/organizations.ts'
 import * as regulators from '../db/models/regulators.ts'
 import * as google from '../external-clients/google.ts'
-import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
+import { GoogleProfile, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
 import { assertOrRedirect } from '../util/assertOr.ts'
 import { warning } from '../util/alerts.ts'
 import { could_not_locate_account_href } from './app/_middleware.ts'
-import { setCookie } from 'std/http/cookie.ts'
+import * as cookie from '../shared/cookie.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
@@ -113,8 +115,8 @@ export const handler: Handlers<Record<string, never>> = {
             })
           }
 
-          const session = await regulators.createSession(trx, {
-            regulator_id: regulator.id,
+          const session = await sessions.create(trx, 'regulator', {
+            entity_id: regulator.id,
           })
 
           const response = redirect('/regulator/pharmacies')
@@ -148,14 +150,14 @@ export const handler: Handlers<Record<string, never>> = {
 
         assertOrRedirect(health_worker, could_not_locate_account_href)
 
-        const session = await health_workers.createSession(trx, {
-          health_worker_id: health_worker.id,
+        const session = await sessions.create(trx, 'health_worker', {
+          entity_id: health_worker.id,
         })
 
         const response = redirect('/app')
 
         setCookie(response.headers, {
-          name: 'health_worker_session_id',
+          name: cookie.sessionKey('health_worker'),
           value: session.id,
         })
 
