@@ -43,7 +43,7 @@ export default function PharmaciesPage(
 ) {
   return (
     <Layout
-      title='Pharmacists'
+      title='Pharmacies'
       route={props.route}
       url={props.url}
       regulator={props.data.regulator}

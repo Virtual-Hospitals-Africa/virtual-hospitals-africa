@@ -67,8 +67,5 @@ _fresh/
 # turbo dev server
 .turbo/
 
-# medplum
-/medplum/
-
 # Temporary files directory
 /temp_files/

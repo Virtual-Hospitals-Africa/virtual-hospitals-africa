@@ -2,6 +2,22 @@ import { sql } from 'kysely'
 import { RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../types.ts'
 import { jsonBuildObject, now } from '../helpers.ts'
 
+export function name_sql(table: string) {
+  return sql<string>`concat(${sql.ref(`${table}.given_name`)}, ' ', ${
+    sql.ref(
+      `${table}.family_name`,
+    )
+  })`
+}
+
+export function address_town_sql(table: string) {
+  return sql<string>`concat(${sql.ref(`${table}.address`)}, ', ', ${
+    sql.ref(
+      `${table}.town`,
+    )
+  })`
+}
+
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
@@ -39,10 +55,8 @@ export async function get(
       'pharmacists.id',
       'pharmacists.licence_number',
       'pharmacists.prefix',
-      'pharmacists.given_name',
-      'pharmacists.family_name',
-      'pharmacists.address',
-      'pharmacists.town',
+      name_sql('pharmacists').as('name'),
+      address_town_sql('pharmacists').as('address'),
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
       sql`CASE
