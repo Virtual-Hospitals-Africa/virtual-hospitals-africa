@@ -1,14 +1,12 @@
-import {
-  TrxOrDb,
-} from '../../types.ts'
+import { TrxOrDb } from '../../types.ts'
 
 export function insert(
   trx: TrxOrDb,
   opts: {
-    alphanumeric_code: string,
-    prescriber_id: string,
-    patient_id: string,
-  }
+    alphanumeric_code: string
+    prescriber_id: string
+    patient_id: string
+  },
 ) {
   return trx
     .insertInto('prescriptions')
@@ -46,13 +44,13 @@ export function getByCode(
 export async function createPrescription(
   trx: TrxOrDb,
   opts: {
-    alphanumeric_code: string,
-    prescriber_id: string,
-    patient_id: string,
-    patient_condition_medication_id: string,
-    pharmacist_id: string,
-    pharmacy_id : string,
-  }
+    alphanumeric_code: string
+    prescriber_id: string
+    patient_id: string
+    patient_condition_medication_id: string
+    pharmacist_id: string
+    pharmacy_id: string
+  },
 ) {
   const prescription = await trx
     .insertInto('prescriptions')
@@ -73,15 +71,15 @@ export async function createPrescription(
     .returning('id')
     .executeTakeFirstOrThrow()
 
-    await trx
-      .insertInto('patient_prescription_medications_filled')
-      .values({
-        patient_prescription_medication_id : patient_prescription_medication.id,
-        pharmacist_id: opts.pharmacist_id,
-        pharmacy_id: opts.pharmacy_id,
-      })
-      .returningAll()
-      .executeTakeFirstOrThrow()
-    
-    return prescription;
+  await trx
+    .insertInto('patient_prescription_medications_filled')
+    .values({
+      patient_prescription_medication_id: patient_prescription_medication.id,
+      pharmacist_id: opts.pharmacist_id,
+      pharmacy_id: opts.pharmacy_id,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
+  return prescription
 }
