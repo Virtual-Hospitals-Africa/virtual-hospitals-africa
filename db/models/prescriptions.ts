@@ -19,25 +19,29 @@ type PatientMedicationInsert = {
   schedules?: Maybe<string>
 }
 
-type PrescriptionInsert = {
-  id: string
-  alphanumeric_code
-  prescriber_id
-  patient_condition_id
-  medications?: PatientMedicationInsert[]
-}
+/*
+await models.prescriptions.insert(db, { 
+alphanumeric_code: '12345678', 
+prescriber_id: '588b7087-1fb8-40a3-b123-1468521375ea', 
+patient_id: '261f3ebf-39b2-4fff-92c9-f71f2765601e' 
+})
+*/
 
 export function insert(
   trx: TrxOrDb,
   opts: {
-    alphanumeric_code: string
-    contents: string
-  },
+    alphanumeric_code: string,
+    prescriber_id: string,
+    patient_id: string,
+  }
 ) {
   return trx
     .insertInto('prescriptions')
-    // deno-lint-ignore no-explicit-any
-    .values(opts as any)
+    .values({
+      alphanumeric_code: opts.alphanumeric_code,
+      prescriber_id: opts.prescriber_id,
+      patient_id: opts.patient_id,
+    })
     .returningAll()
     .executeTakeFirstOrThrow()
 }
