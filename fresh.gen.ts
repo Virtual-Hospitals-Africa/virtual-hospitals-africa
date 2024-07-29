@@ -2,6 +2,7 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_role_entrypoint_logout from './routes/[role_entrypoint]/logout.ts'
 import * as $_404 from './routes/_404.tsx'
 import * as $_app from './routes/_app.tsx'
 import * as $_middleware from './routes/_middleware.ts'
@@ -21,7 +22,6 @@ import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
 import * as $app_insufficient_permissions from './routes/app/insufficient_permissions.tsx'
-import * as $app_logout from './routes/app/logout.ts'
 import * as $app_manufactured_medications from './routes/app/manufactured_medications.tsx'
 import * as $app_media_uuid_ from './routes/app/media/[uuid].tsx'
 import * as $app_organizations from './routes/app/organizations.tsx'
@@ -95,7 +95,6 @@ import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
-import * as $regulator_logout from './routes/regulator/logout.ts'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
@@ -206,6 +205,7 @@ import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
   routes: {
+    './routes/[role_entrypoint]/logout.ts': $_role_entrypoint_logout,
     './routes/_404.tsx': $_404,
     './routes/_app.tsx': $_app,
     './routes/_middleware.ts': $_middleware,
@@ -228,7 +228,6 @@ const manifest = {
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
     './routes/app/insufficient_permissions.tsx': $app_insufficient_permissions,
-    './routes/app/logout.ts': $app_logout,
     './routes/app/manufactured_medications.tsx': $app_manufactured_medications,
     './routes/app/media/[uuid].tsx': $app_media_uuid_,
     './routes/app/organizations.tsx': $app_organizations,
@@ -354,7 +353,6 @@ const manifest = {
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
     './routes/regulator/_middleware.ts': $regulator_middleware,
-    './routes/regulator/logout.ts': $regulator_logout,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':

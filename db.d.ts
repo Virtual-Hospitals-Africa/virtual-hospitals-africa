@@ -526,7 +526,7 @@ export interface HealthWorkers {
 
 export interface HealthWorkerSessions {
   created_at: Generated<Timestamp>
-  health_worker_id: string
+  entity_id: string
   id: Generated<string>
   updated_at: Generated<Timestamp>
 }
@@ -1239,8 +1239,8 @@ export interface Regulators {
 
 export interface RegulatorSessions {
   created_at: Generated<Timestamp>
+  entity_id: string
   id: Generated<string>
-  regulator_id: string
   updated_at: Generated<Timestamp>
 }
 

@@ -197,27 +197,6 @@ export function removeExpiredAccessToken(
   ).executeTakeFirstOrThrow()
 }
 
-export function createSession(
-  trx: TrxOrDb,
-  { health_worker_id }: { health_worker_id: string },
-) {
-  return trx
-    .insertInto('health_worker_sessions')
-    .values({ health_worker_id })
-    .returning('id')
-    .executeTakeFirstOrThrow()
-}
-
-export function removeSession(
-  trx: TrxOrDb,
-  { health_worker_session_id }: { health_worker_session_id: string },
-) {
-  return trx
-    .deleteFrom('health_worker_sessions')
-    .where('id', '=', health_worker_session_id)
-    .execute()
-}
-
 // TODO: See if we can do the update and get in a single query
 export async function getBySession(trx: TrxOrDb, { health_worker_session_id }: {
   health_worker_session_id: string
@@ -228,10 +207,12 @@ export async function getBySession(trx: TrxOrDb, { health_worker_session_id }: {
     health_worker_session_id,
   )
     .set({ updated_at: now })
-    .returning('health_worker_id')
+    .returning('entity_id')
     .executeTakeFirst()
 
-  return session && get(trx, session)
+  return session && get(trx, {
+    health_worker_id: session.entity_id,
+  })
 }
 
 export async function get(
@@ -248,7 +229,7 @@ export async function get(
     .leftJoin(
       'health_worker_sessions',
       'health_workers.id',
-      'health_worker_sessions.health_worker_id',
+      'health_worker_sessions.entity_id',
     )
     .leftJoin(
       'health_worker_google_tokens',

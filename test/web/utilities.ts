@@ -1,7 +1,7 @@
 import { beforeAll } from 'std/testing/bdd.ts'
 import * as cheerio from 'cheerio'
 import { it } from 'std/testing/bdd.ts'
-import * as health_workers from '../../db/models/health_workers.ts'
+import * as sessions from '../../db/models/sessions.ts'
 import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
@@ -162,8 +162,8 @@ export async function addTestHealthWorkerWithSession(
   opts: TestHealthWorkerOpts = { scenario: 'base' },
 ) {
   const healthWorker = await addTestHealthWorker(trx, opts)
-  const session = await health_workers.createSession(trx, {
-    health_worker_id: healthWorker.id,
+  const session = await sessions.create(trx, 'health_worker', {
+    entity_id: healthWorker.id,
   })
   const fetchWithSession: typeof fetch = (
     input: URL | RequestInfo,
