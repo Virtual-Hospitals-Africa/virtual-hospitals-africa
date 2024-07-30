@@ -4,6 +4,7 @@ import {
   Maybe,
   MedicationSchedule,
   PastMedicalCondition,
+  PatientMedicationUpsert,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
   TrxOrDb,
@@ -22,19 +23,6 @@ import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
-
-type PatientMedicationUpsert = {
-  id?: Maybe<string>
-  dosage: number
-  strength: number
-  intake_frequency: string
-  route: string
-  start_date?: Maybe<string>
-  end_date?: Maybe<string>
-  medication_id: string | null
-  manufactured_medication_id: string | null
-  special_instructions?: Maybe<string>
-}
 
 export type PreExistingConditionUpsert = {
   id: string
