@@ -1,14 +1,5 @@
-
-const regulator_emails = [
-  'william.t.weiss@gmail.com',
-  'zorachen84613@gmail.com',
-  'mike.huang.mikank@gmail.com',
-  '812046661lm@gmail.com',
-]
-
 import { TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
-
 
 export function getBySession(trx: TrxOrDb, { regulator_session_id }: {
   regulator_session_id: string

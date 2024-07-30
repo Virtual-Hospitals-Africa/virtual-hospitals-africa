@@ -1,7 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
-import {  Maybe, RenderedPharmacist, TrxOrDb } from '../../types.ts'
-import { now } from '../helpers.ts'
-import { haveNames } from '../../util/haveNames.ts'
 import { sql } from 'kysely'
 import { RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../types.ts'
 import { jsonBuildObject, now } from '../helpers.ts'
@@ -21,7 +17,6 @@ export function address_town_sql(table: string) {
     )
   })`
 }
-
 
 export function update(
   trx: TrxOrDb,
@@ -158,48 +153,4 @@ export function insert(
     .values(data)
     .returning('id')
     .executeTakeFirstOrThrow()
-}
-
-const baseSelect = (trx: TrxOrDb) =>
-  trx
-    .selectFrom('pharmacists')
-    .select((eb) => [
-      eb.ref('pharmacists.given_name').$notNull().as('given_name')
-    ])
-
-
-export async function getAllWithSearchConditions(
-  trx: TrxOrDb,
-  search?: Maybe<string>,
-): Promise<RenderedPharmacist[]> {
-  let query = trx.selectFrom('pharmacists')
-  .select([
-    'id',
-    'licence_number',
-    'prefix',
-    'given_name',
-    'family_name',
-    'address',
-    'town',
-    'expiry_date',
-    'pharmacist_type',
-  ]).where('pharmacists.given_name', 'is not', null);
-  let queryGivenName = query
-  if (search) {
-    queryGivenName = query.where('pharmacists.given_name', 'ilike', `%${search}%`).orderBy('pharmacists.given_name','asc')
-    // queryFamilyName = query.where('pharmacists.family_name', 'ilike', `%${search}%`) 
-    // query = queryGivenName.union(queryFamilyName).orderBy('pharmacists.given_name','asc')
-  }
-  const pharmacists = await queryGivenName.execute()
-  const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(pharmacist => ({
-    id: pharmacist.id,
-    given_name: pharmacist.given_name,
-    licence_number: pharmacist.licence_number,
-    prefix: pharmacist.prefix,
-    family_name: pharmacist.family_name,
-    address: pharmacist.address,
-    town: pharmacist.town,
-    pharmacist_type: pharmacist.pharmacist_type,
-  }));
-  return renderedPharmacists
 }

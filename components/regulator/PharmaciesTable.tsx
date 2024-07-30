@@ -3,24 +3,11 @@ import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
+import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
-
-import { InvitePharmacySearch } from '../../islands/regulator/InvitePharmacySearch.tsx'
-
-type Pharmacy = {
-  address: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  premises_types: RenderedPharmacy
-  town: string | null
-}
-
 import { Person } from '../library/Person.tsx'
-
 
 const columns: TableColumn<RenderedPharmacy>[] = [
   {
@@ -82,13 +69,13 @@ export default function PharmaciesTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <InvitePharmacySearch />
+        <SearchInput />
         <Button
           type='button'
           href={search_href}
           className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
         >
-          Invite
+          Search
         </Button>
       </FormRow>
       <Table

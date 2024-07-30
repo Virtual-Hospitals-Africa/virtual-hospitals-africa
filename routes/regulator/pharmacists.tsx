@@ -1,14 +1,11 @@
 import Layout from '../../components/library/Layout.tsx'
-import { LoggedInRegulator, TrxOrDb } from '../../types.ts'
-import * as pharmacistsService from '../../db/models/pharmacists.ts'
-
 import PharmacistsTable, {
   Pharmacist,
 } from '../../components/regulator/PharmacistsTable.tsx'
+import { LoggedInRegulator } from '../../types.ts'
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { PageProps } from '$fresh/server.ts'
-
 
 type PharmacistsProps = {
   pharmacists: Pharmacist[]
@@ -44,14 +41,9 @@ export const handler = {
   },
 }
 
-
-  const pharmacists = await pharmacistsService.get(ctx.state.trx)
-
-
 export default function PharmacistsPage(
   props: PageProps<PharmacistsProps>,
 ) {
-
   return (
     <Layout
       title='Pharmacists'
@@ -62,8 +54,12 @@ export default function PharmacistsPage(
       variant='regulator home page'
     >
       <PharmacistsTable
-        pharmacists={pharmacists}
-        pathname={ctx.url.pathname}
+        pharmacists={props.data.pharmacists}
+        pathname={props.url.pathname}
+        rowsPerPage={props.data.rowsPerPage}
+        totalRows={props.data.totalRows}
+        currentPage={props.data.currentPage}
+        totalPage={props.data.totalPage}
       />
     </Layout>
   )

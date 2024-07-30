@@ -14,7 +14,6 @@ import {
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
-  Pharmacists,
   Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
@@ -1668,33 +1667,12 @@ export type LoggedInRegulator = {
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
-
-  FreshContext<
-    WithSession & {
-      trx: TrxOrDb
-      healthWorker: EmployedHealthWorker
-    } & T
-  >
-export type LoggedInRegulatorContext<T = Record<never, never>> =
-  FreshContext<
-    WithSession & {
-      trx: TrxOrDb
-      regulator: LoggedInRegulator['regulator']
-    } & T
-  >
-
   FreshContext<LoggedInHealthWorker & T>
-
 
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
   Extra = Record<string, never>,
 > = Handlers<Props, LoggedInHealthWorker & Extra>
-
-export type LoggedInRegulatorHandlerWithProps<
-  Props = Record<string, never>,
-  Extra = Record<string, never>,
-> = Handlers<Props, LoggedInRegulator & Extra>
 
 export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
   Context extends { state: infer State }
@@ -2864,25 +2842,6 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
-
-} & {id:string}
-
-export type RenderedPharmacist =
-  & Pick<
-    Pharmacists,
-      |'given_name'
-      |'licence_number'
-      |'prefix'
-      |'given_name'
-      |'family_name'
-      |'address'
-      |'town'
-      |'pharmacist_type'
-  >&{id:string} | undefined
-
-
-  
-
   href: string
   supervisors: Supervisor[]
 }
@@ -2913,4 +2872,3 @@ export type Supervisor = {
   given_name: string
   prefix: Prefix | null
 }
-
