@@ -6,25 +6,15 @@ import FormRow from '../../islands/form/Row.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { Actions } from '../../types.ts'
+
 import { StateUpdater, useState } from 'https://esm.sh/v128/preact@10.20.1/hooks/src/index.d.ts'
 import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
 
-type Pharmacist = {
-  licence_number: string
-  prefix: string | 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr' | null
-  given_name: string
-  family_name: string
-  address: string | null
-  town: string | null
-  expiry_date: string
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Sales Representative'
-    | 'Pharmacy Technician'
-    | 'Veterinary Surgeon'
+import { Actions, RenderedPharmacist } from '../../types.ts'
+import Pagination from '../library/Pagination.tsx'
+
+
+export type Pharmacist = RenderedPharmacist & {
   actions: Actions
 }
 
@@ -34,20 +24,12 @@ const columns: TableColumn<Pharmacist>[] = [
     data: 'prefix',
   },
   {
-    label: 'Given Name',
-    data: 'given_name',
-  },
-  {
-    label: 'Family Name',
-    data: 'family_name',
+    label: 'Name',
+    data: 'name',
   },
   {
     label: 'Address',
     data: 'address',
-  },
-  {
-    label: 'Town',
-    data: 'town',
   },
   {
     label: 'License Number',
@@ -62,6 +44,21 @@ const columns: TableColumn<Pharmacist>[] = [
     data: 'pharmacist_type',
   },
   {
+    label: 'Pharmacy',
+    data(row) {
+      if (!row.pharmacy) return null
+      return (
+        <a
+          key={`${row.id}-${row.pharmacy.id}`}
+          href={row.pharmacy.href}
+          className='text-indigo-600 hover:text-indigo-900'
+        >
+          {row.pharmacy.name}
+        </a>
+      )
+    },
+  },
+  {
     label: 'Actions',
     type: 'actions',
   },
@@ -69,11 +66,19 @@ const columns: TableColumn<Pharmacist>[] = [
 type PharmacistsTableProps = {
   pharmacists: Pharmacist[]
   pathname: string
+  totalRows: number
+  rowsPerPage: number
+  currentPage: number
+  totalPage: number
 }
 
 export default function PharmacistsTable({
   pharmacists,
   pathname,
+  totalRows,
+  rowsPerPage,
+  currentPage,
+  totalPage,
 }: PharmacistsTableProps): JSX.Element {
   const invite_href = `/regulator/pharmacists/invite`
   return (
@@ -98,6 +103,13 @@ export default function PharmacistsTable({
             Icon={UserCircleIcon}
           />
         )}
+      />
+      <Pagination
+        totalPages={totalPage}
+        currentPages={currentPage}
+        path={pathname}
+        rowsPerPage={rowsPerPage}
+        totalRows={totalRows}
       />
     </>
   )

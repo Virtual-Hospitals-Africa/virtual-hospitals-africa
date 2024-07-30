@@ -4,7 +4,7 @@ import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
 
-export default async function WaitingRoomPage(
+export default async function PrescriptionPage(
   req: Request,
   ctx: FreshContext,
 ) {
@@ -29,7 +29,7 @@ export default async function WaitingRoomPage(
       url={ctx.url}
       variant='just logo'
     >
-      {prescription.contents}
+      TODO: real prescription
     </Layout>
   )
 }

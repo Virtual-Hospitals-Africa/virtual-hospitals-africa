@@ -9,28 +9,56 @@ export function SendableList(
     selected: Signal<Sendable | null>
   },
 ) {
+  const entitySendables = sendables.filter((sendable) =>
+    sendable.to.type === 'entity'
+  )
+  const actionSendables = sendables.filter((sendable) =>
+    sendable.to.type === 'action'
+  )
+
   const show_sendables = selected.value == null
-    ? sendables
+    ? entitySendables
     : sendables.filter((sendable) => sendable === selected.value)
 
   return (
-    <ul
-      role='list'
-      className='divide-y divide-gray-200 overflow-y-auto'
-    >
-      {show_sendables.map((sendable) => {
-        const is_selected = selected.value === sendable
-        return (
-          <SendableListItem
-            key={sendable.key}
-            form={form}
-            sendable={sendable}
-            is_selected={is_selected}
-            toggleSelected={() =>
-              selected.value = is_selected ? null : sendable}
-          />
-        )
-      })}
-    </ul>
+    <div>
+      <ul
+        role='list'
+        className='overflow-y-auto'
+      >
+        {show_sendables.map((sendable) => {
+          const is_selected = selected.value === sendable
+          return (
+            <SendableListItem
+              key={sendable.key}
+              form='intake'
+              sendable={sendable}
+              is_selected={is_selected}
+              toggleSelected={() =>
+                selected.value = is_selected ? null : sendable}
+            />
+          )
+        })}
+      </ul>
+      {selected.value == null && (
+        <div className='sticky bottom-0 left-0 w-full bg-white'>
+          <ul role='list'>
+            {actionSendables.map((sendable) => {
+              const is_selected = selected.value === sendable
+              return (
+                <SendableListItem
+                  key={sendable.key}
+                  form='intake'
+                  sendable={sendable}
+                  is_selected={is_selected}
+                  toggleSelected={() =>
+                    selected.value = is_selected ? null : sendable}
+                />
+              )
+            })}
+          </ul>
+        </div>
+      )}
+    </div>
   )
 }

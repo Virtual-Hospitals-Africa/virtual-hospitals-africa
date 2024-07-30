@@ -6,7 +6,7 @@ import {
   YesNoQuestion,
 } from '../form/Inputs.tsx'
 import { Lifestyle, SexualActivity } from '../../types.ts'
-import SectionHeader from '../../components/library/typography/SectionHeader.tsx'
+import FormSection from '../../components/library/FormSection.tsx'
 
 const attraction_question = ['Male', 'Female', 'LGBTQIA']
 
@@ -20,8 +20,7 @@ export default function SexualActivitySection(
   )
 
   return (
-    <section className='mb-7'>
-      <SectionHeader className='mb-3'>Sexual Activity Questions</SectionHeader>
+    <FormSection header='Sexual Activity Questions'>
       <YesNoGrid>
         <YesNoQuestion
           name='lifestyle.sexual_activity.ever_been_sexually_active'
@@ -158,6 +157,6 @@ export default function SexualActivitySection(
           </Select>
         </>
       )}
-    </section>
+    </FormSection>
   )
 }

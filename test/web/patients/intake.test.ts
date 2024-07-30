@@ -860,7 +860,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it.skip('supports POST on the lifestyle step, moving you to the review step if you already completed all other sections', async () => {
+  it.skip('supports POST on the lifestyle step, moving you to the summary step if you already completed all other sections', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',
@@ -871,7 +871,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
 
     const prior_intake_steps = INTAKE_STEPS.filter((step) =>
-      step !== 'lifestyle' && step !== 'review'
+      step !== 'lifestyle' && step !== 'summary'
     )
     const patient_intake_insert = prior_intake_steps.map((intake_step) => ({
       patient_id,
@@ -979,7 +979,7 @@ describe('/app/patients/[patient_id]/intake', {
     }
     assertEquals(
       postResponse.url,
-      `${route}/app/patients/${patient_id}/intake/review`,
+      `${route}/app/patients/${patient_id}/intake/summary`,
     )
 
     const lifestyle = await patient_lifestyle.get(db, {
@@ -1104,7 +1104,7 @@ describe('/app/patients/[patient_id]/intake', {
     )
   })
 
-  it.skip('supports POST on the lifestyle step, returning you to the first incomplete step before review if any are not yet done', async () => {
+  it.skip('supports POST on the lifestyle step, returning you to the first incomplete step before summary if any are not yet done', async () => {
     const { patient_id } = await patient_encounters.upsert(
       db,
       '00000000-0000-0000-0000-000000000001',

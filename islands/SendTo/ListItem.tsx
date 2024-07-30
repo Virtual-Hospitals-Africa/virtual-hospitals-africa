@@ -8,7 +8,7 @@ import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
 function SendableListItemContents({ sendable }: { sendable: Sendable }) {
   const { image, name, description, status, menu_options, to } = sendable
   return (
-    <div className='group relative flex items-center px-5 py-6'>
+    <div className='group relative flex items-center px-5 py-4'>
       <a className='-m-1 block flex-1 p-1'>
         <div
           className='absolute inset-0 group-hover:bg-gray-50'
@@ -22,11 +22,13 @@ function SendableListItemContents({ sendable }: { sendable: Sendable }) {
             />
           </span>
           <div className='ml-4'>
-            <p className='text-sm font-sans font-medium text-gray-900 leading-normal'>
+            <p
+              className='text-sm font-sans font-medium text-gray-900 leading-normal'
+              style={{ marginBottom: '-0.25rem' }}
+            >
               {name}
             </p>
             <Description description={description} />
-
             {sendable.status && (
               <p className='text-xs font-ubuntu text-gray-500 whitespace-pre-line'>
                 {sendable.status}

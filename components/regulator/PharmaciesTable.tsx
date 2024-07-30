@@ -6,6 +6,7 @@ import FormRow from '../../islands/form/Row.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
+
 import { InvitePharmacySearch } from '../../islands/regulator/InvitePharmacySearch.tsx'
 
 type Pharmacy = {
@@ -18,6 +19,9 @@ type Pharmacy = {
   town: string | null
 }
 
+import { Person } from '../library/Person.tsx'
+
+
 const columns: TableColumn<RenderedPharmacy>[] = [
   {
     label: 'Name',
@@ -26,10 +30,6 @@ const columns: TableColumn<RenderedPharmacy>[] = [
   {
     label: 'Address',
     data: 'address',
-  },
-  {
-    label: 'Town',
-    data: 'town',
   },
   {
     label: 'License Number',
@@ -46,6 +46,17 @@ const columns: TableColumn<RenderedPharmacy>[] = [
   {
     label: 'Pharmacy Type',
     data: 'premises_types',
+  },
+  {
+    label: 'Supervisor',
+    data(row) {
+      if (!row.supervisors || row.supervisors.length === 0) return null
+      return (
+        <div className='flex flex-wrap gap-2'>
+          {row.supervisors.map((s) => <Person person={s} />)}
+        </div>
+      )
+    },
   },
 ]
 

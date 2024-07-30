@@ -1,5 +1,5 @@
-//deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
+import { DB } from '../../../db.d.ts'
 import parseJSON from '../../../util/parseJSON.ts'
 import { groupBy } from '../../../util/groupBy.ts'
 import uniq from '../../../util/uniq.ts'
@@ -54,6 +54,7 @@ type ParsedStrengths = {
   strength_denominator_unit: string
 }
 
+// deno-lint-ignore no-explicit-any
 const skippedDrugs: { drug: any; reason: string }[] = []
 
 const form_rewrite = {
@@ -65,7 +66,7 @@ const form_rewrite = {
   'CREAMS': 'CREAM',
 }
 
-async function seedDataFromJSON(db: Kysely<any>) {
+async function seedDataFromJSON(db: Kysely<DB>) {
   await db
     .insertInto('consumables')
     .values({ name: 'bandage' })
@@ -77,6 +78,7 @@ async function seedDataFromJSON(db: Kysely<any>) {
 
   for (const row of data) {
     if (row.forms in form_rewrite) {
+      // deno-lint-ignore no-explicit-any
       row.forms = (form_rewrite as any)[row.forms]
     }
   }
@@ -96,7 +98,7 @@ async function seedDataFromJSON(db: Kysely<any>) {
 }
 
 async function addDrug(
-  db: Kysely<any>,
+  db: Kysely<DB>,
   [generic_name, manufactured_medications]: [
     string,
     ManufacturedMedicationCsvRow[],
@@ -184,6 +186,7 @@ async function addDrug(
 
   for (const medication of medications) {
     const [form, route] = medication.form.split(';').map((s) => s.trim())
+    // deno-lint-ignore no-explicit-any
     const routes = route ? [route] : (unaffiliated_form_to_route as any)[form]
     if (!routes) {
       console.error(generic_name)

@@ -474,7 +474,7 @@ export function getIntakeById(
     .executeTakeFirstOrThrow()
 }
 
-export async function getIntakeReviewById(
+export async function getIntakeSummaryById(
   trx: TrxOrDb,
   patient_id: string,
 ) {

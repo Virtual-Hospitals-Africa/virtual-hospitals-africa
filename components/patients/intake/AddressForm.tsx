@@ -1,7 +1,7 @@
-import SectionHeader from '../../library/typography/SectionHeader.tsx'
 import { CountryAddressTree, PatientIntake } from '../../../types.ts'
 import AddressForm from '../../../islands/address-inputs.tsx'
 import { NearestHealthCare } from '../../../islands/NearestHealthCare.tsx'
+import FormSection from '../../library/FormSection.tsx'
 
 function PatientAddress(
   { patient, country_address_tree }: {
@@ -10,13 +10,12 @@ function PatientAddress(
   },
 ) {
   return (
-    <section className='mb-7'>
-      <SectionHeader className='mb-3'>Patient Address</SectionHeader>
+    <FormSection header='Patient Address'>
       <AddressForm
         address={patient.address}
         country_address_tree={country_address_tree}
       />
-    </section>
+    </FormSection>
   )
 }
 

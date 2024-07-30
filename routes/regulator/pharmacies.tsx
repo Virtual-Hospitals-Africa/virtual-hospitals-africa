@@ -16,7 +16,7 @@ type PharmaciesProps = {
 }
 
 export const handler = {
-  GET: async function RevokePharmacist(
+  GET: async function (
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
@@ -43,7 +43,7 @@ export default function PharmaciesPage(
 ) {
   return (
     <Layout
-      title='Pharmacists'
+      title='Pharmacies'
       route={props.route}
       url={props.url}
       regulator={props.data.regulator}

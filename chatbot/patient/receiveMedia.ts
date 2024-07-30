@@ -7,9 +7,9 @@ export async function receiveMedia(
   trx: TrxOrDb,
   patientState: PatientChatbotUserState,
 ) {
-  assert(patientState.entity_id)
+  assert(patientState.chatbot_user.entity_id)
   const scheduling_appointment_request = await patients
-    .schedulingAppointmentRequest(trx, patientState.entity_id)
+    .schedulingAppointmentRequest(trx, patientState.chatbot_user.entity_id)
   assert(scheduling_appointment_request)
 
   assert(patientState.unhandled_message.media_id)

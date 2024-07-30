@@ -2,7 +2,7 @@ import { ComponentChild } from 'preact'
 import { FreshContext } from '$fresh/server.ts'
 import { LinkDef, LinkProps } from '../../types.ts'
 import * as ProgressIcons from './icons/progress.tsx'
-import matchActiveLink from '../../util/matchActiveLink.ts'
+import { matchActiveLink } from '../../util/matchActiveLink.ts'
 import cls from '../../util/cls.ts'
 import { LogoWithFullText } from './Logo.tsx'
 import capitalize from '../../util/capitalize.ts'
@@ -81,7 +81,7 @@ const practitioner_home_page_nav_links: LinkDef[] = [
     title: 'Medical Literature',
     Icon: AcademicCapIcon,
   },
-  { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
+  { route: '/app/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
 ]
 
 const regulator_home_page_nav_links: LinkDef[] = [
@@ -96,7 +96,11 @@ const regulator_home_page_nav_links: LinkDef[] = [
     title: 'Medicines',
     Icon: IdentificationIcon,
   },
-  { route: '/logout', title: 'Log Out', Icon: ArrowRightOnRectangleIcon },
+  {
+    route: '/regulator/logout',
+    title: 'Log Out',
+    Icon: ArrowRightOnRectangleIcon,
+  },
 ]
 
 export function GenericSidebar(

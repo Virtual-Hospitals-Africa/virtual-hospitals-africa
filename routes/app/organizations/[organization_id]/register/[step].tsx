@@ -52,9 +52,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
 
     const { step } = ctx.params
 
-    const priorFormState: Partial<FormState> = JSON.parse(
-      ctx.state.session.get('registrationFormState') || '{}',
-    )
+    const priorFormState: Partial<FormState> = await nurse_registration_details
+      .getInProgress(
+        ctx.state.trx,
+        {
+          health_worker_id: ctx.state.healthWorker.id,
+        },
+      )
 
     const newFormState = await getStepFormData(
       step,
@@ -67,12 +71,20 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
       ...newFormState,
     }
 
+    console.log('formState', formState)
+
     const stepIndex = NurseRegistrationStepNames.findIndex((name) =>
       name === step
     )
 
     if (stepIndex < NurseRegistrationStepNames.length - 1) {
-      ctx.state.session.set('registrationFormState', JSON.stringify(formState))
+      const foo = await nurse_registration_details.setInProgress(
+        ctx.state.trx,
+        {
+          health_worker_id: ctx.state.healthWorker.id,
+          data: formState,
+        },
+      )
       const nextStep = NurseRegistrationStepNames[stepIndex + 1]
       const nextUrl = ctx.url.pathname.replace(`/${step}`, `/${nextStep}`)
       return redirect(nextUrl)
@@ -110,7 +122,9 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
 
     await nurse_registration_details.add(ctx.state.trx, registrationDetails)
 
-    ctx.state.session.set('registrationFormState', undefined)
+    await nurse_registration_details.removeInProgress(ctx.state.trx, {
+      health_worker_id: ctx.state.healthWorker.id,
+    })
 
     return redirect('/app')
   },
@@ -159,11 +173,13 @@ export default async function RegisterPage(
     return redirect(`/app/organizations/${organization.id}/register/personal`)
   }
 
-  const registrationFormState = ctx.state.session.get('registrationFormState')
-
-  const formState: Partial<FormState> = registrationFormState
-    ? JSON.parse(registrationFormState)
-    : {}
+  const formState: Partial<FormState> = await nurse_registration_details
+    .getInProgress(
+      ctx.state.trx,
+      {
+        health_worker_id: ctx.state.healthWorker.id,
+      },
+    )
 
   formState.email = healthWorker.email
 

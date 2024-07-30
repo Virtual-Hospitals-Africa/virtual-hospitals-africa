@@ -3,7 +3,7 @@ import { XMarkIcon } from '../../components/library/icons/heroicons/outline.tsx'
 
 export function SendToHeader({ close }: { close: () => void }) {
   return (
-    <div className='p-6 bg-indigo-700'>
+    <div className='sticky top-0 z-10 p-6 bg-indigo-700'>
       <div className='flex items-start justify-between'>
         <Dialog.Title className='text-base font-semibold leading-6 text-white'>
           Send to

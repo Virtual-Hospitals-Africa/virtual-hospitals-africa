@@ -2,11 +2,12 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_role_entrypoint_logout from './routes/[role_entrypoint]/logout.ts'
 import * as $_404 from './routes/_404.tsx'
 import * as $_app from './routes/_app.tsx'
 import * as $_middleware from './routes/_middleware.ts'
 import * as $app from './routes/app.tsx'
-import * as $app_middleware from './routes/app/_middleware.tsx'
+import * as $app_middleware from './routes/app/_middleware.ts'
 import * as $app_calendar from './routes/app/calendar.tsx'
 import * as $app_calendar_appointments_appointment_id_media_media_id_ from './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx'
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
@@ -68,7 +69,7 @@ import * as $app_patients_patient_id_intake_history from './routes/app/patients/
 import * as $app_patients_patient_id_intake_lifestyle from './routes/app/patients/[patient_id]/intake/lifestyle.tsx'
 import * as $app_patients_patient_id_intake_occupation from './routes/app/patients/[patient_id]/intake/occupation.tsx'
 import * as $app_patients_patient_id_intake_personal from './routes/app/patients/[patient_id]/intake/personal.tsx'
-import * as $app_patients_patient_id_intake_review from './routes/app/patients/[patient_id]/intake/review.tsx'
+import * as $app_patients_patient_id_intake_summary from './routes/app/patients/[patient_id]/intake/summary.tsx'
 import * as $app_patients_patient_id_review from './routes/app/patients/[patient_id]/review.tsx'
 import * as $app_patients_patient_id_review_middleware from './routes/app/patients/[patient_id]/review/_middleware.tsx'
 import * as $app_patients_patient_id_review_clinical_notes from './routes/app/patients/[patient_id]/review/clinical_notes.tsx'
@@ -90,18 +91,24 @@ import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
-import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
+import * as $regulator_middleware from './routes/regulator/_middleware.ts'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
+
 import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
+
+import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
+
+
+
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -164,6 +171,7 @@ import * as $family_RelationshipSelect from './islands/family/RelationshipSelect
 import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
+import * as $form_PharmacistForm from './islands/form/PharmacistForm.tsx'
 import * as $form_Row from './islands/form/Row.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
@@ -209,11 +217,12 @@ import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
   routes: {
+    './routes/[role_entrypoint]/logout.ts': $_role_entrypoint_logout,
     './routes/_404.tsx': $_404,
     './routes/_app.tsx': $_app,
     './routes/_middleware.ts': $_middleware,
     './routes/app.tsx': $app,
-    './routes/app/_middleware.tsx': $app_middleware,
+    './routes/app/_middleware.ts': $app_middleware,
     './routes/app/calendar.tsx': $app_calendar,
     './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx':
       $app_calendar_appointments_appointment_id_media_media_id_,
@@ -320,8 +329,8 @@ const manifest = {
       $app_patients_patient_id_intake_occupation,
     './routes/app/patients/[patient_id]/intake/personal.tsx':
       $app_patients_patient_id_intake_personal,
-    './routes/app/patients/[patient_id]/intake/review.tsx':
-      $app_patients_patient_id_intake_review,
+    './routes/app/patients/[patient_id]/intake/summary.tsx':
+      $app_patients_patient_id_intake_summary,
     './routes/app/patients/[patient_id]/review.tsx':
       $app_patients_patient_id_review,
     './routes/app/patients/[patient_id]/review/_middleware.tsx':
@@ -351,17 +360,18 @@ const manifest = {
     './routes/loading-test.tsx': $loading_test,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
-    './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
+    './routes/regulator/_middleware.ts': $regulator_middleware,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacies/[pharmacy.name].tsx':
       $regulator_pharmacies_pharmacy_name_,
     './routes/regulator/pharmacies/pharmacies.tsx':
       $regulator_pharmacies_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
+
     './routes/regulator/pharmacists/[pharmacist_id].tsx':
       $regulator_pharmacists_pharmacist_id_,
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
@@ -369,6 +379,13 @@ const manifest = {
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
     './routes/regulator/pharmacists/pharmacists.tsx':
       $regulator_pharmacists_pharmacists,
+
+    './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':
+      $regulator_pharmacists_pharmacist_id_edit,
+    './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
+      $regulator_pharmacists_pharmacist_id_revoke,
+    './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
+
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
@@ -434,6 +451,7 @@ const manifest = {
     './islands/file-preview-input.tsx': $file_preview_input,
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
+    './islands/form/PharmacistForm.tsx': $form_PharmacistForm,
     './islands/form/Row.tsx': $form_Row,
     './islands/form/buttons.tsx': $form_buttons,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,

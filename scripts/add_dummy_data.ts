@@ -60,8 +60,6 @@ const scenarios: ['male' | 'female', EncounterReason][] = [
 type HW = Awaited<ReturnType<typeof addTestHealthWorker>>
 
 async function addPatientsToWaitingRoom() {
-  await db.deleteFrom('patients').execute()
-  await db.deleteFrom('health_workers').execute()
   const avatars_used = new Set<string>()
   function randomAvatarNotYetUsed(gender: 'male' | 'female') {
     let random_avatar = randomAvatar(gender)
@@ -71,15 +69,6 @@ async function addPatientsToWaitingRoom() {
     avatars_used.add(random_avatar)
     return random_avatar
   }
-
-  const me = randomZimbabweanDemographics()
-  await db.updateTable('health_workers')
-    .where('health_workers.email', '=', 'will.weiss1230@gmail.com')
-    .set({
-      name: me.name,
-      avatar_url: randomAvatarNotYetUsed(me.gender),
-    })
-    .execute()
 
   const num_patients = scenarios.length
   const num_nurses = 5

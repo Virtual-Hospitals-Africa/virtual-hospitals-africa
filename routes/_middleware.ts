@@ -1,10 +1,5 @@
-import { redisSession } from 'fresh_session'
 import { FreshContext } from '$fresh/server.ts'
-import { WithSession } from 'fresh_session'
 import redirect from '../util/redirect.ts'
-import { TrxOrDb } from '../types.ts'
-import db from '../db/db.ts'
-import { redis } from '../external-clients/redis.ts'
 
 // TODO: only do this on dev & test?
 const log_file = Deno.env.get('LOG_FILE') || 'server.log'
@@ -25,49 +20,18 @@ export function grokPostgresError(err: Error) {
   return `${cause.name}: ${cause.fields.message}`
 }
 
-export const handler = [
-  redisSession(redis, {
-    keyPrefix: 'S_',
-    maxAge: 10000000,
-  }),
-  (
-    _req: Request,
-    ctx: FreshContext<
-      WithSession & {
-        trx: TrxOrDb
-      }
-    >,
-  ) => {
-    const accessingApp = ctx.url.pathname.startsWith('/app')
-    const accessingRegulator = ctx.url.pathname.startsWith('/regulator')
+// deno-lint-ignore no-explicit-any
+export const handleError = (err: any) => {
+  if (err.status === 302) {
+    return redirect(err.location)
+  }
+  console.error(err)
+  logError(err)
+  const status = err.status || 500
+  const message: string = grokPostgresError(err) || err.message ||
+    'Internal Server Error'
+  return new Response(message, { status })
+}
 
-    if (!accessingApp && !accessingRegulator) {
-      return ctx.next()
-    }
-
-    if (accessingApp && !ctx.state.session.get('health_worker_id')) {
-      return redirect('/')
-    }
-
-    if (accessingRegulator && !ctx.state.session.get('regulator_id')) {
-      return redirect('/')
-    }
-
-    return db.transaction().setIsolationLevel('read committed').execute(
-      (trx) => {
-        ctx.state.trx = trx
-        return ctx.next()
-      },
-    ).catch((err) => {
-      if (err.status === 302) {
-        return redirect(err.location)
-      }
-      console.error(err)
-      logError(err)
-      const status = err.status || 500
-      const message: string = grokPostgresError(err) || err.message ||
-        'Internal Server Error'
-      return new Response(message, { status })
-    })
-  },
-]
+export const handler = (_req: Request, ctx: FreshContext) =>
+  ctx.next().catch(handleError)

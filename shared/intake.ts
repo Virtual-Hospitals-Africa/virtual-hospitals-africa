@@ -8,7 +8,7 @@ export const INTAKE_STEPS: IntakeStep[] = [
   'occupation',
   'family',
   'lifestyle',
-  'review',
+  'summary',
 ]
 
 export function isIntakeStep(value: unknown): value is IntakeStep {

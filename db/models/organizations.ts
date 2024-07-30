@@ -30,7 +30,7 @@ export async function nearest(
               ) AS distance,
               ST_X(location::geometry) as longitude,
               ST_Y(location::geometry) as latitude
-        FROM Location
+        FROM "Location"
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
        LIMIT 10
   `.execute(trx)
@@ -103,6 +103,7 @@ export function getEmployeesQuery(
     professions?: Profession[]
     emails?: string[]
     is_approved?: boolean
+    exclude_health_worker_id?: string
   },
 ) {
   let hwQuery = trx.selectFrom('health_workers')
@@ -182,7 +183,19 @@ export function getEmployeesQuery(
     hwQuery = hwQuery.where('employment.profession', 'in', opts.professions)
   }
   if (opts.is_approved) {
-    console.log('TODO implement is_approved for doctors')
+    hwQuery = hwQuery.where((eb) =>
+      eb.or([
+        eb('employment.profession', 'in', ['doctor', 'admin']),
+        eb('nurse_registration_details.approved_by', 'is not', null),
+      ])
+    )
+  }
+  if (opts.exclude_health_worker_id) {
+    hwQuery = hwQuery.where(
+      'health_workers.id',
+      '!=',
+      opts.exclude_health_worker_id,
+    )
   }
 
   return hwQuery
@@ -194,7 +207,8 @@ export function getEmployees(
     organization_id: string
     professions?: Profession[]
     emails?: string[]
-    registration_status?: 'pending_approval' | 'approved' | 'incomplete'
+    is_approved?: boolean
+    exclude_health_worker_id?: string
   },
 ): Promise<OrganizationEmployee[]> {
   return getEmployeesQuery(trx, opts).execute()
@@ -210,7 +224,7 @@ export async function getApprovedDoctorsAndNurses(
   const employees = await getEmployees(trx, {
     ...opts,
     professions: ['doctor', 'nurse'],
-    registration_status: 'approved',
+    is_approved: true,
   })
 
   return employees.map(({ is_invitee, professions, ...rest }) => {

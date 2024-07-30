@@ -18,7 +18,7 @@ describe('patient chatbot', { sanitizeResources: false }, () => {
       'patient',
       phone_number,
     )
-    await conversations.updateChatbotUser(db, 'patient', chatbot_user.id, {
+    await conversations.updateChatbotUser(db, chatbot_user, {
       conversation_state: 'not_onboarded:make_appointment:enter_name',
     })
 

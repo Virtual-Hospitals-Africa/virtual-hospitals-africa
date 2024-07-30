@@ -2,7 +2,6 @@
 import { ColumnType, Generated, SqlBool, Transaction } from 'kysely'
 import { JSX } from 'preact'
 import { FreshContext, Handlers } from '$fresh/server.ts'
-import { Session, WithSession } from 'fresh_session'
 import db from './db/db.ts'
 import {
   AgeUnit,
@@ -53,12 +52,28 @@ export type Location = {
 
 export type Gender = 'male' | 'female' | 'non-binary'
 
-export type ChatbotUserState =
+export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
+
+export const PREFIXES: Prefix[] = ['Mr', 'Mrs', 'Ms', 'Dr', 'Miss', 'Sr']
+
+export type PharmacistType =
+  | 'Dispensing Medical Practitioner'
+  | 'Ind Clinic Nurse'
+  | 'Pharmacist'
+  | 'Pharmacy Technician'
+
+export const PHARMACIST_TYPES: PharmacistType[] = [
+  'Dispensing Medical Practitioner',
+  'Ind Clinic Nurse',
+  'Pharmacist',
+  'Pharmacy Technician',
+]
+
+export type ChatbotUser =
   & {
-    chatbot_user_id: string
-    chatbot_user_data: Record<string, unknown>
+    id: string
     entity_id: string | null
-    unhandled_message: UnhandledMessage
+    data: Record<string, unknown>
   }
   & (
     {
@@ -70,12 +85,27 @@ export type ChatbotUserState =
     }
   )
 
+export type ChatbotUserState = {
+  chatbot_user: ChatbotUser
+  unhandled_message: UnhandledMessage
+}
+
 export type PharmacistChatbotUserState = ChatbotUserState & {
-  chatbot_name: 'pharmacist'
+  chatbot_user: {
+    chatbot_name: 'pharmacist'
+  }
+  unhandled_message: {
+    chatbot_name: 'pharmacist'
+  }
 }
 
 export type PatientChatbotUserState = ChatbotUserState & {
-  chatbot_name: 'patient'
+  chatbot_user: {
+    chatbot_name: 'patient'
+  }
+  unhandled_message: {
+    chatbot_name: 'patient'
+  }
 }
 
 export type PatientConversationState =
@@ -403,12 +433,15 @@ export type SchedulingAppointmentOfferedTime = PatientAppointmentOfferedTime & {
 export type PharmacistConversationState =
   | 'initial_message'
   | 'not_onboarded:enter_licence_number'
+  | 'not_onboarded:reenter_licence_number'
   | 'not_onboarded:enter_name'
-  | 'not_onboarded:confirm_details'
+  | 'not_onboarded:share_location'
+  // | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
   // | 'onboarded:get_order_details'
-  | 'onboarded:fill_prescription:enter_prescription_number'
+  | 'onboarded:fill_prescription:enter_code'
+  | 'onboarded:fill_prescription:send_pdf'
   | 'onboarded:view_inventory'
   | 'end_of_demo'
   | 'error'
@@ -419,11 +452,13 @@ export type ConversationStateHandlerType<US extends ChatbotUserState, T> = T & {
 }
 
 export type ConversationStateHandlerNextState<US extends ChatbotUserState> =
-  | US['conversation_state']
+  | US['chatbot_user']['conversation_state']
   | ((
     trx: TrxOrDb,
     userState: US,
-  ) => US['conversation_state'] | Promise<US['conversation_state']>)
+  ) =>
+    | US['chatbot_user']['conversation_state']
+    | Promise<US['chatbot_user']['conversation_state']>)
 
 export type ConversationStateHandlerSelectOption<US extends ChatbotUserState> =
   {
@@ -510,6 +545,14 @@ export type ConversationStateHandlerSendLocation<US extends ChatbotUserState> =
       getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
     }
   >
+export type ConversationStateHandlerSendDocument<US extends ChatbotUserState> =
+  ConversationStateHandlerType<
+    US,
+    {
+      type: 'send_document'
+      getMessages: (trx: TrxOrDb, userState: US) => Promise<WhatsAppSendable>
+    }
+  >
 
 export type ConversationStateHandlerExpectMedia<US extends ChatbotUserState> =
   ConversationStateHandlerType<
@@ -527,10 +570,13 @@ export type ConversationStateHandler<US extends ChatbotUserState> =
   | ConversationStateHandlerList<US>
   | ConversationStateHandlerGetLocation<US>
   | ConversationStateHandlerSendLocation<US>
+  | ConversationStateHandlerSendDocument<US>
   | ConversationStateHandlerExpectMedia<US>
 
 export type ConversationStates<US extends ChatbotUserState> = {
-  [state in US['conversation_state']]: ConversationStateHandler<US>
+  [state in US['chatbot_user']['conversation_state']]: ConversationStateHandler<
+    US
+  >
 }
 
 export type Appointment = {
@@ -1015,6 +1061,21 @@ export type OrganizationEmployee = {
     view: string
   }
 }
+
+// QUESTION: How to make this specific to nurses?
+export type OrganizationRegisteredNurse =
+  & Omit<
+    OrganizationEmployee,
+    | 'is_invitee'
+    | 'professions'
+    | 'registration_status'
+    | 'actions'
+    | 'display_name'
+  >
+  & {
+    avatar_url: string
+    organization_id: string
+  }
 
 export type OrganizationDoctorOrNurse =
   & Omit<
@@ -1566,7 +1627,7 @@ export type WhatsAppSendableLocation = {
 export type WhatsAppSendableDocument = {
   type: 'document'
   messageBody: string
-  pdfPath: string
+  file_path: string
 }
 
 export type WhatsAppLocation = Location & {
@@ -1596,19 +1657,18 @@ export type WhatsAppSendableButtons = {
 
 export type LoggedInHealthWorker = {
   trx: TrxOrDb
-  session: Session
   healthWorker: EmployedHealthWorker
 }
 
 export type LoggedInRegulator = {
   trx: TrxOrDb
-  session: Session
   regulator: {
     id: string
   }
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
+
   FreshContext<
     WithSession & {
       trx: TrxOrDb
@@ -1622,6 +1682,9 @@ export type LoggedInRegulatorContext<T = Record<never, never>> =
       regulator: LoggedInRegulator['regulator']
     } & T
   >
+
+  FreshContext<LoggedInHealthWorker & T>
+
 
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
@@ -1637,6 +1700,20 @@ export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
   Context extends { state: infer State }
     ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
     : LoggedInHealthWorkerHandlerWithProps<unknown, Context>
+
+export type LoggedInRegulatorContext<T = Record<never, never>> = FreshContext<
+  LoggedInRegulator & T
+>
+
+export type LoggedInRegulatorHandlerWithProps<
+  Props = Record<string, never>,
+  Extra = Record<string, never>,
+> = Handlers<Props, LoggedInRegulator & Extra>
+
+export type LoggedInRegulatorHandler<Context = Record<string, never>> =
+  Context extends { state: infer State }
+    ? LoggedInRegulatorHandlerWithProps<unknown, State>
+    : LoggedInRegulatorHandlerWithProps<unknown, Context>
 
 export type Organization = Partial<Location> & {
   name: string
@@ -2704,7 +2781,7 @@ export type HeroIconName =
 
 export type Image = {
   type: 'avatar'
-  url: string
+  url: string | null
   className?: string
 } | {
   type: 'icon'
@@ -2767,6 +2844,7 @@ export type SelectedPatient = {
 }
 
 export type RenderedPharmacy = {
+  id: string
   address: string | null
   expiry_date: string
   licence_number: string
@@ -2786,6 +2864,7 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
+
 } & {id:string}
 
 export type RenderedPharmacist =
@@ -2803,3 +2882,35 @@ export type RenderedPharmacist =
 
 
   
+
+  href: string
+  supervisors: Supervisor[]
+}
+
+export type RenderedPharmacist = {
+  id?: string
+  licence_number: string
+  prefix: Prefix | null
+  name?: string
+  given_name: string
+  family_name: string
+  address: string | null
+  town: string | null
+  expiry_date: string
+  pharmacist_type:
+    | 'Dispensing Medical Practitioner'
+    | 'Ind Clinic Nurse'
+    | 'Pharmacist'
+    | 'Pharmacy Technician'
+  pharmacy?: RenderedPharmacy
+}
+
+export type Supervisor = {
+  id: string
+  href: string
+  name: string
+  family_name: string
+  given_name: string
+  prefix: Prefix | null
+}
+

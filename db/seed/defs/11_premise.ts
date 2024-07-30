@@ -1,11 +1,11 @@
-//deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
+import { DB } from '../../../db.d.ts'
 import { create } from '../create.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 
 export default create(['premises', 'premise_supervisors'], importFromCsv)
 
-async function importFromCsv(db: Kysely<any>) {
+async function importFromCsv(db: Kysely<DB>) {
   const premises = await parseCsv('./db/resources/premises.tsv', {
     columnSeparator: '\t',
   })
@@ -24,7 +24,8 @@ async function importFromCsv(db: Kysely<any>) {
     premisesData.push(premise)
   }
 
-  await db.insertInto('premises').values(premisesData).execute()
+  // deno-lint-ignore no-explicit-any
+  await db.insertInto('premises').values(premisesData as any).execute()
 
   const representativesData = []
 
@@ -62,6 +63,7 @@ async function importFromCsv(db: Kysely<any>) {
 
   await db
     .insertInto('premise_supervisors')
-    .values(representativesData)
+    // deno-lint-ignore no-explicit-any
+    .values(representativesData as any)
     .execute()
 }

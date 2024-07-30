@@ -224,7 +224,7 @@ export async function upsertPreExisting(
   )
 }
 
-export type MedicationReview = {
+export type MedicationSummary = {
   id: string
   name: string
   medication_id: string
@@ -245,7 +245,7 @@ export type MedicationReview = {
   special_instructions: string | null
 }
 
-export type PreExistingConditionReview = {
+export type PreExistingConditionSummary = {
   id: string
   patient_condition_id: string
   start_date: string
@@ -256,7 +256,7 @@ export type PreExistingConditionReview = {
     start_date: string
     name: string
   }[]
-  medications: MedicationReview[]
+  medications: MedicationSummary[]
 }
 
 export function getPreExistingConditionsReview(
@@ -264,7 +264,7 @@ export function getPreExistingConditionsReview(
   opts: {
     patient_id: string
   },
-): Promise<PreExistingConditionReview[]> {
+): Promise<PreExistingConditionSummary[]> {
   return trx
     .selectFrom('patient_conditions')
     .innerJoin(
@@ -318,9 +318,10 @@ export function getPreExistingConditionsReview(
             sql<
               MedicationSchedule[]
             >`TO_JSON(patient_condition_medications.schedules)`.as('schedules'),
-            isoDate(eb_med.ref('patient_condition_medications.start_date')).as(
-              'start_date',
-            ),
+            isoDate(eb_med.ref('patient_condition_medications.start_date'))
+              .$notNull().as(
+                'start_date',
+              ),
           ]),
       ).as('medications'),
       jsonArrayFrom(
@@ -442,9 +443,11 @@ export async function getPreExistingConditions(
         )
         .map(({ schedules, ...medication }) => {
           assertEquals(schedules.length, 1)
+          assert(medication.start_date)
           const [schedule] = schedules
           return {
             ...omit(medication, ['patient_condition_id']),
+            start_date: medication.start_date,
             intake_frequency: schedule.frequency,
             end_date: durationEndDate(medication.start_date, schedule),
             // TODO remove the Number casts

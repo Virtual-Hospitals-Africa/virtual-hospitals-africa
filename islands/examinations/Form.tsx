@@ -81,14 +81,12 @@ export function PatientExaminationForm({
 
   return (
     <>
-      {
-        /* <CheckboxGridItem
+      <CheckboxGridItem
         label='skip'
         name='skipped'
         checked={skipped.value}
         onChange={(checked) => skipped.value = checked}
-      /> */
-      }
+      />
       <div className='sm:columns-3 md:columns-4 lg:columns-5 xl:columns-6'>
         {patient_examination.categories.map((category) => (
           <ExaminationCategory
