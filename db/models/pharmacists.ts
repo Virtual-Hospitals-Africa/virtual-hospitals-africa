@@ -10,16 +10,13 @@ import { sql } from 'kysely'
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
-  data: {
-    licence_number?: string
-    pin?: string | null
-  },
+  data: RenderedPharmacist,
 ) {
-  return trx.updateTable('pharmacists').set(data).where(
-    'id',
-    '=',
-    pharmacist_id,
-  ).execute()
+  return trx
+    .updateTable('pharmacists')
+    .set(data)
+    .where('id', '=', pharmacist_id)
+    .execute()
 }
 
 export function name_sql(table: string) {
