@@ -1,8 +1,11 @@
-import {  Maybe, RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../types.ts'
+import {
+  Maybe,
+  RenderedPharmacist,
+  RenderedPharmacy,
+  TrxOrDb,
+} from '../../types.ts'
 import { jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
-
-
 
 export function update(
   trx: TrxOrDb,
@@ -114,7 +117,6 @@ export async function get(
   }
 }
 
-
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
   return trx.selectFrom('pharmacists')
     .select([
@@ -151,42 +153,49 @@ const baseSelect = (trx: TrxOrDb) =>
     .select((eb) => [
       eb.ref('pharmacists.given_name').$notNull().as('given_name'),
     ])
-  
-    
-
 
 export async function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ): Promise<RenderedPharmacist[]> {
   let query = trx.selectFrom('pharmacists')
-  .select([
-    'id',
-    'licence_number',
-    'prefix',
-    'given_name',
-    'family_name',
-    'address',
-    'town',
-    'expiry_date',
-    'pharmacist_type',
-  ]).where('pharmacists.given_name', 'is not', null);
+    .select([
+      'id',
+      'licence_number',
+      'prefix',
+      'given_name',
+      'family_name',
+      'address',
+      'town',
+      'expiry_date',
+      'pharmacist_type',
+    ]).where('pharmacists.given_name', 'is not', null)
   if (search) {
-    query = query.where(sql`concat(given_name, ' ', family_name)`, `ilike`, `%${search}%`).orderBy('pharmacists.given_name','asc').limit(30)
-    query = query.where(sql`concat(given_name, ' ', family_name)`, 'ilike', `%${search}%`).orderBy('pharmacists.given_name','asc').limit(30)
+    query = query.where(
+      sql`concat(given_name, ' ', family_name)`,
+      `ilike`,
+      `%${search}%`,
+    ).orderBy('pharmacists.given_name', 'asc').limit(30)
+    query = query.where(
+      sql`concat(given_name, ' ', family_name)`,
+      'ilike',
+      `%${search}%`,
+    ).orderBy('pharmacists.given_name', 'asc').limit(30)
   }
   const pharmacists = await query.execute()
-  const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(pharmacist => ({
-    id: pharmacist.id,
-    given_name: pharmacist.given_name,
-    licence_number: pharmacist.licence_number,
-    prefix: pharmacist.prefix,
-    family_name: pharmacist.family_name,
-    address: pharmacist.address,
-    town: pharmacist.town,
-    pharmacist_type: pharmacist.pharmacist_type,
-    expiry_date: pharmacist.expiry_date
-  }));
+  const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(
+    (pharmacist) => ({
+      id: pharmacist.id,
+      given_name: pharmacist.given_name,
+      licence_number: pharmacist.licence_number,
+      prefix: pharmacist.prefix,
+      family_name: pharmacist.family_name,
+      address: pharmacist.address,
+      town: pharmacist.town,
+      pharmacist_type: pharmacist.pharmacist_type,
+      expiry_date: pharmacist.expiry_date,
+    }),
+  )
   return renderedPharmacists
 }
 
@@ -200,4 +209,3 @@ export function insert(
     .returning('id')
     .executeTakeFirstOrThrow()
 }
-  

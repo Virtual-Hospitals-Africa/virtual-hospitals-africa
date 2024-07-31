@@ -7,8 +7,6 @@ import { assertOr404 } from '../../../util/assertOr.ts'
 import { getAllWithSearchConditions } from '../../../db/models/pharmacists.ts'
 import { json } from '../../../util/responses.ts'
 
-
-
 export const handler: LoggedInRegulatorHandlerWithProps<PharmacistsProps> = {
   async GET(req, ctx) {
     assertOr404(
@@ -26,8 +24,6 @@ export const handler: LoggedInRegulatorHandlerWithProps<PharmacistsProps> = {
   },
 }
 
-  type PharmacistsProps = {
-    pharmacists: RenderedPharmacist[]
-  }
-  
-  
+type PharmacistsProps = {
+  pharmacists: RenderedPharmacist[]
+}

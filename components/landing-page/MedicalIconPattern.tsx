@@ -1,5 +1,3 @@
-import cls from '../../util/cls.ts'
-
 export default function MedicalIconPattern() {
   return (
     <div

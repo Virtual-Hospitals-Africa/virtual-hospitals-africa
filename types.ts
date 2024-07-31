@@ -1671,7 +1671,6 @@ export type LoggedInRegulator = {
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
   FreshContext<LoggedInHealthWorker & T>
 
-
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
   Extra = Record<string, never>,
@@ -2874,11 +2873,4 @@ export type Supervisor = {
   family_name: string
   given_name: string
   prefix: Prefix | null
-}& { id: string }
-
-
-
-
-
-
-  
+} & { id: string }

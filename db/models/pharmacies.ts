@@ -33,7 +33,7 @@ export async function getAllWithSearchConditions(
     town: pharmacy.town,
     expiry_date: pharmacy.expiry_date.toDateString(),
     premises_types: pharmacy.premises_types,
-    supervisors: []
+    supervisors: [],
   }))
   return renderedPharmacies
 }

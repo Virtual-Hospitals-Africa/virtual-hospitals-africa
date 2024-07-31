@@ -13,7 +13,6 @@ import {
 } from 'https://esm.sh/v128/preact@10.20.1/hooks/src/index.d.ts'
 import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
 
-
 export type Pharmacist = RenderedPharmacist & {
   actions: Actions
 }
@@ -85,7 +84,7 @@ export default function PharmacistsTable({
     <>
       <FormRow className='mb-4'>
         <InvitePharmacistSearch />
-        <InvitePharmacistSearch/>
+        <InvitePharmacistSearch />
         <Button
           type='button'
           href={invite_href}

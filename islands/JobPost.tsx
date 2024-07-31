@@ -15,7 +15,7 @@ export type JobPostProps = {
 export default function JobPost(
   { title, location, summary, fullDescription }: JobPostProps,
 ) {
-  const [open, setOpen] = useState(false)
+  const [open] = useState(false)
 
   return (
     <div className='lg:col-start-3 lg:row-end-1'>
