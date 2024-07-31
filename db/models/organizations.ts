@@ -115,16 +115,26 @@ export function getEmployeesQuery(
       'nurse_registration_details.health_worker_id',
       'health_workers.id',
     )
-    .select(({ selectFrom }) => [
+    .leftJoin(
+      'health_worker_sessions',
+      'health_worker_sessions.entity_id',
+      'health_workers.id'
+    )
+    .select((eb) => [
       'health_workers.id as health_worker_id',
       'health_workers.name as name',
       'health_workers.email as email',
       'health_workers.name as display_name',
       'health_workers.avatar_url as avatar_url',
+      eb(
+        'health_worker_sessions.updated_at',
+        '>=',
+        sql<Date>`NOW() - INTERVAL '1 hour'`,
+      ).as('online'),
       sql<false>`FALSE`.as('is_invitee'),
       jsonArrayFromColumn(
         'profession_details',
-        selectFrom('employment')
+        eb.selectFrom('employment')
           .leftJoin(
             'nurse_specialties',
             'nurse_specialties.employee_id',
@@ -197,21 +207,6 @@ export function getEmployeesQuery(
       'health_workers.id',
       '!=',
       opts.exclude_health_worker_id,
-    )
-  }
-
-  if (opts.active_hours) {
-    const now = new Date().getTime();
-    const newTimestamp = new Date(now - (opts.active_hours * 60 * 60 * 1000));
-
-    hwQuery = hwQuery.innerJoin(
-      'health_worker_sessions',
-      'health_worker_sessions.health_worker_id',
-      'health_workers.id'
-    ).where(
-      'health_worker_sessions.updated_at',
-      '>=',
-      newTimestamp
     )
   }
 
