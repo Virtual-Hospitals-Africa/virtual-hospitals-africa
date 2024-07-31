@@ -5,7 +5,7 @@ export function InvitePharmacistSearch() {
   return (
     <PersonSearch
       name='given_name'
-      href={`/regulator/pharmacists`}
+      href={`/regulator/pharmacists/pharmacists`}
       label=''
       addable
       optionHref={(pharmacist) => {

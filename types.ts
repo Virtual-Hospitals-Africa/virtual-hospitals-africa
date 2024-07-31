@@ -1669,7 +1669,7 @@ export type LoggedInRegulator = {
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
-  FreshContext<LoggedInHealthWorker & T>
+  FreshContext<LoggedInHealthWorker & T> 
 
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
@@ -1689,11 +1689,6 @@ export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
 export type LoggedInRegulatorContext<T = Record<never, never>> = FreshContext<
   LoggedInRegulator & T
 >
-
-export type LoggedInRegulatorHandlerWithProps<
-  Props = Record<string, never>,
-  Extra = Record<string, never>,
-> = Handlers<Props, LoggedInRegulator & Extra>
 
 export type LoggedInRegulatorHandler<Context = Record<string, never>> =
   Context extends { state: infer State }
@@ -2878,11 +2873,5 @@ export type Supervisor = {
   family_name: string
   given_name: string
   prefix: Prefix | null
-}
+}& { id: string }
 
-export type RenderedPharmacist =
-  & Pick<
-    Pharmacists,
-      |'given_name'
-  >
-  

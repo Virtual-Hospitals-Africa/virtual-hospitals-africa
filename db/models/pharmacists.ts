@@ -147,7 +147,7 @@ const baseSelect = (trx: TrxOrDb) =>
   trx
     .selectFrom('pharmacists')
     .select((eb) => [
-      eb.ref('pharmacists.given_name').$notNull().as('given_name')
+      eb.ref('pharmacists.given_name').$notNull().as('given_name'),
     ])
   
 
