@@ -96,6 +96,7 @@ import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescr
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
+import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
@@ -354,6 +355,8 @@ const manifest = {
     './routes/regulator.tsx': $regulator,
     './routes/regulator/_middleware.ts': $regulator_middleware,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
+    './routes/regulator/pharmacies/[pharmacy_id].tsx':
+      $regulator_pharmacies_pharmacy_id_,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':
       $regulator_pharmacists_pharmacist_id_edit,

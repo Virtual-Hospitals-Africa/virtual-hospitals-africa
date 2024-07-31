@@ -2843,7 +2843,7 @@ export type RenderedPharmacy = {
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
   town: string | null
-  href: string
+  href?: string
   supervisors: Supervisor[]
 }
 
