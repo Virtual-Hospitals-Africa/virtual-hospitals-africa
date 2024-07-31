@@ -15,13 +15,10 @@ export async function getAllWithSearchConditions(
       'expiry_date',
       'premises_types',
   ]).where('name', 'is not', null);
-  let queryGivenName = query
   if (search) {
-    queryGivenName = query.where('name', 'ilike', `%${search}%`).orderBy('name','asc')
-    // queryFamilyName = query.where('pharmacists.family_name', 'ilike', `%${search}%`) 
-    // query = queryGivenName.union(queryFamilyName).orderBy('pharmacists.given_name','asc')
+    query = query.where('name', 'ilike', `%${search}%`).orderBy('name','asc').limit(30)
   }
-  const pharmacies = await queryGivenName.execute()
+  const pharmacies = await query.execute()
   const renderedPharmacies: RenderedPharmacy[] = pharmacies.map(pharmacy => ({
     id: pharmacy.id,
     name: pharmacy.name,
