@@ -109,6 +109,16 @@ export async function createPrescription(
   // Note that this is executed twice.
   // So this code will crush because of same alphanumeric_code
   assert(prescriber_id)
+  // 现在的模拟是
+  /*
+  一个症状对应了2个药
+  有两个症状（所以被执行两次）
+  */
+  // Q1 
+  // 我们是否需要传递验证码而非在这里生成？
+  // 如果生成的话，那对于同一个患者必须是一个验证码
+  // 如何确保哪些处方是分开的 哪些是一起的
+  // Q2
   // 对同一个患者而言验证码应该是同一个
   // 但是此函数被执行两次，alphanumeric_code 是 prescriptions 的 unique
   // 所以崩溃
