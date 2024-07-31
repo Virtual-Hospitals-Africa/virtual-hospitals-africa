@@ -14,6 +14,7 @@ import {
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
+  Pharmacists,
   Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
@@ -1675,6 +1676,11 @@ export type LoggedInHealthWorkerHandlerWithProps<
   Extra = Record<string, never>,
 > = Handlers<Props, LoggedInHealthWorker & Extra>
 
+export type LoggedInRegulatorHandlerWithProps<
+  Props = Record<string, never>,
+  Extra = Record<string, never>,
+> = Handlers<Props, LoggedInRegulator & Extra>
+
 export type LoggedInHealthWorkerHandler<Context = Record<string, never>> =
   Context extends { state: infer State }
     ? LoggedInHealthWorkerHandlerWithProps<unknown, State>
@@ -2873,3 +2879,10 @@ export type Supervisor = {
   given_name: string
   prefix: Prefix | null
 }
+
+export type RenderedPharmacist =
+  & Pick<
+    Pharmacists,
+      |'given_name'
+  >
+  

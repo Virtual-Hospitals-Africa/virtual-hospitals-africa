@@ -2,10 +2,11 @@ import Layout from '../../components/library/Layout.tsx'
 import PharmacistsTable, {
   Pharmacist,
 } from '../../components/regulator/PharmacistsTable.tsx'
-import { LoggedInRegulator } from '../../types.ts'
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { PageProps } from '$fresh/server.ts'
+import { LoggedInRegulator, TrxOrDb } from '../../types.ts'
+import * as pharmacistsService from '../../db/models/pharmacists.ts'
 
 type PharmacistsProps = {
   pharmacists: Pharmacist[]
@@ -54,12 +55,12 @@ export default function PharmacistsPage(
       variant='regulator home page'
     >
       <PharmacistsTable
-        pharmacists={props.data.pharmacists}
-        pathname={props.url.pathname}
-        rowsPerPage={props.data.rowsPerPage}
-        totalRows={props.data.totalRows}
-        currentPage={props.data.currentPage}
-        totalPage={props.data.totalPage}
+          pharmacists={props.data.pharmacists}
+          pathname={props.url.pathname}
+          rowsPerPage={props.data.rowsPerPage}
+          totalRows={props.data.totalRows}
+          currentPage={props.data.currentPage}
+          totalPage={props.data.totalPage}
       />
     </Layout>
   )
