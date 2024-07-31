@@ -7,13 +7,14 @@ import {
   WhatsAppSingleSendable,
 } from '../../types.ts'
 // import * as pharmacists from '../../db/models/pharmacists.ts'
-import * as prescriptions from '../../db/models/prescriptions.ts'
+// import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as conversations from '../../db/models/conversations.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
 import { sql } from 'kysely'
 import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
+import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -87,46 +88,52 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'not_onboarded:reenter_licence_number': {
     type: 'string',
-    prompt: `To continue, you'll need to enter your licence number.`,
+    prompt:
+      `No record found. To continue, you'll need to reenter your licence number.`,
     onExit: handleLicenceInput,
   },
   'not_onboarded:enter_name': {
     type: 'string',
     prompt: 'What is your name?',
     async onExit(trx: TrxOrDb, pharmacistState: PharmacistChatbotUserState) {
-      const name = pharmacistState.unhandled_message.trimmed_body
-      assert(name, 'Name should not be empty')
+      try {
+        const name = pharmacistState.unhandled_message.trimmed_body
+        assert(name, 'Name should not be empty')
 
-      const { licence_number } = pharmacistState.chatbot_user.data
-      assert(typeof licence_number === 'string')
+        const { licence_number } = pharmacistState.chatbot_user.data
+        assert(typeof licence_number === 'string')
 
-      const pharmacist = await trx
-        .selectFrom('pharmacists')
-        .selectAll()
-        .where(
-          sql<
-            // deno-lint-ignore no-explicit-any
-            any
-          >`concat(given_name, ' ', family_name) ilike ${name.toLowerCase()}`,
+        const pharmacist = await trx
+          .selectFrom('pharmacists')
+          .selectAll()
+          .where(
+            sql<
+              // deno-lint-ignore no-explicit-any
+              any
+            >`concat(given_name, ' ', family_name) ilike ${name.toLowerCase()}`,
+          )
+          .where('licence_number', '=', licence_number)
+          .executeTakeFirst()
+
+        if (!pharmacist) {
+          throw new Error(
+            'Cannot find a pharmacist with that licence and name combination',
+          )
+        }
+
+        await conversations.updateChatbotUser(
+          trx,
+          pharmacistState.chatbot_user,
+          {
+            entity_id: pharmacist.id,
+          },
         )
-        .where('licence_number', '=', licence_number)
-        .executeTakeFirst()
-
-      if (!pharmacist) {
-        throw new Error(
-          'Cannot find a pharmacist with that licence and name combination',
-        )
+        // TODO Handle case where the user previously selected they want to view inventory
+        return 'not_onboarded:share_location' as const
+      } catch (err) {
+        console.log(err)
+        return 'not_onboarded:reenter_licence_number' as const
       }
-
-      await conversations.updateChatbotUser(
-        trx,
-        pharmacistState.chatbot_user,
-        {
-          entity_id: pharmacist.id,
-        },
-      )
-      // TODO Handle case where the user previously selected they want to view inventory
-      return 'not_onboarded:share_location' as const
     },
   },
   'not_onboarded:share_location': {
@@ -173,26 +180,12 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   'onboarded:fill_prescription:enter_code': {
     type: 'string',
     prompt: 'Please enter your prescription code',
-    async onExit(trx, pharmacistState) {
-      const code = pharmacistState.unhandled_message.trimmed_body!
-      const prescription = await prescriptions.getByCode(trx, code)
-      if (!prescription) {
-        throw new Error('No prescription with that code')
-      }
-
-      await conversations.updateChatbotUser(
-        trx,
-        pharmacistState.chatbot_user,
-        {
-          data: {
-            prescription_code: code,
-            prescription_id: prescription.id,
-          },
-        },
-      )
-
-      return 'onboarded:fill_prescription:send_pdf' as const
-    },
+    onExit: handlePrescriptionCode,
+  },
+  'onboarded:fill_prescription:reenter_code': {
+    type: 'string',
+    prompt: 'Please enter your prescription code',
+    onExit: handlePrescriptionCode,
   },
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',
