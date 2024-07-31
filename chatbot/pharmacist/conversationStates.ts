@@ -7,7 +7,7 @@ import {
   WhatsAppSingleSendable,
 } from '../../types.ts'
 // import * as pharmacists from '../../db/models/pharmacists.ts'
-import * as prescriptions from '../../db/models/prescriptions.ts'
+// import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as conversations from '../../db/models/conversations.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assert } from 'std/assert/assert.ts'
