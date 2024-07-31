@@ -1,5 +1,3 @@
-import { RenderedPharmacist } from '../../types.ts'
-import { Pharmacist } from './PharmacistsTable.tsx'
 import { DetailedPharmacist } from '../../types.ts'
 type PharmacistProps = {
   pharmacist: DetailedPharmacist

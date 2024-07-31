@@ -1,14 +1,11 @@
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulatorContext } from '../../../types.ts'
-import { getRequiredUUIDParam } from '../../../util/getParam.ts'
 
-export default async function PharmacistPage(
+export default function PharmacistPage(
   _req: Request,
   ctx: LoggedInRegulatorContext,
 ) {
   const { regulator } = ctx.state
-  const pharmacy_name = getRequiredUUIDParam(ctx, 'pharmacy_name')
-  //const pharmacy = await pharmacy.getById(ctx.state.trx,pharmacist_id)
   return (
     <Layout
       title='Pharmacist Profile'

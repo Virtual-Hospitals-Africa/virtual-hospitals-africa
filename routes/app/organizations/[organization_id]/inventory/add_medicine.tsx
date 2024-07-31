@@ -1,10 +1,7 @@
-import { FreshContext } from '$fresh/server.ts'
 import Layout from '../../../../../components/library/Layout.tsx'
 import {
-  LoggedInHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
   MedicationProcurement,
-  RenderedInventoryHistory,
 } from '../../../../../types.ts'
 import redirect from '../../../../../util/redirect.ts'
 import InventoryMedicineForm from '../../../../../components/inventory/MedicineForm.tsx'

@@ -5,11 +5,6 @@ import FormRow from '../../islands/form/Row.tsx'
 import PatientsTable from './Table.tsx'
 import PatientCards from '../../islands/patient-cards.tsx'
 
-function NonEmptyPatientsView(
-  { patients }: { patients: RenderedPatient[] },
-) {
-}
-
 export default function PatientsView(
   { patients }: { patients: RenderedPatient[] },
 ) {

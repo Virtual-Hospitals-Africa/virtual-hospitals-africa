@@ -1,6 +1,6 @@
 import { ComponentChildren } from 'preact'
 import { Maybe } from '../../types.ts'
-import { Button } from './Button.tsx'
+
 import { PencilSquareIcon } from './icons/heroicons/outline.tsx'
 
 export type DescriptionListItemProps = {

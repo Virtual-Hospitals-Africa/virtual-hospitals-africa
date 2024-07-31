@@ -20,11 +20,6 @@ export default function Occupation0_18({
     },
   )
 
-  const school_status = [
-    'in school',
-    'never attended',
-    'stopped school',
-  ]
   const class_inappropriate_reason = [
     'Change of town',
     'Repeated a class',

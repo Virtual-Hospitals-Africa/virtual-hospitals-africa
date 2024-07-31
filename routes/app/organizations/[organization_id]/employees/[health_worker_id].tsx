@@ -10,7 +10,7 @@ export default async function EmployeePage(
   _req: Request,
   ctx: OrganizationContext,
 ) {
-  const { trx, organization, healthWorker, isAdminAtOrganization } = ctx.state
+  const { trx, organization, isAdminAtOrganization } = ctx.state
   const health_worker_id = getRequiredUUIDParam(ctx, 'health_worker_id')
 
   const employee = await health_workers.getEmployeeInfo(

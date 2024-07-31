@@ -1,5 +1,5 @@
 import { ComponentChildren, JSX } from 'preact'
-import cls from '../../util/cls.ts'
+
 import SectionHeader from './typography/SectionHeader.tsx'
 
 export default function Form(

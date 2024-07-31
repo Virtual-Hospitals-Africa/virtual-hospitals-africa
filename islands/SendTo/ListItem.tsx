@@ -6,7 +6,7 @@ import { CircularImage } from './CircularImage.tsx'
 import { HiddenInputs } from '../../components/library/HiddenInputs.tsx'
 
 function SendableListItemContents({ sendable }: { sendable: Sendable }) {
-  const { image, name, description, status, menu_options, to } = sendable
+  const { image, name, description, to } = sendable
   return (
     <div className='group relative flex items-center px-5 py-4'>
       <a className='-m-1 block flex-1 p-1'>

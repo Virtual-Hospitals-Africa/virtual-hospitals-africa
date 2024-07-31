@@ -1,6 +1,5 @@
 import SectionHeading from './SectionHeading.tsx'
 import { Container } from '../../components/library/Container.tsx'
-import ArrowLink from './ArrowLink.tsx'
 import { MHILink } from '../../islands/landing-page/MHIDotsLogo.tsx'
 import { Button } from '../../components/library/Button.tsx'
 import USFLogo from './partner-logos/usf.tsx'

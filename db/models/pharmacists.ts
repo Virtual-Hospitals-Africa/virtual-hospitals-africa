@@ -193,7 +193,7 @@ export async function getAllWithSearchConditions(
       address: pharmacist.address,
       town: pharmacist.town,
       pharmacist_type: pharmacist.pharmacist_type,
-      expiry_date: pharmacist.expiry_date,
+      expiry_date: pharmacist.expiry_date.toDateString(),
     }),
   )
   return renderedPharmacists

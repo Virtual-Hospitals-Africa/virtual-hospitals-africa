@@ -5,8 +5,7 @@ import PharmacistsTable, {
 import * as pharmacists from '../../db/models/pharmacists.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { PageProps } from '$fresh/server.ts'
-import { LoggedInRegulator, TrxOrDb } from '../../types.ts'
-import * as pharmacistsService from '../../db/models/pharmacists.ts'
+import { LoggedInRegulator } from '../../types.ts'
 
 type PharmacistsProps = {
   pharmacists: Pharmacist[]

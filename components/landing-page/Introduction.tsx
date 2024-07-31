@@ -1,6 +1,5 @@
 import { Container } from '../../components/library/Container.tsx'
 import { CheckIcon } from '../library/icons/heroicons/mini.tsx'
-import ArrowLink from './ArrowLink.tsx'
 
 export function Introduction() {
   return (
