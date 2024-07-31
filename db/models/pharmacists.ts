@@ -147,13 +147,6 @@ export function revoke(
   }).where('id', '=', data.pharmacist_id).execute()
 }
 
-const baseSelect = (trx: TrxOrDb) =>
-  trx
-    .selectFrom('pharmacists')
-    .select((eb) => [
-      eb.ref('pharmacists.given_name').$notNull().as('given_name'),
-    ])
-
 export async function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
