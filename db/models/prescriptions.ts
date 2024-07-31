@@ -86,11 +86,14 @@ export async function createPrescription(
     }
   })
 
+  // all information of 'patient_condition_medications'
   const patient_condition_medications = await trx
     .insertInto('patient_condition_medications')
     .values(medications_json)
     .returningAll()
     .execute()
+
+    console.log(patient_condition_medications)
 
   const prescriber_id = await trx
     .selectFrom('patient_condition_medications as pcm')
@@ -106,15 +109,18 @@ export async function createPrescription(
   // Note that this is executed twice.
   // So this code will crush because of same alphanumeric_code
   assert(prescriber_id)
-  // const prescription = await trx
-  //   .insertInto('prescriptions')
-  //   .values({
-  //     alphanumeric_code: opts.alphanumeric_code,
-  //     prescriber_id: prescriber_id.patient_encounter_provider_id,
-  //     patient_id: patient_id,
-  //   })
-  //   .returning('id')
-  //   .executeTakeFirstOrThrow()
+  // 对同一个患者而言验证码应该是同一个
+  // 但是此函数被执行两次，alphanumeric_code 是 prescriptions 的 unique
+  // 所以崩溃
+  const prescription = await trx
+    .insertInto('prescriptions')
+    .values({
+      alphanumeric_code: opts.alphanumeric_code,
+      prescriber_id: prescriber_id.patient_encounter_provider_id,
+      patient_id: patient_id,
+    })
+    .returning('id')
+    .executeTakeFirstOrThrow()
   
   // console.log(prescription)
 
