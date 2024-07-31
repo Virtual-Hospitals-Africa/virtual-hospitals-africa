@@ -1669,7 +1669,8 @@ export type LoggedInRegulator = {
 }
 
 export type LoggedInHealthWorkerContext<T = Record<never, never>> =
-  FreshContext<LoggedInHealthWorker & T> 
+  FreshContext<LoggedInHealthWorker & T>
+
 
 export type LoggedInHealthWorkerHandlerWithProps<
   Props = Record<string, never>,
@@ -2857,7 +2858,7 @@ export type RenderedPharmacist = {
   family_name: string
   address: string | null
   town: string | null
-  expiry_date: string
+  expiry_date: Date
   pharmacist_type:
     | 'Dispensing Medical Practitioner'
     | 'Ind Clinic Nurse'
@@ -2875,3 +2876,9 @@ export type Supervisor = {
   prefix: Prefix | null
 }& { id: string }
 
+
+
+
+
+
+  

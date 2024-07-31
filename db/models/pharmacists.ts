@@ -2,6 +2,8 @@ import {  Maybe, RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../typ
 import { jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
 
+
+
 export function update(
   trx: TrxOrDb,
   pharmacist_id: string,
@@ -150,6 +152,8 @@ const baseSelect = (trx: TrxOrDb) =>
       eb.ref('pharmacists.given_name').$notNull().as('given_name'),
     ])
   
+    
+
 
 export async function getAllWithSearchConditions(
   trx: TrxOrDb,
@@ -169,6 +173,7 @@ export async function getAllWithSearchConditions(
   ]).where('pharmacists.given_name', 'is not', null);
   if (search) {
     query = query.where(sql`concat(given_name, ' ', family_name)`, `ilike`, `%${search}%`).orderBy('pharmacists.given_name','asc').limit(30)
+    query = query.where(sql`concat(given_name, ' ', family_name)`, 'ilike', `%${search}%`).orderBy('pharmacists.given_name','asc').limit(30)
   }
   const pharmacists = await query.execute()
   const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(pharmacist => ({
@@ -180,7 +185,7 @@ export async function getAllWithSearchConditions(
     address: pharmacist.address,
     town: pharmacist.town,
     pharmacist_type: pharmacist.pharmacist_type,
-    expiry_date: pharmacist.expiry_date.toDateString()
+    expiry_date: pharmacist.expiry_date
   }));
   return renderedPharmacists
 }
@@ -195,3 +200,4 @@ export function insert(
     .returning('id')
     .executeTakeFirstOrThrow()
 }
+  

@@ -42,9 +42,10 @@ export const handler = {
   },
 }
 
+
 export default function PharmacistsPage(
-  props: PageProps<PharmacistsProps>,
-) {
+  props: PageProps<PharmacistsProps>){
+
   return (
     <Layout
       title='Pharmacists'
@@ -55,12 +56,12 @@ export default function PharmacistsPage(
       variant='regulator home page'
     >
       <PharmacistsTable
-          pharmacists={props.data.pharmacists}
-          pathname={props.url.pathname}
-          rowsPerPage={props.data.rowsPerPage}
-          totalRows={props.data.totalRows}
-          currentPage={props.data.currentPage}
-          totalPage={props.data.totalPage}
+         pharmacists={props.data.pharmacists}
+         pathname={props.url.pathname}
+         rowsPerPage={props.data.rowsPerPage}
+         totalRows={props.data.totalRows}
+         currentPage={props.data.currentPage}
+         totalPage={props.data.totalPage}
       />
     </Layout>
   )

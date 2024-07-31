@@ -23,3 +23,7 @@ export default async function PharmacistPage(
     </Layout>
   )
 }
+
+
+
+  

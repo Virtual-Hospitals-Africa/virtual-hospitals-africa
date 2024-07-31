@@ -10,6 +10,7 @@ import * as pharmacists from '../../../db/models/pharmacists.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulator, RenderedPharmacist, TrxOrDb } from '../../../types.ts'
 
+
 type InviteProps = {
   regulator: LoggedInRegulator['regulator']
 }
@@ -98,8 +99,5 @@ export default function Invite(
   )
 }
 
-
-
-    
 
 

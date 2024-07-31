@@ -66,3 +66,6 @@ export default function PharmacistDetailedCard({
     </>
   )
 }
+
+
+
