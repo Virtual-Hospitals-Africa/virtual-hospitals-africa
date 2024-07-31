@@ -92,13 +92,13 @@ export function addCalendars(
 export async function getMany(
   trx: TrxOrDb,
   opts: {
-    provider_ids?: string[]
+    employment_ids?: string[]
   },
 ) {
   let query = getQuery(trx)
-  if (opts.provider_ids) {
-    assertOr400(opts.provider_ids.length > 0, 'provider_ids must not be empty')
-    query = query.where('employment.id', '=', opts.provider_ids)
+  if (opts.employment_ids) {
+    assertOr400(opts.employment_ids.length > 0, 'employment_ids must not be empty.')
+    query = query.where('employment.id', '=', opts.employment_ids)
   }
   const providers = await query.execute()
   assertAll(providers, assertProvider)

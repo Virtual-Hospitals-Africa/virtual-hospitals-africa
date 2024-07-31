@@ -116,11 +116,11 @@ export function getAllProviderAvailability(
  */
 export async function availableSlots(
   trx: TrxOrDb,
-  { dates, declinedTimes = [], count, provider_ids, durationMinutes = 30 }: {
+  { dates, declinedTimes = [], count, employment_ids, durationMinutes = 30 }: {
     count: number
     declinedTimes?: string[]
     dates?: string[]
-    provider_ids?: string[]
+    employment_ids?: string[]
     durationMinutes?: number
   },
 ): Promise<{
@@ -132,9 +132,8 @@ export async function availableSlots(
   assert(count > 0, 'count must be greater than 0')
   assertAllHarare(declinedTimes)
 
-  const provider_availability = await getAllProviderAvailability(
-    await getMany(trx, { provider_ids }),
-  )
+  const providers = await getMany(trx, { employment_ids })
+  const provider_availability = await getAllProviderAvailability(providers)
 
   const slots: {
     provider: Provider
