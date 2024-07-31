@@ -1,15 +1,13 @@
 import { RenderedPharmacist } from '../../types.ts'
 
-
-type PharmacistProps={
-  pharmacist: RenderedPharmacist;
+type PharmacistProps = {
+  pharmacist: RenderedPharmacist
 }
-  export default function PharmacistDetailedCard({
-    pharmacist}:PharmacistProps
-  ) 
-  {
-    return (
-      <>
+export default function PharmacistDetailedCard({
+  pharmacist,
+}: PharmacistProps) {
+  return (
+    <>
       <div>
         <div class='mt-6'>
           <dl class='grid grid-cols-1 sm:grid-cols-4'>
@@ -26,8 +24,8 @@ type PharmacistProps={
                 Family Name
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacist?.family_name
-                  || 'N/A'}
+                {pharmacist?.family_name ||
+                  'N/A'}
               </dd>
             </div>
             <div class='border-t border-gray-100 px-4 py-6 sm:col-span-1 sm:px-0'>
@@ -61,10 +59,10 @@ type PharmacistProps={
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {pharmacist?.licence_number}
               </dd>
-            </div> 
-          </dl>   
+            </div>
+          </dl>
         </div>
       </div>
-      </>
-    )
-  }
+    </>
+  )
+}

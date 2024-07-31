@@ -9,8 +9,8 @@ export async function getAllWithSearchConditions(
   search?: Maybe<string>,
 ): Promise<RenderedPharmacy[]> {
   let query = trx.selectFrom('premises')
-  .select([
-    'id',
+    .select([
+      'id',
       'name',
       'licence_number',
       'licensee',
@@ -18,24 +18,27 @@ export async function getAllWithSearchConditions(
       'town',
       'expiry_date',
       'premises_types',
-  ]).where('name', 'is not', null);
+    ]).where('name', 'is not', null)
   let queryGivenName = query
   if (search) {
-    queryGivenName = query.where('name', 'ilike', `%${search}%`).orderBy('name','asc')
-    // queryFamilyName = query.where('pharmacists.family_name', 'ilike', `%${search}%`) 
+    queryGivenName = query.where('name', 'ilike', `%${search}%`).orderBy(
+      'name',
+      'asc',
+    )
+    // queryFamilyName = query.where('pharmacists.family_name', 'ilike', `%${search}%`)
     // query = queryGivenName.union(queryFamilyName).orderBy('pharmacists.given_name','asc')
   }
   const pharmacies = await queryGivenName.execute()
-  const renderedPharmacies: RenderedPharmacy[] = pharmacies.map(pharmacy => ({
+  const renderedPharmacies: RenderedPharmacy[] = pharmacies.map((pharmacy) => ({
     id: pharmacy.id,
     name: pharmacy.name,
     licence_number: pharmacy.licence_number,
     licensee: pharmacy.licensee,
     address: pharmacy.address,
     town: pharmacy.town,
-    expiry_date : pharmacy.expiry_date.toDateString(),
+    expiry_date: pharmacy.expiry_date.toDateString(),
     premises_types: pharmacy.premises_types,
-  }));
+  }))
   return renderedPharmacies
 }
 
@@ -96,7 +99,6 @@ export async function get(
     totalRows,
   }
 }
-
 
 export async function get(
   trx: TrxOrDb,
@@ -175,4 +177,3 @@ export async function get(
     totalRows,
   }
 }
-

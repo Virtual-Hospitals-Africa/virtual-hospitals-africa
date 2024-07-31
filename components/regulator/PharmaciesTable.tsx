@@ -21,7 +21,6 @@ type Pharmacy = {
 
 import { Person } from '../library/Person.tsx'
 
-
 const columns: TableColumn<RenderedPharmacy>[] = [
   {
     label: 'Name',

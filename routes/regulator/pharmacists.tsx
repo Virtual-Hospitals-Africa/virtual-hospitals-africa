@@ -9,7 +9,6 @@ import * as pharmacists from '../../db/models/pharmacists.ts'
 import { FreshContext } from '$fresh/server.ts'
 import { PageProps } from '$fresh/server.ts'
 
-
 type PharmacistsProps = {
   pharmacists: Pharmacist[]
   regulator: LoggedInRegulator['regulator']
@@ -44,14 +43,11 @@ export const handler = {
   },
 }
 
-
-  const pharmacists = await pharmacistsService.get(ctx.state.trx)
-
+const pharmacists = await pharmacistsService.get(ctx.state.trx)
 
 export default function PharmacistsPage(
   props: PageProps<PharmacistsProps>,
 ) {
-
   return (
     <Layout
       title='Pharmacists'

@@ -7,12 +7,14 @@ import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 
-import { StateUpdater, useState } from 'https://esm.sh/v128/preact@10.20.1/hooks/src/index.d.ts'
+import {
+  StateUpdater,
+  useState,
+} from 'https://esm.sh/v128/preact@10.20.1/hooks/src/index.d.ts'
 import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
 
 import { Actions, RenderedPharmacist } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
-
 
 export type Pharmacist = RenderedPharmacist & {
   actions: Actions
@@ -84,7 +86,7 @@ export default function PharmacistsTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <InvitePharmacistSearch/>
+        <InvitePharmacistSearch />
         <Button
           type='button'
           href={invite_href}

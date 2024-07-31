@@ -1,4 +1,3 @@
-
 import Layout from '../../../components/library/Layout.tsx'
 import InvitePharmacistForm from '../../../islands/regulator/InvitePharmacistForm.tsx'
 import { LoggedInRegulator, TrxOrDb } from '../../../types.ts'
@@ -11,7 +10,7 @@ export default async function PharmacistsInvite(
     state: { regulator: LoggedInRegulator['regulator']; trx: TrxOrDb }
   },
 ) {
-const { regulator } = ctx.state
+  const { regulator } = ctx.state
   return (
     <Layout
       title={'invite pharmacist'}
@@ -21,8 +20,7 @@ const { regulator } = ctx.state
       params={{}}
       variant='regulator home page'
     >
-      <InvitePharmacistForm/>
-        
+      <InvitePharmacistForm />
     </Layout>
   )
 }
@@ -126,4 +124,3 @@ export default function Invite(
     </Layout>
   )
 }
-
