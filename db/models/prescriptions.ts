@@ -122,10 +122,22 @@ export async function createPrescription(
   // 对同一个患者而言验证码应该是同一个
   // 但是此函数被执行两次，alphanumeric_code 是 prescriptions 的 unique
   // 所以崩溃
+
+  /**
+   * 患者在某一天就诊有两个症状 => 几张处方？ 1
+   * 患者在第二天又来就诊，又带来了两个症状 => 新处方？ 更新旧处方？ 
+   * => 一个患者对应唯一验证码
+   */
   const prescription = await trx
     .insertInto('prescriptions')
     .values({
-      alphanumeric_code: opts.alphanumeric_code,
+      // TODO 依据患者id来生成验证码
+      // 需要解决的问题是只能执行一次
+      // 解决方案：
+      // 先查看patient_id是否存在，如果存在，获取prescriptions的id
+      // patient_prescription_medications 填入 prescriptions.id
+      // 如果不存在，则计算验证码，生成prescriptions
+      alphanumeric_code: opts.alphanumeric_code, 
       prescriber_id: prescriber_id.patient_encounter_provider_id,
       patient_id: patient_id,
     })

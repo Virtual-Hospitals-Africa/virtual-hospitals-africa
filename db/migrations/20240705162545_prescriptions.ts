@@ -14,7 +14,7 @@ export async function up(db: Kysely<unknown>) {
           'cascade',
         ))
       .addColumn('patient_id', 'uuid', (col) =>
-        col.references('patients.id').onDelete('cascade')))
+        col.references('patients.id').onDelete('cascade').unique()))
 
   await createStandardTable(
     db,
