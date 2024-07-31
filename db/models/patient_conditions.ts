@@ -23,6 +23,7 @@ import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
+import { createPrescription } from './prescriptions.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
@@ -128,40 +129,22 @@ async function upsertPreExistingCondition(
     .values(comorbidities)
     .execute()
 
-  const medications = (condition.medications || []).map((medication) => {
-    const start_date = medication.start_date || condition.start_date
+  const creating_prescription = condition.medications && createPrescription(
+    trx, 
+    patient_id,
+    condition,
+    {
+      parent_condition: parent_condition.id,
+      alphanumeric_code: '123456', 
+      prescriber_id: '343a0f7f-0d93-4695-b9dd-fcbb76ed87ff', 
+      patient_condition_medication_id: '1',
+      pharmacist_id: '83655bf4-9999-43d9-b820-3bf2da495cd1',
+      pharmacy_id : '739c725a-dd43-4204-b292-795f9674ce24'
+    })
 
-    const { duration, duration_unit } = medication.end_date
-      ? {
-        duration: differenceInDays(medication.end_date, start_date),
-        duration_unit: 'days',
-      }
-      : { duration: 1, duration_unit: 'indefinitely' }
+  await Promise.all([inserting_comorbidities, creating_prescription])
 
-    return {
-      patient_condition_id: parent_condition.id,
-      medication_id:
-        (!medication.manufactured_medication_id && medication.medication_id) ||
-        null, // omit medication_id if manufactured_medication_id is present
-      manufactured_medication_id: medication.manufactured_medication_id || null,
-      strength: medication.strength,
-      route: medication.route,
-      schedules: sql<string[]>`
-        ARRAY[
-          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
-        ]::medication_schedule[]
-      `,
-      start_date,
-      special_instructions: medication.special_instructions || null,
-    }
-  })
-
-  const inserting_medications = medications.length && trx
-    .insertInto('patient_condition_medications')
-    .values(medications)
-    .execute()
-
-  await Promise.all([inserting_comorbidities, inserting_medications])
+  console.log(creating_prescription)
 }
 
 export async function upsertPreExisting(
