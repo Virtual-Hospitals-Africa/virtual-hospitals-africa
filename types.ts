@@ -14,7 +14,6 @@ import {
   IntakeStep,
   MaritalStatus,
   PatientCohabitation,
-  Pharmacists,
   Religion,
 } from './db.d.ts'
 import { Examination } from './shared/examinations.ts'
@@ -2857,7 +2856,7 @@ export type RenderedPharmacist = {
   family_name: string
   address: string | null
   town: string | null
-  expiry_date: Date
+  expiry_date: string
   pharmacist_type:
     | 'Dispensing Medical Practitioner'
     | 'Ind Clinic Nurse'
@@ -2874,3 +2873,21 @@ export type Supervisor = {
   given_name: string
   prefix: Prefix | null
 } & { id: string }
+
+export type DetailedPharmacist = {
+  id?: string
+  licence_number: string
+  prefix: Prefix | null
+  name?: string
+  given_name: string
+  family_name: string
+  address: string | null
+  town: string | null
+  expiry_date: Date
+  pharmacist_type:
+    | 'Dispensing Medical Practitioner'
+    | 'Ind Clinic Nurse'
+    | 'Pharmacist'
+    | 'Pharmacy Technician'
+  pharmacy?: RenderedPharmacy
+}

@@ -2,7 +2,6 @@ import {
   EmployedHealthWorker,
   LoggedInHealthWorkerHandlerWithProps,
 } from '../types.ts'
-import { assert } from 'std/assert/assert.ts'
 import { PageProps } from '$fresh/server.ts'
 import Layout from '../components/library/Layout.tsx'
 import { OrganizationAdmin } from '../db/models/employment.ts'
@@ -20,7 +19,7 @@ type PendingApprovalPageProps = {
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   PendingApprovalPageProps
 > = {
-  POST(_req, ctx) {
+  POST(_req) {
     // TODO
     return json({ message: 'ok' })
   },

@@ -18,7 +18,6 @@ import { assertOr400, assertOr403 } from '../../../../../util/assertOr.ts'
 import { todayISOInHarare } from '../../../../../util/date.ts'
 import { assertOr404 } from '../../../../../util/assertOr.ts'
 import { ManufacturedMedicationSearchResult } from '../../../../../types.ts'
-import { assert } from 'std/assert/assert.ts'
 
 export function assertIsUpsertMedicine(
   obj: unknown,
