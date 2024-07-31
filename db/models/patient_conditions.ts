@@ -14,7 +14,6 @@ import * as drugs from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
 import {
-  differenceInDays,
   durationEndDate,
   isISODateString,
 } from '../../util/date.ts'

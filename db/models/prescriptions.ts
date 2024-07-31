@@ -2,6 +2,7 @@ import { sql } from 'kysely'
 import { TrxOrDb } from '../../types.ts'
 import { differenceInDays } from '../../util/date.ts'
 import { PreExistingConditionUpsert } from './patient_conditions.ts'
+import { assert } from 'std/assert/assert.ts'
 
 export function insert(
   trx: TrxOrDb,
@@ -88,20 +89,35 @@ export async function createPrescription(
   const patient_condition_medications = await trx
     .insertInto('patient_condition_medications')
     .values(medications_json)
-    .returning('id')
+    .returningAll()
     .execute()
 
-    return patient_condition_medications
+  const prescriber_id = await trx
+    .selectFrom('patient_condition_medications as pcm')
+    .innerJoin('patient_conditions as pc', 'pcm.patient_condition_id', 'pc.id')
+    .innerJoin('patients as p', 'pc.patient_id', 'p.id')
+    .innerJoin('patient_encounters as pe', 'p.id', 'pe.patient_id')
+    .innerJoin('patient_encounter_providers as pep', 'pe.id', 'pep.patient_encounter_id')
+    .select('pep.id as patient_encounter_provider_id')
+    .where('pcm.patient_condition_id', '=', patient_condition_medications[0].patient_condition_id)
+    .executeTakeFirst()
 
+  console.log(prescriber_id)
+  // Note that this is executed twice.
+  // So this code will crush because of same alphanumeric_code
+  assert(prescriber_id)
   // const prescription = await trx
   //   .insertInto('prescriptions')
   //   .values({
   //     alphanumeric_code: opts.alphanumeric_code,
-  //     prescriber_id: opts.prescriber_id,
-  //     patient_id: opts.patient_id,
+  //     prescriber_id: prescriber_id.patient_encounter_provider_id,
+  //     patient_id: patient_id,
   //   })
   //   .returning('id')
   //   .executeTakeFirstOrThrow()
+  
+  // console.log(prescription)
+
 
   // const patient_prescription_medication = await trx
   //   .insertInto('patient_prescription_medications')
