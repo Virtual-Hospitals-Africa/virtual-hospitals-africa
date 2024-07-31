@@ -45,7 +45,13 @@ export function SendToSidebar(
                     {selected.value && (
                       <SendToSelectedPatient patient={patient} />
                     )}
-                    {selected.value && <SendToForm form={form} textarea={selected.value.textarea} requestTypeOptions={selected.value.request_type_options} />}
+                    {selected.value && (
+                      <SendToForm
+                        form={form}
+                        textarea={selected.value.textarea}
+                        requestTypeOptions={selected.value.request_type_options}
+                      />
+                    )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>

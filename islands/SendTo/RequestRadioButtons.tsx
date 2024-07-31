@@ -6,7 +6,7 @@ import { PickedMakeAppointments } from '../../components/library/icons/PickedMak
 import { PickedDeclareEmergency } from '../../components/library/icons/PickedDeclareEmergency.tsx'
 import { PickedRequestReview } from '../../components/library/icons/PickedRequestReview.tsx'
 
-const REQUEST_TYPES : { [key: string]: string } = {
+const REQUEST_TYPES: { [key: string]: string } = {
   request_review: 'Request Review',
   make_appointment: 'Make Appointment',
   declare_emergency: 'Declare Emergency',
@@ -14,13 +14,13 @@ const REQUEST_TYPES : { [key: string]: string } = {
 
 type RequestType = keyof typeof REQUEST_TYPES
 
-const DefaultIconComponents : { [key: string]: JSX.Element }  = {
+const DefaultIconComponents: { [key: string]: JSX.Element } = {
   request_review: <RequestReview />,
   make_appointment: <MakeAppointments />,
   declare_emergency: <DeclareEmergency />,
 }
 
-const PickedIconComponents : { [key: string]: JSX.Element }  = {
+const PickedIconComponents: { [key: string]: JSX.Element } = {
   request_review: <PickedRequestReview />,
   make_appointment: <PickedMakeAppointments />,
   declare_emergency: <PickedDeclareEmergency />,
