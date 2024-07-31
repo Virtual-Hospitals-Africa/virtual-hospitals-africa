@@ -19,20 +19,12 @@ const columns: TableColumn<Pharmacist>[] = [
     data: 'prefix',
   },
   {
-    label: 'Given Name',
-    data: 'given_name',
-  },
-  {
-    label: 'Family Name',
-    data: 'family_name',
+    label: 'Name',
+    data: 'name',
   },
   {
     label: 'Address',
     data: 'address',
-  },
-  {
-    label: 'Town',
-    data: 'town',
   },
   {
     label: 'License Number',

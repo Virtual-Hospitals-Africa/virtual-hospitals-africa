@@ -1,19 +1,23 @@
+import { setCookie } from 'std/http/cookie.ts'
 import { Handlers } from '$fresh/server.ts'
-import { Session, WithSession } from 'fresh_session'
 import { assert } from 'std/assert/assert.ts'
 import { getInitialTokensFromAuthCode } from '../external-clients/google.ts'
 import redirect from '../util/redirect.ts'
 import db from '../db/db.ts'
 import * as health_workers from '../db/models/health_workers.ts'
+import * as sessions from '../db/models/sessions.ts'
 import * as employment from '../db/models/employment.ts'
 import * as organizations from '../db/models/organizations.ts'
 import * as regulators from '../db/models/regulators.ts'
 import * as google from '../external-clients/google.ts'
-import { GoogleProfile, GoogleTokens, Profession, TrxOrDb } from '../types.ts'
+import { GoogleProfile, Profession, TrxOrDb } from '../types.ts'
 import uniq from '../util/uniq.ts'
 import zip from '../util/zip.ts'
 import { addCalendars } from '../db/models/providers.ts'
-import { handleError } from './_middleware.ts'
+import { assertOrRedirect } from '../util/assertOr.ts'
+import { warning } from '../util/alerts.ts'
+import { could_not_locate_account_href } from './app/_middleware.ts'
+import * as cookie from '../shared/cookie.ts'
 
 export async function initializeHealthWorker(
   trx: TrxOrDb,
@@ -23,7 +27,6 @@ export async function initializeHealthWorker(
 ): Promise<{ id: string }> {
   assert(invitees.length, 'No invitees found')
 
-  // Fire off async operations in parallel
   const removing_invites = await employment.removeInvitees(
     trx,
     invitees.map((invitee) => invitee.id),
@@ -79,97 +82,87 @@ async function checkPermissions(
   return tokenInfo.scope.includes('calendar')
 }
 
-type AuthCheckResult =
-  | {
-    status: 'authorized'
-    type: 'practitioner'
-    practitioner: { id: string }
-  }
-  | { status: 'authorized'; type: 'regulator'; regulator: { id: string } }
-  | { status: 'unauthorized' }
-  | { status: 'insufficient_permissions' }
+const insufficient_permissions = warning(
+  'You need to grant permission to access your Google Calendar to use this app.',
+)
 
-function authCheck(
-  gettingTokens: Promise<GoogleTokens>,
-): Promise<AuthCheckResult> {
-  return db.transaction().execute(async (trx) => {
-    const tokens = await gettingTokens
-    const googleClient = new google.GoogleClient(tokens)
-    const profile = await googleClient.getProfile()
-
-    const is_invited_as_regulator = await regulators.isInvited(profile.email)
-
-    if (is_invited_as_regulator) {
-      const hasPermissions = await checkPermissions(googleClient)
-      if (!hasPermissions) return { status: 'insufficient_permissions' }
-      return {
-        status: 'authorized',
-        type: 'regulator',
-        regulator: { id: '1' },
-        email: profile.email,
-      }
-    }
-
-    const health_worker_invitees = await employment.getInvitees(trx, {
-      email: profile.email,
-    })
-
-    const healthWorker = await (
-      health_worker_invitees.length
-        ? initializeHealthWorker(
-          trx,
-          googleClient,
-          profile,
-          health_worker_invitees,
-        )
-        : health_workers.updateTokens(
-          trx,
-          profile.email,
-          health_workers.pickTokens(tokens),
-        )
-    )
-
-    if (!healthWorker) return { status: 'unauthorized' }
-
-    const hasPermissions = await checkPermissions(googleClient)
-    if (!hasPermissions) return { status: 'insufficient_permissions' }
-
-    return {
-      status: 'authorized',
-      type: 'practitioner',
-      practitioner: healthWorker,
-      email: profile.email,
-    }
-  })
-}
-
-function handleAuthorized(
-  result: AuthCheckResult & { status: 'authorized' },
-  session: Session,
-) {
-  switch (result.type) {
-    case 'practitioner':
-      session.set('health_worker_id', result.practitioner.id)
-      return redirect('/app')
-    case 'regulator':
-      session.set('regulator_id', result.regulator.id)
-      return redirect('/regulator')
-  }
-}
-
-export const handler: Handlers<Record<string, never>, WithSession> = {
-  async GET(_req, ctx) {
-    const { session } = ctx.state
+export const handler: Handlers<Record<string, never>> = {
+  GET(_req, ctx) {
     const code = ctx.url.searchParams.get('code')
-
     assert(code, 'No code found in query params')
-
     const gettingTokens = getInitialTokensFromAuthCode(code)
-    const result = await authCheck(gettingTokens).catch(handleError)
 
-    if (result.status === 'authorized') {
-      return handleAuthorized(result, session)
-    }
-    return redirect(`/app/${result.status}`)
+    return db.transaction().setIsolationLevel('read committed').execute(
+      async (trx) => {
+        const tokens = await gettingTokens
+        const googleClient = new google.GoogleClient(tokens)
+        const hasPermissions = await checkPermissions(googleClient)
+
+        assertOrRedirect(hasPermissions, insufficient_permissions)
+
+        const profile = await googleClient.getProfile()
+
+        const regulator = await regulators.getByEmail(trx, profile.email)
+        if (regulator) {
+          if (
+            regulator.name !== profile.name ||
+            regulator.avatar_url !== profile.picture
+          ) {
+            await regulators.update(trx, {
+              id: regulator.id,
+              name: profile.name,
+              avatar_url: profile.picture,
+            })
+          }
+
+          const session = await sessions.create(trx, 'regulator', {
+            entity_id: regulator.id,
+          })
+
+          const response = redirect('/regulator/pharmacies')
+
+          setCookie(response.headers, {
+            name: 'regulator_session_id',
+            value: session.id,
+          })
+
+          return response
+        }
+
+        const health_worker_invitees = await employment.getInvitees(trx, {
+          email: profile.email,
+        })
+
+        const health_worker = await (
+          health_worker_invitees.length
+            ? initializeHealthWorker(
+              trx,
+              googleClient,
+              profile,
+              health_worker_invitees,
+            )
+            : health_workers.updateTokens(
+              trx,
+              profile.email,
+              health_workers.pickTokens(tokens),
+            )
+        )
+
+        assertOrRedirect(health_worker, could_not_locate_account_href)
+
+        const session = await sessions.create(trx, 'health_worker', {
+          entity_id: health_worker.id,
+        })
+
+        const response = redirect('/app')
+
+        setCookie(response.headers, {
+          name: cookie.sessionKey('health_worker'),
+          value: session.id,
+        })
+
+        return response
+      },
+    )
   },
 }

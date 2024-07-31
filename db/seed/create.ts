@@ -1,7 +1,7 @@
-// deno-lint-ignore-file no-explicit-any
 import { Kysely } from 'kysely'
 import db, { uri } from '../db.ts'
 import { runCommand } from '../../util/command.ts'
+import { DB } from '../../db.d.ts'
 
 const SEED_DUMPS_DIRECTORY = './db/seed/dumps'
 
@@ -11,21 +11,23 @@ const seeds = Array.from(Deno.readDirSync(SEED_DUMPS_DIRECTORY)).map((file) =>
   file.name
 )
 
+type TableName = keyof DB
+
 export function create(
-  table_names: string[],
-  generate: (db: Kysely<any>) => Promise<void>,
+  table_names: TableName[],
+  generate: (db: Kysely<DB>) => Promise<void>,
   opts?: { never_dump?: boolean },
 ) {
-  async function drop(tables: string[] = table_names) {
+  async function drop(tables: TableName[] = table_names) {
     for (const table_name of tables.toReversed()) {
-      await db.deleteFrom(table_name as any).execute()
+      await db.deleteFrom(table_name).execute()
     }
   }
   async function load() {
     const have_rows = await Promise.all(
       table_names.map(async (table_name) => {
         const row = await db
-          .selectFrom(table_name as any)
+          .selectFrom(table_name)
           .selectAll()
           .executeTakeFirst()
         return !!row

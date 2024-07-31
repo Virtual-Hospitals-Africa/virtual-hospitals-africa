@@ -32,6 +32,23 @@ export async function up(db: Kysely<unknown>) {
 
   await createStandardTable(
     db,
+    'nurse_registration_details_in_progress',
+    (qb) =>
+      qb.addColumn('health_worker_id', 'uuid', (column) =>
+        column
+          .references('health_workers.id')
+          .onDelete('cascade')
+          .notNull()
+          .unique())
+        .addColumn(
+          'data',
+          'jsonb',
+          (column) => column.notNull().defaultTo('{}'),
+        ),
+  )
+
+  await createStandardTable(
+    db,
     'nurse_registration_details',
     (qb) =>
       qb.addColumn('health_worker_id', 'uuid', (column) =>
@@ -91,6 +108,7 @@ export async function up(db: Kysely<unknown>) {
 }
 
 export async function down(db: Kysely<unknown>) {
+  await db.schema.dropTable('nurse_registration_details_in_progress').execute()
   await db.schema.dropTable('nurse_registration_details').execute()
   await db.schema.dropTable('nurse_specialties').execute()
   await db.schema.dropType('nurse_specialty').execute()

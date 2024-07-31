@@ -123,4 +123,5 @@ export async function up(db: Kysely<unknown>) {
 export async function down(db: Kysely<unknown>) {
   await db.schema.dropTable('whatsapp_messages_sent').execute()
   await db.schema.dropTable('whatsapp_messages_received').execute()
+  await db.schema.dropType('chatbot_name').execute()
 }

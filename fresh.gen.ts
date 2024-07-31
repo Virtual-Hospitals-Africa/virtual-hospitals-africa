@@ -2,11 +2,12 @@
 // This file SHOULD be checked into source version control.
 // This file is automatically updated during development when running `dev.ts`.
 
+import * as $_role_entrypoint_logout from './routes/[role_entrypoint]/logout.ts'
 import * as $_404 from './routes/_404.tsx'
 import * as $_app from './routes/_app.tsx'
 import * as $_middleware from './routes/_middleware.ts'
 import * as $app from './routes/app.tsx'
-import * as $app_middleware from './routes/app/_middleware.tsx'
+import * as $app_middleware from './routes/app/_middleware.ts'
 import * as $app_calendar from './routes/app/calendar.tsx'
 import * as $app_calendar_appointments_appointment_id_media_media_id_ from './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx'
 import * as $app_calendar_appointments_id_ from './routes/app/calendar/appointments/[id].tsx'
@@ -90,10 +91,10 @@ import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
 import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
-import * as $logout from './routes/logout.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
+import * as $regulator_middleware from './routes/regulator/_middleware.ts'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
@@ -204,11 +205,12 @@ import { type Manifest } from '$fresh/server.ts'
 
 const manifest = {
   routes: {
+    './routes/[role_entrypoint]/logout.ts': $_role_entrypoint_logout,
     './routes/_404.tsx': $_404,
     './routes/_app.tsx': $_app,
     './routes/_middleware.ts': $_middleware,
     './routes/app.tsx': $app,
-    './routes/app/_middleware.tsx': $app_middleware,
+    './routes/app/_middleware.ts': $app_middleware,
     './routes/app/calendar.tsx': $app_calendar,
     './routes/app/calendar/appointments/[appointment_id]/media/[media_id].tsx':
       $app_calendar_appointments_appointment_id_media_media_id_,
@@ -346,11 +348,11 @@ const manifest = {
     './routes/loading-test.tsx': $loading_test,
     './routes/logged-in.tsx': $logged_in,
     './routes/login.tsx': $login,
-    './routes/logout.tsx': $logout,
     './routes/partner.tsx': $partner,
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
+    './routes/regulator/_middleware.ts': $regulator_middleware,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
     './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':

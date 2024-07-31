@@ -145,19 +145,29 @@ export default function PatientSummary(
           children: patient.address,
           edit_href: `${intake_href}/address`,
         },
-        // { label: 'Ethnicity', children: patient.ethnicity },
-        // { label: 'Phone', children: patient.phone_number },
-        // { label: 'National ID', children: patient.national_id_number },
-        // { label: 'Address', children: patient.address },
-        // {
-        //   label: 'Nearest Organization',
-        //   children: patient.nearest_organization_name,
-        // },
-        // { label: 'Primary Doctor', children: patient.primary_doctor_name },
-        // {
-        //   label: 'Pre-existing Conditions',
-        //   children: <PreExistingConditionsSummary {...patient} />,
-        // },
+        { label: 'Ethnicity', children: patient.ethnicity, edit_href: 'TODO' },
+        { label: 'Phone', children: patient.phone_number, edit_href: 'TODO' },
+        {
+          label: 'National ID',
+          children: patient.national_id_number,
+          edit_href: 'TODO',
+        },
+        { label: 'Address', children: patient.address, edit_href: 'TODO' },
+        {
+          label: 'Nearest Organization',
+          children: patient.nearest_organization_name,
+          edit_href: 'TODO',
+        },
+        {
+          label: 'Primary Doctor',
+          children: patient.primary_doctor_name,
+          edit_href: 'TODO',
+        },
+        {
+          label: 'Pre-existing Conditions',
+          children: <PreExistingConditionsSummary {...patient} />,
+          edit_href: 'TODO',
+        },
       ]}
     />
   )
