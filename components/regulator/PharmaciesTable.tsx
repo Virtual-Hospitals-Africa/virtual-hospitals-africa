@@ -7,7 +7,7 @@ import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedPharmacy } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
 import { Person } from '../library/Person.tsx'
-import { InvitePharmacySearch } from '../../islands/regulator/InvitePharmacySearch.tsx'
+import { PharmacySearch } from '../../islands/regulator/PharmacySearch.tsx'
 
 type Pharmacy = {
   address: string | null
@@ -83,7 +83,7 @@ export default function PharmaciesTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <InvitePharmacySearch />
+        <PharmacySearch />
         <Button
           type='button'
           href={search_href}

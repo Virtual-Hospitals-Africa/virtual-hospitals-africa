@@ -7,7 +7,7 @@ import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { Actions, RenderedPharmacist } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
-import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
+import { PharmacistSearch } from '../../islands/regulator/PharmacistSearch.tsx'
 
 export type Pharmacist = RenderedPharmacist & {
   actions: Actions
@@ -79,7 +79,7 @@ export default function PharmacistsTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <InvitePharmacistSearch />
+        <PharmacistSearch />
         <Button
           type='button'
           href={invite_href}
