@@ -366,5 +366,3 @@ export async function ExaminationsPage(
     ),
   }
 }
-
-export default EncounterPage(ExaminationsPage)
