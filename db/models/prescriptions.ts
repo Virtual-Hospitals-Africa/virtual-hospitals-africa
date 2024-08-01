@@ -96,31 +96,39 @@ export async function createPrescription(
         patient_condition_medications_ids.push(record.id)
       })
       
-      // TODO 可能的处理方案 prescriber_id || 
-      // log
-      prescriber_id = await trx
-      .selectFrom('patient_condition_medications as pcm')
-      .innerJoin('patient_conditions as pc', 'pcm.patient_condition_id', 'pc.id')
-      .innerJoin('patients as p', 'pc.patient_id', 'p.id')
-      .innerJoin('patient_encounters as pe', 'p.id', 'pe.patient_id')
-      .innerJoin('patient_encounter_providers as pep', 'pe.id', 'pep.patient_encounter_id')
-      .select('pep.id as patient_encounter_provider_id')
-      .where('pcm.patient_condition_id', '=', patient_condition_medications[0].patient_condition_id)
-      .executeTakeFirst()
-  
-    console.log(prescriber_id)
-    // Note that this is executed twice.
-    // So this code will crush because of same alphanumeric_code
-    assert(prescriber_id)
-
+      if(!prescriber_id){
+        prescriber_id = await trx
+        .selectFrom('patient_condition_medications as pcm')
+        .innerJoin('patient_conditions as pc', 'pcm.patient_condition_id', 'pc.id')
+        .innerJoin('patients as p', 'pc.patient_id', 'p.id')
+        .innerJoin('patient_encounters as pe', 'p.id', 'pe.patient_id')
+        .innerJoin('patient_encounter_providers as pep', 'pe.id', 'pep.patient_encounter_id')
+        .select('pep.id as patient_encounter_provider_id')
+        .where('pcm.patient_condition_id', '=', patient_condition_medications[0].patient_condition_id)
+        .executeTakeFirst()
+          
+        console.log(prescriber_id)
+      }
+      assert(prescriber_id)
   }
+
+  const existCodesObj = await trx
+    .selectFrom('prescriptions')
+    .select('alphanumeric_code')
+    .execute()
+
+  const existCodesArray = existCodesObj.map(row => row.alphanumeric_code);
+  let alphanumeric_code: string
+  do{
+    alphanumeric_code = Math.floor(100000 + Math.random() * 900000).toString()
+  } while (
+    existCodesArray.includes(alphanumeric_code)
+  )
 
   const prescription = await trx
     .insertInto('prescriptions')
     .values({
-      // TODO 检验重复
-      // 左边是string 右边是int/float
-      alphanumeric_code: Math.floor(100000 + Math.random() * 900000), 
+      alphanumeric_code: alphanumeric_code, 
       prescriber_id: prescriber_id.patient_encounter_provider_id,
       patient_id: patient_id,
     })
@@ -129,21 +137,16 @@ export async function createPrescription(
   
    console.log(prescription)
 
-   // TODO 把名字打全
-   const pcmids = (patient_condition_medications_ids || []).map((patient_condition_medications_id) => ({
+   const patient_condition_medication_datas = (patient_condition_medications_ids || []).map((patient_condition_medications_id) => ({
     patient_condition_medication_id: patient_condition_medications_id,
     prescription_id: prescription.id,
   }))
-  console.log(pcmids)
+  console.log(patient_condition_medication_datas)
 
-  // TODO 可以不要返回值
   const patient_prescription_medication = await trx
     .insertInto('patient_prescription_medications')
-    .values(pcmids)
-    .returningAll()
-    .executeTakeFirstOrThrow()
-
-    // await Promise.all([prescription, patient_prescription_medication])
+    .values(patient_condition_medication_datas)
+    .execute()
 
     return prescription
 }

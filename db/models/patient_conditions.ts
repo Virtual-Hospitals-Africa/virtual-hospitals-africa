@@ -128,25 +128,30 @@ async function upsertPreExistingConditions(
       start_date: comorbidity.start_date || condition.start_date,
       comorbidity_of_condition_id: parent_condition.id,
     }))
-    if (comorbidities.length > 0) {
-        // TODO 之前有一个与语句 &&
-      const inserting_comorbidities = trx
+        // TODO 之前有一个与语句 && *
+      const inserting_comorbidities = comorbidities.length > 0
+      ? trx
         .insertInto('patient_conditions')
         .values(comorbidities)
-        .execute();
+        .execute()
+      : Promise.resolve();
 
       comorbidityPromises.push(inserting_comorbidities);
-    }
   }
 
 
-  // TODO 之前有一个与语句 &&
-  const creating_prescription = createPrescription(
+  // TODO 之前有一个与语句 && *
+  const valid_conditions = conditions.filter(condition => 
+    condition.medications && condition.medications.length > 0
+  );
+
+  const creating_prescription =  valid_conditions.length > 0 
+  ? createPrescription(
     trx, 
     patient_id,
     patient_condition_ids,
     conditions,
-    )
+    ) : Promise.resolve()
 
   await Promise.all([...comorbidityPromises, creating_prescription])
 
