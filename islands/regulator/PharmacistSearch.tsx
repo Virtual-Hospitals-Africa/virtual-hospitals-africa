@@ -1,7 +1,7 @@
 import { assert } from 'std/assert/assert.ts'
 import PersonSearch from '../PersonSearch.tsx'
 
-export function InvitePharmacistSearch() {
+export function PharmacistSearch() {
   return (
     <PersonSearch
       name='given_name'
