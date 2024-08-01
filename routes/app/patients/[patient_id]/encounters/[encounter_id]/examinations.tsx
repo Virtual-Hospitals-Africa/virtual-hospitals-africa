@@ -2,6 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import {
   completeStep,
   EncounterContext,
+  EncounterPage,
   EncounterPageChildProps,
 } from './_middleware.tsx'
 import {
