@@ -17,6 +17,14 @@ export const testHealthWorker = () => {
   }
 }
 
+export const testRegulator = () => {
+  return {
+    name: `Test Regulator ${generateUUID()}`,
+    email: generateUUID() + '@example.com',
+    avatar_url: generateUUID() + '.com',
+  }
+}
+
 export const testCalendars = () => ({
   gcal_appointments_calendar_id: generateUUID() +
     '@appointments.calendar.google.com',

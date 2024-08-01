@@ -2873,3 +2873,9 @@ export type Supervisor = {
   given_name: string
   prefix: Prefix | null
 }
+
+export type Regulator = {
+  name: string
+  email: string
+  avatar_url?: string
+}
