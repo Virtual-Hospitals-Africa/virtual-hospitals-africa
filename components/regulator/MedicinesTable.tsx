@@ -9,10 +9,6 @@ import { RenderedMedicien } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
 
 const columns: TableColumn<RenderedMedicien>[] = [
-  /*{
-    label: 'ID',
-    data: 'id',
-  },*/
   {
     label: 'Generic Name',
     data: 'generic_name',
@@ -33,22 +29,6 @@ const columns: TableColumn<RenderedMedicien>[] = [
     label: 'Strength Summary',
     data: 'strength_summary',
   },
-  /*{
-    label: 'Strength Numerators Unit',
-    data: 'strength_numerator_unit',
-  },
-  {
-    label: 'Strength Denominator',
-    data: 'strength_denominator',
-  },
-  {
-    label: 'Strength Denominator Unit',
-    data: 'strength_denominator_unit',
-  },
-  {
-    label: 'Is Strength Denominator Unit',
-    data: 'strength_denominator_is_units',
-  },*/
 ]
 
 type MediciensTableProps = {
