@@ -129,6 +129,7 @@ async function upsertPreExistingConditions(
       comorbidity_of_condition_id: parent_condition.id,
     }))
     if (comorbidities.length > 0) {
+        // TODO 之前有一个与语句 &&
       const inserting_comorbidities = trx
         .insertInto('patient_conditions')
         .values(comorbidities)
@@ -138,19 +139,13 @@ async function upsertPreExistingConditions(
     }
   }
 
+
+  // TODO 之前有一个与语句 &&
   const creating_prescription = createPrescription(
     trx, 
     patient_id,
     patient_condition_ids,
     conditions,
-    // {
-    //   parent_condition: parent_condition.id,
-    //   alphanumeric_code: '123456', 
-    //   prescriber_id: '343a0f7f-0d93-4695-b9dd-fcbb76ed87ff', 
-    //   patient_condition_medication_id: '1',
-    //   pharmacist_id: '83655bf4-9999-43d9-b820-3bf2da495cd1',
-    //   pharmacy_id : '739c725a-dd43-4204-b292-795f9674ce24'
-    // }
     )
 
   await Promise.all([...comorbidityPromises, creating_prescription])
