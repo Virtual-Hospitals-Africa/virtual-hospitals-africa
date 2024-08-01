@@ -95,6 +95,7 @@ import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
+import * as $regulator_medicines from './routes/regulator/medicines.tsx'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
@@ -361,6 +362,7 @@ const manifest = {
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
     './routes/regulator/_middleware.ts': $regulator_middleware,
+    './routes/regulator/medicines.tsx': $regulator_medicines,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacies/[pharmacy.name].tsx':
       $regulator_pharmacies_pharmacy_name_,

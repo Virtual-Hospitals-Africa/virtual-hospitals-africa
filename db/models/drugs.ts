@@ -209,3 +209,54 @@ export async function searchManufacturedMedications(
     strength_denominator: parseFloat(r.strength_denominator),
   }))
 }
+
+export async function get(
+  trx: TrxOrDb,
+  page: number = 1,
+  rowsPerPage: number = 10,
+) {
+  const offset = (page - 1) * rowsPerPage
+  const medicines = await trx
+    .selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .select([
+      'manufactured_medications.id',
+      'drugs.generic_name',
+      'manufactured_medications.trade_name',
+      'manufactured_medications.applicant_name',
+      'medications.form',
+      'medications.strength_numerators',
+      'medications.strength_numerator_unit',
+      'medications.strength_denominator',
+      'medications.strength_denominator_unit',
+      'medications.strength_denominator_is_units',
+      strengthSummary('manufactured_medications'),
+    ])
+    /*.groupBy([
+    ])*/
+    .orderBy('drugs.generic_name', 'asc')
+    .limit(rowsPerPage)
+    .offset(offset)
+    .execute()
+
+  const totalRowsResult = await trx
+    .selectFrom('manufactured_medications')
+    .select((eb) => eb.fn.count('id').as('totalRows'))
+    .execute()
+
+  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+
+  const medicinesList = medicines.map((medicine) => ({
+    ...medicine,
+  }))
+
+  return {
+    medicinesList,
+    totalRows,
+  }
+}
