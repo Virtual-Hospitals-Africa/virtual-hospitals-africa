@@ -29,7 +29,6 @@ const columns: TableColumn<RenderedMedicien>[] = [
     label: 'Strength Summary',
     data: 'strength_summary',
   },
-  
 ]
 
 type MediciensTableProps = {
