@@ -9,7 +9,7 @@ import redirect from '../../../../../util/redirect.ts'
 import OrganizationConsumableForm from '../../../../../islands/inventory/Consumable.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import * as inventory from '../../../../../db/models/inventory.ts'
-import { getRequiredUUIDParam } from '../../../../../util/getParam.ts'
+
 import {
   assertOr400,
   assertOr403,

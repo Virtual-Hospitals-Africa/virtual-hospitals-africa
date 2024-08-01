@@ -1,4 +1,4 @@
-import { ComponentChildren, JSX } from 'preact'
+import { ComponentChildren } from 'preact'
 import cls from '../../util/cls.ts'
 
 export default function Card(

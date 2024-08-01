@@ -3,7 +3,6 @@ import AsyncSearch from '../AsyncSearch.tsx'
 import cls from '../../util/cls.ts'
 import { RenderedICD10DiagnosisTreeWithOptionalIncludes } from '../../types.ts'
 import { SelectWithOptions } from '../form/Inputs.tsx'
-import words from '../../util/words.ts'
 
 type SubDiag0 = NonNullable<
   RenderedICD10DiagnosisTreeWithOptionalIncludes['sub_diagnoses']

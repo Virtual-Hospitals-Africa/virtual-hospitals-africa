@@ -180,7 +180,7 @@ export default function HealthWorkerDetailedCard(
                       className='mx-auto divide-y divide-gray-100 rounded-md border border-gray-200'
                       style={{ width: '50%' }}
                     >
-                      {employee.documents.map((document, index) => (
+                      {employee.documents.map((document) => (
                         <ImageDownload {...document} />
                       ))}
                     </ul>

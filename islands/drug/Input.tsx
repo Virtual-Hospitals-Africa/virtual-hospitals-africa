@@ -30,7 +30,6 @@ export default function DrugInput({
 
   const [
     manufactured_medication_id,
-    setManufacturedMedicationId,
   ] = useState<
     string | null
   >(value?.manufactured_medication_id ?? null)

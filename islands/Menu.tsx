@@ -24,7 +24,7 @@ export function MenuOptions({ options }: MenuProps) {
     >
       <div className='py-1' role='none'>
         {/* <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" --> */}
-        {options.map((option, i) => (
+        {options.map((option) => (
           <a
             href={option.href}
             className='text-gray-700 block px-4 py-2 text-sm'

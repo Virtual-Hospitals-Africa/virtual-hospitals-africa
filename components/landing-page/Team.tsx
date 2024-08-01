@@ -1,4 +1,3 @@
-import { Button } from '../../components/library/Button.tsx'
 import { Container } from '../../components/library/Container.tsx'
 import SectionHeading from './SectionHeading.tsx'
 

@@ -8,7 +8,7 @@ import Layout from '../components/library/Layout.tsx'
 // } from '../components/library/icons/heroicons/solid.tsx'
 // import { Button } from '../components/library/Button.tsx'
 import SideBySide from '../components/library/SideBySide.tsx'
-import PageHeader from '../components/library/typography/PageHeader.tsx'
+
 // import { ArrowUpCircleIcon } from '../components/library/icons/heroicons/mini.tsx'
 // import { ComponentChildren } from 'preact'
 // import JobPost, { JobPostProps } from '../islands/JobPost.tsx'

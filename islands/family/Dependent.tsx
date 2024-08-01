@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks'
-import { FamilyRelation, PatientDemographicInfo } from '../../types.ts'
+import { FamilyRelation } from '../../types.ts'
 import { RemoveRow } from '../AddRemove.tsx'
 import FormRow from '../form/Row.tsx'
 import { TextInput } from '../form/Inputs.tsx'
