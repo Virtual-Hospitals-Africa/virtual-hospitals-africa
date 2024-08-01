@@ -48,67 +48,71 @@ export function getByCode(
 export async function createPrescription(
   trx: TrxOrDb,
   patient_id: string,
-  condition: PreExistingConditionUpsert,
-  opts: {
-    parent_condition: string,
-    alphanumeric_code: string
-    prescriber_id: string
-    patient_condition_medication_id: string
-    pharmacist_id: string
-    pharmacy_id: string
-  },
+  patient_condition_ids: any[],
+  conditions: PreExistingConditionUpsert[],
 ) {
-  const medications_json = (condition.medications || []).map((medication) => {
-    const start_date = medication.start_date || condition.start_date
-
-    const { duration, duration_unit } = medication.end_date
-      ? {
-        duration: differenceInDays(medication.end_date, start_date),
-        duration_unit: 'days',
+  let prescriber_id: any
+  const patient_condition_medications_ids: any[] =  []
+  for(let i = 0; i < conditions.length; i++){
+    const condition = conditions[i]
+    const current_patient_condition_id = patient_condition_ids[i]
+    const medications_json = (condition.medications || []).map((medication) => {
+      const start_date = medication.start_date || condition.start_date
+  
+      const { duration, duration_unit } = medication.end_date
+        ? {
+          duration: differenceInDays(medication.end_date, start_date),
+          duration_unit: 'days',
+        }
+        : { duration: 1, duration_unit: 'indefinitely' }
+  
+      return {
+        patient_condition_id: current_patient_condition_id,
+        medication_id:
+          (!medication.manufactured_medication_id && medication.medication_id) ||
+          null, // omit medication_id if manufactured_medication_id is present
+        manufactured_medication_id: medication.manufactured_medication_id || null,
+        strength: medication.strength,
+        route: medication.route,
+        schedules: sql<string[]>`
+          ARRAY[
+            ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
+          ]::medication_schedule[]
+        `,
+        start_date,
+        special_instructions: medication.special_instructions || null,
       }
-      : { duration: 1, duration_unit: 'indefinitely' }
+    })
+  
+    // all information of 'patient_condition_medications'
+    const patient_condition_medications = await trx
+      .insertInto('patient_condition_medications')
+      .values(medications_json)
+      .returningAll()
+      .execute()
 
-    return {
-      patient_condition_id: opts.parent_condition,
-      medication_id:
-        (!medication.manufactured_medication_id && medication.medication_id) ||
-        null, // omit medication_id if manufactured_medication_id is present
-      manufactured_medication_id: medication.manufactured_medication_id || null,
-      strength: medication.strength,
-      route: medication.route,
-      schedules: sql<string[]>`
-        ARRAY[
-          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
-        ]::medication_schedule[]
-      `,
-      start_date,
-      special_instructions: medication.special_instructions || null,
-    }
-  })
+      console.log(patient_condition_medications)
+      patient_condition_medications.forEach(record => {
+        patient_condition_medications_ids.push(record.id)
+      })
 
-  // all information of 'patient_condition_medications'
-  const patient_condition_medications = await trx
-    .insertInto('patient_condition_medications')
-    .values(medications_json)
-    .returningAll()
-    .execute()
+      prescriber_id = await trx
+      .selectFrom('patient_condition_medications as pcm')
+      .innerJoin('patient_conditions as pc', 'pcm.patient_condition_id', 'pc.id')
+      .innerJoin('patients as p', 'pc.patient_id', 'p.id')
+      .innerJoin('patient_encounters as pe', 'p.id', 'pe.patient_id')
+      .innerJoin('patient_encounter_providers as pep', 'pe.id', 'pep.patient_encounter_id')
+      .select('pep.id as patient_encounter_provider_id')
+      .where('pcm.patient_condition_id', '=', patient_condition_medications[0].patient_condition_id)
+      .executeTakeFirst()
+  
+    console.log(prescriber_id)
+    // Note that this is executed twice.
+    // So this code will crush because of same alphanumeric_code
+    assert(prescriber_id)
 
-    console.log(patient_condition_medications)
+  }
 
-  const prescriber_id = await trx
-    .selectFrom('patient_condition_medications as pcm')
-    .innerJoin('patient_conditions as pc', 'pcm.patient_condition_id', 'pc.id')
-    .innerJoin('patients as p', 'pc.patient_id', 'p.id')
-    .innerJoin('patient_encounters as pe', 'p.id', 'pe.patient_id')
-    .innerJoin('patient_encounter_providers as pep', 'pe.id', 'pep.patient_encounter_id')
-    .select('pep.id as patient_encounter_provider_id')
-    .where('pcm.patient_condition_id', '=', patient_condition_medications[0].patient_condition_id)
-    .executeTakeFirst()
-
-  console.log(prescriber_id)
-  // Note that this is executed twice.
-  // So this code will crush because of same alphanumeric_code
-  assert(prescriber_id)
   // 现在的模拟是
   /*
   一个症状对应了2个药
@@ -137,25 +141,33 @@ export async function createPrescription(
       // 先查看patient_id是否存在，如果存在，获取prescriptions的id
       // patient_prescription_medications 填入 prescriptions.id
       // 如果不存在，则计算验证码，生成prescriptions
-      alphanumeric_code: opts.alphanumeric_code, 
+
+      //随机生成一个 6 位的数字 as code
+      alphanumeric_code: Math.floor(100000 + Math.random() * 900000), 
       prescriber_id: prescriber_id.patient_encounter_provider_id,
       patient_id: patient_id,
     })
     .returning('id')
     .executeTakeFirstOrThrow()
   
-  // console.log(prescription)
+   console.log(prescription)
 
 
-  // const patient_prescription_medication = await trx
-  //   .insertInto('patient_prescription_medications')
-  //   .values({
-  //     patient_condition_medication_id: opts.patient_condition_medication_id,
-  //     prescription_id: prescription.id,
-  //   })
-  //   .returning('id')
-  //   .executeTakeFirstOrThrow()
+   const pcmids = (patient_condition_medications_ids || []).map((patient_condition_medications_id) => ({
+    patient_condition_medication_id: patient_condition_medications_id,
+    prescription_id: prescription.id,
+  }))
+  console.log(pcmids)
 
+  const patient_prescription_medication = await trx
+    .insertInto('patient_prescription_medications')
+    .values(pcmids)
+    .returningAll()
+    .executeTakeFirstOrThrow()
+
+    await Promise.all([prescription, patient_prescription_medication])
+
+    return prescription
   // await trx
   //   .insertInto('patient_prescription_medications_filled')
   //   .values({
@@ -165,6 +177,4 @@ export async function createPrescription(
   //   })
   //   .returningAll()
   //   .executeTakeFirstOrThrow()
-
-  // return prescription
 }

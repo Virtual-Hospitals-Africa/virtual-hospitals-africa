@@ -101,47 +101,59 @@ function assertPreExistingConditions(
   }
 }
 
-async function upsertPreExistingCondition(
+async function upsertPreExistingConditions(
   trx: TrxOrDb,
   patient_id: string,
-  condition: PreExistingConditionUpsert,
+  conditions: PreExistingConditionUpsert[],
 ) {
-  const parent_condition = await trx
-    .insertInto('patient_conditions')
-    .values({
+    const patient_condition_ids: any[] = []
+    const comorbidityPromises: Promise<void>[] = [];
+    for(const condition of conditions){
+      const parent_condition = await trx
+      .insertInto('patient_conditions')
+      .values({
+        patient_id,
+        condition_id: condition.id,
+        start_date: condition.start_date,
+        comorbidity_of_condition_id: null,
+      })
+      .returning('id')
+      .executeTakeFirstOrThrow()
+
+      patient_condition_ids.push(parent_condition.id)
+
+    const comorbidities = (condition.comorbidities || []).map((comorbidity) => ({
       patient_id,
-      condition_id: condition.id,
-      start_date: condition.start_date,
-      comorbidity_of_condition_id: null,
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
+      condition_id: comorbidity.id,
+      start_date: comorbidity.start_date || condition.start_date,
+      comorbidity_of_condition_id: parent_condition.id,
+    }))
+    if (comorbidities.length > 0) {
+      const inserting_comorbidities = trx
+        .insertInto('patient_conditions')
+        .values(comorbidities)
+        .execute();
 
-  const comorbidities = (condition.comorbidities || []).map((comorbidity) => ({
-    patient_id,
-    condition_id: comorbidity.id,
-    start_date: comorbidity.start_date || condition.start_date,
-    comorbidity_of_condition_id: parent_condition.id,
-  }))
-  const inserting_comorbidities = comorbidities.length && trx
-    .insertInto('patient_conditions')
-    .values(comorbidities)
-    .execute()
+      comorbidityPromises.push(inserting_comorbidities);
+    }
+  }
 
-  const creating_prescription = condition.medications && createPrescription(
+  const creating_prescription = createPrescription(
     trx, 
     patient_id,
-    condition,
-    {
-      parent_condition: parent_condition.id,
-      alphanumeric_code: '123456', 
-      prescriber_id: '343a0f7f-0d93-4695-b9dd-fcbb76ed87ff', 
-      patient_condition_medication_id: '1',
-      pharmacist_id: '83655bf4-9999-43d9-b820-3bf2da495cd1',
-      pharmacy_id : '739c725a-dd43-4204-b292-795f9674ce24'
-    })
+    patient_condition_ids,
+    conditions,
+    // {
+    //   parent_condition: parent_condition.id,
+    //   alphanumeric_code: '123456', 
+    //   prescriber_id: '343a0f7f-0d93-4695-b9dd-fcbb76ed87ff', 
+    //   patient_condition_medication_id: '1',
+    //   pharmacist_id: '83655bf4-9999-43d9-b820-3bf2da495cd1',
+    //   pharmacy_id : '739c725a-dd43-4204-b292-795f9674ce24'
+    // }
+    )
 
-  await Promise.all([inserting_comorbidities, creating_prescription])
+  await Promise.all([...comorbidityPromises, creating_prescription])
 
   console.log(creating_prescription)
 }
@@ -176,16 +188,21 @@ export async function upsertPreExisting(
     .where('created_at', '<=', now)
     .execute()
 
-  await Promise.all(
-    patient_conditions.map((condition) => (
-      upsertPreExistingCondition(
-        trx,
-        patient_id,
-        condition,
-      )
-    )),
-  )
+
+
+    //把upsertPreExistingCondition()改为处理整个patient_conditions数组
+  // await Promise.all(
+  //   patient_conditions.map((condition) => (
+  //     upsertPreExistingCondition(
+  //       trx,
+  //       patient_id,
+  //       condition,
+  //     )
+  //   )),
+  // )
   await removing
+  await upsertPreExistingConditions(trx, patient_id, patient_conditions)
+//
 
   const procedures = await getting_procedures
   assertOr400(
