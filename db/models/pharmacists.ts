@@ -148,18 +148,21 @@ export async function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ): Promise<RenderedPharmacist[]> {
-  let query = trx.selectFrom('pharmacists')
+  let query = trx
+    .selectFrom('pharmacists')
     .select([
       'id',
       'licence_number',
       'prefix',
       'given_name',
       'family_name',
+      name_sql('pharmacists').as('name'),
       'address',
       'town',
       'expiry_date',
       'pharmacist_type',
-    ]).where('pharmacists.given_name', 'is not', null)
+    ])
+    .where('pharmacists.given_name', 'is not', null)
   if (search) {
     query = query.where(
       sql`concat(given_name, ' ', family_name)`,
@@ -177,6 +180,7 @@ export async function getAllWithSearchConditions(
     (pharmacist) => ({
       id: pharmacist.id,
       given_name: pharmacist.given_name,
+      name: pharmacist.name,
       licence_number: pharmacist.licence_number,
       prefix: pharmacist.prefix,
       family_name: pharmacist.family_name,
