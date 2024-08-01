@@ -166,11 +166,6 @@ export async function getAllWithSearchConditions(
       `ilike`,
       `%${search}%`,
     ).orderBy('pharmacists.given_name', 'asc').limit(30)
-    query = query.where(
-      sql`concat(given_name, ' ', family_name)`,
-      'ilike',
-      `%${search}%`,
-    ).orderBy('pharmacists.given_name', 'asc').limit(30)
   }
   const pharmacists = await query.execute()
   const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(

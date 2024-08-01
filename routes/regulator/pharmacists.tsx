@@ -22,7 +22,7 @@ export const handler = {
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
-    const ROWS_PER_PAGE = 70
+    const ROWS_PER_PAGE = 100
     const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
     const { pharmacistsList, totalRows } = await pharmacists.get(
       ctx.state.trx,
