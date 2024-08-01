@@ -1,14 +1,15 @@
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulatorContext } from '../../../types.ts'
 
-export default function PharmacistPage(
+export default function PharmacyPage(
   _req: Request,
   ctx: LoggedInRegulatorContext,
 ) {
   const { regulator } = ctx.state
+
   return (
     <Layout
-      title='Pharmacist Profile'
+      title='Pharmacy Profile'
       route={ctx.route}
       url={ctx.url}
       regulator={regulator}

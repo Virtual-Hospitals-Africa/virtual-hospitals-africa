@@ -80,7 +80,6 @@ export default function PharmacistsTable({
     <>
       <FormRow className='mb-4'>
         <InvitePharmacistSearch />
-        <InvitePharmacistSearch />
         <Button
           type='button'
           href={invite_href}
