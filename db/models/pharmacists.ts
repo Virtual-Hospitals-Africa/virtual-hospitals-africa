@@ -35,20 +35,8 @@ export function address_town_sql(table: string) {
   })`
 }
 
-export async function get(
-  trx: TrxOrDb,
-  query: {
-    licence_number?: string
-    given_name?: string
-    family_name?: string
-    pharmacist_type?: string
-    include_revoked?: boolean
-  } = {},
-  page: number = 1,
-  rowsPerPage: number = 10,
-) {
-  const offset = (page - 1) * rowsPerPage
-  const pharmacists = await trx
+function getQuery(trx: TrxOrDb) {
+  return trx
     .selectFrom('pharmacists')
     .leftJoin(
       'premise_supervisors',
@@ -61,9 +49,14 @@ export async function get(
       'pharmacists.licence_number',
       'pharmacists.prefix',
       name_sql('pharmacists').as('name'),
+      sql`concat('/regulator/pharmacists/', pharmacists.id)`.as('href'),
       address_town_sql('pharmacists').as('address'),
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
+      sql`CASE
+        WHEN premises.id IS NOT NULL THEN premises.name
+        ELSE concat(pharmacists.address, ' ', pharmacists.town)
+      END`.as('description'),
       sql`CASE
         WHEN premises.id IS NOT NULL THEN ${
         jsonBuildObject({
@@ -81,6 +74,22 @@ export async function get(
         ELSE NULL
       END`.as('pharmacy'),
     ])
+}
+
+export async function get(
+  trx: TrxOrDb,
+  query: {
+    licence_number?: string
+    given_name?: string
+    family_name?: string
+    pharmacist_type?: string
+    include_revoked?: boolean
+  } = {},
+  page: number = 1,
+  rowsPerPage: number = 10,
+) {
+  const offset = (page - 1) * rowsPerPage
+  const pharmacists = await getQuery(trx)
     .where(
       'pharmacists.revoked_at',
       query.include_revoked ? 'is not' : 'is',
@@ -115,19 +124,8 @@ export async function get(
 }
 
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
-  return trx.selectFrom('pharmacists')
-    .select([
-      'id',
-      'licence_number',
-      'prefix',
-      'given_name',
-      'family_name',
-      'address',
-      'town',
-      'expiry_date',
-      'pharmacist_type',
-    ])
-    .where('id', '=', pharmacist_id)
+  return getQuery(trx)
+    .where('pharmacists.id', '=', pharmacist_id)
     .executeTakeFirst()
 }
 
@@ -144,44 +142,19 @@ export function revoke(
   }).where('id', '=', data.pharmacist_id).execute()
 }
 
-export async function getAllWithSearchConditions(
+export function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
-): Promise<RenderedPharmacist[]> {
-  let query = trx.selectFrom('pharmacists')
-    .select([
-      'id',
-      'licence_number',
-      'prefix',
-      'given_name',
-      'family_name',
-      'address',
-      'town',
-      'expiry_date',
-      'pharmacist_type',
-    ]).where('pharmacists.given_name', 'is not', null)
+) {
+  let query = getQuery(trx).limit(30)
   if (search) {
     query = query.where(
-      sql`concat(given_name, ' ', family_name)`,
+      name_sql('pharmacists'),
       `ilike`,
       `%${search}%`,
-    ).orderBy('pharmacists.given_name', 'asc').limit(30)
+    ).orderBy('pharmacists.given_name', 'asc')
   }
-  const pharmacists = await query.execute()
-  const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(
-    (pharmacist) => ({
-      id: pharmacist.id,
-      given_name: pharmacist.given_name,
-      licence_number: pharmacist.licence_number,
-      prefix: pharmacist.prefix,
-      family_name: pharmacist.family_name,
-      address: pharmacist.address,
-      town: pharmacist.town,
-      pharmacist_type: pharmacist.pharmacist_type,
-      expiry_date: pharmacist.expiry_date.toDateString(),
-    }),
-  )
-  return renderedPharmacists
+  return query.execute()
 }
 
 export function insert(
