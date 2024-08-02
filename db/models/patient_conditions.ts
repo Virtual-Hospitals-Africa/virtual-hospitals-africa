@@ -21,7 +21,6 @@ import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
 import { createPatientPrescriptionMedications } from './prescriptions.ts'
 import { insert as insertPrescriptions } from './prescriptions.ts'
-import { Prescriptions } from '../../db.d.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
