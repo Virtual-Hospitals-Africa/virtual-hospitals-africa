@@ -4,8 +4,8 @@ import {
   DrugSearchResult,
   ManufacturedMedicationSearchResult,
   Maybe,
-  TrxOrDb,
   RenderedMedicine,
+  TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 
@@ -215,7 +215,7 @@ export async function get(
   trx: TrxOrDb,
   page: number = 1,
   rowsPerPage: number = 10,
-): Promise<{ medicines: RenderedMedicine[], totalRows: number }> {
+): Promise<{ medicines: RenderedMedicine[]; totalRows: number }> {
   const offset = (page - 1) * rowsPerPage
   const medicines = await trx
     .selectFrom('manufactured_medications')
@@ -264,5 +264,5 @@ export async function get(
       strength_denominator: parseFloat(medicine.strength_denominator),
     })),
     totalRows,
-  };
+  }
 }
