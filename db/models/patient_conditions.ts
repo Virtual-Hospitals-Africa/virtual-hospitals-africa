@@ -189,7 +189,7 @@ export async function upsertPreExisting(
     .where('patient_id', '=', patient_id)
     .executeTakeFirst()
   let prescription_id: string = ''
-  if(typeof prescriber_id !== 'undefined') {
+  if (typeof prescriber_id !== 'undefined') {
     const prescription = await insertPrescriptions(
       trx,
       prescriber_id.prescriber_id,
