@@ -18,7 +18,7 @@ export const handler: LoggedInRegulatorHandlerWithProps<PharmacistsProps> = {
 
     const pharmacists_with_href = pharmacists.map((pharmacist) => {
       const href = `/regulator/pharmacists/${pharmacist?.id}`
-      return { id: pharmacist?.id, name: pharmacist?.given_name, href }
+      return { id: pharmacist?.id, name: pharmacist?.given_name, href, description: pharmacist?.address }
     })
     return json(pharmacists_with_href)
   },

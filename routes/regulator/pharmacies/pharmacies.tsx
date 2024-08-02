@@ -25,7 +25,7 @@ export const handler: LoggedInRegulatorHandlerWithProps<PharmaciesProps> = {
         id: pharmacy?.id,
         name: pharmacy?.name,
         href,
-        address: pharmacy?.address,
+        description: pharmacy?.address,
       }
     })
     return json(pharmacies_with_href)
