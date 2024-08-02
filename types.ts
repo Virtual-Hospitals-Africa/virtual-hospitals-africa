@@ -2310,6 +2310,19 @@ export type PatientMeasurement = {
   value: number
 }
 
+export type PatientMedicationUpsert = {
+  id?: Maybe<string>
+  dosage: number
+  strength: number
+  intake_frequency: string
+  route: string
+  start_date?: Maybe<string>
+  end_date?: Maybe<string>
+  medication_id: string | null
+  manufactured_medication_id: string | null
+  special_instructions?: Maybe<string>
+}
+
 export type PatientSymptomInsertShared = {
   code: string
   severity: number

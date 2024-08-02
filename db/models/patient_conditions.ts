@@ -4,6 +4,7 @@ import {
   Maybe,
   MedicationSchedule,
   PastMedicalCondition,
+  PatientMedicationUpsert,
   PreExistingCondition,
   PreExistingConditionWithDrugs,
   TrxOrDb,
@@ -12,29 +13,14 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import * as drugs from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  differenceInDays,
-  durationEndDate,
-  isISODateString,
-} from '../../util/date.ts'
+import { durationEndDate, isISODateString } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'
 import { assertAllNotNull } from '../../util/assertAll.ts'
 import { IntakeFrequencies } from '../../shared/medication.ts'
-
-type PatientMedicationUpsert = {
-  id?: Maybe<string>
-  dosage: number
-  strength: number
-  intake_frequency: string
-  route: string
-  start_date?: Maybe<string>
-  end_date?: Maybe<string>
-  medication_id: string | null
-  manufactured_medication_id: string | null
-  special_instructions?: Maybe<string>
-}
+import { createPatientPrescriptionMedications } from './prescriptions.ts'
+import { insert as insertPrescriptions } from './prescriptions.ts'
 
 export type PreExistingConditionUpsert = {
   id: string
@@ -117,6 +103,7 @@ async function upsertPreExistingCondition(
   trx: TrxOrDb,
   patient_id: string,
   condition: PreExistingConditionUpsert,
+  prescription_id: string,
 ) {
   const parent_condition = await trx
     .insertInto('patient_conditions')
@@ -140,40 +127,14 @@ async function upsertPreExistingCondition(
     .values(comorbidities)
     .execute()
 
-  const medications = (condition.medications || []).map((medication) => {
-    const start_date = medication.start_date || condition.start_date
-
-    const { duration, duration_unit } = medication.end_date
-      ? {
-        duration: differenceInDays(medication.end_date, start_date),
-        duration_unit: 'days',
-      }
-      : { duration: 1, duration_unit: 'indefinitely' }
-
-    return {
-      patient_condition_id: parent_condition.id,
-      medication_id:
-        (!medication.manufactured_medication_id && medication.medication_id) ||
-        null, // omit medication_id if manufactured_medication_id is present
-      manufactured_medication_id: medication.manufactured_medication_id || null,
-      strength: medication.strength,
-      route: medication.route,
-      schedules: sql<string[]>`
-        ARRAY[
-          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
-        ]::medication_schedule[]
-      `,
-      start_date,
-      special_instructions: medication.special_instructions || null,
-    }
-  })
-
-  const inserting_medications = medications.length && trx
-    .insertInto('patient_condition_medications')
-    .values(medications)
-    .execute()
-
-  await Promise.all([inserting_comorbidities, inserting_medications])
+  const creating_prescription = condition.medications &&
+    createPatientPrescriptionMedications(
+      trx,
+      condition,
+      parent_condition.id,
+      prescription_id,
+    )
+  await Promise.all([inserting_comorbidities, creating_prescription])
 }
 
 export async function upsertPreExisting(
@@ -206,16 +167,47 @@ export async function upsertPreExisting(
     .where('created_at', '<=', now)
     .execute()
 
+  const removing_prescription = trx.deleteFrom(
+    'prescriptions',
+  )
+    .where('patient_id', '=', patient_id)
+    .execute()
+
+  const prescriber_id = await trx
+    .selectFrom('patients')
+    .innerJoin(
+      'patient_encounters',
+      'patients.id',
+      'patient_encounters.patient_id',
+    )
+    .innerJoin(
+      'patient_encounter_providers',
+      'patient_encounters.id',
+      'patient_encounter_providers.patient_encounter_id',
+    )
+    .select('patient_encounter_providers.id as prescriber_id')
+    .where('patient_id', '=', patient_id)
+    .executeTakeFirst()
+  assert(prescriber_id)
+
+  const prescription = await insertPrescriptions(
+    trx,
+    prescriber_id.prescriber_id,
+    patient_id,
+  )
+
   await Promise.all(
     patient_conditions.map((condition) => (
       upsertPreExistingCondition(
         trx,
         patient_id,
         condition,
+        prescription.id,
       )
     )),
   )
   await removing
+  await removing_prescription
 
   const procedures = await getting_procedures
   assertOr400(
