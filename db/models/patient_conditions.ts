@@ -135,7 +135,6 @@ async function upsertPreExistingCondition(
       prescription_id,
     )
   await Promise.all([inserting_comorbidities, creating_prescription])
-  console.log(creating_prescription)
 }
 
 export async function upsertPreExisting(
