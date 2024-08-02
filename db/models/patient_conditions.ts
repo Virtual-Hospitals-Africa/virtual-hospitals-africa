@@ -188,7 +188,6 @@ export async function upsertPreExisting(
     .select('patient_encounter_providers.id as prescriber_id')
     .where('patient_id', '=', patient_id)
     .executeTakeFirst()
-  console.log(prescriber_id)
   assert(prescriber_id)
 
   const prescription = await insertPrescriptions(
