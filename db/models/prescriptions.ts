@@ -5,8 +5,12 @@ import { PreExistingConditionUpsert } from './patient_conditions.ts'
 
 export async function insert(
   trx: TrxOrDb,
-  prescriber_id: string,
-  patient_id: string,
+  values: {
+    prescriber_id: string,
+    patient_id: string,
+    medications: 
+  }
+  
 ) {
   return trx
     .insertInto('prescriptions')
