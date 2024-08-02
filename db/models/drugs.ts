@@ -5,6 +5,7 @@ import {
   ManufacturedMedicationSearchResult,
   Maybe,
   TrxOrDb,
+  RenderedMedicine,
 } from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
 
@@ -214,7 +215,7 @@ export async function get(
   trx: TrxOrDb,
   page: number = 1,
   rowsPerPage: number = 10,
-) {
+): Promise<{ medicines: RenderedMedicine[], totalRows: number }> {
   const offset = (page - 1) * rowsPerPage
   const medicines = await trx
     .selectFrom('manufactured_medications')
@@ -237,8 +238,6 @@ export async function get(
       'medications.strength_denominator_is_units',
       strengthSummary('manufactured_medications'),
     ])
-    /*.groupBy([
-    ])*/
     .orderBy('drugs.generic_name', 'asc')
     .limit(rowsPerPage)
     .offset(offset)
@@ -251,12 +250,19 @@ export async function get(
 
   const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
 
-  const medicinesList = medicines.map((medicine) => ({
+  /*const medicinesList = medicines.map((medicine) => ({
     ...medicine,
   }))
 
   return {
     medicinesList,
     totalRows,
-  }
+  }*/
+  return {
+    medicines: medicines.map((medicine) => ({
+      ...medicine,
+      strength_denominator: parseFloat(medicine.strength_denominator),
+    })),
+    totalRows,
+  };
 }

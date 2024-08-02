@@ -5,10 +5,10 @@ import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
 import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
-import { RenderedMedicien } from '../../types.ts'
+import { RenderedMedicine } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
 
-const columns: TableColumn<RenderedMedicien>[] = [
+const columns: TableColumn<RenderedMedicine>[] = [
   {
     label: 'Generic Name',
     data: 'generic_name',
@@ -32,7 +32,7 @@ const columns: TableColumn<RenderedMedicien>[] = [
 ]
 
 type MediciensTableProps = {
-  mediciens: RenderedMedicien[]
+  mediciens: RenderedMedicine[]
   pathname: string
   totalRows: number
   rowsPerPage: number
@@ -40,7 +40,7 @@ type MediciensTableProps = {
   totalPage: number
 }
 
-export default function MediciensTable({
+export default function MedicinesTable({
   mediciens,
   pathname,
   totalRows,

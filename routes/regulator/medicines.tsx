@@ -1,12 +1,12 @@
 import Layout from '../../components/library/Layout.tsx'
 import MedicinesTable from '../../components/regulator/MedicinesTable.tsx'
 import { PageProps } from '$fresh/server.ts'
-import { LoggedInRegulator, RenderedMedicien } from '../../types.ts'
+import { LoggedInRegulator, RenderedMedicine } from '../../types.ts'
 import * as drugs from '../../db/models/drugs.ts'
 import { FreshContext } from '$fresh/server.ts'
 
 type MedicinesProps = {
-  medicines: RenderedMedicien[]
+  medicines: RenderedMedicine[]
   regulator: LoggedInRegulator['regulator']
   page: number
   totalRows: number
@@ -22,13 +22,13 @@ export const handler = {
   ) {
     const ROWS_PER_PAGE = 100
     const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
-    const { medicinesList, totalRows } = await drugs.get(
+    const { medicines, totalRows } = await drugs.get(
       ctx.state.trx,
       currentPage,
       ROWS_PER_PAGE,
     )
     return ctx.render({
-      medicines: medicinesList,
+      medicines: medicines,
       regulator: ctx.state.regulator,
       currentPage,
       totalRows,

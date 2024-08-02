@@ -2892,7 +2892,7 @@ export type DetailedPharmacist = {
   pharmacy?: RenderedPharmacy
 }
 
-export type RenderedMedicien = {
+export type RenderedMedicine = {
   id: string
   generic_name: string
   trade_name: string
