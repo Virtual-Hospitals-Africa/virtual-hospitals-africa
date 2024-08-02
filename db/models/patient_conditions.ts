@@ -188,13 +188,15 @@ export async function upsertPreExisting(
     .select('patient_encounter_providers.id as prescriber_id')
     .where('patient_id', '=', patient_id)
     .executeTakeFirst()
-  // assert(prescriber_id)
-
-  const prescription = await insertPrescriptions(
-    trx,
-    prescriber_id.prescriber_id,
-    patient_id,
-  )
+  let prescription_id: string = ''
+  if(typeof prescriber_id !== 'undefined') {
+    const prescription = await insertPrescriptions(
+      trx,
+      prescriber_id.prescriber_id,
+      patient_id,
+    )
+    prescription_id = prescription.id
+  }
 
   await Promise.all(
     patient_conditions.map((condition) => (
@@ -202,7 +204,7 @@ export async function upsertPreExisting(
         trx,
         patient_id,
         condition,
-        prescription.id,
+        prescription_id,
       )
     )),
   )
