@@ -1,16 +1,21 @@
 import { sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
+import { 
+  PatientMedicationUpsert,
+  TrxOrDb,
+} from '../../types.ts'
 import { differenceInDays } from '../../util/date.ts'
-import { PreExistingConditionUpsert } from './patient_conditions.ts'
+import { assert } from 'std/assert/assert.ts'
+
+export type PrescriptionCondition = {
+  patient_condition_id: string
+  start_date: string
+  medications: PatientMedicationUpsert[]
+}
 
 export async function insert(
   trx: TrxOrDb,
-  values: {
-    prescriber_id: string,
-    patient_id: string,
-    medications: 
-  }
-  
+  prescriber_id: string,
+  patient_id: string,
 ) {
   return trx
     .insertInto('prescriptions')
@@ -21,6 +26,24 @@ export async function insert(
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+}
+
+async function generateAlphanumericCode(
+  trx: TrxOrDb,
+) {
+  const existCodesObj = await trx
+    .selectFrom('prescriptions')
+    .select('alphanumeric_code')
+    .execute()
+
+  const existCodesArray = existCodesObj.map((row) => row.alphanumeric_code)
+  let alphanumeric_code: string
+  do {
+    alphanumeric_code = Math.floor(100000 + Math.random() * 900000).toString()
+  } while (
+    existCodesArray.includes(alphanumeric_code)
+  )
+  return alphanumeric_code
 }
 
 export function getById(
@@ -45,14 +68,26 @@ export function getByCode(
     .executeTakeFirst()
 }
 
-export async function createPatientPrescriptionMedications(
+async function insertCondition(
   trx: TrxOrDb,
-  condition: PreExistingConditionUpsert,
-  parent_condition: string,
+  patient_id: string,
   prescription_id: string,
+  condition: PrescriptionCondition,
 ) {
+  const parent_condition = await trx
+  .insertInto('patient_conditions')
+  .values({
+    patient_id,
+    condition_id: condition.patient_condition_id,
+    start_date: condition.start_date,
+    comorbidity_of_condition_id: null,
+  })
+  .returning('id')
+  .executeTakeFirstOrThrow()
+
   const medications = (condition.medications || []).map((medication) => {
     const start_date = medication.start_date || condition.start_date
+
     const { duration, duration_unit } = medication.end_date
       ? {
         duration: differenceInDays(medication.end_date, start_date),
@@ -60,7 +95,7 @@ export async function createPatientPrescriptionMedications(
       }
       : { duration: 1, duration_unit: 'indefinitely' }
     return {
-      patient_condition_id: parent_condition,
+      patient_condition_id: parent_condition.id,
       medication_id:
         (!medication.manufactured_medication_id && medication.medication_id) ||
         null, // omit medication_id if manufactured_medication_id is present
@@ -89,24 +124,30 @@ export async function createPatientPrescriptionMedications(
       prescription_id: prescription_id,
     })
     .execute()
-
-  return patient_condition_medication
 }
 
-async function generateAlphanumericCode(
+export async function createtPrescriptions(
   trx: TrxOrDb,
+  values: {
+    prescriber_id: string,
+    patient_id: string,
+    prescribing: PrescriptionCondition[],
+  }
 ) {
-  const existCodesObj = await trx
-    .selectFrom('prescriptions')
-    .select('alphanumeric_code')
-    .execute()
-
-  const existCodesArray = existCodesObj.map((row) => row.alphanumeric_code)
-  let alphanumeric_code: string
-  do {
-    alphanumeric_code = Math.floor(100000 + Math.random() * 900000).toString()
-  } while (
-    existCodesArray.includes(alphanumeric_code)
+  const prescription = await insert(
+    trx,
+    values.prescriber_id,
+    values.patient_id,
   )
-  return alphanumeric_code
+
+  await Promise.all(
+    values.prescribing.map((condition) => (
+      insertCondition(
+        trx,
+        values.patient_id,
+        prescription.id,
+        condition,
+      )
+    )),
+  )
 }

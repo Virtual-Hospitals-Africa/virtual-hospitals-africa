@@ -69,20 +69,23 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
 
         console.log('tablet', tablet)
 
-        const result = await prescriptions.insert(trx, {
+        const result = await prescriptions.createtPrescriptions(trx, {
           prescriber_id: encounter.providers[0].encounter_provider_id,
           patient_id: patient.id,
           prescribing: [
             {
               patient_condition_id: condition.id,
-              medication: {
-                manufactured_medication_id: tablet.id,
-                medication_id: null,
-                dosage: 1,
-                strength: tablet.strength_numerators[0],
-                intake_frequency: 'qw',
-                route: tablet.routes[0],
-              },
+              start_date: '2020-01-01',
+              medications: [
+                {
+                  manufactured_medication_id: tablet.id,
+                  medication_id: null,
+                  dosage: 1,
+                  strength: tablet.strength_numerators[0],
+                  intake_frequency: 'qw',
+                  route: tablet.routes[0],
+                }
+              ],
             },
           ],
         })
