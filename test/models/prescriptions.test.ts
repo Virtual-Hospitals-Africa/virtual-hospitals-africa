@@ -8,7 +8,6 @@ import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as patients from '../../db/models/patients.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
 
-
 describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
   describe('insert', () => {
     itUsesTrxAnd(
@@ -18,20 +17,24 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           scenario: 'nurse',
         })
         const patient = await patients.insert(trx, { name: 'Billy Bob' })
-        const encounter = await patient_encounters.upsert(trx, '00000000-0000-0000-0000-000000000001', {
-          patient_id: patient.id,
-          reason: 'seeking treatment',
-          notes: null,
-          provider_ids: [healthWorker.employee_id!],
-        })
+        const encounter = await patient_encounters.upsert(
+          trx,
+          '00000000-0000-0000-0000-000000000001',
+          {
+            patient_id: patient.id,
+            reason: 'seeking treatment',
+            notes: null,
+            provider_ids: [healthWorker.employee_id!],
+          },
+        )
 
-        // const 
+        // const
         await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_4373',
             start_date: '2022-01-01',
             medications: [],
-          }
+          },
         ])
 
         const condition = await trx.selectFrom('patient_conditions')
@@ -39,7 +42,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .where('patient_id', '=', patient.id)
           .executeTakeFirstOrThrow()
 
-        console.log('condition', )
+        console.log('condition')
 
         const tablet = await trx
           .selectFrom('manufactured_medications')
@@ -63,7 +66,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           )
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
-        
+
         console.log('tablet', tablet)
 
         const result = await prescriptions.insert(trx, {
@@ -80,7 +83,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
                 intake_frequency: 'qw',
                 route: tablet.routes[0],
               },
-            }
+            },
           ],
         })
 
