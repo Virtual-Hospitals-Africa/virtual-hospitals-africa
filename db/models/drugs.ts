@@ -250,14 +250,6 @@ export async function get(
 
   const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
 
-  /*const medicinesList = medicines.map((medicine) => ({
-    ...medicine,
-  }))
-
-  return {
-    medicinesList,
-    totalRows,
-  }*/
   return {
     medicines: medicines.map((medicine) => ({
       ...medicine,
