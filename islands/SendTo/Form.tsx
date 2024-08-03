@@ -11,16 +11,12 @@ export function SendToForm(
 ) {
   return (
     <div className='flex flex-col'>
-      {/*<div className='mt-6 px-4'>*/}
-      {/* Hardcoding to intake options. These are the options when the providers are at your facility */}
-      {/* When at another facility, this will include request_review */}
       {textarea === 'additional_details' && requestTypeOptions && (
         <SendToRequestRadioButtons
           form={form}
           options={requestTypeOptions}
         />
       )}
-      {/*</div>*/}
       <div className='mt-6 px-4'>
         <h2 className='text-sm font-sans font-medium text-gray-900'>
           {textarea === 'additional_details'
