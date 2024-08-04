@@ -1,7 +1,7 @@
 import { sql } from 'kysely'
 import { PatientMedicationUpsert, TrxOrDb } from '../../types.ts'
 import { differenceInDays } from '../../util/date.ts'
-import { assert } from 'std/assert/assert.ts'
+// import { assert } from 'std/assert/assert.ts'
 
 export type PrescriptionCondition = {
   condition_id: string

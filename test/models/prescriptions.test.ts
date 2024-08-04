@@ -1,7 +1,7 @@
 import { describe } from 'std/testing/bdd.ts'
-import { assert } from 'std/assert/assert.ts'
-import { assertEquals } from 'std/assert/assert_equals.ts'
-import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
+// import { assert } from 'std/assert/assert.ts'
+// import { assertEquals } from 'std/assert/assert_equals.ts'
+// import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
@@ -65,7 +65,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        const result = await prescriptions.createtPrescriptions(trx, {
+        await prescriptions.createtPrescriptions(trx, {
           prescriber_id: encounter.providers[0].encounter_provider_id,
           patient_id: patient.id,
           prescribing: [
