@@ -1,13 +1,10 @@
 import { sql } from 'kysely'
-import { 
-  PatientMedicationUpsert,
-  TrxOrDb,
-} from '../../types.ts'
+import { PatientMedicationUpsert, TrxOrDb } from '../../types.ts'
 import { differenceInDays } from '../../util/date.ts'
 import { assert } from 'std/assert/assert.ts'
 
 export type PrescriptionCondition = {
-  patient_condition_id: string
+  condition_id: string
   start_date: string
   medications: PatientMedicationUpsert[]
 }
@@ -75,15 +72,15 @@ async function insertCondition(
   condition: PrescriptionCondition,
 ) {
   const parent_condition = await trx
-  .insertInto('patient_conditions')
-  .values({
-    patient_id,
-    condition_id: condition.patient_condition_id,
-    start_date: condition.start_date,
-    comorbidity_of_condition_id: null,
-  })
-  .returning('id')
-  .executeTakeFirstOrThrow()
+    .insertInto('patient_conditions')
+    .values({
+      patient_id,
+      condition_id: condition.condition_id,
+      start_date: condition.start_date,
+      comorbidity_of_condition_id: null,
+    })
+    .returning('id')
+    .executeTakeFirstOrThrow()
 
   const medications = (condition.medications || []).map((medication) => {
     const start_date = medication.start_date || condition.start_date
@@ -129,10 +126,10 @@ async function insertCondition(
 export async function createtPrescriptions(
   trx: TrxOrDb,
   values: {
-    prescriber_id: string,
-    patient_id: string,
-    prescribing: PrescriptionCondition[],
-  }
+    prescriber_id: string
+    patient_id: string
+    prescribing: PrescriptionCondition[]
+  },
 ) {
   const prescription = await insert(
     trx,

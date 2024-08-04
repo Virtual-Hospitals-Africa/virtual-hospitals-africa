@@ -42,8 +42,6 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .where('patient_id', '=', patient.id)
           .executeTakeFirstOrThrow()
 
-        console.log('condition')
-
         const tablet = await trx
           .selectFrom('manufactured_medications')
           .innerJoin(
@@ -67,14 +65,12 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        console.log('tablet', tablet)
-
         const result = await prescriptions.createtPrescriptions(trx, {
           prescriber_id: encounter.providers[0].encounter_provider_id,
           patient_id: patient.id,
           prescribing: [
             {
-              patient_condition_id: condition.id,
+              condition_id: condition.condition_id,
               start_date: '2020-01-01',
               medications: [
                 {
@@ -84,7 +80,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
                   strength: tablet.strength_numerators[0],
                   intake_frequency: 'qw',
                   route: tablet.routes[0],
-                }
+                },
               ],
             },
           ],
