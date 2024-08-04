@@ -123,7 +123,7 @@ async function insertCondition(
     .execute()
 }
 
-export async function createtPrescriptions(
+export async function createtPrescription(
   trx: TrxOrDb,
   values: {
     prescriber_id: string
@@ -147,4 +147,6 @@ export async function createtPrescriptions(
       )
     )),
   )
+
+  return prescription.id
 }

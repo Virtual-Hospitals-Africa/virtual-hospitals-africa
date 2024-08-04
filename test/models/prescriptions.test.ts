@@ -1,5 +1,5 @@
 import { describe } from 'std/testing/bdd.ts'
-// import { assert } from 'std/assert/assert.ts'
+import { assert } from 'std/assert/assert.ts'
 // import { assertEquals } from 'std/assert/assert_equals.ts'
 // import { assertNotEquals } from 'std/assert/assert_not_equals.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
@@ -65,7 +65,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        await prescriptions.createtPrescriptions(trx, {
+        const result = await prescriptions.createtPrescription(trx, {
           prescriber_id: encounter.providers[0].encounter_provider_id,
           patient_id: patient.id,
           prescribing: [
@@ -85,6 +85,8 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
             },
           ],
         })
+
+        assert(result)
 
         // assertEquals(
         //   result,
