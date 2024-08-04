@@ -70,7 +70,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           patient_id: patient.id,
           prescribing: [
             {
-              condition_id: condition.condition_id,
+              id: condition.id,
               start_date: '2020-01-01',
               medications: [
                 {

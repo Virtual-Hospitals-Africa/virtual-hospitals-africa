@@ -4,7 +4,7 @@ import { differenceInDays } from '../../util/date.ts'
 // import { assert } from 'std/assert/assert.ts'
 
 export type PrescriptionCondition = {
-  condition_id: string
+  id: string
   start_date: string
   medications: PatientMedicationUpsert[]
 }
@@ -65,23 +65,11 @@ export function getByCode(
     .executeTakeFirst()
 }
 
-async function insertCondition(
+async function insertMedicationsInfomations(
   trx: TrxOrDb,
-  patient_id: string,
   prescription_id: string,
   condition: PrescriptionCondition,
 ) {
-  const parent_condition = await trx
-    .insertInto('patient_conditions')
-    .values({
-      patient_id,
-      condition_id: condition.condition_id,
-      start_date: condition.start_date,
-      comorbidity_of_condition_id: null,
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
-
   const medications = (condition.medications || []).map((medication) => {
     const start_date = medication.start_date || condition.start_date
 
@@ -92,7 +80,7 @@ async function insertCondition(
       }
       : { duration: 1, duration_unit: 'indefinitely' }
     return {
-      patient_condition_id: parent_condition.id,
+      patient_condition_id: condition.id,
       medication_id:
         (!medication.manufactured_medication_id && medication.medication_id) ||
         null, // omit medication_id if manufactured_medication_id is present
@@ -109,18 +97,23 @@ async function insertCondition(
     }
   })
 
-  const patient_condition_medication = await trx
+  const inserted_patient_condition_medications = await trx
     .insertInto('patient_condition_medications')
     .values(medications)
     .returning('id')
-    .executeTakeFirstOrThrow()
-
-  await trx.insertInto('patient_prescription_medications')
-    .values({
-      patient_condition_medication_id: patient_condition_medication.id,
-      prescription_id: prescription_id,
-    })
     .execute()
+
+  await Promise.all(
+    inserted_patient_condition_medications.map((medication) =>
+      trx
+        .insertInto('patient_prescription_medications')
+        .values({
+          patient_condition_medication_id: medication.id,
+          prescription_id: prescription_id,
+        })
+        .execute()
+    ),
+  )
 }
 
 export async function createtPrescription(
@@ -137,13 +130,16 @@ export async function createtPrescription(
     values.patient_id,
   )
 
+  console.log('DEBUG:NIHAO')
+  console.log(prescription.id)
+  console.log(values.prescribing)
+
   await Promise.all(
-    values.prescribing.map((condition) => (
-      insertCondition(
+    values.prescribing.map((PrescriptionCondition) => (
+      insertMedicationsInfomations(
         trx,
-        values.patient_id,
         prescription.id,
-        condition,
+        PrescriptionCondition,
       )
     )),
   )
