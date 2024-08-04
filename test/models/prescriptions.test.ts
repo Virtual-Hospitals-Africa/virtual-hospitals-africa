@@ -37,7 +37,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           },
         ])
 
-        const condition = await trx.selectFrom('patient_conditions')
+        const patient_condition = await trx.selectFrom('patient_conditions')
           .selectAll()
           .where('patient_id', '=', patient.id)
           .executeTakeFirstOrThrow()
@@ -70,7 +70,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           patient_id: patient.id,
           prescribing: [
             {
-              id: condition.id,
+              patient_condition_id: patient_condition.id,
               start_date: '2020-01-01',
               medications: [
                 {

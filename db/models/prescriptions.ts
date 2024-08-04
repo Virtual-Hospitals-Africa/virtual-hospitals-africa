@@ -4,7 +4,7 @@ import { differenceInDays } from '../../util/date.ts'
 // import { assert } from 'std/assert/assert.ts'
 
 export type PrescriptionCondition = {
-  id: string
+  patient_condition_id: string
   start_date: string
   medications: PatientMedicationUpsert[]
 }
@@ -80,7 +80,7 @@ async function insertMedicationsInfomations(
       }
       : { duration: 1, duration_unit: 'indefinitely' }
     return {
-      patient_condition_id: condition.id,
+      patient_condition_id: condition.patient_condition_id,
       medication_id:
         (!medication.manufactured_medication_id && medication.medication_id) ||
         null, // omit medication_id if manufactured_medication_id is present
@@ -129,10 +129,6 @@ export async function createtPrescription(
     values.prescriber_id,
     values.patient_id,
   )
-
-  console.log('DEBUG:NIHAO')
-  console.log(prescription.id)
-  console.log(values.prescribing)
 
   await Promise.all(
     values.prescribing.map((PrescriptionCondition) => (
