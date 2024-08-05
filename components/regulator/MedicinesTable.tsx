@@ -31,8 +31,8 @@ const columns: TableColumn<RenderedMedicine>[] = [
   },
 ]
 
-type MediciensTableProps = {
-  mediciens: RenderedMedicine[]
+type MedicinesTableProps = {
+  medicines: RenderedMedicine[]
   pathname: string
   totalRows: number
   rowsPerPage: number
@@ -41,13 +41,13 @@ type MediciensTableProps = {
 }
 
 export default function MedicinesTable({
-  mediciens,
+  medicines,
   pathname,
   totalRows,
   rowsPerPage,
   currentPage,
   totalPage,
-}: MediciensTableProps): JSX.Element {
+}: MedicinesTableProps): JSX.Element {
   const search_href = `${pathname}`
   const add_href = `${pathname}/add`
   return (
@@ -64,12 +64,12 @@ export default function MedicinesTable({
       </FormRow>
       <Table
         columns={columns}
-        rows={mediciens}
+        rows={medicines}
         EmptyState={() => (
           <EmptyState
-            header='No mediciens'
-            explanation='Add a medicien to get started'
-            button={{ text: 'Add Medicien', href: add_href }}
+            header='No medicines'
+            explanation='Add a medicine to get started'
+            button={{ text: 'Add Medicine', href: add_href }}
           />
         )}
       />

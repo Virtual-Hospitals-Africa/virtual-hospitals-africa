@@ -51,7 +51,7 @@ export default function MedicinesPage(
       variant='regulator home page'
     >
       <MedicinesTable
-        mediciens={props.data.medicines}
+        medicines={props.data.medicines}
         pathname={props.url.pathname}
         rowsPerPage={props.data.rowsPerPage}
         totalRows={props.data.totalRows}
