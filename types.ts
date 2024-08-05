@@ -2891,3 +2891,17 @@ export type DetailedPharmacist = {
     | 'Pharmacy Technician'
   pharmacy?: RenderedPharmacy
 }
+
+export type RenderedMedicine = {
+  id: string
+  generic_name: string
+  trade_name: string
+  applicant_name: string
+  form: string
+  strength_summary: string
+  strength_numerators: number[]
+  strength_numerator_unit: string
+  strength_denominator: number
+  strength_denominator_unit: string
+  strength_denominator_is_units: boolean
+}

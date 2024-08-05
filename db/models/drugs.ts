@@ -4,6 +4,7 @@ import {
   DrugSearchResult,
   ManufacturedMedicationSearchResult,
   Maybe,
+  RenderedMedicine,
   TrxOrDb,
 } from '../../types.ts'
 import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
@@ -208,4 +209,52 @@ export async function searchManufacturedMedications(
     ...r,
     strength_denominator: parseFloat(r.strength_denominator),
   }))
+}
+
+export async function get(
+  trx: TrxOrDb,
+  page: number = 1,
+  rowsPerPage: number = 10,
+): Promise<{ medicines: RenderedMedicine[]; totalRows: number }> {
+  const offset = (page - 1) * rowsPerPage
+  const medicines = await trx
+    .selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .select([
+      'manufactured_medications.id',
+      'drugs.generic_name',
+      'manufactured_medications.trade_name',
+      'manufactured_medications.applicant_name',
+      'medications.form',
+      'medications.strength_numerators',
+      'medications.strength_numerator_unit',
+      'medications.strength_denominator',
+      'medications.strength_denominator_unit',
+      'medications.strength_denominator_is_units',
+      strengthSummary('manufactured_medications'),
+    ])
+    .orderBy('drugs.generic_name', 'asc')
+    .limit(rowsPerPage)
+    .offset(offset)
+    .execute()
+
+  const totalRowsResult = await trx
+    .selectFrom('manufactured_medications')
+    .select((eb) => eb.fn.count('id').as('totalRows'))
+    .execute()
+
+  const totalRows = parseInt(totalRowsResult[0].totalRows.toString(), 10)
+
+  return {
+    medicines: medicines.map((medicine) => ({
+      ...medicine,
+      strength_denominator: parseFloat(medicine.strength_denominator),
+    })),
+    totalRows,
+  }
 }
