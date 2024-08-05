@@ -8,11 +8,16 @@ import * as employment from '../../db/models/employment.ts'
 import * as regulators from '../../db/models/regulators.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
+import * as pharmacists from '../../db/models/pharmacists.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
-import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
-import { testCalendars, testRegulator } from '../mocks.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  RenderedPharmacist,
+  TrxOrDb,
+} from '../../types.ts'
+import { testCalendars, testPharmacist, testRegulator } from '../mocks.ts'
 import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -237,6 +242,21 @@ export async function addTestRegulatorWithSession(
     regulator,
     fetch: fetchWithSession,
     fetchCheerio,
+  }
+}
+
+export async function addTestPharmacist(
+  trx: TrxOrDb,
+  pharmacist?: RenderedPharmacist,
+) {
+  const dummyPharmacist = {
+    ...testPharmacist(),
+    ...pharmacist,
+  }
+  const { id: pharmacistId } = await pharmacists.insert(trx, dummyPharmacist)
+  return {
+    id: pharmacistId,
+    ...dummyPharmacist,
   }
 }
 
