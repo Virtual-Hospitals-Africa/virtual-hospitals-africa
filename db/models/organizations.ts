@@ -101,6 +101,7 @@ type EmployeeQueryOpts = {
   emails?: string[]
   is_approved?: boolean
   exclude_health_worker_id?: string
+  active_hours: 3
 }
 
 export function getEmployeesQuery(
@@ -121,15 +122,15 @@ export function getEmployeesQuery(
       'health_workers.email as email',
       'health_workers.name as display_name',
       'health_workers.avatar_url as avatar_url',
-      eb.selectFrom('health_worker_sessions')
-        .whereRef('health_worker_sessions.entity_id', '=', 'health_workers.id')
-        .select((eb_sessions) =>
-          eb_sessions(
-            'health_worker_sessions.updated_at',
-            '>=',
-            sql<Date>`NOW() - INTERVAL '1 hour'`,
-          ).as('online')
-        ).as('online'),
+      // eb.selectFrom('health_worker_sessions')
+      //   .whereRef('health_worker_sessions.entity_id', '=', 'health_workers.id')
+      //   .select((eb_sessions) =>
+      //     eb_sessions(
+      //       'health_worker_sessions.updated_at',
+      //       '>=',
+      //       sql<Date>`NOW() - INTERVAL '1 hour'`,
+      //     ).as('online')
+      //   ).as('online'),
       sql<false>`FALSE`.as('is_invitee'),
       jsonArrayFromColumn(
         'profession_details',
@@ -206,6 +207,21 @@ export function getEmployeesQuery(
       'health_workers.id',
       '!=',
       opts.exclude_health_worker_id,
+    )
+  }
+
+  if (opts.active_hours) {
+    const now = new Date().getTime();
+    const newTimestamp = new Date(now - (opts.active_hours * 60 * 60 * 1000));
+
+    hwQuery = hwQuery.innerJoin(
+      'health_worker_sessions',
+      'health_worker_sessions.health_worker_id',
+      'health_workers.id'
+    ).where(
+      'health_worker_sessions.updated_at',
+      '>=',
+      newTimestamp
     )
   }
 

@@ -76,7 +76,7 @@ export async function forPatientIntake(
         type: 'avatar',
         url: employee.avatar_url,
       },
-      status: 'Unavailable until tomorrow at 9:00am',
+      status: '<Placeholder> Unavailable until tomorrow at 9:00am',
       to: {
         type: 'entity',
         entity_type: 'health_worker',
