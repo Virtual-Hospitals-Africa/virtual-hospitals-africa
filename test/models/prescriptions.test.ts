@@ -7,6 +7,7 @@ import * as patient_encounters from '../../db/models/patient_encounters.ts'
 import * as patient_conditions from '../../db/models/patient_conditions.ts'
 import * as patients from '../../db/models/patients.ts'
 import { addTestHealthWorker, itUsesTrxAnd } from '../web/utilities.ts'
+import { assertEquals } from 'https://deno.land/std@0.216.0/assert/assert_equals.ts'
 
 describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
   describe('insert', () => {
@@ -28,7 +29,6 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           },
         )
 
-        // const
         await patient_conditions.upsertPreExisting(trx, patient.id, [
           {
             id: 'c_4373',
@@ -65,7 +65,7 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
           .orderBy('drugs.generic_name desc')
           .executeTakeFirstOrThrow()
 
-        const result = await prescriptions.createtPrescription(trx, {
+        const result = await prescriptions.create(trx, {
           prescriber_id: encounter.providers[0].encounter_provider_id,
           patient_id: patient.id,
           prescribing: [
@@ -88,12 +88,15 @@ describe('db/models/prescriptions.ts', { sanitizeResources: false }, () => {
 
         assert(result)
 
-        // assertEquals(
-        //   result,
-        //   {
-        //     id: healthWorker.employee_id!,
-        //   },
-        // )
+        assertEquals(
+          result.prescriber_id,
+          encounter.providers[0].encounter_provider_id!,
+        )
+
+        assertEquals(
+          result.patient_id,
+          patient.id!,
+        )
       },
     )
   })
