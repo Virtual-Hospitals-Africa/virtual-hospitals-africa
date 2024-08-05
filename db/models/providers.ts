@@ -97,8 +97,10 @@ export async function getMany(
 ) {
   let query = getQuery(trx)
   if (opts.employment_ids) {
-    assertOr400(opts.employment_ids.length > 0, 'employment_ids must not be empty.')
-    query = query.where('employment.id', '=', opts.employment_ids)
+    if (!opts.employment_ids.length) {
+      return []
+    }
+    query = query.where('employment.id', 'in', opts.employment_ids)
   }
   const providers = await query.execute()
   assertAll(providers, assertProvider)

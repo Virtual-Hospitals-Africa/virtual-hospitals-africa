@@ -83,7 +83,7 @@ export function defaultTimeRange(): TimeRange {
   timeMax.setDate(timeMin.getDate() + 7)
   return { timeMin, timeMax }
 }
-export async function provider_availability(
+export async function providerAvailability(
   provider: Provider,
   timeRange = defaultTimeRange(),
 ) {
@@ -106,7 +106,7 @@ export function getAllProviderAvailability(
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   return Promise.all(
-    providers.map((provider) => provider_availability(provider, timeRange)),
+    providers.map((provider) => providerAvailability(provider, timeRange)),
   )
 }
 

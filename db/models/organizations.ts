@@ -2,7 +2,6 @@ import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
   HasStringId,
-  integer,
   Location,
   Maybe,
   Organization,
@@ -97,16 +96,17 @@ export function get(
     .execute()
 }
 
+type EmployeeQueryOpts = {
+  professions?: Profession[]
+  emails?: string[]
+  is_approved?: boolean
+  exclude_health_worker_id?: string
+}
+
 export function getEmployeesQuery(
   trx: TrxOrDb,
-  opts: {
-    organization_id: string
-    professions?: Profession[]
-    emails?: string[]
-    is_approved?: boolean
-    exclude_health_worker_id?: string
-    active_hours?: integer
-  },
+  organization_id: string,
+  opts: EmployeeQueryOpts,
 ) {
   let hwQuery = trx.selectFrom('health_workers')
     .innerJoin('employment', 'employment.health_worker_id', 'health_workers.id')
@@ -115,22 +115,21 @@ export function getEmployeesQuery(
       'nurse_registration_details.health_worker_id',
       'health_workers.id',
     )
-    .leftJoin(
-      'health_worker_sessions',
-      'health_worker_sessions.entity_id',
-      'health_workers.id'
-    )
     .select((eb) => [
       'health_workers.id as health_worker_id',
       'health_workers.name as name',
       'health_workers.email as email',
       'health_workers.name as display_name',
       'health_workers.avatar_url as avatar_url',
-      eb(
-        'health_worker_sessions.updated_at',
-        '>=',
-        sql<Date>`NOW() - INTERVAL '1 hour'`,
-      ).as('online'),
+      eb.selectFrom('health_worker_sessions')
+        .whereRef('health_worker_sessions.entity_id', '=', 'health_workers.id')
+        .select((eb_sessions) =>
+          eb_sessions(
+            'health_worker_sessions.updated_at',
+            '>=',
+            sql<Date>`NOW() - INTERVAL '1 hour'`,
+          ).as('online')
+        ).as('online'),
       sql<false>`FALSE`.as('is_invitee'),
       jsonArrayFromColumn(
         'profession_details',
@@ -152,7 +151,7 @@ export function getEmployeesQuery(
             '=',
             'health_workers.id',
           )
-          .where('employment.organization_id', '=', opts.organization_id)
+          .where('employment.organization_id', '=', organization_id)
           .where(
             'employment.profession',
             'in',
@@ -166,7 +165,7 @@ export function getEmployeesQuery(
       jsonBuildObject({
         view: sql<
           string
-        >`concat('/app/organizations/', ${opts.organization_id}::text, '/employees/', health_workers.id::text)`,
+        >`concat('/app/organizations/', ${organization_id}::text, '/employees/', health_workers.id::text)`,
       }).as('actions'),
       sql<'pending_approval' | 'approved' | 'incomplete'>`
         CASE
@@ -178,7 +177,7 @@ export function getEmployeesQuery(
         END
       `.as('registration_status'),
     ])
-    .where('employment.organization_id', '=', opts.organization_id)
+    .where('employment.organization_id', '=', organization_id)
     .groupBy([
       'health_workers.id',
       'nurse_registration_details.approved_by',
@@ -215,26 +214,18 @@ export function getEmployeesQuery(
 
 export function getEmployees(
   trx: TrxOrDb,
-  opts: {
-    organization_id: string
-    professions?: Profession[]
-    emails?: string[]
-    is_approved?: boolean
-    exclude_health_worker_id?: string
-    active_hours?: integer
-  },
+  organization_id: string,
+  opts: EmployeeQueryOpts = {},
 ): Promise<OrganizationEmployee[]> {
-  return getEmployeesQuery(trx, opts).execute()
+  return getEmployeesQuery(trx, organization_id, opts).execute()
 }
 
-export async function getApprovedDoctorsAndNurses(
+export async function getApprovedProviders(
   trx: TrxOrDb,
-  opts: {
-    organization_id: string
-    emails?: string[]
-  },
+  organization_id: string,
+  opts: Omit<EmployeeQueryOpts, 'is_approved' | 'professions'> = {},
 ): Promise<OrganizationDoctorOrNurse[]> {
-  const employees = await getEmployees(trx, {
+  const employees = await getEmployees(trx, organization_id, {
     ...opts,
     professions: ['doctor', 'nurse'],
     is_approved: true,
@@ -257,13 +248,13 @@ export async function getApprovedDoctorsAndNurses(
 
 export function getEmployeesAndInvitees(
   trx: TrxOrDb,
+  organization_id: string,
   opts: {
-    organization_id: string
     professions?: Profession[]
     emails?: string[]
-  },
+  } = {},
 ): Promise<OrganizationEmployeeOrInvitee[]> {
-  const hwQuery = getEmployeesQuery(trx, opts)
+  const hwQuery = getEmployeesQuery(trx, organization_id, opts)
   let inviteeQuery = trx.selectFrom('health_worker_invitees')
     .select((eb) => [
       sql<null | number>`NULL`.as('health_worker_id'),
@@ -284,7 +275,7 @@ export function getEmployeesAndInvitees(
         'registration_status',
       ),
     ])
-    .where('health_worker_invitees.organization_id', '=', opts.organization_id)
+    .where('health_worker_invitees.organization_id', '=', organization_id)
     .groupBy('health_worker_invitees.email')
 
   if (opts.emails) {
@@ -328,10 +319,13 @@ export async function invite(
     professions.add(profession)
   }
 
-  const existingEmployees = await getEmployeesAndInvitees(trx, {
+  const existingEmployees = await getEmployeesAndInvitees(
+    trx,
     organization_id,
-    emails: [...invitedByEmail.keys()],
-  })
+    {
+      emails: [...invitedByEmail.keys()],
+    },
+  )
 
   const exactMatchingInvites = invites.filter(
     (invite) =>

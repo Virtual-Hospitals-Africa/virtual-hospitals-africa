@@ -85,7 +85,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<SchedulePageProps> =
       const availability = await availableSlots(ctx.state.trx, {
         count: 10,
         dates: search.date ? [search.date] : undefined,
-        provider_ids: search.provider_id ? [search.provider_id] : undefined,
+        employment_ids: search.provider_id ? [search.provider_id] : undefined,
       })
 
       const [patient] = await gettingPatient
