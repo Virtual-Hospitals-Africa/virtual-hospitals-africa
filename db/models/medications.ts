@@ -8,15 +8,15 @@ export async function insert(
   prescription_id: string,
   conditions: PrescriptionCondition[],
 ) {
-  const patientConditionionMedications = processMedications(conditions)
+  const medications = processMedications(conditions)
 
-  const inserted_patient_condition_medications = await trx
+  const condition_medications = await trx
     .insertInto('patient_condition_medications')
-    .values(patientConditionionMedications)
+    .values(medications)
     .returning('id')
     .execute()
 
-  const patientPrescriptionMedications = inserted_patient_condition_medications
+  const prescription_medications = condition_medications
     .map((medication) => ({
       patient_condition_medication_id: medication.id,
       prescription_id: prescription_id,
@@ -24,7 +24,7 @@ export async function insert(
 
   await trx
     .insertInto('patient_prescription_medications')
-    .values(patientPrescriptionMedications)
+    .values(prescription_medications)
     .execute()
 }
 
