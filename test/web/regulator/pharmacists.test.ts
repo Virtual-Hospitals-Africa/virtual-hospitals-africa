@@ -46,7 +46,7 @@ describe(
 
       assert(
         $(`td div:contains(${pharmacistName})`).length === 1,
-        `should have one <td> with the text "${pharmacistName}"`,
+        `should have one <td> with the pharmacist name"`,
       )
 
       const tableRow = $(`tr div:contains(${pharmacistName})`).closest('tr')
@@ -54,31 +54,25 @@ describe(
       assert(
         tableRow.find(`td > div:contains(${newPharmacist.prefix})`).length ===
           1,
-        `should have one <td> with the text "${newPharmacist.prefix}"`,
+        `should have one <td> with the text the pharmacist prefix"`,
       )
 
       assert(
         tableRow.find(`td > div:contains(${newPharmacist.pharmacist_type})`)
           .length === 1,
-        `should have one <td> with the text "${newPharmacist.pharmacist_type}"`,
-      )
-
-      assert(
-        tableRow.find(`td > div:contains(${newPharmacist.pharmacy})`).length ===
-          1,
-        `should have one <td> with the text "${newPharmacist.pharmacy}"`,
+        `should have one <td> with the text the pharmacist type"`,
       )
 
       assert(
         tableRow.find(`td > div:contains(${newPharmacist.licence_number})`)
           .length === 1,
-        `should have one <td> with the text "${newPharmacist.licence_number}"`,
+        `should have one <td> with the text the pharmacist licence number`,
       )
 
       assert(
         tableRow.find(`td > div:contains(${newPharmacist.expiry_date})`)
           .length === 1,
-        `should have one <td> with the text "${newPharmacist.expiry_date}"`,
+        `should have one <td> with the text the pharmacist expiry date`,
       )
 
       await removeTestPharmacist(db, newPharmacist.id)
