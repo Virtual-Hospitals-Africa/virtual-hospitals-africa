@@ -435,6 +435,7 @@ export type PharmacistConversationState =
   | 'not_onboarded:reenter_licence_number'
   | 'not_onboarded:enter_name'
   | 'not_onboarded:share_location'
+  | 'not_onboarded:licence_expired'
   // | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
