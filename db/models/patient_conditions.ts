@@ -13,11 +13,7 @@ import { assertOr400 } from '../../util/assertOr.ts'
 import * as drugs from './drugs.ts'
 import uniq from '../../util/uniq.ts'
 import { assert } from 'std/assert/assert.ts'
-import {
-  differenceInDays,
-  durationEndDate,
-  isISODateString,
-} from '../../util/date.ts'
+import { durationEndDate, isISODateString } from '../../util/date.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import omit from '../../util/omit.ts'
 import { isoDate, jsonArrayFrom, now } from '../helpers.ts'

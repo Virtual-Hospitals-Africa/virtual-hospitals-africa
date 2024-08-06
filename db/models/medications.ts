@@ -8,9 +8,7 @@ export async function insert(
   prescription_id: string,
   conditions: PrescriptionCondition[],
 ) {
-  const medications = conditions.flatMap((condition) =>
-    processMedications(condition)
-  )
+  const medications = conditions.flatMap(processMedications)
 
   const condition_medications = await trx
     .insertInto('patient_condition_medications')
