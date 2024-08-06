@@ -33,8 +33,8 @@ export const testRegulator = () => {
 export const testPharmacist = (): RenderedPharmacist => ({
   licence_number: 'P01-0805-2024',
   prefix: 'Mrs',
-  given_name: `Test Given Name ${generateUUID()}`,
-  family_name: `Test Family Name ${generateUUID()}`,
+  given_name: `A Test Given Name ${generateUUID()}`,
+  family_name: `A Test Family Name ${generateUUID()}`,
   address: 'Test Address',
   town: 'Test Town',
   expiry_date: '2030-01-01',

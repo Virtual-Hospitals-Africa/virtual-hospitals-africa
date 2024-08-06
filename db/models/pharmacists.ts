@@ -144,6 +144,13 @@ export function revoke(
     .execute()
 }
 
+export function remove(trx: TrxOrDb, pharmacist_id: string) {
+  return trx
+    .deleteFrom('pharmacists')
+    .where('id', '=', pharmacist_id)
+    .execute()
+}
+
 export function insert(
   trx: TrxOrDb,
   data: RenderedPharmacist,

@@ -260,6 +260,13 @@ export async function addTestPharmacist(
   }
 }
 
+export function removeTestPharmacist(
+  trx: TrxOrDb,
+  pharmacistId: string,
+) {
+  return pharmacists.remove(trx, pharmacistId)
+}
+
 export function getFormValues($: cheerio.CheerioAPI): unknown {
   const formValues = {}
   $('form input,textarea').each((_i, el) => {
