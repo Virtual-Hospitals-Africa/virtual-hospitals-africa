@@ -3,7 +3,6 @@ import {
   RenderedOrganizationDevice,
   RenderedOrganizationMedicine,
 } from '../../types.ts'
-import { Container } from '../library/Container.tsx'
 import { TabProps, Tabs } from '../library/Tabs.tsx'
 import OrganizationConsumablesTable from './ConsumablesTable.tsx'
 import OrganizationDevicesTable from './DevicesTable.tsx'

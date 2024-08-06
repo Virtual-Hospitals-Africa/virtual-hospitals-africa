@@ -4,10 +4,9 @@ import {
   fireEvent,
   render,
   setup,
-  waitFor,
 } from '$fresh-testing-library/mod.ts'
 import NationalIdInputCheckbox from '../../../islands/NationalIdInputCheckbox.tsx'
-import { Signal, signal } from '@preact/signals'
+import { signal } from '@preact/signals'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 
 describe('<NationalIdInputCheckbox />', () => {

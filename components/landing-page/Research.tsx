@@ -1,5 +1,4 @@
 import { Container } from '../../components/library/Container.tsx'
-import { PresentationChartBarIcon } from '../../components/library/icons/heroicons/outline.tsx'
 import ArrowLink from './ArrowLink.tsx'
 import { FeatureGrid } from './FeatureGrid.tsx'
 import SectionHeading from './SectionHeading.tsx'

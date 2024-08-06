@@ -1,6 +1,4 @@
 import { JSX } from 'preact'
-import cls from '../util/cls.ts'
-import { Timer } from '../islands/timer.tsx'
 
 function WifiHeart(
   { variant, ...props }: Omit<JSX.SVGAttributes<SVGSVGElement>, 'className'> & {

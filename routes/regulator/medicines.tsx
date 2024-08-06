@@ -1,14 +1,12 @@
 import Layout from '../../components/library/Layout.tsx'
-import PharmacistsTable, {
-  Pharmacist,
-} from '../../components/regulator/PharmacistsTable.tsx'
-import * as pharmacists from '../../db/models/pharmacists.ts'
-import { FreshContext } from '$fresh/server.ts'
+import MedicinesTable from '../../components/regulator/MedicinesTable.tsx'
 import { PageProps } from '$fresh/server.ts'
-import { LoggedInRegulator } from '../../types.ts'
+import { LoggedInRegulator, RenderedMedicine } from '../../types.ts'
+import * as drugs from '../../db/models/drugs.ts'
+import { FreshContext } from '$fresh/server.ts'
 
-type PharmacistsProps = {
-  pharmacists: Pharmacist[]
+type MedicinesProps = {
+  medicines: RenderedMedicine[]
   regulator: LoggedInRegulator['regulator']
   page: number
   totalRows: number
@@ -22,16 +20,15 @@ export const handler = {
     _req: Request,
     ctx: FreshContext<LoggedInRegulator>,
   ) {
-    const ROWS_PER_PAGE = 70
+    const ROWS_PER_PAGE = 100
     const currentPage = parseInt(ctx.url.searchParams.get('page') ?? '1')
-    const { pharmacistsList, totalRows } = await pharmacists.get(
+    const { medicines, totalRows } = await drugs.get(
       ctx.state.trx,
-      {},
       currentPage,
       ROWS_PER_PAGE,
     )
     return ctx.render({
-      pharmacists: pharmacistsList,
+      medicines: medicines,
       regulator: ctx.state.regulator,
       currentPage,
       totalRows,
@@ -41,20 +38,20 @@ export const handler = {
   },
 }
 
-export default function PharmacistsPage(
-  props: PageProps<PharmacistsProps>,
+export default function MedicinesPage(
+  props: PageProps<MedicinesProps>,
 ) {
   return (
     <Layout
-      title='Pharmacists'
+      title='Medicines'
       route={props.route}
       url={props.url}
       regulator={props.data.regulator}
       params={{}}
       variant='regulator home page'
     >
-      <PharmacistsTable
-        pharmacists={props.data.pharmacists}
+      <MedicinesTable
+        medicines={props.data.medicines}
         pathname={props.url.pathname}
         rowsPerPage={props.data.rowsPerPage}
         totalRows={props.data.totalRows}

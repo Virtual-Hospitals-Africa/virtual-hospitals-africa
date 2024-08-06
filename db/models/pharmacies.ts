@@ -1,8 +1,42 @@
 import { sql } from 'kysely'
-import { TrxOrDb } from '../../types.ts'
 import { jsonArrayFrom } from '../helpers.ts'
 import { address_town_sql, name_sql } from './pharmacists.ts'
 import { RenderedPharmacy, Supervisor } from '../../types.ts'
+import { Maybe, TrxOrDb } from '../../types.ts'
+
+export async function getAllWithSearchConditions(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<RenderedPharmacy[]> {
+  let query = trx.selectFrom('premises')
+    .select([
+      'id',
+      'name',
+      'licence_number',
+      'licensee',
+      'address',
+      'town',
+      'expiry_date',
+      'premises_types',
+    ]).where('name', 'is not', null)
+  if (search) {
+    query = query.where('name', 'ilike', `%${search}%`).orderBy('name', 'asc')
+      .limit(30)
+  }
+  const pharmacies = await query.execute()
+  const renderedPharmacies: RenderedPharmacy[] = pharmacies.map((pharmacy) => ({
+    id: pharmacy.id,
+    name: pharmacy.name,
+    licence_number: pharmacy.licence_number,
+    licensee: pharmacy.licensee,
+    address: pharmacy.address,
+    town: pharmacy.town,
+    expiry_date: pharmacy.expiry_date.toDateString(),
+    premises_types: pharmacy.premises_types,
+    supervisors: [],
+  }))
+  return renderedPharmacies
+}
 
 export async function get(
   trx: TrxOrDb,

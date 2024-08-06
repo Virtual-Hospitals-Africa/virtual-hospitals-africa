@@ -33,7 +33,7 @@ const successMessages = {
 }
 
 export const handler: Handlers = {
-  async POST(req, ctx) {
+  async POST(req) {
     const referer = req.headers.get('referer')
 
     const formValues = await parseRequestAsserts(

@@ -1,6 +1,6 @@
 import { Allergy } from '../../types.ts'
 import Search from '../Search.tsx'
-import cls from '../../util/cls.ts'
+
 import { computed, useSignal } from '@preact/signals'
 
 export default function AllergySearch({

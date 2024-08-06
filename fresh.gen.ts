@@ -95,12 +95,17 @@ import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
+import * as $regulator_medicines from './routes/regulator/medicines.tsx'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
+import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
+import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
+import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
 import * as $regulator_pharmacists_pharmacist_id_edit from './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx'
 import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx'
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
+import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
@@ -195,6 +200,9 @@ import * as $pre_existing_conditions_Condition from './islands/pre-existing-cond
 import * as $pre_existing_conditions_Form from './islands/pre-existing-conditions/Form.tsx'
 import * as $pre_existing_conditions_Medication from './islands/pre-existing-conditions/Medication.tsx'
 import * as $referral_Form from './islands/referral/Form.tsx'
+import * as $regulator_InvitePharmacistForm from './islands/regulator/InvitePharmacistForm.tsx'
+import * as $regulator_InvitePharmacistSearch from './islands/regulator/InvitePharmacistSearch.tsx'
+import * as $regulator_InvitePharmacySearch from './islands/regulator/InvitePharmacySearch.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -354,15 +362,24 @@ const manifest = {
       $prescriptions_prescription_id_,
     './routes/regulator.tsx': $regulator,
     './routes/regulator/_middleware.ts': $regulator_middleware,
+    './routes/regulator/medicines.tsx': $regulator_medicines,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
+    './routes/regulator/pharmacies/[pharmacy.name].tsx':
+      $regulator_pharmacies_pharmacy_name_,
     './routes/regulator/pharmacies/[pharmacy_id].tsx':
       $regulator_pharmacies_pharmacy_id_,
+    './routes/regulator/pharmacies/pharmacies.tsx':
+      $regulator_pharmacies_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
+    './routes/regulator/pharmacists/[pharmacist_id].tsx':
+      $regulator_pharmacists_pharmacist_id_,
     './routes/regulator/pharmacists/[pharmacist_id]/edit.tsx':
       $regulator_pharmacists_pharmacist_id_edit,
     './routes/regulator/pharmacists/[pharmacist_id]/revoke.tsx':
       $regulator_pharmacists_pharmacist_id_revoke,
     './routes/regulator/pharmacists/invite.tsx': $regulator_pharmacists_invite,
+    './routes/regulator/pharmacists/pharmacists.tsx':
+      $regulator_pharmacists_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
@@ -466,6 +483,12 @@ const manifest = {
     './islands/pre-existing-conditions/Medication.tsx':
       $pre_existing_conditions_Medication,
     './islands/referral/Form.tsx': $referral_Form,
+    './islands/regulator/InvitePharmacistForm.tsx':
+      $regulator_InvitePharmacistForm,
+    './islands/regulator/InvitePharmacistSearch.tsx':
+      $regulator_InvitePharmacistSearch,
+    './islands/regulator/InvitePharmacySearch.tsx':
+      $regulator_InvitePharmacySearch,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

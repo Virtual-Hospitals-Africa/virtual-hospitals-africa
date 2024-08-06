@@ -1,6 +1,6 @@
 import * as pharmacists from '../../../../db/models/pharmacists.ts'
 import Layout from '../../../../components/library/Layout.tsx'
-import SectionHeader from '../../../../components/library/typography/SectionHeader.tsx'
+
 import { Button } from '../../../../components/library/Button.tsx'
 import { assertOr404 } from '../../../../util/assertOr.ts'
 import { LoggedInRegulator } from '../../../../types.ts'
@@ -33,7 +33,6 @@ export default async function PharmacistPage(
   _req: Request,
   ctx: FreshContext<LoggedInRegulator>,
 ) {
-  const { regulator } = ctx.state
   const pharmacist_id = getRequiredUUIDParam(ctx, 'pharmacist_id')
 
   const pharmacist = await pharmacists.getById(ctx.state.trx, pharmacist_id)

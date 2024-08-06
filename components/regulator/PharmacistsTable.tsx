@@ -3,11 +3,11 @@ import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
-import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { Actions, RenderedPharmacist } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
+import { InvitePharmacistSearch } from '../../islands/regulator/InvitePharmacistSearch.tsx'
 
 export type Pharmacist = RenderedPharmacist & {
   actions: Actions
@@ -75,13 +75,14 @@ export default function PharmacistsTable({
   currentPage,
   totalPage,
 }: PharmacistsTableProps): JSX.Element {
+  const invite_href = `/regulator/pharmacists/invite`
   return (
     <>
       <FormRow className='mb-4'>
-        <SearchInput />
+        <InvitePharmacistSearch />
         <Button
           type='button'
-          href={`${pathname}/invite`}
+          href={invite_href}
           className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
         >
           Invite

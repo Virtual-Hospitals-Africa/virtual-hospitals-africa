@@ -1,6 +1,4 @@
-import { JSX } from 'preact'
-
-export default function USFLogo(props: JSX.SVGAttributes<SVGSVGElement>) {
+export default function USFLogo() {
   return (
     <svg viewBox='0 0 300 67'>
       <mask fill='#004934'>

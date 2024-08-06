@@ -7,7 +7,7 @@ import cls from '../util/cls.ts'
 
 // TODO: Make an AddRemoveRow that smoothly animates from one to the other
 export function AddRow(
-  { text, onClick, labelled }: {
+  { text, onClick }: {
     text: string
     onClick(): void
     labelled?: boolean

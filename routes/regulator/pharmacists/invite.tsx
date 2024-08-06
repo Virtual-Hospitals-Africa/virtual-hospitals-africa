@@ -1,6 +1,4 @@
 import { FreshContext } from '$fresh/server.ts'
-import Layout from '../../../components/library/Layout.tsx'
-import { LoggedInRegulator, RenderedPharmacist } from '../../../types.ts'
 import PharmacistForm from '../../../islands/form/PharmacistForm.tsx'
 import { PageProps } from '$fresh/server.ts'
 import redirect from '../../../util/redirect.ts'
@@ -9,6 +7,8 @@ import { assertOr400 } from '../../../util/assertOr.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import isString from '../../../util/isString.ts'
 import * as pharmacists from '../../../db/models/pharmacists.ts'
+import Layout from '../../../components/library/Layout.tsx'
+import { LoggedInRegulator, RenderedPharmacist } from '../../../types.ts'
 
 type InviteProps = {
   regulator: LoggedInRegulator['regulator']

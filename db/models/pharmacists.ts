@@ -1,6 +1,23 @@
-import { sql } from 'kysely'
-import { RenderedPharmacist, RenderedPharmacy, TrxOrDb } from '../../types.ts'
+import {
+  Maybe,
+  RenderedPharmacist,
+  RenderedPharmacy,
+  TrxOrDb,
+} from '../../types.ts'
 import { jsonBuildObject, now } from '../helpers.ts'
+import { sql } from 'kysely'
+
+export function update(
+  trx: TrxOrDb,
+  pharmacist_id: string,
+  data: RenderedPharmacist,
+) {
+  return trx
+    .updateTable('pharmacists')
+    .set(data)
+    .where('id', '=', pharmacist_id)
+    .execute()
+}
 
 export function name_sql(table: string) {
   return sql<string>`concat(${sql.ref(`${table}.given_name`)}, ' ', ${
@@ -16,18 +33,6 @@ export function address_town_sql(table: string) {
       `${table}.town`,
     )
   })`
-}
-
-export function update(
-  trx: TrxOrDb,
-  pharmacist_id: string,
-  data: RenderedPharmacist,
-) {
-  return trx
-    .updateTable('pharmacists')
-    .set(data)
-    .where('id', '=', pharmacist_id)
-    .execute()
 }
 
 export async function get(
@@ -110,8 +115,7 @@ export async function get(
 }
 
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
-  return trx
-    .selectFrom('pharmacists')
+  return trx.selectFrom('pharmacists')
     .select([
       'id',
       'licence_number',
@@ -134,14 +138,59 @@ export function revoke(
     regulator_id: number
   },
 ) {
-  return trx
-    .updateTable('pharmacists')
-    .set({
-      revoked_at: now,
-      revoked_by: data.regulator_id,
-    })
-    .where('id', '=', data.pharmacist_id)
-    .execute()
+  return trx.updateTable('pharmacists').set({
+    revoked_at: now,
+    revoked_by: data.regulator_id,
+  }).where('id', '=', data.pharmacist_id).execute()
+}
+
+export async function getAllWithSearchConditions(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+): Promise<RenderedPharmacist[]> {
+  let query = trx
+    .selectFrom('pharmacists')
+    .select([
+      'id',
+      'licence_number',
+      'prefix',
+      'given_name',
+      'family_name',
+      name_sql('pharmacists').as('name'),
+      'address',
+      'town',
+      'expiry_date',
+      'pharmacist_type',
+    ])
+    .where('pharmacists.given_name', 'is not', null)
+  if (search) {
+    query = query.where(
+      sql`concat(given_name, ' ', family_name)`,
+      `ilike`,
+      `%${search}%`,
+    ).orderBy('pharmacists.given_name', 'asc').limit(30)
+    query = query.where(
+      sql`concat(given_name, ' ', family_name)`,
+      'ilike',
+      `%${search}%`,
+    ).orderBy('pharmacists.given_name', 'asc').limit(30)
+  }
+  const pharmacists = await query.execute()
+  const renderedPharmacists: RenderedPharmacist[] = pharmacists.map(
+    (pharmacist) => ({
+      id: pharmacist.id,
+      given_name: pharmacist.given_name,
+      name: pharmacist.name,
+      licence_number: pharmacist.licence_number,
+      prefix: pharmacist.prefix,
+      family_name: pharmacist.family_name,
+      address: pharmacist.address,
+      town: pharmacist.town,
+      pharmacist_type: pharmacist.pharmacist_type,
+      expiry_date: pharmacist.expiry_date.toDateString(),
+    }),
+  )
+  return renderedPharmacists
 }
 
 export function remove(trx: TrxOrDb, pharmacist_id: string) {
