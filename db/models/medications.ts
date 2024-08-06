@@ -8,7 +8,9 @@ export async function insert(
   prescription_id: string,
   conditions: PrescriptionCondition[],
 ) {
-  const medications = processMedications(conditions)
+  const medications = conditions.flatMap((condition) =>
+    processMedications(condition)
+  )
 
   const condition_medications = await trx
     .insertInto('patient_condition_medications')
@@ -28,34 +30,32 @@ export async function insert(
     .execute()
 }
 
-function processMedications(conditions: PrescriptionCondition[]) {
-  return conditions.flatMap((condition) =>
-    (condition.medications || []).map((medication) => {
-      const start_date = medication.start_date || condition.start_date
+export function processMedications(condition: PrescriptionCondition) {
+  return (condition.medications || []).map((medication) => {
+    const start_date = medication.start_date || condition.start_date
 
-      const { duration, duration_unit } = medication.end_date
-        ? {
-          duration: differenceInDays(medication.end_date, start_date),
-          duration_unit: 'days',
-        }
-        : { duration: 1, duration_unit: 'indefinitely' }
-      return {
-        patient_condition_id: condition.patient_condition_id,
-        medication_id: (!medication.manufactured_medication_id &&
-          medication.medication_id) ||
-          null, // omit medication_id if manufactured_medication_id is present
-        manufactured_medication_id: medication.manufactured_medication_id ||
-          null,
-        strength: medication.strength,
-        route: medication.route,
-        schedules: sql<string[]>`
-            ARRAY[
-            ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
-            ]::medication_schedule[]
-        `,
-        start_date,
-        special_instructions: medication.special_instructions || null,
+    const { duration, duration_unit } = medication.end_date
+      ? {
+        duration: differenceInDays(medication.end_date, start_date),
+        duration_unit: 'days',
       }
-    })
-  )
+      : { duration: 1, duration_unit: 'indefinitely' }
+    return {
+      patient_condition_id: condition.patient_condition_id,
+      medication_id: (!medication.manufactured_medication_id &&
+        medication.medication_id) ||
+        null, // omit medication_id if manufactured_medication_id is present
+      manufactured_medication_id: medication.manufactured_medication_id ||
+        null,
+      strength: medication.strength,
+      route: medication.route,
+      schedules: sql<string[]>`
+          ARRAY[
+          ROW(${medication.dosage}, ${medication.intake_frequency}, ${duration}, ${duration_unit})
+          ]::medication_schedule[]
+      `,
+      start_date,
+      special_instructions: medication.special_instructions || null,
+    }
+  })
 }
