@@ -30,7 +30,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     const employees = await getEmployees(
       ctx.state.trx,
-      { organization_id: organization.id },
+      organization.id,
     )
 
     return ctx.render({
