@@ -221,11 +221,11 @@ export function IntakePage(
       step as unknown as IntakeStep,
     )
 
-    const location: Location = {
-      //put longitude and latitude of the VHA Test Clinic temporarily
-      longitude: -2.5879,
-      latitude: 51.4545,
-    }
+    const organizationId = ctx.state.encounter_provider.organization_id
+    const location = await send_to.getLocationByOrganizationId(
+      ctx.state.trx,
+      organizationId,
+    )
 
     const getting_sendables = send_to.forPatientIntake(
       ctx.state.trx,

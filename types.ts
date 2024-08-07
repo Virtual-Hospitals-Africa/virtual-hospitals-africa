@@ -435,6 +435,7 @@ export type PharmacistConversationState =
   | 'not_onboarded:reenter_licence_number'
   | 'not_onboarded:enter_name'
   | 'not_onboarded:share_location'
+  | 'not_onboarded:licence_expired'
   // | 'not_onboarded:confirm_details'
   // | 'not_onboarded:enter_establishment'
   // | 'onboarded:enter_order_number'
@@ -1060,22 +1061,8 @@ export type OrganizationEmployee = {
   actions: {
     view: string
   }
+  online: null | SqlBool
 }
-
-// QUESTION: How to make this specific to nurses?
-export type OrganizationRegisteredNurse =
-  & Omit<
-    OrganizationEmployee,
-    | 'is_invitee'
-    | 'professions'
-    | 'registration_status'
-    | 'actions'
-    | 'display_name'
-  >
-  & {
-    avatar_url: string
-    organization_id: string
-  }
 
 export type OrganizationDoctorOrNurse =
   & Omit<
@@ -1104,6 +1091,7 @@ export type OrganizationEmployeeInvitee = {
   actions: {
     view: null
   }
+  online: null
 }
 
 export type OrganizationDevice = {
@@ -2811,6 +2799,8 @@ export type Sendable = {
     href: string
   }[]
   to: SendableTo
+  request_type_options?: string[]
+  textarea?: string
 }
 
 export type SelectedPatient = {
@@ -2845,6 +2835,9 @@ export type RenderedPharmacy = {
   town: string | null
   href?: string
   supervisors: Supervisor[]
+  actions: {
+    view: string
+  }
 }
 
 export type RenderedPharmacist = {

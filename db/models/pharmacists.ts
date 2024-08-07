@@ -103,6 +103,7 @@ export async function get(
     ...pharmacist,
     expiry_date: new Date(pharmacist.expiry_date).toISOString().split('T')[0],
     actions: {
+      view: `/regulator/pharmacists/${pharmacist.id}`,
       revoke: `/regulator/pharmacists/${pharmacist.id}/revoke`,
       edit: `/regulator/pharmacists/${pharmacist.id}/edit`,
     },
