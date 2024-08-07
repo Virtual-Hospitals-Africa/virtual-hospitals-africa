@@ -1,5 +1,5 @@
 import { Button } from '../../components/library/Button.tsx'
-// import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
+import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
 
 export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
   return (
@@ -8,14 +8,14 @@ export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
       {/* Hardcoding to intake options. These are the options when the providers are at your facility */}
       {/* When at another facility, this will include request_review */}
       {
-        /* <SendToRequestRadioButtons
+        <SendToRequestRadioButtons
           form={form}
           options={[
             'request_review',
             'make_appointment',
             'declare_emergency',
           ]}
-        /> */
+        />
       }
       {/*</div>*/}
       <div className='mt-6 px-4'>

@@ -59,6 +59,7 @@ export async function forPatientIntake(
         entity_id: facility.id,
         online: true,
       },
+      textarea: 'reason_for_escalation',
     }),
   )
 
@@ -91,6 +92,8 @@ export async function forPatientIntake(
         entity_id: nurse.health_worker_id,
         online: false,
       },
+      request_type_options: ['request_review', 'make_appointment', 'declare_emergency'],
+      textarea: 'additional_details',
     }),
   )
 
