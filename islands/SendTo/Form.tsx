@@ -1,32 +1,34 @@
 import { Button } from '../../components/library/Button.tsx'
+import words from '../../util/words.ts'
 import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
 
-export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
+export function SendToForm(
+  { form, textarea, requestTypeOptions }: {
+    form: 'intake' | 'encounter'
+    textarea?: string
+    requestTypeOptions?: string[]
+  },
+) {
   return (
     <div className='flex flex-col'>
-      <div className='mt-6 px-4'>
-        {/* Hardcoding to intake options. These are the options when the providers are at your facility */}
-        {/* When at another facility, this will include request_review */}
+      {requestTypeOptions && (
         <SendToRequestRadioButtons
           form={form}
-          options={[
-            'request_review',
-            'make_appointment',
-            'declare_emergency',
-          ]}
+          options={requestTypeOptions}
         />
-      </div>
-      <div className='mt-6 px-4'>
-        <h2 className='text-sm font-sans font-medium text-gray-900'>
-          Additional Details
-        </h2>
-        <textarea
-          form={form}
-          name='send_to.additional_details'
-          className='w-full border border-gray-300 rounded-md p-2 mt-2'
-        >
-        </textarea>
-      </div>
+      )}
+      {textarea && (
+        <div className='mt-6 px-4'>
+          <h2 className='text-sm font-sans font-medium text-gray-900'>
+            {words(textarea).join(' ')}
+          </h2>
+          <textarea
+            form={form}
+            name={`send_to.${textarea}`}
+            className='w-full border border-gray-300 rounded-md p-2 mt-2'
+          />
+        </div>
+      )}
       <div className='mt-6 px-4 flex justify-end'>
         <Button form={form} type='submit' variant='solid' color='primary'>
           Send

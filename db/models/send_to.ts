@@ -7,6 +7,28 @@ import {
 import { assertOr400 } from '../../util/assertOr.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
 import { getEmployees, nearest } from './organizations.ts'
+import { sql } from 'kysely'
+
+export async function getLocationByOrganizationId(
+  trx: TrxOrDb,
+  organizationId: string,
+) {
+  const result = await trx
+    .selectFrom('Location')
+    .select([
+      sql<number>`("near"::json->>'longitude')::float`.as('longitude'),
+      sql<number>`("near"::json->>'latitude')::float`.as('latitude'),
+    ])
+    .where('organizationId', '=', organizationId)
+    .executeTakeFirst()
+
+  if (!result) {
+    throw new Error(
+      `No location data found for organizationId: ${organizationId}`,
+    )
+  }
+  return result
+}
 
 export async function forPatientIntake(
   trx: TrxOrDb,
@@ -34,6 +56,7 @@ export async function forPatientIntake(
         entity_id: facility.id,
         online: true,
       },
+      textarea: 'reason_for_escalation',
     }),
   )
 
@@ -66,6 +89,12 @@ export async function forPatientIntake(
         entity_id: nurse.health_worker_id,
         online: false,
       },
+      request_type_options: [
+        'request_review',
+        'make_appointment',
+        'declare_emergency',
+      ],
+      textarea: 'additional_details',
     }),
   )
 

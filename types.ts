@@ -2812,6 +2812,8 @@ export type Sendable = {
     href: string
   }[]
   to: SendableTo
+  request_type_options?: string[]
+  textarea?: string
 }
 
 export type SelectedPatient = {

@@ -31,8 +31,9 @@ export async function nearest(
               ST_X(location::geometry) as longitude,
               ST_Y(location::geometry) as latitude
         FROM "Location"
+        WHERE "name"::text ILIKE '%hospital%'
     ORDER BY location <-> ST_SetSRID(ST_MakePoint(${location.longitude}, ${location.latitude}), 4326)::geography
-       LIMIT 10
+       LIMIT 2
   `.execute(trx)
 
   return result.rows
