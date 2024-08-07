@@ -24,7 +24,10 @@ describe(
 
       const $ = cheerio.load(pageContents)
 
-      assert($('input[name="search"]').length === 1)
+      assert(
+        $('input[name="given_name_name"]').length === 1,
+        'should have a search input'
+      )
     })
 
     it('renders a pharmacist table and a pharmacist with GET', async () => {
