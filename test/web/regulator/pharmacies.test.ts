@@ -21,7 +21,7 @@ describe(
 
       assert(
         $('input[name="name_name"]').length === 1,
-        'should have a search input'
+        'should have a search input',
       )
     })
 
