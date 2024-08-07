@@ -34,6 +34,9 @@ export async function getAllWithSearchConditions(
     expiry_date: pharmacy.expiry_date.toDateString(),
     premises_types: pharmacy.premises_types,
     supervisors: [],
+    actions: {
+      view: `/regulator/pharmacies/${pharmacy.id}`,
+    },
   }))
   return renderedPharmacies
 }
@@ -108,6 +111,9 @@ export async function get(
   const pharmaciesList = pharmacies.map((pharmacy) => ({
     ...pharmacy,
     expiry_date: new Date(pharmacy.expiry_date).toISOString().split('T')[0],
+    actions: {
+      view: `/regulator/pharmacies/${pharmacy.id}`,
+    }
   }))
 
   return {

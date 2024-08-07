@@ -2848,6 +2848,9 @@ export type RenderedPharmacy = {
   town: string | null
   href?: string
   supervisors: Supervisor[]
+  actions: {
+    view: string
+  }
 }
 
 export type RenderedPharmacist = {
