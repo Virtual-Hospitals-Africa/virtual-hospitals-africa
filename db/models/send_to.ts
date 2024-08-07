@@ -27,10 +27,7 @@ export async function getLocationByOrganizationId(
       `No location data found for organizationId: ${organizationId}`,
     )
   }
-  return {
-    longitude: result.longitude,
-    latitude: result.latitude,
-  }
+  return result
 }
 
 export async function forPatientIntake(
@@ -100,7 +97,7 @@ export async function forPatientIntake(
   return [
     ...nurse_information,
     ...nearestFacilitySendables,
-    {
+    {  
       key: 'waiting_room',
       name: 'Waiting Room',
       image: {

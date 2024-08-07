@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 import { MakeAppointments } from '../../components/library/icons/MakeAppointments.tsx'
 import { DeclareEmergency } from '../../components/library/icons/DeclareEmergency.tsx'
 import { RequestReview } from '../../components/library/icons/RequestReview.tsx'
@@ -6,7 +6,7 @@ import { PickedMakeAppointments } from '../../components/library/icons/PickedMak
 import { PickedDeclareEmergency } from '../../components/library/icons/PickedDeclareEmergency.tsx'
 import { PickedRequestReview } from '../../components/library/icons/PickedRequestReview.tsx'
 
-const REQUEST_TYPES = {
+const REQUEST_TYPES : { [key: string]: string } = {
   request_review: 'Request Review',
   make_appointment: 'Make Appointment',
   declare_emergency: 'Declare Emergency',
@@ -14,13 +14,13 @@ const REQUEST_TYPES = {
 
 type RequestType = keyof typeof REQUEST_TYPES
 
-const DefaultIconComponents = {
+const DefaultIconComponents : { [key: string]: JSX.Element }  = {
   request_review: <RequestReview />,
   make_appointment: <MakeAppointments />,
   declare_emergency: <DeclareEmergency />,
 }
 
-const PickedIconComponents = {
+const PickedIconComponents : { [key: string]: JSX.Element }  = {
   request_review: <PickedRequestReview />,
   make_appointment: <PickedMakeAppointments />,
   declare_emergency: <PickedDeclareEmergency />,
@@ -31,11 +31,11 @@ export function SendToRequestRadioButtons({
   options,
 }: {
   form: string
-  options: RequestType[]
+  options: string[]
 }) {
-  const [selectedOption, setSelectedOption] = useState<RequestType | null>(null)
+  const [selectedOption, setSelectedOption] = useState<string | null>(null)
 
-  const handleChange = (option: RequestType) => {
+  const handleChange = (option: string) => {
     setSelectedOption(option)
   }
 

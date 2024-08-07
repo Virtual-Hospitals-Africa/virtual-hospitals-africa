@@ -1,30 +1,27 @@
 import { Button } from '../../components/library/Button.tsx'
 import { SendToRequestRadioButtons } from './RequestRadioButtons.tsx'
 
-export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
+//export function SendToForm({ form }: { form: 'intake' | 'encounter' }) {
+  export function SendToForm({ form, textarea, requestTypeOptions }: { form: 'intake' | 'encounter', textarea?: string, requestTypeOptions?: string[] }) {
   return (
     <div className='flex flex-col'>
       {/*<div className='mt-6 px-4'>*/}
       {/* Hardcoding to intake options. These are the options when the providers are at your facility */}
       {/* When at another facility, this will include request_review */}
-      {
+      {textarea === 'additional_details' && requestTypeOptions && (
         <SendToRequestRadioButtons
           form={form}
-          options={[
-            'request_review',
-            'make_appointment',
-            'declare_emergency',
-          ]}
+          options={requestTypeOptions}
         />
-      }
+      )}
       {/*</div>*/}
       <div className='mt-6 px-4'>
         <h2 className='text-sm font-sans font-medium text-gray-900'>
-          Reason for escalation
+          {textarea === 'additional_details' ? 'Additional Details' : 'Reason for Escalation'}
         </h2>
         <textarea
           form={form}
-          name='send_to.additional_details'
+          name={textarea === 'additional_details' ? 'send_to.additional_details' : 'send_to.reason_for_escalation'}
           className='w-full border border-gray-300 rounded-md p-2 mt-2'
         >
         </textarea>
