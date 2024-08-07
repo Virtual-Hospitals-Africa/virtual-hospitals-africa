@@ -148,7 +148,8 @@ export function revoke(
 export function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
-){
+)
+ {
   let query = getQuery(trx).limit(30)
   if (search) {
     query = query.where(
