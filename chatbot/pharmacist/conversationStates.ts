@@ -121,6 +121,11 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
           )
         }
 
+        const today = new Date()
+        if (pharmacist.expiry_date < today) {
+          return 'not_onboarded:licence_expired' as const
+        }
+
         await conversations.updateChatbotUser(
           trx,
           pharmacistState.chatbot_user,
@@ -135,6 +140,18 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         return 'not_onboarded:reenter_licence_number' as const
       }
     },
+  },
+  'not_onboarded:licence_expired': {
+    type: 'select',
+    prompt:
+      'Your license has expired. Please contact the authority to renew your license.',
+    options: [
+      {
+        id: 'main_menu',
+        title: 'Back to main menu',
+        onExit: 'initial_message',
+      },
+    ],
   },
   'not_onboarded:share_location': {
     type: 'get_location',
