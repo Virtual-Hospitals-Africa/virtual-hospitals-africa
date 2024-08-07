@@ -1,3 +1,5 @@
+import address from '../../routes/app/patients/[patient_id]/intake/address.tsx'
+import PharmacistsPage from '../../routes/regulator/pharmacists.tsx'
 import {
   Maybe,
   RenderedPharmacist,
@@ -62,13 +64,13 @@ function getQuery(trx: TrxOrDb) {
         jsonBuildObject({
           id: eb.ref('premises.id'),
           address: eb.ref('premises.address'),
-          expiry_date: sql<string>`TO_CHAR(premises.expiry_date, 'YYYY-MM-DD')`,
-          licence_number: eb.ref('premises.licence_number'),
           licensee: eb.ref('premises.licensee'),
           name: eb.ref('premises.name'),
-          premises_types: eb.ref('premises.premises_types'),
+          expiry_date: sql<string>`TO_CHAR(premises.expiry_date, 'YYYY-MM-DD')`,
+          licence_number: eb.ref('premises.licence_number'),
           town: eb.ref('premises.town'),
           href: sql<string>`'/regulator/pharmacies/' || premises.id`,
+          premises_types: eb.ref('premises.premises_types'),
         })
       }
         ELSE NULL

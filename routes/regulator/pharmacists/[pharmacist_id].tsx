@@ -18,7 +18,7 @@ export default async function PharmacistPage(
   )
   return (
     <Layout
-      title={pharmacist.given_name}
+      title={pharmacist.name}
       route={ctx.route}
       url={ctx.url}
       regulator={regulator}
@@ -35,7 +35,7 @@ export default async function PharmacistPage(
             height={48}
           />
           <dt className='mt-2 text-lg font-bold leading-6 text-gray-900'>
-            {pharmacist.given_name}
+            {pharmacist.name}
           </dt>
           <dt className='text-sm font-sm leading-6 text-gray-400'>
             {'Pharmacist'}

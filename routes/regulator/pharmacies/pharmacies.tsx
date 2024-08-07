@@ -12,24 +12,12 @@ type PharmaciesProps = {
 
 export const handler: LoggedInRegulatorHandlerWithProps<PharmaciesProps> = {
   async GET(req, ctx) {
-    assertOr404(
-      req.headers.get('accept') === 'application/json',
-      'We only accept JSON',
-    )
+    // assertOr404(
+    //   req.headers.get('accept') === 'application/json',
+    //   'We only accept JSON',
+    // )
     const search = ctx.url.searchParams.get('search')
     const pharmacies = await getAllWithSearchConditions(ctx.state.trx, search)
-
-    // TODO Zora and Liu Ming to eliminate this so that the code is instead just
-    // return json(pharmacies)
-    const pharmacies_with_href = pharmacies.map((pharmacy) => {
-      const href = `/regulator/pharmacies/${pharmacy?.id}`
-      return {
-        id: pharmacy?.id,
-        name: pharmacy?.name,
-        href,
-        description: pharmacy?.address,
-      }
-    })
-    return json(pharmacies_with_href)
+    return json(pharmacies)
   },
 }

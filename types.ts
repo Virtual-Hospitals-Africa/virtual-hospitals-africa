@@ -13,6 +13,7 @@ import {
   FamilyType,
   IntakeStep,
   MaritalStatus,
+  NamePrefix,
   PatientCohabitation,
   Religion,
 } from './db.d.ts'
@@ -2875,19 +2876,14 @@ export type Supervisor = {
 } & { id: string }
 
 export type DetailedPharmacist = {
-  id?: string
-  licence_number: string
-  prefix: Prefix | null
-  name?: string
-  given_name: string
-  family_name: string
-  address: string | null
-  town: string | null
+  id: string
   expiry_date: Date
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Pharmacy Technician'
-  pharmacy?: RenderedPharmacy
-}
+  licence_number: string
+  pharmacist_type: PharmacistType
+  prefix: NamePrefix | null
+  name: string
+  href: unknown
+  address: string
+  description: unknown
+  pharmacy: unknown
+} | undefined
