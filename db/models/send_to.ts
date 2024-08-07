@@ -33,8 +33,6 @@ export async function getLocationByOrganizationId(
   return result
 }
 
-
-
 export async function forPatientIntake(
   trx: TrxOrDb,
   _patient_id: string,
