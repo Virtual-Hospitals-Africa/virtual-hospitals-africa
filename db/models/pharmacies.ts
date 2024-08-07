@@ -104,7 +104,7 @@ export async function get(
     expiry_date: new Date(pharmacy.expiry_date).toISOString().split('T')[0],
     actions: {
       view: `/regulator/pharmacies/${pharmacy.id}`,
-    }
+    },
   }))
 
   return {

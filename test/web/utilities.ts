@@ -165,6 +165,7 @@ export async function addTestHealthWorkerWithSession(
   const session = await sessions.create(trx, 'health_worker', {
     entity_id: healthWorker.id,
   })
+
   const fetchWithSession: typeof fetch = (
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},

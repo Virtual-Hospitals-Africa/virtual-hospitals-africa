@@ -29,6 +29,7 @@ import uniq from '../util/uniq.ts'
 import { cacheable } from './redis.ts'
 import { formatHarare } from '../util/date.ts'
 import selfUrl from '../util/selfUrl.ts'
+import isObjectLike from '../util/isObjectLike.ts'
 
 const GOOGLE_MAPS_API_KEY = Deno.env.get('GOOGLE_MAPS_API_KEY')
 if (!Deno.env.get('BUILDING')) assert(GOOGLE_MAPS_API_KEY)
@@ -69,6 +70,10 @@ export class GoogleClient {
     | { result: 'success'; data: T }
     | { result: 'insufficient_permission' }
   > {
+    // Disallow the test server from making real requests to Google
+    if (Deno.env.get('IS_TEST_SERVER')) {
+      return testServerMock(path, opts)
+    }
     const url = `${googleApisUrl}${path}`
     const method = opts?.method || 'get'
     console.log(
@@ -311,6 +316,35 @@ export class GoogleClient {
   getProfile(): Promise<GoogleProfile> {
     return this.makeRequest('/oauth2/v3/userinfo')
   }
+}
+
+function testServerMock(
+  path: string,
+  opts?: RequestOpts,
+  // deno-lint-ignore no-explicit-any
+): { result: 'success'; data: any } {
+  if (path === '/calendar/v3/freeBusy' && opts?.method === 'post') {
+    assert(isObjectLike(opts.data))
+    assert(opts.data.timeMin)
+    assert(opts.data.timeMax)
+    assert(Array.isArray(opts.data.items))
+    const calendars: GCalFreeBusy['calendars'] = {}
+    for (const { id } of opts.data.items) {
+      calendars[id] = {
+        busy: [],
+      }
+    }
+    return {
+      result: 'success' as const,
+      data: {
+        kind: 'calendar#freeBusy',
+        timeMin: opts.data.timeMin,
+        timeMax: opts.data.timeMax,
+        calendars,
+      },
+    }
+  }
+  throw new Error(`No mock for ${opts?.method || 'get'} ${path}`)
 }
 
 export class HealthWorkerGoogleClient extends GoogleClient {
