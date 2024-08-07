@@ -101,6 +101,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
                 organization_ids[0]
               }/employees/${hw_at_organization1.id}`,
             },
+            online: null,
           })
           assertEquals(hw_1.professions.length, 2)
           assertEquals(hw_1.professions[0].profession, 'admin')
@@ -123,6 +124,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
                 organization_ids[0]
               }/employees/${hw_at_organization2.id}`,
             },
+            online: null,
           })
           assertEquals(hw_2.professions.length, 2)
           assertEquals(hw_2.professions[0].profession, 'admin')
@@ -142,6 +144,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
             actions: {
               view: null,
             },
+            online: null,
           })
 
           assertEquals(invitedHw.professions.length, 1)
@@ -291,6 +294,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
                 organization_ids[0]
               }/employees/${hw_at_organization2.id}`,
             },
+            online: null,
           })
           assertEquals(withInvitees[0].professions.length, 2)
           assertEquals(withInvitees[0].professions[0].profession, 'admin')
@@ -356,6 +360,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${hw_at_organization1.id}`,
           },
+          online: null,
         })
         assertEquals(withInvitees[0].professions.length, 1)
         assertEquals(withInvitees[0].professions[0].profession, 'nurse')
@@ -438,6 +443,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${nurse.id}`,
           },
+          online: null,
         })
         assertEquals(nurse_result.professions.length, 1)
         assertEquals(nurse_result.professions[0].profession, 'nurse')
@@ -453,6 +459,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,
           },
+          online: null,
         })
         assertEquals(admin_result.professions.length, 1)
         assertEquals(admin_result.professions[0].profession, 'admin')
