@@ -70,9 +70,12 @@ export default async function WaitingRoomAdd(
   const { organization_id } = params
   assert(organization_id)
 
-  const gettingProviders = organizations.getApprovedDoctorsAndNurses(trx, {
+  const gettingProviders = organizations.getApprovedProviders(
+    trx,
     organization_id,
-  })
+  )
+
+  console.log('gettingProviders', await gettingProviders)
 
   let open_encounter: Maybe<{ encounter_id: string; reason: EncounterReason }>
   let patient: { id?: string | 'add'; name: string } | undefined

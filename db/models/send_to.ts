@@ -1,3 +1,4 @@
+import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 import {
   Location,
   Sendable,
@@ -5,9 +6,11 @@ import {
   TrxOrDb,
 } from '../../types.ts'
 import { assertOr400 } from '../../util/assertOr.ts'
+import capitalize from '../../util/capitalize.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import { getEmployees, nearest } from './organizations.ts'
+import { getApprovedProviders, nearest } from './organizations.ts'
 import { sql } from 'kysely'
+import { getMany } from './providers.ts'
 
 export async function getLocationByOrganizationId(
   trx: TrxOrDb,
@@ -29,6 +32,8 @@ export async function getLocationByOrganizationId(
   }
   return result
 }
+
+
 
 export async function forPatientIntake(
   trx: TrxOrDb,
@@ -60,34 +65,48 @@ export async function forPatientIntake(
     }),
   )
 
-  const nurse_employee_information = await getEmployees(
+  const employees = await getApprovedProviders(
     trx,
+    organization_id,
     {
-      organization_id: organization_id,
-      professions: ['nurse'],
       exclude_health_worker_id: opts.exclude_health_worker_id,
-      is_approved: true,
     },
   )
 
-  const nurse_information: Sendable[] = nurse_employee_information.map(
-    (nurse) => ({
-      key: 'health_worker/' + nurse.name,
-      name: nurse.name,
+  console.log('employees', employees)
+
+  const provider_ids = employees.map((employee) => employee.employee_id)
+
+  console.log('provider_ids', provider_ids)
+
+  const providers = await getMany(trx, { provider_ids })
+
+  console.log('providers', providers)
+  const provider_availability = await getAllProviderAvailability(providers)
+
+  console.log('provider_availability', provider_availability)
+
+  const nurse_information: Sendable[] = employees.map(
+    (employee) => ({
+      key: 'health_worker/' + employee.name,
+      name: employee.name,
       description: {
-        text: nurse.professions.map((_) => _.specialty + ' ' + _.profession)
-          .join(', '),
+        text: capitalize(
+          employee.specialty
+            ? `${employee.specialty} ${employee.profession}`
+            : employee.profession,
+        ),
       },
       image: {
         type: 'avatar',
-        url: nurse.avatar_url,
+        url: employee.avatar_url,
       },
       status: 'Unavailable until tomorrow at 9:00am',
       to: {
         type: 'entity',
         entity_type: 'health_worker',
-        entity_id: nurse.health_worker_id,
-        online: false,
+        entity_id: employee.employee_id,
+        online: !!employee.online,
       },
       request_type_options: [
         'request_review',

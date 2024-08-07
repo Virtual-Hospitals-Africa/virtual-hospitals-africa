@@ -86,7 +86,7 @@ fi
 rm -f test_server.log
 
 # Start the test servers
-IS_TEST=true LOG_FILE=test_server.log PORT=8005 MEDPLUM_SERVER_URL=$MEDPLUM_SERVER_URL start_vha_test_server >> "$test_vha_server_output" 2>&1 &
+IS_TEST=true IS_TEST_SERVER=true LOG_FILE=test_server.log PORT=8005 MEDPLUM_SERVER_URL=$MEDPLUM_SERVER_URL start_vha_test_server >> "$test_vha_server_output" 2>&1 &
 IS_TEST=true MEDPLUM_SERVER_PORT=$MEDPLUM_SERVER_PORT deno task medplum:server >> "$test_medplum_server_output" 2>&1 &
 trap "kill_test_servers" EXIT
 
