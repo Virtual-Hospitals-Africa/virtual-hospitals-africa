@@ -9,12 +9,8 @@
       "jsr:@std/jsonc@0.213": "jsr:@std/jsonc@0.213.1",
       "jsr:@std/path@0.213": "jsr:@std/path@0.213.1",
       "npm:@tailwindcss/forms@0.5.7": "npm:@tailwindcss/forms@0.5.7_tailwindcss@3.3.5__postcss@8.4.35",
-      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:autoprefixer@10.4.17": "npm:autoprefixer@10.4.17_postcss@8.4.35",
       "npm:cssnano@6.0.3": "npm:cssnano@6.0.3_postcss@8.4.35",
-      "npm:fast-levenshtein@3.0.0": "npm:fast-levenshtein@3.0.0",
-      "npm:fast-xml-parser@4.3.4": "npm:fast-xml-parser@4.3.4",
-      "npm:natural@6.10.4": "npm:natural@6.10.4",
       "npm:postcss@8.4.35": "npm:postcss@8.4.35",
       "npm:sql-formatter": "npm:sql-formatter@15.3.2",
       "npm:tailwindcss@3.3.5": "npm:tailwindcss@3.3.5_postcss@8.4.35"
@@ -127,18 +123,6 @@
         "integrity": "sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==",
         "dependencies": {}
       },
-      "@types/node@18.16.19": {
-        "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
-        "dependencies": {}
-      },
-      "afinn-165-financialmarketnews@3.0.0": {
-        "integrity": "sha512-0g9A1S3ZomFIGDTzZ0t6xmv4AuokBvBmpes8htiyHpH7N4xDmvSQL6UxL/Zcs2ypRb3VwgCscaD8Q3zEawKYhw==",
-        "dependencies": {}
-      },
-      "afinn-165@1.0.4": {
-        "integrity": "sha512-7+Wlx3BImrK0HiG6y3lU4xX7SpBPSSu8T9iguPMlaueRFxjbYwAQrp9lqZUuFikqKbd/en8lVREILvP2J80uJA==",
-        "dependencies": {}
-      },
       "ansi-regex@5.0.1": {
         "integrity": "sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==",
         "dependencies": {}
@@ -168,12 +152,6 @@
           "picomatch": "picomatch@2.3.1"
         }
       },
-      "apparatus@0.0.10": {
-        "integrity": "sha512-KLy/ugo33KZA7nugtQ7O0E1c8kQ52N3IvD/XgIh4w/Nr28ypfkwDfA67F1ev4N1m5D+BOk1+b2dEJDfpj/VvZg==",
-        "dependencies": {
-          "sylvester": "sylvester@0.0.12"
-        }
-      },
       "arg@5.0.2": {
         "integrity": "sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==",
         "dependencies": {}
@@ -186,7 +164,7 @@
         "integrity": "sha512-/cpVNRLSfhOtcGflT13P2794gVSgmPgTR+erw5ifnMLZb0UnSlkK4tquLmkd3BhA+nLo5tX8Cu0upUsGKvKbmg==",
         "dependencies": {
           "browserslist": "browserslist@4.23.3",
-          "caniuse-lite": "caniuse-lite@1.0.30001646",
+          "caniuse-lite": "caniuse-lite@1.0.30001650",
           "fraction.js": "fraction.js@4.3.7",
           "normalize-range": "normalize-range@0.1.2",
           "picocolors": "picocolors@1.0.1",
@@ -221,8 +199,8 @@
       "browserslist@4.23.3": {
         "integrity": "sha512-btwCFJVjI4YWDNfau8RhZ+B1Q/VLoUITrm3RlP6y1tYGWIOa+InuYiRGXUBXo8nA1qKmHMyLB/iVQg5TT4eFoA==",
         "dependencies": {
-          "caniuse-lite": "caniuse-lite@1.0.30001646",
-          "electron-to-chromium": "electron-to-chromium@1.5.4",
+          "caniuse-lite": "caniuse-lite@1.0.30001650",
+          "electron-to-chromium": "electron-to-chromium@1.5.5",
           "node-releases": "node-releases@2.0.18",
           "update-browserslist-db": "update-browserslist-db@1.1.0_browserslist@4.23.3"
         }
@@ -235,13 +213,13 @@
         "integrity": "sha512-bsTwuIg/BZZK/vreVTYYbSWoe2F+71P7K5QGEX+pT250DZbfU1MQ5prOKpPR+LL6uWKK3KMwMCAS74QB3Um1uw==",
         "dependencies": {
           "browserslist": "browserslist@4.23.3",
-          "caniuse-lite": "caniuse-lite@1.0.30001646",
+          "caniuse-lite": "caniuse-lite@1.0.30001650",
           "lodash.memoize": "lodash.memoize@4.1.2",
           "lodash.uniq": "lodash.uniq@4.5.0"
         }
       },
-      "caniuse-lite@1.0.30001646": {
-        "integrity": "sha512-dRg00gudiBDDTmUhClSdv3hqRfpbOnU28IpI1T6PBTLWa+kOj0681C8uML3PifYfREuBrVjDGhL3adYpBT6spw==",
+      "caniuse-lite@1.0.30001650": {
+        "integrity": "sha512-fgEc7hP/LB7iicdXHUI9VsBsMZmUmlVJeQP2qqQW+3lkqVhbmjEU8zp+h5stWeilX+G7uXuIUIIlWlDw9jdt8g==",
         "dependencies": {}
       },
       "chokidar@3.6.0": {
@@ -427,8 +405,8 @@
         "integrity": "sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==",
         "dependencies": {}
       },
-      "electron-to-chromium@1.5.4": {
-        "integrity": "sha512-orzA81VqLyIGUEA77YkVA1D+N+nNfl2isJVjjmOyrlxuooZ19ynb+dOlaDTqd/idKRS9lDCSBmtzM+kyCsMnkA==",
+      "electron-to-chromium@1.5.5": {
+        "integrity": "sha512-QR7/A7ZkMS8tZuoftC/jfqNkZLQO779SSW3YuZHP4eXpj3EffGLFcB/Xu9AAZQzLccTiCV+EmUo3ha4mQ9wnlA==",
         "dependencies": {}
       },
       "emoji-regex@8.0.0": {
@@ -456,22 +434,6 @@
           "merge2": "merge2@1.4.1",
           "micromatch": "micromatch@4.0.7"
         }
-      },
-      "fast-levenshtein@3.0.0": {
-        "integrity": "sha512-hKKNajm46uNmTlhHSyZkmToAc56uZJwYq7yrciZjqOxnlfQwERDQJmHPUp7m1m9wx8vgOe8IaCKZ5Kv2k1DdCQ==",
-        "dependencies": {
-          "fastest-levenshtein": "fastest-levenshtein@1.0.16"
-        }
-      },
-      "fast-xml-parser@4.3.4": {
-        "integrity": "sha512-utnwm92SyozgA3hhH2I8qldf2lBqm6qHOICawRNRFu1qMe3+oqr+GcXjGqTmXTMGE5T4eC03kr/rlh5C1IRdZA==",
-        "dependencies": {
-          "strnum": "strnum@1.0.5"
-        }
-      },
-      "fastest-levenshtein@1.0.16": {
-        "integrity": "sha512-eRnCtTTtGZFpQCwhJiUOuxPQWRXVKYDn0b2PeHfXL6/Zi53SLAzAHfVhVWK2AryC/WH05kGfxhFIPvTF0SXQzg==",
-        "dependencies": {}
       },
       "fastq@1.17.1": {
         "integrity": "sha512-sRVD3lWVIXWg6By68ZN7vho9a1pQcN/WBFaAAsDDFzlJjvoGx0P8z7V1t72grFJfJhu3YPZBuu25f7Kaw2jN1w==",
@@ -654,19 +616,6 @@
       "nanoid@3.3.7": {
         "integrity": "sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==",
         "dependencies": {}
-      },
-      "natural@6.10.4": {
-        "integrity": "sha512-PpqKTyRwNsYrTQ7/2El9X96pt7OCKynwGahl9oIBQEz9d71jxnHQ0KkuWg7xOC7ZvG0gRSkJ56q7Ygr5zfof2w==",
-        "dependencies": {
-          "afinn-165": "afinn-165@1.0.4",
-          "afinn-165-financialmarketnews": "afinn-165-financialmarketnews@3.0.0",
-          "apparatus": "apparatus@0.0.10",
-          "safe-stable-stringify": "safe-stable-stringify@2.4.3",
-          "stopwords-iso": "stopwords-iso@1.1.0",
-          "sylvester": "sylvester@0.0.12",
-          "underscore": "underscore@1.13.7",
-          "wordnet-db": "wordnet-db@3.1.14"
-        }
       },
       "nearley@2.20.1": {
         "integrity": "sha512-+Mc8UaAebFzgV+KpI5n7DasuuQCHA89dmwm7JXw3TV43ukfNQ9DnBH3Mdb2g/I4Fdxc26pwimBWvjIw0UAILSQ==",
@@ -1038,10 +987,6 @@
           "queue-microtask": "queue-microtask@1.2.3"
         }
       },
-      "safe-stable-stringify@2.4.3": {
-        "integrity": "sha512-e2bDA2WJT0wxseVd4lsDP4+3ONX6HpMXQa1ZhFQ7SU+GjvORCmShbCMltrtIDfkYhVHrOcPtj+KhmDBdPdZD1g==",
-        "dependencies": {}
-      },
       "shebang-command@2.0.0": {
         "integrity": "sha512-kHxr2zZpYtdmrN1qDjrrX/Z1rR1kG8Dx+gkpK1G4eXmvXswmcE1hTWBWYUzlraYw1/yZp6YuDY77YtvbN0dmDA==",
         "dependencies": {
@@ -1067,10 +1012,6 @@
           "get-stdin": "get-stdin@8.0.0",
           "nearley": "nearley@2.20.1"
         }
-      },
-      "stopwords-iso@1.1.0": {
-        "integrity": "sha512-I6GPS/E0zyieHehMRPQcqkiBMJKGgLta+1hREixhoLPqEA0AlVFiC43dl8uPpmkkeRdDMzYRWFWk5/l9x7nmNg==",
-        "dependencies": {}
       },
       "string-width@4.2.3": {
         "integrity": "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==",
@@ -1099,10 +1040,6 @@
         "dependencies": {
           "ansi-regex": "ansi-regex@6.0.1"
         }
-      },
-      "strnum@1.0.5": {
-        "integrity": "sha512-J8bbNyKKXl5qYcR36TIO8W3mVGVHrmmxsd5PAItGkmyzwJvybiw2IVq5nqd0i4LSNSkB/sx9VHllbfFdr9k1JA==",
-        "dependencies": {}
       },
       "stylehacks@6.1.1_postcss@8.4.35": {
         "integrity": "sha512-gSTTEQ670cJNoaeIp9KX6lZmm8LJ3jPB5yJmX8Zq/wQxOsAFXV3qjWzHas3YYk1qesuVIyYWWUpZ0vSE/dTSGg==",
@@ -1139,10 +1076,6 @@
           "csso": "csso@5.0.5",
           "picocolors": "picocolors@1.0.1"
         }
-      },
-      "sylvester@0.0.12": {
-        "integrity": "sha512-SzRP5LQ6Ts2G5NyAa/jg16s8e3R7rfdFjizy1zeoecYWw+nGL+YA1xZvW/+iJmidBGSdLkuvdwTYEyJEb+EiUw==",
-        "dependencies": {}
       },
       "tailwindcss@3.3.5_postcss@8.4.35": {
         "integrity": "sha512-5SEZU4J7pxZgSkv7FP1zY8i2TIAOooNZ1e/OGtxIEv6GltpoiXUqWvLy89+a10qYTB1N5Ifkuw9lqQkN9sscvA==",
@@ -1193,10 +1126,6 @@
         "integrity": "sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==",
         "dependencies": {}
       },
-      "underscore@1.13.7": {
-        "integrity": "sha512-GMXzWtsc57XAtguZgaQViUOzs0KTkk8ojr3/xAxXLITqf/3EMwxC0inyETfDFjH/Krbhuep0HNbbjI9i/q3F3g==",
-        "dependencies": {}
-      },
       "update-browserslist-db@1.1.0_browserslist@4.23.3": {
         "integrity": "sha512-EdRAaAyk2cUE1wOf2DkEhzxqOQvFOoRJFNS6NeyJ01Gp2beMRpBAINjM2iDXE3KCuKhwnvHIQCJm6ThL2Z+HzQ==",
         "dependencies": {
@@ -1214,10 +1143,6 @@
         "dependencies": {
           "isexe": "isexe@2.0.0"
         }
-      },
-      "wordnet-db@3.1.14": {
-        "integrity": "sha512-zVyFsvE+mq9MCmwXUWHIcpfbrHHClZWZiVOzKSxNJruIcFn2RbY55zkhiAMMxM8zCVSmtNiViq8FsAZSFpMYag==",
-        "dependencies": {}
       },
       "wrap-ansi@7.0.0": {
         "integrity": "sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==",
@@ -1908,10 +1833,8 @@
     "https://deno.land/x/fresh@1.6.8/src/runtime/build_id.ts": "8376e70e42ce456dfa6932c638409d2ef1bca4833b4ceba0bf74510080a7f976",
     "https://deno.land/x/fresh@1.6.8/src/runtime/csp.ts": "9ee900e9b0b786057b1009da5976298c202d1b86d1f1e4d2510bde5f06530ac9",
     "https://deno.land/x/fresh@1.6.8/src/runtime/deserializer.ts": "1b83e75fa61c48b074ea121f33647d1ed15c68fa2f2a11b0a7f7a12cd38af627",
-    "https://deno.land/x/fresh@1.6.8/src/runtime/entrypoints/client.ts": "a9224606e41bc58d81f37b7125650432920a7d136bdf416051e925ac9bbd1f05",
     "https://deno.land/x/fresh@1.6.8/src/runtime/entrypoints/deserializer.ts": "e836f44c454e1f67c86eab30f108eb9be05a38489604a24e418b564b77058b96",
     "https://deno.land/x/fresh@1.6.8/src/runtime/entrypoints/main.ts": "de3aa5cbd9b3abfa825939b58bc8df088ab183e042c0447b37180f4ea31c613c",
-    "https://deno.land/x/fresh@1.6.8/src/runtime/entrypoints/main_dev.ts": "d2960e339119e45017954c7cf6798b9e0a3110d173cc378e1e3e7bc84bd68c34",
     "https://deno.land/x/fresh@1.6.8/src/runtime/entrypoints/signals.ts": "782c81f97d125ad4f92aa0160dad3a2e8b6ea7a61cec7fdab87bbbbd8c0d215c",
     "https://deno.land/x/fresh@1.6.8/src/runtime/head.ts": "0f9932874497ab6e57ed1ba01d549e843523df4a5d36ef97460e7a43e3132fdc",
     "https://deno.land/x/fresh@1.6.8/src/runtime/polyfills.ts": "c3de932b2f23df9a4ade1ab4f8890730c0db0a71bf85faa41742a1763631e917",

@@ -15,12 +15,7 @@ export const handler: LoggedInRegulatorHandlerWithProps<PharmacistsProps> = {
     )
     const search = ctx.url.searchParams.get('search')
     const pharmacists = await getAllWithSearchConditions(ctx.state.trx, search)
-
-    const pharmacists_with_href = pharmacists.map((pharmacist) => {
-      const href = `/regulator/pharmacists/${pharmacist?.id}`
-      return { id: pharmacist?.id, name: pharmacist?.name, href }
-    })
-    return json(pharmacists_with_href)
+    return json(pharmacists)
   },
 }
 
