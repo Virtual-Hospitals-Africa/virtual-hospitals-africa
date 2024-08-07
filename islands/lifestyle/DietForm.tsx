@@ -78,7 +78,7 @@ export default function DietSection(
         When and what does the patient usually eat over the course of a typical
         day?
       </div>
-      {meals.value.map((meal, index) => (
+      {meals.value.map((_meal, index) => (
         <RemoveRow
           onClick={() => {
             removeMeal(index)

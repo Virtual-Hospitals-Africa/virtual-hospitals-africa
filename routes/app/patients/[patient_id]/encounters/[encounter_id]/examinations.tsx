@@ -178,7 +178,7 @@ async function handleAddExaminations(req: Request, ctx: EncounterContext) {
 
 // deno-lint-ignore require-await
 async function handlePlaceOrders(
-  req: Request,
+  _req: Request,
   ctx: EncounterContext,
 ): Promise<Response> {
   // TODO: Place orders

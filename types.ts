@@ -2894,5 +2894,3 @@ export type RenderedMedicine = {
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
 }
- 
-

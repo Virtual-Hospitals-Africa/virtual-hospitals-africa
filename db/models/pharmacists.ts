@@ -1,5 +1,3 @@
-import address from '../../routes/app/patients/[patient_id]/intake/address.tsx'
-import PharmacistsPage from '../../routes/regulator/pharmacists.tsx'
 import {
   Maybe,
   RenderedPharmacist,
@@ -51,6 +49,8 @@ function getQuery(trx: TrxOrDb) {
       'pharmacists.licence_number',
       'pharmacists.prefix',
       name_sql('pharmacists').as('name'),
+      'pharmacists.family_name',
+      'pharmacists.given_name',
       sql`concat('/regulator/pharmacists/', pharmacists.id)`.as('href'),
       address_town_sql('pharmacists').as('address'),
       'pharmacists.expiry_date',
@@ -148,8 +148,7 @@ export function revoke(
 export function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
-)
- {
+) {
   let query = getQuery(trx).limit(30)
   if (search) {
     query = query.where(

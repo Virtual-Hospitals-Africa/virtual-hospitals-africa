@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
+import { jsonArrayFrom } from '../helpers.ts'
 import { address_town_sql, name_sql } from './pharmacists.ts'
 import { RenderedPharmacy, Supervisor } from '../../types.ts'
 import { Maybe, TrxOrDb } from '../../types.ts'
@@ -174,7 +174,7 @@ export async function getById(
       expiry_date: new Date(pharmacy.expiry_date).toISOString().split('T')[0],
       supervisors: pharmacy.supervisors
         .filter((s): s is Supervisor => s.id !== null),
-      actions:{view:""}  
+      actions: { view: '' },
     }
   )
 }
