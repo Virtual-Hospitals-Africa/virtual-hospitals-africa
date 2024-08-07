@@ -55,6 +55,10 @@ const columns: TableColumn<RenderedPharmacy>[] = [
       )
     },
   },
+  {
+    label: 'Actions',
+    type: 'actions',
+  },
 ]
 
 type PharmaciesTableProps = {
