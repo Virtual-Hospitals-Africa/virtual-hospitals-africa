@@ -93,6 +93,7 @@ export async function getMany(
   trx: TrxOrDb,
   opts: {
     employment_ids?: string[]
+    provider_ids?: string[]
   },
 ) {
   let query = getQuery(trx)
