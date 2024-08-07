@@ -1092,6 +1092,7 @@ export type OrganizationEmployeeInvitee = {
   actions: {
     view: null
   }
+  online: null
 }
 
 export type OrganizationDevice = {

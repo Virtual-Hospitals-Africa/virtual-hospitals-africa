@@ -124,13 +124,9 @@ export function getEmployeesQuery(
       'health_workers.avatar_url as avatar_url',
       eb.selectFrom('health_worker_sessions')
         .whereRef('health_worker_sessions.entity_id', '=', 'health_workers.id')
-        .select((eb_sessions) =>
-          eb_sessions(
-            sql<Date>`max(health_worker_sessions.updated_at)`,
-            '>=',
-            sql<Date>`NOW() - INTERVAL '1 hour'`,
-          ).as('online')
-        )
+        .select(sql<boolean>`
+          max(health_worker_sessions.updated_at) >= NOW() - INTERVAL '1 hour'
+        `.as('online'))
         .groupBy('health_worker_sessions.entity_id')
         .as('online'),
       sql<false>`FALSE`.as('is_invitee'),
@@ -265,6 +261,7 @@ export function getEmployeesAndInvitees(
       'health_worker_invitees.email as email',
       'health_worker_invitees.email as display_name',
       sql<null | string>`NULL`.as('avatar_url'),
+      sql<null>`NULL`.as('online'),
       sql<boolean>`TRUE`.as('is_invitee'),
       jsonAgg(
         jsonBuildObject({
