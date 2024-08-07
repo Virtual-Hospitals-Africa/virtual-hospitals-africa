@@ -1062,22 +1062,8 @@ export type OrganizationEmployee = {
   actions: {
     view: string
   }
+  online: null | SqlBool
 }
-
-// QUESTION: How to make this specific to nurses?
-export type OrganizationRegisteredNurse =
-  & Omit<
-    OrganizationEmployee,
-    | 'is_invitee'
-    | 'professions'
-    | 'registration_status'
-    | 'actions'
-    | 'display_name'
-  >
-  & {
-    avatar_url: string
-    organization_id: string
-  }
 
 export type OrganizationDoctorOrNurse =
   & Omit<
@@ -1106,6 +1092,7 @@ export type OrganizationEmployeeInvitee = {
   actions: {
     view: null
   }
+  online: null
 }
 
 export type OrganizationDevice = {
