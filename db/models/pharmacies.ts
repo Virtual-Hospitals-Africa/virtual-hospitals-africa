@@ -181,8 +181,12 @@ export async function getById(
     pharmacy && {
       ...pharmacy,
       expiry_date: new Date(pharmacy.expiry_date).toISOString().split('T')[0],
-      supervisors: pharmacy.supervisors
-        .filter((s): s is Supervisor => s.id !== null),
+      supervisors: pharmacy.supervisors.filter(
+        (s): s is Supervisor => s.id !== null,
+      ),
+      actions: {
+        view: `/regulator/pharmacies/${pharmacy.id}`,
+      },
     }
   )
 }

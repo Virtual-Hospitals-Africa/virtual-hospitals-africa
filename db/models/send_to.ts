@@ -73,11 +73,11 @@ export async function forPatientIntake(
 
   console.log('employees', employees)
 
-  const provider_ids = employees.map((employee) => employee.employee_id)
+  const employment_ids = employees.map((employee) => employee.employee_id)
 
-  console.log('provider_ids', provider_ids)
+  console.log('employment_ids', employment_ids)
 
-  const providers = await getMany(trx, { provider_ids })
+  const providers = await getMany(trx, { employment_ids })
 
   console.log('providers', providers)
   const provider_availability = await getAllProviderAvailability(providers)
