@@ -1133,7 +1133,7 @@ export interface PremiseSupervisors {
 }
 
 export interface Prescriptions {
-  alphanumeric_code: string
+  alphanumeric_code: Generated<string>
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string | null

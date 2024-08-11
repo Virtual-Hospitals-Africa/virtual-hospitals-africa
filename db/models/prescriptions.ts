@@ -1,22 +1,11 @@
-import { TrxOrDb } from '../../types.ts'
+//import { sql } from 'kysely'
+import { PatientMedicationUpsert, TrxOrDb } from '../../types.ts'
+import * as medications from './medications.ts'
 
-export function insert(
-  trx: TrxOrDb,
-  opts: {
-    alphanumeric_code: string
-    prescriber_id: string
-    patient_id: string
-  },
-) {
-  return trx
-    .insertInto('prescriptions')
-    .values({
-      alphanumeric_code: opts.alphanumeric_code,
-      prescriber_id: opts.prescriber_id,
-      patient_id: opts.patient_id,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow()
+export type PrescriptionCondition = {
+  patient_condition_id: string
+  start_date: string
+  medications: PatientMedicationUpsert[]
 }
 
 export function getById(
@@ -41,45 +30,28 @@ export function getByCode(
     .executeTakeFirst()
 }
 
-export async function createPrescription(
+export async function insert(
   trx: TrxOrDb,
-  opts: {
-    alphanumeric_code: string
+  values: {
     prescriber_id: string
     patient_id: string
-    patient_condition_medication_id: string
-    pharmacist_id: string
-    pharmacy_id: string
+    prescribing: PrescriptionCondition[]
   },
 ) {
   const prescription = await trx
     .insertInto('prescriptions')
     .values({
-      alphanumeric_code: opts.alphanumeric_code,
-      prescriber_id: opts.prescriber_id,
-      patient_id: opts.patient_id,
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
-
-  const patient_prescription_medication = await trx
-    .insertInto('patient_prescription_medications')
-    .values({
-      patient_condition_medication_id: opts.patient_condition_medication_id,
-      prescription_id: prescription.id,
-    })
-    .returning('id')
-    .executeTakeFirstOrThrow()
-
-  await trx
-    .insertInto('patient_prescription_medications_filled')
-    .values({
-      patient_prescription_medication_id: patient_prescription_medication.id,
-      pharmacist_id: opts.pharmacist_id,
-      pharmacy_id: opts.pharmacy_id,
+      prescriber_id: values.prescriber_id,
+      patient_id: values.patient_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow()
+
+  await medications.insert(
+    trx,
+    prescription.id,
+    values.prescribing,
+  )
 
   return prescription
 }
