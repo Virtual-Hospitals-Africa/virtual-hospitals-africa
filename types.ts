@@ -2911,3 +2911,9 @@ export type RenderedMedicine = {
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
 }
+
+export type Regulator = {
+  name: string
+  email: string
+  avatar_url?: string
+}

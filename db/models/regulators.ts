@@ -1,4 +1,4 @@
-import { TrxOrDb } from '../../types.ts'
+import { Regulator, TrxOrDb } from '../../types.ts'
 import { now } from '../helpers.ts'
 
 const regulator_emails = [
@@ -26,7 +26,8 @@ export function getBySession(trx: TrxOrDb, { regulator_session_id }: {
         )
         .set({ updated_at: now })
         .returning('regulator_sessions.entity_id'),
-  ).selectFrom('regulators')
+  )
+    .selectFrom('regulators')
     .innerJoin(
       'matching_session',
       'regulators.id',
@@ -37,7 +38,8 @@ export function getBySession(trx: TrxOrDb, { regulator_session_id }: {
 }
 
 export function getByEmail(trx: TrxOrDb, email: string) {
-  return trx.selectFrom('regulators')
+  return trx
+    .selectFrom('regulators')
     .where('email', '=', email)
     .selectAll()
     .executeTakeFirst()
@@ -45,14 +47,28 @@ export function getByEmail(trx: TrxOrDb, email: string) {
 
 export function update(
   trx: TrxOrDb,
-  { id, name, avatar_url }: {
+  {
+    id,
+    name,
+    avatar_url,
+  }: {
     id: string
     name: string
     avatar_url: string
   },
 ) {
-  return trx.updateTable('regulators')
+  return trx
+    .updateTable('regulators')
     .set({ name, avatar_url })
     .where('id', '=', id)
     .execute()
+}
+
+export function upsert(trx: TrxOrDb, regulator: Regulator) {
+  return trx
+    .insertInto('regulators')
+    .values(regulator)
+    .onConflict((oc) => oc.column('email').doUpdateSet(regulator))
+    .returning(['id', 'name', 'email', 'avatar_url'])
+    .executeTakeFirstOrThrow()
 }

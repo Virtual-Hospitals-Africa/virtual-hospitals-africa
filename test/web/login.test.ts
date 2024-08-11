@@ -7,6 +7,7 @@ import * as employment from '../../db/models/employment.ts'
 import * as nurse_registration_details from '../../db/models/nurse_registration_details.ts'
 import {
   addTestHealthWorkerWithSession,
+  addTestRegulatorWithSession,
   route,
   withTestOrganization,
 } from './utilities.ts'
@@ -59,6 +60,17 @@ describe('/login', { sanitizeResources: false, sanitizeOps: false }, () => {
       assertEquals(response.url, `${route}/app`)
       const pageContents = await response.text()
       assert(pageContents.includes('My Patients'))
+    })
+
+    it('allows regulator access /regulator', async () => {
+      const mock = await addTestRegulatorWithSession(db)
+
+      const response = await mock.fetch(`${route}/regulator`)
+
+      if (!response.ok) throw new Error(await response.text())
+      assertEquals(response.url, `${route}/regulator`)
+      const pageContents = await response.text()
+      assert(pageContents.includes('Regulator Home'))
     })
 
     it('redirects from /login to /app', async () => {
