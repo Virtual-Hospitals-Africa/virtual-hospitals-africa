@@ -24,6 +24,7 @@ import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../../../../db/models/patient_encounters.ts'
 import * as send_to from '../../../../../db/models/send_to.ts'
 import * as waiting_room from '../../../../../db/models/waiting_room.ts'
+import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import { ButtonsContainer } from '../../../../../islands/form/buttons.tsx'
 import { SendToButton } from '../../../../../islands/SendTo/Button.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -136,30 +137,21 @@ export async function upsertPatientAndRedirect(
 
     if (send_to.entity) {
       const { organization_id } = ctx.state.encounter_provider
-      const patient_encounter_id = ctx.state.encounter.encounter_id
+      const { encounter_id } = ctx.state.encounter
 
       const provider_id = send_to.entity.id
 
-      // Check if the same provider already exists
-      const existingProvider = await getProviderByEncounter(
+      await patient_encounters.addProvider(
         ctx.state.trx,
-        patient_encounter_id,
-        provider_id,
+        {
+          encounter_id,
+          provider_id,
+        },
       )
-
-      if (!existingProvider) {
-        await ctx.state.trx
-          .insertInto('patient_encounter_providers')
-          .values({
-            patient_encounter_id,
-            provider_id,
-          })
-          .execute()
-      }
 
       await waiting_room.add(
         ctx.state.trx,
-        { organization_id, patient_encounter_id },
+        { organization_id, patient_encounter_id: encounter_id },
       )
       const success = encodeURIComponent(
         `${capitalize(step)} completed and patient added to the waiting room.`,

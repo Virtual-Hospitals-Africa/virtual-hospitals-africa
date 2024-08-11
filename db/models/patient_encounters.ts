@@ -149,6 +149,7 @@ export function addProvider(
       provider_id,
       seen_at: seen_now ? sql<Date>`now()` : null,
     })
+    .onConflict((oc) => oc.doNothing())
     .returning(['id', 'seen_at'])
     .executeTakeFirstOrThrow()
 }
