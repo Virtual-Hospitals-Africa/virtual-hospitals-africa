@@ -116,6 +116,30 @@ export async function forPatientIntake(
   )
 
   return [
+    {
+      key: 'health_worker/' + 'tester',
+      name: 'tester',
+      description: {
+        text: 'ABC',
+      },
+      image: {
+        type: 'icon',
+        icon: 'ClockIcon',
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: '4890f04d-099d-4330-be5d-fc3265aaf2bd', // put employment.health_worker_id
+        online: false,
+      },
+      request_type_options: [
+        'request_review',
+        'make_appointment',
+        'declare_emergency',
+      ],
+      textarea: 'additional_details',
+    },
     ...nurse_information,
     ...nearestFacilitySendables,
     {
