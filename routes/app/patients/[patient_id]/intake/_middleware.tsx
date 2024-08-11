@@ -118,79 +118,53 @@ export async function upsertPatientAndRedirect(
     intake_step_just_completed: step,
   })
 
-  if (send_to) {
-    if (send_to.action && send_to.action === 'waiting_room') {
-      const { organization_id } = ctx.state.encounter_provider
-      const patient_encounter_id = ctx.state.encounter.encounter_id
-
-      await waiting_room.add(
-        ctx.state.trx,
-        { organization_id, patient_encounter_id },
-      )
-      const success = encodeURIComponent(
-        `${capitalize(step)} completed and patient added to the waiting room.`,
-      )
-      return redirect(
-        `/app/organizations/${organization_id}/waiting_room?success=${success}`,
-      )
-    }
-
-    if (send_to.entity) {
-      const { organization_id } = ctx.state.encounter_provider
-      const { encounter_id } = ctx.state.encounter
-
-      const provider_id = send_to.entity.id
-
-      await patient_encounters.addProvider(
-        ctx.state.trx,
-        {
-          encounter_id,
-          provider_id,
-        },
-      )
-
-      await waiting_room.add(
-        ctx.state.trx,
-        { organization_id, patient_encounter_id: encounter_id },
-      )
-      const success = encodeURIComponent(
-        `${capitalize(step)} completed and patient added to the waiting room.`,
-      )
-      return redirect(
-        `/app/organizations/${organization_id}/waiting_room?success=${success}`,
-      )
-    } else {
-      console.log('send_to', send_to)
-      throw new Error('TODO: implement send_to')
-    }
+  if (!send_to) {
+    return redirect(nextLink(ctx))
   }
-  return redirect(nextLink(ctx))
-}
+  if (send_to.action && send_to.action === 'waiting_room') {
+    const { organization_id } = ctx.state.encounter_provider
+    const patient_encounter_id = ctx.state.encounter.encounter_id
 
-async function getProviderIdByNurseId(
-  trx: TrxOrDb,
-  nurseId: string,
-): Promise<string | null> {
-  const result = await trx
-    .selectFrom('employment')
-    .select('employment.id as provider_id')
-    .where('employment.health_worker_id', '=', nurseId)
-    .executeTakeFirst()
+    await waiting_room.add(
+      ctx.state.trx,
+      { organization_id, patient_encounter_id },
+    )
+    const success = encodeURIComponent(
+      `${capitalize(step)} completed and patient added to the waiting room.`,
+    )
+    return redirect(
+      `/app/organizations/${organization_id}/waiting_room?success=${success}`,
+    )
+  }
 
-  return result ? result.provider_id : null
-}
+  if (send_to.entity) {
+    const { organization_id } = ctx.state.encounter_provider
+    const { encounter_id } = ctx.state.encounter
 
-async function getProviderByEncounter(
-  trx: TrxOrDb,
-  patient_encounter_id: string,
-  provider_id: string,
-) {
-  return await trx
-    .selectFrom('patient_encounter_providers')
-    .selectAll()
-    .where('patient_encounter_id', '=', patient_encounter_id)
-    .where('provider_id', '=', provider_id)
-    .executeTakeFirst()
+    const provider_id = send_to.entity.id
+
+    await patient_encounters.addProvider(
+      ctx.state.trx,
+      {
+        encounter_id,
+        provider_id,
+      },
+    )
+
+    await waiting_room.add(
+      ctx.state.trx,
+      { organization_id, patient_encounter_id: encounter_id },
+    )
+    const success = encodeURIComponent(
+      `${capitalize(step)} completed and patient added to the waiting room.`,
+    )
+    return redirect(
+      `/app/organizations/${organization_id}/waiting_room?success=${success}`,
+    )
+  }
+
+  console.log('send_to', send_to)
+  throw new Error('TODO: implement send_to')
 }
 
 export function assertAgeYearsKnown(ctx: IntakeContext): number {
