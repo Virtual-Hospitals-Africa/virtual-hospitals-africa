@@ -141,12 +141,11 @@ export async function upsertPatientAndRedirect(
       const provider_id = send_to.entity.id
 
       // Check if the same provider already exists
-      const existingProvider = await ctx.state.trx
-        .selectFrom('patient_encounter_providers')
-        .selectAll()
-        .where('patient_encounter_id', '=', patient_encounter_id)
-        .where('provider_id', '=', provider_id)
-        .executeTakeFirst()
+      const existingProvider = await getProviderByEncounter(
+        ctx.state.trx,
+        patient_encounter_id,
+        provider_id,
+      )
 
       if (!existingProvider) {
         await ctx.state.trx
@@ -187,6 +186,19 @@ async function getProviderIdByNurseId(
     .executeTakeFirst()
 
   return result ? result.provider_id : null
+}
+
+async function getProviderByEncounter(
+  trx: TrxOrDb,
+  patient_encounter_id: string,
+  provider_id: string,
+) {
+  return await trx
+    .selectFrom('patient_encounter_providers')
+    .selectAll()
+    .where('patient_encounter_id', '=', patient_encounter_id)
+    .where('provider_id', '=', provider_id)
+    .executeTakeFirst()
 }
 
 export function assertAgeYearsKnown(ctx: IntakeContext): number {
