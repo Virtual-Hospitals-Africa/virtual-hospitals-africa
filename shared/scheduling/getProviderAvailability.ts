@@ -83,11 +83,16 @@ export function defaultTimeRange(): TimeRange {
   timeMax.setDate(timeMin.getDate() + 7)
   return { timeMin, timeMax }
 }
+
 export async function providerAvailability(
+  trx: TrxOrDb,
   provider: Provider,
   timeRange = defaultTimeRange(),
 ) {
-  const healthWorkerGoogleClient = new google.GoogleClient(provider)
+  const healthWorkerGoogleClient = new google.HealthWorkerGoogleClient(trx, {
+    ...provider,
+    id: provider.health_worker_id,
+  })
   const freeBusy = await healthWorkerGoogleClient.getFreeBusy({
     ...timeRange,
     calendarIds: [
@@ -102,11 +107,12 @@ export async function providerAvailability(
 }
 
 export function getAllProviderAvailability(
+  trx: TrxOrDb,
   providers: Provider[],
   timeRange: TimeRange = defaultTimeRange(),
 ) {
   return Promise.all(
-    providers.map((provider) => providerAvailability(provider, timeRange)),
+    providers.map((provider) => providerAvailability(trx, provider, timeRange)),
   )
 }
 
@@ -133,7 +139,7 @@ export async function availableSlots(
   assertAllHarare(declinedTimes)
 
   const providers = await getMany(trx, { employment_ids })
-  const provider_availability = await getAllProviderAvailability(providers)
+  const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const slots: {
     provider: Provider

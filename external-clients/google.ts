@@ -348,17 +348,28 @@ function testServerMock(
 }
 
 export class HealthWorkerGoogleClient extends GoogleClient {
-  public health_worker: HealthWorkerWithGoogleTokens
-
   constructor(
-    // deno-lint-ignore no-explicit-any
-    public ctx: HandlerContext<any, LoggedInHealthWorker>,
+    public trx: TrxOrDb,
+    public health_worker: {
+      id: string
+      access_token: string
+      refresh_token: string
+      expires_at: Date | string
+    },
   ) {
-    super(ctx.state.healthWorker)
-    this.health_worker = ctx.state.healthWorker
+    super(health_worker)
     if (!isHealthWorkerWithGoogleTokens(this.health_worker)) {
       throw new Error('You must google tokens to use this client')
     }
+  }
+
+  static fromCtx(
+    ctx: HandlerContext<any, LoggedInHealthWorker>,
+  ) {
+    return new HealthWorkerGoogleClient(
+      ctx.state.trx,
+      ctx.state.healthWorker,
+    )
   }
 
   async makeRequest<T>(path: string, opts?: RequestOpts): Promise<T> {
@@ -368,7 +379,7 @@ export class HealthWorkerGoogleClient extends GoogleClient {
       if (err.message === 'Unauthorized') {
         assert(this.health_worker.refresh_token, 'No refresh token')
         const refreshed = await refreshTokens(
-          this.ctx.state.trx,
+          this.trx,
           this.health_worker,
         )
         if (refreshed.result !== 'success') {
@@ -455,7 +466,11 @@ export async function getNewAccessTokenFromRefreshToken(
 
 export async function refreshTokens(
   trx: TrxOrDb,
-  health_worker: HealthWorkerWithGoogleTokens,
+  health_worker: {
+    id: string
+    access_token: string
+    refresh_token: string
+  },
 ): Promise<{ result: 'success'; access_token: string } | { result: 'expiry' }> {
   try {
     const access_token = await getNewAccessTokenFromRefreshToken(

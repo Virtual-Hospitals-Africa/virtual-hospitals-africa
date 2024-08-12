@@ -80,7 +80,7 @@ export async function forPatientIntake(
   const providers = await getMany(trx, { employment_ids })
 
   console.log('providers', providers)
-  const provider_availability = await getAllProviderAvailability(providers)
+  const provider_availability = await getAllProviderAvailability(trx, providers)
 
   console.log('provider_availability', provider_availability)
 
