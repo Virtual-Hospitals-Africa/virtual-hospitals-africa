@@ -3,7 +3,7 @@ import Layout from '../components/library/Layout.tsx'
 import PageHeader from '../components/library/typography/PageHeader.tsx'
 import SectionHeader from '../components/library/typography/SectionHeader.tsx'
 
-export default function PartnerPage(
+export default function PrivacyPage(
   props: PageProps,
 ) {
   return (
