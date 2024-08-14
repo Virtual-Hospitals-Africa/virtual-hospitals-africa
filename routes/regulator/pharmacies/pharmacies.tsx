@@ -12,10 +12,10 @@ type PharmaciesProps = {
 
 export const handler: LoggedInRegulatorHandlerWithProps<PharmaciesProps> = {
   async GET(req, ctx) {
-    assertOr404(
-      req.headers.get('accept') === 'application/json',
-      'We only accept JSON',
-    )
+    // assertOr404(
+    //   req.headers.get('accept') === 'application/json',
+    //   'We only accept JSON',
+    // )
     const search = ctx.url.searchParams.get('search')
     const pharmacies = await getAllWithSearchConditions(ctx.state.trx, search)
     return json(pharmacies)
