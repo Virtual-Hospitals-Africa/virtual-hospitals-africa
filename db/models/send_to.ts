@@ -1,4 +1,3 @@
-import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 import {
   Location,
   Sendable,
@@ -11,6 +10,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import { getApprovedProviders, nearest } from './organizations.ts'
 import { sql } from 'kysely'
 import { getMany } from './providers.ts'
+// import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 
 export async function getLocationByOrganizationId(
   trx: TrxOrDb,
@@ -80,9 +80,7 @@ export async function forPatientIntake(
   const providers = await getMany(trx, { employment_ids })
 
   console.log('providers', providers)
-  const provider_availability = await getAllProviderAvailability(trx, providers)
-
-  console.log('provider_availability', provider_availability)
+  // const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const nurse_information: Sendable[] = employees.map(
     (employee) => ({
