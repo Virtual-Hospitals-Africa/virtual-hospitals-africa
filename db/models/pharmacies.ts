@@ -1,44 +1,35 @@
 import { sql } from 'kysely'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { address_town_sql, name_sql } from './pharmacists.ts'
 import { RenderedPharmacy, Supervisor } from '../../types.ts'
 import { Maybe, TrxOrDb } from '../../types.ts'
 
-export async function getAllWithSearchConditions(
-  trx: TrxOrDb,
-  search?: Maybe<string>,
-): Promise<RenderedPharmacy[]> {
-  let query = trx.selectFrom('premises')
-    .select([
+function getQuery(trx: TrxOrDb) {
+  return trx
+    .selectFrom('premises')
+    .select((_eb) => [
+      'town',
       'id',
       'name',
       'licence_number',
       'licensee',
-      'address',
-      'town',
+      address_town_sql('premises').as('address'),
       'expiry_date',
       'premises_types',
-    ]).where('name', 'is not', null)
+      sql`concat('/regulator/pharmacies/', id)`.as('href'),
+      sql`concat(address, ' ',town)`.as('description'),
+    ])
+}
+
+export function getAllWithSearchConditions(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+) {
+  let query = getQuery(trx).limit(30)
   if (search) {
     query = query.where('name', 'ilike', `%${search}%`).orderBy('name', 'asc')
-      .limit(30)
   }
-  const pharmacies = await query.execute()
-  const renderedPharmacies: RenderedPharmacy[] = pharmacies.map((pharmacy) => ({
-    id: pharmacy.id,
-    name: pharmacy.name,
-    licence_number: pharmacy.licence_number,
-    licensee: pharmacy.licensee,
-    address: pharmacy.address,
-    town: pharmacy.town,
-    expiry_date: pharmacy.expiry_date.toDateString(),
-    premises_types: pharmacy.premises_types,
-    supervisors: [],
-    actions: {
-      view: `/regulator/pharmacies/${pharmacy.id}`,
-    },
-  }))
-  return renderedPharmacies
+  return query.execute()
 }
 
 export async function get(
@@ -186,7 +177,7 @@ export async function getById(
       ),
       actions: {
         view: `/regulator/pharmacies/${pharmacy.id}`,
-      },
+      }, 
     }
   )
 }
