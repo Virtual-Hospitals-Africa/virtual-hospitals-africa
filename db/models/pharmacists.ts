@@ -156,6 +156,7 @@ export function getAllWithSearchConditions(
       `ilike`,
       `%${search}%`,
     ).orderBy('pharmacists.given_name', 'asc')
+
   }
   return query.execute()
 }
