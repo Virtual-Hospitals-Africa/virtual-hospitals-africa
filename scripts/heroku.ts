@@ -1,40 +1,36 @@
 import { runCommand } from '../util/command.ts'
 
 const APPLICATIONS = {
-  "virtual-hospitals-africa": "web",
-  "vha-pharmacist-chatbot": "worker",
-  "vha-patient-chatbot": "worker",
+  'virtual-hospitals-africa': 'web',
+  'vha-pharmacist-chatbot': 'worker',
+  'vha-patient-chatbot': 'worker',
 }
 
 type Application = keyof typeof APPLICATIONS
 
+function heroku(args: string[]) {
+  return runCommand('heroku', {
+    args,
+    stdout: 'inherit',
+    stderr: 'inherit',
+  })
+}
+
 const COMMANDS = {
   up(app: Application) {
     const dyno_type = APPLICATIONS[app]
-    return runCommand('heroku', {
-      args: ['ps:scale', `${dyno_type}=1`, `--app=${app}`],
-      stdout: 'inherit',
-      stderr: 'inherit',
-    })
+    return heroku(['ps:scale', `${dyno_type}=1`, `--app=${app}`])
   },
   down(app: Application) {
     const dyno_type = APPLICATIONS[app]
-    return runCommand('heroku', {
-      args: ['ps:scale', `${dyno_type}=0`, `--app=${app}`],
-      stdout: 'inherit',
-      stderr: 'inherit',
-    })
+    return heroku(['ps:scale', `${dyno_type}=0`, `--app=${app}`])
   },
   async restart(app: Application) {
     await this.down(app)
     await this.up(app)
   },
   logs(app: Application) {
-    return runCommand('heroku', {
-      args: ['logs', `--tail`, `--app=${app}`],
-      stdout: 'inherit',
-      stderr: 'inherit',
-    })
+    return heroku(['logs', `--tail`, `--app=${app}`])
   },
 }
 
@@ -42,10 +38,6 @@ type Command = keyof typeof COMMANDS
 
 function isCommand(cmd?: string): cmd is Command {
   return !!cmd && cmd in COMMANDS
-}
-
-function isApplication(app?: string): app is Application {
-  return !!app && app in APPLICATIONS
 }
 
 const HELP = `
@@ -60,23 +52,33 @@ COMMANDS
   restart    Restart dyno
   logs       Show logs
 
-APPLICATIONS
+APPS
   ${Object.keys(APPLICATIONS).join('\n  ')}
 `.trim()
 
+function asApplication(app?: string): Application | null {
+  if (!app) return 'virtual-hospitals-africa'
+  if (app in APPLICATIONS) return app as Application
+  const matches = Object.keys(APPLICATIONS).filter((it) => it.includes(app))
+  if (matches.length === 1) return matches[0] as Application
+  return null
+}
+
 if (import.meta.main) {
-  let [cmd, app] = Deno.args
-  
-  if (!cmd || cmd === 'help' || !isCommand(cmd)) {
+  const [cmd, app_arg] = Deno.args
+
+  if (!cmd || !isCommand(cmd)) {
     console.log(HELP)
     Deno.exit(1)
   }
 
+  const app = asApplication(app_arg)
   if (!app) {
-    app = 'virtual-hospitals-africa'
-  }
-  if (!isApplication(app)) {
-    console.log('Please specify an application')
+    console.log(
+      `Please provide a valid app name as in\n\ndeno task heroku ${cmd} virtual-hospitals-africa\n\nValid apps:\n  ${
+        Object.keys(APPLICATIONS).join('\n  ')
+      }`,
+    )
     Deno.exit(1)
   }
 
