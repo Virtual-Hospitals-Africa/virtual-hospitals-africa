@@ -13,7 +13,7 @@ import Layout from '../../components/library/Layout.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<CalendarPageProps> =
   {
-    async GET(req, ctx) {
+    async GET(_req, ctx) {
       const { healthWorker } = ctx.state
       const googleClient = new HealthWorkerGoogleClient(ctx)
 

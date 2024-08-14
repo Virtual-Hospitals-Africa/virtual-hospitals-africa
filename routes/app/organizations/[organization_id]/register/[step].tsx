@@ -78,13 +78,6 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<RegisterPageProps, {
     )
 
     if (stepIndex < NurseRegistrationStepNames.length - 1) {
-      const foo = await nurse_registration_details.setInProgress(
-        ctx.state.trx,
-        {
-          health_worker_id: ctx.state.healthWorker.id,
-          data: formState,
-        },
-      )
       const nextStep = NurseRegistrationStepNames[stepIndex + 1]
       const nextUrl = ctx.url.pathname.replace(`/${step}`, `/${nextStep}`)
       return redirect(nextUrl)
