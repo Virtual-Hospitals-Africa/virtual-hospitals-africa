@@ -2,7 +2,7 @@ import { assert } from 'std/assert/assert.ts'
 import { RenderedWaitingRoom } from '../../types.ts'
 import PersonSearch from '../PersonSearch.tsx'
 
-export function AddPatientSearch({ organization_id, waiting_room }: {
+export function AddPatientSearch({ organization_id }: {
   organization_id: string
   waiting_room: RenderedWaitingRoom[]
 }) {

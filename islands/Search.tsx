@@ -198,9 +198,12 @@ export default function Search<
                         )}
                       </>
                     )
-                    if (!optionHref) return fragment
+                    const href = optionHref?.(option) ||
+                      ('href' in option && typeof option.href === 'string' &&
+                        option.href)
+                    if (!href) return fragment
                     return (
-                      <a href={optionHref(option)}>
+                      <a href={href}>
                         {fragment}
                       </a>
                     )
