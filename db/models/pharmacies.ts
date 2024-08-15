@@ -1,5 +1,5 @@
 import { sql } from 'kysely'
-import { jsonArrayFrom } from '../helpers.ts'
+import { jsonArrayFrom, jsonBuildObject } from '../helpers.ts'
 import { address_town_sql, name_sql } from './pharmacists.ts'
 import { RenderedPharmacy, Supervisor } from '../../types.ts'
 import { Maybe, TrxOrDb } from '../../types.ts'
