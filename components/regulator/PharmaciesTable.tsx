@@ -15,7 +15,7 @@ type Pharmacy = {
   licence_number: string
   licensee: string
   name: string
-  premises_types: RenderedPharmacy
+  pharmacies_types: RenderedPharmacy
   town: string | null
 }
 
@@ -42,7 +42,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
   },
   {
     label: 'Pharmacy Type',
-    data: 'premises_types',
+    data: 'pharmacies_types',
   },
   {
     label: 'Supervisor',

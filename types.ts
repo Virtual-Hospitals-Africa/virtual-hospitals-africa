@@ -2832,7 +2832,7 @@ export type RenderedPharmacy = {
   licence_number: string
   licensee: string
   name: string
-  premises_types:
+  pharmacies_types:
     | 'Clinics: Class A'
     | 'Clinics: Class B'
     | 'Clinics: Class C'

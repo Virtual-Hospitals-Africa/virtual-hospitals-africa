@@ -51,11 +51,11 @@ export async function get(
   const pharmacists = await trx
     .selectFrom('pharmacists')
     .leftJoin(
-      'premise_supervisors',
+      'pharmacy_employment',
       'pharmacists.id',
-      'premise_supervisors.pharmacist_id',
+      'pharmacy_employment.pharmacist_id',
     )
-    .leftJoin('premises', 'premise_supervisors.premise_id', 'premises.id')
+    .leftJoin('pharmacies', 'pharmacy_employment.pharmacy_id', 'pharmacies.id')
     .select((eb) => [
       'pharmacists.id',
       'pharmacists.licence_number',
@@ -65,17 +65,19 @@ export async function get(
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
       sql`CASE
-        WHEN premises.id IS NOT NULL THEN ${
+        WHEN pharmacies.id IS NOT NULL THEN ${
         jsonBuildObject({
-          id: eb.ref('premises.id'),
-          address: eb.ref('premises.address'),
-          expiry_date: sql<string>`TO_CHAR(premises.expiry_date, 'YYYY-MM-DD')`,
-          licence_number: eb.ref('premises.licence_number'),
-          licensee: eb.ref('premises.licensee'),
-          name: eb.ref('premises.name'),
-          premises_types: eb.ref('premises.premises_types'),
-          town: eb.ref('premises.town'),
-          href: sql<string>`'/regulator/pharmacies/' || premises.id`,
+          id: eb.ref('pharmacies.id'),
+          address: eb.ref('pharmacies.address'),
+          expiry_date: sql<
+            string
+          >`TO_CHAR(pharmacies.expiry_date, 'YYYY-MM-DD')`,
+          licence_number: eb.ref('pharmacies.licence_number'),
+          licensee: eb.ref('pharmacies.licensee'),
+          name: eb.ref('pharmacies.name'),
+          pharmacies_types: eb.ref('pharmacies.pharmacies_types'),
+          town: eb.ref('pharmacies.town'),
+          href: sql<string>`'/regulator/pharmacies/' || pharmacies.id`,
         })
       }
         ELSE NULL

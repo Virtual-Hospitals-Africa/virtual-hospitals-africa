@@ -8,7 +8,7 @@ export async function getAllWithSearchConditions(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ): Promise<RenderedPharmacy[]> {
-  let query = trx.selectFrom('premises')
+  let query = trx.selectFrom('pharmacies')
     .select([
       'id',
       'name',
@@ -17,7 +17,7 @@ export async function getAllWithSearchConditions(
       'address',
       'town',
       'expiry_date',
-      'premises_types',
+      'pharmacies_types',
     ]).where('name', 'is not', null)
   if (search) {
     query = query.where('name', 'ilike', `%${search}%`).orderBy('name', 'asc')
@@ -32,7 +32,7 @@ export async function getAllWithSearchConditions(
     address: pharmacy.address,
     town: pharmacy.town,
     expiry_date: pharmacy.expiry_date.toDateString(),
-    premises_types: pharmacy.premises_types,
+    pharmacies_types: pharmacy.pharmacies_types,
     supervisors: [],
     actions: {
       view: `/regulator/pharmacies/${pharmacy.id}`,
@@ -48,53 +48,51 @@ export async function get(
 ) {
   const offset = (page - 1) * rowsPerPage
   const pharmacies = await trx
-    .selectFrom('premises')
+    .selectFrom('pharmacies')
     .leftJoin(
-      'premise_supervisors',
-      'premises.id',
-      'premise_supervisors.premise_id',
+      'pharmacy_employment',
+      'pharmacies.id',
+      'pharmacy_employment.pharmacy_id',
     )
     .leftJoin(
       'pharmacists',
-      'premise_supervisors.pharmacist_id',
+      'pharmacy_employment.pharmacist_id',
       'pharmacists.id',
     )
     .select((eb) => [
-      'premises.id',
-      'premises.name',
-      'premises.licence_number',
-      'premises.licensee',
-      address_town_sql('premises').as('address'),
-      'premises.expiry_date',
-      'premises.premises_types',
+      'pharmacies.id',
+      'pharmacies.name',
+      'pharmacies.licence_number',
+      'pharmacies.licensee',
+      address_town_sql('pharmacies').as('address'),
+      'pharmacies.expiry_date',
+      'pharmacies.pharmacies_types',
       jsonArrayFrom(
         eb
-          .selectFrom('premise_supervisors')
+          .selectFrom('pharmacy_employment')
           .select([
             'id',
             'prefix',
-            name_sql('premise_supervisors').as('name'),
+            name_sql('pharmacy_employment').as('name'),
             sql<
               string
-            >`'/regulator/pharmacists/' || premise_supervisors.pharmacist_id`
-              .as('href'),
+            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
+              .as(
+                'href',
+              ),
           ])
-          .whereRef(
-            'premises.id',
-            '=',
-            'premise_supervisors.premise_id',
-          ),
+          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id'),
       ).as('supervisors'),
     ])
     .groupBy([
-      'premises.id',
-      'premises.name',
-      'premises.licence_number',
-      'premises.licensee',
-      'premises.address',
-      'premises.town',
-      'premises.expiry_date',
-      'premises.premises_types',
+      'pharmacies.id',
+      'pharmacies.name',
+      'pharmacies.licence_number',
+      'pharmacies.licensee',
+      'pharmacies.address',
+      'pharmacies.town',
+      'pharmacies.expiry_date',
+      'pharmacies.pharmacies_types',
     ])
     .orderBy('name', 'asc')
     .limit(rowsPerPage)
@@ -102,7 +100,7 @@ export async function get(
     .execute()
 
   const totalRowsResult = await trx
-    .selectFrom('premises')
+    .selectFrom('pharmacies')
     .select((eb) => eb.fn.count('id').as('totalRows'))
     .execute()
 
@@ -127,54 +125,56 @@ export async function getById(
   pharmacy_id: string,
 ): Promise<RenderedPharmacy | undefined> {
   const pharmacy = await trx
-    .selectFrom('premises')
+    .selectFrom('pharmacies')
     .leftJoin(
-      'premise_supervisors',
-      'premises.id',
-      'premise_supervisors.premise_id',
+      'pharmacy_employment',
+      'pharmacies.id',
+      'pharmacy_employment.pharmacy_id',
     )
     .leftJoin(
       'pharmacists',
-      'premise_supervisors.pharmacist_id',
+      'pharmacy_employment.pharmacist_id',
       'pharmacists.id',
     )
     .select((eb) => [
-      'premises.id',
-      'premises.name',
-      'premises.licence_number',
-      'premises.licensee',
-      address_town_sql('premises').as('address'),
-      'premises.town',
-      'premises.expiry_date',
-      'premises.premises_types',
+      'pharmacies.id',
+      'pharmacies.name',
+      'pharmacies.licence_number',
+      'pharmacies.licensee',
+      address_town_sql('pharmacies').as('address'),
+      'pharmacies.town',
+      'pharmacies.expiry_date',
+      'pharmacies.pharmacies_types',
       jsonArrayFrom(
         eb
-          .selectFrom('premise_supervisors')
+          .selectFrom('pharmacy_employment')
           .select([
             'id',
             'prefix',
             'family_name',
             'given_name',
-            name_sql('premise_supervisors').as('name'),
+            name_sql('pharmacy_employment').as('name'),
             sql<
               string
-            >`'/regulator/pharmacists/' || premise_supervisors.pharmacist_id`
-              .as('href'),
+            >`'/regulator/pharmacists/' || pharmacy_employment.pharmacist_id`
+              .as(
+                'href',
+              ),
           ])
-          .whereRef('premises.id', '=', 'premise_supervisors.premise_id'),
+          .whereRef('pharmacies.id', '=', 'pharmacy_employment.pharmacy_id'),
       ).as('supervisors'),
     ])
     .groupBy([
-      'premises.id',
-      'premises.name',
-      'premises.licence_number',
-      'premises.licensee',
-      'premises.address',
-      'premises.town',
-      'premises.expiry_date',
-      'premises.premises_types',
+      'pharmacies.id',
+      'pharmacies.name',
+      'pharmacies.licence_number',
+      'pharmacies.licensee',
+      'pharmacies.address',
+      'pharmacies.town',
+      'pharmacies.expiry_date',
+      'pharmacies.pharmacies_types',
     ])
-    .where('premises.id', '=', pharmacy_id)
+    .where('pharmacies.id', '=', pharmacy_id)
     .executeTakeFirst()
 
   return (
