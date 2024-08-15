@@ -5,13 +5,19 @@ import * as sessions from '../../db/models/sessions.ts'
 import db from '../../db/db.ts'
 import { upsertWithGoogleCredentials } from '../../db/models/health_workers.ts'
 import * as employment from '../../db/models/employment.ts'
+import * as regulators from '../../db/models/regulators.ts'
 import * as organizations from '../../db/models/organizations.ts'
 import * as details from '../../db/models/nurse_registration_details.ts'
+import * as pharmacists from '../../db/models/pharmacists.ts'
 import { testHealthWorker, testRegistrationDetails } from '../mocks.ts'
 import set from '../../util/set.ts'
 import { parseParam } from '../../util/parseForm.ts'
-import { HealthWorkerWithGoogleTokens, TrxOrDb } from '../../types.ts'
-import { testCalendars } from '../mocks.ts'
+import {
+  HealthWorkerWithGoogleTokens,
+  RenderedPharmacist,
+  TrxOrDb,
+} from '../../types.ts'
+import { testCalendars, testPharmacist, testRegulator } from '../mocks.ts'
 import { addCalendars } from '../../db/models/providers.ts'
 import { assertRejects } from 'std/assert/assert_rejects.ts'
 import { assert } from 'std/assert/assert.ts'
@@ -193,6 +199,73 @@ export async function addTestHealthWorkerWithSession(
     fetch: fetchWithSession,
     fetchCheerio,
   }
+}
+
+export async function addTestRegulator(
+  trx: TrxOrDb,
+) {
+  const createdRegulator = await regulators.upsert(trx, {
+    ...testRegulator(),
+  })
+  return createdRegulator
+}
+
+export async function addTestRegulatorWithSession(
+  trx: TrxOrDb,
+) {
+  const regulator = await addTestRegulator(trx)
+  const session = await sessions.create(trx, 'regulator', {
+    entity_id: regulator.id,
+  })
+  const fetchWithSession: typeof fetch = (
+    input: URL | RequestInfo,
+    { headers, ...rest }: RequestInit = {},
+  ) =>
+    fetch(input, {
+      headers: {
+        ...headers,
+        Cookie: `regulator_session_id=${session.id}`,
+      },
+      ...rest,
+    })
+
+  const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
+    const response = await fetchWithSession(...args)
+    if (!response.ok) throw new Error(await response.text())
+    const html = await response.text()
+    return cheerio.load(html, {
+      baseURI: response.url,
+    })
+  }
+
+  return {
+    regulator_session_id: session.id,
+    regulator,
+    fetch: fetchWithSession,
+    fetchCheerio,
+  }
+}
+
+export async function addTestPharmacist(
+  trx: TrxOrDb,
+  pharmacist?: RenderedPharmacist,
+) {
+  const dummyPharmacist = {
+    ...testPharmacist(),
+    ...pharmacist,
+  }
+  const { id: pharmacistId } = await pharmacists.insert(trx, dummyPharmacist)
+  return {
+    id: pharmacistId,
+    ...dummyPharmacist,
+  }
+}
+
+export function removeTestPharmacist(
+  trx: TrxOrDb,
+  pharmacistId: string,
+) {
+  return pharmacists.remove(trx, pharmacistId)
 }
 
 export function getFormValues($: cheerio.CheerioAPI): unknown {

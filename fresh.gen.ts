@@ -93,6 +93,7 @@ import * as $logged_in from './routes/logged-in.tsx'
 import * as $login from './routes/login.tsx'
 import * as $partner from './routes/partner.tsx'
 import * as $prescriptions_prescription_id_ from './routes/prescriptions/[prescription_id].tsx'
+import * as $privacy from './routes/privacy.tsx'
 import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
 import * as $regulator_medicines from './routes/regulator/medicines.tsx'
@@ -107,6 +108,7 @@ import * as $regulator_pharmacists_pharmacist_id_revoke from './routes/regulator
 import * as $regulator_pharmacists_invite from './routes/regulator/pharmacists/invite.tsx'
 import * as $regulator_pharmacists_pharmacists from './routes/regulator/pharmacists/pharmacists.tsx'
 import * as $schedule_demo from './routes/schedule-demo.tsx'
+import * as $tos from './routes/tos.tsx'
 import * as $volunteer from './routes/volunteer.tsx'
 import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
@@ -360,6 +362,7 @@ const manifest = {
     './routes/partner.tsx': $partner,
     './routes/prescriptions/[prescription_id].tsx':
       $prescriptions_prescription_id_,
+    './routes/privacy.tsx': $privacy,
     './routes/regulator.tsx': $regulator,
     './routes/regulator/_middleware.ts': $regulator_middleware,
     './routes/regulator/medicines.tsx': $regulator_medicines,
@@ -381,6 +384,7 @@ const manifest = {
     './routes/regulator/pharmacists/pharmacists.tsx':
       $regulator_pharmacists_pharmacists,
     './routes/schedule-demo.tsx': $schedule_demo,
+    './routes/tos.tsx': $tos,
     './routes/volunteer.tsx': $volunteer,
     './routes/volunteer/[role].tsx': $volunteer_role_,
     './routes/waitlist.tsx': $waitlist,

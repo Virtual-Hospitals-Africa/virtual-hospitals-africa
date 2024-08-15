@@ -124,7 +124,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const gcal_availability_calendar_id =
       matching_employment!.gcal_availability_calendar_id
 
-    const googleClient = new HealthWorkerGoogleClient(ctx)
+    const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
     const events = await googleClient.getActiveEvents(
       gcal_availability_calendar_id,
     )
@@ -201,7 +201,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     const gcal_availability_calendar_id =
       matching_employment!.gcal_availability_calendar_id
 
-    const googleClient = new HealthWorkerGoogleClient(ctx)
+    const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
 
     const existingAvailability = await googleClient.getActiveEvents(
       gcal_availability_calendar_id,

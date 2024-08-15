@@ -10,6 +10,7 @@ import {
   RenderedPatientEncounterProvider,
   Sendable,
   SendToFormSubmission,
+  TrxOrDb,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
@@ -23,6 +24,7 @@ import { replaceParams } from '../../../../../util/replaceParams.ts'
 import { removeFromWaitingRoomAndAddSelfAsProvider } from '../../../../../db/models/patient_encounters.ts'
 import * as send_to from '../../../../../db/models/send_to.ts'
 import * as waiting_room from '../../../../../db/models/waiting_room.ts'
+import * as patient_encounters from '../../../../../db/models/patient_encounters.ts'
 import { ButtonsContainer } from '../../../../../islands/form/buttons.tsx'
 import { SendToButton } from '../../../../../islands/SendTo/Button.tsx'
 import { assertEquals } from 'std/assert/assert_equals.ts'
@@ -32,7 +34,6 @@ import { Button } from '../../../../../components/library/Button.tsx'
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 import isObjectLike from '../../../../../util/isObjectLike.ts'
 import capitalize from '../../../../../util/capitalize.ts'
-import { Location } from '../../../../../types.ts'
 
 export type IntakeContext = LoggedInHealthWorkerContext<
   {
@@ -117,27 +118,53 @@ export async function upsertPatientAndRedirect(
     intake_step_just_completed: step,
   })
 
-  if (send_to) {
-    if (send_to.action && send_to.action === 'waiting_room') {
-      const { organization_id } = ctx.state.encounter_provider
-      const patient_encounter_id = ctx.state.encounter.encounter_id
-      await waiting_room.add(
-        ctx.state.trx,
-        { organization_id, patient_encounter_id },
-      )
-      const success = encodeURIComponent(
-        `${capitalize(step)} completed and patient added to the waiting room.`,
-      )
-      return redirect(
-        `/app/organizations/${organization_id}/waiting_room?success=${success}`,
-      )
-    } else {
-      console.log('send_to', send_to)
-      throw new Error('TODO: implement send_to')
-    }
+  if (!send_to) {
+    return redirect(nextLink(ctx))
+  }
+  if (send_to.action && send_to.action === 'waiting_room') {
+    const { organization_id } = ctx.state.encounter_provider
+    const patient_encounter_id = ctx.state.encounter.encounter_id
+
+    await waiting_room.add(
+      ctx.state.trx,
+      { organization_id, patient_encounter_id },
+    )
+    const success = encodeURIComponent(
+      `${capitalize(step)} completed and patient added to the waiting room.`,
+    )
+    return redirect(
+      `/app/organizations/${organization_id}/waiting_room?success=${success}`,
+    )
   }
 
-  return redirect(nextLink(ctx))
+  if (send_to.entity) {
+    const { organization_id } = ctx.state.encounter_provider
+    const { encounter_id } = ctx.state.encounter
+
+    const provider_id = send_to.entity.id
+
+    await patient_encounters.addProvider(
+      ctx.state.trx,
+      {
+        encounter_id,
+        provider_id,
+      },
+    )
+
+    await waiting_room.add(
+      ctx.state.trx,
+      { organization_id, patient_encounter_id: encounter_id },
+    )
+    const success = encodeURIComponent(
+      `${capitalize(step)} completed and patient added to the waiting room.`,
+    )
+    return redirect(
+      `/app/organizations/${organization_id}/waiting_room?success=${success}`,
+    )
+  }
+
+  console.log('send_to', send_to)
+  throw new Error('TODO: implement send_to')
 }
 
 export function assertAgeYearsKnown(ctx: IntakeContext): number {

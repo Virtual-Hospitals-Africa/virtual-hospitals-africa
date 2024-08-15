@@ -4,6 +4,7 @@ import db from '../../db/db.ts'
 import * as prescriptions from '../../db/models/prescriptions.ts'
 import * as patients from '../../db/models/patients.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
+import PrescriptionDetail from '../../components/prescriptions/PrescriptionDetail.tsx'
 
 export default async function PrescriptionPage(
   req: Request,
@@ -58,97 +59,97 @@ export default async function PrescriptionPage(
       url={ctx.url}
       variant='just logo'
     >
-      <div
-        style={{
-          fontFamily: 'Arial, sans-serif',
-          margin: 0,
-          padding: 0,
-          backgroundColor: '#f4f4f4',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          marginTop: '500px',
-          marginBottom: '500px',
-        }}
-      >
+      <div class='pt-20 pb-20 bg-gray-100 flex items-center justify-center font-sans'>
         <div
+          class='bg-white p-5'
           style={{
-            width: '800px',
-            background: 'white',
-            padding: '20px',
             boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <div
-            style={{
-              textAlign: 'center',
-              color: '#8b0a50',
-              marginBottom: '20px',
-              borderBottom: '2px solid #f4f4f4',
-              paddingBottom: '10px',
-            }}
-          >
+          <div class='text-purple-900 mb-2 font-extrabold text-3xl text-center pt-5'>
             <h1>PRESCRIPTION TEMPLATE</h1>
           </div>
-          <div style={{ marginBottom: '20px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                <p>
-                  <strong>Prescription No.:</strong> {prescription.id}
-                </p>
-              </div>
-              <div>
-                <p>
-                  <strong>Prescription Date:</strong>{' '}
-                  {new Date(prescription.created_at).toLocaleDateString()}
-                </p>
-              </div>
+          <div class='flex items-center mb-4'>
+            <div class='flex-1 h-4 bg-red-400'></div>
+            <div class='flex-1 h-4 bg-orange-200'></div>
+          </div>
+          <div class='mb-2'>
+            <div class='flex justify-between'>
+              <PrescriptionDetail
+                heading='Prescription No.'
+                information={prescription.id}
+              />
+              <PrescriptionDetail
+                heading='Prescription Date'
+                information={new Date(prescription.created_at)
+                  .toLocaleDateString()}
+              />
             </div>
           </div>
-          <div style={{ marginBottom: '20px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>
+          <div class='flex items-center mb-4'>
+            <div class='flex-1 h-4 bg-orange-200'></div>
+            <div class='flex-1 h-4 bg-white'></div>
+          </div>
+          <div class='mb-2'>
+            <div class='text-purple-900 mb-2 font-bold'>
               Patient Information
             </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <div>
-                <p>
-                  <strong>Name:</strong> {patient.name}
-                </p>
-                <p>
-                  <strong>Phone Number:</strong> {patient.phone_number}
-                </p>
-                <p>
-                  <strong>Email:</strong> {'patient.email'}
-                </p>
-                <p>
-                  <strong>Address:</strong> {'patient.address'}
-                </p>
-                <p>
-                  <strong>Allergies:</strong> {'patient.allergies'}
-                </p>
-              </div>
-              <div>
-                <p>
-                  <strong>Age:</strong> {new Date().getFullYear() -
-                    new Date('patient.date_of_birth').getFullYear()}
-                </p>
-                <p>
-                  <strong>Date of Birth:</strong>{' '}
-                  {new Date('patient.date_of_birth').toLocaleDateString()}
-                </p>
-                <p>
-                  <strong>Gender:</strong> {patient.gender}
-                </p>
-                <p>
-                  <strong>Notable Health Condition:</strong>{' '}
-                  {'patient.health_conditions'}
-                </p>
-              </div>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail heading='Name' information={patient.name} />
+              <PrescriptionDetail
+                heading='Age'
+                information={`${
+                  new Date().getFullYear() -
+                  new Date('patient.date_of_birth').getFullYear()
+                }`}
+              />
+            </div>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail
+                heading='Phone Number'
+                information={patient.phone_number
+                  ? patient.phone_number
+                  : 'N/A'}
+              />
+              <PrescriptionDetail
+                heading='Date of Birth'
+                information={new Date('patient.date_of_birth')
+                  .toLocaleDateString()}
+              />
+            </div>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail
+                heading='Email'
+                information={'patient.email'}
+              />
+              <PrescriptionDetail
+                heading='Gender'
+                information={patient.gender ? patient.gender : 'Nan'}
+              />
+            </div>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail
+                heading='Address'
+                information={'patient.address'}
+              />
+            </div>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail
+                heading='Allergies'
+                information={'patient.allergies'}
+              />
+              <PrescriptionDetail
+                heading='Notable Health Condition'
+                information={'patient.health_conditions'}
+              />
             </div>
           </div>
+          <div class='flex items-center mb-4'>
+            <div class='flex-1 h-4 bg-orange-200'></div>
+            <div class='flex-1 h-4 bg-white'></div>
+          </div>
           <div style={{ marginBottom: '20px' }}>
-            <div style={{ fontWeight: 'bold', marginBottom: '10px' }}>
+            <div class='text-purple-900 mb-2 font-bold'>
               List of Prescribed Medications
             </div>
             <table
@@ -284,37 +285,32 @@ export default async function PrescriptionPage(
               </tbody>
             </table>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              marginTop: '20px',
-              borderTop: '2px solid #f4f4f4',
-              paddingTop: '10px',
-            }}
-          >
-            <div>
-              <p>
-                <strong>Physician Name:</strong> {prescriber}
-              </p>
-              <p>
-                <strong>Physician Phone Number:</strong>{' '}
-                {'prescriber.phone_number'}
-              </p>
-              <p>
-                <strong>Physician Email:</strong> {'prescriber.email'}
-              </p>
-              <p>
-                <strong>Physician Signature:</strong> __________________
-              </p>
+          <div class='mb-3'>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail
+                heading='Physician Name'
+                information={prescriber}
+              />
+              <PrescriptionDetail
+                heading='Physician Phone Number'
+                information={'prescriber.phone_number'}
+              />
             </div>
-            <div>
-              <p>
-                <strong>Prescription Date:</strong>{' '}
-                {new Date(prescription.created_at).toLocaleDateString()}
-              </p>
+            <div class='flex justify-between mb-2'>
+              <PrescriptionDetail
+                heading='Physician Signature'
+                information={'__________________'}
+              />
+              <PrescriptionDetail
+                heading='Physician Email'
+                information={'prescriber.email'}
+              />
             </div>
+          </div>
+          <div>
+            <p>
+              {new Date(prescription.created_at).toLocaleDateString()}
+            </p>
           </div>
         </div>
       </div>

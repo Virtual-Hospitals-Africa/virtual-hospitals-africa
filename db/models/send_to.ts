@@ -1,4 +1,3 @@
-import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 import {
   Location,
   Sendable,
@@ -11,6 +10,7 @@ import isObjectLike from '../../util/isObjectLike.ts'
 import { getApprovedProviders, nearest } from './organizations.ts'
 import { sql } from 'kysely'
 import { getMany } from './providers.ts'
+// import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'
 
 export async function getLocationByOrganizationId(
   trx: TrxOrDb,
@@ -73,16 +73,14 @@ export async function forPatientIntake(
 
   console.log('employees', employees)
 
-  const provider_ids = employees.map((employee) => employee.employee_id)
+  const employment_ids = employees.map((employee) => employee.employee_id)
 
-  console.log('provider_ids', provider_ids)
+  console.log('employment_ids', employment_ids)
 
-  const providers = await getMany(trx, { provider_ids })
+  const providers = await getMany(trx, { employment_ids })
 
   console.log('providers', providers)
-  const provider_availability = await getAllProviderAvailability(providers)
-
-  console.log('provider_availability', provider_availability)
+  // const provider_availability = await getAllProviderAvailability(trx, providers)
 
   const nurse_information: Sendable[] = employees.map(
     (employee) => ({
@@ -116,6 +114,30 @@ export async function forPatientIntake(
   )
 
   return [
+    {
+      key: 'health_worker/' + 'tester',
+      name: 'tester',
+      description: {
+        text: 'ABC',
+      },
+      image: {
+        type: 'icon',
+        icon: 'ClockIcon',
+      },
+      status: 'Unavailable until tomorrow at 9:00am',
+      to: {
+        type: 'entity',
+        entity_type: 'health_worker',
+        entity_id: '4890f04d-099d-4330-be5d-fc3265aaf2bd', // put employment.health_worker_id
+        online: false,
+      },
+      request_type_options: [
+        'request_review',
+        'make_appointment',
+        'declare_emergency',
+      ],
+      textarea: 'additional_details',
+    },
     ...nurse_information,
     ...nearestFacilitySendables,
     {
