@@ -635,6 +635,15 @@ export interface MailingList {
   updated_at: Generated<Timestamp>
 }
 
+export interface ManufacturedMedicationRecalls {
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  manufactured_medication_id: string
+  recalled_at: Timestamp
+  recalled_by: string
+  updated_at: Generated<Timestamp>
+}
+
 export interface ManufacturedMedications {
   applicant_name: string
   created_at: Generated<Timestamp>
@@ -1349,6 +1358,7 @@ export interface DB {
   intake: Intake
   Location: Location
   mailing_list: MailingList
+  manufactured_medication_recalls: ManufacturedMedicationRecalls
   manufactured_medication_strengths: ManufacturedMedicationStrengths
   manufactured_medications: ManufacturedMedications
   measurements: Measurements

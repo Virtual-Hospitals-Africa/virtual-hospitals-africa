@@ -254,6 +254,9 @@ export async function get(
     medicines: medicines.map((medicine) => ({
       ...medicine,
       strength_denominator: parseFloat(medicine.strength_denominator),
+      actions: {
+        recall: `/regulator/medicines/${medicine.id}/recall`,
+      },
     })),
     totalRows,
   }

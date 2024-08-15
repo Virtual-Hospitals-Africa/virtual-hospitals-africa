@@ -2910,6 +2910,9 @@ export type RenderedMedicine = {
   strength_denominator: number
   strength_denominator_unit: string
   strength_denominator_is_units: boolean
+  actions: {
+    recall: string
+  }
 }
 
 export type Regulator = {
