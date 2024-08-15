@@ -62,14 +62,14 @@ export function search(
       'Organization.canonicalName',
       'ilike',
       `%${opts.search}%`,
-    )
+    ).limit(30)
   }
   if (opts.kind) {
     query = query.where(
       'address',
       opts.kind === 'physical' ? 'is not' : 'is',
       null,
-    )
+    ).limit(30)
   }
 
   return query.execute()

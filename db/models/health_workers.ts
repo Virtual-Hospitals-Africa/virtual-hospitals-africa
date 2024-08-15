@@ -578,6 +578,6 @@ export function getEmployeeInfo(
           ).as('documents'),
         ]))
     .selectFrom('employee_info')
-    .selectAll()
+    .selectAll().limit(30)
     .executeTakeFirst()
 }
