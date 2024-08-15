@@ -86,10 +86,10 @@ export default function PharmaciesTable({
         <InvitePharmacySearch />
         <Button
           type='button'
-          href={search_href}
+          href={add_href}
           className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
         >
-          Invite
+          Add
         </Button>
       </FormRow>
       <Table

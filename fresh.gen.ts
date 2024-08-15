@@ -100,6 +100,7 @@ import * as $regulator_medicines from './routes/regulator/medicines.tsx'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
+import * as $regulator_pharmacies_add from './routes/regulator/pharmacies/add.tsx'
 import * as $regulator_pharmacies_pharmacies from './routes/regulator/pharmacies/pharmacies.tsx'
 import * as $regulator_pharmacists from './routes/regulator/pharmacists.tsx'
 import * as $regulator_pharmacists_pharmacist_id_ from './routes/regulator/pharmacists/[pharmacist_id].tsx'
@@ -171,6 +172,7 @@ import * as $file_preview_input from './islands/file-preview-input.tsx'
 import * as $form_Inputs from './islands/form/Inputs.tsx'
 import * as $form_Listbox from './islands/form/Listbox.tsx'
 import * as $form_PharmacistForm from './islands/form/PharmacistForm.tsx'
+import * as $form_PharmacyForm from './islands/form/PharmacyForm.tsx'
 import * as $form_Row from './islands/form/Row.tsx'
 import * as $form_buttons from './islands/form/buttons.tsx'
 import * as $form_unsaved_changes_warning from './islands/form/unsaved_changes_warning.tsx'
@@ -371,6 +373,7 @@ const manifest = {
       $regulator_pharmacies_pharmacy_name_,
     './routes/regulator/pharmacies/[pharmacy_id].tsx':
       $regulator_pharmacies_pharmacy_id_,
+    './routes/regulator/pharmacies/add.tsx': $regulator_pharmacies_add,
     './routes/regulator/pharmacies/pharmacies.tsx':
       $regulator_pharmacies_pharmacies,
     './routes/regulator/pharmacists.tsx': $regulator_pharmacists,
@@ -450,6 +453,7 @@ const manifest = {
     './islands/form/Inputs.tsx': $form_Inputs,
     './islands/form/Listbox.tsx': $form_Listbox,
     './islands/form/PharmacistForm.tsx': $form_PharmacistForm,
+    './islands/form/PharmacyForm.tsx': $form_PharmacyForm,
     './islands/form/Row.tsx': $form_Row,
     './islands/form/buttons.tsx': $form_buttons,
     './islands/form/unsaved_changes_warning.tsx': $form_unsaved_changes_warning,
