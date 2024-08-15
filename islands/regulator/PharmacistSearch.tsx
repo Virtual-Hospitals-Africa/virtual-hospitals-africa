@@ -1,6 +1,5 @@
 import { assert } from 'std/assert/assert.ts'
 import PersonSearch from '../PersonSearch.tsx'
-import { pharmacist } from '../../chatbot/defs.ts'
 
 export function PharmacistSearch() {
   return (

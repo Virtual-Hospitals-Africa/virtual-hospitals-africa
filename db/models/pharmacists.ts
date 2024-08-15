@@ -1,5 +1,3 @@
-import address from '../../routes/app/patients/[patient_id]/intake/address.tsx'
-import PharmacistsPage from '../../routes/regulator/pharmacists.tsx'
 import {
   Maybe,
   RenderedPharmacist,
