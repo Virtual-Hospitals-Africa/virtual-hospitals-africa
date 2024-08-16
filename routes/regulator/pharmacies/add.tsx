@@ -59,7 +59,7 @@ export const handler = {
       pharmacies_types: to_add.pharmacies_types,
       id: to_add.id,
       supervisors: to_add.supervisors,
-      actions:to_add.actions
+      actions: to_add.actions,
     })
 
     const success = encodeURIComponent(

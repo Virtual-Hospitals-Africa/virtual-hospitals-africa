@@ -896,7 +896,6 @@ export function PrefixSelect(
   )
 }
 
-
 export function PharmacistTypeSelect(
   { value }: { value?: Maybe<PharmacistType> },
 ) {
@@ -936,5 +935,3 @@ export function PharmacyTypeSelect(
     </Select>
   )
 }
-
-
