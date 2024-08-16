@@ -53,6 +53,7 @@ export type Gender = 'male' | 'female' | 'non-binary'
 
 export type Prefix = 'Mr' | 'Mrs' | 'Ms' | 'Dr' | 'Miss' | 'Sr'
 
+
 export const PREFIXES: Prefix[] = ['Mr', 'Mrs', 'Ms', 'Dr', 'Miss', 'Sr']
 
 export type PharmacistType =
@@ -67,6 +68,34 @@ export const PHARMACIST_TYPES: PharmacistType[] = [
   'Pharmacist',
   'Pharmacy Technician',
 ]
+
+export type PharmacyType =
+| 'Clinics: Class A'
+    | 'Clinics: Class B'
+    | 'Clinics: Class C'
+    | 'Clinics: Class D'
+    | 'Dispensing medical practice'
+    | 'Hospital pharmacies'
+    | 'Pharmacies: Research'
+    | 'Pharmacies: Restricted'
+    | 'Pharmacy in any other location'
+    | 'Pharmacy in rural area'
+    | 'Pharmacy located in the CBD'
+    | 'Wholesalers'
+
+export const PHARMACY_TYPES: PharmacyType[] =[ 
+   'Clinics: Class A',
+  "Clinics: Class B",
+   "Clinics: Class C",
+   "Clinics: Class D",
+   "Dispensing medical practice",
+   "Hospital pharmacies",
+   "Pharmacies: Research",
+   "Pharmacies: Restricted",
+   'Pharmacy in any other location',
+   'Pharmacy in rural area',
+   'Pharmacy located in the CBD',
+   'Wholesalers']
 
 export type ChatbotUser =
   & {

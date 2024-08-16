@@ -18,10 +18,9 @@ export async function getAllWithSearchConditions(
       'town',
       'expiry_date',
       'pharmacies_types',
-    ]).where('name', 'is not', null)
+    ]).where('name', 'is not', null).limit(30)
   if (search) {
     query = query.where('name', 'ilike', `%${search}%`).orderBy('name', 'asc')
-      .limit(30)
   }
   const pharmacies = await query.execute()
   const renderedPharmacies: RenderedPharmacy[] = pharmacies.map((pharmacy) => ({
@@ -189,4 +188,15 @@ export async function getById(
       },
     }
   )
+}
+
+export function insert(
+  trx: TrxOrDb,
+  data: RenderedPharmacy,
+): Promise<{ id: string }> {
+  return trx
+    .insertInto('pharmacies')
+    .values(data)
+    .returning('id')
+    .executeTakeFirstOrThrow()
 }

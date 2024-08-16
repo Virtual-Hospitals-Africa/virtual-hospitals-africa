@@ -9,6 +9,8 @@ import {
   NURSE_SPECIALTIES,
   PHARMACIST_TYPES,
   PharmacistType,
+  PHARMACY_TYPES,
+  PharmacyType,
   Prefix,
   PREFIXES,
 } from '../../types.ts'
@@ -894,6 +896,7 @@ export function PrefixSelect(
   )
 }
 
+
 export function PharmacistTypeSelect(
   { value }: { value?: Maybe<PharmacistType> },
 ) {
@@ -913,3 +916,25 @@ export function PharmacistTypeSelect(
     </Select>
   )
 }
+
+export function PharmacyTypeSelect(
+  { value }: { value?: Maybe<PharmacyType> },
+) {
+  return (
+    <Select
+      name='pharmacies_types'
+      label='Specialty'
+      required
+    >
+      {PHARMACY_TYPES.map((type) => (
+        <option
+          value={type}
+          label={type}
+          selected={value === type}
+        />
+      ))}
+    </Select>
+  )
+}
+
+
