@@ -53,7 +53,7 @@ import {
         </FormRow>
         
         <FormRow>
-          <PharmacyTypeSelect value={formData.premises_types} />
+          <PharmacyTypeSelect value={formData.pharmacies_types} />
         </FormRow>
 
         <FormRow>

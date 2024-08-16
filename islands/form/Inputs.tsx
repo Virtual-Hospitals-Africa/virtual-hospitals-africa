@@ -922,7 +922,7 @@ export function PharmacyTypeSelect(
 ) {
   return (
     <Select
-      name='premises_types'
+      name='pharmacies_types'
       label='Specialty'
       required
     >

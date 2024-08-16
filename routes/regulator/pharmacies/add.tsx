@@ -31,7 +31,7 @@ export function assertIsUpsertPharmacy(
     isString(obj.licensee),
   )
   assertOr400(
-    isString(obj.premises_types),
+    isString(obj.pharmacies_types),
   )
   assertOr400(
     isString(obj.expiry_date),
@@ -56,7 +56,7 @@ export const handler = {
       address: to_add.address,
       town: to_add.town,
       expiry_date: to_add.expiry_date,
-      premises_types: to_add.premises_types,
+      pharmacies_types: to_add.pharmacies_types,
       id: to_add.id,
       supervisors: to_add.supervisors,
       actions:to_add.actions

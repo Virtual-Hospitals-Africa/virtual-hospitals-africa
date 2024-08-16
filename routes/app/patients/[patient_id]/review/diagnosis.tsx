@@ -6,7 +6,6 @@ import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 
 // deno-lint-ignore no-explicit-any
 function assertIsDiagnoses(_arg: unknown): arg is any {
-
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
@@ -36,12 +35,12 @@ export default async function DiagnosisPage(
 
   return (
     <ReviewLayout ctx={ctx}>
-        <PatientPreExistingConditions
+      <PatientPreExistingConditions
         allergies={[]}
         patient_allergies={[]}
         pre_existing_conditions={[]}
-        />
-      
+      />
+
       <FormButtons />
     </ReviewLayout>
   )

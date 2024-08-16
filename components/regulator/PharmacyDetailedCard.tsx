@@ -39,10 +39,10 @@ export default function PharmacyDetailedCard(
             </div>
             <div class='px-0 py-6 sm:col-span-1'>
               <dt class='text-sm font-bold leading-6 text-gray-900'>
-                Premises Types
+                Pharmacy Types
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
-                {pharmacy.premises_types}
+                {pharmacy.pharmacies_types}
               </dd>
             </div>
             <div class='py-6 sm:col-span-4 sm:px-0'>

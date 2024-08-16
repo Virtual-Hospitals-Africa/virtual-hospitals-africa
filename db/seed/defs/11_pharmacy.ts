@@ -3,29 +3,29 @@ import { DB } from '../../../db.d.ts'
 import { create } from '../create.ts'
 import parseCsv from '../../../util/parseCsv.ts'
 
-export default create(['premises', 'premise_supervisors'], importFromCsv)
+export default create(['pharmacies', 'pharmacy_employment'], importFromCsv)
 
 async function importFromCsv(db: Kysely<DB>) {
-  const premises = await parseCsv('./db/resources/premises.tsv', {
+  const pharmacies = await parseCsv('./db/resources/pharmacies.tsv', {
     columnSeparator: '\t',
   })
 
   const representatives = await parseCsv(
-    './db/resources/premise_representatives.tsv',
+    './db/resources/pharmacy_representatives.tsv',
     {
       columnSeparator: '\t',
     },
   )
 
-  const premisesData = []
+  const pharmaciesData = []
 
-  for await (const premise of premises) {
-    delete premise['\r']
-    premisesData.push(premise)
+  for await (const pharmacy of pharmacies) {
+    delete pharmacy['\r']
+    pharmaciesData.push(pharmacy)
   }
 
   // deno-lint-ignore no-explicit-any
-  await db.insertInto('premises').values(premisesData as any).execute()
+  await db.insertInto('pharmacies').values(pharmaciesData as any).execute()
 
   const representativesData = []
 
@@ -33,12 +33,12 @@ async function importFromCsv(db: Kysely<DB>) {
     delete representative['\r']
     const { licence_number, given_name, family_name, ...resProps } =
       representative
-    const premise = await db
-      .selectFrom('premises')
+    const pharmacy = await db
+      .selectFrom('pharmacies')
       .select(['id', 'licence_number'])
       .where('licence_number', '=', licence_number)
       .executeTakeFirst()
-    if (!premise) continue
+    if (!pharmacy) continue
 
     const pharmacist = await db
       .selectFrom('pharmacists')
@@ -53,16 +53,17 @@ async function importFromCsv(db: Kysely<DB>) {
     }
 
     representativesData.push({
-      premise_id: premise.id,
+      pharmacy_id: pharmacy.id,
       pharmacist_id: pharmacist.id,
       given_name,
       family_name,
+      is_supervisor: true,
       ...resProps,
     })
   }
 
   await db
-    .insertInto('premise_supervisors')
+    .insertInto('pharmacy_employment')
     // deno-lint-ignore no-explicit-any
     .values(representativesData as any)
     .execute()

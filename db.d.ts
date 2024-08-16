@@ -145,13 +145,7 @@ export type PatientCohabitation =
   | 'Sibling'
   | 'Uncle or Aunt'
 
-export type PharmacistType =
-  | 'Dispensing Medical Practitioner'
-  | 'Ind Clinic Nurse'
-  | 'Pharmacist'
-  | 'Pharmacy Technician'
-
-export type PremisesTypes =
+export type PharmaciesTypes =
   | 'Clinics: Class A'
   | 'Clinics: Class B'
   | 'Clinics: Class C'
@@ -164,6 +158,12 @@ export type PremisesTypes =
   | 'Pharmacy in rural area'
   | 'Pharmacy located in the CBD'
   | 'Wholesalers'
+
+export type PharmacistType =
+  | 'Dispensing Medical Practitioner'
+  | 'Ind Clinic Nurse'
+  | 'Pharmacist'
+  | 'Pharmacy Technician'
 
 export type Profession = 'admin' | 'doctor' | 'nurse'
 
@@ -1056,6 +1056,19 @@ export interface PatientSymptoms {
   updated_at: Generated<Timestamp>
 }
 
+export interface Pharmacies {
+  address: string | null
+  created_at: Generated<Timestamp>
+  expiry_date: Timestamp
+  id: Generated<string>
+  licence_number: string
+  licensee: string
+  name: string
+  pharmacies_types: PharmaciesTypes
+  town: string | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface PharmacistChatbotUsers {
   conversation_state: string
   created_at: Generated<Timestamp>
@@ -1091,6 +1104,18 @@ export interface Pharmacists {
   updated_at: Generated<Timestamp>
 }
 
+export interface PharmacyEmployment {
+  created_at: Generated<Timestamp>
+  family_name: string
+  given_name: string
+  id: Generated<string>
+  is_supervisor: boolean
+  pharmacist_id: string
+  pharmacy_id: string
+  prefix: NamePrefix | null
+  updated_at: Generated<Timestamp>
+}
+
 export interface Practitioner {
   _profile: string[] | null
   _security: string[] | null
@@ -1106,30 +1131,6 @@ export interface Practitioner {
   lastUpdated: Timestamp
   phonetic: string[] | null
   projectId: string | null
-}
-
-export interface Premises {
-  address: string | null
-  created_at: Generated<Timestamp>
-  expiry_date: Timestamp
-  id: Generated<string>
-  licence_number: string
-  licensee: string
-  name: string
-  premises_types: PremisesTypes
-  town: string | null
-  updated_at: Generated<Timestamp>
-}
-
-export interface PremiseSupervisors {
-  created_at: Generated<Timestamp>
-  family_name: string
-  given_name: string
-  id: Generated<string>
-  pharmacist_id: string
-  prefix: NamePrefix | null
-  premise_id: string
-  updated_at: Generated<Timestamp>
 }
 
 export interface Prescriptions {
@@ -1389,13 +1390,13 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
+  pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received:
     PharmacistChatbotUserWhatsappMessagesReceived
   pharmacist_chatbot_users: PharmacistChatbotUsers
   pharmacists: Pharmacists
+  pharmacy_employment: PharmacyEmployment
   Practitioner: Practitioner
-  premise_supervisors: PremiseSupervisors
-  premises: Premises
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
