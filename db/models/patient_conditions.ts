@@ -413,9 +413,7 @@ export async function getPreExistingConditions(
             start_date: medication.start_date,
             intake_frequency: schedule.frequency,
             end_date: durationEndDate(medication.start_date, schedule),
-            // TODO remove the Number casts
-            // https://github.com/kysely-org/kysely/issues/802
-            dosage: Number(schedule.dosage),
+            dosage: schedule.dosage,
             strength: Number(medication.strength),
           }
         }),
