@@ -8,6 +8,7 @@ import { RenderedPharmacy } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
 import { Person } from '../library/Person.tsx'
 import { InvitePharmacySearch } from '../../islands/regulator/InvitePharmacySearch.tsx'
+import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 
 type Pharmacy = {
   address: string | null
@@ -100,6 +101,7 @@ export default function PharmaciesTable({
             header='No pharmacies'
             explanation='Add a pharmacy to get started'
             button={{ text: 'Add Pharmacy', href: add_href }}
+            Icon={UserCircleIcon}
           />
         )}
       />
