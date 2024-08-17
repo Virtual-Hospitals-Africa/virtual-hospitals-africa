@@ -269,13 +269,13 @@ export function recall(
     regulator_id: string
   },
 ) {
-  console.log(data.manufactured_medication_id,data.regulator_id)
+  console.log(data.manufactured_medication_id, data.regulator_id)
   return trx.insertInto('manufactured_medication_recalls').values({
     manufactured_medication_id: data.manufactured_medication_id,
     recalled_at: now,
     recalled_by: data.regulator_id.toString(),
   })
-  .execute()
+    .execute()
 }
 
 export function getById(trx: TrxOrDb, medicine_id: string) {
@@ -296,4 +296,3 @@ export function getById(trx: TrxOrDb, medicine_id: string) {
     .where('manufactured_medications.id', '=', medicine_id)
     .executeTakeFirst()
 }
-
