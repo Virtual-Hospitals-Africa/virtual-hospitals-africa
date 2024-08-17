@@ -454,7 +454,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           health_worker_id: admin.id,
           is_invitee: false,
           name: 'Admin',
-          registration_status: 'incomplete',
+          registration_status: 'approved',
           actions: {
             view:
               `/app/organizations/00000000-0000-0000-0000-000000000001/employees/${admin.id}`,

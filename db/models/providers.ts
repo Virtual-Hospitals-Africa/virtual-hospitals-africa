@@ -13,6 +13,7 @@ export const ensureProviderId = (trx: TrxOrDb, provider_id: string) =>
     .where('id', '=', provider_id)
     .where('profession', 'in', ['doctor', 'nurse'])
 
+// This isn't confirming registration_status
 const getQuery = (trx: TrxOrDb) =>
   getWithTokensQuery(trx)
     .innerJoin(
