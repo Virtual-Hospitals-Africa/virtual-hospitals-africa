@@ -79,7 +79,6 @@ export default function PharmaciesTable({
   currentPage,
   totalPage,
 }: PharmaciesTableProps): JSX.Element {
-  const search_href = `${pathname}`
   const add_href = `${pathname}/add`
   return (
     <>

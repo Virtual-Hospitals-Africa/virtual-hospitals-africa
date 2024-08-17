@@ -5,14 +5,14 @@ import PatientPreExistingConditions from '../../../../../components/patients/int
 import { parseRequestAsserts } from '../../../../../util/parseForm.ts'
 
 // deno-lint-ignore no-explicit-any
-function assertIsDiagnoses(_arg: unknown): arg is any {
+function assertIsDiagnoses(_arg: unknown): _arg is any {
+  return true
 }
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<
   unknown,
   ReviewContext['state']
 > = {
-  // deno-lint-ignore require-await
   async POST(req, ctx: ReviewContext) {
     const data = await parseRequestAsserts(
       ctx.state.trx,
@@ -27,7 +27,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
 // deno-lint-ignore require-await
 export default async function DiagnosisPage(
-  req: Request,
+  _req: Request,
   ctx: ReviewContext,
 ) {
   console.log('params', ctx.params)

@@ -7,10 +7,7 @@ import {
 import { assertOr400 } from '../../util/assertOr.ts'
 import capitalize from '../../util/capitalize.ts'
 import isObjectLike from '../../util/isObjectLike.ts'
-import {
-  getApprovedProviders,
-  nearest,
-} from './organizations.ts'
+import { getApprovedProviders, nearest } from './organizations.ts'
 import { sql } from 'kysely'
 // import { getMany } from './providers.ts'
 // import { getAllProviderAvailability } from '../../shared/scheduling/getProviderAvailability.ts'

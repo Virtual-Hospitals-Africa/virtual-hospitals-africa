@@ -23,9 +23,13 @@ describe(
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)
+      console.log($.html())
 
+      $('input').each((i, elem) => {
+        console.log($(elem).html())
+      })
       assert(
-        $('input[name="given_name_name"]').length === 1,
+        $('input[name="pharmacist_name"]').length === 1,
         'should have a search input',
       )
     })

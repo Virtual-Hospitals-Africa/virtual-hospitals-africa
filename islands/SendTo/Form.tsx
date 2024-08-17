@@ -11,6 +11,12 @@ export function SendToForm(
 ) {
   return (
     <div className='flex flex-col'>
+      {requestTypeOptions && (
+        <SendToRequestRadioButtons
+          options={requestTypeOptions}
+          form={form}
+        />
+      )}
       {textarea && (
         <div className='mt-6 px-4'>
           <h2 className='text-sm font-sans font-medium text-gray-900'>

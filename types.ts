@@ -1079,6 +1079,7 @@ export type OrganizationEmployeeOrInvitee =
   | OrganizationEmployee
   | OrganizationEmployeeInvitee
 
+export type RegistrationStatus = 'pending_approval' | 'approved' | 'incomplete'
 export type OrganizationEmployee = {
   name: string
   is_invitee: false
@@ -1087,11 +1088,12 @@ export type OrganizationEmployee = {
     employee_id: string
     profession: Profession
     specialty: NurseSpecialty | null
+    registration_status: RegistrationStatus
   }[]
   avatar_url: null | string
   email: string
   display_name: string
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+  registration_status: RegistrationStatus
   actions: {
     view: string
   }

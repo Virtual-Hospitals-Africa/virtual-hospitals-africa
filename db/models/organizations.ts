@@ -1,7 +1,6 @@
 import { sql } from 'kysely'
 import { assert } from 'std/assert/assert.ts'
 import {
-  GoogleTokens,
   HasStringId,
   Location,
   Maybe,
@@ -14,12 +13,10 @@ import {
 } from '../../types.ts'
 import * as employment from './employment.ts'
 import partition from '../../util/partition.ts'
-import { debugLog, jsonAgg, jsonBuildObject } from '../helpers.ts'
+import { jsonAgg, jsonBuildObject } from '../helpers.ts'
 import * as medplum from '../../external-clients/medplum/client.ts'
 import { assertEquals } from 'std/assert/assert_equals.ts'
 import { assertOr400, StatusError } from '../../util/assertOr.ts'
-import { assertAll } from '../../util/assertAll.ts'
-import { isGoogleTokens } from '../../external-clients/google.ts'
 
 export async function nearest(
   trx: TrxOrDb,
@@ -291,23 +288,6 @@ export async function getApprovedProviders(
       specialty,
     }
   })
-}
-
-export async function getApprovedProvidersWithTokens(
-  trx: TrxOrDb,
-  organization_id: string,
-  opts: Omit<
-    EmployeeQueryOpts,
-    'is_approved' | 'professions' | 'include_google_tokens'
-  > = {},
-): Promise<Array<OrganizationDoctorOrNurse & GoogleTokens>> {
-  const employees = await getApprovedProviders(trx, organization_id, {
-    ...opts,
-    include_google_tokens: true,
-  })
-
-  assertAll<OrganizationDoctorOrNurse, GoogleTokens>(employees, isGoogleTokens)
-  return employees
 }
 
 export function getEmployeesAndInvitees(

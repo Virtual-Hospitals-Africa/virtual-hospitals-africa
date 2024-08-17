@@ -118,7 +118,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
             health_worker_id: hw_at_organization2.id,
             is_invitee: false,
             name: 'At Organization 2',
-            registration_status: 'incomplete',
+            registration_status: 'approved',
             actions: {
               view: `/app/organizations/${
                 organization_ids[0]
@@ -190,7 +190,7 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
               health_worker_id: hw_at_organization2.id,
               is_invitee: false,
               name: 'At Organization 2',
-              registration_status: 'incomplete',
+              registration_status: 'approved',
               actions: {
                 view: `/app/organizations/${
                   organization_ids[0]
@@ -281,20 +281,34 @@ describe('db/models/organizations.ts', { sanitizeResources: false }, () => {
           )
 
           assertEquals(withInvitees.length, 1)
-          assertEquals(omit(withInvitees[0], ['professions']), {
+          assertEquals(withInvitees[0], {
             avatar_url: 'avatar_url',
             email: hw_at_organization2.email,
             display_name: 'At Organization 2',
             health_worker_id: hw_at_organization2.id,
             is_invitee: false,
             name: 'At Organization 2',
-            registration_status: 'incomplete',
+            registration_status: 'approved',
             actions: {
               view: `/app/organizations/${
                 organization_ids[0]
               }/employees/${hw_at_organization2.id}`,
             },
             online: null,
+            professions: [
+              {
+                employee_id: withInvitees[0].professions[0].employee_id!,
+                profession: 'admin',
+                registration_status: 'approved',
+                specialty: null,
+              },
+              {
+                employee_id: withInvitees[0].professions[1].employee_id!,
+                profession: 'doctor',
+                registration_status: 'approved',
+                specialty: null,
+              },
+            ],
           })
           assertEquals(withInvitees[0].professions.length, 2)
           assertEquals(withInvitees[0].professions[0].profession, 'admin')

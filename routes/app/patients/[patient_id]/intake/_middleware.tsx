@@ -10,7 +10,6 @@ import {
   RenderedPatientEncounterProvider,
   Sendable,
   SendToFormSubmission,
-  TrxOrDb,
 } from '../../../../../types.ts'
 import * as patients from '../../../../../db/models/patients.ts'
 import { assertOr400, assertOrRedirect } from '../../../../../util/assertOr.ts'
