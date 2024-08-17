@@ -7,7 +7,7 @@ import {
   RenderedMedicine,
   TrxOrDb,
 } from '../../types.ts'
-import { jsonArrayFrom, jsonArrayFromColumn } from '../helpers.ts'
+import { jsonArrayFrom, jsonArrayFromColumn, now } from '../helpers.ts'
 
 export function strengthDisplay(
   builder: RawBuilder<string>,
@@ -254,7 +254,45 @@ export async function get(
     medicines: medicines.map((medicine) => ({
       ...medicine,
       strength_denominator: parseFloat(medicine.strength_denominator),
+      actions: {
+        recall: `/regulator/medicines/${medicine.id}/recall`,
+      },
     })),
     totalRows,
   }
+}
+
+export function recall(
+  trx: TrxOrDb,
+  data: {
+    manufactured_medication_id: string
+    regulator_id: string
+  },
+) {
+  console.log(data.manufactured_medication_id, data.regulator_id)
+  return trx.insertInto('manufactured_medication_recalls').values({
+    manufactured_medication_id: data.manufactured_medication_id,
+    recalled_at: now,
+    recalled_by: data.regulator_id.toString(),
+  })
+    .execute()
+}
+
+export function getById(trx: TrxOrDb, medicine_id: string) {
+  return trx.selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .select([
+      'manufactured_medications.id',
+      'drugs.generic_name',
+      'manufactured_medications.trade_name',
+      'manufactured_medications.applicant_name',
+      strengthSummary('manufactured_medications'),
+    ])
+    .where('manufactured_medications.id', '=', medicine_id)
+    .executeTakeFirst()
 }
