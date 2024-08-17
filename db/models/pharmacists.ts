@@ -138,7 +138,7 @@ export function revoke(
   trx: TrxOrDb,
   data: {
     pharmacist_id: string
-    regulator_id: number
+    regulator_id: string
   },
 ) {
   return trx.updateTable('pharmacists').set({

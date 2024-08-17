@@ -22,7 +22,7 @@ export const handler = {
 
     await pharmacists.revoke(ctx.state.trx, {
       pharmacist_id,
-      regulator_id: 7,
+      regulator_id: ctx.state.regulator.id,
     })
 
     return redirect('/regulator/pharmacists')

@@ -38,7 +38,8 @@ export async function up(db: Kysely<unknown>) {
       ).addColumn('revoked_at', 'timestamp')
       .addColumn(
         'revoked_by',
-        'integer', /*, col => col.references('regulators.id')*/
+        'uuid',
+        (col) => col.references('regulators.id'),
       )
       .addCheckConstraint(
         'revoked_at',

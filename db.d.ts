@@ -1108,7 +1108,7 @@ export interface Pharmacists {
   pharmacist_type: PharmacistType
   prefix: NamePrefix | null
   revoked_at: Timestamp | null
-  revoked_by: number | null
+  revoked_by: string | null
   town: string | null
   updated_at: Generated<Timestamp>
 }
