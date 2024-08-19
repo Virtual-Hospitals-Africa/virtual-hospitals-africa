@@ -1,4 +1,5 @@
 import { DetailedPharmacist } from '../../types.ts'
+
 type PharmacistProps = {
   pharmacist: DetailedPharmacist
 }
@@ -65,6 +66,19 @@ export default function PharmacistDetailedCard({
               </dt>
               <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
                 {pharmacist?.address}
+              </dd>
+            </div>
+            <div class='border-t border-gray-100 py-6 sm:col-span-4 sm:px-0'>
+              <dt class='text-sm font-bold leading-6 text-gray-900'>
+                Pharmacy
+              </dt>
+              <dd class='mt-1 text-sm leading-6 text-gray-700 sm:mt-2'>
+                <a
+                  className='text-indigo-600 hover:text-indigo-900'
+                  href={pharmacist.pharmacy?.href}
+                >
+                  {pharmacist.pharmacy?.name}
+                </a>
               </dd>
             </div>
           </dl>

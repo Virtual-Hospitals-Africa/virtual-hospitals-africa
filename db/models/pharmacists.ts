@@ -56,7 +56,7 @@ function pharmacists_with_pharmacy_sql(trx: TrxOrDb) {
       address_town_sql('pharmacists').as('full_address'),
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
-      sql`CASE
+      sql<RenderedPharmacy | undefined>`CASE
         WHEN pharmacies.id IS NOT NULL THEN ${
         jsonBuildObject({
           id: eb.ref('pharmacies.id'),
