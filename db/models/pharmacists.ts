@@ -35,20 +35,8 @@ export function address_town_sql(table: string) {
   })`
 }
 
-export async function get(
-  trx: TrxOrDb,
-  query: {
-    licence_number?: string
-    given_name?: string
-    family_name?: string
-    pharmacist_type?: string
-    include_revoked?: boolean
-  } = {},
-  page: number = 1,
-  rowsPerPage: number = 10,
-) {
-  const offset = (page - 1) * rowsPerPage
-  const pharmacists = await trx
+function pharmacists_with_pharmacy_sql(trx: TrxOrDb) {
+  return trx
     .selectFrom('pharmacists')
     .leftJoin(
       'pharmacy_employment',
@@ -60,8 +48,12 @@ export async function get(
       'pharmacists.id',
       'pharmacists.licence_number',
       'pharmacists.prefix',
+      'pharmacists.given_name',
+      'pharmacists.family_name',
       name_sql('pharmacists').as('name'),
-      address_town_sql('pharmacists').as('address'),
+      'pharmacists.town',
+      'pharmacists.address',
+      address_town_sql('pharmacists').as('full_address'),
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
       sql`CASE
@@ -83,6 +75,22 @@ export async function get(
         ELSE NULL
       END`.as('pharmacy'),
     ])
+}
+
+export async function get(
+  trx: TrxOrDb,
+  query: {
+    licence_number?: string
+    given_name?: string
+    family_name?: string
+    pharmacist_type?: string
+    include_revoked?: boolean
+  } = {},
+  page: number = 1,
+  rowsPerPage: number = 10,
+) {
+  const offset = (page - 1) * rowsPerPage
+  const pharmacists = await pharmacists_with_pharmacy_sql(trx)
     .where(
       'pharmacists.revoked_at',
       query.include_revoked ? 'is not' : 'is',
@@ -118,19 +126,8 @@ export async function get(
 }
 
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
-  return trx.selectFrom('pharmacists')
-    .select([
-      'id',
-      'licence_number',
-      'prefix',
-      'given_name',
-      'family_name',
-      'address',
-      'town',
-      'expiry_date',
-      'pharmacist_type',
-    ])
-    .where('id', '=', pharmacist_id)
+  return pharmacists_with_pharmacy_sql(trx)
+    .where('pharmacists.id', '=', pharmacist_id)
     .executeTakeFirst()
 }
 

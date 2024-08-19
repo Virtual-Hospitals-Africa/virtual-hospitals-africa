@@ -2890,6 +2890,7 @@ export type RenderedPharmacist = {
   given_name: string
   family_name: string
   address: string | null
+  full_address?: string | null
   town: string | null
   expiry_date: string
   pharmacist_type:

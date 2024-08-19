@@ -24,7 +24,7 @@ const columns: TableColumn<Pharmacist>[] = [
   },
   {
     label: 'Address',
-    data: 'address',
+    data: 'full_address',
   },
   {
     label: 'License Number',
