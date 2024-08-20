@@ -305,19 +305,6 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      await conversations.updateChatbotUser(
-        trx,
-        pharmacistState.chatbot_user,
-        {
-          data: {
-            ...omit(pharmacistState.chatbot_user.data, [
-              'index_of_medications',
-            ]),
-            index_of_medications: 0,
-          },
-        },
-      )
-
       return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${await processNextMedication(
         trx,
         pharmacistState,
@@ -377,7 +364,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       },
       {
         id: 'main_menu',
-        title: 'Bakc To Main Menu',
+        title: 'Back To Main Menu',
         onExit: 'initial_message',
       },
     ],

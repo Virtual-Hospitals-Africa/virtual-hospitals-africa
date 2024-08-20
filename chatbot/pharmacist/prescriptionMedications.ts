@@ -27,13 +27,26 @@ export async function medicationDescription(
   })
 }
 
-export function dispenseType(
-  _trx: TrxOrDb,
+export async function dispenseType(
+  trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
 ) {
   const unhandled_message = pharmacistState.unhandled_message.trimmed_body!
   const { number_of_medications } = pharmacistState.chatbot_user.data
   assert(typeof number_of_medications === 'number')
+
+  await conversations.updateChatbotUser(
+    trx,
+    pharmacistState.chatbot_user,
+    {
+      data: {
+        ...omit(pharmacistState.chatbot_user.data, [
+          'index_of_medications',
+        ]),
+        index_of_medications: 0,
+      },
+    },
+  )
 
   if (
     unhandled_message === 'dispense' || unhandled_message === 'restart_dispense'
