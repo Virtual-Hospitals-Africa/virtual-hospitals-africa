@@ -19,7 +19,6 @@ import {
   medicationDescription,
   processNextMedication,
 } from './prescriptionMedications.ts'
-import omit from '../../util/omit.ts'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
