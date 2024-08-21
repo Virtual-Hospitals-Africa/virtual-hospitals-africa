@@ -98,6 +98,7 @@ import * as $regulator from './routes/regulator.tsx'
 import * as $regulator_middleware from './routes/regulator/_middleware.ts'
 import * as $regulator_medicines from './routes/regulator/medicines.tsx'
 import * as $regulator_medicines_medicine_id_recall from './routes/regulator/medicines/[medicine_id]/recall.tsx'
+import * as $regulator_medicines_medicines from './routes/regulator/medicines/medicines.tsx'
 import * as $regulator_pharmacies from './routes/regulator/pharmacies.tsx'
 import * as $regulator_pharmacies_pharmacy_name_ from './routes/regulator/pharmacies/[pharmacy.name].tsx'
 import * as $regulator_pharmacies_pharmacy_id_ from './routes/regulator/pharmacies/[pharmacy_id].tsx'
@@ -206,6 +207,7 @@ import * as $referral_Form from './islands/referral/Form.tsx'
 import * as $regulator_InvitePharmacistForm from './islands/regulator/InvitePharmacistForm.tsx'
 import * as $regulator_InvitePharmacistSearch from './islands/regulator/InvitePharmacistSearch.tsx'
 import * as $regulator_InvitePharmacySearch from './islands/regulator/InvitePharmacySearch.tsx'
+import * as $regulator_MedicineSearch from './islands/regulator/MedicineSearch.tsx'
 import * as $symptoms_DurationInput from './islands/symptoms/DurationInput.tsx'
 import * as $symptoms_Input from './islands/symptoms/Input.tsx'
 import * as $symptoms_Section from './islands/symptoms/Section.tsx'
@@ -369,6 +371,8 @@ const manifest = {
     './routes/regulator/medicines.tsx': $regulator_medicines,
     './routes/regulator/medicines/[medicine_id]/recall.tsx':
       $regulator_medicines_medicine_id_recall,
+    './routes/regulator/medicines/medicines.tsx':
+      $regulator_medicines_medicines,
     './routes/regulator/pharmacies.tsx': $regulator_pharmacies,
     './routes/regulator/pharmacies/[pharmacy.name].tsx':
       $regulator_pharmacies_pharmacy_name_,
@@ -496,6 +500,7 @@ const manifest = {
       $regulator_InvitePharmacistSearch,
     './islands/regulator/InvitePharmacySearch.tsx':
       $regulator_InvitePharmacySearch,
+    './islands/regulator/MedicineSearch.tsx': $regulator_MedicineSearch,
     './islands/symptoms/DurationInput.tsx': $symptoms_DurationInput,
     './islands/symptoms/Input.tsx': $symptoms_Input,
     './islands/symptoms/Section.tsx': $symptoms_Section,

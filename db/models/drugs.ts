@@ -103,6 +103,31 @@ function baseQuery(trx: TrxOrDb) {
     ])
 }
 
+
+export async function getAllWithSearchCondition(
+  trx: TrxOrDb,
+  search?: Maybe<string>,
+){
+ let query = getQuery(trx).limit(30)
+ if(search){
+  query = query.where('generic_name', 'ilike', `%${search}%`).orderBy('generic_name', 'asc')
+  .limit(30)
+ }
+ return query.execute()
+}
+
+function getQuery(trx: TrxOrDb) {
+  return trx
+    .selectFrom('drugs')
+    .select((_eb) => [
+      'drugs.id',
+      'drugs.generic_name',
+      'drugs.created_at',
+      'drugs.updated_at',
+    ])
+}
+
+
 export async function search(
   trx: TrxOrDb,
   opts: {

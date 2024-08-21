@@ -3,10 +3,10 @@ import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
-import { SearchInput } from '../../islands/form/Inputs.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedMedicine } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
+import { MedicineSearch } from '../../islands/regulator/MedicineSearch.tsx'
 
 const columns: TableColumn<RenderedMedicine>[] = [
   {
@@ -57,7 +57,7 @@ export default function MedicinesTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <SearchInput />
+        <MedicineSearch />
         <Button
           type='button'
           href={search_href}
