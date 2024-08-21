@@ -108,10 +108,12 @@ export async function getAllWithSearchCondition(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ){
- let query = getQuery(trx).limit(30)
+ let query = baseQuery(trx).limit(30)
+//  let query = getQuery(trx).limit(30)
  if(search){
-  query = query.where('generic_name', 'ilike', `%${search}%`).orderBy('generic_name', 'asc')
+  query = query.where(sql`concat('drugs.generic_name',' ','manufactured_medications.trade_name',' ','manufactured_medications.applicant_name')`, 'ilike', `%${search}%`).orderBy('name', 'asc')
   .limit(30)
+  // query = query.where('drugs.generic_name','ilike','%${search}%').orderBy('drugs.generic_name', 'asc')
  }
  return query.execute()
 }
@@ -125,6 +127,7 @@ function getQuery(trx: TrxOrDb) {
       'drugs.created_at',
       'drugs.updated_at',
     ])
+  
 }
 
 
