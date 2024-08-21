@@ -117,6 +117,23 @@ export async function get(
   }
 }
 
+export function getByName(trx: TrxOrDb, name:string){
+  return trx.selectFrom('pharmacists')
+  .select([
+    'id',
+    'licence_number',
+    'prefix',
+    'given_name',
+    'family_name',
+    'address',
+    'town',
+    'expiry_date',
+    'pharmacist_type',
+  ])
+  .where(sql`concat(given_name, ' ', family_name)`, '=', name)
+  .executeTakeFirst()
+}
+
 export function getById(trx: TrxOrDb, pharmacist_id: string) {
   return trx.selectFrom('pharmacists')
     .select([

@@ -38,6 +38,7 @@ export default async function PharmacyPage(
         </div>
         <PharmacyDetailedCard
           pharmacy={pharmacy}
+          ctx={ctx}
         />
       </div>
     </Layout>
