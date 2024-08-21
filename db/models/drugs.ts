@@ -104,11 +104,65 @@ function baseQuery(trx: TrxOrDb) {
 }
 
 
+function baseQueryNoDistinct(trx: TrxOrDb) {
+  return trx
+    .selectFrom('drugs')
+    .select((eb_drugs) => [
+      'drugs.id',
+      'drugs.generic_name as name',
+      jsonArrayFromColumn(
+        'trade_name',
+        eb_drugs
+          .selectFrom('medications')
+          .innerJoin(
+            'manufactured_medications',
+            'manufactured_medications.medication_id',
+            'medications.id',
+          )
+          .whereRef(
+            'medications.drug_id',
+            '=',
+            'drugs.id',
+          )
+          .where(
+            'manufactured_medications.trade_name',
+            '!=',
+            eb_drugs.ref('drugs.generic_name'),
+          )
+          .select('manufactured_medications.trade_name')
+      ).as('distinct_trade_names'),
+      jsonArrayFromColumn(
+        'applicant_name',
+        eb_drugs
+          .selectFrom('medications')
+          .innerJoin(
+            'manufactured_medications',
+            'manufactured_medications.medication_id',
+            'medications.id',
+          )
+          .whereRef(
+            'medications.drug_id',
+            '=',
+            'drugs.id',
+          )
+          .where(
+            'manufactured_medications.trade_name',
+            '!=',
+            eb_drugs.ref('drugs.generic_name'),
+          )
+          .select('manufactured_medications.applicant_name')
+      ).as('distinct_applicant_names'),
+    ])
+}
+
+
+
+
 export async function getAllWithSearchCondition(
   trx: TrxOrDb,
   search?: Maybe<string>,
 ){
- let query = baseQuery(trx).limit(30)
+ let query = baseQueryNoDistinct(trx).limit(30)
 //  let query = getQuery(trx).limit(30)
  if(search){
   query = query.where(sql`concat('drugs.generic_name',' ','manufactured_medications.trade_name',' ','manufactured_medications.applicant_name')`, 'ilike', `%${search}%`).orderBy('name', 'asc')
