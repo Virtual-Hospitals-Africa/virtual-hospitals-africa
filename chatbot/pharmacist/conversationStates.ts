@@ -12,13 +12,24 @@ import { sql } from 'kysely'
 import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
+import omit from '../../util/omit.ts'
 import {
-  dispense_next_stag,
+  dispenseNextStep,
   dispenseType,
-  getPrescriber,
   medicationDescription,
   processNextMedication,
+  isTheLastMedication,
+  getPendingMedicationsByPrescriptionId,
+  UpdateNumberOfDispensedMedications,
 } from './prescriptionMedications.ts'
+import { 
+  getPrescriberByPrescriptionId, 
+  dispenseMedications,
+  getMedicationsByPrescriptionId,
+  getFilledMedicationsByPrescriptionId,
+  deleteFilledMedications,
+ } from '../../db/models/prescriptions.ts'
+import prescriptions from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -210,22 +221,33 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
   },
   'onboarded:fill_prescription:send_pdf': {
     type: 'send_document',
-    prompt: 'Here is your prescription',
+    prompt: '',
     async getMessages(_trx, pharmacistState) {
       const { prescription_id, prescription_code } =
         pharmacistState.chatbot_user.data
       assert(typeof prescription_id === 'string')
       assert(typeof prescription_code === 'string')
 
-      const medications = await medicationDescription(_trx, prescription_id)
+      const medications = await getMedicationsByPrescriptionId(_trx, prescription_id)
+      const medicationDescriptions = await medicationDescription(_trx, medications)
+      const filledMedications = await getFilledMedicationsByPrescriptionId(_trx, prescription_id)
+      const pendingMedications = medications.filter(medication => 
+        !filledMedications.some(filledMedication => 
+          filledMedication.patient_prescription_medication_id === medication.patient_prescription_medication_id
+        )
+      )
+      const pendingMedicationsDescriptions = await medicationDescription(_trx, pendingMedications)
+      
       await conversations.updateChatbotUser(
         _trx,
         pharmacistState.chatbot_user,
         {
           data: {
             ...pharmacistState.chatbot_user.data,
-            medications: medications,
-            number_of_medications: medications.length,
+            medications: medicationDescriptions,
+            pendingMedications: pendingMedicationsDescriptions,
+            number_of_medications: pendingMedicationsDescriptions.length,
+            number_of_dispensed_medications: 0, //The number of medications dispensed in this round
             index_of_medications: 0,
           },
         },
@@ -237,7 +259,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
 
       const documentMessage: WhatsAppSingleSendable = {
         type: 'document',
-        messageBody: `${String(this.prompt)}\n* ${medications.join('\n* ')}`,
+        messageBody: `Here is your prescription\n* ${medicationDescriptions.join('\n* ')}`,
         file_path,
       }
 
@@ -273,7 +295,20 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'yes',
         title: 'Yes',
-        onExit: 'onboarded:fill_prescription:confirm_done',
+        async onExit(trx, pharmacistState) {
+          const prescription_id = pharmacistState.chatbot_user.data.prescription_id
+          const medications = await getPendingMedicationsByPrescriptionId(trx, prescription_id)
+          const filledMedicationData = [{
+            patient_prescription_medication_id: medications[0].patient_prescription_medication_id,
+            pharmacist_id: pharmacistState.chatbot_user.entity_id,
+            pharmacy_id: pharmacistState.chatbot_user.entity_id,//JUST FOR TEST
+          }]
+          await dispenseMedications(trx, filledMedicationData)
+
+          await UpdateNumberOfDispensedMedications(trx, pharmacistState, 1)
+
+          return 'onboarded:fill_prescription:confirm_done' as const
+        },
       },
       {
         id: 'no',
@@ -289,7 +324,18 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'Yes',
         title: 'Yes',
-        onExit: 'onboarded:fill_prescription:confirm_done',
+        async onExit(trx, pharmacistState) {
+          const prescription_id = pharmacistState.chatbot_user.data.prescription_id
+          const medications = await getPendingMedicationsByPrescriptionId(trx, prescription_id)
+          const filledMedicationData = medications.map((medication) => ({
+            patient_prescription_medication_id: medication.patient_prescription_medication_id,
+            pharmacist_id: pharmacistState.chatbot_user.entity_id,
+            pharmacy_id: pharmacistState.chatbot_user.entity_id, // JUST FOR TEST
+          }));
+          await dispenseMedications(trx, filledMedicationData)
+          await UpdateNumberOfDispensedMedications(trx, pharmacistState, medications.length)
+          return 'onboarded:fill_prescription:confirm_done' as const
+        },
       },
       {
         id: 'No',
@@ -312,7 +358,19 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     options: [{
       id: 'yes',
       title: 'Yes',
-      onExit: 'onboarded:fill_prescription:dispense_select',
+      async onExit(trx, pharmacistState) {
+        const currentIndex = Number(pharmacistState.chatbot_user.data.index_of_medications) - 1
+        const prescription_id = pharmacistState.chatbot_user.data.prescription_id
+        const medications = await getPendingMedicationsByPrescriptionId(trx, prescription_id)
+        const filledMedicationData = [{
+          patient_prescription_medication_id: medications[currentIndex].patient_prescription_medication_id,
+          pharmacist_id: pharmacistState.chatbot_user.entity_id,
+          pharmacy_id: pharmacistState.chatbot_user.entity_id,//JUST FOR TEST
+        }]
+        await dispenseMedications(trx, filledMedicationData)
+        await UpdateNumberOfDispensedMedications(trx, pharmacistState, 1)
+        return 'onboarded:fill_prescription:dispense_select' as const
+      },
     }, {
       id: 'no',
       title: 'No',
@@ -333,11 +391,25 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     options: [{
       id: 'yes',
       title: 'Yes',
-      onExit: dispense_next_stag,
+      async onExit(trx, pharmacistState) {
+        const prescription_id = pharmacistState.chatbot_user.data.prescription_id
+        const medications = await getPendingMedicationsByPrescriptionId(trx, prescription_id)
+        const filledMedicationData = [{
+          patient_prescription_medication_id: medications[0].patient_prescription_medication_id,
+          pharmacist_id: pharmacistState.chatbot_user.entity_id,
+          pharmacy_id: pharmacistState.chatbot_user.entity_id,//JUST FOR TEST
+        }]
+        await dispenseMedications(trx, filledMedicationData)
+        await UpdateNumberOfDispensedMedications(trx, pharmacistState, 1)
+
+        return isTheLastMedication(pharmacistState)
+        ? 'onboarded:fill_prescription:confirm_done' as const
+        : 'onboarded:fill_prescription:dispense_select' as const
+      },
     }, {
       id: 'no',
       title: 'No',
-      onExit: dispense_next_stag,
+      onExit: dispenseNextStep,
     }],
   },
   'onboarded:fill_prescription:confirm_done': {
@@ -346,7 +418,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      const prescriber = await getPrescriber(trx, pharmacistState)
+      const { prescription_id } = pharmacistState.chatbot_user.data
+      assert(typeof prescription_id === 'string')
+      const prescriber = await getPrescriberByPrescriptionId(trx, prescription_id)
       assert(prescriber)
       return `Thank you for assisting "${prescriber.name}" do you want to Print or Share the Prescription Note, or restart dispense`
     },
@@ -359,7 +433,15 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'restart_dispense',
         title: 'Restart Dispense',
-        onExit: dispenseType,
+        async onExit(trx, pharmacistState) {
+            const prescription_id = pharmacistState.chatbot_user.data.prescription_id
+            const number_of_dispensed_medications = Number(pharmacistState.chatbot_user.data.number_of_dispensed_medications)
+            const allFilledMedications = await getFilledMedicationsByPrescriptionId(trx, prescription_id)
+            const filledMedicationsThisRound = allFilledMedications.slice(0, number_of_dispensed_medications);
+            console.log(filledMedicationsThisRound);
+            await deleteFilledMedications(trx, filledMedicationsThisRound)
+          return await dispenseType(trx, pharmacistState)
+        }
       },
       {
         id: 'main_menu',

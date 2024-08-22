@@ -88,6 +88,7 @@ export async function getMedicationsByPrescriptionId(
     .innerJoin('drugs', 'medications.drug_id', 'drugs.id')
     .where('prescriptions.id', '=', prescription_id)
     .select((eb) => [
+      'patient_prescription_medications.id as patient_prescription_medication_id',
       'drugs.generic_name as name',
       'medications.form',
       'patient_condition_medications.route',
@@ -107,7 +108,7 @@ export async function getMedicationsByPrescriptionId(
     .execute()
 
   return patient_medications
-    .map(({ schedules, ...medication }) => {
+    .map(({ schedules, patient_prescription_medication_id, ...medication }) => {
       assertEquals(schedules.length, 1)
       assert(medication.start_date)
       const [schedule] = schedules
@@ -123,6 +124,81 @@ export async function getMedicationsByPrescriptionId(
         dosage: schedule.dosage,
         strength: Number(medication.strength),
         strength_denominator: Number(medication.strength_denominator),
+        patient_prescription_medication_id,
       }
     })
+}
+
+export async function getPrescriberByPrescriptionId(
+  trx: TrxOrDb,
+  prescription_id: string,
+) {
+  assert(typeof prescription_id === 'string')
+  const prescriber = await trx
+    .selectFrom('prescriptions')
+    .innerJoin(
+      'patient_encounter_providers',
+      'patient_encounter_providers.id',
+      'prescriptions.prescriber_id',
+    )
+    .innerJoin(
+      'employment',
+      'employment.id',
+      'patient_encounter_providers.provider_id',
+    )
+    .innerJoin(
+      'health_workers',
+      'health_workers.id',
+      'employment.health_worker_id',
+    )
+    .where('prescriptions.id', '=', prescription_id)
+    .select('health_workers.name')
+    .executeTakeFirst()
+
+  return prescriber
+}
+
+export async function dispenseMedications(
+  trx: TrxOrDb,
+  DispensedMedications: {
+    patient_prescription_medication_id: string,
+    pharmacist_id: string,
+    pharmacy_id: string,
+  }[]
+){
+  return await trx
+  .insertInto('patient_prescription_medications_filled')
+  .values(DispensedMedications)
+  .returningAll()
+  .execute()
+}
+
+export async function getFilledMedicationsByPrescriptionId(
+  trx: TrxOrDb,
+  prescription_id: string,
+){
+  return await trx
+    .selectFrom('patient_prescription_medications')
+    .innerJoin(
+      'patient_prescription_medications_filled',
+      'patient_prescription_medications_filled.patient_prescription_medication_id',
+      'patient_prescription_medications.id',
+    )
+    .where('patient_prescription_medications.prescription_id', '=', prescription_id)
+    .select('patient_prescription_medications_filled.patient_prescription_medication_id')
+    .orderBy('patient_prescription_medications_filled.created_at', 'desc')
+    .execute()
+}
+
+export async function deleteFilledMedications(
+  trx: TrxOrDb,
+  filledMedications: {
+    patient_prescription_medication_id: string,
+  }[]
+) {
+  const idsToDelete = filledMedications.map(medication => medication.patient_prescription_medication_id);
+  return await trx
+  .deleteFrom('patient_prescription_medications_filled')
+  .where('patient_prescription_medication_id', 'in', idsToDelete)
+  .execute()
 }
