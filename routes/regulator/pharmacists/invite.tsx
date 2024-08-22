@@ -6,6 +6,7 @@ import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import isString from '../../../util/isString.ts'
+import isBoolean from '../../../util/isBoolean.ts'
 import * as pharmacists from '../../../db/models/pharmacists.ts'
 import Layout from '../../../components/library/Layout.tsx'
 import { LoggedInRegulator, RenderedPharmacist } from '../../../types.ts'
@@ -16,7 +17,11 @@ type InviteProps = {
 
 export function assertIsUpsertPharmacist(
   obj: unknown,
-): asserts obj is RenderedPharmacist {
+): asserts obj is RenderedPharmacist & {
+  pharmacy_id?: string
+  pharmacy_name?: string
+  is_supervisor?: boolean
+} {
   assertOr400(isObjectLike(obj))
   assertOr400(
     isString(obj.licence_number),
@@ -42,6 +47,14 @@ export function assertIsUpsertPharmacist(
   assertOr400(
     isString(obj.pharmacist_type),
   )
+  if (obj.pharmacy_id) {
+    assertOr400(
+      isString(obj.pharmacy_id),
+    )
+    assertOr400(
+      isBoolean(obj.is_supervisor),
+    )
+  }
 }
 
 export const handler = {
@@ -61,6 +74,9 @@ export const handler = {
       town: to_add.town,
       expiry_date: to_add.expiry_date,
       pharmacist_type: to_add.pharmacist_type,
+      ...(to_add.pharmacy_id && { pharmacy_id: to_add.pharmacy_id }),
+      ...(to_add.pharmacy_id && to_add.is_supervisor !== undefined &&
+        { is_supervisor: to_add.is_supervisor }),
     })
 
     const success = encodeURIComponent(

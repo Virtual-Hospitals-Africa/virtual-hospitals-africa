@@ -64,7 +64,7 @@ export type TextAreaProps = WrapperInputProps<HTMLTextAreaElement, string> & {
   rows?: number
 }
 
-function LabeledInput(
+export function LabeledInput(
   {
     name,
     label = name && capitalize(last(name.split('.'))!),
@@ -932,6 +932,26 @@ export function PharmacyTypeSelect(
           selected={value === type}
         />
       ))}
+    </Select>
+  )
+}
+
+export function IsSupervisorSelect(
+  { value, isRequired }: { value: Maybe<string>; isRequired: boolean },
+) {
+  return (
+    <Select
+      required={isRequired}
+      name='is_supervisor'
+      label='Is Supervisor'
+    >
+      <option value=''>Select</option>
+      <option value='true' label='Yes' selected={value === 'true'} />
+      <option
+        value='false'
+        label='No'
+        selected={value === 'false'}
+      />
     </Select>
   )
 }

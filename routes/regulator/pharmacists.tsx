@@ -44,7 +44,6 @@ export const handler = {
 export default function PharmacistsPage(
   props: PageProps<PharmacistsProps>,
 ) {
-  console.log('props.data.pharmacists', props.data.pharmacists)
   return (
     <Layout
       title='Pharmacists'

@@ -7,16 +7,56 @@ import {
 import { jsonBuildObject, now } from '../helpers.ts'
 import { sql } from 'kysely'
 
-export function update(
+export async function update(
   trx: TrxOrDb,
   pharmacist_id: string,
-  data: RenderedPharmacist,
+  data: RenderedPharmacist & { pharmacy_id?: string; is_supervisor?: boolean },
 ) {
-  return trx
+  const { pharmacy_id, is_supervisor, ...pharmacistData } = data
+  await trx
     .updateTable('pharmacists')
-    .set(data)
+    .set(pharmacistData)
     .where('id', '=', pharmacist_id)
     .execute()
+
+  const existingPharmacy = await trx
+    .selectFrom('pharmacy_employment')
+    .where('pharmacist_id', '=', pharmacist_id)
+    .executeTakeFirst()
+
+  const hasSelectedPharmacy = pharmacy_id !== undefined &&
+    is_supervisor !== undefined
+
+  if (!existingPharmacy && !hasSelectedPharmacy) return
+  if (existingPharmacy && !hasSelectedPharmacy) {
+    return await trx
+      .deleteFrom('pharmacy_employment')
+      .where('pharmacist_id', '=', pharmacist_id)
+      .execute()
+  }
+  if (existingPharmacy && hasSelectedPharmacy) {
+    return await trx
+      .updateTable('pharmacy_employment')
+      .set({
+        pharmacy_id: pharmacy_id,
+        is_supervisor: is_supervisor,
+      })
+      .where('pharmacist_id', '=', pharmacist_id)
+      .execute()
+  }
+  if (!existingPharmacy && hasSelectedPharmacy) {
+    await trx
+      .insertInto('pharmacy_employment')
+      .values({
+        pharmacist_id,
+        pharmacy_id: pharmacy_id,
+        family_name: pharmacistData.family_name,
+        given_name: pharmacistData.given_name,
+        is_supervisor: is_supervisor,
+        prefix: pharmacistData.prefix,
+      })
+      .execute()
+  }
 }
 
 export function name_sql(table: string) {
@@ -56,6 +96,7 @@ function pharmacists_with_pharmacy_sql(trx: TrxOrDb) {
       address_town_sql('pharmacists').as('full_address'),
       'pharmacists.expiry_date',
       'pharmacists.pharmacist_type',
+      'pharmacy_employment.is_supervisor',
       sql<RenderedPharmacy | undefined>`CASE
         WHEN pharmacies.id IS NOT NULL THEN ${
         jsonBuildObject({
@@ -200,13 +241,29 @@ export function remove(trx: TrxOrDb, pharmacist_id: string) {
     .execute()
 }
 
-export function insert(
+export async function insert(
   trx: TrxOrDb,
-  data: RenderedPharmacist,
+  data: RenderedPharmacist & { pharmacy_id?: string; is_supervisor?: boolean },
 ): Promise<{ id: string }> {
-  return trx
+  const { pharmacy_id, is_supervisor, ...pharmacistData } = data
+  const pharmacist = await trx
     .insertInto('pharmacists')
-    .values(data)
+    .values(pharmacistData)
     .returning('id')
     .executeTakeFirstOrThrow()
+  if (pharmacy_id === undefined || is_supervisor === undefined) {
+    return pharmacist
+  }
+  await trx
+    .insertInto('pharmacy_employment')
+    .values({
+      pharmacist_id: pharmacist.id,
+      pharmacy_id,
+      family_name: data.family_name,
+      given_name: data.given_name,
+      is_supervisor,
+      prefix: data.prefix,
+    })
+    .execute()
+  return pharmacist
 }

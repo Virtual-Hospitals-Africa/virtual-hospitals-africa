@@ -116,6 +116,7 @@ import * as $volunteer_role_ from './routes/volunteer/[role].tsx'
 import * as $waitlist from './routes/waitlist.tsx'
 import * as $AddConsumableSearch from './islands/AddConsumableSearch.tsx'
 import * as $AddDeviceSearch from './islands/AddDeviceSearch.tsx'
+import * as $AddPharmacySearch from './islands/AddPharmacySearch.tsx'
 import * as $AddRemove from './islands/AddRemove.tsx'
 import * as $AsyncSearch from './islands/AsyncSearch.tsx'
 import * as $BackLink from './islands/BackLink.tsx'
@@ -398,6 +399,7 @@ const manifest = {
   islands: {
     './islands/AddConsumableSearch.tsx': $AddConsumableSearch,
     './islands/AddDeviceSearch.tsx': $AddDeviceSearch,
+    './islands/AddPharmacySearch.tsx': $AddPharmacySearch,
     './islands/AddRemove.tsx': $AddRemove,
     './islands/AsyncSearch.tsx': $AsyncSearch,
     './islands/BackLink.tsx': $BackLink,

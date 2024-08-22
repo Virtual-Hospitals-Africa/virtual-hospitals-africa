@@ -1,3 +1,4 @@
+import { useSignal } from '@preact/signals'
 import {
   DateInput,
   PharmacistTypeSelect,
@@ -6,16 +7,21 @@ import {
 } from './Inputs.tsx'
 import FormRow from './Row.tsx'
 import Buttons from './buttons.tsx'
-import { RenderedPharmacist } from '../../types.ts'
+import { RenderedPharmacist, RenderedPharmacy } from '../../types.ts'
 import Form from '../../components/library/Form.tsx'
+import { IsSupervisorSelect } from '../../islands/form/Inputs.tsx'
+import AddPharmacySearch from '../AddPharmacySearch.tsx'
 
 type PharmacistForm = {
-  formData: Partial<RenderedPharmacist>
+  formData: Partial<RenderedPharmacist> & { is_supervisor?: boolean }
 }
 
 export default function PharmacistForm(
   { formData }: PharmacistForm,
 ) {
+  const selectedPharmacy = useSignal<RenderedPharmacy | undefined>(
+    formData.pharmacy,
+  )
   return (
     <Form method='POST'>
       <FormRow>
@@ -69,6 +75,19 @@ export default function PharmacistForm(
           type='text'
           label='Address'
           value={formData.address}
+        />
+      </FormRow>
+      <hr className='my-2' />
+      <FormRow>
+        <AddPharmacySearch
+          name='pharmacy'
+          label='Pharmacy'
+          value={selectedPharmacy.value}
+          onSelect={(pharmacy) => selectedPharmacy.value = pharmacy}
+        />
+        <IsSupervisorSelect
+          value={formData.is_supervisor?.toString()}
+          isRequired={selectedPharmacy.value !== undefined}
         />
       </FormRow>
       <hr className='my-2' />

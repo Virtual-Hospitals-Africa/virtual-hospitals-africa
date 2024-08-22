@@ -9,6 +9,7 @@ import { parseRequestAsserts } from '../../../../util/parseForm.ts'
 import { assertOr400 } from '../../../../util/assertOr.ts'
 import isObjectLike from '../../../../util/isObjectLike.ts'
 import isString from '../../../../util/isString.ts'
+import isBoolean from '../../../../util/isBoolean.ts'
 import * as pharmacists from '../../../../db/models/pharmacists.ts'
 import { getRequiredUUIDParam } from '../../../../util/getParam.ts'
 import { stringifyJustDate } from '../../../../util/date.ts'
@@ -20,7 +21,11 @@ type EditPharmacistProps = {
 
 export function assertIsUpdatePharmacist(
   obj: unknown,
-): asserts obj is RenderedPharmacist {
+): asserts obj is RenderedPharmacist & {
+  pharmacy_id?: string
+  pharmacy_name?: string
+  is_supervisor?: boolean
+} {
   assertOr400(isObjectLike(obj))
   assertOr400(
     isString(obj.licence_number),
@@ -46,6 +51,14 @@ export function assertIsUpdatePharmacist(
   assertOr400(
     isString(obj.pharmacist_type),
   )
+  if (obj.pharmacy_id) {
+    assertOr400(
+      isString(obj.pharmacy_id),
+    )
+    assertOr400(
+      isBoolean(obj.is_supervisor),
+    )
+  }
 }
 
 export const handler = {
@@ -71,6 +84,9 @@ export const handler = {
       town: to_update.town,
       expiry_date: to_update.expiry_date,
       pharmacist_type: to_update.pharmacist_type,
+      ...(to_update.pharmacy_id && { pharmacy_id: to_update.pharmacy_id }),
+      ...(to_update.pharmacy_id && to_update.is_supervisor !== undefined &&
+        { is_supervisor: to_update.is_supervisor }),
     })
 
     const success = encodeURIComponent(
