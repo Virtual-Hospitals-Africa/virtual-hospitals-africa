@@ -18,7 +18,7 @@ export default async function PharmacistPage(
   )
   return (
     <Layout
-      title={pharmacist.given_name}
+      title={pharmacist.name}
       route={ctx.route}
       url={ctx.url}
       regulator={regulator}

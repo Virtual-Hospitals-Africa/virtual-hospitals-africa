@@ -16,18 +16,13 @@ describe(
     it('renders a search input with GET', async () => {
       const { fetch } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`${route}/regulator/pharmacists`)
+      const response = await fetch('/regulator/pharmacists')
 
       assert(response.ok, 'should have returned ok')
       assert(response.url === `${route}/regulator/pharmacists`)
       const pageContents = await response.text()
 
       const $ = cheerio.load(pageContents)
-      console.log($.html())
-
-      $('input').each((i, elem) => {
-        console.log($(elem).html())
-      })
       assert(
         $('input[name="pharmacist_name"]').length === 1,
         'should have a search input',
@@ -38,7 +33,7 @@ describe(
       const newPharmacist = await addTestPharmacist(db)
       const { fetch } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`${route}/regulator/pharmacists`)
+      const response = await fetch(`/regulator/pharmacists`)
 
       assert(response.ok, 'should have returned ok')
       assert(response.url === `${route}/regulator/pharmacists`)
