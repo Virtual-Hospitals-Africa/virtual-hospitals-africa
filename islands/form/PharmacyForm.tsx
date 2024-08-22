@@ -1,9 +1,4 @@
-import {
-  DateInput,
-  PharmacyTypeSelect,
-  PrefixSelect,
-  TextInput,
-} from './Inputs.tsx'
+import { DateInput, PharmacyTypeSelect, TextInput } from './Inputs.tsx'
 import FormRow from './Row.tsx'
 import Buttons from './buttons.tsx'
 import { RenderedPharmacy } from '../../types.ts'

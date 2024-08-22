@@ -1,9 +1,4 @@
-import {
-  Address,
-  NurseRegistrationDetails,
-  RenderedPharmacist,
-  TrxOrDb,
-} from '../types.ts'
+import { Address, NurseRegistrationDetails, TrxOrDb } from '../types.ts'
 import generateUUID from '../util/uuid.ts'
 import sample from '../util/sample.ts'
 import * as address from '../db/models/address.ts'
@@ -30,15 +25,15 @@ export const testRegulator = () => {
   }
 }
 
-export const testPharmacist = (): RenderedPharmacist => ({
+export const testPharmacist = () => ({
   licence_number: 'P01-0805-2024',
-  prefix: 'Mrs',
+  prefix: 'Mrs' as const,
   given_name: `A Test Given Name ${generateUUID()}`,
   family_name: `A Test Family Name ${generateUUID()}`,
   address: 'Test Address',
   town: 'Test Town',
   expiry_date: '2030-01-01',
-  pharmacist_type: 'Pharmacist',
+  pharmacist_type: 'Pharmacist' as const,
 })
 
 export const testCalendars = () => ({

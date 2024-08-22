@@ -13,9 +13,9 @@ import Layout from '../../components/library/Layout.tsx'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<CalendarPageProps> =
   {
-    async GET(req, ctx) {
+    async GET(_req, ctx) {
       const { healthWorker } = ctx.state
-      const googleClient = new HealthWorkerGoogleClient(ctx)
+      const googleClient = HealthWorkerGoogleClient.fromCtx(ctx)
 
       const today = todayISOInHarare()
       // if there's no day in the query, use today in Harare

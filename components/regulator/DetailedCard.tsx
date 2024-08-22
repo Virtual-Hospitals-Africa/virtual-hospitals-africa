@@ -1,10 +1,10 @@
-import { DetailedPharmacist } from '../../types.ts'
-type PharmacistProps = {
-  pharmacist: DetailedPharmacist
-}
+import { RenderedPharmacist } from '../../types.ts'
+
 export default function PharmacistDetailedCard({
   pharmacist,
-}: PharmacistProps) {
+}: {
+  pharmacist: RenderedPharmacist
+}) {
   return (
     <>
       <div>

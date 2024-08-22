@@ -1,4 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
 import { Button } from '../../components/library/Button.tsx'
 import Form from '../../components/library/Form.tsx'
 import PersonSearch from '../PersonSearch.tsx'
@@ -16,20 +15,14 @@ export default function InvitePhamacistForm() {
         </FormRow>
         <PersonSearch
           name='pharmacist'
-          href={`/regulator/pharmacists`}
+          href='/regulator/pharmacists/pharmacists'
           label=''
           addable
-          optionHref={(pharmacist) => {
-            if (pharmacist.id === 'add') {
-              return `/regulator/pharmacists/invite?pharmacist_name=${pharmacist.name}`
-            }
-            assert(pharmacist.href, 'Rendered pharmacist should have an href')
-            return pharmacist.href
-          }}
+          addHref='/regulator/pharmacists/invite?pharmacist_name='
         />
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            prefix
+            Prefix
           </label>
         </FormRow>
         <FormRow>
@@ -38,7 +31,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            given_name
+            Given Name
           </label>
         </FormRow>
         <FormRow>
@@ -47,7 +40,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            family_name
+            Family Name
           </label>
         </FormRow>
         <FormRow>
@@ -56,7 +49,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            address
+            Street Address
           </label>
         </FormRow>
         <FormRow>
@@ -65,7 +58,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            town
+            Town
           </label>
         </FormRow>
         <FormRow>
@@ -74,7 +67,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            licence_number
+            Licence Number
           </label>
         </FormRow>
         <FormRow>
@@ -83,7 +76,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            expiry_date
+            Expiry Date
           </label>
         </FormRow>
         <FormRow>
@@ -92,7 +85,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <label className='text-base font-semibold text-gray-900'>
-            pharmacist_type
+            Pharmacist Type
           </label>
         </FormRow>
         <FormRow>
@@ -101,7 +94,7 @@ export default function InvitePhamacistForm() {
 
         <FormRow>
           <Button type='submit' name='pharmacist' value='pharmacist'>
-            invite
+            Invite
           </Button>
         </FormRow>
       </div>

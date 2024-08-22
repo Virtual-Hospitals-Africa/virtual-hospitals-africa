@@ -176,13 +176,18 @@ export async function addTestHealthWorkerWithSession(
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},
   ) =>
-    fetch(input, {
-      headers: {
-        ...headers,
-        Cookie: `health_worker_session_id=${session.id}`,
+    fetch(
+      typeof input === 'string' && input.startsWith('/')
+        ? `${route}${input}`
+        : input,
+      {
+        headers: {
+          ...headers,
+          Cookie: `health_worker_session_id=${session.id}`,
+        },
+        ...rest,
       },
-      ...rest,
-    })
+    )
 
   const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
     const response = await fetchWithSession(...args)
@@ -221,13 +226,18 @@ export async function addTestRegulatorWithSession(
     input: URL | RequestInfo,
     { headers, ...rest }: RequestInit = {},
   ) =>
-    fetch(input, {
-      headers: {
-        ...headers,
-        Cookie: `regulator_session_id=${session.id}`,
+    fetch(
+      typeof input === 'string' && input.startsWith('/')
+        ? `${route}${input}`
+        : input,
+      {
+        headers: {
+          ...headers,
+          Cookie: `regulator_session_id=${session.id}`,
+        },
+        ...rest,
       },
-      ...rest,
-    })
+    )
 
   const fetchCheerio = async (...args: Parameters<typeof fetch>) => {
     const response = await fetchWithSession(...args)
@@ -254,10 +264,10 @@ export async function addTestPharmacist(
     ...testPharmacist(),
     ...pharmacist,
   }
-  const { id: pharmacistId } = await pharmacists.insert(trx, dummyPharmacist)
+  const { id } = await pharmacists.insert(trx, dummyPharmacist)
   return {
-    id: pharmacistId,
     ...dummyPharmacist,
+    id,
   }
 }
 

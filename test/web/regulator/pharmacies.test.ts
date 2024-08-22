@@ -11,7 +11,7 @@ describe(
     it('renders a search input with GET', async () => {
       const { fetch } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`${route}/regulator/pharmacies`)
+      const response = await fetch(`/regulator/pharmacies`)
 
       assert(response.ok, 'should have returned ok')
       assert(response.url === `${route}/regulator/pharmacies`)
@@ -28,7 +28,7 @@ describe(
     it('renders a pharmacy table with GET', async () => {
       const { fetch } = await addTestRegulatorWithSession(db)
 
-      const response = await fetch(`${route}/regulator/pharmacies`)
+      const response = await fetch(`/regulator/pharmacies`)
 
       assert(response.ok, 'should have returned ok')
       assert(response.url === `${route}/regulator/pharmacies`)

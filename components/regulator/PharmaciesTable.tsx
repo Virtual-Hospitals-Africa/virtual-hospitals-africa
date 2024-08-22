@@ -10,16 +10,6 @@ import { Person } from '../library/Person.tsx'
 import { InvitePharmacySearch } from '../../islands/regulator/InvitePharmacySearch.tsx'
 import { UserCircleIcon } from '../library/icons/heroicons/outline.tsx'
 
-type Pharmacy = {
-  address: string | null
-  expiry_date: string
-  licence_number: string
-  licensee: string
-  name: string
-  pharmacies_types: RenderedPharmacy
-  town: string | null
-}
-
 const columns: TableColumn<RenderedPharmacy>[] = [
   {
     label: 'Name',
@@ -27,7 +17,7 @@ const columns: TableColumn<RenderedPharmacy>[] = [
   },
   {
     label: 'Address',
-    data: 'address',
+    data: 'address_display',
   },
   {
     label: 'License Number',
@@ -79,7 +69,6 @@ export default function PharmaciesTable({
   currentPage,
   totalPage,
 }: PharmaciesTableProps): JSX.Element {
-  const search_href = `${pathname}`
   const add_href = `${pathname}/add`
   return (
     <>

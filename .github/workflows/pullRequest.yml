@@ -45,7 +45,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.42.4
+          deno-version: v1.45.5
       
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -116,7 +116,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.42.4
+          deno-version: v1.45.5
 
       - name: Compile chatbot
         run: deno task compile:chatbot
@@ -134,7 +134,7 @@ jobs:
       - name: Set up Deno
         uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.42.4
+          deno-version: v1.45.5
 
       - name: Build web
         run: deno task build

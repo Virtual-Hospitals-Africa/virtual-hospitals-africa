@@ -8,7 +8,6 @@
     "start:beep": "./scripts/watch_and_beep.sh '(Error|error)' deno start",
     "rebuild": "rm -rf /_fresh && rm -rf node_modules && deno task lock:reset && deno task build",
     "web": "deno task run:trusted main.ts",
-
     "db:codegen": "./db/codegen.sh",
     "db:local": "./db/local.sh",
     "db:reset": "deno task run:trusted ./db/reset.ts",
@@ -17,13 +16,10 @@
     "db:drop": "deno task run:trusted db/drop.ts",
     "db:dump": "deno task run:trusted db/dump.ts",
     "db:restore": "deno task run:trusted db/restore.ts",
-
     "medplum:setup": "cd medplum && npm install && npx turbo run build && cd ..",
     "medplum:server": "deno task run:trusted external-clients/medplum/server.ts",
     "medplum:superadmin": "deno task run:trusted external-clients/medplum/superadmin.ts",
-
     "heroku": "deno task run:trusted ./scripts/heroku.ts",
-
     "compile": "DENO_TLS_CA_STORE=system deno compile -A --unsafely-ignore-certificate-errors --unstable --target x86_64-unknown-linux-gnu",
     "compile:chatbot": "deno task compile --output binaries/chatbot chatbot/chatbot.ts",
     "compile:token_refresher": "deno task compile --output binaries/token_refresher token_refresher/token_refresher.ts",
@@ -55,9 +51,7 @@
     "exclude": ["medplum/"],
     "rules": { "include": ["no-unused-vars"], "tags": ["fresh", "recommended"] }
   },
-  "test": {
-    "exclude": ["**/medplum/**/*.*"]
-  },
+  "test": { "exclude": ["**/medplum/**/*.*"] },
   "imports": {
     "$fresh-testing-library": "https://deno.land/x/fresh_testing_library@0.12.0/mod.ts",
     "$fresh-testing-library/": "https://deno.land/x/fresh_testing_library@0.12.0/",

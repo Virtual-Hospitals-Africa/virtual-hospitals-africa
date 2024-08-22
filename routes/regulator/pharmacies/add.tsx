@@ -1,14 +1,14 @@
 import { FreshContext } from '$fresh/server.ts'
 import PharmacyForm from '../../../islands/form/PharmacyForm.tsx'
-import { PageProps } from '$fresh/server.ts'
 import redirect from '../../../util/redirect.ts'
 import { parseRequestAsserts } from '../../../util/parseForm.ts'
 import { assertOr400 } from '../../../util/assertOr.ts'
 import isObjectLike from '../../../util/isObjectLike.ts'
 import isString from '../../../util/isString.ts'
-import * as pharmacy from '../../../db/models/pharmacies.ts'
+import * as pharmacies from '../../../db/models/pharmacies.ts'
 import Layout from '../../../components/library/Layout.tsx'
-import { LoggedInRegulator, RenderedPharmacy } from '../../../types.ts'
+import { LoggedInRegulator } from '../../../types.ts'
+import { PharmaciesTypes } from '../../../db.d.ts'
 
 type InviteProps = {
   regulator: LoggedInRegulator['regulator']
@@ -16,7 +16,15 @@ type InviteProps = {
 
 export function assertIsUpsertPharmacy(
   obj: unknown,
-): asserts obj is RenderedPharmacy {
+): asserts obj is {
+  name: string
+  address: string
+  licence_number: string
+  licensee: string
+  pharmacies_types: PharmaciesTypes
+  expiry_date: string
+  town: string
+} {
   assertOr400(isObjectLike(obj))
   assertOr400(
     isString(obj.name),
@@ -42,53 +50,37 @@ export function assertIsUpsertPharmacy(
 }
 
 export const handler = {
-  POST: async function (req: Request, ctx: FreshContext<LoggedInRegulator>) {
-    const to_add = await parseRequestAsserts(
-      ctx.state.trx,
+  async POST(req: Request, ctx: FreshContext<LoggedInRegulator>) {
+    const { trx } = ctx.state
+    const pharmacy = await parseRequestAsserts(
+      trx,
       req,
       assertIsUpsertPharmacy,
     )
 
-    await pharmacy.insert(ctx.state.trx, {
-      licence_number: to_add.licence_number,
-      licensee: to_add.licensee,
-      name: to_add.name!,
-      address: to_add.address,
-      town: to_add.town,
-      expiry_date: to_add.expiry_date,
-      pharmacies_types: to_add.pharmacies_types,
-      id: to_add.id,
-      supervisors: to_add.supervisors,
-      actions: to_add.actions,
-    })
+    const { id } = await pharmacies.insert(trx, pharmacy)
 
     const success = encodeURIComponent(
-      `New pharmacy added`,
+      'New pharmacy added',
     )
 
     return redirect(
-      `/regulator/pharmacies?success=${success}`,
+      `/regulator/pharmacies?success=${success}&show_pharmacy_id=${id}`,
     )
-  },
-  GET: function (
-    _req: Request,
-    ctx: FreshContext<LoggedInRegulator>,
-  ) {
-    return ctx.render({
-      regulator: ctx.state.regulator,
-    })
   },
 }
 
-export default function Add(
-  props: PageProps<InviteProps>,
+// deno-lint-ignore require-await
+export default async function Add(
+  _req: Request,
+  ctx: FreshContext<LoggedInRegulator>,
 ) {
   return (
     <Layout
       title='Pharmacies'
-      route={props.route}
-      url={props.url}
-      regulator={props.data.regulator}
+      route={ctx.route}
+      url={ctx.url}
+      regulator={ctx.state.regulator}
       params={{}}
       variant='regulator home page'
     >

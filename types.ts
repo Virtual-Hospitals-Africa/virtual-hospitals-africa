@@ -1079,6 +1079,7 @@ export type OrganizationEmployeeOrInvitee =
   | OrganizationEmployee
   | OrganizationEmployeeInvitee
 
+export type RegistrationStatus = 'pending_approval' | 'approved' | 'incomplete'
 export type OrganizationEmployee = {
   name: string
   is_invitee: false
@@ -1087,11 +1088,12 @@ export type OrganizationEmployee = {
     employee_id: string
     profession: Profession
     specialty: NurseSpecialty | null
+    registration_status: RegistrationStatus
   }[]
   avatar_url: null | string
   email: string
   display_name: string
-  registration_status: 'pending_approval' | 'approved' | 'incomplete'
+  registration_status: RegistrationStatus
   actions: {
     view: string
   }
@@ -2862,6 +2864,8 @@ export type SelectedPatient = {
 export type RenderedPharmacy = {
   id: string
   address: string | null
+  town: string | null
+  address_display: string | null
   expiry_date: string
   licence_number: string
   licensee: string
@@ -2879,8 +2883,7 @@ export type RenderedPharmacy = {
     | 'Pharmacy in rural area'
     | 'Pharmacy located in the CBD'
     | 'Wholesalers'
-  town: string | null
-  href?: string
+  href: string
   supervisors: Supervisor[]
   actions: {
     view: string
@@ -2888,48 +2891,35 @@ export type RenderedPharmacy = {
 }
 
 export type RenderedPharmacist = {
-  id?: string
+  id: string
   licence_number: string
   prefix: Prefix | null
-  name?: string
+  name: string
   given_name: string
   family_name: string
   address: string | null
   town: string | null
+  address_display: string | null
   expiry_date: string
   pharmacist_type:
     | 'Dispensing Medical Practitioner'
     | 'Ind Clinic Nurse'
     | 'Pharmacist'
     | 'Pharmacy Technician'
-  pharmacy?: RenderedPharmacy
+  pharmacies: Omit<RenderedPharmacy, 'actions' | 'supervisors'>[]
+  href: string
+  actions: {
+    view: string
+    revoke: string
+    edit: string
+  }
 }
 
 export type Supervisor = {
   id: string
   href: string
   name: string
-  family_name: string
-  given_name: string
   prefix: Prefix | null
-} & { id: string }
-
-export type DetailedPharmacist = {
-  id?: string
-  licence_number: string
-  prefix: Prefix | null
-  name?: string
-  given_name: string
-  family_name: string
-  address: string | null
-  town: string | null
-  expiry_date: Date
-  pharmacist_type:
-    | 'Dispensing Medical Practitioner'
-    | 'Ind Clinic Nurse'
-    | 'Pharmacist'
-    | 'Pharmacy Technician'
-  pharmacy?: RenderedPharmacy
 }
 
 export type RenderedMedicine = {
