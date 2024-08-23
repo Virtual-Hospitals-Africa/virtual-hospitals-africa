@@ -40,10 +40,10 @@ type MedicinesFooInputProps = {
 
 export function MedicinesFooInput({ medicines, pathname }: MedicinesFooInputProps) {
   const { search, setSearch } = useAsyncSearch({
-    href: pathname,
+    href: '/drugs',
     value: null,
   })
-
+  console.log('pathname', pathname)
   console.log('search', search)
   return (
     <div className='mb-4'>

@@ -25,12 +25,15 @@ export default function MedicinesTable({
   currentPage,
   totalPage,
 }: MedicinesTableProps): JSX.Element {
+  const search_href = `${pathname}`
+  const add_href = `${pathname}/add`
   return (
     <>
+
       <MedicinesFooInput 
-        medicines={medicines} 
-        pathname={pathname} 
+        medicines={medicines} pathname={pathname} 
       />
+
 
       <Pagination
         totalPages={totalPage}
