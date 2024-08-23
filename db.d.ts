@@ -1020,7 +1020,7 @@ export interface PatientPrescriptionMedicationsFilled {
   id: Generated<string>
   patient_prescription_medication_id: string
   pharmacist_id: string
-  pharmacy_id: string
+  pharmacy_id: string | null
   updated_at: Generated<Timestamp>
 }
 
@@ -1063,6 +1063,57 @@ export interface PatientSymptoms {
   severity: number
   start_date: Timestamp
   updated_at: Generated<Timestamp>
+}
+
+export interface PgStatStatements {
+  blk_read_time: number | null
+  blk_write_time: number | null
+  calls: Int8 | null
+  dbid: number | null
+  jit_emission_count: Int8 | null
+  jit_emission_time: number | null
+  jit_functions: Int8 | null
+  jit_generation_time: number | null
+  jit_inlining_count: Int8 | null
+  jit_inlining_time: number | null
+  jit_optimization_count: Int8 | null
+  jit_optimization_time: number | null
+  local_blks_dirtied: Int8 | null
+  local_blks_hit: Int8 | null
+  local_blks_read: Int8 | null
+  local_blks_written: Int8 | null
+  max_exec_time: number | null
+  max_plan_time: number | null
+  mean_exec_time: number | null
+  mean_plan_time: number | null
+  min_exec_time: number | null
+  min_plan_time: number | null
+  plans: Int8 | null
+  query: string | null
+  queryid: Int8 | null
+  rows: Int8 | null
+  shared_blks_dirtied: Int8 | null
+  shared_blks_hit: Int8 | null
+  shared_blks_read: Int8 | null
+  shared_blks_written: Int8 | null
+  stddev_exec_time: number | null
+  stddev_plan_time: number | null
+  temp_blk_read_time: number | null
+  temp_blk_write_time: number | null
+  temp_blks_read: Int8 | null
+  temp_blks_written: Int8 | null
+  toplevel: boolean | null
+  total_exec_time: number | null
+  total_plan_time: number | null
+  userid: number | null
+  wal_bytes: Numeric | null
+  wal_fpi: Int8 | null
+  wal_records: Int8 | null
+}
+
+export interface PgStatStatementsInfo {
+  dealloc: Int8 | null
+  stats_reset: Timestamp | null
 }
 
 export interface Pharmacies {
@@ -1108,7 +1159,7 @@ export interface Pharmacists {
   pharmacist_type: PharmacistType
   prefix: NamePrefix | null
   revoked_at: Timestamp | null
-  revoked_by: string | null
+  revoked_by: number | null
   town: string | null
   updated_at: Generated<Timestamp>
 }
@@ -1142,8 +1193,15 @@ export interface Practitioner {
   projectId: string | null
 }
 
-export interface Prescriptions {
+export interface PrescriptionCodes {
   alphanumeric_code: Generated<string>
+  created_at: Generated<Timestamp>
+  id: Generated<string>
+  prescription_id: string
+  updated_at: Generated<Timestamp>
+}
+
+export interface Prescriptions {
   created_at: Generated<Timestamp>
   id: Generated<string>
   patient_id: string | null
@@ -1266,6 +1324,11 @@ export interface Suburbs {
   id: Generated<string>
   name: string
   ward_id: string
+}
+
+export interface TemporaryPrescriptionData {
+  index: string | null
+  prescription_id: string
 }
 
 export interface WaitingRoom {
@@ -1400,6 +1463,8 @@ export interface DB {
   patient_symptom_media: PatientSymptomMedia
   patient_symptoms: PatientSymptoms
   patients: Patients
+  pg_stat_statements: PgStatStatements
+  pg_stat_statements_info: PgStatStatementsInfo
   pharmacies: Pharmacies
   pharmacist_chatbot_user_whatsapp_messages_received:
     PharmacistChatbotUserWhatsappMessagesReceived
@@ -1407,6 +1472,7 @@ export interface DB {
   pharmacists: Pharmacists
   pharmacy_employment: PharmacyEmployment
   Practitioner: Practitioner
+  prescription_codes: PrescriptionCodes
   prescriptions: Prescriptions
   procurement: Procurement
   procurers: Procurers
@@ -1419,6 +1485,7 @@ export interface DB {
   regulators: Regulators
   spatial_ref_sys: SpatialRefSys
   suburbs: Suburbs
+  temporary_prescription_data: TemporaryPrescriptionData
   waiting_room: WaitingRoom
   wards: Wards
   whatsapp_messages_received: WhatsappMessagesReceived
