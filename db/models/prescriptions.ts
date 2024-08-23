@@ -33,9 +33,10 @@ export function getByCode(
   code: string,
 ) {
   return trx
-    .selectFrom('prescriptions')
+    .selectFrom('prescription_codes')
+    .innerJoin('prescriptions', 'prescriptions.id', 'prescription_codes.prescription_id')
     .where('alphanumeric_code', '=', code)
-    .selectAll()
+    .selectAll('prescriptions')
     .executeTakeFirst()
 }
 
