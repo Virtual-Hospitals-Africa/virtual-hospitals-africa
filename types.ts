@@ -1892,6 +1892,23 @@ export type PatientMedication =
     | { medication_id: string; manufactured_medication_id: null }
   )
 
+export type PrescriptionMedication = {
+  patient_prescription_medication_id: string
+  name: string
+  form: string
+  route: string
+  strength_numerator_unit: string
+  strength_denominator: number
+  strength_denominator_unit: string
+  strength_denominator_is_units: boolean
+  special_instructions: string | null
+  start_date: string | null
+  end_date: string
+  dosage: number
+  strength: number
+  intake_frequency: string
+}
+
 export type DurationUnit =
   | 'days'
   | 'weeks'
