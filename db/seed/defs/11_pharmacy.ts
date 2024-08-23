@@ -31,7 +31,7 @@ async function importFromCsv(db: Kysely<DB>) {
 
   for await (const representative of representatives) {
     delete representative['\r']
-    const { licence_number, given_name, family_name, ...resProps } =
+    const { licence_number, given_name, family_name, ..._resProps } =
       representative
     const pharmacy = await db
       .selectFrom('pharmacies')
@@ -55,10 +55,7 @@ async function importFromCsv(db: Kysely<DB>) {
     representativesData.push({
       pharmacy_id: pharmacy.id,
       pharmacist_id: pharmacist.id,
-      given_name,
-      family_name,
       is_supervisor: true,
-      ...resProps,
     })
   }
 

@@ -1115,13 +1115,10 @@ export interface Pharmacists {
 
 export interface PharmacyEmployment {
   created_at: Generated<Timestamp>
-  family_name: string
-  given_name: string
   id: Generated<string>
   is_supervisor: boolean
   pharmacist_id: string
   pharmacy_id: string
-  prefix: NamePrefix | null
   updated_at: Generated<Timestamp>
 }
 
