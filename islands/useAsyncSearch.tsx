@@ -75,13 +75,8 @@ export default function useAsyncSearch<
     }))
   }, [search.query])
 
-  return [
-    search as {
-      query: string
-      delay: null | number
-      active_request: null | XMLHttpRequest
-      results: T[]
-    },
+  return {
+    search,
     setSearch,
-  ]
+  }
 }

@@ -1,5 +1,3 @@
-import { assert } from 'std/assert/assert.ts'
-import { useEffect, useState } from 'preact/hooks'
 import Search, { SearchProps } from './Search.tsx'
 import useAsyncSearch from './useAsyncSearch.tsx'
 
@@ -18,7 +16,7 @@ export default function AsyncSearch<
   onQuery,
   ...rest
 }: AsyncSearchProps<T>) {
-  const [search, setSearch] = useAsyncSearch({ href, value })
+  const { search, setSearch } = useAsyncSearch({ href, value })
   return (
     <Search
       {...rest}

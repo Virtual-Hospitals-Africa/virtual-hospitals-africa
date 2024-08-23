@@ -1,4 +1,4 @@
-import { searchResponse } from './drugs.tsx'
+import { searchResponse } from '../drugs.tsx'
 import { LoggedInHealthWorkerHandlerWithProps } from '../../types.ts'
 
 export const handler: LoggedInHealthWorkerHandlerWithProps<unknown> = {

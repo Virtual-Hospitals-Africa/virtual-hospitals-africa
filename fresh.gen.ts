@@ -17,7 +17,6 @@ import * as $app_conditions from './routes/app/conditions.tsx'
 import * as $app_consumables from './routes/app/consumables.tsx'
 import * as $app_devices from './routes/app/devices.tsx'
 import * as $app_drugs_json from './routes/app/drugs.json.tsx'
-import * as $app_drugs from './routes/app/drugs.tsx'
 import * as $app_employees from './routes/app/employees.tsx'
 import * as $app_icd10 from './routes/app/icd10.tsx'
 import * as $app_icd10_search from './routes/app/icd10_search.tsx'
@@ -86,6 +85,7 @@ import * as $app_symptoms from './routes/app/symptoms.tsx'
 import * as $app_unauthorized from './routes/app/unauthorized.tsx'
 import * as $apply from './routes/apply.tsx'
 import * as $chatbot_incoming_whatsapp from './routes/chatbot/incoming-whatsapp.ts'
+import * as $drugs from './routes/drugs.tsx'
 import * as $index from './routes/index.tsx'
 import * as $interest from './routes/interest.tsx'
 import * as $loading_test from './routes/loading-test.tsx'
@@ -126,6 +126,7 @@ import * as $ErrorMessage from './islands/ErrorMessage.tsx'
 import * as $FlyoutMenu from './islands/FlyoutMenu.tsx'
 import * as $JobPost from './islands/JobPost.tsx'
 import * as $LifestyleForm from './islands/LifestyleForm.tsx'
+import * as $MedicinesFooInput from './islands/MedicinesFooInput.tsx'
 import * as $Menu from './islands/Menu.tsx'
 import * as $NationalIdInput from './islands/NationalIdInput.tsx'
 import * as $NationalIdInputCheckbox from './islands/NationalIdInputCheckbox.tsx'
@@ -238,7 +239,6 @@ const manifest = {
     './routes/app/consumables.tsx': $app_consumables,
     './routes/app/devices.tsx': $app_devices,
     './routes/app/drugs.json.tsx': $app_drugs_json,
-    './routes/app/drugs.tsx': $app_drugs,
     './routes/app/employees.tsx': $app_employees,
     './routes/app/icd10.tsx': $app_icd10,
     './routes/app/icd10_search.tsx': $app_icd10_search,
@@ -358,6 +358,7 @@ const manifest = {
     './routes/app/unauthorized.tsx': $app_unauthorized,
     './routes/apply.tsx': $apply,
     './routes/chatbot/incoming-whatsapp.ts': $chatbot_incoming_whatsapp,
+    './routes/drugs.tsx': $drugs,
     './routes/index.tsx': $index,
     './routes/interest.tsx': $interest,
     './routes/loading-test.tsx': $loading_test,
@@ -409,6 +410,7 @@ const manifest = {
     './islands/FlyoutMenu.tsx': $FlyoutMenu,
     './islands/JobPost.tsx': $JobPost,
     './islands/LifestyleForm.tsx': $LifestyleForm,
+    './islands/MedicinesFooInput.tsx': $MedicinesFooInput,
     './islands/Menu.tsx': $Menu,
     './islands/NationalIdInput.tsx': $NationalIdInput,
     './islands/NationalIdInputCheckbox.tsx': $NationalIdInputCheckbox,

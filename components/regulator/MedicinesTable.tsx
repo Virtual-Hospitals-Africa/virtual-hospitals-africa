@@ -3,37 +3,10 @@ import Table from '../library/Table.tsx'
 import { TableColumn } from '../library/Table.tsx'
 import { Button } from '../library/Button.tsx'
 import FormRow from '../../islands/form/Row.tsx'
-import { SearchInput } from '../../islands/form/Inputs.tsx'
+import { MedicinesFooInput } from '../../islands/MedicinesFooInput.tsx'
 import { EmptyState } from '../library/EmptyState.tsx'
 import { RenderedMedicine } from '../../types.ts'
 import Pagination from '../library/Pagination.tsx'
-
-const columns: TableColumn<RenderedMedicine>[] = [
-  {
-    label: 'Generic Name',
-    data: 'generic_name',
-  },
-  {
-    label: 'Trade Name',
-    data: 'trade_name',
-  },
-  {
-    label: 'Applicant Name',
-    data: 'applicant_name',
-  },
-  {
-    label: 'Form',
-    data: 'form',
-  },
-  {
-    label: 'Strength Summary',
-    data: 'strength_summary',
-  },
-  {
-    label: 'Actions',
-    type: 'actions',
-  },
-]
 
 type MedicinesTableProps = {
   medicines: RenderedMedicine[]
@@ -57,7 +30,7 @@ export default function MedicinesTable({
   return (
     <>
       <FormRow className='mb-4'>
-        <SearchInput />
+        <MedicinesFooInput medicines={medicines} />
         <Button
           type='button'
           href={search_href}
@@ -66,17 +39,7 @@ export default function MedicinesTable({
           Search
         </Button>
       </FormRow>
-      <Table
-        columns={columns}
-        rows={medicines}
-        EmptyState={() => (
-          <EmptyState
-            header='No medicines'
-            explanation='Add a medicine to get started'
-            button={{ text: 'Add Medicine', href: add_href }}
-          />
-        )}
-      />
+
       <Pagination
         totalPages={totalPage}
         currentPages={currentPage}
