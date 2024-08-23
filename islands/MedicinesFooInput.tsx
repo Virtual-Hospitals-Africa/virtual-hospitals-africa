@@ -3,6 +3,8 @@ import { TextInput } from './form/Inputs.tsx'
 import Table, { TableColumn } from '../components/library/Table.tsx'
 import { RenderedMedicine } from '../types.ts'
 import { EmptyState } from '../components/library/EmptyState.tsx'
+import { Button } from '../components/library/Button.tsx'
+import FormRow from './form/Row.tsx'
 
 const columns: TableColumn<RenderedMedicine>[] = [
   {
@@ -31,23 +33,29 @@ const columns: TableColumn<RenderedMedicine>[] = [
   },
 ]
 
-export function MedicinesFooInput(
-  { medicines }: { medicines: RenderedMedicine[] },
-) {
+type MedicinesFooInputProps = {
+  medicines: RenderedMedicine[]
+  pathname: string
+}
+
+export function MedicinesFooInput({ medicines, pathname }: MedicinesFooInputProps) {
   const { search, setSearch } = useAsyncSearch({
-    href: '/drugs',
+    href: pathname,
     value: null,
   })
 
   console.log('search', search)
   return (
-    <>
-      <TextInput
-        name='search'
-        onInput={(e) => {
-          setSearch({ ...search, query: e.currentTarget.value })
-        }}
-      />
+    <div className='mb-4'>
+      <FormRow className='mb-4'>
+        <TextInput 
+          name='search'
+          onInput={(e) => {
+            setSearch({ ...search, query: e.currentTarget.value })
+          }}
+        />
+
+      </FormRow>
       <Table
         columns={columns}
         rows={search.query ? (search.results as any) : medicines}
@@ -60,6 +68,6 @@ export function MedicinesFooInput(
           />
         )}
       />
-    </>
+    </div>
   )
 }
