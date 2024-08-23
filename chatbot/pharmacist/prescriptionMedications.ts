@@ -182,7 +182,7 @@ export async function getPendingMedicationsByPrescriptionId(
   return pendingMedications
 }
 
-async function updateNumberOfDispensedMedications(
+export async function updateNumberOfDispensedMedications(
   trx: TrxOrDb,
   pharmacistState: PharmacistChatbotUserState,
   number_of_medications: number,

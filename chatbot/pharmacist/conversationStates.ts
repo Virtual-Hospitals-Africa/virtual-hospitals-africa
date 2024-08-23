@@ -18,9 +18,9 @@ import {
   dispenseType,
   getAndUptateMedications,
   getPendingMedicationsByPrescriptionId,
-  isTheLastMedication,
+  // isTheLastMedication,
   processNextMedication,
-  UpdateNumberOfDispensedMedications,
+  // updateNumberOfDispensedMedications,
 } from './prescriptionMedications.ts'
 import {
   deleteFilledMedications,
