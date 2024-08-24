@@ -23,8 +23,13 @@ export function getById(
 ) {
   return trx
     .selectFrom('prescriptions')
-    .where('id', '=', id)
-    .selectAll()
+    .innerJoin('prescription_codes', 'prescriptions.id', 'prescription_codes.prescription_id')
+    .where('prescriptions.id', '=', id)
+    // .selectAll()
+    .select('prescriptions.id')
+    .select('prescriptions.prescriber_id')
+    .select('prescriptions.patient_id')
+    .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
 
@@ -36,7 +41,10 @@ export function getByCode(
     .selectFrom('prescription_codes')
     .innerJoin('prescriptions', 'prescriptions.id', 'prescription_codes.prescription_id')
     .where('alphanumeric_code', '=', code)
-    .selectAll('prescriptions')
+    .select('prescriptions.id')
+    .select('prescriptions.prescriber_id')
+    .select('prescriptions.patient_id')
+    .select('prescription_codes.alphanumeric_code')
     .executeTakeFirst()
 }
 
@@ -164,7 +172,7 @@ export async function dispenseMedications(
   DispensedMedications: {
     patient_prescription_medication_id: string
     pharmacist_id: string
-    pharmacy_id: string
+    pharmacy_id?: string
   }[],
 ) {
   return await trx

@@ -13,22 +13,17 @@ import { generatePDF } from '../../util/pdfUtils.ts'
 import { handleLicenceInput } from './handleLicenceInput.ts'
 import { handlePrescriptionCode } from './handlePrescriptionCode.ts'
 import {
-  dispenseNextStep,
+  dispenseAll,
   dispenseOne,
+  dispenseRestart,
+  dispenseSkip,
   dispenseType,
   getAndUptateMedications,
-  getPendingMedicationsByPrescriptionId,
-  // isTheLastMedication,
-  processNextMedication,
-  // updateNumberOfDispensedMedications,
+  currentMedication,
 } from './prescriptionMedications.ts'
 import {
-  deleteFilledMedications,
-  dispenseMedications,
-  getFilledMedicationsByPrescriptionId,
   getPrescriberByPrescriptionId,
 } from '../../db/models/prescriptions.ts'
-// import prescriptions from '../../routes/app/patients/[patient_id]/encounters/[encounter_id]/prescriptions.tsx'
 
 const checkOnboardingStatus = (
   pharmacistState: PharmacistChatbotUserState,
@@ -231,10 +226,9 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
         `${PRESCRIPTIONS_BASE_URL}/prescriptions/${prescription_id}?code=${prescription_code}`,
       )
 
-      const medicationDescriptions = await getAndUptateMedications(
+      const medicationDescriptions: string[] = await getAndUptateMedications(
         _trx,
         pharmacistState,
-        prescription_id,
       )
 
       const documentMessage: WhatsAppSingleSendable = {
@@ -268,7 +262,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense this medication?\n* ${await processNextMedication(
+      return `Do you want to dispense this medication?\n* ${await currentMedication(
         trx,
         pharmacistState,
       )}`
@@ -282,7 +276,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'no',
         title: 'No',
-        onExit: 'onboarded:fill_prescription:confirm_done',
+        onExit: dispenseSkip,
       },
     ],
   },
@@ -293,32 +287,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'Yes',
         title: 'Yes',
-        async onExit(trx, pharmacistState) {
-          const prescription_id =
-            pharmacistState.chatbot_user.data.prescription_id
-          assert(typeof prescription_id === 'string')
-          const medications = await getPendingMedicationsByPrescriptionId(
-            trx,
-            prescription_id,
-          )
-          const filledMedicationData = medications.map((medication) => ({
-            patient_prescription_medication_id:
-              medication.patient_prescription_medication_id,
-            pharmacist_id: pharmacistState.chatbot_user.entity_id,
-            pharmacy_id: pharmacistState.chatbot_user.entity_id, // JUST FOR TEST
-          } as {
-            patient_prescription_medication_id: string
-            pharmacist_id: string
-            pharmacy_id: string
-          }))
-          await dispenseMedications(trx, filledMedicationData)
-          await UpdateNumberOfDispensedMedications(
-            trx,
-            pharmacistState,
-            medications.length,
-          )
-          return 'onboarded:fill_prescription:confirm_done' as const
-        },
+        onExit: dispenseAll,
       },
       {
         id: 'No',
@@ -333,7 +302,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${await processNextMedication(
+      return `Please confirm the items you are dispensing\n\nDo you want to dispense\n* ${await currentMedication(
         trx,
         pharmacistState,
       )}?`
@@ -345,7 +314,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     }, {
       id: 'no',
       title: 'No',
-      onExit: 'onboarded:fill_prescription:dispense_select',
+      onExit: dispenseSkip,
     }],
   },
   'onboarded:fill_prescription:dispense_select': {
@@ -354,7 +323,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       trx: TrxOrDb,
       pharmacistState: PharmacistChatbotUserState,
     ) {
-      return `Do you want to dispense\n* ${await processNextMedication(
+      return `Do you want to dispense\n* ${await currentMedication(
         trx,
         pharmacistState,
       )}?`
@@ -366,7 +335,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
     }, {
       id: 'no',
       title: 'No',
-      onExit: dispenseNextStep,
+      onExit: dispenseSkip,
     }],
   },
   'onboarded:fill_prescription:confirm_done': {
@@ -393,22 +362,7 @@ export const PHARMACIST_CONVERSATION_STATES: ConversationStates<
       {
         id: 'restart_dispense',
         title: 'Restart Dispense',
-        async onExit(trx, pharmacistState) {
-          const prescription_id =
-            pharmacistState.chatbot_user.data.prescription_id
-          const number_of_dispensed_medications = Number(
-            pharmacistState.chatbot_user.data.number_of_dispensed_medications,
-          )
-          const allFilledMedications =
-            await getFilledMedicationsByPrescriptionId(trx, prescription_id)
-          const filledMedicationsThisRound = allFilledMedications.slice(
-            0,
-            number_of_dispensed_medications,
-          )
-          console.log(filledMedicationsThisRound)
-          await deleteFilledMedications(trx, filledMedicationsThisRound)
-          return await dispenseType(trx, pharmacistState)
-        },
+        onExit: dispenseRestart,
       },
       {
         id: 'main_menu',
