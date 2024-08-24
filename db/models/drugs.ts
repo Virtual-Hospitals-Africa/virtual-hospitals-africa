@@ -211,6 +211,80 @@ export async function searchManufacturedMedications(
   }))
 }
 
+export async function searchAcrossPages(
+  trx: TrxOrDb,
+  search: string,
+  page: number = 1,
+  rowsPerPage: number = 10
+): Promise<{ medicines: RenderedMedicine[]; totalRows: number }> {
+  const offset = (page - 1) * rowsPerPage;
+
+  const totalRowsResult = await trx
+    .selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .where((eb) => 
+      eb.or([
+        eb('drugs.generic_name', 'ilike', `%${search}%`),
+        eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
+        eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
+      ])
+    )
+    .select((eb) => eb.fn.countAll().as('totalRows'))
+    .executeTakeFirst();
+
+  const totalRows = totalRowsResult ? parseInt(totalRowsResult.totalRows.toString(), 10) : 0;
+
+  const medicines = await trx
+    .selectFrom('manufactured_medications')
+    .innerJoin(
+      'medications',
+      'medications.id',
+      'manufactured_medications.medication_id',
+    )
+    .innerJoin('drugs', 'drugs.id', 'medications.drug_id')
+    .select([
+      'manufactured_medications.id',
+      'drugs.generic_name',
+      'manufactured_medications.trade_name',
+      'manufactured_medications.applicant_name',
+      'medications.form',
+      'medications.strength_numerators',
+      'medications.strength_numerator_unit',
+      'medications.strength_denominator',
+      'medications.strength_denominator_unit',
+      'medications.strength_denominator_is_units',
+      strengthSummary('manufactured_medications'),
+    ])
+    .where((eb) => 
+      eb.or([
+        eb('drugs.generic_name', 'ilike', `%${search}%`),
+        eb('manufactured_medications.trade_name', 'ilike', `%${search}%`),
+        eb('manufactured_medications.applicant_name', 'ilike', `%${search}%`),
+      ])
+    )
+    .orderBy('drugs.generic_name', 'asc')
+    .limit(rowsPerPage)
+    .offset(offset)
+    .execute();
+
+  return {
+    medicines: medicines.map((medicine) => ({
+      ...medicine,
+      strength_denominator: parseFloat(medicine.strength_denominator),
+      actions: {
+        recall: `/regulator/medicines/${medicine.id}/recall`,
+      },
+    })),
+    totalRows,
+  };
+}
+
+
 export async function get(
   trx: TrxOrDb,
   page: number = 1,

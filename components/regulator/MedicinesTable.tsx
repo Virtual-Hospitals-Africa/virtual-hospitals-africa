@@ -15,6 +15,7 @@ type MedicinesTableProps = {
   rowsPerPage: number
   currentPage: number
   totalPage: number
+  searchQuery: string
 }
 
 export default function MedicinesTable({
@@ -24,6 +25,7 @@ export default function MedicinesTable({
   rowsPerPage,
   currentPage,
   totalPage,
+  searchQuery,
 }: MedicinesTableProps): JSX.Element {
   const search_href = `${pathname}`
   const add_href = `${pathname}/add`
@@ -31,6 +33,7 @@ export default function MedicinesTable({
     <>
       <MedicinesFooInput 
         medicines={medicines}
+        searchQuery={searchQuery}
       />
 
       <Pagination
@@ -39,6 +42,7 @@ export default function MedicinesTable({
         path={pathname}
         rowsPerPage={rowsPerPage}
         totalRows={totalRows}
+        searchQuery={searchQuery}
       />
     </>
   )
