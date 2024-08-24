@@ -6,7 +6,7 @@ type PaginationProps = {
   path: string
   rowsPerPage: number
   totalRows: number
-  searchQuery ?: string
+  searchQuery?: string
 }
 
 export default function Pagination({
@@ -15,16 +15,7 @@ export default function Pagination({
   path,
   rowsPerPage,
   totalRows,
-  searchQuery,
 }: PaginationProps) {
-  const getPageUrl = (page: number) => {
-    const url = new URL(path, window.location.origin);
-    url.searchParams.set('page', page.toString());
-    if (searchQuery) {
-      url.searchParams.set('search', searchQuery);
-    }
-    return url.toString();
-  };
   return (
     <div className='flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6'>
       <div className='flex flex-1 justify-between sm:hidden'>
