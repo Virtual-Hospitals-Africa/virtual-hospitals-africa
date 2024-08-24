@@ -33,12 +33,9 @@ const columns: TableColumn<RenderedMedicine>[] = [
   },
 ]
 
-type MedicinesFooInputProps = {
-  medicines: RenderedMedicine[]
-  pathname: string
-}
-
-export function MedicinesFooInput({ medicines, pathname }: MedicinesFooInputProps) {
+export function MedicinesFooInput(
+  { medicines }: { medicines: RenderedMedicine[] },
+) {
   const { search, setSearch } = useAsyncSearch({
     href: '/drugs',
     value: null,
@@ -48,7 +45,7 @@ export function MedicinesFooInput({ medicines, pathname }: MedicinesFooInputProp
     search.results.some((result) => result.name === medicine.generic_name)
   )
   : medicines
-  console.log('pathname', pathname)
+  
   console.log('search', search)
   return (
     <div className='mb-4'>

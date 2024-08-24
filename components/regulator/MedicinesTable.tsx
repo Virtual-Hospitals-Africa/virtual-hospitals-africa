@@ -29,11 +29,9 @@ export default function MedicinesTable({
   const add_href = `${pathname}/add`
   return (
     <>
-
       <MedicinesFooInput 
-        medicines={medicines} pathname={pathname} 
+        medicines={medicines}
       />
-
 
       <Pagination
         totalPages={totalPage}
