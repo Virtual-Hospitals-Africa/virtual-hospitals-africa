@@ -43,6 +43,11 @@ export function MedicinesFooInput({ medicines, pathname }: MedicinesFooInputProp
     href: '/drugs',
     value: null,
   })
+  const filteredMedicines = search.query
+  ? medicines.filter((medicine) =>
+    search.results.some((result) => result.name === medicine.generic_name)
+  )
+  : medicines
   console.log('pathname', pathname)
   console.log('search', search)
   return (
@@ -58,7 +63,7 @@ export function MedicinesFooInput({ medicines, pathname }: MedicinesFooInputProp
       </FormRow>
       <Table
         columns={columns}
-        rows={search.query ? (search.results as any) : medicines}
+        rows={filteredMedicines}
         EmptyState={() => (
           <EmptyState
             header='No medicines'
