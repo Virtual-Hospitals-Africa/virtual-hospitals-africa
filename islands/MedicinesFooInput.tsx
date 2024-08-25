@@ -86,14 +86,20 @@ export function MedicinesFooInput(
     <div className='mb-4'>
       <FormRow className='mb-4'>
         <TextInput 
-          name='search'
+          name=''
+          placeholder='Search Medicines'
           value={search.query}
           onInput={(e) => {
             setSearch({ ...search, query: e.currentTarget.value })
           }}
           onKeyDown={handleKeyDown}
         />
-        <Button onClick={() => handleSearch(search.query)}>Search</Button>
+        <Button 
+          onClick={() => handleSearch(search.query)}
+          className='w-max rounded-md border-0 text-white shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-white focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 h-9 p-2 self-end whitespace-nowrap grid place-items-center'
+        >
+          Search
+        </Button>
       </FormRow>
       <Table
         columns={columns}
