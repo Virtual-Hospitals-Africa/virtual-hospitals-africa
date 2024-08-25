@@ -17,19 +17,19 @@ interface DiagnosisData {
 }
 
 function assertIsDiagnoses(
-  data: unknown
+  data: unknown,
 ): asserts data is DiagnosisData {
   assertOr400(isObjectLike(data), 'Invalid form values')
   if (data.pre_existing_conditions !== undefined) {
     assertOr400(
-        Array.isArray(data.pre_existing_conditions),
-        'pre_existing_conditions must be an array',
+      Array.isArray(data.pre_existing_conditions),
+      'pre_existing_conditions must be an array',
     )
     for (const condition of data.pre_existing_conditions) {
-        assertOr400(
+      assertOr400(
         typeof condition.id === 'string',
         'Each condition must have an id of type string',
-        )
+      )
     }
   }
 }
@@ -47,10 +47,13 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
     console.log('data', data)
 
     const patient_condition_ids: string[] = []
-    if (data.pre_existing_conditions && Array.isArray(data.pre_existing_conditions)) {
-        for (const condition of data.pre_existing_conditions) {
-          patient_condition_ids.push(condition.id);
-        }
+    if (
+      data.pre_existing_conditions &&
+      Array.isArray(data.pre_existing_conditions)
+    ) {
+      for (const condition of data.pre_existing_conditions) {
+        patient_condition_ids.push(condition.id)
+      }
     }
 
     await ctx.state.trx
@@ -65,7 +68,7 @@ export const handler: LoggedInHealthWorkerHandlerWithProps<
 
     const completing_step = completeStep(ctx)
     return completing_step
-  }
+  },
 }
 
 // deno-lint-ignore require-await
